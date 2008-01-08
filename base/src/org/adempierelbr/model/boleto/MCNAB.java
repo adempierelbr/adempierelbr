@@ -1,0 +1,265 @@
+package org.adempierelbr.model.boleto;
+
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import org.adempierelbr.model.boleto.bank.MBradesco;
+import org.adempierelbr.model.boleto.bank.MHsbc;
+import org.adempierelbr.model.boleto.bank.MItau;
+import org.adempierelbr.model.boleto.bank.MSantander_033;
+import org.compiere.model.MBankAccount;
+import org.compiere.model.X_LBR_CNAB;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
+/**
+ * MCNAB
+ * 
+ * Generic Bank Model
+ * 
+ * @author Mario Grigioni (Kenos, www.kenos.com.br)
+ * @version $Id: MCNAB.java, 07/11/2007 10:45:02 mgrigioni
+ */
+public class MCNAB extends X_LBR_CNAB
+{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MCNAB.class);
+	
+	/**	File Prefix			*/
+	public static final String prefix = "CB"; //COBRANÇA BANCÁRIA
+	
+	/**	File Extension			*/
+	public static final String ext = ".REM"; //REMESSA
+		
+	public static final int BANCO_DO_BRASIL = 0;
+	public static final int BRADESCO = 1;
+	public static final int ITAU = 2;
+	public static final int BANCO_REAL = 3;
+    public static final int CAIXA_ECONOMICA = 4;
+    public static final int UNIBANCO = 5;
+    public static final int HSBC = 6;
+    public static final int SANTANDER_033 = 7;
+    public static final int SANTANDER_353 = 8;
+    
+	public MCNAB(Properties ctx, int LBR_CNAB_ID, String trx) {
+    	super(ctx,LBR_CNAB_ID,trx);
+    }
+	
+	public static void generateFile(int bNum, String fileName, Timestamp DateFrom,
+			                        Timestamp DateTo, MBankAccount BankA, String trx) throws IOException{
+		
+		if(bNum==MCNAB.BANCO_DO_BRASIL){
+			//TODO GENERATEFILE BANCO DO BRASIL
+		}
+    	else if(bNum==MCNAB.BRADESCO){
+    		MBradesco.generateFile(fileName, DateFrom, DateTo, BankA, trx);
+		}
+    	else if(bNum==MCNAB.ITAU){
+    		MItau.generateFile(fileName, DateFrom, DateTo, BankA, trx);
+		}
+    	else if(bNum==MCNAB.BANCO_REAL){
+    		//TODO GENERATEFILE BANCO REAL
+		}
+    	else if(bNum==MCNAB.CAIXA_ECONOMICA){
+    		//TODO GENERATEFILE CAIXA ECONOMICA
+		}
+    	else if(bNum==MCNAB.UNIBANCO){
+    		//TODO GENERATEFILE UNIBANCO
+		}
+    	else if(bNum==MCNAB.HSBC){
+    		MHsbc.generateFile(fileName, DateFrom, DateTo, BankA, trx);
+		}
+    	else if(bNum==MCNAB.SANTANDER_033){
+    		MSantander_033.generateFile(fileName, DateFrom, DateTo, BankA, trx);
+		}
+    	else if(bNum==MCNAB.SANTANDER_353){
+    		//TODO GENERATEFILE SANTANDER 353
+		}
+		
+	}
+	
+	/**************************************************************************
+	 * 	getSystemDate
+	 *  Get Adempiere System Date
+	 * 	@return String dataFormatada
+	 */
+	public static String getSystemDate(Properties ctx)
+	{
+		String dataFormatada = CNABDateFormat(Env.getContextAsDate(ctx, "#Date"));
+		return dataFormatada;
+	}
+		
+	/**************************************************************************
+	 * 	CNABDateFormat
+	 *  Convert Timestamp to CNAB Format (DDMMYY)
+	 *  @param Timestamp dt
+	 * 	@return String data
+	 */
+	public static String CNABDateFormat(Timestamp dt)
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		String data = formatter.format(dt); 
+		data = data.replaceAll("[/]", "");
+		data = data.substring(0, 6);
+		return data;
+	}
+	
+	/**************************************************************************
+	 * 	CNABFormat
+	 *  Clear String Mask and Fill with Zeros at left
+	 *  @param String value
+	 * 	@return String value
+	 */
+	public static String CNABFormat(String value, int qtdDigitos){
+		
+		String zeros    = "0000000000000000000000000000000000000000";
+		
+		if (value == null) value = "";
+		
+		value = value.replaceAll("[.,-/]","");
+		
+		int rest = qtdDigitos - value.length();
+		
+		value = zeros.substring(0,rest) + value;
+		
+		return value;
+	} //CNABFormat
+		
+	/**************************************************************************
+	 * 	getModulo10
+	 *  @param String value
+	 * 	@return int dac
+	 */
+    public static int getModulo10(String campo) {
+        
+		int multiplicador = 2;
+		int multiplicacao = 0;
+		int soma_campo = 0;
+		
+		for (int i = campo.length(); i > 0; i--) {
+			multiplicacao = Integer.parseInt(campo.substring(i-1,i)) * multiplicador;
+			
+			if (multiplicacao >= 10) {
+				multiplicacao = Integer.parseInt(String.valueOf(multiplicacao).substring(0,1)) + Integer.parseInt(String.valueOf(multiplicacao).substring(1,2)); 
+			}
+			soma_campo = soma_campo + multiplicacao;
+			
+			if (multiplicador == 1)
+				multiplicador = 2;
+			else
+				multiplicador = 1;
+		}
+		int dac = 10 - (soma_campo%10);
+		
+		if (dac > 9)
+			dac = 0;
+
+        return dac;
+    }
+    
+	/**************************************************************************
+	 * 	getModulo11
+	 *  @param String value
+	 *  @param int type
+	 * 	@return int dac
+	 */
+    public static int getModulo11(String campo,int type) {
+    	//Modulo 11 - 234567   (type = 7)
+    	//Modulo 11 - 23456789 (type = 9)
+        
+    	int multiplicador = 2;
+		int multiplicacao = 0;
+		int soma_campo = 0;
+		
+		for (int i = campo.length(); i > 0; i--) {
+			multiplicacao = Integer.parseInt(campo.substring(i-1,i)) * multiplicador;
+			
+			soma_campo = soma_campo + multiplicacao;
+			
+			multiplicador++;
+			if (multiplicador > 7 && type == 7)
+				multiplicador = 2;
+			else if (multiplicador > 9 && type == 9)
+				multiplicador = 2;
+		}
+		
+		int dac = 11 - (soma_campo%11);
+		
+        if (dac > 9 && type == 7)
+            dac = 0;
+        else if ((dac == 0 || dac == 1 || dac > 9) && type == 9)
+        	dac = 1;
+
+        return dac;
+    }
+    
+	/**************************************************************************
+	 * 	getFields
+	 *  @param String sql
+	 *  @param String trx
+	 * 	@return MCNAB[] lines
+	 */
+	public static MCNAB[] getFields(String where, Timestamp DateFrom, Timestamp DateTo, String trx){
+		
+		Properties ctx = Env.getCtx();
+	    PreparedStatement pstmt = null;
+	 	ResultSet rs = null;
+		
+	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " + where;
+	           sql += " AND lbr_DocDate BETWEEN ? AND ?";
+	           sql += " AND lbr_IsCancelled = 'N'";
+	           sql += " AND AD_Client_ID = ?";
+	           
+	 	ArrayList<MCNAB> list = new ArrayList<MCNAB>();
+	 	
+		try
+    	{
+    		pstmt = DB.prepareStatement (sql.trim(), trx);
+    		pstmt.setTimestamp(1, DateFrom);
+    		pstmt.setTimestamp(2, DateTo);
+    		pstmt.setInt(3, Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+    		rs = pstmt.executeQuery ();
+    		while (rs.next ())
+    		{
+    			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
+    			list.add(cnab);  
+    		}
+    		rs.close ();
+    		pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		log.log(Level.SEVERE, "", e);
+    	}
+    	try
+    	{
+    		if (pstmt != null)
+    			pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		pstmt = null;
+    	}
+		
+		
+		MCNAB[] lines = new MCNAB[list.size()];
+		list.toArray(lines);
+		return lines;
+	} //getFields
+    
+} //MCNAB

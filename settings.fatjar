@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Nov 09 13:13:29 GMT-03:00 2007
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=customization.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=true
+onejar.expand=
+excludes=<po|Adempiere>;<jar|activation.jar>;<jar|jstl.jar>;<jar|log4j.jar>;<jar|mail.jar>;<jar|standard.jar>;<jar|Verisign.jar>;<jar|ocrs12.jar>;<jar|junit.jar>;<jar|commons-httpclient.jar>;<jar|commons-logging.jar>;<jar|ant-commons-net.jar>;<jar|ant-launcher.jar>;<jar|ant.jar>;<jar|j2ee.jar>;<jar|jnp-client.jar>;<jar|jboss-common-client.jar>;<jar|bsh-1.3.0.jar>;<jar|jsp-api.jar>;<jar|servlet-api.jar>;<jar|jboss-j2ee.jar>;<jar|ojdbc14.jar>;<jar|jpayment.jar>;<jar|jbossall-client.jar>;<jar|jnlp.jar>;<jar|commons-collections-3.1.jar>;<jar|commons-logging.jar>;<jar|commons-net-1.4.0.jar>;<jar|jgraph.jar>
+includes=

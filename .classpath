@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="client/src"/>
+	<classpathentry kind="src" path="dbPort/src"/>
+	<classpathentry kind="src" path="base/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Adempiere"/>
+	<classpathentry kind="lib" path="lib/PDFBox/ant.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/FontBox-0.2.0-dev.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/JempBox-0.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/junit.jar"/>
+	<classpathentry kind="lib" path="lib/PDFBox/PDFBox-0.7.4-dev-20070704.jar"/>
+	<classpathentry kind="lib" path="lib/jBoleto.jar"/>
+	<classpathentry kind="lib" path="lib/rtextpr.jar"/>
+	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
