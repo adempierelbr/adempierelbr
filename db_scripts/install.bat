@@ -1,12 +1,21 @@
 @echo off
 
-cls
+IF (%1)==() GOTO END
 
-Echo AdempiereLBR
-Echo .
-Echo . Mario Grigioni (Kenos, www.kenos.com.br) - 27/12/2007
-Echo .
+CLS
 
-Set /p PGPASSWORD=Password (ADEMPIERE): 
+ECHO AdempiereLBR
+ECHO .
+ECHO . Mario Grigioni (Kenos, www.kenos.com.br) - 08/01/2008
+ECHO .
 
-for %%f in (*.sql) do psql -d adempiere -U adempiere -f %%f
+SET /p PGPASSWORD=Password (ADEMPIERE): 
+
+FOR %%f IN (%1\*.sql) DO psql -d adempiere -U adempiere -f %%f
+PAUSE
+EXIT
+
+:END
+ECHO Usage %0 DIRECTORY
+PAUSE
+EXIT
