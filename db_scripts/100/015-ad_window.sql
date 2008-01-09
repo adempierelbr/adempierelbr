@@ -20,3 +20,5 @@ INSERT INTO ADEMPIERE.AD_WINDOW(ad_window_id, ad_client_id, ad_org_id, isactive,
   VALUES(1000013, 0, 0, 'Y', '2007-12-11 10:35:47.0', 100, '2007-12-11 10:35:47.0', 100, 'Tax Configuration', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N');
 INSERT INTO ADEMPIERE.AD_WINDOW(ad_window_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, windowtype, issotrx, entitytype, processing, ad_image_id, ad_color_id, isdefault, winheight, winwidth, isbetafunctionality)
   VALUES(1000014, 0, 0, 'Y', '2007-12-15 10:58:06.0', 100, '2007-12-15 10:58:14.0', 100, 'Tax Brazil', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N');
+INSERT INTO ADEMPIERE.AD_WINDOW(ad_window_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, windowtype, issotrx, entitytype, processing, ad_image_id, ad_color_id, isdefault, winheight, winwidth, isbetafunctionality)
+  VALUES(1000015, 0, 0, 'Y', '2008-01-04 13:27:26.0', 100, '2008-01-04 13:27:26.0', 100, 'Nota Fiscal', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N');

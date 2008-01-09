@@ -21,14 +21,6 @@ INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id
 INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
   VALUES(10, 1000012, 0, 0, 'Y', '2007-12-07 11:37:08.609', 0, '2007-12-11 09:08:26.859', 0, 1000014, 2);
 INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
-  VALUES(10, 1000014, 0, 0, 'Y', '2007-12-11 09:07:37.562', 0, '2007-12-11 09:09:14.718', 0, 1000008, 0);
-INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
-  VALUES(10, 1000015, 0, 0, 'Y', '2007-12-11 09:08:57.406', 0, '2007-12-11 09:09:14.718', 0, 1000008, 1);
-INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
-  VALUES(10, 1000009, 0, 0, 'Y', '2007-12-04 14:36:56.312', 0, '2007-12-11 09:09:14.718', 0, 1000008, 2);
-INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
-  VALUES(10, 1000000, 0, 0, 'Y', '2007-11-07 12:10:04.453', 0, '2007-12-15 11:01:24.984', 0, 0, 10);
-INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
   VALUES(10, 1000019, 0, 0, 'Y', '2007-12-15 11:01:21.734', 0, '2007-12-15 11:01:24.984', 0, 1000015, 0);
 INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
   VALUES(10, 1000018, 0, 0, 'Y', '2007-12-11 10:39:19.64', 0, '2007-12-15 11:01:24.984', 0, 1000015, 1);
@@ -38,3 +30,13 @@ INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id
   VALUES(10, 1000016, 0, 0, 'Y', '2007-12-11 09:57:42.187', 0, '2007-12-15 11:01:24.984', 0, 1000015, 3);
 INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
   VALUES(10, 1000017, 0, 0, 'Y', '2007-12-11 10:10:45.906', 0, '2007-12-15 11:01:24.984', 0, 1000015, 4);
+INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
+  VALUES(10, 1000000, 0, 0, 'Y', '2007-11-07 12:10:04.453', 0, '2008-01-04 12:30:05.921', 0, 0, 10);
+INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
+  VALUES(10, 1000014, 0, 0, 'Y', '2007-12-11 09:07:37.562', 0, '2008-01-04 12:30:13.64', 0, 1000008, 0);
+INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
+  VALUES(10, 1000015, 0, 0, 'Y', '2007-12-11 09:08:57.406', 0, '2008-01-04 12:30:13.64', 0, 1000008, 1);
+INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
+  VALUES(10, 1000020, 0, 0, 'Y', '2008-01-04 12:29:55.687', 0, '2008-01-04 12:30:13.64', 0, 1000008, 2);
+INSERT INTO ADEMPIERE.AD_TREENODEMM(ad_tree_id, node_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, parent_id, seqno)
+  VALUES(10, 1000009, 0, 0, 'Y', '2007-12-04 14:36:56.312', 0, '2008-01-04 12:30:13.64', 0, 1000008, 3);

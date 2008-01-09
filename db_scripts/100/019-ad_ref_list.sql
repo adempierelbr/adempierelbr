@@ -42,3 +42,11 @@ INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isact
   VALUES(1000033, 0, 0, 'Y', '2007-12-15 10:41:06.0', 100, '2007-12-15 10:41:06.0', 100, 'P', 'Product', NULL, 1000022, NULL, NULL, 'LBRA');
 INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
   VALUES(1000034, 0, 0, 'Y', '2007-12-15 10:41:27.0', 100, '2007-12-15 10:41:27.0', 100, 'S', 'Service', NULL, 1000022, NULL, NULL, 'LBRA');
+INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
+  VALUES(1000035, 0, 0, 'Y', '2008-01-04 15:40:32.0', 100, '2008-01-04 15:40:32.0', 100, 'END', 'End User', NULL, 1000024, NULL, NULL, 'LBRA');
+INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
+  VALUES(1000036, 0, 0, 'Y', '2008-01-04 15:40:52.0', 100, '2008-01-04 15:40:52.0', 100, 'MAN', 'Manufacturing', NULL, 1000024, NULL, NULL, 'LBRA');
+INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
+  VALUES(1000037, 0, 0, 'Y', '2008-01-04 15:41:11.0', 100, '2008-01-04 15:41:11.0', 100, 'IMP', 'Import', NULL, 1000024, NULL, NULL, 'LBRA');
+INSERT INTO ADEMPIERE.AD_REF_LIST(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
+  VALUES(1000038, 0, 0, 'Y', '2008-01-04 15:41:27.0', 100, '2008-01-04 15:41:27.0', 100, 'EXP', 'Export', NULL, 1000024, NULL, NULL, 'LBRA');

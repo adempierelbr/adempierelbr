@@ -38,3 +38,5 @@ INSERT INTO ADEMPIERE.AD_REFERENCE(ad_reference_id, ad_client_id, ad_org_id, isa
   VALUES(1000022, 0, 0, 'Y', '2007-12-15 10:40:55.0', 100, '2007-12-15 10:40:55.0', 100, 'lbr_TaxType', NULL, NULL, 'L', NULL, 'LBRA');
 INSERT INTO ADEMPIERE.AD_REFERENCE(ad_reference_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, validationtype, vformat, entitytype)
   VALUES(1000023, 0, 0, 'Y', '2007-12-15 11:44:54.0', 100, '2007-12-15 11:44:54.0', 100, 'LBR_TaxName', NULL, NULL, 'T', NULL, 'LBRA');
+INSERT INTO ADEMPIERE.AD_REFERENCE(ad_reference_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, validationtype, vformat, entitytype)
+  VALUES(1000024, 0, 0, 'Y', '2008-01-04 15:40:24.0', 100, '2008-01-04 15:40:24.0', 100, 'lbr_TransactionType (Sales/Purchase)', NULL, NULL, 'L', NULL, 'LBRA');
