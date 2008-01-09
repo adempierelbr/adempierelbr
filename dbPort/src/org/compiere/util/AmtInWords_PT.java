@@ -16,13 +16,12 @@
  *****************************************************************************/
 package org.compiere.util;
 
-import java.math.BigInteger;
-
 /**
  *	Portuguese Amount in Words
  *	
  *  @author Jorg Janke - http://www.rgagnon.com/javadetails/java-0426.html
  *  @translator emontenegro, ralexsander
+ *  @contributor mgrigioni - UTF-8 Code
  *  @version $Id: AmtInWords_PT.java,v 1.0 2008/01/07 00:54:36 ralexsander Exp $
  */
 public class AmtInWords_PT implements AmtInWords
@@ -39,44 +38,44 @@ public class AmtInWords_PT implements AmtInWords
 		"", 
 		"", 
 		"",
-		" Décimo de", 
-		" Centésimo de", 
-		" Milésimo de", 
-		" Milionésimo de",
-		" Bilionésimo de",
-		" Trilionésimo de"
+		" D\u00e9cimo de", 
+		" Cent\u00e9simo de", 
+		" Mil\u00e9simo de", 
+		" Milion\u00e9simo de",
+		" Bilion\u00e9simo de",
+		" Trilion\u00e9simo de"
 		};
 	
 	private static final String[]	centsNamesPlural	= {
 		"", 
 		"", 
 		"",
-		" Décimos de", 
-		" Centésimos de", 
-		" Milésimos de", 
-		" Milionésimos de",
-		" Bilionésimos de",
-		" Trilionésimos de"
+		" D\u00e9cimos de", 
+		" Cent\u00e9simos de", 
+		" Mil\u00e9simos de", 
+		" Milion\u00e9simos de",
+		" Bilion\u00e9simos de",
+		" Trilion\u00e9simos de"
 		};
 	
 	private static final String[]	majorNames	= {
 		"", 
 		" Mil", 
-		" Milhão",
-		" Bilhão", 
-		" Trilhão", 
-		" Quatrilhão", 
-		" Quinquilhão"  
+		" Milh\u00e3o",
+		" Bilh\u00e3o", 
+		" Trilh\u00e3o", 
+		" Quatrilh\u00e3o", 
+		" Quinquilh\u00e3o"  
 		};
 
 	private static final String[]	majorNamesPlural	= {
 		"", 
 		" Mil", 
-		" Milhões",
-		" Bilhões", 
-		" Trilhões", 
-		" Quatrilhões", 
-		" Quinquilhões"  
+		" Milh\u00f5es",
+		" Bilh\u00f5es", 
+		" Trilh\u00f5es", 
+		" Quatrilh\u00f5es", 
+		" Quinquilh\u00f5es"  
 		};
 
 	private static final String[]	tensNames	= { 
@@ -85,7 +84,7 @@ public class AmtInWords_PT implements AmtInWords
 		" Vinte",
 		" Trinta", 
 		" Quarenta", 
-		" Cinqüenta", 
+		" Cinq\u00fcenta", 
 		" Sessenta", 
 		" Setenta",
 		" Oitenta", 
@@ -96,7 +95,7 @@ public class AmtInWords_PT implements AmtInWords
 		"", 
 		" Um",
 		" Dois",
-		" Três", 
+		" Tr\u00eas", 
 		" Quatro", 
 		" Cinco", 
 		" Seis", 
@@ -196,9 +195,9 @@ public class AmtInWords_PT implements AmtInWords
 				{
 					s = s.replaceFirst ("Dois Cento es", "Duzentos");
 				}
-				if (s.startsWith ("Três Cento es", 1))
+				if (s.startsWith ("Tr\u00eas Cento es", 1))
 				{
-					s = s.replaceFirst ("Três Cento es", "Trezentos");
+					s = s.replaceFirst ("Tr\u00eas Cento es", "Trezentos");
 				}
 				if (s.startsWith ("Quatro Cento es", 1))
 				{
@@ -276,6 +275,7 @@ public class AmtInWords_PT implements AmtInWords
 
 	//	int newpos = amount.lastIndexOf ('.');  // Old
 		int newpos = amount.lastIndexOf (',');
+		if (newpos == -1) newpos = amount.length();
 		int reais =  Integer.parseInt (amount.substring (0, newpos));
 		double valor = Double.parseDouble(vlr);
 		sb.append (convert (reais));
@@ -382,19 +382,19 @@ public class AmtInWords_PT implements AmtInWords
 			}
 		}
 		
-		/**	Correções	*/
+		/**	CorreÃ§Ãµes	*/
 		String result;
 		result = sb.toString ()
-				.replaceAll("ões Reais", "ões de Reais")
-				.replaceAll("ão Reais", "ão de Reais")
+				.replaceAll("\u00f5es Reais", "\u00f5es de Reais")
+				.replaceAll("\u00e3o Reais", "\u00e3o de Reais")
 				.replaceAll(" e Reais", " Reais")
 				.replaceAll(", de", " de");
 		
 		if (result.indexOf("Bilh") > 0 && result.indexOf("Milh") > 0 && result.indexOf(" de Rea") == -1)
-			result = result.replaceAll("Bilhões e", "Bilhões,").replaceAll("Bilhão e", "Bilhão,");
+			result = result.replaceAll("Bilh\u00f5es e", "Bilh\u00f5es,").replaceAll("Bilh\u00e3o e", "Bilh\u00e3o,");
 		
 		if (result.indexOf("Milh") > 0 && result.indexOf(" de Rea") == -1 && result.indexOf("Mil e") > 0)
-			result = result.replaceAll("Milhões e", "Milhões,").replaceAll("Milhão e", "Milhão,");
+			result = result.replaceAll("Milh\u00f5es e", "Milh\u00f5es,").replaceAll("Milh\u00e3o e", "Milh\u00e3o,");
 
 		return result ; 
 	}	//	getAmtInWords
@@ -402,7 +402,7 @@ public class AmtInWords_PT implements AmtInWords
 	public static void main(String[] args) throws Exception 
 	{
 		AmtInWords_PT aiw = new AmtInWords_PT();
-		System.out.println(aiw.getAmtInWords("3010100,123"));
+		System.out.println(aiw.getAmtInWords("3054897,63"));
 	}
 	
 }	//	AmtInWords_PT
