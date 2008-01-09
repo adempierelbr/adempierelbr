@@ -93,7 +93,7 @@
   <value column="Name" original="Delivery">Entrega</value>
  </row>
  <row id="131" trl="Y">
-  <value column="Name" original="Invoicing">Faturando</value>
+  <value column="Name" original="Invoicing">Fatura</value>
  </row>
  <row id="132" trl="Y">
   <value column="Name" original="Only ..">Somente ..</value>

@@ -1954,4 +1954,8 @@
   <value column="Name" original="Tax Brazil">Imposto (Brasil)</value>
   <value column="Description" original=""></value>
  </row>
+ <row id="1000020" trl="Y">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Description" original=""></value>
+ </row>
 </adempiereTrl>

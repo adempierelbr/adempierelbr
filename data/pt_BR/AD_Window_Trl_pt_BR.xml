@@ -1434,4 +1434,9 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>
+ <row id="1000015" trl="Y">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
 </adempiereTrl>

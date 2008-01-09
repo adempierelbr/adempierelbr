@@ -3354,6 +3354,18 @@
   <value column="Name" original="PO;SO Commitment">PO;SO Commitment</value>
   <value column="Description" original=""></value>
  </row>
+ <row id="53228" trl="Y">
+  <value column="Name" original="System">System</value>
+  <value column="Description" original="Just allowed system configuration">Just allowed system configuration</value>
+ </row>
+ <row id="53229" trl="Y">
+  <value column="Name" original="Client">Client</value>
+  <value column="Description" original="Allowed system and client configuration">Allowed system and client configuration</value>
+ </row>
+ <row id="53230" trl="Y">
+  <value column="Name" original="Organization">Organization</value>
+  <value column="Description" original="Allowed system, client and organization configuration">Allowed system, client and organization configuration</value>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="PJ - Legal Entity">PJ - Pessoa Jurídica</value>
   <value column="Description" original=""></value>
@@ -3440,6 +3452,22 @@
  </row>
  <row id="1000034" trl="Y">
   <value column="Name" original="Service">Serviço</value>
+  <value column="Description" original=""></value>
+ </row>
+ <row id="1000035" trl="Y">
+  <value column="Name" original="End User">Consumidor Final</value>
+  <value column="Description" original=""></value>
+ </row>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="Manufacturing">Industrialização</value>
+  <value column="Description" original=""></value>
+ </row>
+ <row id="1000037" trl="Y">
+  <value column="Name" original="Import">Importação</value>
+  <value column="Description" original=""></value>
+ </row>
+ <row id="1000038" trl="Y">
+  <value column="Name" original="Export">Exportação</value>
   <value column="Description" original=""></value>
  </row>
 </adempiereTrl>

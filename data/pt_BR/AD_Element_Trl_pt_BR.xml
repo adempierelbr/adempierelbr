@@ -13340,9 +13340,9 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="2113" trl="Y">
-  <value column="Name" original="No Packages">Sem Pacotes</value>
-  <value column="PrintName" original="No Packages">Sem Pacotes</value>
-  <value column="Description" original="Number of packages shipped">Número de pacotes enviados</value>
+  <value column="Name" original="No Packages">Número de Volumes</value>
+  <value column="PrintName" original="No Packages">Número de Volumes</value>
+  <value column="Description" original="Number of packages shipped">Número de Volumes Enviados</value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
@@ -23786,6 +23786,66 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""></value>
   <value column="PO_PrintName" original=""></value>
  </row>
+ <row id="53229" trl="Y">
+  <value column="Name" original="Configuration Level">Configuration Level</value>
+  <value column="PrintName" original="Configuration Level for this parameter">Configuration Level for this parameter</value>
+  <value column="Description" original="Configuration Level for this parameter">Configuration Level for this parameter</value>
+  <value column="Help" original="Configuration Level for this parameter. S - just allowed system configuration. C - client configurable parameter. O - org configurable parameter">Configuration Level for this parameter. S - just allowed system configuration. C - client configurable parameter. O - org configurable parameter</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53320" trl="Y">
+  <value column="Name" original="Overwrite Sequence on Complete">Overwrite Sequence on Complete</value>
+  <value column="PrintName" original="Overwrite Sequence on Complete">Overwrite Sequence on Complete</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53321" trl="Y">
+  <value column="Name" original="Definite Sequence">Definite Sequence</value>
+  <value column="PrintName" original="Definite Sequence">Definite Sequence</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53322" trl="Y">
+  <value column="Name" original="Overwrite Date on Complete">Overwrite Date on Complete</value>
+  <value column="PrintName" original="Overwrite Date on Complete">Overwrite Date on Complete</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53323" trl="Y">
+  <value column="Name" original="Jasper Process Now">Jasper Process Now</value>
+  <value column="PrintName" original="Jasper Process Now">Jasper Process Now</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53324" trl="Y">
+  <value column="Name" original="Fail on Missing Model Validator">Fail on Missing Model Validator</value>
+  <value column="PrintName" original="Fail on Missing Model Validator">Fail on Missing Model Validator</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="Bill Fold">Carteira</value>
   <value column="PrintName" original="Bill Fold">Carteira</value>
@@ -25080,7 +25140,541 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="Name" original="Formula">Fórmula</value>
   <value column="PrintName" original="Formula">Fórmula</value>
   <value column="Description" original="Defines the Tax Formula">Define a Fórmula do Imposto</value>
-  <value column="Help" original="Defines the Tax Formula">Define a Fórmula do Imposto</value>
+  <value column="Help" original="Defines the Tax Formula">Campo para definir a Fórmula da Base de Cálculo do Imposto;
+Usar o nome dos impostos separados por @. Ex. @PIS@;
+Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000175" trl="Y">
+  <value column="Name" original="Tax Base Amount">Valor Base de Cálculo</value>
+  <value column="PrintName" original="Tax Base Amount">Valor Base de Cálculo</value>
+  <value column="Description" original="Defines the Tax Base Amount">Define o Valor da Base de Cálculo</value>
+  <value column="Help" original="Defines the Tax Base Amount">Define o Valor da Base de Cálculo</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000176" trl="Y">
+  <value column="Name" original="Formula NetWorth">Formula Valor Líquido</value>
+  <value column="PrintName" original="Formula NetWorth">Formula Valor Líquido</value>
+  <value column="Description" original="Defines the Tax Formula NetWorth">Define a Fórmula de Cálculo para Valor Líquido</value>
+  <value column="Help" original="Defines the Tax Formula NetWorth">Campo para definir a Fórmula de Cálculo do Valor Líquido (usada quando o preço está com Impostos Inclusos);
+Usar o nome dos impostos separados por @. Ex. @PIS@;
+Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000177" trl="Y">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="PrintName" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Description" original="Primary key table LBR_NotaFiscal">Define a Nota Fiscal</value>
+  <value column="Help" original="Primary key table LBR_NotaFiscal">Chave primária tabela LBR_NotaFiscal</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000178" trl="Y">
+  <value column="Name" original="BP Address 1">PN Endereço 1</value>
+  <value column="PrintName" original="BP Address 1">PN Endereço 1</value>
+  <value column="Description" original="BP Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000179" trl="Y">
+  <value column="Name" original="BP Address 2">PN Endereço 2</value>
+  <value column="PrintName" original="BP Address 2">PN Endereço 2</value>
+  <value column="Description" original="BP Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000180" trl="Y">
+  <value column="Name" original="BP Address 3">PN Endereço 3</value>
+  <value column="PrintName" original="BP Address 3">PN Endereço 3</value>
+  <value column="Description" original="BP Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000181" trl="Y">
+  <value column="Name" original="BP Address 4">PN Endereço 4</value>
+  <value column="PrintName" original="BP Address 4">PN Endereço 4</value>
+  <value column="Description" original="BP Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000182" trl="Y">
+  <value column="Name" original="BP City">PN Cidade</value>
+  <value column="PrintName" original="BP City">PN Cidade</value>
+  <value column="Description" original="BP City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000183" trl="Y">
+  <value column="Name" original="BP Country">PN País</value>
+  <value column="PrintName" original="BP Country">PN País</value>
+  <value column="Description" original="BP Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000184" trl="Y">
+  <value column="Name" original="BP Postal">PN CEP</value>
+  <value column="PrintName" original="BP Postal">PN CEP</value>
+  <value column="Description" original="BP Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000185" trl="Y">
+  <value column="Name" original="BP Region">PN Estado</value>
+  <value column="PrintName" original="BP Region">PN Estado</value>
+  <value column="Description" original="BP Region - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Region - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000186" trl="Y">
+  <value column="Name" original="BP Phone">PN Telefone</value>
+  <value column="PrintName" original="BP Phone">PN Telefone</value>
+  <value column="Description" original="BP Phone - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Phone - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000187" trl="Y">
+  <value column="Name" original="BP CNPJ">PN CNPJ</value>
+  <value column="PrintName" original="BP CNPJ">PN CNPJ</value>
+  <value column="Description" original="BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000188" trl="Y">
+  <value column="Name" original="BP IE">PN IE</value>
+  <value column="PrintName" original="BP IE">PN IE</value>
+  <value column="Description" original="BP IE - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP IE - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000189" trl="Y">
+  <value column="Name" original="BP Delivery Address 1">Endereço de Entrega 1</value>
+  <value column="PrintName" original="BP Delivery Address 1">Endereço de Entreda 1</value>
+  <value column="Description" original="BP Delivery Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000190" trl="Y">
+  <value column="Name" original="BP Delivery Address 2">Endereço de Entrega 2</value>
+  <value column="PrintName" original="BP Delivery Address 2">Endereço de Entrega 2</value>
+  <value column="Description" original="BP Delivery Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000191" trl="Y">
+  <value column="Name" original="BP Delivery Address 3">Endereço de Entrega 3</value>
+  <value column="PrintName" original="BP Delivery Address 3">Endereço de Entrega 3</value>
+  <value column="Description" original="BP Delivery Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000192" trl="Y">
+  <value column="Name" original="BP Delivery Address 4">Endereço de Entrega 4</value>
+  <value column="PrintName" original="BP Delivery Address 4">Endereço de Entrega 4</value>
+  <value column="Description" original="BP Delivery Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000193" trl="Y">
+  <value column="Name" original="BP Invoice Address 1">Endereço de Fatura 1</value>
+  <value column="PrintName" original="BP Invoice Address 1">Endereço de Fatura 1</value>
+  <value column="Description" original="BP Invoice Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000194" trl="Y">
+  <value column="Name" original="BP Invoice Address 2">Endereço de Fatura 2</value>
+  <value column="PrintName" original="BP Invoice Address 2">Endereço de Fatura 2</value>
+  <value column="Description" original="BP Invoice Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000195" trl="Y">
+  <value column="Name" original="BP Invoice Address 3">Endereço de Fatura 3</value>
+  <value column="PrintName" original="BP Invoice Address 3">Endereço de Fatura 3</value>
+  <value column="Description" original="BP Invoice Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000196" trl="Y">
+  <value column="Name" original="BP Invoice Address 4">Endereço de Fatura 4</value>
+  <value column="PrintName" original="BP Invoice Address 4">Endereço de Fatura 4</value>
+  <value column="Description" original="BP Invoice Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000197" trl="Y">
+  <value column="Name" original="BP Shipper Address 1">Endereço Transportadora 1</value>
+  <value column="PrintName" original="BP Shipper Address 1">Endereço Transportadora 1</value>
+  <value column="Description" original="BP Shipper Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000198" trl="Y">
+  <value column="Name" original="BP Shipper Address 2">Endereço Transportadora 2</value>
+  <value column="PrintName" original="BP Shipper Address 2">Endereço Transportadora 2</value>
+  <value column="Description" original="BP Shipper Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000199" trl="Y">
+  <value column="Name" original="BP Shipper Address 3">Endereço Transportadora 3</value>
+  <value column="PrintName" original="BP Shipper Address 3">Endereço Transportadora 3</value>
+  <value column="Description" original="BP Shipper Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000200" trl="Y">
+  <value column="Name" original="BP Shipper Address 4">Endereço Transportadora 4</value>
+  <value column="PrintName" original="BP Shipper Address 4">Endereço Transportadora 4</value>
+  <value column="Description" original="BP Shipper Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000201" trl="Y">
+  <value column="Name" original="BP Delivery City">Endereço de Entrega - Cidade</value>
+  <value column="PrintName" original="BP Delivery City">Endereço de Entrega - Cidade</value>
+  <value column="Description" original="BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000202" trl="Y">
+  <value column="Name" original="BP Delivery Country">Endereço de Entrega - País</value>
+  <value column="PrintName" original="BP Delivery Country">Endereço de Entrega - País</value>
+  <value column="Description" original="BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000203" trl="Y">
+  <value column="Name" original="BP Delivery CNPJ">Endereço de Entrega - CNPJ</value>
+  <value column="PrintName" original="BP Delivery CNPJ">Endereço de Entrega - CNPJ</value>
+  <value column="Description" original="BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000204" trl="Y">
+  <value column="Name" original="BP Delivery IE">Endereço de Entrega - IE</value>
+  <value column="PrintName" original="BP Delivery IE">Endereço de Entrega - IE</value>
+  <value column="Description" original="BP Delivery IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000205" trl="Y">
+  <value column="Name" original="BP Delivery Postal">Endereço de Entrega - CEP</value>
+  <value column="PrintName" original="BP Delivery Postal">Endereço de Entrega - CEP</value>
+  <value column="Description" original="BP Delivery Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Delivery Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000206" trl="Y">
+  <value column="Name" original="BP Invoice City">Endereço de Fatura - Cidade</value>
+  <value column="PrintName" original="BP Invoice City">Endereço de Fatura - Cidade</value>
+  <value column="Description" original="BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000207" trl="Y">
+  <value column="Name" original="BP Invoice Country">Endereço de Fatura - País</value>
+  <value column="PrintName" original="BP Invoice Country">Endereço de Fatura - País</value>
+  <value column="Description" original="BP Invoice Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000208" trl="Y">
+  <value column="Name" original="BP Invoice CNPJ">Endereço de Fatura - CNPJ</value>
+  <value column="PrintName" original="BP Invoice CNPJ">Endereço de Fatura - CNPJ</value>
+  <value column="Description" original="BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000209" trl="Y">
+  <value column="Name" original="BP Invoice IE">Endereço de Fatura - IE</value>
+  <value column="PrintName" original="BP Invoice IE">Endereço de Fatura - IE</value>
+  <value column="Description" original="BP Invoice IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000211" trl="Y">
+  <value column="Name" original="BP DeliveryRegion">Endereço de Entrega - Estado</value>
+  <value column="PrintName" original="BP DeliveryRegion">Endereço de Entrega - Estado</value>
+  <value column="Description" original="BP DeliveryRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP DeliveryRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000212" trl="Y">
+  <value column="Name" original="BP InvoiceRegion">Endereço de Fatura - Estado</value>
+  <value column="PrintName" original="BP InvoiceRegion">Endereço de Fatura - Estado</value>
+  <value column="Description" original="BP InvoiceRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP InvoiceRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000213" trl="Y">
+  <value column="Name" original="BP Shipper CNPJ">Endereço Transportadora - CNPJ</value>
+  <value column="PrintName" original="BP Shipper CNPJ">Endereço Transportadora - CNPJ</value>
+  <value column="Description" original="BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000214" trl="Y">
+  <value column="Name" original="BP Shipper City">Endereço Transportadora - Cidade</value>
+  <value column="PrintName" original="BP Shipper City">Endereço Transportadora - Cidade</value>
+  <value column="Description" original="BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000215" trl="Y">
+  <value column="Name" original="BP Shipper Country">Endereço Transportadora - País</value>
+  <value column="PrintName" original="BP Shipper Country">Endereço Transportadora - País</value>
+  <value column="Description" original="BP Shipper Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000216" trl="Y">
+  <value column="Name" original="BP Shipper IE">Endereço Transportadora - IE</value>
+  <value column="PrintName" original="BP Shipper IE">Endereço Transportadora - IE</value>
+  <value column="Description" original="BP Shipper IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000217" trl="Y">
+  <value column="Name" original="BP Shipper Postal">Endereço Transportadora - CEP</value>
+  <value column="PrintName" original="BP Shipper Postal">Endereço Transportadora - CEP</value>
+  <value column="Description" original="BP Shipper Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Shipper Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000218" trl="Y">
+  <value column="Name" original="BP ShipperRegion">Endereço Transportadora - Estado</value>
+  <value column="PrintName" original="BP ShipperRegion">Endereço Transportadora - Estado</value>
+  <value column="Description" original="BP ShipperRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP ShipperRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000219" trl="Y">
+  <value column="Name" original="Nota Fiscal Line">Linha Nota Fiscal</value>
+  <value column="PrintName" original="Nota Fiscal Line">Linha Nota Fiscal</value>
+  <value column="Description" original="Primary key table LBR_NotaFiscalLine">Define a Linha da Nota Fiscal</value>
+  <value column="Help" original="Primary key table LBR_NotaFiscalLine">Chave primária tabela LBR_NotaFiscalLine</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000220" trl="Y">
+  <value column="Name" original="BP Invoice Postal">Endereço de Fatura - CEP</value>
+  <value column="PrintName" original="BP Invoice Postal">Endereço de Fatura - CEP</value>
+  <value column="Description" original="BP Invoice Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="Help" original="BP Invoice Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000221" trl="Y">
+  <value column="Name" original="Gross Weight">Peso Bruto</value>
+  <value column="PrintName" original="Gross Weight">Peso Bruto</value>
+  <value column="Description" original="Defines the Gross Weight">Define o Peso Bruto</value>
+  <value column="Help" original="Defines the Gross Weight">Define o Peso Bruto</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000222" trl="Y">
+  <value column="Name" original="Net Weight">Peso Líquido</value>
+  <value column="PrintName" original="Net Weight">Peso Líquido</value>
+  <value column="Description" original="Defines the Net Weight">Define o Peso Líquido</value>
+  <value column="Help" original="Defines the Net Weight">Define o Peso Líquido</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000223" trl="Y">
+  <value column="Name" original="Insurance Amt">Valor do Seguro</value>
+  <value column="PrintName" original="Insurance Amt">Valor do Seguro</value>
+  <value column="Description" original="Defines the Insurance Amt">Define o Valor do Seguro</value>
+  <value column="Help" original="Defines the Insurance Amt">Define o Valor do Seguro</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000224" trl="Y">
+  <value column="Name" original="NCM Reference">Referência NCM</value>
+  <value column="PrintName" original="NCM Reference">Referência NCM</value>
+  <value column="Description" original="Defines the NCM Reference">Define a Referência do NCM</value>
+  <value column="Help" original="Defines the NCM Reference">Cria uma Referência do NCM das Linhas, para ser impresso nas observações da Nota Fiscal</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000225" trl="Y">
+  <value column="Name" original="CFOP Reference">Referência CFOP</value>
+  <value column="PrintName" original="CFOP Reference">Referência CFOP</value>
+  <value column="Description" original="Defines the CFOP Reference">Define a Referência do CFOP</value>
+  <value column="Help" original="Defines the CFOP Reference">Cria uma Referência do CFOP das Linhas, para ser impresso nas observações da Nota Fiscal</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000226" trl="Y">
+  <value column="Name" original="UOM Name">UDM</value>
+  <value column="PrintName" original="UOM Name">UDM</value>
+  <value column="Description" original="Defines the UOM Name">Define o Nome da Unidade de Medida</value>
+  <value column="Help" original="Defines the UOM Name">Define o Nome da Unidade de Medida</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000227" trl="Y">
+  <value column="Name" original="NCM Name">NCM</value>
+  <value column="PrintName" original="NCM Name">NCM</value>
+  <value column="Description" original="Defines the NCM Name">Define o NCM</value>
+  <value column="Help" original="Defines the NCM Name">Define o NCM</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000228" trl="Y">
+  <value column="Name" original="CFOP Name">CFOP</value>
+  <value column="PrintName" original="CFOP Name">CFOP</value>
+  <value column="Description" original="Defines the CFOP Name">Define o CFOP</value>
+  <value column="Help" original="Defines the CFOP Name">Define o CFOP</value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
   <value column="PO_Name" original=""></value>

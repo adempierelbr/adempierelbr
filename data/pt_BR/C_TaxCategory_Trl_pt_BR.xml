@@ -6,4 +6,8 @@
   <value column="Name" original="Standard">Padrão</value>
   <value column="Description" original=""></value>
  </row>
+ <row id="1000000" trl="Y">
+  <value column="Name" original="BR">BR</value>
+  <value column="Description" original=""></value>
+ </row>
 </adempiereTrl>

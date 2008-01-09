@@ -32,4 +32,29 @@
   <value column="Description" original="Used when Business Partners are exempt from tax">Usado quando os Parceiros de Negócios são isentos de impostos</value>
   <value column="TaxIndicator" original=""></value>
  </row>
+ <row id="1000000" trl="Y">
+  <value column="Name" original="PIS-COFINS-ICMS-IPI">PIS-COFINS-ICMS-IPI</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original=""></value>
+ </row>
+ <row id="1000001" trl="Y">
+  <value column="Name" original="PISPROD">PISPROD</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original="PISPROD">PISPROD</value>
+ </row>
+ <row id="1000002" trl="Y">
+  <value column="Name" original="COFINSPROD">COFINSPROD</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original="COFINSPROD">COFINSPROD</value>
+ </row>
+ <row id="1000003" trl="Y">
+  <value column="Name" original="ICMSPROD">ICMSPROD</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original="ICMSPROD">ICMSPROD</value>
+ </row>
+ <row id="1000004" trl="Y">
+  <value column="Name" original="IPI">IPI</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original="COFINSPROD">COFINSPROD</value>
+ </row>
 </adempiereTrl>

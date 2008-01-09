@@ -1612,6 +1612,11 @@
   <value column="Description" original="Field Group Type">Field Group Type</value>
   <value column="Help" original=""></value>
  </row>
+ <row id="53222" trl="Y">
+  <value column="Name" original="AD_SysConfig ConfigurationLevel">AD_SysConfig ConfigurationLevel</value>
+  <value column="Description" original="Configuration Level">Configuration Level</value>
+  <value column="Help" original=""></value>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="BPTypeBR">Tipo de Pessoa</value>
   <value column="Description" original="">Usado para Idenficar se o Parceiro é Pessoa Física ou Pessoa Jurídica</value>
@@ -1709,6 +1714,11 @@
  </row>
  <row id="1000023" trl="Y">
   <value column="Name" original="LBR_TaxName">LBR_TaxName</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="1000024" trl="Y">
+  <value column="Name" original="lbr_TransactionType (Sales/Purchase)">lbr_TransactionType (Sales/Purchase)</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>

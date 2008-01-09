@@ -2072,4 +2072,10 @@
  <row id="1000026" trl="Y">
   <value column="Name" original="Tax Formula">Fórmula do Imposto</value>
  </row>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+ </row>
+ <row id="1000028" trl="Y">
+  <value column="Name" original="Nota Fiscal Line">Linha Nota Fiscal</value>
+ </row>
 </adempiereTrl>

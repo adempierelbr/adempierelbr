@@ -1289,6 +1289,11 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>
+ <row id="53063" trl="Y">
+  <value column="Name" original="Create Report (Jasper)">Create Report (Jasper)</value>
+  <value column="Description" original="Create Financial Report  (Jasper)">Create Financial Report  (Jasper)</value>
+  <value column="Help" original="The default period is the current period. You can optionally enter other restrictions.  You can select an alternative Reporting Hierarchy.">The default period is the current period. You can optionally enter other restrictions.  You can select an alternative Reporting Hierarchy.</value>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="Create Fields">Criar Campos</value>
   <value column="Description" original=""></value>
