@@ -16,6 +16,9 @@
  *****************************************************************************/
 package org.compiere.util;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  *	Portuguese Amount in Words
  *	
@@ -159,19 +162,19 @@ public class AmtInWords_PT implements AmtInWords
 	 *	@param number
 	 *	@return amt
 	 */
-	private String convert (int number)
+	private String convert (BigDecimal number)
 	{
 		/* special case */
-		if (number == 0)
+		if (number.compareTo(Env.ZERO) == 0)
 			return "";
-		if (number == 1)
+		if (number.compareTo(Env.ONE) == 0)
 			return "Um";
-		if (number == -1)
+		if (number.compareTo(Env.ONE.negate()) == 0)
 			return "Menos Um";
 		String prefix = "";
-		if (number < 0)
+		if (number.compareTo(Env.ZERO) == -1)
 		{
-			number = -number;
+			number = number.negate();
 			prefix = "Menos";
 		}
 		
@@ -183,7 +186,7 @@ public class AmtInWords_PT implements AmtInWords
 		int place = 0;
 		do
 		{
-			int n = number % 1000;
+			int n = number.divideAndRemainder(new BigDecimal(1000))[1].intValue();/// % 1000;
 			if (n != 0)
 			{
 				String s = convertLessThanOneThousand (n);
@@ -240,9 +243,9 @@ public class AmtInWords_PT implements AmtInWords
 				}
 			}
 			place++;	
-			number /= 1000;
+			number = number.divideAndRemainder(new BigDecimal(1000))[0];
 		}
-		while (number > 0);
+		while (number.compareTo(Env.ZERO) == 1);
 		return (prefix + soFar)
 					.replaceAll(" e Mil", " Mil")
 					.trim ();	
@@ -276,7 +279,7 @@ public class AmtInWords_PT implements AmtInWords
 	//	int newpos = amount.lastIndexOf ('.');  // Old
 		int newpos = amount.lastIndexOf (',');
 		if (newpos == -1) newpos = amount.length();
-		int reais =  Integer.parseInt (amount.substring (0, newpos));
+		BigDecimal reais =  new BigDecimal(amount.substring (0, newpos));
 		double valor = Double.parseDouble(vlr);
 		sb.append (convert (reais));
 		for (int i = 0; i < oldamt.length (); i++)
@@ -297,12 +300,12 @@ public class AmtInWords_PT implements AmtInWords
 					{
 						if (Integer.parseInt(cents) > 1)
 						{
-							sb.append (convert(Integer.parseInt(cents)))
+							sb.append (convert(new BigDecimal(cents)))
 								.append(" Centavos");
 						}
 						else 
 						{
-							sb.append (convert(Integer.parseInt(cents)))
+							sb.append (convert(new BigDecimal(cents)))
 								.append(" Centavo");
 						}
 					}
@@ -315,14 +318,14 @@ public class AmtInWords_PT implements AmtInWords
 						{
 							sb.append (' ')
 								.append("Real e ")
-								.append (convert(Integer.parseInt(cents)))
+								.append (convert(new BigDecimal(cents)))
 								.append(" Centavos");
 						}
 						else 
 						{
 							sb.append (' ')
 							.append("Real e ")
-							.append (convert(Integer.parseInt(cents)))
+							.append (convert(new BigDecimal(cents)))
 							.append(" Centavo");
 						}
 						break;
@@ -335,14 +338,14 @@ public class AmtInWords_PT implements AmtInWords
 						if (Integer.parseInt(cents) > 1)
 						{
 							sb.append ("Menos ")
-								.append (convert(Integer.parseInt(cents)))
+								.append (convert(new BigDecimal(cents)))
 								.append(centsNamesPlural[cents.length()])
 								.append(centsNamesPlural[cents.length()].equals("") ? " Centavos" : " Centavo");
 						}
 						else 
 						{
 							sb.append ("Menos ")
-								.append (convert(Integer.parseInt(cents)))
+								.append (convert(new BigDecimal(cents)))
 								.append(centsNames[cents.length()])
 								.append(" Centavo");
 						}
@@ -357,7 +360,7 @@ public class AmtInWords_PT implements AmtInWords
 						{
 							sb.append (' ')
 								.append("Reais e ")
-								.append (convert(Integer.parseInt(cents)))
+								.append (convert(new BigDecimal(cents)))
 								.append(centsNamesPlural[cents.length()])
 								.append(centsNamesPlural[cents.length()].equals("") ? " Centavos" : " Centavo");
 						}
@@ -365,7 +368,7 @@ public class AmtInWords_PT implements AmtInWords
 						{
 							sb.append (' ')
 								.append("Reais e ")
-								.append (convert(Integer.parseInt(cents)))
+								.append (convert(new BigDecimal(cents)))
 								.append(centsNames[cents.length()])
 								.append(" Centavo");
 						}
@@ -373,7 +376,7 @@ public class AmtInWords_PT implements AmtInWords
 					}
 					else
 					{
-						if (reais == 1 || reais == -1)
+						if (reais.abs().compareTo(Env.ONE) == 0)
 							sb.append(" Real");
 						else
 							sb.append(" Reais");
@@ -385,12 +388,26 @@ public class AmtInWords_PT implements AmtInWords
 		/**	Correções	*/
 		String result;
 		result = sb.toString ()
+				.replaceAll(" e Quinquilh", " Quinquilh")
+				.replaceAll(" e Quatrilh", " Quatrilh")
+				.replaceAll(" e Trilh", " Trilh")
+				.replaceAll(" e Bilh", " Bilh")
+				.replaceAll(" e Milh", " Milh")
 				.replaceAll("\u00f5es Reais", "\u00f5es de Reais")
 				.replaceAll("\u00e3o Reais", "\u00e3o de Reais")
 				.replaceAll(" e Reais", " Reais")
 				.replaceAll(", de", " de");
 		
-		if (result.indexOf("Bilh") > 0 && result.indexOf("Milh") > 0 && result.indexOf(" de Rea") == -1)
+		if (result.indexOf("Quinquilh") > 0 && result.indexOf("Quatrilh") > 0 && result.indexOf("Quatrilh\u00f5es de Rea") == -1 && result.indexOf("Quatrilh\u00e3o de Rea") == -1)
+			result = result.replaceAll("Quinquilh\u00f5es e", "Quinquilh\u00f5es,").replaceAll("Quinquilh\u00e3o e", "Quinquilh\u00e3o,");
+		
+		if (result.indexOf("Quatrilh") > 0 && result.indexOf("Trilh") > 0 && result.indexOf("Trilh\u00f5es de Rea") == -1 && result.indexOf("Trilh\u00e3o de Rea") == -1)
+			result = result.replaceAll("Quatrilh\u00f5es e", "Quatrilh\u00f5es,").replaceAll("Quatrilh\u00e3o e", "Quatrilh\u00e3o,");
+		
+		if (result.indexOf("Trilh") > 0 && result.indexOf("Bilh") > 0 && result.indexOf("Bilh\u00f5es de Rea") == -1 && result.indexOf("Bilh\u00e3o de Rea") == -1)
+			result = result.replaceAll("Trilh\u00f5es e", "Trilh\u00f5es,").replaceAll("Trilh\u00e3o e", "Trilh\u00e3o,");
+		
+		if (result.indexOf("Bilh") > 0 && result.indexOf("Milh") > 0 && result.indexOf("Milh\u00f5es de Rea") == -1 && result.indexOf("Milh\u00e3o de Rea") == -1)
 			result = result.replaceAll("Bilh\u00f5es e", "Bilh\u00f5es,").replaceAll("Bilh\u00e3o e", "Bilh\u00e3o,");
 		
 		if (result.indexOf("Milh") > 0 && result.indexOf(" de Rea") == -1 && result.indexOf("Mil e") > 0)
@@ -402,7 +419,7 @@ public class AmtInWords_PT implements AmtInWords
 	public static void main(String[] args) throws Exception 
 	{
 		AmtInWords_PT aiw = new AmtInWords_PT();
-		System.out.println(aiw.getAmtInWords("3054897,63"));
+		System.out.println(aiw.getAmtInWords("9999999999999999999,99999999"));
 	}
 	
 }	//	AmtInWords_PT
