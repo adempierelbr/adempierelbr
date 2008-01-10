@@ -451,7 +451,7 @@
   <value column="Description" original="Immediate Invoice">Fatura Imediata</value>
  </row>
  <row id="222" trl="Y">
-  <value column="Name" original="Pickup">Pegar</value>
+  <value column="Name" original="Pickup">Retirar</value>
   <value column="Description" original=""></value>
  </row>
  <row id="223" trl="Y">

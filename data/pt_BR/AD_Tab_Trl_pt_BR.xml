@@ -406,10 +406,10 @@
   <value column="Help" original="The Pricing Tab displays the List, Standard and Limit prices for each price list a product is contained in.">A Aba "Formação de Preços" mostra a Lista, Preços Normais e Preços Limite para cada lista de preço em que um produto estiver incluído.</value>
  </row>
  <row id="184" trl="Y">
-  <value column="Name" original="Payment Term">Termo de Pagamento</value>
+  <value column="Name" original="Payment Term">Condição de Pagamento</value>
   <value column="CommitWarning" original=""></value>
-  <value column="Description" original="Define Payment Terms">Definir Termos de Pagamento</value>
-  <value column="Help" original="The Payment Term Tab defines the different payments terms that you offer to your Business Partners when paying invoices and also those terms which your Vendors offer you for payment of your invoices. On the standard invoice, the Name and the Document Note of the Payment Term is printed.">A Aba "Termos de Pagamento" define os diferentes termos de pagamento que você oferece aos seus Parceiros de Negócios para pagamentos de faturas e também aqueles termos que são oferecidos pelos seus fornecedores para pagamentos das suas faturas. Na fatura normal, o Nome e a Nota de Documento do Termo de Pagamento é impressa.</value>
+  <value column="Description" original="Define Payment Terms">Definir Condições de Pagamento</value>
+  <value column="Help" original="The Payment Term Tab defines the different payments terms that you offer to your Business Partners when paying invoices and also those terms which your Vendors offer you for payment of your invoices. On the standard invoice, the Name and the Document Note of the Payment Term is printed.">A Aba "Condição de Pagamento" define as diferentes condições de pagamento que você oferece aos seus Parceiros de Negócios para pagamentos de faturas e também aquelas condições que são oferecidos pelos seus fornecedores para pagamentos das suas faturas. Na fatura normal, o Nome e a Nota de Documento da Condição de Pagamento é impressa.</value>
  </row>
  <row id="185" trl="Y">
   <value column="Name" original="Shipper">Transportadora</value>

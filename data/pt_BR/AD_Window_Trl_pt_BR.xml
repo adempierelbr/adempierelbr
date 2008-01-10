@@ -188,9 +188,9 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Help" original="The Product Window defines all products used by an organization.  These products include those sold to customers, used in the manufacture of products sold to customers and products purchased by an organization.">A Janela "Produto" define todos os produtos utilizados por uma organização.  Estes produtos incluem os produtos vendidos a clientes, usados na manufatura de produtos vendidos a clientes e produtos comprados por uma organização.</value>
  </row>
  <row id="141" trl="Y">
-  <value column="Name" original="Payment Term">Termo de Pagamento</value>
-  <value column="Description" original="Maintain Payment Terms">Gerenciamento de Termos de Pagamento</value>
-  <value column="Help" original="The Payment Terms Window defines the different payment terms that you offer your customers and that are offered to you by your vendors.  Each invoice must contain a Payment Term.  On the standard invoice, the Name and the Document Note of the Payment Term is printed.">A Janela " Termos de Pagamento" define os diferentes termos de pagamento que a sua empresa oferece aos seus clientes e que são oferecidos a você pelos seus fornecedores.  Cada fatura tem que conter um Termo de Pagamento.  Na fatura normal, o Nome e a Nota de Documento do Termo de Pagamento é impressa.</value>
+  <value column="Name" original="Payment Term">Condição de Pagamento</value>
+  <value column="Description" original="Maintain Payment Terms">Gerenciamento de Condição de Pagamento</value>
+  <value column="Help" original="The Payment Terms Window defines the different payment terms that you offer your customers and that are offered to you by your vendors.  Each invoice must contain a Payment Term.  On the standard invoice, the Name and the Document Note of the Payment Term is printed.">A Janela " Condição de Pagamento" define as diferentes condições de pagamento que a sua empresa oferece aos seus clientes e que são oferecidos a você pelos seus fornecedores.  Cada fatura tem que conter uma Condição de Pagamento.  Na fatura normal, o Nome e a Nota de Documento da Condição de Pagamento é impressa.</value>
  </row>
  <row id="142" trl="Y">
   <value column="Name" original="Shipper">Transportadora</value>

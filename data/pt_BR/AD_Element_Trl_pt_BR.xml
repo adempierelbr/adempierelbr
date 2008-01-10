@@ -773,10 +773,10 @@
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="204" trl="Y">
-  <value column="Name" original="Payment Term">Termo de Pagamento</value>
-  <value column="PrintName" original="Payment Term">Termo de Pagamento</value>
-  <value column="Description" original="The terms of Payment (timing, discount)">São os termos de pagamento (prazo, descontos)</value>
-  <value column="Help" original="Payment Terms identify the method and timing of payment.">"Termos de Pagamento" identifica o método e o prazo de pagamento.</value>
+  <value column="Name" original="Payment Term">Condição de Pagamento</value>
+  <value column="PrintName" original="Payment Term">Condição de Pagamento</value>
+  <value column="Description" original="The terms of Payment (timing, discount)">São as condições de pagamento (prazo, descontos)</value>
+  <value column="Help" original="Payment Terms identify the method and timing of payment.">"Condição de Pagamento" identifica o método e o prazo de pagamento.</value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
   <value column="PO_Name" original=""></value>
@@ -25675,6 +25675,16 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="CFOP Name">CFOP</value>
   <value column="Description" original="Defines the CFOP Name">Define o CFOP</value>
   <value column="Help" original="Defines the CFOP Name">Define o CFOP</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000229" trl="Y">
+  <value column="Name" original="Nota Fiscal Description">Observação Nota Fiscal</value>
+  <value column="PrintName" original="Nota Fiscal Description">Observação Nota Fiscal</value>
+  <value column="Description" original="Description Printed on Nota Fiscal">Observação Impressa na Nota Fiscal</value>
+  <value column="Help" original="Description Printed on Nota Fiscal">Observação Impressa na Nota Fiscal</value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
   <value column="PO_Name" original=""></value>

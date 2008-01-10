@@ -99,8 +99,8 @@
   <value column="Description" original="Maintain Products">Gerenciamento de Produtos</value>
  </row>
  <row id="127" trl="Y">
-  <value column="Name" original="Payment Term">Termo de Pagamento</value>
-  <value column="Description" original="Maintain Payment Terms">Gerenciamento de Termos de Pagamento</value>
+  <value column="Name" original="Payment Term">Condição de Pagamento</value>
+  <value column="Description" original="Maintain Payment Terms">Gerenciamento de Condições de Pagamento</value>
  </row>
  <row id="128" trl="Y">
   <value column="Name" original="Shipper">Transportadora</value>

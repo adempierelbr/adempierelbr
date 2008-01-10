@@ -39,7 +39,7 @@
   <value column="Name" original="Client">Empresa</value>
  </row>
  <row id="113" trl="Y">
-  <value column="Name" original="Payment Term">Termo de Pagamento</value>
+  <value column="Name" original="Payment Term">Condição de Pagamento</value>
  </row>
  <row id="114" trl="Y">
   <value column="Name" original="User/Contact">Usuário/Contato</value>
@@ -354,7 +354,7 @@
   <value column="Name" original="Account Element Trl">Elemento de Contas **</value>
  </row>
  <row id="303" trl="Y">
-  <value column="Name" original="Payment Term Trl">Termo de Pagamento **</value>
+  <value column="Name" original="Payment Term Trl">Condição de Pagamento **</value>
  </row>
  <row id="304" trl="Y">
   <value column="Name" original="Withholding">Retenção</value>
