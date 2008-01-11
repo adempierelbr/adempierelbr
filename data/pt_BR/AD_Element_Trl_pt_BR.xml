@@ -25690,4 +25690,64 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""></value>
   <value column="PO_PrintName" original=""></value>
  </row>
+ <row id="1000230" trl="Y">
+  <value column="Name" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
+  <value column="PrintName" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
+  <value column="Description" original="Primary key table LBR_DocType_Acct">Define a Contabilidade do Tipo de Documento</value>
+  <value column="Help" original="Primary key table LBR_DocType_Acct">Chave primária table LBR_DocType_Acct</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000231" trl="Y">
+  <value column="Name" original="Credit Account">Conta de Crédito</value>
+  <value column="PrintName" original="Credit Account">Conta de Crédito</value>
+  <value column="Description" original="Defines the Credit Account">Define a Conta de Crédito</value>
+  <value column="Help" original="Defines the Credit Account">Define a Conta de Crédito</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000232" trl="Y">
+  <value column="Name" original="Debit Account">Conta de Débito</value>
+  <value column="PrintName" original="Debit Account">Conta de Débito</value>
+  <value column="Description" original="Defines the Debit Account">Define a Conta de Débito</value>
+  <value column="Help" original="Defines the Debit Account">Define a Conta de Débito</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000233" trl="Y">
+  <value column="Name" original="Automatic Shipment">Embarque Automático</value>
+  <value column="PrintName" original="Automatic Shipment">Embarque Automático</value>
+  <value column="Description" original="Identifies if this Document generates Shipments automatically">Identifica se o Documento gera o Embarque automaticamente</value>
+  <value column="Help" original="Identifies if this Document generates Shipments automatically">Identifica se o Documento gera o Embarque automaticamente</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000234" trl="Y">
+  <value column="Name" original="Automatic Invoice">Fatura Automática</value>
+  <value column="PrintName" original="Automatic Invoice">Fatura Automática</value>
+  <value column="Description" original="Identifies if this Document generates Invoices automatically">Identifica se o Documento gera Faturas automaticamente</value>
+  <value column="Help" original="Identifies if this Document generates Invoices automatically">Identifica se o Documento gera Faturas automaticamente</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000235" trl="Y">
+  <value column="Name" original="Has Open Items">Gera contas a Pagar/Receber</value>
+  <value column="PrintName" original="Has Open Items">Gera contas a Pagar/Receber</value>
+  <value column="Description" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a pagar/receber</value>
+  <value column="Help" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a pagar/receber</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
 </adempiereTrl>

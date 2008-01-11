@@ -2078,4 +2078,7 @@
  <row id="1000028" trl="Y">
   <value column="Name" original="Nota Fiscal Line">Linha Nota Fiscal</value>
  </row>
+ <row id="1000029" trl="Y">
+  <value column="Name" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
+ </row>
 </adempiereTrl>

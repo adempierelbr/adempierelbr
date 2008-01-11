@@ -4325,4 +4325,10 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>
+ <row id="1000022" trl="Y">
+  <value column="Name" original="DocType Acct">DocType Acct</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
 </adempiereTrl>

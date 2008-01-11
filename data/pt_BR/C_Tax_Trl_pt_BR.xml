@@ -57,4 +57,9 @@
   <value column="Description" original=""></value>
   <value column="TaxIndicator" original="COFINSPROD">COFINSPROD</value>
  </row>
+ <row id="1000005" trl="Y">
+  <value column="Name" original="Standard">Standard</value>
+  <value column="Description" original=""></value>
+  <value column="TaxIndicator" original=""></value>
+ </row>
 </adempiereTrl>

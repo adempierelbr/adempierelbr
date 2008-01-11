@@ -27,4 +27,9 @@
   <value column="Description" original=""></value>
   <value column="DocumentNote" original=""></value>
  </row>
+ <row id="1000000" trl="Y">
+  <value column="Name" original="Immediate">Immediate</value>
+  <value column="Description" original=""></value>
+  <value column="DocumentNote" original=""></value>
+ </row>
 </adempiereTrl>

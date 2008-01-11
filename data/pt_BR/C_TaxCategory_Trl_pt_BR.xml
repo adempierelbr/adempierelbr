@@ -10,4 +10,8 @@
   <value column="Name" original="BR">BR</value>
   <value column="Description" original=""></value>
  </row>
+ <row id="1000001" trl="Y">
+  <value column="Name" original="Padrão">Padrão</value>
+  <value column="Description" original=""></value>
+ </row>
 </adempiereTrl>
