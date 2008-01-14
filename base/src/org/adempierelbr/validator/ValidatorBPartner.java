@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
@@ -114,16 +115,7 @@ public class ValidatorBPartner implements ModelValidator
 		
 		int AD_Client_ID = bp.getAD_Client_ID();
 
-		boolean isValid = false;
-		
-		Object oo = bp.get_Value("lbr_BPTypeBRIsValid");
-		if (oo != null) 
-		{
-		 if (oo instanceof Boolean){
-			 isValid = ((Boolean)oo).booleanValue();
-		 }
-		 else isValid = "Y".equals(oo);
-		}
+		boolean isValid = POLBR.get_ValueAsBoolean(bp.get_Value("lbr_BPTypeBRIsValid"));
 		
 		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
 		String  AD_Language = bp.getAD_Language();

@@ -1,19 +1,30 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.adempierelbr.model.MTax;
+import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
+import org.compiere.model.MStorage;
+import org.compiere.model.MWarehouse;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.model.X_C_Order;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -254,8 +265,54 @@ public class ValidatorOrder implements ModelValidator
 			if (!order.isTaxIncluded()){
 				order.setGrandTotal(order.getTotalLines().add(grandTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
 			}
-		}
 			
+			
+			MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
+			String DocSubTypeSO = dt.getDocSubTypeSO();
+			
+			//Somente Venda Padrão
+			if (MDocType.DOCSUBTYPESO_StandardOrder.equals(DocSubTypeSO)){
+				
+				MInOut shipment  = null;
+				MInvoice invoice = null;
+				
+				//Shipment
+				boolean isAutomaticShipment = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsAutomaticShipment"));
+				if (isAutomaticShipment){
+					shipment = createShipment(order,dt,order.getDateOrdered());
+				}
+				
+				//Invoice
+				boolean isAutomaticInvoice = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsAutomaticInvoice"));
+				if (isAutomaticInvoice){
+					
+					if (shipment != null){
+						//	Manually Process Shipment
+						String status = shipment.completeIt();
+						shipment.setDocStatus(status);
+						shipment.save(trx);
+						if (!X_C_Order.DOCSTATUS_Completed.equals(status))
+						{
+							return shipment.getProcessMsg();
+						}
+					}
+					
+					invoice = createInvoice(order,dt,shipment,order.getDateOrdered());
+					
+					if (invoice != null){
+						//	Manually Process Invoice
+						String status = invoice.completeIt();
+						invoice.setDocStatus(status);
+						invoice.save(trx);
+						order.setC_CashLine_ID(invoice.getC_CashLine_ID());
+						if (!X_C_Order.DOCSTATUS_Completed.equals(status))
+						{
+							return invoice.getProcessMsg();
+						}
+					}
+				}
+			}
+		}
 		
 		return null;
 	}	//	docValidate
@@ -294,5 +351,130 @@ public class ValidatorOrder implements ModelValidator
 		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos");
 		return sb.toString ();
 	}	//	toString
+	
+	/**
+	 * 	Create Shipment
+	 *	@param dt order document type
+	 *	@param movementDate optional movement date (default today)
+	 *	@return shipment or null
+	 */
+	private MInOut createShipment(MOrder order, MDocType dt, Timestamp movementDate)
+	{
+		Properties ctx = order.getCtx();
+		String     trx = order.get_TrxName();
+		
+		MInOut shipment = new MInOut (order, dt.getC_DocTypeShipment_ID(), movementDate);
+	//	shipment.setDateAcct(getDateAcct());
+		if (!shipment.save(trx))
+		{
+			log.log(Level.SEVERE, "Could not create Shipment");
+			return null;
+		}
+		//
+		MOrderLine[] oLines = order.getLines(true, null);
+		for (int i = 0; i < oLines.length; i++)
+		{
+			MOrderLine oLine = oLines[i];
+			//
+			MInOutLine ioLine = new MInOutLine(shipment);
+			//	Qty = Ordered - Delivered
+			BigDecimal MovementQty = oLine.getQtyOrdered().subtract(oLine.getQtyDelivered()); 
+			//	Location
+			int M_Locator_ID = MStorage.getM_Locator_ID (oLine.getM_Warehouse_ID(), 
+					oLine.getM_Product_ID(), oLine.getM_AttributeSetInstance_ID(), 
+					MovementQty, trx);
+			if (M_Locator_ID == 0)		//	Get default Location
+			{
+				MWarehouse wh = MWarehouse.get(ctx, oLine.getM_Warehouse_ID());
+				M_Locator_ID = wh.getDefaultLocator().getM_Locator_ID();
+			}
+			//
+			ioLine.setOrderLine(oLine, M_Locator_ID, MovementQty);
+			ioLine.setQty(MovementQty);
+			if (oLine.getQtyEntered().compareTo(oLine.getQtyOrdered()) != 0)
+				ioLine.setQtyEntered(MovementQty
+					.multiply(oLine.getQtyEntered())
+					.divide(oLine.getQtyOrdered(), 6, BigDecimal.ROUND_HALF_UP));
+			if (!ioLine.save(trx))
+			{
+				log.log(Level.SEVERE, "Could not create Shipment Line");
+				return null;
+			}
+		}
+		return shipment;
+	}	//	createShipment
+	
+	/**
+	 * 	Create Invoice
+	 *	@param dt order document type
+	 *	@param shipment optional shipment
+	 *	@param invoiceDate invoice date
+	 *	@return invoice or null
+	 */
+	private MInvoice createInvoice (MOrder order, MDocType dt, MInOut shipment, Timestamp invoiceDate)
+	{
+		String     trx = order.get_TrxName();
+		
+		MInvoice invoice = new MInvoice (order, dt.getC_DocTypeInvoice_ID(), invoiceDate);
+		if (!invoice.save(trx))
+		{
+			log.log(Level.SEVERE, "Could not create Invoice");
+			return null;
+		}
+		
+		//	If we have a Shipment - use that as a base
+		if (shipment != null)
+		{
+			//
+			MInOutLine[] sLines = shipment.getLines(false);
+			for (int i = 0; i < sLines.length; i++)
+			{
+				MInOutLine sLine = sLines[i];
+				//
+				MInvoiceLine iLine = new MInvoiceLine(invoice);
+				iLine.setShipLine(sLine);
+				//	Qty = Delivered	
+				iLine.setQtyEntered(sLine.getQtyEntered());
+				iLine.setQtyInvoiced(sLine.getMovementQty());
+				if (!iLine.save(trx))
+				{
+					log.log(Level.SEVERE, "Could not create Invoice Line from Shipment Line");
+					return null;
+				}
+				//
+				sLine.setIsInvoiced(true);
+				if (!sLine.save(trx))
+				{
+					log.warning("Could not update Shipment line: " + sLine);
+				}
+			}
+		}
+		else	//	Create Invoice from Order
+		{
+			//
+			MOrderLine[] oLines = order.getLines();
+			for (int i = 0; i < oLines.length; i++)
+			{
+				MOrderLine oLine = oLines[i];
+				//
+				MInvoiceLine iLine = new MInvoiceLine(invoice);
+				iLine.setOrderLine(oLine);
+				//	Qty = Ordered - Invoiced	
+				iLine.setQtyInvoiced(oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced()));
+				if (oLine.getQtyOrdered().compareTo(oLine.getQtyEntered()) == 0)
+					iLine.setQtyEntered(iLine.getQtyInvoiced());
+				else
+					iLine.setQtyEntered(iLine.getQtyInvoiced().multiply(oLine.getQtyEntered())
+						.divide(oLine.getQtyOrdered(), 12, BigDecimal.ROUND_HALF_UP));
+				if (!iLine.save(trx))
+				{
+					log.log(Level.SEVERE, "Could not create Invoice Line from Order Line");
+					return null;
+				}
+			}
+		}
+
+		return invoice;
+	}	//	createInvoice
 	
 } //ValidatorOrder

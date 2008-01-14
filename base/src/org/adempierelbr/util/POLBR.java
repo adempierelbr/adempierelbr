@@ -76,7 +76,7 @@ public class POLBR{
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setString(1, DocumentNo);
-			pstmt.setInt(2,Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{
@@ -159,7 +159,7 @@ public class POLBR{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, M_Product_ID);
 			pstmt.setInt(2, C_BPartner_ID);
-			pstmt.setInt(3,Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+			pstmt.setInt(3, Env.getAD_Client_ID(Env.getCtx()));
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{
@@ -200,7 +200,7 @@ public class POLBR{
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
-			pstmt.setInt(1,Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{
@@ -228,6 +228,66 @@ public class POLBR{
 		return C_DocType_ID;
 		
 	}	//	getARReceipt
+	
+	public static int getDocTypeAcct(int C_DocType_ID){
+		
+		Integer LBR_DocType_Acct_ID = null;
+		
+		String sql = "SELECT LBR_DocType_Acct_ID " +
+					 "FROM LBR_DocType_Acct " +
+					 "WHERE C_DocType_ID = ? " + //1
+					 "AND AD_Client_ID = ?"; //2
+
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt (1, C_DocType_ID);
+			pstmt.setInt (2, Env.getAD_Client_ID(Env.getCtx()));
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_DocType_Acct_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		if (LBR_DocType_Acct_ID == null) LBR_DocType_Acct_ID = 0;
+		
+		return LBR_DocType_Acct_ID.intValue();
+		
+	} //getDocTypeAcct
+	
+	public static boolean get_ValueAsBoolean(Object oo){
+		
+		boolean value = false;
+		
+		if (oo != null) 
+		{
+		 if (oo instanceof Boolean){
+			 value = ((Boolean)oo).booleanValue();
+		 }
+		 else value = "Y".equals(oo);
+		}
+		
+		return value;
+	}
 	
 	public static String getOsName(){
 		
