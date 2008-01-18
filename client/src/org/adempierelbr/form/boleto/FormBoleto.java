@@ -251,10 +251,12 @@ public class FormBoleto extends CPanel
 				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, bp.Name, pt.Name, min(op.DateInvoiced) as DateInvoiced, min(op.DueDate) as DueDate, sum(op.GrandTotal) as GrandTotal " +
 				"FROM C_Invoice i " +
 				"INNER JOIN AD_Org o ON i.AD_Org_ID=o.AD_Org_ID " +
+				"INNER JOIN C_DocType d ON i.C_DocTypeTarget_ID=d.C_DocType_ID " +
 				"INNER JOIN C_BPartner bp ON i.C_BPartner_ID=bp.C_BPartner_ID " +
 				"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
 				"INNER JOIN C_PaymentTerm pt ON i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID " +
 				"WHERE i.IsSOTrx='Y' " +
+				"AND d.lbr_HasOpenItems='Y' " +
 				"AND i.AD_Client_ID=? ");
 		
 				if (printedBill.isSelected()){

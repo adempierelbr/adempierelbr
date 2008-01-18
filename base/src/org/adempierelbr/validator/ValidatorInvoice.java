@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import org.adempierelbr.model.MTax;
+import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.compiere.apps.search.Info_Column;
+import org.compiere.model.MAllocationHdr;
+import org.compiere.model.MAllocationLine;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -17,9 +21,11 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.model.X_LBR_TaxLine;
+import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 import bsh.EvalError;
 
@@ -302,6 +308,36 @@ public class ValidatorInvoice implements ModelValidator
 			if (!invoice.isTaxIncluded()){
 				invoice.setGrandTotal(invoice.getTotalLines().add(grandTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
 			}
+			
+			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
+			boolean HasOpenItems = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasOpenItems"));
+			
+			if (!HasOpenItems){
+			
+				invoice.setC_Payment_ID(0);
+				invoice.setIsPaid(true);
+					
+				//	Create Allocation
+				MAllocationHdr alloc = new MAllocationHdr(ctx, false, invoice.getDateAcct(), invoice.getC_Currency_ID(), 
+						Msg.translate(ctx, "C_Invoice_ID")	+ ": " + invoice.getDocumentNo() + "/", trx);
+				alloc.setAD_Org_ID(invoice.getAD_Org_ID());
+				if (alloc.save())
+				{
+					//	Amount
+					BigDecimal gt = invoice.getGrandTotal(true);
+					if (!invoice.isSOTrx())
+						gt = gt.negate();
+					//	Orig Line
+					MAllocationLine aLine = new MAllocationLine (alloc, gt, 
+							Env.ZERO, Env.ZERO, Env.ZERO);
+					aLine.setC_Invoice_ID(invoice.getC_Invoice_ID());
+					aLine.save();
+					//	Process It
+					if (alloc.processIt(DocAction.ACTION_Complete))
+						alloc.save();
+				}
+				
+			} // not have Open Items - create automatically allocation
 		}
 			
 		return null;
