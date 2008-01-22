@@ -18,7 +18,7 @@ CREATE TABLE adempiere.lbr_matrixprinter (
 	lbr_pitch           	numeric(10,0) NOT NULL,
 	lbr_printerpath     	varchar(60) NOT NULL,
 	lbr_printertype     	varchar(15) NOT NULL,
-	lbr_unixprintername 	varchar(40) NOT NULL 
+	lbr_unixprintername 	varchar(40) NULL 
 	);
 
 
