@@ -63,12 +63,12 @@ public class ProcCreateFields extends SvrProcess
 		if (DB.isOracle() == false){
 			//PostgreSQL
 			sql = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
-			tabela.toLowerCase();
+			tabela = tabela.toLowerCase();
 		}
 		else{
 			//Oracle
 			sql = "SELECT column_name FROM user_tab_cols WHERE table_name = ?";
-			tabela.toUpperCase();
+			tabela = tabela.toUpperCase();
 		}
 		
 		PreparedStatement pstmt = null;

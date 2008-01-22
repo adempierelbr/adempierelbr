@@ -60,6 +60,9 @@ public class MDocPrintForm{
 			SubDocRow = DocPrint.getlbr_SubDocRow();
 		}
 		
+		boolean otherRow = false;
+		int     newRow   = 1;
+		
 		try
     	{
     		pstmt = DB.prepareStatement (sql, null);
@@ -79,7 +82,7 @@ public class MDocPrintForm{
       			  		if (value == null){
       			  			value = "";
       			  		}
-      			  		fields[i].setValue(value,fields[i].getlbr_FieldLength());
+      			  		otherRow = fields[i].setValue(value,fields[i].getlbr_FieldLength(),IsSubDoc);
 	            	}
 	            	//Value
 	            	else if (format.equals("V")){
@@ -109,12 +112,36 @@ public class MDocPrintForm{
 	            	int y = 0;
 	            	
 	            	if (IsSubDoc)
-	            		y = fields[i].getlbr_RowNo();
-	            	else
 	            		y = SubDocRow;
+	            	else
+	            		y = fields[i].getlbr_RowNo();
 	            	
 	            	MDocPrintFormField aux = new MDocPrintFormField(fields[i].getValue(),x,y);
 	            	fFields.add(aux);
+	            	
+	            	
+	            	if (otherRow){
+	            		
+	            		int fieldLength = fields[i].getlbr_FieldLength();
+	            		String value = rs.getString(columnName);
+	            		
+	            		while (otherRow){
+	            			
+	            			String newValue = value.substring(fieldLength*newRow);
+	            			otherRow = fields[i].setValue(newValue, fieldLength, IsSubDoc);
+	            			
+	            			y++;
+	            			
+			            	MDocPrintFormField aux2 = new MDocPrintFormField(fields[i].getValue(),x,y);
+			            	fFields.add(aux2);
+			            	
+			            	SubDocRow++;
+			            	newRow++;
+			            	
+	            		}
+	            		
+	            	}
+	            	
 	            }
 	            
 	            SubDocRow++;

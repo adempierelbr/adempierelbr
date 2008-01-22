@@ -57,7 +57,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  Set Value
 	 *  @param String value
 	 */
-	public void setValue(String value, int FieldLenght){
+	public boolean setValue(String value, int FieldLenght, boolean IsSubDoc){
 		
 		int lenght = value.length();
 		
@@ -65,6 +65,8 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 			
 				value = value.substring(0, FieldLenght);
 				this.value = retiraAcentos(value);
+				if (IsSubDoc)
+					return true;
 				
 		}
 		else{
@@ -72,7 +74,9 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 			this.value = retiraAcentos(value);
 		
 		}
-			
+		
+		
+		return false;	
 	}
 	
 	/**************************************************************************
@@ -141,7 +145,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 */
     private String DateToString(Date date){
     	
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String dataFormatada = formatter.format(date); 
 		return dataFormatada;
 		
