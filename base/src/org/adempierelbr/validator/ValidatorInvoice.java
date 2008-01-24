@@ -108,7 +108,7 @@ public class ValidatorInvoice implements ModelValidator
 	{
 		
 		//Executa quando uma Invoice é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW ))
+		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW ))
 		{
 			MInvoice invoice = (MInvoice)po;
 			return modelChange(invoice);
@@ -138,14 +138,7 @@ public class ValidatorInvoice implements ModelValidator
 				MOrder order = new MOrder(invoice.getCtx(),C_Order_ID,invoice.get_TrxName());
 				tType = order.get_ValueAsString("lbr_TransactionType"); 
 				if (!(tType == null || tType.equals(""))){
-					//FIXME: Adempiere não está salvando o dado no banco usando o objeto
-					//Abaixo um ajuste técnico (hehe, adoro POG)
-					//invoice.set_ValueOfColumn("lbr_TransactionType", tType);
-					
-					String sql = "UPDATE C_Invoice" +
-				                 " SET lbr_TransactionTYpe = '" + tType +
-				                 "' WHERE C_Invoice_ID = " + invoice.getC_Invoice_ID();
-					DB.executeUpdate(sql, invoice.get_TrxName());
+					invoice.set_ValueOfColumn("lbr_TransactionType", tType);
 				}
 			}
 		}

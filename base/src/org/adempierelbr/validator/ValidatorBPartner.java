@@ -90,14 +90,14 @@ public class ValidatorBPartner implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		if (po.get_TableName().equalsIgnoreCase("C_BPartner") && (type == CHANGETYPE_CHANGE || type == CHANGETYPE_NEW))
+		if (po.get_TableName().equalsIgnoreCase("C_BPartner") && (type == TYPE_CHANGE || type == TYPE_NEW))
 		{
 			MBPartner bp = (MBPartner)po;
 			return modelChange(bp);
 		}
 		
 		else if (po.get_TableName().equalsIgnoreCase("AD_OrgInfo") && 
-				(type == CHANGETYPE_CHANGE || type == CHANGETYPE_NEW || type == TYPE_AFTER_CHANGE)) {
+				(type == TYPE_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_CHANGE)) {
 			
 			String CNPJ = (String)po.get_Value("lbr_CNPJ");
 			if (!(CNPJ == null || CNPJ.equals("") || CNPJ.startsWith(" "))){
