@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import org.compiere.model.X_LBR_ICMSMatrix;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	MLBRICMSMatrix
@@ -45,7 +46,8 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 		String sql = "SELECT LBR_Tax_ID " +
 				     "FROM LBR_ICMSMatrix " +
 				     "WHERE C_Region_ID = ? " +
-				     "AND To_Region_ID = ?";
+				     "AND To_Region_ID = ? " +
+				     "AND AD_Client_ID = ?";
 
 		Integer Matrix_ID = null;
 		PreparedStatement pstmt = null;
@@ -54,6 +56,7 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, C_Region_ID);
 			pstmt.setInt(2, To_Region_ID);
+			pstmt.setInt(3, Env.getAD_Client_ID(ctx));
 			ResultSet rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
