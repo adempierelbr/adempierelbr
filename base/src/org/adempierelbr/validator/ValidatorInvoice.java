@@ -215,7 +215,7 @@ public class ValidatorInvoice implements ModelValidator
 			iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 			
 			if (!invoice.isTaxIncluded()){
-				invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(ctx, invoice.getC_Invoice_ID(), trx)));
+				invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
 				invoice.save(trx);
 			}
 			else{

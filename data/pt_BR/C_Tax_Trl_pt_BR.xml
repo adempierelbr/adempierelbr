@@ -35,31 +35,26 @@
  <row id="1000000" trl="Y">
   <value column="Name" original="PIS-COFINS-ICMS-IPI">PIS-COFINS-ICMS-IPI</value>
   <value column="Description" original=""></value>
-  <value column="TaxIndicator" original=""></value>
+  <value column="TaxIndicator" original="BR">BR</value>
  </row>
  <row id="1000001" trl="Y">
   <value column="Name" original="PISPROD">PISPROD</value>
   <value column="Description" original=""></value>
-  <value column="TaxIndicator" original="PISPROD">PISPROD</value>
+  <value column="TaxIndicator" original="PIS">PIS</value>
  </row>
- <row id="1000002" trl="Y">
+ <row id="1000002" trl="N">
   <value column="Name" original="COFINSPROD">COFINSPROD</value>
   <value column="Description" original=""></value>
-  <value column="TaxIndicator" original="COFINSPROD">COFINSPROD</value>
+  <value column="TaxIndicator" original="COFINS">COFINS</value>
  </row>
- <row id="1000003" trl="Y">
+ <row id="1000003" trl="N">
   <value column="Name" original="ICMSPROD">ICMSPROD</value>
   <value column="Description" original=""></value>
-  <value column="TaxIndicator" original="ICMSPROD">ICMSPROD</value>
+  <value column="TaxIndicator" original="ICMS">ICMS</value>
  </row>
- <row id="1000004" trl="Y">
+ <row id="1000004" trl="N">
   <value column="Name" original="IPI">IPI</value>
   <value column="Description" original=""></value>
-  <value column="TaxIndicator" original="COFINSPROD">COFINSPROD</value>
- </row>
- <row id="1000005" trl="Y">
-  <value column="Name" original="Standard">Standard</value>
-  <value column="Description" original=""></value>
-  <value column="TaxIndicator" original=""></value>
+  <value column="TaxIndicator" original="IPI">IPI</value>
  </row>
 </adempiereTrl>

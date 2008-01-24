@@ -220,7 +220,7 @@ public class TaxBR
 		
 	} //getMOrderTax
 	
-	public static BigDecimal getMOrderTaxAmt(Properties ctx, Integer C_Order_ID, String trx){
+	public static BigDecimal getMOrderTaxAmt(Integer C_Order_ID, String trx){
 		
 		if (C_Order_ID == null)
 			return Env.ZERO;
@@ -308,7 +308,7 @@ public class TaxBR
 		return retValue;
 	} //getMInvoiceTax
 	
-	public static BigDecimal getMInvoiceTaxAmt(Properties ctx, Integer C_Invoice_ID, String trx){
+	public static BigDecimal getMInvoiceTaxAmt(Integer C_Invoice_ID, String trx){
 		
 		if (C_Invoice_ID == null)
 			return Env.ZERO;

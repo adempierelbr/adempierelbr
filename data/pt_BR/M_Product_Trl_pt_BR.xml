@@ -137,9 +137,4 @@
   <value column="Description" original=""></value>
   <value column="DocumentNote" original=""></value>
  </row>
- <row id="1000000" trl="Y">
-  <value column="Name" original="Padrão">Padrão</value>
-  <value column="Description" original=""></value>
-  <value column="DocumentNote" original=""></value>
- </row>
 </adempiereTrl>

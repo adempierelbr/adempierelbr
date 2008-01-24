@@ -1355,27 +1355,37 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Help" original=""></value>
  </row>
  <row id="52000" trl="Y">
-  <value column="Name" original="Posterita Web Menu">Posterita Web Menu</value>
-  <value column="Description" original="To dynamically generate the menu links in posterita">To dynamically generate the menu links in posterita</value>
+  <value column="Name" original="Web POS Menu">Posterita Web Menu</value>
+  <value column="Description" original="To dynamically generate the menu links in web POS">To dynamically generate the menu links in posterita</value>
   <value column="Help" original=""></value>
  </row>
  <row id="52001" trl="Y">
-  <value column="Name" original="Posterita Role Menu">Posterita Role Menu</value>
+  <value column="Name" original="Web POS Role Menu">Posterita Role Menu</value>
   <value column="Description" original="Depending on Which Role, Different set of Menus are generated and made available.">Depending on Which Role, Different set of Menus are generated and made available.</value>
   <value column="Help" original=""></value>
  </row>
  <row id="52002" trl="Y">
-  <value column="Name" original="Posterita Web Properties">Posterita Web Properties</value>
+  <value column="Name" original="Web POS Properties">Posterita Web Properties</value>
   <value column="Description" original="Stores the message tags to be picked up from AD_MESSAGE ">Stores the message tags to be picked up from AD_MESSAGE </value>
   <value column="Help" original=""></value>
  </row>
  <row id="52003" trl="Y">
-  <value column="Name" original="Posterita BlackListCheque">Posterita BlackListCheque</value>
+  <value column="Name" original="Web POS BlackListCheque">Posterita BlackListCheque</value>
   <value column="Description" original="Black Listed Cheque">Black Listed Cheque</value>
   <value column="Help" original=""></value>
  </row>
  <row id="53003" trl="Y">
   <value column="Name" original="Model Validator">Model Validator</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53015" trl="N">
+  <value column="Name" original="ASP Modules">ASP Modules</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53016" trl="N">
+  <value column="Name" original="ASP Subscribed Modules">ASP Subscribed Modules</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>
@@ -1436,6 +1446,11 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  </row>
  <row id="1000015" trl="Y">
   <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="1000016" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>

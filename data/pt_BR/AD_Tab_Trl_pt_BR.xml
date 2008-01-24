@@ -4193,6 +4193,78 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
  </row>
+ <row id="53056" trl="N">
+  <value column="Name" original="Window">Window</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53057" trl="N">
+  <value column="Name" original="Tab">Tab</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53058" trl="N">
+  <value column="Name" original="Field">Field</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53059" trl="N">
+  <value column="Name" original="Process">Process</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53060" trl="N">
+  <value column="Name" original="Process Parameter">Process Parameter</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53061" trl="N">
+  <value column="Name" original="Form">Form</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53062" trl="N">
+  <value column="Name" original="Task">Task</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53063" trl="N">
+  <value column="Name" original="Workflow">Workflow</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53064" trl="N">
+  <value column="Name" original="Module">Module</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53065" trl="N">
+  <value column="Name" original="Level">Level</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53066" trl="N">
+  <value column="Name" original="Client Level">Client Level</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="53067" trl="N">
+  <value column="Name" original="Exceptions">Exceptions</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="Bank">Banco</value>
   <value column="CommitWarning" original=""></value>
@@ -4327,6 +4399,12 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
  </row>
  <row id="1000022" trl="Y">
   <value column="Name" original="DocType Acct">DocType Acct</value>
+  <value column="CommitWarning" original=""></value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+ </row>
+ <row id="1000023" trl="N">
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
   <value column="CommitWarning" original=""></value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>

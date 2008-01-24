@@ -23447,8 +23447,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original="Receipt">Receipt</value>
  </row>
  <row id="52001" trl="Y">
-  <value column="Name" original="U_BlackListCheque_ID">U_BlackListCheque_ID</value>
-  <value column="PrintName" original="U_BlackListCheque_ID">U_BlackListCheque_ID</value>
+  <value column="Name" original="Black List Cheque">U_BlackListCheque_ID</value>
+  <value column="PrintName" original="Black List Cheque">U_BlackListCheque_ID</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23457,8 +23457,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52002" trl="Y">
-  <value column="Name" original="BankName">BankName</value>
-  <value column="PrintName" original="BankName">BankName</value>
+  <value column="Name" original="Bank Name">BankName</value>
+  <value column="PrintName" original="Bank Name">BankName</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23467,8 +23467,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52003" trl="Y">
-  <value column="Name" original="ChequeNo">ChequeNo</value>
-  <value column="PrintName" original="ChequeNo">ChequeNo</value>
+  <value column="Name" original="Cheque No">ChequeNo</value>
+  <value column="PrintName" original="Cheque No">ChequeNo</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23477,8 +23477,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52004" trl="Y">
-  <value column="Name" original="U_Web_Properties_ID">U_Web_Properties_ID</value>
-  <value column="PrintName" original="U_Web_Properties_ID">U_Web_Properties_ID</value>
+  <value column="Name" original="Web Properties">U_Web_Properties_ID</value>
+  <value column="PrintName" original="Web Properties">U_Web_Properties_ID</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23487,8 +23487,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52005" trl="Y">
-  <value column="Name" original="U_Key">U_Key</value>
-  <value column="PrintName" original="U_Key">U_Key</value>
+  <value column="Name" original="Key">U_Key</value>
+  <value column="PrintName" original="Key">U_Key</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23497,8 +23497,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52006" trl="Y">
-  <value column="Name" original="U_Value">U_Value</value>
-  <value column="PrintName" original="U_Value">U_Value</value>
+  <value column="Name" original="Value">U_Value</value>
+  <value column="PrintName" original="Value">U_Value</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23507,8 +23507,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52007" trl="Y">
-  <value column="Name" original="U_RoleMenu_ID">U_RoleMenu_ID</value>
-  <value column="PrintName" original="U_RoleMenu_ID">U_RoleMenu_ID</value>
+  <value column="Name" original="Role Menu">U_RoleMenu_ID</value>
+  <value column="PrintName" original="Role Menu">U_RoleMenu_ID</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23517,8 +23517,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52008" trl="Y">
-  <value column="Name" original="U_WebMenu_ID">U_WebMenu_ID</value>
-  <value column="PrintName" original="U_WebMenu_ID">U_WebMenu_ID</value>
+  <value column="Name" original="Web Menu">U_WebMenu_ID</value>
+  <value column="PrintName" original="Web Menu">U_WebMenu_ID</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23527,8 +23527,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52009" trl="Y">
-  <value column="Name" original="MenuLink">MenuLink</value>
-  <value column="PrintName" original="MenuLink">MenuLink</value>
+  <value column="Name" original="Menu Link">MenuLink</value>
+  <value column="PrintName" original="Menu Link">MenuLink</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23547,8 +23547,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52011" trl="Y">
-  <value column="Name" original="ParentMenu_ID">ParentMenu_ID</value>
-  <value column="PrintName" original="ParentMenu_ID">ParentMenu_ID</value>
+  <value column="Name" original="Parent Menu">ParentMenu_ID</value>
+  <value column="PrintName" original="Parent Menu">ParentMenu_ID</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23557,8 +23557,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52012" trl="Y">
-  <value column="Name" original="HasSubMenu">HasSubMenu</value>
-  <value column="PrintName" original="HasSubMenu">HasSubMenu</value>
+  <value column="Name" original="Has SubMenu">HasSubMenu</value>
+  <value column="PrintName" original="Has SubMenu">HasSubMenu</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23567,8 +23567,8 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_PrintName" original=""></value>
  </row>
  <row id="52013" trl="Y">
-  <value column="Name" original="ImageLink">ImageLink</value>
-  <value column="PrintName" original="ImageLink">ImageLink</value>
+  <value column="Name" original="Image Link">ImageLink</value>
+  <value column="PrintName" original="Image Link">ImageLink</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -23790,7 +23790,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="Name" original="Configuration Level">Configuration Level</value>
   <value column="PrintName" original="Configuration Level for this parameter">Configuration Level for this parameter</value>
   <value column="Description" original="Configuration Level for this parameter">Configuration Level for this parameter</value>
-  <value column="Help" original="Configuration Level for this parameter. S - just allowed system configuration. C - client configurable parameter. O - org configurable parameter">Configuration Level for this parameter. S - just allowed system configuration. C - client configurable parameter. O - org configurable parameter</value>
+  <value column="Help" original="Configuration Level for this parameter&#10;S - just allowed system configuration&#10;C - client configurable parameter&#10;O - org configurable parameter">Configuration Level for this parameter. S - just allowed system configuration. C - client configurable parameter. O - org configurable parameter</value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
   <value column="PO_Name" original=""></value>
@@ -23839,6 +23839,76 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
  <row id="53324" trl="Y">
   <value column="Name" original="Fail on Missing Model Validator">Fail on Missing Model Validator</value>
   <value column="PrintName" original="Fail on Missing Model Validator">Fail on Missing Model Validator</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53325" trl="N">
+  <value column="Name" original="IsUseASP">IsUseASP</value>
+  <value column="PrintName" original="IsUseASP">IsUseASP</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53326" trl="N">
+  <value column="Name" original="ASP Level">ASP Level</value>
+  <value column="PrintName" original="ASP Level">ASP Level</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53327" trl="N">
+  <value column="Name" original="ASP Status">ASP Status</value>
+  <value column="PrintName" original="ASP Status">ASP Status</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53328" trl="N">
+  <value column="Name" original="AllFields">AllFields</value>
+  <value column="PrintName" original="AllFields">AllFields</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53329" trl="N">
+  <value column="Name" original="ASP Module">ASP Module</value>
+  <value column="PrintName" original="ASP Module">ASP Module</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53330" trl="N">
+  <value column="Name" original="Client Level">Client Level</value>
+  <value column="PrintName" original="Client Level">Client Level</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="53331" trl="N">
+  <value column="Name" original="Client Exception">Client Exception</value>
+  <value column="PrintName" original="Client Exception">Client Exception</value>
   <value column="Description" original=""></value>
   <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
@@ -24926,16 +24996,6 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""></value>
   <value column="PO_PrintName" original=""></value>
  </row>
- <row id="1000150" trl="Y">
-  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
-  <value column="PO_Description" original=""></value>
-  <value column="PO_Help" original=""></value>
-  <value column="PO_Name" original=""></value>
-  <value column="PO_PrintName" original=""></value>
- </row>
  <row id="1000151" trl="Y">
   <value column="Name" original="Customer Category">Categoria do Cliente (CFOP)</value>
   <value column="PrintName" original="Customer Category">Categoria do Cliente (CFOP)</value>
@@ -25745,6 +25805,126 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="Has Open Items">Gera contas a Pagar/Receber</value>
   <value column="Description" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a pagar/receber</value>
   <value column="Help" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a pagar/receber</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000236" trl="N">
+  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
+  <value column="PrintName" original="Generate Fields">Generate Fields</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000237" trl="N">
+  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000238" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+  <value column="PrintName" original="Matrix Printer">Impressora Matricial</value>
+  <value column="Description" original="Primary key table LBR_MatrixPrinter">Define a Impressora Matricial</value>
+  <value column="Help" original="Primary key table LBR_MatrixPrinter">Chave primária tabela LBR_MatrixPrinter</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000239" trl="Y">
+  <value column="Name" original="Characterset">Tipo de Caractere</value>
+  <value column="PrintName" original="Characterset">Tipo de Caractere</value>
+  <value column="Description" original="Defines the Characterset">Define o Tipo de Caractere</value>
+  <value column="Help" original="Defines the Characterset">Define o Tipo de Caractere</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000240" trl="Y">
+  <value column="Name" original="Is Condensed">Comprimido</value>
+  <value column="PrintName" original="Is Condensed">Comprimido</value>
+  <value column="Description" original="Defines if Character is Condensed">Define se o Caractere é Comprimido</value>
+  <value column="Help" original="Defines if Character is Condensed">Define se o Caractere é Comprimido</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000241" trl="Y">
+  <value column="Name" original="Interspace">Espaçamento de Linhas</value>
+  <value column="PrintName" original="Interspace">Espaçamento de Linhas</value>
+  <value column="Description" original="Defines the Interspace">Define o Espaçamento de Linhas</value>
+  <value column="Help" original="Defines the Interspace">Define o Espaçamento de Linhas</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000242" trl="Y">
+  <value column="Name" original="Is UnixPrinter">Impressora Unix</value>
+  <value column="PrintName" original="Is UnixPrinter">Impressora Unix</value>
+  <value column="Description" original="Define if this is an Unix Printer">Define se a impressora esta instalada em um SO baseado em Unix</value>
+  <value column="Help" original="Define if this is an Unix Printer">Define se a impressora esta instalada em um SO baseado em Unix</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000243" trl="Y">
+  <value column="Name" original="Pitch">Pitch</value>
+  <value column="PrintName" original="Pitch">Pitch</value>
+  <value column="Description" original="Defines the Printer Pitch">Define o Pitch da Impressora</value>
+  <value column="Help" original="Defines the Printer Pitch">Define o Pitch da Impressora</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000244" trl="Y">
+  <value column="Name" original="Printer Path">Caminho da Impressora</value>
+  <value column="PrintName" original="Printer Path">Caminho da Impressora</value>
+  <value column="Description" original="Defines the Printer Path">Define o Caminho da Impressora</value>
+  <value column="Help" original="Defines the Printer Path">Define o Caminho da Impressora</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000245" trl="Y">
+  <value column="Name" original="Printer Type">Tipo de Impressora</value>
+  <value column="PrintName" original="Printer Type">Tipo de Impressora</value>
+  <value column="Description" original="Defines the Printer Type">Define o Tipo de Impressora</value>
+  <value column="Help" original="Defines the Printer Type">Define o Tipo de Impressora</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000246" trl="Y">
+  <value column="Name" original="Unix PrinterName">Impressora Unix</value>
+  <value column="PrintName" original="Unix PrinterName">Impressora Unix</value>
+  <value column="Description" original="Defines the Unix PrinterName">Define a Impressora Unix</value>
+  <value column="Help" original="Defines the Unix PrinterName">Define a Impressora Unix</value>
+  <value column="PO_Description" original=""></value>
+  <value column="PO_Help" original=""></value>
+  <value column="PO_Name" original=""></value>
+  <value column="PO_PrintName" original=""></value>
+ </row>
+ <row id="1000247" trl="N">
+  <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
+  <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
+  <value column="Description" original=""></value>
+  <value column="Help" original=""></value>
   <value column="PO_Description" original=""></value>
   <value column="PO_Help" original=""></value>
   <value column="PO_Name" original=""></value>

@@ -1977,16 +1977,16 @@
   <value column="Name" original="PA_DashboardContent_ID">PA_DashboardContent_ID</value>
  </row>
  <row id="52000" trl="Y">
-  <value column="Name" original="U_BlackListCheque_ID">U_BlackListCheque_ID</value>
+  <value column="Name" original="Black List Cheque">U_BlackListCheque_ID</value>
  </row>
  <row id="52001" trl="Y">
-  <value column="Name" original="U_Web_Properties_ID">U_Web_Properties_ID</value>
+  <value column="Name" original="Web Properties">U_Web_Properties_ID</value>
  </row>
  <row id="52002" trl="Y">
-  <value column="Name" original="U_RoleMenu_ID">U_RoleMenu_ID</value>
+  <value column="Name" original="Role Menu">U_RoleMenu_ID</value>
  </row>
  <row id="52003" trl="Y">
-  <value column="Name" original="U_WebMenu_ID">U_WebMenu_ID</value>
+  <value column="Name" original="Web Menu">U_WebMenu_ID</value>
  </row>
  <row id="53011" trl="Y">
   <value column="Name" original="Product Stock at Warehouses">Product Stock at Warehouses</value>
@@ -1999,6 +1999,42 @@
  </row>
  <row id="53015" trl="Y">
   <value column="Name" original="Product Substitute with Stock Info">Product Substitute with Stock Info</value>
+ </row>
+ <row id="53046" trl="N">
+  <value column="Name" original="ASP Window">ASP Window</value>
+ </row>
+ <row id="53047" trl="N">
+  <value column="Name" original="ASP Tab">ASP Tab</value>
+ </row>
+ <row id="53048" trl="N">
+  <value column="Name" original="ASP Field">ASP Field</value>
+ </row>
+ <row id="53049" trl="N">
+  <value column="Name" original="ASP Process">ASP Process</value>
+ </row>
+ <row id="53050" trl="N">
+  <value column="Name" original="ASP Process Parameter">ASP Process Parameter</value>
+ </row>
+ <row id="53051" trl="N">
+  <value column="Name" original="ASP Form">ASP Form</value>
+ </row>
+ <row id="53052" trl="N">
+  <value column="Name" original="ASP Task">ASP Task</value>
+ </row>
+ <row id="53053" trl="N">
+  <value column="Name" original="ASP Workflow">ASP Workflow</value>
+ </row>
+ <row id="53054" trl="N">
+  <value column="Name" original="ASP Module">ASP Module</value>
+ </row>
+ <row id="53055" trl="N">
+  <value column="Name" original="ASP Level">ASP Level</value>
+ </row>
+ <row id="53056" trl="N">
+  <value column="Name" original="Client Level">Client Level</value>
+ </row>
+ <row id="53057" trl="N">
+  <value column="Name" original="Client Exception">Client Exception</value>
  </row>
  <row id="1000001" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
@@ -2080,5 +2116,8 @@
  </row>
  <row id="1000029" trl="Y">
   <value column="Name" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
+ </row>
+ <row id="1000030" trl="N">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
  </row>
 </adempiereTrl>
