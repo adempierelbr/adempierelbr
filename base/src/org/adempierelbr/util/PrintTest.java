@@ -12,7 +12,7 @@ public class PrintTest{
 	public static void main(String[] args){
 		
         TextPrinter printer = PrinterFactory.getPrinter("PLAIN"); // tipo da impressora
-        FilePort port = new FilePort("c:\teste.txt"); // localização da impressora
+        FilePort port = new FilePort("c:\\teste.txt"); // localização da impressora
         JobProperties job = printer.getDefaultJobProperties();
         job.cols = 140; // colunas na folha
         job.rows = 75; // linhas na folha

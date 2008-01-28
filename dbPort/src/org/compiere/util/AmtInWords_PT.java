@@ -17,7 +17,6 @@
 package org.compiere.util;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  *	Portuguese Amount in Words
@@ -354,7 +353,7 @@ public class AmtInWords_PT implements AmtInWords
 				}
 				else 
 				{
-					if (Integer.parseInt(cents) > 0)
+					if (!cents.equals("") && Integer.parseInt(cents) > 0)
 					{
 						if (Integer.parseInt(cents) > 1)
 						{
@@ -383,6 +382,12 @@ public class AmtInWords_PT implements AmtInWords
 					}
 				}
 			}
+		}
+		if (pos == -1){
+			if (reais.abs().compareTo(Env.ONE) == 0)
+				sb.append(" Real");
+			else
+				sb.append(" Reais");
 		}
 		
 		/**	Correções	*/
@@ -419,7 +424,9 @@ public class AmtInWords_PT implements AmtInWords
 	public static void main(String[] args) throws Exception 
 	{
 		AmtInWords_PT aiw = new AmtInWords_PT();
-		System.out.println(aiw.getAmtInWords("9999999999999999999,99999999"));
+		System.out.println(aiw.getAmtInWords("100"));
+		System.out.println(aiw.getAmtInWords("1003,00"));
+		System.out.println(aiw.getAmtInWords("5715,13"));
 	}
 	
 }	//	AmtInWords_PT
