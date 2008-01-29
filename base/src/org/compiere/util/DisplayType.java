@@ -16,10 +16,10 @@
  *****************************************************************************/
 package org.compiere.util;
 
-import java.text.*;
-import java.util.*;
-
-import org.adempierelbr.util.POLBR;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  *	System Display Types.
@@ -98,6 +98,8 @@ public final class DisplayType
 	public static final int URL  = 40;
 	/** Display Type 42	PrinterName	*/
 	public static final int PrinterName  = 42;
+	/** Display Type 1000006 lbr_Taxes */
+	public static final int lbr_Taxes = 1000006;
 	//	Candidates: 
 	
 	/**
@@ -140,7 +142,7 @@ public final class DisplayType
 		if (displayType == ID || displayType == Table || displayType == TableDir
 			|| displayType == Search || displayType == Location || displayType == Locator
 			|| displayType == Account || displayType == Assignment || displayType == PAttribute
-			|| displayType == Image || displayType == Color || displayType == POLBR.getAD_Reference_ID("lbr_Taxes"))
+			|| displayType == Image || displayType == Color || displayType == lbr_Taxes)
 			return true;
 		return false;
 	}	//	isID

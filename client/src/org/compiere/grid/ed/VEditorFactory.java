@@ -20,7 +20,6 @@ import java.util.logging.Level;
 
 import org.adempierelbr.grid.ed.VTaxes;
 import org.adempierelbr.model.MTaxesLookup;
-import org.adempierelbr.util.POLBR;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MAccountLookup;
@@ -206,7 +205,7 @@ public class VEditorFactory
 		
 		//  @author mgrigioni 14/11/2007 13:26
 		//	Brazilian Taxes 
-		else if (displayType == POLBR.getAD_Reference_ID("lbr_Taxes"))
+		else if (displayType == DisplayType.lbr_Taxes)
 		{
 			MTaxesLookup ml = new MTaxesLookup (Env.getCtx(), WindowNo);
 			VTaxes tax = new VTaxes (columnName, mandatory, readOnly, updateable,ml);

@@ -24,45 +24,6 @@ public class POLBR{
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(POLBR.class);
 	
-	public static int getAD_Reference_ID(String Name){
-		
-		int AD_Reference_ID = -1;
-		String sql = "SELECT AD_Reference_ID " +
-				     "FROM AD_Reference " +
-				     "WHERE Name = ?";
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, null);
-			pstmt.setString(1, Name);
-			ResultSet rs = pstmt.executeQuery ();
-			if (rs.next ())
-			{
-				AD_Reference_ID = rs.getInt(1);
-			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
-		
-		return AD_Reference_ID;
-		
-	} //getAD_Reference_ID
-	
 	public static int getC_Invoice_ID(String DocumentNo,String trx)
 	{
 		int C_Invoice_ID = -1;
