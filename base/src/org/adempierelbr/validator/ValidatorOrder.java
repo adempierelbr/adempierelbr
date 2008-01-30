@@ -26,6 +26,7 @@ import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.model.X_C_Order;
 import org.compiere.model.X_LBR_TaxLine;
+import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -209,6 +210,7 @@ public class ValidatorOrder implements ModelValidator
 			String     trx = order.get_TrxName();
 			
 			BigDecimal grandTotal = Env.ZERO;
+			BigDecimal substTotal = Env.ZERO;
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_OrderTax " +
@@ -255,7 +257,13 @@ public class ValidatorOrder implements ModelValidator
 								
 								}
 								
+								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
+								if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
+									substTotal = substTotal.add(taxLine.getlbr_TaxAmt());
+								}
+								
 								grandTotal = grandTotal.add(taxLine.getlbr_TaxAmt());
+								
 							}
 						} //end for
 					}
@@ -264,6 +272,9 @@ public class ValidatorOrder implements ModelValidator
 			
 			if (!order.isTaxIncluded()){
 				order.setGrandTotal(order.getTotalLines().add(grandTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
+			}
+			else{
+				order.setGrandTotal(order.getGrandTotal().add(substTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
 			}
 			
 			

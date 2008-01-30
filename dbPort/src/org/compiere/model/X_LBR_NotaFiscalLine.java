@@ -151,6 +151,23 @@ Integer ii = (Integer)get_Value("LBR_CFOP_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set CFOP Name.
+@param lbr_CFOPName Defines the CFOP Name */
+public void setlbr_CFOPName (String lbr_CFOPName)
+{
+if (lbr_CFOPName != null && lbr_CFOPName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CFOPName = lbr_CFOPName.substring(0,59);
+}
+set_Value ("lbr_CFOPName", lbr_CFOPName);
+}
+/** Get CFOP Name.
+@return Defines the CFOP Name */
+public String getlbr_CFOPName() 
+{
+return (String)get_Value("lbr_CFOPName");
+}
 
 /** LBR_NCM_ID AD_Reference_ID=1000017 */
 public static final int LBR_NCM_ID_AD_Reference_ID=1000017;
@@ -170,20 +187,22 @@ Integer ii = (Integer)get_Value("LBR_NCM_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set Nota Fiscal Line.
-@param LBR_NotaFiscalLine_ID Primary key table LBR_NotaFiscalLine */
-public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
+/** Set NCM Name.
+@param lbr_NCMName Defines the NCM Name */
+public void setlbr_NCMName (String lbr_NCMName)
 {
-if (LBR_NotaFiscalLine_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscalLine_ID is mandatory.");
-set_ValueNoCheck ("LBR_NotaFiscalLine_ID", new Integer(LBR_NotaFiscalLine_ID));
+if (lbr_NCMName != null && lbr_NCMName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_NCMName = lbr_NCMName.substring(0,59);
 }
-/** Get Nota Fiscal Line.
-@return Primary key table LBR_NotaFiscalLine */
-public int getLBR_NotaFiscalLine_ID() 
+set_Value ("lbr_NCMName", lbr_NCMName);
+}
+/** Get NCM Name.
+@return Defines the NCM Name */
+public String getlbr_NCMName() 
 {
-Integer ii = (Integer)get_Value("LBR_NotaFiscalLine_ID");
-if (ii == null) return 0;
-return ii.intValue();
+return (String)get_Value("lbr_NCMName");
 }
 /** Set Nota Fiscal.
 @param LBR_NotaFiscal_ID Primary key table LBR_NotaFiscal */
@@ -200,6 +219,38 @@ public int getLBR_NotaFiscal_ID()
 Integer ii = (Integer)get_Value("LBR_NotaFiscal_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set Nota Fiscal Line.
+@param LBR_NotaFiscalLine_ID Primary key table LBR_NotaFiscalLine */
+public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
+{
+if (LBR_NotaFiscalLine_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscalLine_ID is mandatory.");
+set_ValueNoCheck ("LBR_NotaFiscalLine_ID", new Integer(LBR_NotaFiscalLine_ID));
+}
+/** Get Nota Fiscal Line.
+@return Primary key table LBR_NotaFiscalLine */
+public int getLBR_NotaFiscalLine_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_NotaFiscalLine_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set UOM Name.
+@param lbr_UOMName Defines the UOM Name */
+public void setlbr_UOMName (String lbr_UOMName)
+{
+if (lbr_UOMName != null && lbr_UOMName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_UOMName = lbr_UOMName.substring(0,59);
+}
+set_Value ("lbr_UOMName", lbr_UOMName);
+}
+/** Get UOM Name.
+@return Defines the UOM Name */
+public String getlbr_UOMName() 
+{
+return (String)get_Value("lbr_UOMName");
 }
 /** Set Line No.
 @param Line Unique line for this document */
@@ -340,56 +391,5 @@ set_Value ("VendorProductNo", VendorProductNo);
 public String getVendorProductNo() 
 {
 return (String)get_Value("VendorProductNo");
-}
-/** Set CFOP Name.
-@param lbr_CFOPName Defines the CFOP Name */
-public void setlbr_CFOPName (String lbr_CFOPName)
-{
-if (lbr_CFOPName != null && lbr_CFOPName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_CFOPName = lbr_CFOPName.substring(0,59);
-}
-set_Value ("lbr_CFOPName", lbr_CFOPName);
-}
-/** Get CFOP Name.
-@return Defines the CFOP Name */
-public String getlbr_CFOPName() 
-{
-return (String)get_Value("lbr_CFOPName");
-}
-/** Set NCM Name.
-@param lbr_NCMName Defines the NCM Name */
-public void setlbr_NCMName (String lbr_NCMName)
-{
-if (lbr_NCMName != null && lbr_NCMName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_NCMName = lbr_NCMName.substring(0,59);
-}
-set_Value ("lbr_NCMName", lbr_NCMName);
-}
-/** Get NCM Name.
-@return Defines the NCM Name */
-public String getlbr_NCMName() 
-{
-return (String)get_Value("lbr_NCMName");
-}
-/** Set UOM Name.
-@param lbr_UOMName Defines the UOM Name */
-public void setlbr_UOMName (String lbr_UOMName)
-{
-if (lbr_UOMName != null && lbr_UOMName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_UOMName = lbr_UOMName.substring(0,59);
-}
-set_Value ("lbr_UOMName", lbr_UOMName);
-}
-/** Get UOM Name.
-@return Defines the UOM Name */
-public String getlbr_UOMName() 
-{
-return (String)get_Value("lbr_UOMName");
 }
 }

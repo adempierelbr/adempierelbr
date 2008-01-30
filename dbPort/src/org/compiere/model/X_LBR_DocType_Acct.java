@@ -98,21 +98,6 @@ Integer ii = (Integer)get_Value("C_DocType_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set DocumentType Accounting.
-@param LBR_DocType_Acct_ID Primary key table LBR_DocType_Acct */
-public void setLBR_DocType_Acct_ID (int LBR_DocType_Acct_ID)
-{
-if (LBR_DocType_Acct_ID < 1) throw new IllegalArgumentException ("LBR_DocType_Acct_ID is mandatory.");
-set_ValueNoCheck ("LBR_DocType_Acct_ID", new Integer(LBR_DocType_Acct_ID));
-}
-/** Get DocumentType Accounting.
-@return Primary key table LBR_DocType_Acct */
-public int getLBR_DocType_Acct_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_DocType_Acct_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set Credit Account.
 @param lbr_Acct_CR Defines the Credit Account */
 public void setlbr_Acct_CR (int lbr_Acct_CR)
@@ -138,6 +123,21 @@ set_Value ("lbr_Acct_DR", new Integer(lbr_Acct_DR));
 public int getlbr_Acct_DR() 
 {
 Integer ii = (Integer)get_Value("lbr_Acct_DR");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set DocumentType Accounting.
+@param LBR_DocType_Acct_ID Primary key table LBR_DocType_Acct */
+public void setLBR_DocType_Acct_ID (int LBR_DocType_Acct_ID)
+{
+if (LBR_DocType_Acct_ID < 1) throw new IllegalArgumentException ("LBR_DocType_Acct_ID is mandatory.");
+set_ValueNoCheck ("LBR_DocType_Acct_ID", new Integer(LBR_DocType_Acct_ID));
+}
+/** Get DocumentType Accounting.
+@return Primary key table LBR_DocType_Acct */
+public int getLBR_DocType_Acct_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_DocType_Acct_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }

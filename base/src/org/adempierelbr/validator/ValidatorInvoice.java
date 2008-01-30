@@ -21,6 +21,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.model.X_LBR_TaxLine;
+import org.compiere.model.X_LBR_TaxName;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -245,6 +246,7 @@ public class ValidatorInvoice implements ModelValidator
 			String     trx = invoice.get_TrxName();
 			
 			BigDecimal grandTotal = Env.ZERO;
+			BigDecimal substTotal = Env.ZERO;
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_InvoiceTax " +
@@ -291,7 +293,13 @@ public class ValidatorInvoice implements ModelValidator
 									
 								}
 								
+								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
+								if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
+									substTotal = substTotal.add(taxLine.getlbr_TaxAmt());
+								}
+								
 								grandTotal = grandTotal.add(taxLine.getlbr_TaxAmt());
+								
 							}
 						} //end for
 					}
@@ -300,6 +308,9 @@ public class ValidatorInvoice implements ModelValidator
 			
 			if (!invoice.isTaxIncluded()){
 				invoice.setGrandTotal(invoice.getTotalLines().add(grandTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
+			}
+			else{
+				invoice.setGrandTotal(invoice.getGrandTotal().add(substTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
 			}
 			
 			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());

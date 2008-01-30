@@ -22,9 +22,10 @@ super (ctx, LBR_TaxName_ID, trxName);
 {
 setHasWithHold (false);	// 'N'
 setLBR_TaxName_ID (0);
+setLBR_TaxSubstitution_ID (0);
+setlbr_TaxType (null);	// 'P'
 setName (null);
 setWithHoldThreshold (Env.ZERO);
-setlbr_TaxType (null);	// 'P'
 }
  */
 }
@@ -120,6 +121,53 @@ Integer ii = (Integer)get_Value("LBR_TaxName_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+
+/** LBR_TaxSubstitution_ID AD_Reference_ID=1000023 */
+public static final int LBR_TAXSUBSTITUTION_ID_AD_Reference_ID=1000023;
+/** Set Tax Substitution.
+@param LBR_TaxSubstitution_ID Defines the Tax Substitution */
+public void setLBR_TaxSubstitution_ID (int LBR_TaxSubstitution_ID)
+{
+if (LBR_TaxSubstitution_ID < 1) throw new IllegalArgumentException ("LBR_TaxSubstitution_ID is mandatory.");
+set_Value ("LBR_TaxSubstitution_ID", new Integer(LBR_TaxSubstitution_ID));
+}
+/** Get Tax Substitution.
+@return Defines the Tax Substitution */
+public int getLBR_TaxSubstitution_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxSubstitution_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** lbr_TaxType AD_Reference_ID=1000022 */
+public static final int LBR_TAXTYPE_AD_Reference_ID=1000022;
+/** Product = P */
+public static final String LBR_TAXTYPE_Product = "P";
+/** Service = S */
+public static final String LBR_TAXTYPE_Service = "S";
+/** Substitution = T */
+public static final String LBR_TAXTYPE_Substitution = "T";
+/** Set Tax Type.
+@param lbr_TaxType Define the Tax Type */
+public void setlbr_TaxType (String lbr_TaxType)
+{
+if (lbr_TaxType == null) throw new IllegalArgumentException ("lbr_TaxType is mandatory");
+if (lbr_TaxType.equals("P") || lbr_TaxType.equals("S") || lbr_TaxType.equals("T"));
+ else throw new IllegalArgumentException ("lbr_TaxType Invalid value - " + lbr_TaxType + " - Reference_ID=1000022 - P - S - T");
+if (lbr_TaxType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_TaxType = lbr_TaxType.substring(0,0);
+}
+set_Value ("lbr_TaxType", lbr_TaxType);
+}
+/** Get Tax Type.
+@return Define the Tax Type */
+public String getlbr_TaxType() 
+{
+return (String)get_Value("lbr_TaxType");
+}
 /** Set Name.
 @param Name Alphanumeric identifier of the entity */
 public void setName (String Name)
@@ -152,34 +200,5 @@ public BigDecimal getWithHoldThreshold()
 BigDecimal bd = (BigDecimal)get_Value("WithHoldThreshold");
 if (bd == null) return Env.ZERO;
 return bd;
-}
-
-/** lbr_TaxType AD_Reference_ID=1000022 */
-public static final int LBR_TAXTYPE_AD_Reference_ID=1000022;
-/** Product = P */
-public static final String LBR_TAXTYPE_Product = "P";
-/** Service = S */
-public static final String LBR_TAXTYPE_Service = "S";
-/** Substitution = T */
-public static final String LBR_TAXTYPE_Substitution = "T";
-/** Set Tax Type.
-@param lbr_TaxType Define the Tax Type */
-public void setlbr_TaxType (String lbr_TaxType)
-{
-if (lbr_TaxType == null) throw new IllegalArgumentException ("lbr_TaxType is mandatory");
-if (lbr_TaxType.equals("P") || lbr_TaxType.equals("S") || lbr_TaxType.equals("T"));
- else throw new IllegalArgumentException ("lbr_TaxType Invalid value - " + lbr_TaxType + " - Reference_ID=1000022 - P - S - T");
-if (lbr_TaxType.length() > 1)
-{
-log.warning("Length > 1 - truncated");
-lbr_TaxType = lbr_TaxType.substring(0,0);
-}
-set_Value ("lbr_TaxType", lbr_TaxType);
-}
-/** Get Tax Type.
-@return Define the Tax Type */
-public String getlbr_TaxType() 
-{
-return (String)get_Value("lbr_TaxType");
 }
 }
