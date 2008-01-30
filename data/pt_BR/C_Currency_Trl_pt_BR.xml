@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--Adempiere(r) Release 3.3.1t_2007-12-05 -Smart Suite ERP,CRM and SCM- (c) 1999-2007 Adempiere (r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="C_Currency">
@@ -92,79 +92,79 @@
  </row>
  <row id="143" trl="Y">
   <value column="Description" original="Armenian Dram">Dram Armênio</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="144" trl="Y">
   <value column="Description" original="Kwanza">Kwanza</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="145" trl="Y">
   <value column="Description" original="Azerbaijanian Manat (new)">Azerbaijanian Manat (new)</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="146" trl="Y">
   <value column="Description" original="Boliviano">Boliviano</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="147" trl="Y">
   <value column="Description" original="Franc Congolais">Franco Congolês</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="148" trl="Y">
   <value column="Description" original="Czech Koruna">Corôa Tcheca</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="149" trl="Y">
   <value column="Description" original="Lari">Lari</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="150" trl="Y">
   <value column="Description" original="Iranian Rial">Rial Iraniano</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="151" trl="Y">
   <value column="Description" original="Lithuanian Litus">Litus Lituano</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="152" trl="Y">
   <value column="Description" original="Moldovan Leu">Leu Moldovanês</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="153" trl="Y">
   <value column="Description" original="Philippine Peso">Peso Filipino</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="154" trl="Y">
   <value column="Description" original="Zloty">Zloty</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="155" trl="Y">
   <value column="Description" original="Russian Ruble">Rublo Russo</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="156" trl="Y">
   <value column="Description" original="Sudanese Dinar">Dinar Sudanês</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="157" trl="Y">
   <value column="Description" original="Somoni">Somoni</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="158" trl="Y">
   <value column="Description" original="Manat">Manat</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="159" trl="Y">
   <value column="Description" original="Timor Escudo">Escudo Timorense</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="160" trl="Y">
   <value column="Description" original="Hryvnia">Hryvnia</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="161" trl="Y">
   <value column="Description" original="Uzbekistan Sum">Sum Usbekistanês</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="163" trl="Y">
   <value column="Description" original="Cyprus Pound">Libra Cipriana</value>
@@ -656,39 +656,39 @@
  </row>
  <row id="336" trl="Y">
   <value column="Description" original="Costa Rican Colon">Colon da Costa Rica</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="337" trl="Y">
   <value column="Description" original="Guinea Franc">Franco da Guiné</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="338" trl="Y">
   <value column="Description" original="Guinea-Bissau Peso">Peso de Guiné-Bissau</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="339" trl="Y">
   <value column="Description" original="Som">Som</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="340" trl="Y">
   <value column="Description" original="North Korean Won">Won Norte Koreano</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="341" trl="Y">
   <value column="Description" original="Tenge">Tenge</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="342" trl="Y">
   <value column="Description" original="Lebanese Pound">Libra Libanesa</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="343" trl="Y">
   <value column="Description" original="Naira">Naira</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="344" trl="Y">
   <value column="Description" original="Guarani">Guarani</value>
-  <value column="CurSymbol" original=""></value>
+  <value column="CurSymbol" original=""/>
  </row>
  <row id="346" trl="Y">
   <value column="Description" original="Leu (new)">Leu (novo)</value>

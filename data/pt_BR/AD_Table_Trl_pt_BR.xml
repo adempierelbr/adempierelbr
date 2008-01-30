@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--Adempiere(r) Release 3.3.1t_2007-12-05 -Smart Suite ERP,CRM and SCM- (c) 1999-2007 Adempiere (r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Table">
@@ -2000,41 +2000,44 @@
  <row id="53015" trl="Y">
   <value column="Name" original="Product Substitute with Stock Info">Product Substitute with Stock Info</value>
  </row>
- <row id="53046" trl="N">
+ <row id="53046" trl="Y">
   <value column="Name" original="ASP Window">ASP Window</value>
  </row>
- <row id="53047" trl="N">
+ <row id="53047" trl="Y">
   <value column="Name" original="ASP Tab">ASP Tab</value>
  </row>
- <row id="53048" trl="N">
+ <row id="53048" trl="Y">
   <value column="Name" original="ASP Field">ASP Field</value>
  </row>
- <row id="53049" trl="N">
+ <row id="53049" trl="Y">
   <value column="Name" original="ASP Process">ASP Process</value>
  </row>
- <row id="53050" trl="N">
+ <row id="53050" trl="Y">
   <value column="Name" original="ASP Process Parameter">ASP Process Parameter</value>
  </row>
- <row id="53051" trl="N">
+ <row id="53051" trl="Y">
   <value column="Name" original="ASP Form">ASP Form</value>
  </row>
- <row id="53052" trl="N">
+ <row id="53052" trl="Y">
   <value column="Name" original="ASP Task">ASP Task</value>
  </row>
- <row id="53053" trl="N">
+ <row id="53053" trl="Y">
   <value column="Name" original="ASP Workflow">ASP Workflow</value>
  </row>
- <row id="53054" trl="N">
+ <row id="53054" trl="Y">
   <value column="Name" original="ASP Module">ASP Module</value>
  </row>
- <row id="53055" trl="N">
+ <row id="53055" trl="Y">
   <value column="Name" original="ASP Level">ASP Level</value>
  </row>
- <row id="53056" trl="N">
+ <row id="53056" trl="Y">
   <value column="Name" original="Client Level">Client Level</value>
  </row>
- <row id="53057" trl="N">
+ <row id="53057" trl="Y">
   <value column="Name" original="Client Exception">Client Exception</value>
+ </row>
+ <row id="53058" trl="Y">
+  <value column="Name" original="Rule">Rule</value>
  </row>
  <row id="1000001" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
@@ -2117,7 +2120,7 @@
  <row id="1000029" trl="Y">
   <value column="Name" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
  </row>
- <row id="1000030" trl="N">
+ <row id="1000030" trl="Y">
   <value column="Name" original="Matrix Printer">Impressora Matricial</value>
  </row>
 </adempiereTrl>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--Adempiere(r) Release 3.3.1t_2007-12-05 -Smart Suite ERP,CRM and SCM- (c) 1999-2007 Adempiere (r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Workflow">
@@ -68,92 +68,92 @@ O sistema converte as medidas em porcentagens (baseado nos valores alcançados e
  <row id="113" trl="Y">
   <value column="Name" original="Request Setup">Configuração de Solicitações</value>
   <value column="Description" original="Set up the client to process requests">Configurar a empresa para processar solicitações</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="114" trl="Y">
   <value column="Name" original="Requisition Setup">Configuração de Requisição</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="115" trl="Y">
   <value column="Name" original="Process_Requisition">Process_Requisition</value>
   <value column="Description" original="(Standard Process_Requisition)">(Standard Process_Requisition)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="116" trl="Y">
   <value column="Name" original="Process_Order">Process_Order</value>
   <value column="Description" original="(Standard Process Order)">(Processo de Pedido Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="117" trl="Y">
   <value column="Name" original="Process_Shipment">Process_Shipment</value>
   <value column="Description" original="(Standard Process Shipment)">(Processo de Entrega Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="118" trl="Y">
   <value column="Name" original="Process_Invoice">Process_Invoice</value>
   <value column="Description" original="(Standard Process Onvoice)">(Processo de Fatura Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="119" trl="Y">
   <value column="Name" original="Process_Cash">Process_Cash</value>
   <value column="Description" original="(Standard Process Cash)">(Processo de Caixa Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="120" trl="Y">
   <value column="Name" original="Process_Payment">Process_Payment</value>
   <value column="Description" original="(Standard Process Payment)">(Processo de Pagamento Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="121" trl="Y">
   <value column="Name" original="Process_Journal">Process_Journal</value>
   <value column="Description" original="(Standard Process Journal)">(Processo de Diário Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="122" trl="Y">
   <value column="Name" original="Process_JournalBatch">Process_JournalBatch</value>
   <value column="Description" original="(Standard Process Jornal Batch)">(Processo de Lote Diário Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="123" trl="Y">
   <value column="Name" original="Process_RMA">Process_RMA</value>
   <value column="Description" original="(Standard Process_RMA)">(Processo de ARM Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="124" trl="Y">
   <value column="Name" original="Process_InOutConfirm">Process_InOutConfirm</value>
   <value column="Description" original="(Standard Process Confirmation)">(Processo de Confirmação Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="125" trl="Y">
   <value column="Name" original="Process_Allocation">Process_Allocation</value>
   <value column="Description" original="(Standard Process Allocation)">(Processo de Alocação Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="126" trl="Y">
   <value column="Name" original="Process_TimeExpense">Process_TimeExpense</value>
   <value column="Description" original="(Standard Process Time Expense)">(Processo de Despesas de Tempo Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="127" trl="Y">
   <value column="Name" original="Process_Inventory">Process_Inventory</value>
   <value column="Description" original="(Standard Process Inventory)">(Processo de Estoque Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="128" trl="Y">
   <value column="Name" original="Process_Movement">Process_Movement</value>
   <value column="Description" original="(Standard Process Movement)">(Processo de Movimentação Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="129" trl="Y">
   <value column="Name" original="Process_MovementConfirm">Process_MovementConfirm</value>
   <value column="Description" original="(Standard Process Movement Confirmation)">(Processo de Confirmação de Movimentação Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="130" trl="Y">
   <value column="Name" original="Process_BankStatement">Process_BankStatement</value>
   <value column="Description" original="(Standard Process Bank Statement)">(Processo de Extratos Bancários Padrão)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="131" trl="Y">
   <value column="Name" original="Business Partner Approval">Aprovação de Parceiro de Negócios</value>

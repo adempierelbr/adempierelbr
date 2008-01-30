@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--Adempiere(r) Release 3.3.1t_2007-12-05 -Smart Suite ERP,CRM and SCM- (c) 1999-2007 Adempiere (r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Window">
@@ -130,7 +130,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="127" trl="Y">
   <value column="Name" original="Test">Teste</value>
   <value column="Description" original="Test Screen">Tela de Teste</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="128" trl="Y">
   <value column="Name" original="Attachment">Anexo</value>
@@ -245,7 +245,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="154" trl="Y">
   <value column="Name" original="GL Budget">Orçamento de Razão Geral</value>
   <value column="Description" original="Maintain General Ledger Budgets">Gerenciamento de Orçamentos de Razão Geral</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="158" trl="Y">
   <value column="Name" original="Bank">Banco</value>
@@ -354,8 +354,8 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  </row>
  <row id="186" trl="Y">
   <value column="Name" original="EDI Transaction">Transação EDI</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="187" trl="Y">
   <value column="Name" original="Form">Formulário</value>
@@ -499,12 +499,12 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="221" trl="Y">
   <value column="Name" original="Find (indirect use)">Localizar (uso indireto)</value>
   <value column="Description" original="Find Dialog (indirect use)">Diálogo de Localização (uso indireto)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="223" trl="Y">
   <value column="Name" original="Material Transactions (indirect use)">Transações de Materiais (uso indireto)</value>
   <value column="Description" original="Material Transactions (indirect use)">Transações de Materiais (uso indireto)</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="224" trl="Y">
   <value column="Name" original="Print Form">Formulário de Impressão</value>
@@ -524,7 +524,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="227" trl="Y">
   <value column="Name" original="System Image">Imagem do Sistema</value>
   <value column="Description" original="Maintain Images and Icons">Gerenciamento de Imagens e Ícones</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="228" trl="Y">
   <value column="Name" original="Matched Purchase Orders">Pedidos de Compra Confrontados</value>
@@ -554,7 +554,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="234" trl="Y">
   <value column="Name" original="Expense Type">Tipo de Despesa</value>
   <value column="Description" original="Maintain Expense Report Types">Gerenciamento dos Tipos de Relatórios de Despesa</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="235" trl="Y">
   <value column="Name" original="Expense Report">Relatório de Despesa</value>
@@ -771,7 +771,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="277" trl="Y">
   <value column="Name" original="Import Bank Statement">Importar Extrato Bancário</value>
   <value column="Description" original="Import Bank Statements">Importar Extratos Bancários</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="278" trl="Y">
   <value column="Name" original="Import GL Journal">Importar Diário de Razão Geral</value>
@@ -786,7 +786,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="280" trl="Y">
   <value column="Name" original="Import Payment">Importar Pagamento</value>
   <value column="Description" original="Import Payments">Importar Pagamentos</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="281" trl="Y">
   <value column="Name" original="Import Order">Importar Pedido</value>
@@ -842,12 +842,12 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="291" trl="Y">
   <value column="Name" original="Business Partner Info">Informações do Parceiro de Negócios</value>
   <value column="Description" original="Document Information of Business Partners">Documentar Informações dos Parceiros de Negócios</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="292" trl="Y">
   <value column="Name" original="Label Printer">Impressora de Etiquetas</value>
   <value column="Description" original="Maintain Label Printer Definition">Gerenciamento de Definições de Impressoras de Etiquetas</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="293" trl="Y">
   <value column="Name" original="Sales Rep Info">Info Rep. de Vendas</value>
@@ -1007,7 +1007,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="324" trl="Y">
   <value column="Name" original="RfQ Response">Resposta de SdC</value>
   <value column="Description" original="Manage RfQ Responses">Gerenciar Respostas de Requisição de Cotação</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="325" trl="Y">
   <value column="Name" original="Distribution Run">Rodar Distribuição</value>
@@ -1082,7 +1082,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="339" trl="Y">
   <value column="Name" original="POS Key Layout">Layout das Teclas do PDV</value>
   <value column="Description" original="POS Function Key Layout">Layout das teclas de função do PDV</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="340" trl="Y">
   <value column="Name" original="System Registration">Registro do Sistema</value>
@@ -1147,7 +1147,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="352" trl="Y">
   <value column="Name" original="Position Category">Categoria de Posição</value>
   <value column="Description" original="Maintain Job Position Categories">Gerenciamento de Categorias de Postos de Trabalho</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="353" trl="Y">
   <value column="Name" original="Remuneration">Remuneração</value>
@@ -1157,7 +1157,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="354" trl="Y">
   <value column="Name" original="Product BOM">LDM de Produto</value>
   <value column="Description" original="Maintain Product Bill of Materials">Gerenciamento de Lista de Materiais de Produto</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="355" trl="Y">
   <value column="Name" original="BOM Change Notice">Aviso de Alteração de LDM</value>
@@ -1172,7 +1172,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="358" trl="Y">
   <value column="Name" original="Attribute Set Instance">Instância do Conjunto de Atributos</value>
   <value column="Description" original="View Attribute Set Instance detail and use">Visualizar Detalhes da Instância do Conjunto de Atributos e utilizar</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="359" trl="Y">
   <value column="Name" original="Tax Declaration">Declaração de Impostos</value>
@@ -1217,7 +1217,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="367" trl="Y">
   <value column="Name" original="Issue Recommendation">Issue Recommendation</value>
   <value column="Description" original="Maintain Issue Recommendation">Maintain Issue Recommendation</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="368" trl="Y">
   <value column="Name" original="Issue Status">Issue Status</value>
@@ -1227,7 +1227,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="369" trl="Y">
   <value column="Name" original="Known Issue">Known Issue</value>
   <value column="Description" original="Maintain Known Issue">Maintain Known Issue</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="370" trl="Y">
   <value column="Name" original="Issue Project">Issue Project</value>
@@ -1237,12 +1237,12 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="371" trl="Y">
   <value column="Name" original="Issue User">Issue User</value>
   <value column="Description" original="User who reported Issues">User who reported Issues</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="372" trl="Y">
   <value column="Name" original="Issue System">Issue System</value>
   <value column="Description" original="Maintain Systems">Maintain Systems</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="373" trl="Y">
   <value column="Name" original="Web Project">Web Project</value>
@@ -1251,8 +1251,8 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  </row>
  <row id="374" trl="Y">
   <value column="Name" original="Template">Template</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="375" trl="Y">
   <value column="Name" original="Web Ad Management">Web Ad Management</value>
@@ -1292,7 +1292,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="384" trl="Y">
   <value column="Name" original="Web Broadcast Server">Web Broadcast Server</value>
   <value column="Description" original="Maintain Web Broadcast Server">Maintain Web Broadcast Server</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="385" trl="Y">
   <value column="Name" original="Info Window">Info Window</value>
@@ -1307,12 +1307,12 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="387" trl="Y">
   <value column="Name" original="Text Index Stop">Text Index Stop</value>
   <value column="Description" original="Maintain keywords not to be indexed">Maintain keywords not to be indexed</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="388" trl="Y">
   <value column="Name" original="Text Search Log">Text Search Log</value>
   <value column="Description" original="View Text Search Log">View Text Search Log</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="389" trl="Y">
   <value column="Name" original="LDAP Server">LDAP Server</value>
@@ -1322,7 +1322,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="50001" trl="Y">
   <value column="Name" original="Packages Installed">Packages Installed</value>
   <value column="Description" original="List of packages installed">List of packages installed</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="50002" trl="Y">
   <value column="Name" original="Package Maintenance">Package Maintenance</value>
@@ -1332,7 +1332,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  <row id="50003" trl="Y">
   <value column="Name" original="PackOut - Create a package">PackOut - Create a package</value>
   <value column="Description" original="Package build Application">Package build Application</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="50004" trl="Y">
   <value column="Name" original="Common Package Details">Common Package Details</value>
@@ -1346,112 +1346,117 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  </row>
  <row id="50006" trl="Y">
   <value column="Name" original="System Configurator">System Configurator</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="50007" trl="Y">
   <value column="Name" original="Dashboard Content Edit">Dashboard Content Edit</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="52000" trl="Y">
   <value column="Name" original="Web POS Menu">Posterita Web Menu</value>
   <value column="Description" original="To dynamically generate the menu links in web POS">To dynamically generate the menu links in posterita</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="52001" trl="Y">
   <value column="Name" original="Web POS Role Menu">Posterita Role Menu</value>
   <value column="Description" original="Depending on Which Role, Different set of Menus are generated and made available.">Depending on Which Role, Different set of Menus are generated and made available.</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="52002" trl="Y">
   <value column="Name" original="Web POS Properties">Posterita Web Properties</value>
   <value column="Description" original="Stores the message tags to be picked up from AD_MESSAGE ">Stores the message tags to be picked up from AD_MESSAGE </value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="52003" trl="Y">
   <value column="Name" original="Web POS BlackListCheque">Posterita BlackListCheque</value>
   <value column="Description" original="Black Listed Cheque">Black Listed Cheque</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="53003" trl="Y">
   <value column="Name" original="Model Validator">Model Validator</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
- <row id="53015" trl="N">
+ <row id="53015" trl="Y">
   <value column="Name" original="ASP Modules">ASP Modules</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
- <row id="53016" trl="N">
+ <row id="53016" trl="Y">
   <value column="Name" original="ASP Subscribed Modules">ASP Subscribed Modules</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="53017" trl="Y">
+  <value column="Name" original="Rule">Rule</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="Brazilian Banks">Bancos Brasileiros</value>
   <value column="Description" original="Brazilian Banks">Bancos Brasileiros</value>
-  <value column="Help" original=""></value>
+  <value column="Help" original=""/>
  </row>
  <row id="1000001" trl="Y">
   <value column="Name" original="Document Print">Impressão de Documento</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000002" trl="Y">
   <value column="Name" original="NCM">NCM</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000003" trl="Y">
   <value column="Name" original="CFOP">CFOP</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000008" trl="Y">
   <value column="Name" original="Product Category (CFOP)">Categoria do Produto (CFOP)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000009" trl="Y">
   <value column="Name" original="BPartner Category (CFOP)">Categoria do Parceiro (CFOP)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000010" trl="Y">
   <value column="Name" original="ICMS Matrix">Matriz de ICMS (Estados)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000011" trl="Y">
   <value column="Name" original="Fiscal Group - Product">Grupo de Tributação (Produto)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000012" trl="Y">
   <value column="Name" original="Fiscal Group - Business Partner">Grupo de Tributação (Parceiro de Negócios)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000013" trl="Y">
   <value column="Name" original="Tax Configuration">Configuração de Impostos</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000014" trl="Y">
   <value column="Name" original="Tax Brazil">Imposto (Brasil)</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000015" trl="Y">
   <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000016" trl="Y">
   <value column="Name" original="Matrix Printer">Impressora Matricial</value>
-  <value column="Description" original=""></value>
-  <value column="Help" original=""></value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
 </adempiereTrl>
