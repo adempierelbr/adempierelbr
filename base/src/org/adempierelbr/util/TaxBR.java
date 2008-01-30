@@ -16,6 +16,7 @@ import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
+import org.compiere.model.MProduct;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
@@ -56,6 +57,8 @@ public class TaxBR
 		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
 		lines = MTaxBR.getMTaxBR(Line_ID, isOrder, trx);
 		
+		MProduct product = null;
+		
 		boolean isTaxIncluded = false;
 		double  amt = 0.0;
 		double  lineamt = 0.0;
@@ -63,12 +66,14 @@ public class TaxBR
 		if (isOrder){
 			MOrderLine oLine = new MOrderLine(Env.getCtx(),Line_ID,trx);
 			MOrder order = new MOrder(Env.getCtx(),oLine.getC_Order_ID(),trx);
+			product = oLine.getProduct();
 			isTaxIncluded = order.isTaxIncluded();
 			lineamt = oLine.getLineNetAmt().doubleValue();
 		}
 		else{
 			MInvoiceLine iLine = new MInvoiceLine(Env.getCtx(),Line_ID,trx);
 			MInvoice invoice = new MInvoice(Env.getCtx(),iLine.getC_Invoice_ID(),trx);
+			product = iLine.getProduct();
 			isTaxIncluded = invoice.isTaxIncluded();
 			lineamt = iLine.getLineNetAmt().doubleValue();
 		}
@@ -87,9 +92,19 @@ public class TaxBR
 					amt = lineamt;
 				}
 				
+				//Se o imposto for Substituição Tributária, e o produto estiver marcado
+				if (taxName.getlbr_TaxType().equalsIgnoreCase("T")){
+					if (product != null && 
+						POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"))){
+						
+						double profit = ((Double)product.get_Value("lbr_ProfitPercentage")).doubleValue();
+						amt = amt * (1+(profit/100));	
+					}	
+				}
+				
 				//Base de Cálculo
 				double     base    = calculate(taxBR.getFormula(),amt,lines);
-				BigDecimal taxbase = new BigDecimal(base = base/taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
+				BigDecimal taxbase = new BigDecimal(base = base*taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
 				
 				//Valor do Imposto
 				double     taxamt  = base * taxBR.getTaxRate();

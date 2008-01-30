@@ -160,13 +160,15 @@ public static final int LBR_TAXTYPE_AD_Reference_ID=1000022;
 public static final String LBR_TAXTYPE_Product = "P";
 /** Service = S */
 public static final String LBR_TAXTYPE_Service = "S";
+/** Substitution = T */
+public static final String LBR_TAXTYPE_Substitution = "T";
 /** Set Tax Type.
 @param lbr_TaxType Define the Tax Type */
 public void setlbr_TaxType (String lbr_TaxType)
 {
 if (lbr_TaxType == null) throw new IllegalArgumentException ("lbr_TaxType is mandatory");
-if (lbr_TaxType.equals("P") || lbr_TaxType.equals("S"));
- else throw new IllegalArgumentException ("lbr_TaxType Invalid value - " + lbr_TaxType + " - Reference_ID=1000022 - P - S");
+if (lbr_TaxType.equals("P") || lbr_TaxType.equals("S") || lbr_TaxType.equals("T"));
+ else throw new IllegalArgumentException ("lbr_TaxType Invalid value - " + lbr_TaxType + " - Reference_ID=1000022 - P - S - T");
 if (lbr_TaxType.length() > 1)
 {
 log.warning("Length > 1 - truncated");

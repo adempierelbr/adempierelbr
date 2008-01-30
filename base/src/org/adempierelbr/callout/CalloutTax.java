@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRICMSMatrix;
 import org.adempierelbr.model.MTax;
+import org.adempierelbr.util.POLBR;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -43,7 +44,15 @@ public class CalloutTax extends CalloutEngine
 	
 	private Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
 	
-	private String lbr_TaxType = "P";
+	/** Produto */
+	public static String taxType_Product      = "P";
+	/** Serviço */
+	public static String taxType_Service      = "S";
+	/** Substituição Tributária */
+	public static String taxType_Substitution = "T";
+	
+	private String  lbr_TaxType     = taxType_Product;
+	private boolean hasSubstitution = false;
 
 	/**
 	 *  getTaxes
@@ -141,10 +150,18 @@ public class CalloutTax extends CalloutEngine
 		
 		//Define se é Produto ou Serviço
 		if (product.getProductType().equalsIgnoreCase("I")){
-			lbr_TaxType = "P";
+			lbr_TaxType = taxType_Product;
 		}
 		else{
-			lbr_TaxType = "S";
+			lbr_TaxType = taxType_Service;
+		}
+		
+		//Define se possui Substituição Tributária
+		boolean bp_hasSubstitution   = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_HasSubstitution"));
+		boolean prod_hasSubstitution = POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"));
+		
+		if (bp_hasSubstitution && prod_hasSubstitution){
+			hasSubstitution = true;
 		}
 
 		/**
@@ -221,7 +238,9 @@ public class CalloutTax extends CalloutEngine
 				
 				X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,LBR_TaxName_ID,null);
 				//Verifica o Tipo do Item, para definir os Impostos
-				if (taxName.getlbr_TaxType().equalsIgnoreCase(lbr_TaxType)){
+				if (taxName.getlbr_TaxType().equalsIgnoreCase(lbr_TaxType) ||
+				   (hasSubstitution && taxName.getlbr_TaxType().equalsIgnoreCase(taxType_Substitution))){
+					
 					X_LBR_TaxLine line = null;
 					if (lines.containsKey(LBR_TaxName_ID)){
 						line = new X_LBR_TaxLine(ctx,lines.get(LBR_TaxName_ID),null);

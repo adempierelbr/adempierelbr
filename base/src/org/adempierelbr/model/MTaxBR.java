@@ -90,7 +90,7 @@ public class MTaxBR{
 			if (LBR_TaxLine_ID != 0){
 				X_LBR_TaxLine taxLine = new X_LBR_TaxLine(Env.getCtx(),LBR_TaxLine_ID,trx);
 				TaxRate = taxLine.getlbr_TaxRate().doubleValue()/100; //TAXRATE
-				TaxBase = 1 + ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
+				TaxBase = 1 - ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
 				PostTax = taxLine.islbr_PostTax(); //POSTTAX
 				
 				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
