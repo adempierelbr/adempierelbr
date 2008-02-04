@@ -10,8 +10,10 @@ import org.compiere.apps.ADialog;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
+import org.compiere.model.I_C_Order;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrg;
@@ -29,10 +31,17 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		if (((BigDecimal) mTab.getValue("M_Product_ID")).intValue() == 0)
 			return "";
 
-		MOrder mo = new MOrder(Env.getCtx(), ((BigDecimal) mTab
+		MOrder mo = null;
+		MInvoice mi = null;
+		if(mTab.getAD_Table_ID() == I_C_Order.Table_ID)
+			mo = new MOrder(Env.getCtx(), ((BigDecimal) mTab
 				.getValue("C_Order_ID")).intValue(), null);
-
-		MBPartner mbp = new MBPartner(Env.getCtx(), mo.getC_BPartner_ID(), null);
+		else
+			mi = new MInvoice(Env.getCtx(), ((BigDecimal) mTab
+				.getValue("C_Invoice_ID")).intValue(), null);
+		
+		Integer C_BPartner_ID = (mo == null) ? mi.getC_BPartner_ID() : mo.getC_BPartner_ID(); 
+		MBPartner mbp = new MBPartner(Env.getCtx(), C_BPartner_ID, null);
 		MBPartnerLocation mbpl = new MBPartnerLocation(mbp);
 		MLocation mlbp = new MLocation(Env.getCtx(), mbpl.getC_Location_ID(), null);
 
