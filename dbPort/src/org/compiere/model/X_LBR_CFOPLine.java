@@ -21,14 +21,11 @@ super (ctx, LBR_CFOPLine_ID, trxName);
 /** if (LBR_CFOPLine_ID == 0)
 {
 setC_DocType_ID (0);
-setLBR_BPartnerCategory_ID (0);
 setLBR_CFOP_ID (0);
 setLBR_CFOPLine_ID (0);
 setlbr_DestionationType (null);
-setlbr_IsManufactured (false);	// 'N'
-setlbr_IsSubTributaria (false);	// 'N'
-setLBR_ProductCategory_ID (0);
-setlbr_TransactionType (null);
+setlbr_IsManufactured (null);	// 'N'
+setlbr_IsSubTributaria (null);	// 'N'
 }
  */
 }
@@ -99,7 +96,8 @@ public static final int LBR_BPARTNERCATEGORY_ID_AD_Reference_ID=1000015;
 @param LBR_BPartnerCategory_ID Primary key table LBR_BPartnerCategory */
 public void setLBR_BPartnerCategory_ID (int LBR_BPartnerCategory_ID)
 {
-if (LBR_BPartnerCategory_ID < 1) throw new IllegalArgumentException ("LBR_BPartnerCategory_ID is mandatory.");
+if (LBR_BPartnerCategory_ID <= 0) set_Value ("LBR_BPartnerCategory_ID", null);
+ else 
 set_Value ("LBR_BPartnerCategory_ID", new Integer(LBR_BPartnerCategory_ID));
 }
 /** Get BPartner Category.
@@ -146,8 +144,8 @@ return ii.intValue();
 
 /** lbr_DestionationType AD_Reference_ID=1000012 */
 public static final int LBR_DESTIONATIONTYPE_AD_Reference_ID=1000012;
-/** Estados IdÃªnticos = 0 */
-public static final String LBR_DESTIONATIONTYPE_EstadosIdÃªnticos = "0";
+/** Estados Idênticos = 0 */
+public static final String LBR_DESTIONATIONTYPE_EstadosIdênticos = "0";
 /** Estados Diferentes = 1 */
 public static final String LBR_DESTIONATIONTYPE_EstadosDiferentes = "1";
 /** Estrangeiro = 2 */
@@ -174,41 +172,63 @@ public String getlbr_DestionationType()
 {
 return (String)get_Value("lbr_DestionationType");
 }
+
+/** lbr_IsManufactured AD_Reference_ID=1000029 */
+public static final int LBR_ISMANUFACTURED_AD_Reference_ID=1000029;
+/** Both = B */
+public static final String LBR_ISMANUFACTURED_Both = "B";
+/** No = N */
+public static final String LBR_ISMANUFACTURED_No = "N";
+/** Yes = Y */
+public static final String LBR_ISMANUFACTURED_Yes = "Y";
 /** Set Is Manufactured.
 @param lbr_IsManufactured Defines if the Product is Manufactured */
-public void setlbr_IsManufactured (boolean lbr_IsManufactured)
+public void setlbr_IsManufactured (String lbr_IsManufactured)
 {
-set_Value ("lbr_IsManufactured", new Boolean(lbr_IsManufactured));
+if (lbr_IsManufactured == null) throw new IllegalArgumentException ("lbr_IsManufactured is mandatory");
+if (lbr_IsManufactured.equals("B") || lbr_IsManufactured.equals("N") || lbr_IsManufactured.equals("Y"));
+ else throw new IllegalArgumentException ("lbr_IsManufactured Invalid value - " + lbr_IsManufactured + " - Reference_ID=1000029 - B - N - Y");
+if (lbr_IsManufactured.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_IsManufactured = lbr_IsManufactured.substring(0,0);
+}
+set_Value ("lbr_IsManufactured", lbr_IsManufactured);
 }
 /** Get Is Manufactured.
 @return Defines if the Product is Manufactured */
-public boolean islbr_IsManufactured() 
+public String getlbr_IsManufactured() 
 {
-Object oo = get_Value("lbr_IsManufactured");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
+return (String)get_Value("lbr_IsManufactured");
 }
-return false;
-}
+
+/** lbr_IsSubTributaria AD_Reference_ID=1000027 */
+public static final int LBR_ISSUBTRIBUTARIA_AD_Reference_ID=1000027;
+/** Both = B */
+public static final String LBR_ISSUBTRIBUTARIA_Both = "B";
+/** No = N */
+public static final String LBR_ISSUBTRIBUTARIA_No = "N";
+/** Yes = Y */
+public static final String LBR_ISSUBTRIBUTARIA_Yes = "Y";
 /** Set Is Substituicao Tributaria.
 @param lbr_IsSubTributaria Defines the Is Substituicao Tributaria Status */
-public void setlbr_IsSubTributaria (boolean lbr_IsSubTributaria)
+public void setlbr_IsSubTributaria (String lbr_IsSubTributaria)
 {
-set_Value ("lbr_IsSubTributaria", new Boolean(lbr_IsSubTributaria));
+if (lbr_IsSubTributaria == null) throw new IllegalArgumentException ("lbr_IsSubTributaria is mandatory");
+if (lbr_IsSubTributaria.equals("B") || lbr_IsSubTributaria.equals("N") || lbr_IsSubTributaria.equals("Y"));
+ else throw new IllegalArgumentException ("lbr_IsSubTributaria Invalid value - " + lbr_IsSubTributaria + " - Reference_ID=1000027 - B - N - Y");
+if (lbr_IsSubTributaria.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_IsSubTributaria = lbr_IsSubTributaria.substring(0,0);
+}
+set_Value ("lbr_IsSubTributaria", lbr_IsSubTributaria);
 }
 /** Get Is Substituicao Tributaria.
 @return Defines the Is Substituicao Tributaria Status */
-public boolean islbr_IsSubTributaria() 
+public String getlbr_IsSubTributaria() 
 {
-Object oo = get_Value("lbr_IsSubTributaria");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
-}
-return false;
+return (String)get_Value("lbr_IsSubTributaria");
 }
 
 /** LBR_ProductCategory_ID AD_Reference_ID=1000013 */
@@ -217,7 +237,8 @@ public static final int LBR_PRODUCTCATEGORY_ID_AD_Reference_ID=1000013;
 @param LBR_ProductCategory_ID Primary key table LBR_ProductCategory */
 public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID)
 {
-if (LBR_ProductCategory_ID < 1) throw new IllegalArgumentException ("LBR_ProductCategory_ID is mandatory.");
+if (LBR_ProductCategory_ID <= 0) set_Value ("LBR_ProductCategory_ID", null);
+ else 
 set_Value ("LBR_ProductCategory_ID", new Integer(LBR_ProductCategory_ID));
 }
 /** Get Product Category.
@@ -247,22 +268,21 @@ return ii.intValue();
 
 /** lbr_TransactionType AD_Reference_ID=1000014 */
 public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000014;
-/** Resale = RES */
-public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
-/** Manufacturing = MAN */
-public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
+/** End User (IE Exempt) = CNC */
+public static final String LBR_TRANSACTIONTYPE_EndUserIEExempt = "CNC";
 /** End User = END */
 public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
-/** Fixed  Asset = ASS */
-public static final String LBR_TRANSACTIONTYPE_FixedAsset = "ASS";
+/** Manufacturing = MAN */
+public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
+/** Resale = RES */
+public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
 /** Set Transaction Type.
 @param lbr_TransactionType Defines the Transaction Type */
 public void setlbr_TransactionType (String lbr_TransactionType)
 {
-if (lbr_TransactionType == null) throw new IllegalArgumentException ("lbr_TransactionType is mandatory");
-if (lbr_TransactionType.equals("RES") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("ASS"));
- else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000014 - RES - MAN - END - ASS");
-if (lbr_TransactionType.length() > 3)
+if (lbr_TransactionType == null || lbr_TransactionType.equals("CNC") || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("RES"));
+ else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000014 - CNC - END - MAN - RES");
+if (lbr_TransactionType != null && lbr_TransactionType.length() > 3)
 {
 log.warning("Length > 3 - truncated");
 lbr_TransactionType = lbr_TransactionType.substring(0,2);

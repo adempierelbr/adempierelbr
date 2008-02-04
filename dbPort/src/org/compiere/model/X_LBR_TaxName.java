@@ -168,6 +168,30 @@ public String getlbr_TaxType()
 {
 return (String)get_Value("lbr_TaxType");
 }
+
+/** lbr_WithholdFrequency AD_Reference_ID=1000028 */
+public static final int LBR_WITHHOLDFREQUENCY_AD_Reference_ID=1000028;
+/** Monthly = M */
+public static final String LBR_WITHHOLDFREQUENCY_Monthly = "M";
+/** Set Withhold Frequency.
+@param lbr_WithholdFrequency Defines the Withhold Frequency */
+public void setlbr_WithholdFrequency (String lbr_WithholdFrequency)
+{
+if (lbr_WithholdFrequency == null || lbr_WithholdFrequency.equals("M"));
+ else throw new IllegalArgumentException ("lbr_WithholdFrequency Invalid value - " + lbr_WithholdFrequency + " - Reference_ID=1000028 - M");
+if (lbr_WithholdFrequency != null && lbr_WithholdFrequency.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_WithholdFrequency = lbr_WithholdFrequency.substring(0,0);
+}
+set_Value ("lbr_WithholdFrequency", lbr_WithholdFrequency);
+}
+/** Get Withhold Frequency.
+@return Defines the Withhold Frequency */
+public String getlbr_WithholdFrequency() 
+{
+return (String)get_Value("lbr_WithholdFrequency");
+}
 /** Set Name.
 @param Name Alphanumeric identifier of the entity */
 public void setName (String Name)

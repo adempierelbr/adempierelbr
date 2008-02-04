@@ -318,20 +318,20 @@ return bd;
 
 /** FreightCostRule AD_Reference_ID=153 */
 public static final int FREIGHTCOSTRULE_AD_Reference_ID=153;
-/** Freight included = I */
-public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
-/** Fix price = F */
-public static final String FREIGHTCOSTRULE_FixPrice = "F";
 /** Calculated = C */
 public static final String FREIGHTCOSTRULE_Calculated = "C";
+/** Fix price = F */
+public static final String FREIGHTCOSTRULE_FixPrice = "F";
+/** Freight included = I */
+public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L");
+if (FreightCostRule == null || FreightCostRule.equals("C") || FreightCostRule.equals("F") || FreightCostRule.equals("I") || FreightCostRule.equals("L"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - C - F - I - L");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");

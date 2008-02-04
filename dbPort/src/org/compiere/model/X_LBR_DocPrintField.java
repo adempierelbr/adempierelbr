@@ -133,18 +133,18 @@ return ii.intValue();
 
 /** lbr_FieldAlignment AD_Reference_ID=1000003 */
 public static final int LBR_FIELDALIGNMENT_AD_Reference_ID=1000003;
-/** Left = L */
-public static final String LBR_FIELDALIGNMENT_Left = "L";
 /** Center = C */
 public static final String LBR_FIELDALIGNMENT_Center = "C";
+/** Left = L */
+public static final String LBR_FIELDALIGNMENT_Left = "L";
 /** Right = R */
 public static final String LBR_FIELDALIGNMENT_Right = "R";
 /** Set Field Alignment.
 @param lbr_FieldAlignment Defines the Field Alignment */
 public void setlbr_FieldAlignment (String lbr_FieldAlignment)
 {
-if (lbr_FieldAlignment == null || lbr_FieldAlignment.equals("L") || lbr_FieldAlignment.equals("C") || lbr_FieldAlignment.equals("R"));
- else throw new IllegalArgumentException ("lbr_FieldAlignment Invalid value - " + lbr_FieldAlignment + " - Reference_ID=1000003 - L - C - R");
+if (lbr_FieldAlignment == null || lbr_FieldAlignment.equals("C") || lbr_FieldAlignment.equals("L") || lbr_FieldAlignment.equals("R"));
+ else throw new IllegalArgumentException ("lbr_FieldAlignment Invalid value - " + lbr_FieldAlignment + " - Reference_ID=1000003 - C - L - R");
 if (lbr_FieldAlignment != null && lbr_FieldAlignment.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -193,18 +193,18 @@ return false;
 
 /** lbr_PrintFormat AD_Reference_ID=1000004 */
 public static final int LBR_PRINTFORMAT_AD_Reference_ID=1000004;
-/** String = S */
-public static final String LBR_PRINTFORMAT_String = "S";
 /** Date = D */
 public static final String LBR_PRINTFORMAT_Date = "D";
+/** String = S */
+public static final String LBR_PRINTFORMAT_String = "S";
 /** Value = V */
 public static final String LBR_PRINTFORMAT_Value = "V";
 /** Set Print Format.
 @param lbr_PrintFormat Defines the Print Format Type */
 public void setlbr_PrintFormat (String lbr_PrintFormat)
 {
-if (lbr_PrintFormat == null || lbr_PrintFormat.equals("S") || lbr_PrintFormat.equals("D") || lbr_PrintFormat.equals("V"));
- else throw new IllegalArgumentException ("lbr_PrintFormat Invalid value - " + lbr_PrintFormat + " - Reference_ID=1000004 - S - D - V");
+if (lbr_PrintFormat == null || lbr_PrintFormat.equals("D") || lbr_PrintFormat.equals("S") || lbr_PrintFormat.equals("V"));
+ else throw new IllegalArgumentException ("lbr_PrintFormat Invalid value - " + lbr_PrintFormat + " - Reference_ID=1000004 - D - S - V");
 if (lbr_PrintFormat != null && lbr_PrintFormat.length() > 1)
 {
 log.warning("Length > 1 - truncated");

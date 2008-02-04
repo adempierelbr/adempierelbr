@@ -71,16 +71,16 @@ return sb.toString();
 
 /** lbr_ExceptionType AD_Reference_ID=1000020 */
 public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
-/** Product = P */
-public static final String LBR_EXCEPTIONTYPE_Product = "P";
 /** Fiscal Group = G */
 public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
+/** Product = P */
+public static final String LBR_EXCEPTIONTYPE_Product = "P";
 /** Set Exception Type.
 @param lbr_ExceptionType Defines the Exception Type */
 public void setlbr_ExceptionType (String lbr_ExceptionType)
 {
-if (lbr_ExceptionType == null || lbr_ExceptionType.equals("P") || lbr_ExceptionType.equals("G"));
- else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - P - G");
+if (lbr_ExceptionType == null || lbr_ExceptionType.equals("G") || lbr_ExceptionType.equals("P"));
+ else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - G - P");
 if (lbr_ExceptionType != null && lbr_ExceptionType.length() > 1)
 {
 log.warning("Length > 1 - truncated");

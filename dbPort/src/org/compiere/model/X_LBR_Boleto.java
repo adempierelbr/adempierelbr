@@ -361,17 +361,17 @@ return ii.intValue();
 
 /** lbr_BPTypeBR AD_Reference_ID=1000000 */
 public static final int LBR_BPTYPEBR_AD_Reference_ID=1000000;
-/** PJ - Legal Entity = PJ */
-public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 /** PF - Individual = PF */
 public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+/** PJ - Legal Entity = PJ */
+public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 /** Set Brazilian BP Type.
 @param lbr_BPTypeBR Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual) */
 public void setlbr_BPTypeBR (String lbr_BPTypeBR)
 {
 if (lbr_BPTypeBR == null) throw new IllegalArgumentException ("lbr_BPTypeBR is mandatory");
-if (lbr_BPTypeBR.equals("PJ") || lbr_BPTypeBR.equals("PF"));
- else throw new IllegalArgumentException ("lbr_BPTypeBR Invalid value - " + lbr_BPTypeBR + " - Reference_ID=1000000 - PJ - PF");
+if (lbr_BPTypeBR.equals("PF") || lbr_BPTypeBR.equals("PJ"));
+ else throw new IllegalArgumentException ("lbr_BPTypeBR Invalid value - " + lbr_BPTypeBR + " - Reference_ID=1000000 - PF - PJ");
 if (lbr_BPTypeBR.length() > 2)
 {
 log.warning("Length > 2 - truncated");
