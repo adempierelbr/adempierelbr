@@ -162,9 +162,9 @@ public class FormBoleto extends CPanel
 		selNorthPanel.add(fBankAccount, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
-		selNorthPanel.add(lPrinterName, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+		selNorthPanel.add(lPrinterName, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		selNorthPanel.add(fPrinterName, new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
+		selNorthPanel.add(fPrinterName, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
 		selPanel.setName("selPanel");
