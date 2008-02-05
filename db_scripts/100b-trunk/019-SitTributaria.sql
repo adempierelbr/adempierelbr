@@ -135,52 +135,12 @@ DELETE FROM AD_Element_Trl WHERE AD_Element_ID=1000254
 
 -- 05/02/2008 9h12min1s BRST
 -- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min1s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min1s BRST
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min1s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min1s BRST
--- Default comment for updating dictionary
 DELETE FROM AD_Element WHERE AD_Element_ID=1000254
 ;
 
 -- 05/02/2008 9h12min41s BRST
 -- Default comment for updating dictionary
 DELETE FROM AD_Ref_List_Trl WHERE AD_Ref_List_ID=1000051
-;
-
--- 05/02/2008 9h12min41s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min41s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min41s BRST
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min41s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
 ;
 
 -- 05/02/2008 9h12min41s BRST
@@ -195,26 +155,6 @@ DELETE FROM AD_Ref_List_Trl WHERE AD_Ref_List_ID=1000052
 
 -- 05/02/2008 9h12min42s BRST
 -- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min42s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min42s BRST
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min42s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min42s BRST
--- Default comment for updating dictionary
 DELETE FROM AD_Ref_List WHERE AD_Ref_List_ID=1000052
 ;
 
@@ -225,52 +165,12 @@ DELETE FROM AD_Ref_List_Trl WHERE AD_Ref_List_ID=1000053
 
 -- 05/02/2008 9h12min43s BRST
 -- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min43s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min43s BRST
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min43s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min43s BRST
--- Default comment for updating dictionary
 DELETE FROM AD_Ref_List WHERE AD_Ref_List_ID=1000053
 ;
 
 -- 05/02/2008 9h12min46s BRST
 -- Default comment for updating dictionary
 DELETE FROM AD_Reference_Trl WHERE AD_Reference_ID=1000031
-;
-
--- 05/02/2008 9h12min46s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min47s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min47s BRST
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 05/02/2008 9h12min47s BRST
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
 ;
 
 -- 05/02/2008 9h12min47s BRST
