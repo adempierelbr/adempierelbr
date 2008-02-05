@@ -22,6 +22,7 @@ import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_NCM;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -30,6 +31,7 @@ import org.compiere.model.X_LBR_TaxConfig_ProductGroup;
 import org.compiere.model.X_LBR_TaxConfig_Region;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
+import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -292,6 +294,37 @@ public class CalloutTax extends CalloutEngine
 		
 		return "";
 	} //getTaxes
+	
+	/**
+	 *  getDestinationType
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 *  
+	 *  Table - LBR_CFOPLine / Column LBR_CFOP_ID
+	 * 
+	 */
+	public String getDestinationType (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		Integer LBR_CFOP_ID = (Integer)mTab.getValue("LBR_CFOP_ID");
+		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
+			return "";
+		
+		X_LBR_CFOP cfop = new X_LBR_CFOP(ctx,LBR_CFOP_ID,null);
+		
+		if (cfop.getValue().startsWith("1") || cfop.getValue().startsWith("5"))
+			mTab.setValue("lbr_DestionationType",X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdênticos);
+		else if (cfop.getValue().startsWith("2") || cfop.getValue().startsWith("6"))
+			mTab.setValue("lbr_DestionationType", X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
+		else if (cfop.getValue().startsWith("3") || cfop.getValue().startsWith("7"))
+			mTab.setValue("lbr_DestionationType", X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro);
+			
+		return "";
+	}	//	getDestinationType
 	
 	private void setLines(Properties ctx,Integer LBR_Tax_ID)
 	{
