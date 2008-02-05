@@ -7,10 +7,16 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.compiere.model.X_LBR_Tax;
+import org.compiere.model.X_LBR_TaxConfig_BPGroup;
+import org.compiere.model.X_LBR_TaxConfig_BPartner;
+import org.compiere.model.X_LBR_TaxConfig_Product;
+import org.compiere.model.X_LBR_TaxConfig_ProductGroup;
+import org.compiere.model.X_LBR_TaxConfig_Region;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	MTax
@@ -299,6 +305,56 @@ public class MTax extends X_LBR_Tax {
 		
 	} //getLBR_TaxConfig_BPartner
 	
+	public static X_LBR_TaxConfig_BPartner getX_LBR_TaxConfig_BPartner(Integer LBR_TaxConfiguration_ID, Integer C_BPartner_ID){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer LBR_Tax_ID = null;
+		
+		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
+		if (C_BPartner_ID == null) C_BPartner_ID = -1;
+		
+		String sql = "SELECT LBR_TaxConfig_BPartner_ID " +
+				     "FROM LBR_TaxConfig_BPartner " +
+				     "WHERE LBR_TaxConfiguration_ID = ? " +
+				     "AND C_BPartner_ID = ?"; 
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, LBR_TaxConfiguration_ID);
+			pstmt.setInt(2, C_BPartner_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		if (LBR_Tax_ID == null) return null;
+		
+		return new X_LBR_TaxConfig_BPartner(Env.getCtx(),LBR_Tax_ID,null);
+		
+	} //getX_LBR_TaxConfig_BPartner
+	
 	public static int getLBR_TaxConfig_BPGroup(Integer LBR_TaxConfiguration_ID, Integer LBR_FiscalGroup_BPartner_ID){
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
@@ -349,6 +405,56 @@ public class MTax extends X_LBR_Tax {
 		
 	} //getLBR_TaxConfig_BPGroup
 	
+	public static X_LBR_TaxConfig_BPGroup getX_LBR_TaxConfig_BPGroup(Integer LBR_TaxConfiguration_ID, Integer LBR_FiscalGroup_BPartner_ID){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer LBR_Tax_ID = null;
+		
+		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
+		if (LBR_FiscalGroup_BPartner_ID == null) LBR_FiscalGroup_BPartner_ID = -1;
+		
+		String sql = "SELECT LBR_TaxConfig_BPGroup_ID " +
+				     "FROM LBR_TaxConfig_BPGroup " +
+				     "WHERE LBR_TaxConfiguration_ID = ? " +
+				     "AND LBR_FiscalGroup_BPartner_ID = ?"; 
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, LBR_TaxConfiguration_ID);
+			pstmt.setInt(2, LBR_FiscalGroup_BPartner_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		if (LBR_Tax_ID == null) return null;
+		
+		return new X_LBR_TaxConfig_BPGroup(Env.getCtx(),LBR_Tax_ID,null);
+		
+	} //getX_LBR_TaxConfig_BPGroup
+	
 	public static int getLBR_TaxConfig_Product(Integer LBR_TaxConfiguration_ID){
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
@@ -396,6 +502,53 @@ public class MTax extends X_LBR_Tax {
 		
 	} //getLBR_TaxConfig_Product
 	
+	public static X_LBR_TaxConfig_Product getX_LBR_TaxConfig_Product(Integer LBR_TaxConfiguration_ID){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer LBR_Tax_ID = null;
+		
+		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
+		
+		String sql = "SELECT LBR_TaxConfig_Product_ID " +
+				     "FROM LBR_TaxConfig_Product " +
+				     "WHERE LBR_TaxConfiguration_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, LBR_TaxConfiguration_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		if (LBR_Tax_ID == null) return null;
+		
+		return new X_LBR_TaxConfig_Product(Env.getCtx(),LBR_Tax_ID,null);
+		
+	} //getX_LBR_TaxConfig_Product
+	
 	public static int getLBR_TaxConfig_ProductGroup(Integer LBR_TaxConfiguration_ID){
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
@@ -442,6 +595,53 @@ public class MTax extends X_LBR_Tax {
 		return LBR_Tax_ID.intValue();
 		
 	} //getLBR_TaxConfig_ProductGroup
+	
+	public static X_LBR_TaxConfig_ProductGroup getX_LBR_TaxConfig_ProductGroup(Integer LBR_TaxConfiguration_ID){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer LBR_Tax_ID = null;
+		
+		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
+		
+		String sql = "SELECT LBR_TaxConfig_ProductGroup_ID " +
+				     "FROM LBR_TaxConfig_ProductGroup " +
+				     "WHERE LBR_TaxConfiguration_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, LBR_TaxConfiguration_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		if (LBR_Tax_ID == null) return null;
+		
+		return new X_LBR_TaxConfig_ProductGroup(Env.getCtx(),LBR_Tax_ID,null);
+		
+	} //getX_LBR_TaxConfig_ProductGroup
 	
 	public static int getLBR_TaxConfig_Region(Integer LBR_TaxConfiguration_ID, Integer C_Region_ID, Integer To_Region_ID){
 		
@@ -495,5 +695,58 @@ public class MTax extends X_LBR_Tax {
 		return LBR_Tax_ID.intValue();
 		
 	} //getLBR_TaxConfig_Region
+	
+	public static X_LBR_TaxConfig_Region getX_LBR_TaxConfig_Region(Integer LBR_TaxConfiguration_ID, Integer C_Region_ID, Integer To_Region_ID){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer LBR_Tax_ID = null;
+		
+		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
+		if (C_Region_ID == null) C_Region_ID = -1;
+		if (To_Region_ID == null) To_Region_ID = -1;
+		
+		String sql = "SELECT LBR_TaxConfig_Region_ID " +
+				     "FROM LBR_TaxConfig_Region " +
+				     "WHERE LBR_TaxConfiguration_ID = ? " +
+				     "AND C_Region_ID = ? " +
+				     "AND To_Region_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, LBR_TaxConfiguration_ID);
+			pstmt.setInt(2, C_Region_ID);
+			pstmt.setInt(3, To_Region_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				LBR_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		if (LBR_Tax_ID == null) return null;
+		
+		return new X_LBR_TaxConfig_Region(Env.getCtx(),LBR_Tax_ID,null);
+		
+	} //getX_LBR_TaxConfig_Region
 		
 } //MTax
