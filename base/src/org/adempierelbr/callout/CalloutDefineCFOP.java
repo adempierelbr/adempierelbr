@@ -11,6 +11,7 @@ import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_C_Order;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MInvoice;
@@ -28,46 +29,54 @@ public class CalloutDefineCFOP extends CalloutEngine {
 	public String getCFOP(Properties ctx, int WindowNo, GridTab mTab,
 			GridField mField, Object value) {
 
-		if (((BigDecimal) mTab.getValue("M_Product_ID")).intValue() == 0)
+		Integer M_Product_ID = (Integer) mTab.getValue("M_Product_ID");
+		if (M_Product_ID == null || M_Product_ID.intValue() == 0)
 			return "";
 
 		MOrder mo = null;
 		MInvoice mi = null;
-		if(mTab.getAD_Table_ID() == I_C_Order.Table_ID)
-			mo = new MOrder(Env.getCtx(), ((BigDecimal) mTab
+		if(mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID)
+			mo = new MOrder(Env.getCtx(), ((Integer) mTab
 				.getValue("C_Order_ID")).intValue(), null);
 		else
-			mi = new MInvoice(Env.getCtx(), ((BigDecimal) mTab
+			mi = new MInvoice(Env.getCtx(), ((Integer) mTab
 				.getValue("C_Invoice_ID")).intValue(), null);
 		
-		Integer C_BPartner_ID = (mo == null) ? mi.getC_BPartner_ID() : mo.getC_BPartner_ID(); 
+		Integer C_BPartner_ID = (mo == null) ? mi.getC_BPartner_ID() : mo.getC_BPartner_ID();
+		Integer C_BPartner_Location_ID = 
+			(mo == null) ? mi.getC_BPartner_Location_ID() : mo.getC_BPartner_Location_ID();
 		MBPartner mbp = new MBPartner(Env.getCtx(), C_BPartner_ID, null);
-		MBPartnerLocation mbpl = new MBPartnerLocation(mbp);
+		MBPartnerLocation mbpl = new MBPartnerLocation(Env.getCtx(), C_BPartner_Location_ID, null);
 		MLocation mlbp = new MLocation(Env.getCtx(), mbpl.getC_Location_ID(), null);
 
-		Integer bpCat;
-		if(mbp.isCustomer())
-			bpCat = ((BigDecimal) mbp
-					.get_Value("LBR_CustomerCategory_ID")).intValue();
-		else
-			bpCat = ((BigDecimal) mbp.get_Value("LBR_VendorCategory_ID"))
-					.intValue();
+		Integer bpCat = null;
+		if(mbp.isCustomer()){
+			Integer lbrCust = (Integer) mbp.get_Value("LBR_CustomerCategory_ID");
+			if(lbrCust != null)
+				bpCat = lbrCust.intValue();
+		}
+		else{
+			Integer lbrCust  = (Integer) mbp.get_Value("LBR_VendorCategory_ID");
+			if(lbrCust != null)
+				bpCat = lbrCust.intValue();
+		}
+		if(bpCat == null) bpCat = 0;
 		
-		MProduct mp = new MProduct(Env.getCtx(), ((BigDecimal) mTab
-				.getValue("M_Product_ID")).intValue(), null);
+		MProduct mp = new MProduct(Env.getCtx(), M_Product_ID.intValue(), null);
 
-		Integer prdCat = ((BigDecimal)mp.get_Value("LBR_ProductCategory_ID")).intValue();
+		Integer prdCat = (Integer)mp.get_Value("LBR_ProductCategory_ID");
+		if(prdCat == null)
+			prdCat = 0;
 		
-		MOrg org = new MOrg(Env.getCtx(), ((BigDecimal) mTab
+		MOrg org = new MOrg(Env.getCtx(), ((Integer) mTab
 				.getValue("AD_Org_ID")).intValue(), null);
-		MOrgInfo orgInfo = new MOrgInfo(org);
-		MLocation mlo = new MLocation(Env.getCtx(), orgInfo.getC_Location_ID(),
+		MLocation mlo = new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(),
 				null);
 		
-		String sql = "select lbr_cfop_id from lbr_cfopline where c_doctypetarget_id = ? "
+		String sql = "select lbr_cfop_id from lbr_cfopline where c_doctype_id = ? "
 			+ "and (lbr_productcategory_id = ?  or lbr_productcategory_id is null) "
 			+ "and (lbr_bpartnercategory_id = ? or lbr_bpartnercategory_id is null) "
-			+ "and lbr_destinationtype = ?";
+			+ "and lbr_destionationtype = ?";
 
 		log.finest(sql);
 		PreparedStatement pstmt = null;
