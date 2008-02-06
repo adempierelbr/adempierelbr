@@ -250,6 +250,10 @@ public class POLBR{
 		return value;
 	}
 	
+	public static String get_BooleanAsString(boolean oo){
+		return oo ? "Y" : "N";
+	}
+	
 	public static String getOsName(){
 		
 		String osname = System.getProperty("os.name");
