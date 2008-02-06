@@ -1,6 +1,5 @@
 package org.adempierelbr.callout;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -10,7 +9,6 @@ import org.compiere.apps.ADialog;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
-import org.compiere.model.I_C_Order;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -18,9 +16,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrg;
-import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
-import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -92,11 +88,13 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		MLocation mlo = new MLocation(Env.getCtx(), org.getInfo()
 				.getC_Location_ID(), null);
 
-		String sql = "select lbr_cfopline_id from lbr_cfopline where c_doctype_id = ? "
+		String sql = "select lbr_cfop_id from lbr_cfopline where c_doctype_id = ? "
 				+ "and (lbr_productcategory_id = ?  or lbr_productcategory_id is null) "
 				+ "and (lbr_bpartnercategory_id = ? or lbr_bpartnercategory_id is null) "
 				+ "and lbr_destionationtype = ? " 
-				+ "and lbr_issubtributaria in('B', ?) ";
+				+ "and lbr_issubtributaria in('B', ?) "
+				+ "and lbr_ismanufactured in('B', ?) "
+				+ "and (lbr_transactiontype = ? or lbr_transactiontype is null)";
 
 		log.finest(sql);
 		PreparedStatement pstmt = null;
@@ -125,60 +123,64 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
 			pstmt.setString(5, isSubstitute ? "Y" :  "N");
 			
+			/**
+			 * End User - Exempt
+			 * 	The order header is set to End User and the BP IE is not set
+			 * End User
+			 * 	The order header is set to End User and the BP IE is set
+			 * Manufacturing
+			 * 	The order header is set to Manufacturing
+			 * Resale
+			 * 	Product does not have internal production (Internal Production flag
+			 * 	not set), and order header set as End User.
+			 * Import
+			 * 	Vendor's Country is different from Org country
+			 * Export
+			 * 	Customer's Country is different from Org country
+			 * 
+			 * Flags from the Order Header:
+			 * 	END - End User
+			 * 	IMP - Import
+			 *	EXP - Export
+			 *	MAN - Manufacture
+			 */
+
+			if(transactionType.equals("END") && 
+					mbp.get_Value("lbr_IE") == null){
+				pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
+				if((Boolean)mp.get_Value("lbr_IsManufactured"))
+					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUserIEExempt);
+				else
+					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale);
+
+			}
+			else if(transactionType.equals("END") && 
+					mbp.get_Value("lbr_IE") != null){
+				pstmt.setString(6, "Y");
+				if((Boolean)mp.get_Value("lbr_IsManufactured"))
+					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUser);
+				else
+					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale);
+			} 
+			else if(transactionType.equals("IMP")){
+				pstmt.setString(6, "N");
+				pstmt.setString(7, "NULL");			
+			}
+			else if(transactionType.equals("EXP")){
+				pstmt.setString(6, "B");
+				pstmt.setString(7, "NULL");							
+			}
+			else if(transactionType.equals("MAN")){
+				pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
+				pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Manufacturing);
+			}
+			
 			ResultSet rs = pstmt.executeQuery();
 			rs = pstmt.executeQuery();
-
 			int cont = 0;
-			boolean teste = false;
-			boolean isManufactured;
 			while (rs.next()) {
-				teste = false;
-				/**
-				 * End User - Exempt
-				 * 	The order header is set to End User and the BP IE is not set
-				 * End User
-				 * 	The order header is set to End User and the BP IE is set
-				 * Manufacturing
-				 * 	The order header is set to Manufacturing
-				 * Resale
-				 * 	Product does not have internal production (Internal Production flag
-				 * 	not set), and order header set as End User.
-				 * Import
-				 * 	Vendor's Country is different from Org country
-				 * Export
-				 * 	Customer's Country is different from Org country
-				 */
-				X_LBR_CFOPLine cfopl = new X_LBR_CFOPLine(Env.getCtx(), rs.getInt(1), null);
-				
-				isManufactured = cfopl.getlbr_IsManufactured().equals(mp.get_ValueAsString("lbr_IsManufactured"));
-				
-				if(transactionType.equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUser) &&
-					cfopl.getlbr_TransactionType().equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUserIEExempt) &&
-					mbp.get_Value("lbr_IE") == null && isManufactured){
-					teste = true;
-					cont++;
-				}
-				else if(transactionType.equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUser) && 
-						cfopl.getlbr_TransactionType().equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUser) &&
-						mbp.get_Value("lbr_IE") != null && isManufactured){
-					teste = true;
-					cont++;
-				}
-				else if(transactionType.equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Manufacturing) && 
-						cfopl.getlbr_TransactionType().equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Manufacturing) &&
-						isManufactured){
-					teste = true;
-					cont++;
-				}
-				else if(transactionType.equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale) &&
-						cfopl.getlbr_TransactionType().equals(X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale) &&
-						isManufactured){
-					teste = true;
-					cont++;
-				}
-				if(teste == true && cont == 1)
-					cfopID = cfopl.getLBR_CFOP_ID();
-				else if(cont > 1)
+				cfopID = rs.getInt(1);
+				if(cont > 1)
 					continue;
 			}
 			rs.close();
