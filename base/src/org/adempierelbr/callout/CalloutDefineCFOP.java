@@ -22,7 +22,26 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.adempierelbr.util.POLBR;
 
+/**
+ * CalloutDefineCFOP
+ * 
+ * Callout for C_OrderLine and C_InvoiceLine
+ * 
+ * @author Fernando Lucktemberg (Faire, www.faire.com.br)
+ * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
+ */
 public class CalloutDefineCFOP extends CalloutEngine {
+	/**
+	 *  getCFOP
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 *  
+	 */
 	public String getCFOP(Properties ctx, int WindowNo, GridTab mTab,
 			GridField mField, Object value) {
 
