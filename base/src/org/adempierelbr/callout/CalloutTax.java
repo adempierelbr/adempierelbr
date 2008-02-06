@@ -177,7 +177,13 @@ public class CalloutTax extends CalloutEngine
 		setLines(ctx, (Integer)orgInfo.get_Value("LBR_Tax_ID"));
 		
 		//Region
-		setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
+		String transactionType = order.get_ValueAsString("lbr_TransactionType");
+		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
+		if (transactionType.equals("END") && isIEExempt)
+			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
+			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,location.getC_Region_ID(),location.getC_Region_ID(),null));
+		else
+			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
 		
 		//NCM
 		if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){
@@ -284,7 +290,13 @@ public class CalloutTax extends CalloutEngine
 		if (productSource == null || productSource.equals(""))
 			productSource = "0";
 		
+		if (lbr_TaxStatus == null || lbr_TaxStatus.equals(""))
+			lbr_TaxStatus = "00";
+		
 		lbr_TaxStatus = productSource + lbr_TaxStatus;
+		
+		if (LBR_LegalMessage_ID != null && LBR_LegalMessage_ID.intValue() == 0)
+			LBR_LegalMessage_ID = null;
 		
 		tax.setDescription();
 		tax.save(); //FIXME Adempiere não altera na GUI a descrição

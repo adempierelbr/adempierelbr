@@ -329,12 +329,14 @@ public String getlbr_TaxStatus_Taxing()
 return (String)get_Value("lbr_TaxStatus_Taxing");
 }
 
-/** lbr_TransactionType AD_Reference_ID=1000014 */
-public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000014;
-/** End User (IE Exempt) = CNC */
-public static final String LBR_TRANSACTIONTYPE_EndUserIEExempt = "CNC";
+/** lbr_TransactionType AD_Reference_ID=1000024 */
+public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
 /** End User = END */
 public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
+/** Export = EXP */
+public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
+/** Import = IMP */
+public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
 /** Manufacturing = MAN */
 public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
 /** Resale = RES */
@@ -343,8 +345,8 @@ public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
 @param lbr_TransactionType Defines the Transaction Type */
 public void setlbr_TransactionType (String lbr_TransactionType)
 {
-if (lbr_TransactionType == null || lbr_TransactionType.equals("CNC") || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("RES"));
- else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000014 - CNC - END - MAN - RES");
+if (lbr_TransactionType == null || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("EXP") || lbr_TransactionType.equals("IMP") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("RES"));
+ else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000024 - END - EXP - IMP - MAN - RES");
 if (lbr_TransactionType != null && lbr_TransactionType.length() > 3)
 {
 log.warning("Length > 3 - truncated");
