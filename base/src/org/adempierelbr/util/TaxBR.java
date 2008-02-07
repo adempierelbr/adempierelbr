@@ -156,7 +156,8 @@ public class TaxBR
 			X_LBR_TaxLine taxLine = new X_LBR_TaxLine(Env.getCtx(),taxBR.getLBR_TaxLine_ID(),trx);
 			taxLine.setlbr_TaxAmt(new BigDecimal(taxamt));
 			taxLine.setlbr_TaxBaseAmt(taxbase);
-			taxLine.save(trx);
+			if (taxLine.getLBR_Tax_ID()!= 0)
+				taxLine.save(trx);
 			
 		} //end if
 	}
