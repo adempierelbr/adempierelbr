@@ -42,19 +42,74 @@
   <value column="Description" original=""/>
   <value column="TaxIndicator" original="PIS">PIS</value>
  </row>
- <row id="1000002" trl="Y">
+ <row id="1000002" trl="N">
   <value column="Name" original="COFINSPROD">COFINSPROD</value>
   <value column="Description" original=""/>
   <value column="TaxIndicator" original="COFINS">COFINS</value>
  </row>
- <row id="1000003" trl="Y">
+ <row id="1000003" trl="N">
   <value column="Name" original="ICMSPROD">ICMSPROD</value>
   <value column="Description" original=""/>
   <value column="TaxIndicator" original="ICMS">ICMS</value>
  </row>
- <row id="1000004" trl="Y">
+ <row id="1000004" trl="N">
   <value column="Name" original="IPI">IPI</value>
   <value column="Description" original=""/>
   <value column="TaxIndicator" original="IPI">IPI</value>
+ </row>
+ <row id="1000005" trl="N">
+  <value column="Name" original="ICMSST">ICMSST</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="ICMSST">ICMSST</value>
+ </row>
+ <row id="1000006" trl="Y">
+  <value column="Name" original="PIS-COFINS-IR-CSLL">PIS-COFINS-IR-CSLL</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="BR">BR</value>
+ </row>
+ <row id="1000007" trl="N">
+  <value column="Name" original="PISSERV">PISSERV</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="PIS">PIS</value>
+ </row>
+ <row id="1000008" trl="N">
+  <value column="Name" original="COFINSSERV">COFINSSERV</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="COFINS">COFINS</value>
+ </row>
+ <row id="1000009" trl="N">
+  <value column="Name" original="IR">IR</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="IR">IR</value>
+ </row>
+ <row id="1000010" trl="Y">
+  <value column="Name" original="CSLL">CSLL</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original="CSLL">CSLL</value>
+ </row>
+ <row id="1000011" trl="N">
+  <value column="Name" original="TESTEPAI">TESTEPAI</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original=""/>
+ </row>
+ <row id="1000012" trl="N">
+  <value column="Name" original="TESTEUM">TESTEUM</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original=""/>
+ </row>
+ <row id="1000013" trl="N">
+  <value column="Name" original="TESTEDOIS">TESTEDOIS</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original=""/>
+ </row>
+ <row id="1000014" trl="N">
+  <value column="Name" original="TESTETRES">TESTETRES</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original=""/>
+ </row>
+ <row id="1000015" trl="N">
+  <value column="Name" original="TESTEQUATRO">TESTEQUATRO</value>
+  <value column="Description" original=""/>
+  <value column="TaxIndicator" original=""/>
  </row>
 </adempiereTrl>

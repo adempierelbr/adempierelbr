@@ -1617,18 +1617,23 @@
   <value column="Description" original="Configuration Level">Configuration Level</value>
   <value column="Help" original=""/>
  </row>
- <row id="53234" trl="Y">
+ <row id="53234" trl="N">
   <value column="Name" original="ASP_Status">ASP_Status</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="53235" trl="Y">
+ <row id="53235" trl="N">
   <value column="Name" original="AD_Rule_RuleType">AD_Rule_RuleType</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="53236" trl="Y">
+ <row id="53236" trl="N">
   <value column="Name" original="AD_Rule_EventType">AD_Rule_EventType</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="53237" trl="N">
+  <value column="Name" original="EventModelValidator">EventModelValidator</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
@@ -1687,11 +1692,6 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000014" trl="Y">
-  <value column="Name" original="lbr_TransactionType">lbr_TransactionType</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
  <row id="1000015" trl="Y">
   <value column="Name" original="LBR_BPartnerCategory">LBR_BPartnerCategory</value>
   <value column="Description" original=""/>
@@ -1737,13 +1737,48 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000025" trl="Y">
+ <row id="1000025" trl="N">
   <value column="Name" original="LBR_MatrixPrinter">LBR_MatrixPrinter</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000026" trl="Y">
+ <row id="1000026" trl="N">
   <value column="Name" original="LBR_NotaFiscal">LBR_NotaFiscal</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000027" trl="N">
+  <value column="Name" original="LBR_SubsTributaria">LBR_SubsTributaria</value>
+  <value column="Description" original="Substituição Tributária">Substituição Tributária</value>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000028" trl="N">
+  <value column="Name" original="LBR_Frequency">LBR_Frequency</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000029" trl="N">
+  <value column="Name" original="lbr_IsManufactured">lbr_IsManufactured</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000030" trl="N">
+  <value column="Name" original="LBR_ProductSource">LBR_ProductSource</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000032" trl="Y">
+  <value column="Name" original="lbr_TaxStatus_Taxing">Situação Tributária - Tributação</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000033" trl="N">
+  <value column="Name" original="LBR_LegalMessage_ID">LBR_LegalMessage_ID</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000034" trl="N">
+  <value column="Name" original="LBR_TaxGroup">LBR_TaxGroup</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

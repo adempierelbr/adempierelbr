@@ -1294,13 +1294,18 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original="Create Financial Report  (Jasper)">Create Financial Report  (Jasper)</value>
   <value column="Help" original="The default period is the current period. You can optionally enter other restrictions.  You can select an alternative Reporting Hierarchy.">The default period is the current period. You can optionally enter other restrictions.  You can select an alternative Reporting Hierarchy.</value>
  </row>
- <row id="53065" trl="Y">
+ <row id="53065" trl="N">
   <value column="Name" original="ASP Generate Fields">ASP Generate Fields</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="53067" trl="Y">
+ <row id="53067" trl="N">
   <value column="Name" original="ASP Generate Level">ASP Generate Level</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="53068" trl="N">
+  <value column="Name" original="Update Sequence No">Update Sequence No</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

@@ -4985,8 +4985,12 @@ Obrigado por usar o Gerenciador de Ativos Personalizado Adempiere
   <value column="MsgText" original="This is a system parameter, you can't save it as client parameter">This is a system parameter, you can't save it as client parameter</value>
   <value column="MsgTip" original=""/>
  </row>
- <row id="53023" trl="Y">
+ <row id="53023" trl="N">
   <value column="MsgText" original="Wrong Script Value - format for JSR 223 Script must be engine:scriptName where supported engines must be something like groovy, jython, beanshell">Wrong Script Value - format for JSR 223 Script must be engine:scriptName where supported engines must be something like groovy, jython, beanshell</value>
+  <value column="MsgTip" original=""/>
+ </row>
+ <row id="53024" trl="N">
+  <value column="MsgText" original="Show All Windows">Show All Windows</value>
   <value column="MsgTip" original=""/>
  </row>
  <row id="520010" trl="Y">

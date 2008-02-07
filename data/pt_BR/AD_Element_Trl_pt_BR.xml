@@ -23446,7 +23446,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original="Receipt">Receipt</value>
   <value column="PO_PrintName" original="Receipt">Receipt</value>
  </row>
- <row id="52001" trl="Y">
+ <row id="52001" trl="N">
   <value column="Name" original="Black List Cheque">U_BlackListCheque_ID</value>
   <value column="PrintName" original="Black List Cheque">U_BlackListCheque_ID</value>
   <value column="Description" original=""/>
@@ -23456,7 +23456,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52002" trl="Y">
+ <row id="52002" trl="N">
   <value column="Name" original="Bank Name">BankName</value>
   <value column="PrintName" original="Bank Name">BankName</value>
   <value column="Description" original=""/>
@@ -23466,7 +23466,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52003" trl="Y">
+ <row id="52003" trl="N">
   <value column="Name" original="Cheque No">ChequeNo</value>
   <value column="PrintName" original="Cheque No">ChequeNo</value>
   <value column="Description" original=""/>
@@ -23476,7 +23476,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52004" trl="Y">
+ <row id="52004" trl="N">
   <value column="Name" original="Web Properties">U_Web_Properties_ID</value>
   <value column="PrintName" original="Web Properties">U_Web_Properties_ID</value>
   <value column="Description" original=""/>
@@ -23486,7 +23486,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52005" trl="Y">
+ <row id="52005" trl="N">
   <value column="Name" original="Key">U_Key</value>
   <value column="PrintName" original="Key">U_Key</value>
   <value column="Description" original=""/>
@@ -23496,7 +23496,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52006" trl="Y">
+ <row id="52006" trl="N">
   <value column="Name" original="Value">U_Value</value>
   <value column="PrintName" original="Value">U_Value</value>
   <value column="Description" original=""/>
@@ -23506,7 +23506,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52007" trl="Y">
+ <row id="52007" trl="N">
   <value column="Name" original="Role Menu">U_RoleMenu_ID</value>
   <value column="PrintName" original="Role Menu">U_RoleMenu_ID</value>
   <value column="Description" original=""/>
@@ -23516,7 +23516,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52008" trl="Y">
+ <row id="52008" trl="N">
   <value column="Name" original="Web Menu">U_WebMenu_ID</value>
   <value column="PrintName" original="Web Menu">U_WebMenu_ID</value>
   <value column="Description" original=""/>
@@ -23526,7 +23526,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52009" trl="Y">
+ <row id="52009" trl="N">
   <value column="Name" original="Menu Link">MenuLink</value>
   <value column="PrintName" original="Menu Link">MenuLink</value>
   <value column="Description" original=""/>
@@ -23546,7 +23546,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52011" trl="Y">
+ <row id="52011" trl="N">
   <value column="Name" original="Parent Menu">ParentMenu_ID</value>
   <value column="PrintName" original="Parent Menu">ParentMenu_ID</value>
   <value column="Description" original=""/>
@@ -23556,7 +23556,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52012" trl="Y">
+ <row id="52012" trl="N">
   <value column="Name" original="Has SubMenu">HasSubMenu</value>
   <value column="PrintName" original="Has SubMenu">HasSubMenu</value>
   <value column="Description" original=""/>
@@ -23566,7 +23566,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="52013" trl="Y">
+ <row id="52013" trl="N">
   <value column="Name" original="Image Link">ImageLink</value>
   <value column="PrintName" original="Image Link">ImageLink</value>
   <value column="Description" original=""/>
@@ -23846,7 +23846,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53325" trl="Y">
+ <row id="53325" trl="N">
   <value column="Name" original="IsUseASP">IsUseASP</value>
   <value column="PrintName" original="IsUseASP">IsUseASP</value>
   <value column="Description" original=""/>
@@ -23856,7 +23856,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53326" trl="Y">
+ <row id="53326" trl="N">
   <value column="Name" original="ASP Level">ASP Level</value>
   <value column="PrintName" original="ASP Level">ASP Level</value>
   <value column="Description" original=""/>
@@ -23866,7 +23866,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53327" trl="Y">
+ <row id="53327" trl="N">
   <value column="Name" original="ASP Status">ASP Status</value>
   <value column="PrintName" original="ASP Status">ASP Status</value>
   <value column="Description" original=""/>
@@ -23876,7 +23876,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53328" trl="Y">
+ <row id="53328" trl="N">
   <value column="Name" original="AllFields">AllFields</value>
   <value column="PrintName" original="AllFields">AllFields</value>
   <value column="Description" original=""/>
@@ -23886,7 +23886,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53329" trl="Y">
+ <row id="53329" trl="N">
   <value column="Name" original="ASP Module">ASP Module</value>
   <value column="PrintName" original="ASP Module">ASP Module</value>
   <value column="Description" original=""/>
@@ -23896,7 +23896,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53330" trl="Y">
+ <row id="53330" trl="N">
   <value column="Name" original="Client Level">Client Level</value>
   <value column="PrintName" original="Client Level">Client Level</value>
   <value column="Description" original=""/>
@@ -23906,7 +23906,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53331" trl="Y">
+ <row id="53331" trl="N">
   <value column="Name" original="Client Exception">Client Exception</value>
   <value column="PrintName" original="Client Exception">Client Exception</value>
   <value column="Description" original=""/>
@@ -23916,7 +23916,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53332" trl="Y">
+ <row id="53332" trl="N">
   <value column="Name" original="Rule">Rule</value>
   <value column="PrintName" original="Rule">Rule</value>
   <value column="Description" original=""/>
@@ -23926,7 +23926,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53333" trl="Y">
+ <row id="53333" trl="N">
   <value column="Name" original="Rule Type">Rule Type</value>
   <value column="PrintName" original="Rule Type">Rule Type</value>
   <value column="Description" original=""/>
@@ -23936,7 +23936,7 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53334" trl="Y">
+ <row id="53334" trl="N">
   <value column="Name" original="Generated Draft">Generated Draft</value>
   <value column="PrintName" original="Generated Draft">Generated Draft</value>
   <value column="Description" original=""/>
@@ -23946,10 +23946,30 @@ Para personalizações, copie a entidade e selecione "Usuário"!</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="53336" trl="Y">
+ <row id="53336" trl="N">
   <value column="Name" original="Collapsed By Default">Collapsed By Default</value>
   <value column="PrintName" original="Collapsed By Default">Collapsed By Default</value>
   <value column="Description" original="Flag to set the initial state of collapsible field group.">Flag to set the initial state of collapsible field group.</value>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="53337" trl="N">
+  <value column="Name" original="Table Script Validator">Table Script Validator</value>
+  <value column="PrintName" original="Table Script Validator">Table Script Validator</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="53338" trl="N">
+  <value column="Name" original="Event Model Validator">Event Model Validator</value>
+  <value column="PrintName" original="Event Model Validator">Event Model Validator</value>
+  <value column="Description" original=""/>
   <value column="Help" original=""/>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
@@ -25850,7 +25870,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000236" trl="Y">
+ <row id="1000236" trl="N">
   <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
   <value column="PrintName" original="Generate Fields">Generate Fields</value>
   <value column="Description" original=""/>
@@ -25860,7 +25880,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000237" trl="Y">
+ <row id="1000237" trl="N">
   <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="Description" original=""/>
@@ -25960,7 +25980,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000247" trl="Y">
+ <row id="1000247" trl="N">
   <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="Description" original=""/>
@@ -25985,6 +26005,96 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="Profit Percentage">Margem de Lucro</value>
   <value column="Description" original="Defines the Profit Percentage">Define a Margem de Lucro do Produto para Substituição Tributária</value>
   <value column="Help" original="Defines the Profit Percentage">Define a Margem de Lucro do Produto para Substituição Tributária</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000250" trl="Y">
+  <value column="Name" original="Tax Substitution">Imposto da Substituição Tributária</value>
+  <value column="PrintName" original="Tax Substitution">Imposto da Substituição Tributária</value>
+  <value column="Description" original="Defines the Tax Substitution">Define o Imposto da Substituição Tributária</value>
+  <value column="Help" original="Defines the Tax Substitution">Define o Imposto da Substituição Tributária</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000251" trl="Y">
+  <value column="Name" original="Withhold Frequency">Freqüencia da Retenção</value>
+  <value column="PrintName" original="Withhold Frequency">Freqüencia da Retenção</value>
+  <value column="Description" original="Defines the Withhold Frequency">Define a Freqüencia da Retenção</value>
+  <value column="Help" original="Defines the Withhold Frequency for this Brazilian Tax">Define a Freqüencia da Retenção deste imposto brasileiro</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000253" trl="Y">
+  <value column="Name" original="Product Source">Origem do Produto</value>
+  <value column="PrintName" original="Product Source">Origem do Produto</value>
+  <value column="Description" original="Indicates the Product Source">Indica a origem do produto</value>
+  <value column="Help" original="Indicates the Product Source to determine the first digit of the Tax Situation in Brazil.">Indica a origem do produto para determinar o primeiro digito da situação tributaria.</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000255" trl="Y">
+  <value column="Name" original="Tax Status - Taxing">Situação Tributária (ICMS)</value>
+  <value column="PrintName" original="Tax Status - Taxing">Situação Tributária (ICMS)</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000256" trl="N">
+  <value column="Name" original="Withhold Order">Ordem de Retenção</value>
+  <value column="PrintName" original="Withhold Order">Ordem de Retenção</value>
+  <value column="Description" original="">Indica a Ordem onde foram feitas as Retenções</value>
+  <value column="Help" original="">Indica a Ordem onde foram feitas as Retenções, sendo que pode ser referenciada para ela mesmo.</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000257" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (NF)</value>
+  <value column="PrintName" original="Tax Group">Grupo de Impostos (NF)</value>
+  <value column="Description" original="">Grupo de Impostos para Nota Fiscal</value>
+  <value column="Help" original="">Grupo de Impostos para Nota Fiscal</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000258" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
+  <value column="PrintName" original="Legal Message">Mensagem Legal</value>
+  <value column="Description" original="Primary key table LBR_LegalMessage">Define a Mensagem Legal</value>
+  <value column="Help" original="Primary key table LBR_LegalMessage">Chave primária tabela LBR_LegalMessage</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000259" trl="Y">
+  <value column="Name" original="Has Fiscal Document">Gera Documento Fiscal</value>
+  <value column="PrintName" original="Has Fiscal Document">Gera Documento Fiscal</value>
+  <value column="Description" original="Identifies if has fiscal document">Identifica se é gerado um documento fiscal</value>
+  <value column="Help" original="Identifies if has fiscal document">Identifica se é gerado um documento fiscal</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000260" trl="Y">
+  <value column="Name" original="Is Own Document">Documento Próprio</value>
+  <value column="PrintName" original="Is Own Document">Documento Próprio</value>
+  <value column="Description" original="Identifies if this document is own by the organization">Identifica se o documento é de propriedade da empresa</value>
+  <value column="Help" original="Identifies if this document is own by the organization">Identifica se o documento é de propriedade da empresa</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>

@@ -3366,56 +3366,144 @@
   <value column="Name" original="Organization">Organization</value>
   <value column="Description" original="Allowed system, client and organization configuration">Allowed system, client and organization configuration</value>
  </row>
- <row id="53284" trl="Y">
+ <row id="53284" trl="N">
   <value column="Name" original="Hide">Hide</value>
   <value column="Description" original=""/>
  </row>
- <row id="53285" trl="Y">
+ <row id="53285" trl="N">
   <value column="Name" original="Show">Show</value>
   <value column="Description" original=""/>
  </row>
- <row id="53286" trl="Y">
+ <row id="53286" trl="N">
   <value column="Name" original="Undefined">Undefined</value>
   <value column="Description" original=""/>
  </row>
- <row id="53288" trl="Y">
+ <row id="53288" trl="N">
   <value column="Name" original="EAN 13">EAN 13</value>
   <value column="Description" original=""/>
  </row>
- <row id="53289" trl="Y">
+ <row id="53289" trl="N">
   <value column="Name" original="Aspect Orient Program">Aspect Orient Program</value>
   <value column="Description" original=""/>
  </row>
- <row id="53290" trl="Y">
+ <row id="53290" trl="N">
   <value column="Name" original="JSR 223 Scripting APIs">BeanShell</value>
   <value column="Description" original=""/>
  </row>
- <row id="53291" trl="Y">
+ <row id="53291" trl="N">
   <value column="Name" original="JSR 94 Rule Engine API">JSR 94 Rule Engine API</value>
   <value column="Description" original=""/>
  </row>
- <row id="53292" trl="Y">
+ <row id="53292" trl="N">
   <value column="Name" original="SQL">SQL</value>
   <value column="Description" original=""/>
  </row>
- <row id="53293" trl="Y">
+ <row id="53293" trl="N">
   <value column="Name" original="Callout">Callout</value>
   <value column="Description" original=""/>
  </row>
- <row id="53294" trl="Y">
+ <row id="53294" trl="N">
   <value column="Name" original="Process">Process</value>
   <value column="Description" original=""/>
  </row>
- <row id="53295" trl="Y">
+ <row id="53295" trl="N">
   <value column="Name" original="Model Validator Table Event">Model Validator Table Event</value>
   <value column="Description" original=""/>
  </row>
- <row id="53296" trl="Y">
+ <row id="53296" trl="N">
   <value column="Name" original="Model Validator Document Event">Model Validator Document Event</value>
   <value column="Description" original=""/>
  </row>
- <row id="53297" trl="Y">
+ <row id="53297" trl="N">
   <value column="Name" original="Model Validator Login Event">Model Validator Login Event</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53299" trl="N">
+  <value column="Name" original="Table Before New">Table Before New</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53300" trl="N">
+  <value column="Name" original="Table Before Change">Table Before Change</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53301" trl="N">
+  <value column="Name" original="Table Before Delete">Table Before Delete</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53302" trl="N">
+  <value column="Name" original="Table After New">Table After New</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53303" trl="N">
+  <value column="Name" original="Table After Change">Table After Change</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53304" trl="N">
+  <value column="Name" original="Table After Delete">Table After Delete</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53305" trl="N">
+  <value column="Name" original="Document Before Prepare">Document Before Prepare</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53306" trl="N">
+  <value column="Name" original="Document Before Void">Document Before Void</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53307" trl="N">
+  <value column="Name" original="Document Before Close">Document Before Close</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53308" trl="N">
+  <value column="Name" original="Document Before Reactivate">Document Before Reactivate</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53309" trl="N">
+  <value column="Name" original="Document Before Reverse Correct">Document Before Reverse Correct</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53310" trl="N">
+  <value column="Name" original="Document Before Reverse Accrual">Document Before Reverse Accrual</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53311" trl="N">
+  <value column="Name" original="Document Before Complete">Document Before Complete</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53312" trl="N">
+  <value column="Name" original="Document Before Post">Document Before Post</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53313" trl="N">
+  <value column="Name" original="Document After Prepare">Document After Prepare</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53314" trl="N">
+  <value column="Name" original="Document After Void">Document After Void</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53315" trl="N">
+  <value column="Name" original="Document After Close">Document After Close</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53316" trl="N">
+  <value column="Name" original="Document After Reactivate">Document After Reactivate</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53317" trl="N">
+  <value column="Name" original="Document After Reverse Correct">Document After Reverse Correct</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53318" trl="N">
+  <value column="Name" original="Document After Reverse Accrual">Document After Reverse Accrual</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53319" trl="N">
+  <value column="Name" original="Document After Complete">Document After Complete</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53320" trl="N">
+  <value column="Name" original="Document After Post">Document After Post</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000000" trl="Y">
@@ -3458,8 +3546,8 @@
   <value column="Name" original="Occurrence">Ocorrência</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="Y">
-  <value column="Name" original="Estados IdÃªnticos">Estados Idênticos</value>
+ <row id="1000021" trl="N">
+  <value column="Name" original="Estados Idênticos">Estados Idênticos</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000022" trl="Y">
@@ -3472,22 +3560,6 @@
  </row>
  <row id="1000024" trl="Y">
   <value column="Name" original="Zona Franca">Zona Franca</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000025" trl="Y">
-  <value column="Name" original="Resale">Revenda</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000026" trl="Y">
-  <value column="Name" original="Manufacturing">Industrialização</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000027" trl="Y">
-  <value column="Name" original="End User">Consumidor Final</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000028" trl="Y">
-  <value column="Name" original="Fixed  Asset">Imobilizado</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000029" trl="Y">
@@ -3524,6 +3596,94 @@
  </row>
  <row id="1000039" trl="Y">
   <value column="Name" original="Substitution">Substituição Tributária</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000040" trl="Y">
+  <value column="Name" original="Yes">Sim</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000041" trl="Y">
+  <value column="Name" original="No">Não</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000042" trl="Y">
+  <value column="Name" original="Both">Ambos</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000043" trl="Y">
+  <value column="Name" original="Monthly">Mensal</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000044" trl="Y">
+  <value column="Name" original="Yes">Sim</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000045" trl="Y">
+  <value column="Name" original="No">Não</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000046" trl="Y">
+  <value column="Name" original="Both">Ambos</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000048" trl="Y">
+  <value column="Name" original="Domestic">Nacional</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000049" trl="Y">
+  <value column="Name" original="Imported">Importado</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000050" trl="Y">
+  <value column="Name" original="Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Local</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000054" trl="Y">
+  <value column="Name" original="Integrally Taxed">00 - Tributada Integralmente</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000055" trl="Y">
+  <value column="Name" original="Taxed and with ICMS charged throught Substituição Tributária">10 - Tributada e com cobrança do ICMS por sub. tributária</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000056" trl="Y">
+  <value column="Name" original="Base calc. reduction">20 - Com redução de base de cálculo</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000057" trl="Y">
+  <value column="Name" original="Exempt or not Taxed with ICMS charged throught Subst. Tribut">30 - Isenta ou não trib. e com cobr. ICMS por Subst. Tribut</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000058" trl="Y">
+  <value column="Name" original="Exempt">40 - Isenta</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000059" trl="Y">
+  <value column="Name" original="Not Taxed">41 - Não tributada</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000060" trl="Y">
+  <value column="Name" original="Suspended">50 - Suspensão</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000061" trl="Y">
+  <value column="Name" original="Deferred">51 - Diferimento</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000062" trl="Y">
+  <value column="Name" original="ICMS already charged by Substituição Tributária">60 - ICMS cobrado anteriormente por substituição tributária</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000063" trl="Y">
+  <value column="Name" original="Base calc. reduction and ICMS charged throught Subst. Tribut">70 - ICMS cobrado anteriormente por substituição tributária</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000064" trl="Y">
+  <value column="Name" original="Other">90 - Outras</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000065" trl="Y">
+  <value column="Name" original="Resale">Revenda</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>

@@ -1846,23 +1846,23 @@
   <value column="Name" original="Update Role Menu">Update Role Menu</value>
   <value column="Description" original=""/>
  </row>
- <row id="52001" trl="Y">
+ <row id="52001" trl="N">
   <value column="Name" original="Web POS">Posterita</value>
   <value column="Description" original=""/>
  </row>
- <row id="52002" trl="Y">
+ <row id="52002" trl="N">
   <value column="Name" original="Web POS Menu">Posterita Web Menu</value>
   <value column="Description" original="To dynamically generate the menu links in web POS">To dynamically generate the menu links in posterita</value>
  </row>
- <row id="52003" trl="Y">
+ <row id="52003" trl="N">
   <value column="Name" original="Web POS Role Menu">Posterita Role Menu</value>
   <value column="Description" original="Depending on Which Role, Different set of Menus are generated and made available.">Depending on Which Role, Different set of Menus are generated and made available.</value>
  </row>
- <row id="52004" trl="Y">
+ <row id="52004" trl="N">
   <value column="Name" original="Web POS Properties">Posterita Web Properties</value>
   <value column="Description" original="Stores the message tags to be picked up from AD_MESSAGE ">Stores the message tags to be picked up from AD_MESSAGE </value>
  </row>
- <row id="52005" trl="Y">
+ <row id="52005" trl="N">
   <value column="Name" original="Web POS BlackListCheque">Posterita BlackListCheque</value>
   <value column="Description" original="Black Listed Cheque">Black Listed Cheque</value>
  </row>
@@ -1874,16 +1874,20 @@
   <value column="Name" original="Setup Web POS">Setup Web POS</value>
   <value column="Description" original=""/>
  </row>
- <row id="53083" trl="Y">
+ <row id="53083" trl="N">
   <value column="Name" original="ASP Modules">ASP Modules</value>
   <value column="Description" original=""/>
  </row>
- <row id="53084" trl="Y">
+ <row id="53084" trl="N">
   <value column="Name" original="ASP Subscribed Modules">ASP Subscribed Modules</value>
   <value column="Description" original=""/>
  </row>
- <row id="53086" trl="Y">
+ <row id="53086" trl="N">
   <value column="Name" original="Rule">Rule</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53087" trl="N">
+  <value column="Name" original="Update Sequence No">Update Sequence No</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000000" trl="Y">
@@ -1976,6 +1980,18 @@
  </row>
  <row id="1000022" trl="Y">
   <value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000023" trl="Y">
+  <value column="Name" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
+  <value column="Description" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
+ </row>
+ <row id="1000024" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000025" trl="N">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>

@@ -6,8 +6,12 @@
   <value column="Name" original="Standard">Padrão</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000000" trl="Y">
+ <row id="1000000" trl="N">
   <value column="Name" original="BR">BR</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000001" trl="N">
+  <value column="Name" original="TESTE">TESTE</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>
