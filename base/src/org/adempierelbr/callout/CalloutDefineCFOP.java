@@ -2,7 +2,10 @@ package org.adempierelbr.callout;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
+import java.util.Vector;
 import java.util.logging.Level;
 
 import org.compiere.apps.ADialog;
@@ -21,6 +24,8 @@ import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.adempierelbr.util.POLBR;
+
+import com.sun.tools.javac.util.List;
 
 /**
  * CalloutDefineCFOP
@@ -107,7 +112,8 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		MLocation mlo = new MLocation(Env.getCtx(), org.getInfo()
 				.getC_Location_ID(), null);
 
-		String sql = "select lbr_cfop_id from lbr_cfopline where c_doctype_id = ? "
+		//Set query data
+		String sql = "select lbr_cfop_id, lbr_cfopline_id from lbr_cfopline where c_doctype_id = ? "
 				+ "and (lbr_productcategory_id = ?  or lbr_productcategory_id is null) "
 				+ "and (lbr_bpartnercategory_id = ? or lbr_bpartnercategory_id is null) "
 				+ "and lbr_destionationtype = ? " 
@@ -139,77 +145,59 @@ public class CalloutDefineCFOP extends CalloutEngine {
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro);
 
 			boolean isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution")) &&
-			POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
+				POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
 			pstmt.setString(5, isSubstitute ? "Y" :  "N");
-			
-			/**
-			 * End User - Exempt
-			 * 	The order header is set to End User and the BP IE is not set
-			 * End User
-			 * 	The order header is set to End User and the BP IE is set
-			 * Manufacturing
-			 * 	The order header is set to Manufacturing
-			 * Resale
-			 * 	Product does not have internal production (Internal Production flag
-			 * 	not set), and order header set as End User.
-			 * Import
-			 * 	Vendor's Country is different from Org country
-			 * Export
-			 * 	Customer's Country is different from Org country
-			 * 
-			 * Flags from the Order Header:
-			 * 	END - End User
-			 * 	IMP - Import
-			 *	EXP - Export
-			 *	MAN - Manufacture
-			 */
-
-			if(transactionType.equals("END") && 
-					mbp.get_Value("lbr_IE") == null){
-				pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
-				if((Boolean)mp.get_Value("lbr_IsManufactured"))
-					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUserIEExempt);
-				else
-					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale);
-
-			}
-			else if(transactionType.equals("END") && 
-					mbp.get_Value("lbr_IE") != null){
-				pstmt.setString(6, "Y");
-				if((Boolean)mp.get_Value("lbr_IsManufactured"))
-					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_EndUser);
-				else
-					pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Resale);
-			} 
-			else if(transactionType.equals("IMP")){
-				pstmt.setString(6, "N");
-				pstmt.setString(7, "NULL");			
-			}
-			else if(transactionType.equals("EXP")){
-				pstmt.setString(6, "B");
-				pstmt.setString(7, "NULL");							
-			}
-			else if(transactionType.equals("MAN")){
-				pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
-				pstmt.setString(7, X_LBR_CFOPLine.LBR_TRANSACTIONTYPE_Manufacturing);
-			}
+			pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
+			pstmt.setString(7, transactionType);
 			
 			ResultSet rs = pstmt.executeQuery();
-			rs = pstmt.executeQuery();
+			int contRows = 0;
+			while(rs.next()){
+				contRows++;
+			}
 			int cont = 0;
-			while (rs.next()) {
+			rs = pstmt.executeQuery();
+			if(contRows < 2){
+				rs.next();
 				cfopID = rs.getInt(1);
-				if(cont > 1)
-					continue;
+			}
+			else{
+				Integer [][] tmp = new Integer[contRows][2];	
+				
+				//0 - trans 0, parc 0, prod 0 = 0
+				//1 - trans 1, parc 0, prod 0 = 1
+				//2 - trans 1, parc 2, prod 0 = 3
+				//3 - trans 1, parc 2, prod 3 = 6
+				//4 - trans 0, parc 2, prod 0 = 2
+				//5 - trans 0, parc 2, prod 3 = 5
+				//6 - trans 0, parc 0, prod 3 = 3
+				int trans = 0, parc = 0, prod = 0;
+				cont = 0;
+				Vector <X_LBR_CFOPLine> cfopl = new Vector<X_LBR_CFOPLine>();
+				while(rs.next()){
+					X_LBR_CFOPLine cfop = new X_LBR_CFOPLine(Env.getCtx(), rs.getInt(2), null);
+					cfopl.add(cfop);
+					if(cfop.getlbr_TransactionType() == null)
+						trans = 1;
+					if(cfop.getLBR_BPartnerCategory_ID() == 0)
+						parc = 2;
+					if(cfop.getLBR_ProductCategory_ID() == 0)
+						prod =3;
+					tmp[cont][0] = (trans+parc+prod);
+					tmp[cont][1] = cfop.getLBR_CFOP_ID();
+					cont++;
+				}
+				int idx = 0;
+				int cfopn = 0;
+				for(int i = 0; i < tmp.length; i++){
+					if(tmp[i][0] > idx){
+						idx = tmp[i][0];
+						cfopn = tmp[i][1];
+					}
+				}
+				cfopID = cfopn;
 			}
 			rs.close();
-
-			if (cont > 1) {
-				// TODO - Adicionar mesnagem ao AD
-				ADialog.error(mTab.getWindowNo(), null,
-						"Impossível Determinar o CFOP correto");
-				return "";
-			}
 		} catch (Exception e) {
 			log.log(Level.WARNING, sql, e);
 		}
