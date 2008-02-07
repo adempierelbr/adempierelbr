@@ -2,13 +2,11 @@ package org.adempierelbr.callout;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 
-import org.compiere.apps.ADialog;
+import org.adempierelbr.util.POLBR;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -23,9 +21,6 @@ import org.compiere.model.MProduct;
 import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.adempierelbr.util.POLBR;
-
-import com.sun.tools.javac.util.List;
 
 /**
  * CalloutDefineCFOP
@@ -201,8 +196,11 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		} catch (Exception e) {
 			log.log(Level.WARNING, sql, e);
 		}
-
-		mTab.setValue("LBR_CFOP_ID", cfopID);
+		
+		if (cfopID == null || cfopID.intValue() == 0)
+			mTab.getField("LBR_CFOP_ID").setError(true);
+		else
+			mTab.setValue("LBR_CFOP_ID", cfopID);
 
 		return "";
 	}

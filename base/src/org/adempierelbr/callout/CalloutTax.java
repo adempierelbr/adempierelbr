@@ -89,6 +89,8 @@ public class CalloutTax extends CalloutEngine
 		MOrder   order   = null;
 		MInvoice invoice = null;
 		//
+		boolean  isSOTrx = true;
+		//
 		
 		//Pega no Contexto, qual tipo de documento
 		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
@@ -101,7 +103,8 @@ public class CalloutTax extends CalloutEngine
 			//
 			C_BPartner_ID         = order.getC_BPartner_ID();
 			C_BPartnerLocation_ID = order.getC_BPartner_Location_ID();
-			AD_Org_ID             = order.getAD_Org_ID();	
+			AD_Org_ID             = order.getAD_Org_ID();
+			isSOTrx               = order.isSOTrx();
 		}
 		else{
 			ID = (Integer)mTab.getValue("C_Invoice_ID");
@@ -113,6 +116,7 @@ public class CalloutTax extends CalloutEngine
 			C_BPartner_ID         = invoice.getC_BPartner_ID();
 			C_BPartnerLocation_ID = invoice.getC_BPartner_Location_ID();
 			AD_Org_ID             = invoice.getAD_Org_ID();
+			isSOTrx               = invoice.isSOTrx();
 		}
 		
 		//Product_ID
@@ -301,8 +305,11 @@ public class CalloutTax extends CalloutEngine
 		tax.setDescription();
 		tax.save(); //FIXME Adempiere não altera na GUI a descrição
 		mTab.setValue("LBR_Tax_ID", tax.getLBR_Tax_ID());
-		mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-		mTab.setValue("lbr_TaxStatus_Taxing", lbr_TaxStatus);
+		
+		if (isSOTrx){
+			mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
+			mTab.setValue("lbr_TaxStatus_Taxing", lbr_TaxStatus);
+		}
 		
 		return "";
 	} //getTaxes

@@ -118,10 +118,10 @@ public class ValidatorInvoice implements ModelValidator
 		else
 		
 		//Executa quando uma InvoiceLine é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_InvoiceLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW ))
+		if (po.get_TableName().equalsIgnoreCase("C_InvoiceLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_NEW ))
 		{
 			MInvoiceLine iLine = (MInvoiceLine)po;
-			return modelChange(iLine);
+			return modelChange(iLine,type);
 		}
 		
 		return null;
@@ -150,7 +150,7 @@ public class ValidatorInvoice implements ModelValidator
 	
 	// modelChange - InvoiceLine
 	// @param MInvoiceLine
-	public String modelChange (MInvoiceLine iLine) throws Exception{
+	public String modelChange (MInvoiceLine iLine, int type) throws Exception{
 			
 		if(iLine.isProcessed()){
 			return null;
@@ -160,64 +160,74 @@ public class ValidatorInvoice implements ModelValidator
 		String     trx     = iLine.get_TrxName();
 		
 		BigDecimal taxAmt  = Env.ZERO;
-		
 		Integer LBR_Tax_ID = (Integer)iLine.get_Value("LBR_Tax_ID");
-		if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
-			int C_OrderLine_ID = iLine.getC_OrderLine_ID();
-			if (C_OrderLine_ID != 0){
-				MOrderLine oLine = new MOrderLine(ctx,C_OrderLine_ID,trx);
-				LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
-				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-					MTax oTax = new MTax(ctx,LBR_Tax_ID,trx);
-					MTax newTax = oTax.copyFrom();
+		
+		if (type == TYPE_NEW){
+			
+			if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
+				int C_OrderLine_ID = iLine.getC_OrderLine_ID();
+				if (C_OrderLine_ID != 0){
+					MOrderLine oLine = new MOrderLine(ctx,C_OrderLine_ID,trx);
+				
+					//CFOP, Sit. Tributária, Mensagem Legal
+					Integer LBR_CFOP_ID         = (Integer)oLine.get_Value("LBR_CFOP_ID");
+					Integer LBR_LegalMessage_ID = (Integer)oLine.get_Value("LBR_LegalMessage_ID");
+					String  sitTributaria       = (String)oLine.get_Value("lbr_TaxStatus_Taxing");
+				
+					LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
+					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+						MTax oTax = new MTax(ctx,LBR_Tax_ID,trx);
+						MTax newTax = oTax.copyFrom();
+						
+						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
+						iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
+						iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
+						iLine.set_ValueOfColumn("lbr_TaxStatus_Taxing", sitTributaria);
 					
-					//Atualiza LBR_Tax_ID
-					String sql = "UPDATE C_InvoiceLine" +
-							     " SET LBR_Tax_ID = " + newTax.getLBR_Tax_ID() +
-							     " WHERE C_InvoiceLine_ID = " + iLine.getC_InvoiceLine_ID();
-					DB.executeUpdate(sql, trx);
+					}
 				}
 			}
 		}
+		else{
+			MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
 		
-		MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
-		
-		org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,iLine.getC_Tax_ID(),trx);
+			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,iLine.getC_Tax_ID(),trx);
 				
-		if (tax.isSummary()){
-			
-			MInvoiceLine[] lines = invoice.getLines(true);
-			for (int i = 0; i < lines.length; i++){
+			if (tax.isSummary()){
 				
-				int C_InvoiceLine_ID = lines[i].getC_InvoiceLine_ID();
+				MInvoiceLine[] lines = invoice.getLines(true);
+				for (int i = 0; i < lines.length; i++){
 				
-				TaxBR.calculateTaxes(C_InvoiceLine_ID, false, trx);
+					int C_InvoiceLine_ID = lines[i].getC_InvoiceLine_ID();
 				
-				LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
-				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-					MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
-					X_LBR_TaxLine[] brLines = brTax.getLines();
+					TaxBR.calculateTaxes(C_InvoiceLine_ID, false, trx);
 				
-					for (int j=0;j<brLines.length;j++){
-						taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
+					LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
+					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+						MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
+						X_LBR_TaxLine[] brLines = brTax.getLines();
+				
+						for (int j=0;j<brLines.length;j++){
+							taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
+						}
 					}
-				}
 				
-			} //end for
+				} //end for
 			
-			MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iLine.getC_Tax_ID(), trx);
-			iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+				MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iLine.getC_Tax_ID(), trx);
+				iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 			
-			if (!invoice.isTaxIncluded()){
-				invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
-				invoice.save(trx);
+				if (!invoice.isTaxIncluded()){
+					invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
+					invoice.save(trx);
+				}
+				else{
+					iTax.setTaxBaseAmt(invoice.getTotalLines());
+				}
+			
+				iTax.save(trx);
+			
 			}
-			else{
-				iTax.setTaxBaseAmt(invoice.getTotalLines());
-			}
-			
-			iTax.save(trx);
-			
 		}
 		
 		log.info(iLine.toString());
@@ -341,7 +351,7 @@ public class ValidatorInvoice implements ModelValidator
 						alloc.save();
 				}
 				
-			} // not have Open Items - create automatically allocation
+			} // don't have Open Items - create automatically allocation
 		}
 			
 		return null;
