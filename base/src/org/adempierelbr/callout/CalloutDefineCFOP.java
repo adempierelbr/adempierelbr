@@ -153,8 +153,9 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			int cont = 0;
 			rs = pstmt.executeQuery();
 			if(contRows < 2){
-				rs.next();
-				cfopID = rs.getInt(1);
+				while (rs.next()){
+					cfopID = rs.getInt(1);
+				}
 			}
 			else{
 				Integer [][] tmp = new Integer[contRows][2];	
@@ -197,8 +198,10 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			log.log(Level.WARNING, sql, e);
 		}
 		
-		if (cfopID == null || cfopID.intValue() == 0)
+		if (cfopID == null || cfopID.intValue() == 0){
+			mTab.setValue("LBR_CFOP_ID", null);
 			mTab.getField("LBR_CFOP_ID").setError(true);
+		}
 		else
 			mTab.setValue("LBR_CFOP_ID", cfopID);
 

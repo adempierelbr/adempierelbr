@@ -345,6 +345,37 @@ public class CalloutTax extends CalloutEngine
 		return "";
 	}	//	getDestinationType
 	
+	/**
+	 *  getTransactionType
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 *  
+	 *  Table C_Order - column C_BPartner_ID
+	 *  Table C_Invoice - column C_BPartner_ID
+	 *  
+	 */
+		
+	public String getTransactionType(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		
+		Integer C_BPartner_ID = (Integer)mTab.getValue("C_BPartner_ID");
+		if (C_BPartner_ID == null || C_BPartner_ID.intValue() == 0)
+			return "";
+		
+		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		String lbr_TransactionType = bpartner.get_ValueAsString("lbr_TransactionType");
+		
+		if (!(lbr_TransactionType == null && lbr_TransactionType.equals("")))
+			mTab.setValue("lbr_TransactionType", lbr_TransactionType);
+		
+		return "";
+	} // getTransactionType
+	
 	private void setLines(Properties ctx,Integer LBR_Tax_ID)
 	{
 		
