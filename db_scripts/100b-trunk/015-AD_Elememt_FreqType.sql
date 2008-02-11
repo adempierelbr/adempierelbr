@@ -1,2 +1,0 @@
-INSERT INTO adempiere.ad_element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1000251, 0, 0, 'Y', '2008-02-04 15:31:29.0', 100, '2008-02-04 15:31:29.0', 100, 'lbr_WithholdFrequency', 'U', 'Withhold Frequency', 'Withhold Frequency', 'Defines the Withhold Frequency', 'Defines the Withhold Frequency for this Brazilian Tax', NULL, NULL, NULL, NULL);
