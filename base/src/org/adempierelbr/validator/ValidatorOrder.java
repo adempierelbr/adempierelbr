@@ -1,19 +1,16 @@
 package org.adempierelbr.validator;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
-import org.compiere.apps.ADialog;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
@@ -30,10 +27,8 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.model.X_C_Order;
-import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
-import org.compiere.print.layout.PrintElement;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;

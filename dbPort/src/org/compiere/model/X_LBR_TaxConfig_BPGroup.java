@@ -88,10 +88,10 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** LBR_LegalMessage_ID AD_Reference_ID=1000033 */
-public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000033;
+/** LBR_LegalMessage_ID AD_Reference_ID=1000030 */
+public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000030;
 /** Set Legal Message.
-@param LBR_LegalMessage_ID Primary key table LBR_LegalMessage */
+@param LBR_LegalMessage_ID Defines the Legal Message */
 public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
 {
 if (LBR_LegalMessage_ID <= 0) set_Value ("LBR_LegalMessage_ID", null);
@@ -99,7 +99,7 @@ if (LBR_LegalMessage_ID <= 0) set_Value ("LBR_LegalMessage_ID", null);
 set_Value ("LBR_LegalMessage_ID", new Integer(LBR_LegalMessage_ID));
 }
 /** Get Legal Message.
-@return Primary key table LBR_LegalMessage */
+@return Defines the Legal Message */
 public int getLBR_LegalMessage_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_LegalMessage_ID");
@@ -152,47 +152,47 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** lbr_TaxStatus_Taxing AD_Reference_ID=1000032 */
-public static final int LBR_TAXSTATUS_TAXING_AD_Reference_ID=1000032;
-/** Integrally Taxed = 00 */
-public static final String LBR_TAXSTATUS_TAXING_IntegrallyTaxed = "00";
-/** Taxed and with ICMS charged throught Substituição Tributária = 10 */
-public static final String LBR_TAXSTATUS_TAXING_TaxedAndWithICMSChargedThroughtSubstituiçãoTributária = "10";
-/** Base calc. reduction = 20 */
-public static final String LBR_TAXSTATUS_TAXING_BaseCalcReduction = "20";
-/** Exempt or not Taxed with ICMS charged throught Subst. Tribut = 30 */
-public static final String LBR_TAXSTATUS_TAXING_ExemptOrNotTaxedWithICMSChargedThroughtSubstTribut = "30";
-/** Exempt = 40 */
-public static final String LBR_TAXSTATUS_TAXING_Exempt = "40";
-/** Not Taxed = 41 */
-public static final String LBR_TAXSTATUS_TAXING_NotTaxed = "41";
-/** Suspended = 50 */
-public static final String LBR_TAXSTATUS_TAXING_Suspended = "50";
-/** Deferred = 51 */
-public static final String LBR_TAXSTATUS_TAXING_Deferred = "51";
-/** ICMS already charged by Substituição Tributária = 60 */
-public static final String LBR_TAXSTATUS_TAXING_ICMSAlreadyChargedBySubstituiçãoTributária = "60";
-/** Base calc. reduction and ICMS charged throught Subst. Tribut = 70 */
-public static final String LBR_TAXSTATUS_TAXING_BaseCalcReductionAndICMSChargedThroughtSubstTribut = "70";
-/** Other = 90 */
-public static final String LBR_TAXSTATUS_TAXING_Other = "90";
-/** Set Tax Status - Taxing.
-@param lbr_TaxStatus_Taxing Tax Status - Taxing */
-public void setlbr_TaxStatus_Taxing (String lbr_TaxStatus_Taxing)
+/** lbr_TaxStatus AD_Reference_ID=1000029 */
+public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
+/** 00 - Tributada integralmente = 00 */
+public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
+/** 10 - Tributada e com cobrança do ICMS por Sub. Tributária = 10 */
+public static final String LBR_TAXSTATUS_10_TributadaEComCobrançaDoICMSPorSubTributária = "10";
+/** 20 - Com redução de base de cálculo = 20 */
+public static final String LBR_TAXSTATUS_20_ComReduçãoDeBaseDeCálculo = "20";
+/** 30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
+public static final String LBR_TAXSTATUS_30_IsentaOuNão_TribEComCobrDoICMSPorSubTribut = "30";
+/** 40 - Isenta = 40 */
+public static final String LBR_TAXSTATUS_40_Isenta = "40";
+/** 41 - Não-tributada = 41 */
+public static final String LBR_TAXSTATUS_41_Não_Tributada = "41";
+/** 50 - Suspensão = 50 */
+public static final String LBR_TAXSTATUS_50_Suspensão = "50";
+/** 51 - Diferimento  = 51 */
+public static final String LBR_TAXSTATUS_51_Diferimento = "51";
+/** 60 - ICMS cobrado anteriormente por substituição tributária = 60 */
+public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituiçãoTributária = "60";
+/** 70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib = 70 */
+public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCálcECobrDoICMSPorSubTrib = "70";
+/** 90 - Outras = 90 */
+public static final String LBR_TAXSTATUS_90_Outras = "90";
+/** Set Tax Status.
+@param lbr_TaxStatus Defines the Tax Status */
+public void setlbr_TaxStatus (String lbr_TaxStatus)
 {
-if (lbr_TaxStatus_Taxing == null || lbr_TaxStatus_Taxing.equals("00") || lbr_TaxStatus_Taxing.equals("10") || lbr_TaxStatus_Taxing.equals("20") || lbr_TaxStatus_Taxing.equals("30") || lbr_TaxStatus_Taxing.equals("40") || lbr_TaxStatus_Taxing.equals("41") || lbr_TaxStatus_Taxing.equals("50") || lbr_TaxStatus_Taxing.equals("51") || lbr_TaxStatus_Taxing.equals("60") || lbr_TaxStatus_Taxing.equals("70") || lbr_TaxStatus_Taxing.equals("90"));
- else throw new IllegalArgumentException ("lbr_TaxStatus_Taxing Invalid value - " + lbr_TaxStatus_Taxing + " - Reference_ID=1000032 - 00 - 10 - 20 - 30 - 40 - 41 - 50 - 51 - 60 - 70 - 90");
-if (lbr_TaxStatus_Taxing != null && lbr_TaxStatus_Taxing.length() > 2)
+if (lbr_TaxStatus == null || lbr_TaxStatus.equals("00") || lbr_TaxStatus.equals("10") || lbr_TaxStatus.equals("20") || lbr_TaxStatus.equals("30") || lbr_TaxStatus.equals("40") || lbr_TaxStatus.equals("41") || lbr_TaxStatus.equals("50") || lbr_TaxStatus.equals("51") || lbr_TaxStatus.equals("60") || lbr_TaxStatus.equals("70") || lbr_TaxStatus.equals("90"));
+ else throw new IllegalArgumentException ("lbr_TaxStatus Invalid value - " + lbr_TaxStatus + " - Reference_ID=1000029 - 00 - 10 - 20 - 30 - 40 - 41 - 50 - 51 - 60 - 70 - 90");
+if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 2)
 {
 log.warning("Length > 2 - truncated");
-lbr_TaxStatus_Taxing = lbr_TaxStatus_Taxing.substring(0,1);
+lbr_TaxStatus = lbr_TaxStatus.substring(0,1);
 }
-set_Value ("lbr_TaxStatus_Taxing", lbr_TaxStatus_Taxing);
+set_Value ("lbr_TaxStatus", lbr_TaxStatus);
 }
-/** Get Tax Status - Taxing.
-@return Tax Status - Taxing */
-public String getlbr_TaxStatus_Taxing() 
+/** Get Tax Status.
+@return Defines the Tax Status */
+public String getlbr_TaxStatus() 
 {
-return (String)get_Value("lbr_TaxStatus_Taxing");
+return (String)get_Value("lbr_TaxStatus");
 }
 }

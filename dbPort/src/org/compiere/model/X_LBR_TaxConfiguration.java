@@ -69,32 +69,6 @@ StringBuffer sb = new StringBuffer ("X_LBR_TaxConfiguration[").append(get_ID()).
 return sb.toString();
 }
 
-/** lbr_ExceptionType AD_Reference_ID=1000020 */
-public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
-/** Fiscal Group = G */
-public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
-/** Product = P */
-public static final String LBR_EXCEPTIONTYPE_Product = "P";
-/** Set Exception Type.
-@param lbr_ExceptionType Defines the Exception Type */
-public void setlbr_ExceptionType (String lbr_ExceptionType)
-{
-if (lbr_ExceptionType == null || lbr_ExceptionType.equals("G") || lbr_ExceptionType.equals("P"));
- else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - G - P");
-if (lbr_ExceptionType != null && lbr_ExceptionType.length() > 1)
-{
-log.warning("Length > 1 - truncated");
-lbr_ExceptionType = lbr_ExceptionType.substring(0,0);
-}
-set_Value ("lbr_ExceptionType", lbr_ExceptionType);
-}
-/** Get Exception Type.
-@return Defines the Exception Type */
-public String getlbr_ExceptionType() 
-{
-return (String)get_Value("lbr_ExceptionType");
-}
-
 /** LBR_FiscalGroup_Product_ID AD_Reference_ID=1000018 */
 public static final int LBR_FISCALGROUP_PRODUCT_ID_AD_Reference_ID=1000018;
 /** Set Fiscal Group - Product.
@@ -144,5 +118,31 @@ public int getM_Product_ID()
 Integer ii = (Integer)get_Value("M_Product_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+
+/** lbr_ExceptionType AD_Reference_ID=1000020 */
+public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
+/** Product = P */
+public static final String LBR_EXCEPTIONTYPE_Product = "P";
+/** Fiscal Group = G */
+public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
+/** Set Exception Type.
+@param lbr_ExceptionType Defines the Exception Type */
+public void setlbr_ExceptionType (String lbr_ExceptionType)
+{
+if (lbr_ExceptionType == null || lbr_ExceptionType.equals("P") || lbr_ExceptionType.equals("G"));
+ else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - P - G");
+if (lbr_ExceptionType != null && lbr_ExceptionType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_ExceptionType = lbr_ExceptionType.substring(0,0);
+}
+set_Value ("lbr_ExceptionType", lbr_ExceptionType);
+}
+/** Get Exception Type.
+@return Defines the Exception Type */
+public String getlbr_ExceptionType() 
+{
+return (String)get_Value("lbr_ExceptionType");
 }
 }

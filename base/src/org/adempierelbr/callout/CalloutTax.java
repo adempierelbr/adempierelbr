@@ -205,7 +205,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPGroup taxBPGroup = MTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus();
 			}
 			
 			//Parceiro de Negócios
@@ -213,7 +213,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPartner taxBPartner = MTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus();
 			}
 			
 		}
@@ -225,7 +225,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_ProductGroup taxProductGroup = MTax.getX_LBR_TaxConfig_ProductGroup(LBR_TaxConfiguration_ID);
 			if (taxProductGroup != null){
 				LBR_LegalMessage_ID = taxProductGroup.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxProductGroup.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxProductGroup.getlbr_TaxStatus();
 			}
 			
 			//Estado
@@ -233,7 +233,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID());
 			if (taxRegion != null){
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus();
 			}
 			
 			//Grupo do Parceiro
@@ -241,7 +241,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPGroup taxBPGroup = MTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus();
 			}
 			
 			//Parceiro de Negócios
@@ -249,7 +249,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPartner taxBPartner = MTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus();
 			}
 			
 		}
@@ -261,7 +261,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_Product taxProduct = MTax.getX_LBR_TaxConfig_Product(LBR_TaxConfiguration_ID);
 			if (taxProduct != null){
 				LBR_LegalMessage_ID = taxProduct.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxProduct.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxProduct.getlbr_TaxStatus();
 			}
 			
 			//Estado
@@ -269,7 +269,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID());
 			if (taxRegion != null){
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus();
 			}
 			
 			//Grupo do Parceiro
@@ -277,7 +277,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPGroup taxBPGroup = MTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPGroup.getlbr_TaxStatus();
 			}
 			
 			//Parceiro de Negócios
@@ -285,7 +285,7 @@ public class CalloutTax extends CalloutEngine
 			X_LBR_TaxConfig_BPartner taxBPartner = MTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();
-				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus_Taxing();
+				lbr_TaxStatus       = taxBPartner.getlbr_TaxStatus();
 			}
 			
 		}

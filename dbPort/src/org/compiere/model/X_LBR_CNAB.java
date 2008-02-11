@@ -21,9 +21,9 @@ super (ctx, LBR_CNAB_ID, trxName);
 /** if (LBR_CNAB_ID == 0)
 {
 setLBR_CNAB_ID (0);
+setRoutingNo (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
 setlbr_IsCancelled (false);	// 'N'
-setRoutingNo (null);
 }
  */
 }
@@ -68,6 +68,39 @@ public String toString()
 {
 StringBuffer sb = new StringBuffer ("X_LBR_CNAB[").append(get_ID()).append("]");
 return sb.toString();
+}
+/** Set CNAB.
+@param LBR_CNAB_ID Primary Key table LBR_CNAB */
+public void setLBR_CNAB_ID (int LBR_CNAB_ID)
+{
+if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
+set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
+}
+/** Get CNAB.
+@return Primary Key table LBR_CNAB */
+public int getLBR_CNAB_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_CNAB_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Routing No.
+@param RoutingNo Bank Routing Number */
+public void setRoutingNo (String RoutingNo)
+{
+if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
+if (RoutingNo.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RoutingNo = RoutingNo.substring(0,19);
+}
+set_Value ("RoutingNo", RoutingNo);
+}
+/** Get Routing No.
+@return Bank Routing Number */
+public String getRoutingNo() 
+{
+return (String)get_Value("RoutingNo");
 }
 /** Set CNAB Field1.
 @param lbr_CNABField1 CNAB Field1 */
@@ -851,21 +884,6 @@ public String getlbr_CNABField9()
 {
 return (String)get_Value("lbr_CNABField9");
 }
-/** Set CNAB.
-@param LBR_CNAB_ID Primary Key table LBR_CNAB */
-public void setLBR_CNAB_ID (int LBR_CNAB_ID)
-{
-if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
-set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
-}
-/** Get CNAB.
-@return Primary Key table LBR_CNAB */
-public int getLBR_CNAB_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_CNAB_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set Document Date.
 @param lbr_DocDate Identifies the Document Date */
 public void setlbr_DocDate (Timestamp lbr_DocDate)
@@ -896,23 +914,5 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
-}
-/** Set Routing No.
-@param RoutingNo Bank Routing Number */
-public void setRoutingNo (String RoutingNo)
-{
-if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
-if (RoutingNo.length() > 20)
-{
-log.warning("Length > 20 - truncated");
-RoutingNo = RoutingNo.substring(0,19);
-}
-set_Value ("RoutingNo", RoutingNo);
-}
-/** Get Routing No.
-@return Bank Routing Number */
-public String getRoutingNo() 
-{
-return (String)get_Value("RoutingNo");
 }
 }

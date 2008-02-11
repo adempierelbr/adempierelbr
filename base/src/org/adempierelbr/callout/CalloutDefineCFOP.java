@@ -28,7 +28,7 @@ import org.compiere.util.Env;
  * Callout for C_OrderLine and C_InvoiceLine
  * 
  * @author Fernando Lucktemberg (Faire, www.faire.com.br)
- * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
+ * @version $Id: CalloutDefineCFOP.java, 07/02/2008 13:53:00 fer_luck
  */
 public class CalloutDefineCFOP extends CalloutEngine {
 	/**

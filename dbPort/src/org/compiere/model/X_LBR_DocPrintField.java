@@ -22,8 +22,8 @@ super (ctx, LBR_DocPrintField_ID, trxName);
 {
 setLBR_DocPrintField_ID (0);
 setLBR_DocPrint_ID (0);
-setlbr_IsHeader (false);	// 'N'
 setName (null);
+setlbr_IsHeader (false);	// 'N'
 }
  */
 }
@@ -86,20 +86,6 @@ public String getComments()
 {
 return (String)get_Value("Comments");
 }
-/** Set Column Number.
-@param lbr_ColumnNo Defines the X Position */
-public void setlbr_ColumnNo (int lbr_ColumnNo)
-{
-set_Value ("lbr_ColumnNo", new Integer(lbr_ColumnNo));
-}
-/** Get Column Number.
-@return Defines the X Position */
-public int getlbr_ColumnNo() 
-{
-Integer ii = (Integer)get_Value("lbr_ColumnNo");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set DocPrint Field.
 @param LBR_DocPrintField_ID Primary key table LBR_DocPrintField */
 public void setLBR_DocPrintField_ID (int LBR_DocPrintField_ID)
@@ -130,21 +116,53 @@ Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
+{
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
+}
+set_Value ("Name", Name);
+}
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
+{
+return (String)get_Value("Name");
+}
+/** Set Column Number.
+@param lbr_ColumnNo Defines the X Position */
+public void setlbr_ColumnNo (int lbr_ColumnNo)
+{
+set_Value ("lbr_ColumnNo", new Integer(lbr_ColumnNo));
+}
+/** Get Column Number.
+@return Defines the X Position */
+public int getlbr_ColumnNo() 
+{
+Integer ii = (Integer)get_Value("lbr_ColumnNo");
+if (ii == null) return 0;
+return ii.intValue();
+}
 
 /** lbr_FieldAlignment AD_Reference_ID=1000003 */
 public static final int LBR_FIELDALIGNMENT_AD_Reference_ID=1000003;
-/** Center = C */
-public static final String LBR_FIELDALIGNMENT_Center = "C";
 /** Left = L */
 public static final String LBR_FIELDALIGNMENT_Left = "L";
+/** Center = C */
+public static final String LBR_FIELDALIGNMENT_Center = "C";
 /** Right = R */
 public static final String LBR_FIELDALIGNMENT_Right = "R";
 /** Set Field Alignment.
 @param lbr_FieldAlignment Defines the Field Alignment */
 public void setlbr_FieldAlignment (String lbr_FieldAlignment)
 {
-if (lbr_FieldAlignment == null || lbr_FieldAlignment.equals("C") || lbr_FieldAlignment.equals("L") || lbr_FieldAlignment.equals("R"));
- else throw new IllegalArgumentException ("lbr_FieldAlignment Invalid value - " + lbr_FieldAlignment + " - Reference_ID=1000003 - C - L - R");
+if (lbr_FieldAlignment == null || lbr_FieldAlignment.equals("L") || lbr_FieldAlignment.equals("C") || lbr_FieldAlignment.equals("R"));
+ else throw new IllegalArgumentException ("lbr_FieldAlignment Invalid value - " + lbr_FieldAlignment + " - Reference_ID=1000003 - L - C - R");
 if (lbr_FieldAlignment != null && lbr_FieldAlignment.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -193,18 +211,18 @@ return false;
 
 /** lbr_PrintFormat AD_Reference_ID=1000004 */
 public static final int LBR_PRINTFORMAT_AD_Reference_ID=1000004;
-/** Date = D */
-public static final String LBR_PRINTFORMAT_Date = "D";
 /** String = S */
 public static final String LBR_PRINTFORMAT_String = "S";
+/** Date = D */
+public static final String LBR_PRINTFORMAT_Date = "D";
 /** Value = V */
 public static final String LBR_PRINTFORMAT_Value = "V";
 /** Set Print Format.
 @param lbr_PrintFormat Defines the Print Format Type */
 public void setlbr_PrintFormat (String lbr_PrintFormat)
 {
-if (lbr_PrintFormat == null || lbr_PrintFormat.equals("D") || lbr_PrintFormat.equals("S") || lbr_PrintFormat.equals("V"));
- else throw new IllegalArgumentException ("lbr_PrintFormat Invalid value - " + lbr_PrintFormat + " - Reference_ID=1000004 - D - S - V");
+if (lbr_PrintFormat == null || lbr_PrintFormat.equals("S") || lbr_PrintFormat.equals("D") || lbr_PrintFormat.equals("V"));
+ else throw new IllegalArgumentException ("lbr_PrintFormat Invalid value - " + lbr_PrintFormat + " - Reference_ID=1000004 - S - D - V");
 if (lbr_PrintFormat != null && lbr_PrintFormat.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -231,23 +249,5 @@ public int getlbr_RowNo()
 Integer ii = (Integer)get_Value("lbr_RowNo");
 if (ii == null) return 0;
 return ii.intValue();
-}
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
-{
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
-}
-set_Value ("Name", Name);
-}
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
-{
-return (String)get_Value("Name");
 }
 }

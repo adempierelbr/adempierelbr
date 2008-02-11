@@ -71,6 +71,23 @@ public String toString()
 StringBuffer sb = new StringBuffer ("X_LBR_NotaFiscal[").append(get_ID()).append("]");
 return sb.toString();
 }
+/** Set BP Name.
+@param BPName BP Name */
+public void setBPName (String BPName)
+{
+if (BPName != null && BPName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+BPName = BPName.substring(0,59);
+}
+set_Value ("BPName", BPName);
+}
+/** Get BP Name.
+@return BP Name */
+public String getBPName() 
+{
+return (String)get_Value("BPName");
+}
 
 /** Bill_Location_ID AD_Reference_ID=159 */
 public static final int BILL_LOCATION_ID_AD_Reference_ID=159;
@@ -89,23 +106,6 @@ public int getBill_Location_ID()
 Integer ii = (Integer)get_Value("Bill_Location_ID");
 if (ii == null) return 0;
 return ii.intValue();
-}
-/** Set BP Name.
-@param BPName BP Name */
-public void setBPName (String BPName)
-{
-if (BPName != null && BPName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-BPName = BPName.substring(0,59);
-}
-set_Value ("BPName", BPName);
-}
-/** Get BP Name.
-@return BP Name */
-public String getBPName() 
-{
-return (String)get_Value("BPName");
 }
 
 /** C_BPartner_ID AD_Reference_ID=138 */
@@ -146,25 +146,6 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** C_DocType_ID AD_Reference_ID=170 */
-public static final int C_DOCTYPE_ID_AD_Reference_ID=170;
-/** Set Document Type.
-@param C_DocType_ID Document type or rules */
-public void setC_DocType_ID (int C_DocType_ID)
-{
-if (C_DocType_ID <= 0) set_Value ("C_DocType_ID", null);
- else 
-set_Value ("C_DocType_ID", new Integer(C_DocType_ID));
-}
-/** Get Document Type.
-@return Document type or rules */
-public int getC_DocType_ID() 
-{
-Integer ii = (Integer)get_Value("C_DocType_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
 /** C_DocTypeTarget_ID AD_Reference_ID=170 */
 public static final int C_DOCTYPETARGET_ID_AD_Reference_ID=170;
 /** Set Target Document Type.
@@ -180,6 +161,25 @@ set_Value ("C_DocTypeTarget_ID", new Integer(C_DocTypeTarget_ID));
 public int getC_DocTypeTarget_ID() 
 {
 Integer ii = (Integer)get_Value("C_DocTypeTarget_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** C_DocType_ID AD_Reference_ID=170 */
+public static final int C_DOCTYPE_ID_AD_Reference_ID=170;
+/** Set Document Type.
+@param C_DocType_ID Document type or rules */
+public void setC_DocType_ID (int C_DocType_ID)
+{
+if (C_DocType_ID <= 0) set_Value ("C_DocType_ID", null);
+ else 
+set_Value ("C_DocType_ID", new Integer(C_DocType_ID));
+}
+/** Get Document Type.
+@return Document type or rules */
+public int getC_DocType_ID() 
+{
+Integer ii = (Integer)get_Value("C_DocType_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
@@ -318,20 +318,20 @@ return bd;
 
 /** FreightCostRule AD_Reference_ID=153 */
 public static final int FREIGHTCOSTRULE_AD_Reference_ID=153;
-/** Calculated = C */
-public static final String FREIGHTCOSTRULE_Calculated = "C";
-/** Fix price = F */
-public static final String FREIGHTCOSTRULE_FixPrice = "F";
 /** Freight included = I */
 public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
+/** Fix price = F */
+public static final String FREIGHTCOSTRULE_FixPrice = "F";
+/** Calculated = C */
+public static final String FREIGHTCOSTRULE_Calculated = "C";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("C") || FreightCostRule.equals("F") || FreightCostRule.equals("I") || FreightCostRule.equals("L"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - C - F - I - L");
+if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -413,6 +413,120 @@ if (oo != null)
 }
 return false;
 }
+/** Set Nota Fiscal.
+@param LBR_NotaFiscal_ID Primary key table LBR_NotaFiscal */
+public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
+{
+if (LBR_NotaFiscal_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscal_ID is mandatory.");
+set_ValueNoCheck ("LBR_NotaFiscal_ID", new Integer(LBR_NotaFiscal_ID));
+}
+/** Get Nota Fiscal.
+@return Primary key table LBR_NotaFiscal */
+public int getLBR_NotaFiscal_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_NotaFiscal_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** M_InOut_ID AD_Reference_ID=337 */
+public static final int M_INOUT_ID_AD_Reference_ID=337;
+/** Set Shipment/Receipt.
+@param M_InOut_ID Material Shipment Document */
+public void setM_InOut_ID (int M_InOut_ID)
+{
+if (M_InOut_ID <= 0) set_Value ("M_InOut_ID", null);
+ else 
+set_Value ("M_InOut_ID", new Integer(M_InOut_ID));
+}
+/** Get Shipment/Receipt.
+@return Material Shipment Document */
+public int getM_InOut_ID() 
+{
+Integer ii = (Integer)get_Value("M_InOut_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Shipper.
+@param M_Shipper_ID Method or manner of product delivery */
+public void setM_Shipper_ID (int M_Shipper_ID)
+{
+if (M_Shipper_ID <= 0) set_Value ("M_Shipper_ID", null);
+ else 
+set_Value ("M_Shipper_ID", new Integer(M_Shipper_ID));
+}
+/** Get Shipper.
+@return Method or manner of product delivery */
+public int getM_Shipper_ID() 
+{
+Integer ii = (Integer)get_Value("M_Shipper_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set No Packages.
+@param NoPackages Number of packages shipped */
+public void setNoPackages (BigDecimal NoPackages)
+{
+set_Value ("NoPackages", NoPackages);
+}
+/** Get No Packages.
+@return Number of packages shipped */
+public BigDecimal getNoPackages() 
+{
+BigDecimal bd = (BigDecimal)get_Value("NoPackages");
+if (bd == null) return Env.ZERO;
+return bd;
+}
+/** Set Processed.
+@param Processed The document has been processed */
+public void setProcessed (boolean Processed)
+{
+set_Value ("Processed", new Boolean(Processed));
+}
+/** Get Processed.
+@return The document has been processed */
+public boolean isProcessed() 
+{
+Object oo = get_Value("Processed");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+/** Set Process Now.
+@param Processing Process Now */
+public void setProcessing (boolean Processing)
+{
+set_Value ("Processing", new Boolean(Processing));
+}
+/** Get Process Now.
+@return Process Now */
+public boolean isProcessing() 
+{
+Object oo = get_Value("Processing");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+/** Set Total Lines.
+@param TotalLines Total of all document lines */
+public void setTotalLines (BigDecimal TotalLines)
+{
+set_Value ("TotalLines", TotalLines);
+}
+/** Get Total Lines.
+@return Total of all document lines */
+public BigDecimal getTotalLines() 
+{
+BigDecimal bd = (BigDecimal)get_Value("TotalLines");
+if (bd == null) return Env.ZERO;
+return bd;
+}
 /** Set BP Address 1.
 @param lbr_BPAddress1 BP Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books */
 public void setlbr_BPAddress1 (String lbr_BPAddress1)
@@ -481,23 +595,6 @@ public String getlbr_BPAddress4()
 {
 return (String)get_Value("lbr_BPAddress4");
 }
-/** Set BP City.
-@param lbr_BPCity BP City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public void setlbr_BPCity (String lbr_BPCity)
-{
-if (lbr_BPCity != null && lbr_BPCity.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_BPCity = lbr_BPCity.substring(0,59);
-}
-set_Value ("lbr_BPCity", lbr_BPCity);
-}
-/** Get BP City.
-@return BP City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public String getlbr_BPCity() 
-{
-return (String)get_Value("lbr_BPCity");
-}
 /** Set BP CNPJ.
 @param lbr_BPCNPJ BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books */
 public void setlbr_BPCNPJ (String lbr_BPCNPJ)
@@ -514,6 +611,23 @@ set_Value ("lbr_BPCNPJ", lbr_BPCNPJ);
 public String getlbr_BPCNPJ() 
 {
 return (String)get_Value("lbr_BPCNPJ");
+}
+/** Set BP City.
+@param lbr_BPCity BP City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public void setlbr_BPCity (String lbr_BPCity)
+{
+if (lbr_BPCity != null && lbr_BPCity.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_BPCity = lbr_BPCity.substring(0,59);
+}
+set_Value ("lbr_BPCity", lbr_BPCity);
+}
+/** Get BP City.
+@return BP City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public String getlbr_BPCity() 
+{
+return (String)get_Value("lbr_BPCity");
 }
 /** Set BP Country.
 @param lbr_BPCountry BP Country - Copied from the BP Location into Brazilan Legal and Tax Books */
@@ -600,23 +714,6 @@ public String getlbr_BPDeliveryAddress4()
 {
 return (String)get_Value("lbr_BPDeliveryAddress4");
 }
-/** Set BP Delivery City.
-@param lbr_BPDeliveryCity BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public void setlbr_BPDeliveryCity (String lbr_BPDeliveryCity)
-{
-if (lbr_BPDeliveryCity != null && lbr_BPDeliveryCity.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_BPDeliveryCity = lbr_BPDeliveryCity.substring(0,59);
-}
-set_Value ("lbr_BPDeliveryCity", lbr_BPDeliveryCity);
-}
-/** Get BP Delivery City.
-@return BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public String getlbr_BPDeliveryCity() 
-{
-return (String)get_Value("lbr_BPDeliveryCity");
-}
 /** Set BP Delivery CNPJ.
 @param lbr_BPDeliveryCNPJ BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books */
 public void setlbr_BPDeliveryCNPJ (String lbr_BPDeliveryCNPJ)
@@ -633,6 +730,23 @@ set_Value ("lbr_BPDeliveryCNPJ", lbr_BPDeliveryCNPJ);
 public String getlbr_BPDeliveryCNPJ() 
 {
 return (String)get_Value("lbr_BPDeliveryCNPJ");
+}
+/** Set BP Delivery City.
+@param lbr_BPDeliveryCity BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public void setlbr_BPDeliveryCity (String lbr_BPDeliveryCity)
+{
+if (lbr_BPDeliveryCity != null && lbr_BPDeliveryCity.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_BPDeliveryCity = lbr_BPDeliveryCity.substring(0,59);
+}
+set_Value ("lbr_BPDeliveryCity", lbr_BPDeliveryCity);
+}
+/** Get BP Delivery City.
+@return BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public String getlbr_BPDeliveryCity() 
+{
+return (String)get_Value("lbr_BPDeliveryCity");
 }
 /** Set BP Delivery Country.
 @param lbr_BPDeliveryCountry BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books */
@@ -787,23 +901,6 @@ public String getlbr_BPInvoiceAddress4()
 {
 return (String)get_Value("lbr_BPInvoiceAddress4");
 }
-/** Set BP Invoice City.
-@param lbr_BPInvoiceCity BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity)
-{
-if (lbr_BPInvoiceCity != null && lbr_BPInvoiceCity.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_BPInvoiceCity = lbr_BPInvoiceCity.substring(0,59);
-}
-set_Value ("lbr_BPInvoiceCity", lbr_BPInvoiceCity);
-}
-/** Get BP Invoice City.
-@return BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public String getlbr_BPInvoiceCity() 
-{
-return (String)get_Value("lbr_BPInvoiceCity");
-}
 /** Set BP Invoice CNPJ.
 @param lbr_BPInvoiceCNPJ BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books */
 public void setlbr_BPInvoiceCNPJ (String lbr_BPInvoiceCNPJ)
@@ -820,6 +917,23 @@ set_Value ("lbr_BPInvoiceCNPJ", lbr_BPInvoiceCNPJ);
 public String getlbr_BPInvoiceCNPJ() 
 {
 return (String)get_Value("lbr_BPInvoiceCNPJ");
+}
+/** Set BP Invoice City.
+@param lbr_BPInvoiceCity BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity)
+{
+if (lbr_BPInvoiceCity != null && lbr_BPInvoiceCity.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_BPInvoiceCity = lbr_BPInvoiceCity.substring(0,59);
+}
+set_Value ("lbr_BPInvoiceCity", lbr_BPInvoiceCity);
+}
+/** Get BP Invoice City.
+@return BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public String getlbr_BPInvoiceCity() 
+{
+return (String)get_Value("lbr_BPInvoiceCity");
 }
 /** Set BP Invoice Country.
 @param lbr_BPInvoiceCountry BP Invoice Country - Copied from the BP Location into Brazilan Legal and Tax Books */
@@ -1008,23 +1122,6 @@ public String getlbr_BPShipperAddress4()
 {
 return (String)get_Value("lbr_BPShipperAddress4");
 }
-/** Set BP Shipper City.
-@param lbr_BPShipperCity BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public void setlbr_BPShipperCity (String lbr_BPShipperCity)
-{
-if (lbr_BPShipperCity != null && lbr_BPShipperCity.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_BPShipperCity = lbr_BPShipperCity.substring(0,59);
-}
-set_Value ("lbr_BPShipperCity", lbr_BPShipperCity);
-}
-/** Get BP Shipper City.
-@return BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books */
-public String getlbr_BPShipperCity() 
-{
-return (String)get_Value("lbr_BPShipperCity");
-}
 /** Set BP Shipper CNPJ.
 @param lbr_BPShipperCNPJ BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books */
 public void setlbr_BPShipperCNPJ (String lbr_BPShipperCNPJ)
@@ -1041,6 +1138,23 @@ set_Value ("lbr_BPShipperCNPJ", lbr_BPShipperCNPJ);
 public String getlbr_BPShipperCNPJ() 
 {
 return (String)get_Value("lbr_BPShipperCNPJ");
+}
+/** Set BP Shipper City.
+@param lbr_BPShipperCity BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public void setlbr_BPShipperCity (String lbr_BPShipperCity)
+{
+if (lbr_BPShipperCity != null && lbr_BPShipperCity.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_BPShipperCity = lbr_BPShipperCity.substring(0,59);
+}
+set_Value ("lbr_BPShipperCity", lbr_BPShipperCity);
+}
+/** Get BP Shipper City.
+@return BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books */
+public String getlbr_BPShipperCity() 
+{
+return (String)get_Value("lbr_BPShipperCity");
 }
 /** Set BP Shipper Country.
 @param lbr_BPShipperCountry BP Shipper Country - Copied from the BP Location into Brazilan Legal and Tax Books */
@@ -1217,120 +1331,6 @@ set_Value ("lbr_NetWeight", lbr_NetWeight);
 public BigDecimal getlbr_NetWeight() 
 {
 BigDecimal bd = (BigDecimal)get_Value("lbr_NetWeight");
-if (bd == null) return Env.ZERO;
-return bd;
-}
-/** Set Nota Fiscal.
-@param LBR_NotaFiscal_ID Primary key table LBR_NotaFiscal */
-public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
-{
-if (LBR_NotaFiscal_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscal_ID is mandatory.");
-set_ValueNoCheck ("LBR_NotaFiscal_ID", new Integer(LBR_NotaFiscal_ID));
-}
-/** Get Nota Fiscal.
-@return Primary key table LBR_NotaFiscal */
-public int getLBR_NotaFiscal_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_NotaFiscal_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
-/** M_InOut_ID AD_Reference_ID=337 */
-public static final int M_INOUT_ID_AD_Reference_ID=337;
-/** Set Shipment/Receipt.
-@param M_InOut_ID Material Shipment Document */
-public void setM_InOut_ID (int M_InOut_ID)
-{
-if (M_InOut_ID <= 0) set_Value ("M_InOut_ID", null);
- else 
-set_Value ("M_InOut_ID", new Integer(M_InOut_ID));
-}
-/** Get Shipment/Receipt.
-@return Material Shipment Document */
-public int getM_InOut_ID() 
-{
-Integer ii = (Integer)get_Value("M_InOut_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Shipper.
-@param M_Shipper_ID Method or manner of product delivery */
-public void setM_Shipper_ID (int M_Shipper_ID)
-{
-if (M_Shipper_ID <= 0) set_Value ("M_Shipper_ID", null);
- else 
-set_Value ("M_Shipper_ID", new Integer(M_Shipper_ID));
-}
-/** Get Shipper.
-@return Method or manner of product delivery */
-public int getM_Shipper_ID() 
-{
-Integer ii = (Integer)get_Value("M_Shipper_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set No Packages.
-@param NoPackages Number of packages shipped */
-public void setNoPackages (BigDecimal NoPackages)
-{
-set_Value ("NoPackages", NoPackages);
-}
-/** Get No Packages.
-@return Number of packages shipped */
-public BigDecimal getNoPackages() 
-{
-BigDecimal bd = (BigDecimal)get_Value("NoPackages");
-if (bd == null) return Env.ZERO;
-return bd;
-}
-/** Set Processed.
-@param Processed The document has been processed */
-public void setProcessed (boolean Processed)
-{
-set_Value ("Processed", new Boolean(Processed));
-}
-/** Get Processed.
-@return The document has been processed */
-public boolean isProcessed() 
-{
-Object oo = get_Value("Processed");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
-}
-return false;
-}
-/** Set Process Now.
-@param Processing Process Now */
-public void setProcessing (boolean Processing)
-{
-set_Value ("Processing", new Boolean(Processing));
-}
-/** Get Process Now.
-@return Process Now */
-public boolean isProcessing() 
-{
-Object oo = get_Value("Processing");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
-}
-return false;
-}
-/** Set Total Lines.
-@param TotalLines Total of all document lines */
-public void setTotalLines (BigDecimal TotalLines)
-{
-set_Value ("TotalLines", TotalLines);
-}
-/** Get Total Lines.
-@return Total of all document lines */
-public BigDecimal getTotalLines() 
-{
-BigDecimal bd = (BigDecimal)get_Value("TotalLines");
 if (bd == null) return Env.ZERO;
 return bd;
 }

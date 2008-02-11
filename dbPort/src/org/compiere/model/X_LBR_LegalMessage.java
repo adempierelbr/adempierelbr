@@ -68,14 +68,14 @@ StringBuffer sb = new StringBuffer ("X_LBR_LegalMessage[").append(get_ID()).appe
 return sb.toString();
 }
 /** Set Legal Message.
-@param LBR_LegalMessage_ID Primary key table LBR_LegalMessage */
+@param LBR_LegalMessage_ID Defines the Legal Message */
 public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
 {
 if (LBR_LegalMessage_ID < 1) throw new IllegalArgumentException ("LBR_LegalMessage_ID is mandatory.");
 set_ValueNoCheck ("LBR_LegalMessage_ID", new Integer(LBR_LegalMessage_ID));
 }
 /** Get Legal Message.
-@return Primary key table LBR_LegalMessage */
+@return Defines the Legal Message */
 public int getLBR_LegalMessage_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_LegalMessage_ID");

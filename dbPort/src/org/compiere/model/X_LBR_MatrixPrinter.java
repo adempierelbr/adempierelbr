@@ -21,14 +21,14 @@ super (ctx, LBR_MatrixPrinter_ID, trxName);
 /** if (LBR_MatrixPrinter_ID == 0)
 {
 setIsDefault (false);	// 'N'
+setLBR_MatrixPrinter_ID (0);
+setName (null);
 setlbr_IsCondensed (true);	// 'Y'
 setlbr_IsUnixPrinter (false);	// 'N'
-setLBR_MatrixPrinter_ID (0);
 setlbr_Pitch (0);
 setlbr_PrinterPath (null);
 setlbr_PrinterType (null);
 setlbr_UnixPrinterName (null);
-setName (null);
 }
  */
 }
@@ -91,6 +91,39 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
+}
+/** Set Matrix Printer.
+@param LBR_MatrixPrinter_ID Primary key table LBR_MatrixPrinter */
+public void setLBR_MatrixPrinter_ID (int LBR_MatrixPrinter_ID)
+{
+if (LBR_MatrixPrinter_ID < 1) throw new IllegalArgumentException ("LBR_MatrixPrinter_ID is mandatory.");
+set_ValueNoCheck ("LBR_MatrixPrinter_ID", new Integer(LBR_MatrixPrinter_ID));
+}
+/** Get Matrix Printer.
+@return Primary key table LBR_MatrixPrinter */
+public int getLBR_MatrixPrinter_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_MatrixPrinter_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
+{
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
+}
+set_Value ("Name", Name);
+}
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
+{
+return (String)get_Value("Name");
 }
 /** Set Characterset.
 @param lbr_Characterset Defines the Characterset */
@@ -162,21 +195,6 @@ if (oo != null)
 }
 return false;
 }
-/** Set Matrix Printer.
-@param LBR_MatrixPrinter_ID Primary key table LBR_MatrixPrinter */
-public void setLBR_MatrixPrinter_ID (int LBR_MatrixPrinter_ID)
-{
-if (LBR_MatrixPrinter_ID < 1) throw new IllegalArgumentException ("LBR_MatrixPrinter_ID is mandatory.");
-set_ValueNoCheck ("LBR_MatrixPrinter_ID", new Integer(LBR_MatrixPrinter_ID));
-}
-/** Get Matrix Printer.
-@return Primary key table LBR_MatrixPrinter */
-public int getLBR_MatrixPrinter_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_MatrixPrinter_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set Pitch.
 @param lbr_Pitch Defines the Printer Pitch */
 public void setlbr_Pitch (int lbr_Pitch)
@@ -244,23 +262,5 @@ set_Value ("lbr_UnixPrinterName", lbr_UnixPrinterName);
 public String getlbr_UnixPrinterName() 
 {
 return (String)get_Value("lbr_UnixPrinterName");
-}
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
-{
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
-}
-set_Value ("Name", Name);
-}
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
-{
-return (String)get_Value("Name");
 }
 }

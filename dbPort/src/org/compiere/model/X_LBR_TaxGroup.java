@@ -42,9 +42,9 @@ public static final String Table_Name="LBR_TaxGroup";
 
 protected static KeyNamePair Model = new KeyNamePair(Table_ID,"LBR_TaxGroup");
 
-protected BigDecimal accessLevel = new BigDecimal(6);
+protected BigDecimal accessLevel = new BigDecimal(3);
 /** AccessLevel
-@return 6 - System - Client 
+@return 3 - Client - Org 
 */
 protected int get_AccessLevel()
 {
@@ -85,14 +85,14 @@ public String getDescription()
 return (String)get_Value("Description");
 }
 /** Set Tax Group.
-@param LBR_TaxGroup_ID Tax Group */
+@param LBR_TaxGroup_ID Defines the Tax Group */
 public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
 {
 if (LBR_TaxGroup_ID < 1) throw new IllegalArgumentException ("LBR_TaxGroup_ID is mandatory.");
 set_ValueNoCheck ("LBR_TaxGroup_ID", new Integer(LBR_TaxGroup_ID));
 }
 /** Get Tax Group.
-@return Tax Group */
+@return Defines the Tax Group */
 public int getLBR_TaxGroup_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_TaxGroup_ID");
