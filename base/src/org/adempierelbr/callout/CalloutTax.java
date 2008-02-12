@@ -192,8 +192,6 @@ public class CalloutTax extends CalloutEngine
 		//NCM
 		if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){
 			setLines(ctx, (Integer)ncm.get_Value("LBR_Tax_ID"));
-			LBR_LegalMessage_ID = (Integer)ncm.get_Value("LBR_LegalMessage_ID");
-			lbr_TaxStatus       = (String)ncm.get_Value("lbr_TaxStatus_Taxing");
 		}
 		
 		//Exceções (Configurador de Impostos)
@@ -308,7 +306,7 @@ public class CalloutTax extends CalloutEngine
 		
 		if (isSOTrx){
 			mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-			mTab.setValue("lbr_TaxStatus_Taxing", lbr_TaxStatus);
+			mTab.setValue("lbr_TaxStatus", lbr_TaxStatus);
 		}
 		
 		return "";
