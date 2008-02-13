@@ -2120,16 +2120,16 @@
  <row id="1000028" trl="Y">
   <value column="Name" original="Nota Fiscal Line">Linha Nota Fiscal</value>
  </row>
- <row id="1000029" trl="Y">
-  <value column="Name" original="DocumentType Accounting">Tipo de Documento - Contabilidade</value>
+ <row id="1000029" trl="N">
+  <value column="Name" original="DocumentType Accounting">DocumentType Accounting</value>
  </row>
  <row id="1000030" trl="N">
-  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
  </row>
- <row id="1000031" trl="Y">
-  <value column="Name" original="Tax Group">Grupo de Impostos (NF)</value>
- </row>
- <row id="1000032" trl="N">
+ <row id="1000032" trl="Y">
   <value column="Name" original="Legal Message">Mensagem Legal</value>
+ </row>
+ <row id="1000033" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
  </row>
 </adempiereTrl>

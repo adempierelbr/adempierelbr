@@ -3506,6 +3506,18 @@
   <value column="Name" original="Document After Post">Document After Post</value>
   <value column="Description" original=""/>
  </row>
+ <row id="53321" trl="N">
+  <value column="Name" original="Insert">Insert</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53322" trl="N">
+  <value column="Name" original="Delete">Delete</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="53323" trl="N">
+  <value column="Name" original="Update">Update</value>
+  <value column="Description" original=""/>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="PJ - Legal Entity">PJ - Pessoa Jurídica</value>
   <value column="Description" original=""/>
@@ -3546,7 +3558,7 @@
   <value column="Name" original="Occurrence">Ocorrência</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="N">
+ <row id="1000021" trl="Y">
   <value column="Name" original="Estados Idênticos">Estados Idênticos</value>
   <value column="Description" original=""/>
  </row>
@@ -3611,79 +3623,67 @@
   <value column="Description" original=""/>
  </row>
  <row id="1000043" trl="Y">
-  <value column="Name" original="Monthly">Mensal</value>
+  <value column="Name" original="Resale">Revenda</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000044" trl="Y">
-  <value column="Name" original="Yes">Sim</value>
+  <value column="Name" original="Monthly">Mensal</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000045" trl="Y">
-  <value column="Name" original="No">Não</value>
+  <value column="Name" original="00 - Tributada integralmente">00 - Tributada integralmente</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000046" trl="Y">
-  <value column="Name" original="Both">Ambos</value>
+  <value column="Name" original="10 - Tributada e com cobrança do ICMS por Sub. Tributária">10 - Tributada e com cobrança do ICMS por Sub. Tributária</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000047" trl="Y">
+  <value column="Name" original="20 - Com redução de base de cálculo">20 - Com redução de base de cálculo</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000048" trl="Y">
-  <value column="Name" original="Domestic">Nacional</value>
+  <value column="Name" original="30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut">30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000049" trl="Y">
-  <value column="Name" original="Imported">Importado</value>
+  <value column="Name" original="40 - Isenta">40 - Isenta</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000050" trl="Y">
-  <value column="Name" original="Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Local</value>
+  <value column="Name" original="41 - Não-tributada">41 - Não-tributada</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000054" trl="Y">
-  <value column="Name" original="Integrally Taxed">00 - Tributada Integralmente</value>
+ <row id="1000051" trl="Y">
+  <value column="Name" original="50 - Suspensão">50 - Suspensão</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000052" trl="Y">
+  <value column="Name" original="51 - Diferimento ">51 - Diferimento </value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000053" trl="Y">
+  <value column="Name" original="60 - ICMS cobrado anteriormente por substituição tributária">60 - ICMS cobrado anteriormente por substituição tributária</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000055" trl="Y">
-  <value column="Name" original="Taxed and with ICMS charged throught Substituição Tributária">10 - Tributada e com cobrança do ICMS por sub. tributária</value>
+  <value column="Name" original="70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib">70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000056" trl="Y">
-  <value column="Name" original="Base calc. reduction">20 - Com redução de base de cálculo</value>
+  <value column="Name" original="90 - Outras">90 - Outras</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000057" trl="Y">
-  <value column="Name" original="Exempt or not Taxed with ICMS charged throught Subst. Tribut">30 - Isenta ou não trib. e com cobr. ICMS por Subst. Tribut</value>
+  <value column="Name" original="Domestic">Nacional</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000058" trl="Y">
-  <value column="Name" original="Exempt">40 - Isenta</value>
+  <value column="Name" original="Imported">Importado</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000059" trl="Y">
-  <value column="Name" original="Not Taxed">41 - Não tributada</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000060" trl="Y">
-  <value column="Name" original="Suspended">50 - Suspensão</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000061" trl="Y">
-  <value column="Name" original="Deferred">51 - Diferimento</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000062" trl="Y">
-  <value column="Name" original="ICMS already charged by Substituição Tributária">60 - ICMS cobrado anteriormente por substituição tributária</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000063" trl="Y">
-  <value column="Name" original="Base calc. reduction and ICMS charged throught Subst. Tribut">70 - ICMS cobrado anteriormente por substituição tributária</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000064" trl="Y">
-  <value column="Name" original="Other">90 - Outras</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000065" trl="Y">
-  <value column="Name" original="Resale">Revenda</value>
+  <value column="Name" original="Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Nacional</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>

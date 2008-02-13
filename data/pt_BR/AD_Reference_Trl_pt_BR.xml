@@ -1637,6 +1637,11 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="53238" trl="N">
+  <value column="Name" original="EventChangeLog">EventChangeLog</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
  <row id="1000000" trl="Y">
   <value column="Name" original="BPTypeBR">Tipo de Pessoa</value>
   <value column="Description" original="">Usado para Idenficar se o Parceiro é Pessoa Física ou Pessoa Jurídica</value>
@@ -1747,38 +1752,33 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000027" trl="N">
-  <value column="Name" original="LBR_SubsTributaria">LBR_SubsTributaria</value>
-  <value column="Description" original="Substituição Tributária">Substituição Tributária</value>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="lbr_Yes_No_Both">Sim-Não-Ambos</value>
+  <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
  <row id="1000028" trl="N">
-  <value column="Name" original="LBR_Frequency">LBR_Frequency</value>
+  <value column="Name" original="lbr_WithholdFrequency">lbr_WithholdFrequency</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
  <row id="1000029" trl="N">
-  <value column="Name" original="lbr_IsManufactured">lbr_IsManufactured</value>
+  <value column="Name" original="lbr_TaxStatus">lbr_TaxStatus</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
  <row id="1000030" trl="N">
-  <value column="Name" original="LBR_ProductSource">LBR_ProductSource</value>
+  <value column="Name" original="LBR_LegalMessage">LBR_LegalMessage</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000032" trl="Y">
-  <value column="Name" original="lbr_TaxStatus_Taxing">Situação Tributária - Tributação</value>
+ <row id="1000031" trl="N">
+  <value column="Name" original="lbr_ProductSource">lbr_ProductSource</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000033" trl="N">
-  <value column="Name" original="LBR_LegalMessage_ID">LBR_LegalMessage_ID</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
- <row id="1000034" trl="N">
-  <value column="Name" original="LBR_TaxGroup">LBR_TaxGroup</value>
+ <row id="1000032" trl="N">
+  <value column="Name" original="lbr_TaxGroup">lbr_TaxGroup</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

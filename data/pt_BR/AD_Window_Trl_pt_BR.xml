@@ -1454,18 +1454,18 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000016" trl="Y">
-  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+ <row id="1000016" trl="N">
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
  <row id="1000017" trl="Y">
-  <value column="Name" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
-  <value column="Description" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
+  <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
  <row id="1000018" trl="Y">
-  <value column="Name" original="Legal Message">Mensagem Legal</value>
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

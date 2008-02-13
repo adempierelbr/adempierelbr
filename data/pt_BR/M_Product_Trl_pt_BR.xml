@@ -137,44 +137,4 @@
   <value column="Description" original=""/>
   <value column="DocumentNote" original=""/>
  </row>
- <row id="1000000" trl="N">
-  <value column="Name" original="Produto Produzido Tributado">Produto Produzido Tributado</value>
-  <value column="Description" original="Produto Produzido Tributado">Produto Produzido Tributado</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000001" trl="N">
-  <value column="Name" original="Produto Revenda Tributado">Produto Revenda Tributado</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000002" trl="N">
-  <value column="Name" original="Produto Produzido Substituicao">Produto Produzido Substituicao</value>
-  <value column="Description" original="Produto Produzido Substituicao">Produto Produzido Substituicao</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000003" trl="N">
-  <value column="Name" original="Produto Revenda Substituicao">Produto Revenda Substituicao</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000004" trl="N">
-  <value column="Name" original="Produto Energia Elétrica">Produto Energia Elétrica</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000005" trl="N">
-  <value column="Name" original="Produto Frete">Produto Frete</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000006" trl="N">
-  <value column="Name" original="Produto Serviços de Comunicacao">Produto Serviços de Comunicacao</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000007" trl="N">
-  <value column="Name" original="Teste Subst. Trib">Teste Subst. Trib</value>
-  <value column="Description" original=""/>
-  <value column="DocumentNote" original=""/>
- </row>
 </adempiereTrl>

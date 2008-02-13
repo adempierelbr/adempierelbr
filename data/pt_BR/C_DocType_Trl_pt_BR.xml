@@ -63,8 +63,8 @@
   <value column="DocumentNote" original=""/>
  </row>
  <row id="126" trl="Y">
-  <value column="Name" original="Pedido de Compra">Pedido de Compra</value>
-  <value column="PrintName" original="Pedido de Compra">Pedido de Compra</value>
+  <value column="Name" original="Purchase Order">Pedido de Compra</value>
+  <value column="PrintName" original="Purchase Order">Pedido de Compra</value>
   <value column="DocumentNote" original=""/>
  </row>
  <row id="127" trl="Y">
@@ -88,8 +88,8 @@
   <value column="DocumentNote" original=""/>
  </row>
  <row id="131" trl="Y">
-  <value column="Name" original="Devolução de Venda com Emissão de Nota Própria">Devolução de Venda com Emissão de Nota Própria</value>
-  <value column="PrintName" original="Devolução de Venda com Emissão de Nota Própria">Devolução de Venda com Emissão de Nota Própria</value>
+  <value column="Name" original="Return Material">Devolução de Venda com Emissão de Nota Própria</value>
+  <value column="PrintName" original="Return Material Authorization">Devolução de Venda com Emissão de Nota Própria</value>
   <value column="DocumentNote" original=""/>
  </row>
  <row id="132" trl="Y">
@@ -190,146 +190,6 @@
  <row id="151" trl="Y">
   <value column="Name" original="MM Vendor Return">MM Vendor Return</value>
   <value column="PrintName" original="Vendor Return Material">Vendor Return Material</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000000" trl="Y">
-  <value column="Name" original="Bonificação, Doação ou Brinde">Bonificação, Doação ou Brinde</value>
-  <value column="PrintName" original="Bonificação, Doação ou Brinde">Bonificação, Doação ou Brinde</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000001" trl="N">
-  <value column="Name" original="Fatura sem Contas a Receber">Fatura sem Contas a Receber</value>
-  <value column="PrintName" original="Invoice">Invoice</value>
-  <value column="DocumentNote" original="Document Type Note for general and promotional text.">Document Type Note for general and promotional text.</value>
- </row>
- <row id="1000002" trl="N">
-  <value column="Name" original="Remessa em Consignação">Remessa em Consignação</value>
-  <value column="PrintName" original="Remessa em Consignação">Remessa em Consignação</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000003" trl="Y">
-  <value column="Name" original="Saída de Mercadorias em Transferência ">Saída de Mercadorias em Transferência </value>
-  <value column="PrintName" original="Saída de Mercadorias em Transferência ">Saída de Mercadorias em Transferência </value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000004" trl="N">
-  <value column="Name" original="Venda de Bem do Ativo Imobilizado">Venda de Bem do Ativo Imobilizado</value>
-  <value column="PrintName" original="Venda de Bem do Ativo Imobilizado">Venda de Bem do Ativo Imobilizado</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000005" trl="N">
-  <value column="Name" original="Remessa para depósito fechado ou armazém geral">Remessa para depósito fechado ou armazém geral</value>
-  <value column="PrintName" original="Remessa para depósito fechado ou armazém geral">Remessa para depósito fechado ou armazém geral</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000006" trl="N">
-  <value column="Name" original="Retorno de Mercadoria Depositada em Depósito Fechado">Retorno de Mercadoria Depositada em Depósito Fechado</value>
-  <value column="PrintName" original="Retorno de Mercadoria Depositada em Depósito Fechado">Retorno de Mercadoria Depositada em Depósito Fechado</value>
-  <value column="DocumentNote" original="&#9;">	</value>
- </row>
- <row id="1000007" trl="N">
-  <value column="Name" original="Remessa de mercadoria ou bem para conserto ou reparo">Remessa de mercadoria ou bem para conserto ou reparo</value>
-  <value column="PrintName" original="Remessa de mercadoria ou bem para conserto ou reparo">Remessa de mercadoria ou bem para conserto ou reparo</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000008" trl="N">
-  <value column="Name" original="Devolução de Venda com Emissão de Nota do Cliente">Devolução de Venda com Emissão de Nota do Cliente</value>
-  <value column="PrintName" original="Devolução de Venda com Emissão de Nota do Cliente">Devolução de Venda com Emissão de Nota do Cliente</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000011" trl="N">
-  <value column="Name" original="Bonificações ou Brindes">Bonificações ou Brindes</value>
-  <value column="PrintName" original="Bonificações ou Brindes">Bonificações ou Brindes</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000012" trl="N">
-  <value column="Name" original="Fatura sem Contas a Pagar">Fatura sem Contas a Pagar</value>
-  <value column="PrintName" original="Fatura sem Contas a Pagar">Fatura sem Contas a Pagar</value>
-  <value column="DocumentNote" original="Document Type Note for general and promotional text.">Document Type Note for general and promotional text.</value>
- </row>
- <row id="1000013" trl="N">
-  <value column="Name" original="Compra para Entrega Futura">Compra para Entrega Futura</value>
-  <value column="PrintName" original="Compra para Entrega Futura">Compra para Entrega Futura</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000014" trl="N">
-  <value column="Name" original="Venda para Entrega Futura">Venda para Entrega Futura</value>
-  <value column="PrintName" original="Venda para Entrega Futura">Venda para Entrega Futura</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000015" trl="N">
-  <value column="Name" original="Transferencia para Uso ou Consumo">Transferencia para Uso ou Consumo</value>
-  <value column="PrintName" original="Transferencia para Uso ou Consumo">Transferencia para Uso ou Consumo</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000016" trl="N">
-  <value column="Name" original="Devolução de Venda para Entrega Futura do Cliente">Devolução de Venda para Entrega Futura do Cliente</value>
-  <value column="PrintName" original="Devolução de Venda para Entrega Futura do Cliente">Devolução de Venda para Entrega Futura do Cliente</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000017" trl="N">
-  <value column="Name" original="Devolução Remessa de Venda para Entrega Futura do Cliente">Devolução Remessa de Venda para Entrega Futura do Cliente</value>
-  <value column="PrintName" original="Devolução Remessa de Venda para Entrega Futura do Cliente">Devolução Remessa de Venda para Entrega Futura do Cliente</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000018" trl="N">
-  <value column="Name" original="Aquisição para o Ativo Imobilizado Máquinas e Equipamentos ">Aquisição para o Ativo Imobilizado Máquinas e Equipamentos </value>
-  <value column="PrintName" original="Aquisição para o Ativo Imobilizado Máquinas e Equipamentos ">Aquisição para o Ativo Imobilizado Máquinas e Equipamentos </value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000019" trl="N">
-  <value column="Name" original="Compra para Uso e Consumo ">Compra para Uso e Consumo </value>
-  <value column="PrintName" original="Compra para Uso e Consumo">Compra para Uso e Consumo</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000020" trl="N">
-  <value column="Name" original="Entrada Transferência para Comercialização">Entrada Transferência para Comercialização</value>
-  <value column="PrintName" original="Entrada Transferência para Comercialização">Entrada Transferência para Comercialização</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000022" trl="N">
-  <value column="Name" original="Retorno Remessa de mercadoria ou bem para conserto ou reparo">Retorno Remessa de mercadoria ou bem para conserto ou reparo</value>
-  <value column="PrintName" original="Retorno Remessa de mercadoria ou bem para conserto ou reparo">Retorno Remessa de mercadoria ou bem para conserto ou reparo</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000023" trl="N">
-  <value column="Name" original="Nota Complementar de ICMS - Entrada">Nota Complementar de ICMS - Entrada</value>
-  <value column="PrintName" original="Nota Complementar de ICMS - Entrada">Nota Complementar de ICMS - Entrada</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000024" trl="N">
-  <value column="Name" original="Nota Complementar de ICMS - Saída">Nota Complementar de ICMS - Saída</value>
-  <value column="PrintName" original="Nota Complementar de ICMS - Saída">Nota Complementar de ICMS - Saída</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000025" trl="Y">
-  <value column="Name" original="Saída para Formação de Kit">Saída para Formação de Kit</value>
-  <value column="PrintName" original="Saída para Formação de Kit">Saída para Formação de Kit</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000027" trl="N">
-  <value column="Name" original="Outras Entradas">Outras Entradas</value>
-  <value column="PrintName" original="Outras Entradas">Outras Entradas</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000028" trl="N">
-  <value column="Name" original="Outras Saídas">Outras Saídas</value>
-  <value column="PrintName" original="Outras Saídas">Outras Saídas</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000029" trl="N">
-  <value column="Name" original="Entrada de Kit Composto na Própria Empresa">Entrada de Kit Composto na Própria Empresa</value>
-  <value column="PrintName" original="Entrada de Kit Composto na Própria Empresa">Entrada de Kit Composto na Própria Empresa</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000030" trl="N">
-  <value column="Name" original="Entrada em Depósito Fechado">Entrada em Depósito Fechado</value>
-  <value column="PrintName" original="Entrada em Depósito Fechado">Entrada em Depósito Fechado</value>
-  <value column="DocumentNote" original=""/>
- </row>
- <row id="1000031" trl="N">
-  <value column="Name" original="Remessa de Venda para Entrega Futura">Remessa de Venda para Entrega Futura</value>
-  <value column="PrintName" original="Remessa de Venda para Entrega Futura">Remessa de Venda para Entrega Futura</value>
   <value column="DocumentNote" original=""/>
  </row>
 </adempiereTrl>

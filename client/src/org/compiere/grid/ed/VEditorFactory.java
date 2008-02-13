@@ -16,20 +16,12 @@
  *****************************************************************************/
 package org.compiere.grid.ed;
 
-import java.util.logging.Level;
-
 import org.adempierelbr.grid.ed.VTaxes;
 import org.adempierelbr.model.MTaxesLookup;
-import org.compiere.model.GridField;
-import org.compiere.model.GridTab;
-import org.compiere.model.MAccountLookup;
-import org.compiere.model.MLocationLookup;
-import org.compiere.model.MLocatorLookup;
-import org.compiere.model.MPAttributeLookup;
-import org.compiere.swing.CLabel;
-import org.compiere.util.CLogger;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
+import org.compiere.model.*;
+import org.compiere.swing.*;
+import java.util.logging.*;
+import org.compiere.util.*;
 
 /**
  *  Factory for VEditor and its Label for single Row display and multi row-editor
@@ -196,12 +188,13 @@ public class VEditorFactory
 		//	Location
 		else if (displayType == DisplayType.Location)
 		{
-			VLocation loc = new VLocation (columnName, mandatory, readOnly, updateable,
+			VLocation loc = new VLocation (mTab, columnName, mandatory, readOnly, updateable,
 				(MLocationLookup)mField.getLookup());
 			loc.setName(columnName);
 			loc.setField (mField);
 			editor = loc;
 		}
+		
 		
 		//  @author mgrigioni 14/11/2007 13:26
 		//	Brazilian Taxes 
@@ -212,7 +205,7 @@ public class VEditorFactory
 			tax.setName(columnName);
 			tax.setField (mField);
 			editor = tax;
-		}
+		}		
 
 		//	Locator
 		else if (displayType == DisplayType.Locator)
@@ -227,8 +220,12 @@ public class VEditorFactory
 		//	Account
 		else if (displayType == DisplayType.Account)
 		{
+			//hengsin: bug [ 1711795 ] Combination copied itself in Grid mode
+			/*
 			VAccount acct = new VAccount (columnName, mandatory, readOnly, updateable,
-				(MAccountLookup)mField.getLookup(), mField.getHeader());
+				(MAccountLookup)mField.getLookup(), mField.getHeader());*/
+			VAccount acct = new VAccount (columnName, mandatory, readOnly, updateable,
+					new MAccountLookup (mField.getVO().ctx, mField.getWindowNo()), mField.getHeader());
 			acct.setName(columnName);
 			acct.setField (mField);
 			editor = acct;
@@ -274,7 +271,7 @@ public class VEditorFactory
 		//  PAttribute
 		else if (displayType == DisplayType.PAttribute)
 		{
-			VPAttribute attrib = new VPAttribute (mandatory, readOnly, updateable, WindowNo,
+			VPAttribute attrib = new VPAttribute (mTab, mandatory, readOnly, updateable, WindowNo,
 				(MPAttributeLookup)mField.getLookup());
 			attrib.setName(columnName);
 			attrib.setField (mField);
@@ -336,4 +333,4 @@ public class VEditorFactory
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(VEditorFactory.class);
 
-}   //  VEditorFactory
+}   //  VEditorFactor

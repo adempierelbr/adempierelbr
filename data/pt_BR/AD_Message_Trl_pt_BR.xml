@@ -4993,6 +4993,12 @@ Obrigado por usar o Gerenciador de Ativos Personalizado Adempiere
   <value column="MsgText" original="Show All Windows">Show All Windows</value>
   <value column="MsgTip" original=""/>
  </row>
+ <row id="53025" trl="N">
+  <value column="MsgText" original="Build Version Error">Build Version Error</value>
+  <value column="MsgTip" original="The program assumes build version {0}, but database has build version {1}. &#10;This is likely to cause hard to fix errors. &#10;Please contact administrator.">The program assumes build version {0}, but database has build version {1}. 
+This is likely to cause hard to fix errors. 
+Please contact administrator.</value>
+ </row>
  <row id="520010" trl="Y">
   <value column="MsgText" original="1 Rupee">1 Rupee</value>
   <value column="MsgTip" original=" "> </value>

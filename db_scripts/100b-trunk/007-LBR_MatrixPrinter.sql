@@ -62,6 +62,14 @@ INSERT INTO ADEMPIERE.AD_ELEMENT(ad_element_id, ad_client_id, ad_org_id, isactiv
 INSERT INTO ADEMPIERE.AD_ELEMENT(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
   VALUES(1000246, 0, 0, 'Y', '2008-01-21 18:47:39.0', 100, '2008-01-21 18:47:39.0', 100, 'lbr_UnixPrinterName', 'LBRA', 'Unix PrinterName', 'Unix PrinterName', 'Defines the Unix PrinterName', 'Defines the Unix PrinterName', NULL, NULL, NULL, NULL);
 
+-- AD_WINDOW
+INSERT INTO ADEMPIERE.AD_WINDOW(ad_window_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, windowtype, issotrx, entitytype, processing, ad_image_id, ad_color_id, isdefault, winheight, winwidth, isbetafunctionality)
+  VALUES(1000016, 0, 0, 'Y', '2008-01-21 18:49:45.0', 100, '2008-01-21 18:49:45.0', 100, 'Matrix Printer', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N');
+
+-- AD_TABLE
+INSERT INTO ADEMPIERE.AD_TABLE(ad_table_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, tablename, isview, accesslevel, entitytype, ad_window_id, ad_val_rule_id, loadseq, issecurityenabled, isdeleteable, ishighvolume, importtable, ischangelog, replicationtype, po_window_id, copycolumnsfromtable)
+  VALUES(1000030, 0, 0, 'Y', '2008-01-21 18:05:02.0', 100, '2008-01-21 19:00:30.0', 100, 'Matrix Printer', NULL, NULL, 'LBR_MatrixPrinter', 'N', '4', 'LBRA', 1000016, NULL, 0, 'N', 'Y', 'N', 'N', 'N', 'L', NULL, 'N');
+
 -- AD_COLUMN
 INSERT INTO ADEMPIERE.AD_COLUMN(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic)
   VALUES(1000609, 0, 0, 'Y', '2008-01-21 18:07:33.0', '2008-01-21 18:07:33.0', 100, 100, 'Matrix Printer', 'Primary key table LBR_MatrixPrinter', 'Primary key table LBR_MatrixPrinter', 0, 'LBRA', 'LBR_MatrixPrinter_ID', 1000030, 13, NULL, NULL, 22, NULL, 'Y', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1000238, NULL, 'N', 'N', NULL, NULL);
@@ -102,14 +110,6 @@ INSERT INTO ADEMPIERE.AD_COLUMN(ad_column_id, ad_client_id, ad_org_id, isactive,
   VALUES(1000625, 0, 0, 'Y', '2008-01-21 18:46:49.0', '2008-01-21 18:46:49.0', 100, 100, 'Printer Type', 'Defines the Printer Type', 'Defines the Printer Type', 0, 'LBRA', 'lbr_PrinterType', 1000030, 10, NULL, NULL, 15, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1000245, NULL, 'N', 'N', NULL, NULL);
 INSERT INTO ADEMPIERE.AD_COLUMN(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic)
   VALUES(1000626, 0, 0, 'Y', '2008-01-21 18:48:39.0', '2008-01-21 18:48:39.0', 100, 100, 'Unix PrinterName', 'Defines the Unix PrinterName', 'Defines the Unix PrinterName', 0, 'LBRA', 'lbr_UnixPrinterName', 1000030, 10, NULL, NULL, 40, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1000246, NULL, 'N', 'N', NULL, NULL);
-
--- AD_WINDOW
-INSERT INTO ADEMPIERE.AD_WINDOW(ad_window_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, windowtype, issotrx, entitytype, processing, ad_image_id, ad_color_id, isdefault, winheight, winwidth, isbetafunctionality)
-  VALUES(1000016, 0, 0, 'Y', '2008-01-21 18:49:45.0', 100, '2008-01-21 18:49:45.0', 100, 'Matrix Printer', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N');
-
--- AD_TABLE
-INSERT INTO ADEMPIERE.AD_TABLE(ad_table_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, tablename, isview, accesslevel, entitytype, ad_window_id, ad_val_rule_id, loadseq, issecurityenabled, isdeleteable, ishighvolume, importtable, ischangelog, replicationtype, po_window_id, copycolumnsfromtable)
-  VALUES(1000030, 0, 0, 'Y', '2008-01-21 18:05:02.0', 100, '2008-01-21 19:00:30.0', 100, 'Matrix Printer', NULL, NULL, 'LBR_MatrixPrinter', 'N', '4', 'LBRA', 1000016, NULL, 0, 'N', 'Y', 'N', 'N', 'N', 'L', NULL, 'N');
 
 -- AD_TAB
 INSERT INTO ADEMPIERE.AD_TAB(ad_tab_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, ad_table_id, ad_window_id, seqno, tablevel, issinglerow, isinfotab, istranslationtab, isreadonly, ad_column_id, hastree, whereclause, orderbyclause, commitwarning, ad_process_id, processing, ad_image_id, importfields, ad_columnsortorder_id, ad_columnsortyesno_id, issorttab, entitytype, included_tab_id, readonlylogic, displaylogic, isinsertrecord, isadvancedtab)

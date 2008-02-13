@@ -1974,24 +1974,24 @@
   <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="Y">
-  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+ <row id="1000021" trl="N">
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000022" trl="Y">
   <value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000023" trl="Y">
-  <value column="Name" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
-  <value column="Description" original="Brazilian Tax Group">Grupo de Impostos (NF)</value>
+ <row id="1000023" trl="N">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Description" original=""/>
  </row>
  <row id="1000024" trl="Y">
   <value column="Name" original="Legal Message">Mensagem Legal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000025" trl="N">
-  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+ <row id="1000025" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>
