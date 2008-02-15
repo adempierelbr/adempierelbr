@@ -28,16 +28,16 @@ setDiscountDate (new Timestamp(System.currentTimeMillis()));
 setDocumentNo (null);
 setDueDate (new Timestamp(System.currentTimeMillis()));
 setGrandTotal (Env.ZERO);
-setLBR_Boleto_ID (0);
-setPriceList_Version_ID (null);
-setRoutingNo (null);
 setlbr_AgencyNo (null);
+setlbr_BillFold (null);
+setLBR_Boleto_ID (0);
 setlbr_BPTypeBR (null);
 setlbr_Cessionary (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
 setlbr_IsCancelled (false);	// 'N'
-setlbr_ReceiverName (null);
 setlbr_jBoletoNo (null);
+setlbr_ReceiverName (null);
+setRoutingNo (null);
 }
  */
 }
@@ -290,91 +290,6 @@ BigDecimal bd = (BigDecimal)get_Value("GrandTotal");
 if (bd == null) return Env.ZERO;
 return bd;
 }
-/** Set Boleto.
-@param LBR_Boleto_ID Primary Key table LBR_Boleto */
-public void setLBR_Boleto_ID (int LBR_Boleto_ID)
-{
-if (LBR_Boleto_ID < 1) throw new IllegalArgumentException ("LBR_Boleto_ID is mandatory.");
-set_ValueNoCheck ("LBR_Boleto_ID", new Integer(LBR_Boleto_ID));
-}
-/** Get Boleto.
-@return Primary Key table LBR_Boleto */
-public int getLBR_Boleto_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_Boleto_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set ZIP.
-@param Postal Postal code */
-public void setPostal (String Postal)
-{
-if (Postal != null && Postal.length() > 10)
-{
-log.warning("Length > 10 - truncated");
-Postal = Postal.substring(0,9);
-}
-set_Value ("Postal", Postal);
-}
-/** Get ZIP.
-@return Postal code */
-public String getPostal() 
-{
-return (String)get_Value("Postal");
-}
-/** Set PriceList_Version_ID.
-@param PriceList_Version_ID PriceList_Version_ID */
-public void setPriceList_Version_ID (String PriceList_Version_ID)
-{
-if (PriceList_Version_ID == null) throw new IllegalArgumentException ("PriceList_Version_ID is mandatory.");
-if (PriceList_Version_ID.length() > 10)
-{
-log.warning("Length > 10 - truncated");
-PriceList_Version_ID = PriceList_Version_ID.substring(0,9);
-}
-set_Value ("PriceList_Version_ID", PriceList_Version_ID);
-}
-/** Get PriceList_Version_ID.
-@return PriceList_Version_ID */
-public String getPriceList_Version_ID() 
-{
-return (String)get_Value("PriceList_Version_ID");
-}
-/** Set Region.
-@param RegionName Name of the Region */
-public void setRegionName (String RegionName)
-{
-if (RegionName != null && RegionName.length() > 2)
-{
-log.warning("Length > 2 - truncated");
-RegionName = RegionName.substring(0,1);
-}
-set_Value ("RegionName", RegionName);
-}
-/** Get Region.
-@return Name of the Region */
-public String getRegionName() 
-{
-return (String)get_Value("RegionName");
-}
-/** Set Routing No.
-@param RoutingNo Bank Routing Number */
-public void setRoutingNo (String RoutingNo)
-{
-if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
-if (RoutingNo.length() > 20)
-{
-log.warning("Length > 20 - truncated");
-RoutingNo = RoutingNo.substring(0,19);
-}
-set_Value ("RoutingNo", RoutingNo);
-}
-/** Get Routing No.
-@return Bank Routing Number */
-public String getRoutingNo() 
-{
-return (String)get_Value("RoutingNo");
-}
 /** Set Agency Number.
 @param lbr_AgencyNo Agency Number */
 public void setlbr_AgencyNo (String lbr_AgencyNo)
@@ -392,6 +307,56 @@ set_Value ("lbr_AgencyNo", lbr_AgencyNo);
 public String getlbr_AgencyNo() 
 {
 return (String)get_Value("lbr_AgencyNo");
+}
+/** Set Bill Fold.
+@param lbr_BillFold Type of Bill Fold - For Bank Usage */
+public void setlbr_BillFold (String lbr_BillFold)
+{
+if (lbr_BillFold == null) throw new IllegalArgumentException ("lbr_BillFold is mandatory.");
+if (lbr_BillFold.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+lbr_BillFold = lbr_BillFold.substring(0,9);
+}
+set_Value ("lbr_BillFold", lbr_BillFold);
+}
+/** Get Bill Fold.
+@return Type of Bill Fold - For Bank Usage */
+public String getlbr_BillFold() 
+{
+return (String)get_Value("lbr_BillFold");
+}
+/** Set Bill Kind.
+@param lbr_BillKind Defines the kind of Bill */
+public void setlbr_BillKind (String lbr_BillKind)
+{
+if (lbr_BillKind != null && lbr_BillKind.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+lbr_BillKind = lbr_BillKind.substring(0,9);
+}
+set_Value ("lbr_BillKind", lbr_BillKind);
+}
+/** Get Bill Kind.
+@return Defines the kind of Bill */
+public String getlbr_BillKind() 
+{
+return (String)get_Value("lbr_BillKind");
+}
+/** Set Boleto.
+@param LBR_Boleto_ID Primary Key table LBR_Boleto */
+public void setLBR_Boleto_ID (int LBR_Boleto_ID)
+{
+if (LBR_Boleto_ID < 1) throw new IllegalArgumentException ("LBR_Boleto_ID is mandatory.");
+set_ValueNoCheck ("LBR_Boleto_ID", new Integer(LBR_Boleto_ID));
+}
+/** Get Boleto.
+@return Primary Key table LBR_Boleto */
+public int getLBR_Boleto_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_Boleto_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 
 /** lbr_BPTypeBR AD_Reference_ID=1000000 */
@@ -419,23 +384,6 @@ set_Value ("lbr_BPTypeBR", lbr_BPTypeBR);
 public String getlbr_BPTypeBR() 
 {
 return (String)get_Value("lbr_BPTypeBR");
-}
-/** Set Bill Kind.
-@param lbr_BillKind Defines the kind of Bill */
-public void setlbr_BillKind (String lbr_BillKind)
-{
-if (lbr_BillKind != null && lbr_BillKind.length() > 10)
-{
-log.warning("Length > 10 - truncated");
-lbr_BillKind = lbr_BillKind.substring(0,9);
-}
-set_Value ("lbr_BillKind", lbr_BillKind);
-}
-/** Get Bill Kind.
-@return Defines the kind of Bill */
-public String getlbr_BillKind() 
-{
-return (String)get_Value("lbr_BillKind");
 }
 /** Set Cessionary.
 @param lbr_Cessionary Identifies the Cessionary */
@@ -554,22 +502,23 @@ if (oo != null)
 }
 return false;
 }
-/** Set PaySchedule Number.
-@param lbr_PayScheduleNo Defines the PaySchedule Number */
-public void setlbr_PayScheduleNo (String lbr_PayScheduleNo)
+/** Set jBoleto Number.
+@param lbr_jBoletoNo Identifies the bank number at jBoleto */
+public void setlbr_jBoletoNo (String lbr_jBoletoNo)
 {
-if (lbr_PayScheduleNo != null && lbr_PayScheduleNo.length() > 2)
+if (lbr_jBoletoNo == null) throw new IllegalArgumentException ("lbr_jBoletoNo is mandatory.");
+if (lbr_jBoletoNo.length() > 3)
 {
-log.warning("Length > 2 - truncated");
-lbr_PayScheduleNo = lbr_PayScheduleNo.substring(0,1);
+log.warning("Length > 3 - truncated");
+lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
 }
-set_Value ("lbr_PayScheduleNo", lbr_PayScheduleNo);
+set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
 }
-/** Get PaySchedule Number.
-@return Defines the PaySchedule Number */
-public String getlbr_PayScheduleNo() 
+/** Get jBoleto Number.
+@return Identifies the bank number at jBoleto */
+public String getlbr_jBoletoNo() 
 {
-return (String)get_Value("lbr_PayScheduleNo");
+return (String)get_Value("lbr_jBoletoNo");
 }
 /** Set Payment Location 1.
 @param lbr_PaymentLocation1 Identifies the Payment Location 1 */
@@ -605,6 +554,23 @@ public String getlbr_PaymentLocation2()
 {
 return (String)get_Value("lbr_PaymentLocation2");
 }
+/** Set PaySchedule Number.
+@param lbr_PayScheduleNo Defines the PaySchedule Number */
+public void setlbr_PayScheduleNo (String lbr_PayScheduleNo)
+{
+if (lbr_PayScheduleNo != null && lbr_PayScheduleNo.length() > 2)
+{
+log.warning("Length > 2 - truncated");
+lbr_PayScheduleNo = lbr_PayScheduleNo.substring(0,1);
+}
+set_Value ("lbr_PayScheduleNo", lbr_PayScheduleNo);
+}
+/** Get PaySchedule Number.
+@return Defines the PaySchedule Number */
+public String getlbr_PayScheduleNo() 
+{
+return (String)get_Value("lbr_PayScheduleNo");
+}
 /** Set Receiver Name.
 @param lbr_ReceiverName Name of the Receiver */
 public void setlbr_ReceiverName (String lbr_ReceiverName)
@@ -623,22 +589,56 @@ public String getlbr_ReceiverName()
 {
 return (String)get_Value("lbr_ReceiverName");
 }
-/** Set jBoleto Number.
-@param lbr_jBoletoNo Identifies the bank number at jBoleto */
-public void setlbr_jBoletoNo (String lbr_jBoletoNo)
+/** Set ZIP.
+@param Postal Postal code */
+public void setPostal (String Postal)
 {
-if (lbr_jBoletoNo == null) throw new IllegalArgumentException ("lbr_jBoletoNo is mandatory.");
-if (lbr_jBoletoNo.length() > 3)
+if (Postal != null && Postal.length() > 10)
 {
-log.warning("Length > 3 - truncated");
-lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
+log.warning("Length > 10 - truncated");
+Postal = Postal.substring(0,9);
 }
-set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
+set_Value ("Postal", Postal);
 }
-/** Get jBoleto Number.
-@return Identifies the bank number at jBoleto */
-public String getlbr_jBoletoNo() 
+/** Get ZIP.
+@return Postal code */
+public String getPostal() 
 {
-return (String)get_Value("lbr_jBoletoNo");
+return (String)get_Value("Postal");
+}
+/** Set Region.
+@param RegionName Name of the Region */
+public void setRegionName (String RegionName)
+{
+if (RegionName != null && RegionName.length() > 2)
+{
+log.warning("Length > 2 - truncated");
+RegionName = RegionName.substring(0,1);
+}
+set_Value ("RegionName", RegionName);
+}
+/** Get Region.
+@return Name of the Region */
+public String getRegionName() 
+{
+return (String)get_Value("RegionName");
+}
+/** Set Routing No.
+@param RoutingNo Bank Routing Number */
+public void setRoutingNo (String RoutingNo)
+{
+if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
+if (RoutingNo.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RoutingNo = RoutingNo.substring(0,19);
+}
+set_Value ("RoutingNo", RoutingNo);
+}
+/** Get Routing No.
+@return Bank Routing Number */
+public String getRoutingNo() 
+{
+return (String)get_Value("RoutingNo");
 }
 }
