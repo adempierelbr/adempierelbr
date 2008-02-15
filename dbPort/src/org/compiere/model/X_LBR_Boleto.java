@@ -29,10 +29,10 @@ setDocumentNo (null);
 setDueDate (new Timestamp(System.currentTimeMillis()));
 setGrandTotal (Env.ZERO);
 setLBR_Boleto_ID (0);
+setPriceList_Version_ID (null);
 setRoutingNo (null);
 setlbr_AgencyNo (null);
 setlbr_BPTypeBR (null);
-setlbr_BillFold (null);
 setlbr_Cessionary (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
 setlbr_IsCancelled (false);	// 'N'
@@ -322,6 +322,24 @@ public String getPostal()
 {
 return (String)get_Value("Postal");
 }
+/** Set PriceList_Version_ID.
+@param PriceList_Version_ID PriceList_Version_ID */
+public void setPriceList_Version_ID (String PriceList_Version_ID)
+{
+if (PriceList_Version_ID == null) throw new IllegalArgumentException ("PriceList_Version_ID is mandatory.");
+if (PriceList_Version_ID.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+PriceList_Version_ID = PriceList_Version_ID.substring(0,9);
+}
+set_Value ("PriceList_Version_ID", PriceList_Version_ID);
+}
+/** Get PriceList_Version_ID.
+@return PriceList_Version_ID */
+public String getPriceList_Version_ID() 
+{
+return (String)get_Value("PriceList_Version_ID");
+}
 /** Set Region.
 @param RegionName Name of the Region */
 public void setRegionName (String RegionName)
@@ -401,24 +419,6 @@ set_Value ("lbr_BPTypeBR", lbr_BPTypeBR);
 public String getlbr_BPTypeBR() 
 {
 return (String)get_Value("lbr_BPTypeBR");
-}
-/** Set Bill Fold.
-@param lbr_BillFold Type of Bill Fold - For Bank Usage */
-public void setlbr_BillFold (String lbr_BillFold)
-{
-if (lbr_BillFold == null) throw new IllegalArgumentException ("lbr_BillFold is mandatory.");
-if (lbr_BillFold.length() > 10)
-{
-log.warning("Length > 10 - truncated");
-lbr_BillFold = lbr_BillFold.substring(0,9);
-}
-set_Value ("lbr_BillFold", lbr_BillFold);
-}
-/** Get Bill Fold.
-@return Type of Bill Fold - For Bank Usage */
-public String getlbr_BillFold() 
-{
-return (String)get_Value("lbr_BillFold");
 }
 /** Set Bill Kind.
 @param lbr_BillKind Defines the kind of Bill */

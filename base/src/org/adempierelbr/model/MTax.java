@@ -183,6 +183,56 @@ public class MTax extends X_LBR_Tax {
 		return LBR_TaxLine_ID.intValue();
 	} //getLine
 	
+	/**************************************************************************
+	 *  getC_Tax_ID
+	 *  @return Integer C_Tax_ID
+	 */
+	public static int getC_Tax_ID(int Parent_Tax_ID, int LBR_TaxName_ID, String trx){
+		
+		CLogger log = CLogger.getCLogger(MTax.class);
+		
+		Integer C_Tax_ID = null;
+		
+		String sql = "SELECT C_Tax_ID " +
+				     "FROM C_Tax " +
+				     "WHERE Parent_Tax_ID = ? " +
+				     "AND LBR_TaxName_ID = ?";
+
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, Parent_Tax_ID);
+			pstmt.setInt(2, LBR_TaxName_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				C_Tax_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+
+		if (C_Tax_ID == null) C_Tax_ID = 0;
+			
+		return C_Tax_ID.intValue();
+	} //getC_Tax_ID
+	
 	public void deleteLines(){
 	
 		String sql = "DELETE FROM LBR_TaxLine " +

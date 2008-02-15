@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MTax;
 import org.adempierelbr.model.MTaxBR;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -17,6 +18,8 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MProduct;
+import org.compiere.model.X_LBR_NFLineTax;
+import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
@@ -404,5 +407,85 @@ public class TaxBR
 		return retValue;
 		
 	} //getMInvoiceTaxAmt
+	
+	public static void setNFTax(Properties ctx, int C_Invoice_ID, int LBR_NotaFiscal_ID, String trx){
+		
+		String sql = "SELECT t.LBR_TaxGroup_ID, SUM(it.TaxBaseAmt), SUM(it.TaxAmt) " + //1..3
+			         "FROM C_InvoiceTax it " +
+		             "INNER JOIN C_Tax t ON it.C_Tax_ID = t.C_Tax_ID " +
+		             "WHERE C_Invoice_ID = ? " + //#1
+		             "GROUP BY t.LBR_TaxGroup_ID";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt (1, C_Invoice_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			while (rs.next ()){
+				
+				X_LBR_NFTax nfTax = new X_LBR_NFTax(ctx, 0, trx);
+				nfTax.setLBR_TaxGroup_ID(rs.getInt(1));
+				nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
+				nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
+				nfTax.setlbr_TaxAmt(rs.getBigDecimal(3));
+				nfTax.save(trx);
+				
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql, e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+	} //setNFTax
+	
+	public static void setNFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, String trx){
+		
+		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
+		
+		Integer[] taxName = MTaxBR.getLBR_TaxName_ID(C_InvoiceLine_ID, false, trx);
+		
+		for (int i=0;i<taxName.length;i++){
+			
+			int LBR_TaxLine_ID = MTax.getLine((Integer)iLine.get_Value("LBR_Tax_ID"),taxName[i],trx);
+			if (LBR_TaxLine_ID != 0){
+				
+				X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx, LBR_TaxLine_ID, trx);
+				int C_Tax_ID = MTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName[i], trx);
+				if (C_Tax_ID != 0){
+					
+					org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);
+					Integer LBR_TaxGroup_ID = (Integer)tax.get_Value("LBR_TaxGroup_ID");
+					if (LBR_TaxGroup_ID != null || LBR_TaxGroup_ID.intValue() == 0){
+						
+						X_LBR_NFLineTax nfLineTax = new X_LBR_NFLineTax(ctx,0,trx);
+						nfLineTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
+						nfLineTax.setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);
+						nfLineTax.setlbr_TaxBaseAmt(taxLine.getlbr_TaxBaseAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+						nfLineTax.setlbr_TaxAmt(taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+						nfLineTax.save(trx);
+						
+					}//endif
+					
+				}//endif
+				
+			}//endif
+			
+		}//for
+		
+	}
 		
 }//TaxBR

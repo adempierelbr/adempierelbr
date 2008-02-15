@@ -190,6 +190,50 @@ public class POLBR{
 		
 	}	//	getARReceipt
 	
+	public static int getNFB(int AD_Org_ID)
+	{
+		int C_DocType_ID = -1;
+		String sql = "SELECT C_DocType_ID " +
+				     "FROM C_DocType " +
+				     "WHERE DocBaseType = 'NFB' " +
+				     "AND AD_Client_ID = ? " +
+				     "AND AD_Org_ID IN (0,?) " +
+				     "order by C_DocType_ID, AD_Org_ID desc";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, null);
+			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
+			pstmt.setInt(2, AD_Org_ID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 C_DocType_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		return C_DocType_ID;
+		
+	}	//	getARReceipt
+	
 	public static int getDocTypeAcct(int C_DocType_ID){
 		
 		Integer LBR_DocType_Acct_ID = null;

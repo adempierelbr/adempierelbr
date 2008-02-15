@@ -105,10 +105,10 @@ return ii.intValue();
 public void setlbr_Formula (String lbr_Formula)
 {
 if (lbr_Formula == null) throw new IllegalArgumentException ("lbr_Formula is mandatory.");
-if (lbr_Formula.length() > 1000)
+if (lbr_Formula.length() > 2000)
 {
-log.warning("Length > 1000 - truncated");
-lbr_Formula = lbr_Formula.substring(0,999);
+log.warning("Length > 2000 - truncated");
+lbr_Formula = lbr_Formula.substring(0,1999);
 }
 set_Value ("lbr_Formula", lbr_Formula);
 }
@@ -123,10 +123,10 @@ return (String)get_Value("lbr_Formula");
 public void setlbr_FormulaNetWorth (String lbr_FormulaNetWorth)
 {
 if (lbr_FormulaNetWorth == null) throw new IllegalArgumentException ("lbr_FormulaNetWorth is mandatory.");
-if (lbr_FormulaNetWorth.length() > 1000)
+if (lbr_FormulaNetWorth.length() > 2000)
 {
-log.warning("Length > 1000 - truncated");
-lbr_FormulaNetWorth = lbr_FormulaNetWorth.substring(0,999);
+log.warning("Length > 2000 - truncated");
+lbr_FormulaNetWorth = lbr_FormulaNetWorth.substring(0,1999);
 }
 set_Value ("lbr_FormulaNetWorth", lbr_FormulaNetWorth);
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import org.adempierelbr.model.MTax;
+import org.adempierelbr.process.ProcGenerateNFS;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.compiere.apps.search.Info_Column;
@@ -258,6 +259,8 @@ public class ValidatorInvoice implements ModelValidator
 			BigDecimal grandTotal = Env.ZERO;
 			BigDecimal substTotal = Env.ZERO;
 			
+			int LBR_NotaFiscal_ID = 0;
+			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_InvoiceTax " +
 					     "WHERE TaxAmt = 0 " +
@@ -325,6 +328,8 @@ public class ValidatorInvoice implements ModelValidator
 			
 			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 			boolean HasOpenItems = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasOpenItems"));
+			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
+			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
 			
 			if (!HasOpenItems){
 			
@@ -352,6 +357,25 @@ public class ValidatorInvoice implements ModelValidator
 				}
 				
 			} // don't have Open Items - create automatically allocation
+			
+			if (HasFiscalDocument){
+				
+				if (dt.isSOTrx()){
+					
+					LBR_NotaFiscal_ID = ProcGenerateNFS.generate(ctx,invoice,trx);
+					
+					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+					
+				} //documento de venda (saída)
+				else if (IsOwnDocument){
+					//TODO NF Entrada Própria
+				} //document própria
+				else{
+					//TODO NF Entrada Terceiros
+				} //nf terceiros
+				
+			} // geração de Documento Fiscal
+			
 		}
 			
 		return null;

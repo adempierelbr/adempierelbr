@@ -68,6 +68,9 @@ public String toString()
 StringBuffer sb = new StringBuffer ("X_LBR_TaxConfig_ProductGroup[").append(get_ID()).append("]");
 return sb.toString();
 }
+
+/** LBR_FiscalGroup_Product_ID AD_Reference_ID=1000018 */
+public static final int LBR_FISCALGROUP_PRODUCT_ID_AD_Reference_ID=1000018;
 /** Set Fiscal Group - Product.
 @param LBR_FiscalGroup_Product_ID Primary key table LBR_FiscalGroup_Product */
 public void setLBR_FiscalGroup_Product_ID (int LBR_FiscalGroup_Product_ID)

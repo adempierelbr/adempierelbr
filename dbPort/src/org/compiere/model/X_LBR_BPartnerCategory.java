@@ -42,9 +42,9 @@ public static final String Table_Name="LBR_BPartnerCategory";
 
 protected static KeyNamePair Model = new KeyNamePair(Table_ID,"LBR_BPartnerCategory");
 
-protected BigDecimal accessLevel = new BigDecimal(3);
+protected BigDecimal accessLevel = new BigDecimal(7);
 /** AccessLevel
-@return 3 - Client - Org 
+@return 7 - System - Client - Org 
 */
 protected int get_AccessLevel()
 {

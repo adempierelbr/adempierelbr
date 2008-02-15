@@ -85,14 +85,9 @@ public class ProcPrintNF extends SvrProcess
 				print(getCtx(),p_LBR_MatrixPrinter_ID,p_LBR_DocPrint_ID,i,null);
 			}
 			
-			/*
-			String sql = "UPDATE LBR_NotaFiscal SET IsPrinted= 'Y' " +
-                         "WHERE LBR_NotaFiscal_ID=" + i;
-			int process = DB.executeUpdate(sql, get_TrxName());
-			if (process == -1)
-				throw new AdempiereSystemError ("Não foi possível marcar a Nota como Impressa");
-			*/	
-				
+			NotaFiscal.setIsPrinted(true);
+			NotaFiscal.save(get_TrxName());
+	
 		}
 			    
 		return "ProcPrintNF Process Completed " + "Nota: " + p_LBR_NotaFiscal_ID;
