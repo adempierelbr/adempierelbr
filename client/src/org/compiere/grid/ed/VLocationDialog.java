@@ -188,6 +188,18 @@ public class VLocationDialog extends CDialog implements ActionListener
 			fRegion = new CComboBox(MRegion.getRegions(Env.getCtx(), country.getC_Country_ID()));
 			if (m_location.getRegion() != null)
 				fRegion.setSelectedItem(m_location.getRegion());
+			else
+				if(m_location.getCountry().getC_Country_ID() == 139){
+					MOrg org = new MOrg(Env.getCtx(), m_location.getAD_Org_ID(), null);
+					MLocation location = 
+						new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(), null);
+					MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
+					fRegion.setSelectedItem(region);
+					//	refrseh
+					mainPanel.removeAll();
+					initLocation();
+					fRegion.requestFocus();	//	allows to use Keybord selection
+				}
 			// Kenos
 			fRegion.addActionListener(this);
 			//
@@ -359,7 +371,22 @@ public class VLocationDialog extends CDialog implements ActionListener
 		else
 		{			
 			//  Country/Region
-			Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + getCurrentLocation());
+			if(m_location.getCountry().getC_Country_ID() == 139){
+				//Get the Region name from MRegion, as the RegionName filled in the m_location is not right
+				MRegion region = new MRegion(Env.getCtx(), m_location.getC_Region_ID(), null);
+				String address = "";
+				address = address + (m_location.getAddress1() != null ? m_location.getAddress1() + ", " : "");
+				address = address + (m_location.getAddress2() != null ? m_location.getAddress2() + ", " : "");
+				address = address + (m_location.getAddress3() != null ? m_location.getAddress3() + ", " : "");
+				address = address + (m_location.getAddress4() != null ? m_location.getAddress4() + ", " : "");
+				address = address + (m_location.getPostal() != null ? m_location.getPostal() + ", " : "");
+				address = address + (m_location.getCity() != null ? m_location.getCity() + ", " : "");
+				address = address + (region.getName() != null ? region.getName() + ", " : "");
+				address = address + (m_location.getCountryName() != null ? m_location.getCountryName() : "");
+				Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + address);
+			}
+			else
+				Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + getCurrentLocation());
 		}
 	}	//	actionPerformed
 
