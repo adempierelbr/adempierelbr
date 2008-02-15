@@ -189,7 +189,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 			if (m_location.getRegion() != null)
 				fRegion.setSelectedItem(m_location.getRegion());
 			else
-				if(m_location.getCountry().getC_Country_ID() == 139){
+				if(m_location.getCountry().getC_Country_ID() == 139 && m_location.getAD_Org_ID() != 0){
 					MOrg org = new MOrg(Env.getCtx(), m_location.getAD_Org_ID(), null);
 					MLocation location = 
 						new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(), null);
