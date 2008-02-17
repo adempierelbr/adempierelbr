@@ -1,3 +1,15 @@
+/*****************************************************************************
+* Product: ADempiereLBR - ADempiere Localization Brazil                      *
+* This program is free software. you can redistribute it and/or modify it    *
+* under the terms version 2 of the GNU General Public License as published   *
+* by the Free Software Foundation. This program is distributed in the hope   *
+* that it will be useful, but WITHOUT ANY WARRANTY. without even the implied *
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+* See the GNU General Public License for more details.                       *
+* You should have received a copy of the GNU General Public License along    *
+* with this program. if not, write to the Free Software Foundation, Inc.,    *
+* 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+*****************************************************************************/
 package org.compiere.model;
 
 /** Generated Model - DO NOT CHANGE */
@@ -289,10 +301,6 @@ return (String)get_Value("lbr_IsSubTributaria");
 public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
 /** 00 - Tributada integralmente = 00 */
 public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
-/** 10 - Tributada e com cobrança do ICMS por Sub. Tributária = 10 */
-public static final String LBR_TAXSTATUS_10_TributadaEComCobrançaDoICMSPorSubTributária = "10";
-/** 20 - Com redução de base de cálculo = 20 */
-public static final String LBR_TAXSTATUS_20_ComReduçãoDeBaseDeCálculo = "20";
 /** 30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
 public static final String LBR_TAXSTATUS_30_IsentaOuNão_TribEComCobrDoICMSPorSubTribut = "30";
 /** 40 - Isenta = 40 */
@@ -309,12 +317,16 @@ public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstitui
 public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCálcECobrDoICMSPorSubTrib = "70";
 /** 90 - Outras = 90 */
 public static final String LBR_TAXSTATUS_90_Outras = "90";
+/** 10 - Tributada e com cobrança do ICMS por Sub. Tributária = 10 */
+public static final String LBR_TAXSTATUS_10_TributadaEComCobrançaDoICMSPorSubTributária = "10";
+/** 20 - Com redução de base de cálculo = 20 */
+public static final String LBR_TAXSTATUS_20_ComReduçãoDeBaseDeCálculo = "20";
 /** Set Tax Status.
 @param lbr_TaxStatus Defines the Tax Status */
 public void setlbr_TaxStatus (String lbr_TaxStatus)
 {
-if (lbr_TaxStatus == null || lbr_TaxStatus.equals("00") || lbr_TaxStatus.equals("10") || lbr_TaxStatus.equals("20") || lbr_TaxStatus.equals("30") || lbr_TaxStatus.equals("40") || lbr_TaxStatus.equals("41") || lbr_TaxStatus.equals("50") || lbr_TaxStatus.equals("51") || lbr_TaxStatus.equals("60") || lbr_TaxStatus.equals("70") || lbr_TaxStatus.equals("90"));
- else throw new IllegalArgumentException ("lbr_TaxStatus Invalid value - " + lbr_TaxStatus + " - Reference_ID=1000029 - 00 - 10 - 20 - 30 - 40 - 41 - 50 - 51 - 60 - 70 - 90");
+if (lbr_TaxStatus == null || lbr_TaxStatus.equals("00") || lbr_TaxStatus.equals("30") || lbr_TaxStatus.equals("40") || lbr_TaxStatus.equals("41") || lbr_TaxStatus.equals("50") || lbr_TaxStatus.equals("51") || lbr_TaxStatus.equals("60") || lbr_TaxStatus.equals("70") || lbr_TaxStatus.equals("90") || lbr_TaxStatus.equals("10") || lbr_TaxStatus.equals("20"));
+ else throw new IllegalArgumentException ("lbr_TaxStatus Invalid value - " + lbr_TaxStatus + " - Reference_ID=1000029 - 00 - 30 - 40 - 41 - 50 - 51 - 60 - 70 - 90 - 10 - 20");
 if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 2)
 {
 log.warning("Length > 2 - truncated");

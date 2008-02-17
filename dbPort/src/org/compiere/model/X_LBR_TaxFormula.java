@@ -1,3 +1,15 @@
+/*****************************************************************************
+* Product: ADempiereLBR - ADempiere Localization Brazil                      *
+* This program is free software. you can redistribute it and/or modify it    *
+* under the terms version 2 of the GNU General Public License as published   *
+* by the Free Software Foundation. This program is distributed in the hope   *
+* that it will be useful, but WITHOUT ANY WARRANTY. without even the implied *
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+* See the GNU General Public License for more details.                       *
+* You should have received a copy of the GNU General Public License along    *
+* with this program. if not, write to the Free Software Foundation, Inc.,    *
+* 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+*****************************************************************************/
 package org.compiere.model;
 
 /** Generated Model - DO NOT CHANGE */
@@ -137,29 +149,16 @@ public String getlbr_FormulaNetWorth()
 return (String)get_Value("lbr_FormulaNetWorth");
 }
 
-/** lbr_TransactionType AD_Reference_ID=1000024 */
-public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
-/** End User = END */
-public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
-/** Manufacturing = MAN */
-public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
-/** Import = IMP */
-public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
-/** Export = EXP */
-public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
-/** Resale = RES */
-public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
+/** lbr_TransactionType AD_Reference_ID=1000014 */
+public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000014;
 /** Set Transaction Type.
 @param lbr_TransactionType Defines the Transaction Type */
 public void setlbr_TransactionType (String lbr_TransactionType)
 {
-if (lbr_TransactionType == null) throw new IllegalArgumentException ("lbr_TransactionType is mandatory");
-if (lbr_TransactionType.equals("END") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("IMP") || lbr_TransactionType.equals("EXP") || lbr_TransactionType.equals("RES"));
- else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000024 - END - MAN - IMP - EXP - RES");
-if (lbr_TransactionType.length() > 3)
+if (lbr_TransactionType.length() > 1)
 {
-log.warning("Length > 3 - truncated");
-lbr_TransactionType = lbr_TransactionType.substring(0,2);
+log.warning("Length > 1 - truncated");
+lbr_TransactionType = lbr_TransactionType.substring(0,0);
 }
 set_Value ("lbr_TransactionType", lbr_TransactionType);
 }

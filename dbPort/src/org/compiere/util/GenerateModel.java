@@ -1,6 +1,5 @@
 /******************************************************************************
- * Product: Compiere ERP & CRM Smart Business Solution                        *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -10,9 +9,6 @@
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
- * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
 package org.compiere.util;
 
@@ -38,6 +34,22 @@ import org.compiere.sqlj.Compiere;
  */
 public class GenerateModel
 {
+	
+	/** File Header			*/
+	public static final String COPY = 
+		"/*****************************************************************************\n"
+	   +"* Product: ADempiereLBR - ADempiere Localization Brazil                      *\n"
+	   +"* This program is free software. you can redistribute it and/or modify it    *\n"
+	   +"* under the terms version 2 of the GNU General Public License as published   *\n"
+	   +"* by the Free Software Foundation. This program is distributed in the hope   *\n"
+	   +"* that it will be useful, but WITHOUT ANY WARRANTY. without even the implied *\n"
+	   +"* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *\n"
+	   +"* See the GNU General Public License for more details.                       *\n"
+	   +"* You should have received a copy of the GNU General Public License along    *\n"
+	   +"* with this program. if not, write to the Free Software Foundation, Inc.,    *\n"
+	   +"* 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *\n"
+	   +"*****************************************************************************/\n";
+	
 	/**
 	 * 	Generate PO Class
 	 * 	@param AD_Table_ID table id
@@ -119,8 +131,8 @@ public class GenerateModel
 		String keyColumn = tableName + "_ID";
 		String className = "X_" + tableName;
 		//
-		StringBuffer start = new StringBuffer ()
-			.append ("package " + packageName + ";\n"
+		StringBuffer start = new StringBuffer ().append(COPY);
+		start.append ("package " + packageName + ";\n"
 				+ "/** Generated Model - DO NOT CHANGE */\n");
 		if (!packageName.equals("org.compiere.model"))
 			start.append("import org.compiere.model.*;");	
