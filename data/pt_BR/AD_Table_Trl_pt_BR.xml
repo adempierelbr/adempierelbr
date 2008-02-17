@@ -2132,4 +2132,10 @@
  <row id="1000033" trl="Y">
   <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
  </row>
+ <row id="1000034" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
+ </row>
+ <row id="1000035" trl="N">
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Nota Fiscal Line</value>
+ </row>
 </adempiereTrl>

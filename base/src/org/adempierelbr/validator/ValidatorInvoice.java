@@ -173,7 +173,7 @@ public class ValidatorInvoice implements ModelValidator
 					//CFOP, Sit. Tributária, Mensagem Legal
 					Integer LBR_CFOP_ID         = (Integer)oLine.get_Value("LBR_CFOP_ID");
 					Integer LBR_LegalMessage_ID = (Integer)oLine.get_Value("LBR_LegalMessage_ID");
-					String  sitTributaria       = (String)oLine.get_Value("lbr_TaxStatus_Taxing");
+					String  sitTributaria       = (String)oLine.get_Value("lbr_TaxStatus");
 				
 					LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
 					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
@@ -183,7 +183,7 @@ public class ValidatorInvoice implements ModelValidator
 						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 						iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
 						iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-						iLine.set_ValueOfColumn("lbr_TaxStatus_Taxing", sitTributaria);
+						iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
 					
 					}
 				}
@@ -219,6 +219,7 @@ public class ValidatorInvoice implements ModelValidator
 				iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 			
 				if (!invoice.isTaxIncluded()){
+					iTax.setTaxBaseAmt(invoice.getTotalLines());
 					invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
 					invoice.save(trx);
 				}

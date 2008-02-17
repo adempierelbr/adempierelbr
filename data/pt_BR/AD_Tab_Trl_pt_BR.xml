@@ -4325,7 +4325,7 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000008" trl="N">
+ <row id="1000008" trl="Y">
   <value column="Name" original="Line">Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
@@ -4415,8 +4415,8 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000023" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+ <row id="1000023" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
@@ -4429,6 +4429,18 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
  </row>
  <row id="1000025" trl="Y">
   <value column="Name" original="Group">Grupo</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000026" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>

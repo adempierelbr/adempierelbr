@@ -1782,4 +1782,9 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000033" trl="N">
+  <value column="Name" original="LBR_NotaFiscalLine">LBR_NotaFiscalLine</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

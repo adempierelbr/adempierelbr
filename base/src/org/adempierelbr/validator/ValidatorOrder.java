@@ -175,6 +175,7 @@ public class ValidatorOrder implements ModelValidator
 			oTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 			
 			if (!order.isTaxIncluded()){
+				oTax.setTaxBaseAmt(order.getTotalLines());
 				order.setGrandTotal(order.getTotalLines().add(TaxBR.getMOrderTaxAmt(order.getC_Order_ID(), trx)));
 				order.save(trx);
 			}

@@ -3686,4 +3686,8 @@
   <value column="Name" original="Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Nacional</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000060" trl="N">
+  <value column="Name" original="Nota Fiscal Brasil">Nota Fiscal Brasil</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>
