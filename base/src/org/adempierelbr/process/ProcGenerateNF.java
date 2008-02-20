@@ -111,6 +111,10 @@ public class ProcGenerateNF extends SvrProcess
 			throw new IllegalArgumentException("Fatura == 0");
 		
 		MInvoice invoice = new MInvoice(getCtx(),p_C_Invoice_ID,get_TrxName());
+		Integer invoice_NF_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
+		if (invoice_NF_ID != null && invoice_NF_ID.intValue() > 0){
+			throw new IllegalArgumentException("Fatura já possui nota fiscal");
+		}
 		
 		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,p_IsOwnDocument,get_TrxName());
 		
