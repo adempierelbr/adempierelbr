@@ -525,6 +525,23 @@ if (oo != null)
 }
 return false;
 }
+/** Set Process Now.
+@param Processing2 Process Now */
+public void setProcessing2 (String Processing2)
+{
+if (Processing2 != null && Processing2.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+Processing2 = Processing2.substring(0,0);
+}
+set_Value ("Processing2", Processing2);
+}
+/** Get Process Now.
+@return Process Now */
+public String getProcessing2() 
+{
+return (String)get_Value("Processing2");
+}
 /** Set Total Lines.
 @param TotalLines Total of all document lines */
 public void setTotalLines (BigDecimal TotalLines)
@@ -1345,5 +1362,22 @@ public BigDecimal getlbr_NetWeight()
 BigDecimal bd = (BigDecimal)get_Value("lbr_NetWeight");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Process Cancel Nota Fiscal.
+@param lbr_ProcCancelNF Process to Cancel Nota Fiscal */
+public void setlbr_ProcCancelNF (String lbr_ProcCancelNF)
+{
+if (lbr_ProcCancelNF != null && lbr_ProcCancelNF.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_ProcCancelNF = lbr_ProcCancelNF.substring(0,0);
+}
+set_Value ("lbr_ProcCancelNF", lbr_ProcCancelNF);
+}
+/** Get Process Cancel Nota Fiscal.
+@return Process to Cancel Nota Fiscal */
+public String getlbr_ProcCancelNF() 
+{
+return (String)get_Value("lbr_ProcCancelNF");
 }
 }

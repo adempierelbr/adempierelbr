@@ -13,6 +13,7 @@
 package org.adempierelbr.process;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -39,6 +40,7 @@ import org.compiere.model.MRegion;
 import org.compiere.model.MShipper;
 import org.compiere.model.MUOM;
 import org.compiere.model.X_LBR_CFOP;
+import org.compiere.model.X_LBR_LegalMessage;
 import org.compiere.model.X_LBR_NCM;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -50,24 +52,26 @@ import org.compiere.util.DB;
  *	ProcGenerateNF
  *
  *  Process to Generate Nota Fiscal
- *	
+ *	 
  *	@author Mario Grigioni
  *	@version $Id: ProcGenerateNF.java, 08/01/2008 10:38:00 mgrigioni
  */
-public class ProcGenerateNFS extends SvrProcess
+public class ProcGenerateNF extends SvrProcess
 {
 	
 	/** Fatura                    */
-	private int p_C_Invoice_ID = 0;
+	private Integer p_C_Invoice_ID = 0;
 	/** Nota Fiscal               */
 	private static Integer p_LBR_NotaFiscal_ID = 0;
+	/** Documento Próprio         */
+	private boolean p_IsOwnDocument = true;
 	
 	public static Properties ctx;
 	public static String     trx;
 	public static boolean    isSOTrx = true;
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(ProcGenerateNFS.class);
+	private static CLogger log = CLogger.getCLogger(ProcGenerateNF.class);
 
 	/**
 	 *  Prepare - e.g., get Parameters.
@@ -80,6 +84,8 @@ public class ProcGenerateNFS extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (name.equals("lbr_IsOwnDocument"))
+				p_IsOwnDocument = ((String)para[i].getParameter()).equals("Y");
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -94,14 +100,19 @@ public class ProcGenerateNFS extends SvrProcess
 	{
 		log.info("GenerateNF Process " + "Fatura: " + p_C_Invoice_ID);
 		
-		p_C_Invoice_ID = getRecord_ID();
-
+		p_LBR_NotaFiscal_ID = getRecord_ID();
+		if (p_LBR_NotaFiscal_ID == null || p_LBR_NotaFiscal_ID.intValue() == 0)
+			throw new IllegalArgumentException("Nota Fiscal == 0");
+		
+		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+		
+		p_C_Invoice_ID = nf.getC_Invoice_ID();
+		if (p_C_Invoice_ID == null || p_C_Invoice_ID.intValue() == 0)
+			throw new IllegalArgumentException("Fatura == 0");
+		
 		MInvoice invoice = new MInvoice(getCtx(),p_C_Invoice_ID,get_TrxName());
 		
-		p_LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
-		if (p_LBR_NotaFiscal_ID == null) p_LBR_NotaFiscal_ID = 0;
-		
-		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,get_TrxName());
+		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,p_IsOwnDocument,get_TrxName());
 		
 		invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 		invoice.save(get_TrxName());
@@ -110,15 +121,19 @@ public class ProcGenerateNFS extends SvrProcess
 		
 	}	//	doIt
 	
-	public static int generate(Properties context, MInvoice invoice, String transaction){
+	public static int generate(Properties context, MInvoice invoice, boolean IsOwnDocument, String transaction){
 		
 		int LBR_NotaFiscal_ID = p_LBR_NotaFiscal_ID;
 		
 		ctx = context;
 		trx = transaction;
+		isSOTrx = invoice.isSOTrx();
 		
 		if (LBR_NotaFiscal_ID != 0){
 			
+			DB.executeUpdate("DELETE FROM LBR_NFTax WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID, trx);
+			DB.executeUpdate("DELETE FROM LBR_NFLineTax WHERE LBR_NotaFiscalLine_ID = " +
+					         "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID + ")", trx);
 			DB.executeUpdate("DELETE FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID, trx);
 			
 		}
@@ -156,6 +171,9 @@ public class ProcGenerateNFS extends SvrProcess
 		Map<String,String>         refCFOP               = new HashMap<String, String>(); //Referência CFOP
 		String                     CFOPReference         = "";
 		int                        cfop_ID               = -1;
+		
+		ArrayList<Integer>         refLegalMessage       = new ArrayList<Integer>(); //Referência Mensagem Legal
+		String                     legalMessage          = "";
 			
 		String[]                   CNPJ_IE               = {null,null};
 				
@@ -214,10 +232,18 @@ public class ProcGenerateNFS extends SvrProcess
 			
 		NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 			
-		int C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID());
-			
-		NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
-		NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo
+		if (IsOwnDocument){
+			int C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID());
+			NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
+			NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo
+		}
+		else{
+			NotaFiscal.setC_DocType_ID(0);
+			NotaFiscal.setC_DocTypeTarget_ID(0);
+			NotaFiscal.setDocumentNo(invoice.getPOReference());
+			NotaFiscal.setIsPrinted(false);
+		}
+		
 		NotaFiscal.setDateDoc(invoice.getDateInvoiced());   //Data do Documento
 		
 		/** Dados da Empresa **/
@@ -228,6 +254,7 @@ public class ProcGenerateNFS extends SvrProcess
 		NotaFiscal.setC_Invoice_ID(invoice.getC_Invoice_ID());   /** C_Invoice_ID **/
 		NotaFiscal.setC_Order_ID(order.getC_Order_ID());   /** C_Order_ID **/
 		NotaFiscal.setM_InOut_ID(shipment.getM_InOut_ID());   /** M_InOut_ID **/
+		NotaFiscal.setDescription(order.get_ValueAsString("lbr_NFDescription")); //Observação Nota Fiscal
 			
 		/** Parceiro de Negócios **/
 		NotaFiscal.setC_BPartner_ID(bpartner.getC_BPartner_ID());   /** C_BPartner_ID **/
@@ -347,8 +374,9 @@ public class ProcGenerateNFS extends SvrProcess
 				MProduct   product = new MProduct(ctx,lines[i].getM_Product_ID(),trx);
 				MUOM       uom     = new MUOM(ctx,product.getC_UOM_ID(),trx);
 					
-				Integer LBR_NCM_ID  = (Integer)product.get_Value("LBR_NCM_ID");
-				Integer LBR_CFOP_ID = (Integer)lines[i].get_Value("LBR_CFOP_ID");
+				Integer LBR_NCM_ID          = (Integer)product.get_Value("LBR_NCM_ID");
+				Integer LBR_CFOP_ID         = (Integer)lines[i].get_Value("LBR_CFOP_ID");
+				Integer LBR_LegalMessage_ID = (Integer)lines[i].get_Value("LBR_LegalMessage_ID");
 					
 				String VendorProductNo = POLBR.getVendorProductNo(product.getM_Product_ID(),bpartner.getC_BPartner_ID());
 
@@ -362,15 +390,23 @@ public class ProcGenerateNFS extends SvrProcess
 							
 				NotaFiscalLine.setProductName(product.getName());   //Nome/Descrição Produto
 				NotaFiscalLine.setProductValue(product.getValue());   //Código Produto
-	
+								
 				NotaFiscalLine.setVendorProductNo(VendorProductNo);   //Código do Produto (Cliente)
 				NotaFiscalLine.setC_UOM_ID(uom.getC_UOM_ID());   /** C_UOM_ID **/
 				NotaFiscalLine.setlbr_UOMName(uom.getUOMSymbol());   //Unidade de Medida
+				NotaFiscalLine.setlbr_TaxStatus(lines[i].get_ValueAsString("lbr_TaxStatus")); //Situação Tributária
 				NotaFiscalLine.setQty(lines[i].getQtyInvoiced());   //Quantidade
 				NotaFiscalLine.setPrice(lines[i].getPriceActual()); //Preço
 				NotaFiscalLine.setPriceListAmt(lines[i].getPriceList()); //Preço de Lista
+				
+				//Desconto
+				double discount = (1-NotaFiscalLine.getPriceListAmt().doubleValue()/NotaFiscalLine.getPrice().doubleValue())*100;
+				NotaFiscalLine.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
+				
 				NotaFiscalLine.setLineTotalAmt(lines[i].getLineTotalAmt()); //Preço de Linha
-					
+				
+				
+				/* NCM */
 				if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){
 						
 					X_LBR_NCM ncm = new X_LBR_NCM(ctx,LBR_NCM_ID,trx);
@@ -400,7 +436,8 @@ public class ProcGenerateNFS extends SvrProcess
 					}
 					
 				}
-					
+				
+				/* CFOP */
 				if (LBR_CFOP_ID != null && LBR_CFOP_ID.intValue() != 0){
 						
 					X_LBR_CFOP cfop = new X_LBR_CFOP(ctx,LBR_CFOP_ID,trx);
@@ -430,7 +467,21 @@ public class ProcGenerateNFS extends SvrProcess
 					}
 					
 				}
+				
+				/* Mensagem Legal */
+				if (LBR_LegalMessage_ID != null && LBR_LegalMessage_ID.intValue() != 0){
 					
+					X_LBR_LegalMessage lMessage = new X_LBR_LegalMessage(ctx,LBR_LegalMessage_ID,trx);
+						
+					NotaFiscalLine.setLBR_LegalMessage_ID(lMessage.getLBR_LegalMessage_ID());   /** LBR_LegalMessage_ID **/
+							
+					if (!refLegalMessage.contains(LBR_LegalMessage_ID)){
+						
+						refLegalMessage.add(LBR_LegalMessage_ID);
+						legalMessage += lMessage.getTextMsg() + ", ";
+					}
+				}
+				
 				NotaFiscalLine.save(trx);
 				TaxBR.setNFLineTax(ctx, lines[i].getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), trx);
 					
@@ -439,8 +490,9 @@ public class ProcGenerateNFS extends SvrProcess
 				
 		}//loop Linhas
 			
-		NotaFiscal.setlbr_NCMReference(NCMReference);   //Referência NCM
-		NotaFiscal.setlbr_CFOPReference(CFOPReference); //Referência CFOP
+		NotaFiscal.setlbr_NCMReference(TextUtil.retiraPontoFinal(NCMReference));   //Referência NCM
+		NotaFiscal.setlbr_CFOPReference(TextUtil.retiraPontoFinal(CFOPReference)); //Referência CFOP
+		NotaFiscal.setDocumentNote(TextUtil.retiraPontoFinal(legalMessage)); //Mensagens Legais
 
 		NotaFiscal.save();
 			

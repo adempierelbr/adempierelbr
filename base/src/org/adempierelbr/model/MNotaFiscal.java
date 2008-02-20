@@ -15,6 +15,11 @@ package org.adempierelbr.model;
 import java.util.Properties;
 
 import org.compiere.model.MBPartner;
+import org.compiere.model.MDocType;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MOrder;
+import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_NotaFiscal;
 
 /**
@@ -91,4 +96,65 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	}//getCNPJ_IE
 	
-}
+	/**
+	 * 	Void Document.
+	 * 	@return true if success 
+	 */
+	public boolean voidIt(){
+		
+		if (isCancelled()) return false; //Já está cancelada
+		
+		if (isPrinted()){
+			
+			if (getC_Order_ID() != 0){
+				MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
+				if (order.voidIt()){
+					order.save(get_TrxName());
+					setIsCancelled(true);
+					return true;
+				}
+			} //order
+			else {
+				
+				if (getM_InOut_ID() != 0){
+					MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
+					if (shipment.voidIt()){
+						shipment.save(get_TrxName());
+					}
+				}
+				
+				MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
+				if (invoice.voidIt()){
+					invoice.save(get_TrxName());
+					setIsCancelled(true);
+					return true;
+				}
+				
+			} //invoice
+			
+		} //printed
+		else{
+			
+			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
+			invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", null);
+			invoice.save(get_TrxName());
+			
+			if (getC_DocTypeTarget_ID() != 0){
+				
+				MDocType docType = new MDocType(getCtx(),getC_DocTypeTarget_ID(),get_TrxName());
+				if (docType.getDocNoSequence_ID() != 0){
+					MSequence sequence = new MSequence(getCtx(), docType.getDocNoSequence_ID(), get_TrxName());
+					sequence.setCurrentNext(sequence.getCurrentNext()-1);
+					sequence.save(get_TrxName());
+				}
+				
+			}
+			
+			setIsCancelled(true);
+			return true;	
+		}
+		
+		return false;
+	}
+	
+} //MNotaFiscal

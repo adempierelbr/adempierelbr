@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import org.adempierelbr.model.MTax;
-import org.adempierelbr.process.ProcGenerateNFS;
+import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.compiere.apps.search.Info_Column;
@@ -375,18 +375,18 @@ public class ValidatorInvoice implements ModelValidator
 				
 				if (dt.isSOTrx()){
 					
-					LBR_NotaFiscal_ID = ProcGenerateNFS.generate(ctx,invoice,trx);
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,true,trx);
 					
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 					
 				} //documento de venda (saída)
-				else if (IsOwnDocument){
-					//TODO NF Entrada Própria
-				} //document própria
-				else{
-					//TODO NF Entrada Terceiros
-				} //nf terceiros
-				
+				else {
+					
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,IsOwnDocument,trx);
+					
+					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+					
+				} //documento de compra (entrada)
 			} // geração de Documento Fiscal
 			
 		}

@@ -1,14 +1,14 @@
 #Fat Jar Configuration File
-#Tue Jan 15 14:50:13 BRST 2008
+#Wed Feb 20 11:21:27 BRT 2008
 onejar.license.required=false
 manifest.classpath=
-manifest.removesigners=true
+manifest.removesigners=false
 onejar.checkbox=false
-jarname=C\:\\customization.jar
-manifest.mergeall=true
+jarname=customization.jar
+manifest.mergeall=false
 manifest.mainclass=
 manifest.file=<createnew>
-jarname.isextern=true
+jarname.isextern=false
 onejar.expand=
-excludes=<po|Adempiere>;<jar|ant.jar>;<jar|junit.jar>;<jar|activation.jar>;<jar|jstl.jar>;<jar|log4j.jar>;<jar|mail.jar>;<jar|standard.jar>;<jar|Verisign.jar>;<jar|ocrs12.jar>;<jar|commons-httpclient.jar>;<jar|commons-logging.jar>;<jar|ant-commons-net.jar>;<jar|ant-launcher.jar>;<jar|j2ee.jar>;<jar|jnp-client.jar>;<jar|jboss-common-client.jar>;<jar|bsh-1.3.0.jar>;<jar|jsp-api.jar>;<jar|servlet-api.jar>;<jar|jboss-j2ee.jar>;<jar|ojdbc14.jar>;<jar|jpayment.jar>;<jar|jbossall-client.jar>;<jar|jnlp.jar>;<jar|commons-collections-3.1.jar>;<jar|commons-net-1.4.0.jar>;<jar|jgraph.jar>;<jar|barbecue-1.1.jar>;<jar|jcommon-1.0.5.jar>;<jar|jfreechart-1.0.2.jar>;<jar|postgresql.jar>;<jar|struts.jar>;<jar|barcode4j.jar>;<jar|c3p0-0.9.1.2.jar>;<jar|c3p0-oracle-thin-extras-0.9.1.2.jar>;<jar|looks-2.0.4.jar>;<jar|commons-beanutils.jar>;<jar|commons-beanutils-bean-collections.jar>;<jar|commons-beanutils-core.jar>;<jar|commons-codec-1.3.jar>;<jar|commons-digester-1.7.jar>;<jar|commons-fileupload.jar>;<jar|commons-lang-2.1.jar>;<jar|commons-validator-1.2.0.jar>;<jar|xdoclet-1.2.3.jar>;<jar|xdoclet-ejb-module-1.2.3.jar>;<jar|xdoclet-web-module-1.2.3.jar>;<jar|xdoclet-xdoclet-module-1.2.3.jar>;<jar|xercesImpl.jar>;<jar|xjavadoc-1.1.jar>;<jar|xml-apis.jar>;<jar|itext-1.4.8.jar>;<jar|jpedal.jar>;<jar|jasperreports-1.3.0.jar>;<jar|swingx-0.9.0.jar>
+excludes=<po|Adempiere>;<jar|activation.jar>;<jar|jstl.jar>;<jar|log4j.jar>;<jar|mail.jar>;<jar|standard.jar>;<jar|Verisign.jar>;<jar|ocrs12.jar>;<jar|commons-httpclient.jar>;<jar|ant-commons-net.jar>;<jar|ant-launcher.jar>;<jar|ant.jar>;<jar|j2ee.jar>;<jar|jnp-client.jar>;<jar|jboss-common-client.jar>;<jar|jsp-api.jar>;<jar|servlet-api.jar>;<jar|jboss-j2ee.jar>;<jar|ojdbc14.jar>;<jar|jpayment.jar>;<jar|jbossall-client.jar>;<jar|jnlp.jar>;<jar|commons-collections-3.1.jar>;<jar|commons-logging.jar>;<jar|commons-net-1.4.0.jar>;<jar|jgraph.jar>;<jar|barbecue-1.1.jar>;<jar|jcommon-1.0.5.jar>;<jar|jfreechart-1.0.2.jar>;<jar|postgresql.jar>;<jar|struts.jar>;<jar|barcode4j.jar>;<jar|c3p0-0.9.1.2.jar>;<jar|c3p0-oracle-thin-extras-0.9.1.2.jar>;<jar|looks-2.0.4.jar>;<jar|commons-beanutils.jar>;<jar|commons-beanutils-bean-collections.jar>;<jar|commons-beanutils-core.jar>;<jar|commons-codec-1.3.jar>;<jar|commons-digester-1.7.jar>;<jar|commons-fileupload.jar>;<jar|commons-lang-2.1.jar>;<jar|commons-validator-1.2.0.jar>;<jar|xdoclet-1.2.3.jar>;<jar|xdoclet-ejb-module-1.2.3.jar>;<jar|xdoclet-web-module-1.2.3.jar>;<jar|xdoclet-xdoclet-module-1.2.3.jar>;<jar|xercesImpl.jar>;<jar|xjavadoc-1.1.jar>;<jar|xml-apis.jar>;<jar|itext-1.4.8.jar>;<jar|jpedal.jar>;<jar|jasperreports-1.3.0.jar>;<jar|swingx-0.9.0.jar>;<jar|bsh-2.0b5.jar>;<jar|bsh-engine.jar>;<jar|groovy-all-1.5.1.jar>;<jar|groovy-engine.jar>;<jar|jython.jar>;<jar|jython-engine.jar>;<jar|script-api.jar>;<jar|poi-2.0-final-20040126.jar>;<jar|iReport.jar>;<jar|junit.jar>;<jar|yuiextz.jar>;<jar|zcommon.jar>;<jar|zk.jar>;<jar|zul.jar>;<jar|junit.jar>
 includes=

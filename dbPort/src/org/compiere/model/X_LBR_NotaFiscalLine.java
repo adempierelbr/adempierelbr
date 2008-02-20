@@ -164,6 +164,25 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
+/** LBR_LegalMessage_ID AD_Reference_ID=1000030 */
+public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000030;
+/** Set Legal Message.
+@param LBR_LegalMessage_ID Defines the Legal Message */
+public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
+{
+if (LBR_LegalMessage_ID <= 0) set_Value ("LBR_LegalMessage_ID", null);
+ else 
+set_Value ("LBR_LegalMessage_ID", new Integer(LBR_LegalMessage_ID));
+}
+/** Get Legal Message.
+@return Defines the Legal Message */
+public int getLBR_LegalMessage_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_LegalMessage_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
 /** LBR_NCM_ID AD_Reference_ID=1000017 */
 public static final int LBR_NCM_ID_AD_Reference_ID=1000017;
 /** Set NCM.
@@ -386,6 +405,23 @@ set_Value ("lbr_NCMName", lbr_NCMName);
 public String getlbr_NCMName() 
 {
 return (String)get_Value("lbr_NCMName");
+}
+/** Set Tax Status.
+@param lbr_TaxStatus Defines the Tax Status */
+public void setlbr_TaxStatus (String lbr_TaxStatus)
+{
+if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 3)
+{
+log.warning("Length > 3 - truncated");
+lbr_TaxStatus = lbr_TaxStatus.substring(0,2);
+}
+set_Value ("lbr_TaxStatus", lbr_TaxStatus);
+}
+/** Get Tax Status.
+@return Defines the Tax Status */
+public String getlbr_TaxStatus() 
+{
+return (String)get_Value("lbr_TaxStatus");
 }
 /** Set UOM Name.
 @param lbr_UOMName Defines the UOM Name */

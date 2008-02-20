@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MDocPrintField;
+import org.compiere.model.X_LBR_DocPrint;
 import org.compiere.process.*;
 import org.compiere.util.DB;
 
@@ -48,10 +49,6 @@ public class ProcCreateFields extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
-			else if (name.equals("LBR_DocPrint_ID"))
-				p_LBR_DocPrint_ID = para[i].getParameterAsInt();
-			else if (name.equals("lbr_TableName"))
-				p_TableName = para[i].getParameter().toString();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -66,8 +63,10 @@ public class ProcCreateFields extends SvrProcess
 	{
 		log.info("CreateFields Process " + "Table: " + p_TableName);
 				
-		if (p_TableName == null || p_TableName.equals(""))
-			throw new IllegalArgumentException("Table Unknown");
+		p_LBR_DocPrint_ID = getRecord_ID();
+		
+		X_LBR_DocPrint docPrint = new X_LBR_DocPrint(getCtx(),p_LBR_DocPrint_ID,get_TrxName());
+		p_TableName = docPrint.getlbr_TableName();
 		
 		String sql = "";
 		String tabela = p_TableName;

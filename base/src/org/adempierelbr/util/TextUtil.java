@@ -224,5 +224,26 @@ public class TextUtil
         return acentos;
 		
 	}//retiraAcentos
+	
+	/**************************************************************************
+	 * 	retiraPontoFinal
+	 *  Remove Period
+	 *  @param String value
+	 * 	@return String value
+	 */
+	public static String retiraPontoFinal(String value){
+		
+		if (value == null)
+			return "";
+		
+		value = value.trim();
+		
+		if (value.endsWith(".") || value.endsWith(",") || value.endsWith(";")){
+			value = value.substring(0,value.length()-1);
+		}
+        
+        return value;
+		
+	}//retiraPontoFinal
 		
 }  //MTextProcessor
