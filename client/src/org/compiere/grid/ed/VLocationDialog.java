@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.logging.*;
 
 import javax.swing.*;
+
 import org.compiere.apps.*;
 import org.compiere.model.*;
 import org.compiere.swing.*;
@@ -40,7 +41,10 @@ public class VLocationDialog extends CDialog implements ActionListener
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static String GOOGLE_MAPS_URL_PREFIX = "http://local.google.com/maps?q=";
+	public static String GOOGLE_MAPS_URL_PREFIX     = "http://local.google.com/maps?q=";
+	public static String GOOGLE_MAPS_ROUTE_PREFIX   = "http://maps.google.com/maps?f=d&geocode=";
+	public static String GOOGLE_SOURCE_ADDRESS      = "&saddr=";
+	public static String GOOGLE_DESTINATION_ADDRESS = "&daddr=";
 	
 	/**
 	 *	Constructor
@@ -129,13 +133,16 @@ public class VLocationDialog extends CDialog implements ActionListener
 	private CComboBox	fRegion;
 	private CComboBox   fCity; //Kenos - campo City = COMBO BOX
 	private CComboBox	fCountry;
-
+	
+	/** The "route" key  */
+	private static final String TO_ROUTE = "Rota";
 	/** The "to link" key  */
-	private static final String TO_LINK = "ToLink";
+	private static final String TO_LINK = "Mapa";
+	
+	private JButton toLink  = new JButton();
+	private JButton toRoute = new JButton();
+	
 
-	/** The "to link" Button  */
-	private AppsAction 	m_toMapAction =
-		new AppsAction(TO_LINK, null, Msg.getMsg(Env.getCtx(), TO_LINK));
 	
 	//
 	private GridBagConstraints gbc = new GridBagConstraints();
@@ -157,10 +164,16 @@ public class VLocationDialog extends CDialog implements ActionListener
 		panel.add(mainPanel, BorderLayout.NORTH);
 		panel.add(southPanel, BorderLayout.SOUTH);
 		southPanel.add(confirmPanel, BorderLayout.CENTER);
-
-		m_toMapAction.getButton().setMargin(ConfirmPanel.s_insets);
-		m_toMapAction.setDelegate(this);
-		confirmPanel.addComponent(m_toMapAction.getButton());
+		
+		toLink.setText(TO_LINK);
+		toLink.addActionListener(this);
+		toLink.setMargin(ConfirmPanel.s_insets);
+		confirmPanel.addComponent(toLink);
+		
+		toRoute.setText(TO_ROUTE);
+		toRoute.addActionListener(this);
+		toRoute.setMargin(ConfirmPanel.s_insets);
+		confirmPanel.addComponent(toRoute);
 		//
 		confirmPanel.addActionListener(this);
 	}	//	jbInit
@@ -364,26 +377,22 @@ public class VLocationDialog extends CDialog implements ActionListener
 			fRegion.requestFocus();	//	allows to use Keybord selection
 		}
 		// Kenos
-		else
+		else if (e.getSource() == toLink)
 		{			
-			//  Country/Region
-			if(m_location.getCountry().getC_Country_ID() == 139){
-				//Get the Region name from MRegion, as the RegionName filled in the m_location is not right
-				MRegion region = new MRegion(Env.getCtx(), m_location.getC_Region_ID(), null);
-				String address = "";
-				address = address + (m_location.getAddress1() != null ? m_location.getAddress1() + ", " : "");
-				address = address + (m_location.getAddress2() != null ? m_location.getAddress2() + ", " : "");
-				address = address + (m_location.getAddress3() != null ? m_location.getAddress3() + ", " : "");
-				address = address + (m_location.getAddress4() != null ? m_location.getAddress4() + ", " : "");
-				address = address + (m_location.getPostal() != null ? m_location.getPostal() + ", " : "");
-				address = address + (m_location.getCity() != null ? m_location.getCity() + ", " : "");
-				address = address + (region.getName() != null ? region.getName() + ", " : "");
-				address = address + (m_location.getCountryName() != null ? m_location.getCountryName() : "");
-				Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + address);
-			}
-			else
-				Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + getCurrentLocation());
+			Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + getGoogleMapsLocation(m_location));
 		}
+		else if (e.getSource() == toRoute)
+		{			
+			int AD_Org_ID = Env.getAD_Org_ID(Env.getCtx());
+			if (AD_Org_ID != 0){
+				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), AD_Org_ID);
+				MLocation orgLocation = new MLocation(Env.getCtx(),orgInfo.getC_Location_ID(),null);
+				
+				Env.startBrowser(GOOGLE_MAPS_ROUTE_PREFIX +
+						         GOOGLE_SOURCE_ADDRESS + getGoogleMapsLocation(orgLocation) + //org
+						         GOOGLE_DESTINATION_ADDRESS + getGoogleMapsLocation(m_location)); //partner
+			}
+		} 
 	}	//	actionPerformed
 
 	/**
@@ -435,6 +444,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 	 * 	Get edited Value (MLocation)
 	 *	@return location
 	 */
+	/*
 	private String getCurrentLocation() {
 		m_tempLocation.setAddress1(fAddress1.getText());
 		m_tempLocation.setAddress2(fAddress2.getText());
@@ -456,6 +466,24 @@ public class VLocationDialog extends CDialog implements ActionListener
 			m_tempLocation.setC_Region_ID(0);
 		
 		return m_tempLocation.toString();
+	}*/
+	
+	/**
+	 * 	Get edited Value (MLocation) for GoogleMaps
+	 *  @param MLocation location
+	 *	@return String address
+	 */
+	private String getGoogleMapsLocation(MLocation location) {
+		
+		MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
+		String address = "";
+		address = address + (location.getAddress1() != null ? location.getAddress1() + ", " : "");
+		address = address + (location.getAddress2() != null ? location.getAddress2() + ", " : "");
+		address = address + (location.getCity() != null ? location.getCity() + ", " : "");
+		address = address + (region.getName() != null ? region.getName() + ", " : "");
+		address = address + (location.getCountryName() != null ? location.getCountryName() : "");
+		
+		return address;
 	}
 	
 }	//	VLocationDialog
