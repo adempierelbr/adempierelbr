@@ -142,7 +142,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_ZonaFranca);
 			else if (mlbp.getRegion().equals(mlo.getRegion()))
 				pstmt.setString(4,
-						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdênticos);
+						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdenticos);
 			else if (!mlbp.getRegion().equals(mlo.getRegion())
 					&& mlbp.getCountry().equals(mlo.getCountry()))
 				pstmt.setString(4,

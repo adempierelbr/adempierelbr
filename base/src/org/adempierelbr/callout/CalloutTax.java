@@ -346,7 +346,7 @@ public class CalloutTax extends CalloutEngine
 		X_LBR_CFOP cfop = new X_LBR_CFOP(ctx,LBR_CFOP_ID,null);
 		
 		if (cfop.getValue().startsWith("1") || cfop.getValue().startsWith("5"))
-			mTab.setValue("lbr_DestionationType",X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdênticos);
+			mTab.setValue("lbr_DestionationType",X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdenticos);
 		else if (cfop.getValue().startsWith("2") || cfop.getValue().startsWith("6"))
 			mTab.setValue("lbr_DestionationType", X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
 		else if (cfop.getValue().startsWith("3") || cfop.getValue().startsWith("7"))

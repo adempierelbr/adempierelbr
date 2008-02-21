@@ -34,7 +34,7 @@ super (ctx, LBR_TaxConfig_Product_ID, trxName);
 {
 setLBR_TaxConfig_Product_ID (0);
 setLBR_TaxConfiguration_ID (0);
-setLBR_Tax_ID (0);
+setLBR_Tax_ID (null);
 }
  */
 }
@@ -131,18 +131,16 @@ return ii.intValue();
 }
 /** Set Brazilian Tax.
 @param LBR_Tax_ID Primary key table LBR_Tax */
-public void setLBR_Tax_ID (int LBR_Tax_ID)
+public void setLBR_Tax_ID (Object LBR_Tax_ID)
 {
-if (LBR_Tax_ID < 1) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
-set_Value ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
+if (LBR_Tax_ID == null) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
+set_Value ("LBR_Tax_ID", LBR_Tax_ID);
 }
 /** Get Brazilian Tax.
 @return Primary key table LBR_Tax */
-public int getLBR_Tax_ID() 
+public Object getLBR_Tax_ID() 
 {
-Integer ii = (Integer)get_Value("LBR_Tax_ID");
-if (ii == null) return 0;
-return ii.intValue();
+return get_Value("LBR_Tax_ID");
 }
 /** Set Product.
 @param M_Product_ID Product, Service, Item */
@@ -163,32 +161,32 @@ return ii.intValue();
 public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
 /** 00 - Tributada integralmente = 00 */
 public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
-/** 10 - Tributada e com cobrança do ICMS por Sub. Tributária = 10 */
-public static final String LBR_TAXSTATUS_10_TributadaEComCobrançaDoICMSPorSubTributária = "10";
-/** 20 - Com redução de base de cálculo = 20 */
-public static final String LBR_TAXSTATUS_20_ComReduçãoDeBaseDeCálculo = "20";
-/** 30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
-public static final String LBR_TAXSTATUS_30_IsentaOuNão_TribEComCobrDoICMSPorSubTribut = "30";
 /** 40 - Isenta = 40 */
 public static final String LBR_TAXSTATUS_40_Isenta = "40";
-/** 41 - Não-tributada = 41 */
-public static final String LBR_TAXSTATUS_41_Não_Tributada = "41";
-/** 50 - Suspensão = 50 */
-public static final String LBR_TAXSTATUS_50_Suspensão = "50";
 /** 51 - Diferimento  = 51 */
 public static final String LBR_TAXSTATUS_51_Diferimento = "51";
-/** 60 - ICMS cobrado anteriormente por substituição tributária = 60 */
-public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituiçãoTributária = "60";
-/** 70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib = 70 */
-public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCálcECobrDoICMSPorSubTrib = "70";
 /** 90 - Outras = 90 */
 public static final String LBR_TAXSTATUS_90_Outras = "90";
+/** 10 - Tributada e com cobranca do ICMS por Sub. Tributaria = 10 */
+public static final String LBR_TAXSTATUS_10_TributadaEComCobrancaDoICMSPorSubTributaria = "10";
+/** 20 - Com reducao de base de calculo = 20 */
+public static final String LBR_TAXSTATUS_20_ComReducaoDeBaseDeCalculo = "20";
+/** 30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
+public static final String LBR_TAXSTATUS_30_IsentaOuNao_TribEComCobrDoICMSPorSubTribut = "30";
+/** 41 - Nao-tributada = 41 */
+public static final String LBR_TAXSTATUS_41_Nao_Tributada = "41";
+/** 50 - Suspensao = 50 */
+public static final String LBR_TAXSTATUS_50_Suspensao = "50";
+/** 60 - ICMS cobrado anteriormente por substituicao tributaria = 60 */
+public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituicaoTributaria = "60";
+/** 70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib = 70 */
+public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCalcECobrDoICMSPorSubTrib = "70";
 /** Set Tax Status.
 @param lbr_TaxStatus Defines the Tax Status */
 public void setlbr_TaxStatus (String lbr_TaxStatus)
 {
-if (lbr_TaxStatus == null || lbr_TaxStatus.equals("00") || lbr_TaxStatus.equals("10") || lbr_TaxStatus.equals("20") || lbr_TaxStatus.equals("30") || lbr_TaxStatus.equals("40") || lbr_TaxStatus.equals("41") || lbr_TaxStatus.equals("50") || lbr_TaxStatus.equals("51") || lbr_TaxStatus.equals("60") || lbr_TaxStatus.equals("70") || lbr_TaxStatus.equals("90"));
- else throw new IllegalArgumentException ("lbr_TaxStatus Invalid value - " + lbr_TaxStatus + " - Reference_ID=1000029 - 00 - 10 - 20 - 30 - 40 - 41 - 50 - 51 - 60 - 70 - 90");
+if (lbr_TaxStatus == null || lbr_TaxStatus.equals("00") || lbr_TaxStatus.equals("40") || lbr_TaxStatus.equals("51") || lbr_TaxStatus.equals("90") || lbr_TaxStatus.equals("10") || lbr_TaxStatus.equals("20") || lbr_TaxStatus.equals("30") || lbr_TaxStatus.equals("41") || lbr_TaxStatus.equals("50") || lbr_TaxStatus.equals("60") || lbr_TaxStatus.equals("70"));
+ else throw new IllegalArgumentException ("lbr_TaxStatus Invalid value - " + lbr_TaxStatus + " - Reference_ID=1000029 - 00 - 40 - 51 - 90 - 10 - 20 - 30 - 41 - 50 - 60 - 70");
 if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 2)
 {
 log.warning("Length > 2 - truncated");

@@ -113,19 +113,15 @@ return ii.intValue();
 }
 /** Set Brazilian Tax.
 @param LBR_Tax_ID Primary key table LBR_Tax */
-public void setLBR_Tax_ID (int LBR_Tax_ID)
+public void setLBR_Tax_ID (Object LBR_Tax_ID)
 {
-if (LBR_Tax_ID <= 0) set_Value ("LBR_Tax_ID", null);
- else 
-set_Value ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
+set_Value ("LBR_Tax_ID", LBR_Tax_ID);
 }
 /** Get Brazilian Tax.
 @return Primary key table LBR_Tax */
-public int getLBR_Tax_ID() 
+public Object getLBR_Tax_ID() 
 {
-Integer ii = (Integer)get_Value("LBR_Tax_ID");
-if (ii == null) return 0;
-return ii.intValue();
+return get_Value("LBR_Tax_ID");
 }
 /** Set Search Key.
 @param Value Search key for the record in the format required - must be unique */
