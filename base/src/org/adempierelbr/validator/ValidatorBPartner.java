@@ -37,6 +37,10 @@ import org.compiere.util.DB;
  */
 public class ValidatorBPartner implements ModelValidator
 {
+	
+	/** BPartner Category (CFOP) */
+	private static final int m_LBR_BPartnerCategory_ID = 1000006;
+	
 	/**
 	 *	Constructor.
 	 *	The class is instanciated when logging in and client is selected/known
@@ -160,6 +164,28 @@ public class ValidatorBPartner implements ModelValidator
 			}
 			
 			bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
+			
+		}
+		
+		// FR [ 1898697 ] Validador BPartner - CFOP Group
+		// mgrigioni, 21/02/2008 (Kenos, http://www.kenos.com.br)
+		// Isento IE
+		if (POLBR.get_ValueAsBoolean(bp.get_Value("lbr_IsIEExempt"))){
+			
+			//Cliente
+			if (bp.isCustomer()){
+				Integer LBR_CustomerCategory_ID = (Integer)bp.get_Value("LBR_CustomerCategory_ID");
+				if (LBR_CustomerCategory_ID == null || LBR_CustomerCategory_ID.intValue() == 0){
+					bp.set_ValueOfColumn("LBR_CustomerCategory_ID", m_LBR_BPartnerCategory_ID);
+				}
+			}
+			//Fornecedor
+			if (bp.isVendor()){
+				Integer LBR_VendorCategory_ID = (Integer)bp.get_Value("LBR_VendorCategory_ID");
+				if (LBR_VendorCategory_ID == null || LBR_VendorCategory_ID.intValue() == 0){
+					bp.set_ValueOfColumn("LBR_VendorCategory_ID", m_LBR_BPartnerCategory_ID);
+				}
+			}
 			
 		}
 		
