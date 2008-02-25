@@ -1450,7 +1450,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Help" original=""/>
  </row>
  <row id="1000015" trl="Y">
-  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
@@ -1466,6 +1466,11 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
  </row>
  <row id="1000018" trl="Y">
   <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000019" trl="Y">
+  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

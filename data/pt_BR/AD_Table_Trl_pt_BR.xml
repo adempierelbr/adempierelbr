@@ -2124,7 +2124,7 @@
   <value column="Name" original="DocumentType Accounting">DocumentType Accounting</value>
  </row>
  <row id="1000030" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
  </row>
  <row id="1000032" trl="Y">
   <value column="Name" original="Legal Message">Mensagem Legal</value>

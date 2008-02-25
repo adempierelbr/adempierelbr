@@ -25941,10 +25941,10 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000238" trl="Y">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
-  <value column="PrintName" original="Matrix Printer">Matrix Printer</value>
-  <value column="Description" original="Primary key table LBR_MatrixPrinter">Primary key table LBR_MatrixPrinter</value>
-  <value column="Help" original="Primary key table LBR_MatrixPrinter">Primary key table LBR_MatrixPrinter</value>
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+  <value column="PrintName" original="Matrix Printer">Impressora Matricial</value>
+  <value column="Description" original="Primary key table LBR_MatrixPrinter">Define a Impressora Matricial</value>
+  <value column="Help" original="Primary key table LBR_MatrixPrinter">Chave primária tabela LBR_MatrixPrinter</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
@@ -26185,6 +26185,26 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000271" trl="Y">
+  <value column="Name" original="Process Now">Processar Agora</value>
+  <value column="PrintName" original="Process Now">Processar Agora</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000272" trl="Y">
+  <value column="Name" original="Process Cancel Nota Fiscal">Cancelar Nota Fiscal</value>
+  <value column="PrintName" original="Process Cancel Nota Fiscal">Cancelar Nota Fiscal</value>
+  <value column="Description" original="Process to Cancel Nota Fiscal">Processo para Cancelar Nota Fiscal</value>
+  <value column="Help" original="Process to Cancel Nota Fiscal">Processo para Cancelar Nota Fiscal</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>

@@ -1971,7 +1971,7 @@
   <value column="Description" original=""/>
  </row>
  <row id="1000020" trl="Y">
-  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+  <value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000021" trl="Y">
@@ -1992,6 +1992,10 @@
  </row>
  <row id="1000025" trl="Y">
   <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000026" trl="Y">
+  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>

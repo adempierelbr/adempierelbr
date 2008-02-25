@@ -4445,4 +4445,28 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000028" trl="Y">
+  <value column="Name" original="Header">Cabeçalho</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original="">Cabeçalho da Nota Fiscal</value>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000029" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000030" trl="Y">
+  <value column="Name" original="Line">Linha</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000031" trl="Y">
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Linha</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

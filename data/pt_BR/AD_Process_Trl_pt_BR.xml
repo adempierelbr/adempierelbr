@@ -1329,4 +1329,19 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000004" trl="Y">
+  <value column="Name" original="ProcGenerateNFS">Processar NF (Saída)</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000005" trl="Y">
+  <value column="Name" original="ProcGenerateNFE">Processar NF (Entrada)</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000006" trl="Y">
+  <value column="Name" original="ProcCancelNF">Cancelar Nota Fiscal</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

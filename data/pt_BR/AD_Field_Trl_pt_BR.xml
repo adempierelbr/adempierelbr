@@ -254,4 +254,9 @@ Se o tipo do seu documento não tiver uma seqüência de documentação automát
   <value column="Description" original="Discount in percent">Desconto</value>
   <value column="Help" original="The Discount indicates the discount applied or taken as a percentage.">Define o Desconto da Linha</value>
  </row>
+ <row id="1000604" trl="N">
+  <value column="Name" original="Discount %">Discount %</value>
+  <value column="Description" original="Discount in percent">Discount in percent</value>
+  <value column="Help" original="The Discount indicates the discount applied or taken as a percentage.">The Discount indicates the discount applied or taken as a percentage.</value>
+ </row>
 </adempiereTrl>

@@ -4999,6 +4999,14 @@ Obrigado por usar o Gerenciador de Ativos Personalizado Adempiere
 This is likely to cause hard to fix errors. 
 Please contact administrator.</value>
  </row>
+ <row id="53026" trl="N">
+  <value column="MsgText" original="xls - Excel file">xls - Excel file</value>
+  <value column="MsgTip" original=""/>
+ </row>
+ <row id="53027" trl="N">
+  <value column="MsgText" original="Only from same warehouse">Only from same warehouse</value>
+  <value column="MsgTip" original="Show only orders with the same warehouse as selected in the material receipt">Show only orders with the same warehouse as selected in the material receipt</value>
+ </row>
  <row id="520010" trl="Y">
   <value column="MsgText" original="1 Rupee">1 Rupee</value>
   <value column="MsgTip" original=" "> </value>
