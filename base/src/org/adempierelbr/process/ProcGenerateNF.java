@@ -376,7 +376,7 @@ public class ProcGenerateNF extends SvrProcess
 				LineNo++; // Número da Linha
 					
 				MProduct   product = new MProduct(ctx,lines[i].getM_Product_ID(),trx);
-				MUOM       uom     = new MUOM(ctx,product.getC_UOM_ID(),trx);
+				MUOM       uom     = new MUOM(ctx,lines[i].getC_UOM_ID(),trx);
 					
 				Integer LBR_NCM_ID          = (Integer)product.get_Value("LBR_NCM_ID");
 				Integer LBR_CFOP_ID         = (Integer)lines[i].get_Value("LBR_CFOP_ID");
@@ -399,8 +399,8 @@ public class ProcGenerateNF extends SvrProcess
 				NotaFiscalLine.setC_UOM_ID(uom.getC_UOM_ID());   /** C_UOM_ID **/
 				NotaFiscalLine.setlbr_UOMName(uom.getUOMSymbol());   //Unidade de Medida
 				NotaFiscalLine.setlbr_TaxStatus(lines[i].get_ValueAsString("lbr_TaxStatus")); //Situação Tributária
-				NotaFiscalLine.setQty(lines[i].getQtyInvoiced());   //Quantidade
-				NotaFiscalLine.setPrice(lines[i].getPriceActual()); //Preço
+				NotaFiscalLine.setQty(lines[i].getQtyEntered());   //Quantidade
+				NotaFiscalLine.setPrice(lines[i].getPriceEntered()); //Preço
 				NotaFiscalLine.setPriceListAmt(lines[i].getPriceList()); //Preço de Lista
 				
 				//Desconto
