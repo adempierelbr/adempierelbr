@@ -14,6 +14,7 @@ package org.compiere.grid.ed;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -379,7 +380,19 @@ public class VLocationDialog extends CDialog implements ActionListener
 		// Kenos
 		else if (e.getSource() == toLink)
 		{			
-			Env.startBrowser(GOOGLE_MAPS_URL_PREFIX + getGoogleMapsLocation(m_location));
+			String urlString = GOOGLE_MAPS_URL_PREFIX + getGoogleMapsLocation(m_location);
+			String message = null;
+
+			try
+			{	
+				URL url = new URL(urlString);
+				Env.startBrowser(urlString);
+			}
+			catch (Exception ex)
+			{
+				message = ex.getMessage();
+				ADialog.warn(0, this, "URLnotValid", message);
+			}
 		}
 		else if (e.getSource() == toRoute)
 		{			
@@ -388,9 +401,20 @@ public class VLocationDialog extends CDialog implements ActionListener
 				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), AD_Org_ID);
 				MLocation orgLocation = new MLocation(Env.getCtx(),orgInfo.getC_Location_ID(),null);
 				
-				Env.startBrowser(GOOGLE_MAPS_ROUTE_PREFIX +
+				String urlString = GOOGLE_MAPS_ROUTE_PREFIX +
 						         GOOGLE_SOURCE_ADDRESS + getGoogleMapsLocation(orgLocation) + //org
-						         GOOGLE_DESTINATION_ADDRESS + getGoogleMapsLocation(m_location)); //partner
+						         GOOGLE_DESTINATION_ADDRESS + getGoogleMapsLocation(m_location); //partner
+				String message = null;
+				try
+				{	
+					URL url = new URL(urlString);
+					Env.startBrowser(urlString);
+				}
+				catch (Exception ex)
+				{
+					message = ex.getMessage();
+					ADialog.warn(0, this, "URLnotValid", message);
+				}
 			}
 		} 
 	}	//	actionPerformed
@@ -483,7 +507,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 		address = address + (region.getName() != null ? region.getName() + ", " : "");
 		address = address + (location.getCountryName() != null ? location.getCountryName() : "");
 		
-		return address;
+		return address.replace(" ", "+");
 	}
 	
 }	//	VLocationDialog
