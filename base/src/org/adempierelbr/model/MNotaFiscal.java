@@ -18,7 +18,6 @@ import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
-import org.compiere.model.MOrder;
 import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_NotaFiscal;
 
@@ -105,32 +104,20 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (isCancelled()) return false; //Já está cancelada
 		
 		if (isPrinted()){
-			
-			if (getC_Order_ID() != 0){
-				MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
-				if (order.voidIt()){
-					order.save(get_TrxName());
-					setIsCancelled(true);
-					return true;
+					
+			if (getM_InOut_ID() != 0){
+				MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
+				if (shipment.voidIt()){
+					shipment.save(get_TrxName());
 				}
-			} //order
-			else {
+			}
 				
-				if (getM_InOut_ID() != 0){
-					MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
-					if (shipment.voidIt()){
-						shipment.save(get_TrxName());
-					}
-				}
-				
-				MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
-				if (invoice.voidIt()){
-					invoice.save(get_TrxName());
-					setIsCancelled(true);
-					return true;
-				}
-				
-			} //invoice
+			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
+			if (invoice.voidIt()){
+				invoice.save(get_TrxName());
+				setIsCancelled(true);
+				return true;
+			}
 			
 		} //printed
 		else{
