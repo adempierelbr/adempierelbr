@@ -385,7 +385,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 
 			try
 			{	
-				URL url = new URL(urlString);
+				new URL(urlString);
 				Env.startBrowser(urlString);
 			}
 			catch (Exception ex)
@@ -407,7 +407,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 				String message = null;
 				try
 				{	
-					URL url = new URL(urlString);
+					new URL(urlString);
 					Env.startBrowser(urlString);
 				}
 				catch (Exception ex)
