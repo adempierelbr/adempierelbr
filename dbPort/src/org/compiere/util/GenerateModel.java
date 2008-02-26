@@ -172,6 +172,9 @@ public class GenerateModel
 			+ "super (ctx, rs, trxName);"
 			+ "}"	//	Load Constructor End
 			//
+			+ "/** serialVersionUID */\n"
+			+ "public static final long serialVersionUID=1L;\n"
+			//
 			+ "/** AD_Table_ID */\n"
 			+ "public static final int Table_ID=").append("MTable.getTable_ID(\"").append(tableName).append("\");\n"
 			//	

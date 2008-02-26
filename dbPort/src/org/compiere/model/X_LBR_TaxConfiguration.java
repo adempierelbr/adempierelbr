@@ -47,6 +47,9 @@ public X_LBR_TaxConfiguration (Properties ctx, ResultSet rs, String trxName)
 {
 super (ctx, rs, trxName);
 }
+/** serialVersionUID */
+public static final long serialVersionUID=1L;
+
 /** AD_Table_ID */
 public static final int Table_ID=MTable.getTable_ID("LBR_TaxConfiguration");
 
