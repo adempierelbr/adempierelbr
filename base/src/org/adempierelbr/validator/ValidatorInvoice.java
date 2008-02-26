@@ -272,6 +272,8 @@ public class ValidatorInvoice implements ModelValidator
 			BigDecimal grandTotal = Env.ZERO;
 			BigDecimal substTotal = Env.ZERO;
 			
+			boolean isSOTrx = true;
+			
 			int LBR_NotaFiscal_ID = 0;
 			
 			//Apaga impostos zerados
@@ -373,16 +375,22 @@ public class ValidatorInvoice implements ModelValidator
 			
 			if (HasFiscalDocument){
 				
-				if (dt.isSOTrx()){
+				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
+					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
 					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,true,trx);
+					isSOTrx = true;
+					
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,isSOTrx,true,trx);
 					
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 					
 				} //documento de venda (saída)
-				else {
+				else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) ||
+						 dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo)){
 					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,IsOwnDocument,trx);
+					isSOTrx = false;
+					
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,isSOTrx,IsOwnDocument,trx);
 					
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 					

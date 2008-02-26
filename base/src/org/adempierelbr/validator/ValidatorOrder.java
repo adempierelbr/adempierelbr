@@ -306,7 +306,8 @@ public class ValidatorOrder implements ModelValidator
 			String DocSubTypeSO = dt.getDocSubTypeSO();
 			
 			//Somente Venda Padrão
-			if (MDocType.DOCSUBTYPESO_StandardOrder.equals(DocSubTypeSO)){
+			if (!(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) ||
+				  DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder))){
 				
 				MInOut shipment  = null;
 				MInvoice invoice = null;

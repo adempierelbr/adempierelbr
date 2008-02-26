@@ -213,6 +213,39 @@ Integer ii = (Integer)get_Value("lbr_NoRows");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set SubDoc Row (2).
+@param lbr_SubDoc2Row Identifies the Starter Row of the SubDocument */
+public void setlbr_SubDoc2Row (int lbr_SubDoc2Row)
+{
+set_Value ("lbr_SubDoc2Row", new Integer(lbr_SubDoc2Row));
+}
+/** Get SubDoc Row (2).
+@return Identifies the Starter Row of the SubDocument */
+public int getlbr_SubDoc2Row() 
+{
+Integer ii = (Integer)get_Value("lbr_SubDoc2Row");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** lbr_SubDoc2_ID AD_Reference_ID=1000002 */
+public static final int LBR_SUBDOC2_ID_AD_Reference_ID=1000002;
+/** Set SubDoc_ID (2).
+@param lbr_SubDoc2_ID Identifies the ID of the SubDocument */
+public void setlbr_SubDoc2_ID (int lbr_SubDoc2_ID)
+{
+if (lbr_SubDoc2_ID <= 0) set_Value ("lbr_SubDoc2_ID", null);
+ else 
+set_Value ("lbr_SubDoc2_ID", new Integer(lbr_SubDoc2_ID));
+}
+/** Get SubDoc_ID (2).
+@return Identifies the ID of the SubDocument */
+public int getlbr_SubDoc2_ID() 
+{
+Integer ii = (Integer)get_Value("lbr_SubDoc2_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set SubDoc Row.
 @param lbr_SubDocRow Identifies the Starter Row of the SubDocument */
 public void setlbr_SubDocRow (int lbr_SubDocRow)

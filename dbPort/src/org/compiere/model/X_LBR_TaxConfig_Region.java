@@ -35,7 +35,7 @@ super (ctx, LBR_TaxConfig_Region_ID, trxName);
 setC_Region_ID (0);
 setLBR_TaxConfig_Region_ID (0);
 setLBR_TaxConfiguration_ID (0);
-setLBR_Tax_ID (null);
+setLBR_Tax_ID (0);
 setTo_Region_ID (0);
 }
  */
@@ -151,16 +151,18 @@ return ii.intValue();
 }
 /** Set Brazilian Tax.
 @param LBR_Tax_ID Primary key table LBR_Tax */
-public void setLBR_Tax_ID (Object LBR_Tax_ID)
+public void setLBR_Tax_ID (int LBR_Tax_ID)
 {
-if (LBR_Tax_ID == null) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
-set_Value ("LBR_Tax_ID", LBR_Tax_ID);
+if (LBR_Tax_ID < 1) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
+set_Value ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
 }
 /** Get Brazilian Tax.
 @return Primary key table LBR_Tax */
-public Object getLBR_Tax_ID() 
+public int getLBR_Tax_ID() 
 {
-return get_Value("LBR_Tax_ID");
+Integer ii = (Integer)get_Value("LBR_Tax_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 
 /** To_Region_ID AD_Reference_ID=157 */

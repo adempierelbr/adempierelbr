@@ -33,6 +33,7 @@ super (ctx, LBR_NotaFiscalLine_ID, trxName);
 /** if (LBR_NotaFiscalLine_ID == 0)
 {
 setLBR_NotaFiscalLine_ID (0);
+setlbr_IsService (false);	// 'N'
 }
  */
 }
@@ -388,6 +389,24 @@ set_Value ("lbr_CFOPName", lbr_CFOPName);
 public String getlbr_CFOPName() 
 {
 return (String)get_Value("lbr_CFOPName");
+}
+/** Set Is Service.
+@param lbr_IsService Defines if the lines is a Service */
+public void setlbr_IsService (boolean lbr_IsService)
+{
+set_Value ("lbr_IsService", new Boolean(lbr_IsService));
+}
+/** Get Is Service.
+@return Defines if the lines is a Service */
+public boolean islbr_IsService() 
+{
+Object oo = get_Value("lbr_IsService");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
 }
 /** Set NCM Name.
 @param lbr_NCMName Defines the NCM Name */

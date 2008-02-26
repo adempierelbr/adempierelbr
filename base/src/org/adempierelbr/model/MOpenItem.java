@@ -85,7 +85,7 @@ public class MOpenItem{
 				     "C_InvoicePaySchedule_ID " + //9
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' " +
-					 "AND C_Invoice_ID = ?"; //*1
+					 "AND C_Invoice_ID = ? order by DueDate"; //*1
 		
 		ArrayList<MOpenItem> list = new ArrayList<MOpenItem>();
 		PreparedStatement pstmt = null;
@@ -136,7 +136,7 @@ public class MOpenItem{
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' " +
 					 "AND DateInvoiced = ? " + //*1
-					 "AND AD_Client_ID = ?"; //*2
+					 "AND AD_Client_ID = ? order by DueDate"; //*2
 		
 		ArrayList<MOpenItem> list = new ArrayList<MOpenItem>();
 		PreparedStatement pstmt = null;

@@ -1219,6 +1219,23 @@ public String getlbr_BPShipperIE()
 {
 return (String)get_Value("lbr_BPShipperIE");
 }
+/** Set BPShipper Name.
+@param lbr_BPShipperName Defines the Shipper Name */
+public void setlbr_BPShipperName (String lbr_BPShipperName)
+{
+if (lbr_BPShipperName != null && lbr_BPShipperName.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_BPShipperName = lbr_BPShipperName.substring(0,254);
+}
+set_Value ("lbr_BPShipperName", lbr_BPShipperName);
+}
+/** Get BPShipper Name.
+@return Defines the Shipper Name */
+public String getlbr_BPShipperName() 
+{
+return (String)get_Value("lbr_BPShipperName");
+}
 /** Set BP Shipper Postal.
 @param lbr_BPShipperPostal BP Shipper Postal - Copied from the BP Location into Brazilan Legal and Tax Books */
 public void setlbr_BPShipperPostal (String lbr_BPShipperPostal)
@@ -1379,5 +1396,19 @@ set_Value ("lbr_ProcCancelNF", lbr_ProcCancelNF);
 public String getlbr_ProcCancelNF() 
 {
 return (String)get_Value("lbr_ProcCancelNF");
+}
+/** Set Service Total Amount.
+@param lbr_ServiceTotalAmt Defines the Service Total Amount */
+public void setlbr_ServiceTotalAmt (BigDecimal lbr_ServiceTotalAmt)
+{
+set_Value ("lbr_ServiceTotalAmt", lbr_ServiceTotalAmt);
+}
+/** Get Service Total Amount.
+@return Defines the Service Total Amount */
+public BigDecimal getlbr_ServiceTotalAmt() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_ServiceTotalAmt");
+if (bd == null) return Env.ZERO;
+return bd;
 }
 }

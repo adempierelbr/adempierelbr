@@ -131,11 +131,28 @@ public class ProcPrintNF extends SvrProcess
 	    boolean hasSubDoc = DoctypePrint.islbr_HasSubDoc();
   
 	    if (hasSubDoc){
-	    	MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
-	    	subdocsql = "SELECT * " +
-  	                    "FROM LBR_NotaFiscalLine " +
-  		                "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID + " ORDER BY Line";
-	    	form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+	    	/**
+	    	 * Produto
+	    	 */
+	    	if (DoctypePrint.getlbr_SubDoc_ID() != 0){
+	    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
+	    		subdocsql = "SELECT * " +
+  	                        "FROM Z_NotaFiscalLine " +
+  		                    "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
+  		                    "AND lbr_IsService = 'N' ORDER BY Line";
+	    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+	    	}
+	    	/**
+	    	 * Serviço
+	    	 */
+	    	if (DoctypePrint.getlbr_SubDoc2_ID() != 0){
+	    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
+	    		subdocsql = "SELECT * " +
+                            "FROM Z_NotaFiscalLine " +
+                            "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
+                            "AND lbr_IsService = 'Y' ORDER BY Line";
+	    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+	    	}
 	    }
 	    	
 	    DoctypePrint.print(PrinterType, PrinterName, charSet, condensed, pitch, form.getFields());

@@ -27,6 +27,7 @@ import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
@@ -46,6 +47,7 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 
 /**
@@ -116,7 +118,21 @@ public class ProcGenerateNF extends SvrProcess
 			throw new IllegalArgumentException("Fatura já possui nota fiscal");
 		}
 		
-		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,p_IsOwnDocument,get_TrxName());
+		MDocType dt = new MDocType(getCtx(),invoice.getC_DocTypeTarget_ID(),get_TrxName());
+		if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
+			dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
+				
+			isSOTrx = true;
+				
+		}
+		else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) ||
+				 dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo)){
+			
+			isSOTrx = false;
+			
+		}
+		
+		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,isSOTrx,p_IsOwnDocument,get_TrxName());
 		
 		invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 		invoice.save(get_TrxName());
@@ -125,13 +141,12 @@ public class ProcGenerateNF extends SvrProcess
 		
 	}	//	doIt
 	
-	public static int generate(Properties context, MInvoice invoice, boolean IsOwnDocument, String transaction){
+	public static int generate(Properties context, MInvoice invoice, boolean isSOTrx, boolean IsOwnDocument, String transaction){
 		
 		int LBR_NotaFiscal_ID = p_LBR_NotaFiscal_ID;
 		
 		ctx = context;
 		trx = transaction;
-		isSOTrx = invoice.isSOTrx();
 		
 		if (LBR_NotaFiscal_ID != 0){
 			
@@ -180,6 +195,9 @@ public class ProcGenerateNF extends SvrProcess
 		String                     legalMessage          = "";
 			
 		String[]                   CNPJ_IE               = {null,null};
+		
+		BigDecimal				   TotalLines			 = Env.ZERO;
+		BigDecimal				   ServiceTotalAmt		 = Env.ZERO;
 				
 		//Linhas da Fatura
 		lines = invoice.getLines();
@@ -198,7 +216,16 @@ public class ProcGenerateNF extends SvrProcess
 		bpartner = new MBPartner(ctx,invoice.getC_BPartner_ID(),trx);
 			
 		//Localização Parceiro de Negócios
-		bpLocation = new MBPartnerLocation(ctx,shipment.getC_BPartner_Location_ID(),trx);
+		if (shipment.getC_BPartner_Location_ID() != 0){
+			bpLocation = new MBPartnerLocation(ctx,shipment.getC_BPartner_Location_ID(),trx);
+		}
+		else if (order.getC_BPartner_Location_ID() != 0){
+			bpLocation = new MBPartnerLocation(ctx,order.getC_BPartner_Location_ID(),trx);
+		}
+		else{
+			bpLocation = new MBPartnerLocation(ctx,invoice.getC_BPartner_Location_ID(),trx);
+		}
+		
 		location = new MLocation(ctx,bpLocation.getC_Location_ID(),trx);
 			
 		//Endereço da Fatura
@@ -285,7 +312,7 @@ public class ProcGenerateNF extends SvrProcess
 		NotaFiscal.setlbr_BPCountry(country.getCountryCode());   //País Destinatário
 			
 		/** Fatura **/
-		NotaFiscal.setBill_Location_ID(invoiceLocation.getC_Location_ID());   /** InvoiceLocation_ID **/
+		NotaFiscal.setBill_Location_ID(invoiceBPLocation.getC_BPartner_Location_ID());   /** InvoiceLocation_ID **/
 		NotaFiscal.setC_PaymentTerm_ID(paymentTerm.getC_PaymentTerm_ID());   /** C_PaymentTerm_ID **/
 			
 		CNPJ_IE = NotaFiscal.getCNPJ_IE(invoice.getC_BPartner_ID());
@@ -331,7 +358,8 @@ public class ProcGenerateNF extends SvrProcess
 		/** Transportadora **/
 		if (shipment.getDeliveryViaRule().equalsIgnoreCase("S")){
 				
-			NotaFiscal.setM_Shipper_ID(shipper.getM_Shipper_ID()); 
+			NotaFiscal.setM_Shipper_ID(shipper.getM_Shipper_ID());
+			NotaFiscal.setlbr_BPShipperName(shipper.getName());
 			if (transpLocations.length > 0){
 				CNPJ_IE = NotaFiscal.getCNPJ_IE(transp.getC_BPartner_ID());
 					
@@ -356,8 +384,6 @@ public class ProcGenerateNF extends SvrProcess
 		}//Regra de Entrega = Shipper (Transportadora)
 			
 		/** Valores **/
-		NotaFiscal.setGrandTotal(invoice.getGrandTotal());   //Valor Total da Nota
-		NotaFiscal.setTotalLines(invoice.getTotalLines()); //Valor do Produtos
 		NotaFiscal.setlbr_InsuranceAmt(null);   //Valor do Seguro //TODO
 		NotaFiscal.setFreightAmt(null);   //Valor do Frete //TODO
 		NotaFiscal.setlbr_GrossWeight(null); // Peso Bruto //TODO
@@ -394,7 +420,17 @@ public class ProcGenerateNF extends SvrProcess
 							
 				NotaFiscalLine.setProductName(product.getName());   //Nome/Descrição Produto
 				NotaFiscalLine.setProductValue(product.getValue());   //Código Produto
-								
+				
+				//Serviço
+				if (product.getProductType().equals(MProduct.PRODUCTTYPE_Item)){
+					NotaFiscalLine.setlbr_IsService(false);
+					TotalLines = TotalLines.add(lines[i].getLineNetAmt());
+				}
+				else{
+					NotaFiscalLine.setlbr_IsService(true);
+					ServiceTotalAmt = ServiceTotalAmt.add(lines[i].getLineNetAmt());
+				}
+				
 				NotaFiscalLine.setVendorProductNo(VendorProductNo);   //Código do Produto (Cliente)
 				NotaFiscalLine.setC_UOM_ID(uom.getC_UOM_ID());   /** C_UOM_ID **/
 				NotaFiscalLine.setlbr_UOMName(uom.getUOMSymbol());   //Unidade de Medida
@@ -407,8 +443,7 @@ public class ProcGenerateNF extends SvrProcess
 				double discount = (1-NotaFiscalLine.getPriceListAmt().doubleValue()/NotaFiscalLine.getPrice().doubleValue())*100;
 				NotaFiscalLine.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
 				
-				NotaFiscalLine.setLineTotalAmt(lines[i].getLineTotalAmt()); //Preço de Linha
-				
+				NotaFiscalLine.setLineTotalAmt(lines[i].getLineNetAmt()); //Preço de Linha
 				
 				/* NCM */
 				if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){
@@ -493,7 +528,13 @@ public class ProcGenerateNF extends SvrProcess
 				
 				
 		}//loop Linhas
-			
+		
+		/** Valores **/
+		NotaFiscal.setGrandTotal(invoice.getGrandTotal());   //Valor Total da Nota
+		NotaFiscal.setTotalLines(TotalLines.setScale(2, BigDecimal.ROUND_HALF_UP)); //Valor dos Produtos
+		NotaFiscal.setlbr_ServiceTotalAmt(ServiceTotalAmt.setScale(2, BigDecimal.ROUND_HALF_UP)); //Valor dos Serviços 
+		
+		/** Referências **/
 		NotaFiscal.setlbr_NCMReference(TextUtil.retiraPontoFinal(NCMReference));   //Referência NCM
 		NotaFiscal.setlbr_CFOPReference(TextUtil.retiraPontoFinal(CFOPReference)); //Referência CFOP
 		NotaFiscal.setDocumentNote(TextUtil.retiraPontoFinal(legalMessage)); //Mensagens Legais
