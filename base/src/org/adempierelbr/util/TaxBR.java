@@ -464,6 +464,8 @@ public class TaxBR
 		}
 	} //setNFTax
 	
+	// BF [ 1902926 ] NFLineTax - Falta campo Alíquota e Redução da Base
+	// mgrigioni 27/02/2008, (Kenos, http://www.kenos.com.br)
 	public static void setNFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, String trx){
 		
 		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
@@ -488,6 +490,8 @@ public class TaxBR
 						nfLineTax.setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);
 						nfLineTax.setlbr_TaxBaseAmt(taxLine.getlbr_TaxBaseAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 						nfLineTax.setlbr_TaxAmt(taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+						nfLineTax.setlbr_TaxRate(taxLine.getlbr_TaxRate().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+						nfLineTax.setlbr_TaxBase(taxLine.getlbr_TaxBase().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 						nfLineTax.save(trx);
 						
 					}//endif

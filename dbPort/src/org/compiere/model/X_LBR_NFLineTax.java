@@ -151,6 +151,20 @@ BigDecimal bd = (BigDecimal)get_Value("lbr_TaxAmt");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+/** Set Tax Base.
+@param lbr_TaxBase Indicates the Tax Base */
+public void setlbr_TaxBase (BigDecimal lbr_TaxBase)
+{
+set_Value ("lbr_TaxBase", lbr_TaxBase);
+}
+/** Get Tax Base.
+@return Indicates the Tax Base */
+public BigDecimal getlbr_TaxBase() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_TaxBase");
+if (bd == null) return Env.ZERO;
+return bd;
+}
 /** Set Tax Base Amount.
 @param lbr_TaxBaseAmt Defines the Tax Base Amount */
 public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt)
@@ -163,6 +177,20 @@ set_Value ("lbr_TaxBaseAmt", lbr_TaxBaseAmt);
 public BigDecimal getlbr_TaxBaseAmt() 
 {
 BigDecimal bd = (BigDecimal)get_Value("lbr_TaxBaseAmt");
+if (bd == null) return Env.ZERO;
+return bd;
+}
+/** Set Tax Rate.
+@param lbr_TaxRate Indicates the Tax Rate */
+public void setlbr_TaxRate (BigDecimal lbr_TaxRate)
+{
+set_Value ("lbr_TaxRate", lbr_TaxRate);
+}
+/** Get Tax Rate.
+@return Indicates the Tax Rate */
+public BigDecimal getlbr_TaxRate() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_TaxRate");
 if (bd == null) return Env.ZERO;
 return bd;
 }
