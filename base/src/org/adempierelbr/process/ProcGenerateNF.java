@@ -523,7 +523,12 @@ public class ProcGenerateNF extends SvrProcess
 				
 				NotaFiscalLine.save(trx);
 				TaxBR.setNFLineTax(ctx, lines[i].getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), trx);
-					
+				
+				if(NotaFiscalLine.islbr_IsService()){
+					NotaFiscalLine.setlbr_ServiceTaxes();
+					NotaFiscalLine.save(trx);
+				}
+				
 			}//!lines[i].isDescription()
 				
 				

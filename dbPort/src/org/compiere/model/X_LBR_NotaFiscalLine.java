@@ -428,6 +428,23 @@ public String getlbr_NCMName()
 {
 return (String)get_Value("lbr_NCMName");
 }
+/** Set Service Taxes.
+@param lbr_ServiceTaxes String with all Taxes Names and Taxes Rates */
+public void setlbr_ServiceTaxes (String lbr_ServiceTaxes)
+{
+if (lbr_ServiceTaxes != null && lbr_ServiceTaxes.length() > 1000)
+{
+log.warning("Length > 1000 - truncated");
+lbr_ServiceTaxes = lbr_ServiceTaxes.substring(0,999);
+}
+set_Value ("lbr_ServiceTaxes", lbr_ServiceTaxes);
+}
+/** Get Service Taxes.
+@return String with all Taxes Names and Taxes Rates */
+public String getlbr_ServiceTaxes() 
+{
+return (String)get_Value("lbr_ServiceTaxes");
+}
 /** Set Tax Status.
 @param lbr_TaxStatus Defines the Tax Status */
 public void setlbr_TaxStatus (String lbr_TaxStatus)
