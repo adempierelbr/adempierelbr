@@ -112,3 +112,7 @@ DELETE FROM AD_Element_Trl WHERE AD_Element_ID=1000278
 -- Default comment for updating dictionary
 DELETE FROM AD_Element WHERE AD_Element_ID=1000278
 ;
+
+ALTER TABLE adempiere.lbr_docprint
+    DROP COLUMN lbr_subdoc2row
+;
