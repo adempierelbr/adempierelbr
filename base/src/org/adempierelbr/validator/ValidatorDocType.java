@@ -25,7 +25,9 @@ import org.compiere.util.CLogger;
 /**
  *	ValidatorBPartner
  *
- *  Validate CPF and CNPJ
+ *  If the document type has both Automatic Shipment and Invoice checked, it 
+ *  will then validate the Shipment Document, verifying if the latter has the 
+ *  Shipment Confirmation checked, if it does, and error is generated.
  *
  *	FR[1902562]	
  *
