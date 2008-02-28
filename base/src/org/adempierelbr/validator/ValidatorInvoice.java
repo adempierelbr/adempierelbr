@@ -373,7 +373,7 @@ public class ValidatorInvoice implements ModelValidator
 				
 			} // don't have Open Items - create automatically allocation
 			
-			if (HasFiscalDocument){
+			if (HasFiscalDocument && !isReversal(invoice)){
 				
 				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
 					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
@@ -437,4 +437,26 @@ public class ValidatorInvoice implements ModelValidator
 		return sb.toString ();
 	}	//	toString
 	
+	
+	private boolean isReversal(MInvoice invoice){
+		
+		String description = invoice.getDescription();
+		
+		if (description == null || description.trim().equals(""))
+			return false;
+		
+		int indexOf      = description.lastIndexOf("{->") + 3;
+		int C_Invoice_ID = POLBR.getC_Invoice_ID(description.substring(indexOf, description.length()-1), invoice.get_TrxName()); 
+		
+		if (C_Invoice_ID != -1){
+			MInvoice reversal = new MInvoice(invoice.getCtx(),C_Invoice_ID, invoice.get_TrxName());
+			if ((invoice.getGrandTotal().doubleValue()+reversal.getGrandTotal().doubleValue())==0){
+				if (invoice.getC_BPartner_ID() == reversal.getC_BPartner_ID())
+					return true;
+			}		
+		}
+		
+		return false;
+	}
+
 } //ValidatorInvoice
