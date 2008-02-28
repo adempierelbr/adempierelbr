@@ -92,7 +92,7 @@ public class ProcCreateFields extends SvrProcess
 			{
 				String columnName = rs.getString(1);
 				if (!isCreated(columnName))
-					if (!columnName.endsWith("_ID")){
+					if (!(columnName.endsWith("_ID") || columnName.endsWith("_id"))){
 						setField(columnName);
 					}
 			}

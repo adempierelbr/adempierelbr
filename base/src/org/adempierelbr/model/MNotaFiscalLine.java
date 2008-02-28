@@ -56,16 +56,16 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	public void setlbr_ServiceTaxes(){
 		
 		X_LBR_NFLineTax[] taxes = getTaxes();
-		String serviceString = "";
+		String serviceString = "IMPOSTOS: ";
 		for(int i=0;i<taxes.length;i++){
 			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(getCtx(),taxes[i].getLBR_TaxGroup_ID(),get_TrxName());
-			serviceString += taxGroup.getName() + ": " + 
-							 taxes[i].getlbr_TaxRate() + "%, R$ " + 
+			serviceString += taxGroup.getName() + ":" + 
+							 taxes[i].getlbr_TaxRate() + "% R$" + 
 							 taxes[i].getlbr_TaxAmt() + ", ";  
 		}
 		
 		serviceString = TextUtil.retiraPontoFinal(serviceString);
-		setlbr_ServiceTaxes(serviceString);
+		setlbr_ServiceTaxes("\n" + serviceString);
 		
 	} //setlbr_ServiceTaxes
 	

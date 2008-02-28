@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
@@ -137,11 +138,13 @@ public class MDocPrintForm{
 	            		int fieldLength = fields[i].getlbr_FieldLength();
 	            		String value = rs.getString(columnName);
 	            		
+	            		value = removeEOL(value, fieldLength);
+	            		
 	            		while (otherRow){
 	            			
-	            			String newValue = value.substring(fieldLength*newRow);
-	            			otherRow = fields[i].setValue(newValue, fieldLength, IsSubDoc);
-	            			
+		            		String newValue = value.substring(fieldLength*newRow);
+		            		otherRow = fields[i].setValue(newValue, fieldLength, IsSubDoc);
+
 	            			y++;
 	            			
 			            	MDocPrintFormField aux2 = new MDocPrintFormField(fields[i].getValue(),x,y);
@@ -178,6 +181,34 @@ public class MDocPrintForm{
     		pstmt = null;
     	}
     	
+	}
+	
+	public static String removeEOL(String value, int fieldLength){
+		
+		int indexOf = -1;
+		
+		indexOf = value.indexOf("\n");
+		if (indexOf != -1){
+			String newValue = "";
+			String[] values = value.split("[\r\n]");
+			for (int i=0;i<values.length;i++){
+				int newLength = fieldLength - values[i].length();
+				if (newLength < 0){
+					int fator = values[i].length()/fieldLength;
+					if ((values[i].length()%fieldLength) > 0){
+						fator += 1;
+					}
+					newLength = fieldLength*fator;
+				}
+				else{
+					newLength = fieldLength;
+				}
+				newValue += TextUtil.pad(values[i], ' ', newLength, false);
+			}
+			value = newValue;
+		}
+		
+		return value;
 	}
 	
 } //MDocPrintForm

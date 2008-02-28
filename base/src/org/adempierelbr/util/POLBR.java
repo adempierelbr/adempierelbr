@@ -324,6 +324,13 @@ public class POLBR{
 		return FileSeparator;
 	}
 	
+	public static String getLineSeparator(){
+		
+		String LineSeparator = System.getProperty("line.separator");
+		
+		return LineSeparator;
+	}
+	
 	public static String getPath(){
 		
 		String Path = System.getProperty("user.dir");

@@ -188,6 +188,7 @@ public class ProcGenerateNF extends SvrProcess
 		int                        ref_ID                = -1;
 			
 		Map<String,String>         refCFOP               = new HashMap<String, String>(); //Referência CFOP
+		String					   CFOPNote				 = "";
 		String                     CFOPReference         = "";
 		int                        cfop_ID               = -1;
 		
@@ -285,7 +286,9 @@ public class ProcGenerateNF extends SvrProcess
 		NotaFiscal.setC_Invoice_ID(invoice.getC_Invoice_ID());   /** C_Invoice_ID **/
 		NotaFiscal.setC_Order_ID(order.getC_Order_ID());   /** C_Order_ID **/
 		NotaFiscal.setM_InOut_ID(shipment.getM_InOut_ID());   /** M_InOut_ID **/
-		NotaFiscal.setDescription(order.get_ValueAsString("lbr_NFDescription")); //Observação Nota Fiscal
+		String description = order.get_ValueAsString("lbr_NFDescription");
+		description = description.replaceAll("null", "");
+		NotaFiscal.setDescription(description); //Observação Nota Fiscal
 			
 		/** Parceiro de Negócios **/
 		NotaFiscal.setC_BPartner_ID(bpartner.getC_BPartner_ID());   /** C_BPartner_ID **/
@@ -497,9 +500,10 @@ public class ProcGenerateNF extends SvrProcess
 							NotaFiscalLine.setlbr_CFOPName(cl);
 								
 							if (CFOPReference.equals("")){
-								CFOPReference += "CFOP: ";
+								CFOPReference += "\nCFOP: ";
 							}
-								
+							
+							CFOPNote      += cfop.getDescription() + ", ";
 							CFOPReference += cl + "-" + cfopName + ", ";
 								
 						}
@@ -541,6 +545,7 @@ public class ProcGenerateNF extends SvrProcess
 		
 		/** Referências **/
 		NotaFiscal.setlbr_NCMReference(TextUtil.retiraPontoFinal(NCMReference));   //Referência NCM
+		NotaFiscal.setlbr_CFOPNote(TextUtil.retiraPontoFinal(CFOPNote)); //Natureza da Operação
 		NotaFiscal.setlbr_CFOPReference(TextUtil.retiraPontoFinal(CFOPReference)); //Referência CFOP
 		NotaFiscal.setDocumentNote(TextUtil.retiraPontoFinal(legalMessage)); //Mensagens Legais
 

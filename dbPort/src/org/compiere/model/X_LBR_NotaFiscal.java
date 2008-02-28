@@ -1273,6 +1273,23 @@ public String getlbr_BPShipperRegion()
 {
 return (String)get_Value("lbr_BPShipperRegion");
 }
+/** Set CFOP Note.
+@param lbr_CFOPNote Defines the CFOP Note */
+public void setlbr_CFOPNote (String lbr_CFOPNote)
+{
+if (lbr_CFOPNote != null && lbr_CFOPNote.length() > 300)
+{
+log.warning("Length > 300 - truncated");
+lbr_CFOPNote = lbr_CFOPNote.substring(0,299);
+}
+set_Value ("lbr_CFOPNote", lbr_CFOPNote);
+}
+/** Get CFOP Note.
+@return Defines the CFOP Note */
+public String getlbr_CFOPNote() 
+{
+return (String)get_Value("lbr_CFOPNote");
+}
 /** Set CFOP Reference.
 @param lbr_CFOPReference Defines the CFOP Reference */
 public void setlbr_CFOPReference (String lbr_CFOPReference)
