@@ -205,9 +205,8 @@ public class VLocationDialog extends CDialog implements ActionListener
 						new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(), null);
 					MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
 					fRegion.setSelectedItem(region);
+					m_location.setRegion(region);
 					//	refrseh
-					mainPanel.removeAll();
-					initLocation();
 					fRegion.requestFocus();	//	allows to use Keybord selection
 				}
 			// Kenos
