@@ -65,13 +65,17 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		//Check if the document is actually an order or an Invoice
 		MOrder mo = null;
 		MInvoice mi = null;
-		if (mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID)
+		int C_DocTypeTarget_ID = 0;
+		if (mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID){
 			mo = new MOrder(Env.getCtx(), ((Integer) mTab
 					.getValue("C_Order_ID")).intValue(), null);
-		else
+			C_DocTypeTarget_ID = mo.getC_DocTypeTarget_ID();
+		}
+		else{
 			mi = new MInvoice(Env.getCtx(), ((Integer) mTab
 					.getValue("C_Invoice_ID")).intValue(), null);
-
+			C_DocTypeTarget_ID = mi.getC_DocTypeTarget_ID();
+		}
 		//Check for the transaction type on the document header
 		String transactionType = null;
 		if (mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID)
@@ -133,7 +137,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		Integer cfopID = null;
 		try {
 			pstmt = DB.prepareStatement(sql, null);
-			pstmt.setInt(1, mo.getC_DocTypeTarget_ID());
+			pstmt.setInt(1, C_DocTypeTarget_ID);
 			pstmt.setInt(2, prdCat);
 			pstmt.setInt(3, bpCat);
 

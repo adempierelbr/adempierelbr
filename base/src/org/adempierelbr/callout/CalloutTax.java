@@ -103,6 +103,7 @@ public class CalloutTax extends CalloutEngine
 		//
 		boolean  isSOTrx = true;
 		//
+		String transactionType = null;
 		
 		//Pega no Contexto, qual tipo de documento
 		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
@@ -117,6 +118,7 @@ public class CalloutTax extends CalloutEngine
 			C_BPartnerLocation_ID = order.getC_BPartner_Location_ID();
 			AD_Org_ID             = order.getAD_Org_ID();
 			isSOTrx               = order.isSOTrx();
+			transactionType       = (String)order.get_Value("lbr_TransactionType");
 		}
 		else{
 			ID = (Integer)mTab.getValue("C_Invoice_ID");
@@ -129,6 +131,7 @@ public class CalloutTax extends CalloutEngine
 			C_BPartnerLocation_ID = invoice.getC_BPartner_Location_ID();
 			AD_Org_ID             = invoice.getAD_Org_ID();
 			isSOTrx               = invoice.isSOTrx();
+			transactionType       = (String)invoice.get_Value("lbr_TransactionType");
 		}
 		
 		//Product_ID
@@ -193,7 +196,7 @@ public class CalloutTax extends CalloutEngine
 		setLines(ctx, (Integer)orgInfo.get_Value("LBR_Tax_ID"));
 		
 		//Region
-		String transactionType = order.get_ValueAsString("lbr_TransactionType");
+		if (transactionType == null) transactionType = "";
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
