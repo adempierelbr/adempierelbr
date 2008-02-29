@@ -125,10 +125,14 @@ public class TaxBR
 		if (taxBR != null){
 			
 			double     amt      = 0.0;
+			double     factor   = 0.0;
 			BigDecimal substamt = Env.ZERO;
 			
+			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Service))
+				factor = calculate(taxBR.getServiceFactor(),lineamt,factor,lines);
+			
 			if (isTaxIncluded){
-				amt = calculate(taxBR.getFormulaNetWorth(),lineamt,lines);
+				amt = calculate(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
 			}
 			else{
 				amt = lineamt;
@@ -150,14 +154,14 @@ public class TaxBR
 					lineamt = lineamt * (1+(profit/100));
 					
 					if (isTaxIncluded){
-						amt = calculate(taxBR.getFormulaNetWorth(),lineamt,lines);
+						amt = calculate(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
 					}
 					
 				}	
 			}
 			
 			//Base de Cálculo
-			double     base    = calculate(taxBR.getFormula(),amt,lines);
+			double     base    = calculate(taxBR.getFormula(),amt,factor,lines);
 			BigDecimal taxbase = new BigDecimal(base = base*taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
 			
 			//Valor do Imposto
@@ -177,7 +181,7 @@ public class TaxBR
 		} //end if
 	}
 	
-	private static double calculate(String formula, Double amt, Map<String, MTaxBR> lines) throws EvalError{
+	private static double calculate(String formula, Double amt, Double factor, Map<String, MTaxBR> lines) throws EvalError{
 		
 		if (formula == null || formula.equals("")){
 			return 0.0;
@@ -190,6 +194,9 @@ public class TaxBR
 			
 			if (tax[j].equalsIgnoreCase("AMT")){
 				interpreter.set(tax[j], amt);
+			}
+			else if (tax[j].equalsIgnoreCase("FACTOR")){
+				interpreter.set(tax[j], factor);
 			}
 			else{
 				MTaxBR temptaxBR = lines.get(tax[j]);

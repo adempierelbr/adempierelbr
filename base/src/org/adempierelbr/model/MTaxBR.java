@@ -46,14 +46,16 @@ public class MTaxBR{
 	private int     LBR_TaxLine_ID;
 	private String  Formula;
 	private String  FormulaNetWorth;
+	private String  ServiceFactor;
 	private boolean PostTax;
 	private double  TaxRate;
 	private double  TaxBase;
 	
-	public MTaxBR(String Formula, String FormulaNetWorth, int LBR_TaxLine_ID, double TaxRate, double TaxBase, boolean PostTax){
+	public MTaxBR(String Formula, String FormulaNetWorth, String ServiceFactor, int LBR_TaxLine_ID, double TaxRate, double TaxBase, boolean PostTax){
 		
 		setFormula(Formula);
 		setFormulaNetWorth(FormulaNetWorth);
+		setServiceFactor(ServiceFactor);
 		setLBR_TaxLine_ID(LBR_TaxLine_ID);
 		setTaxRate(TaxRate);
 		setTaxBase(TaxBase);
@@ -63,7 +65,7 @@ public class MTaxBR{
 	
 	public static Map<String, MTaxBR> getMTaxBR(Integer Line_ID, boolean isOrder, String trx){
 		
-		String  formula[] = {"",""};
+		String  formula[] = {"","",""};
 		String  transactionType = "";
 		//
 		Integer LBR_Tax_ID = null;
@@ -105,7 +107,7 @@ public class MTaxBR{
 				TaxBase = 1 - ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
 				PostTax = taxLine.islbr_PostTax(); //POSTTAX
 				
-				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
+				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
 			}
 			
 		}
@@ -168,12 +170,12 @@ public class MTaxBR{
 		if (LBR_TaxName_ID == null)
 			LBR_TaxName_ID = -1;
 		
-		String sql = "SELECT lbr_Formula, lbr_FormulaNetWorth " + 
+		String sql = "SELECT lbr_Formula, lbr_FormulaNetWorth, lbr_ServiceFactor " + 
 					 "FROM LBR_TaxFormula " +
 					 "WHERE LBR_TaxName_ID = ? " +
 					 "AND lbr_TransactionType = ?";
 		
-		String formula[] = {"",""};
+		String formula[] = {"","",""};
 		
 		PreparedStatement pstmt = null;
 		try
@@ -188,6 +190,8 @@ public class MTaxBR{
 				if (formula[0] != null) formula[0] = formula[0].trim();
 				formula[1] = rs.getString(2).trim();
 				if (formula[1] != null) formula[1] = formula[1].trim();
+				formula[2] = rs.getString(3).trim();
+				if (formula[2] != null) formula[2] = formula[2].trim();
 			}
 			rs.close ();
 			pstmt.close ();
@@ -301,6 +305,20 @@ public class MTaxBR{
 	 */
 	public void setFormulaNetWorth(String formula) {
 		FormulaNetWorth = formula;
+	}
+	
+	/**
+	 * @return the service factor
+	 */
+	public String getServiceFactor() {
+		return ServiceFactor;
+	}
+
+	/**
+	 * @param factor the factor to set
+	 */
+	public void setServiceFactor(String factor) {
+		ServiceFactor = factor;
 	}
 
 	/**

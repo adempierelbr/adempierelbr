@@ -36,6 +36,7 @@ setLBR_TaxFormula_ID (0);
 setLBR_TaxName_ID (0);
 setlbr_Formula (null);
 setlbr_FormulaNetWorth (null);
+setlbr_ServiceFactor (null);
 setlbr_TransactionType (null);
 }
  */
@@ -150,6 +151,24 @@ set_Value ("lbr_FormulaNetWorth", lbr_FormulaNetWorth);
 public String getlbr_FormulaNetWorth() 
 {
 return (String)get_Value("lbr_FormulaNetWorth");
+}
+/** Set Service Factor.
+@param lbr_ServiceFactor Define the Service Factor Formula */
+public void setlbr_ServiceFactor (String lbr_ServiceFactor)
+{
+if (lbr_ServiceFactor == null) throw new IllegalArgumentException ("lbr_ServiceFactor is mandatory.");
+if (lbr_ServiceFactor.length() > 1000)
+{
+log.warning("Length > 1000 - truncated");
+lbr_ServiceFactor = lbr_ServiceFactor.substring(0,999);
+}
+set_Value ("lbr_ServiceFactor", lbr_ServiceFactor);
+}
+/** Get Service Factor.
+@return Define the Service Factor Formula */
+public String getlbr_ServiceFactor() 
+{
+return (String)get_Value("lbr_ServiceFactor");
 }
 
 /** lbr_TransactionType AD_Reference_ID=1000024 */
