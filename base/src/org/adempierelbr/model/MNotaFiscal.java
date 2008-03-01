@@ -136,7 +136,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				}
 				
 			}
-			
+			setDocumentNo(null);
 			setIsCancelled(true);
 			return true;	
 		}
