@@ -201,13 +201,17 @@ public class VLocationDialog extends CDialog implements ActionListener
 			else
 				if(m_location.getCountry().getC_Country_ID() == 139 && m_location.getAD_Org_ID() != 0){
 					MOrg org = new MOrg(Env.getCtx(), m_location.getAD_Org_ID(), null);
-					MLocation location = 
-						new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(), null);
-					MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
-					fRegion.setSelectedItem(region);
-					m_location.setRegion(region);
-					//	refrseh
-					fRegion.requestFocus();	//	allows to use Keybord selection
+					int C_Location_ID = org.getInfo().getC_Location_ID();
+					if (C_Location_ID != 0)
+					{
+						MLocation location = 
+							new MLocation(Env.getCtx(), org.getInfo().getC_Location_ID(), null);
+						MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
+						fRegion.setSelectedItem(region);
+						m_location.setRegion(region);
+						//	refrseh
+						fRegion.requestFocus();	//	allows to use Keybord selection
+					}
 				}
 			// Kenos
 			fRegion.addActionListener(this);
