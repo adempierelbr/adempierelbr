@@ -1787,4 +1787,9 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000034" trl="N">
+  <value column="Name" original="C_City">C_City</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

@@ -1998,4 +1998,12 @@
   <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="Print Nota Fiscal">Impressão Nota Fiscal</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000028" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>

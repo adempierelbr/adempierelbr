@@ -26210,4 +26210,94 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000273" trl="Y">
+  <value column="Name" original="Is Service">Serviço</value>
+  <value column="PrintName" original="Is Service">Serviço</value>
+  <value column="Description" original="Defines if the lines is a Service">Define se a linha é um Serviço</value>
+  <value column="Help" original="Defines if the lines is a Service">Define se a linha é um Serviço</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000274" trl="Y">
+  <value column="Name" original="Service Total Amount">Valor Total de Serviços</value>
+  <value column="PrintName" original="Service Total Amount">Valor Total de Serviços</value>
+  <value column="Description" original="Defines the Service Total Amount">Define o Valor Total de Serviços</value>
+  <value column="Help" original="Defines the Service Total Amount">Define o Valor Total de Serviços</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000275" trl="Y">
+  <value column="Name" original="BPShipper Name">Nome Transportadora</value>
+  <value column="PrintName" original="BPShipper Name">Nome Transportadora</value>
+  <value column="Description" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
+  <value column="Help" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000277" trl="Y">
+  <value column="Name" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
+  <value column="PrintName" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
+  <value column="Description" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
+  <value column="Help" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000279" trl="Y">
+  <value column="Name" original="Service Taxes">Impostos Serviço</value>
+  <value column="PrintName" original="Service Taxes">Impostos Serviço</value>
+  <value column="Description" original="String with all Taxes Names and Taxes Rates">Texto com todos os Impostos e Alíquotas</value>
+  <value column="Help" original="String with all Taxes Names and Taxes Rates">Texto com todos os Impostos e Alíquotas</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000280" trl="Y">
+  <value column="Name" original="CFOP Note">Natureza da Operação</value>
+  <value column="PrintName" original="CFOP Note">Natureza da Operação</value>
+  <value column="Description" original="Defines the CFOP Note">Define a Natureza da Operação</value>
+  <value column="Help" original="Defines the CFOP Note">Define a Natureza da Operação</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000282" trl="Y">
+  <value column="Name" original="Service Factor">Fator de Serviço</value>
+  <value column="PrintName" original="Service Factor">Fator de Serviço</value>
+  <value column="Description" original="Define the Service Factor Formula">Define a Fórmula do Fator de Serviço</value>
+  <value column="Help" original="Define the Service Factor Formula">Define a Fórmula do Fator de Serviço</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000283" trl="Y">
+  <value column="Name" original="Withhold Invoice">Fatura com Retenção</value>
+  <value column="PrintName" original="Withhold Invoice">Fatura com Retenção</value>
+  <value column="Description" original="Defines the Withhold Invoice">Define a Fatura com Retenção</value>
+  <value column="Help" original="Defines the Withhold Invoice">Define a Fatura com Retenção</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000284" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
+  <value column="PrintName" original="ISS Matrix">Matriz de ISS</value>
+  <value column="Description" original="Defines the ISS Matrix">Define a Matriz de ISS</value>
+  <value column="Help" original="Primary key table LBR_ISSMatrix">Chave primária tabela LBR_ISSMatrix</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>

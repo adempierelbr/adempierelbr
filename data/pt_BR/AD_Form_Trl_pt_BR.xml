@@ -113,4 +113,9 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000003" trl="Y">
+  <value column="Name" original="Print Nota Fiscal">Impressão Nota Fiscal</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

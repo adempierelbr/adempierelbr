@@ -2138,4 +2138,7 @@
  <row id="1000035" trl="N">
   <value column="Name" original="Nota Fiscal Line Tax">Imposto Nota Fiscal Line</value>
  </row>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
+ </row>
 </adempiereTrl>
