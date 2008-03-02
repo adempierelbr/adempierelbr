@@ -19,7 +19,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRICMSMatrix;
+import org.adempierelbr.model.MICMSMatrix;
+import org.adempierelbr.model.MISSMatrix;
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
@@ -35,6 +36,7 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.X_LBR_CFOP;
+import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.model.X_LBR_NCM;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -43,7 +45,6 @@ import org.compiere.model.X_LBR_TaxConfig_ProductGroup;
 import org.compiere.model.X_LBR_TaxConfig_Region;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
-import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -200,9 +201,15 @@ public class CalloutTax extends CalloutEngine
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
-			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,location.getC_Region_ID(),location.getC_Region_ID(),null));
+			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,location.getC_Region_ID(),location.getC_Region_ID(),null));
 		else
-			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
+			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
+		
+		//ISS (City)
+		if (lbr_TaxType.equals(TaxBR.taxType_Service)){
+			setLines(ctx, MISSMatrix.getLBR_Tax_ID(ctx,M_Product_ID,
+					POLBR.getC_City_ID(location.getCity(), location.getC_Region_ID(), null),null));	
+		}
 		
 		//NCM
 		if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){

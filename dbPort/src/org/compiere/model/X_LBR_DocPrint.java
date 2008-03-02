@@ -117,6 +117,25 @@ Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+
+/** LBR_MatrixPrinter_ID AD_Reference_ID=1000025 */
+public static final int LBR_MATRIXPRINTER_ID_AD_Reference_ID=1000025;
+/** Set Matrix Printer.
+@param LBR_MatrixPrinter_ID Primary key table LBR_MatrixPrinter */
+public void setLBR_MatrixPrinter_ID (int LBR_MatrixPrinter_ID)
+{
+if (LBR_MatrixPrinter_ID <= 0) set_Value ("LBR_MatrixPrinter_ID", null);
+ else 
+set_Value ("LBR_MatrixPrinter_ID", new Integer(LBR_MatrixPrinter_ID));
+}
+/** Get Matrix Printer.
+@return Primary key table LBR_MatrixPrinter */
+public int getLBR_MatrixPrinter_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_MatrixPrinter_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set Name.
 @param Name Alphanumeric identifier of the entity */
 public void setName (String Name)

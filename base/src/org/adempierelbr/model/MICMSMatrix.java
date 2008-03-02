@@ -23,14 +23,14 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	MLBRICMSMatrix
+ *	MICMSMatrix
  *
  *	Model for X_LBR_ICMSMatrix
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: MLBRICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
+ *	@version $Id: MICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
  */
-public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
+public class MICMSMatrix extends X_LBR_ICMSMatrix {
     
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRICMSMatrix(Properties ctx, int ID, String trx){
+	public MICMSMatrix(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -53,7 +53,7 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 	 */
 	public static int getLBR_Tax_ID(Properties ctx, int C_Region_ID, int To_Region_ID, String trx){
 		
-		CLogger log = CLogger.getCLogger(MLBRICMSMatrix.class);
+		CLogger log = CLogger.getCLogger(MICMSMatrix.class);
 		
 		String sql = "SELECT LBR_Tax_ID " +
 				     "FROM LBR_ICMSMatrix " +
@@ -98,4 +98,4 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 		return Matrix_ID.intValue();
 	}
 		
-} //MLBRICMSMatrix
+} //MICMSMatrix

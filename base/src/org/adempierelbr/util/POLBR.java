@@ -78,6 +78,48 @@ public class POLBR{
 		
 	}	//	getC_Invoice_ID
 	
+	public static int getC_City_ID(String Name, int C_Region_ID, String trx)
+	{
+		int C_City_ID = -1;
+		String sql = "SELECT C_City_ID " +
+				     "FROM C_City " +
+				     "WHERE Name LIKE ? " +
+				     "AND C_Region_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setString(1, Name);
+			pstmt.setInt(2, C_Region_ID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 C_City_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		return C_City_ID;
+		
+	}	//	getC_City_ID
+	
 	public static int getLBR_Bank_ID(String RoutingNo){
 		
 		int LBR_Bank_ID = -1; 
