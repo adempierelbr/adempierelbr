@@ -492,7 +492,7 @@ public class ValidatorOrder implements ModelValidator
 				 * lançadas em outra ordem.
 				 * */
 				if (row[0].compareTo(new BigDecimal(lbr_TaxName.getLBR_TaxName_ID())) == 0
-						&& (row[1].compareTo(row[2]) == 1)) // || whMasterOrder != whOrder
+						&& (row[1].compareTo(row[2]) == -1)) // || whMasterOrder != whOrder
 				{
 					BigDecimal grandTotal = order.getGrandTotal();
 					BigDecimal taxAmt = oTax.getTaxAmt().negate();

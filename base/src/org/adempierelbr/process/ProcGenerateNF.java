@@ -443,7 +443,10 @@ public class ProcGenerateNF extends SvrProcess
 				NotaFiscalLine.setPriceListAmt(lines[i].getPriceList()); //Preço de Lista
 				
 				//Desconto
-				double discount = (1-NotaFiscalLine.getPriceListAmt().doubleValue()/NotaFiscalLine.getPrice().doubleValue())*100;
+				double discount = 0.0;
+				if (NotaFiscalLine.getPrice().signum() == 1){
+					discount = (1-NotaFiscalLine.getPriceListAmt().doubleValue()/NotaFiscalLine.getPrice().doubleValue())*100;
+				}
 				NotaFiscalLine.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
 				
 				NotaFiscalLine.setLineTotalAmt(lines[i].getLineNetAmt()); //Preço de Linha

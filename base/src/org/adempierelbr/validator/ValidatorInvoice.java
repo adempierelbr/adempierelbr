@@ -550,7 +550,7 @@ public class ValidatorInvoice implements ModelValidator
 				 * lançadas em outra fatura.
 				 * */
 				if (row[0].compareTo(new BigDecimal(lbr_TaxName.getLBR_TaxName_ID())) == 0
-						&& (row[1].compareTo(row[2]) == 1)) // || whMasterInvoice != whInvoice
+						&& (row[1].compareTo(row[2]) == -1)) // || whMasterInvoice != whInvoice
 				{
 					BigDecimal grandTotal = invoice.getGrandTotal();
 					BigDecimal taxAmt = iTax.getTaxAmt().negate();
@@ -576,7 +576,7 @@ public class ValidatorInvoice implements ModelValidator
 							"WHERE brtn.HasWithHold='Y' AND i.C_BPartner_ID=?  " +  
 							"AND TO_CHAR(i.DateAcct, 'MMYYYY') = TO_CHAR(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'), 'MMYYYY') " +
 							"AND (i.LBR_Withhold_Invoice_ID IS NULL OR i.LBR_Withhold_Invoice_ID=?) " + 
-							"AND i.DocStatus IN ('CL','CO') AND o.C_Invoice_ID<>? " +
+							"AND i.DocStatus IN ('CL','CO') AND i.C_Invoice_ID<>? " +
 							"AND i.IsSOTrx=? " +
 							"AND brtn.LBR_TaxName_ID=?";
 

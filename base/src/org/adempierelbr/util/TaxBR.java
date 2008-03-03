@@ -213,6 +213,11 @@ public class TaxBR
 		//Fórmula
 		formula = formula.replaceAll("@", "");
 		
+		//se amt = 0, retornar zero, para não fazer divisão por 0
+		if (amt == 0){
+			return 0;
+		}
+		
 		//Base de Cálculo
 		double     base    = (Double)interpreter.eval(formula);
 		

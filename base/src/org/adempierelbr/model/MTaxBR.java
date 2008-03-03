@@ -188,9 +188,9 @@ public class MTaxBR{
 			{
 				formula[0] = rs.getString(1);
 				if (formula[0] != null) formula[0] = formula[0].trim();
-				formula[1] = rs.getString(2).trim();
+				formula[1] = rs.getString(2);
 				if (formula[1] != null) formula[1] = formula[1].trim();
-				formula[2] = rs.getString(3).trim();
+				formula[2] = rs.getString(3);
 				if (formula[2] != null) formula[2] = formula[2].trim();
 			}
 			rs.close ();
