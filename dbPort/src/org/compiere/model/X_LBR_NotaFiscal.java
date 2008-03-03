@@ -1222,6 +1222,23 @@ public String getlbr_BPShipperIE()
 {
 return (String)get_Value("lbr_BPShipperIE");
 }
+/** Set BP Shipper License Plate.
+@param lbr_BPShipperLicensePlate Defines the BP Shipper License Plate */
+public void setlbr_BPShipperLicensePlate (String lbr_BPShipperLicensePlate)
+{
+if (lbr_BPShipperLicensePlate != null && lbr_BPShipperLicensePlate.length() > 8)
+{
+log.warning("Length > 8 - truncated");
+lbr_BPShipperLicensePlate = lbr_BPShipperLicensePlate.substring(0,7);
+}
+set_Value ("lbr_BPShipperLicensePlate", lbr_BPShipperLicensePlate);
+}
+/** Get BP Shipper License Plate.
+@return Defines the BP Shipper License Plate */
+public String getlbr_BPShipperLicensePlate() 
+{
+return (String)get_Value("lbr_BPShipperLicensePlate");
+}
 /** Set BPShipper Name.
 @param lbr_BPShipperName Defines the Shipper Name */
 public void setlbr_BPShipperName (String lbr_BPShipperName)
@@ -1399,6 +1416,23 @@ public BigDecimal getlbr_NetWeight()
 BigDecimal bd = (BigDecimal)get_Value("lbr_NetWeight");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Packing Type.
+@param lbr_PackingType Defines the Packing Type */
+public void setlbr_PackingType (String lbr_PackingType)
+{
+if (lbr_PackingType != null && lbr_PackingType.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_PackingType = lbr_PackingType.substring(0,59);
+}
+set_Value ("lbr_PackingType", lbr_PackingType);
+}
+/** Get Packing Type.
+@return Defines the Packing Type */
+public String getlbr_PackingType() 
+{
+return (String)get_Value("lbr_PackingType");
 }
 /** Set Process Cancel Nota Fiscal.
 @param lbr_ProcCancelNF Process to Cancel Nota Fiscal */

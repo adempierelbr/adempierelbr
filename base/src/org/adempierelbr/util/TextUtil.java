@@ -238,7 +238,7 @@ public class TextUtil
 		
 		value = value.trim();
 		
-		if (value.endsWith(".") || value.endsWith(",") || value.endsWith(";")){
+		if (value.endsWith(".") || value.endsWith(",") || value.endsWith(";") || value.endsWith("/")){
 			value = value.substring(0,value.length()-1);
 		}
         

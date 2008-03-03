@@ -155,6 +155,8 @@ public class MDocPrintForm{
 			            	
 	            		}
 	            		
+	            		newRow = 1;
+	            		
 	            	}
 	            	
 	            }

@@ -382,6 +382,8 @@ public class ProcGenerateNF extends SvrProcess
 					
 				country = new MCountry(ctx,transpLocation.getC_Country_ID(),trx);
 				NotaFiscal.setlbr_BPShipperCountry(country.getCountryCode());   //País Transportadora
+				
+				NotaFiscal.setlbr_BPShipperLicensePlate(null); //Placa do Caminhão //TODO
 			}
 
 		}//Regra de Entrega = Shipper (Transportadora)
@@ -391,6 +393,7 @@ public class ProcGenerateNF extends SvrProcess
 		NotaFiscal.setFreightAmt(null);   //Valor do Frete //TODO
 		NotaFiscal.setlbr_GrossWeight(null); // Peso Bruto //TODO
 		NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
+		NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
 		NotaFiscal.setNoPackages(new BigDecimal(shipment.getNoPackages()));   //Quantidade/Volumes
 		NotaFiscal.setProcessed(true);
 		NotaFiscal.save(trx);
