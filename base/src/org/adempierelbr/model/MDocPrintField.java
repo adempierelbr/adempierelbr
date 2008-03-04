@@ -69,7 +69,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  Set Value
 	 *  @param String value
 	 */
-	public boolean setValue(String value, int fieldLength, boolean IsSubDoc){
+	public boolean setValue(String value, int fieldLength, boolean IsOtherRow){
 		
 		value = MDocPrintForm.removeEOL(value, fieldLength);
 				
@@ -79,7 +79,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 			
 			value = value.substring(0, fieldLength);
 			this.value = retiraAcentos(value);
-			if (IsSubDoc)
+			if (IsOtherRow)
 				return true;
 				
 		}

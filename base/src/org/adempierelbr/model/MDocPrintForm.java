@@ -95,7 +95,7 @@ public class MDocPrintForm{
       			  		if (value == null){
       			  			value = "";
       			  		}
-      			  		otherRow = fields[i].setValue(value,fields[i].getlbr_FieldLength(),IsSubDoc);
+      			  		otherRow = fields[i].setValue(value,fields[i].getlbr_FieldLength(),fields[i].islbr_OtherRow());
 	            	}
 	            	//Value
 	            	else if (format.equals("V")){
@@ -143,7 +143,7 @@ public class MDocPrintForm{
 	            		while (otherRow){
 	            			
 		            		String newValue = value.substring(fieldLength*newRow);
-		            		otherRow = fields[i].setValue(newValue, fieldLength, IsSubDoc);
+		            		otherRow = fields[i].setValue(newValue, fieldLength, fields[i].islbr_OtherRow());
 
 	            			y++;
 	            			

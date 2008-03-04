@@ -36,6 +36,7 @@ setLBR_DocPrintField_ID (0);
 setLBR_DocPrint_ID (0);
 setName (null);
 setlbr_IsHeader (false);	// 'N'
+setlbr_OtherRow (false);	// 'N'
 }
  */
 }
@@ -216,6 +217,24 @@ set_Value ("lbr_IsHeader", new Boolean(lbr_IsHeader));
 public boolean islbr_IsHeader() 
 {
 Object oo = get_Value("lbr_IsHeader");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+/** Set Other Row.
+@param lbr_OtherRow Defines if this field uses another row or truncate */
+public void setlbr_OtherRow (boolean lbr_OtherRow)
+{
+set_Value ("lbr_OtherRow", new Boolean(lbr_OtherRow));
+}
+/** Get Other Row.
+@return Defines if this field uses another row or truncate */
+public boolean islbr_OtherRow() 
+{
+Object oo = get_Value("lbr_OtherRow");
 if (oo != null) 
 {
  if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
