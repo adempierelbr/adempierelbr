@@ -33,6 +33,7 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -556,6 +557,11 @@ public class ValidatorInvoice implements ModelValidator
 					BigDecimal taxAmt = iTax.getTaxAmt().negate();
 					invoice.setGrandTotal(grandTotal.add(taxAmt));
 					invoice.save();
+					//Fix - Ajustar PaySchedule
+					MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+					log.fine(pt.toString());
+					pt.apply(invoice);
+					
 					iTax.delete(true);
 					invoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", null);
 					hasLeastThanThreshold = true;
@@ -644,6 +650,11 @@ public class ValidatorInvoice implements ModelValidator
 						
 						BigDecimal grandTotal = invoice.getGrandTotal();
 						invoice.setGrandTotal(grandTotal.add(taxLine.getlbr_TaxAmt()));
+						
+						//Fix - Ajustar PaySchedule
+						MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+						log.fine(pt.toString());
+						pt.apply(invoice);
 						
 						sql = "SELECT DISTINCT C_Invoice_ID FROM C_InvoiceLine WHERE LBR_Tax_ID=?";
 
