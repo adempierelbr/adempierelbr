@@ -86,9 +86,12 @@ public class MBradesco
         cnab.setlbr_CNABField26(especie); //Duplicata
         cnab.setlbr_CNABField27("N"); //Aceite
         cnab.setlbr_CNABField28(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
-        cnab.setlbr_CNABField29("00"); //Instrução 1
-        cnab.setlbr_CNABField30("00"); //Instrução 2
-      //cnab.setlbr_CNABField31(MCNAB.CNABFormat(Juros,13)); //Juros
+        //Protestar
+        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
+        	cnab.setlbr_CNABField29("06"); //Protesto Automático
+        	cnab.setlbr_CNABField30(MCNAB.CNABFormat(new Integer(boleto.getlbr_SueDays()).toString(),2)); //Dias para Protestar
+        }
+        cnab.setlbr_CNABField31(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
         cnab.setlbr_CNABField32(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
         cnab.setlbr_CNABField33(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); // Valor de Desconto
         cnab.setlbr_CNABField34(null); //IOF

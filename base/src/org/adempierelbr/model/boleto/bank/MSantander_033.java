@@ -80,9 +80,12 @@ public class MSantander_033
         cnab.setlbr_CNABField18(especie); // Duplicata Mercantil
         cnab.setlbr_CNABField19("N"); //Aceite
         cnab.setlbr_CNABField20(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
-        cnab.setlbr_CNABField21("00"); //Instrução 1
+        //Protestar
+        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
+        	cnab.setlbr_CNABField21("06"); //Protesto Automático
+        }
         cnab.setlbr_CNABField22("00"); //Instrução 2
-      //cnab.setlbr_CNABField23(MCNAB.CNABFormat(Juros,13)); //Juros
+        cnab.setlbr_CNABField23(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
         cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
         cnab.setlbr_CNABField25(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
         cnab.setlbr_CNABField26(null); //IOF

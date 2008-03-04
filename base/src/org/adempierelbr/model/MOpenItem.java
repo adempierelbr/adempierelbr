@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -40,12 +41,14 @@ public class MOpenItem{
 	private int C_BPartner_ID;
 	private int C_Invoice_ID;
 	private int C_InvoicePaySchedule_ID;
+	private int C_PaymentTerm_ID;
 	private int NetDays;
 	private Timestamp DateInvoiced;
 	private Timestamp DueDate;
 	private Timestamp DiscountDate;
 	private BigDecimal DiscountAmt;
 	private BigDecimal DiscountRate;
+	private BigDecimal InterestAmt;
 	private BigDecimal GrandTotal;
 
 	public MOpenItem(ResultSet rs){
@@ -61,14 +64,18 @@ public class MOpenItem{
 			setDiscountAmt(rs.getBigDecimal("DiscountAmt"));
 			setGrandTotal(rs.getBigDecimal("GrandTotal"));
 			setC_InvoicePaySchedule_ID(rs.getInt("C_InvoicePaySchedule_ID"));
+			setC_PaymentTerm_ID(rs.getInt("C_PaymentTerm_ID"));
 			
 			setDiscountRate(GrandTotal,DiscountAmt);
+			setInterestAmt(GrandTotal);
 			
 		}
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, "" + e);
 		}
+		
+		
 		
 	}
 	
@@ -82,7 +89,8 @@ public class MOpenItem{
 				     "DiscountDate, " + //6
 				     "DiscountAmt, " + //7
 				     "GrandTotal, " + //8
-				     "C_InvoicePaySchedule_ID " + //9
+				     "C_InvoicePaySchedule_ID, " + //9
+				     "C_PaymentTerm_ID " + //10
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' " +
 					 "AND C_Invoice_ID = ? order by DueDate"; //*1
@@ -132,7 +140,8 @@ public class MOpenItem{
 				     "DiscountDate, " + //6
 				     "DiscountAmt, " + //7
 				     "GrandTotal, " + //8
-				     "C_InvoicePaySchedule_ID " + //9
+				     "C_InvoicePaySchedule_ID, " + //9
+				     "C_PaymentTerm_ID " + //10
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' " +
 					 "AND DateInvoiced = ? " + //*1
@@ -188,6 +197,14 @@ public class MOpenItem{
 	
 	public int getC_Invoice_ID(){
 		return C_Invoice_ID;
+	}
+	
+	public void setC_PaymentTerm_ID(int value){
+		C_PaymentTerm_ID = value;
+	}
+	
+	public int getC_PaymentTerm_ID(){
+		return C_PaymentTerm_ID;
 	}
 	
 	private void setC_InvoicePaySchedule_ID(int value){
@@ -256,6 +273,21 @@ public class MOpenItem{
 	
 	public BigDecimal getDiscountRate(){
 		return DiscountRate;
+	}
+	
+	public void setInterestAmt(BigDecimal amt){
+		
+		MOrgInfo orgInfo     = MOrgInfo.get(Env.getCtx(), Env.getAD_Org_ID(Env.getCtx()));
+		BigDecimal interest  = (BigDecimal)orgInfo.get_Value("lbr_Interest");
+		if (interest == null)
+			interest = Env.ZERO;
+		
+		InterestAmt = new BigDecimal(((interest.doubleValue()/30)/100)*amt.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP); 
+		
+	}
+	
+	public BigDecimal getInterestAmt(){
+		return InterestAmt;
 	}
 	
 } //MOpenItem

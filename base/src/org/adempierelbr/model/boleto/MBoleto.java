@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.model.MOpenItem;
 import org.adempierelbr.model.boleto.bank.MBancoBrasil;
 import org.adempierelbr.model.boleto.bank.MBancoReal;
@@ -40,12 +41,14 @@ import org.compiere.model.MBankAccount;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_Bank;
 import org.compiere.model.X_LBR_Boleto;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 import org.jboleto.JBoleto;
 import org.jboleto.JBoletoBean;
 import org.jboleto.JBoletoPrint;
@@ -379,9 +382,6 @@ public class MBoleto extends X_LBR_Boleto
 				newBoleto.setAccountNo(BankA.getAccountNo()); //Número da Conta + DV
 				newBoleto.setlbr_PaymentLocation1(lbrBank.getlbr_PaymentLocation1());
 				newBoleto.setlbr_PaymentLocation2(lbrBank.getlbr_PaymentLocation2());
-				newBoleto.setlbr_Instruction1(""); //TODO - Condição de Pagamento
-				newBoleto.setlbr_Instruction2(""); //TODO - Condição de Pagamento
-				newBoleto.setlbr_Instruction3(""); //TODO - Condição de Pagamento
 				newBoleto.setlbr_BillKind(BankA.get_ValueAsString("lbr_BillKind"));
 				newBoleto.setlbr_ClientCode(BankA.get_ValueAsString("lbr_ClientCode"));
 				newBoleto.setlbr_PayScheduleNo(newBoleto.getPayScheduleNo(C_Invoice_ID,oi[i].getC_InvoicePaySchedule_ID()));
@@ -389,6 +389,34 @@ public class MBoleto extends X_LBR_Boleto
 				newBoleto.setDueDate(oi[i].getDueDate());
 				newBoleto.setDiscountAmt(oi[i].getDiscountAmt());
 				newBoleto.setDiscountDate(oi[i].getDiscountDate());
+				
+				int C_PaymentTerm_ID = oi[i].getC_PaymentTerm_ID();
+				MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
+				
+				//Juros
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest"))){
+					newBoleto.setlbr_Interest(oi[i].getInterestAmt());
+					newBoleto.setlbr_Instruction1("COBRAR MORA DIÁRIA DE R$ " + oi[i].getInterestAmt());
+				}
+				else{
+					newBoleto.setlbr_Interest(Env.ZERO);
+				}
+				
+				//Protesto
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue"))){
+					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
+					newBoleto.setlbr_SueDays(sueDays);
+					newBoleto.setlbr_HasSue(true);
+					newBoleto.setlbr_Instruction2("PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO");
+				}
+				else{
+					newBoleto.setlbr_SueDays(0);
+					newBoleto.setlbr_HasSue(false);
+				}
+				
+				//Nota Fiscal
+				MNotaFiscal nf = new MNotaFiscal(ctx,(Integer)invoice.get_Value("LBR_NotaFiscal_ID"),trx);
+				newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 			
 				String DocumentNo = "";
 			

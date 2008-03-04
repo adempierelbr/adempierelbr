@@ -96,7 +96,7 @@ public class MItau
         cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
         cnab.setlbr_CNABField25("00"); //Instrução 1
         cnab.setlbr_CNABField26("00"); //Instrução 2
-        //cnab.setlbr_CNABField27(MCNAB.CNABFormat(Juros,13)); //Juros
+        cnab.setlbr_CNABField27(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
         cnab.setlbr_CNABField28(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
         cnab.setlbr_CNABField29(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); // Valor de Desconto
         cnab.setlbr_CNABField30(null); //Preencher com Espaços em Branco

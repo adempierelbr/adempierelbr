@@ -47,6 +47,7 @@ setlbr_BPTypeBR (null);
 setlbr_BillFold (null);
 setlbr_Cessionary (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
+setlbr_HasSue (false);	// 'N'
 setlbr_IsCancelled (false);	// 'N'
 setlbr_ReceiverName (null);
 setlbr_jBoletoNo (null);
@@ -500,6 +501,24 @@ public Timestamp getlbr_DocDate()
 {
 return (Timestamp)get_Value("lbr_DocDate");
 }
+/** Set Has Sue.
+@param lbr_HasSue Define if this Document must be Sue */
+public void setlbr_HasSue (boolean lbr_HasSue)
+{
+set_Value ("lbr_HasSue", new Boolean(lbr_HasSue));
+}
+/** Get Has Sue.
+@return Define if this Document must be Sue */
+public boolean islbr_HasSue() 
+{
+Object oo = get_Value("lbr_HasSue");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
 /** Set Instruction 1.
 @param lbr_Instruction1 Identifies the Instrucion 1 */
 public void setlbr_Instruction1 (String lbr_Instruction1)
@@ -550,6 +569,20 @@ set_Value ("lbr_Instruction3", lbr_Instruction3);
 public String getlbr_Instruction3() 
 {
 return (String)get_Value("lbr_Instruction3");
+}
+/** Set Interest.
+@param lbr_Interest Defines the Interest */
+public void setlbr_Interest (BigDecimal lbr_Interest)
+{
+set_Value ("lbr_Interest", lbr_Interest);
+}
+/** Get Interest.
+@return Defines the Interest */
+public BigDecimal getlbr_Interest() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_Interest");
+if (bd == null) return Env.ZERO;
+return bd;
 }
 /** Set IsCancelled.
 @param lbr_IsCancelled Defines if the Document IsCancelled */
@@ -637,6 +670,20 @@ set_Value ("lbr_ReceiverName", lbr_ReceiverName);
 public String getlbr_ReceiverName() 
 {
 return (String)get_Value("lbr_ReceiverName");
+}
+/** Set Sue Days.
+@param lbr_SueDays Define the Sue Days */
+public void setlbr_SueDays (int lbr_SueDays)
+{
+set_Value ("lbr_SueDays", new Integer(lbr_SueDays));
+}
+/** Get Sue Days.
+@return Define the Sue Days */
+public int getlbr_SueDays() 
+{
+Integer ii = (Integer)get_Value("lbr_SueDays");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set jBoleto Number.
 @param lbr_jBoletoNo Identifies the bank number at jBoleto */
