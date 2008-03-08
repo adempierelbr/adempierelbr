@@ -72,6 +72,7 @@ public class FormBoleto extends CPanel
 			fillPicks();
 			jbInit();
 			dynInit();
+			executeQuery();
 			frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 			frame.getContentPane().add(statusBar, BorderLayout.SOUTH);
 		}
