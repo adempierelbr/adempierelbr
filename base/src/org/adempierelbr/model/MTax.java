@@ -150,7 +150,10 @@ public class MTax extends X_LBR_Tax {
 	 *  getLine
 	 *  @return Integer LBR_TaxLine_ID
 	 */
-	public static int getLine(int LBR_Tax_ID, int LBR_TaxName_ID, String trx){
+	public static int getLine(Integer LBR_Tax_ID, int LBR_TaxName_ID, String trx){
+		
+		if (LBR_Tax_ID == null)
+			LBR_Tax_ID = -1;
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
 		

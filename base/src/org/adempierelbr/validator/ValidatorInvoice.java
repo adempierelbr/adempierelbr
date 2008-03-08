@@ -299,9 +299,9 @@ public class ValidatorInvoice implements ModelValidator
 						e.printStackTrace();
 					}
 					
-					int LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
+					Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
 					
-					if (LBR_Tax_ID != 0){
+					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
 						org.compiere.model.MTax[] cTaxes = tax.getChildTaxes(false);
 						for (int j = 0; j < cTaxes.length; j++){
 							org.compiere.model.MTax cTax = cTaxes[j];

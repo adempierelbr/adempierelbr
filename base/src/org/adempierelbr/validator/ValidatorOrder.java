@@ -247,9 +247,9 @@ public class ValidatorOrder implements ModelValidator
 						e.printStackTrace();
 					}
 					
-					int LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
+					Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
 					
-					if (LBR_Tax_ID != 0)
+					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
 					{
 						org.compiere.model.MTax[] cTaxes = tax.getChildTaxes(false);
 						for (int j = 0; j < cTaxes.length; j++)
@@ -306,7 +306,7 @@ public class ValidatorOrder implements ModelValidator
 			String DocSubTypeSO = dt.getDocSubTypeSO();
 			
 			//Somente Venda Padrão
-			if (!(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) ||
+			if (DocSubTypeSO != null && !(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) ||
 				  DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder))){
 				
 				MInOut shipment  = null;
