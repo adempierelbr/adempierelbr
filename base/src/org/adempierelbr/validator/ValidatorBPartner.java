@@ -144,6 +144,10 @@ public class ValidatorBPartner implements ModelValidator
 			//If Individual - Validate CPF
 			if (BPTypeBR.equalsIgnoreCase("PF")){
 					String CPF = (String)bp.get_Value("lbr_CPF");
+					
+					if (CPF.indexOf('.') == -1 || CPF.length() < 14){
+						return "CPF Inválido";
+					}
 					if (!validaCPF(CPF)){
 						return "CPF Inválido";
 					}
@@ -154,6 +158,10 @@ public class ValidatorBPartner implements ModelValidator
 			//Else if Legal Entity - Validate CNPJ
 			else if (BPTypeBR.equalsIgnoreCase("PJ")){
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
+				
+				if (CNPJ.indexOf('.') == -1 || CNPJ.length() < 18){
+					return "CPF Inválido";
+				}
 				if (!validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
 				}
