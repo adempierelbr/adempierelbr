@@ -1344,4 +1344,14 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000007" trl="Y">
+  <value column="Name" original="ProcCreatePO">Criar linhas do Pedido</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000011" trl="Y">
+  <value column="Name" original="ProcCancelBoleto">Cancelar Boleto</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

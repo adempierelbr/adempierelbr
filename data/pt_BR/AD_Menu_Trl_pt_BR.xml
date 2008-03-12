@@ -2006,4 +2006,8 @@
   <value column="Name" original="ISS Matrix">Matriz de ISS</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000030" trl="N">
+  <value column="Name" original="Boleto">Boleto</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>

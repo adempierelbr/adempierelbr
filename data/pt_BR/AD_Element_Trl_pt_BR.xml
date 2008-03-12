@@ -26300,4 +26300,84 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000285" trl="Y">
+  <value column="Name" original="Create PO">Criar linhas do Pedido</value>
+  <value column="PrintName" original="Create PO">Criar linhas do Pedido</value>
+  <value column="Description" original="Process to Create PO Lines from Requisition">Processo para criar linhas do Pedido a partir da Requisição</value>
+  <value column="Help" original="Process to Create PO Lines from Requisition">Processo para criar linhas do Pedido a partir da Requisição</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000286" trl="Y">
+  <value column="Name" original="BP Shipper License Plate">Transportadora - Placa</value>
+  <value column="PrintName" original="BP Shipper License Plate">Transportadora - Placa</value>
+  <value column="Description" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
+  <value column="Help" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000287" trl="Y">
+  <value column="Name" original="Packing Type">Espécie</value>
+  <value column="PrintName" original="Packing Type">Espécie</value>
+  <value column="Description" original="Defines the Packing Type">Define a Espécie</value>
+  <value column="Help" original="Defines the Packing Type">Define a Espécie</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000288" trl="Y">
+  <value column="Name" original="Other Row">Outra Linha</value>
+  <value column="PrintName" original="Other Row">Outra Linha</value>
+  <value column="Description" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
+  <value column="Help" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000291" trl="Y">
+  <value column="Name" original="Has Sue">Protestar</value>
+  <value column="PrintName" original="Has Sue">Protestar</value>
+  <value column="Description" original="Define if this Document must be Sue">Define se o Documento deve ser Protestado Automaticamente</value>
+  <value column="Help" original="Define if this Document must be Sue">Define se o Documento deve ser Protestado Automáticamente</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000292" trl="Y">
+  <value column="Name" original="Sue Days">Dias para Protesto</value>
+  <value column="PrintName" original="Sue Days">Dias para Protesto</value>
+  <value column="Description" original="Define the Sue Days">Define o número de dias para protesto</value>
+  <value column="Help" original="Define the Sue Days">Define o número de dias para protesto</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000293" trl="Y">
+  <value column="Name" original="Has Interest">Cobrança de Juros</value>
+  <value column="PrintName" original="Has Interest">Cobrança de Juros</value>
+  <value column="Description" original="Define if this document has Interest">Define se o documento possui cobrança de juros</value>
+  <value column="Help" original="Define if this document has Interest">Define se o documento possui cobrança de juros</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000299" trl="Y">
+  <value column="Name" original="Process Cancel Boleto">Cancelar Boleto</value>
+  <value column="PrintName" original="Process Cancel Boleto">Cancelar Boleto</value>
+  <value column="Description" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
+  <value column="Help" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>
