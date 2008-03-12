@@ -167,6 +167,10 @@ public class TaxBR
 			//Valor do Imposto
 			double     taxamt  = base * taxBR.getTaxRate();
 			
+			//BF (Base de Cálculo estava somando alíquotas isentas)
+			if (taxBR.getTaxRate() <= 0)
+				taxbase = Env.ZERO;
+			
 			if (substamt.signum() == 1){
 				taxamt = taxamt - substamt.doubleValue();
 			}
