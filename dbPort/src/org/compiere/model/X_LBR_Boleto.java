@@ -40,6 +40,7 @@ setDiscountDate (new Timestamp(System.currentTimeMillis()));
 setDocumentNo (null);
 setDueDate (new Timestamp(System.currentTimeMillis()));
 setGrandTotal (Env.ZERO);
+setIsPaid (false);	// 'N'
 setLBR_Boleto_ID (0);
 setRoutingNo (null);
 setlbr_AgencyNo (null);
@@ -215,6 +216,25 @@ Integer ii = (Integer)get_Value("C_Invoice_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+
+/** C_Payment_ID AD_Reference_ID=343 */
+public static final int C_PAYMENT_ID_AD_Reference_ID=343;
+/** Set Payment.
+@param C_Payment_ID Payment identifier */
+public void setC_Payment_ID (int C_Payment_ID)
+{
+if (C_Payment_ID <= 0) set_Value ("C_Payment_ID", null);
+ else 
+set_Value ("C_Payment_ID", new Integer(C_Payment_ID));
+}
+/** Get Payment.
+@return Payment identifier */
+public int getC_Payment_ID() 
+{
+Integer ii = (Integer)get_Value("C_Payment_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set City.
 @param City Identifies a City */
 public void setCity (String City)
@@ -259,6 +279,23 @@ set_Value ("DiscountDate", DiscountDate);
 public Timestamp getDiscountDate() 
 {
 return (Timestamp)get_Value("DiscountDate");
+}
+/** Set Document Status.
+@param DocStatus The current status of the document */
+public void setDocStatus (String DocStatus)
+{
+if (DocStatus != null && DocStatus.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+DocStatus = DocStatus.substring(0,254);
+}
+set_Value ("DocStatus", DocStatus);
+}
+/** Get Document Status.
+@return The current status of the document */
+public String getDocStatus() 
+{
+return (String)get_Value("DocStatus");
 }
 /** Set Document No.
 @param DocumentNo Document sequence number of the document */
@@ -305,6 +342,24 @@ public BigDecimal getGrandTotal()
 BigDecimal bd = (BigDecimal)get_Value("GrandTotal");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Paid.
+@param IsPaid The document is paid */
+public void setIsPaid (boolean IsPaid)
+{
+set_Value ("IsPaid", new Boolean(IsPaid));
+}
+/** Get Paid.
+@return The document is paid */
+public boolean isPaid() 
+{
+Object oo = get_Value("IsPaid");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
 }
 /** Set Boleto.
 @param LBR_Boleto_ID Primary Key table LBR_Boleto */
@@ -601,6 +656,20 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
+}
+/** Set Occurrence Number.
+@param lbr_OccurNo Defines the Occurrence Number */
+public void setlbr_OccurNo (int lbr_OccurNo)
+{
+set_Value ("lbr_OccurNo", new Integer(lbr_OccurNo));
+}
+/** Get Occurrence Number.
+@return Defines the Occurrence Number */
+public int getlbr_OccurNo() 
+{
+Integer ii = (Integer)get_Value("lbr_OccurNo");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set PaySchedule Number.
 @param lbr_PayScheduleNo Defines the PaySchedule Number */

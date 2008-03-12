@@ -32,6 +32,7 @@ public X_LBR_CNAB (Properties ctx, int LBR_CNAB_ID, String trxName)
 super (ctx, LBR_CNAB_ID, trxName);
 /** if (LBR_CNAB_ID == 0)
 {
+setIsRegistered (false);	// 'N'
 setLBR_CNAB_ID (0);
 setRoutingNo (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
@@ -83,6 +84,43 @@ public String toString()
 {
 StringBuffer sb = new StringBuffer ("X_LBR_CNAB[").append(get_ID()).append("]");
 return sb.toString();
+}
+/** Set Registered.
+@param IsRegistered The application is registered. */
+public void setIsRegistered (boolean IsRegistered)
+{
+set_Value ("IsRegistered", new Boolean(IsRegistered));
+}
+/** Get Registered.
+@return The application is registered. */
+public boolean isRegistered() 
+{
+Object oo = get_Value("IsRegistered");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+
+/** LBR_Boleto_ID AD_Reference_ID=1000008 */
+public static final int LBR_BOLETO_ID_AD_Reference_ID=1000008;
+/** Set Boleto.
+@param LBR_Boleto_ID Primary Key table LBR_Boleto */
+public void setLBR_Boleto_ID (int LBR_Boleto_ID)
+{
+if (LBR_Boleto_ID <= 0) set_Value ("LBR_Boleto_ID", null);
+ else 
+set_Value ("LBR_Boleto_ID", new Integer(LBR_Boleto_ID));
+}
+/** Get Boleto.
+@return Primary Key table LBR_Boleto */
+public int getLBR_Boleto_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_Boleto_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set CNAB.
 @param LBR_CNAB_ID Primary Key table LBR_CNAB */

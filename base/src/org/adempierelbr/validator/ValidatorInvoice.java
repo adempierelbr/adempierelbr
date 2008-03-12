@@ -20,6 +20,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
@@ -423,6 +424,11 @@ public class ValidatorInvoice implements ModelValidator
 					&& whInvoice.compareTo((Integer) invoice.get_Value("C_Invoice_ID")) != 0)
 				return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
 			//TODO: Continuar fazendo as reversões
+			
+			
+			//CANCELA BOLETO E CNAB
+			MBoleto.cancelBoleto(invoice.getCtx(),invoice.getC_Invoice_ID(),invoice.get_TrxName());
+			
 		}
 			
 		return null;

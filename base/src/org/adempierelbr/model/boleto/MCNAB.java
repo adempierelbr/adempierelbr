@@ -232,7 +232,7 @@ public class MCNAB extends X_LBR_CNAB
 		
 	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " + where;
 	           sql += " AND lbr_DocDate BETWEEN ? AND ?";
-	           sql += " AND lbr_IsCancelled = 'N'";
+	           sql += " AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
 	           sql += " AND AD_Client_ID = ?";
 	           
 	 	ArrayList<MCNAB> list = new ArrayList<MCNAB>();
@@ -271,7 +271,91 @@ public class MCNAB extends X_LBR_CNAB
 		
 		MCNAB[] lines = new MCNAB[list.size()];
 		list.toArray(lines);
+		
+		//MARCA BOLETOS COMO REGISTRADOS
+		setIsRegistered(DateFrom,DateTo,where,Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"),trx);
+		
 		return lines;
 	} //getFields
+	
+	private static void setIsRegistered (Timestamp DateFrom, Timestamp DateTo, String where, int AD_Client_ID, String trx){
+		
+		PreparedStatement pstmt = null;
+		
+		String sql  = "UPDATE LBR_CNAB SET IsRegistered = 'Y' " + where;
+               sql += " AND lbr_DocDate BETWEEN ? AND ?";
+               sql += " AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
+               sql += " AND AD_Client_ID = ?";
+        
+        pstmt = DB.prepareStatement (sql.trim(), trx);
+		try {
+			pstmt.setTimestamp(1, DateFrom);
+			pstmt.setTimestamp(2, DateTo);
+			pstmt.setInt(3, Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+			pstmt.executeUpdate();
+	   	}
+    	catch (Exception e)
+    	{
+    		log.log(Level.SEVERE, "", e);
+    	}
+    	try
+    	{
+    		if (pstmt != null)
+    			pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		pstmt = null;
+    	}
+		
+	}
+	
+	/**************************************************************************
+	 * 	getLBR_CNAB_ID
+	 *  @param int LBR_Boleto_ID
+	 *  @param String trx
+	 * 	@return int LBR_CNAB_ID
+	 */
+	public static int getLBR_CNAB_ID(int LBR_Boleto_ID, String trx){
+		
+	    PreparedStatement pstmt = null;
+	 	ResultSet rs = null;
+		
+	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " +
+	 			     "WHERE LBR_Boleto_ID = ?"; 
+	           
+	 	int LBR_CNAB_ID = -1;
+	 	
+		try
+    	{
+    		pstmt = DB.prepareStatement (sql.trim(), trx);
+    		pstmt.setInt(1, LBR_Boleto_ID);
+    		rs = pstmt.executeQuery ();
+    		if (rs.next ())
+    		{
+	    		LBR_CNAB_ID = rs.getInt(1);  
+    		}
+    		rs.close ();
+    		pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		log.log(Level.SEVERE, "", e);
+    	}
+    	try
+    	{
+    		if (pstmt != null)
+    			pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		pstmt = null;
+    	}
+		
+		return LBR_CNAB_ID;
+	} //getLBR_CNAB_ID
     
 } //MCNAB

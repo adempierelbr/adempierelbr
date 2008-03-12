@@ -177,7 +177,14 @@ public class TextUtil
 		
 		int rest = length - value.length();
 		
-		if (rest < 0) return value.substring(0, length);
+		if (rest < 0){
+			
+			if (lpad)
+				return value.substring(0, length);
+			else
+				return value.substring(rest*(-1));
+			
+		}
 		
 		if (lpad)
 			value = fill.substring(0,rest) + value;

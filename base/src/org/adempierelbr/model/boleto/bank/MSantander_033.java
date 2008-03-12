@@ -60,6 +60,7 @@ public class MSantander_033
 		
 		cnab.setRoutingNo(banco); //Santander (Banespa)
 		cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
+		cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
         cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
         cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
         cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
@@ -232,12 +233,13 @@ public class MSantander_033
 			String CodOcorren      = linhas[i].substring(108, 110); //Cód. Ocorrencia
 			String[] DescOcorren   = (occurType.get(Integer.parseInt(CodOcorren)));
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
+			String NossoNo         = (linhas[i].substring(116, 126)).trim(); //Nosso Número
 			Timestamp  DataOcorren = POLBR.stringTodate((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
 			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
 			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
 			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 			
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, 
+			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 			
 		}

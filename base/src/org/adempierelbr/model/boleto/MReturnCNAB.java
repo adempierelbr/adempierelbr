@@ -92,7 +92,7 @@ public class MReturnCNAB
 	}
 	
 	public static void processReturn(FileWriter fw, String CodOcorren, String DescOcorren, String OcorrenType, 
-			                         String DocumentNo, Timestamp DataOcorren, BigDecimal ValorTitulo, 
+			                         String DocumentNo, String NossoNo, Timestamp DataOcorren, BigDecimal ValorTitulo, 
 			                         BigDecimal Desconto, BigDecimal Juros, String trx) throws IOException{
 		
 		Properties ctx = Env.getCtx();
@@ -106,69 +106,88 @@ public class MReturnCNAB
 		              Desconto    + ";" +
 		              Juros       + ";";
 		
+		int C_Invoice_ID = POLBR.getC_Invoice_ID(DocumentNo,trx);
+		int LBR_Boleto_ID = POLBR.getLBR_Boleto_ID(NossoNo, C_Invoice_ID, trx);
+		
 		if (OcorrenType.equalsIgnoreCase("L")){ //Liquidação  
 			
-			int C_Invoice_ID = POLBR.getC_Invoice_ID(DocumentNo,trx);
-			
-			if (C_Invoice_ID != 0){
+			if (C_Invoice_ID > 0){
+					
+				if (LBR_Boleto_ID > 0){
 				
-				MInvoice Invoice = new MInvoice(ctx,C_Invoice_ID,trx);
-				if ((Invoice.getDocStatus()).equals("CO")){
-					if (!Invoice.isPaid()){
+					MInvoice Invoice = new MInvoice(ctx,C_Invoice_ID,trx);
+					MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
 					
-						MPayment Payment = new MPayment(ctx,0,trx);
+					if ((Invoice.getDocStatus()).equals("CO")){
+						if (!Invoice.isPaid()){
 					
-						int C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
+							MPayment Payment = new MPayment(ctx,0,trx);
 					
-						Payment.setC_BankAccount_ID(C_BankAccount_ID);
+							int C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
 					
-						Payment.setC_DocType_ID(POLBR.getARReceipt()); //Contas a Receber
-						Payment.setC_Invoice_ID(C_Invoice_ID);
-						Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());
-						Payment.setC_Currency_ID(297); //BRL
+							Payment.setC_BankAccount_ID(C_BankAccount_ID);
 					
-						Payment.setDateAcct(DataOcorren); //Data da Conta
-						Payment.setDateTrx(DataOcorren); //Data da Transação
+							Payment.setC_DocType_ID(POLBR.getARReceipt()); //Contas a Receber
+							Payment.setC_Invoice_ID(C_Invoice_ID);
+							Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());
+							Payment.setC_Currency_ID(297); //BRL
+					
+							Payment.setDateAcct(DataOcorren); //Data da Conta
+							Payment.setDateTrx(DataOcorren); //Data da Transação
 						
-						BigDecimal DiscountAmt = Env.ZERO;
+							BigDecimal DiscountAmt = Env.ZERO;
 					
-						if (Desconto.signum() != 0){
-							DiscountAmt = Desconto;
-						}
-						else if (Juros.signum() != 0){
-							DiscountAmt = Juros.negate();
-						}
+							if (Desconto.signum() != 0){
+								DiscountAmt = Desconto;
+							}
+							else if (Juros.signum() != 0){
+								DiscountAmt = Juros.negate();
+							}
 					
-						Payment.setPayAmt(ValorTitulo.add(DiscountAmt.negate())); //Valor Pago
+							Payment.setPayAmt(ValorTitulo.add(DiscountAmt.negate())); //Valor Pago
 					
-						Payment.setDiscountAmt(DiscountAmt); //Negativo = Juros | Positivo = Desconto
+							Payment.setDiscountAmt(DiscountAmt); //Negativo = Juros | Positivo = Desconto
 						
-						Payment.save(trx); //Salvar antes de Completar
+							Payment.save(trx); //Salvar antes de Completar
 						
-						String status = Payment.completeIt();
-						Payment.setDocStatus(status);
-						Payment.save(trx);
+							String status = Payment.completeIt();
+							Payment.setDocStatus(status);
+							Payment.save(trx);
+							
+							boleto.setC_Payment_ID(Payment.getC_Payment_ID());
+							boleto.setIsPaid(true);
+							boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
+							boleto.setDocStatus(DescOcorren);
+							boleto.save(trx);
 					
-						TextUtil.addLine(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
-						TextUtil.addEOL(fw);
+							TextUtil.addLine(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
+							TextUtil.addEOL(fw);
 						
-					}//BAIXA
+						}//BAIXA
+						else{
+							
+							boleto.setIsPaid(true);
+							boleto.setDocStatus("DOCUMENTO JA LANCADO");
+							boleto.save(trx);
+							
+							TextUtil.addLine(fw, line + ";;DOCUMENTO JA LANCADO");
+							TextUtil.addEOL(fw);
+						
+						}//JA LANCADO
+					
+					}//FATURA COMPLETADA
 					else{
 						
-						TextUtil.addLine(fw, line + ";;DOCUMENTO JA LANCADO");
-						TextUtil.addEOL(fw);
+						boleto.setDocStatus("FATURA NAO COMPLETADA");
+						boleto.save(trx);
 						
-					}//JA LANCADO
+						TextUtil.addLine(fw, line + ";;FATURA NAO COMPLETADA");
+						TextUtil.addEOL(fw);
 					
-				}//FATURA COMPLETADA
-				else{
-
-					TextUtil.addLine(fw, line + ";;FATURA NAO COMPLETADA");
-					TextUtil.addEOL(fw);
-					
-				}
+					}
 				
-			}//LIQUIDAÇÃO
+				}//LIQUIDAÇÃO
+			}
 			else{
 
 				TextUtil.addLine(fw, line + ";;DOCUMENTO NAO ENCONTRADO");
@@ -180,8 +199,19 @@ public class MReturnCNAB
 		
 		else {
 			
-			TextUtil.addLine(fw, line + ";;OCORRENCIA");
-			TextUtil.addEOL(fw);
+			if (LBR_Boleto_ID != 0){
+				MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
+				boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
+				boleto.setDocStatus(DescOcorren);
+				boleto.save(trx);
+				
+				TextUtil.addLine(fw, line + ";;OCORRENCIA");
+				TextUtil.addEOL(fw);
+			}
+			else{
+				TextUtil.addLine(fw, line + ";;DOCUMENTO NAO ENCONTRADO");
+				TextUtil.addEOL(fw);
+			}
 			
 		}//OCORRENCIA
 		

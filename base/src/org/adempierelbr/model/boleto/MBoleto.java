@@ -539,5 +539,56 @@ public class MBoleto extends X_LBR_Boleto
 	    	TextUtil.deleteFile(fileName);
 	    }
 	}
+	
+	public static void cancelBoleto(Properties ctx, int C_Invoice_ID, String trx){
+		
+		String sql = "SELECT LBR_Boleto_ID, " + //1
+		 			 "FROM LBR_Boleto " +
+	                 "WHERE C_Invoice_ID = ? AND lbr_IsCancelled = 'N'"; //*1
+
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				MBoleto boleto = new MBoleto(ctx,rs.getInt(1),trx);
+				boleto.setlbr_IsCancelled(true);
+				boleto.save(trx);
+				
+				int LBR_CNAB_ID = MCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
+				if (LBR_CNAB_ID > 0){
+					MCNAB cnab = new MCNAB(ctx,LBR_CNAB_ID,trx);
+					cnab.setlbr_IsCancelled(true);
+					cnab.save(trx);
+				}
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		sql = "UPDATE C_Invoice SET C_BankAccount_ID = NULL, lbr_IsBillPrinted = 'N' " +
+	          "WHERE C_Invoice_ID = " + C_Invoice_ID;
+
+		DB.executeUpdate(sql, trx);
+		
+	}
 
 } //MBoleto

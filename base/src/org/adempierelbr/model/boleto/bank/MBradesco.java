@@ -56,15 +56,17 @@ public class MBradesco
 		
 		cnab.setRoutingNo(banco); //Bradesco
 		cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
+		cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
         cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
         cnab.setlbr_CNABField2(null); //Agência de Débito
         cnab.setlbr_CNABField3(null); //Dígito da Agência de Débito
         cnab.setlbr_CNABField4(null); //Razão da Conta Corrente
         cnab.setlbr_CNABField5(null); //Conta Corrente
         cnab.setlbr_CNABField6(null); //Dígito da Conta Corrente
-        cnab.setlbr_CNABField7("0" + boleto.getlbr_BillFold() 
-        		               + boleto.getlbr_AgencyNo() + boleto.getAccountNo()
-        		               + boleto.getAccountDigit()); // ZERO + CARTEIRA + AGÊNCIA + CC + DV
+        cnab.setlbr_CNABField7("0" + TextUtil.pad(boleto.getlbr_BillFold(),'0',3,true) 
+	               + TextUtil.pad(boleto.getlbr_AgencyNo(),'0',5,true) 
+	               + TextUtil.pad(boleto.getAccountNo(),'0',7,true)
+	               + boleto.getAccountDigit()); // ZERO + CARTEIRA + AGÊNCIA + CC + DV
         cnab.setlbr_CNABField8(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Controle do Participanete (Preencher com Número de Documento)
         cnab.setlbr_CNABField9(banco); //Código do Banco
         cnab.setlbr_CNABField10("00000"); //ZEROS
@@ -141,7 +143,7 @@ public class MBradesco
 		TextUtil.addLine(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addLine(fw, TextUtil.pad("", ' ', 8, true)); //BRANCOS
 		TextUtil.addLine(fw, "MX"); //IDENTIFICAÇÃO DO SISTEMA
-		TextUtil.addLine(fw, TextUtil.pad("1", '0', 7, true)); //SEQUENCIAL DO ARQUIVO
+		TextUtil.addLine(fw, TextUtil.pad(MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true)); //SEQUENCIAL DO ARQUIVO
 		TextUtil.addLine(fw, TextUtil.pad("", ' ', 277, true)); //BRANCOS
 		TextUtil.addLine(fw, TextUtil.pad("1", '0', 6, true)); //NÚMERO SEQUENCIAL
 		TextUtil.addEOL(fw);
@@ -170,7 +172,11 @@ public class MBradesco
 		String dv   = BankA.getAccountNo().substring(indexCC+1);
 		String agencia = BankA.get_ValueAsString("lbr_AgencyNo");
 		       agencia = agencia.substring(0, agencia.indexOf('-'));
-		String conta   = "0" + BankA.get_ValueAsString("lbr_BillFold") + agencia + cc + dv;
+		String conta   = "0" 
+						+ TextUtil.pad(BankA.get_ValueAsString("lbr_BillFold"),'0',3,true)
+						+ TextUtil.pad(agencia,'0',5,true)
+						+ TextUtil.pad(cc,'0',7,true)
+						+ dv;
 		
 		String where =  "WHERE lbr_CNABField7 = '" + conta + "'";
 		       
@@ -242,12 +248,13 @@ public class MBradesco
 			String CodOcorren      = linhas[i].substring(108, 110); //Cód. Ocorrencia
 			String[] DescOcorren   = (occurType.get(Integer.parseInt(CodOcorren)));
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
+			String NossoNo         = (linhas[i].substring(70, 81)).trim();   //Nosso Número
 			Timestamp  DataOcorren = POLBR.stringTodate((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
 			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
 			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
 			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 			
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, 
+			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 			
 		}

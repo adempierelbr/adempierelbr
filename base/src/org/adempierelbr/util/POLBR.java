@@ -78,6 +78,50 @@ public class POLBR{
 		
 	}	//	getC_Invoice_ID
 	
+	public static int getLBR_Boleto_ID(String DocumentNo, int C_Invoice_ID, String trx)
+	{
+		int LBR_Boleto_ID = -1;
+		String sql = "SELECT LBR_Boleto_ID " +
+				     "FROM LBR_Boleto " +
+				     "WHERE DocumentNo = ? " +
+				     "AND C_Invoice_ID = ? " +
+				     "AND AD_Client_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setString(1, DocumentNo);
+			pstmt.setInt(2, C_Invoice_ID);
+			pstmt.setInt(3, Env.getAD_Client_ID(Env.getCtx()));
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 LBR_Boleto_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		return LBR_Boleto_ID;
+		
+	}	//	getLBR_Boleto_ID
+	
 	public static int getC_City_ID(String Name, int C_Region_ID, String trx)
 	{
 		int C_City_ID = -1;
