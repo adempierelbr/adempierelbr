@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Vector;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MNotaFiscal;
@@ -312,7 +313,7 @@ public class MBoleto extends X_LBR_Boleto
         
     }
 	
-	public static void generateBoleto(Properties ctx, int C_Invoice_ID, int C_BankAccount_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
+	public static void generateBoleto(Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
 		
 		if (C_Invoice_ID == 0){
 			log.log(Level.SEVERE, "C_Invoice_ID == 0");
@@ -333,7 +334,7 @@ public class MBoleto extends X_LBR_Boleto
 			MBPartner BPartner = MBPartner.get(ctx, invoice.getC_BPartner_ID());
 			MOrg Org = new MOrg(ctx,invoice.getAD_Org_ID(),trx);
 			
-			if (C_BankAccount_ID == 0){
+			if (C_BankAccount_ID == null || C_BankAccount_ID.intValue() == 0){
 				log.log(Level.SEVERE, "C_BankAccount_ID == 0");
 				throw new IllegalArgumentException("C_BankAccount_ID == 0");
 			}
@@ -444,8 +445,9 @@ public class MBoleto extends X_LBR_Boleto
 			
 		JBoletoBean jBoletoBean = new JBoletoBean();
 		
-		MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
-		MBPartner bpartner = new MBPartner(getCtx(),getC_BPartner_ID(),get_TrxName());
+		MInvoice invoice         = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
+		MPaymentTerm paymentTerm = new MPaymentTerm(getCtx(),invoice.getC_PaymentTerm_ID(),get_TrxName());
+		MBPartner bpartner       = new MBPartner(getCtx(),getC_BPartner_ID(),get_TrxName());
 		
 		int bank = Integer.parseInt(getlbr_jBoletoNo());
 			
@@ -499,6 +501,12 @@ public class MBoleto extends X_LBR_Boleto
 	    jBoletoBean.setInstrucao3(Instruction3);
 	    
 	    jBoletoBean.setAgencia(getlbr_AgencyNo());
+	    
+        Vector<String> descricoes = new Vector<String>();
+        descricoes.add("FATURA: " + invoice.getDocumentNo() + "/" + getlbr_PayScheduleNo());
+        descricoes.add(Instruction3);
+        descricoes.add("CONDIÇÃO DE PAGAMENTO: " + paymentTerm.getName());
+        jBoletoBean.setDescricoes(descricoes);
 	    
 	    String AgencyDigit = getAgencyDigit();
 	    if (AgencyDigit != null) jBoletoBean.setDvAgencia(AgencyDigit);

@@ -28,6 +28,7 @@ import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrg;
+import org.compiere.model.MSequence;
 import org.compiere.util.Env;
 
 
@@ -128,6 +129,18 @@ public class MBradesco
 		Properties ctx = Env.getCtx();
 		
 		MOrg    Org    = MOrg.get(ctx,Env.getAD_Org_ID(ctx));
+		Integer LBR_DocSequence_ID = (Integer)BankA.get_Value("LBR_DocSequence_ID");
+		
+		String seqFile = "MX" + TextUtil.pad(MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true);
+		
+		if (LBR_DocSequence_ID != null && LBR_DocSequence_ID.intValue() != 0){
+			MSequence sequence = new MSequence(ctx,LBR_DocSequence_ID,null);
+			seqFile = "";
+			if (sequence.getPrefix() != null) seqFile += sequence.getPrefix();
+			seqFile += ((Integer)sequence.getNextID()).toString();
+			if (sequence.getSuffix() != null) seqFile += sequence.getSuffix();
+			sequence.save();
+		}
 		
 		TextUtil.addLine(fw, "0"); //TIPO DE REGISTRO
 		TextUtil.addLine(fw, "1"); //OPERAÇÃO
@@ -142,8 +155,7 @@ public class MBradesco
 		TextUtil.addLine(fw, TextUtil.pad(bancoName, ' ', 15, false)); //NOME DO BANCO
 		TextUtil.addLine(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addLine(fw, TextUtil.pad("", ' ', 8, true)); //BRANCOS
-		TextUtil.addLine(fw, "MX"); //IDENTIFICAÇÃO DO SISTEMA
-		TextUtil.addLine(fw, TextUtil.pad(MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true)); //SEQUENCIAL DO ARQUIVO
+		TextUtil.addLine(fw, TextUtil.pad(seqFile, '0', 9, false)); //SEQUENCIAL DO ARQUIVO
 		TextUtil.addLine(fw, TextUtil.pad("", ' ', 277, true)); //BRANCOS
 		TextUtil.addLine(fw, TextUtil.pad("1", '0', 6, true)); //NÚMERO SEQUENCIAL
 		TextUtil.addEOL(fw);
