@@ -1,11 +1,11 @@
 #Fat Jar Configuration File
-#Wed Feb 20 11:21:27 BRT 2008
+#Tue Mar 04 19:14:10 BRT 2008
 onejar.license.required=false
 manifest.classpath=
-manifest.removesigners=false
+manifest.removesigners=true
 onejar.checkbox=false
 jarname=customization.jar
-manifest.mergeall=false
+manifest.mergeall=true
 manifest.mainclass=
 manifest.file=<createnew>
 jarname.isextern=false

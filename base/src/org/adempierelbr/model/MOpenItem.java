@@ -62,7 +62,7 @@ public class MOpenItem{
 			setDueDate(rs.getTimestamp("DueDate"));
 			setDiscountDate(rs.getTimestamp("DiscountDate"));
 			setDiscountAmt(rs.getBigDecimal("DiscountAmt"));
-			setGrandTotal(rs.getBigDecimal("GrandTotal"));
+			setGrandTotal(rs.getBigDecimal("OpenAmt"));
 			setC_InvoicePaySchedule_ID(rs.getInt("C_InvoicePaySchedule_ID"));
 			setC_PaymentTerm_ID(rs.getInt("C_PaymentTerm_ID"));
 			
@@ -88,7 +88,7 @@ public class MOpenItem{
 				     "DueDate, " + //5
 				     "DiscountDate, " + //6
 				     "DiscountAmt, " + //7
-				     "GrandTotal, " + //8
+				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
 				     "C_PaymentTerm_ID " + //10
 					 "FROM RV_OpenItem " +
@@ -139,7 +139,7 @@ public class MOpenItem{
 				     "DueDate, " + //5
 				     "DiscountDate, " + //6
 				     "DiscountAmt, " + //7
-				     "GrandTotal, " + //8
+				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
 				     "C_PaymentTerm_ID " + //10
 					 "FROM RV_OpenItem " +

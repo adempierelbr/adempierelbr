@@ -261,7 +261,7 @@ public class FormBoleto extends CPanel
 		int index = 0;
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, bp.Name, pt.Name, min(op.DateInvoiced) as DateInvoiced, min(op.DueDate) as DueDate, sum(op.GrandTotal) as GrandTotal " +
+				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, bp.Name, pt.Name, min(op.DateInvoiced) as DateInvoiced, min(op.DueDate) as DueDate, sum(op.OpenAmt) as GrandTotal " +
 				"FROM C_Invoice i " +
 				"INNER JOIN AD_Org o ON i.AD_Org_ID=o.AD_Org_ID " +
 				"INNER JOIN C_DocType d ON i.C_DocTypeTarget_ID=d.C_DocType_ID " +
