@@ -12,10 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.model.boleto.bank;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
-import org.adempierelbr.model.MOpenItem;
 import org.adempierelbr.model.boleto.MBoleto;
 
 
@@ -37,7 +36,7 @@ public class MSantander_353
 		//TODO
 	} //generateCNAB
 	
-	public static void returnCNAB(ArrayList<String[]> occurType, String FilePath, String[] linhas, String trx){
+	public static void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx){
 	//TODO
 	}
 	

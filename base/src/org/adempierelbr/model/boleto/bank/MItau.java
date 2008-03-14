@@ -16,7 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.adempierelbr.model.boleto.MBoleto;
@@ -247,7 +247,7 @@ public class MItau
 		
 	} //generateFile
 	
-	public static void returnCNAB(ArrayList<String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
+	public static void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 		
 		FileWriter fw = MReturnCNAB.createFile(FilePath);
 		

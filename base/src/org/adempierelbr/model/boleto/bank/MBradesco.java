@@ -16,7 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.adempierelbr.model.boleto.MBoleto;
@@ -72,7 +72,7 @@ public class MBradesco
         cnab.setlbr_CNABField9(banco); //Código do Banco
         cnab.setlbr_CNABField10("00000"); //ZEROS
         cnab.setlbr_CNABField11(MCNAB.CNABFormat(boleto.getDocumentNo() ,11)); //Nosso Número
-        cnab.setlbr_CNABField12(((Integer)MCNAB.getModulo11(boleto.getlbr_BillFold() + boleto.getDocumentNo() , 7)).toString()); //DAC
+        cnab.setlbr_CNABField12(getModulo11(boleto.getlbr_BillFold() + boleto.getDocumentNo() , 7)); //DAC
         cnab.setlbr_CNABField13(MCNAB.CNABFormat("0", 10)); //Desconto Bonificação
         cnab.setlbr_CNABField14("2"); //Condição Emissão de Papeleta ( 2 = Cliente Emite)
         cnab.setlbr_CNABField15("N"); //Não registra na Cobrança
@@ -251,7 +251,7 @@ public class MBradesco
 		
 	} //generateFile
 	
-	public static void returnCNAB(ArrayList<String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
+	public static void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 		
 		FileWriter fw = MReturnCNAB.createFile(FilePath);
 		
@@ -274,5 +274,43 @@ public class MBradesco
 		TextUtil.closeFile(fw);
 		
 	}
+	
+	/**************************************************************************
+	 * 	getModulo11
+	 *  @param String value
+	 *  @param int type
+	 * 	@return String dac
+	 */
+    public static String getModulo11(String campo,int type) {
+    	//Modulo 11 - 234567   (type = 7)
+    	//Modulo 11 - 23456789 (type = 9)
+        
+    	int multiplicador = 2;
+		int multiplicacao = 0;
+		int soma_campo = 0;
+		
+		for (int i = campo.length(); i > 0; i--) {
+			multiplicacao = Integer.parseInt(campo.substring(i-1,i)) * multiplicador;
+			
+			soma_campo = soma_campo + multiplicacao;
+			
+			multiplicador++;
+			if (multiplicador > 7 && type == 7)
+				multiplicador = 2;
+			else if (multiplicador > 9 && type == 9)
+				multiplicador = 2;
+		}
+		
+		int dac = 11 - (soma_campo%11);
+		
+        if (dac == 10 && type == 7)
+            return "P";
+        else if (dac == 11 && type == 7)
+        	return "0";
+        else if ((dac == 0 || dac == 1 || dac > 9) && type == 9)
+        	dac = 1;
+
+        return ((Integer)dac).toString();
+    }
 	
 } //MBradesco

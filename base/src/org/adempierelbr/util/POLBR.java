@@ -39,6 +39,11 @@ public class POLBR{
 	public static int getC_Invoice_ID(String DocumentNo,String trx)
 	{
 		int C_Invoice_ID = -1;
+		
+		int index = DocumentNo.indexOf('/'); 
+		if (index != -1)
+			DocumentNo = DocumentNo.substring(0, index);
+		
 		String sql = "SELECT C_Invoice_ID " +
 				     "FROM C_Invoice " +
 				     "WHERE DocumentNo = ? " +

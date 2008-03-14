@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -59,7 +59,7 @@ public class MReturnCNAB
 	public static void returnCNAB(int LBR_Bank_ID, String FilePath, String[] linhas, String trx) throws IOException{
 			
 		X_LBR_Bank banco = new X_LBR_Bank(Env.getCtx(),LBR_Bank_ID,trx);
-		ArrayList<String[]> occurType = getOccurType(LBR_Bank_ID);
+		HashMap<Integer,String[]> occurType = getOccurType(LBR_Bank_ID);
 		int bank = Integer.parseInt(banco.getlbr_jBoletoNo());
 		
     	if(bank==MCNAB.BANCO_DO_BRASIL){
@@ -199,7 +199,7 @@ public class MReturnCNAB
 		
 		else {
 			
-			if (LBR_Boleto_ID != 0){
+			if (LBR_Boleto_ID > 0){
 				MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
 				boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
 				boleto.setDocStatus(DescOcorren);
@@ -242,9 +242,9 @@ public class MReturnCNAB
 
 	}
 	
-	public static ArrayList<String[]> getOccurType(int LBR_Bank_ID){
+	public static HashMap<Integer,String[]> getOccurType(int LBR_Bank_ID){
 		
-		ArrayList<String[]> list = new ArrayList<String[]>();
+		HashMap<Integer,String[]> list = new HashMap<Integer,String[]>();
 		String sql = "SELECT lbr_OccurNo, lbr_OccurType, Description " +
 				     "FROM LBR_BankInfo " +
 				     "WHERE LBR_Bank_ID = ? " +
@@ -260,7 +260,7 @@ public class MReturnCNAB
 				int OccurNo          = Integer.parseInt(rs.getString("lbr_OccurNo"));
 				String lbr_OccurType = rs.getString("lbr_OccurType");
 				String Description   = rs.getString("Description");
-				list.add(OccurNo,new String[]{lbr_OccurType,Description});
+				list.put(OccurNo,new String[]{lbr_OccurType,Description});
 				
 			}
 			rs.close ();

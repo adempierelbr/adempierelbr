@@ -340,6 +340,8 @@ public class MBoleto extends X_LBR_Boleto
 			}
 			MBankAccount BankA = new MBankAccount(ctx,C_BankAccount_ID,trx);
 			MBank Bank = new MBank(ctx,BankA.getC_Bank_ID(),trx);
+			
+			boolean isRegistered = POLBR.get_ValueAsBoolean(BankA.get_Value("IsRegistered"));
 		
 			X_LBR_Bank lbrBank = new X_LBR_Bank(ctx,(Integer)Bank.get_Value("LBR_Bank_ID"),trx);
 		
@@ -395,7 +397,7 @@ public class MBoleto extends X_LBR_Boleto
 				MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
 				
 				//Juros
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest"))){
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest")) && isRegistered){
 					newBoleto.setlbr_Interest(oi[i].getInterestAmt());
 					newBoleto.setlbr_Instruction1("COBRAR MORA DIÁRIA DE R$ " + oi[i].getInterestAmt());
 				}
@@ -404,7 +406,7 @@ public class MBoleto extends X_LBR_Boleto
 				}
 				
 				//Protesto
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue"))){
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue")) && isRegistered){
 					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
 					newBoleto.setlbr_SueDays(sueDays);
 					newBoleto.setlbr_HasSue(true);
@@ -429,8 +431,11 @@ public class MBoleto extends X_LBR_Boleto
 			
 				newBoleto.setDocumentNo(DocumentNo.trim());
 				newBoleto.save(trx);
-			
-				newBoleto.generateCNAB(Integer.parseInt(lbrBank.getlbr_jBoletoNo()));
+				
+				//Verifica se o boleto é registrado (CNAB)
+				if (isRegistered){
+					newBoleto.generateCNAB(Integer.parseInt(lbrBank.getlbr_jBoletoNo()));
+				}
 			
 				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
 				invoice.set_ValueOfColumn("lbr_IsBillPrinted", true);
