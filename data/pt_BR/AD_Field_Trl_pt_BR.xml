@@ -249,6 +249,11 @@ Se o tipo do seu documento não tiver uma seqüência de documentação automát
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000288" trl="Y">
+  <value column="Name" original="Print Bill">Boleto Impresso</value>
+  <value column="Description" original="Indicates if this Account is used to Print Bills">Define se o Boleto foi Impresso</value>
+  <value column="Help" original="Indicates if this Account is used to Print Bills">Define se o Boleto foi Impresso</value>
+ </row>
  <row id="1000387" trl="Y">
   <value column="Name" original="Discount %">Desconto</value>
   <value column="Description" original="Discount in percent">Desconto</value>

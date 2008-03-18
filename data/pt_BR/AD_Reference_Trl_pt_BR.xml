@@ -1792,4 +1792,14 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000035" trl="Y">
+  <value column="Name" original="lbr_PaymentRule">Forma de Pagamento</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000036" trl="N">
+  <value column="Name" original="C_BankAccount ">C_BankAccount </value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

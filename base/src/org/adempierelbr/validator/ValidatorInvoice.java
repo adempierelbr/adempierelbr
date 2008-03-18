@@ -148,20 +148,41 @@ public class ValidatorInvoice implements ModelValidator
 	// modelChange - Invoice
 	// @param MInvoice
 	public String modelChange (MInvoice invoice) throws Exception{
-					
+		
+		int C_Order_ID = invoice.getC_Order_ID();
+		MOrder order = null;
+		if (C_Order_ID != 0)
+			order = new MOrder(invoice.getCtx(),C_Order_ID,invoice.get_TrxName());
+		else
+			return null;
+		
 		String tType = invoice.get_ValueAsString("lbr_TransactionType"); 
 		
 		if (tType == null || tType.equals("")){
-			int C_Order_ID = invoice.getC_Order_ID();
-			if (C_Order_ID != 0){
-				MOrder order = new MOrder(invoice.getCtx(),C_Order_ID,invoice.get_TrxName());
-				tType = order.get_ValueAsString("lbr_TransactionType"); 
-				if (!(tType == null || tType.equals(""))){
-					invoice.set_ValueOfColumn("lbr_TransactionType", tType);
-				}
-			}
+			tType = order.get_ValueAsString("lbr_TransactionType"); 
+			if (!(tType == null || tType.equals(""))){
+				invoice.set_ValueOfColumn("lbr_TransactionType", tType);
+			}	
 		}
 		
+		String paymentRule = invoice.get_ValueAsString("lbr_PaymentRule"); 
+		
+		if (paymentRule == null || paymentRule.equals("")){
+			paymentRule = order.get_ValueAsString("lbr_PaymentRule"); 
+			if (!(paymentRule == null || paymentRule.equals(""))){
+				invoice.set_ValueOfColumn("lbr_PaymentRule", paymentRule);
+			}	
+		}
+		
+		Integer C_BankAccount_ID = (Integer)invoice.get_Value("C_BankAccount_ID"); 
+		
+		if (C_BankAccount_ID == null || C_BankAccount_ID.intValue() == 0){
+			C_BankAccount_ID = (Integer)order.get_Value("C_BankAccount_ID"); 
+			if (!(C_BankAccount_ID == null || C_BankAccount_ID.intValue() == 0)){
+				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
+			}	
+		}
+
 		log.info(invoice.toString());
 		return null;
 	}

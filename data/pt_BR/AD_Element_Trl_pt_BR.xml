@@ -26360,4 +26360,44 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000302" trl="N">
+  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
+  <value column="PrintName" original="IsGenerateFields">IsGenerateFields</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000303" trl="N">
+  <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
+  <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000304" trl="N">
+  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000305" trl="Y">
+  <value column="Name" original="Payment Rule">Forma de Pagamento</value>
+  <value column="PrintName" original="Payment Rule">Forma de Pagamento</value>
+  <value column="Description" original="How you pay the invoice">Define a Forma de Pagamento</value>
+  <value column="Help" original="The Payment Rule indicates the method of invoice payment.">A Forma de Pagamento define o método de pagamento da Fatura.</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>

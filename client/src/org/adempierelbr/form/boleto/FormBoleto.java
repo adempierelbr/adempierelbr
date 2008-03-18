@@ -26,6 +26,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.adempierelbr.model.boleto.MBoleto;
+import org.adempierelbr.util.POLBR;
 import org.compiere.apps.*;
 import org.compiere.apps.form.FormFrame;
 import org.compiere.apps.form.FormPanel;
@@ -269,7 +270,7 @@ public class FormBoleto extends CPanel
 				"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
 				"INNER JOIN C_PaymentTerm pt ON i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID " +
 				"WHERE i.IsSOTrx='Y' " +
-				"AND d.lbr_HasOpenItems='Y' " +
+				"AND d.lbr_HasOpenItems='Y' AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule = 'B') " + //mostrar somente faturas boleto ou sem forma de pagamento
 				"AND i.AD_Client_ID=? ");
 		
 				if (printedBill.isSelected()){
@@ -398,6 +399,14 @@ public class FormBoleto extends CPanel
 			Properties ctx = Env.getCtx();
 			//Trx transaction = Trx.get(Trx.createTrxName(), true);
 			//String trx = transaction.getTrxName();
+			
+			MBankAccount bankA = new MBankAccount(ctx,(Integer)m_C_BankAccount_ID,null);
+			if (!POLBR.get_ValueAsBoolean(bankA.get_Value("lbr_IsBillPrinted"))){
+				String msg = "Conta não está marcada para Geração de Boletos";
+				statusBar.setStatusLine(msg);	
+				ADialog.info(m_WindowNo, this, msg);
+				return;
+			}
 			
 			Integer[] selection = getSelection();
 			for (int i=0;i<selection.length;i++){

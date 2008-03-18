@@ -3690,4 +3690,20 @@
   <value column="Name" original="Nota Fiscal Brasil">Nota Fiscal Brasil</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000061" trl="Y">
+  <value column="Name" original="Cash">Dinheiro</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000062" trl="Y">
+  <value column="Name" original="Check">Cheque</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000063" trl="Y">
+  <value column="Name" original="Bill">Boleto</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000064" trl="Y">
+  <value column="Name" original="Direct Deposit">Depósito Direto</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>

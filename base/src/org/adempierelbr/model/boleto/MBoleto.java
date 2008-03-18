@@ -330,6 +330,15 @@ public class MBoleto extends X_LBR_Boleto
 		//GERAÇÃO E IMPRESSÃO DE BOLETOS
 		else{
 			MInvoice invoice = MInvoice.get(ctx, C_Invoice_ID);
+			
+			//Verifica se não tem uma conta definida na Fatura
+			Integer invBank = (Integer)invoice.get_Value("C_BankAccount_ID");
+			if (invBank != null && invBank.intValue() != 0){ //Conta <> 0
+				String paymentRule = invoice.get_ValueAsString("lbr_PaymentRule");
+				if (paymentRule.equalsIgnoreCase("B")){ //Forma de Pagamento = Boleto
+					C_BankAccount_ID = invBank;
+				}
+			}
 				        
 			MBPartner BPartner = MBPartner.get(ctx, invoice.getC_BPartner_ID());
 			MOrg Org = new MOrg(ctx,invoice.getAD_Org_ID(),trx);
