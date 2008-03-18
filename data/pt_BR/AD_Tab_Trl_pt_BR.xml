@@ -4475,7 +4475,7 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000034" trl="N">
+ <row id="1000034" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>

@@ -1479,7 +1479,7 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000022" trl="N">
+ <row id="1000022" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>

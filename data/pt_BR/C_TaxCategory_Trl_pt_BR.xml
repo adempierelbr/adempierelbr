@@ -6,16 +6,4 @@
   <value column="Name" original="Standard">Padrão</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000000" trl="N">
-  <value column="Name" original="PRODUTO">PRODUTO</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000001" trl="N">
-  <value column="Name" original="PRODUTO + SUBSTITUIÇÃO">PRODUTO + SUBSTITUIÇÃO</value>
-  <value column="Description" original=""/>
- </row>
- <row id="1000002" trl="N">
-  <value column="Name" original="SERVIÇO">SERVIÇO</value>
-  <value column="Description" original=""/>
- </row>
 </adempiereTrl>

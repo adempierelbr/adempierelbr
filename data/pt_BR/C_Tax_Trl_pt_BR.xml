@@ -32,29 +32,4 @@
   <value column="Description" original="Used when Business Partners are exempt from tax">Usado quando os Parceiros de Negócios são isentos de impostos</value>
   <value column="TaxIndicator" original=""/>
  </row>
- <row id="1000000" trl="N">
-  <value column="Name" original="PRODUTO">PRODUTO</value>
-  <value column="Description" original=""/>
-  <value column="TaxIndicator" original=""/>
- </row>
- <row id="1000001" trl="N">
-  <value column="Name" original="PISPROD">PISPROD</value>
-  <value column="Description" original=""/>
-  <value column="TaxIndicator" original=""/>
- </row>
- <row id="1000002" trl="N">
-  <value column="Name" original="COFINSROD">COFINSROD</value>
-  <value column="Description" original=""/>
-  <value column="TaxIndicator" original=""/>
- </row>
- <row id="1000003" trl="N">
-  <value column="Name" original="ICMSROD">ICMSROD</value>
-  <value column="Description" original=""/>
-  <value column="TaxIndicator" original=""/>
- </row>
- <row id="1000004" trl="N">
-  <value column="Name" original="IPI">IPI</value>
-  <value column="Description" original=""/>
-  <value column="TaxIndicator" original=""/>
- </row>
 </adempiereTrl>

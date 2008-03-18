@@ -26160,36 +26160,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000268" trl="N">
-  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
-  <value column="PrintName" original="Generate Fields">Generate Fields</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000269" trl="Y">
-  <value column="Name" original="LBR_NotaFiscal_ID_to">Nota Fiscal</value>
-  <value column="PrintName" original="LBR_NotaFiscal_ID_to">Nota Fiscal</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000270" trl="N">
-  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
  <row id="1000271" trl="Y">
   <value column="Name" original="Process Now">Processar Agora</value>
   <value column="PrintName" original="Process Now">Processar Agora</value>
@@ -26375,6 +26345,16 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="Process Cancel Boleto">Cancelar Boleto</value>
   <value column="Description" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
   <value column="Help" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000301" trl="Y">
+  <value column="Name" original="File Sequence">Seqüência Arquivo Remessa</value>
+  <value column="PrintName" original="File Sequence">Seqüência Arquivo Remessa</value>
+  <value column="Description" original="Defines the File Sequence">Define a Seqüência do Arquivo de Remessa</value>
+  <value column="Help" original="Defines the File Sequence">Define a Seqüência do Arquivo de Remessa</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
