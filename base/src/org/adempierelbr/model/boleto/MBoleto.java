@@ -555,7 +555,7 @@ public class MBoleto extends X_LBR_Boleto
 	
 	public static void cancelBoleto(Properties ctx, int C_Invoice_ID, String trx){
 		
-		String sql = "SELECT LBR_Boleto_ID, " + //1
+		String sql = "SELECT LBR_Boleto_ID " + //1
 		 			 "FROM LBR_Boleto " +
 	                 "WHERE C_Invoice_ID = ? AND lbr_IsCancelled = 'N'"; //*1
 
