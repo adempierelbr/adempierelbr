@@ -350,6 +350,11 @@ public class MBoleto extends X_LBR_Boleto
 			MBankAccount BankA = new MBankAccount(ctx,C_BankAccount_ID,trx);
 			MBank Bank = new MBank(ctx,BankA.getC_Bank_ID(),trx);
 			
+			if (!POLBR.get_ValueAsBoolean(BankA.get_Value("lbr_IsBillPrinted"))){
+				log.log(Level.SEVERE, "Conta não está marcada para Geração de Boletos");
+				return;
+			}
+			
 			boolean isRegistered = POLBR.get_ValueAsBoolean(BankA.get_Value("IsRegistered"));
 		
 			X_LBR_Bank lbrBank = new X_LBR_Bank(ctx,(Integer)Bank.get_Value("LBR_Bank_ID"),trx);
