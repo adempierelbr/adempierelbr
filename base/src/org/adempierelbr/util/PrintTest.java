@@ -41,8 +41,11 @@ public class PrintTest{
     	    prop.pitch = 12;
     	    
    	     	int v = 0;
+   	     	
+    	    //String ESCP = "C60"; -- ESPAÇAMENTO LINHAS (COMANDO ESCP2)
+    	    //printer.printString(ESCP,0,0,prop);
  	    
-   	     	for (int i=0;i<job.cols;i++){
+   	     	for (int i=1;i<job.cols;i++){
    	     		for (int j=0;j<job.rows;j++){
    	     			printer.printString(Integer.toString(v),i,j,prop);
    	     			v++;
