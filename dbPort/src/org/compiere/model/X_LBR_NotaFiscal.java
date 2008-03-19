@@ -1341,6 +1341,18 @@ public String getlbr_CNPJ()
 {
 return (String)get_Value("lbr_CNPJ");
 }
+/** Set Date InOut.
+@param lbr_DateInOut Defines the InOut Date */
+public void setlbr_DateInOut (Timestamp lbr_DateInOut)
+{
+set_Value ("lbr_DateInOut", lbr_DateInOut);
+}
+/** Get Date InOut.
+@return Defines the InOut Date */
+public Timestamp getlbr_DateInOut() 
+{
+return (Timestamp)get_Value("lbr_DateInOut");
+}
 /** Set Gross Weight.
 @param lbr_GrossWeight Defines the Gross Weight */
 public void setlbr_GrossWeight (BigDecimal lbr_GrossWeight)
@@ -1464,5 +1476,22 @@ public BigDecimal getlbr_ServiceTotalAmt()
 BigDecimal bd = (BigDecimal)get_Value("lbr_ServiceTotalAmt");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Time InOut.
+@param lbr_TimeInOut Defines the InOut Time */
+public void setlbr_TimeInOut (String lbr_TimeInOut)
+{
+if (lbr_TimeInOut != null && lbr_TimeInOut.length() > 5)
+{
+log.warning("Length > 5 - truncated");
+lbr_TimeInOut = lbr_TimeInOut.substring(0,4);
+}
+set_Value ("lbr_TimeInOut", lbr_TimeInOut);
+}
+/** Get Time InOut.
+@return Defines the InOut Time */
+public String getlbr_TimeInOut() 
+{
+return (String)get_Value("lbr_TimeInOut");
 }
 }

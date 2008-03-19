@@ -26400,4 +26400,24 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000306" trl="Y">
+  <value column="Name" original="Date InOut">Data Saída/Entrada</value>
+  <value column="PrintName" original="Date InOut">Data Saída/Entrada</value>
+  <value column="Description" original="Defines the InOut Date">Define a Data de Saída/Entrada</value>
+  <value column="Help" original="Defines the InOut Date">Define a Data de Saída/Entrada</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000307" trl="Y">
+  <value column="Name" original="Time InOut">Hora Saída/Entrada</value>
+  <value column="PrintName" original="Time InOut">Hora Saída/Entrada</value>
+  <value column="Description" original="Defines the InOut Time">Define a Hora de Saída/Entrada</value>
+  <value column="Help" original="Defines the InOut Time">Define a Hora de Saída/Entrada</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>
