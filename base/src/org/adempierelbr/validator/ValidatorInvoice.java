@@ -375,7 +375,7 @@ public class ValidatorInvoice implements ModelValidator
 			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
 			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
 			
-			if (!HasOpenItems){
+			if (!HasOpenItems && !isReversal(invoice)){
 			
 				invoice.setC_Payment_ID(0);
 				invoice.setIsPaid(true);

@@ -14,6 +14,7 @@ package org.adempierelbr.model;
 
 import java.util.Properties;
 
+import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -62,17 +63,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			if (BPTypeBR.equalsIgnoreCase("PJ")){
 				CNPJ = bpartner.get_ValueAsString("lbr_CNPJ");   //CNPJ
 				
-				boolean isIEExempt = false;
-				
-				Object oo = bpartner.get_Value("lbr_IsIEExempt");
-				if (oo != null) 
-				{
-				 if (oo instanceof Boolean){
-					 isIEExempt = ((Boolean)oo).booleanValue();
-				 }
-				 else isIEExempt = "Y".equals(oo);
-				}
-				
+				boolean isIEExempt = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
+							
 				if (isIEExempt){
 					IE = "ISENTO";
 				}
