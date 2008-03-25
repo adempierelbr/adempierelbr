@@ -197,6 +197,13 @@ public class ValidatorBPartner implements ModelValidator
 			
 		}
 		
+		// FR [ 1925151 ] ValidatorBPartner - Tipo de Transação
+		// mgrigioni, 25/03/2008 (Kenos, http://www.kenos.com.br)
+		String lbr_TransactionType = bp.get_ValueAsString("lbr_TransactionType");
+		if (lbr_TransactionType == null || lbr_TransactionType.equals("")){
+			bp.set_ValueOfColumn("lbr_TransactionType", "END"); //End User
+		}
+		
 		log.info(bp.toString());
 		return null;
 	} //modelChange - BPartner
