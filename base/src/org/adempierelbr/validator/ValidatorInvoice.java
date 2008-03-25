@@ -582,7 +582,8 @@ public class ValidatorInvoice implements ModelValidator
 				{
 					BigDecimal grandTotal = invoice.getGrandTotal();
 					BigDecimal taxAmt = iTax.getTaxAmt().negate();
-					invoice.setGrandTotal(grandTotal.add(taxAmt));
+					grandTotal = grandTotal.add(taxAmt);
+					invoice.setGrandTotal(grandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
 					invoice.save();
 					//Fix - Ajustar PaySchedule
 					MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
@@ -676,7 +677,8 @@ public class ValidatorInvoice implements ModelValidator
 						newTax.save(trx);
 						
 						BigDecimal grandTotal = invoice.getGrandTotal();
-						invoice.setGrandTotal(grandTotal.add(taxLine.getlbr_TaxAmt()));
+						grandTotal = grandTotal.add(grandTotal.add(taxLine.getlbr_TaxAmt()));
+						invoice.setGrandTotal(grandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
 						
 						//Fix - Ajustar PaySchedule
 						MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
