@@ -68,6 +68,7 @@ public class MDocPrintForm{
 	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc){
 		
 		int SubDocRow = 0;
+		int RowNo     = 0;
 		
 		if (IsSubDoc){
 			SubDocRow = DocPrint.getlbr_SubDocRow();
@@ -124,8 +125,13 @@ public class MDocPrintForm{
 	            	int x = fields[i].getAlignment();
 	            	int y = 0;
 	            	
-	            	if (IsSubDoc)
-	            		y = SubDocRow;
+	            	if (IsSubDoc){
+	            		y = SubDocRow + fields[i].getlbr_RowNo();
+	            		if (fields[i].getValue() != null && !fields[i].getValue().equals("")){
+	            			if (fields[i].getlbr_RowNo() > RowNo)
+	            				RowNo = fields[i].getlbr_RowNo();
+	            		}
+	            	}
 	            	else
 	            		y = fields[i].getlbr_RowNo();
 	            	
@@ -161,6 +167,7 @@ public class MDocPrintForm{
 	            	
 	            }
 	            
+	            SubDocRow += RowNo; //SubDocumento
 	            SubDocRow++;
 	            
     		}
