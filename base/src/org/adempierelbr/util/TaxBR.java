@@ -452,12 +452,15 @@ public class TaxBR
 			ResultSet rs = pstmt.executeQuery ();
 			while (rs.next ()){
 				
-				X_LBR_NFTax nfTax = new X_LBR_NFTax(ctx, 0, trx);
-				nfTax.setLBR_TaxGroup_ID(rs.getInt(1));
-				nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
-				nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
-				nfTax.setlbr_TaxAmt(rs.getBigDecimal(3));
-				nfTax.save(trx);
+				Integer LBR_TaxGroup_ID = rs.getInt(1);
+				if (LBR_TaxGroup_ID != null && LBR_TaxGroup_ID.intValue() != 0){
+					X_LBR_NFTax nfTax = new X_LBR_NFTax(ctx, 0, trx);
+					nfTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
+					nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
+					nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
+					nfTax.setlbr_TaxAmt(rs.getBigDecimal(3));
+					nfTax.save(trx);
+				}
 				
 			}
 			rs.close ();

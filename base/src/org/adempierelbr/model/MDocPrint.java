@@ -73,8 +73,8 @@ public class MDocPrint extends X_LBR_DocPrint {
     	    prop.pitch = pitch;
     	    
     	    //COMANDOS ESCP - linespacing = 1/8
-    	    String ESCP = "C60";
-    	    printer.printString(ESCP,0,0,prop);
+    	    //String ESCP = "C60";
+    	    //printer.printString(ESCP,0,0,prop);
 
     	    int lenght = fields.length;
     	    for (int i=0;i<lenght;i++){
