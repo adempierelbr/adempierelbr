@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="base/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_04"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Adempiere"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/ant.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
