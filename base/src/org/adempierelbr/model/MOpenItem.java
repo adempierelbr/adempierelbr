@@ -183,6 +183,46 @@ public class MOpenItem{
 		return retValue;
 	} //getOpenItem
 	
+	public static boolean hasOpenItem(Integer C_BPartner_ID, String trx){
+		
+		String sql = "SELECT * " + //1
+					 "FROM RV_OpenItem " +
+				     "WHERE IsSOTrx='Y' AND DaysDue > 0 " +
+					 "AND C_BPartner_ID = ?"; //*1
+		
+		boolean hasOpenItem = false;
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, C_BPartner_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				hasOpenItem = true;
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		return hasOpenItem;
+	} //hasOpenItem
+	
 	private void setC_BPartner_ID(int value){
 		C_BPartner_ID = value;
 	}
