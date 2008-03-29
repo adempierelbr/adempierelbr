@@ -55,6 +55,8 @@ import bsh.EvalError;
  *	
  *	@author Mario Grigioni
  *	@version $Id: ValidatorInvoice.java, 04/01/2008 15:56:00 mgrigioni
+ *
+ *	BF: 1928906 - amontenegro
  */
 public class ValidatorInvoice implements ModelValidator
 {
@@ -375,7 +377,7 @@ public class ValidatorInvoice implements ModelValidator
 			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
 			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
 			
-			if (!HasOpenItems && !isReversal(invoice)){
+			if (!HasOpenItems && !invoice.isReversal()){
 			
 				invoice.setC_Payment_ID(0);
 				invoice.setIsPaid(true);
@@ -402,7 +404,7 @@ public class ValidatorInvoice implements ModelValidator
 				
 			} // don't have Open Items - create automatically allocation
 			
-			if (HasFiscalDocument && !isReversal(invoice)){
+			if (HasFiscalDocument && !invoice.isReversal()){
 				
 				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
 					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
@@ -745,26 +747,5 @@ public class ValidatorInvoice implements ModelValidator
 		return sb.toString ();
 	}	//	toString
 	
-	
-	private boolean isReversal(MInvoice invoice){
-		
-		String description = invoice.getDescription();
-		
-		if (description == null || description.trim().equals(""))
-			return false;
-		
-		int indexOf      = description.lastIndexOf("{->") + 3;
-		int C_Invoice_ID = POLBR.getC_Invoice_ID(description.substring(indexOf, description.length()-1), invoice.get_TrxName()); 
-		
-		if (C_Invoice_ID != -1){
-			MInvoice reversal = new MInvoice(invoice.getCtx(),C_Invoice_ID, invoice.get_TrxName());
-			if ((invoice.getGrandTotal().doubleValue()+reversal.getGrandTotal().doubleValue())==0){
-				if (invoice.getC_BPartner_ID() == reversal.getC_BPartner_ID())
-					return true;
-			}		
-		}
-		
-		return false;
-	}
 
 } //ValidatorInvoice
