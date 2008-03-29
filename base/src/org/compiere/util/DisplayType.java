@@ -357,7 +357,6 @@ public final class DisplayType
 	 *  @param yesNoAsBoolean - yes or no as boolean
 	 *  @return class Integer - BigDecimal - Timestamp - String - Boolean
 	 */
-	@SuppressWarnings("unchecked")
 	public static Class getClass (int displayType, boolean yesNoAsBoolean)
 	{
 		if (isText(displayType) || displayType == List)
@@ -420,8 +419,12 @@ public final class DisplayType
 			return "CLOB";
 		if (displayType == DisplayType.YesNo)
 			return "CHAR(1)";
-		if (displayType == DisplayType.List)
-			return "CHAR(" + fieldLength + ")";
+		if (displayType == DisplayType.List) {
+			if (fieldLength == 1)
+				return "CHAR(" + fieldLength + ")";
+			else
+				return "NVARCHAR2(" + fieldLength + ")";			
+		}
 		if (displayType == DisplayType.Color)
 		{
 			if (columnName.endsWith("_ID"))
