@@ -292,7 +292,7 @@ public class ValidatorInvoice implements ModelValidator
 		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_COMPLETE)){
 			
 			MInvoice invoice = (MInvoice)po;
-			MInvoiceLine[] lines = invoice.getLines();
+			MInvoiceLine[] lines = invoice.getLines(true);
 			
 			Properties ctx = invoice.getCtx();
 			String     trx = invoice.get_TrxName();
@@ -306,7 +306,8 @@ public class ValidatorInvoice implements ModelValidator
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_InvoiceTax " +
-					     "WHERE TaxAmt = 0 " +
+		                 "WHERE (TaxAmt = 0 OR " +
+	                            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
 					     "AND C_Invoice_ID = " + invoice.getC_Invoice_ID();
 			DB.executeUpdate(sql, trx);
 			

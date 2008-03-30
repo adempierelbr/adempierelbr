@@ -164,7 +164,7 @@ public class ValidatorOrder implements ModelValidator
 				
 		if (tax.isSummary()){
 			
-			MOrderLine[] lines = order.getLines();
+			MOrderLine[] lines = order.getLines(true,null);
 			for (int i = 0; i < lines.length; i++){
 				
 				int C_OrderLine_ID = lines[i].getC_OrderLine_ID();
@@ -219,7 +219,7 @@ public class ValidatorOrder implements ModelValidator
 		if (po.get_TableName().equalsIgnoreCase("C_Order") && (timing == TIMING_AFTER_COMPLETE))
 		{
 			MOrder order = (MOrder)po;
-			MOrderLine[] lines = order.getLines();
+			MOrderLine[] lines = order.getLines(true,null);
 			
 			Properties ctx = order.getCtx();
 			String     trx = order.get_TrxName();
@@ -229,7 +229,8 @@ public class ValidatorOrder implements ModelValidator
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_OrderTax " +
-					     "WHERE TaxAmt = 0 " +
+					     "WHERE (TaxAmt = 0 OR " +
+					            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
 					     "AND C_Order_ID = " + order.getC_Order_ID();
 			DB.executeUpdate(sql, trx);
 			
@@ -748,7 +749,7 @@ public class ValidatorOrder implements ModelValidator
 		else	//	Create Invoice from Order
 		{
 			//
-			MOrderLine[] oLines = order.getLines();
+			MOrderLine[] oLines = order.getLines(true,null);
 			for (int i = 0; i < oLines.length; i++)
 			{
 				MOrderLine oLine = oLines[i];
