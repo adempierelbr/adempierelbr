@@ -54,6 +54,8 @@ import org.compiere.util.Env;
  *	ProcGenerateNF
  *
  *  Process to Generate Nota Fiscal
+ *  
+ *  BF: 1931334 (amontenegro)
  *	 
  *	@author Mario Grigioni
  *	@version $Id: ProcGenerateNF.java, 08/01/2008 10:38:00 mgrigioni
@@ -273,7 +275,7 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setC_DocType_ID(0);
 			NotaFiscal.setC_DocTypeTarget_ID(0);
 			NotaFiscal.setDocumentNo(invoice.getPOReference());
-			NotaFiscal.setIsPrinted(false);
+			NotaFiscal.setIsPrinted(true);
 		}
 		
 		NotaFiscal.setDateDoc(invoice.getDateInvoiced());   //Data do Documento
