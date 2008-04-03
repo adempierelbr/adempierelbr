@@ -419,7 +419,7 @@ public class ValidatorOrder implements ModelValidator
 						"WHERE brtn.HasWithHold='Y' AND o.C_BPartner_ID=? " + 
 						"AND TO_CHAR(o.DateAcct, 'MMYYYY') = TO_CHAR(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'), 'MMYYYY') " +
 						//"AND (o.LBR_Withhold_Order_ID IS NULL OR o.LBR_Withhold_Order_ID=?) " +
-						"AND (o.DocStatus IN ('CL','CO') OR (o.DocStatus IN ('CL','CO', 'IP') AND o.C_Order_ID=?)) " +
+						"AND (o.DocStatus IN ('CL','CO') OR (o.C_Order_ID=?)) " +
 						"AND o.IsSOTrx=? " + 
 						"GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold";
 

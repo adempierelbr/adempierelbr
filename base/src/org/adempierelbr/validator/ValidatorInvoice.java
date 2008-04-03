@@ -504,7 +504,7 @@ public class ValidatorInvoice implements ModelValidator
 						"WHERE brtn.HasWithHold='Y' AND i.C_BPartner_ID=? " + 
 						"AND TO_CHAR(i.DateAcct, 'MMYYYY') = TO_CHAR(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'), 'MMYYYY') " +
 						//"AND (i.LBR_Withhold_Invoice_ID IS NULL OR i.LBR_Withhold_Invoice_ID=?) " +
-						"AND (i.DocStatus IN ('CL','CO') OR (i.DocStatus IN ('CL','CO', 'IP') AND i.C_Invoice_ID=?)) " +
+						"AND (i.DocStatus IN ('CL','CO') OR (i.C_Invoice_ID=?)) " +
 						"AND i.IsSOTrx=? " + 
 						"GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold";
 
@@ -581,16 +581,7 @@ public class ValidatorInvoice implements ModelValidator
 				 * */
 				if (row[0].compareTo(new BigDecimal(lbr_TaxName.getLBR_TaxName_ID())) == 0
 						&& (row[1].compareTo(row[2]) == 1)) // || whMasterInvoice != whInvoice
-				{
-					BigDecimal grandTotal = invoice.getGrandTotal();
-					BigDecimal taxAmt = iTax.getTaxAmt().negate();
-					//invoice.setGrandTotal(grandTotal.add(taxAmt));
-					//invoice.save();
-					//Fix - Ajustar PaySchedule
-					MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
-					log.fine(pt.toString());
-					pt.apply(invoice);
-					
+				{				
 					iTax.delete(true);
 					invoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", null);
 					hasLeastThanThreshold = true;
@@ -659,6 +650,12 @@ public class ValidatorInvoice implements ModelValidator
 						invoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whInvoice);
 						invoice.setGrandTotal(invoice.getGrandTotal().add(iTax.getTaxAmt()));
 						invoice.save();	
+						
+						//Fix - Ajustar PaySchedule
+						MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+						log.fine(pt.toString());
+						pt.apply(invoice);
+						
 					}
 					
 					if(taxLines.size() == 0)
