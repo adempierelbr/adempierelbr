@@ -55,6 +55,8 @@ import bsh.EvalError;
  *	
  *	@author Mario Grigioni
  *	@version $Id: ValidatorInvoice.java, 04/01/2008 15:56:00 mgrigioni
+ *
+ *	BF: 1928906 - amontenegro
  */
 public class ValidatorInvoice implements ModelValidator
 {
@@ -375,7 +377,7 @@ public class ValidatorInvoice implements ModelValidator
 			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
 			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
 			
-			if (!HasOpenItems){
+			if (!HasOpenItems && !invoice.isReversal()){
 			
 				invoice.setC_Payment_ID(0);
 				invoice.setIsPaid(true);
@@ -402,7 +404,7 @@ public class ValidatorInvoice implements ModelValidator
 				
 			} // don't have Open Items - create automatically allocation
 			
-			if (HasFiscalDocument && !isReversal(invoice)){
+			if (HasFiscalDocument && !invoice.isReversal()){
 				
 				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
 					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
@@ -494,7 +496,7 @@ public class ValidatorInvoice implements ModelValidator
 		
 		Properties ctx    	 = invoice.getCtx();
 		String     trx    	 = invoice.get_TrxName();
-		int		   whInvoice = invoice.getC_Invoice_ID();
+		Integer	   whInvoice = invoice.getC_Invoice_ID();
 		
 		String sql = "SELECT brtn.LBR_TaxName_ID, brtn.WithHoldThreshold, " +
 						"SUM(ABS(i.TotalLines)) AS GrandTotal FROM C_Invoice i " + //Total à pagar + retido
@@ -503,7 +505,7 @@ public class ValidatorInvoice implements ModelValidator
 						"INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID=t.LBR_TaxName_ID " + 
 						"WHERE brtn.HasWithHold='Y' AND i.C_BPartner_ID=? " + 
 						"AND TO_CHAR(i.DateAcct, 'MMYYYY') = TO_CHAR(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'), 'MMYYYY') " +
-						//"AND (i.LBR_Withhold_Invoice_ID IS NULL OR i.LBR_Withhold_Invoice_ID=?) " +
+						//"AND i.LBR_Withhold_Invoice_ID IS NULL " +
 						"AND (i.DocStatus IN ('CL','CO') OR (i.C_Invoice_ID=?)) " +
 						"AND i.IsSOTrx=? " + 
 						"GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold";
@@ -602,8 +604,8 @@ public class ValidatorInvoice implements ModelValidator
 							"INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID=tl.LBR_TaxName_ID  " + 
 							"WHERE brtn.HasWithHold='Y' AND i.C_BPartner_ID=?  " +  
 							"AND TO_CHAR(i.DateAcct, 'MMYYYY') = TO_CHAR(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'), 'MMYYYY') " +
-							"AND (i.LBR_Withhold_Invoice_ID IS NULL OR i.LBR_Withhold_Invoice_ID=?) " + 
-							"AND i.DocStatus IN ('CL','CO') AND i.C_Invoice_ID<>? " +
+							"AND i.LBR_Withhold_Invoice_ID IS NULL " + 
+							"AND i.DocStatus IN ('CL','CO') AND i.C_Invoice_ID != ? " +
 							"AND i.IsSOTrx=? " +
 							"AND brtn.LBR_TaxName_ID=?";
 
@@ -614,9 +616,9 @@ public class ValidatorInvoice implements ModelValidator
 						pstmt.setInt(1, invoice.getC_BPartner_ID());
 						pstmt.setTimestamp(2, invoice.getDateAcct());
 						pstmt.setInt(3, whInvoice);
-						pstmt.setInt(4, whInvoice);
-						pstmt.setString(5, invoice.isSOTrx() ? "Y" : "N");
-						pstmt.setString(6, row[0].toString());
+						//pstmt.setInt(4, whInvoice);
+						pstmt.setString(4, invoice.isSOTrx() ? "Y" : "N");
+						pstmt.setString(5, row[0].toString());
 						ResultSet rs = pstmt.executeQuery ();
 						while (rs.next ())
 						{
@@ -644,12 +646,14 @@ public class ValidatorInvoice implements ModelValidator
 					//Invoice com retenção própria.
 					if(!hasLeastThanThreshold)
 					{
-						iTax.setTaxAmt(iTax.getTaxAmt().negate());
-						iTax.save();
+						//iTax.setTaxAmt(iTax.getTaxAmt().negate());
+						//iTax.save();
+						
+						BigDecimal taxAmt = iTax.getTaxAmt().negate();
 						
 						invoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whInvoice);
-						invoice.setGrandTotal(invoice.getGrandTotal().add(iTax.getTaxAmt()));
-						invoice.save();	
+						invoice.setGrandTotal(invoice.getGrandTotal().add(taxAmt));
+						//invoice.save();	
 						
 						//Fix - Ajustar PaySchedule
 						MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
@@ -680,7 +684,10 @@ public class ValidatorInvoice implements ModelValidator
 						newTax.save(trx);
 						
 						BigDecimal grandTotal = invoice.getGrandTotal();
-						invoice.setGrandTotal(grandTotal.add(taxLine.getlbr_TaxAmt()));
+						BigDecimal taxAmt     = taxLine.getlbr_TaxAmt().negate();
+						grandTotal = grandTotal.add(grandTotal.add(taxAmt));
+						invoice.setGrandTotal(grandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
+						//invoice.save();
 						
 						//Fix - Ajustar PaySchedule
 						MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
@@ -747,26 +754,5 @@ public class ValidatorInvoice implements ModelValidator
 		return sb.toString ();
 	}	//	toString
 	
-	
-	private boolean isReversal(MInvoice invoice){
-		
-		String description = invoice.getDescription();
-		
-		if (description == null || description.trim().equals(""))
-			return false;
-		
-		int indexOf      = description.lastIndexOf("{->") + 3;
-		int C_Invoice_ID = POLBR.getC_Invoice_ID(description.substring(indexOf, description.length()-1), invoice.get_TrxName()); 
-		
-		if (C_Invoice_ID != -1){
-			MInvoice reversal = new MInvoice(invoice.getCtx(),C_Invoice_ID, invoice.get_TrxName());
-			if ((invoice.getGrandTotal().doubleValue()+reversal.getGrandTotal().doubleValue())==0){
-				if (invoice.getC_BPartner_ID() == reversal.getC_BPartner_ID())
-					return true;
-			}		
-		}
-		
-		return false;
-	}
 
 } //ValidatorInvoice
