@@ -306,7 +306,7 @@ public class ValidatorInvoice implements ModelValidator
 			String sql = "DELETE FROM C_InvoiceTax " +
 					     "WHERE (TaxAmt = 0 OR " +
 					            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
-					     "AND C_Invoice_ID = " + invoice.getC_Order_ID();
+					     "AND C_Invoice_ID = " + invoice.getC_Invoice_ID();
 			DB.executeUpdate(sql, trx);
 			
 			for (int i = 0; i < lines.length; i++){
