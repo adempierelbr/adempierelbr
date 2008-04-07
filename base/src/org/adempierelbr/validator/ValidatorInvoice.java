@@ -304,8 +304,9 @@ public class ValidatorInvoice implements ModelValidator
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_InvoiceTax " +
-					     "WHERE TaxAmt = 0 " +
-					     "AND C_Invoice_ID = " + invoice.getC_Invoice_ID();
+					     "WHERE (TaxAmt = 0 OR " +
+					            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
+					     "AND C_Invoice_ID = " + invoice.getC_Order_ID();
 			DB.executeUpdate(sql, trx);
 			
 			for (int i = 0; i < lines.length; i++){
@@ -375,7 +376,7 @@ public class ValidatorInvoice implements ModelValidator
 			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
 			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
 			
-			if (!HasOpenItems){
+			if (!HasOpenItems && !invoice.isReversal()){
 			
 				invoice.setC_Payment_ID(0);
 				invoice.setIsPaid(true);
@@ -402,7 +403,7 @@ public class ValidatorInvoice implements ModelValidator
 				
 			} // don't have Open Items - create automatically allocation
 			
-			if (HasFiscalDocument && !isReversal(invoice)){
+			if (HasFiscalDocument && !invoice.isReversal()){
 				
 				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) ||
 					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
@@ -747,27 +748,5 @@ public class ValidatorInvoice implements ModelValidator
 		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos");
 		return sb.toString ();
 	}	//	toString
-	
-	
-	private boolean isReversal(MInvoice invoice){
-		
-		String description = invoice.getDescription();
-		
-		if (description == null || description.trim().equals(""))
-			return false;
-		
-		int indexOf      = description.lastIndexOf("{->") + 3;
-		int C_Invoice_ID = POLBR.getC_Invoice_ID(description.substring(indexOf, description.length()-1), invoice.get_TrxName()); 
-		
-		if (C_Invoice_ID != -1){
-			MInvoice reversal = new MInvoice(invoice.getCtx(),C_Invoice_ID, invoice.get_TrxName());
-			if ((invoice.getGrandTotal().doubleValue()+reversal.getGrandTotal().doubleValue())==0){
-				if (invoice.getC_BPartner_ID() == reversal.getC_BPartner_ID())
-					return true;
-			}		
-		}
-		
-		return false;
-	}
 
 } //ValidatorInvoice
