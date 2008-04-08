@@ -561,8 +561,11 @@ public class ValidatorInvoice implements ModelValidator
 			
 			for (int i = 0; i < taxes.length; i++)
 			{
+				
 				MInvoiceTax iTax = taxes[i];
 				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx, iTax.getC_Tax_ID(), trx);
+				if (tax.get_Value("LBR_TaxName_ID") == null)
+					break;
 				X_LBR_TaxName lbr_TaxName = new X_LBR_TaxName(ctx, (Integer) tax.get_Value("LBR_TaxName_ID"), trx);
 				
 				/** 
