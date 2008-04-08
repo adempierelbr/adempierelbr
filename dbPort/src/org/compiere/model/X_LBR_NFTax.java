@@ -34,9 +34,9 @@ super (ctx, LBR_NFTax_ID, trxName);
 {
 setLBR_NFTax_ID (0);
 setLBR_NotaFiscal_ID (0);
-setLBR_TaxGroup_ID (0);
 setlbr_TaxAmt (Env.ZERO);
 setlbr_TaxBaseAmt (Env.ZERO);
+setLBR_TaxGroup_ID (0);
 }
  */
 }
@@ -118,24 +118,6 @@ Integer ii = (Integer)get_Value("LBR_NotaFiscal_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-
-/** LBR_TaxGroup_ID AD_Reference_ID=1000032 */
-public static final int LBR_TAXGROUP_ID_AD_Reference_ID=1000032;
-/** Set Tax Group.
-@param LBR_TaxGroup_ID Defines the Tax Group */
-public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
-{
-if (LBR_TaxGroup_ID < 1) throw new IllegalArgumentException ("LBR_TaxGroup_ID is mandatory.");
-set_Value ("LBR_TaxGroup_ID", new Integer(LBR_TaxGroup_ID));
-}
-/** Get Tax Group.
-@return Defines the Tax Group */
-public int getLBR_TaxGroup_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_TaxGroup_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set Tax Amount.
 @param lbr_TaxAmt Defines the Tax Amount */
 public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt)
@@ -165,5 +147,23 @@ public BigDecimal getlbr_TaxBaseAmt()
 BigDecimal bd = (BigDecimal)get_Value("lbr_TaxBaseAmt");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+
+/** LBR_TaxGroup_ID AD_Reference_ID=1000032 */
+public static final int LBR_TAXGROUP_ID_AD_Reference_ID=1000032;
+/** Set Tax Group.
+@param LBR_TaxGroup_ID Defines the Tax Group */
+public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
+{
+if (LBR_TaxGroup_ID < 1) throw new IllegalArgumentException ("LBR_TaxGroup_ID is mandatory.");
+set_Value ("LBR_TaxGroup_ID", new Integer(LBR_TaxGroup_ID));
+}
+/** Get Tax Group.
+@return Defines the Tax Group */
+public int getLBR_TaxGroup_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxGroup_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 }

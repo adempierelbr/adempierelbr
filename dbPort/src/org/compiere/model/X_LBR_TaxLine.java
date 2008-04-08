@@ -32,10 +32,10 @@ public X_LBR_TaxLine (Properties ctx, int LBR_TaxLine_ID, String trxName)
 super (ctx, LBR_TaxLine_ID, trxName);
 /** if (LBR_TaxLine_ID == 0)
 {
+setlbr_PostTax (true);	// 'Y'
+setLBR_Tax_ID (0);
 setLBR_TaxLine_ID (0);
 setLBR_TaxName_ID (0);
-setLBR_Tax_ID (0);
-setlbr_PostTax (true);	// 'Y'
 }
  */
 }
@@ -83,54 +83,6 @@ public String toString()
 {
 StringBuffer sb = new StringBuffer ("X_LBR_TaxLine[").append(get_ID()).append("]");
 return sb.toString();
-}
-/** Set Tax Line.
-@param LBR_TaxLine_ID Primary key table LBR_TaxLine */
-public void setLBR_TaxLine_ID (int LBR_TaxLine_ID)
-{
-if (LBR_TaxLine_ID < 1) throw new IllegalArgumentException ("LBR_TaxLine_ID is mandatory.");
-set_ValueNoCheck ("LBR_TaxLine_ID", new Integer(LBR_TaxLine_ID));
-}
-/** Get Tax Line.
-@return Primary key table LBR_TaxLine */
-public int getLBR_TaxLine_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_TaxLine_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
-/** LBR_TaxName_ID AD_Reference_ID=1000023 */
-public static final int LBR_TAXNAME_ID_AD_Reference_ID=1000023;
-/** Set Tax Name.
-@param LBR_TaxName_ID Primary key table LBR_TaxName */
-public void setLBR_TaxName_ID (int LBR_TaxName_ID)
-{
-if (LBR_TaxName_ID < 1) throw new IllegalArgumentException ("LBR_TaxName_ID is mandatory.");
-set_Value ("LBR_TaxName_ID", new Integer(LBR_TaxName_ID));
-}
-/** Get Tax Name.
-@return Primary key table LBR_TaxName */
-public int getLBR_TaxName_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_TaxName_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Brazilian Tax.
-@param LBR_Tax_ID Primary key table LBR_Tax */
-public void setLBR_Tax_ID (int LBR_Tax_ID)
-{
-if (LBR_Tax_ID < 1) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
-set_ValueNoCheck ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
-}
-/** Get Brazilian Tax.
-@return Primary key table LBR_Tax */
-public int getLBR_Tax_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_Tax_ID");
-if (ii == null) return 0;
-return ii.intValue();
 }
 /** Set Post Tax.
 @param lbr_PostTax Indicates if the Tax should be Posted */
@@ -191,6 +143,54 @@ public BigDecimal getlbr_TaxBaseAmt()
 BigDecimal bd = (BigDecimal)get_Value("lbr_TaxBaseAmt");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Brazilian Tax.
+@param LBR_Tax_ID Primary key table LBR_Tax */
+public void setLBR_Tax_ID (int LBR_Tax_ID)
+{
+if (LBR_Tax_ID < 1) throw new IllegalArgumentException ("LBR_Tax_ID is mandatory.");
+set_ValueNoCheck ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
+}
+/** Get Brazilian Tax.
+@return Primary key table LBR_Tax */
+public int getLBR_Tax_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_Tax_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Tax Line.
+@param LBR_TaxLine_ID Primary key table LBR_TaxLine */
+public void setLBR_TaxLine_ID (int LBR_TaxLine_ID)
+{
+if (LBR_TaxLine_ID < 1) throw new IllegalArgumentException ("LBR_TaxLine_ID is mandatory.");
+set_ValueNoCheck ("LBR_TaxLine_ID", new Integer(LBR_TaxLine_ID));
+}
+/** Get Tax Line.
+@return Primary key table LBR_TaxLine */
+public int getLBR_TaxLine_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxLine_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** LBR_TaxName_ID AD_Reference_ID=1000023 */
+public static final int LBR_TAXNAME_ID_AD_Reference_ID=1000023;
+/** Set Tax Name.
+@param LBR_TaxName_ID Primary key table LBR_TaxName */
+public void setLBR_TaxName_ID (int LBR_TaxName_ID)
+{
+if (LBR_TaxName_ID < 1) throw new IllegalArgumentException ("LBR_TaxName_ID is mandatory.");
+set_Value ("LBR_TaxName_ID", new Integer(LBR_TaxName_ID));
+}
+/** Get Tax Name.
+@return Primary key table LBR_TaxName */
+public int getLBR_TaxName_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxName_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set Tax Rate.
 @param lbr_TaxRate Indicates the Tax Rate */

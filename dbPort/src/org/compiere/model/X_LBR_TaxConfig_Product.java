@@ -147,20 +147,6 @@ Integer ii = (Integer)get_Value("LBR_Tax_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set Product.
-@param M_Product_ID Product, Service, Item */
-public void setM_Product_ID (int M_Product_ID)
-{
-throw new IllegalArgumentException ("M_Product_ID is virtual column");
-}
-/** Get Product.
-@return Product, Service, Item */
-public int getM_Product_ID() 
-{
-Integer ii = (Integer)get_Value("M_Product_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 
 /** lbr_TaxStatus AD_Reference_ID=1000029 */
 public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
@@ -204,5 +190,19 @@ set_Value ("lbr_TaxStatus", lbr_TaxStatus);
 public String getlbr_TaxStatus() 
 {
 return (String)get_Value("lbr_TaxStatus");
+}
+/** Set Product.
+@param M_Product_ID Product, Service, Item */
+public void setM_Product_ID (int M_Product_ID)
+{
+throw new IllegalArgumentException ("M_Product_ID is virtual column");
+}
+/** Get Product.
+@return Product, Service, Item */
+public int getM_Product_ID() 
+{
+Integer ii = (Integer)get_Value("M_Product_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 }

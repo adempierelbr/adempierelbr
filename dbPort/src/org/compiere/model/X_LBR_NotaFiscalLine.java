@@ -32,8 +32,8 @@ public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String t
 super (ctx, LBR_NotaFiscalLine_ID, trxName);
 /** if (LBR_NotaFiscalLine_ID == 0)
 {
-setLBR_NotaFiscalLine_ID (0);
 setlbr_IsService (false);	// 'N'
+setLBR_NotaFiscalLine_ID (0);
 }
  */
 }
@@ -167,6 +167,41 @@ Integer ii = (Integer)get_Value("LBR_CFOP_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set CFOP Name.
+@param lbr_CFOPName Defines the CFOP Name */
+public void setlbr_CFOPName (String lbr_CFOPName)
+{
+if (lbr_CFOPName != null && lbr_CFOPName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CFOPName = lbr_CFOPName.substring(0,59);
+}
+set_Value ("lbr_CFOPName", lbr_CFOPName);
+}
+/** Get CFOP Name.
+@return Defines the CFOP Name */
+public String getlbr_CFOPName() 
+{
+return (String)get_Value("lbr_CFOPName");
+}
+/** Set Is Service.
+@param lbr_IsService Defines if the lines is a Service */
+public void setlbr_IsService (boolean lbr_IsService)
+{
+set_Value ("lbr_IsService", new Boolean(lbr_IsService));
+}
+/** Get Is Service.
+@return Defines if the lines is a Service */
+public boolean islbr_IsService() 
+{
+Object oo = get_Value("lbr_IsService");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
 
 /** LBR_LegalMessage_ID AD_Reference_ID=1000030 */
 public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000030;
@@ -205,20 +240,22 @@ Integer ii = (Integer)get_Value("LBR_NCM_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set Nota Fiscal Line.
-@param LBR_NotaFiscalLine_ID Primary key table LBR_NotaFiscalLine */
-public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
+/** Set NCM Name.
+@param lbr_NCMName Defines the NCM Name */
+public void setlbr_NCMName (String lbr_NCMName)
 {
-if (LBR_NotaFiscalLine_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscalLine_ID is mandatory.");
-set_ValueNoCheck ("LBR_NotaFiscalLine_ID", new Integer(LBR_NotaFiscalLine_ID));
+if (lbr_NCMName != null && lbr_NCMName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_NCMName = lbr_NCMName.substring(0,59);
 }
-/** Get Nota Fiscal Line.
-@return Primary key table LBR_NotaFiscalLine */
-public int getLBR_NotaFiscalLine_ID() 
+set_Value ("lbr_NCMName", lbr_NCMName);
+}
+/** Get NCM Name.
+@return Defines the NCM Name */
+public String getlbr_NCMName() 
 {
-Integer ii = (Integer)get_Value("LBR_NotaFiscalLine_ID");
-if (ii == null) return 0;
-return ii.intValue();
+return (String)get_Value("lbr_NCMName");
 }
 /** Set Nota Fiscal.
 @param LBR_NotaFiscal_ID Primary key table LBR_NotaFiscal */
@@ -235,6 +272,72 @@ public int getLBR_NotaFiscal_ID()
 Integer ii = (Integer)get_Value("LBR_NotaFiscal_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set Nota Fiscal Line.
+@param LBR_NotaFiscalLine_ID Primary key table LBR_NotaFiscalLine */
+public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
+{
+if (LBR_NotaFiscalLine_ID < 1) throw new IllegalArgumentException ("LBR_NotaFiscalLine_ID is mandatory.");
+set_ValueNoCheck ("LBR_NotaFiscalLine_ID", new Integer(LBR_NotaFiscalLine_ID));
+}
+/** Get Nota Fiscal Line.
+@return Primary key table LBR_NotaFiscalLine */
+public int getLBR_NotaFiscalLine_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_NotaFiscalLine_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Service Taxes.
+@param lbr_ServiceTaxes String with all Taxes Names and Taxes Rates */
+public void setlbr_ServiceTaxes (String lbr_ServiceTaxes)
+{
+if (lbr_ServiceTaxes != null && lbr_ServiceTaxes.length() > 1000)
+{
+log.warning("Length > 1000 - truncated");
+lbr_ServiceTaxes = lbr_ServiceTaxes.substring(0,999);
+}
+set_Value ("lbr_ServiceTaxes", lbr_ServiceTaxes);
+}
+/** Get Service Taxes.
+@return String with all Taxes Names and Taxes Rates */
+public String getlbr_ServiceTaxes() 
+{
+return (String)get_Value("lbr_ServiceTaxes");
+}
+/** Set Tax Status.
+@param lbr_TaxStatus Defines the Tax Status */
+public void setlbr_TaxStatus (String lbr_TaxStatus)
+{
+if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 3)
+{
+log.warning("Length > 3 - truncated");
+lbr_TaxStatus = lbr_TaxStatus.substring(0,2);
+}
+set_Value ("lbr_TaxStatus", lbr_TaxStatus);
+}
+/** Get Tax Status.
+@return Defines the Tax Status */
+public String getlbr_TaxStatus() 
+{
+return (String)get_Value("lbr_TaxStatus");
+}
+/** Set UOM Name.
+@param lbr_UOMName Defines the UOM Name */
+public void setlbr_UOMName (String lbr_UOMName)
+{
+if (lbr_UOMName != null && lbr_UOMName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_UOMName = lbr_UOMName.substring(0,59);
+}
+set_Value ("lbr_UOMName", lbr_UOMName);
+}
+/** Get UOM Name.
+@return Defines the UOM Name */
+public String getlbr_UOMName() 
+{
+return (String)get_Value("lbr_UOMName");
 }
 /** Set Line No.
 @param Line Unique line for this document */
@@ -375,108 +478,5 @@ set_Value ("VendorProductNo", VendorProductNo);
 public String getVendorProductNo() 
 {
 return (String)get_Value("VendorProductNo");
-}
-/** Set CFOP Name.
-@param lbr_CFOPName Defines the CFOP Name */
-public void setlbr_CFOPName (String lbr_CFOPName)
-{
-if (lbr_CFOPName != null && lbr_CFOPName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_CFOPName = lbr_CFOPName.substring(0,59);
-}
-set_Value ("lbr_CFOPName", lbr_CFOPName);
-}
-/** Get CFOP Name.
-@return Defines the CFOP Name */
-public String getlbr_CFOPName() 
-{
-return (String)get_Value("lbr_CFOPName");
-}
-/** Set Is Service.
-@param lbr_IsService Defines if the lines is a Service */
-public void setlbr_IsService (boolean lbr_IsService)
-{
-set_Value ("lbr_IsService", new Boolean(lbr_IsService));
-}
-/** Get Is Service.
-@return Defines if the lines is a Service */
-public boolean islbr_IsService() 
-{
-Object oo = get_Value("lbr_IsService");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
-}
-return false;
-}
-/** Set NCM Name.
-@param lbr_NCMName Defines the NCM Name */
-public void setlbr_NCMName (String lbr_NCMName)
-{
-if (lbr_NCMName != null && lbr_NCMName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_NCMName = lbr_NCMName.substring(0,59);
-}
-set_Value ("lbr_NCMName", lbr_NCMName);
-}
-/** Get NCM Name.
-@return Defines the NCM Name */
-public String getlbr_NCMName() 
-{
-return (String)get_Value("lbr_NCMName");
-}
-/** Set Service Taxes.
-@param lbr_ServiceTaxes String with all Taxes Names and Taxes Rates */
-public void setlbr_ServiceTaxes (String lbr_ServiceTaxes)
-{
-if (lbr_ServiceTaxes != null && lbr_ServiceTaxes.length() > 1000)
-{
-log.warning("Length > 1000 - truncated");
-lbr_ServiceTaxes = lbr_ServiceTaxes.substring(0,999);
-}
-set_Value ("lbr_ServiceTaxes", lbr_ServiceTaxes);
-}
-/** Get Service Taxes.
-@return String with all Taxes Names and Taxes Rates */
-public String getlbr_ServiceTaxes() 
-{
-return (String)get_Value("lbr_ServiceTaxes");
-}
-/** Set Tax Status.
-@param lbr_TaxStatus Defines the Tax Status */
-public void setlbr_TaxStatus (String lbr_TaxStatus)
-{
-if (lbr_TaxStatus != null && lbr_TaxStatus.length() > 3)
-{
-log.warning("Length > 3 - truncated");
-lbr_TaxStatus = lbr_TaxStatus.substring(0,2);
-}
-set_Value ("lbr_TaxStatus", lbr_TaxStatus);
-}
-/** Get Tax Status.
-@return Defines the Tax Status */
-public String getlbr_TaxStatus() 
-{
-return (String)get_Value("lbr_TaxStatus");
-}
-/** Set UOM Name.
-@param lbr_UOMName Defines the UOM Name */
-public void setlbr_UOMName (String lbr_UOMName)
-{
-if (lbr_UOMName != null && lbr_UOMName.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_UOMName = lbr_UOMName.substring(0,59);
-}
-set_Value ("lbr_UOMName", lbr_UOMName);
-}
-/** Get UOM Name.
-@return Defines the UOM Name */
-public String getlbr_UOMName() 
-{
-return (String)get_Value("lbr_UOMName");
 }
 }

@@ -34,9 +34,9 @@ super (ctx, LBR_DocPrintField_ID, trxName);
 {
 setLBR_DocPrintField_ID (0);
 setLBR_DocPrint_ID (0);
-setName (null);
 setlbr_IsHeader (false);	// 'N'
 setlbr_OtherRow (false);	// 'N'
+setName (null);
 }
  */
 }
@@ -102,6 +102,20 @@ public String getComments()
 {
 return (String)get_Value("Comments");
 }
+/** Set Column Number.
+@param lbr_ColumnNo Defines the X Position */
+public void setlbr_ColumnNo (int lbr_ColumnNo)
+{
+set_Value ("lbr_ColumnNo", new Integer(lbr_ColumnNo));
+}
+/** Get Column Number.
+@return Defines the X Position */
+public int getlbr_ColumnNo() 
+{
+Integer ii = (Integer)get_Value("lbr_ColumnNo");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set DocPrint Field.
 @param LBR_DocPrintField_ID Primary key table LBR_DocPrintField */
 public void setLBR_DocPrintField_ID (int LBR_DocPrintField_ID)
@@ -129,38 +143,6 @@ set_ValueNoCheck ("LBR_DocPrint_ID", new Integer(LBR_DocPrint_ID));
 public int getLBR_DocPrint_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
-{
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
-}
-set_Value ("Name", Name);
-}
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
-{
-return (String)get_Value("Name");
-}
-/** Set Column Number.
-@param lbr_ColumnNo Defines the X Position */
-public void setlbr_ColumnNo (int lbr_ColumnNo)
-{
-set_Value ("lbr_ColumnNo", new Integer(lbr_ColumnNo));
-}
-/** Get Column Number.
-@return Defines the X Position */
-public int getlbr_ColumnNo() 
-{
-Integer ii = (Integer)get_Value("lbr_ColumnNo");
 if (ii == null) return 0;
 return ii.intValue();
 }
@@ -283,5 +265,23 @@ public int getlbr_RowNo()
 Integer ii = (Integer)get_Value("lbr_RowNo");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
+{
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
+}
+set_Value ("Name", Name);
+}
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
+{
+return (String)get_Value("Name");
 }
 }

@@ -34,9 +34,9 @@ super (ctx, LBR_CNAB_ID, trxName);
 {
 setIsRegistered (false);	// 'N'
 setLBR_CNAB_ID (0);
-setRoutingNo (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
 setlbr_IsCancelled (false);	// 'N'
+setRoutingNo (null);
 }
  */
 }
@@ -121,39 +121,6 @@ public int getLBR_Boleto_ID()
 Integer ii = (Integer)get_Value("LBR_Boleto_ID");
 if (ii == null) return 0;
 return ii.intValue();
-}
-/** Set CNAB.
-@param LBR_CNAB_ID Primary Key table LBR_CNAB */
-public void setLBR_CNAB_ID (int LBR_CNAB_ID)
-{
-if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
-set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
-}
-/** Get CNAB.
-@return Primary Key table LBR_CNAB */
-public int getLBR_CNAB_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_CNAB_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Routing No.
-@param RoutingNo Bank Routing Number */
-public void setRoutingNo (String RoutingNo)
-{
-if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
-if (RoutingNo.length() > 20)
-{
-log.warning("Length > 20 - truncated");
-RoutingNo = RoutingNo.substring(0,19);
-}
-set_Value ("RoutingNo", RoutingNo);
-}
-/** Get Routing No.
-@return Bank Routing Number */
-public String getRoutingNo() 
-{
-return (String)get_Value("RoutingNo");
 }
 /** Set CNAB Field1.
 @param lbr_CNABField1 CNAB Field1 */
@@ -852,6 +819,57 @@ public String getlbr_CNABField46()
 {
 return (String)get_Value("lbr_CNABField46");
 }
+/** Set CNAB Field47.
+@param lbr_CNABField47 CNAB Field47 */
+public void setlbr_CNABField47 (String lbr_CNABField47)
+{
+if (lbr_CNABField47 != null && lbr_CNABField47.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField47 = lbr_CNABField47.substring(0,59);
+}
+set_Value ("lbr_CNABField47", lbr_CNABField47);
+}
+/** Get CNAB Field47.
+@return CNAB Field47 */
+public String getlbr_CNABField47() 
+{
+return (String)get_Value("lbr_CNABField47");
+}
+/** Set CNAB Field48.
+@param lbr_CNABField48 CNAB Field48 */
+public void setlbr_CNABField48 (String lbr_CNABField48)
+{
+if (lbr_CNABField48 != null && lbr_CNABField48.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField48 = lbr_CNABField48.substring(0,59);
+}
+set_Value ("lbr_CNABField48", lbr_CNABField48);
+}
+/** Get CNAB Field48.
+@return CNAB Field48 */
+public String getlbr_CNABField48() 
+{
+return (String)get_Value("lbr_CNABField48");
+}
+/** Set CNAB Field49.
+@param lbr_CNABField49 CNAB Field49 */
+public void setlbr_CNABField49 (String lbr_CNABField49)
+{
+if (lbr_CNABField49 != null && lbr_CNABField49.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField49 = lbr_CNABField49.substring(0,59);
+}
+set_Value ("lbr_CNABField49", lbr_CNABField49);
+}
+/** Get CNAB Field49.
+@return CNAB Field49 */
+public String getlbr_CNABField49() 
+{
+return (String)get_Value("lbr_CNABField49");
+}
 /** Set CNAB Field5.
 @param lbr_CNABField5 CNAB Field5 */
 public void setlbr_CNABField5 (String lbr_CNABField5)
@@ -868,6 +886,74 @@ set_Value ("lbr_CNABField5", lbr_CNABField5);
 public String getlbr_CNABField5() 
 {
 return (String)get_Value("lbr_CNABField5");
+}
+/** Set CNAB Field50.
+@param lbr_CNABField50 CNAB Field50 */
+public void setlbr_CNABField50 (String lbr_CNABField50)
+{
+if (lbr_CNABField50 != null && lbr_CNABField50.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField50 = lbr_CNABField50.substring(0,59);
+}
+set_Value ("lbr_CNABField50", lbr_CNABField50);
+}
+/** Get CNAB Field50.
+@return CNAB Field50 */
+public String getlbr_CNABField50() 
+{
+return (String)get_Value("lbr_CNABField50");
+}
+/** Set CNAB Field51.
+@param lbr_CNABField51 CNAB Field51 */
+public void setlbr_CNABField51 (String lbr_CNABField51)
+{
+if (lbr_CNABField51 != null && lbr_CNABField51.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField51 = lbr_CNABField51.substring(0,59);
+}
+set_Value ("lbr_CNABField51", lbr_CNABField51);
+}
+/** Get CNAB Field51.
+@return CNAB Field51 */
+public String getlbr_CNABField51() 
+{
+return (String)get_Value("lbr_CNABField51");
+}
+/** Set CNAB Field52.
+@param lbr_CNABField52 CNAB Field52 */
+public void setlbr_CNABField52 (String lbr_CNABField52)
+{
+if (lbr_CNABField52 != null && lbr_CNABField52.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField52 = lbr_CNABField52.substring(0,59);
+}
+set_Value ("lbr_CNABField52", lbr_CNABField52);
+}
+/** Get CNAB Field52.
+@return CNAB Field52 */
+public String getlbr_CNABField52() 
+{
+return (String)get_Value("lbr_CNABField52");
+}
+/** Set CNAB Field53.
+@param lbr_CNABField53 CNAB Field53 */
+public void setlbr_CNABField53 (String lbr_CNABField53)
+{
+if (lbr_CNABField53 != null && lbr_CNABField53.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_CNABField53 = lbr_CNABField53.substring(0,59);
+}
+set_Value ("lbr_CNABField53", lbr_CNABField53);
+}
+/** Get CNAB Field53.
+@return CNAB Field53 */
+public String getlbr_CNABField53() 
+{
+return (String)get_Value("lbr_CNABField53");
 }
 /** Set CNAB Field6.
 @param lbr_CNABField6 CNAB Field6 */
@@ -937,6 +1023,21 @@ public String getlbr_CNABField9()
 {
 return (String)get_Value("lbr_CNABField9");
 }
+/** Set CNAB.
+@param LBR_CNAB_ID Primary Key table LBR_CNAB */
+public void setLBR_CNAB_ID (int LBR_CNAB_ID)
+{
+if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
+set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
+}
+/** Get CNAB.
+@return Primary Key table LBR_CNAB */
+public int getLBR_CNAB_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_CNAB_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set Document Date.
 @param lbr_DocDate Identifies the Document Date */
 public void setlbr_DocDate (Timestamp lbr_DocDate)
@@ -967,5 +1068,23 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
+}
+/** Set Routing No.
+@param RoutingNo Bank Routing Number */
+public void setRoutingNo (String RoutingNo)
+{
+if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
+if (RoutingNo.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RoutingNo = RoutingNo.substring(0,19);
+}
+set_Value ("RoutingNo", RoutingNo);
+}
+/** Get Routing No.
+@return Bank Routing Number */
+public String getRoutingNo() 
+{
+return (String)get_Value("RoutingNo");
 }
 }

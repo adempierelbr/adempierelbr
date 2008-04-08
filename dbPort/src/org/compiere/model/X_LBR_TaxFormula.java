@@ -32,11 +32,11 @@ public X_LBR_TaxFormula (Properties ctx, int LBR_TaxFormula_ID, String trxName)
 super (ctx, LBR_TaxFormula_ID, trxName);
 /** if (LBR_TaxFormula_ID == 0)
 {
-setLBR_TaxFormula_ID (0);
-setLBR_TaxName_ID (0);
 setlbr_Formula (null);
 setlbr_FormulaNetWorth (null);
 setlbr_ServiceFactor (null);
+setLBR_TaxFormula_ID (0);
+setLBR_TaxName_ID (0);
 setlbr_TransactionType (null);
 }
  */
@@ -85,36 +85,6 @@ public String toString()
 {
 StringBuffer sb = new StringBuffer ("X_LBR_TaxFormula[").append(get_ID()).append("]");
 return sb.toString();
-}
-/** Set Tax Formula.
-@param LBR_TaxFormula_ID Primary key table LBR_TaxFormula */
-public void setLBR_TaxFormula_ID (int LBR_TaxFormula_ID)
-{
-if (LBR_TaxFormula_ID < 1) throw new IllegalArgumentException ("LBR_TaxFormula_ID is mandatory.");
-set_ValueNoCheck ("LBR_TaxFormula_ID", new Integer(LBR_TaxFormula_ID));
-}
-/** Get Tax Formula.
-@return Primary key table LBR_TaxFormula */
-public int getLBR_TaxFormula_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_TaxFormula_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Tax Name.
-@param LBR_TaxName_ID Primary key table LBR_TaxName */
-public void setLBR_TaxName_ID (int LBR_TaxName_ID)
-{
-if (LBR_TaxName_ID < 1) throw new IllegalArgumentException ("LBR_TaxName_ID is mandatory.");
-set_ValueNoCheck ("LBR_TaxName_ID", new Integer(LBR_TaxName_ID));
-}
-/** Get Tax Name.
-@return Primary key table LBR_TaxName */
-public int getLBR_TaxName_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_TaxName_ID");
-if (ii == null) return 0;
-return ii.intValue();
 }
 /** Set Formula.
 @param lbr_Formula Defines the Tax Formula */
@@ -169,6 +139,36 @@ set_Value ("lbr_ServiceFactor", lbr_ServiceFactor);
 public String getlbr_ServiceFactor() 
 {
 return (String)get_Value("lbr_ServiceFactor");
+}
+/** Set Tax Formula.
+@param LBR_TaxFormula_ID Primary key table LBR_TaxFormula */
+public void setLBR_TaxFormula_ID (int LBR_TaxFormula_ID)
+{
+if (LBR_TaxFormula_ID < 1) throw new IllegalArgumentException ("LBR_TaxFormula_ID is mandatory.");
+set_ValueNoCheck ("LBR_TaxFormula_ID", new Integer(LBR_TaxFormula_ID));
+}
+/** Get Tax Formula.
+@return Primary key table LBR_TaxFormula */
+public int getLBR_TaxFormula_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxFormula_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Tax Name.
+@param LBR_TaxName_ID Primary key table LBR_TaxName */
+public void setLBR_TaxName_ID (int LBR_TaxName_ID)
+{
+if (LBR_TaxName_ID < 1) throw new IllegalArgumentException ("LBR_TaxName_ID is mandatory.");
+set_ValueNoCheck ("LBR_TaxName_ID", new Integer(LBR_TaxName_ID));
+}
+/** Get Tax Name.
+@return Primary key table LBR_TaxName */
+public int getLBR_TaxName_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_TaxName_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 
 /** lbr_TransactionType AD_Reference_ID=1000024 */

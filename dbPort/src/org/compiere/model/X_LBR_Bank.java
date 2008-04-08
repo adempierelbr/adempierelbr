@@ -115,41 +115,22 @@ Integer ii = (Integer)get_Value("LBR_Bank_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
+/** Set jBoleto Number.
+@param lbr_jBoletoNo Identifies the bank number at jBoleto */
+public void setlbr_jBoletoNo (String lbr_jBoletoNo)
 {
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
+if (lbr_jBoletoNo != null && lbr_jBoletoNo.length() > 3)
 {
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
+log.warning("Length > 3 - truncated");
+lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
 }
-set_Value ("Name", Name);
+set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
 }
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
+/** Get jBoleto Number.
+@return Identifies the bank number at jBoleto */
+public String getlbr_jBoletoNo() 
 {
-return (String)get_Value("Name");
-}
-/** Set Routing No.
-@param RoutingNo Bank Routing Number */
-public void setRoutingNo (String RoutingNo)
-{
-if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
-if (RoutingNo.length() > 20)
-{
-log.warning("Length > 20 - truncated");
-RoutingNo = RoutingNo.substring(0,19);
-}
-set_Value ("RoutingNo", RoutingNo);
-}
-/** Get Routing No.
-@return Bank Routing Number */
-public String getRoutingNo() 
-{
-return (String)get_Value("RoutingNo");
+return (String)get_Value("lbr_jBoletoNo");
 }
 /** Set Payment Location 1.
 @param lbr_PaymentLocation1 Identifies the Payment Location 1 */
@@ -185,21 +166,40 @@ public String getlbr_PaymentLocation2()
 {
 return (String)get_Value("lbr_PaymentLocation2");
 }
-/** Set jBoleto Number.
-@param lbr_jBoletoNo Identifies the bank number at jBoleto */
-public void setlbr_jBoletoNo (String lbr_jBoletoNo)
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
 {
-if (lbr_jBoletoNo != null && lbr_jBoletoNo.length() > 3)
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
 {
-log.warning("Length > 3 - truncated");
-lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
 }
-set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
+set_Value ("Name", Name);
 }
-/** Get jBoleto Number.
-@return Identifies the bank number at jBoleto */
-public String getlbr_jBoletoNo() 
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
 {
-return (String)get_Value("lbr_jBoletoNo");
+return (String)get_Value("Name");
+}
+/** Set Routing No.
+@param RoutingNo Bank Routing Number */
+public void setRoutingNo (String RoutingNo)
+{
+if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
+if (RoutingNo.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RoutingNo = RoutingNo.substring(0,19);
+}
+set_Value ("RoutingNo", RoutingNo);
+}
+/** Get Routing No.
+@return Bank Routing Number */
+public String getRoutingNo() 
+{
+return (String)get_Value("RoutingNo");
 }
 }

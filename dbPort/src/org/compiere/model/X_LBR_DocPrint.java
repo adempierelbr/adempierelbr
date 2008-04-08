@@ -33,10 +33,10 @@ super (ctx, LBR_DocPrint_ID, trxName);
 /** if (LBR_DocPrint_ID == 0)
 {
 setLBR_DocPrint_ID (0);
-setName (null);
 setlbr_HasSubDoc (false);	// 'N'
 setlbr_IsSubDoc (false);	// 'N'
 setlbr_TableName (null);
+setName (null);
 }
  */
 }
@@ -102,58 +102,6 @@ public String getDescription()
 {
 return (String)get_Value("Description");
 }
-/** Set DocPrint.
-@param LBR_DocPrint_ID Primary key table LBR_DocPrint */
-public void setLBR_DocPrint_ID (int LBR_DocPrint_ID)
-{
-if (LBR_DocPrint_ID < 1) throw new IllegalArgumentException ("LBR_DocPrint_ID is mandatory.");
-set_ValueNoCheck ("LBR_DocPrint_ID", new Integer(LBR_DocPrint_ID));
-}
-/** Get DocPrint.
-@return Primary key table LBR_DocPrint */
-public int getLBR_DocPrint_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
-/** LBR_MatrixPrinter_ID AD_Reference_ID=1000025 */
-public static final int LBR_MATRIXPRINTER_ID_AD_Reference_ID=1000025;
-/** Set Matrix Printer.
-@param LBR_MatrixPrinter_ID Primary key table LBR_MatrixPrinter */
-public void setLBR_MatrixPrinter_ID (int LBR_MatrixPrinter_ID)
-{
-if (LBR_MatrixPrinter_ID <= 0) set_Value ("LBR_MatrixPrinter_ID", null);
- else 
-set_Value ("LBR_MatrixPrinter_ID", new Integer(LBR_MatrixPrinter_ID));
-}
-/** Get Matrix Printer.
-@return Primary key table LBR_MatrixPrinter */
-public int getLBR_MatrixPrinter_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_MatrixPrinter_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
-{
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
-}
-set_Value ("Name", Name);
-}
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
-{
-return (String)get_Value("Name");
-}
 /** Set Create Fields.
 @param lbr_CreateFields Processo to Create Document Fields */
 public void setlbr_CreateFields (String lbr_CreateFields)
@@ -170,6 +118,21 @@ set_Value ("lbr_CreateFields", lbr_CreateFields);
 public String getlbr_CreateFields() 
 {
 return (String)get_Value("lbr_CreateFields");
+}
+/** Set DocPrint.
+@param LBR_DocPrint_ID Primary key table LBR_DocPrint */
+public void setLBR_DocPrint_ID (int LBR_DocPrint_ID)
+{
+if (LBR_DocPrint_ID < 1) throw new IllegalArgumentException ("LBR_DocPrint_ID is mandatory.");
+set_ValueNoCheck ("LBR_DocPrint_ID", new Integer(LBR_DocPrint_ID));
+}
+/** Get DocPrint.
+@return Primary key table LBR_DocPrint */
+public int getLBR_DocPrint_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set Has SubDoc.
 @param lbr_HasSubDoc Identifies if the Document has SubDocuments */
@@ -206,6 +169,25 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
+}
+
+/** LBR_MatrixPrinter_ID AD_Reference_ID=1000025 */
+public static final int LBR_MATRIXPRINTER_ID_AD_Reference_ID=1000025;
+/** Set Matrix Printer.
+@param LBR_MatrixPrinter_ID Primary key table LBR_MatrixPrinter */
+public void setLBR_MatrixPrinter_ID (int LBR_MatrixPrinter_ID)
+{
+if (LBR_MatrixPrinter_ID <= 0) set_Value ("LBR_MatrixPrinter_ID", null);
+ else 
+set_Value ("LBR_MatrixPrinter_ID", new Integer(LBR_MatrixPrinter_ID));
+}
+/** Get Matrix Printer.
+@return Primary key table LBR_MatrixPrinter */
+public int getLBR_MatrixPrinter_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_MatrixPrinter_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set Number of Columns.
 @param lbr_NoCols Identifies the Number of Columns */
@@ -254,20 +236,6 @@ Integer ii = (Integer)get_Value("lbr_SubDoc2_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set SubDoc Row.
-@param lbr_SubDocRow Identifies the Starter Row of the SubDocument */
-public void setlbr_SubDocRow (int lbr_SubDocRow)
-{
-set_Value ("lbr_SubDocRow", new Integer(lbr_SubDocRow));
-}
-/** Get SubDoc Row.
-@return Identifies the Starter Row of the SubDocument */
-public int getlbr_SubDocRow() 
-{
-Integer ii = (Integer)get_Value("lbr_SubDocRow");
-if (ii == null) return 0;
-return ii.intValue();
-}
 
 /** lbr_SubDoc_ID AD_Reference_ID=1000002 */
 public static final int LBR_SUBDOC_ID_AD_Reference_ID=1000002;
@@ -284,6 +252,20 @@ set_Value ("lbr_SubDoc_ID", new Integer(lbr_SubDoc_ID));
 public int getlbr_SubDoc_ID() 
 {
 Integer ii = (Integer)get_Value("lbr_SubDoc_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set SubDoc Row.
+@param lbr_SubDocRow Identifies the Starter Row of the SubDocument */
+public void setlbr_SubDocRow (int lbr_SubDocRow)
+{
+set_Value ("lbr_SubDocRow", new Integer(lbr_SubDocRow));
+}
+/** Get SubDoc Row.
+@return Identifies the Starter Row of the SubDocument */
+public int getlbr_SubDocRow() 
+{
+Integer ii = (Integer)get_Value("lbr_SubDocRow");
 if (ii == null) return 0;
 return ii.intValue();
 }
@@ -304,5 +286,23 @@ set_Value ("lbr_TableName", lbr_TableName);
 public String getlbr_TableName() 
 {
 return (String)get_Value("lbr_TableName");
+}
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
+{
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
+}
+set_Value ("Name", Name);
+}
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
+{
+return (String)get_Value("Name");
 }
 }

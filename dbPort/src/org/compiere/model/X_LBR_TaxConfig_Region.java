@@ -168,24 +168,6 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** To_Region_ID AD_Reference_ID=157 */
-public static final int TO_REGION_ID_AD_Reference_ID=157;
-/** Set To.
-@param To_Region_ID Receiving Region */
-public void setTo_Region_ID (int To_Region_ID)
-{
-if (To_Region_ID < 1) throw new IllegalArgumentException ("To_Region_ID is mandatory.");
-set_Value ("To_Region_ID", new Integer(To_Region_ID));
-}
-/** Get To.
-@return Receiving Region */
-public int getTo_Region_ID() 
-{
-Integer ii = (Integer)get_Value("To_Region_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
 /** lbr_TaxStatus AD_Reference_ID=1000029 */
 public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
 /** 00 - Tributada integralmente = 00 */
@@ -228,5 +210,23 @@ set_Value ("lbr_TaxStatus", lbr_TaxStatus);
 public String getlbr_TaxStatus() 
 {
 return (String)get_Value("lbr_TaxStatus");
+}
+
+/** To_Region_ID AD_Reference_ID=157 */
+public static final int TO_REGION_ID_AD_Reference_ID=157;
+/** Set To.
+@param To_Region_ID Receiving Region */
+public void setTo_Region_ID (int To_Region_ID)
+{
+if (To_Region_ID < 1) throw new IllegalArgumentException ("To_Region_ID is mandatory.");
+set_Value ("To_Region_ID", new Integer(To_Region_ID));
+}
+/** Get To.
+@return Receiving Region */
+public int getTo_Region_ID() 
+{
+Integer ii = (Integer)get_Value("To_Region_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 }
