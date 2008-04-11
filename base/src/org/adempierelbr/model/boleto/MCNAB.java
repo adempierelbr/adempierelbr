@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.boleto.bank.MBancoBrasil;
 import org.adempierelbr.model.boleto.bank.MBradesco;
 import org.adempierelbr.model.boleto.bank.MHsbc;
 import org.adempierelbr.model.boleto.bank.MItau;
@@ -74,7 +75,7 @@ public class MCNAB extends X_LBR_CNAB
 			                        Timestamp DateTo, MBankAccount BankA, String trx) throws IOException{
 		
 		if(bNum==MCNAB.BANCO_DO_BRASIL){
-			//TODO GENERATEFILE BANCO DO BRASIL
+			MBancoBrasil.generateFile(fileName, DateFrom, DateTo, BankA, trx);
 		}
     	else if(bNum==MCNAB.BRADESCO){
     		MBradesco.generateFile(fileName, DateFrom, DateTo, BankA, trx);
