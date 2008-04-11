@@ -106,7 +106,7 @@ public class ProcGenerateCNAB extends SvrProcess
 
 	    MCNAB.generateFile(bNum,fileName,p_DateFrom, p_DateTo, BankA, trx);
 		
-		return "GenerateCNAB Process Completed " + "Account: " + p_C_BankAccount_ID;
+		return "GenerateCNAB Process Completed<br>" + "** Arquivo: " + fileName;
 		
 	}	//	doIt
 

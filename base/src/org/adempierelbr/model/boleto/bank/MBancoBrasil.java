@@ -216,7 +216,7 @@ public class MBancoBrasil
 		
 		generateHeader(fw,BankA);
 		
-		//lbr_cnabfield7  = ZERO + CARTEIRA + AGÊNCIA + CC + DV
+		//lbr_cnabfield6  = CC
 		
 		int indexCC = BankA.getAccountNo().indexOf('-');
 		String cc   = BankA.getAccountNo().substring(0, indexCC);
