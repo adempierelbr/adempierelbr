@@ -149,11 +149,11 @@ public class ValidatorDocType implements ModelValidator
 			int maxValue    = (Integer)sequence.get_Value("ValueMax") != null ? (Integer)sequence.get_Value("ValueMax") : 0;
 			int minValue    = (Integer)sequence.get_Value("ValueMin") != null ? (Integer)sequence.get_Value("ValueMin") : 0;
 			
-			if (currentNext > maxValue)
-				currentNext = minValue;
+			if (currentNext > maxValue){
+				sequence.setCurrentNext(minValue);
+			}
 			
-		}
-		
+		}		
 		log.info(sequence.toString());
 		return null;
 	}
