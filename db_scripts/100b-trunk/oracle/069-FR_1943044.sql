@@ -1,33 +1,3 @@
--- 11/04/2008 11h8min44s BRT
--- Default comment for updating dictionary
-INSERT INTO LBR_BankInfo (AD_Org_ID,AD_Client_ID,CreatedBy,Description,IsActive,LBR_BankInfo_ID,LBR_Bank_ID,Updated,UpdatedBy,lbr_OccurNo,lbr_OccurType,Created) VALUES (0,0,100,'CONFIRMAÇÃO ENTRADA DE TÍTULO','Y',1000145,1000000,TO_DATE('2008-04-11 11:08:44','YYYY-MM-DD HH24:MI:SS'),100,'2','O',TO_DATE('2008-04-11 11:08:44','YYYY-MM-DD HH24:MI:SS'))
-;
-
--- 11/04/2008 11h9min39s BRT
--- Default comment for updating dictionary
-DELETE FROM AD_Attachment WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 11/04/2008 11h9min39s BRT
--- Default comment for updating dictionary
-DELETE FROM AD_Archive WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 11/04/2008 11h9min40s BRT
--- Default comment for updating dictionary
-DELETE FROM K_Index WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 11/04/2008 11h9min40s BRT
--- Default comment for updating dictionary
-DELETE FROM AD_Note WHERE AD_Table_ID=? AND Record_ID=?
-;
-
--- 11/04/2008 11h9min40s BRT
--- Default comment for updating dictionary
-DELETE FROM LBR_BankInfo WHERE LBR_BankInfo_ID=1000145
-;
-
 -- 15/04/2008 11h5min36s BRT
 -- Default comment for updating dictionary
 INSERT INTO AD_Column (AD_Org_ID,AD_Element_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,AD_Client_ID,Version,AD_Column_ID) VALUES (0,404,20,115,'IsRange',TO_DATE('2008-04-15 11:05:35','YYYY-MM-DD HH24:MI:SS'),100,'N','The parameter is a range of values','LBRA',1,'The Range checkbox indicates that this parameter is a range of values.','Y','N','N','N','N','Y','N','N','N','N','Y','Range',0,TO_DATE('2008-04-15 11:05:35','YYYY-MM-DD HH24:MI:SS'),100,0,0,1000918)
@@ -201,11 +171,6 @@ UPDATE AD_Field SET Name='Max. Value', Description='Maximum Value for a field', 
 -- 15/04/2008 11h20min19s BRT
 -- Default comment for updating dictionary
 ALTER TABLE AD_Sequence MODIFY ValueMax NUMBER(10) DEFAULT  NULL 
-;
-
--- 15/04/2008 11h20min20s BRT
--- Default comment for updating dictionary
-ALTER TABLE AD_Sequence MODIFY ValueMax NOT NULL
 ;
 
 -- 15/04/2008 11h20min29s BRT
