@@ -280,6 +280,20 @@ public class MBoleto extends X_LBR_Boleto
 		
 		return MCNAB.CNABFormat(((Integer)PayScheduleNo).toString(), 2);	
 	}
+	
+	private String getSequence(MBankAccount BankA){
+		
+		String DocumentNo = "";
+		
+		MSequence Sequence = new MSequence(getCtx(),(Integer)BankA.get_Value("AD_Sequence_ID"),get_TrxName());
+		if (Sequence.getPrefix() != null) DocumentNo += Sequence.getPrefix();
+		DocumentNo += ((Integer)Sequence.getNextID()).toString();
+		if (Sequence.getSuffix() != null) DocumentNo += Sequence.getSuffix();
+		
+		Sequence.save();
+		
+		return DocumentNo;
+	}
 	 
     public void generateCNAB(int bank){
         
@@ -435,13 +449,7 @@ public class MBoleto extends X_LBR_Boleto
 				MNotaFiscal nf = new MNotaFiscal(ctx,(Integer)invoice.get_Value("LBR_NotaFiscal_ID"),trx);
 				newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 			
-				String DocumentNo = "";
-			
-				MSequence Sequence = new MSequence(ctx,(Integer)BankA.get_Value("AD_Sequence_ID"),null);
-				if (Sequence.getPrefix() != null) DocumentNo += Sequence.getPrefix();
-				DocumentNo += ((Integer)Sequence.getNextID()).toString();
-				if (Sequence.getSuffix() != null) DocumentNo += Sequence.getSuffix();
-				Sequence.save();
+				String DocumentNo = newBoleto.getSequence(BankA);
 			
 				newBoleto.setDocumentNo(DocumentNo.trim());
 				newBoleto.save(trx);
@@ -617,5 +625,5 @@ public class MBoleto extends X_LBR_Boleto
 		DB.executeUpdate(sql, trx);
 		
 	}
-
+	
 } //MBoleto

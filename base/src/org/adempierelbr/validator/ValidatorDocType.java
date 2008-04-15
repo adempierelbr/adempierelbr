@@ -14,9 +14,11 @@ package org.adempierelbr.validator;
 
 import java.util.ArrayList;
 
+import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
+import org.compiere.model.MSequence;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -66,6 +68,7 @@ public class ValidatorDocType implements ModelValidator
 		
 		//	ModelChange
 		engine.addModelChange(MDocType.Table_Name, this); //Document Type
+		engine.addModelChange(MSequence.Table_Name, this); //Document Sequence
 	}
 	
 	/**
@@ -105,19 +108,55 @@ public class ValidatorDocType implements ModelValidator
 		if(po.get_TableName().equalsIgnoreCase(MDocType.Table_Name) && (type == TYPE_CHANGE || type ==  TYPE_NEW))
 		{
 			MDocType doc = (MDocType)po;
-			Boolean lbr_IsAutomaticInvoice = (Boolean)doc.get_Value("lbr_IsAutomaticInvoice");
-			Boolean lbr_IsAutomaticShipment = (Boolean)doc.get_Value("lbr_IsAutomaticShipment");
-			if(lbr_IsAutomaticInvoice && lbr_IsAutomaticShipment)
-			{
-				MDocType shpDoc = new MDocType(po.getCtx(),doc.getC_DocTypeShipment_ID(),po.get_TrxName());
-				if((Boolean)shpDoc.get_Value("IsShipConfirm"))
-				{
-					return "Inconsistência nos documentos sub-sequentes";
-				}
-			}
+			return modelChange(doc);
 		}
+		
+		else
+			
+		if(po.get_TableName().equalsIgnoreCase(MSequence.Table_Name) && (type == TYPE_CHANGE))
+		{
+			MSequence sequence = (MSequence)po;
+			return modelChange(sequence);
+		}
+		
 		return null;
 	} //modelChange
+	
+	public String modelChange(MDocType doc){
+		
+
+		Boolean lbr_IsAutomaticInvoice = (Boolean)doc.get_Value("lbr_IsAutomaticInvoice");
+		Boolean lbr_IsAutomaticShipment = (Boolean)doc.get_Value("lbr_IsAutomaticShipment");
+		if(lbr_IsAutomaticInvoice && lbr_IsAutomaticShipment)
+		{
+			MDocType shpDoc = new MDocType(doc.getCtx(),doc.getC_DocTypeShipment_ID(),doc.get_TrxName());
+			if((Boolean)shpDoc.get_Value("IsShipConfirm"))
+			{
+				return "Inconsistência nos documentos sub-sequentes";
+			}
+		}
+		
+		log.info(doc.toString());
+		return null;
+	}
+	
+	public String modelChange(MSequence sequence){
+		
+		boolean isRange = POLBR.get_ValueAsBoolean(sequence.get_Value("IsRange"));
+		if (isRange){
+			
+			int currentNext = sequence.getCurrentNext();
+			int maxValue    = (Integer)sequence.get_Value("ValueMax") != null ? (Integer)sequence.get_Value("ValueMax") : 0;
+			int minValue    = (Integer)sequence.get_Value("ValueMin") != null ? (Integer)sequence.get_Value("ValueMin") : 0;
+			
+			if (currentNext > maxValue)
+				currentNext = minValue;
+			
+		}
+		
+		log.info(sequence.toString());
+		return null;
+	}
 	
 	/**
 	 *	Validate Document.
