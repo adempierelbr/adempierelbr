@@ -14,6 +14,7 @@ package org.adempierelbr.callout;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -52,8 +53,17 @@ import org.compiere.util.Env;
  * CalloutTax
  * 
  * Callout for Table C_OrderLine and C_InvoiceLine
+ * This callout defines the taxes that will be applied to the Document.
+ * This is done using the getTaxes method. As soon as the taxes that
+ * need to be applied are found, they're saved in the following way:
+ * 	- LBR_Tax (Header for the taxes that are applied to the Document)
+ * 		- LBR_TaxLine (Contain the applied taxes + their needed info)
+ * 
+ * The actual taxes get calculated after the save button is pressed
+ * in the document line tab. It gets calculated by the ValidatorOrder/ValidatorInvoice
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
+ * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
  */
 public class CalloutTax extends CalloutEngine
@@ -180,12 +190,37 @@ public class CalloutTax extends CalloutEngine
 		}
 		
 		//Define se possui Substituição Tributária
+		//BEGIN - fer_luck @ faire
+		/**
+		 * Na venda, para verificarmos se existe ou não substituição, devemos checar 
+		 * se o produto é produzido e se tem substituição, caso ambas as afirmações
+		 * sejam verdadeiras, calcula-se o icms normal da venda, e é feita a tomada
+		 * de crédito deste valor, e após isso, calcula-se o icms de substituição
+		 * 
+		 * Na Revenda não cobra substituição, pois já foi cobrada pela indústria e
+		 * não destaca nada.
+		 * 
+		 * Na compra, para verificarmos se existe ou não substituição, primeiro
+		 * verificamos se o parceiro é indústria e se tem o flag substituto marcado,
+		 * caso seja verdadeiro verifcamos se o produto tem substituição, se for verdadeiro
+		 * calcula o icms de substituição subtraindo do imposto que já foi recolhido pela
+		 * indústria.
+		 * 
+		 */
 		boolean bp_hasSubstitution   = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_HasSubstitution"));
 		boolean prod_hasSubstitution = POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"));
+		boolean prod_isManufactured  = POLBR.get_ValueAsBoolean(product.get_Value("lbr_IsManufactured"));
 		
-		if (bp_hasSubstitution && prod_hasSubstitution){
+		//Verifica se é uma PO ou uma SO
+		boolean isSO = (order != null) ? order.isSOTrx() : invoice.isSOTrx();
+		
+		if(bp_hasSubstitution && prod_hasSubstitution && !isSO) {
 			hasSubstitution = true;
 		}
+		if (prod_isManufactured && prod_hasSubstitution && isSO){
+			hasSubstitution = true;
+		}
+		//END - fer_luck @ faire
 
 		/**
 		 * setLines
@@ -193,10 +228,10 @@ public class CalloutTax extends CalloutEngine
 		 * 
 		 */
 		
-		//Org
+		//Taxes defined on the Org
 		setLines(ctx, (Integer)orgInfo.get_Value("LBR_Tax_ID"));
 		
-		//Region
+		//Taxes defined from Region
 		if (transactionType == null) transactionType = "";
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
 		if (transactionType.equals("END") && isIEExempt)

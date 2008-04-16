@@ -47,6 +47,7 @@ import bsh.Interpreter;
  * TaxBR Utils
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
+ * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  * @version $Id: TextBR.java, 02/01/2008 08:44:00 mgrigioni
  */
 public class TaxBR
@@ -111,9 +112,11 @@ public class TaxBR
 				String s_name  = s_taxName.getName().trim();
 				s_taxBR = lines.get(s_name);
 				calculate(s_taxBR,null,product,s_taxName,lines,isTaxIncluded,lineamt,trx);
+				//Calcula o imposto substituido
+				calculate(taxBR, s_taxBR, product,taxName,lines,false,lineamt,trx);
 			}
-			
-			calculate(taxBR, s_taxBR, product,taxName,lines,isTaxIncluded,lineamt,trx);
+			else
+				calculate(taxBR, s_taxBR, product,taxName,lines,isTaxIncluded,lineamt,trx);
 			
 		} //end for
 		
@@ -137,7 +140,6 @@ public class TaxBR
 			else{
 				amt = lineamt;
 			}
-			
 			//Se o imposto for Substituição Tributária, e o produto estiver marcado
 			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
 				if (product != null && 
@@ -156,6 +158,8 @@ public class TaxBR
 					if (isTaxIncluded){
 						amt = calculate(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
 					}
+					else
+						amt = calculate(taxBR.getFormula(), lineamt, factor, lines);
 					
 				}	
 			}

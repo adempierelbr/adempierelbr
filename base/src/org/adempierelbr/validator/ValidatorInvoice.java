@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -54,7 +57,10 @@ import bsh.EvalError;
  *  Validate Invoice (Tax Calculation)
  *	
  *	@author Mario Grigioni
+ *  @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  *	@version $Id: ValidatorInvoice.java, 04/01/2008 15:56:00 mgrigioni
+ *
+ *	BF: 1928906 - amontenegro
  */
 public class ValidatorInvoice implements ModelValidator
 {
@@ -200,6 +206,9 @@ public class ValidatorInvoice implements ModelValidator
 		
 		BigDecimal taxAmt  = Env.ZERO;
 		Integer LBR_Tax_ID = (Integer)iLine.get_Value("LBR_Tax_ID");
+		//BEGIN - fer_luck @ faire
+		HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
+		//END - fer_luck @ faire
 		
 		if (type == TYPE_NEW){
 			
@@ -246,8 +255,22 @@ public class ValidatorInvoice implements ModelValidator
 						MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
 						X_LBR_TaxLine[] brLines = brTax.getLines();
 				
-						for (int j=0;j<brLines.length;j++){
-							taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
+						for (int j=0; j < brLines.length; j++){
+							//BEGIN - fer_luck @ faire
+							X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, brLines[j].getLBR_TaxName_ID(), trx);
+							if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution) || taxName.isHasWithHold()){
+								if(taxList == null)
+									taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
+								boolean isListed = taxList.get(taxName) != null ? true : false;
+								BigDecimal amt = Env.ZERO;
+								if(isListed)
+									amt = taxList.get(taxName);
+								amt = amt.add(brLines[j].getlbr_TaxAmt());
+								taxList.put(taxName, amt);
+							}
+							else	
+								taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
+							//END - fer_luck @ faire
 						}
 					}
 				
@@ -259,9 +282,34 @@ public class ValidatorInvoice implements ModelValidator
 				if (!invoice.isTaxIncluded()){
 					iTax.setTaxBaseAmt(invoice.getTotalLines());
 					invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
+					//BEGIN - fer_luck @ faire
+					if(taxList != null){
+						Iterator it = taxList.entrySet().iterator();
+						while(it.hasNext()){
+							Map.Entry<X_LBR_TaxName, BigDecimal> map;
+							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+							invoice.setGrandTotal(invoice.getGrandTotal().add(map.getValue()));
+						}
+					}
+					//END - fer_luck @ faire
 					invoice.save(trx);
 				}
 				else{
+					//BEGIN - fer_luck @ faire
+					if(taxList != null){
+						Iterator it = taxList.entrySet().iterator();
+						BigDecimal tmp = new BigDecimal(0.0);
+						while(it.hasNext()){
+							Map.Entry<X_LBR_TaxName, BigDecimal> map;
+							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+							tmp = tmp.add(map.getValue());
+						}
+						if(!invoice.getGrandTotal().equals(invoice.getTotalLines().add(tmp))){
+							invoice.setGrandTotal(invoice.getTotalLines().add(tmp));
+							invoice.save();
+						}
+						//END - fer_luck @ faire
+					}
 					iTax.setTaxBaseAmt(invoice.getTotalLines());
 				}
 			
@@ -295,6 +343,10 @@ public class ValidatorInvoice implements ModelValidator
 			Properties ctx = invoice.getCtx();
 			String     trx = invoice.get_TrxName();
 			
+			//BEGIN - fer_luck @ faire
+			HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
+			//END - fer_luck @ faire
+			
 			BigDecimal grandTotal = Env.ZERO;
 			BigDecimal substTotal = Env.ZERO;
 			
@@ -304,8 +356,8 @@ public class ValidatorInvoice implements ModelValidator
 			
 			//Apaga impostos zerados
 			String sql = "DELETE FROM C_InvoiceTax " +
-					     "WHERE (TaxAmt = 0 OR " +
-					            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
+		                 "WHERE (TaxAmt = 0 OR " +
+	                            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
 					     "AND C_Invoice_ID = " + invoice.getC_Invoice_ID();
 			DB.executeUpdate(sql, trx);
 			
@@ -349,11 +401,20 @@ public class ValidatorInvoice implements ModelValidator
 								}
 								
 								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
-								if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
-									substTotal = substTotal.add(taxLine.getlbr_TaxAmt());
+								//BEGIN - fer_luck @ faire
+								if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution) || taxName.isHasWithHold()){
+									if(taxList == null)
+										taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
+									boolean isListed = taxList.get(taxName) != null ? true : false;
+									BigDecimal amt = Env.ZERO;
+									if(isListed)
+										amt = taxList.get(taxName);
+									amt = amt.add(taxLine.getlbr_TaxAmt());
+									taxList.put(taxName, amt);
 								}
-								
-								grandTotal = grandTotal.add(taxLine.getlbr_TaxAmt());
+								else	
+								//END - fer_luck @ faire
+									grandTotal = grandTotal.add(taxLine.getlbr_TaxAmt());
 								
 							}
 						} //end for
@@ -363,9 +424,33 @@ public class ValidatorInvoice implements ModelValidator
 			
 			if (!invoice.isTaxIncluded()){
 				invoice.setGrandTotal(invoice.getTotalLines().add(grandTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
+				//BEGIN - fer_luck @ faire
+				if(taxList != null){
+					Iterator it = taxList.entrySet().iterator();
+					while(it.hasNext()){
+						Map.Entry<X_LBR_TaxName, BigDecimal> map;
+						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+						invoice.setGrandTotal(invoice.getGrandTotal().add(map.getValue()));
+					}
+				}
+				//END - fer_luck @ faire
 			}
 			else{
-				invoice.setGrandTotal(invoice.getGrandTotal().add(substTotal.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
+				//BEGIN - fer_luck @ faire
+				if(taxList != null){
+					Iterator it = taxList.entrySet().iterator();
+					BigDecimal tmp = new BigDecimal(0.0);
+					while(it.hasNext()){
+						Map.Entry<X_LBR_TaxName, BigDecimal> map;
+						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+						tmp = tmp.add(map.getValue());
+					}
+					if(!invoice.getGrandTotal().equals(invoice.getTotalLines().add(tmp))){
+						invoice.setGrandTotal(invoice.getTotalLines().add(tmp));
+						invoice.save();
+					}
+				}
+				//END - fer_luck @ faire
 			}
 			
 			//Validate Withhold
@@ -748,7 +833,7 @@ public class ValidatorInvoice implements ModelValidator
 	 */
 	public String toString ()
 	{
-		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos");
+		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos & Faire");
 		return sb.toString ();
 	}	//	toString
 
