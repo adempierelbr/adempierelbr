@@ -425,7 +425,7 @@ public class MBoleto extends X_LBR_Boleto
 				MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
 				
 				//Juros
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest")) && isRegistered){
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest"))){
 					newBoleto.setlbr_Interest(oi[i].getInterestAmt());
 					newBoleto.setlbr_Instruction1("COBRAR MORA DIÁRIA DE R$ " + oi[i].getInterestAmt());
 				}
@@ -434,7 +434,7 @@ public class MBoleto extends X_LBR_Boleto
 				}
 				
 				//Protesto
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue")) && isRegistered){
+				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue"))){
 					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
 					newBoleto.setlbr_SueDays(sueDays);
 					newBoleto.setlbr_HasSue(true);
