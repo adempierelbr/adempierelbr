@@ -139,6 +139,7 @@ public class ValidatorOrder implements ModelValidator
 	
 	// modelChange - OrderLine
 	// @param MOrderLine
+	@SuppressWarnings("unchecked")
 	public String modelChange (MOrderLine oLine) throws Exception{
 			
 		if(oLine.isProcessed()){
@@ -186,7 +187,7 @@ public class ValidatorOrder implements ModelValidator
 					for (int j=0; j < brLines.length; j++){
 						//BEGIN - fer_luck @ faire
 						X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, brLines[j].getLBR_TaxName_ID(), trx);
-						if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution) || taxName.isHasWithHold()){
+						if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
 							if(taxList == null)
 								taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
 							boolean isListed = taxList.get(taxName) != null ? true : false;
@@ -216,7 +217,7 @@ public class ValidatorOrder implements ModelValidator
 					while(it.hasNext()){
 						Map.Entry<X_LBR_TaxName, BigDecimal> map;
 						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-						order.setGrandTotal(order.getGrandTotal().add(map.getValue()));
+						order.setGrandTotal(order.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 					}
 				}
 				//END - fer_luck @ faire
@@ -233,7 +234,7 @@ public class ValidatorOrder implements ModelValidator
 						tmp = tmp.add(map.getValue());
 					}
 					if(!order.getGrandTotal().equals(order.getTotalLines().add(tmp))){
-						order.setGrandTotal(order.getTotalLines().add(tmp));
+						order.setGrandTotal(order.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 						order.save();
 					}
 					//END - fer_luck @ faire
@@ -258,6 +259,7 @@ public class ValidatorOrder implements ModelValidator
 	 *	@param timing see TIMING_ constants
      *	@return error message or null
 	 */
+	@SuppressWarnings("unchecked")
 	public String docValidate (PO po, int timing)
 	{
 		
@@ -271,7 +273,7 @@ public class ValidatorOrder implements ModelValidator
 			String     trx = order.get_TrxName();
 			
 			BigDecimal grandTotal = Env.ZERO;
-			BigDecimal substTotal = Env.ZERO;
+			//BigDecimal substTotal = Env.ZERO;
 			
 			//BEGIN - fer_luck @ faire
 			HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
@@ -331,7 +333,7 @@ public class ValidatorOrder implements ModelValidator
 								
 								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
 								//BEGIN - fer_luck @ faire
-								if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution) || taxName.isHasWithHold()){
+								if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
 									if(taxList == null)
 										taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
 									boolean isListed = taxList.get(taxName) != null ? true : false;
@@ -359,7 +361,7 @@ public class ValidatorOrder implements ModelValidator
 					while(it.hasNext()){
 						Map.Entry<X_LBR_TaxName, BigDecimal> map;
 						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-						order.setGrandTotal(order.getGrandTotal().add(map.getValue()));
+						order.setGrandTotal(order.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 					}
 				}
 				//END - fer_luck @ faire
@@ -376,7 +378,7 @@ public class ValidatorOrder implements ModelValidator
 						tmp = tmp.add(map.getValue());
 					}
 					if(!order.getGrandTotal().equals(order.getTotalLines().add(tmp))){
-						order.setGrandTotal(order.getTotalLines().add(tmp));
+						order.setGrandTotal(order.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 						order.save();
 					}
 				}
@@ -553,6 +555,8 @@ public class ValidatorOrder implements ModelValidator
 			{
 				MOrderTax oTax = taxes[i];
 				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx, oTax.getC_Tax_ID(), trx);
+				if (tax.get_Value("LBR_TaxName_ID") == null)
+					continue;
 				X_LBR_TaxName lbr_TaxName = new X_LBR_TaxName(ctx, (Integer) tax.get_Value("LBR_TaxName_ID"), trx);
 				
 				if(!lbr_TaxName.isHasWithHold())
@@ -579,7 +583,7 @@ public class ValidatorOrder implements ModelValidator
 				{
 					BigDecimal grandTotal = order.getGrandTotal();
 					BigDecimal taxAmt = oTax.getTaxAmt().negate();
-					order.setGrandTotal(grandTotal.add(taxAmt));
+					order.setGrandTotal(grandTotal.add(taxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 					order.save();
 					oTax.delete(true);
 					order.set_ValueOfColumn("LBR_Withhold_Order_ID", null);
@@ -668,7 +672,7 @@ public class ValidatorOrder implements ModelValidator
 						newTax.save(trx);
 						
 						BigDecimal grandTotal = order.getGrandTotal();
-						order.setGrandTotal(grandTotal.add(taxLine.getlbr_TaxAmt()));
+						order.setGrandTotal(grandTotal.add(taxLine.getlbr_TaxAmt()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 						
 						sql = "SELECT DISTINCT C_Order_ID FROM C_OrderLine WHERE LBR_Tax_ID=?";
 
