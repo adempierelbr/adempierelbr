@@ -13,12 +13,15 @@
 package org.adempierelbr.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * DBUtil
@@ -71,6 +74,24 @@ public class DBUtil {
         }
         
         return list;
+    }
+    
+    public static Connection getConnection(String username, String password, String driver, String url) {
+        try{
+            Class.forName(driver);
+            
+            Properties prop = new Properties();
+            prop.setProperty("user", username);
+            prop.setProperty("password", password);
+            Connection con = DriverManager.getConnection(url, prop);
+            
+            return con;
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        return null;
     }
     
 } //DBUtil
