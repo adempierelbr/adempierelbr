@@ -334,6 +334,8 @@ public class MBoleto extends X_LBR_Boleto
 			throw new IllegalArgumentException("C_Invoice_ID == 0");
 		}
 		
+		ArrayList<MBoleto> list = new ArrayList<MBoleto>();
+		
 		//REIMPRESSÃO DE BOLETOS
 		MBoleto[] boletos = MBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		if (boletos.length > 0){
@@ -462,8 +464,14 @@ public class MBoleto extends X_LBR_Boleto
 				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
 				invoice.set_ValueOfColumn("lbr_IsBillPrinted", true);
 				invoice.save(trx);
+				
+				list.add(newBoleto);
+			}
 			
-				newBoleto.print(FilePath, PrinterName);
+			boletos = new MBoleto[list.size()];
+			list.toArray(boletos);
+			for (int i=0;i<boletos.length; i++){
+				boletos[i].print(FilePath, PrinterName);
 			}
 		}
 	}

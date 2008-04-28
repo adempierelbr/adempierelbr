@@ -223,6 +223,45 @@ public class MOpenItem{
 		return hasOpenItem;
 	} //hasOpenItem
 	
+	public static boolean hasPaySchedule(Integer C_Invoice_ID, String trx){
+		
+		String sql = "SELECT * " + //1
+					 "FROM C_InvoicePaySchedule " +
+					 "WHERE C_Invoice_ID=?"; //*1
+		
+		boolean hasPaySchedule = false;
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				hasPaySchedule = true;
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		return hasPaySchedule;
+	} //hasPaySchedule
+	
 	private void setC_BPartner_ID(int value){
 		C_BPartner_ID = value;
 	}
