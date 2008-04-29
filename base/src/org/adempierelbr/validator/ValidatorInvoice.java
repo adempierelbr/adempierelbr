@@ -273,6 +273,13 @@ public class ValidatorInvoice implements ModelValidator
 								taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
 							//END - fer_luck @ faire
 						}
+						
+						//Via objeto o Adempiere não está atualizando o valor
+						//UPDATE direto no banco
+						String sql = "UPDATE C_InvoiceLine SET TaxAmt = " + MTax.getTaxAmt(LBR_Tax_ID, trx) +
+							         " WHERE C_InvoiceLine_ID = " + lines[i].getC_InvoiceLine_ID();
+						DB.executeUpdate(sql, trx);
+						
 					}
 				
 				} //end for
@@ -420,6 +427,7 @@ public class ValidatorInvoice implements ModelValidator
 								
 							}
 						} //end for
+					
 					}
 				}
 			} //end for

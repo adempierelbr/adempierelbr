@@ -12,12 +12,14 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.TaxBR;
 import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -42,6 +44,9 @@ import org.compiere.util.Env;
  */
 public class MTax extends X_LBR_Tax {
     
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MTax.class);
+	
 	/**
 	 * 
 	 */
@@ -101,6 +106,53 @@ public class MTax extends X_LBR_Tax {
 		
 		return newTax;
 	} //copyFrom
+	
+	/**************************************************************************
+	 *  getTaxAmt
+	 *  @return BigDecimal TaxAmt
+	 */
+	public static BigDecimal getTaxAmt(int LBR_Tax_ID,String trx){
+		
+		String sql = "SELECT lbr_TaxAmt " +
+				     "FROM LBR_TaxLine " +
+				     "WHERE LBR_Tax_ID = ?";
+		
+		BigDecimal taxAmt = Env.ZERO;
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, LBR_Tax_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				BigDecimal amt = rs.getBigDecimal(1);
+				if (amt != null){
+					amt = amt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+					taxAmt = taxAmt.add(amt);
+				}
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+
+		return taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+	} //getTaxAmt
 	
 	/**************************************************************************
 	 *  getLines
