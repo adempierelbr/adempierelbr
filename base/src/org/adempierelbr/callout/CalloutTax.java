@@ -252,7 +252,7 @@ public class CalloutTax extends CalloutEngine
 		
 		//Exceções (Configurador de Impostos)
 		//Sem exceções Produto ou Grupo
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(isSO, null, null);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, null, null);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Grupo do Parceiro
 			setLines(ctx,MTax.getLBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID));
@@ -272,7 +272,7 @@ public class CalloutTax extends CalloutEngine
 			
 		}
 		//Exceção Grupo de Tributação (Produto)
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(isSO, "G", LBR_FiscalGroup_Product_ID);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, "G", LBR_FiscalGroup_Product_ID);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Grupo do Produto
 			setLines(ctx,MTax.getLBR_TaxConfig_ProductGroup(LBR_TaxConfiguration_ID));
@@ -308,7 +308,7 @@ public class CalloutTax extends CalloutEngine
 			
 		}
 		//Exceção Produto
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(isSO, "P", M_Product_ID);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, "P", M_Product_ID);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Produto
 			setLines(ctx,MTax.getLBR_TaxConfig_Product(LBR_TaxConfiguration_ID));

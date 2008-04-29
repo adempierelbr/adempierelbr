@@ -34,6 +34,8 @@ import org.compiere.util.Env;
  *	MTax
  *
  *	Model for X_LBR_Tax
+ *
+ *  [ 1954195 ] AD_Client no Configurador de Impostos
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
@@ -267,7 +269,7 @@ public class MTax extends X_LBR_Tax {
 		return Description;
 	}
 	
-	public static int getLBR_TaxConfiguration_ID(boolean isSOTrx, String ExceptionType, Integer ID){
+	public static int getLBR_TaxConfiguration_ID(Properties ctx, boolean isSOTrx, String ExceptionType, Integer ID){
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
 		
@@ -278,9 +280,9 @@ public class MTax extends X_LBR_Tax {
 		
 		String where = "";
 		if (isSOTrx)
-			where = "WHERE IsSOTrx='Y'";
+			where = "WHERE AD_Client_ID = ? AND IsSOTrx='Y'";
 		else
-			where = "WHERE lbr_IsPOTrx='Y'";
+			where = "WHERE AD_Client_ID = ? AND lbr_IsPOTrx='Y'";
 		
 		String sql = "SELECT LBR_TaxConfiguration_ID " +
 				     "FROM LBR_TaxConfiguration ";
@@ -297,6 +299,7 @@ public class MTax extends X_LBR_Tax {
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
 			ResultSet rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
