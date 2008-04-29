@@ -1494,38 +1494,4 @@ BigDecimal bd = (BigDecimal)get_Value("TotalLines");
 if (bd == null) return Env.ZERO;
 return bd;
 }
-/** Set Description 2.
-@param z_Description2 Defines the Description 2 */
-public void setz_Description2 (String z_Description2)
-{
-if (z_Description2 != null && z_Description2.length() > 255)
-{
-log.warning("Length > 255 - truncated");
-z_Description2 = z_Description2.substring(0,254);
-}
-set_Value ("z_Description2", z_Description2);
-}
-/** Get Description 2.
-@return Defines the Description 2 */
-public String getz_Description2() 
-{
-return (String)get_Value("z_Description2");
-}
-/** Set Volumes.
-@param z_Volumes Define the Volumes */
-public void setz_Volumes (String z_Volumes)
-{
-if (z_Volumes != null && z_Volumes.length() > 80)
-{
-log.warning("Length > 80 - truncated");
-z_Volumes = z_Volumes.substring(0,79);
-}
-set_Value ("z_Volumes", z_Volumes);
-}
-/** Get Volumes.
-@return Define the Volumes */
-public String getz_Volumes() 
-{
-return (String)get_Value("z_Volumes");
-}
 }

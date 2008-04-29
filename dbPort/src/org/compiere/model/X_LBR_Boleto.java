@@ -216,23 +216,6 @@ Integer ii = (Integer)get_Value("C_Invoice_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set City.
-@param City Identifies a City */
-public void setCity (String City)
-{
-if (City != null && City.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-City = City.substring(0,59);
-}
-set_Value ("City", City);
-}
-/** Get City.
-@return Identifies a City */
-public String getCity() 
-{
-return (String)get_Value("City");
-}
 
 /** C_Payment_ID AD_Reference_ID=343 */
 public static final int C_PAYMENT_ID_AD_Reference_ID=343;
@@ -251,6 +234,23 @@ public int getC_Payment_ID()
 Integer ii = (Integer)get_Value("C_Payment_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set City.
+@param City Identifies a City */
+public void setCity (String City)
+{
+if (City != null && City.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+City = City.substring(0,59);
+}
+set_Value ("City", City);
+}
+/** Get City.
+@return Identifies a City */
+public String getCity() 
+{
+return (String)get_Value("City");
 }
 /** Set Discount Amount.
 @param DiscountAmt Calculated amount of discount */

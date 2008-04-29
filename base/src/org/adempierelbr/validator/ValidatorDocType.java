@@ -13,7 +13,9 @@
 package org.adempierelbr.validator;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
+import org.adempierelbr.model.MTaxConfiguration;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
@@ -22,6 +24,7 @@ import org.compiere.model.MSequence;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.model.X_LBR_TaxConfiguration;
 import org.compiere.util.CLogger;
 
 /**
@@ -31,9 +34,12 @@ import org.compiere.util.CLogger;
  *  will then validate the Shipment Document, verifying if the latter has the 
  *  Shipment Confirmation checked, if it does, and error is generated.
  *
- *	FR[1902562]	
+ *	[ 1902562 ] ValidatorDocType
+ *	[ 1943044 ] Sequencia de Documentos - Boletos
+ *	[ 1954103 ] Configurador de Impostos - Exceções para Entrada e Saída
  *
  *	@author Alvaro Montenegro
+ *	@contributor Mario Grigioni
  *	@version $Id: ValidatorBPartner.java, 27/02/2008 08:44:00 amontenegro
  *	
  */
@@ -69,6 +75,7 @@ public class ValidatorDocType implements ModelValidator
 		//	ModelChange
 		engine.addModelChange(MDocType.Table_Name, this); //Document Type
 		engine.addModelChange(MSequence.Table_Name, this); //Document Sequence
+		engine.addModelChange(MTaxConfiguration.Table_Name, this); //Tax Configuration
 	}
 	
 	/**
@@ -119,6 +126,14 @@ public class ValidatorDocType implements ModelValidator
 			return modelChange(sequence);
 		}
 		
+		else
+			
+		if(po.get_TableName().equalsIgnoreCase(MTaxConfiguration.Table_Name) && (type == TYPE_NEW || type == TYPE_CHANGE))
+		{
+			X_LBR_TaxConfiguration taxConfig = (X_LBR_TaxConfiguration)po;
+			return modelChange(taxConfig);
+		}
+		
 		return null;
 	} //modelChange
 	
@@ -137,6 +152,35 @@ public class ValidatorDocType implements ModelValidator
 		}
 		
 		log.info(doc.toString());
+		return null;
+	}
+	
+	public String modelChange(X_LBR_TaxConfiguration taxConfig){
+		
+		Properties ctx = taxConfig.getCtx();
+		String     trx = taxConfig.get_TrxName();
+		
+		boolean isSOTrx = taxConfig.isSOTrx();
+		boolean isPOTrx = taxConfig.islbr_IsPOTrx();
+			
+		int LBR_TaxConfiguration_ID    = taxConfig.getLBR_TaxConfiguration_ID();
+		int M_Product_ID               = taxConfig.getM_Product_ID();
+		int LBR_FiscalGroup_Product_ID = taxConfig.getLBR_FiscalGroup_Product_ID();
+		
+		if (!isSOTrx && !isPOTrx)
+			return "Necessário selecionar ao menos uma das opções de Transação";
+		
+		if (isSOTrx){
+			if (MTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+					return "Já existe uma exceção cadastrada com estes parâmetros";
+		}
+		
+		if (isPOTrx){
+			if (MTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+					return "Já existe uma exceção cadastrada com estes parâmetros";
+		}
+		
+		log.info(taxConfig.toString());
 		return null;
 	}
 	

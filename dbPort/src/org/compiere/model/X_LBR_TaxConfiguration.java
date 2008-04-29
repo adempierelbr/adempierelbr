@@ -32,7 +32,9 @@ public X_LBR_TaxConfiguration (Properties ctx, int LBR_TaxConfiguration_ID, Stri
 super (ctx, LBR_TaxConfiguration_ID, trxName);
 /** if (LBR_TaxConfiguration_ID == 0)
 {
+setIsSOTrx (true);	// Y
 setLBR_FiscalGroup_Product_ID (0);
+setlbr_IsPOTrx (true);	// Y
 setLBR_TaxConfiguration_ID (0);
 setM_Product_ID (0);
 }
@@ -83,6 +85,24 @@ public String toString()
 StringBuffer sb = new StringBuffer ("X_LBR_TaxConfiguration[").append(get_ID()).append("]");
 return sb.toString();
 }
+/** Set Sales Transaction.
+@param IsSOTrx This is a Sales Transaction */
+public void setIsSOTrx (boolean IsSOTrx)
+{
+set_Value ("IsSOTrx", new Boolean(IsSOTrx));
+}
+/** Get Sales Transaction.
+@return This is a Sales Transaction */
+public boolean isSOTrx() 
+{
+Object oo = get_Value("IsSOTrx");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
 
 /** lbr_ExceptionType AD_Reference_ID=1000020 */
 public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
@@ -126,6 +146,24 @@ public int getLBR_FiscalGroup_Product_ID()
 Integer ii = (Integer)get_Value("LBR_FiscalGroup_Product_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set Purchase Transaction.
+@param lbr_IsPOTrx This is a Purchase Transaction */
+public void setlbr_IsPOTrx (boolean lbr_IsPOTrx)
+{
+set_Value ("lbr_IsPOTrx", new Boolean(lbr_IsPOTrx));
+}
+/** Get Purchase Transaction.
+@return This is a Purchase Transaction */
+public boolean islbr_IsPOTrx() 
+{
+Object oo = get_Value("lbr_IsPOTrx");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
 }
 /** Set Tax Configuration.
 @param LBR_TaxConfiguration_ID Primary key table LBR_TaxConfiguration */

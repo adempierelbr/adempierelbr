@@ -32,8 +32,8 @@ public X_LBR_DocPrintField (Properties ctx, int LBR_DocPrintField_ID, String trx
 super (ctx, LBR_DocPrintField_ID, trxName);
 /** if (LBR_DocPrintField_ID == 0)
 {
-setLBR_DocPrintField_ID (0);
 setLBR_DocPrint_ID (0);
+setLBR_DocPrintField_ID (0);
 setlbr_IsHeader (false);	// 'N'
 setlbr_OtherRow (false);	// 'N'
 setName (null);
@@ -116,21 +116,6 @@ Integer ii = (Integer)get_Value("lbr_ColumnNo");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set DocPrint Field.
-@param LBR_DocPrintField_ID Primary key table LBR_DocPrintField */
-public void setLBR_DocPrintField_ID (int LBR_DocPrintField_ID)
-{
-if (LBR_DocPrintField_ID < 1) throw new IllegalArgumentException ("LBR_DocPrintField_ID is mandatory.");
-set_ValueNoCheck ("LBR_DocPrintField_ID", new Integer(LBR_DocPrintField_ID));
-}
-/** Get DocPrint Field.
-@return Primary key table LBR_DocPrintField */
-public int getLBR_DocPrintField_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_DocPrintField_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set DocPrint.
 @param LBR_DocPrint_ID Primary key table LBR_DocPrint */
 public void setLBR_DocPrint_ID (int LBR_DocPrint_ID)
@@ -143,6 +128,21 @@ set_ValueNoCheck ("LBR_DocPrint_ID", new Integer(LBR_DocPrint_ID));
 public int getLBR_DocPrint_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_DocPrint_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set DocPrint Field.
+@param LBR_DocPrintField_ID Primary key table LBR_DocPrintField */
+public void setLBR_DocPrintField_ID (int LBR_DocPrintField_ID)
+{
+if (LBR_DocPrintField_ID < 1) throw new IllegalArgumentException ("LBR_DocPrintField_ID is mandatory.");
+set_ValueNoCheck ("LBR_DocPrintField_ID", new Integer(LBR_DocPrintField_ID));
+}
+/** Get DocPrint Field.
+@return Primary key table LBR_DocPrintField */
+public int getLBR_DocPrintField_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_DocPrintField_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }

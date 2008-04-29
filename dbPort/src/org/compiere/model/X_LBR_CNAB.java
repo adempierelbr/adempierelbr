@@ -122,6 +122,21 @@ Integer ii = (Integer)get_Value("LBR_Boleto_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set CNAB.
+@param LBR_CNAB_ID Primary Key table LBR_CNAB */
+public void setLBR_CNAB_ID (int LBR_CNAB_ID)
+{
+if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
+set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
+}
+/** Get CNAB.
+@return Primary Key table LBR_CNAB */
+public int getLBR_CNAB_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_CNAB_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set CNAB Field1.
 @param lbr_CNABField1 CNAB Field1 */
 public void setlbr_CNABField1 (String lbr_CNABField1)
@@ -1022,21 +1037,6 @@ set_Value ("lbr_CNABField9", lbr_CNABField9);
 public String getlbr_CNABField9() 
 {
 return (String)get_Value("lbr_CNABField9");
-}
-/** Set CNAB.
-@param LBR_CNAB_ID Primary Key table LBR_CNAB */
-public void setLBR_CNAB_ID (int LBR_CNAB_ID)
-{
-if (LBR_CNAB_ID < 1) throw new IllegalArgumentException ("LBR_CNAB_ID is mandatory.");
-set_ValueNoCheck ("LBR_CNAB_ID", new Integer(LBR_CNAB_ID));
-}
-/** Get CNAB.
-@return Primary Key table LBR_CNAB */
-public int getLBR_CNAB_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_CNAB_ID");
-if (ii == null) return 0;
-return ii.intValue();
 }
 /** Set Document Date.
 @param lbr_DocDate Identifies the Document Date */

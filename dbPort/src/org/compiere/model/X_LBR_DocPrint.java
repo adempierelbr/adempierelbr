@@ -218,25 +218,6 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** lbr_SubDoc2_ID AD_Reference_ID=1000002 */
-public static final int LBR_SUBDOC2_ID_AD_Reference_ID=1000002;
-/** Set SubDoc_ID (2).
-@param lbr_SubDoc2_ID Identifies the ID of the SubDocument */
-public void setlbr_SubDoc2_ID (int lbr_SubDoc2_ID)
-{
-if (lbr_SubDoc2_ID <= 0) set_Value ("lbr_SubDoc2_ID", null);
- else 
-set_Value ("lbr_SubDoc2_ID", new Integer(lbr_SubDoc2_ID));
-}
-/** Get SubDoc_ID (2).
-@return Identifies the ID of the SubDocument */
-public int getlbr_SubDoc2_ID() 
-{
-Integer ii = (Integer)get_Value("lbr_SubDoc2_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
 /** lbr_SubDoc_ID AD_Reference_ID=1000002 */
 public static final int LBR_SUBDOC_ID_AD_Reference_ID=1000002;
 /** Set SubDoc_ID.
@@ -252,6 +233,25 @@ set_Value ("lbr_SubDoc_ID", new Integer(lbr_SubDoc_ID));
 public int getlbr_SubDoc_ID() 
 {
 Integer ii = (Integer)get_Value("lbr_SubDoc_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** lbr_SubDoc2_ID AD_Reference_ID=1000002 */
+public static final int LBR_SUBDOC2_ID_AD_Reference_ID=1000002;
+/** Set SubDoc_ID (2).
+@param lbr_SubDoc2_ID Identifies the ID of the SubDocument */
+public void setlbr_SubDoc2_ID (int lbr_SubDoc2_ID)
+{
+if (lbr_SubDoc2_ID <= 0) set_Value ("lbr_SubDoc2_ID", null);
+ else 
+set_Value ("lbr_SubDoc2_ID", new Integer(lbr_SubDoc2_ID));
+}
+/** Get SubDoc_ID (2).
+@return Identifies the ID of the SubDocument */
+public int getlbr_SubDoc2_ID() 
+{
+Integer ii = (Integer)get_Value("lbr_SubDoc2_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }

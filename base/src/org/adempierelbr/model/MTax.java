@@ -267,7 +267,7 @@ public class MTax extends X_LBR_Tax {
 		return Description;
 	}
 	
-	public static int getLBR_TaxConfiguration_ID(String ExceptionType, Integer ID){
+	public static int getLBR_TaxConfiguration_ID(boolean isSOTrx, String ExceptionType, Integer ID){
 		
 		CLogger log = CLogger.getCLogger(MTax.class);
 		
@@ -276,15 +276,22 @@ public class MTax extends X_LBR_Tax {
 		if (ExceptionType == null) ExceptionType = "";
 		if (ID == null) ID = -1;
 		
+		String where = "";
+		if (isSOTrx)
+			where = "WHERE IsSOTrx='Y'";
+		else
+			where = "WHERE lbr_IsPOTrx='Y'";
+		
 		String sql = "SELECT LBR_TaxConfiguration_ID " +
 				     "FROM LBR_TaxConfiguration ";
+			   sql += where;
 		
 		if (ExceptionType.equals("P"))
-			sql += "WHERE M_Product_ID = " + ID;
+			sql += " AND M_Product_ID = " + ID;
 		else if (ExceptionType.equals("G"))
-			sql += "WHERE LBR_FiscalGroup_Product_ID = " + ID; 
+			sql += " AND LBR_FiscalGroup_Product_ID = " + ID; 
 		else
-			sql += "WHERE M_Product_ID is null AND LBR_FiscalGroup_Product_ID is null";
+			sql += " AND M_Product_ID is null AND LBR_FiscalGroup_Product_ID is null";
 			
 		PreparedStatement pstmt = null;
 		try
