@@ -717,7 +717,7 @@ public class ValidatorInvoice implements ModelValidator
 						pstmt.setInt(3, whInvoice);
 						pstmt.setInt(4, whInvoice);
 						pstmt.setString(5, invoice.isSOTrx() ? "Y" : "N");
-						pstmt.setString(6, row[0].toString());
+						pstmt.setInt(6, row[0].intValue());
 						ResultSet rs = pstmt.executeQuery ();
 						while (rs.next ())
 						{
