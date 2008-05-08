@@ -146,7 +146,10 @@ public class MCNAB extends X_LBR_CNAB
 		
 		int rest = qtdDigitos - value.length();
 		
-		value = zeros.substring(0,rest) + value;
+		if (rest < 0)
+			value = value.substring(0, qtdDigitos);
+		else
+			value = zeros.substring(0,rest) + value;
 		
 		return value;
 	} //CNABFormat
