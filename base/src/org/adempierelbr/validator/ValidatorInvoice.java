@@ -55,6 +55,8 @@ import bsh.EvalError;
  *	ValidatorInvoice
  *
  *  Validate Invoice (Tax Calculation)
+ *  
+ *  [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha
  *	
  *	@author Mario Grigioni
  *  @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
@@ -142,7 +144,7 @@ public class ValidatorInvoice implements ModelValidator
 		else
 		
 		//Executa quando uma InvoiceLine é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_InvoiceLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_NEW ))
+		if (po.get_TableName().equalsIgnoreCase("C_InvoiceLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_NEW || type == TYPE_DELETE))
 		{
 			MInvoiceLine iLine = (MInvoiceLine)po;
 			return modelChange(iLine,type);
@@ -197,134 +199,149 @@ public class ValidatorInvoice implements ModelValidator
 	// @param MInvoiceLine
 	@SuppressWarnings("unchecked")
 	public String modelChange (MInvoiceLine iLine, int type) throws Exception{
+		
+		if (type == TYPE_DELETE){
 			
-		if(iLine.isProcessed()){
-			return null;
-		}
-		
-		Properties ctx     = iLine.getCtx();
-		String     trx     = iLine.get_TrxName();
-		
-		BigDecimal taxAmt  = Env.ZERO;
-		Integer LBR_Tax_ID = (Integer)iLine.get_Value("LBR_Tax_ID");
-		//BEGIN - fer_luck @ faire
-		HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
-		//END - fer_luck @ faire
-		
-		if (type == TYPE_NEW){
-			
-			if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
-				int C_OrderLine_ID = iLine.getC_OrderLine_ID();
-				if (C_OrderLine_ID != 0){
-					MOrderLine oLine = new MOrderLine(ctx,C_OrderLine_ID,trx);
-				
-					//CFOP, Sit. Tributária, Mensagem Legal
-					Integer LBR_CFOP_ID         = (Integer)oLine.get_Value("LBR_CFOP_ID");
-					Integer LBR_LegalMessage_ID = (Integer)oLine.get_Value("LBR_LegalMessage_ID");
-					String  sitTributaria       = (String)oLine.get_Value("lbr_TaxStatus");
-				
-					LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
-					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-						MTax oTax = new MTax(ctx,LBR_Tax_ID,trx);
-						MTax newTax = oTax.copyFrom();
-						
-						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
-						iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
-						iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-						iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
-					
-					}
-				}
+			Integer LBR_Tax_ID = (Integer)iLine.get_Value("LBR_Tax_ID");
+			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+				MTax lbrTax = new MTax(iLine.getCtx(),LBR_Tax_ID,iLine.get_TrxName());
+				lbrTax.delete(true, iLine.get_TrxName());
 			}
-		}
+				
+		} //delete
 		else{
-			MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
 		
-			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,iLine.getC_Tax_ID(),trx);
-				
-			if (tax.isSummary()){
-				
-				MInvoiceLine[] lines = invoice.getLines(true);
-				for (int i = 0; i < lines.length; i++){
-				
-					int C_InvoiceLine_ID = lines[i].getC_InvoiceLine_ID();
-				
-					TaxBR.calculateTaxes(C_InvoiceLine_ID, false, trx);
-				
-					LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
-					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-						MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
-						X_LBR_TaxLine[] brLines = brTax.getLines();
-				
-						for (int j=0; j < brLines.length; j++){
-							//BEGIN - fer_luck @ faire
-							X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, brLines[j].getLBR_TaxName_ID(), trx);
-							if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
-								if(taxList == null)
-									taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
-								boolean isListed = taxList.get(taxName) != null ? true : false;
-								BigDecimal amt = Env.ZERO;
-								if(isListed)
-									amt = taxList.get(taxName);
-								amt = amt.add(brLines[j].getlbr_TaxAmt());
-								taxList.put(taxName, amt);
-							}
-							else	
-								taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
-							//END - fer_luck @ faire
-						}
-						
-						//Via objeto o Adempiere não está atualizando o valor
-						//UPDATE direto no banco
-						String sql = "UPDATE C_InvoiceLine SET TaxAmt = " + MTax.getTaxAmt(LBR_Tax_ID, trx) +
-							         " WHERE C_InvoiceLine_ID = " + lines[i].getC_InvoiceLine_ID();
-						DB.executeUpdate(sql, trx);
-						
-					}
-				
-				} //end for
+			if(iLine.isProcessed()){
+				return null;
+			}
+		
+			Properties ctx     = iLine.getCtx();
+			String     trx     = iLine.get_TrxName();
+		
+			BigDecimal taxAmt  = Env.ZERO;
+			Integer LBR_Tax_ID = (Integer)iLine.get_Value("LBR_Tax_ID");
+			//BEGIN - fer_luck @ faire
+			HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
+			//END - fer_luck @ faire
+		
+			if (type == TYPE_NEW){
 			
-				MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iLine.getC_Tax_ID(), trx);
-				iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-			
-				if (!invoice.isTaxIncluded()){
-					iTax.setTaxBaseAmt(invoice.getTotalLines());
-					invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
-					//BEGIN - fer_luck @ faire
-					if(taxList != null){
-						Iterator it = taxList.entrySet().iterator();
-						while(it.hasNext()){
-							Map.Entry<X_LBR_TaxName, BigDecimal> map;
-							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-							invoice.setGrandTotal(invoice.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+				if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
+					int C_OrderLine_ID = iLine.getC_OrderLine_ID();
+					if (C_OrderLine_ID != 0){
+						MOrderLine oLine = new MOrderLine(ctx,C_OrderLine_ID,trx);
+				
+						//CFOP, Sit. Tributária, Mensagem Legal
+						Integer LBR_CFOP_ID         = (Integer)oLine.get_Value("LBR_CFOP_ID");
+						Integer LBR_LegalMessage_ID = (Integer)oLine.get_Value("LBR_LegalMessage_ID");
+						String  sitTributaria       = (String)oLine.get_Value("lbr_TaxStatus");
+				
+						LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
+						if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+							MTax oTax = new MTax(ctx,LBR_Tax_ID,trx);
+							MTax newTax = oTax.copyFrom();
+						
+							iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
+							iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
+							iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
+							iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
+					
 						}
 					}
-					//END - fer_luck @ faire
-					invoice.save(trx);
 				}
-				else{
-					//BEGIN - fer_luck @ faire
-					if(taxList != null){
-						Iterator it = taxList.entrySet().iterator();
-						BigDecimal tmp = new BigDecimal(0.0);
-						while(it.hasNext()){
-							Map.Entry<X_LBR_TaxName, BigDecimal> map;
-							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-							tmp = tmp.add(map.getValue());
-						}
-						if(!invoice.getGrandTotal().equals(invoice.getTotalLines().add(tmp))){
-							invoice.setGrandTotal(invoice.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-							invoice.save();
+			} //new
+		
+			else{
+				MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
+		
+				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,iLine.getC_Tax_ID(),trx);
+				
+				if (tax.isSummary()){
+				
+					MInvoiceLine[] lines = invoice.getLines(true);
+					for (int i = 0; i < lines.length; i++){
+				
+						int C_InvoiceLine_ID = lines[i].getC_InvoiceLine_ID();
+				
+						TaxBR.calculateTaxes(C_InvoiceLine_ID, false, trx);
+				
+						LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
+						if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+							MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
+							X_LBR_TaxLine[] brLines = brTax.getLines();
+				
+							for (int j=0; j < brLines.length; j++){
+							//BEGIN - fer_luck @ faire
+								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, brLines[j].getLBR_TaxName_ID(), trx);
+								if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
+									if(taxList == null)
+										taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
+									boolean isListed = taxList.get(taxName) != null ? true : false;
+									BigDecimal amt = Env.ZERO;
+									if(isListed)
+										amt = taxList.get(taxName);
+									amt = amt.add(brLines[j].getlbr_TaxAmt());
+									taxList.put(taxName, amt);
+								}
+								else	
+									taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
+								//END - fer_luck @ faire
+							}
+						
+							//Via objeto o Adempiere não está atualizando o valor
+							//UPDATE direto no banco
+							String sql = "UPDATE C_InvoiceLine SET TaxAmt = " + MTax.getTaxAmt(LBR_Tax_ID, trx) +
+							             " WHERE C_InvoiceLine_ID = " + lines[i].getC_InvoiceLine_ID();
+							DB.executeUpdate(sql, trx);
+						
+						} //end if
+				
+					} //end for
+			
+					MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iLine.getC_Tax_ID(), trx);
+					iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+			
+					if (!invoice.isTaxIncluded()){
+						iTax.setTaxBaseAmt(invoice.getTotalLines());
+						invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
+						//BEGIN - fer_luck @ faire
+						if(taxList != null){
+							Iterator it = taxList.entrySet().iterator();
+							while(it.hasNext()){
+								Map.Entry<X_LBR_TaxName, BigDecimal> map;
+								map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+								invoice.setGrandTotal(invoice.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+							}
 						}
 						//END - fer_luck @ faire
+						invoice.save(trx);
 					}
-					iTax.setTaxBaseAmt(invoice.getTotalLines());
-				}
+					else{
+						//BEGIN - fer_luck @ faire
+						if(taxList != null){
+							Iterator it = taxList.entrySet().iterator();
+							BigDecimal tmp = new BigDecimal(0.0);
+							while(it.hasNext()){
+								Map.Entry<X_LBR_TaxName, BigDecimal> map;
+								map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
+								tmp = tmp.add(map.getValue());
+							}
+							if(!invoice.getGrandTotal().equals(invoice.getTotalLines().add(tmp))){
+								invoice.setGrandTotal(invoice.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+								invoice.save();
+							}
+						//END - fer_luck @ faire
+						}
+						iTax.setTaxBaseAmt(invoice.getTotalLines());
+					}
 			
-				iTax.save(trx);
+					iTax.save(trx);
 			
-			}
-		}
+				} //isSummary
+				
+			} //change
+			
+		} //new or change
 		
 		log.info(iLine.toString());
 		return null;
