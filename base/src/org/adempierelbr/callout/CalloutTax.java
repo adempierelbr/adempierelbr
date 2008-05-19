@@ -61,6 +61,8 @@ import org.compiere.util.Env;
  * The actual taxes get calculated after the save button is pressed
  * in the document line tab. It gets calculated by the ValidatorOrder/ValidatorInvoice
  * 
+ * [ 1967059 ] Atualizar a description do LBR_Tax_ID na GUI
+ * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
@@ -357,8 +359,10 @@ public class CalloutTax extends CalloutEngine
 			LBR_LegalMessage_ID = null;
 		
 		tax.setDescription();
-		tax.save(); //FIXME Adempiere não altera na GUI a descrição
-		mTab.setValue("LBR_Tax_ID", tax.getLBR_Tax_ID());
+		tax.save();
+		GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
+		LBR_Tax.setValue(tax.getLBR_Tax_ID(), true);
+		//mTab.setValue("LBR_Tax_ID", tax.getLBR_Tax_ID());
 		
 		if (isSOTrx){
 			mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
