@@ -391,92 +391,105 @@ public class MBoleto extends X_LBR_Boleto
 			 * Generate Boleto
 			 */
 			for (int i=0;i<oi.length;i++){
-			
-				MBoleto newBoleto = new MBoleto(ctx,0,trx);
-				newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
-				newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
-				newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
-				//
-				newBoleto.setlbr_Cessionary(Org.getDescription()); //Nome do Cedente (Descrição da Empresa)
-				//
-				newBoleto.setlbr_ReceiverName(BPartner.getName()); //Nome do Sacado
-				newBoleto.setAddress1(Location.getAddress1()); //Endereço
-				newBoleto.setAddress2(Location.getAddress2()); //Número
-				newBoleto.setAddress3(Location.getAddress3()); //Bairro
-				newBoleto.setAddress4(Location.getAddress4()); //Complemento
-				newBoleto.setCity(Location.getCity()); //Cidade
-				newBoleto.setRegionName(Region.getName()); //Estado
-				newBoleto.setPostal(Location.getPostal()); //CEP
-				newBoleto.setC_BPartner_ID(BPartner.getC_BPartner_ID()); /*C_BPARTNER_ID*/
-				newBoleto.setC_Invoice_ID(invoice.getC_Invoice_ID()); /*C_INVOICE_ID*/
-				newBoleto.setlbr_BPTypeBR(BPartner.get_ValueAsString("lbr_BPTypeBR")); //Tipo de Pessoa
-				newBoleto.setlbr_AgencyNo(BankA.get_ValueAsString("lbr_AgencyNo")); //Número Agência + DV
-				newBoleto.setlbr_BillFold(BankA.get_ValueAsString("lbr_BillFold")); //Carteira
-				newBoleto.setAccountNo(BankA.getAccountNo()); //Número da Conta + DV
-				newBoleto.setlbr_PaymentLocation1(lbrBank.getlbr_PaymentLocation1());
-				newBoleto.setlbr_PaymentLocation2(lbrBank.getlbr_PaymentLocation2());
-				newBoleto.setlbr_BillKind(BankA.get_ValueAsString("lbr_BillKind"));
-				newBoleto.setlbr_ClientCode(BankA.get_ValueAsString("lbr_ClientCode"));
-				newBoleto.setlbr_PayScheduleNo(newBoleto.getPayScheduleNo(C_Invoice_ID,oi[i].getC_InvoicePaySchedule_ID()));
-				newBoleto.setGrandTotal(oi[i].getGrandTotal());
-				newBoleto.setDueDate(oi[i].getDueDate());
-				newBoleto.setDiscountAmt(oi[i].getDiscountAmt());
-				newBoleto.setDiscountDate(oi[i].getDiscountDate());
 				
-				int C_PaymentTerm_ID = oi[i].getC_PaymentTerm_ID();
-				MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
+				try{
 				
-				//Juros
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest"))){
-					newBoleto.setlbr_Interest(oi[i].getInterestAmt());
-					newBoleto.setlbr_Instruction1("COBRAR MORA DIÁRIA DE R$ " + oi[i].getInterestAmt());
-				}
-				else{
-					newBoleto.setlbr_Interest(Env.ZERO);
-				}
+					MBoleto newBoleto = new MBoleto(ctx,0,trx);
+					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
+					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
+					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
+					//
+					newBoleto.setlbr_Cessionary(Org.getDescription()); //Nome do Cedente (Descrição da Empresa)
+					//
+					newBoleto.setlbr_ReceiverName(BPartner.getName()); //Nome do Sacado
+					newBoleto.setAddress1(Location.getAddress1()); //Endereço
+					newBoleto.setAddress2(Location.getAddress2()); //Número
+					newBoleto.setAddress3(Location.getAddress3()); //Bairro
+					newBoleto.setAddress4(Location.getAddress4()); //Complemento
+					newBoleto.setCity(Location.getCity()); //Cidade
+					newBoleto.setRegionName(Region.getName()); //Estado
+					newBoleto.setPostal(Location.getPostal()); //CEP
+					newBoleto.setC_BPartner_ID(BPartner.getC_BPartner_ID()); /*C_BPARTNER_ID*/
+					newBoleto.setC_Invoice_ID(invoice.getC_Invoice_ID()); /*C_INVOICE_ID*/
+					newBoleto.setlbr_BPTypeBR(BPartner.get_ValueAsString("lbr_BPTypeBR")); //Tipo de Pessoa
+					newBoleto.setlbr_AgencyNo(BankA.get_ValueAsString("lbr_AgencyNo")); //Número Agência + DV
+					newBoleto.setlbr_BillFold(BankA.get_ValueAsString("lbr_BillFold")); //Carteira
+					newBoleto.setAccountNo(BankA.getAccountNo()); //Número da Conta + DV
+					newBoleto.setlbr_PaymentLocation1(lbrBank.getlbr_PaymentLocation1());
+					newBoleto.setlbr_PaymentLocation2(lbrBank.getlbr_PaymentLocation2());
+					newBoleto.setlbr_BillKind(BankA.get_ValueAsString("lbr_BillKind"));
+					newBoleto.setlbr_ClientCode(BankA.get_ValueAsString("lbr_ClientCode"));
+					newBoleto.setlbr_PayScheduleNo(newBoleto.getPayScheduleNo(C_Invoice_ID,oi[i].getC_InvoicePaySchedule_ID()));
+					newBoleto.setGrandTotal(oi[i].getGrandTotal());
+					newBoleto.setDueDate(oi[i].getDueDate());
+					newBoleto.setDiscountAmt(oi[i].getDiscountAmt());
+					newBoleto.setDiscountDate(oi[i].getDiscountDate());
 				
-				//Protesto
-				if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue"))){
+					int C_PaymentTerm_ID = oi[i].getC_PaymentTerm_ID();
+					MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
+				
+					//Juros
+					if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasInterest"))){
+						newBoleto.setlbr_Interest(oi[i].getInterestAmt());
+						newBoleto.setlbr_Instruction1("COBRAR MORA DIÁRIA DE R$ " + oi[i].getInterestAmt());
+					}
+					else{
+						newBoleto.setlbr_Interest(Env.ZERO);
+					}
+				
+					//Protesto
 					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
-					newBoleto.setlbr_SueDays(sueDays);
-					newBoleto.setlbr_HasSue(true);
-					newBoleto.setlbr_Instruction2("PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO");
+					if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue")) && sueDays.intValue() >= 5){
+						newBoleto.setlbr_SueDays(sueDays);
+						newBoleto.setlbr_HasSue(true);
+						newBoleto.setlbr_Instruction2("PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO");
+					}
+					else{
+						newBoleto.setlbr_SueDays(0);
+						newBoleto.setlbr_HasSue(false);
+					}
+				
+					//Nota Fiscal
+					Integer LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
+					if (LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
+						MNotaFiscal nf = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
+						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
+					}
+				
+					String DocumentNo = newBoleto.getSequence(BankA);
+			
+					newBoleto.setDocumentNo(DocumentNo.trim());
+					if(!newBoleto.save(trx)){
+						log.log(Level.SEVERE, "Erro ao salvar o boleto", newBoleto);
+						return;
+					}
+				
+					//Verifica se o boleto é registrado (CNAB)
+					if (isRegistered){
+						newBoleto.generateCNAB(Integer.parseInt(lbrBank.getlbr_jBoletoNo()));
+					}
+			
+					invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
+					invoice.set_ValueOfColumn("lbr_IsBillPrinted", true);
+					invoice.save(trx);
+				
+					list.add(newBoleto);
 				}
-				else{
-					newBoleto.setlbr_SueDays(0);
-					newBoleto.setlbr_HasSue(false);
+				catch(Exception e){
+					log.log(Level.SEVERE, "Erro ao salvar o boleto", e);
 				}
 				
-				//Nota Fiscal
-				MNotaFiscal nf = new MNotaFiscal(ctx,(Integer)invoice.get_Value("LBR_NotaFiscal_ID"),trx);
-				newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
-			
-				String DocumentNo = newBoleto.getSequence(BankA);
-			
-				newBoleto.setDocumentNo(DocumentNo.trim());
-				newBoleto.save(trx);
-				
-				//Verifica se o boleto é registrado (CNAB)
-				if (isRegistered){
-					newBoleto.generateCNAB(Integer.parseInt(lbrBank.getlbr_jBoletoNo()));
-				}
-			
-				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
-				invoice.set_ValueOfColumn("lbr_IsBillPrinted", true);
-				invoice.save(trx);
-				
-				list.add(newBoleto);
-			}
+			} //end for
 			
 			boletos = new MBoleto[list.size()];
 			list.toArray(boletos);
-			for (int i=0;i<boletos.length; i++){
-				boletos[i].print(FilePath, PrinterName);
+			for (int j=0;j<boletos.length; j++){
+				boletos[j].print(FilePath, PrinterName);
 			}
 		}
 	}
 		
-	private void print(String FilePath, String PrinterName) throws IOException, PrinterException{
+	private void print(String FilePath, String PrinterName){
 			
 		JBoletoBean jBoletoBean = new JBoletoBean();
 		
@@ -578,7 +591,14 @@ public class MBoleto extends X_LBR_Boleto
 	    
 	    if (PrinterName != null){
 	    	log.log(Level.INFO, "ENVIANDO ARQUIVO PARA IMPRESSORA: " + PrinterName);
-	    	JBoletoPrint.print(fileName,PrinterName);
+	    	try {
+				JBoletoPrint.print(fileName,PrinterName);
+			} catch (IOException e) {
+				log.log(Level.SEVERE, "Erro ao salvar o documento", e);
+			} catch (PrinterException e)
+			{
+				log.log(Level.SEVERE, "Erro ao imprimir o documento", e);
+			}
 	    	TextUtil.deleteFile(fileName);
 	    }
 	}
@@ -605,7 +625,9 @@ public class MBoleto extends X_LBR_Boleto
 				if (LBR_CNAB_ID > 0){
 					MCNAB cnab = new MCNAB(ctx,LBR_CNAB_ID,trx);
 					cnab.setlbr_IsCancelled(true);
-					cnab.save(trx);
+					if (!cnab.save(trx)){
+						log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);
+					}
 				}
 			}
 			rs.close ();

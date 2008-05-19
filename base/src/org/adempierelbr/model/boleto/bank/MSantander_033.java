@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.model.boleto.MCNAB;
@@ -29,6 +30,7 @@ import org.compiere.model.MBankAccount;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
 /**
@@ -45,78 +47,88 @@ public class MSantander_033
 	private static String bancoName = "BANESPA";
 	private static String especie   = "01";
 	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MSantander_033.class);
+	
 	public static void generateCNAB(MBoleto boleto, Properties ctx, String trx){
 		
-		MCNAB cnab = new MCNAB(ctx,0,trx);
-		
-		MOrgInfo OrgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx));
-		
-		MInvoice invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
-		MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
-		
-		banco = boleto.getRoutingNo();
-		
-		String CNPJ = OrgInfo.get_ValueAsString("lbr_CNPJ");
-		
-		cnab.setRoutingNo(banco); //Santander (Banespa)
-		cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
-		cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
-        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
-        cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
-        cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
-        cnab.setlbr_CNABField4(boleto.getlbr_ClientCode()); //Código do Cliente
-        cnab.setlbr_CNABField5(null); //Brancos
-        cnab.setlbr_CNABField6(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Campo Livre (Preencher com Número do Documento)
-        cnab.setlbr_CNABField7(MCNAB.CNABFormat(boleto.getlbr_AgencyNo(),3)); //Agência
-        cnab.setlbr_CNABField8(boleto.getDocumentNo()); //Nosso Número
-        cnab.setlbr_CNABField9(null); //Brancos
-        cnab.setlbr_CNABField10(null); //Brancos
-        cnab.setlbr_CNABField11("1"); //Carteira ( 1 = Cobrança Simples)
-        cnab.setlbr_CNABField12("01"); //Remessa
-        cnab.setlbr_CNABField13(invoice.getDocumentNo()); //Número do Documento
-        cnab.setlbr_CNABField14(MCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
-        cnab.setlbr_CNABField15(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
-        cnab.setlbr_CNABField16(banco);
-        cnab.setlbr_CNABField17("00000"); //ZEROS
-        cnab.setlbr_CNABField18(especie); // Duplicata Mercantil
-        cnab.setlbr_CNABField19("N"); //Aceite
-        cnab.setlbr_CNABField20(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
-        //Protestar
-        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
-        	cnab.setlbr_CNABField21("06"); //Protesto Automático
-        }
-        cnab.setlbr_CNABField22("00"); //Instrução 2
-        cnab.setlbr_CNABField23(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
-        cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
-        cnab.setlbr_CNABField25(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
-        cnab.setlbr_CNABField26(null); //IOF
-        cnab.setlbr_CNABField27(null); //Abatimento
-        
-        if ((boleto.getlbr_BPTypeBR()).equalsIgnoreCase("PF")){
-        	cnab.setlbr_CNABField28("01"); //CPF
-        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
-        }
-        else{
-        	cnab.setlbr_CNABField28("02"); //CNPJ
-        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
-        }
-        
-        cnab.setlbr_CNABField30(TextUtil.retiraAcentos(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
-        cnab.setlbr_CNABField31(TextUtil.retiraAcentos(boleto.getAddress1()).toUpperCase()); //Logradouro
-        cnab.setlbr_CNABField32(TextUtil.retiraAcentos(boleto.getAddress3()).toUpperCase()); //Bairro
-        
-        String getcep = MCNAB.CNABFormat(boleto.getPostal(),8);
-        
-        cnab.setlbr_CNABField33(getcep.substring(0, 5)); //CEP
-        cnab.setlbr_CNABField34(getcep.substring(5, 8)); //Sufixo CEP
-        cnab.setlbr_CNABField35(TextUtil.retiraAcentos(boleto.getCity()).toUpperCase()); //Cidade
-        cnab.setlbr_CNABField36(boleto.getRegionName()); //Estado
-        cnab.setlbr_CNABField37(null); //Sacador / Avalista
-        cnab.setlbr_CNABField38(null); //Prazo para Protesto
-        cnab.setlbr_CNABField39(null); //Brancos
-        cnab.setlbr_CNABField40(null); //Ajuste na geração do Arquivo
-        
-        cnab.save(trx);
+		try{
+			MCNAB cnab = new MCNAB(ctx,0,trx);
+			
+			MOrgInfo OrgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx));
+			
+			MInvoice invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
+			MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
+			
+			banco = boleto.getRoutingNo();
+			
+			String CNPJ = OrgInfo.get_ValueAsString("lbr_CNPJ");
+			
+			cnab.setRoutingNo(banco); //Santander (Banespa)
+			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
+			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
+	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
+	        cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
+	        cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
+	        cnab.setlbr_CNABField4(boleto.getlbr_ClientCode()); //Código do Cliente
+	        cnab.setlbr_CNABField5(null); //Brancos
+	        cnab.setlbr_CNABField6(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Campo Livre (Preencher com Número do Documento)
+	        cnab.setlbr_CNABField7(MCNAB.CNABFormat(boleto.getlbr_AgencyNo(),3)); //Agência
+	        cnab.setlbr_CNABField8(boleto.getDocumentNo()); //Nosso Número
+	        cnab.setlbr_CNABField9(null); //Brancos
+	        cnab.setlbr_CNABField10(null); //Brancos
+	        cnab.setlbr_CNABField11("1"); //Carteira ( 1 = Cobrança Simples)
+	        cnab.setlbr_CNABField12("01"); //Remessa
+	        cnab.setlbr_CNABField13(invoice.getDocumentNo()); //Número do Documento
+	        cnab.setlbr_CNABField14(MCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
+	        cnab.setlbr_CNABField15(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
+	        cnab.setlbr_CNABField16(banco);
+	        cnab.setlbr_CNABField17("00000"); //ZEROS
+	        cnab.setlbr_CNABField18(especie); // Duplicata Mercantil
+	        cnab.setlbr_CNABField19("N"); //Aceite
+	        cnab.setlbr_CNABField20(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        //Protestar
+	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
+	        	cnab.setlbr_CNABField21("06"); //Protesto Automático
+	        }
+	        cnab.setlbr_CNABField22("00"); //Instrução 2
+	        cnab.setlbr_CNABField23(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
+	        cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
+	        cnab.setlbr_CNABField25(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
+	        cnab.setlbr_CNABField26(null); //IOF
+	        cnab.setlbr_CNABField27(null); //Abatimento
+	        
+	        if ((boleto.getlbr_BPTypeBR()).equalsIgnoreCase("PF")){
+	        	cnab.setlbr_CNABField28("01"); //CPF
+	        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
+	        }
+	        else{
+	        	cnab.setlbr_CNABField28("02"); //CNPJ
+	        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
+	        }
+	        
+	        cnab.setlbr_CNABField30(TextUtil.retiraAcentos(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
+	        cnab.setlbr_CNABField31(TextUtil.retiraAcentos(boleto.getAddress1()).toUpperCase()); //Logradouro
+	        cnab.setlbr_CNABField32(TextUtil.retiraAcentos(boleto.getAddress3()).toUpperCase()); //Bairro
+	        
+	        String getcep = MCNAB.CNABFormat(boleto.getPostal(),8);
+	        
+	        cnab.setlbr_CNABField33(getcep.substring(0, 5)); //CEP
+	        cnab.setlbr_CNABField34(getcep.substring(5, 8)); //Sufixo CEP
+	        cnab.setlbr_CNABField35(TextUtil.retiraAcentos(boleto.getCity()).toUpperCase()); //Cidade
+	        cnab.setlbr_CNABField36(boleto.getRegionName()); //Estado
+	        cnab.setlbr_CNABField37(null); //Sacador / Avalista
+	        cnab.setlbr_CNABField38(null); //Prazo para Protesto
+	        cnab.setlbr_CNABField39(null); //Brancos
+	        cnab.setlbr_CNABField40(null); //Ajuste na geração do Arquivo
+	        
+	        if (!cnab.save(trx)){
+	        	log.log(Level.SEVERE,"Erro ao salvar CNAB", cnab);
+	        }
+		}
+		catch(Exception e){
+			log.log(Level.SEVERE,"Erro ao salvar CNAB", e);
+		}
         
 	} //generateCNAB
 	
