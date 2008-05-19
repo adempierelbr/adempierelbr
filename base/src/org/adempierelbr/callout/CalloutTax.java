@@ -62,6 +62,7 @@ import org.compiere.util.Env;
  * in the document line tab. It gets calculated by the ValidatorOrder/ValidatorInvoice
  * 
  * [ 1967059 ] Atualizar a description do LBR_Tax_ID na GUI
+ * [ 1967062 ] LBR_Tax criado sem necessidade
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
@@ -159,7 +160,7 @@ public class CalloutTax extends CalloutEngine
 		LBR_Tax_ID = (Integer)mTab.getValue("LBR_Tax_ID");
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		tax = new MTax(ctx,LBR_Tax_ID,null);
-		tax.save();
+		//tax.save();
 		tax.deleteLines();
 		
 		//
@@ -358,12 +359,18 @@ public class CalloutTax extends CalloutEngine
 		if (LBR_LegalMessage_ID != null && LBR_LegalMessage_ID.intValue() == 0)
 			LBR_LegalMessage_ID = null;
 		
-		tax.setDescription();
-		tax.save();
-		GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
-		LBR_Tax.setValue(tax.getLBR_Tax_ID(), true);
-		//mTab.setValue("LBR_Tax_ID", tax.getLBR_Tax_ID());
+		LBR_Tax_ID = tax.getLBR_Tax_ID();
 		
+		if (LBR_Tax_ID != 0){
+			tax.setDescription();
+			tax.save();
+		}
+		else
+			LBR_Tax_ID = null;
+		
+		GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
+		LBR_Tax.setValue(LBR_Tax_ID, true);
+
 		if (isSOTrx){
 			mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
 			mTab.setValue("lbr_TaxStatus", lbr_TaxStatus);
@@ -455,6 +462,10 @@ public class CalloutTax extends CalloutEngine
 			ResultSet rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
+				if (tax.getLBR_Tax_ID() == 0){
+					tax.save();
+				}
+				
 				Integer LBR_TaxName_ID   = rs.getInt(1);
 				
 				X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,LBR_TaxName_ID,null);

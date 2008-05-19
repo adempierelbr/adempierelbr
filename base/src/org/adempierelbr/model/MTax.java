@@ -38,6 +38,7 @@ import org.compiere.util.Env;
  *	Model for X_LBR_Tax
  *
  *  [ 1954195 ] AD_Client no Configurador de Impostos
+ *  [ 1967062 ] LBR_Tax criado sem necessidade
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
@@ -310,12 +311,20 @@ public class MTax extends X_LBR_Tax {
 		
 	}
 	
+	public boolean delete(boolean force, String trxName){
+		
+		deleteLines();
+		return super.delete(force, trxName);
+		
+	}
+	
 	public String toString(){
 		
 		String Description = getDescription();
 		
 		if (Description == null || Description.trim().equals("")){
-			return super.toString();
+			//return super.toString();
+			return "";
 		}
 		
 		return Description;
