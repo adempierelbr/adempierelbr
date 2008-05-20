@@ -101,6 +101,7 @@ public class CalloutTax extends CalloutEngine
 	{
 		//ID's
 		Integer ID                          = null; // C_Order_ID ou C_Invoice_ID
+		Integer Line_ID                     = null; // C_OrderLine_ID ou C_InvoiceLine_ID
 		Integer M_Product_ID                = null;
 		Integer LBR_NCM_ID                  = null;
 		Integer C_BPartner_ID               = null;
@@ -122,6 +123,7 @@ public class CalloutTax extends CalloutEngine
 		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
 		if (table == I_C_Order.Table_ID){
 			ID = (Integer)mTab.getValue("C_Order_ID");
+			Line_ID = (Integer)mTab.getValue("C_OrderLine_ID");
 			if (ID == null || ID.intValue() == 0) return "";
 			
 			//Cria o objeto e verifica Parceiro e Org da Ordem de Venda
@@ -135,6 +137,7 @@ public class CalloutTax extends CalloutEngine
 		}
 		else{
 			ID = (Integer)mTab.getValue("C_Invoice_ID");
+			Line_ID = (Integer)mTab.getValue("C_InvoiceLine_ID");
 			if (ID == null || ID.intValue() == 0) return "";
 			
 			//Cria o objeto e verifica Parceiro e Org da Fatura
@@ -158,7 +161,15 @@ public class CalloutTax extends CalloutEngine
 		
 		//LBR_Tax_ID
 		LBR_Tax_ID = (Integer)mTab.getValue("LBR_Tax_ID");
-		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
+		if (LBR_Tax_ID != null){
+			if (Line_ID == null || Line_ID.intValue() == 0){ //Cópia de Linha
+				//tax = new MTax(ctx,LBR_Tax_ID,null);
+				//MTax newTax = tax.copyFrom();
+				mTab.setValue("LBR_Tax_ID", null);
+				return "";
+			}
+		}
+		else LBR_Tax_ID = 0;
 		tax = new MTax(ctx,LBR_Tax_ID,null);
 		//tax.save();
 		tax.deleteLines();
