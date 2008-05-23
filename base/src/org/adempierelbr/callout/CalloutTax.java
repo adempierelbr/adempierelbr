@@ -380,6 +380,7 @@ public class CalloutTax extends CalloutEngine
 			LBR_Tax_ID = null;
 		
 		GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
+		mTab.setValue("LBR_Tax_ID", LBR_Tax_ID);
 		LBR_Tax.setValue(LBR_Tax_ID, true);
 
 		if (isSOTrx){

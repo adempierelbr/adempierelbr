@@ -2153,9 +2153,9 @@ public class GridTable extends AbstractTableModel
 					rowData[i] = field.getDefault();
 					field.setValue(rowData[i], m_inserting);
 				}
-				else if ( columnName.equalsIgnoreCase("LBR_Tax_ID") ){
+				/*else if ( columnName.equalsIgnoreCase("LBR_Tax_ID") ){
 					rowData[i] = null;
-				}
+				}*/
 				else
 					rowData[i] = origData[i];
 			}
