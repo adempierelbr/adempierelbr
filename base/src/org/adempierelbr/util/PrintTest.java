@@ -24,10 +24,10 @@ public class PrintTest{
 	public static void main(String[] args){
 		
         TextPrinter printer = PrinterFactory.getPrinter("PLAIN"); // tipo da impressora
-        FilePort port = new FilePort("c:\\teste.txt"); // localização da impressora
+        FilePort port = new FilePort("/Users/mgrigioni/teste.txt"); // localização da impressora
         JobProperties job = printer.getDefaultJobProperties();
-        job.cols = 140; // colunas na folha
-        job.rows = 75; // linhas na folha
+        job.cols = 190; // colunas na folha
+        job.rows = 98; // linhas na folha
         String characterSet = null;
         		
         try {
@@ -42,11 +42,11 @@ public class PrintTest{
     	    
    	     	int v = 0;
    	     	
-    	    //String ESCP = "C60"; -- ESPAÇAMENTO LINHAS (COMANDO ESCP2)
+    	    //String ESCP = "C60"; //ESPAÇAMENTO LINHAS (COMANDO ESCP2)
     	    //printer.printString(ESCP,0,0,prop);
  	    
-   	     	for (int i=1;i<job.cols;i++){
-   	     		for (int j=0;j<job.rows;j++){
+   	     	for (int i=1;i<job.rows;i++){
+   	     		for (int j=0;j<job.cols;j++){
    	     			printer.printString(Integer.toString(v),i,j,prop);
    	     			v++;
    	     			if (v > 9){
