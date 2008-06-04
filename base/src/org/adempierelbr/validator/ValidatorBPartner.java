@@ -145,22 +145,33 @@ public class ValidatorBPartner implements ModelValidator
 			if (BPTypeBR.equalsIgnoreCase("PF")){
 					String CPF = (String)bp.get_Value("lbr_CPF");
 					
+					if (CPF == null){
+						return "CPF Nulo";
+					}
+					
 					if (CPF.indexOf('.') == -1 || CPF.length() < 14){
 						return "CPF Inválido";
 					}
+					
 					if (!validaCPF(CPF)){
 						return "CPF Inválido";
 					}
+					
 					if (!consultaCPF(CPF, AD_Client_ID)){
 						return "CPF Duplicado";
-					}		
+					}
+					
 			}
 			//Else if Legal Entity - Validate CNPJ
 			else if (BPTypeBR.equalsIgnoreCase("PJ")){
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
 				
+				if (CNPJ == null){
+					return "CNPJ Nulo";
+				}
+				
 				if (CNPJ.indexOf('.') == -1 || CNPJ.length() < 18){
-					return "CPF Inválido";
+					return "CNPJ Inválido";
 				}
 				if (!validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
