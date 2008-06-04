@@ -294,7 +294,7 @@ public class FormBoleto extends CPanel
 				}
 				
 				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name " +
-						   "ORDER BY o.Name, bp.Name, DateInvoiced, DueDate");
+						   "ORDER BY i.C_Invoice_ID, o.Name, bp.Name, DateInvoiced, DueDate");
 
 		//  reset table
 		int row = 0;

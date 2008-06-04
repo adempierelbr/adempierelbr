@@ -89,14 +89,14 @@ public class TaxBR
 			MOrder order = new MOrder(Env.getCtx(),oLine.getC_Order_ID(),trx);
 			product = oLine.getProduct();
 			isTaxIncluded = order.isTaxIncluded();
-			lineamt = oLine.getLineNetAmt().doubleValue();
+			lineamt = (oLine.getLineNetAmt().setScale(TaxBR.scale,BigDecimal.ROUND_HALF_UP)).doubleValue();
 		}
 		else{
 			MInvoiceLine iLine = new MInvoiceLine(Env.getCtx(),Line_ID,trx);
 			MInvoice invoice = new MInvoice(Env.getCtx(),iLine.getC_Invoice_ID(),trx);
 			product = iLine.getProduct();
 			isTaxIncluded = invoice.isTaxIncluded();
-			lineamt = iLine.getLineNetAmt().doubleValue();
+			lineamt = (iLine.getLineNetAmt().setScale(TaxBR.scale,BigDecimal.ROUND_HALF_UP)).doubleValue();
 		}
 				
 		for (int i=0;i<taxes.length;i++){
