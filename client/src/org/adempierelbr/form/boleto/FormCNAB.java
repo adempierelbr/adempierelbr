@@ -252,7 +252,7 @@ public class FormCNAB extends CPanel
 				"INNER JOIN C_Invoice i ON b.C_Invoice_ID=i.C_Invoice_ID " +
 				"INNER JOIN C_BPartner bp ON i.C_BPartner_ID=bp.C_BPartner_ID " +
 				"INNER JOIN C_Order o ON o.C_Order_ID = i.C_Order_ID " +
-				"WHERE cnab.IsRegistered = 'N' AND lbr_IsCancelled = 'N' " +
+				"WHERE cnab.IsRegistered = 'N' AND cnab.lbr_IsCancelled = 'N' " +
 				"AND i.AD_Client_ID=? " +
 				"AND cnab.C_BankAccount_ID = ? ");
 		
