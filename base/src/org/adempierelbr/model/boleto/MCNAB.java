@@ -282,6 +282,62 @@ public class MCNAB extends X_LBR_CNAB
 		return lines;
 	} //getFields
 	
+	/**************************************************************************
+	 * 	getFields
+	 *  @param String sql
+	 *  @param String trx
+	 * 	@return MCNAB[] lines
+	 */
+	public static MCNAB[] getFields(int C_BankAccount_ID, String trx){
+		
+		Properties ctx = Env.getCtx();
+	    PreparedStatement pstmt = null;
+	 	ResultSet rs = null;
+		
+	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " +
+	 			     "WHERE C_BankAccount_ID = ? AND IsSelected = 'Y'";
+	           
+	 	ArrayList<MCNAB> list = new ArrayList<MCNAB>();
+	 	
+		try
+    	{
+    		pstmt = DB.prepareStatement (sql.trim(), trx);
+    		pstmt.setInt(1, C_BankAccount_ID);
+    		rs = pstmt.executeQuery ();
+    		while (rs.next ())
+    		{
+    			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
+    			list.add(cnab);  
+    		}
+    		rs.close ();
+    		pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		log.log(Level.SEVERE, "", e);
+    	}
+    	try
+    	{
+    		if (pstmt != null)
+    			pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		pstmt = null;
+    	}
+		
+		
+		MCNAB[] lines = new MCNAB[list.size()];
+		list.toArray(lines);
+		
+		//MARCA BOLETOS COMO REGISTRADOS
+		setIsRegistered(C_BankAccount_ID,trx);
+		
+		return lines;
+	} //getFields
+	
 	private static void setIsRegistered (Timestamp DateFrom, Timestamp DateTo, String where, int AD_Client_ID, String trx){
 		
 		PreparedStatement pstmt = null;
@@ -296,6 +352,35 @@ public class MCNAB extends X_LBR_CNAB
 			pstmt.setTimestamp(1, DateFrom);
 			pstmt.setTimestamp(2, DateTo);
 			pstmt.setInt(3, Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
+			pstmt.executeUpdate();
+	   	}
+    	catch (Exception e)
+    	{
+    		log.log(Level.SEVERE, "", e);
+    	}
+    	try
+    	{
+    		if (pstmt != null)
+    			pstmt.close ();
+    		pstmt = null;
+    	}
+    	catch (Exception e)
+    	{
+    		pstmt = null;
+    	}
+		
+	}
+	
+	private static void setIsRegistered (int C_BankAccount_ID, String trx){
+		
+		PreparedStatement pstmt = null;
+		
+		String sql  = "UPDATE LBR_CNAB SET IsRegistered = 'Y', IsSelected='N' " +
+				      "WHERE C_BankAccount_ID = ? AND IsSelected = 'Y'"; 
+        
+        pstmt = DB.prepareStatement (sql.trim(), trx);
+		try {
+			pstmt.setInt(1, C_BankAccount_ID);
 			pstmt.executeUpdate();
 	   	}
     	catch (Exception e)

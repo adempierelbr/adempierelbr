@@ -32,8 +32,8 @@ public X_LBR_BankInfo (Properties ctx, int LBR_BankInfo_ID, String trxName)
 super (ctx, LBR_BankInfo_ID, trxName);
 /** if (LBR_BankInfo_ID == 0)
 {
-setLBR_Bank_ID (0);
 setLBR_BankInfo_ID (0);
+setLBR_Bank_ID (0);
 setlbr_OccurNo (null);
 setlbr_OccurType (null);
 }
@@ -101,6 +101,21 @@ public String getDescription()
 {
 return (String)get_Value("Description");
 }
+/** Set Bank Info.
+@param LBR_BankInfo_ID Primary key table LBR_BankInfo */
+public void setLBR_BankInfo_ID (int LBR_BankInfo_ID)
+{
+if (LBR_BankInfo_ID < 1) throw new IllegalArgumentException ("LBR_BankInfo_ID is mandatory.");
+set_ValueNoCheck ("LBR_BankInfo_ID", new Integer(LBR_BankInfo_ID));
+}
+/** Get Bank Info.
+@return Primary key table LBR_BankInfo */
+public int getLBR_BankInfo_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_BankInfo_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 
 /** LBR_Bank_ID AD_Reference_ID=1000001 */
 public static final int LBR_BANK_ID_AD_Reference_ID=1000001;
@@ -116,21 +131,6 @@ set_ValueNoCheck ("LBR_Bank_ID", new Integer(LBR_Bank_ID));
 public int getLBR_Bank_ID() 
 {
 Integer ii = (Integer)get_Value("LBR_Bank_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Bank Info.
-@param LBR_BankInfo_ID Primary key table LBR_BankInfo */
-public void setLBR_BankInfo_ID (int LBR_BankInfo_ID)
-{
-if (LBR_BankInfo_ID < 1) throw new IllegalArgumentException ("LBR_BankInfo_ID is mandatory.");
-set_ValueNoCheck ("LBR_BankInfo_ID", new Integer(LBR_BankInfo_ID));
-}
-/** Get Bank Info.
-@return Primary key table LBR_BankInfo */
-public int getLBR_BankInfo_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_BankInfo_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }

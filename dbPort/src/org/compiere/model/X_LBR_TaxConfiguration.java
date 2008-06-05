@@ -34,9 +34,9 @@ super (ctx, LBR_TaxConfiguration_ID, trxName);
 {
 setIsSOTrx (true);	// Y
 setLBR_FiscalGroup_Product_ID (0);
-setlbr_IsPOTrx (true);	// Y
 setLBR_TaxConfiguration_ID (0);
 setM_Product_ID (0);
+setlbr_IsPOTrx (true);	// Y
 }
  */
 }
@@ -104,32 +104,6 @@ if (oo != null)
 return false;
 }
 
-/** lbr_ExceptionType AD_Reference_ID=1000020 */
-public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
-/** Product = P */
-public static final String LBR_EXCEPTIONTYPE_Product = "P";
-/** Fiscal Group = G */
-public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
-/** Set Exception Type.
-@param lbr_ExceptionType Defines the Exception Type */
-public void setlbr_ExceptionType (String lbr_ExceptionType)
-{
-if (lbr_ExceptionType == null || lbr_ExceptionType.equals("P") || lbr_ExceptionType.equals("G"));
- else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - P - G");
-if (lbr_ExceptionType != null && lbr_ExceptionType.length() > 1)
-{
-log.warning("Length > 1 - truncated");
-lbr_ExceptionType = lbr_ExceptionType.substring(0,0);
-}
-set_Value ("lbr_ExceptionType", lbr_ExceptionType);
-}
-/** Get Exception Type.
-@return Defines the Exception Type */
-public String getlbr_ExceptionType() 
-{
-return (String)get_Value("lbr_ExceptionType");
-}
-
 /** LBR_FiscalGroup_Product_ID AD_Reference_ID=1000018 */
 public static final int LBR_FISCALGROUP_PRODUCT_ID_AD_Reference_ID=1000018;
 /** Set Fiscal Group - Product.
@@ -146,24 +120,6 @@ public int getLBR_FiscalGroup_Product_ID()
 Integer ii = (Integer)get_Value("LBR_FiscalGroup_Product_ID");
 if (ii == null) return 0;
 return ii.intValue();
-}
-/** Set Purchase Transaction.
-@param lbr_IsPOTrx This is a Purchase Transaction */
-public void setlbr_IsPOTrx (boolean lbr_IsPOTrx)
-{
-set_Value ("lbr_IsPOTrx", new Boolean(lbr_IsPOTrx));
-}
-/** Get Purchase Transaction.
-@return This is a Purchase Transaction */
-public boolean islbr_IsPOTrx() 
-{
-Object oo = get_Value("lbr_IsPOTrx");
-if (oo != null) 
-{
- if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
- return "Y".equals(oo);
-}
-return false;
 }
 /** Set Tax Configuration.
 @param LBR_TaxConfiguration_ID Primary key table LBR_TaxConfiguration */
@@ -197,5 +153,49 @@ public int getM_Product_ID()
 Integer ii = (Integer)get_Value("M_Product_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+
+/** lbr_ExceptionType AD_Reference_ID=1000020 */
+public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
+/** Product = P */
+public static final String LBR_EXCEPTIONTYPE_Product = "P";
+/** Fiscal Group = G */
+public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
+/** Set Exception Type.
+@param lbr_ExceptionType Defines the Exception Type */
+public void setlbr_ExceptionType (String lbr_ExceptionType)
+{
+if (lbr_ExceptionType == null || lbr_ExceptionType.equals("P") || lbr_ExceptionType.equals("G"));
+ else throw new IllegalArgumentException ("lbr_ExceptionType Invalid value - " + lbr_ExceptionType + " - Reference_ID=1000020 - P - G");
+if (lbr_ExceptionType != null && lbr_ExceptionType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+lbr_ExceptionType = lbr_ExceptionType.substring(0,0);
+}
+set_Value ("lbr_ExceptionType", lbr_ExceptionType);
+}
+/** Get Exception Type.
+@return Defines the Exception Type */
+public String getlbr_ExceptionType() 
+{
+return (String)get_Value("lbr_ExceptionType");
+}
+/** Set Purchase Transaction.
+@param lbr_IsPOTrx This is a Purchase Transaction */
+public void setlbr_IsPOTrx (boolean lbr_IsPOTrx)
+{
+set_Value ("lbr_IsPOTrx", new Boolean(lbr_IsPOTrx));
+}
+/** Get Purchase Transaction.
+@return This is a Purchase Transaction */
+public boolean islbr_IsPOTrx() 
+{
+Object oo = get_Value("lbr_IsPOTrx");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
 }
 }

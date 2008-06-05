@@ -35,10 +35,10 @@ super (ctx, LBR_TaxName_ID, trxName);
 setHasWithHold (false);	// 'N'
 setLBR_TaxName_ID (0);
 setLBR_TaxSubstitution_ID (0);
-setlbr_TaxType (null);	// 'P'
-setlbr_WithholdFrequency (null);	// 'M'
 setName (null);
 setWithHoldThreshold (Env.ZERO);
+setlbr_TaxType (null);	// 'P'
+setlbr_WithholdFrequency (null);	// 'M'
 }
  */
 }
@@ -155,6 +155,39 @@ Integer ii = (Integer)get_Value("LBR_TaxSubstitution_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set Name.
+@param Name Alphanumeric identifier of the entity */
+public void setName (String Name)
+{
+if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
+if (Name.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Name = Name.substring(0,59);
+}
+set_Value ("Name", Name);
+}
+/** Get Name.
+@return Alphanumeric identifier of the entity */
+public String getName() 
+{
+return (String)get_Value("Name");
+}
+/** Set WithHold Threshold.
+@param WithHoldThreshold Defines the WithHold Threshold  */
+public void setWithHoldThreshold (BigDecimal WithHoldThreshold)
+{
+if (WithHoldThreshold == null) throw new IllegalArgumentException ("WithHoldThreshold is mandatory.");
+set_Value ("WithHoldThreshold", WithHoldThreshold);
+}
+/** Get WithHold Threshold.
+@return Defines the WithHold Threshold  */
+public BigDecimal getWithHoldThreshold() 
+{
+BigDecimal bd = (BigDecimal)get_Value("WithHoldThreshold");
+if (bd == null) return Env.ZERO;
+return bd;
+}
 
 /** lbr_TaxType AD_Reference_ID=1000022 */
 public static final int LBR_TAXTYPE_AD_Reference_ID=1000022;
@@ -208,38 +241,5 @@ set_Value ("lbr_WithholdFrequency", lbr_WithholdFrequency);
 public String getlbr_WithholdFrequency() 
 {
 return (String)get_Value("lbr_WithholdFrequency");
-}
-/** Set Name.
-@param Name Alphanumeric identifier of the entity */
-public void setName (String Name)
-{
-if (Name == null) throw new IllegalArgumentException ("Name is mandatory.");
-if (Name.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-Name = Name.substring(0,59);
-}
-set_Value ("Name", Name);
-}
-/** Get Name.
-@return Alphanumeric identifier of the entity */
-public String getName() 
-{
-return (String)get_Value("Name");
-}
-/** Set WithHold Threshold.
-@param WithHoldThreshold Defines the WithHold Threshold  */
-public void setWithHoldThreshold (BigDecimal WithHoldThreshold)
-{
-if (WithHoldThreshold == null) throw new IllegalArgumentException ("WithHoldThreshold is mandatory.");
-set_Value ("WithHoldThreshold", WithHoldThreshold);
-}
-/** Get WithHold Threshold.
-@return Defines the WithHold Threshold  */
-public BigDecimal getWithHoldThreshold() 
-{
-BigDecimal bd = (BigDecimal)get_Value("WithHoldThreshold");
-if (bd == null) return Env.ZERO;
-return bd;
 }
 }

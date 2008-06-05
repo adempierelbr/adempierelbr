@@ -33,10 +33,11 @@ super (ctx, LBR_CNAB_ID, trxName);
 /** if (LBR_CNAB_ID == 0)
 {
 setIsRegistered (false);	// 'N'
+setIsSelected (false);	// N
 setLBR_CNAB_ID (0);
+setRoutingNo (null);
 setlbr_DocDate (new Timestamp(System.currentTimeMillis()));
 setlbr_IsCancelled (false);	// 'N'
-setRoutingNo (null);
 }
  */
 }
@@ -85,6 +86,25 @@ public String toString()
 StringBuffer sb = new StringBuffer ("X_LBR_CNAB[").append(get_ID()).append("]");
 return sb.toString();
 }
+
+/** C_BankAccount_ID AD_Reference_ID=1000036 */
+public static final int C_BANKACCOUNT_ID_AD_Reference_ID=1000036;
+/** Set Bank Account.
+@param C_BankAccount_ID Account at the Bank */
+public void setC_BankAccount_ID (int C_BankAccount_ID)
+{
+if (C_BankAccount_ID <= 0) set_Value ("C_BankAccount_ID", null);
+ else 
+set_Value ("C_BankAccount_ID", new Integer(C_BankAccount_ID));
+}
+/** Get Bank Account.
+@return Account at the Bank */
+public int getC_BankAccount_ID() 
+{
+Integer ii = (Integer)get_Value("C_BankAccount_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set Registered.
 @param IsRegistered The application is registered. */
 public void setIsRegistered (boolean IsRegistered)
@@ -96,6 +116,24 @@ set_Value ("IsRegistered", new Boolean(IsRegistered));
 public boolean isRegistered() 
 {
 Object oo = get_Value("IsRegistered");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+/** Set Selected.
+@param IsSelected Selected */
+public void setIsSelected (boolean IsSelected)
+{
+set_Value ("IsSelected", new Boolean(IsSelected));
+}
+/** Get Selected.
+@return Selected */
+public boolean isSelected() 
+{
+Object oo = get_Value("IsSelected");
 if (oo != null) 
 {
  if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
@@ -136,6 +174,24 @@ public int getLBR_CNAB_ID()
 Integer ii = (Integer)get_Value("LBR_CNAB_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set Routing No.
+@param RoutingNo Bank Routing Number */
+public void setRoutingNo (String RoutingNo)
+{
+if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
+if (RoutingNo.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RoutingNo = RoutingNo.substring(0,19);
+}
+set_Value ("RoutingNo", RoutingNo);
+}
+/** Get Routing No.
+@return Bank Routing Number */
+public String getRoutingNo() 
+{
+return (String)get_Value("RoutingNo");
 }
 /** Set CNAB Field1.
 @param lbr_CNABField1 CNAB Field1 */
@@ -1068,23 +1124,5 @@ if (oo != null)
  return "Y".equals(oo);
 }
 return false;
-}
-/** Set Routing No.
-@param RoutingNo Bank Routing Number */
-public void setRoutingNo (String RoutingNo)
-{
-if (RoutingNo == null) throw new IllegalArgumentException ("RoutingNo is mandatory.");
-if (RoutingNo.length() > 20)
-{
-log.warning("Length > 20 - truncated");
-RoutingNo = RoutingNo.substring(0,19);
-}
-set_Value ("RoutingNo", RoutingNo);
-}
-/** Get Routing No.
-@return Bank Routing Number */
-public String getRoutingNo() 
-{
-return (String)get_Value("RoutingNo");
 }
 }

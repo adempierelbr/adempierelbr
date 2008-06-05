@@ -234,10 +234,17 @@ public class MBancoBrasil
 		int indexCC = BankA.getAccountNo().indexOf('-');
 		String cc   = BankA.getAccountNo().substring(0, indexCC);
 			   cc   = TextUtil.pad(cc, '0', 8, true);
+			   
 
 		String where =  "WHERE lbr_CNABField6 = '" + cc + "'";
 		       
-		MCNAB[] lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+		MCNAB[] lines = null;
+		
+		if (DateFrom != null && DateTo != null)
+			lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+		else
+			lines = MCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
+		
 		int numseq = 2;
 		for(int i=0;i<lines.length;i++){
 			

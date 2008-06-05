@@ -204,7 +204,13 @@ public class MBradesco
 		
 		String where =  "WHERE lbr_CNABField7 = '" + conta + "'";
 		       
-		MCNAB[] lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+		MCNAB[] lines = null;
+		
+		if (DateFrom != null && DateTo != null)
+			lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+		else
+			lines = MCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
+		
 		int numseq = 2;
 		for(int i=0;i<lines.length;i++){
 			

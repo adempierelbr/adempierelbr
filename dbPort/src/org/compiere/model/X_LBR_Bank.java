@@ -115,57 +115,6 @@ Integer ii = (Integer)get_Value("LBR_Bank_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set jBoleto Number.
-@param lbr_jBoletoNo Identifies the bank number at jBoleto */
-public void setlbr_jBoletoNo (String lbr_jBoletoNo)
-{
-if (lbr_jBoletoNo != null && lbr_jBoletoNo.length() > 3)
-{
-log.warning("Length > 3 - truncated");
-lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
-}
-set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
-}
-/** Get jBoleto Number.
-@return Identifies the bank number at jBoleto */
-public String getlbr_jBoletoNo() 
-{
-return (String)get_Value("lbr_jBoletoNo");
-}
-/** Set Payment Location 1.
-@param lbr_PaymentLocation1 Identifies the Payment Location 1 */
-public void setlbr_PaymentLocation1 (String lbr_PaymentLocation1)
-{
-if (lbr_PaymentLocation1 != null && lbr_PaymentLocation1.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_PaymentLocation1 = lbr_PaymentLocation1.substring(0,59);
-}
-set_Value ("lbr_PaymentLocation1", lbr_PaymentLocation1);
-}
-/** Get Payment Location 1.
-@return Identifies the Payment Location 1 */
-public String getlbr_PaymentLocation1() 
-{
-return (String)get_Value("lbr_PaymentLocation1");
-}
-/** Set Payment Location 2.
-@param lbr_PaymentLocation2 Identifies the Payment Location 2 */
-public void setlbr_PaymentLocation2 (String lbr_PaymentLocation2)
-{
-if (lbr_PaymentLocation2 != null && lbr_PaymentLocation2.length() > 60)
-{
-log.warning("Length > 60 - truncated");
-lbr_PaymentLocation2 = lbr_PaymentLocation2.substring(0,59);
-}
-set_Value ("lbr_PaymentLocation2", lbr_PaymentLocation2);
-}
-/** Get Payment Location 2.
-@return Identifies the Payment Location 2 */
-public String getlbr_PaymentLocation2() 
-{
-return (String)get_Value("lbr_PaymentLocation2");
-}
 /** Set Name.
 @param Name Alphanumeric identifier of the entity */
 public void setName (String Name)
@@ -201,5 +150,56 @@ set_Value ("RoutingNo", RoutingNo);
 public String getRoutingNo() 
 {
 return (String)get_Value("RoutingNo");
+}
+/** Set Payment Location 1.
+@param lbr_PaymentLocation1 Identifies the Payment Location 1 */
+public void setlbr_PaymentLocation1 (String lbr_PaymentLocation1)
+{
+if (lbr_PaymentLocation1 != null && lbr_PaymentLocation1.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_PaymentLocation1 = lbr_PaymentLocation1.substring(0,59);
+}
+set_Value ("lbr_PaymentLocation1", lbr_PaymentLocation1);
+}
+/** Get Payment Location 1.
+@return Identifies the Payment Location 1 */
+public String getlbr_PaymentLocation1() 
+{
+return (String)get_Value("lbr_PaymentLocation1");
+}
+/** Set Payment Location 2.
+@param lbr_PaymentLocation2 Identifies the Payment Location 2 */
+public void setlbr_PaymentLocation2 (String lbr_PaymentLocation2)
+{
+if (lbr_PaymentLocation2 != null && lbr_PaymentLocation2.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_PaymentLocation2 = lbr_PaymentLocation2.substring(0,59);
+}
+set_Value ("lbr_PaymentLocation2", lbr_PaymentLocation2);
+}
+/** Get Payment Location 2.
+@return Identifies the Payment Location 2 */
+public String getlbr_PaymentLocation2() 
+{
+return (String)get_Value("lbr_PaymentLocation2");
+}
+/** Set jBoleto Number.
+@param lbr_jBoletoNo Identifies the bank number at jBoleto */
+public void setlbr_jBoletoNo (String lbr_jBoletoNo)
+{
+if (lbr_jBoletoNo != null && lbr_jBoletoNo.length() > 3)
+{
+log.warning("Length > 3 - truncated");
+lbr_jBoletoNo = lbr_jBoletoNo.substring(0,2);
+}
+set_Value ("lbr_jBoletoNo", lbr_jBoletoNo);
+}
+/** Get jBoleto Number.
+@return Identifies the bank number at jBoleto */
+public String getlbr_jBoletoNo() 
+{
+return (String)get_Value("lbr_jBoletoNo");
 }
 }

@@ -33,8 +33,8 @@ super (ctx, LBR_CFOPLine_ID, trxName);
 /** if (LBR_CFOPLine_ID == 0)
 {
 setC_DocType_ID (0);
-setLBR_CFOP_ID (0);
 setLBR_CFOPLine_ID (0);
+setLBR_CFOP_ID (0);
 setlbr_DestionationType (null);
 setlbr_IsManufactured (null);	// 'N'
 setlbr_IsSubTributaria (null);	// 'N'
@@ -123,6 +123,21 @@ Integer ii = (Integer)get_Value("LBR_BPartnerCategory_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set CFOP Line.
+@param LBR_CFOPLine_ID Primary key table LBR_CFOPLine */
+public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID)
+{
+if (LBR_CFOPLine_ID < 1) throw new IllegalArgumentException ("LBR_CFOPLine_ID is mandatory.");
+set_ValueNoCheck ("LBR_CFOPLine_ID", new Integer(LBR_CFOPLine_ID));
+}
+/** Get CFOP Line.
+@return Primary key table LBR_CFOPLine */
+public int getLBR_CFOPLine_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_CFOPLine_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 
 /** LBR_CFOP_ID AD_Reference_ID=1000016 */
 public static final int LBR_CFOP_ID_AD_Reference_ID=1000016;
@@ -141,18 +156,57 @@ Integer ii = (Integer)get_Value("LBR_CFOP_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
-/** Set CFOP Line.
-@param LBR_CFOPLine_ID Primary key table LBR_CFOPLine */
-public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID)
+
+/** LBR_LegalMessage_ID AD_Reference_ID=1000030 */
+public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000030;
+/** Set Legal Message.
+@param LBR_LegalMessage_ID Defines the Legal Message */
+public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
 {
-if (LBR_CFOPLine_ID < 1) throw new IllegalArgumentException ("LBR_CFOPLine_ID is mandatory.");
-set_ValueNoCheck ("LBR_CFOPLine_ID", new Integer(LBR_CFOPLine_ID));
+if (LBR_LegalMessage_ID <= 0) set_Value ("LBR_LegalMessage_ID", null);
+ else 
+set_Value ("LBR_LegalMessage_ID", new Integer(LBR_LegalMessage_ID));
 }
-/** Get CFOP Line.
-@return Primary key table LBR_CFOPLine */
-public int getLBR_CFOPLine_ID() 
+/** Get Legal Message.
+@return Defines the Legal Message */
+public int getLBR_LegalMessage_ID() 
 {
-Integer ii = (Integer)get_Value("LBR_CFOPLine_ID");
+Integer ii = (Integer)get_Value("LBR_LegalMessage_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** LBR_ProductCategory_ID AD_Reference_ID=1000013 */
+public static final int LBR_PRODUCTCATEGORY_ID_AD_Reference_ID=1000013;
+/** Set Product Category.
+@param LBR_ProductCategory_ID Primary key table LBR_ProductCategory */
+public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID)
+{
+if (LBR_ProductCategory_ID <= 0) set_Value ("LBR_ProductCategory_ID", null);
+ else 
+set_Value ("LBR_ProductCategory_ID", new Integer(LBR_ProductCategory_ID));
+}
+/** Get Product Category.
+@return Primary key table LBR_ProductCategory */
+public int getLBR_ProductCategory_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_ProductCategory_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Brazilian Tax.
+@param LBR_Tax_ID Primary key table LBR_Tax */
+public void setLBR_Tax_ID (int LBR_Tax_ID)
+{
+if (LBR_Tax_ID <= 0) set_Value ("LBR_Tax_ID", null);
+ else 
+set_Value ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
+}
+/** Get Brazilian Tax.
+@return Primary key table LBR_Tax */
+public int getLBR_Tax_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_Tax_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
@@ -244,60 +298,6 @@ set_Value ("lbr_IsSubTributaria", lbr_IsSubTributaria);
 public String getlbr_IsSubTributaria() 
 {
 return (String)get_Value("lbr_IsSubTributaria");
-}
-
-/** LBR_LegalMessage_ID AD_Reference_ID=1000030 */
-public static final int LBR_LEGALMESSAGE_ID_AD_Reference_ID=1000030;
-/** Set Legal Message.
-@param LBR_LegalMessage_ID Defines the Legal Message */
-public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
-{
-if (LBR_LegalMessage_ID <= 0) set_Value ("LBR_LegalMessage_ID", null);
- else 
-set_Value ("LBR_LegalMessage_ID", new Integer(LBR_LegalMessage_ID));
-}
-/** Get Legal Message.
-@return Defines the Legal Message */
-public int getLBR_LegalMessage_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_LegalMessage_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-
-/** LBR_ProductCategory_ID AD_Reference_ID=1000013 */
-public static final int LBR_PRODUCTCATEGORY_ID_AD_Reference_ID=1000013;
-/** Set Product Category.
-@param LBR_ProductCategory_ID Primary key table LBR_ProductCategory */
-public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID)
-{
-if (LBR_ProductCategory_ID <= 0) set_Value ("LBR_ProductCategory_ID", null);
- else 
-set_Value ("LBR_ProductCategory_ID", new Integer(LBR_ProductCategory_ID));
-}
-/** Get Product Category.
-@return Primary key table LBR_ProductCategory */
-public int getLBR_ProductCategory_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_ProductCategory_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
-/** Set Brazilian Tax.
-@param LBR_Tax_ID Primary key table LBR_Tax */
-public void setLBR_Tax_ID (int LBR_Tax_ID)
-{
-if (LBR_Tax_ID <= 0) set_Value ("LBR_Tax_ID", null);
- else 
-set_Value ("LBR_Tax_ID", new Integer(LBR_Tax_ID));
-}
-/** Get Brazilian Tax.
-@return Primary key table LBR_Tax */
-public int getLBR_Tax_ID() 
-{
-Integer ii = (Integer)get_Value("LBR_Tax_ID");
-if (ii == null) return 0;
-return ii.intValue();
 }
 
 /** lbr_TaxStatus AD_Reference_ID=1000029 */
