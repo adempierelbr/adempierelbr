@@ -284,10 +284,10 @@ public class AmtInWords_PT implements AmtInWords
 				String cents = oldamt.substring (i + 1);
 				do
 				{
-					if(cents.endsWith("0"))
+					if(cents.endsWith("0") && cents.length() > 2)
 						cents = cents.substring(0, cents.length() -1);
 				}
-				while (cents.endsWith("0"));
+				while (cents.endsWith("0") && cents.length() > 2);
 				
 				if (valor > 0 && valor < 1) 
 				{
@@ -423,6 +423,15 @@ public class AmtInWords_PT implements AmtInWords
 		System.out.println(aiw.getAmtInWords("100"));
 		System.out.println(aiw.getAmtInWords("1003,00"));
 		System.out.println(aiw.getAmtInWords("5715,13"));
+		System.out.println(aiw.getAmtInWords("5715,11"));
+		System.out.println(aiw.getAmtInWords("5715,20"));
+		System.out.println(aiw.getAmtInWords("5715,30"));
+		System.out.println(aiw.getAmtInWords("5715,44"));
+		System.out.println(aiw.getAmtInWords("5715,55"));
+		System.out.println(aiw.getAmtInWords("5715,60"));
+		System.out.println(aiw.getAmtInWords("5715,79"));
+		System.out.println(aiw.getAmtInWords("5715,82"));
+		System.out.println(aiw.getAmtInWords("5715,90"));
 	}
 	
 }	//	AmtInWords_PT
