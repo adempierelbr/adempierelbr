@@ -398,6 +398,7 @@ public class MBoleto extends X_LBR_Boleto
 					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
 					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
 					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
+					newBoleto.setC_BankAccount_ID(BankA.getC_BankAccount_ID()); //Conta Bancária
 					//
 					newBoleto.setlbr_Cessionary(Org.getDescription()); //Nome do Cedente (Descrição da Empresa)
 					//

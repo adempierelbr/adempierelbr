@@ -67,6 +67,7 @@ public class MSantander_033
 			cnab.setRoutingNo(banco); //Santander (Banespa)
 			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
+			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //Conta Bancária
 	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
 	        cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
 	        cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
