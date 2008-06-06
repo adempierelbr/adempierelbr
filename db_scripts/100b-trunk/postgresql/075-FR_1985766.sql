@@ -159,9 +159,9 @@ UPDATE AD_Form SET EntityType='LBRA',Updated=TO_TIMESTAMP('2008-06-05 14:26:55',
 ;
 
 -- UPDATE
-UPDATE LBR_Boleto SET C_BankAccount_ID = (SELECT C_BankAccount_ID FROM C_Invoice WHERE C_Invoice.C_Invoice_ID = LBR_Boleto.C_Invoice_ID)
+UPDATE LBR_Boleto SET C_BankAccount_ID = (SELECT C_BankAccount_ID FROM C_Invoice WHERE C_Invoice.C_Invoice_ID = LBR_Boleto.C_Invoice_ID);
 
-UPDATE LBR_CNAB SET C_BankAccount_ID = (SELECT C_BankAccount_ID FROM LBR_Boleto WHERE LBR_Boleto.LBR_Boleto_ID = LBR_CNAB.LBR_Boleto_ID)
+UPDATE LBR_CNAB SET C_BankAccount_ID = (SELECT C_BankAccount_ID FROM LBR_Boleto WHERE LBR_Boleto.LBR_Boleto_ID = LBR_CNAB.LBR_Boleto_ID);
 
 -- 05/06/2008 15h5min41s BRT
 -- Default comment for updating dictionary
