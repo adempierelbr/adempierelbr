@@ -395,6 +395,7 @@ public class FormNotaFiscal extends CPanel
 				ProcPrintNF.print(ctx, (Integer)m_LBR_MatrixPrinter_ID, 2000000, selection[i], null);
 				
 				NotaFiscal.setIsPrinted(true);
+				NotaFiscal.setProcessed(true);
 				NotaFiscal.save();
 				
 			}

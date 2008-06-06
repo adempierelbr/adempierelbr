@@ -98,6 +98,7 @@ public class ProcPrintNF extends SvrProcess
 			}
 			
 			NotaFiscal.setIsPrinted(true);
+			NotaFiscal.setProcessed(true);
 			NotaFiscal.save(get_TrxName());
 	
 		}
