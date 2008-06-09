@@ -215,8 +215,9 @@ public class FormCNAB extends CPanel
 		miniTable.addColumn("LBR_CNAB_ID");
 		miniTable.addColumn("LBR_Boleto_ID");
 		miniTable.addColumn("C_Order_ID");
+		miniTable.addColumn("C_Invoice_ID");
 		miniTable.addColumn("C_BPartner_ID");
-		miniTable.addColumn("DateOrdered");
+		miniTable.addColumn("DateInvoiced");
 		//
 		miniTable.setMultiSelection(true);
 		miniTable.setRowSelectionAllowed(true);
@@ -224,8 +225,9 @@ public class FormCNAB extends CPanel
 		miniTable.setColumnClass(0, IDColumn.class, false, " ");
 		miniTable.setColumnClass(1, String.class, true, Msg.translate(Env.getCtx(), "LBR_Boleto_ID"));
 		miniTable.setColumnClass(2, String.class, true, Msg.translate(Env.getCtx(), "C_Order_ID"));
-		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
-		miniTable.setColumnClass(4, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateOrdered"));
+		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "C_Invoice_ID"));
+		miniTable.setColumnClass(4, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
+		miniTable.setColumnClass(5, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateInvoiced"));
 		//
 		miniTable.autoSize();
 		miniTable.getModel().addTableModelListener(this);
@@ -246,12 +248,12 @@ public class FormCNAB extends CPanel
 		//  Create SQL
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct cnab.LBR_CNAB_ID, b.DocumentNo, o.DocumentNo, bp.Name, o.DateOrdered " +
+				"SELECT distinct cnab.LBR_CNAB_ID, b.DocumentNo, o.DocumentNo, i.DocumentNo, bp.Name, i.DateInvoiced " +
 				"FROM LBR_CNAB cnab " +
 				"INNER JOIN LBR_Boleto b ON cnab.LBR_Boleto_ID=b.LBR_Boleto_ID " +
 				"INNER JOIN C_Invoice i ON b.C_Invoice_ID=i.C_Invoice_ID " +
 				"INNER JOIN C_BPartner bp ON i.C_BPartner_ID=bp.C_BPartner_ID " +
-				"INNER JOIN C_Order o ON o.C_Order_ID = i.C_Order_ID " +
+				"LEFT JOIN C_Order o ON o.C_Order_ID = i.C_Order_ID " +
 				"WHERE cnab.IsRegistered = 'N' AND cnab.lbr_IsCancelled = 'N' " +
 				"AND i.AD_Client_ID=? " +
 				"AND cnab.C_BankAccount_ID = ? ");
@@ -281,8 +283,9 @@ public class FormCNAB extends CPanel
 				miniTable.setValueAt(new IDColumn(rs.getInt(1)), row, 0);   //  LBR_CNAB_ID
 				miniTable.setValueAt(rs.getString(2), row, 1);              //  Boleto
 				miniTable.setValueAt(rs.getString(3), row, 2);              //  Order
-				miniTable.setValueAt(rs.getString(4), row, 3);              //  BPartner
-				miniTable.setValueAt(rs.getTimestamp(5), row, 4);           //  DateOrdered
+				miniTable.setValueAt(rs.getString(4), row, 3);              //  Invoice
+				miniTable.setValueAt(rs.getString(5), row, 4);              //  BPartner
+				miniTable.setValueAt(rs.getTimestamp(6), row, 5);           //  DateInvoiced
 				//  prepare next
 				row++;
 			}
