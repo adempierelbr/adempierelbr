@@ -346,7 +346,7 @@ public class MBancoBrasil
     public static String getModulo11(String campo) {
     	//Modulo 11 - 23456789 (type = 9)
         
-    	int multiplicador = 2;
+    	int multiplicador = 9;
 		int multiplicacao = 0;
 		int soma_campo = 0;
 		
@@ -355,9 +355,9 @@ public class MBancoBrasil
 			
 			soma_campo = soma_campo + multiplicacao;
 			
-			multiplicador++;
-			if (multiplicador > 9)
-				multiplicador = 2;
+			multiplicador--;
+			if (multiplicador < 2)
+				multiplicador = 9;
 		}
 		
 		int dac = (soma_campo%11);
@@ -366,6 +366,13 @@ public class MBancoBrasil
             return "X";
        
         return ((Integer)dac).toString();
+    }
+    
+    public static void main(String[] args){
+    	
+    	System.out.println(getModulo11("16467180001"));
+    	System.out.println(getModulo11("16467180000"));
+    	
     }
 	
 } //MBancoBrasil
