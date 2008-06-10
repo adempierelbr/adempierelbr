@@ -61,6 +61,7 @@ public class MBancoBrasil
 		
 			MInvoice invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
 			MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
+			MBankAccount BankA = new MBankAccount(ctx,boleto.getC_BankAccount_ID(),trx);
 		
 			banco = boleto.getRoutingNo();
 		
@@ -95,7 +96,7 @@ public class MBancoBrasil
         		prefixo = "AIU";
         
         	cnab.setlbr_CNABField16(prefixo);
-        	cnab.setlbr_CNABField17("000"); //Variação da Carteira
+        	cnab.setlbr_CNABField17(MBoleto.getlbr_BillFoldDigit(BankA.get_ValueAsString("lbr_BillFold"))); //Variação da Carteira
         	cnab.setlbr_CNABField18("0"); //Conta Caução (PREENCHER COM ZEROS)
         	cnab.setlbr_CNABField19("00000"); //Cod. Responsabilidade
         	cnab.setlbr_CNABField20("0"); //DV Cod. Responsabilidae
