@@ -227,7 +227,7 @@ public class FormBoleto extends CPanel
 		miniTable.addColumn("C_BPartner_ID");
 		miniTable.addColumn("C_PaymentTerm_ID");
 		miniTable.addColumn("DateInvoiced");
-		miniTable.addColumn("DueDate");
+		//miniTable.addColumn("DueDate");
 		miniTable.addColumn("TotalLines");
 		//
 		miniTable.setMultiSelection(true);
@@ -240,8 +240,8 @@ public class FormBoleto extends CPanel
 		miniTable.setColumnClass(4, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
 		miniTable.setColumnClass(5, String.class, true, Msg.translate(Env.getCtx(), "C_PaymentTerm_ID"));
 		miniTable.setColumnClass(6, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateInvoiced"));
-		miniTable.setColumnClass(7, Timestamp.class, true, Msg.translate(Env.getCtx(), "DueDate"));
-		miniTable.setColumnClass(8, BigDecimal.class, true, Msg.translate(Env.getCtx(), "TotalLines"));
+		//miniTable.setColumnClass(7, Timestamp.class, true, Msg.translate(Env.getCtx(), "DueDate"));
+		miniTable.setColumnClass(7, BigDecimal.class, true, Msg.translate(Env.getCtx(), "TotalLines"));
 		//
 		miniTable.autoSize();
 		miniTable.getModel().addTableModelListener(this);
@@ -264,15 +264,15 @@ public class FormBoleto extends CPanel
 		int index = 0;
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, min(op.DateInvoiced) as DateInvoiced, min(op.DueDate) as DueDate, sum(op.OpenAmt) as GrandTotal " +
+				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, min(i.DateInvoiced) as DateInvoiced, i.GrandTotal " +
 				"FROM C_Invoice i " +
 				"INNER JOIN AD_Org o ON i.AD_Org_ID=o.AD_Org_ID " +
 				"INNER JOIN C_DocType d ON i.C_DocTypeTarget_ID=d.C_DocType_ID " +
 				"INNER JOIN C_BPartner bp ON i.C_BPartner_ID=bp.C_BPartner_ID " +
-				"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
+				//"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
 				"INNER JOIN C_PaymentTerm pt ON i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID " +
 				"LEFT JOIN C_Order ord ON i.C_Order_ID=ord.C_Order_ID " +
-				"WHERE i.IsSOTrx='Y' " +
+				"WHERE i.IsSOTrx='Y' AND i.IsPaid = 'N' " +
 				"AND d.lbr_HasOpenItems='Y' AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule = 'B') " + //mostrar somente faturas boleto ou sem forma de pagamento
 				"AND i.AD_Client_ID=? ");
 		
@@ -293,8 +293,8 @@ public class FormBoleto extends CPanel
 					index = index + 2;
 				}
 				
-				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name " +
-						   "ORDER BY i.C_Invoice_ID, o.Name, bp.Name, DateInvoiced, DueDate");
+				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, i.GrandTotal " +
+						   "ORDER BY i.C_Invoice_ID, o.Name, bp.Name, DateInvoiced");
 
 		//  reset table
 		int row = 0;
@@ -324,8 +324,8 @@ public class FormBoleto extends CPanel
 				miniTable.setValueAt(rs.getString(5), row, 4);              //  BPartner
 				miniTable.setValueAt(rs.getString(6), row, 5);              //  PaymentTerm
 				miniTable.setValueAt(rs.getTimestamp(7), row, 6);           //  DateInvoiced
-				miniTable.setValueAt(rs.getTimestamp(8), row, 7);           //  DueDate
-				miniTable.setValueAt(rs.getBigDecimal(9), row, 8);          //  TotalLines
+				//miniTable.setValueAt(rs.getTimestamp(8), row, 7);           //  DueDate
+				miniTable.setValueAt(rs.getBigDecimal(8), row, 7);          //  TotalLines
 				//  prepare next
 				row++;
 			}
