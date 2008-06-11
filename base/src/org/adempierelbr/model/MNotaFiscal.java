@@ -97,18 +97,26 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		if (isPrinted()){
 					
+			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
+			if (invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Voided) || //Already Voided
+				invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Reversed))
+				;
+			else 
+				if (invoice.voidIt()){
+					invoice.save(get_TrxName());
+				}
+				else return false;
+			
 			if (getM_InOut_ID() != 0){
 				MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
-				if (shipment.voidIt()){
-					shipment.save(get_TrxName());
-				}
-			}
-				
-			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
-			if (invoice.voidIt()){
-				invoice.save(get_TrxName());
-				setIsCancelled(true);
-				return true;
+				if (shipment.getDocStatus().equals(MInOut.DOCSTATUS_Voided) || //Already Voided
+				    shipment.getDocStatus().equals(MInOut.DOCSTATUS_Reversed))
+						;
+				else
+					if (shipment.voidIt()){
+						shipment.save(get_TrxName());
+					}
+					else return false;
 			}
 			
 		} //printed
@@ -117,7 +125,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
 			invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", null);
 			invoice.save(get_TrxName());
-			
+					
 			if (getC_DocTypeTarget_ID() != 0){
 				
 				MDocType docType = new MDocType(getCtx(),getC_DocTypeTarget_ID(),get_TrxName());
@@ -128,11 +136,10 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				}
 				
 			}
-			setIsCancelled(true);
-			return true;	
 		}
 		
-		return false;
+		setIsCancelled(true);
+		return true;
 	}
 	
 } //MNotaFiscal
