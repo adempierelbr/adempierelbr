@@ -170,6 +170,8 @@ public class MDocPrintForm{
 	            SubDocRow += RowNo; //SubDocumento
 	            SubDocRow++;
 	            
+	            RowNo = 0; //Zera RowNo para próxima passagem
+	            
     		}
     		rs.close ();
     		pstmt.close ();
