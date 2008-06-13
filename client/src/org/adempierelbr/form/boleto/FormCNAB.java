@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,6 +83,9 @@ public class FormCNAB extends CPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private BigDecimal GrandTotal   = Env.ZERO;
+	private int        rowsSelected = 0;
 
 	/**
 	 *	Initialize Panel
@@ -217,6 +221,7 @@ public class FormCNAB extends CPanel
 		miniTable.addColumn("C_Order_ID");
 		miniTable.addColumn("C_Invoice_ID");
 		miniTable.addColumn("C_BPartner_ID");
+		miniTable.addColumn("GrandTotal");
 		miniTable.addColumn("DateInvoiced");
 		//
 		miniTable.setMultiSelection(true);
@@ -227,7 +232,8 @@ public class FormCNAB extends CPanel
 		miniTable.setColumnClass(2, String.class, true, Msg.translate(Env.getCtx(), "C_Order_ID"));
 		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "C_Invoice_ID"));
 		miniTable.setColumnClass(4, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
-		miniTable.setColumnClass(5, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateInvoiced"));
+		miniTable.setColumnClass(5, BigDecimal.class, true, Msg.translate(Env.getCtx(), "GrandTotal"));
+		miniTable.setColumnClass(6, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateInvoiced"));
 		//
 		miniTable.autoSize();
 		miniTable.getModel().addTableModelListener(this);
@@ -248,7 +254,7 @@ public class FormCNAB extends CPanel
 		//  Create SQL
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct cnab.LBR_CNAB_ID, b.DocumentNo, o.DocumentNo, i.DocumentNo, bp.Name, i.DateInvoiced " +
+				"SELECT distinct cnab.LBR_CNAB_ID, b.DocumentNo, o.DocumentNo, i.DocumentNo, bp.Name, b.GrandTotal, i.DateInvoiced " +
 				"FROM LBR_CNAB cnab " +
 				"INNER JOIN LBR_Boleto b ON cnab.LBR_Boleto_ID=b.LBR_Boleto_ID " +
 				"INNER JOIN C_Invoice i ON b.C_Invoice_ID=i.C_Invoice_ID " +
@@ -285,7 +291,8 @@ public class FormCNAB extends CPanel
 				miniTable.setValueAt(rs.getString(3), row, 2);              //  Order
 				miniTable.setValueAt(rs.getString(4), row, 3);              //  Invoice
 				miniTable.setValueAt(rs.getString(5), row, 4);              //  BPartner
-				miniTable.setValueAt(rs.getTimestamp(6), row, 5);           //  DateInvoiced
+				miniTable.setValueAt(rs.getBigDecimal(6), row, 5);          //  GrandTotal
+				miniTable.setValueAt(rs.getTimestamp(7), row, 6);           //  DateInvoiced
 				//  prepare next
 				row++;
 			}
@@ -375,15 +382,22 @@ public class FormCNAB extends CPanel
 		    	fileName += POLBR.getFileSeparator();
 		    
 		    fileName += MCNAB.prefix + MCNAB.getSystemDate(ctx) + MCNAB.ext;
-
-		    try {
-				MCNAB.generateFile(bNum,fileName,null,null,BankA,null);
-			} catch (IOException e1) {
-				log.log(Level.SEVERE,"Erro ao gerar arquivo CNAB", e1);
-			}
+		    
+		    boolean answer = ADialog.ask(m_WindowNo, this, 
+		    		                     "Títulos Selecionados: " + rowsSelected + 
+		    		                     " - Valor Total: " + GrandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
+		    if (answer){
+		    	try {
+		    		MCNAB.generateFile(bNum,fileName,null,null,BankA,null);
+		    	} catch (IOException e1) {
+		    		log.log(Level.SEVERE,"Erro ao gerar arquivo CNAB", e1);
+		    	}
 			
-			m_mark = true;
-			executeQuery();
+		    	m_mark = true;
+		    	executeQuery();
+		    }
+		    else
+		    	return;
 		
 		}
 		else{
@@ -430,15 +444,20 @@ public class FormCNAB extends CPanel
 	 */
 	public void tableChanged(TableModelEvent e)
 	{
-		int rowsSelected = 0;
 		int rows = miniTable.getRowCount();
+		
+		GrandTotal   = Env.ZERO;
+		rowsSelected = 0;
+		
 		for (int i = 0; i < rows; i++)
 		{
 			IDColumn id = (IDColumn)miniTable.getValueAt(i, 0);     //  ID in column 0
-			if (id != null && id.isSelected())
+			if (id != null && id.isSelected()){
 				rowsSelected++;
+				GrandTotal = GrandTotal.add((BigDecimal)miniTable.getValueAt(i, 5));
+			}
 		}
-		statusBar.setStatusDB(" " + rowsSelected + " ");
+		statusBar.setStatusDB(" " + rowsSelected + " - Valor Total: " + GrandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
 	}   //  tableChanged
 	
 	/**
