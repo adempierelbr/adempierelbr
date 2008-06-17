@@ -131,6 +131,7 @@ public class MReturnCNAB
 							Payment.setC_Invoice_ID(C_Invoice_ID);
 							Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());
 							Payment.setC_Currency_ID(297); //BRL
+							Payment.setDescription("Documento lançado automaticamente - CNAB");
 					
 							Payment.setDateAcct(DataOcorren); //Data da Conta
 							Payment.setDateTrx(DataOcorren); //Data da Transação
@@ -221,6 +222,7 @@ public class MReturnCNAB
 		
 		FileWriter fw = TextUtil.createFile(FilePath + FileName,false);
 		TextUtil.addLine(fw, getHeader());
+		TextUtil.addEOL(fw);
 		return fw;
 		
 	}
