@@ -297,7 +297,7 @@ public class MReturnCNAB
 		int valor1 = Integer.parseInt(value.substring(0, length-2));
 		int valor2 = Integer.parseInt(value.substring(length-2, length));
 		
-		double valorTitulo = valor1 + (valor2/100);
+		double valorTitulo = valor1 + ((double)valor2/100);
 		
 		return new BigDecimal(valorTitulo).setScale(2, BigDecimal.ROUND_HALF_UP);
 		
