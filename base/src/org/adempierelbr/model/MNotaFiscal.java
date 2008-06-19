@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBPartner;
@@ -20,7 +24,9 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
+import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscal;
+import org.compiere.util.DB;
 
 /**
  *	MNotaFiscal
@@ -46,6 +52,52 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	public MNotaFiscal(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
+	
+	/**************************************************************************
+	 *  getLines
+	 *  @return MNotaFiscalLine[] lines
+	 */
+	public MNotaFiscalLine[] getLines(){
+		
+		String sql = "SELECT LBR_NotaFiscalLine_ID " + //1
+		 			 "FROM LBR_NotaFiscalLine " +
+		 			 "WHERE LBR_NotaFiscal_ID = ? "; //*1
+
+		ArrayList<MNotaFiscalLine> list = new ArrayList<MNotaFiscalLine>();
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, get_TrxName());
+			pstmt.setInt(1, getLBR_NotaFiscal_ID());
+			ResultSet rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				list.add (new MNotaFiscalLine(getCtx(),rs.getInt(1),get_TrxName()));
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+
+		MNotaFiscalLine[] retValue = new MNotaFiscalLine[list.size()];
+		list.toArray(retValue);
+		return retValue;
+		
+	} //getLines
 	
 	public String[] getCNPJ_IE(int C_BPartner_ID){
 		
