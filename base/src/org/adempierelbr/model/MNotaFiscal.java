@@ -24,7 +24,6 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
-import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscal;
 import org.compiere.util.DB;
 

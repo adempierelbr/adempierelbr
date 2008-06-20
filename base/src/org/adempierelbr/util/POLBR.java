@@ -295,12 +295,18 @@ public class POLBR{
 	
 	public static int getNFB(int AD_Org_ID)
 	{
+		return POLBR.getNFB(AD_Org_ID,true);
+	}
+	
+	public static int getNFB(int AD_Org_ID, boolean isSOTrx)
+	{
 		int C_DocType_ID = -1;
 		String sql = "SELECT C_DocType_ID " +
 				     "FROM C_DocType " +
 				     "WHERE DocBaseType = 'NFB' " +
 				     "AND AD_Client_ID = ? " +
 				     "AND AD_Org_ID IN (0,?) " +
+				     "AND IsSOTrx = ? " +
 				     "order by C_DocType_ID, AD_Org_ID desc";
 		
 		PreparedStatement pstmt = null;
@@ -309,6 +315,7 @@ public class POLBR{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
 			pstmt.setInt(2, AD_Org_ID);
+			pstmt.setString(3, isSOTrx ? "Y" : "N");
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{

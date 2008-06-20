@@ -267,7 +267,7 @@ public class ProcGenerateNF extends SvrProcess
 		NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 			
 		if (IsOwnDocument){
-			int C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID());
+			int C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID(),isSOTrx);
 			NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
 			NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo
 		}
