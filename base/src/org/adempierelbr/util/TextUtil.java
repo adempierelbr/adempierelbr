@@ -141,10 +141,10 @@ public class TextUtil
 	 */
 	public static void addEOL(FileWriter fw) throws IOException {
 	
-		if (POLBR.getOsName().startsWith("win"))
+		//if (POLBR.getOsName().startsWith("win"))
 		    fw.write(EOL_WIN32);
-		else
-		    fw.write(EOL_LINUX);
+		//else
+		//   fw.write(EOL_LINUX);
 			
 	}
 		
