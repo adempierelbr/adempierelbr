@@ -122,9 +122,9 @@ public class MHsbc
 	        cnab.setlbr_CNABField40(TextUtil.retiraAcentos(boleto.getCity()).toUpperCase()); //Cidade
 	        cnab.setlbr_CNABField41(boleto.getRegionName()); //Estado
 	        cnab.setlbr_CNABField42(null); //Sacador / Avalista
-	        cnab.setlbr_CNABField43(null); //Preencher com Espaços em Branco
-	        cnab.setlbr_CNABField44(null); //Data Mora
-	        cnab.setlbr_CNABField45(null); //Prazo
+	        cnab.setlbr_CNABField43(null); //Tipo Bloqueto
+	        cnab.setlbr_CNABField44(null); //Prazo Protesto
+	        cnab.setlbr_CNABField45("9"); //Moeda
 	        cnab.setlbr_CNABField46(null); //Ajuste na geração do Arquivo
 	        
 	        if (!cnab.save(trx)){
