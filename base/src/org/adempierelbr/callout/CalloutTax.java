@@ -249,7 +249,7 @@ public class CalloutTax extends CalloutEngine
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
-			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,location.getC_Region_ID(),location.getC_Region_ID(),null));
+			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),orgLocation.getC_Region_ID(),null));
 		else
 			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
 		
