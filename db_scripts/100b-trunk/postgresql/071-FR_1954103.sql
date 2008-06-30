@@ -25,17 +25,17 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 29/04/2008 8h49min59s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Transação de Compras',PrintName='Transação de Compras',Updated=TO_TIMESTAMP('2008-04-29 08:49:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Transacao de Compras',PrintName='Transacao de Compras',Updated=TO_TIMESTAMP('2008-04-29 08:49:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
 ;
 
 -- 29/04/2008 8h50min12s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET Description='Esta é uma Transação de Compras',Updated=TO_TIMESTAMP('2008-04-29 08:50:12','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET Description='Esta  uma Transacao de Compras',Updated=TO_TIMESTAMP('2008-04-29 08:50:12','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
 ;
 
 -- 29/04/2008 8h50min38s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET Help='A caixa de verificação "Transação de Compras" indica se este item é uma Transação de Compras.',Updated=TO_TIMESTAMP('2008-04-29 08:50:38','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET Help='A caixa de verificacao "Transacao de Compras" indica se este item e uma Transacao de Compras.',Updated=TO_TIMESTAMP('2008-04-29 08:50:38','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000319 AND AD_Language='pt_BR'
 ;
 
 -- 29/04/2008 8h51min12s BRT
