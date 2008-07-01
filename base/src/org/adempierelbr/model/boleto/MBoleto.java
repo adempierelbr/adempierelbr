@@ -450,7 +450,7 @@ public class MBoleto extends X_LBR_Boleto
 					newBoleto.setC_Invoice_ID(invoice.getC_Invoice_ID()); /*C_INVOICE_ID*/
 					newBoleto.setlbr_BPTypeBR(BPartner.get_ValueAsString("lbr_BPTypeBR")); //Tipo de Pessoa
 					newBoleto.setlbr_AgencyNo(BankA.get_ValueAsString("lbr_AgencyNo")); //Número Agência + DV
-					newBoleto.setlbr_BillFold(getlbr_BillFoldNo(BankA.get_ValueAsString("lbr_BillFold"))); //Carteira
+					newBoleto.setlbr_BillFold(BankA.get_ValueAsString("lbr_BillFold")); //Carteira
 					newBoleto.setAccountNo(BankA.getAccountNo()); //Número da Conta + DV
 					newBoleto.setlbr_PaymentLocation1(lbrBank.getlbr_PaymentLocation1());
 					newBoleto.setlbr_PaymentLocation2(lbrBank.getlbr_PaymentLocation2());

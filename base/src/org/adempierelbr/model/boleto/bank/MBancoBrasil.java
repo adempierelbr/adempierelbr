@@ -87,7 +87,7 @@ public class MBancoBrasil
 			cnab.setlbr_CNABField14(null); //BRANCOS
 			cnab.setlbr_CNABField15(null); //Indicativo de Sacador (BRANCO)
         
-			String carteira = boleto.getlbr_BillFold();
+			String carteira = MBoleto.getlbr_BillFoldNo(boleto.getlbr_BillFold());
         	String prefixo  = "AI";
         
         	if (carteira.equals("31") || carteira.equals("51"))
@@ -96,7 +96,7 @@ public class MBancoBrasil
         		prefixo = "AIU";
         
         	cnab.setlbr_CNABField16(prefixo);
-        	cnab.setlbr_CNABField17(MBoleto.getlbr_BillFoldDigit(BankA.get_ValueAsString("lbr_BillFold"))); //Variação da Carteira
+        	cnab.setlbr_CNABField17(MBoleto.getlbr_BillFoldDigit(boleto.getlbr_BillFold())); //Variação da Carteira
         	cnab.setlbr_CNABField18("0"); //Conta Caução (PREENCHER COM ZEROS)
         	cnab.setlbr_CNABField19("00000"); //Cod. Responsabilidade
         	cnab.setlbr_CNABField20("0"); //DV Cod. Responsabilidae
