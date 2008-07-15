@@ -405,7 +405,7 @@ public class MInOut extends X_M_InOut implements DocAction
 		else
 		{
 			log.info("Movement Type not found.");
-			setMovementType (order.isSOTrx() ? MOVEMENTTYPE_CustomerShipment : MOVEMENTTYPE_VendorReceipts);
+			setMovementType (invoice.isSOTrx() ? MOVEMENTTYPE_CustomerShipment : MOVEMENTTYPE_VendorReceipts);
 		}
 		/**		KENOS - MM Returns - FINAL		*/
 		
