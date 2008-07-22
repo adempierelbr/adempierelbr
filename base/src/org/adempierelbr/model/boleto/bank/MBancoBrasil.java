@@ -61,7 +61,7 @@ public class MBancoBrasil
 		
 			MInvoice invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
 			MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
-			MBankAccount BankA = new MBankAccount(ctx,boleto.getC_BankAccount_ID(),trx);
+			//MBankAccount BankA = new MBankAccount(ctx,boleto.getC_BankAccount_ID(),trx);
 		
 			banco = boleto.getRoutingNo();
 		
