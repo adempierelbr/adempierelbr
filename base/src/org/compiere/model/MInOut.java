@@ -2087,23 +2087,25 @@ public class MInOut extends X_M_InOut implements DocAction
 	 *  @return C_Locator_ID
 	 * 
 	 */
-	private int getC_Locator_ID(int M_Warehouse_ID, Integer C_BPartner_ID)
+	private int getM_LocatorTo_ID(int M_Warehouse_ID, MBPartner bpartner)
 	{
-		int C_Locator_ID = 0;
+		int M_Locator_ID = 0;
+		Integer C_BPartner_ID = bpartner.get_ID();
 		
 		String trx = get_TrxName();
 		Properties ctx = getCtx();
 		
-		C_Locator_ID = checkLocatorExists(M_Warehouse_ID, C_BPartner_ID);
+		M_Locator_ID = checkLocatorExists(M_Warehouse_ID, C_BPartner_ID);
 		
-		if(C_Locator_ID > -1) return C_Locator_ID; 
+		if(M_Locator_ID > -1) return M_Locator_ID; 
 		
 		MLocator locator = new MLocator(ctx,0,trx);
 		locator.setM_Warehouse_ID(M_Warehouse_ID);
-		locator.setValue(C_BPartner_ID.toString());
-		locator.setX("1");
-		locator.setY("1");
-		locator.setZ("1");
+		locator.setValue(bpartner.getValue());
+		locator.setX(C_BPartner_ID.toString());
+		locator.setY(C_BPartner_ID.toString());
+		locator.setZ(C_BPartner_ID.toString());
+		locator.set_ValueOfColumn("C_BPartner_ID", C_BPartner_ID);
 		
 		if(locator.save(trx))
 			return locator.get_ID();
@@ -2113,7 +2115,7 @@ public class MInOut extends X_M_InOut implements DocAction
 	
 	private int checkLocatorExists(int M_Warehouse_ID, Integer C_BPartner_ID)
 	{
-		int C_Locator_ID = -1;
+		int M_Locator_ID = -1;
 		
 		String trx = get_TrxName();
 		
@@ -2131,7 +2133,7 @@ public class MInOut extends X_M_InOut implements DocAction
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{
-				C_Locator_ID = rs.getInt(1);
+				M_Locator_ID = rs.getInt(1);
 			}
 			rs.close();
 			pstmt.close();
@@ -2152,7 +2154,7 @@ public class MInOut extends X_M_InOut implements DocAction
 			pstmt = null;
 		}		
 		
-		return C_Locator_ID;
+		return M_Locator_ID;
 	}
 	
 }	//	MInOut
