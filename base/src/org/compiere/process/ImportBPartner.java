@@ -288,6 +288,16 @@ public class ImportBPartner extends SvrProcess
 
 				if (impBP.getC_BPartner_ID() == 0)	//	Insert new BPartner
 				{
+					if(impBP.getName() == null || impBP.getName().length() ==0)
+					{
+						sql = new StringBuffer ("UPDATE I_BPartner i "
+								+ "SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||")
+								.append("'Invalid Name, ' ")
+								.append("WHERE I_BPartner_ID=").append(impBP.getI_BPartner_ID());
+							DB.executeUpdate(sql.toString(), get_TrxName());
+							continue;
+					}
+					
 					bp = new MBPartner(impBP);
 					
 					/** LBR */
