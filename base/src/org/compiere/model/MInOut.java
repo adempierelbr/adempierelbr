@@ -1212,6 +1212,91 @@ public class MInOut extends X_M_InOut implements DocAction
 		if (m_processMsg != null)
 			return DocAction.STATUS_Invalid;
 		
+        /**    Criar movimentação de estoque    **/
+        MDocType docTypeInOut = new MDocType(p_ctx, getC_DocType_ID(), get_TrxName());
+       
+        if((Boolean) docTypeInOut.get_Value("lbr_GenerateMovement"))
+        {
+			MMovement movement = new MMovement(p_ctx, 0, get_TrxName());
+			movement.setMovementDate(getDateAcct());
+			
+			int C_DocType_ID=0;
+			
+			try
+			{
+				C_DocType_ID = Integer.parseInt(docTypeInOut.get_ValueAsString("lbr_DocTypeMovement_ID"));
+			}
+			catch(Exception e)
+			{
+				return DocAction.STATUS_Invalid;
+			}
+			
+			movement.setC_DocType_ID(C_DocType_ID);
+			movement.setIsApproved(true);
+			movement.save();
+			   
+			//For all lines
+			MInOutLine[] lines = getLines(false);
+			for(MInOutLine line : lines)
+			{
+				MMovementLine mLine = new MMovementLine(movement);
+				mLine.setM_Product_ID(line.getM_Product_ID());
+				mLine.setLine(line.getLine());
+				mLine.setDescription(line.getDescription());
+				mLine.setMovementQty(line.getMovementQty());
+				mLine.setM_Locator_ID(line.getM_Locator_ID());
+				
+				int M_Warehouse_ID=0;
+				
+				try
+				{
+					M_Warehouse_ID = Integer.parseInt(docTypeInOut.get_ValueAsString("M_Warehouse_ID"));
+				}
+				catch(Exception e)
+				{
+					return DocAction.STATUS_Invalid;
+				}
+				
+				int locatorTo = getM_LocatorTo_ID(M_Warehouse_ID, getBPartner());
+				
+				if(locatorTo <= 0)
+					return DocAction.STATUS_Invalid;
+					
+				mLine.setM_LocatorTo_ID(locatorTo);
+				mLine.save();
+				
+				line.setProcessed(true);
+				line.save();
+			}
+        /**    for (int lineIndex = 0; lineIndex < lines.length; lineIndex++)
+            {
+                MMovementLine mLine = new MMovementLine(movement);
+                mLine.setM_Product_ID(lines[lineIndex].getM_Product_ID());
+                mLine.setLine(lines[lineIndex].getLine());
+                mLine.setDescription(lines[lineIndex].getDescription());
+                mLine.setMovementQty(lines[lineIndex].getMovementQty());
+                mLine.setM_Locator_ID(lines[lineIndex].getM_Locator_ID());
+               
+                int locatorTo = 102;//TODO: getM_LocatorTo_ID(getM_Warehouse_ID(), getC_BPartner_ID());
+                mLine.setM_LocatorTo_ID(locatorTo);
+                mLine.save();
+            }*/
+           
+            movement.processIt(DocAction.ACTION_Complete);
+            movement.set_Value("M_InOut_ID", getM_InOut_ID());
+            movement.save();
+           
+            if(movement.getDocStatus().equalsIgnoreCase(DocAction.STATUS_Completed))
+            {
+            	setProcessed(true);
+            	setDocAction(DocAction.ACTION_Close);
+            	
+            	return DocAction.STATUS_Completed;
+            }
+            else
+            	return DocAction.STATUS_Invalid;
+        }
+		
 		//	Outstanding (not processed) Incoming Confirmations ?
 		MInOutConfirm[] confirmations = getConfirmations(true);
 		for (int i = 0; i < confirmations.length; i++)
@@ -1227,7 +1312,6 @@ public class MInOut extends X_M_InOut implements DocAction
 				return DocAction.STATUS_InProgress;
 			}
 		}
-		
 		
 		//	Implicit Approval
 		if (!isApproved())
@@ -2095,7 +2179,7 @@ public class MInOut extends X_M_InOut implements DocAction
 		String trx = get_TrxName();
 		Properties ctx = getCtx();
 		
-		M_Locator_ID = checkLocatorExists(M_Warehouse_ID, C_BPartner_ID);
+		M_Locator_ID = checkLocatorExists(M_Warehouse_ID, bpartner.getValue());
 		
 		if(M_Locator_ID > -1) return M_Locator_ID; 
 		
@@ -2113,7 +2197,7 @@ public class MInOut extends X_M_InOut implements DocAction
 		return -1;
 	}
 	
-	private int checkLocatorExists(int M_Warehouse_ID, Integer C_BPartner_ID)
+	private int checkLocatorExists(int M_Warehouse_ID, String bpartnerValue)
 	{
 		int M_Locator_ID = -1;
 		
@@ -2128,7 +2212,7 @@ public class MInOut extends X_M_InOut implements DocAction
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
-			pstmt.setString(1, C_BPartner_ID.toString());
+			pstmt.setString(1, bpartnerValue);
 			pstmt.setInt(2, M_Warehouse_ID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
