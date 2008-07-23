@@ -310,13 +310,13 @@ public class MInOut extends X_M_InOut implements DocAction
 				"SELECT COALESCE(IsSOTrx, ' ') AS DocBaseType FROM C_DocType WHERE C_DocType_ID=?", 
 				C_DocTypeShipment_ID).equals("Y") ? true : false;
 		
-		if((baseType.equals("MMS") || baseType.equals("MM0")) && isDocTypeSOTrx)
+		if((baseType.equals("MMS")) && isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_CustomerShipment);
-		else if((baseType.equals("MMS") || baseType.equals("MM0")) && !isDocTypeSOTrx)
+		else if((baseType.equals("MMS")) && !isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_VendorReturns);
-		else if((baseType.equals("MMR") || baseType.equals("MM1")) && isDocTypeSOTrx)
+		else if((baseType.equals("MMR")) && isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_CustomerReturns);
-		else if((baseType.equals("MMR") || baseType.equals("MM1")) && !isDocTypeSOTrx)
+		else if((baseType.equals("MMR")) && !isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_VendorReceipts);
 		else
 		{
@@ -394,13 +394,13 @@ public class MInOut extends X_M_InOut implements DocAction
 				"SELECT COALESCE(IsSOTrx, ' ') AS DocBaseType FROM C_DocType WHERE C_DocType_ID=?", 
 				C_DocTypeShipment_ID).equals("Y") ? true : false;
 		
-		if((baseType.equals("MMS") || baseType.equals("MM0")) && isDocTypeSOTrx)
+		if((baseType.equals("MMS")) && isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_CustomerShipment);
-		else if((baseType.equals("MMS") || baseType.equals("MM0")) && !isDocTypeSOTrx)
+		else if((baseType.equals("MMS")) && !isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_VendorReturns);
-		else if((baseType.equals("MMR") || baseType.equals("MM1")) && isDocTypeSOTrx)
+		else if((baseType.equals("MMR")) && isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_CustomerReturns);
-		else if((baseType.equals("MMR") || baseType.equals("MM1")) && !isDocTypeSOTrx)
+		else if((baseType.equals("MMR")) && !isDocTypeSOTrx)
 			setMovementType (MOVEMENTTYPE_VendorReceipts);
 		else
 		{
