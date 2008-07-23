@@ -21,6 +21,7 @@ import java.math.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
+
 import org.compiere.print.*;
 import org.compiere.process.*;
 import org.compiere.util.*;
@@ -2079,5 +2080,79 @@ public class MInOut extends X_M_InOut implements DocAction
 			|| DOCSTATUS_Closed.equals(ds)
 			|| DOCSTATUS_Reversed.equals(ds);
 	}	//	isComplete
+	
+	/**
+	 * 	Returns the locator ID created automatically for 
+	 * 	the given business partner
+	 *  @return C_Locator_ID
+	 * 
+	 */
+	private int getC_Locator_ID(int M_Warehouse_ID, Integer C_BPartner_ID)
+	{
+		int C_Locator_ID = 0;
+		
+		String trx = get_TrxName();
+		Properties ctx = getCtx();
+		
+		C_Locator_ID = checkLocatorExists(M_Warehouse_ID, C_BPartner_ID);
+		
+		if(C_Locator_ID > -1) return C_Locator_ID; 
+		
+		MLocator locator = new MLocator(ctx,0,trx);
+		locator.setM_Warehouse_ID(M_Warehouse_ID);
+		locator.setValue(C_BPartner_ID.toString());
+		locator.setX("1");
+		locator.setY("1");
+		locator.setZ("1");
+		
+		if(locator.save(trx))
+			return locator.get_ID();
+		
+		return -1;
+	}
+	
+	private int checkLocatorExists(int M_Warehouse_ID, Integer C_BPartner_ID)
+	{
+		int C_Locator_ID = -1;
+		
+		String trx = get_TrxName();
+		
+		String sql = "SELECT M_Locator_ID " +
+				     "FROM M_Locator " +
+				     "WHERE Value = ? " +
+				     "AND M_Warehouse_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setString(1, C_BPartner_ID.toString());
+			pstmt.setInt(2, M_Warehouse_ID);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				C_Locator_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		return C_Locator_ID;
+	}
 	
 }	//	MInOut
