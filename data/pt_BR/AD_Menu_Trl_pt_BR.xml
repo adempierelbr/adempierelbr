@@ -2026,4 +2026,8 @@
   <value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000033" trl="N">
+  <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>

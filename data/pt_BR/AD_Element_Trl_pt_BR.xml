@@ -26560,4 +26560,34 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000321" trl="Y">
+  <value column="Name" original="Generate Movement">Movimentação de Material</value>
+  <value column="PrintName" original="Generate Movement">Movimentação de Material</value>
+  <value column="Description" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indica se este documento gera uma movimentação de material ao invés de uma expedição/recebimento</value>
+  <value column="Help" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indica se este documento gera uma movimentação de material ao invés de uma expedição/recebimento</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000322" trl="Y">
+  <value column="Name" original="Movement DocType">Documento de Movimentação</value>
+  <value column="PrintName" original="Movement DocType">Documento de Movimentação</value>
+  <value column="Description" original="Defines the Movement Document Type used for the Material Movement">Define o Documentno de Movimentação usado na Movimentação de Material</value>
+  <value column="Help" original="Defines the Movement Document Type used for the Material Movement">Define o Documentno de Movimentação usado na Movimentação de Material</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000323" trl="Y">
+  <value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
+  <value column="PrintName" original="Other NF Link">Outras Notas Fiscais</value>
+  <value column="Description" original="Identifies the Other NF Link">Identifica Outras Notas Fiscais</value>
+  <value column="Help" original="Primary key table LBR_OtherNFLink">Chave primária da tabela LBR_OtherNFLink</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>

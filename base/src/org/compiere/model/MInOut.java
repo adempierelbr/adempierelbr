@@ -1223,7 +1223,7 @@ public class MInOut extends X_M_InOut implements DocAction
 			movement.setMovementDate(getDateAcct());
 			
 			Integer C_DocType_ID = null;
-			C_DocType_ID = (Integer)docTypeInOut.get_Value("lbr_DocTypeMovement_ID");
+			C_DocType_ID = (Integer)docTypeInOut.get_Value("LBR_DocTypeMovement_ID");
 			if (C_DocType_ID == null || C_DocType_ID.intValue() == 0){
 				log.log(Level.SEVERE,"C_DocType_ID = " + C_DocType_ID);
 				return DocAction.STATUS_Invalid;

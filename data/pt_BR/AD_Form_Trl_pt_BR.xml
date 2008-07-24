@@ -123,4 +123,9 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000005" trl="N">
+  <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>
