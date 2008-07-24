@@ -1290,6 +1290,9 @@ public class MInOut extends X_M_InOut implements DocAction
             {
             	setProcessed(true);
             	setDocAction(DocAction.ACTION_Close);
+            	movement.setDocAction(DocAction.ACTION_None);
+            	movement.setDocStatus(DocAction.STATUS_Closed);
+            	movement.save();
             	
             	return DocAction.STATUS_Completed;
             }
