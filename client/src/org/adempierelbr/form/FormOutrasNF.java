@@ -120,6 +120,8 @@ public class FormOutrasNF extends CPanel
 	private BorderLayout selPanelLayout = new BorderLayout();
 	private CLabel lBPartner = new CLabel();
 	private VLookup fBPartner;
+	private CLabel lLocator = new CLabel();
+	private VLookup fLocator;
 	private GridBagLayout northPanelLayout = new GridBagLayout();
 	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true);
 	private StatusBar statusBar = new StatusBar();
@@ -152,6 +154,9 @@ public class FormOutrasNF extends CPanel
 		lBPartner.setLabelFor(fBPartner);
 		lBPartner.setText(Msg.translate(Env.getCtx(), "C_BPartner_ID"));
 		
+		lLocator.setLabelFor(fLocator);
+		lLocator.setText(Msg.translate(Env.getCtx(), "M_Locator_ID"));
+		
 		selNorthPanel.setLayout(northPanelLayout);
 		tabbedPane.add(selPanel, Msg.getMsg(Env.getCtx(), "Select"));
 		selPanel.add(selNorthPanel, BorderLayout.NORTH);
@@ -182,7 +187,11 @@ public class FormOutrasNF extends CPanel
 	{
 		MLookup BPartnerL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2893, DisplayType.Search);
 		fBPartner = new VLookup ("C_BPartner_ID", false, false, true, BPartnerL);
-		fBPartner.addVetoableChangeListener(this);	
+		fBPartner.addVetoableChangeListener(this);
+		
+		MLookup LocatorL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 1979, DisplayType.Search);
+		fLocator = new VLookup ("M_Locator_ID", false, false, true, LocatorL);
+		//fLocator.addVetoableChangeListener(this);	
 		//
 	}	//	fillPicks
 
@@ -208,7 +217,7 @@ public class FormOutrasNF extends CPanel
 		miniTable.setColumnClass(1, String.class, true, Msg.translate(Env.getCtx(), "C_Order_ID"));
 		miniTable.setColumnClass(2, String.class, true, Msg.translate(Env.getCtx(), "Line"));
 		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "M_Product_ID"));
-		miniTable.setColumnClass(4, BigDecimal.class, false, Msg.translate(Env.getCtx(), "M_Locator_ID"));
+		miniTable.setColumnClass(4, fLocator, DisplayType.Search, false, Msg.translate(Env.getCtx(), "M_Locator_ID"));
 		miniTable.setColumnClass(5, BigDecimal.class, false, Msg.translate(Env.getCtx(), "Qty"));
 		//
 		miniTable.autoSize();
@@ -237,11 +246,11 @@ public class FormOutrasNF extends CPanel
 			    "FROM C_Invoice i " +
 			    "INNER JOIN C_Order o ON i.C_Order_ID = o.C_Order_ID " +
 			    "INNER JOIN C_DocType dt ON o.C_DocTypeTarget_ID = dt.C_DocType_ID " +
-			    "INNER JOIN LBR_OtherNFLink onf ON dt.C_DocType_ID = onf.C_DocType_ID " +
+			    //"INNER JOIN LBR_OtherNFLink onf ON dt.C_DocType_ID = onf.C_DocType_ID " +
 			    "INNER JOIN C_InvoiceLine il ON i.C_Invoice_ID = il.C_Invoice_ID " +
 			    "INNER JOIN M_Product p ON il.M_Product_ID = p.M_Product_ID " +
-				"WHERE i.AD_Client_ID = ? " +
-				"AND onf.C_DocTypeTarget_ID = ? ");
+				"WHERE i.AD_Client_ID = ? ");
+				//"AND onf.C_DocTypeTarget_ID = ? ");
 		
 				if (m_C_BPartner_ID != null){
 					sql.append("AND o.C_BPartner_ID=? ");
@@ -249,7 +258,7 @@ public class FormOutrasNF extends CPanel
 				else
 					return;
 				
-				sql.append("ORDER BY o.DocumentNo, ol.Line");
+				sql.append("ORDER BY i.DocumentNo, il.Line");
 
 		//  reset table
 		int row = 0;

@@ -92,8 +92,8 @@ public class InfoBPartner extends Info
 		new Info_Column(Msg.translate(Env.getCtx(), "Contact"), "c.Name AS Contact", KeyNamePair.class, "c.AD_User_ID"),
 		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditAvailable"), "C_BPartner.SO_CreditLimit-C_BPartner.SO_CreditUsed AS SO_CreditAvailable", BigDecimal.class, true, true, null),
 		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditUsed"), "C_BPartner.SO_CreditUsed", BigDecimal.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "CPF"), "C_BPartner.lbr_CPF", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "CNPJ"), "C_BPartner.lbr_CNPJ", String.class),
+		new Info_Column("CPF", "C_BPartner.lbr_CPF", String.class),
+		new Info_Column("CNPJ", "C_BPartner.lbr_CNPJ", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class),
@@ -139,11 +139,11 @@ public class InfoBPartner extends Info
 		fieldEMail.setBackground(AdempierePLAF.getInfoBackground());
 		fieldEMail.addActionListener(this);
 
-		labelCNPJ.setText(Msg.getMsg(Env.getCtx(), "CNPJ"));
+		labelCNPJ.setText("CNPJ");
 		fieldCNPJ.setBackground(AdempierePLAF.getInfoBackground());
 		fieldCNPJ.addActionListener(this);
 
-		labelCPF.setText(Msg.translate(Env.getCtx(), "CPF"));
+		labelCPF.setText("CPF");
 		fieldCPF.setBackground(AdempierePLAF.getInfoBackground());
 		fieldCPF.addActionListener(this);
 
