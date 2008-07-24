@@ -1,6 +1,6 @@
 -- 23/07/2008 21h22min18s BRT
 -- Default comment for updating dictionary
-INSERT INTO AD_Form (AD_Client_ID,AD_Form_ID,AD_Org_ID,AccessLevel,Classname,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,Name,Updated,UpdatedBy) VALUES (0,1000005,0,'3','org.adempierelbr.form.boleto.FormOutrasNF',TO_TIMESTAMP('2008-07-23 21:22:18','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','Outras Notas Fiscais',TO_TIMESTAMP('2008-07-23 21:22:18','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Form (AD_Client_ID,AD_Form_ID,AD_Org_ID,AccessLevel,Classname,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,Name,Updated,UpdatedBy) VALUES (0,1000005,0,'3','org.adempierelbr.form.FormOutrasNF',TO_TIMESTAMP('2008-07-23 21:22:18','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','Outras Notas Fiscais',TO_TIMESTAMP('2008-07-23 21:22:18','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 23/07/2008 21h22min18s BRT
