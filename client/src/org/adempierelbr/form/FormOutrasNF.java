@@ -232,12 +232,16 @@ public class FormOutrasNF extends CPanel
 		//  Create SQL
 		
 		StringBuffer sql = new StringBuffer(
-				"SELECT ol.C_OrderLine_ID, o.DocumentNo, ol.Line, " +
-				"p.Value || p.Name, p.M_Locator_ID, ol.QtyEntered " +
-				"FROM C_Order o " +
-				"INNER JOIN C_OrderLine ol ON o.C_Order_ID = ol.C_OrderLine_ID " +
-				"INNER JOIN M_Product p ON ol.M_Product_ID = p.M_Product_ID " +
-				"WHERE o.AD_Client_ID = ? ");
+				"SELECT il.C_InvoiceLine_ID, i.DocumentNo, il.Line, " +
+			    "p.Value || ' - ' || p.Name, p.M_Locator_ID, il.QtyEntered " +
+			    "FROM C_Invoice i " +
+			    "INNER JOIN C_Order o ON i.C_Order_ID = o.C_Order_ID " +
+			    "INNER JOIN C_DocType dt ON o.C_DocTypeTarget_ID = dt.C_DocType_ID " +
+			    "INNER JOIN LBR_OtherNFLink onf ON dt.C_DocType_ID = onf.C_DocType_ID " +
+			    "INNER JOIN C_InvoiceLine il ON i.C_Invoice_ID = il.C_Invoice_ID " +
+			    "INNER JOIN M_Product p ON il.M_Product_ID = p.M_Product_ID " +
+				"WHERE i.AD_Client_ID = ? " +
+				"AND onf.C_DocTypeTarget_ID = ? ");
 		
 				if (m_C_BPartner_ID != null){
 					sql.append("AND o.C_BPartner_ID=? ");
