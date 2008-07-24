@@ -22,6 +22,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
 
+import org.adempierelbr.util.POLBR;
 import org.compiere.print.*;
 import org.compiere.process.*;
 import org.compiere.util.*;
@@ -1197,6 +1198,7 @@ public class MInOut extends X_M_InOut implements DocAction
 	/**
 	 * 	Complete Document
 	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
+	 *  @contributor mgrigioni - Melhorias no tratamento de erros do processo
 	 */
 	public String completeIt()
 	{
@@ -1215,25 +1217,21 @@ public class MInOut extends X_M_InOut implements DocAction
         /**    Criar movimentação de estoque    **/
         MDocType docTypeInOut = new MDocType(p_ctx, getC_DocType_ID(), get_TrxName());
        
-        if((Boolean) docTypeInOut.get_Value("lbr_GenerateMovement"))
+        if(POLBR.get_ValueAsBoolean(docTypeInOut.get_Value("lbr_GenerateMovement")))
         {
 			MMovement movement = new MMovement(p_ctx, 0, get_TrxName());
 			movement.setMovementDate(getDateAcct());
 			
-			int C_DocType_ID=0;
-			
-			try
-			{
-				C_DocType_ID = Integer.parseInt(docTypeInOut.get_ValueAsString("lbr_DocTypeMovement_ID"));
-			}
-			catch(Exception e)
-			{
+			Integer C_DocType_ID = null;
+			C_DocType_ID = (Integer)docTypeInOut.get_Value("lbr_DocTypeMovement_ID");
+			if (C_DocType_ID == null || C_DocType_ID.intValue() == 0){
+				log.log(Level.SEVERE,"C_DocType_ID = " + C_DocType_ID);
 				return DocAction.STATUS_Invalid;
 			}
 			
 			movement.setC_DocType_ID(C_DocType_ID);
 			movement.setIsApproved(true);
-			movement.save();
+			movement.save(get_TrxName());
 			   
 			//For all lines
 			MInOutLine[] lines = getLines(false);
@@ -1246,45 +1244,30 @@ public class MInOut extends X_M_InOut implements DocAction
 				mLine.setMovementQty(line.getMovementQty());
 				mLine.setM_Locator_ID(line.getM_Locator_ID());
 				
-				int M_Warehouse_ID=0;
-				
-				try
-				{
-					M_Warehouse_ID = Integer.parseInt(docTypeInOut.get_ValueAsString("M_Warehouse_ID"));
-				}
-				catch(Exception e)
-				{
+				Integer M_Warehouse_ID = null;
+				M_Warehouse_ID = (Integer)docTypeInOut.get_Value("M_Warehouse_ID");
+				if (M_Warehouse_ID == null || M_Warehouse_ID.intValue() == 0){
+					log.log(Level.SEVERE,"M_Warehouse_ID = " + M_Warehouse_ID);
 					return DocAction.STATUS_Invalid;
 				}
 				
 				int locatorTo = getM_LocatorTo_ID(M_Warehouse_ID, getBPartner());
 				
-				if(locatorTo <= 0)
+				if(locatorTo <= 0){
+					log.log(Level.SEVERE,"M_LocatorTo_ID = " + locatorTo);
 					return DocAction.STATUS_Invalid;
-					
+				}	
+				
 				mLine.setM_LocatorTo_ID(locatorTo);
-				mLine.save();
+				mLine.save(get_TrxName());
 				
 				line.setProcessed(true);
-				line.save();
+				line.save(get_TrxName());
 			}
-        /**    for (int lineIndex = 0; lineIndex < lines.length; lineIndex++)
-            {
-                MMovementLine mLine = new MMovementLine(movement);
-                mLine.setM_Product_ID(lines[lineIndex].getM_Product_ID());
-                mLine.setLine(lines[lineIndex].getLine());
-                mLine.setDescription(lines[lineIndex].getDescription());
-                mLine.setMovementQty(lines[lineIndex].getMovementQty());
-                mLine.setM_Locator_ID(lines[lineIndex].getM_Locator_ID());
-               
-                int locatorTo = 102;//TODO: getM_LocatorTo_ID(getM_Warehouse_ID(), getC_BPartner_ID());
-                mLine.setM_LocatorTo_ID(locatorTo);
-                mLine.save();
-            }*/
-           
+			
             movement.processIt(DocAction.ACTION_Complete);
             movement.set_Value("M_InOut_ID", getM_InOut_ID());
-            movement.save();
+            movement.save(get_TrxName());
            
             if(movement.getDocStatus().equalsIgnoreCase(DocAction.STATUS_Completed))
             {
@@ -2172,7 +2155,8 @@ public class MInOut extends X_M_InOut implements DocAction
 	 * 	Returns the locator ID created automatically for 
 	 * 	the given business partner
 	 *  @return C_Locator_ID
-	 * 
+	 *  @contributor mgrigioni - Alterada a verificação do locator para o C_BPartner_ID,
+	 *  	                     se o usuário alterar o value do parceiro o mesmo é replicado para o locator
 	 */
 	private int getM_LocatorTo_ID(int M_Warehouse_ID, MBPartner bpartner)
 	{
@@ -2182,11 +2166,12 @@ public class MInOut extends X_M_InOut implements DocAction
 		String trx = get_TrxName();
 		Properties ctx = getCtx();
 		
-		M_Locator_ID = checkLocatorExists(M_Warehouse_ID, bpartner.getValue());
+		M_Locator_ID = checkLocatorExists(M_Warehouse_ID, bpartner.getC_BPartner_ID());
 		
-		if(M_Locator_ID > -1) return M_Locator_ID; 
+		if(M_Locator_ID == -1) 
+			M_Locator_ID = 0; 
 		
-		MLocator locator = new MLocator(ctx,0,trx);
+		MLocator locator = new MLocator(ctx,M_Locator_ID,trx);
 		locator.setM_Warehouse_ID(M_Warehouse_ID);
 		locator.setValue(bpartner.getValue());
 		locator.setX(C_BPartner_ID.toString());
@@ -2195,12 +2180,12 @@ public class MInOut extends X_M_InOut implements DocAction
 		locator.set_ValueOfColumn("C_BPartner_ID", C_BPartner_ID);
 		
 		if(locator.save(trx))
-			return locator.get_ID();
+			return locator.getM_Locator_ID();
 		
 		return -1;
 	}
 	
-	private int checkLocatorExists(int M_Warehouse_ID, String bpartnerValue)
+	private int checkLocatorExists(int M_Warehouse_ID, int C_BPartner_ID)
 	{
 		int M_Locator_ID = -1;
 		
@@ -2208,14 +2193,14 @@ public class MInOut extends X_M_InOut implements DocAction
 		
 		String sql = "SELECT M_Locator_ID " +
 				     "FROM M_Locator " +
-				     "WHERE Value = ? " +
+				     "WHERE C_BPartner_ID = ? " +
 				     "AND M_Warehouse_ID = ?";
 		
 		PreparedStatement pstmt = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
-			pstmt.setString(1, bpartnerValue);
+			pstmt.setInt(1, C_BPartner_ID);
 			pstmt.setInt(2, M_Warehouse_ID);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
