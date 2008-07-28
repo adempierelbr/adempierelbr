@@ -57,6 +57,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
+import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 
 /**
@@ -242,13 +243,14 @@ public class FormOutrasNF extends CPanel
 		
 		StringBuffer sql = new StringBuffer(
 				"SELECT il.C_InvoiceLine_ID, i.DocumentNo, il.Line, " +
-			    "p.Value || ' - ' || p.Name, p.M_Locator_ID, il.QtyEntered " +
+			    "p.Value || ' - ' || p.Name, l.M_Locator_ID, l.Value, il.QtyEntered " +
 			    "FROM C_Invoice i " +
 			    "INNER JOIN C_Order o ON i.C_Order_ID = o.C_Order_ID " +
 			    "INNER JOIN C_DocType dt ON o.C_DocTypeTarget_ID = dt.C_DocType_ID " +
 			    //"INNER JOIN LBR_OtherNFLink onf ON dt.C_DocType_ID = onf.C_DocType_ID " +
 			    "INNER JOIN C_InvoiceLine il ON i.C_Invoice_ID = il.C_Invoice_ID " +
 			    "INNER JOIN M_Product p ON il.M_Product_ID = p.M_Product_ID " +
+			    "LEFT JOIN M_Locator l ON p.M_Locator_ID = l.M_Locator_ID " +
 				"WHERE i.AD_Client_ID = ? ");
 				//"AND onf.C_DocTypeTarget_ID = ? ");
 		
@@ -280,7 +282,7 @@ public class FormOutrasNF extends CPanel
 				miniTable.setValueAt(rs.getString(2), row, 1);              //  C_Order_ID
 				miniTable.setValueAt(rs.getString(3), row, 2);              //  Line
 				miniTable.setValueAt(rs.getString(4), row, 3);              //  M_Product_ID
-				miniTable.setValueAt(rs.getBigDecimal(5), row, 4);          //  M_Locator_ID
+				miniTable.setValueAt(new KeyNamePair(rs.getInt(5),rs.getString(6)), row, 4);          //  M_Locator_ID
 				miniTable.setValueAt(rs.getBigDecimal(6), row, 5);          //  Qty
 				//  prepare next
 				row++;

@@ -1,6 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
- * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -10,14 +9,10 @@
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
- * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
 package org.adempierelbr.grid.ed;
 
 import java.awt.Component;
-import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
@@ -35,6 +30,11 @@ import org.compiere.util.CLogger;
  */
 public final class AdempiereLBREditor extends AbstractCellEditor implements TableCellEditor
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 *	Constructor
 	 *  @param find find
@@ -65,14 +65,6 @@ public final class AdempiereLBREditor extends AbstractCellEditor implements Tabl
 		Object obj = m_editor.getValue();		//	returns Integer, BidDecimal, String
 		log.config("Obj=" + obj);
 		return obj;
-		/**
-		if (obj == null)
-			return null;
-		//
-		String retValue = obj.toString();
-		log.config( "FindValueEditor.getCellEditorValue");
-		return retValue;
-		**/
 	}	//	getCellEditorValue
 
 	/**
@@ -93,27 +85,5 @@ public final class AdempiereLBREditor extends AbstractCellEditor implements Tabl
 		return (Component)m_editor;
 	}   //	getTableCellEditorComponent
 
-	/**
-	 *  Cell Editable.
-	 * 	Called before getTableCellEditorComponent
-	 *  @param e event
-	 *  @return true if editable
-	 */
-	public boolean isCellEditable (EventObject e)
-	{
-	//	log.config( "FindValueEditor.isCellEditable");
-		return true;
-	}   //  isCellEditable
-
-	/**
-	 *  Cell Selectable.
-	 * 	Called after getTableCellEditorComponent
-	 *  @param e event
-	 *  @return true if selectable
-	 */
-	public boolean shouldSelectCell (EventObject e) 
-	{
-		return true; 
-	}	//	shouldSelectCell
 
 }	//	FindValueEditor

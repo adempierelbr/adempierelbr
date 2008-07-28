@@ -215,13 +215,13 @@ DELETE FROM AD_Ref_List WHERE AD_Ref_List_ID=1000025
 
 -- 11/02/2008 10h8min25s BRST
 -- Default comment for updating dictionary
-DELETE FROM AD_Reference_Trl WHERE AD_Reference_ID=1000014
-;
+-- DELETE FROM AD_Reference_Trl WHERE AD_Reference_ID=1000014
+--;
 
 -- 11/02/2008 10h8min25s BRST
 -- Default comment for updating dictionary
-DELETE FROM AD_Reference WHERE AD_Reference_ID=1000014
-;
+-- DELETE FROM AD_Reference WHERE AD_Reference_ID=1000014
+--;
 
 -- 11/02/2008 10h8min33s BRST
 -- Default comment for updating dictionary
