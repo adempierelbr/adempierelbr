@@ -61,6 +61,8 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 */
 	public void setValue(String value){
 		
+		if (value == null) value = "";
+		
 		this.value = retiraAcentos(value);
 		
 	}
@@ -70,6 +72,8 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  @param String value
 	 */
 	public boolean setValue(String value, int fieldLength, boolean IsOtherRow){
+		
+		if (value == null) value = "";
 		
 		value = MDocPrintForm.removeEOL(value, fieldLength);
 				
@@ -117,7 +121,10 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  Get Value
 	 */
 	public String getValue(){
-		return value;
+		
+		if (value == null) return "";
+		
+		return value.toUpperCase();
 	}
 	
 	/**************************************************************************
@@ -221,6 +228,8 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 * 	@return String acentos
 	 */
 	private String retiraAcentos(String acentos){
+		
+		if (acentos == null) return null;
 		
 		acentos = acentos.replaceAll("[àâáäã]","a");
         acentos = acentos.replaceAll("[èéêë]","e");
