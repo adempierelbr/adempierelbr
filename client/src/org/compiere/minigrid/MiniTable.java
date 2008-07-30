@@ -423,15 +423,9 @@ public class MiniTable extends CTable
 			tc.setHeaderValue(Util.cleanAmp(header));
 
 		tc.setCellRenderer(new VCellRenderer(displayType));
-		if (readOnly)
-			tc.setCellEditor(new ROCellEditor());
-		else
-		{
-			tc.setCellEditor(new AdempiereLBREditor(lookup));
-		}
-		m_minWidth.add(new Integer(60));
-			
-			tc.setHeaderRenderer(new VHeaderRenderer(displayType));
+		tc.setCellEditor(new AdempiereLBREditor(lookup,readOnly));
+		m_minWidth.add(new Integer(80));
+		tc.setHeaderRenderer(new VHeaderRenderer(displayType));
 
 	//	log.fine( "Renderer=" + tc.getCellRenderer().toString() + ", Editor=" + tc.getCellEditor().toString());
 	}   //  setColumnClass

@@ -429,6 +429,8 @@ public class MBoleto extends X_LBR_Boleto
 			for (int i=0;i<oi.length;i++){
 				
 				try{
+					
+					int jBoletoNo = Integer.parseInt(lbrBank.getlbr_jBoletoNo());
 				
 					MBoleto newBoleto = new MBoleto(ctx,0,trx);
 					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
@@ -492,8 +494,9 @@ public class MBoleto extends X_LBR_Boleto
 						MNotaFiscal nf = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
 						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 					}
-				
+					
 					String DocumentNo = newBoleto.getSequence(BankA);
+					DocumentNo = TextUtil.pad(DocumentNo, '0', JBoleto.getQtdDigitos(jBoletoNo), true);
 			
 					newBoleto.setDocumentNo(DocumentNo.trim());
 					if(!newBoleto.save(trx)){

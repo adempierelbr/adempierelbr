@@ -21,6 +21,7 @@ import javax.swing.table.TableCellEditor;
 import org.compiere.grid.ed.VEditor;
 import org.compiere.grid.ed.VLookup;
 import org.compiere.util.CLogger;
+import org.compiere.util.KeyNamePair;
 
 /**
  * AdempiereLBREditor
@@ -40,14 +41,17 @@ public final class AdempiereLBREditor extends AbstractCellEditor implements Tabl
 	 *  @param find find
 	 *  @param valueTo true if it is the "to" value column
 	 */
-	public AdempiereLBREditor (VLookup lookup)
+	public AdempiereLBREditor (VLookup lookup, boolean IsReadOnly)
 	{
 		super();
-		m_lookup = lookup;
+		m_lookup   = lookup;
+		m_readOnly = IsReadOnly;
 	}	//	FindValueEditor
 
 	/** Find Window             */
 	private VLookup			m_lookup;
+	/** ReadOnly                */
+	private boolean         m_readOnly;
 	/**	Editor					*/
 	private VEditor			m_editor = null;
 	/**	Logger			*/
@@ -62,7 +66,7 @@ public final class AdempiereLBREditor extends AbstractCellEditor implements Tabl
 	{
 		if (m_editor == null)
 			return null;
-		Object obj = m_editor.getValue();		//	returns Integer, BidDecimal, String
+		Object obj = new KeyNamePair((Integer)m_editor.getValue(),m_lookup.getDisplay());		//	returns Integer, BidDecimal, String
 		log.config("Obj=" + obj);
 		return obj;
 	}	//	getCellEditorValue
@@ -81,6 +85,7 @@ public final class AdempiereLBREditor extends AbstractCellEditor implements Tabl
 	{
 		//
 		m_editor = m_lookup;
+		m_editor.setReadWrite(!m_readOnly);
 		//
 		return (Component)m_editor;
 	}   //	getTableCellEditorComponent
