@@ -26,7 +26,10 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -42,11 +45,21 @@ import org.compiere.apps.ConfirmPanel;
 import org.compiere.apps.StatusBar;
 import org.compiere.apps.form.FormFrame;
 import org.compiere.apps.form.FormPanel;
+import org.compiere.grid.ed.VComboBox;
 import org.compiere.grid.ed.VLookup;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
+import org.compiere.model.MDocType;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MLocator;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MRMA;
+import org.compiere.model.MSequence;
+import org.compiere.model.X_LBR_ProcessLink;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.process.ProcessInfo;
 import org.compiere.swing.CLabel;
@@ -58,8 +71,10 @@ import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+import org.compiere.util.Language;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
+import org.jboss.util.loading.Translatable;
 
 /**
  * FormOutrasNF
@@ -124,6 +139,8 @@ public class FormOutrasNF extends CPanel
 	private VLookup fBPartner;
 	private CLabel lLocator = new CLabel();
 	private VLookup fLocator;
+	private CLabel lDocType = new CLabel();
+    private VLookup fDocType;
 	private GridBagLayout northPanelLayout = new GridBagLayout();
 	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true);
 	private StatusBar statusBar = new StatusBar();
@@ -147,6 +164,8 @@ public class FormOutrasNF extends CPanel
 	{
 		CompiereColor.setBackground(this);
 		//
+		lDocType.setLabelFor(fDocType);
+		lDocType.setText(Msg.translate(Env.getCtx(), "C_DocType_ID"));
 		
 		confirmPanelSel.addButton(markButton);
 		
@@ -173,6 +192,9 @@ public class FormOutrasNF extends CPanel
 		selPanel.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(miniTable, null);
 		
+		selNorthPanel.add(lDocType, null);
+        selNorthPanel.add(fDocType, null);
+		
 		confirmPanelSel.addActionListener(this);
 		
 		markButton.setText("Todos");
@@ -194,7 +216,13 @@ public class FormOutrasNF extends CPanel
 		MLookup LocatorL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 1979, DisplayType.Search);
 		fLocator = new VLookup ("M_Locator_ID", false, false, true, LocatorL);
 		//fLocator.addVetoableChangeListener(this);	
-		//
+		
+		
+		//MLookup docTypeL = MLookupFactory.get(Env.getCtx(), m_WindowNo, 0, 2172, DisplayType.Table);
+		MLookup docTypeL = MLookupFactory.get(Env.getCtx(), 0, 2172, DisplayType.Table, Language.getLoginLanguage(), "C_DocType_ID", 1000037, false, null);
+		fDocType = new VLookup("AD_Org_ID",true,false,true,docTypeL); 
+        fDocType.addActionListener(this);
+        
 	}	//	fillPicks
 
 	/**
@@ -344,15 +372,121 @@ public class FormOutrasNF extends CPanel
 		if (m_whereClause.length() > 0 && m_selectionActive){
 
 			Properties ctx = Env.getCtx();
-			//Trx transaction = Trx.get(Trx.createTrxName(), true);
-			//String trx = transaction.getTrxName();
+			Trx transaction = Trx.get(Trx.createTrxName(), true);
+			String trx = transaction.getTrxName();
+			
 			
 			OrderLine[] selection = getSelection();
-			for (int i=0;i<selection.length;i++){
-				log.fine("Invoice = " + selection[i].getC_InvoiceLine_ID() +
-				         ", UDM = " + selection[i].getC_UOM_ID() + 
-				         ", Locator = " + selection[i].getM_Locator_ID() +
-				         ", Qtd = " + selection[i].getQtyEntered());
+			if(!validateSelection())
+			{
+				processError("Favor preencher todos os campos das linhas selecionadas",transaction);
+				return;
+			}
+			Map<Integer,Integer> ordersAdded = new HashMap<Integer, Integer>();
+			for(OrderLine gLine : selection)
+			{
+				MInvoiceLine invLine = new MInvoiceLine(ctx,gLine.getC_InvoiceLine_ID(),trx);
+				MInvoice inv = new MInvoice(ctx,invLine.getC_Invoice_ID(),trx);
+				MOrder newOrd;
+				
+				Integer C_DocTypeTarget_ID = 1000034;
+				Integer C_OrderLine_ID = 0;
+				
+				if(ordersAdded.containsKey(inv.getC_Order_ID()))
+				{
+					Integer C_Order_ID = ordersAdded.get(inv.getC_Order_ID());
+					
+					MOrderLine oldOrdLine = new MOrderLine(ctx,invLine.getC_OrderLine_ID(),trx);
+					newOrd = new MOrder(ctx,C_Order_ID,trx);
+					
+					
+					MOrderLine newOrdLine = copyLineFrom(oldOrdLine, C_Order_ID, ctx, trx);
+					newOrdLine.setC_Order_ID(C_Order_ID);
+					
+					for(OrderLine tempLine : selection)
+					{
+						if(tempLine.getC_InvoiceLine_ID() == invLine.getC_InvoiceLine_ID())
+						{
+							newOrdLine.setQty(gLine.getQtyEntered());
+							MLocator loc = new MLocator(ctx,gLine.getM_Locator_ID(),trx);
+							newOrdLine.setM_Warehouse_ID(loc.getM_Warehouse_ID());
+							break;
+						}
+					}
+					
+					if(newOrd.save(trx))
+						if(newOrdLine.save(trx))
+							C_OrderLine_ID = newOrdLine.get_ID();
+						else
+						{
+							processError("Erro salvando linha do pedido",transaction);
+							return;
+						}
+					else
+					{
+						processError("Erro salvando novo pedido automático", transaction);
+						return;	
+					}
+				}
+				else
+				{
+					MOrder oldOrd = new MOrder(ctx,inv.getC_Order_ID(),trx);
+					MOrderLine oldOrdLine = new MOrderLine(ctx,invLine.getC_OrderLine_ID(),trx);
+					
+					//newOrd = new MOrder(ctx,0,trx);
+					//MOrder.copyValues(oldOrd, newOrd);
+					newOrd = copyFrom(oldOrd, new Timestamp(System.currentTimeMillis()), C_DocTypeTarget_ID, true, false, false, trx);
+					newOrd.setC_DocTypeTarget_ID(C_DocTypeTarget_ID);
+					
+					MOrderLine newOrdLine = copyLineFrom(oldOrdLine, inv.getC_Order_ID(), ctx, trx);
+					
+					for(OrderLine tempLine : selection)
+					{
+						if(tempLine.getC_InvoiceLine_ID() == invLine.getC_InvoiceLine_ID())
+						{
+							newOrdLine.setQty(gLine.getQtyEntered());
+							MLocator loc = new MLocator(ctx,gLine.getM_Locator_ID(),trx);
+							newOrdLine.setM_Warehouse_ID(loc.getM_Warehouse_ID());
+							break;
+						}
+					}
+					
+					if(newOrd.save(trx))
+					{
+						ordersAdded.put(inv.getC_Order_ID(), newOrd.get_ID());
+						newOrdLine.setC_Order_ID(newOrd.get_ID());
+						if(newOrdLine.save(trx))
+						{
+							C_OrderLine_ID = newOrdLine.get_ID();
+						}
+						else
+						{
+							processError("Erro salvando linha do pedido",transaction);
+							return;
+						}
+					}
+					else
+					{
+						processError("Erro salvando novo pedido automático", transaction);
+						return;	
+					}
+				}
+				
+				if(C_OrderLine_ID != null && C_OrderLine_ID != 0)
+				{
+					X_LBR_ProcessLink process = new X_LBR_ProcessLink(ctx,0,trx);
+					process.setC_InvoiceLine_ID(gLine.getC_InvoiceLine_ID());
+					process.setC_OrderLine_ID(C_OrderLine_ID);
+					process.save(trx);
+				}
+			}
+			
+			if(transaction.commit())
+			{
+				String msg = "Pedidos criados com sucesso!!!";
+				statusBar.setStatusLine(msg);	
+				ADialog.info(m_WindowNo, this, msg);
+				transaction.close();
 			}
 			
 			m_mark = true;
@@ -564,6 +698,152 @@ public class FormOutrasNF extends CPanel
 		transaction.rollback();
 		transaction.close();
 	}
+	
+
+	/**
+	 * 	Copy Order from another Order
+	 *	@param from The source order
+	 *	@param dateDoc Document Date
+	 *	@param C_DocTypeTarget_ID Target Document Type for the new Order
+	 *	@return Newly created line
+	 */
+	private MOrder copyFrom (MOrder from, Timestamp dateDoc, 
+			int C_DocTypeTarget_ID, boolean isSOTrx, boolean counter, boolean copyASI, 
+			String trxName)
+		{
+			MOrder to = new MOrder (from.getCtx(), 0, trxName);
+			to.set_TrxName(trxName);
+			MOrder.copyValues(from, to);
+			to.set_ValueOfColumn("C_Order_ID", new Integer(0));
+			to.set_ValueOfColumn("DocumentNo", getDocumentNo(C_DocTypeTarget_ID, from.getCtx(), trxName));
+			//
+			to.setDocStatus ("DR");		//	Draft
+			to.setDocAction("CO");
+			//
+			to.setC_DocType_ID(0);
+			to.setC_DocTypeTarget_ID (C_DocTypeTarget_ID);
+			to.setIsSOTrx(isSOTrx);
+			//
+			to.setIsSelected (false);
+			to.setDateOrdered (dateDoc);
+			to.setDateAcct (dateDoc);
+			to.setDatePromised (dateDoc);	//	assumption
+			to.setDatePrinted(null);
+			to.setIsPrinted (false);
+			//
+			to.setIsApproved (false);
+			to.setIsCreditApproved(false);
+			to.setC_Payment_ID(0);
+			to.setC_CashLine_ID(0);
+			//	Amounts are updated  when adding lines
+			to.setGrandTotal(Env.ZERO);
+			to.setTotalLines(Env.ZERO);
+			//
+			to.setIsDelivered(false);
+			to.setIsInvoiced(false);
+			to.setIsSelfService(false);
+			to.setIsTransferred (false);
+			to.setPosted (false);
+			to.setProcessed (false);
+			if (counter)
+				to.setRef_Order_ID(from.getC_Order_ID());
+			else
+				to.setRef_Order_ID(0);
+			//
+			if (!to.save(trxName))
+				throw new IllegalStateException("Could not create Order");
+			if (counter)
+				from.setRef_Order_ID(to.getC_Order_ID());
+			
+			return to;
+	}	//	copyFrom
+	
+	/**
+	 * 	Copy Line From other Order Line
+	 *	@param otherLine orderLine
+	 *	@param C_Order_ID C_Order_ID for the new line
+	 *	@return Newly created line
+	 */
+	public MOrderLine copyLineFrom (MOrderLine otherLine,Integer C_Order_ID , Properties ctx, String trx)
+	{
+		MOrderLine newLine = new MOrderLine (ctx,0,trx);
+		MOrderLine.copyValues(otherLine, newLine);
+		newLine.setC_Order_ID(C_Order_ID);
+		newLine.set_ValueOfColumn ("C_OrderLine_ID", new Integer(0));	//	new
+		newLine.setM_AttributeSetInstance_ID(0);
+		newLine.setS_ResourceAssignment_ID(0);
+		newLine.setRef_OrderLine_ID(0);
+		newLine.setQtyDelivered(Env.ZERO);
+		newLine.setQtyInvoiced(Env.ZERO);
+		newLine.setQtyReserved(Env.ZERO);
+		newLine.setDateDelivered(null);
+		newLine.setDateInvoiced(null);
+		newLine.setProcessed(false);
+		if (newLine.save(trx))
+			return newLine;
+		else
+			return null;
+	}	//	copyLinesFrom
+
+	
+	/**
+	 * 	Get the Document Number for the new Order
+	 *	@param C_DocTypeTarget_ID The target document type ID
+	 *	@param ctx Context Properties
+	 *	@param trx Transaction Name
+	 *	@return Newly created line
+	 */
+	private String getDocumentNo(Integer C_DocTypeTarget_ID,Properties ctx, String trx)
+	{
+		String DocumentNo = "";
+		MDocType docType = new MDocType(ctx,C_DocTypeTarget_ID,trx);
+		MSequence Sequence = new MSequence(ctx,docType.getDocNoSequence_ID(),trx);
+		if (Sequence.getPrefix() != null) 
+			DocumentNo += Sequence.getPrefix();
+		
+		DocumentNo += ((Integer)Sequence.getNextID()).toString();
+		
+		if (Sequence.getSuffix() != null) 
+			DocumentNo += Sequence.getSuffix();
+		
+		Sequence.save();
+		
+		return DocumentNo;
+	}//getDocumentNo
+	
+	/**
+	 * 	Validate Selection - Validates all the selected lines before processing
+	 *	@param selection The selected lines
+	 *	@return True if validated | False something is missing
+	 */
+	private boolean validateSelection()
+	{
+		//	Get selected entries
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		for (int i = 0; i < miniTable.getRowCount(); i++)
+		{
+			IDColumn id = (IDColumn)miniTable.getValueAt(i, 0);     
+			if (id != null && id.isSelected())
+				selection.add(i);
+		}
+		
+		for(Integer i : selection)
+		{
+			if(miniTable.getValueAt(i, 0) == null)					// C_InvoiceLine_ID
+				return false;
+			if(miniTable.getValueAt(i, 1) == null)					// C_Order.DocumentNo
+				return false;
+			if(miniTable.getValueAt(i, 2) == null)					// C_Invoice.Line
+				return false;
+			if(miniTable.getValueAt(i, 3) == null)					// M_Product_ID
+				return false;
+			if(miniTable.getValueAt(i, 4) == null)					// M_Locator_ID
+				return false;
+			if(miniTable.getValueAt(i, 5) == null)					// Qty
+				return false;
+		}
+		return true;	
+	}//validateSelection
 	
 	/**
 	 * OrderLine

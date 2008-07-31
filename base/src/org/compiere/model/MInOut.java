@@ -1199,6 +1199,7 @@ public class MInOut extends X_M_InOut implements DocAction
 	 * 	Complete Document
 	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
 	 *  @contributor mgrigioni - Melhorias no tratamento de erros do processo
+	 *  @contributor rsantana - Criação do processo de Movimentação de Estoque
 	 */
 	public String completeIt()
 	{
@@ -1242,7 +1243,10 @@ public class MInOut extends X_M_InOut implements DocAction
 				mLine.setLine(line.getLine());
 				mLine.setDescription(line.getDescription());
 				mLine.setMovementQty(line.getMovementQty());
-				mLine.setM_Locator_ID(line.getM_Locator_ID());
+				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
+					mLine.setM_LocatorTo_ID(line.getM_Locator_ID());
+				else
+					mLine.setM_Locator_ID(line.getM_Locator_ID());
 				
 				Integer M_Warehouse_ID = null;
 				M_Warehouse_ID = (Integer)docTypeInOut.get_Value("M_Warehouse_ID");
@@ -1253,12 +1257,16 @@ public class MInOut extends X_M_InOut implements DocAction
 				
 				int locatorTo = getM_LocatorTo_ID(M_Warehouse_ID, getBPartner());
 				
-				if(locatorTo <= 0){
+				if(locatorTo <= 0){ 
 					log.log(Level.SEVERE,"M_LocatorTo_ID = " + locatorTo);
 					return DocAction.STATUS_Invalid;
 				}	
 				
-				mLine.setM_LocatorTo_ID(locatorTo);
+				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
+					mLine.setM_Locator_ID(locatorTo);
+				else
+					mLine.setM_LocatorTo_ID(locatorTo);
+				
 				mLine.save(get_TrxName());
 				
 				line.setProcessed(true);
