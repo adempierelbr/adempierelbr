@@ -26,6 +26,7 @@ import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MClientInfo;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -160,6 +161,8 @@ public class ProcGenerateNF extends SvrProcess
 				DB.executeUpdate("DELETE FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID, trx);
 				
 			}
+			
+			MClientInfo                clientInfo            = MClientInfo.get(ctx);
 				
 			MInvoiceLine[]             lines                 = null; //Linhas da Fatura
 			MOrder                     order                 = null; //Ordem de Venda
@@ -417,7 +420,15 @@ public class ProcGenerateNF extends SvrProcess
 					Integer LBR_NCM_ID          = (Integer)product.get_Value("LBR_NCM_ID");
 					Integer LBR_CFOP_ID         = (Integer)lines[i].get_Value("LBR_CFOP_ID");
 					Integer LBR_LegalMessage_ID = (Integer)lines[i].get_Value("LBR_LegalMessage_ID");
-						
+					
+					/* FRETE */
+					int FreightProduct_ID = clientInfo.getM_ProductFreight_ID();
+					if (product.getM_Product_ID() == FreightProduct_ID){
+						NotaFiscal.setFreightAmt(lines[i].getLineNetAmt());
+						LineNo--;
+						continue;
+					}
+					
 					String VendorProductNo = POLBR.getVendorProductNo(product.getM_Product_ID(),bpartner.getC_BPartner_ID());
 	
 					MNotaFiscalLine NotaFiscalLine = new MNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
