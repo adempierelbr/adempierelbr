@@ -247,11 +247,14 @@ public class CalloutTax extends CalloutEngine
 		//Taxes defined from Region
 		if (transactionType == null) transactionType = "";
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
+		int FromRegion_ID = isSO ? orgLocation.getC_Region_ID() : location.getC_Region_ID();
+		int ToRegion_ID   = isSO ? location.getC_Region_ID() : orgLocation.getC_Region_ID();
+		
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
-			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),orgLocation.getC_Region_ID(),null));
+			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,FromRegion_ID,null));
 		else
-			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,orgLocation.getC_Region_ID(),location.getC_Region_ID(),null));
+			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,ToRegion_ID,null));
 		
 		//ISS (City)
 		if (lbr_TaxType.equals(TaxBR.taxType_Service)){
