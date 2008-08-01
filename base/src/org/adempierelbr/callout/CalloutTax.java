@@ -63,6 +63,7 @@ import org.compiere.util.Env;
  * 
  * [ 1967059 ] Atualizar a description do LBR_Tax_ID na GUI
  * [ 1967062 ] LBR_Tax criado sem necessidade
+ * [ 2034912 ] CalloutTax - ICMS Compra x Venda
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
@@ -300,8 +301,8 @@ public class CalloutTax extends CalloutEngine
 			}
 			
 			//Estado
-			setLines(ctx,MTax.getLBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID()));
-			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID());
+			setLines(ctx,MTax.getLBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID));
+			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
 			if (taxRegion != null){
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
 				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus();
@@ -336,8 +337,8 @@ public class CalloutTax extends CalloutEngine
 			}
 			
 			//Estado
-			setLines(ctx,MTax.getLBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID()));
-			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, orgLocation.getC_Region_ID(),location.getC_Region_ID());
+			setLines(ctx,MTax.getLBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID));
+			X_LBR_TaxConfig_Region taxRegion = MTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
 			if (taxRegion != null){
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
 				lbr_TaxStatus       = taxRegion.getlbr_TaxStatus();
