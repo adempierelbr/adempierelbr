@@ -45,7 +45,6 @@ import org.compiere.apps.ConfirmPanel;
 import org.compiere.apps.StatusBar;
 import org.compiere.apps.form.FormFrame;
 import org.compiere.apps.form.FormPanel;
-import org.compiere.grid.ed.VComboBox;
 import org.compiere.grid.ed.VLookup;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
@@ -57,7 +56,6 @@ import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MRMA;
 import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_ProcessLink;
 import org.compiere.plaf.CompiereColor;
@@ -74,7 +72,6 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
-import org.jboss.util.loading.Translatable;
 
 /**
  * FormOutrasNF
@@ -126,6 +123,7 @@ public class FormOutrasNF extends CPanel
 	private boolean			m_selectionActive      = true;
 	private String          m_whereClause;
 	private Object          m_C_BPartner_ID        = null;
+	private Object          m_C_DocType_ID         = null;
 	private boolean         m_mark = true;
 	
 	/**	Logger			*/
@@ -163,10 +161,7 @@ public class FormOutrasNF extends CPanel
 	void jbInit() throws Exception
 	{
 		CompiereColor.setBackground(this);
-		//
-		lDocType.setLabelFor(fDocType);
-		lDocType.setText(Msg.translate(Env.getCtx(), "C_DocType_ID"));
-		
+		//		
 		confirmPanelSel.addButton(markButton);
 		
 		selPanel.setLayout(selPanelLayout);
@@ -174,6 +169,9 @@ public class FormOutrasNF extends CPanel
 		
 		lBPartner.setLabelFor(fBPartner);
 		lBPartner.setText(Msg.translate(Env.getCtx(), "C_BPartner_ID"));
+		
+		lDocType.setLabelFor(fDocType);
+		lDocType.setText(Msg.translate(Env.getCtx(), "C_DocType_ID"));
 		
 		lLocator.setLabelFor(fLocator);
 		lLocator.setText(Msg.translate(Env.getCtx(), "M_Locator_ID"));
@@ -187,13 +185,15 @@ public class FormOutrasNF extends CPanel
 		selNorthPanel.add(fBPartner, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
+		selNorthPanel.add(lDocType, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		selNorthPanel.add(fDocType, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+		
 		selPanel.setName("selPanel");
 		selPanel.add(confirmPanelSel, BorderLayout.SOUTH);
 		selPanel.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(miniTable, null);
-		
-		selNorthPanel.add(lDocType, null);
-        selNorthPanel.add(fDocType, null);
 		
 		confirmPanelSel.addActionListener(this);
 		
@@ -217,10 +217,10 @@ public class FormOutrasNF extends CPanel
 		fLocator = new VLookup ("M_Locator_ID", false, false, true, LocatorL);
 		//fLocator.addVetoableChangeListener(this);	
 		
-		
 		//MLookup docTypeL = MLookupFactory.get(Env.getCtx(), m_WindowNo, 0, 2172, DisplayType.Table);
-		MLookup docTypeL = MLookupFactory.get(Env.getCtx(), 0, 2172, DisplayType.Table, Language.getLoginLanguage(), "C_DocType_ID", 1000037, false, null);
-		fDocType = new VLookup("AD_Org_ID",true,false,true,docTypeL); 
+		MLookup docTypeL = MLookupFactory.get(Env.getCtx(), 0, 2172, DisplayType.Table, 
+				Language.getLoginLanguage(), "C_DocType_ID", 1000038, false, null);
+		fDocType = new VLookup("C_DocType_ID",true,false,true,docTypeL); 
         fDocType.addActionListener(this);
         
 	}	//	fillPicks
@@ -248,6 +248,7 @@ public class FormOutrasNF extends CPanel
 		miniTable.setColumnClass(1, String.class, true, Msg.translate(Env.getCtx(), "DocumentNo"));
 		miniTable.setColumnClass(2, String.class, true, Msg.translate(Env.getCtx(), "Line"));
 		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "M_Product_ID"));
+		//FIXME CADA LINHA DEVE POSSUIR UM LOOKUP
 		miniTable.setColumnClass(4, fLocator, DisplayType.Search, false, Msg.translate(Env.getCtx(), "M_Locator_ID"));
 		miniTable.setColumnClass(5, BigDecimal.class, false, Msg.translate(Env.getCtx(), "Qty"));
 		miniTable.setColumnClass(6, String.class, true, Msg.translate(Env.getCtx(), "C_UOM_ID"));
@@ -389,7 +390,7 @@ public class FormOutrasNF extends CPanel
 				MInvoice inv = new MInvoice(ctx,invLine.getC_Invoice_ID(),trx);
 				MOrder newOrd;
 				
-				Integer C_DocTypeTarget_ID = 1000034;
+				Integer C_DocTypeTarget_ID = 1000034; //FIXME HARDCODED
 				Integer C_OrderLine_ID = 0;
 				
 				if(ordersAdded.containsKey(inv.getC_Order_ID()))
@@ -516,6 +517,12 @@ public class FormOutrasNF extends CPanel
 			m_C_BPartner_ID = e.getNewValue();
 			fBPartner.setValue(m_C_BPartner_ID);	//	display value
 			if (m_C_BPartner_ID != null) i = 1;
+		}
+		
+		if (e.getPropertyName().equals("C_DocType_ID"))
+		{
+			m_C_DocType_ID = e.getNewValue();
+			fDocType.setValue(m_C_DocType_ID);	//	display value
 		}
 		
 		if (i != 0) executeQuery();

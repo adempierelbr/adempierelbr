@@ -492,6 +492,23 @@ BigDecimal bd = (BigDecimal)get_Value("NoPackages");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+/** Set Reactivate Nota Fiscal.
+@param ProcReactivateNF This Process Reactivates the Nota Fiscal Document */
+public void setProcReactivateNF (String ProcReactivateNF)
+{
+if (ProcReactivateNF != null && ProcReactivateNF.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+ProcReactivateNF = ProcReactivateNF.substring(0,0);
+}
+set_Value ("ProcReactivateNF", ProcReactivateNF);
+}
+/** Get Reactivate Nota Fiscal.
+@return This Process Reactivates the Nota Fiscal Document */
+public String getProcReactivateNF() 
+{
+return (String)get_Value("ProcReactivateNF");
+}
 /** Set Processed.
 @param Processed The document has been processed */
 public void setProcessed (boolean Processed)
