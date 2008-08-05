@@ -72,6 +72,7 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
+import org.jfree.data.KeyedObject;
 
 /**
  * FormOutrasNF
@@ -217,12 +218,11 @@ public class FormOutrasNF extends CPanel
 		fLocator = new VLookup ("M_Locator_ID", false, false, true, LocatorL);
 		//fLocator.addVetoableChangeListener(this);	
 		
-		//MLookup docTypeL = MLookupFactory.get(Env.getCtx(), m_WindowNo, 0, 2172, DisplayType.Table);
 		MLookup docTypeL = MLookupFactory.get(Env.getCtx(), 0, 2172, DisplayType.Table, 
 				Language.getLoginLanguage(), "C_DocType_ID", 1000038, false, null);
 		fDocType = new VLookup("C_DocType_ID",true,false,true,docTypeL); 
-        fDocType.addActionListener(this);
-        
+        fDocType.addVetoableChangeListener(this);
+        if(docTypeL.getSelectedItem() != null) m_C_DocType_ID = ((KeyNamePair)docTypeL.getSelectedItem()).getKey(); 
 	}	//	fillPicks
 
 	/**
@@ -271,31 +271,39 @@ public class FormOutrasNF extends CPanel
 	{
 		log.info("");
 		int AD_Client_ID = Env.getAD_Client_ID(Env.getCtx());
+		int index = 0;
 		//  Create SQL
+			
+		StringBuffer sql = new StringBuffer("SELECT invlinea.C_InvoiceLine_ID, inva.DocumentNo " + 
+			    ", invlinea.Line, prod.Value || ' - ' || prod.Name, locator.M_Locator_ID, locator.Value, " + 
+                "invlinea.qtyentered, uom.C_UOM_ID, uom.Name FROM " +
+				"c_order orda " +
+				"INNER JOIN c_invoice inva ON orda.c_order_id = inva.c_order_id " +
+				"INNER JOIN c_invoiceline invlinea ON inva.c_invoice_id = invlinea.c_invoice_id " +
+				"INNER JOIN m_product prod ON invlinea.m_product_id = prod.m_product_id " +
+				"INNER JOIN c_uom uom ON invlinea.c_uom_id = uom.c_uom_id " +
+				"INNER JOIN lbr_othernflink othernf ON orda.c_doctypetarget_id = othernf.c_doctype_id " +
+				"LEFT JOIN m_locator locator ON prod.m_locator_id = locator.m_locator_id " +
+				"WHERE orda.ad_client_id = ? AND " +
+				"orda.c_doctypetarget_id IN (SELECT c_doctype_id FROM lbr_othernflink) AND " +
+				"orda.docstatus = 'CO' ");
+
+		if (m_C_BPartner_ID != null){
+			sql.append("AND orda.C_BPartner_ID=? ");
+			index += 1;
+		}
+		else
+			return;
 		
-		StringBuffer sql = new StringBuffer(
-				"SELECT il.C_InvoiceLine_ID, i.DocumentNo, il.Line, " +
-			    "p.Value || ' - ' || p.Name, l.M_Locator_ID, l.Value, il.QtyEntered, uom.C_UOM_ID, uom.Name " +
-			    "FROM C_Invoice i " +
-			    "INNER JOIN C_Order o ON i.C_Order_ID = o.C_Order_ID " +
-			    "INNER JOIN C_DocType dt ON o.C_DocTypeTarget_ID = dt.C_DocType_ID " +
-			    //"INNER JOIN LBR_OtherNFLink onf ON dt.C_DocType_ID = onf.C_DocType_ID " +
-			    "INNER JOIN C_InvoiceLine il ON i.C_Invoice_ID = il.C_Invoice_ID " +
-			    "INNER JOIN M_Product p ON il.M_Product_ID = p.M_Product_ID " +
-			    "INNER JOIN C_UOM uom ON il.C_UOM_ID = uom.C_UOM_ID " +
-			    "LEFT JOIN M_Locator l ON p.M_Locator_ID = l.M_Locator_ID " +
-				"WHERE i.AD_Client_ID = ? " +
-				//"AND onf.C_DocTypeTarget_ID = ? ");
-				"AND il.C_InvoiceLine_ID NOT IN (SELECT C_InvoiceLine_ID From LBR_ProcessLink WHERE AD_Client_ID = i.AD_Client_ID)");
+		if (m_C_DocType_ID != null){
+			sql.append("AND othernf.c_doctypetarget_id = ?");
+			index += 2;
+		}
+		
+		sql.append("ORDER BY inva.DocumentNo, invlinea.Line");
 
-				if (m_C_BPartner_ID != null){
-					sql.append("AND o.C_BPartner_ID=? ");
-				}
-				else
-					return;
-				
-				sql.append("ORDER BY i.DocumentNo, il.Line");
-
+		ArrayList<OrderLine> lines = new ArrayList<OrderLine>();
+		
 		//  reset table
 		int row = 0;
 		miniTable.setRowCount(row);
@@ -304,24 +312,28 @@ public class FormOutrasNF extends CPanel
 		{
 			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, AD_Client_ID);
-			if(m_C_BPartner_ID != null)
+			if(index == 1) pstmt.setInt(2, (Integer)m_C_BPartner_ID);
+			else if(index == 2) pstmt.setInt(2, (Integer)m_C_DocType_ID);
+			else if(index == 3)
+			{
 				pstmt.setInt(2, (Integer)m_C_BPartner_ID);
+				pstmt.setInt(3, (Integer)m_C_DocType_ID);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			//
 			while (rs.next())
 			{
-				//  extend table
-				miniTable.setRowCount(row+1);
-				//  set values
-				miniTable.setValueAt(new IDColumn(rs.getInt(1)), row, 0);   //  C_InvoiceLine_ID
-				miniTable.setValueAt(rs.getString(2), row, 1);              //  C_Invoice_ID
-				miniTable.setValueAt(rs.getString(3), row, 2);              //  Line
-				miniTable.setValueAt(rs.getString(4), row, 3);              //  M_Product_ID
-				miniTable.setValueAt(new KeyNamePair(rs.getInt(5),rs.getString(6)), row, 4); //  M_Locator_ID
-				miniTable.setValueAt(rs.getBigDecimal(7), row, 5);          //  Qty
-				miniTable.setValueAt(new KeyNamePair(rs.getInt(8),rs.getString(9)), row, 6); // C_UOM_ID
-				//  prepare next
-				row++;
+				OrderLine line = new OrderLine();
+				line.setC_InvoiceLine_ID(rs.getInt(1));
+				line.setC_Invoice_ID(rs.getInt(2));
+				line.setLine(rs.getInt(3));
+				line.setM_ProductName(rs.getString(4));
+				line.setM_Locator_ID(rs.getInt(5));
+				line.setM_LocatorValue(rs.getString(6));
+				line.setQtyEntered(rs.getBigDecimal(7));
+				line.setC_UOM_ID(rs.getInt(8));
+				line.setC_UOMName(rs.getString(9));
+				lines.add(line);
 			}
 			rs.close();
 			pstmt.close();
@@ -331,6 +343,10 @@ public class FormOutrasNF extends CPanel
 			log.log(Level.SEVERE, sql.toString(), e);
 		}
 		//
+		processReturns(lines, true);
+		OrderLine[] results = new OrderLine[lines.size()];
+		lines.toArray(results);
+		populateMiniTable(results);
 		miniTable.autoSize();
 		statusBar.setStatusDB(String.valueOf(miniTable.getRowCount()));
 	}   //  executeQuery
@@ -390,7 +406,7 @@ public class FormOutrasNF extends CPanel
 				MInvoice inv = new MInvoice(ctx,invLine.getC_Invoice_ID(),trx);
 				MOrder newOrd;
 				
-				Integer C_DocTypeTarget_ID = 1000034; //FIXME HARDCODED
+				Integer C_DocTypeTarget_ID = (Integer)m_C_DocType_ID;
 				Integer C_OrderLine_ID = 0;
 				
 				if(ordersAdded.containsKey(inv.getC_Order_ID()))
@@ -523,6 +539,7 @@ public class FormOutrasNF extends CPanel
 		{
 			m_C_DocType_ID = e.getNewValue();
 			fDocType.setValue(m_C_DocType_ID);	//	display value
+			if (m_C_DocType_ID != null) i = 1;
 		}
 		
 		if (i != 0) executeQuery();
@@ -644,12 +661,15 @@ public class FormOutrasNF extends CPanel
 		for (int i = 0; i < rows; i++)
 		{
 			IDColumn id              = (IDColumn)miniTable.getValueAt(i, 0); //  ID in column 0
-			KeyNamePair C_UOM_ID     = (KeyNamePair)miniTable.getValueAt(i, 6);
+			Integer C_Invoice_ID     = (Integer)miniTable.getValueAt(i, 1);
+			Integer Line			 = (Integer)miniTable.getValueAt(i, 2);
+			String M_ProductName	 = (String)miniTable.getValueAt(i, 3);
 			KeyNamePair M_Locator_ID = (KeyNamePair)miniTable.getValueAt(i, 4);
 			BigDecimal QtyEntered    = (BigDecimal)miniTable.getValueAt(i, 5);
+			KeyNamePair C_UOM_ID     = (KeyNamePair)miniTable.getValueAt(i, 6);			
 		//	log.fine( "Row=" + i + " - " + id);
 			if (id != null && id.isSelected())
-				results.add(new OrderLine(id.getRecord_ID(),C_UOM_ID.getKey(),M_Locator_ID.getKey(), QtyEntered));
+				results.add(new OrderLine(id.getRecord_ID(),C_Invoice_ID,Line,M_ProductName,M_Locator_ID.getKey(),M_Locator_ID.getName(),C_UOM_ID.getKey(),C_UOM_ID.getName(),QtyEntered));
 		}
 		
 		OrderLine[] lines = new OrderLine[results.size ()];
@@ -697,6 +717,32 @@ public class FormOutrasNF extends CPanel
 	public void executeASync (ProcessInfo pi)
 	{
 	}   //  executeASync
+	
+	
+	/**
+	 * 	Populates the miniTable with Data
+	 *	@param OrderLine[] Lines 
+	 */
+	private void populateMiniTable(OrderLine[] lines)
+	{
+		Integer row = 0;
+		miniTable.setRowCount(row);
+		for(OrderLine line : lines)
+		{
+				//  extend table
+				miniTable.setRowCount(row+1);
+				//  set values
+				miniTable.setValueAt(new IDColumn(line.getC_InvoiceLine_ID()), row, 0);   							//  C_InvoiceLine_ID
+				miniTable.setValueAt(line.getC_Invoice_ID(), row, 1);              									//  C_Invoice_ID
+				miniTable.setValueAt(line.getLine(), row, 2);              											//  Line
+				miniTable.setValueAt(line.getM_ProductName(), row, 3);              								//  M_Product.Name + Value
+				miniTable.setValueAt(new KeyNamePair(line.getM_Locator_ID(),line.getM_LocatorValue()), row, 4); 	//  (M_Locator_ID,M_LocatorValue)
+				miniTable.setValueAt(line.getQtyEntered(), row, 5);          										//  Qty
+				miniTable.setValueAt(new KeyNamePair(line.getC_UOM_ID(),line.getC_UOMName()), row, 6);			 	//  C_UOM_ID
+				
+				row++;
+		}
+	}
 	
 	private void processError(String msg, Trx transaction)
 	{
@@ -818,6 +864,79 @@ public class FormOutrasNF extends CPanel
 		return DocumentNo;
 	}//getDocumentNo
 	
+	private void processReturns(ArrayList<OrderLine> lines, boolean recursive)
+	{	
+		StringBuffer sql = new StringBuffer("SELECT procb.c_orderline_id,invlineb.c_invoiceline_id , SUM(invlineb.qtyentered) " +
+									"FROM lbr_processlink procb " +
+								    "INNER JOIN c_orderline ordlineb ON procb.c_orderline_id = ordlineb.c_orderline_id " +
+								    "INNER JOIN c_order ordb ON ordlineb.c_order_id = ordb.c_order_id " +
+								    "INNER JOIN c_invoice invb ON ordlineb.c_order_id = invb.c_order_id " +
+								    "INNER JOIN c_invoiceline invlineb ON ordlineb.c_orderline_id = invlineb.c_orderline_id " +
+								    "WHERE ordb.docstatus = 'CO' " +
+								    "AND procb.c_invoiceline_id IN " + getWhereINC_InvoiceLine_ID(lines) +
+									"GROUP BY invlineb.c_invoiceline_id ,procb.c_invoiceline_id, procb.c_orderline_id");
+
+		
+		ArrayList<OrderLine> blines = new ArrayList<OrderLine>();
+		
+		//  Execute
+		try
+		{
+			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+			ResultSet rs = pstmt.executeQuery();
+			//
+			while (rs.next())
+			{
+				OrderLine line = new OrderLine();
+				line.setC_OrderLine_ID(rs.getInt(1));
+				line.setC_InvoiceLine_ID(rs.getInt(2));
+				line.setQtyEntered(rs.getBigDecimal(3));
+				blines.add(line);
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (SQLException e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		
+		if(recursive)
+			processReturns(blines, false);
+		
+		for(OrderLine bline : blines)
+		{
+			for(OrderLine aline : lines)
+			{
+				if(bline.getC_InvoiceLine_ID().intValue() == aline.getC_InvoiceLine_ID().intValue())
+				{
+					if(recursive)
+						aline.setQtyEntered(aline.getQtyEntered().subtract(bline.getQtyEntered()));
+					else
+						aline.setQtyEntered(aline.getQtyEntered().add(bline.getQtyEntered()));
+					break;
+				}
+			}
+		}
+	}
+	
+	private String getWhereINC_InvoiceLine_ID(ArrayList<OrderLine> lines)
+	{
+		StringBuffer C_InvoiceLine_ID = new StringBuffer();
+		if(lines.size() < 1000)
+		{
+			C_InvoiceLine_ID.append("(");
+			for(int i = 0;i < lines.size() ; i++)
+			{
+				OrderLine line = lines.get(i);
+				if (i > 0) C_InvoiceLine_ID.append(","); 
+				C_InvoiceLine_ID.append(line.getC_InvoiceLine_ID()); 
+			}
+			C_InvoiceLine_ID.append(") ");
+		}
+		return C_InvoiceLine_ID.toString();
+	}
+	
 	/**
 	 * 	Validate Selection - Validates all the selected lines before processing
 	 *	@param selection The selected lines
@@ -859,15 +978,29 @@ public class FormOutrasNF extends CPanel
 	class OrderLine{
 		
 		private Integer        C_InvoiceLine_ID;
-		private Integer        C_UOM_ID;
+		private Integer 	   C_Invoice_ID;
+		private Integer 	   Line;
+		private String	       M_ProductName;
 		private Integer        M_Locator_ID;
+		private String 	       M_LocatorValue;
+		private Integer        C_UOM_ID;
+		private String		   C_UOMName;
 		private BigDecimal     QtyEntered;
+		private Integer	       C_OrderLine_ID;
 		
-		OrderLine(Integer C_InvoiceLine_ID, Integer C_UOM_ID, Integer M_Locator_ID, BigDecimal QtyEntered){
+		OrderLine(){};
+		
+		OrderLine(Integer C_InvoiceLine_ID, Integer C_Invoice_ID, Integer Line, String M_ProductName, 
+				Integer M_Locator_ID, String M_LocatorValue, Integer C_UOM_ID, String C_UOMName, BigDecimal QtyEntered){
 			
 			this.C_InvoiceLine_ID = C_InvoiceLine_ID;
-			this.C_UOM_ID         = C_UOM_ID;
+			this.C_Invoice_ID	  = C_Invoice_ID;
+			this.Line             = Line;
+			this.M_ProductName    = M_ProductName;
 			this.M_Locator_ID     = M_Locator_ID;
+			this.M_LocatorValue   = M_LocatorValue;
+			this.C_UOM_ID         = C_UOM_ID;
+			this.C_UOMName		  = C_UOMName;
 			this.QtyEntered       = QtyEntered;
 			
 		}
@@ -878,23 +1011,68 @@ public class FormOutrasNF extends CPanel
 		public void setC_InvoiceLine_ID(Integer invoiceLine_ID) {
 			C_InvoiceLine_ID = invoiceLine_ID;
 		}
-		public Integer getC_UOM_ID() {
-			return C_UOM_ID;
+		
+		public Integer getC_Invoice_ID() {
+			return C_Invoice_ID;
 		}
-		public void setC_UOM_ID(Integer c_uom_id) {
-			C_UOM_ID = c_uom_id;
+		public void setC_Invoice_ID(Integer C_Invoice_ID) {
+			this.C_Invoice_ID = C_Invoice_ID;
 		}
+		
+		public Integer getLine() {
+			return this.Line;
+		}
+		public void setLine(Integer Line) {
+			this.Line = Line;
+		}
+		
+		public String getM_ProductName() {
+			return this.M_ProductName;
+		}
+		public void setM_ProductName(String M_ProductName) {
+			this.M_ProductName = M_ProductName;
+		}
+		
 		public Integer getM_Locator_ID() {
 			return M_Locator_ID;
 		}
 		public void setM_Locator_ID(Integer locator_ID) {
 			M_Locator_ID = locator_ID;
 		}
+		
+		public String getM_LocatorValue() {
+			return this.M_LocatorValue;
+		}
+		public void setM_LocatorValue(String M_LocatorValue) {
+			this.M_LocatorValue = M_LocatorValue;
+		}
+		
+		public Integer getC_UOM_ID() {
+			return C_UOM_ID;
+		}
+		public void setC_UOM_ID(Integer c_uom_id) {
+			C_UOM_ID = c_uom_id;
+		}
+		
+		public String getC_UOMName() {
+			return this.C_UOMName;
+		}
+		public void setC_UOMName(String C_UOMName) {
+			this.C_UOMName = C_UOMName;
+		}
+				
 		public BigDecimal getQtyEntered() {
 			return QtyEntered;
 		}
 		public void setQtyEntered(BigDecimal qtyEntered) {
 			QtyEntered = qtyEntered;
+		}
+		
+		public Integer getC_OrderLine_ID() {
+			return C_OrderLine_ID;
+		}
+		public void setC_OrderLine_ID(Integer C_OrderLine_ID) {
+			this.C_OrderLine_ID = C_OrderLine_ID;
 		}
 		
 	} //OrderLine
