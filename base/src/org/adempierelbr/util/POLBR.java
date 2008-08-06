@@ -83,6 +83,52 @@ public class POLBR{
 		
 	}	//	getC_Invoice_ID
 	
+	public static int getLBR_NotaFiscal_ID(String DocumentNo,boolean IsSOTrx, String trx)
+	{
+		int LBR_NotaFiscal_ID = -1;
+				
+		String sql = "SELECT LBR_NotaFiscal_ID " +
+				     "FROM LBR_NotaFiscal " +
+				     "WHERE DocumentNo = ? " +
+				     "AND AD_Client_ID = ? " +
+				     "AND IsSOTrx = ? " +
+				     "ORDER BY LBR_NotaFiscal_ID desc";
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setString(1, DocumentNo);
+			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
+			pstmt.setString(3, IsSOTrx ? "Y" : "N");
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 LBR_NotaFiscal_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}		
+		
+		return LBR_NotaFiscal_ID;
+		
+	}	//	getLBR_NotaFiscal_ID
+	
 	public static int getLBR_Boleto_ID(String DocumentNo, int C_Invoice_ID, String trx)
 	{
 		int LBR_Boleto_ID = -1;
