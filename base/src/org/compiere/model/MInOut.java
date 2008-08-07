@@ -1238,22 +1238,26 @@ public class MInOut extends X_M_InOut implements DocAction
 			MInOutLine[] lines = getLines(false);
 			for(MInOutLine line : lines)
 			{
-				MMovementLine mLine = new MMovementLine(movement);
-				mLine.setM_Product_ID(line.getM_Product_ID());
-				mLine.setLine(line.getLine());
-				mLine.setDescription(line.getDescription());
-				mLine.setMovementQty(line.getMovementQty());
-				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
-					mLine.setM_LocatorTo_ID(line.getM_Locator_ID());
-				else
-					mLine.setM_Locator_ID(line.getM_Locator_ID());
-				
 				Integer M_Warehouse_ID = null;
 				M_Warehouse_ID = (Integer)docTypeInOut.get_Value("M_Warehouse_ID");
 				if (M_Warehouse_ID == null || M_Warehouse_ID.intValue() == 0){
 					log.log(Level.SEVERE,"M_Warehouse_ID = " + M_Warehouse_ID);
 					return DocAction.STATUS_Invalid;
 				}
+				
+				Integer M_OrderLineLocator_ID = null;
+				MOrderLine ordLine = new MOrderLine(Env.getCtx(),line.getC_OrderLine_ID(),get_TrxName());
+				M_OrderLineLocator_ID = (Integer)ordLine.get_Value("M_Locator_ID");
+				
+				MMovementLine mLine = new MMovementLine(movement);
+				mLine.setM_Product_ID(line.getM_Product_ID());
+				mLine.setLine(line.getLine());
+				mLine.setDescription(line.getDescription());
+				mLine.setMovementQty(line.getMovementQty());
+				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
+					mLine.setM_LocatorTo_ID(M_OrderLineLocator_ID);
+				else
+					mLine.setM_Locator_ID(line.getM_Locator_ID());
 				
 				int locatorTo = getM_LocatorTo_ID(M_Warehouse_ID, getBPartner());
 				
@@ -1282,19 +1286,6 @@ public class MInOut extends X_M_InOut implements DocAction
 					m_processMsg = "Cannot correct Inventory";
 					return DocAction.STATUS_Invalid;
 				}
-				
-				//	Correct Order Line
-				int M_Product_ID   = line.getM_Product_ID();
-				int C_OrderLine_ID = line.getC_OrderLine_ID();
-				if (M_Product_ID != 0 && C_OrderLine_ID != 0){
-					MOrderLine oLine = new MOrderLine(getCtx(),C_OrderLine_ID,get_TrxName());
-					if (line.getMovementQty().signum() != 1)
-						oLine.setQtyReserved(Env.ZERO);
-					else
-						oLine.setQtyReserved(oLine.getQtyReserved().subtract(line.getMovementQty()));
-					oLine.save(get_TrxName());
-					log.info("OrderLine QtyReserved = " + oLine.getQtyReserved());
-				}		
 			}
 			
             movement.processIt(DocAction.ACTION_Complete);
