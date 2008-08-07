@@ -1286,6 +1286,20 @@ public class MInOut extends X_M_InOut implements DocAction
 					m_processMsg = "Cannot correct Inventory";
 					return DocAction.STATUS_Invalid;
 				}
+				 
+                //      Correct Order Line 	 
+                int M_Product_ID   = line.getM_Product_ID(); 	 
+                int C_OrderLine_ID = line.getC_OrderLine_ID(); 	 
+                if (M_Product_ID != 0 && C_OrderLine_ID != 0){ 	 
+                        MOrderLine oLine = new MOrderLine(getCtx(),C_OrderLine_ID,get_TrxName()); 	 
+                        if (line.getMovementQty().signum() != 1) 	 
+                                oLine.setQtyReserved(Env.ZERO); 	 
+                        else 	 
+                                oLine.setQtyReserved(oLine.getQtyReserved().subtract(line.getMovementQty())); 	 
+                        oLine.save(get_TrxName()); 	 
+                        log.info("OrderLine QtyReserved = " + oLine.getQtyReserved()); 	 
+                }
+				
 			}
 			
             movement.processIt(DocAction.ACTION_Complete);
