@@ -135,7 +135,7 @@ public class ProcGenerateNF extends SvrProcess
 			
 		}
 		
-		int LBR_NotaFiscal_ID = generate(getCtx(),invoice,isSOTrx,p_IsOwnDocument,get_TrxName());
+		int LBR_NotaFiscal_ID = generate(getCtx(),invoice, p_LBR_NotaFiscal_ID, isSOTrx, p_IsOwnDocument,get_TrxName());
 		
 		invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 		invoice.save(get_TrxName());
@@ -144,10 +144,8 @@ public class ProcGenerateNF extends SvrProcess
 		
 	}	//	doIt
 	
-	public static int generate(Properties context, MInvoice invoice, boolean isSOTrx, boolean IsOwnDocument, String transaction){
-		
-		int LBR_NotaFiscal_ID = p_LBR_NotaFiscal_ID;
-		
+	public static int generate(Properties context, MInvoice invoice, int LBR_NotaFiscal_ID, boolean isSOTrx, boolean IsOwnDocument, String transaction){
+				
 		ctx = context;
 		trx = transaction;
 		

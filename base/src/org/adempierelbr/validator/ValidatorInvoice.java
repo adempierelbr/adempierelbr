@@ -522,7 +522,7 @@ public class ValidatorInvoice implements ModelValidator
 					
 					isSOTrx = true;
 					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,isSOTrx,true,trx);
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,0,isSOTrx,true,trx);
 					
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 					
@@ -532,7 +532,7 @@ public class ValidatorInvoice implements ModelValidator
 					
 					isSOTrx = false;
 					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,isSOTrx,IsOwnDocument,trx);
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,0,isSOTrx,IsOwnDocument,trx);
 					
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 					
