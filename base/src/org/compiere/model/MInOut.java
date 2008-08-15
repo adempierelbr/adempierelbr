@@ -1313,7 +1313,14 @@ public class MInOut extends X_M_InOut implements DocAction
             	movement.setDocAction(DocAction.ACTION_None);
             	movement.setDocStatus(DocAction.STATUS_Closed);
             	movement.save();
-            	
+
+            	//User Validation
+        		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
+        		if (valid != null)
+        		{
+        			m_processMsg = valid;
+        			return DocAction.STATUS_Invalid;
+        		}
             	return DocAction.STATUS_Completed;
             }
             else
