@@ -245,6 +245,16 @@ public class AmtInWords_PT implements AmtInWords
 					.replaceAll(" e Mil", " Mil")
 					.trim ();	
 	}	//	convert
+	
+	public String getAmtInWords (BigDecimal amount) throws Exception
+	{	
+		amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+		
+		String samount = amount.toString();
+		samount = samount.replaceAll("\\.", ",");
+		
+		return getAmtInWords(samount);
+	}
 
 	
 	/**************************************************************************
@@ -432,6 +442,10 @@ public class AmtInWords_PT implements AmtInWords
 		System.out.println(aiw.getAmtInWords("5715,79"));
 		System.out.println(aiw.getAmtInWords("5715,82"));
 		System.out.println(aiw.getAmtInWords("5715,90"));
+		
+		System.out.println(aiw.getAmtInWords(new BigDecimal(51.34)));
+		
+		
 	}
 	
 }	//	AmtInWords_PT
