@@ -4,10 +4,12 @@ if [ -z "$1" ]; then
    exit 0
 fi
 if [ -z "$2" ]; then
-	$2 = adempiere
+   echo "Usage: $0 DIRECTORY DATABASE USER"
+   exit 0
 fi
 if [ -z "$3" ]; then
-	$3 = adempiere
+   echo "Usage: $0 DIRECTORY DATABASE USER"
+   exit 0
 fi
 
 echo "AdempiereLBR"

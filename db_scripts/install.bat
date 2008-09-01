@@ -1,8 +1,8 @@
 @echo off
 
 IF (%1)==() GOTO END
-IF (%2)==() %2=adempiere
-IF (%3)==() %3=adempiere
+IF (%2)==() GOTO END
+IF (%3)==() GOTO END
 CLS
 
 ECHO AdempiereLBR
