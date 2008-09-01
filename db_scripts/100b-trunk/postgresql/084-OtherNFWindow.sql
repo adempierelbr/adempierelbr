@@ -1484,3 +1484,40 @@ UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_TIMESTAMP('2008-08-31 19:56:02','Y
 UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_TIMESTAMP('2008-08-31 19:56:15','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=2000021
 ;
 
+-- 01/09/2008 10h24min43s BRT
+-- Default comment for updating dictionary
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,2000033,1076,0,19,2000001,'C_InvoiceLine_ID',TO_TIMESTAMP('2008-09-01 10:24:42','YYYY-MM-DD HH24:MI:SS'),100,'Invoice Detail Line','LBRA',22,'The Invoice Line uniquely identifies a single line of an Invoice.','Y','N','N','N','N','N','N','N','N','N','Y','Invoice Line',0,TO_TIMESTAMP('2008-09-01 10:24:42','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 01/09/2008 10h24min43s BRT
+-- Default comment for updating dictionary
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=2000033 AND EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Column_ID!=t.AD_Column_ID)
+;
+
+-- 01/09/2008 10h24min45s BRT
+-- Default comment for updating dictionary
+ALTER TABLE LBR_OtherNFLine ADD COLUMN C_InvoiceLine_ID NUMERIC(10)
+;
+
+-- 01/09/2008 10h24min57s BRT
+-- Default comment for updating dictionary
+UPDATE AD_Table SET AD_Window_ID=2000000,Updated=TO_TIMESTAMP('2008-09-01 10:24:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Table_ID=2000001
+;
+
+-- 01/09/2008 10h25min9s BRT
+-- Default comment for updating dictionary
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,2000033,2000025,0,2000001,TO_TIMESTAMP('2008-09-01 10:25:09','YYYY-MM-DD HH24:MI:SS'),100,'Invoice Detail Line',22,'LBRA','The Invoice Line uniquely identifies a single line of an Invoice.','Y','Y','Y','N','N','N','N','N','Invoice Line',TO_TIMESTAMP('2008-09-01 10:25:09','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 01/09/2008 10h25min9s BRT
+-- Default comment for updating dictionary
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=2000025 AND EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Field_ID!=t.AD_Field_ID)
+;
+
+-- 01/09/2008 10h25min26s BRT
+-- Default comment for updating dictionary
+UPDATE AD_Field SET SeqNo=0,IsDisplayed='N' WHERE AD_Field_ID=2000025
+;
+
+
+
