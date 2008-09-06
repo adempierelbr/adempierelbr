@@ -13,6 +13,8 @@
 package org.adempierelbr.process;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -33,10 +35,15 @@ import org.compiere.util.DB;
  *	Process to Print Nota Fiscal
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *  @contributor Fernando Lucktemberg (Faire Consultoria, www.faire.com.br)
  *	@version $Id: ProcPrintNF.java, 22/01/2008 13:38:00 mgrigioni
  */
 public class ProcPrintNF extends SvrProcess
 {
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(ProcPrintNF.class);
+	
 	/**	Impressora Matricial	        */
 	private int p_LBR_MatrixPrinter_ID = 0;
 	/**	Tipo de Document (Impressão)	*/
@@ -117,46 +124,105 @@ public class ProcPrintNF extends SvrProcess
 	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
 	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
 	    
-	    String sql       = "";
-	    String subdocsql = "";
-	    
-		MDocPrintForm form = new MDocPrintForm();
+		String sql = "SELECT count(*) " +
+				     "FROM lbr_notafiscalline " +
+				     "WHERE lbr_notafiscal_id = ?";
+		int itens = 0;
+		int noRows = 0;
+
+		PreparedStatement pstmt = DB.prepareStatement(sql, Trx);
+		try {
+
+			pstmt.setInt(1, LBR_NotaFiscal_ID);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			itens = rs.getInt(1);
+			pstmt.close();
+			pstmt = null;
+			rs.close();
+			rs = null;
+			sql = "SELECT lbr_norows FROM lbr_docprint WHERE lbr_docprint_id in " +
+				  "(SELECT lbr_subdoc_id FROM lbr_docprint WHERE lbr_docprint_id = ?)";
+
+			pstmt = DB.prepareStatement(sql, Trx);
+			pstmt.setInt(1, LBR_DocPrint_ID);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			noRows = rs.getInt(1);
+			pstmt.close();
+			pstmt = null;
+			rs.close();
+			rs = null;			
+
+		} catch (Exception e) {
+			log.log(Level.SEVERE,"",e);
+		}
+
+		BigDecimal noPages = new BigDecimal(itens).divide(new BigDecimal(noRows), RoundingMode.UP);
+		MDocPrintForm form;
+
 		MDocPrint DoctypePrint = new MDocPrint(ctx,LBR_DocPrint_ID,Trx);
-	    	
-	    sql = "SELECT * " +
-  	          "FROM LBR_NotaFiscal " +
-  	          "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID;
-  
-	    form.setFields(DoctypePrint, sql,false);
-  
-	    boolean hasSubDoc = DoctypePrint.islbr_HasSubDoc();
-  
-	    if (hasSubDoc){
-	    	/**
-	    	 * Produto
-	    	 */
-	    	if (DoctypePrint.getlbr_SubDoc_ID() != 0){
-	    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
-	    		subdocsql = "SELECT * " +
-  	                        "FROM Z_NotaFiscalLine " +
-  		                    "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
-  		                    "AND lbr_IsService = 'N' ORDER BY Line";
-	    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
-	    	}
-	    	/**
-	    	 * Serviço
-	    	 */
-	    	if (DoctypePrint.getlbr_SubDoc2_ID() != 0){
-	    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
-	    		subdocsql = "SELECT * " +
-                            "FROM Z_NotaFiscalLine " +
-                            "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
-                            "AND lbr_IsService = 'Y' ORDER BY Line";
-	    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
-	    	}
-	    }
-	    	
-	    DoctypePrint.print(PrinterType, PrinterName, charSet, condensed, pitch, form.getFields());
+	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
+
+		for(int i = 0; i < noPages.intValue(); i++){
+
+			form = new MDocPrintForm();
+		    String subdocsql = "";	
+		    sql = "SELECT * " +
+	  	          "FROM Z_NotaFiscal_V " +
+	  	          "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID;
+
+		    form.setFields(DoctypePrint, sql,false, new String((i+1) + "/" + noPages.intValue()));
+		    boolean hasSubDoc = DoctypePrint.islbr_HasSubDoc();
+
+		    if (hasSubDoc){
+
+		    	/**
+		    	 * Produto
+		    	 */
+
+		    	if (DoctypePrint.getlbr_SubDoc_ID() != 0){
+
+		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
+		    		subdocsql = "SELECT * " +
+	  	                        "FROM Z_NotaFiscalLine_V " +
+	  		                    "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
+	  		                    " AND lbr_IsService = 'N' AND (line BETWEEN " + ((noRows * i) + 1) + 
+	                            " AND " + (noRows * (i+1)) +") ORDER BY Line";
+
+		    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+
+		    	}
+
+		    	/**
+		    	 * Serviço
+		    	 */
+		    	if (DoctypePrint.getlbr_SubDoc2_ID() != 0){
+
+		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
+		    		subdocsql = "SELECT * " +
+	                            "FROM Z_NotaFiscalLine_V " +
+	                            "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
+	                            " AND lbr_IsService = 'Y' AND (line BETWEEN " + ((noRows * i) + 1) + 
+	                            " AND " + (noRows * (i+1)) +") ORDER BY Line";
+
+		    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+
+		    	}
+
+		    }
+
+		    DoctypePrint.addPage(form.getFields());
+		    if(i + 1 < noPages.intValue()){
+		    	DoctypePrint.newPage();
+		    }
+
+		}
+
+    	DoctypePrint.endJob();
+
+	    
 	    
 	    if (MatrixPrinter.islbr_IsUnixPrinter()){
 	    

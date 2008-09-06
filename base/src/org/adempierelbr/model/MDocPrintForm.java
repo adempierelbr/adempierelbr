@@ -60,12 +60,16 @@ public class MDocPrintForm{
 		
 		return lines;
 		
-	}	
+	}
+	
+	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc){
+		setFields(DocPrint, sql, IsSubDoc, "");
+	}
 	
 	/**************************************************************************
 	 *  Set Fields - Default
 	 */
-	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc){
+	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc, String pageNo){
 		
 		int SubDocRow = 0;
 		int RowNo     = 0;
@@ -96,6 +100,12 @@ public class MDocPrintForm{
       			  		if (value == null){
       			  			value = "";
       			  		}
+      			  		
+      			  		//PageNo
+      			  		if (columnName.equalsIgnoreCase("PageNo")){
+      			  			value = pageNo;
+      			  		}
+      			  		
       			  		otherRow = fields[i].setValue(value,fields[i].getlbr_FieldLength(),fields[i].islbr_OtherRow());
 	            	}
 	            	//Value

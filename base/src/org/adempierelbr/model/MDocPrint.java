@@ -29,6 +29,7 @@ import com.java4less.textprinter.ports.FilePort;
  *	Model for X_LBR_DocPrint
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *	@contributor Fernando Lucktemberg (Faire Consultoria, www.faire.com.br)
  *	@version $Id: MDocPrint.java, 12/11/2007 13:38:00 mgrigioni
  */
 public class MDocPrint extends X_LBR_DocPrint {
@@ -37,6 +38,11 @@ public class MDocPrint extends X_LBR_DocPrint {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+    private FilePort port;
+    private TextPrinter printer;
+    JobProperties job;
+    TextProperties prop;
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -48,47 +54,103 @@ public class MDocPrint extends X_LBR_DocPrint {
 		super(ctx,ID,trx);	
 	}
 		
-	/**************************************************************************
-	 * 	Public Print
-	 */
-	public void print(String PrinterType, String PrinterName, 
-			          String charSet, boolean condensed,
-			          int pitch,MDocPrintFormField[] fields){
-		
-		
-        TextPrinter printer = PrinterFactory.getPrinter(PrinterType); // tipo da impressora
-        FilePort port = new FilePort(PrinterName); // localização da impressora
-        JobProperties job = printer.getDefaultJobProperties();
-        job.cols = getlbr_NoCols(); // colunas na folha
-        job.rows = getlbr_NoRows(); // linhas na folha
-        		
-        try {
-        	printer.startJob(port, job);
-        	        
-    	    TextProperties prop = printer.getDefaultTextProperties();
-    	    if (!(charSet == null || charSet.equals("")))
-    	    	prop.characterSet = charSet;
-    	    
-    	    prop.condensed = condensed;
-    	    prop.pitch = pitch;
-    	    
-    	    //COMANDOS ESCP - linespacing = 1/8
-    	    //String ESCP = "C60";
-    	    //printer.printString(ESCP,0,0,prop);
+	public void startJob(String PrinterType, String PrinterName, 
+			String charSet, boolean condensed, int pitch){
 
-    	    int lenght = fields.length;
-    	    for (int i=0;i<lenght;i++){
-    	  
-    	    	printer.printString(fields[i].getValue(), fields[i].getLocationY(), fields[i].getLocationX(), prop);
-    		}
-    	    
-    	    //Finish Job
-            printer.endJob();
-        }
-        catch (TextPrinterException ex) {
-        	ex.printStackTrace();
-    	}
-    	        
-    }
+		printer = PrinterFactory.getPrinter(PrinterType); // tipo da impressora
+		port = new FilePort(PrinterName); // localização da impressora
+		job = printer.getDefaultJobProperties();
+		job.cols = getlbr_NoCols(); // colunas na folha
+		job.rows = getlbr_NoRows(); // linhas na folha
+
+		try {
+			
+			printer.startJob(port, job);
+			prop = printer.getDefaultTextProperties();
+			
+			if (!(charSet == null || charSet.equals("")))
+				prop.characterSet = charSet;
+			
+			prop.condensed = condensed;
+			prop.pitch = pitch;
+
+		} catch (TextPrinterException ex) {
+			ex.printStackTrace();
+		}
+	} //startJob
+
+	/***************************************************************************
+	 * Public Print
+	 */
+	public void addPage(MDocPrintFormField[] fields){        		
+		
+		//COMANDOS ESCP - linespacing = 1/8
+		//String ESCP = "C60";
+		//printer.printString(ESCP,0,0,prop);
+
+	    int lenght = fields.length;
+
+	    for (int i=0;i<lenght;i++){
+	    	printer.printString(fields[i].getValue(), fields[i].getLocationY(), fields[i].getLocationX(), prop);
+		}
+	} //addPage
+
+	public void endJob(){
+		try { 
+			printer.endJob(); //Finish Job
+		}
+		catch (TextPrinterException ex) {
+			ex.printStackTrace();
+		}
+	} //endJob
+
+	public void newPage(){
+
+		try {
+			printer.newPage();
+		}
+		catch (TextPrinterException ex) {
+			ex.printStackTrace();
+		}
+	} //newPage
+	
+	@Deprecated
+	public void print(String PrinterType, String PrinterName, 
+	          String charSet, boolean condensed,
+	          int pitch,MDocPrintFormField[] fields){
+
+		TextPrinter printer = PrinterFactory.getPrinter(PrinterType); // tipo da impressora
+		FilePort port = new FilePort(PrinterName); // localização da impressora
+		JobProperties job = printer.getDefaultJobProperties();
+		job.cols = getlbr_NoCols(); // colunas na folha
+		job.rows = getlbr_NoRows(); // linhas na folha
+		
+		try {
+			printer.startJob(port, job);
+	        
+			TextProperties prop = printer.getDefaultTextProperties();
+			if (!(charSet == null || charSet.equals("")))
+				prop.characterSet = charSet;
+			
+			prop.condensed = true;
+			//prop.pitch = pitch;
+				
+			//COMANDOS ESCP - linespacing = 1/8
+			//String ESCP = "C60";
+			//printer.printString(ESCP,0,0,prop);
+
+			int lenght = fields.length;
+			for (int i=0;i<lenght;i++){
+				printer.printString(fields[i].getValue(), fields[i].getLocationY(), fields[i].getLocationX(), prop);
+			}
+  
+			//Finish Job
+			printer.endJob();
+		}
+		catch (TextPrinterException ex) {
+			ex.printStackTrace();
+		}
+      
+	}//print
 	
 } //MDocPrint
