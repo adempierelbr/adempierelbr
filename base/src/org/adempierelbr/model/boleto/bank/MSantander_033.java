@@ -252,7 +252,7 @@ public class MSantander_033
 			String CodOcorren      = linhas[i].substring(108, 110); //Cód. Ocorrencia
 			String[] DescOcorren   = (occurType.get(Integer.parseInt(CodOcorren)));
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
-			String NossoNo         = (linhas[i].substring(116, 126)).trim(); //Nosso Número
+			String NossoNo         = (linhas[i].substring(65, 72)).trim(); //Nosso Número
 			Timestamp  DataOcorren = POLBR.stringTodate((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
 			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
 			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
