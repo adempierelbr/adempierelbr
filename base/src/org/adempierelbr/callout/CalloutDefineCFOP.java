@@ -132,6 +132,12 @@ public class CalloutDefineCFOP extends CalloutEngine {
 				+ "and lbr_ismanufactured in('B', ?) "
 				+ "and (lbr_transactiontype = ? or lbr_transactiontype is null)";
 
+		
+		if (mlbp == null || mlo == null){
+			log.log(Level.SEVERE,"Location == null");
+			return "";
+		}
+		
 		log.finest(sql);
 		PreparedStatement pstmt = null;
 		Integer cfopID = null;
@@ -144,16 +150,16 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			if (mbp.get_Value("lbr_Suframa") != null)
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_ZonaFranca);
+			else if (mlbp.getC_Country_ID() != mlo.getC_Country_ID())
+				pstmt.setString(4,
+						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro);
 			else if (mlbp.getRegion().equals(mlo.getRegion()))
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdenticos);
-			else if (!mlbp.getRegion().equals(mlo.getRegion())
-					&& mlbp.getCountry().equals(mlo.getCountry()))
+			else if (!mlbp.getRegion().equals(mlo.getRegion()))
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
-			else
-				pstmt.setString(4,
-						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro);
+
 
 			boolean isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution")) &&
 				POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));

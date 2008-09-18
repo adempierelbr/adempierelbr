@@ -277,6 +277,12 @@ public class ProcGenerateNF extends SvrProcess
 			else{
 				NotaFiscal.setC_DocType_ID(0);
 				NotaFiscal.setC_DocTypeTarget_ID(0);
+				
+				if (invoice.getPOReference() == null ||
+					invoice.getPOReference().equals("")){
+					return 0;
+				}
+				
 				NotaFiscal.setDocumentNo(invoice.getPOReference());
 				NotaFiscal.setIsPrinted(true);
 			}
