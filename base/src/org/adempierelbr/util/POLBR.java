@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 
 import org.compiere.util.CLogger;
@@ -514,5 +516,76 @@ public class POLBR{
 		String dataFormatada = formatter.format(dt); 
 		return dataFormatada;
 	}
+	
+	/**
+	 * Date Utils
+	 */
+	public static Timestamp addDays (Timestamp day, int offset)
+	{
+		if (day == null)
+			day = new Timestamp(System.currentTimeMillis());
+		//
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		if (offset != 0)
+			cal.add(Calendar.DAY_OF_YEAR, offset);	//	may have a problem with negative (before 1/1)
+		//
+		return new Timestamp (cal.getTimeInMillis());
+	}	//	addDays
+	
+	public static Timestamp addWeeks (Timestamp day, int offset)
+	{
+		if (day == null)
+			day = new Timestamp(System.currentTimeMillis());
+		//
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		if (offset != 0)
+			cal.add(Calendar.WEEK_OF_YEAR, offset);	//	may have a problem with negative (before 1/1)
+		//
+		return new Timestamp (cal.getTimeInMillis());
+	}	//	addWeeks
+	
+	public static Timestamp addMonths (Timestamp day, int offset)
+	{
+		if (day == null)
+			day = new Timestamp(System.currentTimeMillis());
+		//
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		if (offset != 0)
+			cal.add(Calendar.MONTH, offset);	//	may have a problem with negative (before 1/1)
+		//
+		return new Timestamp (cal.getTimeInMillis());
+	}	//	addMonths
+	
+	public static Timestamp addYears (Timestamp day, int offset)
+	{
+		if (day == null)
+			day = new Timestamp(System.currentTimeMillis());
+		//
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		if (offset != 0)
+			cal.add(Calendar.YEAR, offset);	//	may have a problem with negative (before 1/1)
+		//
+		return new Timestamp (cal.getTimeInMillis());
+	}	//	addYears
 	
 } //MPOLBR
