@@ -68,7 +68,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		X_LBR_OtherNF otherNF = new X_LBR_OtherNF(ctx,LBR_OtherNF_ID,trx);
 		
 		ProcessarLinhas(otherNF);
-		//otherNF.setProcessed(true);
+		otherNF.setProcessed(true);
 		otherNF.save(trx);
 		
 		return returnMsg.toString();
