@@ -168,7 +168,7 @@ public class ProcPrintNF extends SvrProcess
 
 		for(int i = 0; i < noPages.intValue(); i++){
 			
-			if (noPages.intValue() == (i-1)){
+			if (noPages.intValue() == (i+1)){
 				lastpage = true;
 			}
 			else{
