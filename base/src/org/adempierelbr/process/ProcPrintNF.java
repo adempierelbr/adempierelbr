@@ -123,6 +123,7 @@ public class ProcPrintNF extends SvrProcess
 	    String charSet      = MatrixPrinter.getlbr_Characterset();
 	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
 	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
+		boolean lastpage    = true;
 	    
 		String sql = "SELECT count(*) " +
 				     "FROM lbr_notafiscalline " +
@@ -166,6 +167,13 @@ public class ProcPrintNF extends SvrProcess
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
 
 		for(int i = 0; i < noPages.intValue(); i++){
+			
+			if (noPages.intValue() == (i-1)){
+				lastpage = true;
+			}
+			else{
+				lastpage = false;
+			}
 
 			form = new MDocPrintForm();
 		    String subdocsql = "";	
@@ -173,7 +181,7 @@ public class ProcPrintNF extends SvrProcess
 	  	          "FROM Z_NotaFiscal_V " +
 	  	          "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID;
 
-		    form.setFields(DoctypePrint, sql,false, new String((i+1) + "/" + noPages.intValue()));
+		    form.setFields(DoctypePrint, sql,false, new String((i+1) + "/" + noPages.intValue()),lastpage);
 		    boolean hasSubDoc = DoctypePrint.islbr_HasSubDoc();
 
 		    if (hasSubDoc){

@@ -63,13 +63,13 @@ public class MDocPrintForm{
 	}
 	
 	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc){
-		setFields(DocPrint, sql, IsSubDoc, "");
+		setFields(DocPrint, sql, IsSubDoc, "", true);
 	}
 	
 	/**************************************************************************
 	 *  Set Fields - Default
 	 */
-	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc, String pageNo){
+	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc, String pageNo, boolean lastpage){
 		
 		int SubDocRow = 0;
 		int RowNo     = 0;
@@ -134,6 +134,12 @@ public class MDocPrintForm{
 	            	//Alignment
 	            	int x = fields[i].getAlignment();
 	            	int y = 0;
+	            	
+	            	//Check Header Columns
+	            	if (!fields[i].islbr_IsHeader() && !lastpage){
+	            		fields[i].setValue("");
+	            		otherRow = false;
+	            	}
 	            	
 	            	if (IsSubDoc){
 	            		y = SubDocRow + fields[i].getlbr_RowNo();
