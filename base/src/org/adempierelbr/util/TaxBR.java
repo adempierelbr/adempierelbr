@@ -506,8 +506,9 @@ public class TaxBR
 					
 					org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);
 					Integer LBR_TaxGroup_ID = (Integer)tax.get_Value("LBR_TaxGroup_ID");
-					if (LBR_TaxGroup_ID != null || LBR_TaxGroup_ID.intValue() == 0){
-						
+					
+					if (LBR_TaxGroup_ID != null && LBR_TaxGroup_ID.intValue() != 0) //BUG: Quando TaxGroup e NULL
+					{
 						X_LBR_NFLineTax nfLineTax = new X_LBR_NFLineTax(ctx,0,trx);
 						nfLineTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
 						nfLineTax.setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);

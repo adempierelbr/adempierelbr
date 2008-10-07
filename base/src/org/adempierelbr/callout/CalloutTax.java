@@ -483,6 +483,10 @@ public class CalloutTax extends CalloutEngine
 				}
 				
 				Integer LBR_TaxName_ID   = rs.getInt(1);
+				//TODO: BUGFIX: Erro, SELECT Retorna um TaxName que nao existe
+				// Correcao temporaria
+				if(DB.getSQLValue(null, "SELECT COALESCE(LBR_TaxName_ID, 0) FROM LBR_TaxName WHERE LBR_TaxName_ID=" + LBR_TaxName_ID) <= 0)
+					continue;
 				
 				X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,LBR_TaxName_ID,null);
 				//Verifica o Tipo do Item, para definir os Impostos

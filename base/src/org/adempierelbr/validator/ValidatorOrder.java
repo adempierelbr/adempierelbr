@@ -219,6 +219,7 @@ public class ValidatorOrder implements ModelValidator
 			
 				MOrderTax oTax = TaxBR.getMOrderTax(ctx, order.getC_Order_ID(), oLine.getC_Tax_ID(), trx);
 				oTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+				oTax.setAD_Org_ID(order.getAD_Org_ID()); // BUGFIX: LNM
 			
 				if (!order.isTaxIncluded()){
 					oTax.setTaxBaseAmt(order.getTotalLines());
@@ -253,8 +254,8 @@ public class ValidatorOrder implements ModelValidator
 					}
 					oTax.setTaxBaseAmt(order.getTotalLines());
 				}
-			
-				oTax.save(trx);
+				if(!oTax.save(trx))
+					log.warning("Unable to save Order Tax."); //Tracing errors
 			} //isSummary
 			
 		} //new or change
@@ -333,6 +334,8 @@ public class ValidatorOrder implements ModelValidator
 									
 									MOrderTax oTax = TaxBR.getMOrderTax(ctx, order.getC_Order_ID(), cTax.getC_Tax_ID(), trx);
 									
+									oTax.setAD_Org_ID(order.getAD_Org_ID()); //BUG FIX
+									
 									BigDecimal TaxAmt     = oTax.getTaxAmt();
 									BigDecimal TaxBaseAmt = oTax.getTaxBaseAmt();
 									
@@ -340,8 +343,8 @@ public class ValidatorOrder implements ModelValidator
 									
 									oTax.setTaxBaseAmt(TaxBaseAmt.add(taxLine.getlbr_TaxBaseAmt()));
 									oTax.setIsTaxIncluded(order.isTaxIncluded());
-									oTax.save(trx);
-								
+									if(!oTax.save(trx))
+										log.warning("Unable to save Order Tax."); //Tracing errors
 								}
 								
 								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);

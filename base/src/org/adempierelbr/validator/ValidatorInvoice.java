@@ -300,7 +300,8 @@ public class ValidatorInvoice implements ModelValidator
 			
 					MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iLine.getC_Tax_ID(), trx);
 					iTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-			
+					iTax.setAD_Org_ID(invoice.getAD_Org_ID());
+					
 					if (!invoice.isTaxIncluded()){
 						iTax.setTaxBaseAmt(invoice.getTotalLines());
 						invoice.setGrandTotal(invoice.getTotalLines().add(TaxBR.getMInvoiceTaxAmt(invoice.getC_Invoice_ID(), trx)));
@@ -415,6 +416,7 @@ public class ValidatorInvoice implements ModelValidator
 								if (taxLine.islbr_PostTax()){
 									
 									MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), cTax.getC_Tax_ID(), trx);
+									iTax.setAD_Org_ID(invoice.getAD_Org_ID());
 									
 									BigDecimal TaxAmt     = iTax.getTaxAmt();
 									BigDecimal TaxBaseAmt = iTax.getTaxBaseAmt();
