@@ -466,8 +466,8 @@ public class ProcGenerateNF extends SvrProcess
 					
 					//Desconto
 					double discount = 0.0;
-					if (NotaFiscalLine.getPrice().signum() == 1){
-						discount = (1-NotaFiscalLine.getPriceListAmt().doubleValue()/NotaFiscalLine.getPrice().doubleValue())*100;
+					if (NotaFiscalLine.getPrice().signum() == 1 && NotaFiscalLine.getPriceListAmt().signum() == 1){
+						discount = (1-NotaFiscalLine.getPrice().doubleValue()/NotaFiscalLine.getPriceListAmt().doubleValue())*100;
 					}
 					NotaFiscalLine.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
 					
