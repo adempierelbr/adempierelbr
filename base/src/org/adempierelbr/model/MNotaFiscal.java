@@ -170,6 +170,20 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 					else return false;
 			}
 			
+			/* CANCELA OV
+			if (getC_Order_ID() != 0){
+				MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
+				if (order.getDocStatus().equals(MOrder.DOCSTATUS_Voided) || //Already Voided
+				    order.getDocStatus().equals(MOrder.DOCSTATUS_Reversed))
+						;
+				else
+					if (order.voidIt()){
+						order.save(get_TrxName());
+					}
+					else return false;
+			}
+			*/
+			
 		} //printed
 		else{
 			
