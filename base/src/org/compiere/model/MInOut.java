@@ -2001,12 +2001,12 @@ public class MInOut extends X_M_InOut implements DocAction
 			{
 				if (mPO[i].getC_InvoiceLine_ID() == 0)
 					mPO[i].delete(true);
-				else
+				/*else
 				{
 					mPO[i].setM_InOutLine_ID(0);
 					mPO[i].save();
 					
-				}
+				}*/
 			}
 		}
 
