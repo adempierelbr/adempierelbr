@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
@@ -97,11 +96,25 @@ public class ProcPrintNF extends SvrProcess
 		
 		int i = 0;
 		
+		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(getCtx(),p_LBR_MatrixPrinter_ID,null);
+		
+		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
+		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
+	    String charSet      = MatrixPrinter.getlbr_Characterset();
+	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
+	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
+		
+		MDocPrint DoctypePrint = new MDocPrint(getCtx(),p_LBR_DocPrint_ID,null);
+	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
+		if (i != 0)
+			DoctypePrint.newPage();
+		
 		for (i = p_LBR_NotaFiscal_ID;i<=p_LBR_NotaFiscal_ID_to;i++){
 			
 			MNotaFiscal NotaFiscal = new MNotaFiscal(getCtx(),i,get_TrxName());
+			
 			if (!NotaFiscal.isPrinted() && !NotaFiscal.isCancelled()){
-				print(getCtx(),p_LBR_MatrixPrinter_ID,p_LBR_DocPrint_ID,i,null);
+				print(getCtx(), i, MatrixPrinter, DoctypePrint,null);
 			}
 			
 			NotaFiscal.setIsPrinted(true);
@@ -109,20 +122,17 @@ public class ProcPrintNF extends SvrProcess
 			NotaFiscal.save(get_TrxName());
 	
 		}
+		
+		DoctypePrint.endJob();
+		
+		MDocPrint.unixPrint(MatrixPrinter);
 			    
 		return "ProcPrintNF Process Completed " + "Nota: " + p_LBR_NotaFiscal_ID;
 		
 	}	//	doIt
 	
-	public static void print(Properties ctx, int LBR_MatrixPrinter_ID, int LBR_DocPrint_ID, int LBR_NotaFiscal_ID, String Trx){
+	public static void print(Properties ctx, int LBR_NotaFiscal_ID, X_LBR_MatrixPrinter MatrixPrinter, MDocPrint DoctypePrint, String Trx){
 		
-		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(ctx,LBR_MatrixPrinter_ID,Trx);
-		
-		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
-		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
-	    String charSet      = MatrixPrinter.getlbr_Characterset();
-	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
-	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
 		boolean lastpage    = true;
 	    
 		String sql = "SELECT count(*) " +
@@ -146,7 +156,7 @@ public class ProcPrintNF extends SvrProcess
 				  "(SELECT lbr_subdoc_id FROM lbr_docprint WHERE lbr_docprint_id = ?)";
 
 			pstmt = DB.prepareStatement(sql, Trx);
-			pstmt.setInt(1, LBR_DocPrint_ID);
+			pstmt.setInt(1, DoctypePrint.getLBR_DocPrint_ID());
 			rs = pstmt.executeQuery();
 			rs.next();
 			
@@ -162,9 +172,6 @@ public class ProcPrintNF extends SvrProcess
 
 		BigDecimal noPages = new BigDecimal(itens).divide(new BigDecimal(noRows), RoundingMode.UP);
 		MDocPrintForm form;
-
-		MDocPrint DoctypePrint = new MDocPrint(ctx,LBR_DocPrint_ID,Trx);
-	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
 
 		for(int i = 0; i < noPages.intValue(); i++){
 			
@@ -227,23 +234,7 @@ public class ProcPrintNF extends SvrProcess
 		    }
 
 		}
-
-    	DoctypePrint.endJob();
-
-	    
-	    
-	    if (MatrixPrinter.islbr_IsUnixPrinter()){
-	    
-	    	String impressora = MatrixPrinter.getlbr_UnixPrinterName();
-	    	String arquivo    = MatrixPrinter.getlbr_PrinterPath();
-	    
-	    	try {
-	    		Runtime.getRuntime().exec(new String[] { "lpr", "-P", impressora , arquivo });
-	    	} catch (IOException e) {
-	    		e.printStackTrace();
-	    	}	
-	    }
-	    
+    
 	}
 	
 	/**************************************************************************

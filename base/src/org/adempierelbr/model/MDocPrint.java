@@ -15,6 +15,7 @@ package org.adempierelbr.model;
 import java.util.Properties;
 
 import org.compiere.model.X_LBR_DocPrint;
+import org.compiere.model.X_LBR_MatrixPrinter;
 
 import com.java4less.textprinter.JobProperties;
 import com.java4less.textprinter.PrinterFactory;
@@ -78,6 +79,22 @@ public class MDocPrint extends X_LBR_DocPrint {
 			ex.printStackTrace();
 		}
 	} //startJob
+	
+	public static void unixPrint(X_LBR_MatrixPrinter MatrixPrinter){
+		
+	    if (MatrixPrinter.islbr_IsUnixPrinter()){
+	    
+	    	String impressora = MatrixPrinter.getlbr_UnixPrinterName();
+	    	String arquivo    = MatrixPrinter.getlbr_PrinterPath();
+	    
+	    	try {
+	    		Runtime.getRuntime().exec(new String[] { "lpr", "-P", impressora , arquivo });
+	    	} catch (Exception e) {
+	    		e.printStackTrace();
+	    	}	
+	    }
+	    
+	} //unixPrint
 
 	/***************************************************************************
 	 * Public Print

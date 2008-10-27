@@ -38,6 +38,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.adempierelbr.model.MDocPrint;
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.process.ProcPrintNF;
 import org.compiere.apps.ADialog;
@@ -51,6 +52,7 @@ import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
+import org.compiere.model.X_LBR_MatrixPrinter;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.process.ProcessInfo;
 import org.compiere.swing.CLabel;
@@ -381,24 +383,13 @@ public class FormNotaFiscal extends CPanel
 		
 		if (m_whereClause.length() > 0 && m_selectionActive){
 
-			Properties ctx = Env.getCtx();
-			//Trx transaction = Trx.get(Trx.createTrxName(), true);
-			//String trx = transaction.getTrxName();
-			
-			Integer[] selection = getSelection();
-			for (int i=0;i<selection.length;i++){
-				
-				MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
-				
-				//Impressão
-				//FIXME: DocPrint está hardcoded
-				ProcPrintNF.print(ctx, (Integer)m_LBR_MatrixPrinter_ID, 2000000, selection[i], null);
-				
-				NotaFiscal.setIsPrinted(true);
-				NotaFiscal.setProcessed(true);
-				NotaFiscal.save();
-				
+			try{			
+				print();
 			}
+			catch (Exception ex){
+				log.log(Level.SEVERE, "", ex);
+			}
+			
 			m_mark = true;
 			executeQuery();
 		
@@ -410,6 +401,45 @@ public class FormNotaFiscal extends CPanel
 			return;	
 		}
 	}	//	actionPerformed
+	
+	private void print(){
+		
+		Properties ctx = Env.getCtx();
+		//Trx transaction = Trx.get(Trx.createTrxName(), true);
+		//String trx = transaction.getTrxName();
+		
+		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
+		
+		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
+		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
+	    String charSet      = MatrixPrinter.getlbr_Characterset();
+	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
+	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
+		
+		//Impressão
+		//FIXME: DocPrint está hardcoded
+		MDocPrint DoctypePrint = new MDocPrint(ctx,2000000,null);
+	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
+		
+		Integer[] selection = getSelection();
+		for (int i=0;i<selection.length;i++){
+			
+			if (i != 0)
+				DoctypePrint.newPage();
+			
+			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
+			ProcPrintNF.print(ctx,selection[i], MatrixPrinter, DoctypePrint, null);
+			
+			NotaFiscal.setIsPrinted(true);
+			NotaFiscal.setProcessed(true);
+			NotaFiscal.save();
+			
+		}
+		
+		DoctypePrint.endJob();
+		MDocPrint.unixPrint(MatrixPrinter);
+		
+	} //print
 
 	/**
 	 *	Vetoable Change Listener - requery
