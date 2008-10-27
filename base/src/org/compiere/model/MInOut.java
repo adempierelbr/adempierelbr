@@ -1999,14 +1999,7 @@ public class MInOut extends X_M_InOut implements DocAction
 			MMatchPO[] mPO = MMatchPO.getInOut(getCtx(), getM_InOut_ID(), get_TrxName());
 			for (int i = 0; i < mPO.length; i++)
 			{
-				if (mPO[i].getC_InvoiceLine_ID() == 0)
-					mPO[i].delete(true);
-				/*else
-				{
-					mPO[i].setM_InOutLine_ID(0);
-					mPO[i].save();
-					
-				}*/
+				mPO[i].delete(true);
 			}
 		}
 
