@@ -29,6 +29,8 @@ import org.compiere.util.DB;
  *	MDocPrintForm
  *
  *	DocPrint Form
+ *
+ *  BF [ 2200616 ] Problemas com Impressão de Documentos
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MDocPrintForm.java, 12/11/2007 14:55:00 mgrigioni
@@ -80,6 +82,8 @@ public class MDocPrintForm{
 		
 		boolean otherRow = false;
 		int     newRow   = 1;
+		int     auxRow   = 0;
+		int     lasty    = 0;
 		
 		try
     	{
@@ -148,8 +152,16 @@ public class MDocPrintForm{
 	            				RowNo = fields[i].getlbr_RowNo();
 	            		}
 	            	}
-	            	else
+	            	else{
 	            		y = fields[i].getlbr_RowNo();
+	            		if ((lasty + auxRow) > y){
+	            			y += auxRow;
+	            		}
+	            		else{
+	            			auxRow = 0;
+	            		}
+	            	}
+	            		
 	            	
 	            	MDocPrintFormField aux = new MDocPrintFormField(fields[i].getValue(),x,y);
 	            	fFields.add(aux);
@@ -174,12 +186,15 @@ public class MDocPrintForm{
 			            	
 			            	SubDocRow++;
 			            	newRow++;
+			            	auxRow++;
 			            	
 	            		}
 	            		
 	            		newRow = 1;
 	            		
 	            	}
+	            
+		            lasty = y; //Salva último y
 	            	
 	            }
 	            
@@ -187,7 +202,7 @@ public class MDocPrintForm{
 	            SubDocRow++;
 	            
 	            RowNo = 0; //Zera RowNo para próxima passagem
-	            
+	            	            
     		}
     		rs.close ();
     		pstmt.close ();
