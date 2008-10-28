@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ import java.util.logging.Level;
 
 import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MConversionRate;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_NotaFiscal;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	MNotaFiscal
@@ -137,6 +140,24 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return CNPJ_IE;
 	
 	}//getCNPJ_IE
+	
+	/**
+	 * Convert Amt
+	 * @throws Exception 
+	 */
+	public BigDecimal convertAmt(BigDecimal Amt, int C_Currency_ID) throws Exception{
+		
+		Amt = MConversionRate.convertBase(getCtx(), Amt, C_Currency_ID, 
+				  getDateDoc(), 0, Env.getAD_Client_ID(getCtx()), 
+				  Env.getAD_Org_ID(getCtx()));
+
+		if (Amt == null){
+			log.log(Level.SEVERE,"null if no rate = " + getDateDoc() + " / Currency = " + C_Currency_ID);
+			throw new Exception();
+		}
+		
+		return Amt;
+	} //convertAmt
 	
 	/**
 	 * 	Void Document.

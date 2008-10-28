@@ -26,6 +26,7 @@ import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MClient;
 import org.compiere.model.MClientInfo;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
@@ -73,7 +74,7 @@ public class ProcGenerateNF extends SvrProcess
 	
 	public static Properties ctx;
 	public static String     trx;
-	public static boolean    isSOTrx = true;
+	public static boolean    isSOTrx    = true;
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcGenerateNF.class);
@@ -187,7 +188,8 @@ public class ProcGenerateNF extends SvrProcess
 			MCountry                   country               = null; //País
 				
 			MOrgInfo                   orgInfo               = null; //Organização
-				
+			MClient                    client                = null; //Empresa	
+			
 			Map<String,String>         refNCM                = new HashMap<String, String>(); //Referência NCM
 			String                     NCMReference          = "";
 			int                        ref_ID                = -1;
@@ -204,6 +206,8 @@ public class ProcGenerateNF extends SvrProcess
 			
 			BigDecimal				   TotalLines			 = Env.ZERO;
 			BigDecimal				   ServiceTotalAmt		 = Env.ZERO;
+			
+			boolean                    hasConvert            = false;
 					
 			//Linhas da Fatura
 			lines = invoice.getLines();
@@ -261,6 +265,9 @@ public class ProcGenerateNF extends SvrProcess
 				
 			//Organização
 			orgInfo = MOrgInfo.get(ctx, invoice.getAD_Org_ID());
+			
+			//Empresa
+			client = MClient.get(ctx);
 			
 				
 			/** SET NOTA FISCAL **/
@@ -410,7 +417,15 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.save(trx);
 				
 			TaxBR.setNFTax(ctx, invoice.getC_Invoice_ID(), NotaFiscal.getLBR_NotaFiscal_ID(), trx);
-				
+			
+			//CONVERSAO
+			int clientCurrency = client.getC_Currency_ID();
+			int C_Currency_ID  = invoice.getC_Currency_ID();
+			
+			if (clientCurrency != C_Currency_ID){
+				hasConvert = true;
+			}
+			
 			/** SET NOTA FISCAL LINE **/
 			for (int i=0;i<numLinhas;i++){
 					
@@ -446,14 +461,26 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscalLine.setProductName(product.getName());   //Nome/Descrição Produto
 					NotaFiscalLine.setProductValue(product.getValue());   //Código Produto
 					
+					//VALORES
+					BigDecimal LineNetAmt = lines[i].getLineNetAmt();
+					BigDecimal Price      = lines[i].getPriceEntered();
+					BigDecimal PriceList  = lines[i].getPriceList();
+					
+					/** CONVERSAO DE MOEDA **/
+					if (hasConvert){
+						LineNetAmt = NotaFiscal.convertAmt(LineNetAmt, C_Currency_ID);
+						Price      = NotaFiscal.convertAmt(Price, C_Currency_ID);
+						PriceList  = NotaFiscal.convertAmt(PriceList, C_Currency_ID);	
+					}
+					
 					//Serviço
 					if (product.getProductType().equals(MProduct.PRODUCTTYPE_Item)){
 						NotaFiscalLine.setlbr_IsService(false);
-						TotalLines = TotalLines.add(lines[i].getLineNetAmt());
+						TotalLines = TotalLines.add(LineNetAmt);
 					}
 					else{
 						NotaFiscalLine.setlbr_IsService(true);
-						ServiceTotalAmt = ServiceTotalAmt.add(lines[i].getLineNetAmt());
+						ServiceTotalAmt = ServiceTotalAmt.add(LineNetAmt);
 					}
 					
 					NotaFiscalLine.setVendorProductNo(VendorProductNo);   //Código do Produto (Cliente)
@@ -461,8 +488,8 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscalLine.setlbr_UOMName(uom.getUOMSymbol());   //Unidade de Medida
 					NotaFiscalLine.setlbr_TaxStatus(lines[i].get_ValueAsString("lbr_TaxStatus")); //Situação Tributária
 					NotaFiscalLine.setQty(lines[i].getQtyEntered());   //Quantidade
-					NotaFiscalLine.setPrice(lines[i].getPriceEntered()); //Preço
-					NotaFiscalLine.setPriceListAmt(lines[i].getPriceList()); //Preço de Lista
+					NotaFiscalLine.setPrice(Price); //Preço
+					NotaFiscalLine.setPriceListAmt(PriceList); //Preço de Lista
 					
 					//Desconto
 					double discount = 0.0;
@@ -471,7 +498,7 @@ public class ProcGenerateNF extends SvrProcess
 					}
 					NotaFiscalLine.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
 					
-					NotaFiscalLine.setLineTotalAmt(lines[i].getLineNetAmt()); //Preço de Linha
+					NotaFiscalLine.setLineTotalAmt(LineNetAmt); //Preço de Linha
 					
 					/* NCM */
 					if (LBR_NCM_ID != null && LBR_NCM_ID.intValue() != 0){
@@ -564,7 +591,12 @@ public class ProcGenerateNF extends SvrProcess
 			}//loop Linhas
 			
 			/** Valores **/
-			NotaFiscal.setGrandTotal(invoice.getGrandTotal());   //Valor Total da Nota
+			BigDecimal GrandTotal = invoice.getGrandTotal();
+			if (hasConvert){
+				GrandTotal = NotaFiscal.convertAmt(GrandTotal, C_Currency_ID);
+			}
+			
+			NotaFiscal.setGrandTotal(GrandTotal);   //Valor Total da Nota
 			NotaFiscal.setTotalLines(TotalLines.setScale(2, BigDecimal.ROUND_HALF_UP)); //Valor dos Produtos
 			NotaFiscal.setlbr_ServiceTotalAmt(ServiceTotalAmt.setScale(2, BigDecimal.ROUND_HALF_UP)); //Valor dos Serviços 
 			
