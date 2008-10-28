@@ -17,44 +17,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MTax;
-import org.adempierelbr.model.boleto.MBoleto;
-import org.adempierelbr.process.ProcGenerateNF;
-import org.adempierelbr.util.POLBR;
-import org.adempierelbr.util.TaxBR;
 import org.compiere.apps.search.Info_Column;
-import org.compiere.model.MAllocationHdr;
-import org.compiere.model.MAllocationLine;
 import org.compiere.model.MClient;
-import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInOutLine;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MInvoiceTax;
-import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.X_LBR_TaxLine;
-import org.compiere.model.X_LBR_TaxName;
-import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Msg;
-
-import bsh.EvalError;
 
 /**
  *	ValidatorInOut
@@ -142,7 +120,6 @@ public class ValidatorInOut implements ModelValidator
 	 *	@param timing see TIMING_ constants
      *	@return error message or null
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public String docValidate (PO po, int timing)
 	{
 		if (po.get_TableName().equalsIgnoreCase("M_InOut") 
@@ -196,7 +173,7 @@ public class ValidatorInOut implements ModelValidator
 		{
 			MInOut inout = (MInOut)po;
 			MInOutLine[] lines = inout.getLines();
-			ArrayList<String> olines = new ArrayList<String>();
+			ArrayList<Integer> olines = new ArrayList<Integer>();
 			
 			if (lines.length == 0)
 				return "Documento sem linhas";
@@ -229,11 +206,22 @@ public class ValidatorInOut implements ModelValidator
 						&& oline.getQtyDelivered().subtract(oline.getQtyInvoiced()).doubleValue() == 0)
 					return "Fatura(s) em aberto. Impossível continuar com o estorno.";
 				
-				if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_ORDERLINE_ON_SHIP_RECEIPT", true, po.getAD_Client_ID())
-						&& olines.contains("" + line.getC_OrderLine_ID()))
-					return "Linha #" + line.getLine() + " duplicada.";
-
-				olines.add("" + line.getC_OrderLine_ID());
+				int C_OrderLine_ID = line.getC_OrderLine_ID();
+				if (C_OrderLine_ID != 0){
+					if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_ORDERLINE_ON_SHIP_RECEIPT", true, po.getAD_Client_ID())
+							&& olines.contains("" + line.getC_OrderLine_ID())){
+						return "Linha #" + line.getLine() + " duplicada.";
+					}
+					else{
+						olines.add(line.getC_OrderLine_ID());
+					}
+				}
+				
+				/*
+				 *  FIXME: QtyDelivered é na UDM padrão, QtyEntered pode ser outra,
+				 *  com isso a comparação, pode não funcionar corretamente.
+				 *  
+				 */
 				
 				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
 				if (timing == TIMING_BEFORE_COMPLETE
