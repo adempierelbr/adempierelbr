@@ -1489,4 +1489,14 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000023" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
+  <value column="Help" original=""/>
+ </row>
+ <row id="2000000" trl="Y">
+  <value column="Name" original="Other NF">Outras Notas Fiscais</value>
+  <value column="Description" original="Other NF ">Outras Notas Fiscais</value>
+  <value column="Help" original="Other NF Processing Window"/>
+ </row>
 </adempiereTrl>

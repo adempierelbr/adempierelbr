@@ -2026,8 +2026,20 @@
   <value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000033" trl="N">
+ <row id="1000033" trl="Y">
   <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
+ </row>
+ <row id="1000034" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
+ </row>
+ <row id="1000035" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="2000000" trl="Y">
+  <value column="Name" original="Other NF">Outras Notas Fiscais</value>
+  <value column="Description" original="Other NF ">Outras Notas Fiscais</value>
  </row>
 </adempiereTrl>

@@ -1374,4 +1374,19 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
   <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
  </row>
+ <row id="2000000" trl="Y">
+  <value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="2000001" trl="Y">
+  <value column="Name" original="lbr_ProcessOtherNF">Processar Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="2000002" trl="Y">
+  <value column="Name" original="lbr_VoidOtherNF">Anular Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

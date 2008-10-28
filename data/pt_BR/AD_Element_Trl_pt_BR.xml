@@ -26430,46 +26430,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000308" trl="N">
-  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
-  <value column="PrintName" original="IsGenerateFields">IsGenerateFields</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000309" trl="N">
-  <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
-  <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000310" trl="N">
-  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000311" trl="N">
-  <value column="Name" original="ScriptsPath">ScriptsPath</value>
-  <value column="PrintName" original="ScriptsPath">ScriptsPath</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
  <row id="1000312" trl="Y">
   <value column="Name" original="CNAB Field47">CNAB Campo 47</value>
   <value column="PrintName" original="CNAB Field47">CNAB Campo 47</value>
@@ -26585,6 +26545,126 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PrintName" original="Other NF Link">Outras Notas Fiscais</value>
   <value column="Description" original="Identifies the Other NF Link">Identifica Outras Notas Fiscais</value>
   <value column="Help" original="Primary key table LBR_OtherNFLink">Chave primária da tabela LBR_OtherNFLink</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000325" trl="N">
+  <value column="Name" original="NFe No">NFe No</value>
+  <value column="PrintName" original="NFe No">NFe No</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000326" trl="Y">
+  <value column="Name" original="Is Return">Retorno</value>
+  <value column="PrintName" original="Is Return">Retorno</value>
+  <value column="Description" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
+  <value column="Help" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000000" trl="Y">
+  <value column="Name" original="Other NF">Outra NF</value>
+  <value column="PrintName" original="Other NF">Outra NF</value>
+  <value column="Description" original="Other NF">Define a Outra NF</value>
+  <value column="Help" original="Other NF">Campo chave da tabela LBR_OtherNF</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000001" trl="Y">
+  <value column="Name" original="Other NF Request Type">Tipo de Solicitação</value>
+  <value column="PrintName" original="Other NF Request Type">Tipo de Solicitação</value>
+  <value column="Description" original="Type of request for the Other NF Process">Tipo de Solicitação para Processo de Outras NFs</value>
+  <value column="Help" original="Type of request for the Other NF Process">Tipo de Solicitação para Processo de Outras NFs</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000002" trl="Y">
+  <value column="Name" original="Generate">Criar Linhas Outras NFs</value>
+  <value column="PrintName" original="Generate">Criar Linhas Outras NFs</value>
+  <value column="Description" original="Generate">Processo para criação de Linhas para Outras NFs</value>
+  <value column="Help" original="Generates the Other NF Lines">Processo para criação de Linhas para Outras NFs</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000003" trl="Y">
+  <value column="Name" original="Process">Processar</value>
+  <value column="PrintName" original="Process">Processar</value>
+  <value column="Description" original="Process now">Processar Agora</value>
+  <value column="Help" original="Process Other NF">Processar Outras NFs</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000004" trl="Y">
+  <value column="Name" original="Void">Anular</value>
+  <value column="PrintName" original="Void">Anular</value>
+  <value column="Description" original="Void Other NF">Anular Outra NF</value>
+  <value column="Help" original="Void Other NF">Anular Outra NF</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000005" trl="Y">
+  <value column="Name" original="Other NF Line">Linha Outra NF</value>
+  <value column="PrintName" original="Other NF Line">Linha Outra NF</value>
+  <value column="Description" original="Other NF Line">Define a Linha Outra NF</value>
+  <value column="Help" original="Other NF Line">Campo chave da tabela LBR_OtherNFLine</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000006" trl="N">
+  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
+  <value column="PrintName" original="IsGenerateFields">IsGenerateFields</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000007" trl="Y">
+  <value column="Name" original="LBR_NotaFiscal_ID_to">Nota Fiscal</value>
+  <value column="PrintName" original="LBR_NotaFiscal_ID_to">Nota Fiscal</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000008" trl="N">
+  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="2000009" trl="N">
+  <value column="Name" original="ScriptsPath">ScriptsPath</value>
+  <value column="PrintName" original="ScriptsPath">ScriptsPath</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>

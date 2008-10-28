@@ -1807,4 +1807,19 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000038" trl="N">
+  <value column="Name" original="LBR_OtherNFDocType">LBR_OtherNFDocType</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000039" trl="N">
+  <value column="Name" original="LBR_WHLocOtherNF">LBR_WHLocOtherNF</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="2000000" trl="N">
+  <value column="Name" original="LBR_OtherNF_RequestType">LBR_OtherNF_RequestType</value>
+  <value column="Description" original="Other NF Request Type">Other NF Request Type</value>
+  <value column="Help" original="Other NF Request Type">Other NF Request Type</value>
+ </row>
 </adempiereTrl>

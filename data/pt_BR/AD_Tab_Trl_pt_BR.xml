@@ -4493,4 +4493,34 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original="Manufacture">Industrialização</value>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000037" trl="Y">
+  <value column="Name" original="Manufacture Plan">Planejamento</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000038" trl="Y">
+  <value column="Name" original="Manufacture Line">Linha</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="2000000" trl="Y">
+  <value column="Name" original="Header">Cabeçalho</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original="Other NF Header">Cabeçalho Outras Notas Fiscais</value>
+  <value column="Help" original="Other NF Header">Cabeçalho Outras Notas Fiscais</value>
+ </row>
+ <row id="2000001" trl="Y">
+  <value column="Name" original="Line">Linha</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original="Other NF Line">Linha Outras Notas Fiscais</value>
+  <value column="Help" original="Other NF Line">Linha Outras Notas Fiscais</value>
+ </row>
 </adempiereTrl>

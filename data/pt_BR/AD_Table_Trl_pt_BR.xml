@@ -2150,4 +2150,10 @@
  <row id="1000038" trl="N">
   <value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
  </row>
+ <row id="2000000" trl="N">
+  <value column="Name" original="Other NF">Outra NF</value>
+ </row>
+ <row id="2000001" trl="N">
+  <value column="Name" original="Other NF Line">Linha Outra NF</value>
+ </row>
 </adempiereTrl>
