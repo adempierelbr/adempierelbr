@@ -32,11 +32,11 @@ public X_LBR_OtherNF (Properties ctx, int LBR_OtherNF_ID, String trxName)
 super (ctx, LBR_OtherNF_ID, trxName);
 /** if (LBR_OtherNF_ID == 0)
 {
+setC_BPartner_ID (0);
 setC_DocTypeTarget_ID (0);
 setC_DocType_ID (0);
 setLBR_OtherNF_ID (0);
 setM_Warehouse_ID (0);
-setlbr_OtherNF_RequestType (null);
 }
  */
 }
@@ -92,8 +92,7 @@ public static final int C_BPARTNER_ID_AD_Reference_ID=173;
 @param C_BPartner_ID Identifies a Business Partner */
 public void setC_BPartner_ID (int C_BPartner_ID)
 {
-if (C_BPartner_ID <= 0) set_Value ("C_BPartner_ID", null);
- else 
+if (C_BPartner_ID < 1) throw new IllegalArgumentException ("C_BPartner_ID is mandatory.");
 set_Value ("C_BPartner_ID", new Integer(C_BPartner_ID));
 }
 /** Get Business Partner .
@@ -224,8 +223,8 @@ public String getlbr_GenerateOtherNF()
 return (String)get_Value("lbr_GenerateOtherNF");
 }
 
-/** lbr_OtherNF_RequestType AD_Reference_ID=2000000 */
-public static final int LBR_OTHERNF_REQUESTTYPE_AD_Reference_ID=2000000;
+/** lbr_OtherNF_RequestType AD_Reference_ID=1000040 */
+public static final int LBR_OTHERNF_REQUESTTYPE_AD_Reference_ID=1000040;
 /** Material Return = MR */
 public static final String LBR_OTHERNF_REQUESTTYPE_MaterialReturn = "MR";
 /** Material Invoice = MI */
@@ -234,10 +233,9 @@ public static final String LBR_OTHERNF_REQUESTTYPE_MaterialInvoice = "MI";
 @param lbr_OtherNF_RequestType Type of request for the Other NF Process */
 public void setlbr_OtherNF_RequestType (String lbr_OtherNF_RequestType)
 {
-if (lbr_OtherNF_RequestType == null) throw new IllegalArgumentException ("lbr_OtherNF_RequestType is mandatory");
-if (lbr_OtherNF_RequestType.equals("MR") || lbr_OtherNF_RequestType.equals("MI"));
- else throw new IllegalArgumentException ("lbr_OtherNF_RequestType Invalid value - " + lbr_OtherNF_RequestType + " - Reference_ID=2000000 - MR - MI");
-if (lbr_OtherNF_RequestType.length() > 2)
+if (lbr_OtherNF_RequestType == null || lbr_OtherNF_RequestType.equals("MR") || lbr_OtherNF_RequestType.equals("MI"));
+ else throw new IllegalArgumentException ("lbr_OtherNF_RequestType Invalid value - " + lbr_OtherNF_RequestType + " - Reference_ID=1000040 - MR - MI");
+if (lbr_OtherNF_RequestType != null && lbr_OtherNF_RequestType.length() > 2)
 {
 log.warning("Length > 2 - truncated");
 lbr_OtherNF_RequestType = lbr_OtherNF_RequestType.substring(0,1);

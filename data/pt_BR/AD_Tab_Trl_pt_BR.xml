@@ -4511,16 +4511,16 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="2000000" trl="Y">
+ <row id="1000039" trl="Y">
   <value column="Name" original="Header">Cabeçalho</value>
   <value column="CommitWarning" original=""/>
-  <value column="Description" original="Other NF Header">Cabeçalho Outras Notas Fiscais</value>
-  <value column="Help" original="Other NF Header">Cabeçalho Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
- <row id="2000001" trl="Y">
+ <row id="1000040" trl="Y">
   <value column="Name" original="Line">Linha</value>
   <value column="CommitWarning" original=""/>
-  <value column="Description" original="Other NF Line">Linha Outras Notas Fiscais</value>
-  <value column="Help" original="Other NF Line">Linha Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
 </adempiereTrl>

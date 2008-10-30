@@ -341,13 +341,11 @@ public static final String FREIGHTCOSTRULE_FixPrice = "F";
 public static final String FREIGHTCOSTRULE_Calculated = "C";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
-/** Excluded = E */
-public static final String FREIGHTCOSTRULE_Excluded = "E";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("E") || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L"));
+if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L"));
  else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
@@ -1433,6 +1431,23 @@ set_Value ("lbr_NCMReference", lbr_NCMReference);
 public String getlbr_NCMReference() 
 {
 return (String)get_Value("lbr_NCMReference");
+}
+/** Set NFe No.
+@param lbr_NFENo NFe No */
+public void setlbr_NFENo (String lbr_NFENo)
+{
+if (lbr_NFENo != null && lbr_NFENo.length() > 22)
+{
+log.warning("Length > 22 - truncated");
+lbr_NFENo = lbr_NFENo.substring(0,21);
+}
+set_Value ("lbr_NFENo", lbr_NFENo);
+}
+/** Get NFe No.
+@return NFe No */
+public String getlbr_NFENo() 
+{
+return (String)get_Value("lbr_NFENo");
 }
 /** Set Net Weight.
 @param lbr_NetWeight Defines the Net Weight */

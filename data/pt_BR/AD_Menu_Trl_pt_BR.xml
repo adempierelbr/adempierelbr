@@ -2038,8 +2038,8 @@
   <value column="Name" original="Manufacture">Industrialização</value>
   <value column="Description" original=""/>
  </row>
- <row id="2000000" trl="Y">
+ <row id="1000036" trl="Y">
   <value column="Name" original="Other NF">Outras Notas Fiscais</value>
-  <value column="Description" original="Other NF ">Outras Notas Fiscais</value>
+  <value column="Description" original=""/>
  </row>
 </adempiereTrl>
