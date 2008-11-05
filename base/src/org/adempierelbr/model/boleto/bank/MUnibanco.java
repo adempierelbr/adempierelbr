@@ -39,7 +39,7 @@ import org.compiere.util.Env;
 public class MUnibanco
 {
 	private static String banco     = "409";
-	private static String bancoName = "UNIBANCO";
+	private static String bancoName = "UNIBANCO S/A";
 	
 	private static void generateHeader(FileWriter fw, MBankAccount BankA) throws IOException{
 		
@@ -175,14 +175,14 @@ public class MUnibanco
 		
 		for (int i = 1;i<((linhas.length)-1);i++){
 			
-			String CodOcorren      = ""; //Cód. Ocorrencia
-			String[] DescOcorren   = {"","L"};
-			String DocumentNo      = (linhas[i].substring(37, 57)).trim();   //Número da Fatura
-			String NossoNo         = ""; //(linhas[i].substring(85, 93)).trim();   //Nosso Número
-			Timestamp  DataOcorren = POLBR.stringTodate((linhas[i].substring(122, 128)).trim(),"ddMMyy"); //Data Pagamento
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(128, 141)).trim()); //Valor Titulo
-			BigDecimal Desconto    = Env.ZERO; //MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
-			BigDecimal Juros       = Env.ZERO; //MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
+			String CodOcorren      = linhas[i].substring(108, 110); //Cód. Ocorrencia
+			String[] DescOcorren   = (occurType.get(Integer.parseInt(CodOcorren)));
+			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
+			String NossoNo         = (linhas[i].substring(62, 76)).trim(); //Nosso Número
+			Timestamp  DataOcorren = POLBR.stringTodate((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
+			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
+			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
+			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 			
 			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
