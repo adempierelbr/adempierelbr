@@ -134,19 +134,29 @@ public class POLBR{
 	public static int getLBR_Boleto_ID(String DocumentNo, int C_Invoice_ID, String trx)
 	{
 		int LBR_Boleto_ID = -1;
+		int index = 1;
+		
 		String sql = "SELECT LBR_Boleto_ID " +
 				     "FROM LBR_Boleto " +
 				     "WHERE DocumentNo = ? " +
-				     "AND C_Invoice_ID = ? " +
-				     "AND AD_Client_ID = ?";
+				     "AND AD_Client_ID = ? ";
+				     
+		if (C_Invoice_ID > 0){
+			sql += "AND C_Invoice_ID = ? ";
+			index++;
+		}
 		
+		sql += " ORDER BY LBR_Boleto_ID DESC";
+				     
 		PreparedStatement pstmt = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setString(1, DocumentNo);
-			pstmt.setInt(2, C_Invoice_ID);
-			pstmt.setInt(3, Env.getAD_Client_ID(Env.getCtx()));
+			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
+			if (index > 1){
+				pstmt.setInt(3, C_Invoice_ID);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next())
 			{

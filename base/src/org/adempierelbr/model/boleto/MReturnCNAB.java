@@ -108,87 +108,84 @@ public class MReturnCNAB
 		
 		int C_Invoice_ID = POLBR.getC_Invoice_ID(DocumentNo,trx);
 		int LBR_Boleto_ID = POLBR.getLBR_Boleto_ID(NossoNo, C_Invoice_ID, trx);
-		
-		if (OcorrenType.equalsIgnoreCase("L")){ //Liquidação  
 			
-			if (C_Invoice_ID > 0){
+		if (OcorrenType.equalsIgnoreCase("L")){ //Liquidação  
 					
-				if (LBR_Boleto_ID > 0){
+			if (LBR_Boleto_ID > 0){
 				
-					MInvoice Invoice = new MInvoice(ctx,C_Invoice_ID,trx);
-					MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
+				MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
+				MInvoice Invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
+				
+				if ((Invoice.getDocStatus()).equals("CO")){
+					if (!Invoice.isPaid()){
+				
+						MPayment Payment = new MPayment(ctx,0,trx);
 					
-					if ((Invoice.getDocStatus()).equals("CO")){
-						if (!Invoice.isPaid()){
+						int C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
 					
-							MPayment Payment = new MPayment(ctx,0,trx);
+						Payment.setC_BankAccount_ID(C_BankAccount_ID);
 					
-							int C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
+						Payment.setC_DocType_ID(POLBR.getARReceipt()); //Contas a Receber
+						Payment.setC_Invoice_ID(C_Invoice_ID);
+						Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());
+						Payment.setC_Currency_ID(297); //BRL
+						Payment.setDescription("Documento lançado automaticamente - CNAB");
 					
-							Payment.setC_BankAccount_ID(C_BankAccount_ID);
-					
-							Payment.setC_DocType_ID(POLBR.getARReceipt()); //Contas a Receber
-							Payment.setC_Invoice_ID(C_Invoice_ID);
-							Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());
-							Payment.setC_Currency_ID(297); //BRL
-							Payment.setDescription("Documento lançado automaticamente - CNAB");
-					
-							Payment.setDateAcct(DataOcorren); //Data da Conta
-							Payment.setDateTrx(DataOcorren); //Data da Transação
+						Payment.setDateAcct(DataOcorren); //Data da Conta
+						Payment.setDateTrx(DataOcorren); //Data da Transação
 						
-							BigDecimal DiscountAmt = Env.ZERO;
+						BigDecimal DiscountAmt = Env.ZERO;
 					
-							if (Desconto.signum() != 0){
-								DiscountAmt = Desconto;
-							}
-							else if (Juros.signum() != 0){
-								DiscountAmt = Juros.negate();
-							}
-					
-							Payment.setPayAmt(ValorTitulo.add(DiscountAmt.negate())); //Valor Pago
-					
-							Payment.setDiscountAmt(DiscountAmt); //Negativo = Juros | Positivo = Desconto
+						if (Desconto.signum() != 0){
+							DiscountAmt = Desconto;
+						}
+						else if (Juros.signum() != 0){
+							DiscountAmt = Juros.negate();
+						}
 						
-							Payment.save(trx); //Salvar antes de Completar
+						Payment.setPayAmt(ValorTitulo.add(DiscountAmt.negate())); //Valor Pago
+					
+						Payment.setDiscountAmt(DiscountAmt); //Negativo = Juros | Positivo = Desconto
 						
-							String status = Payment.completeIt();
-							Payment.setDocStatus(status);
-							Payment.save(trx);
+						Payment.save(trx); //Salvar antes de Completar
+						
+						String status = Payment.completeIt();
+						Payment.setDocStatus(status);
+						Payment.save(trx);
 							
-							boleto.setC_Payment_ID(Payment.getC_Payment_ID());
-							boleto.setIsPaid(true);
-							boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
-							boleto.setDocStatus(DescOcorren);
-							boleto.save(trx);
-					
-							TextUtil.addLine(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
-							TextUtil.addEOL(fw);
-						
-						}//BAIXA
-						else{
-							
-							boleto.setIsPaid(true);
-							boleto.setDocStatus("DOCUMENTO JA LANCADO");
-							boleto.save(trx);
-							
-							TextUtil.addLine(fw, line + ";;DOCUMENTO JA LANCADO");
-							TextUtil.addEOL(fw);
-						
-						}//JA LANCADO
-					
-					}//FATURA COMPLETADA
-					else{
-						
-						boleto.setDocStatus("FATURA NAO COMPLETADA");
+						boleto.setC_Payment_ID(Payment.getC_Payment_ID());
+						boleto.setIsPaid(true);
+						boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
+						boleto.setDocStatus(DescOcorren);
 						boleto.save(trx);
-						
-						TextUtil.addLine(fw, line + ";;FATURA NAO COMPLETADA");
-						TextUtil.addEOL(fw);
 					
-					}
+						TextUtil.addLine(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
+						TextUtil.addEOL(fw);
+						
+					}//BAIXA
+					else{
+							
+						boleto.setIsPaid(true);
+						boleto.setDocStatus("DOCUMENTO JA LANCADO");
+						boleto.save(trx);
+							
+						TextUtil.addLine(fw, line + ";;DOCUMENTO JA LANCADO");
+						TextUtil.addEOL(fw);
+						
+					}//JA LANCADO
+					
+				}//FATURA COMPLETADA
+				else{
+						
+					boleto.setDocStatus("FATURA NAO COMPLETADA");
+					boleto.save(trx);
+						
+					TextUtil.addLine(fw, line + ";;FATURA NAO COMPLETADA");
+					TextUtil.addEOL(fw);
+					
+				}
 				
-				}//LIQUIDAÇÃO
-			}
+			}//BOLETO
 			else{
 
 				TextUtil.addLine(fw, line + ";;DOCUMENTO NAO ENCONTRADO");
