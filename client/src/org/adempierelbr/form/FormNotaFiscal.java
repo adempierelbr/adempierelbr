@@ -134,7 +134,7 @@ public class FormNotaFiscal extends CPanel
 	private VLookup fMatrixPrinter;
 	private JCheckBox printedNF = new JCheckBox();
 	private GridBagLayout northPanelLayout = new GridBagLayout();
-	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true);
+	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true,true);
 	private StatusBar statusBar = new StatusBar();
 	private JScrollPane scrollPane = new JScrollPane();
 	private MiniTable miniTable = new MiniTable();
@@ -363,6 +363,13 @@ public class FormNotaFiscal extends CPanel
 		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
 			dispose();
+			return;
+		}
+		//
+		
+		if (e.getActionCommand().equals(ConfirmPanel.A_REFRESH))
+		{
+			executeQuery();
 			return;
 		}
 		//

@@ -136,7 +136,7 @@ public class FormCNAB extends CPanel
 	private CLabel lFileName = new CLabel();
 	private VFile fFileName = new VFile("File_Directory",true,false,true,20,false);
 	private GridBagLayout northPanelLayout = new GridBagLayout();
-	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true);
+	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true,true);
 	private StatusBar statusBar = new StatusBar();
 	private JScrollPane scrollPane = new JScrollPane();
 	private MiniTable miniTable = new MiniTable();
@@ -330,6 +330,13 @@ public class FormCNAB extends CPanel
 		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
 			dispose();
+			return;
+		}
+		//
+		
+		if (e.getActionCommand().equals(ConfirmPanel.A_REFRESH))
+		{
+			executeQuery();
 			return;
 		}
 		//
