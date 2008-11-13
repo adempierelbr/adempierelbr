@@ -31,6 +31,7 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrg;
 import org.compiere.model.MProduct;
 import org.compiere.model.X_LBR_CFOPLine;
+import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -43,6 +44,10 @@ import org.compiere.util.Env;
  * @version $Id: CalloutDefineCFOP.java, 07/02/2008 13:53:00 fer_luck
  */
 public class CalloutDefineCFOP extends CalloutEngine {
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(CalloutDefineCFOP.class);
+	
 	/**
 	 *  getCFOP
 	 *
@@ -61,35 +66,64 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		Integer M_Product_ID = (Integer) mTab.getValue("M_Product_ID");
 		if (M_Product_ID == null || M_Product_ID.intValue() == 0)
 			return "";
-
+		
 		//Check if the document is actually an order or an Invoice
 		MOrder mo = null;
 		MInvoice mi = null;
-		int C_DocTypeTarget_ID = 0;
 		if (mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID){
 			mo = new MOrder(Env.getCtx(), ((Integer) mTab
 					.getValue("C_Order_ID")).intValue(), null);
-			C_DocTypeTarget_ID = mo.getC_DocTypeTarget_ID();
 		}
 		else{
 			mi = new MInvoice(Env.getCtx(), ((Integer) mTab
 					.getValue("C_Invoice_ID")).intValue(), null);
-			C_DocTypeTarget_ID = mi.getC_DocTypeTarget_ID();
 		}
+	
+		Integer cfopID = CalloutDefineCFOP.getCFOP(ctx, M_Product_ID, mo, mi, null);
+				
+		if (cfopID == null || cfopID.intValue() == 0){
+			mTab.setValue("LBR_CFOP_ID", null);
+			mTab.getField("LBR_CFOP_ID").setError(true);
+		}
+		else
+			mTab.setValue("LBR_CFOP_ID", cfopID);
+
+		return "";
+	}
+	
+	public static Integer getCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
+		
+		if (M_Product_ID <= 0){
+			log.log(Level.WARNING, "M_Product_ID == 0");
+			return null;
+		}
+		
+		//Check if the document is actually an order or an Invoice
+		int C_DocTypeTarget_ID = 0;
 		//Check for the transaction type on the document header
 		String transactionType = null;
-		if (mTab.getAD_Table_ID() == I_C_OrderLine.Table_ID)
+		
+		if (mo != null){
+			C_DocTypeTarget_ID = mo.getC_DocTypeTarget_ID();
 			transactionType = (mo.get_Value("lbr_TransactionType") == null) ? ""
-				: mo.get_Value("lbr_TransactionType").toString();
-		else
+					: mo.get_Value("lbr_TransactionType").toString();
+		}
+		else if (mi != null){
+			C_DocTypeTarget_ID = mi.getC_DocTypeTarget_ID();
 			transactionType = (mi.get_Value("lbr_TransactionType") == null) ? ""
-				: mi.get_Value("lbr_TransactionType").toString();
+					: mi.get_Value("lbr_TransactionType").toString();
+		}
+		else{
+			log.log(Level.WARNING, "Order and Invoice == null");
+			return null;
+		}
 
 		//Grab Business Partner data
 		Integer C_BPartner_ID = (mo == null) ? mi.getC_BPartner_ID() : mo
 				.getC_BPartner_ID();
 		Integer C_BPartner_Location_ID = (mo == null) ? mi
 				.getC_BPartner_Location_ID() : mo.getC_BPartner_Location_ID();
+				
 		MBPartner mbp = new MBPartner(Env.getCtx(), C_BPartner_ID, null);
 		MBPartnerLocation mbpl = new MBPartnerLocation(Env.getCtx(),
 				C_BPartner_Location_ID, null);
@@ -111,15 +145,14 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			bpCat = 0;
 
 		//Grab Product data
-		MProduct mp = new MProduct(Env.getCtx(), M_Product_ID.intValue(), null);
+		MProduct mp = new MProduct(Env.getCtx(), M_Product_ID, null);
 
 		Integer prdCat = (Integer) mp.get_Value("LBR_ProductCategory_ID");
 		if (prdCat == null)
 			prdCat = 0;
 
 		//Grab Organization data
-		MOrg org = new MOrg(Env.getCtx(),
-				((Integer) mTab.getValue("AD_Org_ID")).intValue(), null);
+		MOrg org = MOrg.get(ctx, Env.getAD_Org_ID(ctx));
 		MLocation mlo = new MLocation(Env.getCtx(), org.getInfo()
 				.getC_Location_ID(), null);
 
@@ -135,7 +168,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		
 		if (mlbp == null || mlo == null){
 			log.log(Level.SEVERE,"Location == null");
-			return "";
+			return null;
 		}
 		
 		log.finest(sql);
@@ -220,13 +253,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			log.log(Level.WARNING, sql, e);
 		}
 		
-		if (cfopID == null || cfopID.intValue() == 0){
-			mTab.setValue("LBR_CFOP_ID", null);
-			mTab.getField("LBR_CFOP_ID").setError(true);
-		}
-		else
-			mTab.setValue("LBR_CFOP_ID", cfopID);
-
-		return "";
+		return cfopID;
 	}
-}
+	
+} //CalloutDefineCFOP
