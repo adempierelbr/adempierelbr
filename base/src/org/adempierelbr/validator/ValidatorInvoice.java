@@ -192,7 +192,7 @@ public class ValidatorInvoice implements ModelValidator
 		}
 
 		log.info(invoice.toString());
-		return null;
+		return validatePaymentTerm(invoice);
 	}
 	
 	// modelChange - InvoiceLine
@@ -854,6 +854,38 @@ public class ValidatorInvoice implements ModelValidator
 			log.warning("Retenções de outras Faturas contidas nesta Fatura.");
 		
 		return "";
+	}
+	
+	private String validatePaymentTerm(MInvoice invoice){
+		
+		/*
+		Properties ctx = invoice.getCtx();
+		String     trx = invoice.get_TrxName();
+		
+		String docStatus = invoice.getDocStatus();
+		String error     = "";
+		
+		if (docStatus.equals(MInvoice.DOCSTATUS_Completed) || 
+			docStatus.equals(MInvoice.DOCSTATUS_Reversed) || 
+			docStatus.equals(MInvoice.DOCSTATUS_Closed) ||
+			docStatus.equals(MInvoice.DOCSTATUS_Voided)){
+			
+			MInvoicePaySchedule[] ischedule = POLBR.getInvoicePaySchedule(ctx, invoice.getC_Invoice_ID(), trx);
+			
+			int C_PaymentTerm_ID = invoice.getC_PaymentTerm_ID();
+			MPaymentTerm paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
+			MPaySchedule[] schedule = paymentTerm.getSchedule(true);
+			
+			if (ischedule.length != schedule.length){
+				error = "Condição de Pagamento Inconsistente";
+				log.log(Level.WARNING, error);
+				return error;
+			}
+			
+		}
+		*/
+		
+		return null;
 	}
 	
 	/**

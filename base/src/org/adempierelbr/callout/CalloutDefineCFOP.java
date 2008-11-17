@@ -124,10 +124,10 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		Integer C_BPartner_Location_ID = (mo == null) ? mi
 				.getC_BPartner_Location_ID() : mo.getC_BPartner_Location_ID();
 				
-		MBPartner mbp = new MBPartner(Env.getCtx(), C_BPartner_ID, null);
+		MBPartner mbp = new MBPartner(ctx, C_BPartner_ID, null);
 		MBPartnerLocation mbpl = new MBPartnerLocation(Env.getCtx(),
 				C_BPartner_Location_ID, null);
-		MLocation mlbp = new MLocation(Env.getCtx(), mbpl.getC_Location_ID(),
+		MLocation mlbp = new MLocation(ctx, mbpl.getC_Location_ID(),
 				null);
 
 		Integer bpCat = null;
@@ -145,7 +145,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			bpCat = 0;
 
 		//Grab Product data
-		MProduct mp = new MProduct(Env.getCtx(), M_Product_ID, null);
+		MProduct mp = new MProduct(ctx, M_Product_ID, null);
 
 		Integer prdCat = (Integer) mp.get_Value("LBR_ProductCategory_ID");
 		if (prdCat == null)
@@ -153,7 +153,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 
 		//Grab Organization data
 		MOrg org = MOrg.get(ctx, Env.getAD_Org_ID(ctx));
-		MLocation mlo = new MLocation(Env.getCtx(), org.getInfo()
+		MLocation mlo = new MLocation(ctx, org.getInfo()
 				.getC_Location_ID(), null);
 
 		//Set query data

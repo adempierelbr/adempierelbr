@@ -17,10 +17,13 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -84,6 +87,45 @@ public class POLBR{
 		return C_Invoice_ID;
 		
 	}	//	getC_Invoice_ID
+	
+	public static MInvoicePaySchedule[] getInvoicePaySchedule(Properties ctx, int C_Invoice_ID, String trx)
+	{
+		String sql = "SELECT * FROM C_InvoicePaySchedule WHERE C_Invoice_ID=?";
+		ArrayList<MInvoicePaySchedule> list = new ArrayList<MInvoicePaySchedule>();
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				MInvoicePaySchedule ps = new MInvoicePaySchedule(ctx, rs, trx);
+				list.add (ps);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "getInvoicePaySchedule", e); 
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		MInvoicePaySchedule[] m_schedule = new MInvoicePaySchedule[list.size()];
+		list.toArray(m_schedule);
+		return m_schedule;
+	}	//	getInvoicePaySchedule
 	
 	public static int getLBR_NotaFiscal_ID(String DocumentNo,boolean IsSOTrx, String trx)
 	{
