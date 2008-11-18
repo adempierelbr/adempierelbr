@@ -1792,11 +1792,7 @@ public class MInOut extends X_M_InOut implements DocAction
 				//	No AttributeSetInstance found for remainder
 				if (qtyToDeliver.signum() != 0)
 				{
-					MInOutLineMA ma = new MInOutLineMA (line, 
-						0, qtyToDeliver);
-					if (!ma.save())
-						;
-					log.fine("##: " + ma);
+					createMInOutLineMA(line, 0, qtyToDeliver);
 				}
 			}	//	outgoing Trx
 		}	//	attributeSetInstance
@@ -1804,6 +1800,64 @@ public class MInOut extends X_M_InOut implements DocAction
 		if (needSave && !line.save())
 			log.severe("NOT saved " + line);
 	}	//	checkMaterialPolicy
+	
+	private boolean createMInOutLineMA(MInOutLine line, int M_AttributeSetInstance_ID, BigDecimal MovementQty){
+		
+		String sql = "SELECT M_InOutLineMA_ID " +
+				     "FROM M_InOutLineMA " +
+				     "WHERE M_InOutLine_ID=? " +
+				     "AND M_AttributeSetInstance_ID=?";
+		
+		int M_InOutLineMA_ID = 0;
+		
+		PreparedStatement pstmt = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, get_TrxName());
+			pstmt.setInt (1, line.getM_InOutLine_ID());
+			pstmt.setInt (2, M_AttributeSetInstance_ID);
+			ResultSet rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				M_InOutLineMA_ID = rs.getInt(1);
+			}
+			rs.close ();
+			pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log (Level.SEVERE, sql, e);
+		}
+		try
+		{
+			if (pstmt != null)
+				pstmt.close ();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			pstmt = null;
+		}
+		
+		if (M_InOutLineMA_ID == 0){
+			MInOutLineMA ma = new MInOutLineMA (line, 0, MovementQty);
+			if (!ma.save()){
+				log.fine("##: " + ma);
+				return false;
+			}
+		}
+		else{
+			MInOutLineMA ma = new MInOutLineMA (getCtx(), M_InOutLineMA_ID, get_TrxName());
+			ma.setMovementQty(MovementQty);
+			if (!ma.save()){
+				log.fine("##: " + ma);
+				return false;
+			}
+		}
+		
+		return true;
+	} //createMInOutLineMA
 
 	
 	/**************************************************************************
@@ -2265,5 +2319,5 @@ public class MInOut extends X_M_InOut implements DocAction
 		
 		return M_Locator_ID;
 	}
-	
+		
 }	//	MInOut
