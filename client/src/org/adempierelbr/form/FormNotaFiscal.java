@@ -304,9 +304,11 @@ public class FormNotaFiscal extends CPanel
 		int row = 0;
 		miniTable.setRowCount(row);
 		//  Execute
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
-			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+			pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, AD_Client_ID);
 			if (index == 1) pstmt.setTimestamp(2, (Timestamp)m_DateDoc);
 			else if (index == 2) pstmt.setInt(2, (Integer)m_C_BPartner_ID);
@@ -314,7 +316,7 @@ public class FormNotaFiscal extends CPanel
 				pstmt.setTimestamp(2, (Timestamp)m_DateDoc);
 				pstmt.setInt(3, (Integer)m_C_BPartner_ID);
 			}
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			//
 			while (rs.next())
 			{
@@ -329,12 +331,13 @@ public class FormNotaFiscal extends CPanel
 				//  prepare next
 				row++;
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		//
 		miniTable.autoSize();

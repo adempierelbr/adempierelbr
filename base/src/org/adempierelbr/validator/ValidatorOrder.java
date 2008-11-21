@@ -524,6 +524,7 @@ public class ValidatorOrder implements ModelValidator
 						"GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold";
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
@@ -532,7 +533,7 @@ public class ValidatorOrder implements ModelValidator
 			pstmt.setInt(3, whOrder);
 			//pstmt.setInt(4, whOrder);
 			pstmt.setString(4, order.isSOTrx() ? "Y" : "N");
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				BigDecimal[] result = new BigDecimal[3];
@@ -542,23 +543,13 @@ public class ValidatorOrder implements ModelValidator
 				//result[3] = rs.getBigDecimal(4);
 				results.add(result);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		for (int r = 0; r < results.size(); r++)
@@ -635,28 +626,18 @@ public class ValidatorOrder implements ModelValidator
 						pstmt.setInt(4, whOrder);
 						pstmt.setString(5, order.isSOTrx() ? "Y" : "N");
 						pstmt.setString(6, row[0].toString());
-						ResultSet rs = pstmt.executeQuery ();
+						rs = pstmt.executeQuery ();
 						while (rs.next ())
 						{
 							taxLines.add(rs.getInt(1));
 						}
-						rs.close ();
-						pstmt.close ();
-						pstmt = null;
 					}
 					catch (Exception e)
 					{
 						log.log(Level.SEVERE, "", e);
 					}
-					try
-					{
-						if (pstmt != null)
-							pstmt.close ();
-						pstmt = null;
-					}
-					catch (Exception e)
-					{
-						pstmt = null;
+					finally{
+					       DB.close(rs, pstmt);
 					}
 					
 					//Ordem com retenção própria.
@@ -697,28 +678,18 @@ public class ValidatorOrder implements ModelValidator
 						{
 							pstmt = DB.prepareStatement (sql, null);
 							pstmt.setInt(1, taxLine.getLBR_Tax_ID());
-							ResultSet rs = pstmt.executeQuery ();
+							rs = pstmt.executeQuery ();
 							if (rs.next ())
 							{
 								C_Order_ID = rs.getInt(1);
 							}
-							rs.close ();
-							pstmt.close ();
-							pstmt = null;
 						}
 						catch (Exception e)
 						{
 							log.log(Level.SEVERE, "", e);
 						}
-						try
-						{
-							if (pstmt != null)
-								pstmt.close ();
-							pstmt = null;
-						}
-						catch (Exception e)
-						{
-							pstmt = null;
+						finally{
+						       DB.close(rs, pstmt);
 						}
 						
 						MOrder oldOrder = new MOrder(ctx, C_Order_ID, trx);

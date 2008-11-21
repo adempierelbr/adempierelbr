@@ -1,17 +1,17 @@
 package org.adempierelbr.process;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.X_LBR_OtherNF;
+import org.compiere.model.X_LBR_OtherNFLine;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.model.*;
 
 /**
  *	ProcGenerateOtherNF
@@ -100,9 +100,11 @@ public class ProcGenerateOtherNF extends SvrProcess
 			    "LOCATOR.M_Locator_ID, uom.c_uom_id, prod.M_Product_ID " + 
 			    "ORDER BY orda.DocumentNo");
 		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
-			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+			pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, AD_Client_ID);
 			if(index == 1) pstmt.setInt(2, (Integer)C_BPartner_ID);
 			else if(index == 2) pstmt.setInt(2, (Integer)C_DocType_ID);
@@ -111,7 +113,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 				pstmt.setInt(2, (Integer)C_BPartner_ID);
 				pstmt.setInt(3, (Integer)C_DocType_ID);
 			}
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			//
 			while (rs.next())
 			{
@@ -128,12 +130,13 @@ public class ProcGenerateOtherNF extends SvrProcess
 					line.save(trx);
 				}
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 	} //GerarLinhas

@@ -270,16 +270,18 @@ public class FormCNAB extends CPanel
 		int row = 0;
 		miniTable.setRowCount(row);
 		//  Execute
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
-			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+			pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, AD_Client_ID);
 			if (m_C_BankAccount_ID == null)
 				pstmt.setInt(2, 0);
 			else
 				pstmt.setInt(2, (Integer)m_C_BankAccount_ID);
 			
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			//
 			while (rs.next())
 			{
@@ -296,12 +298,13 @@ public class FormCNAB extends CPanel
 				//  prepare next
 				row++;
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		//
 		miniTable.autoSize();

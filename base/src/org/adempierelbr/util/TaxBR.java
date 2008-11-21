@@ -274,31 +274,22 @@ public class TaxBR
 		
 		String sql = "SELECT * FROM C_OrderTax WHERE C_Order_ID=? AND C_Tax_ID=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt (1, C_Order_ID);
 			pstmt.setInt (2, C_Tax_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 				retValue = new MOrderTax (ctx, rs, trx);
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (retValue == null){
@@ -320,30 +311,21 @@ public class TaxBR
 				
 		String sql = "SELECT SUM(TaxAmt) FROM C_OrderTax WHERE C_Order_ID=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt (1, C_Order_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 				retValue = rs.getBigDecimal(1);
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (retValue == null) retValue = Env.ZERO;
@@ -363,31 +345,22 @@ public class TaxBR
 		
 		String sql = "SELECT * FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt (1, C_Invoice_ID);
 			pstmt.setInt (2, C_Tax_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 				retValue = new MInvoiceTax (ctx, rs, trx);
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (retValue == null){
@@ -408,30 +381,21 @@ public class TaxBR
 		
 		String sql = "SELECT SUM(TaxAmt) FROM C_InvoiceTax WHERE C_Invoice_ID=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt (1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 				retValue = rs.getBigDecimal(1);
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (retValue == null) retValue = Env.ZERO;
@@ -449,11 +413,12 @@ public class TaxBR
 		             "GROUP BY t.LBR_TaxGroup_ID";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt (1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ()){
 				
 				Integer LBR_TaxGroup_ID = rs.getInt(1);
@@ -467,24 +432,15 @@ public class TaxBR
 				}
 				
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
+		
 	} //setNFTax
 	
 	// BF [ 1902926 ] NFLineTax - Falta campo Alíquota e Redução da Base

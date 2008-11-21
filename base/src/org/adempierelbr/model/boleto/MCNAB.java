@@ -253,23 +253,13 @@ public class MCNAB extends X_LBR_CNAB
     			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
     			list.add(cnab);  
     		}
-    		rs.close ();
-    		pstmt.close ();
-    		pstmt = null;
     	}
     	catch (Exception e)
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(rs, pstmt);
     	}
 		
 		
@@ -309,23 +299,13 @@ public class MCNAB extends X_LBR_CNAB
     			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
     			list.add(cnab);  
     		}
-    		rs.close ();
-    		pstmt.close ();
-    		pstmt = null;
     	}
     	catch (Exception e)
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(rs, pstmt);
     	}
 		
 		
@@ -358,15 +338,8 @@ public class MCNAB extends X_LBR_CNAB
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(pstmt);
     	}
 		
 	}
@@ -387,15 +360,8 @@ public class MCNAB extends X_LBR_CNAB
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(pstmt);
     	}
 		
 	}
@@ -425,23 +391,13 @@ public class MCNAB extends X_LBR_CNAB
     		{
 	    		LBR_CNAB_ID = rs.getInt(1);  
     		}
-    		rs.close ();
-    		pstmt.close ();
-    		pstmt = null;
     	}
     	catch (Exception e)
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(rs, pstmt);
     	}
 		
 		return LBR_CNAB_ID;

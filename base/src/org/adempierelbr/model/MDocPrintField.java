@@ -186,34 +186,24 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 				     "WHERE LBR_DocPrint_ID = ? " + //1
 				     "AND IsActive='Y' ORDER By lbr_RowNo asc, lbr_ColumnNo asc";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, LBR_DocPrint_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
 				MDocPrintField Field = new MDocPrintField(ctx, rs.getInt(1), null);
 				list.add(Field);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
 		}
-		finally
-		{
-			try
-			{
-				if (pstmt != null)
-					pstmt.close ();
-			}
-			catch (Exception e)
-			{}
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		//
 		MDocPrintField[] lines = new MDocPrintField[list.size ()];

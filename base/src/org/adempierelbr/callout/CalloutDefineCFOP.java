@@ -173,6 +173,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		
 		log.finest(sql);
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		Integer cfopID = null;
 		try {
 			pstmt = DB.prepareStatement(sql, null);
@@ -200,7 +201,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
 			pstmt.setString(7, transactionType);
 			
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			int contRows = 0;
 			while(rs.next()){
 				contRows++;
@@ -248,9 +249,11 @@ public class CalloutDefineCFOP extends CalloutEngine {
 				}
 				cfopID = cfopn;
 			}
-			rs.close();
 		} catch (Exception e) {
 			log.log(Level.WARNING, sql, e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		return cfopID;

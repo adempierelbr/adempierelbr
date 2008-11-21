@@ -120,11 +120,12 @@ public class MTax extends X_LBR_Tax {
 		
 		BigDecimal taxAmt = Env.ZERO;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, LBR_Tax_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				BigDecimal amt = rs.getBigDecimal(1);
@@ -133,23 +134,13 @@ public class MTax extends X_LBR_Tax {
 					taxAmt = taxAmt.add(amt);
 				}
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		return taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
@@ -167,33 +158,24 @@ public class MTax extends X_LBR_Tax {
 
 		ArrayList<X_LBR_TaxLine> list = new ArrayList<X_LBR_TaxLine>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, get_TrxName());
 			pstmt.setInt(1, getLBR_Tax_ID());
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				X_LBR_TaxLine line = new X_LBR_TaxLine(getCtx(),rs.getInt(1),get_TrxName());
 				list.add (line);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		X_LBR_TaxLine[] retValue = new X_LBR_TaxLine[list.size()];
@@ -219,33 +201,24 @@ public class MTax extends X_LBR_Tax {
 
 		Integer LBR_TaxLine_ID = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, LBR_Tax_ID);
 			pstmt.setInt(2, LBR_TaxName_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_TaxLine_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		if (LBR_TaxLine_ID == null) LBR_TaxLine_ID = 0;
@@ -269,33 +242,24 @@ public class MTax extends X_LBR_Tax {
 				     "AND LBR_TaxName_ID = ?";
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, Parent_Tax_ID);
 			pstmt.setInt(2, LBR_TaxName_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				C_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		if (C_Tax_ID == null) C_Tax_ID = 0;
@@ -357,33 +321,24 @@ public class MTax extends X_LBR_Tax {
 			sql += " AND M_Product_ID is null AND LBR_FiscalGroup_Product_ID is null";
 			
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_TaxConfiguration_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = 0;
 		
@@ -406,34 +361,25 @@ public class MTax extends X_LBR_Tax {
 				     "AND C_BPartner_ID = ?"; 
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, C_BPartner_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		
@@ -456,34 +402,25 @@ public class MTax extends X_LBR_Tax {
 				     "AND C_BPartner_ID = ?"; 
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, C_BPartner_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) return null;
 		
@@ -506,12 +443,13 @@ public class MTax extends X_LBR_Tax {
 				     "AND LBR_FiscalGroup_BPartner_ID = ?"; 
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, LBR_FiscalGroup_BPartner_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
@@ -524,16 +462,9 @@ public class MTax extends X_LBR_Tax {
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		
@@ -556,12 +487,13 @@ public class MTax extends X_LBR_Tax {
 				     "AND LBR_FiscalGroup_BPartner_ID = ?"; 
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, LBR_FiscalGroup_BPartner_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
@@ -574,16 +506,9 @@ public class MTax extends X_LBR_Tax {
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) return null;
 		
@@ -604,33 +529,24 @@ public class MTax extends X_LBR_Tax {
 				     "WHERE LBR_TaxConfiguration_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		
@@ -651,33 +567,24 @@ public class MTax extends X_LBR_Tax {
 				     "WHERE LBR_TaxConfiguration_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) return null;
 		
@@ -698,33 +605,24 @@ public class MTax extends X_LBR_Tax {
 				     "WHERE LBR_TaxConfiguration_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		
@@ -745,33 +643,24 @@ public class MTax extends X_LBR_Tax {
 				     "WHERE LBR_TaxConfiguration_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) return null;
 		
@@ -796,35 +685,26 @@ public class MTax extends X_LBR_Tax {
 				     "AND To_Region_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, C_Region_ID);
 			pstmt.setInt(3, To_Region_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 		
@@ -849,35 +729,26 @@ public class MTax extends X_LBR_Tax {
 				     "AND To_Region_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_TaxConfiguration_ID);
 			pstmt.setInt(2, C_Region_ID);
 			pstmt.setInt(3, To_Region_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Tax_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		if (LBR_Tax_ID == null) return null;
 		

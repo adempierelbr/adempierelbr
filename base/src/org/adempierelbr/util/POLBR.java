@@ -55,34 +55,25 @@ public class POLBR{
 				     "AND AD_Client_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setString(1, DocumentNo);
 			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 C_Invoice_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return C_Invoice_ID;
 		
@@ -93,33 +84,24 @@ public class POLBR{
 		String sql = "SELECT * FROM C_InvoicePaySchedule WHERE C_Invoice_ID=?";
 		ArrayList<MInvoicePaySchedule> list = new ArrayList<MInvoicePaySchedule>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setInt(1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
 				MInvoicePaySchedule ps = new MInvoicePaySchedule(ctx, rs, trx);
 				list.add (ps);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "getInvoicePaySchedule", e); 
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		MInvoicePaySchedule[] m_schedule = new MInvoicePaySchedule[list.size()];
@@ -139,35 +121,26 @@ public class POLBR{
 				     "ORDER BY LBR_NotaFiscal_ID desc";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setString(1, DocumentNo);
 			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
 			pstmt.setString(3, IsSOTrx ? "Y" : "N");
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 LBR_NotaFiscal_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return LBR_NotaFiscal_ID;
 		
@@ -191,6 +164,7 @@ public class POLBR{
 		sql += " ORDER BY LBR_Boleto_ID DESC";
 				     
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
@@ -199,29 +173,19 @@ public class POLBR{
 			if (index > 1){
 				pstmt.setInt(3, C_Invoice_ID);
 			}
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 LBR_Boleto_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return LBR_Boleto_ID;
 		
@@ -236,34 +200,25 @@ public class POLBR{
 				     "AND C_Region_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setString(1, Name);
 			pstmt.setInt(2, C_Region_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 C_City_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return C_City_ID;
 		
@@ -276,33 +231,24 @@ public class POLBR{
 				     "FROM LBR_Bank " +
 				     "WHERE RoutingNo = ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setString(1, RoutingNo);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_Bank_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return LBR_Bank_ID;
 		
@@ -318,35 +264,26 @@ public class POLBR{
 				     "AND C_BPartner_ID = ? " + //2
 				     "AND AD_Client_ID = ?"; //3
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, M_Product_ID);
 			pstmt.setInt(2, C_BPartner_ID);
 			pstmt.setInt(3, Env.getAD_Client_ID(Env.getCtx()));
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				VendorProductNo = rs.getString(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return VendorProductNo;
 	
@@ -361,33 +298,24 @@ public class POLBR{
 				     "AND AD_Client_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 C_DocType_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return C_DocType_ID;
 		
@@ -410,35 +338,26 @@ public class POLBR{
 				     "order by C_DocType_ID, AD_Org_ID desc";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
 			pstmt.setInt(2, AD_Org_ID);
 			pstmt.setString(3, isSOTrx ? "Y" : "N");
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				 C_DocType_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return C_DocType_ID;
 		
@@ -454,33 +373,24 @@ public class POLBR{
 					 "AND AD_Client_ID = ?"; //2
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt (1, C_DocType_ID);
 			pstmt.setInt (2, Env.getAD_Client_ID(Env.getCtx()));
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_DocType_Acct_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (LBR_DocType_Acct_ID == null) LBR_DocType_Acct_ID = 0;

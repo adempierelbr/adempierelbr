@@ -409,34 +409,26 @@ public class ValidatorBPartner implements ModelValidator
 				     "FROM C_BPartner " +
 				     "WHERE lbr_CNPJ = ? AND AD_Client_ID = ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setString (1, xCNPJ);
 			pstmt.setInt(2, AD_Client_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				iCNPJ = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
+		
 		if (iCNPJ > 0) 
 			return false;
 		else 
@@ -455,34 +447,26 @@ public class ValidatorBPartner implements ModelValidator
 				     "FROM C_BPartner " +
 				     "WHERE lbr_CPF = ? AND AD_Client_ID = ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setString (1, xCPF);
 			pstmt.setInt(2, AD_Client_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				iCPF = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
+		
 		if (iCPF > 0) 
 			return false;
 		else 

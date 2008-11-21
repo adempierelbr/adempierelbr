@@ -275,25 +275,29 @@ public class ValidatorInOut implements ModelValidator
 			+ "WHERE M_Product_ID=?";	//	1
 		if(M_Locator_ID > 0)
 			sql = sql + " AND M_Locator_ID=?";	//	2
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
-			PreparedStatement pstmt = DB.prepareStatement(sql, null);
+			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, M_Product_ID);
 			if(M_Locator_ID > 0)
 				pstmt.setInt(2, M_Locator_ID);
 			
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				QtyOnHand = rs.getBigDecimal(1);
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, sql, e);
 			return Env.ZERO;
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if(QtyOnHand != null)

@@ -132,32 +132,23 @@ public class MTaxBR{
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, Line_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				list.add (rs.getInt(1));
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		Integer[] retValue = new Integer[list.size()];
@@ -178,12 +169,13 @@ public class MTaxBR{
 		String formula[] = {"","",""};
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, LBR_TaxName_ID);
 			pstmt.setString(2, TransactionType);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				formula[0] = rs.getString(1);
@@ -193,23 +185,13 @@ public class MTaxBR{
 				formula[2] = rs.getString(3);
 				if (formula[2] != null) formula[2] = formula[2].trim();
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		return formula;
@@ -230,33 +212,24 @@ public class MTaxBR{
 		Integer LBR_TaxLine_ID = null;
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, LBR_TaxName_ID);
 			pstmt.setInt(2, LBR_Tax_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				LBR_TaxLine_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (LBR_TaxLine_ID == null) LBR_TaxLine_ID = 0;

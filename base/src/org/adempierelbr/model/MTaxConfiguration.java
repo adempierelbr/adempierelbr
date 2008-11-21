@@ -63,33 +63,24 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 		
 		boolean hasSOTrx = false;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
 			pstmt.setInt(2, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				hasSOTrx = true;
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		return hasSOTrx;
@@ -108,33 +99,24 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 		
 		boolean hasPOTrx = false;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
 			pstmt.setInt(2, LBR_TaxConfiguration_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				hasPOTrx = true;
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		return hasPOTrx;

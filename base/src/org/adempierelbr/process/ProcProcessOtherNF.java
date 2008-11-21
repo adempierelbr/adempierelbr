@@ -159,7 +159,7 @@ public class ProcProcessOtherNF extends SvrProcess
 	{
 		ArrayList<Integer> lineIds = new ArrayList<Integer>();
 		PreparedStatement pstmt = null;
-		Properties ctx = getCtx();
+		//Properties ctx = getCtx();
 		String trx = get_TrxName();
 		
 		StringBuffer sql = new StringBuffer("SELECT lbr_othernfline_id FROM lbr_othernfline WHERE lbr_othernf_id = ?");
@@ -179,10 +179,8 @@ public class ProcProcessOtherNF extends SvrProcess
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
 		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		return lineIds;

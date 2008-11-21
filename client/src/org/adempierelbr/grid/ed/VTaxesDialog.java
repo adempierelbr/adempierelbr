@@ -422,11 +422,12 @@ public class VTaxesDialog extends CDialog implements ActionListener
 				     "WHERE LBR_Tax_ID = ?";
 			
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, m_tax.getLBR_Tax_ID());
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				Integer LBR_TaxLine_ID = rs.getInt("LBR_TaxLine_ID");
@@ -449,23 +450,13 @@ public class VTaxesDialog extends CDialog implements ActionListener
 				//
 				addLine(LBR_TaxLine_ID,vSelect,vTax,vRate,vBase,vPost);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (m_line == 0) addLine();

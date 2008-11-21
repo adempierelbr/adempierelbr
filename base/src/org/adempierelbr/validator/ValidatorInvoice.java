@@ -632,6 +632,7 @@ public class ValidatorInvoice implements ModelValidator
 						"GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold";
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
@@ -639,7 +640,7 @@ public class ValidatorInvoice implements ModelValidator
 			pstmt.setTimestamp(2, invoice.getDateAcct());
 			pstmt.setInt(3, whInvoice);
 			pstmt.setString(4, invoice.isSOTrx() ? "Y" : "N");
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				BigDecimal[] result = new BigDecimal[3];
@@ -648,23 +649,13 @@ public class ValidatorInvoice implements ModelValidator
 				result[2] = rs.getBigDecimal(3);
 				results.add(result);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		for (int r = 0; r < results.size(); r++)
@@ -737,28 +728,18 @@ public class ValidatorInvoice implements ModelValidator
 						pstmt.setInt(4, whInvoice);
 						pstmt.setString(5, invoice.isSOTrx() ? "Y" : "N");
 						pstmt.setInt(6, row[0].intValue());
-						ResultSet rs = pstmt.executeQuery ();
+						rs = pstmt.executeQuery ();
 						while (rs.next ())
 						{
 							taxLines.add(rs.getInt(1));
 						}
-						rs.close ();
-						pstmt.close ();
-						pstmt = null;
 					}
 					catch (Exception e)
 					{
 						log.log(Level.SEVERE, "", e);
 					}
-					try
-					{
-						if (pstmt != null)
-							pstmt.close ();
-						pstmt = null;
-					}
-					catch (Exception e)
-					{
-						pstmt = null;
+					finally{
+					       DB.close(rs, pstmt);
 					}
 					
 					iTax.setTaxAmt(iTax.getTaxAmt().negate());

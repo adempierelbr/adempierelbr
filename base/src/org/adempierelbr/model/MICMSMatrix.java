@@ -63,34 +63,25 @@ public class MICMSMatrix extends X_LBR_ICMSMatrix {
 
 		Integer Matrix_ID = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, C_Region_ID);
 			pstmt.setInt(2, To_Region_ID);
 			pstmt.setInt(3, Env.getAD_Client_ID(ctx));
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
 				Matrix_ID = rs.getInt(1);
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		if (Matrix_ID == null) Matrix_ID = 0;

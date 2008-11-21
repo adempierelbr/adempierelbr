@@ -296,7 +296,6 @@ public class ProcCreateDefaultColumns extends SvrProcess
 		finally
 		{
 			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
 		}
 		
 		return returnValue;

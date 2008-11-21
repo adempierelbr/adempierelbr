@@ -81,34 +81,25 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 		ArrayList<X_LBR_NFLineTax> list = new ArrayList<X_LBR_NFLineTax>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, get_TrxName());
 			pstmt.setInt(1, getLBR_NotaFiscalLine_ID());
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				list.add (new X_LBR_NFLineTax(getCtx(),rs.getInt(1),get_TrxName()));
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-
+		
 		X_LBR_NFLineTax[] retValue = new X_LBR_NFLineTax[list.size()];
 		list.toArray(retValue);
 		return retValue;

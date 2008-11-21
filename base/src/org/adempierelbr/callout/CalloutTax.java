@@ -471,11 +471,12 @@ public class CalloutTax extends CalloutEngine
 				     "WHERE LBR_Tax_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt (1, LBR_Tax_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				if (tax.getLBR_Tax_ID() == 0){
@@ -509,25 +510,14 @@ public class CalloutTax extends CalloutEngine
 				}
 				
 			}
-			
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 
 	} //setLines
 	
@@ -538,33 +528,24 @@ public class CalloutTax extends CalloutEngine
 				     "FROM LBR_TaxLine " +
 				     "WHERE LBR_Tax_ID = ?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt (1, tax.getLBR_Tax_ID());
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				lines.put(rs.getInt(2), rs.getInt(1));
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 
 	} //setLines
 	

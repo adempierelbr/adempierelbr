@@ -141,17 +141,17 @@ public class ProcPrintNF extends SvrProcess
 		int itens = 0;
 		int noRows = 0;
 
-		PreparedStatement pstmt = DB.prepareStatement(sql, Trx);
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-
+			
+			pstmt = DB.prepareStatement(sql, Trx);
 			pstmt.setInt(1, LBR_NotaFiscal_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			rs.next();
 			itens = rs.getInt(1);
-			pstmt.close();
-			pstmt = null;
-			rs.close();
-			rs = null;
+			DB.close(rs, pstmt);
+
 			sql = "SELECT lbr_norows FROM lbr_docprint WHERE lbr_docprint_id in " +
 				  "(SELECT lbr_subdoc_id FROM lbr_docprint WHERE lbr_docprint_id = ?)";
 
@@ -160,14 +160,13 @@ public class ProcPrintNF extends SvrProcess
 			rs = pstmt.executeQuery();
 			rs.next();
 			
-			noRows = rs.getInt(1);
-			pstmt.close();
-			pstmt = null;
-			rs.close();
-			rs = null;			
+			noRows = rs.getInt(1);		
 
 		} catch (Exception e) {
 			log.log(Level.SEVERE,"",e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
 		}
 
 		BigDecimal noPages = new BigDecimal(itens).divide(new BigDecimal(noRows), RoundingMode.UP);
@@ -250,32 +249,22 @@ public class ProcPrintNF extends SvrProcess
 				     "FROM LBR_MatrixPrinter " +
 				     "WHERE IsDefault = 'Y' order by LBR_MatrixPrinter_ID";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql,null);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				LBR_MatrixPrinter_ID = rs.getInt(1);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
 		}
-		finally
-		{
-			try
-			{
-				if (pstmt != null)
-					pstmt.close ();
-			}
-			catch (Exception e)
-			{}
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		if (LBR_MatrixPrinter_ID == null) LBR_MatrixPrinter_ID = 0;

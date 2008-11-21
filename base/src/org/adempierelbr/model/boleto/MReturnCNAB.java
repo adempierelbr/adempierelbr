@@ -249,11 +249,12 @@ public class MReturnCNAB
 				     "WHERE LBR_Bank_ID = ? " +
 				     "AND IsActive='Y'";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt(1, LBR_Bank_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				int OccurNo          = Integer.parseInt(rs.getString("lbr_OccurNo"));
@@ -262,24 +263,14 @@ public class MReturnCNAB
 				list.put(OccurNo,new String[]{lbr_OccurType,Description});
 				
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return list;
 		

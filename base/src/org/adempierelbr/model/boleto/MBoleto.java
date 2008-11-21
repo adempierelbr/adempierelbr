@@ -87,34 +87,25 @@ public class MBoleto extends X_LBR_Boleto
 
 		ArrayList<MBoleto> list = new ArrayList<MBoleto>();
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				list.add (new MBoleto(ctx,rs.getInt(1),trx));
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-
+		
 		MBoleto[] retValue = new MBoleto[list.size()];
 		list.toArray(retValue);
 		return retValue;
@@ -279,34 +270,24 @@ public class MBoleto extends X_LBR_Boleto
 		int PayScheduleNo = 1;
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
 				 numParcela.put(rs.getInt(1), PayScheduleNo);
 				 PayScheduleNo++;
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql.toString(), e);
 		}
-		finally
-		{
-			try
-			{
-				if (pstmt != null)
-					pstmt.close ();
-			}
-			catch (Exception e)
-			{}
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		//
 		
@@ -650,11 +631,12 @@ public class MBoleto extends X_LBR_Boleto
 	                 "WHERE C_Invoice_ID = ? AND lbr_IsCancelled = 'N'"; //*1
 
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement (sql, trx);
 			pstmt.setInt(1, C_Invoice_ID);
-			ResultSet rs = pstmt.executeQuery ();
+			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
 				MBoleto boleto = new MBoleto(ctx,rs.getInt(1),trx);
@@ -670,23 +652,13 @@ public class MBoleto extends X_LBR_Boleto
 					}
 				}
 			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
+		finally{
+		       DB.close(rs, pstmt);
 		}
 		
 		sql = "UPDATE C_Invoice SET C_BankAccount_ID = NULL, lbr_IsBillPrinted = 'N' " +

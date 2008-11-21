@@ -204,23 +204,13 @@ public class MDocPrintForm{
 	            RowNo = 0; //Zera RowNo para próxima passagem
 	            	            
     		}
-    		rs.close ();
-    		pstmt.close ();
-    		pstmt = null;
     	}
     	catch (Exception e)
     	{
     		log.log(Level.SEVERE, "", e);
     	}
-    	try
-    	{
-    		if (pstmt != null)
-    			pstmt.close ();
-    		pstmt = null;
-    	}
-    	catch (Exception e)
-    	{
-    		pstmt = null;
+    	finally{
+    	       DB.close(rs, pstmt);
     	}
     	
 	}
