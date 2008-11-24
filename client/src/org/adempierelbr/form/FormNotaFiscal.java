@@ -41,6 +41,7 @@ import javax.swing.event.TableModelListener;
 import org.adempierelbr.model.MDocPrint;
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.process.ProcPrintNF;
+import org.adempierelbr.util.POLBR;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.ConfirmPanel;
 import org.compiere.apps.StatusBar;
@@ -58,6 +59,7 @@ import org.compiere.process.ProcessInfo;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
 import org.compiere.swing.CTabbedPane;
+import org.compiere.swing.CTextField;
 import org.compiere.util.ASyncProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -80,8 +82,12 @@ public class FormNotaFiscal extends CPanel
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long      serialVersionUID = 1L;
+	
+	private static       Timestamp envDate          = Env.getContextAsDate(Env.getCtx(), "#Date");
 
+	private static final String    interval         = "7";
+	
 	/**
 	 *	Initialize Panel
 	 *  @param WindowNo window
@@ -130,6 +136,8 @@ public class FormNotaFiscal extends CPanel
 	private VDate fDateDoc = new VDate("DateDoc", false, false, true, 15, "");
 	private CLabel lBPartner = new CLabel();
 	private VLookup fBPartner;
+	private CLabel lDocumentNo = new CLabel();
+	private CTextField fDocumentNo = new CTextField(15);
 	private CLabel lMatrixPrinter = new CLabel();
 	private VLookup fMatrixPrinter;
 	private JCheckBox printedNF = new JCheckBox();
@@ -161,13 +169,16 @@ public class FormNotaFiscal extends CPanel
 		confirmPanelSel.add(printedNF);
 		
 		selPanel.setLayout(selPanelLayout);
-		selPanel.setPreferredSize(new Dimension(1024,450));
+		selPanel.setPreferredSize(new Dimension(800,450));
 		
 		lDateDoc.setLabelFor(fDateDoc);
 		lDateDoc.setText(Msg.translate(Env.getCtx(), "DateDoc"));
 		
 		lBPartner.setLabelFor(fBPartner);
 		lBPartner.setText(Msg.translate(Env.getCtx(), "C_BPartner_ID"));
+		
+		lDocumentNo.setLabelFor(fDocumentNo);
+		lDocumentNo.setText(Msg.translate(Env.getCtx(), "DocumentNo"));
 		
 		lMatrixPrinter.setLabelFor(fMatrixPrinter);
 		lMatrixPrinter.setText(Msg.translate(Env.getCtx(), "LBR_MatrixPrinter_ID"));
@@ -183,15 +194,21 @@ public class FormNotaFiscal extends CPanel
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		selNorthPanel.add(fDateDoc, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-		
+			
 		selNorthPanel.add(lBPartner, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		selNorthPanel.add(fBPartner, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
-		selNorthPanel.add(lMatrixPrinter, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+		
+		selNorthPanel.add(lDocumentNo, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		selNorthPanel.add(fMatrixPrinter, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
+		selNorthPanel.add(fDocumentNo, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+		
+		selNorthPanel.add(lMatrixPrinter, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		selNorthPanel.add(fMatrixPrinter, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
 		selPanel.setName("selPanel");
@@ -205,6 +222,7 @@ public class FormNotaFiscal extends CPanel
 		markButton.addActionListener(this);
 		
 		fDateDoc.addVetoableChangeListener(this);
+		envDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 		
 	}	//	jbInit
 
@@ -224,6 +242,7 @@ public class FormNotaFiscal extends CPanel
 		MLookup BPartnerL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2893, DisplayType.Search);
 		fBPartner = new VLookup ("C_BPartner_ID", false, false, true, BPartnerL);
 		fBPartner.addVetoableChangeListener(this);	
+		
 		//
 	}	//	fillPicks
 
@@ -267,19 +286,20 @@ public class FormNotaFiscal extends CPanel
 	private void executeQuery()
 	{
 		log.info("");
+		statusBar.setStatusLine("");
 		int AD_Client_ID = Env.getAD_Client_ID(Env.getCtx());
 		//  Create SQL
 		
 		int index = 0;
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct nf.LBR_NotaFiscal_ID, o.Name, nf.DocumentNo, bp.Name, nf.DateDoc " +
-				"FROM LBR_NotaFiscal nf " +
-				"INNER JOIN AD_Org o ON nf.AD_Org_ID=o.AD_Org_ID " +
-				"INNER JOIN C_BPartner bp ON nf.C_BPartner_ID = bp.C_BPartner_ID " +
-				"WHERE nf.C_DocTypeTarget_ID IS NOT NULL " +
-				"AND nf.IsCancelled='N' " +
-				"AND nf.AD_Client_ID=? ");
+				    "SELECT distinct nf.LBR_NotaFiscal_ID, o.Name, nf.DocumentNo, bp.Name, nf.DateDoc ");
+		sql.append ("FROM LBR_NotaFiscal nf ");
+		sql.append ("INNER JOIN AD_Org o ON nf.AD_Org_ID=o.AD_Org_ID ");
+		sql.append ("INNER JOIN C_BPartner bp ON nf.C_BPartner_ID = bp.C_BPartner_ID ");
+		sql.append ("WHERE nf.C_DocTypeTarget_ID IS NOT NULL ");
+		sql.append ("AND nf.IsCancelled='N' ");
+		sql.append ("AND nf.AD_Client_ID=? ");
 		
 				if (printedNF.isSelected()){
 					sql.append("AND nf.IsPrinted='Y' ");
@@ -296,6 +316,24 @@ public class FormNotaFiscal extends CPanel
 				if (m_C_BPartner_ID != null){
 					sql.append("AND nf.C_BPartner_ID=? ");
 					index = index + 2;
+				}
+				
+				String documentNo = fDocumentNo.getText().toUpperCase();
+				if (documentNo != null && !(documentNo.equals(""))){
+					sql.append("AND UPPER(nf.DocumentNo) LIKE '%");
+					sql.append(documentNo.toString());
+					sql.append("%' ");
+				}
+				
+				if (index == 0 && printedNF.isSelected()){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
+					sql.append("AND nf.DateDoc BETWEEN (?::timestamp - integer '");
+					sql.append(interval);
+					sql.append("') AND ? ");
+					index = 4;
+					
+					statusBar.setStatusLine("Intervalo definido entre " + 
+							POLBR.dateTostring(POLBR.addDays(envDate, Integer.parseInt(interval) * -1),"dd/MM/yyyy") + " e " + 
+							POLBR.dateTostring(envDate,"dd/MM/yyyy"));
 				}
 				
 				sql.append("ORDER BY nf.DocumentNo, DateDoc, o.Name, bp.Name");
@@ -315,6 +353,10 @@ public class FormNotaFiscal extends CPanel
 			else if (index == 3){
 				pstmt.setTimestamp(2, (Timestamp)m_DateDoc);
 				pstmt.setInt(3, (Integer)m_C_BPartner_ID);
+			}
+			else if (index == 4){
+				pstmt.setTimestamp(2, envDate);
+				pstmt.setTimestamp(3, envDate);
 			}
 			rs = pstmt.executeQuery();
 			//
@@ -651,4 +693,4 @@ public class FormNotaFiscal extends CPanel
 	{
 	}   //  executeASync
 	
-}	//	FormBoleto
+}	//	FormNotaFiscal
