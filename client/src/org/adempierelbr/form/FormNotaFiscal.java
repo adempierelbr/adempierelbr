@@ -72,6 +72,8 @@ import org.compiere.util.Msg;
  * 
  * Form to Print Nota Fiscal
  * 
+ * FR [2343379] - Definição de Impressão de Documento NF na Org
+ * 
  * @author Mario Grigioni, mgrigioni (Kenos, www.kenos.com.br) 
  * @version $Id: FormNotaFiscal.java, 01/03/2007 09:46:00 mgrigioni
  */
@@ -84,10 +86,12 @@ public class FormNotaFiscal extends CPanel
 	 */
 	private static final long      serialVersionUID = 1L;
 	
-	private static       Timestamp envDate          = Env.getContextAsDate(Env.getCtx(), "#Date");
-
-	private static final String    interval         = "7";
+	private static final String    interval         = "7";     // Intervalo de Datas
 	
+	private static final int       LBR_DocPrint_ID  = 2000000; // Documento de Impressão Padrão  
+	
+	private static Timestamp envDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
+
 	/**
 	 *	Initialize Panel
 	 *  @param WindowNo window
@@ -469,8 +473,11 @@ public class FormNotaFiscal extends CPanel
 	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
 		
 		//Impressão
-		//FIXME: DocPrint está hardcoded
-		MDocPrint DoctypePrint = new MDocPrint(ctx,2000000,null);
+	    int orgDocPrint_ID = POLBR.getLBR_DocPrint_ID(ctx);
+	    if (orgDocPrint_ID == 0)
+	    	orgDocPrint_ID = LBR_DocPrint_ID;
+	    
+		MDocPrint DoctypePrint = new MDocPrint(ctx,orgDocPrint_ID,null);
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
 		
 		Integer[] selection = getSelection();

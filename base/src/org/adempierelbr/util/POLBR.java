@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.compiere.model.MInvoicePaySchedule;
+import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -145,6 +146,18 @@ public class POLBR{
 		return LBR_NotaFiscal_ID;
 		
 	}	//	getLBR_NotaFiscal_ID
+	
+	public static int getLBR_DocPrint_ID(Properties ctx){
+		
+		MOrgInfo orgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx));
+		Integer LBR_DocPrint_ID = (Integer)orgInfo.get_Value("LBR_DocPrint_ID");
+		if (LBR_DocPrint_ID == null){
+			LBR_DocPrint_ID = 0;
+		}
+		
+		return LBR_DocPrint_ID.intValue();
+		
+	} // getLBR_DocPrint_ID
 	
 	public static int getLBR_Boleto_ID(String DocumentNo, int C_Invoice_ID, String trx)
 	{
