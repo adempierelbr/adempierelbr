@@ -18,11 +18,6 @@ ALTER TABLE AD_OrgInfo ADD COLUMN LBR_DocPrint_ID NUMERIC(10)
 INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1000997,1000975,0,170,TO_TIMESTAMP('2008-11-25 10:56:53','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_DocPrint',22,'LBRA','Primary key table LBR_DocPrint','Y','Y','Y','N','N','N','N','N','DocPrint',TO_TIMESTAMP('2008-11-25 10:56:53','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
--- 25/11/2008 10h56min54s BRST
--- Default comment for updating dictionary
-INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1000975 AND EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Field_ID!=t.AD_Field_ID)
-;
-
 -- 25/11/2008 10h58min31s BRST
 -- Default comment for updating dictionary
 UPDATE AD_Field SET SeqNo=90,IsDisplayed='Y' WHERE AD_Field_ID=8729
