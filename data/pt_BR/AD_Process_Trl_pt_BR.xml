@@ -1389,4 +1389,9 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
+ <row id="1000017" trl="Y">
+  <value column="Name" original="Sobre AdempiereLBR">Sobre AdempiereLBR</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
 </adempiereTrl>

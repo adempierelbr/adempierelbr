@@ -2042,4 +2042,8 @@
   <value column="Name" original="Other NF">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
  </row>
+ <row id="1000037" trl="Y">
+  <value column="Name" original="ProcLBRVersion">Sobre AdempiereLBR</value>
+  <value column="Description" original=""/>
+ </row>
 </adempiereTrl>

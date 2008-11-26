@@ -264,4 +264,9 @@ Se o tipo do seu documento não tiver uma seqüência de documentação automát
   <value column="Description" original="Discount in percent">Discount in percent</value>
   <value column="Help" original="The Discount indicates the discount applied or taken as a percentage.">The Discount indicates the discount applied or taken as a percentage.</value>
  </row>
+ <row id="1000975" trl="Y">
+  <value column="Name" original="DocPrint">Documento Nota Fiscal</value>
+  <value column="Description" original="Primary key table LBR_DocPrint">Define o Documento base para Impressão da Nota Fiscal</value>
+  <value column="Help" original="Primary key table LBR_DocPrint">Define o Documento base para Impressão da Nota Fiscal</value>
+ </row>
 </adempiereTrl>
