@@ -464,6 +464,9 @@ public class FormNotaFiscal extends CPanel
 		//Trx transaction = Trx.get(Trx.createTrxName(), true);
 		//String trx = transaction.getTrxName();
 		
+		if ((Integer)m_LBR_MatrixPrinter_ID == null)
+			return;
+		
 		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
 		
 		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
