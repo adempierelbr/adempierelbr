@@ -1,11 +1,11 @@
 -- 26/11/2008 9h58min3s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100005,'C',TO_TIMESTAMP('2008-11-26 09:58:03','YYYY-MM-DD HH24:MI:SS'),100,'Define a versão do AdempiereLBR','LBRA','Y','LBR_VERSION_NO',TO_TIMESTAMP('2008-11-26 09:58:03','YYYY-MM-DD HH24:MI:SS'),100,'100')
+INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100005,'C',TO_TIMESTAMP('2008-11-26 09:58:03','YYYY-MM-DD HH24:MI:SS'),100,'Define a versÃ£o do AdempiereLBR','LBRA','Y','LBR_VERSION_NO',TO_TIMESTAMP('2008-11-26 09:58:03','YYYY-MM-DD HH24:MI:SS'),100,'100')
 ;
 
 -- 26/11/2008 9h59min36s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100006,'C',TO_TIMESTAMP('2008-11-26 09:59:36','YYYY-MM-DD HH24:MI:SS'),100,'Define o último script executado','LBRA','Y','LBR_LAST_SCRIPT_EXECUTED',TO_TIMESTAMP('2008-11-26 09:59:36','YYYY-MM-DD HH24:MI:SS'),100,'100b-100/090-PrepareVersion100.sql')
+INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100006,'C',TO_TIMESTAMP('2008-11-26 09:59:36','YYYY-MM-DD HH24:MI:SS'),100,'Define o Ãºltimo script executado','LBRA','Y','LBR_LAST_SCRIPT_EXECUTED',TO_TIMESTAMP('2008-11-26 09:59:36','YYYY-MM-DD HH24:MI:SS'),100,'100b-100/090-PrepareVersion100.sql')
 ;
 
 
