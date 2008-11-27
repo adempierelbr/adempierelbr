@@ -14,6 +14,7 @@ package org.adempierelbr.model;
 
 import java.util.Properties;
 
+import org.compiere.model.MSysConfig;
 import org.compiere.model.X_LBR_DocPrint;
 
 import com.java4less.textprinter.JobProperties;
@@ -101,9 +102,11 @@ public class MDocPrint extends X_LBR_DocPrint {
 	public void addPage(MDocPrintFormField[] fields){        		
 		
 		//COMANDOS ESCP - linespacing = 1/8
-		//String ESCP = "C60";
-		//printer.printString(ESCP,0,0,prop);
-
+		if (enableLineSpacing()){
+			String ESCP = "C60";
+			printer.printString(ESCP,0,0,prop);
+		}	
+			
 	    int lenght = fields.length;
 
 	    for (int i=0;i<lenght;i++){
@@ -130,6 +133,10 @@ public class MDocPrint extends X_LBR_DocPrint {
 		}
 	} //newPage
 	
+	private boolean enableLineSpacing(){
+		return MSysConfig.getBooleanValue("LBR_ENABLE_LINESPACING_COMMAND", false);
+	} //enableLineSpacing
+	
 	@Deprecated
 	public void print(String PrinterType, String PrinterName, 
 	          String charSet, boolean condensed,
@@ -152,8 +159,10 @@ public class MDocPrint extends X_LBR_DocPrint {
 			//prop.pitch = pitch;
 				
 			//COMANDOS ESCP - linespacing = 1/8
-			//String ESCP = "C60";
-			//printer.printString(ESCP,0,0,prop);
+			if (enableLineSpacing()){
+				String ESCP = "C60";
+				printer.printString(ESCP,0,0,prop);
+			}	
 
 			int lenght = fields.length;
 			for (int i=0;i<lenght;i++){
