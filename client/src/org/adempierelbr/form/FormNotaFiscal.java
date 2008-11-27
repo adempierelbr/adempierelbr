@@ -39,6 +39,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.adempierelbr.model.MDocPrint;
+import org.adempierelbr.model.MMatrixPrinter;
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.process.ProcPrintNF;
 import org.adempierelbr.util.POLBR;
@@ -53,7 +54,6 @@ import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
-import org.compiere.model.X_LBR_MatrixPrinter;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.process.ProcessInfo;
 import org.compiere.swing.CLabel;
@@ -241,6 +241,7 @@ public class FormNotaFiscal extends CPanel
 		fMatrixPrinter = new VLookup ("LBR_MatrixPrinter_ID", true, false, true, PrinterL);
 		fMatrixPrinter.addVetoableChangeListener(this);
 		
+		fMatrixPrinter.setValue(MMatrixPrinter.getDefaultPrinter());
 		m_LBR_MatrixPrinter_ID = (Integer)fMatrixPrinter.getValue();
 		
 		MLookup BPartnerL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2893, DisplayType.Search);
@@ -467,7 +468,7 @@ public class FormNotaFiscal extends CPanel
 		if ((Integer)m_LBR_MatrixPrinter_ID == null)
 			return;
 		
-		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
+		MMatrixPrinter MatrixPrinter = new MMatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
 		
 		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
 		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 

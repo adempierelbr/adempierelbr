@@ -21,12 +21,13 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MDocPrint;
 import org.adempierelbr.model.MDocPrintForm;
+import org.adempierelbr.model.MMatrixPrinter;
 import org.adempierelbr.model.MNotaFiscal;
-import org.compiere.model.X_LBR_MatrixPrinter;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	ProcPrintNF
@@ -96,7 +97,7 @@ public class ProcPrintNF extends SvrProcess
 		
 		int i = 0;
 		
-		X_LBR_MatrixPrinter MatrixPrinter = new X_LBR_MatrixPrinter(getCtx(),p_LBR_MatrixPrinter_ID,null);
+		MMatrixPrinter MatrixPrinter = new MMatrixPrinter(getCtx(),p_LBR_MatrixPrinter_ID,null);
 		
 		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
 		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
@@ -131,45 +132,35 @@ public class ProcPrintNF extends SvrProcess
 		
 	}	//	doIt
 	
-	public static void print(Properties ctx, int LBR_NotaFiscal_ID, X_LBR_MatrixPrinter MatrixPrinter, MDocPrint DoctypePrint, String Trx){
+	public static void print(Properties ctx, int LBR_NotaFiscal_ID, MMatrixPrinter MatrixPrinter, MDocPrint DoctypePrint, String Trx){
 		
-		boolean lastpage    = true;
+		int noItens        = 0;
+		int noRows         = 500;
+		
+		boolean lastpage   = true;
+
+	    BigDecimal noPages = Env.ONE;
 	    
-		String sql = "SELECT count(*) " +
-				     "FROM lbr_notafiscalline " +
-				     "WHERE lbr_notafiscal_id = ?";
-		int itens = 0;
-		int noRows = 0;
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			
-			pstmt = DB.prepareStatement(sql, Trx);
-			pstmt.setInt(1, LBR_NotaFiscal_ID);
-			rs = pstmt.executeQuery();
-			rs.next();
-			itens = rs.getInt(1);
-			DB.close(rs, pstmt);
-
-			sql = "SELECT lbr_norows FROM lbr_docprint WHERE lbr_docprint_id in " +
-				  "(SELECT lbr_subdoc_id FROM lbr_docprint WHERE lbr_docprint_id = ?)";
-
-			pstmt = DB.prepareStatement(sql, Trx);
-			pstmt.setInt(1, DoctypePrint.getLBR_DocPrint_ID());
-			rs = pstmt.executeQuery();
-			rs.next();
-			
-			noRows = rs.getInt(1);		
-
-		} catch (Exception e) {
-			log.log(Level.SEVERE,"",e);
+	    MDocPrint SubDoc1  = null;
+	    MDocPrint SubDoc2  = null;
+		
+	    noItens = getNoItens(LBR_NotaFiscal_ID,Trx);
+		
+		//checkSubDocuments
+		int LBR_SubDoc_ID = DoctypePrint.getlbr_SubDoc_ID(); //Produtos
+		int LBR_SubDoc2_ID = DoctypePrint.getlbr_SubDoc2_ID(); //Serviços
+		
+		if (LBR_SubDoc_ID != 0){
+			SubDoc1 = new MDocPrint(ctx,LBR_SubDoc_ID,Trx);
+			noRows  = SubDoc1.getlbr_NoRows();
+			if (noRows == 0) noRows = 500;
+			noPages = new BigDecimal(noItens).divide(new BigDecimal(noRows), RoundingMode.UP);
 		}
-		finally{
-		       DB.close(rs, pstmt);
+		
+		if (LBR_SubDoc2_ID != 0){
+			SubDoc2 = new MDocPrint(ctx,LBR_SubDoc2_ID,Trx);
 		}
-
-		BigDecimal noPages = new BigDecimal(itens).divide(new BigDecimal(noRows), RoundingMode.UP);
+		
 		MDocPrintForm form;
 
 		for(int i = 0; i < noPages.intValue(); i++){
@@ -182,12 +173,13 @@ public class ProcPrintNF extends SvrProcess
 			}
 
 			form = new MDocPrintForm();
-		    String subdocsql = "";	
-		    sql = "SELECT * " +
-	  	          "FROM Z_NotaFiscal_V " +
-	  	          "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID;
+		    StringBuffer subdocsql = null;	
+		    StringBuffer sql = new StringBuffer();
+		    sql.append("SELECT * FROM ");
+	  	    sql.append(DoctypePrint.getlbr_TableName());
+	  	    sql.append(" WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID);
 
-		    form.setFields(DoctypePrint, sql,false, new String((i+1) + "/" + noPages.intValue()),lastpage);
+		    form.setFields(DoctypePrint, sql.toString(), false, new String((i+1) + "/" + noPages.intValue()),lastpage);
 		    boolean hasSubDoc = DoctypePrint.islbr_HasSubDoc();
 
 		    if (hasSubDoc){
@@ -196,32 +188,34 @@ public class ProcPrintNF extends SvrProcess
 		    	 * Produto
 		    	 */
 
-		    	if (DoctypePrint.getlbr_SubDoc_ID() != 0){
+		    	if (LBR_SubDoc_ID != 0){
 
 		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
-		    		subdocsql = "SELECT * " +
-	  	                        "FROM Z_NotaFiscalLine_V " +
-	  		                    "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
-	  		                    " AND lbr_IsService = 'N' AND (line BETWEEN " + ((noRows * i) + 1) + 
-	                            " AND " + (noRows * (i+1)) +") ORDER BY Line";
+		    		subdocsql = new StringBuffer();
+		    		subdocsql.append("SELECT * FROM ");
+		    		subdocsql.append(SubDoc1.getlbr_TableName());
+	  		        subdocsql.append(" WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID);
+	  		        subdocsql.append(" AND lbr_IsService = 'N' AND (line BETWEEN ");
+	  		        subdocsql.append(((noRows * i) + 1)); 
+	                subdocsql.append(" AND " + (noRows * (i+1)) +") ORDER BY Line");
 
-		    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+		    		form.setFields(SubDocPrint, subdocsql.toString(), hasSubDoc);
 
 		    	}
 
 		    	/**
 		    	 * Serviço
 		    	 */
-		    	if (DoctypePrint.getlbr_SubDoc2_ID() != 0){
+		    	if (LBR_SubDoc2_ID != 0){
 
 		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
-		    		subdocsql = "SELECT * " +
-	                            "FROM Z_NotaFiscalLine_V " +
-	                            "WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID +
-	                            " AND lbr_IsService = 'Y' AND (line BETWEEN " + ((noRows * i) + 1) + 
-	                            " AND " + (noRows * (i+1)) +") ORDER BY Line";
+		    		subdocsql = new StringBuffer();
+		    		subdocsql.append("SELECT * FROM ");
+	                subdocsql.append(SubDoc2.getlbr_TableName());
+	                subdocsql.append(" WHERE LBR_NotaFiscal_ID = " + LBR_NotaFiscal_ID);
+	                subdocsql.append(" AND lbr_IsService = 'Y' ORDER BY Line");
 
-		    		form.setFields(SubDocPrint, subdocsql, hasSubDoc);
+		    		form.setFields(SubDocPrint, subdocsql.toString(), hasSubDoc);
 
 		    	}
 
@@ -236,41 +230,33 @@ public class ProcPrintNF extends SvrProcess
     
 	}
 	
-	/**************************************************************************
-	 *  Get DefaultPrinter
-	 *  @return int LBR_MatrixPrinter_ID
-	 */
-	public static int getDefaultPrinter(){
+	private static int getNoItens(int LBR_NotaFiscal_ID, String Trx){
 		
-		CLogger	log = CLogger.getCLogger(ProcPrintNF.class);
+		int noItens = 0;
 		
-		Integer LBR_MatrixPrinter_ID = null;
-		String sql = "SELECT LBR_MatrixPrinter_ID " +
-				     "FROM LBR_MatrixPrinter " +
-				     "WHERE IsDefault = 'Y' order by LBR_MatrixPrinter_ID";
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT count(*) ");
+		sql.append("FROM lbr_notafiscalline ");
+		sql.append("WHERE lbr_notafiscal_id = ?");
+		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql,null);
+		try {
+			
+			pstmt = DB.prepareStatement(sql.toString(), Trx);
+			pstmt.setInt(1, LBR_NotaFiscal_ID);
 			rs = pstmt.executeQuery();
-			if (rs.next())
-			{
-				LBR_MatrixPrinter_ID = rs.getInt(1);
+			if (rs.next()){
+				noItens = rs.getInt(1);
 			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql.toString(), e);
+		} catch (Exception e) {
+			log.log(Level.SEVERE,"",e);
 		}
 		finally{
 		       DB.close(rs, pstmt);
 		}
 		
-		if (LBR_MatrixPrinter_ID == null) LBR_MatrixPrinter_ID = 0;
-		
-		return LBR_MatrixPrinter_ID.intValue();
-		
-	}
-	
+		return noItens;
+	} //getNoItens
+			
 }	//	ProcPrintNF
