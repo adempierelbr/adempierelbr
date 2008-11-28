@@ -79,7 +79,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 					.getValue("C_Invoice_ID")).intValue(), null);
 		}
 	
-		Integer cfopID = CalloutDefineCFOP.getCFOP(ctx, M_Product_ID, mo, mi, null);
+		Integer cfopID = CalloutDefineCFOP.defineCFOP(ctx, M_Product_ID, mo, mi, null);
 				
 		if (cfopID == null || cfopID.intValue() == 0){
 			mTab.setValue("LBR_CFOP_ID", null);
@@ -91,7 +91,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		return "";
 	}
 	
-	public static Integer getCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
+	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
 		
 		if (M_Product_ID <= 0){
 			log.log(Level.WARNING, "M_Product_ID == 0");
