@@ -296,6 +296,7 @@ public class FormNotaFiscal extends CPanel
 		//  Create SQL
 		
 		int index = 0;
+		boolean documentno = false;
 
 		StringBuffer sql = new StringBuffer(
 				    "SELECT distinct nf.LBR_NotaFiscal_ID, o.Name, nf.DocumentNo, bp.Name, nf.DateDoc ");
@@ -328,9 +329,11 @@ public class FormNotaFiscal extends CPanel
 					sql.append("AND UPPER(nf.DocumentNo) LIKE '%");
 					sql.append(documentNo.toString());
 					sql.append("%' ");
+					
+					documentno = true;
 				}
 				
-				if (index == 0 && printedNF.isSelected()){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
+				if (index == 0 && printedNF.isSelected() && !documentno){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
 					sql.append("AND nf.DateDoc BETWEEN (?::timestamp - integer '");
 					sql.append(interval);
 					sql.append("') AND ? ");
