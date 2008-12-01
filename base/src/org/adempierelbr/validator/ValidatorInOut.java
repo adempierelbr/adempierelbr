@@ -241,20 +241,26 @@ public class ValidatorInOut implements ModelValidator
 						qtyToShip = qtyToShip.add(lines[j].getQtyEntered());
 					}
 				}
-					
-				String movementType = inout.getMovementType();
 				
-				if (movementType.charAt(1) == '-')
-				{
-					if (timing == TIMING_BEFORE_COMPLETE
-							&& onHand.subtract(qtyToShip).doubleValue() < 0)
-						return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
+				if (timing == TIMING_BEFORE_COMPLETE
+						&& MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, po.getAD_Client_ID())){
+									
+					String movementType = inout.getMovementType();
+					
+					if (movementType.charAt(1) == '-')
+					{
+						if (timing == TIMING_BEFORE_COMPLETE
+								&& onHand.subtract(qtyToShip).doubleValue() < 0)
+							return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
+					}
+					else 
+					{
+						if (onHand.add(line.getQtyEntered()).doubleValue() < 0)
+							return "Sem quantidade disponível na linha #" + line.getLine() + ".";
+					}
+				
 				}
-				else 
-				{
-					if (onHand.add(line.getQtyEntered()).doubleValue() < 0)
-						return "Sem quantidade disponível na linha #" + line.getLine() + ".";
-				}
+				
 			} // for;
 		}
 		
