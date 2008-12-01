@@ -1,18 +1,3 @@
--- 01/12/2008 9h48min19s BRST
--- Default comment for updating dictionary
-INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100007,'C',TO_TIMESTAMP('2008-12-01 09:48:19','YYYY-MM-DD HH24:MI:SS'),100,'Y/N - Permite que um Embarque/Recebimento faça movimentações com estoque negativo','LBRA','Y','LBR_ALLOW_NEGATIVE_STOCK',TO_TIMESTAMP('2008-12-01 09:48:19','YYYY-MM-DD HH24:MI:SS'),100,'Y')
-;
-
--- 01/12/2008 9h48min25s BRST
--- Default comment for updating dictionary
-INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100008,'C',TO_TIMESTAMP('2008-12-01 09:48:25','YYYY-MM-DD HH24:MI:SS'),100,'Y/N - Permite que um Embarque/Recebimento faça movimentações com estoque negativo','LBRA','Y','LBR_ALLOW_NEGATIVE_STOCK',TO_TIMESTAMP('2008-12-01 09:48:25','YYYY-MM-DD HH24:MI:SS'),100,'Y')
-;
-
--- 01/12/2008 9h49min1s BRST
--- Default comment for updating dictionary
-UPDATE AD_SysConfig SET Value='100-trunk/002-Allow_NegativeStock.sql',Updated=TO_TIMESTAMP('2008-12-01 09:49:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
-;
-
 -- 01/12/2008 10h27min14s BRST
 -- Default comment for updating dictionary
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1000998,230,0,10,1000001,'Comments',TO_TIMESTAMP('2008-12-01 10:27:13','YYYY-MM-DD HH24:MI:SS'),100,'Comments or additional information','LBRA',70,'The Comments field allows for free form entry of additional information.','Y','N','N','N','N','N','N','N','N','N','Y','Comments',0,TO_TIMESTAMP('2008-12-01 10:27:13','YYYY-MM-DD HH24:MI:SS'),100,0)
