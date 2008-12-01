@@ -276,6 +276,8 @@ public class FormBoleto extends CPanel
 				"AND d.lbr_HasOpenItems='Y' AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule = 'B') " + //mostrar somente faturas boleto ou sem forma de pagamento
 				"AND i.AD_Client_ID=? ");
 		
+				sql.append("AND d.DocBaseType like '" + MDocType.DOCBASETYPE_ARInvoice + "' ");
+		
 				if (printedBill.isSelected()){
 					sql.append("AND i.lbr_IsBillPrinted='Y' ");
 				}

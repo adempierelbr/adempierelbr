@@ -271,6 +271,23 @@ public String getCity()
 {
 return (String)get_Value("City");
 }
+/** Set Comments.
+@param Comments Comments or additional information */
+public void setComments (String Comments)
+{
+if (Comments != null && Comments.length() > 70)
+{
+log.warning("Length > 70 - truncated");
+Comments = Comments.substring(0,69);
+}
+set_Value ("Comments", Comments);
+}
+/** Get Comments.
+@return Comments or additional information */
+public String getComments() 
+{
+return (String)get_Value("Comments");
+}
 /** Set Discount Amount.
 @param DiscountAmt Calculated amount of discount */
 public void setDiscountAmt (BigDecimal DiscountAmt)
