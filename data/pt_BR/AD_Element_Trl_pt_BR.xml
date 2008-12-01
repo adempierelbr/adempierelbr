@@ -26670,4 +26670,14 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000337" trl="Y">
+  <value column="Name" original="Boleto Comments">Observação Boleto</value>
+  <value column="PrintName" original="Boleto Comments">Observação Boleto</value>
+  <value column="Description" original="Define the Boleto Comments">Define a Observação do Boleto</value>
+  <value column="Help" original="Define the Boleto Comments">Define a Observação do Boleto</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>
