@@ -62,7 +62,7 @@ public class TaxBR
 	public static String taxType_Service      = X_LBR_TaxName.LBR_TAXTYPE_Service;
 	/** Substituição Tributária */
 	public static String taxType_Substitution = X_LBR_TaxName.LBR_TAXTYPE_Substitution;
-	
+		
 	/**************************************************************************
 	 *  calculateTaxes
 	 *  
@@ -73,6 +73,8 @@ public class TaxBR
 	 *  @param String trx
 	 */
 	public static void calculateTaxes(Integer Line_ID, boolean isOrder, String trx) throws EvalError{
+		
+		Properties ctx = Env.getCtx();
 		
 		Integer[] taxes = MTaxBR.getLBR_TaxName_ID(Line_ID, isOrder, trx);
 		
@@ -85,15 +87,15 @@ public class TaxBR
 		double  lineamt  = 0.0;
 		
 		if (isOrder){
-			MOrderLine oLine = new MOrderLine(Env.getCtx(),Line_ID,trx);
-			MOrder order = new MOrder(Env.getCtx(),oLine.getC_Order_ID(),trx);
+			MOrderLine oLine = new MOrderLine(ctx,Line_ID,trx);
+			MOrder order = new MOrder(ctx,oLine.getC_Order_ID(),trx);
 			product = oLine.getProduct();
 			isTaxIncluded = order.isTaxIncluded();
 			lineamt = (oLine.getLineNetAmt().setScale(TaxBR.scale,BigDecimal.ROUND_HALF_UP)).doubleValue();
 		}
 		else{
-			MInvoiceLine iLine = new MInvoiceLine(Env.getCtx(),Line_ID,trx);
-			MInvoice invoice = new MInvoice(Env.getCtx(),iLine.getC_Invoice_ID(),trx);
+			MInvoiceLine iLine = new MInvoiceLine(ctx,Line_ID,trx);
+			MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
 			product = iLine.getProduct();
 			isTaxIncluded = invoice.isTaxIncluded();
 			lineamt = (iLine.getLineNetAmt().setScale(TaxBR.scale,BigDecimal.ROUND_HALF_UP)).doubleValue();
@@ -101,14 +103,14 @@ public class TaxBR
 				
 		for (int i=0;i<taxes.length;i++){
 			
-			X_LBR_TaxName taxName = new X_LBR_TaxName(Env.getCtx(),taxes[i],trx);
+			X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxes[i],trx);
 			String name    = taxName.getName().trim();
 			MTaxBR taxBR   = lines.get(name);
 			MTaxBR s_taxBR = null;
 			
 			//Faz o cálculo do imposto substituto antes
 			if (taxName.getlbr_TaxType().equals(TaxBR.taxType_Substitution)){
-				X_LBR_TaxName s_taxName = new X_LBR_TaxName(Env.getCtx(),taxName.getLBR_TaxSubstitution_ID(),trx);
+				X_LBR_TaxName s_taxName = new X_LBR_TaxName(ctx,taxName.getLBR_TaxSubstitution_ID(),trx);
 				String s_name  = s_taxName.getName().trim();
 				s_taxBR = lines.get(s_name);
 				calculate(s_taxBR,null,product,s_taxName,lines,isTaxIncluded,lineamt,trx);
@@ -262,6 +264,29 @@ public class TaxBR
 		taxes.toArray(retValue);
 		return retValue;
 	} //getTaxes
+	
+	public static int deleteSummaryTax(int ID, boolean isOrder, String trx){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("DELETE FROM ");
+		if (isOrder)
+			sql.append(MOrderTax.Table_Name);
+		else
+			sql.append(MInvoiceTax.Table_Name);
+		
+		sql.append(" WHERE (TaxAmt = 0 OR ");
+		sql.append("C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) AND ");
+		
+		if (isOrder)
+			sql.append(MOrder.Table_Name).append("_ID = ");
+		else
+			sql.append(MInvoice.Table_Name).append("_ID = ");
+		
+		sql.append(ID);
+		
+		return DB.executeUpdate(sql.toString(), trx);
+	} //deleteSummaryTax
 	
 	public static MOrderTax getMOrderTax(Properties ctx, Integer C_Order_ID, Integer C_Tax_ID, String trx){
 		

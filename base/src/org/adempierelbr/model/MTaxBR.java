@@ -120,22 +120,29 @@ public class MTaxBR{
 		if (Line_ID == null)
 			Line_ID = -1;
 		
-		String sql = "SELECT LBR_TaxName_ID " + 
-					 "FROM C_Tax tax";
+		StringBuffer sql = new StringBuffer();
 		
-		if (isOrder) 
-			sql += ", C_OrderLine sLine WHERE sLine.C_OrderLine_ID = ? ";
-		else
-			sql += ", C_InvoiceLine sLine WHERE sLine.C_InvoiceLine_ID = ? ";
-		
-		sql += "AND Parent_Tax_ID = sLine.C_Tax_ID";
+		sql.append("SELECT LBR_TaxName_ID ");
+		sql.append("FROM C_Tax tax, ");
+		if (isOrder){
+			sql.append(MOrderLine.Table_Name);
+			sql.append(" sLine WHERE sLine.");
+			sql.append(MOrderLine.Table_Name).append("_ID = ? ");
+		}
+		else{
+			sql.append(MInvoiceLine.Table_Name);
+			sql.append(" sLine WHERE sLine.");
+			sql.append(MInvoiceLine.Table_Name).append("_ID = ? ");
+		}
+
+		sql.append("AND Parent_Tax_ID = sLine.C_Tax_ID");
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement (sql, trx);
+			pstmt = DB.prepareStatement (sql.toString(), trx);
 			pstmt.setInt(1, Line_ID);
 			rs = pstmt.executeQuery ();
 			while (rs.next ())

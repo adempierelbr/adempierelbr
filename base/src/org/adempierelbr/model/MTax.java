@@ -19,7 +19,16 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MInvoiceTax;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MOrderTax;
+import org.compiere.model.MPriceList;
+import org.compiere.model.PO;
 import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -32,13 +41,16 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import bsh.EvalError;
+
 /**
  *	MTax
  *
  *	Model for X_LBR_Tax
  *
- *  [ 1954195 ] AD_Client no Configurador de Impostos
- *  [ 1967062 ] LBR_Tax criado sem necessidade
+ *  [ 1954195 ] AD_Client no Configurador de Impostos, mgrigioni
+ *  [ 1967062 ] LBR_Tax criado sem necessidade, mgrigioni
+ *  [ 2200626 ] Lista de Preço Brasil, mgrigioni
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
@@ -62,6 +74,251 @@ public class MTax extends X_LBR_Tax {
 	public MTax(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
+	
+	public static boolean modelChange(Properties ctx, MOrderLine oLine, String trx) throws EvalError{
+		return modelChange(ctx,oLine,null,trx);
+	}
+	
+	public static boolean modelChange(Properties ctx, MInvoiceLine iLine, String trx) throws EvalError{
+		return modelChange(ctx,null,iLine,trx);
+	}
+
+	private static boolean modelChange(Properties ctx, MOrderLine oLine, 
+			MInvoiceLine iLine, String trx) throws EvalError{
+		
+		BigDecimal itaxAmt = Env.ZERO;
+		BigDecimal taxAmt  = Env.ZERO;
+		
+		boolean isOrder = true;
+				
+		PO   document = null;
+		PO   line     = null;
+		PO   doctax   = null;
+		PO[] lines    = null;
+		if (oLine != null){
+			document = new MOrder(ctx,oLine.getC_Order_ID(),trx);
+			line     = oLine;
+			lines    = ((MOrder)document).getLines(true,null);
+			doctax   = TaxBR.getMOrderTax(ctx, document.get_ID(), (Integer)line.get_Value("C_Tax_ID"), trx);
+		}
+		else{
+			document = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
+			line     = iLine;
+			lines    = ((MInvoice)document).getLines(true);
+			doctax   = TaxBR.getMInvoiceTax(ctx, document.get_ID(), (Integer)line.get_Value("C_Tax_ID"), trx);
+			isOrder  = false;
+		}
+
+		MPriceList pList = new MPriceList(ctx,(Integer)document.get_Value("M_PriceList_ID"),trx);
+		
+		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
+		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		
+		org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,(Integer)line.get_Value("C_Tax_ID"),trx);
+			
+		if (tax.isSummary()){
+		
+			for (int i=0; i<lines.length; i++){
+			
+				int ID = lines[i].get_ID();
+			
+				TaxBR.calculateTaxes(ID, isOrder, trx);
+				
+				Integer LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
+				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){	
+				
+					org.compiere.model.MTax cTaxes[] = tax.getChildTaxes(false);
+					for(org.compiere.model.MTax cTax : cTaxes){
+						int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
+						if (LBR_TaxLine_ID != 0){
+							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
+							if (!tIncluded.contains(cTax.getC_Tax_ID()) && brazilianlist){
+								itaxAmt = itaxAmt.add(taxLine.getlbr_TaxAmt());
+							}
+							
+							taxAmt = taxAmt.add(taxLine.getlbr_TaxAmt());
+						}
+					} //end for child taxes
+				} //LBR_Tax_ID not null
+			
+			} //end for order lines
+		
+			//Precisão
+			taxAmt  = taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+			itaxAmt = itaxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+			
+			boolean isTaxIncluded = POLBR.get_ValueAsBoolean(document.get_Value("IsTaxIncluded"));
+			BigDecimal totalLines = (BigDecimal)document.get_Value("TotalLines");
+			if (totalLines == null) totalLines = Env.ZERO;
+			
+			if (isTaxIncluded){
+				if (isOrder) //GrandTotal = Column not updatable
+					((MOrder)document).setGrandTotal(totalLines.add(itaxAmt));
+				else
+					((MInvoice)document).setGrandTotal(totalLines.add(itaxAmt));
+				
+				saveDocTax(doctax, isOrder, document.getAD_Org_ID(), taxAmt,
+						(BigDecimal)document.get_Value("GrandTotal"), isTaxIncluded, trx);
+			}
+			else{
+				if (isOrder) //GrandTotal = Column not updatable
+					((MOrder)document).setGrandTotal(totalLines.add(taxAmt));
+				else
+					((MInvoice)document).setGrandTotal(totalLines.add(taxAmt));
+				
+				saveDocTax(doctax, isOrder, document.getAD_Org_ID(), taxAmt,
+						totalLines, isTaxIncluded, trx);
+			}
+			
+			if(isOrder)
+				((MOrder)document).save(trx);
+			else
+				((MInvoice)document).save(trx);
+		} //isSummary
+		
+		return true;
+	} //modelChange
+		
+	public static boolean docValidate(Properties ctx, MOrder order, String trx) throws EvalError{
+		return docValidate(ctx,order,null,trx);
+	}
+	
+	public static boolean docValidate(Properties ctx, MInvoice invoice, String trx) throws EvalError{
+		return docValidate(ctx,null,invoice,trx);
+	}
+	
+	private static boolean docValidate(Properties ctx, MOrder order, 
+			MInvoice invoice, String trx) throws EvalError{
+		
+		BigDecimal itaxAmt    = Env.ZERO;
+		BigDecimal taxAmt     = Env.ZERO;
+		
+		boolean isOrder       = true;
+		boolean isTaxIncluded = false;
+				
+		PO   document = null;
+		PO   doctax   = null;
+		PO[] lines    = null;
+		if (order != null){
+			document = order;
+			lines    = ((MOrder)document).getLines(true,null);
+			isTaxIncluded = order.isTaxIncluded();
+		}
+		else{
+			document = invoice;
+			lines    = ((MInvoice)document).getLines(true);
+			isOrder  = false;
+			isTaxIncluded = invoice.isTaxIncluded();
+		}
+		
+		TaxBR.deleteSummaryTax(document.get_ID(), isOrder, trx);
+		
+		MPriceList pList = new MPriceList(ctx,(Integer)document.get_Value("M_PriceList_ID"),trx);
+		
+		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
+		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		
+		BigDecimal totalLines = (BigDecimal)document.get_Value("TotalLines");
+		if (totalLines == null) totalLines = Env.ZERO;
+		
+		for (PO line : lines){
+			
+			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,(Integer)line.get_Value("C_Tax_ID"),trx);
+			
+			if (tax.isSummary()){
+				
+				//Cálculo dos Impostos (Linha)
+				TaxBR.calculateTaxes(line.get_ID(), isOrder, trx);
+				
+				Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
+				
+				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+					
+					org.compiere.model.MTax[] cTaxes = tax.getChildTaxes(false);
+					
+					for (org.compiere.model.MTax cTax : cTaxes){
+						
+						int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
+						if (LBR_TaxLine_ID != 0){
+							
+							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
+							
+							//Verifica se o Imposto deve ser Contabilizado
+							if (taxLine.islbr_PostTax()){
+								
+								if (isOrder)
+									doctax = TaxBR.getMOrderTax(ctx, document.get_ID(), cTax.getC_Tax_ID(), trx);
+								else
+									doctax = TaxBR.getMInvoiceTax(ctx, document.get_ID(), cTax.getC_Tax_ID(), trx);
+								
+								BigDecimal TaxAmt     = (BigDecimal)doctax.get_Value("TaxAmt");
+								if (TaxAmt == null) TaxAmt = Env.ZERO;
+								
+								BigDecimal TaxBaseAmt = (BigDecimal)doctax.get_Value("TaxBaseAmt");
+								if (TaxBaseAmt == null) TaxBaseAmt = Env.ZERO;
+								
+								BigDecimal lineTaxAmt = taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+								
+								saveDocTax(doctax, isOrder, document.getAD_Org_ID(), TaxAmt.add(lineTaxAmt),
+										TaxBaseAmt.add(taxLine.getlbr_TaxBaseAmt()), isTaxIncluded, trx);
+								
+							} // postTax
+							
+							if (!tIncluded.contains(cTax.getC_Tax_ID()) && brazilianlist){
+								itaxAmt = itaxAmt.add(taxLine.getlbr_TaxAmt());
+							}
+							
+							taxAmt = taxAmt.add(taxLine.getlbr_TaxAmt());
+							
+						} //LBR_TaxLine_ID != 0
+						
+					} //child taxes
+					
+				} //LBR_Tax_ID != null
+				
+			} //summary tax
+			
+		} //document lines
+		
+		if (isTaxIncluded){
+			if (isOrder) //GrandTotal = Column not updatable
+				((MOrder)document).setGrandTotal(totalLines.add(itaxAmt));
+			else
+				((MInvoice)document).setGrandTotal(totalLines.add(itaxAmt));
+		}
+		else{
+			if (isOrder) //GrandTotal = Column not updatable
+				((MOrder)document).setGrandTotal(totalLines.add(taxAmt));
+			else
+				((MInvoice)document).setGrandTotal(totalLines.add(taxAmt));
+		}
+		
+		if(isOrder)
+			((MOrder)document).save(trx);
+		else
+			((MInvoice)document).save(trx);
+		
+		return true;
+	} //docValidate
+	
+	private static boolean saveDocTax(PO doctax, boolean isOrder, int AD_Org_ID, BigDecimal TaxAmt, 
+			BigDecimal TaxBaseAmt, boolean isTaxIncluded, String trx){
+		
+		if (isOrder){
+			((MOrderTax)doctax).setAD_Org_ID(AD_Org_ID);
+			((MOrderTax)doctax).setTaxAmt(TaxAmt);
+			((MOrderTax)doctax).setTaxBaseAmt(TaxBaseAmt);
+			((MOrderTax)doctax).setIsTaxIncluded(isTaxIncluded);
+			return ((MOrderTax)doctax).save(trx);
+		}
+		else{
+			((MInvoiceTax)doctax).setAD_Org_ID(AD_Org_ID);
+			((MInvoiceTax)doctax).setTaxAmt(TaxAmt);
+			((MInvoiceTax)doctax).setTaxBaseAmt(TaxBaseAmt);
+			((MInvoiceTax)doctax).setIsTaxIncluded(isTaxIncluded);
+			return ((MInvoiceTax)doctax).save(trx);
+		}
+	} //saveDocTax
 	
 	/**************************************************************************
 	 * 	setDescription
@@ -192,8 +449,6 @@ public class MTax extends X_LBR_Tax {
 		if (LBR_Tax_ID == null)
 			LBR_Tax_ID = -1;
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		String sql = "SELECT LBR_TaxLine_ID " +
 				     "FROM LBR_TaxLine " +
 				     "WHERE LBR_Tax_ID = ? " +
@@ -231,9 +486,7 @@ public class MTax extends X_LBR_Tax {
 	 *  @return Integer C_Tax_ID
 	 */
 	public static int getC_Tax_ID(int Parent_Tax_ID, int LBR_TaxName_ID, String trx){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
+
 		Integer C_Tax_ID = null;
 		
 		String sql = "SELECT C_Tax_ID " +
@@ -296,35 +549,34 @@ public class MTax extends X_LBR_Tax {
 	
 	public static int getLBR_TaxConfiguration_ID(Properties ctx, boolean isSOTrx, String ExceptionType, Integer ID){
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		Integer LBR_TaxConfiguration_ID = null;
 		
 		if (ExceptionType == null) ExceptionType = "";
 		if (ID == null) ID = -1;
 		
-		String where = "";
-		if (isSOTrx)
-			where = "WHERE AD_Client_ID = ? AND IsSOTrx='Y'";
-		else
-			where = "WHERE AD_Client_ID = ? AND lbr_IsPOTrx='Y'";
+		StringBuffer sql = new StringBuffer();
 		
-		String sql = "SELECT LBR_TaxConfiguration_ID " +
-				     "FROM LBR_TaxConfiguration ";
-			   sql += where;
+		sql.append("SELECT LBR_TaxConfiguration_ID ");
+		sql.append("FROM LBR_TaxConfiguration ");
+		sql.append("WHERE AD_Client_ID = ? AND ");
+		
+		if (isSOTrx)
+			sql.append("IsSOTrx = 'Y'");
+		else
+			sql.append("lbr_IsPOTrx = 'Y'");
 		
 		if (ExceptionType.equals("P"))
-			sql += " AND M_Product_ID = " + ID;
+			sql.append(" AND M_Product_ID = ").append(ID);
 		else if (ExceptionType.equals("G"))
-			sql += " AND LBR_FiscalGroup_Product_ID = " + ID; 
+			sql.append(" AND LBR_FiscalGroup_Product_ID = ").append(ID); 
 		else
-			sql += " AND M_Product_ID is null AND LBR_FiscalGroup_Product_ID is null";
+			sql.append(" AND M_Product_ID is null AND LBR_FiscalGroup_Product_ID is null");
 			
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement (sql, null);
+			pstmt = DB.prepareStatement (sql.toString(), null);
 			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
 			rs = pstmt.executeQuery ();
 			if (rs.next ())
@@ -347,8 +599,6 @@ public class MTax extends X_LBR_Tax {
 	} //getLBR_TaxConfiguration_ID
 	
 	public static int getLBR_TaxConfig_BPartner(Integer LBR_TaxConfiguration_ID, Integer C_BPartner_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
 		
 		Integer LBR_Tax_ID = null;
 		
@@ -388,9 +638,7 @@ public class MTax extends X_LBR_Tax {
 	} //getLBR_TaxConfig_BPartner
 	
 	public static X_LBR_TaxConfig_BPartner getX_LBR_TaxConfig_BPartner(Integer LBR_TaxConfiguration_ID, Integer C_BPartner_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
+
 		Integer LBR_Tax_ID = null;
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
@@ -429,8 +677,6 @@ public class MTax extends X_LBR_Tax {
 	} //getX_LBR_TaxConfig_BPartner
 	
 	public static int getLBR_TaxConfig_BPGroup(Integer LBR_TaxConfiguration_ID, Integer LBR_FiscalGroup_BPartner_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
 		
 		Integer LBR_Tax_ID = null;
 		
@@ -474,8 +720,6 @@ public class MTax extends X_LBR_Tax {
 	
 	public static X_LBR_TaxConfig_BPGroup getX_LBR_TaxConfig_BPGroup(Integer LBR_TaxConfiguration_ID, Integer LBR_FiscalGroup_BPartner_ID){
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		Integer LBR_Tax_ID = null;
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
@@ -518,8 +762,6 @@ public class MTax extends X_LBR_Tax {
 	
 	public static int getLBR_TaxConfig_Product(Integer LBR_TaxConfiguration_ID){
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		Integer LBR_Tax_ID = null;
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
@@ -555,8 +797,6 @@ public class MTax extends X_LBR_Tax {
 	} //getLBR_TaxConfig_Product
 	
 	public static X_LBR_TaxConfig_Product getX_LBR_TaxConfig_Product(Integer LBR_TaxConfiguration_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
 		
 		Integer LBR_Tax_ID = null;
 		
@@ -594,8 +834,6 @@ public class MTax extends X_LBR_Tax {
 	
 	public static int getLBR_TaxConfig_ProductGroup(Integer LBR_TaxConfiguration_ID){
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		Integer LBR_Tax_ID = null;
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
@@ -632,8 +870,6 @@ public class MTax extends X_LBR_Tax {
 	
 	public static X_LBR_TaxConfig_ProductGroup getX_LBR_TaxConfig_ProductGroup(Integer LBR_TaxConfiguration_ID){
 		
-		CLogger log = CLogger.getCLogger(MTax.class);
-		
 		Integer LBR_Tax_ID = null;
 		
 		if (LBR_TaxConfiguration_ID == null) LBR_TaxConfiguration_ID = -1;
@@ -669,8 +905,6 @@ public class MTax extends X_LBR_Tax {
 	} //getX_LBR_TaxConfig_ProductGroup
 	
 	public static int getLBR_TaxConfig_Region(Integer LBR_TaxConfiguration_ID, Integer C_Region_ID, Integer To_Region_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
 		
 		Integer LBR_Tax_ID = null;
 		
@@ -713,8 +947,6 @@ public class MTax extends X_LBR_Tax {
 	} //getLBR_TaxConfig_Region
 	
 	public static X_LBR_TaxConfig_Region getX_LBR_TaxConfig_Region(Integer LBR_TaxConfiguration_ID, Integer C_Region_ID, Integer To_Region_ID){
-		
-		CLogger log = CLogger.getCLogger(MTax.class);
 		
 		Integer LBR_Tax_ID = null;
 		

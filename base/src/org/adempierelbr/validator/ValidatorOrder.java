@@ -17,9 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -46,18 +43,16 @@ import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
-
-import bsh.EvalError;
 
 /**
  *	ValidatorOrder
  *
  *  Validate Order (Tax Calculation)
  *  
- *  [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha
+ *  [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha, mgrigioni
+ *  [ 2200626 ] Lista de Preço Brasil, mgrigioni
  *	
- *	@author Mario Grigioni
+ *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  *	@version $Id: ValidatorOrder.java, 21/12/2007 14:45:00 mgrigioni
  */
@@ -141,8 +136,10 @@ public class ValidatorOrder implements ModelValidator
 	
 	// modelChange - OrderLine
 	// @param MOrderLine
-	@SuppressWarnings("unchecked")
 	public String modelChange (MOrderLine oLine, int type) throws Exception{
+		
+		Properties ctx    = oLine.getCtx();
+		String     trx    = oLine.get_TrxName();
 		
 		if (type == TYPE_DELETE){
 			
@@ -169,94 +166,14 @@ public class ValidatorOrder implements ModelValidator
 			if (oLine.getQtyInvoiced() != null && oLine.getQtyInvoiced().signum() != 0){
 				return null;
 			}
-		
-			Properties ctx    = oLine.getCtx();
-			String     trx    = oLine.get_TrxName();
-		
-			BigDecimal taxAmt = Env.ZERO;
-			//BEGIN - fer_luck @ faire
-			HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
-			//END - fer_luck @ faire
-		
-			MOrder order = new MOrder(ctx,oLine.getC_Order_ID(),trx);
-		
-			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,oLine.getC_Tax_ID(),trx);
-				
-			if (tax.isSummary()){
 			
-				MOrderLine[] lines = order.getLines(true,null);
-				for (int i = 0; i < lines.length; i++){
-				
-					int C_OrderLine_ID = lines[i].getC_OrderLine_ID();
-				
-					TaxBR.calculateTaxes(C_OrderLine_ID, true, trx);
-				
-					Integer LBR_Tax_ID = (Integer)lines[i].get_Value("LBR_Tax_ID");
-					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-						MTax brTax = new MTax(ctx,LBR_Tax_ID,trx);
-						X_LBR_TaxLine[] brLines = brTax.getLines();
-				
-						for (int j=0; j < brLines.length; j++){
-							//BEGIN - fer_luck @ faire
-							X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, brLines[j].getLBR_TaxName_ID(), trx);
-							if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
-								if(taxList == null)
-									taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
-								boolean isListed = taxList.get(taxName) != null ? true : false;
-								BigDecimal amt = Env.ZERO;
-								if(isListed)
-									amt = taxList.get(taxName);
-								amt = amt.add(brLines[j].getlbr_TaxAmt());
-								taxList.put(taxName, amt);
-							}
-							else	
-								taxAmt = taxAmt.add(brLines[j].getlbr_TaxAmt());
-							//END - fer_luck @ faire
-						}
-					}
-				
-				} //end for
-			
-				MOrderTax oTax = TaxBR.getMOrderTax(ctx, order.getC_Order_ID(), oLine.getC_Tax_ID(), trx);
-				oTax.setTaxAmt(taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-				oTax.setAD_Org_ID(order.getAD_Org_ID()); // BUGFIX: LNM
-			
-				if (!order.isTaxIncluded()){
-					oTax.setTaxBaseAmt(order.getTotalLines());
-					order.setGrandTotal(order.getTotalLines().add(TaxBR.getMOrderTaxAmt(order.getC_Order_ID(), trx)));
-					//BEGIN - fer_luck @ faire
-					if(taxList != null){
-						Iterator it = taxList.entrySet().iterator();
-						while(it.hasNext()){
-							Map.Entry<X_LBR_TaxName, BigDecimal> map;
-							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-							order.setGrandTotal(order.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-						}
-					}
-					//END - fer_luck @ faire
-					order.save(trx);
-				}
-				else{
-					//BEGIN - fer_luck @ faire
-					if(taxList != null){
-						Iterator it = taxList.entrySet().iterator();
-						BigDecimal tmp = new BigDecimal(0.0);
-						while(it.hasNext()){
-							Map.Entry<X_LBR_TaxName, BigDecimal> map;
-							map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-							tmp = tmp.add(map.getValue());
-						}
-						if(!order.getGrandTotal().equals(order.getTotalLines().add(tmp))){
-							order.setGrandTotal(order.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-							order.save();
-						}
-					//END - fer_luck @ faire
-					}
-					oTax.setTaxBaseAmt(order.getTotalLines());
-				}
-				if(!oTax.save(trx))
-					log.warning("Unable to save Order Tax."); //Tracing errors
-			} //isSummary
+			//ModelChange
+			try{
+				MTax.modelChange(ctx, oLine, trx);
+			}
+			catch (Exception e){
+				log.log(Level.SEVERE, "", e);
+			}
 			
 		} //new or change
 
@@ -273,7 +190,6 @@ public class ValidatorOrder implements ModelValidator
 	 *	@param timing see TIMING_ constants
      *	@return error message or null
 	 */
-	@SuppressWarnings("unchecked")
 	public String docValidate (PO po, int timing)
 	{
 		
@@ -281,125 +197,17 @@ public class ValidatorOrder implements ModelValidator
 		if (po.get_TableName().equalsIgnoreCase("C_Order") && (timing == TIMING_AFTER_COMPLETE))
 		{
 			MOrder order = (MOrder)po;
-			MOrderLine[] lines = order.getLines(true,null);
 			
 			Properties ctx = order.getCtx();
 			String     trx = order.get_TrxName();
 			
-			BigDecimal grandTotal = Env.ZERO;
-			//BigDecimal substTotal = Env.ZERO;
-			
-			//BEGIN - fer_luck @ faire
-			HashMap <X_LBR_TaxName, BigDecimal> taxList = null;
-			//END - fer_luck @ faire
-			
-			//Apaga impostos zerados
-			String sql = "DELETE FROM C_OrderTax " +
-					     "WHERE (TaxAmt = 0 OR " +
-					            "C_Tax_ID IN (SELECT C_Tax_ID FROM C_Tax WHERE IsSummary = 'Y')) " +
-					     "AND C_Order_ID = " + order.getC_Order_ID();
-			DB.executeUpdate(sql, trx);
-			
-			for (int i = 0; i < lines.length; i++)
-			{
-				MOrderLine line = lines[i];
-				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,line.getC_Tax_ID(),trx);
-				
-				if (tax.isSummary())
-				{
-					//Cálculo dos Impostos (Linha)
-					try {
-						TaxBR.calculateTaxes(line.getC_OrderLine_ID(), true, trx);
-					} catch (EvalError e) {
-						e.printStackTrace();
-					}
-					
-					Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
-					
-					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
-					{
-						org.compiere.model.MTax[] cTaxes = tax.getChildTaxes(false);
-						for (int j = 0; j < cTaxes.length; j++)
-						{
-							org.compiere.model.MTax cTax = cTaxes[j];
-							
-							int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
-							if (LBR_TaxLine_ID != 0)
-							{
-								X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
-								
-								//Verifica se o Imposto deve ser Contabilizado
-								if (taxLine.islbr_PostTax())
-								{
-									
-									MOrderTax oTax = TaxBR.getMOrderTax(ctx, order.getC_Order_ID(), cTax.getC_Tax_ID(), trx);
-									
-									oTax.setAD_Org_ID(order.getAD_Org_ID()); //BUG FIX
-									
-									BigDecimal TaxAmt     = oTax.getTaxAmt();
-									BigDecimal TaxBaseAmt = oTax.getTaxBaseAmt();
-									
-									oTax.setTaxAmt(TaxAmt.add(taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP)));
-									
-									oTax.setTaxBaseAmt(TaxBaseAmt.add(taxLine.getlbr_TaxBaseAmt()));
-									oTax.setIsTaxIncluded(order.isTaxIncluded());
-									if(!oTax.save(trx))
-										log.warning("Unable to save Order Tax."); //Tracing errors
-								}
-								
-								X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
-								//BEGIN - fer_luck @ faire
-								if(taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
-									if(taxList == null)
-										taxList = new HashMap <X_LBR_TaxName, BigDecimal>();
-									boolean isListed = taxList.get(taxName) != null ? true : false;
-									BigDecimal amt = Env.ZERO;
-									if(isListed)
-										amt = taxList.get(taxName);
-									amt = amt.add(taxLine.getlbr_TaxAmt());
-									taxList.put(taxName, amt);
-								}
-								else	
-								//END - fer_luck @ faire
-									grandTotal = grandTotal.add(taxLine.getlbr_TaxAmt());
-								
-							}
-						} //end for
-					}
-				}
-			} //end for
-			
-			if (!order.isTaxIncluded()){
-				order.setGrandTotal(order.getTotalLines().add(TaxBR.getMOrderTaxAmt(order.getC_Order_ID(), trx)));
-				//BEGIN - fer_luck @ faire
-				if(taxList != null){
-					Iterator it = taxList.entrySet().iterator();
-					while(it.hasNext()){
-						Map.Entry<X_LBR_TaxName, BigDecimal> map;
-						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-						order.setGrandTotal(order.getGrandTotal().add(map.getValue()).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-					}
-				}
-				//END - fer_luck @ faire
-				order.save(trx);
+			//DocValidate
+			try {
+				MTax.docValidate(ctx, order, trx);
+			} catch (Exception e) {
+				log.log(Level.SEVERE, "", e);
 			}
-			else{
-				//BEGIN - fer_luck @ faire
-				if(taxList != null){
-					Iterator it = taxList.entrySet().iterator();
-					BigDecimal tmp = new BigDecimal(0.0);
-					while(it.hasNext()){
-						Map.Entry<X_LBR_TaxName, BigDecimal> map;
-						map = (Map.Entry<X_LBR_TaxName, BigDecimal>) it.next();
-						tmp = tmp.add(map.getValue());
-					}
-					if(!order.getGrandTotal().equals(order.getTotalLines().add(tmp))){
-						order.setGrandTotal(order.getTotalLines().add(tmp).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-						order.save();
-					}
-				}
-				//END - fer_luck @ faire
-			}
+
 			//Validate Withhold
 			validateWithhold((MOrder)po);			
 			
