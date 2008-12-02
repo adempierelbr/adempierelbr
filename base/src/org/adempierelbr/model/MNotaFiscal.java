@@ -208,8 +208,17 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				MDocType docType = new MDocType(getCtx(),getC_DocTypeTarget_ID(),get_TrxName());
 				if (docType.getDocNoSequence_ID() != 0){
 					MSequence sequence = new MSequence(getCtx(), docType.getDocNoSequence_ID(), get_TrxName());
-					sequence.setCurrentNext(sequence.getCurrentNext()-1);
-					sequence.save(get_TrxName());
+					
+					int actual = sequence.getCurrentNext()-1;
+					if (actual == Integer.parseInt(getDocumentNo())){	
+						sequence.setCurrentNext(sequence.getCurrentNext()-1);
+						sequence.save(get_TrxName());
+					}
+					else{
+						log.log(Level.SEVERE, "Existem notas com numeração superior " +
+								"no sistema. Nota: " + getDocumentNo());
+						return false;
+					}
 				}
 				
 			}
