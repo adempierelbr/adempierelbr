@@ -63,7 +63,7 @@ public class ProcCancelNF extends SvrProcess
 			if (nf.voidIt())
 				nf.save(get_TrxName());
 			else
-				return "Nota: " + p_LBR_NotaFiscal_ID + "não cancelada";
+				return "Nota: " + p_LBR_NotaFiscal_ID + " não cancelada";
 		}
     
 		return "ProcCancelNF Process Completed " + "Nota: " + p_LBR_NotaFiscal_ID;
