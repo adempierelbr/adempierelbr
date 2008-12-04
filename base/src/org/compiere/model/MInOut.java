@@ -1203,9 +1203,7 @@ public class MInOut extends X_M_InOut implements DocAction
 	 *  @contributor amontenegro - BF[#2388403]
 	 */
 	public String completeIt()
-	{
-		String LBR_IsReturn; //C_DocType.LBR_IsReturn
-		
+	{	
 		//	Re-Check
 		if (!m_justPrepared)
 		{
@@ -1220,7 +1218,8 @@ public class MInOut extends X_M_InOut implements DocAction
 		
         /**    Criar movimentação de estoque    **/
         MDocType docTypeInOut = new MDocType(p_ctx, getC_DocType_ID(), get_TrxName());
-       
+    	boolean lbr_IsReturn = POLBR.get_ValueAsBoolean(docTypeInOut.get_Value("lbr_IsReturn"));
+    	
         if(POLBR.get_ValueAsBoolean(docTypeInOut.get_Value("lbr_GenerateMovement")))
         {
 			MMovement movement = new MMovement(p_ctx, 0, get_TrxName());
@@ -1257,10 +1256,7 @@ public class MInOut extends X_M_InOut implements DocAction
 				mLine.setLine(line.getLine());
 				mLine.setDescription(line.getDescription());
 				mLine.setMovementQty(line.getMovementQty());
-				LBR_IsReturn = DB.getSQLValueString(null,
-						"SELECT LBR_IsReturn FROM C_DocType WHERE C_DocType_ID=?", 
-						getC_DocType_ID());
-				if(LBR_IsReturn.equalsIgnoreCase("Y"))
+				if(lbr_IsReturn)
 					mLine.setM_LocatorTo_ID(M_OrderLineLocator_ID);
 				else
 					mLine.setM_Locator_ID(line.getM_Locator_ID());
@@ -1272,7 +1268,7 @@ public class MInOut extends X_M_InOut implements DocAction
 					return DocAction.STATUS_Invalid;
 				}	
 				
-				if(LBR_IsReturn.equalsIgnoreCase("Y"))
+				if(lbr_IsReturn)
 					mLine.setM_Locator_ID(locatorTo);
 				else
 					mLine.setM_LocatorTo_ID(locatorTo);
@@ -2273,12 +2269,13 @@ public class MInOut extends X_M_InOut implements DocAction
 				     "AND M_Warehouse_ID = ?";
 		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
 			pstmt.setInt(1, C_BPartner_ID);
 			pstmt.setInt(2, M_Warehouse_ID);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				M_Locator_ID = rs.getInt(1);
@@ -2291,16 +2288,9 @@ public class MInOut extends X_M_InOut implements DocAction
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
+		finally{
+			DB.close(rs, pstmt);
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}		
 		
 		return M_Locator_ID;
 	}
