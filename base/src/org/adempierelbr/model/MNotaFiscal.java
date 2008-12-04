@@ -27,6 +27,7 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
 import org.compiere.model.X_LBR_NotaFiscal;
+import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -44,6 +45,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MNotaFiscal.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -91,6 +95,48 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return retValue;
 		
 	} //getLines
+	
+	/**************************************************************************
+	 *  lastPrinted
+	 *  @return int documentno
+	 */
+	public int lastPrinted(){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("SELECT max(DocumentNo) ");
+		sql.append("FROM ").append(MNotaFiscal.Table_Name);
+		sql.append(" WHERE ").append("AD_Org_ID = ? "); //1
+		sql.append("AND ").append("C_DocType_ID = ? "); //2
+		sql.append("AND IsSOTrx = ? ");                 //3
+		sql.append("AND IsPrinted = 'Y'");
+		
+		Integer documentno = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql.toString(), get_TrxName());
+			pstmt.setInt(1, getAD_Org_ID());
+			pstmt.setInt(2, getC_DocType_ID());
+			pstmt.setString(3, isSOTrx() ? "Y" : "N");
+			rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				documentno = rs.getInt(1);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return documentno;
+	} //lastPrinted
 	
 	public String[] getCNPJ_IE(int C_BPartner_ID){
 		

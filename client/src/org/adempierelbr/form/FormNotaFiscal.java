@@ -486,14 +486,31 @@ public class FormNotaFiscal extends CPanel
 	    
 		MDocPrint DoctypePrint = new MDocPrint(ctx,orgDocPrint_ID,null);
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
-		
+	    		
 		Integer[] selection = getSelection();
 		for (int i=0;i<selection.length;i++){
+			
+			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
+						
+			//check lastPrinted
+			if (i == 0 && !printedNF.isSelected()){
+				Integer lastPrinted = NotaFiscal.lastPrinted();
+				if (lastPrinted != null && lastPrinted.intValue() != 0){
+					Integer documentNo = Integer.parseInt(NotaFiscal.getDocumentNo());
+					if (documentNo.intValue() != lastPrinted.intValue() + 1){
+						 boolean answer = ADialog.ask(m_WindowNo, this, null,
+								 "Última Nota Impressa: " + lastPrinted + "\n" +
+								 "Nota Selecionada: " + documentNo + "\n\n" +
+								 "Continuar Impressão ?");
+						 if (!answer)
+							 return;
+					}
+				}
+			}
 			
 			if (i != 0)
 				DoctypePrint.newPage();
 			
-			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
 			ProcPrintNF.print(ctx,selection[i], MatrixPrinter, DoctypePrint, null);
 			
 			NotaFiscal.setIsPrinted(true);
