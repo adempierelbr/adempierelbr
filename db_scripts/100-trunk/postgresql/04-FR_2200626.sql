@@ -364,3 +364,7 @@ UPDATE AD_Tab SET DisplayLogic='@lbr_BrazilianPriceList@=''N''', ReadOnlyLogic=N
 UPDATE AD_Tab SET DisplayLogic='@lbr_BrazilianPriceList@=''Y''',Updated=TO_TIMESTAMP('2008-12-01 14:51:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1000041
 ;
 
+-- 01/12/2008 14h51min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-trunk/004-FR_2200626.sql',Updated=TO_TIMESTAMP('2008-12-01 10:36:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
