@@ -1200,9 +1200,12 @@ public class MInOut extends X_M_InOut implements DocAction
 	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
 	 *  @contributor mgrigioni - Melhorias no tratamento de erros do processo
 	 *  @contributor rsantana - Criação do processo de Movimentação de Estoque
+	 *  @contributor amontenegro - BF[#2388403]
 	 */
 	public String completeIt()
 	{
+		String LBR_IsReturn; //C_DocType.LBR_IsReturn
+		
 		//	Re-Check
 		if (!m_justPrepared)
 		{
@@ -1254,7 +1257,10 @@ public class MInOut extends X_M_InOut implements DocAction
 				mLine.setLine(line.getLine());
 				mLine.setDescription(line.getDescription());
 				mLine.setMovementQty(line.getMovementQty());
-				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
+				LBR_IsReturn = DB.getSQLValueString(null,
+						"SELECT LBR_IsReturn FROM C_DocType WHERE C_DocType_ID=?", 
+						getC_DocType_ID());
+				if(LBR_IsReturn.equalsIgnoreCase("Y"))
 					mLine.setM_LocatorTo_ID(M_OrderLineLocator_ID);
 				else
 					mLine.setM_Locator_ID(line.getM_Locator_ID());
@@ -1266,7 +1272,7 @@ public class MInOut extends X_M_InOut implements DocAction
 					return DocAction.STATUS_Invalid;
 				}	
 				
-				if(getMovementType().equals(MOVEMENTTYPE_CustomerReturns))
+				if(LBR_IsReturn.equalsIgnoreCase("Y"))
 					mLine.setM_Locator_ID(locatorTo);
 				else
 					mLine.setM_LocatorTo_ID(locatorTo);
