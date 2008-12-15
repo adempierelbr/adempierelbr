@@ -31,10 +31,13 @@ import org.compiere.model.I_C_Order;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.PO;
 import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_CFOPLine;
 import org.compiere.model.X_LBR_NCM;
@@ -45,6 +48,7 @@ import org.compiere.model.X_LBR_TaxConfig_ProductGroup;
 import org.compiere.model.X_LBR_TaxConfig_Region;
 import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.model.X_LBR_TaxName;
+import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -74,14 +78,17 @@ public class CalloutTax extends CalloutEngine
 	/**	Debug Steps			*/
 	//private boolean steps = false;
 	
-	private MTax tax = null;
+	private static MTax tax = null;
 	
-	private Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
+	private static Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
 		
-	private String  lbr_TaxType         = TaxBR.taxType_Product;
-	private String  lbr_TaxStatus       = "00";
-	private Integer LBR_LegalMessage_ID = null;
-	private boolean hasSubstitution     = false;
+	private static String  lbr_TaxType         = TaxBR.taxType_Product;
+	private static String  lbr_TaxStatus       = "00";
+	private static Integer LBR_LegalMessage_ID = null;
+	private static boolean hasSubstitution     = false;
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(CalloutTax.class);
 
 	/**
 	 *  getTaxes
@@ -101,8 +108,67 @@ public class CalloutTax extends CalloutEngine
 	public String getTaxes(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
 	{
 		//ID's
-		Integer ID                          = null; // C_Order_ID ou C_Invoice_ID
-		Integer Line_ID                     = null; // C_OrderLine_ID ou C_InvoiceLine_ID
+		Integer Line_ID     = null; // C_OrderLine_ID ou C_InvoiceLine_ID
+		//OBJETOS
+		MOrderLine   oLine  = null;
+		MInvoiceLine iLine  = null;
+	
+		//Pega no Contexto, qual tipo de documento
+		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
+		if (table == I_C_Order.Table_ID){
+			Line_ID = (Integer)mTab.getValue("C_OrderLine_ID");
+			if (Line_ID  == null || Line_ID.intValue() == 0)
+				return "";
+			else
+				oLine = new MOrderLine(ctx,Line_ID,null);
+		}
+		else{
+			Line_ID = (Integer)mTab.getValue("C_InvoiceLine_ID");
+			if (Line_ID  == null || Line_ID.intValue() == 0)
+				return "";
+			else
+				iLine = new MInvoiceLine(ctx,Line_ID,null);
+		}
+		
+		TaxesException tE = getException(oLine,iLine);
+		if (tE != null){
+			GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
+			mTab.setValue("LBR_Tax_ID", tE.getLBR_Tax_ID());
+			LBR_Tax.setValue(tE.getLBR_Tax_ID(), true);
+
+			if (tE.isSOTrx()){
+				mTab.setValue("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
+				mTab.setValue("lbr_TaxStatus", tE.getlbr_TaxStatus());
+			}
+		}
+		else{
+			GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
+			mTab.setValue("LBR_Tax_ID", null);
+			LBR_Tax.setValue(null, true);
+			
+			mTab.setValue("LBR_LegalMessage_ID", null);
+			mTab.setValue("lbr_TaxStatus", null);
+		}
+				
+		return "";
+	} //getTaxes
+	
+	public static TaxesException getException(MOrderLine oLine){
+		return getException(oLine,null);
+	}
+	
+	public static TaxesException getException(MInvoiceLine iLine){
+		return getException(null,iLine);
+	}
+	
+	private static TaxesException getException(MOrderLine oLine, MInvoiceLine iLine){
+		
+		cleanStaticAttributes();
+		
+		Properties ctx = oLine.getCtx();
+		PO document = null;
+		
+		//ID's
 		Integer M_Product_ID                = null;
 		Integer LBR_NCM_ID                  = null;
 		Integer C_BPartner_ID               = null;
@@ -112,67 +178,60 @@ public class CalloutTax extends CalloutEngine
 		Integer AD_Org_ID                   = null;
 		Integer LBR_Tax_ID                  = null;
 		Integer LBR_TaxConfiguration_ID     = null;
-		//OBJETOS
-		MOrder   order   = null;
-		MInvoice invoice = null;
 		//
 		boolean  isSOTrx = true;
 		//
 		String transactionType = null;
 		
-		//Pega no Contexto, qual tipo de documento
-		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
-		if (table == I_C_Order.Table_ID){
-			ID = (Integer)mTab.getValue("C_Order_ID");
-			Line_ID = (Integer)mTab.getValue("C_OrderLine_ID");
-			if (ID == null || ID.intValue() == 0) return "";
-			
-			//Cria o objeto e verifica Parceiro e Org da Ordem de Venda
-			order = new MOrder(ctx,ID,null);
+		if (oLine != null){			
+			document = new MOrder(ctx,oLine.getC_Order_ID(),null);
 			//
-			C_BPartner_ID         = order.getC_BPartner_ID();
-			C_BPartnerLocation_ID = order.getC_BPartner_Location_ID();
-			AD_Org_ID             = order.getAD_Org_ID();
-			isSOTrx               = order.isSOTrx();
-			transactionType       = (String)order.get_Value("lbr_TransactionType");
+			M_Product_ID = oLine.getM_Product_ID();
+			LBR_Tax_ID   = (Integer)oLine.get_Value("LBR_Tax_ID");
+			//
+			if (oLine.get_ID() == 0)
+				return null;
+			//
+			C_BPartner_ID         = ((MOrder)document).getC_BPartner_ID();
+			C_BPartnerLocation_ID = ((MOrder)document).getC_BPartner_Location_ID();
+			AD_Org_ID             = ((MOrder)document).getAD_Org_ID();
+			isSOTrx               = ((MOrder)document).isSOTrx();
+			transactionType       = (String)((MOrder)document).get_Value("lbr_TransactionType");
+		}
+		else if (iLine != null){
+			document = new MInvoice(ctx,iLine.getC_Invoice_ID(),null);
+			//
+			M_Product_ID = iLine.getM_Product_ID();
+			LBR_Tax_ID   = (Integer)iLine.get_Value("LBR_Tax_ID");
+			//
+			if (iLine.get_ID() == 0)
+				return null;
+			//
+			C_BPartner_ID         = ((MInvoice)document).getC_BPartner_ID();
+			C_BPartnerLocation_ID = ((MInvoice)document).getC_BPartner_Location_ID();
+			AD_Org_ID             = ((MInvoice)document).getAD_Org_ID();
+			isSOTrx               = ((MInvoice)document).isSOTrx();
+			transactionType       = (String)((MInvoice)document).get_Value("lbr_TransactionType");
 		}
 		else{
-			ID = (Integer)mTab.getValue("C_Invoice_ID");
-			Line_ID = (Integer)mTab.getValue("C_InvoiceLine_ID");
-			if (ID == null || ID.intValue() == 0) return "";
-			
-			//Cria o objeto e verifica Parceiro e Org da Fatura
-			invoice = new MInvoice(ctx,ID,null);
-			//
-			C_BPartner_ID         = invoice.getC_BPartner_ID();
-			C_BPartnerLocation_ID = invoice.getC_BPartner_Location_ID();
-			AD_Org_ID             = invoice.getAD_Org_ID();
-			isSOTrx               = invoice.isSOTrx();
-			transactionType       = (String)invoice.get_Value("lbr_TransactionType");
+			log.log(Level.WARNING, "Order and Invoice == null");
+			return null;
 		}
 		
 		//Product_ID
-		M_Product_ID = (Integer)mTab.getValue("M_Product_ID");
 		if (M_Product_ID == null || M_Product_ID.intValue() == 0)
-			return "";
+			return null;
 		
 		//
 		MOrgInfo orgInfo       = MOrgInfo.get(ctx, AD_Org_ID);
 		MLocation orgLocation  = new MLocation(ctx,orgInfo.getC_Location_ID(),null);
 		
 		//LBR_Tax_ID
-		LBR_Tax_ID = (Integer)mTab.getValue("LBR_Tax_ID");
-		if (LBR_Tax_ID != null){
-			if (Line_ID == null || Line_ID.intValue() == 0){ //Cópia de Linha
-				//tax = new MTax(ctx,LBR_Tax_ID,null);
-				//MTax newTax = tax.copyFrom();
-				mTab.setValue("LBR_Tax_ID", null);
-				return "";
-			}
+		if (LBR_Tax_ID == null){
+			LBR_Tax_ID = 0;
 		}
-		else LBR_Tax_ID = 0;
+		
 		tax = new MTax(ctx,LBR_Tax_ID,null);
-		//tax.save();
 		tax.deleteLines();
 		
 		//
@@ -183,10 +242,10 @@ public class CalloutTax extends CalloutEngine
 		//
 		LBR_NCM_ID = (Integer)product.get_Value("LBR_NCM_ID");
 		if (LBR_NCM_ID == null) LBR_NCM_ID = 0;
-		X_LBR_NCM ncm = new X_LBR_NCM(ctx,LBR_NCM_ID,null);
+			X_LBR_NCM ncm = new X_LBR_NCM(ctx,LBR_NCM_ID,null);
 
 		//Grupos de Tributação
-		if (order != null){
+		if (oLine != null){
 			LBR_FiscalGroup_BPartner_ID = (Integer)bpartner.get_Value("LBR_FiscalGroup_Customer_ID");
 		}
 		else{
@@ -225,13 +284,10 @@ public class CalloutTax extends CalloutEngine
 		boolean prod_hasSubstitution = POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"));
 		boolean prod_isManufactured  = POLBR.get_ValueAsBoolean(product.get_Value("lbr_IsManufactured"));
 		
-		//Verifica se é uma PO ou uma SO
-		boolean isSO = (order != null) ? order.isSOTrx() : invoice.isSOTrx();
-		
-		if(bp_hasSubstitution && prod_hasSubstitution && !isSO) {
+		if(bp_hasSubstitution && prod_hasSubstitution && !isSOTrx) {
 			hasSubstitution = true;
 		}
-		if (prod_isManufactured && prod_hasSubstitution && isSO){
+		if (prod_isManufactured && prod_hasSubstitution && isSOTrx){
 			hasSubstitution = true;
 		}
 		//END - fer_luck @ faire
@@ -248,8 +304,8 @@ public class CalloutTax extends CalloutEngine
 		//Taxes defined from Region
 		if (transactionType == null) transactionType = "";
 		boolean isIEExempt     = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
-		int FromRegion_ID = isSO ? orgLocation.getC_Region_ID() : location.getC_Region_ID();
-		int ToRegion_ID   = isSO ? location.getC_Region_ID() : orgLocation.getC_Region_ID();
+		int FromRegion_ID = isSOTrx ? orgLocation.getC_Region_ID() : location.getC_Region_ID();
+		int ToRegion_ID   = isSOTrx ? location.getC_Region_ID() : orgLocation.getC_Region_ID();
 		
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
@@ -270,7 +326,7 @@ public class CalloutTax extends CalloutEngine
 		
 		//Exceções (Configurador de Impostos)
 		//Sem exceções Produto ou Grupo
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, null, null);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, null, null);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Grupo do Parceiro
 			setLines(ctx,MTax.getLBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID));
@@ -290,7 +346,7 @@ public class CalloutTax extends CalloutEngine
 			
 		}
 		//Exceção Grupo de Tributação (Produto)
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, "G", LBR_FiscalGroup_Product_ID);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, "G", LBR_FiscalGroup_Product_ID);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Grupo do Produto
 			setLines(ctx,MTax.getLBR_TaxConfig_ProductGroup(LBR_TaxConfiguration_ID));
@@ -326,7 +382,7 @@ public class CalloutTax extends CalloutEngine
 			
 		}
 		//Exceção Produto
-		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSO, "P", M_Product_ID);
+		LBR_TaxConfiguration_ID = MTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, "P", M_Product_ID);
 		if (LBR_TaxConfiguration_ID != null && LBR_TaxConfiguration_ID.intValue() != 0){
 			//Produto
 			setLines(ctx,MTax.getLBR_TaxConfig_Product(LBR_TaxConfiguration_ID));
@@ -383,17 +439,21 @@ public class CalloutTax extends CalloutEngine
 		else
 			LBR_Tax_ID = null;
 		
-		GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
-		mTab.setValue("LBR_Tax_ID", LBR_Tax_ID);
-		LBR_Tax.setValue(LBR_Tax_ID, true);
-
-		if (isSOTrx){
-			mTab.setValue("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-			mTab.setValue("lbr_TaxStatus", lbr_TaxStatus);
-		}
+		return new TaxesException(LBR_Tax_ID,LBR_LegalMessage_ID,
+				lbr_TaxStatus, isSOTrx);		
+	} //getException
+	
+	private static void cleanStaticAttributes(){
+		tax = null;
 		
-		return "";
-	} //getTaxes
+		lines = new HashMap<Integer, Integer>();
+			
+		lbr_TaxType         = TaxBR.taxType_Product;
+		lbr_TaxStatus       = "00";
+		LBR_LegalMessage_ID = null;
+		hasSubstitution     = false;
+	} //cleanStaticAttributes
+	
 	
 	/**
 	 *  getDestinationType
@@ -457,7 +517,7 @@ public class CalloutTax extends CalloutEngine
 		return "";
 	} // getTransactionType
 	
-	private void setLines(Properties ctx,Integer LBR_Tax_ID)
+	private static void setLines(Properties ctx,Integer LBR_Tax_ID)
 	{
 		
 		if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
@@ -521,7 +581,7 @@ public class CalloutTax extends CalloutEngine
 
 	} //setLines
 	
-	private void setLines()
+	private static void setLines()
 	{
 		
 		String sql = "SELECT LBR_TaxLine_ID, LBR_TaxName_ID " +
@@ -549,4 +609,54 @@ public class CalloutTax extends CalloutEngine
 
 	} //setLines
 	
-}
+} //CalloutTax
+
+class TaxesException{
+	
+	private Integer LBR_Tax_ID;
+	private Integer LBR_LegalMessage_ID;
+	private String  lbr_TaxStatus;
+	private boolean isSOTrx;
+	
+	TaxesException(){}
+	
+	TaxesException(Integer LBR_Tax_ID, Integer LBR_LegalMessage_ID, 
+			String lbr_TaxStatus, boolean isSOTrx){
+		setLBR_Tax_ID(LBR_Tax_ID);
+		setLBR_LegalMessage_ID(LBR_LegalMessage_ID);
+		setlbr_TaxStatus(lbr_TaxStatus);
+		setSOTrx(isSOTrx);
+	}
+
+	public Integer getLBR_Tax_ID() {
+		return LBR_Tax_ID;
+	}
+
+	public void setLBR_Tax_ID(Integer tax_ID) {
+		LBR_Tax_ID = tax_ID;
+	}
+
+	public Integer getLBR_LegalMessage_ID() {
+		return LBR_LegalMessage_ID;
+	}
+
+	public void setLBR_LegalMessage_ID(Integer legalMessage_ID) {
+		LBR_LegalMessage_ID = legalMessage_ID;
+	}
+
+	public String getlbr_TaxStatus() {
+		return lbr_TaxStatus;
+	}
+
+	public void setlbr_TaxStatus(String lbr_TaxStatus) {
+		this.lbr_TaxStatus = lbr_TaxStatus;
+	}
+
+	public boolean isSOTrx() {
+		return isSOTrx;
+	}
+
+	public void setSOTrx(boolean isSOTrx) {
+		this.isSOTrx = isSOTrx;
+	}
+} //Taxes
