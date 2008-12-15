@@ -23,7 +23,9 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MBPartner;
 import org.compiere.model.MInvoicePaySchedule;
+import org.compiere.model.MLocator;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -203,6 +205,75 @@ public class POLBR{
 		return LBR_Boleto_ID;
 		
 	}	//	getLBR_Boleto_ID
+	
+	/**
+	 * 	Returns the locator ID created automatically for 
+	 * 	the given business partner
+	 *  @return C_Locator_ID
+	 *  @contributor mgrigioni - Alterada a verificação do locator para o C_BPartner_ID,
+	 *  	                     se o usuário alterar o value do parceiro o mesmo é replicado para o locator
+	 */
+	public static int getM_Locator_ID(int M_Warehouse_ID, MBPartner bpartner, String trx)
+	{
+		int M_Locator_ID = 0;
+		Integer C_BPartner_ID = bpartner.get_ID();
+		
+		Properties ctx = Env.getCtx();
+		
+		M_Locator_ID = POLBR.checkLocatorExists(M_Warehouse_ID, C_BPartner_ID, trx);
+		
+		if(M_Locator_ID == -1) 
+			M_Locator_ID = 0; 
+		
+		MLocator locator = new MLocator(ctx,M_Locator_ID,trx);
+		locator.setM_Warehouse_ID(M_Warehouse_ID);
+		locator.setValue(bpartner.getValue());
+		locator.setX(C_BPartner_ID.toString());
+		locator.setY(C_BPartner_ID.toString());
+		locator.setZ(C_BPartner_ID.toString());
+		locator.set_ValueOfColumn("C_BPartner_ID", C_BPartner_ID);
+		
+		if(locator.save(trx))
+			return locator.getM_Locator_ID();
+		
+		return -1;
+	} //getM_Locator_ID
+	
+	public static int checkLocatorExists(int M_Warehouse_ID, int C_BPartner_ID, String trx)
+	{
+		int M_Locator_ID = -1;
+		
+		String sql = "SELECT M_Locator_ID " +
+				     "FROM M_Locator " +
+				     "WHERE C_BPartner_ID = ? " +
+				     "AND M_Warehouse_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_BPartner_ID);
+			pstmt.setInt(2, M_Warehouse_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				M_Locator_ID = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			pstmt = null;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+			DB.close(rs, pstmt);
+		}
+		
+		return M_Locator_ID;
+	} //checkLocatorExists
 	
 	public static int getC_City_ID(String Name, int C_Region_ID, String trx)
 	{

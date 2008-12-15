@@ -91,7 +91,15 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		return "";
 	}
 	
-	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
+	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, String trx){
+		return defineCFOP(ctx,M_Product_ID,mo,null,trx);
+	}
+	
+	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MInvoice mi, String trx){
+		return defineCFOP(ctx,M_Product_ID,null,mi,trx);
+	}
+	
+	private static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
 		
 		if (M_Product_ID <= 0){
 			log.log(Level.WARNING, "M_Product_ID == 0");

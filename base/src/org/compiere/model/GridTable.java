@@ -1144,7 +1144,7 @@ public class GridTable extends AbstractTableModel
 			if (!m_tableName.endsWith("_Trl"))	//	translation tables have no model
 				return dataSavePO (Record_ID);
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			if (e instanceof ClassNotFoundException)
 				log.warning(m_tableName + " - " + e.getLocalizedMessage());
@@ -1206,6 +1206,9 @@ public class GridTable extends AbstractTableModel
 			//	Prepare
 			boolean manualUpdate = ResultSet.CONCUR_READ_ONLY == rs.getConcurrency();
 			if (DB.isRemoteObjects())
+				manualUpdate = true;
+			// Manual update if log migration scripts is enabled - teo_sarca BF [ 1901192 ]
+			if(!manualUpdate && Ini.isPropertyBool(Ini.P_LOGMIGRATIONSCRIPT))
 				manualUpdate = true;
 			if (manualUpdate)
 				createUpdateSqlReset();
@@ -2140,6 +2143,8 @@ public class GridTable extends AbstractTableModel
 					|| columnName.equals("Processed") || columnName.equals("IsSelfService")
 					|| columnName.equals("DocAction") || columnName.equals("DocStatus")
 					|| columnName.equals("Posted") || columnName.equals("IsReconciled")
+					|| columnName.equals("IsApproved") // BF [ 1943682 ]
+					|| columnName.equals("IsGenerated") // BF [ 1943682 ]
 					|| columnName.startsWith("Ref_")
 					//	Order/Invoice
 					|| columnName.equals("GrandTotal") || columnName.equals("TotalLines")

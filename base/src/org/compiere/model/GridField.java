@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -324,6 +325,14 @@ public class GridField
 		//  Mandatory if displayed
 		return isDisplayed (checkContext);
 	}	//	isMandatory
+	
+	/**
+	 *	forward compatibility - this method is implemented in 3.5.2
+	 *  @return true, if editable
+	 */
+	public boolean isEditablePara(boolean checkContext) {
+		return true;
+	}
 
 	/**
 	 *	Is it Editable - checks IsActive, IsUpdateable, and isDisplayed
@@ -659,7 +668,13 @@ public class GridField
 			//	Timestamps
 			if (DisplayType.isDate(m_vo.displayType))
 			{
-				java.util.Date date =  DisplayType.getDateFormat_JDBC().parse (value);
+				// try timestamp format - then date format -- [ 1950305 ]
+				java.util.Date date = null;
+				try {
+					date = DisplayType.getTimestampFormat_Default().parse (value);
+				} catch (java.text.ParseException e) {
+					date = DisplayType.getDateFormat_JDBC().parse (value);
+				}
 				return new Timestamp (date.getTime());
 			}
 			
@@ -940,6 +955,15 @@ public class GridField
 			return false;
 		return m_vo.IsUpdateable;
 	}
+	
+	/**
+	 * 	forward compatibility - this method is implemented in 3.5.2
+	 *	@return true if autocomplete
+	 */
+	public boolean isAutocomplete() {
+		return false;
+	}
+	
 	/**
 	 * 	Is Always Updateable
 	 *	@return true if always updateable
@@ -1664,4 +1688,14 @@ public class GridField
 	public boolean getIsCollapsedByDefault() {
 		return m_vo.IsCollapsedByDefault;
 	}
+	
+	/**
+	 *	forward compatibility - this method is implemented in 3.5.2
+	 * @return List of existing entries for this field
+	 */
+	public List<String> getEntries() {
+		ArrayList<String> list = new ArrayList<String>();
+		return list;
+	}
+	
 }   //  MField

@@ -1,7 +1,5 @@
 package org.adempierelbr.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +7,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.callout.CalloutDefineCFOP;
+import org.adempierelbr.model.MOtherNF;
+import org.adempierelbr.model.MOtherNFLine;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -16,12 +17,9 @@ import org.compiere.model.MLocator;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MSequence;
-import org.compiere.model.X_LBR_OtherNF;
-import org.compiere.model.X_LBR_OtherNFLine;
 import org.compiere.model.X_LBR_ProcessLink;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -31,10 +29,15 @@ import org.compiere.util.Env;
  *  
  *	 
  *	@author Alvaro Montenegro
+ *  @contributor Mario Grigioni (Kenos, www.kenos.com.br) mgrigioni
  *	@version $Id: ProcProcessOtherNF.java, 29/08/2008 10:38:00 amontenegro
  */
 public class ProcProcessOtherNF extends SvrProcess
 {
+	
+	private Properties ctx = null;
+	private String     trx = null;
+	
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -61,36 +64,36 @@ public class ProcProcessOtherNF extends SvrProcess
 	{
 		StringBuffer returnMsg = new StringBuffer();
 		
-		Properties ctx = getCtx();
-		String trx = get_TrxName();
-		int LBR_OtherNF_ID = getRecord_ID();
+		ctx = getCtx();
+		trx = get_TrxName();
+				
+		boolean isProcessed = false;
+		int LBR_OtherNF_ID  = getRecord_ID();
 		
-		X_LBR_OtherNF otherNF = new X_LBR_OtherNF(ctx,LBR_OtherNF_ID,trx);
+		try{
+			MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
 		
-		ProcessarLinhas(otherNF);
-		otherNF.setProcessed(true);
-		otherNF.save(trx);
+			isProcessed = ProcessarLinhas(otherNF);
+			otherNF.setProcessed(isProcessed);
+			otherNF.save(trx);
+		}
+		catch(Exception e){
+			log.log(Level.SEVERE, "", e);
+		}
 		
 		return returnMsg.toString();
 	}//doIt
 	
-	private void ProcessarLinhas(X_LBR_OtherNF otherNF)
+	private boolean ProcessarLinhas(MOtherNF otherNF)
 	{
-		ArrayList<Integer> IDs = PegaLinhas(otherNF.get_ID());
+		ArrayList<Integer> IDs = otherNF.getLines();
 		Map<Integer,Integer> ordersAdded = new HashMap<Integer, Integer>();
-		Integer C_DocTypeTarget_ID = 0;
-		
-		Properties ctx = getCtx();
-		String trx = get_TrxName();
-		
-		if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("MR"))
-			C_DocTypeTarget_ID = (Integer)otherNF.getC_DocType_ID();
-		else
-			C_DocTypeTarget_ID = (Integer)otherNF.getC_DocTypeTarget_ID();
+		int C_DocTypeTarget_ID = otherNF.getC_DocType_ID();
+		boolean processed = false;
 		
 		for(Integer ID : IDs)
 		{
-			X_LBR_OtherNFLine line = new X_LBR_OtherNFLine(ctx,ID,trx);
+			MOtherNFLine line = new MOtherNFLine(ctx,ID,trx);
 			Integer C_OrderLine_ID = 0;
 			
 			MInvoiceLine invLine = new MInvoiceLine(ctx,line.getC_InvoiceLine_ID(),trx);
@@ -112,23 +115,21 @@ public class ProcProcessOtherNF extends SvrProcess
 				X_LBR_ProcessLink process = new X_LBR_ProcessLink(ctx,0,trx);
 				process.setC_InvoiceLine_ID(line.getC_InvoiceLine_ID());
 				process.setC_OrderLine_ID(C_OrderLine_ID);
-				process.save(trx);
+				processed = process.save(trx);
 			}
 			
-			line.setProcessed(true);
+			line.setProcessed(processed);
 			line.save(trx);
 		}
+		
+		return processed;
 	}
 	
 	private int CriaPedido(int C_DocTypeTarget_ID, MInvoice inv)
-	{
-		Properties ctx = getCtx();
-		String trx = get_TrxName();
-		
+	{		
 		MOrder oldOrd = new MOrder(ctx,inv.getC_Order_ID(),trx);
 
-		MOrder newOrd = copyFrom(oldOrd, new Timestamp(System.currentTimeMillis()), C_DocTypeTarget_ID, true, false, false, trx);
-		newOrd.setC_DocTypeTarget_ID(C_DocTypeTarget_ID);
+		MOrder newOrd = copyFrom(oldOrd, Env.getContextAsDate(ctx, "#Date"), C_DocTypeTarget_ID, true, false, false, trx);
 		
 		if(newOrd.save(trx))
 		{
@@ -137,55 +138,25 @@ public class ProcProcessOtherNF extends SvrProcess
 		return 0;
 	}
 	
-	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, X_LBR_OtherNFLine line)
+	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, MOtherNFLine line)
 	{
-		Properties ctx = getCtx();
-		String trx = get_TrxName();
 		MOrderLine oldOrdLine = new MOrderLine(ctx,invLine.getC_OrderLine_ID(),trx);
-		MOrderLine newOrdLine = copyLineFrom(oldOrdLine, oldC_Order_ID, ctx, trx);
+		MOrderLine newOrdLine = copyLineFrom(oldOrdLine, newC_Order_ID, ctx, trx);
 		
 		MLocator loc = new MLocator(ctx,line.getM_Locator_ID(),trx);
 		
 		newOrdLine.setQty(line.getQty());
 		newOrdLine.setM_Warehouse_ID(loc.getM_Warehouse_ID());
 		newOrdLine.set_ValueOfColumn("M_Locator_ID", loc.getM_Locator_ID());
-		newOrdLine.setC_Order_ID(newC_Order_ID);
+		
+		Integer LBR_CFOP_ID = CalloutDefineCFOP.defineCFOP(ctx, newOrdLine.getM_Product_ID(), new MOrder(ctx,newC_Order_ID,trx), trx);
+		newOrdLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
+		
 		newOrdLine.save(trx);
 		
 		return newOrdLine.get_ID();
 	}
-	
-	private ArrayList<Integer> PegaLinhas(int LBR_OtherNF_ID)
-	{
-		ArrayList<Integer> lineIds = new ArrayList<Integer>();
-		PreparedStatement pstmt = null;
-		//Properties ctx = getCtx();
-		String trx = get_TrxName();
 		
-		StringBuffer sql = new StringBuffer("SELECT lbr_othernfline_id FROM lbr_othernfline WHERE lbr_othernf_id = ?");
-		
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql.toString(), trx);
-			pstmt.setInt(1, LBR_OtherNF_ID);
-			rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				lineIds.add(rs.getInt(1));
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql.toString(), e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-		
-		return lineIds;
-	}
-	
 	/**
 	 * 	Copy Order from another Order
 	 *	@param from The source order
