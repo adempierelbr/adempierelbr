@@ -72,10 +72,6 @@ public class ProcGenerateNF extends SvrProcess
 	/** Documento Próprio         */
 	private boolean p_IsOwnDocument = true;
 	
-	public static Properties ctx;
-	public static String     trx;
-	public static boolean    isSOTrx    = true;
-
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcGenerateNF.class);
 
@@ -112,6 +108,8 @@ public class ProcGenerateNF extends SvrProcess
 		
 		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 		
+		boolean isSOTrx = true;
+		
 		p_C_Invoice_ID = nf.getC_Invoice_ID();
 		if (p_C_Invoice_ID == null || p_C_Invoice_ID.intValue() == 0)
 			throw new IllegalArgumentException("Fatura == 0");
@@ -147,8 +145,8 @@ public class ProcGenerateNF extends SvrProcess
 	
 	public static int generate(Properties context, MInvoice invoice, int LBR_NotaFiscal_ID, boolean isSOTrx, boolean IsOwnDocument, String transaction){
 				
-		ctx = context;
-		trx = transaction;
+		Properties ctx = context;
+		String     trx = transaction;
 		
 		try{
 		
