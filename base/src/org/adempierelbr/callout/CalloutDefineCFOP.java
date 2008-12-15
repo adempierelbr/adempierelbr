@@ -203,8 +203,8 @@ public class CalloutDefineCFOP extends CalloutEngine {
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
 
 
-			boolean isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution")) &&
-				POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
+			boolean isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution")); 
+				//&& POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
 			pstmt.setString(5, isSubstitute ? "Y" :  "N");
 			pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
 			pstmt.setString(7, transactionType);
