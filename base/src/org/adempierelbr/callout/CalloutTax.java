@@ -75,14 +75,14 @@ public class CalloutTax extends CalloutEngine
 	/**	Debug Steps			*/
 	//private boolean steps = false;
 	
-	private static MTax tax = null;
+	private MTax tax = null;
 	
-	private static Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
 		
-	private static String  lbr_TaxType         = TaxBR.taxType_Product;
-	private static String  lbr_TaxStatus       = "00";
-	private static Integer LBR_LegalMessage_ID = null;
-	private static boolean hasSubstitution     = false;
+	private String  lbr_TaxType         = TaxBR.taxType_Product;
+	private String  lbr_TaxStatus       = "00";
+	private Integer LBR_LegalMessage_ID = null;
+	private boolean hasSubstitution     = false;
 	
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(CalloutTax.class);
@@ -171,17 +171,17 @@ public class CalloutTax extends CalloutEngine
 		return "";
 	} //getTaxes
 	
-	public static TaxesException getException(Properties ctx, MOrder order, 
+	public TaxesException getException(Properties ctx, MOrder order, 
 			MProduct product, Integer LBR_Tax_ID){
 		return getException(ctx,order,null,product,LBR_Tax_ID);
 	}
 	
-	public static TaxesException getException(Properties ctx, MInvoice invoice,
+	public TaxesException getException(Properties ctx, MInvoice invoice,
 			MProduct product, Integer LBR_Tax_ID){
 		return getException(ctx, null,invoice,product,LBR_Tax_ID);
 	}
 	
-	private static TaxesException getException(Properties ctx, MOrder order, 
+	private TaxesException getException(Properties ctx, MOrder order, 
 			MInvoice invoice, MProduct product, Integer LBR_Tax_ID){
 		
 		cleanStaticAttributes();
@@ -442,7 +442,7 @@ public class CalloutTax extends CalloutEngine
 				lbr_TaxStatus, isSOTrx);		
 	} //getException
 	
-	private static void cleanStaticAttributes(){
+	private void cleanStaticAttributes(){
 		tax = null;
 		
 		lines = new HashMap<Integer, Integer>();
@@ -516,7 +516,7 @@ public class CalloutTax extends CalloutEngine
 		return "";
 	} // getTransactionType
 	
-	private static void setLines(Properties ctx,Integer LBR_Tax_ID)
+	private void setLines(Properties ctx,Integer LBR_Tax_ID)
 	{
 		
 		if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
@@ -580,7 +580,7 @@ public class CalloutTax extends CalloutEngine
 
 	} //setLines
 	
-	private static void setLines()
+	private void setLines()
 	{
 		
 		String sql = "SELECT LBR_TaxLine_ID, LBR_TaxName_ID " +
