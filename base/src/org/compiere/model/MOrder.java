@@ -40,6 +40,8 @@ import org.compiere.util.Msg;
  *
  *  @author Jorg Janke
  *  @version $Id: MOrder.java,v 1.5 2006/10/06 00:42:24 jjanke Exp $
+ *  
+ *  BF[#2440821] - amontenegro (www.kenos.com.br)
  */
 public class MOrder extends X_C_Order implements DocAction
 {
@@ -482,6 +484,13 @@ public class MOrder extends X_C_Order implements DocAction
 			MOrderLine line = new MOrderLine (this);
 			PO.copyValues(fromLines[i], line, getAD_Client_ID(), getAD_Org_ID());
 			line.setC_Order_ID(getC_Order_ID());
+			// Kenos - Problema de quantidade reservada
+			line.setQtyDelivered(Env.ZERO);
+			line.setQtyInvoiced(Env.ZERO);
+			line.setQtyReserved(Env.ZERO);
+			line.setDateDelivered(null);
+			line.setDateInvoiced(null);
+			// Kenos - Problema de quantidade reservada
 			line.setOrder(this);
 			line.set_ValueNoCheck ("C_OrderLine_ID", I_ZERO);	//	new
 			//KENOS - LBR_Tax_ID
@@ -502,12 +511,7 @@ public class MOrder extends X_C_Order implements DocAction
 				line.setRef_OrderLine_ID(fromLines[i].getC_OrderLine_ID());
 			else
 				line.setRef_OrderLine_ID(0);
-			//
-			line.setQtyDelivered(Env.ZERO);
-			line.setQtyInvoiced(Env.ZERO);
-			line.setQtyReserved(Env.ZERO);
-			line.setDateDelivered(null);
-			line.setDateInvoiced(null);
+
 			//	Tax
 			if (getC_BPartner_ID() != otherOrder.getC_BPartner_ID())
 				line.setTax();		//	recalculate
