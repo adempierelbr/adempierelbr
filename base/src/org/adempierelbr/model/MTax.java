@@ -114,7 +114,10 @@ public class MTax extends X_LBR_Tax {
 		MPriceList pList = new MPriceList(ctx,(Integer)document.get_Value("M_PriceList_ID"),trx);
 		
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
-		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
+		if (brazilianlist){
+			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		}
 		
 		Integer C_Tax_ID = (Integer)line.get_Value("C_Tax_ID");
 		if (C_Tax_ID == null)
@@ -230,7 +233,10 @@ public class MTax extends X_LBR_Tax {
 		MPriceList pList = new MPriceList(ctx,(Integer)document.get_Value("M_PriceList_ID"),trx);
 		
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
-		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
+		if (brazilianlist){
+			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+		}
 		
 		totalLines = (BigDecimal)document.get_Value("TotalLines");
 		if (totalLines == null) totalLines = Env.ZERO;
