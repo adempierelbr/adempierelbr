@@ -287,6 +287,11 @@ public class ValidatorInvoice implements ModelValidator
 				log.log(Level.SEVERE, "", e);
 			}
 			
+			//Fix - Ajustar PaySchedule
+			MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+			log.fine(pt.toString());
+			pt.apply(invoice);
+			
 			//Validate Withhold
 			validateWithhold((MInvoice)po);
 			

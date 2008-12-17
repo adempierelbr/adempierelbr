@@ -154,8 +154,8 @@ public class TaxBR
 					}
 					
 					//Valor + Margem de Lucro
-					double profit = ((BigDecimal)product.get_Value("lbr_ProfitPercentage")).doubleValue();
-					lineamt = lineamt * (1+(profit/100));
+					double iva = ((BigDecimal)product.get_Value("lbr_ProfitPercentage")).doubleValue();
+					lineamt = lineamt * (1+(iva/100));
 					
 					if (isTaxIncluded){
 						amt = calculate(taxBR.getFormulaNetWorth(),lineamt,factor,lines);

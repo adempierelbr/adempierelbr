@@ -75,19 +75,21 @@ public class MTax extends X_LBR_Tax {
 		super(ctx,ID,trx);	
 	}
 	
-	public static boolean modelChange(Properties ctx, MOrderLine oLine, String trx) throws EvalError{
+	public static MTaxAmounts modelChange(Properties ctx, MOrderLine oLine, String trx) throws EvalError{
 		return modelChange(ctx,oLine,null,trx);
 	}
 	
-	public static boolean modelChange(Properties ctx, MInvoiceLine iLine, String trx) throws EvalError{
+	public static MTaxAmounts modelChange(Properties ctx, MInvoiceLine iLine, String trx) throws EvalError{
 		return modelChange(ctx,null,iLine,trx);
 	}
 
-	private static boolean modelChange(Properties ctx, MOrderLine oLine, 
+	private static MTaxAmounts modelChange(Properties ctx, MOrderLine oLine, 
 			MInvoiceLine iLine, String trx) throws EvalError{
 		
-		BigDecimal itaxAmt = Env.ZERO;
-		BigDecimal taxAmt  = Env.ZERO;
+		BigDecimal totalLines = Env.ZERO; //TotalLines
+		BigDecimal taxAmt     = Env.ZERO; //TaxAmt (all taxes)
+		BigDecimal etaxAmt    = Env.ZERO; //Excluded TaxAmt
+		BigDecimal substAmt   = Env.ZERO; //Substitution TaxAmt
 		
 		boolean isOrder = true;
 				
@@ -133,7 +135,12 @@ public class MTax extends X_LBR_Tax {
 						if (LBR_TaxLine_ID != 0){
 							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
 							if (!tIncluded.contains(cTax.getC_Tax_ID()) && brazilianlist){
-								itaxAmt = itaxAmt.add(taxLine.getlbr_TaxAmt());
+								etaxAmt = etaxAmt.add(taxLine.getlbr_TaxAmt());
+							}
+							
+							X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
+							if (taxName.getlbr_TaxType().equals(TaxBR.taxType_Substitution)){
+								substAmt = substAmt.add(taxLine.getlbr_TaxAmt());
 							}
 							
 							taxAmt = taxAmt.add(taxLine.getlbr_TaxAmt());
@@ -144,18 +151,19 @@ public class MTax extends X_LBR_Tax {
 			} //end for order lines
 		
 			//Precisão
-			taxAmt  = taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
-			itaxAmt = itaxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+			taxAmt   = taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+			etaxAmt  = etaxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+			substAmt = substAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
 			
 			boolean isTaxIncluded = POLBR.get_ValueAsBoolean(document.get_Value("IsTaxIncluded"));
-			BigDecimal totalLines = (BigDecimal)document.get_Value("TotalLines");
+			totalLines = (BigDecimal)document.get_Value("TotalLines");
 			if (totalLines == null) totalLines = Env.ZERO;
 			
 			if (isTaxIncluded){
 				if (isOrder) //GrandTotal = Column not updatable
-					((MOrder)document).setGrandTotal(totalLines.add(itaxAmt));
+					((MOrder)document).setGrandTotal(totalLines.add(etaxAmt));
 				else
-					((MInvoice)document).setGrandTotal(totalLines.add(itaxAmt));
+					((MInvoice)document).setGrandTotal(totalLines.add(etaxAmt));
 				
 				saveDocTax(doctax, isOrder, document.getAD_Org_ID(), taxAmt,
 						(BigDecimal)document.get_Value("GrandTotal"), isTaxIncluded, trx);
@@ -176,22 +184,24 @@ public class MTax extends X_LBR_Tax {
 				((MInvoice)document).save(trx);
 		} //isSummary
 		
-		return true;
+		return new MTaxAmounts(totalLines,taxAmt,etaxAmt,substAmt);
 	} //modelChange
 		
-	public static boolean docValidate(Properties ctx, MOrder order, String trx) throws EvalError{
+	public static MTaxAmounts docValidate(Properties ctx, MOrder order, String trx) throws EvalError{
 		return docValidate(ctx,order,null,trx);
 	}
 	
-	public static boolean docValidate(Properties ctx, MInvoice invoice, String trx) throws EvalError{
+	public static MTaxAmounts docValidate(Properties ctx, MInvoice invoice, String trx) throws EvalError{
 		return docValidate(ctx,null,invoice,trx);
 	}
 	
-	private static boolean docValidate(Properties ctx, MOrder order, 
+	private static MTaxAmounts docValidate(Properties ctx, MOrder order, 
 			MInvoice invoice, String trx) throws EvalError{
 		
-		BigDecimal itaxAmt    = Env.ZERO;
-		BigDecimal taxAmt     = Env.ZERO;
+		BigDecimal totalLines = Env.ZERO; //TotalLines
+		BigDecimal taxAmt     = Env.ZERO; //TaxAmt (all taxes)
+		BigDecimal etaxAmt    = Env.ZERO; //Excluded TaxAmt
+		BigDecimal substAmt   = Env.ZERO; //Substitution TaxAmt
 		
 		boolean isOrder       = true;
 		boolean isTaxIncluded = false;
@@ -218,7 +228,7 @@ public class MTax extends X_LBR_Tax {
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
 		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		
-		BigDecimal totalLines = (BigDecimal)document.get_Value("TotalLines");
+		totalLines = (BigDecimal)document.get_Value("TotalLines");
 		if (totalLines == null) totalLines = Env.ZERO;
 		
 		for (PO line : lines){
@@ -265,7 +275,12 @@ public class MTax extends X_LBR_Tax {
 							} // postTax
 							
 							if (!tIncluded.contains(cTax.getC_Tax_ID()) && brazilianlist){
-								itaxAmt = itaxAmt.add(taxLine.getlbr_TaxAmt());
+								etaxAmt = etaxAmt.add(taxLine.getlbr_TaxAmt());
+							}
+							
+							X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxLine.getLBR_TaxName_ID(),trx);
+							if (taxName.getlbr_TaxType().equals(TaxBR.taxType_Substitution)){
+								substAmt = substAmt.add(taxLine.getlbr_TaxAmt());
 							}
 							
 							taxAmt = taxAmt.add(taxLine.getlbr_TaxAmt());
@@ -280,11 +295,16 @@ public class MTax extends X_LBR_Tax {
 			
 		} //document lines
 		
+		//Precisão
+		taxAmt   = taxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+		etaxAmt  = etaxAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+		substAmt = substAmt.setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+		
 		if (isTaxIncluded){
 			if (isOrder) //GrandTotal = Column not updatable
-				((MOrder)document).setGrandTotal(totalLines.add(itaxAmt));
+				((MOrder)document).setGrandTotal(totalLines.add(etaxAmt));
 			else
-				((MInvoice)document).setGrandTotal(totalLines.add(itaxAmt));
+				((MInvoice)document).setGrandTotal(totalLines.add(etaxAmt));
 		}
 		else{
 			if (isOrder) //GrandTotal = Column not updatable
@@ -298,7 +318,7 @@ public class MTax extends X_LBR_Tax {
 		else
 			((MInvoice)document).save(trx);
 		
-		return true;
+		return new MTaxAmounts(totalLines,taxAmt,etaxAmt,substAmt);
 	} //docValidate
 	
 	private static boolean saveDocTax(PO doctax, boolean isOrder, int AD_Org_ID, BigDecimal TaxAmt, 
@@ -989,3 +1009,49 @@ public class MTax extends X_LBR_Tax {
 	} //getX_LBR_TaxConfig_Region
 		
 } //MTax
+
+class MTaxAmounts{
+	
+	private BigDecimal Amt;
+	private BigDecimal taxAmt;
+	private BigDecimal taxExcludedAmt;
+	private BigDecimal taxSubstAmt;
+	
+	//Default Constructor
+	MTaxAmounts(){}
+	
+	MTaxAmounts(BigDecimal Amt, BigDecimal taxAmt, 
+			BigDecimal taxExcludedAmt, BigDecimal taxSubstAmt){
+		
+		setAmt(Amt);
+		setTaxAmt(taxAmt);
+		setTaxExcludedAmt(taxExcludedAmt);
+		setTaxSubstAmt(taxSubstAmt);
+	}
+	
+	public BigDecimal getAmt() {
+		return Amt;
+	}
+	public void setAmt(BigDecimal Amt) {
+		this.Amt = Amt;
+	}
+	public BigDecimal getTaxAmt() {
+		return taxAmt;
+	}
+	public void setTaxAmt(BigDecimal taxAmt) {
+		this.taxAmt = taxAmt;
+	}
+	public BigDecimal getTaxExcludedAmt() {
+		return taxExcludedAmt;
+	}
+	public void setTaxExcludedAmt(BigDecimal taxExcludedAmt) {
+		this.taxExcludedAmt = taxExcludedAmt;
+	}
+	public BigDecimal getTaxSubstAmt() {
+		return taxSubstAmt;
+	}
+	public void setTaxSubstAmt(BigDecimal taxSubstAmt) {
+		this.taxSubstAmt = taxSubstAmt;
+	}
+	
+} //MTaxAmounts
