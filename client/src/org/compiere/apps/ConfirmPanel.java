@@ -535,7 +535,40 @@ public final class ConfirmPanel extends CPanel
 		bOK = createOKButton(withText);
 		okCancel.add(bOK);
 		setCancelVisible(withCancelButton);
-		setCancelVisible(withRefreshButton);
+		setRefreshVisible(withRefreshButton);
+		this.add(okCancel, BorderLayout.EAST);
+		//
+	}	//	ConfirmPanel
+	
+	/**
+	 *	Create Confirmation Panel with different buttons
+	 *  @param withCancelButton with cancel
+	 *  @param withRefreshButton with refresh
+	 */
+	public ConfirmPanel(boolean withCancelButton,
+		boolean withRefreshButton, boolean withPrintButton)
+	{
+		super();
+		
+		boolean withText = true;
+		
+		BorderLayout mainLayout = new BorderLayout();
+		this.setLayout(mainLayout);
+		this.setName("confirmPanel");
+		//
+		CPanel okCancel = new CPanel(new FlowLayout(FlowLayout.RIGHT));
+		okCancel.setOpaque(false);
+		bPrint = createPrintButton(withText);
+		okCancel.add(bPrint);
+		bRefresh = createRefreshButton(withText);
+		okCancel.add(bRefresh);
+		bCancel = createCancelButton(withText);
+		okCancel.add(bCancel);
+		bOK = createOKButton(withText);
+		okCancel.add(bOK);
+		setCancelVisible(withCancelButton);
+		setRefreshVisible(withRefreshButton);
+		setPrintVisible(withPrintButton);
 		this.add(okCancel, BorderLayout.EAST);
 		//
 	}	//	ConfirmPanel
@@ -547,6 +580,7 @@ public final class ConfirmPanel extends CPanel
 	private CButton bCancel;
 	//
 	private CButton bRefresh;
+	private CButton bPrint;
 	private CButton bReset;
 	private CButton bCustomize;
 	private CButton bHistory;
@@ -649,6 +683,16 @@ public final class ConfirmPanel extends CPanel
 		bRefresh.setVisible(value);
 		bRefresh.setEnabled(value);
 	}	//	setRefreshVisible
+	
+	/**
+	 *	Show Print button
+	 *  @param value trie for visible
+	 */
+	public void setPrintVisible (boolean value)
+	{
+		bPrint.setVisible(value);
+		bPrint.setEnabled(value);
+	}	//	setPrintVisible
 
 	/**
 	 *	Is Cancel Visible
@@ -704,6 +748,15 @@ public final class ConfirmPanel extends CPanel
 		return bRefresh;
 	}	//	getRefreshButton
 	
+	/**
+	 *	Get Print Button
+	 *  @return Button
+	 */
+	public CButton getPrintButton()
+	{
+		return bPrint;
+	}	//	getPrintButton
+	
 	
 	/**************************************************************************
 	 *	Add Action Listener
@@ -719,6 +772,8 @@ public final class ConfirmPanel extends CPanel
 		//
 		if (bRefresh != null)
 			((AppsAction)bRefresh.getAction()).setDelegate(al);
+		if (bPrint != null)
+			((AppsAction)bPrint.getAction()).setDelegate(al);
 		if (bReset != null)
 			((AppsAction)bReset.getAction()).setDelegate(al);
 		if (bCustomize != null)

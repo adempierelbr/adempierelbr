@@ -94,6 +94,7 @@ public class FormBoleto extends CPanel
 	private Object          m_C_BankAccount_ID = null;
 	private Object          m_C_BPartner_ID    = null;
 	private Object          m_PrinterName      = null;
+	private Object          m_FileName         = null;
 	private boolean         m_mark = true;
 	
 	/**	Logger			*/
@@ -111,9 +112,11 @@ public class FormBoleto extends CPanel
 	private VLookup fBPartner;
 	private CLabel lPrinterName = new CLabel();
 	private CPrinter fPrinterName = new CPrinter();
+	private CLabel lFileName = new CLabel();
+	private VFile fFileName = new VFile("File_Directory",false,false,true,20,false);
 	private JCheckBox printedBill = new JCheckBox();
 	private GridBagLayout northPanelLayout = new GridBagLayout();
-	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true,true);
+	private ConfirmPanel confirmPanelSel = new ConfirmPanel(true,true,true);
 	private StatusBar statusBar = new StatusBar();
 	private JScrollPane scrollPane = new JScrollPane();
 	private MiniTable miniTable = new MiniTable();
@@ -154,9 +157,12 @@ public class FormBoleto extends CPanel
 		lPrinterName.setLabelFor(fPrinterName);
 		lPrinterName.setText(Msg.translate(Env.getCtx(), "PrinterName"));
 		
+		lFileName.setLabelFor(fFileName);
+		lFileName.setText(Msg.translate(Env.getCtx(), "File_Directory"));
+		
 		printedBill.setText(Msg.translate(Env.getCtx(), "IsPrinted"));
 		printedBill.addActionListener(this);
-		
+				
 		selNorthPanel.setLayout(northPanelLayout);
 		tabbedPane.add(selPanel, Msg.getMsg(Env.getCtx(), "Select"));
 		selPanel.add(selNorthPanel, BorderLayout.NORTH);
@@ -176,9 +182,14 @@ public class FormBoleto extends CPanel
 		selNorthPanel.add(fBankAccount, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
-		selNorthPanel.add(lPrinterName, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+		selNorthPanel.add(lPrinterName, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		selNorthPanel.add(fPrinterName, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+		selNorthPanel.add(fPrinterName, new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+		
+		selNorthPanel.add(lFileName, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		selNorthPanel.add(fFileName, new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
 				,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 		
 		selPanel.setName("selPanel");
@@ -208,7 +219,10 @@ public class FormBoleto extends CPanel
 		
 		MLookup BPartnerL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2893, DisplayType.Search);
 		fBPartner = new VLookup ("C_BPartner_ID", false, false, true, BPartnerL);
-		fBPartner.addVetoableChangeListener(this);	
+		fBPartner.addVetoableChangeListener(this);
+				
+		lFileName.setVisible(false);
+		fFileName.setVisible(false);
 		//
 	}	//	fillPicks
 
@@ -372,6 +386,24 @@ public class FormBoleto extends CPanel
 		}
 		//
 		
+		if (e.getActionCommand().equals(ConfirmPanel.A_PRINT))
+		{
+			boolean change = false;
+			
+			if (fFileName.isVisible()){
+				change = true;
+			}
+			
+			lPrinterName.setVisible(change);
+			fPrinterName.setVisible(change);
+			
+			lFileName.setVisible(!change);
+			fFileName.setVisible(!change);
+			
+			return;
+		}
+		//
+		
 		if (e.getActionCommand().equals(ConfirmPanel.A_REFRESH))
 		{
 			executeQuery();
@@ -410,11 +442,38 @@ public class FormBoleto extends CPanel
 				}
 			}
 			
-			m_PrinterName = fPrinterName.getValue();
+			String printerName = null;
+			String fileName    = null;
 			
+			if (fPrinterName.isVisible()){
+				m_PrinterName = fPrinterName.getValue();
+				
+				if (m_PrinterName == null || ((String)m_PrinterName).equals("")){
+					String msg = "Selecionar impressora para Impressão dos Boletos";
+					statusBar.setStatusLine(msg);	
+					ADialog.info(m_WindowNo, this, msg);
+					return;
+				}
+				
+				printerName = (String)m_PrinterName;
+				fileName    = null;
+			}
+			else {
+				m_FileName = fFileName.getValue();
+				
+				if (m_FileName == null || ((String)m_FileName).equals("")){
+					String msg = "Selecionar diretório onde os Boletos serão gravados";
+					statusBar.setStatusLine(msg);	
+					ADialog.info(m_WindowNo, this, msg);
+					return;
+				}
+				
+				printerName = null;
+				fileName    = (String)m_FileName;
+			}
+						
 			Properties ctx = Env.getCtx();
-			//Trx transaction = Trx.get(Trx.createTrxName(), true);
-			//String trx = transaction.getTrxName();
+			String trxName = null; //Trx.createTrxName("PBO");
 			
 			if (!printedBill.isSelected()){ //BF - não criar bankA quando impresso marcado
 				MBankAccount bankA = new MBankAccount(ctx,(Integer)m_C_BankAccount_ID,null);
@@ -429,7 +488,7 @@ public class FormBoleto extends CPanel
 			Integer[] selection = getSelection();
 			for (int i=0;i<selection.length;i++){
 				try {
-					MBoleto.generateBoleto(ctx, selection[i], (Integer)m_C_BankAccount_ID, null, (String)m_PrinterName, null);
+					MBoleto.generateBoleto(ctx, selection[i], (Integer)m_C_BankAccount_ID, fileName, printerName, trxName);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (PrinterException e1) {
