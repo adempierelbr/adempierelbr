@@ -698,6 +698,14 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			line.setC_Invoice_ID(getC_Invoice_ID());
 			line.setInvoice(this);
 			line.set_ValueNoCheck ("C_InvoiceLine_ID", I_ZERO);	// new
+			//KENOS - LBR_Tax_ID
+			Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
+			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
+				org.adempierelbr.model.MTax tax = new org.adempierelbr.model.MTax(getCtx(),LBR_Tax_ID,get_TrxName());
+				org.adempierelbr.model.MTax newTax = tax.copyFrom();
+				line.set_Value("LBR_Tax_ID", newTax.get_ID());
+			}
+			
 			//	Reset
 			if (!setOrder)
 				line.setC_OrderLine_ID(0);
