@@ -177,7 +177,7 @@ public class TaxBR
 			if (taxBR.getTaxRate() <= 0)
 				taxbase = Env.ZERO;
 			
-			if (substamt.signum() == 1){
+			if (substamt.signum() != 0){ //BF - Não estava funcionando os estornos
 				taxamt = taxamt - substamt.doubleValue();
 			}
 			
@@ -317,7 +317,7 @@ public class TaxBR
 		       DB.close(rs, pstmt);
 		}
 		
-		if (retValue == null){
+		if (retValue == null && C_Tax_ID > 0){
 			retValue = new MOrderTax(ctx,0,trx);
 			retValue.setC_Order_ID(C_Order_ID);
 			retValue.setC_Tax_ID(C_Tax_ID);
@@ -388,7 +388,7 @@ public class TaxBR
 		       DB.close(rs, pstmt);
 		}
 		
-		if (retValue == null){
+		if (retValue == null && C_Tax_ID > 0){
 			retValue = new MInvoiceTax(ctx,0,trx);
 			retValue.setC_Invoice_ID(C_Invoice_ID);
 			retValue.setC_Tax_ID(C_Tax_ID);

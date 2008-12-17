@@ -116,7 +116,11 @@ public class MTax extends X_LBR_Tax {
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
 		ArrayList<Integer> tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		
-		org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,(Integer)line.get_Value("C_Tax_ID"),trx);
+		Integer C_Tax_ID = (Integer)line.get_Value("C_Tax_ID");
+		if (C_Tax_ID == null)
+			C_Tax_ID = 0;
+		
+		org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);
 			
 		if (tax.isSummary()){
 		
@@ -233,7 +237,11 @@ public class MTax extends X_LBR_Tax {
 		
 		for (PO line : lines){
 			
-			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,(Integer)line.get_Value("C_Tax_ID"),trx);
+			Integer C_Tax_ID = (Integer)line.get_Value("C_Tax_ID");
+			if (C_Tax_ID == null)
+				C_Tax_ID = 0;
+			
+			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);
 			
 			if (tax.isSummary()){
 				

@@ -557,10 +557,16 @@ public class ValidatorOrder implements ModelValidator
 			MInOutLine ioLine = new MInOutLine(shipment);
 			//	Qty = Ordered - Delivered
 			BigDecimal MovementQty = oLine.getQtyOrdered().subtract(oLine.getQtyDelivered()); 
+			if (MovementQty.signum() == 0)
+				continue;
+			
 			//	Location
-			int M_Locator_ID = MStorage.getM_Locator_ID (oLine.getM_Warehouse_ID(), 
+			Integer M_Locator_ID = (Integer)oLine.get_Value("M_Locator_ID");
+			if (M_Locator_ID == null || M_Locator_ID.intValue() == 0){
+				M_Locator_ID = MStorage.getM_Locator_ID (oLine.getM_Warehouse_ID(), 
 					oLine.getM_Product_ID(), oLine.getM_AttributeSetInstance_ID(), 
 					MovementQty, trx);
+			}
 			if (M_Locator_ID == 0)		//	Get default Location
 			{
 				MWarehouse wh = MWarehouse.get(ctx, oLine.getM_Warehouse_ID());
