@@ -26,6 +26,8 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
+import org.compiere.model.ModelValidationEngine;
+import org.compiere.model.ModelValidator;
 import org.compiere.model.X_LBR_NotaFiscal;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -48,6 +50,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(MNotaFiscal.class);
+	
+	/**	Process Message */
+	private String		m_processMsg = null;
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -202,6 +207,12 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 */
 	public boolean voidIt(){
 		
+		log.info(toString());
+		// Before Void
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_VOID);
+		if (m_processMsg != null)
+			return false;
+		
 		if (isCancelled()) return false; //Já está cancelada
 		
 		if (isPrinted()){
@@ -228,7 +239,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 					else return false;
 			}
 			
-			/* CANCELA OV
+			/* CANCELA OV - Utilizar código no validator do cliente no AFTER_VOID
 			if (getC_Order_ID() != 0){
 				MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
 				if (order.getDocStatus().equals(MOrder.DOCSTATUS_Voided) || //Already Voided
@@ -271,6 +282,12 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		}
 		
 		setIsCancelled(true);
+		
+		// After Void
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
+		if (m_processMsg != null)
+			return false;
+		
 		return true;
 	}
 	
