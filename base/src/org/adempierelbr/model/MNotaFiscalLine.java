@@ -65,7 +65,11 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		}
 		
 		serviceString = TextUtil.retiraPontoFinal(serviceString);
-		setlbr_ServiceTaxes("\n" + serviceString);
+		
+		if (taxes.length > 0)
+			setlbr_ServiceTaxes("\n" + serviceString);
+		else
+			setlbr_ServiceTaxes("");
 		
 	} //setlbr_ServiceTaxes
 	

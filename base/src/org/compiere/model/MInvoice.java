@@ -21,6 +21,10 @@ import java.math.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
+
+import org.adempierelbr.callout.CalloutDefineCFOP;
+import org.adempierelbr.callout.CalloutTax;
+import org.adempierelbr.util.TaxesException;
 import org.compiere.print.*;
 import org.compiere.process.*;
 import org.compiere.util.*;
@@ -37,6 +41,7 @@ import org.compiere.util.*;
  *  
  *  
  *  Modifications: Made the isReversal method public (amontenegro)
+ *  BF [#2445887] - Added the calculations to the copyLinesFrom method
  *
  *  Modifications: Added RMA functionality (Ashley Ramdass)
  */
@@ -698,13 +703,30 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			line.setC_Invoice_ID(getC_Invoice_ID());
 			line.setInvoice(this);
 			line.set_ValueNoCheck ("C_InvoiceLine_ID", I_ZERO);	// new
-			//KENOS - LBR_Tax_ID
-			Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
-			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-				org.adempierelbr.model.MTax tax = new org.adempierelbr.model.MTax(getCtx(),LBR_Tax_ID,get_TrxName());
-				org.adempierelbr.model.MTax newTax = tax.copyFrom();
-				line.set_Value("LBR_Tax_ID", newTax.get_ID());
+			//Begin Kenos - Callouts - BF [#2445887]
+			//Callout - DefineCFOP
+			Integer cfopID = CalloutDefineCFOP.defineCFOP(getCtx(), line.getM_Product_ID(),this, get_TrxName());
+			line.set_ValueOfColumn("LBR_CFOP_ID", cfopID);
+			//Callout - Impostos
+			CalloutTax tax = new CalloutTax();
+			TaxesException tE = tax.getException(getCtx(), this, line.getProduct(), null);
+			
+			line.set_ValueOfColumn("LBR_LegalMessage_ID", null);
+			line.set_ValueOfColumn("lbr_TaxStatus", null);
+			
+			if (tE != null){
+				line.set_ValueOfColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
+
+				if (tE.isSOTrx()){
+					line.set_ValueOfColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
+					line.set_ValueOfColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
+				}
+				
 			}
+			else{
+				line.set_ValueOfColumn("LBR_Tax_ID", null);
+			}
+			//End Kenos - Callouts
 			
 			//	Reset
 			if (!setOrder)

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.MTaxAmounts;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.compiere.model.MInvoice;
@@ -1023,49 +1024,3 @@ public class MTax extends X_LBR_Tax {
 	} //getX_LBR_TaxConfig_Region
 		
 } //MTax
-
-class MTaxAmounts{
-	
-	private BigDecimal Amt;
-	private BigDecimal taxAmt;
-	private BigDecimal taxExcludedAmt;
-	private BigDecimal taxSubstAmt;
-	
-	//Default Constructor
-	MTaxAmounts(){}
-	
-	MTaxAmounts(BigDecimal Amt, BigDecimal taxAmt, 
-			BigDecimal taxExcludedAmt, BigDecimal taxSubstAmt){
-		
-		setAmt(Amt);
-		setTaxAmt(taxAmt);
-		setTaxExcludedAmt(taxExcludedAmt);
-		setTaxSubstAmt(taxSubstAmt);
-	}
-	
-	public BigDecimal getAmt() {
-		return Amt;
-	}
-	public void setAmt(BigDecimal Amt) {
-		this.Amt = Amt;
-	}
-	public BigDecimal getTaxAmt() {
-		return taxAmt;
-	}
-	public void setTaxAmt(BigDecimal taxAmt) {
-		this.taxAmt = taxAmt;
-	}
-	public BigDecimal getTaxExcludedAmt() {
-		return taxExcludedAmt;
-	}
-	public void setTaxExcludedAmt(BigDecimal taxExcludedAmt) {
-		this.taxExcludedAmt = taxExcludedAmt;
-	}
-	public BigDecimal getTaxSubstAmt() {
-		return taxSubstAmt;
-	}
-	public void setTaxSubstAmt(BigDecimal taxSubstAmt) {
-		this.taxSubstAmt = taxSubstAmt;
-	}
-	
-} //MTaxAmounts
