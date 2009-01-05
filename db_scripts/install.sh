@@ -1,4 +1,7 @@
 #!/bin/bash
+
+## 05-Jan-2009 - Make the file executable for Linux/Unix platforms
+
 if [ -z "$1" ]; then
    echo "Usage: $0 DIRECTORY DATABASE USER"
    exit 0
