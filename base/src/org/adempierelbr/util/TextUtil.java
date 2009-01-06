@@ -109,6 +109,50 @@ public class TextUtil
 	}
 	
 	/**
+	 *  addLine
+	 *  Add line
+	 *  @param  FileWriter fw
+	 *  @param  String line
+	 *  @param  boolean quoteValue ? surround the line with double quotes : do not surround the values with double quotes
+	 */
+	public static void addLine(FileWriter fw, String line, boolean quoteValue) throws IOException {
+
+		if (quoteValue)
+			addLine(fw, "\"" + line + "\"");
+		else
+			addLine(fw,line);
+		
+	}
+
+	/**
+	 *  addCsvLine
+	 *  Add's a line with a comma at the end of the line
+	 *  @param  FileWriter fw
+	 *  @param  String line
+	 */
+	public static void addCsvLine(FileWriter fw, String line) throws IOException {
+		
+		addLine(fw,line + ",");
+		
+	}
+	
+	/**
+	 *  addCsvLine
+	 *  Add's a line with a comma at the end of the line
+	 *  @param  FileWriter fw
+	 *  @param  String line
+	 *  @param  boolean quoteValue ? surround the line with double quotes : do not surround the values with double quotes
+	 */
+	public static void addCsvLine(FileWriter fw, String line, boolean quoteValue) throws IOException {
+		
+		if (quoteValue)
+			addLine(fw, "\"" + line + "\",");
+		else
+			addLine(fw,line + ",");
+		
+	}
+	
+	/**
 	 *  closeFile
 	 *  Close a text file
 	 *  @param  String FileName (FilePath) 
