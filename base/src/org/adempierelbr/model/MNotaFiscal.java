@@ -53,6 +53,14 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	/**	Process Message */
 	private String		m_processMsg = null;
+	
+	public String getProcessMsg() {
+		
+		if (m_processMsg == null)
+			m_processMsg = "";
+		
+		return m_processMsg;
+	}
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -225,7 +233,10 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				if (invoice.voidIt()){
 					invoice.save(get_TrxName());
 				}
-				else return false;
+				else {
+					m_processMsg = invoice.getProcessMsg();
+					return false;
+				}
 			
 			if (getM_InOut_ID() != 0){
 				MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
@@ -236,7 +247,10 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 					if (shipment.voidIt()){
 						shipment.save(get_TrxName());
 					}
-					else return false;
+					else {
+						m_processMsg = invoice.getProcessMsg();
+						return false;
+					}
 			}
 			
 			/* CANCELA OV - Utilizar código no validator do cliente no AFTER_VOID

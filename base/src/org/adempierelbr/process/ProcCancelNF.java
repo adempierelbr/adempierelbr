@@ -62,8 +62,11 @@ public class ProcCancelNF extends SvrProcess
 			MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 			if (nf.voidIt())
 				nf.save(get_TrxName());
-			else
-				return "Nota: " + p_LBR_NotaFiscal_ID + " não cancelada";
+			else{
+				String msg = "Nota: " + p_LBR_NotaFiscal_ID + " não cancelada. ";
+					   msg += nf.getProcessMsg();
+				return msg.trim();
+			}
 		}
     
 		return "ProcCancelNF Process Completed " + "Nota: " + p_LBR_NotaFiscal_ID;
