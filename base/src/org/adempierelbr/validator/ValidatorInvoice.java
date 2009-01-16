@@ -115,6 +115,10 @@ public class ValidatorInvoice implements ModelValidator
 	public String login (int AD_Org_ID, int AD_Role_ID, int AD_User_ID)
 	{
 		log.info("AD_User_ID=" + AD_User_ID);
+		
+		if (getAD_Client_ID() != 0 && AD_Org_ID == 0)
+			return "Não é possível logar com Org = *";
+		
 		return null;
 	}	//	login
 	
