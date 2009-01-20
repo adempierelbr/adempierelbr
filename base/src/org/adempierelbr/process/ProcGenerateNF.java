@@ -48,7 +48,6 @@ import org.compiere.model.X_LBR_NCM;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 
@@ -150,14 +149,7 @@ public class ProcGenerateNF extends SvrProcess
 		
 		try{
 		
-			if (LBR_NotaFiscal_ID != 0){
-				
-				DB.executeUpdate("DELETE FROM LBR_NFTax WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID, trx);
-				DB.executeUpdate("DELETE FROM LBR_NFLineTax WHERE LBR_NotaFiscalLine_ID = " +
-						         "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID + ")", trx);
-				DB.executeUpdate("DELETE FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID, trx);
-				
-			}
+			deleteLines(LBR_NotaFiscal_ID, trx);
 			
 			MClientInfo                clientInfo            = MClientInfo.get(ctx);
 				
@@ -406,7 +398,7 @@ public class ProcGenerateNF extends SvrProcess
 				
 			/** Valores **/
 			NotaFiscal.setlbr_InsuranceAmt(null);   //Valor do Seguro //TODO
-			NotaFiscal.setFreightAmt(null);   //Valor do Frete //TODO
+			//NotaFiscal.setFreightAmt(null);   //Valor do Frete (Definido na Linha)
 			NotaFiscal.setlbr_GrossWeight(null); // Peso Bruto //TODO
 			NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
@@ -454,7 +446,15 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscalLine.setC_InvoiceLine_ID(lines[i].getC_InvoiceLine_ID());   /** C_InvoiceLine_ID **/
 					NotaFiscalLine.setLine(LineNo);   //Linha Número
 					NotaFiscalLine.setM_Product_ID(product.getM_Product_ID());   /** M_Product_ID **/
-					NotaFiscalLine.setDescription(lines[i].getDescription());   //Descrição linha Fatura
+					
+					String ldescription = lines[i].getDescription();
+					if (ldescription != null){
+						ldescription = ldescription.trim();
+						if (ldescription.equals(""))
+							ldescription = null;
+					}
+
+					NotaFiscalLine.setDescription(ldescription);   //Descrição linha Fatura
 								
 					NotaFiscalLine.setProductName(product.getName());   //Nome/Descrição Produto
 					NotaFiscalLine.setProductValue(product.getValue());   //Código Produto
@@ -615,5 +615,15 @@ public class ProcGenerateNF extends SvrProcess
 		return LBR_NotaFiscal_ID;
 		
 	}//generate
+	
+	private static void deleteLines(int LBR_NotaFiscal_ID, String trx){
+		
+		if (LBR_NotaFiscal_ID != 0){
+			MNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
+			MNotaFiscal.deleteLBR_NFLineTax(LBR_NotaFiscal_ID, trx); //Imposto Linha
+			MNotaFiscal.deleteLBR_NotaFiscalLine(LBR_NotaFiscal_ID, trx); //Linhas da NF
+		}
+		
+	} //deleteLines
 	
 }//ProcGenerateNF

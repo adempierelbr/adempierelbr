@@ -28,7 +28,10 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.compiere.model.X_LBR_NFLineTax;
+import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_NotaFiscal;
+import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -304,5 +307,47 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return true;
 	}
+	
+	public static boolean deleteLBR_NotaFiscalLine (int LBR_NotaFiscal_ID, String trx){
+		
+		StringBuffer sql = new StringBuffer("DELETE FROM ")
+		   .append(X_LBR_NotaFiscalLine.Table_Name)
+		   .append(" WHERE LBR_NotaFiscal_ID = ")
+		   .append(LBR_NotaFiscal_ID);
+		
+		if (DB.executeUpdate(sql.toString(), trx) == -1)
+			return false;
+		
+		return true;
+	} //deleteLBR_NotaFiscalLine
+	
+	public static boolean deleteLBR_NFTax (int LBR_NotaFiscal_ID, String trx){
+		
+		StringBuffer sql = new StringBuffer("DELETE FROM ")
+		   .append(X_LBR_NFTax.Table_Name)
+		   .append(" WHERE LBR_NotaFiscal_ID = ")
+		   .append(LBR_NotaFiscal_ID);
+		
+		if (DB.executeUpdate(sql.toString(), trx) == -1)
+			return false;
+		
+		return true;
+	} //deleteLBR_NFTax
+	
+	public static boolean deleteLBR_NFLineTax (int LBR_NotaFiscal_ID, String trx){
+		
+		StringBuffer sql = new StringBuffer("DELETE FROM ")
+		   .append(X_LBR_NFLineTax.Table_Name)
+		   .append(" WHERE LBR_NotaFiscalLine_ID IN ")
+		   .append("(SELECT LBR_NotaFiscalLine_ID FROM ")
+		   .append(X_LBR_NotaFiscalLine.Table_Name)
+		   .append(" WHERE LBR_NotaFiscal_ID = ")
+		   .append(LBR_NotaFiscal_ID).append(")");
+		
+		if (DB.executeUpdate(sql.toString(), trx) == -1)
+			return false;
+		
+		return true;
+	} //deleteLBR_NFLineTax
 	
 } //MNotaFiscal
