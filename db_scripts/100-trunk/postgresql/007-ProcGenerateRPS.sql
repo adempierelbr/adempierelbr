@@ -30,7 +30,7 @@ INSERT INTO AD_Process_Access (AD_Client_ID,AD_Org_ID,AD_Process_ID,AD_Role_ID,C
 
 -- 21/01/2009 11h18min57s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Process_Trl SET IsTranslated='Y',Name='Geração Arquivo RPS',Description='Processo para Geração de Arquivo RPS (NFe)',Updated=TO_TIMESTAMP('2009-01-21 11:18:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1000018 AND AD_Language='pt_BR'
+UPDATE AD_Process_Trl SET IsTranslated='Y',Name='GeraÃ§Ã£o Arquivo RPS',Description='Processo para GeraÃ§Ã£o de Arquivo RPS (NFe)',Updated=TO_TIMESTAMP('2009-01-21 11:18:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1000018 AND AD_Language='pt_BR'
 ;
 
 -- 21/01/2009 11h19min35s BRST
@@ -70,7 +70,7 @@ INSERT INTO AD_TreeNodeMM (AD_Client_ID,AD_Org_ID, IsActive,Created,CreatedBy,Up
 
 -- 21/01/2009 11h21min5s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Menu_Trl SET IsTranslated='Y',Name='Geração Arquivo RPS',Updated=TO_TIMESTAMP('2009-01-21 11:21:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Menu_ID=1000038 AND AD_Language='pt_BR'
+UPDATE AD_Menu_Trl SET IsTranslated='Y',Name='GeraÃ§Ã£o Arquivo RPS',Updated=TO_TIMESTAMP('2009-01-21 11:21:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Menu_ID=1000038 AND AD_Language='pt_BR'
 ;
 
 -- 21/01/2009 11h21min18s BRST
