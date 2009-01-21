@@ -234,81 +234,34 @@ UPDATE AD_SysConfig SET Value='100-trunk/007-ProcGenerateRPS.sql',Updated=TO_TIM
 ;
 
 --- VIEW RPS
-CREATE
-OR
-REPLACE
-VIEW adempiere.lbr_rps_v AS 
+drop view adempiere.lbr_rps_v;
+
+CREATE OR REPLACE VIEW adempiere.lbr_rps_v AS 
 SELECT
-nf.ad_client_id,
-nf.ad_org_id,
-2                                                   AS tipo_de_registro,
-'RPS'::text                                         AS tipo_de_rps,
-'     '::text                                       AS serie_do_rps,
-nf.documentno                                       AS numero_do_rps,
-nf.datedoc                                          AS 
-data_de_emissao_do_rps,
-CASE 
-WHEN (nf.iscancelled = 'Y'::bpchar) 
-THEN 'C'::text 
-ELSE 'T'::text 
-END                                                     AS situacao_do_rps,
-inv.totallines                                      AS valor_dos_servicos,
-(0)::NUMERIC                                        AS valor_das_deducoes,
-COALESCE(nf.z_codigoservico, ((	SELECT
-MAX((nfl.productvalue)::text) AS MAX 
-FROM
-lbr_notafiscalline nfl 
+    nf.ad_client_id, nf.ad_org_id, 2 AS tipo_de_registro, 'RPS'::text AS tipo_de_rps,
+    '     '::text AS serie_do_rps, nf.documentno AS numero_do_rps, nf.datedoc AS data_de_emissao_do_rps,
+    CASE WHEN (nf.iscancelled = 'Y') THEN 'C' ELSE 'T' END AS situacao_do_rps,
+    inv.totallines AS valor_dos_servicos, 0 AS valor_das_deducoes, 
+    (SELECT MAX(nfl.productvalue) FROM lbr_notafiscalline nfl WHERE nfl.lbr_notafiscal_id = nf.lbr_notafiscal_id) AS codigo_do_servico_prestado,
+    0 AS aliquota, 2 AS iss_retido,
+    CASE tomador.lbr_bptypebr 
+        WHEN 'PF' THEN 1 
+        WHEN 'PJ' THEN 2 
+        ELSE 3 END AS indicador_pf_pj_tomador,
+    nf.lbr_bpcnpj AS cpf_cnpj_tomador, tomador.lbr_ccm AS insc_municipal_tomador,
+    CASE WHEN (nf.lbr_bpie IS NULL) THEN '000'
+         WHEN (UPPER(nf.lbr_bpie) ~~ '%ISENT%'::text) THEN '000'
+         ELSE nf.lbr_bpie END AS insc_estadual_tomador,
+    nf.bpname AS nome_razao_tomador, substring(nf.lbr_bpaddress1,1,3) AS tipo_end_tomador,
+    nf.lbr_bpaddress1 AS end_tomador, nf.lbr_bpaddress2 AS num_tomador,
+    nf.lbr_bpaddress4 AS complemento_tomador, nf.lbr_bpaddress3 AS bairro_tomador,
+    nf.lbr_bpcity AS cidade_tomador, nf.lbr_bpregion AS uf_tomador,
+    nf.lbr_bppostal AS cep_tomador, ''::text AS email_tomador,
+    COALESCE(nf.description,(SELECT MAX(nfl.productname) 
+                             FROM lbr_notafiscalline nfl 
+                             WHERE nfl.lbr_notafiscal_id = nf.lbr_notafiscal_id)) AS discriminacao_dos_servicos 
+FROM lbr_notafiscal nf 
+    INNER JOIN c_bpartner tomador ON (nf.c_bpartner_id = tomador.c_bpartner_id)
+    INNER JOIN c_invoice inv ON (nf.c_invoice_id = inv.c_invoice_id)
 WHERE
-(nfl.lbr_notafiscal_id = nf.
-lbr_notafiscal_id)
-)
-)::CHARACTER VARYING) AS codigo_do_servico_prestado,
-(0)::NUMERIC                                        AS aliquota,
-(2)::NUMERIC                                        AS iss_retido,
-CASE tomador.lbr_bptypebr 
-WHEN 'PF'::text 
-THEN 1 
-WHEN 'PJ'::text 
-THEN 2 
-ELSE 3 
-END                                                     AS 
-indicador_pf_pj_tomador,
-nf.lbr_bpcnpj                                       AS cpf_cnpj_tomador,
-tomador.lbr_ccm                                     AS 
-insc_municipal_tomador,
-CASE 
-WHEN (nf.lbr_bpie IS NULL) 
-THEN '000'::CHARACTER VARYING 
-WHEN (UPPER((nf.lbr_bpie)::text) ~~ '%ISENT%'::text) 
-THEN '000'::CHARACTER VARYING 
-ELSE nf.lbr_bpie 
-END                                                     AS 
-insc_estadual_tomador,
-nf.bpname                                           AS nome_razao_tomador,
-substring(nf.lbr_bpaddress1,1,3)                    AS tipo_end_tomador,
-nf.lbr_bpaddress1                                   AS end_tomador,
-nf.lbr_bpaddress2                                   AS num_tomador,
-nf.lbr_bpaddress4                                   AS complemento_tomador,
-nf.lbr_bpaddress3                                   AS bairro_tomador,
-nf.lbr_bpcity                                       AS cidade_tomador,
-nf.lbr_bpregion                                     AS uf_tomador,
-nf.lbr_bppostal                                     AS cep_tomador,
-''::text                                            AS email_tomador,
-COALESCE((nf.description)::text, (	SELECT
-MAX((nfl.productname)::text) AS MAX 
-FROM
-lbr_notafiscalline nfl 
-WHERE
-(nfl.lbr_notafiscal_id = nf.
-lbr_notafiscal_id)))                              
-AS discriminacao_dos_servicos 
-FROM
-((lbr_notafiscal nf 
-JOIN c_bpartner tomador 
-ON ((nf.c_bpartner_id = tomador.c_bpartner_id))) 
-JOIN c_invoice inv 
-ON ((nf.c_invoice_id = inv.c_invoice_id))) 
-WHERE
-((nf.issotrx = 'Y'::bpchar) AND
-(nf.iscancelled = 'N'::bpchar));
-;
+    nf.issotrx = 'Y' AND nf.iscancelled = 'N';
