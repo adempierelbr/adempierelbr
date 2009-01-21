@@ -1,3 +1,15 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.process;
 
 import java.sql.PreparedStatement;
@@ -6,8 +18,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.compiere.model.MColumn;
-import org.compiere.model.MOrder;
-import org.compiere.model.MProcess;
 import org.compiere.model.MTable;
 import org.compiere.model.M_Element;
 import org.compiere.process.ColumnSync;
@@ -15,7 +25,6 @@ import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 
 /**
@@ -72,8 +81,8 @@ public class ProcCreateDefaultColumns extends SvrProcess
 	
 	private void CreateDefaultColumns(int AD_Table_ID)
 	{
-		Properties ctx = getCtx();
-		String trx = get_TrxName();
+		//Properties ctx = getCtx();
+		//String trx = get_TrxName();
 		
 		CreateID(AD_Table_ID);
 		CreateAD_Client_ID(AD_Table_ID);
