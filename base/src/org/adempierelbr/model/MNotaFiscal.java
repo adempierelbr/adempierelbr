@@ -78,12 +78,25 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	/**************************************************************************
 	 *  getLines
 	 *  @return MNotaFiscalLine[] lines
+	 *  @deprecated
 	 */
 	public MNotaFiscalLine[] getLines(){
+		return getLines(null);
+	}
+	
+	/**************************************************************************
+	 *  getLines
+	 *  @param String orderBy or null
+	 *  @return MNotaFiscalLine[] lines
+	 */
+	public MNotaFiscalLine[] getLines(String orderBy){
 		
 		String sql = "SELECT LBR_NotaFiscalLine_ID " + //1
 		 			 "FROM LBR_NotaFiscalLine " +
 		 			 "WHERE LBR_NotaFiscal_ID = ? "; //*1
+		
+		if (orderBy != null && !orderBy.equals(""))
+			sql += orderBy;
 
 		ArrayList<MNotaFiscalLine> list = new ArrayList<MNotaFiscalLine>();
 		PreparedStatement pstmt = null;
