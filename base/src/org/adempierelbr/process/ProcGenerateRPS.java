@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MOrg;
@@ -63,7 +62,7 @@ public class ProcGenerateRPS extends SvrProcess
 	public static final String ext = ".txt";
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(ProcGenerateNF.class);
+	private static CLogger log = CLogger.getCLogger(ProcGenerateRPS.class);
 
 	/**
 	 *  Prepare - e.g., get Parameters.

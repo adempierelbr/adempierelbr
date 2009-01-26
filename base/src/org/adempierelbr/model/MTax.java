@@ -15,19 +15,26 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.util.MTaxAmounts;
 import org.adempierelbr.util.POLBR;
+import org.adempierelbr.util.ServiceTaxes;
 import org.adempierelbr.util.TaxBR;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_Order;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MPriceList;
 import org.compiere.model.PO;
 import org.compiere.model.X_LBR_Tax;
@@ -335,6 +342,320 @@ public class MTax extends X_LBR_Tax {
 		
 		return new MTaxAmounts(totalLines,taxAmt,etaxAmt,substAmt);
 	} //docValidate
+	
+	public static String validateWithhold(MOrder order){
+		return validateWithhold(order,null);
+	}
+	
+	public static String validateWithhold(MInvoice invoice){
+		return validateWithhold(null,invoice);
+	}
+	
+	private static String validateWithhold (MOrder order, MInvoice invoice)
+	{
+		Boolean hasWhSummary = false, hasLeastThanThreshold = false;
+		
+		boolean isOrder = true;
+		
+		PO   document = null;
+		PO[] doctaxes = null;
+		if (order != null){
+			document = order;
+			doctaxes = order.getTaxes(true);
+			isOrder  = true;
+		}
+		else{
+			document = invoice;
+			doctaxes = invoice.getTaxes(true);
+			isOrder  = false;
+		}
+		
+		Properties ctx    	  = document.getCtx();
+		String     trx    	  = document.get_TrxName();
+		int		   whDocument = document.get_ID();
+		
+		ServiceTaxes[] serviceTaxes = getServiceTaxes(document,isOrder,trx);
+		
+		for (ServiceTaxes serviceTax : serviceTaxes)
+		{	
+			for (PO doctax : doctaxes)
+			{
+				BigDecimal taxAmount = Env.ZERO;
+				
+				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx, (Integer)doctax.get_Value("C_Tax_ID"), trx);
+				if (tax.get_Value("LBR_TaxName_ID") == null)
+					continue;
+				
+				X_LBR_TaxName lbr_TaxName = new X_LBR_TaxName(ctx, (Integer) tax.get_Value("LBR_TaxName_ID"), trx);
+				
+				//Somente continua se o imposto tiver retenção
+				if(!lbr_TaxName.isHasWithHold())
+					continue;
+
+				log.fine("TaxName ID: " + serviceTax.getLBR_TaxName_ID());
+				log.fine("TaxName ID LBR: " + lbr_TaxName.getLBR_TaxName_ID());
+				log.fine("Withhold Threshold: " + serviceTax.getThreshold());
+				log.fine("Withhold Total: " + serviceTax.getGrandTotal());
+				
+				//O imposto será apagado caso o valor da NF não tenha atingido o limiar de retenção
+				//ou se estiver marcado para as retenções serem lançadas em outra fatura.
+				if (serviceTax.getLBR_TaxName_ID() == lbr_TaxName.getLBR_TaxName_ID()
+						&& (serviceTax.getThreshold().compareTo(serviceTax.getGrandTotal()) == 1))
+				{				
+					doctax.delete(true);
+					if (isOrder)
+						document.set_ValueOfColumn("LBR_Withhold_Order_ID", null);
+					else
+						document.set_ValueOfColumn("LBR_Withhold_Invoice_ID", null);
+						
+					hasLeastThanThreshold = true;
+				}
+				
+				//Limiar atingido
+				else if (serviceTax.getLBR_TaxName_ID() == lbr_TaxName.getLBR_TaxName_ID())
+				{
+					Integer[] taxLines = getTaxLines(document,isOrder,serviceTax.getLBR_TaxName_ID(),trx);
+					
+					if (isOrder){
+						taxAmount = ((MOrderTax)doctax).getTaxAmt().negate();
+						((MOrderTax)doctax).setTaxAmt(taxAmount);
+					}
+					else{
+						taxAmount = ((MInvoiceTax)doctax).getTaxAmt().negate();
+						((MInvoiceTax)doctax).setTaxAmt(taxAmount);
+					}
+					
+					doctax.save(trx);
+					
+					//Invoice com retenção própria.
+					if(taxLines.length == 0)
+					{
+						
+						/**
+						 * O campo LBR_Withhold_Document_ID preenchido significa que a reteção foi
+						 * efetuada, este campo NULL significa que não há retenção ou o limiar ainda
+						 * não foi atingido.
+						 * */
+						if (isOrder){
+							document.set_ValueOfColumn("LBR_Withhold_Order_ID", whDocument);
+							((MOrder)document).setGrandTotal(((MOrder)document).getGrandTotal().add(taxAmount));
+							((MOrder)document).save(trx);
+						}
+						else{
+							document.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whDocument);
+							((MInvoice)document).setGrandTotal(((MInvoice)document).getGrandTotal().add(taxAmount));
+							((MInvoice)document).save(trx);
+						
+							//Fix - Ajustar PaySchedule
+							MPaymentTerm pt = new MPaymentTerm(ctx, ((MInvoice)document).getC_PaymentTerm_ID(), trx);
+							log.fine(pt.toString());
+							pt.apply(invoice);
+						}
+						
+						continue;
+					}
+					
+					//TODO: FAZER VALIDACAO PARA LANCAR RETROATIVO OU NAO
+					/*
+					else {
+	
+						//Nesta etapa o imposto será lançado 
+						//com referência à outras ordens
+						for (int i=0; i < taxLines.length; i++)
+						{
+							int C_Invoice_ID = 0;
+							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx, taxLines.get(j), trx);
+							//MInvoiceTax newTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iTax.getC_Tax_ID(), trx);
+							
+							
+							BigDecimal TaxAmt     = iTax.getTaxAmt();
+							BigDecimal TaxBaseAmt = iTax.getTaxBaseAmt();
+							
+							//
+							//BigDecimal TaxAmt     = newTax.getTaxAmt();
+							//BigDecimal TaxBaseAmt = newTax.getTaxBaseAmt();
+							BigDecimal OldTaxAmt     = taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP).negate();
+							BigDecimal OldTaxBaseAmt = taxLine.getlbr_TaxBaseAmt();
+							
+							iTax.setTaxAmt(TaxAmt.add(OldTaxAmt));
+							iTax.setTaxBaseAmt(TaxBaseAmt.add(OldTaxBaseAmt));
+							iTax.setIsTaxIncluded(invoice.isTaxIncluded());
+							iTax.save(trx);
+							
+							//newTax.setTaxAmt(TaxAmt.add(OldTaxAmt));
+							//newTax.setTaxBaseAmt(TaxBaseAmt.add(OldTaxBaseAmt));
+							////newTax.setIsTaxIncluded(invoice.isTaxIncluded());
+							//newTax.save(trx);
+							
+							grandTotal = invoice.getGrandTotal();
+							invoice.setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+							
+							//Fix - Ajustar PaySchedule
+							MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+							log.fine(pt.toString());
+							pt.apply(invoice);
+							
+							sql = "SELECT DISTINCT C_Invoice_ID FROM C_InvoiceLine WHERE LBR_Tax_ID=?";
+							C_Invoice_ID = DB.getSQLValue(trx, sql, taxLine.getLBR_Tax_ID());
+	
+							//Marcar que a fatura abaixo terá suas retenções em outra fatura.
+							MInvoice oldInvoice = new MInvoice(ctx, C_Invoice_ID, trx);
+							oldInvoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whInvoice);
+							oldInvoice.save();
+							
+							hasWhSummary = true;
+						} //end for
+					
+						invoice.save();
+					} //end if
+					 */
+				} //limiar atingido
+				
+			} //doctax
+			
+		} //document
+		
+		if(hasLeastThanThreshold)
+			log.warning("Retenções não contabilizadas, por não atingir o limiar.");
+		
+		if(hasWhSummary)
+			log.warning("Retenções de outras Faturas contidas nesta Fatura.");
+		
+		return "";
+	} //validateWithhold
+	
+	private static ServiceTaxes[] getServiceTaxes(PO document, boolean isOrder, String trx){
+		
+		ArrayList<ServiceTaxes> taxes = new ArrayList<ServiceTaxes>();
+		
+		boolean IsSOTrx = POLBR.get_ValueAsBoolean(document.get_Value("IsSOTrx"));
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("SELECT brtn.LBR_TaxName_ID, brtn.WithHoldThreshold, ")
+		   .append("SUM(ABS(d.TotalLines)) AS GrandTotal ");
+		
+		if (isOrder){
+			sql.append("FROM ").append(I_C_Order.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(I_C_OrderLine.Table_Name).append(" dl ");
+			sql.append("ON d.C_Order_ID = dl.C_Order_ID ");
+		}
+		else{
+			sql.append("FROM ").append(I_C_Invoice.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(I_C_InvoiceLine.Table_Name).append(" dl ");
+			sql.append("ON d.C_Invoice_ID = dl.C_Invoice_ID ");
+		}
+		
+		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
+		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
+		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
+		   .append("AND (d.DocStatus = 'CO' OR d.");
+		
+		if (isOrder)
+			sql.append(I_C_Order.Table_Name);
+		else
+			sql.append(I_C_Invoice.Table_Name);
+		
+		sql.append("_ID = ?) AND d.IsSOTrx = ? ");
+		sql.append("GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold");
+
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DB.prepareStatement (sql.toString(), trx);
+			pstmt.setInt(1, (Integer)document.get_Value("C_BPartner_ID"));
+			pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
+			pstmt.setInt(3, document.get_ID());
+			pstmt.setString(4, IsSOTrx ? "Y" : "N");
+			rs = pstmt.executeQuery ();
+			
+			while (rs.next ()) {
+				taxes.add(new ServiceTaxes(rs.getInt(1), rs.getBigDecimal(2), rs.getBigDecimal(3)));
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+			DB.close(rs, pstmt);
+		}
+		
+		ServiceTaxes[] retValue = new ServiceTaxes[taxes.size()];
+		taxes.toArray(retValue);
+		return retValue;
+	} //getServiceTaxes
+	
+	private static Integer[] getTaxLines(PO document, boolean isOrder, int LBR_TaxName_ID, String trx){
+		
+		ArrayList<Integer> taxLines = new ArrayList<Integer>();
+		
+		boolean IsSOTrx = POLBR.get_ValueAsBoolean(document.get_Value("IsSOTrx"));
+		
+		StringBuffer sql = new StringBuffer();
+	
+		//Verificar se já houve alguma retenção para o cliente no mês
+		sql.append("SELECT DISTINCT tl.LBR_TaxLine_ID ");
+		
+		if (isOrder){
+			sql.append("FROM ").append(I_C_Order.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(I_C_OrderLine.Table_Name).append(" dl ");
+			sql.append("ON d.C_Order_ID = dl.C_Order_ID ");
+		}
+		else{
+			sql.append("FROM ").append(I_C_Invoice.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(I_C_InvoiceLine.Table_Name).append(" dl ");
+			sql.append("ON d.C_Invoice_ID = dl.C_Invoice_ID ");
+		}
+		
+		sql.append("INNER JOIN LBR_TaxLine tl ON tl.LBR_Tax_ID = dl.LBR_Tax_ID ")
+		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = tl.LBR_TaxName_ID ")
+		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
+		   .append("AND d.DocStatus = 'CO' ");
+		
+		if (isOrder){
+			sql.append("AND (d.LBR_Withhold_Order_ID IS NULL OR d.LBR_Withhold_Order_ID = ?)");
+			sql.append("AND d.").append(I_C_Order.Table_Name).append("_ID <> ? ");
+		}
+		else{
+			sql.append("AND (d.LBR_Withhold_Invoice_ID IS NULL OR d.LBR_Withhold_Invoice_ID = ?)");
+			sql.append("AND d.").append(I_C_Invoice.Table_Name).append("_ID <> ? ");
+		}
+		
+		sql.append("AND d.IsSOTrx = ? AND brtn.LBR_TaxName_ID = ? ");
+
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DB.prepareStatement (sql.toString(), trx);
+			pstmt.setInt(1, (Integer)document.get_Value("C_BPartner_ID"));
+			pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
+			pstmt.setInt(3, document.get_ID());
+			pstmt.setInt(4, document.get_ID());
+			pstmt.setString(5, IsSOTrx ? "Y" : "N");
+			pstmt.setInt(6, LBR_TaxName_ID);
+			rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				taxLines.add(rs.getInt(1));
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+	       DB.close(rs, pstmt);
+		}
+		
+		Integer[] retValue = new Integer[taxLines.size()];
+		taxLines.toArray(retValue);
+		return retValue;
+	} //getTaxLines
 	
 	private static boolean saveDocTax(PO doctax, boolean isOrder, int AD_Org_ID, BigDecimal TaxAmt, 
 			BigDecimal TaxBaseAmt, boolean isTaxIncluded, String trx){
