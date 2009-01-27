@@ -335,10 +335,7 @@ public class ValidatorInvoice implements ModelValidator
 					dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)){
 					
 					isSOTrx = true;
-					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,0,isSOTrx,true,trx);
-					
-					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+					IsOwnDocument = true;
 					
 				} //documento de venda (saída)
 				else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) ||
@@ -346,11 +343,11 @@ public class ValidatorInvoice implements ModelValidator
 					
 					isSOTrx = false;
 					
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,0,isSOTrx,IsOwnDocument,trx);
-					
-					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
-					
 				} //documento de compra (entrada)
+				
+				LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx,invoice,0,isSOTrx,IsOwnDocument,trx);
+				invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+				
 			} // geração de Documento Fiscal
 			
 		}

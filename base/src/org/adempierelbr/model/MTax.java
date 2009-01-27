@@ -445,11 +445,6 @@ public class MTax extends X_LBR_Tax {
 							document.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whDocument);
 							((MInvoice)document).setGrandTotal(((MInvoice)document).getGrandTotal().add(taxAmount));
 							((MInvoice)document).save(trx);
-						
-							//Fix - Ajustar PaySchedule
-							MPaymentTerm pt = new MPaymentTerm(ctx, ((MInvoice)document).getC_PaymentTerm_ID(), trx);
-							log.fine(pt.toString());
-							pt.apply(invoice);
 						}
 						
 						continue;
@@ -489,12 +484,7 @@ public class MTax extends X_LBR_Tax {
 							
 							grandTotal = invoice.getGrandTotal();
 							invoice.setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-							
-							//Fix - Ajustar PaySchedule
-							MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
-							log.fine(pt.toString());
-							pt.apply(invoice);
-							
+														
 							sql = "SELECT DISTINCT C_Invoice_ID FROM C_InvoiceLine WHERE LBR_Tax_ID=?";
 							C_Invoice_ID = DB.getSQLValue(trx, sql, taxLine.getLBR_Tax_ID());
 	
@@ -514,6 +504,14 @@ public class MTax extends X_LBR_Tax {
 			} //doctax
 			
 		} //document
+		
+		if (!isOrder){
+			//Fix - Ajustar PaySchedule
+			MPaymentTerm pt = new MPaymentTerm(ctx, ((MInvoice)document).getC_PaymentTerm_ID(), trx);
+			log.fine(pt.toString());
+			pt.apply((MInvoice)document);
+		}
+		
 		
 		if(hasLeastThanThreshold)
 			log.warning("Retenções não contabilizadas, por não atingir o limiar.");
