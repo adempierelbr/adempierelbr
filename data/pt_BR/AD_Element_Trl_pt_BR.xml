@@ -25930,17 +25930,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000229" trl="Y">
-  <value column="Name" original="Nota Fiscal Description">Observação Nota Fiscal</value>
-  <value column="PrintName" original="Nota Fiscal Description">Observação Nota Fiscal</value>
-  <value column="Description" original="Description Printed on Nota Fiscal">Observação Impressa na Nota Fiscal</value>
-  <value column="Help" original="Description Printed on Nota Fiscal">Observação Impressa na Nota Fiscal</value>
+ <row id="1000229" trl="N">
+  <value column="Name" original="Nota Fiscal Description">Nota Fiscal Description</value>
+  <value column="PrintName" original="Nota Fiscal Description">Nota Fiscal Description</value>
+  <value column="Description" original="Description Printed on Nota Fiscal">Description Printed on Nota Fiscal</value>
+  <value column="Help" original="Description Printed on Nota Fiscal">Description Printed on Nota Fiscal</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000230" trl="Y">
+ <row id="1000230" trl="N">
   <value column="Name" original="DocumentType Accounting">DocumentType Accounting</value>
   <value column="PrintName" original="DocumentType Accounting">DocumentType Accounting</value>
   <value column="Description" original="Primary key table LBR_DocType_Acct">Primary key table LBR_DocType_Acct</value>
@@ -25950,67 +25950,67 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000231" trl="Y">
-  <value column="Name" original="Credit Account">Conta de Crédito</value>
-  <value column="PrintName" original="Credit Account">Conta de Crédito</value>
-  <value column="Description" original="Defines the Credit Account">Define a Conta de Crédito</value>
-  <value column="Help" original="Defines the Credit Account">Define a Conta de Crédito</value>
+ <row id="1000231" trl="N">
+  <value column="Name" original="Credit Account">Credit Account</value>
+  <value column="PrintName" original="Credit Account">Credit Account</value>
+  <value column="Description" original="Defines the Credit Account">Defines the Credit Account</value>
+  <value column="Help" original="Defines the Credit Account">Defines the Credit Account</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000232" trl="Y">
-  <value column="Name" original="Debit Account">Conta de Débito</value>
-  <value column="PrintName" original="Debit Account">Conta de Débito</value>
-  <value column="Description" original="Defines the Debit Account">Define a Conta de Débito</value>
-  <value column="Help" original="Defines the Debit Account">Define a Conta de Débito</value>
+ <row id="1000232" trl="N">
+  <value column="Name" original="Debit Account">Debit Account</value>
+  <value column="PrintName" original="Debit Account">Debit Account</value>
+  <value column="Description" original="Defines the Debit Account">Defines the Debit Account</value>
+  <value column="Help" original="Defines the Debit Account">Defines the Debit Account</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000233" trl="Y">
-  <value column="Name" original="Automatic Shipment">Remessa Automática</value>
-  <value column="PrintName" original="Automatic Shipment">Remessa Automática</value>
-  <value column="Description" original="Identifies if this Document generates Shipments automatically">Identifica se o Documento gera uma Remessa Automática</value>
-  <value column="Help" original="Identifies if this Document generates Shipments automatically">Identifica se o Documento gera uma Remessa Automática</value>
+ <row id="1000233" trl="N">
+  <value column="Name" original="Automatic Shipment">Automatic Shipment</value>
+  <value column="PrintName" original="Automatic Shipment">Automatic Shipment</value>
+  <value column="Description" original="Identifies if this Document generates Shipments automatically">Identifies if this Document generates Shipments automatically</value>
+  <value column="Help" original="Identifies if this Document generates Shipments automatically">Identifies if this Document generates Shipments automatically</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000234" trl="Y">
-  <value column="Name" original="Automatic Invoice">Fatura Automática</value>
-  <value column="PrintName" original="Automatic Invoice">Fatura Automática</value>
-  <value column="Description" original="Identifies if this Document generates Invoices automatically">Identifica se o Documento gera uma Fatura Automática</value>
-  <value column="Help" original="Identifies if this Document generates Invoices automatically">Identifica se o Documento gera uma Fatura Automática</value>
+ <row id="1000234" trl="N">
+  <value column="Name" original="Automatic Invoice">Automatic Invoice</value>
+  <value column="PrintName" original="Automatic Invoice">Automatic Invoice</value>
+  <value column="Description" original="Identifies if this Document generates Invoices automatically">Identifies if this Document generates Invoices automatically</value>
+  <value column="Help" original="Identifies if this Document generates Invoices automatically">Identifies if this Document generates Invoices automatically</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000235" trl="Y">
-  <value column="Name" original="Has Open Items">Gerar Contas a Pagar/Receber</value>
-  <value column="PrintName" original="Has Open Items">Gerar Contas a Pagar/Receber</value>
-  <value column="Description" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a Pagar/Receber</value>
-  <value column="Help" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a Pagar/Receber</value>
+ <row id="1000235" trl="N">
+  <value column="Name" original="Has Open Items">Has Open Items</value>
+  <value column="PrintName" original="Has Open Items">Has Open Items</value>
+  <value column="Description" original="Identifies if this Document Has Open Items">Identifies if this Document Has Open Items</value>
+  <value column="Help" original="Identifies if this Document Has Open Items">Identifies if this Document Has Open Items</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000238" trl="Y">
-  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
-  <value column="PrintName" original="Matrix Printer">Impressora Matricial</value>
-  <value column="Description" original="Primary key table LBR_MatrixPrinter">Define a Impressora Matricial</value>
-  <value column="Help" original="Primary key table LBR_MatrixPrinter">Chave primária tabela LBR_MatrixPrinter</value>
+ <row id="1000238" trl="N">
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+  <value column="PrintName" original="Matrix Printer">Matrix Printer</value>
+  <value column="Description" original="Primary key table LBR_MatrixPrinter">Primary key table LBR_MatrixPrinter</value>
+  <value column="Help" original="Primary key table LBR_MatrixPrinter">Primary key table LBR_MatrixPrinter</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000239" trl="Y">
+ <row id="1000239" trl="N">
   <value column="Name" original="Characterset">Characterset</value>
   <value column="PrintName" original="Characterset">Characterset</value>
   <value column="Description" original="Defines the Characterset">Defines the Characterset</value>
@@ -26020,7 +26020,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000240" trl="Y">
+ <row id="1000240" trl="N">
   <value column="Name" original="Is Condensed">Is Condensed</value>
   <value column="PrintName" original="Is Condensed">Is Condensed</value>
   <value column="Description" original="Defines if Character is Condensed">Defines if Character is Condensed</value>
@@ -26030,7 +26030,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000241" trl="Y">
+ <row id="1000241" trl="N">
   <value column="Name" original="Interspace">Interspace</value>
   <value column="PrintName" original="Interspace">Interspace</value>
   <value column="Description" original="Defines the Interspace">Defines the Interspace</value>
@@ -26040,7 +26040,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000242" trl="Y">
+ <row id="1000242" trl="N">
   <value column="Name" original="Is UnixPrinter">Is UnixPrinter</value>
   <value column="PrintName" original="Is UnixPrinter">Is UnixPrinter</value>
   <value column="Description" original="Define if this is an Unix Printer">Define if this is an Unix Printer</value>
@@ -26050,7 +26050,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000243" trl="Y">
+ <row id="1000243" trl="N">
   <value column="Name" original="Pitch">Pitch</value>
   <value column="PrintName" original="Pitch">Pitch</value>
   <value column="Description" original="Defines the Printer Pitch">Defines the Printer Pitch</value>
@@ -26060,7 +26060,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000244" trl="Y">
+ <row id="1000244" trl="N">
   <value column="Name" original="Printer Path">Printer Path</value>
   <value column="PrintName" original="Printer Path">Printer Path</value>
   <value column="Description" original="Defines the Printer Path">Defines the Printer Path</value>
@@ -26070,7 +26070,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000245" trl="Y">
+ <row id="1000245" trl="N">
   <value column="Name" original="Printer Type">Printer Type</value>
   <value column="PrintName" original="Printer Type">Printer Type</value>
   <value column="Description" original="Defines the Printer Type">Defines the Printer Type</value>
@@ -26080,7 +26080,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000246" trl="Y">
+ <row id="1000246" trl="N">
   <value column="Name" original="Unix PrinterName">Unix PrinterName</value>
   <value column="PrintName" original="Unix PrinterName">Unix PrinterName</value>
   <value column="Description" original="Defines the Unix PrinterName">Defines the Unix PrinterName</value>
@@ -26090,139 +26090,139 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000248" trl="Y">
-  <value column="Name" original="Has Substitution">Substituição Tributária</value>
-  <value column="PrintName" original="Has Substitution">Substituição Tributária</value>
-  <value column="Description" original="Defines if the record has Substituion">Define se o registro possui Substituição Tributária</value>
-  <value column="Help" original="Defines if the record has Substituion">Define se o registro possui Substituição Tributária</value>
+ <row id="1000248" trl="N">
+  <value column="Name" original="Has Substitution">Has Substitution</value>
+  <value column="PrintName" original="Has Substitution">Has Substitution</value>
+  <value column="Description" original="Defines if the record has Substituion">Defines if the record has Substituion</value>
+  <value column="Help" original="Defines if the record has Substituion">Defines if the record has Substituion</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000249" trl="Y">
-  <value column="Name" original="Profit Percentage">Margem de Lucro</value>
-  <value column="PrintName" original="Profit Percentage">Margem de Lucro</value>
-  <value column="Description" original="Defines the Profit Percentage">Define a Margem de Lucro</value>
-  <value column="Help" original="Defines the Profit Percentage">Define a Margem de Lucro</value>
+ <row id="1000249" trl="N">
+  <value column="Name" original="Profit Percentage">Profit Percentage</value>
+  <value column="PrintName" original="Profit Percentage">Profit Percentage</value>
+  <value column="Description" original="Defines the Profit Percentage">Defines the Profit Percentage</value>
+  <value column="Help" original="Defines the Profit Percentage">Defines the Profit Percentage</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000250" trl="Y">
-  <value column="Name" original="Tax Substitution">Imposto Substituído</value>
-  <value column="PrintName" original="Tax Substitution">Imposto Substituído</value>
-  <value column="Description" original="Defines the Tax Substitution">Define o Imposto Substituído</value>
-  <value column="Help" original="Defines the Tax Substitution">Define o Imposto Substituído</value>
+ <row id="1000250" trl="N">
+  <value column="Name" original="Tax Substitution">Tax Substitution</value>
+  <value column="PrintName" original="Tax Substitution">Tax Substitution</value>
+  <value column="Description" original="Defines the Tax Substitution">Defines the Tax Substitution</value>
+  <value column="Help" original="Defines the Tax Substitution">Defines the Tax Substitution</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000251" trl="Y">
-  <value column="Name" original="Withhold Frequency">Freqüência da Retenção</value>
-  <value column="PrintName" original="Withhold Frequency">Freqüência da Retenção</value>
-  <value column="Description" original="Defines the Withhold Frequency">Define a Freqüência da Retenção</value>
-  <value column="Help" original="Defines the Withhold Frequency">Define a Freqüência da Retenção</value>
+ <row id="1000251" trl="N">
+  <value column="Name" original="Withhold Frequency">Withhold Frequency</value>
+  <value column="PrintName" original="Withhold Frequency">Withhold Frequency</value>
+  <value column="Description" original="Defines the Withhold Frequency">Defines the Withhold Frequency</value>
+  <value column="Help" original="Defines the Withhold Frequency">Defines the Withhold Frequency</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000252" trl="Y">
-  <value column="Name" original="Tax Status">Situação Tributária (ICMS)</value>
-  <value column="PrintName" original="Tax Status">Situação Tributária (ICMS)</value>
-  <value column="Description" original="Defines the Tax Status">Define a Situação Tributária (ICMS)</value>
-  <value column="Help" original="Defines the Tax Status">Define a Situação Tributária (ICMS)</value>
+ <row id="1000252" trl="N">
+  <value column="Name" original="Tax Status">Tax Status</value>
+  <value column="PrintName" original="Tax Status">Tax Status</value>
+  <value column="Description" original="Defines the Tax Status">Defines the Tax Status</value>
+  <value column="Help" original="Defines the Tax Status">Defines the Tax Status</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000253" trl="Y">
-  <value column="Name" original="Legal Message">Mensagem Legal</value>
-  <value column="PrintName" original="Legal Message">Mensagem Legal</value>
-  <value column="Description" original="Defines the Legal Message">Define a Mensagem Legal</value>
-  <value column="Help" original="Primary key table LBR_LegalMessage">Chave primária tabela LBR_LegalMessage</value>
+ <row id="1000253" trl="N">
+  <value column="Name" original="Legal Message">Legal Message</value>
+  <value column="PrintName" original="Legal Message">Legal Message</value>
+  <value column="Description" original="Defines the Legal Message">Defines the Legal Message</value>
+  <value column="Help" original="Primary key table LBR_LegalMessage">Primary key table LBR_LegalMessage</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000254" trl="Y">
-  <value column="Name" original="Product Source">Origem do Produto</value>
-  <value column="PrintName" original="Product Source">Origem do Produto</value>
-  <value column="Description" original="Defines the Product Source">Define a Origem do Produto</value>
-  <value column="Help" original="Defines the Product Source">Define a Origem do Produto</value>
+ <row id="1000254" trl="N">
+  <value column="Name" original="Product Source">Product Source</value>
+  <value column="PrintName" original="Product Source">Product Source</value>
+  <value column="Description" original="Defines the Product Source">Defines the Product Source</value>
+  <value column="Help" original="Defines the Product Source">Defines the Product Source</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000255" trl="Y">
-  <value column="Name" original="Has Fiscal Document">Documento Fiscal</value>
-  <value column="PrintName" original="Has Fiscal Document">Documento Fiscal</value>
-  <value column="Description" original="Identifies if the this document has fiscal document">Identifica se este documento "gera" um Documento Fiscal</value>
-  <value column="Help" original="Identifies if the this document has fiscal document">Identifica se este documento "gera" um Documento Fiscal</value>
+ <row id="1000255" trl="N">
+  <value column="Name" original="Has Fiscal Document">Has Fiscal Document</value>
+  <value column="PrintName" original="Has Fiscal Document">Has Fiscal Document</value>
+  <value column="Description" original="Identifies if the this document has fiscal document">Identifies if the this document has fiscal document</value>
+  <value column="Help" original="Identifies if the this document has fiscal document">Identifies if the this document has fiscal document</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000256" trl="Y">
-  <value column="Name" original="Is Own Document">Documento Próprio</value>
-  <value column="PrintName" original="Is Own Document">Documento Próprio</value>
-  <value column="Description" original="Identifies this is an own document">Identifica se este é um documento da empresa</value>
-  <value column="Help" original="Identifies this is an own document">Identifica se este é um documento da empresa</value>
+ <row id="1000256" trl="N">
+  <value column="Name" original="Is Own Document">Is Own Document</value>
+  <value column="PrintName" original="Is Own Document">Is Own Document</value>
+  <value column="Description" original="Identifies this is an own document">Identifies this is an own document</value>
+  <value column="Help" original="Identifies this is an own document">Identifies this is an own document</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000257" trl="Y">
-  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
-  <value column="PrintName" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
-  <value column="Description" original="Defines the Tax Group">Define o Grupo de Impostos para Nota Fiscal</value>
-  <value column="Help" original="Primary key table LBR_TaxGroup">Chave primária tabela LBR_TaxGroup</value>
+ <row id="1000257" trl="N">
+  <value column="Name" original="Tax Group">Tax Group</value>
+  <value column="PrintName" original="Tax Group">Tax Group</value>
+  <value column="Description" original="Defines the Tax Group">Defines the Tax Group</value>
+  <value column="Help" original="Primary key table LBR_TaxGroup">Primary key table LBR_TaxGroup</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000259" trl="Y">
-  <value column="Name" original="Withhold Order">Ordem com Retenção</value>
-  <value column="PrintName" original="Withhold Order">Ordem com Retenção</value>
-  <value column="Description" original="Defines the Withhold Order">Define a Ordem com Retenção</value>
-  <value column="Help" original="Defines the Withhold Order">Define a Ordem com Retenção</value>
+ <row id="1000259" trl="N">
+  <value column="Name" original="Withhold Order">Withhold Order</value>
+  <value column="PrintName" original="Withhold Order">Withhold Order</value>
+  <value column="Description" original="Defines the Withhold Order">Defines the Withhold Order</value>
+  <value column="Help" original="Defines the Withhold Order">Defines the Withhold Order</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000266" trl="Y">
-  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
-  <value column="PrintName" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
-  <value column="Description" original="Defines the Nota Fiscal Tax">Define o Imposto da Nota Fiscal</value>
-  <value column="Help" original="Primary key table LBR_NFTax">Chave primária tabela LBR_NFTax</value>
+ <row id="1000266" trl="N">
+  <value column="Name" original="Nota Fiscal Tax">Nota Fiscal Tax</value>
+  <value column="PrintName" original="Nota Fiscal Tax">Nota Fiscal Tax</value>
+  <value column="Description" original="Defines the Nota Fiscal Tax">Defines the Nota Fiscal Tax</value>
+  <value column="Help" original="Primary key table LBR_NFTax">Primary key table LBR_NFTax</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000267" trl="Y">
-  <value column="Name" original="Nota Fiscal Line Tax">Imposto Nota Fiscal Line</value>
-  <value column="PrintName" original="Nota Fiscal Line Tax">Imposto Nota Fiscal Line</value>
-  <value column="Description" original="Defines the Nota Fiscal Line Tax">Define o Imposto da Nota Fiscal Line</value>
-  <value column="Help" original="Primary key table LBR_NFLineTax">Chave primária tabela LBR_NFLineTax</value>
+ <row id="1000267" trl="N">
+  <value column="Name" original="Nota Fiscal Line Tax">Nota Fiscal Line Tax</value>
+  <value column="PrintName" original="Nota Fiscal Line Tax">Nota Fiscal Line Tax</value>
+  <value column="Description" original="Defines the Nota Fiscal Line Tax">Defines the Nota Fiscal Line Tax</value>
+  <value column="Help" original="Primary key table LBR_NFLineTax">Primary key table LBR_NFLineTax</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000271" trl="Y">
-  <value column="Name" original="Process Now">Processar Agora</value>
-  <value column="PrintName" original="Process Now">Processar Agora</value>
+ <row id="1000271" trl="N">
+  <value column="Name" original="Process Now">Process Now</value>
+  <value column="PrintName" original="Process Now">Process Now</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
   <value column="PO_Description" original=""/>
@@ -26230,341 +26230,341 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000272" trl="Y">
-  <value column="Name" original="Process Cancel Nota Fiscal">Cancelar Nota Fiscal</value>
-  <value column="PrintName" original="Process Cancel Nota Fiscal">Cancelar Nota Fiscal</value>
-  <value column="Description" original="Process to Cancel Nota Fiscal">Processo para Cancelar Nota Fiscal</value>
-  <value column="Help" original="Process to Cancel Nota Fiscal">Processo para Cancelar Nota Fiscal</value>
+ <row id="1000272" trl="N">
+  <value column="Name" original="Process Cancel Nota Fiscal">Process Cancel Nota Fiscal</value>
+  <value column="PrintName" original="Process Cancel Nota Fiscal">Process Cancel Nota Fiscal</value>
+  <value column="Description" original="Process to Cancel Nota Fiscal">Process to Cancel Nota Fiscal</value>
+  <value column="Help" original="Process to Cancel Nota Fiscal">Process to Cancel Nota Fiscal</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000273" trl="Y">
-  <value column="Name" original="Is Service">Serviço</value>
-  <value column="PrintName" original="Is Service">Serviço</value>
-  <value column="Description" original="Defines if the lines is a Service">Define se a linha é um Serviço</value>
-  <value column="Help" original="Defines if the lines is a Service">Define se a linha é um Serviço</value>
+ <row id="1000273" trl="N">
+  <value column="Name" original="Is Service">Is Service</value>
+  <value column="PrintName" original="Is Service">Is Service</value>
+  <value column="Description" original="Defines if the lines is a Service">Defines if the lines is a Service</value>
+  <value column="Help" original="Defines if the lines is a Service">Defines if the lines is a Service</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000274" trl="Y">
-  <value column="Name" original="Service Total Amount">Valor Total de Serviços</value>
-  <value column="PrintName" original="Service Total Amount">Valor Total de Serviços</value>
-  <value column="Description" original="Defines the Service Total Amount">Define o Valor Total de Serviços</value>
-  <value column="Help" original="Defines the Service Total Amount">Define o Valor Total de Serviços</value>
+ <row id="1000274" trl="N">
+  <value column="Name" original="Service Total Amount">Service Total Amount</value>
+  <value column="PrintName" original="Service Total Amount">Service Total Amount</value>
+  <value column="Description" original="Defines the Service Total Amount">Defines the Service Total Amount</value>
+  <value column="Help" original="Defines the Service Total Amount">Defines the Service Total Amount</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000275" trl="Y">
-  <value column="Name" original="BPShipper Name">Nome Transportadora</value>
-  <value column="PrintName" original="BPShipper Name">Nome Transportadora</value>
-  <value column="Description" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
-  <value column="Help" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
+ <row id="1000275" trl="N">
+  <value column="Name" original="BPShipper Name">BPShipper Name</value>
+  <value column="PrintName" original="BPShipper Name">BPShipper Name</value>
+  <value column="Description" original="Defines the Shipper Name">Defines the Shipper Name</value>
+  <value column="Help" original="Defines the Shipper Name">Defines the Shipper Name</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000277" trl="Y">
+ <row id="1000277" trl="N">
   <value column="Name" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
   <value column="PrintName" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
-  <value column="Description" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
-  <value column="Help" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
+  <value column="Description" original="Identifies the ID of the SubDocument">Identifies the ID of the SubDocument</value>
+  <value column="Help" original="Identifies the ID of the SubDocument">Identifies the ID of the SubDocument</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000279" trl="Y">
-  <value column="Name" original="Service Taxes">Impostos Serviço</value>
-  <value column="PrintName" original="Service Taxes">Impostos Serviço</value>
-  <value column="Description" original="String with all Taxes Names and Taxes Rates">Texto com todos os Impostos e Alíquotas</value>
-  <value column="Help" original="String with all Taxes Names and Taxes Rates">Texto com todos os Impostos e Alíquotas</value>
+ <row id="1000279" trl="N">
+  <value column="Name" original="Service Taxes">Service Taxes</value>
+  <value column="PrintName" original="Service Taxes">Service Taxes</value>
+  <value column="Description" original="String with all Taxes Names and Taxes Rates">String with all Taxes Names and Taxes Rates</value>
+  <value column="Help" original="String with all Taxes Names and Taxes Rates">String with all Taxes Names and Taxes Rates</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000280" trl="Y">
-  <value column="Name" original="CFOP Note">Natureza da Operação</value>
-  <value column="PrintName" original="CFOP Note">Natureza da Operação</value>
-  <value column="Description" original="Defines the CFOP Note">Define a Natureza da Operação</value>
-  <value column="Help" original="Defines the CFOP Note">Define a Natureza da Operação</value>
+ <row id="1000280" trl="N">
+  <value column="Name" original="CFOP Note">CFOP Note</value>
+  <value column="PrintName" original="CFOP Note">CFOP Note</value>
+  <value column="Description" original="Defines the CFOP Note">Defines the CFOP Note</value>
+  <value column="Help" original="Defines the CFOP Note">Defines the CFOP Note</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000282" trl="Y">
-  <value column="Name" original="Service Factor">Fator de Serviço</value>
-  <value column="PrintName" original="Service Factor">Fator de Serviço</value>
-  <value column="Description" original="Define the Service Factor Formula">Define a Fórmula do Fator de Serviço</value>
-  <value column="Help" original="Define the Service Factor Formula">Define a Fórmula do Fator de Serviço</value>
+ <row id="1000282" trl="N">
+  <value column="Name" original="Service Factor">Service Factor</value>
+  <value column="PrintName" original="Service Factor">Service Factor</value>
+  <value column="Description" original="Define the Service Factor Formula">Define the Service Factor Formula</value>
+  <value column="Help" original="Define the Service Factor Formula">Define the Service Factor Formula</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000283" trl="Y">
-  <value column="Name" original="Withhold Invoice">Fatura com Retenção</value>
-  <value column="PrintName" original="Withhold Invoice">Fatura com Retenção</value>
-  <value column="Description" original="Defines the Withhold Invoice">Define a Fatura com Retenção</value>
-  <value column="Help" original="Defines the Withhold Invoice">Define a Fatura com Retenção</value>
+ <row id="1000283" trl="N">
+  <value column="Name" original="Withhold Invoice">Withhold Invoice</value>
+  <value column="PrintName" original="Withhold Invoice">Withhold Invoice</value>
+  <value column="Description" original="Defines the Withhold Invoice">Defines the Withhold Invoice</value>
+  <value column="Help" original="Defines the Withhold Invoice">Defines the Withhold Invoice</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000284" trl="Y">
-  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
-  <value column="PrintName" original="ISS Matrix">Matriz de ISS</value>
-  <value column="Description" original="Defines the ISS Matrix">Define a Matriz de ISS</value>
-  <value column="Help" original="Primary key table LBR_ISSMatrix">Chave primária tabela LBR_ISSMatrix</value>
+ <row id="1000284" trl="N">
+  <value column="Name" original="ISS Matrix">ISS Matrix</value>
+  <value column="PrintName" original="ISS Matrix">ISS Matrix</value>
+  <value column="Description" original="Defines the ISS Matrix">Defines the ISS Matrix</value>
+  <value column="Help" original="Primary key table LBR_ISSMatrix">Primary key table LBR_ISSMatrix</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000285" trl="Y">
-  <value column="Name" original="Create PO">Criar linhas do Pedido</value>
-  <value column="PrintName" original="Create PO">Criar linhas do Pedido</value>
-  <value column="Description" original="Process to Create PO Lines from Requisition">Processo para criar linhas do Pedido a partir da Requisição</value>
-  <value column="Help" original="Process to Create PO Lines from Requisition">Processo para criar linhas do Pedido a partir da Requisição</value>
+ <row id="1000285" trl="N">
+  <value column="Name" original="Create PO">Create PO</value>
+  <value column="PrintName" original="Create PO">Create PO</value>
+  <value column="Description" original="Process to Create PO Lines from Requisition">Process to Create PO Lines from Requisition</value>
+  <value column="Help" original="Process to Create PO Lines from Requisition">Process to Create PO Lines from Requisition</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000286" trl="Y">
-  <value column="Name" original="BP Shipper License Plate">Transportadora - Placa</value>
-  <value column="PrintName" original="BP Shipper License Plate">Transportadora - Placa</value>
-  <value column="Description" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
-  <value column="Help" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
+ <row id="1000286" trl="N">
+  <value column="Name" original="BP Shipper License Plate">BP Shipper License Plate</value>
+  <value column="PrintName" original="BP Shipper License Plate">BP Shipper License Plate</value>
+  <value column="Description" original="Defines the BP Shipper License Plate">Defines the BP Shipper License Plate</value>
+  <value column="Help" original="Defines the BP Shipper License Plate">Defines the BP Shipper License Plate</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000287" trl="Y">
-  <value column="Name" original="Packing Type">Espécie</value>
-  <value column="PrintName" original="Packing Type">Espécie</value>
-  <value column="Description" original="Defines the Packing Type">Define a Espécie</value>
-  <value column="Help" original="Defines the Packing Type">Define a Espécie</value>
+ <row id="1000287" trl="N">
+  <value column="Name" original="Packing Type">Packing Type</value>
+  <value column="PrintName" original="Packing Type">Packing Type</value>
+  <value column="Description" original="Defines the Packing Type">Defines the Packing Type</value>
+  <value column="Help" original="Defines the Packing Type">Defines the Packing Type</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000288" trl="Y">
-  <value column="Name" original="Other Row">Outra Linha</value>
-  <value column="PrintName" original="Other Row">Outra Linha</value>
-  <value column="Description" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
-  <value column="Help" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
+ <row id="1000288" trl="N">
+  <value column="Name" original="Other Row">Other Row</value>
+  <value column="PrintName" original="Other Row">Other Row</value>
+  <value column="Description" original="Defines if this field uses another row or truncate">Defines if this field uses another row or truncate</value>
+  <value column="Help" original="Defines if this field uses another row or truncate">Defines if this field uses another row or truncate</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000291" trl="Y">
-  <value column="Name" original="Has Sue">Protestar</value>
-  <value column="PrintName" original="Has Sue">Protestar</value>
-  <value column="Description" original="Define if this Document must be Sue">Define se o Documento deve ser Protestado Automaticamente</value>
-  <value column="Help" original="Define if this Document must be Sue">Define se o Documento deve ser Protestado Automáticamente</value>
+ <row id="1000291" trl="N">
+  <value column="Name" original="Has Sue">Has Sue</value>
+  <value column="PrintName" original="Has Sue">Has Sue</value>
+  <value column="Description" original="Define if this Document must be Sue">Define if this Document must be Sue</value>
+  <value column="Help" original="Define if this Document must be Sue">Define if this Document must be Sue</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000292" trl="Y">
-  <value column="Name" original="Sue Days">Dias para Protesto</value>
-  <value column="PrintName" original="Sue Days">Dias para Protesto</value>
-  <value column="Description" original="Define the Sue Days">Define o número de dias para protesto</value>
-  <value column="Help" original="Define the Sue Days">Define o número de dias para protesto</value>
+ <row id="1000292" trl="N">
+  <value column="Name" original="Sue Days">Sue Days</value>
+  <value column="PrintName" original="Sue Days">Sue Days</value>
+  <value column="Description" original="Define the Sue Days">Define the Sue Days</value>
+  <value column="Help" original="Define the Sue Days">Define the Sue Days</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000293" trl="Y">
-  <value column="Name" original="Has Interest">Cobrança de Juros</value>
-  <value column="PrintName" original="Has Interest">Cobrança de Juros</value>
-  <value column="Description" original="Define if this document has Interest">Define se o documento possui cobrança de juros</value>
-  <value column="Help" original="Define if this document has Interest">Define se o documento possui cobrança de juros</value>
+ <row id="1000293" trl="N">
+  <value column="Name" original="Has Interest">Has Interest</value>
+  <value column="PrintName" original="Has Interest">Has Interest</value>
+  <value column="Description" original="Define if this document has Interest">Define if this document has Interest</value>
+  <value column="Help" original="Define if this document has Interest">Define if this document has Interest</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000299" trl="Y">
-  <value column="Name" original="Process Cancel Boleto">Cancelar Boleto</value>
-  <value column="PrintName" original="Process Cancel Boleto">Cancelar Boleto</value>
-  <value column="Description" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
-  <value column="Help" original="Process to Cancel Boleto">Processo para Cancelar Boleto</value>
+ <row id="1000299" trl="N">
+  <value column="Name" original="Process Cancel Boleto">Process Cancel Boleto</value>
+  <value column="PrintName" original="Process Cancel Boleto">Process Cancel Boleto</value>
+  <value column="Description" original="Process to Cancel Boleto">Process to Cancel Boleto</value>
+  <value column="Help" original="Process to Cancel Boleto">Process to Cancel Boleto</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000301" trl="Y">
-  <value column="Name" original="File Sequence">Seqüência Arquivo Remessa</value>
-  <value column="PrintName" original="File Sequence">Seqüência Arquivo Remessa</value>
-  <value column="Description" original="Defines the File Sequence">Define a Seqüência do Arquivo de Remessa</value>
-  <value column="Help" original="Defines the File Sequence">Define a Seqüência do Arquivo de Remessa</value>
+ <row id="1000301" trl="N">
+  <value column="Name" original="File Sequence">File Sequence</value>
+  <value column="PrintName" original="File Sequence">File Sequence</value>
+  <value column="Description" original="Defines the File Sequence">Defines the File Sequence</value>
+  <value column="Help" original="Defines the File Sequence">Defines the File Sequence</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000305" trl="Y">
-  <value column="Name" original="Payment Rule">Forma de Pagamento</value>
-  <value column="PrintName" original="Payment Rule">Forma de Pagamento</value>
-  <value column="Description" original="How you pay the invoice">Define a Forma de Pagamento</value>
-  <value column="Help" original="The Payment Rule indicates the method of invoice payment.">A Forma de Pagamento define o método de pagamento da Fatura.</value>
+ <row id="1000305" trl="N">
+  <value column="Name" original="Payment Rule">Payment Rule</value>
+  <value column="PrintName" original="Payment Rule">Payment Rule</value>
+  <value column="Description" original="How you pay the invoice">How you pay the invoice</value>
+  <value column="Help" original="The Payment Rule indicates the method of invoice payment.">The Payment Rule indicates the method of invoice payment.</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000306" trl="Y">
-  <value column="Name" original="Date InOut">Data Saída/Entrada</value>
-  <value column="PrintName" original="Date InOut">Data Saída/Entrada</value>
-  <value column="Description" original="Defines the InOut Date">Define a Data de Saída/Entrada</value>
-  <value column="Help" original="Defines the InOut Date">Define a Data de Saída/Entrada</value>
+ <row id="1000306" trl="N">
+  <value column="Name" original="Date InOut">Date InOut</value>
+  <value column="PrintName" original="Date InOut">Date InOut</value>
+  <value column="Description" original="Defines the InOut Date">Defines the InOut Date</value>
+  <value column="Help" original="Defines the InOut Date">Defines the InOut Date</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000307" trl="Y">
-  <value column="Name" original="Time InOut">Hora Saída/Entrada</value>
-  <value column="PrintName" original="Time InOut">Hora Saída/Entrada</value>
-  <value column="Description" original="Defines the InOut Time">Define a Hora de Saída/Entrada</value>
-  <value column="Help" original="Defines the InOut Time">Define a Hora de Saída/Entrada</value>
+ <row id="1000307" trl="N">
+  <value column="Name" original="Time InOut">Time InOut</value>
+  <value column="PrintName" original="Time InOut">Time InOut</value>
+  <value column="Description" original="Defines the InOut Time">Defines the InOut Time</value>
+  <value column="Help" original="Defines the InOut Time">Defines the InOut Time</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000312" trl="Y">
-  <value column="Name" original="CNAB Field47">CNAB Campo 47</value>
-  <value column="PrintName" original="CNAB Field47">CNAB Campo 47</value>
-  <value column="Description" original="CNAB Field47">CNAB Campo 47</value>
-  <value column="Help" original="CNAB Field47">CNAB Campo 47</value>
+ <row id="1000312" trl="N">
+  <value column="Name" original="CNAB Field47">CNAB Field47</value>
+  <value column="PrintName" original="CNAB Field47">CNAB Field47</value>
+  <value column="Description" original="CNAB Field47">CNAB Field47</value>
+  <value column="Help" original="CNAB Field47">CNAB Field47</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000313" trl="Y">
-  <value column="Name" original="CNAB Field48">CNAB Campo 48</value>
-  <value column="PrintName" original="CNAB Field48">CNAB Campo 48</value>
-  <value column="Description" original="CNAB Field48">CNAB Campo 48</value>
-  <value column="Help" original="CNAB Field48">CNAB Campo 48</value>
+ <row id="1000313" trl="N">
+  <value column="Name" original="CNAB Field48">CNAB Field48</value>
+  <value column="PrintName" original="CNAB Field48">CNAB Field48</value>
+  <value column="Description" original="CNAB Field48">CNAB Field48</value>
+  <value column="Help" original="CNAB Field48">CNAB Field48</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000314" trl="Y">
-  <value column="Name" original="CNAB Field49">CNAB Campo 49</value>
-  <value column="PrintName" original="CNAB Field49">CNAB Campo 49</value>
-  <value column="Description" original="CNAB Field49">CNAB Campo 49</value>
-  <value column="Help" original="CNAB Field49">CNAB Campo 49</value>
+ <row id="1000314" trl="N">
+  <value column="Name" original="CNAB Field49">CNAB Field49</value>
+  <value column="PrintName" original="CNAB Field49">CNAB Field49</value>
+  <value column="Description" original="CNAB Field49">CNAB Field49</value>
+  <value column="Help" original="CNAB Field49">CNAB Field49</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000315" trl="Y">
-  <value column="Name" original="CNAB Field50">CNAB Campo 50</value>
-  <value column="PrintName" original="CNAB Field50">CNAB Campo 50</value>
-  <value column="Description" original="CNAB Field50">CNAB Campo 50</value>
-  <value column="Help" original="CNAB Field50">CNAB Campo 50</value>
+ <row id="1000315" trl="N">
+  <value column="Name" original="CNAB Field50">CNAB Field50</value>
+  <value column="PrintName" original="CNAB Field50">CNAB Field50</value>
+  <value column="Description" original="CNAB Field50">CNAB Field50</value>
+  <value column="Help" original="CNAB Field50">CNAB Field50</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000316" trl="Y">
-  <value column="Name" original="CNAB Field51">CNAB Campo 51</value>
-  <value column="PrintName" original="CNAB Field51">CNAB Campo 51</value>
-  <value column="Description" original="CNAB Field51">CNAB Campo 51</value>
-  <value column="Help" original="CNAB Field51">CNAB Campo 51</value>
+ <row id="1000316" trl="N">
+  <value column="Name" original="CNAB Field51">CNAB Field51</value>
+  <value column="PrintName" original="CNAB Field51">CNAB Field51</value>
+  <value column="Description" original="CNAB Field51">CNAB Field51</value>
+  <value column="Help" original="CNAB Field51">CNAB Field51</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000317" trl="Y">
-  <value column="Name" original="CNAB Field52">CNAB Campo 52</value>
-  <value column="PrintName" original="CNAB Field52">CNAB Campo 52</value>
-  <value column="Description" original="CNAB Field52">CNAB Campo 52</value>
-  <value column="Help" original="CNAB Field52">CNAB Campo 52</value>
+ <row id="1000317" trl="N">
+  <value column="Name" original="CNAB Field52">CNAB Field52</value>
+  <value column="PrintName" original="CNAB Field52">CNAB Field52</value>
+  <value column="Description" original="CNAB Field52">CNAB Field52</value>
+  <value column="Help" original="CNAB Field52">CNAB Field52</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000318" trl="Y">
-  <value column="Name" original="CNAB Field53">CNAB Campo 53</value>
-  <value column="PrintName" original="CNAB Field53">CNAB Campo 53</value>
-  <value column="Description" original="CNAB Field53">CNAB Campo 53</value>
-  <value column="Help" original="CNAB Field53">CNAB Campo 53</value>
+ <row id="1000318" trl="N">
+  <value column="Name" original="CNAB Field53">CNAB Field53</value>
+  <value column="PrintName" original="CNAB Field53">CNAB Field53</value>
+  <value column="Description" original="CNAB Field53">CNAB Field53</value>
+  <value column="Help" original="CNAB Field53">CNAB Field53</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000319" trl="Y">
-  <value column="Name" original="Purchase Transaction">Transação de Compras</value>
-  <value column="PrintName" original="Purchase Transaction">Transação de Compras</value>
-  <value column="Description" original="This is a Purchase Transaction">Esta é uma Transação de Compras</value>
-  <value column="Help" original="The Purchase Transaction checkbox indicates if this item is a Purchase Transaction.">A caixa de verificação "Transação de Compras" indica se este item é uma Transação de Compras.</value>
+  <value column="Name" original="Purchase Transaction">Transacao de Compras</value>
+  <value column="PrintName" original="Purchase Transaction">Transacao de Compras</value>
+  <value column="Description" original="This is a Purchase Transaction">Esta  uma Transacao de Compras</value>
+  <value column="Help" original="The Purchase Transaction checkbox indicates if this item is a Purchase Transaction.">A caixa de verificacao "Transacao de Compras" indica se este item e uma Transacao de Compras.</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000320" trl="Y">
-  <value column="Name" original="Reactivate Nota Fiscal">Reativar Nota Fiscal</value>
-  <value column="PrintName" original="Reactivate Nota Fiscal">Reativar Nota Fiscal</value>
-  <value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
-  <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
+ <row id="1000320" trl="N">
+  <value column="Name" original="Reactivate Nota Fiscal">Process to Reactivate Nota Fiscal</value>
+  <value column="PrintName" original="Reactivate Nota Fiscal">Process to Reactivate Nota Fiscal</value>
+  <value column="Description" original="This Process Reactivates the Nota Fiscal Document">This Process Reactivates the Nota Fiscal Document</value>
+  <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000321" trl="Y">
-  <value column="Name" original="Generate Movement">Movimentação de Material</value>
-  <value column="PrintName" original="Generate Movement">Movimentação de Material</value>
-  <value column="Description" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indica se este documento gera uma movimentação de material ao invés de uma expedição/recebimento</value>
-  <value column="Help" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indica se este documento gera uma movimentação de material ao invés de uma expedição/recebimento</value>
+ <row id="1000321" trl="N">
+  <value column="Name" original="Generate Movement">Generate Movement</value>
+  <value column="PrintName" original="Generate Movement">Generate Movement</value>
+  <value column="Description" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indicates if this document generates a material movement insted of a material shipment/receipt</value>
+  <value column="Help" original="Indicates if this document generates a material movement insted of a material shipment/receipt">Indicates if this document generates a material movement insted of a material shipment/receipt</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000322" trl="Y">
-  <value column="Name" original="Movement DocType">Documento de Movimentação</value>
-  <value column="PrintName" original="Movement DocType">Documento de Movimentação</value>
-  <value column="Description" original="Defines the Movement Document Type used for the Material Movement">Define o Documentno de Movimentação usado na Movimentação de Material</value>
-  <value column="Help" original="Defines the Movement Document Type used for the Material Movement">Define o Documentno de Movimentação usado na Movimentação de Material</value>
+ <row id="1000322" trl="N">
+  <value column="Name" original="Movement DocType">Movement DocType</value>
+  <value column="PrintName" original="Movement DocType">Movement DocType</value>
+  <value column="Description" original="Defines the Movement Document Type used for the Material Movement">Defines the Movement Document Type used for the Material Movement</value>
+  <value column="Help" original="Defines the Movement Document Type used for the Material Movement">Defines the Movement Document Type used for the Material Movement</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000323" trl="Y">
-  <value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
-  <value column="PrintName" original="Other NF Link">Outras Notas Fiscais</value>
-  <value column="Description" original="Identifies the Other NF Link">Identifica Outras Notas Fiscais</value>
-  <value column="Help" original="Primary key table LBR_OtherNFLink">Chave primária da tabela LBR_OtherNFLink</value>
+ <row id="1000323" trl="N">
+  <value column="Name" original="Other NF Link">Other NF Link</value>
+  <value column="PrintName" original="Other NF Link">Other NF Link</value>
+  <value column="Description" original="Identifies the Other NF Link">Identifies the Other NF Link</value>
+  <value column="Help" original="Primary key table LBR_OtherNFLink">Primary key table LBR_OtherNFLink</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
@@ -26580,61 +26580,61 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000326" trl="Y">
-  <value column="Name" original="Is Return">Retorno</value>
-  <value column="PrintName" original="Is Return">Retorno</value>
-  <value column="Description" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
-  <value column="Help" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
+ <row id="1000326" trl="N">
+  <value column="Name" original="Is Return">Is Return</value>
+  <value column="PrintName" original="Is Return">Is Return</value>
+  <value column="Description" original="Defines if the is a return of manufactured products">Defines if the is a return of manufactured products</value>
+  <value column="Help" original="Defines if the is a return of manufactured products">Defines if the is a return of manufactured products</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000327" trl="Y">
-  <value column="Name" original="Other NF">Outra Nota Fiscal</value>
-  <value column="PrintName" original="Other NF">Outra Nota Fiscal</value>
-  <value column="Description" original="Other NF">Define a Outra Nota Fiscal</value>
-  <value column="Help" original="Other NF">Campo chave da tabela LBR_OtherNF</value>
+ <row id="1000327" trl="N">
+  <value column="Name" original="Other NF">Other NF</value>
+  <value column="PrintName" original="Other NF">Other NF</value>
+  <value column="Description" original="Other NF">Other NF</value>
+  <value column="Help" original="Other NF">Other NF</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000328" trl="Y">
-  <value column="Name" original="Other NF Request Type">Tipo de Solicitação</value>
-  <value column="PrintName" original="Other NF Request Type">Tipo de Solicitação</value>
-  <value column="Description" original="Type of request for the Other NF Process">Define o Tipo de Solicitação</value>
-  <value column="Help" original="Type of request for the Other NF Process">Define o Tipo de Solicitação</value>
+  <value column="Name" original="Other NF Request Type">Tipo de Requisição</value>
+  <value column="PrintName" original="Other NF Request Type">Tipo de Requisição</value>
+  <value column="Description" original="Type of request for the Other NF Process">Tipo de Requisição</value>
+  <value column="Help" original="Type of request for the Other NF Process">Tipo de Requisição</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000329" trl="Y">
-  <value column="Name" original="Generate">Criar Linhas</value>
-  <value column="PrintName" original="Generate">Criar Linhas</value>
-  <value column="Description" original="Generate">Processo para criação de Linhas</value>
-  <value column="Help" original="Generates the Other NF Lines">Processo para criação de Linhas</value>
+  <value column="Name" original="Generate">Gerar Linhas</value>
+  <value column="PrintName" original="Generate">Gerar Linhas</value>
+  <value column="Description" original="Generate">Gerar Linhas de Consignação</value>
+  <value column="Help" original="Generates the Other NF Lines">Gera as linhas de Consignação</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000330" trl="Y">
-  <value column="Name" original="Process">Processar</value>
-  <value column="PrintName" original="Process">Processar</value>
-  <value column="Description" original="Process now">Processar Outras Notas Fiscais</value>
-  <value column="Help" original="Process Other NF">Processar Outras Notas Fiscais</value>
+  <value column="Name" original="Process">Processar Consignação</value>
+  <value column="PrintName" original="Process">Processar Consignação</value>
+  <value column="Description" original="Process now">Executa o processo de consginação</value>
+  <value column="Help" original="Process Other NF">Executa todo o processo de consignação de acordo com os valores das linhas de consignação e as configurações de criação de documentos</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
  <row id="1000331" trl="Y">
-  <value column="Name" original="Void">Anular</value>
-  <value column="PrintName" original="Void">Anular</value>
-  <value column="Description" original="Void Other NF">Anular Outras Notas Fiscais</value>
-  <value column="Help" original="Void Other NF">Anular Outras Notas Fiscais</value>
+  <value column="Name" original="Void">Anular Processo</value>
+  <value column="PrintName" original="Void">Anular Processo </value>
+  <value column="Description" original="Void Other NF">Anula o processo</value>
+  <value column="Help" original="Void Other NF">Anula o processo de retorno/venda de consignação</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
@@ -26650,11 +26650,11 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000337" trl="Y">
-  <value column="Name" original="Boleto Comments">Observação Boleto</value>
-  <value column="PrintName" original="Boleto Comments">Observação Boleto</value>
-  <value column="Description" original="Define the Boleto Comments">Define a Observação do Boleto</value>
-  <value column="Help" original="Define the Boleto Comments">Define a Observação do Boleto</value>
+ <row id="1000337" trl="N">
+  <value column="Name" original="Boleto Comments">Boleto Comments</value>
+  <value column="PrintName" original="Boleto Comments">Boleto Comments</value>
+  <value column="Description" original="Define the Boleto Comments">Define the Boleto Comments</value>
+  <value column="Help" original="Define the Boleto Comments">Define the Boleto Comments</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>
@@ -26680,7 +26680,47 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000340" trl="N">
+ <row id="1000341" trl="Y">
+  <value column="Name" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="PrintName" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="Description" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="Help" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000342" trl="Y">
+  <value column="Name" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
+  <value column="PrintName" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
+  <value column="Description" original="Localization Brasil Document Base Type">Tipo de Documento Base do LBR</value>
+  <value column="Help" original="Localization Brasil Document Base Type">Tipo de Documento Base do projeto de localização brasil.</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000343" trl="Y">
+  <value column="Name" original="Origin Invoice Line">Linha da Fatura de Origem</value>
+  <value column="PrintName" original="Origin Invoice Line">Linha da Fatura de Origem</value>
+  <value column="Description" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
+  <value column="Help" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000344" trl="Y">
+  <value column="Name" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="PrintName" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="Description" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="Help" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000345" trl="N">
   <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
   <value column="PrintName" original="IsGenerateFields">IsGenerateFields</value>
   <value column="Description" original=""/>
@@ -26690,7 +26730,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000341" trl="N">
+ <row id="1000346" trl="N">
   <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="Description" original=""/>
@@ -26700,7 +26740,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000342" trl="N">
+ <row id="1000347" trl="N">
   <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="Description" original=""/>
@@ -26710,7 +26750,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000343" trl="N">
+ <row id="1000348" trl="N">
   <value column="Name" original="ScriptsPath">ScriptsPath</value>
   <value column="PrintName" original="ScriptsPath">ScriptsPath</value>
   <value column="Description" original=""/>

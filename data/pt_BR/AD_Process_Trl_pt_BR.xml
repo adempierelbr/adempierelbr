@@ -1334,62 +1334,62 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000003" trl="Y">
-  <value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
+ <row id="1000003" trl="N">
+  <value column="Name" original="ProcPrintNF">ProcPrintNF</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000004" trl="Y">
-  <value column="Name" original="ProcGenerateNFS">Processar NF (Saída)</value>
+ <row id="1000004" trl="N">
+  <value column="Name" original="ProcGenerateNFS">ProcGenerateNFS</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000005" trl="Y">
-  <value column="Name" original="ProcGenerateNFE">Processar NF (Entrada)</value>
+ <row id="1000005" trl="N">
+  <value column="Name" original="ProcGenerateNFE">ProcGenerateNFE</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000006" trl="Y">
-  <value column="Name" original="ProcCancelNF">Cancelar Nota Fiscal</value>
+ <row id="1000006" trl="N">
+  <value column="Name" original="ProcCancelNF">ProcCancelNF</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000007" trl="Y">
-  <value column="Name" original="ProcCreatePO">Criar linhas do Pedido</value>
+ <row id="1000007" trl="N">
+  <value column="Name" original="ProcCreatePO">ProcCreatePO</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000011" trl="Y">
-  <value column="Name" original="ProcCancelBoleto">Cancelar Boleto</value>
+ <row id="1000011" trl="N">
+  <value column="Name" original="ProcCancelBoleto">ProcCancelBoleto</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000012" trl="Y">
-  <value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
+ <row id="1000012" trl="N">
+  <value column="Name" original="ProcNFNo">ProcNFNo</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000013" trl="Y">
-  <value column="Name" original="ProcReactivateNF">Reativar Nota Fiscal</value>
-  <value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
-  <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
+ <row id="1000013" trl="N">
+  <value column="Name" original="ProcReactivateNF">ProcReactivateNF</value>
+  <value column="Description" original="This Process Reactivates the Nota Fiscal Document"/>
+  <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS"/>
  </row>
- <row id="1000014" trl="Y">
-  <value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
+ <row id="1000014" trl="N">
+  <value column="Name" original="Generate Lines">Gera Linhas de Consginação</value>
+  <value column="Description" original="Generate Consignation Lines">Gera Linhas de Consignação baseado nas quantidades de produtos consignadas a determinado Parceiro de Negócios</value>
+  <value column="Help" original="Generates Consignation Lines based on the values of Consignation Sales Orders"/>
  </row>
  <row id="1000015" trl="Y">
-  <value column="Name" original="lbr_ProcessOtherNF">Processar</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
+  <value column="Name" original="Process Consignation">Processar Consignação</value>
+  <value column="Description" original="Executes the consignation process">Executa o processo de consginação</value>
+  <value column="Help" original="Executes the consignation process">Executa todo o processo de consignação de acordo com os valores das linhas de consignação e as configurações de criação de documentos</value>
  </row>
  <row id="1000016" trl="Y">
-  <value column="Name" original="lbr_VoidOtherNF">Anular</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
+  <value column="Name" original="Void">Anular Processo</value>
+  <value column="Description" original="Voids the consignation process">Anular Processo</value>
+  <value column="Help" original="Voids the consignation process">Anula o processo de retorno/venda de consignação</value>
  </row>
- <row id="1000017" trl="Y">
+ <row id="1000017" trl="N">
   <value column="Name" original="Sobre AdempiereLBR">Sobre AdempiereLBR</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>

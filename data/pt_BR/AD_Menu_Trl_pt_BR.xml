@@ -1978,76 +1978,88 @@
   <value column="Name" original="Tax Brazil">Imposto (Brasil)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000020" trl="Y">
+ <row id="1000020" trl="N">
   <value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="Y">
-  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
+ <row id="1000021" trl="N">
+  <value column="Name" original="Matrix Printer">Matrix Printer</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000022" trl="Y">
-  <value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
+ <row id="1000022" trl="N">
+  <value column="Name" original="ProcPrintNF">ProcPrintNF</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000023" trl="Y">
+ <row id="1000023" trl="N">
   <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000024" trl="Y">
-  <value column="Name" original="Legal Message">Mensagem Legal</value>
+ <row id="1000024" trl="N">
+  <value column="Name" original="Legal Message">Legal Message</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000025" trl="Y">
-  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
+ <row id="1000025" trl="N">
+  <value column="Name" original="Tax Group">Tax Group</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000026" trl="Y">
-  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
+ <row id="1000026" trl="N">
+  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (PO)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000027" trl="Y">
-  <value column="Name" original="Print Nota Fiscal">Impressão Nota Fiscal</value>
+ <row id="1000027" trl="N">
+  <value column="Name" original="Print Nota Fiscal">Print Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000028" trl="Y">
-  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
+ <row id="1000028" trl="N">
+  <value column="Name" original="ISS Matrix">ISS Matrix</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000030" trl="Y">
+ <row id="1000030" trl="N">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000031" trl="Y">
-  <value column="Name" original="Generate CNAB">Geração CNAB</value>
+ <row id="1000031" trl="N">
+  <value column="Name" original="Generate CNAB">Generate CNAB</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000032" trl="Y">
-  <value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
+ <row id="1000032" trl="N">
+  <value column="Name" original="ProcNFNo">ProcNFNo</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000033" trl="Y">
+ <row id="1000033" trl="N">
   <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000034" trl="Y">
-  <value column="Name" original="Manufacture">Industrialização</value>
-  <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
+ <row id="1000034" trl="N">
+  <value column="Name" original="Manufacture">Manufacture</value>
+  <value column="Description" original="Manufacture based on Bill of Materials">Manufacture based on Bill of Materials</value>
  </row>
- <row id="1000035" trl="Y">
-  <value column="Name" original="Manufacture">Industrialização</value>
+ <row id="1000035" trl="N">
+  <value column="Name" original="Manufacture">Manufacture</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000036" trl="Y">
-  <value column="Name" original="Other NF">Outras Notas Fiscais</value>
+ <row id="1000036" trl="N">
+  <value column="Name" original="Other NF">Other NF</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000037" trl="Y">
+ <row id="1000037" trl="N">
   <value column="Name" original="Sobre AdempiereLBR">Sobre AdempiereLBR</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000038" trl="Y">
   <value column="Name" original="ProcGenerateRPS">Geração Arquivo RPS</value>
+  <value column="Description" original="Process to Generate RPS File (NFe)">Processo para Geração de Arquivo RPS (NFe)</value>
+ </row>
+ <row id="1000039" trl="Y">
+  <value column="Name" original="Consignation">Consignação</value>
   <value column="Description" original=""/>
+ </row>
+ <row id="1000040" trl="Y">
+  <value column="Name" original="Consignation Invoice">Venda de Consignação</value>
+  <value column="Description" original="Process all the Consignation Invoice Processes">Executa o processo de venda de consignação</value>
+ </row>
+ <row id="1000041" trl="Y">
+  <value column="Name" original="Consignation Return">Retorno de Consignação</value>
+  <value column="Description" original="Process all the Consignation Returns steps">Executa o processo de retorno de cosnginação</value>
  </row>
 </adempiereTrl>

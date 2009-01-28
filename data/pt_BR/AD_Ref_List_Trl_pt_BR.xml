@@ -3582,7 +3582,7 @@
   <value column="Name" original="Occurrence">Ocorrência</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="Y">
+ <row id="1000021" trl="N">
   <value column="Name" original="Estados Identicos">Estados Idênticos</value>
   <value column="Description" original=""/>
  </row>
@@ -3634,108 +3634,148 @@
   <value column="Name" original="Substitution">Substituição Tributária</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000040" trl="Y">
-  <value column="Name" original="Yes">Sim</value>
+ <row id="1000040" trl="N">
+  <value column="Name" original="Yes">Yes</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000041" trl="Y">
-  <value column="Name" original="No">Não</value>
+ <row id="1000041" trl="N">
+  <value column="Name" original="No">No</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000042" trl="Y">
-  <value column="Name" original="Both">Ambos</value>
+ <row id="1000042" trl="N">
+  <value column="Name" original="Both">Both</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000043" trl="Y">
-  <value column="Name" original="Resale">Revenda</value>
+ <row id="1000043" trl="N">
+  <value column="Name" original="Resale">Resale</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000044" trl="Y">
-  <value column="Name" original="Monthly">Mensal</value>
+ <row id="1000044" trl="N">
+  <value column="Name" original="Monthly">Monthly</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000045" trl="Y">
+ <row id="1000045" trl="N">
   <value column="Name" original="00 - Tributada integralmente">00 - Tributada integralmente</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000046" trl="Y">
+ <row id="1000046" trl="N">
   <value column="Name" original="10 - Tributada e com cobranca do ICMS por Sub. Tributaria">10 - Tributada e com cobrança do ICMS por Sub. Tributária</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000047" trl="Y">
+ <row id="1000047" trl="N">
   <value column="Name" original="20 - Com reducao de base de calculo">20 - Com redução de base de cálculo</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000048" trl="Y">
+ <row id="1000048" trl="N">
   <value column="Name" original="30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut">30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000049" trl="Y">
+ <row id="1000049" trl="N">
   <value column="Name" original="40 - Isenta">40 - Isenta</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000050" trl="Y">
+ <row id="1000050" trl="N">
   <value column="Name" original="41 - Nao-tributada">41 - Não-tributada</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000051" trl="Y">
+ <row id="1000051" trl="N">
   <value column="Name" original="50 - Suspensao">50 - Suspensão</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000052" trl="Y">
+ <row id="1000052" trl="N">
   <value column="Name" original="51 - Diferimento ">51 - Diferimento </value>
   <value column="Description" original=""/>
  </row>
- <row id="1000053" trl="Y">
+ <row id="1000053" trl="N">
   <value column="Name" original="60 - ICMS cobrado anteriormente por substituicao tributaria">60 - ICMS cobrado anteriormente por substituição tributária</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000055" trl="Y">
-  <value column="Name" original="70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib">70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib</value>
+ <row id="1000055" trl="N">
+  <value column="Name" original="70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib">70 - Com redução de base de cálculo e cobrança do ICMS</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000056" trl="Y">
+ <row id="1000056" trl="N">
   <value column="Name" original="90 - Outras">90 - Outras</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000057" trl="Y">
-  <value column="Name" original="Domestic">Nacional</value>
+ <row id="1000057" trl="N">
+  <value column="Name" original="Domestic">Domestic</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000058" trl="Y">
-  <value column="Name" original="Imported">Importado</value>
+ <row id="1000058" trl="N">
+  <value column="Name" original="Imported">Imported</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000059" trl="Y">
-  <value column="Name" original="Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Nacional</value>
+ <row id="1000059" trl="N">
+  <value column="Name" original="Imported - Acquired from a domestic distributor">Imported - Acquired from a domestic distributor</value>
   <value column="Description" original=""/>
  </row>
  <row id="1000060" trl="N">
   <value column="Name" original="Nota Fiscal Brasil">Nota Fiscal Brasil</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000061" trl="Y">
-  <value column="Name" original="Cash">Dinheiro</value>
+ <row id="1000061" trl="N">
+  <value column="Name" original="Cash">Cash</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000062" trl="Y">
-  <value column="Name" original="Check">Cheque</value>
+ <row id="1000062" trl="N">
+  <value column="Name" original="Check">Check</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000063" trl="Y">
-  <value column="Name" original="Bill">Boleto</value>
+ <row id="1000063" trl="N">
+  <value column="Name" original="Bill">Bill</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000064" trl="Y">
-  <value column="Name" original="Direct Deposit">Depósito Direto</value>
+ <row id="1000064" trl="N">
+  <value column="Name" original="Direct Deposit">Direct Deposit</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000065" trl="N">
-  <value column="Name" original="Material Return">Material Return</value>
+ <row id="1000065" trl="Y">
+  <value column="Name" original="Material Return">Retorno de Material</value>
+  <value column="Description" original="">Tipo de Requisição de Retorno de Materiais</value>
+ </row>
+ <row id="1000066" trl="Y">
+  <value column="Name" original="Material Invoice">Fatura de Material</value>
+  <value column="Description" original="">Requisição de faturamento de material</value>
+ </row>
+ <row id="1000067" trl="Y">
+  <value column="Name" original="Consignation Sales Order">Ordem de Venda de Envio de Consignação</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000066" trl="N">
-  <value column="Name" original="Material Invoice">Material Invoice</value>
+ <row id="1000068" trl="Y">
+  <value column="Name" original="Consignation Shipment">Expedição de Envio de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000069" trl="Y">
+  <value column="Name" original="Consignation Invoice">Fatura de Envio de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000070" trl="Y">
+  <value column="Name" original="Consignation return sales order">Ordem de Venda de Retorno de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000071" trl="Y">
+  <value column="Name" original="Consignation Return Shipment">Expedição de Retorno de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000072" trl="Y">
+  <value column="Name" original="Consignation Return Invoice">Fatura de Retorno de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000073" trl="Y">
+  <value column="Name" original="Consignation Invoice Sales Order">Ordem de Venda de Faturamento de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000074" trl="Y">
+  <value column="Name" original="Consignation Invoice Shipment">Expedição de Faturamento de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000075" trl="Y">
+  <value column="Name" original="Consignation Invoice Invoice">Fatura de Faturamento de Consignação</value>
+  <value column="Description" original=""/>
+ </row>
+ <row id="1000076" trl="Y">
+  <value column="Name" original="Default">Padrão</value>
   <value column="Description" original=""/>
  </row>
 </adempiereTrl>

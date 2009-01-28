@@ -113,17 +113,17 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000003" trl="Y">
-  <value column="Name" original="Print Nota Fiscal">Impressão Nota Fiscal</value>
+ <row id="1000003" trl="N">
+  <value column="Name" original="Print Nota Fiscal">Print Nota Fiscal</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000004" trl="Y">
-  <value column="Name" original="Generate CNAB">Geração CNAB</value>
+ <row id="1000004" trl="N">
+  <value column="Name" original="Generate CNAB">Generate CNAB</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000005" trl="Y">
+ <row id="1000005" trl="N">
   <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>

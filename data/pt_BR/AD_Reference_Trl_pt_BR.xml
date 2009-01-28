@@ -1757,8 +1757,8 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000027" trl="Y">
-  <value column="Name" original="lbr_Yes_No_Both">Sim-Não-Ambos</value>
+ <row id="1000027" trl="N">
+  <value column="Name" original="lbr_Yes_No_Both">lbr_Yes_No_Both</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
@@ -1797,8 +1797,8 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000035" trl="Y">
-  <value column="Name" original="lbr_PaymentRule">Forma de Pagamento</value>
+ <row id="1000035" trl="N">
+  <value column="Name" original="lbr_PaymentRule">lbr_PaymentRule</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
@@ -1808,7 +1808,7 @@
   <value column="Help" original=""/>
  </row>
  <row id="1000038" trl="N">
-  <value column="Name" original="LBR_OtherNFDocType">LBR_OtherNFDocType</value>
+  <value column="Name" original="LBR_OtherNFDocType">lbr_OtherNFDocType</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
@@ -1817,9 +1817,19 @@
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000040" trl="N">
-  <value column="Name" original="LBR_OtherNF_RequestType">LBR_OtherNF_RequestType</value>
-  <value column="Description" original="Other NF Request Type">Other NF Request Type</value>
-  <value column="Help" original="Other NF Request Type">Other NF Request Type</value>
+ <row id="1000040" trl="Y">
+  <value column="Name" original="LBR_OtherNF_RequestType">Tipo de Requisição</value>
+  <value column="Description" original="Other NF Request Type">Tipo de Requisição</value>
+  <value column="Help" original="Other NF Request Type">Tipo de Requisição</value>
+ </row>
+ <row id="1000042" trl="N">
+  <value column="Name" original="LBR_C_InvoiceLine">LBR_C_InvoiceLine</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000043" trl="N">
+  <value column="Name" original="LBR_DocBaseType">LBR_DocBaseType</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
 </adempiereTrl>
