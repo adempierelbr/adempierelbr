@@ -1759,4 +1759,7 @@ UPDATE AD_Tab SET TabLevel=1,Updated=TO_TIMESTAMP('2009-01-28 01:21:50','YYYY-MM
 UPDATE AD_Tab SET TabLevel=1,Updated=TO_TIMESTAMP('2009-01-28 01:22:00','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1000043
 ;
 
-
+-- 28/01/2009 1h23min7s BRST
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-trunk/010-OtherNF_WindowChanges.sql',Updated=TO_TIMESTAMP('2009-01-21 11:22:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;

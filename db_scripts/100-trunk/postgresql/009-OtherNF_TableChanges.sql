@@ -439,3 +439,8 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 -- Default comment for updating dictionary
 ALTER TABLE LBR_ProcessLink ADD COLUMN M_AttributeSetInstance_ID NUMERIC(10)
 ;
+
+-- 26/01/2009 11h50min7s BRST
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-trunk/009-OtherNF_TableChanges.sql',Updated=TO_TIMESTAMP('2009-01-21 11:22:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
