@@ -4421,104 +4421,104 @@ Você pode escolher que somente valores positivos (Valor Convertido - Valor a Su
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000023" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+ <row id="1000023" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000024" trl="N">
-  <value column="Name" original="Legal Message">Legal Message</value>
+ <row id="1000024" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000025" trl="N">
-  <value column="Name" original="Group">Group</value>
+ <row id="1000025" trl="Y">
+  <value column="Name" original="Group">Grupo</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000026" trl="N">
-  <value column="Name" original="Nota Fiscal Tax">Nota Fiscal Tax</value>
+ <row id="1000026" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000027" trl="N">
-  <value column="Name" original="Nota Fiscal Line Tax">Nota Fiscal Line Tax</value>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000028" trl="N">
-  <value column="Name" original="Header">Header</value>
+ <row id="1000028" trl="Y">
+  <value column="Name" original="Header">Cabeçalho</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original="">Cabeçalho da Nota Fiscal</value>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000029" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000029" trl="N">
-  <value column="Name" original="Nota Fiscal Tax">Nota Fiscal Tax</value>
+ <row id="1000030" trl="Y">
+  <value column="Name" original="Line">Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000030" trl="N">
-  <value column="Name" original="Line">Line</value>
+ <row id="1000031" trl="Y">
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000031" trl="N">
-  <value column="Name" original="Nota Fiscal Line Tax">Nota Fiscal Line Tax</value>
+ <row id="1000032" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000032" trl="N">
-  <value column="Name" original="ISS Matrix">ISS Matrix</value>
-  <value column="CommitWarning" original=""/>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
- <row id="1000034" trl="N">
+ <row id="1000034" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000035" trl="N">
-  <value column="Name" original="Other NF Link">Other NF Link</value>
+ <row id="1000035" trl="Y">
+  <value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000036" trl="N">
-  <value column="Name" original="Manufacture">Manufacture</value>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
   <value column="CommitWarning" original=""/>
-  <value column="Description" original="Manufacture">Manufacture</value>
+  <value column="Description" original="Manufacture">Industrialização</value>
   <value column="Help" original=""/>
  </row>
- <row id="1000037" trl="N">
-  <value column="Name" original="Manufacture Plan">Manufacture Plan</value>
-  <value column="CommitWarning" original=""/>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
- <row id="1000038" trl="N">
-  <value column="Name" original="Manufacture Line">Manufacture Line</value>
+ <row id="1000037" trl="Y">
+  <value column="Name" original="Manufacture Plan">Planejamento</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000039" trl="N">
-  <value column="Name" original="Header">Header</value>
+ <row id="1000038" trl="Y">
+  <value column="Name" original="Manufacture Line">Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000040" trl="N">
-  <value column="Name" original="Line">Line</value>
+ <row id="1000039" trl="Y">
+  <value column="Name" original="Header">Cabeçalho</value>
+  <value column="CommitWarning" original=""/>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
+ </row>
+ <row id="1000040" trl="Y">
+  <value column="Name" original="Line">Linha</value>
   <value column="CommitWarning" original=""/>
   <value column="Description" original=""/>
   <value column="Help" original=""/>

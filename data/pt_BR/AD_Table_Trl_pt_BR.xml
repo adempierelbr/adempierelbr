@@ -2127,31 +2127,31 @@
   <value column="Name" original="DocumentType Accounting">DocumentType Accounting</value>
  </row>
  <row id="1000030" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
  </row>
- <row id="1000032" trl="N">
-  <value column="Name" original="Legal Message">Legal Message</value>
+ <row id="1000032" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
  </row>
- <row id="1000033" trl="N">
-  <value column="Name" original="Tax Group">Tax Group</value>
+ <row id="1000033" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
  </row>
- <row id="1000034" trl="N">
-  <value column="Name" original="Nota Fiscal Tax">Nota Fiscal Tax</value>
+ <row id="1000034" trl="Y">
+  <value column="Name" original="Nota Fiscal Tax">Imposto Nota Fiscal</value>
  </row>
  <row id="1000035" trl="N">
-  <value column="Name" original="Nota Fiscal Line Tax">Nota Fiscal Line Tax</value>
+  <value column="Name" original="Nota Fiscal Line Tax">Imposto Nota Fiscal Line</value>
  </row>
- <row id="1000036" trl="N">
-  <value column="Name" original="ISS Matrix">ISS Matrix</value>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
  </row>
  <row id="1000037" trl="N">
   <value column="Name" original="Process Link">Process Link</value>
  </row>
  <row id="1000038" trl="N">
-  <value column="Name" original="Other NF Link">Other NF Link</value>
+  <value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
  </row>
- <row id="1000039" trl="N">
-  <value column="Name" original="Other NF">Other NF</value>
+ <row id="1000039" trl="Y">
+  <value column="Name" original="Other NF">Outra Nota Fiscal</value>
  </row>
  <row id="1000040" trl="N">
   <value column="Name" original="Other NF Line">Other NF Line</value>

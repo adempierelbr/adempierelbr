@@ -1454,48 +1454,48 @@ Verifique que a tradução crie os registros de tradução faltantes. Inicie est
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000015" trl="N">
+ <row id="1000015" trl="Y">
   <value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000016" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+ <row id="1000016" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000017" trl="N">
-  <value column="Name" original="Legal Message">Legal Message</value>
+ <row id="1000017" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000018" trl="N">
-  <value column="Name" original="Tax Group">Tax Group</value>
+ <row id="1000018" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000019" trl="N">
-  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (PO)</value>
+ <row id="1000019" trl="Y">
+  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000020" trl="N">
-  <value column="Name" original="ISS Matrix">ISS Matrix</value>
+ <row id="1000020" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000022" trl="N">
+ <row id="1000022" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>
- <row id="1000023" trl="N">
-  <value column="Name" original="Manufacture">Manufacture</value>
-  <value column="Description" original="Manufacture based on Bill of Materials">Manufacture based on Bill of Materials</value>
+ <row id="1000023" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
   <value column="Help" original=""/>
  </row>
- <row id="1000024" trl="N">
-  <value column="Name" original="Other NF">Other NF</value>
+ <row id="1000024" trl="Y">
+  <value column="Name" original="Other NF">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
  </row>

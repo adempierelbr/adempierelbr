@@ -97,14 +97,14 @@
   <value column="Description" original="">Diretório onde será salvo o Arquivo de Log do Retorno</value>
   <value column="Help" original=""/>
  </row>
- <row id="1000009" trl="N">
-  <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
-  <value column="Description" original="Primary key table LBR_NotaFiscal">Primary key table LBR_NotaFiscal</value>
-  <value column="Help" original="Primary key table LBR_NotaFiscal">Primary key table LBR_NotaFiscal</value>
+ <row id="1000009" trl="Y">
+  <value column="Name" original="Nota Fiscal">Nota Fiscal (de)</value>
+  <value column="Description" original="Primary key table LBR_NotaFiscal">Define a Nota Fiscal</value>
+  <value column="Help" original="Primary key table LBR_NotaFiscal">Chave primária tabela LBR_NotaFiscal</value>
  </row>
- <row id="1000010" trl="N">
-  <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
+ <row id="1000010" trl="Y">
+  <value column="Name" original="LBR_NotaFiscal_ID_to">Nota Fiscal (para)</value>
+  <value column="Description" original="">Define a Nota Fiscal</value>
+  <value column="Help" original="">Chave primária tabela LBR_NotaFiscal</value>
  </row>
 </adempiereTrl>

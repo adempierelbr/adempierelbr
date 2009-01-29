@@ -1978,71 +1978,71 @@
   <value column="Name" original="Tax Brazil">Imposto (Brasil)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000020" trl="N">
+ <row id="1000020" trl="Y">
   <value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000021" trl="N">
-  <value column="Name" original="Matrix Printer">Matrix Printer</value>
+ <row id="1000021" trl="Y">
+  <value column="Name" original="Matrix Printer">Impressora Matricial</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000022" trl="N">
-  <value column="Name" original="ProcPrintNF">ProcPrintNF</value>
+ <row id="1000022" trl="Y">
+  <value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000023" trl="N">
+ <row id="1000023" trl="Y">
   <value column="Name" original="Nota Fiscal">Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000024" trl="N">
-  <value column="Name" original="Legal Message">Legal Message</value>
+ <row id="1000024" trl="Y">
+  <value column="Name" original="Legal Message">Mensagem Legal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000025" trl="N">
-  <value column="Name" original="Tax Group">Tax Group</value>
+ <row id="1000025" trl="Y">
+  <value column="Name" original="Tax Group">Grupo de Impostos (Nota Fiscal)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000026" trl="N">
-  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (PO)</value>
+ <row id="1000026" trl="Y">
+  <value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000027" trl="N">
-  <value column="Name" original="Print Nota Fiscal">Print Nota Fiscal</value>
+ <row id="1000027" trl="Y">
+  <value column="Name" original="Print Nota Fiscal">Impressão Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000028" trl="N">
-  <value column="Name" original="ISS Matrix">ISS Matrix</value>
+ <row id="1000028" trl="Y">
+  <value column="Name" original="ISS Matrix">Matriz de ISS</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000030" trl="N">
+ <row id="1000030" trl="Y">
   <value column="Name" original="Boleto">Boleto</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000031" trl="N">
-  <value column="Name" original="Generate CNAB">Generate CNAB</value>
+ <row id="1000031" trl="Y">
+  <value column="Name" original="Generate CNAB">Geração CNAB</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000032" trl="N">
-  <value column="Name" original="ProcNFNo">ProcNFNo</value>
+ <row id="1000032" trl="Y">
+  <value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000033" trl="N">
+ <row id="1000033" trl="Y">
   <value column="Name" original="Outras Notas Fiscais">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000034" trl="N">
-  <value column="Name" original="Manufacture">Manufacture</value>
-  <value column="Description" original="Manufacture based on Bill of Materials">Manufacture based on Bill of Materials</value>
+ <row id="1000034" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
+  <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
  </row>
- <row id="1000035" trl="N">
-  <value column="Name" original="Manufacture">Manufacture</value>
+ <row id="1000035" trl="Y">
+  <value column="Name" original="Manufacture">Industrialização</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000036" trl="N">
-  <value column="Name" original="Other NF">Other NF</value>
+ <row id="1000036" trl="Y">
+  <value column="Name" original="Other NF">Outras Notas Fiscais</value>
   <value column="Description" original=""/>
  </row>
- <row id="1000037" trl="N">
+ <row id="1000037" trl="Y">
   <value column="Name" original="Sobre AdempiereLBR">Sobre AdempiereLBR</value>
   <value column="Description" original=""/>
  </row>
