@@ -286,7 +286,7 @@ public class FormBoleto extends CPanel
 				//"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
 				"INNER JOIN C_PaymentTerm pt ON i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID " +
 				"LEFT JOIN C_Order ord ON i.C_Order_ID=ord.C_Order_ID " +
-				"WHERE i.IsSOTrx='Y' AND i.IsPaid = 'N' " +
+				"WHERE i.IsSOTrx='Y' AND i.IsPaid = 'N' AND i.DocStatus = 'CO' " +
 				"AND d.lbr_HasOpenItems='Y' AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule = 'B') " + //mostrar somente faturas boleto ou sem forma de pagamento
 				"AND i.AD_Client_ID=? ");
 		

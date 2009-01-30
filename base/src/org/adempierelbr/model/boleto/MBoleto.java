@@ -46,6 +46,8 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
+import org.compiere.model.ModelValidationEngine;
+import org.compiere.model.ModelValidator;
 import org.compiere.model.X_LBR_Bank;
 import org.compiere.model.X_LBR_Boleto;
 import org.compiere.util.CLogger;
@@ -74,11 +76,25 @@ public class MBoleto extends X_LBR_Boleto
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(MBoleto.class);
 	
+	/**	Process Message */
+	private String		m_processMsg = null;
+	
 	private static final String dateFormat = "dd/MM/yyyy";
 
 	MBoleto(Properties ctx, int LBR_Boleto_ID, String trx){
 		super(ctx,LBR_Boleto_ID,trx);
 	}
+	
+	public boolean save(String trxName){
+		
+		// Before Save
+		m_processMsg = ModelValidationEngine.get().fireModelChange(this,ModelValidator.TYPE_BEFORE_NEW);
+		if (m_processMsg != null){
+			return false;
+		}
+		
+		return super.save(trxName);
+	} //save
 	
 	public static MBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 		
@@ -490,6 +506,7 @@ public class MBoleto extends X_LBR_Boleto
 					DocumentNo = TextUtil.pad(DocumentNo, '0', JBoleto.getQtdDigitos(jBoletoNo), true);
 			
 					newBoleto.setDocumentNo(DocumentNo.trim());
+									
 					if(!newBoleto.save(trx)){
 						log.log(Level.SEVERE, "Erro ao salvar o boleto", newBoleto);
 						return;

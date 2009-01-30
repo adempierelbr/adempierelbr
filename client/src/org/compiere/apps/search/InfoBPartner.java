@@ -81,7 +81,7 @@ public class InfoBPartner extends Info
 	/** From Clause             */
 	private static String s_partnerFROM = "C_BPartner"
 		+ " LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')"
-		+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')" 
+		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')" 
 		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)";
 	
 	/**  Array of Column Info    */
@@ -89,12 +89,12 @@ public class InfoBPartner extends Info
 		new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "Contact"), "c.Name AS Contact", KeyNamePair.class, "c.AD_User_ID"),
-		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditAvailable"), "C_BPartner.SO_CreditLimit-C_BPartner.SO_CreditUsed AS SO_CreditAvailable", BigDecimal.class, true, true, null),
-		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditUsed"), "C_BPartner.SO_CreditUsed", BigDecimal.class),
 		new Info_Column("CPF", "C_BPartner.lbr_CPF", String.class),
 		new Info_Column("CNPJ", "C_BPartner.lbr_CNPJ", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class),
+		//new Info_Column(Msg.translate(Env.getCtx(), "Contact"), "c.Name AS Contact", KeyNamePair.class, "c.AD_User_ID"),
+		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditAvailable"), "C_BPartner.SO_CreditLimit-C_BPartner.SO_CreditUsed AS SO_CreditAvailable", BigDecimal.class, true, true, null),
+		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditUsed"), "C_BPartner.SO_CreditUsed", BigDecimal.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1", String.class),
@@ -107,10 +107,10 @@ public class InfoBPartner extends Info
 	private CTextField fieldValue = new CTextField(10);
 	private CLabel labelName = new CLabel();
 	private CTextField fieldName = new CTextField(10);
-	private CLabel labelContact = new CLabel();
-	private CTextField fieldContact = new CTextField(10);
-	private CLabel labelEMail = new CLabel();
-	private CTextField fieldEMail = new CTextField(10);
+	//private CLabel labelContact = new CLabel();
+	//private CTextField fieldContact = new CTextField(10);
+	//private CLabel labelEMail = new CLabel();
+	//private CTextField fieldEMail = new CTextField(10);
 	private CLabel labelCNPJ = new CLabel();
 	private CTextField fieldCNPJ = new CTextField(10);
 	private CLabel labelCPF = new CLabel();
@@ -131,13 +131,13 @@ public class InfoBPartner extends Info
 		fieldName.setBackground(AdempierePLAF.getInfoBackground());
 		fieldName.addActionListener(this);
 
-		labelContact.setText(Msg.getMsg(Env.getCtx(), "Contact"));
-		fieldContact.setBackground(AdempierePLAF.getInfoBackground());
-		fieldContact.addActionListener(this);
+		//labelContact.setText(Msg.getMsg(Env.getCtx(), "Contact"));
+		//fieldContact.setBackground(AdempierePLAF.getInfoBackground());
+		//fieldContact.addActionListener(this);
 		
-		labelEMail.setText(Msg.getMsg(Env.getCtx(), "EMail"));
-		fieldEMail.setBackground(AdempierePLAF.getInfoBackground());
-		fieldEMail.addActionListener(this);
+		//labelEMail.setText(Msg.getMsg(Env.getCtx(), "EMail"));
+		//fieldEMail.setBackground(AdempierePLAF.getInfoBackground());
+		//fieldEMail.addActionListener(this);
 
 		labelCNPJ.setText("CNPJ");
 		fieldCNPJ.setBackground(AdempierePLAF.getInfoBackground());
@@ -164,16 +164,16 @@ public class InfoBPartner extends Info
 		//
 		parameterPanel.add(labelValue, new ALayoutConstraint(0,0));
 		parameterPanel.add(fieldValue, null);
-		parameterPanel.add(labelContact, null);
-		parameterPanel.add(fieldContact, null);
+		//parameterPanel.add(labelContact, null);
+		//parameterPanel.add(fieldContact, null);
 		parameterPanel.add(labelCPF, null);
 		parameterPanel.add(fieldCPF, null);
 		parameterPanel.add(checkCustomer, null);
 		//		
 		parameterPanel.add(labelName, new ALayoutConstraint(1,0));
 		parameterPanel.add(fieldName, null);
-		parameterPanel.add(labelEMail, null);
-		parameterPanel.add(fieldEMail, null);
+		//parameterPanel.add(labelEMail, null);
+		//parameterPanel.add(fieldEMail, null);
 		parameterPanel.add(labelCNPJ, null);
 		parameterPanel.add(fieldCNPJ, null);
 		parameterPanel.add(checkAND, null);
@@ -255,6 +255,7 @@ public class InfoBPartner extends Info
 		if (!(name.equals("") || name.equals("%")))
 			list.add ("UPPER(C_BPartner.Name) LIKE ?");
 		//	=> Contact
+		/*
 		String contact = fieldContact.getText().toUpperCase();
 		if (!(contact.equals("") || contact.equals("%")))
 			list.add ("UPPER(c.Name) LIKE ?");
@@ -262,6 +263,7 @@ public class InfoBPartner extends Info
 		String email = fieldEMail.getText().toUpperCase();
 		if (!(email.equals("") || email.equals("%")))
 			list.add ("UPPER(c.EMail) LIKE ?");
+		*/
 		//	=> CPF
 		String cpf = fieldCPF.getText().toUpperCase();
 		if (!(cpf.equals("") || cpf.equals("%")))
@@ -333,6 +335,7 @@ public class InfoBPartner extends Info
 			log.fine("Name: " + name);
 		}
 		//	=> Contact
+		/*
 		String contact = fieldContact.getText().toUpperCase();
 		if (!(contact.equals("") || contact.equals("%")))
 		{
@@ -350,6 +353,7 @@ public class InfoBPartner extends Info
 			pstmt.setString(index++, email);
 			log.fine("EMail: " + email);
 		}
+		*/
 		//	=> CPF
 		String cpf = fieldCPF.getText().toUpperCase();
 		if (!(cpf.equals("") || cpf.equals("%")))

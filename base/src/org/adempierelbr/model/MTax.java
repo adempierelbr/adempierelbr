@@ -382,7 +382,11 @@ public class MTax extends X_LBR_Tax {
 			{
 				BigDecimal taxAmount = Env.ZERO;
 				
-				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx, (Integer)doctax.get_Value("C_Tax_ID"), trx);
+				Integer C_Tax_ID = (Integer)doctax.get_Value("C_Tax_ID");
+				if (C_Tax_ID == null || C_Tax_ID.intValue() == 0)
+					continue;
+				
+				org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx, C_Tax_ID, trx);
 				if (tax.get_Value("LBR_TaxName_ID") == null)
 					continue;
 				
