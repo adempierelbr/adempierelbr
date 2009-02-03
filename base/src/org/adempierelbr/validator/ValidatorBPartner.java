@@ -157,7 +157,7 @@ public class ValidatorBPartner implements ModelValidator
 						return "CPF Inválido";
 					}
 					
-					if (!consultaCPF(CPF, AD_Client_ID)){
+					if (!consultaCPF(CPF, AD_Client_ID, bp.get_ID())){
 						return "CPF Duplicado";
 					}
 					
@@ -176,7 +176,7 @@ public class ValidatorBPartner implements ModelValidator
 				if (!validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
 				}
-				if (!consultaCNPJ(CNPJ, AD_Client_ID)){
+				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID())){
 					return "CNPJ Duplicado";
 				}
 					
@@ -403,11 +403,12 @@ public class ValidatorBPartner implements ModelValidator
 	 *	@param String xCNPJ
 	 *	@return boolean true or false
 	 */
-	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID) {
+	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID, int C_BPartner_ID) {
 		int iCNPJ = 0;
 		String sql = "SELECT count(lbr_CNPJ) " +
 				     "FROM C_BPartner " +
-				     "WHERE lbr_CNPJ = ? AND AD_Client_ID = ?";
+				     "WHERE lbr_CNPJ = ? AND AD_Client_ID = ? " +
+				     "AND C_BPartner_ID <> ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -415,6 +416,7 @@ public class ValidatorBPartner implements ModelValidator
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setString (1, xCNPJ);
 			pstmt.setInt(2, AD_Client_ID);
+			pstmt.setInt(3, C_BPartner_ID);
 			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
@@ -441,11 +443,12 @@ public class ValidatorBPartner implements ModelValidator
 	 *	@param String xCPF
 	 *	@return boolean true or false
 	 */
-	public boolean consultaCPF(String xCPF, int AD_Client_ID) {
+	public boolean consultaCPF(String xCPF, int AD_Client_ID, int C_BPartner_ID) {
 		int iCPF = 0;
 		String sql = "SELECT count(lbr_CPF) " +
 				     "FROM C_BPartner " +
-				     "WHERE lbr_CPF = ? AND AD_Client_ID = ?";
+				     "WHERE lbr_CPF = ? AND AD_Client_ID = ?" +
+				     "AND C_BPartner_ID <> ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -453,6 +456,7 @@ public class ValidatorBPartner implements ModelValidator
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setString (1, xCPF);
 			pstmt.setInt(2, AD_Client_ID);
+			pstmt.setInt(3, C_BPartner_ID);
 			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
