@@ -122,8 +122,8 @@ if (ii == null) return 0;
 return ii.intValue();
 }
 
-/** C_DocType_ID AD_Reference_ID=1000038 */
-public static final int C_DOCTYPE_ID_AD_Reference_ID=1000038;
+/** C_DocType_ID AD_Reference_ID=170 */
+public static final int C_DOCTYPE_ID_AD_Reference_ID=170;
 /** Set Document Type.
 @param C_DocType_ID Document type or rules */
 public void setC_DocType_ID (int C_DocType_ID)
@@ -143,7 +143,7 @@ return ii.intValue();
 @param IsGenerated This Line is generated */
 public void setIsGenerated (boolean IsGenerated)
 {
-set_Value ("IsGenerated", new Boolean(IsGenerated));
+set_ValueNoCheck ("IsGenerated", new Boolean(IsGenerated));
 }
 /** Get Generated.
 @return This Line is generated */
@@ -191,7 +191,7 @@ return ii.intValue();
 @param Processed The document has been processed */
 public void setProcessed (boolean Processed)
 {
-set_Value ("Processed", new Boolean(Processed));
+set_ValueNoCheck ("Processed", new Boolean(Processed));
 }
 /** Get Processed.
 @return The document has been processed */

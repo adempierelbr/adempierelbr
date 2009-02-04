@@ -1681,17 +1681,17 @@ UPDATE AD_Column_Trl SET Name='Referência de Linha da Invoice',IsTranslated='Y'
 
 -- 27/01/2009 13h57min22s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET Name='Referência de Linha da Invoice',PrintName='Referência de Linha da Invoice',Description='Referência de Linha da Invoice',Help='Referência de Linha da Invoice',Updated=TO_TIMESTAMP('2009-01-27 13:57:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000341 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET Name='Referência de Linha da Invoice',PrintName='Referência de Linha da Invoice',Description='Referência de Linha da Invoice',Help='Referência de Linha da Invoice',Updated=TO_TIMESTAMP('2009-01-27 13:57:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000344 AND AD_Language='pt_BR'
 ;
 
 -- 27/01/2009 13h57min25s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Updated=TO_TIMESTAMP('2009-01-27 13:57:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000341 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Updated=TO_TIMESTAMP('2009-01-27 13:57:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000344 AND AD_Language='pt_BR'
 ;
 
 -- 27/01/2009 13h59min27s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Tipo de Documento Base LBR',PrintName='Tipo de Documento Base LBR',Description='Tipo de Documento Base do LBR',Help='Tipo de Documento Base do projeto de localização brasil.',Updated=TO_TIMESTAMP('2009-01-27 13:59:27','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000342 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Tipo de Documento Base LBR',PrintName='Tipo de Documento Base LBR',Description='Tipo de Documento Base do LBR',Help='Tipo de Documento Base do projeto de localização brasil.',Updated=TO_TIMESTAMP('2009-01-27 13:59:27','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000345 AND AD_Language='pt_BR'
 ;
 
 -- 27/01/2009 13h59min56s BRST

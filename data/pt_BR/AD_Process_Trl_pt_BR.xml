@@ -1375,19 +1375,19 @@ Então a Classificação de todas as Respostas de quantidades são somadas para 
   <value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
  </row>
  <row id="1000014" trl="Y">
-  <value column="Name" original="Generate Lines">Criar Linhas</value>
-  <value column="Description" original="Generate Consignation Lines"/>
-  <value column="Help" original="Generates Consignation Lines based on the values of Consignation Sales Orders"/>
+  <value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000015" trl="Y">
-  <value column="Name" original="Process Consignation">Processar</value>
-  <value column="Description" original="Executes the consignation process"/>
-  <value column="Help" original="Executes the consignation process"/>
+  <value column="Name" original="lbr_ProcessOtherNF">Processar</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000016" trl="Y">
-  <value column="Name" original="Void">Anular</value>
-  <value column="Description" original="Voids the consignation process"/>
-  <value column="Help" original="Voids the consignation process"/>
+  <value column="Name" original="lbr_VoidOtherNF">Anular</value>
+  <value column="Description" original=""/>
+  <value column="Help" original=""/>
  </row>
  <row id="1000017" trl="Y">
   <value column="Name" original="Sobre AdempiereLBR">Sobre AdempiereLBR</value>

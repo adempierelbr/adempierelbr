@@ -26680,47 +26680,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000341" trl="Y">
-  <value column="Name" original="Reference Invoice Line">Referência de Linha da Invoice</value>
-  <value column="PrintName" original="Reference Invoice Line">Referência de Linha da Invoice</value>
-  <value column="Description" original="Reference Invoice Line">Referência de Linha da Invoice</value>
-  <value column="Help" original="Reference Invoice Line">Referência de Linha da Invoice</value>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000342" trl="Y">
-  <value column="Name" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
-  <value column="PrintName" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
-  <value column="Description" original="Localization Brasil Document Base Type">Tipo de Documento Base do LBR</value>
-  <value column="Help" original="Localization Brasil Document Base Type">Tipo de Documento Base do projeto de localização brasil.</value>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000343" trl="Y">
-  <value column="Name" original="Origin Invoice Line">Linha da Fatura de Origem</value>
-  <value column="PrintName" original="Origin Invoice Line">Linha da Fatura de Origem</value>
-  <value column="Description" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
-  <value column="Help" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000344" trl="Y">
-  <value column="Name" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-  <value column="PrintName" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-  <value column="Description" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-  <value column="Help" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-  <value column="PO_Description" original=""/>
-  <value column="PO_Help" original=""/>
-  <value column="PO_Name" original=""/>
-  <value column="PO_PrintName" original=""/>
- </row>
- <row id="1000345" trl="N">
+ <row id="1000340" trl="N">
   <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
   <value column="PrintName" original="IsGenerateFields">IsGenerateFields</value>
   <value column="Description" original=""/>
@@ -26730,7 +26690,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000346" trl="N">
+ <row id="1000341" trl="N">
   <value column="Name" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="PrintName" original="LBR_NotaFiscal_ID_to">LBR_NotaFiscal_ID_to</value>
   <value column="Description" original=""/>
@@ -26740,7 +26700,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000347" trl="N">
+ <row id="1000342" trl="N">
   <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="PrintName" original="PriceList_Version_ID">PriceList_Version_ID</value>
   <value column="Description" original=""/>
@@ -26750,11 +26710,61 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
- <row id="1000348" trl="N">
+ <row id="1000343" trl="N">
   <value column="Name" original="ScriptsPath">ScriptsPath</value>
   <value column="PrintName" original="ScriptsPath">ScriptsPath</value>
   <value column="Description" original=""/>
   <value column="Help" original=""/>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000344" trl="Y">
+  <value column="Name" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="PrintName" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="Description" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="Help" original="Reference Invoice Line">Referência de Linha da Invoice</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000345" trl="Y">
+  <value column="Name" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
+  <value column="PrintName" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
+  <value column="Description" original="Localization Brasil Document Base Type">Tipo de Documento Base do LBR</value>
+  <value column="Help" original="Localization Brasil Document Base Type">Tipo de Documento Base do projeto de localização brasil.</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000346" trl="Y">
+  <value column="Name" original="Origin Invoice Line">Linha da Fatura de Origem</value>
+  <value column="PrintName" original="Origin Invoice Line">Linha da Fatura de Origem</value>
+  <value column="Description" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
+  <value column="Help" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000347" trl="N">
+  <value column="Name" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
+  <value column="PrintName" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
+  <value column="Description" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
+  <value column="Help" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
+ <row id="1000348" trl="Y">
+  <value column="Name" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="PrintName" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="Description" original="Destination Invoice Line">Linha da Fatura de Destino</value>
+  <value column="Help" original="Destination Invoice Line">Linha da Fatura de Destino</value>
   <value column="PO_Description" original=""/>
   <value column="PO_Help" original=""/>
   <value column="PO_Name" original=""/>

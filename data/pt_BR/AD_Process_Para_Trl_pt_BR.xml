@@ -77,21 +77,6 @@
   <value column="Description" original="Print the unprocessed (unprinted) entries of the dunning run only.">Print the unprocessed (unprinted) entries of the dunning run only.</value>
   <value column="Help" original="Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.">Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.</value>
  </row>
- <row id="53025" trl="N">
-  <value column="Name" original="PriceList_Version_ID">PriceList_Version_ID</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
- <row id="53127" trl="N">
-  <value column="Name" original="IsGenerateFields">IsGenerateFields</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
- <row id="53131" trl="N">
-  <value column="Name" original="ScriptsPath">ScriptsPath</value>
-  <value column="Description" original=""/>
-  <value column="Help" original=""/>
- </row>
  <row id="1000006" trl="Y">
   <value column="Name" original="File_Directory">Diretório</value>
   <value column="Description" original="">Diretório onde será salvo o Arquivo de Log do Retorno</value>

@@ -337,4 +337,44 @@
   <value column="PrintName" original="Remessa de Venda para Entrega Futura">Remessa de Venda para Entrega Futura</value>
   <value column="DocumentNote" original=""/>
  </row>
+ <row id="1000032" trl="N">
+  <value column="Name" original="Fatura de Envio de Consignação">Fatura de Envio de Consignação</value>
+  <value column="PrintName" original="Fatura de Envio de Consignação">Fatura de Envio de Consignação</value>
+  <value column="DocumentNote" original="Tipo de documento para envio de consignação">Tipo de documento para envio de consignação</value>
+ </row>
+ <row id="1000033" trl="N">
+  <value column="Name" original="MM Envio de Consignação">MM Envio de Consignação</value>
+  <value column="PrintName" original="MM Envio de Consignação">MM Envio de Consignação</value>
+  <value column="DocumentNote" original=""/>
+ </row>
+ <row id="1000034" trl="N">
+  <value column="Name" original="Fatura de Retorno de Consignação">Fatura de Retorno de Consignação</value>
+  <value column="PrintName" original="Fatura de Retorno de Consignação">Fatura de Retorno de Consignação</value>
+  <value column="DocumentNote" original="Tipo de documento para retorno de consignação">Tipo de documento para retorno de consignação</value>
+ </row>
+ <row id="1000035" trl="N">
+  <value column="Name" original="MM Retorno de Consignação">MM Retorno de Consignação</value>
+  <value column="PrintName" original="MM Retorno de Consignação">MM Retorno de Consignação</value>
+  <value column="DocumentNote" original=""/>
+ </row>
+ <row id="1000036" trl="N">
+  <value column="Name" original="Retorno de Consignação">Retorno de Consignação</value>
+  <value column="PrintName" original="Retorno de Consignação">Retorno de Consignação</value>
+  <value column="DocumentNote" original=""/>
+ </row>
+ <row id="1000037" trl="N">
+  <value column="Name" original="Fatura de Faturamento de Consignação">Fatura de Faturamento de Consignação</value>
+  <value column="PrintName" original="Fatura de Faturamento de Consignação">Fatura de Faturamento de Consignação</value>
+  <value column="DocumentNote" original="Tipo de documento para faturamento de consignação">Tipo de documento para faturamento de consignação</value>
+ </row>
+ <row id="1000038" trl="N">
+  <value column="Name" original="MM Faturamento de Consignação">MM Faturamento de Consignação</value>
+  <value column="PrintName" original="MM Faturamento de Consignação">MM Faturamento de Consignação</value>
+  <value column="DocumentNote" original=""/>
+ </row>
+ <row id="1000039" trl="N">
+  <value column="Name" original="Faturamento de Consignação">Faturamento de Consignação</value>
+  <value column="PrintName" original="Faturamento de Consignação">Faturamento de Consignação</value>
+  <value column="DocumentNote" original=""/>
+ </row>
 </adempiereTrl>

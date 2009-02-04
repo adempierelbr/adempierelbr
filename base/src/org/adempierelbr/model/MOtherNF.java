@@ -28,6 +28,7 @@ import org.compiere.util.DB;
  *	Model for X_LBR_OtherNF
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br) 
  *	@version $Id: MOtherNF.java, 11/12/2008 13:21:00 mgrigioni
  */
 public class MOtherNF extends X_LBR_OtherNF {
@@ -50,15 +51,57 @@ public class MOtherNF extends X_LBR_OtherNF {
 		super(ctx,ID,trx);	
 	}
 	
+	/**************************************************************************
+	 * 	Get Lines of Order
+	 * 	@param whereClause where clause or null (starting with AND)
+	 * 	@param orderClause order clause
+	 * 	@return lines
+	 */
+	public MOtherNFLine[] getLines (String whereClause, String orderClause)
+	{
+		ArrayList<MOtherNFLine> list = new ArrayList<MOtherNFLine> ();
+		StringBuffer sql = new StringBuffer("SELECT * FROM LBR_OtherNFLine WHERE LBR_OtherNF_ID=? ");
+		if (whereClause != null)
+			sql.append(whereClause);
+		if (orderClause != null)
+			sql.append(" ").append(orderClause);
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
+			pstmt.setInt(1, this.getLBR_OtherNF_ID());
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				MOtherNFLine onfl = new MOtherNFLine(getCtx(), rs, get_TrxName());
+				list.add(onfl);
+			}
+ 		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null; pstmt = null;
+		}
+		//
+		MOtherNFLine[] lines = new MOtherNFLine[list.size()];
+		list.toArray (lines);
+		return lines;
+	}	//	getLines
+	
 	public ArrayList<Integer> getLines()
 	{
 		ArrayList<Integer> lineIds = new ArrayList<Integer>();
 		PreparedStatement pstmt = null;
 		
-		StringBuffer sql = new StringBuffer();
-					 sql.append("SELECT lbr_othernfline_id ")
-					    .append("FROM lbr_othernfline ")
-					    .append("WHERE lbr_othernf_id = ?");
+		StringBuilder sql = new StringBuilder();
+					 sql.append("SELECT lbr_othernfline_id ");
+					 sql.append("FROM lbr_othernfline ");
+					 sql.append("WHERE lbr_othernf_id = ?");
 		
 		ResultSet rs = null;
 		try

@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.compiere.model.X_LBR_OtherNFLine;
@@ -23,6 +24,7 @@ import org.compiere.util.CLogger;
  *	Model for X_LBR_OtherNFLine
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br)
  *	@version $Id: MOtherNFLine.java, 11/12/2008 13:27:00 mgrigioni
  */
 public class MOtherNFLine extends X_LBR_OtherNFLine {
@@ -44,5 +46,16 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	public MOtherNFLine(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MOtherNFLine (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}	//	MOtherNFLine
 		
 } //MOtherNFLine

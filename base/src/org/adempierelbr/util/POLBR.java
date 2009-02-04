@@ -239,6 +239,68 @@ public class POLBR{
 		return -1;
 	} //getM_Locator_ID
 	
+	public static String getLBR_DocBaseType(Integer C_Invoice_ID, String trx)
+	{
+		String lbr_docbasetype = null;
+		
+		StringBuilder sql = new StringBuilder(); 
+		sql.append("SELECT dt.LBR_DocBaseType FROM C_Invoice i INNER JOIN C_DocType dt ON i.c_doctypetarget_id = dt.c_doctype_id ");
+		sql.append("WHERE i.c_invoice_id = ? ");
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql.toString(), trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 lbr_docbasetype = rs.getString(1);	 
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return lbr_docbasetype;
+	} //getLBR_DocBaseType
+	
+	public static Integer getlbr_Ref_C_InvoiceLine_ID(Integer C_OrderLine_ID, String trx)
+	{
+		Integer lbr_Ref_C_InvoiceLine_ID = 0;
+		
+		StringBuilder sql = new StringBuilder(); 
+		sql.append("SELECT lbr_Ref_C_InvoiceLine_ID FROM C_OrderLine ");
+		sql.append("WHERE c_orderline_id = ? ");
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql.toString(), trx);
+			pstmt.setInt(1, C_OrderLine_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				lbr_Ref_C_InvoiceLine_ID = rs.getInt(1);	 
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return lbr_Ref_C_InvoiceLine_ID;
+	} //getlbr_Ref_C_InvoiceLine_ID
+	
 	public static int checkLocatorExists(int M_Warehouse_ID, int C_BPartner_ID, String trx)
 	{
 		int M_Locator_ID = -1;

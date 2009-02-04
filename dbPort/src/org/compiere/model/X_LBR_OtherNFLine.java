@@ -88,9 +88,9 @@ return sb.toString();
 @param C_InvoiceLine_ID Invoice Detail Line */
 public void setC_InvoiceLine_ID (int C_InvoiceLine_ID)
 {
-if (C_InvoiceLine_ID <= 0) set_Value ("C_InvoiceLine_ID", null);
+if (C_InvoiceLine_ID <= 0) set_ValueNoCheck ("C_InvoiceLine_ID", null);
  else 
-set_Value ("C_InvoiceLine_ID", new Integer(C_InvoiceLine_ID));
+set_ValueNoCheck ("C_InvoiceLine_ID", new Integer(C_InvoiceLine_ID));
 }
 /** Get Invoice Line.
 @return Invoice Detail Line */
@@ -104,9 +104,9 @@ return ii.intValue();
 @param C_UOM_ID Unit of Measure */
 public void setC_UOM_ID (int C_UOM_ID)
 {
-if (C_UOM_ID <= 0) set_Value ("C_UOM_ID", null);
+if (C_UOM_ID <= 0) set_ValueNoCheck ("C_UOM_ID", null);
  else 
-set_Value ("C_UOM_ID", new Integer(C_UOM_ID));
+set_ValueNoCheck ("C_UOM_ID", new Integer(C_UOM_ID));
 }
 /** Get UOM.
 @return Unit of Measure */
@@ -125,7 +125,7 @@ if (DocumentNo != null && DocumentNo.length() > 30)
 log.warning("Length > 30 - truncated");
 DocumentNo = DocumentNo.substring(0,29);
 }
-set_Value ("DocumentNo", DocumentNo);
+set_ValueNoCheck ("DocumentNo", DocumentNo);
 }
 /** Get Document No.
 @return Document sequence number of the document */
@@ -192,7 +192,7 @@ public static final int M_PRODUCT_ID_AD_Reference_ID=162;
 public void setM_Product_ID (int M_Product_ID)
 {
 if (M_Product_ID < 1) throw new IllegalArgumentException ("M_Product_ID is mandatory.");
-set_Value ("M_Product_ID", new Integer(M_Product_ID));
+set_ValueNoCheck ("M_Product_ID", new Integer(M_Product_ID));
 }
 /** Get Product.
 @return Product, Service, Item */
@@ -206,7 +206,7 @@ return ii.intValue();
 @param Processed The document has been processed */
 public void setProcessed (boolean Processed)
 {
-set_Value ("Processed", new Boolean(Processed));
+set_ValueNoCheck ("Processed", new Boolean(Processed));
 }
 /** Get Processed.
 @return The document has been processed */

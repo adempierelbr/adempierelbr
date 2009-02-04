@@ -7,22 +7,22 @@ ALTER TABLE "adempiere"."lbr_processlink"
 
 -- 26/01/2009 11h13min48s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000341,0,'lbr_Ref_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:13:48','YYYY-MM-DD HH24:MI:SS'),100,'Reference Invoice Line','LBRA','Reference Invoice Line','Y','Reference Invoice Line','Reference Invoice Line',TO_TIMESTAMP('2009-01-26 11:13:48','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000344,0,'lbr_Ref_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:13:48','YYYY-MM-DD HH24:MI:SS'),100,'Reference Invoice Line','LBRA','Reference Invoice Line','Y','Reference Invoice Line','Reference Invoice Line',TO_TIMESTAMP('2009-01-26 11:13:48','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 26/01/2009 11h13min48s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000341 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000344 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
 ;
 
 -- 26/01/2009 11h14min2s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de referência',PrintName='Linha da Fatura de referência',Description='Linha da Fatura de referência para criação desta linha',Help='Linha da Fatura de referência para criação desta linha',Updated=TO_TIMESTAMP('2009-01-26 11:14:02','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000341 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de referência',PrintName='Linha da Fatura de referência',Description='Linha da Fatura de referência para criação desta linha',Help='Linha da Fatura de referência para criação desta linha',Updated=TO_TIMESTAMP('2009-01-26 11:14:02','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000344 AND AD_Language='pt_BR'
 ;
 
 -- 26/01/2009 11h14min48s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001022,1000341,0,18,260,'lbr_Ref_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:14:47','YYYY-MM-DD HH24:MI:SS'),100,'Reference Invoice Line','LBRA',22,'Reference Invoice Line','Y','N','N','N','N','N','N','N','N','N','Y','Reference Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:14:47','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001022,1000344,0,18,260,'lbr_Ref_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:14:47','YYYY-MM-DD HH24:MI:SS'),100,'Reference Invoice Line','LBRA',22,'Reference Invoice Line','Y','N','N','N','N','N','N','N','N','N','Y','Reference Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:14:47','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 26/01/2009 11h14min48s BRST
@@ -57,17 +57,17 @@ UPDATE AD_Column SET AD_Reference_Value_ID=1000042,Updated=TO_TIMESTAMP('2009-01
 
 -- 26/01/2009 11h17min55s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000342,0,'LBR_DocBaseType',TO_TIMESTAMP('2009-01-26 11:17:55','YYYY-MM-DD HH24:MI:SS'),100,'Localization Brasil Document Base Type','LBRA','Localization Brasil Document Base Type','Y','LBR DocBaseType','LBR DocBaseType',TO_TIMESTAMP('2009-01-26 11:17:55','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000345,0,'LBR_DocBaseType',TO_TIMESTAMP('2009-01-26 11:17:55','YYYY-MM-DD HH24:MI:SS'),100,'Localization Brasil Document Base Type','LBRA','Localization Brasil Document Base Type','Y','LBR DocBaseType','LBR DocBaseType',TO_TIMESTAMP('2009-01-26 11:17:55','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 26/01/2009 11h17min55s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000342 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000345 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
 ;
 
 -- 26/01/2009 11h18min30s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Tipo de Documento Base LBR',PrintName='Tipo de Documento Base LBR',Description='Tipo de Documento Base LBR',Help='Tipo de Documento Base LBR',Updated=TO_TIMESTAMP('2009-01-26 11:18:30','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000342 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Tipo de Documento Base LBR',PrintName='Tipo de Documento Base LBR',Description='Tipo de Documento Base LBR',Help='Tipo de Documento Base LBR',Updated=TO_TIMESTAMP('2009-01-26 11:18:30','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000345 AND AD_Language='pt_BR'
 ;
 
 -- 26/01/2009 11h19min2s BRST
@@ -82,37 +82,37 @@ INSERT INTO AD_Reference_Trl (AD_Language,AD_Reference_ID, Description,Help,Name
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element SET ColumnName='lbr_DocBaseType',Updated=TO_TIMESTAMP('2009-01-26 11:19:13','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000342
+UPDATE AD_Element SET ColumnName='lbr_DocBaseType',Updated=TO_TIMESTAMP('2009-01-26 11:19:13','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000345
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Column SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Element_ID=1000342
+UPDATE AD_Column SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Element_ID=1000345
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Field SET Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Element_ID=1000342) AND IsCentrallyMaintained='Y'
+UPDATE AD_Field SET Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Element_ID=1000345) AND IsCentrallyMaintained='Y'
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Process_Para SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type', AD_Element_ID=1000342 WHERE UPPER(ColumnName)='LBR_DOCBASETYPE' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
+UPDATE AD_Process_Para SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type', AD_Element_ID=1000345 WHERE UPPER(ColumnName)='LBR_DOCBASETYPE' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Process_Para SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Element_ID=1000342 AND IsCentrallyMaintained='Y'
+UPDATE AD_Process_Para SET ColumnName='lbr_DocBaseType', Name='LBR DocBaseType', Description='Localization Brasil Document Base Type', Help='Localization Brasil Document Base Type' WHERE AD_Element_ID=1000345 AND IsCentrallyMaintained='Y'
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_PrintFormatItem SET PrintName='LBR DocBaseType', Name='LBR DocBaseType' WHERE IsCentrallyMaintained='Y' AND EXISTS (SELECT * FROM AD_Column c WHERE c.AD_Column_ID=AD_PrintFormatItem.AD_Column_ID AND c.AD_Element_ID=1000342)
+UPDATE AD_PrintFormatItem SET PrintName='LBR DocBaseType', Name='LBR DocBaseType' WHERE IsCentrallyMaintained='Y' AND EXISTS (SELECT * FROM AD_Column c WHERE c.AD_Column_ID=AD_PrintFormatItem.AD_Column_ID AND c.AD_Element_ID=1000345)
 ;
 
 -- 26/01/2009 11h19min13s BRST
 -- Default comment for updating dictionary
-UPDATE AD_PrintFormatItem SET PrintName='LBR DocBaseType', Name='LBR DocBaseType' WHERE IsCentrallyMaintained='Y' AND EXISTS (SELECT * FROM AD_Column c WHERE c.AD_Column_ID=AD_PrintFormatItem.AD_Column_ID AND c.AD_Element_ID=1000342)
+UPDATE AD_PrintFormatItem SET PrintName='LBR DocBaseType', Name='LBR DocBaseType' WHERE IsCentrallyMaintained='Y' AND EXISTS (SELECT * FROM AD_Column c WHERE c.AD_Column_ID=AD_PrintFormatItem.AD_Column_ID AND c.AD_Element_ID=1000345)
 ;
 
 -- 26/01/2009 11h20min7s BRST
@@ -272,7 +272,7 @@ UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Padrão',Updated=TO_TIMESTAMP(
 
 -- 26/01/2009 11h26min52s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001023,1000342,0,17,1000043,217,'lbr_DocBaseType',TO_TIMESTAMP('2009-01-26 11:26:52','YYYY-MM-DD HH24:MI:SS'),100,'Localization Brasil Document Base Type','LBRA',4,'Localization Brasil Document Base Type','Y','N','N','N','N','N','N','N','N','N','Y','LBR DocBaseType',0,TO_TIMESTAMP('2009-01-26 11:26:52','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001023,1000345,0,17,1000043,217,'lbr_DocBaseType',TO_TIMESTAMP('2009-01-26 11:26:52','YYYY-MM-DD HH24:MI:SS'),100,'Localization Brasil Document Base Type','LBRA',4,'Localization Brasil Document Base Type','Y','N','N','N','N','N','N','N','N','N','Y','LBR DocBaseType',0,TO_TIMESTAMP('2009-01-26 11:26:52','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 26/01/2009 11h26min52s BRST
@@ -312,22 +312,22 @@ DELETE FROM AD_Column WHERE AD_Column_ID=1000927
 
 -- 26/01/2009 11h29min3s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000343,0,'lbr_Ori_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:29:03','YYYY-MM-DD HH24:MI:SS'),100,'Origin Invoice Line','LBRA','Origin Invoice Line','Y','Origin Invoice Line','Origin Invoice Line',TO_TIMESTAMP('2009-01-26 11:29:03','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000346,0,'lbr_Ori_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:29:03','YYYY-MM-DD HH24:MI:SS'),100,'Origin Invoice Line','LBRA','Origin Invoice Line','Y','Origin Invoice Line','Origin Invoice Line',TO_TIMESTAMP('2009-01-26 11:29:03','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 26/01/2009 11h29min3s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000343 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000346 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
 ;
 
 -- 26/01/2009 11h29min43s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de Origem',PrintName='Linha da Fatura de Origem',Description='Linha da Fatura de Envio de Consignação',Help='Linha da Fatura de Envio de Consignação',Updated=TO_TIMESTAMP('2009-01-26 11:29:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000343 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de Origem',PrintName='Linha da Fatura de Origem',Description='Linha da Fatura de Envio de Consignação',Help='Linha da Fatura de Envio de Consignação',Updated=TO_TIMESTAMP('2009-01-26 11:29:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000346 AND AD_Language='pt_BR'
 ;
 
 -- 26/01/2009 11h30min13s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001024,1000343,0,18,1000042,1000037,'lbr_Ori_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:30:13','YYYY-MM-DD HH24:MI:SS'),100,'Origin Invoice Line','LBRA',22,'Origin Invoice Line','Y','N','N','N','N','N','Y','N','N','N','N','Origin Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:30:13','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001024,1000346,0,18,1000042,1000037,'lbr_Ori_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:30:13','YYYY-MM-DD HH24:MI:SS'),100,'Origin Invoice Line','LBRA',22,'Origin Invoice Line','Y','N','N','N','N','N','Y','N','N','N','N','Origin Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:30:13','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 26/01/2009 11h30min13s BRST
@@ -342,22 +342,22 @@ ALTER TABLE LBR_ProcessLink ADD COLUMN lbr_Ori_C_InvoiceLine_ID NUMERIC(10)
 
 -- 26/01/2009 11h31min3s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000344,0,'lbr_Dest_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:31:03','YYYY-MM-DD HH24:MI:SS'),100,'Destination Invoice Line','LBRA','Destination Invoice Line','Y','Destination Invoice Line','Destination Invoice Line',TO_TIMESTAMP('2009-01-26 11:31:03','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000348,0,'lbr_Dest_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:31:03','YYYY-MM-DD HH24:MI:SS'),100,'Destination Invoice Line','LBRA','Destination Invoice Line','Y','Destination Invoice Line','Destination Invoice Line',TO_TIMESTAMP('2009-01-26 11:31:03','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 26/01/2009 11h31min3s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000344 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000348 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
 ;
 
 -- 26/01/2009 11h33min5s BRST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de Destino',PrintName='Linha da Fatura de Destino',Description='Linha da Fatura de Destino',Help='Linha da Fatura de Destino',Updated=TO_TIMESTAMP('2009-01-26 11:33:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000344 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Linha da Fatura de Destino',PrintName='Linha da Fatura de Destino',Description='Linha da Fatura de Destino',Help='Linha da Fatura de Destino',Updated=TO_TIMESTAMP('2009-01-26 11:33:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000348 AND AD_Language='pt_BR'
 ;
 
 -- 26/01/2009 11h34min57s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001025,1000344,0,18,1000042,1000037,'lbr_Dest_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:34:57','YYYY-MM-DD HH24:MI:SS'),100,'Destination Invoice Line','U',22,'Destination Invoice Line','Y','N','N','N','N','N','N','N','N','N','Y','Destination Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:34:57','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001025,1000348,0,18,1000042,1000037,'lbr_Dest_C_InvoiceLine_ID',TO_TIMESTAMP('2009-01-26 11:34:57','YYYY-MM-DD HH24:MI:SS'),100,'Destination Invoice Line','U',22,'Destination Invoice Line','Y','N','N','N','N','N','N','N','N','N','Y','Destination Invoice Line',0,TO_TIMESTAMP('2009-01-26 11:34:57','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 26/01/2009 11h34min57s BRST
