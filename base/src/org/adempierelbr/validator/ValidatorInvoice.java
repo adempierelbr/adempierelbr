@@ -391,7 +391,7 @@ public class ValidatorInvoice implements ModelValidator
 			// consignação
 			String lbr_docbasetype = POLBR.getLBR_DocBaseType(invoice.getC_Invoice_ID(), trx);
 
-			if (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc"))
+			if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
 			{
 				MProcessLink proc = new MProcessLink(ctx, 0, trx);
 				Integer lbr_Ref_C_InvoiceLine_ID;
