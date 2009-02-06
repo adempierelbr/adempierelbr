@@ -56,6 +56,10 @@ public class FormBoleto extends CPanel
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final String    interval         = "7";     // Intervalo de Datas
+
+	private static Timestamp envDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
 
 	/**
 	 *	Initialize Panel
@@ -203,6 +207,7 @@ public class FormBoleto extends CPanel
 		markButton.addActionListener(this);
 		
 		fDateInvoiced.addVetoableChangeListener(this);
+		envDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 		
 	}	//	jbInit
 
@@ -309,6 +314,17 @@ public class FormBoleto extends CPanel
 					index = index + 2;
 				}
 				
+				if (index == 0 && printedBill.isSelected()){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
+					sql.append("AND i.DateInvoiced BETWEEN (?::timestamp - integer '");
+					sql.append(interval);
+					sql.append("') AND ? ");
+					index = 4;
+					
+					statusBar.setStatusLine("Intervalo definido entre " + 
+							POLBR.dateTostring(POLBR.addDays(envDate, Integer.parseInt(interval) * -1),"dd/MM/yyyy") + " e " + 
+							POLBR.dateTostring(envDate,"dd/MM/yyyy"));
+				}
+				
 				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, i.GrandTotal " +
 						   "ORDER BY i.C_Invoice_ID, o.Name, bp.Name, DateInvoiced");
 
@@ -327,6 +343,10 @@ public class FormBoleto extends CPanel
 			else if (index == 3){
 				pstmt.setTimestamp(2, (Timestamp)m_DateInvoiced);
 				pstmt.setInt(3, (Integer)m_C_BPartner_ID);
+			}
+			else if (index == 4){
+				pstmt.setTimestamp(2, envDate);
+				pstmt.setTimestamp(3, envDate);
 			}
 			rs = pstmt.executeQuery();
 			//
