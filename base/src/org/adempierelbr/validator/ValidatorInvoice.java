@@ -21,7 +21,6 @@ import org.adempierelbr.model.MProcessLink;
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.process.ProcGenerateNF;
-import org.adempierelbr.util.Consignation;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
@@ -33,7 +32,6 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPaymentTerm;
-import org.compiere.model.MTransaction;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -48,8 +46,8 @@ import org.compiere.util.Msg;
  * 
  * Validate Invoice (Tax Calculation)
  * 
- * [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha, mgrigioni [
- * 2200626 ] Lista de Preço Brasil, mgrigioni
+ * [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha, mgrigioni
+ * [ 2200626 ] Lista de Preço Brasil, mgrigioni
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
@@ -301,6 +299,24 @@ public class ValidatorInvoice implements ModelValidator
 	public String docValidate(PO po, int timing)
 	{
 
+		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_PREPARE)){
+			
+			MInvoice invoice = (MInvoice)po;
+			
+			Properties ctx = invoice.getCtx();
+			String     trx = invoice.get_TrxName();
+			
+			MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
+			if (POLBR.get_ValueAsBoolean(docType.get_Value("lbr_HasFiscalDocument")) && //Gera Documento Fiscal
+				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument"))){ //Não é um documento próprio
+				
+				if (invoice.getPOReference() == null || invoice.getPOReference().equals("")){
+					return "Necessário preencher campo Referência do Pedido";
+				}
+				
+			}
+		}
+		
 		// Executa quando uma Invoice é completada
 		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_COMPLETE))
 		{

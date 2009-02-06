@@ -637,6 +637,9 @@ public class MBoleto extends X_LBR_Boleto
 	    
 	    if (FilePath == null) FilePath = POLBR.getPath();
 	    
+	    if (!(FilePath.endsWith(POLBR.getFileSeparator()))) 
+	    	FilePath += POLBR.getFileSeparator();
+	    
 	    fileName = FilePath + fileName;
 	    
 	    log.log(Level.INFO, "SALVANDO ARQUIVO: " + fileName);
