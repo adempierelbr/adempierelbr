@@ -338,6 +338,43 @@ UPDATE AD_Field SET Name='lbr_Ori_C_InvoiceLine_ID', Description='Origin Invoice
 insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
 ;
 
+-- 06/02/2009 17h54min37s BRST
+-- Default comment for updating dictionary
+UPDATE C_DocType SET DocBaseType='API',Updated=TO_DATE('2009-02-06 17:54:37','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE C_DocType_ID=1000034
+;
+
+-- 06/02/2009 17h58min9s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Tab SET WhereClause='lbr_OtherNF_RequestType = ''MR''',Updated=TO_DATE('2009-02-06 17:58:09','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1000042
+;
+
+-- 06/02/2009 17h58min16s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Tab SET WhereClause='lbr_OtherNF_RequestType = ''MI'' ',Updated=TO_DATE('2009-02-06 17:58:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1000044
+;
+
+-- 06/02/2009 17h58min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:58:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001028
+;
+
+-- 06/02/2009 17h58min42s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:58:42','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001033
+;
+
+-- 06/02/2009 17h58min55s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:58:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001002
+;
+
+-- 06/02/2009 17h59min0s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:59:00','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001007
+;
+
+
+
 -- 04/02/2009 11h54min3s BRST
 -- Default comment for updating dictionary
 UPDATE C_DocType SET M_Warehouse_ID=1000000,Updated=TO_TIMESTAMP('2009-02-04 11:54:03','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE C_DocType_ID=1000035
