@@ -26770,4 +26770,14 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
   <value column="PO_Name" original=""/>
   <value column="PO_PrintName" original=""/>
  </row>
+ <row id="1000349" trl="Y">
+  <value column="Name" original="Is Third Party ">Em poder de terceiro</value>
+  <value column="PrintName" original="Is Third Party ">Em poder de terceiro</value>
+  <value column="Description" original="Indicates if this warehouse holds third party locators">Indica se o armazém contém localizadores que estão em poder de terceiros</value>
+  <value column="Help" original="Indicates if this warehouse holds third party locators">Indica se o armazém contém localizadores que estão em poder de terceiros</value>
+  <value column="PO_Description" original=""/>
+  <value column="PO_Help" original=""/>
+  <value column="PO_Name" original=""/>
+  <value column="PO_PrintName" original=""/>
+ </row>
 </adempiereTrl>

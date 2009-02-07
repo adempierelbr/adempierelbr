@@ -5015,4 +5015,8 @@ Please contact administrator.</value>
   <value column="MsgText" original="Slow Moving Items">Slow Moving Items</value>
   <value column="MsgTip" original=" "> </value>
  </row>
+ <row id="1000000" trl="Y">
+  <value column="MsgText" original="The selected warehouse is not Third Party.">O Armazém selecionado não está em poder de terceiros.</value>
+  <value column="MsgTip" original="Please, select a Third Party Warehouse.">Selecione um armazém que se encontra em poder de terceiros.</value>
+ </row>
 </adempiereTrl>

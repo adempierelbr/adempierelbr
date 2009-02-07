@@ -116,7 +116,7 @@ public class ProcProcessOtherNF extends SvrProcess
 			}
 			else
 			{
-				int C_Order_ID = CriaPedido(C_DocTypeTarget_ID,refInv.getC_Order_ID());
+				int C_Order_ID = CriaPedido(C_DocTypeTarget_ID,refInv.getC_Order_ID(),otherNF.getM_Warehouse_ID());
 				C_OrderLine_ID = CriaLinha(refInv.getC_Order_ID(),C_Order_ID,refInvLine,line,otherNF.getM_Warehouse_ID());
 				ordersAdded.put(refInv.getC_Order_ID(), C_Order_ID);
 			}
@@ -149,7 +149,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		}
 	}
 	
-	private int CriaPedido(int C_DocTypeTarget_ID, int OldC_Order_ID)
+	private int CriaPedido(int C_DocTypeTarget_ID, int OldC_Order_ID, int M_Warehouse_ID)
 	{
 		Properties ctx = getCtx();
 		String trx = get_TrxName();
@@ -160,6 +160,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		newOrd.setC_DocTypeTarget_ID(C_DocTypeTarget_ID);
 		newOrd.setDescription(null);
 		newOrd.set_ValueOfColumn("Ref_Order_ID", null);
+		newOrd.setM_Warehouse_ID(M_Warehouse_ID);
 		
 		//The copyFrom method also copied the lines, we don't want that. 
 		for(MOrderLine line : newOrd.getLines())

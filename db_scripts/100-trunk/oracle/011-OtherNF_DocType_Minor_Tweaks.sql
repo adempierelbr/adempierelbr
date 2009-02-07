@@ -373,10 +373,121 @@ UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:58:55','YYYY-M
 UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2009-02-06 17:59:00','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001007
 ;
 
+-- 06/02/2009 18h29min40s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1000349,0,'lbr_IsThirdParty',TO_DATE('2009-02-06 18:29:40','YYYY-MM-DD HH24:MI:SS'),100,'Indicates if this warehouse holds third party locators','LBRA','Indicates if this warehouse holds third party locators','Y','Is Third Party ','Is Third Party ',TO_DATE('2009-02-06 18:29:40','YYYY-MM-DD HH24:MI:SS'),100)
+;
 
+-- 06/02/2009 18h29min40s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1000349 AND EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Element_ID!=t.AD_Element_ID)
+;
+
+-- 06/02/2009 18h30min29s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Em poder de terceiro',PrintName='Em poder de terceiro',Description='Indica se o armazém contém localizadores que estão em poder de terceiros',Help='Indica se o armazém contém localizadores que estão em poder de terceiros',Updated=TO_DATE('2009-02-06 18:30:29','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000349 AND AD_Language='pt_BR'
+;
+
+-- 06/02/2009 18h30min48s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001031,1000349,0,20,190,'lbr_IsThirdParty',TO_DATE('2009-02-06 18:30:48','YYYY-MM-DD HH24:MI:SS'),100,'''N''','Indicates if this warehouse holds third party locators','LBRA',1,'Indicates if this warehouse holds third party locators','Y','N','N','N','N','N','N','N','N','N','Y','Is Third Party ',0,TO_DATE('2009-02-06 18:30:48','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 06/02/2009 18h30min48s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1001031 AND EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Column_ID!=t.AD_Column_ID)
+;
+
+-- 06/02/2009 18h30min49s BRST
+-- Default comment for updating dictionary
+ALTER TABLE M_Warehouse ADD lbr_IsThirdParty CHAR(1) DEFAULT 'N' CHECK (lbr_IsThirdParty IN ('Y','N'))
+;
+
+-- 06/02/2009 18h31min5s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1001031,1001053,0,177,TO_DATE('2009-02-06 18:31:05','YYYY-MM-DD HH24:MI:SS'),100,'Indicates if this warehouse holds third party locators',1,'LBRA','Indicates if this warehouse holds third party locators','Y','Y','Y','N','N','N','N','N','Is Third Party ',TO_DATE('2009-02-06 18:31:05','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 06/02/2009 18h31min5s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1001053 AND EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Field_ID!=t.AD_Field_ID)
+;
+
+-- 06/02/2009 18h31min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET SeqNo=80,IsDisplayed='Y' WHERE AD_Field_ID=1001053
+;
+
+-- 06/02/2009 18h31min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET SeqNo=90,IsDisplayed='Y' WHERE AD_Field_ID=3781
+;
+
+-- 06/02/2009 18h31min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET SeqNo=100,IsDisplayed='Y' WHERE AD_Field_ID=12132
+;
+
+-- 06/02/2009 18h31min39s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET SeqNo=110,IsDisplayed='Y' WHERE AD_Field_ID=12131
+;
+
+-- 06/02/2009 18h35min45s BRST
+-- Default comment for updating dictionary
+UPDATE M_Warehouse SET lbr_IsThirdParty='Y',Updated=TO_DATE('2009-02-06 18:35:45','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE M_Warehouse_ID=1000000
+;
+
+-- 06/02/2009 18h43min56s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Message (AD_Client_ID,AD_Message_ID,AD_Org_ID,Created,CreatedBy,EntityType,IsActive,MsgText,MsgTip,MsgType,Updated,UpdatedBy,Value) VALUES (0,1000000,0,TO_DATE('2009-02-06 18:43:56','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','The selected warehouse is not Third Party','Please, select a Third Party Warehouse','E',TO_DATE('2009-02-06 18:43:56','YYYY-MM-DD HH24:MI:SS'),100,'WarehouseNotThirdParty')
+;
+
+-- 06/02/2009 18h43min57s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Message_Trl (AD_Language,AD_Message_ID, MsgText,MsgTip, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Message_ID, t.MsgText,t.MsgTip, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Message t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Message_ID=1000000 AND EXISTS (SELECT * FROM AD_Message_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Message_ID!=t.AD_Message_ID)
+;
+
+-- 06/02/2009 19h25min35s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Message SET MsgText='The selected warehouse is not Third Party.', MsgTip='Please, select a Third Party Warehouse.',Updated=TO_DATE('2009-02-06 19:25:35','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Message_ID=1000000
+;
+
+-- 06/02/2009 19h25min35s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Message_Trl SET IsTranslated='N' WHERE AD_Message_ID=1000000
+;
+
+-- 06/02/2009 19h25min41s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Message_Trl SET MsgText='O Armazém selecionado não está em poder de terceiros.',MsgTip='Selecione um armazém que se encontra em poder de terceiros.',Updated=TO_DATE('2009-02-06 19:25:41','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Message_ID=1000000 AND AD_Language='pt_BR'
+;
+
+-- 06/02/2009 19h25min53s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Message_Trl SET IsTranslated='Y',Updated=TO_DATE('2009-02-06 19:25:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Message_ID=1000000 AND AD_Language='pt_BR'
+;
+
+-- 06/02/2009 19h26min33s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET DisplayLogic='@IsGenerated@ = ''Y''',Updated=TO_DATE('2009-02-06 19:26:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001036
+;
+
+-- 06/02/2009 19h26min59s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET DisplayLogic=NULL,Updated=TO_DATE('2009-02-06 19:26:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001036
+;
+
+-- 06/02/2009 19h27min17s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Column SET ReadOnlyLogic='@IsGenerated@ = ''Y''',Updated=TO_DATE('2009-02-06 19:27:17','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000971
+;
 
 -- 04/02/2009 11h54min3s BRST
 -- Default comment for updating dictionary
 UPDATE C_DocType SET M_Warehouse_ID=1000000,Updated=TO_TIMESTAMP('2009-02-04 11:54:03','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE C_DocType_ID=1000035
 ;
 
+-- 26/01/2009 11h50min7s BRST
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-trunk/011-OtherNF_DocType_Minor_Tweaks.sql',Updated=TO_TIMESTAMP('2009-01-21 11:22:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006

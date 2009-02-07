@@ -24,10 +24,12 @@ import javax.sql.rowset.CachedRowSet;
 import org.adempierelbr.model.MOtherNF;
 import org.adempierelbr.model.MOtherNFLine;
 import org.adempierelbr.util.POLBR;
+import org.apache.commons.validator.Msg;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MWarehouse;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.AdempiereUserError;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -80,7 +82,9 @@ public class ProcGenerateOtherNF extends SvrProcess
 			MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
 			isGenerated = GerarLinhas(otherNF,returnMsg);
 			if(!otherNF.isGenerated())
+			{
 				otherNF.setIsGenerated(isGenerated);
+			}
 			otherNF.save(trx);
 		}
 		catch(Exception e){
@@ -90,24 +94,33 @@ public class ProcGenerateOtherNF extends SvrProcess
 		return returnMsg.toString();
 	}//doIt
 	
-	private boolean GerarLinhas(MOtherNF otherNF,StringBuffer returnMsg)
+	private boolean GerarLinhas(MOtherNF otherNF,StringBuffer returnMsg) 
 	{
 		Properties ctx = getCtx();
 		String     trx = get_TrxName();
 		int counter = 0;
 		//The user decides which warehouse the product will be returned to
 		MWarehouse warehouse = new MWarehouse(ctx,otherNF.getM_Warehouse_ID(),trx);
-		//MBPartner bpartner = new MBPartner(ctx,otherNF.getC_BPartner_ID(),trx);
-								 
+		
+		if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("mi") && !POLBR.get_ValueAsBoolean(warehouse.get_Value("lbr_IsThirdParty")))
+		{
+			returnMsg.append(org.compiere.util.Msg.translate(ctx, "@WarehouseNotThirdParty@"));
+			return false;
+		}
+		
+			
 		StringBuilder sql = new StringBuilder("SELECT ");
 						sql.append("il.qtyinvoiced - "); 
-						sql.append("coalesce(( ");
+						sql.append("(coalesce(( ");
 						sql.append("select sum(c_invoiceline.qtyinvoiced) from c_invoiceline "); 
 						sql.append("inner join c_invoice ON c_invoiceline.c_invoice_id = c_invoice.c_invoice_id ");
 						sql.append("inner join c_doctype ON c_invoice.c_doctypetarget_id = c_doctype.c_doctype_id ");
-						sql.append("where c_invoiceline.m_product_id = il.m_product_id and c_invoice.c_bpartner_id = i.c_bpartner_id and c_invoiceline.ad_client_id = il.ad_client_id ");
-						sql.append("and c_invoiceline.ad_org_id = il.ad_org_id and c_invoice.docstatus = 'CO' and (c_doctype.lbr_docbasetype = 'FARC' or c_doctype.lbr_docbasetype = 'FAFC') ");
-						sql.append("),0) as Qty, ");
+						sql.append("where c_invoiceline.m_product_id = il.m_product_id and c_invoice.c_bpartner_id = i.c_bpartner_id and c_invoiceline.ad_client_id = il.ad_client_id AND ");
+						sql.append("c_invoiceline_id = il.c_invoiceline_id AND ");
+						sql.append("c_invoiceline.ad_org_id = il.ad_org_id and c_invoice.docstatus = 'CO' and (c_doctype.lbr_docbasetype = 'FARC' or c_doctype.lbr_docbasetype = 'FAFC') ");
+						sql.append("),0) + ");
+						sql.append("COALESCE((select sum(qty) from lbr_othernfline where processed = 'Y' and c_invoiceline_id = il.c_invoiceline_id),0)) ");		
+						sql.append("as Qty, ");
 						sql.append("il.c_invoiceline_id, ");
 						sql.append("il.m_product_id, ");
 						sql.append("il.c_uom_id, ");
@@ -153,7 +166,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 		{
 			while (crs.next())
 			{
-				if(!C_InvoiceLine_Exists(trx, ctx, crs.getInt("C_InvoiceLine_ID"),otherNF.get_ID()))
+				if(!(crs.getBigDecimal("Qty").signum() == 0 || crs.getBigDecimal("Qty").signum() == -1) && !C_InvoiceLine_Exists(trx, ctx, crs.getInt("C_InvoiceLine_ID"),otherNF.get_ID()))
 				{
 					MOtherNFLine line = new MOtherNFLine(ctx,0,trx);
 					line.setLBR_OtherNF_ID(otherNF.get_ID());
@@ -162,7 +175,15 @@ public class ProcGenerateOtherNF extends SvrProcess
 					line.setM_Product_ID(crs.getInt("M_Product_ID"));
 					line.setQty(crs.getBigDecimal("Qty"));
 					line.setC_UOM_ID(crs.getInt("C_UOM_ID"));
-					line.setM_Locator_ID(warehouse.getDefaultLocator().getM_Locator_ID());
+					if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("mi")) 
+					{
+						MBPartner bpartner = new MBPartner(ctx,otherNF.getC_BPartner_ID(),trx);
+						line.setM_Locator_ID(POLBR.getM_Locator_ID(otherNF.getM_Warehouse_ID(), bpartner, trx));
+					}
+					else
+					{
+						line.setM_Locator_ID(warehouse.getDefaultLocator().getM_Locator_ID());
+					}
 					line.save(trx);
 					counter++;
 				}
@@ -209,4 +230,6 @@ public class ProcGenerateOtherNF extends SvrProcess
 		
 		return returnValue;
 	} //ProjectLineExists
+	
+	
 }
