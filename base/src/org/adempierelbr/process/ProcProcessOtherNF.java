@@ -15,28 +15,29 @@ package org.adempierelbr.process;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import javax.sql.rowset.CachedRowSet;
+
 import org.adempierelbr.model.MOtherNF;
 import org.adempierelbr.model.MOtherNFLine;
+import org.adempierelbr.util.POLBR;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MLocator;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MSequence;
-import org.compiere.model.X_LBR_OtherNF;
-import org.compiere.model.X_LBR_OtherNFLine;
-import org.compiere.model.X_LBR_ProcessLink;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import com.sun.rowset.CachedRowSetImpl;
 
 /**
  *	ProcProcessOtherNF
@@ -81,20 +82,23 @@ public class ProcProcessOtherNF extends SvrProcess
 		
 		MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
 		
-		ProcessarLinhas(otherNF);
-		otherNF.setProcessed(true);
+		if(ProcessarLinhas(otherNF,returnMsg))
+			otherNF.setProcessed(true);
 		otherNF.save(trx);
 		
 		return returnMsg.toString();
 	}//doIt
 	
-	private void ProcessarLinhas(MOtherNF otherNF)
+	private boolean ProcessarLinhas(MOtherNF otherNF, StringBuffer returnMsg)
 	{	
 		Map<Integer,Integer> ordersAdded = new HashMap<Integer, Integer>();
 		Integer C_DocTypeTarget_ID = 0;
 		
 		Properties ctx = getCtx();
 		String trx = get_TrxName();
+		
+		if(!precheck(otherNF,returnMsg))
+			return false;
 		
 		//Verifica se é um retorno ou venda de consignação. MR = Material Return
 		if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("MR"))
@@ -104,7 +108,6 @@ public class ProcProcessOtherNF extends SvrProcess
 		
 		for(MOtherNFLine line : otherNF.getLines(null, null))
 		{
-			Integer C_OrderLine_ID = 0;
 			
 			MInvoiceLine refInvLine = new MInvoiceLine(ctx,line.getC_InvoiceLine_ID(),trx);
 			MInvoice refInv = new MInvoice(ctx,refInvLine.getC_Invoice_ID(),trx);
@@ -112,22 +115,14 @@ public class ProcProcessOtherNF extends SvrProcess
 			if(ordersAdded.containsKey(refInv.getC_Order_ID()))
 			{
 				Integer C_Order_ID = ordersAdded.get(refInv.getC_Order_ID());
-				C_OrderLine_ID = CriaLinha(refInv.getC_Order_ID(),C_Order_ID,refInvLine,line,otherNF.getM_Warehouse_ID());
+				CriaLinha(refInv.getC_Order_ID(),C_Order_ID,refInvLine,line,otherNF.getM_Warehouse_ID());
 			}
 			else
 			{
 				int C_Order_ID = CriaPedido(C_DocTypeTarget_ID,refInv.getC_Order_ID(),otherNF.getM_Warehouse_ID());
-				C_OrderLine_ID = CriaLinha(refInv.getC_Order_ID(),C_Order_ID,refInvLine,line,otherNF.getM_Warehouse_ID());
+				CriaLinha(refInv.getC_Order_ID(),C_Order_ID,refInvLine,line,otherNF.getM_Warehouse_ID());
 				ordersAdded.put(refInv.getC_Order_ID(), C_Order_ID);
 			}
-			
-//			if(C_OrderLine_ID != null && C_OrderLine_ID != 0)
-//			{
-//				X_LBR_ProcessLink process = new X_LBR_ProcessLink(ctx,0,trx);
-//				process.setC_InvoiceLine_ID(line.getC_InvoiceLine_ID());
-//				process.setC_OrderLine_ID(C_OrderLine_ID);
-//				process.save(trx);
-//			}
 			
 			line.setProcessed(true);
 			line.save(trx);
@@ -147,6 +142,7 @@ public class ProcProcessOtherNF extends SvrProcess
 				}
 			}
 		}
+		return true;
 	}
 	
 	private int CriaPedido(int C_DocTypeTarget_ID, int OldC_Order_ID, int M_Warehouse_ID)
@@ -192,35 +188,71 @@ public class ProcProcessOtherNF extends SvrProcess
 		return newOrdLine.get_ID();
 	}
 	
-//	private ArrayList<Integer> PegaLinhas(int LBR_OtherNF_ID)
-//	{
-//		ArrayList<Integer> lineIds = new ArrayList<Integer>();
-//		PreparedStatement pstmt = null;
-//		String trx = get_TrxName();
-//		
-//		StringBuffer sql = new StringBuffer("SELECT lbr_othernfline_id FROM lbr_othernfline WHERE lbr_othernf_id = ?");
-//		
-//		ResultSet rs = null;
-//		try
-//		{
-//			pstmt = DB.prepareStatement(sql.toString(), trx);
-//			pstmt.setInt(1, LBR_OtherNF_ID);
-//			rs = pstmt.executeQuery();
-//			while (rs.next())
-//			{
-//				lineIds.add(rs.getInt(1));
-//			}
-//		}
-//		catch (Exception e)
-//		{
-//			log.log(Level.SEVERE, sql.toString(), e);
-//		}
-//		finally{
-//		       DB.close(rs, pstmt);
-//		}
-//		
-//		return lineIds;
-//	}
+	
+	private boolean precheck(MOtherNF otherNF,StringBuffer returnMsg)
+	{
+		boolean returnValue = false;
+		PreparedStatement pstmt = null;
+		String trx = get_TrxName();
+				
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT ");
+				sql.append("p.name,l.value,  ");
+				if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("MR"))
+				{
+					MDocType dt = new MDocType(getCtx(),otherNF.getC_DocType_ID(),trx);
+					MDocType shpDT = new MDocType(getCtx(),dt.getC_DocTypeShipment_ID(),trx);
+					MBPartner bp = new MBPartner(getCtx(),otherNF.getC_BPartner_ID(),trx);
+					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = " + POLBR.getM_Locator_ID((Integer)shpDT.get_Value("M_Warehouse_ID"),bp, trx) + " and m_product_id = nfl.m_product_id) - qty ");
+				}
+				else
+					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = nfl.m_locator_id and m_product_id = nfl.m_product_id) - qty ");
+				sql.append("FROM ");
+				sql.append("lbr_othernfline nfl ");
+				sql.append("inner join m_product p on nfl.m_product_id = p.m_product_id ");
+				sql.append("inner join m_locator l on nfl.m_locator_id = l.m_locator_id ");
+				sql.append("where nfl.processed = 'N' and nfl.lbr_othernf_id = ? ");
+		
+		ResultSet rs = null;
+		CachedRowSet crs = null;
+		try
+		{
+			crs = new CachedRowSetImpl();
+			pstmt = DB.prepareStatement(sql.toString(), trx);
+			pstmt.setInt(1, otherNF.getLBR_OtherNF_ID());
+			rs = pstmt.executeQuery();
+			crs.populate(rs);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		       rs = null; pstmt = null;
+		}
+		
+		try
+		{
+			while(crs.next())
+			{
+				if(crs.getBigDecimal(3).signum() == -1)
+				{
+					returnMsg.append(org.compiere.util.Msg.translate(getCtx(), "@NoQtyAvailable@") + " " + crs.getString(1) + " - " + crs.getString(2));
+					returnValue = false;
+					break;
+				}
+				else
+					returnValue = true;
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		
+		return returnValue;
+	}
 	
 	
 	/**
@@ -251,6 +283,35 @@ public class ProcProcessOtherNF extends SvrProcess
 			return null;
 	}	//	copyLinesFrom
 
+//	private ArrayList<Integer> PegaLinhas(int LBR_OtherNF_ID)
+//	{
+//		ArrayList<Integer> lineIds = new ArrayList<Integer>();
+//		PreparedStatement pstmt = null;
+//		String trx = get_TrxName();
+//		
+//		StringBuffer sql = new StringBuffer("SELECT lbr_othernfline_id FROM lbr_othernfline WHERE lbr_othernf_id = ?");
+//		
+//		ResultSet rs = null;
+//		try
+//		{
+//			pstmt = DB.prepareStatement(sql.toString(), trx);
+//			pstmt.setInt(1, LBR_OtherNF_ID);
+//			rs = pstmt.executeQuery();
+//			while (rs.next())
+//			{
+//				lineIds.add(rs.getInt(1));
+//			}
+//		}
+//		catch (Exception e)
+//		{
+//			log.log(Level.SEVERE, sql.toString(), e);
+//		}
+//		finally{
+//		       DB.close(rs, pstmt);
+//		}
+//		
+//		return lineIds;
+//	}
 	
 //	/**
 //	 * 	Get the Document Number for the new Order

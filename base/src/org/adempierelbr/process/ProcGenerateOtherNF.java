@@ -15,7 +15,6 @@ package org.adempierelbr.process;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -24,12 +23,10 @@ import javax.sql.rowset.CachedRowSet;
 import org.adempierelbr.model.MOtherNF;
 import org.adempierelbr.model.MOtherNFLine;
 import org.adempierelbr.util.POLBR;
-import org.apache.commons.validator.Msg;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MWarehouse;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.AdempiereUserError;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -119,7 +116,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 						sql.append("c_invoiceline_id = il.c_invoiceline_id AND ");
 						sql.append("c_invoiceline.ad_org_id = il.ad_org_id and c_invoice.docstatus = 'CO' and (c_doctype.lbr_docbasetype = 'FARC' or c_doctype.lbr_docbasetype = 'FAFC') ");
 						sql.append("),0) + ");
-						sql.append("COALESCE((select sum(qty) from lbr_othernfline where processed = 'Y' and c_invoiceline_id = il.c_invoiceline_id),0)) ");		
+						sql.append("COALESCE((select sum(qty) from lbr_othernfline where processed = 'Y' and iscancelled = 'N' and c_invoiceline_id = il.c_invoiceline_id),0)) ");		
 						sql.append("as Qty, ");
 						sql.append("il.c_invoiceline_id, ");
 						sql.append("il.m_product_id, ");

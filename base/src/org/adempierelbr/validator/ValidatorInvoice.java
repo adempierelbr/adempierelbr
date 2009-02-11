@@ -21,6 +21,7 @@ import org.adempierelbr.model.MProcessLink;
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.process.ProcGenerateNF;
+import org.adempierelbr.util.Consignation;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
@@ -458,6 +459,12 @@ public class ValidatorInvoice implements ModelValidator
 
 			// CANCELA BOLETO E CNAB
 			MBoleto.cancelBoleto(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+			
+			//CANCELA CONSIGNAÇÃO
+			for(MInvoiceLine iLine : invoice.getLines())
+			{
+				Consignation.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
+			}
 
 		}
 		else if (po.get_TableName().equalsIgnoreCase("C_Invoice")
