@@ -516,7 +516,8 @@ public class MBoleto extends X_LBR_Boleto
 					if (isRegistered){
 						newBoleto.generateCNAB(Integer.parseInt(lbrBank.getlbr_jBoletoNo()));
 					}
-			
+					
+					invoice.set_ValueOfColumn("lbr_PaymentRule", "B"); //Forma de Pagamento
 					invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
 					invoice.set_ValueOfColumn("lbr_IsBillPrinted", true);
 					invoice.save(trx);

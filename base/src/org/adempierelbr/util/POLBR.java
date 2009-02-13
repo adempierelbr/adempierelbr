@@ -206,6 +206,57 @@ public class POLBR{
 		
 	}	//	getLBR_Boleto_ID
 	
+	public static int getLBR_Boleto_ID(Integer C_Invoice_ID, Integer C_InvoicePaySchedule_ID, String trx)
+	{
+		int LBR_Boleto_ID = -1;
+		int index = 1;
+		int aux = 0;
+		
+		if (C_Invoice_ID == null)
+			C_Invoice_ID = -1;
+		
+		if (C_InvoicePaySchedule_ID == null)
+			C_InvoicePaySchedule_ID = -1;
+		
+		String sql = "SELECT LBR_Boleto_ID " +
+				     "FROM LBR_Boleto " +
+				     "WHERE C_Invoice_ID = ? ";
+				     
+		if (C_InvoicePaySchedule_ID > 0){
+			sql += "AND C_InvoicePaySchedule_ID = ? ";
+			index++;
+		}
+						     
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			if (index > 1){
+				pstmt.setInt(2, C_InvoicePaySchedule_ID);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				 LBR_Boleto_ID = rs.getInt(1);
+				 aux++;
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		if (aux > 1)
+			LBR_Boleto_ID = -1;
+		
+		return LBR_Boleto_ID;
+	}	//	getLBR_Boleto_ID
+	
 	/**
 	 * 	Returns the locator ID created automatically for 
 	 * 	the given business partner
@@ -239,36 +290,6 @@ public class POLBR{
 		return -1;
 	} //getM_Locator_ID
 	
-	public static String getLBR_DocBaseType(Integer C_Invoice_ID, String trx)
-	{
-		String lbr_docbasetype = null;
-		
-		StringBuilder sql = new StringBuilder(); 
-		sql.append("SELECT dt.LBR_DocBaseType FROM C_Invoice i INNER JOIN C_DocType dt ON i.c_doctypetarget_id = dt.c_doctype_id ");
-		sql.append("WHERE i.c_invoice_id = ? ");
-		
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql.toString(), trx);
-			pstmt.setInt(1, C_Invoice_ID);
-			rs = pstmt.executeQuery();
-			if (rs.next())
-			{
-				 lbr_docbasetype = rs.getString(1);	 
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-		
-		return lbr_docbasetype;
-	} //getLBR_DocBaseType
 	
 	public static Integer getlbr_Ref_C_InvoiceLine_ID(Integer C_OrderLine_ID, String trx)
 	{

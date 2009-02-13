@@ -242,7 +242,7 @@ public class FormBoleto extends CPanel
 		miniTable.addColumn("C_Invoice_ID");
 		miniTable.addColumn("AD_Org_ID");
 		miniTable.addColumn("DocumentNo");
-		miniTable.addColumn("C_Order_ID");
+		miniTable.addColumn("LBR_NotaFiscal_ID");
 		miniTable.addColumn("C_BPartner_ID");
 		miniTable.addColumn("C_PaymentTerm_ID");
 		miniTable.addColumn("DateInvoiced");
@@ -255,7 +255,7 @@ public class FormBoleto extends CPanel
 		miniTable.setColumnClass(0, IDColumn.class, false, " ");
 		miniTable.setColumnClass(1, String.class, true, Msg.translate(Env.getCtx(), "AD_Org_ID"));
 		miniTable.setColumnClass(2, String.class, true, Msg.translate(Env.getCtx(), "DocumentNo"));
-		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "C_Order_ID"));
+		miniTable.setColumnClass(3, String.class, true, Msg.translate(Env.getCtx(), "LBR_NotaFiscal_ID"));
 		miniTable.setColumnClass(4, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
 		miniTable.setColumnClass(5, String.class, true, Msg.translate(Env.getCtx(), "C_PaymentTerm_ID"));
 		miniTable.setColumnClass(6, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateInvoiced"));
@@ -277,20 +277,21 @@ public class FormBoleto extends CPanel
 	private void executeQuery()
 	{
 		log.info("");
+		statusBar.setStatusLine("");
 		int AD_Client_ID = Env.getAD_Client_ID(Env.getCtx());
 		//  Create SQL
 		
 		int index = 0;
 
 		StringBuffer sql = new StringBuffer(
-				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, min(i.DateInvoiced) as DateInvoiced, i.GrandTotal " +
+				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, nf.DocumentNo, bp.Name, pt.Name, min(i.DateInvoiced) as DateInvoiced, i.GrandTotal " +
 				"FROM C_Invoice i " +
 				"INNER JOIN AD_Org o ON i.AD_Org_ID=o.AD_Org_ID " +
 				"INNER JOIN C_DocType d ON i.C_DocTypeTarget_ID=d.C_DocType_ID " +
 				"INNER JOIN C_BPartner bp ON i.C_BPartner_ID=bp.C_BPartner_ID " +
 				//"INNER JOIN RV_OpenItem op ON i.C_Invoice_ID=op.C_Invoice_ID " +
 				"INNER JOIN C_PaymentTerm pt ON i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID " +
-				"LEFT JOIN C_Order ord ON i.C_Order_ID=ord.C_Order_ID " +
+				"LEFT JOIN LBR_NotaFiscal nf ON i.LBR_NotaFiscal_ID=nf.LBR_NotaFiscal_ID " +
 				"WHERE i.IsSOTrx='Y' AND i.IsPaid = 'N' AND i.DocStatus = 'CO' " +
 				"AND d.lbr_HasOpenItems='Y' AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule = 'B') " + //mostrar somente faturas boleto ou sem forma de pagamento
 				"AND i.AD_Client_ID=? ");
@@ -325,7 +326,7 @@ public class FormBoleto extends CPanel
 							POLBR.dateTostring(envDate,"dd/MM/yyyy"));
 				}
 				
-				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, ord.DocumentNo, bp.Name, pt.Name, i.GrandTotal " +
+				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, nf.DocumentNo, bp.Name, pt.Name, i.GrandTotal " +
 						   "ORDER BY i.C_Invoice_ID, o.Name, bp.Name, DateInvoiced");
 
 		//  reset table

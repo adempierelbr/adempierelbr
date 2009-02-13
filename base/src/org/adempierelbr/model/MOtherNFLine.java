@@ -12,11 +12,14 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.compiere.model.X_LBR_OtherNFLine;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 
 /**
  *	MOtherNFLine
@@ -57,5 +60,35 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	{
 		super(ctx, rs, trxName);
 	}	//	MOtherNFLine
+	
+	public static boolean voidConsignationLine(Integer C_InvoiceLine_ID, String trx)
+	{
+		int returnValue = 0;
+		
+		String sql = "UPDATE LBR_OtherNFLine SET IsCancelled = 'Y' " +
+				     "WHERE C_InvoiceLine_ID = " +
+				     	"(SELECT lbr_ori_c_invoiceline_id " +
+				     	"FROM lbr_processlink " +
+				     	"WHERE lbr_dest_c_invoiceline_id = ?)";
+				     		     
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_InvoiceLine_ID);
+			returnValue = pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return (returnValue > 0);
+		
+	}	//voidConsignationLine
 		
 } //MOtherNFLine

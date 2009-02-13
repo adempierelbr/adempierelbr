@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MOtherNFLine;
 import org.adempierelbr.model.MProcessLink;
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.process.ProcGenerateNF;
-import org.adempierelbr.util.Consignation;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
@@ -318,6 +318,8 @@ public class ValidatorInvoice implements ModelValidator
 			}
 		}
 		
+		else
+		
 		// Executa quando uma Invoice é completada
 		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_COMPLETE))
 		{
@@ -406,7 +408,7 @@ public class ValidatorInvoice implements ModelValidator
 			// A referência será sempre da fatura de envio, com a fatura de retorno ou venda
 			// Antes de fazer qualquer processamento pesado, primeiro deve-se verificar se é uma fatura de
 			// consignação
-			String lbr_docbasetype = POLBR.getLBR_DocBaseType(invoice.getC_Invoice_ID(), trx);
+			String lbr_docbasetype = (String)dt.get_Value("LBR_DocBaseType"); //BF: assim se não existe a coluna retorn NULL
 
 			if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
 			{
@@ -463,7 +465,7 @@ public class ValidatorInvoice implements ModelValidator
 			//CANCELA CONSIGNAÇÃO
 			for(MInvoiceLine iLine : invoice.getLines())
 			{
-				Consignation.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
+				MOtherNFLine.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
 			}
 
 		}
