@@ -488,6 +488,72 @@ UPDATE AD_Column SET ReadOnlyLogic='@IsGenerated@ = ''Y''',Updated=TO_DATE('2009
 UPDATE C_DocType SET M_Warehouse_ID=1000000,Updated=TO_TIMESTAMP('2009-02-04 11:54:03','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE C_DocType_ID=1000035
 ;
 
+-- 11/02/2009 18h28min59s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001032,2531,0,20,1000040,'IsCancelled',TO_DATE('2009-02-11 18:28:59','YYYY-MM-DD HH24:MI:SS'),100,'The transaction was cancelled','LBRA',1,'Y','N','N','N','N','N','N','N','N','N','Y','Cancelled',0,TO_DATE('2009-02-11 18:28:59','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 11/02/2009 18h28min59s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1001032 AND EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Column_ID!=t.AD_Column_ID)
+;
+
+-- 11/02/2009 18h29min0s BRST
+-- Default comment for updating dictionary
+ALTER TABLE LBR_OtherNFLine ADD IsCancelled CHAR(1) CHECK (IsCancelled IN ('Y','N'))
+;
+
+-- 11/02/2009 18h29min3s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Column SET IsUpdateable='N',Updated=TO_DATE('2009-02-11 18:29:03','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001032
+;
+
+-- 11/02/2009 18h29min22s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1001032,1001054,0,1000045,TO_DATE('2009-02-11 18:29:22','YYYY-MM-DD HH24:MI:SS'),100,'The transaction was cancelled',1,'LBRA','Y','Y','Y','N','N','N','N','N','Cancelled',TO_DATE('2009-02-11 18:29:22','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 11/02/2009 18h29min22s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1001054 AND EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Field_ID!=t.AD_Field_ID)
+;
+
+-- 11/02/2009 18h29min33s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsSameLine='Y',Updated=TO_DATE('2009-02-11 18:29:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001054
+;
+
+-- 11/02/2009 18h29min51s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1001032,1001055,0,1000043,TO_DATE('2009-02-11 18:29:50','YYYY-MM-DD HH24:MI:SS'),100,'The transaction was cancelled',1,'LBRA','Y','Y','Y','N','N','N','N','N','Cancelled',TO_DATE('2009-02-11 18:29:50','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 11/02/2009 18h29min51s BRST
+-- Default comment for updating dictionary
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1001055 AND EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language!=l.AD_Language OR tt.AD_Field_ID!=t.AD_Field_ID)
+;
+
+-- 11/02/2009 18h29min57s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsSameLine='Y',Updated=TO_DATE('2009-02-11 18:29:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001055
+;
+
+-- 11/02/2009 18h44min53s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Column SET DefaultValue='''N''', IsUpdateable='Y',Updated=TO_DATE('2009-02-11 18:44:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001032
+;
+
+-- 11/02/2009 18h44min54s BRST
+-- Default comment for updating dictionary
+ALTER TABLE LBR_OtherNFLine MODIFY IsCancelled CHAR(1) DEFAULT 'N'
+;
+
+-- 11/02/2009 18h45min2s BRST
+-- Default comment for updating dictionary
+UPDATE AD_Column SET IsUpdateable='N',Updated=TO_DATE('2009-02-11 18:45:02','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001032
+;
+
+
 -- 26/01/2009 11h50min7s BRST
 -- Default comment for updating dictionary
 UPDATE AD_SysConfig SET Value='100-trunk/011-OtherNF_DocType_Minor_Tweaks.sql',Updated=TO_TIMESTAMP('2009-01-21 11:22:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
