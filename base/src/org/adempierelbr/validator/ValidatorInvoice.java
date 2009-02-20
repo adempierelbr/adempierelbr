@@ -312,7 +312,8 @@ public class ValidatorInvoice implements ModelValidator
 				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument"))){ //Não é um documento próprio
 				
 				if (invoice.getPOReference() == null || invoice.getPOReference().equals("")){
-					return "Necessário preencher campo Referência do Pedido";
+					if (!invoice.isReversal())
+						return "Necessário preencher campo Referência do Pedido";
 				}
 				
 			}
