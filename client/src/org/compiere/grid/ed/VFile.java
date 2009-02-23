@@ -1,5 +1,6 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -9,57 +10,36 @@
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ * For the text or an alternative of this public license, you may reach us    *
+ * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
+ * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
-package org.adempierelbr.grid.ed;
+package org.compiere.grid.ed;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.*;
+import java.io.*;
 
-import javax.swing.JComponent;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.adempiere.plaf.AdempierePLAF;
-import org.adempierelbr.model.MTax;
-import org.adempierelbr.model.MTaxesLookup;
 import org.compiere.apps.ADialog;
-import org.compiere.grid.ed.VEditor;
-import org.compiere.grid.ed.VLookup;
-import org.compiere.swing.CButton;
-import org.compiere.swing.CMenuItem;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
+import org.compiere.model.*;
+import org.adempiere.plaf.AdempierePLAF;
+import org.compiere.swing.*;
+import org.compiere.util.*;
 
 /**
- *	VTaxes
+ *	File/Path Selection
  *
- *	lbr_Taxes Type
- *	
- *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: VTaxes.java, 14/11/2007 13:39:00 mgrigioni
+ *  @author 	Initial: Jirimuto
+ *  @version 	$Id: VFile.java,v 1.2 2006/07/30 00:51:28 jjanke Exp $
+ *  
+ *  @author 	Teo Sarca
  */
-public class VTaxes extends JComponent
-	implements VEditor, ActionListener
+public class VFile extends JComponent
+	implements VEditor, ActionListener, KeyListener
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 *	Constructor
 	 *
@@ -67,15 +47,22 @@ public class VTaxes extends JComponent
 	 * 	@param mandatory mandatory
 	 * 	@param isReadOnly read only
 	 * 	@param isUpdateable updateable
-	 * 	@param mLocation location model
+	 * 	@param files Files only if false Directory only
 	 */
-	public VTaxes(String columnName, boolean mandatory, boolean isReadOnly, boolean isUpdateable,
-		MTaxesLookup mTax)
+	public VFile(String columnName, boolean mandatory, 
+		boolean isReadOnly, boolean isUpdateable, int fieldLength, boolean files)
 	{
 		super();
 		super.setName(columnName);
 		m_columnName = columnName;
-		m_mTaxes = mTax;
+		m_fieldLength = fieldLength;
+		if (files)	//	default Directories
+			m_selectionMode = JFileChooser.FILES_ONLY;
+		String col = columnName.toLowerCase();
+		if (col.indexOf("open") != -1 || col.indexOf("load") != -1)
+			m_dialogType = JFileChooser.OPEN_DIALOG;
+		else if (col.indexOf("save") != -1)
+			m_dialogType = JFileChooser.SAVE_DIALOG;
 		//
 		LookAndFeel.installBorder(this, "TextField.border");
 		this.setLayout(new BorderLayout());
@@ -84,18 +71,19 @@ public class VTaxes extends JComponent
 		int height = m_text.getPreferredSize().height;
 
 		//  Button
-		m_button.setIcon(Env.getImageIcon("Register16.gif"));
+		m_button.setIcon(Env.getImageIcon("Open16.gif"));
 		m_button.setMargin(new Insets(0,0,0,0));
 		m_button.setPreferredSize(new Dimension(height, height));
 		m_button.addActionListener(this);
 		this.add(m_button, BorderLayout.EAST);
 		//	***	Button & Text	***
 		m_text.setBorder(null);
-		m_text.setEditable(false);
-		m_text.setFocusable(false);
+		m_text.setEditable(true);
+		m_text.setFocusable(true);
 		m_text.setFont(AdempierePLAF.getFont_Field());
 		m_text.setForeground(AdempierePLAF.getTextColor_Normal());
-		m_text.addMouseListener(new VTaxes_mouseAdapter(this));
+		m_text.addMouseListener(new VFile_mouseAdapter(this));
+		m_text.addKeyListener(this);
 		this.add(m_text, BorderLayout.CENTER);
 
 		//	Editable
@@ -104,12 +92,7 @@ public class VTaxes extends JComponent
 		else
 			setReadWrite (true);
 		setMandatory (mandatory);
-		//
-		mDelete = new CMenuItem(Msg.getMsg(Env.getCtx(), "Delete"), Env.getImageIcon ("Delete16.gif"));
-		mDelete.addActionListener(this);
-		popupMenu.add(mDelete);
-
-	}	//	VTaxes
+	}	//	VFile
 
 	/**
 	 *  Dispose
@@ -118,24 +101,27 @@ public class VTaxes extends JComponent
 	{
 		m_text = null;
 		m_button = null;
-		m_mTaxes = null;
+		m_field = null;
 	}   //  dispose
 
 	/** The Text Field                  */
-	private JTextField			m_text = new JTextField(VLookup.DISPLAY_LENGTH);
+	private CTextField			m_text = new CTextField(VLookup.DISPLAY_LENGTH);
 	/** The Button                      */
 	private CButton				m_button = new CButton();
-
-	private MTaxesLookup		m_mTaxes;
-	private MTax			    m_value;
-
+	/** Column Name						*/
 	private String				m_columnName;
+	private String				m_oldText;
+	private String				m_initialText;
+	/** Field Length				*/
+	private int					m_fieldLength;
+	/**	Setting new value			*/
+	private volatile boolean	m_setting = false;
+	/** Selection Mode					*/
+	private int					m_selectionMode = JFileChooser.DIRECTORIES_ONLY;
+	/** Save/Open						*/
+	private int					m_dialogType = JFileChooser.CUSTOM_DIALOG;
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(VTaxes.class);
-
-	//	Popup
-	JPopupMenu 					popupMenu = new JPopupMenu();
-	private CMenuItem 			mDelete;
+	private static CLogger log = CLogger.getCLogger(VFile.class);
 
 	/**
 	 *	Enable/disable
@@ -146,6 +132,7 @@ public class VTaxes extends JComponent
 		m_button.setReadWrite (value);
 		if (m_button.isVisible() != value)
 			m_button.setVisible (value);
+		m_text.setReadWrite(value);
 		setBackground(false);
 	}	//	setReadWrite
 
@@ -219,27 +206,15 @@ public class VTaxes extends JComponent
 	public void setValue(Object value)
 	{
 		if (value == null)
-		{
-			m_value = null;
-			m_text.setText(null);
-		}
+			m_oldText = "";
 		else
-		{
-			m_value = m_mTaxes.getTax(value, null);
-			if (m_value == null)
-				m_text.setText("<" + value + ">");
-			else
-				m_text.setText(m_value.toString());
-		}
+			m_oldText = value.toString();
+		//	only set when not updated here
+		if (m_setting)
+			return;
+		m_text.setText (m_oldText);
+		m_initialText = m_oldText;
 	}	//	setValue
-
-	/**
-	 * 	Request Focus
-	 */
-	public void requestFocus ()
-	{
-		m_text.requestFocus ();
-	}	//	requestFocus
 
 	/**
 	 *  Property Change Listener
@@ -257,21 +232,8 @@ public class VTaxes extends JComponent
 	 */
 	public Object getValue()
 	{
-		if (m_value == null)
-			return null;
-		return new Integer(m_value.getLBR_Tax_ID());
+		return m_text.getText();
 	}	//	getValue
-
-	/**
-	 *	Return Editor value
-	 *  @return value
-	 */
-	public int getLBR_Tax_ID()
-	{
-		if (m_value == null)
-			return 0;
-		return m_value.getLBR_Tax_ID();
-	}	//	getC_Location_ID
 
 	/**
 	 *  Return Display Value
@@ -288,33 +250,41 @@ public class VTaxes extends JComponent
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource() == mDelete)
-			m_value = null;        //  create new
+		String m_value = m_text.getText();
 		//
-		log.config( "actionPerformed - " + m_value);
-		VTaxesDialog td = new VTaxesDialog(Env.getFrame(this),
-				Msg.translate(Env.getCtx(), "LBR_Tax_ID"), m_value);
-		td.setVisible(true);
-		m_value = td.getValue();
+		log.config(m_value);
 		//
-		if (e.getSource() == mDelete)
-			;
-		else if (!td.isChanged())
+		String fieldName = null;
+		if (m_field != null)
+			fieldName = m_field.getHeader();
+		else
+			fieldName = Msg.getElement(Env.getCtx(), m_columnName); 
+		//
+		JFileChooser chooser = new JFileChooser(m_value);
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setFileSelectionMode(m_selectionMode);
+		chooser.setDialogTitle(fieldName);
+		chooser.setDialogType(m_dialogType);
+		//	
+		int returnVal = -1;
+		if (m_dialogType == JFileChooser.SAVE_DIALOG)
+			returnVal = chooser.showSaveDialog(this);
+		else if (m_dialogType == JFileChooser.OPEN_DIALOG)
+			returnVal = chooser.showOpenDialog(this);
+		else //	if (m_dialogType == JFileChooser.CUSTOM_DIALOG)
+			returnVal= chooser.showDialog(this, fieldName);
+		if (returnVal != JFileChooser.APPROVE_OPTION)
 			return;
-
-		//	Data Binding
+		
+		File selectedFile = chooser.getSelectedFile();
+		m_text.setText(selectedFile.getAbsolutePath() );
+		//  Data Binding
 		try
 		{
-			Integer LBR_Tax_ID = null;
-			if (m_value != null)
-				LBR_Tax_ID = m_value.getLBR_Tax_ID();
-			//  force Change - user does not realize that embedded object is already saved.
-			fireVetoableChange(m_columnName, null, LBR_Tax_ID);
-			setValue(LBR_Tax_ID);
+			fireVetoableChange(m_columnName, m_oldText, m_text.getText());
 		}
-		catch (PropertyVetoException pve)
+		catch (PropertyVetoException pve)	
 		{
-			log.log(Level.SEVERE, "VTaxes.actionPerformed", pve);
 		}
 
 	}	//	actionPerformed
@@ -329,12 +299,69 @@ public class VTaxes extends JComponent
 	}   //  addActionListener
 
 	/**
-	 *  Set Field/WindowNo for ValuePreference (NOP)
-	 *  @param mField Model Field
+	 *  Action Listener Interface
+	 *  @param listener
 	 */
-	public void setField (org.compiere.model.GridField mField)
+	public void removeActionListener(ActionListener listener)
 	{
+		m_text.removeActionListener(listener);
+	}   //  removeActionListener
+
+	/**
+	 *  Set Field/WindowNo 
+	 *  @param mField field
+	 */
+	public void setField (GridField mField)
+	{
+		m_field = mField;
 	}   //  setField
+
+	/** Grid Field				*/
+	private GridField 	m_field = null;
+	
+	/**
+	 *  Get Field
+	 *  @return gridField
+	 */
+	public GridField getField()
+	{
+		return m_field;
+	}   //  getField
+	
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyTyped(KeyEvent e) {
+	}
+
+	/**
+	 *	Key Released.
+	 *	if Escape Restore old Text
+	 *  @param e event
+	 *  @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent e) {
+		if (CLogMgt.isLevelFinest())
+			log.finest("Key=" + e.getKeyCode() + " - " + e.getKeyChar() + " -> " + m_text.getText());
+		//  ESC
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			m_text.setText(m_initialText);
+		//	Ignore keys that do not alter the text
+		else if (e.getKeyChar() == KeyEvent.CHAR_UNDEFINED)
+			return;
+		m_setting = true;
+		try
+		{
+			String clear = m_text.getText();
+			if (clear.length() > m_fieldLength)
+				clear = clear.substring(0, m_fieldLength);
+			fireVetoableChange (m_columnName, m_oldText, clear);
+		}
+		catch (PropertyVetoException pve)	
+		{
+		}
+		m_setting = false;
+	}
 	
 	/**
 	 *	Action - Info
@@ -353,25 +380,23 @@ public class VTaxes extends JComponent
 				"Mandatory: " + isMandatory());
 	}	//actionInfo
 
-}	//	VLocation
+}	//	VFile
 
-/*****************************************************************************/
-
-/**
+/******************************************************************************
  *	Mouse Listener for Popup Menu
  */
-final class VTaxes_mouseAdapter extends java.awt.event.MouseAdapter
+final class VFile_mouseAdapter extends java.awt.event.MouseAdapter
 {
 	/**
 	 *	Constructor
 	 *  @param adaptee adaptee
 	 */
-	VTaxes_mouseAdapter(VTaxes adaptee)
+	VFile_mouseAdapter(VFile adaptee)
 	{
-		this.m_adaptee = adaptee;
+		m_adaptee = adaptee;
 	}	//	VLookup_mouseAdapter
 
-	private VTaxes m_adaptee;
+	private VFile m_adaptee;
 
 	/**
 	 *	Mouse Listener
@@ -379,15 +404,11 @@ final class VTaxes_mouseAdapter extends java.awt.event.MouseAdapter
 	 */
 	public void mouseClicked(MouseEvent e)
 	{
+		
 		//	ActionInfo
 		if (SwingUtilities.isRightMouseButton(e) && ((e.getModifiers() & InputEvent.CTRL_MASK) != 0))	//ELTEK
 			m_adaptee.actionInfo(); // rsantana
 		
-		else
-		
-		//	popup menu
-		if (SwingUtilities.isRightMouseButton(e))
-			m_adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
 	}	//	mouse Clicked
 
-}	//	VTaxes_mouseAdapter
+}	//	VFile_mouseAdapter
