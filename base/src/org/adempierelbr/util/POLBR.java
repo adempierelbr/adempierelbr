@@ -567,6 +567,10 @@ public class POLBR{
 	} //getDocTypeAcct
 	
 	public static boolean get_ValueAsBoolean(Object oo){
+		return get_ValueAsBoolean(oo,false);
+	}
+	
+	public static boolean get_ValueAsBoolean(Object oo, boolean defaultValue){
 		
 		boolean value = false;
 		
@@ -577,6 +581,7 @@ public class POLBR{
 		 }
 		 else value = "Y".equals(oo);
 		}
+		else return defaultValue;
 		
 		return value;
 	}
