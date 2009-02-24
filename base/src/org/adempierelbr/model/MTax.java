@@ -545,7 +545,7 @@ public class MTax extends X_LBR_Tax {
 		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
 		if (isOrder)
