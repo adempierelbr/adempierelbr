@@ -36,6 +36,7 @@ import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MPriceList;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.PO;
 import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
@@ -356,6 +357,7 @@ public class MTax extends X_LBR_Tax {
 		Boolean hasWhSummary = false, hasLeastThanThreshold = false;
 		
 		boolean isOrder = true;
+		boolean isTaxIncluded = false;
 		
 		PO   document = null;
 		PO[] doctaxes = null;
@@ -363,11 +365,13 @@ public class MTax extends X_LBR_Tax {
 			document = order;
 			doctaxes = order.getTaxes(true);
 			isOrder  = true;
+			isTaxIncluded = order.isTaxIncluded();
 		}
 		else{
 			document = invoice;
 			doctaxes = invoice.getTaxes(true);
 			isOrder  = false;
+			isTaxIncluded = invoice.isTaxIncluded();
 		}
 		
 		Properties ctx    	  = document.getCtx();
@@ -431,6 +435,8 @@ public class MTax extends X_LBR_Tax {
 					
 					doctax.save(trx);
 					
+					boolean retroactive = MSysConfig.getBooleanValue("LBR_ALLOW_RETROACTIVE_SERVICETAX", true, document.getAD_Client_ID());
+					
 					//Invoice com retenção própria.
 					if(taxLines.length == 0)
 					{
@@ -453,56 +459,45 @@ public class MTax extends X_LBR_Tax {
 						
 						continue;
 					}
-					
-					//TODO: FAZER VALIDACAO PARA LANCAR RETROATIVO OU NAO
-					/*
-					else {
+										
+					else if (retroactive) {
 	
 						//Nesta etapa o imposto será lançado 
 						//com referência à outras ordens
 						for (int i=0; i < taxLines.length; i++)
 						{
-							int C_Invoice_ID = 0;
-							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx, taxLines.get(j), trx);
-							//MInvoiceTax newTax = TaxBR.getMInvoiceTax(ctx, invoice.getC_Invoice_ID(), iTax.getC_Tax_ID(), trx);
+							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx, taxLines[i], trx);
 							
+							BigDecimal TaxAmt     = (BigDecimal)doctax.get_Value("TaxAmt");
+							BigDecimal TaxBaseAmt = (BigDecimal)doctax.get_Value("TaxBaseAmt");
 							
-							BigDecimal TaxAmt     = iTax.getTaxAmt();
-							BigDecimal TaxBaseAmt = iTax.getTaxBaseAmt();
-							
-							//
-							//BigDecimal TaxAmt     = newTax.getTaxAmt();
-							//BigDecimal TaxBaseAmt = newTax.getTaxBaseAmt();
 							BigDecimal OldTaxAmt     = taxLine.getlbr_TaxAmt().setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP).negate();
 							BigDecimal OldTaxBaseAmt = taxLine.getlbr_TaxBaseAmt();
 							
-							iTax.setTaxAmt(TaxAmt.add(OldTaxAmt));
-							iTax.setTaxBaseAmt(TaxBaseAmt.add(OldTaxBaseAmt));
-							iTax.setIsTaxIncluded(invoice.isTaxIncluded());
-							iTax.save(trx);
+							TaxAmt     = TaxAmt.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP);
+							TaxBaseAmt = TaxBaseAmt.add(OldTaxBaseAmt).setScale(2, BigDecimal.ROUND_HALF_UP);
 							
-							//newTax.setTaxAmt(TaxAmt.add(OldTaxAmt));
-							//newTax.setTaxBaseAmt(TaxBaseAmt.add(OldTaxBaseAmt));
-							////newTax.setIsTaxIncluded(invoice.isTaxIncluded());
-							//newTax.save(trx);
+							saveDocTax(doctax,isOrder,Env.getAD_Org_ID(ctx),TaxAmt,TaxBaseAmt,isTaxIncluded,trx);
 							
-							grandTotal = invoice.getGrandTotal();
-							invoice.setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
-														
-							sql = "SELECT DISTINCT C_Invoice_ID FROM C_InvoiceLine WHERE LBR_Tax_ID=?";
-							C_Invoice_ID = DB.getSQLValue(trx, sql, taxLine.getLBR_Tax_ID());
-	
-							//Marcar que a fatura abaixo terá suas retenções em outra fatura.
-							MInvoice oldInvoice = new MInvoice(ctx, C_Invoice_ID, trx);
-							oldInvoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whInvoice);
-							oldInvoice.save();
+							if (isOrder){
+								BigDecimal grandTotal = ((MOrder)document).getGrandTotal();
+								((MOrder)document).setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+							}
+							else{
+								BigDecimal grandTotal = ((MInvoice)document).getGrandTotal();
+								((MInvoice)document).setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+							}
+							
+							setReferenceDoc(ctx, isOrder, whDocument,taxLine.getLBR_Tax_ID(),trx);
 							
 							hasWhSummary = true;
 						} //end for
 					
-						invoice.save();
+						if (isOrder)
+							((MOrder)document).save(trx);
+						else
+							((MInvoice)document).save(trx);
 					} //end if
-					 */
 				} //limiar atingido
 				
 			} //doctax
@@ -515,8 +510,7 @@ public class MTax extends X_LBR_Tax {
 			log.fine(pt.toString());
 			pt.apply((MInvoice)document);
 		}
-		
-		
+			
 		if(hasLeastThanThreshold)
 			log.warning("Retenções não contabilizadas, por não atingir o limiar.");
 		
@@ -677,6 +671,30 @@ public class MTax extends X_LBR_Tax {
 			return ((MInvoiceTax)doctax).save(trx);
 		}
 	} //saveDocTax
+	
+	private static boolean setReferenceDoc(Properties ctx, boolean isOrder, int whDocument, Integer LBR_Tax_ID, String trx){
+		
+		int Document_ID = 0;
+		String sql = "";
+		
+		if (isOrder)
+			sql = "SELECT DISTINCT C_Order_ID FROM C_OrderLine WHERE LBR_Tax_ID=?";
+		else
+			sql = "SELECT DISTINCT C_Invoice_ID FROM C_InvoiceLine WHERE LBR_Tax_ID=?";
+		
+		Document_ID = DB.getSQLValue(trx, sql, LBR_Tax_ID);
+
+		if (isOrder){
+			MOrder oldOrder = new MOrder(ctx, Document_ID, trx);
+			oldOrder.set_ValueOfColumn("LBR_Withhold_Order_ID", whDocument);
+			 return oldOrder.save(trx);
+		}
+		else{
+			MInvoice oldInvoice = new MInvoice(ctx, Document_ID, trx);
+			oldInvoice.set_ValueOfColumn("LBR_Withhold_Invoice_ID", whDocument);
+			return oldInvoice.save(trx);
+		}
+	} //setReferenceDoc
 	
 	/**************************************************************************
 	 * 	setDescription

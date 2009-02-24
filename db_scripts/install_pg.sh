@@ -22,7 +22,7 @@ echo "."
 echo "Password (ADEMPIERE): "
 read variavel
 export PGPASSWORD=$variavel
-for f in $(ls $1/*.sql); do
+for f in $(ls $1/postgresql/*.sql); do
 echo ". Executando Script" $f
 psql -d $2 -U $3 -f $f
 done

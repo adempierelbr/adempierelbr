@@ -12,7 +12,7 @@ ECHO .
 
 SET /p DBPASSWORD=Password (Usuário do Banco de Dados, ex.:ADEMPIERE): : 
 
-FOR %%f IN (%1\*.sql) DO sqlplus %3/%DBPASSWORD%@%2 @%%f
+FOR %%f IN (%1\oracle\*.sql) DO sqlplus %3/%DBPASSWORD%@%2 @%%f
 PAUSE
 EXIT
 

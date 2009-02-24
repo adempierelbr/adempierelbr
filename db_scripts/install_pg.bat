@@ -12,7 +12,7 @@ ECHO .
 
 SET /p PGPASSWORD=Password (ADEMPIERE): 
 
-FOR %%f IN (%1\*.sql) DO psql -d %2 -U %3 -f %%f
+FOR %%f IN (%1\postgresql\*.sql) DO psql -d %2 -U %3 -f %%f
 PAUSE
 EXIT
 
