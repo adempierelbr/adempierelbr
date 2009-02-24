@@ -43,3 +43,4 @@ UPDATE AD_Field SET IsSameLine='N',Updated=TO_DATE('2008-03-13 08:23:30','YYYY-M
 UPDATE AD_Field SET DisplayLogic='@lbr_IsBillPrinted@=''Y''', IsSameLine='Y', SeqNo=200, AD_FieldGroup_ID=1000000,Updated=TO_DATE('2008-03-13 08:23:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000870
 ;
 
+exit

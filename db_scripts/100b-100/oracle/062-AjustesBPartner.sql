@@ -48,3 +48,4 @@ UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR'' & @lbr_BPTypeBR@=''PF'
 UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR'' & @IsActive@=''Y''',Updated=TO_DATE('2008-03-13 10:18:03','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000426
 ;
 
+exit

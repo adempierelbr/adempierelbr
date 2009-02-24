@@ -318,3 +318,4 @@ UPDATE AD_Column SET DefaultValue='5',Updated=TO_DATE('2008-03-04 16:04:04','YYY
 UPDATE AD_Field SET Name='Sue Days', Description='Define the Sue Days', Help='Define the Sue Days' WHERE AD_Column_ID=1000739 AND IsCentrallyMaintained='Y'
 ;
 
+exit

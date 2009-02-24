@@ -698,3 +698,4 @@ UPDATE AD_Column SET Callout='org.compiere.model.CalloutInvoice.bPartner;org.ade
 UPDATE AD_Field SET Name='Business Partner ', Description='Identifies a Business Partner', Help='A Business Partner is anyone with whom you transact.  This can include Vendor, Customer, Employee or Salesperson' WHERE AD_Column_ID=3499 AND IsCentrallyMaintained='Y'
 ;
 
+exit

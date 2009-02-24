@@ -28,3 +28,4 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 ALTER TABLE M_Movement ADD M_InOut_ID NUMBER(10)
 ;
 
+exit

@@ -38,3 +38,4 @@ UPDATE AD_Column SET AD_Val_Rule_ID=1000010,Updated=TO_DATE('2008-03-18 11:23:18
 UPDATE AD_Field SET Name='Bank Account', Description='Account at the Bank', Help='The Bank Account identifies an account at this Bank.' WHERE AD_Column_ID=1000906 AND IsCentrallyMaintained='Y'
 ;
 
+exit

@@ -223,3 +223,4 @@ UPDATE AD_Column SET IsMandatory='Y',Updated=TO_DATE('2008-04-15 11:20:59','YYYY
 UPDATE AD_Field SET Name='Min. Value', Description='Minimum Value for a field', Help='The Minimum Value indicates the lowest  allowable value for a field.' WHERE AD_Column_ID=1000919 AND IsCentrallyMaintained='Y'
 ;
 
+exit

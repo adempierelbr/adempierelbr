@@ -53,3 +53,4 @@ UPDATE AD_Column SET AD_Reference_ID=34, IsMandatory='Y',Updated=TO_DATE('2008-0
 UPDATE AD_Field SET Name='Service Factor', Description='Define the Service Factor Formula', Help='Define the Service Factor Formula' WHERE AD_Column_ID=1000714 AND IsCentrallyMaintained='Y'
 ;
 
+exit

@@ -13,3 +13,4 @@ UPDATE AD_Column SET AD_Val_Rule_ID=1000007,Updated=TO_DATE('2008-02-26 19:12:59
 UPDATE AD_Field SET Name='Target Document Type', Description='Target document type for conversing documents', Help='You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.' WHERE AD_Column_ID=1000484 AND IsCentrallyMaintained='Y'
 ;
 
+exit

@@ -13,3 +13,4 @@ INSERT INTO AD_Reference_Trl (AD_Language,AD_Reference_ID, Description,Help,Name
 INSERT INTO AD_Ref_Table (AD_Client_ID,AD_Display,AD_Key,AD_Org_ID,AD_Reference_ID,AD_Table_ID,Created,CreatedBy,EntityType,IsActive,IsValueDisplayed,Updated,UpdatedBy,WhereClause) VALUES (0,1509,1501,0,1000038,217,TO_DATE('2008-07-29 19:32:42','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N',TO_DATE('2008-07-29 19:32:42','YYYY-MM-DD HH24:MI:SS'),100,'C_DocType.C_DocType_ID IN (SELECT C_DoctypeTarget_ID FROM LBR_OtherNFLink)')
 ;
 
+exit

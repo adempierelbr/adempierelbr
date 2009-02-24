@@ -18,3 +18,4 @@ INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLe
 INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLevel,Created,CreatedBy,Description,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1100004,'C',TO_DATE('2008-09-10 16:56:38','YYYY-MM-DD HH24:MI:SS'),100,'Y/N - Permite que um Envio/Recebimento seja feito com quantidade MAIOR que a ordem.','LBRA','Y','LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY',TO_DATE('2008-09-10 16:56:38','YYYY-MM-DD HH24:MI:SS'),100,'Y')
 ;
 
+exit

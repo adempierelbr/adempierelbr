@@ -323,3 +323,4 @@ UPDATE AD_Field SET DisplayLogic='@lbr_IsBillPrinted@=''Y''',Updated=TO_DATE('20
 UPDATE AD_Field SET SeqNo=0,IsDisplayed='N' WHERE AD_Field_ID=1000868
 ;
 
+exit

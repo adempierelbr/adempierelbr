@@ -128,3 +128,4 @@ UPDATE AD_Field SET SeqNo=70,IsDisplayed='Y' WHERE AD_Field_ID=1000630
 UPDATE AD_Field SET IsSameLine='Y',Updated=TO_DATE('2008-02-27 08:23:09','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000630
 ;
 
+exit

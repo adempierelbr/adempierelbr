@@ -43,3 +43,4 @@ UPDATE AD_Field SET IsSameLine='N',Updated=TO_DATE('2008-03-04 10:57:51','YYYY-M
 UPDATE AD_Field SET IsSameLine='Y',Updated=TO_DATE('2008-03-04 10:57:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000733
 ;
 
+exit

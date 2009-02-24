@@ -118,3 +118,4 @@ UPDATE AD_Field SET IsSameLine='Y', SeqNo=174, AD_FieldGroup_ID=125,Updated=TO_D
 UPDATE AD_Field SET SeqNo=172, AD_FieldGroup_ID=125,Updated=TO_DATE('2008-03-19 08:41:08','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000882
 ;
 
+exit

@@ -23,3 +23,4 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 ALTER TABLE C_Invoice ADD LBR_Withhold_Invoice_ID NUMBER(10)
 ;
 
+exit

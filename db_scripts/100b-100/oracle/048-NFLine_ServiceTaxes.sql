@@ -53,3 +53,4 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 UPDATE AD_Field SET DisplayLogic='@lbr_IsService@=''Y''',Updated=TO_DATE('2008-02-27 09:28:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000633
 ;
 
+exit

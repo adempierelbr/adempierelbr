@@ -118,3 +118,4 @@ UPDATE AD_Field SET DisplayLogic='@lbr_HasSubDoc@=''Y''', AD_FieldGroup_ID=104,U
 UPDATE AD_Field SET DisplayLogic='@lbr_HasSubDoc@=''Y''', AD_FieldGroup_ID=104,Updated=TO_DATE('2008-02-26 17:30:06','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000626
 ;
 
+exit
