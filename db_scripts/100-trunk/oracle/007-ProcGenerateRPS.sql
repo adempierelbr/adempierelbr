@@ -270,7 +270,6 @@ CREATE OR REPLACE VIEW adempiere.lbr_rps_v AS
     COALESCE(nf.description,(SELECT MAX(nfl.productname) 
                              FROM lbr_notafiscalline nfl 
                              WHERE nfl.lbr_notafiscal_id = nf.lbr_notafiscal_id)) AS discriminacao_dos_servicos 
-
 FROM lbr_notafiscal nf 
     INNER JOIN c_bpartner tomador ON (nf.c_bpartner_id = tomador.c_bpartner_id)
     INNER JOIN c_invoice inv ON (nf.c_invoice_id = inv.c_invoice_id)
