@@ -225,8 +225,9 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 03/02/2009 19h21min38s BRST
 -- Default comment for updating dictionary
-insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
-;
+-- Oracle Remark: Changed directly at the table creation
+--insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
+--;
 
 -- 04/02/2009 10h27min28s BRST
 -- Default comment for updating dictionary
@@ -261,62 +262,63 @@ UPDATE AD_Column SET IsParent='N',Updated=TO_TIMESTAMP('2009-02-04 10:29:32','YY
 
 -- 04/02/2009 10h29min35s BRST
 -- Default comment for updating dictionary
-insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
-;
+-- Oracle Remark: Changed directly at the table creation
+--insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
+--;
 
 -- 04/02/2009 10h29min41s BRST
 -- Default comment for updating dictionary
-insert into t_alter_column values('lbr_processlink','lbr_Dest_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
-;
+-- Oracle Remark: Changed directly at the table creation
+--insert into t_alter_column values('lbr_processlink','lbr_Dest_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
+--;
 
 DROP TABLE adempiere.lbr_processlink
 ;
 
 CREATE TABLE adempiere.lbr_processlink ( 
-    lbr_processlink_id       	numeric(10,0) NOT NULL,
-    ad_client_id             	numeric(10,0) NOT NULL,
-    ad_org_id                	numeric(10,0) NOT NULL,
-    isactive                 	char(1) NOT NULL DEFAULT 'Y'::bpchar,
-    created                  	timestamp NOT NULL,
-    createdby                	numeric(10,0) NOT NULL,
-    updated                  	timestamp NOT NULL,
-    updatedby                	numeric(10,0) NOT NULL,
-    lbr_ori_c_invoiceline_id 	numeric(10,0) NULL,
-    lbr_dest_c_invoiceline_id	numeric(10,0) NULL,
-    m_product_id             	numeric(10,0) NULL,
-    movementtype             	varchar(2) NULL,
-    movementqty              	numeric NULL,
-    m_attributesetinstance_id	numeric(10,0) NULL,
+    lbr_processlink_id       	number(10,0) NOT NULL,
+    ad_client_id             	number(10,0) NOT NULL,
+    ad_org_id                	number(10,0) NOT NULL,
+    isactive                 	char(1) DEFAULT 'Y' NOT NULL,
+    created                  	date NOT NULL,
+    createdby                	number(10,0) NOT NULL,
+    updated                  	date NOT NULL,
+    updatedby                	number(10,0) NOT NULL,
+    lbr_ori_c_invoiceline_id 	number(10,0) NULL,
+    lbr_dest_c_invoiceline_id	number(10,0) NULL,
+    m_product_id             	number(10,0) NULL,
+    movementtype             	nvarchar2(2) NULL,
+    movementqty              	number NULL,
+    m_attributesetinstance_id	number(10,0) NULL,
     PRIMARY KEY(lbr_processlink_id)
 )
-WITHOUT OIDS 
-TABLESPACE pg_default
 ;
+
 ALTER TABLE adempiere.lbr_processlink
     ADD CONSTRAINT lbr_processlink_isactive_check
-	CHECK (isactive = ANY (ARRAY['Y'::bpchar, 'N'::bpchar]))
+	CHECK (isactive IN ('Y', 'N'))
 ;
 
 
 -- 04/02/2009 11h44min32s BRST
 -- Default comment for updating dictionary
 --UPDATE AD_Column SET AD_Element_ID=1000347, ColumnName='lbr_Ref_C_InvoiceLine_ID', Description='Reference Invoice Line', Help='Reference Invoice Line', Name='lbr_Ref_C_InvoiceLine_ID',Updated=TO_TIMESTAMP('2009-02-04 11:44:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001022
-;
+--;
 
 -- 04/02/2009 11h44min32s BRST
 -- Default comment for updating dictionary
 --UPDATE AD_Column_Trl SET IsTranslated='N' WHERE AD_Column_ID=1001022
-;
+--;
 
 -- 04/02/2009 11h44min32s BRST
 -- Default comment for updating dictionary
 --UPDATE AD_Field SET Name='lbr_Ref_C_InvoiceLine_ID', Description='Reference Invoice Line', Help='Reference Invoice Line' WHERE AD_Column_ID=1001022 AND IsCentrallyMaintained='Y'
-;
+--;
 
 -- 04/02/2009 11h47min40s BRST
 -- Default comment for updating dictionary
 --insert into t_alter_column values('c_orderline','lbr_Ref_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
-;
+--;
 
 -- 04/02/2009 11h51min36s BRST
 -- Default comment for updating dictionary
@@ -335,8 +337,8 @@ UPDATE AD_Field SET Name='lbr_Ori_C_InvoiceLine_ID', Description='Origin Invoice
 
 -- 04/02/2009 11h51min38s BRST
 -- Default comment for updating dictionary
-insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
-;
+--insert into t_alter_column values('lbr_processlink','lbr_Ori_C_InvoiceLine_ID','NUMERIC(10)',null,'NULL')
+--;
 
 -- 06/02/2009 17h54min37s BRST
 -- Default comment for updating dictionary
@@ -557,3 +559,6 @@ UPDATE AD_Column SET IsUpdateable='N',Updated=TO_DATE('2009-02-11 18:45:02','YYY
 -- 26/01/2009 11h50min7s BRST
 -- Default comment for updating dictionary
 UPDATE AD_SysConfig SET Value='100-trunk/011-OtherNF_DocType_Minor_Tweaks.sql',Updated=TO_TIMESTAMP('2009-01-21 11:22:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
+
+exit

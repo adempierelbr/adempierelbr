@@ -40,7 +40,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 24/07/2008 13h39min11s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_ProcessLink ADD C_InvoiceLine_ID NUMBER(10) NOT NULL
+ALTER TABLE LBR_ProcessLink ADD C_InvoiceLine_ID NUMBER(10) NULL
 ;
 
 -- 24/07/2008 13h40min0s BRT

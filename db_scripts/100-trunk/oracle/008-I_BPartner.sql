@@ -10,7 +10,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h32min18s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN AD_Language VARCHAR(6)
+ALTER TABLE I_BPartner ADD AD_Language VARCHAR(6)
 ;
 
 -- 21/01/2009 14h33min23s BRST
@@ -25,7 +25,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h33min24s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_BPTypeBR VARCHAR(2)
+ALTER TABLE I_BPartner ADD lbr_BPTypeBR VARCHAR(2)
 ;
 
 -- 21/01/2009 14h34min20s BRST
@@ -40,7 +40,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h34min21s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_CNPJ VARCHAR(18)
+ALTER TABLE I_BPartner ADD lbr_CNPJ VARCHAR(18)
 ;
 
 -- 21/01/2009 14h35min24s BRST
@@ -55,7 +55,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h35min25s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_CPF VARCHAR(14)
+ALTER TABLE I_BPartner ADD lbr_CPF VARCHAR(14)
 ;
 
 -- 21/01/2009 14h36min21s BRST
@@ -70,7 +70,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h36min22s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_IE VARCHAR(30)
+ALTER TABLE I_BPartner ADD lbr_IE VARCHAR(30)
 ;
 
 -- 21/01/2009 14h36min44s BRST
@@ -90,7 +90,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h37min1s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_CCM VARCHAR(30)
+ALTER TABLE I_BPartner ADD lbr_CCM VARCHAR(30)
 ;
 
 -- 21/01/2009 14h37min47s BRST
@@ -105,7 +105,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h37min49s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN lbr_RG VARCHAR(30)
+ALTER TABLE I_BPartner ADD lbr_RG VARCHAR(30)
 ;
 
 -- 21/01/2009 14h38min56s BRST
@@ -120,7 +120,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h38min57s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN IsVendor CHAR(1) DEFAULT 'N' CHECK (IsVendor IN ('Y','N')) NOT NULL
+ALTER TABLE I_BPartner ADD IsVendor CHAR(1) DEFAULT 'N' CHECK (IsVendor IN ('Y','N')) NOT NULL
 ;
 
 -- 21/01/2009 14h39min22s BRST
@@ -135,7 +135,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h39min23s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN IsCustomer CHAR(1) DEFAULT 'N' CHECK (IsCustomer IN ('Y','N')) NOT NULL
+ALTER TABLE I_BPartner ADD IsCustomer CHAR(1) DEFAULT 'N' CHECK (IsCustomer IN ('Y','N')) NOT NULL
 ;
 
 -- 21/01/2009 14h39min56s BRST
@@ -150,7 +150,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 21/01/2009 14h39min57s BRST
 -- Default comment for updating dictionary
-ALTER TABLE I_BPartner ADD COLUMN IsSalesRep CHAR(1) DEFAULT 'N' CHECK (IsSalesRep IN ('Y','N')) NOT NULL
+ALTER TABLE I_BPartner ADD IsSalesRep CHAR(1) DEFAULT 'N' CHECK (IsSalesRep IN ('Y','N')) NOT NULL
 ;
 
 -- 21/01/2009 14h40min20s BRST
@@ -363,3 +363,4 @@ UPDATE AD_Field SET AD_FieldGroup_ID=1000000,Updated=TO_TIMESTAMP('2009-01-21 14
 UPDATE AD_SysConfig SET Value='100-trunk/008-I_BPartner.sql',Updated=TO_TIMESTAMP('2009-01-21 14:44:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
 ;
 
+exit

@@ -15,3 +15,5 @@ update ad_fieldgroup set entitytype = 'LBRA' where ad_fieldgroup_id between 1000
 update ad_field set entitytype = 'LBRA' where ad_field_id between 100000 and 1999999;
 update ad_menu set entitytype = 'LBRA' where ad_menu_id between 100000 and 1999999;
 update ad_column set entitytype = 'LBRA' where ad_column_id between 100000 and 1999999;
+
+exit
