@@ -27,7 +27,7 @@ ALTER TABLE adempiere.c_bpartner ADD	lbr_rg                     	nvarchar2(30) N
 ALTER TABLE adempiere.c_bpartner ADD	lbr_ccm                    	nvarchar2(30) NULL;
 ALTER TABLE adempiere.c_bpartner ADD	lbr_suframa                	nvarchar2(30) NULL;
 ALTER TABLE adempiere.c_bpartner ADD	lbr_ie                     	nvarchar2(30) NULL;
-ALTER TABLE adempiere.c_bpartner ADD	lbr_isieexempt             	char(1) DEFAULT 'N' NOT NULL;
+ALTER TABLE adempiere.c_bpartner ADD	lbr_isieexempt             	char(1) DEFAULT 'N' NULL;
 ALTER TABLE adempiere.c_bpartner ADD	lbr_bptypebrisvalid        	char(1) DEFAULT 'N' NOT NULL;
 ALTER TABLE adempiere.c_bpartner ADD	lbr_customercategory_id    	number(10,0) NULL;
 ALTER TABLE adempiere.c_bpartner ADD	lbr_vendorcategory_id      	number(10,0) NULL;

@@ -513,8 +513,8 @@ CREATE TABLE adempiere.lbr_taxformula (
 	updatedby          	number(10,0) NOT NULL,
 	lbr_taxname_id     	number(10,0) NOT NULL,
 	lbr_transactiontype	char(3) NOT NULL,
-	lbr_formula        	nvarchar2(1000) NOT NULL,
-	lbr_formulanetworth	nvarchar2(1000) NOT NULL 
+	lbr_formula        	nvarchar2(2000) NULL,
+	lbr_formulanetworth	nvarchar2(2000) NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxline ( 
