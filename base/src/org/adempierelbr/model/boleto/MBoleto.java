@@ -657,46 +657,33 @@ public class MBoleto extends X_LBR_Boleto
 	
 	public static void cancelBoleto(Properties ctx, int C_Invoice_ID, String trx){
 		
-		String sql = "SELECT LBR_Boleto_ID " + //1
-		 			 "FROM LBR_Boleto " +
-	                 "WHERE C_Invoice_ID = ? AND lbr_IsCancelled = 'N'"; //*1
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt(1, C_Invoice_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				MBoleto boleto = new MBoleto(ctx,rs.getInt(1),trx);
-				boleto.setlbr_IsCancelled(true);
-				boleto.save(trx);
-				
-				int LBR_CNAB_ID = MCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
-				if (LBR_CNAB_ID > 0){
-					MCNAB cnab = new MCNAB(ctx,LBR_CNAB_ID,trx);
-					cnab.setlbr_IsCancelled(true);
-					if (!cnab.save(trx)){
-						log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);
-					}
+		if (C_Invoice_ID <= 0)
+			return;
+		
+		MBoleto[] boletos = MBoleto.getBoleto(ctx, C_Invoice_ID, trx);
+		for(MBoleto boleto : boletos){
+			
+			boleto.setlbr_IsCancelled(true);
+			boleto.save(trx);
+			
+			int LBR_CNAB_ID = MCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
+			if (LBR_CNAB_ID > 0){
+				MCNAB cnab = new MCNAB(ctx,LBR_CNAB_ID,trx);
+				cnab.setlbr_IsCancelled(true);
+				if (!cnab.save(trx)){
+					log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);
 				}
 			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
+			
 		}
 		
-		sql = "UPDATE C_Invoice SET C_BankAccount_ID = NULL, lbr_IsBillPrinted = 'N' " +
-	          "WHERE C_Invoice_ID = " + C_Invoice_ID;
-
-		DB.executeUpdate(sql, trx);
-		
+		//Atualiza Fatura
+		MInvoice invoice = new MInvoice(ctx,C_Invoice_ID,trx);
+		invoice.set_ValueOfColumn("C_BankAccount_ID", null);
+		invoice.set_ValueOfColumn("lbr_IsBillPrinted", false);
+		if (!invoice.save(trx)){
+			log.log(Level.SEVERE, null, invoice);
+		}
 	}
 	
 } //MBoleto

@@ -15,21 +15,35 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.util.POLBR;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MConversionRate;
+import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MLocation;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrgInfo;
+import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
+import org.compiere.model.MShipper;
 import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.Query;
+import org.compiere.model.X_LBR_CFOP;
+import org.compiere.model.X_LBR_LegalMessage;
+import org.compiere.model.X_LBR_NCM;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_NotaFiscal;
@@ -58,6 +72,17 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	/**	Process Message */
 	private String		m_processMsg = null;
+	
+	/** REFERENCE */
+	public Map<String,String> m_refNCM  = new HashMap<String, String>(); //Referência NCM
+	public Map<String,String> m_refCFOP = new HashMap<String, String>(); //Referência CFOP
+	public ArrayList<Integer> m_refLegalMessage = new ArrayList<Integer>(); //Referência Mensagem Legal
+	
+	/** STRING */
+	String m_NCMReference  = "";
+	String m_CFOPNote      = "";
+	String m_CFOPReference = "";
+	String m_LegalMessage  = "";
 	
 	public String getProcessMsg() {
 		
@@ -88,6 +113,17 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		super(ctx, rs, trxName);
 	}
 	
+	public boolean save(String trxName){
+		
+		// Before Save
+		m_processMsg = ModelValidationEngine.get().fireModelChange(this,ModelValidator.TYPE_BEFORE_NEW);
+		if (m_processMsg != null){
+			return false;
+		}
+		
+		return super.save(trxName);
+	} //save
+	
 	/**************************************************************************
 	 *  getLines
 	 *  @return MNotaFiscalLine[] lines
@@ -96,6 +132,206 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	public MNotaFiscalLine[] getLines(){
 		return getLines(null);
 	}
+	
+	public MBPartnerLocation getBPartnerLocation(MOrder order, MInvoice invoice, MInOut shipment){
+		
+		MBPartnerLocation bpLocation = null;
+		
+		if (shipment.getC_BPartner_Location_ID() != 0){
+			bpLocation = new MBPartnerLocation(getCtx(),shipment.getC_BPartner_Location_ID(),get_TrxName());
+		}
+		else if (order.getC_BPartner_Location_ID() != 0){
+			bpLocation = new MBPartnerLocation(getCtx(),order.getC_BPartner_Location_ID(),get_TrxName());
+		}
+		else{
+			bpLocation = new MBPartnerLocation(getCtx(),invoice.getC_BPartner_Location_ID(),get_TrxName());
+		}
+		
+		return bpLocation;
+	} //getBPartnerLocation
+	
+	public void setOrgInfo(int AD_Org_ID){
+		
+		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID);
+		
+		setlbr_CNPJ(orgInfo.get_ValueAsString("lbr_CNPJ"));
+		setlbr_IE(orgInfo.get_ValueAsString("lbr_IE"));
+	} //setOrgInfo
+	
+	public void setBPartner(MBPartner bpartner, MBPartnerLocation bpLocation){
+		
+		setC_BPartner_ID(bpartner.getC_BPartner_ID());   /** C_BPartner_ID **/
+		setC_BPartner_Location_ID(bpLocation.getC_BPartner_Location_ID());   /** C_BPartner_Location_ID **/
+		setBPName(bpartner.getName());   //Nome Destinatário
+		setlbr_BPPhone(bpLocation.getPhone());   //Telefone Destinatário
+
+		setlbr_BPCNPJ(POLBR.getCNPJ(bpartner));   //CNPJ Destinatário
+		setlbr_BPIE(POLBR.getIE(bpartner));   //IE Destinatário
+		
+		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
+		setlbr_BPAddress1(location.getAddress1());   //Endereço Destinatário
+		setlbr_BPAddress2(location.getAddress2());   //Endereço Destinatário
+		setlbr_BPAddress3(location.getAddress3());   //Endereço Destinatário
+		setlbr_BPAddress4(location.getAddress4());   //Endereço Destinatário
+		setlbr_BPCity(location.getCity());   //Cidade Destinatário
+		setlbr_BPPostal(location.getPostal());   //CEP Destinatário
+			
+		MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+		setlbr_BPRegion(region.getName());   //Estado Destinatário
+			
+		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+		setlbr_BPCountry(country.getCountryCode());   //País Destinatário	
+	} //setBPartner
+	
+	public void setInvoiceBPartner(MInvoice invoice){
+		
+		setBill_Location_ID(invoice.getC_BPartner_Location_ID());   /** InvoiceLocation_ID **/
+		setC_PaymentTerm_ID(invoice.getC_PaymentTerm_ID());   /** C_PaymentTerm_ID **/
+			
+		setlbr_BPInvoiceCNPJ(POLBR.getCNPJ(getCtx(), invoice.getC_BPartner_ID()));   //CNPJ Fatura
+		setlbr_BPInvoiceIE(POLBR.getIE(getCtx(), invoice.getC_BPartner_ID()));   //IE Fatura
+			
+		MBPartnerLocation bpLocation = new MBPartnerLocation(getCtx(),invoice.getC_BPartner_Location_ID(),get_TrxName());
+		MLocation         location   = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
+		
+		setlbr_BPInvoiceAddress1(location.getAddress1());   //Endereço Fatura
+		setlbr_BPInvoiceAddress2(location.getAddress2());   //Endereço Fatura
+		setlbr_BPInvoiceAddress3(location.getAddress3());   //Endereço Fatura
+		setlbr_BPInvoiceAddress4(location.getAddress4());   //Endereço Fatura
+		setlbr_BPInvoiceCity(location.getCity());   //Cidade Fatura
+		setlbr_BPInvoicePostal(location.getPostal());   //CEP Fatura
+			
+		MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+		setlbr_BPInvoiceRegion(region.getName());   //Estado Fatura
+			
+		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+		setlbr_BPInvoiceCountry(country.getCountryCode());   //País Fatura
+	} //setInvoiceBPartner
+	
+	public void setShipmentBPartner(MInOut shipment){
+		
+		setlbr_BPDeliveryCNPJ(POLBR.getCNPJ(getCtx(), shipment.getC_BPartner_ID()));   //CNPJ Entrega
+		setlbr_BPDeliveryIE(POLBR.getIE(getCtx(), shipment.getC_BPartner_ID()));   //IE Entrega
+			
+		MBPartnerLocation bpLocation = new MBPartnerLocation(getCtx(),shipment.getC_BPartner_Location_ID(),get_TrxName());
+		MLocation         location   = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
+		
+		setlbr_BPDeliveryAddress1(location.getAddress1());   //Endereço Entrega
+		setlbr_BPDeliveryAddress2(location.getAddress2());   //Endereço Entrega
+		setlbr_BPDeliveryAddress3(location.getAddress3());   //Endereço Entrega
+		setlbr_BPDeliveryAddress4(location.getAddress4());   //Endereço Entrega
+		setlbr_BPDeliveryCity(location.getCity());   //Cidade Entrega
+		setlbr_BPDeliveryPostal(location.getPostal());   //CEP Entrega
+			
+		MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+		setlbr_BPDeliveryRegion(region.getName());   //Estado Entrega
+			
+		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+		setlbr_BPDeliveryCountry(country.getCountryCode());   //País Entrega
+			
+		setFreightCostRule(shipment.getFreightCostRule()); //Frete por Conta
+	} //setShipmentBPartner
+	
+	public void setShipper(MShipper shipper, String LicensePlate){
+		
+		setM_Shipper_ID(shipper.getM_Shipper_ID());
+		setlbr_BPShipperName(shipper.getName());
+		
+		MBPartner transp = new MBPartner(getCtx(),shipper.getC_BPartner_ID(),get_TrxName());
+		
+		setlbr_BPShipperCNPJ(POLBR.getCNPJ(transp));   //CNPJ Transportadora
+		setlbr_BPShipperIE(POLBR.getIE(transp));   //IE Transportadora
+		setlbr_BPShipperLicensePlate(LicensePlate);
+		
+		//Localização Transportadora
+		MBPartnerLocation[] transpLocations = transp.getLocations(false);
+		MLocation location = null;
+		
+		if (transpLocations.length > 0){
+
+			location = new MLocation(getCtx(),transpLocations[0].getC_Location_ID(),get_TrxName());
+			
+			setlbr_BPShipperAddress1(location.getAddress1());   //Endereço Transportadora
+			setlbr_BPShipperAddress2(location.getAddress2());   //Endereço Transportadora
+			setlbr_BPShipperAddress3(location.getAddress3());   //Endereço Transportadora
+			setlbr_BPShipperAddress4(location.getAddress4());   //Endereço Transportadora
+				
+			setlbr_BPShipperCity(location.getCity());   //Cidade Transportadora
+			setlbr_BPShipperPostal(location.getPostal());   //CEP Transportadora
+				
+			MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+			setlbr_BPShipperRegion(region.getName());   //Estado Transportadora
+				
+			MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+			setlbr_BPShipperCountry(country.getCountryCode());   //País Transportadora
+		}
+		
+	} //setShipper
+	
+	public String getNCM(Integer LBR_NCM_ID){
+		
+		if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
+			return null;
+		
+		X_LBR_NCM ncm = new X_LBR_NCM(getCtx(),LBR_NCM_ID,get_TrxName());
+		
+		String ncmName = ncm.getValue();
+		
+		if (!(ncmName == null || ncmName.equals(""))){
+				
+			if (m_refNCM.containsKey(ncmName)){
+				return m_refNCM.get(ncmName).toString();   //NCM
+			}
+			else {
+				String cl = TextUtil.alfab[m_refNCM.size()];
+				m_refNCM.put(ncmName, cl);
+				setNCMReference(ncmName,cl,true);
+				return cl;
+			}
+		}
+		
+		return null;
+	} //getNCM
+	
+	public String getCFOP(Integer LBR_CFOP_ID){
+		
+		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
+			return null;
+		
+		X_LBR_CFOP cfop = new X_LBR_CFOP(getCtx(),LBR_CFOP_ID,get_TrxName());
+		
+		String cfopName = cfop.getValue();
+		
+		if (!(cfopName == null || cfopName.equals(""))){
+			
+			if (m_refCFOP.containsKey(cfopName)){
+				return m_refCFOP.get(cfopName).toString();   //CFOP
+			}
+			else {
+				String cl = TextUtil.alfab[m_refCFOP.size()];
+				m_refCFOP.put(cfopName, cl);
+				setCFOPNote(cfop.getDescription() + ", ",true);
+				setCFOPReference(cfopName,cl,true);
+				return cl;
+			}
+		}
+		
+		return null;	
+	} //getCFOP
+	
+	public void setLegalMessage(Integer LBR_LegalMessage_ID){
+		
+		if (LBR_LegalMessage_ID == null || LBR_LegalMessage_ID.intValue() == 0)
+			return;
+		
+		X_LBR_LegalMessage lMessage = new X_LBR_LegalMessage(getCtx(),LBR_LegalMessage_ID,get_TrxName());
+			
+		if (!m_refLegalMessage.contains(LBR_LegalMessage_ID)){
+			
+			m_refLegalMessage.add(LBR_LegalMessage_ID);
+			setLegalMessage(lMessage.getTextMsg() + ", ",true);
+		}
+	} //setLegalMessage
 	
 	/**************************************************************************
 	 *  getLines
@@ -160,47 +396,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return documentno;
 	} //lastPrinted
-	
-	public String[] getCNPJ_IE(int C_BPartner_ID){
 		
-		String[] CNPJ_IE = {null,null};
-		
-		String  CNPJ = null;
-		String  IE   = null;
-		
-		MBPartner bpartner = new MBPartner(getCtx(),C_BPartner_ID,get_TrxName());
-				
-		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
-		
-		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
-		
-			if (BPTypeBR.equalsIgnoreCase("PJ")){
-				CNPJ = bpartner.get_ValueAsString("lbr_CNPJ");   //CNPJ
-				
-				boolean isIEExempt = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
-							
-				if (isIEExempt){
-					IE = "ISENTO";
-				}
-				else{
-					IE = bpartner.get_ValueAsString("lbr_IE");
-				}
-				
-			}
-			else if (BPTypeBR.equalsIgnoreCase("PF")){
-				CNPJ = bpartner.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
-				IE = "ISENTO";   //IE = ISENTO
-			}
-			
-		}
-		
-		CNPJ_IE[0] = CNPJ;
-		CNPJ_IE[1] = IE;
-		
-		return CNPJ_IE;
-	
-	}//getCNPJ_IE
-	
 	/**
 	 * Convert Amt
 	 * @throws Exception 
@@ -356,5 +552,67 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return true;
 	} //deleteLBR_NFLineTax
+
+	public String getNCMReference() {
+		return TextUtil.retiraPontoFinal(m_NCMReference);
+	}
+
+	private void setNCMReference(String ncmName, String cl, boolean concat) {
+		
+		if (concat){
+			if (m_NCMReference.equals("")){
+				m_NCMReference += "Classif: ";
+			}
+				
+			m_NCMReference += cl + "-" + ncmName + ", ";
+		}
+		else{
+			m_NCMReference = ncmName;
+		}
+	}
+
+	public String getCFOPNote() {
+		return TextUtil.retiraPontoFinal(m_CFOPNote);
+	}
+
+	private void setCFOPNote(String cfopNote, boolean concat) {
+		
+		if (concat){
+			m_CFOPNote += cfopNote;
+		}
+		else{
+			m_CFOPNote = cfopNote;
+		}
+	}
+
+	public String getCFOPReference() {
+		return TextUtil.retiraPontoFinal(m_CFOPReference);
+	}
+
+	private void setCFOPReference(String cfopName, String cl, boolean concat) {
+		if (concat){
+			if (m_CFOPReference.equals("")){
+				m_CFOPReference += "\nCFOP: ";
+			}
+				
+			m_CFOPReference += cl + "-" + cfopName + ", ";
+		}
+		else{
+			m_CFOPReference = cfopName;
+		}
+	}
+
+	public String getLegalMessage() {
+		return TextUtil.retiraPontoFinal(m_LegalMessage);
+	}
+
+	private void setLegalMessage(String legalMessage, boolean concat) {
+		if (concat){
+			m_LegalMessage += legalMessage;
+		}
+		else{
+			m_LegalMessage = legalMessage;
+		}
+	}
 	
 } //MNotaFiscal

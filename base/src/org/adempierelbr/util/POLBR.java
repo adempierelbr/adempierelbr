@@ -17,14 +17,12 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.boleto.MCNAB;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocator;
@@ -85,6 +83,42 @@ public class POLBR{
 		return C_Invoice_ID;
 		
 	}	//	getC_Invoice_ID
+	
+	public static int getM_InOut_ID(int C_Invoice_ID, String trx){
+		
+		Integer M_InOut_ID = null;
+				
+		String sql = "SELECT MAX(M_InOut_ID) " +
+				     "FROM M_InOutLine " +
+				     "WHERE M_InOutLine_ID IN " +
+				        "(SELECT M_InOutLine_ID " +
+				        "FROM C_InvoiceLine " +
+				        "WHERE C_Invoice_ID = ?)";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_Invoice_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 M_InOut_ID = rs.getInt(1);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		if (M_InOut_ID == null) M_InOut_ID = 0;
+		
+		return M_InOut_ID;	
+	} //getM_InOut_ID
 	
 	public static MInvoicePaySchedule[] getInvoicePaySchedule(Properties ctx, int C_Invoice_ID, String trx)
 	{
@@ -244,6 +278,61 @@ public class POLBR{
 		
 		return LBR_Boleto_ID;
 	}	//	getLBR_Boleto_ID
+	
+	public static String getCNPJ(Properties ctx, int C_BPartner_ID){
+		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		return getCNPJ(bpartner);
+	} //getCNPJ
+	
+	public static String getCNPJ(MBPartner bpartner){
+		
+		String  CNPJ = null;
+				
+		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+		
+			if (BPTypeBR.equalsIgnoreCase("PJ")){
+				CNPJ = bpartner.get_ValueAsString("lbr_CNPJ");   //CNPJ
+			}
+			else if (BPTypeBR.equalsIgnoreCase("PF")){
+				CNPJ = bpartner.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
+			}
+			
+		}
+		
+		return CNPJ;
+	}//getCNPJ
+	
+	public static String getIE(Properties ctx, int C_BPartner_ID){
+		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		return getIE(bpartner);
+	} //getCNPJ
+	
+	public static String getIE(MBPartner bpartner){
+		
+		String  IE   = null;
+				
+		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+		
+				boolean isIEExempt = POLBR.get_ValueAsBoolean(bpartner.get_Value("lbr_IsIEExempt"));
+							
+				if (isIEExempt){
+					IE = "ISENTO";
+				}
+				else{
+					IE = bpartner.get_ValueAsString("lbr_IE");
+				}
+				
+		}
+		
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+		
+		return IE;
+	}//getIE
 	
 	/**
 	 * 	Returns the locator ID created automatically for 
