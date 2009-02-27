@@ -90,8 +90,6 @@ public class FormNotaFiscal extends CPanel
 	
 	private static final int       LBR_DocPrint_ID  = 2000000; // Documento de Impressão Padrão  
 	
-	private static Timestamp envDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
-
 	/**
 	 *	Initialize Panel
 	 *  @param WindowNo window
@@ -226,7 +224,6 @@ public class FormNotaFiscal extends CPanel
 		markButton.addActionListener(this);
 		
 		fDateDoc.addVetoableChangeListener(this);
-		envDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 		
 	}	//	jbInit
 
@@ -296,7 +293,9 @@ public class FormNotaFiscal extends CPanel
 		//  Create SQL
 		
 		int index = 0;
-		boolean documentno = false;
+		boolean documentno  = false;
+		Timestamp startDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
+		Timestamp actualDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 
 		StringBuffer sql = new StringBuffer(
 				    "SELECT distinct nf.LBR_NotaFiscal_ID, o.Name, nf.DocumentNo, bp.Name, nf.DateDoc ");
@@ -334,14 +333,15 @@ public class FormNotaFiscal extends CPanel
 				}
 				
 				if (index == 0 && printedNF.isSelected() && !documentno){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
-					sql.append("AND nf.DateDoc BETWEEN (?::timestamp - integer '");
-					sql.append(interval);
-					sql.append("') AND ? ");
+					
+					startDate = POLBR.addDays(actualDate, Integer.parseInt(interval) * -1);
+					
+					sql.append("AND nf.DateDoc BETWEEN ? AND ?");
 					index = 4;
 					
 					statusBar.setStatusLine("Intervalo definido entre " + 
-							POLBR.dateTostring(POLBR.addDays(envDate, Integer.parseInt(interval) * -1),"dd/MM/yyyy") + " e " + 
-							POLBR.dateTostring(envDate,"dd/MM/yyyy"));
+							POLBR.dateTostring(startDate,"dd/MM/yyyy") + " e " + 
+							POLBR.dateTostring(actualDate,"dd/MM/yyyy"));
 				}
 				
 				sql.append("ORDER BY nf.DocumentNo, DateDoc, o.Name, bp.Name");
@@ -363,8 +363,8 @@ public class FormNotaFiscal extends CPanel
 				pstmt.setInt(3, (Integer)m_C_BPartner_ID);
 			}
 			else if (index == 4){
-				pstmt.setTimestamp(2, envDate);
-				pstmt.setTimestamp(3, envDate);
+				pstmt.setTimestamp(2, startDate);
+				pstmt.setTimestamp(3, actualDate);
 			}
 			rs = pstmt.executeQuery();
 			//
@@ -486,31 +486,14 @@ public class FormNotaFiscal extends CPanel
 	    
 		MDocPrint DoctypePrint = new MDocPrint(ctx,orgDocPrint_ID,null);
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
-	    		
+		
 		Integer[] selection = getSelection();
 		for (int i=0;i<selection.length;i++){
-			
-			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
-						
-			//check lastPrinted
-			if (i == 0 && !printedNF.isSelected()){
-				Integer lastPrinted = NotaFiscal.lastPrinted();
-				if (lastPrinted != null && lastPrinted.intValue() != 0){
-					Integer documentNo = Integer.parseInt(NotaFiscal.getDocumentNo());
-					if (documentNo.intValue() != lastPrinted.intValue() + 1){
-						 boolean answer = ADialog.ask(m_WindowNo, this, null,
-								 "Última Nota Impressa: " + lastPrinted + "\n" +
-								 "Nota Selecionada: " + documentNo + "\n\n" +
-								 "Continuar Impressão ?");
-						 if (!answer)
-							 return;
-					}
-				}
-			}
 			
 			if (i != 0)
 				DoctypePrint.newPage();
 			
+			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
 			ProcPrintNF.print(ctx,selection[i], MatrixPrinter, DoctypePrint, null);
 			
 			NotaFiscal.setIsPrinted(true);

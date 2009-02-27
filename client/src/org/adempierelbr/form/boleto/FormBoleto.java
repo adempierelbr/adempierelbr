@@ -59,8 +59,6 @@ public class FormBoleto extends CPanel
 	
 	private static final String    interval         = "7";     // Intervalo de Datas
 
-	private static Timestamp envDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
-
 	/**
 	 *	Initialize Panel
 	 *  @param WindowNo window
@@ -207,7 +205,6 @@ public class FormBoleto extends CPanel
 		markButton.addActionListener(this);
 		
 		fDateInvoiced.addVetoableChangeListener(this);
-		envDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 		
 	}	//	jbInit
 
@@ -282,6 +279,8 @@ public class FormBoleto extends CPanel
 		//  Create SQL
 		
 		int index = 0;
+		Timestamp startDate  = Env.getContextAsDate(Env.getCtx(), "#Date");
+		Timestamp actualDate = Env.getContextAsDate(Env.getCtx(), "#Date");
 
 		StringBuffer sql = new StringBuffer(
 				"SELECT distinct i.C_Invoice_ID, o.Name, i.DocumentNo, nf.DocumentNo, bp.Name, pt.Name, min(i.DateInvoiced) as DateInvoiced, i.GrandTotal " +
@@ -316,14 +315,15 @@ public class FormBoleto extends CPanel
 				}
 				
 				if (index == 0 && printedBill.isSelected()){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
-					sql.append("AND i.DateInvoiced BETWEEN (?::timestamp - integer '");
-					sql.append(interval);
-					sql.append("') AND ? ");
+					
+					startDate = POLBR.addDays(actualDate, Integer.parseInt(interval) * -1);
+					
+					sql.append("AND nf.DateDoc BETWEEN ? AND ?");
 					index = 4;
 					
 					statusBar.setStatusLine("Intervalo definido entre " + 
-							POLBR.dateTostring(POLBR.addDays(envDate, Integer.parseInt(interval) * -1),"dd/MM/yyyy") + " e " + 
-							POLBR.dateTostring(envDate,"dd/MM/yyyy"));
+							POLBR.dateTostring(startDate,"dd/MM/yyyy") + " e " + 
+							POLBR.dateTostring(actualDate,"dd/MM/yyyy"));
 				}
 				
 				sql.append("GROUP BY i.C_Invoice_ID, o.Name, i.DocumentNo, nf.DocumentNo, bp.Name, pt.Name, i.GrandTotal " +
@@ -346,8 +346,8 @@ public class FormBoleto extends CPanel
 				pstmt.setInt(3, (Integer)m_C_BPartner_ID);
 			}
 			else if (index == 4){
-				pstmt.setTimestamp(2, envDate);
-				pstmt.setTimestamp(3, envDate);
+				pstmt.setTimestamp(2, startDate);
+				pstmt.setTimestamp(3, actualDate);
 			}
 			rs = pstmt.executeQuery();
 			//
