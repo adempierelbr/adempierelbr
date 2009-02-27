@@ -18,6 +18,8 @@ import java.util.Properties;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MTable;
+import org.compiere.model.ModelValidationEngine;
+import org.compiere.model.ModelValidator;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscalLine;
@@ -37,6 +39,17 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**	Process Message */
+	private String		m_processMsg = null;
+	
+	public String getProcessMsg() {
+		
+		if (m_processMsg == null)
+			m_processMsg = "";
+		
+		return m_processMsg;
+	}
 
 	/**************************************************************************
 	 *  Default Constructor

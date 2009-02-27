@@ -112,17 +112,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	{
 		super(ctx, rs, trxName);
 	}
-	
-	public boolean save(String trxName){
-		
-		// Before Save
-		m_processMsg = ModelValidationEngine.get().fireModelChange(this,ModelValidator.TYPE_BEFORE_NEW);
-		if (m_processMsg != null){
-			return false;
-		}
-		
-		return super.save(trxName);
-	} //save
+
 	
 	/**************************************************************************
 	 *  getLines
@@ -133,17 +123,26 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return getLines(null);
 	}
 	
+	public void setDescription(String description){
+		if (description == null)
+			super.setDescription("");
+		else{
+			description = description.replaceAll("null", " ");
+			super.setDescription(description.trim());
+		}
+	}
+	
 	public MBPartnerLocation getBPartnerLocation(MOrder order, MInvoice invoice, MInOut shipment){
 		
 		MBPartnerLocation bpLocation = null;
 		
-		if (shipment.getC_BPartner_Location_ID() != 0){
+		if (shipment != null && shipment.getC_BPartner_Location_ID() != 0){
 			bpLocation = new MBPartnerLocation(getCtx(),shipment.getC_BPartner_Location_ID(),get_TrxName());
 		}
-		else if (order.getC_BPartner_Location_ID() != 0){
+		else if (order != null && order.getC_BPartner_Location_ID() != 0){
 			bpLocation = new MBPartnerLocation(getCtx(),order.getC_BPartner_Location_ID(),get_TrxName());
 		}
-		else{
+		else if (invoice != null){
 			bpLocation = new MBPartnerLocation(getCtx(),invoice.getC_BPartner_Location_ID(),get_TrxName());
 		}
 		
@@ -159,6 +158,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	} //setOrgInfo
 	
 	public void setBPartner(MBPartner bpartner, MBPartnerLocation bpLocation){
+		
+		if (bpartner == null || bpLocation == null)
+			return;
 		
 		setC_BPartner_ID(bpartner.getC_BPartner_ID());   /** C_BPartner_ID **/
 		setC_BPartner_Location_ID(bpLocation.getC_BPartner_Location_ID());   /** C_BPartner_Location_ID **/
@@ -185,6 +187,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	public void setInvoiceBPartner(MInvoice invoice){
 		
+		if (invoice == null)
+			return;
+		
 		setBill_Location_ID(invoice.getC_BPartner_Location_ID());   /** InvoiceLocation_ID **/
 		setC_PaymentTerm_ID(invoice.getC_PaymentTerm_ID());   /** C_PaymentTerm_ID **/
 			
@@ -210,6 +215,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	public void setShipmentBPartner(MInOut shipment){
 		
+		if (shipment == null)
+			return;
+		
 		setlbr_BPDeliveryCNPJ(POLBR.getCNPJ(getCtx(), shipment.getC_BPartner_ID()));   //CNPJ Entrega
 		setlbr_BPDeliveryIE(POLBR.getIE(getCtx(), shipment.getC_BPartner_ID()));   //IE Entrega
 			
@@ -234,6 +242,10 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	
 	public void setShipper(MShipper shipper, String LicensePlate){
 		
+		setlbr_BPShipperLicensePlate(LicensePlate);
+		if (shipper == null)
+			return;
+		
 		setM_Shipper_ID(shipper.getM_Shipper_ID());
 		setlbr_BPShipperName(shipper.getName());
 		
@@ -241,7 +253,6 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		setlbr_BPShipperCNPJ(POLBR.getCNPJ(transp));   //CNPJ Transportadora
 		setlbr_BPShipperIE(POLBR.getIE(transp));   //IE Transportadora
-		setlbr_BPShipperLicensePlate(LicensePlate);
 		
 		//Localização Transportadora
 		MBPartnerLocation[] transpLocations = transp.getLocations(false);
@@ -592,10 +603,10 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	private void setCFOPReference(String cfopName, String cl, boolean concat) {
 		if (concat){
 			if (m_CFOPReference.equals("")){
-				m_CFOPReference += "\nCFOP: ";
+				m_CFOPReference += "";
 			}
 				
-			m_CFOPReference += cl + "-" + cfopName + ", ";
+			m_CFOPReference += cfopName + "/";
 		}
 		else{
 			m_CFOPReference = cfopName;
@@ -614,5 +625,24 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			m_LegalMessage = legalMessage;
 		}
 	}
+	
+	/**  
+	 * UTILIZAR POLBR.getCNPJ ou POLBR.getIE
+	 * @deprecated
+	 */
+	public String[] getCNPJ_IE(int C_BPartner_ID){
+		
+		String[] CNPJ_IE = {null,null};
+				
+		MBPartner bpartner = new MBPartner(getCtx(),C_BPartner_ID,get_TrxName());
+		
+		String  CNPJ = POLBR.getCNPJ(bpartner);
+		String  IE   = POLBR.getIE(bpartner);
+		
+		CNPJ_IE[0] = CNPJ;
+		CNPJ_IE[1] = IE;
+		
+		return CNPJ_IE;
+	}//getCNPJ_IE
 	
 } //MNotaFiscal

@@ -99,17 +99,6 @@ public class MBoleto extends X_LBR_Boleto
 		super(ctx, rs, trxName);
 	}
 	
-	public boolean save(String trxName){
-		
-		// Before Save
-		m_processMsg = ModelValidationEngine.get().fireModelChange(this,ModelValidator.TYPE_BEFORE_NEW);
-		if (m_processMsg != null){
-			return false;
-		}
-		
-		return super.save(trxName);
-	} //save
-	
 	public static MBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 		
 		String whereClause = "C_Invoice_ID = ? AND lbr_IsCancelled = 'N'";

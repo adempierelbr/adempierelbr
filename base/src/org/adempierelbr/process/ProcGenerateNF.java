@@ -204,7 +204,6 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setM_InOut_ID(shipment.getM_InOut_ID());   /** M_InOut_ID **/
 			
 			String description = order.get_ValueAsString("lbr_NFDescription");
-			       description = description.replaceAll("null", "");
 			NotaFiscal.setDescription(description); //Observação Nota Fiscal
 				
 			/** Parceiro de Negócios **/
@@ -229,7 +228,6 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
 			NotaFiscal.setNoPackages(new BigDecimal(shipment.getNoPackages()));   //Quantidade/Volumes
-			NotaFiscal.setProcessed(true);
 			NotaFiscal.save(trx);
 				
 			TaxBR.setNFTax(ctx, invoice.getC_Invoice_ID(), NotaFiscal.getLBR_NotaFiscal_ID(), trx);
@@ -370,6 +368,7 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_CFOPReference(NotaFiscal.getCFOPReference()); //Referência CFOP
 			NotaFiscal.setDocumentNote(NotaFiscal.getLegalMessage()); //Mensagens Legais
 	
+			NotaFiscal.setProcessed(true);
 			NotaFiscal.save(trx);
 				
 			LBR_NotaFiscal_ID = NotaFiscal.getLBR_NotaFiscal_ID();
