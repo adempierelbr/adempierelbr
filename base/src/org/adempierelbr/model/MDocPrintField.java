@@ -12,17 +12,16 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_DocPrintField;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 
 /**
  *	MDocPrintField
@@ -40,7 +39,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	private static final long serialVersionUID = 1L;
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MDocPrintField.class);
+	public static CLogger log = CLogger.getCLogger(MDocPrintField.class);
 	
 	/** Value           */
 	private String value = "";
@@ -53,6 +52,17 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 */
 	public MDocPrintField(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
+	}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MDocPrintField (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
 	}
 	
 	/**************************************************************************
@@ -180,35 +190,16 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 */
 	public static MDocPrintField[] getFields(Properties ctx, int LBR_DocPrint_ID)
 	{
-		ArrayList<MDocPrintField> list = new ArrayList<MDocPrintField> ();
-		String sql = "SELECT LBR_DocPrintField_ID " +
-				     "FROM LBR_DocPrintField " +
-				     "WHERE LBR_DocPrint_ID = ? " + //1
-				     "AND IsActive='Y' ORDER By lbr_RowNo asc, lbr_ColumnNo asc";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql, null);
-			pstmt.setInt(1, LBR_DocPrint_ID);
-			rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				MDocPrintField Field = new MDocPrintField(ctx, rs.getInt(1), null);
-				list.add(Field);
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql.toString(), e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-		//
-		MDocPrintField[] lines = new MDocPrintField[list.size ()];
-		list.toArray (lines);
-		return lines;
+		String whereClause = "LBR_DocPrint_ID = ? AND IsActive = 'Y'";
+		
+		MTable table = MTable.get(ctx, MDocPrintField.Table_Name);		
+		Query query =  new Query(table, whereClause, null);
+	 		  query.setParameters(new Object[]{LBR_DocPrint_ID});
+	 		  query.setOrderBy("lbr_RowNo, lbr_ColumnNo");
+		
+		List<MDocPrintField> list = query.list();
+		
+		return list.toArray(new MDocPrintField[list.size()]);	
 	}	//	getFields
 	
 	

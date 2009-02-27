@@ -47,6 +47,17 @@ public class MICMSMatrix extends X_LBR_ICMSMatrix {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MICMSMatrix (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	/**************************************************************************
 	 *  get Matrix_ID
 	 *  @return X_LBR_TaxLine[] lines

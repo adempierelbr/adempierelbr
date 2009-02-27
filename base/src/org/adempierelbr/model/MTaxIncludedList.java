@@ -15,9 +15,12 @@ package org.adempierelbr.model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_TaxIncludedList;
 import org.compiere.model.X_LBR_TaxName;
 import org.compiere.util.CLogger;
@@ -48,6 +51,17 @@ public class MTaxIncludedList extends X_LBR_TaxIncludedList {
 	 */
 	public MTaxIncludedList(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
+	}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MTaxIncludedList (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
 	}
 	
 	/**************************************************************************
@@ -116,48 +130,25 @@ public class MTaxIncludedList extends X_LBR_TaxIncludedList {
 	
 	/**************************************************************************
 	 *  getList
-	 *  @return ArrayList<MTaxIncludedList> list
+	 *  @return List<MTaxIncludedList> list
 	 */
-	public static ArrayList<MTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
+	public static List<MTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
 		
-		String sql = "SELECT LBR_TaxIncludedList_ID " +
-				     "FROM LBR_TaxIncludedList " +
-				     "WHERE IsActive = 'Y' " +
-				     "AND M_PriceList_ID = ?";
-
-		ArrayList<MTaxIncludedList> list = new ArrayList<MTaxIncludedList>();
+		String whereClause = "M_PriceList_ID = ? AND IsActive = 'Y' ";
 		
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt(1, M_PriceList_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				MTaxIncludedList tList = new MTaxIncludedList(ctx,rs.getInt(1),trx);
-				list.add(tList);
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
+		MTable table = MTable.get(ctx, MTaxIncludedList.Table_Name);		
+		Query query =  new Query(table, whereClause, trx);
+	 		  query.setParameters(new Object[]{M_PriceList_ID});
+	 		
+		List<MTaxIncludedList> list = query.list();
 		
-		return list;
+		return list;	
 	} //getList
 	
 	public static MTaxIncludedList[] getArray(Properties ctx, int M_PriceList_ID, String trx){
 		
-		ArrayList<MTaxIncludedList> list = MTaxIncludedList.getList(ctx, M_PriceList_ID, trx);
-		MTaxIncludedList[] retValue = new MTaxIncludedList[list.size()];
-		list.toArray(retValue);
-		
-		return retValue;
+		List<MTaxIncludedList> list = MTaxIncludedList.getList(ctx, M_PriceList_ID, trx);
+		return list.toArray(new MTaxIncludedList[list.size()]);
 	} //getArray
 		
 } //MTaxIncludedList

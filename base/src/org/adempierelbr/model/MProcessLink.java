@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.compiere.model.X_LBR_ProcessLink;
@@ -44,4 +45,16 @@ public class MProcessLink extends X_LBR_ProcessLink
 	public MProcessLink(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
-}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MProcessLink (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
+} //MProcessLink

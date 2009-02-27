@@ -47,6 +47,17 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MISSMatrix (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	/**************************************************************************
 	 *  get Matrix_ID
 	 *  @return X_LBR_TaxLine[] lines

@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.compiere.model.MSysConfig;
@@ -53,6 +54,17 @@ public class MDocPrint extends X_LBR_DocPrint {
 	 */
 	public MDocPrint(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
+	}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MDocPrint (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
 	}
 		
 	public void startJob(String PrinterType, String PrinterName, 

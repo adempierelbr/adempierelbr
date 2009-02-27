@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -46,8 +47,10 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
+import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_Bank;
 import org.compiere.model.X_LBR_Boleto;
 import org.compiere.util.CLogger;
@@ -85,6 +88,17 @@ public class MBoleto extends X_LBR_Boleto
 		super(ctx,LBR_Boleto_ID,trx);
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MBoleto (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	public boolean save(String trxName){
 		
 		// Before Save
@@ -98,34 +112,15 @@ public class MBoleto extends X_LBR_Boleto
 	
 	public static MBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 		
-		String sql = "SELECT LBR_Boleto_ID " + //1
-					 "FROM LBR_Boleto " +
-					 "WHERE lbr_IsCancelled = 'N' AND C_Invoice_ID = ?"; //*1
-
-		ArrayList<MBoleto> list = new ArrayList<MBoleto>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt(1, C_Invoice_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				list.add (new MBoleto(ctx,rs.getInt(1),trx));
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
+		String whereClause = "C_Invoice_ID = ? AND lbr_IsCancelled = 'N'";
 		
-		MBoleto[] retValue = new MBoleto[list.size()];
-		list.toArray(retValue);
-		return retValue;
+		MTable table = MTable.get(ctx, MBoleto.Table_Name);		
+		Query query =  new Query(table, whereClause, trx);
+	 		  query.setParameters(new Object[]{C_Invoice_ID});
+	 		
+		List<MBoleto> list = query.list();
+		
+		return list.toArray(new MBoleto[list.size()]);	
 	}
 	
 	/**

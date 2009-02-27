@@ -15,7 +15,7 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -26,8 +26,10 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MSequence;
+import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_NotaFiscal;
@@ -75,6 +77,17 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MNotaFiscal (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	/**************************************************************************
 	 *  getLines
 	 *  @return MNotaFiscalLine[] lines
@@ -91,38 +104,19 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 */
 	public MNotaFiscalLine[] getLines(String orderBy){
 		
-		String sql = "SELECT LBR_NotaFiscalLine_ID " + //1
-		 			 "FROM LBR_NotaFiscalLine " +
-		 			 "WHERE LBR_NotaFiscal_ID = ? "; //*1
+		String whereClause = "LBR_NotaFiscal_ID = ?";
 		
-		if (orderBy != null && !orderBy.equals(""))
-			sql += orderBy;
-
-		ArrayList<MNotaFiscalLine> list = new ArrayList<MNotaFiscalLine>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, get_TrxName());
-			pstmt.setInt(1, getLBR_NotaFiscal_ID());
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				list.add (new MNotaFiscalLine(getCtx(),rs.getInt(1),get_TrxName()));
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-
-		MNotaFiscalLine[] retValue = new MNotaFiscalLine[list.size()];
-		list.toArray(retValue);
-		return retValue;
+		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()});
+	 	
+	 	orderBy = POLBR.checkOrderBy(orderBy);
+	 	if (orderBy != null)
+	 		  query.setOrderBy(orderBy);
 		
+		List<MNotaFiscalLine> list = query.list();
+		
+		return list.toArray(new MNotaFiscalLine[list.size()]);	
 	} //getLines
 	
 	/**************************************************************************

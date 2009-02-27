@@ -50,6 +50,17 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MTaxConfiguration (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	public static boolean hasSOTrx(Properties ctx, int LBR_TaxConfiguration_ID, int M_Product_ID, int LBR_FiscalGroup_Product_ID, String trx){
 		
 		String sql = "SELECT * " + //1

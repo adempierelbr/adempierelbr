@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -26,11 +26,15 @@ import org.adempierelbr.model.boleto.bank.MBradesco;
 import org.adempierelbr.model.boleto.bank.MHsbc;
 import org.adempierelbr.model.boleto.bank.MItau;
 import org.adempierelbr.model.boleto.bank.MSantander_033;
+import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBankAccount;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_CNAB;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
 
 /**
  * MCNAB
@@ -70,6 +74,17 @@ public class MCNAB extends X_LBR_CNAB
 	public MCNAB(Properties ctx, int LBR_CNAB_ID, String trx) {
     	super(ctx,LBR_CNAB_ID,trx);
     }
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MCNAB (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
 	
 	public static void generateFile(int bNum, String fileName, Timestamp DateFrom,
 			                        Timestamp DateTo, MBankAccount BankA, String trx) throws IOException{
@@ -231,45 +246,27 @@ public class MCNAB extends X_LBR_CNAB
 	public static MCNAB[] getFields(String where, Timestamp DateFrom, Timestamp DateTo, String trx){
 		
 		Properties ctx = Env.getCtx();
-	    PreparedStatement pstmt = null;
-	 	ResultSet rs = null;
+
+		String whereClause = "lbr_DocDate BETWEEN ? AND ? " +
+				             "AND AD_Client_ID = ? " +
+				             "AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
 		
-	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " + where;
-	           sql += " AND lbr_DocDate BETWEEN ? AND ?";
-	           sql += " AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
-	           sql += " AND AD_Client_ID = ?";
-	           
-	 	ArrayList<MCNAB> list = new ArrayList<MCNAB>();
-	 	
-		try
-    	{
-    		pstmt = DB.prepareStatement (sql.trim(), trx);
-    		pstmt.setTimestamp(1, DateFrom);
-    		pstmt.setTimestamp(2, DateTo);
-    		pstmt.setInt(3, Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
-    		rs = pstmt.executeQuery ();
-    		while (rs.next ())
-    		{
-    			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
-    			list.add(cnab);  
-    		}
-    	}
-    	catch (Exception e)
-    	{
-    		log.log(Level.SEVERE, "", e);
-    	}
-    	finally{
-    	       DB.close(rs, pstmt);
-    	}
+		where = POLBR.checkWhereClause(where);
+		if (where != null)
+			whereClause += " AND " + where;
 		
-		
-		MCNAB[] lines = new MCNAB[list.size()];
-		list.toArray(lines);
+		MTable table = MTable.get(ctx, MCNAB.Table_Name);		
+		Query query =  new Query(table, whereClause, trx);
+	 		  query.setParameters(new Object[]{TimeUtil.getDay(DateFrom), 
+	 				                           TimeUtil.getDay(DateTo), 
+	 				                           Env.getAD_Client_ID(ctx)});
+	 		
+		List<MCNAB> list = query.list();
 		
 		//MARCA BOLETOS COMO REGISTRADOS
-		setIsRegistered(DateFrom,DateTo,where,Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"),trx);
+		setIsRegistered(DateFrom,DateTo,where,Env.getAD_Client_ID(ctx),trx);
 		
-		return lines;
+		return list.toArray(new MCNAB[list.size()]);
 	} //getFields
 	
 	/**************************************************************************
@@ -281,41 +278,19 @@ public class MCNAB extends X_LBR_CNAB
 	public static MCNAB[] getFields(int C_BankAccount_ID, String trx){
 		
 		Properties ctx = Env.getCtx();
-	    PreparedStatement pstmt = null;
-	 	ResultSet rs = null;
-		
-	 	String sql = "SELECT LBR_CNAB_ID FROM LBR_CNAB " +
-	 			     "WHERE C_BankAccount_ID = ? AND IsSelected = 'Y'";
-	           
-	 	ArrayList<MCNAB> list = new ArrayList<MCNAB>();
-	 	
-		try
-    	{
-    		pstmt = DB.prepareStatement (sql.trim(), trx);
-    		pstmt.setInt(1, C_BankAccount_ID);
-    		rs = pstmt.executeQuery ();
-    		while (rs.next ())
-    		{
-    			MCNAB cnab = new MCNAB(ctx,rs.getInt(1),trx);
-    			list.add(cnab);  
-    		}
-    	}
-    	catch (Exception e)
-    	{
-    		log.log(Level.SEVERE, "", e);
-    	}
-    	finally{
-    	       DB.close(rs, pstmt);
-    	}
-		
-		
-		MCNAB[] lines = new MCNAB[list.size()];
-		list.toArray(lines);
+
+		String whereClause = "C_BankAccount_ID = ? AND IsSelected = 'Y'";
+				
+		MTable table = MTable.get(ctx, MCNAB.Table_Name);		
+		Query query =  new Query(table, whereClause, trx);
+	 		  query.setParameters(new Object[]{C_BankAccount_ID});
+	 		
+		List<MCNAB> list = query.list();
 		
 		//MARCA BOLETOS COMO REGISTRADOS
 		setIsRegistered(C_BankAccount_ID,trx);
 		
-		return lines;
+		return list.toArray(new MCNAB[list.size()]);
 	} //getFields
 	
 	private static void setIsRegistered (Timestamp DateFrom, Timestamp DateTo, String where, int AD_Client_ID, String trx){

@@ -20,13 +20,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.boleto.MCNAB;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -84,32 +88,16 @@ public class POLBR{
 	
 	public static MInvoicePaySchedule[] getInvoicePaySchedule(Properties ctx, int C_Invoice_ID, String trx)
 	{
-		String sql = "SELECT * FROM C_InvoicePaySchedule WHERE C_Invoice_ID=?";
-		ArrayList<MInvoicePaySchedule> list = new ArrayList<MInvoicePaySchedule>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql, trx);
-			pstmt.setInt(1, C_Invoice_ID);
-			rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				MInvoicePaySchedule ps = new MInvoicePaySchedule(ctx, rs, trx);
-				list.add (ps);
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "getInvoicePaySchedule", e); 
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
 		
-		MInvoicePaySchedule[] m_schedule = new MInvoicePaySchedule[list.size()];
-		list.toArray(m_schedule);
-		return m_schedule;
+		String whereClause = "C_Invoice_ID=?";
+		
+		MTable table = MTable.get(ctx, MInvoicePaySchedule.Table_Name);		
+		Query query =  new Query(table, whereClause, trx);
+	 		  query.setParameters(new Object[]{C_Invoice_ID});
+	 		
+		List<MInvoicePaySchedule> list = query.list();
+		
+		return list.toArray(new MInvoicePaySchedule[list.size()]);
 	}	//	getInvoicePaySchedule
 	
 	public static int getLBR_NotaFiscal_ID(String DocumentNo,boolean IsSOTrx, String trx)
@@ -590,6 +578,30 @@ public class POLBR{
 		return oo ? "Y" : "N";
 	}
 	
+	public static String checkOrderBy(String orderBy){
+		
+		if (orderBy == null || orderBy.equals(""))
+			return null;
+		
+		if ((orderBy.toUpperCase()).startsWith("ORDER BY")){
+			orderBy = orderBy.substring(8);
+		}
+		
+		return orderBy.trim();
+	} //checkOrderBy
+	
+	public static String checkWhereClause(String whereClause){
+		
+		if (whereClause == null || whereClause.equals(""))
+			return null;
+		
+		if ((whereClause.toUpperCase()).startsWith("WHERE")){
+			whereClause = whereClause.substring(5);
+		}
+		
+		return whereClause.trim();
+	} //checkWhereClause
+	
 	public static String getOsName(){
 		
 		String osname = System.getProperty("os.name");
@@ -721,5 +733,11 @@ public class POLBR{
 		//
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addYears
+	
+	/*
+	public static void main (String[] args){
+		System.out.println(checkOrderBy("ORDER BY Teste_ID"));
+	}
+	*/
 	
 } //MPOLBR

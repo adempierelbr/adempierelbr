@@ -12,17 +12,16 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.model.X_LBR_TaxGroup;
-import org.compiere.util.DB;
 
 /**
  *	MNotaFiscalLine
@@ -47,6 +46,17 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 */
 	public MNotaFiscalLine(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
+	}
+	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MNotaFiscalLine (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
 	}
 	
 	/**************************************************************************
@@ -79,34 +89,14 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 */
 	private X_LBR_NFLineTax[] getTaxes(){
 		
-		String sql = "SELECT LBR_NFLineTax_ID " + //1
-		 			 "FROM LBR_NFLineTax " +
-		 			 "WHERE LBR_NotaFiscalLine_ID = ? "; //*1
-
-		ArrayList<X_LBR_NFLineTax> list = new ArrayList<X_LBR_NFLineTax>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, get_TrxName());
-			pstmt.setInt(1, getLBR_NotaFiscalLine_ID());
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				list.add (new X_LBR_NFLineTax(getCtx(),rs.getInt(1),get_TrxName()));
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
+		String whereClause = "LBR_NotaFiscalLine_ID = ?";
 		
-		X_LBR_NFLineTax[] retValue = new X_LBR_NFLineTax[list.size()];
-		list.toArray(retValue);
-		return retValue;
+		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID()});
+	 			
+		List<X_LBR_NFLineTax> list = query.list();
 		
+		return list.toArray(new X_LBR_NFLineTax[list.size()]);	
 	} //getTaxes
 }

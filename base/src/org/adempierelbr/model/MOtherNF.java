@@ -15,9 +15,13 @@ package org.adempierelbr.model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.POLBR;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_OtherNF;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -51,46 +55,42 @@ public class MOtherNF extends X_LBR_OtherNF {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MOtherNF (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	/**************************************************************************
 	 * 	Get Lines of Order
 	 * 	@param whereClause where clause or null (starting with AND)
 	 * 	@param orderClause order clause
 	 * 	@return lines
 	 */
-	public MOtherNFLine[] getLines (String whereClause, String orderClause)
+	public MOtherNFLine[] getLines (String where, String orderBy)
 	{
-		ArrayList<MOtherNFLine> list = new ArrayList<MOtherNFLine> ();
-		StringBuffer sql = new StringBuffer("SELECT * FROM LBR_OtherNFLine WHERE LBR_OtherNF_ID=? ");
-		if (whereClause != null)
-			sql.append(whereClause);
-		if (orderClause != null)
-			sql.append(" ").append(orderClause);
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
-			pstmt.setInt(1, this.getLBR_OtherNF_ID());
-			rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				MOtherNFLine onfl = new MOtherNFLine(getCtx(), rs, get_TrxName());
-				list.add(onfl);
-			}
- 		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql.toString(), e);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
-		}
-		//
-		MOtherNFLine[] lines = new MOtherNFLine[list.size()];
-		list.toArray (lines);
-		return lines;
+		String whereClause = "LBR_OtherNF_ID=? ";
+		
+		where = POLBR.checkWhereClause(where);
+		if (where != null)
+			whereClause += " AND " + where;
+		
+		MTable table = MTable.get(getCtx(), MOtherNFLine.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_OtherNF_ID()});
+	 	
+	 	orderBy = POLBR.checkOrderBy(orderBy);
+	 	if (orderBy != null)
+	 		  query.setOrderBy(orderBy);
+		
+		List<MOtherNFLine> list = query.list();
+		
+		return list.toArray(new MOtherNFLine[list.size()]);	
 	}	//	getLines
 	
 	public ArrayList<Integer> getLines()

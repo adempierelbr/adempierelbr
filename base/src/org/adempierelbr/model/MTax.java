@@ -84,6 +84,17 @@ public class MTax extends X_LBR_Tax {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MTax (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	public static MTaxAmounts modelChange(Properties ctx, MOrderLine oLine, String trx) throws EvalError{
 		return modelChange(ctx,oLine,null,trx);
 	}

@@ -49,6 +49,17 @@ public class MMatrixPrinter extends X_LBR_MatrixPrinter {
 		super(ctx,ID,trx);	
 	}
 	
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MMatrixPrinter (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+	
 	/**************************************************************************
 	 *  Get DefaultPrinter
 	 *  @return int LBR_MatrixPrinter_ID
