@@ -18,8 +18,6 @@ import java.util.Properties;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MTable;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.ModelValidator;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscalLine;

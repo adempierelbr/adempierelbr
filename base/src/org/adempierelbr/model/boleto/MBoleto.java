@@ -48,8 +48,6 @@ import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
 import org.compiere.model.MTable;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.ModelValidator;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_Bank;
 import org.compiere.model.X_LBR_Boleto;
@@ -78,9 +76,6 @@ public class MBoleto extends X_LBR_Boleto
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(MBoleto.class);
-	
-	/**	Process Message */
-	private String		m_processMsg = null;
 	
 	private static final String dateFormat = "dd/MM/yyyy";
 
