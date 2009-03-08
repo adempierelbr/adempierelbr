@@ -95,6 +95,59 @@ public class MTax extends X_LBR_Tax {
 		super(ctx, rs, trxName);
 	}
 	
+	/**
+	 *  Constructor to be used when migrating from Adempiere Tax
+	 *  
+	 *  @param Properties ctx
+	 *  @param int ID (0 create new)
+	 *  @param String trx
+	 *  @param ArrayList<String> Tax Names (LBR)
+	 *  @param ArrayList<BigDecimal> Tax Rates
+	 */
+	public MTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates)
+	{
+		this(ctx,0,trx);
+		
+		if(taxNames.size() == taxRates.size())
+		{
+			for(int i = 0; i < taxNames.size(); i++)
+			{
+				String 		taxName 		= taxNames.get(i);
+				BigDecimal 	taxRate 		= taxRates.get(i);
+				
+				int	LBR_TaxName_ID 			= getTaxName_ID(taxName);
+				
+				if(LBR_TaxName_ID > 0
+						&& taxRate != null)
+				{
+					X_LBR_TaxLine line = new X_LBR_TaxLine(ctx,0,null);
+					line.setLBR_Tax_ID(this.getLBR_Tax_ID());
+					line.setLBR_TaxName_ID(LBR_TaxName_ID);
+					line.setlbr_TaxRate(taxRate);
+					line.setlbr_TaxBase(Env.ZERO);
+					line.setlbr_PostTax(true);
+					line.save();
+				}
+			}
+		}
+	}
+	
+	private int getTaxName_ID(String taxName)
+	{
+		// TODO Auto-generated method stub
+		String sql = "";
+		
+		if(taxName != null && !taxName.equals(""))
+		{
+			sql = "SELECT LBR_TaxName_ID " +
+					"FROM LBR_TaxName " +
+					"WHERE Name='" + taxName + "'";
+			return DB.getSQLValue(null, sql);
+		}
+		else 
+			return 0;
+	}
+
 	public static MTaxAmounts modelChange(Properties ctx, MOrderLine oLine, String trx) throws EvalError{
 		return modelChange(ctx,oLine,null,trx);
 	}
