@@ -8,3 +8,5 @@ INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLe
 UPDATE AD_SysConfig SET Value='100-trunk/013-Retroactive_ServiceTax.sql',Updated=TO_DATE('2009-02-24 10:49:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
 ;
 
+exit
+
