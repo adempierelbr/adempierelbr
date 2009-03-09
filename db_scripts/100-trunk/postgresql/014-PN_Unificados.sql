@@ -248,3 +248,13 @@ UPDATE AD_Column SET ReadOnlyLogic='@lbr_BPTypeBRIsValid=''Y''',Updated=TO_TIMES
 UPDATE AD_Column SET DefaultValue='@SQL=SELECT SUBSTR(lbr_CNPJ, 1, 10) AS lbr_CNPJ FROM C_BPartner WHERE C_BPartner.C_BPartner_ID=@C_BPartner_ID@',Updated=TO_TIMESTAMP('2009-03-09 20:29:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001039
 ;
 
+-- 09/03/2009 20h40min33s BRT
+-- Default comment for updating dictionary
+UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_TIMESTAMP('2009-03-09 20:40:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001056
+;
+
+-- 09/03/2009 20h44min43s BRT
+-- Default comment for updating dictionary
+UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR'' & @lbr_BPTypeBR@=''PJ'' & @#LBR_USE_UNIFIED_BP@=''Y'' & @lbr_IsIEExempt@=''N''',Updated=TO_TIMESTAMP('2009-03-09 20:44:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1001059
+;
+
