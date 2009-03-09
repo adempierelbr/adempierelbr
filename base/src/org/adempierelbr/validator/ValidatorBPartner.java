@@ -211,7 +211,8 @@ public class ValidatorBPartner implements ModelValidator
 					
 			}
 			//Else if Legal Entity - Validate CNPJ
-			else if (BPTypeBR.equalsIgnoreCase("PJ")){
+			else if (BPTypeBR.equalsIgnoreCase("PJ"))
+			{
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
 				
 				if (CNPJ == null){
@@ -227,11 +228,12 @@ public class ValidatorBPartner implements ModelValidator
 				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID(), bp.get_TableName())){
 					return "CNPJ Duplicado";
 				}
-					
+				
+				if(MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
+					bp.set_CustomColumn("lbr_CNPJ", CNPJ.substring(0, 10) + "/0000-00");
 			}
 			
 			bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
-			
 		}
 		
 		// FR [ 1898697 ] Validador BPartner - CFOP Group

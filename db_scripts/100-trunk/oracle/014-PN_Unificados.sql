@@ -242,3 +242,10 @@ UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR'' & @lbr_BPTypeBR@=''PF'
 -- Default comment for updating dictionary
 UPDATE AD_Column SET ReadOnlyLogic='@lbr_BPTypeBRIsValid=''Y''',Updated=TO_DATE('2009-03-09 17:59:47','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001039
 ;
+
+-- 09/03/2009 20h29min1s BRT
+-- Default comment for updating dictionary
+UPDATE AD_Column SET DefaultValue='@SQL=SELECT SUBSTR(lbr_CNPJ, 1, 10) AS lbr_CNPJ FROM C_BPartner WHERE C_BPartner.C_BPartner_ID=@C_BPartner_ID@',Updated=TO_DATE('2009-03-09 20:29:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1001039
+;
+
+
