@@ -20,12 +20,15 @@ import java.util.logging.Level;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	ValidatorBPartner
@@ -69,6 +72,7 @@ public class ValidatorBPartner implements ModelValidator
 		
 		//	ModelChange
 		engine.addModelChange("C_BPartner", this); //Parceiro de Negócios
+		engine.addModelChange("C_BPartner_Location", this); //Localização
 		engine.addModelChange("AD_OrgInfo", this); //Divisão
 	}	//	initialize
 
@@ -91,6 +95,16 @@ public class ValidatorBPartner implements ModelValidator
 	 */
 	public String login (int AD_Org_ID, int AD_Role_ID, int AD_User_ID)
 	{
+		Boolean isUseUnifiedBP = MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false);
+		
+		if(isUseUnifiedBP)
+			log.info("LBR: Usando PN unificados.");
+		else
+			log.info("LBR: Usando um PN por Filial (Normal).");
+		
+		//	Load Enviroment
+		Env.setContext(Env.getCtx(), "#LBR_USE_UNIFIED_BP", isUseUnifiedBP);
+		
 		log.info("AD_User_ID=" + AD_User_ID);
 		return null;
 	}	//	login
@@ -111,6 +125,11 @@ public class ValidatorBPartner implements ModelValidator
 			MBPartner bp = (MBPartner)po;
 			return modelChange(bp);
 		}
+		else if (po.get_TableName().equalsIgnoreCase("C_BPartner_Location") && (type == TYPE_CHANGE || type == TYPE_NEW))
+		{
+			MBPartnerLocation bp = (MBPartnerLocation)po;
+			return modelChange(bp);
+		}
 		
 		else if (po.get_TableName().equalsIgnoreCase("AD_OrgInfo") && 
 				(type == TYPE_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_CHANGE)) {
@@ -126,6 +145,35 @@ public class ValidatorBPartner implements ModelValidator
 		log.info(po.toString()+" | TYPE:"+type );
 		return null;
 	}	//	modelChange
+	
+	private String modelChange(MBPartnerLocation bpl)
+	{
+		MBPartner bp = new MBPartner(Env.getCtx(), bpl.getC_BPartner_ID(), null);
+		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
+		
+		boolean isValid = POLBR.get_ValueAsBoolean(bp.get_Value("lbr_BPTypeBRIsValid"));
+		
+		if (!isValid || BPTypeBR == null || !BPTypeBR.equalsIgnoreCase("PJ")) 
+			return null;
+		
+		String CNPJMatriz = (String)bp.get_Value("lbr_CNPJ");
+		String CNPJFilial = (String)bpl.get_Value("lbr_CNPJ");
+		
+		if(CNPJMatriz.substring(0, 10).equalsIgnoreCase(CNPJFilial.substring(0, 10)))
+		{
+			if (!validaCNPJ(CNPJFilial))
+				return "CNPJ Inválido";
+			
+			if (!consultaCNPJ(CNPJFilial, bpl.getAD_Client_ID(), bpl.get_ID(), bpl.get_TableName()))
+				return "CNPJ Duplicado";
+		}
+		else
+			return "CNPJ não corresponde com a Matriz.";
+		
+		bpl.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
+		
+		return "";
+	}	//	ModelChange - MBPartnerLocation
 	
 	private String modelChange(MBPartner bp){
 		
@@ -176,7 +224,7 @@ public class ValidatorBPartner implements ModelValidator
 				if (!validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
 				}
-				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID())){
+				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID(), bp.get_TableName())){
 					return "CNPJ Duplicado";
 				}
 					
@@ -403,18 +451,30 @@ public class ValidatorBPartner implements ModelValidator
 	 *	@param String xCNPJ
 	 *	@return boolean true or false
 	 */
-	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID, int C_BPartner_ID) {
+	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID, int C_BPartner_ID, String TableName) 
+	{
+		Boolean isUnifiedBP = MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false);
 		int iCNPJ = 0;
-		String sql = "SELECT count(lbr_CNPJ) " +
-				     "FROM C_BPartner " +
-				     "WHERE lbr_CNPJ = ? AND AD_Client_ID = ? " +
-				     "AND C_BPartner_ID <> ?";
+		String sql = "SELECT COUNT(lbr_CNPJ) " +
+				     "FROM " + TableName + " ";
+		
+		if(isUnifiedBP && TableName.equals("C_BPartner"))
+			sql += "WHERE SUBSTR(lbr_CNPJ, 1, 10) = ? AND AD_Client_ID = ? ";
+		else
+			sql += "WHERE lbr_CNPJ = ? AND AD_Client_ID = ? ";
+		
+		sql += "AND " + TableName + "_ID <> ?";
+		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
+			System.out.println("" + xCNPJ.substring(0,10));
 			pstmt = DB.prepareStatement (sql, null);
-			pstmt.setString (1, xCNPJ);
+			if(isUnifiedBP && TableName.equals("C_BPartner"))
+				pstmt.setString (1, xCNPJ.substring(0,10));
+			else
+				pstmt.setString (1, xCNPJ);
 			pstmt.setInt(2, AD_Client_ID);
 			pstmt.setInt(3, C_BPartner_ID);
 			rs = pstmt.executeQuery ();
