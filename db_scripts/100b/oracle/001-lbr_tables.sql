@@ -72,8 +72,8 @@ CREATE TABLE adempiere.lbr_boleto (
 	lbr_iscancelled     	char(1) DEFAULT 'N' NOT NULL,
 	c_bpartner_id       	number(10,0) NOT NULL,
 	lbr_payscheduleno   	nvarchar2(2) NULL,
-	grandtotal          	numeric NOT NULL,
-	discountamt         	numeric NOT NULL,
+	grandtotal          	number NOT NULL,
+	discountamt         	number NOT NULL,
 	duedate             	date NOT NULL,
 	discountdate        	date NOT NULL,
 	lbr_jboletono       	nvarchar2(3) NOT NULL 
@@ -349,14 +349,14 @@ CREATE TABLE adempiere.lbr_notafiscal (
 	lbr_cnpj              	nvarchar2(18) NULL,
 	lbr_ie                	nvarchar2(30) NULL,
 	datedoc               	date NULL,
-	freightamt            	numeric NULL,
+	freightamt            	number NULL,
 	freightcostrule       	char(1) NULL,
-	lbr_grossweight       	numeric NULL,
-	lbr_netweight         	numeric NULL,
-	nopackages            	numeric NULL,
-	totallines            	numeric NULL,
-	grandtotal            	numeric NULL,
-	lbr_insuranceamt      	numeric NULL,
+	lbr_grossweight       	number NULL,
+	lbr_netweight         	number NULL,
+	nopackages            	number NULL,
+	totallines            	number NULL,
+	grandtotal            	number NULL,
+	lbr_insuranceamt      	number NULL,
 	processed             	char(1) DEFAULT 'N' NOT NULL,
 	processing            	char(1) NULL,
 	lbr_ncmreference      	nvarchar2(300) NULL,
@@ -381,13 +381,13 @@ CREATE TABLE adempiere.lbr_notafiscalline (
 	lbr_cfop_id          	number(10,0) NULL,
 	productname          	nvarchar2(100) NULL,
 	productvalue         	nvarchar2(60) NULL,
-	price                	numeric NULL,
-	linetotalamt         	numeric NULL,
-	pricelistamt         	numeric NULL,
-	qty                  	numeric NULL,
+	price                	number NULL,
+	linetotalamt         	number NULL,
+	pricelistamt         	number NULL,
+	qty                  	number NULL,
 	lbr_uomname          	nvarchar2(60) NULL,
 	description          	nvarchar2(255) NULL,
-	discount             	numeric NULL,
+	discount             	number NULL,
 	line                 	number(10,0) NULL,
 	lbr_ncmname          	nvarchar2(60) NULL,
 	lbr_cfopname         	nvarchar2(60) NULL,
@@ -527,12 +527,12 @@ CREATE TABLE adempiere.lbr_taxline (
 	updated       	date NOT NULL,
 	updatedby     	number(10,0) NOT NULL,
 	lbr_tax_id    	number(10,0) NOT NULL,
-	lbr_taxrate   	numeric NULL,
-	lbr_taxbase   	numeric NULL,
+	lbr_taxrate   	number NULL,
+	lbr_taxbase   	number NULL,
 	lbr_posttax   	char(1) DEFAULT 'Y' NOT NULL,
-	lbr_taxamt    	numeric NULL,
+	lbr_taxamt    	number NULL,
 	lbr_taxname_id	number(10,0) NOT NULL,
-	lbr_taxbaseamt	numeric NULL 
+	lbr_taxbaseamt	number NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxname ( 
@@ -548,7 +548,7 @@ CREATE TABLE adempiere.lbr_taxname (
 	description      	nvarchar2(255) NULL,
 	lbr_taxtype      	char(1) DEFAULT 'P' NOT NULL,
 	haswithhold      	char(1) DEFAULT 'N' NOT NULL,
-	withholdthreshold	numeric NULL 
+	withholdthreshold	number NULL 
 	);
 
 ALTER TABLE adempiere.lbr_bank

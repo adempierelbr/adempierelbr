@@ -104,9 +104,10 @@ public class MTax extends X_LBR_Tax {
 	 *  @param ArrayList<String> Tax Names (LBR)
 	 *  @param ArrayList<BigDecimal> Tax Rates
 	 */
-	public MTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates)
+	public MTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates, ArrayList<BigDecimal> taxBases)
 	{
 		this(ctx,0,trx);
+		this.save(trx);
 		
 		if(taxNames.size() == taxRates.size())
 		{
@@ -114,6 +115,7 @@ public class MTax extends X_LBR_Tax {
 			{
 				String 		taxName 		= taxNames.get(i);
 				BigDecimal 	taxRate 		= taxRates.get(i);
+				BigDecimal  taxBase			= taxBases.get(i);
 				
 				int	LBR_TaxName_ID 			= getTaxName_ID(taxName);
 				
@@ -121,27 +123,30 @@ public class MTax extends X_LBR_Tax {
 						&& taxRate != null)
 				{
 					X_LBR_TaxLine line = new X_LBR_TaxLine(ctx,0,null);
-					line.setLBR_Tax_ID(this.getLBR_Tax_ID());
+					line.setLBR_Tax_ID(this.get_ID());
 					line.setLBR_TaxName_ID(LBR_TaxName_ID);
 					line.setlbr_TaxRate(taxRate);
-					line.setlbr_TaxBase(Env.ZERO);
+					line.setlbr_TaxBase(taxBase == null ? Env.ZERO : taxBase);
 					line.setlbr_PostTax(true);
 					line.save();
 				}
 			}
 		}
+		
+		this.setDescription();
+		this.save(trx);
 	}
 	
 	private int getTaxName_ID(String taxName)
 	{
-		// TODO Auto-generated method stub
 		String sql = "";
 		
 		if(taxName != null && !taxName.equals(""))
 		{
 			sql = "SELECT LBR_TaxName_ID " +
 					"FROM LBR_TaxName " +
-					"WHERE Name='" + taxName + "'";
+					"WHERE TRIM(Name)='" + taxName + "' " +
+					"AND AD_Client_ID = " + Env.getAD_Client_ID(getCtx());
 			return DB.getSQLValue(null, sql);
 		}
 		else 
