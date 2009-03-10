@@ -341,12 +341,14 @@ public static final String FREIGHTCOSTRULE_FixPrice = "F";
 public static final String FREIGHTCOSTRULE_Calculated = "C";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
+/** Freight excluded = E */
+public static final String FREIGHTCOSTRULE_FreightExcluded = "E";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L");
+if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L") || FreightCostRule.equals("E"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L - E");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -1307,6 +1309,57 @@ public String getlbr_BPShipperRegion()
 {
 return (String)get_Value("lbr_BPShipperRegion");
 }
+/** Set Barcode 1.
+@param lbr_Barcode1 First Barcode of the Nota Fiscal */
+public void setlbr_Barcode1 (String lbr_Barcode1)
+{
+if (lbr_Barcode1 != null && lbr_Barcode1.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_Barcode1 = lbr_Barcode1.substring(0,254);
+}
+set_Value ("lbr_Barcode1", lbr_Barcode1);
+}
+/** Get Barcode 1.
+@return First Barcode of the Nota Fiscal */
+public String getlbr_Barcode1() 
+{
+return (String)get_Value("lbr_Barcode1");
+}
+/** Set Barcode 2.
+@param lbr_Barcode2 Second Barcode of the Nota Fiscal */
+public void setlbr_Barcode2 (String lbr_Barcode2)
+{
+if (lbr_Barcode2 != null && lbr_Barcode2.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_Barcode2 = lbr_Barcode2.substring(0,254);
+}
+set_Value ("lbr_Barcode2", lbr_Barcode2);
+}
+/** Get Barcode 2.
+@return Second Barcode of the Nota Fiscal */
+public String getlbr_Barcode2() 
+{
+return (String)get_Value("lbr_Barcode2");
+}
+/** Set Bill Note.
+@param lbr_BillNote Bill Note */
+public void setlbr_BillNote (String lbr_BillNote)
+{
+if (lbr_BillNote != null && lbr_BillNote.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_BillNote = lbr_BillNote.substring(0,254);
+}
+set_Value ("lbr_BillNote", lbr_BillNote);
+}
+/** Get Bill Note.
+@return Bill Note */
+public String getlbr_BillNote() 
+{
+return (String)get_Value("lbr_BillNote");
+}
 /** Set CFOP Note.
 @param lbr_CFOPNote Defines the CFOP Note */
 public void setlbr_CFOPNote (String lbr_CFOPNote)
@@ -1369,6 +1422,42 @@ set_Value ("lbr_DateInOut", lbr_DateInOut);
 public Timestamp getlbr_DateInOut() 
 {
 return (Timestamp)get_Value("lbr_DateInOut");
+}
+
+/** lbr_Delivery_Location_ID AD_Reference_ID=159 */
+public static final int LBR_DELIVERY_LOCATION_ID_AD_Reference_ID=159;
+/** Set Delivery Location.
+@param lbr_Delivery_Location_ID The Delivery Location ID */
+public void setlbr_Delivery_Location_ID (int lbr_Delivery_Location_ID)
+{
+if (lbr_Delivery_Location_ID <= 0) set_Value ("lbr_Delivery_Location_ID", null);
+ else 
+set_Value ("lbr_Delivery_Location_ID", new Integer(lbr_Delivery_Location_ID));
+}
+/** Get Delivery Location.
+@return The Delivery Location ID */
+public int getlbr_Delivery_Location_ID() 
+{
+Integer ii = (Integer)get_Value("lbr_Delivery_Location_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Fiscal Obs..
+@param lbr_FiscalOBS Fiscal Observation for the Fiscal Books */
+public void setlbr_FiscalOBS (String lbr_FiscalOBS)
+{
+if (lbr_FiscalOBS != null && lbr_FiscalOBS.length() > 64)
+{
+log.warning("Length > 64 - truncated");
+lbr_FiscalOBS = lbr_FiscalOBS.substring(0,63);
+}
+set_Value ("lbr_FiscalOBS", lbr_FiscalOBS);
+}
+/** Get Fiscal Obs..
+@return Fiscal Observation for the Fiscal Books */
+public String getlbr_FiscalOBS() 
+{
+return (String)get_Value("lbr_FiscalOBS");
 }
 /** Set Gross Weight.
 @param lbr_GrossWeight Defines the Gross Weight */
@@ -1449,6 +1538,127 @@ public String getlbr_NFENo()
 {
 return (String)get_Value("lbr_NFENo");
 }
+
+/** lbr_NFReference AD_Reference_ID=1000026 */
+public static final int LBR_NFREFERENCE_AD_Reference_ID=1000026;
+/** Set NF Reference.
+@param lbr_NFReference Reference to other NF */
+public void setlbr_NFReference (int lbr_NFReference)
+{
+set_Value ("lbr_NFReference", new Integer(lbr_NFReference));
+}
+/** Get NF Reference.
+@return Reference to other NF */
+public int getlbr_NFReference() 
+{
+Integer ii = (Integer)get_Value("lbr_NFReference");
+if (ii == null) return 0;
+return ii.intValue();
+}
+
+/** lbr_NFType AD_Reference_ID=1000044 */
+public static final int LBR_NFTYPE_AD_Reference_ID=1000044;
+/** 001_ACT-Autorização de Carregamento de Transporte = 001 */
+public static final String LBR_NFTYPE_001_ACT_AutorizaçãoDeCarregamentoDeTransporte = "001";
+/** 002_AIMR-Atestado de Intervenção em Máquina = 002 */
+public static final String LBR_NFTYPE_002_AIMR_AtestadoDeIntervençãoEmMáquina = "002";
+/** 003_AIPDV-Atestado de Intervenção em PDV = 003 */
+public static final String LBR_NFTYPE_003_AIPDV_AtestadoDeIntervençãoEmPDV = "003";
+/** 004_BPA-Bilhete de Passagem Aquaviário = 004 */
+public static final String LBR_NFTYPE_004_BPA_BilheteDePassagemAquaviário = "004";
+/** 005_BPF-Bilhete de Passagem Ferroviário = 005 */
+public static final String LBR_NFTYPE_005_BPF_BilheteDePassagemFerroviário = "005";
+/** 006_BPNB-Bilhete de Passagem e Nota de Bagagem = 006 */
+public static final String LBR_NFTYPE_006_BPNB_BilheteDePassagemENotaDeBagagem = "006";
+/** 007_BPR-Bilhete de Passagem Rodoviário = 007 */
+public static final String LBR_NFTYPE_007_BPR_BilheteDePassagemRodoviário = "007";
+/** 008_CA-Conhecimento Aéreo = 008 */
+public static final String LBR_NFTYPE_008_CA_ConhecimentoAéreo = "008";
+/** 009_CTA-Conhecimento de Transporte Avulso = 009 */
+public static final String LBR_NFTYPE_009_CTA_ConhecimentoDeTransporteAvulso = "009";
+/** 010_CTAC-Conhecimento de Transporte Aquaviário de Cargas = 010 */
+public static final String LBR_NFTYPE_010_CTAC_ConhecimentoDeTransporteAquaviárioDeCargas = "010";
+/** 011_CTFC-Conhecimento de Transporte Ferroviário de Cargas = 011 */
+public static final String LBR_NFTYPE_011_CTFC_ConhecimentoDeTransporteFerroviárioDeCargas = "011";
+/** 012_CTRC-Conhecimento de Transporte Rodoviário de Cargas = 012 */
+public static final String LBR_NFTYPE_012_CTRC_ConhecimentoDeTransporteRodoviárioDeCargas = "012";
+/** 013_DAICMS-Demons. de Apuração do ICMS-DAICMS = 013 */
+public static final String LBR_NFTYPE_013_DAICMS_DemonsDeApuraçãoDoICMS_DAICMS = "013";
+/** 014_DCICMS-Demons. de Apuração do Compl. do ICMS-DCICMS = 014 */
+public static final String LBR_NFTYPE_014_DCICMS_DemonsDeApuraçãoDoComplDoICMS_DCICMS = "014";
+/** 015_DCL-Despacho de Cargas em Lotação = 015 */
+public static final String LBR_NFTYPE_015_DCL_DespachoDeCargasEmLotação = "015";
+/** 016_DCMS-Despacho de Cargas Modelo Simplificado = 016 */
+public static final String LBR_NFTYPE_016_DCMS_DespachoDeCargasModeloSimplificado = "016";
+/** 017_DEB-Documento de Excesso de Bagagem = 017 */
+public static final String LBR_NFTYPE_017_DEB_DocumentoDeExcessoDeBagagem = "017";
+/** 018_DSEP-Documento Simplificado de Embarque de Passageiro = 018 */
+public static final String LBR_NFTYPE_018_DSEP_DocumentoSimplificadoDeEmbarqueDePassageiro = "018";
+/** 019_DSICMS-Demons. de Contrib. Substituto do ICMS-DSICMS = 019 */
+public static final String LBR_NFTYPE_019_DSICMS_DemonsDeContribSubstitutoDoICMS_DSICMS = "019";
+/** 020_DT-Despacho de Transporte = 020 */
+public static final String LBR_NFTYPE_020_DT_DespachoDeTransporte = "020";
+/** 021_EF-Extrato de Faturamento = 021 */
+public static final String LBR_NFTYPE_021_EF_ExtratoDeFaturamento = "021";
+/** 022_GNR-Guia Nacional de Recolhimento de Tributos Estaduais = 022 */
+public static final String LBR_NFTYPE_022_GNR_GuiaNacionalDeRecolhimentoDeTributosEstaduais = "022";
+/** 023_MC-Manifesto de Carga = 023 */
+public static final String LBR_NFTYPE_023_MC_ManifestoDeCarga = "023";
+/** 024_NF-Nota Fiscal = 024 */
+public static final String LBR_NFTYPE_024_NF_NotaFiscal = "024";
+/** 025_NFA-Nota Fiscal Avulsa = 025 */
+public static final String LBR_NFTYPE_025_NFA_NotaFiscalAvulsa = "025";
+/** 026_NFCEE-Nota Fiscal/Conta de Energia Elétrica = 026 */
+public static final String LBR_NFTYPE_026_NFCEE_NotaFiscalContaDeEnergiaElétrica = "026";
+/** 027_NFCFA-Nota Fiscal/Conta de Fornecimento de Água = 027 */
+public static final String LBR_NFTYPE_027_NFCFA_NotaFiscalContaDeFornecimentoDeÁgua = "027";
+/** 028_NFE-Nota Fiscal de Entrada = 028 */
+public static final String LBR_NFTYPE_028_NFE_NotaFiscalDeEntrada = "028";
+/** 029_NFF-NFF = 029 */
+public static final String LBR_NFTYPE_029_NFF_NFF = "029";
+/** 030_NFME-Nota Fiscal Microempresa = 030 */
+public static final String LBR_NFTYPE_030_NFME_NotaFiscalMicroempresa = "030";
+/** 031_NFP-Nota Fiscal de Produtor = 031 */
+public static final String LBR_NFTYPE_031_NFP_NotaFiscalDeProdutor = "031";
+/** 032_NFS-Nota Fiscal Simplificada = 032 */
+public static final String LBR_NFTYPE_032_NFS_NotaFiscalSimplificada = "032";
+/** 033_NFSC-Nota Fiscal e Serviço de Comunicação = 033 */
+public static final String LBR_NFTYPE_033_NFSC_NotaFiscalEServiçoDeComunicação = "033";
+/** 034_NFSTC-Nota Fiscal de Serviço de Telecomunicações = 034 */
+public static final String LBR_NFTYPE_034_NFSTC_NotaFiscalDeServiçoDeTelecomunicações = "034";
+/** 035_NFSTR-Nota Fiscal de Serviço de Transporte = 035 */
+public static final String LBR_NFTYPE_035_NFSTR_NotaFiscalDeServiçoDeTransporte = "035";
+/** 036_NFVC-Nota Fiscal de Venda a Consumidor = 036 */
+public static final String LBR_NFTYPE_036_NFVC_NotaFiscalDeVendaAConsumidor = "036";
+/** 037_OCC-Ordem de Coleta de Carga = 037 */
+public static final String LBR_NFTYPE_037_OCC_OrdemDeColetaDeCarga = "037";
+/** 038_RD-Relação de Despachos = 038 */
+public static final String LBR_NFTYPE_038_RD_RelaçãoDeDespachos = "038";
+/** 039_RECA-Relatório de Emissão de Conhecimento Aéreos = 039 */
+public static final String LBR_NFTYPE_039_RECA_RelatórioDeEmissãoDeConhecimentoAéreos = "039";
+/** 040_REP-Relatório de Embarque de Passageiros = 040 */
+public static final String LBR_NFTYPE_040_REP_RelatórioDeEmbarqueDePassageiros = "040";
+/** 041_RMD-Resumo de Movimento Diário = 041 */
+public static final String LBR_NFTYPE_041_RMD_ResumoDeMovimentoDiário = "041";
+/** Set NF Type.
+@param lbr_NFType Nota Fiscal Type */
+public void setlbr_NFType (String lbr_NFType)
+{
+if (lbr_NFType == null || lbr_NFType.equals("001") || lbr_NFType.equals("002") || lbr_NFType.equals("003") || lbr_NFType.equals("004") || lbr_NFType.equals("005") || lbr_NFType.equals("006") || lbr_NFType.equals("007") || lbr_NFType.equals("008") || lbr_NFType.equals("009") || lbr_NFType.equals("010") || lbr_NFType.equals("011") || lbr_NFType.equals("012") || lbr_NFType.equals("013") || lbr_NFType.equals("014") || lbr_NFType.equals("015") || lbr_NFType.equals("016") || lbr_NFType.equals("017") || lbr_NFType.equals("018") || lbr_NFType.equals("019") || lbr_NFType.equals("020") || lbr_NFType.equals("021") || lbr_NFType.equals("022") || lbr_NFType.equals("023") || lbr_NFType.equals("024") || lbr_NFType.equals("025") || lbr_NFType.equals("026") || lbr_NFType.equals("027") || lbr_NFType.equals("028") || lbr_NFType.equals("029") || lbr_NFType.equals("030") || lbr_NFType.equals("031") || lbr_NFType.equals("032") || lbr_NFType.equals("033") || lbr_NFType.equals("034") || lbr_NFType.equals("035") || lbr_NFType.equals("036") || lbr_NFType.equals("037") || lbr_NFType.equals("038") || lbr_NFType.equals("039") || lbr_NFType.equals("040") || lbr_NFType.equals("041"));
+ else throw new IllegalArgumentException ("lbr_NFType Invalid value - " + lbr_NFType + " - Reference_ID=1000044 - 001 - 002 - 003 - 004 - 005 - 006 - 007 - 008 - 009 - 010 - 011 - 012 - 013 - 014 - 015 - 016 - 017 - 018 - 019 - 020 - 021 - 022 - 023 - 024 - 025 - 026 - 027 - 028 - 029 - 030 - 031 - 032 - 033 - 034 - 035 - 036 - 037 - 038 - 039 - 040 - 041");
+if (lbr_NFType != null && lbr_NFType.length() > 6)
+{
+log.warning("Length > 6 - truncated");
+lbr_NFType = lbr_NFType.substring(0,5);
+}
+set_Value ("lbr_NFType", lbr_NFType);
+}
+/** Get NF Type.
+@return Nota Fiscal Type */
+public String getlbr_NFType() 
+{
+return (String)get_Value("lbr_NFType");
+}
 /** Set Net Weight.
 @param lbr_NetWeight Defines the Net Weight */
 public void setlbr_NetWeight (BigDecimal lbr_NetWeight)
@@ -1511,6 +1721,42 @@ BigDecimal bd = (BigDecimal)get_Value("lbr_ServiceTotalAmt");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+/** Set Shipment Note.
+@param lbr_ShipNote Extra Shipment Information  */
+public void setlbr_ShipNote (String lbr_ShipNote)
+{
+if (lbr_ShipNote != null && lbr_ShipNote.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_ShipNote = lbr_ShipNote.substring(0,254);
+}
+set_Value ("lbr_ShipNote", lbr_ShipNote);
+}
+/** Get Shipment Note.
+@return Extra Shipment Information  */
+public String getlbr_ShipNote() 
+{
+return (String)get_Value("lbr_ShipNote");
+}
+
+/** lbr_Ship_Location_ID AD_Reference_ID=159 */
+public static final int LBR_SHIP_LOCATION_ID_AD_Reference_ID=159;
+/** Set Ship Location.
+@param lbr_Ship_Location_ID The Shipment Location ID */
+public void setlbr_Ship_Location_ID (int lbr_Ship_Location_ID)
+{
+if (lbr_Ship_Location_ID <= 0) set_Value ("lbr_Ship_Location_ID", null);
+ else 
+set_Value ("lbr_Ship_Location_ID", new Integer(lbr_Ship_Location_ID));
+}
+/** Get Ship Location.
+@return The Shipment Location ID */
+public int getlbr_Ship_Location_ID() 
+{
+Integer ii = (Integer)get_Value("lbr_Ship_Location_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set Time InOut.
 @param lbr_TimeInOut Defines the InOut Time */
 public void setlbr_TimeInOut (String lbr_TimeInOut)
@@ -1527,5 +1773,33 @@ set_Value ("lbr_TimeInOut", lbr_TimeInOut);
 public String getlbr_TimeInOut() 
 {
 return (String)get_Value("lbr_TimeInOut");
+}
+/** Set CIF Total.
+@param lbr_TotalCIF CIF Total for all the document */
+public void setlbr_TotalCIF (BigDecimal lbr_TotalCIF)
+{
+set_Value ("lbr_TotalCIF", lbr_TotalCIF);
+}
+/** Get CIF Total.
+@return CIF Total for all the document */
+public BigDecimal getlbr_TotalCIF() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_TotalCIF");
+if (bd == null) return Env.ZERO;
+return bd;
+}
+/** Set SISCOMEX Total.
+@param lbr_TotalSISCOMEX SISCOMEX Total for all the document */
+public void setlbr_TotalSISCOMEX (BigDecimal lbr_TotalSISCOMEX)
+{
+set_Value ("lbr_TotalSISCOMEX", lbr_TotalSISCOMEX);
+}
+/** Get SISCOMEX Total.
+@return SISCOMEX Total for all the document */
+public BigDecimal getlbr_TotalSISCOMEX() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_TotalSISCOMEX");
+if (bd == null) return Env.ZERO;
+return bd;
 }
 }

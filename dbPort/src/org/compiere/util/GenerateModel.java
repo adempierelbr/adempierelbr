@@ -792,7 +792,7 @@ public class GenerateModel
 		//	third parameter
 		// Kenos
 		//String entityType = "'U','A'";	//	User, Application
-		String entityType = "'LBRA'";	//	AdempiereLBR
+		String entityType = "'LBR'";	//	AdempiereLBR
     if (args.length > 2)
 			entityType = args[2]; 
 		if (entityType == null || entityType.length() == 0)
@@ -800,7 +800,7 @@ public class GenerateModel
 			System.err.println("No EntityType");
 			System.exit(1);
 		}
-		StringBuffer sql = new StringBuffer("EntityType IN (")
+		StringBuffer sql = new StringBuffer("EntityType NOT IN (")
 			.append(entityType).append(")");
 		log.info(sql.toString());
 		log.info("----------------------------------");
@@ -808,8 +808,8 @@ public class GenerateModel
 		//	complete sql
 		sql.insert(0, "SELECT AD_Table_ID "
 			+ "FROM AD_Table "
-			+ "WHERE (TableName IN ('RV_WarehousePrice','RV_BPartner')"	//	special views
-			+ " OR IsView='N')"
+			+ "WHERE (TableName IN ('C_BPartner', 'C_Order','LBR_NotaFiscal', 'M_InOut')"	//	special views
+			+ " OR 'y'='N')"
 			+ " AND TableName NOT LIKE '%_Trl' AND ");
 		sql.append(" ORDER BY TableName");
 		
