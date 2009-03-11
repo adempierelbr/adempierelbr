@@ -411,6 +411,34 @@ if (oo != null)
 }
 return false;
 }
+/** Set Line Total CIF.
+@param lbr_LineTotalCIF The total CIF for the line */
+public void setlbr_LineTotalCIF (BigDecimal lbr_LineTotalCIF)
+{
+set_Value ("lbr_LineTotalCIF", lbr_LineTotalCIF);
+}
+/** Get Line Total CIF.
+@return The total CIF for the line */
+public BigDecimal getlbr_LineTotalCIF() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_LineTotalCIF");
+if (bd == null) return Env.ZERO;
+return bd;
+}
+/** Set Line Total SISCOMEX.
+@param lbr_LineTotalSISCOMEX The total SISCOMEX for the Line */
+public void setlbr_LineTotalSISCOMEX (BigDecimal lbr_LineTotalSISCOMEX)
+{
+set_Value ("lbr_LineTotalSISCOMEX", lbr_LineTotalSISCOMEX);
+}
+/** Get Line Total SISCOMEX.
+@return The total SISCOMEX for the Line */
+public BigDecimal getlbr_LineTotalSISCOMEX() 
+{
+BigDecimal bd = (BigDecimal)get_Value("lbr_LineTotalSISCOMEX");
+if (bd == null) return Env.ZERO;
+return bd;
+}
 /** Set NCM Name.
 @param lbr_NCMName Defines the NCM Name */
 public void setlbr_NCMName (String lbr_NCMName)

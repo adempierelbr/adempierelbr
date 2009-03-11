@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -119,6 +120,40 @@ public class POLBR{
 		
 		return M_InOut_ID;	
 	} //getM_InOut_ID
+	
+	/**
+	 * 	Returns the total for the ICMS Tax 
+	 * 	There must be a TaxGroup with the name ICMS
+	 *  @return ICMSTotal
+	 */
+	public static BigDecimal getICMSTotal(int LBR_NotaFiscal_ID, String trx){
+		
+		BigDecimal ICMSTotal = new BigDecimal(0);
+				
+		String sql = "select lbr_taxamt from lbr_nftax where lbr_notafiscal_id = ? and lbr_taxgroup_id = (select lbr_taxgroup_id from lbr_taxgroup where name = 'ICMS')";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, LBR_NotaFiscal_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 ICMSTotal = rs.getBigDecimal(1);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return ICMSTotal;	
+	} //getICMSTotal
 	
 	public static MInvoicePaySchedule[] getInvoicePaySchedule(Properties ctx, int C_Invoice_ID, String trx)
 	{

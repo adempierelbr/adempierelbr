@@ -213,7 +213,7 @@ return ii.intValue();
 
 /** lbr_Ori_C_InvoiceLine_ID AD_Reference_ID=1000042 */
 public static final int LBR_ORI_C_INVOICELINE_ID_AD_Reference_ID=1000042;
-/** Set Origin Invoice Line.
+/** Set lbr_Ori_C_InvoiceLine_ID.
 @param lbr_Ori_C_InvoiceLine_ID Origin Invoice Line */
 public void setlbr_Ori_C_InvoiceLine_ID (int lbr_Ori_C_InvoiceLine_ID)
 {
@@ -221,7 +221,7 @@ if (lbr_Ori_C_InvoiceLine_ID <= 0) set_ValueNoCheck ("lbr_Ori_C_InvoiceLine_ID",
  else 
 set_ValueNoCheck ("lbr_Ori_C_InvoiceLine_ID", new Integer(lbr_Ori_C_InvoiceLine_ID));
 }
-/** Get Origin Invoice Line.
+/** Get lbr_Ori_C_InvoiceLine_ID.
 @return Origin Invoice Line */
 public int getlbr_Ori_C_InvoiceLine_ID() 
 {

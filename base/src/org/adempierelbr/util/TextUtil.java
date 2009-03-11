@@ -277,6 +277,17 @@ public class TextUtil
 	}//retiraAcentos
 	
 	/**************************************************************************
+	 * 	retiraMascara
+	 *  Removes Mask Characters
+	 *  @param String acentos
+	 * 	@return String acentos
+	 */
+	public static String retiraMascara(String mascara)
+	{
+		return mascara.replaceAll("[.,-/]","");
+	}//retiraMascara
+	
+	/**************************************************************************
 	 * 	retiraPontoFinal
 	 *  Remove Period
 	 *  @param String value

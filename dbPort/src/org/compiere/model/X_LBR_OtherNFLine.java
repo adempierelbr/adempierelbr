@@ -133,6 +133,24 @@ public String getDocumentNo()
 {
 return (String)get_Value("DocumentNo");
 }
+/** Set Cancelled.
+@param IsCancelled The transaction was cancelled */
+public void setIsCancelled (boolean IsCancelled)
+{
+set_ValueNoCheck ("IsCancelled", new Boolean(IsCancelled));
+}
+/** Get Cancelled.
+@return The transaction was cancelled */
+public boolean isCancelled() 
+{
+Object oo = get_Value("IsCancelled");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
 /** Set Other NF Line.
 @param LBR_OtherNFLine_ID Other NF Line */
 public void setLBR_OtherNFLine_ID (int LBR_OtherNFLine_ID)

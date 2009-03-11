@@ -20,6 +20,7 @@ import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.model.MNotaFiscalLine;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
@@ -29,6 +30,7 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MShipper;
 import org.compiere.model.MUOM;
@@ -184,12 +186,13 @@ public class ProcGenerateNF extends SvrProcess
 				NotaFiscal.setC_DocType_ID(0);
 				NotaFiscal.setC_DocTypeTarget_ID(0);
 				
-				if (invoice.getPOReference() == null ||
-					invoice.getPOReference().equals("")){
+				if (invoice.get_Value("lbr_NFEntrada") == null ||
+						invoice.get_ValueAsString("lbr_NFEntrada").equals("")){
 					return 0;
 				}
 				
-				NotaFiscal.setDocumentNo(invoice.getPOReference());
+				
+				NotaFiscal.setDocumentNo(invoice.get_ValueAsString("lbr_NFEntrada"));
 				NotaFiscal.setIsPrinted(true);
 			}
 			
@@ -228,6 +231,28 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
 			NotaFiscal.setNoPackages(new BigDecimal(shipment.getNoPackages()));   //Quantidade/Volumes
+			
+			/** Código de Barras **/
+			StringBuilder Barcode1 = new StringBuilder(); 
+			Barcode1.append("1");
+			Barcode1.append(TextUtil.pad(NotaFiscal.getDocumentNo(), '0', 6, true));
+			Barcode1.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
+			Barcode1.append(NotaFiscal.getlbr_OrgRegion());
+			Barcode1.append(POLBR.dateTostring(NotaFiscal.getDateDoc(), "yyyyMMdd"));
+			Barcode1.append("2"); //TODO "Fix hardcode value"
+			NotaFiscal.setlbr_Barcode1(Barcode1.toString());
+			
+			StringBuilder Barcode2 = new StringBuilder();
+			Barcode2.append("2");
+			Barcode2.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
+			Barcode2.append(NotaFiscal.getlbr_OrgRegion());
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", Math.round(NotaFiscal.getGrandTotal().floatValue())).replace('.', ','),'0',10,true));
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", Math.round(POLBR.getICMSTotal(NotaFiscal.get_ID(), trx).floatValue())),'0',10,true));
+			NotaFiscal.setlbr_Barcode1(Barcode2.toString());
+			
+			/** NFType */
+			NotaFiscal.setlbr_NFType(invoice.get_ValueAsString("lbr_NFType"));
+			
 			NotaFiscal.save(trx);
 				
 			TaxBR.setNFTax(ctx, invoice.getC_Invoice_ID(), NotaFiscal.getLBR_NotaFiscal_ID(), trx);
@@ -239,6 +264,9 @@ public class ProcGenerateNF extends SvrProcess
 			if (clientCurrency != C_Currency_ID){
 				hasConvert = true;
 			}
+			
+
+			
 			
 			/** SET NOTA FISCAL LINE **/
 			for (MInvoiceLine iLine : lines){

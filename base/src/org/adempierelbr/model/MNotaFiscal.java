@@ -33,6 +33,7 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
+import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
@@ -150,9 +151,21 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	} //getBPartnerLocation
 	
 	public void setOrgInfo(int AD_Org_ID){
-		
+		MOrg org = MOrg.get(getCtx(), AD_Org_ID);
 		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID);
+		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),get_TrxName());
+		MCountry orgCountry = new MCountry(getCtx(),orgLoc.getC_Country_ID(),get_TrxName());
 		
+		setlbr_Org_Location_ID(orgLoc.getC_Location_ID());
+		setlbr_OrgAddress1(orgLoc.getAddress1());
+		setlbr_OrgAddress1(orgLoc.getAddress2());
+		setlbr_OrgAddress1(orgLoc.getAddress3());
+		setlbr_OrgAddress1(orgLoc.getAddress4());
+		setlbr_OrgName(org.getName());
+		setlbr_OrgCity(orgLoc.getCity());
+		setlbr_OrgCountry(orgCountry.getCountryCode());
+		setlbr_OrgRegion(orgLoc.getRegionName(true));
+		setlbr_OrgCCM(orgInfo.get_ValueAsString("lbr_CCM"));
 		setlbr_CNPJ(orgInfo.get_ValueAsString("lbr_CNPJ"));
 		setlbr_IE(orgInfo.get_ValueAsString("lbr_IE"));
 	} //setOrgInfo
@@ -261,6 +274,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (transpLocations.length > 0){
 
 			location = new MLocation(getCtx(),transpLocations[0].getC_Location_ID(),get_TrxName());
+			
+			
 			
 			setlbr_BPShipperAddress1(location.getAddress1());   //Endereço Transportadora
 			setlbr_BPShipperAddress2(location.getAddress2());   //Endereço Transportadora

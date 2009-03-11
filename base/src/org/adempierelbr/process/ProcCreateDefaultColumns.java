@@ -104,8 +104,8 @@ public class ProcCreateDefaultColumns extends SvrProcess
 
 		M_Element element = new M_Element(ctx,0,trx);
 		element.setColumnName(name);
-		element.setName(name.substring(name.indexOf("_", 0) + 1,name.lastIndexOf("_", name.length())));
-		element.setPrintName(name.substring(name.indexOf("_", 0) + 1,name.lastIndexOf("_", name.length())));
+		element.setName(name);
+		element.setPrintName(name);
 		element.setDescription("Primary Key : " + table.getName());
 		element.setHelp("Primary Key : " + table.getName());
 		element.save();

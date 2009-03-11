@@ -225,16 +225,16 @@ return (String)get_Value("lbr_GenerateOtherNF");
 
 /** lbr_OtherNF_RequestType AD_Reference_ID=1000040 */
 public static final int LBR_OTHERNF_REQUESTTYPE_AD_Reference_ID=1000040;
-/** Material Return = MR */
-public static final String LBR_OTHERNF_REQUESTTYPE_MaterialReturn = "MR";
 /** Material Invoice = MI */
 public static final String LBR_OTHERNF_REQUESTTYPE_MaterialInvoice = "MI";
+/** Material Return = MR */
+public static final String LBR_OTHERNF_REQUESTTYPE_MaterialReturn = "MR";
 /** Set Other NF Request Type.
 @param lbr_OtherNF_RequestType Type of request for the Other NF Process */
 public void setlbr_OtherNF_RequestType (String lbr_OtherNF_RequestType)
 {
-if (lbr_OtherNF_RequestType == null || lbr_OtherNF_RequestType.equals("MR") || lbr_OtherNF_RequestType.equals("MI"));
- else throw new IllegalArgumentException ("lbr_OtherNF_RequestType Invalid value - " + lbr_OtherNF_RequestType + " - Reference_ID=1000040 - MR - MI");
+if (lbr_OtherNF_RequestType == null || lbr_OtherNF_RequestType.equals("MI") || lbr_OtherNF_RequestType.equals("MR"));
+ else throw new IllegalArgumentException ("lbr_OtherNF_RequestType Invalid value - " + lbr_OtherNF_RequestType + " - Reference_ID=1000040 - MI - MR");
 if (lbr_OtherNF_RequestType != null && lbr_OtherNF_RequestType.length() > 2)
 {
 log.warning("Length > 2 - truncated");

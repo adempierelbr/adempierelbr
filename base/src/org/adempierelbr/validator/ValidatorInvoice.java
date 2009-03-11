@@ -203,6 +203,17 @@ public class ValidatorInvoice implements ModelValidator
 				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
 			}
 		}
+		
+		String lbr_NFEntrada = invoice.get_ValueAsString("lbr_NFEntrada");
+		
+		if (lbr_NFEntrada == null || lbr_NFEntrada.trim().equalsIgnoreCase(""))
+		{
+			lbr_NFEntrada = order.get_ValueAsString("lbr_NFEntrada");
+			if (lbr_NFEntrada == null || lbr_NFEntrada.trim().equalsIgnoreCase(""))
+			{
+				invoice.set_ValueOfColumn("lbr_NFEntrada", lbr_NFEntrada);
+			}
+		}
 
 		log.info(invoice.toString());
 		return validatePaymentTerm(invoice);
@@ -311,7 +322,7 @@ public class ValidatorInvoice implements ModelValidator
 			if (POLBR.get_ValueAsBoolean(docType.get_Value("lbr_HasFiscalDocument")) && //Gera Documento Fiscal
 				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument"))){ //Não é um documento próprio
 				
-				if (invoice.getPOReference() == null || invoice.getPOReference().equals("")){
+				if (invoice.get_Value("lbr_NFEntrada") == null || invoice.get_ValueAsString("lbr_NFEntrada").equals("")){
 					if (!invoice.isReversal())
 						return "Necessário preencher campo Referência do Pedido";
 				}

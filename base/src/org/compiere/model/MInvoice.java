@@ -530,6 +530,11 @@ public class MInvoice extends X_C_Invoice implements DocAction
             setC_BPartner_Location_ID(rmaOrder.getBill_Location_ID());
         }
         
+        if(ship.get_Value("lbr_NFEntrada") != null)
+        {
+        	set_Value("lbr_NFEntrada", ship.get_Value("lbr_NFEntrada"));
+        }
+        
 	}	//	setShipment
 
 	/**

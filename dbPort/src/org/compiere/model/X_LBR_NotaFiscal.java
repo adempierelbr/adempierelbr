@@ -1673,6 +1673,209 @@ BigDecimal bd = (BigDecimal)get_Value("lbr_NetWeight");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+/** Set Organization Address 1.
+@param lbr_OrgAddress1 The issuer organization address 1 */
+public void setlbr_OrgAddress1 (String lbr_OrgAddress1)
+{
+if (lbr_OrgAddress1 != null && lbr_OrgAddress1.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgAddress1 = lbr_OrgAddress1.substring(0,59);
+}
+set_Value ("lbr_OrgAddress1", lbr_OrgAddress1);
+}
+/** Get Organization Address 1.
+@return The issuer organization address 1 */
+public String getlbr_OrgAddress1() 
+{
+return (String)get_Value("lbr_OrgAddress1");
+}
+/** Set Organization Address 2.
+@param lbr_OrgAddress2 The issuer organization address 2 */
+public void setlbr_OrgAddress2 (String lbr_OrgAddress2)
+{
+if (lbr_OrgAddress2 != null && lbr_OrgAddress2.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgAddress2 = lbr_OrgAddress2.substring(0,59);
+}
+set_Value ("lbr_OrgAddress2", lbr_OrgAddress2);
+}
+/** Get Organization Address 2.
+@return The issuer organization address 2 */
+public String getlbr_OrgAddress2() 
+{
+return (String)get_Value("lbr_OrgAddress2");
+}
+/** Set Organization Address 3.
+@param lbr_OrgAddress3 The issuer organization address 3 */
+public void setlbr_OrgAddress3 (String lbr_OrgAddress3)
+{
+if (lbr_OrgAddress3 != null && lbr_OrgAddress3.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgAddress3 = lbr_OrgAddress3.substring(0,59);
+}
+set_Value ("lbr_OrgAddress3", lbr_OrgAddress3);
+}
+/** Get Organization Address 3.
+@return The issuer organization address 3 */
+public String getlbr_OrgAddress3() 
+{
+return (String)get_Value("lbr_OrgAddress3");
+}
+/** Set Organization Address 4.
+@param lbr_OrgAddress4 The issuer organization address 4 */
+public void setlbr_OrgAddress4 (String lbr_OrgAddress4)
+{
+if (lbr_OrgAddress4 != null && lbr_OrgAddress4.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgAddress4 = lbr_OrgAddress4.substring(0,59);
+}
+set_Value ("lbr_OrgAddress4", lbr_OrgAddress4);
+}
+/** Get Organization Address 4.
+@return The issuer organization address 4 */
+public String getlbr_OrgAddress4() 
+{
+return (String)get_Value("lbr_OrgAddress4");
+}
+/** Set Organization CCM.
+@param lbr_OrgCCM The Organization CCM */
+public void setlbr_OrgCCM (String lbr_OrgCCM)
+{
+if (lbr_OrgCCM != null && lbr_OrgCCM.length() > 30)
+{
+log.warning("Length > 30 - truncated");
+lbr_OrgCCM = lbr_OrgCCM.substring(0,29);
+}
+set_Value ("lbr_OrgCCM", lbr_OrgCCM);
+}
+/** Get Organization CCM.
+@return The Organization CCM */
+public String getlbr_OrgCCM() 
+{
+return (String)get_Value("lbr_OrgCCM");
+}
+/** Set Organization City.
+@param lbr_OrgCity The City of the Organization */
+public void setlbr_OrgCity (String lbr_OrgCity)
+{
+if (lbr_OrgCity != null && lbr_OrgCity.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgCity = lbr_OrgCity.substring(0,59);
+}
+set_Value ("lbr_OrgCity", lbr_OrgCity);
+}
+/** Get Organization City.
+@return The City of the Organization */
+public String getlbr_OrgCity() 
+{
+return (String)get_Value("lbr_OrgCity");
+}
+/** Set Organization Country.
+@param lbr_OrgCountry The Country of the Organization */
+public void setlbr_OrgCountry (String lbr_OrgCountry)
+{
+if (lbr_OrgCountry != null && lbr_OrgCountry.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgCountry = lbr_OrgCountry.substring(0,59);
+}
+set_Value ("lbr_OrgCountry", lbr_OrgCountry);
+}
+/** Get Organization Country.
+@return The Country of the Organization */
+public String getlbr_OrgCountry() 
+{
+return (String)get_Value("lbr_OrgCountry");
+}
+/** Set Organization Name.
+@param lbr_OrgName The Name of the Organization */
+public void setlbr_OrgName (String lbr_OrgName)
+{
+if (lbr_OrgName != null && lbr_OrgName.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_OrgName = lbr_OrgName.substring(0,59);
+}
+set_Value ("lbr_OrgName", lbr_OrgName);
+}
+/** Get Organization Name.
+@return The Name of the Organization */
+public String getlbr_OrgName() 
+{
+return (String)get_Value("lbr_OrgName");
+}
+/** Set Organization Phone.
+@param lbr_OrgPhone The Organization Phone */
+public void setlbr_OrgPhone (String lbr_OrgPhone)
+{
+if (lbr_OrgPhone != null && lbr_OrgPhone.length() > 40)
+{
+log.warning("Length > 40 - truncated");
+lbr_OrgPhone = lbr_OrgPhone.substring(0,39);
+}
+set_Value ("lbr_OrgPhone", lbr_OrgPhone);
+}
+/** Get Organization Phone.
+@return The Organization Phone */
+public String getlbr_OrgPhone() 
+{
+return (String)get_Value("lbr_OrgPhone");
+}
+/** Set Organization Postal Code.
+@param lbr_OrgPostal The Postal Code of the Organization */
+public void setlbr_OrgPostal (String lbr_OrgPostal)
+{
+if (lbr_OrgPostal != null && lbr_OrgPostal.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+lbr_OrgPostal = lbr_OrgPostal.substring(0,9);
+}
+set_Value ("lbr_OrgPostal", lbr_OrgPostal);
+}
+/** Get Organization Postal Code.
+@return The Postal Code of the Organization */
+public String getlbr_OrgPostal() 
+{
+return (String)get_Value("lbr_OrgPostal");
+}
+/** Set Organization Region.
+@param lbr_OrgRegion The Region of the Organization */
+public void setlbr_OrgRegion (String lbr_OrgRegion)
+{
+if (lbr_OrgRegion != null && lbr_OrgRegion.length() > 40)
+{
+log.warning("Length > 40 - truncated");
+lbr_OrgRegion = lbr_OrgRegion.substring(0,39);
+}
+set_Value ("lbr_OrgRegion", lbr_OrgRegion);
+}
+/** Get Organization Region.
+@return The Region of the Organization */
+public String getlbr_OrgRegion() 
+{
+return (String)get_Value("lbr_OrgRegion");
+}
+/** Set Org Address.
+@param lbr_Org_Location_ID Organization Location/Address */
+public void setlbr_Org_Location_ID (int lbr_Org_Location_ID)
+{
+if (lbr_Org_Location_ID <= 0) set_Value ("lbr_Org_Location_ID", null);
+ else 
+set_Value ("lbr_Org_Location_ID", new Integer(lbr_Org_Location_ID));
+}
+/** Get Org Address.
+@return Organization Location/Address */
+public int getlbr_Org_Location_ID() 
+{
+Integer ii = (Integer)get_Value("lbr_Org_Location_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 /** Set Packing Type.
 @param lbr_PackingType Defines the Packing Type */
 public void setlbr_PackingType (String lbr_PackingType)

@@ -10,6 +10,6 @@ INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTra
 
 -- 10/03/2009 17h40min21s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Ref_List_Trl SET Name='Frete n‹o Incluso',Description='Frete n‹o Incluso',Updated=TO_DATE('2009-03-10 17:40:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000119 AND AD_Language='pt_BR'
+UPDATE AD_Ref_List_Trl SET Name='Frete nÂ‹o Incluso',Description='Frete nÂ‹o Incluso',Updated=TO_DATE('2009-03-10 17:40:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000119 AND AD_Language='pt_BR'
 ;
 
