@@ -246,12 +246,17 @@ public class ProcGenerateNF extends SvrProcess
 			Barcode2.append("2");
 			Barcode2.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
 			Barcode2.append(NotaFiscal.getlbr_OrgRegion());
-			Barcode2.append(TextUtil.pad(String.format("%10.2f", Math.round(NotaFiscal.getGrandTotal().floatValue())).replace('.', ','),'0',10,true));
-			Barcode2.append(TextUtil.pad(String.format("%10.2f", Math.round(POLBR.getICMSTotal(NotaFiscal.get_ID(), trx).floatValue())),'0',10,true));
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", NotaFiscal.getGrandTotal()).replace('.', ','),'0',10,true));
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", POLBR.getICMSTotal(NotaFiscal.get_ID(), trx)),'0',10,true));
 			NotaFiscal.setlbr_Barcode1(Barcode2.toString());
 			
-			/** NFType */
-			NotaFiscal.setlbr_NFType(invoice.get_ValueAsString("lbr_NFType"));
+			/** NFType **/
+			if(invoice.get_Value("lbr_NFType") != null && !invoice.get_ValueAsString("lbr_NFType").equalsIgnoreCase(""))
+				NotaFiscal.setlbr_NFType(invoice.get_ValueAsString("lbr_NFType"));
+			
+			/** Notes **/
+			NotaFiscal.setlbr_BillNote(invoice.get_ValueAsString("lbr_BillNote"));
+			NotaFiscal.setlbr_ShipNote(invoice.get_ValueAsString("lbr_ShipNote"));
 			
 			NotaFiscal.save(trx);
 				

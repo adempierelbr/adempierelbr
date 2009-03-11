@@ -158,11 +158,12 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		setlbr_Org_Location_ID(orgLoc.getC_Location_ID());
 		setlbr_OrgAddress1(orgLoc.getAddress1());
-		setlbr_OrgAddress1(orgLoc.getAddress2());
-		setlbr_OrgAddress1(orgLoc.getAddress3());
-		setlbr_OrgAddress1(orgLoc.getAddress4());
+		setlbr_OrgAddress2(orgLoc.getAddress2());
+		setlbr_OrgAddress3(orgLoc.getAddress3());
+		setlbr_OrgAddress4(orgLoc.getAddress4());
 		setlbr_OrgName(org.getName());
 		setlbr_OrgCity(orgLoc.getCity());
+		setlbr_OrgPostal(orgLoc.getPostal());
 		setlbr_OrgCountry(orgCountry.getCountryCode());
 		setlbr_OrgRegion(orgLoc.getRegionName(true));
 		setlbr_OrgCCM(orgInfo.get_ValueAsString("lbr_CCM"));

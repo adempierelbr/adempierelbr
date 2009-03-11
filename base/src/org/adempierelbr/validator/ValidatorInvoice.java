@@ -214,6 +214,28 @@ public class ValidatorInvoice implements ModelValidator
 				invoice.set_ValueOfColumn("lbr_NFEntrada", lbr_NFEntrada);
 			}
 		}
+		
+		String lbr_BillNote = invoice.get_ValueAsString("lbr_BillNote");
+		
+		if (lbr_BillNote == null || lbr_BillNote.trim().equalsIgnoreCase(""))
+		{
+			lbr_BillNote = order.get_ValueAsString("lbr_BillNote");
+			if (lbr_BillNote == null || lbr_BillNote.trim().equalsIgnoreCase(""))
+			{
+				invoice.set_ValueOfColumn("lbr_BillNote", lbr_BillNote);
+			}
+		}
+		
+		String lbr_ShipNote = invoice.get_ValueAsString("lbr_ShipNote");
+		
+		if (lbr_ShipNote == null || lbr_ShipNote.trim().equalsIgnoreCase(""))
+		{
+			lbr_ShipNote = order.get_ValueAsString("lbr_ShipNote");
+			if (lbr_ShipNote == null || lbr_ShipNote.trim().equalsIgnoreCase(""))
+			{
+				invoice.set_ValueOfColumn("lbr_ShipNote", lbr_ShipNote);
+			}
+		}
 
 		log.info(invoice.toString());
 		return validatePaymentTerm(invoice);
