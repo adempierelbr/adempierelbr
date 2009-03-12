@@ -38,6 +38,7 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
 import org.compiere.model.MShipper;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
@@ -52,6 +53,8 @@ import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import com.sun.servicetag.SystemEnvironment;
 
 /**
  *	MNotaFiscal
@@ -181,8 +184,18 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		setBPName(bpartner.getName());   //Nome Destinatário
 		setlbr_BPPhone(bpLocation.getPhone());   //Telefone Destinatário
 
-		setlbr_BPCNPJ(POLBR.getCNPJ(bpartner));   //CNPJ Destinatário
-		setlbr_BPIE(POLBR.getIE(bpartner));   //IE Destinatário
+		////if(bpartner.get_Value(""))
+		if(MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false)
+		{
+			setlbr_BPCNPJ(POLBR.getCNPJ(bpartner));   //CNPJ Destinatário
+			setlbr_BPIE(POLBR.getIE(bpartner));   //IE Destinatário
+		}
+		else
+		{
+			setlbr_BPCNPJ(POLBR.getCNPJ(bpLocation));  //CNPJ Destinatário
+			setlbr_BPIE(POLBR.getIE(bpLocation)); //IE Destinatário
+		}
+		
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
 		setlbr_BPAddress1(location.getAddress1());   //Endereço Destinatário
