@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrgInfo;
@@ -339,6 +340,26 @@ public class POLBR{
 		return CNPJ;
 	}//getCNPJ
 	
+	public static String getCNPJ(MBPartnerLocation bpLocation){
+		
+		String  CNPJ = null;
+				
+		String BPTypeBR = bpLocation.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+		
+			if (BPTypeBR.equalsIgnoreCase("PJ")){
+				CNPJ = bpLocation.get_ValueAsString("lbr_CNPJ");   //CNPJ
+			}
+			else if (BPTypeBR.equalsIgnoreCase("PF")){
+				CNPJ = bpLocation.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
+			}
+			
+		}
+		
+		return CNPJ;
+	}//getCNPJ
+	
 	public static String getIE(Properties ctx, int C_BPartner_ID){
 		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
 		return getIE(bpartner);
@@ -359,6 +380,31 @@ public class POLBR{
 				}
 				else{
 					IE = bpartner.get_ValueAsString("lbr_IE");
+				}
+				
+		}
+		
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+		
+		return IE;
+	}//getIE
+	
+	public static String getIE(MBPartnerLocation bpLocation){
+		
+		String  IE   = null;
+				
+		String BPTypeBR = bpLocation.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+		
+				boolean isIEExempt = POLBR.get_ValueAsBoolean(bpLocation.get_Value("lbr_IsIEExempt"));
+							
+				if (isIEExempt){
+					IE = "ISENTO";
+				}
+				else{
+					IE = bpLocation.get_ValueAsString("lbr_IE");
 				}
 				
 		}

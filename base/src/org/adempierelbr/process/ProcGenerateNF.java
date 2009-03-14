@@ -231,25 +231,7 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
 			NotaFiscal.setNoPackages(new BigDecimal(shipment.getNoPackages()));   //Quantidade/Volumes
-			
-			/** Código de Barras **/
-			StringBuilder Barcode1 = new StringBuilder(); 
-			Barcode1.append("1");
-			Barcode1.append(TextUtil.pad(NotaFiscal.getDocumentNo(), '0', 6, true));
-			Barcode1.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
-			Barcode1.append(NotaFiscal.getlbr_OrgRegion());
-			Barcode1.append(POLBR.dateTostring(NotaFiscal.getDateDoc(), "yyyyMMdd"));
-			Barcode1.append("2"); //TODO "Fix hardcode value"
-			NotaFiscal.setlbr_Barcode1(Barcode1.toString());
-			
-			StringBuilder Barcode2 = new StringBuilder();
-			Barcode2.append("2");
-			Barcode2.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
-			Barcode2.append(NotaFiscal.getlbr_OrgRegion());
-			Barcode2.append(TextUtil.pad(String.format("%10.2f", NotaFiscal.getGrandTotal()).replace('.', ','),'0',10,true));
-			Barcode2.append(TextUtil.pad(String.format("%10.2f", POLBR.getICMSTotal(NotaFiscal.get_ID(), trx)),'0',10,true));
-			NotaFiscal.setlbr_Barcode1(Barcode2.toString());
-			
+
 			/** NFType **/
 			if(invoice.get_Value("lbr_NFType") != null && !invoice.get_ValueAsString("lbr_NFType").equalsIgnoreCase(""))
 				NotaFiscal.setlbr_NFType(invoice.get_ValueAsString("lbr_NFType"));
@@ -400,6 +382,25 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_CFOPNote(NotaFiscal.getCFOPNote()); //Natureza da Operação
 			NotaFiscal.setlbr_CFOPReference(NotaFiscal.getCFOPReference()); //Referência CFOP
 			NotaFiscal.setDocumentNote(NotaFiscal.getLegalMessage()); //Mensagens Legais
+			
+			/** Código de Barras **/
+			StringBuilder Barcode1 = new StringBuilder(); 
+			Barcode1.append("1");
+			Barcode1.append(TextUtil.pad(NotaFiscal.getDocumentNo(), '0', 6, true));
+			Barcode1.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
+			Barcode1.append(NotaFiscal.getlbr_OrgRegion());
+			Barcode1.append(POLBR.dateTostring(NotaFiscal.getDateDoc(), "yyyyMMdd"));
+			Barcode1.append("2"); //TODO "Fix hardcode value"
+			NotaFiscal.setlbr_Barcode1(Barcode1.toString());
+			
+			StringBuilder Barcode2 = new StringBuilder();
+			Barcode2.append("2");
+			Barcode2.append(TextUtil.pad(TextUtil.retiraMascara(NotaFiscal.getlbr_CNPJ()), '0', 14, true));
+			Barcode2.append(NotaFiscal.getlbr_OrgRegion());
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", NotaFiscal.getGrandTotal()).replace('.', ','),'0',10,true));
+			Barcode2.append(TextUtil.pad(String.format("%10.2f", POLBR.getICMSTotal(NotaFiscal.get_ID(), trx)),'0',10,true));
+			NotaFiscal.setlbr_Barcode1(Barcode2.toString());
+			
 	
 			NotaFiscal.setProcessed(true);
 			NotaFiscal.save(trx);
