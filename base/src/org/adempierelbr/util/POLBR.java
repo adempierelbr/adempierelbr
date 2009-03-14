@@ -29,6 +29,7 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
@@ -315,26 +316,66 @@ public class POLBR{
 		return LBR_Boleto_ID;
 	}	//	getLBR_Boleto_ID
 	
+	/**
+	 * Utilizar o método que incluí o parametro do C_BPartner_Location
+	 * @param bpartner 
+	 * @return
+	 */
+	@Deprecated
 	public static String getCNPJ(Properties ctx, int C_BPartner_ID){
 		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
 		return getCNPJ(bpartner);
 	} //getCNPJ
 	
+	public static String getCNPJ(Properties ctx, int C_BPartner_ID, int C_BPartner_Location_ID){
+		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		MBPartnerLocation bpLocation = new MBPartnerLocation(ctx,C_BPartner_Location_ID,null);
+		return getCNPJ(bpartner,bpLocation);
+	} //getCNPJ
+	
+	/**
+	 * Utilizar o método que incluí o parametro do MBPLocation
+	 * @param bpartner 
+	 * @return
+	 */
+	@Deprecated
 	public static String getCNPJ(MBPartner bpartner){
 		
 		String  CNPJ = null;
 				
 		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
 		
-		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
-		
-			if (BPTypeBR.equalsIgnoreCase("PJ")){
+		if (!(BPTypeBR == null || BPTypeBR.equals("")))
+		{
+			if (BPTypeBR.equalsIgnoreCase("PJ"))
+			{
 				CNPJ = bpartner.get_ValueAsString("lbr_CNPJ");   //CNPJ
 			}
-			else if (BPTypeBR.equalsIgnoreCase("PF")){
+			else if (BPTypeBR.equalsIgnoreCase("PF"))
+			{
 				CNPJ = bpartner.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
 			}
-			
+		}
+		
+		return CNPJ;
+	}//getCNPJ
+	
+	public static String getCNPJ(MBPartner bpartner, MBPartnerLocation bpLocation){
+		
+		String  CNPJ = null;
+		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals("")))
+		{
+				
+			if((MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+			{
+				CNPJ = getCNPJ(bpartner);
+			}
+			else
+			{	
+				CNPJ = getCNPJ(bpLocation);
+			}
 		}
 		
 		return CNPJ;
@@ -360,11 +401,38 @@ public class POLBR{
 		return CNPJ;
 	}//getCNPJ
 	
+	/**
+	 * Utilizar o método que possuí o parametro C_BPartner_Location_ID
+	 * @param ctx
+	 * @param C_BPartner_ID
+	 * @return 
+	 */
+	@Deprecated
 	public static String getIE(Properties ctx, int C_BPartner_ID){
 		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
 		return getIE(bpartner);
 	} //getCNPJ
 	
+	/**
+	 * 
+	 * @param ctx
+	 * @param C_BPartner_ID
+	 * @param C_BPartner_Location_ID
+	 * @return Inscrição estadual
+	 */
+	public static String getIE(Properties ctx, int C_BPartner_ID, int C_BPartner_Location_ID){
+		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		MBPartnerLocation bpLocation = new MBPartnerLocation(ctx,C_BPartner_Location_ID,null);
+		return getIE(bpartner,bpLocation);
+	} //getCNPJ
+	
+	
+	/**
+	 * Utilizar o método que possuí o parâmetro MBPartnerLocation
+	 * @param bpartner
+	 * @return Inscrição estadual
+	 */
+	@Deprecated
 	public static String getIE(MBPartner bpartner){
 		
 		String  IE   = null;
@@ -387,6 +455,26 @@ public class POLBR{
 		if (IE == null || IE.equals(""))
 			IE = "ISENTO";
 		
+		return IE;
+	}//getIE
+	
+	public static String getIE(MBPartner bpartner, MBPartnerLocation bpLocation){
+		
+		String  IE   = null;
+		
+		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+			if((MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+			{
+				IE = getIE(bpartner); 
+			}
+			else
+			{
+				IE = getIE(bpLocation);
+			}
+		}
+						
 		return IE;
 	}//getIE
 	

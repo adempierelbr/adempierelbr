@@ -40,6 +40,7 @@ setIsOneTime (false);
 setIsProspect (false);
 setIsSalesRep (false);
 setIsSummary (false);
+setIsValid (false);	// N
 setIsVendor (false);
 setName (null);
 setSO_CreditLimit (Env.ZERO);
@@ -137,6 +138,23 @@ public String getAD_OrgBP_ID()
 {
 return (String)get_Value("AD_OrgBP_ID");
 }
+/** Set Account No.
+@param AccountNo Account Number */
+public void setAccountNo (String AccountNo)
+{
+if (AccountNo != null && AccountNo.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+AccountNo = AccountNo.substring(0,9);
+}
+set_Value ("AccountNo", AccountNo);
+}
+/** Get Account No.
+@return Account Number */
+public String getAccountNo() 
+{
+return (String)get_Value("AccountNo");
+}
 /** Set Acquisition Cost.
 @param AcqusitionCost The cost of gaining the prospect as a customer */
 public void setAcqusitionCost (BigDecimal AcqusitionCost)
@@ -165,6 +183,34 @@ BigDecimal bd = (BigDecimal)get_Value("ActualLifeTimeValue");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+
+/** BPTypeBR AD_Reference_ID=2000004 */
+public static final int BPTYPEBR_AD_Reference_ID=2000004;
+/** -- = -- */
+public static final String BPTYPEBR___ = "--";
+/** Pessoa Fisica = PF */
+public static final String BPTYPEBR_PessoaFisica = "PF";
+/** Pessoa Juridica = PJ */
+public static final String BPTYPEBR_PessoaJuridica = "PJ";
+/** Set Tipo de Parceiro.
+@param BPTypeBR Identifica se o Parceiro é pessoa Física ou Jurídica */
+public void setBPTypeBR (String BPTypeBR)
+{
+if (BPTypeBR == null || BPTypeBR.equals("--") || BPTypeBR.equals("PF") || BPTypeBR.equals("PJ"));
+ else throw new IllegalArgumentException ("BPTypeBR Invalid value - " + BPTypeBR + " - Reference_ID=2000004 - -- - PF - PJ");
+if (BPTypeBR != null && BPTypeBR.length() > 2)
+{
+log.warning("Length > 2 - truncated");
+BPTypeBR = BPTypeBR.substring(0,1);
+}
+set_Value ("BPTypeBR", BPTypeBR);
+}
+/** Get Tipo de Parceiro.
+@return Identifica se o Parceiro é pessoa Física ou Jurídica */
+public String getBPTypeBR() 
+{
+return (String)get_Value("BPTypeBR");
+}
 /** Set Partner Parent.
 @param BPartner_Parent_ID Business Partner Parent */
 public void setBPartner_Parent_ID (int BPartner_Parent_ID)
@@ -180,6 +226,40 @@ public int getBPartner_Parent_ID()
 Integer ii = (Integer)get_Value("BPartner_Parent_ID");
 if (ii == null) return 0;
 return ii.intValue();
+}
+/** Set CNPJ.
+@param CNPJ CNPJ */
+public void setCNPJ (String CNPJ)
+{
+if (CNPJ != null && CNPJ.length() > 18)
+{
+log.warning("Length > 18 - truncated");
+CNPJ = CNPJ.substring(0,17);
+}
+set_Value ("CNPJ", CNPJ);
+}
+/** Get CNPJ.
+@return CNPJ */
+public String getCNPJ() 
+{
+return (String)get_Value("CNPJ");
+}
+/** Set CPF.
+@param CPF CPF */
+public void setCPF (String CPF)
+{
+if (CPF != null && CPF.length() > 14)
+{
+log.warning("Length > 14 - truncated");
+CPF = CPF.substring(0,13);
+}
+set_Value ("CPF", CPF);
+}
+/** Get CPF.
+@return CPF */
+public String getCPF() 
+{
+return (String)get_Value("CPF");
 }
 /** Set Business Partner Group.
 @param C_BP_Group_ID Business Partner Group */
@@ -294,6 +374,23 @@ Integer ii = (Integer)get_Value("C_PaymentTerm_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set Client Code.
+@param ClientCode Client Code */
+public void setClientCode (String ClientCode)
+{
+if (ClientCode != null && ClientCode.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+ClientCode = ClientCode.substring(0,0);
+}
+set_Value ("ClientCode", ClientCode);
+}
+/** Get Client Code.
+@return Client Code */
+public String getClientCode() 
+{
+return (String)get_Value("ClientCode");
+}
 /** Set D-U-N-S.
 @param DUNS Dun & Bradstreet Number */
 public void setDUNS (String DUNS)
@@ -314,24 +411,24 @@ return (String)get_Value("DUNS");
 
 /** DeliveryRule AD_Reference_ID=151 */
 public static final int DELIVERYRULE_AD_Reference_ID=151;
-/** After Receipt = R */
-public static final String DELIVERYRULE_AfterReceipt = "R";
 /** Availability = A */
 public static final String DELIVERYRULE_Availability = "A";
-/** Complete Line = L */
-public static final String DELIVERYRULE_CompleteLine = "L";
-/** Complete Order = O */
-public static final String DELIVERYRULE_CompleteOrder = "O";
-/** Manual = M */
-public static final String DELIVERYRULE_Manual = "M";
 /** Force = F */
 public static final String DELIVERYRULE_Force = "F";
+/** Complete Line = L */
+public static final String DELIVERYRULE_CompleteLine = "L";
+/** Manual = M */
+public static final String DELIVERYRULE_Manual = "M";
+/** Complete Order = O */
+public static final String DELIVERYRULE_CompleteOrder = "O";
+/** After Receipt = R */
+public static final String DELIVERYRULE_AfterReceipt = "R";
 /** Set Delivery Rule.
 @param DeliveryRule Defines the timing of Delivery */
 public void setDeliveryRule (String DeliveryRule)
 {
-if (DeliveryRule == null || DeliveryRule.equals("R") || DeliveryRule.equals("A") || DeliveryRule.equals("L") || DeliveryRule.equals("O") || DeliveryRule.equals("M") || DeliveryRule.equals("F"));
- else throw new IllegalArgumentException ("DeliveryRule Invalid value - " + DeliveryRule + " - Reference_ID=151 - R - A - L - O - M - F");
+if (DeliveryRule == null || DeliveryRule.equals("A") || DeliveryRule.equals("F") || DeliveryRule.equals("L") || DeliveryRule.equals("M") || DeliveryRule.equals("O") || DeliveryRule.equals("R"));
+ else throw new IllegalArgumentException ("DeliveryRule Invalid value - " + DeliveryRule + " - Reference_ID=151 - A - F - L - M - O - R");
 if (DeliveryRule != null && DeliveryRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -348,18 +445,18 @@ return (String)get_Value("DeliveryRule");
 
 /** DeliveryViaRule AD_Reference_ID=152 */
 public static final int DELIVERYVIARULE_AD_Reference_ID=152;
-/** Pickup = P */
-public static final String DELIVERYVIARULE_Pickup = "P";
 /** Delivery = D */
 public static final String DELIVERYVIARULE_Delivery = "D";
+/** Pickup = P */
+public static final String DELIVERYVIARULE_Pickup = "P";
 /** Shipper = S */
 public static final String DELIVERYVIARULE_Shipper = "S";
 /** Set Delivery Via.
 @param DeliveryViaRule How the order will be delivered */
 public void setDeliveryViaRule (String DeliveryViaRule)
 {
-if (DeliveryViaRule == null || DeliveryViaRule.equals("P") || DeliveryViaRule.equals("D") || DeliveryViaRule.equals("S"));
- else throw new IllegalArgumentException ("DeliveryViaRule Invalid value - " + DeliveryViaRule + " - Reference_ID=152 - P - D - S");
+if (DeliveryViaRule == null || DeliveryViaRule.equals("D") || DeliveryViaRule.equals("P") || DeliveryViaRule.equals("S"));
+ else throw new IllegalArgumentException ("DeliveryViaRule Invalid value - " + DeliveryViaRule + " - Reference_ID=152 - D - P - S");
 if (DeliveryViaRule != null && DeliveryViaRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -390,6 +487,23 @@ public String getDescription()
 {
 return (String)get_Value("Description");
 }
+/** Set Description 2.
+@param Description2 Description 2 */
+public void setDescription2 (String Description2)
+{
+if (Description2 != null && Description2.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+Description2 = Description2.substring(0,59);
+}
+set_Value ("Description2", Description2);
+}
+/** Get Description 2.
+@return Description 2 */
+public String getDescription2() 
+{
+return (String)get_Value("Description2");
+}
 /** Set Document Copies.
 @param DocumentCopies Number of copies to be printed */
 public void setDocumentCopies (int DocumentCopies)
@@ -415,6 +529,110 @@ set_Value ("DunningGrace", DunningGrace);
 public Timestamp getDunningGrace() 
 {
 return (Timestamp)get_Value("DunningGrace");
+}
+
+/** Especie AD_Reference_ID=2000031 */
+public static final int ESPECIE_AD_Reference_ID=2000031;
+/** Autorização de Carregamento de Transporte = ACT--- */
+public static final String ESPECIE_AutorizaçãoDeCarregamentoDeTransporte = "ACT---";
+/** Atestado de Intervenção em Máquina = AIMR-- */
+public static final String ESPECIE_AtestadoDeIntervençãoEmMáquina = "AIMR--";
+/** Atestado de Intervenção em PDV = AIPDV- */
+public static final String ESPECIE_AtestadoDeIntervençãoEmPDV = "AIPDV-";
+/** Bilhete de Passagem Aquaviário = BPA--- */
+public static final String ESPECIE_BilheteDePassagemAquaviário = "BPA---";
+/** Bilhete de Passagem Ferroviário = BPF--- */
+public static final String ESPECIE_BilheteDePassagemFerroviário = "BPF---";
+/** Bilhete de Passagem e Nota de Bagagem = BPNB-- */
+public static final String ESPECIE_BilheteDePassagemENotaDeBagagem = "BPNB--";
+/** Bilhete de Passagem Rodoviário = BPR--- */
+public static final String ESPECIE_BilheteDePassagemRodoviário = "BPR---";
+/** Conhecimento Aéreo = CA---- */
+public static final String ESPECIE_ConhecimentoAéreo = "CA----";
+/** Conhecimento de Transporte Avulso = CTA--- */
+public static final String ESPECIE_ConhecimentoDeTransporteAvulso = "CTA---";
+/** Conhecimento de Transporte Aquaviário de Cargas = CTAC-- */
+public static final String ESPECIE_ConhecimentoDeTransporteAquaviárioDeCargas = "CTAC--";
+/** Conhecimento de Transporte Ferroviário de Cargas = CTFC-- */
+public static final String ESPECIE_ConhecimentoDeTransporteFerroviárioDeCargas = "CTFC--";
+/** Conhecimento de Transporte Rodoviário de Cargas = CTRC-- */
+public static final String ESPECIE_ConhecimentoDeTransporteRodoviárioDeCargas = "CTRC--";
+/** Demonstrativo de Apuração do ICMS-DAICMS = DAICMS */
+public static final String ESPECIE_DemonstrativoDeApuraçãoDoICMS_DAICMS = "DAICMS";
+/** Demonstrativo de Apuração do Compl. do ICMS-DCICMS = DCICMS */
+public static final String ESPECIE_DemonstrativoDeApuraçãoDoComplDoICMS_DCICMS = "DCICMS";
+/** Despacho de Cargas em Lotação = DCL--- */
+public static final String ESPECIE_DespachoDeCargasEmLotação = "DCL---";
+/** Despacho de Cargas Modelo Simplificado = DCMS-- */
+public static final String ESPECIE_DespachoDeCargasModeloSimplificado = "DCMS--";
+/** Documento de Excesso de Bagagem = DEB--- */
+public static final String ESPECIE_DocumentoDeExcessoDeBagagem = "DEB---";
+/** Documento Simplificado de Embarque de Passageiro = DSEP-- */
+public static final String ESPECIE_DocumentoSimplificadoDeEmbarqueDePassageiro = "DSEP--";
+/** Demonstrativo de Contrib. Substituto do ICMS-DSICMS = DSICMS */
+public static final String ESPECIE_DemonstrativoDeContribSubstitutoDoICMS_DSICMS = "DSICMS";
+/** Despacho de Transporte = DT---- */
+public static final String ESPECIE_DespachoDeTransporte = "DT----";
+/** Extrato de Faturamento = EF---- */
+public static final String ESPECIE_ExtratoDeFaturamento = "EF----";
+/** Guia Nacional de Recolhimento de Tributos Estaduais = GNR--- */
+public static final String ESPECIE_GuiaNacionalDeRecolhimentoDeTributosEstaduais = "GNR---";
+/** Manifesto de Carga = MC---- */
+public static final String ESPECIE_ManifestoDeCarga = "MC----";
+/** Nota Fiscal = NF---- */
+public static final String ESPECIE_NotaFiscal = "NF----";
+/** Nota Fiscal Avulsa = NFA--- */
+public static final String ESPECIE_NotaFiscalAvulsa = "NFA---";
+/** Nota Fiscal/Conta de Energia Elétrica = NFCEE- */
+public static final String ESPECIE_NotaFiscalContaDeEnergiaElétrica = "NFCEE-";
+/** Nota Fiscal/Conta de Fornecimento de Água = NFCFA- */
+public static final String ESPECIE_NotaFiscalContaDeFornecimentoDeÁgua = "NFCFA-";
+/** Nota Fiscal de Entrada = NFE--- */
+public static final String ESPECIE_NotaFiscalDeEntrada = "NFE---";
+/** NFF -  = NFF--- */
+public static final String ESPECIE_NFF_ = "NFF---";
+/** Nota Fiscal Microempresa = NFME-- */
+public static final String ESPECIE_NotaFiscalMicroempresa = "NFME--";
+/** Nota Fiscal de Produtor = NFP--- */
+public static final String ESPECIE_NotaFiscalDeProdutor = "NFP---";
+/** Nota Fiscal Simplificada = NFS--- */
+public static final String ESPECIE_NotaFiscalSimplificada = "NFS---";
+/** Nota Fiscal e Serviço de Comunicação = NFSC-- */
+public static final String ESPECIE_NotaFiscalEServiçoDeComunicação = "NFSC--";
+/** Nota Fiscal de Serviço de Telecomunicações = NFSTC- */
+public static final String ESPECIE_NotaFiscalDeServiçoDeTelecomunicações = "NFSTC-";
+/** Nota Fiscal de Serviço de Transporte = NFSTR- */
+public static final String ESPECIE_NotaFiscalDeServiçoDeTransporte = "NFSTR-";
+/** Nota Fiscal de Venda a Consumidor = NFVC-- */
+public static final String ESPECIE_NotaFiscalDeVendaAConsumidor = "NFVC--";
+/** Ordem de Coleta de Carga = OCC--- */
+public static final String ESPECIE_OrdemDeColetaDeCarga = "OCC---";
+/** Relação de Despachos = RD---- */
+public static final String ESPECIE_RelaçãoDeDespachos = "RD----";
+/** Relatório de Emissão de Conhecimento Aéreos = RECA-- */
+public static final String ESPECIE_RelatórioDeEmissãoDeConhecimentoAéreos = "RECA--";
+/** Relatório de Embarque de Passageiros = REP--- */
+public static final String ESPECIE_RelatórioDeEmbarqueDePassageiros = "REP---";
+/** Resumo de Movimento Diário = RMD--- */
+public static final String ESPECIE_ResumoDeMovimentoDiário = "RMD---";
+/** Set Especie.
+@param Especie Especie */
+public void setEspecie (String Especie)
+{
+if (Especie == null || Especie.equals("ACT---") || Especie.equals("AIMR--") || Especie.equals("AIPDV-") || Especie.equals("BPA---") || Especie.equals("BPF---") || Especie.equals("BPNB--") || Especie.equals("BPR---") || Especie.equals("CA----") || Especie.equals("CTA---") || Especie.equals("CTAC--") || Especie.equals("CTFC--") || Especie.equals("CTRC--") || Especie.equals("DAICMS") || Especie.equals("DCICMS") || Especie.equals("DCL---") || Especie.equals("DCMS--") || Especie.equals("DEB---") || Especie.equals("DSEP--") || Especie.equals("DSICMS") || Especie.equals("DT----") || Especie.equals("EF----") || Especie.equals("GNR---") || Especie.equals("MC----") || Especie.equals("NF----") || Especie.equals("NFA---") || Especie.equals("NFCEE-") || Especie.equals("NFCFA-") || Especie.equals("NFE---") || Especie.equals("NFF---") || Especie.equals("NFME--") || Especie.equals("NFP---") || Especie.equals("NFS---") || Especie.equals("NFSC--") || Especie.equals("NFSTC-") || Especie.equals("NFSTR-") || Especie.equals("NFVC--") || Especie.equals("OCC---") || Especie.equals("RD----") || Especie.equals("RECA--") || Especie.equals("REP---") || Especie.equals("RMD---"));
+ else throw new IllegalArgumentException ("Especie Invalid value - " + Especie + " - Reference_ID=2000031 - ACT--- - AIMR-- - AIPDV- - BPA--- - BPF--- - BPNB-- - BPR--- - CA---- - CTA--- - CTAC-- - CTFC-- - CTRC-- - DAICMS - DCICMS - DCL--- - DCMS-- - DEB--- - DSEP-- - DSICMS - DT---- - EF---- - GNR--- - MC---- - NF---- - NFA--- - NFCEE- - NFCFA- - NFE--- - NFF--- - NFME-- - NFP--- - NFS--- - NFSC-- - NFSTC- - NFSTR- - NFVC-- - OCC--- - RD---- - RECA-- - REP--- - RMD---");
+if (Especie != null && Especie.length() > 6)
+{
+log.warning("Length > 6 - truncated");
+Especie = Especie.substring(0,5);
+}
+set_Value ("Especie", Especie);
+}
+/** Get Especie.
+@return Especie */
+public String getEspecie() 
+{
+return (String)get_Value("Especie");
 }
 /** Set First Sale.
 @param FirstSale Date of First Sale */
@@ -445,22 +663,22 @@ return bd;
 
 /** FreightCostRule AD_Reference_ID=153 */
 public static final int FREIGHTCOSTRULE_AD_Reference_ID=153;
-/** Freight included = I */
-public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
-/** Fix price = F */
-public static final String FREIGHTCOSTRULE_FixPrice = "F";
 /** Calculated = C */
 public static final String FREIGHTCOSTRULE_Calculated = "C";
+/** Freight not included = E */
+public static final String FREIGHTCOSTRULE_FreightNotIncluded = "E";
+/** Fix price = F */
+public static final String FREIGHTCOSTRULE_FixPrice = "F";
+/** Freight included = I */
+public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
-/** Freight excluded = E */
-public static final String FREIGHTCOSTRULE_FreightExcluded = "E";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L") || FreightCostRule.equals("E"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L - E");
+if (FreightCostRule == null || FreightCostRule.equals("C") || FreightCostRule.equals("E") || FreightCostRule.equals("F") || FreightCostRule.equals("I") || FreightCostRule.equals("L"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - C - E - F - I - L");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -475,22 +693,78 @@ public String getFreightCostRule()
 return (String)get_Value("FreightCostRule");
 }
 
+/** ICMSType AD_Reference_ID=2000027 */
+public static final int ICMSTYPE_AD_Reference_ID=2000027;
+/** Credito de Imposto = C */
+public static final String ICMSTYPE_CreditoDeImposto = "C";
+/** Isentas ou Nao Tributadas = I */
+public static final String ICMSTYPE_IsentasOuNaoTributadas = "I";
+/** Outras = O */
+public static final String ICMSTYPE_Outras = "O";
+/** Set Tipo de ICMS.
+@param ICMSType Tipo de ICMS */
+public void setICMSType (String ICMSType)
+{
+if (ICMSType == null || ICMSType.equals("C") || ICMSType.equals("I") || ICMSType.equals("O"));
+ else throw new IllegalArgumentException ("ICMSType Invalid value - " + ICMSType + " - Reference_ID=2000027 - C - I - O");
+if (ICMSType != null && ICMSType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+ICMSType = ICMSType.substring(0,0);
+}
+set_Value ("ICMSType", ICMSType);
+}
+/** Get Tipo de ICMS.
+@return Tipo de ICMS */
+public String getICMSType() 
+{
+return (String)get_Value("ICMSType");
+}
+
+/** IPIType AD_Reference_ID=2000027 */
+public static final int IPITYPE_AD_Reference_ID=2000027;
+/** Credito de Imposto = C */
+public static final String IPITYPE_CreditoDeImposto = "C";
+/** Isentas ou Nao Tributadas = I */
+public static final String IPITYPE_IsentasOuNaoTributadas = "I";
+/** Outras = O */
+public static final String IPITYPE_Outras = "O";
+/** Set Tipo de IPI.
+@param IPIType Tipo de IPI */
+public void setIPIType (String IPIType)
+{
+if (IPIType == null || IPIType.equals("C") || IPIType.equals("I") || IPIType.equals("O"));
+ else throw new IllegalArgumentException ("IPIType Invalid value - " + IPIType + " - Reference_ID=2000027 - C - I - O");
+if (IPIType != null && IPIType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+IPIType = IPIType.substring(0,0);
+}
+set_Value ("IPIType", IPIType);
+}
+/** Get Tipo de IPI.
+@return Tipo de IPI */
+public String getIPIType() 
+{
+return (String)get_Value("IPIType");
+}
+
 /** InvoiceRule AD_Reference_ID=150 */
 public static final int INVOICERULE_AD_Reference_ID=150;
-/** After Order delivered = O */
-public static final String INVOICERULE_AfterOrderDelivered = "O";
 /** After Delivery = D */
 public static final String INVOICERULE_AfterDelivery = "D";
-/** Customer Schedule after Delivery = S */
-public static final String INVOICERULE_CustomerScheduleAfterDelivery = "S";
 /** Immediate = I */
 public static final String INVOICERULE_Immediate = "I";
+/** After Order delivered = O */
+public static final String INVOICERULE_AfterOrderDelivered = "O";
+/** Customer Schedule after Delivery = S */
+public static final String INVOICERULE_CustomerScheduleAfterDelivery = "S";
 /** Set Invoice Rule.
 @param InvoiceRule Frequency and method of invoicing  */
 public void setInvoiceRule (String InvoiceRule)
 {
-if (InvoiceRule == null || InvoiceRule.equals("O") || InvoiceRule.equals("D") || InvoiceRule.equals("S") || InvoiceRule.equals("I"));
- else throw new IllegalArgumentException ("InvoiceRule Invalid value - " + InvoiceRule + " - Reference_ID=150 - O - D - S - I");
+if (InvoiceRule == null || InvoiceRule.equals("D") || InvoiceRule.equals("I") || InvoiceRule.equals("O") || InvoiceRule.equals("S"));
+ else throw new IllegalArgumentException ("InvoiceRule Invalid value - " + InvoiceRule + " - Reference_ID=150 - D - I - O - S");
 if (InvoiceRule != null && InvoiceRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -660,6 +934,24 @@ set_Value ("IsTaxExempt", new Boolean(IsTaxExempt));
 public boolean isTaxExempt() 
 {
 Object oo = get_Value("IsTaxExempt");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+/** Set Valid.
+@param IsValid Element is valid */
+public void setIsValid (boolean IsValid)
+{
+set_Value ("IsValid", new Boolean(IsValid));
+}
+/** Get Valid.
+@return Element is valid */
+public boolean isValid() 
+{
+Object oo = get_Value("IsValid");
 if (oo != null) 
 {
  if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
@@ -947,22 +1239,22 @@ return ii.intValue();
 public static final int PAYMENTRULE_AD_Reference_ID=195;
 /** Cash = B */
 public static final String PAYMENTRULE_Cash = "B";
-/** Credit Card = K */
-public static final String PAYMENTRULE_CreditCard = "K";
-/** Direct Deposit = T */
-public static final String PAYMENTRULE_DirectDeposit = "T";
-/** Check = S */
-public static final String PAYMENTRULE_Check = "S";
-/** On Credit = P */
-public static final String PAYMENTRULE_OnCredit = "P";
 /** Direct Debit = D */
 public static final String PAYMENTRULE_DirectDebit = "D";
+/** Credit Card = K */
+public static final String PAYMENTRULE_CreditCard = "K";
+/** On Credit = P */
+public static final String PAYMENTRULE_OnCredit = "P";
+/** Check = S */
+public static final String PAYMENTRULE_Check = "S";
+/** Direct Deposit = T */
+public static final String PAYMENTRULE_DirectDeposit = "T";
 /** Set Payment Rule.
 @param PaymentRule How you pay the invoice */
 public void setPaymentRule (String PaymentRule)
 {
-if (PaymentRule == null || PaymentRule.equals("B") || PaymentRule.equals("K") || PaymentRule.equals("T") || PaymentRule.equals("S") || PaymentRule.equals("P") || PaymentRule.equals("D"));
- else throw new IllegalArgumentException ("PaymentRule Invalid value - " + PaymentRule + " - Reference_ID=195 - B - K - T - S - P - D");
+if (PaymentRule == null || PaymentRule.equals("B") || PaymentRule.equals("D") || PaymentRule.equals("K") || PaymentRule.equals("P") || PaymentRule.equals("S") || PaymentRule.equals("T"));
+ else throw new IllegalArgumentException ("PaymentRule Invalid value - " + PaymentRule + " - Reference_ID=195 - B - D - K - P - S - T");
 if (PaymentRule != null && PaymentRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -981,22 +1273,22 @@ return (String)get_Value("PaymentRule");
 public static final int PAYMENTRULEPO_AD_Reference_ID=195;
 /** Cash = B */
 public static final String PAYMENTRULEPO_Cash = "B";
-/** Credit Card = K */
-public static final String PAYMENTRULEPO_CreditCard = "K";
-/** Direct Deposit = T */
-public static final String PAYMENTRULEPO_DirectDeposit = "T";
-/** Check = S */
-public static final String PAYMENTRULEPO_Check = "S";
-/** On Credit = P */
-public static final String PAYMENTRULEPO_OnCredit = "P";
 /** Direct Debit = D */
 public static final String PAYMENTRULEPO_DirectDebit = "D";
+/** Credit Card = K */
+public static final String PAYMENTRULEPO_CreditCard = "K";
+/** On Credit = P */
+public static final String PAYMENTRULEPO_OnCredit = "P";
+/** Check = S */
+public static final String PAYMENTRULEPO_Check = "S";
+/** Direct Deposit = T */
+public static final String PAYMENTRULEPO_DirectDeposit = "T";
 /** Set Payment Rule.
 @param PaymentRulePO Purchase payment option */
 public void setPaymentRulePO (String PaymentRulePO)
 {
-if (PaymentRulePO == null || PaymentRulePO.equals("B") || PaymentRulePO.equals("K") || PaymentRulePO.equals("T") || PaymentRulePO.equals("S") || PaymentRulePO.equals("P") || PaymentRulePO.equals("D"));
- else throw new IllegalArgumentException ("PaymentRulePO Invalid value - " + PaymentRulePO + " - Reference_ID=195 - B - K - T - S - P - D");
+if (PaymentRulePO == null || PaymentRulePO.equals("B") || PaymentRulePO.equals("D") || PaymentRulePO.equals("K") || PaymentRulePO.equals("P") || PaymentRulePO.equals("S") || PaymentRulePO.equals("T"));
+ else throw new IllegalArgumentException ("PaymentRulePO Invalid value - " + PaymentRulePO + " - Reference_ID=195 - B - D - K - P - S - T");
 if (PaymentRulePO != null && PaymentRulePO.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -1023,6 +1315,23 @@ public BigDecimal getPotentialLifeTimeValue()
 BigDecimal bd = (BigDecimal)get_Value("PotentialLifeTimeValue");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set RG.
+@param RG RG */
+public void setRG (String RG)
+{
+if (RG != null && RG.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+RG = RG.substring(0,19);
+}
+set_Value ("RG", RG);
+}
+/** Get RG.
+@return RG */
+public String getRG() 
+{
+return (String)get_Value("RG");
 }
 /** Set Rating.
 @param Rating Classification or Importance */
@@ -1061,22 +1370,22 @@ return (String)get_Value("ReferenceNo");
 
 /** SOCreditStatus AD_Reference_ID=289 */
 public static final int SOCREDITSTATUS_AD_Reference_ID=289;
-/** Credit Stop = S */
-public static final String SOCREDITSTATUS_CreditStop = "S";
 /** Credit Hold = H */
 public static final String SOCREDITSTATUS_CreditHold = "H";
+/** Credit OK = O */
+public static final String SOCREDITSTATUS_CreditOK = "O";
+/** Credit Stop = S */
+public static final String SOCREDITSTATUS_CreditStop = "S";
 /** Credit Watch = W */
 public static final String SOCREDITSTATUS_CreditWatch = "W";
 /** No Credit Check = X */
 public static final String SOCREDITSTATUS_NoCreditCheck = "X";
-/** Credit OK = O */
-public static final String SOCREDITSTATUS_CreditOK = "O";
 /** Set Credit Status.
 @param SOCreditStatus Business Partner Credit Status */
 public void setSOCreditStatus (String SOCreditStatus)
 {
-if (SOCreditStatus == null || SOCreditStatus.equals("S") || SOCreditStatus.equals("H") || SOCreditStatus.equals("W") || SOCreditStatus.equals("X") || SOCreditStatus.equals("O"));
- else throw new IllegalArgumentException ("SOCreditStatus Invalid value - " + SOCreditStatus + " - Reference_ID=289 - S - H - W - X - O");
+if (SOCreditStatus == null || SOCreditStatus.equals("H") || SOCreditStatus.equals("O") || SOCreditStatus.equals("S") || SOCreditStatus.equals("W") || SOCreditStatus.equals("X"));
+ else throw new IllegalArgumentException ("SOCreditStatus Invalid value - " + SOCreditStatus + " - Reference_ID=289 - H - O - S - W - X");
 if (SOCreditStatus != null && SOCreditStatus.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -1216,6 +1525,23 @@ Integer ii = (Integer)get_Value("ShelfLifeMinPct");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set Site Code.
+@param SiteCode Site Code */
+public void setSiteCode (String SiteCode)
+{
+if (SiteCode != null && SiteCode.length() > 5)
+{
+log.warning("Length > 5 - truncated");
+SiteCode = SiteCode.substring(0,4);
+}
+set_Value ("SiteCode", SiteCode);
+}
+/** Get Site Code.
+@return Site Code */
+public String getSiteCode() 
+{
+return (String)get_Value("SiteCode");
+}
 /** Set Tax ID.
 @param TaxID Tax Identification */
 public void setTaxID (String TaxID)
@@ -1285,17 +1611,17 @@ return (String)get_Value("Value");
 
 /** lbr_BPTypeBR AD_Reference_ID=1000000 */
 public static final int LBR_BPTYPEBR_AD_Reference_ID=1000000;
-/** PJ - Legal Entity = PJ */
-public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 /** PF - Individual = PF */
 public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+/** PJ - Legal Entity = PJ */
+public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 /** Set Brazilian BP Type.
 @param lbr_BPTypeBR Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual) */
 public void setlbr_BPTypeBR (String lbr_BPTypeBR)
 {
 if (lbr_BPTypeBR == null) throw new IllegalArgumentException ("lbr_BPTypeBR is mandatory");
-if (lbr_BPTypeBR.equals("PJ") || lbr_BPTypeBR.equals("PF"));
- else throw new IllegalArgumentException ("lbr_BPTypeBR Invalid value - " + lbr_BPTypeBR + " - Reference_ID=1000000 - PJ - PF");
+if (lbr_BPTypeBR.equals("PF") || lbr_BPTypeBR.equals("PJ"));
+ else throw new IllegalArgumentException ("lbr_BPTypeBR Invalid value - " + lbr_BPTypeBR + " - Reference_ID=1000000 - PF - PJ");
 if (lbr_BPTypeBR.length() > 2)
 {
 log.warning("Length > 2 - truncated");
@@ -1453,20 +1779,20 @@ return (String)get_Value("lbr_NFDescription");
 
 /** lbr_PaymentRule AD_Reference_ID=1000035 */
 public static final int LBR_PAYMENTRULE_AD_Reference_ID=1000035;
-/** Check = C */
-public static final String LBR_PAYMENTRULE_Check = "C";
-/** Cash = X */
-public static final String LBR_PAYMENTRULE_Cash = "X";
 /** Bill = B */
 public static final String LBR_PAYMENTRULE_Bill = "B";
+/** Check = C */
+public static final String LBR_PAYMENTRULE_Check = "C";
 /** Direct Deposit = D */
 public static final String LBR_PAYMENTRULE_DirectDeposit = "D";
+/** Cash = X */
+public static final String LBR_PAYMENTRULE_Cash = "X";
 /** Set Payment Rule.
 @param lbr_PaymentRule How you pay the invoice */
 public void setlbr_PaymentRule (String lbr_PaymentRule)
 {
-if (lbr_PaymentRule == null || lbr_PaymentRule.equals("C") || lbr_PaymentRule.equals("X") || lbr_PaymentRule.equals("B") || lbr_PaymentRule.equals("D"));
- else throw new IllegalArgumentException ("lbr_PaymentRule Invalid value - " + lbr_PaymentRule + " - Reference_ID=1000035 - C - X - B - D");
+if (lbr_PaymentRule == null || lbr_PaymentRule.equals("B") || lbr_PaymentRule.equals("C") || lbr_PaymentRule.equals("D") || lbr_PaymentRule.equals("X"));
+ else throw new IllegalArgumentException ("lbr_PaymentRule Invalid value - " + lbr_PaymentRule + " - Reference_ID=1000035 - B - C - D - X");
 if (lbr_PaymentRule != null && lbr_PaymentRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -1519,20 +1845,20 @@ return (String)get_Value("lbr_Suframa");
 public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
 /** End User = END */
 public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
-/** Manufacturing = MAN */
-public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
-/** Import = IMP */
-public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
 /** Export = EXP */
 public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
+/** Import = IMP */
+public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
+/** Manufacturing = MAN */
+public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
 /** Resale = RES */
 public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
 /** Set Transaction Type.
 @param lbr_TransactionType Defines the Transaction Type */
 public void setlbr_TransactionType (String lbr_TransactionType)
 {
-if (lbr_TransactionType == null || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("IMP") || lbr_TransactionType.equals("EXP") || lbr_TransactionType.equals("RES"));
- else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000024 - END - MAN - IMP - EXP - RES");
+if (lbr_TransactionType == null || lbr_TransactionType.equals("END") || lbr_TransactionType.equals("EXP") || lbr_TransactionType.equals("IMP") || lbr_TransactionType.equals("MAN") || lbr_TransactionType.equals("RES"));
+ else throw new IllegalArgumentException ("lbr_TransactionType Invalid value - " + lbr_TransactionType + " - Reference_ID=1000024 - END - EXP - IMP - MAN - RES");
 if (lbr_TransactionType != null && lbr_TransactionType.length() > 3)
 {
 log.warning("Length > 3 - truncated");
@@ -1545,5 +1871,73 @@ set_Value ("lbr_TransactionType", lbr_TransactionType);
 public String getlbr_TransactionType() 
 {
 return (String)get_Value("lbr_TransactionType");
+}
+/** Set Bank Agency.
+@param z_BankAgency Bank Agency */
+public void setz_BankAgency (String z_BankAgency)
+{
+if (z_BankAgency != null && z_BankAgency.length() > 10)
+{
+log.warning("Length > 10 - truncated");
+z_BankAgency = z_BankAgency.substring(0,9);
+}
+set_Value ("z_BankAgency", z_BankAgency);
+}
+/** Get Bank Agency.
+@return Bank Agency */
+public String getz_BankAgency() 
+{
+return (String)get_Value("z_BankAgency");
+}
+/** Set Bank Code.
+@param z_BankCode Bank Code */
+public void setz_BankCode (String z_BankCode)
+{
+if (z_BankCode != null && z_BankCode.length() > 5)
+{
+log.warning("Length > 5 - truncated");
+z_BankCode = z_BankCode.substring(0,4);
+}
+set_Value ("z_BankCode", z_BankCode);
+}
+/** Get Bank Code.
+@return Bank Code */
+public String getz_BankCode() 
+{
+return (String)get_Value("z_BankCode");
+}
+/** Set Client Code.
+@param z_ClientCode Client Code */
+public void setz_ClientCode (String z_ClientCode)
+{
+if (z_ClientCode != null && z_ClientCode.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+z_ClientCode = z_ClientCode.substring(0,0);
+}
+set_Value ("z_ClientCode", z_ClientCode);
+}
+/** Get Client Code.
+@return Client Code */
+public String getz_ClientCode() 
+{
+return (String)get_Value("z_ClientCode");
+}
+/** Set Site Code.
+@param z_SiteCode Site Code */
+public void setz_SiteCode (String z_SiteCode)
+{
+if (z_SiteCode != null && z_SiteCode.length() > 5)
+{
+log.warning("Length > 5 - truncated");
+z_SiteCode = z_SiteCode.substring(0,4);
+}
+set_Value ("z_SiteCode", z_SiteCode);
+}
+/** Get Site Code.
+@return Site Code */
+public String getz_SiteCode() 
+{
+return (String)get_Value("z_SiteCode");
 }
 }

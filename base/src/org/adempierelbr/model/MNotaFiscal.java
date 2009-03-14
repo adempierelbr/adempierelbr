@@ -159,7 +159,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),get_TrxName());
 		MCountry orgCountry = new MCountry(getCtx(),orgLoc.getC_Country_ID(),get_TrxName());
 		
-		setlbr_Org_Location_ID(orgLoc.getC_Location_ID());
+		setOrg_Location_ID(orgLoc.getC_Location_ID());
 		setlbr_OrgAddress1(orgLoc.getAddress1());
 		setlbr_OrgAddress2(orgLoc.getAddress2());
 		setlbr_OrgAddress3(orgLoc.getAddress3());
@@ -184,18 +184,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		setBPName(bpartner.getName());   //Nome Destinatário
 		setlbr_BPPhone(bpLocation.getPhone());   //Telefone Destinatário
 
-		////if(bpartner.get_Value(""))
-		if(MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false)
-		{
-			setlbr_BPCNPJ(POLBR.getCNPJ(bpartner));   //CNPJ Destinatário
-			setlbr_BPIE(POLBR.getIE(bpartner));   //IE Destinatário
-		}
-		else
-		{
-			setlbr_BPCNPJ(POLBR.getCNPJ(bpLocation));  //CNPJ Destinatário
-			setlbr_BPIE(POLBR.getIE(bpLocation)); //IE Destinatário
-		}
-		
+		setlbr_BPCNPJ(POLBR.getCNPJ(bpartner,bpLocation));   //CNPJ Destinatário
+		setlbr_BPIE(POLBR.getIE(bpartner,bpLocation));   //IE Destinatário	
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
 		setlbr_BPAddress1(location.getAddress1());   //Endereço Destinatário
@@ -220,11 +210,11 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		setBill_Location_ID(invoice.getC_BPartner_Location_ID());   /** InvoiceLocation_ID **/
 		setC_PaymentTerm_ID(invoice.getC_PaymentTerm_ID());   /** C_PaymentTerm_ID **/
 			
-		setlbr_BPInvoiceCNPJ(POLBR.getCNPJ(getCtx(), invoice.getC_BPartner_ID()));   //CNPJ Fatura
-		setlbr_BPInvoiceIE(POLBR.getIE(getCtx(), invoice.getC_BPartner_ID()));   //IE Fatura
-			
 		MBPartnerLocation bpLocation = new MBPartnerLocation(getCtx(),invoice.getC_BPartner_Location_ID(),get_TrxName());
 		MLocation         location   = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
+		
+		setlbr_BPInvoiceCNPJ(POLBR.getCNPJ(getCtx(), invoice.getC_BPartner_ID(),bpLocation.getC_BPartner_Location_ID()));   //CNPJ Fatura
+		setlbr_BPInvoiceIE(POLBR.getIE(getCtx(), invoice.getC_BPartner_ID(),bpLocation.getC_BPartner_Location_ID()));   //IE Fatura
 		
 		setlbr_BPInvoiceAddress1(location.getAddress1());   //Endereço Fatura
 		setlbr_BPInvoiceAddress2(location.getAddress2());   //Endereço Fatura
@@ -245,11 +235,11 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (shipment == null)
 			return;
 		
-		setlbr_BPDeliveryCNPJ(POLBR.getCNPJ(getCtx(), shipment.getC_BPartner_ID()));   //CNPJ Entrega
-		setlbr_BPDeliveryIE(POLBR.getIE(getCtx(), shipment.getC_BPartner_ID()));   //IE Entrega
-			
 		MBPartnerLocation bpLocation = new MBPartnerLocation(getCtx(),shipment.getC_BPartner_Location_ID(),get_TrxName());
 		MLocation         location   = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
+
+		setlbr_BPDeliveryCNPJ(POLBR.getCNPJ(getCtx(), shipment.getC_BPartner_ID(),bpLocation.getC_BPartner_Location_ID()));   //CNPJ Entrega
+		setlbr_BPDeliveryIE(POLBR.getIE(getCtx(), shipment.getC_BPartner_ID(),bpLocation.getC_BPartner_Location_ID()));   //IE Entrega
 		
 		setlbr_BPDeliveryAddress1(location.getAddress1());   //Endereço Entrega
 		setlbr_BPDeliveryAddress2(location.getAddress2());   //Endereço Entrega
@@ -278,18 +268,17 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		MBPartner transp = new MBPartner(getCtx(),shipper.getC_BPartner_ID(),get_TrxName());
 		
-		setlbr_BPShipperCNPJ(POLBR.getCNPJ(transp));   //CNPJ Transportadora
-		setlbr_BPShipperIE(POLBR.getIE(transp));   //IE Transportadora
-		
 		//Localização Transportadora
 		MBPartnerLocation[] transpLocations = transp.getLocations(false);
 		MLocation location = null;
 		
+		
+		
 		if (transpLocations.length > 0){
 
-			location = new MLocation(getCtx(),transpLocations[0].getC_Location_ID(),get_TrxName());
-			
-			
+			location = new MLocation(getCtx(),transpLocations[0].getC_Location_ID(),get_TrxName());		
+			setlbr_BPShipperCNPJ(POLBR.getCNPJ(transp,transpLocations[0]));   //CNPJ Transportadora
+			setlbr_BPShipperIE(POLBR.getIE(transp,transpLocations[0]));   //IE Transportadora
 			
 			setlbr_BPShipperAddress1(location.getAddress1());   //Endereço Transportadora
 			setlbr_BPShipperAddress2(location.getAddress2());   //Endereço Transportadora
@@ -304,6 +293,11 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				
 			MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
 			setlbr_BPShipperCountry(country.getCountryCode());   //País Transportadora
+		}
+		else
+		{
+			setlbr_BPShipperCNPJ(POLBR.getCNPJ(transp));   //CNPJ Transportadora
+			setlbr_BPShipperIE(POLBR.getIE(transp));   //IE Transportadora
 		}
 		
 	} //setShipper

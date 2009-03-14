@@ -160,6 +160,22 @@ Integer ii = (Integer)get_Value("C_BPartner_Location_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set CFOP.
+@param C_CFOP_ID Código Fiscal da Operação */
+public void setC_CFOP_ID (int C_CFOP_ID)
+{
+if (C_CFOP_ID <= 0) set_Value ("C_CFOP_ID", null);
+ else 
+set_Value ("C_CFOP_ID", new Integer(C_CFOP_ID));
+}
+/** Get CFOP.
+@return Código Fiscal da Operação */
+public int getC_CFOP_ID() 
+{
+Integer ii = (Integer)get_Value("C_CFOP_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
 
 /** C_DocTypeTarget_ID AD_Reference_ID=170 */
 public static final int C_DOCTYPETARGET_ID_AD_Reference_ID=170;
@@ -268,10 +284,10 @@ return (Timestamp)get_Value("DateDoc");
 @param Description Optional short description of the record */
 public void setDescription (String Description)
 {
-if (Description != null && Description.length() > 255)
+if (Description != null && Description.length() > 1024)
 {
-log.warning("Length > 255 - truncated");
-Description = Description.substring(0,254);
+log.warning("Length > 1024 - truncated");
+Description = Description.substring(0,1023);
 }
 set_Value ("Description", Description);
 }
@@ -280,6 +296,23 @@ set_Value ("Description", Description);
 public String getDescription() 
 {
 return (String)get_Value("Description");
+}
+/** Set Description 2.
+@param Description2 Description 2 */
+public void setDescription2 (String Description2)
+{
+if (Description2 != null && Description2.length() > 1024)
+{
+log.warning("Length > 1024 - truncated");
+Description2 = Description2.substring(0,1023);
+}
+set_Value ("Description2", Description2);
+}
+/** Get Description 2.
+@return Description 2 */
+public String getDescription2() 
+{
+return (String)get_Value("Description2");
 }
 /** Set Document No.
 @param DocumentNo Document sequence number of the document */
@@ -333,22 +366,22 @@ return bd;
 
 /** FreightCostRule AD_Reference_ID=153 */
 public static final int FREIGHTCOSTRULE_AD_Reference_ID=153;
-/** Freight included = I */
-public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
-/** Fix price = F */
-public static final String FREIGHTCOSTRULE_FixPrice = "F";
 /** Calculated = C */
 public static final String FREIGHTCOSTRULE_Calculated = "C";
+/** Freight not included = E */
+public static final String FREIGHTCOSTRULE_FreightNotIncluded = "E";
+/** Fix price = F */
+public static final String FREIGHTCOSTRULE_FixPrice = "F";
+/** Freight included = I */
+public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
-/** Freight excluded = E */
-public static final String FREIGHTCOSTRULE_FreightExcluded = "E";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
-if (FreightCostRule == null || FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L") || FreightCostRule.equals("E"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L - E");
+if (FreightCostRule == null || FreightCostRule.equals("C") || FreightCostRule.equals("E") || FreightCostRule.equals("F") || FreightCostRule.equals("I") || FreightCostRule.equals("L"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - C - E - F - I - L");
 if (FreightCostRule != null && FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -480,6 +513,18 @@ Integer ii = (Integer)get_Value("M_Shipper_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
+/** Set Movement Date.
+@param MovementDate Date a product was moved in or out of inventory */
+public void setMovementDate (Timestamp MovementDate)
+{
+set_Value ("MovementDate", MovementDate);
+}
+/** Get Movement Date.
+@return Date a product was moved in or out of inventory */
+public Timestamp getMovementDate() 
+{
+return (Timestamp)get_Value("MovementDate");
+}
 /** Set No Packages.
 @param NoPackages Number of packages shipped */
 public void setNoPackages (BigDecimal NoPackages)
@@ -493,6 +538,56 @@ public BigDecimal getNoPackages()
 BigDecimal bd = (BigDecimal)get_Value("NoPackages");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Order No.
+@param OrderNo Order No */
+public void setOrderNo (String OrderNo)
+{
+if (OrderNo != null && OrderNo.length() > 30)
+{
+log.warning("Length > 30 - truncated");
+OrderNo = OrderNo.substring(0,29);
+}
+set_Value ("OrderNo", OrderNo);
+}
+/** Get Order No.
+@return Order No */
+public String getOrderNo() 
+{
+return (String)get_Value("OrderNo");
+}
+/** Set Org Address.
+@param Org_Location_ID Organization Location/Address */
+public void setOrg_Location_ID (int Org_Location_ID)
+{
+if (Org_Location_ID <= 0) set_Value ("Org_Location_ID", null);
+ else 
+set_Value ("Org_Location_ID", new Integer(Org_Location_ID));
+}
+/** Get Org Address.
+@return Organization Location/Address */
+public int getOrg_Location_ID() 
+{
+Integer ii = (Integer)get_Value("Org_Location_ID");
+if (ii == null) return 0;
+return ii.intValue();
+}
+/** Set Order Reference.
+@param POReference Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner */
+public void setPOReference (String POReference)
+{
+if (POReference != null && POReference.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+POReference = POReference.substring(0,19);
+}
+set_Value ("POReference", POReference);
+}
+/** Get Order Reference.
+@return Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner */
+public String getPOReference() 
+{
+return (String)get_Value("POReference");
 }
 /** Set Reactivate Nota Fiscal.
 @param ProcReactivateNF This Process Reactivates the Nota Fiscal Document */
@@ -1309,6 +1404,32 @@ public String getlbr_BPShipperRegion()
 {
 return (String)get_Value("lbr_BPShipperRegion");
 }
+
+/** lbr_BPTypeBR AD_Reference_ID=1000000 */
+public static final int LBR_BPTYPEBR_AD_Reference_ID=1000000;
+/** PF - Individual = PF */
+public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+/** PJ - Legal Entity = PJ */
+public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
+/** Set Brazilian BP Type.
+@param lbr_BPTypeBR Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual) */
+public void setlbr_BPTypeBR (String lbr_BPTypeBR)
+{
+if (lbr_BPTypeBR == null || lbr_BPTypeBR.equals("PF") || lbr_BPTypeBR.equals("PJ"));
+ else throw new IllegalArgumentException ("lbr_BPTypeBR Invalid value - " + lbr_BPTypeBR + " - Reference_ID=1000000 - PF - PJ");
+if (lbr_BPTypeBR != null && lbr_BPTypeBR.length() > 2)
+{
+log.warning("Length > 2 - truncated");
+lbr_BPTypeBR = lbr_BPTypeBR.substring(0,1);
+}
+set_Value ("lbr_BPTypeBR", lbr_BPTypeBR);
+}
+/** Get Brazilian BP Type.
+@return Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual) */
+public String getlbr_BPTypeBR() 
+{
+return (String)get_Value("lbr_BPTypeBR");
+}
 /** Set Barcode 1.
 @param lbr_Barcode1 First Barcode of the Nota Fiscal */
 public void setlbr_Barcode1 (String lbr_Barcode1)
@@ -1860,22 +1981,6 @@ public String getlbr_OrgRegion()
 {
 return (String)get_Value("lbr_OrgRegion");
 }
-/** Set Org Address.
-@param lbr_Org_Location_ID Organization Location/Address */
-public void setlbr_Org_Location_ID (int lbr_Org_Location_ID)
-{
-if (lbr_Org_Location_ID <= 0) set_Value ("lbr_Org_Location_ID", null);
- else 
-set_Value ("lbr_Org_Location_ID", new Integer(lbr_Org_Location_ID));
-}
-/** Get Org Address.
-@return Organization Location/Address */
-public int getlbr_Org_Location_ID() 
-{
-Integer ii = (Integer)get_Value("lbr_Org_Location_ID");
-if (ii == null) return 0;
-return ii.intValue();
-}
 /** Set Packing Type.
 @param lbr_PackingType Defines the Packing Type */
 public void setlbr_PackingType (String lbr_PackingType)
@@ -2002,6 +2107,145 @@ set_Value ("lbr_TotalSISCOMEX", lbr_TotalSISCOMEX);
 public BigDecimal getlbr_TotalSISCOMEX() 
 {
 BigDecimal bd = (BigDecimal)get_Value("lbr_TotalSISCOMEX");
+if (bd == null) return Env.ZERO;
+return bd;
+}
+/** Set Service Description.
+@param z_DescriptionServicos Service Description */
+public void setz_DescriptionServicos (String z_DescriptionServicos)
+{
+if (z_DescriptionServicos != null && z_DescriptionServicos.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+z_DescriptionServicos = z_DescriptionServicos.substring(0,254);
+}
+set_Value ("z_DescriptionServicos", z_DescriptionServicos);
+}
+/** Get Service Description.
+@return Service Description */
+public String getz_DescriptionServicos() 
+{
+return (String)get_Value("z_DescriptionServicos");
+}
+/** Set NF Entrada No.
+@param z_NFEntradaNO NF Entrada No */
+public void setz_NFEntradaNO (String z_NFEntradaNO)
+{
+if (z_NFEntradaNO != null && z_NFEntradaNO.length() > 22)
+{
+log.warning("Length > 22 - truncated");
+z_NFEntradaNO = z_NFEntradaNO.substring(0,21);
+}
+set_Value ("z_NFEntradaNO", z_NFEntradaNO);
+}
+/** Get NF Entrada No.
+@return NF Entrada No */
+public String getz_NFEntradaNO() 
+{
+return (String)get_Value("z_NFEntradaNO");
+}
+/** Set Package Name.
+@param z_PackageName Package Name */
+public void setz_PackageName (String z_PackageName)
+{
+if (z_PackageName != null && z_PackageName.length() > 40)
+{
+log.warning("Length > 40 - truncated");
+z_PackageName = z_PackageName.substring(0,39);
+}
+set_Value ("z_PackageName", z_PackageName);
+}
+/** Get Package Name.
+@return Package Name */
+public String getz_PackageName() 
+{
+return (String)get_Value("z_PackageName");
+}
+/** Set Sistema Composto.
+@param z_SistemaComposto Sistema Composto */
+public void setz_SistemaComposto (boolean z_SistemaComposto)
+{
+set_Value ("z_SistemaComposto", new Boolean(z_SistemaComposto));
+}
+/** Get Sistema Composto.
+@return Sistema Composto */
+public boolean isz_SistemaComposto() 
+{
+Object oo = get_Value("z_SistemaComposto");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
+
+/** z_TaxTrxType AD_Reference_ID=3000000 */
+public static final int Z_TAXTRXTYPE_AD_Reference_ID=3000000;
+/** Entrada = E */
+public static final String Z_TAXTRXTYPE_Entrada = "E";
+/** Importação = I */
+public static final String Z_TAXTRXTYPE_Importação = "I";
+/** Saída = S */
+public static final String Z_TAXTRXTYPE_Saída = "S";
+/** Exportação = X */
+public static final String Z_TAXTRXTYPE_Exportação = "X";
+/** Set Transaction Type.
+@param z_TaxTrxType Define the transaction type */
+public void setz_TaxTrxType (String z_TaxTrxType)
+{
+if (z_TaxTrxType == null || z_TaxTrxType.equals("E") || z_TaxTrxType.equals("I") || z_TaxTrxType.equals("S") || z_TaxTrxType.equals("X"));
+ else throw new IllegalArgumentException ("z_TaxTrxType Invalid value - " + z_TaxTrxType + " - Reference_ID=3000000 - E - I - S - X");
+if (z_TaxTrxType != null && z_TaxTrxType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+z_TaxTrxType = z_TaxTrxType.substring(0,0);
+}
+set_Value ("z_TaxTrxType", z_TaxTrxType);
+}
+/** Get Transaction Type.
+@return Define the transaction type */
+public String getz_TaxTrxType() 
+{
+return (String)get_Value("z_TaxTrxType");
+}
+
+/** z_TaxType AD_Reference_ID=3000001 */
+public static final int Z_TAXTYPE_AD_Reference_ID=3000001;
+/** Consumo = C */
+public static final String Z_TAXTYPE_Consumo = "C";
+/** Industrialização = I */
+public static final String Z_TAXTYPE_Industrialização = "I";
+/** Set Tax Type.
+@param z_TaxType Defines the type of operation that this tax is applied to */
+public void setz_TaxType (String z_TaxType)
+{
+if (z_TaxType == null || z_TaxType.equals("C") || z_TaxType.equals("I"));
+ else throw new IllegalArgumentException ("z_TaxType Invalid value - " + z_TaxType + " - Reference_ID=3000001 - C - I");
+if (z_TaxType != null && z_TaxType.length() > 1)
+{
+log.warning("Length > 1 - truncated");
+z_TaxType = z_TaxType.substring(0,0);
+}
+set_Value ("z_TaxType", z_TaxType);
+}
+/** Get Tax Type.
+@return Defines the type of operation that this tax is applied to */
+public String getz_TaxType() 
+{
+return (String)get_Value("z_TaxType");
+}
+/** Set Total II.
+@param z_TotalII Total II of all document lines */
+public void setz_TotalII (BigDecimal z_TotalII)
+{
+set_Value ("z_TotalII", z_TotalII);
+}
+/** Get Total II.
+@return Total II of all document lines */
+public BigDecimal getz_TotalII() 
+{
+BigDecimal bd = (BigDecimal)get_Value("z_TotalII");
 if (bd == null) return Env.ZERO;
 return bd;
 }

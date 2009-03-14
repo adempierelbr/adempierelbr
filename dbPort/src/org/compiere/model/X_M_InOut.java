@@ -402,25 +402,25 @@ return (Timestamp)get_Value("DateReceived");
 
 /** DeliveryRule AD_Reference_ID=151 */
 public static final int DELIVERYRULE_AD_Reference_ID=151;
-/** After Receipt = R */
-public static final String DELIVERYRULE_AfterReceipt = "R";
 /** Availability = A */
 public static final String DELIVERYRULE_Availability = "A";
-/** Complete Line = L */
-public static final String DELIVERYRULE_CompleteLine = "L";
-/** Complete Order = O */
-public static final String DELIVERYRULE_CompleteOrder = "O";
-/** Manual = M */
-public static final String DELIVERYRULE_Manual = "M";
 /** Force = F */
 public static final String DELIVERYRULE_Force = "F";
+/** Complete Line = L */
+public static final String DELIVERYRULE_CompleteLine = "L";
+/** Manual = M */
+public static final String DELIVERYRULE_Manual = "M";
+/** Complete Order = O */
+public static final String DELIVERYRULE_CompleteOrder = "O";
+/** After Receipt = R */
+public static final String DELIVERYRULE_AfterReceipt = "R";
 /** Set Delivery Rule.
 @param DeliveryRule Defines the timing of Delivery */
 public void setDeliveryRule (String DeliveryRule)
 {
 if (DeliveryRule == null) throw new IllegalArgumentException ("DeliveryRule is mandatory");
-if (DeliveryRule.equals("R") || DeliveryRule.equals("A") || DeliveryRule.equals("L") || DeliveryRule.equals("O") || DeliveryRule.equals("M") || DeliveryRule.equals("F"));
- else throw new IllegalArgumentException ("DeliveryRule Invalid value - " + DeliveryRule + " - Reference_ID=151 - R - A - L - O - M - F");
+if (DeliveryRule.equals("A") || DeliveryRule.equals("F") || DeliveryRule.equals("L") || DeliveryRule.equals("M") || DeliveryRule.equals("O") || DeliveryRule.equals("R"));
+ else throw new IllegalArgumentException ("DeliveryRule Invalid value - " + DeliveryRule + " - Reference_ID=151 - A - F - L - M - O - R");
 if (DeliveryRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -437,10 +437,10 @@ return (String)get_Value("DeliveryRule");
 
 /** DeliveryViaRule AD_Reference_ID=152 */
 public static final int DELIVERYVIARULE_AD_Reference_ID=152;
-/** Pickup = P */
-public static final String DELIVERYVIARULE_Pickup = "P";
 /** Delivery = D */
 public static final String DELIVERYVIARULE_Delivery = "D";
+/** Pickup = P */
+public static final String DELIVERYVIARULE_Pickup = "P";
 /** Shipper = S */
 public static final String DELIVERYVIARULE_Shipper = "S";
 /** Set Delivery Via.
@@ -448,8 +448,8 @@ public static final String DELIVERYVIARULE_Shipper = "S";
 public void setDeliveryViaRule (String DeliveryViaRule)
 {
 if (DeliveryViaRule == null) throw new IllegalArgumentException ("DeliveryViaRule is mandatory");
-if (DeliveryViaRule.equals("P") || DeliveryViaRule.equals("D") || DeliveryViaRule.equals("S"));
- else throw new IllegalArgumentException ("DeliveryViaRule Invalid value - " + DeliveryViaRule + " - Reference_ID=152 - P - D - S");
+if (DeliveryViaRule.equals("D") || DeliveryViaRule.equals("P") || DeliveryViaRule.equals("S"));
+ else throw new IllegalArgumentException ("DeliveryViaRule Invalid value - " + DeliveryViaRule + " - Reference_ID=152 - D - P - S");
 if (DeliveryViaRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -483,32 +483,32 @@ return (String)get_Value("Description");
 
 /** DocAction AD_Reference_ID=135 */
 public static final int DOCACTION_AD_Reference_ID=135;
-/** Complete = CO */
-public static final String DOCACTION_Complete = "CO";
-/** Approve = AP */
-public static final String DOCACTION_Approve = "AP";
-/** Reject = RJ */
-public static final String DOCACTION_Reject = "RJ";
-/** Post = PO */
-public static final String DOCACTION_Post = "PO";
-/** Void = VO */
-public static final String DOCACTION_Void = "VO";
-/** Close = CL */
-public static final String DOCACTION_Close = "CL";
-/** Reverse - Correct = RC */
-public static final String DOCACTION_Reverse_Correct = "RC";
-/** Reverse - Accrual = RA */
-public static final String DOCACTION_Reverse_Accrual = "RA";
-/** Invalidate = IN */
-public static final String DOCACTION_Invalidate = "IN";
-/** Re-activate = RE */
-public static final String DOCACTION_Re_Activate = "RE";
 /** <None> = -- */
 public static final String DOCACTION_None = "--";
-/** Wait Complete = WC */
-public static final String DOCACTION_WaitComplete = "WC";
+/** Approve = AP */
+public static final String DOCACTION_Approve = "AP";
+/** Close = CL */
+public static final String DOCACTION_Close = "CL";
+/** Complete = CO */
+public static final String DOCACTION_Complete = "CO";
+/** Invalidate = IN */
+public static final String DOCACTION_Invalidate = "IN";
+/** Post = PO */
+public static final String DOCACTION_Post = "PO";
 /** Prepare = PR */
 public static final String DOCACTION_Prepare = "PR";
+/** Reverse - Accrual = RA */
+public static final String DOCACTION_Reverse_Accrual = "RA";
+/** Reverse - Correct = RC */
+public static final String DOCACTION_Reverse_Correct = "RC";
+/** Re-activate = RE */
+public static final String DOCACTION_Re_Activate = "RE";
+/** Reject = RJ */
+public static final String DOCACTION_Reject = "RJ";
+/** Void = VO */
+public static final String DOCACTION_Void = "VO";
+/** Wait Complete = WC */
+public static final String DOCACTION_WaitComplete = "WC";
 /** Unlock = XL */
 public static final String DOCACTION_Unlock = "XL";
 /** Set Document Action.
@@ -516,8 +516,8 @@ public static final String DOCACTION_Unlock = "XL";
 public void setDocAction (String DocAction)
 {
 if (DocAction == null) throw new IllegalArgumentException ("DocAction is mandatory");
-if (DocAction.equals("CO") || DocAction.equals("AP") || DocAction.equals("RJ") || DocAction.equals("PO") || DocAction.equals("VO") || DocAction.equals("CL") || DocAction.equals("RC") || DocAction.equals("RA") || DocAction.equals("IN") || DocAction.equals("RE") || DocAction.equals("--") || DocAction.equals("WC") || DocAction.equals("PR") || DocAction.equals("XL"));
- else throw new IllegalArgumentException ("DocAction Invalid value - " + DocAction + " - Reference_ID=135 - CO - AP - RJ - PO - VO - CL - RC - RA - IN - RE - -- - WC - PR - XL");
+if (DocAction.equals("--") || DocAction.equals("AP") || DocAction.equals("CL") || DocAction.equals("CO") || DocAction.equals("IN") || DocAction.equals("PO") || DocAction.equals("PR") || DocAction.equals("RA") || DocAction.equals("RC") || DocAction.equals("RE") || DocAction.equals("RJ") || DocAction.equals("VO") || DocAction.equals("WC") || DocAction.equals("XL"));
+ else throw new IllegalArgumentException ("DocAction Invalid value - " + DocAction + " - Reference_ID=135 - -- - AP - CL - CO - IN - PO - PR - RA - RC - RE - RJ - VO - WC - XL");
 if (DocAction.length() > 2)
 {
 log.warning("Length > 2 - truncated");
@@ -534,28 +534,28 @@ return (String)get_Value("DocAction");
 
 /** DocStatus AD_Reference_ID=131 */
 public static final int DOCSTATUS_AD_Reference_ID=131;
-/** In Progress = IP */
-public static final String DOCSTATUS_InProgress = "IP";
-/** Waiting Confirmation = WC */
-public static final String DOCSTATUS_WaitingConfirmation = "WC";
-/** Drafted = DR */
-public static final String DOCSTATUS_Drafted = "DR";
-/** Completed = CO */
-public static final String DOCSTATUS_Completed = "CO";
-/** Approved = AP */
-public static final String DOCSTATUS_Approved = "AP";
-/** Not Approved = NA */
-public static final String DOCSTATUS_NotApproved = "NA";
-/** Voided = VO */
-public static final String DOCSTATUS_Voided = "VO";
-/** Invalid = IN */
-public static final String DOCSTATUS_Invalid = "IN";
-/** Reversed = RE */
-public static final String DOCSTATUS_Reversed = "RE";
-/** Closed = CL */
-public static final String DOCSTATUS_Closed = "CL";
 /** Unknown = ?? */
 public static final String DOCSTATUS_Unknown = "??";
+/** Approved = AP */
+public static final String DOCSTATUS_Approved = "AP";
+/** Closed = CL */
+public static final String DOCSTATUS_Closed = "CL";
+/** Completed = CO */
+public static final String DOCSTATUS_Completed = "CO";
+/** Drafted = DR */
+public static final String DOCSTATUS_Drafted = "DR";
+/** Invalid = IN */
+public static final String DOCSTATUS_Invalid = "IN";
+/** In Progress = IP */
+public static final String DOCSTATUS_InProgress = "IP";
+/** Not Approved = NA */
+public static final String DOCSTATUS_NotApproved = "NA";
+/** Reversed = RE */
+public static final String DOCSTATUS_Reversed = "RE";
+/** Voided = VO */
+public static final String DOCSTATUS_Voided = "VO";
+/** Waiting Confirmation = WC */
+public static final String DOCSTATUS_WaitingConfirmation = "WC";
 /** Waiting Payment = WP */
 public static final String DOCSTATUS_WaitingPayment = "WP";
 /** Set Document Status.
@@ -563,8 +563,8 @@ public static final String DOCSTATUS_WaitingPayment = "WP";
 public void setDocStatus (String DocStatus)
 {
 if (DocStatus == null) throw new IllegalArgumentException ("DocStatus is mandatory");
-if (DocStatus.equals("IP") || DocStatus.equals("WC") || DocStatus.equals("DR") || DocStatus.equals("CO") || DocStatus.equals("AP") || DocStatus.equals("NA") || DocStatus.equals("VO") || DocStatus.equals("IN") || DocStatus.equals("RE") || DocStatus.equals("CL") || DocStatus.equals("??") || DocStatus.equals("WP"));
- else throw new IllegalArgumentException ("DocStatus Invalid value - " + DocStatus + " - Reference_ID=131 - IP - WC - DR - CO - AP - NA - VO - IN - RE - CL - ?? - WP");
+if (DocStatus.equals("??") || DocStatus.equals("AP") || DocStatus.equals("CL") || DocStatus.equals("CO") || DocStatus.equals("DR") || DocStatus.equals("IN") || DocStatus.equals("IP") || DocStatus.equals("NA") || DocStatus.equals("RE") || DocStatus.equals("VO") || DocStatus.equals("WC") || DocStatus.equals("WP"));
+ else throw new IllegalArgumentException ("DocStatus Invalid value - " + DocStatus + " - Reference_ID=131 - ?? - AP - CL - CO - DR - IN - IP - NA - RE - VO - WC - WP");
 if (DocStatus.length() > 2)
 {
 log.warning("Length > 2 - truncated");
@@ -577,6 +577,48 @@ set_Value ("DocStatus", DocStatus);
 public String getDocStatus() 
 {
 return (String)get_Value("DocStatus");
+}
+
+/** DocVerified AD_Reference_ID=2000003 */
+public static final int DOCVERIFIED_AD_Reference_ID=2000003;
+/** Documento OK = DOK */
+public static final String DOCVERIFIED_DocumentoOK = "DOK";
+/** Documento nao Permite o Mesmo Material em Mais de uma Linha  = DPL */
+public static final String DOCVERIFIED_DocumentoNaoPermiteOMesmoMaterialEmMaisDeUmaLinha = "DPL";
+/** Documento esta Vazio = DVZ */
+public static final String DOCVERIFIED_DocumentoEstaVazio = "DVZ";
+/** Faturamento e Entrega Divergentes = FED */
+public static final String DOCVERIFIED_FaturamentoEEntregaDivergentes = "FED";
+/** Existem Items com Quantidade Zero = IQZ */
+public static final String DOCVERIFIED_ExistemItemsComQuantidadeZero = "IQZ";
+/** Documento nao Permite Materiais com Qtd Negativa = QNG */
+public static final String DOCVERIFIED_DocumentoNaoPermiteMateriaisComQtdNegativa = "QNG";
+/** Reversed = RE */
+public static final String DOCVERIFIED_Reversed = "RE";
+/** Documento nao Permite Recebimento sem Ordem de Compra = SOC */
+public static final String DOCVERIFIED_DocumentoNaoPermiteRecebimentoSemOrdemDeCompra = "SOC";
+/** Existem Itens sem Saldo no Estoque = SSE */
+public static final String DOCVERIFIED_ExistemItensSemSaldoNoEstoque = "SSE";
+/** Existem Itens sem Saldo na Ordem = SSO */
+public static final String DOCVERIFIED_ExistemItensSemSaldoNaOrdem = "SSO";
+/** Set Status da Verificação.
+@param DocVerified Indica se ocorreram erros ao processar este documento */
+public void setDocVerified (String DocVerified)
+{
+if (DocVerified == null || DocVerified.equals("DOK") || DocVerified.equals("DPL") || DocVerified.equals("DVZ") || DocVerified.equals("FED") || DocVerified.equals("IQZ") || DocVerified.equals("QNG") || DocVerified.equals("RE") || DocVerified.equals("SOC") || DocVerified.equals("SSE") || DocVerified.equals("SSO"));
+ else throw new IllegalArgumentException ("DocVerified Invalid value - " + DocVerified + " - Reference_ID=2000003 - DOK - DPL - DVZ - FED - IQZ - QNG - RE - SOC - SSE - SSO");
+if (DocVerified != null && DocVerified.length() > 3)
+{
+log.warning("Length > 3 - truncated");
+DocVerified = DocVerified.substring(0,2);
+}
+set_ValueNoCheck ("DocVerified", DocVerified);
+}
+/** Get Status da Verificação.
+@return Indica se ocorreram erros ao processar este documento */
+public String getDocVerified() 
+{
+return (String)get_Value("DocVerified");
 }
 /** Set Document No.
 @param DocumentNo Document sequence number of the document */
@@ -619,23 +661,23 @@ return bd;
 
 /** FreightCostRule AD_Reference_ID=153 */
 public static final int FREIGHTCOSTRULE_AD_Reference_ID=153;
-/** Freight included = I */
-public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
-/** Fix price = F */
-public static final String FREIGHTCOSTRULE_FixPrice = "F";
 /** Calculated = C */
 public static final String FREIGHTCOSTRULE_Calculated = "C";
+/** Freight not included = E */
+public static final String FREIGHTCOSTRULE_FreightNotIncluded = "E";
+/** Fix price = F */
+public static final String FREIGHTCOSTRULE_FixPrice = "F";
+/** Freight included = I */
+public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
 /** Line = L */
 public static final String FREIGHTCOSTRULE_Line = "L";
-/** Freight excluded = E */
-public static final String FREIGHTCOSTRULE_FreightExcluded = "E";
 /** Set Freight Cost Rule.
 @param FreightCostRule Method for charging Freight */
 public void setFreightCostRule (String FreightCostRule)
 {
 if (FreightCostRule == null) throw new IllegalArgumentException ("FreightCostRule is mandatory");
-if (FreightCostRule.equals("I") || FreightCostRule.equals("F") || FreightCostRule.equals("C") || FreightCostRule.equals("L") || FreightCostRule.equals("E"));
- else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - I - F - C - L - E");
+if (FreightCostRule.equals("C") || FreightCostRule.equals("E") || FreightCostRule.equals("F") || FreightCostRule.equals("I") || FreightCostRule.equals("L"));
+ else throw new IllegalArgumentException ("FreightCostRule Invalid value - " + FreightCostRule + " - Reference_ID=153 - C - E - F - I - L");
 if (FreightCostRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -665,6 +707,20 @@ set_Value ("GenerateTo", GenerateTo);
 public String getGenerateTo() 
 {
 return (String)get_Value("GenerateTo");
+}
+/** Set Gross Weight.
+@param GrossWeight Gross Weight */
+public void setGrossWeight (BigDecimal GrossWeight)
+{
+set_Value ("GrossWeight", GrossWeight);
+}
+/** Get Gross Weight.
+@return Gross Weight */
+public BigDecimal getGrossWeight() 
+{
+BigDecimal bd = (BigDecimal)get_Value("GrossWeight");
+if (bd == null) return Env.ZERO;
+return bd;
 }
 /** Set Approved.
 @param IsApproved Indicates if this document requires approval */
@@ -834,26 +890,26 @@ return (Timestamp)get_Value("MovementDate");
 
 /** MovementType AD_Reference_ID=189 */
 public static final int MOVEMENTTYPE_AD_Reference_ID=189;
+/** Customer Returns = C+ */
+public static final String MOVEMENTTYPE_CustomerReturns = "C+";
+/** Customer Shipment = C- */
+public static final String MOVEMENTTYPE_CustomerShipment = "C-";
+/** Inventory In = I+ */
+public static final String MOVEMENTTYPE_InventoryIn = "I+";
+/** Inventory Out = I- */
+public static final String MOVEMENTTYPE_InventoryOut = "I-";
+/** Movement To = M+ */
+public static final String MOVEMENTTYPE_MovementTo = "M+";
+/** Movement From = M- */
+public static final String MOVEMENTTYPE_MovementFrom = "M-";
 /** Production + = P+ */
 public static final String MOVEMENTTYPE_ProductionPlus = "P+";
 /** Production - = P- */
 public static final String MOVEMENTTYPE_Production_ = "P-";
-/** Customer Shipment = C- */
-public static final String MOVEMENTTYPE_CustomerShipment = "C-";
-/** Customer Returns = C+ */
-public static final String MOVEMENTTYPE_CustomerReturns = "C+";
 /** Vendor Receipts = V+ */
 public static final String MOVEMENTTYPE_VendorReceipts = "V+";
 /** Vendor Returns = V- */
 public static final String MOVEMENTTYPE_VendorReturns = "V-";
-/** Inventory Out = I- */
-public static final String MOVEMENTTYPE_InventoryOut = "I-";
-/** Inventory In = I+ */
-public static final String MOVEMENTTYPE_InventoryIn = "I+";
-/** Movement From = M- */
-public static final String MOVEMENTTYPE_MovementFrom = "M-";
-/** Movement To = M+ */
-public static final String MOVEMENTTYPE_MovementTo = "M+";
 /** Work Order + = W+ */
 public static final String MOVEMENTTYPE_WorkOrderPlus = "W+";
 /** Work Order - = W- */
@@ -863,8 +919,8 @@ public static final String MOVEMENTTYPE_WorkOrder_ = "W-";
 public void setMovementType (String MovementType)
 {
 if (MovementType == null) throw new IllegalArgumentException ("MovementType is mandatory");
-if (MovementType.equals("P+") || MovementType.equals("P-") || MovementType.equals("C-") || MovementType.equals("C+") || MovementType.equals("V+") || MovementType.equals("V-") || MovementType.equals("I-") || MovementType.equals("I+") || MovementType.equals("M-") || MovementType.equals("M+") || MovementType.equals("W+") || MovementType.equals("W-"));
- else throw new IllegalArgumentException ("MovementType Invalid value - " + MovementType + " - Reference_ID=189 - P+ - P- - C- - C+ - V+ - V- - I- - I+ - M- - M+ - W+ - W-");
+if (MovementType.equals("C+") || MovementType.equals("C-") || MovementType.equals("I+") || MovementType.equals("I-") || MovementType.equals("M+") || MovementType.equals("M-") || MovementType.equals("P+") || MovementType.equals("P-") || MovementType.equals("V+") || MovementType.equals("V-") || MovementType.equals("W+") || MovementType.equals("W-"));
+ else throw new IllegalArgumentException ("MovementType Invalid value - " + MovementType + " - Reference_ID=189 - C+ - C- - I+ - I- - M+ - M- - P+ - P- - V+ - V- - W+ - W-");
 if (MovementType.length() > 2)
 {
 log.warning("Length > 2 - truncated");
@@ -877,6 +933,20 @@ set_ValueNoCheck ("MovementType", MovementType);
 public String getMovementType() 
 {
 return (String)get_Value("MovementType");
+}
+/** Set Net Weight.
+@param NetWeight Net Weight */
+public void setNetWeight (BigDecimal NetWeight)
+{
+set_Value ("NetWeight", NetWeight);
+}
+/** Get Net Weight.
+@return Net Weight */
+public BigDecimal getNetWeight() 
+{
+BigDecimal bd = (BigDecimal)get_Value("NetWeight");
+if (bd == null) return Env.ZERO;
+return bd;
 }
 /** Set No Packages.
 @param NoPackages Number of packages shipped */
@@ -908,6 +978,144 @@ set_Value ("POReference", POReference);
 public String getPOReference() 
 {
 return (String)get_Value("POReference");
+}
+
+/** PackageType AD_Reference_ID=2000015 */
+public static final int PACKAGETYPE_AD_Reference_ID=2000015;
+/** 25 Engr + 11 Cxs = 01 */
+public static final String PACKAGETYPE_25EngrPlus11Cxs = "01";
+/** 15 engr + 9 cxs = 02 */
+public static final String PACKAGETYPE_15EngrPlus9Cxs = "02";
+/** 1 Palete + 2 Cxs = 03 */
+public static final String PACKAGETYPE_1PaletePlus2Cxs = "03";
+/** 1 Palete + 1 Caixa + 1 Bobina = 04 */
+public static final String PACKAGETYPE_1PaletePlus1CaixaPlus1Bobina = "04";
+/** 1 Palete + 3 Caixas = 05 */
+public static final String PACKAGETYPE_1PaletePlus3Caixas = "05";
+/** 8 Caixas + 1 Engradado = 06 */
+public static final String PACKAGETYPE_8CaixasPlus1Engradado = "06";
+/** 33 Caixas + 01 Engradado = 07 */
+public static final String PACKAGETYPE_33CaixasPlus01Engradado = "07";
+/** 8 Engradados + 20 Caixas = 08 */
+public static final String PACKAGETYPE_8EngradadosPlus20Caixas = "08";
+/** 1 Caixa + 1 Palete = 09 */
+public static final String PACKAGETYPE_1CaixaPlus1Palete = "09";
+/** 2 Bobinas + 1 Caixa + 1 Palete = 10 */
+public static final String PACKAGETYPE_2BobinasPlus1CaixaPlus1Palete = "10";
+/** 03 Bobinas + 01 Palete + 23 cxs  = 11 */
+public static final String PACKAGETYPE_03BobinasPlus01PaletePlus23Cxs = "11";
+/** 02 Bobinas + 01 Palete + 23 Cxs = 12 */
+public static final String PACKAGETYPE_02BobinasPlus01PaletePlus23Cxs = "12";
+/** 03 Bobinas + 01 Palete + 09 Cxs = 13 */
+public static final String PACKAGETYPE_03BobinasPlus01PaletePlus09Cxs = "13";
+/** Gabinete = 14 */
+public static final String PACKAGETYPE_Gabinete = "14";
+/** Volumes = 15 */
+public static final String PACKAGETYPE_Volumes = "15";
+/** 4 Caixas + 1 Palete   = 16 */
+public static final String PACKAGETYPE_4CaixasPlus1Palete = "16";
+/** 7 CXS. MAD + 1 BOMBONA = 17 */
+public static final String PACKAGETYPE_7CXSMADPlus1BOMBONA = "17";
+/** 1 Pal + 2 Bob + 2 Bombonas + 21 Cxs = 18 */
+public static final String PACKAGETYPE_1PalPlus2BobPlus2BombonasPlus21Cxs = "18";
+/** 5 Engradados + 3 Caixas = 19 */
+public static final String PACKAGETYPE_5EngradadosPlus3Caixas = "19";
+/** 4 Bobinas + 11 Caixas + 1 Palete = 1A */
+public static final String PACKAGETYPE_4BobinasPlus11CaixasPlus1Palete = "1A";
+/** Engradado = 1B */
+public static final String PACKAGETYPE_Engradado = "1B";
+/** Caixa = 20 */
+public static final String PACKAGETYPE_Caixa = "20";
+/** 1 Engradado + 2 Caixas = 21 */
+public static final String PACKAGETYPE_1EngradadoPlus2Caixas = "21";
+/** 1 Engr + 1 Bombona + 7 Cxs = 22 */
+public static final String PACKAGETYPE_1EngrPlus1BombonaPlus7Cxs = "22";
+/** 11 Engradados + 9 Caixas = 23 */
+public static final String PACKAGETYPE_11EngradadosPlus9Caixas = "23";
+/** 4 Engradados + 3 Caixas = 24 */
+public static final String PACKAGETYPE_4EngradadosPlus3Caixas = "24";
+/** 15 Engradados + 9 Caixas = 25 */
+public static final String PACKAGETYPE_15EngradadosPlus9Caixas = "25";
+/** 1 Palete + 1 Bobina = 26 */
+public static final String PACKAGETYPE_1PaletePlus1Bobina = "26";
+/**  2 Cxs + 1 Palete + 1 Engradado = 27 */
+public static final String PACKAGETYPE_2CxsPlus1PaletePlus1Engradado = "27";
+/** 3 Caixas + 1 Engradado = 28 */
+public static final String PACKAGETYPE_3CaixasPlus1Engradado = "28";
+/** 2 Palete + 5 Caixas = 29 */
+public static final String PACKAGETYPE_2PaletePlus5Caixas = "29";
+/** 15 Engr. de madeira + 15 Cxs. Papelao = 30 */
+public static final String PACKAGETYPE_15EngrDeMadeiraPlus15CxsPapelao = "30";
+/** 16 Bat + 4 Cx. Madeira = 31 */
+public static final String PACKAGETYPE_16BatPlus4CxMadeira = "31";
+/** 8 Bat + 2 Cx. Madeira = 32 */
+public static final String PACKAGETYPE_8BatPlus2CxMadeira = "32";
+/** 40 Bat + 10 Cx. Madeira = 33 */
+public static final String PACKAGETYPE_40BatPlus10CxMadeira = "33";
+/** 13 Cx. Madeira + 52 Bat  = 34 */
+public static final String PACKAGETYPE_13CxMadeiraPlus52Bat = "34";
+/** 100 Bat + 25 Caixa Madeira = 35 */
+public static final String PACKAGETYPE_100BatPlus25CaixaMadeira = "35";
+/** 15 Cx Madeira + 60 Bat  = 36 */
+public static final String PACKAGETYPE_15CxMadeiraPlus60Bat = "36";
+/** 04 Engr + 01 Bombona + 5 cxs = 37 */
+public static final String PACKAGETYPE_04EngrPlus01BombonaPlus5Cxs = "37";
+/** 1 Cx. Madeira + 4 Bat  = 38 */
+public static final String PACKAGETYPE_1CxMadeiraPlus4Bat = "38";
+/** AMARRADO/ATADO/FEIXE = 39 */
+public static final String PACKAGETYPE_AMARRADOATADOFEIXE = "39";
+/** 3 Carton Boxes + 1 Pallet = 3B */
+public static final String PACKAGETYPE_3CartonBoxesPlus1Pallet = "3B";
+/** 1 caixa + 4 bat = 40 */
+public static final String PACKAGETYPE_1CaixaPlus4Bat = "40";
+/** 12 Caixas + 6 Palete = 41 */
+public static final String PACKAGETYPE_12CaixasPlus6Palete = "41";
+/** 16 Caixas + 16 Palete = 42 */
+public static final String PACKAGETYPE_16CaixasPlus16Palete = "42";
+/** 16 Caixas + 6 Palete = 43 */
+public static final String PACKAGETYPE_16CaixasPlus6Palete = "43";
+/** Estrado\Amarrado\Atado\Feixe = 44 */
+public static final String PACKAGETYPE_EstradoAmarradoAtadoFeixe = "44";
+/** 04 Engradados + 01 Palete + 06 Cxs = 4P */
+public static final String PACKAGETYPE_04EngradadosPlus01PaletePlus06Cxs = "4P";
+/** 44 Engr + 5 Boxes + 1 Bobine = BB */
+public static final String PACKAGETYPE_44EngrPlus5BoxesPlus1Bobine = "BB";
+/** Carton Boxes = BC */
+public static final String PACKAGETYPE_CartonBoxes = "BC";
+/** Wood Boxes = BW */
+public static final String PACKAGETYPE_WoodBoxes = "BW";
+/** Boxes = BX */
+public static final String PACKAGETYPE_Boxes = "BX";
+/** 4 Bobinas + 10 Caixas + 1 Palete = CA */
+public static final String PACKAGETYPE_4BobinasPlus10CaixasPlus1Palete = "CA";
+/** 44 Engr + 5 Boxes = EB */
+public static final String PACKAGETYPE_44EngrPlus5Boxes = "EB";
+/** Estrado = ES */
+public static final String PACKAGETYPE_Estrado = "ES";
+/** Metal Boxes = MB */
+public static final String PACKAGETYPE_MetalBoxes = "MB";
+/** Others = OT */
+public static final String PACKAGETYPE_Others = "OT";
+/** Pallet = PL */
+public static final String PACKAGETYPE_Pallet = "PL";
+/** Set Package Type.
+@param PackageType Package Type */
+public void setPackageType (String PackageType)
+{
+if (PackageType == null || PackageType.equals("01") || PackageType.equals("02") || PackageType.equals("03") || PackageType.equals("04") || PackageType.equals("05") || PackageType.equals("06") || PackageType.equals("07") || PackageType.equals("08") || PackageType.equals("09") || PackageType.equals("10") || PackageType.equals("11") || PackageType.equals("12") || PackageType.equals("13") || PackageType.equals("14") || PackageType.equals("15") || PackageType.equals("16") || PackageType.equals("17") || PackageType.equals("18") || PackageType.equals("19") || PackageType.equals("1A") || PackageType.equals("1B") || PackageType.equals("20") || PackageType.equals("21") || PackageType.equals("22") || PackageType.equals("23") || PackageType.equals("24") || PackageType.equals("25") || PackageType.equals("26") || PackageType.equals("27") || PackageType.equals("28") || PackageType.equals("29") || PackageType.equals("30") || PackageType.equals("31") || PackageType.equals("32") || PackageType.equals("33") || PackageType.equals("34") || PackageType.equals("35") || PackageType.equals("36") || PackageType.equals("37") || PackageType.equals("38") || PackageType.equals("39") || PackageType.equals("3B") || PackageType.equals("40") || PackageType.equals("41") || PackageType.equals("42") || PackageType.equals("43") || PackageType.equals("44") || PackageType.equals("4P") || PackageType.equals("BB") || PackageType.equals("BC") || PackageType.equals("BW") || PackageType.equals("BX") || PackageType.equals("CA") || PackageType.equals("EB") || PackageType.equals("ES") || PackageType.equals("MB") || PackageType.equals("OT") || PackageType.equals("PL"));
+ else throw new IllegalArgumentException ("PackageType Invalid value - " + PackageType + " - Reference_ID=2000015 - 01 - 02 - 03 - 04 - 05 - 06 - 07 - 08 - 09 - 10 - 11 - 12 - 13 - 14 - 15 - 16 - 17 - 18 - 19 - 1A - 1B - 20 - 21 - 22 - 23 - 24 - 25 - 26 - 27 - 28 - 29 - 30 - 31 - 32 - 33 - 34 - 35 - 36 - 37 - 38 - 39 - 3B - 40 - 41 - 42 - 43 - 44 - 4P - BB - BC - BW - BX - CA - EB - ES - MB - OT - PL");
+if (PackageType != null && PackageType.length() > 2)
+{
+log.warning("Length > 2 - truncated");
+PackageType = PackageType.substring(0,1);
+}
+set_Value ("PackageType", PackageType);
+}
+/** Get Package Type.
+@return Package Type */
+public String getPackageType() 
+{
+return (String)get_Value("PackageType");
 }
 /** Set Pick Date.
 @param PickDate Date/Time when picked for Shipment */
@@ -942,14 +1150,14 @@ return false;
 
 /** PriorityRule AD_Reference_ID=154 */
 public static final int PRIORITYRULE_AD_Reference_ID=154;
+/** Urgent = 1 */
+public static final String PRIORITYRULE_Urgent = "1";
 /** High = 3 */
 public static final String PRIORITYRULE_High = "3";
 /** Medium = 5 */
 public static final String PRIORITYRULE_Medium = "5";
 /** Low = 7 */
 public static final String PRIORITYRULE_Low = "7";
-/** Urgent = 1 */
-public static final String PRIORITYRULE_Urgent = "1";
 /** Minor = 9 */
 public static final String PRIORITYRULE_Minor = "9";
 /** Set Priority.
@@ -957,8 +1165,8 @@ public static final String PRIORITYRULE_Minor = "9";
 public void setPriorityRule (String PriorityRule)
 {
 if (PriorityRule == null) throw new IllegalArgumentException ("PriorityRule is mandatory");
-if (PriorityRule.equals("3") || PriorityRule.equals("5") || PriorityRule.equals("7") || PriorityRule.equals("1") || PriorityRule.equals("9"));
- else throw new IllegalArgumentException ("PriorityRule Invalid value - " + PriorityRule + " - Reference_ID=154 - 3 - 5 - 7 - 1 - 9");
+if (PriorityRule.equals("1") || PriorityRule.equals("3") || PriorityRule.equals("5") || PriorityRule.equals("7") || PriorityRule.equals("9"));
+ else throw new IllegalArgumentException ("PriorityRule Invalid value - " + PriorityRule + " - Reference_ID=154 - 1 - 3 - 5 - 7 - 9");
 if (PriorityRule.length() > 1)
 {
 log.warning("Length > 1 - truncated");
@@ -1155,5 +1363,22 @@ public BigDecimal getWeight()
 BigDecimal bd = (BigDecimal)get_Value("Weight");
 if (bd == null) return Env.ZERO;
 return bd;
+}
+/** Set Receipt NF Number.
+@param lbr_NFEntrada Number of the receipt NF */
+public void setlbr_NFEntrada (String lbr_NFEntrada)
+{
+if (lbr_NFEntrada != null && lbr_NFEntrada.length() > 20)
+{
+log.warning("Length > 20 - truncated");
+lbr_NFEntrada = lbr_NFEntrada.substring(0,19);
+}
+set_Value ("lbr_NFEntrada", lbr_NFEntrada);
+}
+/** Get Receipt NF Number.
+@return Number of the receipt NF */
+public String getlbr_NFEntrada() 
+{
+return (String)get_Value("lbr_NFEntrada");
 }
 }

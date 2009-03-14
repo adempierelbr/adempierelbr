@@ -284,6 +284,8 @@ public class TextUtil
 	 */
 	public static String retiraMascara(String mascara)
 	{
+		if(mascara == null || mascara.equalsIgnoreCase(""))
+			return null;
 		return mascara.replaceAll("[.,-/]","");
 	}//retiraMascara
 	
