@@ -368,7 +368,7 @@ public class POLBR{
 		if (!(BPTypeBR == null || BPTypeBR.equals("")))
 		{
 				
-			if((MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+			if((MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
 			{
 				CNPJ = getCNPJ(bpartner);
 			}
@@ -465,7 +465,7 @@ public class POLBR{
 		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
 		
 		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
-			if((MSysConfig.getBooleanValue("LBR_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+			if((MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
 			{
 				IE = getIE(bpartner); 
 			}
