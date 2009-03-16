@@ -220,7 +220,7 @@ public class ValidatorInvoice implements ModelValidator
 		if (lbr_BillNote == null || lbr_BillNote.trim().equalsIgnoreCase(""))
 		{
 			lbr_BillNote = order.get_ValueAsString("lbr_BillNote");
-			if (lbr_BillNote == null || lbr_BillNote.trim().equalsIgnoreCase(""))
+			if (lbr_BillNote != null && !lbr_BillNote.trim().equalsIgnoreCase(""))
 			{
 				invoice.set_ValueOfColumn("lbr_BillNote", lbr_BillNote);
 			}
@@ -231,7 +231,7 @@ public class ValidatorInvoice implements ModelValidator
 		if (lbr_ShipNote == null || lbr_ShipNote.trim().equalsIgnoreCase(""))
 		{
 			lbr_ShipNote = order.get_ValueAsString("lbr_ShipNote");
-			if (lbr_ShipNote == null || lbr_ShipNote.trim().equalsIgnoreCase(""))
+			if (lbr_ShipNote != null && !lbr_ShipNote.trim().equalsIgnoreCase(""))
 			{
 				invoice.set_ValueOfColumn("lbr_ShipNote", lbr_ShipNote);
 			}
