@@ -115,6 +115,40 @@ public class MTaxBR{
 		return lines;
 	} //getMTaxBR
 	
+	public static Map<String, MTaxBR> getMTaxBR(Integer C_Tax_ID, Integer LBR_Tax_ID, String transactionType, String trx){
+		
+		String  formula[] = {"","",""};
+		//
+		boolean PostTax = true;
+		//
+		double  TaxRate = 0.0;
+		double  TaxBase = 0.0;
+		//
+		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
+		
+		Integer[] TaxName = getLBR_TaxName_ID(C_Tax_ID,trx);
+		
+		for (int i=0;i<TaxName.length;i++){
+			
+			X_LBR_TaxName taxName = new X_LBR_TaxName(Env.getCtx(),TaxName[i],trx);
+			
+			formula = getlbr_Formula(TaxName[i],transactionType,trx); //FÓRMULA
+			int LBR_TaxLine_ID = getLBR_TaxLine_ID(TaxName[i],LBR_Tax_ID,trx);
+			
+			if (LBR_TaxLine_ID != 0){
+				X_LBR_TaxLine taxLine = new X_LBR_TaxLine(Env.getCtx(),LBR_TaxLine_ID,trx);
+				TaxRate = taxLine.getlbr_TaxRate().doubleValue()/100; //TAXRATE
+				TaxBase = 1 - ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
+				PostTax = taxLine.islbr_PostTax(); //POSTTAX
+				
+				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
+			}
+			
+		}
+		
+		return lines;
+	} //getMTaxBR
+	
 	public static Integer[] getLBR_TaxName_ID(Integer Line_ID, boolean isOrder, String trx){
 		
 		if (Line_ID == null)
@@ -144,6 +178,43 @@ public class MTaxBR{
 		{
 			pstmt = DB.prepareStatement (sql.toString(), trx);
 			pstmt.setInt(1, Line_ID);
+			rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				list.add (rs.getInt(1));
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		Integer[] retValue = new Integer[list.size()];
+		list.toArray(retValue);
+		return retValue;
+	} //getLBR_TaxName_ID
+	
+	public static Integer[] getLBR_TaxName_ID(Integer C_Tax_ID, String trx)
+	{
+		if (C_Tax_ID == null)
+			C_Tax_ID = -1;
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("SELECT LBR_TaxName_ID ");
+		sql.append("FROM C_Tax ");
+		sql.append("WHERE Parent_Tax_ID = ?");
+		
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql.toString(), trx);
+			pstmt.setInt(1, C_Tax_ID);
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{

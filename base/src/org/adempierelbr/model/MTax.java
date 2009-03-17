@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -28,6 +29,7 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.I_C_OrderLine;
+import org.compiere.model.MAttachment;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -37,7 +39,9 @@ import org.compiere.model.MOrderTax;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MPriceList;
 import org.compiere.model.MSysConfig;
+import org.compiere.model.MTable;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -205,7 +209,8 @@ public class MTax extends X_LBR_Tax {
 			
 		if (tax.isSummary()){
 		
-			for (int i=0; i<lines.length; i++){
+			for (int i=0; i<lines.length; i++)
+			{
 			
 				int ID = lines[i].get_ID();
 			
@@ -294,12 +299,14 @@ public class MTax extends X_LBR_Tax {
 		PO   document = null;
 		PO   doctax   = null;
 		PO[] lines    = null;
-		if (order != null){
+		if (order != null)
+		{
 			document = order;
 			lines    = ((MOrder)document).getLines(true,null);
 			isTaxIncluded = order.isTaxIncluded();
 		}
-		else{
+		else
+		{
 			document = invoice;
 			lines    = ((MInvoice)document).getLines(true);
 			isOrder  = false;
@@ -309,45 +316,45 @@ public class MTax extends X_LBR_Tax {
 		TaxBR.deleteSummaryTax(document.get_ID(), isOrder, trx);
 		
 		MPriceList pList = new MPriceList(ctx,(Integer)document.get_Value("M_PriceList_ID"),trx);
+		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
 		
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
-		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
-		if (brazilianlist){
+		
+		if (brazilianlist)
 			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
-		}
 		
 		totalLines = (BigDecimal)document.get_Value("TotalLines");
 		if (totalLines == null) totalLines = Env.ZERO;
 		
-		for (PO line : lines){
-			
+		for (PO line : lines)
+		{
 			Integer C_Tax_ID = (Integer)line.get_Value("C_Tax_ID");
 			if (C_Tax_ID == null)
 				C_Tax_ID = 0;
 			
 			org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);
 			
-			if (tax.isSummary()){
-				
+			if (tax.isSummary())
+			{
 				//Cálculo dos Impostos (Linha)
 				TaxBR.calculateTaxes(line.get_ID(), isOrder, trx);
 				
 				Integer LBR_Tax_ID = (Integer)line.get_Value("LBR_Tax_ID");
 				
-				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-					
+				if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
+				{
 					org.compiere.model.MTax[] cTaxes = tax.getChildTaxes(false);
 					
-					for (org.compiere.model.MTax cTax : cTaxes){
-						
+					for (org.compiere.model.MTax cTax : cTaxes)
+					{
 						int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
-						if (LBR_TaxLine_ID != 0){
-							
+						if (LBR_TaxLine_ID != 0)
+						{
 							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
 							
 							//Verifica se o Imposto deve ser Contabilizado
-							if (taxLine.islbr_PostTax()){
-								
+							if (taxLine.islbr_PostTax())
+							{
 								if (isOrder)
 									doctax = TaxBR.getMOrderTax(ctx, document.get_ID(), cTax.getC_Tax_ID(), trx);
 								else
@@ -614,7 +621,7 @@ public class MTax extends X_LBR_Tax {
 		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(?,'MM') ")
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
 		if (isOrder)

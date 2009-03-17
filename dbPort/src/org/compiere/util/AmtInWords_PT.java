@@ -269,20 +269,19 @@ public class AmtInWords_PT implements AmtInWords
 			return amount;
 		//
 		StringBuffer sb = new StringBuffer ();
-    //	int pos = amount.lastIndexOf ('.');    // Old
-		int pos = amount.lastIndexOf (',');  		
-    //  int pos2 = amount.lastIndexOf (',');   // Old		
-		int pos2 = amount.lastIndexOf ('.');
+    	int pos = amount.lastIndexOf ('.');    // Old
+	//	int pos = amount.lastIndexOf (',');  		
+    	int pos2 = amount.lastIndexOf (',');   // Old		
+	//	int pos2 = amount.lastIndexOf ('.');
 		if (pos2 > pos)
 			pos = pos2;
 		String oldamt = amount;
 
-    //  amount = amount.replaceAll (",", "");   // Old
+		amount = amount.replaceAll ("\\.", "").replaceAll (",", ".");   // Old
 		String vlr = amount.replaceAll (",", ".");
-		amount = amount.replaceAll( "\\.","");
 
-	//	int newpos = amount.lastIndexOf ('.');  // Old
-		int newpos = amount.lastIndexOf (',');
+		int newpos = amount.lastIndexOf ('.');  // Old
+	//	int newpos = amount.lastIndexOf (',');
 		if (newpos == -1) newpos = amount.length();
 		BigDecimal reais =  new BigDecimal(amount.substring (0, newpos));
 		double valor = Double.parseDouble(vlr);

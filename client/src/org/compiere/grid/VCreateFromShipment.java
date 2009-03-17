@@ -58,34 +58,36 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
      */
     protected void loadTableOIS (Vector data)
     {
-        //  Header Info
-        Vector<String> columnNames = new Vector<String>(7);
-        columnNames.add(Msg.getMsg(Env.getCtx(), "Select"));
-        columnNames.add(Msg.translate(Env.getCtx(), "Quantity"));
-        columnNames.add(Msg.translate(Env.getCtx(), "C_UOM_ID"));
-        columnNames.add(Msg.translate(Env.getCtx(), "M_Product_ID"));
-        columnNames.add(Msg.getElement(Env.getCtx(), "VendorProductNo", false));
-        columnNames.add(Msg.getElement(Env.getCtx(), "C_Order_ID", false));
-        columnNames.add(Msg.getElement(Env.getCtx(), "M_RMA_ID", false));
-        columnNames.add(Msg.getElement(Env.getCtx(), "C_Invoice_ID", false));
+		//  Header Info
+		Vector<String> columnNames = new Vector<String>(9);
+		columnNames.add(Msg.getMsg(Env.getCtx(), "Select"));
+		columnNames.add(Msg.translate(Env.getCtx(), "AD_Org_ID"));
+		columnNames.add(Msg.translate(Env.getCtx(), "Quantity"));
+		columnNames.add(Msg.translate(Env.getCtx(), "C_UOM_ID"));
+		columnNames.add(Msg.translate(Env.getCtx(), "M_Product_ID"));
+		columnNames.add(Msg.getElement(Env.getCtx(), "VendorProductNo", false));
+		columnNames.add(Msg.getElement(Env.getCtx(), "C_Order_ID", false));
+		columnNames.add(Msg.getElement(Env.getCtx(), "M_InOut_ID", false));
+		columnNames.add(Msg.getElement(Env.getCtx(), "C_Invoice_ID", false));
 
-        //  Remove previous listeners
-        dataTable.getModel().removeTableModelListener(this);
-        //  Set Model
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        model.addTableModelListener(this);
-        dataTable.setModel(model);
-        //
-        dataTable.setColumnClass(0, Boolean.class, false);      //  0-Selection
-        dataTable.setColumnClass(1, Double.class, true);        //  1-Qty
-        dataTable.setColumnClass(2, String.class, true);        //  2-UOM
-        dataTable.setColumnClass(3, String.class, true);        //  3-Product
-        dataTable.setColumnClass(4, String.class, true);        //  4-VendorProductNo
-        dataTable.setColumnClass(5, String.class, true);        //  5-Order
-        dataTable.setColumnClass(6, String.class, true);        //  6-RMA
-        dataTable.setColumnClass(7, String.class, true);        //  7-Invoice
-        //  Table UI
-        dataTable.autoSize();
+		//  Remove previous listeners
+		dataTable.getModel().removeTableModelListener(this);
+		//  Set Model
+		DefaultTableModel model = new DefaultTableModel(data, columnNames);
+		model.addTableModelListener(this);
+		dataTable.setModel(model);
+		//
+		dataTable.setColumnClass(0, Boolean.class, false);      //  0-Selection
+		dataTable.setColumnClass(1, KeyNamePair.class, true);        //  1-AD_Org_ID
+		dataTable.setColumnClass(2, Double.class, true);        //  2-Qty
+		dataTable.setColumnClass(3, String.class, true);        //  3-UOM
+		dataTable.setColumnClass(4, String.class, true);        //  4-Product
+		dataTable.setColumnClass(5, String.class, true);        //  5-VendorProductNo
+		dataTable.setColumnClass(6, String.class, true);        //  6-Order
+		dataTable.setColumnClass(7, String.class, true);        //  7-Ship
+		dataTable.setColumnClass(8, String.class, true);        //  8-Invoice
+		//  Table UI
+		dataTable.autoSize();
     }   //  loadOrder
     
 	/**
@@ -154,25 +156,29 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
                + " OR mi.C_InvoiceLine_ID IS NULL) "
            + "ORDER BY i.DateInvoiced");
         
-        
-
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try
         {
-            PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+            pstmt = DB.prepareStatement(sql.toString(), null);
             pstmt.setInt(1, C_BPartner_ID);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             while (rs.next())
             {
                 pp = new KeyNamePair(rs.getInt(1), rs.getString(2));
                 invoiceField.addItem(pp);
             }
-            rs.close();
-            pstmt.close();
+        //    rs.close();
+        //    pstmt.close();
         }
         catch (SQLException e)
         {
             log.log(Level.SEVERE, sql.toString(), e);
+        }
+        finally
+        {
+        	DB.close(rs, pstmt);
         }
         invoiceField.setSelectedIndex(0);
         invoiceField.addActionListener(this);
@@ -519,23 +525,25 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
 		for (int i = 0; i < rows; i++) {
 			if (((Boolean) model.getValueAt(i, 0)).booleanValue()) {
 				// variable values
-				Double d = (Double) model.getValueAt(i, 1); // 1-Qty
+				Double d = (Double) model.getValueAt(i, 2); // 1-Qty
 				BigDecimal QtyEntered = new BigDecimal(d.doubleValue());
-				KeyNamePair pp = (KeyNamePair) model.getValueAt(i, 2); // 2-UOM
+				KeyNamePair pp = (KeyNamePair) model.getValueAt(i, 1); // 2-UOM
+				int AD_Org_ID = pp.getKey();
+				pp = (KeyNamePair) model.getValueAt(i, 3); // 2-UOM
 				int C_UOM_ID = pp.getKey();
-				pp = (KeyNamePair) model.getValueAt(i, 3); // 3-Product
+				pp = (KeyNamePair) model.getValueAt(i, 4); // 3-Product
 				int M_Product_ID = pp.getKey();
 				int C_OrderLine_ID = 0;
-				pp = (KeyNamePair) model.getValueAt(i, 5); // 5-OrderLine
+				pp = (KeyNamePair) model.getValueAt(i, 6); // 5-OrderLine
 				if (pp != null)
 					C_OrderLine_ID = pp.getKey();
                 int M_RMALine_ID = 0;
-                pp = (KeyNamePair) model.getValueAt(i, 6); // 6-RMA
+                pp = (KeyNamePair) model.getValueAt(i, 7); // 6-RMA
                 if (pp != null)
                     M_RMALine_ID = pp.getKey();
 				int C_InvoiceLine_ID = 0;
 				MInvoiceLine il = null;
-				pp = (KeyNamePair) model.getValueAt(i, 7); // 7-InvoiceLine
+				pp = (KeyNamePair) model.getValueAt(i, 8); // 7-InvoiceLine
 				if (pp != null)
 					C_InvoiceLine_ID = pp.getKey();
 				if (C_InvoiceLine_ID != 0)
@@ -580,6 +588,7 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
 					iol.setM_AttributeSetInstance_ID(ol.getM_AttributeSetInstance_ID());
 					iol.setDescription(ol.getDescription());
 					//
+					iol.setAD_Org_ID(AD_Org_ID);
 					iol.setC_Project_ID(ol.getC_Project_ID());
 					iol.setC_ProjectPhase_ID(ol.getC_ProjectPhase_ID());
 					iol.setC_ProjectTask_ID(ol.getC_ProjectTask_ID());

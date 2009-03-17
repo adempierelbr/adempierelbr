@@ -360,15 +360,14 @@ public class POLBR{
 		return CNPJ;
 	}//getCNPJ
 	
-	public static String getCNPJ(MBPartner bpartner, MBPartnerLocation bpLocation){
-		
+	public static String getCNPJ(MBPartner bpartner, MBPartnerLocation bpLocation)
+	{	
 		String  CNPJ = null;
 		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
 		
-		if (!(BPTypeBR == null || BPTypeBR.equals("")))
+		if (BPTypeBR != null && !BPTypeBR.equals(""))
 		{
-				
-			if((MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+			if(!MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) || BPTypeBR.equalsIgnoreCase("PF"))	
 			{
 				CNPJ = getCNPJ(bpartner);
 			}
@@ -381,21 +380,24 @@ public class POLBR{
 		return CNPJ;
 	}//getCNPJ
 	
-	public static String getCNPJ(MBPartnerLocation bpLocation){
-		
+	public static String getCNPJ(MBPartnerLocation bpLocation)
+	{
 		String  CNPJ = null;
-				
-		String BPTypeBR = bpLocation.get_ValueAsString("lbr_BPTypeBR");
 		
-		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
+		MBPartner bp = new MBPartner(Env.getCtx(), bpLocation.getC_BPartner_ID(), null);
 		
-			if (BPTypeBR.equalsIgnoreCase("PJ")){
+		String BPTypeBR = bp.get_ValueAsString("lbr_BPTypeBR");
+		
+		if (BPTypeBR != null && !BPTypeBR.equals(""))
+		{
+			if (BPTypeBR.equalsIgnoreCase("PJ"))
+			{
 				CNPJ = bpLocation.get_ValueAsString("lbr_CNPJ");   //CNPJ
 			}
-			else if (BPTypeBR.equalsIgnoreCase("PF")){
-				CNPJ = bpLocation.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
+			else if (BPTypeBR.equalsIgnoreCase("PF"))
+			{
+				CNPJ = bp.get_ValueAsString("lbr_CPF");   //CNPJ = CPF
 			}
-			
 		}
 		
 		return CNPJ;
@@ -458,14 +460,16 @@ public class POLBR{
 		return IE;
 	}//getIE
 	
-	public static String getIE(MBPartner bpartner, MBPartnerLocation bpLocation){
-		
+	public static String getIE(MBPartner bpartner, MBPartnerLocation bpLocation)
+	{
 		String  IE   = null;
+		MBPartner bp = new MBPartner(Env.getCtx(), bpLocation.getC_BPartner_ID(), null);
 		
-		String BPTypeBR = bpartner.get_ValueAsString("lbr_BPTypeBR");
+		String BPTypeBR = bp.get_ValueAsString("lbr_BPTypeBR");
 		
-		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
-			if((MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) == false) || BPTypeBR.equalsIgnoreCase("PF"))	
+		if (BPTypeBR != null && !BPTypeBR.equals(""))
+		{
+			if(!MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP",false) || BPTypeBR.equalsIgnoreCase("PF"))	
 			{
 				IE = getIE(bpartner); 
 			}
@@ -481,19 +485,20 @@ public class POLBR{
 	public static String getIE(MBPartnerLocation bpLocation){
 		
 		String  IE   = null;
-				
-		String BPTypeBR = bpLocation.get_ValueAsString("lbr_BPTypeBR");
+		MBPartner bp = new MBPartner(Env.getCtx(), bpLocation.getC_BPartner_ID(), null);
+
+		String BPTypeBR = bp.get_ValueAsString("lbr_BPTypeBR");
 		
-		if (!(BPTypeBR == null || BPTypeBR.equals(""))){
-		
-				boolean isIEExempt = POLBR.get_ValueAsBoolean(bpLocation.get_Value("lbr_IsIEExempt"));
-							
-				if (isIEExempt){
-					IE = "ISENTO";
-				}
-				else{
-					IE = bpLocation.get_ValueAsString("lbr_IE");
-				}
+		if (BPTypeBR != null && !BPTypeBR.equals(""))
+		{
+			boolean isIEExempt = POLBR.get_ValueAsBoolean(bpLocation.get_Value("lbr_IsIEExempt"));
+						
+			if (isIEExempt){
+				IE = "ISENTO";
+			}
+			else{
+				IE = bpLocation.get_ValueAsString("lbr_IE");
+			}
 				
 		}
 		
