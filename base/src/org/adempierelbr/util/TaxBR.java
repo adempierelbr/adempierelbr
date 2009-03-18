@@ -296,11 +296,14 @@ public class TaxBR
 		double     factor   = 0.0;
 		double	   lineamt 	= 0.0;
 		double	   totalamt = 0.0;
-		double     totalipi = 0.0;
 		BigDecimal substamt = Env.ZERO;
 		Properties ctx = Env.getCtx();
+		Integer product_ID = (Integer) mTab.getValue("M_Product_ID");
 		
-		MProduct product = new MProduct(ctx, (Integer) mTab.getValue("M_Product_ID"), null);
+		MProduct product = null;
+		
+		if(product_ID != null)
+			product = new MProduct(ctx, product_ID, null);
 		
 		if(!isTaxIncluded)
 			lineamt = ((BigDecimal) mTab.getValue("PriceEntered")).doubleValue();
