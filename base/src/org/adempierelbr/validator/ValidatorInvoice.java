@@ -333,18 +333,21 @@ public class ValidatorInvoice implements ModelValidator
 	public String docValidate(PO po, int timing)
 	{
 
-		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_PREPARE)){
-			
+		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_PREPARE))
+		{
 			MInvoice invoice = (MInvoice)po;
 			
 			Properties ctx = invoice.getCtx();
 			String     trx = invoice.get_TrxName();
 			
 			MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
-			if (POLBR.get_ValueAsBoolean(docType.get_Value("lbr_HasFiscalDocument")) && //Gera Documento Fiscal
-				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument"))){ //Não é um documento próprio
+			if (POLBR.get_ValueAsBoolean(docType.get_Value("lbr_HasFiscalDocument")) && //	Gera Documento Fiscal
+				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument")))		//	Não é um documento próprio
+			{ 
 				
-				if (invoice.get_Value("lbr_NFEntrada") == null || invoice.get_ValueAsString("lbr_NFEntrada").equals("")){
+				if (invoice.get_Value("lbr_NFEntrada") == null 
+						|| invoice.get_ValueAsString("lbr_NFEntrada").equals(""))
+				{
 					if (!invoice.isReversal())
 						return "Necessário preencher campo Referência do Pedido";
 				}
