@@ -33,5 +33,10 @@ UPDATE AD_Column SET Callout='org.compiere.model.CalloutOrder.charge;org.adempie
 UPDATE AD_Column SET Callout='org.compiere.model.CalloutInvoice.charge;org.adempierelbr.callout.CalloutDefineCFOP.getCFOP',Updated=TO_DATE('2009-03-28 14:08:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=3845
 ;
 
+-- Mar 28, 2009 2:29:01 PM BRT
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-trunk/021-DefineCFOP_Charge.sql',Updated=TO_DATE('2009-03-28 14:29:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
+
 exit
 
