@@ -25,6 +25,7 @@ import org.compiere.model.GridTab;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCharge;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
@@ -41,6 +42,8 @@ import org.compiere.util.Env;
  * Callout for C_OrderLine and C_InvoiceLine
  * 
  * @author Fernando Lucktemberg (Faire, www.faire.com.br)
+ * @contributor Eduardo Montenegro (Kenos, www.kenos.com.br)
+ * @contributor Ricardo Santana (Kenos, www.kenos.com.br)
  * @version $Id: CalloutDefineCFOP.java, 07/02/2008 13:53:00 fer_luck
  */
 public class CalloutDefineCFOP extends CalloutEngine {
@@ -62,10 +65,20 @@ public class CalloutDefineCFOP extends CalloutEngine {
 	public String getCFOP(Properties ctx, int WindowNo, GridTab mTab,
 			GridField mField, Object value) {
 
-		//If product is null, leave the callout
+		//If product and charge are null, leave the callout
 		Integer M_Product_ID = (Integer) mTab.getValue("M_Product_ID");
-		if (M_Product_ID == null || M_Product_ID.intValue() == 0)
+		Integer C_Charge_ID = (Integer) mTab.getValue("C_Charge_ID");
+		if ((M_Product_ID == null || M_Product_ID.intValue() == 0) 
+				&& (C_Charge_ID == null || C_Charge_ID.intValue() == 0))
 			return "";
+		
+		if (M_Product_ID == null){
+			M_Product_ID = 0;
+		}
+		
+		if (C_Charge_ID == null){
+			C_Charge_ID = 0;
+		}
 		
 		//Check if the document is actually an order or an Invoice
 		MOrder mo = null;
@@ -79,7 +92,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 					.getValue("C_Invoice_ID")).intValue(), null);
 		}
 	
-		Integer cfopID = CalloutDefineCFOP.defineCFOP(ctx, M_Product_ID, mo, mi, null);
+		Integer cfopID = CalloutDefineCFOP.defineCFOP(ctx, M_Product_ID, C_Charge_ID, mo, mi, null);
 				
 		if (cfopID == null || cfopID.intValue() == 0){
 			mTab.setValue("LBR_CFOP_ID", null);
@@ -92,17 +105,23 @@ public class CalloutDefineCFOP extends CalloutEngine {
 	}
 	
 	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, String trx){
-		return defineCFOP(ctx,M_Product_ID,mo,null,trx);
+		return defineCFOP(ctx,M_Product_ID,0,mo,null,trx);
+	}
+	public static Integer defineCFOP(Properties ctx, int M_Product_ID, int C_Charge_ID, MOrder mo, String trx){
+		return defineCFOP(ctx,M_Product_ID,C_Charge_ID,mo,null,trx);
 	}
 	
 	public static Integer defineCFOP(Properties ctx, int M_Product_ID, MInvoice mi, String trx){
-		return defineCFOP(ctx,M_Product_ID,null,mi,trx);
+		return defineCFOP(ctx,M_Product_ID,0,null,mi,trx);
+	}
+	public static Integer defineCFOP(Properties ctx, int M_Product_ID, int C_Charge_ID, MInvoice mi, String trx){
+		return defineCFOP(ctx,M_Product_ID,C_Charge_ID,null,mi,trx);
 	}
 	
-	private static Integer defineCFOP(Properties ctx, int M_Product_ID, MOrder mo, MInvoice mi, String trx){
+	private static Integer defineCFOP(Properties ctx, int M_Product_ID, int C_Charge_ID, MOrder mo, MInvoice mi, String trx){
 		
-		if (M_Product_ID <= 0){
-			log.log(Level.WARNING, "M_Product_ID == 0");
+		if (M_Product_ID <= 0 && C_Charge_ID <= 0){
+			log.log(Level.WARNING, "M_Product_ID == 0 and C_Charge_ID == 0");
 			return null;
 		}
 		
@@ -152,10 +171,22 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		if (bpCat == null)
 			bpCat = 0;
 
-		//Grab Product data
-		MProduct mp = new MProduct(ctx, M_Product_ID, null);
-
-		Integer prdCat = (Integer) mp.get_Value("LBR_ProductCategory_ID");
+		//Grab Product/Charge data
+		Integer prdCat = null;
+		boolean isSubstitute = false;
+		boolean isManufactured = false;
+		
+		if (M_Product_ID > 0){
+			MProduct mp = new MProduct(ctx, M_Product_ID, null);
+			prdCat = (Integer) mp.get_Value("LBR_ProductCategory_ID");
+			isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution"));
+			isManufactured = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_IsManufactured"));
+		}
+		else{
+			MCharge mc = new MCharge(ctx, C_Charge_ID, null);
+			prdCat = (Integer) mc.get_Value("LBR_ProductCategory_ID");
+		}
+		
 		if (prdCat == null)
 			prdCat = 0;
 
@@ -202,11 +233,10 @@ public class CalloutDefineCFOP extends CalloutEngine {
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
 
-
-			boolean isSubstitute = POLBR.get_ValueAsBoolean(mp.get_Value("lbr_HasSubstitution")); 
+ 
 				//&& POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
 			pstmt.setString(5, isSubstitute ? "Y" :  "N");
-			pstmt.setString(6, POLBR.get_BooleanAsString((Boolean)mp.get_Value("lbr_IsManufactured")));
+			pstmt.setString(6, isManufactured ? "Y" : "N");
 			pstmt.setString(7, transactionType);
 			
 			rs = pstmt.executeQuery();
