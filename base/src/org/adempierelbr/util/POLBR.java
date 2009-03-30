@@ -40,6 +40,8 @@ import org.compiere.util.Env;
  *	POLBR
  *
  *	PO AdempiereLBR
+ *
+ *	[ 2719395 ] BF - As contas de DR e CR colocadas no Tipo de Documento não funcionam
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MPOLBR.java, 01/11/2007 10:13:00 mgrigioni
@@ -787,8 +789,7 @@ public class POLBR{
 		
 		String sql = "SELECT LBR_DocType_Acct_ID " +
 					 "FROM LBR_DocType_Acct " +
-					 "WHERE C_DocType_ID = ? " + //1
-					 "AND AD_Client_ID = ?"; //2
+					 "WHERE C_DocType_ID = ? "; //1
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -796,7 +797,6 @@ public class POLBR{
 		{
 			pstmt = DB.prepareStatement (sql, null);
 			pstmt.setInt (1, C_DocType_ID);
-			pstmt.setInt (2, Env.getAD_Client_ID(Env.getCtx()));
 			rs = pstmt.executeQuery ();
 			if (rs.next ())
 			{
