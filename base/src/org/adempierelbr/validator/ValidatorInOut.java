@@ -24,6 +24,10 @@ import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInOutLine;
+import org.compiere.model.MInventory;
+import org.compiere.model.MInventoryLine;
+import org.compiere.model.MMovement;
+import org.compiere.model.MMovementLine;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MProduct;
 import org.compiere.model.MSysConfig;
@@ -33,14 +37,14 @@ import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
- *	ValidatorInOut
- *  
- *  [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha
- *	
+ *	ValidatorInOut, inclui as validações de outras tabelas que 
+ *	manipulam materiais, como Movimentações, Inventário e Entrada/Saída.
+ *  	
  *	@author Ricardo Santana (ralexsander)
- *	@version $Id: ValidatorInvoice.java, 04/01/2008 15:56:00 ralexsander
+ *	@version $Id: ValidatorInOut.java, 04/01/2008 15:56:00 ralexsander
  */
 public class ValidatorInOut implements ModelValidator
 {
@@ -72,6 +76,9 @@ public class ValidatorInOut implements ModelValidator
 
 		//	DocValidate
 		engine.addDocValidate("M_InOut", this);
+		engine.addDocValidate("M_Movement", this);
+		engine.addDocValidate("M_Inventory", this);
+
 	}	//	initialize
 
 	/**
@@ -122,147 +129,15 @@ public class ValidatorInOut implements ModelValidator
 	 */
 	public String docValidate (PO po, int timing)
 	{
-		if (po.get_TableName().equalsIgnoreCase("M_InOut") 
-				&& (timing == TIMING_AFTER_COMPLETE))
-		{
-			
-			MInOut inOut = (MInOut)po;
-			Properties ctx = inOut.getCtx();
-			String     trx = inOut.get_TrxName();
-			
-			String sql = "SELECT C_DocType_ID FROM C_DocType " +
-					"WHERE lbr_IsManufactured='Y' AND C_DocType_ID=?";
-			
-			/** 
-			 * Verifica se é industrialização
-			 * */
-			if(DB.getSQLValue(trx, sql, inOut.getC_DocType_ID()) < 0)
-				return null;
-			
-			MInOutLine[] lines = inOut.getLines();
-			
-			for(MInOutLine line : lines)
-			{
-				int C_OrderLine_ID = line.getC_OrderLine_ID();
-				
-				if(C_OrderLine_ID > 0)
-				{
-					MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
-					Integer ii = (Integer) oLine.get_Value("M_ProductionLine_ID");
-					int M_ProductionLine_ID = 0;
-					
-					if(ii != null)
-						M_ProductionLine_ID = ii.intValue();
-					else
-						continue;
-					
-					/**	
-					 * Atualiza a quantidade entregue de industrialização
-					 * */
-					
-					DB.executeUpdate("UPDATE M_ProductionLine " +
-							"SET QtyDelivered=COALESCE(QtyDelivered,0)+ " +
-							"(SELECT QtyEntered FROM M_InOutLine " +
-							"WHERE M_InOutLine_ID=" + line.getM_InOutLine_ID() + ") " +
-							"WHERE M_ProductionLine_ID=" + M_ProductionLine_ID, po.get_TrxName());
-				}
-			}	
-		}
-		else if (po.get_TableName().equalsIgnoreCase("M_InOut") 
-				&& (timing == TIMING_BEFORE_COMPLETE || timing == TIMING_BEFORE_REVERSECORRECT))
-		{
-			MInOut inout = (MInOut)po;
-			MInOutLine[] lines = inout.getLines();
-			ArrayList<Integer> olines = new ArrayList<Integer>();
-			
-			if (lines.length == 0)
-				return "Documento sem linhas";
+		if (po.get_TableName().equalsIgnoreCase("M_InOut"))
+			return docValidate((MInOut) po, timing);
+		
+		else if (po.get_TableName().equalsIgnoreCase("M_Movement"))
+			return docValidate((MMovement) po, timing);
+		
+		else if (po.get_TableName().equalsIgnoreCase("M_Inventory"))
+			return docValidate((MInventory) po, timing);
 
-			for (int i = 0; i < lines.length; i++)
-			{
-				MInOutLine line = lines[i];
-				int M_Product_ID = line.getM_Product_ID();
-				int M_Locator_ID = line.getM_Locator_ID();
-				BigDecimal onHand = Env.ZERO, qtyToShip = Env.ZERO;
-				MProduct produto = MProduct.get(po.getCtx(), M_Product_ID);
-				
-				if (!produto.isStocked())
-					continue;
-				
-				if (M_Locator_ID == 0)
-					return "Localizador do estoque não definida na linha: #" + line.getLine() + ".";
-
-				if (line.getQtyEntered() == Env.ZERO)
-					return "Item com quantidade ZERO na linha: #" + line.getLine() + ".";
-				
-				if (!MSysConfig.getBooleanValue("LBR_ALLOW_MM_SHIP_RECEIPT_WITHOUT_ORDER", true, po.getAD_Client_ID())
-						&& line.getC_OrderLine_ID() == 0)
-					return "Ordem de Compra não disponível.";
-				
-				MOrderLine oline = new MOrderLine(po.getCtx(), line.getC_OrderLine_ID(), po.get_TrxName());
-				
-				if (timing == TIMING_BEFORE_REVERSECORRECT 
-						&& !MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_SHIP_RECEIT_WITH_OPEN_INVOICE", true, po.getAD_Client_ID())
-						&& oline.getQtyDelivered().subtract(oline.getQtyInvoiced()).doubleValue() == 0)
-					return "Fatura(s) em aberto. Impossível continuar com o estorno.";
-				
-				int C_OrderLine_ID = line.getC_OrderLine_ID();
-				if (C_OrderLine_ID != 0){
-					if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_ORDERLINE_ON_SHIP_RECEIPT", true, po.getAD_Client_ID())
-							&& olines.contains("" + line.getC_OrderLine_ID())){
-						return "Linha #" + line.getLine() + " duplicada.";
-					}
-					else{
-						olines.add(line.getC_OrderLine_ID());
-					}
-				}
-				
-				/*
-				 *  FIXME: QtyDelivered é na UDM padrão, QtyEntered pode ser outra,
-				 *  com isso a comparação, pode não funcionar corretamente.
-				 *  
-				 */
-				
-				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
-				if (timing == TIMING_BEFORE_COMPLETE
-						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, po.getAD_Client_ID())
-						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
-					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();
-				
-				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID); //QtyOnHand
-				
-				qtyToShip = Env.ZERO;
-				
-				for (int j = 0; j < lines.length; j++)
-				{
-					if(lines[j].getM_Product_ID() == line.getM_Product_ID()
-							&& lines[j].getM_Locator_ID() == line.getM_Locator_ID())
-					{
-						qtyToShip = qtyToShip.add(lines[j].getQtyEntered());
-					}
-				}
-				
-				if (timing == TIMING_BEFORE_COMPLETE
-						&& MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, po.getAD_Client_ID())){
-									
-					String movementType = inout.getMovementType();
-					
-					if (movementType.charAt(1) == '-')
-					{
-						if (timing == TIMING_BEFORE_COMPLETE
-								&& onHand.subtract(qtyToShip).doubleValue() < 0)
-							return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
-					}
-					else 
-					{
-						if (onHand.add(line.getQtyEntered()).doubleValue() < 0)
-							return "Sem quantidade disponível na linha #" + line.getLine() + ".";
-					}
-				
-				}
-				
-			} // for;
-		}
 		
 		return null;
 	}	//	docValidate
@@ -311,6 +186,250 @@ public class ValidatorInOut implements ModelValidator
 		
 		return Env.ZERO;
 	}	//	QtyOnHand
+	
+	/**
+	 *	Validate Movement.
+	 *  
+	 *	@param MMovement movement
+	 *	@param timing see TIMING_ constants
+     *	@return error message or null
+	 */
+	private String docValidate(MMovement mov, int timing)
+	{
+		Properties ctx = mov.getCtx();
+		
+		if (timing == TIMING_BEFORE_COMPLETE)
+		{
+			MMovementLine[] lines = mov.getLines(true);
+			ArrayList<String> prod = new ArrayList<String>();
+			
+			if(lines == null
+					|| lines.length <= 0)
+				return Msg.getMsg(ctx, "NoLines");
+			
+			for(MMovementLine line : lines)
+			{
+				if(line.getM_Product_ID() <=0 
+						|| line.getM_Locator_ID() <=0)
+					return "Produto ou Localizador inválido";
+				
+				if(line.getMovementQty().equals(Env.ZERO))
+					return "Itens com qtd zero";
+				
+				if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID()))
+					return "Duas linhas usando o mesmo produto na mesma posição";
+				else
+					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+				
+				BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID());
+				
+				if(qtdOnHand.compareTo(line.getMovementQty()) == -1)
+					return "Sem saldo na linha=" + line.getLine();
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 *	Validate Inventory.
+	 *  
+	 *	@param MInventory inventory
+	 *	@param timing see TIMING_ constants
+     *	@return error message or null
+	 */
+	private String docValidate(MInventory inv, int timing)
+	{
+		Properties ctx = inv.getCtx();
+		
+		if (timing == TIMING_AFTER_COMPLETE)
+		{
+			MInventoryLine[] lines = inv.getLines(true);
+			ArrayList<String> prod = new ArrayList<String>();
+			
+			if(lines == null
+					|| lines.length <= 0)
+				return Msg.getMsg(ctx, "NoLines");
+			
+			Boolean isInternalUse = (Boolean) inv.get_Value("z_IsInternalUse");
+			
+			if(isInternalUse != null && isInternalUse)
+			{
+				for(MInventoryLine line : lines)
+				{
+					if(line.getM_Product_ID() <=0 
+							|| line.getM_Locator_ID() <=0)
+						return "Produto ou Localizador inválido";
+					
+					if(line.getMovementQty().equals(Env.ZERO))
+						return "Itens com qtd zero";
+					
+					if(line.getC_Charge_ID() == 0)
+						return "Sem conta de destino";
+					
+					if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID()))
+						return "Duas linhas usando o mesmo produto na mesma posição";
+					else
+						prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+					
+					BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID());
+					
+					if(qtdOnHand.compareTo(line.getQtyInternalUse()) == -1)
+						return "Sem saldo na linha=" + line.getLine();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 *	Validate Shipment/Receipt.
+	 *  
+	 *	@param MInOut inventory
+	 *	@param timing see TIMING_ constants
+     *	@return error message or null
+	 */
+	private String docValidate(MInOut inOut, int timing)
+	{
+		Properties ctx = inOut.getCtx();
+		String     trx = inOut.get_TrxName();
+		
+		if (timing == TIMING_AFTER_COMPLETE)
+		{
+			String sql = "SELECT C_DocType_ID FROM C_DocType " +
+					"WHERE lbr_IsManufactured='Y' AND C_DocType_ID=?";
+			
+			/** 
+			 * Verifica se é industrialização
+			 * */
+			if(DB.getSQLValue(trx, sql, inOut.getC_DocType_ID()) < 0)
+				return null;
+			
+			MInOutLine[] lines = inOut.getLines();
+			
+			for(MInOutLine line : lines)
+			{
+				int C_OrderLine_ID = line.getC_OrderLine_ID();
+				
+				if(C_OrderLine_ID > 0)
+				{
+					MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
+					Integer ii = (Integer) oLine.get_Value("M_ProductionLine_ID");
+					int M_ProductionLine_ID = 0;
+					
+					if(ii != null)
+						M_ProductionLine_ID = ii.intValue();
+					else
+						continue;
+					
+					/**	
+					 * Atualiza a quantidade entregue de industrialização
+					 * */
+					
+					DB.executeUpdate("UPDATE M_ProductionLine " +
+							"SET QtyDelivered=COALESCE(QtyDelivered,0)+ " +
+							"(SELECT QtyEntered FROM M_InOutLine " +
+							"WHERE M_InOutLine_ID=" + line.getM_InOutLine_ID() + ") " +
+							"WHERE M_ProductionLine_ID=" + M_ProductionLine_ID, trx);
+				}
+			}	
+		}
+		else if ((timing == TIMING_BEFORE_COMPLETE || timing == TIMING_BEFORE_REVERSECORRECT))
+		{
+			MInOutLine[] lines = inOut.getLines();
+			ArrayList<Integer> olines = new ArrayList<Integer>();
+			
+			if (lines.length == 0)
+				return "Documento sem linhas";
+	
+			for (int i = 0; i < lines.length; i++)
+			{
+				MInOutLine line = lines[i];
+				int M_Product_ID = line.getM_Product_ID();
+				int M_Locator_ID = line.getM_Locator_ID();
+				BigDecimal onHand = Env.ZERO, qtyToShip = Env.ZERO;
+				MProduct produto = MProduct.get(ctx, M_Product_ID);
+				
+				if (!produto.isStocked())
+					continue;
+				
+				if (M_Locator_ID == 0)
+					return "Localizador do estoque não definida na linha: #" + line.getLine() + ".";
+	
+				if (line.getQtyEntered() == Env.ZERO)
+					return "Item com quantidade ZERO na linha: #" + line.getLine() + ".";
+				
+				if (!MSysConfig.getBooleanValue("LBR_ALLOW_MM_SHIP_RECEIPT_WITHOUT_ORDER", true, inOut.getAD_Client_ID())
+						&& line.getC_OrderLine_ID() == 0)
+					return "Ordem de Compra não disponível.";
+				
+				MOrderLine oline = new MOrderLine(ctx, line.getC_OrderLine_ID(), trx);
+				
+				if (timing == TIMING_BEFORE_REVERSECORRECT 
+						&& !MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_SHIP_RECEIT_WITH_OPEN_INVOICE", true, inOut.getAD_Client_ID())
+						&& oline.getQtyDelivered().subtract(oline.getQtyInvoiced()).doubleValue() == 0)
+					return "Fatura(s) em aberto. Impossível continuar com o estorno.";
+				
+				int C_OrderLine_ID = line.getC_OrderLine_ID();
+				if (C_OrderLine_ID != 0)
+				{
+					if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_ORDERLINE_ON_SHIP_RECEIPT", true, inOut.getAD_Client_ID())
+							&& olines.contains("" + line.getC_OrderLine_ID()))
+						return "Linha #" + line.getLine() + " duplicada.";
+					else
+						olines.add(line.getC_OrderLine_ID());
+				}
+				
+				/**
+				 *  FIXME: QtyDelivered é na UDM padrão, QtyEntered pode ser outra,
+				 *  com isso a comparação, pode não funcionar corretamente.
+				 *  
+				 */
+				
+				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
+				if (timing == TIMING_BEFORE_COMPLETE
+						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, inOut.getAD_Client_ID())
+						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
+					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();
+				
+				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID); //QtyOnHand
+				
+				qtyToShip = Env.ZERO;
+				
+				for (int j = 0; j < lines.length; j++)
+				{
+					if(lines[j].getM_Product_ID() == line.getM_Product_ID()
+							&& lines[j].getM_Locator_ID() == line.getM_Locator_ID())
+					{
+						qtyToShip = qtyToShip.add(lines[j].getQtyEntered());
+					}
+				}
+				
+				if (timing == TIMING_BEFORE_COMPLETE
+						&& MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, inOut.getAD_Client_ID())){
+									
+					String movementType = inOut.getMovementType();
+					
+					if (movementType.charAt(1) == '-')
+					{
+						if (timing == TIMING_BEFORE_COMPLETE
+								&& onHand.subtract(qtyToShip).doubleValue() < 0)
+							return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
+					}
+					else 
+					{
+						if (onHand.add(line.getQtyEntered()).doubleValue() < 0)
+							return "Sem quantidade disponível na linha #" + line.getLine() + ".";
+					}
+				
+				}
+				
+			} // for;
+		}
+		
+		return null;
+	}
 		
 	/**
 	 * 	Update Info Window Columns.
