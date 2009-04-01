@@ -292,7 +292,10 @@ public class ValidatorInvoice implements ModelValidator
 							iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
 							iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
 							iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
-
+							if(iLine.getDescription() == null
+									|| iLine.getDescription().equals(""))
+								iLine.setDescription(oLine.getDescription());
+							
 						}
 					}
 				}
@@ -300,7 +303,6 @@ public class ValidatorInvoice implements ModelValidator
 
 			else
 			{
-
 				// ModelChange
 				try
 				{
