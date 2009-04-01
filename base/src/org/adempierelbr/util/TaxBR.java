@@ -148,9 +148,11 @@ public class TaxBR
 				amt = lineamt;
 			}
 			//Se o imposto for Substituição Tributária, e o produto estiver marcado
-			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
+			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution))
+			{
 				if (product != null && 
-					POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"))){
+					POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution")))
+				{
 					
 					//Valor do Imposto Substituto
 					if (s_taxBR != null){
@@ -342,7 +344,8 @@ public class TaxBR
 			MTaxBR taxBR = lines.get(taxName.getName().trim());
 			
 			/** Remover o IPI do calculo **/
-			if(taxName.getName().trim().indexOf("IPI") != -1)
+			if(taxName.getName().trim().indexOf("IPI") != -1
+					|| taxName.isHasWithHold())
 				continue;
 				
 			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Service))
@@ -379,14 +382,14 @@ public class TaxBR
 			
 			//Base de Cálculo
 			double     base    = calculate(taxBR.getFormula(),amt,factor,lines);
-			BigDecimal taxbase = new BigDecimal(base = base*taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
+			base = base * taxBR.getTaxBase();
 			
 			//Valor do Imposto
 			double     taxamt  = base * taxBR.getTaxRate();
 			
 			//BF (Base de Cálculo estava somando alíquotas isentas)
-			if (taxBR.getTaxRate() <= 0)
-				taxbase = Env.ZERO;
+		//	if (taxBR.getTaxRate() <= 0)
+		//		taxbase = Env.ZERO;
 			
 			if (substamt.signum() != 0){ //BF - Não estava funcionando os estornos
 				taxamt = taxamt - substamt.doubleValue();
@@ -414,22 +417,24 @@ public class TaxBR
 		String[] tax   = getTaxes(formula);
 		
 		Interpreter interpreter = new Interpreter();
-		for (int j=0;j<tax.length;j++){
-			
-			if (tax[j].equalsIgnoreCase("AMT")){
+		for (int j=0;j<tax.length;j++)
+		{
+			if (tax[j].equalsIgnoreCase("AMT"))
 				interpreter.set(tax[j], amt);
-			}
-			else if (tax[j].equalsIgnoreCase("FACTOR")){
+			
+			else if (tax[j].equalsIgnoreCase("FACTOR"))
 				interpreter.set(tax[j], factor);
-			}
-			else{
+			
+			else
+			{
 				MTaxBR temptaxBR = lines.get(tax[j]);
-					if (temptaxBR != null){
-						interpreter.set(tax[j],temptaxBR.getTaxRate());
-					}
-					else{
-						interpreter.set(tax[j], 0.0);
-					}
+				
+				if (temptaxBR != null)
+				{
+					interpreter.set(tax[j], temptaxBR.getTaxRate() * temptaxBR.getTaxBase() );
+				}
+				else
+					interpreter.set(tax[j], 0.0);
 			}
 			
 		}
