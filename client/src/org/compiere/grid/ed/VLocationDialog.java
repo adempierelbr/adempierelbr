@@ -23,6 +23,7 @@ import java.util.logging.*;
 
 import javax.swing.*;
 
+import org.adempierelbr.util.WebServiceCep;
 import org.compiere.apps.*;
 import org.compiere.model.*;
 import org.compiere.swing.*;
@@ -140,9 +141,9 @@ public class VLocationDialog extends CDialog implements ActionListener
 	/** The "to link" key  */
 	private static final String TO_LINK = "Mapa";
 	
-	private JButton toLink  = new JButton();
-	private JButton toRoute = new JButton();
-	
+	private JButton toLink  	= new JButton();
+	private JButton toRoute 	= new JButton();
+	private JButton getAddress 	= new JButton();
 
 	
 	//
@@ -175,6 +176,11 @@ public class VLocationDialog extends CDialog implements ActionListener
 		toRoute.addActionListener(this);
 		toRoute.setMargin(ConfirmPanel.s_insets);
 		confirmPanel.addComponent(toRoute);
+		
+		getAddress.setText("Procurar");
+		getAddress.addActionListener(this);
+		getAddress.setMargin(ConfirmPanel.s_insets);
+		confirmPanel.addComponent(getAddress);
 		//
 		confirmPanel.addActionListener(this);
 	}	//	jbInit
@@ -419,7 +425,44 @@ public class VLocationDialog extends CDialog implements ActionListener
 					ADialog.warn(0, this, "URLnotValid", message);
 				}
 			}
-		} 
+		}
+		else if (e.getSource() == getAddress)
+		{	
+			if(fPostal != null 
+					&& !fPostal.getText().equals(""))
+			{
+				if (!fAddress1.getText().equals("")
+						|| !fAddress2.getText().equals("")
+						|| !fAddress3.getText().equals("")
+						|| !fAddress4.getText().equals("")
+						|| fCity.getSelectedIndex() > 0) 
+				{
+					String warningMsg = "O endereço atual será substituido. Deseja continuar?";
+					String warningTitle = "Aviso";
+					int response = JOptionPane.showConfirmDialog(null, warningMsg,
+							warningTitle, JOptionPane.YES_NO_OPTION);
+					if (response == JOptionPane.NO_OPTION)
+						return;
+				}
+				
+				WebServiceCep cep = WebServiceCep.searchCep(fPostal.getText());
+				if (cep.wasSuccessful())
+				{
+					fAddress1.setText(cep.getLogradouroType() + " " + cep.getLogradouro());
+					fAddress3.setText(cep.getBairro());
+					fCity.setSelectedItem(cep.getCidade());
+					fRegion.setSelectedItem(cep.getUf());
+				}
+				else if (cep.getResulCode() == 0)
+					JOptionPane.showMessageDialog(null, "CEP não encontrado na base de dados.");
+				else if (cep.getResulCode() == 14)
+					JOptionPane.showMessageDialog(null, "Não foi possível fazer a busca. (Possível problema com a Internet).");
+				else
+					JOptionPane.showMessageDialog(null, "Erro ao fazer a busca.");					
+			}
+			else
+				JOptionPane.showMessageDialog(null, "Preencha o CEP.");
+		}
 	}	//	actionPerformed
 
 	/**
