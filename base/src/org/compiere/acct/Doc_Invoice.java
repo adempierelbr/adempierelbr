@@ -20,6 +20,8 @@ import java.math.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
+
+import org.adempierelbr.util.POLBR;
 import org.compiere.model.*;
 import org.compiere.util.*;
 
@@ -458,6 +460,24 @@ public class Doc_Invoice extends Doc
 			//  Revenue         CR
 			if(hasOpenItems)	//		Postar de acordo com o Tipo de Documento
 			{
+				/**
+				 * Customização da conta de débito e crédito no lançamento.
+				 * */
+				int C_DocType_ID        = getC_DocType_ID();
+				int LBR_DocType_Acct_ID = POLBR.getDocTypeAcct(C_DocType_ID); 
+				int LBR_DR				= 0;
+				int LBR_CR				= 0;
+				
+				/**
+				 * Tenta determinar qual é a conta customizada
+				 * */
+				if (LBR_DocType_Acct_ID > 0)
+				{
+					X_LBR_DocType_Acct DocAcct = new X_LBR_DocType_Acct(getCtx(),LBR_DocType_Acct_ID,null);
+					LBR_CR = DocAcct.getlbr_Acct_CR();
+					LBR_DR = DocAcct.getlbr_Acct_DR();
+				}
+
 				for (int i = 0; i < p_lines.length; i++)
 				{
 					/**	
@@ -479,7 +499,8 @@ public class Doc_Invoice extends Doc
 						}
 					}
 					fact.createLine (p_lines[i],
-						p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, as),
+						LBR_DR == 0 ? p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, as) : 
+							MAccount.get(getCtx(), LBR_DR),
 						getC_Currency_ID(), amt, null);
 					if (!p_lines[i].isItem())
 					{
@@ -497,9 +518,27 @@ public class Doc_Invoice extends Doc
 						fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false);  //  to Loc
 					}
 				}
+				
 				//  Receivables             CR
-				int receivables_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable, as);
-				int receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
+				int receivables_ID = 0;
+				int receivablesServices_ID = 0;
+				
+				/**
+				 * KENOS
+				 * 
+				 * Se não conseguir determinar a conta customizada
+				 * utiliza a conta default.
+				 * */
+				if (LBR_CR > 0)
+					receivables_ID = LBR_CR;
+				else
+					receivables_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable, as);
+				
+				if (LBR_CR > 0)
+					receivablesServices_ID = LBR_CR;
+				else
+					receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
+				
 				if (m_allLinesItem || !as.isPostServices() 
 					|| receivables_ID == receivablesServices_ID)
 				{
