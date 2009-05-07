@@ -183,3 +183,8 @@ UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument = NVL((SELECT dt.lbr_IsOwnDocument F
 ;
 UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument = 'Y' WHERE IsSOTrx='Y'
 ;
+
+-- Mar 28, 2009 2:29:01 PM BRT
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-branches/028-SINTEGRA.sql',Updated=TO_DATE('2009-05-07 14:29:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
