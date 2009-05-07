@@ -918,6 +918,7 @@ public class POLBR{
 	 *  @param Timestamp dt
 	 *  @param String dateFormat
 	 * 	@return String dataFormatada
+	 * 	@deprecated Use timeToString from TextUtil
 	 */
 	public static String dateTostring(Timestamp dt, String dateFormat)
 	{

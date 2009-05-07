@@ -465,13 +465,13 @@ public class ValidatorBPartner implements ModelValidator
 		else
 			sql += "WHERE lbr_CNPJ = ? AND AD_Client_ID = ? ";
 		
-		sql += "AND " + TableName + "_ID <> ?";
+		sql += "AND " + TableName + "_ID <> ? AND IsActive='Y'";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			System.out.println("" + xCNPJ.substring(0,10));
+		//	System.out.println("" + xCNPJ.substring(0,10));
 			pstmt = DB.prepareStatement (sql, null);
 			if(isUnifiedBP && TableName.equals("C_BPartner"))
 				pstmt.setString (1, xCNPJ.substring(0,10));

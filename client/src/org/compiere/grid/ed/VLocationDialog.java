@@ -448,10 +448,16 @@ public class VLocationDialog extends CDialog implements ActionListener
 				WebServiceCep cep = WebServiceCep.searchCep(fPostal.getText());
 				if (cep.wasSuccessful())
 				{
+					MRegion[] regions = MRegion.getRegions(Env.getCtx(), 139);
+					for (MRegion r : regions)
+						if (r.getName() != null && r.getName().equals(cep.getUf()))
+						{
+							fRegion.setSelectedItem(r);
+							break;
+						}
+					fCity.setSelectedItem(cep.getCidade());
 					fAddress1.setText(cep.getLogradouroType() + " " + cep.getLogradouro());
 					fAddress3.setText(cep.getBairro());
-					fCity.setSelectedItem(cep.getCidade());
-					fRegion.setSelectedItem(cep.getUf());
 				}
 				else if (cep.getResulCode() == 0)
 					JOptionPane.showMessageDialog(null, "CEP não encontrado na base de dados.");

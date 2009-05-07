@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
@@ -22,6 +23,7 @@ import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.model.X_LBR_TaxGroup;
+import org.compiere.util.DB;
 
 /**
  *	MNotaFiscalLine
@@ -110,4 +112,102 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		
 		return list.toArray(new X_LBR_NFLineTax[list.size()]);	
 	} //getTaxes
+	
+	/**
+	 *  Retorno o valor do ICMS
+	 *  
+	 *  @return	BigDecimal	Valor ICMS
+	 */
+	public BigDecimal getICMSAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSAmt
+	
+	/**
+	 *  Retorno o valor da Base de ICMS
+	 *  
+	 *  @return	BigDecimal	Base ICMS
+	 */
+	public BigDecimal getICMSBase()
+	{
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSBase
+	
+	/**
+	 *  Retorno o valor da Redução da Base de ICMS
+	 *  
+	 *  @return	BigDecimal	Redução da Base de ICMS
+	 */
+	public BigDecimal getICMSBaseReduction()
+	{
+		String sql = "SELECT AVG(lbr_TaxBase) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSBaseReduction
+	
+	/**
+	 *  Retorno a alíquota de ICMS
+	 *  
+	 *  @return	BigDecimal	Alíquota ICMS
+	 */
+	public BigDecimal getICMSRate()
+	{
+		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSRate
+	
+	/**
+	 *  Retorno o valor do IPI
+	 *  
+	 *  @return	BigDecimal	Valor IPI
+	 */
+	public BigDecimal getIPIAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getIPIAmt
+	
+	/**
+	 *  Retorno o valor da Base de IPI
+	 *  
+	 *  @return	BigDecimal	Base IPI
+	 */
+	public BigDecimal getIPIBase()
+	{
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getIPIBase
+	
+	/**
+	 *  Retorno a alíquota de IPI
+	 *  
+	 *  @return	BigDecimal	Alíquota IPI
+	 */
+	public BigDecimal getIPIRate()
+	{
+		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getIPIRate
 }

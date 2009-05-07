@@ -19,7 +19,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.compiere.util.Env;
 
 /**
  * TextUtil
@@ -31,7 +38,6 @@ import java.util.ArrayList;
  */
 public class TextUtil
 {   
-	
 	public static final String EOL_WIN32 = "\r\n";
 	public static final String EOL_LINUX = "\n";
 	
@@ -192,6 +198,14 @@ public class TextUtil
 			
 	}
 		
+	public static String pad(int value,char filler,int length,boolean lpad){
+		return pad(((Integer)value).toString(), filler, length, lpad, false, false);
+	}
+
+	public static String pad(String value,char filler,int length,boolean lpad){
+		return pad(value, filler, length, lpad, false, false);
+	}
+
 	/**
 	 * 	pad
 	 *  @param String value
@@ -238,15 +252,92 @@ public class TextUtil
 		return value;
 	} //pad
 	
-	
-	public static String pad(String value,char filler,int lenght,boolean lpad){
-		return pad(value, filler, lenght, lpad, false, false);
-	}
-	
-	public static String pad(int value,char filler,int lenght,boolean lpad){
-		return pad(((Integer)value).toString(), filler, lenght, lpad, false, false);
-	}
+	/**
+	 * 	Left Pad with 0
+	 * 
+	 *  @param String value
+	 *  @param int length
+	 * 	@return String value
+	 */
+	public static String lPad(String value, int length)
+	{
+		if (value == null)
+			value = "";
+		else
+			value = toNumeric(value);
 		
+		return pad(value, '0', length, true, false, false);
+	}
+
+	/**
+	 * 	Left Pad
+	 * 
+	 *  @param String value
+	 *  @param char filler
+	 *  @param int length
+	 * 	@return String value
+	 */
+	public static String lPad(String value, char filler, int length)
+	{
+		return pad(value, filler, length, true, false, false);
+	}
+	
+	/**
+	 * 	Left Pad with 0 (Scale 2 Default)
+	 * 
+	 *  @param String value
+	 *  @param int length
+	 * 	@return String value
+	 */
+	public static String lPad(BigDecimal valueBD, int length)
+	{
+		return lPad(valueBD, length, 2);
+	}
+
+	/**
+	 * 	Left Pad with 0
+	 * 
+	 *  @param String value
+	 *  @param int length
+	 *  @param int scale
+	 * 	@return String value
+	 */
+	public static String lPad(BigDecimal valueBD, int length, int scale)
+	{
+		if (valueBD == null)
+			valueBD = Env.ZERO;
+		
+		String value = toNumeric(valueBD.setScale(scale, BigDecimal.ROUND_HALF_UP).toString());
+		return pad(value, '0', length, true, false, false);
+	}
+
+	/**
+	 * 	Right Pad with blank space ' '
+	 * 
+	 *  @param String value
+	 *  @param int length
+	 * 	@return String value
+	 */
+	public static String rPad(String value, int length)
+	{
+		if (value == null)
+			value = "";
+		return pad(retiraEspecial(value), ' ', length, false, false, false);
+	}
+
+	/**
+	 * 	Right Pad
+	 * 
+	 *  @param String value
+	 *  @param char filler
+	 *  @param int length
+	 * 	@return String value
+	 */
+	public static String rPad(String value, char filler, int length)
+	{
+		return pad(value, filler, length, false, false, false);
+	}
+	
 	/**************************************************************************
 	 * 	retiraAcentos
 	 *  Remove Special Characters
@@ -264,6 +355,7 @@ public class TextUtil
         acentos = acentos.replaceAll("[òôóöõ]","o");
         acentos = acentos.replaceAll("[ùûúüũ]","u");
         acentos = acentos.replaceAll("ç", "c");
+        acentos = acentos.replaceAll("ñ", "n");
         
         acentos = acentos.replaceAll("[ÀÂÁÄÃ]","A");
         acentos = acentos.replaceAll("[ÈÊÉË]","E");
@@ -271,16 +363,18 @@ public class TextUtil
         acentos = acentos.replaceAll("[ÒÔÓÖÕ]","O");
         acentos = acentos.replaceAll("[ÙÛÚÜŨ]","U");
         acentos = acentos.replaceAll("Ç", "C");
+        acentos = acentos.replaceAll("Ñ", "N");
         
         return acentos;
 		
-	}//retiraAcentos
+	}	//	retiraAcentos
 	
 	/**************************************************************************
 	 * 	retiraMascara
 	 *  Removes Mask Characters
 	 *  @param String acentos
 	 * 	@return String acentos
+	 *  @deprecated	Use toNumeric or retiraEspecial
 	 */
 	public static String retiraMascara(String mascara)
 	{
@@ -308,6 +402,88 @@ public class TextUtil
         
         return value;
 		
-	}//retiraPontoFinal
+	}	//	retiraPontoFinal
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um String desconsiderando<BR>
+	 * qualquer outro caracter.<BR><BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Uma <tt>{@link String} "14.568-910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568910"</tt>.
+	 * <BR>Uma <tt>{@link String} "1%4#5?55%16a8&910"</tt>
+	 * <BR>é automaticamente passada para <tt>"14555168"</tt>, 
+	 * <BR>só levando em conta os números.
+	 * 
+	 * @param 	String Valor Original
+	 * @return	String Somente Números
+	 * */
+	public static String toNumeric(String value)
+	{
+		return value.replaceAll( "\\D*", "" );
+	}	//	toNumeric
+	
+	/**
+	 * Retorna somente os digitos de 0..9<BR>
+	 * e as letras de a..z e A..Z, desconsiderando<BR>
+	 * qualquer outro caracter.<BR><BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Uma <tt>{@link String} "123ABC##&&%%999"</tt> 
+	 * <BR>é automaticamente passada para <tt>"123ABC999"</tt>.
+	 * <BR>Uma <tt>{@link String} "1%4#5?55%16a8&910bbb"</tt>
+	 * <BR>é automaticamente passada para <tt>"1455516a8bbb"</tt>, 
+	 * <BR>só levando em conta os números.
+	 * 
+	 * @param 	String Valor Original
+	 * @return	String Somente Letras e Números
+	 * */
+	public static String retiraEspecial(String value)
+	{
+		StringBuffer result = new StringBuffer("");
+		value = retiraAcentos(value);
 		
-}  //MTextProcessor
+		for (int i=0; i<value.length(); i++)
+			if (Character.isDigit(value.charAt(i))
+					|| Character.isLetter(value.charAt(i))
+					|| value.charAt(i) == ' ')
+				result.append(value.charAt(i));
+			
+		return result.toString();
+	}	//	retiraEspecial
+	
+	/**
+	 * Retorna a data formatada de acordo com o formato
+	 * <BR>Dia: dd, Mes: mm, Ano: yyyy
+	 * 
+	 * @param	Timestamp Data
+	 * @param	String Formato da data
+	 * @return	String Data Formatada
+	 * */
+	public static String timeToString(Timestamp ts, String format)
+	{
+		if(format == null || format.length() == 0)
+			format = "yyyyMMdd";
+		
+		//	Se a data for nula retorna a qtd de zeros respectivos
+		//	a quantidade de digitos do formato.
+		if(ts == null)
+			return lPad("", '0', format.length());
+		
+		SimpleDateFormat f = new SimpleDateFormat(format);
+		return f.format(ts);
+	}	//	timeToString
+	
+	/**
+	 * Retorna a data formatada em AnoMesDia yyyymmdd
+	 * 
+	 * @param	Timestamp Data
+	 * @return	String Data Formatada
+	 * */
+	public static String timeToString(Timestamp ts)
+	{
+		return timeToString(ts, "yyyyMMdd");
+	}	//	timeToString
+	
+}	//	TextUtil
