@@ -187,7 +187,7 @@ public class ValidatorBPartner implements ModelValidator
 		if (AD_Language == null || AD_Language.equals("") || !AD_Language.equalsIgnoreCase("pt_BR")) return null;
 		
 		// If not validated
-		if (!isValid) {
+		if (!isValid || bp.is_ValueChanged("IsActive")) {
 		
 			//If Individual - Validate CPF
 			if (BPTypeBR.equalsIgnoreCase("PF")){

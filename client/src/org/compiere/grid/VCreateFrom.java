@@ -502,8 +502,9 @@ public abstract class VCreateFrom extends CDialog
 			+ "CASE WHEN l.QtyOrdered=0 THEN 0 ELSE l.QtyEntered/l.QtyOrdered END,"	//	2
 			+ " l.C_UOM_ID,COALESCE(uom.UOMSymbol,uom.Name),"			//	3..4
 			+ " COALESCE(l.M_Product_ID,0),COALESCE(p.Name,c.Name),po.VendorProductNo,"	//	5..7
-			+ " l.C_OrderLine_ID,l.Line "								//	8..9
+			+ " l.C_OrderLine_ID,l.Line, l.AD_Org_ID, o.Name "								//	8..9
 			+ "FROM C_OrderLine l"
+			+ " INNER JOIN AD_Org o ON (o.AD_Org_ID=l.AD_Org_ID) "
 			+ " LEFT OUTER JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND l.C_BPartner_ID = po.C_BPartner_ID) "
 			+ " LEFT OUTER JOIN M_MatchPO m ON (l.C_OrderLine_ID=m.C_OrderLine_ID AND ");
 		sql.append(forInvoice ? "m.C_InvoiceLine_ID" : "m.M_InOutLine_ID");
@@ -519,7 +520,7 @@ public abstract class VCreateFrom extends CDialog
 		sql.append(" WHERE l.C_Order_ID=? "			//	#1
 			+ "GROUP BY l.QtyOrdered,CASE WHEN l.QtyOrdered=0 THEN 0 ELSE l.QtyEntered/l.QtyOrdered END, "
 			+ "l.C_UOM_ID,COALESCE(uom.UOMSymbol,uom.Name),po.VendorProductNo, "
-				+ "l.M_Product_ID,COALESCE(p.Name,c.Name), l.Line,l.C_OrderLine_ID "
+				+ "l.M_Product_ID,COALESCE(p.Name,c.Name), l.Line,l.C_OrderLine_ID, l.AD_Org_ID, o.Name "
 			+ "ORDER BY l.Line");
 		//
         //LBR - Fix para Industrialização
@@ -566,8 +567,10 @@ public abstract class VCreateFrom extends CDialog
 				BigDecimal qtyOrdered = rs.getBigDecimal(1);
 				BigDecimal multiplier = rs.getBigDecimal(2);
 				BigDecimal qtyEntered = qtyOrdered.multiply(multiplier);
+				KeyNamePair pp = new KeyNamePair(rs.getInt(10), rs.getString(11).trim());
+				line.add(pp);                           //  2-Org
 				line.add(new Double(qtyEntered.doubleValue()));  //  1-Qty
-				KeyNamePair pp = new KeyNamePair(rs.getInt(3), rs.getString(4).trim());
+				pp = new KeyNamePair(rs.getInt(3), rs.getString(4).trim());
 				line.add(pp);                           //  2-UOM
 				pp = new KeyNamePair(rs.getInt(5), rs.getString(6));
 				line.add(pp);                           //  3-Product

@@ -54,8 +54,6 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import com.sun.servicetag.SystemEnvironment;
-
 /**
  *	MNotaFiscal
  *

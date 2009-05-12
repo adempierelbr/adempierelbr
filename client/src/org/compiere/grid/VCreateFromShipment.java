@@ -338,7 +338,7 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
 				+ "l.QtyInvoiced-SUM(NVL(mi.Qty,0)),l.QtyEntered/l.QtyInvoiced,"
 				+ " l.C_UOM_ID,COALESCE(uom.UOMSymbol,uom.Name)," // 3..4
 				+ " l.M_Product_ID,p.Name, po.VendorProductNo, l.C_InvoiceLine_ID,l.Line," // 5..9
-				+ " l.C_OrderLine_ID "
+				+ " l.C_OrderLine_ID, l.AD_Org_ID, o.Name AS OrgName "
 				+ " FROM C_InvoiceLine l "); // 10
 		if (Env.isBaseLanguage(Env.getCtx(), "C_UOM"))
 			sql.append(" LEFT OUTER JOIN C_UOM uom ON (l.C_UOM_ID=uom.C_UOM_ID)");
@@ -350,6 +350,7 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
 			.append(" INNER JOIN C_Invoice inv ON (l.C_Invoice_ID=inv.C_Invoice_ID)")
 			.append(" LEFT OUTER JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND inv.C_BPartner_ID = po.C_BPartner_ID)")
 			.append(" LEFT OUTER JOIN M_MatchInv mi ON (l.C_InvoiceLine_ID=mi.C_InvoiceLine_ID)")
+			.append(" INNER JOIN AD_Org o ON (o.AD_Org_ID=l.AD_Org_ID)")
 			
 			.append(" WHERE l.C_Invoice_ID=? ")	
 			.append("GROUP BY l.QtyInvoiced,l.QtyEntered/l.QtyInvoiced,"
@@ -367,8 +368,11 @@ public class VCreateFromShipment extends VCreateFrom implements VetoableChangeLi
 				BigDecimal qtyInvoiced = rs.getBigDecimal(1);
 				BigDecimal multiplier = rs.getBigDecimal(2);
 				BigDecimal qtyEntered = qtyInvoiced.multiply(multiplier);
+				KeyNamePair pp = new KeyNamePair(rs.getInt(11), rs.getString(12).trim());
+				line.add(pp);	//	1-Org
+				
 				line.add(new Double(qtyEntered.doubleValue())); // 1-Qty
-				KeyNamePair pp = new KeyNamePair(rs.getInt(3), rs.getString(4).trim());
+				pp = new KeyNamePair(rs.getInt(3), rs.getString(4).trim());
 				line.add(pp); // 2-UOM
 				pp = new KeyNamePair(rs.getInt(5), rs.getString(6));
 				line.add(pp); // 3-Product

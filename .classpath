@@ -14,7 +14,7 @@
 	<classpathentry kind="lib" path="lib/rtextpr.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/PDFBox-0.7.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="/adempiere342/jboss/lib/dom4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/dom4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/adempiere342"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
