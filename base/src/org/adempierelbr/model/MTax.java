@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -25,11 +24,6 @@ import org.adempierelbr.util.MTaxAmounts;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.ServiceTaxes;
 import org.adempierelbr.util.TaxBR;
-import org.compiere.model.I_C_Invoice;
-import org.compiere.model.I_C_InvoiceLine;
-import org.compiere.model.I_C_Order;
-import org.compiere.model.I_C_OrderLine;
-import org.compiere.model.MAttachment;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -39,9 +33,7 @@ import org.compiere.model.MOrderTax;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MPriceList;
 import org.compiere.model.MSysConfig;
-import org.compiere.model.MTable;
 import org.compiere.model.PO;
-import org.compiere.model.Query;
 import org.compiere.model.X_LBR_Tax;
 import org.compiere.model.X_LBR_TaxConfig_BPGroup;
 import org.compiere.model.X_LBR_TaxConfig_BPartner;
@@ -66,6 +58,7 @@ import bsh.EvalError;
  *  [ 2200626 ] Lista de Preço Brasil, mgrigioni
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *  @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
  */
 public class MTax extends X_LBR_Tax {
@@ -608,26 +601,27 @@ public class MTax extends X_LBR_Tax {
 		   .append("SUM(ABS(d.TotalLines)) AS GrandTotal ");
 		
 		if (isOrder){
-			sql.append("FROM ").append(I_C_Order.Table_Name).append(" d ");
-			sql.append("INNER JOIN ").append(I_C_OrderLine.Table_Name).append(" dl ");
+			sql.append("FROM ").append(MOrder.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(MOrderLine.Table_Name).append(" dl ");
 			sql.append("ON d.C_Order_ID = dl.C_Order_ID ");
 		}
 		else{
-			sql.append("FROM ").append(I_C_Invoice.Table_Name).append(" d ");
-			sql.append("INNER JOIN ").append(I_C_InvoiceLine.Table_Name).append(" dl ");
+			sql.append("FROM ").append(MInvoice.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(MInvoiceLine.Table_Name).append(" dl ");
 			sql.append("ON d.C_Invoice_ID = dl.C_Invoice_ID ");
 		}
 		
 		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(?,'MM') ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
 		if (isOrder)
-			sql.append(I_C_Order.Table_Name);
+			sql.append(MOrder.Table_Name);
 		else
-			sql.append(I_C_Invoice.Table_Name);
+			sql.append(MInvoice.Table_Name);
 		
 		sql.append("_ID = ?) AND d.IsSOTrx = ? ");
 		sql.append("GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold");
@@ -638,9 +632,9 @@ public class MTax extends X_LBR_Tax {
 		try {
 			pstmt = DB.prepareStatement (sql.toString(), trx);
 			pstmt.setInt(1, (Integer)document.get_Value("C_BPartner_ID"));
-			pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
-			pstmt.setInt(3, document.get_ID());
-			pstmt.setString(4, IsSOTrx ? "Y" : "N");
+			//pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
+			pstmt.setInt(2, document.get_ID());
+			pstmt.setString(3, IsSOTrx ? "Y" : "N");
 			rs = pstmt.executeQuery ();
 			
 			while (rs.next ()) {
@@ -672,29 +666,30 @@ public class MTax extends X_LBR_Tax {
 		sql.append("SELECT DISTINCT tl.LBR_TaxLine_ID ");
 		
 		if (isOrder){
-			sql.append("FROM ").append(I_C_Order.Table_Name).append(" d ");
-			sql.append("INNER JOIN ").append(I_C_OrderLine.Table_Name).append(" dl ");
+			sql.append("FROM ").append(MOrder.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(MOrderLine.Table_Name).append(" dl ");
 			sql.append("ON d.C_Order_ID = dl.C_Order_ID ");
 		}
 		else{
-			sql.append("FROM ").append(I_C_Invoice.Table_Name).append(" d ");
-			sql.append("INNER JOIN ").append(I_C_InvoiceLine.Table_Name).append(" dl ");
+			sql.append("FROM ").append(MInvoice.Table_Name).append(" d ");
+			sql.append("INNER JOIN ").append(MInvoiceLine.Table_Name).append(" dl ");
 			sql.append("ON d.C_Invoice_ID = dl.C_Invoice_ID ");
 		}
 		
 		sql.append("INNER JOIN LBR_TaxLine tl ON tl.LBR_Tax_ID = dl.LBR_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = tl.LBR_TaxName_ID ")
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS GMT'),'MM') ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND d.DocStatus = 'CO' ");
 		
 		if (isOrder){
 			sql.append("AND (d.LBR_Withhold_Order_ID IS NULL OR d.LBR_Withhold_Order_ID = ?)");
-			sql.append("AND d.").append(I_C_Order.Table_Name).append("_ID <> ? ");
+			sql.append("AND d.").append(MOrder.Table_Name).append("_ID <> ? ");
 		}
 		else{
 			sql.append("AND (d.LBR_Withhold_Invoice_ID IS NULL OR d.LBR_Withhold_Invoice_ID = ?)");
-			sql.append("AND d.").append(I_C_Invoice.Table_Name).append("_ID <> ? ");
+			sql.append("AND d.").append(MInvoice.Table_Name).append("_ID <> ? ");
 		}
 		
 		sql.append("AND d.IsSOTrx = ? AND brtn.LBR_TaxName_ID = ? ");
@@ -705,11 +700,11 @@ public class MTax extends X_LBR_Tax {
 		try {
 			pstmt = DB.prepareStatement (sql.toString(), trx);
 			pstmt.setInt(1, (Integer)document.get_Value("C_BPartner_ID"));
-			pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
+			//pstmt.setTimestamp(2, (Timestamp)document.get_Value("DateAcct"));
+			pstmt.setInt(2, document.get_ID());
 			pstmt.setInt(3, document.get_ID());
-			pstmt.setInt(4, document.get_ID());
-			pstmt.setString(5, IsSOTrx ? "Y" : "N");
-			pstmt.setInt(6, LBR_TaxName_ID);
+			pstmt.setString(4, IsSOTrx ? "Y" : "N");
+			pstmt.setInt(5, LBR_TaxName_ID);
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
