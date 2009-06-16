@@ -166,6 +166,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		return "";
 	}	//	doIt
 	
+	/**
+	 * Retorna os registros do SINTEGRA para o estado determinado.
+	 * 
+	 * @param ctx
+	 * @param estado or null
+	 * @return	SINTEGRA
+	 * @throws Exception
+	 */
 	private String getSINTEGRA(Properties ctx, String estado) throws Exception
 	{
 		/**	Validar produto					*/
@@ -196,12 +204,15 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		StringBuffer whereClause = new StringBuffer("");
 		
 		whereClause.append("AD_Client_ID=? ")
-			.append("AND AD_Org_ID=? ");
+			.append("AND AD_Org_ID=? ")
+			.append("AND lbr_CFOPReference NOT LIKE '%1%933%' ")			
+			.append("AND lbr_CFOPReference NOT LIKE '%2%933%' ");
+
 		
 		if(estado != "")
 			whereClause.append("AND lbr_BPInvoiceRegion='" + estado + "' ");
 		
-		whereClause.append("AND TRUNC(DateDoc) BETWEEN ")
+		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ")
 			.append(DB.TO_DATE(p_DateFrom))
 			.append(" AND ")
 			.append(DB.TO_DATE(p_DateTo));
@@ -246,7 +257,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')) ")
 					.append("LEFT JOIN   LBR_NFLineTax nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
 					.append("AND nfltipi.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
-					.append("WHERE nf.LBR_NotaFiscal_ID = ? GROUP BY nflt.lbr_TaxRate, nfl.lbr_CFOPName");
+					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
+					.append("GROUP BY NVL(nflt.lbr_TaxRate,0), NVL(nfl.lbr_CFOPName,'0')");
 				
 				DB.close(rs, pstmt);
 				pstmt = DB.prepareStatement(sql.toString(), null);
@@ -286,9 +300,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					}
 					else								//	Outro CFOP
 					{
+						/**	Data do documento ou data da entrada */
+						Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
+						if (data == null)
+							data = NF.getDateDoc();
+						
 						linha.append(registro50(NF.getlbr_BPCNPJ(),
 			    				NF.getlbr_BPIE(),
-			    				NF.getDateDoc(),
+			    				data,
 			    				NF.getlbr_BPRegion(),
 			    				"01",		//	FIXME	Modelo
 			    				serieNo(NF.getDocumentNo()),
@@ -319,7 +338,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
 					.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
 					.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
-					.append("WHERE nf.LBR_NotaFiscal_ID = ? GROUP BY nflt.lbr_TaxRate, nfl.lbr_CFOPName");
+					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
+					.append("GROUP BY nflt.lbr_TaxRate, nfl.lbr_CFOPName");
 				
 				DB.close(rs, pstmt);
 				pstmt = DB.prepareStatement(sql.toString(), null);
@@ -334,9 +356,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 							&& CFOP.trim().endsWith("352"))	//	CFOP de Transporte
 						continue;
 					
+					/**	Data do documento ou data da entrada */
+					Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
+					if (data == null)
+						data = NF.getDateDoc();
+					
 					linha.append(registro51(NF.getlbr_BPCNPJ(),
 	        				NF.getlbr_BPIE(),
-	        				NF.getDateDoc(),
+	        				data,
 	        				NF.getlbr_BPRegion(),
 	        				serieNo(NF.getDocumentNo()),	
 	        				docNo(NF.getDocumentNo()),
@@ -355,7 +382,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					registro51.append(linha);
 				}
 				
-				MNotaFiscalLine[] NFLines = NF.getLines("Line");
+				MNotaFiscalLine[] NFLines = getLines(NF);
 				for (MNotaFiscalLine NFLine : NFLines)
 				{
 					String CFOP = NFLine.getlbr_CFOPName();
@@ -1277,5 +1304,30 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		return registro90(CNPJ, IE, Total50, Total51, 0, Total54, 
 				0, 0, 0, 0, 0, Total70, 0, 0, Total75, 0, 0, 0, 0);
 	}
+	
+	 /**************************************************************************
+	 *  getLines
+	 *  @param String MNotaFiscal
+	 *  @return MNotaFiscalLine[] lines
+	 */
+	private MNotaFiscalLine[] getLines(MNotaFiscal NF)
+	{
+		if (NF == null)
+		 return null;
+		
+		String whereClause = "LBR_NotaFiscal_ID = ? "
+			+ "AND lbr_CFOPName NOT LIKE '%1%933%' "			
+			+ "AND lbr_CFOPName NOT LIKE '%2%933%' ";
+		
+		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{NF.getLBR_NotaFiscal_ID()});
+	 	
+	 	query.setOrderBy("Line");
+	
+		List<MNotaFiscalLine> list = query.list();
+		
+		return list.toArray(new MNotaFiscalLine[list.size()]);	
+	} //getLines
 	
 }	//	ProcGenerateSINTEGRA
