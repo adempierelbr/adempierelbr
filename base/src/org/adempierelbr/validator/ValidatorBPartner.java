@@ -36,6 +36,9 @@ import org.compiere.util.Env;
  *  Validate CPF and CNPJ
  *	
  *	@author Mario Grigioni
+ *	@contributor Ricardo Santana (www.kenos.com.br)
+ *		BF [ 2808639 ] - Erro ao salvar registro na C_BPartner_Location
+ *
  *	@version $Id: ValidatorBPartner.java, 31/10/2007 10:51:00 mgrigioni
  */
 public class ValidatorBPartner implements ModelValidator
@@ -146,8 +149,18 @@ public class ValidatorBPartner implements ModelValidator
 		return null;
 	}	//	modelChange
 	
+	/**
+	 *  Validate MBPartnerLocation
+	 *  
+	 * @param bpl
+	 * @return
+	 */
 	private String modelChange(MBPartnerLocation bpl)
 	{
+		//	BF [ 2808639 ] - Erro notado pelo usuario gmichels
+		if (!MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
+			return "";
+			
 		MBPartner bp = new MBPartner(Env.getCtx(), bpl.getC_BPartner_ID(), null);
 		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
 		
@@ -537,7 +550,5 @@ public class ValidatorBPartner implements ModelValidator
 			return false;
 		else 
 			return true;
-	}
-	
-	
+	}	//	consultaCPF
 }
