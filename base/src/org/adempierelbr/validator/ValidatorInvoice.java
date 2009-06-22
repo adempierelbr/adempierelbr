@@ -82,9 +82,14 @@ public class ValidatorInvoice implements ModelValidator
 	 */
 	public void initialize(ModelValidationEngine engine, MClient client)
 	{
-		m_AD_Client_ID = client.getAD_Client_ID();
-
-		log.info(client.toString());
+		//client = null for global validator
+        if (client != null) {
+            m_AD_Client_ID = client.getAD_Client_ID();
+            log.info(client.toString());
+        }
+        else  {
+            log.info("Initializing global validator: "+this.toString());
+        }
 
 		// ModelChange
 		engine.addModelChange("C_Invoice", this);
@@ -118,7 +123,7 @@ public class ValidatorInvoice implements ModelValidator
 	{
 		log.info("AD_User_ID=" + AD_User_ID);
 
-		if (getAD_Client_ID() != 0 && AD_Org_ID == 0)
+		if (getAD_Client_ID() <= 0 && AD_Org_ID == 0 && AD_User_ID != 100)
 			return "Não é possível logar com Org = *";
 
 		return null;
@@ -241,11 +246,15 @@ public class ValidatorInvoice implements ModelValidator
 		return validatePaymentTerm(invoice);
 	}
 
-	// modelChange - InvoiceLine
-	// @param MInvoiceLine
+	/**
+	 * 
+	 * @param 	iLine 	MInvoiceLine
+	 * @param 	type	Timing
+	 * @return	null or error msg
+	 * @throws Exception
+	 */
 	public String modelChange(MInvoiceLine iLine, int type) throws Exception
 	{
-
 		Properties ctx = iLine.getCtx();
 		String trx = iLine.get_TrxName();
 
@@ -259,48 +268,43 @@ public class ValidatorInvoice implements ModelValidator
 				lbrTax.delete(true, iLine.get_TrxName());
 			}
 
-		} // delete
+		}	//	delete
 		else
 		{
-
-			if (iLine.isProcessed()) { return null; }
+			if (iLine.isProcessed())
+				return null;
 
 			Integer LBR_Tax_ID = (Integer) iLine.get_Value("LBR_Tax_ID");
 
-			if (type == TYPE_NEW)
+			if (type == TYPE_NEW && (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0)) 
 			{
-
-				if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0)
+				int C_OrderLine_ID = iLine.getC_OrderLine_ID();
+				if (C_OrderLine_ID != 0)
 				{
-					int C_OrderLine_ID = iLine.getC_OrderLine_ID();
-					if (C_OrderLine_ID != 0)
+					MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
+					//
+					// CFOP, Sit. Tributária, Mensagem Legal
+					Integer LBR_CFOP_ID = (Integer) oLine.get_Value("LBR_CFOP_ID");
+					Integer LBR_LegalMessage_ID = (Integer) oLine.get_Value("LBR_LegalMessage_ID");
+					String sitTributaria = (String) oLine.get_Value("lbr_TaxStatus");
+					//
+					iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
+					iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
+					iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
+					if(iLine.getDescription() == null
+							|| iLine.getDescription().equals(""))
+						iLine.setDescription(oLine.getDescription());
+					//
+					LBR_Tax_ID = (Integer) oLine.get_Value("LBR_Tax_ID");
+					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
 					{
-						MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
-
-						// CFOP, Sit. Tributária, Mensagem Legal
-						Integer LBR_CFOP_ID = (Integer) oLine.get_Value("LBR_CFOP_ID");
-						Integer LBR_LegalMessage_ID = (Integer) oLine.get_Value("LBR_LegalMessage_ID");
-						String sitTributaria = (String) oLine.get_Value("lbr_TaxStatus");
-
-						LBR_Tax_ID = (Integer) oLine.get_Value("LBR_Tax_ID");
-						if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
-						{
-							MTax oTax = new MTax(ctx, LBR_Tax_ID, trx);
-							MTax newTax = oTax.copyFrom();
-
-							iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
-							iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
-							iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-							iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
-							if(iLine.getDescription() == null
-									|| iLine.getDescription().equals(""))
-								iLine.setDescription(oLine.getDescription());
-							
-						}
+						MTax oTax = new MTax(ctx, LBR_Tax_ID, trx);
+						MTax newTax = oTax.copyFrom();
+						//
+						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 					}
 				}
 			} // new
-
 			else
 			{
 				// ModelChange
@@ -312,14 +316,12 @@ public class ValidatorInvoice implements ModelValidator
 				{
 					log.log(Level.SEVERE, "", e);
 				}
-
 			} // change
-
 		} // new or change
-
+		//
 		log.info(iLine.toString());
 		return null;
-	} // modelChange(MInvoiceLine)
+	} // modelChange
 
 	/**
 	 * Validate Document. Called as first step of DocAction.prepareIt when you
