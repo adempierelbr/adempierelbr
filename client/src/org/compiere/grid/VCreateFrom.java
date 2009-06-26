@@ -601,6 +601,7 @@ public abstract class VCreateFrom extends CDialog
 		//  Header Info
 		Vector<String> columnNames = new Vector<String>(7);
 		columnNames.add(Msg.getMsg(Env.getCtx(), "Select"));
+		columnNames.add(Msg.translate(Env.getCtx(), "AD_Org_ID"));
 		columnNames.add(Msg.translate(Env.getCtx(), "Quantity"));
 		columnNames.add(Msg.translate(Env.getCtx(), "C_UOM_ID"));
 		columnNames.add(Msg.translate(Env.getCtx(), "M_Product_ID"));
@@ -617,13 +618,14 @@ public abstract class VCreateFrom extends CDialog
 		dataTable.setModel(model);
 		//
 		dataTable.setColumnClass(0, Boolean.class, false);      //  0-Selection
-		dataTable.setColumnClass(1, Double.class, true);        //  1-Qty
-		dataTable.setColumnClass(2, String.class, true);        //  2-UOM
-		dataTable.setColumnClass(3, String.class, true);        //  3-Product
-		dataTable.setColumnClass(4, String.class, true);        //  4-VendorProductNo
-		dataTable.setColumnClass(5, String.class, true);        //  5-Order
-		dataTable.setColumnClass(6, String.class, true);        //  6-Ship
-		dataTable.setColumnClass(7, String.class, true);        //  7-Invoice
+		dataTable.setColumnClass(1, KeyNamePair.class, true);        //  1-AD_Org_ID
+		dataTable.setColumnClass(2, Double.class, true);        //  2-Qty
+		dataTable.setColumnClass(3, String.class, true);        //  3-UOM
+		dataTable.setColumnClass(4, String.class, true);        //  4-Product
+		dataTable.setColumnClass(5, String.class, true);        //  5-VendorProductNo
+		dataTable.setColumnClass(6, String.class, true);        //  6-Order
+		dataTable.setColumnClass(7, String.class, true);        //  7-Ship
+		dataTable.setColumnClass(8, String.class, true);        //  8-Invoice
 		//  Table UI
 		dataTable.autoSize();
 	}   //  loadOrder
