@@ -407,7 +407,7 @@ public class ValidatorInOut implements ModelValidator
 				}
 				
 				if (timing == TIMING_BEFORE_COMPLETE
-						&& MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, inOut.getAD_Client_ID())){
+						&& !MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, inOut.getAD_Client_ID())){
 									
 					String movementType = inOut.getMovementType();
 					
