@@ -16,18 +16,23 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.*;
-import java.math.*;
-import java.sql.*;
-import java.util.*;
-import java.util.logging.*;
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
 
-import org.adempierelbr.callout.CalloutDefineCFOP;
-import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.util.TaxesException;
-import org.compiere.print.*;
-import org.compiere.process.*;
-import org.compiere.util.*;
+import org.compiere.print.ReportEngine;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.CCache;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 
 /**
@@ -41,7 +46,7 @@ import org.compiere.util.*;
  *  
  *  
  *  Modifications: Made the isReversal method public (amontenegro)
- *  BF [#2445887] - Added the calculations to the copyLinesFrom method
+ *  BF [#2445887] - Copy brazilian taxes in copyLinesFrom method (ralexsander)
  *
  *  Modifications: Added RMA functionality (Ashley Ramdass)
  */
@@ -708,31 +713,22 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			line.setC_Invoice_ID(getC_Invoice_ID());
 			line.setInvoice(this);
 			line.set_ValueNoCheck ("C_InvoiceLine_ID", I_ZERO);	// new
-			//Begin Kenos - Callouts - BF [#2445887]
-			//Callout - DefineCFOP
-			Integer cfopID = CalloutDefineCFOP.defineCFOP(getCtx(), line.getM_Product_ID(),this, get_TrxName());
-			line.set_ValueOfColumn("LBR_CFOP_ID", cfopID);
-			//Callout - Impostos
-			CalloutTax tax = new CalloutTax();
-			TaxesException tE = tax.getException(getCtx(), this, line.getProduct(), null);
-			
-			line.set_ValueOfColumn("LBR_LegalMessage_ID", null);
-			line.set_ValueOfColumn("lbr_TaxStatus", null);
-			
-			if (tE != null){
-				line.set_ValueOfColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
-
-				if (tE.isSOTrx()){
-					line.set_ValueOfColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
-					line.set_ValueOfColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
-				}
-				
+			//
+			//	Begin Kenos - BF [#2445887]
+			//	Usar os valores da invoice original
+			line.set_ValueOfColumn("LBR_CFOP_ID", fromLine.get_Value("LBR_CFOP_ID"));
+			line.set_ValueOfColumn("LBR_LegalMessage_ID", fromLine.get_Value("LBR_LegalMessage_ID"));
+			line.set_ValueOfColumn("lbr_TaxStatus", fromLine.get_Value("lbr_TaxStatus"));
+			Integer LBR_Tax_ID = (Integer) fromLine.get_Value("LBR_Tax_ID");
+			//
+			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() > 0)
+			{
+				org.adempierelbr.model.MTax fromTax = 
+					new org.adempierelbr.model.MTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
+				line.set_ValueOfColumn("LBR_Tax_ID", fromTax.copyFrom().getLBR_Tax_ID());
 			}
-			else{
-				line.set_ValueOfColumn("LBR_Tax_ID", null);
-			}
-			//End Kenos - Callouts
-			
+			//	End - Kenos
+			//
 			//	Reset
 			if (!setOrder)
 				line.setC_OrderLine_ID(0);

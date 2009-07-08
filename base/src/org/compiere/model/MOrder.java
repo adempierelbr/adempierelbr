@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.callout.CalloutDefineCFOP;
-import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.util.TaxesException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -46,7 +43,7 @@ import org.compiere.util.Msg;
  *  
  *   BF[#2440821] - amontenegro (www.kenos.com.br)
  *   
- *   BF [#2445887] - Added the calculations to the copyLinesFrom method
+ *   BF [#2445887] -  Copy brazilian taxes in copyLinesFrom method (ralexsander)
  *   
  */
 public class MOrder extends X_C_Order implements DocAction
@@ -499,33 +496,22 @@ public class MOrder extends X_C_Order implements DocAction
 			//
 			line.setOrder(this);
 			line.set_ValueNoCheck ("C_OrderLine_ID", I_ZERO);	//	new
-			//Begin Kenos - Callouts BF [#2445887] 
-			//Callout - DefineCFOP
-			Integer cfopID = CalloutDefineCFOP.defineCFOP(getCtx(), line.getM_Product_ID(),this, get_TrxName());
-			line.set_ValueOfColumn("LBR_CFOP_ID", cfopID);
-			//Callout - Impostos
-			CalloutTax tax = new CalloutTax();
-			TaxesException tE = tax.getException(getCtx(), this, line.getProduct(), null);
-			
-			line.set_ValueOfColumn("LBR_LegalMessage_ID", null);
-			line.set_ValueOfColumn("lbr_TaxStatus", null);
-			
-			if (tE != null){
-				line.set_ValueOfColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
-
-				if (tE.isSOTrx()){
-					line.set_ValueOfColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
-					line.set_ValueOfColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
-				}
-				
+			//
+			//	Begin Kenos - BF [#2445887]
+			//	Usar os valores da invoice original
+			line.set_ValueOfColumn("LBR_CFOP_ID", fromLines[i].get_Value("LBR_CFOP_ID"));
+			line.set_ValueOfColumn("LBR_LegalMessage_ID", fromLines[i].get_Value("LBR_LegalMessage_ID"));
+			line.set_ValueOfColumn("lbr_TaxStatus", fromLines[i].get_Value("lbr_TaxStatus"));
+			Integer LBR_Tax_ID = (Integer) fromLines[i].get_Value("LBR_Tax_ID");
+			//
+			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() > 0)
+			{
+				org.adempierelbr.model.MTax fromTax = 
+					new org.adempierelbr.model.MTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
+				line.set_ValueOfColumn("LBR_Tax_ID", fromTax.copyFrom().getLBR_Tax_ID());
 			}
-			else{
-				line.set_ValueOfColumn("LBR_Tax_ID", null);
-			}
-			
-			//End Kenos - Callouts
-			
-			
+			//	End - Kenos
+			//
 			//	References
 			if (!copyASI)
 			{
