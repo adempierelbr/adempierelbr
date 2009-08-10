@@ -300,56 +300,179 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 	} //setShipper
 	
-	public String getNCM(Integer LBR_NCM_ID){
-		
+	/**
+	 * Retorna o NCM ou a Referência do NCM 
+	 * 	de acordo com a configuração do sistema.
+	 * 
+	 * @param LBR_NCM_ID
+	 * @return
+	 */
+	public String getNCM(Integer LBR_NCM_ID)
+	{
 		if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
 			return null;
 		
 		X_LBR_NCM ncm = new X_LBR_NCM(getCtx(),LBR_NCM_ID,get_TrxName());
-		
 		String ncmName = ncm.getValue();
 		
-		if (!(ncmName == null || ncmName.equals(""))){
-				
-			if (m_refNCM.containsKey(ncmName)){
-				return m_refNCM.get(ncmName).toString();   //NCM
+		if (!(ncmName == null || ncmName.equals("")))
+		{
+			//	Retorna a Ref. do NCM
+			if (m_refNCM.containsKey(ncmName))
+			{
+				//	Retorna o NCM
+				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", true, Env.getAD_Client_ID(Env.getCtx())))
+					return ncmName;
+				//	Retorna a Chave
+				else
+					return m_refNCM.get(ncmName).toString();	//	NCM
 			}
-			else {
+			else
+			{
 				String cl = TextUtil.alfab[m_refNCM.size()];
 				m_refNCM.put(ncmName, cl);
 				setNCMReference(ncmName,cl,true);
-				return cl;
+				//	Retorna o NCM
+				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", true, Env.getAD_Client_ID(Env.getCtx())))
+					return ncmName;
+				//	Retorna a Chave
+				else
+					return cl;
 			}
 		}
-		
+		//
 		return null;
-	} //getNCM
+	}	//	getNCM
 	
-	public String getCFOP(Integer LBR_CFOP_ID){
+	/**
+	 *  Retorno o valor da Base de ICMS
+	 *  
+	 *  @return	BigDecimal	Base ICMS
+	 */
+	public BigDecimal getICMSBase()
+	{
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
 		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getICMSBase
+	
+	/**
+	 *  Retorno o valor da Base de ICMSST
+	 *  
+	 *  @return	BigDecimal	Base ICMSST
+	 */
+	public BigDecimal getICMSBaseST()
+	{
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMSST')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getICMSBaseST
+	
+	/**
+	 *  Retorno o valor do ICMS
+	 *  
+	 *  @return	BigDecimal	ICMS
+	 */
+	public BigDecimal getICMSAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
+		//
+		BigDecimal result = DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());
+		return result == null ? Env.ZERO : result;	
+	}	//	getICMSAmt
+	
+	/**
+	 *  Retorno o valor do ICMSST
+	 *  
+	 *  @return	BigDecimal	ICMSST
+	 */
+	public BigDecimal getICMSAmtST()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMSST')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getICMSAmtST
+	
+	/**
+	 *  Retorno o valor do IPI
+	 *  
+	 *  @return	BigDecimal	IPI
+	 */
+	public BigDecimal getIPIAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getIPIAmt
+	
+	/**
+	 * 	Retorna o CFOP das linhas, no caso de mais de 1 CFOP, 
+	 * 		retorna o ref. ao Maior Valor
+	 * 
+	 * @return CFOP
+	 */
+	public String getCFOP()
+	{
+		String sql = "SELECT lbr_CFOPName " +
+					"FROM LBR_NotaFiscalLine " +
+					"WHERE LBR_NotaFiscal_ID=? ORDER BY LineTotalAmt DESC";
+		return DB.getSQLValueString(null, sql, getLBR_NotaFiscal_ID());
+	}
+	
+	/**
+	 * Retorna o CFOP ou a Referência do CFOP 
+	 * 	de acordo com a configuração do sistema.
+	 * 
+	 * @param LBR_CFOP_ID
+	 * @return CFOP ou Ref. do CFOP
+	 */
+	public String getCFOP(Integer LBR_CFOP_ID)
+	{
 		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
 			return null;
-		
+		//
 		X_LBR_CFOP cfop = new X_LBR_CFOP(getCtx(),LBR_CFOP_ID,get_TrxName());
-		
 		String cfopName = cfop.getValue();
-		
-		if (!(cfopName == null || cfopName.equals(""))){
-			
-			if (m_refCFOP.containsKey(cfopName)){
-				return m_refCFOP.get(cfopName).toString();   //CFOP
+		//
+		if (!(cfopName == null || cfopName.equals("")))
+		{
+			//	Retorna a Ref. do CFOP
+			if (m_refCFOP.containsKey(cfopName))
+			{
+				//	Retorna o CFOP
+				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+					return cfopName;
+				//	Retorna a Chave
+				else
+					return m_refCFOP.get(cfopName).toString();	//	CFOP
 			}
-			else {
+			else 
+			{
 				String cl = TextUtil.alfab[m_refCFOP.size()];
 				m_refCFOP.put(cfopName, cl);
 				setCFOPNote(cfop.getDescription() + ", ",true);
-				setCFOPReference(cfopName,cl,true);
-				return cl;
+				setCFOPReference(cfopName,cl);
+				//	Retorna o CFOP
+				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+					return cfopName;
+				//	Retorna a Chave
+				else
+					return cl;
 			}
 		}
-		
+		//
 		return null;	
-	} //getCFOP
+	}	//	getCFOP
 	
 	public void setLegalMessage(Integer LBR_LegalMessage_ID){
 		
@@ -382,9 +505,14 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 	if (orderBy != null)
 	 		  query.setOrderBy(orderBy);
 		
-		List<MNotaFiscalLine> list = query.list();
+	 	List<MNotaFiscalLine> list = query.list();
+		MNotaFiscalLine [] teste = new MNotaFiscalLine[list.size()];
+	 	int i = 0;
+		for (X_LBR_NotaFiscalLine notaFiscalLine : list) {
+			teste[i++] = new MNotaFiscalLine(Env.getCtx(), notaFiscalLine.getLBR_NotaFiscalLine_ID(), null);
+		}
 		
-		return list.toArray(new MNotaFiscalLine[list.size()]);	
+		return teste;	
 	} //getLines
 	
 	/**************************************************************************
@@ -486,7 +614,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 						shipment.save(get_TrxName());
 					}
 					else {
-						m_processMsg = invoice.getProcessMsg();
+						m_processMsg = shipment.getProcessMsg();
 						return false;
 					}
 			}
@@ -589,18 +717,26 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return TextUtil.retiraPontoFinal(m_NCMReference);
 	}
 
-	private void setNCMReference(String ncmName, String cl, boolean concat) {
-		
-		if (concat){
-			if (m_NCMReference.equals("")){
+	/**
+	 * 	Set NCM Reference
+	 * 	
+	 * 	A-0000.00.00, B-9999.99.99
+	 * 
+	 * @param ncmName
+	 * @param cl
+	 * @param concat
+	 */
+	private void setNCMReference(String ncmName, String cl, boolean concat) 
+	{
+		if (concat)
+		{
+			if (m_NCMReference.equals(""))
 				m_NCMReference += "Classif: ";
-			}
-				
+			//
 			m_NCMReference += cl + "-" + ncmName + ", ";
 		}
-		else{
+		else
 			m_NCMReference = ncmName;
-		}
 	}
 
 	public String getCFOPNote() {
@@ -621,16 +757,31 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return TextUtil.retiraPontoFinal(m_CFOPReference);
 	}
 
-	private void setCFOPReference(String cfopName, String cl, boolean concat) {
-		if (concat){
-			if (m_CFOPReference.equals("")){
-				m_CFOPReference += "";
-			}
-				
-			m_CFOPReference += cfopName + "/";
+	/**
+	 * 	Set CFOP Reference.
+	 * 
+	 * 	A-5.101, B-5.102
+	 *  
+	 * @param cfopName
+	 * @param cl
+	 * @param concat
+	 */
+	private void setCFOPReference(String cfopName, String cl)
+	{
+		if (m_CFOPReference == null
+				|| m_CFOPReference.equals(""))
+		{
+			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+				m_CFOPReference = cl + "-" + cfopName;
+			else
+				m_CFOPReference = cfopName;
 		}
-		else{
-			m_CFOPReference = cfopName;
+		else
+		{
+			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+				m_CFOPReference += ", " + cl + "-" + cfopName;
+			else
+				m_CFOPReference += ", " + cfopName;
 		}
 	}
 
@@ -665,5 +816,23 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return CNPJ_IE;
 	}//getCNPJ_IE
+	
+	/**************************************************************************
+	 *  getTaxes
+	 *  @return X_LBR_NFLineTax[] taxes
+	 */
+	public X_LBR_NFTax[] getTaxes(){
+		
+		String whereClause = "LBR_NotaFiscal_ID = ?";
+		
+		MTable table = MTable.get(getCtx(), X_LBR_NFTax.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()});
+	 			
+		List<X_LBR_NFLineTax> list = query.list();
+		
+		return list.toArray(new X_LBR_NFTax[list.size()]);	
+	} //getTaxes
+
 	
 } //MNotaFiscal

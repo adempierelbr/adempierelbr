@@ -425,6 +425,186 @@ public class TextUtil
 	}	//	toNumeric
 	
 	/**
+	 * 	Verifica se a string está entre os valores minímos e máximo
+	 * 
+	 * @param 	value
+	 * @param 	min
+	 * @param 	max
+	 * @return
+	 */
+	public static String checkSizeN (String value, int min, int max, boolean mandatory)
+	{
+		if (!mandatory && (value == null || value == ""))
+			return "";
+		else
+			return checkSizeN (value, min, max);
+	}
+	
+	/**
+	 * 	Verifica se a string está entre os valores minímos e máximo
+	 * 
+	 * @param 	value
+	 * @param 	min
+	 * @param 	max
+	 * @return
+	 */
+	public static String checkSizeN (String value, int min, int max)
+	{
+		if (value == null)
+			value = "";
+		return checkSize (toNumeric(value), min, max);
+	}
+	
+	/**
+	 * 	Verifica se a string está entre os valores minímos e máximo
+	 * 
+	 * @param 	value
+	 * @param 	min
+	 * @param 	max
+	 * @return
+	 */
+	public static String checkSize (String value, int min, int max, boolean mandatory)
+	{
+		if (!mandatory && (value == null || value == ""))
+			return "";
+		else
+			return checkSize (value, min, max);
+	}
+	
+	/**
+	 * 	Verifica se a string está entre os valores minímos e máximo
+	 * 
+	 * @param 	value
+	 * @param 	min
+	 * @param 	max
+	 * @return
+	 */
+	public static String checkSize (String value, int min, int max)
+	{
+		if (value == null)
+			value = "";
+		if (min > max)
+			min=max;
+		//
+		if (value.length() < min)
+			return rPad(value, min);
+		//
+		if (value.length() > max)
+			return rPad(value, max);
+		//
+		return value;
+	}
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um BigDecimal com 2 casas.<BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Um <tt>{@link BigDecimal} "14568.910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568,910"</tt>.
+	 * 
+	 * @param 	BigDecimal Valor Original
+	 * @param 	min
+	 * @param 	max
+	 * @return	String Numero formatado
+	 * */
+	public static String toNumeric(BigDecimal value, int min, int max, boolean mandatory)
+	{
+		if (!mandatory && value == null)
+			return "";
+		else
+			return  toNumeric(value, min, max);
+	}
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um BigDecimal com 2 casas.<BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Um <tt>{@link BigDecimal} "14568.910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568,910"</tt>.
+	 * 
+	 * @param 	BigDecimal Valor Original
+	 * @param 	min
+	 * @param 	max
+	 * @return	String Numero formatado
+	 * */
+	public static String toNumeric(BigDecimal value, int min, int max)
+	{
+		return toNumeric(value, min, max, 2);
+	}
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um BigDecimal com 2 casas.<BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Um <tt>{@link BigDecimal} "14568.910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568,910"</tt>.
+	 * 
+	 * @param 	BigDecimal Valor Original
+	 * @param 	min
+	 * @param 	max
+	 * @param	scale
+	 * @return	String Numero formatado
+	 * */
+	public static String toNumeric(BigDecimal value, int min, int max, int scale)
+	{
+		if (value == null)
+			return pad("0,00", '0', min, true, false, false);
+		if (min > max)
+			min=max;
+		//
+		String result = toNumeric(value, scale);
+		//
+		if (result == null || result == "")
+			return pad("0,00", '0', min, true, false, false);
+		//
+		if (result.length() < min)
+			return pad(result, '0', min, true, false, false);
+		//
+		if (result.length() > max)
+			return pad(result, '0', max, true, false, false);
+		//
+		return result;
+	}
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um BigDecimal com 2 casas.<BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Um <tt>{@link BigDecimal} "14568.910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568,910"</tt>.
+	 * 
+	 * @param 	BigDecimal Valor Original
+	 * @return	String Numero formatado
+	 * */
+	public static String toNumeric(BigDecimal value)
+	{
+		return toNumeric(value, 2);
+	}
+	
+	/**
+	 * Retorna sempre somente os digitos<BR>
+	 * de 0..9 de um BigDecimal com 2 casas.<BR>
+	 * 
+	 * <BR>Por Exemplo:
+	 * <BR>Um <tt>{@link BigDecimal} "14568.910"</tt> 
+	 * <BR>é automaticamente passada para <tt>"14568,910"</tt>.
+	 * 
+	 * @param 	BigDecimal Valor Original
+	 * @return	String Numero formatado
+	 * */
+	public static String toNumeric(BigDecimal value, int scale)
+	{
+		if (value == null)
+			return "";
+		//
+		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+	}	//	toNumeric
+	
+	/**
 	 * Retorna somente os digitos de 0..9<BR>
 	 * e as letras de a..z e A..Z, desconsiderando<BR>
 	 * qualquer outro caracter.<BR><BR>
@@ -452,6 +632,23 @@ public class TextUtil
 			
 		return result.toString();
 	}	//	retiraEspecial
+	
+	/**
+	 * Retorna a data formatada de acordo com o formato
+	 * <BR>Dia: dd, Mes: mm, Ano: yyyy
+	 * 
+	 * @param	Timestamp Data
+	 * @param	String Formato da data
+	 * @param	boolean Obrigatório
+	 * @return	String Data Formatada
+	 * */
+	public static String timeToString(Timestamp ts, String format, boolean mandatory)
+	{
+		if (!mandatory && ts==null)
+			return "";
+		else
+			return timeToString(ts, format);
+	}
 	
 	/**
 	 * Retorna a data formatada de acordo com o formato

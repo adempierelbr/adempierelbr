@@ -24,6 +24,7 @@ import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.model.X_LBR_TaxGroup;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	MNotaFiscalLine
@@ -123,8 +124,9 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
 				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
 				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')";
-		
-		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+		//
+		BigDecimal result = DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+		return result == null ? Env.ZERO : result;
 	}	//	getICMSAmt
 	
 	/**
