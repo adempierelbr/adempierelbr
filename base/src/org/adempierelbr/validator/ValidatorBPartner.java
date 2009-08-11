@@ -199,8 +199,8 @@ public class ValidatorBPartner implements ModelValidator
 		
 		if (AD_Language == null || AD_Language.equals("") || !AD_Language.equalsIgnoreCase("pt_BR")) return null;
 		
-		// If not validated
-		if (!isValid || bp.is_ValueChanged("IsActive")) {
+		//	If not validated or trying to activate an inactive record
+		if (!isValid || (bp.is_ValueChanged("IsActive") && bp.isActive())) {
 		
 			//If Individual - Validate CPF
 			if (BPTypeBR.equalsIgnoreCase("PF")){
@@ -235,7 +235,7 @@ public class ValidatorBPartner implements ModelValidator
 				if (CNPJ.indexOf('.') == -1 || CNPJ.length() < 18){
 					return "CNPJ Inválido";
 				}
-				if (!validaCNPJ(CNPJ)){
+				if (!isValid && !validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
 				}
 				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID(), bp.get_TableName())){

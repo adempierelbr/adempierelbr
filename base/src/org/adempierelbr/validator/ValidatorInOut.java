@@ -368,7 +368,7 @@ public class ValidatorInOut implements ModelValidator
 				
 				if (timing == TIMING_BEFORE_REVERSECORRECT 
 						&& !MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_SHIP_RECEIT_WITH_OPEN_INVOICE", true, inOut.getAD_Client_ID())
-						&& oline.getQtyDelivered().subtract(oline.getQtyInvoiced()).doubleValue() == 0)
+						&& DB.getSQLValue(null, "SELECT COUNT(*) FROM C_InvoiceLine il, C_Invoice i WHERE i.C_Invoice_ID=il.C_Invoice_ID AND i.DocStatus IN ('CO','CL') AND il.M_InOutLine_ID=?", line.getM_InOutLine_ID()) > 0)
 					return "Fatura(s) em aberto. Impossível continuar com o estorno.";
 				
 				int C_OrderLine_ID = line.getC_OrderLine_ID();
@@ -392,6 +392,9 @@ public class ValidatorInOut implements ModelValidator
 						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, inOut.getAD_Client_ID())
 						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
 					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();
+				
+				if (M_Product_ID == 0)
+					continue;
 				
 				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID); //QtyOnHand
 				
