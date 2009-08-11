@@ -31,6 +31,7 @@ import org.compiere.model.GridTab;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCharge;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
@@ -69,17 +70,15 @@ import org.compiere.util.Env;
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
+ * @contributor	Ricardo Santana (Kenos, www.kenos.com.br)
  * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
  */
 public class CalloutTax extends CalloutEngine
 {
-	/**	Debug Steps			*/
-	//private boolean steps = false;
-	
 	private MTax tax = null;
-	
+	//
 	private Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
-		
+	//
 	private String  lbr_TaxType         = TaxBR.taxType_Product;
 	private String  lbr_TaxStatus       = "00";
 	private Integer LBR_LegalMessage_ID = null;
@@ -102,7 +101,6 @@ public class CalloutTax extends CalloutEngine
 	 *  Table C_InvoiceLine - column M_Product_ID
 	 *  
 	 */
-		
 	public String getTaxes(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
 	{
 		//ID's
@@ -112,33 +110,34 @@ public class CalloutTax extends CalloutEngine
 		MOrder   order   = null;
 		MInvoice invoice = null;
 		MProduct product = null;
-	
-		//Pega no Contexto, qual tipo de documento
+		//
+		//	Pega no Contexto, qual tabela
 		int table = Env.getContextAsInt(ctx, WindowNo, 0, "AD_Table_ID");
-		if (table == I_C_Order.Table_ID){
+		//
+		if (table == MOrder.Table_ID)
+		{
 			ID = (Integer)mTab.getValue("C_Order_ID");
 			if (ID  == null || ID.intValue() == 0)
 				return "";
-			
+			//
 			Line_ID = (Integer)mTab.getValue("C_OrderLine_ID");
-			
 			order = new MOrder(ctx,ID,null);
 		}
-		else{
+		else if (table == MInvoice.Table_ID)
+		{
 			ID = (Integer)mTab.getValue("C_Invoice_ID");
 			if (ID  == null || ID.intValue() == 0)
 				return "";
-			
+			//
 			Line_ID = (Integer)mTab.getValue("C_InvoiceLine_ID");
-			
 			invoice = new MInvoice(ctx,ID,null);
 		}
-		
-		Integer M_Product_ID = (Integer)mTab.getValue("M_Product_ID");
-		if (M_Product_ID  == null || M_Product_ID.intValue() == 0)
+		else
+		{
+			log.log (Level.WARNING, "Resource not implemented for this Table= #" + table);
 			return "";
-		
-		//LBR_Tax_ID
+		}
+		//	LBR_Tax_ID
 		Integer LBR_Tax_ID = (Integer)mTab.getValue("LBR_Tax_ID");
 		if (LBR_Tax_ID != null){
 			if (Line_ID == null || Line_ID.intValue() == 0){ //Cópia de Linha
@@ -146,48 +145,85 @@ public class CalloutTax extends CalloutEngine
 				return "";
 			}
 		}
-		
-		product = new MProduct(ctx,M_Product_ID,null);
-		
-		TaxesException tE = getException(ctx,order,invoice,product,LBR_Tax_ID);
-		if (tE != null){
+		//
+		Integer M_Product_ID = (Integer)mTab.getValue("M_Product_ID");
+		//
+		if (M_Product_ID  != null && M_Product_ID.intValue() != 0)
+			product = new MProduct(ctx,M_Product_ID,null);
+		//
+		TaxesException tE = getException(ctx,order,invoice,product,null,LBR_Tax_ID);
+		//
+		if (tE != null)
+		{
 			GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
 			mTab.setValue("LBR_Tax_ID", tE.getLBR_Tax_ID());
 			LBR_Tax.setValue(tE.getLBR_Tax_ID(), true);
-
-			if (tE.isSOTrx()){
+			//
+			mTab.setValue("lbr_TaxStatus", tE.getlbr_TaxStatus());
+			//
+			if (tE.isSOTrx())
 				mTab.setValue("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
-				mTab.setValue("lbr_TaxStatus", tE.getlbr_TaxStatus());
-			}
 		}
-		else{
+		else
+		{
 			GridField LBR_Tax = mTab.getField("LBR_Tax_ID");
 			mTab.setValue("LBR_Tax_ID", null);
 			LBR_Tax.setValue(null, true);
-			
+			//
 			mTab.setValue("LBR_LegalMessage_ID", null);
 			mTab.setValue("lbr_TaxStatus", null);
 		}
-				
+		//
 		return "";
-	} //getTaxes
+	}	//	getTaxes
 	
+	/**
+	 * 	Retorna a exceção do imposto
+	 * 
+	 * @param ctx
+	 * @param order
+	 * @param product
+	 * @param LBR_Tax_ID
+	 * @return
+	 */
 	public TaxesException getException(Properties ctx, MOrder order, 
-			MProduct product, Integer LBR_Tax_ID){
-		return getException(ctx,order,null,product,LBR_Tax_ID);
+			MProduct product, Integer LBR_Tax_ID)
+	{
+		return getException(ctx,order,null,product,null,LBR_Tax_ID);
 	}
 	
+	/**
+	 * 	Retorna a exceção do imposto
+	 * 
+	 * @param ctx
+	 * @param invoice
+	 * @param product
+	 * @param LBR_Tax_ID
+	 * @return
+	 */
 	public TaxesException getException(Properties ctx, MInvoice invoice,
-			MProduct product, Integer LBR_Tax_ID){
-		return getException(ctx, null,invoice,product,LBR_Tax_ID);
+			MProduct product, Integer LBR_Tax_ID)
+	{
+		return getException(ctx, null,invoice,product,null,LBR_Tax_ID);
 	}
 	
-	private TaxesException getException(Properties ctx, MOrder order, 
-			MInvoice invoice, MProduct product, Integer LBR_Tax_ID){
-		
+	/**
+	 * Retorna a exceção do imposto
+	 * 
+	 * @param ctx
+	 * @param order
+	 * @param invoice
+	 * @param product
+	 * @param charge
+	 * @param LBR_Tax_ID
+	 * @return TaxesException
+	 */
+	private TaxesException getException(Properties ctx, MOrder order,
+			MInvoice invoice, MProduct product, MCharge charge, Integer LBR_Tax_ID)
+	{
 		cleanStaticAttributes();
-		
-		//ID's
+		//
+		//	ID's
 		Integer LBR_NCM_ID                  = null;
 		Integer C_BPartner_ID               = null;
 		Integer C_BPartnerLocation_ID       = null;
@@ -199,42 +235,41 @@ public class CalloutTax extends CalloutEngine
 		boolean  isSOTrx = true;
 		//
 		String transactionType = null;
-		
-		if (order != null){			
+		//
+		if (order != null)
+		{			
 			C_BPartner_ID         = order.getC_BPartner_ID();
 			C_BPartnerLocation_ID = order.getC_BPartner_Location_ID();
 			AD_Org_ID             = order.getAD_Org_ID();
 			isSOTrx               = order.isSOTrx();
 			transactionType       = (String)order.get_Value("lbr_TransactionType");
 		}
-		else if (invoice != null){
+		else if (invoice != null)
+		{
 			C_BPartner_ID         = invoice.getC_BPartner_ID();
 			C_BPartnerLocation_ID = invoice.getC_BPartner_Location_ID();
 			AD_Org_ID             = invoice.getAD_Org_ID();
 			isSOTrx               = invoice.isSOTrx();
 			transactionType       = (String)invoice.get_Value("lbr_TransactionType");
 		}
-		else{
+		else
+		{
 			log.log(Level.WARNING, "Order and Invoice == null");
 			return null;
 		}
-		
-		//Product
+		//	Product
 		if (product == null)
 			return null;
-		
 		//
 		MOrgInfo orgInfo       = MOrgInfo.get(ctx, AD_Org_ID);
 		MLocation orgLocation  = new MLocation(ctx,orgInfo.getC_Location_ID(),null);
-		
-		//LBR_Tax_ID
-		if (LBR_Tax_ID == null){
+		//
+		//	LBR_Tax_ID
+		if (LBR_Tax_ID == null)
 			LBR_Tax_ID = 0;
-		}
-		
-		tax = new MTax(ctx,LBR_Tax_ID,null);
+		//
+		tax = new MTax(ctx, LBR_Tax_ID, null);
 		tax.deleteLines();
-		
 		//
 		MBPartner bpartner           = new MBPartner(ctx, C_BPartner_ID,null);
 		MBPartnerLocation bpLocation = new MBPartnerLocation(ctx, C_BPartnerLocation_ID,null);
@@ -243,8 +278,8 @@ public class CalloutTax extends CalloutEngine
 		LBR_NCM_ID = (Integer)product.get_Value("LBR_NCM_ID");
 		if (LBR_NCM_ID == null) LBR_NCM_ID = 0;
 			X_LBR_NCM ncm = new X_LBR_NCM(ctx,LBR_NCM_ID,null);
-
-		//Grupos de Tributação
+		//
+		//	Grupos de Tributação
 		if (order != null){
 			LBR_FiscalGroup_BPartner_ID = (Integer)bpartner.get_Value("LBR_FiscalGroup_Customer_ID");
 		}
@@ -441,19 +476,22 @@ public class CalloutTax extends CalloutEngine
 		
 		return new TaxesException(LBR_Tax_ID,LBR_LegalMessage_ID,
 				lbr_TaxStatus, isSOTrx);		
-	} //getException
+	}	//	getException
 	
-	private void cleanStaticAttributes(){
+	/**
+	 * cleanStaticAttributes
+	 */
+	private void cleanStaticAttributes()
+	{
 		tax = null;
-		
+		//
 		lines = new HashMap<Integer, Integer>();
-			
+		//
 		lbr_TaxType         = TaxBR.taxType_Product;
 		lbr_TaxStatus       = "00";
 		LBR_LegalMessage_ID = null;
 		hasSubstitution     = false;
-	} //cleanStaticAttributes
-	
+	}	//	cleanStaticAttributes
 	
 	/**
 	 *  getDestinationType
@@ -473,63 +511,70 @@ public class CalloutTax extends CalloutEngine
 		Integer LBR_CFOP_ID = (Integer)mTab.getValue("LBR_CFOP_ID");
 		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
 			return "";
-		
-		X_LBR_CFOP cfop = new X_LBR_CFOP(ctx,LBR_CFOP_ID,null);
-		
+		//
+		X_LBR_CFOP cfop = new X_LBR_CFOP(ctx, LBR_CFOP_ID, null);
+		//
 		if (cfop.getValue().startsWith("1") || cfop.getValue().startsWith("5"))
 			mTab.setValue("lbr_DestionationType",X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdenticos);
 		else if (cfop.getValue().startsWith("2") || cfop.getValue().startsWith("6"))
 			mTab.setValue("lbr_DestionationType", X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
 		else if (cfop.getValue().startsWith("3") || cfop.getValue().startsWith("7"))
 			mTab.setValue("lbr_DestionationType", X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro);
-			
+		//
 		return "";
 	}	//	getDestinationType
 	
 	/**
-	 *  getTransactionType
+	 *  Atualiza o tipo de transação.
 	 *
+	 *	Table C_Order 	- column C_BPartner_ID
+	 *  Table C_Invoice - column C_BPartner_ID
+	 *  
 	 *  @param ctx      Context
 	 *  @param WindowNo current Window No
 	 *  @param mTab     Model Tab
 	 *  @param mField   Model Field
 	 *  @param value    The new value
 	 *  @return Error message or ""
-	 *  
-	 *  Table C_Order - column C_BPartner_ID
-	 *  Table C_Invoice - column C_BPartner_ID
-	 *  
 	 */
-		
 	public String getTransactionType(Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
 	{
-		
 		Integer C_BPartner_ID = (Integer)mTab.getValue("C_BPartner_ID");
+		//
 		if (C_BPartner_ID == null || C_BPartner_ID.intValue() == 0)
 			return "";
-		
+		//
 		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
 		String lbr_TransactionType = bpartner.get_ValueAsString("lbr_TransactionType");
-		
-		if (!(lbr_TransactionType == null && lbr_TransactionType.equals("")))
+		//
+		if (lbr_TransactionType != null && !lbr_TransactionType.equals(""))
 			mTab.setValue("lbr_TransactionType", lbr_TransactionType);
-		
+		//
 		return "";
-	} // getTransactionType
+	}	//	getTransactionType
 	
-	private void setLines(Properties ctx,Integer LBR_Tax_ID)
+	/**
+	 * 	Adiciona o imposto ou altera um imposto existente.
+	 * 
+	 * @param ctx
+	 * @param LBR_Tax_ID
+	 */
+	private void setLines(Properties ctx, Integer LBR_Tax_ID)
 	{
-		
-		if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0){
+		if (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0)
 			return;
-		}
-		
+		/**	
+		 * TODO: Verificar a chamada do setLines para ocorrer apenas uma vez
+		 */
 		setLines();
-		
-		String sql = "SELECT LBR_TaxName_ID, lbr_TaxRate, lbr_TaxBase, lbr_PostTax " +
-				     "FROM LBR_TaxLine " +
-				     "WHERE LBR_Tax_ID = ?";
-		
+		//
+		String sql = "SELECT 	tl.LBR_TaxName_ID, tl.lbr_TaxRate, tl.lbr_TaxBase, tl.lbr_PostTax " +
+				     "FROM 		LBR_TaxLine tl " +
+				     "WHERE 	tl.LBR_Tax_ID = ? AND EXISTS " +
+					     "(SELECT 	'1' " +
+					     "FROM 		LBR_TaxName tn " +
+					     "WHERE 	tn.LBR_TaxName_ID=tl.LBR_TaxName_ID)";
+		//
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -542,24 +587,23 @@ public class CalloutTax extends CalloutEngine
 				if (tax.getLBR_Tax_ID() == 0){
 					tax.save();
 				}
-				
-				Integer LBR_TaxName_ID   = rs.getInt(1);
-				//TODO: BUGFIX: Erro, SELECT Retorna um TaxName que nao existe
-				// Correcao temporaria
-				if(DB.getSQLValue(null, "SELECT COALESCE(LBR_TaxName_ID, 0) FROM LBR_TaxName WHERE LBR_TaxName_ID=" + LBR_TaxName_ID) <= 0)
-					continue;
-				
-				X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,LBR_TaxName_ID,null);
-				//Verifica o Tipo do Item, para definir os Impostos
+				//
+				Integer LBR_TaxName_ID = rs.getInt(1);
+				//
+				X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, LBR_TaxName_ID, null);
+				//
+				//	Verifica o Tipo do Item, para definir os Impostos
 				if (taxName.getlbr_TaxType().equalsIgnoreCase(lbr_TaxType) ||
-				   (hasSubstitution && taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution))){
-					
+				   (hasSubstitution && taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)))
+				{
 					X_LBR_TaxLine line = null;
-					if (lines.containsKey(LBR_TaxName_ID)){
+					if (lines.containsKey(LBR_TaxName_ID))
+					{
 						line = new X_LBR_TaxLine(ctx,lines.get(LBR_TaxName_ID),null);
 					}
-					else{
-						line = new X_LBR_TaxLine(ctx,0,null);
+					else
+					{
+						line = new X_LBR_TaxLine(ctx, 0, null);
 					}
 					line.setLBR_Tax_ID(tax.getLBR_Tax_ID());
 					line.setLBR_TaxName_ID(LBR_TaxName_ID);
@@ -568,25 +612,27 @@ public class CalloutTax extends CalloutEngine
 					line.setlbr_PostTax("Y".equals(rs.getString(4)));
 					line.save();
 				}
-				
 			}
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		finally{
+		finally
+		{
 		       DB.close(rs, pstmt);
 		}
-
-	} //setLines
+	}	//	setLines
 	
+	/**
+	 * 	Grava os impostos que já estão salvos num ArrayList
+	 */
 	private void setLines()
 	{
-		
 		String sql = "SELECT LBR_TaxLine_ID, LBR_TaxName_ID " +
 				     "FROM LBR_TaxLine " +
 				     "WHERE LBR_Tax_ID = ?";
+		//
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -603,10 +649,9 @@ public class CalloutTax extends CalloutEngine
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		finally{
+		finally
+		{
 		       DB.close(rs, pstmt);
 		}
-
-	} //setLines
-	
-} //CalloutTax
+	}	//	setLines
+}	//	CalloutTax
