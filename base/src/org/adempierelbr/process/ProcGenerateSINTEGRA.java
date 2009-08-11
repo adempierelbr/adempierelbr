@@ -108,12 +108,12 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		if (p_Consolidate)
 		{
 			String fileName = p_FilePath;
-			
+			//
 			if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
 		    	fileName += POLBR.getFileSeparator();
-			
+			//
 			fileName += "SINTEGRA_CONSOLIDADO.txt";
-			
+			//
 			FileWriter fw = new FileWriter(fileName, false);
 			fw.write(getSINTEGRA(ctx, ""));
 			fw.flush();
@@ -123,12 +123,12 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		{
 			String fileName = p_FilePath;
 			String rName = new MRegion(ctx, p_C_Region_ID, null).getName().trim().toUpperCase();
-			
+			//
 			if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
 		    	fileName += POLBR.getFileSeparator();
-			
+			//
 			fileName += "SINTEGRA_"+rName+".txt";
-			
+			//
 			FileWriter fw = new FileWriter(fileName, false);
 			fw.write(getSINTEGRA(ctx, rName));
 			fw.flush();
@@ -145,16 +145,16 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					String fileName = p_FilePath;
 					String rName = r.getName().trim().toUpperCase();
 					String result = getSINTEGRA(ctx, rName);
-					
+					//
 					//	Menor que 3 linhas não salva o arquivo
 					if (result.length() <= (130 * 3))
 						continue;
-					
+					//
 					if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
 				    	fileName += POLBR.getFileSeparator();
-					
+					//
 					fileName += "SINTEGRA_"+rName+".txt";
-					
+					//
 					FileWriter fw = new FileWriter(fileName, false);
 					fw.write(result);
 					fw.flush();
@@ -162,7 +162,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				}
 			}
 		}
-		
+		//
 		return "";
 	}	//	doIt
 	
@@ -178,7 +178,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		/**	Validar produto					*/
 		ArrayList<String> uniquePrd = new ArrayList<String>();
-		
+		//
 		StringBuffer registro50 = new StringBuffer("");
 		StringBuffer registro51 = new StringBuffer("");
 		StringBuffer registro54 = new StringBuffer("");
@@ -189,39 +189,40 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		Integer	count54 = 0;
 		Integer	count70 = 0;
 		Integer	count75 = 0;
-		
+		//
 		if(estado == null)
 			estado = "";
-		
+		//
 		if (p_AD_Org_ID == 0)
-			throw new Exception("AD_Org_ID Mandatory");
-		
+			throw new Exception("@AD_Org_ID@ @Mandatory@");
+		//
 		MOrgInfo oi 	= new MOrg(Env.getCtx(), p_AD_Org_ID, null).getInfo();
 		MLocation ol 	= new MLocation(Env.getCtx(), oi.getC_Location_ID(), null);
 		MRegion r 		= ol.getRegion();
-		
+		//
 		StringBuffer result = new StringBuffer("");
 		StringBuffer whereClause = new StringBuffer("");
-		
+		//
 		whereClause.append("AD_Client_ID=? ")
 			.append("AND AD_Org_ID=? ")
 			.append("AND lbr_CFOPReference NOT LIKE '%1%933%' ")			
-			.append("AND lbr_CFOPReference NOT LIKE '%2%933%' ");
-
-		
+			.append("AND lbr_CFOPReference NOT LIKE '%2%933%' ")
+			.append("AND lbr_CFOPReference NOT LIKE '%Z%' ");
+		//
 		if(estado != "")
 			whereClause.append("AND lbr_BPInvoiceRegion='" + estado + "' ");
-		
+		//
 		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ")
 			.append(DB.TO_DATE(p_DateFrom))
 			.append(" AND ")
 			.append(DB.TO_DATE(p_DateTo));
-
+		//
 		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);		
 		Query q =  new Query(table, whereClause.toString(), null);
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
+		q.setOrderBy(" (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), Documentno ");
 		List<MNotaFiscal> list = q.list();
-		
+		//
 		//	Monta o Registro 10
 		log.finer("SINTEGRA: 10");
 		result.append(
@@ -231,7 +232,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						ol.getCity(), r.getName(),
 						oi.get_ValueAsString("Fax"),	//	Fax
 						p_DateFrom,	p_DateTo, "3", "3",	"1"));
-		
+		//
 		//	Monta o Registro 11
 		log.finer("SINTEGRA: 11");
 		result.append(
@@ -240,28 +241,46 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						ol.getPostal(),
 						oi.get_ValueAsString("ContactName"),		//	Pessoa Contato
 						oi.get_ValueAsString("Phone")));	//	Telefone Contato
-		
+		//
 		for(MNotaFiscal NF : list)
 		{
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			StringBuffer sql = new StringBuffer("");
-
+			//
 			try
 			{
-//				Monta o Registro 50 e 70
-				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), SUM(NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)), SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
-					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), NVL(nflt.lbr_TaxRate,0) FROM LBR_NotaFiscal nf ")
+				//	Monta o Registro 50 e 70
+				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), SUM((CASE WHEN nf.lbr_TransactionType IN ('IMP', 'COU') AND NVL(nflt.lbr_TaxBaseAmt,0) > 0 THEN NVL(nflt.lbr_TaxBaseAmt,0) " +
+						   										"WHEN nf.lbr_TransactionType IN ('IMP', 'COU') THEN NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0) + NVL(nf.LBR_INSURANCEAMT,0) + NVL(nf.FREIGHTAMT,0) + NVL(nflt.lbr_TaxAmt,0) + NVL(nfltpis.lbr_TaxAmt,0) + NVL(nfltcofins.lbr_TaxAmt,0) + ((NVL(nfl.LineTotalAmt,0) * NVL(nf.lbr_TotalSISCOMEX,0)) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1)) " +
+																"ELSE NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0) + NVL(nf.LBR_INSURANCEAMT,0) + NVL(nf.FREIGHTAMT,0) END)), SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
+					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), " +
+							"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_20' OR " +
+									"nfl.lbr_TaxStatus LIKE '_30' OR " +
+									"nfl.lbr_TaxStatus LIKE '_40' OR " +
+									"nfl.lbr_TaxStatus LIKE '_41' OR " +
+									"nfl.lbr_TaxStatus LIKE '_60' OR " +
+									"nfl.lbr_TaxStatus LIKE '_70' " +
+								"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
+								"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_50' OR " +
+									"nfl.lbr_TaxStatus LIKE '_51' OR " +
+									"nfl.lbr_TaxStatus LIKE '_90' " +
+								"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras FROM LBR_NotaFiscal nf ")
 					.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
-					.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')) ")
-					.append("LEFT JOIN   LBR_NFLineTax nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nfltipi.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
+					.append("LEFT JOIN   LBR_NFLineTax_V nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+					.append("AND nflt.TaxIndicator='ICMS') ")
+					.append("LEFT JOIN   LBR_NFLineTax_V nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+					.append("AND nfltipi.TaxIndicator='IPI') ")
+					.append("LEFT JOIN  LBR_NFLineTax_V nfltpis ON (nfltpis.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+					.append("AND nfltpis.TaxIndicator='PIS') ")
+					.append("LEFT JOIN  LBR_NFLineTax_V nfltcofins ON (nfltcofins.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+					.append("AND nfltcofins.TaxIndicator='COFINS') ")
 					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
 					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
 					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
-					.append("GROUP BY NVL(nflt.lbr_TaxRate,0), NVL(nfl.lbr_CFOPName,'0')");
-				
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%Z%' ")
+					.append("GROUP BY nf.LBR_INSURANCEAMT, nf.FREIGHTAMT, NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), NVL(nfl.lbr_CFOPName,'0')");
+				//
 				DB.close(rs, pstmt);
 				pstmt = DB.prepareStatement(sql.toString(), null);
 				pstmt.setInt(1, NF.getLBR_NotaFiscal_ID());
@@ -270,13 +289,18 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				{
 					StringBuffer linha = new StringBuffer("");
 					String CFOP = rs.getString(1);
-					
+					//
+					/**	Data do documento ou data da entrada */
+					Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
+					if (data == null)
+						data = NF.getDateDoc();
+					//
 					if (CFOP != null
 							&& CFOP.trim().endsWith("352"))	//	CFOP de Transporte
 					{
 						linha.append(registro70(NF.getlbr_BPCNPJ(),
 			    				NF.getlbr_BPIE(),
-			    				NF.getDateDoc(),
+			    				data,
 			    				NF.getlbr_BPRegion(),
 			    				"08",		//	FIXME	Modelo
 			    				"",			//	FIXME	SubSérie
@@ -286,10 +310,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			    				rs.getBigDecimal(2),
 			    				rs.getBigDecimal(3),
 			    				rs.getBigDecimal(4),
-			    				Env.ZERO,	//	FIXME	Isenta
-			    				Env.ZERO,	//	FIXME	Outras
+			    				rs.getBigDecimal(6),
+			    				rs.getBigDecimal(7),
 			    				"1",
-			    				"N"));		//	FIXME 	Situação NF
+			    				NF.isCancelled()));
 						
 						if (linha.length() < 5)
 							continue;
@@ -300,11 +324,6 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					}
 					else								//	Outro CFOP
 					{
-						/**	Data do documento ou data da entrada */
-						Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
-						if (data == null)
-							data = NF.getDateDoc();
-						
 						linha.append(registro50(NF.getlbr_BPCNPJ(),
 			    				NF.getlbr_BPIE(),
 			    				data,
@@ -317,10 +336,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			    				rs.getBigDecimal(2),
 			    				rs.getBigDecimal(3),
 			    				rs.getBigDecimal(4),
-			    				Env.ZERO,	//	FIXME	Isenta
-			    				Env.ZERO,	//	FIXME	Outras
+			    				rs.getBigDecimal(6),
+			    				rs.getBigDecimal(7),
 			    				rs.getBigDecimal(5),
-			    				"N"));		//	FIXME 	Situação NF
+			    				NF.isCancelled()));
 						
 						if (linha.length() < 5)
 							continue;
@@ -333,15 +352,23 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				
 //				Monta o registro 51
 				sql = new StringBuffer("");
-				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), SUM(NVL(nfl.LineTotalAmt,0)), SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
-					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), NVL(nflt.lbr_TaxRate,0) FROM LBR_NotaFiscal nf ")
+				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), nf.GrandTotal, SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
+					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), " +
+							"SUM((CASE WHEN nfl.lbr_TaxStatusIPI LIKE '_2' OR " +
+							"nfl.lbr_TaxStatusIPI LIKE '_3' OR " +
+							"nfl.lbr_TaxStatusIPI LIKE '_4' " +
+						"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nflt.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
+						"SUM((CASE WHEN nfl.lbr_TaxStatusIPI LIKE '_5' OR " +
+							"nfl.lbr_TaxStatusIPI LIKE '_9' " +
+						"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nflt.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras FROM LBR_NotaFiscal nf ")
 					.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
 					.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
 					.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
 					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
 					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
 					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
-					.append("GROUP BY nflt.lbr_TaxRate, nfl.lbr_CFOPName");
+					.append("AND nfl.lbr_CFOPName NOT LIKE '%Z%' ")
+					.append("GROUP BY nfl.lbr_CFOPName, nf.GrandTotal");
 				
 				DB.close(rs, pstmt);
 				pstmt = DB.prepareStatement(sql.toString(), null);
@@ -360,7 +387,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
 					if (data == null)
 						data = NF.getDateDoc();
-					
+					//
 					linha.append(registro51(NF.getlbr_BPCNPJ(),
 	        				NF.getlbr_BPIE(),
 	        				data,
@@ -370,9 +397,9 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	        				CFOP,
 	        				rs.getBigDecimal(2),
 	        				rs.getBigDecimal(4),
-	        				Env.ZERO,	//	FIXME	Isenta
-	        				Env.ZERO,	//	FIXME	Outras
-	        				"N"));		//	FIXME 	Situação NF
+	        				rs.getBigDecimal(5),
+	        				rs.getBigDecimal(6),
+	        				NF.isCancelled()));
 					
 					if (linha.length() < 5)
 						continue;
@@ -381,7 +408,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					log.finer("SINTEGRA: 51");
 					registro51.append(linha);
 				}
-				
+				//
+				if (NF.isCancelled())	//	Não gerar registros 54 e 75 para canceladas
+					continue;
+				//
 				MNotaFiscalLine[] NFLines = getLines(NF);
 				for (MNotaFiscalLine NFLine : NFLines)
 				{
@@ -411,7 +441,6 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 							Env.ZERO,	//	FIXME	ICMS ST
 							NFLine.getIPIAmt(),
 							NFLine.getICMSRate()));
-					
 					
 					if (uniquePrd.contains(NFLine.getProductValue()))
 						continue;
@@ -470,10 +499,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		if (documentNo == null
 				|| documentNo.startsWith("-"))
 			return "";
-		
+		//
 		if (documentNo.indexOf('-') == -1)
 			return documentNo;
-		
+		//
 		return documentNo.substring(0, documentNo.indexOf('-'));
 	}	//	docNo
 	
@@ -489,7 +518,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				|| documentNo.indexOf('-') == -1
 				|| documentNo.endsWith("-"))
 			return "";
-		
+		//
 		return documentNo.substring(1+documentNo.indexOf('-'), documentNo.length());
 	}	//	docNo
 	
@@ -578,7 +607,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			String Bairro, String CEP, String Contato, String Telefone)
 	{
 		StringBuffer result = new StringBuffer("");
-
+		//
 		result.append("11")								//	1	2	N
 			.append(TextUtil.rPad(Logradouro	, 34))	//	2	34	X
 			.append(TextUtil.lPad(Numero		, 5))	//	3	5	N
@@ -587,9 +616,9 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(CEP			, 8))	//	6	8	N
 			.append(TextUtil.rPad(Contato		, 28))	//	7	28	X
 			.append(TextUtil.lPad(Telefone		, 12));	//	8	12	N
-		
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
 	}	//	registro11
 	
@@ -625,12 +654,30 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			String UF, String CodModeloNF, String SerieNF, String NoNF,
 			String CFOP, String Emitente, BigDecimal ValorTotal, BigDecimal BaseICMS,
 			BigDecimal ValorICMS, BigDecimal ValorIsento, BigDecimal ValorOutras,
-			BigDecimal AliqICMS, String SitNF)
+			BigDecimal AliqICMS, Boolean SitNF)
 	{
 		StringBuffer result = new StringBuffer("");
-		
+		//
+		String situacao = SitNF ? "S" : "N";
+		//
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+		//
+		if (UF == null || !isBR(UF))
+			UF = "EX";
+		//
+		if (SitNF)	//	NF Cancelada
+		{
+			ValorTotal 	= Env.ZERO;
+			BaseICMS 	= Env.ZERO;
+			ValorICMS 	= Env.ZERO;
+			ValorIsento = Env.ZERO;
+			ValorOutras = Env.ZERO;
+			AliqICMS 	= Env.ZERO;
+		}
+		//
 		Emitente = Emitente.equals("Y") || Emitente.equalsIgnoreCase("true")  ? "P" : "T";
-		
+		//
 		result.append("50")								//	1	2	N
 			.append(TextUtil.lPad(CNPJ			, 14))	//	2	14	N
 			.append(TextUtil.rPad(IE			, 14))	//	3	14	X
@@ -647,10 +694,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(ValorIsento	, 13))	//	14	13	N
 			.append(TextUtil.lPad(ValorOutras	, 13))	//	15	13	N
 			.append(TextUtil.lPad(AliqICMS		, 4))	//	16	4	N
-			.append(TextUtil.rPad(SitNF			, 1));	//	17	1	X
-		
+			.append(TextUtil.rPad(situacao		, 1));	//	17	1	X
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
 	}	//	registro50
 
@@ -676,10 +723,26 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	private String registro51(String CNPJ, String IE, Timestamp DataEmissao,
 			String UF, String SerieNF, String NoNF,	String CFOP, 
 			BigDecimal ValorTotal, BigDecimal ValorIPI, BigDecimal ValorIsento, 
-			BigDecimal ValorOutras, String SitNF)
+			BigDecimal ValorOutras, Boolean SitNF)
 	{
 		StringBuffer result = new StringBuffer("");
-		
+		//
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+		//
+		if (UF == null || !isBR(UF))
+			UF = "EX";
+		//
+		String situacao = SitNF ? "S" : "N";
+		//
+		if (SitNF)	//	NF Cancelada
+		{
+			ValorTotal 	= Env.ZERO;
+			ValorIPI 	= Env.ZERO;
+			ValorIsento = Env.ZERO;
+			ValorOutras = Env.ZERO;
+		}
+		//
 		result.append("51")								//	1	2	N
 			.append(TextUtil.lPad(CNPJ			, 14))	//	2	14	N
 			.append(TextUtil.rPad(IE			, 14))	//	3	14	X
@@ -693,10 +756,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(ValorIsento	, 13))	//	11	13	N
 			.append(TextUtil.lPad(ValorOutras	, 13))	//	12	13	N
 			.append(TextUtil.rPad(" "			, 20))	//	13	20	X
-			.append(TextUtil.rPad(SitNF			, 1));	//	14	1	X
-		
+			.append(TextUtil.rPad(situacao		, 1));	//	14	1	X
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
 	}	//	registro51
 	
@@ -741,14 +804,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			BigDecimal ValorIPI, BigDecimal AliqICMS)
 	{
 		StringBuffer result = new StringBuffer("");
-		
+		//
 		if (CodProduto == null || CodProduto.equals(""))
 		{
 			CodProduto = "SEMCODIGO";
 			errors.append("NF: ").append(NoNF).append(" do CNPJ ").append(CNPJ)
 				.append(" sem código de produto. Item: ").append(SeqItem);
 		}
-		
+		//
 		result.append("54")									//	1	2	N
 			.append(TextUtil.lPad(CNPJ			, 14))		//	2	14	N
 			.append(TextUtil.lPad(CodModeloNF	, 2))		//	3	2	N
@@ -765,9 +828,9 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(BaseICMSST	, 12))		//	14	12	N
 			.append(TextUtil.lPad(ValorIPI		, 12))		//	15	12	N
 			.append(TextUtil.lPad(AliqICMS		, 4));		//	16	4	X
-		
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
 	}	//	registro54
 	
@@ -861,10 +924,24 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			String UF, String CodModeloNF, String SerieNF, String SubSerieNF, String NoNF,
 			String CFOP, BigDecimal ValorTotal, BigDecimal BaseICMS,
 			BigDecimal ValorICMS, BigDecimal ValorIsento, BigDecimal ValorOutras,
-			String CIF_FOB, String SitNF)
+			String CIF_FOB, Boolean SitNF)
 	{
 		StringBuffer result = new StringBuffer("");
-				
+		//
+		String situacao = SitNF ? "S" : "N";
+		//
+		if (SitNF)	//	NF Cancelada
+		{
+			ValorTotal 	= Env.ZERO;
+			BaseICMS 	= Env.ZERO;
+			ValorICMS 	= Env.ZERO;
+			ValorIsento = Env.ZERO;
+			ValorOutras = Env.ZERO;
+		}
+		//
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+		//
 		result.append("70")								//	1	2	N
 			.append(TextUtil.lPad(CNPJ			, 14))	//	2	14	N
 			.append(TextUtil.rPad(IE			, 14))	//	3	14	X
@@ -881,12 +958,11 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(ValorIsento	, 14))	//	14	13	N
 			.append(TextUtil.lPad(ValorOutras	, 14))	//	15	13	N
 			.append(TextUtil.rPad(CIF_FOB		, 1))	//	16	4	N
-			.append(TextUtil.rPad(SitNF			, 1));	//	17	1	X
-		
+			.append(TextUtil.rPad(situacao		, 1));	//	17	1	X
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
-		//TODO: Registro 70
 	}
 	
 	/**
@@ -938,19 +1014,19 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			BigDecimal AliqICMS, BigDecimal RedBaseCalc, BigDecimal BaseICMSST)
 	{
 		StringBuffer result = new StringBuffer("");
-		
+		//
 		if (CodProduto == null || CodProduto.equals(""))
 		{
 			CodProduto = "SEMCODIGO";
 			errors.append("Registro 75 sem código.");
 		}
-		
+		//
 		if (DescProduto == null || DescProduto.equals(""))
 		{
 			DescProduto = "SEMDESCRICAO";
 			errors.append("Registro 75 sem descrição.");
 		}
-		
+		//
 		result.append("75")								//	1	2	N
 			.append(TextUtil.timeToString(DataInicial))	//	2	6	D
 			.append(TextUtil.timeToString(DataFinal))	//	3	6	D
@@ -962,9 +1038,9 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(AliqICMS		, 4))	//	9	4	N
 			.append(TextUtil.lPad(RedBaseCalc	, 5))	//	10	5	N
 			.append(TextUtil.lPad(BaseICMSST	, 13));	//	11	13	X
-		
+		//
 		result.append(TextUtil.EOL_WIN32);
-		
+		//
 		return result.toString();
 	}	//	registro75
 	
@@ -1045,81 +1121,80 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		int count 	= 0;
 		int Total90	= 1;
-		
+		//
 		StringBuffer header = new StringBuffer("");
 		StringBuffer linhas	= new StringBuffer("");
-	
+		//
 		header.append("90")							//	1	2	X
 			.append(TextUtil.lPad(CNPJ	, 14))		//	2	14	N
 			.append(TextUtil.rPad(IE	, 14));		//	3	14	X;
-		
-		
-		/**	Primeira Linha	*/
+		//
+		//	Primeira Linha
 		linhas.append(header);
-		
+		//
 		if (Total50 != null && Total50.intValue() != 0)	//	1
 		{
 			count++;
 			linhas.append("50")
 				.append(TextUtil.lPad("" + Total50, 8));
 		}
-		
+		//
 		if (Total51 != null && Total51.intValue() != 0)	//	2
 		{
 			count++;
 			linhas.append("51")
 				.append(TextUtil.lPad("" + Total51, 8));
 		}
-		
+		//
 		if (Total53 != null && Total53.intValue() != 0)	//	3
 		{
 			count++;
 			linhas.append("53")
 				.append(TextUtil.lPad("" + Total53, 8));
 		}
-		
+		//
 		if (Total54 != null && Total54.intValue() != 0)	//	4
 		{
 			count++;
 			linhas.append("54")
 				.append(TextUtil.lPad("" + Total54, 8));
 		}
-		
+		//
 		if (Total55 != null && Total55.intValue() != 0)	//	5
 		{
 			count++;
 			linhas.append("55")
 				.append(TextUtil.lPad("" + Total55, 8));
 		}
-		
+		//
 		if (Total56 != null && Total56.intValue() != 0)	//	6
 		{
 			count++;
 			linhas.append("56")
 				.append(TextUtil.lPad("" + Total56, 8));
 		}
-		
+		//
 		if (Total57 != null && Total57.intValue() != 0)	//	7
 		{
 			count++;
 			linhas.append("57")
 				.append(TextUtil.lPad("" + Total57, 8));
 		}
-		
+		//
 		if (Total60 != null && Total60.intValue() != 0)	//	8
 		{
 			count++;
 			linhas.append("60")
 				.append(TextUtil.lPad("" + Total60, 8));
 		}
-		
+		//
 		if (Total61 != null && Total61.intValue() != 0)	//	9
 		{
 			count++;
 			linhas.append("61")
 				.append(TextUtil.lPad("" + Total61, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1128,14 +1203,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total70 != null && Total70.intValue() != 0)	//	10
 		{
 			count++;
 			linhas.append("70")
 				.append(TextUtil.lPad("" + Total70, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1144,14 +1219,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total71 != null && Total71.intValue() != 0)	//	11
 		{
 			count++;
 			linhas.append("71")
 				.append(TextUtil.lPad("" + Total71, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1160,14 +1235,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total74 != null && Total74.intValue() != 0)	//	12
 		{
 			count++;
 			linhas.append("74")
 				.append(TextUtil.lPad("" + Total74, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1176,14 +1251,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total75 != null && Total75.intValue() != 0)	//	13
 		{
 			count++;
 			linhas.append("75")
 				.append(TextUtil.lPad("" + Total75, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1192,14 +1267,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total76 != null && Total76.intValue() != 0)	//	14
 		{
 			count++;
 			linhas.append("76")
 				.append(TextUtil.lPad("" + Total76, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1208,14 +1283,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total77 != null && Total77.intValue() != 0)	//	15
 		{
 			count++;
 			linhas.append("77")
 				.append(TextUtil.lPad("" + Total77, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1224,14 +1299,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total85 != null && Total85.intValue() != 0)	//	16
 		{
 			count++;
 			linhas.append("85")
 				.append(TextUtil.lPad("" + Total85, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1240,14 +1315,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		if (Total86 != null && Total86.intValue() != 0)	//	17
 		{
 			count++;
 			linhas.append("86")
 				.append(TextUtil.lPad("" + Total86, 8));
 		}
-		
+		//
 		if (count == 9)
 		{
 			Total90++;
@@ -1256,7 +1331,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(TextUtil.EOL_WIN32)
 				.append(header);
 		}
-		
+		//
 		Integer Total99 = 	(Total50 == null ? 0 : Total50) + 
 							(Total51 == null ? 0 : Total51) + 
 							(Total53 == null ? 0 : Total53) + 
@@ -1275,16 +1350,15 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 							(Total85 == null ? 0 : Total85) + 
 							(Total86 == null ? 0 : Total86) +
 							(Total90 + 2); //	Total de Registros 90 + 2 ref. aos registro 10 e 11
-		
+		//
 		count++;
 		linhas.append("99")
 			.append(TextUtil.lPad("" + Total99, 8))
 			.append(TextUtil.rPad(" ", 95 - (count * 10)))
 			.append(Total90);
-		
+		//
 		return linhas.toString();
 	}
-	
 	
 	/**
 	 * TOTALIZAÇÃO DO ARQUIVO
@@ -1305,7 +1379,45 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				0, 0, 0, 0, 0, Total70, 0, 0, Total75, 0, 0, 0, 0);
 	}
 	
-	 /**************************************************************************
+	 /**
+	 * Verifica se é um estado brasileiro
+	 * 
+	 * @param UF
+	 * @return
+	 */
+	private boolean isBR(String uf) 
+	{
+		if (uf.equals("AC")) 		return true;
+		else if (uf.equals("AL")) 	return true;
+		else if (uf.equals("AP")) 	return true;
+		else if (uf.equals("AM")) 	return true;
+		else if (uf.equals("BA")) 	return true;
+		else if (uf.equals("CE")) 	return true;
+		else if (uf.equals("DF")) 	return true;
+		else if (uf.equals("ES")) 	return true;
+		else if (uf.equals("GO")) 	return true;
+		else if (uf.equals("MA")) 	return true;
+		else if (uf.equals("MT")) 	return true;
+		else if (uf.equals("MS")) 	return true;
+		else if (uf.equals("MG")) 	return true;
+		else if (uf.equals("PA")) 	return true;
+		else if (uf.equals("PB")) 	return true;
+		else if (uf.equals("PR")) 	return true;
+		else if (uf.equals("PE")) 	return true;
+		else if (uf.equals("PI")) 	return true;
+		else if (uf.equals("RJ")) 	return true;
+		else if (uf.equals("RN")) 	return true;
+		else if (uf.equals("RS")) 	return true;
+		else if (uf.equals("RO")) 	return true;
+		else if (uf.equals("RR")) 	return true;
+		else if (uf.equals("SC")) 	return true;
+		else if (uf.equals("SP")) 	return true;
+		else if (uf.equals("SE")) 	return true;
+		else if (uf.equals("TO")) 	return true;
+		else 						return false;
+	}
+
+	/**************************************************************************
 	 *  getLines
 	 *  @param String MNotaFiscal
 	 *  @return MNotaFiscalLine[] lines
@@ -1314,20 +1426,20 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		if (NF == null)
 		 return null;
-		
+		//
 		String whereClause = "LBR_NotaFiscal_ID = ? "
 			+ "AND lbr_CFOPName NOT LIKE '%1%933%' "			
 			+ "AND lbr_CFOPName NOT LIKE '%2%933%' ";
-		
+		//
 		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name);		
 		Query query =  new Query(table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{NF.getLBR_NotaFiscal_ID()});
-	 	
+	 	//
 	 	query.setOrderBy("Line");
-	
+	 	//
 		List<MNotaFiscalLine> list = query.list();
-		
+		//
 		return list.toArray(new MNotaFiscalLine[list.size()]);	
-	} //getLines
+	}	//	getLines
 	
 }	//	ProcGenerateSINTEGRA
