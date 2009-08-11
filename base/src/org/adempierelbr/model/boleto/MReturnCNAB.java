@@ -118,6 +118,12 @@ public class MReturnCNAB
 				
 				if ((Invoice.getDocStatus()).equals("CO")){
 					if (!Invoice.isPaid()){
+						
+						if (C_Invoice_ID <= 0 && Invoice != null && Invoice.getC_Invoice_ID() > 0)
+						{
+							log.fine("Documento sem registro");
+							C_Invoice_ID = Invoice.getC_Invoice_ID();
+						}
 				
 						MPayment Payment = new MPayment(ctx,0,trx);
 					
