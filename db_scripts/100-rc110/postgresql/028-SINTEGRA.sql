@@ -10,7 +10,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Name,Description,PrintNam
 
 -- 13/04/2009 19h11min52s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET Name='Raz„o Social',PrintName='Raz„o Social',Description='Nome da Raz„o Social da Empresa',Help='Esta Raz„o Social estar· presente em todos os documentos fiscais e cont·beis, como por exemplo o SPED e o SINTEGRA.',Updated=TO_TIMESTAMP('2009-04-13 19:11:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1100005 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET Name='Raz‚Äπo Social',PrintName='Raz‚Äπo Social',Description='Nome da Raz‚Äπo Social da Empresa',Help='Esta Raz‚Äπo Social estar‚Ä° presente em todos os documentos fiscais e cont‚Ä°beis, como por exemplo o SPED e o SINTEGRA.',Updated=TO_TIMESTAMP('2009-04-13 19:11:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1100005 AND AD_Language='pt_BR'
 ;
 
 -- 13/04/2009 19h15min48s BRT
@@ -178,7 +178,7 @@ UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument='N' WHERE lbr_IsOwnDocument IS NULL
 insert into t_alter_column values('lbr_notafiscal','lbr_IsOwnDocument',null,'NOT NULL',null)
 ;
 
---	Alteração para deixar compativel com o passado
+--  Altera??o para deixar compativel com o passado
 UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument = COALESCE((SELECT dt.lbr_IsOwnDocument FROM C_DocType dt, C_Invoice i WHERE i.C_Invoice_ID=LBR_NotaFiscal.C_Invoice_ID AND i.C_DocTypeTarget_ID=dt.C_DocType_ID), (CASE WHEN IsSOTrx='Y' THEN 'Y' ELSE 'N' END))
 ;
 UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument = 'Y' WHERE IsSOTrx='Y'
@@ -188,3 +188,4 @@ UPDATE LBR_NotaFiscal SET lbr_IsOwnDocument = 'Y' WHERE IsSOTrx='Y'
 -- Default comment for updating dictionary
 UPDATE AD_SysConfig SET Value='100-branches/028-SINTEGRA.sql',Updated=TO_TIMESTAMP('2009-05-07 14:29:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
 ;
+

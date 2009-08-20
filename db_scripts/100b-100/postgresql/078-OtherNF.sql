@@ -10,7 +10,7 @@ INSERT INTO AD_Table_Trl (AD_Language,AD_Table_ID, Name, IsTranslated,AD_Client_
 
 -- 24/07/2008 13h37min32s BRT
 -- Default comment for updating dictionary
-INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,2000029,TO_TIMESTAMP('2008-07-24 13:37:32','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table LBR_ProcessLink',1,'Y','N','Y','Y','LBR_ProcessLink','N',1000000,TO_TIMESTAMP('2008-07-24 13:37:32','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,1000076,TO_TIMESTAMP('2008-07-24 13:37:32','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table LBR_ProcessLink',1,'Y','N','Y','Y','LBR_ProcessLink','N',1000000,TO_TIMESTAMP('2008-07-24 13:37:32','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 24/07/2008 13h38min35s BRT
@@ -258,7 +258,7 @@ INSERT INTO AD_Table_Trl (AD_Language,AD_Table_ID, Name, IsTranslated,AD_Client_
 
 -- 24/07/2008 13h54min55s BRT
 -- Default comment for updating dictionary
-INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,2000030,TO_TIMESTAMP('2008-07-24 13:54:55','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table LBR_OtherNFLink',1,'Y','N','Y','Y','LBR_OtherNFLink','N',1000000,TO_TIMESTAMP('2008-07-24 13:54:55','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,1000077,TO_TIMESTAMP('2008-07-24 13:54:55','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table LBR_OtherNFLink',1,'Y','N','Y','Y','LBR_OtherNFLink','N',1000000,TO_TIMESTAMP('2008-07-24 13:54:55','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 24/07/2008 13h56min20s BRT

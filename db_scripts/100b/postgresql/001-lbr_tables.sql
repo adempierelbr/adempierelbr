@@ -122,7 +122,7 @@ CREATE TABLE adempiere.lbr_cfopline (
 	lbr_transactiontype    	varchar(3) NOT NULL,
 	lbr_ismanufactured     	char(1) NOT NULL DEFAULT 'N'::bpchar,
 	lbr_bpartnercategory_id	numeric(10,0) NOT NULL,
-	lbr_tax_id             	varchar(22) NULL 
+	lbr_tax_id	numeric(10,0) NULL 
 	);
 
 CREATE TABLE adempiere.lbr_cnab ( 
@@ -263,7 +263,7 @@ CREATE TABLE adempiere.lbr_icmsmatrix (
 	updatedby        	numeric(10,0) NOT NULL,
 	c_region_id      	numeric(10,0) NOT NULL,
 	to_region_id     	numeric(10,0) NOT NULL,
-	lbr_tax_id       	varchar(22) NULL 
+	lbr_tax_id	numeric(10,0) NULL 
 	);
 
 CREATE TABLE adempiere.lbr_ncm ( 
@@ -277,7 +277,7 @@ CREATE TABLE adempiere.lbr_ncm (
 	updatedby   	numeric(10,0) NOT NULL,
 	value       	varchar(60) NOT NULL,
 	description 	varchar(255) NULL,
-	lbr_tax_id  	varchar(22) NULL 
+	lbr_tax_id	numeric(10,0) NULL 
 	);
 
 CREATE TABLE adempiere.lbr_notafiscal ( 
@@ -430,7 +430,7 @@ CREATE TABLE adempiere.lbr_taxconfig_bpartner (
 	updatedby                	numeric(10,0) NOT NULL,
 	lbr_taxconfiguration_id  	numeric(10,0) NOT NULL,
 	c_bpartner_id            	numeric(10,0) NOT NULL,
-	lbr_tax_id               	varchar(22) NOT NULL 
+	lbr_tax_id	numeric(10,0) NOT NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxconfig_bpgroup ( 
@@ -444,7 +444,7 @@ CREATE TABLE adempiere.lbr_taxconfig_bpgroup (
 	updatedby                  	numeric(10,0) NOT NULL,
 	lbr_taxconfiguration_id    	numeric(10,0) NOT NULL,
 	lbr_fiscalgroup_bpartner_id	numeric(10,0) NOT NULL,
-	lbr_tax_id                 	varchar(22) NOT NULL 
+	lbr_tax_id	numeric(10,0) NOT NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxconfig_product ( 
@@ -457,7 +457,7 @@ CREATE TABLE adempiere.lbr_taxconfig_product (
 	updated                 	timestamp NOT NULL,
 	updatedby               	numeric(10,0) NOT NULL,
 	lbr_taxconfiguration_id 	numeric(10,0) NOT NULL,
-	lbr_tax_id              	varchar(22) NOT NULL 
+	lbr_tax_id	numeric(10,0) NOT NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxconfig_productgroup ( 
@@ -470,7 +470,7 @@ CREATE TABLE adempiere.lbr_taxconfig_productgroup (
 	updated                      	timestamp NOT NULL,
 	updatedby                    	numeric(10,0) NOT NULL,
 	lbr_taxconfiguration_id      	numeric(10,0) NOT NULL,
-	lbr_tax_id                   	varchar(22) NOT NULL 
+	lbr_tax_id	numeric(10,0) NOT NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxconfig_region ( 
@@ -485,7 +485,7 @@ CREATE TABLE adempiere.lbr_taxconfig_region (
 	lbr_taxconfiguration_id	numeric(10,0) NOT NULL,
 	c_region_id            	numeric(10,0) NOT NULL,
 	to_region_id           	numeric(10,0) NOT NULL,
-	lbr_tax_id             	varchar(22) NOT NULL 
+	lbr_tax_id	numeric(10,0) NOT NULL 
 	);
 
 CREATE TABLE adempiere.lbr_taxconfiguration ( 

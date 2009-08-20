@@ -40,6 +40,5 @@ UPDATE AD_PrintFormatItem SET PrintName='Customer NF Number', Name='Customer NF 
 
 -- 28/03/2009 11h30min38s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Nota Fiscal Cliente',PrintName='Nota Fiscal Cliente',Description='Número da Nota Fiscal do Cliente',Help='Campo para preencher o número da nota fiscal do cliente que será copiado para a nota fiscal.',PO_Name='Nota Fiscal Fornecedor',PO_PrintName='Nota Fiscal Fornecedor',PO_Description='Número da Nota Fiscal do Fornecedor',PO_Help='Campo para preencher o número da nota fiscal do fornecedor que será copiado para a nota fiscal.',Updated=TO_TIMESTAMP('2009-03-28 11:30:38','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000364 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Nota Fiscal Cliente',PrintName='Nota Fiscal Cliente',Description='NÅ“mero da Nota Fiscal do Cliente',Help='Campo para preencher o nÅ“mero da nota fiscal do cliente que serâ€¡ copiado para a nota fiscal.',PO_Name='Nota Fiscal Fornecedor',PO_PrintName='Nota Fiscal Fornecedor',PO_Description='NÅ“mero da Nota Fiscal do Fornecedor',PO_Help='Campo para preencher o nÅ“mero da nota fiscal do fornecedor que serâ€¡ copiado para a nota fiscal.',Updated=TO_TIMESTAMP('2009-03-28 11:30:38','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000364 AND AD_Language='pt_BR'
 ;
-

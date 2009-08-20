@@ -9,7 +9,7 @@ ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_ie        	varchar(30) NULL;
 ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_ccm       	varchar(30) NULL;
 ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_suframa   	varchar(30) NULL;
 ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_interest  	numeric NOT NULL DEFAULT (0)::numeric;
-ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_tax_id    	varchar(22) NULL;
+ALTER TABLE adempiere.ad_orginfo ADD COLUMN	lbr_tax_id	numeric(10,0) NULL;
 
 ALTER TABLE adempiere.c_bank ADD COLUMN	lbr_bank_id  	numeric(10,0) NULL;
 
@@ -38,12 +38,12 @@ ALTER TABLE adempiere.c_invoice ADD COLUMN	lbr_isbillprinted     	char(1) NOT NU
 ALTER TABLE adempiere.c_invoice ADD COLUMN	c_bankaccount_id      	numeric(10,0) NULL;
 ALTER TABLE adempiere.c_invoice ADD COLUMN	lbr_transactiontype   	char(3) NULL;
 
-ALTER TABLE adempiere.c_invoiceline ADD COLUMN	lbr_tax_id               	varchar(22) NULL;
+ALTER TABLE adempiere.c_invoiceline ADD COLUMN	lbr_tax_id	numeric(10,0) NULL;
 ALTER TABLE adempiere.c_invoiceline ADD COLUMN	lbr_cfop_id              	numeric(10,0) NULL; 
 
 ALTER TABLE adempiere.c_order ADD COLUMN	lbr_transactiontype   	char(3) NULL;
 
-ALTER TABLE adempiere.c_orderline ADD COLUMN	lbr_tax_id               	varchar(22) NULL;
+ALTER TABLE adempiere.c_orderline ADD COLUMN	lbr_tax_id	numeric(10,0) NULL;
 ALTER TABLE adempiere.c_orderline ADD COLUMN	lbr_cfop_id              	numeric(10,0) NULL;
 
 ALTER TABLE adempiere.c_tax ADD COLUMN	lbr_taxname_id        	numeric(10,0) NULL;
