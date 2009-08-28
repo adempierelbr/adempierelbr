@@ -1,0 +1,58 @@
+<!-- ================================================  -->
+<!-- AdempiereLBR Build                                -->
+<!-- ================================================  -->
+<!-- $Header: /utils_dev/build.xml,v 1.4 2009/05/08 23:29:11 ralexsander Exp $ -->
+<project name="adempierelbr" default="main" basedir="./">
+
+	<target name="main" depends="pre, lib-prjct, bin-prjct, compress" description="Main target">
+		<echo message=" ===============================================" />
+		<echo message=" Process Finished" />
+		<echo message=" ===============================================" />
+    </target>
+	
+	<target name="pre" description="Checking conditions">
+		<echo message=" ===============================================" />
+		<echo message=" COMPILE YOUR PROJECT USING ECLIPSE FIRST" />
+		<echo message=" AdempiereLBR Folder: ${lbr.FOLDER}" />
+		<echo message=" ===============================================" />
+		<echo message=" Created By: Ricardo Santana (www.kenos.com.br)" />
+		<echo message=" ===============================================" />
+		
+		<available file="./bin" property="bin-prjct.present" />
+	    <available file="./lib" property="lib-prjct.present" />
+		
+		<!-- deletes previously created jar -->
+	    <delete file="customization.jar" />
+	    
+		<!-- creates temp build directory -->
+	    <mkdir dir="build_jar" />
+    </target>
+
+	<target name="bin-prjct" if="bin-prjct.present">
+		<!-- copy the CLASSes from your custom project to "build_jar" directory  -->
+	    <copy todir="build_jar" overwrite="true">
+	    	<fileset dir="./bin" includes="**/*.*" excludes="**/MANIFEST.MF" />
+	    </copy>
+	</target>
+	
+	<target name="lib-prjct" if="lib-prjct.present">
+		<!-- extract and copy the JARs from your custom project to "build_jar" directory  -->
+		<unjar dest="build_jar" overwrite="true">
+		    <patternset>
+		        <include name="**/*.*" />
+		    	<exclude name="**/MANIFEST.MF" />
+		    </patternset>
+		    <fileset dir="./lib">
+		        <include name="**/*.jar" />
+		    </fileset>
+		</unjar>
+	</target>
+	
+	<target name="compress">
+	
+	    <!-- creates your jar with the contents inside "build_jar" -->
+	    <jar destfile="customization.jar" basedir="build_jar" duplicate="preserve" />	
+		<delete dir="build_jar" />
+	
+	</target>
+</project>
