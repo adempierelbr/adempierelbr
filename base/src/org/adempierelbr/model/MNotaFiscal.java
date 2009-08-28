@@ -834,5 +834,25 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return list.toArray(new X_LBR_NFTax[list.size()]);	
 	} //getTaxes
 
+	/**
+	 * 	Encontra a NF pelo ID de NF-e
+	 * 
+	 * @param NFeID
+	 * @return
+	 */
+	public static MNotaFiscal getNFe (String NFeID)
+	{
+		String sql =  "SELECT LBR_NotaFiscal_ID " +
+						"FROM LBR_NotaFiscal " +
+					   "WHERE lbr_NFeID=?" +
+					     "AND AD_Client_ID=" + Env.getAD_Client_ID(Env.getCtx());
+		//
+		int LBR_NotaFiscal_ID = DB.getSQLValue(null, sql, NFeID);
+		//
+		if (LBR_NotaFiscal_ID > 0)
+			return new MNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
+		else
+			return null;
+	}	//	get
 	
 } //MNotaFiscal

@@ -101,7 +101,7 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *  getTaxes
 	 *  @return X_LBR_NFLineTax[] taxes
 	 */
-	private X_LBR_NFLineTax[] getTaxes(){
+	public X_LBR_NFLineTax[] getTaxes(){
 		
 		String whereClause = "LBR_NotaFiscalLine_ID = ?";
 		

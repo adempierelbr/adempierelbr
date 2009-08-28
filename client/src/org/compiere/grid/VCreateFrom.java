@@ -65,6 +65,8 @@ public abstract class VCreateFrom extends CDialog
 			retValue = new VCreateFromInvoice (mTab);
 		else if (AD_Table_ID == 319)        //  M_InOut
 			retValue = new VCreateFromShipment (mTab);
+		else if (AD_Table_ID == 1100001)    //  LBR_NFeLot
+			retValue = new VCreateFromNFeLot (mTab);	
 		else if (AD_Table_ID == 426)		//	C_PaySelection
 			return null;	//	ignore - will call process C_PaySelection_CreateFrom
 		/**
@@ -137,12 +139,12 @@ public abstract class VCreateFrom extends CDialog
 	private CPanel parameterPanel = new CPanel();
 	protected CPanel parameterBankPanel = new CPanel();
 	private BorderLayout parameterLayout = new BorderLayout();
-	private JLabel bankAccountLabel = new JLabel();
+	protected JLabel bankAccountLabel = new JLabel();
 	protected CPanel parameterStdPanel = new CPanel();
 	private JLabel bPartnerLabel = new JLabel();
 	protected VLookup bankAccountField;
 	//RF [1811114]
-	private JLabel authorizationLabel = new JLabel();
+	protected JLabel authorizationLabel = new JLabel();
 	protected VString authorizationField = new VString();
 	private GridBagLayout parameterStdLayout = new GridBagLayout();
 	private GridBagLayout parameterBankLayout = new GridBagLayout();
