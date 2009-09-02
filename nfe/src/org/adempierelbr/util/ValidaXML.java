@@ -1,9 +1,12 @@
 package org.adempierelbr.util;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -22,11 +25,13 @@ public class ValidaXML {
 		//Get validation driver
 		SchemaFactory factory = SchemaFactory.newInstance(schemaLang);
 		//Create schema by reading it from an XSD file
-		try {
-//			URL xsdPath = new URL(getClass().getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName).toString());
+		try 
+		{
+			//	Grava o arquivo no tmp
 			URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-			File xsdFile = new File(xsdPath.getPath());
-			Schema schema = factory.newSchema(new StreamSource(xsdFile));
+//			File xsdFile = new File(xsdPath.getPath());
+			//
+			Schema schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
 			Validator validator = schema.newValidator();
 			//Perform the validation:
 			validator.validate(new StreamSource(new StringReader(stringXml)));
@@ -39,6 +44,8 @@ public class ValidaXML {
 						+ ((SAXParseException) e).getColumnNumber()
 						+ " | Lin: " + ((SAXParseException) e).getLineNumber()
 						+ " - " + ((SAXParseException) e).getLocalizedMessage();
+			else
+				return "Unknow error attemping to validate XML.";
 		}
 		return "";
 	}
@@ -77,5 +84,13 @@ public class ValidaXML {
 
 	public static String validaRecebimentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "procNFe_v1.10.xsd");
+	}
+	
+	public static String validaPedCancelamentoNFe(String stringXml) {
+		return ValidaDoc(stringXml, "cancNFe_v1.07.xsd");
+	}
+	
+	public static String validaRetCancelamentoNFe(String stringXml) {
+		return ValidaDoc(stringXml, "retCancNFe_v1.07.xsd");
 	}
 }

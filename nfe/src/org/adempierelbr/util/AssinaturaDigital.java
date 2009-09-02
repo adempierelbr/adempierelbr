@@ -52,9 +52,16 @@ import org.w3c.dom.NodeList;
  */
 public class AssinaturaDigital
 {
-	public static final String algoritmo = "RSA";
-	public static final String algoritmoAssinatura = "MD5withRSA";
+	/**		Document Type 	*/
+	public static final String RECEPCAO_NFE			="1";
+	public static final String CANCELAMENTO_NFE		="2";
+	
+	/**		Algoritmos		*/
+	public static final String ALGORITIMO = "RSA";
+	public static final String ALGORITMO_ASSINATURA = "MD5withRSA";
+	
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+	
 	static XMLSignatureFactory sig;
 	static X509Certificate cert;
 	static KeyInfo ki;
@@ -73,7 +80,7 @@ public class AssinaturaDigital
 	 * @param OrgInfo
 	 * @throws Exception
 	 */
-	public static void Assinar(String caminhoxml, MOrgInfo oi) throws Exception
+	public static void Assinar(String caminhoxml, MOrgInfo oi, String docType) throws Exception
 	{
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MDigitalCertificate dc = new MDigitalCertificate(Env.getCtx(), cert, null);
@@ -95,7 +102,7 @@ public class AssinaturaDigital
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
 		//
 		AssinaturaDigital.loadKeys();
-		AssinaturaDigital.assinarDocumento(caminhoxml);
+		AssinaturaDigital.assinarDocumento(caminhoxml, docType);
 	}	//	Assinar
 
 	public static PrivateKey getChavePrivada() throws Exception
@@ -125,7 +132,7 @@ public class AssinaturaDigital
 	public static boolean verificarAssinatura(PublicKey chave, byte[] buffer,
 			byte[] assinado) throws Exception
 	{
-		Signature assinatura = Signature.getInstance(algoritmoAssinatura);
+		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
 		assinatura.initVerify(chave);
 		assinatura.update(buffer, 0, buffer.length);
 		return assinatura.verify(assinado);
@@ -134,7 +141,7 @@ public class AssinaturaDigital
 	public static byte[] criarAssinatura(PrivateKey chavePrivada, byte[] buffer)
 			throws Exception
 	{
-		Signature assinatura = Signature.getInstance(algoritmoAssinatura);
+		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
 		assinatura.initSign(chavePrivada);
 		assinatura.update(buffer, 0, buffer.length);
 		return assinatura.sign();
@@ -156,8 +163,8 @@ public class AssinaturaDigital
 			return "Certificado invalido!";
 		}
 	}	//	getValidade
-
-	public static void assinarDocumento(String localDocumento) throws Exception
+	
+	public static void assinarDocumento(String localDocumento, String docType) throws Exception
 	{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
@@ -174,10 +181,18 @@ public class AssinaturaDigital
 				(TransformParameterSpec) null);
 		transformList.add(enveloped);
 		transformList.add(c14n);
+		
+		String tag = null;
 
-		NodeList elements = doc.getElementsByTagName("infNFe");
+		if (docType.equals(RECEPCAO_NFE))
+			tag = "infNFe";
+		else if (docType.equals(CANCELAMENTO_NFE))
+			tag = "infCanc";
+		
+		NodeList elements = doc.getElementsByTagName(tag);
 		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
 		String id = el.getAttribute("Id");
+		//
 		Reference r = sig.newReference("#".concat(id), sig.newDigestMethod(
 				DigestMethod.SHA1, null), transformList, null, null);
 		si = sig.newSignedInfo(sig.newCanonicalizationMethod(

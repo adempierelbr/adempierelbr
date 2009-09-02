@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.MessageFormat;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -18,6 +21,10 @@ import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.util.CLogger;
 import org.compiere.utils.DigestOfFile;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -27,7 +34,7 @@ import org.compiere.utils.DigestOfFile;
 public class NFeUtil
 {
 	/**			Peso			**/
-	private static final String peso = "4329876543298765432987654329876543298765432";
+	private static final String PESO = "4329876543298765432987654329876543298765432";
 	
 	/**	Logger				*/
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
@@ -49,7 +56,7 @@ public class NFeUtil
 			for (int i = 0; i < chave.length(); i++)
 			{
 				x = Integer.parseInt(chave.substring(i, i + 1))
-						* Integer.parseInt(peso.substring(i, i + 1));
+						* Integer.parseInt(PESO.substring(i, i + 1));
 				soma += x;
 			}
 			
@@ -73,14 +80,14 @@ public class NFeUtil
 	 * 
 	 * 	@return cabeçalho de envio
 	 */
-	public static String geraCabecEnviNFe(){
+	public static String geraCabecEnviNFe(String version){
 		
 		String cabecalho = "";
 		cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
 					"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
 					  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 					  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
-					"<versaoDados>1.10</versaoDados>\n" +
+					"<versaoDados>"+version+"</versaoDados>\n" +
 					"</cabecMsg>";
 		return cabecalho;
 	}	//	geraCabecEnviNFe
@@ -90,13 +97,13 @@ public class NFeUtil
 	 * 
 	 * @return	Cabeçalho de consulta
 	 */
-	public static String geraCabecConsultaNFe ()
+	public static String geraCabecConsultaNFe (String version)
 	{
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
 						"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
 						  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 						  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
-						"<versaoDados>1.07</versaoDados>\n" +
+						"<versaoDados>"+version+"</versaoDados>\n" +
 						"</cabecMsg>";
 		return cabecalho;
 	}	//	geraCabecConsultaNFe
@@ -107,7 +114,7 @@ public class NFeUtil
 	 * @param recibo
 	 * @return	XML
 	 */
-	public static String consultaLote (String recibo)
+	public static String consultaLote (String recibo, String envType)
 	{
 		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
 							"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
@@ -120,6 +127,31 @@ public class NFeUtil
 	}	//	consultaLote
 	
 	/**
+	 * 	Gera o XML para cancelamento da NF-e
+	 * 
+	 * @param Chave da NF-e
+	 * @param Protocolo de Autorização
+	 * @param Tipo de Ambiente
+	 * @return	XML
+	 */
+	public static String geraCancelamentoNF (String chNFe, String protocolNFe, String envType)
+	{
+		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+						  "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+								  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+								  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cancNFe_v1.07.xsd\" versao=\"1.07\">" +
+							  "<infCanc Id=\"ID"+chNFe+"\">"+
+						          "<tpAmb>"+envType+"</tpAmb>"+
+						          "<xServ>CANCELAR</xServ>"+
+						          "<chNFe>"+chNFe+"</chNFe>"+
+						          "<nProt>"+protocolNFe+"</nProt>"+
+						          "<xJust>Teste do WS de Cancelamento</xJust>"+
+					          "</infCanc>"+ 
+						  "</cancNFe>";
+		return dados;
+	}	//	consultaLote
+	
+	/**
 	 * 	Gera o arquivo de Lote
 	 * 
 	 * @param xmlGerado
@@ -127,7 +159,7 @@ public class NFeUtil
 	 * @return
 	 * @throws Exception
 	 */
-	public static String gerarLote (MNFeLot lot) throws Exception
+	public static String geraLote (MNFeLot lot, String envType) throws Exception
 	{
 		log.fine("ini");
 		String[] xmlGerado = lot.getXMLs();
@@ -170,7 +202,7 @@ public class NFeUtil
 		}
 		//
 		MAttachment attachLotNFe = lot.createAttachment();
-		File attachFile = new File(gravaArquivo("Lote-"+lote+"-NFe.xml", contatosEmXML));
+		File attachFile = new File(gravaArquivo(lote+"-env-lot.xml", contatosEmXML));
 		attachLotNFe.addEntry(attachFile);
 		attachLotNFe.save();
 		//
@@ -233,4 +265,99 @@ public class NFeUtil
 		//
 		return caminho + nomeArquivo;
 	 }
+	
+	/**
+	 * 	Get Value from XML
+	 * 
+	 * @param node
+	 * @param Tag
+	 * @return
+	 */
+	public static String getValue (Node node, String Tag)
+	{
+		if (node == null)
+			return "";
+		
+		NodeList nl = ((Element) node).getElementsByTagName(Tag);
+		if (nl == null)
+			return "";
+		
+		Element el = (Element) nl.item(0);
+		if (el == null)
+			return "";
+		
+		nl = el.getChildNodes();
+		if (nl == null)
+			return "";
+		
+		return nl.item(0).getNodeValue();
+	}	//	getValue
+	
+	/**
+	 * 	Get Value from XML
+	 * 
+	 * @param node
+	 * @param Tag
+	 * @return
+	 */
+	public static String getValue (Document doc, String Tag)
+	{
+		if (doc.getElementsByTagName(Tag) == null)
+			return "";
+		
+		if (doc.getElementsByTagName(Tag).item(0) == null)
+			return "";
+		
+		return doc.getElementsByTagName(Tag).item(0).getTextContent();
+	}	//	getValue
+	
+	/**
+	 * 	Get Resource to include in XSD File
+	 * 
+	 * @param clazz
+	 * @param name
+	 * @return
+	 */
+	public static URL getResource(Class clazz, String name)
+	{
+        // Get the URL for the resource using the standard behavior
+        URL result = clazz.getResource(name);
+ 
+        // Check to see that the URL is not null and that it's a JAR URL.
+        if (result != null && "jar".equalsIgnoreCase(result.getProtocol())) {
+            // Get the URL to the "clazz" itself.  In a JNLP environment, the "getProtectionDomain" call should succeed only with properly signed JARs.
+            URL classSourceLocationURL = clazz.getProtectionDomain().getCodeSource().getLocation();
+            // Create a String which embeds the classSourceLocationURL in a JAR URL referencing the desired resource.
+            String urlString = MessageFormat.format("jar:{0}!/{1}/{2}", classSourceLocationURL.toExternalForm(), packageNameOfClass(clazz).replaceAll("\\.", "/"), name);
+ 
+            // Check to see that new URL differs.  There's no reason to instantiate a new URL if the external forms are identical (as happens on pre-1.5.0_16 builds of the JDK).
+            if (urlString.equals(result.toExternalForm()) == false) {
+                // The URLs are different, try instantiating the new URL.
+                try {
+                    result = new URL(urlString);
+                } catch (MalformedURLException malformedURLException) {
+                    throw new RuntimeException(malformedURLException);
+                }
+            }
+        }
+        return result;
+    }
+	
+	/**
+	 * 	packageNameOfClass
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+    public static String packageNameOfClass(Class clazz) 
+    {
+        String result = "";
+        String className = clazz.getName();
+        int lastPeriod = className.lastIndexOf(".");
+ 
+        if (lastPeriod > -1) {
+            result = className.substring(0, lastPeriod);
+        }
+        return result;
+    }	//	packageNameOfClass
 }	//	NFeUtil

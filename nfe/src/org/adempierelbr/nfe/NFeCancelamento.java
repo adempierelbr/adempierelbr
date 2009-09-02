@@ -1,17 +1,22 @@
 package org.adempierelbr.nfe;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.StringReader;
 import java.security.Security;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.adempierelbr.model.MDigitalCertificate;
 import org.adempierelbr.model.MNFeLot;
+import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.ValidaXML;
 import org.compiere.model.MAttachment;
@@ -21,6 +26,9 @@ import org.compiere.util.Env;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamento;
+import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamentoLocator;
+import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamentoSoap;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcao;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcaoLocator;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcaoSoap;
@@ -30,10 +38,10 @@ import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcaoSoap;
  * 
  * @author Ricardo Santana (Kenos, www.kenos.com.br)
  */
-public class NFeRecepcao
+public class NFeCancelamento
 {
 	/**	Logger						*/
-	private static CLogger log = CLogger.getCLogger(NFeRecepcao.class);
+	private static CLogger log = CLogger.getCLogger(NFeCancelamento.class);
 	
 	/**	Certificado do Cliente		*/
 	private static String certTypeOrg 	= "";
@@ -49,23 +57,46 @@ public class NFeRecepcao
 	 * @return
 	 * @throws Exception
 	 */
-	public static String sendNFe(MNFeLot lot) throws Exception
+	public static String cancelNFe(MNotaFiscal nf) throws Exception
 	{
 		log.fine("ini");
-		MOrgInfo oi = lot.getOrgInfo();
+		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), nf.getAD_Org_ID());
+		String chNFe 	= nf.get_ValueAsString("lbr_NFeID");
+		String pclNFe 	= nf.get_ValueAsString("lbr_NFeProt");
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
 		//
-		String nfeLotDadosMsg 	= NFeUtil.geraLote(lot, envType);
-		String nfeLotCabecMsg 	= NFeUtil.geraCabecEnviNFe("1.10");
+		String nfeCancelDadosMsg 	= NFeUtil.geraCancelamentoNF(chNFe, pclNFe, envType);
+		String nfeCancelCabecMsg 	= NFeUtil.geraCabecEnviNFe("1.07");		//	Versão do arquivo XSD
 		//
-		if (!ValidaXML.validaCabecalho(nfeLotCabecMsg).equals(""))
+		File attachFile = new File(NFeUtil.gravaArquivo(nf.getDocumentNo()+"-ped-can.xml", nfeCancelDadosMsg));
+		AssinaturaDigital.Assinar(attachFile.toString(), oi, AssinaturaDigital.CANCELAMENTO_NFE);
+		nfeCancelDadosMsg = "";
+		FileInputStream stream = new FileInputStream(attachFile);
+		DataInputStream in = new DataInputStream(stream);
+		while (in.available() != 0)
 		{
-			log.severe("Validation LOT Header Error");
-        	throw new Exception("Validation LOT Header Error");
+			nfeCancelDadosMsg += in.readLine();
 		}
+		//
+		String validation = ValidaXML.validaCabecalho(nfeCancelCabecMsg);
+		if (!validation.equals(""))
+		{
+			log.severe("Validation Cancel Header Error: " + validation);
+        	throw new Exception("Validation Cancel Header Error" + validation);
+		}
+		validation = ValidaXML.validaPedCancelamentoNFe(nfeCancelDadosMsg);
+		if (!validation.equals(""))
+		{
+			log.severe("Validation Cancel Data Error: " + validation);
+        	throw new Exception("Validation Cancel Data Error: " + validation);
+		}
+		//
+		MAttachment attachLotNFe = nf.createAttachment();
+		attachLotNFe.addEntry(attachFile);
+		attachLotNFe.save();
 		//
 		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
@@ -102,45 +133,51 @@ public class NFeRecepcao
 		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
 		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		//
-		NfeRecepcao recep = new NfeRecepcaoLocator(envType);
+		NfeCancelamento recep = new NfeCancelamentoLocator(envType);
 		try 
 		{
 			//	Envio
-			NfeRecepcaoSoap nfeRecepcao = recep.getNfeRecepcaoSoap();
-			String nfeResposta = nfeRecepcao.nfeRecepcaoLote(nfeLotCabecMsg, nfeLotDadosMsg);
+			NfeCancelamentoSoap nfeCancelamento = recep.getNfeCancelamentoSoap();
+			String nfeRespostaCanc = nfeCancelamento.nfeCancelamentoNF(nfeCancelCabecMsg, nfeCancelDadosMsg);
 			
 			//	Resposta do Envio
-			String retorno = ValidaXML.validaRetXML(nfeResposta);
-			if (!retorno.equals(""))
-				return retorno;
+			validation = ValidaXML.validaRetCancelamentoNFe(nfeRespostaCanc);
+			if (!validation.equals(""))
+				return validation;
 			//
-			MAttachment attachLotNFe = lot.createAttachment();
-			File attachFile = new File(NFeUtil.gravaArquivo(lot.getDocumentNo()+"-rec.xml", nfeResposta));
+			attachLotNFe = nf.createAttachment();
+			attachFile = new File(NFeUtil.gravaArquivo(nf.getDocumentNo()+"-can.xml", nfeRespostaCanc));
 			attachLotNFe.addEntry(attachFile);
 			attachLotNFe.save();
 			//
 	        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	        Document doc = builder.parse(new InputSource(new StringReader(nfeResposta)));
+	        Document doc = builder.parse(new InputSource(new StringReader(nfeRespostaCanc)));
 	        //
-	        String cStat = doc.getElementsByTagName("cStat").item(0).getTextContent();   
-	        String xMotivo = doc.getElementsByTagName("xMotivo").item(0).getTextContent();   
-	        String nRec = doc.getElementsByTagName("nRec").item(0).getTextContent();   
-	        String dhRecbto = doc.getElementsByTagName("dhRecbto").item(0).getTextContent();
+	        String cStat = 		NFeUtil.getValue (doc, "cStat");   
+	        String xMotivo = 	NFeUtil.getValue (doc, "xMotivo");   
+	        String nProt = 		NFeUtil.getValue (doc, "nProt");   
+	        String dhRecbto = 	NFeUtil.getValue (doc, "dhRecbto");
 	        //
-	        String lotDesc = "["+dhRecbto.replace('T', ' ')+"] " + xMotivo + "\n";
-	        lot.setlbr_NFeStatus(cStat);
-	        if (lot.getDescription() == null)
-	        	lot.setDescription(lotDesc);
+	        String nfeDesc = "["+dhRecbto.replace('T', ' ')+"] " + xMotivo + "\n";
+	        nf.set_CustomColumn("lbr_NFeStatus", cStat);
+	        if (nf.get_Value("lbr_NFeDesc") == null)
+	        	nf.set_CustomColumn("lbr_NFeDesc", nfeDesc);
 	        else
-	        	lot.setDescription(lot.getDescription() + lotDesc);
-	        lot.setlbr_NFeRecID(nRec);
+	        	nf.set_CustomColumn("lbr_NFeDesc", nf.get_Value("lbr_NFeDesc") + nfeDesc);
 	        //
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	        Date parsedDate = dateFormat.parse(dhRecbto.replace('T', ' '));
-	        Timestamp timestamp = new Timestamp(parsedDate.getTime());
-	        lot.setDateTrx(timestamp);
-	        lot.setlbr_LotSent(true);
-	        lot.save();
+	        if (cStat.equals("101"))	//	Cancelameno Autorizado
+	        {
+		        nf.set_CustomColumn("lbr_NFeProt", nProt);
+		        //
+		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		        Date parsedDate = dateFormat.parse(dhRecbto.replace('T', ' '));
+		        Timestamp timestamp = new Timestamp(parsedDate.getTime());
+		        nf.set_CustomColumn("DateTrx", timestamp);
+		        nf.setIsCancelled(true);
+		        if (!nf.isProcessed())
+		        	nf.setProcessed(true);
+	        }
+	        nf.save();
 		} 
 		catch (Throwable e1)
 		{

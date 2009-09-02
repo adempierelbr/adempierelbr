@@ -6,6 +6,7 @@ import java.security.Security;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,15 +22,13 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.zkoss.util.logging.Log;
 
-import br.sp.h.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcao;
-import br.sp.h.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcaoLocator;
-import br.sp.h.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcaoSoap;
+import br.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcao;
+import br.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcaoLocator;
+import br.inf.portalfiscal.www.nfe.wsdl.NfeRetRecepcao.NfeRetRecepcaoSoap;
 
 /**
  * 	Transmissão dos Lotes de NF-e
@@ -61,13 +60,18 @@ public class NFeRetRecepcao
 		//
 		if (!lot.islbr_LotSent())
 		{
-			log.log(Log.ERROR, "LOT not sent yet");
+			log.log(Level.SEVERE, "LOT not sent yet");
 			throw new Exception("LOT not sent yet");
 		}
 		//
 		MOrgInfo oi = lot.getOrgInfo();
-		String nfeLotDadosMsg 	= NFeUtil.consultaLote(lot.getlbr_NFeRecID());
-		String nfeLotCabecMsg 	= NFeUtil.geraCabecEnviNFe();
+		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		//
+		if (envType == null || envType.equals(""))
+			return "Ambiente da NF-e deve ser preenchido.";
+		//
+		String nfeLotDadosMsg 	= NFeUtil.consultaLote(lot.getlbr_NFeRecID(), envType);
+		String nfeLotCabecMsg 	= NFeUtil.geraCabecEnviNFe("1.10");		//	Versão do arquivo XSD
 		//
 		if (!ValidaXML.validaCabecalho(nfeLotCabecMsg).equals(""))
 		{
@@ -82,7 +86,7 @@ public class NFeRetRecepcao
 		}
 		//	Anexa o arquivo
 		MAttachment attachLotNFe = lot.createAttachment();
-		File attachFile = new File(NFeUtil.gravaArquivo("Consulta-"+lot.getDocumentNo()+"-NFe.xml", nfeLotDadosMsg));
+		File attachFile = new File(NFeUtil.gravaArquivo(lot.getlbr_NFeRecID()+"-ped-rec.xml", nfeLotDadosMsg));
 		attachLotNFe.addEntry(attachFile);
 		attachLotNFe.save();
 		//
@@ -121,7 +125,7 @@ public class NFeRetRecepcao
 		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
 		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		//
-		NfeRetRecepcao retRecep = new NfeRetRecepcaoLocator();
+		NfeRetRecepcao retRecep = new NfeRetRecepcaoLocator(envType);
 		try 
 		{
 			//	Envio
@@ -133,7 +137,7 @@ public class NFeRetRecepcao
 				;	// TODO: Error
 			//
 			attachLotNFe = lot.createAttachment();
-			attachFile = new File(NFeUtil.gravaArquivo("RespConsulta-"+lot.getDocumentNo()+"-NFe.xml", nfeRetResposta));
+			attachFile = new File(NFeUtil.gravaArquivo(lot.getlbr_NFeRecID()+"-pro-rec.xml", nfeRetResposta));
 			attachLotNFe.addEntry(attachFile);
 			attachLotNFe.save();
 			//
@@ -156,17 +160,17 @@ public class NFeRetRecepcao
 	        		Node node = infProt.item(i);
 	        		if (node.getNodeType() == Node.ELEMENT_NODE)
 	        		{
-	        			String chNFe	= getValue (node, "chNFe");
-	        			String xMotivo 	= getValue (node, "xMotivo");
-	        			String digVal 	= getValue (node, "digVal");
-	        			String dhRecbto = getValue (node, "dhRecbto");
-	        			String cStat 	= getValue (node, "cStat");
-	        			String nProt 	= getValue (node, "nProt");
+	        			String chNFe	= NFeUtil.getValue (node, "chNFe");
+	        			String xMotivo 	= NFeUtil.getValue (node, "xMotivo");
+	        			String digVal 	= NFeUtil.getValue (node, "digVal");
+	        			String dhRecbto = NFeUtil.getValue (node, "dhRecbto");
+	        			String cStat 	= NFeUtil.getValue (node, "cStat");
+	        			String nProt 	= NFeUtil.getValue (node, "nProt");
 	        			//
 	        			MNotaFiscal nf = MNotaFiscal.getNFe (chNFe);
 	        			if (nf == null)
 	        			{
-	        				log.log(Log.ERROR, "NF not found");
+	        				log.log(Level.SEVERE, "NF not found");
 	        				throw new Exception("NF not found");
 	        			}
 	        			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -188,7 +192,7 @@ public class NFeRetRecepcao
 	        }	//	if
 	        //
 	        Timestamp now = new Timestamp(new Date().getTime());
-	        String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd hh:mm:ss")+"] "+xMotivoL+"\n";
+	        String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] "+xMotivoL+"\n";
 	        lot.setlbr_NFeAnswerStatus(cStatL);
 	        if (lot.getDescription() == null)
 	        	lot.setDescription(nfeDesc);
@@ -208,31 +212,4 @@ public class NFeRetRecepcao
 		//
 		return "Processo completado.";
 	}	//	consultaNFe
-	
-	/**
-	 * 	Get Value from XML
-	 * 
-	 * @param node
-	 * @param Tag
-	 * @return
-	 */
-	private static String getValue (Node node, String Tag)
-	{
-		if (node == null)
-			return "";
-		
-		NodeList nl = ((Element) node).getElementsByTagName(Tag);
-		if (nl == null)
-			return "";
-		
-		Element el = (Element) nl.item(0);
-		if (el == null)
-			return "";
-		
-		nl = el.getChildNodes();
-		if (nl == null)
-			return "";
-		
-		return nl.item(0).getNodeValue();
-	}	//	getValue
 }	//	NFeRetRecepcao
