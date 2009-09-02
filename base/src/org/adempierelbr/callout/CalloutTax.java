@@ -28,7 +28,6 @@ import org.adempierelbr.util.TaxesException;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
-import org.compiere.model.I_C_Order;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCharge;

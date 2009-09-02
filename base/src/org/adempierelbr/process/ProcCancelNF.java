@@ -15,6 +15,7 @@ package org.adempierelbr.process;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.nfe.NFeCancelamento;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
@@ -46,6 +47,7 @@ public class ProcCancelNF extends SvrProcess
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
+		p_LBR_NotaFiscal_ID = getRecord_ID();
 	}	//	prepare
 
 	/**
@@ -57,9 +59,17 @@ public class ProcCancelNF extends SvrProcess
 	{	
 		log.info("ProcCancelNF Process " + "Nota: " + p_LBR_NotaFiscal_ID);
 		
-		p_LBR_NotaFiscal_ID = getRecord_ID();
-		if (p_LBR_NotaFiscal_ID != 0){
+		if (p_LBR_NotaFiscal_ID != 0)
+		{
 			MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+			//
+			if (nf.get_Value("lbr_NFeID") != null)
+			{
+				if (nf.isCancelled())
+					return "NF Já está cancelada.";
+				//
+				return NFeCancelamento.cancelNFe(nf);
+			}
 			if (nf.voidIt())
 				nf.save(get_TrxName());
 			else{
