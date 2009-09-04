@@ -792,7 +792,7 @@ public class GenerateModel
 		//	third parameter
 		// Kenos
 		//String entityType = "'U','A'";	//	User, Application
-		String entityType = "'LBR'";	//	AdempiereLBR
+		String entityType = "'LB R'";	//	AdempiereLBR
     if (args.length > 2)
 			entityType = args[2]; 
 		if (entityType == null || entityType.length() == 0)
@@ -808,8 +808,8 @@ public class GenerateModel
 		//	complete sql
 		sql.insert(0, "SELECT AD_Table_ID "
 			+ "FROM AD_Table "
-			+ "WHERE (TableName IN ('C_BPartner', 'C_Order','LBR_NotaFiscal', 'M_InOut')"	//	special views
-			+ " OR 'y'='N')"
+			+ "WHERE (TableName IN ('LBR_NFDI'))"	//	special views
+			//+ " OR 'y'='N')"
 			+ " AND TableName NOT LIKE '%_Trl' AND ");
 		sql.append(" ORDER BY TableName");
 		

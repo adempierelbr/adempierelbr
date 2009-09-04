@@ -1,8 +1,11 @@
 package org.adempierelbr.nfe.beans;
 
-public class AdicoesDIBean {
+import org.adempierelbr.util.TextUtil;
+
+public class AdicoesDI {
 
 	private String nAdicao;
+	private String nDI;
 	private String nSeqAdic;
 	private String cFabricante;
 	private String vDescDI;
@@ -15,6 +18,12 @@ public class AdicoesDIBean {
 	public String getNSeqAdic() {
 		return nSeqAdic;
 	}
+	public void setNDI(String nDI) {
+		this.nDI = nDI;
+	}
+	public String getNDI() {
+		return nDI;
+	}
 	public void setNSeqAdic(String seqAdic) {
 		nSeqAdic = seqAdic;
 	}
@@ -22,7 +31,7 @@ public class AdicoesDIBean {
 		return cFabricante;
 	}
 	public void setCFabricante(String fabricante) {
-		cFabricante = fabricante;
+		cFabricante = TextUtil.retiraAcentos(fabricante);
 	}
 	public String getVDescDI() {
 		return vDescDI;

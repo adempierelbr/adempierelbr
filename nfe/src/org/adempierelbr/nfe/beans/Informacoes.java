@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class InformacoesBean {
+public class Informacoes {
 
 	// Informa��es Adicionais
 	

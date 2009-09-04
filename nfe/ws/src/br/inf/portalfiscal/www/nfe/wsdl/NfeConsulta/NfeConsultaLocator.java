@@ -18,14 +18,10 @@ public class NfeConsultaLocator extends org.apache.axis.client.Service implement
     public NfeConsultaLocator() {
     }
 
-	public NfeConsultaLocator(String amb) {
-    	ambiente = amb;
-    }
-
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
+    private static String ambiente 		= "2";
     
     public NfeConsultaLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
@@ -42,6 +38,12 @@ public class NfeConsultaLocator extends org.apache.axis.client.Service implement
 
     public java.lang.String getNfeConsultaSoapAddress() {
         return NfeConsultaSoap_address;
+    }
+    
+    public void setNfeConsultaSoapAddress() {
+    	NfeConsultaSoap_address = ambiente.equals(PRODUCAO) 	?
+	    	"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeConsulta.asmx"			:
+	    	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeConsulta.asmx";
     }
 
     // The WSDD service name defaults to the port name.
@@ -89,6 +91,12 @@ public class NfeConsultaLocator extends org.apache.axis.client.Service implement
 
     public java.lang.String getNfeConsultaSoap12Address() {
         return NfeConsultaSoap12_address;
+    }
+    
+    public void setNfeConsultaSoap12Address() {
+    	NfeConsultaSoap12_address = ambiente.equals(PRODUCAO) 	?
+            	"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeConsulta.asmx"			:
+                "https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeConsulta.asmx";
     }
 
     // The WSDD service name defaults to the port name.

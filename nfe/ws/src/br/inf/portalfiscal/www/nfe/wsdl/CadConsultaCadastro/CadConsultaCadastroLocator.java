@@ -16,15 +16,11 @@ public class CadConsultaCadastroLocator extends org.apache.axis.client.Service i
 
 	public CadConsultaCadastroLocator() {
     }
-	
-	public CadConsultaCadastroLocator(String amb) {
-		ambiente = amb;
-    }
 
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
+    private static String ambiente 		= "2";
     
     public CadConsultaCadastroLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
@@ -41,6 +37,12 @@ public class CadConsultaCadastroLocator extends org.apache.axis.client.Service i
 
     public java.lang.String getCadConsultaCadastroSoap12Address() {
         return CadConsultaCadastroSoap12_address;
+    }
+    
+    public void setCadConsultaCadastroSoap12Address() {
+    	CadConsultaCadastroSoap12_address = ambiente.equals(PRODUCAO) 			?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro.asmx"				:
+    		"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.
@@ -88,6 +90,12 @@ public class CadConsultaCadastroLocator extends org.apache.axis.client.Service i
 
     public java.lang.String getCadConsultaCadastroSoapAddress() {
         return CadConsultaCadastroSoap_address;
+    }
+    
+    public void setCadConsultaCadastroSoapAddress() {
+    	CadConsultaCadastroSoap_address = ambiente.equals(PRODUCAO) 			?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro.asmx"				:
+        	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.

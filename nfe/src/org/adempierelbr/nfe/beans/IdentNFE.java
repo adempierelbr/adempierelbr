@@ -2,7 +2,9 @@ package org.adempierelbr.nfe.beans;
 
 import java.util.Date;
 
-public class IdentNFEBean {
+import org.adempierelbr.util.TextUtil;
+
+public class IdentNFE {
 
 	// Identifica��o da Nota Fiscal Eletronica
 	
@@ -44,7 +46,7 @@ public class IdentNFEBean {
 		return natOp;
 	}
 	public void setNatOp(String natOp) {
-		this.natOp = natOp;
+		this.natOp = TextUtil.retiraAcentos(natOp);
 	}
 	public String getIndPag() {
 		return indPag;

@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class IdentFiscoBean {
+public class IdentFisco {
 
 	// Identifica��o do Fisco Emitente da NFE
 	

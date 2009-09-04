@@ -12,19 +12,15 @@ public class NfeRecepcaoLocator extends org.apache.axis.client.Service implement
 /**
  * Serviço destinado à recepção de mensagens de lote de NF-e
  */
-
+    
     public NfeRecepcaoLocator() {
-    }
-
-	public NfeRecepcaoLocator(String amb) {
-    	ambiente = amb;
     }
 
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
-
+    public static String ambiente 		= "2";
+    
     public NfeRecepcaoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
     }
@@ -40,6 +36,12 @@ public class NfeRecepcaoLocator extends org.apache.axis.client.Service implement
 
     public java.lang.String getNfeRecepcaoSoapAddress() {
         return NfeRecepcaoSoap_address;
+    }
+    
+    public void setNfeRecepcaoSoapAddress() {
+    	NfeRecepcaoSoap_address = ambiente.equals(PRODUCAO) 		?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeRecepcao.asmx" 			:
+    		"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeRecepcao.asmx";
     }
 
     // The WSDD service name defaults to the port name.
@@ -87,6 +89,12 @@ public class NfeRecepcaoLocator extends org.apache.axis.client.Service implement
 
     public java.lang.String getNfeRecepcaoSoap12Address() {
         return NfeRecepcaoSoap12_address;
+    }
+    
+    public void setNfeRecepcaoSoap12Address() {
+    	 NfeRecepcaoSoap12_address = ambiente.equals(PRODUCAO) 		?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeRecepcao.asmx" 			:
+        	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeRecepcao.asmx";
     }
 
     // The WSDD service name defaults to the port name.

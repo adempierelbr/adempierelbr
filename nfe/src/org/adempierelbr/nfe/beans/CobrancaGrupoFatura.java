@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class CobrancaGrupoFaturaBean {
+public class CobrancaGrupoFatura {
 
 	private String nFat;
 	private String vOrig;

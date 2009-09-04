@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class ValoresICMSBean {
+public class ValoresICMS {
 	
 	private String ICMSTot;
 	private String vBC;

@@ -349,10 +349,10 @@ public class TextUtil
 		if (acentos == null)
 			return "";
 		
-		acentos = acentos.replaceAll("[àâáäã]","a");
+		acentos = acentos.replaceAll("[àâáäãª]","a");
         acentos = acentos.replaceAll("[èéêë]","e");
         acentos = acentos.replaceAll("[ìîíïĩ]","i");
-        acentos = acentos.replaceAll("[òôóöõ]","o");
+        acentos = acentos.replaceAll("[òôóöõº]","o");
         acentos = acentos.replaceAll("[ùûúüũ]","u");
         acentos = acentos.replaceAll("ç", "c");
         acentos = acentos.replaceAll("ñ", "n");
@@ -364,6 +364,8 @@ public class TextUtil
         acentos = acentos.replaceAll("[ÙÛÚÜŨ]","U");
         acentos = acentos.replaceAll("Ç", "C");
         acentos = acentos.replaceAll("Ñ", "N");
+        
+        acentos = acentos.replaceAll("[`~\"<>;&]"," ");
         
         return acentos;
 		

@@ -3,23 +3,23 @@ package org.adempierelbr.nfe.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DadosNFEBean {
+public class DadosNFE {
 
 	// Dados da Nota Fiscal Eletronica
 	private String versao;
 	private String Id;
 	private String pk_nitem;	
-	private IdentNFEBean ide;
-	private IdentEmitBean emit;
-	private IdentFiscoBean avulsa;
-	private IdentDestBean dest;
-	private IdentLocRetiradaBean retirada;
+	private IdentNFE ide;
+	private IdentEmit emit;
+	private IdentFisco avulsa;
+	private IdentDest dest;
+	private IdentLocRetirada retirada;
 	private IdentLocalEntrega entrega;
 	private List det = new ArrayList();
-	private ValoresBean total;
-	private TransporteBean transp;
-	private CobrancaBean cobr;
-	private InfAssinaturaBean Signature;
+	private Valores total;
+	private Transporte transp;
+	private Cobranca cobr;
+	private InfAssinatura Signature;
 	
 
 	
@@ -36,34 +36,34 @@ public class DadosNFEBean {
 	public void setPk_nitem(String pk_nitem) {
 		this.pk_nitem = pk_nitem;
 	}
-	public IdentNFEBean getIde() {
+	public IdentNFE getIde() {
 		return ide;
 	}
-	public void setIde(IdentNFEBean ide) {
+	public void setIde(IdentNFE ide) {
 		this.ide = ide;
 	}
-	public IdentEmitBean getEmit() {
+	public IdentEmit getEmit() {
 		return emit;
 	}
-	public void setEmit(IdentEmitBean emit) {
+	public void setEmit(IdentEmit emit) {
 		this.emit = emit;
 	}
-	public IdentFiscoBean getAvulsa() {
+	public IdentFisco getAvulsa() {
 		return avulsa;
 	}
-	public void setAvulsa(IdentFiscoBean avulsa) {
+	public void setAvulsa(IdentFisco avulsa) {
 		this.avulsa = avulsa;
 	}
-	public IdentDestBean getDest() {
+	public IdentDest getDest() {
 		return dest;
 	}
-	public void setDest(IdentDestBean dest) {
+	public void setDest(IdentDest dest) {
 		this.dest = dest;
 	}
-	public IdentLocRetiradaBean getRetirada() {
+	public IdentLocRetirada getRetirada() {
 		return retirada;
 	}
-	public void setRetirada(IdentLocRetiradaBean retirada) {
+	public void setRetirada(IdentLocRetirada retirada) {
 		this.retirada = retirada;
 	}
 	public IdentLocalEntrega getEntrega() {
@@ -72,28 +72,28 @@ public class DadosNFEBean {
 	public void setEntrega(IdentLocalEntrega entrega) {
 		this.entrega = entrega;
 	}
-	public ValoresBean getTotal() {
+	public Valores getTotal() {
 		return total;
 	}
-	public void setTotal(ValoresBean total) {
+	public void setTotal(Valores total) {
 		this.total = total;
 	}
-	public TransporteBean getTransp() {
+	public Transporte getTransp() {
 		return transp;
 	}
-	public void setTransp(TransporteBean transp) {
+	public void setTransp(Transporte transp) {
 		this.transp = transp;
 	}
-	public CobrancaBean getCobr() {
+	public Cobranca getCobr() {
 		return cobr;
 	}
-	public void setCobr(CobrancaBean cobr) {
+	public void setCobr(Cobranca cobr) {
 		this.cobr = cobr;
 	}
-	public InfAssinaturaBean getSignature() {
+	public InfAssinatura getSignature() {
 		return Signature;
 	}
-	public void setSignature(InfAssinaturaBean signature) {
+	public void setSignature(InfAssinatura signature) {
 		Signature = signature;
 	}
 	public String getId() {

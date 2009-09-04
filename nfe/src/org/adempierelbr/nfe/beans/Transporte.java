@@ -1,16 +1,16 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteBean {
+public class Transporte {
 
 	// Informa��es do Transporte da NF-E
 	
 	private String modFrete;
-	private TransporteGrupoBean transporta;
-	private TransporteRetencaoBean retTransp;
+	private TransporteGrupo transporta;
+	private TransporteRetencao retTransp;
 	private TransporteGrupoVeiculos veicTransp;
-	private TransporteReboqueBean reboque;
-	private TransporteVolBean vol;
-	private TransporteLacresBean lacres;
+	private TransporteReboque reboque;
+	private TransporteVol vol;
+	private TransporteLacres lacres;
 	
 	
 	public String getModFrete() {
@@ -19,16 +19,16 @@ public class TransporteBean {
 	public void setModFrete(String modFrete) {
 		this.modFrete = modFrete;
 	}
-	public TransporteGrupoBean getTransporta() {
+	public TransporteGrupo getTransporta() {
 		return transporta;
 	}
-	public void setTransporta(TransporteGrupoBean transporta) {
+	public void setTransporta(TransporteGrupo transporta) {
 		this.transporta = transporta;
 	}
-	public TransporteRetencaoBean getRetTransp() {
+	public TransporteRetencao getRetTransp() {
 		return retTransp;
 	}
-	public void setRetTransp(TransporteRetencaoBean retTransp) {
+	public void setRetTransp(TransporteRetencao retTransp) {
 		this.retTransp = retTransp;
 	}
 	public TransporteGrupoVeiculos getVeicTransp() {
@@ -37,22 +37,22 @@ public class TransporteBean {
 	public void setVeicTransp(TransporteGrupoVeiculos veicTransp) {
 		this.veicTransp = veicTransp;
 	}
-	public TransporteReboqueBean getReboque() {
+	public TransporteReboque getReboque() {
 		return reboque;
 	}
-	public void setReboque(TransporteReboqueBean reboque) {
+	public void setReboque(TransporteReboque reboque) {
 		this.reboque = reboque;
 	}
-	public TransporteVolBean getVol() {
+	public TransporteVol getVol() {
 		return vol;
 	}
-	public void setVol(TransporteVolBean vol) {
+	public void setVol(TransporteVol vol) {
 		this.vol = vol;
 	}
-	public TransporteLacresBean getLacres() {
+	public TransporteLacres getLacres() {
 		return lacres;
 	}
-	public void setLacres(TransporteLacresBean lacres) {
+	public void setLacres(TransporteLacres lacres) {
 		this.lacres = lacres;
 	}
 	

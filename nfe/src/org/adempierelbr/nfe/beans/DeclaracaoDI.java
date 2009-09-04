@@ -1,13 +1,18 @@
 package org.adempierelbr.nfe.beans;
 
-public class DeclaracaoDIBean {
+import java.util.ArrayList;
+import java.util.List;
+
+import org.adempierelbr.util.TextUtil;
+
+public class DeclaracaoDI {
 	private String nDI;
 	private String dDI;
 	private String xLocDesemb;
 	private String UFDesemb;
 	private String dDesemb;
 	private String cExportador;
-	private AdicoesDIBean adi;
+	private List adi = new ArrayList();
 	
 	public String getNDI() {
 		return nDI;
@@ -25,7 +30,7 @@ public class DeclaracaoDIBean {
 		return xLocDesemb;
 	}
 	public void setXLocDesemb(String locDesemb) {
-		xLocDesemb = locDesemb;
+		xLocDesemb = TextUtil.retiraAcentos(locDesemb);
 	}
 	public String getUFDesemb() {
 		return UFDesemb;
@@ -45,11 +50,11 @@ public class DeclaracaoDIBean {
 	public void setCExportador(String exportador) {
 		cExportador = exportador;
 	}
-	public AdicoesDIBean getAdi() {
+	public List getAdi() {
 		return adi;
 	}
-	public void setAdi(AdicoesDIBean adi) {
-		this.adi = adi;
+	public void addAdi(AdicoesDI adi) {
+		this.adi.add(adi);
 	}
 
 	

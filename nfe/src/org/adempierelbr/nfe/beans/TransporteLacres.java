@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteLacresBean {
+public class TransporteLacres {
 
 	private String nLacre;
 

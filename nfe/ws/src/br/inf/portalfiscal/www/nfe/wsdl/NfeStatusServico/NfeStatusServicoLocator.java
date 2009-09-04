@@ -17,14 +17,10 @@ public class NfeStatusServicoLocator extends org.apache.axis.client.Service impl
     public NfeStatusServicoLocator() {
     }
 
-	public NfeStatusServicoLocator(String amb) {
-    	ambiente = amb;
-    }
-
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
+    private static String ambiente 		= "2";
 
     public NfeStatusServicoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
@@ -41,6 +37,12 @@ public class NfeStatusServicoLocator extends org.apache.axis.client.Service impl
 
     public java.lang.String getNfeStatusServicoSoap12Address() {
         return NfeStatusServicoSoap12_address;
+    }
+    
+    public void setNfeStatusServicoSoap12Address() {
+    	NfeStatusServicoSoap12_address = ambiente.equals(PRODUCAO) 		?
+        		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeStatusServico.asmx"				:
+        		"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeStatusServico.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.
@@ -88,6 +90,12 @@ public class NfeStatusServicoLocator extends org.apache.axis.client.Service impl
 
     public java.lang.String getNfeStatusServicoSoapAddress() {
         return NfeStatusServicoSoap_address;
+    }
+    
+    public void setNfeStatusServicoSoapAddress() {
+    	NfeStatusServicoSoap_address = ambiente.equals(PRODUCAO) 		?
+        		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeStatusServico.asmx"				:
+            	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeStatusServico.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.

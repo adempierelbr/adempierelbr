@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class CobrancaGrupoDuplicataBean {
+public class CobrancaGrupoDuplicata {
 
 	private String dup;
 	private String nDup;

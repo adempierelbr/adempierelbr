@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteVolBean {
+public class TransporteVol {
 
 	private String qVol;
 	private String esp;

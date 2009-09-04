@@ -17,14 +17,10 @@ public class NfeCancelamentoLocator extends org.apache.axis.client.Service imple
     public NfeCancelamentoLocator() {
     }
 
-	public NfeCancelamentoLocator(String amb) {
-    	ambiente = amb;
-    }
-
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
+    public static String ambiente 		= "2";
 
     public NfeCancelamentoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
@@ -41,6 +37,12 @@ public class NfeCancelamentoLocator extends org.apache.axis.client.Service imple
 
     public java.lang.String getNfeCancelamentoSoapAddress() {
         return NfeCancelamentoSoap_address;
+    }
+    
+    public void setNfeCancelamentoSoapAddress() {
+    	NfeCancelamentoSoap_address = ambiente.equals(PRODUCAO) 		?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeCancelamento.asmx" 			:
+    		"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeCancelamento.asmx";
     }
 
     // The WSDD service name defaults to the port name.
@@ -88,6 +90,12 @@ public class NfeCancelamentoLocator extends org.apache.axis.client.Service imple
 
     public java.lang.String getNfeCancelamentoSoap12Address() {
         return NfeCancelamentoSoap12_address;
+    }
+    
+    public void setNfeCancelamentoSoap12Address() {
+    	 NfeCancelamentoSoap12_address = ambiente.equals(PRODUCAO) 		?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeCancelamento.asmx" 			:
+        	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeCancelamento.asmx";
     }
 
     // The WSDD service name defaults to the port name.

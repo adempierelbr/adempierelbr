@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteRetencaoBean {
+public class TransporteRetencao {
 	
 	private String vServ;
 	private String vBCRet;

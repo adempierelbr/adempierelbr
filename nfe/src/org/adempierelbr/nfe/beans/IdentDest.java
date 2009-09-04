@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class IdentDestBean {
+public class IdentDest {
 
 	// Identifica��o do Destinat�rio da Nota Fiscal Eletronica
 	
@@ -8,7 +8,7 @@ public class IdentDestBean {
 	private String CNPJ;
 	private String CPF;
 	private String xNome;
-	private EnderDestBean enderDest;
+	private EnderDest enderDest;
 	private String IE;
 	private String ISUF;
 
@@ -36,10 +36,10 @@ public class IdentDestBean {
 	public void setXNome(String nome) {
 		xNome = nome;
 	}
-	public EnderDestBean getEnderDest() {
+	public EnderDest getEnderDest() {
 		return enderDest;
 	}
-	public void setEnderDest(EnderDestBean enderDest) {
+	public void setEnderDest(EnderDest enderDest) {
 		this.enderDest = enderDest;
 	}
 	public String getIE() {

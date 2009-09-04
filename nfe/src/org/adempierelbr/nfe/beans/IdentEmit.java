@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class IdentEmitBean {
+public class IdentEmit {
 
 	// Identifica��o do Emitente da Nota Fiscal
 	
@@ -9,7 +9,7 @@ public class IdentEmitBean {
 	private String CPF;
 	private String xNome;
 	private String xFant;
-	private EnderEmitBean enderEmit;
+	private EnderEmit enderEmit;
 
 	private String IE;
 	private String IEST;
@@ -48,10 +48,10 @@ public class IdentEmitBean {
 	public void setXFant(String fant) {
 		xFant = fant;
 	}
-	public EnderEmitBean getEnderEmit() {
+	public EnderEmit getEnderEmit() {
 		return enderEmit;
 	}
-	public void setEnderEmit(EnderEmitBean enderEmit) {
+	public void setEnderEmit(EnderEmit enderEmit) {
 		this.enderEmit = enderEmit;
 	}
 	public String getIE() {

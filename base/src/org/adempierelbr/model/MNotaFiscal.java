@@ -46,6 +46,7 @@ import org.compiere.model.Query;
 import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_LegalMessage;
 import org.compiere.model.X_LBR_NCM;
+import org.compiere.model.X_LBR_NFDI;
 import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_NotaFiscal;
@@ -833,6 +834,23 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return list.toArray(new X_LBR_NFTax[list.size()]);	
 	} //getTaxes
+	
+	/**************************************************************************
+	 *  getDIs
+	 *  @return X_LBR_NFDI[] taxes
+	 */
+	public X_LBR_NFDI[] getDIs(){
+		
+		String whereClause = "LBR_NotaFiscal_ID = ?";
+		
+		MTable table = MTable.get(getCtx(), X_LBR_NFDI.Table_Name);		
+		Query query =  new Query(table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()});
+	 			
+		List<X_LBR_NFDI> list = query.list();
+		
+		return list.toArray(new X_LBR_NFDI[list.size()]);	
+	}	//	getDIs
 
 	/**
 	 * 	Encontra a NF pelo ID de NF-e

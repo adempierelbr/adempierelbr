@@ -1,6 +1,8 @@
 package org.adempierelbr.nfe.beans;
 
-public class EnderEmitBean {
+import org.adempierelbr.util.TextUtil;
+
+public class EnderEmit {
 
 	private String xLgr;
 	private String nro;
@@ -17,7 +19,7 @@ public class EnderEmitBean {
 		return xLgr;
 	}
 	public void setXLgr(String lgr) {
-		xLgr = lgr;
+		xLgr = TextUtil.retiraAcentos(lgr);
 	}
 	public String getNro() {
 		return nro;
@@ -29,13 +31,13 @@ public class EnderEmitBean {
 		return xCpl;
 	}
 	public void setXCpl(String cpl) {
-		xCpl = cpl;
+		xCpl = TextUtil.retiraAcentos(cpl);
 	}
 	public String getXBairro() {
 		return xBairro;
 	}
 	public void setXBairro(String bairro) {
-		xBairro = bairro;
+		xBairro = TextUtil.retiraAcentos(bairro);
 	}
 	public String getCMun() {
 		return cMun;
@@ -65,7 +67,7 @@ public class EnderEmitBean {
 		return xPais;
 	}
 	public void setXPais(String pais) {
-		xPais = pais;
+		xPais = TextUtil.retiraAcentos(pais);
 	}
 	public String getFone() {
 		return fone;
@@ -77,8 +79,6 @@ public class EnderEmitBean {
 		return xMun;
 	}
 	public void setXMun(String mun) {
-		xMun = mun;
+		xMun = TextUtil.retiraAcentos(mun);
 	}
-
-
 }

@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class ValoresISSQNBean {
+public class ValoresISSQN {
 
 	private String vServ;
 	private String vBC;

@@ -3,17 +3,17 @@ package org.adempierelbr.nfe.beans;
 public class NFEBean {
 	
 	private String NFe;
-	private DadosNFEBean infNFe;
+	private DadosNFE infNFe;
 	public String getNFe() {
 		return NFe;
 	}
 	public void setNFe(String fe) {
 		NFe = fe;
 	}
-	public DadosNFEBean getInfNFe() {
+	public DadosNFE getInfNFe() {
 		return infNFe;
 	}
-	public void setInfNFe(DadosNFEBean infNFe) {
+	public void setInfNFe(DadosNFE infNFe) {
 		this.infNFe = infNFe;
 	}
 		

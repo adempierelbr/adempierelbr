@@ -22,7 +22,7 @@ public class LinhaNFEBean {
 	private String vSeg;
 	private String vDesc;
 	private int nItem;
-	private DeclaracaoDIBean DI;
+	private DeclaracaoDI DI;
 	private ICMSBean ICMS;
 	private ImpostoIPIBean IPI;
 	private ImpostoDIBean II;
@@ -142,10 +142,10 @@ public class LinhaNFEBean {
 	public void setVDesc(String desc) {
 		vDesc = desc;
 	}
-	public DeclaracaoDIBean getDI() {
+	public DeclaracaoDI getDI() {
 		return DI;
 	}
-	public void setDI(DeclaracaoDIBean di) {
+	public void setDI(DeclaracaoDI di) {
 		DI = di;
 	}
 	public ICMSBean getICMS() {

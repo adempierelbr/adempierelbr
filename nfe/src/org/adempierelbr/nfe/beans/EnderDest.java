@@ -1,11 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class IdentLocRetiradaBean {
-
-	// Identifica��o do Local de Retirada
-	
-	private String retirada;
-	private String CNPJ;
+public class EnderDest {
 	private String xLgr;
 	private String nro;
 	private String xCpl;
@@ -13,18 +8,11 @@ public class IdentLocRetiradaBean {
 	private String cMun;
 	private String xMun;
 	private String UF;
-	public String getRetirada() {
-		return retirada;
-	}
-	public void setRetirada(String retirada) {
-		this.retirada = retirada;
-	}
-	public String getCNPJ() {
-		return CNPJ;
-	}
-	public void setCNPJ(String cnpj) {
-		CNPJ = cnpj;
-	}
+	private String CEP;
+	private String cPais;
+	private String xPais;
+	private String fone;
+
 	public String getXLgr() {
 		return xLgr;
 	}
@@ -67,6 +55,31 @@ public class IdentLocRetiradaBean {
 	public void setUF(String uf) {
 		UF = uf;
 	}
+	public String getCEP() {
+		return CEP;
+	}
+	public void setCEP(String cep) {
+		CEP = cep;
+	}
+	public String getCPais() {
+		return cPais;
+	}
+	public void setCPais(String pais) {
+		cPais = pais;
+	}
+	public String getXPais() {
+		return xPais;
+	}
+	public void setXPais(String pais) {
+		xPais = pais;
+	}
+	public String getFone() {
+		return fone;
+	}
+	public void setFone(String fone) {
+		this.fone = fone;
+	}
+
 	
 	
 }

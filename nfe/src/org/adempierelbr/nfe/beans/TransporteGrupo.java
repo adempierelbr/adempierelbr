@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteGrupoBean {
+public class TransporteGrupo {
 	
 	private String transporta;
 	private String CNPJ;

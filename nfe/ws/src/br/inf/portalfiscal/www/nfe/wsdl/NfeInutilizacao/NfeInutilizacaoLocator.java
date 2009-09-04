@@ -17,14 +17,10 @@ public class NfeInutilizacaoLocator extends org.apache.axis.client.Service imple
     public NfeInutilizacaoLocator() {
     }
 
-	public NfeInutilizacaoLocator(String amb) {
-    	ambiente = amb;
-    }
-
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private String ambiente 		= "2";
+    private static String ambiente 		= "2";
     
     public NfeInutilizacaoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);
@@ -41,6 +37,12 @@ public class NfeInutilizacaoLocator extends org.apache.axis.client.Service imple
 
     public java.lang.String getNfeInutilizacaoSoap12Address() {
         return NfeInutilizacaoSoap12_address;
+    }
+    
+    public void setNfeInutilizacaoSoap12Address() {
+    	NfeInutilizacaoSoap12_address = ambiente.equals(PRODUCAO) 			?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeInutilizacao.asmx"				:
+    		"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeInutilizacao.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.
@@ -88,6 +90,12 @@ public class NfeInutilizacaoLocator extends org.apache.axis.client.Service imple
 
     public java.lang.String getNfeInutilizacaoSoapAddress() {
         return NfeInutilizacaoSoap_address;
+    }
+    
+    public void setNfeInutilizacaoSoapAddress() {
+    	NfeInutilizacaoSoap_address = ambiente.equals(PRODUCAO) 			?
+    		"https://nfe.fazenda.sp.gov.br/nfeWEB/services/NfeInutilizacao.asmx"				:
+        	"https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/NfeInutilizacao.asmx"	;
     }
 
     // The WSDD service name defaults to the port name.

@@ -22,6 +22,8 @@ public class ProdutosNFEBean {
 	private String vUnTrib;
 //	private int nItem;
 //	private TributosInciBean imposto;
+	private DeclaracaoDI DI;
+	
 	public String getProd() {
 		return prod;
 	}
@@ -105,6 +107,12 @@ public class ProdutosNFEBean {
 	}
 	public void setCEANTrib(String trib) {
 		cEANTrib = trib;
+	}
+	public DeclaracaoDI getDI() {
+		return DI;
+	}
+	public void setDI(DeclaracaoDI DI) {
+		this.DI = DI;
 	}
 	
 	/* public ProdutosNFEBean(

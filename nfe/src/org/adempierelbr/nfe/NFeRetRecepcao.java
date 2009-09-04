@@ -125,7 +125,8 @@ public class NFeRetRecepcao
 		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
 		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		//
-		NfeRetRecepcao retRecep = new NfeRetRecepcaoLocator(envType);
+		NfeRetRecepcaoLocator.ambiente = envType;
+		NfeRetRecepcao retRecep = new NfeRetRecepcaoLocator();
 		try 
 		{
 			//	Envio

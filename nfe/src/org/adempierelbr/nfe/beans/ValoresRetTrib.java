@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class ValoresRetTribBean {
+public class ValoresRetTrib {
 
 	private String vRetPIS;
 	private String vRetCOFINS;

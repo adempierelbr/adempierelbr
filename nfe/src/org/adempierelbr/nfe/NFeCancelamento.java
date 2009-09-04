@@ -133,7 +133,8 @@ public class NFeCancelamento
 		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
 		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		//
-		NfeCancelamento recep = new NfeCancelamentoLocator(envType);
+		NfeCancelamentoLocator.ambiente = envType;
+		NfeCancelamento recep = new NfeCancelamentoLocator();
 		try 
 		{
 			//	Envio

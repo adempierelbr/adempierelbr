@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class TransporteReboqueBean {
+public class TransporteReboque {
 
 	private String placa;
 	private String UF;

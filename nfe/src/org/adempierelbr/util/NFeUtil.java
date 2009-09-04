@@ -255,6 +255,8 @@ public class NFeUtil
 	 */
 	public static String gravaArquivo (String nomeArquivo, String dados) throws Exception
 	{
+		System.setProperty("file.encoding", "UTF-8");
+		//
 		String caminho = System.getProperty("java.io.tmpdir")
 							+ System.getProperty("file.separator");
 		//

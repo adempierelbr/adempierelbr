@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-public class InfAssinaturaBean {
+public class InfAssinatura {
 
 	public String Signature;
 
