@@ -7,7 +7,7 @@ public class ProdutosNFEBean {
 	private String prod;
 	private String cProd;
 	private String cEAN;
-
+	//
 	private String xProd;
 	private String NCM;
 	private String CFOP;
@@ -16,12 +16,10 @@ public class ProdutosNFEBean {
 	private String vUnCom;
 	private String vProd;
 	private String cEANTrib;
-
+	//
 	private String uTrib;
 	private String qTrib;
 	private String vUnTrib;
-//	private int nItem;
-//	private TributosInciBean imposto;
 	private DeclaracaoDI DI;
 	
 	public String getProd() {

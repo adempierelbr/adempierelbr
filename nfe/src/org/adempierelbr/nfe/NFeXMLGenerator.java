@@ -437,7 +437,7 @@ public class NFeXMLGenerator
 		}
 		else
 		{
-			entrega.setUF(nf.getlbr_BPDeliveryRegion());
+			entrega.setUF(nf.getlbr_BPRegion());
 			entrega.setCNPJ(bpCNPJ);
 			entrega.setXMun(RemoverAcentos.remover(bpCity.getName()));
 		}
@@ -582,6 +582,7 @@ public class NFeXMLGenerator
 
 		for (MNotaFiscalLine nfLine : nfLines)
 		{
+			ProdutosNFEBean produtos = new ProdutosNFEBean();
 			DeclaracaoDI declaracao = new DeclaracaoDI();
 			//	DI e Adições
 			if (nfLine.get_Value("LBR_NFDI_ID") != null)
@@ -601,8 +602,8 @@ public class NFeXMLGenerator
 				adicao.setNSeqAdic(nfLine.get_ValueAsString("lbr_NumSeqItem"));
 //				adicao.setVDescDI(Env.ZERO);	//TODO
 				adicao.setNDI(di.getlbr_DI());
-//				hAdi.add(adicao);
 				declaracao.addAdi(adicao);
+				produtos.setDI(declaracao);
 			}
 			
 			//
@@ -620,8 +621,6 @@ public class NFeXMLGenerator
 			COFINSGrupoBean cofinsgrupo = new COFINSGrupoBean(); // Grupo de
 			// COFINS
 			TributosInciBean impostos = new TributosInciBean(); // Tributos
-
-			ProdutosNFEBean produtos = new ProdutosNFEBean();
 
 			MProduct prdt = new MProduct(ctx, nfLine.getM_Product_ID(), null);
 			produtos.setCProd(prdt.getValue());
@@ -646,7 +645,6 @@ public class NFeXMLGenerator
 			produtos.setVUnTrib(nfLine.getPrice().setScale(4, ROUND).toString());
 			if (nfLine.getlbr_NCMName() != null && !nfLine.getlbr_NCMName().equals(""))
 				produtos.setNCM(TextUtil.toNumeric(nfLine.getlbr_NCMName()));
-			produtos.setDI(declaracao);
 			dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++));
 
 			xstream.alias("det", DetailsNFEBean.class);
