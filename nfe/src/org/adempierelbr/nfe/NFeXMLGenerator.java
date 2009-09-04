@@ -815,18 +815,11 @@ public class NFeXMLGenerator
 				}
 				else if(lt.getTaxIndicator().equals("II"))
 				{
-					impostodi.setVII(lt.getvImposto().setScale(2, ROUND).toString());
 					impostodi.setVBC(lt.getvBC().setScale(2, ROUND).toString());
-					impostodi.setII(lt.getpImposto().setScale(2, ROUND).toString());
 					impostodi.setVDespAdu(Env.ZERO.setScale(2, ROUND).toString());
+					impostodi.setVII(lt.getvImposto().setScale(2, ROUND).toString());
+					impostodi.setVIOF(Env.ZERO.setScale(2, ROUND).toString());
 					impostos.setII(impostodi);
-					xstream.useAttributeFor(ImpostoDIBean.class, "II");
-//					TNFe.InfNFe.Det.Imposto.II ii =
-//					obj.createTNFeInfNFeDetImpostoII();
-//					imposto.setII(ii);
-//					//vII - Valor Total do II
-//					imposto.setII(JFNumber.transform(lt.getvImposto().doubleValue(),
-//					"##############0.00"));
 				}
 				else if(lt.getTaxIndicator().equals("ISSQN"))
 				{
