@@ -134,7 +134,7 @@ public class NFeUtil
 	 * @param Tipo de Ambiente
 	 * @return	XML
 	 */
-	public static String geraCancelamentoNF (String chNFe, String protocolNFe, String envType)
+	public static String geraCancelamentoNF (String chNFe, String protocolNFe, String envType, String motivo)
 	{
 		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
 						  "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
@@ -145,7 +145,7 @@ public class NFeUtil
 						          "<xServ>CANCELAR</xServ>"+
 						          "<chNFe>"+chNFe+"</chNFe>"+
 						          "<nProt>"+protocolNFe+"</nProt>"+
-						          "<xJust>Teste do WS de Cancelamento</xJust>"+
+						          "<xJust>"+motivo+"</xJust>"+
 					          "</infCanc>"+ 
 						  "</cancNFe>";
 		return dados;

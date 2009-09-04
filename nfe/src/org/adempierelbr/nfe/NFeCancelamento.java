@@ -60,6 +60,16 @@ public class NFeCancelamento
 	public static String cancelNFe(MNotaFiscal nf) throws Exception
 	{
 		log.fine("ini");
+		//
+		String motivoCanc = (String) nf.get_Value("lbr_MotivoCancel");
+		
+		if (motivoCanc == null)
+			return "Sem motivo de cancelamento";
+		else if (motivoCanc.length() < 16)
+			return "Motivo de cancelamento muito curto. Min: 15 letras.";
+		else if (motivoCanc.length() >= 255)
+			return "Motivo de cancelamento muito longo. Max: 255 letras.";
+		//
 		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), nf.getAD_Org_ID());
 		String chNFe 	= nf.get_ValueAsString("lbr_NFeID");
 		String pclNFe 	= nf.get_ValueAsString("lbr_NFeProt");
@@ -68,7 +78,7 @@ public class NFeCancelamento
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
 		//
-		String nfeCancelDadosMsg 	= NFeUtil.geraCancelamentoNF(chNFe, pclNFe, envType);
+		String nfeCancelDadosMsg 	= NFeUtil.geraCancelamentoNF(chNFe, pclNFe, envType, motivoCanc);
 		String nfeCancelCabecMsg 	= NFeUtil.geraCabecEnviNFe("1.07");		//	Versão do arquivo XSD
 		//
 		File attachFile = new File(NFeUtil.gravaArquivo(nf.getDocumentNo()+"-ped-can.xml", nfeCancelDadosMsg));
