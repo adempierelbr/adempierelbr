@@ -1,4 +1,4 @@
-package org.adempierelbr.nfe;
+	package org.adempierelbr.nfe;
 
 import java.io.File;
 import java.io.StringReader;

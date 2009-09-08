@@ -36,6 +36,7 @@ import org.adempierelbr.nfe.beans.IdentNFE;
 import org.adempierelbr.nfe.beans.ImpostoDIBean;
 import org.adempierelbr.nfe.beans.ImpostoIPIBean;
 import org.adempierelbr.nfe.beans.ImpostoIPIGrupoBean;
+import org.adempierelbr.nfe.beans.InfAdiFisco;
 import org.adempierelbr.nfe.beans.InfAssinatura;
 import org.adempierelbr.nfe.beans.Informacoes;
 import org.adempierelbr.nfe.beans.InformacoesNFEReferenciadaBean;
@@ -126,7 +127,6 @@ public class NFeXMLGenerator
 		EnderDest enderDest = new EnderDest();
 		IdentLocRetirada retirada = new IdentLocRetirada();
 		IdentLocalEntrega entrega = new IdentLocalEntrega();
-		Informacoes informacoes = new Informacoes();
 		Valores valores = new Valores();
 		ValoresICMS valoresicms = new ValoresICMS();
 		ValoresISSQN valoresissq = new ValoresISSQN();
@@ -612,6 +612,7 @@ public class NFeXMLGenerator
 			ICMSBean.ICMS60Grp icms60 = new ICMSBean.ICMS60Grp();
 			ImpostoIPIBean ipinfe = new ImpostoIPIBean(); // IPI
 			ImpostoIPIGrupoBean ipigrupo = new ImpostoIPIGrupoBean(); // Grupo
+			Informacoes informacoes = new Informacoes();
 			// de
 			// IPI
 			ImpostoDIBean impostodi = new ImpostoDIBean(); // DI
@@ -645,7 +646,15 @@ public class NFeXMLGenerator
 			produtos.setVUnTrib(nfLine.getPrice().setScale(4, ROUND).toString());
 			if (nfLine.getlbr_NCMName() != null && !nfLine.getlbr_NCMName().equals(""))
 				produtos.setNCM(TextUtil.toNumeric(nfLine.getlbr_NCMName()));
-			dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++));
+			//
+			String desc = TextUtil.retiraAcentos(nfLine.getDescription());
+			if (desc != null)
+			{
+				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++, desc));
+			}
+			else
+				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++));
+
 
 			xstream.alias("det", DetailsNFEBean.class);
 			xstream.useAttributeFor(DetailsNFEBean.class, "nItem");
@@ -829,8 +838,14 @@ public class NFeXMLGenerator
 				}
 			}	//	Impostos das Linhas
 		}	//	Linhas
-		
-
+		//
+		String dadosAdi = TextUtil.retiraAcentos(nf.getDescription());
+		if (dadosAdi != null && !dadosAdi.equals(""))
+		{
+			InfAdiFisco infAdi = new InfAdiFisco();
+			infAdi.setInfCpl(nf.getDescription());
+			dados.setInfAdic(infAdi);
+		}
 
 		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">\n";
 		String rodape = "\n</NFe>";

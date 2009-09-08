@@ -19,6 +19,7 @@ public class DadosNFE {
 	private Valores total;
 	private Transporte transp;
 	private Cobranca cobr;
+	private InfAdiFisco infAdic;
 	private InfAssinatura Signature;
 	
 
@@ -109,5 +110,13 @@ public class DadosNFE {
 	public List getContent() {
         return det;
 }
+	public InfAdiFisco getInfAdic()
+	{
+		return infAdic;
+	}
+	public void setInfAdic(InfAdiFisco infAdic)
+	{
+		this.infAdic = infAdic;
+	}
 
 }
