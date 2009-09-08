@@ -842,7 +842,7 @@ public class NFeXMLGenerator
 		if (dadosAdi != null && !dadosAdi.equals(""))
 		{
 			InfAdiFisco infAdi = new InfAdiFisco();
-			infAdi.setInfCpl(nf.getDescription());
+			infAdi.setInfCpl(dadosAdi);
 			dados.setInfAdic(infAdi);
 		}
 

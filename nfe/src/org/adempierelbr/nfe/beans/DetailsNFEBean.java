@@ -1,5 +1,7 @@
 package org.adempierelbr.nfe.beans;
 
+import org.adempierelbr.util.TextUtil;
+
 public class DetailsNFEBean
 {
 
@@ -36,6 +38,6 @@ public class DetailsNFEBean
 		this.imposto = tributos;
 		this.prod = prod;
 		this.nItem = nItem;
-		this.infAdProd = inf;
+		this.infAdProd = TextUtil.retiraAcentos(inf);
 	}	//	DetailsNFEBean
 }	//	DetailsNFEBean
