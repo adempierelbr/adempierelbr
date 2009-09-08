@@ -648,13 +648,12 @@ public class NFeXMLGenerator
 				produtos.setNCM(TextUtil.toNumeric(nfLine.getlbr_NCMName()));
 			//
 			String desc = TextUtil.retiraAcentos(nfLine.getDescription());
-			if (desc != null)
+			if (desc != null && !desc.equals(""))
 			{
 				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++, desc));
 			}
 			else
 				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++));
-
 
 			xstream.alias("det", DetailsNFEBean.class);
 			xstream.useAttributeFor(DetailsNFEBean.class, "nItem");
