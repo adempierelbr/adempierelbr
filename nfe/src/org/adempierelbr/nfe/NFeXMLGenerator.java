@@ -838,7 +838,7 @@ public class NFeXMLGenerator
 			}	//	Impostos das Linhas
 		}	//	Linhas
 		//
-		String dadosAdi = TextUtil.retiraAcentos(nf.getDescription());
+		String dadosAdi = TextUtil.retiraAcentos(nf.getDescription()).replace("\r", "").replace("\n", ". ");
 		if (dadosAdi != null && !dadosAdi.equals(""))
 		{
 			InfAdiFisco infAdi = new InfAdiFisco();
