@@ -59,6 +59,6 @@ public class Registro10
 				TextUtil.toNumeric(VersaoDoLeiaute, 1, 4) 		+ PIPE +
 				TextUtil.lPad(CNPJ, 14)		 					+ PIPE +
 				TextUtil.timeToString(DataInicio, "dd/MM/yyyy")	+ PIPE +
-				TextUtil.timeToString(DataFinal,  "dd/MM/yyyy") + PIPE + TextUtil.EOL_WIN32);
+				TextUtil.timeToString(DataFinal,  "dd/MM/yyyy") + TextUtil.EOL_WIN32);
 	}
 }	//	Registro10

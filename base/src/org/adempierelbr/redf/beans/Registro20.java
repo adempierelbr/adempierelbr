@@ -97,7 +97,7 @@ public class Registro20
 	public StringBuffer format()
 	{
 		String mask = "dd/MM/yyyy hh:mm:ss";
-		int sizeCNPJ = CNPJDest != null && CNPJDest.length() < 12 ? 11 : 14;
+		int sizeCNPJ = CNPJDest != null && CNPJDest.length() < 15 ? 11 : 14;
 		sizeCNPJ = CNPJDest == null ? 0 : sizeCNPJ;
 		boolean isCancelled = FuncaoDoRegistro.equals("C") ? true : false;
 		//

@@ -60,6 +60,6 @@ public class Registro90
 				TextUtil.lPad ("" + QtdRegistros30, 5) 	+ PIPE +
 				TextUtil.lPad ("" + QtdRegistros40, 5) 	+ PIPE +
 				TextUtil.lPad ("" + QtdRegistros50, 5) 	+ PIPE +
-				TextUtil.lPad ("" + QtdRegistros60, 5) 	+ PIPE + TextUtil.EOL_WIN32);
+				TextUtil.lPad ("" + QtdRegistros60, 5) 	+ TextUtil.EOL_WIN32);
 	}
 }	//	Registro90
