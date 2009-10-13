@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.callout.CalloutTax;
 import org.adempierelbr.model.MTax;
 import org.adempierelbr.util.POLBR;
+import org.adempierelbr.util.TaxesException;
 import org.compiere.apps.search.Info_Column;
+import org.compiere.model.GridField;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -29,6 +32,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
 import org.compiere.model.MStorage;
 import org.compiere.model.MWarehouse;
 import org.compiere.model.ModelValidationEngine;
@@ -119,7 +123,8 @@ public class ValidatorOrder implements ModelValidator
 	public String modelChange (PO po, int type) throws Exception
 	{
 		//Executa quando uma OrderLine é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_OrderLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW || type == TYPE_DELETE))
+		if (po.get_TableName().equalsIgnoreCase("C_OrderLine") && (type == TYPE_AFTER_CHANGE || 
+				type == TYPE_AFTER_NEW || type == TYPE_BEFORE_NEW || type == TYPE_DELETE))
 		{
 			MOrderLine oLine = (MOrderLine)po;
 			return modelChange(oLine,type);
@@ -135,7 +140,26 @@ public class ValidatorOrder implements ModelValidator
 		Properties ctx    = oLine.getCtx();
 		String     trx    = oLine.get_TrxName();
 		
-		if (type == TYPE_DELETE){
+		if (type == TYPE_BEFORE_NEW)
+		{
+			MProduct p = oLine.getProduct();
+			if (p != null && oLine.get_Value("LBR_Tax_ID") == null)
+			{
+				CalloutTax ct = new CalloutTax();
+				TaxesException tE = ct.getException(ctx,oLine.getParent(),null,p,null,null);
+				//
+				if (tE != null)
+				{
+					oLine.set_CustomColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
+					//
+					oLine.set_CustomColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
+					//
+					if (tE.isSOTrx())
+						oLine.set_CustomColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
+				}
+			}
+		}
+		else if (type == TYPE_DELETE){
 			
 			Integer LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){

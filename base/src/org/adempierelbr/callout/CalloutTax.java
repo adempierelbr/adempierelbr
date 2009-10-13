@@ -217,7 +217,7 @@ public class CalloutTax extends CalloutEngine
 	 * @param LBR_Tax_ID
 	 * @return TaxesException
 	 */
-	private TaxesException getException(Properties ctx, MOrder order,
+	public TaxesException getException(Properties ctx, MOrder order,
 			MInvoice invoice, MProduct product, MCharge charge, Integer LBR_Tax_ID)
 	{
 		cleanStaticAttributes();
