@@ -243,7 +243,7 @@ public class ProcGenerateGIA extends SvrProcess
 			String ref 			= TextUtil.timeToString(this.REF, "yyyyMM");
 //			String refInicial 	= TextUtil.timeToString(this.REFINICIAL, "yyyyMM");
 			String refInicial	= "000000";		//	FIXME: Verificar porque não valida com a data
-			this.CNAE 			= "0000000";	//	FIXME: Com CNAE não valida
+			this.CNAE 			= "0000000";	//	CNAE não é mais usado nas novas versoes	
 			//
 			result.append("05")											//	1	2	N
 				.append(TextUtil.lPad(this.IE				, 12))		//	2	14	X
@@ -789,7 +789,8 @@ public class ProcGenerateGIA extends SvrProcess
 					"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_50' OR " +
 						"nfl.lbr_TaxStatus LIKE '_51' OR " +
 						"nfl.lbr_TaxStatus LIKE '_90' " +
-					"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras FROM LBR_NotaFiscal nf ")
+					"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras, " +
+					"SUM(NVL(nfltipi.lbr_TaxAmt,0)) AS ImpostoIPI FROM LBR_NotaFiscal nf ")
 		.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
 		.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
 		.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')) ")
@@ -821,13 +822,14 @@ public class ProcGenerateGIA extends SvrProcess
 				BigDecimal valor_contabil_2 	= Env.ZERO;
 				BigDecimal basecalculo_2 		= Env.ZERO;
 				BigDecimal imposto 				= rs.getBigDecimal(4);
-				BigDecimal isenta 				= rs.getBigDecimal(5);
-				BigDecimal outras 				= rs.getBigDecimal(6);
+				BigDecimal isenta 				= rs.getBigDecimal(6);
+				BigDecimal outras 				= rs.getBigDecimal(7);
 				BigDecimal icmscobradost 		= Env.ZERO;
 				BigDecimal impretsubstitutost 	= Env.ZERO;
 				BigDecimal impretsubstituido 	= Env.ZERO;
 				BigDecimal petroleoenergia 		= Env.ZERO;
 				BigDecimal outrosprodutos 		= Env.ZERO;
+				BigDecimal outrosimpostos 		= rs.getBigDecimal(8);
 				Integer benef 					= 0;
 				
 				if (CFOP.startsWith("6")
@@ -838,16 +840,17 @@ public class ProcGenerateGIA extends SvrProcess
 					valor_contabil_1	=	Env.ZERO;
 					basecalculo_1		=	Env.ZERO;
 				}
-				//
-				if (uf == null)
-				{
-					errors.append("CFOP Invalido - NF=" + NF.getDocumentNo());
-					continue;
-				}
 				//	Transação Fora do Estado
 				if (CFOP.startsWith("2")
 						|| CFOP.startsWith("6"))
 				{
+					//
+					if (uf == null)
+					{
+						errors.append("UF Invalida - NF=" + NF.getDocumentNo());
+						continue;
+					}
+					//
 					Registro14 reg14 = null;
 					//
 					if (registro14.containsKey(uf.CODIGO + CFOP))
@@ -874,7 +877,7 @@ public class ProcGenerateGIA extends SvrProcess
 					reg10 = registro10.get(CFOP);
 					reg10.add(valor_contabil_1, basecalculo_1, imposto, 
 							isenta, outras, icmscobradost, impretsubstitutost, 
-							impretsubstituido, outrosprodutos);
+							impretsubstituido, outrosimpostos);
 					registro10.remove(CFOP);
 				}
 				else
@@ -882,7 +885,7 @@ public class ProcGenerateGIA extends SvrProcess
 					CFOPs.add(CFOP);
 					reg10 = new Registro10(CFOP, valor_contabil_1, basecalculo_1, 
 							imposto, isenta, outras, icmscobradost, impretsubstitutost,
-							impretsubstituido, outrosprodutos);
+							impretsubstituido, outrosimpostos);
 				}
 				registro10.put(CFOP, reg10);
 			}
