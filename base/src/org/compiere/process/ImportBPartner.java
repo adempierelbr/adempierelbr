@@ -338,7 +338,10 @@ public class ImportBPartner extends SvrProcess
 						}
 					}
 					if (!impBP.get_ValueAsString("lbr_IE").equals(""))
+					{
 						bp.set_ValueOfColumn("lbr_IE", impBP.get_ValueAsString("lbr_IE"));
+						bp.set_ValueOfColumn("lbr_IsIEExempt", false);
+					}
 					if (!impBP.get_ValueAsString("lbr_CCM").equals(""))
 						bp.set_ValueOfColumn("lbr_CCM", impBP.get_ValueAsString("lbr_CCM"));
 					if (!impBP.get_ValueAsString("lbr_RG").equals(""))
