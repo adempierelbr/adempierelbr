@@ -37,6 +37,7 @@ import org.compiere.model.MUOM;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 
@@ -177,20 +178,34 @@ public class ProcGenerateNF extends SvrProcess
 				
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 				
-			if (IsOwnDocument){
-				int C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID(),isSOTrx);
-				NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
-				NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo
+			if (IsOwnDocument)
+			{
+				Integer C_DocType_ID = -1;
+				//
+				C_DocType_ID = (Integer) invoice.get_Value("LBR_DocTypeNF_ID");
+				
+				if (C_DocType_ID == null || C_DocType_ID.intValue() <= 0)
+					C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID(), isSOTrx);
+				
+				NotaFiscal.setC_DocType_ID(C_DocType_ID);   		//	Tipo de Documento
+				NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   	//	Tipo de Documento Alvo
 			}
-			else{
-				NotaFiscal.setC_DocType_ID(0);
-				NotaFiscal.setC_DocTypeTarget_ID(0);
+			else
+			{
+				Integer C_DocType_ID = -1;
+				//
+				C_DocType_ID = (Integer) invoice.get_Value("LBR_DocTypeNF_ID");
+				
+				if (C_DocType_ID == null || C_DocType_ID.intValue() <= 0)
+					C_DocType_ID = 0;
+				//
+				NotaFiscal.setC_DocType_ID(C_DocType_ID);
+				NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);
 				
 				if (invoice.get_Value("lbr_NFEntrada") == null ||
 						invoice.get_ValueAsString("lbr_NFEntrada").equals("")){
 					return 0;
 				}
-				
 				
 				NotaFiscal.setDocumentNo(invoice.get_ValueAsString("lbr_NFEntrada"));
 				NotaFiscal.setIsPrinted(true);
