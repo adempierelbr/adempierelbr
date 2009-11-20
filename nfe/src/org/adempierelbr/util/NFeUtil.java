@@ -178,10 +178,11 @@ public class NFeUtil
 	        serializer.transform(new DOMSource(doc), new StreamResult(stw));
 	        dados[i] = stw.toString();
 	        //
-	        if (!ValidaXML.validaXML(dados[i]).equals(""))
+	        String validation = ValidaXML.validaXML(dados[i]);
+	        if (!validation.equals(""))
 	        {
-	        	log.severe("Validation individuals XML files for LOT Error");
-	        	throw new Exception("Validation individuals XML files for LOT Error");
+	        	log.severe("Validation individuals XML files for LOT Error: "+validation);
+	        	throw new Exception("Validation individuals XML files for LOT Error: "+validation);
 	        }
 			conjunto += dados[i];
 		}
@@ -194,11 +195,12 @@ public class NFeUtil
 			   "<idLote>"+lote+"</idLote>";
 		String rodape 	=  "\n</enviNFe>";
 		String contatosEmXML = cabecalho + conjunto + rodape;
-		
-		if (!ValidaXML.validaEnvXML(contatosEmXML).equals(""))
+		//
+		String validation = ValidaXML.validaEnvXML(contatosEmXML);
+		if (!validation.equals(""))
 		{
-			log.severe("Validation XML LOT Error");
-			throw new Exception("Validation XML LOT Error");
+			log.severe("Validation XML LOT Error: "+validation);
+			throw new Exception("Validation XML LOT Error: "+validation);
 		}
 		//
 		MAttachment attachLotNFe = lot.createAttachment();
