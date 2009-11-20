@@ -338,61 +338,69 @@ public class ValidatorBPartner implements ModelValidator
 	 *	@param String xCPF
 	 *	@return boolean true or false
 	 */
-	public static boolean validaCPF(String xCPF){
-		int d1,d4,xx,nCount,resto,digito1,digito2;
-		String Check;
-		String Separadores = "/-.";
-		d1 = 0; d4 = 0; xx = 1;
-		
-		if (xCPF.equals("000.000.000-00") ||
-			xCPF.equals("111.111.111-11") ||
-			xCPF.equals("222.222.222-22") ||
-			xCPF.equals("333.333.333-33") ||
-			xCPF.equals("444.444.444-44") ||
-			xCPF.equals("555.555.555-55") ||
-			xCPF.equals("666.666.666-66") ||
-			xCPF.equals("777.777.777-77") ||
-			xCPF.equals("888.888.888-88") ||
-			xCPF.equals("999.999.999-99"))
+	public static boolean validaCPF(String xCPF)
+	{
+		try
+		{
+			int d1,d4,xx,nCount,resto,digito1,digito2;
+			String Check;
+			String Separadores = "/-.";
+			d1 = 0; d4 = 0; xx = 1;
+			
+			if (xCPF.equals("000.000.000-00") ||
+				xCPF.equals("111.111.111-11") ||
+				xCPF.equals("222.222.222-22") ||
+				xCPF.equals("333.333.333-33") ||
+				xCPF.equals("444.444.444-44") ||
+				xCPF.equals("555.555.555-55") ||
+				xCPF.equals("666.666.666-66") ||
+				xCPF.equals("777.777.777-77") ||
+				xCPF.equals("888.888.888-88") ||
+				xCPF.equals("999.999.999-99"))
+			{
+				return false;
+			}
+			
+			for (nCount = 0; nCount < xCPF.length() -2; nCount++) {
+				String s_aux = xCPF.substring(nCount, nCount+1);
+				if (Separadores.indexOf(s_aux) == -1) {
+					d1 = d1 + ( 11 - xx ) * Integer.valueOf (s_aux).intValue();
+					d4 = d4 + ( 12 - xx ) * Integer.valueOf (s_aux).intValue();
+					xx++;
+				}
+			}
+			
+			resto = (d1 % 11);
+			
+			if (resto < 2) {
+				digito1 = 0;
+			}
+			else {
+				digito1 = 11 - resto;
+			}
+			
+			d4 = d4 + 2 * digito1;
+			resto = (d4 % 11);
+			
+			if (resto < 2) {
+				digito2 = 0;
+			}
+			else {
+				digito2 = 11 - resto;
+			}
+	
+			Check = String.valueOf(digito1) + String.valueOf(digito2);
+			String s_aux2 = xCPF.substring (xCPF.length()-2, xCPF.length());
+	
+			if (s_aux2.compareTo (Check) != 0){
+				return false;
+			}
+			return true;
+		}
+		catch (Exception e)
 		{
 			return false;
 		}
-		
-		for (nCount = 0; nCount < xCPF.length() -2; nCount++) {
-			String s_aux = xCPF.substring(nCount, nCount+1);
-			if (Separadores.indexOf(s_aux) == -1) {
-				d1 = d1 + ( 11 - xx ) * Integer.valueOf (s_aux).intValue();
-				d4 = d4 + ( 12 - xx ) * Integer.valueOf (s_aux).intValue();
-				xx++;
-			}
-		}
-		
-		resto = (d1 % 11);
-		
-		if (resto < 2) {
-			digito1 = 0;
-		}
-		else {
-			digito1 = 11 - resto;
-		}
-		
-		d4 = d4 + 2 * digito1;
-		resto = (d4 % 11);
-		
-		if (resto < 2) {
-			digito2 = 0;
-		}
-		else {
-			digito2 = 11 - resto;
-		}
-
-		Check = String.valueOf(digito1) + String.valueOf(digito2);
-		String s_aux2 = xCPF.substring (xCPF.length()-2, xCPF.length());
-
-		if (s_aux2.compareTo (Check) != 0){
-			return false;
-		}
-		return true;
 	} // validaCPF
 	
 	/**
