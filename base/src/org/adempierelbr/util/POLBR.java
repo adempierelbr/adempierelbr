@@ -254,6 +254,24 @@ public class POLBR{
 			{
 				 LBR_Boleto_ID = rs.getInt(1);
 			}
+			//
+			
+			//
+			if (LBR_Boleto_ID <= 0 && DocumentNo != null && isNumber(DocumentNo))
+			{
+				Integer docNo = new Integer(DocumentNo);
+				pstmt = DB.prepareStatement(sql, trx);
+				pstmt.setString(1, docNo.toString());
+				pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
+				if (index > 1)
+					pstmt.setInt(3, C_Invoice_ID);
+				
+				rs = pstmt.executeQuery();
+				if (rs.next())
+				{
+					 LBR_Boleto_ID = rs.getInt(1);
+				}
+			}
 		}
 		catch (Exception e)
 		{
@@ -267,6 +285,27 @@ public class POLBR{
 		
 	}	//	getLBR_Boleto_ID
 	
+	/**
+	 * Verifica se uma String contém exclusivamente dígitos
+	 * 
+	 * @param documentNo
+	 * @return
+	 */
+	private static boolean isNumber(String documentNo)
+	{
+		if (documentNo == null)
+			return false;
+		else
+		{
+			for (int i=0; i<documentNo.length(); i++)
+			{
+				if (!Character.isDigit(documentNo.charAt(i)))
+					return false;;
+			}
+		}
+		return true;
+	}
+
 	public static int getLBR_Boleto_ID(Integer C_Invoice_ID, Integer C_InvoicePaySchedule_ID, String trx)
 	{
 		int LBR_Boleto_ID = -1;
