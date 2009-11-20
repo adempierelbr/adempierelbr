@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.boleto.bank.MBancoBrasil;
+import org.adempierelbr.model.boleto.bank.MBancoReal;
 import org.adempierelbr.model.boleto.bank.MBradesco;
 import org.adempierelbr.model.boleto.bank.MHsbc;
 import org.adempierelbr.model.boleto.bank.MItau;
@@ -84,40 +85,52 @@ public class MCNAB extends X_LBR_CNAB
 	public MCNAB (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MCNAB
 	
-	public static void generateFile(int bNum, String fileName, Timestamp DateFrom,
-			                        Timestamp DateTo, MBankAccount BankA, String trx) throws IOException{
+	/**
+	 * 	Generate CNAB File
+	 * 
+	 * @param bNum
+	 * @param fileName
+	 * @param dateFrom
+	 * @param dateTo
+	 * @param bankAcct
+	 * @param trxName
+	 * @throws IOException
+	 */
+	public static void generateFile (int bNum, String fileName, Timestamp dateFrom, 
+			Timestamp dateTo, MBankAccount bankAcct, String trxName) throws IOException
+	{	
+		if (bNum==MCNAB.BANCO_DO_BRASIL)
+			MBancoBrasil.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
 		
-		if(bNum==MCNAB.BANCO_DO_BRASIL){
-			MBancoBrasil.generateFile(fileName, DateFrom, DateTo, BankA, trx);
-		}
-    	else if(bNum==MCNAB.BRADESCO){
-    		MBradesco.generateFile(fileName, DateFrom, DateTo, BankA, trx);
-		}
-    	else if(bNum==MCNAB.ITAU){
-    		MItau.generateFile(fileName, DateFrom, DateTo, BankA, trx);
-		}
-    	else if(bNum==MCNAB.BANCO_REAL){
-    		//TODO GENERATEFILE BANCO REAL
-		}
-    	else if(bNum==MCNAB.CAIXA_ECONOMICA){
-    		//TODO GENERATEFILE CAIXA ECONOMICA
-		}
-    	else if(bNum==MCNAB.UNIBANCO){
-    		//TODO GENERATEFILE UNIBANCO
-		}
-    	else if(bNum==MCNAB.HSBC){
-    		MHsbc.generateFile(fileName, DateFrom, DateTo, BankA, trx);
-		}
-    	else if(bNum==MCNAB.SANTANDER_033){
-    		MSantander_033.generateFile(fileName, DateFrom, DateTo, BankA, trx);
-		}
-    	else if(bNum==MCNAB.SANTANDER_353){
-    		//TODO GENERATEFILE SANTANDER 353
-		}
+    	else if (bNum==MCNAB.BRADESCO)
+    		MBradesco.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
 		
-	}
+    	else if (bNum==MCNAB.ITAU)
+    		MItau.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
+		
+    	else if (bNum==MCNAB.BANCO_REAL)
+    		MBancoReal.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
+    		
+    	else if (bNum==MCNAB.CAIXA_ECONOMICA)
+    		log.log (Level.WARNING, "Bank not implemented yet.");			//	TODO
+		
+    	else if (bNum==MCNAB.UNIBANCO)
+    		log.log (Level.WARNING, "Bank not implemented yet.");			//	TODO
+		
+    	else if (bNum==MCNAB.HSBC)
+    		MHsbc.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
+		
+    	else if (bNum==MCNAB.SANTANDER_033)
+    		MSantander_033.generateFile (fileName, dateFrom, dateTo, bankAcct, trxName);
+		
+    	else if (bNum==MCNAB.SANTANDER_353)
+    		log.log (Level.WARNING, "Bank not implemented yet.");			//	TODO
+		
+    	else
+    		log.log (Level.WARNING, "Unknown Bank");						//	TODO
+	}	//	generateFile
 	
 	/**************************************************************************
 	 * 	getSystemDate
@@ -167,14 +180,14 @@ public class MCNAB extends X_LBR_CNAB
 			value = zeros.substring(0,rest) + value;
 		
 		return value;
-	} //CNABFormat
+	}	//	CNABFormat
 		
 	/**************************************************************************
 	 * 	getModulo10
 	 *  @param String value
 	 * 	@return int dac
 	 */
-    public static int getModulo10(String campo) {
+    public static int getModulo10(String campo){
         
 		int multiplicador = 2;
 		int multiplicacao = 0;
@@ -264,10 +277,10 @@ public class MCNAB extends X_LBR_CNAB
 		List<MCNAB> list = query.list();
 		
 		//MARCA BOLETOS COMO REGISTRADOS
-		setIsRegistered(DateFrom,DateTo,where,Env.getAD_Client_ID(ctx),trx);
+		setIsRegistered(DateFrom, DateTo, whereClause, Env.getAD_Client_ID(ctx), trx);
 		
 		return list.toArray(new MCNAB[list.size()]);
-	} //getFields
+	}	//	getFields
 	
 	/**************************************************************************
 	 * 	getFields
@@ -291,18 +304,24 @@ public class MCNAB extends X_LBR_CNAB
 		setIsRegistered(C_BankAccount_ID,trx);
 		
 		return list.toArray(new MCNAB[list.size()]);
-	} //getFields
+	}	//	getFields
 	
+	/**
+	 * 	Boleto registrado
+	 * 	
+	 * @param DateFrom
+	 * @param DateTo
+	 * @param where
+	 * @param AD_Client_ID
+	 * @param trx
+	 */
 	private static void setIsRegistered (Timestamp DateFrom, Timestamp DateTo, String where, int AD_Client_ID, String trx){
 		
 		PreparedStatement pstmt = null;
 		
-		String sql  = "UPDATE LBR_CNAB SET IsRegistered = 'Y' " + where;
-               sql += " AND lbr_DocDate BETWEEN ? AND ?";
-               sql += " AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
-               sql += " AND AD_Client_ID = ?";
-        
-        pstmt = DB.prepareStatement (sql.trim(), trx);
+		String sql  = "UPDATE LBR_CNAB SET IsRegistered = 'Y' WHERE " + where;
+
+		pstmt = DB.prepareStatement (sql.trim(), trx);
 		try {
 			pstmt.setTimestamp(1, DateFrom);
 			pstmt.setTimestamp(2, DateTo);
@@ -316,9 +335,14 @@ public class MCNAB extends X_LBR_CNAB
     	finally{
     	       DB.close(pstmt);
     	}
-		
-	}
+	}	//	setIsRegistered
 	
+	/**
+	 * 	Boleto registrado
+	 * 
+	 * @param C_BankAccount_ID
+	 * @param trx
+	 */
 	private static void setIsRegistered (int C_BankAccount_ID, String trx){
 		
 		PreparedStatement pstmt = null;
@@ -376,6 +400,5 @@ public class MCNAB extends X_LBR_CNAB
     	}
 		
 		return LBR_CNAB_ID;
-	} //getLBR_CNAB_ID
-    
-} //MCNAB
+	} 	//	getLBR_CNAB_ID
+}	//	MCNAB
