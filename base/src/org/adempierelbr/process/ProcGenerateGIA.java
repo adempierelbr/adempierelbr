@@ -765,7 +765,8 @@ public class ProcGenerateGIA extends SvrProcess
 		//
 		whereClause.append("AD_Client_ID=? ")
 			.append("AND AD_Org_ID=? ")
-			.append("AND lbr_CFOPReference NOT LIKE '%Z%' ");
+			.append("AND lbr_CFOPReference NOT LIKE '%Z%' ")
+			.append("AND IsActive='Y' AND IsCancelled='N' ");
 		//
 		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ")
 			.append(DB.TO_DATE(p_DateFrom))
@@ -777,7 +778,13 @@ public class ProcGenerateGIA extends SvrProcess
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
 		List<MNotaFiscal> list = q.list();
 		//
-		sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), SUM(NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)), SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
+		sql.append("SELECT NVL(nfl.lbr_CFOPName,'0') AS CFOP, " +
+				"SUM(NVL(nfl.LineTotalAmt,0) + ((NVL(nfl.LineTotalAmt,0) * (NVL(nf.lbr_TotalSISCOMEX,0) + NVL(nf.lbr_InsuranceAmt,0) + NVL(nf.FreightAmt,0))) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1)) + " +
+				        "NVL(DECODE(nf.lbr_TransactionType, " +
+				            "'END', nfltipi.lbr_TaxAmt, " +
+				            "'IMP', nflt.lbr_TaxBaseAmt - NVL(nfl.LineTotalAmt,0) " +
+				                 ", 0),0)) AS TotLine, " +
+                 "SUM(NVL(nflt.lbr_TaxBaseAmt,0)) AS BaseICMS, ")
 		.append("SUM(NVL(nflt.lbr_TaxAmt,0)), NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), " +
 				"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_20' OR " +
 						"nfl.lbr_TaxStatus LIKE '_30' OR " +
@@ -785,17 +792,19 @@ public class ProcGenerateGIA extends SvrProcess
 						"nfl.lbr_TaxStatus LIKE '_41' OR " +
 						"nfl.lbr_TaxStatus LIKE '_60' OR " +
 						"nfl.lbr_TaxStatus LIKE '_70' " +
-					"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
+					"THEN (NVL(nfl.LineTotalAmt,0) + ((NVL(nfl.LineTotalAmt,0) * (NVL(nf.lbr_TotalSISCOMEX,0) + NVL(nf.lbr_InsuranceAmt,0) + NVL(nf.FreightAmt,0))) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1))) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
 					"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_50' OR " +
 						"nfl.lbr_TaxStatus LIKE '_51' OR " +
 						"nfl.lbr_TaxStatus LIKE '_90' " +
-					"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras, " +
-					"SUM(NVL(nfltipi.lbr_TaxAmt,0)) AS ImpostoIPI FROM LBR_NotaFiscal nf ")
+					"THEN (NVL(nfl.LineTotalAmt,0) + DECODE(nf.lbr_TransactionType, 'END', NVL(nfltipi.lbr_TaxAmt,0), 0) + ((NVL(nfl.LineTotalAmt,0) * (NVL(nf.lbr_TotalSISCOMEX,0) + NVL(nf.lbr_InsuranceAmt,0) + NVL(nf.FreightAmt,0))) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1))) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras, " +
+					"SUM(NVL(nfltipi.lbr_TaxAmt,0)) AS ImpostoIPI, SUM(NVL(nfltst.lbr_TaxAmt,0)) AS ImpostoST FROM LBR_NotaFiscal nf ")
 		.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
-		.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-		.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='ICMS')) ")
-		.append("LEFT JOIN   LBR_NFLineTax nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-		.append("AND nfltipi.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
+		.append("LEFT JOIN   LBR_NFLineTax_V nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+		.append("AND nflt.TaxIndicator='ICMS') ")
+		.append("LEFT JOIN   LBR_NFLineTax_V nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+		.append("AND nfltipi.TaxIndicator='IPI') ")
+		.append("LEFT JOIN   LBR_NFLineTax_V nfltst ON (nfltst.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
+		.append("AND nfltst.TaxIndicator='ICMSST') ")
 		.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
 		.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
 		.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
@@ -825,7 +834,7 @@ public class ProcGenerateGIA extends SvrProcess
 				BigDecimal isenta 				= rs.getBigDecimal(6);
 				BigDecimal outras 				= rs.getBigDecimal(7);
 				BigDecimal icmscobradost 		= Env.ZERO;
-				BigDecimal impretsubstitutost 	= Env.ZERO;
+				BigDecimal impretsubstitutost 	= rs.getBigDecimal(8);
 				BigDecimal impretsubstituido 	= Env.ZERO;
 				BigDecimal petroleoenergia 		= Env.ZERO;
 				BigDecimal outrosprodutos 		= Env.ZERO;
