@@ -172,6 +172,80 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}	//	getICMSRate
 	
 	/**
+	 *  Retorno o valor do Imposto
+	 *  
+	 *  @param taxIndicator
+	 *  @return	BigDecimal	Valor do Imposto
+	 */
+	public BigDecimal getTaxAmt (String taxIndicator)
+	{
+		if (taxIndicator == null)
+			return Env.ZERO;
+		//
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='"+taxIndicator+"')";
+		//
+		BigDecimal result = DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+		return result == null ? Env.ZERO : result;
+	}	//	getICMSAmt
+	
+	/**
+	 *  Retorno o valor da Base do Imposto
+	 *  
+	 *  @param taxIndicator
+	 *  @return	BigDecimal	Base do Imposto
+	 */
+	public BigDecimal getTaxBase(String taxIndicator)
+	{
+		if (taxIndicator == null)
+			return Env.ZERO;
+		//
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='"+taxIndicator+"')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSBase
+	
+	/**
+	 *  Retorno o valor da Redução da Base do Imposto
+	 *  
+	 *  @param taxIndicator
+	 *  @return	BigDecimal	Redução da Base do Imposto
+	 */
+	public BigDecimal getTaxBaseReduction(String taxIndicator)
+	{
+		if (taxIndicator == null)
+			return Env.ZERO;
+		//
+		String sql = "SELECT AVG(lbr_TaxBase) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='"+taxIndicator+"')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSBaseReduction
+	
+	/**
+	 * 
+	 *  Retorno a alíquota do Imposto
+	 *  
+	 *  @param taxIndicator
+	 *  @return	BigDecimal	Alíquota do Imposto
+	 */
+	public BigDecimal getTaxRate(String taxIndicator)
+	{
+		if (taxIndicator == null)
+			return Env.ZERO;
+		//
+		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
+				"WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='"+taxIndicator+"')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscalLine_ID());	
+	}	//	getICMSRate
+	
+	/**
 	 *  Retorno o valor do IPI
 	 *  
 	 *  @return	BigDecimal	Valor IPI

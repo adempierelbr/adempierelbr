@@ -417,6 +417,34 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	}	//	getIPIAmt
 	
 	/**
+	 *  Retorno o valor do IPI
+	 *  
+	 *  @return	BigDecimal	IPI
+	 */
+	public BigDecimal getPISAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='PIS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getIPIAmt
+	
+	/**
+	 *  Retorno o valor do IPI
+	 *  
+	 *  @return	BigDecimal	IPI
+	 */
+	public BigDecimal getCOFINSAmt()
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='COFINS')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getIPIAmt
+	
+	/**
 	 * 	Retorna o CFOP das linhas, no caso de mais de 1 CFOP, 
 	 * 		retorna o ref. ao Maior Valor
 	 * 
