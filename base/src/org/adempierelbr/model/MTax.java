@@ -597,7 +597,7 @@ public class MTax extends X_LBR_Tax {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("SELECT brtn.LBR_TaxName_ID, brtn.WithHoldThreshold, ")
+		sql.append("SELECT brtn.LBR_TaxName_ID, SUM(brtn.WithHoldThreshold) AS WithHoldThreshold, ")
 		   .append("SUM(ABS(d.TotalLines)) AS GrandTotal ");
 		
 		if (isOrder){
@@ -614,8 +614,8 @@ public class MTax extends X_LBR_Tax {
 		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
-		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
+		   .append("AND TRUNC(d.DateAcct,'MMYYYY') = TRUNC(")
+		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MMYYYY') ")	//	BF [2782374]
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
 		if (isOrder)
@@ -624,7 +624,7 @@ public class MTax extends X_LBR_Tax {
 			sql.append(MInvoice.Table_Name);
 		
 		sql.append("_ID = ?) AND d.IsSOTrx = ? ");
-		sql.append("GROUP BY brtn.LBR_TaxName_ID, brtn.WithHoldThreshold");
+		sql.append("GROUP BY brtn.LBR_TaxName_ID");
 
 
 		PreparedStatement pstmt = null;
