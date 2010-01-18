@@ -81,8 +81,8 @@ public class MBancoReal
 			String identCobr = invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo();
 			//
 			String agencyNo = boleto.getlbr_AgencyNo();
-			String accountNo = boleto.getAccountNo() + boleto.getAccountDigit();
-			String titBankNo = MCNAB.CNABFormat(boleto.getDocumentNo() + MCNAB.getModulo11(boleto.getDocumentNo(), 7), 7);
+			String accountNo = boleto.getAccountNo();
+			String titBankNo = MCNAB.CNABFormat(boleto.getDocumentNo(), 7);
 			String titCedeNo = MCNAB.CNABFormat(invoice.getDocumentNo(),10);
 			//
 			String dueDate = MCNAB.CNABDateFormat(boleto.getDueDate());
