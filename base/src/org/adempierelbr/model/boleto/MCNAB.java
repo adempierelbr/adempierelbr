@@ -36,6 +36,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * MCNAB
@@ -164,22 +165,10 @@ public class MCNAB extends X_LBR_CNAB
 	 *  @param String value
 	 * 	@return String value
 	 */
-	public static String CNABFormat(String value, int qtdDigitos){
-		
-		String zeros    = "0000000000000000000000000000000000000000";
-		
-		if (value == null) value = "";
-		
-		value = value.replaceAll("[.,-/]","");
-		
-		int rest = qtdDigitos - value.length();
-		
-		if (rest < 0)
-			value = value.substring(0, qtdDigitos);
-		else
-			value = zeros.substring(0,rest) + value;
-		
-		return value;
+	public static String CNABFormat(String value, int qtdDigitos)
+	{
+		value = value == null ? "" : value.replaceAll("[.,-/]","");
+		return TextUtil.lPad(value, qtdDigitos);
 	}	//	CNABFormat
 		
 	/**************************************************************************

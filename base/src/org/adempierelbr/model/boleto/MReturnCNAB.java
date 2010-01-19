@@ -127,8 +127,13 @@ public class MReturnCNAB
 				
 						MPayment Payment = new MPayment(ctx,0,trx);
 					
-						int C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
-					
+						Integer C_BankAccount_ID = boleto.getC_BankAccount_ID();
+						//
+						if (C_BankAccount_ID == null)
+							C_BankAccount_ID = (Integer)Invoice.get_Value("C_BankAccount_ID");
+						if (C_BankAccount_ID == null)
+							log.log(Level.SEVERE, "Bank Account not valid");
+						
 						Payment.setC_BankAccount_ID(C_BankAccount_ID);
 					
 						Payment.setC_DocType_ID(POLBR.getARReceipt()); //Contas a Receber
@@ -153,17 +158,17 @@ public class MReturnCNAB
 					
 						Payment.setDiscountAmt(DiscountAmt); //Negativo = Juros | Positivo = Desconto
 						
-						Payment.save(trx); //Salvar antes de Completar
+						Payment.save(); //Salvar antes de Completar
 						
 						String status = Payment.completeIt();
 						Payment.setDocStatus(status);
-						Payment.save(trx);
+						Payment.save();
 							
 						boleto.setC_Payment_ID(Payment.getC_Payment_ID());
 						boleto.setIsPaid(true);
 						boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
 						boleto.setDocStatus(DescOcorren);
-						boleto.save(trx);
+						boleto.save();
 					
 						TextUtil.addLine(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
 						TextUtil.addEOL(fw);
@@ -173,7 +178,7 @@ public class MReturnCNAB
 							
 						boleto.setIsPaid(true);
 						boleto.setDocStatus("DOCUMENTO JA LANCADO");
-						boleto.save(trx);
+						boleto.save();
 							
 						TextUtil.addLine(fw, line + ";;DOCUMENTO JA LANCADO");
 						TextUtil.addEOL(fw);
@@ -184,7 +189,7 @@ public class MReturnCNAB
 				else{
 						
 					boleto.setDocStatus("FATURA NAO COMPLETADA");
-					boleto.save(trx);
+					boleto.save();
 						
 					TextUtil.addLine(fw, line + ";;FATURA NAO COMPLETADA");
 					TextUtil.addEOL(fw);

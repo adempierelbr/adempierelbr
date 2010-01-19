@@ -79,7 +79,8 @@ public class MBoleto extends X_LBR_Boleto
 	
 	private static final String dateFormat = "dd/MM/yyyy";
 
-	MBoleto(Properties ctx, int LBR_Boleto_ID, String trx){
+	public MBoleto(Properties ctx, int LBR_Boleto_ID, String trx)
+	{
 		super(ctx,LBR_Boleto_ID,trx);
 	}
 	
