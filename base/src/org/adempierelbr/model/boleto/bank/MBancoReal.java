@@ -322,7 +322,7 @@ public class MBancoReal
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField6(), 1)); 	//	23
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField7(), 7)); 	//	24
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField8(), 7)); 	//	31
-			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField9(), 25)); 	//	38
+			TextUtil.addLine(fw, TextUtil.pad(lines[i].getlbr_CNABField9(), ' ', 25, false)); 	//	38
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField10(), 2)); 	//	63
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField11(), 7)); 	//	65..71
 			TextUtil.addLine(fw, TextUtil.rPad(lines[i].getlbr_CNABField12(), 1)); 	//	72
