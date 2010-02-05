@@ -149,13 +149,15 @@ public class ValidatorInOut implements ModelValidator
 	 *	@param M_Locator_ID
      *	@return BigDecimal quantity of product
 	 */
-	private BigDecimal getQtyOnHand(int M_Product_ID, int M_Locator_ID)
+	private BigDecimal getQtyOnHand(int M_Product_ID, int M_Locator_ID, int M_AttributeSetInstance_ID)
 	{
 		BigDecimal QtyOnHand = Env.ZERO;
 		String sql = "SELECT SUM(QtyOnHand) FROM M_Storage "
 			+ "WHERE M_Product_ID=?";	//	1
 		if(M_Locator_ID > 0)
 			sql = sql + " AND M_Locator_ID=?";	//	2
+		if(M_AttributeSetInstance_ID >0)
+			sql = sql + " AND M_AttributeSetInstance_ID=?";	//	3
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -163,8 +165,10 @@ public class ValidatorInOut implements ModelValidator
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, M_Product_ID);
-			if(M_Locator_ID > 0)
+			if (M_Locator_ID > 0)
 				pstmt.setInt(2, M_Locator_ID);
+			if(M_AttributeSetInstance_ID > 0)
+				pstmt.setInt(3, M_AttributeSetInstance_ID);
 			
 			rs = pstmt.executeQuery();
 			if (rs.next())
@@ -221,7 +225,7 @@ public class ValidatorInOut implements ModelValidator
 				else
 					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
 				
-				BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID());
+				BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID(), line.getM_AttributeSetInstance_ID());
 				
 				if(qtdOnHand.compareTo(line.getMovementQty()) == -1)
 					return "Sem saldo na linha=" + line.getLine();
@@ -272,7 +276,7 @@ public class ValidatorInOut implements ModelValidator
 					else
 						prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
 					
-					BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID());
+					BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID(), line.getM_AttributeSetInstance_ID());
 					
 					if(qtdOnHand.compareTo(line.getQtyInternalUse()) == -1)
 						return "Sem saldo na linha=" + line.getLine();
@@ -347,6 +351,7 @@ public class ValidatorInOut implements ModelValidator
 			{
 				MInOutLine line = lines[i];
 				int M_Product_ID = line.getM_Product_ID();
+				int M_AttributeSetInstance_ID = line.getM_AttributeSetInstance_ID();
 				int M_Locator_ID = line.getM_Locator_ID();
 				BigDecimal onHand = Env.ZERO, qtyToShip = Env.ZERO;
 				MProduct produto = MProduct.get(ctx, M_Product_ID);
@@ -396,7 +401,7 @@ public class ValidatorInOut implements ModelValidator
 				if (M_Product_ID == 0)
 					continue;
 				
-				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID); //QtyOnHand
+				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID); //QtyOnHand
 				
 				qtyToShip = Env.ZERO;
 				
