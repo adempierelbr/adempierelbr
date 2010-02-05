@@ -152,18 +152,28 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		return bpLocation;
 	} //getBPartnerLocation
 	
-	public void setOrgInfo(int AD_Org_ID){
+	/**
+	 * 	Set organization details
+	 * 
+	 * @param AD_Org_ID
+	 */
+	public void setOrgInfo (int AD_Org_ID)
+	{
 		MOrg org = MOrg.get(getCtx(), AD_Org_ID);
 		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID);
 		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),get_TrxName());
 		MCountry orgCountry = new MCountry(getCtx(),orgLoc.getC_Country_ID(),get_TrxName());
-		
+		//
+		String legalEntity = orgInfo.get_ValueAsString("lbr_LegalEntity");
+		if (legalEntity == null || legalEntity.length() < 1)
+			legalEntity = org.getName();
+		//
 		setOrg_Location_ID(orgLoc.getC_Location_ID());
 		setlbr_OrgAddress1(orgLoc.getAddress1());
 		setlbr_OrgAddress2(orgLoc.getAddress2());
 		setlbr_OrgAddress3(orgLoc.getAddress3());
 		setlbr_OrgAddress4(orgLoc.getAddress4());
-		setlbr_OrgName(org.getName());
+		setlbr_OrgName(legalEntity);
 		setlbr_OrgCity(orgLoc.getCity());
 		setlbr_OrgPostal(orgLoc.getPostal());
 		setlbr_OrgCountry(orgCountry.getCountryCode());
@@ -171,7 +181,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		setlbr_OrgCCM(orgInfo.get_ValueAsString("lbr_CCM"));
 		setlbr_CNPJ(orgInfo.get_ValueAsString("lbr_CNPJ"));
 		setlbr_IE(orgInfo.get_ValueAsString("lbr_IE"));
-	} //setOrgInfo
+	}	//	setOrgInfo
 	
 	public void setBPartner(MBPartner bpartner, MBPartnerLocation bpLocation){
 		
