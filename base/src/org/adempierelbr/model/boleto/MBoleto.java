@@ -14,6 +14,7 @@ package org.adempierelbr.model.boleto;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -453,17 +454,34 @@ public class MBoleto extends X_LBR_Boleto
 					else{
 						newBoleto.setlbr_Interest(Env.ZERO);
 					}
+					
+					//	Instrução 2 - Desconto e Protesto
+					String inst2 = "";
+					if (op.getDiscountAmt() != null 
+							&& op.getDiscountAmt().signum() == 1
+							&& op.getDiscountDate() != null)
+					{
+						inst2 = "ATÉ O DIA " 
+							+ TextUtil.timeToString(op.getDiscountDate(), "dd/MM/yyyy")
+							+ " CONCEDER DESCONTO DE R$ " + op.getDiscountAmt()
+								.setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',')
+							+ ". ";
+					}
 				
 					//Protesto
 					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
 					if (POLBR.get_ValueAsBoolean(paymentTerm.get_Value("lbr_HasSue")) && sueDays.intValue() >= 5){
 						newBoleto.setlbr_SueDays(sueDays);
 						newBoleto.setlbr_HasSue(true);
-						newBoleto.setlbr_Instruction2("PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO");
+						inst2 += "PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO";
 					}
 					else{
 						newBoleto.setlbr_SueDays(0);
 						newBoleto.setlbr_HasSue(false);
+					}
+					if (inst2 != null && inst2.length() > 0)
+					{
+						newBoleto.setlbr_Instruction2(inst2);
 					}
 				
 					//Nota Fiscal
