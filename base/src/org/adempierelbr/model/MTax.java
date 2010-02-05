@@ -59,6 +59,7 @@ import bsh.EvalError;
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *  @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
+ *  @contributor Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
  */
 public class MTax extends X_LBR_Tax {
@@ -549,12 +550,12 @@ public class MTax extends X_LBR_Tax {
 							saveDocTax(doctax,isOrder,Env.getAD_Org_ID(ctx),TaxAmt,TaxBaseAmt,isTaxIncluded,trx);
 							
 							if (isOrder){
-								BigDecimal grandTotal = ((MOrder)document).getGrandTotal();
-								((MOrder)document).setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+								BigDecimal grandTotal = ((MOrder)document).getGrandTotal();	//	BF [2946291]
+								((MOrder)document).setGrandTotal(grandTotal.add(OldTaxAmt.add(taxAmount)).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 							}
 							else{
-								BigDecimal grandTotal = ((MInvoice)document).getGrandTotal();
-								((MInvoice)document).setGrandTotal(grandTotal.add(OldTaxAmt).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
+								BigDecimal grandTotal = ((MInvoice)document).getGrandTotal();	//	BF [2946291]
+								((MInvoice)document).setGrandTotal(grandTotal.add(OldTaxAmt.add(taxAmount)).setScale(TaxBR.scale, BigDecimal.ROUND_HALF_UP));
 							}
 							
 							setReferenceDoc(ctx, isOrder, whDocument,taxLine.getLBR_Tax_ID(),trx);
@@ -613,8 +614,9 @@ public class MTax extends X_LBR_Tax {
 		
 		sql.append("INNER JOIN C_Tax t ON t.Parent_Tax_ID = dl.C_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
+		   .append("INNER JOIN C_DocType dt ON dt.C_DocType_ID = d.C_DocTypeTarget_ID ")	//	BF [2946291]
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append("AND dt.DocSubTypeSO NOT IN ('ON','OB') AND TRUNC(d.DateAcct,'MM') = TRUNC(")
 		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
@@ -678,8 +680,9 @@ public class MTax extends X_LBR_Tax {
 		
 		sql.append("INNER JOIN LBR_TaxLine tl ON tl.LBR_Tax_ID = dl.LBR_Tax_ID ")
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = tl.LBR_TaxName_ID ")
+		   .append("INNER JOIN C_DocType dt ON dt.C_DocType_ID = d.C_DocTypeTarget_ID ")	//	BF [2946291]
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append("AND dt.DocSubTypeSO NOT IN ('ON','OB') AND TRUNC(d.DateAcct,'MM') = TRUNC(")
 		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND d.DocStatus = 'CO' ");
 		
