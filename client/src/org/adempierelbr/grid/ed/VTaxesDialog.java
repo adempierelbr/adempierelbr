@@ -116,6 +116,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		try
 		{
 			jbInit();
+			initTaxes();
 		}
 		catch(Exception ex)
 		{
