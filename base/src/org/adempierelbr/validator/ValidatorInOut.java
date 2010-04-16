@@ -356,7 +356,7 @@ public class ValidatorInOut implements ModelValidator
 				BigDecimal onHand = Env.ZERO, qtyToShip = Env.ZERO;
 				MProduct produto = MProduct.get(ctx, M_Product_ID);
 				
-				if (!produto.isStocked())
+				if (produto == null || !produto.isStocked()) // BF #2988383
 					continue;
 				
 				if (M_Locator_ID == 0)
