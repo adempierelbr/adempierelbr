@@ -2241,6 +2241,26 @@ public class MOrder extends X_C_Order implements DocAction
 		return false;
 	}	//	reverseAccrualIt
 	
+
+	/**
+	 * 	Re-activate.
+	 * 	@return true if success 
+	 */
+	public boolean reviewIt ()
+	{
+		MOrder newOrder = MOrder.copyFrom (this, getDateOrdered(), 
+			getC_DocType_ID(), isSOTrx(), false, true, get_TrxName());		//	copy ASI
+		newOrder.setC_DocTypeTarget_ID(getC_DocType_ID());
+		newOrder.setDocumentNo(newOrder.getDocumentNo() + "_R1");
+		boolean OK = newOrder.save();
+		if (!OK)
+			throw new IllegalStateException("Could not create new Order");
+		//
+		reActivateIt();
+		
+		return true;
+	}	//	reviewIt
+	
 	/**
 	 * 	Re-activate.
 	 * 	@return true if success 

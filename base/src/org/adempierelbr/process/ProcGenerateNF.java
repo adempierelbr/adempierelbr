@@ -18,6 +18,7 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
@@ -30,14 +31,12 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
-import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MShipper;
 import org.compiere.model.MUOM;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 
@@ -109,7 +108,9 @@ public class ProcGenerateNF extends SvrProcess
 			
 		MInvoice invoice = new MInvoice(getCtx(),p_C_Invoice_ID,get_TrxName());
 		Integer invoice_NF_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
-		if (invoice_NF_ID != null && invoice_NF_ID.intValue() > 0){
+		if (invoice_NF_ID != null 
+				&& invoice_NF_ID.intValue() > 0 
+				&& invoice_NF_ID.intValue() != p_LBR_NotaFiscal_ID){
 			throw new IllegalArgumentException("Fatura já possui nota fiscal");
 		}
 		
@@ -139,9 +140,10 @@ public class ProcGenerateNF extends SvrProcess
 				
 		Properties ctx = context;
 		String     trx = transaction;
+		MNotaFiscal NotaFiscal = null;
 		
-		try{
-		
+		try
+		{
 			deleteLines(LBR_NotaFiscal_ID, trx);
 			
 			BigDecimal TotalLines	   = Env.ZERO;
@@ -174,15 +176,16 @@ public class ProcGenerateNF extends SvrProcess
 			MClientInfo clientInfo = client.getInfo();
 			
 			/** SET NOTA FISCAL **/
-			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
+			NotaFiscal = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
 				
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
+			MDocType dtInvoice = new MDocType(ctx, invoice.getC_DocTypeTarget_ID(), null);
 				
 			if (IsOwnDocument)
 			{
 				Integer C_DocType_ID = -1;
 				//
-				C_DocType_ID = (Integer) invoice.get_Value("LBR_DocTypeNF_ID");
+				C_DocType_ID = (Integer) dtInvoice.get_Value("LBR_DocTypeNF_ID");
 				
 				if (C_DocType_ID == null || C_DocType_ID.intValue() <= 0)
 					C_DocType_ID = POLBR.getNFB(invoice.getAD_Org_ID(), isSOTrx);
@@ -194,7 +197,7 @@ public class ProcGenerateNF extends SvrProcess
 			{
 				Integer C_DocType_ID = -1;
 				//
-				C_DocType_ID = (Integer) invoice.get_Value("LBR_DocTypeNF_ID");
+				C_DocType_ID = (Integer) dtInvoice.get_Value("LBR_DocTypeNF_ID");
 				
 				if (C_DocType_ID == null || C_DocType_ID.intValue() <= 0)
 					C_DocType_ID = 0;
@@ -222,6 +225,18 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setM_InOut_ID(shipment.getM_InOut_ID());   /** M_InOut_ID **/
 			
 			String description = order.get_ValueAsString("lbr_NFDescription");
+			if (description == null)
+				description = "";
+			//
+			if (description.length() > 1 && !description.endsWith(" - "))
+				description += " - ";
+			if (order != null && order.getC_Order_ID() > 0)
+				description += "Pedido: " + order.getDocumentNo();
+			if (description.length() > 1 && !description.endsWith(" - "))
+				description += " - ";
+			if (invoice != null && invoice.getC_Invoice_ID() > 0)
+				description += "Fatura: " + invoice.getDocumentNo();
+			//
 			NotaFiscal.setDescription(description); //Observação Nota Fiscal
 				
 			/** Parceiro de Negócios **/
@@ -422,9 +437,47 @@ public class ProcGenerateNF extends SvrProcess
 				
 			LBR_NotaFiscal_ID = NotaFiscal.getLBR_NotaFiscal_ID();
 		}
-		catch(Exception e){
+		catch (Exception e)
+		{
+			if (NotaFiscal.get_ColumnIndex("ErrorMsg") > 0)
+			{
+				NotaFiscal.set_CustomColumn("ErrorMsg", e.getMessage());
+				NotaFiscal.save();
+			}
+			//
 			log.log(Level.SEVERE,"Erro no processo GenerateNotaFiscal", e);
 		}
+		
+		String result = "";
+		if (LBR_NotaFiscal_ID > 0)
+		{
+			try
+			{
+				if (NotaFiscal.getC_DocType_ID() > 0)
+				{
+					MDocType dt = new MDocType (ctx, NotaFiscal.getC_DocType_ID(), trx);
+					boolean generateXML = POLBR.get_ValueAsBoolean(dt.get_Value("z_isGenerateXML"), false);
+					//
+					if (generateXML)
+						result = NFeXMLGenerator.geraCorpoNFe (LBR_NotaFiscal_ID, trx);
+					//
+					if (!result.equals("") && NotaFiscal.get_ColumnIndex("ErrorMsg") > 0)
+					{
+						NotaFiscal.set_CustomColumn("ErrorMsg", result.toString().replace('\\', ' ').replace('\'', ' '));
+						NotaFiscal.save();
+					}	//	if
+				}
+			}
+			catch (Exception e)
+			{
+				if (NotaFiscal.get_ColumnIndex("ErrorMsg") > 0)
+				{
+					NotaFiscal.set_CustomColumn("ErrorMsg", result);
+					NotaFiscal.save();
+				}
+				e.printStackTrace();
+			}	//	catch
+		}	//	if
 						
 		return LBR_NotaFiscal_ID;
 		

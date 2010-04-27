@@ -20,7 +20,7 @@ public class NfeStatusServicoLocator extends org.apache.axis.client.Service impl
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private static String ambiente 		= "2";
+    public static String ambiente 		= "2";
 
     public NfeStatusServicoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);

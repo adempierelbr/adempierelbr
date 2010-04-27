@@ -6,10 +6,10 @@ import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
 
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.model.MNotaFiscalLine;
@@ -64,7 +64,6 @@ import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
 import org.brazilutils.br.uf.UF;
-import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -79,13 +78,13 @@ import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.model.X_C_City;
 import org.compiere.model.X_LBR_CFOP;
+import org.compiere.model.X_LBR_NCM;
 import org.compiere.model.X_LBR_NFDI;
 import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_TaxGroup;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import com.java4less.textprinter.ports.HDParallelPort;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -109,9 +108,20 @@ public class NFeXMLGenerator
 	 */
 	public static String geraCorpoNFe (int LBR_NotaFiscal_ID) throws Exception
 	{
+		return geraCorpoNFe (LBR_NotaFiscal_ID, null);
+	}	//	geraCorpoNFe
+	
+	/**
+	 * Gera o corpo da NF
+	 * 
+	 * @param LBR_NotaFiscal_ID
+	 * @param Trx_Name
+	 * @return
+	 */
+	public static String geraCorpoNFe (int LBR_NotaFiscal_ID, String trxName) throws Exception
+	{
 		log.fine("Gerando corpo NF-e");
 		Properties ctx = Env.getCtx();
-		String trxName = null;
 		//
 		XStream xstream = new XStream();
 
@@ -156,7 +166,7 @@ public class NFeXMLGenerator
 		MNotaFiscal nf = new MNotaFiscal(ctx, LBR_NotaFiscal_ID, trxName);
 		if (LBR_NotaFiscal_ID == 0)
 			return "Nota fiscal inexistente";
-
+		
 		X_LBR_NFTax[] nfTaxes = nf.getTaxes();
 		MNotaFiscalLine[] nfLines = nf.getLines(null);
 
@@ -258,8 +268,16 @@ public class NFeXMLGenerator
 		String aamm = TextUtil.timeToString(dt, "yyMM");
 		String orgCPNJ = TextUtil.toNumeric(nf.getlbr_CNPJ()); 
 		//
+		BigDecimal orgCityCode = Env.ZERO;
+		if (orgCity.get_Value("lbr_CityCode") != null)
+			orgCityCode = (BigDecimal) orgCity.get_Value("lbr_CityCode");
+		//
 		chaveNFE.setAAMM(aamm);
-		chaveNFE.setCUF("35");	//	FIXME: 
+		if (orgCityCode.compareTo(Env.ZERO) == 0)
+			chaveNFE.setCUF("35");
+		else
+			chaveNFE.setCUF(orgCityCode.toString().substring(0, 2));
+		//
 		chaveNFE.setCNPJ(orgCPNJ);
 		chaveNFE.setMod(modNF);
 		chaveNFE.setSerie(TextUtil.lPad(serie, 3));
@@ -284,7 +302,7 @@ public class NFeXMLGenerator
 		// Identificação NFE
 		identNFe.setCUF(chaveNFE.getCUF());
 		identNFe.setCNF(chaveNFE.getCNF());
-		identNFe.setNatOp(TextUtil.checkSize(nf.getlbr_CFOPNote(), 1, 60));
+		identNFe.setNatOp(RemoverAcentos.remover(TextUtil.checkSize(nf.getlbr_CFOPNote(), 1, 60)));
 		identNFe.setIndPag(indPag);
 		identNFe.setMod(chaveNFE.getMod());
 		identNFe.setSerie(serie);
@@ -292,8 +310,7 @@ public class NFeXMLGenerator
 		identNFe.setDEmi(DEmi);
 		identNFe.setDSaiEnt(DSaiEnt);
 		identNFe.setTpNF(nf.isSOTrx() ? "1" : "0");
-		BigDecimal orgCityCode = Env.ZERO;
-		if (orgCity.get_Value("lbr_CityCode") != null)	//	TODO: Copiar para LBR_NF
+		if (orgCity.get_Value("lbr_CityCode") != null)
 			orgCityCode = (BigDecimal) orgCity.get_Value("lbr_CityCode");
 		identNFe.setCMunFG(orgCityCode.toString());
 		identNFe.setTpImp(tpImp);
@@ -307,11 +324,11 @@ public class NFeXMLGenerator
 		dados.setIde(identNFe);
 
 		//	Endereco do Emitente
-		enderEmit.setXLgr(nf.getlbr_OrgAddress1());
-		enderEmit.setNro(nf.getlbr_OrgAddress2());
-		enderEmit.setXBairro(nf.getlbr_OrgAddress3());
-		enderEmit.setCMun(orgCityCode.toString());
-		enderEmit.setXMun(nf.getlbr_OrgCity());
+		enderEmit.setXLgr(RemoverAcentos.remover(nf.getlbr_OrgAddress1()));
+		enderEmit.setNro(RemoverAcentos.remover(nf.getlbr_OrgAddress2()));
+		enderEmit.setXBairro(RemoverAcentos.remover(nf.getlbr_OrgAddress3()));
+		enderEmit.setCMun(RemoverAcentos.remover(orgCityCode.toString()));
+		enderEmit.setXMun(RemoverAcentos.remover(nf.getlbr_OrgCity()));
 		enderEmit.setUF(orgRegion.getName());
 		enderEmit.setCEP(TextUtil.toNumeric(orgLoc.getPostal()));
 		enderEmit.setCPais("1058");
@@ -328,20 +345,20 @@ public class NFeXMLGenerator
 			orgXFant = orgNome;
 		emitente.setXFant(orgXFant);
 		//
-		String orgIE = orgInfo.get_ValueAsString("lbr_IE");
+		String orgIE = formatStringCodes(orgInfo.get_ValueAsString("lbr_IE"));
 		//
-		UF uf = UF.valueOf(orgRegion.getName());
-		//
-		if (uf != null && !orgIE.toUpperCase().contains("ISENT"))
-		{
-			InscricaoEstadual ie = uf.getInscricaoEstadual();
-			ie.setNumber(orgInfo.get_ValueAsString("lbr_IE"));
-			//
-			if (!ie.isValid())
-				return "IE do Emitente incorreto: " + ie.getInvalidCause();
-			//
-			orgIE = ie.getNumber();
-		}
+//		UF uf = UF.valueOf(orgRegion.getName());
+//		//
+//		if (uf != null && !orgIE.toUpperCase().contains("ISENT"))
+//		{
+//			InscricaoEstadual ie = uf.getInscricaoEstadual();
+//			ie.setNumber(orgInfo.get_ValueAsString("lbr_IE"));
+//			//
+//			if (!ie.isValid())
+//				return "IE do Emitente incorreto: " + ie.getInvalidCause();
+//			//
+//			orgIE = ie.getNumber();
+//		}
 		//
 		emitente.setIE(orgIE);
 		String orgIM = formatStringCodes(orgInfo.get_ValueAsString("lbr_CCM"));
@@ -352,7 +369,7 @@ public class NFeXMLGenerator
 
 		//	Endereco do Destinatario
 		enderDest.setXLgr(RemoverAcentos.remover(bpLoc.getAddress1()));
-		enderDest.setNro(bpLoc.getAddress2());
+		enderDest.setNro(RemoverAcentos.remover(bpLoc.getAddress2()));
 		if (bpLoc.getAddress3() != null)
 			enderDest.setXBairro(RemoverAcentos.remover(bpLoc.getAddress3()));
 		else
@@ -408,27 +425,27 @@ public class NFeXMLGenerator
 		destinatario.setXNome(RemoverAcentos.remover(nf.getBPName()));
 		//
 		String bpIE = formatStringCodes(nf.getlbr_BPIE());
-		uf = UF.valueOf(nf.getlbr_BPRegion());
-		//
-		if (uf != null && !bpIE.toUpperCase().contains("ISENT"))
-		{
-			InscricaoEstadual ie = uf.getInscricaoEstadual();
-			ie.setNumber(bpIE);
-			//
-			if (!ie.isValid())
-				return "IE do Parceiro incorreto: " + ie.getInvalidCause();
-			//
-			bpIE = ie.getNumber();
-		}
+//		uf = UF.valueOf(nf.getlbr_BPRegion());
+//		//
+//		if (uf != null && !bpIE.toUpperCase().contains("ISENT"))
+//		{
+//			InscricaoEstadual ie = uf.getInscricaoEstadual();
+//			ie.setNumber(bpIE);
+//			//
+//			if (!ie.isValid())
+////				return "IE do Parceiro incorreto: " + ie.getInvalidCause();
+//			//
+//			bpIE = ie.getNumber();
+//		}
 		//
 		destinatario.setIE(bpIE);
 		destinatario.setEnderDest(enderDest);
 
 		// Identificacao do Local de Entrega
 		entrega.setXLgr(RemoverAcentos.remover(bpLoc.getAddress1()));
-		entrega.setNro(bpLoc.getAddress2());
+		entrega.setNro(RemoverAcentos.remover(bpLoc.getAddress2()));
 		entrega.setXBairro(RemoverAcentos.remover(bpLoc.getAddress3()));
-		entrega.setCMun(bpCityCode.toString());
+		entrega.setCMun(RemoverAcentos.remover(bpCityCode.toString()));
 		if (bpCityCode.toString().equals("9999999"))
 		{
 			entrega.setUF("EX");
@@ -437,12 +454,19 @@ public class NFeXMLGenerator
 		}
 		else
 		{
+			if (bpCNPJ.length() == 11)
+			{
+				entrega.setCNPJ("");
+				entrega.setCPF(bpCNPJ);
+			}
+			else
+				entrega.setCNPJ(bpCNPJ);
+			//
 			entrega.setUF(nf.getlbr_BPRegion());
-			entrega.setCNPJ(bpCNPJ);
 			entrega.setXMun(RemoverAcentos.remover(bpCity.getName()));
 		}
-		
-		dados.setEntrega(entrega);
+		if (bpCNPJ.length() != 11)
+			dados.setEntrega(entrega);
 
 		// vNF - Valor Total da NF-e
 		valoresicms.setVNF(nf.getGrandTotal().setScale(2, ROUND).toString());
@@ -531,19 +555,19 @@ public class NFeXMLGenerator
 			//
 			if (shipperUF != null)
 			{
-				InscricaoEstadual ie = shipperUF.getInscricaoEstadual();
-				ie.setNumber(nf.getlbr_BPShipperIE());
-				//
-				if (ie == null || !ie.isValid())
-					return "IE da Transportadora incorreto: " + ie.getInvalidCause();
+//				InscricaoEstadual ie = shipperUF.getInscricaoEstadual();
+//				ie.setNumber(nf.getlbr_BPShipperIE());
+//				//
+//				if (ie == null || !ie.isValid())
+//					return "IE da Transportadora incorreto: " + ie.getInvalidCause();
 				//
 				String end = nf.getlbr_BPShipperAddress1() + ", " + 	//	Rua
 					nf.getlbr_BPShipperAddress2() + " - " + 			//	Número
 					nf.getlbr_BPShipperAddress4() + " - " +				//	Complemento
 					nf.getlbr_BPShipperAddress3();						//	Bairro
 				//
-				transgrupo.setIE(ie.getNumber());
-				transgrupo.setXNome(nf.getlbr_BPShipperName());
+				transgrupo.setIE(formatStringCodes(nf.getlbr_BPShipperIE()));
+				transgrupo.setXNome(RemoverAcentos.remover(nf.getlbr_BPShipperName()));
 				transgrupo.setXEnder(RemoverAcentos.remover(end));
 				transgrupo.setXMun(RemoverAcentos.remover(nf.getlbr_BPShipperCity()));
 				transgrupo.setUF(RemoverAcentos.remover(nf.getlbr_BPShipperRegion()));
@@ -568,7 +592,9 @@ public class NFeXMLGenerator
 		// Valor Liquido
 		cobrfat.setVLiq(nf.getGrandTotal().setScale(2, ROUND).toString());
 		// Desconto
-		// cobrfat.setVDesc(JFNumber.transform(0.00, "##############0.00"));
+//		BigDecimal discountAmt = (BigDecimal) nf.get_Value("DiscountAmt");
+//		if (discountAmt != null)
+//		cobrfat.setVDesc(discountAmt.setScale(2, ROUND).toString());
 
 		cobr.setFat(cobrfat);
 
@@ -624,7 +650,7 @@ public class NFeXMLGenerator
 			TributosInciBean impostos = new TributosInciBean(); // Tributos
 
 			MProduct prdt = new MProduct(ctx, nfLine.getM_Product_ID(), null);
-			produtos.setCProd(prdt.getValue());
+			produtos.setCProd(RemoverAcentos.remover(prdt.getValue()));
 			produtos.setXProd(RemoverAcentos.remover(prdt.getName()));
 			if (prdt.getUPC() == null
 					|| (prdt.getUPC().length() < 12 || prdt.getUPC().length() > 14))
@@ -632,7 +658,7 @@ public class NFeXMLGenerator
 				produtos.setCEAN("");
 			}
 			else
-				produtos.setCEAN(prdt.getUPC());
+				produtos.setCEAN(RemoverAcentos.remover(prdt.getUPC()));
 			produtos.setCEANTrib("");
 			X_LBR_CFOP cfop = new X_LBR_CFOP(ctx, nfLine.getLBR_CFOP_ID(),
 					null);
@@ -644,10 +670,13 @@ public class NFeXMLGenerator
 			produtos.setVProd(nfLine.getLineTotalAmt().setScale(2, ROUND).toString());
 			produtos.setVUnCom(nfLine.getPrice().setScale(4, ROUND).toString());
 			produtos.setVUnTrib(nfLine.getPrice().setScale(4, ROUND).toString());
-			if (nfLine.getlbr_NCMName() != null && !nfLine.getlbr_NCMName().equals(""))
-				produtos.setNCM(TextUtil.toNumeric(nfLine.getlbr_NCMName()));
+			if (nfLine.getLBR_NCM_ID() > 0)
+			{
+				X_LBR_NCM vNCM = new X_LBR_NCM (Env.getCtx(), nfLine.getLBR_NCM_ID(), null);
+				produtos.setNCM(TextUtil.toNumeric(vNCM.getValue()));
+			}
 			//
-			String desc = TextUtil.retiraAcentos(nfLine.getDescription());
+			String desc = RemoverAcentos.remover(nfLine.getDescription());
 			if (desc != null && !desc.equals(""))
 			{
 				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++, desc));
@@ -661,6 +690,16 @@ public class NFeXMLGenerator
 			//
 			NFeTaxes[] lineTax = NFeTaxes.getTaxes(nfLine);
 			//
+			NFeTaxes taxST = null;
+			for (NFeTaxes lt : lineTax)
+			{
+				if (lt.getTaxIndicator().contains("ICMS")
+						&& lt.getTaxIndicator().contains("ST"))
+				{
+					taxST = lt;
+				}
+			}
+			//
 			for (NFeTaxes lt : lineTax)
 			{
 				if (lt.getTaxIndicator().equals("ICMS"))
@@ -671,6 +710,10 @@ public class NFeXMLGenerator
 					// 1 - Pauta (valor);
 					// 2 - Preço Tabelado Máximo (valor);
 					// 3 - Valor da Operação
+					if (taxStatus == null)
+						log.log(Level.SEVERE, "Situação Tributária Inválida para a NF: "+
+								nf.getDocumentNo() + ", Linha: " + nfLine.getLine());
+						
 					if (taxStatus.endsWith("40") || 
 							taxStatus.endsWith("41") || 
 							taxStatus.endsWith("50"))
@@ -685,19 +728,19 @@ public class NFeXMLGenerator
 								.substring(1));
 						icmsgrupo.setOrig(taxStatus
 								.substring(0, 1));
-						icmsgrupo.setPICMS(lt.getpImposto().setScale(2, ROUND).toString());
-						icmsgrupo.setVBC(lt.getvBC().setScale(2, ROUND).toString());
-						icmsgrupo.setVICMS(lt.getvImposto().setScale(2, ROUND).toString());
-						if (taxStatus.endsWith("60")
-								|| taxStatus.endsWith("10"))
+						icmsgrupo.setpICMS(lt.getpImposto().setScale(2, ROUND).toString());
+						icmsgrupo.setvBC(lt.getvBC().setScale(2, ROUND).toString());
+						icmsgrupo.setvICMS(lt.getvImposto().setScale(2, ROUND).toString());
+						if (taxStatus.endsWith("60"))
 						{
-							icms60.setCST(taxStatus
-									.substring(1));
-							icms60.setOrig(taxStatus
-									.substring(0, 1));
-							icms60.setVBCST(lt.getvBC().setScale(2, ROUND).toString());
-							icms60.setVICMSST(lt.getvImposto().setScale(2, ROUND).toString());
-						}
+							icms60.setCST(taxStatus.substring(1));
+							icms60.setOrig(taxStatus.substring(0, 1));
+							if (taxST != null)
+							{
+								icms60.setVBCST(taxST.getvBC().setScale(2, ROUND).toString());
+								icms60.setVICMSST(taxST.getvImposto().setScale(2, ROUND).toString());
+							}	//	if
+						}	//	if
 					}
 					//
 					if (taxStatus.endsWith("00"))
@@ -706,10 +749,26 @@ public class NFeXMLGenerator
 					}
 					else if (taxStatus.endsWith("10"))
 					{
+						icmsgrupo.setModBC("0");
+						//
+						if (taxST != null)
+						{
+							BigDecimal iva = (BigDecimal) prdt.get_Value("lbr_ProfitPercentage");
+							if (iva != null && iva.signum() != 0)
+								icmsgrupo.setpMVAST(iva.setScale(2, ROUND).toString());
+							icmsgrupo.setModBCST("4");
+							icmsgrupo.setvBCST(taxST.getvBC().setScale(2, ROUND).toString());
+							if (taxST.getvRedBC().signum() != 0)
+								icmsgrupo.setpRedBCST(taxST.getvRedBC().setScale(2, ROUND).toString());
+							icmsgrupo.setpICMSST(taxST.getpImposto().setScale(2, ROUND).toString());
+							icmsgrupo.setvICMSST(taxST.getvImposto().setScale(2, ROUND).toString());
+						}
+						
 						icmsnfe.setICMS10(icmsgrupo);
 					}
 					else if (taxStatus.endsWith("20"))
 					{
+						icmsgrupo.setpRedBC(lt.getvRedBC().setScale(2, ROUND).toString());
 						icmsnfe.setICMS20(icmsgrupo);
 					}
 					else if (taxStatus.endsWith("30"))
@@ -732,6 +791,21 @@ public class NFeXMLGenerator
 					}
 					else if (taxStatus.endsWith("70"))
 					{
+						icmsgrupo.setpRedBC(lt.getvRedBC().setScale(2, ROUND).toString());
+						
+						if (taxST != null)
+						{
+							BigDecimal iva = (BigDecimal) prdt.get_Value("lbr_ProfitPercentage");
+							if (iva != null && iva.signum() != 0)
+								icmsgrupo.setpMVAST(iva.setScale(2, ROUND).toString());
+							icmsgrupo.setModBCST("4");
+							icmsgrupo.setvBCST(taxST.getvBC().setScale(2, ROUND).toString());
+							if (taxST.getvRedBC().signum() != 0)
+								icmsgrupo.setpRedBCST(taxST.getvRedBC().setScale(2, ROUND).toString());
+							icmsgrupo.setpICMSST(taxST.getpImposto().setScale(2, ROUND).toString());
+							icmsgrupo.setvICMSST(taxST.getvImposto().setScale(2, ROUND).toString());
+						}
+						
 						icmsnfe.setICMS70(icmsgrupo);
 					}
 					else if (taxStatus.endsWith("90"))
@@ -839,10 +913,13 @@ public class NFeXMLGenerator
 		}	//	Linhas
 		//
 		String dadosAdi = TextUtil.retiraAcentos(nf.getDescription()).replace("\r", "").replace("\n", ". ");
+		if (dadosAdi != null && dadosAdi.length() > 1)
+			dadosAdi += " - ";
+		dadosAdi += TextUtil.retiraAcentos(nf.getDocumentNote()).replace("\r", "").replace("\n", ". ");
 		if (dadosAdi != null && !dadosAdi.equals(""))
 		{
 			InfAdiFisco infAdi = new InfAdiFisco();
-			infAdi.setInfCpl(dadosAdi);
+			infAdi.setInfCpl(RemoverAcentos.remover(dadosAdi));
 			dados.setInfAdic(infAdi);
 		}
 
@@ -895,6 +972,12 @@ public class NFeXMLGenerator
 			//	Grava ID
 			nf.set_CustomColumn("lbr_NFeID", nfeID);
 			nf.save();
+			//	Apaga o anexo anterior
+			if (nf.getAttachment(true) != null)
+			{
+				nf.getAttachment().delete(true);
+				nf.getAttachment(true);	//	Force requery
+			}
 			//	Anexa o XML na NF
 			MAttachment attachNFe = nf.createAttachment();
 			File attachFile = new File(ret[0]);
@@ -918,6 +1001,7 @@ public class NFeXMLGenerator
 		code = code.replace(".", "");
 		code = code.replace("/", "");
 		code = code.replace("-", "");
+		code = code.replace(" ", "");
 		return code;
 	}	//	formatStringCodes
 

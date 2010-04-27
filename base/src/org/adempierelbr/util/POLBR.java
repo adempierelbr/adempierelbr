@@ -222,7 +222,12 @@ public class POLBR{
 		
 	} // getLBR_DocPrint_ID
 	
-	public static int getLBR_Boleto_ID(String DocumentNo, int C_Invoice_ID, String trx)
+	public static int getLBR_Boleto_ID(String nossoNo, int C_Invoice_ID, String trx)
+	{
+		return getLBR_Boleto_ID (null, nossoNo, C_Invoice_ID, trx);
+	}
+	
+	public static int getLBR_Boleto_ID(String documentNo, String nossoNo, int C_Invoice_ID, String trx)
 	{
 		int LBR_Boleto_ID = -1;
 		int index = 1;
@@ -244,7 +249,7 @@ public class POLBR{
 		try
 		{
 			pstmt = DB.prepareStatement(sql, trx);
-			pstmt.setString(1, DocumentNo);
+			pstmt.setString(1, nossoNo);
 			pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
 			if (index > 1){
 				pstmt.setInt(3, C_Invoice_ID);
@@ -257,9 +262,9 @@ public class POLBR{
 			//
 			
 			//
-			if (LBR_Boleto_ID <= 0 && DocumentNo != null && isNumber(DocumentNo))
+			if (LBR_Boleto_ID <= 0 && nossoNo != null && isNumber(nossoNo))
 			{
-				Integer docNo = new Integer(DocumentNo);
+				Integer docNo = new Integer(nossoNo);
 				pstmt = DB.prepareStatement(sql, trx);
 				pstmt.setString(1, docNo.toString());
 				pstmt.setInt(2, Env.getAD_Client_ID(Env.getCtx()));
@@ -270,6 +275,37 @@ public class POLBR{
 				if (rs.next())
 				{
 					 LBR_Boleto_ID = rs.getInt(1);
+				}
+			}
+			
+			//	Adaptação para boletos onde o Banco gera o NN
+			if (LBR_Boleto_ID <= 0 
+					&& nossoNo != null 
+					&& documentNo != null
+					&& documentNo.indexOf('/') > 1
+					&& C_Invoice_ID > 1)
+			{
+				sql = "SELECT LBR_Boleto_ID " +
+				     	"FROM LBR_Boleto " +
+				       "WHERE AD_Client_ID = ? " +
+				         "AND C_Invoice_ID = ?";
+				
+				pstmt = DB.prepareStatement(sql, trx);
+				pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
+				pstmt.setInt(2, C_Invoice_ID);
+				
+				if (isNumber(documentNo.substring(1+documentNo.lastIndexOf('/'))))
+				{
+					int parcela = Integer.parseInt(documentNo.substring(1+documentNo.lastIndexOf('/')));
+					int cont = 1;
+					rs = pstmt.executeQuery();
+					while (rs.next())
+					{
+						if (cont == parcela)
+							LBR_Boleto_ID = rs.getInt(1);
+						else
+							cont++;
+					}
 				}
 			}
 		}

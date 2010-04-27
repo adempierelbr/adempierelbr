@@ -106,8 +106,8 @@ public class MReturnCNAB
 		              Desconto    + ";" +
 		              Juros       + ";";
 		
-		int C_Invoice_ID = POLBR.getC_Invoice_ID(DocumentNo,trx);
-		int LBR_Boleto_ID = POLBR.getLBR_Boleto_ID(NossoNo, C_Invoice_ID, trx);
+		int C_Invoice_ID = POLBR.getC_Invoice_ID (DocumentNo,trx);
+		int LBR_Boleto_ID = POLBR.getLBR_Boleto_ID (DocumentNo, NossoNo, C_Invoice_ID, trx); 
 			
 		if (OcorrenType.equalsIgnoreCase("L")){ //Liquidação  
 					

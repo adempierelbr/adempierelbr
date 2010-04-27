@@ -171,8 +171,14 @@ public class NFeRetRecepcao
 	        			MNotaFiscal nf = MNotaFiscal.getNFe (chNFe);
 	        			if (nf == null)
 	        			{
-	        				log.log(Level.SEVERE, "NF not found");
-	        				throw new Exception("NF not found");
+	        				log.log(Level.SEVERE, "NF not found= " + chNFe);
+	        				continue;
+	        			}
+	        			else if (nf.get_Value("lbr_NFeStatus") != null
+	        					&& nf.get_Value("lbr_NFeStatus").toString().equals("100"))
+	        			{
+	        				log.log(Level.WARNING, "NF already authorized= " + chNFe);
+	        				continue;
 	        			}
 	        			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	        	        Date parsedDate = dateFormat.parse(dhRecbto.replace('T', ' '));
@@ -188,6 +194,17 @@ public class NFeRetRecepcao
 	        			nf.set_CustomColumn("lbr_NFeProt", nProt);
 	        			nf.set_CustomColumn("DateTrx", ts);
 	        			nf.save();
+	        			
+	        			String error = "";
+	        			try 
+	        			{
+	        				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
+	        					error = "Problemas ao atualizar o XML para o padrão de distribuição";
+	        			}
+	        			catch (Exception e) 
+	        			{
+	        				log.log(Level.WARNING, error, e);
+	        			}
 	        		}	//	if
 	        	}	//	for
 	        }	//	if

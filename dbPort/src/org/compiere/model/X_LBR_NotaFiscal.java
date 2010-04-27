@@ -86,6 +86,61 @@ public String toString()
 StringBuffer sb = new StringBuffer ("X_LBR_NotaFiscal[").append(get_ID()).append("]");
 return sb.toString();
 }
+
+/** Set NFe Protocol.
+@param lbr_NFeProt NFe Protocol */
+public void setlbr_NFeProt (String lbr_NFeProt)
+{
+if (lbr_NFeProt != null && lbr_NFeProt.length() > 60)
+{
+log.warning("Length > 60 - truncated");
+lbr_NFeProt = lbr_NFeProt.substring(0,59);
+}
+set_Value ("lbr_NFeProt", lbr_NFeProt);
+}
+/** Get NFe Protocol.
+@return NFe Protocol */
+public String getlbr_NFeProt() 
+{
+return (String)get_Value("lbr_NFeProt");
+}
+/** Set NFe Status.
+@param lbr_NFeStatus Status of NFe */
+public void setlbr_NFeStatus (String lbr_NFeStatus)
+{
+if (lbr_NFeStatus == null || lbr_NFeStatus.equals("100") || lbr_NFeStatus.equals("101") || lbr_NFeStatus.equals("102") || lbr_NFeStatus.equals("103") || lbr_NFeStatus.equals("104") || lbr_NFeStatus.equals("105") || lbr_NFeStatus.equals("106") || lbr_NFeStatus.equals("107") || lbr_NFeStatus.equals("108") || lbr_NFeStatus.equals("109") || lbr_NFeStatus.equals("110") || lbr_NFeStatus.equals("111") || lbr_NFeStatus.equals("112") || lbr_NFeStatus.equals("201") || lbr_NFeStatus.equals("202") || lbr_NFeStatus.equals("203") || lbr_NFeStatus.equals("204") || lbr_NFeStatus.equals("205") || lbr_NFeStatus.equals("206") || lbr_NFeStatus.equals("207") || lbr_NFeStatus.equals("208") || lbr_NFeStatus.equals("209") || lbr_NFeStatus.equals("210") || lbr_NFeStatus.equals("211") || lbr_NFeStatus.equals("212") || lbr_NFeStatus.equals("213") || lbr_NFeStatus.equals("214") || lbr_NFeStatus.equals("215") || lbr_NFeStatus.equals("216") || lbr_NFeStatus.equals("217") || lbr_NFeStatus.equals("218") || lbr_NFeStatus.equals("219") || lbr_NFeStatus.equals("220") || lbr_NFeStatus.equals("221") || lbr_NFeStatus.equals("222") || lbr_NFeStatus.equals("223") || lbr_NFeStatus.equals("224") || lbr_NFeStatus.equals("225") || lbr_NFeStatus.equals("226") || lbr_NFeStatus.equals("227") || lbr_NFeStatus.equals("228") || lbr_NFeStatus.equals("229") || lbr_NFeStatus.equals("230") || lbr_NFeStatus.equals("231") || lbr_NFeStatus.equals("232") || lbr_NFeStatus.equals("233") || lbr_NFeStatus.equals("234") || lbr_NFeStatus.equals("235") || lbr_NFeStatus.equals("236") || lbr_NFeStatus.equals("237") || lbr_NFeStatus.equals("238") || lbr_NFeStatus.equals("239") || lbr_NFeStatus.equals("240") || lbr_NFeStatus.equals("241") || lbr_NFeStatus.equals("242") || lbr_NFeStatus.equals("243") || lbr_NFeStatus.equals("244") || lbr_NFeStatus.equals("245") || lbr_NFeStatus.equals("246") || lbr_NFeStatus.equals("247") || lbr_NFeStatus.equals("248") || lbr_NFeStatus.equals("249") || lbr_NFeStatus.equals("250") || lbr_NFeStatus.equals("251") || lbr_NFeStatus.equals("252") || lbr_NFeStatus.equals("253") || lbr_NFeStatus.equals("254") || lbr_NFeStatus.equals("255") || lbr_NFeStatus.equals("256") || lbr_NFeStatus.equals("257") || lbr_NFeStatus.equals("258") || lbr_NFeStatus.equals("259") || lbr_NFeStatus.equals("260") || lbr_NFeStatus.equals("261") || lbr_NFeStatus.equals("262") || lbr_NFeStatus.equals("263") || lbr_NFeStatus.equals("264") || lbr_NFeStatus.equals("265") || lbr_NFeStatus.equals("266") || lbr_NFeStatus.equals("267") || lbr_NFeStatus.equals("268") || lbr_NFeStatus.equals("269") || lbr_NFeStatus.equals("270") || lbr_NFeStatus.equals("271") || lbr_NFeStatus.equals("272") || lbr_NFeStatus.equals("273") || lbr_NFeStatus.equals("274") || lbr_NFeStatus.equals("275") || lbr_NFeStatus.equals("276") || lbr_NFeStatus.equals("277") || lbr_NFeStatus.equals("278") || lbr_NFeStatus.equals("279") || lbr_NFeStatus.equals("280") || lbr_NFeStatus.equals("281") || lbr_NFeStatus.equals("282") || lbr_NFeStatus.equals("283") || lbr_NFeStatus.equals("284") || lbr_NFeStatus.equals("285") || lbr_NFeStatus.equals("286") || lbr_NFeStatus.equals("287") || lbr_NFeStatus.equals("288") || lbr_NFeStatus.equals("289") || lbr_NFeStatus.equals("290") || lbr_NFeStatus.equals("291") || lbr_NFeStatus.equals("292") || lbr_NFeStatus.equals("293") || lbr_NFeStatus.equals("294") || lbr_NFeStatus.equals("295") || lbr_NFeStatus.equals("296") || lbr_NFeStatus.equals("297") || lbr_NFeStatus.equals("298") || lbr_NFeStatus.equals("299") || lbr_NFeStatus.equals("401") || lbr_NFeStatus.equals("402") || lbr_NFeStatus.equals("403") || lbr_NFeStatus.equals("404") || lbr_NFeStatus.equals("405") || lbr_NFeStatus.equals("406") || lbr_NFeStatus.equals("407") || lbr_NFeStatus.equals("453") || lbr_NFeStatus.equals("454") || lbr_NFeStatus.equals("478") || lbr_NFeStatus.equals("999") || lbr_NFeStatus.equals("301") || lbr_NFeStatus.equals("302"));
+ else throw new IllegalArgumentException ("lbr_NFeStatus Invalid value - " + lbr_NFeStatus + " - Reference_ID=1100004 - 100 - 101 - 102 - 103 - 104 - 105 - 106 - 107 - 108 - 109 - 110 - 111 - 112 - 201 - 202 - 203 - 204 - 205 - 206 - 207 - 208 - 209 - 210 - 211 - 212 - 213 - 214 - 215 - 216 - 217 - 218 - 219 - 220 - 221 - 222 - 223 - 224 - 225 - 226 - 227 - 228 - 229 - 230 - 231 - 232 - 233 - 234 - 235 - 236 - 237 - 238 - 239 - 240 - 241 - 242 - 243 - 244 - 245 - 246 - 247 - 248 - 249 - 250 - 251 - 252 - 253 - 254 - 255 - 256 - 257 - 258 - 259 - 260 - 261 - 262 - 263 - 264 - 265 - 266 - 267 - 268 - 269 - 270 - 271 - 272 - 273 - 274 - 275 - 276 - 277 - 278 - 279 - 280 - 281 - 282 - 283 - 284 - 285 - 286 - 287 - 288 - 289 - 290 - 291 - 292 - 293 - 294 - 295 - 296 - 297 - 298 - 299 - 401 - 402 - 403 - 404 - 405 - 406 - 407 - 453 - 454 - 478 - 999 - 301 - 302");
+if (lbr_NFeStatus != null && lbr_NFeStatus.length() > 3)
+{
+log.warning("Length > 3 - truncated");
+lbr_NFeStatus = lbr_NFeStatus.substring(0,2);
+}
+set_Value ("lbr_NFeStatus", lbr_NFeStatus);
+}
+/** Get NFe Status.
+@return Status of NFe */
+public String getlbr_NFeStatus() 
+{
+return (String)get_Value("lbr_NFeStatus");
+}
+/** Set Digest Value.
+@param lbr_DigestValue Digest Value */
+public void setlbr_DigestValue (String lbr_DigestValue)
+{
+if (lbr_DigestValue != null && lbr_DigestValue.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_DigestValue = lbr_DigestValue.substring(0,254);
+}
+set_Value ("lbr_DigestValue", lbr_DigestValue);
+}
+/** Get Digest Value.
+@return Digest Value */
+public String getlbr_DigestValue() 
+{
+return (String)get_Value("lbr_DigestValue");
+}
+
 /** Set BP Name.
 @param BPName BP Name */
 public void setBPName (String BPName)
@@ -279,6 +334,18 @@ set_Value ("DateDoc", DateDoc);
 public Timestamp getDateDoc() 
 {
 return (Timestamp)get_Value("DateDoc");
+}
+/** Set Transaction Date.
+@param DateTrx Transaction Date */
+public void setDateTrx (Timestamp DateTrx)
+{
+set_Value ("DateTrx", DateTrx);
+}
+/** Get Transaction Date.
+@return Transaction Date */
+public Timestamp getDateTrx() 
+{
+return (Timestamp)get_Value("DateTrx");
 }
 /** Set Description.
 @param Description Optional short description of the record */
@@ -558,17 +625,17 @@ return (String)get_Value("OrderNo");
 }
 /** Set Org Address.
 @param Org_Location_ID Organization Location/Address */
-public void setOrg_Location_ID (int Org_Location_ID)
+public void setlbr_Org_Location_ID (int Org_Location_ID)
 {
-if (Org_Location_ID <= 0) set_Value ("Org_Location_ID", null);
+if (Org_Location_ID <= 0) set_Value ("lbr_Org_Location_ID", null);
  else 
-set_Value ("Org_Location_ID", new Integer(Org_Location_ID));
+set_Value ("lbr_Org_Location_ID", new Integer(Org_Location_ID));
 }
 /** Get Org Address.
 @return Organization Location/Address */
-public int getOrg_Location_ID() 
+public int getlbr_Org_Location_ID() 
 {
-Integer ii = (Integer)get_Value("Org_Location_ID");
+Integer ii = (Integer)get_Value("lbr_Org_Location_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }
@@ -1625,6 +1692,24 @@ BigDecimal bd = (BigDecimal)get_Value("lbr_InsuranceAmt");
 if (bd == null) return Env.ZERO;
 return bd;
 }
+/** Set Is Own Document.
+@param lbr_IsOwnDocument Identifies this is an own document */
+public void setlbr_IsOwnDocument (boolean lbr_IsOwnDocument)
+{
+set_Value ("lbr_IsOwnDocument", new Boolean(lbr_IsOwnDocument));
+}
+/** Get Is Own Document.
+@return Identifies this is an own document */
+public boolean islbr_IsOwnDocument() 
+{
+Object oo = get_Value("lbr_IsOwnDocument");
+if (oo != null) 
+{
+ if (oo instanceof Boolean) return ((Boolean)oo).booleanValue();
+ return "Y".equals(oo);
+}
+return false;
+}
 /** Set NCM Reference.
 @param lbr_NCMReference Defines the NCM Reference */
 public void setlbr_NCMReference (String lbr_NCMReference)
@@ -1641,6 +1726,57 @@ set_Value ("lbr_NCMReference", lbr_NCMReference);
 public String getlbr_NCMReference() 
 {
 return (String)get_Value("lbr_NCMReference");
+}
+
+/** Set NFe Description.
+@param lbr_NFeDesc Description of NFe */
+public void setlbr_NFeDesc (String lbr_NFeDesc)
+{
+if (lbr_NFeDesc != null && lbr_NFeDesc.length() > 512)
+{
+log.warning("Length > 512 - truncated");
+lbr_NFeDesc = lbr_NFeDesc.substring(0,511);
+}
+set_Value ("lbr_NFeDesc", lbr_NFeDesc);
+}
+/** Get NFe Description.
+@return Description of NFe */
+public String getlbr_NFeDesc() 
+{
+return (String)get_Value("lbr_NFeDesc");
+}
+/** Set NFe ID.
+@param lbr_NFeID Identification of NFe */
+public void setlbr_NFeID (String lbr_NFeID)
+{
+if (lbr_NFeID != null && lbr_NFeID.length() > 255)
+{
+log.warning("Length > 255 - truncated");
+lbr_NFeID = lbr_NFeID.substring(0,254);
+}
+set_Value ("lbr_NFeID", lbr_NFeID);
+}
+/** Get NFe ID.
+@return Identification of NFe */
+public String getlbr_NFeID() 
+{
+return (String)get_Value("lbr_NFeID");
+}
+/** Set NFe Lot.
+@param LBR_NFeLot_ID NFe Lot */
+public void setLBR_NFeLot_ID (int LBR_NFeLot_ID)
+{
+if (LBR_NFeLot_ID <= 0) set_Value ("LBR_NFeLot_ID", null);
+ else 
+set_Value ("LBR_NFeLot_ID", new Integer(LBR_NFeLot_ID));
+}
+/** Get NFe Lot.
+@return NFe Lot */
+public int getLBR_NFeLot_ID() 
+{
+Integer ii = (Integer)get_Value("LBR_NFeLot_ID");
+if (ii == null) return 0;
+return ii.intValue();
 }
 /** Set NFe No.
 @param lbr_NFENo NFe No */

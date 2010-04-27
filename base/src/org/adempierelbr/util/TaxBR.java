@@ -164,17 +164,18 @@ public class TaxBR
 					double iva = ((BigDecimal)product.get_Value("lbr_ProfitPercentage")).doubleValue();
 					lineamt = lineamt * (1+(iva/100));
 					
-					if (isTaxIncluded){
+					if (isTaxIncluded)
+					{
 						amt = calculate(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
 					}
 					else
 						amt = calculate(taxBR.getFormula(), lineamt, factor, lines);
-					
 				}	
 			}
 			
 			//Base de Cálculo
-			double     base    = calculate(taxBR.getFormula(),amt,factor,lines);
+			double     base    = POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution")) ? 
+					lineamt : calculate(taxBR.getFormula(),amt,factor,lines);
 			BigDecimal taxbase = new BigDecimal(base = base*taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
 			
 			//Valor do Imposto

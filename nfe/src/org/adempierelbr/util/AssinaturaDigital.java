@@ -3,13 +3,16 @@ package org.adempierelbr.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.Signature;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -69,6 +72,8 @@ public class AssinaturaDigital
 	static KeyPair keyP;
 	
 	private static String certType = "";
+	private static String cfgFile = "";
+	private static boolean isToken = false;
 	private static String alias = "";
 	private static char[] senha = "".toCharArray();
 	private static InputStream jksData = null;
@@ -95,9 +100,28 @@ public class AssinaturaDigital
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
 		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		{
+			jksData = new FileInputStream(jksFile);
 			certType = "PKCS12";
+		}
+		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS11))
+		{
+			cfgFile = System.getProperty("java.io.tmpdir") + "Token.cfg";
+			FileWriter f = TextUtil.createFile(cfgFile, false);
+			f.write("name = "+alias);
+			f.write("\nlibrary = "+jksFile.toString());
+			f.flush();
+			f.close();
+			//
+			isToken = true;
+			jksData = null;
+			certType = "PKCS11";
+		}
 		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		{
+			jksData = new FileInputStream(jksFile);
 			certType = "JKS";
+		}
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
 		//
@@ -117,7 +141,15 @@ public class AssinaturaDigital
 
 	public static void loadKeys() throws Exception
 	{
-		KeyStore keystore = KeyStore.getInstance(certType);
+		KeyStore keystore = null;
+		//
+		if (isToken)
+		{
+			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
+            Security.addProvider(p);
+		}
+		//
+		keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
 		Key key = keystore.getKey(alias, senha);
 		if (key instanceof PrivateKey)

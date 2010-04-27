@@ -220,10 +220,13 @@ public class ValidatorInOut implements ModelValidator
 				if(line.getMovementQty().equals(Env.ZERO))
 					return "Itens com qtd zero";
 				
-				if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID()))
+				if(prod.contains("" + line.getM_Product_ID() 
+						+ "|" + line.getM_Locator_ID()
+						+ "|" + line.getM_AttributeSetInstance_ID()))
 					return "Duas linhas usando o mesmo produto na mesma posição";
 				else
-					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID()
+							+ "|" + line.getM_AttributeSetInstance_ID());
 				
 				BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID(), line.getM_AttributeSetInstance_ID());
 				
@@ -339,7 +342,9 @@ public class ValidatorInOut implements ModelValidator
 				}
 			}	
 		}
-		else if ((timing == TIMING_BEFORE_COMPLETE || timing == TIMING_BEFORE_REVERSECORRECT))
+		else if ((timing == TIMING_BEFORE_COMPLETE 
+				|| timing == TIMING_BEFORE_REVERSECORRECT
+				|| timing == TIMING_BEFORE_PREPARE))
 		{
 			MInOutLine[] lines = inOut.getLines();
 			ArrayList<Integer> olines = new ArrayList<Integer>();
@@ -407,21 +412,22 @@ public class ValidatorInOut implements ModelValidator
 				
 				for (int j = 0; j < lines.length; j++)
 				{
-					if(lines[j].getM_Product_ID() == line.getM_Product_ID()
-							&& lines[j].getM_Locator_ID() == line.getM_Locator_ID())
+					if(lines[j].getM_Product_ID() == M_Product_ID
+							&& lines[j].getM_Locator_ID() == M_Locator_ID
+							&& lines[j].getM_AttributeSetInstance_ID() == M_AttributeSetInstance_ID)
 					{
 						qtyToShip = qtyToShip.add(lines[j].getQtyEntered());
 					}
 				}
 				
-				if (timing == TIMING_BEFORE_COMPLETE
+				if ((timing == TIMING_BEFORE_COMPLETE || timing == TIMING_BEFORE_PREPARE)
 						&& !MSysConfig.getBooleanValue("LBR_ALLOW_NEGATIVE_STOCK", true, inOut.getAD_Client_ID())){
 									
 					String movementType = inOut.getMovementType();
 					
 					if (movementType.charAt(1) == '-')
 					{
-						if (timing == TIMING_BEFORE_COMPLETE
+						if ((timing == TIMING_BEFORE_COMPLETE || timing == TIMING_BEFORE_PREPARE)
 								&& onHand.subtract(qtyToShip).doubleValue() < 0)
 							return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
 					}

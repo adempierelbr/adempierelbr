@@ -59,8 +59,12 @@ public class ProcGenerateNFEXml extends SvrProcess
 			//	Apaga o XML antigo
 			Timestamp now = new Timestamp(new Date().getTime());
 	        String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] XML antigo deletado\n";
-			nf.getAttachment().delete(true);
+	        //
+	        if (nf.getAttachment(true) != null)
+	        	nf.getAttachment().delete(true);
+	        //
 			nfeDesc += "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] NF removida do lote anterior\n";
+			nf.set_CustomColumn("LBR_NFeLot_ID", null);
 			//
 			if (nf.get_Value("lbr_NFeDesc") == null)
 				nf.set_CustomColumn("lbr_NFeDesc", nfeDesc);
@@ -68,7 +72,8 @@ public class ProcGenerateNFEXml extends SvrProcess
 				nf.set_CustomColumn("lbr_NFeDesc", nf.get_Value("lbr_NFeDesc") + nfeDesc);
 		}
 		//
-//		nf.setProcessed(true);
+		if (!nf.isProcessed())
+			nf.setProcessed(true);
 		nf.save();
 		//
 		String result = NFeXMLGenerator.geraCorpoNFe(p_LBR_NotaFiscal_ID);

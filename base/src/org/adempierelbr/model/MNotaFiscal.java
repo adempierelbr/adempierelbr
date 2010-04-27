@@ -168,7 +168,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (legalEntity == null || legalEntity.length() < 1)
 			legalEntity = org.getName();
 		//
-		setOrg_Location_ID(orgLoc.getC_Location_ID());
+		setlbr_Org_Location_ID(orgLoc.getC_Location_ID());
 		setlbr_OrgAddress1(orgLoc.getAddress1());
 		setlbr_OrgAddress2(orgLoc.getAddress2());
 		setlbr_OrgAddress3(orgLoc.getAddress3());
@@ -181,6 +181,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		setlbr_OrgCCM(orgInfo.get_ValueAsString("lbr_CCM"));
 		setlbr_CNPJ(orgInfo.get_ValueAsString("lbr_CNPJ"));
 		setlbr_IE(orgInfo.get_ValueAsString("lbr_IE"));
+		//
+		setlbr_OrgPhone(orgInfo.get_ValueAsString("Phone"));
 	}	//	setOrgInfo
 	
 	public void setBPartner(MBPartner bpartner, MBPartnerLocation bpLocation){

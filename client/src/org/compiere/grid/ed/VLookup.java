@@ -23,6 +23,7 @@ import java.sql.*;
 import java.util.logging.*;
 import javax.swing.*;
 
+import org.adempierelbr.model.MNFeLot;
 import org.compiere.apps.*;
 import org.compiere.apps.search.*;
 import org.compiere.model.*;
@@ -225,6 +226,13 @@ public class VLookup extends JComponent
 			mBPartnerUpd.addActionListener(this);
 			popupMenu.add(mBPartnerUpd);
 		}
+		//	Ruston
+		if (columnName.equals("LBR_NFeLot_ID"))
+		{
+			mNFeLotDelete = new CMenuItem (Msg.getMsg(Env.getCtx(), "Delete"), Env.getImageIcon("Delete16.gif"));
+			mNFeLotDelete.addActionListener(this);
+			popupMenu.add(mNFeLotDelete);
+		}
 		//
 		if (m_lookup != null && m_lookup.getZoom() == 0)
 			mZoom.setEnabled(false);
@@ -287,6 +295,7 @@ public class VLookup extends JComponent
 	private CMenuItem 			mRefresh;
 	private CMenuItem			mBPartnerNew;
 	private CMenuItem			mBPartnerUpd;
+	private CMenuItem			mNFeLotDelete;
 	// Mouse Listener
 	private VLookup_mouseAdapter mouseAdapter;
 
@@ -368,6 +377,9 @@ public class VLookup extends JComponent
 		// If the field is readonly the BPartner new option should be hidden - teo_sarca [ 1721710 ]
 		if (mBPartnerNew != null)
 			mBPartnerNew.setVisible(value);
+		//	If the field has no data, then delete option should be hidden
+		if (mNFeLotDelete != null)
+			mNFeLotDelete.setVisible(m_value != null);
 	}	//	setReadWrite
 
 	/**
@@ -639,6 +651,8 @@ public class VLookup extends JComponent
 			actionBPartner(true);
 		else if (e.getSource() == mBPartnerUpd)
 			actionBPartner(false);
+		else if (e.getSource() == mNFeLotDelete)
+			actionDeleteLot();
 	}	//	actionPerformed
 
 	/**
@@ -1230,6 +1244,38 @@ public class VLookup extends JComponent
 
 		actionCombo (new Integer(result));      //  data binding
 	}	//	actionBPartner
+	
+	/**
+	 *	Action - Delete Lot
+	 */
+	private void actionDeleteLot ()
+	{
+		int LBR_NFeLot_ID = 0;
+		//
+		if (m_value instanceof Integer)
+			LBR_NFeLot_ID = ((Integer)m_value).intValue();
+		else if (m_value != null)
+			LBR_NFeLot_ID = Integer.parseInt(m_value.toString());
+		//
+		if (LBR_NFeLot_ID > 0)
+		{
+			MNFeLot lot = new MNFeLot (Env.getCtx(), LBR_NFeLot_ID, null);
+			if (lot.islbr_LotSent())
+				ADialog.error(m_lookup.getWindowNo(), null, "CannotDeleteTrx");
+			else
+			{
+				//	Se não for leitura-escrita, marca como LE temporariamente
+				Boolean isRW = isReadWrite();
+				if (!isRW)
+					m_combo.setReadWrite(true);
+				//
+				m_lookup.getDirect(null, false, true);
+				actionCombo (null);
+				//
+				m_combo.setReadWrite(isRW);
+			}	//	else
+		}
+	}	//	actionDeleteLot
 
 	/**
 	 *	Action - Zoom

@@ -6,6 +6,7 @@ public class IdentLocalEntrega {
 	
 	private String entrega;
 	private String CNPJ;
+	private String CPF;
 	private String xLgr;
 	private String nro;
 	private String xCpl;
@@ -24,6 +25,14 @@ public class IdentLocalEntrega {
 	}
 	public void setCNPJ(String cnpj) {
 		CNPJ = cnpj;
+	}
+	public String getCPF()
+	{
+		return CPF;
+	}
+	public void setCPF(String cPF)
+	{
+		CPF = cPF;
 	}
 	public String getXLgr() {
 		return xLgr;

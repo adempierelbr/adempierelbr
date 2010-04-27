@@ -423,6 +423,9 @@ public class TextUtil
 	 * */
 	public static String toNumeric(String value)
 	{
+		if (value == null)
+			return "";
+		//
 		return value.replaceAll( "\\D*", "" );
 	}	//	toNumeric
 	

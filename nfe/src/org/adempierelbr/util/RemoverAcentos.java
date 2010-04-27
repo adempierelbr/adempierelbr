@@ -1,8 +1,8 @@
 package org.adempierelbr.util;
 
 public class RemoverAcentos {
-	static String acentuado = "çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛº'`";
-	static String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU   ";
+	static String acentuado = "çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛº'`-";
+	static String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU    ";
 	static char[] tabela;
 	static {
 		tabela = new char[256];
@@ -27,6 +27,10 @@ public class RemoverAcentos {
 			}
 		}
 		String retorno = sb.toString();
+		
+		retorno = retorno.replaceAll("\"", " ");
+		retorno = retorno.replaceAll("[ªº'`´@&^*#²–|{}œ∑®†¥øπ“‘«ß∂ƒ©˙∆˚¬…æΩ≈√∫µ≤≥÷¡™£¢∞§¶•°”\n]", " ");
+		
 		return retorno.trim();
 	}
 }

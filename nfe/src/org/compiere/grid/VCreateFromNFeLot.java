@@ -126,7 +126,11 @@ public class VCreateFromNFeLot extends VCreateFrom implements VetoableChangeList
 		String sql = "SELECT Documentno, DateDoc, BPName, lbr_BPCNPJ, "
 			+ "lbr_BPRegion, LBR_NotaFiscal_ID "
 			+ "FROM LBR_NotaFiscal "
-			+ "WHERE LBR_NFeID IS NOT NULL AND LBR_NFeLot_ID IS NULL";      //  #2
+			+ "WHERE LBR_NFeID IS NOT NULL " 	//	Com ID da NF-e
+			+ "AND LBR_NFeLot_ID IS NULL "		//	Sem Lote
+			+ "AND Processed='Y' "				//	Processadas
+			+ "AND IsCancelled='N' "			//	Não canceladas
+			+ "AND IsActive='Y' ";				//	Ativas
 
 		try
 		{

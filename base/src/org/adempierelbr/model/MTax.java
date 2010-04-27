@@ -616,7 +616,8 @@ public class MTax extends X_LBR_Tax {
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = t.LBR_TaxName_ID ")
 		   .append("INNER JOIN C_DocType dt ON dt.C_DocType_ID = d.C_DocTypeTarget_ID ")	//	BF [2946291]
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND dt.DocSubTypeSO NOT IN ('ON','OB') AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append("AND (dt.DocSubTypeSO IS NULL OR dt.DocSubTypeSO NOT IN ('ON','OB')) ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
 		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND (d.DocStatus = 'CO' OR d.");
 		
@@ -682,7 +683,8 @@ public class MTax extends X_LBR_Tax {
 		   .append("INNER JOIN LBR_TaxName brtn ON brtn.LBR_TaxName_ID = tl.LBR_TaxName_ID ")
 		   .append("INNER JOIN C_DocType dt ON dt.C_DocType_ID = d.C_DocTypeTarget_ID ")	//	BF [2946291]
 		   .append("WHERE brtn.HasWithhold = 'Y' AND d.C_BPartner_ID = ? ")
-		   .append("AND dt.DocSubTypeSO NOT IN ('ON','OB') AND TRUNC(d.DateAcct,'MM') = TRUNC(")
+		   .append("AND (dt.DocSubTypeSO IS NULL OR dt.DocSubTypeSO NOT IN ('ON','OB')) ")
+		   .append("AND TRUNC(d.DateAcct,'MM') = TRUNC(")
 		   .append(DB.TO_DATE((Timestamp)document.get_Value("DateAcct"))).append(",'MM') ")	//	BF [2782374]
 		   .append("AND d.DocStatus = 'CO' ");
 		

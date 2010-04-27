@@ -121,7 +121,7 @@ public class MItau
 	        
 	        cnab.setlbr_CNABField34(TextUtil.retiraAcentos(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
 	        cnab.setlbr_CNABField35(null); //Preencher com Espaços em Branco
-	        cnab.setlbr_CNABField36(TextUtil.retiraAcentos(boleto.getAddress1()).toUpperCase()); //Logradouro
+	        cnab.setlbr_CNABField36(TextUtil.retiraAcentos(boleto.getAddress1() + ", " + boleto.getAddress2()).toUpperCase()); //Logradouro
 	        cnab.setlbr_CNABField37(TextUtil.retiraAcentos(boleto.getAddress3()).toUpperCase()); //Bairro
 	        cnab.setlbr_CNABField38(MCNAB.CNABFormat(boleto.getPostal(),8)); //CEP
 	        cnab.setlbr_CNABField39(TextUtil.retiraAcentos(boleto.getCity()).toUpperCase()); //Cidade

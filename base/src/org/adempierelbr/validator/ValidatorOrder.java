@@ -24,6 +24,7 @@ import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxesException;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.GridField;
+import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -41,6 +42,7 @@ import org.compiere.model.PO;
 import org.compiere.model.X_C_Order;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	ValidatorOrder
@@ -233,9 +235,10 @@ public class ValidatorOrder implements ModelValidator
 			String DocSubTypeSO = dt.getDocSubTypeSO();
 			
 			//Somente Venda Padrão
-			if (DocSubTypeSO != null && !(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) ||
-				  DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder))){
-				
+			if (DocSubTypeSO != null 
+					&& !(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) 
+							|| DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder)))
+			{
 				MInOut shipment  = null;
 				MInvoice invoice = null;
 				

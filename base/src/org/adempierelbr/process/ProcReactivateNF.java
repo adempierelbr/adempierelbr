@@ -14,10 +14,12 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MNFeLot;
 import org.adempierelbr.model.MNotaFiscal;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 
 /**
@@ -70,7 +72,21 @@ public class ProcReactivateNF extends SvrProcess
 		
 		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 		if (nf.isCancelled())
-			return "Não é permitido reativar uma Nota Fiscal Cancelada";
+			return "Não é permitido reativar uma Nota Fiscal Cancelada.";
+		
+		if (nf.get_Value("LBR_NFeLot_ID") != null)
+		{
+			MNFeLot nfLot = new MNFeLot (Env.getCtx(), (Integer) nf.get_Value("LBR_NFeLot_ID"), null);
+			if (!nfLot.isProcessed())
+				return "Não é permitido reativar, pois o lote da NF não foi processado ainda.";
+		}
+		
+		if (nf.get_Value("lbr_NFeStatus") != null)
+		{
+			String status = (String) nf.get_Value("lbr_NFeStatus");
+			if (status != null && status.equals("100"))
+				return "Não é permitido reativar uma Nota Fiscal Autorizada (100).";
+		}
 		
 		nf.setProcessed(false);
 		nf.save(get_TrxName());
