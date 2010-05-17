@@ -4521,3 +4521,8 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 ;
 
 -- FINAL Retirado do antigo Trunk  ---- 046-NFe
+
+-- 17/05/2010 1h39min56s BRT
+-- Default comment for updating dictionary
+UPDATE AD_SysConfig SET Value='100-rc110/029-NFe.sql',Updated=TO_TIMESTAMP('2010-05-17 01:39:56','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_SysConfig_ID=1100006
+;
