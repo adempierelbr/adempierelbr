@@ -1,4 +1,4 @@
--- 13/04/2009 19h10min28s BRT
+﻿-- 13/04/2009 19h10min28s BRT
 -- Default comment for updating dictionary
 INSERT INTO AD_Element (AD_Element_ID,ColumnName,AD_Client_ID,Name,Created,Updated,PrintName,IsActive,EntityType,AD_Org_ID,CreatedBy,UpdatedBy) VALUES (1100005,'lbr_LegalEntity',0,'Legal Entity',TO_TIMESTAMP('2009-04-13 19:10:27','YYYY-MM-DD HH24:MI:SS'),TO_TIMESTAMP('2009-04-13 19:10:27','YYYY-MM-DD HH24:MI:SS'),'Legal Entity','Y','LBRA',0,100,100)
 ;
@@ -10,7 +10,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Name,Description,PrintNam
 
 -- 13/04/2009 19h11min52s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET Name='Raz‹o Social',PrintName='Raz‹o Social',Description='Nome da Raz‹o Social da Empresa',Help='Esta Raz‹o Social estar‡ presente em todos os documentos fiscais e cont‡beis, como por exemplo o SPED e o SINTEGRA.',Updated=TO_TIMESTAMP('2009-04-13 19:11:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1100005 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET Name='Razão Social',PrintName='Razão Social',Description='Nome da Razão Social da Empresa',Help='Esta Razão Social estar‡ presente em todos os documentos fiscais e cont‡beis, como por exemplo o SPED e o SINTEGRA.',Updated=TO_TIMESTAMP('2009-04-13 19:11:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1100005 AND AD_Language='pt_BR'
 ;
 
 -- 13/04/2009 19h15min48s BRT
