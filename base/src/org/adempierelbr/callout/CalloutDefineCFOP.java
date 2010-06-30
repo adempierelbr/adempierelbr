@@ -92,14 +92,28 @@ public class CalloutDefineCFOP extends CalloutEngine {
 					.getValue("C_Invoice_ID")).intValue(), null);
 		}
 	
-		Integer cfopID = CalloutDefineCFOP.defineCFOP(ctx, M_Product_ID, C_Charge_ID, mo, mi, null);
-				
-		if (cfopID == null || cfopID.intValue() == 0){
+		Integer cfopLineID = CalloutDefineCFOP.defineCFOP(ctx, M_Product_ID, C_Charge_ID, mo, mi, null);
+		if (cfopLineID != null && cfopLineID.intValue() > 0)
+		{
+			X_LBR_CFOPLine cfopLine = new X_LBR_CFOPLine (Env.getCtx(), cfopLineID, null);
+			Integer cfopID = cfopLine.getLBR_CFOP_ID();
+			//
+			mTab.setValue("LBR_CFOP_ID", cfopID);
+			//
+			if (cfopLine.getLBR_LegalMessage_ID() > 0)
+				mTab.setValue("LBR_LegalMessage_ID", cfopLine.getLBR_LegalMessage_ID());
+			//
+			if (cfopLine.getlbr_TaxStatus() != null)
+			{
+				MProduct p = new MProduct (Env.getCtx(), M_Product_ID, null);
+				mTab.setValue("lbr_TaxStatus", p.get_Value("lbr_ProductSource") + cfopLine.getlbr_TaxStatus());
+			}
+		}
+		else
+		{
 			mTab.setValue("LBR_CFOP_ID", null);
 			mTab.getField("LBR_CFOP_ID").setError(true);
 		}
-		else
-			mTab.setValue("LBR_CFOP_ID", cfopID);
 
 		return "";
 	}
@@ -195,17 +209,21 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		MLocation mlo = new MLocation(ctx, org.getInfo()
 				.getC_Location_ID(), null);
 
-		//Set query data
-		String sql = "select lbr_cfop_id, lbr_cfopline_id from lbr_cfopline where c_doctype_id = ? "
-				+ "and (lbr_productcategory_id = ?  or lbr_productcategory_id is null) "
-				+ "and (lbr_bpartnercategory_id = ? or lbr_bpartnercategory_id is null) "
-				+ "and lbr_destionationtype = ? " 
-				+ "and lbr_issubtributaria in('B', ?) "
-				+ "and lbr_ismanufactured in('B', ?) "
-				+ "and (lbr_transactiontype = ? or lbr_transactiontype is null)";
+		//	Set query data
+		String sql = "SELECT LBR_CFOP_ID, LBR_CFOPLine_ID "
+				+ "FROM LBR_CFOPLine "
+				+ "WHERE C_DocType_ID=? "													//	1
+				+ "AND (LBR_ProductCategory_ID = ?  OR LBR_ProductCategory_ID IS NULL) "	//	2
+				+ "AND (LBR_BPartnerCategory_ID = ? OR LBR_BPartnerCategory_ID IS NULL) "	//	3
+				+ "AND lbr_DestionationType = ? " 											//	4
+				+ "AND lbr_IsSubTributaria IN ('B', ?) "									//	5
+				+ "AND lbr_IsManufactured IN ('B', ?) "										//	6
+				+ "AND (lbr_TransactionType = ? OR lbr_TransactionType IS NULL) "			//	7
+				+ "AND AD_Org_ID IN (0, ?)";												//	8
 
 		
-		if (mlbp == null || mlo == null){
+		if (mlbp == null || mlo == null)
+		{
 			log.log(Level.SEVERE,"Location == null");
 			return null;
 		}
@@ -214,12 +232,13 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Integer cfopID = null;
-		try {
+		try 
+		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, C_DocTypeTarget_ID);
 			pstmt.setInt(2, prdCat);
 			pstmt.setInt(3, bpCat);
-
+			//
 			if (mbp.get_Value("lbr_Suframa") != null)
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_ZonaFranca);
@@ -232,13 +251,12 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			else if (!mlbp.getRegion().equals(mlo.getRegion()))
 				pstmt.setString(4,
 						X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes);
-
- 
-				//&& POLBR.get_ValueAsBoolean(mbp.get_Value("lbr_HasSubstitution"));
-			pstmt.setString(5, isSubstitute ? "Y" :  "N");
+			//
+ 			pstmt.setString(5, isSubstitute ? "Y" :  "N");
 			pstmt.setString(6, isManufactured ? "Y" : "N");
 			pstmt.setString(7, transactionType);
-			
+			pstmt.setInt(8, org.getAD_Org_ID());
+			//
 			rs = pstmt.executeQuery();
 			int contRows = 0;
 			while(rs.next()){
@@ -248,34 +266,36 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			rs = pstmt.executeQuery();
 			if(contRows < 2){
 				while (rs.next()){
-					cfopID = rs.getInt(1);
+					cfopID = rs.getInt(2);
 				}
 			}
 			else{
 				Integer [][] tmp = new Integer[contRows][2];	
-				
-				//0 - trans 0, parc 0, prod 0 = 0
-				//1 - trans 1, parc 0, prod 0 = 1
-				//2 - trans 1, parc 2, prod 0 = 3
-				//3 - trans 1, parc 2, prod 3 = 6
-				//4 - trans 0, parc 2, prod 0 = 2
-				//5 - trans 0, parc 2, prod 3 = 5
-				//6 - trans 0, parc 0, prod 3 = 3
-				int trans = 0, parc = 0, prod = 0;
+
+				int points = 0;
 				cont = 0;
 				Vector <X_LBR_CFOPLine> cfopl = new Vector<X_LBR_CFOPLine>();
-				while(rs.next()){
+				while(rs.next())
+				{
 					X_LBR_CFOPLine cfop = new X_LBR_CFOPLine(Env.getCtx(), rs.getInt(2), null);
 					cfopl.add(cfop);
-					if(cfop.getlbr_TransactionType() == null)
-						trans = 1;
-					if(cfop.getLBR_BPartnerCategory_ID() == 0)
-						parc = 2;
-					if(cfop.getLBR_ProductCategory_ID() == 0)
-						prod =3;
-					tmp[cont][0] = (trans+parc+prod);
-					tmp[cont][1] = cfop.getLBR_CFOP_ID();
+					//
+					if (cfop.getlbr_TransactionType() != null)
+						points++;
+					if (cfop.getLBR_BPartnerCategory_ID() != 0)
+						points += 2;
+					if (cfop.getLBR_ProductCategory_ID() != 0)
+						points += 3;
+					if (cfop.getAD_Org_ID() == 0)
+						points += 4;
+					else if (cfop.getAD_Org_ID() == org.getAD_Org_ID())
+						points += 5;
+					//
+					tmp[cont][0] = (points);
+					tmp[cont][1] = cfop.getLBR_CFOPLine_ID();
 					cont++;
+					//
+					points = 0;
 				}
 				int idx = 0;
 				int cfopn = 0;

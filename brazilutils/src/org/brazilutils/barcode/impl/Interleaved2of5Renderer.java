@@ -43,7 +43,7 @@ import org.brazilutils.barcode.IncompatibleBarCodePatternException;
  *     <center><img src="doc-files/i25-1.jpg" border="0"></center>
  *  </p>
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: Interleaved2of5Renderer.java,v 1.1 2005/11/18 14:44:19 rawfosgod Exp $
  *
  *  @see Interleaved2of5Encoder

@@ -174,7 +174,7 @@ public class TaxBR
 			}
 			
 			//Base de Cálculo
-			double     base    = POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution")) ? 
+			double     base    = (product != null && POLBR.get_ValueAsBoolean(product.get_Value("lbr_HasSubstitution"))) ? 
 					lineamt : calculate(taxBR.getFormula(),amt,factor,lines);
 			BigDecimal taxbase = new BigDecimal(base = base*taxBR.getTaxBase()).setScale(scale, BigDecimal.ROUND_HALF_UP);
 			

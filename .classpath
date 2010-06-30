@@ -6,26 +6,26 @@
 	<classpathentry kind="src" path="nfe/src"/>
 	<classpathentry kind="src" path="nfe/ws/src"/>
 	<classpathentry kind="src" path="brazilutils/src"/>
-	<classpathentry kind="lib" path="lib/PDFBox/ant.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/FontBox-0.2.0-dev.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/JempBox-0.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/ant.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/FontBox-0.2.0-dev.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/JempBox-0.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/junit.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jBoleto.jar"/>
-	<classpathentry kind="lib" path="lib/rtextpr.jar"/>
-	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
-	<classpathentry kind="lib" path="lib/PDFBox/PDFBox-0.7.3.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j.jar"/>
-	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis.jar"/>
-	<classpathentry kind="lib" path="lib/ws/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="lib/ws/javax.wsdl_1.5.1.v200806030408.jar"/>
-	<classpathentry kind="lib" path="lib/ws/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="lib/ws/org.apache.commons.logging_1.0.4.v200904062259.jar"/>
-	<classpathentry kind="lib" path="lib/ws/saaj.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere342"/>
+	<classpathentry exported="true" kind="lib" path="lib/rtextpr.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/bsh-2.0b4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/PDFBox-0.7.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xstream-1.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/axis.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/commons-discovery-0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/javax.wsdl_1.5.1.v200806030408.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/jaxrpc.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/org.apache.commons.logging_1.0.4.v200904062259.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/saaj.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere342"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

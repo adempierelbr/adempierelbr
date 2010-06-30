@@ -685,7 +685,70 @@ public class POLBR{
 		
 		return M_Locator_ID;
 	} //checkLocatorExists
+
+	/**
+	 * 	Get Region ID based on Region Name and Country
+	 * 
+	 * @param Region Name
+	 * @param C_Country_ID
+	 * @param trx
+	 * @return C_City_ID
+	 */
+	public static int getC_Region_ID(String Name, int C_Country_ID, String trx)
+	{
+		int C_Region_ID = -1;
+		String sql = "SELECT C_Region_ID " +
+				     "FROM C_Region " +
+				     "WHERE Name LIKE ? " +
+				     "AND C_Country_ID = ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setString(1, Name);
+			pstmt.setInt(2, C_Country_ID);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				C_Region_ID = rs.getInt(1);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally
+		{
+		       DB.close(rs, pstmt);
+		}
+		
+		return C_Region_ID;
+		
+	}	//	getC_Region_ID
 	
+	/**
+	 * 	Get City ID based on Name and Region
+	 * 
+	 * @param City Name
+	 * @param Region Name
+	 * @param trx
+	 * @return C_City_ID
+	 */
+	public static int getC_City_ID(String cityName, String regionName, int pC_Country_ID, String trx)
+	{
+		return getC_City_ID(cityName, getC_Region_ID(regionName, pC_Country_ID, trx), trx);
+	}	//	getC_City_ID
+	
+	/**
+	 * 	Get City ID based on Name and Region
+	 * 
+	 * @param City Name
+	 * @param C_Region_ID
+	 * @param trx
+	 * @return C_City_ID
+	 */
 	public static int getC_City_ID(String Name, int C_Region_ID, String trx)
 	{
 		int C_City_ID = -1;
@@ -711,7 +774,8 @@ public class POLBR{
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		finally{
+		finally
+		{
 		       DB.close(rs, pstmt);
 		}
 		

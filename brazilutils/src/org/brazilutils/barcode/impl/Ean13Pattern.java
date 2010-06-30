@@ -37,7 +37,7 @@ import org.brazilutils.barcode.BarCodePatternException;
  *  be passed to a renderer class (default {@link Ean13Renderer})
  *  that actually knows how to render the pattern.</p>
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: Ean13Pattern.java,v 1.1 2005/11/18 14:44:17 rawfosgod Exp $
  */
 public class Ean13Pattern implements BarCodePattern {

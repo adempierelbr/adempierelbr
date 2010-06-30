@@ -94,6 +94,9 @@ public class NFeUtil
 	{
 		if (xml != null)
 		{
+			//	Force ReQuery
+			nf.getAttachment(true);
+			//
 			MAttachment attachDist = nf.createAttachment();
 			attachDist.addEntry(xml);
 			return attachDist.save(nf.get_TrxName());

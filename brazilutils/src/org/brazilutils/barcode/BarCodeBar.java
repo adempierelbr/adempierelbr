@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 /**
  *  TODO
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: BarCodeBar.java,v 1.1 2005/11/18 14:44:14 rawfosgod Exp $
  */
 public class BarCodeBar {

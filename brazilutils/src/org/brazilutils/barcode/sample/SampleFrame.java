@@ -40,7 +40,7 @@ import org.brazilutils.barcode.BarCodeEncoder;
 /**
  *  Application main frame.
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: SampleFrame.java,v 1.1 2005/11/18 14:44:20 rawfosgod Exp $
  */
 public class SampleFrame extends JFrame {

@@ -35,7 +35,7 @@ public abstract class InscricaoEstadual
 implements NumberComposed, Validable, ChainValidator {
 
     /**
-     * @deprecated usado para manter método deprecated em UF funcionado
+     * @deprecated usado para manter mï¿½todo deprecated em UF funcionado
      * @param unit
      * @return
      */
@@ -47,16 +47,16 @@ implements NumberComposed, Validable, ChainValidator {
             return (InscricaoEstadual) Class.forName(name).newInstance();
 
         } catch (InstantiationException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } catch (IllegalAccessException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } catch (ClassNotFoundException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } 
 

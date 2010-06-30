@@ -47,7 +47,7 @@ import java.util.regex.Matcher;
  *
  *  <p><strong>NOTE</strong> The weights are applied from right to left.</p>
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: Modulo10Calculator.java,v 1.1 2005/11/18 14:44:17 rawfosgod Exp $
  */
 public class Modulo10Calculator implements ChecksumCalculator {

@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
  *  be passed to a renderer class (default {@link Interleaved2of5Renderer})
  *  that actually knows how to render the pattern.</p>
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: Interleaved2of5Pattern.java,v 1.1 2005/11/18 14:44:18 rawfosgod Exp $
  */
 public class Interleaved2of5Pattern implements BarCodePattern {

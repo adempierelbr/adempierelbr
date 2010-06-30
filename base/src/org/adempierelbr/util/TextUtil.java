@@ -23,9 +23,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.logging.Level;
 
+import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
 /**
@@ -38,6 +38,9 @@ import org.compiere.util.Env;
  */
 public class TextUtil
 {   
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(TextUtil.class);
+	
 	public static final String EOL_WIN32 = "\r\n";
 	public static final String EOL_LINUX = "\n";
 	
@@ -101,6 +104,40 @@ public class TextUtil
 		return fw;
 	}
 	
+	/**
+	 * 	Gera um arquivo com codificação UTF-8
+	 * 
+	 * @param dados a serem gravados no arquivo
+	 * @param nome do arquivo
+	 */
+	public static void generateFile (String data, String fileName)
+	{
+		generateFile (data, fileName, "UTF-8");
+	}	//	generateFile
+	
+	/**
+	 * 	Gera um arquivo
+	 * 
+	 * @param dados a serem gravados no arquivo
+	 * @param nome do arquivo
+	 * @param codificação (ex. UTF-8, ISO-8859-1, etc)
+	 */
+	public static void generateFile (String data, String fileName, String encoding)
+	{
+		try
+		{
+			System.setProperty("file.encoding", encoding);
+			//
+			FileWriter fw = TextUtil.createFile(fileName, false);
+			TextUtil.addLine(fw, data);
+			TextUtil.closeFile(fw);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + fileName, e);
+		}
+	}	//	generateFile
+
 	/**
 	 *  addLine
 	 *  Add line

@@ -37,7 +37,7 @@ import org.brazilutils.barcode.IncompatibleBarCodePatternException;
 /**
  *  A reusable class capable of rendering an EAN-13 barcode symbology.
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: Ean13Renderer.java,v 1.1 2005/11/18 14:44:18 rawfosgod Exp $
  *
  *  @see Ean13Encoder

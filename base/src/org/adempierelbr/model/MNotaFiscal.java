@@ -42,6 +42,7 @@ import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_LegalMessage;
@@ -51,6 +52,7 @@ import org.compiere.model.X_LBR_NFLineTax;
 import org.compiere.model.X_LBR_NFTax;
 import org.compiere.model.X_LBR_NotaFiscal;
 import org.compiere.model.X_LBR_NotaFiscalLine;
+import org.compiere.model.X_LBR_TaxGroup;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -66,7 +68,7 @@ import org.compiere.util.Env;
 public class MNotaFiscal extends X_LBR_NotaFiscal {
     
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -358,6 +360,175 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	}	//	getNCM
 	
 	/**
+	 * 	Ajusta as variáveis da mensagem legal
+	 * 
+	 * 	@param documentNote
+	 */
+	public void setDocumentNote (String documentNote)
+	{
+		super.setDocumentNote(parse(documentNote));
+	}	//	setDocumentNote
+	
+	/**
+	 * 	Parse text
+	 *	@param text text
+	 *	@param po object
+	 *	@return parsed text
+	 */
+	private String parse (String text)
+	{
+		if (text.indexOf('@') == -1)
+			return text;
+		
+		String inStr = text;
+		String token;
+		StringBuffer outStr = new StringBuffer();
+
+		int i = inStr.indexOf('@');
+		while (i != -1)
+		{
+			outStr.append(inStr.substring(0, i));			// up to @
+			inStr = inStr.substring(i+1, inStr.length());	// from first @
+
+			int j = inStr.indexOf('@');						// next @
+			if (j < 0)										// no second tag
+			{
+				inStr = "@" + inStr;
+				break;
+			}
+
+			token = inStr.substring(0, j);
+			outStr.append(parseVariable(token));			// replace context
+
+			inStr = inStr.substring(j+1, inStr.length());	// from second @
+			i = inStr.indexOf('@');
+		}
+
+		outStr.append(inStr);           					//	add remainder
+		return outStr.toString();
+	}	//	parse
+	
+	/**
+	 * 	Parse Variable
+	 *	@param variable variable
+	 *	@return translated variable or if not found the original tag
+	 */
+	private String parseVariable (String variable)
+	{
+		if (variable == null || variable.indexOf('<') == -1)
+			return "";
+		else if (variable.contains("<lbr_TaxAmt>"))
+		{
+			BigDecimal tax = getTaxAmt(variable.substring(0, variable.indexOf('<')));
+			//
+			if (tax == null)
+				tax = Env.ZERO;
+			//
+			return tax.setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+		}
+		else
+		{
+			log.warning("Not implemented yet.");
+			return "";
+		}
+	}	//	parseVariable
+	
+	/**
+	 * 
+	 */
+	public void setlbr_ServiceTaxes()
+	{
+		String serviceDescription = "";
+		MNotaFiscalLine[] lines = getLines(null);
+		//
+		for (MNotaFiscalLine line : lines)
+		{
+			if (line.getLBR_NotaFiscalLine_ID() <= 0
+					|| line.getQty().compareTo(Env.ZERO) <= 0)
+				continue;
+			//
+			serviceDescription += line.getQty() + " " + line.getlbr_UOMName() + "\t";
+			serviceDescription += line.getProductName();
+			//
+			if (line.getDescription() != null 
+					&& !line.getDescription().equals(""))
+			{
+				serviceDescription += ", " + line.getDescription();
+				//
+				if (line.getQty().compareTo(Env.ONE) == 1)
+				{
+					serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+				}
+				serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
+			}
+			//
+			serviceDescription += "\n";
+		}
+		//
+		X_LBR_NFTax[] taxes = getTaxes();
+		String header = "";
+		String content = "";
+		String footer = "";
+		Boolean printTaxes = false;
+		//
+		if (taxes == null)
+			;
+		else
+		{
+			header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
+			header += "- R$ ";
+			header += TextUtil.lPad(getlbr_ServiceTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+			header += "\n\n";
+			//
+			if (taxes.length == 1)
+				header += "Retenção:\n";
+			else if (taxes.length > 1)
+				header += "Retenções:\n";
+			//
+			for (X_LBR_NFTax tax : taxes)
+			{
+				X_LBR_TaxGroup tg = new X_LBR_TaxGroup (Env.getCtx(), tax.getLBR_TaxGroup_ID(), null);
+				if (tg.getName() == null || tg.getName().equals("ISS"))	//	ISS ja e destacado normalmente
+					continue;
+				//
+				printTaxes = true;
+				//
+				content += TextUtil.rPad(tg.getName(), 15);
+				content += "- R$ ";
+				content += TextUtil.lPad(tax.getlbr_TaxAmt().abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+				content += "\n";
+			}
+			footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
+			footer += "- R$ ";
+			footer += TextUtil.lPad(getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+			footer += "\n";
+		}
+		//
+		if (printTaxes)
+			serviceDescription += header + content + footer;
+		//
+		MOpenItem[] ois = MOpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
+		if (ois == null)
+			;
+		else if (ois.length == 1)
+			serviceDescription += "\nVencimento em " + TextUtil.timeToString(ois[0].getDueDate(), "dd/MM/yyyy");
+		else if (ois.length > 1)
+		{
+			serviceDescription += "\nVencimentos:\n";
+			//
+			for (MOpenItem oi : ois)
+			{
+				serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
+				serviceDescription += "     - R$ ";
+				serviceDescription += TextUtil.lPad(oi.getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+				serviceDescription += "\n";
+			}
+		}
+		//
+		setDescription(serviceDescription);
+	}
+	
+	/**
 	 *  Retorno o valor da Base de ICMS
 	 *  
 	 *  @return	BigDecimal	Base ICMS
@@ -457,6 +628,20 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	}	//	getIPIAmt
 	
 	/**
+	 *  Retorno o valor do Imposto
+	 *  
+	 *  @return	BigDecimal	Imposto
+	 */
+	public BigDecimal getTaxAmt (String taxName)
+	{
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
+				"WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " + 
+				"(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='"+taxName+"')";
+		
+		return DB.getSQLValueBD(null, sql, getLBR_NotaFiscal_ID());	
+	}	//	getIPIAmt
+	
+	/**
 	 * 	Retorna o CFOP das linhas, no caso de mais de 1 CFOP, 
 	 * 		retorna o ref. ao Maior Valor
 	 * 
@@ -550,7 +735,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		MNotaFiscalLine [] teste = new MNotaFiscalLine[list.size()];
 	 	int i = 0;
 		for (X_LBR_NotaFiscalLine notaFiscalLine : list) {
-			teste[i++] = new MNotaFiscalLine(Env.getCtx(), notaFiscalLine.getLBR_NotaFiscalLine_ID(), null);
+			teste[i++] = new MNotaFiscalLine(Env.getCtx(), notaFiscalLine.getLBR_NotaFiscalLine_ID(), get_TrxName());
 		}
 		
 		return teste;	

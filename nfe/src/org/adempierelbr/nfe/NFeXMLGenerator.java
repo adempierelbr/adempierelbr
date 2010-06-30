@@ -592,9 +592,9 @@ public class NFeXMLGenerator
 		// Valor Liquido
 		cobrfat.setVLiq(nf.getGrandTotal().setScale(2, ROUND).toString());
 		// Desconto
-//		BigDecimal discountAmt = (BigDecimal) nf.get_Value("DiscountAmt");
-//		if (discountAmt != null)
-//		cobrfat.setVDesc(discountAmt.setScale(2, ROUND).toString());
+		BigDecimal discountAmt = (BigDecimal) nf.get_Value("DiscountAmt");
+		if (discountAmt != null)
+		cobrfat.setVDesc(discountAmt.setScale(2, ROUND).toString());
 
 		cobr.setFat(cobrfat);
 
@@ -818,7 +818,7 @@ public class NFeXMLGenerator
 				}
 				else if (lt.getTaxIndicator().equals("PIS"))
 				{
-					pisgrupo.setCST("01");
+					pisgrupo.setCST("99");	//	Solicitado pela INCONTROL
 					if (pisgrupo.getCST().equals("01"))
 					{
 						// vPIS - Valor do PIS
@@ -832,7 +832,7 @@ public class NFeXMLGenerator
 						xstream.aliasField("PISAliq", PISBean.class, "PIS");
 						impostos.setPIS(pisnfe);
 					}
-					else
+					else if (pisgrupo.getCST().equals("01"))
 					{
 						pisgrupo.setCST("04");
 						pisnfe.setPIS(pisgrupo);
@@ -840,10 +840,22 @@ public class NFeXMLGenerator
 						xstream.aliasField("PISNT", PISBean.class, "PIS");
 						impostos.setPIS(pisnfe);
 					}
+					else if (pisgrupo.getCST().equals("99"))
+					{
+//						pisgrupo.setVBC(Env.ZERO.setScale(2, ROUND).toString());
+//						pisgrupo.setPPIS(Env.ZERO.setScale(2, ROUND).toString());
+						pisgrupo.setqBCProd(Env.ZERO.setScale(4, ROUND).toString());
+						pisgrupo.setvAliqProd(Env.ZERO.setScale(4, ROUND).toString());
+						pisgrupo.setVPIS(Env.ZERO.setScale(2, ROUND).toString());
+						pisnfe.setPIS(pisgrupo);
+						xstream.useAttributeFor(PISBean.class, "PIS");
+						xstream.aliasField("PISOutr", PISBean.class, "PIS");
+						impostos.setPIS(pisnfe);
+					}
 				}
 				else if (lt.getTaxIndicator().equals("COFINS"))
 				{
-					cofinsgrupo.setCST("01");
+					cofinsgrupo.setCST("99");	//	Solicitado pela INCONTROL
 					if (cofinsgrupo.getCST().equals("01"))
 					{
 						cofinsgrupo.setCST("01");
@@ -858,12 +870,24 @@ public class NFeXMLGenerator
 						xstream.aliasField("COFINSAliq", COFINSBean.class, "COFINS");
 						impostos.setCOFINS(cofinsnfe);
 					}
-					else
+					else if (cofinsgrupo.getCST().equals("04"))
 					{
 						cofinsgrupo.setCST("04");
 						cofinsnfe.setCOFINS(cofinsgrupo);
 						xstream.useAttributeFor(COFINSBean.class, "COFINS");
 						xstream.aliasField("COFINSNT", COFINSBean.class, "COFINS");
+						impostos.setCOFINS(cofinsnfe);
+					}
+					else if (cofinsgrupo.getCST().equals("99"))
+					{
+//						cofinsgrupo.setVBC(Env.ZERO.setScale(2, ROUND).toString());
+//						cofinsgrupo.setPCOFINS(Env.ZERO.setScale(2, ROUND).toString());
+						cofinsgrupo.setqBCProd(Env.ZERO.setScale(4, ROUND).toString());
+						cofinsgrupo.setvAliqProd(Env.ZERO.setScale(4, ROUND).toString());
+						cofinsgrupo.setVCOFINS(Env.ZERO.setScale(2, ROUND).toString());
+						cofinsnfe.setCOFINS(cofinsgrupo);
+						xstream.useAttributeFor(COFINSBean.class, "COFINS");
+						xstream.aliasField("COFINSOutr", COFINSBean.class, "COFINS");
 						impostos.setCOFINS(cofinsnfe);
 					}
 				}

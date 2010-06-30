@@ -36,7 +36,7 @@ import org.brazilutils.barcode.BarCodeRenderer;
 /**
  *  A JPanel specialization used to render the barcode symbology.
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: SamplePanel.java,v 1.1 2005/11/18 14:44:21 rawfosgod Exp $
  */
 public class SamplePanel extends JPanel {

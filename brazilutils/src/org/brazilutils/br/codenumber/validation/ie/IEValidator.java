@@ -25,22 +25,22 @@ public abstract class IEValidator implements Validator{
         // usa reflection 
         String name = IEValidator.class.getPackage().getName() + ".IEValidatorFor" + unit.getShortCode();
 
-        // não podemos fazer cache porque alguns valdiadores podem 
+        // nï¿½o podemos fazer cache porque alguns valdiadores podem 
         // ser parameterizados
         try {
             return (IEValidator) Class.forName(name).newInstance();
 
         } catch (InstantiationException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } catch (IllegalAccessException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } catch (ClassNotFoundException e) {
-            // não é suposto isto acontecer pq a classes procuradas 
-            // estão no mesmo pacote
+            // nï¿½o ï¿½ suposto isto acontecer pq a classes procuradas 
+            // estï¿½o no mesmo pacote
             throw new RuntimeException (e);
         } 
     }

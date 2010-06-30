@@ -121,10 +121,10 @@ return ii.intValue();
 @param Description Optional short description of the record */
 public void setDescription (String Description)
 {
-if (Description != null && Description.length() > 255)
+if (Description != null && Description.length() > 1024)
 {
-log.warning("Length > 255 - truncated");
-Description = Description.substring(0,254);
+log.warning("Length > 1024 - truncated");
+Description = Description.substring(0,1024);
 }
 set_Value ("Description", Description);
 }

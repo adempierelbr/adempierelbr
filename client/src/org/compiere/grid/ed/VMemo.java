@@ -16,41 +16,52 @@
  *****************************************************************************/
 package org.compiere.grid.ed;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+
+import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
 
 import org.adempiere.plaf.AdempierePLAF;
-import org.compiere.apps.*;
-import org.compiere.swing.*;
-import org.compiere.util.*;
+import org.compiere.apps.ADialog;
+import org.compiere.apps.ScriptEditor;
+import org.compiere.swing.CMenuItem;
+import org.compiere.swing.CTextArea;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  *  Text Control (JTextArea embedded in JScrollPane)
  *
  *  @author 	Jorg Janke
- *  @version 	$Id: VMemo.java,v 1.2 2006/07/30 00:51:27 jjanke Exp $
+ *  @version 	$Id: VMemo.java,v 1.2 2006/07/30 00:51:28 jjanke Exp $
  */
 public class VMemo extends CTextArea
-	implements VEditor, KeyListener, FocusListener, ActionListener
+	implements VEditor, KeyListener, ActionListener
 {
 	/**
-	 *	IDE Baan Constructor
+	 * 	Serial
 	 */
-	public VMemo()
-	{
-		this("", false, false, true, 60, 4000);
-	}	//	VMemo
+	private static final long serialVersionUID = 2349724618796811044L;
 
 	/**
 	 *	Standard Constructor
-	 *  @param columnName
-	 *  @param mandatory
-	 *  @param isReadOnly
-	 *  @param isUpdateable
-	 *  @param displayLength
-	 *  @param fieldLength
+	 *  @param columnName column name
+	 *  @param mandatory mandatory
+	 *  @param isReadOnly read only
+	 *  @param isUpdateable updateable
+	 *  @param displayLength display length
+	 *  @param fieldLength field length
 	 */
 	public VMemo (String columnName, boolean mandatory, boolean isReadOnly, boolean isUpdateable,
 		int displayLength, int fieldLength)
@@ -58,7 +69,6 @@ public class VMemo extends CTextArea
 		super (fieldLength/80, 50);
 		super.setName(columnName);
 		LookAndFeel.installBorder(this, "TextField.border");
-		this.addFocusListener(this);    //  to activate editor
 
 		//  Create Editor
 		setColumns(displayLength>VString.MAXDISPLAY_LENGTH ? VString.MAXDISPLAY_LENGTH : displayLength);	//  46
@@ -67,8 +77,6 @@ public class VMemo extends CTextArea
 
 		setLineWrap(true);
 		setWrapStyleWord(true);
-		addFocusListener(this);
-		setInputVerifier(new CInputVerifier()); //Must be set AFTER addFocusListener in order to work
 		setMandatory(mandatory);
 		m_columnName = columnName;
 		m_fieldLength = fieldLength;
@@ -79,7 +87,7 @@ public class VMemo extends CTextArea
 
 		//	Popup
 		addMouseListener(new VMemo_mouseAdapter(this));
-		if (columnName.equals("Script"))
+		if (columnName.equals("Script"))	
 			menuEditor = new CMenuItem(Msg.getMsg(Env.getCtx(), "Script"), Env.getImageIcon("Script16.gif"));
 		else
 			menuEditor = new CMenuItem(Msg.getMsg(Env.getCtx(), "Editor"), Env.getImageIcon("Editor16.gif"));
@@ -94,31 +102,35 @@ public class VMemo extends CTextArea
 	{
 	}   //  dispose
 
-	JPopupMenu          popupMenu = new JPopupMenu();
-	private CMenuItem 	menuEditor;
-	private int			m_fieldLength;
-
-	private String		m_columnName;
-	private String		m_oldText = "";
-	private boolean		m_firstChange;
-	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(VMemo.class);
+	JPopupMenu          		popupMenu = new JPopupMenu();
+	private CMenuItem 			menuEditor;
+	private int					m_fieldLength;
+	private String				m_columnName;
+	private String				m_oldText;
+	private String				m_initialText;
+	private volatile boolean	m_setting = false;
 
 	/**
 	 *	Set Editor to value
-	 *  @param value
+	 *  @param value value
 	 */
 	public void setValue(Object value)
 	{
-		super.setValue(value);
-		m_firstChange = true;
+		if (value == null)
+			m_oldText = "";
+		else
+			m_oldText = value.toString();
+		if (m_setting)
+			return;
+		super.setValue(m_oldText);
+		m_initialText = m_oldText;
 		//	Always position Top 
 		setCaretPosition(0);
 	}	//	setValue
 
 	/**
 	 *  Property Change Listener
-	 *  @param evt
+	 *  @param evt event
 	 */
 	public void propertyChange (PropertyChangeEvent evt)
 	{
@@ -128,7 +140,7 @@ public class VMemo extends CTextArea
 
 	/**
 	 *	ActionListener
-	 *  @param e
+	 *  @param e event
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
@@ -145,16 +157,15 @@ public class VMemo extends CTextArea
 				s = Editor.startEditor (this, Msg.translate(Env.getCtx(), m_columnName), 
 					getText(), isEditable(), m_fieldLength);
 			menuEditor.setEnabled(true);
-			setValue(s);
+			//	Data Binding
 			try
 			{
-				fireVetoableChange(m_columnName, null, getText());
-				m_oldText = getText();
+				fireVetoableChange(m_columnName, m_oldText, s);
 			}
 			catch (PropertyVetoException pve)	{}
 		}
 	}	//	actionPerformed
-	
+
 	private int findWindowNo() {
 		Container c = this.getParent();		
 		return c != null ? Env.getWindowNo(c) : 0;
@@ -162,7 +173,7 @@ public class VMemo extends CTextArea
 
 	/**
 	 *  Action Listener Interface - NOP
-	 *  @param listener
+	 *  @param listener listener
 	 */
 	public void addActionListener(ActionListener listener)
 	{
@@ -170,102 +181,38 @@ public class VMemo extends CTextArea
 
 	/**************************************************************************
 	 *	Key Listener Interface
-	 *  @param e
+	 *  @param e event
 	 */
 	public void keyTyped(KeyEvent e)	{}
 	public void keyPressed(KeyEvent e)	{}
 
 	/**
-	 *	Escape 	- Restore old Text.
-	 *  Indicate Change
-	 *  @param e
+	 * 	Key Released
+	 *	if Escape restore old Text.
+	 *  @param e event
 	 */
 	public void keyReleased(KeyEvent e)
 	{
 		//  ESC
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && !getText().equals(m_oldText))
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			setText(m_initialText);
+		m_setting = true;
+		try
 		{
-			log.fine( "VMemo.keyReleased - ESC");
-			setText(m_oldText);
-			return;
+			fireVetoableChange(m_columnName, m_oldText, getText());
 		}
-		//  Indicate Change
-		if (m_firstChange && !m_oldText.equals(getText()))
-		{
-			log.fine( "VMemo.keyReleased - firstChange");
-			m_firstChange = false;
-			try
-			{
-				String text = getText();
-				fireVetoableChange(m_columnName, text, null);   //  No data committed - done when focus lost !!!
-			}
-			catch (PropertyVetoException pve)	{}
-		}	//	firstChange
+		catch (PropertyVetoException pve)	{}
+		m_setting = false;
 	}	//	keyReleased
 
 	/**
-	 *	Focus Gained	- Save for Escape
-	 *  @param e
-	 */
-	public void focusGained (FocusEvent e)
-	{
-		log.config(e.paramString());
-		if (e.getSource() instanceof VMemo)
-			requestFocus();
-		else
-			m_oldText = getText();
-	}	//	focusGained
-
-	/**
-	 *	Data Binding to MTable (via GridController)
-	 *  @param e
-	 */
-	public void focusLost (FocusEvent e)
-	{
-		//log.config( "VMemo.focusLost " + e.getSource(), e.paramString());
-		//	something changed?
-		return;
-
-	}	//	focusLost
-
-	/*************************************************************************/
-
-	/**
 	 *  Set Field/WindowNo for ValuePreference (NOP)
-	 *  @param mField
+	 *  @param mField field model
 	 */
 	public void setField (org.compiere.model.GridField mField)
 	{
 	}   //  setField
-
-
-
-private class CInputVerifier extends InputVerifier {
-
-	 public boolean verify(JComponent input) {
-
-
-		//NOTE: We return true no matter what since the InputVerifier is only introduced to fireVetoableChange in due time
-		if (getText() == null && m_oldText == null)
-			return true;
-		else if (getText().equals(m_oldText))
-			return true;
-		//
-		try
-		{
-			String text = getText();
-			fireVetoableChange(m_columnName, null, text);
-			m_oldText = text;
-			return true;
-		}
-		catch (PropertyVetoException pve)	{}
-		return true;
-
-	 } // verify
-
-   } // CInputVerifier
-
-
+	
 	/**
 	 *	Action - Info
 	 *	Ricardo Santana (Kenos, www.kenos.com.br), rsantana
@@ -292,7 +239,7 @@ final class VMemo_mouseAdapter extends MouseAdapter
 {
 	/**
 	 *	Constructor
-	 *  @param adaptee
+	 *  @param adaptee VMemo
 	 */
 	VMemo_mouseAdapter(VMemo adaptee)
 	{
@@ -303,7 +250,7 @@ final class VMemo_mouseAdapter extends MouseAdapter
 
 	/**
 	 *	Mouse Listener
-	 *  @param e
+	 *  @param e event
 	 */
 	public void mouseClicked(MouseEvent e)
 	{
@@ -317,7 +264,5 @@ final class VMemo_mouseAdapter extends MouseAdapter
 		if (SwingUtilities.isRightMouseButton(e))
 			m_adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
 	}	//	mouse Clicked
-
-
 
 }	//	VMemo_mouseAdapter

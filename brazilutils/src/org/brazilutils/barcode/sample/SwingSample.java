@@ -28,7 +28,7 @@ import org.brazilutils.barcode.BarCodeEncoder;
 /**
  *  A sample swing-based application.
  *
- *  @author Daniel Gonçalves
+ *  @author Daniel Gonï¿½alves
  *  @version $Id: SwingSample.java,v 1.1 2005/11/18 14:44:21 rawfosgod Exp $
  */
 public class SwingSample {
