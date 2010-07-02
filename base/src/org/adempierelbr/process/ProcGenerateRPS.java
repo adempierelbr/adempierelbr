@@ -146,7 +146,8 @@ public class ProcGenerateRPS extends SvrProcess
 		//
 		String where = "IsCancelled='N' AND DateDoc BETWEEN " + 
 			DB.TO_DATE(p_DateFrom) + " AND " + 
-			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=?";
+			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=? " +
+			"AND C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType WHERE lbr_NFModel LIKE 'RPS%') ";
 		//
 		MTable t = MTable.get(Env.getCtx(), MNotaFiscal.Table_Name);
 		Query q = new Query (t, where, trxName);
