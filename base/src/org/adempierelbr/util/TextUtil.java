@@ -13,12 +13,17 @@
 package org.adempierelbr.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -105,17 +110,6 @@ public class TextUtil
 	}
 	
 	/**
-	 * 	Gera um arquivo com codificação UTF-8
-	 * 
-	 * @param dados a serem gravados no arquivo
-	 * @param nome do arquivo
-	 */
-	public static void generateFile (String data, String fileName)
-	{
-		generateFile (data, fileName, "UTF-8");
-	}	//	generateFile
-	
-	/**
 	 * 	Gera um arquivo
 	 * 
 	 * @param dados a serem gravados no arquivo
@@ -126,7 +120,31 @@ public class TextUtil
 	{
 		try
 		{
-			System.setProperty("file.encoding", encoding);
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), encoding));
+			out.write(data);
+			out.close();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			log.log(Level.SEVERE, "Formato não suportado="+encoding+", arquivo: " + fileName, e);
+		}
+		catch (IOException e)
+		{
+			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + fileName, e);
+		}
+	}	//	generateFile
+	
+	/**
+	 * 	Gera um arquivo com codificação UTF-8
+	 * 
+	 * @param dados a serem gravados no arquivo
+	 * @param nome do arquivo
+	 */
+	public static void generateFile (String data, String fileName)
+	{
+		try
+		{
+			System.setProperty("file.encoding", "UTF-8");
 			//
 			FileWriter fw = TextUtil.createFile(fileName, false);
 			TextUtil.addLine(fw, data);

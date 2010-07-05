@@ -81,9 +81,11 @@ public class VCreateFromNFeLot extends VCreateFrom implements VetoableChangeList
         authorizationField.setVisible(false);
 		setTitle(Msg.translate(Env.getCtx(), "LBR_NFeLot") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
 		parameterStdPanel.setVisible(false);
-		
+		//
 		int LBR_NFeLot_ID = Env.getContextAsInt(Env.getCtx(), p_WindowNo, "LBR_NFeLot_ID");
-		loadNFe(LBR_NFeLot_ID);
+		int AD_Org_ID = Env.getContextAsInt(Env.getCtx(), p_WindowNo, "AD_Org_ID");
+		//
+		loadNFe(LBR_NFeLot_ID, AD_Org_ID);
 
 		return true;
 	}   //  dynInit
@@ -111,7 +113,7 @@ public class VCreateFromNFeLot extends VCreateFrom implements VetoableChangeList
 	 *  @param C_BankAccount_ID Bank Account
 	 *  @param Autorization Code
 	 */
-	private void loadNFe (int LBR_NFeLot_ID)
+	private void loadNFe (int LBR_NFeLot_ID, int AD_Org_ID)
 	{
 		log.config ("LBR_NFeLot_ID=" + LBR_NFeLot_ID);
 		/**
@@ -130,11 +132,13 @@ public class VCreateFromNFeLot extends VCreateFrom implements VetoableChangeList
 			+ "AND LBR_NFeLot_ID IS NULL "		//	Sem Lote
 			+ "AND Processed='Y' "				//	Processadas
 			+ "AND IsCancelled='N' "			//	Não canceladas
-			+ "AND IsActive='Y' ";				//	Ativas
+			+ "AND IsActive='Y' "				//	Ativas
+			+ "AND AD_Org_ID IN (?, 0) ";		//	Organização
 
 		try
 		{
 			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
+			pstmt.setInt(1, AD_Org_ID);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
 			{

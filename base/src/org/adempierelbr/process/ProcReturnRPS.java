@@ -69,30 +69,26 @@ public class ProcReturnRPS extends SvrProcess
 		String[] linhas = TextUtil.readFile(p_FileName);
 		for (int i = 1; i < linhas.length; i++)
 		{
-			//BUGFIX: String index out of range: 419
-			if(linhas[i].length() < 419)
+			if (linhas[i].length() < 419)
 				continue;
-			
+			//
 			String rpsNumber = linhas[i].substring(41, 53).trim();
 			String NFeNo     = linhas[i].substring(1, 9).trim();
 			String status    = linhas[i].substring(418, 419).trim();
-			int LBR_NotaFiscal_ID = POLBR.getLBR_NotaFiscal_ID(rpsNumber, true, get_TrxName());
+			int LBR_NotaFiscal_ID = POLBR.getLBR_NotaFiscal_ID (rpsNumber, true, get_TrxName());
+			//
 			if (LBR_NotaFiscal_ID != -1)
 			{
-				
-				MNotaFiscal nf = new MNotaFiscal(getCtx(),LBR_NotaFiscal_ID,get_TrxName());
-				nf.setIsPrinted(true); //MARCA IMPRESSO PARA CANCELAR OS DOCUMENTOS VINCULADOS
+				MNotaFiscal nf = new MNotaFiscal(getCtx(), LBR_NotaFiscal_ID, get_TrxName());
+				nf.setIsPrinted(true); 	//	Marca impresso para cancelar os documentos vinculados
 				nf.set_ValueOfColumn("lbr_NFENo", NFeNo);
-				if (status.equalsIgnoreCase("C")){
+				if (status.equalsIgnoreCase("C"))
+				{
 					nf.voidIt();
 				}
 				nf.save(get_TrxName());
-				
 			}
-				
 		}
-		
 		return "ReturnRPS Process Completed " + "Arquivo: " + p_FileName;
 	}	//	doIt
-	
 }	//	ProcReturnRPS

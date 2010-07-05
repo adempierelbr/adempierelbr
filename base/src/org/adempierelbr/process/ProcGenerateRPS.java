@@ -63,7 +63,7 @@ public class ProcGenerateRPS extends SvrProcess
 	private static CLogger log = CLogger.getCLogger(ProcGenerateRPS.class);
 	
 	/** Charset				*/
-	private static final Charset ISO88591 = Charset.forName("ISO-8859-1");
+	private static final Charset ISO88591 = Charset.forName("ISO8859_1");
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 
 	/**
@@ -159,7 +159,7 @@ public class ProcGenerateRPS extends SvrProcess
 			result.append(NFSeRPSGenerator.generateRPS(nf.getLBR_NotaFiscal_ID(), trxName));
 		}
 		result.append(NFSeRPSGenerator.generateFooter());
-		TextUtil.generateFile(new String(new String(result.toString().getBytes(), UTF8)
-					.getBytes(ISO88591), ISO88591), fileName, ISO88591.displayName());
+		//
+		TextUtil.generateFile(result.toString(), fileName, ISO88591.displayName());
 	}	//	generate	
 }	//	ProcGenerateRPS

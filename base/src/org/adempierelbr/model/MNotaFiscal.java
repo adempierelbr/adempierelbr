@@ -434,7 +434,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	}	//	parseVariable
 	
 	/**
-	 * 
+	 * 	Preenche o campo descrição com toda a discriminação dos serviços
 	 */
 	public void setlbr_ServiceTaxes()
 	{
@@ -452,15 +452,12 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			//
 			if (line.getDescription() != null 
 					&& !line.getDescription().equals(""))
-			{
 				serviceDescription += ", " + line.getDescription();
-				//
-				if (line.getQty().compareTo(Env.ONE) == 1)
-				{
-					serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
-				}
-				serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
-			}
+			
+			if (line.getQty().compareTo(Env.ONE) == 1)
+				serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+			
+			serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
 			//
 			serviceDescription += "\n";
 		}
@@ -525,8 +522,20 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			}
 		}
 		//
-		setDescription(serviceDescription);
-	}
+		if (getPOReference() != null 
+				&& !getPOReference().trim().equals(""))
+			serviceDescription += "\nReferência: " + getPOReference() + "\n";
+		//
+		if (getC_DocTypeTarget_ID() > 0)
+		{
+			MDocType dt = new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null);
+			//
+			if (dt.getDocumentNote() != null && !dt.getDocumentNote().trim().equals(""))
+				serviceDescription += "\n" + dt.getDocumentNote();
+		}
+		//
+		setDescription(serviceDescription.trim());
+	}	//	setlbr_ServiceTaxes
 	
 	/**
 	 *  Retorno o valor da Base de ICMS
