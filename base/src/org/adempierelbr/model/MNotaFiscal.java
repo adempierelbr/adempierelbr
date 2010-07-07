@@ -40,6 +40,7 @@ import org.compiere.model.MSequence;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
+import org.compiere.model.MUser;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -153,6 +154,30 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return bpLocation;
 	} //getBPartnerLocation
+	
+	/**
+	 * 	TODO: Replicar o campo email para a Nota Fiscal com a opção de ter um e-mail
+	 * 		cadastrado para recepção de NF. Discutir se este e-mail deve ser por BP
+	 * 		ou por Endereço.
+	 * 
+	 * @return Email
+	 */
+	public String getEMail()
+	{
+		if (getC_Invoice_ID() > 0)
+		{
+			MInvoice i = new MInvoice (Env.getCtx(), getC_Invoice_ID(), null);
+			if (i.getAD_User_ID() > 0)
+			{
+				MUser u = new MUser (Env.getCtx(), i.getAD_User_ID(), null);
+				//
+				if (u.getEMail() != null)
+					return u.getEMail();
+			}
+		}
+		//
+		return "";
+	}	//	getEMail
 	
 	/**
 	 * 	Set organization details

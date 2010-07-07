@@ -89,6 +89,7 @@ public class NFSeXMLGenerator
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
 		MNotaFiscalLine[] nfLines = nf.getLines("");
 		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), null);
+		//
 		Integer vC_City_ID = POLBR.getC_City_ID(nf.getlbr_BPCity(), 
 				nf.getlbr_BPRegion(), 139, null);	//	Only needed for Brazilian Cities
 		X_C_City c = new X_C_City (Env.getCtx(), vC_City_ID, null);
@@ -172,6 +173,8 @@ public class NFSeXMLGenerator
 		tpRPS.setAliquotaServicos(aliquota);
 		tpRPS.setCodigoServicos(serviceCode);
 		tpRPS.setDiscriminacao(discriminacao);
+		//
+		tpRPS.setEmailTomador(nf.getEMail());
 		//
 		return tpRPS;
 	}	//	generateNFSe

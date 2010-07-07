@@ -64,7 +64,6 @@ public class ProcGenerateRPS extends SvrProcess
 	
 	/** Charset				*/
 	private static final Charset ISO88591 = Charset.forName("ISO8859_1");
-	private static final Charset UTF8 = Charset.forName("UTF-8");
 
 	/**
 	 *  Prepare - e.g., get Parameters.

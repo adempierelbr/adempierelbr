@@ -382,9 +382,15 @@ public class ProcGenerateNF extends SvrProcess
 							{
 								X_LBR_TaxName txName = new X_LBR_TaxName(ctx, tLine.getLBR_TaxName_ID(), trx);
 								
+								//	Ignorar Retenção
+								if (txName.isHasWithHold())
+									continue;
+								
+								// 	Ignorar IPI para todas as transações, exceto importação
 								if(txName.getName().toUpperCase().indexOf("IPI") == -1
 										&& !((String) invoice.get_Value("lbr_TransactionType")).equals("IMP"))
 								{
+									//	Se for estorno ignorar
 									if (iLine.getQtyEntered().signum() != 1)
 										continue;
 									
