@@ -625,17 +625,17 @@ return (String)get_Value("OrderNo");
 }
 /** Set Org Address.
 @param Org_Location_ID Organization Location/Address */
-public void setlbr_Org_Location_ID (int Org_Location_ID)
+public void setOrg_Location_ID (int Org_Location_ID)
 {
-if (Org_Location_ID <= 0) set_Value ("lbr_Org_Location_ID", null);
+if (Org_Location_ID <= 0) set_Value ("Org_Location_ID", null);
  else 
-set_Value ("lbr_Org_Location_ID", new Integer(Org_Location_ID));
+set_Value ("Org_Location_ID", new Integer(Org_Location_ID));
 }
 /** Get Org Address.
 @return Organization Location/Address */
-public int getlbr_Org_Location_ID() 
+public int getOrg_Location_ID() 
 {
-Integer ii = (Integer)get_Value("lbr_Org_Location_ID");
+Integer ii = (Integer)get_Value("Org_Location_ID");
 if (ii == null) return 0;
 return ii.intValue();
 }

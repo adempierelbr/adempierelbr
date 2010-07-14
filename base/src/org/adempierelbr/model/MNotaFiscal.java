@@ -195,7 +195,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (legalEntity == null || legalEntity.length() < 1)
 			legalEntity = org.getName();
 		//
-		setlbr_Org_Location_ID(orgLoc.getC_Location_ID());
+		setOrg_Location_ID(orgLoc.getC_Location_ID());
 		setlbr_OrgAddress1(orgLoc.getAddress1());
 		setlbr_OrgAddress2(orgLoc.getAddress2());
 		setlbr_OrgAddress3(orgLoc.getAddress3());
@@ -369,7 +369,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			}
 			else
 			{
-				String cl = TextUtil.alfab[m_refNCM.size()];
+				//	FIXME: Acertar o Alfabeto para AA, AB...
+				String cl = TextUtil.alfab[m_refNCM.size() > 25 ? 25 : m_refNCM.size()];
 				m_refNCM.put(ncmName, cl);
 				setNCMReference(ncmName,cl,true);
 				//	Retorna o NCM
@@ -477,7 +478,12 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			//
 			if (line.getDescription() != null 
 					&& !line.getDescription().equals(""))
-				serviceDescription += ", " + line.getDescription();
+			{
+				if (line.getProductName() != null && !"".equals(line.getProductName()))
+					serviceDescription += ", " + line.getDescription();
+				else
+					serviceDescription += line.getDescription();
+			}
 			
 			if (line.getQty().compareTo(Env.ONE) == 1)
 				serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
@@ -718,7 +724,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			}
 			else 
 			{
-				String cl = TextUtil.alfab[m_refCFOP.size()];
+				String cl = TextUtil.alfab[m_refCFOP.size() > 25 ? 25 : m_refCFOP.size()];
 				m_refCFOP.put(cfopName, cl);
 				setCFOPNote(cfop.getDescription() + ", ",true);
 				setCFOPReference(cfopName,cl);

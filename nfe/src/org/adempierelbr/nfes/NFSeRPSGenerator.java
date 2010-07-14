@@ -138,7 +138,7 @@ public class NFSeRPSGenerator
 		rps.append(TextUtil.rPad(cidade(tpRPS.getEnderecoTomador().getCidade()), 50));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getUF(), 2));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getCEP(), 8));
-		rps.append(TextUtil.rPad(tpRPS.getEmailTomador(), 75));
+		rps.append(TextUtil.pad(tpRPS.getEmailTomador(), ' ', 75, false, false, false)); //	Não retira caracteres especiais
 		rps.append(TextUtil.checkSize(tpRPS.getDiscriminacao(), 0, 1000));
 		rps.append(TextUtil.EOL_WIN32);
 		//	Contadores

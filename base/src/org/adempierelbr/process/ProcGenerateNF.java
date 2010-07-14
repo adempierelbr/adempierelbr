@@ -279,9 +279,9 @@ public class ProcGenerateNF extends SvrProcess
 			if (ois == null)
 				;
 			else if (ois.length == 1)
-				serviceDescription += "Vencimento:\n";
+				serviceDescription += "Vencimento: ";
 			else if (ois.length > 1)
-				serviceDescription += "Vencimentos:\n";
+				serviceDescription += "Vencimentos: ";
 			//
 			for (MOpenItem oi : ois)
 			{
@@ -329,7 +329,7 @@ public class ProcGenerateNF extends SvrProcess
 					
 					/* FRETE */
 					int FreightProduct_ID = clientInfo.getM_ProductFreight_ID();
-					if (product.getM_Product_ID() == FreightProduct_ID)
+					if (product.get_ID() > 0 && product.getM_Product_ID() == FreightProduct_ID)
 					{
 						NotaFiscal.setFreightAmt(iLine.getLineNetAmt());
 						LineNo--;

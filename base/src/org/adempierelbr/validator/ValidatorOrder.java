@@ -154,7 +154,7 @@ public class ValidatorOrder implements ModelValidator
 				{
 					oLine.set_CustomColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
 					//
-					oLine.set_CustomColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
+//					oLine.set_CustomColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
 					//
 					if (tE.isSOTrx())
 						oLine.set_CustomColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());

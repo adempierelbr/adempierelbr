@@ -135,7 +135,7 @@ public class RegistroNFSe
 		}
 		//
 		return email;
-	}
+	}	//	tpEmail
 	
 	protected String tpDiscriminacao (String discriminacao)
 	{
