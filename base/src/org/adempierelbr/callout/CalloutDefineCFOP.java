@@ -139,6 +139,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			return null;
 		}
 		
+		Integer vAD_Org_ID = 0;
 		//Check if the document is actually an order or an Invoice
 		int C_DocTypeTarget_ID = 0;
 		//Check for the transaction type on the document header
@@ -148,11 +149,13 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			C_DocTypeTarget_ID = mo.getC_DocTypeTarget_ID();
 			transactionType = (mo.get_Value("lbr_TransactionType") == null) ? ""
 					: mo.get_Value("lbr_TransactionType").toString();
+			vAD_Org_ID = mo.getAD_Org_ID();
 		}
 		else if (mi != null){
 			C_DocTypeTarget_ID = mi.getC_DocTypeTarget_ID();
 			transactionType = (mi.get_Value("lbr_TransactionType") == null) ? ""
 					: mi.get_Value("lbr_TransactionType").toString();
+			vAD_Org_ID = mi.getAD_Org_ID();
 		}
 		else{
 			log.log(Level.WARNING, "Order and Invoice == null");
@@ -205,7 +208,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 			prdCat = 0;
 
 		//Grab Organization data
-		MOrg org = MOrg.get(ctx, Env.getAD_Org_ID(ctx));
+		MOrg org = MOrg.get(ctx, vAD_Org_ID);
 		MLocation mlo = new MLocation(ctx, org.getInfo()
 				.getC_Location_ID(), null);
 
