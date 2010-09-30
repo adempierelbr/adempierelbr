@@ -805,12 +805,12 @@ ALTER TABLE LBR_NotaFiscal ADD lbr_OrgName NVARCHAR2(60)
 
 -- 10/03/2009 23h51min49s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Element SET ColumnName='lbr_Org_Location_ID',Updated=TO_DATE('2009-03-10 23:51:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1874
+UPDATE AD_Element SET ColumnName='Org_Location_ID',Updated=TO_DATE('2009-03-10 23:51:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1874
 ;
 
 -- 10/03/2009 23h51min49s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Column SET ColumnName='lbr_Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL WHERE AD_Element_ID=1874
+UPDATE AD_Column SET ColumnName='Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL WHERE AD_Element_ID=1874
 ;
 
 -- 10/03/2009 23h51min49s BRT
@@ -820,12 +820,12 @@ UPDATE AD_Field SET Name='Org Address', Description='Organization Location/Addre
 
 -- 10/03/2009 23h51min50s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Process_Para SET ColumnName='lbr_Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL, AD_Element_ID=1874 WHERE UPPER(ColumnName)='LBR_ORG_LOCATION_ID' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
+UPDATE AD_Process_Para SET ColumnName='Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL, AD_Element_ID=1874 WHERE UPPER(ColumnName)='Org_Location_ID' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
 ;
 
 -- 10/03/2009 23h51min50s BRT
 -- Default comment for updating dictionary
-UPDATE AD_Process_Para SET ColumnName='lbr_Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL WHERE AD_Element_ID=1874 AND IsCentrallyMaintained='Y'
+UPDATE AD_Process_Para SET ColumnName='Org_Location_ID', Name='Org Address', Description='Organization Location/Address', Help=NULL WHERE AD_Element_ID=1874 AND IsCentrallyMaintained='Y'
 ;
 
 -- 10/03/2009 23h51min50s BRT
@@ -840,7 +840,7 @@ UPDATE AD_PrintFormatItem pi SET PrintName='Org Address', Name='Org Address' WHE
 
 -- 10/03/2009 23h52min15s BRT
 -- Default comment for updating dictionary
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001067,1874,0,21,1000027,'lbr_Org_Location_ID',TO_DATE('2009-03-10 23:52:15','YYYY-MM-DD HH24:MI:SS'),100,'Organization Location/Address','LBRA',22,'Y','N','N','N','N','N','N','N','N','N','Y','Org Address',0,TO_DATE('2009-03-10 23:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1001067,1874,0,21,1000027,'Org_Location_ID',TO_DATE('2009-03-10 23:52:15','YYYY-MM-DD HH24:MI:SS'),100,'Organization Location/Address','LBRA',22,'Y','N','N','N','N','N','N','N','N','N','Y','Org Address',0,TO_DATE('2009-03-10 23:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 10/03/2009 23h52min15s BRT
@@ -850,7 +850,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 10/03/2009 23h52min17s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_NotaFiscal ADD lbr_Org_Location_ID NUMBER(10)
+ALTER TABLE LBR_NotaFiscal ADD Org_Location_ID NUMBER(10)
 ;
 
 -- 10/03/2009 23h53min36s BRT
