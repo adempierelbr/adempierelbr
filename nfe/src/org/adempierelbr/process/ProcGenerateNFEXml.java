@@ -52,7 +52,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 			return "Tipo de documento inválido";
 		//
 		MDocType dt = new MDocType (Env.getCtx(), nf.getC_DocTypeTarget_ID(), null);
-		String nfModel = (String) dt.get_Value("lbr_NFModel");
+		String nfModel = dt.get_ValueAsString("lbr_NFModel");
 		//
 		if (nfModel == null)
 			return "Não há modelo para esta NF-e.";

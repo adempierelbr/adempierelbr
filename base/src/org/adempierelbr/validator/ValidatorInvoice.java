@@ -381,7 +381,7 @@ public class ValidatorInvoice implements ModelValidator
 			}
 
 			// Fix - Ajustar PaySchedule
-			MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+			MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), trx);
 			log.fine(pt.toString());
 			pt.apply(invoice);
 
@@ -452,7 +452,7 @@ public class ValidatorInvoice implements ModelValidator
 			String lbr_docbasetype = (String)dt.get_Value("LBR_DocBaseType"); //BF: assim se não existe a coluna retorn NULL
 
 			if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
-			{
+			{	
 				MProcessLink proc = new MProcessLink(ctx, 0, trx);
 				Integer lbr_Ref_C_InvoiceLine_ID;
 				

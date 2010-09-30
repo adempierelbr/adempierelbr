@@ -20,7 +20,7 @@ public class NfeInutilizacaoLocator extends org.apache.axis.client.Service imple
     public final String PRODUCAO 	= "1";
     public final String HOMOLOGACAO = "2";
     //
-    private static String ambiente 		= "2";
+    public static String ambiente 		= "2";
     
     public NfeInutilizacaoLocator(org.apache.axis.EngineConfiguration config) {
         super(config);

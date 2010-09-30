@@ -590,6 +590,8 @@ public class Doc_Allocation extends Doc
 		double percent = invoice.getGrandTotal().doubleValue() / allocationSource.doubleValue();
 		if (percent > 0.99 && percent < 1.01)
 			percent = 1.0;
+		else
+			percent = 1/percent;
 		log.config("Multiplier=" + percent + " - GrandTotal=" + invoice.getGrandTotal()
 			+ " - Allocation Source=" + allocationSource);
 		

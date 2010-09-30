@@ -84,6 +84,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	public Map<String,String> m_refCFOP = new HashMap<String, String>(); //Referência CFOP
 	public ArrayList<Integer> m_refLegalMessage = new ArrayList<Integer>(); //Referência Mensagem Legal
 	
+	/**	RPS sem número do documento	*/
+	public static final String RPS_TEMP = "RPS-TEMP";
+	
 	/** STRING */
 	String m_NCMReference  = "";
 	String m_CFOPNote      = "";
@@ -840,6 +843,34 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		
 		return Amt;
 	} //convertAmt
+	
+	/**************************************************************************
+	 * 	Before Save
+	 *	@param newRecord
+	 *	@return true if it can be sabed
+	 */
+	protected boolean beforeSave (boolean newRecord)
+	{
+		if (newRecord)
+		{
+			Integer vC_DocTypeTarget_ID = getC_DocTypeTarget_ID();
+			//
+			if (vC_DocTypeTarget_ID != null
+					&& vC_DocTypeTarget_ID.intValue() > 0)
+			{
+				MDocType dt = new MDocType (Env.getCtx(), vC_DocTypeTarget_ID, null);
+				String nfModel = dt.get_ValueAsString("lbr_NFModel");
+				//
+				if (nfModel != null && nfModel.startsWith("RPS"))
+				{
+					if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, getAD_Client_ID()))
+						setDocumentNo(RPS_TEMP);
+				}
+			}
+		}
+		//
+		return true;
+	}	//	beforeSave
 	
 	/**
 	 * 	Void Document.

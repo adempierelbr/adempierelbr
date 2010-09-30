@@ -883,7 +883,7 @@ public class GridTable extends AbstractTableModel
 		//	Has anything changed?
 		Object oldValue = getValueAt(row, col);
 		if (!force && (
-			(oldValue == null && value == null)
+			(oldValue == null && (value == null || value.equals("")))
 			||	(oldValue != null && oldValue.equals(value))
 			||	(oldValue != null && value != null && oldValue.toString().equals(value.toString()))
 			))

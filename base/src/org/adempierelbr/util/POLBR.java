@@ -327,7 +327,7 @@ public class POLBR{
 	 * @param documentNo
 	 * @return
 	 */
-	private static boolean isNumber(String documentNo)
+	public static boolean isNumber(String documentNo)
 	{
 		if (documentNo == null)
 			return false;
@@ -340,7 +340,7 @@ public class POLBR{
 			}
 		}
 		return true;
-	}
+	}	//	isNumber
 
 	public static int getLBR_Boleto_ID(Integer C_Invoice_ID, Integer C_InvoicePaySchedule_ID, String trx)
 	{

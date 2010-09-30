@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -20,16 +21,24 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.adempierelbr.model.MNFeLot;
 import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.utils.DigestOfFile;
+import org.dom4j.io.OutputFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.Dom4JDriver;
+
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -280,10 +289,22 @@ public class NFeUtil
 		
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 			+ "<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" "
-			+ "versao=\"1.02\">" + "<versaoDados>1.07</versaoDados>"
+			+ "versao=\"1.02\"><versaoDados>"+version+"</versaoDados>"
 			+ "</cabecMsg>";
 		return cabecalho;
 	}	//	geraCabecStatusServico
+	
+	public static NfeInutilizacao2Stub.NfeCabecMsgE geraCabecInutilizacao (String region)
+	{
+		NfeInutilizacao2Stub.NfeCabecMsg cabecMsg = new NfeInutilizacao2Stub.NfeCabecMsg();
+		cabecMsg.setCUF(region);
+		cabecMsg.setVersaoDados("2.0");
+
+		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = new NfeInutilizacao2Stub.NfeCabecMsgE();
+		cabecMsgE.setNfeCabecMsg(cabecMsg);
+
+		return cabecMsgE;
+	}
 	
 	/**
 	 * 	Gera o cabeçalho de Consulta de Estado do Serviço
@@ -296,6 +317,43 @@ public class NFeUtil
 			+ "<consStatServ versao=\"1.07\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">"
 			+ "<tpAmb>"+tpAmb+"</tpAmb><cUF>42</cUF><xServ>STATUS</xServ></consStatServ>";
 		return status;
+	}	//	geraStatusServico
+	
+	/**
+	 * 	Gera o cabeçalho de Consulta de Estado do Serviço
+	 * 
+	 * 	@return cabeçalho de envio
+	 */
+	public static String geraInutilizacao (InutilizacaoNF nf)
+	{
+//		Dom4JDriver dom = new Dom4JDriver();
+//		OutputFormat format = new OutputFormat();
+//		format.setEncoding("UTF-8");
+//		format.setNewLineAfterDeclaration(false);
+//		format.setNewlines(false);
+//		dom.setOutputFormat(format);
+		//
+		XStream xml = new XStream();
+		//
+		xml.alias("infInut", InutilizacaoNF.class);
+		xml.useAttributeFor(InutilizacaoNF.class, "Id");
+		xml.omitField(InutilizacaoNF.class, "msg");
+		xml.omitField(InutilizacaoNF.class, "log");
+		// 
+		StringBuffer inut = new StringBuffer("");
+//		inut.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		
+		inut.append("<inutNFe " +
+				"xmlns=\"http://www.portalfiscal.inf.br/nfe\" " +
+//				"xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+//				"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+//				"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+//				"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/inutNFe_v2.00.xsd\" " +
+				"versao=\"1.07\">");
+		inut.append(xml.toXML(nf));
+		inut.append("</inutNFe>");
+		//
+		return inut.toString();
 	}	//	geraStatusServico
 	
 	/**

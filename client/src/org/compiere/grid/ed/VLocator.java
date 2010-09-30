@@ -276,7 +276,8 @@ public class VLocator extends JComponent
 		//	Data Binding
 		try
 		{
-			fireVetoableChange(m_columnName, null, value);
+			if (fire)
+				fireVetoableChange(m_columnName, null, value);
 		}
 		catch (PropertyVetoException pve)
 		{

@@ -276,7 +276,7 @@ public class ProcGenerateNF extends SvrProcess
 			String serviceDescription = "";
 			MOpenItem[] ois = MOpenItem.getOpenItem(invoice.getC_Invoice_ID(), invoice.get_TrxName());
 			
-			if (ois == null)
+			if (ois == null || ois.length <= 0)
 				;
 			else if (ois.length == 1)
 				serviceDescription += "Vencimento: ";

@@ -58,12 +58,15 @@ public class AssinaturaDigital
 	/**		Document Type 	*/
 	public static final String RECEPCAO_NFE			="1";
 	public static final String CANCELAMENTO_NFE		="2";
+	public static final String INUTILIZACAO_NFE		="3";
 	
 	/**		Algoritmos		*/
 	public static final String ALGORITIMO = "RSA";
 	public static final String ALGORITMO_ASSINATURA = "MD5withRSA";
 	
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+	private static final String PROVIDER_CLASS_NAME = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";  
+    private static final String PROVIDER_NAME = "jsr105Provider";  
 	
 	static XMLSignatureFactory sig;
 	static X509Certificate cert;
@@ -204,13 +207,15 @@ public class AssinaturaDigital
 				new FileInputStream(localDocumento));
 		System.out.println("Documento ok!");
 
-		sig = XMLSignatureFactory.getInstance("DOM");
+		String providerName = System.getProperty(PROVIDER_NAME, PROVIDER_CLASS_NAME);
+		sig = XMLSignatureFactory.getInstance("DOM", (Provider) Class.forName(providerName).newInstance());
 
 		ArrayList<Transform> transformList = new ArrayList<Transform>();
 		Transform enveloped = sig.newTransform(Transform.ENVELOPED,
 				(TransformParameterSpec) null);
 		Transform c14n = sig.newTransform(C14N_TRANSFORM_METHOD,
-				(TransformParameterSpec) null);
+				(TransformParameterSpec) null);		
+
 		transformList.add(enveloped);
 		transformList.add(c14n);
 		
@@ -220,6 +225,8 @@ public class AssinaturaDigital
 			tag = "infNFe";
 		else if (docType.equals(CANCELAMENTO_NFE))
 			tag = "infCanc";
+		else if (docType.equals(INUTILIZACAO_NFE))
+			tag = "infInut";
 		
 		NodeList elements = doc.getElementsByTagName(tag);
 		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);

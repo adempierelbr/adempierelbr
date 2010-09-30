@@ -24,6 +24,8 @@ import org.adempierelbr.nfes.NFSeRPSGenerator;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MSequence;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
@@ -45,7 +47,6 @@ import org.compiere.util.Env;
  */
 public class ProcGenerateRPS extends SvrProcess
 {
-	
 	/** Data Emissão     	*/
 	private Timestamp p_DateFrom;
 	private Timestamp p_DateTo;
@@ -155,6 +156,13 @@ public class ProcGenerateRPS extends SvrProcess
 		List<MNotaFiscal> list = q.list();
 		for (MNotaFiscal nf : list)
 		{
+			//	Gera a sequência de RPS neste momento
+			if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, nf.getAD_Client_ID())
+					&& MNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
+			{
+				nf.setDocumentNo(MSequence.getDocumentNo(nf.getC_DocTypeTarget_ID(), trxName, false));
+				nf.save();
+			}
 			result.append(NFSeRPSGenerator.generateRPS(nf.getLBR_NotaFiscal_ID(), trxName));
 		}
 		result.append(NFSeRPSGenerator.generateFooter());

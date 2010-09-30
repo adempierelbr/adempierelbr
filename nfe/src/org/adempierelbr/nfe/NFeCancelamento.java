@@ -8,13 +8,11 @@ import java.security.Security;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.adempierelbr.model.MDigitalCertificate;
-import org.adempierelbr.model.MNFeLot;
 import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
@@ -29,9 +27,6 @@ import org.xml.sax.InputSource;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamento;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamentoLocator;
 import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamentoSoap;
-import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcao;
-import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcaoLocator;
-import br.inf.portalfiscal.www.nfe.wsdl.NfeRecepcao.NfeRecepcaoSoap;
 
 /**
  * 	Consulta dos Lotes Processados de NF-e

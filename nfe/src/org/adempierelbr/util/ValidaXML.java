@@ -93,4 +93,12 @@ public class ValidaXML {
 	public static String validaRetCancelamentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retCancNFe_v1.07.xsd");
 	}
+	
+	public static String validaPedInutilizacaoNFe(String stringXml) {
+		return ValidaDoc(stringXml, "inutNFe_v1.07.xsd");
+	}
+	
+	public static String validaRetInutilizacaoNFe(String stringXml) {
+		return ValidaDoc(stringXml, "retInutNFe_v1.07.xsd");
+	}
 }
