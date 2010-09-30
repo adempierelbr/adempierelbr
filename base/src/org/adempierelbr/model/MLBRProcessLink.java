@@ -19,22 +19,20 @@ import org.compiere.model.X_LBR_ProcessLink;
 import org.compiere.util.CLogger;
 
 /**
- *	MProcessLink
- *
  *	Model for X_LBR_ProcessLink
  *	
  *	@author Alvaro Montenegro (Kenos, www.kenos.com.br)
  *	@version $Id: MProcessLink.java, 03/02/2009 14:10:00 amontenegro
  */
-public class MProcessLink extends X_LBR_ProcessLink
+public class MLBRProcessLink extends X_LBR_ProcessLink
 {
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	/**	Logger			*/
-	public static CLogger log = CLogger.getCLogger(MProcessLink.class);
+	public static CLogger log = CLogger.getCLogger(MLBRProcessLink.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -42,7 +40,7 @@ public class MProcessLink extends X_LBR_ProcessLink
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MProcessLink(Properties ctx, int ID, String trx){
+	public MLBRProcessLink(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -52,9 +50,9 @@ public class MProcessLink extends X_LBR_ProcessLink
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MProcessLink (Properties ctx, ResultSet rs, String trxName)
+	public MLBRProcessLink (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
 	
-} //MProcessLink
+} 	//	MLBRProcessLink

@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MNFeLot;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MDocType;
@@ -46,7 +46,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{
-		MNotaFiscal nf = new MNotaFiscal(Env.getCtx(), p_LBR_NotaFiscal_ID, null);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(), p_LBR_NotaFiscal_ID, null);
 		//
 		if (nf.getC_DocTypeTarget_ID() <= 0)
 			return "Tipo de documento inválido";

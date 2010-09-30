@@ -23,22 +23,20 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	MTaxConfiguration
- *
  *	Model for X_LBR_TaxConfiguration
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTaxConfiguration.java, 29/04/2008 09:02:00 mgrigioni
  */
-public class MTaxConfiguration extends X_LBR_TaxConfiguration {
-    
-	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MTaxConfiguration.class);
-	
+public class MLBRTaxConfiguration extends X_LBR_TaxConfiguration 
+{
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MLBRTaxConfiguration.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -46,7 +44,7 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MTaxConfiguration(Properties ctx, int ID, String trx){
+	public MLBRTaxConfiguration(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -56,7 +54,7 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MTaxConfiguration (Properties ctx, ResultSet rs, String trxName)
+	public MLBRTaxConfiguration (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -133,4 +131,4 @@ public class MTaxConfiguration extends X_LBR_TaxConfiguration {
 		return hasPOTrx;
 	} //hasPOTrx
 		
-} //MTaxConfiguration
+} 	//	MLBRTaxConfiguration

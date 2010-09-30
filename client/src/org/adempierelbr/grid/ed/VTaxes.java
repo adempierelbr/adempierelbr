@@ -32,7 +32,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 
 import org.adempiere.plaf.AdempierePLAF;
-import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.MTaxesLookup;
 import org.compiere.apps.ADialog;
 import org.compiere.grid.ed.VEditor;
@@ -127,7 +127,7 @@ public class VTaxes extends JComponent
 	private CButton				m_button = new CButton();
 
 	private MTaxesLookup		m_mTaxes;
-	private MTax			    m_value;
+	private MLBRTax			    m_value;
 
 	private String				m_columnName;
 	/**	Logger			*/

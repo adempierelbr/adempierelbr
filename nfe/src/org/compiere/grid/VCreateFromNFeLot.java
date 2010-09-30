@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.apps.ADialog;
 import org.compiere.model.GridTab;
 import org.compiere.util.DB;
@@ -210,7 +210,7 @@ public class VCreateFromNFeLot extends VCreateFrom implements VetoableChangeList
 				KeyNamePair pp = (KeyNamePair)model.getValueAt(i, 1);
 				int LBR_NotaFiscal_ID = pp.getKey();
 				//
-				MNotaFiscal nf = new MNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
+				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
 				nf.set_CustomColumn("LBR_NFeLot_ID", LBR_NFeLot_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//

@@ -180,7 +180,7 @@ public class Doc_Invoice extends Doc
 			{
 				BigDecimal lineTaxAmt = Env.ZERO;
 				
-				X_LBR_TaxLine[] taxLines = (new org.adempierelbr.model.MTax(getCtx(), LBR_Tax_ID, null)).getLines();
+				X_LBR_TaxLine[] taxLines = (new org.adempierelbr.model.MLBRTax(getCtx(), LBR_Tax_ID, null)).getLines();
 				for(X_LBR_TaxLine taxLine : taxLines)
 					lineTaxAmt = lineTaxAmt.add(taxLine.getlbr_TaxAmt());
 				

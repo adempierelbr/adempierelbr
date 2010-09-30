@@ -13,7 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.adempierelbr.model.MDigitalCertificate;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.ValidaXML;
@@ -52,7 +52,7 @@ public class NFeCancelamento
 	 * @return
 	 * @throws Exception
 	 */
-	public static String cancelNFe(MNotaFiscal nf) throws Exception
+	public static String cancelNFe(MLBRNotaFiscal nf) throws Exception
 	{
 		log.fine("ini");
 		//

@@ -15,7 +15,7 @@ package org.adempierelbr.validator;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.adempierelbr.model.MTaxConfiguration;
+import org.adempierelbr.model.MLBRTaxConfiguration;
 import org.adempierelbr.util.POLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
@@ -75,7 +75,7 @@ public class ValidatorDocType implements ModelValidator
 		//	ModelChange
 		engine.addModelChange(MDocType.Table_Name, this); //Document Type
 		engine.addModelChange(MSequence.Table_Name, this); //Document Sequence
-		engine.addModelChange(MTaxConfiguration.Table_Name, this); //Tax Configuration
+		engine.addModelChange(MLBRTaxConfiguration.Table_Name, this); //Tax Configuration
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class ValidatorDocType implements ModelValidator
 		
 		else
 			
-		if(po.get_TableName().equalsIgnoreCase(MTaxConfiguration.Table_Name) && (type == TYPE_NEW || type == TYPE_CHANGE))
+		if(po.get_TableName().equalsIgnoreCase(MLBRTaxConfiguration.Table_Name) && (type == TYPE_NEW || type == TYPE_CHANGE))
 		{
 			X_LBR_TaxConfiguration taxConfig = (X_LBR_TaxConfiguration)po;
 			return modelChange(taxConfig);
@@ -171,12 +171,12 @@ public class ValidatorDocType implements ModelValidator
 			return "Necessário selecionar ao menos uma das opções de Transação";
 		
 		if (isSOTrx){
-			if (MTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+			if (MLBRTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
 					return "Já existe uma exceção cadastrada com estes parâmetros";
 		}
 		
 		if (isPOTrx){
-			if (MTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+			if (MLBRTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
 					return "Já existe uma exceção cadastrada com estes parâmetros";
 		}
 		

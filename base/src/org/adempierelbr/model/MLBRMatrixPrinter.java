@@ -17,33 +17,33 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.compiere.model.X_LBR_ICMSMatrix;
+import org.compiere.model.X_LBR_MatrixPrinter;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
- *	MICMSMatrix
- *
- *	Model for X_LBR_ICMSMatrix
+ *	Model for X_LBR_MatrixPrinter
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: MICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
+ *	@version $Id: MMatrixPrinter.java, 27/11/2008 10:24:00 mgrigioni
  */
-public class MICMSMatrix extends X_LBR_ICMSMatrix {
-    
+public class MLBRMatrixPrinter extends X_LBR_MatrixPrinter
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MLBRMatrixPrinter.class);
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MICMSMatrix(Properties ctx, int ID, String trx){
+	public MLBRMatrixPrinter(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -53,51 +53,43 @@ public class MICMSMatrix extends X_LBR_ICMSMatrix {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MICMSMatrix (Properties ctx, ResultSet rs, String trxName)
+	public MLBRMatrixPrinter (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
 	
 	/**************************************************************************
-	 *  get Matrix_ID
-	 *  @return X_LBR_TaxLine[] lines
+	 *  Get DefaultPrinter
+	 *  @return int LBR_MatrixPrinter_ID
 	 */
-	public static int getLBR_Tax_ID(Properties ctx, int C_Region_ID, int To_Region_ID, String trx){
-		
-		CLogger log = CLogger.getCLogger(MICMSMatrix.class);
-		
-		String sql = "SELECT LBR_Tax_ID " +
-				     "FROM LBR_ICMSMatrix " +
-				     "WHERE C_Region_ID = ? " +
-				     "AND To_Region_ID = ? " +
-				     "AND AD_Client_ID = ?";
-
-		Integer Matrix_ID = null;
+	public static int getDefaultPrinter(){
+				
+		Integer LBR_MatrixPrinter_ID = null;
+		String sql = "SELECT LBR_MatrixPrinter_ID " +
+				     "FROM LBR_MatrixPrinter " +
+				     "WHERE IsDefault = 'Y' order by LBR_MatrixPrinter_ID";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt(1, C_Region_ID);
-			pstmt.setInt(2, To_Region_ID);
-			pstmt.setInt(3, Env.getAD_Client_ID(ctx));
-			rs = pstmt.executeQuery ();
-			if (rs.next ())
+			pstmt = DB.prepareStatement(sql,null);
+			rs = pstmt.executeQuery();
+			if (rs.next())
 			{
-				Matrix_ID = rs.getInt(1);
+				LBR_MatrixPrinter_ID = rs.getInt(1);
 			}
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, "", e);
+			log.log(Level.SEVERE, sql.toString(), e);
 		}
 		finally{
 		       DB.close(rs, pstmt);
 		}
-
-		if (Matrix_ID == null) Matrix_ID = 0;
 		
-		return Matrix_ID.intValue();
+		if (LBR_MatrixPrinter_ID == null) LBR_MatrixPrinter_ID = 0;
+		
+		return LBR_MatrixPrinter_ID.intValue();	
 	}
-		
-} //MICMSMatrix
+			
+} 	//	MLBRMatrixPrinter

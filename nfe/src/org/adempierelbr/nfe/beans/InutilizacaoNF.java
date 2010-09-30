@@ -1,6 +1,6 @@
 package org.adempierelbr.nfe.beans;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MDocType;
@@ -20,7 +20,7 @@ public class InutilizacaoNF
 	 * 
 	 * @param nf Nota Fiscal
 	 */
-	public InutilizacaoNF (MNotaFiscal nf, String tpAmb)
+	public InutilizacaoNF (MLBRNotaFiscal nf, String tpAmb)
 	{
 		MDocType dt = new MDocType (Env.getCtx(), nf.getC_DocTypeTarget_ID(), null);
 		//

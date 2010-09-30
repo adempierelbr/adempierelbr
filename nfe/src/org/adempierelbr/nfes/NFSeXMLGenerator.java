@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.nfes.beans.BtpCPFCNPJ;
 import org.adempierelbr.nfes.beans.BtpChaveRPS;
 import org.adempierelbr.nfes.beans.BtpEndereco;
@@ -85,9 +85,9 @@ public class NFSeXMLGenerator
 	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		Properties ctx = Env.getCtx();
-		MNotaFiscal nf = new MNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
-		MNotaFiscalLine[] nfLines = nf.getLines("");
+		MLBRNotaFiscalLine[] nfLines = nf.getLines("");
 		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), null);
 		//
 		Integer vC_City_ID = POLBR.getC_City_ID(nf.getlbr_BPCity(), 
@@ -149,7 +149,7 @@ public class NFSeXMLGenerator
 		String discriminacao = nf.getDescription();
 		
 		//	Linhas
-		for (MNotaFiscalLine nfLine : nfLines)
+		for (MLBRNotaFiscalLine nfLine : nfLines)
 		{
 			if (!nfLine.islbr_IsService())
 				continue;
@@ -185,7 +185,7 @@ public class NFSeXMLGenerator
 	 * @param nf
 	 * @return
 	 */
-	private static BigDecimal getDeducoes (MNotaFiscal nf)
+	private static BigDecimal getDeducoes (MLBRNotaFiscal nf)
 	{
 		BigDecimal deducoes = Env.ZERO;
 		//

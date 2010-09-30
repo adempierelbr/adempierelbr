@@ -26,18 +26,16 @@ import com.java4less.textprinter.TextProperties;
 import com.java4less.textprinter.ports.FilePort;
 
 /**
- *	MDocPrint
- *
  *	Model for X_LBR_DocPrint
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@contributor Fernando Lucktemberg (Faire Consultoria, www.faire.com.br)
  *	@version $Id: MDocPrint.java, 12/11/2007 13:38:00 mgrigioni
  */
-public class MDocPrint extends X_LBR_DocPrint {
-    
+public class MLBRDocPrint extends X_LBR_DocPrint
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -52,7 +50,7 @@ public class MDocPrint extends X_LBR_DocPrint {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MDocPrint(Properties ctx, int ID, String trx){
+	public MLBRDocPrint(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -62,7 +60,7 @@ public class MDocPrint extends X_LBR_DocPrint {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDocPrint (Properties ctx, ResultSet rs, String trxName)
+	public MLBRDocPrint (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -92,7 +90,7 @@ public class MDocPrint extends X_LBR_DocPrint {
 		}
 	} //startJob
 	
-	public static void unixPrint(MMatrixPrinter MatrixPrinter){
+	public static void unixPrint(MLBRMatrixPrinter MatrixPrinter){
 		
 	    if (MatrixPrinter.islbr_IsUnixPrinter()){
 	    
@@ -111,7 +109,7 @@ public class MDocPrint extends X_LBR_DocPrint {
 	/***************************************************************************
 	 * Public Print
 	 */
-	public void addPage(MDocPrintFormField[] fields){        		
+	public void addPage(MLBRDocPrintFormField[] fields){        		
 		
 		//COMANDOS ESCP - linespacing = 1/8
 		if (enableLineSpacing()){
@@ -152,7 +150,7 @@ public class MDocPrint extends X_LBR_DocPrint {
 	@Deprecated
 	public void print(String PrinterType, String PrinterName, 
 	          String charSet, boolean condensed,
-	          int pitch,MDocPrintFormField[] fields){
+	          int pitch,MLBRDocPrintFormField[] fields){
 
 		TextPrinter printer = PrinterFactory.getPrinter(PrinterType); // tipo da impressora
 		FilePort port = new FilePort(PrinterName); // localização da impressora
@@ -190,4 +188,4 @@ public class MDocPrint extends X_LBR_DocPrint {
       
 	}//print
 	
-} //MDocPrint
+}	//	MLBRDocPrint

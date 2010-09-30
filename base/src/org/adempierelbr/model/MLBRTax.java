@@ -49,8 +49,6 @@ import org.compiere.util.Env;
 import bsh.EvalError;
 
 /**
- *	MTax
- *
  *	Model for X_LBR_Tax
  *
  *  [ 1954195 ] AD_Client no Configurador de Impostos, mgrigioni
@@ -62,10 +60,10 @@ import bsh.EvalError;
  *  @contributor Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MTax.java, 12/11/2007 13:38:00 mgrigioni
  */
-public class MTax extends X_LBR_Tax {
-    
+public class MLBRTax extends X_LBR_Tax 
+{    
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MTax.class);
+	private static CLogger log = CLogger.getCLogger(MLBRTax.class);
 	
 	/**
 	 * 
@@ -78,7 +76,7 @@ public class MTax extends X_LBR_Tax {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MTax(Properties ctx, int ID, String trx){
+	public MLBRTax(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -88,7 +86,7 @@ public class MTax extends X_LBR_Tax {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MTax (Properties ctx, ResultSet rs, String trxName)
+	public MLBRTax (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -102,7 +100,7 @@ public class MTax extends X_LBR_Tax {
 	 *  @param ArrayList<String> Tax Names (LBR)
 	 *  @param ArrayList<BigDecimal> Tax Rates
 	 */
-	public MTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates, ArrayList<BigDecimal> taxBases)
+	public MLBRTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates, ArrayList<BigDecimal> taxBases)
 	{
 		this(ctx,0,trx);
 		this.save(trx);
@@ -192,7 +190,7 @@ public class MTax extends X_LBR_Tax {
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
 		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
 		if (brazilianlist){
-			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+			tIncluded = MLBRTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		}
 		
 		Integer C_Tax_ID = (Integer)line.get_Value("C_Tax_ID");
@@ -215,7 +213,7 @@ public class MTax extends X_LBR_Tax {
 				
 					org.compiere.model.MTax cTaxes[] = tax.getChildTaxes(false);
 					for(org.compiere.model.MTax cTax : cTaxes){
-						int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
+						int LBR_TaxLine_ID = MLBRTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
 						if (LBR_TaxLine_ID != 0){
 							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
 							if (!tIncluded.contains(cTax.getC_Tax_ID()) && brazilianlist){
@@ -315,7 +313,7 @@ public class MTax extends X_LBR_Tax {
 		boolean brazilianlist = POLBR.get_ValueAsBoolean(pList.get_Value("lbr_BrazilianPriceList"));
 		
 		if (brazilianlist)
-			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+			tIncluded = MLBRTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		
 		totalLines = (BigDecimal)document.get_Value("TotalLines");
 		if (totalLines == null) totalLines = Env.ZERO;
@@ -341,7 +339,7 @@ public class MTax extends X_LBR_Tax {
 					
 					for (org.compiere.model.MTax cTax : cTaxes)
 					{
-						int LBR_TaxLine_ID = MTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
+						int LBR_TaxLine_ID = MLBRTax.getLine(LBR_Tax_ID, (Integer)cTax.get_Value("LBR_TaxName_ID"), trx);
 						if (LBR_TaxLine_ID != 0)
 						{
 							X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx,LBR_TaxLine_ID,trx);
@@ -797,9 +795,9 @@ public class MTax extends X_LBR_Tax {
 	 *  copyFrom
 	 *  @return MTax newTax
 	 */
-	public MTax copyFrom(){
+	public MLBRTax copyFrom(){
 		
-		MTax newTax = new MTax(getCtx(),0,get_TrxName());
+		MLBRTax newTax = new MLBRTax(getCtx(),0,get_TrxName());
 		newTax.setDescription(getDescription());
 		newTax.save(get_TrxName());
 		
@@ -1440,4 +1438,4 @@ public class MTax extends X_LBR_Tax {
 		
 	} //getX_LBR_TaxConfig_Region
 		
-} //MTax
+} 	//	MLBRTax

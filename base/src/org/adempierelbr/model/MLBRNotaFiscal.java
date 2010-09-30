@@ -43,7 +43,6 @@ import org.compiere.model.MTable;
 import org.compiere.model.MUser;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
-import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_CFOP;
 import org.compiere.model.X_LBR_LegalMessage;
@@ -59,22 +58,20 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	MNotaFiscal
- *
  *	Model for X_LBR_NotaFiscal
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MNotaFiscal.java, 08/01/2008 10:56:00 mgrigioni
  */
-public class MNotaFiscal extends X_LBR_NotaFiscal {
-    
+public class MLBRNotaFiscal extends X_LBR_NotaFiscal
+{    
 	/**
 	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MNotaFiscal.class);
+	private static CLogger log = CLogger.getCLogger(MLBRNotaFiscal.class);
 	
 	/**	Process Message */
 	private String		m_processMsg = null;
@@ -107,7 +104,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNotaFiscal(Properties ctx, int ID, String trx){
+	public MLBRNotaFiscal(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -117,7 +114,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNotaFiscal (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNotaFiscal (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -128,7 +125,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @return MNotaFiscalLine[] lines
 	 *  @deprecated
 	 */
-	public MNotaFiscalLine[] getLines(){
+	public MLBRNotaFiscalLine[] getLines(){
 		return getLines(null);
 	}
 	
@@ -468,9 +465,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	public void setlbr_ServiceTaxes()
 	{
 		String serviceDescription = "";
-		MNotaFiscalLine[] lines = getLines(null);
+		MLBRNotaFiscalLine[] lines = getLines(null);
 		//
-		for (MNotaFiscalLine line : lines)
+		for (MLBRNotaFiscalLine line : lines)
 		{
 			if (line.getLBR_NotaFiscalLine_ID() <= 0
 					|| line.getQty().compareTo(Env.ZERO) <= 0)
@@ -538,7 +535,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (printTaxes)
 			serviceDescription += header + content + footer;
 		//
-		MOpenItem[] ois = MOpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
+		MLBROpenItem[] ois = MLBROpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
 		if (ois == null)
 			;
 		else if (ois.length == 1)
@@ -547,7 +544,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		{
 			serviceDescription += "\nVencimentos:\n";
 			//
-			for (MOpenItem oi : ois)
+			for (MLBROpenItem oi : ois)
 			{
 				serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
 				serviceDescription += "     - R$ ";
@@ -762,11 +759,11 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param String orderBy or null
 	 *  @return MNotaFiscalLine[] lines
 	 */
-	public MNotaFiscalLine[] getLines(String orderBy){
+	public MLBRNotaFiscalLine[] getLines(String orderBy){
 		
 		String whereClause = "LBR_NotaFiscal_ID = ?";
 		
-		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name);		
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);		
 		Query query =  new Query(table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()});
 	 	
@@ -774,11 +771,11 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 	if (orderBy != null)
 	 		  query.setOrderBy(orderBy);
 		
-	 	List<MNotaFiscalLine> list = query.list();
-		MNotaFiscalLine [] teste = new MNotaFiscalLine[list.size()];
+	 	List<MLBRNotaFiscalLine> list = query.list();
+		MLBRNotaFiscalLine [] teste = new MLBRNotaFiscalLine[list.size()];
 	 	int i = 0;
 		for (X_LBR_NotaFiscalLine notaFiscalLine : list) {
-			teste[i++] = new MNotaFiscalLine(Env.getCtx(), notaFiscalLine.getLBR_NotaFiscalLine_ID(), get_TrxName());
+			teste[i++] = new MLBRNotaFiscalLine(Env.getCtx(), notaFiscalLine.getLBR_NotaFiscalLine_ID(), get_TrxName());
 		}
 		
 		return teste;	
@@ -793,7 +790,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append("SELECT max(DocumentNo) ");
-		sql.append("FROM ").append(MNotaFiscal.Table_Name);
+		sql.append("FROM ").append(MLBRNotaFiscal.Table_Name);
 		sql.append(" WHERE ").append("AD_Org_ID = ? "); //1
 		sql.append("AND ").append("C_DocType_ID = ? "); //2
 		sql.append("AND IsSOTrx = ? ");                 //3
@@ -1154,7 +1151,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param NFeID
 	 * @return
 	 */
-	public static MNotaFiscal getNFe (String NFeID)
+	public static MLBRNotaFiscal getNFe (String NFeID)
 	{
 		String sql =  "SELECT LBR_NotaFiscal_ID " +
 						"FROM LBR_NotaFiscal " +
@@ -1164,9 +1161,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		int LBR_NotaFiscal_ID = DB.getSQLValue(null, sql, NFeID);
 		//
 		if (LBR_NotaFiscal_ID > 0)
-			return new MNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
+			return new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
 		else
 			return null;
 	}	//	get
 	
-} //MNotaFiscal
+} 	//	MLBRNotaFiscal

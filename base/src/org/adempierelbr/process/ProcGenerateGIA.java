@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MLocation;
@@ -773,10 +773,10 @@ public class ProcGenerateGIA extends SvrProcess
 			.append(" AND ")
 			.append(DB.TO_DATE(p_DateTo));
 		//
-		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);		
+		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);		
 		Query q =  new Query(table, whereClause.toString(), null);
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
-		List<MNotaFiscal> list = q.list();
+		List<MLBRNotaFiscal> list = q.list();
 		//
 		sql.append("SELECT NVL(nfl.lbr_CFOPName,'0') AS CFOP, " +
 				"SUM(NVL(nfl.LineTotalAmt,0) + ((NVL(nfl.LineTotalAmt,0) * (NVL(nf.lbr_TotalSISCOMEX,0) + NVL(nf.lbr_InsuranceAmt,0) + NVL(nf.FreightAmt,0))) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1)) + " +
@@ -811,7 +811,7 @@ public class ProcGenerateGIA extends SvrProcess
 		.append("AND nfl.lbr_CFOPName NOT LIKE '%Z%' ")
 		.append("GROUP BY NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), NVL(nfl.lbr_CFOPName,'0')");
 		//
-		for(MNotaFiscal NF : list)
+		for(MLBRNotaFiscal NF : list)
 		{
 			DB.close(rs, pstmt);
 			pstmt = DB.prepareStatement(sql.toString(), null);

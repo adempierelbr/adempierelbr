@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeCancelamento;
 import org.adempierelbr.nfe.NFeInutilizacao;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
@@ -66,7 +66,7 @@ public class ProcCancelNF extends SvrProcess
 		
 		if (p_LBR_NotaFiscal_ID != 0)
 		{
-			MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+			MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 			//
 			MDocType dt = new MDocType (Env.getCtx(), nf.getC_DocTypeTarget_ID(), null);
 			String nfModel = dt.get_ValueAsString("lbr_NFModel");

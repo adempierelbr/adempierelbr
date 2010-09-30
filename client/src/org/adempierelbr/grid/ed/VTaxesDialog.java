@@ -30,7 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.MLBRTax;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.apps.ConfirmPanel;
@@ -110,7 +110,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 * @param title title (field name)
 	 * @param location Model Location
 	 */
-	public VTaxesDialog (Frame frame, String title, MTax tax)
+	public VTaxesDialog (Frame frame, String title, MLBRTax tax)
 	{
 		super(frame, title, true);
 		try
@@ -124,7 +124,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		}
 		m_tax = tax;
 		if (m_tax == null || m_tax.getLBR_Tax_ID() == 0)
-			m_tax = new MTax (Env.getCtx(), 0, null);
+			m_tax = new MLBRTax (Env.getCtx(), 0, null);
 		//
 		//	Overwrite title	
 		if (m_tax.getLBR_Tax_ID() == 0){
@@ -141,7 +141,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	}	//	VLocationDialog
 
 	private boolean 	m_change = false;
-	private MTax		m_tax;
+	private MLBRTax		m_tax;
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(VTaxesDialog.class);
 	//
@@ -488,7 +488,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 * 	Get edited Value (X_LBR_Tax)
 	 *	@return m_tax
 	 */
-	public MTax getValue()
+	public MLBRTax getValue()
 	{
 		return m_tax;
 	}	//	getValue

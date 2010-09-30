@@ -62,7 +62,7 @@ public final class MTaxesLookup extends Lookup
 	{
 		if (value == null)
 			return null;
-		MTax tax = getTax(value, null);
+		MLBRTax tax = getTax(value, null);
 		if (tax == null)
 			return "<" + value.toString() + ">";
 		return tax.toString();
@@ -77,7 +77,7 @@ public final class MTaxesLookup extends Lookup
 	{
 		if (value == null)
 			return null;
-		MTax tax = getTax (value, null);
+		MLBRTax tax = getTax (value, null);
 		if (tax == null)
 			return null;
 		return new KeyNamePair (tax.getLBR_Tax_ID(), tax.toString());
@@ -100,7 +100,7 @@ public final class MTaxesLookup extends Lookup
 	 *	@param trxName transaction
 	 * 	@return X_LBR_Tax
 	 */
-	public MTax getTax (Object key, String trxName)
+	public MLBRTax getTax (Object key, String trxName)
 	{
 		if (key == null)
 			return null;
@@ -119,9 +119,9 @@ public final class MTaxesLookup extends Lookup
 	 *	@param trxName transaction
 	 * 	@return X_LBR_Tax
 	 */
-	public MTax getTax (int LBR_Tax_ID, String trxName)
+	public MLBRTax getTax (int LBR_Tax_ID, String trxName)
 	{
-		return new MTax(m_ctx, LBR_Tax_ID, trxName);
+		return new MLBRTax(m_ctx, LBR_Tax_ID, trxName);
 	}	//	getX_LBR_Tax
 
 	/**

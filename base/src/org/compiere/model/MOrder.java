@@ -506,8 +506,8 @@ public class MOrder extends X_C_Order implements DocAction
 			//
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() > 0)
 			{
-				org.adempierelbr.model.MTax fromTax = 
-					new org.adempierelbr.model.MTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
+				org.adempierelbr.model.MLBRTax fromTax = 
+					new org.adempierelbr.model.MLBRTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
 				line.set_ValueOfColumn("LBR_Tax_ID", fromTax.copyFrom().getLBR_Tax_ID());
 			}
 			//	End - Kenos

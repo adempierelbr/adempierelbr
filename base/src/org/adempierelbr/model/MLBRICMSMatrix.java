@@ -17,28 +17,23 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.compiere.model.X_LBR_OtherNFLine;
+import org.compiere.model.X_LBR_ICMSMatrix;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
- *	MOtherNFLine
- *
- *	Model for X_LBR_OtherNFLine
+ *	Model for X_LBR_ICMSMatrix
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br)
- *	@version $Id: MOtherNFLine.java, 11/12/2008 13:27:00 mgrigioni
+ *	@version $Id: MICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
  */
-public class MOtherNFLine extends X_LBR_OtherNFLine {
-    
+public class MLBRICMSMatrix extends X_LBR_ICMSMatrix
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	/**	Logger			*/
-	public static CLogger log = CLogger.getCLogger(MOtherNFLine.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -46,7 +41,7 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MOtherNFLine(Properties ctx, int ID, String trx){
+	public MLBRICMSMatrix(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -56,28 +51,39 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MOtherNFLine (Properties ctx, ResultSet rs, String trxName)
+	public MLBRICMSMatrix (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}	//	MOtherNFLine
+	}
 	
-	public static boolean voidConsignationLine(Integer C_InvoiceLine_ID, String trx)
-	{
-		int returnValue = 0;
+	/**************************************************************************
+	 *  get Matrix_ID
+	 *  @return X_LBR_TaxLine[] lines
+	 */
+	public static int getLBR_Tax_ID(Properties ctx, int C_Region_ID, int To_Region_ID, String trx){
 		
-		String sql = "UPDATE LBR_OtherNFLine SET IsCancelled = 'Y' " +
-				     "WHERE C_InvoiceLine_ID = " +
-				     	"(SELECT lbr_ori_c_invoiceline_id " +
-				     	"FROM lbr_processlink " +
-				     	"WHERE lbr_dest_c_invoiceline_id = ?)";
-				     		     
+		CLogger log = CLogger.getCLogger(MLBRICMSMatrix.class);
+		
+		String sql = "SELECT LBR_Tax_ID " +
+				     "FROM LBR_ICMSMatrix " +
+				     "WHERE C_Region_ID = ? " +
+				     "AND To_Region_ID = ? " +
+				     "AND AD_Client_ID = ?";
+
+		Integer Matrix_ID = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement(sql, trx);
-			pstmt.setInt(1, C_InvoiceLine_ID);
-			returnValue = pstmt.executeUpdate();
+			pstmt = DB.prepareStatement (sql, trx);
+			pstmt.setInt(1, C_Region_ID);
+			pstmt.setInt(2, To_Region_ID);
+			pstmt.setInt(3, Env.getAD_Client_ID(ctx));
+			rs = pstmt.executeQuery ();
+			if (rs.next ())
+			{
+				Matrix_ID = rs.getInt(1);
+			}
 		}
 		catch (Exception e)
 		{
@@ -86,9 +92,10 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 		finally{
 		       DB.close(rs, pstmt);
 		}
+
+		if (Matrix_ID == null) Matrix_ID = 0;
 		
-		return (returnValue > 0);
+		return Matrix_ID.intValue();
+	}
 		
-	}	//voidConsignationLine
-		
-} //MOtherNFLine
+}	//	MLBRICMSMatrix

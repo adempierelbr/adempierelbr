@@ -13,7 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.adempierelbr.model.MDigitalCertificate;
 import org.adempierelbr.model.MNFeLot;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
@@ -168,7 +168,7 @@ public class NFeRetRecepcao
 	        			String cStat 	= NFeUtil.getValue (node, "cStat");
 	        			String nProt 	= NFeUtil.getValue (node, "nProt");
 	        			//
-	        			MNotaFiscal nf = MNotaFiscal.getNFe (chNFe);
+	        			MLBRNotaFiscal nf = MLBRNotaFiscal.getNFe (chNFe);
 	        			if (nf == null)
 	        			{
 	        				log.log(Level.SEVERE, "NF not found= " + chNFe);

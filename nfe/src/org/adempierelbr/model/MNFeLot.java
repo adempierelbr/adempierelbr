@@ -91,13 +91,13 @@ public class MNFeLot extends X_LBR_NFeLot
 		ArrayList<String> xmls = new ArrayList<String>();
 		String whereClause = "LBR_NFeLot_ID=?";
 		//
-		MTable table = MTable.get(getCtx(), MNotaFiscal.Table_Name);		
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscal.Table_Name);		
 		Query query =  new Query(table, whereClause, null);
 	 		  query.setParameters(new Object[]{getLBR_NFeLot_ID()});
 		//
-	 	List<MNotaFiscal> list = query.list();
+	 	List<MLBRNotaFiscal> list = query.list();
 	 	//
-	 	for (MNotaFiscal NF : list) 
+	 	for (MLBRNotaFiscal NF : list) 
 	 	{
 	 		if (NF == null)
 	 			continue;

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfes.NFSeRPSGenerator;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
@@ -149,16 +149,16 @@ public class ProcGenerateRPS extends SvrProcess
 			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=? AND IsPrinted='N' " +
 			"AND C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType WHERE lbr_NFModel LIKE 'RPS%') ";
 		//
-		MTable t = MTable.get(Env.getCtx(), MNotaFiscal.Table_Name);
+		MTable t = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);
 		Query q = new Query (t, where, trxName);
 		q.setParameters(new Object[]{p_AD_Org_ID});
 		//
-		List<MNotaFiscal> list = q.list();
-		for (MNotaFiscal nf : list)
+		List<MLBRNotaFiscal> list = q.list();
+		for (MLBRNotaFiscal nf : list)
 		{
 			//	Gera a sequência de RPS neste momento
 			if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, nf.getAD_Client_ID())
-					&& MNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
+					&& MLBRNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
 			{
 				nf.setDocumentNo(MSequence.getDocumentNo(nf.getC_DocTypeTarget_ID(), trxName, false));
 				nf.save();

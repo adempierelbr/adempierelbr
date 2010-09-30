@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MLocation;
@@ -217,11 +217,11 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(" AND ")
 			.append(DB.TO_DATE(p_DateTo));
 		//
-		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);		
+		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);		
 		Query q =  new Query(table, whereClause.toString(), null);
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
 		q.setOrderBy(" (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), Documentno ");
-		List<MNotaFiscal> list = q.list();
+		List<MLBRNotaFiscal> list = q.list();
 		//
 		//	Monta o Registro 10
 		log.finer("SINTEGRA: 10");
@@ -242,7 +242,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						oi.get_ValueAsString("ContactName"),		//	Pessoa Contato
 						oi.get_ValueAsString("Phone")));	//	Telefone Contato
 		//
-		for(MNotaFiscal NF : list)
+		for(MLBRNotaFiscal NF : list)
 		{
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -412,8 +412,8 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				if (NF.isCancelled())	//	Não gerar registros 54 e 75 para canceladas
 					continue;
 				//
-				MNotaFiscalLine[] NFLines = getLines(NF);
-				for (MNotaFiscalLine NFLine : NFLines)
+				MLBRNotaFiscalLine[] NFLines = getLines(NF);
+				for (MLBRNotaFiscalLine NFLine : NFLines)
 				{
 					String CFOP = NFLine.getlbr_CFOPName();
 					
@@ -1422,7 +1422,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	 *  @param String MNotaFiscal
 	 *  @return MNotaFiscalLine[] lines
 	 */
-	private MNotaFiscalLine[] getLines(MNotaFiscal NF)
+	private MLBRNotaFiscalLine[] getLines(MLBRNotaFiscal NF)
 	{
 		if (NF == null)
 		 return null;
@@ -1431,15 +1431,15 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			+ "AND lbr_CFOPName NOT LIKE '%1%933%' "			
 			+ "AND lbr_CFOPName NOT LIKE '%2%933%' ";
 		//
-		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name);		
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);		
 		Query query =  new Query(table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{NF.getLBR_NotaFiscal_ID()});
 	 	//
 	 	query.setOrderBy("Line");
 	 	//
-		List<MNotaFiscalLine> list = query.list();
+		List<MLBRNotaFiscalLine> list = query.list();
 		//
-		return list.toArray(new MNotaFiscalLine[list.size()]);	
+		return list.toArray(new MLBRNotaFiscalLine[list.size()]);	
 	}	//	getLines
 	
 }	//	ProcGenerateSINTEGRA

@@ -26,37 +26,35 @@ import org.compiere.util.DB;
 
 
 /**
- *	MDocPrintForm
- *
- *	DocPrint Form
+ *	Document Print Model
  *
  *  BF [ 2200616 ] Problemas com Impressão de Documentos
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MDocPrintForm.java, 12/11/2007 14:55:00 mgrigioni
  */
-public class MDocPrintForm{
-    
+public class MLBRDocPrintForm
+{    
 	/**	Logger			  */
-	private static CLogger log = CLogger.getCLogger(MDocPrintForm.class);
+	private static CLogger log = CLogger.getCLogger(MLBRDocPrintForm.class);
 	/** PreparedStatement */
     private PreparedStatement pstmt = null;
     /** ResultSet         */
  	private ResultSet rs = null;
  	/** Form Fields       */
- 	public ArrayList<MDocPrintFormField> fFields = new ArrayList<MDocPrintFormField>();
+ 	public ArrayList<MLBRDocPrintFormField> fFields = new ArrayList<MLBRDocPrintFormField>();
 	
 	/**************************************************************************
 	 *  Default Constructor
 	 */
-	public MDocPrintForm(){}	
+	public MLBRDocPrintForm(){}	
 	
 	/**************************************************************************
 	 *  Get Fields - Sort by LocationY, LocationX
 	 */
-	public MDocPrintFormField[] getFields(){
+	public MLBRDocPrintFormField[] getFields(){
 		
-		MDocPrintFormField[] lines = new MDocPrintFormField[fFields.size()];
+		MLBRDocPrintFormField[] lines = new MLBRDocPrintFormField[fFields.size()];
 		fFields.toArray(lines);
 		Arrays.sort(lines);
 		
@@ -64,14 +62,14 @@ public class MDocPrintForm{
 		
 	}
 	
-	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc){
+	public void setFields(MLBRDocPrint DocPrint, String sql, boolean IsSubDoc){
 		setFields(DocPrint, sql, IsSubDoc, "", true);
 	}
 	
 	/**************************************************************************
 	 *  Set Fields - Default
 	 */
-	public void setFields(MDocPrint DocPrint, String sql, boolean IsSubDoc, String pageNo, boolean lastpage){
+	public void setFields(MLBRDocPrint DocPrint, String sql, boolean IsSubDoc, String pageNo, boolean lastpage){
 		
 		int SubDocRow = 0;
 		int RowNo     = 0;
@@ -91,7 +89,7 @@ public class MDocPrintForm{
     		rs = pstmt.executeQuery ();
     		while (rs.next ())
     		{
-    			MDocPrintField[] fields = MDocPrintField.getFields(DocPrint.getCtx(), DocPrint.getLBR_DocPrint_ID());
+    			MLBRDocPrintField[] fields = MLBRDocPrintField.getFields(DocPrint.getCtx(), DocPrint.getLBR_DocPrint_ID());
 	            
 	            for (int i=0;i<fields.length;i++){
 	            	
@@ -163,7 +161,7 @@ public class MDocPrintForm{
 	            	}
 	            		
 	            	
-	            	MDocPrintFormField aux = new MDocPrintFormField(fields[i].getValue(),x,y);
+	            	MLBRDocPrintFormField aux = new MLBRDocPrintFormField(fields[i].getValue(),x,y);
 	            	fFields.add(aux);
 	            	
 	            	
@@ -181,7 +179,7 @@ public class MDocPrintForm{
 
 	            			y++;
 	            			
-			            	MDocPrintFormField aux2 = new MDocPrintFormField(fields[i].getValue(),x,y);
+			            	MLBRDocPrintFormField aux2 = new MLBRDocPrintFormField(fields[i].getValue(),x,y);
 			            	fFields.add(aux2);
 			            	
 			            	SubDocRow++;
@@ -242,5 +240,4 @@ public class MDocPrintForm{
 		
 		return value;
 	}
-	
-} //MDocPrintForm
+}	//	MLBRDocPrintForm

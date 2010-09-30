@@ -17,35 +17,34 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.compiere.model.X_LBR_MatrixPrinter;
+import org.compiere.model.X_LBR_OtherNFLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
 /**
- *	MMatrixPrinter
- *
- *	Model for X_LBR_MatrixPrinter
+ *	Model for X_LBR_OtherNFLine
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: MMatrixPrinter.java, 27/11/2008 10:24:00 mgrigioni
+ *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br)
+ *	@version $Id: MOtherNFLine.java, 11/12/2008 13:27:00 mgrigioni
  */
-public class MMatrixPrinter extends X_LBR_MatrixPrinter {
-    
+public class MLBROtherNFLine extends X_LBR_OtherNFLine 
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MMatrixPrinter.class);
-	
+	public static CLogger log = CLogger.getCLogger(MLBROtherNFLine.class);
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MMatrixPrinter(Properties ctx, int ID, String trx){
+	public MLBROtherNFLine(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -55,43 +54,39 @@ public class MMatrixPrinter extends X_LBR_MatrixPrinter {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MMatrixPrinter (Properties ctx, ResultSet rs, String trxName)
+	public MLBROtherNFLine (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MOtherNFLine
 	
-	/**************************************************************************
-	 *  Get DefaultPrinter
-	 *  @return int LBR_MatrixPrinter_ID
-	 */
-	public static int getDefaultPrinter(){
-				
-		Integer LBR_MatrixPrinter_ID = null;
-		String sql = "SELECT LBR_MatrixPrinter_ID " +
-				     "FROM LBR_MatrixPrinter " +
-				     "WHERE IsDefault = 'Y' order by LBR_MatrixPrinter_ID";
+	public static boolean voidConsignationLine(Integer C_InvoiceLine_ID, String trx)
+	{
+		int returnValue = 0;
+		
+		String sql = "UPDATE LBR_OtherNFLine SET IsCancelled = 'Y' " +
+				     "WHERE C_InvoiceLine_ID = " +
+				     	"(SELECT lbr_ori_c_invoiceline_id " +
+				     	"FROM lbr_processlink " +
+				     	"WHERE lbr_dest_c_invoiceline_id = ?)";
+				     		     
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement(sql,null);
-			rs = pstmt.executeQuery();
-			if (rs.next())
-			{
-				LBR_MatrixPrinter_ID = rs.getInt(1);
-			}
+			pstmt = DB.prepareStatement(sql, trx);
+			pstmt.setInt(1, C_InvoiceLine_ID);
+			returnValue = pstmt.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, sql.toString(), e);
+			log.log(Level.SEVERE, "", e);
 		}
 		finally{
 		       DB.close(rs, pstmt);
 		}
 		
-		if (LBR_MatrixPrinter_ID == null) LBR_MatrixPrinter_ID = 0;
+		return (returnValue > 0);
 		
-		return LBR_MatrixPrinter_ID.intValue();	
-	}
-			
-} //MMatrixPrinter
+	}	//voidConsignationLine
+		
+} 	//	MLBROtherNFLine

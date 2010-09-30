@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBPartner;
@@ -55,7 +55,7 @@ public class ProcEMailNFe extends SvrProcess
 		if (p_LBR_NotaFiscal_ID <= 0)
 			return "NF-e não encontrada.";
 		//
-		MNotaFiscal nf = new MNotaFiscal (Env.getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
+		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
 		//
 		return sendEmailNFe (nf, true);	//	TODO: Permitir o re-enviado se explícito nos parâmetros
 	}	//	doIt
@@ -66,7 +66,7 @@ public class ProcEMailNFe extends SvrProcess
 	 * @param nf
 	 * @return
 	 */
-	public static String sendEmailNFe (MNotaFiscal nf, boolean force)
+	public static String sendEmailNFe (MLBRNotaFiscal nf, boolean force)
 	{
 		if (nf == null)
 		{

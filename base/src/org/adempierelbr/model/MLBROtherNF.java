@@ -27,23 +27,21 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
 /**
- *	MOtherNF
- *
  *	Model for X_LBR_OtherNF
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br) 
  *	@version $Id: MOtherNF.java, 11/12/2008 13:21:00 mgrigioni
  */
-public class MOtherNF extends X_LBR_OtherNF {
-    
+public class MLBROtherNF extends X_LBR_OtherNF
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MOtherNF.class);
+	private static CLogger log = CLogger.getCLogger(MLBROtherNF.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -51,7 +49,7 @@ public class MOtherNF extends X_LBR_OtherNF {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MOtherNF(Properties ctx, int ID, String trx){
+	public MLBROtherNF(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -61,7 +59,7 @@ public class MOtherNF extends X_LBR_OtherNF {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MOtherNF (Properties ctx, ResultSet rs, String trxName)
+	public MLBROtherNF (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -72,7 +70,7 @@ public class MOtherNF extends X_LBR_OtherNF {
 	 * 	@param orderClause order clause
 	 * 	@return lines
 	 */
-	public MOtherNFLine[] getLines (String where, String orderBy)
+	public MLBROtherNFLine[] getLines (String where, String orderBy)
 	{
 		String whereClause = "LBR_OtherNF_ID=? ";
 		
@@ -80,7 +78,7 @@ public class MOtherNF extends X_LBR_OtherNF {
 		if (where != null)
 			whereClause += " AND " + where;
 		
-		MTable table = MTable.get(getCtx(), MOtherNFLine.Table_Name);		
+		MTable table = MTable.get(getCtx(), MLBROtherNFLine.Table_Name);		
 		Query query =  new Query(table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{getLBR_OtherNF_ID()});
 	 	
@@ -88,9 +86,9 @@ public class MOtherNF extends X_LBR_OtherNF {
 	 	if (orderBy != null)
 	 		  query.setOrderBy(orderBy);
 		
-		List<MOtherNFLine> list = query.list();
+		List<MLBROtherNFLine> list = query.list();
 		
-		return list.toArray(new MOtherNFLine[list.size()]);	
+		return list.toArray(new MLBROtherNFLine[list.size()]);	
 	}	//	getLines
 	
 	public ArrayList<Integer> getLines()
@@ -125,4 +123,4 @@ public class MOtherNF extends X_LBR_OtherNF {
 		return lineIds;
 	} //getLines
 		
-} //MOtherNF
+} 	//	MLBROtherNF

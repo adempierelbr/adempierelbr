@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
-import org.adempierelbr.model.MOpenItem;
-import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
+import org.adempierelbr.model.MLBROpenItem;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxBR;
@@ -99,7 +99,7 @@ public class ProcGenerateNF extends SvrProcess
 		if (p_LBR_NotaFiscal_ID == null || p_LBR_NotaFiscal_ID.intValue() == 0)
 			throw new IllegalArgumentException("Nota Fiscal == 0");
 		
-		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 		
 		boolean isSOTrx = true;
 		
@@ -145,7 +145,7 @@ public class ProcGenerateNF extends SvrProcess
 				
 		Properties ctx = context;
 		String     trx = transaction;
-		MNotaFiscal NotaFiscal = null;
+		MLBRNotaFiscal NotaFiscal = null;
 		
 		try
 		{
@@ -181,7 +181,7 @@ public class ProcGenerateNF extends SvrProcess
 			MClientInfo clientInfo = client.getInfo();
 			
 			/** SET NOTA FISCAL **/
-			NotaFiscal = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
+			NotaFiscal = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
 				
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 			MDocType dtInvoice = new MDocType(ctx, invoice.getC_DocTypeTarget_ID(), null);
@@ -274,7 +274,7 @@ public class ProcGenerateNF extends SvrProcess
 			
 			/** Notes **/
 			String serviceDescription = "";
-			MOpenItem[] ois = MOpenItem.getOpenItem(invoice.getC_Invoice_ID(), invoice.get_TrxName());
+			MLBROpenItem[] ois = MLBROpenItem.getOpenItem(invoice.getC_Invoice_ID(), invoice.get_TrxName());
 			
 			if (ois == null || ois.length <= 0)
 				;
@@ -283,7 +283,7 @@ public class ProcGenerateNF extends SvrProcess
 			else if (ois.length > 1)
 				serviceDescription += "Vencimentos: ";
 			//
-			for (MOpenItem oi : ois)
+			for (MLBROpenItem oi : ois)
 			{
 				serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
 				serviceDescription += " R$ ";
@@ -338,7 +338,7 @@ public class ProcGenerateNF extends SvrProcess
 					
 					String VendorProductNo = POLBR.getVendorProductNo(product.getM_Product_ID(),bpartner.getC_BPartner_ID());
 	
-					MNotaFiscalLine NotaFiscalLine = new MNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
+					MLBRNotaFiscalLine NotaFiscalLine = new MLBRNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
 						
 					NotaFiscalLine.setLBR_NotaFiscal_ID(NotaFiscal.getLBR_NotaFiscal_ID());   /** LBR_NotaFiscal_ID **/
 					NotaFiscalLine.setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());   /** C_InvoiceLine_ID **/
@@ -375,7 +375,7 @@ public class ProcGenerateNF extends SvrProcess
 						Integer taxBR_ID = (Integer) iLine.get_Value("LBR_Tax_ID");
 						if(taxBR_ID != null && taxBR_ID.intValue() > 0)
 						{
-							MTax taxBR = new MTax(ctx, taxBR_ID.intValue(), trx);
+							MLBRTax taxBR = new MLBRTax(ctx, taxBR_ID.intValue(), trx);
 							X_LBR_TaxLine[] tLines = taxBR.getLines();
 							
 							for(X_LBR_TaxLine tLine : tLines)
@@ -563,9 +563,9 @@ public class ProcGenerateNF extends SvrProcess
 	private static void deleteLines(int LBR_NotaFiscal_ID, String trx){
 		
 		if (LBR_NotaFiscal_ID != 0){
-			MNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
-			MNotaFiscal.deleteLBR_NFLineTax(LBR_NotaFiscal_ID, trx); //Imposto Linha
-			MNotaFiscal.deleteLBR_NotaFiscalLine(LBR_NotaFiscal_ID, trx); //Linhas da NF
+			MLBRNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
+			MLBRNotaFiscal.deleteLBR_NFLineTax(LBR_NotaFiscal_ID, trx); //Imposto Linha
+			MLBRNotaFiscal.deleteLBR_NotaFiscalLine(LBR_NotaFiscal_ID, trx); //Linhas da NF
 		}
 		
 	} //deleteLines

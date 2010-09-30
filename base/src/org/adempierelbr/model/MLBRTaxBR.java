@@ -31,17 +31,15 @@ import org.compiere.util.Env;
 
 
 /**
- *	MTaxBR
- *
  *	MTaxBR Class
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTaxBR.java, 19/12/2007 09:50:00 mgrigioni
  */
-public class MTaxBR{
-	
+public class MLBRTaxBR
+{	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MTaxBR.class);
+	private static CLogger log = CLogger.getCLogger(MLBRTaxBR.class);
 	
 	private int     LBR_TaxLine_ID;
 	private String  Formula;
@@ -51,7 +49,7 @@ public class MTaxBR{
 	private double  TaxRate;
 	private double  TaxBase;
 	
-	public MTaxBR(String Formula, String FormulaNetWorth, String ServiceFactor, int LBR_TaxLine_ID, double TaxRate, double TaxBase, boolean PostTax){
+	public MLBRTaxBR(String Formula, String FormulaNetWorth, String ServiceFactor, int LBR_TaxLine_ID, double TaxRate, double TaxBase, boolean PostTax){
 		
 		setFormula(Formula);
 		setFormulaNetWorth(FormulaNetWorth);
@@ -63,7 +61,7 @@ public class MTaxBR{
 		
 	}
 	
-	public static Map<String, MTaxBR> getMTaxBR(Integer Line_ID, boolean isOrder, String trx){
+	public static Map<String, MLBRTaxBR> getMTaxBR(Integer Line_ID, boolean isOrder, String trx){
 		
 		String  formula[] = {"","",""};
 		String  transactionType = "";
@@ -75,7 +73,7 @@ public class MTaxBR{
 		double  TaxRate = 0.0;
 		double  TaxBase = 0.0;
 		//
-		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
+		Map<String, MLBRTaxBR> lines = new HashMap<String, MLBRTaxBR>();
 		
 		if (isOrder){
 			MOrderLine oLine = new MOrderLine(Env.getCtx(),Line_ID,trx);
@@ -107,7 +105,7 @@ public class MTaxBR{
 				TaxBase = 1 - ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
 				PostTax = taxLine.islbr_PostTax(); //POSTTAX
 				
-				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
+				lines.put(taxName.getName().trim(), new MLBRTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
 			}
 			
 		}
@@ -115,7 +113,7 @@ public class MTaxBR{
 		return lines;
 	} //getMTaxBR
 	
-	public static Map<String, MTaxBR> getMTaxBR(Integer C_Tax_ID, Integer LBR_Tax_ID, String transactionType, String trx){
+	public static Map<String, MLBRTaxBR> getMTaxBR(Integer C_Tax_ID, Integer LBR_Tax_ID, String transactionType, String trx){
 		
 		String  formula[] = {"","",""};
 		//
@@ -124,7 +122,7 @@ public class MTaxBR{
 		double  TaxRate = 0.0;
 		double  TaxBase = 0.0;
 		//
-		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
+		Map<String, MLBRTaxBR> lines = new HashMap<String, MLBRTaxBR>();
 		
 		Integer[] TaxName = getLBR_TaxName_ID(C_Tax_ID,trx);
 		
@@ -141,7 +139,7 @@ public class MTaxBR{
 				TaxBase = 1 - ((taxLine.getlbr_TaxBase().doubleValue())/100); //TAXBASE
 				PostTax = taxLine.islbr_PostTax(); //POSTTAX
 				
-				lines.put(taxName.getName().trim(), new MTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
+				lines.put(taxName.getName().trim(), new MLBRTaxBR(formula[0], formula[1], formula[2], LBR_TaxLine_ID, TaxRate, TaxBase, PostTax));
 			}
 			
 		}
@@ -414,4 +412,4 @@ public class MTaxBR{
 		TaxBase = taxBase;
 	}
 	
-}
+}	//	MLBRTaxBR

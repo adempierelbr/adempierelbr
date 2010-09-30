@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.process.ProcessInfoParameter;
@@ -79,7 +79,7 @@ public class ProcReturnRPS extends SvrProcess
 			//
 			if (LBR_NotaFiscal_ID != -1)
 			{
-				MNotaFiscal nf = new MNotaFiscal(getCtx(), LBR_NotaFiscal_ID, get_TrxName());
+				MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), LBR_NotaFiscal_ID, get_TrxName());
 				nf.setIsPrinted(true); 	//	Marca impresso para cancelar os documentos vinculados
 				nf.set_ValueOfColumn("lbr_NFENo", NFeNo);
 				if (status.equalsIgnoreCase("C"))

@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.util.POLBR;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MTable;
@@ -107,7 +107,7 @@ public class NFeTaxes
 	 * 		mesmo que sem valores a destacar.	
 	 * @return NFeTaxes Taxes
 	 */
-	public static NFeTaxes[] getTaxes (MNotaFiscalLine nfl)
+	public static NFeTaxes[] getTaxes (MLBRNotaFiscalLine nfl)
 	{
 		HashMap<String, NFeTaxes> txs = new HashMap<String, NFeTaxes>();
 		//

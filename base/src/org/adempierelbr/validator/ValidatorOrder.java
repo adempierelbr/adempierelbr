@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.util.POLBR;
 import org.adempierelbr.util.TaxesException;
 import org.compiere.apps.search.Info_Column;
@@ -165,7 +165,7 @@ public class ValidatorOrder implements ModelValidator
 			
 			Integer LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-				MTax lbrTax = new MTax(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
+				MLBRTax lbrTax = new MLBRTax(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
 				lbrTax.delete(true, oLine.get_TrxName());
 			}
 				
@@ -189,7 +189,7 @@ public class ValidatorOrder implements ModelValidator
 			
 			//ModelChange
 			try{
-				MTax.modelChange(ctx, oLine, trx);
+				MLBRTax.modelChange(ctx, oLine, trx);
 			}
 			catch (Exception e){
 				log.log(Level.SEVERE, "", e);
@@ -223,13 +223,13 @@ public class ValidatorOrder implements ModelValidator
 			
 			//DocValidate
 			try {
-				MTax.docValidate(ctx, order, trx);
+				MLBRTax.docValidate(ctx, order, trx);
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "", e);
 			}
 
 			//Validate Withhold
-			MTax.validateWithhold(order);		
+			MLBRTax.validateWithhold(order);		
 			
 			MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
 			String DocSubTypeSO = dt.getDocSubTypeSO();

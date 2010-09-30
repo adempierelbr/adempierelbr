@@ -24,8 +24,8 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MOpenItem;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.boleto.bank.MBancoBrasil;
 import org.adempierelbr.model.boleto.bank.MBancoReal;
 import org.adempierelbr.model.boleto.bank.MBradesco;
@@ -398,14 +398,14 @@ public class MBoleto extends X_LBR_Boleto
 			Location = MLocation.get(ctx, BPLocation.getC_Location_ID(), trx);
 			Region = new MRegion(ctx, Location.getC_Region_ID(),trx);
 		
-			MOpenItem[] oi = null;
+			MLBROpenItem[] oi = null;
 		
-			oi = MOpenItem.getOpenItem(C_Invoice_ID, trx);
+			oi = MLBROpenItem.getOpenItem(C_Invoice_ID, trx);
 		
 			/*
 			 * Generate Boleto
 			 */
-			for (MOpenItem op : oi){
+			for (MLBROpenItem op : oi){
 				
 				try{
 					
@@ -487,7 +487,7 @@ public class MBoleto extends X_LBR_Boleto
 					//Nota Fiscal
 					Integer LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
 					if (LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
-						MNotaFiscal nf = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
+						MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
 						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 					}
 					

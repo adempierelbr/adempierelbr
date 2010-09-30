@@ -24,8 +24,8 @@ import java.util.logging.Level;
 import javax.sql.rowset.CachedRowSet;
 
 import org.adempierelbr.callout.CalloutDefineCFOP;
-import org.adempierelbr.model.MOtherNF;
-import org.adempierelbr.model.MOtherNFLine;
+import org.adempierelbr.model.MLBROtherNF;
+import org.adempierelbr.model.MLBROtherNFLine;
 import org.adempierelbr.util.POLBR;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
@@ -81,7 +81,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		String trx = get_TrxName();
 		int LBR_OtherNF_ID = getRecord_ID();
 		
-		MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
+		MLBROtherNF otherNF = new MLBROtherNF(ctx,LBR_OtherNF_ID,trx);
 		
 		if(ProcessarLinhas(otherNF,returnMsg))
 			otherNF.setProcessed(true);
@@ -90,7 +90,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		return returnMsg.toString();
 	}//doIt
 	
-	private boolean ProcessarLinhas(MOtherNF otherNF, StringBuffer returnMsg)
+	private boolean ProcessarLinhas(MLBROtherNF otherNF, StringBuffer returnMsg)
 	{	
 		Map<Integer,Integer> ordersAdded = new HashMap<Integer, Integer>();
 		Integer C_DocTypeTarget_ID = 0;
@@ -107,7 +107,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		else
 			C_DocTypeTarget_ID = (Integer)otherNF.getC_DocTypeTarget_ID();
 		
-		for(MOtherNFLine line : otherNF.getLines(null, null))
+		for(MLBROtherNFLine line : otherNF.getLines(null, null))
 		{
 			
 			MInvoiceLine refInvLine = new MInvoiceLine(ctx,line.getC_InvoiceLine_ID(),trx);
@@ -172,7 +172,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		return 0;
 	}
 	
-	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, MOtherNFLine line, int M_Warehouse_ID)
+	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, MLBROtherNFLine line, int M_Warehouse_ID)
 	{
 		Properties ctx = getCtx();
 		String trx = get_TrxName();
@@ -195,7 +195,7 @@ public class ProcProcessOtherNF extends SvrProcess
 	}
 	
 	
-	private boolean precheck(MOtherNF otherNF,StringBuffer returnMsg)
+	private boolean precheck(MLBROtherNF otherNF,StringBuffer returnMsg)
 	{
 		boolean returnValue = false;
 		PreparedStatement pstmt = null;

@@ -23,17 +23,15 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	MISSMatrix
- *
  *	Model for X_LBR_ISSMatrix
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MISSMatrix.java, 02/03/2008 11:40:00 mgrigioni
  */
-public class MISSMatrix extends X_LBR_ISSMatrix {
-    
+public class MLBRISSMatrix extends X_LBR_ISSMatrix
+{    
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +41,7 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MISSMatrix(Properties ctx, int ID, String trx){
+	public MLBRISSMatrix(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -53,7 +51,7 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MISSMatrix (Properties ctx, ResultSet rs, String trxName)
+	public MLBRISSMatrix (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -64,7 +62,7 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 	 */
 	public static int getLBR_Tax_ID(Properties ctx, int M_Product_ID, int C_City_ID, String trx){
 		
-		CLogger log = CLogger.getCLogger(MISSMatrix.class);
+		CLogger log = CLogger.getCLogger(MLBRISSMatrix.class);
 		
 		String sql = "SELECT LBR_Tax_ID " +
 				     "FROM LBR_ISSMatrix " +
@@ -100,5 +98,4 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 		
 		return Matrix_ID.intValue();
 	}
-		
-} //MISSMatrix
+}	//	MLBRISSMatrix

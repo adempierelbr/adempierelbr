@@ -21,8 +21,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MTax;
-import org.adempierelbr.model.MTaxBR;
+import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxBR;
 import org.compiere.model.GridTab;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -77,10 +77,10 @@ public class TaxBR
 		
 		Properties ctx = Env.getCtx();
 		
-		Integer[] taxes = MTaxBR.getLBR_TaxName_ID(Line_ID, isOrder, trx);
+		Integer[] taxes = MLBRTaxBR.getLBR_TaxName_ID(Line_ID, isOrder, trx);
 		
-		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
-		lines = MTaxBR.getMTaxBR(Line_ID, isOrder, trx);
+		Map<String, MLBRTaxBR> lines = new HashMap<String, MLBRTaxBR>();
+		lines = MLBRTaxBR.getMTaxBR(Line_ID, isOrder, trx);
 		
 		MProduct product = null;
 		
@@ -108,8 +108,8 @@ public class TaxBR
 		{
 			X_LBR_TaxName taxName = new X_LBR_TaxName(ctx,taxes[i],trx);
 			String name    = taxName.getName().trim();
-			MTaxBR taxBR   = lines.get(name);
-			MTaxBR s_taxBR = null;
+			MLBRTaxBR taxBR   = lines.get(name);
+			MLBRTaxBR s_taxBR = null;
 			
 			//Faz o cálculo do imposto substituto antes
 			if (taxName.getlbr_TaxType().equals(TaxBR.taxType_Substitution))
@@ -128,8 +128,8 @@ public class TaxBR
 		
 	} //calculateTaxes
 	
-	private static void calculate(MTaxBR taxBR, MTaxBR s_taxBR, MProduct product, X_LBR_TaxName taxName, 
-			Map<String, MTaxBR> lines, boolean isTaxIncluded, double lineamt, String trx) throws EvalError{
+	private static void calculate(MLBRTaxBR taxBR, MLBRTaxBR s_taxBR, MProduct product, X_LBR_TaxName taxName, 
+			Map<String, MLBRTaxBR> lines, boolean isTaxIncluded, double lineamt, String trx) throws EvalError{
 		
 		if (taxBR != null)
 		{
@@ -201,7 +201,7 @@ public class TaxBR
 	
 	public static BigDecimal getTaxAmt(MOrderLine ol, Boolean isTaxIncluded) throws EvalError
 	{
-		MTaxBR s_taxBR 		= null;
+		MLBRTaxBR s_taxBR 		= null;
 		double     amt      = 0.0;
 		double     factor   = 0.0;
 		double	   lineamt 	= 0.0;
@@ -219,15 +219,15 @@ public class TaxBR
 		if(ol.get_Value("LBR_Tax_ID") == null)
 			return Env.ZERO;
 		
-		MTax tx = new MTax(ctx, (Integer) ol.get_Value("LBR_Tax_ID"), null);
+		MLBRTax tx = new MLBRTax(ctx, (Integer) ol.get_Value("LBR_Tax_ID"), null);
 		X_LBR_TaxLine[] txLines = tx.getLines();
-		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
-		lines = MTaxBR.getMTaxBR(ol.getC_OrderLine_ID(), true, null);
+		Map<String, MLBRTaxBR> lines = new HashMap<String, MLBRTaxBR>();
+		lines = MLBRTaxBR.getMTaxBR(ol.getC_OrderLine_ID(), true, null);
 		
 		for(X_LBR_TaxLine txLine : txLines)
 		{
 			X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, txLine.getLBR_TaxName_ID(), null);
-			MTaxBR taxBR = lines.get(taxName.getName().trim());
+			MLBRTaxBR taxBR = lines.get(taxName.getName().trim());
 			
 			if(taxName.getName().trim().indexOf("IPI") != -1)
 				continue;
@@ -293,7 +293,7 @@ public class TaxBR
 
 	public static BigDecimal getTaxAmt(GridTab mTab, String trxType, Boolean isTaxIncluded) throws EvalError
 	{
-		MTaxBR s_taxBR 		= null;
+		MLBRTaxBR s_taxBR 		= null;
 		double     amt      = 0.0;
 		double     rateIPI   = 0.0;
 		double     factor   = 0.0;
@@ -320,10 +320,10 @@ public class TaxBR
 		Integer C_Tax_ID = (Integer) mTab.getValue("C_Tax_ID");
 		Integer LBR_Tax_ID = (Integer) mTab.getValue("LBR_Tax_ID");
 		
-		MTax tx = new MTax(ctx, (Integer) mTab.getValue("LBR_Tax_ID"), null);
+		MLBRTax tx = new MLBRTax(ctx, (Integer) mTab.getValue("LBR_Tax_ID"), null);
 		X_LBR_TaxLine[] txLines = tx.getLines();
-		Map<String, MTaxBR> lines = new HashMap<String, MTaxBR>();
-		lines = MTaxBR.getMTaxBR(C_Tax_ID, LBR_Tax_ID, trxType, null);
+		Map<String, MLBRTaxBR> lines = new HashMap<String, MLBRTaxBR>();
+		lines = MLBRTaxBR.getMTaxBR(C_Tax_ID, LBR_Tax_ID, trxType, null);
 		
 		/** Adicionar o IPI no calculo **/
 		if(isTaxIncluded)
@@ -342,7 +342,7 @@ public class TaxBR
 		for(X_LBR_TaxLine txLine : txLines)
 		{
 			X_LBR_TaxName taxName = new X_LBR_TaxName(ctx, txLine.getLBR_TaxName_ID(), null);
-			MTaxBR taxBR = lines.get(taxName.getName().trim());
+			MLBRTaxBR taxBR = lines.get(taxName.getName().trim());
 			
 			/** Remover o IPI do calculo **/
 			if(taxName.getName().trim().indexOf("IPI") != -1
@@ -409,7 +409,7 @@ public class TaxBR
 	}
 	
 	
-	private static double calculate(String formula, Double amt, Double factor, Map<String, MTaxBR> lines) throws EvalError{
+	private static double calculate(String formula, Double amt, Double factor, Map<String, MLBRTaxBR> lines) throws EvalError{
 		
 		if (formula == null || formula.equals("")){
 			return 0.0;
@@ -428,7 +428,7 @@ public class TaxBR
 			
 			else
 			{
-				MTaxBR temptaxBR = lines.get(tax[j]);
+				MLBRTaxBR temptaxBR = lines.get(tax[j]);
 				
 				if (temptaxBR != null)
 				{
@@ -694,15 +694,15 @@ public class TaxBR
 		
 		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
 		
-		Integer[] taxName = MTaxBR.getLBR_TaxName_ID(C_InvoiceLine_ID, false, trx);
+		Integer[] taxName = MLBRTaxBR.getLBR_TaxName_ID(C_InvoiceLine_ID, false, trx);
 		
 		for (int i=0;i<taxName.length;i++){
 			
-			int LBR_TaxLine_ID = MTax.getLine((Integer)iLine.get_Value("LBR_Tax_ID"),taxName[i],trx);
+			int LBR_TaxLine_ID = MLBRTax.getLine((Integer)iLine.get_Value("LBR_Tax_ID"),taxName[i],trx);
 			if (LBR_TaxLine_ID != 0){
 				
 				X_LBR_TaxLine taxLine = new X_LBR_TaxLine(ctx, LBR_TaxLine_ID, trx);
-				int C_Tax_ID = MTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName[i], trx);
+				int C_Tax_ID = MLBRTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName[i], trx);
 				if (C_Tax_ID != 0){
 					
 					org.compiere.model.MTax tax = new org.compiere.model.MTax(ctx,C_Tax_ID,trx);

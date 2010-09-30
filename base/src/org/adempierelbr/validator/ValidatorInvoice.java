@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MOtherNFLine;
-import org.adempierelbr.model.MProcessLink;
-import org.adempierelbr.model.MTax;
+import org.adempierelbr.model.MLBROtherNFLine;
+import org.adempierelbr.model.MLBRProcessLink;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.boleto.MBoleto;
 import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.POLBR;
@@ -264,7 +264,7 @@ public class ValidatorInvoice implements ModelValidator
 			Integer LBR_Tax_ID = (Integer) iLine.get_Value("LBR_Tax_ID");
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
 			{
-				MTax lbrTax = new MTax(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
+				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
 				lbrTax.delete(true, iLine.get_TrxName());
 			}
 
@@ -298,8 +298,8 @@ public class ValidatorInvoice implements ModelValidator
 					LBR_Tax_ID = (Integer) oLine.get_Value("LBR_Tax_ID");
 					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
 					{
-						MTax oTax = new MTax(ctx, LBR_Tax_ID, trx);
-						MTax newTax = oTax.copyFrom();
+						MLBRTax oTax = new MLBRTax(ctx, LBR_Tax_ID, trx);
+						MLBRTax newTax = oTax.copyFrom();
 						//
 						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 					}
@@ -310,7 +310,7 @@ public class ValidatorInvoice implements ModelValidator
 				// ModelChange
 				try
 				{
-					MTax.modelChange(ctx, iLine, trx);
+					MLBRTax.modelChange(ctx, iLine, trx);
 				}
 				catch (Exception e)
 				{
@@ -373,7 +373,7 @@ public class ValidatorInvoice implements ModelValidator
 			// DocValidate
 			try
 			{
-				MTax.docValidate(ctx, invoice, trx);
+				MLBRTax.docValidate(ctx, invoice, trx);
 			}
 			catch (Exception e)
 			{
@@ -386,7 +386,7 @@ public class ValidatorInvoice implements ModelValidator
 			pt.apply(invoice);
 
 			// Validate Withhold
-			MTax.validateWithhold(invoice);
+			MLBRTax.validateWithhold(invoice);
 
 			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 			boolean HasOpenItems = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasOpenItems"));
@@ -453,7 +453,7 @@ public class ValidatorInvoice implements ModelValidator
 
 			if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
 			{	
-				MProcessLink proc = new MProcessLink(ctx, 0, trx);
+				MLBRProcessLink proc = new MLBRProcessLink(ctx, 0, trx);
 				Integer lbr_Ref_C_InvoiceLine_ID;
 				
 				for(MInvoiceLine iLine : invoice.getLines())
@@ -473,16 +473,16 @@ public class ValidatorInvoice implements ModelValidator
 	
 					if (lbr_docbasetype.equalsIgnoreCase("farc"))
 					{
-						proc.setMovementType(MProcessLink.MOVEMENTTYPE_MovementFrom);
+						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_MovementFrom);
 					}
 					else if (lbr_docbasetype.equalsIgnoreCase("faec"))
 					{
-						proc.setMovementType(MProcessLink.MOVEMENTTYPE_MovementTo);
+						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_MovementTo);
 						proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
 					}
 					else if (lbr_docbasetype.equalsIgnoreCase("fafc"))
 					{
-						proc.setMovementType(MProcessLink.MOVEMENTTYPE_CustomerShipment);
+						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_CustomerShipment);
 						proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
 					}
 					proc.save(trx);
@@ -506,7 +506,7 @@ public class ValidatorInvoice implements ModelValidator
 			//CANCELA CONSIGNAÇÃO
 			for(MInvoiceLine iLine : invoice.getLines())
 			{
-				MOtherNFLine.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
+				MLBROtherNFLine.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
 			}
 
 		}
