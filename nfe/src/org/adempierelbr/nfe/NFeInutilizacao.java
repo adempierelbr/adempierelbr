@@ -12,7 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.adempierelbr.model.MDigitalCertificate;
+import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
@@ -96,14 +96,14 @@ public class NFeInutilizacao
 		//
 		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
-		MDigitalCertificate dcOrg = new MDigitalCertificate(Env.getCtx(), certOrg, null);
-		MDigitalCertificate dcWS = new MDigitalCertificate(Env.getCtx(), certWS, null);
+		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
+		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 		//
 		if (dcOrg.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dcOrg.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeOrg = "PKCS12";
-		else if (dcOrg.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certTypeOrg = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
@@ -111,9 +111,9 @@ public class NFeInutilizacao
 		//
 		if (dcWS.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dcWS.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeWS = "PKCS12";
-		else if (dcWS.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certTypeWS = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");

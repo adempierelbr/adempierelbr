@@ -19,7 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.adempierelbr.model.MNFeLot;
+import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.compiere.model.MAttachment;
@@ -423,7 +423,7 @@ public class NFeUtil
 	 * @return
 	 * @throws Exception
 	 */
-	public static String geraLote (MNFeLot lot, String envType) throws Exception
+	public static String geraLote (MLBRNFeLot lot, String envType) throws Exception
 	{
 		log.fine("ini");
 		String[] xmlGerado = lot.getXMLs();

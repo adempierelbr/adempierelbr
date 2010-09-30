@@ -19,12 +19,10 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempierelbr.util.NFeUtil;
-import org.adempierelbr.util.POLBR;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.model.X_LBR_NFeLot;
-import org.compiere.model.X_LBR_NotaFiscalLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -34,10 +32,10 @@ import org.compiere.util.Env;
  *	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MDigitalCertificate.java,v 1.0 2009/08/23 00:51:27 ralexsander Exp $
  */
-public class MNFeLot extends X_LBR_NFeLot 
+public class MLBRNFeLot extends X_LBR_NFeLot 
 {
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +45,7 @@ public class MNFeLot extends X_LBR_NFeLot
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNFeLot (Properties ctx, int ID, String trx){
+	public MLBRNFeLot (Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -57,7 +55,7 @@ public class MNFeLot extends X_LBR_NFeLot
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNFeLot (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNFeLot (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -111,4 +109,4 @@ public class MNFeLot extends X_LBR_NFeLot
 	 	//
 		return result;
 	}	//	getXMLs
-}	//	MNFeLot
+}	//	MLBRNFeLot

@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNFeLot;
+import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -76,7 +76,7 @@ public class ProcReactivateNF extends SvrProcess
 		
 		if (nf.get_Value("LBR_NFeLot_ID") != null)
 		{
-			MNFeLot nfLot = new MNFeLot (Env.getCtx(), (Integer) nf.get_Value("LBR_NFeLot_ID"), null);
+			MLBRNFeLot nfLot = new MLBRNFeLot (Env.getCtx(), (Integer) nf.get_Value("LBR_NFeLot_ID"), null);
 			if (!nfLot.isProcessed())
 				return "Não é permitido reativar, pois o lote da NF não foi processado ainda.";
 		}

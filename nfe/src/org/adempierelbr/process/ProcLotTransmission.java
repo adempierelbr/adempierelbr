@@ -2,7 +2,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNFeLot;
+import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.nfe.NFeRecepcao;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -44,7 +44,7 @@ public class ProcLotTransmission extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{
-		MNFeLot lot = new MNFeLot (Env.getCtx(), p_LBR_NFeLot_ID, get_TrxName());
+		MLBRNFeLot lot = new MLBRNFeLot (Env.getCtx(), p_LBR_NFeLot_ID, get_TrxName());
 		//
 		if (lot.isProcessed())
 			return "Lote já processado";

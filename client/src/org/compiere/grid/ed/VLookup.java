@@ -23,7 +23,7 @@ import java.sql.*;
 import java.util.logging.*;
 import javax.swing.*;
 
-import org.adempierelbr.model.MNFeLot;
+import org.adempierelbr.model.MLBRNFeLot;
 import org.compiere.apps.*;
 import org.compiere.apps.search.*;
 import org.compiere.model.*;
@@ -1259,7 +1259,7 @@ public class VLookup extends JComponent
 		//
 		if (LBR_NFeLot_ID > 0)
 		{
-			MNFeLot lot = new MNFeLot (Env.getCtx(), LBR_NFeLot_ID, null);
+			MLBRNFeLot lot = new MLBRNFeLot (Env.getCtx(), LBR_NFeLot_ID, null);
 			if (lot.islbr_LotSent())
 				ADialog.error(m_lookup.getWindowNo(), null, "CannotDeleteTrx");
 			else

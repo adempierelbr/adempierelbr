@@ -23,10 +23,10 @@ import org.compiere.model.X_LBR_DigitalCertificate;
  *	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MDigitalCertificate.java,v 1.0 2009/08/23 00:51:27 ralexsander Exp $
  */
-public class MDigitalCertificate extends X_LBR_DigitalCertificate 
+public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate 
 {
 	/**
-	 * 
+	 * 	Default Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MDigitalCertificate(Properties ctx, int ID, String trx){
+	public MLBRDigitalCertificate(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -46,8 +46,8 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDigitalCertificate (Properties ctx, ResultSet rs, String trxName)
+	public MLBRDigitalCertificate (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}		
-}	//	MDigitalCertificate
+}	//	MLBRDigitalCertificate
