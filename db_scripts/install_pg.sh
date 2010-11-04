@@ -18,11 +18,12 @@ fi
 echo "AdempiereLBR"
 echo "."
 echo ". Mario Grigioni (Kenos, www.kenos.com.br) - 01/09/2008"
+echo ". Michel Silvestre - resultado.log - 23/08/2010
 echo "."
 echo "Password (ADEMPIERE): "
 read variavel
 export PGPASSWORD=$variavel
 for f in $(ls $1/postgresql/*.sql); do
-echo ". Executando Script" $f
-psql -d $2 -U $3 -f $f
+echo ". Execultando Script" $f >> resultado.log
+psql -d $2 -U $3 -f $f >>resultado.log 2>&1
 done

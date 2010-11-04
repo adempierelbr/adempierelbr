@@ -23,6 +23,10 @@ public class ServiceTaxes{
 	//Default Constructor
 	ServiceTaxes(){}
 	
+	public String toString(){
+		return String.valueOf(LBR_TaxName_ID);
+	}
+	
 	public ServiceTaxes(int LBR_TaxName_ID, BigDecimal Threshold, BigDecimal GrandTotal){
 		
 		setLBR_TaxName_ID(LBR_TaxName_ID);

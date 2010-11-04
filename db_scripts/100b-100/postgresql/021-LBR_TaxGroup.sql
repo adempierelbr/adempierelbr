@@ -198,7 +198,7 @@ ALTER TABLE LBR_TaxGroup ADD COLUMN Description VARCHAR(255)
 
 -- 11/02/2008 14h2min38s BRST
 -- Default comment for updating dictionary
-INSERT INTO AD_Window (AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WinHeight,WinWidth,AD_Client_ID,WindowType) VALUES (0,1000018,TO_TIMESTAMP('2008-02-11 14:02:38','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','N','Y','Tax Group','N',TO_TIMESTAMP('2008-02-11 14:02:38','YYYY-MM-DD HH24:MI:SS'),100,0,0,0,'M')
+INSERT INTO AD_Window (AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WinHeight,WinWidth,AD_Client_ID,WindowType) VALUES (0,1000018,TO_TIMESTAMP('2008-02-11 14:02:38','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','N','Y','Tax Group (LBR)','N',TO_TIMESTAMP('2008-02-11 14:02:38','YYYY-MM-DD HH24:MI:SS'),100,0,0,0,'M')
 ;
 
 -- 11/02/2008 14h2min38s BRST

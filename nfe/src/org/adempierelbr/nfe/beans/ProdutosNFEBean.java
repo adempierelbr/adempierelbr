@@ -1,8 +1,20 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
 public class ProdutosNFEBean {
 
-	// Produtos e Servi�os da NF-E
+	// Produtos e Serviços da NF-E
 	
 	private String prod;
 	private String cProd;
@@ -22,126 +34,137 @@ public class ProdutosNFEBean {
 	private String vUnTrib;
 	private DeclaracaoDI DI;
 	
-	public String getProd() {
-		return prod;
-	}
-	public void setProd(String prod) {
-		this.prod = prod;
-	}
-	public String getCProd() {
-		return cProd;
-	}
-	public void setCProd(String prod) {
-		cProd = prod;
-	}
-	public String getXProd() {
-		return xProd;
-	}
-	public void setXProd(String prod) {
-		xProd = prod;
-	}
-	public String getNCM() {
-		return NCM;
-	}
-	public void setNCM(String ncm) {
-		NCM = ncm;
-	}
-	public String getCFOP() {
-		return CFOP;
-	}
-	public void setCFOP(String cfop) {
-		CFOP = cfop;
-	}
-	public String getUCom() {
-		return uCom;
-	}
-	public void setUCom(String com) {
-		uCom = com;
-	}
-	public String getQCom() {
-		return qCom;
-	}
-	public void setQCom(String com) {
-		qCom = com;
-	}
-	public String getVUnCom() {
-		return vUnCom;
-	}
-	public void setVUnCom(String unCom) {
-		vUnCom = unCom;
-	}
-	public String getVProd() {
-		return vProd;
-	}
-	public void setVProd(String prod) {
-		vProd = prod;
-	}
-	public String getUTrib() {
-		return uTrib;
-	}
-	public void setUTrib(String trib) {
-		uTrib = trib;
-	}
-	public String getQTrib() {
-		return qTrib;
-	}
-	public void setQTrib(String trib) {
-		qTrib = trib;
-	}
-	public String getVUnTrib() {
-		return vUnTrib;
-	}
-	public void setVUnTrib(String unTrib) {
-		vUnTrib = unTrib;
-	}
-	public String getCEAN() {
-		return cEAN;
-	}
-	public void setCEAN(String cean) {
-		cEAN = cean;
-	}
-	public String getCEANTrib() {
-		return cEANTrib;
-	}
-	public void setCEANTrib(String trib) {
-		cEANTrib = trib;
-	}
 	public DeclaracaoDI getDI() {
 		return DI;
 	}
 	public void setDI(DeclaracaoDI DI) {
 		this.DI = DI;
 	}
+	public String getProd() {
+		return prod;
+	}
+	public void setProd(String prod) {
+		if (prod != null)
+			prod = prod.trim();
 	
-	/* public ProdutosNFEBean(
-			 			    String cProd
-			 			  , String xProd
-			 			  , String NCM
-			 			  , String CFOP
-			 			  , String uCom
-			 			  , String qCom
-			 			  , String vUnCom
-			 			  , String vProd
-			 			  , String uTrib
-			 			  , String vUnTrib
-			 			  , int nItem
-			 			  , TributosInciBean tributos
-	 ) {
-		 
-		 this.cProd = cProd;
-		 this.xProd = xProd;
-		 this.NCM = NCM;
-		 this.CFOP = CFOP;
-		 this.uCom = uCom;
-		 this.qCom = qCom;
-		 this.vUnCom = vUnCom;
-		 this.vProd = vProd;
-		 this.uTrib = uTrib;
-		 this.vUnTrib = vUnTrib;
-		 this.nItem = nItem;
-		 this.imposto = tributos;
-	 }
-
-*/
-
+		this.prod = prod;
+	}
+	public String getcProd() {
+		return cProd;
+	}
+	public void setcProd(String cProd) {
+		if (cProd != null)
+			cProd = cProd.trim();
+	
+		this.cProd = cProd;
+	}
+	public String getcEAN() {
+		return cEAN;
+	}
+	public void setcEAN(String cEAN) {
+		if (cEAN != null)
+			cEAN = cEAN.trim();
+	
+		this.cEAN = cEAN;
+	}
+	public String getxProd() {
+		return xProd;
+	}
+	public void setxProd(String xProd) {
+		if (xProd != null)
+			xProd = xProd.trim();
+	
+		this.xProd = xProd;
+	}
+	public String getNCM() {
+		return NCM;
+	}
+	public void setNCM(String nCM) {
+		if (nCM != null)
+			nCM = nCM.trim();
+	
+		NCM = nCM;
+	}
+	public String getCFOP() {
+		return CFOP;
+	}
+	public void setCFOP(String cFOP) {
+		if (cFOP != null)
+			cFOP = cFOP.trim();
+	
+		CFOP = cFOP;
+	}
+	public String getuCom() {
+		return uCom;
+	}
+	public void setuCom(String uCom) {
+		if (uCom != null)
+			uCom = uCom.trim();
+	
+		this.uCom = uCom;
+	}
+	public String getqCom() {
+		return qCom;
+	}
+	public void setqCom(String qCom) {
+		if (qCom != null)
+			qCom = qCom.trim();
+	
+		this.qCom = qCom;
+	}
+	public String getvUnCom() {
+		return vUnCom;
+	}
+	public void setvUnCom(String vUnCom) {
+		if (vUnCom != null)
+			vUnCom = vUnCom.trim();
+	
+		this.vUnCom = vUnCom;
+	}
+	public String getvProd() {
+		return vProd;
+	}
+	public void setvProd(String vProd) {
+		if (vProd != null)
+			vProd = vProd.trim();
+	
+		this.vProd = vProd;
+	}
+	public String getcEANTrib() {
+		return cEANTrib;
+	}
+	public void setcEANTrib(String cEANTrib) {
+		if (cEANTrib != null)
+			cEANTrib = cEANTrib.trim();
+	
+		this.cEANTrib = cEANTrib;
+	}
+	public String getuTrib() {
+		return uTrib;
+	}
+	public void setuTrib(String uTrib) {
+		if (uTrib != null)
+			uTrib = uTrib.trim();
+	
+		this.uTrib = uTrib;
+	}
+	public String getqTrib() {
+		return qTrib;
+	}
+	public void setqTrib(String qTrib) {
+		if (qTrib != null)
+			qTrib = qTrib.trim();
+	
+		this.qTrib = qTrib;
+	}
+	public String getvUnTrib() {
+		return vUnTrib;
+	}
+	public void setvUnTrib(String vUnTrib) {
+		if (vUnTrib != null)
+			vUnTrib = vUnTrib.trim();
+	
+		this.vUnTrib = vUnTrib;
+	}
+	
 }

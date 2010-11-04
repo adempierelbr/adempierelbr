@@ -22,13 +22,13 @@ import org.compiere.process.SvrProcess;
  *	ProcLBRVersion
  *
  *	Process to show AdempiereLBR About
- *	
+ *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: ProcLBRVersion.java, 26/11/2008 10:07:00 mgrigioni
  */
 public class ProcLBRVersion extends SvrProcess
 {
-	
+
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -51,20 +51,20 @@ public class ProcLBRVersion extends SvrProcess
 	 *  @throws Exception if not successful
 	 */
 	protected String doIt() throws Exception
-	{	
-		log.info("About AdempiereLBR");
-		
+	{
+		log.info("About OSeb");
+
 		StringBuffer msg = new StringBuffer();
-		
+
 		msg.append("<br><font color=\"#000000\">");
-		msg.append("<b>Versão AdempiereLBR: </b>");
-		msg.append(MSysConfig.getValue("LBR_VERSION_NO") + "<br>");
+		msg.append("<b>Versão OSeb: </b>");
+		msg.append(MSysConfig.getValue("OSEB_VERSION_NO") + "<br>");
 		msg.append("<b>Último Script Executado: </b>");
-		msg.append(MSysConfig.getValue("LBR_LAST_SCRIPT_EXECUTED") + "<br><br>");
+		msg.append(MSysConfig.getValue("OSEB_LAST_SCRIPT_EXECUTED") + "<br><br>");
 		msg.append("</font>");
 
 		return msg.toString();
 	}	//	doIt
-	
+
 
 }	//	ProcLBRVersion

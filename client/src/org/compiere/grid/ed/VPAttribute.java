@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -36,7 +36,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 
 import org.adempiere.plaf.AdempierePLAF;
-import org.compiere.apps.ADialog;
+import org.compiere.apps.FieldRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MAttributeSet;
@@ -62,6 +62,43 @@ import org.compiere.util.Msg;
 public class VPAttribute extends JComponent
 	implements VEditor, ActionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 108156477716619163L;
+
+	/**
+	 *	Mouse Listener
+	 */
+	final class VPAttribute_mouseAdapter extends MouseAdapter
+	{
+		/**
+		 *	Constructor
+		 *  @param adaptee adaptee
+		 */
+		VPAttribute_mouseAdapter(VPAttribute adaptee)
+		{
+			m_adaptee = adaptee;
+		}	//	VPAttribute_mouseAdapter
+
+		private VPAttribute m_adaptee;
+
+		/**
+		 *	Mouse Listener
+		 *  @param e event
+		 */
+		public void mouseClicked(MouseEvent e)
+		{
+			//	Double Click
+			if (e.getClickCount() > 1)
+				m_adaptee.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "Mouse"));
+			//	popup menu
+			if (SwingUtilities.isRightMouseButton(e))
+				m_adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
+		}	//	mouse Clicked
+
+	}	//	VPAttribute_mouseAdapter
+
 	/**
 	 *	IDE Constructor
 	 */
@@ -163,6 +200,7 @@ public class VPAttribute extends JComponent
 	
 	/**	Calling Window Info				*/
 	private int					m_AD_Column_ID = 0;
+	private GridField m_mField;
 	/**	No Instance Key					*/
 	private static Integer		NO_INSTANCE = new Integer(0);
 	/**	Logger			*/
@@ -307,6 +345,10 @@ public class VPAttribute extends JComponent
 		//	To determine behavior
 		m_AD_Column_ID = mField.getAD_Column_ID();
 		m_GridField = mField;
+		
+		m_mField = mField;
+		if (m_mField != null)
+			FieldRecordInfo.addMenu(this, popupMenu);
 	}	//	setField
 
 	/**
@@ -323,6 +365,12 @@ public class VPAttribute extends JComponent
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
+		if (e.getActionCommand().equals(FieldRecordInfo.CHANGE_LOG_COMMAND))
+		{
+			FieldRecordInfo.start(m_mField);
+			return;
+		}
+		
 		if (!m_button.isEnabled ())
 			return;
 		m_button.setEnabled (false);
@@ -330,8 +378,9 @@ public class VPAttribute extends JComponent
 		Integer oldValue = (Integer)getValue ();
 		int oldValueInt = oldValue == null ? 0 : oldValue.intValue ();
 		int M_AttributeSetInstance_ID = oldValueInt;
-		int M_Product_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, "M_Product_ID");
-		int M_ProductBOM_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, "M_ProductBOM_ID");
+		int M_Product_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, m_GridTab.getTabNo(), "M_Product_ID");
+		int M_ProductBOM_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, m_GridTab.getTabNo(), "M_ProductBOM_ID");
+		int M_Locator_ID = -1;
 
 		log.config("M_Product_ID=" + M_Product_ID + "/" + M_ProductBOM_ID
 			+ ",M_AttributeSetInstance_ID=" + M_AttributeSetInstance_ID
@@ -373,48 +422,13 @@ public class VPAttribute extends JComponent
 			{
 				m_text.setText(vad.getM_AttributeSetInstanceName());
 				M_AttributeSetInstance_ID = vad.getM_AttributeSetInstance_ID();
-				if (m_GridTab != null && !productWindow && vad.getM_Locator_ID() > 0)
-					m_GridTab.setValue("M_Locator_ID", vad.getM_Locator_ID());
+				if (!productWindow && vad.getM_Locator_ID() > 0)
+				{
+					M_Locator_ID = vad.getM_Locator_ID();
+				}
 				changed = true;
 			}
 		}
-		/** Selection
-		{
-			//	Get Model
-			MAttributeSetInstance masi = MAttributeSetInstance.get(Env.getCtx(), M_AttributeSetInstance_ID, M_Product_ID);
-			if (masi == null)
-			{
-				log.log(Level.SEVERE, "No Model for M_AttributeSetInstance_ID=" + M_AttributeSetInstance_ID + ", M_Product_ID=" + M_Product_ID);
-			}
-			else
-			{
-				Env.setContext(Env.getCtx(), m_WindowNo, "M_AttributeSet_ID", masi.getM_AttributeSet_ID());
-				//	Get Attribute Set
-				MAttributeSet as = masi.getMAttributeSet();
-				//	Product has no Attribute Set
-				if (as == null)		
-					ADialog.error(m_WindowNo, this, "PAttributeNoAttributeSet");
-				//	Product has no Instance Attributes
-				else if (!as.isInstanceAttribute())
-					ADialog.error(m_WindowNo, this, "PAttributeNoInstanceAttribute");
-				else
-				{
-					int M_Warehouse_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, "M_Warehouse_ID");
-					int M_Locator_ID = Env.getContextAsInt (Env.getCtx (), m_WindowNo, "M_Locator_ID");
-					String title = "";
-					PAttributeInstance pai = new PAttributeInstance (
-						Env.getFrame(this), title, 
-						M_Warehouse_ID, M_Locator_ID, M_Product_ID, m_C_BPartner_ID);
-					if (pai.getM_AttributeSetInstance_ID() != -1)
-					{
-						m_text.setText(pai.getM_AttributeSetInstanceName());
-						M_AttributeSetInstance_ID = pai.getM_AttributeSetInstance_ID();
-						changed = true;
-					}
-				}
-			}
-		}
-		**/
 		
 		//	Set Value
 		if (changed)
@@ -425,9 +439,21 @@ public class VPAttribute extends JComponent
 				setValue(null);
 			else
 				setValue(new Integer(M_AttributeSetInstance_ID));
+			// Change Locator
+			if (m_GridTab != null && M_Locator_ID > 0)
+			{
+				log.finest("Change M_Locator_ID="+M_Locator_ID);
+				m_GridTab.setValue("M_Locator_ID", M_Locator_ID);
+			}
+			//
 			try
 			{
-				fireVetoableChange("M_AttributeSetInstance_ID", new Object(), getValue());
+				String columnName = "M_AttributeSetInstance_ID";
+		 	 	if (m_GridField != null)
+		 	 	{
+		 	 		columnName = m_GridField.getColumnName();
+		 	 	}
+		 	 	fireVetoableChange(columnName, new Object(), getValue());
 			}
 			catch (PropertyVetoException pve)
 			{
@@ -452,55 +478,5 @@ public class VPAttribute extends JComponent
 		if (evt.getPropertyName().equals(org.compiere.model.GridField.PROPERTY))
 			setValue(evt.getNewValue());
 	}   //  propertyChange
-	
-	/**
-	 *	Action - Info
-	 *	Ricardo Santana (Kenos, www.kenos.com.br), rsantana
-	 */
-	void actionInfo()
-	{
-		if (m_text == null)
-			return;
-		
-		ADialog.info(0, this, "Info", 
-				
-				"ColumnName: " + m_mPAttribute.getColumnName() + "\n" +
-				"Content: " + m_mPAttribute.getSelectedItem() + "\n" +
-				"Value: " + getValue() + "\n" +
-				"ReadWrite: " + isReadWrite() + "\n" +
-				"Mandatory: " + isMandatory());
-	}	//actionInfo
 
 }	//	VPAttribute
-
-/**
- *	Mouse Listener
- */
-final class VPAttribute_mouseAdapter extends MouseAdapter
-{
-	/**
-	 *	Constructor
-	 *  @param adaptee adaptee
-	 */
-	VPAttribute_mouseAdapter(VPAttribute adaptee)
-	{
-		m_adaptee = adaptee;
-	}	//	VPAttribute_mouseAdapter
-
-	private VPAttribute m_adaptee;
-
-	/**
-	 *	Mouse Listener
-	 *  @param e event
-	 */
-	public void mouseClicked(MouseEvent e)
-	{
-		//	Double Click
-		if (e.getClickCount() > 1)
-			m_adaptee.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "Mouse"));
-		//	popup menu
-		if (SwingUtilities.isRightMouseButton(e))
-			m_adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
-	}	//	mouse Clicked
-
-}	//	VPAttribute_mouseAdapter

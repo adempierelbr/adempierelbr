@@ -17,11 +17,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.adempierelbr.util.POLBR;
+import org.brazilutils.br.uf.UF;
+import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
@@ -34,7 +36,7 @@ import org.compiere.util.Env;
  *	ValidatorBPartner
  *
  *  Validate CPF and CNPJ
- *	
+ *
  *	@author Mario Grigioni
  *	@contributor Ricardo Santana (www.kenos.com.br)
  *		BF [ 2808639 ] - Erro ao salvar registro na C_BPartner_Location
@@ -43,10 +45,10 @@ import org.compiere.util.Env;
  */
 public class ValidatorBPartner implements ModelValidator
 {
-	
+
 	/** BPartner Category (CFOP) */
 	private static final int m_LBR_BPartnerCategory_ID = 1000006;
-	
+
 	/**
 	 *	Constructor.
 	 *	The class is instanciated when logging in and client is selected/known
@@ -55,28 +57,31 @@ public class ValidatorBPartner implements ModelValidator
 	{
 		super ();
 	}	//	ValidatorBPartner
-	
+
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ValidatorBPartner.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
-	
-	
+
 	/**
 	 *	Initialize Validation
-	 *	@param engine validation engine 
+	 *	@param engine validation engine
 	 *	@param client client
 	 */
 	public void initialize (ModelValidationEngine engine, MClient client)
 	{
-		m_AD_Client_ID = client.getAD_Client_ID();
+		//client = null for global validator
+		if (client != null) {
+			m_AD_Client_ID = client.getAD_Client_ID();
+			log.info(client.toString());
+		}
+		else  {
+			log.info("Initializing global validator: "+this.toString());
+		}
 
-		log.info(client.toString());
-		
-		//	ModelChange
-		engine.addModelChange("C_BPartner", this); //Parceiro de Negócios
-		engine.addModelChange("C_BPartner_Location", this); //Localização
-		engine.addModelChange("AD_OrgInfo", this); //Divisão
+		engine.addModelChange(MBPartner.Table_Name, this);
+		engine.addModelChange(MBPartnerLocation.Table_Name, this);
+		engine.addModelChange(MOrgInfo.Table_Name, this);
 	}	//	initialize
 
 	/**
@@ -98,20 +103,24 @@ public class ValidatorBPartner implements ModelValidator
 	 */
 	public String login (int AD_Org_ID, int AD_Role_ID, int AD_User_ID)
 	{
+		log.info("AD_User_ID=" + AD_User_ID);
+
+		if (getAD_Client_ID() > 0 && AD_Org_ID == 0 && AD_User_ID != 100)
+			return "Não é possível logar com Org = *";
+
 		Boolean isUseUnifiedBP = MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false);
-		
+
 		if(isUseUnifiedBP)
 			log.info("LBR: Usando PN unificados.");
 		else
 			log.info("LBR: Usando um PN por Filial (Normal).");
-		
+
 		//	Load Enviroment
 		Env.setContext(Env.getCtx(), "#LBR_USE_UNIFIED_BP", isUseUnifiedBP);
-		
-		log.info("AD_User_ID=" + AD_User_ID);
+
 		return null;
 	}	//	login
-	
+
     /**
      *	Model Change of a monitored Table.
      *	Called after PO.beforeSave/PO.beforeDelete
@@ -123,35 +132,35 @@ public class ValidatorBPartner implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		if (po.get_TableName().equalsIgnoreCase("C_BPartner") && (type == TYPE_CHANGE || type == TYPE_NEW))
-		{
-			MBPartner bp = (MBPartner)po;
-			return modelChange(bp);
+
+		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_NEW);
+		boolean isAfterChange = type == TYPE_AFTER_CHANGE;
+
+		if (po instanceof MBPartner && isChange){
+			return modelChange((MBPartner)po);
 		}
-		else if (po.get_TableName().equalsIgnoreCase("C_BPartner_Location") && (type == TYPE_CHANGE || type == TYPE_NEW))
-		{
-			MBPartnerLocation bp = (MBPartnerLocation)po;
-			return modelChange(bp);
+
+		else if (po instanceof MBPartnerLocation && isChange){
+			return modelChange ((MBPartnerLocation)po);
 		}
-		
-		else if (po.get_TableName().equalsIgnoreCase("AD_OrgInfo") && 
-				(type == TYPE_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_CHANGE)) {
-			
-			String CNPJ = (String)po.get_Value("lbr_CNPJ");
-			if (!(CNPJ == null || CNPJ.equals("") || CNPJ.startsWith(" "))){
+
+		else if (po instanceof MOrgInfo && (isChange || isAfterChange)){
+
+			String CNPJ = po.get_ValueAsString("lbr_CNPJ");
+			if (!CNPJ.trim().equals("")){
 				if (!validaCNPJ(CNPJ)){
 					return "CNPJ Inválido";
 				}
 			}
+
 		}
-		
-		log.info(po.toString()+" | TYPE:"+type );
+
 		return null;
 	}	//	modelChange
-	
+
 	/**
 	 *  Validate MBPartnerLocation
-	 *  
+	 *
 	 * @param bpl
 	 * @return
 	 */
@@ -160,78 +169,82 @@ public class ValidatorBPartner implements ModelValidator
 		//	BF [ 2808639 ] - Erro notado pelo usuario gmichels
 		if (!MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
 			return "";
-			
-		MBPartner bp = new MBPartner(Env.getCtx(), bpl.getC_BPartner_ID(), null);
+
+		MBPartner bp = new MBPartner(Env.getCtx(), bpl.getC_BPartner_ID(), bpl.get_TrxName());
 		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
-		
-		boolean isValid = POLBR.get_ValueAsBoolean(bp.get_Value("lbr_BPTypeBRIsValid"));
-		
-		if (!isValid || BPTypeBR == null || !BPTypeBR.equalsIgnoreCase("PJ")) 
+
+		boolean isValid = bp.get_ValueAsBoolean("lbr_BPTypeBRIsValid");
+
+		//BF - trying to inactive record
+		if (bpl.is_ValueChanged("IsActive") && !bpl.isActive())
 			return null;
-		
+
+		if (!isValid || BPTypeBR == null || !BPTypeBR.equalsIgnoreCase("PJ"))
+			return null;
+
 		String CNPJMatriz = (String)bp.get_Value("lbr_CNPJ");
 		String CNPJFilial = (String)bpl.get_Value("lbr_CNPJ");
-		
+
 		if(CNPJMatriz.substring(0, 10).equalsIgnoreCase(CNPJFilial.substring(0, 10)))
 		{
 			if (!validaCNPJ(CNPJFilial))
 				return "CNPJ Inválido";
-			
+
 			if (!consultaCNPJ(CNPJFilial, bpl.getAD_Client_ID(), bpl.get_ID(), bpl.get_TableName()))
 				return "CNPJ Duplicado";
 		}
 		else
 			return "CNPJ não corresponde com a Matriz.";
-		
+
 		bpl.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
-		
+
 		return "";
 	}	//	ModelChange - MBPartnerLocation
-	
+
 	private String modelChange(MBPartner bp){
-		
+
 		int AD_Client_ID = bp.getAD_Client_ID();
 
-		boolean isValid = POLBR.get_ValueAsBoolean(bp.get_Value("lbr_BPTypeBRIsValid"));
-		
+		boolean isValid = bp.get_ValueAsBoolean("lbr_BPTypeBRIsValid");
+
 		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
 		String  AD_Language = bp.getAD_Language();
-		
+
 		if (AD_Language == null || AD_Language.equals("") || !AD_Language.equalsIgnoreCase("pt_BR")) return null;
-		
+
 		//	If not validated or trying to activate an inactive record
 		if (!isValid || (bp.is_ValueChanged("IsActive") && bp.isActive())) {
-		
+
 			//If Individual - Validate CPF
 			if (BPTypeBR.equalsIgnoreCase("PF")){
 					String CPF = (String)bp.get_Value("lbr_CPF");
-					
+
 					if (CPF == null){
 						return "CPF Nulo";
 					}
-					
+
 					if (CPF.indexOf('.') == -1 || CPF.length() < 14){
 						return "CPF Inválido";
 					}
-					
+
 					if (!validaCPF(CPF)){
 						return "CPF Inválido";
 					}
-					
+
 					if (!consultaCPF(CPF, AD_Client_ID, bp.get_ID())){
 						return "CPF Duplicado";
 					}
-					
+
 			}
 			//Else if Legal Entity - Validate CNPJ
 			else if (BPTypeBR.equalsIgnoreCase("PJ"))
 			{
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
-				
+
 				if (CNPJ == null){
 					return "CNPJ Nulo";
 				}
-				
+
 				if (CNPJ.indexOf('.') == -1 || CNPJ.length() < 18){
 					return "CNPJ Inválido";
 				}
@@ -241,19 +254,19 @@ public class ValidatorBPartner implements ModelValidator
 				if (!consultaCNPJ(CNPJ, AD_Client_ID, bp.get_ID(), bp.get_TableName())){
 					return "CNPJ Duplicado";
 				}
-				
+
 				if(MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
 					bp.set_CustomColumn("lbr_CNPJ", CNPJ.substring(0, 10) + "/0000-00");
 			}
-			
+
 			bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 		}
-		
+
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
 		// mgrigioni, 21/02/2008 (Kenos, http://www.kenos.com.br)
 		// Isento IE
-		if (POLBR.get_ValueAsBoolean(bp.get_Value("lbr_IsIEExempt"))){
-			
+		if (bp.get_ValueAsBoolean("lbr_IsIEExempt")){
+
 			//Cliente
 			if (bp.isCustomer()){
 				Integer LBR_CustomerCategory_ID = (Integer)bp.get_Value("LBR_CustomerCategory_ID");
@@ -268,23 +281,23 @@ public class ValidatorBPartner implements ModelValidator
 					bp.set_ValueOfColumn("LBR_VendorCategory_ID", m_LBR_BPartnerCategory_ID);
 				}
 			}
-			
+
 		}
-		
+
 		// FR [ 1925151 ] ValidatorBPartner - Tipo de Transação
 		// mgrigioni, 25/03/2008 (Kenos, http://www.kenos.com.br)
 		String lbr_TransactionType = bp.get_ValueAsString("lbr_TransactionType");
 		if (lbr_TransactionType == null || lbr_TransactionType.equals("")){
 			bp.set_ValueOfColumn("lbr_TransactionType", "END"); //End User
 		}
-		
+
 		log.info(bp.toString());
 		return null;
 	} //modelChange - BPartner
-	
+
 	/**
 	 *	Validate Document.
-	 *	Called as first step of DocAction.prepareIt 
+	 *	Called as first step of DocAction.prepareIt
      *	when you called addDocValidate for the table.
      *	Note that totals, etc. may not be correct.
 	 *	@param po persistent object
@@ -295,7 +308,7 @@ public class ValidatorBPartner implements ModelValidator
 	{
 		return null;
 	}	//	docValidate
-		
+
 	/**
 	 * 	Update Info Window Columns.
 	 * 	- add new Columns
@@ -306,11 +319,11 @@ public class ValidatorBPartner implements ModelValidator
 	 *	@param sqlOrder order by clause, can me modified
 	 *	@return true if you updated columns, sequence or sql From clause
 	 */
-	public boolean updateInfoColumns (ArrayList<Info_Column> columns, 
+	public boolean updateInfoColumns (ArrayList<Info_Column> columns,
 		StringBuffer sqlFrom, StringBuffer sqlOrder)
 	{
 		/**		*
-		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific 
+		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific
 		String from = sqlFrom.toString();
 		if (from.startsWith ("M_Product"))
 		{
@@ -319,19 +332,19 @@ public class ValidatorBPartner implements ModelValidator
 		}/** 	*/
 		return false;
 	}	//	updateInfoColumns
-	
-	
+
+
 	/**
 	 * 	String Representation
 	 *	@return info
 	 */
 	public String toString ()
 	{
-		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos");
+		StringBuffer sb = new StringBuffer ("ValidatorBPartner@AdempiereLBR - Powered by Kenos");
 		return sb.toString ();
 	}	//	toString
-	
-		
+
+
 	/**
 	 *	validaCPF
 	 *	Validates CPF
@@ -346,7 +359,7 @@ public class ValidatorBPartner implements ModelValidator
 			String Check;
 			String Separadores = "/-.";
 			d1 = 0; d4 = 0; xx = 1;
-			
+
 			if (xCPF.equals("000.000.000-00") ||
 				xCPF.equals("111.111.111-11") ||
 				xCPF.equals("222.222.222-22") ||
@@ -360,7 +373,7 @@ public class ValidatorBPartner implements ModelValidator
 			{
 				return false;
 			}
-			
+
 			for (nCount = 0; nCount < xCPF.length() -2; nCount++) {
 				String s_aux = xCPF.substring(nCount, nCount+1);
 				if (Separadores.indexOf(s_aux) == -1) {
@@ -369,29 +382,29 @@ public class ValidatorBPartner implements ModelValidator
 					xx++;
 				}
 			}
-			
+
 			resto = (d1 % 11);
-			
+
 			if (resto < 2) {
 				digito1 = 0;
 			}
 			else {
 				digito1 = 11 - resto;
 			}
-			
+
 			d4 = d4 + 2 * digito1;
 			resto = (d4 % 11);
-			
+
 			if (resto < 2) {
 				digito2 = 0;
 			}
 			else {
 				digito2 = 11 - resto;
 			}
-	
+
 			Check = String.valueOf(digito1) + String.valueOf(digito2);
 			String s_aux2 = xCPF.substring (xCPF.length()-2, xCPF.length());
-	
+
 			if (s_aux2.compareTo (Check) != 0){
 				return false;
 			}
@@ -402,7 +415,7 @@ public class ValidatorBPartner implements ModelValidator
 			return false;
 		}
 	} // validaCPF
-	
+
 	/**
 	 *	validaCNPJ
 	 *	Validates CNPJ
@@ -416,7 +429,7 @@ public class ValidatorBPartner implements ModelValidator
 	    d1 = 0;
 	    d4 = 0;
 	    xx = 0;
-	    
+
 	    for (nCount = 0; nCount < xCNPJ.length()-2; nCount++) {
 	      s_aux = xCNPJ.substring (nCount, nCount+1);
 	      if (Separadores.indexOf(s_aux) == -1) {
@@ -426,23 +439,23 @@ public class ValidatorBPartner implements ModelValidator
 	          else {
 	              fator = 13 - xx;
 	          }
-	    	  
+
 	          d1 = d1 + Integer.valueOf (s_aux).intValue() * fator;
-	          
+
 	          if (xx < 5) {
 	              fator = 6 - xx;
 	          }
 	          else {
 	              fator = 14 - xx;
 	          }
-	          
+
 	          d4 += Integer.valueOf (s_aux).intValue() * fator;
 	          xx++;
 	      }
 	    }
-	    
+
 	    resto = (d1 % 11);
-	    
+
 	    if (resto < 2) {
 	      digito1 = 0;
 	    }
@@ -452,7 +465,7 @@ public class ValidatorBPartner implements ModelValidator
 
 	    d4 = d4 + 2 * digito1;
 	    resto = (d4 % 11);
-	    
+
 	    if (resto < 2) {
 	      digito2 = 0;
 	    }
@@ -467,27 +480,58 @@ public class ValidatorBPartner implements ModelValidator
 	    }
 	    return true;
 	} //validaCPNJ
-	
+
+	/**
+	 * validaIE
+	 * @param ie
+	 * @param uf
+	 * @return NULL if Invalid OR IE with onlynumbers
+	 */
+	@SuppressWarnings("deprecation")
+	public static String validaIE(String ie, UF uf){
+
+		if (uf != null && !ie.toUpperCase().contains("ISENT"))
+		{
+			InscricaoEstadual iEstadual = uf.getInscricaoEstadual();
+			iEstadual.setNumber(ie);
+			//
+			if (!iEstadual.isValid()){
+				if (iEstadual.getInvalidCause() != null)
+					return null;
+				else
+					return iEstadual.getNumber();
+			}
+			else
+				return iEstadual.getNumber();
+		}
+
+		if (uf == null)
+			ie = "";
+
+		return ie;
+	} //validaIE
+
+
 	/**
 	 *	consultaCNPJ
 	 *	Check if this CNPJ is already on database
 	 *	@param String xCNPJ
 	 *	@return boolean true or false
 	 */
-	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID, int C_BPartner_ID, String TableName) 
+	public boolean consultaCNPJ(String xCNPJ, int AD_Client_ID, int C_BPartner_ID, String TableName)
 	{
 		Boolean isUnifiedBP = MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false);
 		int iCNPJ = 0;
 		String sql = "SELECT COUNT(lbr_CNPJ) " +
 				     "FROM " + TableName + " ";
-		
+
 		if(isUnifiedBP && TableName.equals("C_BPartner"))
 			sql += "WHERE SUBSTR(lbr_CNPJ, 1, 10) = ? AND AD_Client_ID = ? ";
 		else
 			sql += "WHERE lbr_CNPJ = ? AND AD_Client_ID = ? ";
-		
+
 		sql += "AND " + TableName + "_ID <> ? AND IsActive='Y'";
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -513,13 +557,13 @@ public class ValidatorBPartner implements ModelValidator
 		finally{
 		       DB.close(rs, pstmt);
 		}
-		
-		if (iCNPJ > 0) 
+
+		if (iCNPJ > 0)
 			return false;
-		else 
+		else
 			return true;
 	} // consultaCNPJ
-		
+
 	/**
 	 *	consultaCPF
 	 *	Check if this CPF is already on database
@@ -531,7 +575,7 @@ public class ValidatorBPartner implements ModelValidator
 		String sql = "SELECT count(lbr_CPF) " +
 				     "FROM C_BPartner " +
 				     "WHERE lbr_CPF = ? AND AD_Client_ID = ?" +
-				     "AND C_BPartner_ID <> ?";
+				     "AND C_BPartner_ID <> ? AND IsActive = 'Y'";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -553,10 +597,10 @@ public class ValidatorBPartner implements ModelValidator
 		finally{
 		       DB.close(rs, pstmt);
 		}
-		
-		if (iCPF > 0) 
+
+		if (iCPF > 0)
 			return false;
-		else 
+		else
 			return true;
 	}	//	consultaCPF
 }

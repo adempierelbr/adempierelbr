@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -54,16 +54,32 @@ import org.compiere.util.Evaluator;
  *
  *  @author Jorg Janke
  *  @author Victor Perez , e-Evolution.SC FR [ 1757088 ], [1877902] Implement JSR 223 Scripting APIs to Callout
+ *  		http://sourceforge.net/tracker/?func=detail&atid=879335&aid=1877902&group_id=176962 to FR [1877902]
  *  @author Carlos Ruiz, qss FR [1877902]
- *  @see  http://sourceforge.net/tracker/?func=detail&atid=879335&aid=1877902&group_id=176962 to FR [1877902]
+ *  @author Juan David Arboleda (arboleda), GlobalQSS, [ 1795398 ] Process Parameter: add display and readonly logic
+ *  @author Teo Sarca, teo.sarca@gmail.com
+ *  		<li>BF [ 2874646 ] GridField issue when a lookup is key
+ *  			https://sourceforge.net/tracker/?func=detail&aid=2874646&group_id=176962&atid=879332
+ *  @author victor.perez@e-evolution.com,www.e-evolution.com
+ *  		<li>BF [ 2910358 ] Error in context when a field is found in different tabs.
+ *  			https://sourceforge.net/tracker/?func=detail&aid=2910358&group_id=176962&atid=879332
+ *     		<li>BF [ 2910368 ] Error in context when IsActive field is found in different
+ *  			https://sourceforge.net/tracker/?func=detail&aid=2910368&group_id=176962&atid=879332
+ *  		<li>BF [ 3007342 ] Included tab context conflict issue
+ *  			https://sourceforge.net/tracker/?func=detail&aid=3007342&group_id=176962&atid=879332
  *  @version $Id: GridField.java,v 1.5 2006/07/30 00:51:02 jjanke Exp $
  */
 public class GridField 
 	implements Serializable, Evaluatee
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1124123543602986028L;
+
+	/**
 	 *  Field Constructor.
-	 *  requires initField for complete instatanciation
+	 *  requires initField for complete instantiation
 	 *  @param vo ValueObjecy
 	 */
 	public GridField (GridFieldVO vo)
@@ -78,6 +94,8 @@ public class GridField
 	private GridFieldVO        m_vo;
 	/** The Mnemonic				*/
 	private char			m_mnemonic = 0;
+	
+	private GridTab m_gridTab;
 	
 	/**
 	 *  Dispose
@@ -165,7 +183,7 @@ public class GridField
 			MLocationLookup ml = new MLocationLookup (m_vo.ctx, m_vo.WindowNo);
 			m_lookup = ml;
 		}
-		else if (m_vo.displayType == DisplayType.lbr_Taxes)   //  not cached
+		else if (m_vo.displayType == DisplayType.lbr_Taxes)   //  ADempiereLBR - Taxes
 		{
 			MTaxesLookup ml = new MTaxesLookup (m_vo.ctx, m_vo.WindowNo);
 			m_lookup = ml;
@@ -184,7 +202,7 @@ public class GridField
 		{
 			MPAttributeLookup pa = new MPAttributeLookup (m_vo.ctx, m_vo.WindowNo);
 			m_lookup = pa;
-		}	
+		}
 	}   //  m_lookup
 
 	/**
@@ -213,17 +231,17 @@ public class GridField
 	public boolean isLookup()
 	{
 		boolean retValue = false;
-		if (m_vo.IsKey)
+		if (DisplayType.isLookup(m_vo.displayType))
+			retValue = true;
+		else if (m_vo.IsKey)
 			retValue = false;
 	//	else if (m_vo.ColumnName.equals("CreatedBy") || m_vo.ColumnName.equals("UpdatedBy"))
 	//		retValue = false;
-		else if (DisplayType.isLookup(m_vo.displayType))
-			retValue = true;
 		else if (m_vo.displayType == DisplayType.Location
 			|| m_vo.displayType == DisplayType.Locator
 			|| m_vo.displayType == DisplayType.Account
 			|| m_vo.displayType == DisplayType.PAttribute
-			|| m_vo.displayType == DisplayType.lbr_Taxes)
+			|| m_vo.displayType == DisplayType.lbr_Taxes) //ADempiereLBR
 			retValue = true;
 
 		return retValue;
@@ -315,25 +333,39 @@ public class GridField
 
 		//  Numeric Keys and Created/Updated as well as 
 		//	DocumentNo/Value/ASI ars not mandatory (persistency layer manages them)
-		if ((m_vo.IsKey && m_vo.ColumnName.endsWith("_ID"))
+		if (m_gridTab != null &&  // if gridtab doesn't exist then it's not a window field (probably a process parameter field)
+			  (   (m_vo.IsKey && m_vo.ColumnName.endsWith("_ID"))
 				|| m_vo.ColumnName.startsWith("Created") || m_vo.ColumnName.startsWith("Updated")
 				|| m_vo.ColumnName.equals("Value") 
 				|| m_vo.ColumnName.equals("DocumentNo")
-				|| m_vo.ColumnName.equals("M_AttributeSetInstance_ID"))	//	0 is valid
+				|| m_vo.ColumnName.equals("M_AttributeSetInstance_ID") 	//	0 is valid
+			  )
+			)
 			return false;
 
 		//  Mandatory if displayed
 		return isDisplayed (checkContext);
 	}	//	isMandatory
-	
+
 	/**
-	 *	forward compatibility - this method is implemented in 3.5.2
+	 *	Is parameter Editable - checks if parameter is Read Only
+	 *  @param checkContext if true checks Context
 	 *  @return true, if editable
 	 */
 	public boolean isEditablePara(boolean checkContext) {
-		return true;
-	}
+		if (checkContext && m_vo.ReadOnlyLogic.length() > 0)
+		{
+			boolean retValue = !Evaluator.evaluateLogic(this, m_vo.ReadOnlyLogic);
+			log.finest(m_vo.ColumnName + " R/O(" + m_vo.ReadOnlyLogic + ") => R/W-" + retValue);
+			if (!retValue)
+				return false;
+		}
 
+		//  ultimately visibility decides
+		return isDisplayed (checkContext);
+	}
+	
+	
 	/**
 	 *	Is it Editable - checks IsActive, IsUpdateable, and isDisplayed
 	 *  @param checkContext if true checks Context for Active, IsProcessed, LinkColumn
@@ -348,14 +380,14 @@ public class GridField
 			|| (m_vo.ColumnName.equals("Record_ID") && m_vo.displayType == DisplayType.Button))	//  Zoom
 			return true;
 
-		//  Fields always updareable
-		if (m_vo.IsAlwaysUpdateable)      //  Zoom
-			return true;
-		
 		//  Tab or field is R/O
 		if (m_vo.tabReadOnly || m_vo.IsReadOnly)
 		{
 			log.finest(m_vo.ColumnName + " NO - TabRO=" + m_vo.tabReadOnly + ", FieldRO=" + m_vo.IsReadOnly);
+			
+			if (getDisplayType() == DisplayType.Button &&  m_vo.IsAlwaysUpdateable) //BUTTON ENABLED IF IS ALWAYS UPDATEABLE
+				return true;
+			
 			return false;
 		}
 
@@ -367,7 +399,7 @@ public class GridField
 		}
 
 		//	Field is the Link Column of the tab
-		if (m_vo.ColumnName.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "LinkColumnName")))
+		if (m_vo.ColumnName.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, GridTab.CTX_LinkColumnName)))
 		{
 			log.finest(m_vo.ColumnName + " NO - LinkColumn");
 			return false;
@@ -378,7 +410,7 @@ public class GridField
 		{
 			int AD_Client_ID = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "AD_Client_ID");
 			int AD_Org_ID = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "AD_Org_ID");
-			String keyColumn = Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "KeyColumnName");
+			String keyColumn = Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, GridTab.CTX_KeyColumnName);
 			if ("EntityType".equals(keyColumn))
 				keyColumn = "AD_EntityType_ID";
 			if (!keyColumn.endsWith("_ID"))
@@ -401,29 +433,33 @@ public class GridField
 				return false;
 		}
 		
+		//BF [ 2910368 ]
 		//  Always editable if Active
-		if (checkContext && "Y".equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, "IsActive"))
+		if (checkContext && "Y".equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "IsActive"))
 				&& (   m_vo.ColumnName.equals("Processing")
 					|| m_vo.ColumnName.equals("PaymentRule")
 					|| m_vo.ColumnName.equals("DocAction") 
 					|| m_vo.ColumnName.equals("GenerateTo")))
 			return true;
 
-		//  Record is Processed	***	
-		if (checkContext 
-			&& (Env.getContext(m_vo.ctx, m_vo.WindowNo, "Processed").equals("Y")
-				|| Env.getContext(m_vo.ctx, m_vo.WindowNo, "Processing").equals("Y")))
-			return false;
-
 		//  IsActive field is editable, if record not processed
 		if (m_vo.ColumnName.equals("IsActive"))
 			return true;
-
-		//  Record is not Active
-		if (checkContext && !Env.getContext(m_vo.ctx, m_vo.WindowNo, "IsActive").equals("Y"))
+		// BF [ 2910368 ]
+		// Record is not Active
+		if (checkContext && !Env.getContext(m_vo.ctx, m_vo.WindowNo,m_vo.TabNo, "IsActive").equals("Y"))
+			return false;
+		
+		//  Fields always updareable
+		if (m_vo.IsAlwaysUpdateable)      //  Zoom
+			return true;
+		
+		//  Record is Processed	***	
+		if (checkContext 
+			&& ("Y".equals(get_ValueAsString("Processed")) || "Y".equals(get_ValueAsString("Processing"))) )
 			return false;
 
-		//  ultimately visibily decides
+		//  ultimately visibility decides
 		return isDisplayed (checkContext);
 	}	//	isEditable
 
@@ -479,14 +515,14 @@ public class GridField
 		}
 		
 		//	Set Client & Org to System, if System access
-		if (X_AD_Table.ACCESSLEVEL_SystemOnly.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "AccessLevel"))
+		if (X_AD_Table.ACCESSLEVEL_SystemOnly.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, GridTab.CTX_AccessLevel))
 			&& (m_vo.ColumnName.equals("AD_Client_ID") || m_vo.ColumnName.equals("AD_Org_ID")))
 		{
 			log.fine("[SystemAccess] " + m_vo.ColumnName + "=0");
 			return new Integer(0);
 		}
 		//	Set Org to System, if Client access
-		else if (X_AD_Table.ACCESSLEVEL_SystemPlusClient.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "AccessLevel"))
+		else if (X_AD_Table.ACCESSLEVEL_SystemPlusClient.equals(Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, GridTab.CTX_AccessLevel))
 			&& m_vo.ColumnName.equals("AD_Org_ID"))
 		{
 			log.fine("[ClientAccess] " + m_vo.ColumnName + "=0");
@@ -774,7 +810,10 @@ public class GridField
 	 */
 	public String get_ValueAsString (String variableName)
 	{
-		return Env.getContext (m_vo.ctx, m_vo.WindowNo, variableName, true);
+	   if( m_vo.TabNo == 0)
+	    	return Env.getContext (m_vo.ctx, m_vo.WindowNo, variableName, true);
+	    else
+		return Env.getContext (m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, variableName, false, true);
 	}	//	get_ValueAsString
 
 
@@ -955,15 +994,13 @@ public class GridField
 			return false;
 		return m_vo.IsUpdateable;
 	}
-	
 	/**
-	 * 	forward compatibility - this method is implemented in 3.5.2
+	 * 	Is Autocomplete
 	 *	@return true if autocomplete
 	 */
 	public boolean isAutocomplete() {
-		return false;
+		return m_vo.IsAutocomplete;
 	}
-	
 	/**
 	 * 	Is Always Updateable
 	 *	@return true if always updateable
@@ -1119,7 +1156,7 @@ public class GridField
 			m_parentValue = Boolean.FALSE;
 		else 
 		{
-			String LinkColumnName = Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, "LinkColumnName");
+			String LinkColumnName = Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, GridTab.CTX_LinkColumnName);
 			if (LinkColumnName == null || LinkColumnName.length() == 0)
 				m_parentValue = Boolean.FALSE; // teo_sarca, [ 1673886 ]
 			else 
@@ -1259,6 +1296,19 @@ public class GridField
 		m_inserting = inserting;
 		m_error = false;        //  reset error
 
+		updateContext();
+
+		//  Does not fire, if same value
+		Object oldValue = m_oldValue;
+		if (inserting)
+			oldValue = INSERTING;
+		m_propertyChangeListeners.firePropertyChange(PROPERTY, oldValue, m_value);
+	}   //  setValue
+
+	/**
+	 * Update env. context with current value
+	 */
+	public void updateContext() {
 		//	Set Context
 		if (m_vo.displayType == DisplayType.Text 
 			|| m_vo.displayType == DisplayType.Memo
@@ -1267,30 +1317,39 @@ public class GridField
 			|| m_vo.displayType == DisplayType.RowID
 			|| isEncrypted())
 			;	//	ignore
-		else if (newValue instanceof Boolean)
+		else if (m_value instanceof Boolean)
 		{
 			backupValue(); // teo_sarca [ 1699826 ]
-			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, 
-				((Boolean)newValue).booleanValue());
+			if (!isParentTabField())
+			{
+				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, 
+					((Boolean)m_value).booleanValue());
+			}
+			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, 
+					m_value==null ? null : (((Boolean)m_value) ? "Y" : "N"));
 		}
-		else if (newValue instanceof Timestamp)
+		else if (m_value instanceof Timestamp)
 		{
 			backupValue(); // teo_sarca [ 1699826 ]
-			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, (Timestamp)m_value);
+			if (!isParentTabField())
+			{
+				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, (Timestamp)m_value);
+			}
+			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, 
+					m_value==null ? null : m_value.toString().substring(0, m_value.toString().indexOf(".")));
 		}
 		else
 		{
 			backupValue(); // teo_sarca [ 1699826 ]
-			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, 
+			if (!isParentTabField())
+			{
+				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, 
+					m_value==null ? null : m_value.toString());
+			}
+			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, 
 				m_value==null ? null : m_value.toString());
-		}
-		
-		//  Does not fire, if same value
-		Object oldValue = m_oldValue;
-		if (inserting)
-			oldValue = INSERTING;
-		m_propertyChangeListeners.firePropertyChange(PROPERTY, oldValue, m_value);
-	}   //  setValue
+		}		
+	}
 
 	/**
 	 * 	Set Value and Validate
@@ -1496,6 +1555,7 @@ public class GridField
 			sb.append("(Key)");
 		if (isParentColumn())
 			sb.append("(Parent)");
+		sb.append(", IsDisplayed="+m_vo.IsDisplayed);
 		sb.append("]");
 		return sb.toString();
 	}   //  toString
@@ -1597,16 +1657,16 @@ public class GridField
 	{
 		boolean result = false;
 		int tabNo = m_vo.TabNo;
-		int currentLevel = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, tabNo, "TabLevel");
+		int currentLevel = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, tabNo, GridTab.CTX_TabLevel);
 		if (tabNo > 1 && currentLevel > 1)
 		{
 			while ( tabNo >= 1 && !result)
 			{
 				tabNo--;
-				int level = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, tabNo, "TabLevel");
+				int level = Env.getContextAsInt(m_vo.ctx, m_vo.WindowNo, tabNo, GridTab.CTX_TabLevel);
 				if (level > 0 && level < currentLevel) 
 				{
-					String linkColumn = Env.getContext(m_vo.ctx, m_vo.WindowNo, tabNo, "LinkColumnName");
+					String linkColumn = Env.getContext(m_vo.ctx, m_vo.WindowNo, tabNo, GridTab.CTX_LinkColumnName);
 					if (m_vo.ColumnName.equals(linkColumn))
 					{
 						result = true;
@@ -1633,7 +1693,7 @@ public class GridField
 	 */
 	private final void backupValue() {
 		if (!m_isBackupValue) {
-			m_backupValue = Env.getContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName);
+			m_backupValue = get_ValueAsString(m_vo.ColumnName);
 			if (CLogMgt.isLevelFinest())
 				log.finest("Backup " + m_vo.WindowNo + "|" + m_vo.ColumnName + "=" + m_backupValue);
 			m_isBackupValue = true;
@@ -1646,9 +1706,18 @@ public class GridField
 	 */
 	public void restoreValue() {
 		if (m_isBackupValue) {
-			if (CLogMgt.isLevelFinest())
-				log.finest("Restore " + m_vo.WindowNo + "|" + m_vo.ColumnName + "=" + m_backupValue);
-			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, m_backupValue);
+			if (isParentTabField())
+			{
+				if (CLogMgt.isLevelFinest())
+					log.finest("Restore " + m_vo.WindowNo + "|" + m_vo.TabNo + "|" + m_vo.ColumnName + "=" + m_backupValue);
+				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, m_backupValue);
+			}
+			else
+			{
+				if (CLogMgt.isLevelFinest())
+					log.finest("Restore " + m_vo.WindowNo + "|" + m_vo.ColumnName + "=" + m_backupValue);
+				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, m_backupValue);
+			}
 		}
 	}
 	
@@ -1690,12 +1759,95 @@ public class GridField
 	}
 	
 	/**
-	 *	forward compatibility - this method is implemented in 3.5.2
+	 * Returns a list containing all existing entries of this field
+	 * with the actual AD_Org_ID and AD_Client_ID.
 	 * @return List of existing entries for this field
 	 */
 	public List<String> getEntries() {
 		ArrayList<String> list = new ArrayList<String>();
+		PreparedStatement pstmt1;
+		PreparedStatement pstmt2;
+		String sql = "";
+		
+		try
+		{
+			String tableName = null;
+			String columnName = null;
+			int AD_Org_ID = Env.getAD_Org_ID(Env.getCtx());
+			int AD_Client_ID = Env.getAD_Client_ID(Env.getCtx());
+			sql = "SELECT t.TableName, c.ColumnName " +
+					" FROM AD_COLUMN c INNER JOIN AD_Table t ON (c.AD_Table_ID=t.AD_Table_ID)" +
+					" WHERE AD_Column_ID=?";
+			pstmt1 = DB.prepareStatement(sql, null);
+			pstmt1.setInt(1, getAD_Column_ID());
+			ResultSet rs1 = pstmt1.executeQuery();
+			if (rs1.next())
+			{
+				tableName = rs1.getString(1);
+				columnName = rs1.getString(2);
+							}
+			DB.close(rs1, pstmt1);
+			
+			if (tableName != null && columnName != null) {
+				sql = "SELECT DISTINCT "  + columnName + " FROM " + tableName + " WHERE AD_Client_ID=? "
+				+ " AND AD_Org_ID=?";
+				pstmt2 = DB.prepareStatement(sql, null);
+				pstmt2.setInt(1, AD_Client_ID);
+				pstmt2.setInt(2, AD_Org_ID);
+				
+				ResultSet rs2 = pstmt2.executeQuery();
+				while (rs2.next())
+				{
+					list.add(rs2.getString(1));
+				}
+				DB.close(rs2, pstmt2);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql, e);
+		}
+		
+		
 		return list;
 	}
 	
+	/**
+	 * @param gridTab
+	 */
+	public void setGridTab(GridTab gridTab)
+	{
+		m_gridTab = gridTab;
+	}
+
+	/**
+	 * @return GridTab
+	 */
+	public GridTab getGridTab()
+	{
+		return m_gridTab;
+	}
+	
+	/**
+	 * @param columnName
+	 * @return true if columnName also exist in parent tab
+	 */
+	private boolean isParentTabField(String columnName)
+	{
+		if (m_gridTab == null)
+			return false;
+		GridTab parentTab = m_gridTab.getParentTab();
+		if (parentTab == null)
+			return false;
+		return parentTab.getField(columnName) != null;
+	}
+	
+	/**
+	 * 
+	 * @return true if this field (m_vo.ColumnName) also exist in parent tab
+	 */
+	private boolean isParentTabField()
+	{
+		return isParentTabField(m_vo.ColumnName);
+	}
 }   //  MField

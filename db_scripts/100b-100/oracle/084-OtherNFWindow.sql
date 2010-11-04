@@ -50,7 +50,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 29/08/2008 17h2min4s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_OtherNF ADD AD_Client_ID NUMERIC(10) DEFAULT NULL NOT NULL
+ALTER TABLE LBR_OtherNF ADD AD_Client_ID NUMERIC(10) NOT NULL
 ;
 
 -- 29/08/2008 17h2min59s BRT
@@ -65,7 +65,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 29/08/2008 17h3min0s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_OtherNF ADD AD_Org_ID NUMERIC(10) DEFAULT NULL NOT NULL
+ALTER TABLE LBR_OtherNF ADD AD_Org_ID NUMERIC(10) NOT NULL
 ;
 
 -- 29/08/2008 17h4min12s BRT
@@ -608,7 +608,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 31/08/2008 19h20min21s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_OtherNFLine ADD AD_Client_ID NUMERIC(10) DEFAULT NULL NOT NULL
+ALTER TABLE LBR_OtherNFLine ADD AD_Client_ID NUMERIC(10) NOT NULL
 ;
 
 -- 31/08/2008 19h20min57s BRT
@@ -623,7 +623,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 31/08/2008 19h20min58s BRT
 -- Default comment for updating dictionary
-ALTER TABLE LBR_OtherNFLine ADD AD_Org_ID NUMERIC(10) DEFAULT NULL NOT NULL
+ALTER TABLE LBR_OtherNFLine ADD AD_Org_ID NUMERIC(10) NOT NULL
 ;
 
 -- 31/08/2008 19h21min22s BRT

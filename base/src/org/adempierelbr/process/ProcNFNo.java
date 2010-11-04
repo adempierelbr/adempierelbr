@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MNotaFiscal;
 import org.compiere.model.MDocType;
 import org.compiere.model.MSequence;
 import org.compiere.process.ProcessInfoParameter;
@@ -64,7 +64,7 @@ public class ProcNFNo extends SvrProcess
 	{
 		log.info("ProcNFNo Process");
 		
-		int C_DocType_ID = POLBR.getNFB(Env.getAD_Org_ID(getCtx()));
+		int C_DocType_ID = MNotaFiscal.getNFB(Env.getAD_Org_ID(getCtx()));
 		if (C_DocType_ID <= 0)
 			return "Nenhum documento do tipo NFB cadastrado";
 

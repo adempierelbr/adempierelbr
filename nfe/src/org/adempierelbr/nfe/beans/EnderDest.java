@@ -1,3 +1,15 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
 public class EnderDest {
@@ -41,45 +53,64 @@ public class EnderDest {
 		return cMun;
 	}
 	public void setCMun(String mun) {
+		if (mun != null)
+			mun = mun.trim();
+		
 		cMun = mun;
 	}
 	public String getXMun() {
 		return xMun;
 	}
 	public void setXMun(String mun) {
+		if (mun != null)
+			mun = mun.trim();
+		
 		xMun = mun;
 	}
 	public String getUF() {
 		return UF;
 	}
 	public void setUF(String uf) {
+		if (uf != null)
+			uf = uf.trim();
+		
 		UF = uf;
 	}
 	public String getCEP() {
 		return CEP;
 	}
 	public void setCEP(String cep) {
+		if (cep != null)
+			cep = cep.trim();
+		
 		CEP = cep;
 	}
 	public String getCPais() {
 		return cPais;
 	}
 	public void setCPais(String pais) {
+		if (pais != null)
+			pais = pais.trim();
+		
 		cPais = pais;
 	}
 	public String getXPais() {
 		return xPais;
 	}
 	public void setXPais(String pais) {
+		if (pais != null)
+			pais = pais.trim();
+		
 		xPais = pais;
 	}
 	public String getFone() {
 		return fone;
 	}
 	public void setFone(String fone) {
+		if (fone != null)
+			fone = fone.trim();
+		
 		this.fone = fone;
 	}
-
-	
 	
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -39,9 +39,18 @@ import org.compiere.util.DisplayType;
  *
  * 	@author 	Jorg Janke
  * 	@version 	$Id: VCellRenderer.java,v 1.4 2006/07/30 00:51:27 jjanke Exp $
+ * 
+ * @author Teo Sarca
+ * 		<li>FR [ 2866571 ] VCellRenderer: implement getters
+ * 			https://sourceforge.net/tracker/?func=detail&aid=2866571&group_id=176962&atid=879335
  */
 public final class VCellRenderer extends DefaultTableCellRenderer
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3135422746697244864L;
+
 	/**
 	 *	Constructor for Grid
 	 *  @param mField field model
@@ -256,4 +265,23 @@ public final class VCellRenderer extends DefaultTableCellRenderer
 		m_lookup = null;
 	}	//	dispose
 
+	public String getColumnName()
+	{
+		return m_columnName;
+	}
+	
+	public Lookup getLookup()
+	{
+		return m_lookup;
+	}
+
+	public int getDisplayType()
+	{
+		return m_displayType;
+	}
+
+	public boolean isPassword()
+	{
+		return m_password;
+	}
 }	//	VCellRenderer

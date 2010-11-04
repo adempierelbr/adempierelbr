@@ -22,6 +22,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.adempiere.plaf.AdempierePLAF;
+import org.adempierelbr.util.SQLUtils;
 import org.compiere.apps.*;
 import org.compiere.grid.ed.*;
 import org.compiere.minigrid.*;
@@ -37,6 +38,11 @@ import org.compiere.util.*;
  */
 public class InfoBPartner extends Info
 {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5550733934685665946L;
+
 	/**
 	 *	Standard Constructor
 	 *  @param frame frame
@@ -81,9 +87,9 @@ public class InfoBPartner extends Info
 	/** From Clause             */
 	private static String s_partnerFROM = "C_BPartner"
 		+ " LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')"
-		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')" 
+		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')"
 		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)";
-	
+
 	/**  Array of Column Info    */
 	private static Info_Column[] s_partnerLayout = {
 		new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class),
@@ -134,7 +140,7 @@ public class InfoBPartner extends Info
 		//labelContact.setText(Msg.getMsg(Env.getCtx(), "Contact"));
 		//fieldContact.setBackground(AdempierePLAF.getInfoBackground());
 		//fieldContact.addActionListener(this);
-		
+
 		//labelEMail.setText(Msg.getMsg(Env.getCtx(), "EMail"));
 		//fieldEMail.setBackground(AdempierePLAF.getInfoBackground());
 		//fieldEMail.addActionListener(this);
@@ -169,7 +175,7 @@ public class InfoBPartner extends Info
 		parameterPanel.add(labelCPF, null);
 		parameterPanel.add(fieldCPF, null);
 		parameterPanel.add(checkCustomer, null);
-		//		
+		//
 		parameterPanel.add(labelName, new ALayoutConstraint(1,0));
 		parameterPanel.add(fieldName, null);
 		//parameterPanel.add(labelEMail, null);
@@ -188,8 +194,8 @@ public class InfoBPartner extends Info
 	{
 		/**	From
 			C_BPartner
-			 LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y') 
-			 LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y') 
+			 LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')
+			 LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')
 			 LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)
 		**/
 
@@ -250,10 +256,6 @@ public class InfoBPartner extends Info
 		String value = fieldValue.getText().toUpperCase();
 		if (!(value.equals("") || value.equals("%")))
 			list.add ("UPPER(C_BPartner.Value) LIKE ?");
-		//	=> Name
-		String name = fieldName.getText().toUpperCase();
-		if (!(name.equals("") || name.equals("%")))
-			list.add ("UPPER(C_BPartner.Name) LIKE ?");
 		//	=> Contact
 		/*
 		String contact = fieldContact.getText().toUpperCase();
@@ -294,6 +296,12 @@ public class InfoBPartner extends Info
 				sql.append(")");
 		}
 
+		//	=> Name
+		String name = fieldName.getText().toUpperCase();
+		if (!(name.equals("") || name.equals("%")))
+			sql.append(SQLUtils.likeField("C_BPartner.Name", name));
+			//list.add ("UPPER(C_BPartner.Name) LIKE ?");
+
 		//	Static SQL
 		if (checkCustomer.isSelected())
 		{
@@ -329,10 +337,16 @@ public class InfoBPartner extends Info
 		String name = fieldName.getText().toUpperCase();
 		if (!(name.equals("") || name.equals("%")))
 		{
-			if (!name.endsWith("%"))
+			/*if (!name.endsWith("%"))
 				name += "%";
 			pstmt.setString(index++, name);
 			log.fine("Name: " + name);
+			*/
+			String names[] = SQLUtils.likeParameters(name);
+			for (int i = 0; i < names.length; i++) {
+				pstmt.setString(index++, names[i]);
+				log.fine("Name"+index+": " + names[i]);
+			}
 		}
 		//	=> Contact
 		/*
@@ -403,9 +417,9 @@ public class InfoBPartner extends Info
 		}
 		//  publish for Callout to read
 		Integer ID = getSelectedRowKey();
-		Env.setContext(Env.getCtx(), Env.WINDOW_INFO, Env.TAB_INFO, "C_BPartner_ID", ID == null ? "0" : ID.toString());
-		Env.setContext(Env.getCtx(), Env.WINDOW_INFO, Env.TAB_INFO, "AD_User_ID", String.valueOf(AD_User_ID));
-		Env.setContext(Env.getCtx(), Env.WINDOW_INFO, Env.TAB_INFO, "C_BPartner_Location_ID", String.valueOf(C_BPartner_Location_ID));
+		Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "C_BPartner_ID", ID == null ? "0" : ID.toString());
+		Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "AD_User_ID", String.valueOf(AD_User_ID));
+		Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "C_BPartner_Location_ID", String.valueOf(C_BPartner_Location_ID));
 	}   //  saveSelectionDetail
 
 
@@ -418,7 +432,7 @@ public class InfoBPartner extends Info
 		Integer C_BPartner_ID = getSelectedRowKey();
 		if (C_BPartner_ID == null)
 			return;
-		InvoiceHistory ih = new InvoiceHistory (this, C_BPartner_ID.intValue(), 
+		InvoiceHistory ih = new InvoiceHistory (this, C_BPartner_ID.intValue(),
 			0, 0, 0);
 		ih.setVisible(true);
 		ih = null;

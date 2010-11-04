@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -16,12 +16,10 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.rmi.RemoteException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,18 +34,12 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.DBException;
 import org.compiere.db.CConnection;
-import org.compiere.interfaces.Server;
-import org.compiere.model.GridTab;
-import org.compiere.model.MDocType;
-import org.compiere.model.MSysConfig;
-import org.compiere.model.MSystem;
-import org.compiere.model.PO;
-import org.compiere.model.X_AD_Sequence;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
-import org.compiere.util.DBException;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Trx;
@@ -60,56 +52,38 @@ import org.compiere.util.Trx;
  */
 public class MSequence extends X_AD_Sequence
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6827013120475678483L;
 	/** Use SQL procedure to get next id			*/
-	  //begin vpj-cd e-evolution 02/11/2005  PostgreSQL  
+	  //begin vpj-cd e-evolution 02/11/2005  PostgreSQL
 	//private static final boolean USE_PROCEDURE = true;
 	private static boolean USE_PROCEDURE = false;
 	//end vpj-cd e-evolution 02/11/2005
 	/** Log Level for Next ID Call					*/
 	private static final Level LOGLEVEL = Level.ALL;
-	
-	public static synchronized int getNextID (int AD_Client_ID, String TableName) 
+
+	private static final int QUERY_TIME_OUT = 10;
+
+	public static int getNextID (int AD_Client_ID, String TableName)
 	{
 		return getNextID(AD_Client_ID, TableName, null);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 *	Get next number for Key column = 0 is Error.
 	 *  @param AD_Client_ID client
 	 *  @param TableName table name
 	 * 	@param trxName deprecated.
 	 *  @return next no or (-1=not found, -2=error)
 	 */
-	public static synchronized int getNextID (int AD_Client_ID, String TableName, String trxName)
+	public static int getNextID (int AD_Client_ID, String TableName, String trxName)
 	{
 		if (TableName == null || TableName.length() == 0)
 			throw new IllegalArgumentException("TableName missing");
-		
-		//get from server
-		if (DB.isRemoteObjects())
-		{
-			Server server = CConnection.get().getServer();
-			try
-			{
-				if (server != null)
-				{	// See ServerBean
-					// hengsin: don't execute getNextID in tranaction to fix performance and locking issue
-					int id = server.getNextID(AD_Client_ID, TableName, null);
-					s_log.finest("server => " + id);
-					if (id < 0)
-						throw new DBException("No NextID");
-					return id;
-				}
-				s_log.log(Level.SEVERE, "AppsServer not found - " + TableName); 
-			}
-			catch (RemoteException ex)
-			{
-				s_log.log(Level.SEVERE, "AppsServer error", ex);
-			}
-			//	Try locally
-		}
-		
+
 		int retValue = -1;
 
 		//	Check AdempiereSys
@@ -121,27 +95,26 @@ public class MSequence extends X_AD_Sequence
 			s_log.log(LOGLEVEL, TableName + " - AdempiereSys=" + adempiereSys  + " [" + trxName + "]");
 		  //begin vpj-cd e-evolution 09/02/2005 PostgreSQL
 		String selectSQL = null;
-		if (DB.isOracle() == false || DB.isRemoteObjects())
-		{	
+		if (DB.isOracle() == false)
+		{
 			selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, AD_Sequence_ID "
 				+ "FROM AD_Sequence "
 				+ "WHERE Name=?"
 				+ " AND IsActive='Y' AND IsTableID='Y' AND IsAutoSequence='Y' "
-				+ " FOR UPDATE OF AD_Sequence ";						
+				+ " FOR UPDATE OF AD_Sequence ";
 			USE_PROCEDURE=false;
 		}
-		else	
+		else
 		{
-			selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, AD_Sequence_ID "	
+			selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, AD_Sequence_ID "
 			+ "FROM AD_Sequence "
 			+ "WHERE Name=?"
-			+ " AND IsActive='Y' AND IsTableID='Y' AND IsAutoSequence='Y' "
-			+ "FOR UPDATE";	// jz derby needs expicitly said it//OF CurrentNext, CurrentNextSys";
-			
+			+ " AND IsActive='Y' AND IsTableID='Y' AND IsAutoSequence='Y' ";
+
 			USE_PROCEDURE = true;
 		}
-		
-		//hengsin: executing getNextID in transaction create huge performance and locking issue		
+
+		//hengsin: executing getNextID in transaction create huge performance and locking issue
 		//Trx trx = trxName == null ? null : Trx.get(trxName, true);
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -159,26 +132,26 @@ public class MSequence extends X_AD_Sequence
 					ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 				pstmt.setString(1, TableName);
 				//
+				if (!USE_PROCEDURE && DB.getDatabase().isQueryTimeoutSupported())
+					pstmt.setQueryTimeout(QUERY_TIME_OUT);
 				rs = pstmt.executeQuery();
 				if (CLogMgt.isLevelFinest())
 					s_log.finest("AC=" + conn.getAutoCommit() + ", RO=" + conn.isReadOnly()
 						+ " - Isolation=" + conn.getTransactionIsolation() + "(" + Connection.TRANSACTION_READ_COMMITTED
-						+ ") - RSType=" + pstmt.getResultSetType() + "(" + ResultSet.TYPE_SCROLL_SENSITIVE  
+						+ ") - RSType=" + pstmt.getResultSetType() + "(" + ResultSet.TYPE_SCROLL_SENSITIVE
 						+ "), RSConcur=" + pstmt.getResultSetConcurrency() + "(" + ResultSet.CONCUR_UPDATABLE
 						+ ")");
 				if (rs.next())
 				{
-					
+
 					// Get the table
 					MTable table = MTable.get(Env.getCtx(), TableName);
-					boolean hasEntityType = false;
-					if (table.getColumn("EntityType") != null)
-						hasEntityType = true;
-					
+
 					int AD_Sequence_ID = rs.getInt(4);
 					boolean gotFromHTTP = false;
 
 					// If maintaining official dictionary try to get the ID from http official server
+					/*
 					if (adempiereSys) {
 
 						String isUseCentralizedID = MSysConfig.getValue("DICTIONARY_ID_USE_CENTRALIZED_ID", "Y"); // defaults to Y
@@ -200,9 +173,16 @@ public class MSequence extends X_AD_Sequence
 						}
 
 					}
-
+					*/
+					
+					boolean queryProjectServer = false;
+					if (table.getColumn("EntityType") != null)
+						queryProjectServer = true;
+					if (!queryProjectServer && MSequence.Table_Name.equalsIgnoreCase(TableName))
+						queryProjectServer = true;
+					
 					// If not official dictionary try to get the ID from http custom server - if configured
-					if (hasEntityType && ( ! adempiereSys ) && ( ! isExceptionCentralized(TableName) ) ) {
+					if (queryProjectServer && ( /*!*/ adempiereSys ) && ( ! isExceptionCentralized(TableName) ) ) {
 
 						String isUseProjectCentralizedID = MSysConfig.getValue("PROJECT_ID_USE_CENTRALIZED_ID", "N"); // defaults to N
 						if (isUseProjectCentralizedID.equals("Y")) {
@@ -223,7 +203,7 @@ public class MSequence extends X_AD_Sequence
 						}
 
 					}
-					
+
 					if (! gotFromHTTP) {
 						//
 						if (USE_PROCEDURE)
@@ -250,22 +230,22 @@ public class MSequence extends X_AD_Sequence
 							} finally {
 								updateSQL.close();
 							}
-						} 
+						}
 					}
-					
+
 					//if (trx == null)
 					conn.commit();
 				}
 				else
 					s_log.severe ("No record found - " + TableName);
-								
+
 				//
 				break;		//	EXIT
 			}
 			catch (Exception e)
 			{
 				s_log.log(Level.SEVERE, TableName + " - " + e.getMessage(), e);
-				try 
+				try
 				{
 					if (conn != null)
 						conn.rollback();
@@ -282,12 +262,12 @@ public class MSequence extends X_AD_Sequence
 						conn.close();
 					} catch (SQLException e) {}
 					conn = null;
-				}				
+				}
 			}
 			Thread.yield();		//	give it time
 		}
 
-	
+
 		//s_log.finest (retValue + " - Table=" + TableName + " [" + trx + "]");
 		return retValue;
 	}	//	getNextID
@@ -314,6 +294,10 @@ public class MSequence extends X_AD_Sequence
 			cstmt.setInt(1, AD_Sequence_ID);
 			cstmt.setString(2, adempiereSys ? "Y" : "N");
 			cstmt.registerOutParameter(3, Types.INTEGER);
+			if (DB.getDatabase().isQueryTimeoutSupported())
+			{
+				cstmt.setQueryTimeout(QUERY_TIME_OUT);
+			}
 			cstmt.execute();
 			retValue = cstmt.getInt(3);
 		}
@@ -327,7 +311,7 @@ public class MSequence extends X_AD_Sequence
 		}
 		return retValue;
 	}	//	nextID
-	
+
 	/**
 	 * Get next id by year
 	 * @param conn
@@ -352,6 +336,10 @@ public class MSequence extends X_AD_Sequence
 			cstmt.setInt(2, incrementNo);
 			cstmt.setString(3, calendarYear);
 			cstmt.registerOutParameter(4, Types.INTEGER);
+			if (DB.getDatabase().isQueryTimeoutSupported())
+			{
+				cstmt.setQueryTimeout(QUERY_TIME_OUT);
+			}
 			cstmt.execute();
 			retValue = cstmt.getInt(4);
 		} catch (Exception e) {
@@ -361,7 +349,7 @@ public class MSequence extends X_AD_Sequence
 		}
 		return retValue;
 	} // nextID
-	
+
 	/**************************************************************************
 	 * 	Get Document No from table
 	 *	@param AD_Client_ID client
@@ -369,10 +357,10 @@ public class MSequence extends X_AD_Sequence
 	 * 	@param trxName optional Transaction Name
 	 *	@return document no or null
 	 */
-	public static synchronized String getDocumentNo (int AD_Client_ID, String TableName, String trxName)
+	public static String getDocumentNo (int AD_Client_ID, String TableName, String trxName)
 	{
 		return getDocumentNo(AD_Client_ID, TableName, trxName, null);
-		
+
 	}
 	/**************************************************************************
 	 * 	Get Document No from table
@@ -382,33 +370,11 @@ public class MSequence extends X_AD_Sequence
 	 *  @param PO
 	 *	@return document no or null
 	 */
-	public static synchronized String getDocumentNo (int AD_Client_ID, String TableName, String trxName, PO po)
+	public static String getDocumentNo (int AD_Client_ID, String TableName, String trxName, PO po)
 	{
 		if (TableName == null || TableName.length() == 0)
 			throw new IllegalArgumentException("TableName missing");
 
-		//get from server
-		if (DB.isRemoteObjects())
-		{
-			Server server = CConnection.get().getServer();
-			try
-			{
-				if (server != null)
-				{	//	See ServerBean
-					String dn = server.getDocumentNo (AD_Client_ID, TableName, trxName, po);
-					s_log.finest("Server => " + dn);
-					if (dn != null)
-						return dn;
-				}
-				s_log.log(Level.SEVERE, "AppsServer not found - " + TableName); 
-			}
-			catch (RemoteException ex)
-			{
-				s_log.log(Level.SEVERE, "AppsServer error", ex);
-			}
-		}
-		
-		//local
 		//	Check AdempiereSys
 		boolean adempiereSys = Ini.isPropertyBool(Ini.P_ADEMPIERESYS);
 		if (adempiereSys && AD_Client_ID > 11)
@@ -416,18 +382,18 @@ public class MSequence extends X_AD_Sequence
 		//
 		if (CLogMgt.isLevel(LOGLEVEL))
 			s_log.log(LOGLEVEL, TableName + " - AdempiereSys=" + adempiereSys  + " [" + trxName + "]");
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		boolean isStartNewYear = false;
 		String dateColumn = null;
-		
+
 		if (!adempiereSys)
 		{
 			// Get the Start New Year flag
 			String startNewYearSQL = "SELECT StartNewYear, DateColumn FROM AD_Sequence "
 					+ "WHERE Name = ? AND IsActive = 'Y' AND IsTableID = 'N' AND IsAutoSequence='Y' AND AD_Client_ID = ?";
-			try 
+			try
 			{
 				pstmt = DB.prepareStatement(startNewYearSQL, trxName);
 				pstmt.setString(1, PREFIX_DOCSEQ + TableName);
@@ -437,8 +403,8 @@ public class MSequence extends X_AD_Sequence
 					isStartNewYear = "Y".equals(rs.getString(1));
 					dateColumn = rs.getString(2);
 				}
-			} 
-			catch (Exception e) 
+			}
+			catch (Exception e)
 			{
 				s_log.log(Level.SEVERE, "(Table) [" + trxName + "]", e);
 			}
@@ -447,22 +413,22 @@ public class MSequence extends X_AD_Sequence
 				DB.close(rs, pstmt);
 			}
 		}
-		
-		
+
+
 		String selectSQL = null;
-		if (DB.isOracle() == false || DB.isRemoteObjects())
-		{	
+		if (DB.isOracle() == false)
+		{
 			if (isStartNewYear) {
 				selectSQL = "SELECT y.CurrentNext, s.CurrentNextSys, s.IncrementNo, s.Prefix, s.Suffix, s.DecimalPattern, s.AD_Sequence_ID "
 						+ "FROM AD_Sequence_No y, AD_Sequence s "
-						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "						
+						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "
 						+ "AND s.Name = ? "
 						+ "AND s.AD_Client_ID = ? "
 						+ "AND y.CalendarYear = ? "
 						+ "AND s.IsActive='Y' AND s.IsTableID='N' AND s.IsAutoSequence='Y' "
 						+ "ORDER BY s.AD_Client_ID DESC "
-						+ "FOR UPDATE OF AD_Sequence_No";
-			} else {				
+						+ "FOR UPDATE OF y";
+			} else {
 				selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, Prefix, Suffix, DecimalPattern, AD_Sequence_ID "
 						+ "FROM AD_Sequence "
 						+ "WHERE Name = ? "
@@ -472,13 +438,13 @@ public class MSequence extends X_AD_Sequence
 						+ "FOR UPDATE OF AD_Sequence";
 			}
 			USE_PROCEDURE=false;
-		}	
+		}
 		else
 		{
 			if (isStartNewYear) {
 				selectSQL = "SELECT y.CurrentNext, s.CurrentNextSys, s.IncrementNo, Prefix, Suffix, DecimalPattern, s.AD_Sequence_ID "
 						+ "FROM AD_Sequence_No y, AD_Sequence s "
-						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "						
+						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "
 						+ "AND s.Name = ? "
 						+ "AND s.AD_Client_ID = ? "
 						+ "AND y.CalendarYear = ? "
@@ -513,8 +479,8 @@ public class MSequence extends X_AD_Sequence
 			//	Error
 			if (conn == null)
 				return null;
-			
-			if (isStartNewYear) 
+
+			if (isStartNewYear)
 			{
 				if (po != null && dateColumn != null && dateColumn.length() > 0)
 				{
@@ -528,18 +494,20 @@ public class MSequence extends X_AD_Sequence
 					calendarYear = sdf.format(new Date());
 				}
 			}
-			
+
 			//
 			pstmt = conn.prepareStatement(selectSQL,
-				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);			
+				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			pstmt.setString(1, PREFIX_DOCSEQ + TableName);
 			pstmt.setInt(2, AD_Client_ID);
 			if (isStartNewYear)
 				pstmt.setString(3, calendarYear);
-			
+
 			//
+			if (!USE_PROCEDURE && DB.getDatabase().isQueryTimeoutSupported())
+				pstmt.setQueryTimeout(QUERY_TIME_OUT);
 			rs = pstmt.executeQuery();
-		//	s_log.fine("AC=" + conn.getAutoCommit() + " -Iso=" + conn.getTransactionIsolation() 
+		//	s_log.fine("AC=" + conn.getAutoCommit() + " -Iso=" + conn.getTransactionIsolation()
 		//		+ " - Type=" + pstmt.getResultSetType() + " - Concur=" + pstmt.getResultSetConcurrency());
 			if (rs.next())
 			{
@@ -550,21 +518,21 @@ public class MSequence extends X_AD_Sequence
 				incrementNo = rs.getInt(3);
 				if (USE_PROCEDURE)
 				{
-					next = isStartNewYear 
-						? nextIDByYear(conn, AD_Sequence_ID, incrementNo, calendarYear)							
+					next = isStartNewYear
+						? nextIDByYear(conn, AD_Sequence_ID, incrementNo, calendarYear)
 						: nextID(conn, AD_Sequence_ID, adempiereSys);
 				}
 				else
 				{
 					PreparedStatement updateSQL = null;
-					try 
+					try
 					{
 						if (adempiereSys) {
 							updateSQL = conn
 									.prepareStatement("UPDATE AD_Sequence SET CurrentNextSys = CurrentNextSys + ? WHERE AD_Sequence_ID = ?");
 							next = rs.getInt(2);
 						} else {
-							String sql = isStartNewYear 
+							String sql = isStartNewYear
 								? "UPDATE AD_Sequence_No SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ? AND CalendarYear = ?"
 								: "UPDATE AD_Sequence SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ?";
 							updateSQL = conn
@@ -581,7 +549,7 @@ public class MSequence extends X_AD_Sequence
 					{
 						DB.close(updateSQL);
 					}
-				} 
+				}
 			}
 			else
 			{
@@ -599,12 +567,15 @@ public class MSequence extends X_AD_Sequence
 		catch (Exception e)
 		{
 			s_log.log(Level.SEVERE, "(Table) [" + trxName + "]", e);
-			next = -2;
+			if (DBException.isTimeout(e))
+				throw new AdempiereException("GenerateDocumentNoTimeOut", e);
+			else
+				throw new AdempiereException("GenerateDocumentNoError", e);
 		}
 		finally
 		{
 			//Finish
-			DB.close(rs, pstmt);			
+			DB.close(rs, pstmt);
 			try
 			{
 				if (trx == null && conn != null) {
@@ -617,11 +588,11 @@ public class MSequence extends X_AD_Sequence
 				s_log.log(Level.SEVERE, "(Table) - finish", e);
 			}
 		}
-		
+
 		//	Error
 		if (next < 0)
 			return null;
-		
+
 		//	create DocumentNo
 		StringBuffer doc = new StringBuffer();
 		if (prefix != null && prefix.length() > 0)
@@ -633,11 +604,11 @@ public class MSequence extends X_AD_Sequence
 		if (suffix != null && suffix.length() > 0)
 			doc.append(Env.parseVariable(suffix, po, trxName, false));
 		String documentNo = doc.toString();
-		s_log.finer (documentNo + " (" + incrementNo + ")" 
+		s_log.finer (documentNo + " (" + incrementNo + ")"
 				+ " - Table=" + TableName + " [" + trx + "]");
 		return documentNo;
 	}	//	getDocumentNo
-		
+
 	/**
 	 * 	Get Document No based on Document Type
 	 *	@param C_DocType_ID document type
@@ -654,53 +625,30 @@ public class MSequence extends X_AD_Sequence
 	 * 	Get Document No based on Document Type
 	 *	@param C_DocType_ID document type
 	 * 	@param trxName optional Transaction Name
-	 *  @param definite asking for a definitive or temporary sequence 
+	 *  @param definite asking for a definitive or temporary sequence
 	 *	@return document no or null
 	 */
-	public static synchronized String getDocumentNo (int C_DocType_ID, String trxName, boolean definite)
+	public static String getDocumentNo (int C_DocType_ID, String trxName, boolean definite)
 	{
 		return getDocumentNo(C_DocType_ID, trxName, definite, null);
 	}
-	
+
 	/**
 	 * 	Get Document No based on Document Type
 	 *	@param C_DocType_ID document type
 	 * 	@param trxName optional Transaction Name
 	 *  @param definite asking for a definitive or temporary sequence
-	 *  @param po 
+	 *  @param po
 	 *	@return document no or null
 	 */
-	public static synchronized String getDocumentNo (int C_DocType_ID, String trxName, boolean definite, PO po)
+	public static String getDocumentNo (int C_DocType_ID, String trxName, boolean definite, PO po)
 	{
 		if (C_DocType_ID == 0)
 		{
 			s_log.severe ("C_DocType_ID=0");
 			return null;
 		}
-		
-		//get from server
-		
-		if (DB.isRemoteObjects())
-		{
-			Server server = CConnection.get().getServer();
-			try
-			{
-				if (server != null)
-				{	//	See ServerBean
-					String dn = server.getDocumentNo (C_DocType_ID, trxName, definite, po);
-					s_log.finest("Server => " + dn);
-					if (dn != null)
-						return dn;
-				}
-				s_log.log(Level.SEVERE, "AppsServer not found - " + C_DocType_ID); 
-			}
-			catch (RemoteException ex)
-			{
-				s_log.log(Level.SEVERE, "AppsServer error", ex);
-			}
-		}
-		
-		//local
+
 		MDocType dt = MDocType.get (Env.getCtx(), C_DocType_ID);	//	wrong for SERVER, but r/o
 		if (dt != null && !dt.isDocNoControlled())
 		{
@@ -721,17 +669,17 @@ public class MSequence extends X_AD_Sequence
 			s_log.warning ("No Definite Sequence for DocType - " + dt);
 			return null;
 		}
-			
+
 		//	Check AdempiereSys
 		boolean adempiereSys = Ini.isPropertyBool(Ini.P_ADEMPIERESYS);
 		if (CLogMgt.isLevel(LOGLEVEL))
 			s_log.log(LOGLEVEL, "DocType_ID=" + C_DocType_ID + " [" + trxName + "]");
-		  
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		boolean isStartNewYear = false;
 		String dateColumn = null;
-		
+
 		if (!adempiereSys)
 		{
 			// Get the Start New Year & Sequence Type
@@ -754,22 +702,22 @@ public class MSequence extends X_AD_Sequence
 				DB.close(rs, pstmt);
 			}
 		}
-		
+
 		String selectSQL = null;
 		if (DB.isOracle() == false)
-		{	
-			if (isStartNewYear) 
+		{
+			if (isStartNewYear)
 			{
 				selectSQL = "SELECT y.CurrentNext, s.CurrentNextSys, s.IncrementNo, s.Prefix, s.Suffix, s.DecimalPattern, s.AD_Client_ID, s.AD_Sequence_ID "
 						+ "FROM AD_Sequence_No y, AD_Sequence s "
-						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "						
+						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "
 						+ "AND s.AD_Sequence_ID = ? "
 						+ "AND y.CalendarYear = ? "
 						+ "AND s.IsActive='Y' AND s.IsTableID='N' AND s.IsAutoSequence='Y' "
-						+ "FOR UPDATE OF AD_Sequence_No";
-			} 
-			else 
-			{				
+						+ "FOR UPDATE OF y";
+			}
+			else
+			{
 				selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, Prefix, Suffix, DecimalPattern, AD_Client_ID, AD_Sequence_ID "
 						+ "FROM AD_Sequence "
 						+ "WHERE AD_Sequence_ID = ? "
@@ -777,13 +725,13 @@ public class MSequence extends X_AD_Sequence
 						+ "FOR UPDATE OF AD_Sequence";
 			}
 			USE_PROCEDURE=false;
-		}	
-		else		
+		}
+		else
 		{
 			if (isStartNewYear) {
 				selectSQL = "SELECT y.CurrentNext, s.CurrentNextSys, s.IncrementNo, s.Prefix, s.Suffix, s.DecimalPattern, s.AD_Client_ID, s.AD_Sequence_ID "
 						+ "FROM AD_Sequence_No y, AD_Sequence s "
-						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "						
+						+ "WHERE y.AD_Sequence_ID = s.AD_Sequence_ID "
 						+ "AND s.AD_Sequence_ID = ? "
 						+ "AND y.CalendarYear = ? "
 						+ "AND s.IsActive='Y' AND s.IsTableID='N' AND s.IsAutoSequence='Y' ";
@@ -814,8 +762,8 @@ public class MSequence extends X_AD_Sequence
 			//	Error
 			if (conn == null)
 				return null;
-			
-			if (isStartNewYear) 
+
+			if (isStartNewYear)
 			{
 				if (po != null && dateColumn != null && dateColumn.length() > 0)
 				{
@@ -829,7 +777,7 @@ public class MSequence extends X_AD_Sequence
 					calendarYear = sdf.format(new Date());
 				}
 			}
-			
+
 			pstmt = conn.prepareStatement(selectSQL,
 				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			if (definite)
@@ -838,10 +786,12 @@ public class MSequence extends X_AD_Sequence
 				pstmt.setInt(1, dt.getDocNoSequence_ID());
 			if (isStartNewYear)
 				pstmt.setString(2, calendarYear);
-				
+
 			//
+			if (!USE_PROCEDURE && DB.getDatabase().isQueryTimeoutSupported())
+				pstmt.setQueryTimeout(QUERY_TIME_OUT);
 			rs = pstmt.executeQuery();
-		//	s_log.fine("AC=" + conn.getAutoCommit() + " -Iso=" + conn.getTransactionIsolation() 
+		//	s_log.fine("AC=" + conn.getAutoCommit() + " -Iso=" + conn.getTransactionIsolation()
 		//		+ " - Type=" + pstmt.getResultSetType() + " - Concur=" + pstmt.getResultSetConcurrency());
 			if (rs.next())
 			{
@@ -853,24 +803,24 @@ public class MSequence extends X_AD_Sequence
 				if (adempiereSys && AD_Client_ID > 11)
 					adempiereSys = false;
 				AD_Sequence_ID = rs.getInt(8);
-				
+
 				if (USE_PROCEDURE)
 				{
-					next = isStartNewYear 
+					next = isStartNewYear
 						? nextIDByYear(conn, AD_Sequence_ID, incrementNo, calendarYear)
 						: nextID(conn, AD_Sequence_ID, adempiereSys);
 				}
 				else
 				{
 					PreparedStatement updateSQL = null;
-					try 
+					try
 					{
 						if (adempiereSys) {
 							updateSQL = conn
 									.prepareStatement("UPDATE AD_Sequence SET CurrentNextSys = CurrentNextSys + ? WHERE AD_Sequence_ID = ?");
 							next = rs.getInt(2);
 						} else {
-							String sql = isStartNewYear 
+							String sql = isStartNewYear
 								? "UPDATE AD_Sequence_No SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ? AND CalendarYear = ?"
 								: "UPDATE AD_Sequence SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ?";
 							updateSQL = conn.prepareStatement(sql);
@@ -882,7 +832,7 @@ public class MSequence extends X_AD_Sequence
 							updateSQL.setString(3, calendarYear);
 						updateSQL.executeUpdate();
 					}
-					finally 
+					finally
 					{
 						DB.close(updateSQL);
 					}
@@ -902,7 +852,10 @@ public class MSequence extends X_AD_Sequence
 		catch (Exception e)
 		{
 			s_log.log(Level.SEVERE, "(DocType) [" + trxName + "]", e);
-			next = -2;
+			if (DBException.isTimeout(e))
+				throw new AdempiereException("GenerateDocumentNoTimeOut", e);
+			else
+				throw new AdempiereException("GenerateDocumentNoError", e);
 		}
 		finally
 		{
@@ -935,14 +888,14 @@ public class MSequence extends X_AD_Sequence
 		if (suffix != null && suffix.length() > 0)
 			doc.append(Env.parseVariable(suffix, po, trxName, false));
 		String documentNo = doc.toString();
-		s_log.finer (documentNo + " (" + incrementNo + ")" 
+		s_log.finer (documentNo + " (" + incrementNo + ")"
 				+ " - C_DocType_ID=" + C_DocType_ID + " [" + trx + "]");
 		return documentNo;
 	}	//	getDocumentNo
 
-	
+
 	/**************************************************************************
-	 *	Check/Initialize Client DocumentNo/Value Sequences 	
+	 *	Check/Initialize Client DocumentNo/Value Sequences
 	 *	@param ctx context
 	 *	@param AD_Client_ID client
 	 *	@param trxName transaction
@@ -996,12 +949,12 @@ public class MSequence extends X_AD_Sequence
 			rs = null;
 			pstmt = null;
 		}
-		s_log.info ("AD_Client_ID=" + AD_Client_ID 
+		s_log.info ("AD_Client_ID=" + AD_Client_ID
 			+ " - created #" + counter
 			+ " - success=" + success);
 		return success;
 	}	//	checkClientSequences
-	
+
 
 	/**
 	 * 	Create Table ID Sequence
@@ -1012,6 +965,28 @@ public class MSequence extends X_AD_Sequence
 	 */
 	public static boolean createTableSequence (Properties ctx, String TableName, String trxName)
 	{
+		boolean SYSTEM_NATIVE_SEQUENCE = MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE",false);
+
+		if(SYSTEM_NATIVE_SEQUENCE)
+		{
+			int next_id = MSequence.getNextID(Env.getAD_Client_ID(ctx), TableName, trxName);
+			if(next_id == -1)
+			{
+				MSequence seq = new MSequence (ctx, 0, trxName);
+				seq.setClientOrg(0, 0);
+				seq.setName(TableName);
+				seq.setDescription("Table " + TableName);
+				seq.setIsTableID(true);
+				seq.saveEx();
+				next_id = 1000000;
+			}
+
+			if(CConnection.get().getDatabase().createSequence(TableName+"_SEQ", 1, 0 , 99999999,  next_id, trxName))
+				return true;
+
+			return false;
+		}
+
 		MSequence seq = new MSequence (ctx, 0, trxName);
 		seq.setClientOrg(0, 0);
 		seq.setName(TableName);
@@ -1019,7 +994,7 @@ public class MSequence extends X_AD_Sequence
 		seq.setIsTableID(true);
 		return seq.save();
 	}	//	createTableSequence
-		
+
 
 	/**
 	 * 	Get Sequence
@@ -1027,11 +1002,11 @@ public class MSequence extends X_AD_Sequence
 	 *	@param tableName table name
 	 *	@return Sequence
 	 */
-	public static MSequence get (Properties ctx, String tableName) 
+	public static MSequence get (Properties ctx, String tableName)
 	{
 		return get(ctx, tableName, null);
 	}
-			
+
 	/**
 	 * 	Get Sequence
 	 *	@param ctx context
@@ -1069,19 +1044,19 @@ public class MSequence extends X_AD_Sequence
 		}
 		return retValue;
 	}	//	get
-	
-	
+
+
 	/**	Sequence for Table Document No's	*/
 	private static final String	PREFIX_DOCSEQ = "DocumentNo_";
 	/**	Start Number			*/
 	public static final int		INIT_NO = 1000000;	//	1 Mio
 	/**	Start System Number		*/
-	// public static final int		INIT_SYS_NO = 100; // start number for Compiere	
+	// public static final int		INIT_SYS_NO = 100; // start number for Compiere
 	public static final int		INIT_SYS_NO = 50000;   // start number for Adempiere
 	/** Static Logger			*/
 	private static CLogger 		s_log = CLogger.getCLogger(MSequence.class);
-	
-	
+
+
 	/**************************************************************************
 	 *	Standard Constructor
 	 *	@param ctx context
@@ -1131,7 +1106,7 @@ public class MSequence extends X_AD_Sequence
 		setName(PREFIX_DOCSEQ + tableName);
 		setDescription("DocumentNo/Value for Table " + tableName);
 	}	//	MSequence;
-	
+
 	/**
 	 * 	New Document Sequence Constructor
 	 *	@param ctx context
@@ -1150,8 +1125,8 @@ public class MSequence extends X_AD_Sequence
 		setCurrentNext(StartNo);
 		setCurrentNextSys(StartNo/10);
 	}	//	MSequence;
-	
-	
+
+
 	/**************************************************************************
 	 * 	Get Next No and increase current next
 	 *	@return next no to use
@@ -1162,7 +1137,7 @@ public class MSequence extends X_AD_Sequence
 		setCurrentNext(retValue + getIncrementNo());
 		return retValue;
 	}	//	getNextNo
-	
+
 	/**
 	 * 	Validate Table Sequence Values
 	 *	@return true if updated
@@ -1186,7 +1161,7 @@ public class MSequence extends X_AD_Sequence
 			IDRangeEnd = system.getIDRangeEnd().intValue();
 		boolean change = false;
 		String info = null;
-		
+
 		//	Current Next
 		String sql = "SELECT MAX(" + tableName + "_ID) FROM " + tableName;
 		if (IDRangeEnd > 0)
@@ -1198,7 +1173,7 @@ public class MSequence extends X_AD_Sequence
 		if (getCurrentNext() < maxTableID)
 		{
 			setCurrentNext(maxTableID);
-			info = "CurrentNext=" + maxTableID; 
+			info = "CurrentNext=" + maxTableID;
 			change = true;
 		}
 
@@ -1222,8 +1197,8 @@ public class MSequence extends X_AD_Sequence
 			log.fine(getName() + " - " + info);
 		return change;
 	}	//	validate
-	
-	
+
+
 	/**************************************************************************
 	 *	Test
 	 *	@param args ignored
@@ -1232,7 +1207,7 @@ public class MSequence extends X_AD_Sequence
 	{
 		// int id = getNextID_HTTP("AD_Column");
 		// if (true) return;
-		
+
 		org.compiere.Adempiere.startup(true);
 		CLogMgt.setLevel(Level.SEVERE);
 		CLogMgt.setLoggerLevel(Level.SEVERE, null);
@@ -1246,25 +1221,25 @@ public class MSequence extends X_AD_Sequence
 		System.out.println(DB.getDocumentNo(118, trxName));
 		System.out.println(DB.getDocumentNo(118, trxName));
 		System.out.println(DB.getDocumentNo(117, trxName));
-		
+
 		trxName = "test1";
 		System.out.println(DB.getDocumentNo(115, trxName));	//	hangs here as supposed
 		System.out.println(DB.getDocumentNo(116, trxName));
 		System.out.println(DB.getDocumentNo(117, trxName));
 		System.out.println(DB.getDocumentNo(118, trxName));
 
-		
-		
-		
-		
+
+
+
+
 		/** **/
-		
+
 		/** Time Test	*/
 		long time = System.currentTimeMillis();
 		Thread[] threads = new Thread[10];
 		for (int i = 0; i < 10; i++)
 		{
-			Runnable r = new GetIDs(i); 
+			Runnable r = new GetIDs(i);
 			threads[i] = new Thread(r);
 			threads[i].start();
 		}
@@ -1279,7 +1254,7 @@ public class MSequence extends X_AD_Sequence
 			}
 		}
 		time = System.currentTimeMillis() - time;
-		
+
 		System.out.println("-------------------------------------------");
 		System.out.println("Size=" + s_list.size() + " (should be 1000)");
 		Integer[] ia = new Integer[s_list.size()];
@@ -1304,9 +1279,9 @@ public class MSequence extends X_AD_Sequence
 		System.out.println("Duplicates=" + duplicates);
 		System.out.println("Time (ms)=" + time + " - " + ((float)time/s_list.size()) + " each" );
 		System.out.println("-------------------------------------------");
-		
-		
-		
+
+
+
 		/** **
 		try
 		{
@@ -1322,17 +1297,17 @@ public class MSequence extends X_AD_Sequence
 			sql += "FOR UPDATE";
 			//	creates ORA-00907: missing right parenthesis
 		//	sql += "FOR UPDATE OF CurrentNext, CurrentNextSys";
-			
+
 
 			PreparedStatement pstmt = conn.prepareStatement(sql,
 				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = pstmt.executeQuery();
 			System.out.println("AC=" + conn.getAutoCommit() + ", RO=" + conn.isReadOnly()
 				+ " - Isolation=" + conn.getTransactionIsolation() + "(" + Connection.TRANSACTION_READ_COMMITTED
-				+ ") - RSType=" + pstmt.getResultSetType() + "(" + ResultSet.TYPE_SCROLL_SENSITIVE  
+				+ ") - RSType=" + pstmt.getResultSetType() + "(" + ResultSet.TYPE_SCROLL_SENSITIVE
 				+ "), RSConcur=" + pstmt.getResultSetConcurrency() + "(" + ResultSet.CONCUR_UPDATABLE
 				+ ")");
-			
+
 			if (rs.next())
 			{
 				int IncrementNo = rs.getInt(3);
@@ -1348,23 +1323,23 @@ public class MSequence extends X_AD_Sequence
 			conn.close();
 			//
 			System.out.println("Next=" + retValue);
-			
+
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace ();
 		}
-		
+
 		System.exit(0);
-				
+
 		/** **
-			
+
 		int AD_Client_ID = 0;
 		int C_DocType_ID = 115;	//	GL
 		String TableName = "C_Invoice";
 		String trxName = "x";
-		Trx trx = Trx.get(trxName, true);		
-				
+		Trx trx = Trx.get(trxName, true);
+
 		System.out.println ("none " + getNextID (0, "Test"));
 		System.out.println ("----------------------------------------------");
 		System.out.println ("trx1 " + getNextID (0, "Test"));
@@ -1375,12 +1350,12 @@ public class MSequence extends X_AD_Sequence
 		System.out.println ("trx4 " + getNextID (0, "Test"));
 	//	trx.rollback();
 	//	trx.close();
-		System.out.println ("----------------------------------------------");		
+		System.out.println ("----------------------------------------------");
 		System.out.println ("none " + getNextID (0, "Test"));
-		System.out.println ("==============================================");		
-		
+		System.out.println ("==============================================");
 
-		trx = Trx.get(trxName, true);		
+
+		trx = Trx.get(trxName, true);
 		System.out.println ("none " + getDocumentNo(AD_Client_ID, TableName, null));
 		System.out.println ("----------------------------------------------");
 		System.out.println ("trx1 " + getDocumentNo(AD_Client_ID, TableName, trxName));
@@ -1391,12 +1366,12 @@ public class MSequence extends X_AD_Sequence
 		System.out.println ("trx4 " + getDocumentNo(AD_Client_ID, TableName, trxName));
 		trx.rollback();
 		trx.close();
-		System.out.println ("----------------------------------------------");		
+		System.out.println ("----------------------------------------------");
 		System.out.println ("none " + getDocumentNo(AD_Client_ID, TableName, null));
-		System.out.println ("==============================================");		
+		System.out.println ("==============================================");
 
 
-		trx = Trx.get(trxName, true);		
+		trx = Trx.get(trxName, true);
 		System.out.println ("none " + getDocumentNo(C_DocType_ID, null));
 		System.out.println ("----------------------------------------------");
 		System.out.println ("trx1 " + getDocumentNo(C_DocType_ID, trxName));
@@ -1407,18 +1382,18 @@ public class MSequence extends X_AD_Sequence
 		System.out.println ("trx4 " + getDocumentNo(C_DocType_ID, trxName));
 		trx.rollback();
 		trx.close();
-		System.out.println ("----------------------------------------------");		
+		System.out.println ("----------------------------------------------");
 		System.out.println ("none " + getDocumentNo(C_DocType_ID, null));
-		System.out.println ("==============================================");		
+		System.out.println ("==============================================");
 		/** **/
 	}	//	main
 
 	/** Test		*/
-	private static Vector<Integer> s_list = null; 
-	
+	private static Vector<Integer> s_list = null;
+
 	/**
 	 * 	Test Sequence - Get IDs
-	 *	
+	 *
 	 *  @author Jorg Janke
 	 *  @version $Id: MSequence.java,v 1.3 2006/07/30 00:58:04 jjanke Exp $
 	 */
@@ -1433,7 +1408,7 @@ public class MSequence extends X_AD_Sequence
 			m_i = i;
 		}
 		private int m_i;
-		
+
 		/**
 		 * 	Run
 		 */
@@ -1454,7 +1429,7 @@ public class MSequence extends X_AD_Sequence
 			}
 		}
 	}	//	GetIDs
-	
+
 	/**
 	 *	Get next number for Key column
 	 *  @param AD_Client_ID client
@@ -1471,11 +1446,11 @@ public class MSequence extends X_AD_Sequence
 		String prm_ALTKEY = "";  // TODO: generate alt-key based on key of table
 		String prm_COMMENT = MSysConfig.getValue("DICTIONARY_ID_COMMENTS");
 		String prm_PROJECT = new String("Adempiere");
-		
+
 		return getNextID_HTTP(TableName, website, prm_USER,
 				prm_PASSWORD, prm_TABLE, prm_ALTKEY, prm_COMMENT, prm_PROJECT);
 	}
-	
+
 	/**
 	 *	Get next number for Key column
 	 *  @param AD_Client_ID client
@@ -1492,7 +1467,7 @@ public class MSequence extends X_AD_Sequence
 		String prm_ALTKEY = "";  // TODO: generate alt-key based on key of table
 		String prm_COMMENT = MSysConfig.getValue("PROJECT_ID_COMMENTS");
 		String prm_PROJECT = MSysConfig.getValue("PROJECT_ID_PROJECT");
-		
+
 		return getNextID_HTTP(TableName, website, prm_USER,
 				prm_PASSWORD, prm_TABLE, prm_ALTKEY, prm_COMMENT, prm_PROJECT);
 	}
@@ -1501,7 +1476,7 @@ public class MSequence extends X_AD_Sequence
 			String website, String prm_USER, String prm_PASSWORD,
 			String prm_TABLE, String prm_ALTKEY, String prm_COMMENT,
 			String prm_PROJECT) {
-		StringBuffer read = new StringBuffer("");
+		StringBuffer read = new StringBuffer();
 		int retValue = -1;
 		try {
 			String completeUrl = website + "?" + "USER="
@@ -1511,64 +1486,29 @@ public class MSequence extends X_AD_Sequence
 					+ URLEncoder.encode(prm_TABLE, "UTF-8") + "&ALTKEY="
 					+ URLEncoder.encode(prm_ALTKEY, "UTF-8") + "&COMMENT="
 					+ URLEncoder.encode(prm_COMMENT, "UTF-8");
-				
+
 			// Now use the URL class to parse the user-specified URL into
 			// its various parts: protocol, host, port, filename.  Check the protocol
 			URL url = new URL(completeUrl);
-/**			
- * 
- * 			Código original não funciona para os IDs do LBR
- * 
- * 			String protocol = url.getProtocol();
+			String protocol = url.getProtocol();
 			if (!protocol.equals("http"))
 				throw new IllegalArgumentException("URL must use 'http:' protocol");
-			String host = url.getHost();
-			int port = url.getPort();
-			if (port == -1) port = 80;  // if no port, use the default HTTP port
-			String filename = url.getFile();
-			// Open a network socket connection to the specified host and port
-			Socket socket = new Socket(host, port);
-			// Get input and output streams for the socket
-			InputStream from_server = socket.getInputStream();
-			PrintWriter to_server = 
-				new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-			// Send the HTTP GET command to the Web server, specifying the file.
-			// This uses an old and very simple version of the HTTP protocol
-			to_server.println("GET " + filename);
-			to_server.flush();  // Send it right now!
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setAllowUserInteraction(false);
+			InputStream is =  conn.getInputStream();
 
 			// Now read the server's response, and write it to the file
 			byte[] buffer = new byte[4096];
 			int bytes_read;
-			while((bytes_read = from_server.read(buffer)) != -1) {
+			while((bytes_read = is.read(buffer)) != -1) {
 				for (int i = 0; i < bytes_read; i++) {
 					if (buffer[i] != 10)
 						read.append((char) buffer[i]);
 				}
 			}
-
-			// When the server closes the connection, we close our stuff
-			socket.close();
-			retValue = Integer.parseInt(read.toString()); */
-			
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestProperty("Request-Method", "GET");
-			connection.setDoInput(true);
-			connection.setDoOutput(false);
-			connection.connect();
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuffer newData = new StringBuffer();
-			String s = "";
-			while (null != ((s = br.readLine())))
-				newData.append(s);
-			
-			br.close();
-			
-			/***	Tenta converter em Integer	*/
-			retValue = Integer.parseInt(newData.toString());
-			
+			conn.disconnect();
+			retValue = Integer.parseInt(read.toString());
 			if (retValue <= 0)
 				retValue = -1;
 		}
@@ -1576,11 +1516,11 @@ public class MSequence extends X_AD_Sequence
 			System.err.println(e);
 			retValue = -1;
 		}
-		s_log.log(Level.INFO, "getNextID_HTTP - " + TableName + "=" + read + "(" + retValue + ")"); 
-	    
+		s_log.log(Level.INFO, "getNextID_HTTP - " + TableName + "=" + read + "(" + retValue + ")");
+
 		return retValue;
 	}
-	
+
 	private static boolean isExceptionCentralized(String tableName) {
 		String [] exceptionTables = new String[] {
 				"AD_ACCESSLOG",
@@ -1626,7 +1566,7 @@ public class MSequence extends X_AD_Sequence
 		// don't log selects or insert/update for exception tables (i.e. AD_Issue, AD_ChangeLog)
 		return false;
 	}
-	
+
 	/**
 	 * Get preliminary document no by year
 	 * @param tab
@@ -1636,12 +1576,12 @@ public class MSequence extends X_AD_Sequence
 	 */
 	public static String getPreliminaryNoByYear(GridTab tab, int AD_Sequence_ID, String dateColumn, String trxName) {
 		Date d = (Date)tab.getValue(dateColumn);
-		if (d == null) 
+		if (d == null)
 			d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String calendarYear = sdf.format(d);
 		String sql = "select CurrentNext From AD_Sequence_No Where AD_Sequence_ID = ? and CalendarYear = ?";
-	
+
 		return DB.getSQLValueString(trxName, sql, AD_Sequence_ID, calendarYear);
 	}
 

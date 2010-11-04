@@ -14,15 +14,11 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.nfe.NFeCancelamento;
-import org.adempierelbr.nfe.NFeInutilizacao;
-import org.adempierelbr.nfe.beans.InutilizacaoNF;
-import org.compiere.model.MDocType;
-import org.compiere.model.MOrgInfo;
+import org.adempierelbr.util.NFeUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Env;
 
 /**
  *	ProcCancelNF
@@ -66,35 +62,21 @@ public class ProcCancelNF extends SvrProcess
 		
 		if (p_LBR_NotaFiscal_ID != 0)
 		{
-			MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
-			//
-			MDocType dt = new MDocType (Env.getCtx(), nf.getC_DocTypeTarget_ID(), null);
-			String nfModel = dt.get_ValueAsString("lbr_NFModel");
+			MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 			//
 			if (nf.get_Value("lbr_NFeID") != null)
 			{
 				if (nf.isCancelled())
 					return "NF Já está cancelada.";
 				//
+				if (nf.getlbr_NFeStatus() != null && !nf.getlbr_NFeStatus().equals(NFeUtil.AUTORIZADA))
+					return "Não é possível cancelar uma NFe não autorizada.";
+				
 				return NFeCancelamento.cancelNFe(nf);
-			}
-			else if (nfModel != null && nfModel.equals("55"))
-			{
-				MOrgInfo oi = MOrgInfo.get(Env.getCtx(), nf.getAD_Org_ID());
-				InutilizacaoNF iNF = new InutilizacaoNF(nf, oi.get_ValueAsString("lbr_NFeEnv"));
-				//
-				if (!iNF.isValid())
-				{
-					log.severe(iNF.getMsg());
-					return "NF não pode ser inutilizada. Verificar log. " + iNF.getMsg();
-				}
-				//
-				return NFeInutilizacao.invalidateNF(oi, iNF);
 			}
 			if (nf.voidIt())
 				nf.save(get_TrxName());
-			else
-			{
+			else{
 				String msg = "Nota: " + p_LBR_NotaFiscal_ID + " não cancelada. ";
 					   msg += nf.getProcessMsg();
 				return msg.trim();

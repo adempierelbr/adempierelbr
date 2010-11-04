@@ -30,7 +30,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.X_LBR_TaxLine;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.apps.ConfirmPanel;
@@ -39,7 +40,6 @@ import org.compiere.grid.ed.VLookup;
 import org.compiere.grid.ed.VNumber;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
-import org.compiere.model.X_LBR_TaxLine;
 import org.compiere.swing.CDialog;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
@@ -53,10 +53,10 @@ import org.compiere.util.Msg;
  *	VTaxesDialog
  *
  *	Taxes Dialog
- *	
+ *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@contributor Ricardo Santana (Kenos, www.kenos.com.br) - ralexsander
- *	
+ *
  *	@version $Id: VTaxesDialog.java, 14/11/2007 13:45:00 mgrigioni
  */
 public class VTaxesDialog extends CDialog implements ActionListener
@@ -71,7 +71,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 *
 	 *	@author Ricardo Santana
 	 */
-	private class LineTax 
+	private class LineTax
 	{
 		Integer   	LINE;
 		JButton 	DELETE;
@@ -79,11 +79,11 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		VNumber   	RATE;
 		VNumber	 	BASE;
 		VCheckBox 	POST;
-		
+
 		/**
-		 * 
+		 *
 		 * 	Constructor
-		 * 
+		 *
 		 * @param line
 		 * @param delete
 		 * @param tax
@@ -92,7 +92,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		 * @param post
 		 */
 		private LineTax (Integer line, JButton delete, VLookup tax,
-					VNumber rate, VNumber base, VCheckBox post) 
+					VNumber rate, VNumber base, VCheckBox post)
 		{
 			this.LINE		=line;
 			this.DELETE		=delete;
@@ -102,7 +102,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 			this.POST		=post;
 		}	//	LineTax
 	}	//	LineTax
-		
+
 	/**
 	 *	Constructor
 	 *
@@ -110,13 +110,12 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 * @param title title (field name)
 	 * @param location Model Location
 	 */
-	public VTaxesDialog (Frame frame, String title, MLBRTax tax)
+	public VTaxesDialog (Frame frame, String title, MTaxLBR tax)
 	{
 		super(frame, title, true);
 		try
 		{
 			jbInit();
-			initTaxes();
 		}
 		catch(Exception ex)
 		{
@@ -124,9 +123,9 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		}
 		m_tax = tax;
 		if (m_tax == null || m_tax.getLBR_Tax_ID() == 0)
-			m_tax = new MLBRTax (Env.getCtx(), 0, null);
+			m_tax = new MTaxLBR (Env.getCtx(), 0, null);
 		//
-		//	Overwrite title	
+		//	Overwrite title
 		if (m_tax.getLBR_Tax_ID() == 0){
 			setTitle(Msg.getMsg(Env.getCtx(), "New"));
 			initTaxes();
@@ -134,6 +133,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		}
 		else{
 			setTitle(Msg.getMsg(Env.getCtx(), "Update"));
+			initTaxes();
 			getLines();
 		}
 		//
@@ -141,7 +141,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	}	//	VLocationDialog
 
 	private boolean 	m_change = false;
-	private MLBRTax		m_tax;
+	private MTaxLBR		m_tax;
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(VTaxesDialog.class);
 	//
@@ -150,7 +150,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	private ConfirmPanel confirmPanel = new ConfirmPanel(true);
 	//
 	private JScrollPane scrollPanel = new JScrollPane(mainPanel,
-		    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+		    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private BorderLayout  panelLayout   = new BorderLayout();
 	private GridBagLayout gridBagLayout = new GridBagLayout();
@@ -184,7 +184,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		panelLayout.setHgap(5);
 		panelLayout.setVgap(5);
-		panel.setPreferredSize(new Dimension(650,245));
+		panel.setPreferredSize(new Dimension(750,270));
 		//
 		getContentPane().add(panel);
 		panel.add(scrollPanel, BorderLayout.CENTER);
@@ -195,7 +195,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		newButton.setToolTipText(Msg.translate(Env.getCtx(), "New"));
 		confirmPanel.addComponent(newButton);
 		newButton.addActionListener(this);
-		//		
+		//
 		delRecordButton.setIcon(Env.getImageIcon("DeleteSelection24.gif"));
 		delRecordButton.setMargin(ConfirmPanel.s_insets);
 		delRecordButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete"));
@@ -204,7 +204,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		confirmPanel.addActionListener(this);
 	}	//	jbInit
-	
+
 	/**
 	 * 	Carrega os impostos e alíquotas
 	 */
@@ -241,7 +241,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		pack();
 		setLocationRelativeTo(null);
 	}	//	initLocation
-	
+
 	/**
 	 * 	Adiciona uma linha em branco
 	 */
@@ -265,10 +265,10 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		addLine(lt);
 	}	//	addLine
-	
+
 	/**
 	 * Create a new delete button
-	 * 
+	 *
 	 * @return JButton Delete
 	 */
 	private JButton getDelButton()
@@ -281,7 +281,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		return delLineButton;
 	}	//	getDelButton
-	
+
 	/**
 	 *	Add Line to screen
 	 *
@@ -324,7 +324,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 *  @param e ActionEvent
 	 */
 	public void actionPerformed(ActionEvent e)
-	{	
+	{
 		//	newButton
 		if (e.getSource().equals(newButton))
 		{
@@ -389,7 +389,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 
 	/**
 	 * 	Before Save
-	 * 
+	 *
 	 * @return
 	 */
 	private Boolean beforeSave()
@@ -409,7 +409,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		return true;
 	}	//	beforeSave
-	
+
 	/**
 	 * 	OK - check for changes (save them) & Exit
 	 */
@@ -422,7 +422,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 			taxLine.delete(false);
 		}
 		//
-		if (m_tax.getLBR_Tax_ID() == 0) 
+		if (m_tax.getLBR_Tax_ID() == 0)
 			m_tax.save();
 		//
 		for (LineTax lTax : taxLines)
@@ -448,7 +448,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		m_tax.setDescription();
 		m_tax.save();
 	}	//	save
-	
+
 	/**
 	 * 	Delete Record
 	 */
@@ -488,11 +488,11 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	 * 	Get edited Value (X_LBR_Tax)
 	 *	@return m_tax
 	 */
-	public MLBRTax getValue()
+	public MTaxLBR getValue()
 	{
 		return m_tax;
 	}	//	getValue
-	
+
 	/**
 	 * 	Get all lines
 	 */
@@ -552,9 +552,9 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		{
 		       DB.close(rs, pstmt);
 		}
-		
-		if (lineCount == 1) 
+
+		if (lineCount == 1)
 			addLine();
-		
+
 	}	//	getLines
 }	//	VTaxesDialog

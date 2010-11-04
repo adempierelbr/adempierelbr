@@ -14,8 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -69,26 +68,30 @@ public class ProcReturnRPS extends SvrProcess
 		String[] linhas = TextUtil.readFile(p_FileName);
 		for (int i = 1; i < linhas.length; i++)
 		{
-			if (linhas[i].length() < 419)
+			//BUGFIX: String index out of range: 419
+			if(linhas[i].length() < 419)
 				continue;
-			//
+			
 			String rpsNumber = linhas[i].substring(41, 53).trim();
 			String NFeNo     = linhas[i].substring(1, 9).trim();
 			String status    = linhas[i].substring(418, 419).trim();
-			int LBR_NotaFiscal_ID = POLBR.getLBR_NotaFiscal_ID (rpsNumber, true, get_TrxName());
-			//
+			int LBR_NotaFiscal_ID = MNotaFiscal.getLBR_NotaFiscal_ID(rpsNumber, true, get_TrxName());
 			if (LBR_NotaFiscal_ID != -1)
 			{
-				MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), LBR_NotaFiscal_ID, get_TrxName());
-				nf.setIsPrinted(true); 	//	Marca impresso para cancelar os documentos vinculados
+				
+				MNotaFiscal nf = new MNotaFiscal(getCtx(),LBR_NotaFiscal_ID,get_TrxName());
+				nf.setIsPrinted(true); //MARCA IMPRESSO PARA CANCELAR OS DOCUMENTOS VINCULADOS
 				nf.set_ValueOfColumn("lbr_NFENo", NFeNo);
-				if (status.equalsIgnoreCase("C"))
-				{
+				if (status.equalsIgnoreCase("C")){
 					nf.voidIt();
 				}
 				nf.save(get_TrxName());
+				
 			}
+				
 		}
+		
 		return "ReturnRPS Process Completed " + "Arquivo: " + p_FileName;
 	}	//	doIt
+	
 }	//	ProcReturnRPS

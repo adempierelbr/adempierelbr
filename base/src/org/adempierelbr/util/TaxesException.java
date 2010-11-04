@@ -12,6 +12,14 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+/**
+ *	ADempiereLBR
+ *
+ *	Utility class for Taxes Exceptions
+ *	
+ *	@author Mario Grigioni
+ *	@version $Id: TaxesException.java, 05/02/2010 14:37:00 mgrigioni
+ */
 public class TaxesException{
 	
 	private Integer LBR_Tax_ID;

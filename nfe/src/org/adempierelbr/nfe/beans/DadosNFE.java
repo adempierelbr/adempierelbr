@@ -1,3 +1,15 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
 import java.util.ArrayList;
@@ -15,15 +27,12 @@ public class DadosNFE {
 	private IdentDest dest;
 	private IdentLocRetirada retirada;
 	private IdentLocalEntrega entrega;
-	private List det = new ArrayList();
+	private List<DetailsNFEBean> det = new ArrayList<DetailsNFEBean>();
 	private Valores total;
 	private Transporte transp;
 	private Cobranca cobr;
 	private InfAdiFisco infAdic;
 	private InfAssinatura Signature;
-	
-
-	
 	
 	public String getVersao() {
 		return versao;
@@ -105,11 +114,12 @@ public class DadosNFE {
 	}
 	public void add(DetailsNFEBean detailsNFEBean) {
         det.add(detailsNFEBean);
-}
+	}
 
-	public List getContent() {
+	public List<DetailsNFEBean> getContent() {
         return det;
-}
+	}
+	
 	public InfAdiFisco getInfAdic()
 	{
 		return infAdic;

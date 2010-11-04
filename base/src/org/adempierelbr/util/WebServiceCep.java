@@ -131,7 +131,6 @@ public final class WebServiceCep {
 		public IterableElement(Iterator<?> itr) {
 			this.itr = (Iterator<Element>)itr;
 		}
-		@Override
 		public Iterator<Element> iterator() {
 			return itr;
 		}

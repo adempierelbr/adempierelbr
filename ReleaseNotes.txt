@@ -1,0 +1,49 @@
+﻿Release Notes - AdempiereLBR 3.6.0
+
+Versão Inicial
+Integração do projeto OSeB 3.6.0 no AdempiereLBR
+
+
+
+
+<--------------------------------------------->
+
+Release Notes - OSeB 3.6.0
+
+Versão Inicial
+Fork do AdempiereLBR com suporte ao Adempiere 3.6.0 LTS;
+BF 3034651 - Initial Client Setup;
+BF 3048696 - Contribuição Pablo Boff Pigozzo, encoding error no envio de email da NFe;
+FR 3047146 - Entradas dos Validators do OSeB na table AD_ModelValidator;
+FR 3044354 - Contribuição Pablo Boff Pigozzo - CNAB convênio 6 e 7 posições Banco do Brasil;
+FR 3046238 - Contribuição Marcelo Onhate - Melhorias na busca com "%";
+FR 3047227 - Logo do OSeB;
+
+Versão 09/09/2010 - Patch 0.1 (Intervalo de scripts 10-13)
+Melhorias gerais no código e pequenas correções;
+BF - Não é possível logar com a Org = *, quando usado Client System com usuário System;
+FR 3151686 - Views para Livros Fiscais, Sintegra, GIA, SPED;
+FR 3043636 - NF-e Todos os Estados - Criada Janela para gerenciar endereços dos WebServices;
+BF 3051683 - lbr_TaxStatusIPI - Criação do campo na tabela LBR_NotaFiscalLine;
+BF 3054559 - lbr_MotivoCancel - Criação do campo na tabela LBR_NotaFiscal e na Janela;
+BF 3058303 - Problema no calculo da ST reportado pelo Marcelo Luiz Onhate
+
+Versão 08/10/2010 - Patch 0.2 (Intervalo de scripts 14-21)
+Melhorias gerais no código e pequenas correções
+Alteração no processo ProcGenerateSINTEGRA para utilizar as novas views e alteração para atender ST (Pablo e Marcelo)
+BF 3067106 - Problema nas views SINTEGRA. Está ocorrendo divisões por zero o que resulta em erro. (Pablo Pigozzo)
+FR 3067611 - Alteração no foco na InfoProduct (Marcelo Onhate)
+FR 3073329 - Novos Padrões e EntityType para OSeB (Mario Grigioni)
+BF Espaçamento Campos Janela - https://sourceforge.net/tracker/?func=detail&aid=3073406&group_id=176962&atid=879332 (Tacker Adempiere)
+BF Instância de atributos - https://sourceforge.net/tracker/index.php?func=detail&aid=3074827&group_id=176962&atid=879332 (Tracker Adempiere)
+FR Melhorias nas informações dos Campos - https://sourceforge.net/tracker/?func=detail&aid=3028539&group_id=176962&atid=879335 (Tracker Adempiere)
+BF 3076582 - C_City - lbr_CityCode referência errada (Mario Grigioni)
+BF - Problemas com NFe e Anexos no FileSystem
+FR 3078880 - Trocar o nome do processo Sobre (Marcelo Onhate)
+FR 3078890 - Criação de campo "Contato que Envia NFe" na OrgInfo (Marcelo Onhate)
+BF 3078773 - Problemas com EntityType LBRA e package das classes (Mario Grigioni)
+FR 3078989 - Alterar o nome do "Grupo de Campos" de AdempiereLBR para "Localização Brasil" (Mario Grigioni)
+
+Versão 12/11/2010 - Patch 0.3 (Não lançada no OSeb)
+BF Problemas ao verificar alteração de valores no GridTable - https://sourceforge.net/tracker/index.php?func=detail&aid=3090578&group_id=176962&atid=879332 (Tracker Adempiere)
+BF Alteração do Processo de Consulta Cadastro da NFe devido a alterações no WebService (Mario Grigioni)

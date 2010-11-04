@@ -15,8 +15,8 @@ package org.adempierelbr.validator;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.adempierelbr.model.MLBRTaxConfiguration;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MTaxConfiguration;
+import org.adempierelbr.model.X_LBR_TaxConfiguration;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
@@ -24,14 +24,13 @@ import org.compiere.model.MSequence;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.X_LBR_TaxConfiguration;
 import org.compiere.util.CLogger;
 
 /**
  *	ValidatorBPartner
  *
- *  If the document type has both Automatic Shipment and Invoice checked, it 
- *  will then validate the Shipment Document, verifying if the latter has the 
+ *  If the document type has both Automatic Shipment and Invoice checked, it
+ *  will then validate the Shipment Document, verifying if the latter has the
  *  Shipment Confirmation checked, if it does, and error is generated.
  *
  *	[ 1902562 ] ValidatorDocType
@@ -41,12 +40,12 @@ import org.compiere.util.CLogger;
  *	@author Alvaro Montenegro
  *	@contributor Mario Grigioni
  *	@version $Id: ValidatorBPartner.java, 27/02/2008 08:44:00 amontenegro
- *	
+ *
  */
 public class ValidatorDocType implements ModelValidator
 {
-	
-	
+
+
 	/**
 	 *	Constructor.
 	 *	The class is instanciated when logging in and client is selected/known
@@ -55,29 +54,33 @@ public class ValidatorDocType implements ModelValidator
 	{
 		super ();
 	}
-	
+
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(ValidatorBPartner.class);
+	private static CLogger log = CLogger.getCLogger(ValidatorDocType.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
-	
+
 	/**
 	 *	Initialize Validation
-	 *	@param engine validation engine 
+	 *	@param engine validation engine
 	 *	@param client client
 	 */
 	public void initialize (ModelValidationEngine engine, MClient client)
 	{
-		m_AD_Client_ID = client.getAD_Client_ID();
+		//client = null for global validator
+		if (client != null) {
+			m_AD_Client_ID = client.getAD_Client_ID();
+			log.info(client.toString());
+		}
+		else  {
+			log.info("Initializing global validator: "+this.toString());
+		}
 
-		log.info(client.toString());
-		
-		//	ModelChange
 		engine.addModelChange(MDocType.Table_Name, this); //Document Type
 		engine.addModelChange(MSequence.Table_Name, this); //Document Sequence
-		engine.addModelChange(MLBRTaxConfiguration.Table_Name, this); //Tax Configuration
-	}
-	
+		engine.addModelChange(MTaxConfiguration.Table_Name, this); //Tax Configuration
+	}	//	initialize
+
 	/**
 	 *	Get Client to be monitored
 	 *	@return AD_Client_ID client
@@ -100,7 +103,7 @@ public class ValidatorDocType implements ModelValidator
 		log.info("AD_User_ID=" + AD_User_ID);
 		return null;
 	}	//	login
-	
+
     /**
      *	Model Change of a monitored Table.
      *	Called after PO.beforeSave/PO.beforeDelete
@@ -112,36 +115,30 @@ public class ValidatorDocType implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		if(po.get_TableName().equalsIgnoreCase(MDocType.Table_Name) && (type == TYPE_CHANGE || type ==  TYPE_NEW))
-		{
-			MDocType doc = (MDocType)po;
-			return modelChange(doc);
+
+		boolean isChange = type == TYPE_CHANGE;
+		boolean isNew    = type == TYPE_NEW;
+
+		if (po instanceof MDocType && (isChange || isNew)){
+			return modelChange((MDocType)po);
 		}
-		
-		else
-			
-		if(po.get_TableName().equalsIgnoreCase(MSequence.Table_Name) && (type == TYPE_CHANGE))
-		{
-			MSequence sequence = (MSequence)po;
-			return modelChange(sequence);
+
+		else if (po instanceof X_LBR_TaxConfiguration && (isChange || isNew)){
+			return modelChange((X_LBR_TaxConfiguration)po);
 		}
-		
-		else
-			
-		if(po.get_TableName().equalsIgnoreCase(MLBRTaxConfiguration.Table_Name) && (type == TYPE_NEW || type == TYPE_CHANGE))
-		{
-			X_LBR_TaxConfiguration taxConfig = (X_LBR_TaxConfiguration)po;
-			return modelChange(taxConfig);
+
+		else if (po instanceof MSequence && isChange){
+			return modelChange((MSequence)po);
 		}
-		
+
 		return null;
 	} //modelChange
-	
-	public String modelChange(MDocType doc){
-		
 
-		Boolean lbr_IsAutomaticInvoice = (Boolean)doc.get_Value("lbr_IsAutomaticInvoice");
-		Boolean lbr_IsAutomaticShipment = (Boolean)doc.get_Value("lbr_IsAutomaticShipment");
+	public String modelChange(MDocType doc){
+
+
+		boolean lbr_IsAutomaticInvoice = doc.get_ValueAsBoolean("lbr_IsAutomaticInvoice");
+		boolean lbr_IsAutomaticShipment = doc.get_ValueAsBoolean("lbr_IsAutomaticShipment");
 		if(lbr_IsAutomaticInvoice && lbr_IsAutomaticShipment)
 		{
 			MDocType shpDoc = new MDocType(doc.getCtx(),doc.getC_DocTypeShipment_ID(),doc.get_TrxName());
@@ -150,61 +147,61 @@ public class ValidatorDocType implements ModelValidator
 				return "Inconsistência nos documentos sub-sequentes";
 			}
 		}
-		
+
 		log.info(doc.toString());
 		return null;
 	}
-	
+
 	public String modelChange(X_LBR_TaxConfiguration taxConfig){
-		
+
 		Properties ctx = taxConfig.getCtx();
 		String     trx = taxConfig.get_TrxName();
-		
+
 		boolean isSOTrx = taxConfig.isSOTrx();
 		boolean isPOTrx = taxConfig.islbr_IsPOTrx();
-			
+
 		int LBR_TaxConfiguration_ID    = taxConfig.getLBR_TaxConfiguration_ID();
 		int M_Product_ID               = taxConfig.getM_Product_ID();
 		int LBR_FiscalGroup_Product_ID = taxConfig.getLBR_FiscalGroup_Product_ID();
-		
+
 		if (!isSOTrx && !isPOTrx)
 			return "Necessário selecionar ao menos uma das opções de Transação";
-		
+
 		if (isSOTrx){
-			if (MLBRTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+			if (MTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
 					return "Já existe uma exceção cadastrada com estes parâmetros";
 		}
-		
+
 		if (isPOTrx){
-			if (MLBRTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
+			if (MTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
 					return "Já existe uma exceção cadastrada com estes parâmetros";
 		}
-		
+
 		log.info(taxConfig.toString());
 		return null;
 	}
-	
+
 	public String modelChange(MSequence sequence){
-		
-		boolean isRange = POLBR.get_ValueAsBoolean(sequence.get_Value("IsRange"));
+
+		boolean isRange = sequence.get_ValueAsBoolean("IsRange");
 		if (isRange){
-			
+
 			int currentNext = sequence.getCurrentNext();
 			int maxValue    = (Integer)sequence.get_Value("ValueMax") != null ? (Integer)sequence.get_Value("ValueMax") : 0;
 			int minValue    = (Integer)sequence.get_Value("ValueMin") != null ? (Integer)sequence.get_Value("ValueMin") : 0;
-			
+
 			if (currentNext > maxValue){
 				sequence.setCurrentNext(minValue);
 			}
-			
-		}		
+
+		}
 		log.info(sequence.toString());
 		return null;
 	}
-	
+
 	/**
 	 *	Validate Document.
-	 *	Called as first step of DocAction.prepareIt 
+	 *	Called as first step of DocAction.prepareIt
      *	when you called addDocValidate for the table.
      *	Note that totals, etc. may not be correct.
 	 *	@param po persistent object
@@ -215,7 +212,7 @@ public class ValidatorDocType implements ModelValidator
 	{
 		return null;
 	}	//	docValidate
-		
+
 	/**
 	 * 	Update Info Window Columns.
 	 * 	- add new Columns
@@ -226,11 +223,11 @@ public class ValidatorDocType implements ModelValidator
 	 *	@param sqlOrder order by clause, can me modified
 	 *	@return true if you updated columns, sequence or sql From clause
 	 */
-	public boolean updateInfoColumns (ArrayList<Info_Column> columns, 
+	public boolean updateInfoColumns (ArrayList<Info_Column> columns,
 		StringBuffer sqlFrom, StringBuffer sqlOrder)
 	{
 		/**		*
-		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific 
+		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific
 		String from = sqlFrom.toString();
 		if (from.startsWith ("M_Product"))
 		{
@@ -239,15 +236,15 @@ public class ValidatorDocType implements ModelValidator
 		}/** 	*/
 		return false;
 	}	//	updateInfoColumns
-	
-	
+
+
 	/**
 	 * 	String Representation
 	 *	@return info
 	 */
 	public String toString ()
 	{
-		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos");
+		StringBuffer sb = new StringBuffer ("ValidatorDocType@AdempiereLBR - Powered by Kenos");
 		return sb.toString ();
 	}	//	toString
 

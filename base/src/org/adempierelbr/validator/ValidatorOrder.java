@@ -13,18 +13,18 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.util.TaxBR;
+import org.adempierelbr.util.TaxesCalculation;
 import org.adempierelbr.util.TaxesException;
 import org.compiere.apps.search.Info_Column;
-import org.compiere.model.GridField;
-import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -39,19 +39,17 @@ import org.compiere.model.MWarehouse;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.X_C_Order;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  *	ValidatorOrder
  *
  *  Validate Order (Tax Calculation)
- *  
+ *
  *  [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha, mgrigioni
  *  [ 2200626 ] Lista de Preço Brasil, mgrigioni
- *	
+ *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  *	@version $Id: ValidatorOrder.java, 21/12/2007 14:45:00 mgrigioni
@@ -66,28 +64,31 @@ public class ValidatorOrder implements ModelValidator
 	{
 		super ();
 	}	//ValidatorOrder
-	
+
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ValidatorOrder.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
-	
-	
+
 	/**
 	 *	Initialize Validation
-	 *	@param engine validation engine 
+	 *	@param engine validation engine
 	 *	@param client client
 	 */
 	public void initialize (ModelValidationEngine engine, MClient client)
 	{
-		m_AD_Client_ID = client.getAD_Client_ID();
+		//client = null for global validator
+		if (client != null) {
+			m_AD_Client_ID = client.getAD_Client_ID();
+			log.info(client.toString());
+		}
+		else  {
+			log.info("Initializing global validator: "+this.toString());
+		}
 
-		log.info(client.toString());
-		
-		//	ModelChange
-		engine.addModelChange("C_OrderLine", this);
-		//	DocValidate
-		engine.addDocValidate("C_Order", this);
+		engine.addModelChange(MOrderLine.Table_Name, this);
+
+		engine.addDocValidate(MOrder.Table_Name, this);
 	}	//	initialize
 
 	/**
@@ -112,7 +113,7 @@ public class ValidatorOrder implements ModelValidator
 		log.info("AD_User_ID=" + AD_User_ID);
 		return null;
 	}	//	login
-	
+
     /**
      *	Model Change of a monitored Table.
      *	Called after PO.beforeSave/PO.beforeDelete
@@ -125,76 +126,77 @@ public class ValidatorOrder implements ModelValidator
 	public String modelChange (PO po, int type) throws Exception
 	{
 		//Executa quando uma OrderLine é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_OrderLine") && (type == TYPE_AFTER_CHANGE || 
-				type == TYPE_AFTER_NEW || type == TYPE_BEFORE_NEW || type == TYPE_DELETE))
-		{
-			MOrderLine oLine = (MOrderLine)po;
-			return modelChange(oLine,type);
+		boolean isChange = (TYPE_AFTER_NEW  == type || TYPE_AFTER_CHANGE == type);
+		boolean isNew    = (TYPE_BEFORE_NEW == type);
+		boolean isDelete = (TYPE_BEFORE_DELETE == type);
+
+		if (po instanceof MOrderLine && (isChange || isNew || isDelete)){
+			return modelChange((MOrderLine)po, isNew, isDelete);
 		}
-		
+
 		return null;
 	}	//	modelChange
-	
+
 	// modelChange - OrderLine
 	// @param MOrderLine
-	public String modelChange (MOrderLine oLine, int type) throws Exception{
-		
+	public String modelChange (MOrderLine oLine, boolean isNew, boolean isDelete) throws Exception{
+
 		Properties ctx    = oLine.getCtx();
 		String     trx    = oLine.get_TrxName();
-		
-		if (type == TYPE_BEFORE_NEW)
-		{
-			MProduct p = oLine.getProduct();
-			if (p != null && oLine.get_Value("LBR_Tax_ID") == null)
-			{
+
+		if (isNew) {
+			MProduct product = oLine.getProduct();
+			if (product != null && oLine.get_ValueAsInt("LBR_Tax_ID") == 0) {
 				CalloutTax ct = new CalloutTax();
-				TaxesException tE = ct.getException(ctx,oLine.getParent(),null,p,null,null);
+				TaxesException tE = ct.getException(ctx,oLine.getParent(),product,null);
 				//
-				if (tE != null)
-				{
+				if (tE != null) {
 					oLine.set_CustomColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
-					//
-//					oLine.set_CustomColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
-					//
+					oLine.set_CustomColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
 					if (tE.isSOTrx())
 						oLine.set_CustomColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
 				}
 			}
-		}
-		else if (type == TYPE_DELETE){
-			
-			Integer LBR_Tax_ID = (Integer)oLine.get_Value("LBR_Tax_ID");
-			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0){
-				MLBRTax lbrTax = new MLBRTax(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
+		} //NEW
+
+		else if (isDelete){
+			int LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
+			if (LBR_Tax_ID != 0){
+				MTaxLBR lbrTax = new MTaxLBR(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
 				lbrTax.delete(true, oLine.get_TrxName());
 			}
-				
-		} //delete
+		} //DELETE
+
 		else{
+			//PROCESSED - don't do any thing
 			if(oLine.isProcessed()){
+				TaxBR.deleteSummaryTax(oLine.getC_Order_ID(), true, trx);
 				return null;
 			}
-		
+
 			//Verifica se já tem um Shipment
 			//Ordem PDV, só marca processed no final
 			if (oLine.getQtyDelivered() != null && oLine.getQtyDelivered().signum() != 0){
+				TaxBR.deleteSummaryTax(oLine.getC_Order_ID(), true, trx);
 				return null;
 			}
-		
+
 			//Verifica se já tem uma Invoice
 			//Ordem PDV, só marca processed no final
 			if (oLine.getQtyInvoiced() != null && oLine.getQtyInvoiced().signum() != 0){
+				TaxBR.deleteSummaryTax(oLine.getC_Order_ID(), true, trx);
 				return null;
 			}
-			
+
 			//ModelChange
 			try{
-				MLBRTax.modelChange(ctx, oLine, trx);
+				TaxesCalculation calc = new TaxesCalculation(oLine);
+				calc.modelChange();
 			}
 			catch (Exception e){
 				log.log(Level.SEVERE, "", e);
 			}
-			
+
 		} //new or change
 
 		log.info(oLine.toString());
@@ -203,7 +205,7 @@ public class ValidatorOrder implements ModelValidator
 
 	/**
 	 *	Validate Document.
-	 *	Called as first step of DocAction.prepareIt 
+	 *	Called as first step of DocAction.prepareIt
      *	when you called addDocValidate for the table.
      *	Note that totals, etc. may not be correct.
 	 *	@param po persistent object
@@ -212,96 +214,97 @@ public class ValidatorOrder implements ModelValidator
 	 */
 	public String docValidate (PO po, int timing)
 	{
-		
-		//Executa quando uma Ordem é completada
-		if (po.get_TableName().equalsIgnoreCase("C_Order") && (timing == TIMING_AFTER_COMPLETE))
-		{
-			MOrder order = (MOrder)po;
-			
+
+		if (po instanceof MOrder){
+
+			MOrder order   = (MOrder)po;
 			Properties ctx = order.getCtx();
 			String     trx = order.get_TrxName();
-			
-			//DocValidate
-			try {
-				MLBRTax.docValidate(ctx, order, trx);
-			} catch (Exception e) {
-				log.log(Level.SEVERE, "", e);
-			}
 
-			//Validate Withhold
-			MLBRTax.validateWithhold(order);		
-			
-			MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
-			String DocSubTypeSO = dt.getDocSubTypeSO();
-			
-			//Somente Venda Padrão
-			if (DocSubTypeSO != null 
-					&& !(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) 
-							|| DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder)))
-			{
-				MInOut shipment  = null;
-				MInvoice invoice = null;
-				
-				//Shipment
-				boolean isAutomaticShipment = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsAutomaticShipment"));
-				if (isAutomaticShipment){
-					shipment = createShipment(order,dt,order.getDateOrdered());
+			if (timing == TIMING_AFTER_COMPLETE){
+
+				//DocValidate
+				try {
+					TaxesCalculation calc = new TaxesCalculation(order);
+					calc.docValidate(timing);
+				} catch (Exception e) {
+					log.log(Level.SEVERE, "", e);
 				}
-				
-				//Invoice
-				boolean isAutomaticInvoice = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsAutomaticInvoice"));
-				if (isAutomaticInvoice){
-					
-					if (shipment != null){
-						//	Manually Process Shipment
-						String status = shipment.completeIt();
-						shipment.setDocStatus(status);
-						shipment.save(trx);
-						if (!X_C_Order.DOCSTATUS_Completed.equals(status))
-						{
-							return shipment.getProcessMsg();
+
+				//Validate Withhold
+				MTaxLBR.validateWithhold(order);
+
+				MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
+				String DocSubTypeSO = dt.getDocSubTypeSO();
+
+				//Somente Venda Padrão
+				if (DocSubTypeSO != null && !(DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_WarehouseOrder) ||
+					  DocSubTypeSO.equals(MDocType.DOCSUBTYPESO_POSOrder))){
+
+					MInOut shipment  = null;
+					MInvoice invoice = null;
+
+					//Shipment
+					boolean isAutomaticShipment = dt.get_ValueAsBoolean("lbr_IsAutomaticShipment");
+					if (isAutomaticShipment){
+						shipment = createShipment(order,dt,order.getDateOrdered());
+					}
+
+					//Invoice
+					boolean isAutomaticInvoice = dt.get_ValueAsBoolean("lbr_IsAutomaticInvoice");
+					if (isAutomaticInvoice){
+
+						if (shipment != null){
+							//	Manually Process Shipment
+							String status = shipment.completeIt();
+							shipment.setDocStatus(status);
+							shipment.save(trx);
+							if (!MOrder.DOCSTATUS_Completed.equals(status))
+							{
+								return shipment.getProcessMsg();
+							}
+						}
+
+						invoice = createInvoice(order,dt,shipment,order.getDateOrdered());
+
+						if (invoice != null){
+							//	Manually Process Invoice
+							String status = invoice.completeIt();
+							invoice.setDocStatus(status);
+							invoice.save(trx);
+							order.setC_CashLine_ID(invoice.getC_CashLine_ID());
+							if (!MOrder.DOCSTATUS_Completed.equals(status))
+							{
+								return invoice.getProcessMsg();
+							}
 						}
 					}
-					
-					invoice = createInvoice(order,dt,shipment,order.getDateOrdered());
-					
-					if (invoice != null){
-						//	Manually Process Invoice
-						String status = invoice.completeIt();
-						invoice.setDocStatus(status);
-						invoice.save(trx);
-						order.setC_CashLine_ID(invoice.getC_CashLine_ID());
-						if (!X_C_Order.DOCSTATUS_Completed.equals(status))
-						{
-							return invoice.getProcessMsg();
-						}
-					}
 				}
-			}
-		}
-		else if(po.get_TableName().equalsIgnoreCase("C_Order") 
-				&& (timing == TIMING_AFTER_REACTIVATE 
-						|| timing == TIMING_AFTER_VOID 
-						|| timing == TIMING_AFTER_CLOSE))
-		{
-			MOrder order = (MOrder)po;
-			String sql = "UPDATE C_Order SET LBR_Withhold_Order_ID=NULL " +
-						     "WHERE LBR_Withhold_Order_ID=" + order.getC_Order_ID();
-			
-			DB.executeUpdate(sql, order.get_TrxName());
-			
-			Integer whOrder = 0;
-			whOrder = (Integer) order.get_Value("LBR_Withhold_Order_ID");
-			
-			if (whOrder != null
-					&& whOrder.compareTo((Integer) order.get_Value("C_Order_ID")) != 0)
-				return "Não é possível re-abrir uma Ordem que tem Retenções de outra Ordem.";
-			//TODO: Continuar fazendo as reversões
-		}
-		
+
+			} //AFTER COMPLETE
+
+			else if (timing == TIMING_AFTER_REACTIVATE || timing == TIMING_AFTER_VOID ||
+					 timing == TIMING_AFTER_CLOSE){
+
+				String sql = "UPDATE C_Order SET LBR_Withhold_Order_ID=NULL " +
+							 "WHERE LBR_Withhold_Order_ID=" + order.getC_Order_ID();
+
+				DB.executeUpdate(sql, order.get_TrxName());
+
+				int whOrder = order.get_ValueAsInt("LBR_Withhold_Order_ID");
+
+				if (whOrder != 0)
+					return "Não é possível re-abrir uma Ordem que tem Retenções de outra Ordem.";
+				//TODO: Continuar fazendo as reversões
+
+			} //AFTER REACTIVE AND REVERSE
+
+		} //MOrder
+
+
 		return null;
 	}	//	docValidate
-		
+
 	/**
 	 * 	Update Info Window Columns.
 	 * 	- add new Columns
@@ -312,11 +315,11 @@ public class ValidatorOrder implements ModelValidator
 	 *	@param sqlOrder order by clause, can me modified
 	 *	@return true if you updated columns, sequence or sql From clause
 	 */
-	public boolean updateInfoColumns (ArrayList<Info_Column> columns, 
+	public boolean updateInfoColumns (ArrayList<Info_Column> columns,
 		StringBuffer sqlFrom, StringBuffer sqlOrder)
 	{
 		/**		*
-		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific 
+		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific
 		String from = sqlFrom.toString();
 		if (from.startsWith ("M_Product"))
 		{
@@ -325,17 +328,17 @@ public class ValidatorOrder implements ModelValidator
 		}/**	*/
 		return false;
 	}	//	updateInfoColumns
-		
+
 	/**
 	 * 	String Representation
 	 *	@return info
 	 */
 	public String toString ()
 	{
-		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos & Faire");
+		StringBuffer sb = new StringBuffer ("ValidatorOrder@AdempiereLBR - Powered by Kenos & Faire");
 		return sb.toString ();
 	}	//	toString
-	
+
 	/**
 	 * 	Create Shipment
 	 *	@param dt order document type
@@ -346,7 +349,7 @@ public class ValidatorOrder implements ModelValidator
 	{
 		Properties ctx = order.getCtx();
 		String     trx = order.get_TrxName();
-		
+
 		MInOut shipment = new MInOut (order, dt.getC_DocTypeShipment_ID(), movementDate);
 	//	shipment.setDateAcct(getDateAcct());
 		if (!shipment.save(trx))
@@ -362,15 +365,15 @@ public class ValidatorOrder implements ModelValidator
 			//
 			MInOutLine ioLine = new MInOutLine(shipment);
 			//	Qty = Ordered - Delivered
-			BigDecimal MovementQty = oLine.getQtyOrdered().subtract(oLine.getQtyDelivered()); 
+			BigDecimal MovementQty = oLine.getQtyOrdered().subtract(oLine.getQtyDelivered());
 			if (MovementQty.signum() == 0)
 				continue;
-			
+
 			//	Location
 			Integer M_Locator_ID = (Integer)oLine.get_Value("M_Locator_ID");
 			if (M_Locator_ID == null || M_Locator_ID.intValue() == 0){
-				M_Locator_ID = MStorage.getM_Locator_ID (oLine.getM_Warehouse_ID(), 
-					oLine.getM_Product_ID(), oLine.getM_AttributeSetInstance_ID(), 
+				M_Locator_ID = MStorage.getM_Locator_ID (oLine.getM_Warehouse_ID(),
+					oLine.getM_Product_ID(), oLine.getM_AttributeSetInstance_ID(),
 					MovementQty, trx);
 			}
 			if (M_Locator_ID == 0)		//	Get default Location
@@ -384,7 +387,7 @@ public class ValidatorOrder implements ModelValidator
 			if (oLine.getQtyEntered().compareTo(oLine.getQtyOrdered()) != 0)
 				ioLine.setQtyEntered(MovementQty
 					.multiply(oLine.getQtyEntered())
-					.divide(oLine.getQtyOrdered(), 6, BigDecimal.ROUND_HALF_UP));
+					.divide(oLine.getQtyOrdered(), 6, RoundingMode.HALF_UP));
 			if (!ioLine.save(trx))
 			{
 				log.log(Level.SEVERE, "Could not create Shipment Line");
@@ -393,7 +396,7 @@ public class ValidatorOrder implements ModelValidator
 		}
 		return shipment;
 	}	//	createShipment
-	
+
 	/**
 	 * 	Create Invoice
 	 *	@param dt order document type
@@ -404,14 +407,14 @@ public class ValidatorOrder implements ModelValidator
 	private MInvoice createInvoice (MOrder order, MDocType dt, MInOut shipment, Timestamp invoiceDate)
 	{
 		String     trx = order.get_TrxName();
-		
+
 		MInvoice invoice = new MInvoice (order, dt.getC_DocTypeInvoice_ID(), invoiceDate);
 		if (!invoice.save(trx))
 		{
 			log.log(Level.SEVERE, "Could not create Invoice");
 			return null;
 		}
-		
+
 		//	If we have a Shipment - use that as a base
 		if (shipment != null)
 		{
@@ -423,7 +426,7 @@ public class ValidatorOrder implements ModelValidator
 				//
 				MInvoiceLine iLine = new MInvoiceLine(invoice);
 				iLine.setShipLine(sLine);
-				//	Qty = Delivered	
+				//	Qty = Delivered
 				iLine.setQtyEntered(sLine.getQtyEntered());
 				iLine.setQtyInvoiced(sLine.getMovementQty());
 				if (!iLine.save(trx))
@@ -449,13 +452,13 @@ public class ValidatorOrder implements ModelValidator
 				//
 				MInvoiceLine iLine = new MInvoiceLine(invoice);
 				iLine.setOrderLine(oLine);
-				//	Qty = Ordered - Invoiced	
+				//	Qty = Ordered - Invoiced
 				iLine.setQtyInvoiced(oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced()));
 				if (oLine.getQtyOrdered().compareTo(oLine.getQtyEntered()) == 0)
 					iLine.setQtyEntered(iLine.getQtyInvoiced());
 				else
 					iLine.setQtyEntered(iLine.getQtyInvoiced().multiply(oLine.getQtyEntered())
-						.divide(oLine.getQtyOrdered(), 12, BigDecimal.ROUND_HALF_UP));
+						.divide(oLine.getQtyOrdered(), 12, RoundingMode.HALF_UP));
 				if (!iLine.save(trx))
 				{
 					log.log(Level.SEVERE, "Could not create Invoice Line from Order Line");
@@ -466,5 +469,5 @@ public class ValidatorOrder implements ModelValidator
 
 		return invoice;
 	}	//	createInvoice
-	
+
 } //ValidatorOrder

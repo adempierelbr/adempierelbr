@@ -1,0 +1,334 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
+package org.adempierelbr.model;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+
+import org.adempierelbr.util.TaxBR;
+import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
+/**
+ *	MNotaFiscalLine
+ *
+ *	Model for X_LBR_NotaFiscalLine
+ *
+ *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *	@version $Id: MNotaFiscalLine.java, 08/01/2008 11:01:00 mgrigioni
+ */
+public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**	Process Message */
+	private String		m_processMsg = null;
+
+	public String getProcessMsg() {
+
+		if (m_processMsg == null)
+			m_processMsg = "";
+
+		return m_processMsg;
+	}
+
+	/**************************************************************************
+	 *  Default Constructor
+	 *  @param Properties ctx
+	 *  @param int ID (0 create new)
+	 *  @param String trx
+	 */
+	public MNotaFiscalLine(Properties ctx, int ID, String trx){
+		super(ctx,ID,trx);
+	}
+
+	/**
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
+	 */
+	public MNotaFiscalLine (Properties ctx, ResultSet rs, String trxName)
+	{
+		super(ctx, rs, trxName);
+	}
+
+	/**************************************************************************
+	 *  selbr_ServiceTaxes
+	 *  Geração de String com Impostos da Linha (Serviço)
+	 */
+	public void setlbr_ServiceTaxes(){
+
+		X_LBR_NFLineTax[] taxes = getTaxes();
+		String serviceString = "IMPOSTOS: ";
+		for(int i=0;i<taxes.length;i++){
+			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(getCtx(),taxes[i].getLBR_TaxGroup_ID(),get_TrxName());
+			serviceString += taxGroup.getName() + ":" +
+							 taxes[i].getlbr_TaxRate() + "% R$" +
+							 taxes[i].getlbr_TaxAmt() + ", ";
+		}
+
+		serviceString = TextUtil.retiraPontoFinal(serviceString);
+
+		if (taxes.length > 0)
+			setlbr_ServiceTaxes("\n" + serviceString);
+		else
+			setlbr_ServiceTaxes("");
+
+	} //setlbr_ServiceTaxes
+
+	/**************************************************************************
+	 *  getTaxes
+	 *  @return X_LBR_NFLineTax[] taxes
+	 */
+	public X_LBR_NFLineTax[] getTaxes(){
+
+		String whereClause = "LBR_NotaFiscalLine_ID = ?";
+
+		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name, get_TrxName());
+		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID()});
+
+		List<X_LBR_NFLineTax> list = query.list();
+
+		return list.toArray(new X_LBR_NFLineTax[list.size()]);
+	} //getTaxes
+
+	public BigDecimal getFreightAmt(BigDecimal totalLinesAmt, BigDecimal totalFreightAmt){
+
+		BigDecimal lineAmt = getLineTotalAmt();
+		BigDecimal freightAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
+		           freightAmt = totalFreightAmt.multiply(freightAmt);
+
+		return freightAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
+	} //getFreightAmt
+
+	public BigDecimal getInsuranceAmt(BigDecimal totalLinesAmt, BigDecimal totalInsuranceAmt){
+
+		BigDecimal lineAmt = getLineTotalAmt();
+		BigDecimal insuranceAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
+		           insuranceAmt = totalInsuranceAmt.multiply(insuranceAmt);
+
+		return insuranceAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
+	} //getInsuranceAmt
+
+
+	/**
+	 * Retorna o valor do Imposto
+	 *
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxAmt(String taxIndicator){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxAmt
+
+	/**
+	 * Retorna a Base de Cálculo do Imposto
+	 *
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxBase(String taxIndicator){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxBase
+
+	/**
+	 * Retorna a redução da Base de Cálculo
+	 *
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxBaseReduction(String taxIndicator){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT AVG(lbr_TaxBase) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxBaseReduction
+
+	/**
+	 * Retorna a Alíquota do Imposto
+	 *
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxRate(String taxIndicator){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxRate
+
+	/**
+	 *  Retorno a LBR_NFLineTax
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getTax(String taxIndicator)
+	{
+
+		if (taxIndicator == null)
+			return null;
+
+		String whereClause = "LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+				             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+
+		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name, get_TrxName());
+		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
+
+		List<X_LBR_NFLineTax> list = query.list();
+		if (list.size() == 1)
+			return (list.toArray(new X_LBR_NFLineTax[list.size()]))[0];
+
+		return null;
+	}	//	getICMSTax
+
+
+	/**
+	 *  Retorno o valor da Base de ICMSST
+	 *
+	 *  @return	BigDecimal	Base ICMSST
+	 */
+	public BigDecimal getICMSSTBase()
+	{
+		return getTaxBase("ICMSST");
+	}	//	getICMSSTBase
+	
+	
+	/**
+	 *  Retorno a LBR_NFLineTax do ICMS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getICMSTax()
+	{
+		return getTax("ICMS");
+	}	//	getICMSTax
+
+	/**
+	 *  Retorno o valor do ICMS
+	 *
+	 *  @return	BigDecimal	Valor ICMS
+	 */
+	public BigDecimal getICMSAmt()
+	{
+		return getTaxAmt("ICMS");
+	}	//	getICMSAmt
+
+	/**
+	 *  Retorno o valor da Base de ICMS
+	 *
+	 *  @return	BigDecimal	Base ICMS
+	 */
+	public BigDecimal getICMSBase()
+	{
+		return getTaxBase("ICMS");
+	}	//	getICMSBase
+
+	/**
+	 *  Retorno o valor da Redução da Base de ICMS
+	 *
+	 *  @return	BigDecimal	Redução da Base de ICMS
+	 */
+	public BigDecimal getICMSBaseReduction()
+	{
+		return getTaxBaseReduction("ICMS");
+	}	//	getICMSBaseReduction
+
+	/**
+	 *  Retorno a alíquota de ICMS
+	 *
+	 *  @return	BigDecimal	Alíquota ICMS
+	 */
+	public BigDecimal getICMSRate()
+	{
+		return getTaxRate("ICMS");
+	}	//	getICMSRate
+
+	/**
+	 *  Retorno a LBR_NFLineTax do IPI
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getIPITax()
+	{
+		return getTax("IPI");
+	}	//	getIPITax
+
+	/**
+	 *  Retorno o valor do IPI
+	 *
+	 *  @return	BigDecimal	Valor IPI
+	 */
+	public BigDecimal getIPIAmt()
+	{
+		return getTaxAmt("IPI");
+	}	//	getIPIAmt
+
+	/**
+	 *  Retorno o valor da Base de IPI
+	 *
+	 *  @return	BigDecimal	Base IPI
+	 */
+	public BigDecimal getIPIBase()
+	{
+		return getTaxBase("IPI");
+	}	//	getIPIBase
+
+	/**
+	 *  Retorno a alíquota de IPI
+	 *
+	 *  @return	BigDecimal	Alíquota IPI
+	 */
+	public BigDecimal getIPIRate()
+	{
+		return getTaxRate("IPI");
+	}	//	getIPIRate
+
+} //MNotaFiscalLine

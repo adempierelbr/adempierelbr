@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -16,21 +16,29 @@
  *****************************************************************************/
 package org.compiere.acct;
 
-import java.math.*;
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
-import org.compiere.model.*;
-import org.compiere.util.*;
+import org.compiere.model.MAccount;
+import org.compiere.model.MAcctSchema;
+import org.compiere.model.MCharge;
+import org.compiere.model.MProduct;
+import org.compiere.model.PO;
+import org.compiere.model.ProductCost;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *  Standard Document Line
  *
  *  @author 	Jorg Janke
- *  @contributor	Ricardo Santana (www.Kenos.com.br)
+ *  @author Armen Rizal, Goodwill Consulting
+ * 			<li>BF [ 1745154 ] Cost in Reversing Material Related Docs
  *  @version 	$Id: DocLine.java,v 1.2 2006/07/30 00:53:33 jjanke Exp $
  */
 public class DocLine
-{	
+{
 	/**
 	 *	Create Document Line
 	 *	@param po line persistent object
@@ -69,7 +77,7 @@ public class DocLine
 	private BigDecimal			m_ListAmt = Env.ZERO;
 	/** Discount Amount         */
 	private BigDecimal 			m_DiscountAmt = Env.ZERO;
-	
+
 	//	--	Eltek Kenos
 	/** Line Tax Amt            */
 	private BigDecimal			m_LineTaxtAmt = null;
@@ -84,6 +92,8 @@ public class DocLine
 	private ProductCost			m_productCost = null;
 	/** Production indicator	*/
 	private boolean 			m_productionBOM = false;
+	/** Outside Processing	*/
+	private int 				m_PP_Cost_Collector_ID = 0;
 	/** Account used only for GL Journal    */
 	private MAccount 			m_account = null;
 
@@ -158,7 +168,7 @@ public class DocLine
 	{
 		m_C_ConversionType_ID = C_ConversionType_ID;
 	}	//	setC_ConversionType_ID
-	
+
 	/**
 	 *  Set Amount (DR)
 	 *  @param sourceAmt source amt
@@ -266,7 +276,7 @@ public class DocLine
 
 		if (PriceList != null && Qty != null)
 			m_ListAmt = PriceList.multiply(Qty);
-		if (m_ListAmt.equals(Env.ZERO))
+		if (m_ListAmt.compareTo(Env.ZERO) == 0)
 			m_ListAmt = m_LineNetAmt;
 		m_DiscountAmt = m_ListAmt.subtract(m_LineNetAmt);
 		//
@@ -284,7 +294,7 @@ public class DocLine
 	{
 		m_LineTaxtAmt = taxAmt;
 	}   //  setDateDoc
-	
+
 	/**
 	 *  Line Tax Amount
 	 *  @return tax amount
@@ -293,7 +303,7 @@ public class DocLine
 	{
 		return m_LineTaxtAmt == null ? Env.ZERO : m_LineTaxtAmt;
 	}   //  getLineTaxAmt
-	
+
 	/**
 	 *  Line Discount
 	 *  @return discount amount
@@ -475,7 +485,7 @@ public class DocLine
 		}
 		return m_C_Period_ID;
 	}	//	getC_Period_ID
-	
+
 	/**
 	 * 	Set C_Period_ID
 	 *	@param C_Period_ID id
@@ -484,7 +494,7 @@ public class DocLine
 	{
 		m_C_Period_ID = C_Period_ID;
 	}	//	setC_Period_ID
-	
+
 	/**************************************************************************
 	 *  Get (Journal) AcctSchema
 	 *  @return C_AcctSchema_ID
@@ -502,7 +512,7 @@ public class DocLine
 	{
 		return p_po.get_ID();
 	}	//	get_ID
-	
+
 	/**
 	 * 	Get AD_Org_ID
 	 *	@return org
@@ -511,7 +521,7 @@ public class DocLine
 	{
 		return p_po.getAD_Org_ID();
 	}	//	getAD_Org_ID
-	
+
 	/**
 	 * 	Get Order AD_Org_ID
 	 *	@return order org if defined
@@ -620,7 +630,7 @@ public class DocLine
 	{
 		m_productionBOM = productionBOM;
 	}	//	setProductionBOM
-	
+
 	/**
 	 * 	Is this the BOM to be produced
 	 *	@return true if BOM
@@ -629,7 +639,7 @@ public class DocLine
 	{
 		return m_productionBOM;
 	}	//	isProductionBOM
-	
+
 	/**
 	 *  Get Production Plan
 	 *  @return M_ProductionPlan_ID
@@ -670,7 +680,7 @@ public class DocLine
 	{
 		return m_C_LocFrom_ID;
 	}	//	getC_LocFrom_ID
-	
+
 	/**
 	 * 	Set C_LocFrom_ID
 	 *	@param C_LocFrom_ID loc from
@@ -679,6 +689,24 @@ public class DocLine
 	{
 		m_C_LocFrom_ID = C_LocFrom_ID;
 	}	//	setC_LocFrom_ID
+
+	/**
+	 * 	Get PP_Cost_Collector_ID
+	 *	@return Cost Collector ID
+	 */
+	public int getPP_Cost_Collector_ID()
+	{
+		return m_PP_Cost_Collector_ID;
+	}	//	getC_LocFrom_ID
+
+	/**
+	 * 	Get PP_Cost_Collector_ID
+	 *	@return Cost Collector ID
+	 */
+	public int setPP_Cost_Collector_ID(int PP_Cost_Collector_ID)
+	{
+		return m_PP_Cost_Collector_ID;
+	}	//	getC_LocFrom_ID
 
 	/**
 	 * 	Get C_LocTo_ID
@@ -705,11 +733,11 @@ public class DocLine
 	public ProductCost getProductCost()
 	{
 		if (m_productCost == null)
-			m_productCost = new ProductCost (Env.getCtx(), 
+			m_productCost = new ProductCost (Env.getCtx(),
 				getM_Product_ID(), getM_AttributeSetInstance_ID(), p_po.get_TrxName());
 		return m_productCost;
 	}	//	getProductCost
-	
+
 	// MZ Goodwill
 	/**
 	 *  Get Total Product Costs from Cost Detail or from Current Cost
@@ -721,17 +749,19 @@ public class DocLine
 	 */
 	public BigDecimal getProductCosts (MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause)
 	{
+		/*
 		if (whereClause != null)
 		{
-			MCostDetail cd = MCostDetail.get (Env.getCtx(), whereClause, 
-					get_ID(), getM_AttributeSetInstance_ID(), p_po.get_TrxName());
+			MCostDetail cd = MCostDetail.get (Env.getCtx(), whereClause,
+					get_ID(), getM_AttributeSetInstance_ID(), as.getC_AcctSchema_ID(), p_po.get_TrxName());
 			if (cd != null)
 				return cd.getAmt();
 		}
+		*/
 		return getProductCosts(as, AD_Org_ID, zeroCostsOK);
 	}   //  getProductCosts
 	// end MZ
-	
+
 	/**
 	 *  Get Total Product Costs
 	 *  @param as accounting schema
@@ -744,7 +774,7 @@ public class DocLine
 		ProductCost pc = getProductCost();
 		int C_OrderLine_ID = getC_OrderLine_ID();
 		String costingMethod = null;
-		BigDecimal costs = pc.getProductCosts(as, AD_Org_ID, costingMethod, 
+		BigDecimal costs = pc.getProductCosts(as, AD_Org_ID, costingMethod,
 			C_OrderLine_ID, zeroCostsOK);
 		if (costs != null)
 			return costs;
@@ -752,13 +782,13 @@ public class DocLine
 	}   //  getProductCosts
 
 	/**
-	 * 	Get Product 
+	 * 	Get Product
 	 *	@return product or null if no product
 	 */
 	public MProduct getProduct()
 	{
 		if (m_productCost == null)
-			m_productCost = new ProductCost (Env.getCtx(), 
+			m_productCost = new ProductCost (Env.getCtx(),
 				getM_Product_ID(), getM_AttributeSetInstance_ID(), p_po.get_TrxName());
 		if (m_productCost != null)
 			return m_productCost.getProduct();
@@ -824,8 +854,8 @@ public class DocLine
 		return m_qty;
 	}   //  getQty
 
-	
-	
+
+
 	/**
 	 *  Description
 	 *  @return doc line description
@@ -899,8 +929,8 @@ public class DocLine
 	{
 		m_C_BPartner_ID = C_BPartner_ID;
 	}	//	setC_BPartner_ID
-	
-	
+
+
 	/**
 	 * 	Get C_BPartner_Location_ID
 	 *	@return BPartner Location
@@ -916,7 +946,7 @@ public class DocLine
 		}
 		return m_doc.getC_BPartner_Location_ID();
 	}	//	getC_BPartner_Location_ID
-	
+
 	/**
 	 *  Get TrxOrg
 	 *  @return AD_OrgTrx_ID
@@ -975,6 +1005,38 @@ public class DocLine
 		}
 		return 0;
 	}   //  getC_Project_ID
+
+	/**
+	 *  Get Project Phase
+	 *  @return C_ProjectPhase_ID
+	 */
+	public int getC_ProjectPhase_ID()
+	{
+		int index = p_po.get_ColumnIndex("C_ProjectPhase_ID");
+		if (index != -1)
+		{
+			Integer ii = (Integer)p_po.get_Value(index);
+			if (ii != null)
+				return ii.intValue();
+		}
+		return 0;
+	}   //  getC_ProjectPhase_ID
+
+	/**
+	 *  Get Project Task
+	 *  @return C_ProjectTask_ID
+	 */
+	public int getC_ProjectTask_ID()
+	{
+		int index = p_po.get_ColumnIndex("C_ProjectTask_ID");
+		if (index != -1)
+		{
+			Integer ii = (Integer)p_po.get_Value(index);
+			if (ii != null)
+				return ii.intValue();
+		}
+		return 0;
+	}   //  getC_ProjectTask_ID
 
 	/**
 	 *  Get Campaign
@@ -1039,7 +1101,7 @@ public class DocLine
 		}
 		return 0;
 	}   //  getUser2_ID
-        
+
         	/**
 	 *  Get User Defined Column
 	 *  @param ColumnName column name
@@ -1056,6 +1118,29 @@ public class DocLine
 		}
 		return 0;
 	}   //  getValue
+
+	//AZ Goodwill
+	private int         		m_ReversalLine_ID = 0;
+	/**
+	 *  Set ReversalLine_ID
+	 *  store original (voided/reversed) document line
+	 *  @param ReversalLine_ID
+	 */
+	public void setReversalLine_ID (int ReversalLine_ID)
+	{
+		m_ReversalLine_ID = ReversalLine_ID;
+	}   //  setReversalLine_ID
+
+	/**
+	 *  Get ReversalLine_ID
+	 *  get original (voided/reversed) document line
+	 *  @return ReversalLine_ID
+	 */
+	public int getReversalLine_ID()
+	{
+		return m_ReversalLine_ID;
+	}   //  getReversalLine_ID
+	//end AZ Goodwill
 
 	/**
 	 *  String representation

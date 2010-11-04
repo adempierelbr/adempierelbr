@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
-import java.io.FileWriter;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,9 +21,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.MLBRNotaFiscalLine;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MNCM;
+import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
@@ -39,31 +39,35 @@ import org.compiere.util.Env;
 
 /**
  *	Generate SINTEGRA Files
- *	
+ *
  *	@author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: ProcGenerateSINTEGRA.java, 2009/04/08 15:57:00 ralexsander 
+ *	@contributor Mario Grigioni
+ *  @contributor Pablo Boff Pigozzo
+ *	@contributor Marcelo Luiz Onhate
+ *  @version $Id: ProcGenerateSINTEGRA.java, 11/03/2010 08:29 mgrigioni
  */
 public class ProcGenerateSINTEGRA extends SvrProcess
 {
 	/**	Arquivo							*/
 	private String p_FilePath = null;
-	
+	private final static String EXT = ".txt";
+
 	/** Periodo a ser pesquisado		*/
 	private Timestamp p_DateFrom;
 	private Timestamp p_DateTo;
-	
+
 	/** Organização						*/
 	private int p_AD_Org_ID = 0;
-	
+
 	/** Estado							*/
 	private int p_C_Region_ID = 0;
-	
+
 	/**	Consolidar em um único document	*/
 	private Boolean p_Consolidate = false;
-	
+
 	/**	Erros e Advertências			*/
 	private StringBuffer errors = new StringBuffer("");
-	
+
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -82,8 +86,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			}
 			else if(name.equals("File_Directory"))
 				p_FilePath = para[i].getParameter().toString();
+			/*
 			else if(name.equals("AD_Org_ID"))
 				p_AD_Org_ID = para[i].getParameterAsInt();
+			*/
 			else if(name.equals("C_Region_ID"))
 				p_C_Region_ID = para[i].getParameterAsInt();
 			else if(name.equals("ConsolidateDocument"))
@@ -91,9 +97,11 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
-		
+
 		if(p_Consolidate == null)
 			p_Consolidate = false;
+
+		p_AD_Org_ID = Env.getAD_Org_ID(getCtx());
 	}	//	prepare
 
 	/**
@@ -102,127 +110,113 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	 *  @throws Exception if not successful
 	 */
 	protected String doIt() throws Exception
-	{	
+	{
 		Properties ctx = Env.getCtx();
-		
-		if (p_Consolidate)
+
+		long start = System.currentTimeMillis();
+
+		if (p_DateFrom == null || p_DateTo == null)
+			throw new IllegalArgumentException("Intervalo de Datas Inválido");
+
+		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
+	    	p_FilePath += AdempiereLBR.getFileSeparator();
+
+		StringBuffer sintegra = new StringBuffer(); //Data File
+		String rName          = null; //Region name
+
+		String dataInicial = TextUtil.timeToString(p_DateFrom, "ddMMyy");
+		String dataFinal   = TextUtil.timeToString(p_DateTo, "ddMMyy");
+
+		String fileName = "SNTGRA_" + dataInicial + dataFinal;
+
+		if (p_C_Region_ID > 0)
 		{
-			String fileName = p_FilePath;
-			//
-			if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
-		    	fileName += POLBR.getFileSeparator();
-			//
-			fileName += "SINTEGRA_CONSOLIDADO.txt";
-			//
-			FileWriter fw = new FileWriter(fileName, false);
-			fw.write(getSINTEGRA(ctx, ""));
-			fw.flush();
-			fw.close();
+			rName = new MRegion(ctx, p_C_Region_ID, null).getName().trim().toUpperCase();
+			fileName += rName;
 		}
-		else if (p_C_Region_ID > 0)
-		{
-			String fileName = p_FilePath;
-			String rName = new MRegion(ctx, p_C_Region_ID, null).getName().trim().toUpperCase();
-			//
-			if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
-		    	fileName += POLBR.getFileSeparator();
-			//
-			fileName += "SINTEGRA_"+rName+".txt";
-			//
-			FileWriter fw = new FileWriter(fileName, false);
-			fw.write(getSINTEGRA(ctx, rName));
-			fw.flush();
-			fw.close();
-		}
-		else
-		{
-			MRegion[] regions = MRegion.getRegions(ctx, 139);	//	Only Brazilian Regions
-			
-			if (regions != null)
-			{
-				for (MRegion r : regions)
-				{
-					String fileName = p_FilePath;
-					String rName = r.getName().trim().toUpperCase();
-					String result = getSINTEGRA(ctx, rName);
-					//
-					//	Menor que 3 linhas não salva o arquivo
-					if (result.length() <= (130 * 3))
-						continue;
-					//
-					if (!(p_FilePath.endsWith(POLBR.getFileSeparator()))) 
-				    	fileName += POLBR.getFileSeparator();
-					//
-					fileName += "SINTEGRA_"+rName+".txt";
-					//
-					FileWriter fw = new FileWriter(fileName, false);
-					fw.write(result);
-					fw.flush();
-					fw.close();
+
+		try{
+
+			if (p_Consolidate) {
+				sintegra = getSINTEGRA(ctx, "");
+				TextUtil.generateFile(sintegra.toString(), p_FilePath + fileName + EXT);
+			} //Arquivo Consolidado
+
+			else if (p_C_Region_ID > 0) {
+				sintegra = getSINTEGRA(ctx, rName);
+				TextUtil.generateFile(sintegra.toString(), p_FilePath + fileName + EXT);
+			} //Estado Selecionado
+
+			else {
+				MRegion[] regions = MRegion.getRegions(ctx, 139); // Only Brazilian Regions
+				if (regions != null) {
+					for (MRegion r : regions) {
+						rName = r.getName().trim().toUpperCase();
+
+						sintegra = getSINTEGRA(ctx, rName);
+						if (sintegra.length() <= (130 * 3)) //	Menor que 3 linhas não salva o arquivo
+							continue;
+
+						TextUtil.generateFile(sintegra.toString(), p_FilePath + fileName + rName + EXT);
+					} //loop Estados
 				}
-			}
+			} //Todos os Estados Separados
+
+		} catch (Exception e) {
+			log.log(Level.SEVERE,"",e);
+			return "Erro na Geração do Arquivo";
 		}
-		//
-		return "";
+
+		long end = System.currentTimeMillis();
+
+		String tempoDecorrido = AdempiereLBR.executionTime(start, end);
+
+		return "Arquivo(s) Gerado(s) com Sucesso em: " + p_FilePath +
+		       " <br>** Tempo decorrido: <font color=\"008800\">" + tempoDecorrido + "</font>";
 	}	//	doIt
-	
+
+
 	/**
 	 * Retorna os registros do SINTEGRA para o estado determinado.
-	 * 
+	 *
 	 * @param ctx
 	 * @param estado or null
 	 * @return	SINTEGRA
 	 * @throws Exception
 	 */
-	private String getSINTEGRA(Properties ctx, String estado) throws Exception
+	private StringBuffer getSINTEGRA(Properties ctx, String estado) throws Exception
 	{
-		/**	Validar produto					*/
-		ArrayList<String> uniquePrd = new ArrayList<String>();
-		//
-		StringBuffer registro50 = new StringBuffer("");
-		StringBuffer registro51 = new StringBuffer("");
-		StringBuffer registro54 = new StringBuffer("");
-		StringBuffer registro70 = new StringBuffer("");
-		StringBuffer registro75 = new StringBuffer("");
-		Integer	count50 = 0;
-		Integer	count51 = 0;
-		Integer	count54 = 0;
-		Integer	count70 = 0;
-		Integer	count75 = 0;
 		//
 		if(estado == null)
 			estado = "";
 		//
 		if (p_AD_Org_ID == 0)
 			throw new Exception("@AD_Org_ID@ @Mandatory@");
+		//	
+		/**	Validar produto					*/
+		ArrayList<String> uniquePrd = new ArrayList<String>();
+		//
+		StringBuffer registro50 = new StringBuffer("");
+		StringBuffer registro51 = new StringBuffer("");
+		StringBuffer registro53 = new StringBuffer("");
+		StringBuffer registro54 = new StringBuffer("");
+		StringBuffer registro70 = new StringBuffer("");
+		StringBuffer registro75 = new StringBuffer("");
+		int countnf = 0;
+		int aux     = 1;
+		int	count50 = 0;
+		int	count51 = 0;
+		int	count53 = 0;
+		int	count54 = 0;
+		int	count70 = 0;
+		int	count75 = 0;
 		//
 		MOrgInfo oi 	= new MOrg(Env.getCtx(), p_AD_Org_ID, null).getInfo();
 		MLocation ol 	= new MLocation(Env.getCtx(), oi.getC_Location_ID(), null);
 		MRegion r 		= ol.getRegion();
 		//
 		StringBuffer result = new StringBuffer("");
-		StringBuffer whereClause = new StringBuffer("");
-		//
-		whereClause.append("AD_Client_ID=? ")
-			.append("AND AD_Org_ID=? ")
-			.append("AND lbr_CFOPReference NOT LIKE '%1%933%' ")			
-			.append("AND lbr_CFOPReference NOT LIKE '%2%933%' ")
-			.append("AND lbr_CFOPReference NOT LIKE '%Z%' ");
-		//
-		if(estado != "")
-			whereClause.append("AND lbr_BPInvoiceRegion='" + estado + "' ");
-		//
-		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ")
-			.append(DB.TO_DATE(p_DateFrom))
-			.append(" AND ")
-			.append(DB.TO_DATE(p_DateTo));
-		//
-		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);		
-		Query q =  new Query(table, whereClause.toString(), null);
-		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
-		q.setOrderBy(" (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), Documentno ");
-		List<MLBRNotaFiscal> list = q.list();
-		//
+
 		//	Monta o Registro 10
 		log.finer("SINTEGRA: 10");
 		result.append(
@@ -230,238 +224,287 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						oi.get_ValueAsString("lbr_IE"),
 						oi.get_ValueAsString("lbr_LegalEntity"),	//	Razão Social
 						ol.getCity(), r.getName(),
-						oi.get_ValueAsString("Fax"),	//	Fax
+						oi.get_ValueAsString("Fax"), //	Fax
 						p_DateFrom,	p_DateTo, "3", "3",	"1"));
-		//
+
 		//	Monta o Registro 11
 		log.finer("SINTEGRA: 11");
 		result.append(
 				registro11(ol.getAddress1(), ol.getAddress2(),
 						ol.getAddress4(), ol.getAddress3(),
 						ol.getPostal(),
-						oi.get_ValueAsString("ContactName"),		//	Pessoa Contato
+						oi.get_ValueAsString("ContactName"), //	Pessoa Contato
 						oi.get_ValueAsString("Phone")));	//	Telefone Contato
-		//
-		for(MLBRNotaFiscal NF : list)
-		{
+
+
+		MNotaFiscal[] nfs = getNotasFiscais(ctx,estado);
+		countnf = nfs.length;
+		for(MNotaFiscal nf : nfs) {
+
+			log.finer("NF " + aux + "/" + countnf + ": "+ nf.getDocumentNo());
+			log.info("Processado: " + String.format("%,.5f",(((double)aux/(double)countnf)*100)) + "%");
+			aux++;
+
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			StringBuffer sql = new StringBuffer("");
-			//
-			try
+						
+			//	Data do documento ou data da entrada
+			Timestamp data = nf.isSOTrx() ? nf.getDateDoc() : nf.getlbr_DateInOut();
+			if (data == null)
+				data = nf.getDateDoc();
+			
+			// Modelo da NF			
+			String modeloNF = "";
+			if(!nf.isSOTrx()){
+				modeloNF = nf.getlbr_NFeID()==null || "".equals(nf.getlbr_NFeID()) ? "01" : "55";
+			}else{
+				modeloNF = nf.getlbr_NFeID()==null || "".equals(nf.getlbr_NFeID()) ? "03" : "55"; 
+			}
+			
+			
+			try 
 			{
+
 				//	Monta o Registro 50 e 70
-				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), SUM((CASE WHEN nf.lbr_TransactionType IN ('IMP', 'COU') AND NVL(nflt.lbr_TaxBaseAmt,0) > 0 THEN NVL(nflt.lbr_TaxBaseAmt,0) " +
-						   										"WHEN nf.lbr_TransactionType IN ('IMP', 'COU') THEN NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0) + NVL(nf.LBR_INSURANCEAMT,0) + NVL(nf.FREIGHTAMT,0) + NVL(nflt.lbr_TaxAmt,0) + NVL(nfltpis.lbr_TaxAmt,0) + NVL(nfltcofins.lbr_TaxAmt,0) + ((NVL(nfl.LineTotalAmt,0) * NVL(nf.lbr_TotalSISCOMEX,0)) / NVL(DECODE(nf.TotalLines,0,1,nf.TotalLines),1)) " +
-																"ELSE NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0) + NVL(nf.LBR_INSURANCEAMT,0) + NVL(nf.FREIGHTAMT,0) END)), SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
-					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), " +
-							"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_20' OR " +
-									"nfl.lbr_TaxStatus LIKE '_30' OR " +
-									"nfl.lbr_TaxStatus LIKE '_40' OR " +
-									"nfl.lbr_TaxStatus LIKE '_41' OR " +
-									"nfl.lbr_TaxStatus LIKE '_60' OR " +
-									"nfl.lbr_TaxStatus LIKE '_70' " +
-								"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
-								"SUM((CASE WHEN nfl.lbr_TaxStatus LIKE '_50' OR " +
-									"nfl.lbr_TaxStatus LIKE '_51' OR " +
-									"nfl.lbr_TaxStatus LIKE '_90' " +
-								"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nfltipi.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras FROM LBR_NotaFiscal nf ")
-					.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
-					.append("LEFT JOIN   LBR_NFLineTax_V nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nflt.TaxIndicator='ICMS') ")
-					.append("LEFT JOIN   LBR_NFLineTax_V nfltipi ON (nfltipi.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nfltipi.TaxIndicator='IPI') ")
-					.append("LEFT JOIN  LBR_NFLineTax_V nfltpis ON (nfltpis.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nfltpis.TaxIndicator='PIS') ")
-					.append("LEFT JOIN  LBR_NFLineTax_V nfltcofins ON (nfltcofins.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nfltcofins.TaxIndicator='COFINS') ")
-					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%Z%' ")
-					.append("GROUP BY nf.LBR_INSURANCEAMT, nf.FREIGHTAMT, NVL(CASE WHEN nfl.lbr_CFOPName LIKE '%352' THEN 0 ELSE nflt.lbr_TaxRate END,0), NVL(nfl.lbr_CFOPName,'0')");
-				//
-				DB.close(rs, pstmt);
+				sql.append(" SELECT CFOP, valorContabil, baseICMS, valorICMS, 		"); 
+				sql.append("   aliqICMS, isentoICMS, outrosICMS, LBR_NotaFiscal_ID 	");
+                sql.append(" FROM LBR_SitICMS_SINTEGRA 								");
+                sql.append(" WHERE LBR_NotaFiscal_ID = ? 							");
+
 				pstmt = DB.prepareStatement(sql.toString(), null);
-				pstmt.setInt(1, NF.getLBR_NotaFiscal_ID());
+				pstmt.setInt(1, nf.getLBR_NotaFiscal_ID());
 				rs = pstmt.executeQuery();
-				while (rs.next())
+
+				Integer lastNF_ID = 0;
+				while (rs.next()) 
 				{
 					StringBuffer linha = new StringBuffer("");
-					String CFOP = rs.getString(1);
-					//
-					/**	Data do documento ou data da entrada */
-					Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
-					if (data == null)
-						data = NF.getDateDoc();
-					//
-					if (CFOP != null
-							&& CFOP.trim().endsWith("352"))	//	CFOP de Transporte
+					String CFOP = rs.getString("CFOP");
+					Integer currentNF_ID = rs.getInt("LBR_NotaFiscal_ID");
+
+					if (nf.isCancelled() && currentNF_ID.intValue() == lastNF_ID.intValue())
+						continue;
+
+					lastNF_ID = currentNF_ID;
+					if (CFOP != null && CFOP.trim().endsWith("352")) 
 					{
-						linha.append(registro70(NF.getlbr_BPCNPJ(),
-			    				NF.getlbr_BPIE(),
-			    				data,
-			    				NF.getlbr_BPRegion(),
-			    				"08",		//	FIXME	Modelo
-			    				"",			//	FIXME	SubSérie
-			    				serieNo(NF.getDocumentNo()),
-			    				docNo(NF.getDocumentNo()),
-			    				rs.getString(1),
-			    				rs.getBigDecimal(2),
-			    				rs.getBigDecimal(3),
-			    				rs.getBigDecimal(4),
-			    				rs.getBigDecimal(6),
-			    				rs.getBigDecimal(7),
-			    				"1",
-			    				NF.isCancelled()));
-						
+						linha.append(
+								registro70(nf.getlbr_BPCNPJ(),nf.getlbr_BPIE(),
+			    				data, nf.getlbr_BPRegion(), "08", nf.getSerieNo(), "",
+			    				nf.getDocNo(), CFOP,
+			    				rs.getBigDecimal("valorContabil"),
+			    				rs.getBigDecimal("baseICMS"),
+			    				rs.getBigDecimal("valorICMS"),
+			    				rs.getBigDecimal("isentoICMS"),
+			    				rs.getBigDecimal("outrosICMS"),
+			    				"1", nf.isCancelled()));
+
 						if (linha.length() < 5)
 							continue;
-						
+
 						count70++;
 						log.finer("SINTEGRA: 70");
 			    		registro70.append(linha);
-					}
-					else								//	Outro CFOP
+					
+					} // end Registro 70
+					else 
 					{
-						linha.append(registro50(NF.getlbr_BPCNPJ(),
-			    				NF.getlbr_BPIE(),
-			    				data,
-			    				NF.getlbr_BPRegion(),
-			    				"01",		//	FIXME	Modelo
-			    				serieNo(NF.getDocumentNo()),
-			    				docNo(NF.getDocumentNo()),
-			    				CFOP,
-			    				NF.get_ValueAsString("lbr_IsOwnDocument"),
-			    				rs.getBigDecimal(2),
-			    				rs.getBigDecimal(3),
-			    				rs.getBigDecimal(4),
-			    				rs.getBigDecimal(6),
-			    				rs.getBigDecimal(7),
-			    				rs.getBigDecimal(5),
-			    				NF.isCancelled()));
+						boolean emitente = true;
 						
+						if (!nf.isSOTrx()){
+							if (!nf.get_ValueAsBoolean("lbr_IsOwnDocument") && 
+									nf.getC_DocType_ID() == 0)
+								emitente = false;
+						}
+						
+						linha.append(
+								registro50(nf.getlbr_BPCNPJ(), nf.getlbr_BPIE(),
+			    				data, nf.getlbr_BPRegion(), modeloNF,
+			    				nf.getSerieNo(), nf.getDocNo(),
+			    				CFOP, emitente ? "Y" : "N",
+			    				rs.getBigDecimal("valorContabil"),
+			    				rs.getBigDecimal("baseICMS"),
+			    				rs.getBigDecimal("valorICMS"),
+			    				rs.getBigDecimal("isentoICMS"),
+			    				rs.getBigDecimal("outrosICMS"),
+			    				rs.getBigDecimal("aliqICMS"),
+			    				nf.isCancelled()));
+
 						if (linha.length() < 5)
 							continue;
-						
+
 						count50++;
 						log.finer("SINTEGRA: 50");
 			    		registro50.append(linha);
-					}
-				}
-				
-//				Monta o registro 51
-				sql = new StringBuffer("");
-				sql.append("SELECT NVL(nfl.lbr_CFOPName,'0'), nf.GrandTotal, SUM(NVL(nflt.lbr_TaxBaseAmt,0)), ")
-					.append("SUM(NVL(nflt.lbr_TaxAmt,0)), " +
-							"SUM((CASE WHEN nfl.lbr_TaxStatusIPI LIKE '_2' OR " +
-							"nfl.lbr_TaxStatusIPI LIKE '_3' OR " +
-							"nfl.lbr_TaxStatusIPI LIKE '_4' " +
-						"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nflt.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Isento, " +
-						"SUM((CASE WHEN nfl.lbr_TaxStatusIPI LIKE '_5' OR " +
-							"nfl.lbr_TaxStatusIPI LIKE '_9' " +
-						"THEN (NVL(nfl.LineTotalAmt,0) + NVL(nflt.lbr_TaxAmt,0)) - (NVL(nflt.lbr_TaxBaseAmt,0)) ELSE 0 END)) AS Outras FROM LBR_NotaFiscal nf ")
-					.append("INNER JOIN  LBR_NotaFiscalLine nfl ON nf.LBR_NotaFiscal_ID=nfl.LBR_NotaFiscal_ID ")
-					.append("LEFT JOIN   LBR_NFLineTax nflt ON (nflt.LBR_NotaFiscalLine_ID=nfl.LBR_NotaFiscalLine_ID ")
-					.append("AND nflt.LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE Name='IPI')) ")
-					.append("WHERE nf.LBR_NotaFiscal_ID = ? ")
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%1%933%' ")			
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%2%933%' ")
-					.append("AND nfl.lbr_CFOPName NOT LIKE '%Z%' ")
-					.append("GROUP BY nfl.lbr_CFOPName, nf.GrandTotal");
-				
+			    		
+					} // End Registro 50
+					
+				} // loop SELECT Registros 50 e 70
 				DB.close(rs, pstmt);
+
+				// Monta o registro 51
+				sql = new StringBuffer("");
+
+				sql.append(" SELECT CFOP, valorTotal, baseIPI, valorIPI,"); //1..4
+				sql.append(" isentoIPI, outrosIPI, LBR_NotaFiscal_ID 	"); //5..7
+				sql.append(" FROM LBR_SitIPI_V 							");
+				sql.append(" WHERE LBR_NotaFiscal_ID = ? 				");
+				sql.append("   AND CFOP NOT LIKE '%352%'				");
+
 				pstmt = DB.prepareStatement(sql.toString(), null);
-				pstmt.setInt(1, NF.getLBR_NotaFiscal_ID());
+				pstmt.setInt(1, nf.getLBR_NotaFiscal_ID());
 				rs = pstmt.executeQuery();
-				while (rs.next())
+		
+				while (rs.next()) 
 				{
 					StringBuffer linha = new StringBuffer("");
 					String CFOP = rs.getString(1);
-					
-					if (CFOP != null
-							&& CFOP.trim().endsWith("352"))	//	CFOP de Transporte
-						continue;
-					
-					/**	Data do documento ou data da entrada */
-					Timestamp data = NF.isSOTrx() ? NF.getDateDoc() : NF.getlbr_DateInOut();
-					if (data == null)
-						data = NF.getDateDoc();
-					//
-					linha.append(registro51(NF.getlbr_BPCNPJ(),
-	        				NF.getlbr_BPIE(),
+					linha.append(registro51(nf.getlbr_BPCNPJ(),
+	        				nf.getlbr_BPIE(),
 	        				data,
-	        				NF.getlbr_BPRegion(),
-	        				serieNo(NF.getDocumentNo()),	
-	        				docNo(NF.getDocumentNo()),
+	        				nf.getlbr_BPRegion(),
+	        				nf.getSerieNo(),
+	        				nf.getDocNo(),
 	        				CFOP,
-	        				rs.getBigDecimal(2),
-	        				rs.getBigDecimal(4),
-	        				rs.getBigDecimal(5),
-	        				rs.getBigDecimal(6),
-	        				NF.isCancelled()));
-					
+	        				rs.getBigDecimal("valorTotal"),
+	        				rs.getBigDecimal("valorIPI"),
+	        				rs.getBigDecimal("isentoIPI"),
+	        				rs.getBigDecimal("outrosIPI"),
+	        				nf.isCancelled()));
+
 					if (linha.length() < 5)
 						continue;
-					
+
 					count51++;
 					log.finer("SINTEGRA: 51");
 					registro51.append(linha);
-				}
-				//
-				if (NF.isCancelled())	//	Não gerar registros 54 e 75 para canceladas
+					
+				} // loop SELECT Registro 51
+				DB.close(rs, pstmt);
+				
+				//	Monta o Registro 53				
+				log.finer("SINTEGRA: 53");
+				
+				sql = new StringBuffer("");
+				sql.append(" SELECT * 						");
+  				sql.append(" FROM LBR_SitICMSST 			");
+  				sql.append(" WHERE AD_Client_ID=?			");
+  				sql.append("   AND LBR_NotaFiscal_ID = ? 	");
+				
+				pstmt = DB.prepareStatement(sql.toString(), null);
+				pstmt.setInt(1, nf.getAD_Client_ID());
+				pstmt.setInt(2, nf.getLBR_NotaFiscal_ID());
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					registro53.append(
+							registro53(nf.getlbr_BPCNPJ(), nf.getlbr_BPIE(),
+									data, nf.getlbr_BPRegion(),
+									modeloNF, nf.getSerieNo(),
+			        				nf.getDocNo(), rs.getString("cfop"),
+			        				nf.get_ValueAsBoolean("lbr_IsOwnDocument"),
+			        				rs.getBigDecimal("baseICMS"),
+			        				rs.getBigDecimal("valorICMS"),
+			        				rs.getBigDecimal("outrasDesp"),
+			        				nf.isCancelled(),			        				
+			        				" "));
+					count53++;
+				}// end REGISTRO TIPO 53				
+				
+				
+				// Não gerar registros 54 e 75 para canceladas
+				if (nf.isCancelled()) 
 					continue;
-				//
-				MLBRNotaFiscalLine[] NFLines = getLines(NF);
-				for (MLBRNotaFiscalLine NFLine : NFLines)
-				{
-					String CFOP = NFLine.getlbr_CFOPName();
-					
-					if (CFOP != null
-							&& CFOP.trim().endsWith("352"))	//	CFOP de Transporte
-						continue;
-					
+				
+				// Registro tipo 54 e 75
+				MNotaFiscalLine[] nfLines = getLines(nf);
+				String CFOP = "";
+				int line = 0;
+				for (MNotaFiscalLine nfLine : nfLines) {
+					log.finer("NF: "+ nf.getDocumentNo() +
+							  " Linha: "  + nfLine.getLine());
+
+					line++;
+					CFOP = nfLine.getlbr_CFOPName();
+
+					//Registro 54
 					count54++;
-					
-//					Registro 54
+					registro54.append(
+							registro54(nf.getlbr_BPCNPJ(), nf.getlbr_BPRegion(),
+							modeloNF,nf.getSerieNo(),nf.getDocNo(),
+							nfLine.getlbr_CFOPName(),
+							nfLine.getlbr_TaxStatus(),"" + line,
+							nfLine.getProductValue(),
+							nfLine.getQty(),
+							nfLine.getLineTotalAmt(),
+							Env.ZERO,				//	FIXME	Desconto
+							nfLine.getICMSBase(),
+							nfLine.getICMSSTBase(),
+							nfLine.getIPIAmt(),
+							nfLine.getICMSRate()));
+
 					log.finer("SINTEGRA: 54");
-					registro54.append(registro54(
-							NF.getlbr_BPCNPJ(),
-							"01",			//	FIXME 	Modelo
-							serieNo(NF.getDocumentNo()),
-							docNo(NF.getDocumentNo()),
-							NFLine.getlbr_CFOPName(),
-							NFLine.getlbr_TaxStatus(),
-							"" + NFLine.getLine(),
-							NFLine.getProductValue(),
-							NFLine.getQty(),
-							NFLine.getLineTotalAmt(),
-							Env.ZERO,	//	FIXME	Desconto
-							NFLine.getICMSBase(),
-							Env.ZERO,	//	FIXME	ICMS ST
-							NFLine.getIPIAmt(),
-							NFLine.getICMSRate()));
-					
-					if (uniquePrd.contains(NFLine.getProductValue()))
+
+					if (uniquePrd.contains(nfLine.getProductValue()))
 						continue;
-					
-					uniquePrd.add(NFLine.getProductValue());
+
+					uniquePrd.add(nfLine.getProductValue());
+
+					//BF NCM Name
+					String ncmName = nfLine.getlbr_NCMName();
+					if (ncmName == null || ncmName.trim().equals("")){
+
+						ncmName = "0000.00.00";
+
+						if (nfLine.getLBR_NCM_ID() != 0){
+							MNCM ncm = new MNCM(ctx,nfLine.getLBR_NCM_ID(),null);
+							ncmName = ncm.getValue();
+						}
+					}
+
+					//Registro 75
 					count75++;
-					
-//					Registro 75
+					registro75.append(
+							registro75(p_DateFrom, p_DateTo,
+							nfLine.getProductValue(),
+							ncmName,
+							nfLine.getProductName(),
+							nfLine.getlbr_UOMName(),
+							nfLine.getIPIRate(),
+							nfLine.getICMSRate(),
+							nfLine.getICMSBaseReduction(),
+							nfLine.getICMSSTBase()));
 					log.finer("SINTEGRA: 75");
-					registro75.append(registro75(
-							p_DateFrom,
-							p_DateTo,
-							NFLine.getProductValue(),
-							NFLine.getlbr_NCMName(),
-							NFLine.getProductName(),
-							NFLine.getlbr_UOMName(),
-							NFLine.getIPIRate(),
-							NFLine.getICMSRate(),
-							NFLine.getICMSBaseReduction(),
-							Env.ZERO));
 				}
+
+				if (nf.getFreightAmt().signum() == 1){
+					registro54.append(registro54(
+							nf.getlbr_BPCNPJ(), nf.getlbr_BPRegion(), modeloNF,
+							nf.getSerieNo(),
+							nf.getDocNo(),
+							CFOP, "   ", "991", "  ", //FRETE
+							Env.ONE, Env.ZERO,
+							nf.getFreightAmt(), Env.ZERO,
+							Env.ZERO, Env.ZERO, Env.ZERO));
+
+					count54++;
+					log.finer("SINTEGRA: 54 - FRETE");
+				}
+
+				if (nf.getlbr_InsuranceAmt().signum() == 1){
+					registro54.append(registro54(
+							nf.getlbr_BPCNPJ(), nf.getlbr_BPRegion(), modeloNF,
+							nf.getSerieNo(),
+							nf.getDocNo(),
+							CFOP, "   ", "992", "  ", //SEGURO
+							Env.ONE, Env.ZERO,
+							nf.getlbr_InsuranceAmt(), Env.ZERO,
+							Env.ZERO, Env.ZERO, Env.ZERO));
+					count54++;
+					log.finer("SINTEGRA: 54 - SEGURO");
+				}
+
 			}
 			catch (Exception e)
 			{
@@ -471,106 +514,78 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			{
 				DB.close(rs, pstmt);
 			}
-		}
-		
+		} //loop NotaFiscal
+
 		StringBuffer registro90 = new StringBuffer("");
-		
+
 		registro90.append(registro90(
 				oi.get_ValueAsString("lbr_CNPJ"),
-				oi.get_ValueAsString("lbr_IE"), count50, 
-				count51, count54, count70, count75));
-		
+				oi.get_ValueAsString("lbr_IE"), 
+				count50,
+				count51, 
+				count53,
+				count54,
+				0,//55
+				0,//56
+				0,//57
+				0,//60
+				0,//61
+				count70,
+				0,//71
+				0,//74
+				count75,
+				0,//76
+				0,//77
+				0,//85
+				0//86
+				));
+
 		return result.append(registro50)
-				.append(registro51)
-				.append(registro54)
-				.append(registro70)
-				.append(registro75)
-				.append(registro90).toString();
-	}
-	
-	/**
-	 * Extrai o número da NF
-	 * 
-	 * @param	String	No da NF com a Série
-	 * @return	String	No da NF sem a Série
-	 */
-	private String docNo(String documentNo)
-	{
-		if (documentNo == null
-				|| documentNo.startsWith("-"))
-			return "";
-		//
-		if (documentNo.indexOf('-') == -1)
-			return documentNo;
-		//
-		return documentNo.substring(0, documentNo.indexOf('-'));
-	}	//	docNo
-	
-	/**
-	 * Extrai a Série da NF
-	 * 
-	 * @param	String	No da NF com a Série
-	 * @return	String	Série da NF
-	 */
-	private String serieNo(String documentNo)
-	{
-		if (documentNo == null
-				|| documentNo.indexOf('-') == -1
-				|| documentNo.endsWith("-"))
-			return "";
-		//
-		return documentNo.substring(1+documentNo.indexOf('-'), documentNo.length());
-	}	//	docNo
-	
+				     .append(registro51)
+				     .append(registro53)
+				     .append(registro54)
+				     .append(registro70)
+				     .append(registro75)
+				     .append(registro90);
+	} //getSintegra
+
+
 	/**
 	 * 	Formata o Registro 10
-	 * 
+	 *
 	 * 	Mestre do Estabelecimento
-	 * 
-	 * @param	String		CNPJ
-	 * @param	String		IE
-	 * @param	String		Razão Social
-	 * @param	String		Município
-	 * @param	String		UF
-	 * @param	String		Fax
-	 * @param	Timestamp	Data Inicial
-	 * @param	Timestamp	Data Final
-	 * @param	String		Código do Convênio
-	 * @param	String		Código da Natureza de Operações
-	 * @param	String		Código da Finalidade
-	 * @return	String		Registro 10 Formatado
 	 */
 	private String registro10(String CNPJ, String IE, String RazaoSocial,
 			String Municipio, String UF, String Fax, Timestamp DataInicial,
 			Timestamp DataFinal, String CC, String CNO, String CF)
 	{
 		StringBuffer result = new StringBuffer("");
-		
+
 		/**
 		 * Descrição do código de identificação da estrutura do arquivo
-		 * 
-		 * Estrutura conforme Convênio ICMS 57/95, 
+		 *
+		 * Estrutura conforme Convênio ICMS 57/95,
 		 * com as alterações promovidas pelo Convênio ICMS 76/03.
 		 * */
 		if (CC == null || CC.length() == 0)
 			CC = "3";
-		
+
 		/**
 		 * Descrição do código da natureza das operações
-		 * 
+		 *
 		 * Totalidade das operações do informante
 		 * */
 		if (CNO == null || CNO.length() == 0)
 			CNO = "3";
-		
+
 		/**
 		 * Descrição da finalidade
-		 * 
+		 *
 		 * Normal
 		 * */
 		if (CF == null || CF.length() == 0)
 			CF = "1";
-		
+
 		result.append("10")								//	1	2	N
 			.append(TextUtil.lPad(CNPJ			, 14))	//	2	14	N
 			.append(TextUtil.rPad(IE			, 14))	//	3	14	X
@@ -583,25 +598,16 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			.append(TextUtil.lPad(CC			, 1))	//	10	1	X
 			.append(TextUtil.lPad(CNO			, 1))	//	11	1	X
 			.append(TextUtil.lPad(CF			, 1));	//	12	1	X
-		
+
 		result.append(TextUtil.EOL_WIN32);
-		
+
 		return result.toString();
 	}	//	registro10
-	
+
 	/**
 	 * 	Formata o Registro 11
-	 * 
+	 *
 	 * 	Dados Complementares do Informante
-	 * 
-	 * @param	String	Logradouro
-	 * @param	String	Numero
-	 * @param	String	Complemento
-	 * @param	String	Bairro
-	 * @param	String	CEP
-	 * @param	String	Contato
-	 * @param	String	Telefone
-	 * @return	String	Registro 11 Formatado
 	 */
 	private String registro11(String Logradouro, String Numero, String Complemento,
 			String Bairro, String CEP, String Contato, String Telefone)
@@ -621,34 +627,16 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return result.toString();
 	}	//	registro11
-	
+
 	/**
 	 * 	Formata o Registro 50
-	 * 
+	 *
 	 * 	Nota Fiscal, modelo 1 ou 1-A (código 01), quanto ao ICMS, <BR>
 	 * 	   a critério de cada UF, Nota Fiscal do Produtor, modelo 4 (código 04),
 	 *	Nota Fiscal/Conta de Energia Elétrica, modelo 6 (código 06),
 	 *	Nota Fiscal de Serviço de Comunicação, modelo 21 (código 21),
 	 *	Nota Fiscal de Serviços de Telecomunicações, modelo 22 (código 22)’
 	 *	Nota Fiscal Eletrônica, modelo 55 (código 55).
-	 *
-	 * @param	String		CNPJ
-	 * @param	String		IE
-	 * @param	Timestamp	Data de emissão ou recebimento
-	 * @param	String		UF
-	 * @param	String		Código do modelo da nota fiscal
-	 * @param	String		Série da nota fiscal
-	 * @param	String		Número da nota fiscal
-	 * @param	String		CFOP
-	 * @param	String		Emitente da Nota Fiscal (P-próprio/T-terceiros)
-	 * @param	BigDecimal	Valor total da nota fiscal
-	 * @param	BigDecimal	Base de Cálculo do ICMS
-	 * @param	BigDecimal	Montante do imposto ICMS
-	 * @param	BigDecimal	Valor amparado por isenção ou não incidência
-	 * @param	BigDecimal	Valor que não confira débito ou crédito do ICMS
-	 * @param	BigDecimal	Alíquota do ICMS
-	 * @param	String		Situação da Nota Fiscal
-	 * @return	String		Registro 50 Formatado
 	 */
 	private String registro50(String CNPJ, String IE, Timestamp DataEmissao,
 			String UF, String CodModeloNF, String SerieNF, String NoNF,
@@ -663,8 +651,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		if (IE == null || IE.equals(""))
 			IE = "ISENTO";
 		//
-		if (UF == null || !isBR(UF))
+		if (UF == null || !AdempiereLBR.isRegionBR(UF)){
 			UF = "EX";
+			CNPJ = null;
+		}
 		//
 		if (SitNF)	//	NF Cancelada
 		{
@@ -703,26 +693,12 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 
 	/**
 	 * 	Formata o Registro 51
-	 * 	
+	 *
 	 * 	Total de NF quanto ao IPI.
-	 * 
-	 * @param	String		CNPJ
-	 * @param	String		IE
-	 * @param	Timestamp	Data de emissão ou recebimento
-	 * @param	String		UF
-	 * @param	String		Série da nota fiscal
-	 * @param	String		Número da nota fiscal
-	 * @param	String		CFOP
-	 * @param	BigDecimal	Valor total da nota fiscal
-	 * @param	BigDecimal	Montante do imposto IPI
-	 * @param	BigDecimal	Valor amparado por isenção ou não incidência
-	 * @param	BigDecimal	Valor que não confira débito ou crédito do ICMS
-	 * @param	String		Situação da Nota Fiscal
-	 * @return	String		Registro 51 Formatado
 	 */
 	private String registro51(String CNPJ, String IE, Timestamp DataEmissao,
-			String UF, String SerieNF, String NoNF,	String CFOP, 
-			BigDecimal ValorTotal, BigDecimal ValorIPI, BigDecimal ValorIsento, 
+			String UF, String SerieNF, String NoNF,	String CFOP,
+			BigDecimal ValorTotal, BigDecimal ValorIPI, BigDecimal ValorIsento,
 			BigDecimal ValorOutras, Boolean SitNF)
 	{
 		StringBuffer result = new StringBuffer("");
@@ -730,8 +706,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		if (IE == null || IE.equals(""))
 			IE = "ISENTO";
 		//
-		if (UF == null || !isBR(UF))
+		if (UF == null || !AdempiereLBR.isRegionBR(UF)){
 			UF = "EX";
+			CNPJ = null;
+		}
 		//
 		String situacao = SitNF ? "S" : "N";
 		//
@@ -762,42 +740,94 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return result.toString();
 	}	//	registro51
+
+	
+	
 	
 	/**
-	 * SUBSTITUIÇÃO TRIBUTÁRIA
-	 * *
-	@SuppressWarnings("unused")
-	private void registro53()
+	* SUBSTITUIÇÃO TRIBUTÁRIA - REGISTRO53
+	* 
+	* @param CNPJ CNPJ do Contribuínte Substituído
+	* @param IE IE do Contribuínte Substituído
+	* @param DataEmissao Data de Emissão ou Recebimento 
+	* @param UF do Contribuínte Substituído
+	* @param ModeloNF Código do Modelo da NF
+	* @param SerieNF Série da NF
+	* @param NoNF Número da NF
+	* @param CFOP Código Fiscal de Operação e Prestação
+	* @param lbr_IsOwnDocument Documento Próprio
+	* @param BaseICMSST Base de Cálculo
+	* @param ValorICMSST Valor de ICMSST
+	* @param ValorOutrasDesp valor de outras despesas como frete, seguro e outras.
+	* @param IsCancelled NF cancelada
+	* @param CodAntecipacao Tipo de Antecipação tributária
+	* */
+	private String registro53(String CNPJ, String IE, Timestamp DataEmissao, String UF, 
+			String ModeloNF, String SerieNF, String NoNF, String CFOP, Boolean lbr_IsOwnDocument, 
+			BigDecimal BaseICMSST, BigDecimal ValorICMSST, BigDecimal ValorOutrasDesp, 
+			Boolean IsCanceled, String CodAntecipacao)
 	{
-		//TODO: Registro 53
-	}
+		
+		StringBuffer result = new StringBuffer("");
+		
+		// UF Nacional ou EXTERIOR
+		if (UF == null || !AdempiereLBR.isRegionBR(UF)){
+			UF = "EX";
+			CNPJ = null;
+		}
+		
+		// Isento
+		if (IE == null || IE.equals(""))
+			IE = "ISENTO";
+				
+		// S - Cancelada   N - Normal
+		String situacao = IsCanceled ? "S" : "N"; 
+		
+		// IsOwnDocument P - Proprio   T - Terceiros
+		String emitente = lbr_IsOwnDocument ?  "P" : "T";  
+		
+		//	NF Cancelada
+		if (IsCanceled)	
+		{
+			ValorICMSST = Env.ZERO;
+			ValorOutrasDesp = Env.ZERO;
+			BaseICMSST = Env.ZERO;
+		}
+		
+		//
+		result.append("53")									//	1
+			.append(TextUtil.lPad(CNPJ			, 14))		//	2
+			.append(TextUtil.lPad(IE			, 14))		//	3
+			.append(TextUtil.timeToString(DataEmissao))		//	4
+			.append(TextUtil.lPad(UF			, 2))		//	5
+			.append(TextUtil.lPad(ModeloNF		, 2))		//	6
+			.append(TextUtil.rPad(SerieNF		, 3))		//	7
+			.append(TextUtil.lPad(NoNF			, 6))		//	8
+			.append(TextUtil.rPad(CFOP			, 4))		//	9
+			.append(TextUtil.lPad(emitente		, 1))		//	10
+			.append(TextUtil.lPad(BaseICMSST	, 13))		//	11
+			.append(TextUtil.lPad(ValorICMSST	, 13))		//	12
+			.append(TextUtil.lPad(ValorOutrasDesp , 13))	//	13
+			.append(TextUtil.lPad(situacao		, 1))		//	14
+			.append(TextUtil.lPad(CodAntecipacao, 1))		//	15
+			.append(TextUtil.lPad(" "			, 29));		//	16
+		//
+		result.append(TextUtil.EOL_WIN32);
 	
+		//
+		return result.toString();
+			
+	} // Registr 53
+
 	/***	Comentada os métodos acima	***/
-	
+
 	/**
 	 * 	Formata o Registro 54
-	 * 
-	 * 	Produto
 	 *
-	 * @param	String		CNPJ
-	 * @param	String		Código do modelo da nota fiscal
-	 * @param	String		Série da nota fiscal
-	 * @param	String		Número da nota fiscal
-	 * @param	String		CFOP
-	 * @param	String		Código da Situação Tributária
-	 * @param	String		Número de ordem do item na nota fiscal
-	 * @param	String		Código do produto ou serviço do informante
-	 * @param	BigDecimal	Quantidade do produto (com 3 decimais)
-	 * @param	BigDecimal	Valor total do Produto (Total)
-	 * @param	BigDecimal	Valor do Desconto
-	 * @param	BigDecimal	Base de Cálculo do ICMS
-	 * @param	BigDecimal	Base de Cálculo do ICMS de retenção na Subst. Trib.
-	 * @param	BigDecimal	Valor do IPI
-	 * @param	BigDecimal	Alíquota Utilizada no Cálculo do ICMS
-	 * @return	String		Registro 54 Formatado
+	 * 	Produto
 	 */
-	private String registro54(String CNPJ, String CodModeloNF, 
-			String SerieNF, String NoNF, String CFOP, String CST, 
+	private String registro54(String CNPJ, String UF, String CodModeloNF,
+			String SerieNF, String NoNF, String CFOP, String CST,
 			String SeqItem, String CodProduto,
 			BigDecimal QtdProd, BigDecimal ValorProd,
 			BigDecimal ValorDesconto, BigDecimal BaseICMS, BigDecimal BaseICMSST,
@@ -810,6 +840,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 			CodProduto = "SEMCODIGO";
 			errors.append("NF: ").append(NoNF).append(" do CNPJ ").append(CNPJ)
 				.append(" sem código de produto. Item: ").append(SeqItem);
+		}
+		//
+		if (UF == null || !AdempiereLBR.isRegionBR(UF)){
+			CNPJ = null;
 		}
 		//
 		result.append("54")									//	1	2	N
@@ -833,7 +867,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return result.toString();
 	}	//	registro54
-	
+
 	/**
 	 * GUIA NACIONAL DE RECOLHIMENTO DE TRIBUTOS ESTADUAIS
 	 * *
@@ -842,7 +876,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 55
 	}
-	
+
 	/**
 	 * OPERAÇÕES COM VEÍCULOS AUTOMOTORES NOVOS
 	 * *
@@ -851,7 +885,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 56
 	}
-	
+
 	/**
 	 * NÚMERO DE LOTE DE FABRICAÇÃO DE PRODUTO
 	 * *
@@ -860,14 +894,14 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 57
 	}
-	
+
 	/**
-	 * Cupom Fiscal, Cupom Fiscal - PDV, e os seguintes Documentos Fiscais quando 
-	 * emitidos por Equipamento Emissor de Cupom Fiscal: 
-	 * Bilhete de Passagem Rodoviário (modelo 13), 
-	 * Bilhete de Passagem Aquaviário (modelo 14), 
-	 * Bilhete de Passagem e Nota de Bagagem (modelo 15), 
-	 * Bilhete de Passagem Ferroviário (modelo 16), e 
+	 * Cupom Fiscal, Cupom Fiscal - PDV, e os seguintes Documentos Fiscais quando
+	 * emitidos por Equipamento Emissor de Cupom Fiscal:
+	 * Bilhete de Passagem Rodoviário (modelo 13),
+	 * Bilhete de Passagem Aquaviário (modelo 14),
+	 * Bilhete de Passagem e Nota de Bagagem (modelo 15),
+	 * Bilhete de Passagem Ferroviário (modelo 16), e
 	 * Nota Fiscal de Venda a Consumidor (modelo 2)
 	 * *
 	@SuppressWarnings("unused")
@@ -875,16 +909,16 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 60
 	}
-	
+
 	/**
-	 * Para os documentos fiscais descritos a seguir, quando não 
-	 * emitidos por equipamento emissor de cupom fiscal: 
-	 * Bilhete de Passagem Aquaviário (modelo 14), 
-	 * Bilhete de Passagem e Nota de Bagagem (modelo 15), 
-	 * Bilhete de Passagem Ferroviário (modelo 16), 
-	 * Bilhete de Passagem Rodoviário (modelo 13) e 
-	 * Nota Fiscal de Venda a Consumidor (modelo 2), 
-	 * Nota Fiscal de Produtor (modelo 4), para as unidades da 
+	 * Para os documentos fiscais descritos a seguir, quando não
+	 * emitidos por equipamento emissor de cupom fiscal:
+	 * Bilhete de Passagem Aquaviário (modelo 14),
+	 * Bilhete de Passagem e Nota de Bagagem (modelo 15),
+	 * Bilhete de Passagem Ferroviário (modelo 16),
+	 * Bilhete de Passagem Rodoviário (modelo 13) e
+	 * Nota Fiscal de Venda a Consumidor (modelo 2),
+	 * Nota Fiscal de Produtor (modelo 4), para as unidades da
 	 * Federação que não o exigirem na forma prevista no item 11.
 	 * *
 	@SuppressWarnings("unused")
@@ -892,8 +926,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 61
 	}
-	
+
 	/**
+	 * Formata o Registro 70
+	 *
 	 * Nota Fiscal de Serviço de Transporte
 	 * Conhecimento de Transporte Rodoviário de Cargas
 	 * Conhecimento de Transporte Aquaviário de Cargas
@@ -901,34 +937,21 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	 * Conhecimento Aéreo
 	 * Conhecimento de Transporte Multimodal de Cargas
 	 * Nota Fiscal de Serviço de Transporte Ferroviário
-	 *
-	 * @param	String		CNPJ
-	 * @param	String		IE
-	 * @param	Timestamp	Data de emissão ou recebimento
-	 * @param	String		UF
-	 * @param	String		Código do modelo da nota fiscal
-	 * @param	String		Série da nota fiscal
-	 * @param	String		Número da nota fiscal
-	 * @param	String		CFOP
-	 * @param	String		Emitente da Nota Fiscal (P-próprio/T-terceiros)
-	 * @param	BigDecimal	Valor total da nota fiscal
-	 * @param	BigDecimal	Base de Cálculo do ICMS
-	 * @param	BigDecimal	Montante do imposto ICMS
-	 * @param	BigDecimal	Valor amparado por isenção ou não incidência
-	 * @param	BigDecimal	Valor que não confira débito ou crédito do ICMS
-	 * @param	BigDecimal	Alíquota do ICMS
-	 * @param	String		Situação da Nota Fiscal
-	 * @return	String		Registro 70 Formatado
 	 */
 	private String registro70(String CNPJ, String IE, Timestamp DataEmissao,
 			String UF, String CodModeloNF, String SerieNF, String SubSerieNF, String NoNF,
 			String CFOP, BigDecimal ValorTotal, BigDecimal BaseICMS,
-			BigDecimal ValorICMS, BigDecimal ValorIsento, BigDecimal ValorOutras,
-			String CIF_FOB, Boolean SitNF)
+			BigDecimal ValorICMS, BigDecimal ValorIsento,
+			BigDecimal ValorOutras, String CIF_FOB, Boolean SitNF)
 	{
 		StringBuffer result = new StringBuffer("");
 		//
 		String situacao = SitNF ? "S" : "N";
+		//
+		if (UF == null || !AdempiereLBR.isRegionBR(UF)){
+			UF = "EX";
+			CNPJ = null;
+		}
 		//
 		if (SitNF)	//	NF Cancelada
 		{
@@ -964,7 +987,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return result.toString();
 	}
-	
+
 	/**
 	 * Informações da Carga Transportada Referente a:
 	 * Conhecimento de Transporte Rodoviário de Cargas
@@ -978,7 +1001,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 71
 	}
-	
+
 	/**
 	 * REGISTRO DE INVENTÁRIO
 	 * *
@@ -987,30 +1010,17 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 74
 	}
-	
+
 	/***	Comentada os métodos acima	***/
-	
+
 	/**
 	 * 	Formata o Registro 75
-	 * 
-	 * 	CÓDIGO DE PRODUTO OU SERVIÇO	
 	 *
-	 * @param	String		CNPJ
-	 * @param	Timestamp	Data Inicial
-	 * @param	Timestamp	Data Final
-	 * @param	String		Código do prod ou ser utilizado pelo contrib.
-	 * @param	String		NCM
-	 * @param	String		Descrição do produto ou serviço
-	 * @param	String		Unidade de medida de comercialização do produto
-	 * @param	BigDecimal	Alíquota do IPI do produto
-	 * @param	BigDecimal	Alíquota do ICMS aplicável a mercadoria
-	 * @param	BigDecimal	% de Redução na base de cálculo do ICMS
-	 * @param	BigDecimal	Base de Cálculo do ICMS de ST
-	 * @return	String		Registro 54 Formatado
+	 * 	CÓDIGO DE PRODUTO OU SERVIÇO
 	 */
-	private String registro75(Timestamp DataInicial, 
-			Timestamp DataFinal, String CodProduto, String NCM, 
-			String DescProduto, String UdM, BigDecimal AliqIPI, 
+	private String registro75(Timestamp DataInicial,
+			Timestamp DataFinal, String CodProduto, String NCM,
+			String DescProduto, String UdM, BigDecimal AliqIPI,
 			BigDecimal AliqICMS, BigDecimal RedBaseCalc, BigDecimal BaseICMSST)
 	{
 		StringBuffer result = new StringBuffer("");
@@ -1043,20 +1053,20 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return result.toString();
 	}	//	registro75
-	
+
 	/**
 	 * NOTA FISCAL DE SERVIÇOS DE COMUNICAÇÃO (MOD. 21)
 	 * NOTA FISCAL DE SERVIÇOS DE TELECOMUNICAÇÕES (MOD. 22
-	 * 
+	 *
 	 * (NAS PRESTAÇÕES DE SERVIÇO)
-	 * 
+	 *
 	 * *
 	@SuppressWarnings("unused")
 	private void registro76()
 	{
 		//TODO: Registro 76
 	}
-	
+
 	/**
 	 * SERVIÇOS DE COMUNICAÇÃO E TELECOMUNICAÇÃO
 	 * *
@@ -1065,7 +1075,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 77
 	}
-	
+
 	/**
 	 * Informações de Exportações
 	 * *
@@ -1074,7 +1084,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 85
 	}
-	
+
 	/**
 	 * Informações Complementares de Exportações
 	 * *
@@ -1083,40 +1093,18 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	{
 		//TODO: Registro 86
 	}
-	
+
 	/***	Comentada os métodos acima	***/
-	
+
 	/**
+	 * Formata Registro 90
+	 *
 	 * TOTALIZAÇÃO DO ARQUIVO
-	 * 
-	 * TODO: Feito uma solução rápida, desenvolver uma solução
-	 * 	mais eficiente, com o uso de HashMap por exemplo.
-	 * 
-	 * @param	String CNPJ
-	 * @param	String IE
-	 * @param	Integer Total de Registros 50
-	 * @param	Integer Total de Registros 51
-	 * @param	Integer Total de Registros 53
-	 * @param	Integer Total de Registros 54
-	 * @param	Integer Total de Registros 55
-	 * @param	Integer Total de Registros 56
-	 * @param	Integer Total de Registros 57
-	 * @param	Integer Total de Registros 60
-	 * @param	Integer Total de Registros 61
-	 * @param	Integer Total de Registros 70
-	 * @param	Integer Total de Registros 71
-	 * @param	Integer Total de Registros 74
-	 * @param	Integer Total de Registros 75
-	 * @param	Integer Total de Registros 76
-	 * @param	Integer Total de Registros 77
-	 * @param	Integer Total de Registros 85
-	 * @param	Integer Total de Registros 86
-	 * @return	String	Registro 90 Formatado
 	 * */
-	private String registro90(String CNPJ, String IE, Integer Total50, 
-			Integer Total51, Integer Total53, Integer Total54, Integer Total55, 
-			Integer Total56, Integer Total57, Integer Total60, Integer Total61, 
-			Integer Total70, Integer Total71, Integer Total74, Integer Total75, 
+	private String registro90(String CNPJ, String IE, Integer Total50,
+			Integer Total51, Integer Total53, Integer Total54, Integer Total55,
+			Integer Total56, Integer Total57, Integer Total60, Integer Total61,
+			Integer Total70, Integer Total71, Integer Total74, Integer Total75,
 			Integer Total76, Integer Total77, Integer Total85, Integer Total86)
 	{
 		int count 	= 0;
@@ -1332,22 +1320,22 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 				.append(header);
 		}
 		//
-		Integer Total99 = 	(Total50 == null ? 0 : Total50) + 
-							(Total51 == null ? 0 : Total51) + 
-							(Total53 == null ? 0 : Total53) + 
-							(Total54 == null ? 0 : Total54) + 
-							(Total55 == null ? 0 : Total55) + 
-							(Total56 == null ? 0 : Total56) + 
-							(Total57 == null ? 0 : Total57) + 
-							(Total60 == null ? 0 : Total60) + 
-							(Total61 == null ? 0 : Total61) + 
-							(Total70 == null ? 0 : Total70) + 
-							(Total71 == null ? 0 : Total71) + 
-							(Total74 == null ? 0 : Total74) + 
-							(Total75 == null ? 0 : Total75) + 
-							(Total76 == null ? 0 : Total76) + 
-							(Total77 == null ? 0 : Total77) + 
-							(Total85 == null ? 0 : Total85) + 
+		Integer Total99 = 	(Total50 == null ? 0 : Total50) +
+							(Total51 == null ? 0 : Total51) +
+							(Total53 == null ? 0 : Total53) +
+							(Total54 == null ? 0 : Total54) +
+							(Total55 == null ? 0 : Total55) +
+							(Total56 == null ? 0 : Total56) +
+							(Total57 == null ? 0 : Total57) +
+							(Total60 == null ? 0 : Total60) +
+							(Total61 == null ? 0 : Total61) +
+							(Total70 == null ? 0 : Total70) +
+							(Total71 == null ? 0 : Total71) +
+							(Total74 == null ? 0 : Total74) +
+							(Total75 == null ? 0 : Total75) +
+							(Total76 == null ? 0 : Total76) +
+							(Total77 == null ? 0 : Total77) +
+							(Total85 == null ? 0 : Total85) +
 							(Total86 == null ? 0 : Total86) +
 							(Total90 + 2); //	Total de Registros 90 + 2 ref. aos registro 10 e 11
 		//
@@ -1359,87 +1347,52 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		return linhas.toString();
 	}
-	
+
+
 	/**
-	 * TOTALIZAÇÃO DO ARQUIVO
-	 * 
-	 * @param	String 	CNPJ
-	 * @param	String 	IE
-	 * @param	Integer Total de Registros 50
-	 * @param	Integer Total de Registros 51
-	 * @param	Integer Total de Registros 54
-	 * @param	Integer Total de Registros 70
-	 * @param	Integer Total de Registros 75
-	 * @return	String	Registro 90 Formatado
-	 * */
-	private String registro90(String CNPJ, String IE, Integer Total50, 
-			Integer Total51,Integer Total54, Integer Total70, Integer Total75)
-	{
-		return registro90(CNPJ, IE, Total50, Total51, 0, Total54, 
-				0, 0, 0, 0, 0, Total70, 0, 0, Total75, 0, 0, 0, 0);
-	}
-	
-	 /**
-	 * Verifica se é um estado brasileiro
-	 * 
-	 * @param UF
-	 * @return
+	 * Retorna Array com LBR_NotaFiscal_ID
+	 * @param ctx
+	 * @param estado
+	 * @throws Exception
 	 */
-	private boolean isBR(String uf) 
-	{
-		if (uf.equals("AC")) 		return true;
-		else if (uf.equals("AL")) 	return true;
-		else if (uf.equals("AP")) 	return true;
-		else if (uf.equals("AM")) 	return true;
-		else if (uf.equals("BA")) 	return true;
-		else if (uf.equals("CE")) 	return true;
-		else if (uf.equals("DF")) 	return true;
-		else if (uf.equals("ES")) 	return true;
-		else if (uf.equals("GO")) 	return true;
-		else if (uf.equals("MA")) 	return true;
-		else if (uf.equals("MT")) 	return true;
-		else if (uf.equals("MS")) 	return true;
-		else if (uf.equals("MG")) 	return true;
-		else if (uf.equals("PA")) 	return true;
-		else if (uf.equals("PB")) 	return true;
-		else if (uf.equals("PR")) 	return true;
-		else if (uf.equals("PE")) 	return true;
-		else if (uf.equals("PI")) 	return true;
-		else if (uf.equals("RJ")) 	return true;
-		else if (uf.equals("RN")) 	return true;
-		else if (uf.equals("RS")) 	return true;
-		else if (uf.equals("RO")) 	return true;
-		else if (uf.equals("RR")) 	return true;
-		else if (uf.equals("SC")) 	return true;
-		else if (uf.equals("SP")) 	return true;
-		else if (uf.equals("SE")) 	return true;
-		else if (uf.equals("TO")) 	return true;
-		else 						return false;
-	}
+	private MNotaFiscal[] getNotasFiscais(Properties ctx, String estado){
+
+		StringBuffer whereClause = new StringBuffer("");
+		//
+		whereClause.append("AD_Client_ID=? AND AD_Org_ID=? ");
+		//
+		if(estado != "")
+			whereClause.append("AND lbr_BPRegion='" + estado + "' ");
+		//
+		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ? AND ? ");
+		//
+		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);
+		Query q =  new Query(ctx, table, whereClause.toString(), null);
+		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID, p_DateFrom, p_DateTo});
+		q.setOrderBy(" (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), Documentno ");
+		List<MNotaFiscal> list = q.list();
+
+		return list.toArray(new MNotaFiscal[list.size()]);
+	} //getNotasFiscais
 
 	/**************************************************************************
 	 *  getLines
 	 *  @param String MNotaFiscal
 	 *  @return MNotaFiscalLine[] lines
 	 */
-	private MLBRNotaFiscalLine[] getLines(MLBRNotaFiscal NF)
+	private MNotaFiscalLine[] getLines(MNotaFiscal nf)
 	{
-		if (NF == null)
-		 return null;
-		//
+
 		String whereClause = "LBR_NotaFiscal_ID = ? "
-			+ "AND lbr_CFOPName NOT LIKE '%1%933%' "			
-			+ "AND lbr_CFOPName NOT LIKE '%2%933%' ";
-		//
-		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);		
-		Query query =  new Query(table, whereClause, get_TrxName());
-	 		  query.setParameters(new Object[]{NF.getLBR_NotaFiscal_ID()});
-	 	//
-	 	query.setOrderBy("Line");
-	 	//
-		List<MLBRNotaFiscalLine> list = query.list();
-		//
-		return list.toArray(new MLBRNotaFiscalLine[list.size()]);	
-	}	//	getLines
-	
+			               + "AND lbr_CFOPName NOT LIKE '%1%933%' "
+			               + "AND lbr_CFOPName NOT LIKE '%2%933%' "
+			               + "AND lbr_CFOPName NOT LIKE '%352%' "
+			               + "AND lbr_CFOPName NOT LIKE '%ZZZ%'";;
+
+		String orderBy = "Line";
+		Object[] parameters = new Object[]{nf.getLBR_NotaFiscal_ID()};
+
+		return nf.getLines(parameters, whereClause, orderBy);
+	}//	getLines
+
 }	//	ProcGenerateSINTEGRA

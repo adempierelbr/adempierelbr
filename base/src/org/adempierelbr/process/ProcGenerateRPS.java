@@ -12,27 +12,26 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfes.NFSeRPSGenerator;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MSequence;
-import org.compiere.model.MSysConfig;
-import org.compiere.model.MTable;
-import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
 
 /**
  *	ProcGenerateRPS
@@ -42,29 +41,28 @@ import org.compiere.util.Env;
  *	 
  *	@author Alvaro Montenegro
  *  @contributor Mario Grigioni (Kenos, www.kenos.com.br), mgrigioni
- *  @contributor Ricardo Santana (Kenos, www.kenos.com.br), ralexsander
- *	@version $Id: ProcGenerateRPS.java, v2.0 2008/04/17 10:37:22 PM, amontenegro Exp $
+ *	@version $Id: ProcGenerateRPS.java, 17/04/2008 10:38:00 amontenegro
  */
 public class ProcGenerateRPS extends SvrProcess
 {
-	/** Data Emissão     	*/
+	
+	/** Data Emissão     */
 	private Timestamp p_DateFrom;
 	private Timestamp p_DateTo;
 	
-	/**	Arquivo	            */
+	/** Tipos de Formatacao */
+	private static final int FORMATAR_DATA = 1;
+	private static final int FORMATAR_VALOR = 2;
+	private static final int FORMATAR_SOMENTE_NUMEROS = 3;
+	
+	/**	Arquivo	               */
 	private String p_FilePath = null;
 	
-	/**	Extensão do Arquivo	*/
+	/**	Extensão do Arquivo			*/
 	public static final String ext = ".txt";
 	
-	/**	Organização			*/
-	private Integer p_AD_Org_ID;
-	
-	/**	Logger				*/
+	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcGenerateRPS.class);
-	
-	/** Charset				*/
-	private static final Charset ISO88591 = Charset.forName("ISO8859_1");
 
 	/**
 	 *  Prepare - e.g., get Parameters.
@@ -86,16 +84,9 @@ public class ProcGenerateRPS extends SvrProcess
 			{
 				p_FilePath = para[i].getParameter().toString();
 			}
-			else if(name.equals("AD_Org_ID"))
-			{
-				p_AD_Org_ID = para[i].getParameterAsInt();
-			}
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
-		//	Default Organization
-		if (p_AD_Org_ID == null || p_AD_Org_ID <= 0)
-			p_AD_Org_ID = Env.getContextAsInt(Env.getCtx(), "#AD_Org_ID");
 	}	//	prepare
 
 	/**
@@ -106,67 +97,233 @@ public class ProcGenerateRPS extends SvrProcess
 	protected String doIt() throws Exception
 	{
 		log.info("GenerateRPS Process ");
-		//
-		if (p_AD_Org_ID <= 0)
-			return "No organization found";
-		//
+
 		Properties ctx = getCtx();
-		String     trxName = get_TrxName();
+		String     trx = get_TrxName();
 		String     fileName = p_FilePath;
-		//
-	    if (!fileName.endsWith(POLBR.getFileSeparator())) 
-	    	fileName += POLBR.getFileSeparator();
-		//
-		String dateFrom = TextUtil.timeToString(p_DateFrom, "ddMMyyyy");
-		String dateTo = TextUtil.timeToString(p_DateTo, "ddMMyyyy");
-		//
-		fileName += "RPS_" + dateFrom + "_" + dateTo + ext;
-		generate (ctx, trxName, fileName);
-		//
+
+	    if (!(fileName.endsWith(AdempiereLBR.getFileSeparator()))) 
+	    	fileName += AdempiereLBR.getFileSeparator();
+		
+		String date1Str = TextUtil.timeToString(p_DateFrom, "ddMMyy");
+		String date2Str = TextUtil.timeToString(p_DateTo, "ddMMyy");
+		
+		fileName += "rps" + date1Str + "_" + date2Str + ext;
+		
+		generate(ctx,trx,fileName,p_DateFrom,p_DateTo);
+	
 		return "GenerateRPS Process Completed ";
+		
 	}	//	doIt
 	
-	/**
-	 * 	Gera o arquivo do RPS
-	 * 
-	 * @param ctx
-	 * @param trxName
-	 * @param fileName
-	 * @param dateFrom
-	 * @param dateTo
-	 * @throws IOException
-	 */
-	private void generate (Properties ctx, String trxName, String fileName) throws Exception
+	private void generate(Properties ctx, String trx, String FileName, Timestamp from, Timestamp to) throws IOException
 	{
-		MOrgInfo OrgInfo = MOrgInfo.get(ctx, p_AD_Org_ID);
+		FileWriter fw = TextUtil.createFile(FileName, false);
+		int totalRows = 0;
+		
+		MOrg Org = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrgInfo OrgInfo = Org.getInfo();
+		
 		String ccm = OrgInfo.get_ValueAsString("lbr_CCM");
-		//
-		StringBuffer result = new StringBuffer("");
-		result.append(NFSeRPSGenerator.generateHeader(ccm, p_DateFrom, p_DateTo));
-		//
-		String where = "IsCancelled='N' AND DateDoc BETWEEN " + 
-			DB.TO_DATE(p_DateFrom) + " AND " + 
-			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=? AND IsPrinted='N' " +
-			"AND C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType WHERE lbr_NFModel LIKE 'RPS%') ";
-		//
-		MTable t = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);
-		Query q = new Query (t, where, trxName);
-		q.setParameters(new Object[]{p_AD_Org_ID});
-		//
-		List<MLBRNotaFiscal> list = q.list();
-		for (MLBRNotaFiscal nf : list)
+		
+		generateHeader(fw,from,to,ccm);
+		
+		StringBuffer sql = new StringBuffer("");
+		
+		sql.append("SELECT * FROM LBR_RPS_v ")
+		   .append(getWhereClause());
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
 		{
-			//	Gera a sequência de RPS neste momento
-			if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, nf.getAD_Client_ID())
-					&& MLBRNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
+			pstmt = DB.prepareStatement(sql.toString(), trx);
+			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
+			pstmt.setInt(2, Env.getAD_Org_ID(ctx));
+			pstmt.setTimestamp(3, from);
+			pstmt.setTimestamp(4, to);
+			rs = pstmt.executeQuery();
+			while (rs.next())
 			{
-				nf.setDocumentNo(MSequence.getDocumentNo(nf.getC_DocTypeTarget_ID(), trxName, false));
-				nf.save();
+				TextUtil.addText(fw, TextUtil.pad(rs.getInt("tipo_de_registro"), ' ', 1, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("tipo_de_rps"), ' ', 5, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("serie_do_rps"), ' ', 5, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("numero_do_rps"), '0', 12, true, true, true));
+				TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_DATA, rs.getTimestamp("data_de_emissao_do_rps")), ' ', 8, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("situacao_do_rps"), ' ', 1, false));
+				TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_VALOR, rs.getBigDecimal("valor_dos_servicos")), '0', 15, true));
+				TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_VALOR, rs.getBigDecimal("valor_das_deducoes")), '0', 15, true));
+				TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_SOMENTE_NUMEROS, rs.getString("codigo_do_servico_prestado")), '0', 5, true));
+				TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_VALOR, rs.getBigDecimal("aliquota")), '0', 4, true));
+				TextUtil.addText(fw, TextUtil.pad(rs.getInt("iss_retido"), ' ', 1, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("indicador_pf_pj_tomador"), ' ', 1, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("cpf_cnpj_tomador"), '0', 14, true, true, true));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("insc_municipal_tomador"), '0', 8, true, true, true));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("insc_estadual_tomador"), '0', 12, true, true, true));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("nome_razao_tomador"), ' ', 75, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("tipo_end_tomador"), ' ', 3, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("end_tomador"), ' ', 50, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("num_tomador"), ' ', 10, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("complemento_tomador"), ' ', 30, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("bairro_tomador"), ' ', 30, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("cidade_tomador"), ' ', 50, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("uf_tomador"), ' ', 2, false));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("cep_tomador"), '0', 8, true, true, true));
+				TextUtil.addText(fw, TextUtil.pad(rs.getString("email_tomador"), ' ', 75, false));
+				TextUtil.addText(fw, replaceACSII(rs.getString("discriminacao_dos_servicos")));
+				TextUtil.addEOL(fw);
+				totalRows++;
 			}
-			result.append(NFSeRPSGenerator.generateRPS(nf.getLBR_NotaFiscal_ID(), trxName));
+ 		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
 		}
-		result.append(NFSeRPSGenerator.generateFooter());
-		//
-		TextUtil.generateFile(result.toString(), fileName, ISO88591.displayName());
-	}	//	generate	
-}	//	ProcGenerateRPS
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null; pstmt = null;
+		}
+		
+		try
+		{
+			sql = new StringBuffer("SELECT SUM(valor_dos_servicos) AS totalServicos, ")
+				.append("SUM(valor_das_deducoes) AS totalDeducoes ")
+				.append("FROM LBR_RPS_v ")
+				.append(getWhereClause());
+			
+			pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
+			pstmt.setInt(1, Env.getAD_Client_ID(ctx));
+			pstmt.setInt(2, Env.getAD_Org_ID(ctx));
+			pstmt.setTimestamp(3, from);
+			pstmt.setTimestamp(4, to);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+			{
+				BigDecimal totalServicos = rs.getBigDecimal("totalServicos");
+				BigDecimal totalDeducoes = rs.getBigDecimal("totalDeducoes");
+				
+				generateFooter(fw, totalRows, totalServicos, totalDeducoes);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, sql.toString(), e);
+		}
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null; pstmt = null;
+		}
+
+		TextUtil.closeFile(fw);
+		
+	}//generate
+	
+	private String getWhereClause()
+	{
+		return " WHERE AD_Client_ID = ? AND AD_Org_ID = ? AND Data_De_Emissao_Do_RPS BETWEEN ? AND ?";
+	}
+	
+	private void generateHeader(FileWriter fw, Timestamp from, Timestamp to, String ccm) throws IOException
+	{
+		
+		TextUtil.addText(fw, "1"); //Tipo de Registro
+		TextUtil.addText(fw, "001"); //Versão do Arquivo
+		TextUtil.addText(fw, TextUtil.pad(ccm, ' ', 8, false)); //Inscrição Municipal do Prestador
+		TextUtil.addText(fw, RPSDataFormat(FORMATAR_DATA, from)); //Data de Início do Período Transferido no Arquivo
+		TextUtil.addText(fw, RPSDataFormat(FORMATAR_DATA, to)); //Data de Fim do Período Transferido no Arquivo
+		TextUtil.addEOL(fw);
+		
+	} //generateHeader
+	
+	private void generateFooter(FileWriter fw, int lines, BigDecimal totalServicos, BigDecimal totalDeduces) throws IOException
+	{
+		
+		TextUtil.addText(fw, "9"); //Tipo de Registro
+		TextUtil.addText(fw, TextUtil.pad(lines, '0', 7, true));
+		TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_VALOR, totalServicos), '0', 15, true));
+		TextUtil.addText(fw, TextUtil.pad(RPSDataFormat(FORMATAR_VALOR, totalDeduces), '0', 15, true));
+		TextUtil.addEOL(fw);
+		
+	} //generateFooter
+	
+	/**************************************************************************
+	 * 	RPSDateFormat
+	 *  Convert Timestamp to AAAAMMDD
+	 *  Convert BigDecimal to specific format (10,54 ==> 00001054)
+	 *  @param Timestamp dt
+	 * 	@return String data
+	 */
+	private String RPSDataFormat(int formato, Object obj)
+	{
+		if (formato == FORMATAR_DATA)
+		{
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+			String data = formatter.format(obj); 
+			data = data.replaceAll("[/]", "");
+			data = data.substring(0, 8);
+			return data;
+		}
+		else if (formato == FORMATAR_VALOR)
+		{
+			BigDecimal valor = (BigDecimal) obj;
+			if (valor == null)
+				valor = Env.ZERO;
+			
+			String valor_txt = String.format("%10.2f", valor.doubleValue());
+			String valor_result = "";
+			
+			for(int i=0; i < valor_txt.length(); i++)
+			{
+				if(Character.isDigit(valor_txt.charAt(i)))
+					valor_result += "" + valor_txt.charAt(i);
+			}
+			
+			return valor_result;
+		}
+		else if (formato == FORMATAR_SOMENTE_NUMEROS)
+		{
+			String texto = (String) obj;
+			
+			if(texto == null || texto.length() <= 0)
+				return "";
+
+			String texto_result = "";
+			
+			for(int i=0; i < texto.length(); i++)
+			{
+				if(Character.isDigit(texto.charAt(i)))
+					texto_result += "" + texto.charAt(i);
+			}
+			
+			return texto_result;
+		}
+		else
+			return "";
+	}
+	
+	private String replaceACSII(String str)
+	{
+		if (str == null || str.length() <= 0)
+			str = " ";
+		
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < str.length(); i++)
+		{
+			int c = (int) str.charAt(i);
+			if ((c != 13) && (c != 10))
+			{
+				sb.append(str.charAt(i));
+			} 
+			else
+			{
+				sb.append("|");
+			}
+		}
+
+		return sb.toString();
+	}
+	
+} //ProcGenerateRPS

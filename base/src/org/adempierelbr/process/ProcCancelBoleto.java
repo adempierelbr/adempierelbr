@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.boleto.MBoleto;
+import org.adempierelbr.model.MBoleto;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 

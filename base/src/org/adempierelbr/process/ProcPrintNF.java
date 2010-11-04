@@ -19,10 +19,10 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRDocPrint;
-import org.adempierelbr.model.MLBRDocPrintForm;
-import org.adempierelbr.model.MLBRMatrixPrinter;
-import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MDocPrint;
+import org.adempierelbr.model.MDocPrintForm;
+import org.adempierelbr.model.MMatrixPrinter;
+import org.adempierelbr.model.MNotaFiscal;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -97,7 +97,7 @@ public class ProcPrintNF extends SvrProcess
 		
 		int i = 0;
 		
-		MLBRMatrixPrinter MatrixPrinter = new MLBRMatrixPrinter(getCtx(),p_LBR_MatrixPrinter_ID,null);
+		MMatrixPrinter MatrixPrinter = new MMatrixPrinter(getCtx(),p_LBR_MatrixPrinter_ID,null);
 		
 		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
 		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
@@ -105,14 +105,14 @@ public class ProcPrintNF extends SvrProcess
 	    int pitch           = MatrixPrinter.getlbr_Pitch(); 
 	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
 		
-		MLBRDocPrint DoctypePrint = new MLBRDocPrint(getCtx(),p_LBR_DocPrint_ID,null);
+		MDocPrint DoctypePrint = new MDocPrint(getCtx(),p_LBR_DocPrint_ID,null);
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
 		if (i != 0)
 			DoctypePrint.newPage();
 		
 		for (i = p_LBR_NotaFiscal_ID;i<=p_LBR_NotaFiscal_ID_to;i++){
 			
-			MLBRNotaFiscal NotaFiscal = new MLBRNotaFiscal(getCtx(),i,get_TrxName());
+			MNotaFiscal NotaFiscal = new MNotaFiscal(getCtx(),i,get_TrxName());
 			
 			if (!NotaFiscal.isPrinted() && !NotaFiscal.isCancelled()){
 				print(getCtx(), i, MatrixPrinter, DoctypePrint,null);
@@ -126,13 +126,13 @@ public class ProcPrintNF extends SvrProcess
 		
 		DoctypePrint.endJob();
 		
-		MLBRDocPrint.unixPrint(MatrixPrinter);
+		MDocPrint.unixPrint(MatrixPrinter);
 			    
 		return "ProcPrintNF Process Completed " + "Nota: " + p_LBR_NotaFiscal_ID;
 		
 	}	//	doIt
 	
-	public static void print(Properties ctx, int LBR_NotaFiscal_ID, MLBRMatrixPrinter MatrixPrinter, MLBRDocPrint DoctypePrint, String Trx){
+	public static void print(Properties ctx, int LBR_NotaFiscal_ID, MMatrixPrinter MatrixPrinter, MDocPrint DoctypePrint, String Trx){
 		
 		int noItens        = 0;
 		int noRows         = 500;
@@ -141,8 +141,8 @@ public class ProcPrintNF extends SvrProcess
 
 	    BigDecimal noPages = Env.ONE;
 	    
-	    MLBRDocPrint SubDoc1  = null;
-	    MLBRDocPrint SubDoc2  = null;
+	    MDocPrint SubDoc1  = null;
+	    MDocPrint SubDoc2  = null;
 		
 	    noItens = getNoItens(LBR_NotaFiscal_ID,Trx);
 		
@@ -151,17 +151,17 @@ public class ProcPrintNF extends SvrProcess
 		int LBR_SubDoc2_ID = DoctypePrint.getlbr_SubDoc2_ID(); //Serviços
 		
 		if (LBR_SubDoc_ID != 0){
-			SubDoc1 = new MLBRDocPrint(ctx,LBR_SubDoc_ID,Trx);
+			SubDoc1 = new MDocPrint(ctx,LBR_SubDoc_ID,Trx);
 			noRows  = SubDoc1.getlbr_NoRows();
 			if (noRows == 0) noRows = 500;
 			noPages = new BigDecimal(noItens).divide(new BigDecimal(noRows), RoundingMode.UP);
 		}
 		
 		if (LBR_SubDoc2_ID != 0){
-			SubDoc2 = new MLBRDocPrint(ctx,LBR_SubDoc2_ID,Trx);
+			SubDoc2 = new MDocPrint(ctx,LBR_SubDoc2_ID,Trx);
 		}
 		
-		MLBRDocPrintForm form;
+		MDocPrintForm form;
 
 		for(int i = 0; i < noPages.intValue(); i++){
 			
@@ -172,7 +172,7 @@ public class ProcPrintNF extends SvrProcess
 				lastpage = false;
 			}
 
-			form = new MLBRDocPrintForm();
+			form = new MDocPrintForm();
 		    StringBuffer subdocsql = null;	
 		    StringBuffer sql = new StringBuffer();
 		    sql.append("SELECT * FROM ");
@@ -190,7 +190,7 @@ public class ProcPrintNF extends SvrProcess
 
 		    	if (LBR_SubDoc_ID != 0){
 
-		    		MLBRDocPrint SubDocPrint = new MLBRDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
+		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc_ID(),Trx);
 		    		subdocsql = new StringBuffer();
 		    		subdocsql.append("SELECT * FROM ");
 		    		subdocsql.append(SubDoc1.getlbr_TableName());
@@ -208,7 +208,7 @@ public class ProcPrintNF extends SvrProcess
 		    	 */
 		    	if (LBR_SubDoc2_ID != 0){
 
-		    		MLBRDocPrint SubDocPrint = new MLBRDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
+		    		MDocPrint SubDocPrint = new MDocPrint(ctx, DoctypePrint.getlbr_SubDoc2_ID(),Trx);
 		    		subdocsql = new StringBuffer();
 		    		subdocsql.append("SELECT * FROM ");
 	                subdocsql.append(SubDoc2.getlbr_TableName());

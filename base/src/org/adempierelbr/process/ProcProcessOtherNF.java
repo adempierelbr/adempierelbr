@@ -15,7 +15,6 @@ package org.adempierelbr.process;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -24,9 +23,9 @@ import java.util.logging.Level;
 import javax.sql.rowset.CachedRowSet;
 
 import org.adempierelbr.callout.CalloutDefineCFOP;
-import org.adempierelbr.model.MLBROtherNF;
-import org.adempierelbr.model.MLBROtherNFLine;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.model.MOtherNF;
+import org.adempierelbr.model.MOtherNFLine;
+import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
@@ -81,7 +80,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		String trx = get_TrxName();
 		int LBR_OtherNF_ID = getRecord_ID();
 		
-		MLBROtherNF otherNF = new MLBROtherNF(ctx,LBR_OtherNF_ID,trx);
+		MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
 		
 		if(ProcessarLinhas(otherNF,returnMsg))
 			otherNF.setProcessed(true);
@@ -90,7 +89,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		return returnMsg.toString();
 	}//doIt
 	
-	private boolean ProcessarLinhas(MLBROtherNF otherNF, StringBuffer returnMsg)
+	private boolean ProcessarLinhas(MOtherNF otherNF, StringBuffer returnMsg)
 	{	
 		Map<Integer,Integer> ordersAdded = new HashMap<Integer, Integer>();
 		Integer C_DocTypeTarget_ID = 0;
@@ -107,7 +106,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		else
 			C_DocTypeTarget_ID = (Integer)otherNF.getC_DocTypeTarget_ID();
 		
-		for(MLBROtherNFLine line : otherNF.getLines(null, null))
+		for(MOtherNFLine line : otherNF.getLines(null, null))
 		{
 			
 			MInvoiceLine refInvLine = new MInvoiceLine(ctx,line.getC_InvoiceLine_ID(),trx);
@@ -172,7 +171,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		return 0;
 	}
 	
-	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, MLBROtherNFLine line, int M_Warehouse_ID)
+	private int CriaLinha(int oldC_Order_ID, int newC_Order_ID, MInvoiceLine invLine, MOtherNFLine line, int M_Warehouse_ID)
 	{
 		Properties ctx = getCtx();
 		String trx = get_TrxName();
@@ -195,7 +194,7 @@ public class ProcProcessOtherNF extends SvrProcess
 	}
 	
 	
-	private boolean precheck(MLBROtherNF otherNF,StringBuffer returnMsg)
+	private boolean precheck(MOtherNF otherNF,StringBuffer returnMsg)
 	{
 		boolean returnValue = false;
 		PreparedStatement pstmt = null;
@@ -209,7 +208,7 @@ public class ProcProcessOtherNF extends SvrProcess
 					MDocType dt = new MDocType(getCtx(),otherNF.getC_DocType_ID(),trx);
 					MDocType shpDT = new MDocType(getCtx(),dt.getC_DocTypeShipment_ID(),trx);
 					MBPartner bp = new MBPartner(getCtx(),otherNF.getC_BPartner_ID(),trx);
-					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = " + POLBR.getM_Locator_ID((Integer)shpDT.get_Value("M_Warehouse_ID"),bp, trx) + " and m_product_id = nfl.m_product_id) - qty ");
+					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = " + AdempiereLBR.getM_Locator_ID((Integer)shpDT.get_Value("M_Warehouse_ID"),bp, trx) + " and m_product_id = nfl.m_product_id) - qty ");
 				}
 				else
 					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = nfl.m_locator_id and m_product_id = nfl.m_product_id) - qty ");

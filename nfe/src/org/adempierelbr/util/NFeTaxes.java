@@ -12,26 +12,12 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.MLBRNotaFiscalLine;
-import org.adempierelbr.util.POLBR;
-import org.compiere.model.MOrgInfo;
-import org.compiere.model.MTable;
-import org.compiere.model.Query;
-import org.compiere.model.X_LBR_NFLineTax;
-import org.compiere.model.X_LBR_NFeLot;
-import org.compiere.model.X_LBR_NotaFiscalLine;
-import org.compiere.model.X_LBR_TaxGroup;
-import org.compiere.util.DB;
+import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.X_LBR_NFLineTax;
+import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.compiere.util.Env;
 
 /**
@@ -55,7 +41,7 @@ public class NFeTaxes
 	
 	private BigDecimal pImposto;
 	
-	private BigDecimal vRedBC;
+	private BigDecimal pRedBC;
 	
 	private String CST;
 	
@@ -75,7 +61,7 @@ public class NFeTaxes
 		setvBC(Env.ZERO);
 		setvImposto(Env.ZERO);
 		setpImposto(Env.ZERO);
-		setvRedBC(Env.ZERO);
+		setpRedBC(Env.ZERO);
 		setCST(CST);
 	}
 	
@@ -90,13 +76,13 @@ public class NFeTaxes
 	 * @param CST
 	 */
 	public NFeTaxes (String taxIndicator, BigDecimal vBC, BigDecimal vImposto, 
-				BigDecimal pImposto, BigDecimal vRedBC, String CST)
+				BigDecimal pImposto, BigDecimal pRedBC, String CST)
 	{
 		this (taxIndicator, CST);
 		setvBC(vBC);
 		setvImposto(vImposto);
 		setpImposto(pImposto);
-		setvRedBC(vRedBC);
+		setpRedBC(pRedBC);
 	}
 	
 	/**
@@ -107,7 +93,7 @@ public class NFeTaxes
 	 * 		mesmo que sem valores a destacar.	
 	 * @return NFeTaxes Taxes
 	 */
-	public static NFeTaxes[] getTaxes (MLBRNotaFiscalLine nfl)
+	public static NFeTaxes[] getTaxes (MNotaFiscalLine nfl)
 	{
 		HashMap<String, NFeTaxes> txs = new HashMap<String, NFeTaxes>();
 		//
@@ -203,14 +189,14 @@ public class NFeTaxes
 		this.pImposto = pImposto;
 	}
 
-	public BigDecimal getvRedBC()
+	public BigDecimal getpRedBC()
 	{
-		return vRedBC;
+		return pRedBC;
 	}
 
-	public void setvRedBC(BigDecimal vRedBC)
+	public void setpRedBC(BigDecimal pRedBC)
 	{
-		this.vRedBC = vRedBC;
+		this.pRedBC = pRedBC;
 	}
 
 	public String getCST()

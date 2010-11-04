@@ -1,12 +1,20 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -29,7 +37,7 @@ public class ValidaXML {
 		{
 			//	Grava o arquivo no tmp
 			URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-//			File xsdFile = new File(xsdPath.getPath());
+          //File xsdFile = new File(xsdPath.getPath());
 			//
 			Schema schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
 			Validator validator = schema.newValidator();
@@ -92,13 +100,5 @@ public class ValidaXML {
 	
 	public static String validaRetCancelamentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retCancNFe_v1.07.xsd");
-	}
-	
-	public static String validaPedInutilizacaoNFe(String stringXml) {
-		return ValidaDoc(stringXml, "inutNFe_v1.07.xsd");
-	}
-	
-	public static String validaRetInutilizacaoNFe(String stringXml) {
-		return ValidaDoc(stringXml, "retInutNFe_v1.07.xsd");
 	}
 }

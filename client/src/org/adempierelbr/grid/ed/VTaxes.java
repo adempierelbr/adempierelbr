@@ -19,7 +19,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -32,11 +31,12 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 
 import org.adempiere.plaf.AdempierePLAF;
-import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MTaxLBR;
 import org.adempierelbr.model.MTaxesLookup;
-import org.compiere.apps.ADialog;
+import org.compiere.apps.FieldRecordInfo;
 import org.compiere.grid.ed.VEditor;
 import org.compiere.grid.ed.VLookup;
+import org.compiere.model.GridField;
 import org.compiere.swing.CButton;
 import org.compiere.swing.CMenuItem;
 import org.compiere.util.CLogger;
@@ -59,6 +59,35 @@ public class VTaxes extends JComponent
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 *	Mouse Listener for Popup Menu
+	 */
+	final class VTaxes_mouseAdapter extends java.awt.event.MouseAdapter
+	{
+		/**
+		 *	Constructor
+		 *  @param adaptee adaptee
+		 */
+		VTaxes_mouseAdapter(VTaxes adaptee)
+		{
+			this.adaptee = adaptee;
+		}	//	VLookup_mouseAdapter
+
+		private VTaxes adaptee;
+
+		/**
+		 *	Mouse Listener
+		 *  @param e MouseEvent
+		 */
+		public void mouseClicked(MouseEvent e)
+		{
+			//	popup menu
+			if (SwingUtilities.isRightMouseButton(e))
+				adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
+		}	//	mouse Clicked
+
+	}	//	VTaxes_mouseAdapter
 
 	/**
 	 *	Constructor
@@ -127,7 +156,7 @@ public class VTaxes extends JComponent
 	private CButton				m_button = new CButton();
 
 	private MTaxesLookup		m_mTaxes;
-	private MLBRTax			    m_value;
+	private MTaxLBR			    m_value;
 
 	private String				m_columnName;
 	/**	Logger			*/
@@ -137,6 +166,9 @@ public class VTaxes extends JComponent
 	JPopupMenu 					popupMenu = new JPopupMenu();
 	private CMenuItem 			mDelete;
 
+	/** The Grid Field * */
+	private GridField m_GridField; // added for processCallout
+	
 	/**
 	 *	Enable/disable
 	 *  @param value true if ReadWrite
@@ -288,30 +320,39 @@ public class VTaxes extends JComponent
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
+		if (e.getActionCommand().equals(FieldRecordInfo.CHANGE_LOG_COMMAND))
+		{
+			FieldRecordInfo.start(m_GridField);
+			return;
+		}
+		
 		if (e.getSource() == mDelete)
 			m_value = null;        //  create new
 		//
 		log.config( "actionPerformed - " + m_value);
-		VTaxesDialog td = new VTaxesDialog(Env.getFrame(this),
-				Msg.translate(Env.getCtx(), "LBR_Tax_ID"), m_value);
-		td.setVisible(true);
-		m_value = td.getValue();
+		VTaxesDialog ld = new VTaxesDialog(Env.getFrame(this),
+			Msg.getMsg(Env.getCtx(), "LBR_Tax_ID"), m_value);
+		ld.setVisible(true);
+		m_value = ld.getValue();
 		//
 		if (e.getSource() == mDelete)
 			;
-		else if (!td.isChanged())
+		else if (!ld.isChanged())
 			return;
 
 		//	Data Binding
 		try
 		{
-			Integer LBR_Tax_ID = null;
+			int LBR_Tax_ID = 0;
 			if (m_value != null)
 				LBR_Tax_ID = m_value.getLBR_Tax_ID();
+			Integer ii = new Integer(LBR_Tax_ID);
+	
 			//  force Change - user does not realize that embedded object is already saved.
 			fireVetoableChange(m_columnName, null, null);
-			fireVetoableChange(m_columnName, null, LBR_Tax_ID);
-			setValue(LBR_Tax_ID);
+			fireVetoableChange(m_columnName, null, ii);
+			
+			setValue(ii);
 		}
 		catch (PropertyVetoException pve)
 		{
@@ -335,60 +376,9 @@ public class VTaxes extends JComponent
 	 */
 	public void setField (org.compiere.model.GridField mField)
 	{
+		m_GridField = mField;
+		if (m_GridField != null)
+			FieldRecordInfo.addMenu(this, popupMenu);
 	}   //  setField
 	
-	/**
-	 *	Action - Info
-	 *	Ricardo Santana (Kenos, www.kenos.com.br), rsantana
-	 */
-	void actionInfo()
-	{
-		if (m_text == null)
-			return;
-		
-		ADialog.info(0, this, "Info", 
-				
-				"ColumnName: " + m_columnName + "\n" +
-				"Value: " + getValue() + "\n" +
-				"ReadWrite: " + isReadWrite() + "\n" +
-				"Mandatory: " + isMandatory());
-	}	//actionInfo
-
-}	//	VLocation
-
-/*****************************************************************************/
-
-/**
- *	Mouse Listener for Popup Menu
- */
-final class VTaxes_mouseAdapter extends java.awt.event.MouseAdapter
-{
-	/**
-	 *	Constructor
-	 *  @param adaptee adaptee
-	 */
-	VTaxes_mouseAdapter(VTaxes adaptee)
-	{
-		this.m_adaptee = adaptee;
-	}	//	VLookup_mouseAdapter
-
-	private VTaxes m_adaptee;
-
-	/**
-	 *	Mouse Listener
-	 *  @param e MouseEvent
-	 */
-	public void mouseClicked(MouseEvent e)
-	{
-		//	ActionInfo
-		if (SwingUtilities.isRightMouseButton(e) && ((e.getModifiers() & InputEvent.CTRL_MASK) != 0))	//ELTEK
-			m_adaptee.actionInfo(); // rsantana
-		
-		else
-		
-		//	popup menu
-		if (SwingUtilities.isRightMouseButton(e))
-			m_adaptee.popupMenu.show((Component)e.getSource(), e.getX(), e.getY());
-	}	//	mouse Clicked
-
-}	//	VTaxes_mouseAdapter
+}	//	VTaxes

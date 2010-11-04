@@ -17,12 +17,11 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBROtherNFLine;
-import org.adempierelbr.model.MLBRProcessLink;
-import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.model.boleto.MBoleto;
+import org.adempierelbr.model.MBoleto;
+import org.adempierelbr.model.MTaxLBR;
 import org.adempierelbr.process.ProcGenerateNF;
-import org.adempierelbr.util.POLBR;
+import org.adempierelbr.util.TaxBR;
+import org.adempierelbr.util.TaxesCalculation;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MAllocationLine;
@@ -44,16 +43,16 @@ import org.compiere.util.Msg;
 
 /**
  * ValidatorInvoice
- * 
+ *
  * Validate Invoice (Tax Calculation)
- * 
+ *
  * [ 1967069 ] LBR_Tax não é excluído quando excluí uma linha, mgrigioni
  * [ 2200626 ] Lista de Preço Brasil, mgrigioni
- * 
+ *
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  * @version $Id: ValidatorInvoice.java, 04/01/2008 15:56:00 mgrigioni
- * 
+ *
  *          BF: 1928906 - amontenegro
  */
 public class ValidatorInvoice implements ModelValidator
@@ -73,34 +72,30 @@ public class ValidatorInvoice implements ModelValidator
 	private int				m_AD_Client_ID	= -1;
 
 	/**
-	 * Initialize Validation
-	 * 
-	 * @param engine
-	 *            validation engine
-	 * @param client
-	 *            client
+	 *	Initialize Validation
+	 *	@param engine validation engine
+	 *	@param client client
 	 */
-	public void initialize(ModelValidationEngine engine, MClient client)
+	public void initialize (ModelValidationEngine engine, MClient client)
 	{
 		//client = null for global validator
-        if (client != null) {
-            m_AD_Client_ID = client.getAD_Client_ID();
-            log.info(client.toString());
-        }
-        else  {
-            log.info("Initializing global validator: "+this.toString());
-        }
+		if (client != null) {
+			m_AD_Client_ID = client.getAD_Client_ID();
+			log.info(client.toString());
+		}
+		else  {
+			log.info("Initializing global validator: "+this.toString());
+		}
 
-		// ModelChange
-		engine.addModelChange("C_Invoice", this);
-		engine.addModelChange("C_InvoiceLine", this);
-		// DocValidate
-		engine.addDocValidate("C_Invoice", this);
-	} // initialize
+		engine.addModelChange(MInvoice.Table_Name, this);
+		engine.addModelChange(MInvoiceLine.Table_Name, this);
+
+		engine.addDocValidate(MInvoice.Table_Name, this);
+	}	//	initialize
 
 	/**
 	 * Get Client to be monitored
-	 * 
+	 *
 	 * @return AD_Client_ID client
 	 */
 	public int getAD_Client_ID()
@@ -110,7 +105,7 @@ public class ValidatorInvoice implements ModelValidator
 
 	/**
 	 * User Login. Called when preferences are set
-	 * 
+	 *
 	 * @param AD_Org_ID
 	 *            org
 	 * @param AD_Role_ID
@@ -122,10 +117,6 @@ public class ValidatorInvoice implements ModelValidator
 	public String login(int AD_Org_ID, int AD_Role_ID, int AD_User_ID)
 	{
 		log.info("AD_User_ID=" + AD_User_ID);
-
-		if (getAD_Client_ID() <= 0 && AD_Org_ID == 0 && AD_User_ID != 100)
-			return "Não é possível logar com Org = *";
-
 		return null;
 	} // login
 
@@ -133,7 +124,7 @@ public class ValidatorInvoice implements ModelValidator
 	 * Model Change of a monitored Table. Called after
 	 * PO.beforeSave/PO.beforeDelete when you called addModelChange for the
 	 * table
-	 * 
+	 *
 	 * @param po
 	 *            persistent object
 	 * @param type
@@ -145,20 +136,22 @@ public class ValidatorInvoice implements ModelValidator
 	public String modelChange(PO po, int type) throws Exception
 	{
 
+		log.info(po.get_TableName() + " Type: "+type);
+
+		boolean isChange = (TYPE_AFTER_NEW == type || TYPE_AFTER_CHANGE == type);
+		boolean isNew    = (TYPE_NEW == type);
+		boolean isDelete = (TYPE_BEFORE_DELETE == type);
+
 		// Executa quando uma Invoice é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW))
-		{
-			MInvoice invoice = (MInvoice) po;
-			return modelChange(invoice);
+		if (po instanceof MInvoice && (isNew || isChange)){
+			return modelChange((MInvoice)po);
 		}
 
 		else
 
 		// Executa quando uma InvoiceLine é salva ou atualizada
-		if (po.get_TableName().equalsIgnoreCase("C_InvoiceLine") && (type == TYPE_AFTER_CHANGE || type == TYPE_NEW || type == TYPE_AFTER_NEW || type == TYPE_DELETE))
-		{
-			MInvoiceLine iLine = (MInvoiceLine) po;
-			return modelChange(iLine, type);
+		if (po instanceof MInvoiceLine && (isChange || isNew || isDelete)){
+			return modelChange((MInvoiceLine)po, isNew, isDelete);
 		}
 
 		return null;
@@ -168,138 +161,95 @@ public class ValidatorInvoice implements ModelValidator
 	// @param MInvoice
 	public String modelChange(MInvoice invoice) throws Exception
 	{
-
 		int C_Order_ID = invoice.getC_Order_ID();
-		MOrder order = null;
-		if (C_Order_ID != 0)
-			order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());
-		else
+		if (C_Order_ID <= 0)
 			return null;
 
-		String tType = invoice.get_ValueAsString("lbr_TransactionType");
+		MOrder order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());;
 
-		if (tType == null || tType.equals(""))
-		{
-			tType = order.get_ValueAsString("lbr_TransactionType");
-			if (!(tType == null || tType.equals("")))
-			{
-				invoice.set_ValueOfColumn("lbr_TransactionType", tType);
-			}
+		if (invoice.get_ValueAsString("lbr_TransactionType").equals("")){
+			invoice.set_ValueOfColumn("lbr_TransactionType", order.get_Value("lbr_TransactionType"));
 		}
 
-		String paymentRule = invoice.get_ValueAsString("lbr_PaymentRule");
-
-		if (paymentRule == null || paymentRule.equals(""))
-		{
-			paymentRule = order.get_ValueAsString("lbr_PaymentRule");
-			if (!(paymentRule == null || paymentRule.equals("")))
-			{
-				invoice.set_ValueOfColumn("lbr_PaymentRule", paymentRule);
-			}
+		if (invoice.get_ValueAsString("lbr_PaymentRule").equals("")){
+			invoice.set_ValueOfColumn("lbr_PaymentRule", order.get_Value("lbr_PaymentRule"));
 		}
 
-		Integer C_BankAccount_ID = (Integer) invoice.get_Value("C_BankAccount_ID");
-
-		if (C_BankAccount_ID == null || C_BankAccount_ID.intValue() == 0)
-		{
-			C_BankAccount_ID = (Integer) order.get_Value("C_BankAccount_ID");
-			if (!(C_BankAccount_ID == null || C_BankAccount_ID.intValue() == 0))
-			{
-				invoice.set_ValueOfColumn("C_BankAccount_ID", C_BankAccount_ID);
-			}
-		}
-		
-		String lbr_NFEntrada = invoice.get_ValueAsString("lbr_NFEntrada");
-		
-		if (lbr_NFEntrada == null || lbr_NFEntrada.trim().equalsIgnoreCase(""))
-		{
-			lbr_NFEntrada = order.get_ValueAsString("lbr_NFEntrada");
-			if (lbr_NFEntrada == null || lbr_NFEntrada.trim().equalsIgnoreCase(""))
-			{
-				invoice.set_ValueOfColumn("lbr_NFEntrada", lbr_NFEntrada);
-			}
-		}
-		
-		String lbr_BillNote = invoice.get_ValueAsString("lbr_BillNote");
-		
-		if (lbr_BillNote == null || lbr_BillNote.trim().equalsIgnoreCase(""))
-		{
-			lbr_BillNote = order.get_ValueAsString("lbr_BillNote");
-			if (lbr_BillNote != null && !lbr_BillNote.trim().equalsIgnoreCase(""))
-			{
-				invoice.set_ValueOfColumn("lbr_BillNote", lbr_BillNote);
-			}
-		}
-		
-		String lbr_ShipNote = invoice.get_ValueAsString("lbr_ShipNote");
-		
-		if (lbr_ShipNote == null || lbr_ShipNote.trim().equalsIgnoreCase(""))
-		{
-			lbr_ShipNote = order.get_ValueAsString("lbr_ShipNote");
-			if (lbr_ShipNote != null && !lbr_ShipNote.trim().equalsIgnoreCase(""))
-			{
-				invoice.set_ValueOfColumn("lbr_ShipNote", lbr_ShipNote);
-			}
+		if (invoice.get_ValueAsString("lbr_NFEntrada").trim().equals("")){
+			invoice.set_ValueOfColumn("lbr_NFEntrada", order.get_ValueAsString("lbr_NFEntrada").trim());
 		}
 
-		log.info(invoice.toString());
+		if (invoice.get_ValueAsString("lbr_BillNote").trim().equals("")){
+			invoice.set_ValueOfColumn("lbr_BillNote", order.get_ValueAsString("lbr_BillNote").trim());
+		}
+
+		if (invoice.get_ValueAsString("lbr_ShipNote").trim().equals("")){
+			invoice.set_ValueOfColumn("lbr_ShipNote", order.get_ValueAsString("lbr_ShipNote").trim());
+		}
+
+		if (invoice.get_ValueAsInt("C_BankAccount_ID") == 0) {
+			invoice.set_ValueOfColumn("C_BankAccount_ID", order.get_Value("C_BankAccount_ID"));
+		}
+
 		return validatePaymentTerm(invoice);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param 	iLine 	MInvoiceLine
 	 * @param 	type	Timing
 	 * @return	null or error msg
 	 * @throws Exception
 	 */
-	public String modelChange(MInvoiceLine iLine, int type) throws Exception
+	public String modelChange(MInvoiceLine iLine, boolean isNew, boolean isDelete) throws Exception
 	{
 		Properties ctx = iLine.getCtx();
 		String trx = iLine.get_TrxName();
 
-		if (type == TYPE_DELETE)
-		{
+		MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
+		int LBR_Tax_ID = iLine.get_ValueAsInt("LBR_Tax_ID");
 
-			Integer LBR_Tax_ID = (Integer) iLine.get_Value("LBR_Tax_ID");
-			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
-			{
-				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
+		if (isDelete)
+		{
+			if (LBR_Tax_ID != 0){
+				MTaxLBR lbrTax = new MTaxLBR(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
 				lbrTax.delete(true, iLine.get_TrxName());
 			}
+		} //delete
 
-		}	//	delete
-		else
-		{
-			if (iLine.isProcessed())
+		else {
+			//PROCESSED - don't do any thing
+			if (iLine.isProcessed() || invoice.isProcessed() ||
+				invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Completed)){
+				TaxBR.deleteSummaryTax(invoice.get_ID(), false, trx);
 				return null;
+			}
 
-			Integer LBR_Tax_ID = (Integer) iLine.get_Value("LBR_Tax_ID");
-
-			if (type == TYPE_NEW && (LBR_Tax_ID == null || LBR_Tax_ID.intValue() == 0)) 
+			if (isNew &&  LBR_Tax_ID == 0)
 			{
 				int C_OrderLine_ID = iLine.getC_OrderLine_ID();
 				if (C_OrderLine_ID != 0)
 				{
 					MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
-					//
 					// CFOP, Sit. Tributária, Mensagem Legal
-					Integer LBR_CFOP_ID = (Integer) oLine.get_Value("LBR_CFOP_ID");
-					Integer LBR_LegalMessage_ID = (Integer) oLine.get_Value("LBR_LegalMessage_ID");
-					String sitTributaria = (String) oLine.get_Value("lbr_TaxStatus");
-					//
-					iLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
-					iLine.set_ValueOfColumn("LBR_LegalMessage_ID", LBR_LegalMessage_ID);
-					iLine.set_ValueOfColumn("lbr_TaxStatus", sitTributaria);
-					if(iLine.getDescription() == null
-							|| iLine.getDescription().equals(""))
+					if (iLine.get_ValueAsInt("LBR_CFOP_ID") <= 0)
+						iLine.set_ValueOfColumn("LBR_CFOP_ID", oLine.get_Value("LBR_CFOP_ID"));
+
+					if (iLine.get_ValueAsInt("LBR_LegalMessage_ID") <= 0)
+						iLine.set_ValueOfColumn("LBR_LegalMessage_ID", oLine.get_Value("LBR_LegalMessage_ID"));
+
+					if (iLine.get_ValueAsString("lbr_TaxStatus").isEmpty())
+						iLine.set_ValueOfColumn("lbr_TaxStatus", oLine.get_Value("lbr_TaxStatus"));
+
+					if(iLine.getDescription() == null || iLine.getDescription().equals(""))
 						iLine.setDescription(oLine.getDescription());
+
 					//
-					LBR_Tax_ID = (Integer) oLine.get_Value("LBR_Tax_ID");
-					if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() != 0)
+					LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
+					if (LBR_Tax_ID != 0)
 					{
-						MLBRTax oTax = new MLBRTax(ctx, LBR_Tax_ID, trx);
-						MLBRTax newTax = oTax.copyFrom();
+						MTaxLBR oTax = new MTaxLBR(ctx, LBR_Tax_ID, trx);
+						MTaxLBR newTax = oTax.copyTo();
 						//
 						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 					}
@@ -310,7 +260,8 @@ public class ValidatorInvoice implements ModelValidator
 				// ModelChange
 				try
 				{
-					MLBRTax.modelChange(ctx, iLine, trx);
+					TaxesCalculation calc = new TaxesCalculation(iLine);
+					calc.modelChange();
 				}
 				catch (Exception e)
 				{
@@ -318,8 +269,7 @@ public class ValidatorInvoice implements ModelValidator
 				}
 			} // change
 		} // new or change
-		//
-		log.info(iLine.toString());
+
 		return null;
 	} // modelChange
 
@@ -327,7 +277,7 @@ public class ValidatorInvoice implements ModelValidator
 	 * Validate Document. Called as first step of DocAction.prepareIt when you
 	 * called addDocValidate for the table. Note that totals, etc. may not be
 	 * correct.
-	 * 
+	 *
 	 * @param po
 	 *            persistent object
 	 * @param timing
@@ -337,189 +287,175 @@ public class ValidatorInvoice implements ModelValidator
 	public String docValidate(PO po, int timing)
 	{
 
-		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_PREPARE))
-		{
+		if (po instanceof MInvoice){
+
 			MInvoice invoice = (MInvoice)po;
-			
 			Properties ctx = invoice.getCtx();
 			String     trx = invoice.get_TrxName();
-			
-			MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
-			if (POLBR.get_ValueAsBoolean(docType.get_Value("lbr_HasFiscalDocument")) && //	Gera Documento Fiscal
-				!POLBR.get_ValueAsBoolean(docType.get_Value("lbr_IsOwnDocument")))		//	Não é um documento próprio
-			{ 
-				
-				if (invoice.get_Value("lbr_NFEntrada") == null 
-						|| invoice.get_ValueAsString("lbr_NFEntrada").equals(""))
+
+			if (timing == TIMING_AFTER_PREPARE){
+
+				MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
+				if (docType.get_ValueAsBoolean("lbr_HasFiscalDocument") && //	Gera Documento Fiscal
+					!docType.get_ValueAsBoolean("lbr_IsOwnDocument"))	   //	Não é um documento próprio
 				{
-					if (!invoice.isReversal())
-						return "Necessário preencher campo Referência do Pedido";
+					if (invoice.get_ValueAsString("lbr_NFEntrada").equals(""))
+					{
+						if (!invoice.isReversal())
+							return "Necessário preencher campo Referência do Pedido";
+					}
 				}
-				
-			}
-		}
-		
-		else
-		
-		// Executa quando uma Invoice é completada
-		if (po.get_TableName().equalsIgnoreCase("C_Invoice") && (timing == TIMING_AFTER_COMPLETE))
-		{
+			} //AFTER PREPARE
 
-			MInvoice invoice = (MInvoice) po;
+			else if (timing == TIMING_AFTER_COMPLETE){
 
-			Properties ctx = invoice.getCtx();
-			String trx = invoice.get_TrxName();
-
-			// DocValidate
-			try
-			{
-				MLBRTax.docValidate(ctx, invoice, trx);
-			}
-			catch (Exception e)
-			{
-				log.log(Level.SEVERE, "", e);
-			}
-
-			// Fix - Ajustar PaySchedule
-			MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), trx);
-			log.fine(pt.toString());
-			pt.apply(invoice);
-
-			// Validate Withhold
-			MLBRTax.validateWithhold(invoice);
-
-			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
-			boolean HasOpenItems = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasOpenItems"));
-			boolean HasFiscalDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_HasFiscalDocument"));
-			boolean IsOwnDocument = POLBR.get_ValueAsBoolean(dt.get_Value("lbr_IsOwnDocument"));
-
-			if (!HasOpenItems && !invoice.isReversal())
-			{
-
-				invoice.setC_Payment_ID(0);
-				invoice.setIsPaid(true);
-
-				// Create Allocation
-				MAllocationHdr alloc = new MAllocationHdr(ctx, false, invoice.getDateAcct(), invoice.getC_Currency_ID(), Msg.translate(ctx, "C_Invoice_ID") + ": " + invoice.getDocumentNo() + "/", trx);
-				alloc.setAD_Org_ID(invoice.getAD_Org_ID());
-				if (alloc.save())
+				// DocValidate
+				try
 				{
-					// Amount
-					BigDecimal gt = invoice.getGrandTotal(true);
-					if (!invoice.isSOTrx())
-						gt = gt.negate();
-					// Orig Line
-					MAllocationLine aLine = new MAllocationLine(alloc, gt, Env.ZERO, Env.ZERO, Env.ZERO);
-					aLine.setC_Invoice_ID(invoice.getC_Invoice_ID());
-					aLine.save();
-					// Process It
-					if (alloc.processIt(DocAction.ACTION_Complete))
-						alloc.save();
+					TaxesCalculation calc = new TaxesCalculation(invoice);
+					calc.docValidate(timing);
+				}
+				catch (Exception e)
+				{
+					log.log(Level.SEVERE, "", e);
 				}
 
-			} // don't have Open Items - create automatically allocation
+				// Fix - Ajustar PaySchedule
+				MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+				log.fine(pt.toString());
+				pt.apply(invoice);
 
-			boolean isSOTrx = true;
-			int LBR_NotaFiscal_ID = 0;
+				// Validate Withhold
+				MTaxLBR.validateWithhold(invoice);
 
-			if (HasFiscalDocument && !invoice.isReversal())
-			{
+				MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
+				boolean hasOpenItems      = dt.get_ValueAsBoolean("lbr_HasOpenItems");
+				boolean hasFiscalDocument = dt.get_ValueAsBoolean("lbr_HasFiscalDocument");
+				boolean isOwnDocument     = dt.get_ValueAsBoolean("lbr_IsOwnDocument");
 
-				if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice))
+				if (!hasOpenItems && !invoice.isReversal())
 				{
 
-					isSOTrx = true;
-					IsOwnDocument = true;
+					invoice.setC_Payment_ID(0);
+					invoice.setIsPaid(true);
 
-				} // documento de venda (saída)
-				else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo))
+					// Create Allocation
+					MAllocationHdr alloc = new MAllocationHdr(ctx, false, invoice.getDateAcct(), invoice.getC_Currency_ID(), Msg.translate(ctx, "C_Invoice_ID") + ": " + invoice.getDocumentNo() + "/", trx);
+					alloc.setAD_Org_ID(invoice.getAD_Org_ID());
+					if (alloc.save())
+					{
+						// Amount
+						BigDecimal gt = invoice.getGrandTotal(true);
+						if (!invoice.isSOTrx())
+							gt = gt.negate();
+						// Orig Line
+						MAllocationLine aLine = new MAllocationLine(alloc, gt, Env.ZERO, Env.ZERO, Env.ZERO);
+						aLine.setC_Invoice_ID(invoice.getC_Invoice_ID());
+						aLine.save();
+						// Process It
+						if (alloc.processIt(DocAction.ACTION_Complete))
+							alloc.save();
+					}
+
+				} // don't have Open Items - create automatically allocation
+
+				boolean isSOTrx = true;
+				int LBR_NotaFiscal_ID = 0;
+
+				if (hasFiscalDocument && !invoice.isReversal()) {
+					if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)) {
+						isSOTrx = true;
+						isOwnDocument = true;
+					} // documento de venda (saída)
+					else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo)) {
+						isSOTrx = false;
+					} // documento de compra (entrada)
+
+					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx, invoice, 0, isSOTrx, isOwnDocument, trx);
+					if (LBR_NotaFiscal_ID == 0)
+						return "Erro na geração da Nota Fiscal";
+
+					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+				} // geração de Documento Fiscal
+
+
+				// Processo de consignação - Registra referência na tabela LBR_ProcessLink
+				// A referência será sempre da fatura de envio, com a fatura de retorno ou venda
+				// Antes de fazer qualquer processamento pesado, primeiro deve-se verificar se é uma fatura de
+				// consignação
+				// FIXME - Necessário corrigir o processo
+				/*
+				String lbr_docbasetype = (String)dt.get_Value("LBR_DocBaseType"); //BF: assim se não existe a coluna retorn NULL
+
+				if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
 				{
+					MProcessLink proc = new MProcessLink(ctx, 0, trx);
+					Integer lbr_Ref_C_InvoiceLine_ID;
 
-					isSOTrx = false;
+					for(MInvoiceLine iLine : invoice.getLines())
+					{
+						proc.setM_Product_ID(iLine.getM_Product_ID());
+						proc.setM_AttributeSetInstance_ID(iLine.getM_AttributeSetInstance_ID());
 
-				} // documento de compra (entrada)
+						lbr_Ref_C_InvoiceLine_ID = AdempiereLBR.getlbr_Ref_C_InvoiceLine_ID(iLine.getC_OrderLine_ID(),trx);
 
-				LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx, invoice, 0, isSOTrx, IsOwnDocument, trx);
-				invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+						if (!invoice.isReversal()) //Se for uma invoice reversa, devemos multiplicar a qty por -1
+							proc.setMovementQty(iLine.getQtyInvoiced());
+						else
+							proc.setMovementQty(iLine.getQtyInvoiced().negate());
 
-			} // geração de Documento Fiscal
-			
+						proc.setlbr_Dest_C_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
+						proc.setlbr_Ori_C_InvoiceLine_ID(lbr_Ref_C_InvoiceLine_ID);
 
-			// Processo de consignação - Registra referência na tabela LBR_ProcessLink
-			// A referência será sempre da fatura de envio, com a fatura de retorno ou venda
-			// Antes de fazer qualquer processamento pesado, primeiro deve-se verificar se é uma fatura de
-			// consignação
-			String lbr_docbasetype = (String)dt.get_Value("LBR_DocBaseType"); //BF: assim se não existe a coluna retorn NULL
+						if (lbr_docbasetype.equalsIgnoreCase("farc"))
+						{
+							proc.setMovementType(MProcessLink.MOVEMENTTYPE_MovementFrom);
+						}
+						else if (lbr_docbasetype.equalsIgnoreCase("faec"))
+						{
+							proc.setMovementType(MProcessLink.MOVEMENTTYPE_MovementTo);
+							proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
+						}
+						else if (lbr_docbasetype.equalsIgnoreCase("fafc"))
+						{
+							proc.setMovementType(MProcessLink.MOVEMENTTYPE_CustomerShipment);
+							proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
+						}
+						proc.save(trx);
+					}
+				}
+				// Fim Processo de Consginação
+				*/
+			} //AFTER COMPLETE
 
-			if (lbr_docbasetype != null && (lbr_docbasetype.equalsIgnoreCase("farc") || lbr_docbasetype.equalsIgnoreCase("faec") || lbr_docbasetype.equalsIgnoreCase("fafc")))
-			{	
-				MLBRProcessLink proc = new MLBRProcessLink(ctx, 0, trx);
-				Integer lbr_Ref_C_InvoiceLine_ID;
-				
+			else if ((timing == TIMING_AFTER_REACTIVATE || timing == TIMING_AFTER_VOID || timing == TIMING_AFTER_CLOSE || timing == TIMING_AFTER_REVERSECORRECT)){
+
+				String sql = "UPDATE C_Invoice SET LBR_Withhold_Invoice_ID=NULL " + "WHERE LBR_Withhold_Invoice_ID=" + invoice.getC_Invoice_ID();
+
+				DB.executeUpdate(sql, invoice.get_TrxName());
+				// TODO: Continuar fazendo as reversões
+
+				// CANCELA BOLETO E CNAB
+				MBoleto.cancelBoleto(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+
+				//FIXME
+				//CANCELA CONSIGNAÇÃO
+				/*
 				for(MInvoiceLine iLine : invoice.getLines())
 				{
-					proc.setM_Product_ID(iLine.getM_Product_ID());
-					proc.setM_AttributeSetInstance_ID(iLine.getM_AttributeSetInstance_ID());
-	
-					lbr_Ref_C_InvoiceLine_ID = POLBR.getlbr_Ref_C_InvoiceLine_ID(iLine.getC_OrderLine_ID(),trx);
-	
-					if (!invoice.isReversal()) //Se for uma invoice reversa, devemos multiplicar a qty por -1
-						proc.setMovementQty(iLine.getQtyInvoiced());
-					else
-						proc.setMovementQty(iLine.getQtyInvoiced().negate());
-	
-					proc.setlbr_Dest_C_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
-					proc.setlbr_Ori_C_InvoiceLine_ID(lbr_Ref_C_InvoiceLine_ID);
-	
-					if (lbr_docbasetype.equalsIgnoreCase("farc"))
-					{
-						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_MovementFrom);
-					}
-					else if (lbr_docbasetype.equalsIgnoreCase("faec"))
-					{
-						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_MovementTo);
-						proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
-					}
-					else if (lbr_docbasetype.equalsIgnoreCase("fafc"))
-					{
-						proc.setMovementType(MLBRProcessLink.MOVEMENTTYPE_CustomerShipment);
-						proc.setMovementQty(proc.getMovementQty().negate()); //Enviando itens = Retira do Estoque
-					}
-					proc.save(trx);
+					MOtherNFLine.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
 				}
-			}
-			// Fim Processo de Consginação
-		}
-		else if (po.get_TableName().equalsIgnoreCase("C_Invoice")
-				&& (timing == TIMING_AFTER_REACTIVATE || timing == TIMING_AFTER_VOID || timing == TIMING_AFTER_CLOSE || timing == TIMING_AFTER_REVERSECORRECT))
-		{
-			MInvoice invoice = (MInvoice) po;
+				*/
+			} //AFTER REACTIVE AND REVERSE
 
-			String sql = "UPDATE C_Invoice SET LBR_Withhold_Invoice_ID=NULL " + "WHERE LBR_Withhold_Invoice_ID=" + invoice.getC_Invoice_ID();
+			else if ((timing == TIMING_BEFORE_REACTIVATE || timing == TIMING_BEFORE_VOID || timing == TIMING_BEFORE_CLOSE || timing == TIMING_BEFORE_REVERSECORRECT)) {
 
-			DB.executeUpdate(sql, invoice.get_TrxName());
-			// TODO: Continuar fazendo as reversões
+				int whInvoice = invoice.get_ValueAsInt("LBR_Withhold_Invoice_ID");
+				if (whInvoice != 0)
+					return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
+			} //BEFORE REACTIVE AND REVERSE
 
-			// CANCELA BOLETO E CNAB
-			MBoleto.cancelBoleto(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
-			
-			//CANCELA CONSIGNAÇÃO
-			for(MInvoiceLine iLine : invoice.getLines())
-			{
-				MLBROtherNFLine.voidConsignationLine(iLine.getC_InvoiceLine_ID(), invoice.get_TrxName());
-			}
-
-		}
-		else if (po.get_TableName().equalsIgnoreCase("C_Invoice")
-				&& (timing == TIMING_BEFORE_REACTIVATE || timing == TIMING_BEFORE_VOID || timing == TIMING_BEFORE_CLOSE || timing == TIMING_BEFORE_REVERSECORRECT))
-		{
-			MInvoice invoice = (MInvoice) po;
-			Integer whInvoice = 0;
-			whInvoice = (Integer) invoice.get_Value("LBR_Withhold_Invoice_ID");
-
-			if (whInvoice != null && whInvoice.compareTo((Integer) invoice.get_Value("C_Invoice_ID")) != 0)
-				return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
-		}
+		} //MInvoice
 
 		return null;
 	} // docValidate
@@ -527,7 +463,7 @@ public class ValidatorInvoice implements ModelValidator
 	/**
 	 * Update Info Window Columns. - add new Columns - remove columns - change
 	 * dispay sequence
-	 * 
+	 *
 	 * @param columns
 	 *            array of columns
 	 * @param sqlFrom
@@ -554,25 +490,25 @@ public class ValidatorInvoice implements ModelValidator
 		/*
 		 * Properties ctx = invoice.getCtx(); String trx =
 		 * invoice.get_TrxName();
-		 * 
+		 *
 		 * String docStatus = invoice.getDocStatus(); String error = "";
-		 * 
+		 *
 		 * if (docStatus.equals(MInvoice.DOCSTATUS_Completed) ||
 		 * docStatus.equals(MInvoice.DOCSTATUS_Reversed) ||
 		 * docStatus.equals(MInvoice.DOCSTATUS_Closed) ||
 		 * docStatus.equals(MInvoice.DOCSTATUS_Voided)){
-		 * 
+		 *
 		 * MInvoicePaySchedule[] ischedule = POLBR.getInvoicePaySchedule(ctx,
 		 * invoice.getC_Invoice_ID(), trx);
-		 * 
+		 *
 		 * int C_PaymentTerm_ID = invoice.getC_PaymentTerm_ID(); MPaymentTerm
 		 * paymentTerm = new MPaymentTerm(ctx,C_PaymentTerm_ID,trx);
 		 * MPaySchedule[] schedule = paymentTerm.getSchedule(true);
-		 * 
+		 *
 		 * if (ischedule.length != schedule.length){ error =
 		 * "Condição de Pagamento Inconsistente"; log.log(Level.WARNING, error);
 		 * return error; }
-		 * 
+		 *
 		 * }
 		 */
 
@@ -581,12 +517,12 @@ public class ValidatorInvoice implements ModelValidator
 
 	/**
 	 * String Representation
-	 * 
+	 *
 	 * @return info
 	 */
 	public String toString()
 	{
-		StringBuffer sb = new StringBuffer("AdempiereLBR - Powered by Kenos & Faire");
+		StringBuffer sb = new StringBuffer("ValidatorInvoice@AdempiereLBR - Powered by Kenos & Faire");
 		return sb.toString();
 	} // toString
 

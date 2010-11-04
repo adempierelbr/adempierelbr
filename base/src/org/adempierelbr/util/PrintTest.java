@@ -21,30 +21,32 @@ import com.java4less.textprinter.ports.FilePort;
 
 public class PrintTest{
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args){
-		
+
         TextPrinter printer = PrinterFactory.getPrinter("PLAIN"); // tipo da impressora
         FilePort port = new FilePort("/Users/mgrigioni/teste.txt"); // localização da impressora
         JobProperties job = printer.getDefaultJobProperties();
         job.cols = 190; // colunas na folha
         job.rows = 98; // linhas na folha
         String characterSet = null;
-        		
+
         try {
         	printer.startJob(port, job);
-        	        
+
     	    TextProperties prop = printer.getDefaultTextProperties();
-    	    if (!(characterSet == null || characterSet.equals("")))
+    	    if (!(characterSet == null || characterSet.equals(""))){
     	    	prop.characterSet = characterSet;
-    	    
+    	    }
+
     	    prop.condensed = true;
     	    prop.pitch = 12;
-    	    
+
    	     	int v = 0;
-   	     	
+
     	    //String ESCP = "C60"; //ESPAÇAMENTO LINHAS (COMANDO ESCP2)
     	    //printer.printString(ESCP,0,0,prop);
- 	    
+
    	     	for (int i=1;i<job.rows;i++){
    	     		for (int j=0;j<job.cols;j++){
    	     			printer.printString(Integer.toString(v),i,j,prop);
@@ -55,14 +57,14 @@ public class PrintTest{
    	     		}
    	     		v = 0;
    	     	}
-   	     	
+
     	    //Finish Job
             printer.endJob();
         }
         catch (TextPrinterException ex) {
         	ex.printStackTrace();
     	}
-		
-		
+
+
 	}
 }

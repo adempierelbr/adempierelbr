@@ -1,18 +1,27 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.util;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.security.Provider;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.Signature;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -41,7 +50,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MDigitalCertificate;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.Env;
@@ -58,15 +67,12 @@ public class AssinaturaDigital
 	/**		Document Type 	*/
 	public static final String RECEPCAO_NFE			="1";
 	public static final String CANCELAMENTO_NFE		="2";
-	public static final String INUTILIZACAO_NFE		="3";
 	
 	/**		Algoritmos		*/
 	public static final String ALGORITIMO = "RSA";
 	public static final String ALGORITMO_ASSINATURA = "MD5withRSA";
 	
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
-	private static final String PROVIDER_CLASS_NAME = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";  
-    private static final String PROVIDER_NAME = "jsr105Provider";  
 	
 	static XMLSignatureFactory sig;
 	static X509Certificate cert;
@@ -75,8 +81,6 @@ public class AssinaturaDigital
 	static KeyPair keyP;
 	
 	private static String certType = "";
-	private static String cfgFile = "";
-	private static boolean isToken = false;
 	private static String alias = "";
 	private static char[] senha = "".toCharArray();
 	private static InputStream jksData = null;
@@ -91,7 +95,7 @@ public class AssinaturaDigital
 	public static void Assinar(String caminhoxml, MOrgInfo oi, String docType) throws Exception
 	{
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
+		MDigitalCertificate dc = new MDigitalCertificate(Env.getCtx(), cert, null);
 		String aliascliente = dc.getAlias();
 		String password = dc.getPassword();
 		MAttachment attachJKS = dc.getAttachment();
@@ -102,29 +106,10 @@ public class AssinaturaDigital
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
-		{
-			jksData = new FileInputStream(jksFile);
+		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certType = "PKCS12";
-		}
-		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
-		{
-			cfgFile = System.getProperty("java.io.tmpdir") + "Token.cfg";
-			FileWriter f = TextUtil.createFile(cfgFile, false);
-			f.write("name = "+alias);
-			f.write("\nlibrary = "+jksFile.toString());
-			f.flush();
-			f.close();
-			//
-			isToken = true;
-			jksData = null;
-			certType = "PKCS11";
-		}
-		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
-		{
-			jksData = new FileInputStream(jksFile);
+		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
-		}
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
 		//
@@ -144,15 +129,7 @@ public class AssinaturaDigital
 
 	public static void loadKeys() throws Exception
 	{
-		KeyStore keystore = null;
-		//
-		if (isToken)
-		{
-			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
-            Security.addProvider(p);
-		}
-		//
-		keystore = KeyStore.getInstance(certType);
+		KeyStore keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
 		Key key = keystore.getKey(alias, senha);
 		if (key instanceof PrivateKey)
@@ -207,15 +184,13 @@ public class AssinaturaDigital
 				new FileInputStream(localDocumento));
 		System.out.println("Documento ok!");
 
-		String providerName = System.getProperty(PROVIDER_NAME, PROVIDER_CLASS_NAME);
-		sig = XMLSignatureFactory.getInstance("DOM", (Provider) Class.forName(providerName).newInstance());
+		sig = XMLSignatureFactory.getInstance("DOM");
 
 		ArrayList<Transform> transformList = new ArrayList<Transform>();
 		Transform enveloped = sig.newTransform(Transform.ENVELOPED,
 				(TransformParameterSpec) null);
 		Transform c14n = sig.newTransform(C14N_TRANSFORM_METHOD,
-				(TransformParameterSpec) null);		
-
+				(TransformParameterSpec) null);
 		transformList.add(enveloped);
 		transformList.add(c14n);
 		
@@ -225,8 +200,6 @@ public class AssinaturaDigital
 			tag = "infNFe";
 		else if (docType.equals(CANCELAMENTO_NFE))
 			tag = "infCanc";
-		else if (docType.equals(INUTILIZACAO_NFE))
-			tag = "infInut";
 		
 		NodeList elements = doc.getElementsByTagName(tag);
 		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
@@ -240,7 +213,7 @@ public class AssinaturaDigital
 						.singletonList(r));
 
 		KeyInfoFactory kif = sig.getKeyInfoFactory();
-		List x509Content = new ArrayList();
+		List<X509Certificate> x509Content = new ArrayList<X509Certificate>();
 		x509Content.add(cert);
 		X509Data xd = kif.newX509Data(x509Content);
 		ki = kif.newKeyInfo(Collections.singletonList(xd));

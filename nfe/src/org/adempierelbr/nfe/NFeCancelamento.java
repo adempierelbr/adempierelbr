@@ -1,21 +1,36 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfe;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.security.Security;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.adempierelbr.model.MLBRDigitalCertificate;
-import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MDigitalCertificate;
+import org.adempierelbr.model.MNotaFiscal;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.ValidaXML;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
@@ -32,17 +47,12 @@ import br.inf.portalfiscal.www.nfe.wsdl.NfeCancelamento.NfeCancelamentoSoap;
  * 	Consulta dos Lotes Processados de NF-e
  * 
  * @author Ricardo Santana (Kenos, www.kenos.com.br)
+ * @contributor Mario Grigioni
  */
 public class NFeCancelamento
 {
 	/**	Logger						*/
 	private static CLogger log = CLogger.getCLogger(NFeCancelamento.class);
-	
-	/**	Certificado do Cliente		*/
-	private static String certTypeOrg 	= "";
-	
-	/**	Certificado do WS			*/
-	private static String certTypeWS	= "";
 	
 	/**
 	 * 	Consulta dos Lotes Processados de NF-e
@@ -52,11 +62,14 @@ public class NFeCancelamento
 	 * @return
 	 * @throws Exception
 	 */
-	public static String cancelNFe(MLBRNotaFiscal nf) throws Exception
+	public static String cancelNFe(MNotaFiscal nf) throws Exception
 	{
+		Properties ctx = Env.getCtx();
+		String trxName = nf.get_TrxName();
+		
 		log.fine("ini");
 		//
-		String motivoCanc = (String) nf.get_Value("lbr_MotivoCancel");
+		String motivoCanc = nf.getlbr_MotivoCancel();
 		
 		if (motivoCanc == null)
 			return "Sem motivo de cancelamento";
@@ -65,26 +78,30 @@ public class NFeCancelamento
 		else if (motivoCanc.length() >= 255)
 			return "Motivo de cancelamento muito longo. Max: 255 letras.";
 		//
-		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), nf.getAD_Org_ID());
-		String chNFe 	= nf.get_ValueAsString("lbr_NFeID");
-		String pclNFe 	= nf.get_ValueAsString("lbr_NFeProt");
+		MOrgInfo oi = MOrgInfo.get(ctx, nf.getAD_Org_ID());
+		String chNFe 	= nf.getlbr_NFeID();
+		String pclNFe 	= nf.getlbr_NFeProt();
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
 		//
-		String nfeCancelDadosMsg 	= NFeUtil.geraCancelamentoNF(chNFe, pclNFe, envType, motivoCanc);
+		String nfeCancelDadosMsg 	= NFeUtil.geraCabecCancelamentoNF(chNFe, pclNFe, envType, RemoverAcentos.remover(motivoCanc));
 		String nfeCancelCabecMsg 	= NFeUtil.geraCabecEnviNFe("1.07");		//	Versão do arquivo XSD
 		//
 		File attachFile = new File(NFeUtil.gravaArquivo(nf.getDocumentNo()+"-ped-can.xml", nfeCancelDadosMsg));
 		AssinaturaDigital.Assinar(attachFile.toString(), oi, AssinaturaDigital.CANCELAMENTO_NFE);
 		nfeCancelDadosMsg = "";
-		FileInputStream stream = new FileInputStream(attachFile);
-		DataInputStream in = new DataInputStream(stream);
-		while (in.available() != 0)
-		{
-			nfeCancelDadosMsg += in.readLine();
+		
+		FileInputStream stream = new FileInputStream(attachFile);   
+		InputStreamReader streamReader = new InputStreamReader(stream);   
+		BufferedReader reader = new BufferedReader(streamReader);  
+		
+		String line    = null;
+		while( (line=reader.readLine() ) != null ) { 
+			nfeCancelDadosMsg += line;
 		}
+		
 		//
 		String validation = ValidaXML.validaCabecalho(nfeCancelCabecMsg);
 		if (!validation.equals(""))
@@ -102,42 +119,11 @@ public class NFeCancelamento
 		MAttachment attachLotNFe = nf.createAttachment();
 		attachLotNFe.addEntry(attachFile);
 		attachLotNFe.save();
+		
+		//INICIALIZA CERTIFICADO
+		MDigitalCertificate.setCertificate(ctx, nf.getAD_Org_ID());
 		//
-		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
-		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
-		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
-		//
-		if (dcOrg.getlbr_CertType() == null)
-			throw new Exception("Certificate Type is NULL");
-		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
-			certTypeOrg = "PKCS12";
-		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
-			certTypeOrg = "JKS";
-		else
-			throw new Exception("Unknow Certificate Type or Not implemented yet");
-		File certFileOrg = NFeUtil.getAttachmentEntryFile(dcOrg.getAttachment().getEntry(0));
-		//
-		if (dcWS.getlbr_CertType() == null)
-			throw new Exception("Certificate Type is NULL");
-		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
-			certTypeWS = "PKCS12";
-		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
-			certTypeWS = "JKS";
-		else
-			throw new Exception("Unknow Certificate Type or Not implemented yet");
-		File certFileWS = NFeUtil.getAttachmentEntryFile(dcWS.getAttachment().getEntry(0));
-		//
-		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
-		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-		//
-		System.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
-		System.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
-		System.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
-		//
-		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
-		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
-		//
+		
 		NfeCancelamentoLocator.ambiente = envType;
 		NfeCancelamento recep = new NfeCancelamentoLocator();
 		try 
@@ -165,25 +151,34 @@ public class NFeCancelamento
 	        String dhRecbto = 	NFeUtil.getValue (doc, "dhRecbto");
 	        //
 	        String nfeDesc = "["+dhRecbto.replace('T', ' ')+"] " + xMotivo + "\n";
-	        nf.set_CustomColumn("lbr_NFeStatus", cStat);
-	        if (nf.get_Value("lbr_NFeDesc") == null)
-	        	nf.set_CustomColumn("lbr_NFeDesc", nfeDesc);
+	        nf.setlbr_NFeStatus(cStat);
+	        if (nf.getlbr_NFeDesc() == null)
+	        	nf.setlbr_NFeDesc(nfeDesc);
 	        else
-	        	nf.set_CustomColumn("lbr_NFeDesc", nf.get_Value("lbr_NFeDesc") + nfeDesc);
+	        	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
 	        //
 	        if (cStat.equals("101"))	//	Cancelameno Autorizado
 	        {
-		        nf.set_CustomColumn("lbr_NFeProt", nProt);
+		        nf.setlbr_NFeProt(nProt);
 		        //
 		        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		        Date parsedDate = dateFormat.parse(dhRecbto.replace('T', ' '));
 		        Timestamp timestamp = new Timestamp(parsedDate.getTime());
-		        nf.set_CustomColumn("DateTrx", timestamp);
+		        nf.setDateTrx(timestamp);
 		        nf.setIsCancelled(true);
 		        if (!nf.isProcessed())
 		        	nf.setProcessed(true);
+		        
+				//Atualiza XML para padrão de distribuição - Cancelamento
+				try {
+					NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf));
+				} catch (Exception e) {
+					log.log(Level.WARNING,"",e);
+				}
+				
 	        }
-	        nf.save();
+	        nf.save(trxName);
+			
 		} 
 		catch (Throwable e1)
 		{

@@ -1,3 +1,15 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.util;
 
 import java.io.File;
@@ -5,12 +17,14 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -19,26 +33,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.adempierelbr.model.MLBRNFeLot;
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfe.beans.InutilizacaoNF;
+import org.adempierelbr.model.MNotaFiscal;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.utils.DigestOfFile;
-import org.dom4j.io.OutputFormat;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.Dom4JDriver;
-
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -47,118 +53,194 @@ import com.thoughtworks.xstream.io.xml.Dom4JDriver;
  */
 public class NFeUtil
 {
-	/**			Peso			**/
-	private static final String PESO = "4329876543298765432987654329876543298765432";
 	
-	/**	Logger				*/
+	/**	Logger			    */
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 	
 	/** Versão              */
 	public static final String VERSAO      = "1.10";
 	public static final String VERSAO_APP  = "1.40";
 	
-	/**
-	 * 	Retorna o digito na NFe através da chave de acesso.
-	 * 
-	 * @param chave
-	 * @return	Digito
-	 */
-	public static int GerarDigito (String chave)
-	{
-		int x = 0;
-		int soma = 0;
-		int dv = 0;
-		//
-		try
-		{
-			for (int i = 0; i < chave.length(); i++)
-			{
-				x = Integer.parseInt(chave.substring(i, i + 1))
-						* Integer.parseInt(PESO.substring(i, i + 1));
-				soma += x;
-			}
-			
-			dv = 11 - (soma % 11);
-
-			if (dv > 9)
-			{
-				dv = 0;
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Chave Inválida!");
-		}
-
-		return dv;
-	}	//	GerarDigito
+	/** STATUS              */
+	public static final String AUTORIZADA  = "100";
+	public static final String CANCELADA   = "101";
+	
+	/** XML                 */
+	private static String FILE_EXT      = "-dst.xml";
+	public static final long XML_SIZE   = 500;
+	
+	/** Reference NFeStatus */
+	public static final int NFeReference   = 1100004;
 	
 	/**
-	 * update Attachment
-	 * @param nf
-	 * @param xml
-	 * @return true = success, false = error
+	 * Gera o cabeçalho da NFe
+	 * 
+	 * @return cabecalho
 	 */
-	public static boolean updateAttach (MLBRNotaFiscal nf, File xml)
-	{
-		if (xml != null)
-		{
-			//	Force ReQuery
-			nf.getAttachment(true);
-			//
-			MAttachment attachDist = nf.createAttachment();
-			attachDist.addEntry(xml);
-			return attachDist.save(nf.get_TrxName());
-		}	//	if	
-		return true;
-	}	//	updateAttach
+	public static String geraCabecNFe(){
+		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
+		return cabecalho;
+	} //geraCabecNFe
 	
 	/**
+	 * Gera o rodapé da NFe
 	 * 
-	 * @param nf
-	 * @return
-	 * @throws Exception
+	 * return rodape
 	 */
-	public static File generateDistribution(MLBRNotaFiscal nf) throws Exception
+	public static String geraRodapNFe(){
+		String rodape = "</NFe>";
+		return rodape;
+	} //geraRodapNFe
+	
+	/**
+	 * 	Gera o cabeçalho de Envio da NFe
+	 * 
+	 * 	@return cabeçalho de envio
+	 */
+	public static String geraCabecEnviNFe(String version){
+		
+		String cabecalho = "";
+		cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+					"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+					  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+					  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
+					"<versaoDados>"+version+"</versaoDados>\n" +
+					"</cabecMsg>";
+		return cabecalho;
+	}	//	geraCabecEnviNFe
+	
+	/**
+	 * 	Gera o cabeçalho de consulta da NFe
+	 * 
+	 * @return	Cabeçalho de consulta
+	 */
+	public static String geraCabecConsultaNFe (String version)
 	{
-		String ext = "-dst.xml";
-		File attach = null;
-		//
-		//	Verifica se foi processada
-		if (nf.getlbr_NFeProt() == null || nf.getlbr_NFeProt().equals(""))
-			return attach;
-		//
-		String status = nf.getlbr_NFeStatus();
-		String msgStatus = "";
+		String cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+						"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+						  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+						  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
+						"<versaoDados>"+version+"</versaoDados>\n" +
+						"</cabecMsg>";
+		return cabecalho;
+	}	//	geraCabecConsultaNFe
+	
+	/**
+	 * Gera o cabeçalho do lote
+	 * 
+	 * @return Cabeçalho do lote 
+	 */
+	public static String geraCabecLoteNFe (String lote){
+		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+	     "<enviNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+	     "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+	     "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/enviNFe_v1.10.xsd\" versao=\"1.10\">" +
+	   "<idLote>"+lote+"</idLote>";
+		
+		return cabecalho;
+	} // geraCabecLoteNFe
+	
+	/**
+	 * Gera o cabeçalho distribuição
+	 * 
+	 * @return Cabeçalho distribuiçãi
+	 */
+	public static String geraCabecDistribuicao(){
+		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.10\">";
+	
+		return cabecalho;
+	}
+	
+	/**
+	 * 	Gera o XML para consulta de Lote
+	 * 
+	 * @param recibo
+	 * @return	XML
+	 */
+	public static String geraCabecConsultaLote (String recibo, String envType)
+	{
+		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+						"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+						"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+						"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/consReciNFe_v1.10.xsd\" versao=\"1.10\">" +
+							"<tpAmb>"+envType+"</tpAmb>" +
+						"<nRec>"+recibo+"</nRec>"+ 
+						"</consReciNFe>";
+		return dados;
+	}	//	consultaLote
+	
+	/**
+	 * Gera o XML para consulta cadastro
+	 * 
+	 * @return XML
+	 */
+	public static String geraCabecConsCad(){
+		
+		String dados = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +  
+					   "<cabecMsg versao=\"1.01\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
+				       "<versaoDados>1.01</versaoDados>" + 
+   					   "</cabecMsg>";
+						
+		return dados;
+	} //geraCabecConsCad
+	
+	/**
+	 * Gera o XML com dados de cadastro
+	 * 
+	 * @param uf
+	 * @param ie
+	 * @param cnpj
+	 * @param cpf
+	 * 
+	 * @return XML
+	 */
+	public static String geraDadosConsCad(String uf, String ie, String cnpj, String cpf){
+		
+		String dados = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+					   "<ConsCad xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.01\">" +
+					   "<infCons>" + 
+					   "<xServ>CONS-CAD</xServ>" +
+					   "<UF>"+uf+"</UF>";
 
-		if (status.equals("100"))	//	Autorizado o uso da NF-e
-		{
-			ext = "-dst.xml";
-			msgStatus = "Autorizado o uso da NF-e";
-		}
-		else if (status.equals("101"))	//	Cancelamento de NF-e homologado
-		{
-			ext = "-can.xml";
-			msgStatus = "Cancelamento da NF-e Homologado";
-		}
+		if (ie != null)
+			dados += "<IE>"+ie+"</IE>";
 
-		File xml = getAttachmentEntryFile(nf.getAttachment().getEntry(0));
-		if (xml == null || xml.getName().endsWith(ext)) // Já está no padrão de distribuição
-			return attach;
+		if (cnpj != null)
+			dados += "<CNPJ>"+ie+"</CNPJ>";
 
-		String dados = XMLtoString (xml);
-		String cabecalho = geraCabecDistribuicao();
-		String rodape = geraRodapDistribuicao (nf.getlbr_NFeID(),
-				nf.getlbr_NFeProt(), getEnvType(nf.getCtx()), timeToString(nf
-						.getDateTrx()), nf.getlbr_DigestValue(), status, msgStatus);
-		//
-		String dadosEmXML = cabecalho + dados + rodape;
-		attach = new File(gravaArquivo(nf.getlbr_NFeID() + ext, dadosEmXML));
+		if (cpf != null)
+			dados += "<CPF>"+ie+"</CPF>";					
 
-		nf.getAttachment(true).delete(true); // Exclui anexo anterior. BUG ADempiere
-
-		return attach;
-	} // NFeDistribution
+		dados += "</infCons></ConsCad>";
+		
+		return dados;
+	} //geraDadosConsCad
+	
+	/**
+	 * 	Gera o XML para cancelamento da NF-e
+	 * 
+	 * @param Chave da NF-e
+	 * @param Protocolo de Autorização
+	 * @param Tipo de Ambiente
+	 * @return	XML
+	 */
+	public static String geraCabecCancelamentoNF (String chNFe, String protocolNFe, String envType, String motivo)
+	{
+		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+						  "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
+								  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+								  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cancNFe_v1.07.xsd\" versao=\"1.07\">" +
+							  "<infCanc Id=\"ID"+chNFe+"\">"+
+						          "<tpAmb>"+envType+"</tpAmb>"+
+						          "<xServ>CANCELAR</xServ>"+
+						          "<chNFe>"+chNFe+"</chNFe>"+
+						          "<nProt>"+protocolNFe+"</nProt>"+
+						          "<xJust>"+motivo+"</xJust>"+
+					          "</infCanc>"+ 
+						  "</cancNFe>";
+		return dados;
+	}	//	CabecCancelamento
 	
 	/**
 	 * Rodapé padrão Distribuição
@@ -188,292 +270,83 @@ public class NFeUtil
 		return dados;
 	}	//	RodapDistribuicao
 	
-	/**
-	 * Timestamp para String
-	 * @param dhRecbto
-	 * @return
-	 */
-	public static String timeToString(Timestamp dhRecbto){
-		return TextUtil.timeToString(dhRecbto, "yyyy-MM-dd HH:mm:ss").replace(' ', 'T');
-	} //DateToString
+	public static File generateDistribution(MNotaFiscal nf) throws Exception{
+		
+		File attach = null;
+		
+		if (nf.getlbr_NFeProt() == null || nf.getlbr_NFeProt().equals("")) //Verifica se foi processada
+			return attach;
+		
+		String status = nf.getlbr_NFeStatus();
+		
+		if (status.equals(AUTORIZADA)){ //Autorizado o uso da NF-e
+			FILE_EXT = "-dst.xml";
+		}
+		else if (status.equals(CANCELADA)){ //Cancelamento de NF-e homologado
+			FILE_EXT = "-can.xml";
+		}
+		
+		File xml = getAttachmentEntryFile(nf.getAttachment(true).getEntry(0));
+		if (xml == null || xml.getName().endsWith(FILE_EXT)) //Já está no padrão de distribuição
+			return attach;
+			
+	    String dados = XMLtoString(xml);	        
+	    //
+	    String cabecalho  = geraCabecDistribuicao();
+		//
+	    String rodape 	  = geraRodapDistribuicao(nf.getlbr_NFeID(), nf.getlbr_NFeProt(), getEnvType(nf.getCtx()),
+	        		                                  timeToString(nf.getDateTrx()), nf.getlbr_DigestValue(), 
+	        		                                  status,getNFeStatus(status));
+		//
+		String dadosEmXML = cabecalho + dados + rodape;
+		attach = new File(gravaArquivo(nf.getlbr_NFeID() + FILE_EXT, dadosEmXML));
+			
+		MAttachment auxAttach = nf.getAttachment(true);
+		if (auxAttach != null)
+			auxAttach.delete(true); //Exclui anexo anterior. BUG ADempiere
+
+		return attach;
+	} //NFeDistribution
 	
 	/**
-	 * getEnvType
-	 * 
-	 * @param ctx
-	 * @return envType
+	 * update Attachment
+	 * @param nf
+	 * @param xml
+	 * @return true = success, false = error
 	 */
-	public static String getEnvType(Properties ctx)
-	{
-		MOrgInfo oi = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx));
-		String envType = oi.get_ValueAsString("lbr_NFeEnv");
-
-		if (envType == null || envType.equals(""))
-			envType = "2"; // Homologação
-
-		return envType;
-	} // getEnvType
-
-	public static String XMLtoString(File xml) throws Exception
-	{
+	public static boolean updateAttach(MNotaFiscal nf, File xml){
+		
+		if (xml != null){
+			MAttachment attachDist = nf.createAttachment(true);
+			attachDist.addEntry(xml);
+			return attachDist.save();
+		}		
+		
+		return true;
+	}
+	
+	public static String XMLtoString(File xml) throws Exception{
+		
 		String dados = "";
 		if (xml == null)
 			return dados;
-
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-				.newInstance();
-		InputStream inputStream = new FileInputStream(xml);
-		org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder()
-				.parse(inputStream);
-		StringWriter stw = new StringWriter();
-		Transformer serializer = TransformerFactory.newInstance().newTransformer();
-		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		serializer.transform(new DOMSource(doc), new StreamResult(stw));
-		dados = stw.toString();
-
-		dados = dados.substring(dados.indexOf("<NFe"), dados.indexOf("</NFe>") + 6);
-		if (dados.startsWith("<NFe>"))
-		{
-			dados = geraCabecNFe() + dados.substring(5);
-		}
-
-		return dados;
-	} // XMLtoString
-	
-	/**
-	 * Gera o cabeçalho da NFe
-	 * 
-	 * @return cabecalho
-	 */
-	public static String geraCabecNFe(){
-		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
-		return cabecalho;
-	} //geraCabecNFe
-	
-	/**
-	 * Gera o cabeçalho distribuição
-	 * 
-	 * @return Cabeçalho distribuiçãi
-	 */
-	public static String geraCabecDistribuicao()
-	{
-		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"1.10\">";
-	
-		return cabecalho;
-	}
-	
-	/**
-	 * 	Gera o cabeçalho de Envio da NFe
-	 * 
-	 * 	@return cabeçalho de envio
-	 */
-	public static String geraCabecEnviNFe(String version){
 		
-		String cabecalho = "";
-		cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-					"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-					  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-					  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
-					"<versaoDados>"+version+"</versaoDados>\n" +
-					"</cabecMsg>";
-		return cabecalho;
-	}	//	geraCabecEnviNFe
-	
-	/**
-	 * 	Gera o cabeçalho de Consulta de Estado do Serviço
-	 * 
-	 * 	@return cabeçalho de envio
-	 */
-	public static String geraCabecStatusServico(String version){
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); 
+        InputStream inputStream = new FileInputStream(xml); 
+        org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream); 
+        StringWriter stw = new StringWriter(); 
+        Transformer serializer = TransformerFactory.newInstance().newTransformer();
+        serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        serializer.transform(new DOMSource(doc), new StreamResult(stw));
+        dados = stw.toString();
 		
-		String cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ "<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" "
-			+ "versao=\"1.02\"><versaoDados>"+version+"</versaoDados>"
-			+ "</cabecMsg>";
-		return cabecalho;
-	}	//	geraCabecStatusServico
-	
-	public static NfeInutilizacao2Stub.NfeCabecMsgE geraCabecInutilizacao (String region)
-	{
-		NfeInutilizacao2Stub.NfeCabecMsg cabecMsg = new NfeInutilizacao2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados("2.0");
-
-		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = new NfeInutilizacao2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	}
-	
-	/**
-	 * 	Gera o cabeçalho de Consulta de Estado do Serviço
-	 * 
-	 * 	@return cabeçalho de envio
-	 */
-	public static String geraStatusServico (String tpAmb)
-	{
-		String status = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ "<consStatServ versao=\"1.07\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">"
-			+ "<tpAmb>"+tpAmb+"</tpAmb><cUF>42</cUF><xServ>STATUS</xServ></consStatServ>";
-		return status;
-	}	//	geraStatusServico
-	
-	/**
-	 * 	Gera o cabeçalho de Consulta de Estado do Serviço
-	 * 
-	 * 	@return cabeçalho de envio
-	 */
-	public static String geraInutilizacao (InutilizacaoNF nf)
-	{
-//		Dom4JDriver dom = new Dom4JDriver();
-//		OutputFormat format = new OutputFormat();
-//		format.setEncoding("UTF-8");
-//		format.setNewLineAfterDeclaration(false);
-//		format.setNewlines(false);
-//		dom.setOutputFormat(format);
-		//
-		XStream xml = new XStream();
-		//
-		xml.alias("infInut", InutilizacaoNF.class);
-		xml.useAttributeFor(InutilizacaoNF.class, "Id");
-		xml.omitField(InutilizacaoNF.class, "msg");
-		xml.omitField(InutilizacaoNF.class, "log");
-		// 
-		StringBuffer inut = new StringBuffer("");
-//		inut.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		
-		inut.append("<inutNFe " +
-				"xmlns=\"http://www.portalfiscal.inf.br/nfe\" " +
-//				"xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-//				"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-//				"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-//				"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/inutNFe_v2.00.xsd\" " +
-				"versao=\"1.07\">");
-		inut.append(xml.toXML(nf));
-		inut.append("</inutNFe>");
-		//
-		return inut.toString();
-	}	//	geraStatusServico
-	
-	/**
-	 * 	Gera o cabeçalho de consulta da NFe
-	 * 
-	 * @return	Cabeçalho de consulta
-	 */
-	public static String geraCabecConsultaNFe (String version)
-	{
-		String cabecalho = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-						"<cabecMsg xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-						  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-						  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cabecMsg_v1.02.xsd\" versao=\"1.02\">" +
-						"<versaoDados>"+version+"</versaoDados>\n" +
-						"</cabecMsg>";
-		return cabecalho;
-	}	//	geraCabecConsultaNFe
-	
-	/**
-	 * 	Gera o XML para consulta de Lote
-	 * 
-	 * @param recibo
-	 * @return	XML
-	 */
-	public static String consultaLote (String recibo, String envType)
-	{
-		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
-							"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-								"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-								"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/consReciNFe_v1.10.xsd\" versao=\"1.10\">" +
-							"<tpAmb>"+envType+"</tpAmb>" +
-						"<nRec>"+recibo+"</nRec>"+ 
-						"</consReciNFe>";
-		return dados;
-	}	//	consultaLote
-	
-	/**
-	 * 	Gera o XML para cancelamento da NF-e
-	 * 
-	 * @param Chave da NF-e
-	 * @param Protocolo de Autorização
-	 * @param Tipo de Ambiente
-	 * @return	XML
-	 */
-	public static String geraCancelamentoNF (String chNFe, String protocolNFe, String envType, String motivo)
-	{
-		String dados = 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
-						  "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-								  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-								  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cancNFe_v1.07.xsd\" versao=\"1.07\">" +
-							  "<infCanc Id=\"ID"+chNFe+"\">"+
-						          "<tpAmb>"+envType+"</tpAmb>"+
-						          "<xServ>CANCELAR</xServ>"+
-						          "<chNFe>"+chNFe+"</chNFe>"+
-						          "<nProt>"+protocolNFe+"</nProt>"+
-						          "<xJust>"+motivo+"</xJust>"+
-					          "</infCanc>"+ 
-						  "</cancNFe>";
-		return dados;
-	}	//	consultaLote
-	
-	/**
-	 * 	Gera o arquivo de Lote
-	 * 
-	 * @param xmlGerado
-	 * @param oi	OrgInfo
-	 * @return
-	 * @throws Exception
-	 */
-	public static String geraLote (MLBRNFeLot lot, String envType) throws Exception
-	{
-		log.fine("ini");
-		String[] xmlGerado = lot.getXMLs();
-		//
-		String dados[] = new String[xmlGerado.length];
-		String conjunto = "";
-		//
-		for (int i = 0; i < xmlGerado.length; i++) 
-		{
-	        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance(); 
-	        InputStream inputStream = new FileInputStream(new File(xmlGerado[i])); 
-	        org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream); 
-	        StringWriter stw = new StringWriter(); 
-	        Transformer serializer = TransformerFactory.newInstance().newTransformer();
-	        serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-	        serializer.transform(new DOMSource(doc), new StreamResult(stw));
-	        dados[i] = stw.toString();
-	        //
-	        String validation = ValidaXML.validaXML(dados[i]);
-	        if (!validation.equals(""))
-	        {
-	        	log.severe("Validation individuals XML files for LOT Error: "+validation);
-	        	throw new Exception("Validation individuals XML files for LOT Error: "+validation);
-	        }
-			conjunto += dados[i];
-		}
-		//
-		String lote = lot.getDocumentNo();
-        String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
-			     "<enviNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-			     "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-			     "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/enviNFe_v1.10.xsd\" versao=\"1.10\">" +
-			   "<idLote>"+lote+"</idLote>";
-		String rodape 	=  "\n</enviNFe>";
-		String contatosEmXML = cabecalho + conjunto + rodape;
-		//
-		String validation = ValidaXML.validaEnvXML(contatosEmXML);
-		if (!validation.equals(""))
-		{
-			log.severe("Validation XML LOT Error: "+validation);
-			throw new Exception("Validation XML LOT Error: "+validation);
-		}
-		//
-		MAttachment attachLotNFe = lot.createAttachment();
-		File attachFile = new File(gravaArquivo(lote+"-env-lot.xml", contatosEmXML));
-		attachLotNFe.addEntry(attachFile);
-		attachLotNFe.save();
-		//
-		return contatosEmXML;
-	}	//	gerarLote
+        dados = dados.substring(dados.indexOf("<NFe"),dados.indexOf("</NFe>")+6);
+        if (dados.startsWith("<NFe>")){
+        	dados = geraCabecNFe() + dados.substring(5);
+        }
+        
+        return dados;
+	} //XMLtoString
 	
 	/**
 	 * Get Attachment
@@ -484,9 +357,9 @@ public class NFeUtil
 	public static File getAttachmentEntryFile(MAttachmentEntry entry)
 	{
 		String localFile = System.getProperty("java.io.tmpdir")
-				+ System.getProperty("file.separator") + entry.getName();
+				+ System.getProperty("file.separator") + entry;
 		String downloadedLocalFile = System.getProperty("java.io.tmpdir")
-				+ System.getProperty("file.separator") + "TMP" + entry.getName();
+				+ System.getProperty("file.separator") + "TMP" + entry;
 		File attachedFile = new File(localFile);
 		if (attachedFile.exists())
 		{
@@ -533,6 +406,90 @@ public class NFeUtil
 		//
 		return caminho + nomeArquivo;
 	 }
+	
+	/**
+	 * String para Timestamp
+	 * @param dhRecbto
+	 * @return
+	 */
+	public static Timestamp stringToTime(String dhRecbto){
+		return TextUtil.stringToTime(dhRecbto.replace('T', ' '), "yyyy-MM-dd HH:mm:ss");
+	} //StringToDate
+	
+	/**
+	 * Timestamp para String
+	 * @param dhRecbto
+	 * @return
+	 */
+	public static String timeToString(Timestamp dhRecbto){
+		return TextUtil.timeToString(dhRecbto, "yyyy-MM-dd HH:mm:ss").replace(' ', 'T');
+	} //DateToString
+	
+	/**
+	 * getEnvType
+	 * @param ctx
+	 * @return envType
+	 */
+	public static String getEnvType(Properties ctx){
+		MOrgInfo oi = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx));
+		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		
+		if (envType == null || envType.equals(""))
+			envType = "2"; //Homologação
+	
+		return envType;
+	} //getEnvType
+	
+	public static String getNFeStatus(String status)
+	{
+		String NFeStatus = "";
+		
+		String sql = "SELECT Name " +
+				     "FROM AD_Ref_LIst " +
+				     "WHERE AD_Reference_ID = ? " +
+				     "AND Value = ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, null);
+			pstmt.setInt(1, NFeReference);
+			pstmt.setString(2, status);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				 NFeStatus = rs.getString(1);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return NFeStatus;
+	}	//getNFeStatus
+	
+	/**
+	 * Valida tamanho do Arquivo XML
+	 * @param file
+	 * @return error or null
+	 */
+	public static String validateSize(File file){
+		
+		long size = file.length(); //bytes
+		if ((size/1024) > XML_SIZE){ //check kbytes
+			String erro = "Tamanho do Arquivo XML inválido > " + XML_SIZE + " kbytes";
+			log.severe(erro);
+			return erro;
+		}
+		
+		return null;
+	} //validateSize
+	
 	
 	/**
 	 * 	Get Value from XML
@@ -586,6 +543,7 @@ public class NFeUtil
 	 * @param name
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static URL getResource(Class clazz, String name)
 	{
         // Get the URL for the resource using the standard behavior
@@ -617,7 +575,8 @@ public class NFeUtil
 	 * @param clazz
 	 * @return
 	 */
-    public static String packageNameOfClass(Class clazz) 
+    @SuppressWarnings("unchecked")
+	public static String packageNameOfClass(Class clazz) 
     {
         String result = "";
         String className = clazz.getName();

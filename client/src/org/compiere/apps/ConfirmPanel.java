@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -16,11 +16,24 @@
  *****************************************************************************/
 package org.compiere.apps;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import org.compiere.swing.*;
-import org.compiere.util.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
+
+import org.compiere.swing.CButton;
+import org.compiere.swing.CPanel;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  *  Application Confirm Panel.
@@ -32,6 +45,12 @@ import org.compiere.util.*;
  */
 public final class ConfirmPanel extends CPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6041019802043360966L;
+
+
 	/**
 	 *	Create OK Button with label text and F4 Shortcut
 	 *  @param text text
@@ -450,65 +469,6 @@ public final class ConfirmPanel extends CPanel
 	{
 		this (withCancelButton, false, false, false, false, false, true);
 	}	//	ConfirmPanel
-
-	/**
-	 *	Create Confirmation Panel with different buttons
-	 *  @param withCancelButton with cancel
-	 *  @param withRefreshButton with refresh
-	 *  @param withResetButton with reset
-	 *  @param withCustomizeButton with customize
-	 *  @param withHistoryButton with history
-	 *  @param withZoomButton with zoom
-	 *  @param withText with text
-	 */
-	public ConfirmPanel(boolean withCancelButton,
-		boolean withRefreshButton, 
-		boolean withResetButton, 
-		boolean withCustomizeButton,
-		boolean withHistoryButton, 
-		boolean withZoomButton,
-		boolean withText)
-	{
-		super();
-		BorderLayout mainLayout = new BorderLayout();
-		this.setLayout(mainLayout);
-		this.setName("confirmPanel");
-		//
-		CPanel okCancel = new CPanel(new FlowLayout(FlowLayout.RIGHT));
-		okCancel.setOpaque(false);
-		bCancel = createCancelButton(withText);
-		okCancel.add(bCancel);
-		bOK = createOKButton(withText);
-		okCancel.add(bOK);
-		setCancelVisible(withCancelButton);
-		this.add(okCancel, BorderLayout.EAST);
-		//
-		if (withRefreshButton)
-		{
-			bRefresh = createRefreshButton(withText);
-			addComponent(bRefresh);
-		}
-		if (withResetButton)
-		{
-			bReset = createResetButton(withText);
-			addComponent(bReset);
-		}
-		if (withCustomizeButton)
-		{
-			bCustomize = createCustomizeButton(withText);
-			addComponent(bCustomize);
-		}
-		if (withHistoryButton)
-		{
-			bHistory = createHistoryButton(withText);
-			addComponent(bHistory);
-		}
-		if (withZoomButton)
-		{
-			bZoom = createZoomButton(withText);
-			addComponent(bZoom);
-		}
-	}	//	ConfirmPanel
 	
 	/**
 	 *	Create Confirmation Panel with different buttons
@@ -571,6 +531,66 @@ public final class ConfirmPanel extends CPanel
 		setPrintVisible(withPrintButton);
 		this.add(okCancel, BorderLayout.EAST);
 		//
+	}	//	ConfirmPanel
+
+
+	/**
+	 *	Create Confirmation Panel with different buttons
+	 *  @param withCancelButton with cancel
+	 *  @param withRefreshButton with refresh
+	 *  @param withResetButton with reset
+	 *  @param withCustomizeButton with customize
+	 *  @param withHistoryButton with history
+	 *  @param withZoomButton with zoom
+	 *  @param withText with text
+	 */
+	public ConfirmPanel(boolean withCancelButton,
+		boolean withRefreshButton, 
+		boolean withResetButton, 
+		boolean withCustomizeButton,
+		boolean withHistoryButton, 
+		boolean withZoomButton,
+		boolean withText)
+	{
+		super();
+		BorderLayout mainLayout = new BorderLayout();
+		this.setLayout(mainLayout);
+		this.setName("confirmPanel");
+		//
+		CPanel okCancel = new CPanel(new FlowLayout(FlowLayout.RIGHT));
+		okCancel.setOpaque(false);
+		bCancel = createCancelButton(withText);
+		okCancel.add(bCancel);
+		bOK = createOKButton(withText);
+		okCancel.add(bOK);
+		setCancelVisible(withCancelButton);
+		this.add(okCancel, BorderLayout.EAST);
+		//
+		if (withRefreshButton)
+		{
+			bRefresh = createRefreshButton(withText);
+			addComponent(bRefresh);
+		}
+		if (withResetButton)
+		{
+			bReset = createResetButton(withText);
+			addComponent(bReset);
+		}
+		if (withCustomizeButton)
+		{
+			bCustomize = createCustomizeButton(withText);
+			addComponent(bCustomize);
+		}
+		if (withHistoryButton)
+		{
+			bHistory = createHistoryButton(withText);
+			addComponent(bHistory);
+		}
+		if (withZoomButton)
+		{
+			bZoom = createZoomButton(withText);
+			addComponent(bZoom);
+		}
 	}	//	ConfirmPanel
 
 	/**	Additional Buttons Panel			*/
@@ -646,6 +666,26 @@ public final class ConfirmPanel extends CPanel
 	}	//	getCancelButton
 
 	/**
+	 *	Show Refresh button
+	 *  @param value trie for visible
+	 */
+	public void setRefreshVisible (boolean value)
+	{
+		bRefresh.setVisible(value);
+		bRefresh.setEnabled(value);
+	}	//	setRefreshVisible
+	
+	/**
+	 *	Show Print button
+	 *  @param value trie for visible
+	 */
+	public void setPrintVisible (boolean value)
+	{
+		bPrint.setVisible(value);
+		bPrint.setEnabled(value);
+	}	//	setPrintVisible
+	
+	/**
 	 *	Show OK button
 	 *  @param value true for visible
 	 */
@@ -673,26 +713,6 @@ public final class ConfirmPanel extends CPanel
 		bCancel.setVisible(value);
 		bCancel.setEnabled(value);
 	}	//	setCancelVisible
-	
-	/**
-	 *	Show Refresh button
-	 *  @param value trie for visible
-	 */
-	public void setRefreshVisible (boolean value)
-	{
-		bRefresh.setVisible(value);
-		bRefresh.setEnabled(value);
-	}	//	setRefreshVisible
-	
-	/**
-	 *	Show Print button
-	 *  @param value trie for visible
-	 */
-	public void setPrintVisible (boolean value)
-	{
-		bPrint.setVisible(value);
-		bPrint.setEnabled(value);
-	}	//	setPrintVisible
 
 	/**
 	 *	Is Cancel Visible
@@ -748,15 +768,6 @@ public final class ConfirmPanel extends CPanel
 		return bRefresh;
 	}	//	getRefreshButton
 	
-	/**
-	 *	Get Print Button
-	 *  @return Button
-	 */
-	public CButton getPrintButton()
-	{
-		return bPrint;
-	}	//	getPrintButton
-	
 	
 	/**************************************************************************
 	 *	Add Action Listener
@@ -772,8 +783,6 @@ public final class ConfirmPanel extends CPanel
 		//
 		if (bRefresh != null)
 			((AppsAction)bRefresh.getAction()).setDelegate(al);
-		if (bPrint != null)
-			((AppsAction)bPrint.getAction()).setDelegate(al);
 		if (bReset != null)
 			((AppsAction)bReset.getAction()).setDelegate(al);
 		if (bCustomize != null)

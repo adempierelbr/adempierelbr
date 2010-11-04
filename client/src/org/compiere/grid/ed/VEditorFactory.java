@@ -1,5 +1,6 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -9,21 +10,31 @@
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ * For the text or an alternative of this public license, you may reach us    *
+ * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
+ * or via info@compiere.org or http://www.compiere.org/license.html           *
  *****************************************************************************/
 package org.compiere.grid.ed;
 
+import java.util.logging.Level;
+
 import org.adempierelbr.grid.ed.VTaxes;
 import org.adempierelbr.model.MTaxesLookup;
-import org.compiere.model.*;
-import org.compiere.swing.*;
-import java.util.logging.*;
-import org.compiere.util.*;
+import org.compiere.model.GridField;
+import org.compiere.model.GridTab;
+import org.compiere.model.MAccountLookup;
+import org.compiere.model.MLocationLookup;
+import org.compiere.model.MLocatorLookup;
+import org.compiere.model.MPAttributeLookup;
+import org.compiere.swing.CLabel;
+import org.compiere.util.CLogger;
+import org.compiere.util.DisplayType;
 
 /**
  *  Factory for VEditor and its Label for single Row display and multi row-editor
  *
  *  @see VCellRenderer for multi-row display
- *  @author  Jorg Janke
+ *  @author  Jorg Janked
  *  @version $Id: VEditorFactory.java,v 1.3 2006/07/30 00:51:28 jjanke Exp $
  */
 public class VEditorFactory
@@ -85,6 +96,9 @@ public class VEditorFactory
 					mField.getVFormat(), mField.getObscureType());
 				vs.setName (columnName);
 				vs.setField (mField);
+				if (mField.isAutocomplete()) {
+					ADempiereAutoCompleteDecorator.decorate(vs, mField.getEntries(), false);
+				}
 				editor = vs;
 			}
 		}
@@ -191,13 +205,12 @@ public class VEditorFactory
 			editor = loc;
 		}
 		
-		
 		//  @author mgrigioni 14/11/2007 13:26
 		//	Brazilian Taxes 
 		else if (displayType == DisplayType.lbr_Taxes)
 		{
-			MTaxesLookup ml = new MTaxesLookup (Env.getCtx(), WindowNo);
-			VTaxes tax = new VTaxes (columnName, mandatory, readOnly, updateable,ml);
+			VTaxes tax = new VTaxes (columnName, mandatory, readOnly, updateable,
+					(MTaxesLookup)mField.getLookup());
 			tax.setName(columnName);
 			tax.setField (mField);
 			editor = tax;
@@ -328,5 +341,6 @@ public class VEditorFactory
 	
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(VEditorFactory.class);
+	
 
-}   //  VEditorFactor
+}   //  VEditorFactory
