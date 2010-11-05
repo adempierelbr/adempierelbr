@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.simp.SacredSimpUtil;
 import org.adempierelbr.sacred.simp.beans.B0R0001;
@@ -125,7 +125,7 @@ public class ProcGenerateSacredSimp extends SvrProcess
 		SacredSimpUtil.setEnv(getCtx(),get_TrxName());
 		CounterSacred.clear();
 		//Notas Fiscais Período
-		MNotaFiscal[] nfs = SacredSimpUtil.getNotaFiscal(dateFrom, dateTo, true);
+		MLBRNotaFiscal[] nfs = SacredSimpUtil.getNotaFiscal(dateFrom, dateTo, true);
 		
 		IVA          = SacredSimpUtil.getIVA(dateFrom, dateTo); //IVA Período
 		medICMS      = SacredSimpUtil.getMedICMS(dateFrom, dateTo); //Média ICMS Compras Período
@@ -141,7 +141,7 @@ public class ProcGenerateSacredSimp extends SvrProcess
 			result.append(new B0R0001("0")); //BLOCO COM DADOS
 		
 		//REGISTRO 0150 - CADASTRO PARCEIROS - NIVEL 2
-		for(MNotaFiscal nf : nfs){
+		for(MLBRNotaFiscal nf : nfs){
 			if (nf.isCancelled())
 				continue; //NAO LANCAR DOCUMENTOS CANCELADOS
 			
@@ -165,7 +165,7 @@ public class ProcGenerateSacredSimp extends SvrProcess
 			result.append(new B5R5001("0")); //BLOCO COM DADOS
 		
 		//REGISTRO 5315 - OPERAÇÕES DE SAÍDA - NIVEL 2
-		for(MNotaFiscal nf : nfs){
+		for(MLBRNotaFiscal nf : nfs){
 			if (nf.isCancelled())
 				continue; //NAO LANCAR DOCUMENTOS CANCELADOS
 			

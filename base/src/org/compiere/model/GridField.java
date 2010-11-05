@@ -31,7 +31,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MTaxesLookup;
+import org.adempierelbr.model.MLBRTaxesLookup;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -185,7 +185,7 @@ public class GridField
 		}
 		else if (m_vo.displayType == DisplayType.lbr_Taxes)   //  ADempiereLBR - Taxes
 		{
-			MTaxesLookup ml = new MTaxesLookup (m_vo.ctx, m_vo.WindowNo);
+			MLBRTaxesLookup ml = new MLBRTaxesLookup (m_vo.ctx, m_vo.WindowNo);
 			m_lookup = ml;
 		}
 		else if (m_vo.displayType == DisplayType.Locator)

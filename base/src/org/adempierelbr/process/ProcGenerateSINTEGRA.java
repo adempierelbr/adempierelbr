@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNCM;
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MLocation;
@@ -237,9 +237,9 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						oi.get_ValueAsString("Phone")));	//	Telefone Contato
 
 
-		MNotaFiscal[] nfs = getNotasFiscais(ctx,estado);
+		MLBRNotaFiscal[] nfs = getNotasFiscais(ctx,estado);
 		countnf = nfs.length;
-		for(MNotaFiscal nf : nfs) {
+		for(MLBRNotaFiscal nf : nfs) {
 
 			log.finer("NF " + aux + "/" + countnf + ": "+ nf.getDocumentNo());
 			log.info("Processado: " + String.format("%,.5f",(((double)aux/(double)countnf)*100)) + "%");
@@ -418,10 +418,10 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 					continue;
 				
 				// Registro tipo 54 e 75
-				MNotaFiscalLine[] nfLines = getLines(nf);
+				MLBRNotaFiscalLine[] nfLines = getLines(nf);
 				String CFOP = "";
 				int line = 0;
-				for (MNotaFiscalLine nfLine : nfLines) {
+				for (MLBRNotaFiscalLine nfLine : nfLines) {
 					log.finer("NF: "+ nf.getDocumentNo() +
 							  " Linha: "  + nfLine.getLine());
 
@@ -458,7 +458,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 						ncmName = "0000.00.00";
 
 						if (nfLine.getLBR_NCM_ID() != 0){
-							MNCM ncm = new MNCM(ctx,nfLine.getLBR_NCM_ID(),null);
+							MLBRNCM ncm = new MLBRNCM(ctx,nfLine.getLBR_NCM_ID(),null);
 							ncmName = ncm.getValue();
 						}
 					}
@@ -1355,7 +1355,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	 * @param estado
 	 * @throws Exception
 	 */
-	private MNotaFiscal[] getNotasFiscais(Properties ctx, String estado){
+	private MLBRNotaFiscal[] getNotasFiscais(Properties ctx, String estado){
 
 		StringBuffer whereClause = new StringBuffer("");
 		//
@@ -1366,13 +1366,13 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 		//
 		whereClause.append("AND (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ? AND ? ");
 		//
-		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);
+		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);
 		Query q =  new Query(ctx, table, whereClause.toString(), null);
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID, p_DateFrom, p_DateTo});
 		q.setOrderBy(" (CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), Documentno ");
-		List<MNotaFiscal> list = q.list();
+		List<MLBRNotaFiscal> list = q.list();
 
-		return list.toArray(new MNotaFiscal[list.size()]);
+		return list.toArray(new MLBRNotaFiscal[list.size()]);
 	} //getNotasFiscais
 
 	/**************************************************************************
@@ -1380,7 +1380,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 	 *  @param String MNotaFiscal
 	 *  @return MNotaFiscalLine[] lines
 	 */
-	private MNotaFiscalLine[] getLines(MNotaFiscal nf)
+	private MLBRNotaFiscalLine[] getLines(MLBRNotaFiscal nf)
 	{
 
 		String whereClause = "LBR_NotaFiscal_ID = ? "

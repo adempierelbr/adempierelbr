@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.adempierelbr.model.MTaxIncludedList;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTaxIncludedList;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_TaxLine;
 import org.adempierelbr.model.X_LBR_TaxName;
 import org.compiere.model.MInvoice;
@@ -246,7 +246,7 @@ public class TaxesCalculation{
 		boolean brazilianlist = pList.get_ValueAsBoolean("lbr_BrazilianPriceList");
 		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
 		if (brazilianlist){
-			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+			tIncluded = MLBRTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		}
 
 		MTax tax = getMTax();
@@ -263,7 +263,7 @@ public class TaxesCalculation{
 				int LBR_Tax_ID = line.get_ValueAsInt("LBR_Tax_ID");
 				if (LBR_Tax_ID > 0){
 
-					Map<Integer,X_LBR_TaxLine> lTaxes = MTaxLBR.getLines(ctx, LBR_Tax_ID, trx);
+					Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, LBR_Tax_ID, trx);
 					MTax cTaxes[] = tax.getChildTaxes(false);
 					for(MTax cTax : cTaxes){
 
@@ -358,7 +358,7 @@ public class TaxesCalculation{
 		boolean brazilianlist = pList.get_ValueAsBoolean("lbr_BrazilianPriceList");
 		ArrayList<Integer> tIncluded = new ArrayList<Integer>();
 		if (brazilianlist){
-			tIncluded = MTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
+			tIncluded = MLBRTaxIncludedList.getTaxes(ctx, pList.getM_PriceList_ID(), trx);
 		}
 
 		TaxBR.deleteAllTax(getDocument_ID(), m_isOrder, trx);
@@ -380,7 +380,7 @@ public class TaxesCalculation{
 					//CALCULATE THE CURRENT ROW
 					TaxBR.calculateTaxes(getLine_ID(), m_isOrder, trx);
 
-					Map<Integer,X_LBR_TaxLine> lTaxes = MTaxLBR.getLines(ctx, LBR_Tax_ID, trx);
+					Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, LBR_Tax_ID, trx);
 					MTax cTaxes[] = tax.getChildTaxes(false);
 					for(MTax cTax : cTaxes){
 

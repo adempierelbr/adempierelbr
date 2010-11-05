@@ -31,8 +31,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 
 import org.adempiere.plaf.AdempierePLAF;
-import org.adempierelbr.model.MTaxLBR;
-import org.adempierelbr.model.MTaxesLookup;
+import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxesLookup;
 import org.compiere.apps.FieldRecordInfo;
 import org.compiere.grid.ed.VEditor;
 import org.compiere.grid.ed.VLookup;
@@ -99,7 +99,7 @@ public class VTaxes extends JComponent
 	 * 	@param mLocation location model
 	 */
 	public VTaxes(String columnName, boolean mandatory, boolean isReadOnly, boolean isUpdateable,
-		MTaxesLookup mTax)
+		MLBRTaxesLookup mTax)
 	{
 		super();
 		super.setName(columnName);
@@ -155,8 +155,8 @@ public class VTaxes extends JComponent
 	/** The Button                      */
 	private CButton				m_button = new CButton();
 
-	private MTaxesLookup		m_mTaxes;
-	private MTaxLBR			    m_value;
+	private MLBRTaxesLookup		m_mTaxes;
+	private MLBRTax			    m_value;
 
 	private String				m_columnName;
 	/**	Logger			*/

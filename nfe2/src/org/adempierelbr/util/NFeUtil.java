@@ -29,7 +29,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MOrgInfo;
@@ -333,7 +333,7 @@ public abstract class NFeUtil
 		return msg;
 	}	// geraMsgCancelamento
 
-	public static File generateDistribution(MNotaFiscal nf) throws Exception{
+	public static File generateDistribution(MLBRNotaFiscal nf) throws Exception{
 
 		File attach = null;
 
@@ -375,7 +375,7 @@ public abstract class NFeUtil
 	 * @param xml
 	 * @return true = success, false = error
 	 */
-	public static boolean updateAttach(MNotaFiscal nf, File xml){
+	public static boolean updateAttach(MLBRNotaFiscal nf, File xml){
 
 		if (xml != null){
 			MAttachment attachDist = nf.createAttachment(true);

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
-import org.adempierelbr.model.MBoleto;
+import org.adempierelbr.model.MLBRBoleto;
 import org.compiere.model.MBankAccount;
 import org.compiere.util.CLogger;
 
@@ -41,7 +41,7 @@ public interface I_Bank {
 	public final String DUPLICATA  = "01"; //ESPECIE DUPLICATA MERCANTIL - HSBC = 98
 
 	//Método para geração do CNAB
-	public void generateCNAB(MBoleto boleto);
+	public void generateCNAB(MLBRBoleto boleto);
 
 	//Método para retorno do CNAB
 	public void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException;

@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -60,7 +60,7 @@ public class ProcGenerateDistribution extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{		
-		MNotaFiscal nf = new MNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
 		//
 		boolean success = NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf));
 		String msg = "";

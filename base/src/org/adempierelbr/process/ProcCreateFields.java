@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MDocPrintField;
+import org.adempierelbr.model.MLBRDocPrintField;
 import org.adempierelbr.model.X_LBR_DocPrint;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -113,7 +113,7 @@ public class ProcCreateFields extends SvrProcess
 	
 	private void setField(String columnName){
 		
-		MDocPrintField Field = new MDocPrintField(getCtx(),0,null);
+		MLBRDocPrintField Field = new MLBRDocPrintField(getCtx(),0,null);
 		if (!(columnName.endsWith("_ID"))){
 			Field.setName(columnName);
 			Field.setLBR_DocPrint_ID(p_LBR_DocPrint_ID);

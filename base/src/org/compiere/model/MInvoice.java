@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
 import org.adempiere.exceptions.DBException;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTax;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -718,7 +718,7 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			//
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() > 0)
 			{
-				MTaxLBR fromTax = new MTaxLBR(Env.getCtx(), LBR_Tax_ID, get_TrxName());
+				MLBRTax fromTax = new MLBRTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
 				line.set_ValueOfColumn("LBR_Tax_ID", fromTax.copyTo().getLBR_Tax_ID());
 			}
 			//	End - Kenos

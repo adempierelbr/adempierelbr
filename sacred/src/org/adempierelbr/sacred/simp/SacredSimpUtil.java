@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.simp.beans.B0R0000;
 import org.adempierelbr.sacred.simp.beans.B0R0150;
@@ -101,7 +101,7 @@ public class SacredSimpUtil{
 		return new B0R0000(dateFrom, NOME, CNPJ, IE, CNAE, CMUN);
 	} //createR0000
 
-	public static B0R0150 createR0150(MNotaFiscal nf){
+	public static B0R0150 createR0150(MLBRNotaFiscal nf){
 
 		String COD_PAR  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
 		boolean isEx    = false;
@@ -157,7 +157,7 @@ public class SacredSimpUtil{
 		return artigos;
 	} //createR0300
 
-	public static B5R5315 createR5315(MNotaFiscal nf){
+	public static B5R5315 createR5315(MLBRNotaFiscal nf){
 
 		String COD_PAR  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
 		if (COD_PAR == null || COD_PAR.trim().equals("")){
@@ -180,7 +180,7 @@ public class SacredSimpUtil{
 				PERC_CRDOUT,VALOR_CRDOUT);
 	} //createR5315
 
-	public static B5R5325 createR5325(MNotaFiscal nf, BigDecimal IVA_UTILIZADO, BigDecimal PER_MED_ICMS){
+	public static B5R5325 createR5325(MLBRNotaFiscal nf, BigDecimal IVA_UTILIZADO, BigDecimal PER_MED_ICMS){
 
 		String COD_LEGAL = null;
 
@@ -234,7 +234,7 @@ public class SacredSimpUtil{
 		return new B5R5325(COD_LEGAL,IVA_UTILIZADO,PER_MED_ICMS,CRED_EST_ICMS,ICMS_GERA);
 	} //createR5325
 
-	public static B5R5330 createR5330(MNotaFiscal nf){
+	public static B5R5330 createR5330(MLBRNotaFiscal nf){
 
 		BigDecimal VALOR_BC = nf.getICMSBase();
 		BigDecimal ICMS_DEB = nf.getICMSDebAmt();
@@ -242,7 +242,7 @@ public class SacredSimpUtil{
 		return new B5R5330(VALOR_BC,ICMS_DEB);
 	} //createR5330
 
-	public static B5R5335 createR5335(MNotaFiscal nf){
+	public static B5R5335 createR5335(MLBRNotaFiscal nf){
 
 		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
 		String COMP_OPER    = "0";
@@ -250,7 +250,7 @@ public class SacredSimpUtil{
 		return new B5R5335(NUM_DECL_EXP,COMP_OPER);
 	} //createR5335
 
-	public static B5R5350 createR5350(MNotaFiscal nf){
+	public static B5R5350 createR5350(MLBRNotaFiscal nf){
 
 		BigDecimal VALOR_BC = nf.getICMSBase();
 		BigDecimal ICMS_DEB = nf.getICMSDebAmt();
@@ -344,9 +344,9 @@ public class SacredSimpUtil{
 	 * @param isSOTrx: true = venda, false = compra
 	 * @return MNotaFiscal[]
 	 */
-	public static MNotaFiscal[] getNotaFiscal(Timestamp dateFrom, Timestamp dateTo, boolean isSOTrx){
+	public static MLBRNotaFiscal[] getNotaFiscal(Timestamp dateFrom, Timestamp dateTo, boolean isSOTrx){
 
-		ArrayList<MNotaFiscal> list = new ArrayList<MNotaFiscal>();
+		ArrayList<MLBRNotaFiscal> list = new ArrayList<MLBRNotaFiscal>();
 
 		String sql = "SELECT DISTINCT DateDoc, LBR_NotaFiscal_ID " +
 				     "FROM Z_CREDICMS " +
@@ -366,7 +366,7 @@ public class SacredSimpUtil{
 			pstmt.setInt(4, Env.getAD_Client_ID(ctx));
 			rs = pstmt.executeQuery();
 			while (rs.next()){
-				list.add(new MNotaFiscal(ctx,rs.getInt("LBR_NotaFiscal_ID"),null));
+				list.add(new MLBRNotaFiscal(ctx,rs.getInt("LBR_NotaFiscal_ID"),null));
 			}
 
 		}
@@ -378,7 +378,7 @@ public class SacredSimpUtil{
 		       DB.close(rs, pstmt);
 		}
 
-		return list.toArray(new MNotaFiscal[list.size()]);
+		return list.toArray(new MLBRNotaFiscal[list.size()]);
 	} //getNotaFiscal
 
 	/**

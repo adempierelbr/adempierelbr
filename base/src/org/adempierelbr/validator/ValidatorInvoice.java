@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TaxesCalculation;
@@ -212,7 +212,7 @@ public class ValidatorInvoice implements ModelValidator
 		if (isDelete)
 		{
 			if (LBR_Tax_ID != 0){
-				MTaxLBR lbrTax = new MTaxLBR(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
+				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
 				lbrTax.delete(true, iLine.get_TrxName());
 			}
 		} //delete
@@ -248,8 +248,8 @@ public class ValidatorInvoice implements ModelValidator
 					LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
 					if (LBR_Tax_ID != 0)
 					{
-						MTaxLBR oTax = new MTaxLBR(ctx, LBR_Tax_ID, trx);
-						MTaxLBR newTax = oTax.copyTo();
+						MLBRTax oTax = new MLBRTax(ctx, LBR_Tax_ID, trx);
+						MLBRTax newTax = oTax.copyTo();
 						//
 						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 					}
@@ -326,7 +326,7 @@ public class ValidatorInvoice implements ModelValidator
 				pt.apply(invoice);
 
 				// Validate Withhold
-				MTaxLBR.validateWithhold(invoice);
+				MLBRTax.validateWithhold(invoice);
 
 				MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 				boolean hasOpenItems      = dt.get_ValueAsBoolean("lbr_HasOpenItems");
@@ -436,7 +436,7 @@ public class ValidatorInvoice implements ModelValidator
 				// TODO: Continuar fazendo as reversões
 
 				// CANCELA BOLETO E CNAB
-				MBoleto.cancelBoleto(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+				MLBRBoleto.cancelBoleto(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
 
 				//FIXME
 				//CANCELA CONSIGNAÇÃO

@@ -41,7 +41,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.adempierelbr.model.MBoleto;
+import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.apps.ADialog;
@@ -541,7 +541,7 @@ public class VFormBoleto extends CPanel
 			Integer[] selection = getSelection();
 			for (int i=0;i<selection.length;i++){
 				try {
-					MBoleto.generateBoleto(ctx, selection[i], (Integer)m_C_BankAccount_ID, fileName, printerName, trxName);
+					MLBRBoleto.generateBoleto(ctx, selection[i], (Integer)m_C_BankAccount_ID, fileName, printerName, trxName);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (PrinterException e1) {

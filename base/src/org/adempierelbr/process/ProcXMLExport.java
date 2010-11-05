@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.logging.Level;
 
 import org.adempiere.pipo.CreateZipFile;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MSysConfig;
@@ -103,13 +103,13 @@ public class ProcXMLExport extends SvrProcess
 		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
 		//
-		MTable table = MTable.get(Env.getCtx(), MNotaFiscal.Table_Name);		
+		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);		
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
 		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()), p_C_DocTypeTarget_ID});
 		//		
 		for (PO po : q.list())
 		{
-			MNotaFiscal nf = (MNotaFiscal) po;
+			MLBRNotaFiscal nf = (MLBRNotaFiscal) po;
 			//
 			MAttachment attachment = nf.getAttachment();
 			if(attachment == null)

@@ -38,9 +38,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.adempierelbr.model.MDocPrint;
-import org.adempierelbr.model.MMatrixPrinter;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRDocPrint;
+import org.adempierelbr.model.MLBRMatrixPrinter;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.process.ProcPrintNF;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
@@ -239,7 +239,7 @@ public class VFormNotaFiscal extends CPanel
 		fMatrixPrinter = new VLookup ("LBR_MatrixPrinter_ID", true, false, true, PrinterL);
 		fMatrixPrinter.addVetoableChangeListener(this);
 		
-		fMatrixPrinter.setValue(MMatrixPrinter.getDefaultPrinter());
+		fMatrixPrinter.setValue(MLBRMatrixPrinter.getDefaultPrinter());
 		m_LBR_MatrixPrinter_ID = (Integer)fMatrixPrinter.getValue();
 		
 		MLookup BPartnerL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2893, DisplayType.Search);
@@ -472,7 +472,7 @@ public class VFormNotaFiscal extends CPanel
 		if ((Integer)m_LBR_MatrixPrinter_ID == null)
 			return;
 		
-		MMatrixPrinter MatrixPrinter = new MMatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
+		MLBRMatrixPrinter MatrixPrinter = new MLBRMatrixPrinter(ctx,(Integer)m_LBR_MatrixPrinter_ID,null);
 		
 		String PrinterType  = MatrixPrinter.getlbr_PrinterType();
 		String PrinterName  = MatrixPrinter.getlbr_PrinterPath(); 
@@ -481,11 +481,11 @@ public class VFormNotaFiscal extends CPanel
 	    boolean condensed   = MatrixPrinter.islbr_IsCondensed();
 		
 		//Impressão
-	    int orgDocPrint_ID = MDocPrint.getLBR_DocPrint_ID(ctx);
+	    int orgDocPrint_ID = MLBRDocPrint.getLBR_DocPrint_ID(ctx);
 	    if (orgDocPrint_ID == 0)
 	    	orgDocPrint_ID = LBR_DocPrint_ID;
 	    
-		MDocPrint DoctypePrint = new MDocPrint(ctx,orgDocPrint_ID,null);
+		MLBRDocPrint DoctypePrint = new MLBRDocPrint(ctx,orgDocPrint_ID,null);
 	    DoctypePrint.startJob(PrinterType, PrinterName, charSet, condensed, pitch);
 		
 		Integer[] selection = getSelection();
@@ -494,7 +494,7 @@ public class VFormNotaFiscal extends CPanel
 			if (i != 0)
 				DoctypePrint.newPage();
 			
-			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,selection[i],null);
+			MLBRNotaFiscal NotaFiscal = new MLBRNotaFiscal(ctx,selection[i],null);
 			ProcPrintNF.print(ctx,selection[i], MatrixPrinter, DoctypePrint, null);
 			
 			NotaFiscal.setIsPrinted(true);
@@ -504,7 +504,7 @@ public class VFormNotaFiscal extends CPanel
 		}
 		
 		DoctypePrint.endJob();
-		MDocPrint.unixPrint(MatrixPrinter);
+		MLBRDocPrint.unixPrint(MatrixPrinter);
 		
 	} //print
 

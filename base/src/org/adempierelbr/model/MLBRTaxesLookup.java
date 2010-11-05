@@ -30,7 +30,7 @@ import org.compiere.util.NamePair;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTaxesLookup.java, 14/11/2007 13:48:00 mgrigioni
  */
-public final class MTaxesLookup extends Lookup
+public final class MLBRTaxesLookup extends Lookup
 	implements Serializable
 {
 
@@ -44,7 +44,7 @@ public final class MTaxesLookup extends Lookup
 	 *  @param ctx context
 	 *  @param WindowNo window no (to derive AD_Client/Org for new records)
 	 */
-	public MTaxesLookup(Properties ctx, int WindowNo)
+	public MLBRTaxesLookup(Properties ctx, int WindowNo)
 	{
 		super (DisplayType.TableDir, WindowNo);
 		m_ctx = ctx;
@@ -62,7 +62,7 @@ public final class MTaxesLookup extends Lookup
 	{
 		if (value == null)
 			return null;
-		MTaxLBR tax = getTax(value, null);
+		MLBRTax tax = getTax(value, null);
 		if (tax == null)
 			return "<" + value.toString() + ">";
 		return tax.toString();
@@ -77,7 +77,7 @@ public final class MTaxesLookup extends Lookup
 	{
 		if (value == null)
 			return null;
-		MTaxLBR tax = getTax (value, null);
+		MLBRTax tax = getTax (value, null);
 		if (tax == null)
 			return null;
 		return new KeyNamePair (tax.getLBR_Tax_ID(), tax.toString());
@@ -100,7 +100,7 @@ public final class MTaxesLookup extends Lookup
 	 *	@param trxName transaction
 	 * 	@return X_LBR_Tax
 	 */
-	public MTaxLBR getTax (Object key, String trxName)
+	public MLBRTax getTax (Object key, String trxName)
 	{
 		if (key == null)
 			return null;
@@ -119,9 +119,9 @@ public final class MTaxesLookup extends Lookup
 	 *	@param trxName transaction
 	 * 	@return X_LBR_Tax
 	 */
-	public MTaxLBR getTax (int LBR_Tax_ID, String trxName)
+	public MLBRTax getTax (int LBR_Tax_ID, String trxName)
 	{
-		return new MTaxLBR(m_ctx, LBR_Tax_ID, trxName);
+		return new MLBRTax(m_ctx, LBR_Tax_ID, trxName);
 	}	//	getX_LBR_Tax
 
 	/**

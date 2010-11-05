@@ -47,7 +47,7 @@ import org.compiere.util.TimeUtil;
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @version $Id: MCNAB.java, 07/11/2007 10:45:02 mgrigioni
  */
-public class MCNAB extends X_LBR_CNAB
+public class MLBRCNAB extends X_LBR_CNAB
 {
 
 	/**
@@ -56,7 +56,7 @@ public class MCNAB extends X_LBR_CNAB
 	private static final long serialVersionUID = 1L;
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MCNAB.class);
+	private static CLogger log = CLogger.getCLogger(MLBRCNAB.class);
 
 	/**	File Prefix			*/
 	public static final String prefix = "CB"; //COBRANÇA BANCÁRIA
@@ -74,7 +74,7 @@ public class MCNAB extends X_LBR_CNAB
     public static final int SANTANDER_033 = 7;
     public static final int SANTANDER_353 = 8;
 
-	public MCNAB(Properties ctx, int LBR_CNAB_ID, String trx) {
+	public MLBRCNAB(Properties ctx, int LBR_CNAB_ID, String trx) {
     	super(ctx,LBR_CNAB_ID,trx);
     }
 
@@ -84,7 +84,7 @@ public class MCNAB extends X_LBR_CNAB
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MCNAB (Properties ctx, ResultSet rs, String trxName)
+	public MLBRCNAB (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MCNAB
@@ -105,15 +105,15 @@ public class MCNAB extends X_LBR_CNAB
 	{
 
 		switch(bNum){
-			case MCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.BRADESCO         : new MBradesco().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.ITAU				: new MItau().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.BANCO_REAL		: new MBancoReal().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.UNIBANCO			: new MUnibanco().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.HSBC				: new MHsbc().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.SANTANDER_033	: new MSantander_033().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
-			case MCNAB.SANTANDER_353	: new MSantander_353().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.BRADESCO         : new MBradesco().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.ITAU				: new MItau().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.BANCO_REAL		: new MBancoReal().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.UNIBANCO			: new MUnibanco().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.HSBC				: new MHsbc().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.SANTANDER_033	: new MSantander_033().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
+			case MLBRCNAB.SANTANDER_353	: new MSantander_353().generateFile (fileName, dateFrom, dateTo, bankAcct, trxName); break;
 			default : log.log (Level.WARNING, "Unknown Bank");
 		}
 
@@ -230,7 +230,7 @@ public class MCNAB extends X_LBR_CNAB
 	 *  @param String trx
 	 * 	@return MCNAB[] lines
 	 */
-	public static MCNAB[] getFields(String where, Timestamp DateFrom, Timestamp DateTo, String trx){
+	public static MLBRCNAB[] getFields(String where, Timestamp DateFrom, Timestamp DateTo, String trx){
 
 		Properties ctx = Env.getCtx();
 
@@ -242,18 +242,18 @@ public class MCNAB extends X_LBR_CNAB
 		if (where != null)
 			whereClause += " AND " + where;
 
-		MTable table = MTable.get(ctx, MCNAB.Table_Name);
+		MTable table = MTable.get(ctx, MLBRCNAB.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
 	 		  query.setParameters(new Object[]{TimeUtil.getDay(DateFrom),
 	 				                           TimeUtil.getDay(DateTo),
 	 				                           Env.getAD_Client_ID(ctx)});
 
-		List<MCNAB> list = query.list();
+		List<MLBRCNAB> list = query.list();
 
 		//MARCA BOLETOS COMO REGISTRADOS
 		setIsRegistered(DateFrom, DateTo, whereClause, Env.getAD_Client_ID(ctx), trx);
 
-		return list.toArray(new MCNAB[list.size()]);
+		return list.toArray(new MLBRCNAB[list.size()]);
 	}	//	getFields
 
 	/**************************************************************************
@@ -262,22 +262,22 @@ public class MCNAB extends X_LBR_CNAB
 	 *  @param String trx
 	 * 	@return MCNAB[] lines
 	 */
-	public static MCNAB[] getFields(int C_BankAccount_ID, String trx){
+	public static MLBRCNAB[] getFields(int C_BankAccount_ID, String trx){
 
 		Properties ctx = Env.getCtx();
 
 		String whereClause = "C_BankAccount_ID = ? AND IsSelected = 'Y'";
 
-		MTable table = MTable.get(ctx, MCNAB.Table_Name);
+		MTable table = MTable.get(ctx, MLBRCNAB.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
 	 		  query.setParameters(new Object[]{C_BankAccount_ID});
 
-		List<MCNAB> list = query.list();
+		List<MLBRCNAB> list = query.list();
 
 		//MARCA BOLETOS COMO REGISTRADOS
 		setIsRegistered(C_BankAccount_ID,trx);
 
-		return list.toArray(new MCNAB[list.size()]);
+		return list.toArray(new MLBRCNAB[list.size()]);
 	}	//	getFields
 
 	/**

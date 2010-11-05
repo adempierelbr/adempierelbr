@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: OSeB - OpenSource ERP Brazil                                      *
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -94,7 +94,7 @@ public class ProcSeqCreator extends SvrProcess
 	{
 		Adempiere.startupEnvironment(false);
 		CLogMgt.setLevel(Level.FINE);
-		String filePath = "C:\\Users\\mario.grigioni\\Desktop\\data\\OSeB\\";
+		String filePath = "C:\\Users\\mario.grigioni\\Desktop\\data\\AdempiereLBR\\";
 		generateFile(filePath);
 	}
 

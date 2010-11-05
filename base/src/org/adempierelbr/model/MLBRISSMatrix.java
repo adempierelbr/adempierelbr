@@ -26,7 +26,7 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MISSMatrix.java, 02/03/2008 11:40:00 mgrigioni
  */
-public class MISSMatrix extends X_LBR_ISSMatrix {
+public class MLBRISSMatrix extends X_LBR_ISSMatrix {
 
 	/**
 	 *
@@ -39,7 +39,7 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MISSMatrix(Properties ctx, int ID, String trx){
+	public MLBRISSMatrix(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -49,7 +49,7 @@ public class MISSMatrix extends X_LBR_ISSMatrix {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MISSMatrix (Properties ctx, ResultSet rs, String trxName)
+	public MLBRISSMatrix (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}

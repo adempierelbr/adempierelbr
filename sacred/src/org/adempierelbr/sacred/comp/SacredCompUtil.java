@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.comp.beans.B0R0000;
 import org.adempierelbr.sacred.comp.beans.B0R0150;
@@ -118,7 +118,7 @@ public class SacredCompUtil{
 		return new B0R0000(dateFrom, NOME, CNPJ, IE, CNAE, CMUN);
 	} //createR0000
 
-	public static B0R0150 createR0150(MNotaFiscal nf){
+	public static B0R0150 createR0150(MLBRNotaFiscal nf){
 
 		String COD_PAR  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
 		boolean isEx    = false;
@@ -162,7 +162,7 @@ public class SacredCompUtil{
 				NUM, COMPL, BAIRRO, COD_MUN, FONE);
 	} //createR0150
 	
-	public static B0R0200 createR0200(MNotaFiscalLine nfl){
+	public static B0R0200 createR0200(MLBRNotaFiscalLine nfl){
 
 		int M_Product_ID = nfl.getM_Product_ID();
 		if (M_Product_ID <= 0)
@@ -222,8 +222,8 @@ public class SacredCompUtil{
 
 	public static B5R5315 createR5315(int NUM_LANC, int C_Period_ID, int LBR_NotaFiscalLine_ID){
 
-		MNotaFiscalLine nfl = new MNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
-		MNotaFiscal nf = new MNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
+		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
 		
 		String COD_PAR  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
 		if (COD_PAR == null || COD_PAR.trim().equals("")){
@@ -261,7 +261,7 @@ public class SacredCompUtil{
 		if (COD_LEGAL == null)
 			return null;
 		
-		MNotaFiscalLine nfl = new MNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
+		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
 		BigDecimal VALOR_OP_ITEM  = nfl.getLineTotalAmt();
 		//((custo*qtd)/medICMS) - valorICMS
@@ -275,7 +275,7 @@ public class SacredCompUtil{
 	
 	public static B5R5330 createR5330(int LBR_NotaFiscalLine_ID){
 		
-		MNotaFiscalLine nfl = new MNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
+		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
 		BigDecimal VALOR_BC_ITEM = nfl.getICMSBase();
 		BigDecimal ALIQ_ITEM = nfl.getICMSRate();
@@ -286,8 +286,8 @@ public class SacredCompUtil{
 	
 	public static B5R5335 createR5335(int LBR_NotaFiscalLine_ID){
 
-		MNotaFiscalLine nfl = new MNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
-		MNotaFiscal nf = new MNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
+		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
 		
 		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
 		String COMP_OPER    = "0";
@@ -298,7 +298,7 @@ public class SacredCompUtil{
 
 	public static B5R5350 createR5350(int LBR_NotaFiscalLine_ID){
 		
-		MNotaFiscalLine nfl = new MNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
+		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
 		BigDecimal VALOR_OP_ITEM       = nfl.getLineTotalAmt();
 		BigDecimal VALOR_BC_ITEM       = nfl.getICMSBase();
@@ -331,9 +331,9 @@ public class SacredCompUtil{
 	 * @param isSOTrx: true = venda, false = compra
 	 * @return MNotaFiscal[]
 	 */
-	public static MNotaFiscal[] getNotaFiscal(Timestamp dateFrom, Timestamp dateTo, boolean isSOTrx){
+	public static MLBRNotaFiscal[] getNotaFiscal(Timestamp dateFrom, Timestamp dateTo, boolean isSOTrx){
 
-		ArrayList<MNotaFiscal> list = new ArrayList<MNotaFiscal>();
+		ArrayList<MLBRNotaFiscal> list = new ArrayList<MLBRNotaFiscal>();
 
 		String sql = "SELECT DISTINCT DateDoc, LBR_NotaFiscal_ID " +
 				     "FROM Z_CREDICMS " +
@@ -353,7 +353,7 @@ public class SacredCompUtil{
 			pstmt.setInt(4, Env.getAD_Client_ID(ctx));
 			rs = pstmt.executeQuery();
 			while (rs.next()){
-				list.add(new MNotaFiscal(ctx,rs.getInt("LBR_NotaFiscal_ID"),null));
+				list.add(new MLBRNotaFiscal(ctx,rs.getInt("LBR_NotaFiscal_ID"),null));
 			}
 
 		}
@@ -365,10 +365,10 @@ public class SacredCompUtil{
 		       DB.close(rs, pstmt);
 		}
 
-		return list.toArray(new MNotaFiscal[list.size()]);
+		return list.toArray(new MLBRNotaFiscal[list.size()]);
 	} //getNotaFiscal
 	
-	private static String getCOD_LEGAL(MNotaFiscal nf){
+	private static String getCOD_LEGAL(MLBRNotaFiscal nf){
 		
 		String COD_LEGAL = null;
 

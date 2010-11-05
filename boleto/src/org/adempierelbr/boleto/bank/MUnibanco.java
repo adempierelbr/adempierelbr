@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MCNAB;
-import org.adempierelbr.model.MReturnCNAB;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBankAccount;
 import org.compiere.util.Env;
@@ -39,7 +39,7 @@ public class MUnibanco implements I_Bank
 {
 
 	@Override
-	public void generateCNAB(MBoleto boleto) {
+	public void generateCNAB(MLBRBoleto boleto) {
 		// TODO Auto-generated method stub
 
 	}
@@ -67,7 +67,7 @@ public class MUnibanco implements I_Bank
 		TextUtil.addText(fw, TextUtil.pad(null, ' ', 14, true)); //ZEROS
 		TextUtil.addText(fw, TextUtil.pad(null, ' ', 2, true)); //COD. MENSAGEM
 		TextUtil.addText(fw, TextUtil.pad(null, ' ', 41, true)); //USO DO BANCO
-		TextUtil.addText(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
+		TextUtil.addText(fw, MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addText(fw, "01600"); //DENSIDADE DO ARQUIVO
 		TextUtil.addText(fw, "BPI"); //LITERAL DENSIDADE
 		TextUtil.addText(fw, TextUtil.pad(null, ' ', 283, true)); //USO DO BANCO
@@ -171,7 +171,7 @@ public class MUnibanco implements I_Bank
 
 	public void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 
-		FileWriter fw = MReturnCNAB.createFile(FilePath);
+		FileWriter fw = ReturnCNABUtil.createFile(FilePath);
 
 		for (int i = 1;i<((linhas.length)-1);i++){
 
@@ -180,11 +180,11 @@ public class MUnibanco implements I_Bank
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
 			String NossoNo         = (linhas[i].substring(62, 76)).trim(); //Nosso Número
 			Timestamp  DataOcorren = TextUtil.stringToTime((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
-			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
-			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
+			BigDecimal ValorTitulo = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
+			BigDecimal Desconto    = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
+			BigDecimal Juros       = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
+			ReturnCNABUtil.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 
 		}

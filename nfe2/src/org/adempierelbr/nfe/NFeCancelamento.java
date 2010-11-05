@@ -25,8 +25,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.adempierelbr.model.MDigitalCertificate;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
@@ -62,7 +62,7 @@ public class NFeCancelamento
 	 * @return
 	 * @throws Exception
 	 */
-	public static String cancelNFe(MNotaFiscal nf) throws Exception
+	public static String cancelNFe(MLBRNotaFiscal nf) throws Exception
 	{
 		Properties ctx = Env.getCtx();
 		String trxName = nf.get_TrxName();
@@ -92,7 +92,7 @@ public class NFeCancelamento
 		//
 
 		//INICIALIZA CERTIFICADO
-		MDigitalCertificate.setCertificate(ctx, Env.getAD_Org_ID(ctx));
+		MLBRDigitalCertificate.setCertificate(ctx, Env.getAD_Org_ID(ctx));
 		//
 
 		try{

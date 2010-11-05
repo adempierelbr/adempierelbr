@@ -29,7 +29,7 @@ import org.compiere.util.DB;
  *	@author Mario Grigioni
  *	@version $Id: MNCM.java, 01/12/2009 11:14:00 mgrigioni
  */
-public class MNCM extends X_LBR_NCM {
+public class MLBRNCM extends X_LBR_NCM {
 
 	/**
 	 *
@@ -45,7 +45,7 @@ public class MNCM extends X_LBR_NCM {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNCM(Properties ctx, int ID, String trx){
+	public MLBRNCM(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -55,7 +55,7 @@ public class MNCM extends X_LBR_NCM {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNCM (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNCM (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -92,7 +92,7 @@ public class MNCM extends X_LBR_NCM {
 			if (LBR_NCM_ID == null)
 				LBR_NCM_ID = 0; //	Sem NCM
 
-			int defaultNCM_ID = MNCM.getDefaultNCM(line.getAD_Client_ID());
+			int defaultNCM_ID = MLBRNCM.getDefaultNCM(line.getAD_Client_ID());
 
 			/** Não laçar se o NCM estiver padrão.	*/
 			if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0 || LBR_NCM_ID.intValue() == defaultNCM_ID)

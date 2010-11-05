@@ -20,7 +20,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TaxesCalculation;
 import org.adempierelbr.util.TaxesException;
@@ -162,7 +162,7 @@ public class ValidatorOrder implements ModelValidator
 		else if (isDelete){
 			int LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
 			if (LBR_Tax_ID != 0){
-				MTaxLBR lbrTax = new MTaxLBR(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
+				MLBRTax lbrTax = new MLBRTax(oLine.getCtx(),LBR_Tax_ID,oLine.get_TrxName());
 				lbrTax.delete(true, oLine.get_TrxName());
 			}
 		} //DELETE
@@ -232,7 +232,7 @@ public class ValidatorOrder implements ModelValidator
 				}
 
 				//Validate Withhold
-				MTaxLBR.validateWithhold(order);
+				MLBRTax.validateWithhold(order);
 
 				MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
 				String DocSubTypeSO = dt.getDocSubTypeSO();

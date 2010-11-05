@@ -54,10 +54,10 @@ import org.compiere.util.Env;
  *  @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
  *	@version $Id: MTax.java, 26/01/2010 09:10:00 mgrigioni
  */
-public class MTaxLBR extends X_LBR_Tax {
+public class MLBRTax extends X_LBR_Tax {
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MTaxLBR.class);
+	private static CLogger log = CLogger.getCLogger(MLBRTax.class);
 
 	/**
 	 *
@@ -74,7 +74,7 @@ public class MTaxLBR extends X_LBR_Tax {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MTaxLBR(Properties ctx, int ID, String trx){
+	public MLBRTax(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -84,7 +84,7 @@ public class MTaxLBR extends X_LBR_Tax {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MTaxLBR (Properties ctx, ResultSet rs, String trxName)
+	public MLBRTax (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -98,7 +98,7 @@ public class MTaxLBR extends X_LBR_Tax {
 	 *  @param ArrayList<String> Tax Names (LBR)
 	 *  @param ArrayList<BigDecimal> Tax Rates
 	 */
-	public MTaxLBR(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates, ArrayList<BigDecimal> taxBases)
+	public MLBRTax(Properties ctx, String trx, ArrayList<String> taxNames, ArrayList<BigDecimal> taxRates, ArrayList<BigDecimal> taxBases)
 	{
 		this(ctx,0,trx);
 		this.save(trx);
@@ -557,9 +557,9 @@ public class MTaxLBR extends X_LBR_Tax {
 	 *  copyTo - Copy the current MTax and return a new copy of the Object
 	 *  @return MTax newTax
 	 */
-	public MTaxLBR copyTo(){
+	public MLBRTax copyTo(){
 
-		MTaxLBR newTax = new MTaxLBR(getCtx(),0,get_TrxName());
+		MLBRTax newTax = new MLBRTax(getCtx(),0,get_TrxName());
 		newTax.setDescription(getDescription());
 		newTax.save(get_TrxName());
 
@@ -579,9 +579,9 @@ public class MTaxLBR extends X_LBR_Tax {
 
 	/**************************************************************************
 	 *  copyLinesTo - Copy lines from the current MTax to the newTax param
-	 *  @param MTaxLBR newTax
+	 *  @param MLBRTax newTax
 	 */
-	public void copyLinesTo(MTaxLBR newTax){
+	public void copyLinesTo(MLBRTax newTax){
 
 		newTax.deleteLines(); //delete old lines
 
@@ -609,7 +609,7 @@ public class MTaxLBR extends X_LBR_Tax {
 		if (LBR_Tax_ID == 0)
 			return;
 
-		MTaxLBR newTax = new MTaxLBR(getCtx(),LBR_Tax_ID,get_TrxName());
+		MLBRTax newTax = new MLBRTax(getCtx(),LBR_Tax_ID,get_TrxName());
 		copyLinesTo(newTax);
 	} //copyLines
 

@@ -22,9 +22,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MCNAB;
-import org.adempierelbr.model.MReturnCNAB;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
@@ -54,7 +54,7 @@ public class MBancoReal implements I_Bank
 	 * @param ctx
 	 * @param trxName
 	 */
-	public void generateCNAB (MBoleto boleto) {
+	public void generateCNAB (MLBRBoleto boleto) {
 
 		Properties ctx     = boleto.getCtx();
 		String     trxName = boleto.get_TrxName();
@@ -66,7 +66,7 @@ public class MBancoReal implements I_Bank
 				log.log(Level.SEVERE, "Banco não suportado ["+boleto.getRoutingNo()+"], " +
 						"banco suportado ["+CBANCOREAL+"]");
 			//
-			MCNAB cnab = new MCNAB(ctx, 0, trxName);
+			MLBRCNAB cnab = new MLBRCNAB(ctx, 0, trxName);
 			//
 			MOrgInfo orgInfo 	= MOrgInfo.get (ctx, Env.getAD_Org_ID(ctx), trxName);
 			MInvoice invoice 	= new MInvoice (ctx, boleto.getC_Invoice_ID(), trxName);
@@ -77,18 +77,18 @@ public class MBancoReal implements I_Bank
 			//
 			String agencyNo = boleto.getlbr_AgencyNo();
 			String accountNo = boleto.getAccountNo();
-			String titBankNo = MCNAB.CNABFormat(boleto.getDocumentNo(), 7);
-			String titCedeNo = MCNAB.CNABFormat(invoice.getDocumentNo(),10);
+			String titBankNo = MLBRCNAB.CNABFormat(boleto.getDocumentNo(), 7);
+			String titCedeNo = MLBRCNAB.CNABFormat(invoice.getDocumentNo(),10);
 			//
-			String dueDate = MCNAB.CNABDateFormat(boleto.getDueDate());
-			String docDate = MCNAB.CNABDateFormat(boleto.getlbr_DocDate());
-			String discountDate = MCNAB.CNABDateFormat(boleto.getDiscountDate());
+			String dueDate = MLBRCNAB.CNABDateFormat(boleto.getDueDate());
+			String docDate = MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate());
+			String discountDate = MLBRCNAB.CNABDateFormat(boleto.getDiscountDate());
 			//
-			String grandTot = MCNAB.CNABFormat(boleto.getGrandTotal()
+			String grandTot = MLBRCNAB.CNABFormat(boleto.getGrandTotal()
 					.setScale(2, ROUND).toString(), 13);
-			String interest = MCNAB.CNABFormat(boleto.getlbr_Interest()
+			String interest = MLBRCNAB.CNABFormat(boleto.getlbr_Interest()
 					.setScale(2, ROUND).toString(), 13);
-			String discountAmt = MCNAB.CNABFormat(boleto.getDiscountAmt()
+			String discountAmt = MLBRCNAB.CNABFormat(boleto.getDiscountAmt()
 					.setScale(2, ROUND).toString(), 13);
 			//
 			cnab.setRoutingNo(CBANCOREAL); 								//	Banco Real
@@ -98,11 +98,11 @@ public class MBancoReal implements I_Bank
 			//
 			cnab.setlbr_CNABField1("1"); 							//	Tipo de Registro = 3
 			cnab.setlbr_CNABField2("02"); 							//	Pessoa Jurídica
-			cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ, 14)); 	//	CNPJ Empresa
+			cnab.setlbr_CNABField3(MLBRCNAB.CNABFormat(CNPJ, 14)); 	//	CNPJ Empresa
 			cnab.setlbr_CNABField4("0"); 							//	Zero
-			cnab.setlbr_CNABField5(MCNAB.CNABFormat(agencyNo, 4)); 	//	Agência
+			cnab.setlbr_CNABField5(MLBRCNAB.CNABFormat(agencyNo, 4)); 	//	Agência
 			cnab.setlbr_CNABField6("0"); 							//	Zero
-			cnab.setlbr_CNABField7(MCNAB.CNABFormat(accountNo, 7));	//	Conta Corrente
+			cnab.setlbr_CNABField7(MLBRCNAB.CNABFormat(accountNo, 7));	//	Conta Corrente
 			cnab.setlbr_CNABField8(null); 							//	Brancos
 			cnab.setlbr_CNABField9(identCobr); 						//	Campo Livre
 			cnab.setlbr_CNABField10("00");							//	Zeros
@@ -110,9 +110,9 @@ public class MBancoReal implements I_Bank
 			cnab.setlbr_CNABField12("0");							//	Incidência da Multa | FIXME
 			cnab.setlbr_CNABField13("00");							//	Número de Dias para Multa | FIXME
 			cnab.setlbr_CNABField14("0");							//	Tipo da Multa | FIXME
-			cnab.setlbr_CNABField15(MCNAB.CNABFormat("0",13));		//	Multa
+			cnab.setlbr_CNABField15(MLBRCNAB.CNABFormat("0",13));		//	Multa
 			cnab.setlbr_CNABField16(null); 							//	Brancos
-			cnab.setlbr_CNABField17(MCNAB.CNABFormat("0",9)); 		//	Contrato
+			cnab.setlbr_CNABField17(MLBRCNAB.CNABFormat("0",9)); 		//	Contrato
 			cnab.setlbr_CNABField18(null); 							//	Brancos
 			cnab.setlbr_CNABField19(boleto.getlbr_BillFold()); 		//	Código da Carteira
 			cnab.setlbr_CNABField20("5");							//	Tipo de Cobrança
@@ -121,7 +121,7 @@ public class MBancoReal implements I_Bank
 			cnab.setlbr_CNABField23(dueDate);						//	Data de Vencimento
 			cnab.setlbr_CNABField24(grandTot);						//	Valor do Título
 			cnab.setlbr_CNABField25(CBANCOREAL);				    //	Identificação do Banco
-			cnab.setlbr_CNABField26(MCNAB.CNABFormat("",5));		//	Agência Cobradora
+			cnab.setlbr_CNABField26(MLBRCNAB.CNABFormat("",5));		//	Agência Cobradora
 			cnab.setlbr_CNABField27(DUPLICATA); 					// 	Espécie de Título - Duplicata
 			cnab.setlbr_CNABField28("N"); 							//	Aceite
 			cnab.setlbr_CNABField29(docDate); 						//	Data de Emissão
@@ -140,7 +140,7 @@ public class MBancoReal implements I_Bank
 				 * 	CPF é formado por 3 campos.
 				 * 	CPF (Sem dig) + 000 + Controle (Dig. verificador)
 				 */
-				String CPF_Cedente = MCNAB.CNABFormat(bPartner.get_ValueAsString("lbr_CPF"), 11);
+				String CPF_Cedente = MLBRCNAB.CNABFormat(bPartner.get_ValueAsString("lbr_CPF"), 11);
 				CPF_Cedente = CPF_Cedente.substring(0, 9) + "000" + CPF_Cedente.substring(9);
 				//
 				cnab.setlbr_CNABField38("01"); 						//	Cód. Inscr. Sacado
@@ -152,7 +152,7 @@ public class MBancoReal implements I_Bank
 				 * 	CNPJ é formado por 3 campos.
 				 * 	CNPJ + Filial + Controle (Dig. verificador)
 				 */
-				String CNPJ_Cedente = MCNAB.CNABFormat(bPartner.get_ValueAsString("lbr_CNPJ"), 14);
+				String CNPJ_Cedente = MLBRCNAB.CNABFormat(bPartner.get_ValueAsString("lbr_CNPJ"), 14);
 				//
 				cnab.setlbr_CNABField38("02"); 						//	Cód. Inscr. Sacado
 				cnab.setlbr_CNABField39(CNPJ_Cedente); 				//	CPF ou CPNJ
@@ -165,7 +165,7 @@ public class MBancoReal implements I_Bank
 			cnab.setlbr_CNABField42(RemoverAcentos.remover(boleto.getAddress3())
 					.toUpperCase()); 								//	Bairro
 			//
-			String CEP = MCNAB.CNABFormat(boleto.getPostal(),8);
+			String CEP = MLBRCNAB.CNABFormat(boleto.getPostal(),8);
 			cnab.setlbr_CNABField43(CEP.substring(0, 5)); 			//	CEP
 			cnab.setlbr_CNABField44(CEP.substring(5, 8)); 			//	Complemento do CEP
 			//
@@ -196,7 +196,7 @@ public class MBancoReal implements I_Bank
 	public void returnCNAB (HashMap<Integer,String[]> occurType, String FilePath,
 			String[] linhas, String trx) throws IOException
 	{
-		FileWriter fw = MReturnCNAB.createFile(FilePath);
+		FileWriter fw = ReturnCNABUtil.createFile(FilePath);
 		//
 		for (int i = 1;i<((linhas.length)-1);i++)
 		{
@@ -209,13 +209,13 @@ public class MBancoReal implements I_Bank
 			//	Data da Ocorrência
 			Timestamp  dataOcorren = TextUtil.stringToTime((linhas[i].substring(110, 116)).trim(),"ddMMyy");
 			//	Valor do Título
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim());
+			BigDecimal ValorTitulo = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(152, 165)).trim());
 			//	Desconto concedido
-			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim());
+			BigDecimal Desconto    = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(240, 253)).trim());
 			//	Juros de Mora
-			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim());
+			BigDecimal Juros       = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(266, 279)).trim());
 			//
-			MReturnCNAB.processReturn(fw, codOcorren, descOcorren[1], descOcorren[0], documentNo, nossoNo,
+			ReturnCNABUtil.processReturn(fw, codOcorren, descOcorren[1], descOcorren[0], documentNo, nossoNo,
 									  dataOcorren, ValorTitulo, Desconto, Juros, trx);
 		}
 		TextUtil.closeFile(fw);
@@ -240,7 +240,7 @@ public class MBancoReal implements I_Bank
 		String agencia = BankA.get_ValueAsString("lbr_AgencyNo");
 		String constante = TextUtil.rPad("1REMESSA01COBRANCA", 25);
 		String legalEntity = TextUtil.rPad((String) oi.get_Value("lbr_LegalEntity"), 30);
-		String data = MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"));
+		String data = MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"));
 		//
 		TextUtil.addText(fw, "0"); 									//	Código do Registro
 		TextUtil.addText(fw, constante); 							//	Constante
@@ -297,15 +297,15 @@ public class MBancoReal implements I_Bank
 		generateHeader (fw,bankAcct);
 		//
 		int 	seqNo 	= 2;
-		String 	cc 		= MCNAB.CNABFormat (bankAcct.getAccountNo(), 7);
+		String 	cc 		= MLBRCNAB.CNABFormat (bankAcct.getAccountNo(), 7);
 		String 	where 	= " lbr_CNABField7='" + cc + "'";
 		BigDecimal tot	= Env.ZERO;
 		//
-		MCNAB[] lines = null;
+		MLBRCNAB[] lines = null;
 		if (dateFrom != null && dateTo != null)
-			lines = MCNAB.getFields (where, dateFrom, dateTo, trx);
+			lines = MLBRCNAB.getFields (where, dateFrom, dateTo, trx);
 		else
-			lines = MCNAB.getFields (bankAcct.getC_BankAccount_ID(),trx);
+			lines = MLBRCNAB.getFields (bankAcct.getC_BankAccount_ID(),trx);
 		//
 		for (int i=0; i < lines.length; i++)
 		{
@@ -361,7 +361,7 @@ public class MBancoReal implements I_Bank
 			TextUtil.addText(fw, TextUtil.lPad(""+seqNo, 6)); 						//	395..400
 			TextUtil.addEOL(fw);
 			//
-			tot = tot.add(MReturnCNAB.stringTobigdecimal(lines[i].getlbr_CNABField24()));
+			tot = tot.add(ReturnCNABUtil.stringTobigdecimal(lines[i].getlbr_CNABField24()));
 			seqNo++;
 		}
 		//

@@ -18,33 +18,30 @@ import java.util.Properties;
 import org.compiere.util.DB;
 
 /**
- *	Model for LBR_NFeWebService
+ *	MMatrixPrinter
  *
- *	@author Mario Grigioni
- *	@version $Id: MNFeWebService.java,27/08/2010 17:10:00 mgrigioni Exp $
+ *	Model for X_LBR_MatrixPrinter
+ *
+ *	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ *	@version $Id: MMatrixPrinter.java, 27/11/2008 10:24:00 mgrigioni
  */
-public class MNFeWebService extends X_LBR_NFeWebService
-{
+public class MLBRMatrixPrinter extends X_LBR_MatrixPrinter {
+
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	public static final String CADCONSULTACADASTRO = "NfeConsultaCadastro";
-	public static final String STATUSSERVICO       = "NfeStatusServico";
-	public static final String CONSULTA            = "NfeConsultaProtocolo";
-	public static final String INUTILIZACAO        = "NfeInutilizacao";
-	public static final String CANCELAMENTO        = "NfeCancelamento";
-	public static final String RETRECEPCAO         = "NfeRetRecepcao";
-	public static final String RECEPCAO            = "NfeRecepcao";
-	
+
+	/**	Logger			*/
+	//private static CLogger log = CLogger.getCLogger(MMatrixPrinter.class);
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNFeWebService(Properties ctx, int ID, String trx){
+	public MLBRMatrixPrinter(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -54,19 +51,24 @@ public class MNFeWebService extends X_LBR_NFeWebService
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNFeWebService (Properties ctx, ResultSet rs, String trxName)
+	public MLBRMatrixPrinter (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
-	
-	public static String getURL (String name, String envType, String versionNo, int C_Region_ID){
-		
-		String sql = "SELECT URL FROM LBR_NFeWebService " +
-				     "WHERE UPPER(Name) LIKE ? AND lbr_NFeEnv = ? " +
-				     "AND VersionNo = ? AND C_Region_ID = ?";
 
-		return DB.getSQLValueString(null, sql, 
-				new Object[]{name.toUpperCase(),envType,versionNo,C_Region_ID});
-	} //getURL
+	/**************************************************************************
+	 *  Get DefaultPrinter
+	 *  @return int LBR_MatrixPrinter_ID
+	 */
+	public static int getDefaultPrinter(){
 
-}	//	MNFeWebService
+		String sql = "SELECT LBR_MatrixPrinter_ID " +
+				     "FROM LBR_MatrixPrinter " +
+				     "WHERE IsDefault = 'Y' order by LBR_MatrixPrinter_ID";
+
+		int LBR_MatrixPrinter_ID = DB.getSQLValue(null, sql);
+
+		return LBR_MatrixPrinter_ID > 0 ? LBR_MatrixPrinter_ID : 0;
+	}
+
+} //MMatrixPrinter

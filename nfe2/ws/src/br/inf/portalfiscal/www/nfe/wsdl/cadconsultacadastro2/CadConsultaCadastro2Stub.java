@@ -7,7 +7,7 @@
  */
         package br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2;
 
-import org.adempierelbr.model.MNFeWebService;
+import org.adempierelbr.model.MLBRNFeWebService;
 
         
 
@@ -31,7 +31,7 @@ import org.adempierelbr.model.MNFeWebService;
     	private static String stubAddress = "";
 
     	public static void setAmbiente(String ambiente, int C_Region_ID) {
-    		stubAddress = MNFeWebService.getURL(MNFeWebService.CADCONSULTACADASTRO,
+    		stubAddress = MLBRNFeWebService.getURL(MLBRNFeWebService.CADCONSULTACADASTRO,
     				ambiente, "2.00", C_Region_ID);
     	}
 

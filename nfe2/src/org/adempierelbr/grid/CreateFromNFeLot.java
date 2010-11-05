@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.Vector;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.X_LBR_NotaFiscal;
 import org.compiere.grid.CreateFrom;
 import org.compiere.minigrid.IMiniTable;
@@ -146,7 +146,7 @@ public class CreateFromNFeLot extends CreateFrom {
 				KeyNamePair pp = (KeyNamePair)miniTable.getValueAt(i, 1);
 				int LBR_NotaFiscal_ID = pp.getKey();
 				//
-				MNotaFiscal nf = new MNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
+				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
 				nf.set_CustomColumn("LBR_NFeLot_ID", LBR_NFeLot_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//

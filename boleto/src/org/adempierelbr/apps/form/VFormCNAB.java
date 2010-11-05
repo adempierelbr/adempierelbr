@@ -39,7 +39,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.adempierelbr.model.MCNAB;
+import org.adempierelbr.model.MLBRCNAB;
 import org.adempierelbr.model.X_LBR_Bank;
 import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.apps.ADialog;
@@ -374,7 +374,7 @@ public class VFormCNAB extends CPanel
 
 			Integer[] selection = getSelection();
 			for (int i=0;i<selection.length;i++){
-				MCNAB cnab = new MCNAB(ctx,selection[i],null);
+				MLBRCNAB cnab = new MLBRCNAB(ctx,selection[i],null);
 				cnab.setIsSelected(true);
 				cnab.save();
 			}
@@ -391,14 +391,14 @@ public class VFormCNAB extends CPanel
 		    if (!(fileName.endsWith(AdempiereLBR.getFileSeparator()))) 
 		    	fileName += AdempiereLBR.getFileSeparator();
 		    
-		    fileName += MCNAB.prefix + MCNAB.getSystemDate(ctx) + MCNAB.ext;
+		    fileName += MLBRCNAB.prefix + MLBRCNAB.getSystemDate(ctx) + MLBRCNAB.ext;
 		    
 		    boolean answer = ADialog.ask(m_WindowNo, this, 
 		    		                     "Títulos Selecionados: " + rowsSelected + 
 		    		                     " - Valor Total: " + GrandTotal.setScale(2, BigDecimal.ROUND_HALF_UP));
 		    if (answer){
 		    	try {
-		    		MCNAB.generateFile(bNum,fileName,null,null,BankA,null);
+		    		MLBRCNAB.generateFile(bNum,fileName,null,null,BankA,null);
 		    	} catch (IOException e1) {
 		    		log.log(Level.SEVERE,"Erro ao gerar arquivo CNAB", e1);
 		    	}

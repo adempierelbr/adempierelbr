@@ -21,7 +21,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.adempierelbr.model.MDigitalCertificate;
+import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MLocation;
@@ -96,7 +96,7 @@ public class ProcConsultaCadastro extends SvrProcess
 			return null;
 
 		//INICIALIZA CERTIFICADO
-		MDigitalCertificate.setCertificate(ctx, Env.getAD_Org_ID(ctx));
+		MLBRDigitalCertificate.setCertificate(ctx, Env.getAD_Org_ID(ctx));
 		//
 		String status = "Erro na verificação de Status";
 

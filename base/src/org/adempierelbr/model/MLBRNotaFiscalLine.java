@@ -32,7 +32,7 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MNotaFiscalLine.java, 08/01/2008 11:01:00 mgrigioni
  */
-public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
+public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	/**
 	 *
@@ -56,7 +56,7 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNotaFiscalLine(Properties ctx, int ID, String trx){
+	public MLBRNotaFiscalLine(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -66,7 +66,7 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNotaFiscalLine (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNotaFiscalLine (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -103,7 +103,7 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 		String whereClause = "LBR_NotaFiscalLine_ID = ?";
 
-		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name, get_TrxName());
+		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name);
 		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID()});
 
@@ -218,7 +218,7 @@ public class MNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		String whereClause = "LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
 				             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 
-		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name, get_TrxName());
+		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name);
 		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
 	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
 

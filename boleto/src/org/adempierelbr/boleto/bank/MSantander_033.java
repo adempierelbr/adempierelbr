@@ -21,9 +21,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MCNAB;
-import org.adempierelbr.model.MReturnCNAB;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
@@ -44,13 +44,13 @@ import org.compiere.util.Env;
 public class MSantander_033 implements I_Bank
 {
 
-	public void generateCNAB(MBoleto boleto){
+	public void generateCNAB(MLBRBoleto boleto){
 
 		Properties ctx = boleto.getCtx();
 		String     trx = boleto.get_TrxName();
 
 		try{
-			MCNAB cnab = new MCNAB(ctx,0,trx);
+			MLBRCNAB cnab = new MLBRCNAB(ctx,0,trx);
 
 			MOrgInfo OrgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx),trx);
 
@@ -65,49 +65,49 @@ public class MSantander_033 implements I_Bank
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //Conta Bancária
 	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
 	        cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
-	        cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
+	        cnab.setlbr_CNABField3(MLBRCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
 	        cnab.setlbr_CNABField4(boleto.getlbr_ClientCode()); //Código do Cliente
 	        cnab.setlbr_CNABField5(null); //Brancos
 	        cnab.setlbr_CNABField6(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Campo Livre (Preencher com Número do Documento)
-	        cnab.setlbr_CNABField7(MCNAB.CNABFormat(boleto.getlbr_AgencyNo(),3)); //Agência
+	        cnab.setlbr_CNABField7(MLBRCNAB.CNABFormat(boleto.getlbr_AgencyNo(),3)); //Agência
 	        cnab.setlbr_CNABField8(boleto.getDocumentNo()); //Nosso Número
 	        cnab.setlbr_CNABField9(null); //Brancos
 	        cnab.setlbr_CNABField10(null); //Brancos
 	        cnab.setlbr_CNABField11("1"); //Carteira ( 1 = Cobrança Simples)
 	        cnab.setlbr_CNABField12("01"); //Remessa
 	        cnab.setlbr_CNABField13(invoice.getDocumentNo()); //Número do Documento
-	        cnab.setlbr_CNABField14(MCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
-	        cnab.setlbr_CNABField15(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
+	        cnab.setlbr_CNABField14(MLBRCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
+	        cnab.setlbr_CNABField15(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
 	        cnab.setlbr_CNABField16(CSANTANDER033);
 	        cnab.setlbr_CNABField17("00000"); //ZEROS
 	        cnab.setlbr_CNABField18(DUPLICATA); // Duplicata Mercantil
 	        cnab.setlbr_CNABField19("N"); //Aceite
-	        cnab.setlbr_CNABField20(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        cnab.setlbr_CNABField20(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
 	        //Protestar
 	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
 	        	cnab.setlbr_CNABField21("06"); //Protesto Automático
 	        }
 	        cnab.setlbr_CNABField22("00"); //Instrução 2
-	        cnab.setlbr_CNABField23(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
-	        cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
-	        cnab.setlbr_CNABField25(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
+	        cnab.setlbr_CNABField23(MLBRCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
+	        cnab.setlbr_CNABField24(MLBRCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
+	        cnab.setlbr_CNABField25(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
 	        cnab.setlbr_CNABField26(null); //IOF
 	        cnab.setlbr_CNABField27(null); //Abatimento
 
 	        if ((boleto.getlbr_BPTypeBR()).equalsIgnoreCase("PF")){
 	        	cnab.setlbr_CNABField28("01"); //CPF
-	        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField29(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
 	        }
 	        else{
 	        	cnab.setlbr_CNABField28("02"); //CNPJ
-	        	cnab.setlbr_CNABField29(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField29(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
 	        }
 
 	        cnab.setlbr_CNABField30(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
 	        cnab.setlbr_CNABField31(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase()); //Logradouro
 	        cnab.setlbr_CNABField32(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); //Bairro
 
-	        String getcep = MCNAB.CNABFormat(boleto.getPostal(),8);
+	        String getcep = MLBRCNAB.CNABFormat(boleto.getPostal(),8);
 
 	        cnab.setlbr_CNABField33(getcep.substring(0, 5)); //CEP
 	        cnab.setlbr_CNABField34(getcep.substring(5, 8)); //Sufixo CEP
@@ -146,7 +146,7 @@ public class MSantander_033 implements I_Bank
 		//
 		TextUtil.addText(fw, CSANTANDER033); //CÓDIGO DO BANCO
 		TextUtil.addText(fw, TextUtil.pad(NSANTANDER033, ' ', 15, false)); //NOME DO BANCO
-		TextUtil.addText(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
+		TextUtil.addText(fw, MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addText(fw, "01600"); //DENSIDADE DE GRAVAÇÃO
 		TextUtil.addText(fw, "BPI"); //UNIDADE DENSIDADE DE GRAVAÇÃO
 		TextUtil.addText(fw, TextUtil.pad("", ' ', 286, true)); //BRANCOS
@@ -177,12 +177,12 @@ public class MSantander_033 implements I_Bank
 
 		String where =  "WHERE lbr_CNABField4 = '" + CodCliente + "'";
 
-		MCNAB[] lines = null;
+		MLBRCNAB[] lines = null;
 
 		if (DateFrom != null && DateTo != null)
-			lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+			lines = MLBRCNAB.getFields(where, DateFrom, DateTo, trx);
 		else
-			lines = MCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
+			lines = MLBRCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
 
 		int numseq = 2;
 		for(int i=0;i<lines.length;i++){
@@ -240,7 +240,7 @@ public class MSantander_033 implements I_Bank
 
 	public void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 
-		FileWriter fw = MReturnCNAB.createFile(FilePath);
+		FileWriter fw = ReturnCNABUtil.createFile(FilePath);
 
 		for (int i = 1;i<((linhas.length)-1);i++){
 
@@ -249,11 +249,11 @@ public class MSantander_033 implements I_Bank
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
 			String NossoNo         = (linhas[i].substring(65, 72)).trim(); //Nosso Número
 			Timestamp  DataOcorren = TextUtil.stringToTime((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
-			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
-			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
+			BigDecimal ValorTitulo = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
+			BigDecimal Desconto    = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
+			BigDecimal Juros       = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
+			ReturnCNABUtil.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 
 		}

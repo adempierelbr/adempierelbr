@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MBoleto;
+import org.adempierelbr.model.MLBRBoleto;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
@@ -59,7 +59,7 @@ public class ProcCancelBoleto extends SvrProcess
 		
 		p_C_Invoice_ID = getRecord_ID();
 		if (p_C_Invoice_ID != 0){
-			MBoleto.cancelBoleto(getCtx(), p_C_Invoice_ID, get_TrxName());
+			MLBRBoleto.cancelBoleto(getCtx(), p_C_Invoice_ID, get_TrxName());
 		}
     
 		return "ProcCancelBoleto Process Completed " + "Fatura: " + p_C_Invoice_ID;

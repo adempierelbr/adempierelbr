@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_TaxLine;
 import org.adempierelbr.model.X_LBR_TaxName;
 import org.compiere.model.MInvoice;
@@ -105,7 +105,7 @@ public class ImpostoBR{
 		BigDecimal  TaxBase = Env.ZERO;
 		//
 		Map<String, ImpostoBR> lines = new HashMap<String, ImpostoBR>();
-		Map<Integer, X_LBR_TaxLine> lTaxes = MTaxLBR.getLines(Env.getCtx(), LBR_Tax_ID, trx);
+		Map<Integer, X_LBR_TaxLine> lTaxes = MLBRTax.getLines(Env.getCtx(), LBR_Tax_ID, trx);
 
 		X_LBR_TaxName[] taxesName = getLBR_TaxName(C_Tax_ID,trx);
 

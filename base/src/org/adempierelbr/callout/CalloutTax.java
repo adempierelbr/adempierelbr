@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MICMSMatrix;
-import org.adempierelbr.model.MISSMatrix;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRICMSMatrix;
+import org.adempierelbr.model.MLBRISSMatrix;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_CFOP;
 import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.adempierelbr.model.X_LBR_NCM;
@@ -76,7 +76,7 @@ import org.compiere.util.Env;
  */
 public class CalloutTax extends CalloutEngine
 {
-	private MTaxLBR tax = null;
+	private MLBRTax tax = null;
 	//
 	private Map<Integer, Integer> lines = new HashMap<Integer, Integer>();
 	//
@@ -252,7 +252,7 @@ public class CalloutTax extends CalloutEngine
 		if (LBR_Tax_ID == null)
 			LBR_Tax_ID = 0;
 		//
-		tax = new MTaxLBR(ctx, LBR_Tax_ID, null);
+		tax = new MLBRTax(ctx, LBR_Tax_ID, null);
 		tax.deleteLines();
 		//
 		MBPartner bpartner           = new MBPartner(ctx, C_BPartner_ID,null);
@@ -326,15 +326,15 @@ public class CalloutTax extends CalloutEngine
 
 		if (transactionType.equals("END") && isIEExempt)
 			//Operação (Consumidor Final) e Isento de IE (Alíquota Interna)
-			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,FromRegion_ID,null));
+			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,FromRegion_ID,null));
 		else
-			setLines(ctx, MICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,ToRegion_ID,null));
+			setLines(ctx, MLBRICMSMatrix.getLBR_Tax_ID(ctx,FromRegion_ID,ToRegion_ID,null));
 
 		//ISS (City)
 		if (lbr_TaxType.equals(TaxBR.taxType_Service)){
 			X_C_City city = BPartnerUtil.getX_C_City(ctx, location, null);
 			if (city != null)
-				setLines(ctx, MISSMatrix.getLBR_Tax_ID(ctx,product.get_ID(),city.getC_City_ID(),null));
+				setLines(ctx, MLBRISSMatrix.getLBR_Tax_ID(ctx,product.get_ID(),city.getC_City_ID(),null));
 		}
 
 		//NCM
@@ -343,10 +343,10 @@ public class CalloutTax extends CalloutEngine
 		}
 
 		//Exceções (Configurador de Impostos) sem exceções Produto ou Grupo
-		LBR_TaxConfiguration_ID = MTaxLBR.getLBR_TaxConfiguration_ID(ctx,isSOTrx, null, null);
+		LBR_TaxConfiguration_ID = MLBRTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, null, null);
 		if (LBR_TaxConfiguration_ID > 0){
 			//Grupo do Parceiro
-			X_LBR_TaxConfig_BPGroup taxBPGroup = MTaxLBR.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
+			X_LBR_TaxConfig_BPGroup taxBPGroup = MLBRTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				setLines(ctx, taxBPGroup.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
@@ -354,7 +354,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Parceiro de Negócios
-			X_LBR_TaxConfig_BPartner taxBPartner = MTaxLBR.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
+			X_LBR_TaxConfig_BPartner taxBPartner = MLBRTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				setLines(ctx,taxBPartner.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();
@@ -364,10 +364,10 @@ public class CalloutTax extends CalloutEngine
 		}
 
 		//Exceção Grupo de Tributação (Produto)
-		LBR_TaxConfiguration_ID = MTaxLBR.getLBR_TaxConfiguration_ID(ctx,isSOTrx, MTaxLBR.EXCEPTION_GROUP, LBR_FiscalGroup_Product_ID);
+		LBR_TaxConfiguration_ID = MLBRTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, MLBRTax.EXCEPTION_GROUP, LBR_FiscalGroup_Product_ID);
 		if (LBR_TaxConfiguration_ID > 0){
 			//Grupo do Produto
-			X_LBR_TaxConfig_ProductGroup taxProductGroup = MTaxLBR.getX_LBR_TaxConfig_ProductGroup(LBR_TaxConfiguration_ID);
+			X_LBR_TaxConfig_ProductGroup taxProductGroup = MLBRTax.getX_LBR_TaxConfig_ProductGroup(LBR_TaxConfiguration_ID);
 			if (taxProductGroup != null){
 				setLines(ctx,taxProductGroup.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxProductGroup.getLBR_LegalMessage_ID();
@@ -375,7 +375,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Estado
-			X_LBR_TaxConfig_Region taxRegion = MTaxLBR.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
+			X_LBR_TaxConfig_Region taxRegion = MLBRTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
 			if (taxRegion != null){
 				setLines(ctx,taxRegion.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
@@ -383,7 +383,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Grupo do Parceiro
-			X_LBR_TaxConfig_BPGroup taxBPGroup = MTaxLBR.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
+			X_LBR_TaxConfig_BPGroup taxBPGroup = MLBRTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				setLines(ctx,taxBPGroup.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
@@ -391,7 +391,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Parceiro de Negócios
-			X_LBR_TaxConfig_BPartner taxBPartner = MTaxLBR.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
+			X_LBR_TaxConfig_BPartner taxBPartner = MLBRTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				setLines(ctx,taxBPartner.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();
@@ -401,10 +401,10 @@ public class CalloutTax extends CalloutEngine
 		}
 
 		//Exceção Produto
-		LBR_TaxConfiguration_ID = MTaxLBR.getLBR_TaxConfiguration_ID(ctx,isSOTrx, MTaxLBR.EXCEPTION_PRODUCT, product.get_ID());
+		LBR_TaxConfiguration_ID = MLBRTax.getLBR_TaxConfiguration_ID(ctx,isSOTrx, MLBRTax.EXCEPTION_PRODUCT, product.get_ID());
 		if (LBR_TaxConfiguration_ID > 0){
 			//Produto
-			X_LBR_TaxConfig_Product taxProduct = MTaxLBR.getX_LBR_TaxConfig_Product(LBR_TaxConfiguration_ID);
+			X_LBR_TaxConfig_Product taxProduct = MLBRTax.getX_LBR_TaxConfig_Product(LBR_TaxConfiguration_ID);
 			if (taxProduct != null){
 				setLines(ctx,taxProduct.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxProduct.getLBR_LegalMessage_ID();
@@ -412,7 +412,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Estado
-			X_LBR_TaxConfig_Region taxRegion = MTaxLBR.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
+			X_LBR_TaxConfig_Region taxRegion = MLBRTax.getX_LBR_TaxConfig_Region(LBR_TaxConfiguration_ID, FromRegion_ID,ToRegion_ID);
 			if (taxRegion != null){
 				setLines(ctx,taxRegion.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxRegion.getLBR_LegalMessage_ID();
@@ -420,7 +420,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Grupo do Parceiro
-			X_LBR_TaxConfig_BPGroup taxBPGroup = MTaxLBR.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
+			X_LBR_TaxConfig_BPGroup taxBPGroup = MLBRTax.getX_LBR_TaxConfig_BPGroup(LBR_TaxConfiguration_ID, LBR_FiscalGroup_BPartner_ID);
 			if (taxBPGroup != null){
 				setLines(ctx,taxBPGroup.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPGroup.getLBR_LegalMessage_ID();
@@ -428,7 +428,7 @@ public class CalloutTax extends CalloutEngine
 			}
 
 			//Parceiro de Negócios
-			X_LBR_TaxConfig_BPartner taxBPartner = MTaxLBR.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
+			X_LBR_TaxConfig_BPartner taxBPartner = MLBRTax.getX_LBR_TaxConfig_BPartner(LBR_TaxConfiguration_ID, C_BPartner_ID);
 			if (taxBPartner != null){
 				setLines(ctx,taxBPartner.getLBR_Tax_ID());
 				LBR_LegalMessage_ID = taxBPartner.getLBR_LegalMessage_ID();

@@ -52,15 +52,15 @@ public class ProcLBRVersion extends SvrProcess
 	 */
 	protected String doIt() throws Exception
 	{
-		log.info("About OSeb");
+		log.info("About ADempiereLBR");
 
 		StringBuffer msg = new StringBuffer();
 
 		msg.append("<br><font color=\"#000000\">");
 		msg.append("<b>Versão OSeb: </b>");
-		msg.append(MSysConfig.getValue("OSEB_VERSION_NO") + "<br>");
+		msg.append(MSysConfig.getValue("LBR_VERSION_NO") + "<br>");
 		msg.append("<b>Último Script Executado: </b>");
-		msg.append(MSysConfig.getValue("OSEB_LAST_SCRIPT_EXECUTED") + "<br><br>");
+		msg.append(MSysConfig.getValue("LBR_LAST_SCRIPT_EXECUTED") + "<br><br>");
 		msg.append("</font>");
 
 		return msg.toString();

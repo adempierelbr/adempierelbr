@@ -32,14 +32,14 @@ import org.compiere.util.DB;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTaxIncludedList.java, 01/12/2008 15:20:00 mgrigioni
  */
-public class MTaxIncludedList extends X_LBR_TaxIncludedList {
+public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static CLogger log = CLogger.getCLogger(MTaxIncludedList.class);
+	private static CLogger log = CLogger.getCLogger(MLBRTaxIncludedList.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -47,7 +47,7 @@ public class MTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MTaxIncludedList(Properties ctx, int ID, String trx){
+	public MLBRTaxIncludedList(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -57,7 +57,7 @@ public class MTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MTaxIncludedList (Properties ctx, ResultSet rs, String trxName)
+	public MLBRTaxIncludedList (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -130,23 +130,23 @@ public class MTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  getList
 	 *  @return List<MTaxIncludedList> list
 	 */
-	public static List<MTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
+	public static List<MLBRTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
 
 		String whereClause = "M_PriceList_ID = ? AND IsActive = 'Y' ";
 
-		MTable table = MTable.get(ctx, MTaxIncludedList.Table_Name);
+		MTable table = MTable.get(ctx, MLBRTaxIncludedList.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
 	 		  query.setParameters(new Object[]{M_PriceList_ID});
 
-		List<MTaxIncludedList> list = query.list();
+		List<MLBRTaxIncludedList> list = query.list();
 
 		return list;
 	} //getList
 
-	public static MTaxIncludedList[] getArray(Properties ctx, int M_PriceList_ID, String trx){
+	public static MLBRTaxIncludedList[] getArray(Properties ctx, int M_PriceList_ID, String trx){
 
-		List<MTaxIncludedList> list = MTaxIncludedList.getList(ctx, M_PriceList_ID, trx);
-		return list.toArray(new MTaxIncludedList[list.size()]);
+		List<MLBRTaxIncludedList> list = MLBRTaxIncludedList.getList(ctx, M_PriceList_ID, trx);
+		return list.toArray(new MLBRTaxIncludedList[list.size()]);
 	} //getArray
 
 } //MTaxIncludedList

@@ -28,7 +28,7 @@ import org.compiere.util.Env;
  *	@contributor Mario Grigioni
  *	@version $Id: MDigitalCertificate.java,v 1.0 2009/08/23 00:51:27 ralexsander Exp $
  */
-public class MDigitalCertificate extends X_LBR_DigitalCertificate
+public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 {
 	/**
 	 *
@@ -47,7 +47,7 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MDigitalCertificate(Properties ctx, int ID, String trx){
+	public MLBRDigitalCertificate(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -57,7 +57,7 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDigitalCertificate (Properties ctx, ResultSet rs, String trxName)
+	public MLBRDigitalCertificate (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -72,15 +72,15 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 
 		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
-		MDigitalCertificate dcOrg = new MDigitalCertificate(Env.getCtx(), certOrg, null);
-		MDigitalCertificate dcWS = new MDigitalCertificate(Env.getCtx(), certWS, null);
+		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
+		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 
 		//CERTIFICADO CLIENTE
 		if (dcOrg.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dcOrg.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeOrg = "PKCS12";
-		else if (dcOrg.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certTypeOrg = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
@@ -90,9 +90,9 @@ public class MDigitalCertificate extends X_LBR_DigitalCertificate
 		//CERTIFICADO WS
 		if (dcWS.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dcWS.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeWS = "PKCS12";
-		else if (dcWS.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certTypeWS = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");

@@ -481,7 +481,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if (value.startsWith("@") && value.endsWith("@")){				
 			fieldName.setText(value.substring(1,value.length()-1));
 			fieldName.requestFocus();
-		}else if (MSysConfig.getValue("OSEB_INFO_PRODUCT_FOCUS","").equals("NAME")){
+		}else if (MSysConfig.getValue("LBR_INFO_PRODUCT_FOCUS","").equals("NAME")){
 			fieldName.setText(value);
 			fieldName.requestFocus();
 		}else

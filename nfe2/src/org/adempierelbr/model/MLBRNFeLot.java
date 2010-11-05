@@ -54,7 +54,7 @@ import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
  *	@contributor Mario Grigioni
  *	@version $Id: MNFeLot.java,v 1.0 2009/08/23 00:51:27 ralexsander Exp $
  */
-public class MNFeLot extends X_LBR_NFeLot
+public class MLBRNFeLot extends X_LBR_NFeLot
 {
 	/**
 	 *
@@ -64,7 +64,7 @@ public class MNFeLot extends X_LBR_NFeLot
 	private static final String lote = "NFe Lote ";
 
 	/**	Logger				*/
-	private static CLogger log = CLogger.getCLogger(MNFeLot.class);
+	private static CLogger log = CLogger.getCLogger(MLBRNFeLot.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -72,7 +72,7 @@ public class MNFeLot extends X_LBR_NFeLot
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNFeLot (Properties ctx, int ID, String trx){
+	public MLBRNFeLot (Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -82,7 +82,7 @@ public class MNFeLot extends X_LBR_NFeLot
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNFeLot (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNFeLot (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -170,7 +170,7 @@ public class MNFeLot extends X_LBR_NFeLot
 		//
 
 		//INICIALIZA CERTIFICADO
-		MDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
+		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
 		//
 
 		try{
@@ -275,7 +275,7 @@ public class MNFeLot extends X_LBR_NFeLot
 		//
 
 		//INICIALIZA CERTIFICADO
-		MDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
+		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
 		//
 		try{
 			String nfeConsultaDadosMsg 	= NFeUtil.geraMsgRetRecepcao(getlbr_NFeRecID(), envType);
@@ -313,7 +313,7 @@ public class MNFeLot extends X_LBR_NFeLot
 			    //
 			    for (int i=0; i< infProt.getLength(); i++) {
 		        	Node node = infProt.item(i);
-		        	String error = MNotaFiscal.authorizeNFe(node,trxName);
+		        	String error = MLBRNotaFiscal.authorizeNFe(node,trxName);
 		        	if (error != null)
 		        		throw new Exception(error);
 		        }	//	for
@@ -383,14 +383,14 @@ public class MNFeLot extends X_LBR_NFeLot
 		ArrayList<String> xmls = new ArrayList<String>();
 		String whereClause = "LBR_NFeLot_ID=?";
 		//
-		MTable table = MTable.get(getCtx(), MNotaFiscal.Table_Name);
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscal.Table_Name);
 		Query query =  new Query(getCtx(), table, whereClause, null);
 	 		  query.setParameters(new Object[]{getLBR_NFeLot_ID()});
 	 		  query.setOrderBy("DocumentNo, LBR_NotaFiscal_ID");
 		//
-	 	List<MNotaFiscal> list = query.list();
+	 	List<MLBRNotaFiscal> list = query.list();
 	 	//
-	 	for (MNotaFiscal NF : list)
+	 	for (MLBRNotaFiscal NF : list)
 	 	{
 	 		if (NF == null)
 	 			continue;

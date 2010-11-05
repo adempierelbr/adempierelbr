@@ -16,8 +16,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNFeLot;
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNFeLot;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAttachment;
@@ -63,7 +63,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{
-		MNotaFiscal nf = new MNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
 		//
 		if (nf.get_Value("lbr_NFeProt") != null || nf.isProcessed())
 		{
@@ -75,7 +75,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 		if (nf.getLBR_NFeLot_ID() > 0)
 		{
 			//Se lote não foi enviado apaga o lote ou processado
-			MNFeLot lot = new MNFeLot(getCtx(),nf.getLBR_NFeLot_ID(),null);
+			MLBRNFeLot lot = new MLBRNFeLot(getCtx(),nf.getLBR_NFeLot_ID(),null);
 			if (lot.islbr_LotSent() && !lot.isProcessed())
 				return "Lote já enviado. Processar retorno para verificar erros.";
 			

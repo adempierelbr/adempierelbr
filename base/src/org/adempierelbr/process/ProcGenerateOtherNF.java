@@ -20,8 +20,8 @@ import java.util.logging.Level;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.adempierelbr.model.MOtherNF;
-import org.adempierelbr.model.MOtherNFLine;
+import org.adempierelbr.model.MLBROtherNF;
+import org.adempierelbr.model.MLBROtherNFLine;
 import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MWarehouse;
@@ -76,7 +76,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 		int LBR_OtherNF_ID  = getRecord_ID();
 
 		try{
-			MOtherNF otherNF = new MOtherNF(ctx,LBR_OtherNF_ID,trx);
+			MLBROtherNF otherNF = new MLBROtherNF(ctx,LBR_OtherNF_ID,trx);
 			isGenerated = GerarLinhas(otherNF,returnMsg);
 			if(!otherNF.isGenerated())
 			{
@@ -91,7 +91,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 		return returnMsg.toString();
 	}//doIt
 
-	private boolean GerarLinhas(MOtherNF otherNF,StringBuffer returnMsg)
+	private boolean GerarLinhas(MLBROtherNF otherNF,StringBuffer returnMsg)
 	{
 		Properties ctx = getCtx();
 		String     trx = get_TrxName();
@@ -165,7 +165,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 			{
 				if(!(crs.getBigDecimal("Qty").signum() == 0 || crs.getBigDecimal("Qty").signum() == -1) && !C_InvoiceLine_Exists(trx, ctx, crs.getInt("C_InvoiceLine_ID"),otherNF.get_ID()))
 				{
-					MOtherNFLine line = new MOtherNFLine(ctx,0,trx);
+					MLBROtherNFLine line = new MLBROtherNFLine(ctx,0,trx);
 					line.setLBR_OtherNF_ID(otherNF.get_ID());
 					line.setC_InvoiceLine_ID(crs.getInt("C_InvoiceLine_ID"));
 					line.setDocumentNo(crs.getString("DocumentNo"));

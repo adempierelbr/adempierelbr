@@ -34,7 +34,7 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni
  *	@version $Id: MCFOP.java, 10/11/2009 12:29:00 mgrigioni
  */
-public class MCFOP extends X_LBR_CFOP {
+public class MLBRCFOP extends X_LBR_CFOP {
 
 	/**
 	 *
@@ -50,7 +50,7 @@ public class MCFOP extends X_LBR_CFOP {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MCFOP(Properties ctx, int ID, String trx){
+	public MLBRCFOP(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -60,19 +60,19 @@ public class MCFOP extends X_LBR_CFOP {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MCFOP (Properties ctx, ResultSet rs, String trxName)
+	public MLBRCFOP (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
 	
-	public static MCFOP getCFOP(Properties ctx, String value, String trxName){
+	public static MLBRCFOP getCFOP(Properties ctx, String value, String trxName){
 		
 		String sql = "SELECT MAX(LBR_CFOP_ID) FROM LBR_CFOP " +
 				     "WHERE value = ? AND AD_Client_ID = ?";
 		
 		int LBR_CFOP_ID = DB.getSQLValue(trxName, sql, new Object[]{value,Env.getAD_Client_ID(ctx)});
 		if (LBR_CFOP_ID > 0){
-			return new MCFOP(ctx,LBR_CFOP_ID,trxName);
+			return new MLBRCFOP(ctx,LBR_CFOP_ID,trxName);
 		}
 		
 		return null;
@@ -110,7 +110,7 @@ public class MCFOP extends X_LBR_CFOP {
 				continue;
 
 			Integer LBR_CFOP_ID = (Integer)line.get_Value("LBR_CFOP_ID");
-			if (!MCFOP.validateCFOP(LBR_CFOP_ID, isSOTrx, orgLocation, location, !dt.get_ValueAsBoolean("lbr_HasFiscalDocument")))
+			if (!MLBRCFOP.validateCFOP(LBR_CFOP_ID, isSOTrx, orgLocation, location, !dt.get_ValueAsBoolean("lbr_HasFiscalDocument")))
 				return  "CFOP inválido. Fatura: " + invoice.getDocumentNo() + " Linha: " + line.getLine();
 		}
 
@@ -147,7 +147,7 @@ public class MCFOP extends X_LBR_CFOP {
 		MOrderLine[] lines = order.getLines();
 		for(MOrderLine line : lines){
 			Integer LBR_CFOP_ID = (Integer)line.get_Value("LBR_CFOP_ID");
-			if (!MCFOP.validateCFOP(LBR_CFOP_ID, isSOTrx, orgLocation, location, true))
+			if (!MLBRCFOP.validateCFOP(LBR_CFOP_ID, isSOTrx, orgLocation, location, true))
 				return  "CFOP inválido. OV: " + order.getDocumentNo() + " Linha: " + line.getLine();
 		}
 
@@ -222,7 +222,7 @@ public class MCFOP extends X_LBR_CFOP {
 		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() <= 0)
 			return allowNull;
 
-		MCFOP cfop = new MCFOP(Env.getCtx(),LBR_CFOP_ID,null);
+		MLBRCFOP cfop = new MLBRCFOP(Env.getCtx(),LBR_CFOP_ID,null);
 
 		validated = cfop.validateCFOP(isSOTrx, orgLocation, bpLocation, allowNull);
 

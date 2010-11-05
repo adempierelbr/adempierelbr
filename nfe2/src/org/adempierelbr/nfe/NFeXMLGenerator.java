@@ -22,9 +22,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MCFOP;
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRCFOP;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
@@ -170,12 +170,12 @@ public class NFeXMLGenerator
 		dados.setVersao(NFeUtil.VERSAO);
 		xstream.useAttributeFor(DadosNFE.class, "Id");
 
-		MNotaFiscal nf = new MNotaFiscal(ctx, LBR_NotaFiscal_ID, trxName);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx, LBR_NotaFiscal_ID, trxName);
 		if (LBR_NotaFiscal_ID == 0)
 			return "Nota fiscal inexistente";
 
 		X_LBR_NFTax[] nfTaxes = nf.getTaxes();
-		MNotaFiscalLine[] nfLines = nf.getLines(null);
+		MLBRNotaFiscalLine[] nfLines = nf.getLines(null);
 
 		// DADOS DA ORG DE VENDA/COMPRA
 		MOrg org = new MOrg(ctx, nf.getAD_Org_ID(), trxName);
@@ -568,7 +568,7 @@ public class NFeXMLGenerator
 		xstream.alias("adi", AdicoesDI.class);
 		xstream.addImplicitCollection(DeclaracaoDI.class, "adi");
 
-		for (MNotaFiscalLine nfLine : nfLines) {
+		for (MLBRNotaFiscalLine nfLine : nfLines) {
 			ProdutosNFEBean produtos = new ProdutosNFEBean();
 			DeclaracaoDI declaracao = new DeclaracaoDI();
 
@@ -629,7 +629,7 @@ public class NFeXMLGenerator
 
 			produtos.setcEANTrib("");
 
-			MCFOP cfop = new MCFOP(ctx, nfLine.getLBR_CFOP_ID(),null);
+			MLBRCFOP cfop = new MLBRCFOP(ctx, nfLine.getLBR_CFOP_ID(),null);
 			String cfopName = nfLine.getlbr_CFOPName();
 			if (cfopName == null || cfopName.equals(""))
 				return "CFOP Linha: " + nfLine.getLine() + " Inválido";

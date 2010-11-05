@@ -99,7 +99,7 @@ public class GenerateModel
 
 		//	third parameter
 		//String entityType = "'U','A'";	//	User, Application
-		String entityType = "'LBRA','OSEB'";
+		String entityType = "'LBRA'";
 		if (args.length > 2)
 			entityType = args[2];
 		if (entityType == null || entityType.length() == 0)

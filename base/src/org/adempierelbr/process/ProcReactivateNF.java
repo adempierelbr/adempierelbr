@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -68,7 +68,7 @@ public class ProcReactivateNF extends SvrProcess
 		
 		log.info("ProcReactivateNF Process Nota Fiscal " + p_LBR_NotaFiscal_ID);
 		
-		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 		if (nf.isCancelled())
 			return "Não é permitido reativar uma Nota Fiscal Cancelada";
 		

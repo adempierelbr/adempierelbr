@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.redf.beans.Registro10;
 import org.adempierelbr.redf.beans.Registro20;
 import org.adempierelbr.redf.beans.Registro30;
@@ -143,18 +143,18 @@ public class ProcGenerateREDF extends SvrProcess
 			.append(" AND ")
 			.append(DB.TO_DATE(p_DateTo));
 		//
-		MTable table = MTable.get(ctx, MNotaFiscal.Table_Name);
+		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);
 		Query q =  new Query(ctx, table, whereClause.toString(), null);
 		q.setParameters(new Object[]{Env.getAD_Client_ID(ctx), p_AD_Org_ID});
 		q.setOrderBy("(CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END), DocumentNo");
-		List<MNotaFiscal> list = q.list();
+		List<MLBRNotaFiscal> list = q.list();
 		//
 		//	Monta o Registro 10
 		log.finer("REDF: 10");
 		Registro10 r10 = new Registro10 ((String) oi.get_Value("lbr_CNPJ"), p_DateFrom, p_DateTo);
 		result.append(r10.format());
 		//
-		for (MNotaFiscal NF : list)
+		for (MLBRNotaFiscal NF : list)
 		{
 			String emitente = NF.isSOTrx() ? "1" : "0";
 			//
@@ -172,7 +172,7 @@ public class ProcGenerateREDF extends SvrProcess
 			if (NF.isCancelled())
 				continue;
 			//
-			for (MNotaFiscalLine line : NF.getLines("Line"))
+			for (MLBRNotaFiscalLine line : NF.getLines("Line"))
 			{
 				Registro30 r30 = new Registro30 (line.getProductValue(), line.getProductName(),
 						line.getlbr_NCMName(), line.getlbr_UOMName(), line.getQty(), line.getPrice().add(line.getICMSAmt().divide(line.getQty(), 12, RoundingMode.HALF_UP)),

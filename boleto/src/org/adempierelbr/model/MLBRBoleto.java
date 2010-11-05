@@ -70,7 +70,7 @@ import org.jboleto.JBoletoPrint;
  *
  * @version $Id: MBoleto.java, 31/10/2007 10:43:02 mgrigioni
  */
-public class MBoleto extends X_LBR_Boleto
+public class MLBRBoleto extends X_LBR_Boleto
 {
 
 	/**
@@ -79,11 +79,11 @@ public class MBoleto extends X_LBR_Boleto
 	private static final long serialVersionUID = 1L;
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MBoleto.class);
+	private static CLogger log = CLogger.getCLogger(MLBRBoleto.class);
 
 	private static final String dateFormat = "dd/MM/yyyy";
 
-	public MBoleto(Properties ctx, int LBR_Boleto_ID, String trx){
+	public MLBRBoleto(Properties ctx, int LBR_Boleto_ID, String trx){
 		super(ctx,LBR_Boleto_ID,trx);
 	}
 
@@ -93,7 +93,7 @@ public class MBoleto extends X_LBR_Boleto
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MBoleto (Properties ctx, ResultSet rs, String trxName)
+	public MLBRBoleto (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -276,17 +276,17 @@ public class MBoleto extends X_LBR_Boleto
 		return LBR_Boleto_ID;
 	}	//	getLBR_Boleto_ID
 
-	public static MBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
+	public static MLBRBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 
 		String whereClause = "C_Invoice_ID = ? AND lbr_IsCancelled = 'N'";
 
-		MTable table = MTable.get(ctx, MBoleto.Table_Name);
+		MTable table = MTable.get(ctx, MLBRBoleto.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
 	 		  query.setParameters(new Object[]{C_Invoice_ID});
 
-		List<MBoleto> list = query.list();
+		List<MLBRBoleto> list = query.list();
 
-		return list.toArray(new MBoleto[list.size()]);
+		return list.toArray(new MLBRBoleto[list.size()]);
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class MBoleto extends X_LBR_Boleto
 			PayScheduleNo = numParcela.get(C_InvoicePaySchedule_ID);
 
 
-		return MCNAB.CNABFormat(((Integer)PayScheduleNo).toString(), 2);
+		return MLBRCNAB.CNABFormat(((Integer)PayScheduleNo).toString(), 2);
 	}
 
 	private String getSequence(MBankAccount BankA){
@@ -493,15 +493,15 @@ public class MBoleto extends X_LBR_Boleto
     public void generateCNAB(int bank){
 
 		switch(bank){
-			case MCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().generateCNAB(this); break;
-			case MCNAB.BRADESCO         : new MBradesco().generateCNAB(this); break;
-			case MCNAB.ITAU				: new MItau().generateCNAB(this); break;
-			case MCNAB.BANCO_REAL		: new MBancoReal().generateCNAB(this); break;
-			case MCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().generateCNAB(this); break;
-			case MCNAB.UNIBANCO			: new MUnibanco().generateCNAB(this); break;
-			case MCNAB.HSBC				: new MHsbc().generateCNAB(this); break;
-			case MCNAB.SANTANDER_033	: new MSantander_033().generateCNAB(this); break;
-			case MCNAB.SANTANDER_353	: new MSantander_353().generateCNAB(this); break;
+			case MLBRCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().generateCNAB(this); break;
+			case MLBRCNAB.BRADESCO         : new MBradesco().generateCNAB(this); break;
+			case MLBRCNAB.ITAU				: new MItau().generateCNAB(this); break;
+			case MLBRCNAB.BANCO_REAL		: new MBancoReal().generateCNAB(this); break;
+			case MLBRCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().generateCNAB(this); break;
+			case MLBRCNAB.UNIBANCO			: new MUnibanco().generateCNAB(this); break;
+			case MLBRCNAB.HSBC				: new MHsbc().generateCNAB(this); break;
+			case MLBRCNAB.SANTANDER_033	: new MSantander_033().generateCNAB(this); break;
+			case MLBRCNAB.SANTANDER_353	: new MSantander_353().generateCNAB(this); break;
 		}
 
     } //generateCNAB
@@ -519,10 +519,10 @@ public class MBoleto extends X_LBR_Boleto
 		}
 
 		List<File> pdfList      = new ArrayList<File>();
-		ArrayList<MBoleto> list = new ArrayList<MBoleto>();
+		ArrayList<MLBRBoleto> list = new ArrayList<MLBRBoleto>();
 
 		//REIMPRESSÃO DE BOLETOS
-		MBoleto[] boletos = MBoleto.getBoleto(ctx, C_Invoice_ID, trx);
+		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		if (boletos.length > 0){
 			for (int i=0;i<boletos.length; i++){
 				File boletoPDF = boletos[i].print(FilePath, PrinterName);
@@ -570,20 +570,20 @@ public class MBoleto extends X_LBR_Boleto
 			Location = MLocation.get(ctx, BPLocation.getC_Location_ID(), trx);
 			Region = new MRegion(ctx, Location.getC_Region_ID(),trx);
 
-			MOpenItem[] oi = null;
+			MLBROpenItem[] oi = null;
 
-			oi = MOpenItem.getOpenItem(C_Invoice_ID, trx);
+			oi = MLBROpenItem.getOpenItem(C_Invoice_ID, trx);
 
 			/*
 			 * Generate Boleto
 			 */
-			for (MOpenItem op : oi){
+			for (MLBROpenItem op : oi){
 
 				try{
 
 					int jBoletoNo = Integer.parseInt(lbrBank.getlbr_jBoletoNo());
 
-					MBoleto newBoleto = new MBoleto(ctx,0,trx);
+					MLBRBoleto newBoleto = new MLBRBoleto(ctx,0,trx);
 					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
 					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
 					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
@@ -655,7 +655,7 @@ public class MBoleto extends X_LBR_Boleto
 					//Nota Fiscal
 					Integer LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
 					if (LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
-						MNotaFiscal nf = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
+						MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
 						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 					}
 
@@ -696,7 +696,7 @@ public class MBoleto extends X_LBR_Boleto
 
 			} //end for
 
-			boletos = new MBoleto[list.size()];
+			boletos = new MLBRBoleto[list.size()];
 			list.toArray(boletos);
 			for (int j=0;j<boletos.length; j++){
 				File boletoPDF = boletos[j].print(FilePath, PrinterName);
@@ -838,15 +838,15 @@ public class MBoleto extends X_LBR_Boleto
 		if (C_Invoice_ID <= 0)
 			return;
 
-		MBoleto[] boletos = MBoleto.getBoleto(ctx, C_Invoice_ID, trx);
-		for(MBoleto boleto : boletos){
+		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
+		for(MLBRBoleto boleto : boletos){
 
 			boleto.setlbr_IsCancelled(true);
 			boleto.save(trx);
 
-			int LBR_CNAB_ID = MCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
+			int LBR_CNAB_ID = MLBRCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
 			if (LBR_CNAB_ID > 0){
-				MCNAB cnab = new MCNAB(ctx,LBR_CNAB_ID,trx);
+				MLBRCNAB cnab = new MLBRCNAB(ctx,LBR_CNAB_ID,trx);
 				cnab.setlbr_IsCancelled(true);
 				if (!cnab.save(trx)){
 					log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);

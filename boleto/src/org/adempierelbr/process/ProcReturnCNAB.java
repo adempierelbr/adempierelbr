@@ -14,8 +14,8 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MReturnCNAB;
 import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -79,7 +79,7 @@ public class ProcReturnCNAB extends SvrProcess
 
 		if (LBR_Bank_ID == -1) throw new IllegalArgumentException("Arquivo Inválido");
 
-		MReturnCNAB.returnCNAB(LBR_Bank_ID, p_FilePath, linhas, get_TrxName());
+		ReturnCNABUtil.returnCNAB(LBR_Bank_ID, p_FilePath, linhas, get_TrxName());
 
 		return "ReturnCNAB Process Completed " + "Arquivo: " + p_FileName;
 

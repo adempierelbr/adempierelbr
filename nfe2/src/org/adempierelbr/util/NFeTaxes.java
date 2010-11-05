@@ -15,7 +15,7 @@ package org.adempierelbr.util;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.compiere.util.Env;
@@ -93,7 +93,7 @@ public class NFeTaxes
 	 * 		mesmo que sem valores a destacar.
 	 * @return NFeTaxes Taxes
 	 */
-	public static NFeTaxes[] getTaxes (MNotaFiscalLine nfl)
+	public static NFeTaxes[] getTaxes (MLBRNotaFiscalLine nfl)
 	{
 		HashMap<String, NFeTaxes> txs = new HashMap<String, NFeTaxes>();
 		//

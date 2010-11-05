@@ -39,10 +39,10 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MOpenItem.java, 30/10/2007 10:47:00 mgrigioni
  */
-public class MOpenItem{
+public class MLBROpenItem{
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MOpenItem.class);
+	private static CLogger log = CLogger.getCLogger(MLBROpenItem.class);
 
 	private int C_BPartner_ID;
 	private int C_Invoice_ID;
@@ -57,7 +57,7 @@ public class MOpenItem{
 	private BigDecimal InterestAmt;
 	private BigDecimal GrandTotal;
 
-	private MOpenItem(ResultSet rs){
+	private MLBROpenItem(ResultSet rs){
 
 		try
 		{
@@ -85,7 +85,7 @@ public class MOpenItem{
 
 	}
 
-	public static MOpenItem[] getOpenItem(Integer C_Invoice_ID, String trx){
+	public static MLBROpenItem[] getOpenItem(Integer C_Invoice_ID, String trx){
 
 		String sql = "SELECT C_Invoice_ID, " + //1
 				     "C_BPartner_ID, " + //2
@@ -101,7 +101,7 @@ public class MOpenItem{
 				     "WHERE IsSOTrx='Y' " +
 					 "AND C_Invoice_ID = ? order by DueDate"; //*1
 
-		ArrayList<MOpenItem> list = new ArrayList<MOpenItem>();
+		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -111,7 +111,7 @@ public class MOpenItem{
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
-				list.add (new MOpenItem(rs));
+				list.add (new MLBROpenItem(rs));
 			}
 		}
 		catch (Exception e)
@@ -122,12 +122,12 @@ public class MOpenItem{
 		       DB.close(rs, pstmt);
 		}
 
-		MOpenItem[] retValue = new MOpenItem[list.size()];
+		MLBROpenItem[] retValue = new MLBROpenItem[list.size()];
 		list.toArray(retValue);
 		return retValue;
 	} //getOpenItem
 
-	public static MOpenItem[] getOpenItem(Timestamp DateInvoiced, String trx){
+	public static MLBROpenItem[] getOpenItem(Timestamp DateInvoiced, String trx){
 
 		String sql = "SELECT C_Invoice_ID, " + //1
 				     "C_BPartner_ID, " + //2
@@ -144,7 +144,7 @@ public class MOpenItem{
 					 "AND DateInvoiced = ? " + //*1
 					 "AND AD_Client_ID = ? order by DueDate"; //*2
 
-		ArrayList<MOpenItem> list = new ArrayList<MOpenItem>();
+		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -155,7 +155,7 @@ public class MOpenItem{
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
-				list.add (new MOpenItem(rs));
+				list.add (new MLBROpenItem(rs));
 			}
 		}
 		catch (Exception e)
@@ -166,7 +166,7 @@ public class MOpenItem{
 		       DB.close(rs, pstmt);
 		}
 
-		MOpenItem[] retValue = new MOpenItem[list.size()];
+		MLBROpenItem[] retValue = new MLBROpenItem[list.size()];
 		list.toArray(retValue);
 		return retValue;
 	} //getOpenItem

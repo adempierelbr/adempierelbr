@@ -25,8 +25,8 @@ import java.util.logging.Level;
 
 import javax.script.ScriptException;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxLine;
@@ -241,7 +241,7 @@ public abstract class TaxBR
 		Integer LBR_Tax_ID = (Integer) mTab.getValue("LBR_Tax_ID");
 		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
 
-		MTaxLBR tx = new MTaxLBR(ctx, (Integer)mTab.getValue("LBR_Tax_ID"), null);
+		MLBRTax tx = new MLBRTax(ctx, (Integer)mTab.getValue("LBR_Tax_ID"), null);
 		X_LBR_TaxLine[] txLines = tx.getLines();
 		Map<String, ImpostoBR> lines = new HashMap<String, ImpostoBR>();
 		lines = ImpostoBR.getImpostoBR(C_Tax_ID, LBR_Tax_ID, trxType, null);
@@ -619,7 +619,7 @@ public abstract class TaxBR
 	 */
 	public static void setNFTax(Properties ctx, int LBR_NotaFiscal_ID, String trx){
 
-		MNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
+		MLBRNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
 
 		String sql = "SELECT t.LBR_TaxGroup_ID, SUM(t.lbr_TaxBaseAmt), SUM(t.lbr_TaxAmt) " + //1..3
 			         "FROM LBR_NFLineTax t " +
@@ -676,14 +676,14 @@ public abstract class TaxBR
 		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
 
 		X_LBR_TaxName[] taxesName = ImpostoBR.getLBR_TaxName(ctx, C_InvoiceLine_ID, false, trx);
-		Map<Integer,X_LBR_TaxLine> lTaxes = MTaxLBR.getLines(ctx, iLine.get_ValueAsInt("LBR_Tax_ID"), trx);
+		Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, iLine.get_ValueAsInt("LBR_Tax_ID"), trx);
 
 		for (X_LBR_TaxName taxName : taxesName){
 
 			if (lTaxes.containsKey(taxName.get_ID())){
 
 				X_LBR_TaxLine taxLine = lTaxes.get(taxName.get_ID());
-				int C_Tax_ID = MTaxLBR.getC_Tax_ID(iLine.getC_Tax_ID(), taxName.get_ID(), trx);
+				int C_Tax_ID = MLBRTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName.get_ID(), trx);
 				if (C_Tax_ID > 0 && taxLine.islbr_PostTax()){
 
 					MTax tax = new MTax(ctx,C_Tax_ID,trx);

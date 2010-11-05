@@ -21,9 +21,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MCNAB;
-import org.adempierelbr.model.MReturnCNAB;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
@@ -45,13 +45,13 @@ public class MHsbc implements I_Bank
 {
 	public String DUPLICATA   = "98";
 
-	public void generateCNAB(MBoleto boleto){
+	public void generateCNAB(MLBRBoleto boleto){
 
 		Properties ctx = boleto.getCtx();
 		String     trx = boleto.get_TrxName();
 
 		try{
-			MCNAB cnab = new MCNAB(ctx,0,trx);
+			MLBRCNAB cnab = new MLBRCNAB(ctx,0,trx);
 
 			MOrgInfo OrgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx), trx);
 
@@ -66,43 +66,43 @@ public class MHsbc implements I_Bank
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //Conta Bancária
 	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
 	        cnab.setlbr_CNABField2("02"); //Pessoa Jurídica
-	        cnab.setlbr_CNABField3(MCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
+	        cnab.setlbr_CNABField3(MLBRCNAB.CNABFormat(CNPJ,14)); //CNPJ Empresa
 	        cnab.setlbr_CNABField4("0"); //Zero
-	        cnab.setlbr_CNABField5(MCNAB.CNABFormat(boleto.getlbr_AgencyNo(),4)); //Agência
+	        cnab.setlbr_CNABField5(MLBRCNAB.CNABFormat(boleto.getlbr_AgencyNo(),4)); //Agência
 	        cnab.setlbr_CNABField6("55"); //Sub-Conta Preencher "55"
-	        cnab.setlbr_CNABField7(MCNAB.CNABFormat(boleto.getlbr_AgencyNo() + boleto.getAccountNo() + boleto.getAccountDigit(),11)); //Conta Corrente
+	        cnab.setlbr_CNABField7(MLBRCNAB.CNABFormat(boleto.getlbr_AgencyNo() + boleto.getAccountNo() + boleto.getAccountDigit(),11)); //Conta Corrente
 	        cnab.setlbr_CNABField8(null); //Preencher com Espaços em Branco
 	        cnab.setlbr_CNABField9(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Campo Livre (Preencher com Número do Documento)
-	        cnab.setlbr_CNABField10(MCNAB.CNABFormat(boleto.getDocumentNo() + MCNAB.getModulo11(boleto.getDocumentNo(), 7),11));
-	        cnab.setlbr_CNABField11(MCNAB.CNABFormat("",6)); //Desconto-Data(2)
-	        cnab.setlbr_CNABField12(MCNAB.CNABFormat("",13)); //Valor-Desconto
-	        cnab.setlbr_CNABField13(MCNAB.CNABFormat("", 6)); //Desconto-Data(3)
-	        cnab.setlbr_CNABField14(MCNAB.CNABFormat("",13)); //Valor-Desconto
+	        cnab.setlbr_CNABField10(MLBRCNAB.CNABFormat(boleto.getDocumentNo() + MLBRCNAB.getModulo11(boleto.getDocumentNo(), 7),11));
+	        cnab.setlbr_CNABField11(MLBRCNAB.CNABFormat("",6)); //Desconto-Data(2)
+	        cnab.setlbr_CNABField12(MLBRCNAB.CNABFormat("",13)); //Valor-Desconto
+	        cnab.setlbr_CNABField13(MLBRCNAB.CNABFormat("", 6)); //Desconto-Data(3)
+	        cnab.setlbr_CNABField14(MLBRCNAB.CNABFormat("",13)); //Valor-Desconto
 	        cnab.setlbr_CNABField15("1"); //Carteira
 	        cnab.setlbr_CNABField16("01"); //Remessa
-	        cnab.setlbr_CNABField17(MCNAB.CNABFormat(invoice.getDocumentNo(),10)); // Número do Documento
-	        cnab.setlbr_CNABField18(MCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
-	        cnab.setlbr_CNABField19(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
+	        cnab.setlbr_CNABField17(MLBRCNAB.CNABFormat(invoice.getDocumentNo(),10)); // Número do Documento
+	        cnab.setlbr_CNABField18(MLBRCNAB.CNABDateFormat(boleto.getDueDate())); //Data Vencimento
+	        cnab.setlbr_CNABField19(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
 	        cnab.setlbr_CNABField20(CHSBC);
-	        cnab.setlbr_CNABField21(MCNAB.CNABFormat("",5)); //Preencher com Zeros
+	        cnab.setlbr_CNABField21(MLBRCNAB.CNABFormat("",5)); //Preencher com Zeros
 	        cnab.setlbr_CNABField22(DUPLICATA); // Duplicata Mercantil
 	        cnab.setlbr_CNABField23("N"); //Aceite
-	        cnab.setlbr_CNABField24(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        cnab.setlbr_CNABField24(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
 	        cnab.setlbr_CNABField25("00"); //Instrução 1
 	        cnab.setlbr_CNABField26("00"); //Instrução 2
-	        cnab.setlbr_CNABField27(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
-	        cnab.setlbr_CNABField28(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
-	        cnab.setlbr_CNABField29(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
+	        cnab.setlbr_CNABField27(MLBRCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
+	        cnab.setlbr_CNABField28(MLBRCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
+	        cnab.setlbr_CNABField29(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); //Valor do Desconto
 	        cnab.setlbr_CNABField30(null); //Preencher com Espaços em Branco
 	        cnab.setlbr_CNABField31(null); //Preencher com Espaços em Branco
 
 	        if ((boleto.getlbr_BPTypeBR()).equalsIgnoreCase("PF")){
 	        	cnab.setlbr_CNABField32("01"); //CPF
-	        	cnab.setlbr_CNABField33(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField33(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
 	        }
 	        else{
 	        	cnab.setlbr_CNABField32("02"); //CNPJ
-	        	cnab.setlbr_CNABField33(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField33(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
 	        }
 
 	        cnab.setlbr_CNABField34(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
@@ -110,7 +110,7 @@ public class MHsbc implements I_Bank
 	        cnab.setlbr_CNABField36(null);
 	        cnab.setlbr_CNABField37(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); //Bairro
 
-	        String getcep = MCNAB.CNABFormat(boleto.getPostal(),8);
+	        String getcep = MLBRCNAB.CNABFormat(boleto.getPostal(),8);
 
 	        cnab.setlbr_CNABField38(getcep.substring(0, 5)); //CEP
 	        cnab.setlbr_CNABField39(getcep.substring(5, 8)); //Sufixo CEP
@@ -156,7 +156,7 @@ public class MHsbc implements I_Bank
 		//
 		TextUtil.addText(fw, CHSBC); //CÓDIGO DO BANCO
 		TextUtil.addText(fw, TextUtil.pad(NHSBC, ' ', 15, false)); //NOME DO BANCO
-		TextUtil.addText(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
+		TextUtil.addText(fw, MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addText(fw, "01600"); //DENSIDADE
 		TextUtil.addText(fw, "BPI"); //LITERAL DENSIDADE
 		TextUtil.addText(fw, TextUtil.pad("", ' ', 2, true)); //BRANCOS
@@ -186,16 +186,16 @@ public class MHsbc implements I_Bank
 
 		String cc      = BankA.getAccountNo();
 		String agencia = BankA.get_ValueAsString("lbr_AgencyNo");
-		String conta   = MCNAB.CNABFormat(agencia + cc, 11);
+		String conta   = MLBRCNAB.CNABFormat(agencia + cc, 11);
 
 		String where =  "WHERE lbr_CNABField7 = '" + conta + "'";
 
-		MCNAB[] lines = null;
+		MLBRCNAB[] lines = null;
 
 		if (DateFrom != null && DateTo != null)
-			lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+			lines = MLBRCNAB.getFields(where, DateFrom, DateTo, trx);
 		else
-			lines = MCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
+			lines = MLBRCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
 
 		int numseq = 2;
 		for(int i=0;i<lines.length;i++){
@@ -259,7 +259,7 @@ public class MHsbc implements I_Bank
 
 	public void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 
-		FileWriter fw = MReturnCNAB.createFile(FilePath);
+		FileWriter fw = ReturnCNABUtil.createFile(FilePath);
 
 		for (int i = 1;i<((linhas.length)-1);i++){
 
@@ -268,11 +268,11 @@ public class MHsbc implements I_Bank
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
 			String NossoNo         = (linhas[i].substring(62, 73)).trim();   //Nosso Número
 			Timestamp  DataOcorren = TextUtil.stringToTime((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
-			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
-			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
+			BigDecimal ValorTitulo = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
+			BigDecimal Desconto    = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
+			BigDecimal Juros       = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
+			ReturnCNABUtil.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 
 		}

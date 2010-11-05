@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
+import org.adempierelbr.model.MLBRBoleto;
 import org.compiere.model.MBankAccount;
 
 /**
@@ -33,7 +33,7 @@ public class MSantander_353 implements I_Bank
 {
 
 	@Override
-	public void generateCNAB(MBoleto boleto) {
+	public void generateCNAB(MLBRBoleto boleto) {
 		// TODO Auto-generated method stub
 
 	}

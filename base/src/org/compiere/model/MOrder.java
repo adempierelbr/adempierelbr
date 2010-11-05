@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
 import org.adempiere.exceptions.FillMandatoryException;
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTax;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -535,7 +535,7 @@ public class MOrder extends X_C_Order implements DocAction
 			//
 			if (LBR_Tax_ID != null && LBR_Tax_ID.intValue() > 0)
 			{
-				MTaxLBR fromTax = new MTaxLBR(Env.getCtx(), LBR_Tax_ID, get_TrxName());
+				MLBRTax fromTax = new MLBRTax(Env.getCtx(), LBR_Tax_ID, get_TrxName());
 				line.set_ValueOfColumn("LBR_Tax_ID", fromTax.copyTo().getLBR_Tax_ID());
 			}
 			//	End - Kenos

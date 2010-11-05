@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.comp.SacredCompUtil;
 import org.adempierelbr.sacred.comp.beans.B0R0001;
@@ -123,7 +123,7 @@ public class ProcGenerateSacredComp extends SvrProcess
 		SacredCompUtil.setEnv(getCtx(),get_TrxName());
 		CounterSacred.clear();
 		//Notas Fiscais Período
-		MNotaFiscal[] nfs = SacredCompUtil.getNotaFiscal(dateFrom, dateTo, true);
+		MLBRNotaFiscal[] nfs = SacredCompUtil.getNotaFiscal(dateFrom, dateTo, true);
 		
 		MPeriod previous = MPeriod.get(getCtx(), AdempiereLBR.getPreviousPeriod_ID(getCtx(), p_C_Period_ID));
 		medICMS_INI = SacredCompUtil.getMedICMS(previous.getStartDate(), previous.getEndDate()); //Média ICMS Compras Período Anterior
@@ -136,7 +136,7 @@ public class ProcGenerateSacredComp extends SvrProcess
 			result.append(new B0R0001("0")); //BLOCO COM DADOS
 		
 		//REGISTRO 0150 - CADASTRO PARCEIROS - NIVEL 2
-		for(MNotaFiscal nf : nfs){
+		for(MLBRNotaFiscal nf : nfs){
 			if (nf.isCancelled())
 				continue; //NAO LANCAR DOCUMENTOS CANCELADOS
 			
@@ -146,12 +146,12 @@ public class ProcGenerateSacredComp extends SvrProcess
 		}
 		
 		//REGISTRO 0200 - CADASTRO ITEM - NIVEL 2
-		for(MNotaFiscal nf : nfs){
+		for(MLBRNotaFiscal nf : nfs){
 			if (nf.isCancelled())
 				continue; //NAO LANCAR DOCUMENTOS CANCELADOS
 			
-			MNotaFiscalLine[] lines = nf.getLines("Line");
-			for (MNotaFiscalLine line : lines){
+			MLBRNotaFiscalLine[] lines = nf.getLines("Line");
+			for (MLBRNotaFiscalLine line : lines){
 				B0R0200 r0200 = SacredCompUtil.createR0200(line);
 				if (r0200 != null)
 					result.append(r0200);

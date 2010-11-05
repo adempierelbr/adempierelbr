@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.adempierelbr.model.MNFeWebService;
+import org.adempierelbr.model.MLBRNFeWebService;
 
 /*
  *  NfeRetRecepcao2Stub java implementation
@@ -33,7 +33,7 @@ public class NfeRetRecepcao2Stub extends org.apache.axis2.client.Stub {
 	private static String stubAddress = "";
 
 	public static void setAmbiente(String ambiente, int C_Region_ID) {
-		stubAddress = MNFeWebService.getURL(MNFeWebService.RETRECEPCAO,
+		stubAddress = MLBRNFeWebService.getURL(MLBRNFeWebService.RETRECEPCAO,
 				ambiente, "2.00", C_Region_ID);
 	}
 

@@ -19,7 +19,7 @@ package org.compiere.grid.ed;
 import java.util.logging.Level;
 
 import org.adempierelbr.grid.ed.VTaxes;
-import org.adempierelbr.model.MTaxesLookup;
+import org.adempierelbr.model.MLBRTaxesLookup;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MAccountLookup;
@@ -210,7 +210,7 @@ public class VEditorFactory
 		else if (displayType == DisplayType.lbr_Taxes)
 		{
 			VTaxes tax = new VTaxes (columnName, mandatory, readOnly, updateable,
-					(MTaxesLookup)mField.getLookup());
+					(MLBRTaxesLookup)mField.getLookup());
 			tax.setName(columnName);
 			tax.setField (mField);
 			editor = tax;

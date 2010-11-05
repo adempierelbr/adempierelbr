@@ -17,8 +17,8 @@ import java.math.RoundingMode;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
-import org.adempierelbr.model.MNotaFiscalLine;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TaxBR;
@@ -97,7 +97,7 @@ public class ProcGenerateNF extends SvrProcess
 		if (p_LBR_NotaFiscal_ID == null || p_LBR_NotaFiscal_ID.intValue() == 0)
 			throw new IllegalArgumentException("Nota Fiscal == 0");
 
-		MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 
 		boolean isSOTrx = true;
 
@@ -177,7 +177,7 @@ public class ProcGenerateNF extends SvrProcess
 			MClientInfo clientInfo = client.getInfo();
 
 			/** SET NOTA FISCAL **/
-			MNotaFiscal NotaFiscal = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
+			MLBRNotaFiscal NotaFiscal = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
 
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 			NotaFiscal.setlbr_IsOwnDocument(IsOwnDocument);
@@ -187,7 +187,7 @@ public class ProcGenerateNF extends SvrProcess
 
 				int C_DocType_ID = NotaFiscal.getLBR_DocTypeNF_ID(invoice); //DocumentNF da Fatura
 				if (C_DocType_ID == 0)
-					C_DocType_ID = MNotaFiscal.getNFB(invoice.getAD_Org_ID(),isSOTrx); //Se estiver em branco busca no banco um documento de NF
+					C_DocType_ID = MLBRNotaFiscal.getNFB(invoice.getAD_Org_ID(),isSOTrx); //Se estiver em branco busca no banco um documento de NF
 
 				NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
 				NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo
@@ -300,7 +300,7 @@ public class ProcGenerateNF extends SvrProcess
 
 					String VendorProductNo = AdempiereLBR.getVendorProductNo(product.getM_Product_ID(),bpartner.getC_BPartner_ID(),trx);
 
-					MNotaFiscalLine NotaFiscalLine = new MNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
+					MLBRNotaFiscalLine NotaFiscalLine = new MLBRNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
 
 					NotaFiscalLine.setLBR_NotaFiscal_ID(NotaFiscal.getLBR_NotaFiscal_ID());   /** LBR_NotaFiscal_ID **/
 					NotaFiscalLine.setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());   /** C_InvoiceLine_ID **/
@@ -434,7 +434,7 @@ public class ProcGenerateNF extends SvrProcess
 			// Gerar XML automaticamente
 			try {
 				
-				if(MSysConfig.getBooleanValue("OSEB_AUTO_GENERATE_XML", false, NotaFiscal.getAD_Client_ID()))
+				if(MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, NotaFiscal.getAD_Client_ID()))
 					NFeXMLGenerator.geraCorpoNFe(LBR_NotaFiscal_ID, trx);
 			
 			} catch(Exception ex) {
@@ -453,9 +453,9 @@ public class ProcGenerateNF extends SvrProcess
 	private static void deleteLines(int LBR_NotaFiscal_ID, String trx){
 
 		if (LBR_NotaFiscal_ID != 0){
-			MNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
-			MNotaFiscal.deleteLBR_NFLineTax(LBR_NotaFiscal_ID, trx); //Imposto Linha
-			MNotaFiscal.deleteLBR_NotaFiscalLine(LBR_NotaFiscal_ID, trx); //Linhas da NF
+			MLBRNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
+			MLBRNotaFiscal.deleteLBR_NFLineTax(LBR_NotaFiscal_ID, trx); //Imposto Linha
+			MLBRNotaFiscal.deleteLBR_NotaFiscalLine(LBR_NotaFiscal_ID, trx); //Linhas da NF
 		}
 
 	} //deleteLines

@@ -29,7 +29,7 @@ import org.compiere.util.DB;
  *	@contributor Alvaro Montenegro (Kenos, www.kenos.com.br)
  *	@version $Id: MOtherNFLine.java, 11/12/2008 13:27:00 mgrigioni
  */
-public class MOtherNFLine extends X_LBR_OtherNFLine {
+public class MLBROtherNFLine extends X_LBR_OtherNFLine {
     
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	private static final long serialVersionUID = 1L;
 	
 	/**	Logger			*/
-	public static CLogger log = CLogger.getCLogger(MOtherNFLine.class);
+	public static CLogger log = CLogger.getCLogger(MLBROtherNFLine.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -45,7 +45,7 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MOtherNFLine(Properties ctx, int ID, String trx){
+	public MLBROtherNFLine(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);	
 	}
 	
@@ -55,7 +55,7 @@ public class MOtherNFLine extends X_LBR_OtherNFLine {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MOtherNFLine (Properties ctx, ResultSet rs, String trxName)
+	public MLBROtherNFLine (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MOtherNFLine

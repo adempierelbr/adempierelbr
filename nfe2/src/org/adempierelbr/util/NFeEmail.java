@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MClient;
 import org.compiere.model.MOrgInfo;
@@ -42,10 +42,10 @@ public abstract class NFeEmail {
 
 	/**
 	 * 	Send Mail
-	 * 	@param MNotaFiscal nf
+	 * 	@param MLBRNotaFiscal nf
 	 * 	@return	E-mail enviado
 	 * */
-	public static boolean sendMail(final MNotaFiscal nf)
+	public static boolean sendMail(final MLBRNotaFiscal nf)
 	{
 
 		final Properties ctx = nf.getCtx();
@@ -56,7 +56,7 @@ public abstract class NFeEmail {
 			final MClient client = MClient.get(ctx);
 			MOrgInfo orgInfo = MOrgInfo.get(ctx, nf.getAD_Org_ID(),trx);
 
-			final MUser from = new MUser(ctx, orgInfo.get_ValueAsInt("OSEB_ContatoNFe"), trx);
+			final MUser from = new MUser(ctx, orgInfo.get_ValueAsInt("lbr_ContatoNFe"), trx);
 			
 			// Check from email user
 			if (from.getEMailUser() == null && from.getEMailUserPW() == null)

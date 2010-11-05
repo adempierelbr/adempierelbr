@@ -50,7 +50,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.adempierelbr.model.MDigitalCertificate;
+import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
@@ -99,7 +99,7 @@ public class AssinaturaDigital
 	public static void Assinar(String caminhoxml, MOrgInfo oi, String docType) throws Exception
 	{
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		MDigitalCertificate dc = new MDigitalCertificate(Env.getCtx(), cert, null);
+		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
 		String aliascliente = dc.getAlias();
 		String password = dc.getPassword();
 		MAttachment attachJKS = dc.getAttachment();
@@ -110,9 +110,9 @@ public class AssinaturaDigital
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
-		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certType = "PKCS12";
-		else if (dc.getlbr_CertType().equals(MDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
+		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");

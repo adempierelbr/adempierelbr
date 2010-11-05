@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MCNAB;
+import org.adempierelbr.model.MLBRCNAB;
 import org.adempierelbr.model.X_LBR_Bank;
 import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.model.MBank;
@@ -102,9 +102,9 @@ public class ProcGenerateCNAB extends SvrProcess
 	    if (!(fileName.endsWith(AdempiereLBR.getFileSeparator()))) 
 	    	fileName += AdempiereLBR.getFileSeparator();
 	    
-	    fileName += MCNAB.prefix + MCNAB.getSystemDate(ctx) + MCNAB.ext;
+	    fileName += MLBRCNAB.prefix + MLBRCNAB.getSystemDate(ctx) + MLBRCNAB.ext;
 
-	    MCNAB.generateFile(bNum,fileName,p_DateFrom, p_DateTo, BankA, trx);
+	    MLBRCNAB.generateFile(bNum,fileName,p_DateFrom, p_DateTo, BankA, trx);
 		
 		return "GenerateCNAB Process Completed<br>" + "** Arquivo: " + fileName;
 		

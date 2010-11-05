@@ -10,7 +10,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.model;
+package org.adempierelbr.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,6 +32,9 @@ import org.adempierelbr.boleto.bank.MItau;
 import org.adempierelbr.boleto.bank.MSantander_033;
 import org.adempierelbr.boleto.bank.MSantander_353;
 import org.adempierelbr.boleto.bank.MUnibanco;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.model.X_LBR_Bank;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MInvoice;
@@ -49,10 +52,10 @@ import org.compiere.util.Env;
  * @contribuitor Pablo Boff Pigozzo - 25/08/2010 11:30 pablobp
  * @version $Id: MReturnCNAB.java, 30/11/2007 10:32:02 mgrigioni
  */
-public class MReturnCNAB
+public class ReturnCNABUtil
 {
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MReturnCNAB.class);
+	private static CLogger log = CLogger.getCLogger(ReturnCNABUtil.class);
 
 	/** FileName        */
 	private static final String FileName = "LogRetorno.CSV";
@@ -64,15 +67,15 @@ public class MReturnCNAB
 		int bank = Integer.parseInt(banco.getlbr_jBoletoNo());
 
 		switch(bank){
-			case MCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.BRADESCO         : new MBradesco().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.ITAU				: new MItau().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.BANCO_REAL		: new MBancoReal().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.UNIBANCO			: new MUnibanco().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.HSBC				: new MHsbc().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.SANTANDER_033	: new MSantander_033().returnCNAB(occurType, FilePath, linhas, trx); break;
-			case MCNAB.SANTANDER_353	: new MSantander_353().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.BANCO_DO_BRASIL  : new MBancoBrasil().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.BRADESCO         : new MBradesco().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.ITAU				: new MItau().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.BANCO_REAL		: new MBancoReal().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.CAIXA_ECONOMICA  : new MCaixaEconomica().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.UNIBANCO			: new MUnibanco().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.HSBC				: new MHsbc().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.SANTANDER_033	: new MSantander_033().returnCNAB(occurType, FilePath, linhas, trx); break;
+			case MLBRCNAB.SANTANDER_353	: new MSantander_353().returnCNAB(occurType, FilePath, linhas, trx); break;
 		}
 	}
 
@@ -95,19 +98,19 @@ public class MReturnCNAB
 		int C_Invoice_ID = AdempiereLBR.getC_Invoice_ID(DocumentNo,trx);
 		
 		// Boleto
-		String LBR_PayScheduleNo = MBoleto.getLBR_PayScheduleNo(DocumentNo);	
-		int LBR_Boleto_ID = MBoleto.getLBR_Boleto_ID(NossoNo, LBR_PayScheduleNo, C_Invoice_ID, trx);
+		String LBR_PayScheduleNo = MLBRBoleto.getLBR_PayScheduleNo(DocumentNo);	
+		int LBR_Boleto_ID = MLBRBoleto.getLBR_Boleto_ID(NossoNo, LBR_PayScheduleNo, C_Invoice_ID, trx);
 
 		if (OcorrenType.equalsIgnoreCase("L")){ //Liquidação
 
 			if (LBR_Boleto_ID > 0){
 
-				MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
+				MLBRBoleto boleto = new MLBRBoleto(ctx,LBR_Boleto_ID,trx);
 				MInvoice Invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
 				
 				// Atualizar DocumentNo (somente para casos onde o banco atribui o DocumentNo)
 				if(!boleto.getDocumentNo().equals(NossoNo))
-					MBoleto.uptadeDocumentNo(boleto.getLBR_Boleto_ID(), NossoNo, trx);
+					MLBRBoleto.uptadeDocumentNo(boleto.getLBR_Boleto_ID(), NossoNo, trx);
 
 				if ((Invoice.getDocStatus()).equals("CO")){
 					if (!Invoice.isPaid()){
@@ -203,14 +206,14 @@ public class MReturnCNAB
 		else {
 
 			if (LBR_Boleto_ID > 0){
-				MBoleto boleto = new MBoleto(ctx,LBR_Boleto_ID,trx);
+				MLBRBoleto boleto = new MLBRBoleto(ctx,LBR_Boleto_ID,trx);
 				boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
 				boleto.setDocStatus(DescOcorren);
 				boleto.save(trx);
 				
 				// Atualizar DocumentNo (somente para casos onde o banco atribui o DocumentNo)
 				if(!boleto.getDocumentNo().equals(NossoNo))
-					MBoleto.uptadeDocumentNo(boleto.getLBR_Boleto_ID(), NossoNo, trx);
+					MLBRBoleto.uptadeDocumentNo(boleto.getLBR_Boleto_ID(), NossoNo, trx);
 
 				TextUtil.addText(fw, line + ";;OCORRENCIA");
 				TextUtil.addEOL(fw);

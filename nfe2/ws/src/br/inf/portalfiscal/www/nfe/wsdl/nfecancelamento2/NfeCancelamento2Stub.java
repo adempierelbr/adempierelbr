@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.adempierelbr.model.MNFeWebService;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.apache.axiom.om.OMAttribute;
 
 /*
@@ -35,7 +35,7 @@ public class NfeCancelamento2Stub extends org.apache.axis2.client.Stub {
 	private static String stubAddress = "";
 
 	public static void setAmbiente(String ambiente, int C_Region_ID) {
-		stubAddress = MNFeWebService.getURL(MNFeWebService.CANCELAMENTO,
+		stubAddress = MLBRNFeWebService.getURL(MLBRNFeWebService.CANCELAMENTO,
 				ambiente, "2.00", C_Region_ID);
 	}
 

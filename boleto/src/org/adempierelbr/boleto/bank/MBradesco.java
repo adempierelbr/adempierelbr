@@ -21,9 +21,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
-import org.adempierelbr.model.MBoleto;
-import org.adempierelbr.model.MCNAB;
-import org.adempierelbr.model.MReturnCNAB;
+import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
@@ -44,13 +44,13 @@ import org.compiere.util.Env;
 public class MBradesco implements I_Bank
 {
 
-	public void generateCNAB(MBoleto boleto){
+	public void generateCNAB(MLBRBoleto boleto){
 
 		Properties ctx = boleto.getCtx();
 		String     trx = boleto.get_TrxName();
 
 		try{
-			MCNAB cnab = new MCNAB(ctx,0,trx);
+			MLBRCNAB cnab = new MLBRCNAB(ctx,0,trx);
 
 			MInvoice invoice = new MInvoice(ctx,boleto.getC_Invoice_ID(),trx);
 			MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
@@ -72,9 +72,9 @@ public class MBradesco implements I_Bank
 	        cnab.setlbr_CNABField8(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Controle do Participanete (Preencher com Número de Documento)
 	        cnab.setlbr_CNABField9(CBRADESCO); //Código do Banco
 	        cnab.setlbr_CNABField10("00000"); //ZEROS
-	        cnab.setlbr_CNABField11(MCNAB.CNABFormat(boleto.getDocumentNo() ,11)); //Nosso Número
+	        cnab.setlbr_CNABField11(MLBRCNAB.CNABFormat(boleto.getDocumentNo() ,11)); //Nosso Número
 	        cnab.setlbr_CNABField12(getModulo11(boleto.getlbr_BillFold() + boleto.getDocumentNo() , 7)); //DAC
-	        cnab.setlbr_CNABField13(MCNAB.CNABFormat("0", 10)); //Desconto Bonificação
+	        cnab.setlbr_CNABField13(MLBRCNAB.CNABFormat("0", 10)); //Desconto Bonificação
 	        cnab.setlbr_CNABField14("2"); //Condição Emissão de Papeleta ( 2 = Cliente Emite)
 	        cnab.setlbr_CNABField15("N"); //Não registra na Cobrança
 	        cnab.setlbr_CNABField16(null); //BRANCOS
@@ -83,38 +83,38 @@ public class MBradesco implements I_Bank
 	        cnab.setlbr_CNABField19(null); //BRANCOS
 	        cnab.setlbr_CNABField20("01"); //Código da Ocorrência (1 = REMESSA)
 	        cnab.setlbr_CNABField21(invoice.getDocumentNo()); //Número do Documento
-	        cnab.setlbr_CNABField22(MCNAB.CNABDateFormat(boleto.getDueDate())); //Data de Vencimento
-	        cnab.setlbr_CNABField23(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
+	        cnab.setlbr_CNABField22(MLBRCNAB.CNABDateFormat(boleto.getDueDate())); //Data de Vencimento
+	        cnab.setlbr_CNABField23(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getGrandTotal()).doubleValue()),13)); //Valor do Título
 	        cnab.setlbr_CNABField24("000"); //ZEROS
 	        cnab.setlbr_CNABField25("00000"); //ZEROS
 	        cnab.setlbr_CNABField26(DUPLICATA); //Duplicata
 	        cnab.setlbr_CNABField27("N"); //Aceite
-	        cnab.setlbr_CNABField28(MCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        cnab.setlbr_CNABField28(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
 	        //Protestar
 	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
 	        	cnab.setlbr_CNABField29("06"); //Protesto Automático
-	        	cnab.setlbr_CNABField30(MCNAB.CNABFormat(new Integer(boleto.getlbr_SueDays()).toString(),2)); //Dias para Protestar
+	        	cnab.setlbr_CNABField30(MLBRCNAB.CNABFormat(new Integer(boleto.getlbr_SueDays()).toString(),2)); //Dias para Protestar
 	        }
-	        cnab.setlbr_CNABField31(MCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
-	        cnab.setlbr_CNABField32(MCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
-	        cnab.setlbr_CNABField33(MCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); // Valor de Desconto
+	        cnab.setlbr_CNABField31(MLBRCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros
+	        cnab.setlbr_CNABField32(MLBRCNAB.CNABDateFormat(boleto.getDiscountDate())); //Desconto Até
+	        cnab.setlbr_CNABField33(MLBRCNAB.CNABFormat(String.format("%,.2f", (boleto.getDiscountAmt()).doubleValue()),13)); // Valor de Desconto
 	        cnab.setlbr_CNABField34(null); //IOF
-	        cnab.setlbr_CNABField35(MCNAB.CNABFormat("", 13)); //Valor do Abatimento
+	        cnab.setlbr_CNABField35(MLBRCNAB.CNABFormat("", 13)); //Valor do Abatimento
 
 	        if ((boleto.getlbr_BPTypeBR()).equalsIgnoreCase("PF")){
 	        	cnab.setlbr_CNABField36("01"); //CPF
-	        	cnab.setlbr_CNABField37(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField37(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CPF"),14)); //CPF ou CPNJ
 	        }
 	        else{
 	        	cnab.setlbr_CNABField36("02"); //CNPJ
-	        	cnab.setlbr_CNABField37(MCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
+	        	cnab.setlbr_CNABField37(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); //CPF ou CPNJ
 	        }
 
 	        cnab.setlbr_CNABField38(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
 	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase() + "," + boleto.getCity().toUpperCase()); //Logradouro
 	        cnab.setlbr_CNABField40(null); //1a Mensagem
 
-	        String getcep = MCNAB.CNABFormat(boleto.getPostal(),8);
+	        String getcep = MLBRCNAB.CNABFormat(boleto.getPostal(),8);
 
 	        cnab.setlbr_CNABField41(getcep.substring(0, 5)); //CEP
 	        cnab.setlbr_CNABField42(getcep.substring(5, 8)); //Sufixo CEP
@@ -138,7 +138,7 @@ public class MBradesco implements I_Bank
 		MOrg    Org    = MOrg.get(ctx,Env.getAD_Org_ID(ctx));
 		Integer LBR_DocSequence_ID = (Integer)BankA.get_Value("LBR_DocSequence_ID");
 
-		String seqFile = "MX" + TextUtil.pad(MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true);
+		String seqFile = "MX" + TextUtil.pad(MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true);
 
 		if (LBR_DocSequence_ID != null && LBR_DocSequence_ID.intValue() != 0){
 			MSequence sequence = new MSequence(ctx,LBR_DocSequence_ID,null);
@@ -160,7 +160,7 @@ public class MBradesco implements I_Bank
 		//
 		TextUtil.addText(fw, CBRADESCO); //CÓDIGO DO BANCO
 		TextUtil.addText(fw, TextUtil.pad(NBRADESCO, ' ', 15, false)); //NOME DO BANCO
-		TextUtil.addText(fw, MCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
+		TextUtil.addText(fw, MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date"))); //DATA DE GERAÇÃO
 		TextUtil.addText(fw, TextUtil.pad("", ' ', 8, true)); //BRANCOS
 		TextUtil.addText(fw, TextUtil.pad(seqFile, '0', 9, false)); //SEQUENCIAL DO ARQUIVO
 		TextUtil.addText(fw, TextUtil.pad("", ' ', 277, true)); //BRANCOS
@@ -199,12 +199,12 @@ public class MBradesco implements I_Bank
 
 		String where =  "WHERE lbr_CNABField7 = '" + conta + "'";
 
-		MCNAB[] lines = null;
+		MLBRCNAB[] lines = null;
 
 		if (DateFrom != null && DateTo != null)
-			lines = MCNAB.getFields(where, DateFrom, DateTo, trx);
+			lines = MLBRCNAB.getFields(where, DateFrom, DateTo, trx);
 		else
-			lines = MCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
+			lines = MLBRCNAB.getFields(BankA.getC_BankAccount_ID(),trx);
 
 		int numseq = 2;
 		for(int i=0;i<lines.length;i++){
@@ -266,7 +266,7 @@ public class MBradesco implements I_Bank
 
 	public void returnCNAB(HashMap<Integer,String[]> occurType, String FilePath, String[] linhas, String trx) throws IOException{
 
-		FileWriter fw = MReturnCNAB.createFile(FilePath);
+		FileWriter fw = ReturnCNABUtil.createFile(FilePath);
 
 		for (int i = 1;i<((linhas.length)-1);i++){
 
@@ -275,11 +275,11 @@ public class MBradesco implements I_Bank
 			String DocumentNo      = (linhas[i].substring(37, 62)).trim();   //Número da Fatura
 			String NossoNo         = (linhas[i].substring(70, 81)).trim();   //Nosso Número
 			Timestamp  DataOcorren = TextUtil.stringToTime((linhas[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
-			BigDecimal ValorTitulo = MReturnCNAB.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
-			BigDecimal Desconto    = MReturnCNAB.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
-			BigDecimal Juros       = MReturnCNAB.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
+			BigDecimal ValorTitulo = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(152, 165)).trim()); //Valor Titulo
+			BigDecimal Desconto    = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(240, 253)).trim()); //Desconto
+			BigDecimal Juros       = ReturnCNABUtil.stringTobigdecimal((linhas[i].substring(266, 279)).trim()); //Juros
 
-			MReturnCNAB.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
+			ReturnCNABUtil.processReturn(fw, CodOcorren, DescOcorren[1], DescOcorren[0], DocumentNo, NossoNo,
 									  DataOcorren, ValorTitulo, Desconto, Juros, trx);
 
 		}

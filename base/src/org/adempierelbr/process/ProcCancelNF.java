@@ -14,7 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeCancelamento;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.process.ProcessInfoParameter;
@@ -62,7 +62,7 @@ public class ProcCancelNF extends SvrProcess
 		
 		if (p_LBR_NotaFiscal_ID != 0)
 		{
-			MNotaFiscal nf = new MNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
+			MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 			//
 			if (nf.get_Value("lbr_NFeID") != null)
 			{

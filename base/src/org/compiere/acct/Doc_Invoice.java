@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MTaxLBR;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_DocType_Acct;
 import org.adempierelbr.model.X_LBR_TaxLine;
 import org.adempierelbr.util.AdempiereLBR;
@@ -199,7 +199,7 @@ public class Doc_Invoice extends Doc
 			{
 				BigDecimal lineTaxAmt = Env.ZERO;
 
-				X_LBR_TaxLine[] taxLines = (new MTaxLBR(getCtx(), LBR_Tax_ID, null)).getLines();
+				X_LBR_TaxLine[] taxLines = (new MLBRTax(getCtx(), LBR_Tax_ID, null)).getLines();
 				for(X_LBR_TaxLine taxLine : taxLines)
 					lineTaxAmt = lineTaxAmt.add(taxLine.getlbr_TaxAmt());
 

@@ -31,7 +31,7 @@ import org.compiere.util.CLogger;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MDocPrintField.java, 12/11/2007 13:43:00 mgrigioni
  */
-public class MDocPrintField extends X_LBR_DocPrintField{
+public class MLBRDocPrintField extends X_LBR_DocPrintField{
 
 	/**
 	 *
@@ -39,7 +39,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	private static final long serialVersionUID = 1L;
 
 	/**	Logger			*/
-	public static CLogger log = CLogger.getCLogger(MDocPrintField.class);
+	public static CLogger log = CLogger.getCLogger(MLBRDocPrintField.class);
 
 	/** Value           */
 	private String value = "";
@@ -50,7 +50,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MDocPrintField(Properties ctx, int ID, String trx){
+	public MLBRDocPrintField(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -60,7 +60,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDocPrintField (Properties ctx, ResultSet rs, String trxName)
+	public MLBRDocPrintField (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -85,7 +85,7 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 
 		if (value == null) value = "";
 
-		value = MDocPrintForm.removeEOL(value, fieldLength);
+		value = MLBRDocPrintForm.removeEOL(value, fieldLength);
 
 		int lenght = value.length();
 
@@ -175,18 +175,18 @@ public class MDocPrintField extends X_LBR_DocPrintField{
 	 * 	@param int C_Doctype_Print_ID
 	 * 	@return fields
 	 */
-	public static MDocPrintField[] getFields(Properties ctx, int LBR_DocPrint_ID)
+	public static MLBRDocPrintField[] getFields(Properties ctx, int LBR_DocPrint_ID)
 	{
 		String whereClause = "LBR_DocPrint_ID = ? AND IsActive = 'Y'";
 
-		MTable table = MTable.get(ctx, MDocPrintField.Table_Name);
+		MTable table = MTable.get(ctx, MLBRDocPrintField.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, null);
 	 		  query.setParameters(new Object[]{LBR_DocPrint_ID});
 	 		  query.setOrderBy("lbr_RowNo, lbr_ColumnNo");
 
-		List<MDocPrintField> list = query.list();
+		List<MLBRDocPrintField> list = query.list();
 
-		return list.toArray(new MDocPrintField[list.size()]);
+		return list.toArray(new MLBRDocPrintField[list.size()]);
 	}	//	getFields
 
 } //MDocPrintField

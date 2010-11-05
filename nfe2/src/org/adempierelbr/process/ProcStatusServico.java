@@ -20,7 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.adempierelbr.model.MDigitalCertificate;
+import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MLocation;
@@ -80,7 +80,7 @@ public class ProcStatusServico extends SvrProcess
 			return "UF Inválida";
 
 		//INICIALIZA CERTIFICADO
-		MDigitalCertificate.setCertificate(getCtx(), Env.getAD_Org_ID(getCtx()));
+		MLBRDigitalCertificate.setCertificate(getCtx(), Env.getAD_Org_ID(getCtx()));
 		//
 		String status = "Erro na verificação de Status";
 

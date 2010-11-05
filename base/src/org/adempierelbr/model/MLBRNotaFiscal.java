@@ -62,7 +62,7 @@ import org.w3c.dom.Node;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MNotaFiscal.java, 08/01/2008 10:56:00 mgrigioni
  */
-public class MNotaFiscal extends X_LBR_NotaFiscal {
+public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 	/**
 	 *
@@ -70,7 +70,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	private static final long serialVersionUID = 1L;
 
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MNotaFiscal.class);
+	private static CLogger log = CLogger.getCLogger(MLBRNotaFiscal.class);
 
 	/**	Process Message */
 	private String		m_processMsg = null;
@@ -103,7 +103,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MNotaFiscal(Properties ctx, int ID, String trx){
+	public MLBRNotaFiscal(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -113,7 +113,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MNotaFiscal (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNotaFiscal (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -124,7 +124,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param dateTo
 	 * @return MNotaFiscal[]
 	 */
-	public static MNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo,String trxName){
+	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo,String trxName){
 		return get(dateFrom, dateTo,null,trxName);
 	}
 
@@ -135,7 +135,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param isSOTrx: true = venda, false = compra, null = ambos
 	 * @return MNotaFiscal[]
 	 */
-	public static MNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, Boolean isSOTrx, String trxName){
+	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, Boolean isSOTrx, String trxName){
 
 		String whereClause = "AD_Client_ID=? AND " +
 							 "(CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) " +
@@ -147,13 +147,13 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (isSOTrx != null)
 			whereClause += " AND IsSOTrx='" + (isSOTrx ? "Y" : "N") + "'";
 
-		MTable table = MTable.get(Env.getCtx(), MNotaFiscal.Table_Name);
+		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), trxName);
 	          q.setOrderBy(orderBy);
 		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),dateFrom,dateTo});
 
-	    List<MNotaFiscal> list = q.list();
-	    MNotaFiscal[] nfs = new MNotaFiscal[list.size()];
+	    List<MLBRNotaFiscal> list = q.list();
+	    MLBRNotaFiscal[] nfs = new MLBRNotaFiscal[list.size()];
 	    return list.toArray(nfs);
 	}
 
@@ -211,8 +211,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (TotalSiscomexAmt.signum() == 0)
 			return;
 
-		MNotaFiscalLine[] nfLines = getLines("Line");
-		for (MNotaFiscalLine nfLine : nfLines){
+		MLBRNotaFiscalLine[] nfLines = getLines("Line");
+		for (MLBRNotaFiscalLine nfLine : nfLines){
 
 			BigDecimal lineAmt = nfLine.getLineTotalAmt();
 			//siscomexAmt = lineAmt/totalLinesAmt (porcentagem do total da nf)
@@ -254,8 +254,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 		if (TotalFreightAmt.signum() == 0)
 			return;
 
-		MNotaFiscalLine[] nfLines = getLines("Line");
-		for (MNotaFiscalLine nfLine : nfLines){
+		MLBRNotaFiscalLine[] nfLines = getLines("Line");
+		for (MLBRNotaFiscalLine nfLine : nfLines){
 
 			BigDecimal ICMSRate = nfLine.getICMSRate();
 			if (ICMSRate == null || ICMSRate.signum() == 0)
@@ -285,7 +285,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @return MNotaFiscalLine[] lines
 	 *  @deprecated
 	 */
-	public MNotaFiscalLine[] getLines(){
+	public MLBRNotaFiscalLine[] getLines(){
 		return getLines(null);
 	}
 
@@ -598,8 +598,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 
 		BigDecimal currentCost = Env.ZERO;
 
-		MNotaFiscalLine[] lines = getLines("line");
-		for(MNotaFiscalLine line : lines){
+		MLBRNotaFiscalLine[] lines = getLines("line");
+		for(MLBRNotaFiscalLine line : lines){
 			int M_Product_ID = line.getM_Product_ID();
 			if (M_Product_ID == 0)
 				continue;
@@ -673,7 +673,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @deprecated
 	 */
 	public static BigDecimal getICMSAmt(Properties ctx, int LBR_NotaFiscal_ID, String trx){
-		MNotaFiscal nf = new MNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
 		return nf.getICMSAmt();
 	} //getICMSAMt
 
@@ -830,7 +830,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 *  @param String orderBy or null
 	 *  @return MNotaFiscalLine[] lines
 	 */
-	public MNotaFiscalLine[] getLines(String orderBy){
+	public MLBRNotaFiscalLine[] getLines(String orderBy){
 
 		String   whereClause = "LBR_NotaFiscal_ID = ?";
 		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID()};
@@ -845,9 +845,9 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param String orderBy
 	 * @return MNotaFiscalLine[] lines
 	 */
-	public MNotaFiscalLine[] getLines(Object[] parameters, String whereClause, String orderBy){
+	public MLBRNotaFiscalLine[] getLines(Object[] parameters, String whereClause, String orderBy){
 
-		MTable table = MTable.get(getCtx(), MNotaFiscalLine.Table_Name, get_TrxName());
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);
 		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
 	 		  query.setParameters(parameters);
 
@@ -855,8 +855,8 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 	if (orderBy != null)
 	 		  query.setOrderBy(orderBy);
 
-	 	List<MNotaFiscalLine> list = query.list();
-	 	return list.toArray(new MNotaFiscalLine[list.size()]);
+	 	List<MLBRNotaFiscalLine> list = query.list();
+	 	return list.toArray(new MLBRNotaFiscalLine[list.size()]);
 	} //getLines
 
 	/**************************************************************************
@@ -1170,7 +1170,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 			String cStat 	= NFeUtil.getValue (node, "cStat");
 			String nProt 	= NFeUtil.getValue (node, "nProt");
 			//
-			MNotaFiscal nf = getNFe(chNFe, trxName);
+			MLBRNotaFiscal nf = getNFe(chNFe, trxName);
 			if (nf == null)
 			{
 				error = "NF não encontrada";
@@ -1224,7 +1224,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param NFeID
 	 * @return
 	 */
-	public static MNotaFiscal getNFe (String NFeID, String trxName)
+	public static MLBRNotaFiscal getNFe (String NFeID, String trxName)
 	{
 		String sql =  "SELECT LBR_NotaFiscal_ID FROM LBR_NotaFiscal " +
 					   "WHERE lbr_NFeID = ? AND AD_Client_ID = ?";
@@ -1233,7 +1233,7 @@ public class MNotaFiscal extends X_LBR_NotaFiscal {
 				new Object[]{NFeID, Env.getAD_Client_ID(Env.getCtx())});
 
 		if (LBR_NotaFiscal_ID > 0)
-			return new MNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, trxName);
+			return new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, trxName);
 		else{
 			log.warning("NFe " + NFeID);
 			return null;

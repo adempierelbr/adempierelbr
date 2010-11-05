@@ -12,36 +12,39 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
- *	MICMSMatrix
+ *	Model for LBR_NFeWebService
  *
- *	Model for X_LBR_ICMSMatrix
- *
- *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: MICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
+ *	@author Mario Grigioni
+ *	@version $Id: MNFeWebService.java,27/08/2010 17:10:00 mgrigioni Exp $
  */
-public class MICMSMatrix extends X_LBR_ICMSMatrix {
-
+public class MLBRNFeWebService extends X_LBR_NFeWebService
+{
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final String CADCONSULTACADASTRO = "NfeConsultaCadastro";
+	public static final String STATUSSERVICO       = "NfeStatusServico";
+	public static final String CONSULTA            = "NfeConsultaProtocolo";
+	public static final String INUTILIZACAO        = "NfeInutilizacao";
+	public static final String CANCELAMENTO        = "NfeCancelamento";
+	public static final String RETRECEPCAO         = "NfeRetRecepcao";
+	public static final String RECEPCAO            = "NfeRecepcao";
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MICMSMatrix(Properties ctx, int ID, String trx){
+	public MLBRNFeWebService(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -51,42 +54,19 @@ public class MICMSMatrix extends X_LBR_ICMSMatrix {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MICMSMatrix (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNFeWebService (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
+	
+	public static String getURL (String name, String envType, String versionNo, int C_Region_ID){
+		
+		String sql = "SELECT URL FROM LBR_NFeWebService " +
+				     "WHERE UPPER(Name) LIKE ? AND lbr_NFeEnv = ? " +
+				     "AND VersionNo = ? AND C_Region_ID = ?";
 
-	public static BigDecimal getICMSRate(Properties ctx, String regionName, String trx){
+		return DB.getSQLValueString(null, sql, 
+				new Object[]{name.toUpperCase(),envType,versionNo,C_Region_ID});
+	} //getURL
 
-		int C_Region_ID = AdempiereLBR.getC_Region_ID(regionName, trx);
-		if (C_Region_ID <= 0)
-			return null;
-
-		int LBR_Tax_ID = getLBR_Tax_ID(ctx,C_Region_ID,C_Region_ID,trx);
-
-		String sql = "SELECT MAX(tl.lbr_TaxRate) FROM LBR_TaxLine tl " +
-				     "WHERE tl.LBR_Tax_ID = ?";
-
-		BigDecimal rate = DB.getSQLValueBD(trx, sql, LBR_Tax_ID);
-
-		return rate != null ? rate : Env.ZERO;
-	} //getICMSRate
-
-
-	/**************************************************************************
-	 *  get Matrix_ID
-	 *  @return X_LBR_TaxLine[] lines
-	 */
-	public static int getLBR_Tax_ID(Properties ctx, int C_Region_ID, int To_Region_ID, String trx){
-
-		String sql = "SELECT LBR_Tax_ID FROM LBR_ICMSMatrix " +
-				     "WHERE C_Region_ID = ? AND To_Region_ID = ? " +
-				     "AND AD_Client_ID = ?";
-
-		int Matrix_ID = DB.getSQLValue(trx, sql,
-				new Object[]{C_Region_ID, To_Region_ID, Env.getAD_Client_ID(ctx)});
-
-		return Matrix_ID > 0 ? Matrix_ID : 0;
-	}
-
-} //MICMSMatrix
+}	//	MNFeWebService
