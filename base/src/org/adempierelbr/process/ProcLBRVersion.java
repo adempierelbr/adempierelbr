@@ -57,7 +57,7 @@ public class ProcLBRVersion extends SvrProcess
 		StringBuffer msg = new StringBuffer();
 
 		msg.append("<br><font color=\"#000000\">");
-		msg.append("<b>Versão OSeb: </b>");
+		msg.append("<b>Versão ADempiereLBR: </b>");
 		msg.append(MSysConfig.getValue("LBR_VERSION_NO") + "<br>");
 		msg.append("<b>Último Script Executado: </b>");
 		msg.append(MSysConfig.getValue("LBR_LAST_SCRIPT_EXECUTED") + "<br><br>");
