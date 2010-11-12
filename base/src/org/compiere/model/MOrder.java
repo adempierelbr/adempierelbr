@@ -546,6 +546,20 @@ public class MOrder extends X_C_Order implements DocAction
 				line.setM_AttributeSetInstance_ID(0);
 				line.setS_ResourceAssignment_ID(0);
 			}
+			
+			//	Begin LCR - BF [#3107419] edilsondneto
+			//	Incluir atributo de instância
+			int M_AttributeSetInstance_ID = fromLines[i].get_ValueAsInt("M_AttributeSetInstance_ID");
+			if (M_AttributeSetInstance_ID > 0){
+				MAttributeSetInstance from = new MAttributeSetInstance(getCtx(),M_AttributeSetInstance_ID,get_TrxName());
+				MAttributeSetInstance to = new MAttributeSetInstance(getCtx(),0,get_TrxName());
+				
+				PO.copyValues(from, to);
+				to.save(get_TrxName());
+				line.setM_AttributeSetInstance_ID(to.get_ID());
+			}
+			//	End - LCR
+			
 			if (counter)
 				line.setRef_OrderLine_ID(fromLines[i].getC_OrderLine_ID());
 			else
