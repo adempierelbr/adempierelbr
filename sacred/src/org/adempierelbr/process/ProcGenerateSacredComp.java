@@ -135,6 +135,8 @@ public class ProcGenerateSacredComp extends SvrProcess
 		if (nfs.length > 0)
 			result.append(new B0R0001("0")); //BLOCO COM DADOS
 		
+		StringBuffer b0r0200 = new StringBuffer("");
+		
 		//REGISTRO 0150 - CADASTRO PARCEIROS - NIVEL 2
 		for(MLBRNotaFiscal nf : nfs){
 			if (nf.isCancelled())
@@ -143,20 +145,17 @@ public class ProcGenerateSacredComp extends SvrProcess
 			B0R0150 r0150 = SacredCompUtil.createR0150(nf);
 			if (r0150 != null)
 				result.append(r0150);
-		}
-		
-		//REGISTRO 0200 - CADASTRO ITEM - NIVEL 2
-		for(MLBRNotaFiscal nf : nfs){
-			if (nf.isCancelled())
-				continue; //NAO LANCAR DOCUMENTOS CANCELADOS
 			
 			MLBRNotaFiscalLine[] lines = nf.getLines("Line");
 			for (MLBRNotaFiscalLine line : lines){
 				B0R0200 r0200 = SacredCompUtil.createR0200(line);
 				if (r0200 != null)
-					result.append(r0200);
+					b0r0200.append(r0200);
 			}
 		}
+		
+		//REGISTRO 0200 - CADASTRO DE ITENS - NIVEL 2
+		result.append(b0r0200);
 		
 		//REGISTRO 0300 - ENQUADRAMENTO LEGAL - NIVEL 2
 		ArrayList<B0R0300> r0300s = SacredCompUtil.createR0300();
