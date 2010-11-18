@@ -39,6 +39,7 @@ import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MPayment;
+import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -113,7 +114,7 @@ public class ReturnCNABUtil
 					MLBRBoleto.uptadeDocumentNo(boleto.getLBR_Boleto_ID(), NossoNo, trx);
 
 				if ((Invoice.getDocStatus()).equals("CO")){
-					if (!Invoice.isPaid()){
+					if (!Invoice.isPaid() && !boleto.isPaid()){
 
 						if (C_Invoice_ID <= 0 && Invoice != null && Invoice.getC_Invoice_ID() > 0)
 						{
@@ -155,19 +156,32 @@ public class ReturnCNABUtil
 
 						Payment.setDiscountAmt(DiscountAmt); 						// Negativo = Juros | Positivo = Desconto
 
-						Payment.save(trx); //Salvar antes de Completar
+						
+						// Save and process
+						if(Payment.save(trx)) 
+						{
 
-						String status = Payment.completeIt();
-						Payment.setDocStatus(status);
-						Payment.save(trx);
+							Payment.setDocAction(DocAction.ACTION_Complete);
+							if(Payment.processIt(DocAction.ACTION_Complete))
+								Payment.save(trx);
+							
+							boleto.setC_Payment_ID(Payment.getC_Payment_ID());
+							boleto.setIsPaid(true);
+							boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
+							boleto.setDocStatus(DescOcorren);
 
-						boleto.setC_Payment_ID(Payment.getC_Payment_ID());
-						boleto.setIsPaid(true);
-						boleto.setlbr_OccurNo(Integer.parseInt(CodOcorren));
-						boleto.setDocStatus(DescOcorren);
-						boleto.save(trx);
+							// Colocar no log uma indicação do erro
+							if(Payment.getDocStatus().equals(DocAction.STATUS_Completed) && boleto.save(trx))
+								TextUtil.addText(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
+							else 
+								TextUtil.addText(fw, line + ";" + Payment.getPayAmt() + ";ERRO AO EFETUAR LANÇAMENTO");
 
-						TextUtil.addText(fw, line + ";" + Payment.getPayAmt() + ";LANCAMENTO REALIZADO");
+						} 
+						else 
+						{
+							TextUtil.addText(fw, line + ";" + Payment.getPayAmt() + ";ERRO AO EFETUAR LANÇAMENTO");
+						}
+						
 						TextUtil.addEOL(fw);
 
 					}//BAIXA
