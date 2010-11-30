@@ -142,83 +142,114 @@ public class MLBRBoleto extends X_LBR_Boleto
 		return retorno;
 	}
 	
-	/** Get LBR_Bolerto_ID 
+	/**
+	 *  Get LBR_Bolerto_ID - Três tentativas de busca, pelo número da Fatura + Vencimento, 
+	 *  pelo nosso número e pelo nosso número sem zeros a esquerda
 	 * @param DocumentNo com o número do Documento
 	 * @param LBR_PayScheduleNo com o número da Parcela
 	 * @param C_Invoice_ID com a Fatura
 	 * @param trx com a Transaçao
-	 * @return LBR_Boleto_ID */
+	 * @return LBR_Boleto_ID 
+	 */
 	public static int getLBR_Boleto_ID(String DocumentNo, String LBR_PayScheduleNo, int C_Invoice_ID, String trx)
 	{
 		int LBR_Boleto_ID = -1;
 		
-		String whereDocumentNo = "";
-		String OrderBy = "";
+		String sql 					= "";
+		String whereDocNo 			= "";
+		String whereInvPaySchedNo 	= "";
+		String orderBy 				= "";
 		
-		String sql = " SELECT LBR_Boleto_ID " +
-				     " FROM LBR_Boleto " +
-				     " WHERE LBR_IsCancelled = 'N'" +
-				       " AND AD_Client_ID = ? ";
-		
-				     
-		if (LBR_PayScheduleNo != null && !LBR_PayScheduleNo.trim().equals("")) 
-			sql += " AND LBR_PayScheduleNo = '" + LBR_PayScheduleNo.trim() + "'";
-			
-		if (C_Invoice_ID > 0) 
-			sql += " AND C_Invoice_ID = " + C_Invoice_ID;
-		
-		if (DocumentNo != null && !DocumentNo.trim().equals("")) 
-			whereDocumentNo = " AND DocumentNo = '" + DocumentNo.trim() + "'";
+		sql = " SELECT LBR_Boleto_ID 				" +
+			  "   FROM LBR_Boleto 					" +
+			  "  WHERE LBR_IsCancelled = 'N'		" +
+			  "    AND AD_Client_ID = ? 			";
 		
 		
-		OrderBy = " ORDER BY LBR_Boleto_ID DESC";		
+		// By Invoice e Pay Schedule No
+		if (C_Invoice_ID > 0 && LBR_PayScheduleNo != null && !LBR_PayScheduleNo.isEmpty()) 
+			whereInvPaySchedNo += " AND LBR_PayScheduleNo = ? AND C_Invoice_ID = ? ";
+
+
+		// By DocumentNo
+		if (DocumentNo != null && !DocumentNo.isEmpty()) 
+			whereDocNo += " AND DocumentNo = ? ";
+		
+		
+		// Order By
+		orderBy += " ORDER BY LBR_Boleto_ID DESC ";		
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		try
-		{
-			pstmt = DB.prepareStatement(sql + whereDocumentNo + OrderBy , trx);
-			pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
-			
-			rs = pstmt.executeQuery();
-			if (rs.next())
-				 LBR_Boleto_ID = rs.getInt(1);
-			
-			// Se não retornar, remover ZEROS da esquerda do DocumentNo e tentar novamente 
-			if (LBR_Boleto_ID <= 0 && DocumentNo != null && TextUtil.isNumber(DocumentNo))
-			{
-				if (DocumentNo != null && !DocumentNo.trim().equals("")) 
-					whereDocumentNo = " AND DocumentNo = '" + new BigDecimal(DocumentNo).toString() + "'";
-				
-				pstmt = DB.prepareStatement(sql + whereDocumentNo + OrderBy, trx);
+		try {
+	
+		
+			// PRIMEIRA BUSCA - POR FATURA E PARCELA 
+			if (C_Invoice_ID > 0 && LBR_PayScheduleNo != null && !LBR_PayScheduleNo.isEmpty()){
+
+				// ADD INVOICE E PAY SCHEDULE NA PESQUISA
+				pstmt = DB.prepareStatement(sql + whereInvPaySchedNo + orderBy, trx);
 				pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
+				pstmt.setString(2, LBR_PayScheduleNo);		// SCHED
+				pstmt.setInt(3, C_Invoice_ID);				// INVOICE
 								
 				rs = pstmt.executeQuery();				
+				if (rs.next())
+					 LBR_Boleto_ID = rs.getInt(1);				
+
+			}			
+			
+			
+			/** 
+			 * ESSES MÉTODOS ABAIXO SÃO PARA CASOS EM QUA NÃO ENCONTRE A FATURA + NUMERO DA PARCELA
+			 * DIFICILMENTE SERAO ACIONADOS, POIS DE ACORDO COM A ESTRUTURA DE RETORNO ATUAL, SEMPRE DEVERÁ ACHAR COM O MÉTODO ACIMA,
+			 * PORÉM SE NÃO ENCONTRAR, FAZ AS TENTATIVAS PELO NOSSO NUMERO
+			 */
+			
+			if(LBR_Boleto_ID <= 0 && DocumentNo != null && !DocumentNo.isEmpty()) {
+				
+			
+				// add DocumentNo na Pesquisa
+				sql += whereDocNo;
+				sql += orderBy;
+				
+				pstmt = DB.prepareStatement(sql, trx);
+				pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));		// CLIENT
+				pstmt.setString(2, DocumentNo);							// DOCUMENTNO
+				
+				// Executa Query
+				rs = pstmt.executeQuery();
+				if (rs.next())
+					 LBR_Boleto_ID = rs.getInt(1);
+			}
+
+			
+			// NÃO ENCONTROU, REMOVER ZEROS DA ESQUERDA DO NUMERO DO BOLETO E TENTAR NOVAMENTE
+			if (LBR_Boleto_ID <= 0 && DocumentNo != null && !DocumentNo.isEmpty() && TextUtil.isNumber(DocumentNo))
+			{
+
+				pstmt = DB.prepareStatement(sql, trx);
+				pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));			// CLIENT
+				pstmt.setString(2, new BigDecimal(DocumentNo).toString());	// DOCUMENTNO
+				
+				// Executa Query
+				rs = pstmt.executeQuery();
 				if (rs.next())
 					 LBR_Boleto_ID = rs.getInt(1);
 
 			}
 			
-			// Se não retornar nada, remover DocumentNo da pesquisa e utilizar a Invoice e PaySched
-			if (LBR_Boleto_ID <= 0){
-				pstmt = DB.prepareStatement(sql + OrderBy, trx);
-				pstmt.setInt(1, Env.getAD_Client_ID(Env.getCtx()));
-								
-				rs = pstmt.executeQuery();				
-				if (rs.next())
-					 LBR_Boleto_ID = rs.getInt(1);
-				
-			
-			}
 						
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
+			
 			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
+			
+		} finally {
+			
+		    DB.close(rs, pstmt);
+		    
 		}
 		
 		return LBR_Boleto_ID;
