@@ -515,7 +515,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			if (m_refNCM.containsKey(ncmName))
 			{
 				//	Retorna o NCM
-				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", true, Env.getAD_Client_ID(Env.getCtx())))
+				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", false, Env.getAD_Client_ID(Env.getCtx())))
 					return ncmName;
 				//	Retorna a Chave
 				else
@@ -527,7 +527,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 				m_refNCM.put(ncmName, cl);
 				setNCMReference(ncmName,cl,true);
 				//	Retorna o NCM
-				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", true, Env.getAD_Client_ID(Env.getCtx())))
+				if (!MSysConfig.getBooleanValue("LBR_REF_NCM", false, Env.getAD_Client_ID(Env.getCtx())))
 					return ncmName;
 				//	Retorna a Chave
 				else
@@ -787,7 +787,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			if (m_refCFOP.containsKey(cfopName))
 			{
 				//	Retorna o CFOP
-				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", false, Env.getAD_Client_ID(Env.getCtx())))
 					return cfopName;
 				//	Retorna a Chave
 				else
@@ -800,7 +800,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 				setCFOPNote(cfop.getDescription() + ", ",true);
 				setCFOPReference(cfopName,cl);
 				//	Retorna o CFOP
-				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+				if (!MSysConfig.getBooleanValue("LBR_REF_CFOP", false, Env.getAD_Client_ID(Env.getCtx())))
 					return cfopName;
 				//	Retorna a Chave
 				else
@@ -1090,14 +1090,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		if (m_CFOPReference == null
 				|| m_CFOPReference.equals(""))
 		{
-			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", false, Env.getAD_Client_ID(Env.getCtx())))
 				m_CFOPReference = cl + "-" + cfopName;
 			else
 				m_CFOPReference = cfopName;
 		}
 		else
 		{
-			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", true, Env.getAD_Client_ID(Env.getCtx())))
+			if (MSysConfig.getBooleanValue("LBR_REF_CFOP", false, Env.getAD_Client_ID(Env.getCtx())))
 				m_CFOPReference += ", " + cl + "-" + cfopName;
 			else
 				m_CFOPReference += ", " + cfopName;
