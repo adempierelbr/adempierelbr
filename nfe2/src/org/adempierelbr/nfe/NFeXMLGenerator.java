@@ -97,6 +97,7 @@ import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.Transform;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -131,7 +132,7 @@ public class NFeXMLGenerator
 		
 		//
 		XStream xstream = new XStream();
-
+		
 		DadosNFE dados = new DadosNFE();
 		NFERefenciadaBean nfereferencia = new NFERefenciadaBean();
 		InformacoesNFEReferenciadaBean inforeferencia = new InformacoesNFEReferenciadaBean();
@@ -840,12 +841,12 @@ public class NFeXMLGenerator
 
 		String nfeID = dados.getId().substring(3);
 		String arquivoXML = nfeID + FILE_EXT;
-		String NFeEmXML = NFeUtil.geraCabecNFe() + xstream.toXML(dados) + NFeUtil.geraRodapNFe();
-
+		String NFeEmXML = NFeUtil.geraCabecNFe() + TextUtil.removeEOL(xstream.toXML(dados)) + NFeUtil.geraRodapNFe();
+		
 		try
 		{
 			log.fine("Assinando NF-e");
-			arquivoXML = TextUtil.generateTmpFile(NFeEmXML, arquivoXML);
+			arquivoXML = TextUtil.generateTmpFile(NFeUtil.removeIndent(NFeEmXML), arquivoXML);
 			AssinaturaDigital.Assinar(arquivoXML, orgInfo, AssinaturaDigital.RECEPCAO_NFE);
 		}
 		catch (Exception e){

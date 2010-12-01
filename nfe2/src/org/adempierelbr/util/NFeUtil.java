@@ -410,7 +410,44 @@ public abstract class NFeUtil
 
         return dados;
 	} //XMLtoString
-
+	
+	/**
+	 * removeIndent
+	 * @param xml
+	 * @return
+	 */
+	public static String removeIndent(String xml){
+		
+		StringBuilder newXML = new StringBuilder("");
+		
+		int i = 0;
+		while (i < xml.length()){
+			int end = xml.indexOf(">", i);
+			if (end != -1){
+				newXML.append(xml.substring(i, end+1));
+				i = end + 1;
+				
+				int newTag = xml.indexOf("<", i);
+				int endTag = xml.indexOf("</", i);
+				
+				if (endTag > newTag){
+					i = newTag;
+				}
+				
+				//check if value is blank
+				if (endTag != -1){
+					String value = xml.substring(i, endTag);
+					if (value.trim().isEmpty())
+						i = endTag;
+				}
+				
+			}
+		}
+					
+		return newXML.toString();
+	} //removeIndent
+	
+	
 	/**
 	 * Get Attachment
 	 *
@@ -489,7 +526,7 @@ public abstract class NFeUtil
 	public static String getNFeStatus(String status)
 	{
 
-		String sql = "SELECT Name FROM AD_Ref_LIst " +
+		String sql = "SELECT Name FROM AD_Ref_List " +
 				     "WHERE AD_Reference_ID = ? AND Value = ?";
 
 		String NFeStatus = DB.getSQLValueString(null, sql,
@@ -612,5 +649,5 @@ public abstract class NFeUtil
         }
         return result;
     }	//	packageNameOfClass
-
+	
 }	//	NFeUtil

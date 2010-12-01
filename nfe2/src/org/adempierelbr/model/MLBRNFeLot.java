@@ -119,7 +119,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		//
 		String lote = getDocumentNo();
         String cabecalho = NFeUtil.geraCabecLoteNFe(lote);
-		String rodape 	=  "\n</enviNFe>";
+		String rodape 	=  "</enviNFe>";
 		String contatosEmXML = cabecalho + conjunto + rodape;
 		//
 		String validation = ValidaXML.validaEnvXML(contatosEmXML);
