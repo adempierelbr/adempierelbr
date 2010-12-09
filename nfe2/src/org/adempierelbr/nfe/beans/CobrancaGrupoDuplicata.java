@@ -14,20 +14,10 @@ package org.adempierelbr.nfe.beans;
 
 public class CobrancaGrupoDuplicata {
 
-	private String dup;
 	private String nDup;
 	private String dVenc;
 	private String vDup;
 	
-	public String getDup() {
-		return dup;
-	}
-	public void setDup(String dup) {
-		if (dup != null)
-			dup = dup.trim();
-	
-		this.dup = dup;
-	}
 	public String getnDup() {
 		return nDup;
 	}

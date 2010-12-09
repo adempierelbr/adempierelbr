@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import org.adempierelbr.model.MLBRCFOP;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
+import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
@@ -91,6 +92,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
 import org.compiere.model.X_C_City;
@@ -157,8 +159,8 @@ public class NFeXMLGenerator
 		TransporteRetencao transretencao = new TransporteRetencao();
 		TransporteVol transvol = new TransporteVol();
 		Cobranca cobr = new Cobranca();
-		CobrancaGrupoFatura cobrfat = new CobrancaGrupoFatura();
-		CobrancaGrupoDuplicata cobrdup = new CobrancaGrupoDuplicata();
+		CobrancaGrupoFatura cobrfat = null;
+		CobrancaGrupoDuplicata cobrdup = null;
 		InfAssinatura assinatura = new InfAssinatura();
 		ChaveNFE chaveNFE = new ChaveNFE();
 
@@ -211,7 +213,12 @@ public class NFeXMLGenerator
 		 * 1 – pagamento à prazo
 		 * 2 – outros
 		 */
-		String indPag = "0";	//	FIXME: PAYMENTTERM
+		String indPag = "0"; //A VISTA
+		MLBROpenItem[] openItems = MLBROpenItem.getOpenItem(nf.getC_Invoice_ID(), trxName);
+		if (openItems.length > 1)
+			indPag = "2"; //PARCELADO
+		else if (openItems[0].getNetDays() > 0)
+			indPag = "1"; //OUTROS
 
 		/** Identificação do Ambiente (1 - Produção; 2 - Homologação) */
 		String tpAmb = docType.get_ValueAsString("lbr_NFeEnv");
@@ -553,18 +560,30 @@ public class NFeXMLGenerator
 			boolean HasOpenItems = dt.get_ValueAsBoolean("lbr_HasOpenItems");
 
 			if (HasOpenItems){
+				cobrfat = new CobrancaGrupoFatura();
 				cobrfat.setnFat(nf.getDocumentNo()); // Codigo NFE
 				cobrfat.setvOrig(TextUtil.bigdecimalToString(nf.getGrandTotal())); // Valor Bruto
 			    cobrfat.setvLiq(TextUtil.bigdecimalToString(nf.getGrandTotal())); // Valor Liquido
 			    //cobrfat.setvDesc(TextUtil.ZERO_STRING); // Desconto
-
 			    cobr.setFat(cobrfat);
+
+			    //Adiciona as duplicatas da fatura
+			    for(int i=0; i < openItems.length; i++) {
+					MLBROpenItem openItem = openItems[i];
+					cobrdup = new CobrancaGrupoDuplicata();
+					cobrdup.setdVenc(TextUtil.timeToString(openItem.getDueDate(),"yyyy-MM-dd"));
+					cobrdup.setnDup(cobrfat.getnFat()+"/"+Integer.toString(i+1));
+					cobrdup.setvDup(TextUtil.bigdecimalToString(openItem.getGrandTotal()));
+					cobr.addDup(cobrdup);
+				}
 			    dados.setCobr(cobr);
 			}
 		}
 
 		int linhaNF = 1;
 
+		xstream.addImplicitCollection(Cobranca.class, "dups");
+		xstream.alias("dup", CobrancaGrupoDuplicata.class);
 		xstream.omitField(AdicoesDI.class, "nDI");
 		xstream.alias("adi", AdicoesDI.class);
 		xstream.addImplicitCollection(DeclaracaoDI.class, "adi");

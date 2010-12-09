@@ -12,26 +12,33 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cobranca {
-	
+
 	// Dados da Cobrança
 	private CobrancaGrupoFatura fat;
-	
-	private CobrancaGrupoDuplicata dup;
-	public CobrancaGrupoDuplicata getDup() {
-		return dup;
+
+	private List<CobrancaGrupoDuplicata> dups = new ArrayList<CobrancaGrupoDuplicata>();
+
+	public List<CobrancaGrupoDuplicata> getDups() {
+		return dups;
 	}
-	public void setDup(CobrancaGrupoDuplicata dup) {
-		this.dup = dup;
+
+	public void setDups(List<CobrancaGrupoDuplicata> dups) {
+		this.dups = dups;
 	}
+
 	public CobrancaGrupoFatura getFat() {
 		return fat;
 	}
+
 	public void setFat(CobrancaGrupoFatura fat) {
 		this.fat = fat;
 	}
-	
-	
-	
 
+	public boolean addDup(CobrancaGrupoDuplicata e) {
+		return dups.add(e);
+	}
 }
