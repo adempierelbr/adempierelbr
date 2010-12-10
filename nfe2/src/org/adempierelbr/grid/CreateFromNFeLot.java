@@ -21,6 +21,7 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.X_LBR_NotaFiscal;
+import org.adempierelbr.util.NFeUtil;
 import org.compiere.grid.CreateFrom;
 import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.GridTab;
@@ -147,11 +148,21 @@ public class CreateFromNFeLot extends CreateFrom {
 				int LBR_NotaFiscal_ID = pp.getKey();
 				//
 				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
-				nf.set_CustomColumn("LBR_NFeLot_ID", LBR_NFeLot_ID);
+				String nfeID = NFeUtil.checkXMLFile(nf);
+				if (nfeID == null){
+					log.severe("Anexo NFe não encontrado. Nota Fiscal: " + nf.getDocumentNo());
+					continue;
+				}
+					
+				if (!nfeID.equals(nf.getlbr_NFeID()))
+					nf.setlbr_NFeID(nfeID); //Atualiza o campo lbr_NFeID, caso ele esteja diferente do anexo
+				
+				nf.setLBR_NFeLot_ID(LBR_NFeLot_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//
 				if (!nf.save())
 					log.log(Level.SEVERE, "NF not added to LOT, #" + i);
+				
 			}   //   if selected
 		}   //  for all rows
 		return true;

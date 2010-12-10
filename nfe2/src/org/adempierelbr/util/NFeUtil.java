@@ -551,6 +551,20 @@ public abstract class NFeUtil
 
 		return null;
 	} //validateSize
+	
+	public static String checkXMLFile(MLBRNotaFiscal nf){
+		
+		String nfeID = nf.getAttachment().getEntry(0).toString();
+		if(nfeID != null){
+			
+			int beginIndex = nfeID.lastIndexOf(File.separator)+1;
+			int endIndex   = nfeID.lastIndexOf('-');
+			
+			nfeID = nfeID.substring(beginIndex, endIndex == -1 ? nfeID.length() : endIndex);
+		}
+		
+		return nfeID;
+	}
 
 
 	/**
