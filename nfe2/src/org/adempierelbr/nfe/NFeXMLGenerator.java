@@ -563,9 +563,9 @@ public class NFeXMLGenerator
 			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 			boolean HasOpenItems = dt.get_ValueAsBoolean("lbr_HasOpenItems");
 
-			if (HasOpenItems){
+			if (HasOpenItems && nf.isSOTrx()){
 				cobrfat = new CobrancaGrupoFatura();
-				cobrfat.setnFat(nf.getDocumentNo()); // Codigo NFE
+				cobrfat.setnFat(invoice.getDocumentNo()); // Codigo NFE
 				cobrfat.setvOrig(TextUtil.bigdecimalToString(nf.getGrandTotal())); // Valor Bruto
 			    cobrfat.setvLiq(TextUtil.bigdecimalToString(nf.getGrandTotal())); // Valor Liquido
 			    //cobrfat.setvDesc(TextUtil.ZERO_STRING); // Desconto
