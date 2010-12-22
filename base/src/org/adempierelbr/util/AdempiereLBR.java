@@ -15,6 +15,7 @@ package org.adempierelbr.util;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -59,14 +60,28 @@ public abstract class AdempiereLBR{
 		if (index != -1)
 			DocumentNo = DocumentNo.substring(0, index);
 
-		String sql = "SELECT C_Invoice_ID FROM C_Invoice WHERE DocumentNo = ? " +
-				     "AND AD_Client_ID = ?";
+		String sql = "SELECT C_Invoice_ID FROM C_Invoice " +
+				     "WHERE DocumentNo = ? AND AD_Client_ID = ?";
 
 		int C_Invoice_ID = DB.getSQLValue(trx, sql,
 				new Object[]{DocumentNo,Env.getAD_Client_ID(Env.getCtx())});
 
 		return C_Invoice_ID;
 	}	//	getC_Invoice_ID
+	
+	public static int getC_ElementValue_ID (String account,String trx)
+	{
+		if (account == null || account.isEmpty())
+			return -1;
+		
+		String sql = "SELECT C_ElementValue_ID FROM C_ElementValue " +
+		             "WHERE Value=? AND AD_Client_ID=? AND IsActive='Y'";
+		
+		int C_ElementValue_ID = DB.getSQLValue(trx, sql, 
+				new Object[]{account,Env.getAD_Client_ID(Env.getCtx())});
+		
+		return C_ElementValue_ID;
+	}	//getC_ElementValue_ID
 
 	public static int getC_Region_ID(String regionName, String trx){
 
@@ -301,6 +316,7 @@ public abstract class AdempiereLBR{
 						"INNER JOIN C_OrderLine ol ON (o.C_Order_ID = ol.C_Order_ID) " +
 					 "WHERE ol.M_Product_ID = ? " +
 					 "AND o.C_Order_ID <> ? AND o.AD_Client_ID = ? " +
+					 "AND ol.QtyEntered > 0 " +
 					 "AND o.IsSOTrx = 'N' AND o.DocStatus = 'CO' ";
 
 		if (C_BPartner_ID > 0 ){
@@ -462,7 +478,59 @@ public abstract class AdempiereLBR{
 		//
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addYears
+	
+	/**
+	 * getMonths
+	 * Retorna um array com o primeiro dia de todos os mês no intervalo das datas
+	 * @param dateFrom
+	 * @param dateTo
+	 * @return Timestamp[]
+	 */
+	public static Timestamp[] getMonths(Timestamp dateFrom, Timestamp dateTo){
+		
+		if (dateFrom.after(dateTo))
+			return null;
+		
+		Calendar begin = new GregorianCalendar();
+		begin.setTime(dateFrom);
+				 
+		Calendar end = new GregorianCalendar();
+		end.setTime(dateTo);
+		
+		List<Timestamp> months = new ArrayList<Timestamp>();		 
+		
+		while (begin.before(end)){
+			
+			begin.set(Calendar.DATE, begin.getActualMinimum(Calendar.DAY_OF_MONTH));		
+			months.add(new Timestamp(begin.getTimeInMillis()));
+			
+			begin.add(Calendar.MONTH, 1);
+		}
+		
+		Timestamp[] retValue = new Timestamp[months.size()];
+		months.toArray(retValue);
+		return retValue;
+	}
+	
+	/**
+	 * firstDayMonth
+	 * @param date
+	 * @return Timestamp - Primeiro dia do mês
+	 */
+	public static Timestamp firstDayMonth(Timestamp date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
 
+		return new Timestamp(cal.getTimeInMillis());
+	}
+	
+	/**
+	 * firstDayMonth
+	 * @param Ano Ex. 2010
+	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
+	 * @return Timestamp - Primeiro dia do mês
+	 */
 	public static Timestamp firstDayMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -470,6 +538,25 @@ public abstract class AdempiereLBR{
 		return new Timestamp(cal.getTimeInMillis());
 	}
 
+	/**
+	 * lastDayMonth
+	 * @param date
+	 * @return Timestamp - Último dia do mês
+	 */
+	public static Timestamp lastDayMonth(Timestamp date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+		return new Timestamp(cal.getTimeInMillis());
+	}
+	
+	/**
+	 * lastDayMonth
+	 * @param Ano Ex. 2010
+	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
+	 * @return Timestamp - Último dia do mês
+	 */
 	public static Timestamp lastDayMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));

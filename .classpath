@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
+	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="sacred/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
@@ -22,12 +23,6 @@
 	<classpathentry kind="lib" path="lib/brazilutils.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/axis.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/javax.wsdl_1.5.1.v200806030408.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/org.apache.commons.logging_1.0.4.v200904062259.jar"/>
-	<classpathentry kind="lib" path="lib/ws/axis/saaj.jar"/>
 	<classpathentry kind="lib" path="lib/ws/axiom-api-1.2.8.jar"/>
 	<classpathentry kind="lib" path="lib/ws/axiom-dom-1.2.8.jar"/>
 	<classpathentry kind="lib" path="lib/ws/axiom-impl-1.2.8.jar"/>

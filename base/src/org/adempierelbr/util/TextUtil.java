@@ -269,14 +269,18 @@ public abstract class TextUtil
 	 * @return String without EOL
 	 */
 	public static String removeEOL(String text){
-
+		return removeEOL(text," ");
+	} //removeEOL
+	
+	public static String removeEOL(String text, String replaceStr){
+		
 		if (text == null)
 			return "";
+		
+		text = text.replaceAll("[\r\n\t]", replaceStr);
 
-		text = text.replaceAll("[\r\n\t]", " ");
-
-		return itrim(text.trim());
-	} //removeEOL
+		return itrim(text.trim(),replaceStr);
+	}
 
 	/**
 	 * formatStringCodes
@@ -842,12 +846,16 @@ public abstract class TextUtil
      *  @return replace multiple whitespaces between words with single blank
      */
     public static String itrim(String source) {
+    	return itrim(source," ");
+    }
+    
+    public static String itrim(String source, String replaceStr){	
     	if (source != null)
-    		return source.replaceAll("\\b\\s{2,}\\b", " ");
-
+    		return source.replaceAll("\\b\\s{2,}\\b", replaceStr);
+    	
     	return "";
     }
-
+    
 	/**
 	 * Verifica se uma String contém exclusivamente dígitos
 	 *
