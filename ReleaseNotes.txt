@@ -1,10 +1,8 @@
 ﻿Release Notes - AdempiereLBR 3.6.0
 
-Versão Inicial
+Versão Inicial (22/12/2010)
 Integração do projeto OSeB 3.6.0 no AdempiereLBR (Mario Grigioni)
-
-
-
+FR 3118613 - Adicionados processos de consulta parceiro e status da NFe (Marcelo Onhate)
 
 <--------------------------------------------->
 
