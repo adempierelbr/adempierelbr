@@ -20,6 +20,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.callout.CalloutTax;
+import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TaxesCalculation;
@@ -233,6 +234,10 @@ public class ValidatorOrder implements ModelValidator
 
 				//Validate Withhold
 				MLBRTax.validateWithhold(order);
+				
+				//FR 3079621 Onhate
+				MLBRProductMovementFiller pmf = new MLBRProductMovementFiller();
+				pmf.saveThis(order);
 
 				MDocType dt = MDocType.get(ctx, order.getC_DocTypeTarget_ID());
 				String DocSubTypeSO = dt.getDocSubTypeSO();

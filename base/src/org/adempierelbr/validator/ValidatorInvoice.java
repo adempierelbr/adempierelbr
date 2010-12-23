@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.process.ProcGenerateNF;
 import org.adempierelbr.util.TaxBR;
@@ -377,7 +378,10 @@ public class ValidatorInvoice implements ModelValidator
 
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
 				} // geração de Documento Fiscal
-
+				
+				//FR 3079621 Onhate
+				MLBRProductMovementFiller pmf = new MLBRProductMovementFiller();
+				pmf.saveThis(invoice);
 
 				// Processo de consignação - Registra referência na tabela LBR_ProcessLink
 				// A referência será sempre da fatura de envio, com a fatura de retorno ou venda
