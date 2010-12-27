@@ -39,7 +39,7 @@
 	<classpathentry kind="lib" path="lib/ws/neethi-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/ws/wsdl4j-1.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/ws/XmlSchema-1.4.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere_360"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

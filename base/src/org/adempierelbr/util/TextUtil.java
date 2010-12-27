@@ -58,7 +58,8 @@ public abstract class TextUtil
 	public static final String EOL_MAC   = "\n\r";
 
 	/** ENCODING        */
-	public static final String UTF8 = "UTF-8";
+	public static final String UTF8     = "UTF-8";
+	public static final String ISO88591 = "ISO-8859-1";
 
 	/** Formatação de Números    */
 	private static String nFormat = "#,##0.00";
@@ -121,39 +122,13 @@ public abstract class TextUtil
 	 * generateFile (DEFAULT ENCODING UTF-8)
 	 * Create and write String to File
 	 * 
-	 * 	This method is not working for ISO-88591,
-	 * 		check {@link #generateFileW(String, String, String)}
-	 * 
 	 * @param data
 	 * @param filePath
 	 * @return filePath
 	 */
-	@Deprecated
 	public static String generateFile(String data, String filePath){
 		return generateFile(data,filePath,UTF8);
 	}
-
-	/**
-	 * generateFile
-	 * Create and write String to File
-	 * @param data
-	 * @param filePath
-	 * @param encoding
-	 * @return filePath
-	 */
-	public static String generateFile(String data, String filePath, String encoding){
-
-		try{
-			FileWriter fw = TextUtil.createFile(filePath,false,encoding);
-			TextUtil.addText(fw, data);
-			TextUtil.closeFile(fw);
-		}
-		catch(Exception e){
-			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + filePath, e);
-		}
-
-		return filePath;
-	} //generateFile
 	
 	/**
 	 * 	Gera um arquivo
@@ -162,22 +137,24 @@ public abstract class TextUtil
 	 * @param nome do arquivo
 	 * @param codificação (ex. UTF-8, ISO-8859-1, etc)
 	 */
-	public static void generateFileW (String data, String fileName, String encoding)
+	public static String generateFile (String data, String filePath, String encoding)
 	{
 		try
 		{
-			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), encoding));
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), encoding));
 			out.write(data);
 			out.close();
 		}
 		catch (UnsupportedEncodingException e)
 		{
-			log.log(Level.SEVERE, "Formato não suportado="+encoding+", arquivo: " + fileName, e);
+			log.log(Level.SEVERE, "Formato não suportado="+encoding+", arquivo: " + filePath, e);
 		}
 		catch (IOException e)
 		{
-			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + fileName, e);
+			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + filePath, e);
 		}
+		
+		return filePath;
 	}	//	generateFile
 
 	/**

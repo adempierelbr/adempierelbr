@@ -164,6 +164,6 @@ public class ProcGenerateRPS extends SvrProcess
 			result.append(NFSeRPSGenerator.generateRPS(nf.getLBR_NotaFiscal_ID(), trxName));
 		}
 		result.append(NFSeRPSGenerator.generateFooter());
-		TextUtil.generateFileW(result.toString(), fileName, ISO88591.displayName());
+		TextUtil.generateFile(result.toString(), fileName, ISO88591.displayName());
 	}	//	generate	
 }	//	ProcGenerateRPS
