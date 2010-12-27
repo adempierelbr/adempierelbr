@@ -49,6 +49,20 @@ public abstract class BPartnerUtil{
 		MBPartnerLocation bpLocation = new MBPartnerLocation(ctx,C_BPartner_Location_ID,null);
 		return getCNPJ(bpartner,bpLocation);
 	} //getCNPJ
+	
+	/**
+	 * 	Retorna se o PN é Pessoa Física ou Pessoa Jurídica
+	 * 
+	 * @param bp Business Partner
+	 * @return PF, PJ or null
+	 */
+	public static String getBPTypeBR (MBPartner bp)
+	{
+		if (bp == null)
+			return null;
+		//
+		return bp.get_ValueAsString("lbr_BPTypeBR");
+	}	//	getBPTypeBR
 
 	/**
 	 * Utilizar o método que incluí o parametro do MBPLocation

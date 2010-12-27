@@ -111,7 +111,8 @@ public class ProcGenerateNF extends SvrProcess
 
 		MInvoice invoice = new MInvoice(getCtx(),p_C_Invoice_ID,get_TrxName());
 		Integer invoice_NF_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
-		if (invoice_NF_ID != null && invoice_NF_ID.intValue() > 0){
+		if (invoice_NF_ID != null && invoice_NF_ID.intValue() > 0
+				&& invoice_NF_ID.intValue() != p_LBR_NotaFiscal_ID){
 			throw new IllegalArgumentException("Fatura já possui nota fiscal");
 		}
 
@@ -430,13 +431,26 @@ public class ProcGenerateNF extends SvrProcess
 
 			LBR_NotaFiscal_ID = NotaFiscal.getLBR_NotaFiscal_ID();
 			
-			
 			// Gerar XML automaticamente
-			try {
-				
-				if(MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, NotaFiscal.getAD_Client_ID()))
-					NFeXMLGenerator.geraCorpoNFe(LBR_NotaFiscal_ID, trx);
-			
+			try
+			{
+				if (NotaFiscal.getC_DocType_ID() > 0)
+				{
+					MDocType dt = new MDocType (ctx, NotaFiscal.getC_DocType_ID(), trx);
+					String model = dt.get_ValueAsString("lbr_NFModel");
+					//
+					if (model == null)
+						log.log(Level.INFO, "Tipo de NF não definido.");
+					else if (model.startsWith("RPS"))
+					{
+						NotaFiscal.setlbr_ServiceTaxes();
+						NotaFiscal.save(trx);
+					}
+					//
+					else if (model.equals("55") && 
+							MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, NotaFiscal.getAD_Client_ID()))
+						NFeXMLGenerator.geraCorpoNFe(LBR_NotaFiscal_ID, trx);
+				}
 			} catch(Exception ex) {
 				log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + NotaFiscal.getDocumentNo());
 			}

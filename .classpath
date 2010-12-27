@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
-	<classpathentry kind="src" path="sped/src"/>
+	<classpathentry kind="src" path="nfse/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="sacred/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
@@ -39,7 +39,7 @@
 	<classpathentry kind="lib" path="lib/ws/neethi-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/ws/wsdl4j-1.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/ws/XmlSchema-1.4.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere_360"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

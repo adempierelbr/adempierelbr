@@ -13,12 +13,17 @@
 package org.adempierelbr.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -115,10 +120,15 @@ public abstract class TextUtil
 	/**
 	 * generateFile (DEFAULT ENCODING UTF-8)
 	 * Create and write String to File
+	 * 
+	 * 	This method is not working for ISO-88591,
+	 * 		check {@link #generateFileW(String, String, String)}
+	 * 
 	 * @param data
 	 * @param filePath
 	 * @return filePath
 	 */
+	@Deprecated
 	public static String generateFile(String data, String filePath){
 		return generateFile(data,filePath,UTF8);
 	}
@@ -144,6 +154,31 @@ public abstract class TextUtil
 
 		return filePath;
 	} //generateFile
+	
+	/**
+	 * 	Gera um arquivo
+	 * 
+	 * @param dados a serem gravados no arquivo
+	 * @param nome do arquivo
+	 * @param codificação (ex. UTF-8, ISO-8859-1, etc)
+	 */
+	public static void generateFileW (String data, String fileName, String encoding)
+	{
+		try
+		{
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), encoding));
+			out.write(data);
+			out.close();
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			log.log(Level.SEVERE, "Formato não suportado="+encoding+", arquivo: " + fileName, e);
+		}
+		catch (IOException e)
+		{
+			log.log(Level.SEVERE, "Erro ao gerar Arquivo: " + fileName, e);
+		}
+	}	//	generateFile
 
 	/**
 	 * generateTmpFile
