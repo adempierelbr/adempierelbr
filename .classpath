@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="base/src"/>
-	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="boleto/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
@@ -10,6 +9,7 @@
 	<classpathentry kind="src" path="nfse/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="sacred/src"/>
+	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
 	<classpathentry kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
