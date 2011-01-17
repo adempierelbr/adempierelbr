@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -25,7 +25,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI012.java, 16/11/2010, 16:09:00, mgrigioni
  */
-public class RI012 implements RegSped {
+public class RI012 extends RegSped {
 	
 	private final String REG   = "I012";
 
@@ -58,16 +58,16 @@ public class RI012 implements RegSped {
 		String format =
 			  PIPE + REG
 			+ PIPE + NUM_ORD
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NAT_LIVR), 0, 80)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80)
 			+ PIPE + TIPO	
-			+ PIPE + TextUtil.checkSize(COD_HASH_AUX, 0, 40)
+			+ PIPE + TextUtil.checkSize(COD_HASH_AUX, 40)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI012

@@ -14,8 +14,8 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 /**
  * Identificação do Arquivo
@@ -33,7 +33,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RJ150.java, 18/11/2010, 11:40:00, mgrigioni
  */
-public class RJ150 implements RegSped {
+public class RJ150 extends RegSped {
 
 	private final String REG = "J150";
 	
@@ -67,18 +67,18 @@ public class RJ150 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_AGL, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_AGL, 255)
 			+ PIPE + TextUtil.toNumeric(NIVEL_AGL, 0, 255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESCR_COD_AGL), 0, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESCR_COD_AGL), 255)
 			+ PIPE + TextUtil.toNumeric(VL_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_VL, 0, 1)
+			+ PIPE + TextUtil.checkSize(IND_VL, 1)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } // RJ150 

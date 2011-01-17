@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -23,7 +23,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI020.java, 16/11/2010, 16:27:00, mgrigioni
  */
-public class RI020 implements RegSped {
+public class RI020 extends RegSped {
 	
 	private final String REG   = "I020";
 	
@@ -57,18 +57,18 @@ public class RI020 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(REG_COD, 0, 4)
+			+ PIPE + TextUtil.checkSize(REG_COD, 4)
 			+ PIPE + NUM_AD
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CAMPO), 0, 100)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESCRICAO), 0,100)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(TIPO), 0, 100)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CAMPO), 100)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESCRICAO), 100)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(TIPO), 100)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI012

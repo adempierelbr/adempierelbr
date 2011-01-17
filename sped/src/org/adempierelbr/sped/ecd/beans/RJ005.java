@@ -15,8 +15,8 @@ package org.adempierelbr.sped.ecd.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -32,7 +32,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RJ005.java, 18/11/2010, 10:48:00, mgrigioni
  */
-public class RJ005 implements RegSped {
+public class RJ005 extends RegSped {
 	
 	private final String REG   = "J005";
 	
@@ -66,14 +66,14 @@ public class RJ005 implements RegSped {
 			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
 			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
 			+ PIPE + TextUtil.toNumeric(ID_DEM, 0, 1)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CAB_DEM), 0, 65535)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CAB_DEM), 65535)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RJ005 

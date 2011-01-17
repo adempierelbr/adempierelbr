@@ -14,8 +14,8 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -28,7 +28,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI100.java, 17/11/2010, 10:53:00, mgrigioni
  */
-public class RI100 implements RegSped {
+public class RI100 extends RegSped {
 	
 	private final String REG   = "I100";
 	
@@ -57,15 +57,15 @@ public class RI100 implements RegSped {
 		String format =
 			  PIPE + REG
 			+ PIPE + TextUtil.timeToString(DT_ALT, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CCUS), 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CCUS), 255)
 			+ PIPE;
 			
 		return TextUtil.removeEOL(format) + EOL;
 	} // format
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI100

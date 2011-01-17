@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -28,7 +27,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0007.java, 16/11/2010, 15:15:00, mgrigioni
  */
-public class R0007 implements RegSped {
+public class R0007 extends RegSped {
 
 	private final String REG   = "0007";
 	
@@ -54,15 +53,15 @@ public class R0007 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_ENT_REF, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_ENT_REF, 255)
 			+ PIPE + TextUtil.toNumeric(COD_INSCR)
 			+ PIPE;
 
 		return TextUtil.removeEOL(format) + EOL;
 	} 	//toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //R0007

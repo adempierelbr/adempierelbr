@@ -150,38 +150,58 @@ class SPEDComparator implements Comparator<Object>
 		String s2 = "0000";
 		//
 		if (o1 instanceof String)
-			s1 = (String) o1;
+			s1 = (String)o1;
 		if (o2 instanceof String)
-			s2 = (String) o2;
+			s2 = (String)o2;
 
 		if (s1 == null || s2 == null)
 			return 0;
 		//
+		if (s1.startsWith("0"))
+			s1 = "01" + s1.substring(1);	
+		if (s1.startsWith("A"))
+			s1 = "02" + s1.substring(1);
 		if (s1.startsWith("C"))
-			s1 = "2" + s1.substring(1);
+			s1 = "03" + s1.substring(1);
 		if (s1.startsWith("D"))
-			s1 = "3" + s1.substring(1);
+			s1 = "04" + s1.substring(1);
 		if (s1.startsWith("E"))
-			s1 = "4" + s1.substring(1);
+			s1 = "05" + s1.substring(1);
 		if (s1.startsWith("G"))
-			s1 = "5" + s1.substring(1);
+			s1 = "06" + s1.substring(1);
 		if (s1.startsWith("H"))
-			s1 = "6" + s1.substring(1);
+			s1 = "07" + s1.substring(1);
+		if (s1.startsWith("I"))
+			s1 = "08" + s1.substring(1);
+		if (s1.startsWith("J"))
+			s1 = "09" + s1.substring(1);
 		if (s1.startsWith("1"))
-			s1 = "7" + s1.substring(1);
+			s1 = "10" + s1.substring(1);
+		if (s1.startsWith("9"))
+			s1 = "11" + s1.substring(1);
 		//
+		if (s2.startsWith("0"))
+			s2 = "01" + s2.substring(1);	
+		if (s2.startsWith("A"))
+			s2 = "02" + s2.substring(1);
 		if (s2.startsWith("C"))
-			s2 = "2" + s2.substring(1);
+			s2 = "03" + s2.substring(1);
 		if (s2.startsWith("D"))
-			s2 = "3" + s2.substring(1);
+			s2 = "04" + s2.substring(1);
 		if (s2.startsWith("E"))
-			s2 = "4" + s2.substring(1);
+			s2 = "05" + s2.substring(1);
 		if (s2.startsWith("G"))
-			s2 = "5" + s2.substring(1);
+			s2 = "06" + s2.substring(1);
 		if (s2.startsWith("H"))
-			s2 = "6" + s2.substring(1);
+			s2 = "07" + s2.substring(1);
+		if (s2.startsWith("I"))
+			s2 = "08" + s2.substring(1);
+		if (s2.startsWith("J"))
+			s2 = "09" + s2.substring(1);
 		if (s2.startsWith("1"))
-			s2 = "7" + s2.substring(1);
+			s2 = "10" + s2.substring(1);
+		if (s2.startsWith("9"))
+			s2 = "11" + s2.substring(1);
 		//
 		return s1.compareTo(s2);
 	}	//	compare

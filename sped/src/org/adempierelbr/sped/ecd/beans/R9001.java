@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -28,7 +27,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: R9001.java, 16/11/2010, 15:33:00, mgrigioni
  */
 
-public class R9001 implements RegSped {
+public class R9001 extends RegSped {
 	
 	private final String REG   = "9001";
 	
@@ -58,8 +57,8 @@ public class R9001 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //R9001

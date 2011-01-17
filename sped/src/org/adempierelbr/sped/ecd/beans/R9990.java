@@ -24,7 +24,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R9990.java, 16/11/2010, 15:49:00, mgrigioni
  */
-public class R9990 implements RegSped {
+public class R9990 extends RegSped {
 
 	private final String REG   = "9990";
 
@@ -50,9 +50,9 @@ public class R9990 implements RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}
-
-	public void addCounter() {
-		CounterSped.register(REG);
+	
+	public String getReg() {
+		return REG;
 	}
 	
 } //R9990

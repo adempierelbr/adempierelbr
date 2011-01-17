@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -30,7 +30,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0150.java, 16/11/2010, 15:16:00, mgrigioni
  */
-public class R0150 implements RegSped {
+public class R0150 extends RegSped {
 	
 	private final String REG   = "0150";
 	
@@ -78,25 +78,25 @@ public class R0150 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_PART, 0, 255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NOME), 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_PART, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255)
 			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(COD_PAIS), '0', 5)
 			+ PIPE + TextUtil.toNumeric(CNPJ)
 			+ PIPE + TextUtil.toNumeric(CPF) 
 			+ PIPE + TextUtil.toNumeric(NIT) 
-			+ PIPE + TextUtil.checkSize(UF, 0, 2)
+			+ PIPE + TextUtil.checkSize(UF, 2)
 			+ PIPE + TextUtil.toNumeric(IE) 
-			+ PIPE + TextUtil.checkSize(IE_ST, 0, 255)
+			+ PIPE + TextUtil.checkSize(IE_ST, 255)
 			+ PIPE + TextUtil.toNumeric(COD_MUN) 
-			+ PIPE + TextUtil.checkSize(IM, 0, 255)
-			+ PIPE + TextUtil.checkSize(SUFRAMA, 0, 9)
+			+ PIPE + TextUtil.checkSize(IM, 255)
+			+ PIPE + TextUtil.checkSize(SUFRAMA, 9)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //R0150

@@ -28,7 +28,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RJ990.java, 18/11/2010, 14:30:00, mgrigioni
  */
 
-public class RJ990 implements RegSped {
+public class RJ990 extends RegSped {
 	
 	private final String REG = "J990";
 	
@@ -59,8 +59,8 @@ public class RJ990 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } // RJ990

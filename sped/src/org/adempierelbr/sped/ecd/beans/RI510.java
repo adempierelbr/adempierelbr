@@ -14,8 +14,8 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -37,7 +37,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI510.java, 18/11/2010, 10:20:00, mgrigioni
  */
-public class RI510 implements RegSped {
+public class RI510 extends RegSped {
 	
 	private final String REG   = "I510";
 	
@@ -72,9 +72,9 @@ public class RI510 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(NM_CAMPO, 0, 16)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESC_CAMPO), 0, 50)
-			+ PIPE + TextUtil.checkSize(TIPO_CAMPO, 1, 1)
+			+ PIPE + TextUtil.checkSize(NM_CAMPO, 16)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESC_CAMPO), 50)
+			+ PIPE + TextUtil.checkSize(TIPO_CAMPO, 1)
 			+ PIPE + TextUtil.toNumeric(TAM_CAMPO, 0, 3)
 			+ PIPE + TextUtil.toNumeric(DEC_CAMPO, 0, 2)
 			+ PIPE + TextUtil.toNumeric(COL_CAMPO, 0, 3)
@@ -83,8 +83,8 @@ public class RI510 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI510

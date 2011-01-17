@@ -15,8 +15,8 @@ package org.adempierelbr.sped.ecd.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -28,7 +28,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI030.java, 16/11/2010, 16:27:00, mgrigioni
  */
-public class RI030 implements RegSped {
+public class RI030 extends RegSped {
 
 	private final String REG   = "I030";
 	private final String DNRC_ABERT = "TERMO DE ABERTURA";
@@ -83,23 +83,23 @@ public class RI030 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(DNRC_ABERT, 0, 17) 
+			+ PIPE + TextUtil.checkSize(DNRC_ABERT, 17) 
 			+ PIPE + TextUtil.toNumeric(NUM_ORD, 0) 
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NAT_LIVR), 0, 80) 
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80) 
 			+ PIPE + (QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0))
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NOME), 0, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255)
 			+ PIPE + TextUtil.toNumeric(NIRE) 
 			+ PIPE + TextUtil.toNumeric(CNPJ)
 			+ PIPE + TextUtil.timeToString(DT_ARQ, "ddMMyyyy")
 			+ PIPE + TextUtil.timeToString(DT_ARQ_CONV, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESC_MUN), 0, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESC_MUN), 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } // RI030

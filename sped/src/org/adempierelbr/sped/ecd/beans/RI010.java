@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
@@ -26,7 +25,7 @@ import org.compiere.util.CLogger;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI010.java, 16/11/2010, 16:03:00, mgrigioni
  */
-public class RI010 implements RegSped
+public class RI010 extends RegSped
 {
 	/** Logger */
 	private static CLogger log = CLogger.getCLogger(RI010.class);
@@ -68,14 +67,14 @@ public class RI010 implements RegSped
 		String format = 
 			  PIPE + REG
 			+ PIPE + TextUtil.checkSize(IND_ESC, 1, 1)
-			+ PIPE + TextUtil.checkSize(COD_VER_LC, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_VER_LC, 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI010

@@ -14,7 +14,6 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -26,7 +25,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI355.java, 18/11/2010, 10:13:00, mgrigioni
  */
-public class RI355 implements RegSped {
+public class RI355 extends RegSped {
 	
 	private final String REG   = "I355";
 	
@@ -58,8 +57,8 @@ public class RI355 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
 			+ PIPE + TextUtil.toNumeric(VL_CTA, 0, 255)
 			+ PIPE + TextUtil.checkSize(IND_DC, 1, 1)
 			+ PIPE;
@@ -67,8 +66,8 @@ public class RI355 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI355

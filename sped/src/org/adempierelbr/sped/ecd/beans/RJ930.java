@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -28,7 +28,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RJ930.java, 18/11/2010, 14:24:00, mgrigioni
  */
 
-public class RJ930 implements RegSped {
+public class RJ930 extends RegSped {
 	
 	private final String REG = "J930";
 	
@@ -62,18 +62,18 @@ public class RJ930 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IDENT_NOM), 0, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(IDENT_NOM), 255)
 			+ PIPE + TextUtil.toNumeric(IDENT_CPF)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IDENT_QUALIF), 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_ASSIM, 0, 3)
-			+ PIPE + TextUtil.checkSize(IND_CRC, 0, 11)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(IDENT_QUALIF), 255)
+			+ PIPE + TextUtil.checkSize(COD_ASSIM, 3)
+			+ PIPE + TextUtil.checkSize(IND_CRC, 11)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } // RJ930

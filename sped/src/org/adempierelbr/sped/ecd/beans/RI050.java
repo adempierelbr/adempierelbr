@@ -17,10 +17,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDUtil;
 import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MElementValue;
 import org.compiere.util.Env;
@@ -35,7 +35,7 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI050.java, 17/11/2010, 09:57:00, mgrigioni
  */
-public class RI050 implements RegSped {
+public class RI050 extends RegSped {
 	
 	private final String REG   = "I050";
 	//
@@ -126,19 +126,19 @@ public class RI050 implements RegSped {
 		String format = 
 			  PIPE + REG
 			+ PIPE + TextUtil.timeToString(DT_ALT, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(COD_NAT, 0, 2)
+			+ PIPE + TextUtil.checkSize(COD_NAT, 2)
 			+ PIPE + TextUtil.checkSize(IND_CTA, 1, 1)
 			+ PIPE + TextUtil.toNumeric(NIVEL, 0)
-			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_CTA_SUP, 0, 255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CTA), 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA_SUP, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CTA), 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI050

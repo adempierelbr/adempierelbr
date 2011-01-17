@@ -14,7 +14,6 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDBalance;
 import org.adempierelbr.util.TextUtil;
@@ -32,7 +31,7 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI155.java, 17/11/2010, 11:37:00, mgrigioni
  */
-public class RI155 implements RegSped {
+public class RI155 extends RegSped {
 	
 	private final String REG   = "I155";
 	//
@@ -83,21 +82,21 @@ public class RI155 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
 			+ PIPE + TextUtil.toNumeric(VL_SLD_INI, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_DC_INI, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC_INI, 255)
 			+ PIPE + TextUtil.toNumeric(VL_DEB, 0, 255) 
 			+ PIPE + TextUtil.toNumeric(VL_CRED, 0, 255)
-			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_DC_FIN, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC_FIN, 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} // toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI155

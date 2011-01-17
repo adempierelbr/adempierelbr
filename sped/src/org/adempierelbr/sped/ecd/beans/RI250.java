@@ -17,9 +17,9 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDBalance;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
 
@@ -47,7 +47,7 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI250.java, 17/11/2010, 14:42:00, mgrigioni
  */
-public class RI250 implements RegSped {
+public class RI250 extends RegSped {
 	
 	private final String 	REG   = "I250";
 	//
@@ -116,14 +116,14 @@ public class RI250 implements RegSped {
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
 			+ PIPE + TextUtil.toNumeric(VL_DC, 0, 255) 
-			+ PIPE + TextUtil.checkSize(IND_DC, 0, 1) 
-			+ PIPE + TextUtil.checkSize(NUM_ARQ, 0, 255)
-			+ PIPE + TextUtil.checkSize(COD_HIST_PAD, 0, 255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(HIST), 0, 65535)
-			+ PIPE + TextUtil.checkSize(COD_PART, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC, 1) 
+			+ PIPE + TextUtil.checkSize(NUM_ARQ, 255)
+			+ PIPE + TextUtil.checkSize(COD_HIST_PAD, 255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(HIST), 65535)
+			+ PIPE + TextUtil.checkSize(COD_PART, 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
@@ -140,8 +140,8 @@ public class RI250 implements RegSped {
 		return _rI200.get(key);
 	}	//	getRI200
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RI250

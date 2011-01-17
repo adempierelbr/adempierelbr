@@ -23,18 +23,24 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni
  * @version $Id: RegSped.java, 16/11/2010, 14:33, mgrigioni
  */
-public interface RegSped {
+public abstract class RegSped {
 	
 	//String PIPE
 	public static final String PIPE = "|";
 	
 	//String EOL
 	public static final String EOL  = TextUtil.EOL_WIN32;
-	
+		
 	//Método para retornar registro formatado
-	public String toString();
+	//Todo registro do SPED deve iniciar com PIPE e terminar com PIPE
+	public abstract String toString();
+	
+	//Método para retornar o nome do registro
+	public abstract String getReg();
 	
 	//Método para adicionar registro ao contador
-	void addCounter();
+	public void addCounter(){
+		CounterSped.register(getReg());
+	}
 	
 } //RegSped

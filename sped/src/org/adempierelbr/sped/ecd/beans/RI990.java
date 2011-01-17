@@ -24,7 +24,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI990.java, 18/11/2010, 10:30:00, mgrigioni
  */
-public class RI990 implements RegSped {
+public class RI990 extends RegSped {
 	
 	private final String REG   = "I990";
 	//
@@ -54,8 +54,8 @@ public class RI990 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 }//RI990

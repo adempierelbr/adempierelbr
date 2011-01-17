@@ -14,7 +14,6 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -28,7 +27,7 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0180.java, 16/11/2010, 15:18:00, mgrigioni
  */
-public class R0180 implements RegSped {
+public class R0180 extends RegSped {
 	
 	private final String 	REG   = "0180";
 	
@@ -64,8 +63,8 @@ public class R0180 implements RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
-	
+
 } 	//R0180

@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDUtil;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -35,7 +35,7 @@ import org.compiere.util.Env;
  * @version $Id: RJ900.java, 18/11/2010, 14:20:00, mgrigioni
  */
 
-public class RJ900 implements RegSped{
+public class RJ900 extends RegSped{
 	
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(RJ900.class);
@@ -105,10 +105,10 @@ public class RJ900 implements RegSped{
 		
 		String format =
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(DNRC_ENCER, 0, 21)
+			+ PIPE + TextUtil.checkSize(DNRC_ENCER, 21)
 			+ PIPE + TextUtil.toNumeric(NUM_ORD, 0)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NAT_LIVRO), 0, 80)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NOME), 0, 255) 
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVRO), 80)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255) 
 			+ PIPE + (QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0))
 			+ PIPE + TextUtil.timeToString(DT_INI_ESCR, "ddMMyyyy")
 			+ PIPE + TextUtil.timeToString(DT_FIN_ESCR, "ddMMyyyy")
@@ -117,8 +117,8 @@ public class RJ900 implements RegSped{
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
 	
-	public void addCounter() {
-		CounterSped.register(REG);
+	public String getReg() {
+		return REG;
 	}
 	
 } //RJ900
