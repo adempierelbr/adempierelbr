@@ -132,17 +132,6 @@ class SPEDComparator implements Comparator<Object>
 {
 	/**
 	 * 	Comparator para ordenar os Arrays
-	 *
-	 * 	Peso para cada bloco:
-	 *
-	 * 		0	=	0,
-	 * 		C	=	2,
-	 * 		D	=	3,
-	 * 		E	=	4,
-	 * 		G	=	5,
-	 * 		H	=	6,
-	 * 		1	=	7,
-	 * 		9	=	9
 	 */
 	public int compare (Object o1, Object o2)
 	{
@@ -155,16 +144,15 @@ class SPEDComparator implements Comparator<Object>
 
 		if (s1 == null || s2 == null)
 			return 0;
-		//
-		char c1 = s1.charAt(0);
-		char c2 = s2.charAt(0);
-		
-		switch(c1){
+		if (s1.isEmpty() || s2.isEmpty())
+			return 0;
+		//		
+		switch(s1.charAt(0)){
 			case '1' : s1 = "ZZ"  + s1; break;
 			case '9' : s1 = "ZZZ" + s1; break;
 		}
 		
-		switch(c2){
+		switch(s2.charAt(0)){
 			case '1' : s2 = "ZZ"  + s2; break;
 			case '9' : s2 = "ZZZ" + s2; break;
 		}
