@@ -146,8 +146,7 @@ class SPEDComparator implements Comparator<Object>
 	 */
 	public int compare (Object o1, Object o2)
 	{
-		String s1 = "0000";
-		String s2 = "0000";
+		String s1 = null, s2 = null;
 		//
 		if (o1 instanceof String)
 			s1 = (String)o1;
@@ -157,51 +156,19 @@ class SPEDComparator implements Comparator<Object>
 		if (s1 == null || s2 == null)
 			return 0;
 		//
-		if (s1.startsWith("0"))
-			s1 = "01" + s1.substring(1);	
-		if (s1.startsWith("A"))
-			s1 = "02" + s1.substring(1);
-		if (s1.startsWith("C"))
-			s1 = "03" + s1.substring(1);
-		if (s1.startsWith("D"))
-			s1 = "04" + s1.substring(1);
-		if (s1.startsWith("E"))
-			s1 = "05" + s1.substring(1);
-		if (s1.startsWith("G"))
-			s1 = "06" + s1.substring(1);
-		if (s1.startsWith("H"))
-			s1 = "07" + s1.substring(1);
-		if (s1.startsWith("I"))
-			s1 = "08" + s1.substring(1);
-		if (s1.startsWith("J"))
-			s1 = "09" + s1.substring(1);
-		if (s1.startsWith("1"))
-			s1 = "10" + s1.substring(1);
-		if (s1.startsWith("9"))
-			s1 = "11" + s1.substring(1);
-		//
-		if (s2.startsWith("0"))
-			s2 = "01" + s2.substring(1);	
-		if (s2.startsWith("A"))
-			s2 = "02" + s2.substring(1);
-		if (s2.startsWith("C"))
-			s2 = "03" + s2.substring(1);
-		if (s2.startsWith("D"))
-			s2 = "04" + s2.substring(1);
-		if (s2.startsWith("E"))
-			s2 = "05" + s2.substring(1);
-		if (s2.startsWith("G"))
-			s2 = "06" + s2.substring(1);
-		if (s2.startsWith("H"))
-			s2 = "07" + s2.substring(1);
-		if (s2.startsWith("I"))
-			s2 = "08" + s2.substring(1);
-		if (s2.startsWith("J"))
-			s2 = "09" + s2.substring(1);
-		if (s2.startsWith("1"))
-			s2 = "10" + s2.substring(1);
-		if (s2.startsWith("9"))
-			s2 = "11" + s2.substring(1);
+		char c1 = s1.charAt(0);
+		char c2 = s2.charAt(0);
+		
+		switch(c1){
+			case '1' : s1 = "ZZ"  + s1; break;
+			case '9' : s1 = "ZZZ" + s1; break;
+		}
+		
+		switch(c2){
+			case '1' : s2 = "ZZ"  + s2; break;
+			case '9' : s2 = "ZZZ" + s2; break;
+		}
+		
 		//
 		return s1.compareTo(s2);
 	}	//	compare
@@ -215,4 +182,18 @@ class SPEDComparator implements Comparator<Object>
 	{
 		return new SPEDComparator ();
 	}	//	get	
+	
+	public static void main (String[] args){
+		
+		Object[] keys = new Object[]{"0001","A100","9990","1001","C100","A150","M001","F102","D110","D100"};
+		Arrays.sort(keys, SPEDComparator.get());
+		
+		for (Object key : keys)
+		{
+			if (key instanceof String)
+				System.out.println(key);
+		}
+		
+	}
+	
 }
