@@ -572,6 +572,10 @@ public abstract class TextUtil
 	public static String checkSize(String value, int min, int max){
 		return checkSize(value,min,max,' ');
 	}
+	
+	public static String checkSize(String value, int max){
+		return checkSize(value,0,max,' ');
+	}
 
 	/**
 	 * 	Verifica se a string está entre os valores minímos e máximo
@@ -863,9 +867,11 @@ public abstract class TextUtil
     
     public static String itrim(String source, String replaceStr){	
     	if (source != null)
-    		return source.replaceAll("\\b\\s{2,}\\b", replaceStr);
+    		source = source.replaceAll("\\b\\s{2,}\\b", replaceStr);
+    	else
+    		source = "";
     	
-    	return "";
+    	return source.trim();
     }
     
 	/**
