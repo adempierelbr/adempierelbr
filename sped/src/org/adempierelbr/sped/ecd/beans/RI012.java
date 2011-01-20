@@ -26,8 +26,6 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI012.java, 16/11/2010, 16:09:00, mgrigioni
  */
 public class RI012 extends RegSped {
-	
-	private final String REG   = "I012";
 
 	private String NAT_LIVR;
 	private String COD_HASH_AUX;
@@ -65,9 +63,5 @@ public class RI012 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI012

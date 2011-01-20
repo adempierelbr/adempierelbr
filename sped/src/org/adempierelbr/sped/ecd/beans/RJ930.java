@@ -30,8 +30,6 @@ import org.adempierelbr.util.TextUtil;
 
 public class RJ930 extends RegSped {
 	
-	private final String REG = "J930";
-	
 	private String IDENT_NOM;
 	private String IDENT_CPF;
 	private String IDENT_QUALIF;
@@ -71,9 +69,5 @@ public class RJ930 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RJ930

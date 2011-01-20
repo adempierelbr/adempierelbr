@@ -39,8 +39,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI510 extends RegSped {
 	
-	private final String REG   = "I510";
-	
 	private String NM_CAMPO;
 	private String DESC_CAMPO;
 	private String TIPO_CAMPO;
@@ -82,9 +80,5 @@ public class RI510 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI510

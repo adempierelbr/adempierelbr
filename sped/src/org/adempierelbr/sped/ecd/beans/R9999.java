@@ -29,8 +29,6 @@ import org.adempierelbr.util.TextUtil;
  */
 
 public class R9999 extends RegSped {
-	
-	private final String REG     = "9999";
 
 	private String QTD_LIN = ""; 
 	
@@ -52,10 +50,6 @@ public class R9999 extends RegSped {
 		  + PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
-	}
-	
-	public String getReg() {
-		return REG;
 	}
 	
 } // R9999

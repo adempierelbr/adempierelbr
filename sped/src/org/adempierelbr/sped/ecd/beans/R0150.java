@@ -32,8 +32,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class R0150 extends RegSped {
 	
-	private final String REG   = "0150";
-	
 	private String COD_PART;
 	private String NOME;
 	private String COD_PAIS;
@@ -94,9 +92,5 @@ public class R0150 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //R0150

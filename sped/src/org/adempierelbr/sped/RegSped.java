@@ -30,17 +30,33 @@ public abstract class RegSped {
 	
 	//String EOL
 	public static final String EOL  = TextUtil.EOL_WIN32;
+	
+	protected String REG = getClassName();
 		
 	//Método para retornar registro formatado
 	//Todo registro do SPED deve iniciar com PIPE e terminar com PIPE
 	public abstract String toString();
 	
 	//Método para retornar o nome do registro
-	public abstract String getReg();
+	public String getReg(){
+		return REG;
+	}
 	
 	//Método para adicionar registro ao contador
 	public void addCounter(){
 		CounterSped.register(getReg());
+	}
+	
+	//Método para pegar o className e retornar o registro
+	private String getClassName() {
+		String FQClassName = this.getClass().getName();
+		int firstChar;
+		firstChar = FQClassName.lastIndexOf ('.') + 1;
+		if ( firstChar > 0 ) {
+			FQClassName = FQClassName.substring ( firstChar );
+		}
+		
+		return FQClassName.substring(1);
 	}
 	
 } //RegSped

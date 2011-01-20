@@ -28,9 +28,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI150.java, 17/11/2010, 11:28:00, mgrigioni
  */
 public class RI150 extends RegSped {
-	
-	private final String REG   = "I150";
-	//
+
 	private Timestamp DT_INI;
 	private Timestamp DT_FIN;
 
@@ -59,9 +57,5 @@ public class RI150 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI150

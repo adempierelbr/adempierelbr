@@ -704,12 +704,22 @@ public abstract class TextUtil
 	 * */
 	public static String toNumeric(BigDecimal value, int scale)
 	{
-		if (value == null)
-			return "";
-		//
-		return value.setScale(scale, RoundingMode.HALF_UP).toString().replace('.', ',');
+		return toNumeric(value,scale,false);
 	}	//	toNumeric
 
+	public static String toNumeric(BigDecimal value, int scale, boolean mandatory){
+		
+		if (value == null){
+			if (!mandatory)
+				return "";
+			
+			value = new BigDecimal("0");
+		}
+	
+		return value.setScale(scale, TaxBR.ROUND).toString().replace('.', ',');
+	}
+	
+	
 	/**
 	 * Retorna somente os digitos de 0..9<BR>
 	 * e as letras de a..z e A..Z, desconsiderando<BR>
@@ -840,17 +850,17 @@ public abstract class TextUtil
 	 * @return String with scale
 	 */
 	public static String bigdecimalToString(BigDecimal value, int scale){
-
+		
 		if (value == null)
 			return ZERO_STRING;
-
+		
 		return value.setScale(scale, TaxBR.ROUND).toString();
 	} //bigdecimalToString
 
 	/**
 	 * getValor
 	 * @param value
-	 * @return String with scale
+	 * @return String with default scale (2)
 	 */
 	public static String bigdecimalToString(BigDecimal value){
 		return bigdecimalToString(value,TaxBR.SCALE);

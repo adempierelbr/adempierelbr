@@ -26,8 +26,6 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI310.java, 18/11/2010, 10:06:00, mgrigioni
  */
 public class RI310 extends RegSped {
-	
-	private final String REG   = "I310";
 
 	private String COD_CTA;
 	private String COD_CCUS;
@@ -65,9 +63,5 @@ public class RI310 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RI310

@@ -30,8 +30,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI500 extends RegSped {
 	
-	private final String REG   = "I500";
-	
 	private BigDecimal TAM_FONTE;
 
 	/**
@@ -57,9 +55,5 @@ public class RI500 extends RegSped {
 			+ PIPE;
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI500

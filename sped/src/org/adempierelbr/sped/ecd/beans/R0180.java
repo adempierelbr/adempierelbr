@@ -29,8 +29,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class R0180 extends RegSped {
 	
-	private final String 	REG   = "0180";
-	
 	private String 			COD_REL;
 	private Timestamp 		DT_INI_REL;
 	private Timestamp 		DT_FIN_REL;
@@ -62,9 +60,5 @@ public class R0180 extends RegSped {
 			
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
-	
-	public String getReg() {
-		return REG;
-	}
 
 } 	//R0180

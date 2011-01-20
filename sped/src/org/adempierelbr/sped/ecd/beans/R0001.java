@@ -28,8 +28,6 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: R0001.java, 16/11/2010, 15:15:00, mgrigioni
  */
 public class R0001 extends RegSped {
-
-	private final String REG   = "0001";
 	
 	private String IND_DAD; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
@@ -60,9 +58,5 @@ public class R0001 extends RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 		
 	} //toString
-
-	public String getReg() {
-		return REG;
-	}
 	
 } //R0001

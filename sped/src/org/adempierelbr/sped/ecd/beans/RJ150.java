@@ -34,8 +34,6 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RJ150.java, 18/11/2010, 11:40:00, mgrigioni
  */
 public class RJ150 extends RegSped {
-
-	private final String REG = "J150";
 	
 	private String COD_AGL;
 	private BigDecimal NIVEL_AGL;
@@ -76,9 +74,5 @@ public class RJ150 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RJ150 

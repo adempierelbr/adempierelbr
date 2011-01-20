@@ -29,8 +29,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class R0020 extends RegSped {
 	
-	private final String REG   = "0020";
-	
 	private String IND_DEC;
 	private String CNPJ;
 	private String UF;
@@ -80,9 +78,5 @@ public class R0020 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //R0020

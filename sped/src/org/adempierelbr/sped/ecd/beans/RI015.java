@@ -24,8 +24,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI015 extends RegSped {
 
-	private final String REG   = "I015";
-	
 	private String COD_CTA_RES;
 	
 	/**
@@ -51,9 +49,5 @@ public class RI015 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 }	//RI015

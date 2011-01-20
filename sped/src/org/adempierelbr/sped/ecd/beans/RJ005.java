@@ -34,8 +34,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RJ005 extends RegSped {
 	
-	private final String REG   = "J005";
-	
 	private Timestamp DT_INI;
 	private Timestamp DT_FIN;
 	private BigDecimal ID_DEM;
@@ -71,9 +69,5 @@ public class RJ005 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RJ005 

@@ -33,8 +33,6 @@ import org.compiere.util.Env;
  */
 public class RI155 extends RegSped {
 	
-	private final String REG   = "I155";
-	//
 	private String COD_CTA;
 	private String COD_CCUS;
 	private BigDecimal VL_SLD_INI;
@@ -84,19 +82,15 @@ public class RI155 extends RegSped {
 			  PIPE + REG
 			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
 			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
-			+ PIPE + TextUtil.toNumeric(VL_SLD_INI, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_SLD_INI)
 			+ PIPE + TextUtil.checkSize(IND_DC_INI, 255)
-			+ PIPE + TextUtil.toNumeric(VL_DEB, 0, 255) 
-			+ PIPE + TextUtil.toNumeric(VL_CRED, 0, 255)
-			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN, 255)
+			+ PIPE + TextUtil.toNumeric(VL_DEB) 
+			+ PIPE + TextUtil.toNumeric(VL_CRED)
+			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN)
 			+ PIPE + TextUtil.checkSize(IND_DC_FIN, 255)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} // toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI155

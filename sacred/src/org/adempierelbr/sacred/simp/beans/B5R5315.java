@@ -63,9 +63,9 @@ public class B5R5315 implements RegSacred{
 			+ PIPE + SER
 			+ PIPE + NUM_DOC
 			+ PIPE + TextUtil.toNumeric(COD_PART)
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_SAI,2).replace('.', ',')
-			+ PIPE + TextUtil.bigdecimalToString(PERC_CRDOUT,2).replace('.', ',')
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_CRDOUT,2).replace('.',',');
+			+ PIPE + TextUtil.toNumeric(VALOR_SAI,2,true)
+			+ PIPE + TextUtil.toNumeric(PERC_CRDOUT,2,true)
+			+ PIPE + TextUtil.toNumeric(VALOR_CRDOUT,2,true);
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

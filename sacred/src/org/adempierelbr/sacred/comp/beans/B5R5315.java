@@ -96,12 +96,12 @@ public class B5R5315 implements RegSacred{
 			+ PIPE + TextUtil.toNumeric(COD_PART)
 			+ PIPE + TextUtil.lPad(COD_LANC,6)
 			+ PIPE + IND
-			+ PIPE + TextUtil.bigdecimalToString(QUAN,5).replace('.', ',')
-			+ PIPE + TextUtil.bigdecimalToString(CUST_MERC,5).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(VL_ICMS,5).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(PERC_CRDOUT,2).replace('.', ',')
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_CRDOUT,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_DESP,2).replace('.',',');
+			+ PIPE + TextUtil.toNumeric(QUAN,5,true)
+			+ PIPE + TextUtil.toNumeric(CUST_MERC,5,true)
+			+ PIPE + TextUtil.toNumeric(VL_ICMS,5,true)
+			+ PIPE + TextUtil.toNumeric(PERC_CRDOUT,2,true)
+			+ PIPE + TextUtil.toNumeric(VALOR_CRDOUT,2,true)
+			+ PIPE + TextUtil.toNumeric(VALOR_DESP,2,true);
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

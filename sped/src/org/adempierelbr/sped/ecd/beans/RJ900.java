@@ -40,7 +40,6 @@ public class RJ900 extends RegSped{
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(RJ900.class);
 	
-	private final String REG 		= "J900";
 	private final String DNRC_ENCER = "TERMO DE ENCERRAMENTO";
 	
 	private BigDecimal 	 NUM_ORD;
@@ -116,9 +115,5 @@ public class RJ900 extends RegSped{
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RJ900

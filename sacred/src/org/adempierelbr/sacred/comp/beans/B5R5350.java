@@ -49,12 +49,12 @@ public class B5R5350 implements RegSacred{
 		
 		String format = 
 			REG
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_OP_ITEM,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(VALOR_BC_ITEM,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(ALIQ_ITEM,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(ICMS_DEB_ITEM,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(ICMS_OPER_ITEM,2).replace('.',',')
-			+ PIPE + TextUtil.bigdecimalToString(ICMS_OPER_ITEM_CRED,2).replace('.',',');
+			+ PIPE + TextUtil.toNumeric(VALOR_OP_ITEM,2,true)
+			+ PIPE + TextUtil.toNumeric(VALOR_BC_ITEM,2,true)
+			+ PIPE + TextUtil.toNumeric(ALIQ_ITEM,2,true)
+			+ PIPE + TextUtil.toNumeric(ICMS_DEB_ITEM,2,true)
+			+ PIPE + TextUtil.toNumeric(ICMS_OPER_ITEM,2,true)
+			+ PIPE + TextUtil.toNumeric(ICMS_OPER_ITEM_CRED,2,true);
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

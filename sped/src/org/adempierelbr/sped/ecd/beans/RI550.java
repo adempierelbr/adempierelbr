@@ -26,9 +26,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI550.java, 18/11/2010, 10:23:00, mgrigioni
  */
 public class RI550 extends RegSped {
-	
-	private final String REG   = "I550";
-	
+
 	private String RZ_CONT;
 
 	/**
@@ -54,9 +52,5 @@ public class RI550 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI550

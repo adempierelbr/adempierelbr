@@ -34,7 +34,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class R0000 extends RegSped {
 
-	private final String REG   = "0000";
 	private final String LECD  = "LECD";
 	
 	private String NOME;
@@ -91,9 +90,5 @@ public class R0000 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //R0000

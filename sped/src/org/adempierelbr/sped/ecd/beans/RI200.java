@@ -31,8 +31,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI200 extends RegSped{
 	
-	private final String REG   = "I200";
-	//
 	private String NUM_LCTO;
 	private Timestamp DT_LCTO;
 	private BigDecimal VL_LCTO;
@@ -89,9 +87,5 @@ public class RI200 extends RegSped{
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 
 } //RI200

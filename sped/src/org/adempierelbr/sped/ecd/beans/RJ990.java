@@ -30,8 +30,6 @@ import org.adempierelbr.util.TextUtil;
 
 public class RJ990 extends RegSped {
 	
-	private final String REG = "J990";
-	
 	private String QTD_LIN_J;
 
 	/**
@@ -58,9 +56,5 @@ public class RJ990 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}	//toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RJ990

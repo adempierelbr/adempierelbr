@@ -37,8 +37,6 @@ import org.compiere.util.Env;
  */
 public class RI050 extends RegSped {
 	
-	private final String REG   = "I050";
-	//
 	private Timestamp DT_ALT;
 	private String COD_NAT;
 	private String IND_CTA;
@@ -136,9 +134,5 @@ public class RI050 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI050

@@ -37,8 +37,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RJ100 extends RegSped {
 	
-	private final String REG = "J100";
-	
 	private String COD_AGL;
 	private BigDecimal NIVEL_AGL;
 	private String IND_GPR_BAL;
@@ -80,9 +78,5 @@ public class RJ100 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} // format
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RJ100

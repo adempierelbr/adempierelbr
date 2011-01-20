@@ -28,8 +28,6 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: R0007.java, 16/11/2010, 15:15:00, mgrigioni
  */
 public class R0007 extends RegSped {
-
-	private final String REG   = "0007";
 	
 	private String COD_ENT_REF;
 	private String COD_INSCR;
@@ -59,9 +57,5 @@ public class R0007 extends RegSped {
 
 		return TextUtil.removeEOL(format) + EOL;
 	} 	//toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //R0007

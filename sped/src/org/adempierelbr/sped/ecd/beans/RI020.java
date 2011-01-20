@@ -24,9 +24,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI020.java, 16/11/2010, 16:27:00, mgrigioni
  */
 public class RI020 extends RegSped {
-	
-	private final String REG   = "I020";
-	
+
 	private String REG_COD;
 	private String CAMPO;
 	private String DESCRICAO;
@@ -66,9 +64,5 @@ public class RI020 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI012

@@ -26,9 +26,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI300.java, 17/11/2010, 14:44:00, mgrigioni
  */
 public class RI300 extends RegSped {
-	
-	private final String REG   = "I300";
-	//
+
 	private Timestamp DT_BCTE;
 
 	/**
@@ -54,9 +52,5 @@ public class RI300 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 
 } //RI300

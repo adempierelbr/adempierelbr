@@ -34,8 +34,6 @@ import org.adempierelbr.util.TextUtil;
 
 public class RJ800 extends RegSped {
 
-	private final String REG = "J800";
-	
 	private String ARQ_RTF;
 	private String IND_FIM_RTF;
 
@@ -64,9 +62,5 @@ public class RJ800 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RJ800

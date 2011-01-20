@@ -27,8 +27,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI075 extends RegSped {
 	
-	private final String REG   = "I075";
-
 	private String COD_HIST;
 	private String DESCR_HIST;
 
@@ -57,9 +55,5 @@ public class RI075 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI075

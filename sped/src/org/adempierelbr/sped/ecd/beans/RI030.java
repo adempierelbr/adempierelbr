@@ -30,7 +30,6 @@ import org.adempierelbr.util.TextUtil;
  */
 public class RI030 extends RegSped {
 
-	private final String REG   = "I030";
 	private final String DNRC_ABERT = "TERMO DE ABERTURA";
 	
 	private BigDecimal NUM_ORD;
@@ -97,9 +96,5 @@ public class RI030 extends RegSped {
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } // RI030

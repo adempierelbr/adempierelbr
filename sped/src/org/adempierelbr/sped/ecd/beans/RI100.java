@@ -29,9 +29,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RI100.java, 17/11/2010, 10:53:00, mgrigioni
  */
 public class RI100 extends RegSped {
-	
-	private final String REG   = "I100";
-	
+
 	private Timestamp DT_ALT;
 	private String COD_CCUS;
 	private String CCUS;
@@ -63,9 +61,5 @@ public class RI100 extends RegSped {
 			
 		return TextUtil.removeEOL(format) + EOL;
 	} // format
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI100

@@ -29,8 +29,6 @@ public class RI010 extends RegSped
 {
 	/** Logger */
 	private static CLogger log = CLogger.getCLogger(RI010.class);
-	//
-	private final String REG   = "I010";
 
 	/**
 	 * Indicador da forma de escrituração contábil:
@@ -72,9 +70,5 @@ public class RI010 extends RegSped
 		
 		return TextUtil.removeEOL(format) + EOL;
 	} //toString
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI010

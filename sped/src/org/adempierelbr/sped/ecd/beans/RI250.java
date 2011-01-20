@@ -49,8 +49,6 @@ import org.compiere.util.Env;
  */
 public class RI250 extends RegSped {
 	
-	private final String 	REG   = "I250";
-	//
 	private String 			COD_CTA;
 	private String 			COD_CCUS;
 	private BigDecimal 		VL_DC;
@@ -139,9 +137,5 @@ public class RI250 extends RegSped {
 	{
 		return _rI200.get(key);
 	}	//	getRI200
-	
-	public String getReg() {
-		return REG;
-	}
 	
 } //RI250

@@ -139,8 +139,13 @@ class SPEDComparator implements Comparator<Object>
 		//
 		if (o1 instanceof String)
 			s1 = (String)o1;
+		else if (o1 instanceof RegSped)
+			s1 = ((RegSped) o1).getReg();
+		
 		if (o2 instanceof String)
 			s2 = (String)o2;
+		else if (o2 instanceof RegSped)
+			s2 = ((RegSped) o2).getReg();
 
 		if (s1 == null || s2 == null)
 			return 0;
