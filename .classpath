@@ -8,6 +8,7 @@
 	<classpathentry kind="src" path="nfe2/ws/src"/>
 	<classpathentry kind="src" path="nfse/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
+	<classpathentry kind="src" path="gia/src"/>
 	<classpathentry kind="src" path="sacred/src"/>
 	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
