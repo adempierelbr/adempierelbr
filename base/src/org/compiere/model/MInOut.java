@@ -1537,7 +1537,7 @@ public class MInOut extends X_M_InOut implements DocAction
 				if (isSOTrx()							//	PO is done by Matching
 					|| sLine.getM_Product_ID() == 0)	//	PO Charges, empty lines
 				{
-					if (isSOTrx())
+					if (isSOTrx() && !(getC_DocType().getDocBaseType().equals("MMR")))
 						oLine.setQtyDelivered(oLine.getQtyDelivered().subtract(Qty));
 					else
 						oLine.setQtyDelivered(oLine.getQtyDelivered().add(Qty));

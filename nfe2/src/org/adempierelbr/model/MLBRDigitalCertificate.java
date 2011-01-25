@@ -62,16 +62,20 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		super(ctx, rs, trxName);
 	}
 
+	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
+		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
+		int certWS = oi.get_ValueAsInt("LBR_DC_WS_ID");
+		setCertificate(ctx,oi,certWS);
+	}
+	
 	/**
 	 * setCertificate
 	 * Set all System.property for webservice connection
 	 */
-	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
+	public static void setCertificate(Properties ctx, MOrgInfo oi, int certWS) throws Exception{
 
-		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
-
-		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
+		int certOrg = oi.get_ValueAsInt("LBR_DC_Org_ID");
+		
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 

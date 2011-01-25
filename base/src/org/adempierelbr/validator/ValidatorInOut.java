@@ -425,7 +425,7 @@ public class ValidatorInOut implements ModelValidator
 				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
 				if (timing == TIMING_BEFORE_COMPLETE
 						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, inOut.getAD_Client_ID())
-						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
+						&& (oline.getQtyDelivered().add(line.getQtyEntered())).compareTo(oline.getQtyEntered()) == 1)
 					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();
 
 				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID); //QtyOnHand

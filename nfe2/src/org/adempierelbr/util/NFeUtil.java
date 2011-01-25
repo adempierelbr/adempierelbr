@@ -44,6 +44,7 @@ import org.w3c.dom.NodeList;
 
 import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeConsulta2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferecepcao2.NfeRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeStatusServico2Stub;
@@ -133,6 +134,43 @@ public abstract class NFeUtil
 
 		return dados;
 	}	//	RodapDistribuicao
+	
+	/**
+	 * Método para gerar cabeçalho status da NFe
+	 * @param region
+	 * @return NfeConsulta2Stub.NfeCabecMsgE
+	 */
+	public static NfeConsulta2Stub.NfeCabecMsgE geraCabecConsulta(String region){
+
+		NfeConsulta2Stub.NfeCabecMsg cabecMsg = new NfeConsulta2Stub.NfeCabecMsg();
+		cabecMsg.setCUF(region);
+		cabecMsg.setVersaoDados(VERSAO);
+
+		NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = new NfeConsulta2Stub.NfeCabecMsgE();
+		cabecMsgE.setNfeCabecMsg(cabecMsg);
+
+		return cabecMsgE;
+	} //geraCabecConsulta
+	
+	/**
+	 * Método para gerar dados para consulta da NFe
+	 * @param envType
+	 * @param region
+	 * @return msg
+	 */
+	public static String geraMsgConsulta(String envType, String chNFe){
+
+		String msg =
+			"<nfeDadosMsg>" +
+		    	"<consSitNFe versao=\"" + VERSAO + "\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
+		        	"<tpAmb>"+envType+"</tpAmb>" +
+		        	"<xServ>CONSULTAR</xServ>" +
+		        	"<chNFe>"+chNFe+"</chNFe>"+
+		        "</consSitNFe>" +
+		    "</nfeDadosMsg>";
+
+		return msg;
+	} //geraMsgConsulta
 
 	/**
 	 * Método para gerar cabeçalho status serviço NF 2.00

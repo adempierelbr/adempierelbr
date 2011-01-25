@@ -15,6 +15,7 @@ package org.adempierelbr.util;
 import java.util.List;
 import java.util.Properties;
 
+import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MLocation;
@@ -351,6 +352,12 @@ public abstract class BPartnerUtil{
 
 		return Suframa;
 	}//getSuframa
+	
+	public static String getRegionCode(I_C_BPartner_Location bpl){
+		MLocation loc = new MLocation(Env.getCtx(),bpl.getC_Location_ID(),null);
+		return getRegionCode(loc);
+	} //getRegionCode
+	
 
 	public static String getRegionCode(MLocation location){
 
