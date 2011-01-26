@@ -27,6 +27,7 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.process.ProcessInfoParameter;
@@ -90,15 +91,18 @@ public class ProcConsultaNFe extends SvrProcess
 		if (orgInfo == null)
 			return "Organização não encontrada";
 
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),null);
+		//MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),null);
 		String envType 	= orgInfo.get_ValueAsString("lbr_NFeEnv");
 
-		String region = BPartnerUtil.getRegionCode(orgLoc);
+		MBPartnerLocation bpl = new MBPartnerLocation(getCtx(),nf.getC_BPartner_Location_ID(),null);
+		MLocation bpLoc = new MLocation(getCtx(),bpl.getC_Location_ID(),null);
+		
+		String region = BPartnerUtil.getRegionCode(bpLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
 
 		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(getCtx(), orgInfo.getAD_Org_ID());
+		MLBRDigitalCertificate.setCertificate(getCtx(), orgInfo, envType, bpLoc.getC_Region_ID());
 		//
 		String status = "Erro na verificação de Status";
 
@@ -108,7 +112,7 @@ public class ProcConsultaNFe extends SvrProcess
 			NfeConsulta2Stub.NfeDadosMsg dadosMsg = NfeConsulta2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsulta(region);
 
-			NfeConsulta2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeConsulta2Stub.setAmbiente(envType,bpLoc.getC_Region_ID());
 			NfeConsulta2Stub stub = new NfeConsulta2Stub();
 
 			String respStatus = stub.nfeConsultaNF2(dadosMsg, cabecMsgE).getExtraElement().toString();

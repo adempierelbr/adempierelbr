@@ -18,3 +18,4 @@ UPDATE AD_Process_Para SET ColumnName='LBR_ContatoNFe', Name='Contato NFe', Desc
 UPDATE AD_Process_Para SET ColumnName='LBR_ContatoNFe', Name='Contato NFe', Description='Email do Usuario/Contato que servirá como remetente do XML da NFe enviado automáticamente aos Usuários/Contatos do Parceiro de Negócio.', Help=NULL WHERE AD_Element_ID=1120002 AND IsCentrallyMaintained='Y'
 ;
 
+UPDATE AD_SysConfig SET Value='360-trunk/027-BF_3148121.sql' WHERE AD_SysConfig_ID=1100006;
