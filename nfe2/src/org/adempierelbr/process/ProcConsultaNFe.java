@@ -131,10 +131,11 @@ public class ProcConsultaNFe extends SvrProcess
 		    	nf.setlbr_NFeDesc(nfeDesc);
 		    else
 		    	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
-		    if (cStat.equals(NFeUtil.AUTORIZADA))
-		    	nf.setProcessed(true);
 		    
-		    nf.save(get_TrxName());
+		    if (cStat.equals(NFeUtil.AUTORIZADA)){
+		    	nf.setProcessed(true);
+		    	nf.save(get_TrxName());
+		    }
 		    
 		}
 		catch (Throwable e1){

@@ -333,6 +333,7 @@ public class ProcGenerateNF extends SvrProcess
 					}
 
 					//Serviço
+					/* CODIGO ABAIXO - VALIDAÇÃO POR CFOP
 					if (product.getProductType().equals(MProduct.PRODUCTTYPE_Item)){
 						NotaFiscalLine.setlbr_IsService(false);
 						TotalLines = TotalLines.add(LineNetAmt);
@@ -341,6 +342,7 @@ public class ProcGenerateNF extends SvrProcess
 						NotaFiscalLine.setlbr_IsService(true);
 						ServiceTotalAmt = ServiceTotalAmt.add(LineNetAmt);
 					}
+					*/
 
 					NotaFiscalLine.setVendorProductNo(VendorProductNo);   //Código do Produto (Cliente)
 					NotaFiscalLine.setC_UOM_ID(uom.getC_UOM_ID());   /** C_UOM_ID **/
@@ -367,6 +369,16 @@ public class ProcGenerateNF extends SvrProcess
 					/* CFOP */
 					NotaFiscalLine.setLBR_CFOP_ID(LBR_CFOP_ID);   /** LBR_CFOP_ID **/
 					NotaFiscalLine.setlbr_CFOPName(NotaFiscal.getCFOP(LBR_CFOP_ID));
+					
+					//VALIDAÇÂO DO CAMPO SERVIÇO POR CFOP
+					if (NotaFiscalLine.get_ValueAsString("lbr_CFOPName").endsWith(".933")){
+						NotaFiscalLine.setlbr_IsService(true);
+						ServiceTotalAmt = ServiceTotalAmt.add(LineNetAmt);
+					}
+					else{
+						NotaFiscalLine.setlbr_IsService(false);
+						TotalLines = TotalLines.add(LineNetAmt);
+					}
 
 					/* Mensagem Legal */
 					NotaFiscalLine.setLBR_LegalMessage_ID(LBR_LegalMessage_ID);   /** LBR_LegalMessage_ID **/

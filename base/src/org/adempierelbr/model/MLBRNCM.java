@@ -15,10 +15,10 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MProduct;
-import org.compiere.model.X_M_Product;
 import org.compiere.util.DB;
 
 /**
@@ -75,15 +75,24 @@ public class MLBRNCM extends X_LBR_NCM {
 
 		Properties ctx = invoice.getCtx();
 		String     trx = invoice.get_TrxName();
+		
+		MDocType dt = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
 
 		MInvoiceLine[] lines = invoice.getLines();
 		for(MInvoiceLine line : lines){
 
+			/* VALIDAÇÃO POR CFOP
 			if (line.getM_Product_ID() == 0) //Se produto não verifica
 				continue;
-
+			*/
+			
 			MProduct   product = new MProduct(ctx,line.getM_Product_ID(),trx);
-			if (!product.getProductType().equals(X_M_Product.PRODUCTTYPE_Item))
+			//if (!product.getProductType().equals(X_M_Product.PRODUCTTYPE_Item))
+			//	continue;
+			
+			int LBR_CFOP_ID = line.get_ValueAsInt("LBR_CFOP_ID");
+			MLBRCFOP cfop = new MLBRCFOP(ctx,LBR_CFOP_ID,trx);
+			if (!dt.get_ValueAsBoolean("lbr_HasFiscalDocument") || cfop.get_ValueAsString("Value").endsWith(".933"))
 				continue;
 
 			Integer LBR_NCM_ID = (Integer)line.get_Value("LBR_NCM_ID"); //	NCM da Fatura
