@@ -19,6 +19,7 @@ import java.util.Properties;
 
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -61,11 +62,32 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	{
 		super(ctx, rs, trxName);
 	}
-
+	
+	/**
+	 * getJKS
+	 * Retorna o LBR_DigitalCertificate_ID referente ao Estado e Ambiente da NFe
+	 * @param ctx
+	 * @param envType
+	 * @param C_Region_ID
+	 * @return LBR_DigitalCertificate_ID
+	 */
+	public static int getJKS(Properties ctx, String envType, int C_Region_ID){
+		
+		String sql = "SELECT LBR_DigitalCertificate_ID " +
+				     "FROM LBR_DigitalCertificate " +
+				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? AND C_Region_ID = ?";
+		
+		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType,C_Region_ID});
+	} //getJKS
+	
 	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
 		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
 		int certWS = oi.get_ValueAsInt("LBR_DC_WS_ID");
 		setCertificate(ctx,oi,certWS);
+	}
+	
+	public static void setCertificate(Properties ctx, MOrgInfo oi, String envType, int C_Region_ID) throws Exception{
+		setCertificate(ctx,oi,getJKS(ctx,envType,C_Region_ID));
 	}
 	
 	/**
@@ -75,6 +97,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	public static void setCertificate(Properties ctx, MOrgInfo oi, int certWS) throws Exception{
 
 		int certOrg = oi.get_ValueAsInt("LBR_DC_Org_ID");
+		
+		if (certOrg <= 0 || certWS <= 0)
+			throw new Exception("Erro com certificado. " +
+					        "Certificado Org = " + certOrg + " - Certificado WS = " + certWS);
 		
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
