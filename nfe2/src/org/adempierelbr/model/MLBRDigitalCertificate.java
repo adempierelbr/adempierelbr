@@ -71,13 +71,13 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	 * @param C_Region_ID
 	 * @return LBR_DigitalCertificate_ID
 	 */
-	public static int getJKS(Properties ctx, String envType, int C_Region_ID){
+	public static int getJKS(Properties ctx, String envType){
 		
-		String sql = "SELECT LBR_DigitalCertificate_ID " +
+		String sql = "SELECT MAX(LBR_DigitalCertificate_ID) " +
 				     "FROM LBR_DigitalCertificate " +
-				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? AND C_Region_ID = ?";
+				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? AND IsActive = 'Y'";
 		
-		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType,C_Region_ID});
+		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType});
 	} //getJKS
 	
 	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
@@ -86,8 +86,8 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		setCertificate(ctx,oi,certWS);
 	}
 	
-	public static void setCertificate(Properties ctx, MOrgInfo oi, String envType, int C_Region_ID) throws Exception{
-		setCertificate(ctx,oi,getJKS(ctx,envType,C_Region_ID));
+	public static void setCertificate(Properties ctx, MOrgInfo oi) throws Exception{
+		setCertificate(ctx,oi,getJKS(ctx,oi.get_ValueAsString("lbr_NFeEnv")));
 	}
 	
 	/**
@@ -130,20 +130,23 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		File certFileWS = NFeUtil.getAttachmentEntryFile(dcWS.getAttachment(true).getEntry(0));
 
 		//
-		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 		//
-		System.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
-		System.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
-		System.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
+		Properties props = System.getProperties();
+		props.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 		//
-		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
-		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
+		props.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
+		props.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
+		props.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
+		//
+		props.setProperty("javax.net.ssl.trustStoreType", certTypeWS);	
+		props.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		if(dcWS.getPassword()!=null && !"".equals(dcWS.getPassword()))
-			System.setProperty("javax.net.ssl.trustStorePassword", dcWS.getPassword());
+			props.setProperty("javax.net.ssl.trustStorePassword", dcWS.getPassword());
 		// BF - JRE > 1.6.19
-		System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
+		props.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
 
+		System.setProperties(props);
 	} //setCertificate
 
 }	//	MDigitalCertificate

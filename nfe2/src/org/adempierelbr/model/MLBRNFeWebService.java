@@ -12,9 +12,13 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
 
+import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
 /**
@@ -29,6 +33,9 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MLBRNFeWebService.class);
 	
 	public static final String CADCONSULTACADASTRO = "NfeConsultaCadastro";
 	public static final String STATUSSERVICO       = "NfeStatusServico";
@@ -68,5 +75,41 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 		return DB.getSQLValueString(null, sql, 
 				new Object[]{name.toUpperCase(),envType,versionNo,C_Region_ID});
 	} //getURL
+	
+	public static String[] getURL (String envType){
+		
+		String sql = "SELECT URL FROM LBR_NFeWebService " +
+		             "WHERE lbr_NFeEnv = ?";
+		
+		ArrayList<String> list = new ArrayList<String>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setString(1, envType);
+			rs = pstmt.executeQuery ();
+			while (rs.next ())
+			{
+				String url = rs.getString("URL");
+				       url = url.substring(url.indexOf("//") + 2);
+			           url = url.substring(0, url.indexOf("/"));
+			    
+			   if (!list.contains(url))
+				   list.add(url);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+
+		String[] retValue = new String[list.size()];
+		list.toArray(retValue);
+		return retValue;
+	}
 
 }	//	MNFeWebService

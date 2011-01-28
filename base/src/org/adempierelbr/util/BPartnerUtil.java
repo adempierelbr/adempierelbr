@@ -25,6 +25,7 @@ import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -352,6 +353,30 @@ public abstract class BPartnerUtil{
 
 		return Suframa;
 	}//getSuframa
+	
+	public static String getRegionCode(String regionName){
+		
+		String sql = "SELECT C_Region_ID " +
+				     "FROM C_Region " +
+				     "WHERE Name = ? AND C_Country_ID = ?";
+		
+		int C_Region_ID = DB.getSQLValue(null, sql, new Object[]{regionName,BRASIL});
+		
+		return getRegionCode(C_Region_ID);
+	} //getRegionCode
+	
+	public static String getRegionCode(int C_Region_ID){
+		
+		String sql = "SELECT lbr_CityCode " +
+				     "FROM C_City " +
+				     "WHERE C_Region_ID = ?";
+		
+		String cityCode = DB.getSQLValueString(null, sql, C_Region_ID);
+		if (cityCode != null && cityCode.length() > 2)
+			return cityCode.substring(0, 2);
+		
+		return "";
+	} //getRegionCode
 	
 	public static String getRegionCode(I_C_BPartner_Location bpl){
 		MLocation loc = new MLocation(Env.getCtx(),bpl.getC_Location_ID(),null);

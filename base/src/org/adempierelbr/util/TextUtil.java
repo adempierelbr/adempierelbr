@@ -138,11 +138,11 @@ public abstract class TextUtil
 	 * @param codificação (ex. UTF-8, ISO-8859-1, etc)
 	 */
 	public static String generateFile (String data, String filePath, String encoding)
-	{
+	{				
 		try
 		{
 			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), encoding));
-			out.write(data);
+			out.write(data == null ? "" : data);
 			out.close();
 		}
 		catch (UnsupportedEncodingException e)

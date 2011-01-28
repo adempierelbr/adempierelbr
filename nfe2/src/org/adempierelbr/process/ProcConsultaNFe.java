@@ -102,7 +102,7 @@ public class ProcConsultaNFe extends SvrProcess
 			return "UF Inválida";
 
 		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(getCtx(), orgInfo, envType, bpLoc.getC_Region_ID());
+		MLBRDigitalCertificate.setCertificate(getCtx(), orgInfo);
 		//
 		String status = "Erro na verificação de Status";
 
