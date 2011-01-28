@@ -75,9 +75,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		
 		String sql = "SELECT MAX(LBR_DigitalCertificate_ID) " +
 				     "FROM LBR_DigitalCertificate " +
-				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? AND IsActive = 'Y'";
+				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? " +
+				     "AND lbr_CertType = ? AND IsActive = 'Y'";
 		
-		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType});
+		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType,MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore});
 	} //getJKS
 	
 	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{

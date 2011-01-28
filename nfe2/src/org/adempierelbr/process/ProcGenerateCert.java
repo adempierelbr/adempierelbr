@@ -106,7 +106,7 @@ public class ProcGenerateCert extends SvrProcess
 		
 		generateCertificate(passphrases,FilePath,FileName);
 		
-		return "Certificado gerado com sucesso: " + FilePath + FileName;
+		return "Certificado gerado com sucesso em: " + FilePath + " - " + FileName;
 	}
 	
 	private static void generateCertificate(String[] passphrases, String FilePath, String FileName) throws Exception
