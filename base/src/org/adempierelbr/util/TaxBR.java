@@ -54,6 +54,7 @@ import bsh.Interpreter;
  *
  * @author Mario Grigioni
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
+ * @contributor Fernando O. Moraes (Faire, www.faire.com.br)
  * @version $Id: TextBR.java, 26/01/2010 09:10:00 mgrigioni
  */
 public abstract class TaxBR
@@ -229,7 +230,7 @@ public abstract class TaxBR
 		if(!isTaxIncluded)
 			lineamt = (BigDecimal) mTab.getValue("PriceEntered");
 		else
-			lineamt = (BigDecimal) mTab.getValue("PriceEnteredBR");
+			lineamt = (BigDecimal) mTab.getValue("lbr_PriceEnteredBR");
 
 		if(mTab.getValue("LBR_Tax_ID") == null
 				|| mTab.getValue("C_Tax_ID") == null)

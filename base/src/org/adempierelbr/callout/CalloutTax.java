@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.callout;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -45,12 +46,16 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPriceList;
 import org.compiere.model.MProduct;
+import org.compiere.model.MUOMConversion;
 import org.compiere.model.PO;
 import org.compiere.model.X_C_City;
 import org.compiere.model.X_M_Product;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import bsh.EvalError;
 
 /**
  * CalloutTax
@@ -71,6 +76,7 @@ import org.compiere.util.Env;
  *
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @contributor Fernando Lucktemberg (Faire, www.faire.com.br)
+ * @contributor Fernando O. Moraes (Faire, www.faire.com.br)
  * @contributor	Ricardo Santana (Kenos, www.kenos.com.br)
  * @version $Id: CalloutTax.java, 11/12/2007 16:23:00 mgrigioni
  */
@@ -628,4 +634,93 @@ public class CalloutTax extends CalloutEngine
 		       DB.close(rs, pstmt);
 		}
 	}	//	setLines
+	
+	/**
+	 * 
+	 * 	@author Ricardo Santana
+	 * 
+	 *	Order Line - TaxBR.
+	 *		- basis: PriceEntered, PriceEnteredBR (Brazilian Taxes)
+	 *		- sets PriceEnteredBR, PriceEntered (With or Without Taxes)
+	 *  
+	 *  @param ctx context
+	 *  @param WindowNo current Window No
+	 *  @param mTab Grid Tab
+	 *  @param mField Grid Field
+	 *  @param value New Value
+	 *  @return null or error message
+	 * 	@throws EvalError 
+	 */
+	public String taxBR (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value) throws EvalError
+	{
+		int C_UOM_To_ID = Env.getContextAsInt(ctx, WindowNo, "C_UOM_ID");
+		int M_Product_ID = Env.getContextAsInt(ctx, WindowNo, "M_Product_ID");
+		int M_PriceList_ID = Env.getContextAsInt(ctx, WindowNo, "M_PriceList_ID");
+		int StdPrecision = MPriceList.getStandardPrecision(ctx, M_PriceList_ID);
+		
+		BigDecimal result = Env.ZERO;
+		Integer C_Order_ID = (Integer) mTab.getValue("C_Order_ID");
+		String trxType = null;
+		
+		if(C_Order_ID == null || C_Order_ID.intValue() <= 0	|| value == null)
+			return "";
+		
+		if(M_Product_ID == 0)
+			return "";
+		
+		
+		
+		MOrder o = new MOrder(ctx, C_Order_ID, null);
+		trxType = (String) o.get_Value("lbr_TransactionType");
+		
+		if(mField.getColumnName().equals("lbr_PriceEnteredBR"))
+			mTab.setValue("lbr_IsPriceBR", true);
+		else if(mField.getColumnName().equals("PriceEntered"))
+			mTab.setValue("lbr_IsPriceBR", false);
+		
+		if(mTab.getValueAsBoolean("lbr_IsPriceBR"))
+		{
+			result = TaxBR.getTaxAmt(mTab, trxType, true);
+			if(result != null && !isCalloutActive())
+			{
+				BigDecimal PriceEntered = ((BigDecimal) mTab.getValue("lbr_PriceEnteredBR")).subtract(result);
+				BigDecimal PriceActual = MUOMConversion.convertProductTo (ctx, M_Product_ID, 
+						C_UOM_To_ID, PriceEntered);
+				
+				if (PriceActual == null)
+					PriceActual = PriceEntered;
+				//
+				log.fine("PriceEntered=" + PriceEntered 
+					+ " -> PriceActual=" + PriceActual);
+				
+				mTab.setValue("PriceEntered", PriceEntered);
+				mTab.setValue("PriceActual", PriceActual);
+			}
+		}
+		else
+		{
+			result = TaxBR.getTaxAmt(mTab, trxType, false);
+			if(result != null && !isCalloutActive())
+			{
+				BigDecimal PriceEnteredBR = result.add((BigDecimal) mTab.getValue("PriceEntered"));
+				BigDecimal PriceEntered = (BigDecimal) mTab.getValue("PriceEntered");
+				
+				BigDecimal PriceActual = MUOMConversion.convertProductTo (ctx, M_Product_ID, 
+						C_UOM_To_ID, PriceEntered);
+				
+				if (PriceActual == null)
+					PriceActual = PriceEntered;
+				//
+				log.fine("PriceEntered=" + PriceEntered 
+					+ " -> PriceActual=" + PriceActual);
+				
+				mTab.setValue("lbr_PriceEnteredBR", PriceEnteredBR);
+				mTab.setValue("PriceActual", PriceActual);
+			}
+		}
+		
+		return "";
+	}	//	taxBR
+	
+	
 }	//	CalloutTax
