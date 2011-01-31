@@ -138,3 +138,6 @@ UPDATE AD_Field SET AD_FieldGroup_ID=103,Updated=TO_DATE('2010-10-22 07:59:03','
 UPDATE AD_Field SET AD_FieldGroup_ID=103, IsReadOnly='Y',Updated=TO_DATE('2010-10-22 07:59:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1103001
 ;
 
+UPDATE AD_SysConfig SET Value='360-trunk/031-FR_3168718.sql' WHERE AD_SysConfig_ID=1100006;
+
+exit
