@@ -18,12 +18,14 @@ import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C181: DETALHAMENTO DA CONSOLIDAÇÃO – OPERAÇÕES DE VENDAS – PIS/PASEP
+ * REGISTRO C191: DETALHAMENTO DA CONSOLIDAÇÃO – OPERAÇÕES DE AQUISIÇÃO COM DIREITO A CRÉDITO, 
+ * E OPERAÇÕES DE DEVOLUÇÃO DE COMPRAS E VENDAS – PIS/PASEP
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC181.java, 21/01/2011, 14:35:00, mgrigioni
+ * @version $Id: RC191.java, 21/01/2011, 15:30:00, mgrigioni
  */
-public class RC181 extends RegSped {
+public class RC191 extends RegSped {
 
+	private String CNPJ_CPF_PART;
 	private String CST_PIS;
 	private String CFOP;
 	private String COD_CTA;
@@ -38,6 +40,7 @@ public class RC181 extends RegSped {
 	
 	/**
 	 * Constructor
+	 * @param CNPJ_CPF_PART
 	 * @param CST_PIS
 	 * @param CFOP
 	 * @param COD_CTA
@@ -49,9 +52,10 @@ public class RC181 extends RegSped {
 	 * @param ALIQ_PIS_QUANT
 	 * @param VL_PIS
 	 */
-	public RC181(String CST_PIS, String CFOP, String COD_CTA, BigDecimal VL_ITEM,
+	public RC191(String CNPJ_CPF_PART, String CST_PIS, String CFOP, String COD_CTA, BigDecimal VL_ITEM,
 			BigDecimal VL_DESC, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS,
 			BigDecimal QUANT_BC_PIS, BigDecimal ALIQ_PIS_QUANT, BigDecimal VL_PIS) {
+		this.CNPJ_CPF_PART = CNPJ_CPF_PART;
 		this.CST_PIS = CST_PIS;
 		this.CFOP = CFOP;
 		this.COD_CTA = COD_CTA;
@@ -64,10 +68,10 @@ public class RC181 extends RegSped {
 		this.VL_PIS = VL_PIS;
 		//
 		addCounter();
-	} //RC181
+	} //RC191
 
 	/**
-	 * Formata o Bloco C Registro 181
+	 * Formata o Bloco C Registro 191
 	 * 
 	 * @return
 	 */
@@ -75,6 +79,7 @@ public class RC181 extends RegSped {
 		
 		String format = 
 			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ_CPF_PART), 14)
 			+ PIPE + TextUtil.lPad(CST_PIS, 2)
 			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CFOP),4,4)
 			+ PIPE + TextUtil.toNumeric(VL_ITEM,2,true)
@@ -90,4 +95,4 @@ public class RC181 extends RegSped {
 		return TextUtil.removeEOL(format) + EOL;
 	}//toString
 
-} //RC181
+} //RC191

@@ -18,56 +18,51 @@ import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C181: DETALHAMENTO DA CONSOLIDAÇÃO – OPERAÇÕES DE VENDAS – PIS/PASEP
+ * REGISTRO D101: COMPLEMENTO DO DOCUMENTO DE TRANSPORTE 
+ * (Códigos 07, 08, 8B, 09, 10, 11, 26, 27 e 57) – PIS/PASEP.
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC181.java, 21/01/2011, 14:35:00, mgrigioni
+ * @version $Id: RD101.java, 31/01/2011, 10:50:00, mgrigioni
  */
-public class RC181 extends RegSped {
-
+public class RD101 extends RegSped {
+	
+	private String IND_NAT_FRT;
 	private String CST_PIS;
-	private String CFOP;
+	private String NAT_BC_CRED;
 	private String COD_CTA;
 
 	private BigDecimal VL_ITEM;
-	private BigDecimal VL_DESC;
 	private BigDecimal VL_BC_PIS;
 	private BigDecimal ALIQ_PIS;
-	private BigDecimal QUANT_BC_PIS;
-	private BigDecimal ALIQ_PIS_QUANT;
 	private BigDecimal VL_PIS;
 	
 	/**
 	 * Constructor
+	 * @param IND_NAT_FRT
 	 * @param CST_PIS
-	 * @param CFOP
+	 * @param NAT_BC_CRED
 	 * @param COD_CTA
 	 * @param VL_ITEM
-	 * @param VL_DESC
 	 * @param VL_BC_PIS
 	 * @param ALIQ_PIS
-	 * @param QUANT_BC_PIS
-	 * @param ALIQ_PIS_QUANT
 	 * @param VL_PIS
 	 */
-	public RC181(String CST_PIS, String CFOP, String COD_CTA, BigDecimal VL_ITEM,
-			BigDecimal VL_DESC, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS,
-			BigDecimal QUANT_BC_PIS, BigDecimal ALIQ_PIS_QUANT, BigDecimal VL_PIS) {
+	public RD101(String IND_NAT_FRT, String CST_PIS, String NAT_BC_CRED, String COD_CTA,
+			BigDecimal VL_ITEM, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS, BigDecimal VL_PIS) 
+	{
+		this.IND_NAT_FRT = IND_NAT_FRT;
 		this.CST_PIS = CST_PIS;
-		this.CFOP = CFOP;
+		this.NAT_BC_CRED = NAT_BC_CRED;
 		this.COD_CTA = COD_CTA;
 		this.VL_ITEM = VL_ITEM;
-		this.VL_DESC = VL_DESC;
 		this.VL_BC_PIS = VL_BC_PIS;
 		this.ALIQ_PIS = ALIQ_PIS;
-		this.QUANT_BC_PIS = QUANT_BC_PIS;
-		this.ALIQ_PIS_QUANT = ALIQ_PIS_QUANT;
 		this.VL_PIS = VL_PIS;
 		//
 		addCounter();
-	} //RC181
+	}	//RD101
 
 	/**
-	 * Formata o Bloco C Registro 181
+	 * Formata o Bloco D Registro 101
 	 * 
 	 * @return
 	 */
@@ -75,19 +70,18 @@ public class RC181 extends RegSped {
 		
 		String format = 
 			  PIPE + REG
-			+ PIPE + TextUtil.lPad(CST_PIS, 2)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CFOP),4,4)
-			+ PIPE + TextUtil.toNumeric(VL_ITEM,2,true)
-			+ PIPE + TextUtil.toNumeric(VL_DESC,2)
-			+ PIPE + TextUtil.toNumeric(VL_BC_PIS,2)
-			+ PIPE + TextUtil.toNumeric(ALIQ_PIS,4)
-			+ PIPE + TextUtil.toNumeric(QUANT_BC_PIS,3)
-			+ PIPE + TextUtil.toNumeric(ALIQ_PIS_QUANT,4)
-			+ PIPE + TextUtil.toNumeric(VL_PIS,2)
-			+ PIPE + TextUtil.checkSize(COD_CTA, 60)
-			+ PIPE;
-			
+				+ PIPE + TextUtil.checkSize(IND_NAT_FRT, 1, 1)
+				+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(VL_ITEM), 255)
+				+ PIPE + TextUtil.checkSize(CST_PIS, 2, 2)
+				+ PIPE + TextUtil.checkSize(NAT_BC_CRED, 2, 2)
+				+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(VL_BC_PIS), 255)
+				+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(ALIQ_PIS,4), 8)
+				+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(VL_PIS), 255)
+                + PIPE + TextUtil.checkSize(COD_CTA, 60)
+				+ PIPE;
+		
 		return TextUtil.removeEOL(format) + EOL;
-	}//toString
-
-} //RC181
+		
+	} //toString
+	
+} //RD101

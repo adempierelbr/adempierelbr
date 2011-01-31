@@ -12,46 +12,33 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.piscofins.beans;
 
-import java.math.BigDecimal;
-
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C120: COMPLEMENTO DO DOCUMENTO - OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01) 
+ * REGISTRO C188: PROCESSO REFERENCIADO 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC111.java, 20/01/2011, 15:11:00, mgrigioni
+ * @version $Id: RC188.java, 21/01/2011, 14:40:00, mgrigioni
  */
-public class RC120 extends RegSped {
+public class RC188 extends RegSped {
 
-	private String COD_DOC_IMP;
-	private String NUM_DOC_IMP;
-	private String NUM_ACDRAW;
+	private String NUM_PROC;
+	private String IND_PROC;
 	
-	private BigDecimal PIS_IMP;
-	private BigDecimal COFINS_IMP;
-
 	/**
 	 * Constructor
-	 * @param COD_DOC_IMP
-	 * @param NUM_DOC_IMP
-	 * @param PIS_IMP
-	 * @param COFINS_IMP
-	 * @param NUM_ACDRAW
+	 * @param NUM_PROC
+	 * @param IND_PROC
 	 */
-	public RC120(String COD_DOC_IMP, String NUM_DOC_IMP, BigDecimal PIS_IMP,
-			BigDecimal COFINS_IMP, String NUM_ACDRAW) {
-		this.COD_DOC_IMP = COD_DOC_IMP;
-		this.NUM_DOC_IMP = NUM_DOC_IMP;
-		this.PIS_IMP = PIS_IMP;
-		this.COFINS_IMP = COFINS_IMP;
-		this.NUM_ACDRAW = NUM_ACDRAW;
+	public RC188(String NUM_PROC, String IND_PROC) {
+		this.NUM_PROC = NUM_PROC;
+		this.IND_PROC = IND_PROC;
 		//
 		addCounter();
-	} //RC120
+	} //RC188
 
 	/**
-	 * Formata o Bloco C Registro 120
+	 * Formata o Bloco C Registro 188
 	 * 
 	 * @return
 	 */
@@ -59,14 +46,11 @@ public class RC120 extends RegSped {
 		
 		String format = 
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_DOC_IMP, 1, 1)
-			+ PIPE + TextUtil.checkSize(NUM_DOC_IMP, 10)
-			+ PIPE + TextUtil.toNumeric(PIS_IMP)
-			+ PIPE + TextUtil.toNumeric(COFINS_IMP)
-			+ PIPE + TextUtil.checkSize(NUM_ACDRAW,11)
+			+ PIPE + TextUtil.checkSize(NUM_PROC, 20)
+			+ PIPE + TextUtil.checkSize(IND_PROC, 1)
 			+ PIPE;
 			
 		return TextUtil.removeEOL(format) + EOL;
 	}//toString
 
-} //RC120
+} //RC188

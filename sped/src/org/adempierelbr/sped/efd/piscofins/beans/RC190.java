@@ -20,20 +20,21 @@ import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C180: CONSOLIDAÇÃO DE NOTAS FISCAIS ELETRÕNICAS EMITIDAS PELA PESSOA JURÍDICA
- * (CÓDIGO 55) – OPERAÇÕES DE VENDAS
+ * REGISTRO C190: CONSOLIDAÇÃO DE NOTAS FISCAIS ELETRÔNICAS (CÓDIGO 55)
+ * OPERAÇÕES DE AQUISIÇÃO COM DIREITO A CRÉDITO, E 
+ * OPERAÇÕES DE DEVOLUÇÃO DE COMPRAS E VENDAS.
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC180.java, 20/01/2011, 15:33:00, mgrigioni
+ * @version $Id: RC190.java, 21/01/2011, 15:21:00, mgrigioni
  */
-public class RC180 extends RegSped {
+public class RC190 extends RegSped {
 
 	private String COD_MOD;
 	private String COD_ITEM;
 	private String COD_NCM;
 	private String EX_IPI;
 	
-	private Timestamp DT_DOC_INI;
-	private Timestamp DT_DOC_FIN;
+	private Timestamp DT_REF_INI;
+	private Timestamp DT_REF_FIN;
 	
 	private BigDecimal VL_TOT_ITEM;
 	
@@ -43,25 +44,25 @@ public class RC180 extends RegSped {
 	 * @param COD_ITEM
 	 * @param COD_NCM
 	 * @param EX_IPI
-	 * @param DT_DOC_INI
-	 * @param DT_DOC_FIN
+	 * @param DT_REF_INI
+	 * @param DT_REF_FIN
 	 * @param VL_TOT_ITEM
 	 */
-	public RC180(String COD_MOD, String COD_ITEM, String  COD_NCM, String EX_IPI,
-			Timestamp DT_DOC_INI, Timestamp DT_DOC_FIN, BigDecimal VL_TOT_ITEM) {
+	public RC190(String COD_MOD, String COD_ITEM, String COD_NCM, String EX_IPI,
+			Timestamp DT_REF_INI, Timestamp DT_REF_FIN, BigDecimal VL_TOT_ITEM) {
 		this.COD_MOD = COD_MOD;
 		this.COD_ITEM = COD_ITEM;
 		this.COD_NCM = COD_NCM;
 		this.EX_IPI = EX_IPI;
-		this.DT_DOC_INI = DT_DOC_INI;
-		this.DT_DOC_FIN = DT_DOC_FIN;
+		this.DT_REF_INI = DT_REF_INI;
+		this.DT_REF_FIN = DT_REF_FIN;
 		this.VL_TOT_ITEM = VL_TOT_ITEM;
 		//
 		addCounter();
-	} //RC180
+	} //RC190
 
 	/**
-	 * Formata o Bloco C Registro 180
+	 * Formata o Bloco C Registro 190
 	 * 
 	 * @return
 	 */
@@ -69,16 +70,16 @@ public class RC180 extends RegSped {
 		
 		String format = 
 			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_MOD, 2, 2)
-			+ PIPE + TextUtil.timeToString(DT_DOC_INI, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_DOC_FIN, "ddMMyyyy")
+			+ PIPE + TextUtil.checkSize(COD_MOD, 2) 
+			+ PIPE + TextUtil.timeToString(DT_REF_INI, "ddMMyyyy")
+			+ PIPE + TextUtil.timeToString(DT_REF_FIN, "ddMMyyyy")
 			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COD_ITEM), 60)
 			+ PIPE + TextUtil.checkSize(COD_NCM, 8)
 			+ PIPE + TextUtil.checkSize(EX_IPI,3)
-			+ PIPE + TextUtil.toNumeric(VL_TOT_ITEM, 2, true)
+			+ PIPE + TextUtil.toNumeric(VL_TOT_ITEM,2,true)
 			+ PIPE;
 			
 		return TextUtil.removeEOL(format) + EOL;
 	}//toString
 
-} //RC180
+} //RC190
