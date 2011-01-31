@@ -40,7 +40,8 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni
  *	@contributor Ricardo Santana (www.kenos.com.br)
  *		BF [ 2808639 ] - Erro ao salvar registro na C_BPartner_Location
- *
+ *	@contributor Fernando de O. Moraes (www.faire.com.br)
+ *		BF [ 3168869  ] - Erro na logica de marcar um parceiro de negocios como valido (lbr_BPTypeBRIsValid)
  *	@version $Id: ValidatorBPartner.java, 31/10/2007 10:51:00 mgrigioni
  */
 public class ValidatorBPartner implements ModelValidator
@@ -234,7 +235,8 @@ public class ValidatorBPartner implements ModelValidator
 					if (!consultaCPF(CPF, AD_Client_ID, bp.get_ID())){
 						return "CPF Duplicado";
 					}
-
+					//BF - 3168869 
+					bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 			}
 			//Else if Legal Entity - Validate CNPJ
 			else if (BPTypeBR.equalsIgnoreCase("PJ"))
@@ -257,9 +259,14 @@ public class ValidatorBPartner implements ModelValidator
 
 				if(MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
 					bp.set_CustomColumn("lbr_CNPJ", CNPJ.substring(0, 10) + "/0000-00");
-			}
-
-			bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
+				
+				//BF - 3168869 
+				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
+			}else
+				//BF - 3168869 
+				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", false);
+			
+			
 		}
 
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
