@@ -71,10 +71,10 @@ public class R0140 extends RegSped {
 			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 100)
 			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14) 
 			+ PIPE + TextUtil.checkSize(UF, 2)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IE),14)
-			+ PIPE + TextUtil.rPad(TextUtil.retiraEspecial(COD_MUN), '0', 7)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IM),255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(SUFRAMA),9)
+			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(IE),14)
+			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7)
+			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(IM),255)
+			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(SUFRAMA),9)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;

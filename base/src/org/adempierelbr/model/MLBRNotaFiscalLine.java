@@ -111,18 +111,34 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 		return list.toArray(new X_LBR_NFLineTax[list.size()]);
 	} //getTaxes
+	
+	public BigDecimal getFreightAmt(){
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),getLBR_NotaFiscal_ID(),get_TrxName());
+		return getFreightAmt(nf.getTotalLines(),nf.getFreightAmt());
+	}
 
-	public BigDecimal getFreightAmt(BigDecimal totalLinesAmt, BigDecimal totalFreightAmt){
+	protected BigDecimal getFreightAmt(BigDecimal totalLinesAmt, BigDecimal totalFreightAmt){
 
+		if (totalLinesAmt.signum() <= 0 || totalFreightAmt.signum() <= 0)
+			return Env.ZERO;
+		
 		BigDecimal lineAmt = getLineTotalAmt();
 		BigDecimal freightAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
 		           freightAmt = totalFreightAmt.multiply(freightAmt);
 
 		return freightAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
 	} //getFreightAmt
+	
+	public BigDecimal getInsuranceAmt(){
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),getLBR_NotaFiscal_ID(),get_TrxName());
+		return getFreightAmt(nf.getTotalLines(),nf.getlbr_InsuranceAmt());
+	}
 
-	public BigDecimal getInsuranceAmt(BigDecimal totalLinesAmt, BigDecimal totalInsuranceAmt){
+	protected BigDecimal getInsuranceAmt(BigDecimal totalLinesAmt, BigDecimal totalInsuranceAmt){
 
+		if (totalLinesAmt.signum() <= 0 || totalInsuranceAmt.signum() <= 0)
+			return Env.ZERO;
+		
 		BigDecimal lineAmt = getLineTotalAmt();
 		BigDecimal insuranceAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
 		           insuranceAmt = totalInsuranceAmt.multiply(insuranceAmt);
@@ -130,6 +146,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		return insuranceAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
 	} //getInsuranceAmt
 
+	public BigDecimal getTotalOperationAmt(){
+		
+		BigDecimal lineAmt      = getLineTotalAmt();
+		BigDecimal freightAmt   = getFreightAmt();		
+		BigDecimal insuranceAmt = getInsuranceAmt();
+		BigDecimal siscomexAmt  = getlbr_LineTotalSISCOMEX();
+		BigDecimal ipiAmt       = getIPIAmt();
+		
+		//VALOR LINHA + FRETE + SEGURO + SISCOMEX + IPI = VALOR TOTAL DA OPERACAO
+		return (lineAmt.add(freightAmt).add(insuranceAmt).add(siscomexAmt).add
+			   (ipiAmt)).setScale(TaxBR.SCALE, TaxBR.ROUND);
+	}
+	
 
 	/**
 	 * Retorna o valor do Imposto

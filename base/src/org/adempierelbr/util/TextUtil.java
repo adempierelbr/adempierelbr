@@ -740,14 +740,15 @@ public abstract class TextUtil
 		StringBuffer result = new StringBuffer("");
 		value = RemoverAcentos.remover(value);
 
-		for (int i=0; i<value.length(); i++)
-			if (Character.isDigit(value.charAt(i))
-					|| Character.isLetter(value.charAt(i))
-					|| value.charAt(i) == ' ')
+		for (int i=0; i<value.length(); i++){
+			if (Character.isLetterOrDigit(value.charAt(i)) || 
+				value.charAt(i) == ' '){
 				result.append(value.charAt(i));
+			}
+		}
 
 		return result.toString();
-	}	//	retiraEspecial
+	}	//retiraEspecial
 
 	/**
 	 * Retorna a data formatada de acordo com o formato

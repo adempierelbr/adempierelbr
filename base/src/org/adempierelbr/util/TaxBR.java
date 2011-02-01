@@ -689,11 +689,15 @@ public abstract class TaxBR
 
 					MTax tax = new MTax(ctx,C_Tax_ID,trx);
 					int LBR_TaxGroup_ID = tax.get_ValueAsInt("LBR_TaxGroup_ID");
-
-					if (LBR_TaxGroup_ID > 0) //BUG: Quando TaxGroup e NULL
+					
+					MInvoiceTax iTax = getMInvoiceTax(ctx,iLine.getC_Invoice_ID(),tax.get_ID(),trx);
+					
+					if (LBR_TaxGroup_ID > 0 && iTax.getTaxAmt().signum() != 0) //Quando TaxGroup <> NULL E MInvoiceTax tem valor
 					{
 						setNFLineTax(ctx,LBR_TaxGroup_ID,LBR_NotaFiscalLine_ID,taxLine.getlbr_TaxBaseAmt(),
-								taxLine.getlbr_TaxAmt(),taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(),
+								//Multiplica por -1 quando retenção ou 1 quando tributação normal
+								taxLine.getlbr_TaxAmt().multiply(new BigDecimal(iTax.getTaxAmt().signum())),
+								taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(),
 								description,trx);
 					}//endif
 

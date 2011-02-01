@@ -671,9 +671,9 @@ public class NFeXMLGenerator
 			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),4));
 
 			if (nf.getFreightAmt().signum() == 1) //FRETE
-				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt())));
+				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt()));
 			if (nf.getlbr_InsuranceAmt().signum() == 1) //SEGURO
-				produtos.setvSeg(TextUtil.bigdecimalToString(nfLine.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt())));
+				produtos.setvSeg(TextUtil.bigdecimalToString(nfLine.getInsuranceAmt()));
 
 			produtos.setIndTot("1"); //v2.0 = 0 – VL Ñ ENTRA NO TOT 1 - VL ENTRA
 			String ncm = nfLine.getlbr_NCMName();

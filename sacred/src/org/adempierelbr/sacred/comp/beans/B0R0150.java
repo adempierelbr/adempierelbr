@@ -2,6 +2,7 @@ package org.adempierelbr.sacred.comp.beans;
 
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.RegSacred;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -70,16 +71,16 @@ public class B0R0150 implements RegSacred{
 		String format = 
 			REG
 			+ PIPE + TextUtil.toNumeric(COD_PART) 
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NOME),0,255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME),0,255)
 			+ PIPE + TextUtil.lPad(COD_PAIS, 5)
 			+ PIPE + TextUtil.formatStringCodes(CNPJ)
 			+ PIPE + TextUtil.formatStringCodes(IE)
 			+ PIPE + UF
 			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(CEP), 8)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(END),0,255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(END),0,255)
 			+ PIPE + TextUtil.toNumeric(NUM)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(COMPL),0,255)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(BAIRRO),0,255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COMPL),0,255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(BAIRRO),0,255)
 			+ PIPE + TextUtil.lPad(COD_MUN, 7)
 			+ PIPE + TextUtil.toNumeric(FONE);
 		

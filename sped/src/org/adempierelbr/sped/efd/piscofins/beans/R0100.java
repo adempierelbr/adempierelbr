@@ -85,9 +85,9 @@ public class R0100 extends RegSped {
 			  PIPE + REG
 			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 100)
 			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CPF),11)
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CRC),15)
+			+ PIPE + TextUtil.checkSize(CRC,15)
 			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14)
-			+ PIPE + TextUtil.rPad(TextUtil.retiraEspecial(CEP), '0', 8)
+			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(CEP), '0', 8)
 			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(END), 60)
 			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(NUM), 255)
 			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COMPL),60)
@@ -95,7 +95,7 @@ public class R0100 extends RegSped {
 			+ PIPE + TextUtil.checkSize(FONE, 10)
 			+ PIPE + TextUtil.checkSize(FAX, 10)
 			+ PIPE + TextUtil.checkSize(TextUtil.itrim(EMAIL),255)
-			+ PIPE + TextUtil.rPad(TextUtil.retiraEspecial(COD_MUN), '0', 7)
+			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7)
 			+ PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;

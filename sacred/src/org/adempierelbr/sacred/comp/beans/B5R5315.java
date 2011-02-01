@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.RegSacred;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -88,7 +89,7 @@ public class B5R5315 implements RegSacred{
 			REG 
 			+ PIPE + NUM_LANC
 			+ PIPE + TextUtil.timeToString(DT_MOV, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(HIST),0,255)
+			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(HIST),0,255)
 			+ PIPE + TextUtil.lPad(TIP_DOC,3)
 			+ PIPE + SER
 			+ PIPE + NUM_DOC

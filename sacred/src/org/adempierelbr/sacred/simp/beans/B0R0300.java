@@ -2,6 +2,7 @@ package org.adempierelbr.sacred.simp.beans;
 
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.RegSacred;
+import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -66,14 +67,14 @@ public class B0R0300 implements RegSacred{
 			REG
 			+ PIPE + TextUtil.lPad(COD_LEGAL, 4) 
 			+ PIPE + TextUtil.lPad(DESC, 2)
-			+ PIPE + TextUtil.retiraEspecial(ANEX)
-			+ PIPE + TextUtil.retiraEspecial(ART)
-			+ PIPE + TextUtil.retiraEspecial(INC)
-			+ PIPE + TextUtil.retiraEspecial(ALIN)
-			+ PIPE + TextUtil.retiraEspecial(PRG)
-			+ PIPE + TextUtil.retiraEspecial(ITM)
-			+ PIPE + TextUtil.retiraEspecial(LTR)
-			+ PIPE + TextUtil.retiraEspecial(OBS);
+			+ PIPE + RemoverAcentos.remover(ANEX)
+			+ PIPE + RemoverAcentos.remover(ART)
+			+ PIPE + RemoverAcentos.remover(INC)
+			+ PIPE + RemoverAcentos.remover(ALIN)
+			+ PIPE + RemoverAcentos.remover(PRG)
+			+ PIPE + RemoverAcentos.remover(ITM)
+			+ PIPE + RemoverAcentos.remover(LTR)
+			+ PIPE + RemoverAcentos.remover(OBS);
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

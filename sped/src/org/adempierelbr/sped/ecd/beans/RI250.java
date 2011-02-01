@@ -74,7 +74,7 @@ public class RI250 extends RegSped {
 		this.IND_DC 	  = VL_DC.signum() == 1 ? "D" : "C";
 		this.NUM_ARQ 	  = NUM_ARQ;
 		this.COD_HIST_PAD = COD_HIST_PAD;
-		this.HIST 		  = TextUtil.removeEOL(TextUtil.retiraEspecial(HIST));
+		this.HIST 		  = TextUtil.removeEOL(RemoverAcentos.remover(HIST));
 		//
 		if (COD_PART != null && !COD_PART.equals("0"))
 			this.COD_PART 	  = COD_PART;

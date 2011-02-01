@@ -13,8 +13,8 @@
 package org.adempierelbr.util;
 
 public abstract class RemoverAcentos {
-	static String acentuado = "çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ¹²³";
-	static String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU123";
+	static String acentuado = "çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ¹²³ªº";
+	static String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU123ao";
 	static char[] tabela;
 	static {
 		tabela = new char[256];
@@ -37,25 +37,28 @@ public abstract class RemoverAcentos {
 		for (int i = 0; i < s.length(); ++i) {
 			char ch = s.charAt(i);
 			if (ch < 256) {
-				sb.append(tabela[ch]);
+				sb.append(removeSpecial(tabela[ch]));
 			} else {
-				sb.append(ch);
+				sb.append(removeSpecial(ch));
 			}
 		}
 		String retorno = sb.toString();
 
 		retorno = retorno.replaceAll("½", "1/2").replaceAll("¼", "1/4").replaceAll("¾", "3/4");
-		retorno = retorno.replaceAll("\"", " ");
-		retorno = retorno.replaceAll("[ªº°'˙`´“”‘˚™{}≤≥±@©®&œ^*#«∑ß∂ƒ†¥∆∫√µøπ¡∞÷æ§¶Ω£¢•≈–¬…]", " ");
+		retorno = retorno.replaceAll("\"", " ").replaceAll("[œ*ßƒµøπæΩ]", " ");
 
 		return retorno.trim();
 	}
-
-	public static void main (String[] args){
-
-		String teste = "Este é um teste \"TESTE\" de uma ªº com caracteres çã.. è estranhso";
-		System.out.println(remover(teste));
-
+	
+	private static String removeSpecial(char value){
+		
+		if (Character.isLetterOrDigit(value) ||
+			String.valueOf(value).matches("[!?$%()-+/;:.,]") ||
+			value == ' '){
+			return String.valueOf(value);
+		}
+		
+		return "";
 	}
-
+	
 }
