@@ -371,7 +371,7 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscalLine.setlbr_CFOPName(NotaFiscal.getCFOP(LBR_CFOP_ID));
 					
 					//VALIDAÇÂO DO CAMPO SERVIÇO POR CFOP
-					if (NotaFiscalLine.get_ValueAsString("lbr_CFOPName").endsWith(".933")){
+					if (NotaFiscalLine.getLBR_CFOP().islbr_IsService()){
 						NotaFiscalLine.setlbr_IsService(true);
 						ServiceTotalAmt = ServiceTotalAmt.add(LineNetAmt);
 					}

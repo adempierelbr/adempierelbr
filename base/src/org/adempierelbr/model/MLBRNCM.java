@@ -93,8 +93,7 @@ public class MLBRNCM extends X_LBR_NCM {
 			int LBR_CFOP_ID = line.get_ValueAsInt("LBR_CFOP_ID");
 			MLBRCFOP cfop = new MLBRCFOP(ctx,LBR_CFOP_ID,trx);
 			if (!dt.get_ValueAsBoolean("lbr_HasFiscalDocument") || 
-				cfop.get_ValueAsString("Value").endsWith(".933")|| //Serviço
-				cfop.get_ValueAsString("Value").endsWith(".352")|| //CT
+				cfop.islbr_IsService() || //Serviço
 				line.isDescription())
 				continue;
 
