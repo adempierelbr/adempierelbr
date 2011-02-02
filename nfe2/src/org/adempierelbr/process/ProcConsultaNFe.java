@@ -15,6 +15,7 @@ package org.adempierelbr.process;
 import java.io.StringReader;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -87,22 +88,30 @@ public class ProcConsultaNFe extends SvrProcess
 		
 		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),p_LBR_NotaFiscal_ID,get_TrxName());
 		
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), Env.getAD_Org_ID(getCtx()),null);
+		return getStatus(nf);
+	}	//	doIt
+	
+	public static String getStatus(MLBRNotaFiscal nf) throws Exception{
+	
+		Properties ctx = nf.getCtx();
+		String     trx = nf.get_TrxName();
+		
+		MOrgInfo orgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx),null);
 		if (orgInfo == null)
 			return "Organização não encontrada";
 
 		//MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),null);
 		String envType 	= orgInfo.get_ValueAsString("lbr_NFeEnv");
 
-		MBPartnerLocation bpl = new MBPartnerLocation(getCtx(),nf.getC_BPartner_Location_ID(),null);
-		MLocation bpLoc = new MLocation(getCtx(),bpl.getC_Location_ID(),null);
+		MBPartnerLocation bpl = new MBPartnerLocation(ctx,nf.getC_BPartner_Location_ID(),null);
+		MLocation bpLoc = new MLocation(ctx,bpl.getC_Location_ID(),null);
 		
 		String region = BPartnerUtil.getRegionCode(bpLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
 
 		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(getCtx(), orgInfo);
+		MLBRDigitalCertificate.setCertificate(ctx, orgInfo);
 		//
 		String status = "Erro na verificação de Status";
 
@@ -138,7 +147,7 @@ public class ProcConsultaNFe extends SvrProcess
 		    
 		    if (cStat.equals(NFeUtil.AUTORIZADA)){
 		    	nf.setProcessed(true);
-		    	nf.save(get_TrxName());
+		    	nf.save(trx);
 		    }
 		    
 		}
@@ -148,6 +157,6 @@ public class ProcConsultaNFe extends SvrProcess
 		}
 
 		return status;
-	}	//	doIt
+	}
 
 }	//	ProcConsultaNFe
