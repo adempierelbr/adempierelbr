@@ -24,7 +24,7 @@ import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /** Generated Model for LBR_NFTax
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent 
 {
@@ -32,7 +32,7 @@ public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_NFTax (Properties ctx, int LBR_NFTax_ID, String trxName)

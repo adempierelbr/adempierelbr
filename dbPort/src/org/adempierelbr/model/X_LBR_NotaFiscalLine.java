@@ -24,7 +24,7 @@ import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /** Generated Model for LBR_NotaFiscalLine
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_Persistent 
 {
@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -86,9 +86,9 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public void setC_InvoiceLine_ID (int C_InvoiceLine_ID)
 	{
 		if (C_InvoiceLine_ID < 1) 
-			set_Value (COLUMNNAME_C_InvoiceLine_ID, null);
+			set_ValueNoCheck (COLUMNNAME_C_InvoiceLine_ID, null);
 		else 
-			set_Value (COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+			set_ValueNoCheck (COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
 	}
 
 	/** Get Invoice Line.
@@ -349,6 +349,11 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_NCMName);
 	}
 
+	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NFDI)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NFDI.Table_Name)
+			.getPO(getLBR_NFDI_ID(), get_TrxName());	}
+
 	/** Set DI.
 		@param LBR_NFDI_ID DI	  */
 	public void setLBR_NFDI_ID (int LBR_NFDI_ID)
@@ -420,15 +425,15 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return ii.intValue();
 	}
 
-	/** Set Numero da adição.
-		@param lbr_NumAdicao Numero da adição	  */
+	/** Set Número da adição.
+		@param lbr_NumAdicao Número da adição	  */
 	public void setlbr_NumAdicao (int lbr_NumAdicao)
 	{
 		set_Value (COLUMNNAME_lbr_NumAdicao, Integer.valueOf(lbr_NumAdicao));
 	}
 
-	/** Get Numero da adição.
-		@return Numero da adição	  */
+	/** Get Número da adição.
+		@return Número da adição	  */
 	public int getlbr_NumAdicao () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NumAdicao);
@@ -437,15 +442,15 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return ii.intValue();
 	}
 
-	/** Set NÃºm. Seq. Item.
-		@param lbr_NumSeqItem NÃºm. Seq. Item	  */
+	/** Set Núm. Seq. Item.
+		@param lbr_NumSeqItem Núm. Seq. Item	  */
 	public void setlbr_NumSeqItem (int lbr_NumSeqItem)
 	{
 		set_Value (COLUMNNAME_lbr_NumSeqItem, Integer.valueOf(lbr_NumSeqItem));
 	}
 
-	/** Get NÃºm. Seq. Item.
-		@return NÃºm. Seq. Item	  */
+	/** Get Núm. Seq. Item.
+		@return Núm. Seq. Item	  */
 	public int getlbr_NumSeqItem () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NumSeqItem);
@@ -490,34 +495,34 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 
 	/** lbr_TaxStatusIPI AD_Reference_ID=1120000 */
 	public static final int LBR_TAXSTATUSIPI_AD_Reference_ID=1120000;
-	/** 00 - Entrada com recuperaÃ§Ã£o de crÃ©dito = 00 */
-	public static final String LBR_TAXSTATUSIPI_00_EntradaComRecuperaÃÃ£oDeCrÃDito = "00";
-	/** 01 - Entrada tributada com alÃ­quota zero = 01 */
-	public static final String LBR_TAXSTATUSIPI_01_EntradaTributadaComAlÃ­quotaZero = "01";
+	/** 00 - Entrada com recuperação de crédito = 00 */
+	public static final String LBR_TAXSTATUSIPI_00_EntradaComRecuperaçãoDeCrédito = "00";
+	/** 01 - Entrada tributada com alíquota zero = 01 */
+	public static final String LBR_TAXSTATUSIPI_01_EntradaTributadaComAlíquotaZero = "01";
 	/** 02 - Entrada isenta = 02 */
 	public static final String LBR_TAXSTATUSIPI_02_EntradaIsenta = "02";
-	/** 03 - Entrada nÃ£o-tributada = 03 */
-	public static final String LBR_TAXSTATUSIPI_03_EntradaNÃ£o_Tributada = "03";
+	/** 03 - Entrada não-tributada = 03 */
+	public static final String LBR_TAXSTATUSIPI_03_EntradaNão_Tributada = "03";
 	/** 04 - Entrada imune = 04 */
 	public static final String LBR_TAXSTATUSIPI_04_EntradaImune = "04";
-	/** 05 - Entrada com suspensÃ£o = 05 */
-	public static final String LBR_TAXSTATUSIPI_05_EntradaComSuspensÃ£o = "05";
+	/** 05 - Entrada com suspensão = 05 */
+	public static final String LBR_TAXSTATUSIPI_05_EntradaComSuspensão = "05";
 	/** 49 - Outras entradas = 49 */
 	public static final String LBR_TAXSTATUSIPI_49_OutrasEntradas = "49";
-	/** 50 - SaÃ­da tributada = 50 */
-	public static final String LBR_TAXSTATUSIPI_50_SaÃ­daTributada = "50";
-	/** 51 - SaÃ­da tributada com alÃ­quota zero = 51 */
-	public static final String LBR_TAXSTATUSIPI_51_SaÃ­daTributadaComAlÃ­quotaZero = "51";
-	/** 52 - SaÃ­da isenta = 52 */
-	public static final String LBR_TAXSTATUSIPI_52_SaÃ­daIsenta = "52";
-	/** 53 - SaÃ­da nÃ£o-tributada = 53 */
-	public static final String LBR_TAXSTATUSIPI_53_SaÃ­daNÃ£o_Tributada = "53";
-	/** 54 - SaÃ­da imune = 54 */
-	public static final String LBR_TAXSTATUSIPI_54_SaÃ­daImune = "54";
-	/** 55 - SaÃ­da com suspensÃ£o = 55 */
-	public static final String LBR_TAXSTATUSIPI_55_SaÃ­daComSuspensÃ£o = "55";
-	/** 99 - Outras saÃ­das = 99 */
-	public static final String LBR_TAXSTATUSIPI_99_OutrasSaÃ­das = "99";
+	/** 50 - Saída tributada = 50 */
+	public static final String LBR_TAXSTATUSIPI_50_SaídaTributada = "50";
+	/** 51 - Saída tributada com alíquota zero = 51 */
+	public static final String LBR_TAXSTATUSIPI_51_SaídaTributadaComAlíquotaZero = "51";
+	/** 52 - Saída isenta = 52 */
+	public static final String LBR_TAXSTATUSIPI_52_SaídaIsenta = "52";
+	/** 53 - Saída não-tributada = 53 */
+	public static final String LBR_TAXSTATUSIPI_53_SaídaNão_Tributada = "53";
+	/** 54 - Saída imune = 54 */
+	public static final String LBR_TAXSTATUSIPI_54_SaídaImune = "54";
+	/** 55 - Saída com suspensão = 55 */
+	public static final String LBR_TAXSTATUSIPI_55_SaídaComSuspensão = "55";
+	/** 99 - Outras saídas = 99 */
+	public static final String LBR_TAXSTATUSIPI_99_OutrasSaídas = "99";
 	/** Set Tax Status (IPI).
 		@param lbr_TaxStatusIPI 
 		Defines the Tax Status (IPI)

@@ -297,10 +297,14 @@ public class ValidatorInvoice implements ModelValidator
 			if (timing == TIMING_AFTER_PREPARE){
 
 				MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
-				if (docType.get_ValueAsBoolean("lbr_HasFiscalDocument") && //	Gera Documento Fiscal
-					!docType.get_ValueAsBoolean("lbr_IsOwnDocument"))	   //	Não é um documento próprio
-				{
-					if (invoice.get_ValueAsString("lbr_NFEntrada").equals(""))
+				if (docType.get_ValueAsBoolean("lbr_HasFiscalDocument")){ //Gera documento fiscal
+					
+					if (invoice.get_ValueAsString("lbr_NFModel").isEmpty()){
+						return "Necessário preencher o campo Modelo da Nota Fiscal";
+					}
+					
+					if (invoice.get_ValueAsString("lbr_NFEntrada").equals("") && 
+						!docType.get_ValueAsBoolean("lbr_IsOwnDocument"))
 					{
 						if (!invoice.isReversal())
 							return "Necessário preencher campo Referência do Pedido";

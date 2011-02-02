@@ -140,6 +140,15 @@ public interface I_LBR_DigitalCertificate
 	/** Get Digital Certificate	  */
 	public int getLBR_DigitalCertificate_ID();
 
+    /** Column name lbr_NFeEnv */
+    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
+
+	/** Set NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv);
+
+	/** Get NFe Environment	  */
+	public String getlbr_NFeEnv();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 

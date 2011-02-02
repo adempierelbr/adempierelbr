@@ -249,10 +249,10 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
 			NotaFiscal.setNoPackages(new BigDecimal(shipment.getNoPackages()));   //Quantidade/Volumes
 
-			/** NFType **/
-			if(invoice.get_Value("lbr_NFType") != null && !invoice.get_ValueAsString("lbr_NFType").equalsIgnoreCase(""))
-				NotaFiscal.setlbr_NFType(invoice.get_ValueAsString("lbr_NFType"));
-
+			/** NF Model **/
+			if(invoice.get_Value("lbr_NFModel") != null && !invoice.get_ValueAsString("lbr_NFModel").equalsIgnoreCase(""))
+				NotaFiscal.setlbr_NFModel(invoice.get_ValueAsString("lbr_NFModel"));
+			
 			/** Notes **/
 			NotaFiscal.setlbr_BillNote(invoice.get_ValueAsString("lbr_BillNote"));
 			NotaFiscal.setlbr_ShipNote(invoice.get_ValueAsString("lbr_ShipNote"));

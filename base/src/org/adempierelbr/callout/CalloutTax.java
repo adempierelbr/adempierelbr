@@ -46,7 +46,6 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPriceList;
 import org.compiere.model.MProduct;
 import org.compiere.model.MUOMConversion;
 import org.compiere.model.PO;
@@ -523,12 +522,12 @@ public class CalloutTax extends CalloutEngine
 		//
 		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
 		String lbr_TransactionType = bpartner.get_ValueAsString("lbr_TransactionType");
-		String  lbr_NFType         = (String)bpartner.get_Value("lbr_NFType");
+		String  lbr_NFModel        = (String)bpartner.get_Value("lbr_NFModel");
 		//
 		if (lbr_TransactionType != null && !lbr_TransactionType.equals(""))
 			mTab.setValue("lbr_TransactionType", lbr_TransactionType);
 		//
-		mTab.setValue("lbr_NFType", lbr_NFType);
+		mTab.setValue("lbr_NFModel", lbr_NFModel);
 
 		return "";
 	}	//	getTransactionType
@@ -655,8 +654,8 @@ public class CalloutTax extends CalloutEngine
 	{
 		int C_UOM_To_ID = Env.getContextAsInt(ctx, WindowNo, "C_UOM_ID");
 		int M_Product_ID = Env.getContextAsInt(ctx, WindowNo, "M_Product_ID");
-		int M_PriceList_ID = Env.getContextAsInt(ctx, WindowNo, "M_PriceList_ID");
-		int StdPrecision = MPriceList.getStandardPrecision(ctx, M_PriceList_ID);
+		//int M_PriceList_ID = Env.getContextAsInt(ctx, WindowNo, "M_PriceList_ID");
+		//int StdPrecision = MPriceList.getStandardPrecision(ctx, M_PriceList_ID);
 		
 		BigDecimal result = Env.ZERO;
 		Integer C_Order_ID = (Integer) mTab.getValue("C_Order_ID");

@@ -1245,6 +1245,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_NFeStatus();
 
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
+
     /** Column name lbr_NFReference */
     public static final String COLUMNNAME_lbr_NFReference = "lbr_NFReference";
 

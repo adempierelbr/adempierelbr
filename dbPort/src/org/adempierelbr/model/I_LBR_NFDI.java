@@ -121,10 +121,10 @@ public interface I_LBR_NFDI
     /** Column name lbr_CodExportador */
     public static final String COLUMNNAME_lbr_CodExportador = "lbr_CodExportador";
 
-	/** Set CÛdigo do exportador	  */
+	/** Set Código do exportador	  */
 	public void setlbr_CodExportador (String lbr_CodExportador);
 
-	/** Get CÛdigo do exportador	  */
+	/** Get Código do exportador	  */
 	public String getlbr_CodExportador();
 
     /** Column name lbr_DataDesemb */
@@ -140,26 +140,22 @@ public interface I_LBR_NFDI
     public static final String COLUMNNAME_lbr_DI = "lbr_DI";
 
 	/** Set DI.
-	  * N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public void setlbr_DI (String lbr_DI);
 
 	/** Get DI.
-	  * N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public String getlbr_DI();
 
     /** Column name lbr_LocDesemb */
     public static final String COLUMNNAME_lbr_LocDesemb = "lbr_LocDesemb";
 
-	/** Set Local de Desembaraço.
-	  * Local de Desembaraço
-	  */
+	/** Set Local de Desembaraço	  */
 	public void setlbr_LocDesemb (String lbr_LocDesemb);
 
-	/** Get Local de Desembaraço.
-	  * Local de Desembaraço
-	  */
+	/** Get Local de Desembaraço	  */
 	public String getlbr_LocDesemb();
 
     /** Column name LBR_NFDI_ID */

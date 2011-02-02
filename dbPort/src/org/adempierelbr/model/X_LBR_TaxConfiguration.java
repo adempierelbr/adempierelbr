@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_TaxConfiguration
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_TaxConfiguration (Properties ctx, int LBR_TaxConfiguration_ID, String trxName)

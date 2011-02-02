@@ -480,6 +480,9 @@ public abstract class NFeUtil
 				}
 				
 			}
+			else{ //BF - se não tiver ">" fica em loop infinito
+				break;
+			}
 		}
 					
 		return newXML.toString();

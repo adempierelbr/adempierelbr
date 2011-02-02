@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_NCM
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NCM extends PO implements I_LBR_NCM, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_NCM extends PO implements I_LBR_NCM, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_NCM (Properties ctx, int LBR_NCM_ID, String trxName)

@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_ProductCategory
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_ProductCategory extends PO implements I_LBR_ProductCategory, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_ProductCategory extends PO implements I_LBR_ProductCategory, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_ProductCategory (Properties ctx, int LBR_ProductCategory_ID, String trxName)

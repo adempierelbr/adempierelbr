@@ -267,6 +267,8 @@ public interface I_LBR_NotaFiscalLine
 	/** Get DI	  */
 	public int getLBR_NFDI_ID();
 
+	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException;
+
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
 
@@ -298,19 +300,19 @@ public interface I_LBR_NotaFiscalLine
     /** Column name lbr_NumAdicao */
     public static final String COLUMNNAME_lbr_NumAdicao = "lbr_NumAdicao";
 
-	/** Set Numero da adição	  */
+	/** Set Número da adição	  */
 	public void setlbr_NumAdicao (int lbr_NumAdicao);
 
-	/** Get Numero da adição	  */
+	/** Get Número da adição	  */
 	public int getlbr_NumAdicao();
 
     /** Column name lbr_NumSeqItem */
     public static final String COLUMNNAME_lbr_NumSeqItem = "lbr_NumSeqItem";
 
-	/** Set NÃºm. Seq. Item	  */
+	/** Set Núm. Seq. Item	  */
 	public void setlbr_NumSeqItem (int lbr_NumSeqItem);
 
-	/** Get NÃºm. Seq. Item	  */
+	/** Get Núm. Seq. Item	  */
 	public int getlbr_NumSeqItem();
 
     /** Column name lbr_ServiceTaxes */

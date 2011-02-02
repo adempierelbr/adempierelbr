@@ -23,7 +23,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_NFDI
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent 
 {
@@ -31,7 +31,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_NFDI (Properties ctx, int LBR_NFDI_ID, String trxName)
@@ -40,6 +40,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
       /** if (LBR_NFDI_ID == 0)
         {
 			setLBR_NFDI_ID (0);
+			setLBR_NotaFiscal_ID (0);
         } */
     }
 
@@ -105,15 +106,15 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 		return (String)get_Value(COLUMNNAME_lbr_BPRegion);
 	}
 
-	/** Set CÛdigo do exportador.
-		@param lbr_CodExportador CÛdigo do exportador	  */
+	/** Set Código do exportador.
+		@param lbr_CodExportador Código do exportador	  */
 	public void setlbr_CodExportador (String lbr_CodExportador)
 	{
 		set_Value (COLUMNNAME_lbr_CodExportador, lbr_CodExportador);
 	}
 
-	/** Get CÛdigo do exportador.
-		@return CÛdigo do exportador	  */
+	/** Get Código do exportador.
+		@return Código do exportador	  */
 	public String getlbr_CodExportador () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_CodExportador);
@@ -135,7 +136,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 
 	/** Set DI.
 		@param lbr_DI 
-		N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+		Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public void setlbr_DI (String lbr_DI)
 	{
@@ -143,7 +144,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	}
 
 	/** Get DI.
-		@return N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+		@return Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public String getlbr_DI () 
 	{
@@ -151,17 +152,14 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	}
 
 	/** Set Local de Desembaraço.
-		@param lbr_LocDesemb 
-		Local de Desembaraço
-	  */
+		@param lbr_LocDesemb Local de Desembaraço	  */
 	public void setlbr_LocDesemb (String lbr_LocDesemb)
 	{
 		set_Value (COLUMNNAME_lbr_LocDesemb, lbr_LocDesemb);
 	}
 
 	/** Get Local de Desembaraço.
-		@return Local de Desembaraço
-	  */
+		@return Local de Desembaraço	  */
 	public String getlbr_LocDesemb () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_LocDesemb);
@@ -199,9 +197,9 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
 	{
 		if (LBR_NotaFiscal_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, null);
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, null);
 		else 
-			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
 	}
 
 	/** Get Nota Fiscal.

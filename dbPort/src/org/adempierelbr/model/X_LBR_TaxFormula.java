@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_TaxFormula
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20110202L;
 
     /** Standard Constructor */
     public X_LBR_TaxFormula (Properties ctx, int LBR_TaxFormula_ID, String trxName)
@@ -189,6 +189,8 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
 	/** Resale = RES */
 	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
+	/** Imp Courier = COU */
+	public static final String LBR_TRANSACTIONTYPE_ImpCourier = "COU";
 	/** Set Transaction Type.
 		@param lbr_TransactionType 
 		Defines the Transaction Type
