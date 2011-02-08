@@ -791,6 +791,8 @@ public final class ConfirmPanel extends CPanel
 			((AppsAction)bHistory.getAction()).setDelegate(al);
 		if (bZoom != null)
 			((AppsAction)bZoom.getAction()).setDelegate(al);
+		if (bPrint != null)
+			((AppsAction)bPrint.getAction()).setDelegate(al);
 			
 		//	Set OK as default Button
 		JRootPane rootpane = null;
