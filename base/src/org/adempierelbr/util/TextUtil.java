@@ -73,15 +73,29 @@ public abstract class TextUtil
 	public static final String ZERO_STRING = Env.ZERO.setScale(TaxBR.SCALE, TaxBR.ROUND).toString();
 
 	/** Alfabeto        */
-	public static final String[] ALFAB = {"A","B","C","D","E",
+	private static final String[] ALFAB = {"A","B","C","D","E",
 						                  "F","G","H","I","J",
 						                  "K","L","M","N","O",
 						                  "P","Q","R","S","T",
-						                  "U","V","X","W","Y","Z",
-						                  "AA","AB","AC","AD","AE",
-						                  "AF","AG","AH","AI","AJ",
-						                  "AK","AL","AM","AN","AO"};
-
+						                  "U","V","X","W","Y","Z"};
+	
+	/**
+	 * Metodo para gerar combinacao de letras do alfabeto
+	 * @author Fernando Moraes (fernando.moraes @ faire.com.br)
+	 * @param num numero da combinacao a ser gerada
+	 * @return referente ao numero desejado 
+	 *  0=A, 26 = AA, 42 = AP
+	 *  52=BA
+	 */
+	public static String getALFAB(int num){
+		int quociente = num /ALFAB.length;
+		int resto = num % ALFAB.length;
+		if (quociente == 0 )
+			return ALFAB[resto];
+		else
+			return ALFAB[quociente-1]+ getALFAB(resto);
+		
+	}
 	/**
 	 *  readFile
 	 *  Reads a file and return the lines into a string array

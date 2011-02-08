@@ -575,7 +575,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			}
 			else
 			{
-				String cl = TextUtil.ALFAB[m_refNCM.size()];
+				String cl = TextUtil.getALFAB(m_refNCM.size());
 				m_refNCM.put(ncmName, cl);
 				setNCMReference(ncmName,cl,true);
 				//	Retorna o NCM
@@ -847,7 +847,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			}
 			else
 			{
-				String cl = TextUtil.ALFAB[m_refCFOP.size()];
+				String cl = TextUtil.getALFAB(m_refCFOP.size());
 				m_refCFOP.put(cfopName, cl);
 				setCFOPNote(cfop.getDescription() + ", ",true);
 				setCFOPReference(cfopName,cl);
