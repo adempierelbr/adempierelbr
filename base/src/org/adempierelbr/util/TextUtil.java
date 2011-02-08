@@ -273,6 +273,7 @@ public abstract class TextUtil
 		//else
 		//   fw.write(EOL_LINUX);
 	} //addEOL
+	
 
 	/**
 	 * removeEOL
@@ -282,6 +283,14 @@ public abstract class TextUtil
 	 */
 	public static String removeEOL(String text){
 		return removeEOL(text," ");
+	} //removeEOL
+	
+	public static StringBuilder removeEOL(StringBuilder text){
+		return new StringBuilder(removeEOL(text.toString()));
+	} //removeEOL
+	
+	public static StringBuffer removeEOL(StringBuffer text){
+		return new StringBuffer(removeEOL(text.toString()));
 	} //removeEOL
 	
 	public static String removeEOL(String text, String replaceStr){
@@ -591,7 +600,10 @@ public abstract class TextUtil
 			value = "";
 		if (min > max)
 			min=max;
-		//
+		
+		//bf remove spaces before check length
+		value = value.trim();
+		
 		if (value.length() < min)
 			return rPad(value, filler, min);
 		//

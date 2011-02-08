@@ -159,7 +159,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			   (ipiAmt)).setScale(TaxBR.SCALE, TaxBR.ROUND);
 	}
 	
-
+	/**
+	 * Retorna CFOP sem formatação
+	 * Ex. CFOP 1.101 = 1101
+	 * Ex. CFOP Z.ZZZ = 0000
+	 * @return String CFOP formatação (só numeros)
+	 */
+	public String getCFOP(){
+		return TextUtil.lPad(TextUtil.toNumeric(getlbr_CFOPName()),4);
+	}
+	
 	/**
 	 * Retorna o valor do Imposto
 	 *
@@ -319,6 +328,25 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		return getTaxRate("ICMS");
 	}	//	getICMSRate
+	
+	/**
+	 * Formata e retorna a Situação Tributária do ICMS
+	 * 
+	 * @return String Situação Tributária do ICMS
+	 */
+	public String getCST_ICMS(){
+		String CST_ICMS = getlbr_TaxStatus();
+		
+		if (CST_ICMS == null || CST_ICMS.isEmpty() || CST_ICMS.length() != 3){
+			CST_ICMS = TextUtil.lPad(CST_ICMS, 3);
+		}
+		
+		if (CST_ICMS.equals("000") && getICMSAmt().signum() == 0){
+			CST_ICMS = "040"; //ISENTO
+		}
+		
+		return CST_ICMS;
+	} //getCST_ICMS
 
 	/**
 	 *  Retorno a LBR_NFLineTax do IPI
@@ -359,5 +387,60 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		return getTaxRate("IPI");
 	}	//	getIPIRate
+	
+	/**
+	 * Formata e retorna a Situação Tributária do IPI
+	 * 
+	 * @return String Situação Tributária do IPI
+	 */
+	public String getCST_IPI(){
+		String CST_IPI = getlbr_TaxStatusIPI();
+		
+		if (CST_IPI == null || CST_IPI.isEmpty() || CST_IPI.length() != 2){
+			if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
+				CST_IPI = "00";
+			else
+				CST_IPI = "50";
+		}
+		
+		if (getIPIAmt().signum() == 0){ //ISENTO
+			if (CST_IPI.equals("00"))
+				CST_IPI = "02";
+			else if (CST_IPI.equals("50"))
+				CST_IPI = "52";
+		}
+		
+		return CST_IPI;
+	} //getCST_IPI
+	
+	/**
+	 * Formata e retorna a Situação Tributária do PIS
+	 * FIXME: CRIAR CAMPO NA TABELA LBR_NotaFiscalLine
+	 * @return String Situação Tributária do PIS
+	 */
+	public String getCST_PIS(){
+		String CST_PIS = "01"; //TRIBUTAVEL
+				
+		if (getTaxAmt("PIS").signum() != 1){ //ISENTO
+			CST_PIS = "07";
+		}
+		
+		return CST_PIS;
+	} //getCST_PIS
+	
+	/**
+	 * Formata e retorna a Situação Tributária do COFINS
+	 * FIXME: CRIAR CAMPO NA TABELA LBR_NotaFiscalLine
+	 * @return String Situação Tributária do COFINS
+	 */
+	public String getCST_COFINS(){
+		String CST_COFINS = "01"; //TRIBUTAVEL
+		
+		if (getTaxAmt("COFINS").signum() != 1){ //ISENTO
+			CST_COFINS = "07";
+		}
+		
+		return CST_COFINS;
+	} //getCST_COFINS
 
 } //MNotaFiscalLine

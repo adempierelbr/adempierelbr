@@ -142,6 +142,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, Boolean isSOTrx, String trxName){
 
 		String whereClause = "AD_Client_ID=? AND " +
+				             "AD_Org_ID IN (0,?) AND " +
 							 "(CASE WHEN IsSOTrx='Y' THEN TRUNC(DateDoc) " +
 							 "ELSE TRUNC(NVL(lbr_DateInOut, DateDoc)) END) BETWEEN ? AND ?";
 
@@ -154,7 +155,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), trxName);
 	          q.setOrderBy(orderBy);
-		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),dateFrom,dateTo});
+		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom,dateTo});
 
 	    List<MLBRNotaFiscal> list = q.list();
 	    MLBRNotaFiscal[] nfs = new MLBRNotaFiscal[list.size()];
@@ -228,6 +229,29 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 		return LBR_DocTypeNF_ID.intValue();
 	} //getLBR_DocTypeNF_ID
+	
+	/**
+	 * Indicador do tipo de pagamento (Utilizado na NFe e SPED)
+	 * @return String indPag
+	 */
+	public String getIndPag(){
+		
+		String indPag = "0"; //A VISTA
+		MLBROpenItem[] openItems = MLBROpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
+		if (openItems.length > 1)
+			indPag = "2"; //PARCELADO
+		else {
+			if (openItems.length == 1){
+				if (openItems[0].getNetDays() > 0)
+					indPag = "1"; //A PRAZO
+			}
+			else{
+				indPag = "9"; //SEM COBRANCA
+			}
+		}
+		
+		return indPag;
+	}
 
 	public void setSiscomexTax(){
 
@@ -1351,7 +1375,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	}//getserieNo
 
 	public String getSerieNo(){
-		return getSerieNo(getDocumentNo());
+		String serieNo = getSerieNo(getDocumentNo());
+		if (serieNo.isEmpty() && islbr_IsOwnDocument()){
+			MDocType dt = new MDocType(getCtx(),getC_DocTypeTarget_ID(),get_TrxName());
+			serieNo = dt.get_ValueAsString("lbr_NFSerie");
+		}
+		return serieNo;
 	}
 	
 	/**

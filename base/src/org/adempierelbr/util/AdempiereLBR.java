@@ -18,7 +18,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -53,6 +55,9 @@ public abstract class AdempiereLBR{
 
 	public static final String AD_LANGUAGE = "pt_BR";
 	public static final int    BRASIL      = 139;
+	
+	//UDM cache
+	private static Map<Integer,String[]> _UOM = new HashMap<Integer,String[]>();
 
 	public static int getC_Invoice_ID(String DocumentNo,String trx)
 	{
@@ -194,13 +199,64 @@ public abstract class AdempiereLBR{
 
 		return countryName != null ? countryName : country.getName();
 	} //getCountry_trl
+	
+	private static void loadUOM(){
+		
+		if (_UOM.isEmpty()){
+		
+			String sql = "SELECT C_UOM_ID, Name, UOMSymbol FROM C_Uom_Trl " +
+			             "WHERE AD_Language = ?";
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try{
+				pstmt = DB.prepareStatement (sql, null);
+				pstmt.setString(1, AD_LANGUAGE);
+				rs = pstmt.executeQuery ();
+				while (rs.next ()){
+					_UOM.put(rs.getInt("C_UOM_ID"), 
+							new String[]{rs.getString("Name"),rs.getString("UOMSymbol")});
+				}
+			}
+			catch (Exception e){
+				log.log(Level.SEVERE, "", e);
+			}
+			finally{
+			  DB.close(rs, pstmt);
+			}
+		}
+	}
+	
+	
+	public static String getUOMDesc_trl(MUOM uom){
+		return getUOMDesc_trl(uom,AD_LANGUAGE);
+	}
+	
+	public static String getUOMDesc_trl(MUOM uom, String AD_Language){
 
+		loadUOM();
+		if (_UOM.containsKey(uom.get_ID()) && AD_Language.equals(AD_LANGUAGE))
+			return _UOM.get(uom.get_ID())[0];
+		
+		String sql = "SELECT Name FROM C_Uom_Trl " +
+					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
+
+		String UOMName = DB.getSQLValueString(null, sql,
+				new Object[]{uom.get_ID(),AD_Language});
+
+		return UOMName != null ? UOMName : uom.getName();
+	} //getUOMDesc_trl
+	
 	public static String getUOM_trl(MUOM uom){
 		return getUOM_trl(uom,AD_LANGUAGE);
 	}
 
 	public static String getUOM_trl(MUOM uom, String AD_Language){
 
+		loadUOM();
+		if (_UOM.containsKey(uom.get_ID()) && AD_Language.equals(AD_LANGUAGE))
+			return _UOM.get(uom.get_ID())[1];
+		
 		String sql = "SELECT UomSymbol FROM C_Uom_Trl " +
 					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
 

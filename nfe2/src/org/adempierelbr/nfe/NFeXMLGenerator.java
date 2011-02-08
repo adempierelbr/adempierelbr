@@ -213,16 +213,9 @@ public class NFeXMLGenerator
 		 * 1 – pagamento à prazo
 		 * 2 – outros
 		 */
-		String indPag = "0"; //A VISTA
-		MLBROpenItem[] openItems = MLBROpenItem.getOpenItem(nf.getC_Invoice_ID(), trxName);
-		if (openItems.length > 1)
-			indPag = "2"; //PARCELADO
-		else {
-			if (openItems.length == 1){
-				if (openItems[0].getNetDays() > 0)
-					indPag = "1"; //OUTROS
-			}
-		}
+		String indPag = nf.getIndPag();
+		if (indPag.equals("9")) // 9 é usado no SPED EFD
+			indPag = "0";
 
 		/** Identificação do Ambiente (1 - Produção; 2 - Homologação) */
 		String tpAmb = docType.get_ValueAsString("lbr_NFeEnv");
@@ -564,6 +557,9 @@ public class NFeXMLGenerator
 			boolean HasOpenItems = dt.get_ValueAsBoolean("lbr_HasOpenItems");
 
 			if (HasOpenItems && nf.isSOTrx()){
+				
+				MLBROpenItem[] openItems = MLBROpenItem.getOpenItem(nf.getC_Invoice_ID(), trxName);
+				
 				cobrfat = new CobrancaGrupoFatura();
 				cobrfat.setnFat(invoice.getDocumentNo()); // Codigo NFE
 				cobrfat.setvOrig(TextUtil.bigdecimalToString(nf.getGrandTotal())); // Valor Bruto

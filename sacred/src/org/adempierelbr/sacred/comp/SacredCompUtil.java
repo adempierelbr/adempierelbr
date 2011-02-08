@@ -183,7 +183,10 @@ public class SacredCompUtil{
 
 		String DESCR_ITEM = nfl.getProductName();
 		String UNI        = nfl.getlbr_UOMName();
-		String COD_GEN    = nfl.getlbr_NCMName().substring(0, 2);
+		
+		String COD_GEN = "00";
+		if (nfl.getlbr_NCMName() != null && nfl.getlbr_NCMName().length() > 2)
+			COD_GEN    = nfl.getlbr_NCMName().substring(0, 2);
 
 		_MProduct.add(COD_ITEM);
 
