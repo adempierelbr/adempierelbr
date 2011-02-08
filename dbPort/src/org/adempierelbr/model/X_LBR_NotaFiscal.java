@@ -34,7 +34,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110208L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -374,6 +374,26 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Discount Amount.
+		@param DiscountAmt 
+		Calculated amount of discount
+	  */
+	public void setDiscountAmt (BigDecimal DiscountAmt)
+	{
+		set_Value (COLUMNNAME_DiscountAmt, DiscountAmt);
+	}
+
+	/** Get Discount Amount.
+		@return Calculated amount of discount
+	  */
+	public BigDecimal getDiscountAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DiscountAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Document No.

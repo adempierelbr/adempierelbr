@@ -247,6 +247,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getDescription();
 
+    /** Column name DiscountAmt */
+    public static final String COLUMNNAME_DiscountAmt = "DiscountAmt";
+
+	/** Set Discount Amount.
+	  * Calculated amount of discount
+	  */
+	public void setDiscountAmt (BigDecimal DiscountAmt);
+
+	/** Get Discount Amount.
+	  * Calculated amount of discount
+	  */
+	public BigDecimal getDiscountAmt();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
