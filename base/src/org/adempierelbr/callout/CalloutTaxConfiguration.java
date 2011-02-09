@@ -14,6 +14,7 @@ package org.adempierelbr.callout;
 
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_ICMSBasis;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -66,5 +67,28 @@ public class CalloutTaxConfiguration extends CalloutEngine
 		
 		return "";
 	}	//	exceptionType
+	
+	/**
+	 *	Retorna a Descrição do Fundamento Legal
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 */
+    public String fundamentosICMS (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+    	Integer LBR_ICMSBasis_ID = (Integer)value;
+    	if (LBR_ICMSBasis_ID == null || LBR_ICMSBasis_ID.intValue() == 0)
+    		return "";
+
+    	X_LBR_ICMSBasis fundamento = new X_LBR_ICMSBasis(ctx,LBR_ICMSBasis_ID,null);
+
+    	mTab.setValue("Description", fundamento.getHelp() + " - " + fundamento.getDescription());
+
+        return "";
+	}	//	fundamentosICMS
 	
 }

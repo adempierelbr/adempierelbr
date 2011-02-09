@@ -11,6 +11,9 @@ import java.util.logging.Level;
 import org.adempierelbr.gia.beans.CR05;
 import org.adempierelbr.gia.beans.CR10;
 import org.adempierelbr.gia.beans.CR14;
+import org.adempierelbr.gia.beans.CR20;
+import org.adempierelbr.model.X_LBR_ApuracaoICMSLine;
+import org.adempierelbr.model.X_LBR_ICMSBasis;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
@@ -148,15 +151,14 @@ public class GIAUtil{
 		return list.toArray(new CR14[list.size()]);
 	} //createCR14
 	
-	/* TODO - Apuração de ICMS no ADempiereLBR
 	public static CR20[] createCR20(){
 		
 		ArrayList<CR20> list = new ArrayList<CR20>();
 		
-		String sql = "SELECT * FROM Z_ApuracaoICMSLine al " +
-				     "WHERE al.Z_ApuracaoICMS_ID = " +
-				     "(SELECT Z_ApuracaoICMS_ID " +
-				      "FROM Z_ApuracaoICMS ap " +
+		String sql = "SELECT * FROM LBR_ApuracaoICMSLine al " +
+				     "WHERE al.LBR_ApuracaoICMS_ID = " +
+				     "(SELECT LBR_ApuracaoICMS_ID " +
+				      "FROM LBR_ApuracaoICMS ap " +
 				      "WHERE ap.C_Period_ID = ? AND ap.AD_Client_ID = ?)";
 		
 		PreparedStatement pstmt = null;
@@ -170,8 +172,8 @@ public class GIAUtil{
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
-				X_Z_ApuracaoICMSLine icmsLine = new X_Z_ApuracaoICMSLine(ctx,rs,trx);
-				X_Z_FundamentosICMS  fund = new X_Z_FundamentosICMS(ctx,icmsLine.getZ_FundamentosICMS_ID(),trx);
+				X_LBR_ApuracaoICMSLine icmsLine = new X_LBR_ApuracaoICMSLine(ctx,rs,trx);
+				X_LBR_ICMSBasis  fund = new X_LBR_ICMSBasis(ctx,icmsLine.getLBR_ICMSBasis_ID(),trx);
 				
 				list.add(new CR20(fund.getValue(), icmsLine.getAmt(),
 						fund.getType().equals("P") ? "0" : "1", fund.getHelp(),icmsLine.getDescription()));
@@ -188,14 +190,12 @@ public class GIAUtil{
 		
 		return list.toArray(new CR20[list.size()]);
 	} //createCR20
-	*/
 	
 	private static BigDecimal getCumulatedAmt(){
 		
 		BigDecimal amt = null;
 		
-		/* TODO
-		String sql = "SELECT TotalAmt FROM Z_ApuracaoICMS ai " +
+		String sql = "SELECT TotalAmt FROM LBR_ApuracaoICMS ai " +
 				     "WHERE ai.C_Period_ID = " +
 				     	"(SELECT p1.C_Period_ID FROM C_Period p1 " +
 				     	"WHERE p1.StartDate = " +
@@ -204,7 +204,6 @@ public class GIAUtil{
 		
 		amt = DB.getSQLValueBD(get_TrxName(), sql, 
 				new Object[]{period.getC_Period_ID(),Env.getAD_Client_ID(ctx)});
-		*/
 		
 		if (amt == null)
 			amt =  Env.ZERO;
