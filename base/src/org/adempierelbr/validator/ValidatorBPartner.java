@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.adempierelbr.util.AdempiereLBR;
 import org.brazilutils.br.uf.UF;
 import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.compiere.apps.search.Info_Column;
@@ -208,10 +209,10 @@ public class ValidatorBPartner implements ModelValidator
 
 		boolean isValid = bp.get_ValueAsBoolean("lbr_BPTypeBRIsValid");
 
-		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
+		String  BPTypeBR = bp.get_ValueAsString("lbr_BPTypeBR");
 		String  AD_Language = bp.getAD_Language();
 
-		if (AD_Language == null || AD_Language.equals("") || !AD_Language.equalsIgnoreCase("pt_BR")) return null;
+		if (AD_Language == null || AD_Language.trim().isEmpty() || !AD_Language.equals(AdempiereLBR.AD_LANGUAGE)) return null;
 
 		//	If not validated or trying to activate an inactive record
 		if (!isValid || (bp.is_ValueChanged("IsActive") && bp.isActive())) {
@@ -239,8 +240,7 @@ public class ValidatorBPartner implements ModelValidator
 					bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 			}
 			//Else if Legal Entity - Validate CNPJ
-			else if (BPTypeBR.equalsIgnoreCase("PJ"))
-			{
+			else if (BPTypeBR.equalsIgnoreCase("PJ")) {
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
 
 				if (CNPJ == null){
@@ -262,11 +262,10 @@ public class ValidatorBPartner implements ModelValidator
 				
 				//BF - 3168869 
 				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
-			}else
+			}
+			else
 				//BF - 3168869 
-				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", false);
-			
-			
+				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", false);	
 		}
 
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
