@@ -47,6 +47,21 @@ public class CounterSped
 	}	//	register
 	
 	/**
+	 * 	Remove o registro no contador
+	 * 
+	 * @param regName
+	 */
+	public static void unregister (String regName)
+	{
+		if (regs.containsKey(regName))
+		{
+			Integer count = regs.get(regName);
+			regs.remove(regName);
+			regs.put(regName, count-1);
+		}
+	}	//	unregister
+		
+	/**
 	 * Retorna todos os registros do arquivo
 	 * @return String[] registros
 	 */

@@ -148,6 +148,7 @@ public class ProcGenerateNF extends SvrProcess
 
 			deleteLines(LBR_NotaFiscal_ID, trx);
 
+			BigDecimal discountAmt     = Env.ZERO;
 			BigDecimal TotalLines	   = Env.ZERO;
 			BigDecimal ServiceTotalAmt = Env.ZERO;
 
@@ -274,6 +275,12 @@ public class ProcGenerateNF extends SvrProcess
 
 				if (!iLine.isDescription()){
 
+					//Linha de Desconto, não aparece nas linhas e é somado no discountAmt
+					if (iLine.getLineNetAmt().signum() == -1){
+						discountAmt = discountAmt.add(iLine.getLineNetAmt());
+						continue;
+					}
+					
 					LineNo++; // Número da Linha
 
 					MProduct   product = new MProduct(ctx,iLine.getM_Product_ID(),trx);
@@ -404,6 +411,7 @@ public class ProcGenerateNF extends SvrProcess
 			}
 
 			NotaFiscal.setGrandTotal(GrandTotal);   //Valor Total da Nota
+			NotaFiscal.setDiscountAmt(discountAmt.abs()); //Total de Descontos
 			NotaFiscal.setTotalLines(TotalLines.setScale(2, RoundingMode.HALF_UP)); //Valor dos Produtos
 			NotaFiscal.setlbr_ServiceTotalAmt(ServiceTotalAmt.setScale(2, RoundingMode.HALF_UP)); //Valor dos Serviços
 

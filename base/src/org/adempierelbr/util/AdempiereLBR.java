@@ -573,7 +573,7 @@ public abstract class AdempiereLBR{
 	 * @param date
 	 * @return Timestamp - Primeiro dia do mês
 	 */
-	public static Timestamp firstDayMonth(Timestamp date){
+	public static Timestamp getFirstDayOfMonth(Timestamp date){
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -587,7 +587,7 @@ public abstract class AdempiereLBR{
 	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
 	 * @return Timestamp - Primeiro dia do mês
 	 */
-	public static Timestamp firstDayMonth(Integer Ano, Integer Mes){
+	public static Timestamp getFirstDayOfMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
 
@@ -599,7 +599,7 @@ public abstract class AdempiereLBR{
 	 * @param date
 	 * @return Timestamp - Último dia do mês
 	 */
-	public static Timestamp lastDayMonth(Timestamp date){
+	public static Timestamp getLastDayOfMonth(Timestamp date){
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -613,7 +613,7 @@ public abstract class AdempiereLBR{
 	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
 	 * @return Timestamp - Último dia do mês
 	 */
-	public static Timestamp lastDayMonth(Integer Ano, Integer Mes){
+	public static Timestamp getLastDayOfMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 

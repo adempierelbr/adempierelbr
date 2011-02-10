@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped;
 
+import java.math.BigDecimal;
+
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 /**
  * Interface de Registro do Projeto SPED
@@ -24,6 +28,9 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RegSped.java, 16/11/2010, 14:33, mgrigioni
  */
 public abstract class RegSped {
+	
+	/**	Logger			*/
+	public CLogger log = CLogger.getCLogger(this.getClass());
 	
 	//String PIPE
 	public static final String PIPE = "|";
@@ -37,6 +44,38 @@ public abstract class RegSped {
 	//Todo registro do SPED deve iniciar com PIPE e terminar com PIPE
 	public abstract String toString();
 	
+	/**
+	 * Constructor
+	 */
+	public RegSped() {
+		addCounter();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((REG == null) ? 0 : REG.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RegSped other = (RegSped) obj;
+		if (REG == null) {
+			if (other.REG != null)
+				return false;
+		} else if (!REG.equals(other.REG))
+			return false;
+		return true;
+	}
+
 	//Método para retornar o nome do registro
 	public String getReg(){
 		return REG;
@@ -45,6 +84,32 @@ public abstract class RegSped {
 	//Método para adicionar registro ao contador
 	public void addCounter(){
 		CounterSped.register(getReg());
+	}
+	
+	//Método para subtrair registro ao contador
+	public void subtractCounter(){
+		CounterSped.unregister(getReg());
+	}
+	
+	//Método genérico do RegSPED, sobreescrito em beans específicos
+	protected Object get_Value(String attribute){
+		return "";
+	}
+	
+	public BigDecimal get_ValueAsBD(String attribute){
+		Object result = get_Value(attribute);
+		if (result instanceof BigDecimal)
+			return (BigDecimal) result;
+		
+		return Env.ZERO;
+	}
+	
+	public boolean get_ValueAsBoolean(String attribute){
+		Object result = get_Value(attribute);
+		if (result instanceof Boolean)
+			return (Boolean) result;
+		
+		return false;
 	}
 	
 	//Método para pegar o className e retornar o registro

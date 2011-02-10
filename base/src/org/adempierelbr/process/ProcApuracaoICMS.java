@@ -62,7 +62,7 @@ public class ProcApuracaoICMS extends SvrProcess
 		BigDecimal debit       = getDebit(period.getStartDate(),period.getEndDate());
 		BigDecimal otherDebit  = getOtherDebit(Record_ID);
 		
-		BigDecimal cumulatedAmt = getCumulatedAmt(period.get_ID());
+		BigDecimal cumulatedAmt = getCumulatedAmt(getCtx(),period.get_ID());
 		
 		apuracao.setTotalCr(credit.setScale(2, RoundingMode.HALF_UP));
 		apuracao.setTotalDr(debit.setScale(2, RoundingMode.HALF_UP));	
@@ -144,7 +144,7 @@ public class ProcApuracaoICMS extends SvrProcess
 		return amt;
 	} //getOtherDebit
 	
-	private BigDecimal getCumulatedAmt(int C_Period_ID){
+	public static BigDecimal getCumulatedAmt(Properties ctx, int C_Period_ID){
 		
 		BigDecimal amt = null;
 		
@@ -155,8 +155,8 @@ public class ProcApuracaoICMS extends SvrProcess
 				     		"(SELECT TRUNC(p2.StartDate-1,'MM') FROM C_Period p2 " +
 				     		"WHERE p2.C_Period_ID = ?) AND p1.AD_Client_ID = ?)";
 		
-		amt = DB.getSQLValueBD(get_TrxName(), sql, 
-				new Object[]{C_Period_ID,Env.getAD_Client_ID(getCtx())});
+		amt = DB.getSQLValueBD(null, sql, 
+				new Object[]{C_Period_ID,Env.getAD_Client_ID(ctx)});
 		
 		if (amt == null)
 			amt =  Env.ZERO;
