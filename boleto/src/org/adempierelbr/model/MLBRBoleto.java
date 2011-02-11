@@ -593,12 +593,27 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 			X_LBR_Bank lbrBank = new X_LBR_Bank(ctx, Bank.get_ValueAsInt("LBR_Bank_ID"),trx);
 
-			MBPartnerLocation BPLocation = null;
+			// Localização do Parceiro de Negócio
+			int C_Location_ID = 0;
 			MLocation Location = null;
 			MRegion Region = null;
-
-			BPLocation = BPartner.getLocation(invoice.getC_BPartner_Location_ID());
-			Location = MLocation.get(ctx, BPLocation.getC_Location_ID(), trx);
+			MBPartnerLocation BPLocation = new MBPartnerLocation(ctx, invoice.getC_BPartner_Location_ID(), trx);
+			if(BPLocation.isActive() && BPLocation.isPayFrom()) {
+				C_Location_ID = BPLocation.getC_Location_ID();
+			} else {
+				MBPartnerLocation BPLocations[] = BPartner.getLocations(true);
+				for(MBPartnerLocation BPLoc: BPLocations)
+				{
+					if(BPLoc.isActive() && BPLoc.isPayFrom())
+					{
+						C_Location_ID = BPLoc.getC_Location_ID();
+						break;
+					}
+				}
+			}
+						
+			
+			Location = MLocation.get(ctx, C_Location_ID, trx);
 			Region = new MRegion(ctx, Location.getC_Region_ID(),trx);
 
 			MLBROpenItem[] oi = null;
