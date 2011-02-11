@@ -171,6 +171,10 @@ public class RC170 extends RegSped implements Comparable<Object> {
 		}
 	}
 	
+	public Integer getNUM_ITEM(){
+		return NUM_ITEM;
+	}
+	
 	public String getCST_ICMS(){
 		return CST_ICMS;
 	}

@@ -340,6 +340,40 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	public MLBRNotaFiscalLine[] getLines(){
 		return getLines(null);
 	}
+	
+	/**************************************************************************
+	 *  getLines
+	 *  @param String orderBy or null
+	 *  @return MNotaFiscalLine[] lines
+	 */
+	public MLBRNotaFiscalLine[] getLines(String orderBy){
+
+		String   whereClause = "LBR_NotaFiscal_ID = ?";
+		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID()};
+
+		return getLines(parameters,whereClause,orderBy);
+	} //getLines
+
+	/**
+	 * getLines
+	 * @param Object[] parameters
+	 * @param String whereClause
+	 * @param String orderBy
+	 * @return MNotaFiscalLine[] lines
+	 */
+	public MLBRNotaFiscalLine[] getLines(Object[] parameters, String whereClause, String orderBy){
+
+		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);
+		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
+	 		  query.setParameters(parameters);
+
+	 	orderBy = TextUtil.checkOrderBy(orderBy);
+	 	if (orderBy != null)
+	 		  query.setOrderBy(orderBy);
+
+	 	List<MLBRNotaFiscalLine> list = query.list();
+	 	return list.toArray(new MLBRNotaFiscalLine[list.size()]);
+	} //getLines
 
 	public void setDescription(String description){
 		if (description == null)
@@ -940,40 +974,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			setLegalMessage(lMessage.getTextMsg() + ", ",true);
 		}
 	} //setLegalMessage
-
-	/**************************************************************************
-	 *  getLines
-	 *  @param String orderBy or null
-	 *  @return MNotaFiscalLine[] lines
-	 */
-	public MLBRNotaFiscalLine[] getLines(String orderBy){
-
-		String   whereClause = "LBR_NotaFiscal_ID = ?";
-		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID()};
-
-		return getLines(parameters,whereClause,orderBy);
-	} //getLines
-
-	/**
-	 * getLines
-	 * @param Object[] parameters
-	 * @param String whereClause
-	 * @param String orderBy
-	 * @return MNotaFiscalLine[] lines
-	 */
-	public MLBRNotaFiscalLine[] getLines(Object[] parameters, String whereClause, String orderBy){
-
-		MTable table = MTable.get(getCtx(), MLBRNotaFiscalLine.Table_Name);
-		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
-	 		  query.setParameters(parameters);
-
-	 	orderBy = TextUtil.checkOrderBy(orderBy);
-	 	if (orderBy != null)
-	 		  query.setOrderBy(orderBy);
-
-	 	List<MLBRNotaFiscalLine> list = query.list();
-	 	return list.toArray(new MLBRNotaFiscalLine[list.size()]);
-	} //getLines
 
 	/**************************************************************************
 	 *  lastPrinted

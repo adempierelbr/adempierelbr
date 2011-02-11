@@ -162,6 +162,22 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 		return discountAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
 	} //getDiscountAmt
+	
+	/**
+	 * Retorna a DIs da Linha
+	 * @return X_LBR_NFDI
+	 */
+	public X_LBR_NFDI getDI(){
+		
+		String   whereClause = "LBR_NotaFiscal_ID = ? AND lbr_NFDI_ID = ?";
+		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID(),getLBR_NFDI_ID()};
+		
+		MTable table = MTable.get(getCtx(), X_LBR_NFDI.Table_Name);
+		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
+	 		  query.setParameters(parameters);
+
+	 	return (X_LBR_NFDI)query.firstOnly();
+	} //getDI
 
 	public BigDecimal getTotalOperationAmt(){
 		

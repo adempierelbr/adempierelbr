@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO C120: OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01).
@@ -49,6 +50,19 @@ public class RC120 extends RegSped {
 		this.NUM_ACDRAW = NUM_ACDRAW;
 	} //RC120
 	
+	public void addValues(RC120 otherC120){
+		this.PIS_IMP     = getPIS_IMP().add(otherC120.getPIS_IMP());
+		this.COFINS_IMP  = getCOFINS_IMP().add(otherC120.getCOFINS_IMP());
+	}
+	
+	private BigDecimal getPIS_IMP() {
+		return PIS_IMP ==  null ? Env.ZERO : PIS_IMP;
+	}
+
+	private BigDecimal getCOFINS_IMP() {
+		return COFINS_IMP == null ? Env.ZERO : COFINS_IMP;
+	}
+	
 	/**
 	 * Formata o Bloco C Registro 120
 	 * 
@@ -68,4 +82,37 @@ public class RC120 extends RegSped {
 		return (TextUtil.removeEOL(format).append(EOL)).toString();
 	} // toString
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((NUM_ACDRAW == null) ? 0 : NUM_ACDRAW.hashCode());
+		result = prime * result
+				+ ((NUM_DOC_IMP == null) ? 0 : NUM_DOC_IMP.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RC120 other = (RC120) obj;
+		if (NUM_ACDRAW == null) {
+			if (other.NUM_ACDRAW != null)
+				return false;
+		} else if (!NUM_ACDRAW.equals(other.NUM_ACDRAW))
+			return false;
+		if (NUM_DOC_IMP == null) {
+			if (other.NUM_DOC_IMP != null)
+				return false;
+		} else if (!NUM_DOC_IMP.equals(other.NUM_DOC_IMP))
+			return false;
+		return true;
+	}
+	
 } //RC120

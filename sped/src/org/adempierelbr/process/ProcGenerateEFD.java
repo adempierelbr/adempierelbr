@@ -29,7 +29,9 @@ import org.adempierelbr.sped.efd.beans.R9990;
 import org.adempierelbr.sped.efd.beans.R9999;
 import org.adempierelbr.sped.efd.beans.RC001;
 import org.adempierelbr.sped.efd.beans.RC100;
+import org.adempierelbr.sped.efd.beans.RC120;
 import org.adempierelbr.sped.efd.beans.RC170;
+import org.adempierelbr.sped.efd.beans.RC172;
 import org.adempierelbr.sped.efd.beans.RC190;
 import org.adempierelbr.sped.efd.beans.RC500;
 import org.adempierelbr.sped.efd.beans.RC510;
@@ -86,6 +88,9 @@ public class ProcGenerateEFD extends SvrProcess
 	private Map<Integer,RC500>      _RC500 = new HashMap<Integer,RC500>();
 	private Map<Integer,RD100>      _RD100 = new HashMap<Integer,RD100>();
 	private Map<Integer,RD500>      _RD500 = new HashMap<Integer,RD500>();
+	
+	private Map<Integer,ArrayList<RC120>> _RC120 = new HashMap<Integer,ArrayList<RC120>>();
+	private Map<Integer,ArrayList<RC172>> _RC172 = new HashMap<Integer,ArrayList<RC172>>();
 	
 	private Map<Integer,Set<RC170>> _RC170 = new HashMap<Integer,Set<RC170>>();
 	private Map<Integer,Set<RC510>> _RC510 = new HashMap<Integer,Set<RC510>>();
@@ -311,6 +316,29 @@ public class ProcGenerateEFD extends SvrProcess
 		//REGISTROS FILHOS DO C100
 		if (fiscalHeader instanceof RC100){
 			
+			//INFORMACOES DE IMPORTACAO
+			RC120 rc120 = EFDUtil.createRC120(nfLine);
+			if (rc120 != null){
+				
+				ArrayList<RC120> listRC120 = _RC120.get(fiscalHeader.hashCode());
+				if (listRC120 == null)
+					listRC120 = new ArrayList<RC120>();
+				
+				if (listRC120.contains(rc120)){
+					RC120 oldRC120 = listRC120.get(listRC120.indexOf(rc120));
+					rc120.addValues(oldRC120);
+					
+					listRC120.remove(rc120);
+					listRC120.add(rc120);
+					rc120.subtractCounter();
+				}
+				else{
+					listRC120.add(rc120);
+				}
+				
+				_RC120.put(fiscalHeader.hashCode(),listRC120);
+			}
+					
 			//ITENS DO DOCUMENTO C170
 			Set<RC170> setRC170 = _RC170.get(fiscalHeader.hashCode());
 			if (setRC170 == null)
@@ -321,6 +349,18 @@ public class ProcGenerateEFD extends SvrProcess
 			setRC170.add(rc170);
 			_RC170.put(fiscalHeader.hashCode(), setRC170);
 			//FIM C170
+			
+			//DETALHES SERVICO
+			RC172 rc172 = EFDUtil.createRC172(rc170,nfLine);
+			if (rc172 != null){
+				ArrayList<RC172> listRC172 = _RC172.get(fiscalHeader.hashCode());
+				if (listRC172 == null)
+					listRC172 = new ArrayList<RC172>();
+				
+				listRC172.add(rc172);
+				_RC172.put(fiscalHeader.hashCode(),listRC172);
+			}
+			//FIM C172
 		}
 		
 		else
@@ -418,17 +458,40 @@ public class ProcGenerateEFD extends SvrProcess
 		for (RC100 rc100 : arrayRC100){
 			BLOCOC.append(rc100);
 			
+			if (_RC120.containsKey(rc100.hashCode())){
+				List<RC120> listRC120 = _RC120.get(rc100.hashCode());
+				for(RC120 rc120 : listRC120){
+					BLOCOC.append(rc120);
+				}
+			}
+			
+			if (_RC172.containsKey(rc100.hashCode())){
+				BLOCOC.append(EFDUtil.createRC130(_RC172.get(rc100.hashCode())));
+			}
+			
 			if (_RC170.containsKey(rc100.hashCode())){
 				Set<RC170> setRC170 = _RC170.get(rc100.hashCode());
 				RC170[] arrayRC170 = new RC170[setRC170.size()];
 				setRC170.toArray(arrayRC170);
 				Arrays.sort(arrayRC170);
+				int index = 0;
 				for(RC170 rc170 : arrayRC170){
 					if (rc100.getCOD_MOD().equals("55") && 
 						rc100.getIND_EMIT().equals("0")) //NFe própria não informar C170
 						rc170.subtractCounter();
 					else{
 						BLOCOC.append(rc170);
+					}
+					
+					if (_RC172.containsKey(rc100.hashCode())){
+						if (index >= _RC172.get(rc100.hashCode()).size())
+							continue;
+						
+						RC172 rc172 = _RC172.get(rc100.hashCode()).get(index);
+						if (rc172.getRC170().equals(rc170)){
+							BLOCOC.append(rc172);
+							index++;
+						}
 					}
 				}  //loop C170
 				

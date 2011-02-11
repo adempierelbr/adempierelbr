@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
+import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.process.ProcApuracaoICMS;
 import org.adempierelbr.process.ProcApuracaoIPI;
 import org.adempierelbr.sped.CounterSped;
@@ -25,7 +26,10 @@ import org.adempierelbr.sped.efd.beans.R0150;
 import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
 import org.adempierelbr.sped.efd.beans.RC100;
+import org.adempierelbr.sped.efd.beans.RC120;
+import org.adempierelbr.sped.efd.beans.RC130;
 import org.adempierelbr.sped.efd.beans.RC170;
+import org.adempierelbr.sped.efd.beans.RC172;
 import org.adempierelbr.sped.efd.beans.RC190;
 import org.adempierelbr.sped.efd.beans.RC500;
 import org.adempierelbr.sped.efd.beans.RC510;
@@ -323,6 +327,49 @@ public class EFDUtil{
 				VL_PIS,VL_COFINS,VL_PIS_ST,VL_COFINS_ST);
 	} //createRC100
 	
+	public static RC120 createRC120(MLBRNotaFiscalLine nfLine){
+		
+		if (!nfLine.getCFOP().startsWith("3"))
+			return null;
+		
+		X_LBR_NFDI di = nfLine.getDI();
+		if (di != null){
+			String COD_DOC_IMP = "0"; //TODO: 0–DI, 1-DSI;
+			String NUM_DOC_IMP = di.getlbr_DI();
+			BigDecimal PIS_IMP = nfLine.getTaxAmt("PIS");
+			BigDecimal COFINS_IMP = nfLine.getTaxAmt("COFINS");
+			String NUM_ACDRAW = ""; //TODO
+			
+			return new RC120(COD_DOC_IMP,NUM_DOC_IMP,PIS_IMP,COFINS_IMP,NUM_ACDRAW);
+		}
+		
+		return null;
+	} //createRC120
+	
+	public static RC130 createRC130(ArrayList<RC172> listRC172){
+		
+		BigDecimal VL_SERV_NT = Env.ZERO;
+		BigDecimal VL_BC_ISSQN = Env.ZERO;
+		BigDecimal VL_ISSQN = Env.ZERO;
+		BigDecimal VL_BC_IRRF = Env.ZERO;
+		BigDecimal VL_IRRF = Env.ZERO;
+		BigDecimal VL_BC_PREV = Env.ZERO;
+		BigDecimal VL_PREV = Env.ZERO;
+		
+		for(RC172 rc172 : listRC172){
+			VL_SERV_NT  = VL_SERV_NT.add(rc172.getVL_SERV_NT());
+			VL_BC_ISSQN = VL_BC_ISSQN.add(rc172.getVL_BC_ISSQN());
+			VL_ISSQN    = VL_ISSQN.add(rc172.getVL_ISSQN());
+			VL_BC_IRRF  = VL_BC_IRRF.add(rc172.getVL_BC_IRRF());
+			VL_IRRF     = VL_IRRF.add(rc172.getVL_IRRF());
+			VL_BC_PREV  = VL_BC_PREV.add(rc172.getVL_BC_PREV());
+			VL_PREV     = VL_PREV.add(rc172.getVL_PREV());
+		}
+		
+		return new RC130(VL_SERV_NT,VL_BC_ISSQN,VL_ISSQN,VL_BC_IRRF,
+				VL_IRRF,VL_BC_PREV,VL_PREV);
+	} //createRC130
+	
 	public static RC170 createRC170(MLBRNotaFiscalLine nfLine, String COD_ITEM, String TIPO_ITEM, 
 			String UNID, int line){
 		
@@ -370,6 +417,26 @@ public class EFDUtil{
 				QUANT_BC_PIS,ALIQ_PIS,VL_PIS,CST_COFINS,VL_BC_COFINS,ALIQ_COFINS,QUANT_BC_COFINS,
 				V_ALIQ_COFINS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
 	} //createRC170
+	
+	public static RC172 createRC172(RC170 rc170, MLBRNotaFiscalLine nfLine){
+		
+		if (!(nfLine.getCFOP().equals("5933") ||
+			  nfLine.getCFOP().equals("6933") ||
+			  nfLine.getCFOP().equals("7933")))
+			return null;
+		
+		BigDecimal VL_SERV_NT = nfLine.getTotalOperationAmt().subtract(nfLine.getICMSAmt());
+		BigDecimal VL_BC_ISSQN = nfLine.getTaxBaseAmt("ISS");
+		BigDecimal ALIQ_ISSQN = nfLine.getTaxRate("ISS");
+		BigDecimal VL_ISSQN = nfLine.getTaxAmt("ISS");
+		BigDecimal VL_BC_IRRF = nfLine.getTaxBaseAmtWithhold("IR").abs();
+		BigDecimal VL_IRRF = nfLine.getTaxAmtWithhold("IR").abs();
+		BigDecimal VL_BC_PREV = nfLine.getTaxBaseAmtWithhold("INSS").abs();
+		BigDecimal VL_PREV = nfLine.getTaxAmtWithhold("INSS"); 
+		
+		return new RC172(rc170,VL_SERV_NT,VL_BC_ISSQN,ALIQ_ISSQN,VL_ISSQN,
+				VL_BC_IRRF,VL_IRRF,VL_BC_PREV,VL_PREV);
+	} //createRC172
 	
 	public static RC190[] createRC190(Set<RC170> setRC170){
 		
