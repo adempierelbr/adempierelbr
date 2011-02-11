@@ -195,6 +195,21 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}
 	
 	/**
+	 * isAsset (verifica se a linha é um ativo fixo)
+	 * @return boolean
+	 */
+	public boolean isAsset(){
+		
+		boolean isAsset = false;
+		
+		//COMPRA DE ATIVO O CREDITO É LANÇADO NO BLOCO G
+		if (getCFOP().equals("1551") || getCFOP().equals("2551") || getCFOP().equals("3551"))
+			isAsset = true;
+		
+		return isAsset;
+	} //isAsset
+	
+	/**
 	 * Retorno o valor de TODOS os impostos da linha
 	 * @return TotalTaxAmt
 	 */
@@ -245,8 +260,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
 	 * @return TaxBaseAmt 
 	 */
-	public BigDecimal getTaxBase(String taxIndicator){
-		return getTaxBase(taxIndicator,false);
+	public BigDecimal getTaxBaseAmt(String taxIndicator){
+		return getTaxBaseAmt(taxIndicator,false);
 	}
 
 	/**
@@ -254,11 +269,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
 	 * @return TaxBaseAmt 
 	 */
-	public BigDecimal getTaxBaseWithhold(String taxIndicator){
-		return getTaxBase(taxIndicator,true);
+	public BigDecimal getTaxBaseAmtWithhold(String taxIndicator){
+		return getTaxBaseAmt(taxIndicator,true);
 	}
 	
-	private BigDecimal getTaxBase(String taxIndicator, boolean isWithhold){
+	private BigDecimal getTaxBaseAmt(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
@@ -359,7 +374,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 */
 	public BigDecimal getICMSSTBase()
 	{
-		return getTaxBase("ICMSST");
+		return getTaxBaseAmt("ICMSST");
 	}	//	getICMSSTBase
 	
 	
@@ -388,9 +403,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *
 	 *  @return	BigDecimal	Base ICMS
 	 */
-	public BigDecimal getICMSBase()
+	public BigDecimal getICMSBaseAmt()
 	{
-		return getTaxBase("ICMS");
+		return getTaxBaseAmt("ICMS");
 	}	//	getICMSBase
 
 	/**
@@ -457,9 +472,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *
 	 *  @return	BigDecimal	Base IPI
 	 */
-	public BigDecimal getIPIBase()
+	public BigDecimal getIPIBaseAmt()
 	{
-		return getTaxBase("IPI");
+		return getTaxBaseAmt("IPI");
 	}	//	getIPIBase
 
 	/**

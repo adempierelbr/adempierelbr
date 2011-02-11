@@ -27,6 +27,15 @@ import org.adempierelbr.sped.efd.beans.R0200;
 import org.adempierelbr.sped.efd.beans.RC100;
 import org.adempierelbr.sped.efd.beans.RC170;
 import org.adempierelbr.sped.efd.beans.RC190;
+import org.adempierelbr.sped.efd.beans.RC500;
+import org.adempierelbr.sped.efd.beans.RC510;
+import org.adempierelbr.sped.efd.beans.RC590;
+import org.adempierelbr.sped.efd.beans.RD100;
+import org.adempierelbr.sped.efd.beans.RD110;
+import org.adempierelbr.sped.efd.beans.RD190;
+import org.adempierelbr.sped.efd.beans.RD500;
+import org.adempierelbr.sped.efd.beans.RD510;
+import org.adempierelbr.sped.efd.beans.RD590;
 import org.adempierelbr.sped.efd.beans.RE110;
 import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE520;
@@ -294,8 +303,12 @@ public class EFDUtil{
 		BigDecimal VL_FRT = nf.getFreightAmt();
 		BigDecimal VL_SEG = nf.getlbr_InsuranceAmt();
 		BigDecimal VL_OUT_DA = Env.ZERO; //TODO ???
-		BigDecimal VL_BC_ICMS = nf.getICMSBase();
-		BigDecimal VL_ICMS = nf.getICMSAmt();
+		
+		//BF: Para ativos fixo, lançar o crédito no bloco G
+		BigDecimal[] assetAmt = nf.getAssetTaxAmt();
+		BigDecimal VL_BC_ICMS = nf.getICMSBase().subtract(assetAmt[0]);
+		BigDecimal VL_ICMS = nf.getICMSAmt().subtract(assetAmt[1]);
+		
 		BigDecimal VL_BC_ICMS_ST = nf.getTaxBaseAmt("ICMSST");
 		BigDecimal VL_ICMS_ST = nf.getTaxAmt("ICMSST");
 		BigDecimal VL_IPI = nf.getIPIAmt();
@@ -320,27 +333,27 @@ public class EFDUtil{
 		String     IND_MOV = TIPO_ITEM.equals("09") ? "1" : "0"; //1=SEM MOV, 0=COM MOV
 		String CST_ICMS = nfLine.getCST_ICMS();
 		String CFOP     = nfLine.getCFOP();
-		String COD_NAT  = ""; //TODO ???
-		BigDecimal VL_BC_ICMS = nfLine.getICMSBase();
-		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
-		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
-		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBase("ICMSST");
+		String COD_NAT  = ""; //TODO ???		
+		BigDecimal VL_BC_ICMS    = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSBaseAmt();
+		BigDecimal ALIQ_ICMS     = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSRate();
+		BigDecimal VL_ICMS       = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSAmt();
+		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
 		BigDecimal ALIQ_ST       = nfLine.getTaxRate("ICMSST");
 		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
 		String IND_APUR = "0"; //APURACAO MENSAL
 		String CST_IPI = nfLine.getCST_IPI();
 		String COD_ENQ = ""; //TODO ???
-		BigDecimal VL_BC_IPI = nfLine.getIPIBase();
+		BigDecimal VL_BC_IPI = nfLine.getIPIBaseAmt();
 		BigDecimal ALIQ_IPI  = nfLine.getIPIRate();
 		BigDecimal VL_IPI    = nfLine.getIPIAmt();
 		String CST_PIS = nfLine.getCST_PIS();
-		BigDecimal VL_BC_PIS = nfLine.getTaxBase("PIS");
+		BigDecimal VL_BC_PIS = nfLine.getTaxBaseAmt("PIS");
 		BigDecimal ALIQ_PIS = nfLine.getTaxRate("PIS");
 		BigDecimal QUANT_BC_PIS = Env.ZERO; //TODO ???
 		BigDecimal V_ALIQ_PIS = Env.ZERO; //TODO
 		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
 		String CST_COFINS = nfLine.getCST_COFINS();
-		BigDecimal VL_BC_COFINS = nfLine.getTaxBase("COFINS");
+		BigDecimal VL_BC_COFINS = nfLine.getTaxBaseAmt("COFINS");
 		BigDecimal ALIQ_COFINS = nfLine.getTaxRate("COFINS");
 		BigDecimal QUANT_BC_COFINS = Env.ZERO; //TODO ???
 		BigDecimal V_ALIQ_COFINS = Env.ZERO; //TODO
@@ -384,6 +397,247 @@ public class EFDUtil{
 				
 		return arrayRC190;
 	} //createRC190
+	
+	public static RC500 createRC500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
+		
+		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
+		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
+		String SER        = nf.getSerieNo();
+		String SUB        = ""; //TODO ???
+		String COD_CONS   = ""; //Opcional - Só informa na saída
+		String NUM_DOC    = nf.getDocNo();
+		Timestamp DT_DOC  = nf.getDateDoc();
+		Timestamp DT_E_S  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
+		BigDecimal VL_DOC = nf.getGrandTotal();	
+		BigDecimal VL_DESC = nf.getDiscountAmt();
+		BigDecimal VL_FORN = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
+		BigDecimal VL_TERC = Env.ZERO; //TODO ???
+		BigDecimal VL_DA = Env.ZERO; //TODO ???
+		BigDecimal VL_BC_ICMS = nf.getICMSBase();
+		BigDecimal VL_ICMS = nf.getICMSAmt();
+		BigDecimal VL_BC_ICMS_ST = nf.getTaxBaseAmt("ICMSST");
+		BigDecimal VL_ICMS_ST = nf.getTaxAmt("ICMSST");
+		BigDecimal VL_PIS = nf.getPISAmt();
+		BigDecimal VL_COFINS = nf.getCOFINSAmt();
+		BigDecimal VL_SERV_NT = VL_FORN.subtract(VL_BC_ICMS);
+		String COD_INF = ""; //TODO ???
+		String TP_LIGACAO = ""; //TODO ???
+		String COD_GRUPO_TENSAO = ""; //TODO ???
+	
+		return new RC500(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,COD_CONS,
+				NUM_DOC,DT_DOC,DT_E_S,VL_DOC,VL_DESC,VL_FORN,VL_SERV_NT,VL_TERC,VL_DA,
+				VL_BC_ICMS, VL_ICMS, VL_BC_ICMS_ST, VL_ICMS_ST, COD_INF, VL_PIS, VL_COFINS, 
+				TP_LIGACAO, COD_GRUPO_TENSAO);
+	} //createRC500
+	
+	public static RC510 createRC510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
+		
+		String COD_CLASS = ""; //TODO ??? (para saída apenas)
+		BigDecimal QTD = nfLine.getQty();
+		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
+		BigDecimal VL_DESC = nfLine.getDiscountAmt();
+		String CST_ICMS = nfLine.getCST_ICMS();
+		String CFOP     = nfLine.getCFOP();
+		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
+		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
+		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
+		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
+		BigDecimal ALIQ_ST       = nfLine.getTaxRate("ICMSST");
+		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
+		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
+		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
+		String COD_CTA = ""; //TODO ???
+		String IND_REC = "0"; //TODO ??? (para saída apenas)
+		String COD_PART = ""; //TODO ??? (para saída apenas)
+		
+		//INFORMAÇÕES PARA O REGISTRO C590
+		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
+		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		
+		return new RC510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
+				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
+				IND_REC,COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
+	} //createRC510
+	
+	public static RC590[] createRC590(Set<RC510> setRC510){
+		
+		Map<Integer,RC590> _RC590 = new HashMap<Integer,RC590>();
+		
+		for (RC510 rc510 : setRC510){
+		
+			RC590 rc590 = new RC590(rc510.getCST_ICMS(), rc510.getCFOP(), rc510.getALIQ_ICMS(),
+					                rc510.getVL_OPR(), rc510.getVL_BC_ICMS(), rc510.getVL_ICMS(),
+					                rc510.getVL_BC_ICMS_ST(), rc510.getVL_ICMS_ST(), 
+					                rc510.getVL_RED_BC_ICMS(),"");
+			
+			if (_RC590.containsKey(rc590.hashCode())){
+				RC590 oldRC590 = _RC590.get(rc590.hashCode());
+				rc590.addValues(oldRC590);
+				rc590.subtractCounter();
+			}
+			_RC590.put(rc590.hashCode(),rc590);
+			
+		} //loop D510
+		
+		RC590[] arrayRC590 = new RC590[_RC590.size()];
+		_RC590.values().toArray(arrayRC590);
+		Arrays.sort(arrayRC590);
+				
+		return arrayRC590;
+	} //createRC590
+	
+	public static RD100 createRD100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
+		
+		String IND_OPER    = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
+		String COD_SIT     = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
+		String SER         = nf.getSerieNo();
+		String SUB         = ""; //TODO ???
+		String NUM_DOC     = nf.getDocNo();
+		String CHV_CTE     = nf.getlbr_NFeID();
+		Timestamp DT_DOC   = nf.getDateDoc();
+		Timestamp DT_A_P   = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
+		String TP_CT_e     = ""; //TODO (só para saída)
+		String CHV_CTE_REF = ""; //TODO (só para saída)
+		BigDecimal VL_DOC = nf.getGrandTotal();	
+		BigDecimal VL_DESC = nf.getDiscountAmt();
+		String IND_FRT = nf.getFreightCostRule() == null ? "9" : (nf.getFreightCostRule().equals("E") ? "2" : "1");
+		BigDecimal VL_SERV = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
+		BigDecimal VL_BC_ICMS = nf.getICMSBase();
+		BigDecimal VL_ICMS = nf.getICMSAmt();
+		BigDecimal VL_NT = VL_SERV.subtract(VL_BC_ICMS);
+		String COD_INF = ""; //TODO ???
+		String COD_CTA = ""; //TODO ???
+		return new RD100(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
+				CHV_CTE,DT_DOC,DT_A_P,TP_CT_e,CHV_CTE_REF,VL_DOC,VL_DESC,IND_FRT,VL_SERV,
+				VL_BC_ICMS, VL_ICMS, VL_NT, COD_INF, COD_CTA);
+	} //createRD100
+	
+	public static RD110 createRD110(MLBRNotaFiscalLine nfLine, String COD_ITEM, int line){
+		
+		BigDecimal VL_SERV = nfLine.getLineTotalAmt();
+		BigDecimal VL_OUT  = Env.ZERO; //TODO Outros Valores
+		String CST_ICMS = nfLine.getCST_ICMS();
+		String CFOP     = nfLine.getCFOP();
+		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
+		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
+		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
+		
+		//INFORMAÇÕES PARA O REGISTRO C590
+		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
+		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		
+		return new RD110(line,COD_ITEM,VL_SERV,VL_OUT,CST_ICMS,CFOP,VL_BC_ICMS,
+				ALIQ_ICMS,VL_ICMS,PERC_BC_ICMS,VL_OPR);
+	} //createRD110
+	
+	public static RD190[] createRD190(Set<RD110> setRD110){
+		
+		Map<Integer,RD190> _RD190 = new HashMap<Integer,RD190>();
+		
+		for (RD110 rd110 : setRD110){
+		
+			RD190 rd190 = new RD190(rd110.getCST_ICMS(), rd110.getCFOP(), rd110.getALIQ_ICMS(),
+					                rd110.getVL_OPR(), rd110.getVL_BC_ICMS(), rd110.getVL_ICMS(),
+					                rd110.getVL_RED_BC_ICMS(),"");
+			
+			if (_RD190.containsKey(rd190.hashCode())){
+				RD190 oldRD190 = _RD190.get(rd190.hashCode());
+				rd190.addValues(oldRD190);
+				rd190.subtractCounter();
+			}
+			_RD190.put(rd190.hashCode(),rd190);
+			
+		} //loop D110
+		
+		RD190[] arrayRD190 = new RD190[_RD190.size()];
+		_RD190.values().toArray(arrayRD190);
+		Arrays.sort(arrayRD190);
+				
+		return arrayRD190;
+	} //createRD190
+	
+	public static RD500 createRD500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
+		
+		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
+		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
+		String SER        = nf.getSerieNo();
+		String SUB        = ""; //TODO ???
+		String NUM_DOC    = nf.getDocNo();
+		Timestamp DT_DOC  = nf.getDateDoc();
+		Timestamp DT_A_P  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
+		BigDecimal VL_DOC = nf.getGrandTotal();	
+		BigDecimal VL_DESC = nf.getDiscountAmt();
+		BigDecimal VL_SERV = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
+		BigDecimal VL_TERC = Env.ZERO; //TODO ???
+		BigDecimal VL_DA = Env.ZERO; //TODO ???
+		BigDecimal VL_BC_ICMS = nf.getICMSBase();
+		BigDecimal VL_ICMS = nf.getICMSAmt();
+		BigDecimal VL_PIS = nf.getPISAmt();
+		BigDecimal VL_COFINS = nf.getCOFINSAmt();
+		BigDecimal VL_SERV_NT = VL_SERV.subtract(VL_BC_ICMS);
+		String COD_INF = ""; //TODO ???
+		String COD_CTA = ""; //TODO ???
+		String TP_ASSINANTE = ""; //TODO ???
+	
+		return new RD500(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
+				DT_DOC,DT_A_P,VL_DOC,VL_DESC,VL_SERV,VL_SERV_NT,VL_TERC,VL_DA,
+				VL_BC_ICMS, VL_ICMS, COD_INF, VL_PIS, VL_COFINS, COD_CTA, TP_ASSINANTE);
+	} //createRD500
+	
+	public static RD510 createRD510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
+		
+		String COD_CLASS = ""; //TODO ??? (para saída apenas)
+		BigDecimal QTD = nfLine.getQty();
+		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
+		BigDecimal VL_DESC = nfLine.getDiscountAmt();
+		String CST_ICMS = nfLine.getCST_ICMS();
+		String CFOP     = nfLine.getCFOP();
+		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
+		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
+		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
+		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
+		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
+		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
+		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
+		String COD_CTA = ""; //TODO ???
+		String IND_REC = "0"; //TODO ??? (para saída apenas)
+		String COD_PART = ""; //TODO ??? (para saída apenas)
+		
+		//INFORMAÇÕES PARA O REGISTRO C590
+		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
+		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		
+		return new RD510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
+				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,VL_ICMS_ST, IND_REC,
+				COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
+	} //createRD510
+	
+	public static RD590[] createRD590(Set<RD510> setRD510){
+		
+		Map<Integer,RD590> _RD590 = new HashMap<Integer,RD590>();
+		
+		for (RD510 rd510 : setRD510){
+		
+			RD590 rd590 = new RD590(rd510.getCST_ICMS(), rd510.getCFOP(), rd510.getALIQ_ICMS(),
+					                rd510.getVL_OPR(), rd510.getVL_BC_ICMS(), rd510.getVL_ICMS(),
+					                rd510.getVL_BC_ICMS_ST(), rd510.getVL_ICMS_ST(), 
+					                rd510.getVL_RED_BC_ICMS(),"");
+			
+			if (_RD590.containsKey(rd590.hashCode())){
+				RD590 oldRD590 = _RD590.get(rd590.hashCode());
+				rd590.addValues(oldRD590);
+				rd590.subtractCounter();
+			}
+			_RD590.put(rd590.hashCode(),rd590);
+			
+		} //loop D510
+		
+		RD590[] arrayRD590 = new RD590[_RD590.size()];
+		_RD590.values().toArray(arrayRD590);
+		Arrays.sort(arrayRD590);
+				
+		return arrayRD590;
+	} //createRD590
 	
 	public static RE110 createRE110(Timestamp dateFrom, List<RegSped> regs){
 		

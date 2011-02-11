@@ -280,7 +280,7 @@ public class SacredCompUtil{
 		
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
-		BigDecimal VALOR_BC_ITEM = nfl.getICMSBase();
+		BigDecimal VALOR_BC_ITEM = nfl.getICMSBaseAmt();
 		BigDecimal ALIQ_ITEM = nfl.getICMSRate();
 		BigDecimal ICMS_DEB_ITEM = nfl.getICMSAmt();
 		
@@ -304,7 +304,7 @@ public class SacredCompUtil{
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
 		BigDecimal VALOR_OP_ITEM       = nfl.getLineTotalAmt();
-		BigDecimal VALOR_BC_ITEM       = nfl.getICMSBase();
+		BigDecimal VALOR_BC_ITEM       = nfl.getICMSBaseAmt();
 		BigDecimal ALIQ_ITEM           = nfl.getICMSRate();
 		BigDecimal ICMS_DEB_ITEM       = nfl.getICMSAmt();
 		BigDecimal ICMS_OPER_ITEM      = Env.ZERO;

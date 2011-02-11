@@ -31,8 +31,17 @@ import org.adempierelbr.sped.efd.beans.RC001;
 import org.adempierelbr.sped.efd.beans.RC100;
 import org.adempierelbr.sped.efd.beans.RC170;
 import org.adempierelbr.sped.efd.beans.RC190;
+import org.adempierelbr.sped.efd.beans.RC500;
+import org.adempierelbr.sped.efd.beans.RC510;
+import org.adempierelbr.sped.efd.beans.RC590;
 import org.adempierelbr.sped.efd.beans.RC990;
 import org.adempierelbr.sped.efd.beans.RD001;
+import org.adempierelbr.sped.efd.beans.RD100;
+import org.adempierelbr.sped.efd.beans.RD110;
+import org.adempierelbr.sped.efd.beans.RD190;
+import org.adempierelbr.sped.efd.beans.RD500;
+import org.adempierelbr.sped.efd.beans.RD510;
+import org.adempierelbr.sped.efd.beans.RD590;
 import org.adempierelbr.sped.efd.beans.RD990;
 import org.adempierelbr.sped.efd.beans.RE001;
 import org.adempierelbr.sped.efd.beans.RE100;
@@ -63,6 +72,10 @@ public class ProcGenerateEFD extends SvrProcess
 	/** Período   */
 	private int p_C_Period_ID = 0;
 	
+	/** Controle para saber se existe registros no bloco **/
+	private boolean hasC = false;
+	private boolean hasD = false;
+	
 	private Set<R0150> _R0150 = new LinkedHashSet<R0150>();
 	private Set<R0190> _R0190 = new LinkedHashSet<R0190>();
 	private Set<R0200> _R0200 = new LinkedHashSet<R0200>();
@@ -70,7 +83,14 @@ public class ProcGenerateEFD extends SvrProcess
 	private List<RegSped> _RE110 = new ArrayList<RegSped>(); //List de beans para saldo do icms
 	
 	private Map<Integer,RC100>      _RC100 = new HashMap<Integer,RC100>();
+	private Map<Integer,RC500>      _RC500 = new HashMap<Integer,RC500>();
+	private Map<Integer,RD100>      _RD100 = new HashMap<Integer,RD100>();
+	private Map<Integer,RD500>      _RD500 = new HashMap<Integer,RD500>();
+	
 	private Map<Integer,Set<RC170>> _RC170 = new HashMap<Integer,Set<RC170>>();
+	private Map<Integer,Set<RC510>> _RC510 = new HashMap<Integer,Set<RC510>>();
+	private Map<Integer,Set<RD110>> _RD110 = new HashMap<Integer,Set<RD110>>();
+	private Map<Integer,Set<RD510>> _RD510 = new HashMap<Integer,Set<RD510>>();
 	
 	/**
 	 * Prepare - e.g., get Parameters.
@@ -135,28 +155,10 @@ public class ProcGenerateEFD extends SvrProcess
 		log.fine("init");
 		EFDUtil.setEnv(getCtx(),get_TrxName());
 		CounterSped.clear();
-		
-		//Blocos do SPED
-		StringBuilder BLOCO0 = new StringBuilder(""); //Abertura, Identificação e Referências
-		StringBuilder BLOCOC = new StringBuilder(""); //Documentos Fiscais I – Mercadorias (ICMS/IPI)
-		StringBuilder BLOCOD = new StringBuilder(""); //Documentos Fiscais II – Serviços (ICMS)
-		StringBuilder BLOCOE = new StringBuilder(""); //Apuração do ICMS e do IPI
-		StringBuilder BLOCOG = new StringBuilder(""); //Controle do Crédito de ICMS do Ativo Permanente – CIAP
-		StringBuilder BLOCOH = new StringBuilder(""); //Inventário Físico
-		StringBuilder BLOCO1 = new StringBuilder(""); //Outras Informações
-		StringBuilder BLOCO9 = new StringBuilder(""); //Controle e Encerramento do Arquivo Digital
-		
+				
 		//Notas Fiscais Período
 		MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(dateFrom,dateTo,get_TrxName());
 		
-		BLOCO0.append(EFDUtil.createR0000(dateFrom,dateTo));
-		BLOCO0.append(new R0001(nfs.length > 0));
-		BLOCO0.append(EFDUtil.createR0005());
-		
-		R0100 r0100 = EFDUtil.createR0100(); //CONTADOR
-		if (r0100 != null)
-			BLOCO0.append(r0100);
-
 		int count = nfs.length;
 		int aux   = 1;
 		for (MLBRNotaFiscal nf : nfs){
@@ -168,7 +170,7 @@ public class ProcGenerateEFD extends SvrProcess
 			String IND_EMIT = nf.islbr_IsOwnDocument() ? "0" : "1"; //0 = Própria, 1 = Terceiros
 			String nfReg    = EFDUtil.getNFHeaderReg(COD_MOD); //Cabeçalho da NFe
 			
-			if (!(nfReg.startsWith("C") /*|| nfReg.startsWith("D")*/)){
+			if (!(nfReg.startsWith("C") || nfReg.startsWith("D"))){
 				continue; //NAO PERTENCE AOS BLOCOS C OU D
 			}
 			
@@ -183,28 +185,8 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			String COD_PART = r0150 == null ? "" : r0150.getCOD_PART(); 
 			
-			RC100 rc100 = null;
-			
-			if (nfReg.startsWith("C")){
-				if (BLOCOC.length() == 0) //INICIA BLOCO C
-					BLOCOC.append(new RC001(true));
-				
-				//REGISTROS C100
-				if (nfReg.equals("C100")){
-					rc100 = EFDUtil.createRC100(nf, COD_PART, COD_MOD, IND_EMIT);
-					if (_RC100.containsKey(rc100.hashCode())){
-						RC100 oldRC100 = _RC100.get(rc100.hashCode());
-						rc100.addValues(oldRC100);
-						rc100.subtractCounter();
-					}
-					_RC100.put(rc100.hashCode(),rc100);
-				} //FIM C100
-				
-			}
-			else {
-				if (BLOCOD.length() == 0) //INICIA BLOCO D
-					BLOCOD.append(new RD001(true));
-			}
+			//Cabeçalho do Documento Fiscal
+			RegSped fiscalHeader = createFiscalHeader(nf, nfReg, COD_PART, COD_MOD, IND_EMIT);
 			
 			if (nf.isCancelled()) //NF Cancelada não precisa de registros detalhados
 				continue;
@@ -235,27 +217,177 @@ public class ProcGenerateEFD extends SvrProcess
 				String TIPO_ITEM = r0200 == null ? "99" : r0200.getTIPO_ITEM();
 				String UNID      = r0190 == null ? "UN" : r0190.getUNID();
 				
-				//REGISTROS FILHOS DO C100
-				if (nfReg.equals("C100")){
-					
-					//ITENS DO DOCUMENTO C170
-					Set<RC170> setRC170 = _RC170.get(rc100.hashCode());
-					if (setRC170 == null)
-						setRC170 = new LinkedHashSet<RC170>();
-				
-					int line = setRC170.size() + 1;
-					RC170 rc170 = EFDUtil.createRC170(nfLine, COD_ITEM, TIPO_ITEM, UNID, line);
-					setRC170.add(rc170);
-					_RC170.put(rc100.hashCode(), setRC170);
-					//FIM C170
-				}
+				//Detalhes do Documento Fiscal
+				createFiscalDetail(nfLine,fiscalHeader,COD_ITEM,TIPO_ITEM,UNID);
 					
 			} //loop Linhas da Nota Fiscal
-			
-			
+				
 		} //loop Nota Fiscal
+	
+		//BLOCOS SPED EFD		
+		StringBuilder BLOCO0 = montaBLOCO0(count,dateFrom,dateTo); //Abertura, Identificação e Referências
+		StringBuilder BLOCOC = montaBLOCOC(); //Documentos Fiscais I – Mercadorias (ICMS/IPI)
+		StringBuilder BLOCOD = montaBLOCOD(); //Documentos Fiscais II – Serviços (ICMS)
+		StringBuilder BLOCOE = montaBLOCOE(dateFrom,dateTo); //Apuração do ICMS e do IPI
+		StringBuilder BLOCOG = montaBLOCOG(); //Controle do Crédito de ICMS do Ativo Permanente – CIAP
+		StringBuilder BLOCOH = montaBLOCOH(); //Inventário Físico
+		StringBuilder BLOCO1 = montaBLOCO1(); //Outras Informações
+		StringBuilder BLOCO9 = montaBLOCO9(); //Controle e Encerramento do Arquivo Digital
+		
+		//Monta string final
+		StringBuilder result = BLOCO0.append(BLOCOC).append(BLOCOD).append(BLOCOE)
+		               .append(BLOCOG).append(BLOCOH).append(BLOCO1).append(BLOCO9);
+		
+		return result;
+	}	//	runEFD
+	
+	private RegSped createFiscalHeader(MLBRNotaFiscal nf, String nfReg, String COD_PART, 
+			String COD_MOD, String IND_EMIT){
+		
+		//REGISTROS C100
+		if (nfReg.equals("C100")){
+			RC100 rc100 = EFDUtil.createRC100(nf, COD_PART, COD_MOD, IND_EMIT);
+			if (_RC100.containsKey(rc100.hashCode())){
+				RC100 oldRC100 = _RC100.get(rc100.hashCode());
+				rc100.addValues(oldRC100);
+				rc100.subtractCounter();
+			}
+			_RC100.put(rc100.hashCode(),rc100);
+			hasC = true;
+			return rc100;
+		} //FIM C100
+		
+		else
+		
+		//REGISTROS C500
+		if (nfReg.equals("C500")){
+			RC500 rc500 = EFDUtil.createRC500(nf, COD_PART, COD_MOD, IND_EMIT);
+			if (_RC500.containsKey(rc500.hashCode())){
+				RC500 oldRC500 = _RC500.get(rc500.hashCode());
+				rc500.addValues(oldRC500);
+				rc500.subtractCounter();
+			}
+			_RC500.put(rc500.hashCode(),rc500);
+			hasC = true;
+			return rc500;
+		} //FIM C500
+		
+		else
+			
+		//REGISTROS D100
+		if (nfReg.equals("D100")){
+			RD100 rd100 = EFDUtil.createRD100(nf, COD_PART, COD_MOD, IND_EMIT);
+			if (_RD100.containsKey(rd100.hashCode())){
+				RD100 oldRD100 = _RD100.get(rd100.hashCode());
+				rd100.addValues(oldRD100);
+				rd100.subtractCounter();
+			}
+			_RD100.put(rd100.hashCode(),rd100);
+			hasD = true;
+			return rd100;
+		} //FIM D100
+		
+		else
+			
+		//REGISTROS D500
+		if (nfReg.equals("D500")){
+			RD500 rd500 = EFDUtil.createRD500(nf, COD_PART, COD_MOD, IND_EMIT);
+			if (_RD500.containsKey(rd500.hashCode())){
+				RD500 oldRD500 = _RD500.get(rd500.hashCode());
+				rd500.addValues(oldRD500);
+				rd500.subtractCounter();
+			}
+			_RD500.put(rd500.hashCode(),rd500);
+			hasD = true;
+			return rd500;
+		} //FIM D500
+	
+		return null;
+	} //createFiscalHeader
+	
+	private void createFiscalDetail(MLBRNotaFiscalLine nfLine, RegSped fiscalHeader, 
+			String COD_ITEM, String TIPO_ITEM, String UNID){
+		
+		//REGISTROS FILHOS DO C100
+		if (fiscalHeader instanceof RC100){
+			
+			//ITENS DO DOCUMENTO C170
+			Set<RC170> setRC170 = _RC170.get(fiscalHeader.hashCode());
+			if (setRC170 == null)
+				setRC170 = new LinkedHashSet<RC170>();
+		
+			int line = setRC170.size() + 1;
+			RC170 rc170 = EFDUtil.createRC170(nfLine, COD_ITEM, TIPO_ITEM, UNID, line);
+			setRC170.add(rc170);
+			_RC170.put(fiscalHeader.hashCode(), setRC170);
+			//FIM C170
+		}
+		
+		else
+		
+		//REGISTROS FILHOS DO C500
+		if (fiscalHeader instanceof RC500){
+			
+			//ITENS DO DOCUMENTO C510
+			Set<RC510> setRC510 = _RC510.get(fiscalHeader.hashCode());
+			if (setRC510 == null)
+				setRC510 = new LinkedHashSet<RC510>();
+		
+			int line = setRC510.size() + 1;
+			RC510 rc510 = EFDUtil.createRC510(nfLine, COD_ITEM, UNID, line);
+			setRC510.add(rc510);
+			_RC510.put(fiscalHeader.hashCode(), setRC510);
+			//FIM C510
+		}
+		
+		else
+		
+		//REGISTROS FILHOS DO D100
+		if (fiscalHeader instanceof RD100){
+			
+			//ITENS DO DOCUMENTO D110
+			Set<RD110> setRD110 = _RD110.get(fiscalHeader.hashCode());
+			if (setRD110 == null)
+				setRD110 = new LinkedHashSet<RD110>();
+		
+			int line = setRD110.size() + 1;
+			RD110 rd110 = EFDUtil.createRD110(nfLine, COD_ITEM, line);
+			setRD110.add(rd110);
+			_RD110.put(fiscalHeader.hashCode(), setRD110);
+			//FIM D110
+		}
+		
+		else
+			
+		//REGISTROS FILHOS DO D500
+		if (fiscalHeader instanceof RD500){
+				
+			//ITENS DO DOCUMENTO D510
+			Set<RD510> setRD510 = _RD510.get(fiscalHeader.hashCode());
+			if (setRD510 == null)
+				setRD510 = new LinkedHashSet<RD510>();
+			
+			int line = setRD510.size() + 1;
+			RD510 rd510 = EFDUtil.createRD510(nfLine, COD_ITEM, UNID, line);
+			setRD510.add(rd510);
+			_RD510.put(fiscalHeader.hashCode(), setRD510);
+			//FIM D510
+		}
+	} //createFiscalDetail
+	
+	private StringBuilder montaBLOCO0(int count, Timestamp dateFrom, Timestamp dateTo){
+		
+		StringBuilder BLOCO0 = new StringBuilder("");
 		
 		//MONTA BLOCO 0
+		BLOCO0.append(EFDUtil.createR0000(dateFrom,dateTo));
+		BLOCO0.append(new R0001(count > 0));
+		BLOCO0.append(EFDUtil.createR0005());
+		
+		R0100 r0100 = EFDUtil.createR0100(); //CONTADOR
+		if (r0100 != null)
+			BLOCO0.append(r0100);
+		
 		for (R0150 r0150 : _R0150){ //PARCEIROS
 			BLOCO0.append(r0150);
 		}
@@ -271,7 +403,15 @@ public class ProcGenerateEFD extends SvrProcess
 		BLOCO0.append(new R0990());
 		//FIM BLOCO 0
 		
+		return BLOCO0;
+	} //montaBLOCO0
+	
+	private StringBuilder montaBLOCOC(){
+		
+		StringBuilder BLOCOC = new StringBuilder("");
+	
 		//MONTA BLOCO C
+		BLOCOC.append(new RC001(hasC));
 		RC100[] arrayRC100 = new RC100[_RC100.size()];
 		_RC100.values().toArray(arrayRC100);
 		Arrays.sort(arrayRC100);
@@ -302,13 +442,115 @@ public class ProcGenerateEFD extends SvrProcess
 			
 		} //loop C100
 		
+		RC500[] arrayRC500 = new RC500[_RC500.size()];
+		_RC500.values().toArray(arrayRC500);
+		Arrays.sort(arrayRC500);
+		for (RC500 rc500 : arrayRC500){
+			BLOCOC.append(rc500);
+			
+			if (_RC510.containsKey(rc500.hashCode())){
+				Set<RC510> setRC510 = _RC510.get(rc500.hashCode());
+				RC510[] arrayRC510 = new RC510[setRC510.size()];
+				setRC510.toArray(arrayRC510);
+				Arrays.sort(arrayRC510);
+				for(RC510 rc510 : arrayRC510){
+					if (rc500.getIND_EMIT().equals("1")) //Informar apenas saídas
+						rc510.subtractCounter();
+					else{
+						BLOCOC.append(rc510);
+					}
+				}  //loop C510
+				
+				RC590[] arrayRC590 = EFDUtil.createRC590(setRC510);
+				for(RC590 rc590 : arrayRC590){
+					_RE110.add(rc590);
+					BLOCOC.append(rc590);
+				} //loop C590
+				
+			} // verifica se a NF possui itens
+			
+		} //loop C500
+		
 		BLOCOC.append(new RC990());
 		//FIM BLOCO C
 		
+		return BLOCOC;
+	} //montaBLOCOC
+	
+	private StringBuilder montaBLOCOD(){
+		
+		StringBuilder BLOCOD = new StringBuilder("");
+	
 		//MONTA BLOCO D
-		BLOCOD.append(new RD001(false));
+		BLOCOD.append(new RD001(hasD));
+		RD100[] arrayRD100 = new RD100[_RD100.size()];
+		_RD100.values().toArray(arrayRD100);
+		Arrays.sort(arrayRD100);
+		for (RD100 rd100 : arrayRD100){
+			BLOCOD.append(rd100);
+			
+			if (_RD110.containsKey(rd100.hashCode())){
+				Set<RD110> setRD110 = _RD110.get(rd100.hashCode());
+				RD110[] arrayRD110 = new RD110[setRD110.size()];
+				setRD110.toArray(arrayRD110);
+				Arrays.sort(arrayRD110);
+				for(RD110 rd110 : arrayRD110){
+					if (rd100.getIND_EMIT().equals("1")) //Informar apenas saídas
+						rd110.subtractCounter();
+					else{
+						BLOCOD.append(rd110);
+					}
+				}  //loop D110
+				
+				RD190[] arrayRD190 = EFDUtil.createRD190(setRD110);
+				for(RD190 rd190 : arrayRD190){
+					_RE110.add(rd190);
+					BLOCOD.append(rd190);
+				} //loop D190
+				
+			} // verifica se a NF possui itens
+			
+		} //loop D100
+		
+		//MONTA BLOCO D
+		RD500[] arrayRD500 = new RD500[_RD500.size()];
+		_RD500.values().toArray(arrayRD500);
+		Arrays.sort(arrayRD500);
+		for (RD500 rd500 : arrayRD500){
+			BLOCOD.append(rd500);
+			
+			if (_RD510.containsKey(rd500.hashCode())){
+				Set<RD510> setRD510 = _RD510.get(rd500.hashCode());
+				RD510[] arrayRD510 = new RD510[setRD510.size()];
+				setRD510.toArray(arrayRD510);
+				Arrays.sort(arrayRD510);
+				for(RD510 rd510 : arrayRD510){
+					if (rd500.getIND_EMIT().equals("1")) //Informar apenas saídas
+						rd510.subtractCounter();
+					else{
+						BLOCOD.append(rd510);
+					}
+				}  //loop D510
+				
+				RD590[] arrayRD590 = EFDUtil.createRD590(setRD510);
+				for(RD590 rd590 : arrayRD590){
+					_RE110.add(rd590);
+					BLOCOD.append(rd590);
+				} //loop D590
+				
+			} // verifica se a NF possui itens
+				
+		} //loop D500
+		
 		BLOCOD.append(new RD990());
 		//FIM BLOCO D
+		
+		return BLOCOD;
+	} //montaBLOCOD
+	
+	private StringBuilder montaBLOCOE(Timestamp dateFrom, Timestamp dateTo){
+		
+		StringBuilder BLOCOE = new StringBuilder("");
 		
 		//MONTA BLOCO E
 		if (CounterSped.getBlockCounter("C") > 2 || CounterSped.getBlockCounter("D") > 2){
@@ -327,21 +569,49 @@ public class ProcGenerateEFD extends SvrProcess
 		}
 		//FIM BLOCO E
 		
+		return BLOCOE;
+	} //monteBLOCOE
+	
+	private StringBuilder montaBLOCOG(){
+		
+		StringBuilder BLOCOG = new StringBuilder("");
+	
 		//MONTA BLOCO G
 		BLOCOG.append(new RG001(false));
 		BLOCOG.append(new RG990());
 		//FIM BLOCO G
 		
+		return BLOCOG;
+	} //montaBLOCOG
+	
+	private StringBuilder montaBLOCOH(){
+		
+		StringBuilder BLOCOH = new StringBuilder("");
+	
 		//MONTA BLOCO H
 		BLOCOH.append(new RH001(false));
 		BLOCOH.append(new RH990());
 		//FIM BLOCO H
 		
+		return BLOCOH;
+	} //montaBLOCOH
+	
+	private StringBuilder montaBLOCO1(){
+		
+		StringBuilder BLOCO1 = new StringBuilder("");
+	
 		//MONTA BLOCO 1
 		BLOCO1.append(new R1001(false));
 		BLOCO1.append(new R1990());
 		//FIM BLOCO 1
 		
+		return BLOCO1;
+	} //montaBLOCO1
+	
+	private StringBuilder montaBLOCO9(){
+		
+		StringBuilder BLOCO9 = new StringBuilder("");
+	
 		//MONTA BLOCO 9
 		BLOCO9.append(new R9001(true));
 		R9990 r9990 = new R9990();
@@ -356,11 +626,7 @@ public class ProcGenerateEFD extends SvrProcess
 		BLOCO9.append(r9999);
 		//FIM BLOCO 9
 		
-		//Monta string final
-		StringBuilder result = BLOCO0.append(BLOCOC).append(BLOCOD).append(BLOCOE)
-		               .append(BLOCOG).append(BLOCOH).append(BLOCO1).append(BLOCO9);
-		
-		return result;
-	}	//	runEFD
+		return BLOCO9;
+	} //montaBLOCO9
 				
 }	//	ProcGenerateEFD

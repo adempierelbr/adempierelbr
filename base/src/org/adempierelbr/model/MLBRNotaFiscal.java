@@ -689,6 +689,27 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		return result == null ? Env.ZERO : result;
 	} //getTaxRate
 	
+	/**
+	 * Retorna a base de cálculo e o valor do ICMS para as linhas de ativo fixo
+	 * @return BigDecimla[] 0 = Base de Cálculo, 1 = Valor do Imposto
+	 */
+	public BigDecimal[] getAssetTaxAmt(){
+		
+		BigDecimal[] assetAmt = new BigDecimal[]{Env.ZERO,Env.ZERO};
+		
+		String   whereClause = "LBR_NotaFiscal_ID = ? AND lbr_CFOPName IN (?,?,?)";
+		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID(),"1.551","2.551","3.551"};
+		
+		MLBRNotaFiscalLine[] nfLines = getLines(parameters,whereClause,"Line");
+		
+		for (MLBRNotaFiscalLine nfLine : nfLines){
+			assetAmt[0] = assetAmt[0].add(nfLine.getICMSBaseAmt());
+			assetAmt[1] = assetAmt[1].add(nfLine.getICMSAmt());
+		}
+		
+		return assetAmt;
+	} //getAssetAmt
+	
 	public BigDecimal getCost(int C_AcctSchema_ID, int C_CostElement_ID){
 
 		BigDecimal currentCost = Env.ZERO;
