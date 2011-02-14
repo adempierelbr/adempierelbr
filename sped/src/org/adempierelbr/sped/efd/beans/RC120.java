@@ -72,11 +72,11 @@ public class RC120 extends RegSped {
 		
 		StringBuilder format = new StringBuilder
                    (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_DOC_IMP, 1, 1))
+            .append(PIPE).append(TextUtil.lPad(COD_DOC_IMP, 1))
             .append(PIPE).append(TextUtil.checkSize(NUM_DOC_IMP, 10))
             .append(PIPE).append(TextUtil.toNumeric(PIS_IMP))
             .append(PIPE).append(TextUtil.toNumeric(COFINS_IMP))
-            .append(PIPE).append(TextUtil.checkSize(NUM_ACDRAW,11))
+            .append(PIPE).append(TextUtil.checkSize(NUM_ACDRAW,20))
             .append(PIPE);
 
 		return (TextUtil.removeEOL(format).append(EOL)).toString();

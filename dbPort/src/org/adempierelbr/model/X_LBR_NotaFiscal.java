@@ -34,7 +34,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110208L;
+	private static final long serialVersionUID = 20110214L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -1437,6 +1437,31 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public Timestamp getlbr_DateInOut () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_lbr_DateInOut);
+	}
+
+	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_DE)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_DE.Table_Name)
+			.getPO(getLBR_DE_ID(), get_TrxName());	}
+
+	/** Set DE.
+		@param LBR_DE_ID DE	  */
+	public void setLBR_DE_ID (int LBR_DE_ID)
+	{
+		if (LBR_DE_ID < 1) 
+			set_Value (COLUMNNAME_LBR_DE_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_DE_ID, Integer.valueOf(LBR_DE_ID));
+	}
+
+	/** Get DE.
+		@return DE	  */
+	public int getLBR_DE_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_DE_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public I_C_BPartner_Location getlbr_Delivery_Location() throws RuntimeException

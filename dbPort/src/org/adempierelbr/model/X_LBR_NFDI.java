@@ -31,7 +31,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110214L;
 
     /** Standard Constructor */
     public X_LBR_NFDI (Properties ctx, int LBR_NFDI_ID, String trxName)
@@ -41,6 +41,8 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
         {
 			setLBR_NFDI_ID (0);
 			setLBR_NotaFiscal_ID (0);
+			setType (null);
+// 1
         } */
     }
 
@@ -151,6 +153,23 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 		return (String)get_Value(COLUMNNAME_lbr_DI);
 	}
 
+	/** Set Drawback No.
+		@param lbr_Drawback 
+		Identifies the Drawback No
+	  */
+	public void setlbr_Drawback (String lbr_Drawback)
+	{
+		set_Value (COLUMNNAME_lbr_Drawback, lbr_Drawback);
+	}
+
+	/** Get Drawback No.
+		@return Identifies the Drawback No
+	  */
+	public String getlbr_Drawback () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_Drawback);
+	}
+
 	/** Set Local de Desembaraço.
 		@param lbr_LocDesemb Local de Desembaraço	  */
 	public void setlbr_LocDesemb (String lbr_LocDesemb)
@@ -211,5 +230,29 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Type AD_Reference_ID=1120013 */
+	public static final int TYPE_AD_Reference_ID=1120013;
+	/** Declaração de Importação = 0 */
+	public static final String TYPE_DeclaraçãoDeImportação = "0";
+	/** Declaração Simplificada de Importação = 1 */
+	public static final String TYPE_DeclaraçãoSimplificadaDeImportação = "1";
+	/** Set Type.
+		@param Type 
+		Type of Validation (SQL, Java Script, Java Language)
+	  */
+	public void setType (String Type)
+	{
+
+		set_Value (COLUMNNAME_Type, Type);
+	}
+
+	/** Get Type.
+		@return Type of Validation (SQL, Java Script, Java Language)
+	  */
+	public String getType () 
+	{
+		return (String)get_Value(COLUMNNAME_Type);
 	}
 }

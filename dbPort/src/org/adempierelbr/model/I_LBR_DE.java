@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for LBR_NFDI
+/** Generated Interface for LBR_DE
  *  @author Adempiere (generated) 
  *  @version Release 3.6.0LTS
  */
-public interface I_LBR_NFDI 
+public interface I_LBR_DE 
 {
 
-    /** TableName=LBR_NFDI */
-    public static final String Table_Name = "LBR_NFDI";
+    /** TableName=LBR_DE */
+    public static final String Table_Name = "LBR_DE";
 
-    /** AD_Table_ID=1100002 */
+    /** AD_Table_ID=1120014 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -63,6 +63,19 @@ public interface I_LBR_NFDI
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_Country_ID */
+    public static final String COLUMNNAME_C_Country_ID = "C_Country_ID";
+
+	/** Set Country.
+	  * Country 
+	  */
+	public void setC_Country_ID (int C_Country_ID);
+
+	/** Get Country.
+	  * Country 
+	  */
+	public int getC_Country_ID();
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -78,6 +91,32 @@ public interface I_LBR_NFDI
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name CreateFrom */
+    public static final String COLUMNNAME_CreateFrom = "CreateFrom";
+
+	/** Set Create lines from.
+	  * Process which will generate a new document lines based on an existing document
+	  */
+	public void setCreateFrom (String CreateFrom);
+
+	/** Get Create lines from.
+	  * Process which will generate a new document lines based on an existing document
+	  */
+	public String getCreateFrom();
+
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
+
+	/** Set Document Date.
+	  * Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc);
+
+	/** Get Document Date.
+	  * Date of the Document
+	  */
+	public Timestamp getDateDoc();
 
     /** Column name DateTrx */
     public static final String COLUMNNAME_DateTrx = "DateTrx";
@@ -105,95 +144,92 @@ public interface I_LBR_NFDI
 	  */
 	public boolean isActive();
 
-    /** Column name lbr_BPRegion */
-    public static final String COLUMNNAME_lbr_BPRegion = "lbr_BPRegion";
+    /** Column name lbr_CHCEmb */
+    public static final String COLUMNNAME_lbr_CHCEmb = "lbr_CHCEmb";
 
-	/** Set BP Region.
-	  * BP Region - Copied from the BP Location into Brazilan Legal and Tax Books
+	/** Set No. Conhecimento de Embarque.
+	  * Número do Conhecimento de Embarque
 	  */
-	public void setlbr_BPRegion (String lbr_BPRegion);
+	public void setlbr_CHCEmb (String lbr_CHCEmb);
 
-	/** Get BP Region.
-	  * BP Region - Copied from the BP Location into Brazilan Legal and Tax Books
+	/** Get No. Conhecimento de Embarque.
+	  * Número do Conhecimento de Embarque
 	  */
-	public String getlbr_BPRegion();
+	public String getlbr_CHCEmb();
 
-    /** Column name lbr_CodExportador */
-    public static final String COLUMNNAME_lbr_CodExportador = "lbr_CodExportador";
+    /** Column name lbr_CHCType */
+    public static final String COLUMNNAME_lbr_CHCType = "lbr_CHCType";
 
-	/** Set Código do exportador	  */
-	public void setlbr_CodExportador (String lbr_CodExportador);
-
-	/** Get Código do exportador	  */
-	public String getlbr_CodExportador();
-
-    /** Column name lbr_DataDesemb */
-    public static final String COLUMNNAME_lbr_DataDesemb = "lbr_DataDesemb";
-
-	/** Set Data do Desembaraço	  */
-	public void setlbr_DataDesemb (Timestamp lbr_DataDesemb);
-
-	/** Get Data do Desembaraço	  */
-	public Timestamp getlbr_DataDesemb();
-
-    /** Column name lbr_DI */
-    public static final String COLUMNNAME_lbr_DI = "lbr_DI";
-
-	/** Set DI.
-	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	/** Set Tipo Conhecimento de Transporte.
+	  * Define o Tipo de Conhecimento de Transporte
 	  */
-	public void setlbr_DI (String lbr_DI);
+	public void setlbr_CHCType (String lbr_CHCType);
 
-	/** Get DI.
-	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	/** Get Tipo Conhecimento de Transporte.
+	  * Define o Tipo de Conhecimento de Transporte
 	  */
-	public String getlbr_DI();
+	public String getlbr_CHCType();
 
-    /** Column name lbr_Drawback */
-    public static final String COLUMNNAME_lbr_Drawback = "lbr_Drawback";
+    /** Column name lbr_DateCHCEmb */
+    public static final String COLUMNNAME_lbr_DateCHCEmb = "lbr_DateCHCEmb";
 
-	/** Set Drawback No.
-	  * Identifies the Drawback No
+	/** Set Data Conhecimento de Embarque.
+	  * Data do Conhecimento de Embarque
 	  */
-	public void setlbr_Drawback (String lbr_Drawback);
+	public void setlbr_DateCHCEmb (Timestamp lbr_DateCHCEmb);
 
-	/** Get Drawback No.
-	  * Identifies the Drawback No
+	/** Get Data Conhecimento de Embarque.
+	  * Data do Conhecimento de Embarque
 	  */
-	public String getlbr_Drawback();
+	public Timestamp getlbr_DateCHCEmb();
 
-    /** Column name lbr_LocDesemb */
-    public static final String COLUMNNAME_lbr_LocDesemb = "lbr_LocDesemb";
+    /** Column name lbr_DateRE */
+    public static final String COLUMNNAME_lbr_DateRE = "lbr_DateRE";
 
-	/** Set Local de Desembaraço	  */
-	public void setlbr_LocDesemb (String lbr_LocDesemb);
-
-	/** Get Local de Desembaraço	  */
-	public String getlbr_LocDesemb();
-
-    /** Column name LBR_NFDI_ID */
-    public static final String COLUMNNAME_LBR_NFDI_ID = "LBR_NFDI_ID";
-
-	/** Set DI	  */
-	public void setLBR_NFDI_ID (int LBR_NFDI_ID);
-
-	/** Get DI	  */
-	public int getLBR_NFDI_ID();
-
-    /** Column name LBR_NotaFiscal_ID */
-    public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
-
-	/** Set Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
+	/** Set Data RE.
+	  * Data do Registro de Exportação
 	  */
-	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID);
+	public void setlbr_DateRE (Timestamp lbr_DateRE);
 
-	/** Get Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
+	/** Get Data RE.
+	  * Data do Registro de Exportação
 	  */
-	public int getLBR_NotaFiscal_ID();
+	public Timestamp getlbr_DateRE();
 
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException;
+    /** Column name lbr_DE */
+    public static final String COLUMNNAME_lbr_DE = "lbr_DE";
+
+	/** Set DE.
+	  * Número do Documento de Exportação
+	  */
+	public void setlbr_DE (String lbr_DE);
+
+	/** Get DE.
+	  * Número do Documento de Exportação
+	  */
+	public String getlbr_DE();
+
+    /** Column name LBR_DE_ID */
+    public static final String COLUMNNAME_LBR_DE_ID = "LBR_DE_ID";
+
+	/** Set DE	  */
+	public void setLBR_DE_ID (int LBR_DE_ID);
+
+	/** Get DE	  */
+	public int getLBR_DE_ID();
+
+    /** Column name lbr_RE */
+    public static final String COLUMNNAME_lbr_RE = "lbr_RE";
+
+	/** Set No. RE.
+	  * No. do Registro de Exportação
+	  */
+	public void setlbr_RE (String lbr_RE);
+
+	/** Get No. RE.
+	  * No. do Registro de Exportação
+	  */
+	public String getlbr_RE();
 
     /** Column name Type */
     public static final String COLUMNNAME_Type = "Type";

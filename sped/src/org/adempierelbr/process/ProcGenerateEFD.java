@@ -4,12 +4,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MLBRDE;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.sped.CounterSped;
@@ -22,6 +24,8 @@ import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
 import org.adempierelbr.sped.efd.beans.R0990;
 import org.adempierelbr.sped.efd.beans.R1001;
+import org.adempierelbr.sped.efd.beans.R1100;
+import org.adempierelbr.sped.efd.beans.R1105;
 import org.adempierelbr.sped.efd.beans.R1990;
 import org.adempierelbr.sped.efd.beans.R9001;
 import org.adempierelbr.sped.efd.beans.R9900;
@@ -84,10 +88,10 @@ public class ProcGenerateEFD extends SvrProcess
 	
 	private List<RegSped> _RE110 = new ArrayList<RegSped>(); //List de beans para saldo do icms
 	
-	private Map<Integer,RC100>      _RC100 = new HashMap<Integer,RC100>();
-	private Map<Integer,RC500>      _RC500 = new HashMap<Integer,RC500>();
-	private Map<Integer,RD100>      _RD100 = new HashMap<Integer,RD100>();
-	private Map<Integer,RD500>      _RD500 = new HashMap<Integer,RD500>();
+	private Map<Integer,RC100> _RC100 = new HashMap<Integer,RC100>();
+	private Map<Integer,RC500> _RC500 = new HashMap<Integer,RC500>();
+	private Map<Integer,RD100> _RD100 = new HashMap<Integer,RD100>();
+	private Map<Integer,RD500> _RD500 = new HashMap<Integer,RD500>();
 	
 	private Map<Integer,ArrayList<RC120>> _RC120 = new HashMap<Integer,ArrayList<RC120>>();
 	private Map<Integer,ArrayList<RC172>> _RC172 = new HashMap<Integer,ArrayList<RC172>>();
@@ -96,6 +100,8 @@ public class ProcGenerateEFD extends SvrProcess
 	private Map<Integer,Set<RC510>> _RC510 = new HashMap<Integer,Set<RC510>>();
 	private Map<Integer,Set<RD110>> _RD110 = new HashMap<Integer,Set<RD110>>();
 	private Map<Integer,Set<RD510>> _RD510 = new HashMap<Integer,Set<RD510>>();
+	
+	private Map<R1100,Set<R1105>> _R1100 = new HashMap<R1100,Set<R1105>>();	
 	
 	/**
 	 * Prepare - e.g., get Parameters.
@@ -228,6 +234,9 @@ public class ProcGenerateEFD extends SvrProcess
 			} //loop Linhas da Nota Fiscal
 				
 		} //loop Nota Fiscal
+		
+		//BLOCO 1: OUTRAS INFORMAÇÕES
+		createDEInfo(dateFrom,dateTo);
 	
 		//BLOCOS SPED EFD		
 		StringBuilder BLOCO0 = montaBLOCO0(count,dateFrom,dateTo); //Abertura, Identificação e Referências
@@ -414,6 +423,44 @@ public class ProcGenerateEFD extends SvrProcess
 			//FIM D510
 		}
 	} //createFiscalDetail
+	
+	private void createDEInfo(Timestamp dateFrom, Timestamp dateTo){
+		
+		MLBRDE[] des = MLBRDE.get(dateFrom, dateTo, get_TrxName());
+		for (MLBRDE de : des){
+			
+			Set<R1105> setR1105 = new LinkedHashSet<R1105>();
+			
+			MLBRNotaFiscal[] exps = de.getMLBRNotaFiscal();
+			
+			for (MLBRNotaFiscal exp : exps){
+				
+				MLBRNotaFiscalLine[] nfLines = exp.getLines("Line");
+				for (MLBRNotaFiscalLine nfLine : nfLines){
+					
+					R0200 r0200 = EFDUtil.createR0200(nfLine);
+					if (_R0200.contains(r0200))
+						r0200.subtractCounter();
+					else
+						_R0200.add(r0200);
+					
+					R1105 r1105 = new R1105(exp.getlbr_NFModel(),exp.getSerieNo(),
+							exp.getDocNo(),exp.getlbr_NFeID(),exp.getDateDoc(),
+							r0200.getCOD_ITEM());
+					
+					if (setR1105.contains(r1105))
+						r1105.subtractCounter();
+					else{
+						setR1105.add(r1105);
+					}
+				} //loop linhas
+			} //loop nf
+			
+			R1100 r1100 = EFDUtil.createR1100(de);
+			_R1100.put(r1100, setR1105);
+		} //loop DE
+		
+	} //createDEInfo
 	
 	private StringBuilder montaBLOCO0(int count, Timestamp dateFrom, Timestamp dateTo){
 		
@@ -664,7 +711,17 @@ public class ProcGenerateEFD extends SvrProcess
 		StringBuilder BLOCO1 = new StringBuilder("");
 	
 		//MONTA BLOCO 1
-		BLOCO1.append(new R1001(false));
+		BLOCO1.append(new R1001(_R1100.size() > 0));
+		Iterator<R1100> listR1100 = _R1100.keySet().iterator();
+		while(listR1100.hasNext()){
+			R1100 r1100 = listR1100.next();
+			BLOCO1.append(r1100);
+			Set<R1105> setR1105 = _R1100.get(r1100);
+			for (R1105 r1105 : setR1105){
+				BLOCO1.append(r1105);
+			}
+		}
+		
 		BLOCO1.append(new R1990());
 		//FIM BLOCO 1
 		

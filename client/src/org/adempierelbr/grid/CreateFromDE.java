@@ -20,25 +20,25 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.X_LBR_NotaFiscal;
-import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.model.X_LBR_DE;
 import org.compiere.grid.CreateFrom;
 import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.GridTab;
+import org.compiere.model.MCountry;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 
 /**
- *  Add NF to LOT
+ *  Add NF to LBR_DE (Declaração de Exportação)
  *
  *  @author Mario Grigioni
- *  @version  $Id: CreateFromNFeLot, 21/06/2010 16:51:00 mgrigioni Exp $
+ *  @version  $Id: CreateFromDE, 14/02/2011 10:52:00 mgrigioni Exp $
  */
-public class CreateFromNFeLot extends CreateFrom {
+public class CreateFromDE extends CreateFrom {
 	
-	public CreateFromNFeLot(GridTab mTab)
+	public CreateFromDE(GridTab mTab)
 	{
 		super(mTab);
 		log.info(mTab.toString());
@@ -48,7 +48,7 @@ public class CreateFromNFeLot extends CreateFrom {
 	public boolean dynInit() throws Exception 
 	{
 		log.config("");
-        setTitle(Msg.translate(Env.getCtx(), "LBR_NFeLot") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
+        setTitle(Msg.translate(Env.getCtx(), "LBR_DE") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
 
 		return true;
 	}
@@ -60,39 +60,40 @@ public class CreateFromNFeLot extends CreateFrom {
 		 *  Documentno      - 1
 		 *  DateTrx    		- 2
 		 *  BPName     		- 3
-		 *  CNPJ            - 4
-		 *  UF				- 5
+		 *  País            - 4
 		 */
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		String sql = "SELECT nf.Documentno, nf.DateDoc, nf.BPName, nf.lbr_BPCNPJ, "
-			+ "nf.lbr_BPRegion, nf.LBR_NotaFiscal_ID "
-			+ "FROM LBR_NotaFiscal nf " +
-					"INNER JOIN AD_Attachment att ON (nf.LBR_NotaFiscal_ID = att.Record_ID " +
-					"AND att.AD_Table_ID = ?) "
-			+ "WHERE nf.LBR_NFeID IS NOT NULL AND nf.LBR_NFeLot_ID IS NULL "
-			+ "AND IsCancelled = 'N' "
-			+ "ORDER BY 1";
+		String sql = "SELECT nf.LBR_NotaFiscal_ID, nf.Documentno, nf.DateDoc," +
+				     "nf.BPName, nf.lbr_BPCountry  " +
+			         "FROM LBR_NotaFiscal nf " +
+			         "WHERE nf.IsCancelled = 'N' " +
+			         "AND nf.IsSOTrx = 'Y' AND nf.lbr_BPCountry = ? " +
+			         "AND nf.LBR_DE_ID IS NULL  " +
+			         "ORDER BY 3";
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
+		int LBR_DE_ID = Env.getContextAsInt(Env.getCtx(), getGridTab().getWindowNo(), "LBR_DE_ID");
+		X_LBR_DE de = new X_LBR_DE(Env.getCtx(),LBR_DE_ID,null);
+		MCountry country = new MCountry(Env.getCtx(),de.getC_Country_ID(),null);
+		
 		try
 		{
 			pstmt = DB.prepareStatement(sql.toString(), null);
-			pstmt.setInt(1, X_LBR_NotaFiscal.Table_ID);
+			pstmt.setString(1, country.getCountryCode());
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
-				Vector<Object> line = new Vector<Object>(6);
+				Vector<Object> line = new Vector<Object>(5);
 				line.add(new Boolean(false));       //  0-Selection
 				//
-				KeyNamePair kp = new KeyNamePair(rs.getInt(6), rs.getString(1));
+				KeyNamePair kp = new KeyNamePair(rs.getInt(1), rs.getString(2));
 				//
 				line.add(kp);						//	1-DocumentNo
-				line.add(rs.getTimestamp(2));       //  2-DateTrx
-				line.add(rs.getString(3));			//	3-BPName
-				line.add(rs.getString(4));			//	4-CNPJ
-				line.add(rs.getString(5));			//	5-UF
+				line.add(rs.getTimestamp(3));       //  2-DateTrx
+				line.add(rs.getString(4));			//	3-BPName
+				line.add(rs.getString(5));			//	4-Country
 				data.add(line);
 			}
 			rs.close();
@@ -121,8 +122,7 @@ public class CreateFromNFeLot extends CreateFrom {
 		miniTable.setColumnClass(1, String.class, true);   		//  1-DocumentNo
 		miniTable.setColumnClass(2, Timestamp.class, true);     //  2-TrxDate
 		miniTable.setColumnClass(3, String.class, true);        //  3-BPName
-		miniTable.setColumnClass(4, String.class, true);    	//  4-lbr_CNPJ
-		miniTable.setColumnClass(5, String.class, true);    	//  5-lbr_BPRegion
+		miniTable.setColumnClass(4, String.class, true);    	//  4-BPCountry
         
         //  Table UI
 		miniTable.autoSize();
@@ -137,7 +137,7 @@ public class CreateFromNFeLot extends CreateFrom {
 			return false;
 
 		//  fixed values
-		int LBR_NFeLot_ID = Env.getContextAsInt(Env.getCtx(), getGridTab().getWindowNo(), "LBR_NFeLot_ID");
+		int LBR_DE_ID = Env.getContextAsInt(Env.getCtx(), getGridTab().getWindowNo(), "LBR_DE_ID");
 
 		//  Lines
 		for (int i = 0; i < rows; i++)
@@ -148,20 +148,11 @@ public class CreateFromNFeLot extends CreateFrom {
 				int LBR_NotaFiscal_ID = pp.getKey();
 				//
 				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
-				String nfeID = NFeUtil.checkXMLFile(nf);
-				if (nfeID == null){
-					log.severe("Anexo NFe não encontrado. Nota Fiscal: " + nf.getDocumentNo());
-					continue;
-				}
-					
-				if (!nfeID.equals(nf.getlbr_NFeID()))
-					nf.setlbr_NFeID(nfeID); //Atualiza o campo lbr_NFeID, caso ele esteja diferente do anexo
-				
-				nf.setLBR_NFeLot_ID(LBR_NFeLot_ID);
+				nf.setLBR_DE_ID(LBR_DE_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//
 				if (!nf.save())
-					log.log(Level.SEVERE, "NF not added to LOT, #" + i);
+					log.log(Level.SEVERE, "NF not added to DE, #" + i);
 				
 			}   //   if selected
 		}   //  for all rows
@@ -171,14 +162,13 @@ public class CreateFromNFeLot extends CreateFrom {
 	protected Vector<String> getOISColumnNames()
 	{
 		//  Header Info
-		Vector<String> columnNames = new Vector<String>(6);
+		Vector<String> columnNames = new Vector<String>(5);
 		columnNames.add(Msg.getMsg(Env.getCtx(), "Select"));
 		columnNames.add(Msg.getElement(Env.getCtx(), "DocumentNo"));
 		columnNames.add(Msg.translate(Env.getCtx(), "Date"));
 		columnNames.add(Msg.translate(Env.getCtx(), "BPName"));
-		columnNames.add(Msg.translate(Env.getCtx(), "lbr_CNPJ"));
-		columnNames.add(Msg.translate(Env.getCtx(), "lbr_BPRegion"));
-	    
+		columnNames.add(Msg.translate(Env.getCtx(), "lbr_BPCountry"));
 	    return columnNames;
 	}
-}
+	
+} //CreateFromDE

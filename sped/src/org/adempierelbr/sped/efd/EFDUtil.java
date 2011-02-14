@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.adempierelbr.model.MLBRDE;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFDI;
@@ -18,6 +19,7 @@ import org.adempierelbr.process.ProcApuracaoICMS;
 import org.adempierelbr.process.ProcApuracaoIPI;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.efd.beans.R1100;
 import org.adempierelbr.sped.efd.beans.R9900;
 import org.adempierelbr.sped.efd.beans.R0000;
 import org.adempierelbr.sped.efd.beans.R0005;
@@ -334,11 +336,11 @@ public class EFDUtil{
 		
 		X_LBR_NFDI di = nfLine.getDI();
 		if (di != null){
-			String COD_DOC_IMP = "0"; //TODO: 0–DI, 1-DSI;
+			String COD_DOC_IMP = di.getType();
 			String NUM_DOC_IMP = di.getlbr_DI();
 			BigDecimal PIS_IMP = nfLine.getTaxAmt("PIS");
 			BigDecimal COFINS_IMP = nfLine.getTaxAmt("COFINS");
-			String NUM_ACDRAW = ""; //TODO
+			String NUM_ACDRAW = di.getlbr_Drawback();
 			
 			return new RC120(COD_DOC_IMP,NUM_DOC_IMP,PIS_IMP,COFINS_IMP,NUM_ACDRAW);
 		}
@@ -589,7 +591,7 @@ public class EFDUtil{
 		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
 		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
 		
-		//INFORMAÇÕES PARA O REGISTRO C590
+		//INFORMAÇÕES PARA O REGISTRO D190
 		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
 		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
 		
@@ -670,7 +672,7 @@ public class EFDUtil{
 		String IND_REC = "0"; //TODO ??? (para saída apenas)
 		String COD_PART = ""; //TODO ??? (para saída apenas)
 		
-		//INFORMAÇÕES PARA O REGISTRO C590
+		//INFORMAÇÕES PARA O REGISTRO D590
 		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
 		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
 		
@@ -831,6 +833,27 @@ public class EFDUtil{
 				VL_SC_IPI,VL_SD_IPI);
 	} //createRE520
 	
+	public static R1100 createR1100(MLBRDE de){
+		
+		String IND_DOC    = de.getType();
+		String NRO_DE     = de.getlbr_DE();
+		Timestamp DT_DE   = de.getDateDoc();
+		String NRO_RE     = de.getlbr_RE();
+		Timestamp DT_RE   = de.getlbr_DateRE();
+		String CHC_EMB    = de.getlbr_CHCEmb();
+		Timestamp DT_CHC  = de.getlbr_DateCHCEmb();
+		Timestamp DT_AVB  = de.getDateTrx();
+		String TP_CHC     = de.getlbr_CHCType();
+		
+		MCountry country = new MCountry(getCtx(),de.getC_Country_ID(),null);
+		String PAIS = country.get_ValueAsString("lbr_CountryCode");
+		if (!PAIS.trim().isEmpty() && PAIS.length() > 3)
+			PAIS = PAIS.substring(1, PAIS.length()-1); //PAIS SISCOMEX são só 3 dígitos
+		
+		return new R1100(IND_DOC,NRO_DE,DT_DE,NRO_RE,DT_RE,CHC_EMB,
+				DT_CHC,DT_AVB,TP_CHC,PAIS);
+	} //createR1100
+		
 	public static R9900[] createR9900(){
 
 		String regName = "9900";

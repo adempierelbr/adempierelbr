@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
+import org.adempierelbr.grid.VCreateFromDEUI;
+import org.adempierelbr.model.X_LBR_DE;
 import org.adempierelbr.model.X_LBR_NFeLot;
 import org.compiere.model.GridTab;
 import org.compiere.model.I_C_BankStatement;
@@ -56,6 +58,7 @@ public class VCreateFromFactory
 		s_registeredClasses.put(I_M_RMA.Table_ID, VCreateFromRMAUI.class);
 		
 		s_registeredClasses.put(X_LBR_NFeLot.Table_ID, VCreateFromNFeLotUI.class); //LBR
+		s_registeredClasses.put(X_LBR_DE.Table_ID, VCreateFromDEUI.class); //LBR
 		//s_registeredClasses.put(I_C_Order.Table_ID, VCreateFromManufactureUI.class); //LBR
 	}
 	
