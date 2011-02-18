@@ -17,6 +17,8 @@ import java.math.RoundingMode;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MLBRNFLineTax;
+import org.adempierelbr.model.MLBRNFTax;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.nfe.NFeXMLGenerator;
@@ -260,8 +262,6 @@ public class ProcGenerateNF extends SvrProcess
 
 			NotaFiscal.save(trx);
 
-			TaxBR.setNFTax(ctx, invoice.getC_Invoice_ID(), NotaFiscal.getLBR_NotaFiscal_ID(), trx);
-
 			//CONVERSAO
 			int clientCurrency = client.getC_Currency_ID();
 			int C_Currency_ID  = invoice.getC_Currency_ID();
@@ -392,7 +392,7 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscal.setLegalMessage(LBR_LegalMessage_ID);
 
 					NotaFiscalLine.save(trx);
-					TaxBR.setNFLineTax(ctx, iLine.getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), trx);
+					MLBRNFLineTax.createLBR_NFLineTax(ctx, iLine.getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), trx);
 
 					if(NotaFiscalLine.islbr_IsService()){
 						NotaFiscalLine.setlbr_ServiceTaxes();
@@ -414,7 +414,8 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setDiscountAmt(discountAmt.abs()); //Total de Descontos
 			NotaFiscal.setTotalLines(TotalLines.setScale(2, RoundingMode.HALF_UP)); //Valor dos Produtos
 			NotaFiscal.setlbr_ServiceTotalAmt(ServiceTotalAmt.setScale(2, RoundingMode.HALF_UP)); //Valor dos Serviços
-
+			MLBRNFTax.createLBR_NFTax(ctx, NotaFiscal.getLBR_NotaFiscal_ID(), trx);
+			
 			/** Referências **/
 			NotaFiscal.setlbr_NCMReference(NotaFiscal.getNCMReference());   //Referência NCM
 			NotaFiscal.setlbr_CFOPNote(NotaFiscal.getCFOPNote()); //Natureza da Operação

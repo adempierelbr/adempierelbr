@@ -253,15 +253,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		return indPag;
 	}
 
-	public void setSiscomexTax(){
+	public boolean setSiscomexTax(){
 
 		BigDecimal TotalLinesAmt = getTotalLines();
 		if (TotalLinesAmt.signum() == 0)
-			return;
+			return true;
 
 		BigDecimal TotalSiscomexAmt = getlbr_TotalSISCOMEX();
 		if (TotalSiscomexAmt.signum() == 0)
-			return;
+			return true;
 
 		MLBRNotaFiscalLine[] nfLines = getLines("Line");
 		for (MLBRNotaFiscalLine nfLine : nfLines){
@@ -288,23 +288,27 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 			int LBR_TaxGroup_ID   = TaxBR.getTaxGroup_ID("ICMS");
 			if (LBR_TaxGroup_ID > 0){
-				TaxBR.setNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
+				MLBRNFLineTax nfLineTax = new MLBRNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
 						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "SISCOMEX", get_TrxName());
+				if (!nfLineTax.save(get_TrxName())){
+					return false;
+				}
 			}
 
 		} //for lines
 
-	} //setSiscomexTAx
+		return true;
+	} //setSiscomexTax
 
-	public void setFreightTax(){
+	public boolean setFreightTax(){
 
 		BigDecimal TotalLinesAmt = getTotalLines();
 		if (TotalLinesAmt.signum() == 0)
-			return;
+			return true;
 
 		BigDecimal TotalFreightAmt = getFreightAmt();
 		if (TotalFreightAmt.signum() == 0)
-			return;
+			return true;
 
 		MLBRNotaFiscalLine[] nfLines = getLines("Line");
 		for (MLBRNotaFiscalLine nfLine : nfLines){
@@ -324,12 +328,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 			int LBR_TaxGroup_ID   = TaxBR.getTaxGroup_ID("ICMS");
 			if (LBR_TaxGroup_ID > 0){
-				TaxBR.setNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
+				MLBRNFLineTax nfLineTax = new MLBRNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
 						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "FRETE", get_TrxName());
+				if (!nfLineTax.save(get_TrxName())){
+					return false;
+				}
 			}
 
 		} //for lines
 
+		return true;
 	} //setFreightTax
 
 	/**************************************************************************
@@ -629,28 +637,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	 * @return BigDecimal amt
 	 */
 	public BigDecimal getTaxAmt(String taxIndicator){
-		return getTaxAmt(taxIndicator,false);
-	}
-	
-	/**
-	 * Retorna o valor do Imposto (retenção)
-	 * @return BigDecimal amt
-	 */
-	public BigDecimal getTaxAmtWithhold(String taxIndicator){
-		return getTaxAmt(taxIndicator,true);
-	}
-
-	private BigDecimal getTaxAmt(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscal_ID = ? " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -661,28 +654,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	 * @return BigDecimal TaxBaseAmt
 	 */
 	public BigDecimal getTaxBaseAmt(String taxIndicator){
-		return getTaxBaseAmt(taxIndicator,false);
-	}
-	
-	/**
-	 * Retorna a Base de Cálculo do Imposto (retenção)
-	 * @return BigDecimal TaxBaseAmt
-	 */
-	public BigDecimal getTaxBaseAmtWithhold(String taxIndicator){
-		return getTaxBaseAmt(taxIndicator,true);
-	}
-	
-	private BigDecimal getTaxBaseAmt(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscal_ID = ? " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -693,28 +671,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	 * @return BigDecimal TaxRate
 	 */
 	public BigDecimal getTaxRate(String taxIndicator){
-		return getTaxRate(taxIndicator,false);
-	}
-	
-	/**
-	 * Retorna a Alíquota do Imposto (retenção)
-	 * @return BigDecimal TaxRate
-	 */
-	public BigDecimal getTaxRateWithhold(String taxIndicator){
-		return getTaxRate(taxIndicator,true);
-	}
-	
-	private BigDecimal getTaxRate(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
-		             "WHERE lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_NotaFiscalLine_ID IN " +
+		             "WHERE LBR_NotaFiscalLine_ID IN " +
 		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID = ?) " +
 		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//

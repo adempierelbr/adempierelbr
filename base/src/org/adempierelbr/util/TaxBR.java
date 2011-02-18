@@ -25,10 +25,7 @@ import java.util.logging.Level;
 
 import javax.script.ScriptException;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.model.X_LBR_NFLineTax;
-import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxLine;
 import org.adempierelbr.model.X_LBR_TaxName;
 import org.compiere.model.GridTab;
@@ -39,7 +36,6 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MProduct;
-import org.compiere.model.MTax;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -572,160 +568,6 @@ public abstract class TaxBR
 
 		return DB.executeUpdate(sql.toString(), trx);
 	} //deleteSummaryTax
-
-	public static void setNFTax(Properties ctx, int C_Invoice_ID, int LBR_NotaFiscal_ID, String trx){
-
-		String sql = "SELECT t.LBR_TaxGroup_ID, SUM(it.TaxBaseAmt), SUM(it.TaxAmt) " + //1..3
-			         "FROM C_InvoiceTax it " +
-		             "INNER JOIN C_Tax t ON it.C_Tax_ID = t.C_Tax_ID " +
-		             "WHERE C_Invoice_ID = ? " + //#1
-		             "GROUP BY t.LBR_TaxGroup_ID";
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt (1, C_Invoice_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ()){
-
-				Integer LBR_TaxGroup_ID = rs.getInt(1);
-				if (LBR_TaxGroup_ID != null && LBR_TaxGroup_ID.intValue() != 0){
-					X_LBR_NFTax nfTax = new X_LBR_NFTax(ctx, 0, trx);
-					nfTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
-					nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
-					nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
-					nfTax.setlbr_TaxAmt(rs.getBigDecimal(3));
-					nfTax.save(trx);
-				}
-
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql, e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-
-	} //setNFTax
-
-	/**
-	 * *** WARNING *** only use if you have values in LBR_NFLineTax
-	 * @param ctx
-	 * @param LBR_NotaFiscal_ID
-	 * @param trx
-	 */
-	public static void setNFTax(Properties ctx, int LBR_NotaFiscal_ID, String trx){
-
-		MLBRNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
-
-		String sql = "SELECT t.LBR_TaxGroup_ID, SUM(t.lbr_TaxBaseAmt), SUM(t.lbr_TaxAmt) " + //1..3
-			         "FROM LBR_NFLineTax t " +
-		             "INNER JOIN LBR_NotaFiscalLine nfl ON t.LBR_NotaFiscalLine_ID = nfl.LBR_NotaFiscalLine_ID " +
-		             "WHERE nfl.LBR_NotaFiscal_ID = ? " + //#1
-		             "GROUP BY t.LBR_TaxGroup_ID";
-
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt (1, LBR_NotaFiscal_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ()){
-
-				Integer LBR_TaxGroup_ID = rs.getInt(1);
-				if (LBR_TaxGroup_ID != null && LBR_TaxGroup_ID.intValue() != 0){
-					X_LBR_NFTax nfTax = new X_LBR_NFTax(ctx, 0, trx);
-					nfTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
-					nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
-					nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
-					nfTax.setlbr_TaxAmt(rs.getBigDecimal(3));
-					nfTax.save(trx);
-				}
-
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql, e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-
-	} //setNFTax
-
-	/**
-	 * setNFLineTax
-	 * @param ctx
-	 * @param C_InvoiceLine_ID
-	 * @param LBR_NotaFiscalLine_ID
-	 * @param trx
-	 */
-	public static void setNFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, String trx){
-		setNFLineTax(ctx,C_InvoiceLine_ID,LBR_NotaFiscalLine_ID,null,trx);
-	}
-
-	// BF [ 1902926 ] NFLineTax - Falta campo Alíquota e Redução da Base
-	// mgrigioni 27/02/2008, (Kenos, http://www.kenos.com.br)
-	public static void setNFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, String description, String trx){
-
-		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
-
-		X_LBR_TaxName[] taxesName = ImpostoBR.getLBR_TaxName(ctx, C_InvoiceLine_ID, false, trx);
-		Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, iLine.get_ValueAsInt("LBR_Tax_ID"), trx);
-
-		for (X_LBR_TaxName taxName : taxesName){
-
-			if (lTaxes.containsKey(taxName.get_ID())){
-
-				X_LBR_TaxLine taxLine = lTaxes.get(taxName.get_ID());
-				int C_Tax_ID = MLBRTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName.get_ID(), trx);
-				if (C_Tax_ID > 0 && taxLine.islbr_PostTax()){
-
-					MTax tax = new MTax(ctx,C_Tax_ID,trx);
-					int LBR_TaxGroup_ID = tax.get_ValueAsInt("LBR_TaxGroup_ID");
-					
-					MInvoiceTax iTax = getMInvoiceTax(ctx,iLine.getC_Invoice_ID(),tax.get_ID(),trx);
-					
-					if (LBR_TaxGroup_ID > 0 && iTax.getTaxAmt().signum() != 0) //Quando TaxGroup <> NULL E MInvoiceTax tem valor
-					{
-						setNFLineTax(ctx,LBR_TaxGroup_ID,LBR_NotaFiscalLine_ID,taxLine.getlbr_TaxBaseAmt(),
-								//Multiplica por -1 quando retenção ou 1 quando tributação normal
-								taxLine.getlbr_TaxAmt().multiply(new BigDecimal(iTax.getTaxAmt().signum())),
-								taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(),
-								description,trx);
-					}//endif
-
-				}//endif
-
-			}//endif
-
-		}//for
-
-	}
-
-	/**
-	 * setNFLineTax
-	 */
-	public static void setNFLineTax(Properties ctx, int LBR_TaxGroup_ID, int LBR_NotaFiscalLine_ID,
-			BigDecimal lbr_TaxBaseAmt, BigDecimal lbr_TaxAmt, BigDecimal lbr_TaxRate,
-			BigDecimal lbr_TaxBase, String description, String trx){
-
-		X_LBR_NFLineTax nfLineTax = new X_LBR_NFLineTax(ctx,0,trx);
-		nfLineTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
-		nfLineTax.setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);
-		nfLineTax.setlbr_TaxBaseAmt(lbr_TaxBaseAmt.setScale(SCALE, ROUND));
-		nfLineTax.setlbr_TaxAmt(lbr_TaxAmt.setScale(SCALE, ROUND));
-		nfLineTax.setlbr_TaxRate(lbr_TaxRate.setScale(SCALE, ROUND));
-		nfLineTax.setlbr_TaxBase(lbr_TaxBase.setScale(SCALE, ROUND));
-		nfLineTax.setDescription(description); //ELTEK
-		nfLineTax.save(trx);
-	} //setNFLineTax
 
 	/**
 	 * getTaxGroup_ID

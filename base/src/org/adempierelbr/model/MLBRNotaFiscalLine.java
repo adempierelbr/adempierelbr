@@ -243,29 +243,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @return TaxAmt
 	 */
 	public BigDecimal getTaxAmt(String taxIndicator){
-		return getTaxAmt(taxIndicator,false);
-	}
-	
-	/**
-	 * Retorna o valor do Imposto (retenção)
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxAmt 
-	 */
-	public BigDecimal getTaxAmtWithhold(String taxIndicator){
-		return getTaxAmt(taxIndicator,true);
-	}
-	
-	private BigDecimal getTaxAmt(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? AND lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -277,29 +261,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @return TaxBaseAmt 
 	 */
 	public BigDecimal getTaxBaseAmt(String taxIndicator){
-		return getTaxBaseAmt(taxIndicator,false);
-	}
-
-	/**
-	 * Retorna a Base de Cálculo do Imposto (retenção)
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxBaseAmt 
-	 */
-	public BigDecimal getTaxBaseAmtWithhold(String taxIndicator){
-		return getTaxBaseAmt(taxIndicator,true);
-	}
-	
-	private BigDecimal getTaxBaseAmt(String taxIndicator, boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? AND lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -328,29 +296,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @return TaxRate 
 	 */
 	public BigDecimal getTaxRate(String taxIndicator){
-		return getTaxRate(taxIndicator,false);
-	}
-	
-	/**
-	 * Retorna a Alíquota do Imposto (retenção)
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxRate
-	 */
-	public BigDecimal getTaxRateWithhold(String taxIndicator){
-		return getTaxRate(taxIndicator,true);
-	}
-	
-	private BigDecimal getTaxRate(String taxIndicator,boolean isWithhold){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? AND lbr_TaxAmt ";
-		
-		sql += isWithhold ? " < 0 " : " >= 0 ";
-		
-		sql += " AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
@@ -534,10 +486,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @return String Situação Tributária do PIS
 	 */
 	public String getCST_PIS(){
-		String CST_PIS = "01"; //TRIBUTAVEL
+
+		String CST_PIS = ""; //FIXME: Buscar na LBR_NotaFiscalLine
+		
+		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
+			CST_PIS = "50";
+		else
+			CST_PIS = "01";
 				
-		if (getTaxAmt("PIS").signum() != 1){ //ISENTO
-			CST_PIS = "07";
+		if (getTaxAmt("COFINS").signum() != 1){ //ISENTO
+			if (CST_PIS.equals("50"))
+				CST_PIS = "98";
+			else if (CST_PIS.equals("01"))
+				CST_PIS = "07";
 		}
 		
 		return CST_PIS;
@@ -549,10 +510,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @return String Situação Tributária do COFINS
 	 */
 	public String getCST_COFINS(){
-		String CST_COFINS = "01"; //TRIBUTAVEL
 		
+		String CST_COFINS = ""; //FIXME: Buscar na LBR_NotaFiscalLine
+		
+		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
+			CST_COFINS = "50";
+		else
+			CST_COFINS = "01";
+				
 		if (getTaxAmt("COFINS").signum() != 1){ //ISENTO
-			CST_COFINS = "07";
+			if (CST_COFINS.equals("50"))
+				CST_COFINS = "98";
+			else if (CST_COFINS.equals("01"))
+				CST_COFINS = "07";
 		}
 		
 		return CST_COFINS;
