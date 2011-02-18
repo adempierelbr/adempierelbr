@@ -144,10 +144,12 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 	protected boolean afterSave(boolean newRecord, boolean success){
 		
 		if (newRecord || !success)
-			return false;
+			return true;
 		
 		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),getLBR_NotaFiscalLine_ID(),get_TrxName());
-		MLBRNFTax.createLBR_NFTax(getCtx(), nfLine.getLBR_NotaFiscal_ID(), get_TrxName());
+		if (!MLBRNFTax.createLBR_NFTax(getCtx(), nfLine.getLBR_NotaFiscal_ID(), get_TrxName())){
+			return false;
+		}
 		
 		return true;
 	}
