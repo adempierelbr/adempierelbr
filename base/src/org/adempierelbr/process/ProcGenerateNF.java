@@ -246,7 +246,7 @@ public class ProcGenerateNF extends SvrProcess
 
 			/** Valores **/
 			NotaFiscal.setlbr_InsuranceAmt(null);   //Valor do Seguro //TODO
-			//NotaFiscal.setFreightAmt(null);   //Valor do Frete (Definido na Linha)
+			NotaFiscal.setFreightAmt(null);   //Valor do Frete
 			NotaFiscal.setlbr_GrossWeight(null); // Peso Bruto //TODO
 			NotaFiscal.setlbr_NetWeight(null); //Peso Líquido //TODO
 			NotaFiscal.setlbr_PackingType(null); //Espécie //TODO
@@ -414,7 +414,6 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setDiscountAmt(discountAmt.abs()); //Total de Descontos
 			NotaFiscal.setTotalLines(TotalLines.setScale(2, RoundingMode.HALF_UP)); //Valor dos Produtos
 			NotaFiscal.setlbr_ServiceTotalAmt(ServiceTotalAmt.setScale(2, RoundingMode.HALF_UP)); //Valor dos Serviços
-			MLBRNFTax.createLBR_NFTax(ctx, NotaFiscal.getLBR_NotaFiscal_ID(), trx);
 			
 			/** Referências **/
 			NotaFiscal.setlbr_NCMReference(NotaFiscal.getNCMReference());   //Referência NCM
@@ -427,7 +426,10 @@ public class ProcGenerateNF extends SvrProcess
 
 			/** Lançamento Impostos Frete **/
 			NotaFiscal.setFreightTax();
-
+			
+			/** Lançamento Impostos Nota Fiscal **/
+			MLBRNFTax.createLBR_NFTax(ctx, NotaFiscal.getLBR_NotaFiscal_ID(), trx);
+			
 			/** Código de Barras **/
 			StringBuilder Barcode1 = new StringBuilder();
 			Barcode1.append("1");

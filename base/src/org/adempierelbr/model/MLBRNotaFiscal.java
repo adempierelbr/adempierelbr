@@ -650,6 +650,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	} //getTaxAmt
 	
 	/**
+	 * Retorna o valor do Imposto sem as linhas com serviço
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxAmtWithoutService(String taxIndicator){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID IN " +
+		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID = ? AND lbr_CFOPName NOT LIKE '%.933') " +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxAmtWithoutService
+	
+	/**
 	 * Retorna a Base de Cálculo do Imposto
 	 * @return BigDecimal TaxBaseAmt
 	 */
