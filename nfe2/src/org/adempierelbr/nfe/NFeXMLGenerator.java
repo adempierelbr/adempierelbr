@@ -204,8 +204,10 @@ public class NFeXMLGenerator
 		X_C_City bpCity = BPartnerUtil.getX_C_City(ctx,bpLoc,trxName);
 
 		// Dados do documento da NF
-		String modNF = docType.get_ValueAsString("lbr_NFModel");
-		String serie = docType.get_ValueAsString("lbr_NFSerie");
+		String modNF = nf.getlbr_NFModel();
+		String serie = nf.getSerieNo();
+		if (serie.isEmpty())
+			serie = "0";
 
 		/**
 		 * Indicador da forma de pagamento:
