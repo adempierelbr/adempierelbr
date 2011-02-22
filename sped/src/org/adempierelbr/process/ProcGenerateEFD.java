@@ -322,6 +322,9 @@ public class ProcGenerateEFD extends SvrProcess
 	private void createFiscalDetail(MLBRNotaFiscalLine nfLine, RegSped fiscalHeader, 
 			String COD_ITEM, String TIPO_ITEM, String UNID){
 		
+		if (fiscalHeader == null)
+			return;
+		
 		//REGISTROS FILHOS DO C100
 		if (fiscalHeader instanceof RC100){
 			

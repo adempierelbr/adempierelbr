@@ -81,9 +81,9 @@ public class R1100 extends RegSped implements Comparable<Object>{
             .append(PIPE).append(TextUtil.timeToString(DT_DE,"ddMMyyyy"))
             .append(PIPE).append(TextUtil.checkSize(NAT_EXP, 1))
             .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(NRO_RE),12))
-            .append(PIPE).append(TextUtil.timeToString(DT_RE,"ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_RE,"ddMMyyyy",false))
             .append(PIPE).append(TextUtil.checkSize(CHC_EMB,18))
-            .append(PIPE).append(TextUtil.timeToString(DT_CHC,"ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_CHC,"ddMMyyyy",false))
             .append(PIPE).append(TextUtil.timeToString(DT_AVB,"ddMMyyyy"))
             .append(PIPE).append(TextUtil.checkSize(TP_CHC, 2))
             .append(PIPE).append(TextUtil.lPad(PAIS,3))
@@ -97,6 +97,7 @@ public class R1100 extends RegSped implements Comparable<Object>{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((NRO_DE == null) ? 0 : NRO_DE.hashCode());
+		result = prime * result + ((NRO_RE == null) ? 0 : NRO_RE.hashCode());
 		return result;
 	}
 
@@ -113,6 +114,11 @@ public class R1100 extends RegSped implements Comparable<Object>{
 			if (other.NRO_DE != null)
 				return false;
 		} else if (!NRO_DE.equals(other.NRO_DE))
+			return false;
+		if (NRO_RE == null) {
+			if (other.NRO_RE != null)
+				return false;
+		} else if (!NRO_RE.equals(other.NRO_RE))
 			return false;
 		return true;
 	}

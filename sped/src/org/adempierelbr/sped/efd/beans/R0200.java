@@ -121,11 +121,14 @@ public class R0200 extends RegSped {
 			this.COD_NCM = "";
 			this.COD_GEN = "";
 		}
+		else{
+			this.COD_NCM = TextUtil.checkSize(TextUtil.toNumeric(COD_NCM), 8);
+			if (this.COD_NCM.length() != 8)
+				this.COD_NCM = "";
 		
-		this.COD_NCM = TextUtil.checkSize(TextUtil.toNumeric(COD_NCM), 8);
-		
-		if (this.COD_NCM != null && this.COD_NCM.length() > 2)
-			COD_GEN    = this.COD_NCM.substring(0, 2);
+			if (this.COD_NCM != null && this.COD_NCM.length() > 2)
+				COD_GEN    = this.COD_NCM.substring(0, 2);
+		}
 	}
 
 	/**

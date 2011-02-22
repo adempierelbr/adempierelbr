@@ -279,7 +279,10 @@ public class EFDUtil{
 		if (nfLine.islbr_IsService())
 			TIPO_ITEM = "09"; //SERVICO
 		
-		String COD_NCM       = nfLine.getlbr_NCMName();
+		String COD_NCM = nfLine.getlbr_NCMName();
+		if (COD_NCM == null || COD_NCM.trim().isEmpty())
+			COD_NCM = nfLine.getLBR_NCM().getValue();
+		
 		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
 		String COD_LST       = ""; //COD SERVIDO //TODO ???
 		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
@@ -431,10 +434,10 @@ public class EFDUtil{
 		BigDecimal VL_BC_ISSQN = nfLine.getTaxBaseAmt("ISS");
 		BigDecimal ALIQ_ISSQN = nfLine.getTaxRate("ISS");
 		BigDecimal VL_ISSQN = nfLine.getTaxAmt("ISS");
-		BigDecimal VL_BC_IRRF = nfLine.getTaxBaseAmtWithhold("IR").abs();
-		BigDecimal VL_IRRF = nfLine.getTaxAmtWithhold("IR").abs();
-		BigDecimal VL_BC_PREV = nfLine.getTaxBaseAmtWithhold("INSS").abs();
-		BigDecimal VL_PREV = nfLine.getTaxAmtWithhold("INSS"); 
+		BigDecimal VL_BC_IRRF = nfLine.getTaxBaseAmt("IR").abs();
+		BigDecimal VL_IRRF = nfLine.getTaxAmt("IR").abs();
+		BigDecimal VL_BC_PREV = nfLine.getTaxBaseAmt("INSS").abs();
+		BigDecimal VL_PREV = nfLine.getTaxAmt("INSS"); 
 		
 		return new RC172(rc170,VL_SERV_NT,VL_BC_ISSQN,ALIQ_ISSQN,VL_ISSQN,
 				VL_BC_IRRF,VL_IRRF,VL_BC_PREV,VL_PREV);
