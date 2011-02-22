@@ -651,22 +651,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	
 	/**
 	 * Retorna o valor do Imposto sem as linhas com serviço
+	 * @param taxIndicator
+	 * @param onlyService - true, só impostos de serviço, false, só impostos exceto serviços
 	 * @return BigDecimal amt
 	 */
-	public BigDecimal getTaxAmtWithoutService(String taxIndicator){
+	public BigDecimal getTaxAmtService(String taxIndicator, boolean onlyService){
 
 		if (taxIndicator == null)
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
 		             "WHERE LBR_NotaFiscalLine_ID IN " +
-		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID = ? AND lbr_CFOPName NOT LIKE '%.933') " +
+		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND lbr_CFOPName" + (onlyService ? " LIKE " : " NOT LIKE ") + "'%.933')"  +
 		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
-	} //getTaxAmtWithoutService
+	} //getTaxAmtService
 	
 	/**
 	 * Retorna a Base de Cálculo do Imposto
@@ -684,6 +687,28 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
 	} //getTaxAmt
+	
+	/**
+	 * Retorna o valor do Imposto sem as linhas com serviço
+	 * @param taxIndicator
+	 * @param onlyService - true, só impostos de serviço, false, só impostos exceto serviços
+	 * @return BigDecimal amt
+	 */
+	public BigDecimal getTaxBaseAmtService(String taxIndicator, boolean onlyService){
+
+		if (taxIndicator == null)
+			return Env.ZERO;
+
+		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
+		             "WHERE LBR_NotaFiscalLine_ID IN " +
+		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND lbr_CFOPName" + (onlyService ? " LIKE " : " NOT LIKE ") + "'%.933')"  +
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		//
+
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
+		return result == null ? Env.ZERO : result;
+	} //getTaxBaseAmtService
 
 	/**
 	 * Retorna a Alíquota do Imposto
@@ -847,6 +872,23 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	{
 		return getTaxAmt("COFINS");
 	}	//	getCOFINSAmt
+	
+	/**
+	 * Retorna o desconto proporcional ao base amt
+	 * Usado para saber o desconto das linhas só de serviço ou só de produtos
+	 * @param baseAmt
+	 * @return
+	 */
+	public BigDecimal getDiscountAmt(BigDecimal baseAmt){
+
+		if (baseAmt.signum() <= 0 || baseAmt.signum() <= 0)
+			return Env.ZERO;
+		
+		BigDecimal discountAmt = baseAmt.divide(getTotalLines().add(getlbr_ServiceTotalAmt()), TaxBR.MCROUND);
+		           discountAmt = getDiscountAmt().multiply(discountAmt);
+
+		return discountAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
+	} //getDiscountAmt
 
 	public static int getLBR_NotaFiscal_ID(String DocumentNo,boolean IsSOTrx, String trx)
 	{

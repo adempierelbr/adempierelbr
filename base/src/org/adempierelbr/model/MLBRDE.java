@@ -80,7 +80,7 @@ public class MLBRDE extends X_LBR_DE {
 
 		String whereClause = "AD_Client_ID=? AND " +
 				             "AD_Org_ID IN (0,?) AND " +
-							 "DateDoc BETWEEN ? AND ?";
+							 "DateTrx BETWEEN ? AND ?";
 
 		MTable table = MTable.get(Env.getCtx(), MLBRDE.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), trxName);
