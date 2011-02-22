@@ -244,7 +244,7 @@ public class SacredSimpUtil{
 
 	public static B5R5335 createR5335(MLBRNotaFiscal nf){
 
-		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
+		String NUM_DECL_EXP = nf.getLBR_DE().getlbr_DE();
 		String COMP_OPER    = "0";
 
 		return new B5R5335(NUM_DECL_EXP,COMP_OPER);

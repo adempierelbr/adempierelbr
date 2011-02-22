@@ -292,7 +292,7 @@ public class SacredCompUtil{
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
 		
-		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
+		String NUM_DECL_EXP = nf.getLBR_DE().getlbr_DE();
 		String COMP_OPER    = "0";
 		BigDecimal SERV_COMUN = Env.ZERO;
 
