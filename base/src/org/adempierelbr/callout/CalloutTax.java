@@ -242,6 +242,11 @@ public class CalloutTax extends CalloutEngine
 		boolean  isSOTrx 		   = document.get_ValueAsBoolean("IsSOTrx");
 		String transactionType     = document.get_ValueAsString("lbr_TransactionType");
 		//
+		
+		//FR - Para exportação não existe incidência de impostos
+		if (transactionType.equals("EXP")){
+			return null;
+		}
 
 		//	Product
 		if (product == null && charge == null)

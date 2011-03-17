@@ -482,12 +482,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	
 	/**
 	 * Formata e retorna a Situação Tributária do PIS
-	 * FIXME: CRIAR CAMPO NA TABELA LBR_NotaFiscalLine
 	 * @return String Situação Tributária do PIS
 	 */
 	public String getCST_PIS(){
 
-		String CST_PIS = ""; //FIXME: Buscar na LBR_NotaFiscalLine
+		String CST_PIS = getlbr_TaxStatusPIS();
 		
 		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
 			CST_PIS = "50";
@@ -506,12 +505,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	
 	/**
 	 * Formata e retorna a Situação Tributária do COFINS
-	 * FIXME: CRIAR CAMPO NA TABELA LBR_NotaFiscalLine
 	 * @return String Situação Tributária do COFINS
 	 */
 	public String getCST_COFINS(){
 		
-		String CST_COFINS = ""; //FIXME: Buscar na LBR_NotaFiscalLine
+		String CST_COFINS = getlbr_TaxStatusCOFINS();
 		
 		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
 			CST_COFINS = "50";

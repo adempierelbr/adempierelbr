@@ -53,7 +53,7 @@ public abstract class RemoverAcentos {
 	private static String removeSpecial(char value){
 		
 		if (Character.isLetterOrDigit(value) ||
-			String.valueOf(value).matches("[!?$%()-+/;:.,]") ||
+			String.valueOf(value).matches("[!?$%()--+/;:.,]") ||
 			value == ' '){
 			return String.valueOf(value);
 		}

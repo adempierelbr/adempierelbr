@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -150,6 +151,28 @@ public abstract class AdempiereLBR{
 
 		return M_Product_ID;
 	}//getProduct_IDfromValue
+	
+	public static int getLocator_IDfromValue(int M_Warehouse_ID, String value, String trx){
+
+		String sql = "SELECT M_Locator_ID FROM M_Locator " +
+	                 "WHERE IsActive = 'Y' AND M_Warehouse_ID = ? " +
+	                 "AND Value = ?";
+
+		int M_Locator_ID = DB.getSQLValue(trx, sql,
+				new Object[]{M_Warehouse_ID,value});
+
+		return M_Locator_ID;
+	}//getLocator_IDfromValue
+	
+	public static BigDecimal getQtyOnHand(int M_Product_ID, int M_Locator_ID, String trx){
+		
+		String sql = "SELECT SUM(s.QtyOnHand) FROM M_Storage s " +
+					 "WHERE s.M_Product_ID = ? AND s.M_Locator_ID = ?";
+		
+		BigDecimal qtyOnHand = DB.getSQLValueBD(trx, sql, new Object[]{M_Product_ID,M_Locator_ID});
+		
+		return qtyOnHand == null ? Env.ZERO : qtyOnHand;
+	}
 
 	public static int getARReceipt(){
 

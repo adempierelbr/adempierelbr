@@ -341,6 +341,19 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_TaxStatus();
 
+    /** Column name lbr_TaxStatusCOFINS */
+    public static final String COLUMNNAME_lbr_TaxStatusCOFINS = "lbr_TaxStatusCOFINS";
+
+	/** Set Tax Status (COFINS).
+	  * Defines the Tax Status (COFINS)
+	  */
+	public void setlbr_TaxStatusCOFINS (String lbr_TaxStatusCOFINS);
+
+	/** Get Tax Status (COFINS).
+	  * Defines the Tax Status (COFINS)
+	  */
+	public String getlbr_TaxStatusCOFINS();
+
     /** Column name lbr_TaxStatusIPI */
     public static final String COLUMNNAME_lbr_TaxStatusIPI = "lbr_TaxStatusIPI";
 
@@ -353,6 +366,19 @@ public interface I_LBR_NotaFiscalLine
 	  * Defines the Tax Status (IPI)
 	  */
 	public String getlbr_TaxStatusIPI();
+
+    /** Column name lbr_TaxStatusPIS */
+    public static final String COLUMNNAME_lbr_TaxStatusPIS = "lbr_TaxStatusPIS";
+
+	/** Set Tax Status (PIS).
+	  * Defines the Tax Status (PIS)
+	  */
+	public void setlbr_TaxStatusPIS (String lbr_TaxStatusPIS);
+
+	/** Get Tax Status (PIS).
+	  * Defines the Tax Status (PIS)
+	  */
+	public String getlbr_TaxStatusPIS();
 
     /** Column name lbr_UOMName */
     public static final String COLUMNNAME_lbr_UOMName = "lbr_UOMName";
