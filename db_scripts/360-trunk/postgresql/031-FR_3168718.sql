@@ -10,7 +10,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 21/10/2010 13h9min5s AMST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Preço Brasi',PrintName='Preço Brasil',Updated=TO_TIMESTAMP('2010-10-21 13:09:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1103000 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='PreÃ§o Brasi',PrintName='PreÃ§o Brasil',Updated=TO_TIMESTAMP('2010-10-21 13:09:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1103000 AND AD_Language='pt_BR'
 ;
 
 -- 21/10/2010 13h10min4s AMST
@@ -25,7 +25,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 21/10/2010 13h10min22s AMST
 -- Default comment for updating dictionary
-UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Preço Brasil',PrintName='Preço Brasil',Updated=TO_TIMESTAMP('2010-10-21 13:10:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1103001 AND AD_Language='pt_BR'
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='PreÃ§o Brasil',PrintName='PreÃ§o Brasil',Updated=TO_TIMESTAMP('2010-10-21 13:10:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1103001 AND AD_Language='pt_BR'
 ;
 
 -- 21/10/2010 13h10min51s AMST
