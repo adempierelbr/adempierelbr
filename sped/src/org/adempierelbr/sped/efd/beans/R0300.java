@@ -28,6 +28,9 @@ public class R0300 extends RegSped  {
 	private String DESCR_ITEM;
 	private String COD_PRNC;
 	private String COD_CTA;
+	private String COD_CCUS;
+	private String HELP;
+	
 	private int NR_PARC;
 	
 	/**
@@ -41,7 +44,7 @@ public class R0300 extends RegSped  {
 	 * @param NR_PARC
 	 */
 	public R0300(String COD_IND_BEM, String IDENT_MERC, String DESCR_ITEM,
-			String COD_PRNC, String COD_CTA, int NR_PARC)
+			String COD_PRNC, String COD_CTA, int NR_PARC, String COD_CCUS, String HELP)
 	{
 		super();
 		setCOD_IND_BEM(COD_IND_BEM);
@@ -50,6 +53,8 @@ public class R0300 extends RegSped  {
 		setCOD_PRNC(COD_PRNC);
 		this.COD_CTA = COD_CTA;
 		this.NR_PARC = NR_PARC;
+		this.COD_CCUS = COD_CCUS;
+		this.HELP = HELP;
 	}	//R0300
 	
 	private void setCOD_IND_BEM(String COD_IND_BEM) {
@@ -60,7 +65,7 @@ public class R0300 extends RegSped  {
 		else
 			this.COD_IND_BEM = TextUtil.checkSize(RemoverAcentos.remover(COD_IND_BEM), 60);;
 	}
-	
+		
 	private void setIDENT_MERC(String IDENT_MERC) {
 		
 		if (IDENT_MERC == null || IDENT_MERC.isEmpty() || IDENT_MERC.length() > 1){
@@ -78,6 +83,27 @@ public class R0300 extends RegSped  {
 		}
 		else
 			this.COD_PRNC = TextUtil.checkSize(RemoverAcentos.remover(COD_PRNC), 60);;
+	}
+	
+	public String getIDENT_MERC(){
+		return this.IDENT_MERC;
+	}
+	
+	public int getNR_PARC(){
+		return this.NR_PARC;
+	}
+	
+	public String getCOD_CCUS(){
+		return this.COD_CCUS;
+	}
+	
+	public String getHELP(){
+		
+		if (this.HELP == null || this.HELP.trim().isEmpty()){
+			return "SEM DESCRICAO";
+		}
+		
+		return this.HELP;
 	}
 	
 	/**

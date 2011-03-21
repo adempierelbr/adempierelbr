@@ -22,6 +22,8 @@ import org.adempierelbr.sped.efd.beans.R0100;
 import org.adempierelbr.sped.efd.beans.R0150;
 import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
+import org.adempierelbr.sped.efd.beans.R0300;
+import org.adempierelbr.sped.efd.beans.R0600;
 import org.adempierelbr.sped.efd.beans.R0990;
 import org.adempierelbr.sped.efd.beans.R1001;
 import org.adempierelbr.sped.efd.beans.R1100;
@@ -51,15 +53,19 @@ import org.adempierelbr.sped.efd.beans.RD590;
 import org.adempierelbr.sped.efd.beans.RD990;
 import org.adempierelbr.sped.efd.beans.RE001;
 import org.adempierelbr.sped.efd.beans.RE100;
+import org.adempierelbr.sped.efd.beans.RE111;
 import org.adempierelbr.sped.efd.beans.RE500;
 import org.adempierelbr.sped.efd.beans.RE510;
+import org.adempierelbr.sped.efd.beans.RE530;
 import org.adempierelbr.sped.efd.beans.RE990;
 import org.adempierelbr.sped.efd.beans.RG001;
 import org.adempierelbr.sped.efd.beans.RG990;
 import org.adempierelbr.sped.efd.beans.RH001;
+import org.adempierelbr.sped.efd.beans.RH005;
 import org.adempierelbr.sped.efd.beans.RH990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MAsset;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -81,10 +87,14 @@ public class ProcGenerateEFD extends SvrProcess
 	/** Controle para saber se existe registros no bloco **/
 	private boolean hasC = false;
 	private boolean hasD = false;
+	private boolean hasG = false;
+	private boolean hasH = false;
 	
 	private Set<R0150> _R0150 = new LinkedHashSet<R0150>();
 	private Set<R0190> _R0190 = new LinkedHashSet<R0190>();
 	private Set<R0200> _R0200 = new LinkedHashSet<R0200>();
+	private Set<R0300> _R0300 = new LinkedHashSet<R0300>();
+	private Set<R0600> _R0600 = new LinkedHashSet<R0600>();
 	
 	private List<RegSped> _RE110 = new ArrayList<RegSped>(); //List de beans para saldo do icms
 	
@@ -235,6 +245,9 @@ public class ProcGenerateEFD extends SvrProcess
 				
 		} //loop Nota Fiscal
 		
+		//BLOCO G: CIAP
+		createCIAPInfo(dateTo);
+		
 		//BLOCO 1: OUTRAS INFORMAÇÕES
 		createDEInfo(dateFrom,dateTo);
 	
@@ -244,7 +257,7 @@ public class ProcGenerateEFD extends SvrProcess
 		StringBuilder BLOCOD = montaBLOCOD(); //Documentos Fiscais II – Serviços (ICMS)
 		StringBuilder BLOCOE = montaBLOCOE(dateFrom,dateTo); //Apuração do ICMS e do IPI
 		StringBuilder BLOCOG = montaBLOCOG(); //Controle do Crédito de ICMS do Ativo Permanente – CIAP
-		StringBuilder BLOCOH = montaBLOCOH(); //Inventário Físico
+		StringBuilder BLOCOH = montaBLOCOH(dateFrom); //Inventário Físico
 		StringBuilder BLOCO1 = montaBLOCO1(); //Outras Informações
 		StringBuilder BLOCO9 = montaBLOCO9(); //Controle e Encerramento do Arquivo Digital
 		
@@ -465,6 +478,29 @@ public class ProcGenerateEFD extends SvrProcess
 		
 	} //createDEInfo
 	
+	private void createCIAPInfo(Timestamp dateTo){
+		
+		MAsset[] assets = EFDUtil.getAtivosCIAP(dateTo);
+		for (MAsset asset : assets){
+			
+			//Cadastro de Centro de Custo
+			R0600 r0600 = EFDUtil.createR0600(asset.getAD_Org_ID(),dateTo);
+			if (_R0600.contains(r0600))
+				r0600.subtractCounter();
+			else
+				_R0600.add(r0600);
+			
+			//Cadastro de Ativos
+			R0300 r0300 = EFDUtil.createR0300(asset, r0600.getCOD_CCUS());
+			if (_R0300.contains(r0300))
+				r0300.subtractCounter();
+			else
+				_R0300.add(r0300);			
+
+		} //loop asset
+		
+	} //createCIAPInfo
+	
 	private StringBuilder montaBLOCO0(int count, Timestamp dateFrom, Timestamp dateTo){
 		
 		StringBuilder BLOCO0 = new StringBuilder("");
@@ -488,6 +524,16 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		for (R0200 r0200 : _R0200){ //PRODUTOS
 			BLOCO0.append(r0200);
+		}
+		
+		for (R0300 r0300 : _R0300){ //ATIVO FIXO
+			BLOCO0.append(r0300);
+			if (r0300.getIDENT_MERC().equals("1")) //OBRIGATÓRIO QUANDO BEM
+				BLOCO0.append(EFDUtil.createR0305(r0300));
+		}
+		
+		for (R0600 r0600 : _R0600){ //CENTRO DE CUSTO
+			BLOCO0.append(r0600);
 		}
 		
 		BLOCO0.append(new R0990());
@@ -527,8 +573,9 @@ public class ProcGenerateEFD extends SvrProcess
 				int index = 0;
 				for(RC170 rc170 : arrayRC170){
 					if (rc100.getCOD_MOD().equals("55") && 
-						rc100.getIND_EMIT().equals("0")) //NFe própria não informar C170
+						rc100.getIND_EMIT().equals("0")){ //NFe própria não informar C170
 						rc170.subtractCounter();
+					}
 					else{
 						BLOCOC.append(rc170);
 					}
@@ -670,14 +717,24 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCOE.append(new RE001(true));
 			BLOCOE.append(new RE100(dateFrom,dateTo));
 			BLOCOE.append(EFDUtil.createRE110(dateFrom, _RE110));
-			BLOCOE.append(new RE500(dateFrom,dateTo));
 			
+			RE111[] arrayRE111 = EFDUtil.createRE111(dateFrom);
+			for (RE111 re111 : arrayRE111){
+				BLOCOE.append(re111);
+			}
+			
+			BLOCOE.append(new RE500(dateFrom,dateTo));
 			RE510[] arrayRE510 = EFDUtil.createRE510(_RC170);
 			for(RE510 re510 : arrayRE510){
 				BLOCOE.append(re510);
 			} //loop E510
 			
 			BLOCOE.append(EFDUtil.createRE520(dateFrom, arrayRE510));
+			RE530[] arrayRE530 = EFDUtil.createRE530(dateFrom);
+			for (RE530 re530 : arrayRE530){
+				BLOCOE.append(re530);
+			}
+			
 			BLOCOE.append(new RE990());
 		}
 		//FIM BLOCO E
@@ -690,19 +747,26 @@ public class ProcGenerateEFD extends SvrProcess
 		StringBuilder BLOCOG = new StringBuilder("");
 	
 		//MONTA BLOCO G
-		BLOCOG.append(new RG001(false));
+		BLOCOG.append(new RG001(hasG));
 		BLOCOG.append(new RG990());
 		//FIM BLOCO G
 		
 		return BLOCOG;
 	} //montaBLOCOG
 	
-	private StringBuilder montaBLOCOH(){
+	private StringBuilder montaBLOCOH(Timestamp dateFrom){
 		
 		StringBuilder BLOCOH = new StringBuilder("");
 	
+		RH005 rh005 = EFDUtil.createRH005(dateFrom);
+		if (rh005 != null)
+			hasH = true;
+		
 		//MONTA BLOCO H
-		BLOCOH.append(new RH001(false));
+		BLOCOH.append(new RH001(hasH));
+		if (hasH){
+			BLOCOH.append(rh005);
+		}
 		BLOCOH.append(new RH990());
 		//FIM BLOCO H
 		

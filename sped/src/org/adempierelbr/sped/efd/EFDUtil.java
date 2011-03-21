@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,22 +13,28 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.adempierelbr.model.MLBRApuracaoICMS;
+import org.adempierelbr.model.MLBRApuracaoIPI;
 import org.adempierelbr.model.MLBRDE;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
+import org.adempierelbr.model.X_LBR_ApuracaoICMSLine;
+import org.adempierelbr.model.X_LBR_ApuracaoIPILine;
 import org.adempierelbr.model.X_LBR_NFDI;
-import org.adempierelbr.process.ProcApuracaoICMS;
-import org.adempierelbr.process.ProcApuracaoIPI;
+import org.adempierelbr.process.ProcAssetDepreciate;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.sped.efd.beans.R1100;
-import org.adempierelbr.sped.efd.beans.R9900;
 import org.adempierelbr.sped.efd.beans.R0000;
 import org.adempierelbr.sped.efd.beans.R0005;
 import org.adempierelbr.sped.efd.beans.R0100;
 import org.adempierelbr.sped.efd.beans.R0150;
 import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
+import org.adempierelbr.sped.efd.beans.R0300;
+import org.adempierelbr.sped.efd.beans.R0305;
+import org.adempierelbr.sped.efd.beans.R0600;
+import org.adempierelbr.sped.efd.beans.R1100;
+import org.adempierelbr.sped.efd.beans.R9900;
 import org.adempierelbr.sped.efd.beans.RC100;
 import org.adempierelbr.sped.efd.beans.RC120;
 import org.adempierelbr.sped.efd.beans.RC130;
@@ -43,23 +51,37 @@ import org.adempierelbr.sped.efd.beans.RD500;
 import org.adempierelbr.sped.efd.beans.RD510;
 import org.adempierelbr.sped.efd.beans.RD590;
 import org.adempierelbr.sped.efd.beans.RE110;
+import org.adempierelbr.sped.efd.beans.RE111;
 import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE520;
+import org.adempierelbr.sped.efd.beans.RE530;
+import org.adempierelbr.sped.efd.beans.RH005;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MAsset;
+import org.compiere.model.MAssetGroupAcct;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MProduct;
+import org.compiere.model.MTable;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
+import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
+/**
+ *	Utilitarios para o EFD
+ *
+ * @author Mario Grigioni, mgrigioni
+ * @version $Id: EFDUtil.java, 20/01/2011, 09:50:00, mgrigioni
+ */
 public class EFDUtil{
 
 	/**	Logger			*/
@@ -290,6 +312,42 @@ public class EFDUtil{
 		return new R0200(COD_ITEM,DESCR_ITEM,COD_BARRA,COD_ANT_ITEM,UNID_INV,TIPO_ITEM,
 				COD_NCM,EX_IPI,COD_LST,ALIQ_ICMS);
 	} //createR0200
+	
+	public static R0305 createR0305(R0300 r0300){		
+		return new R0305(r0300.getCOD_CCUS(),r0300.getHELP(),r0300.getNR_PARC());
+	} //createR0305
+	
+	public static R0300 createR0300(MAsset asset, String COD_CCUS){
+		
+		int C_AcctSchema_ID = Env.getContextAsInt(ctx, "$C_AcctSchema_ID");
+		
+		String COD_IND_BEM = asset.getValue();
+		String IDENT_MERC  = asset.getA_Parent_Asset_ID() <= 0 ? "1" : "2";
+		String DESCR_ITEM  = asset.getName();
+		String HELP        = asset.getHelp();
+		String COD_PRNC    = asset.getA_Parent_Asset().getValue();
+		String COD_CTA     = null;
+		
+		MAssetGroupAcct assetGroup = ProcAssetDepreciate.getMAssetGroupAcct(ctx,asset.getA_Asset_Group_ID(),C_AcctSchema_ID);
+		int NR_PARC = assetGroup.getUseLifeMonths();
+		
+		return new R0300(COD_IND_BEM,IDENT_MERC,DESCR_ITEM,COD_PRNC,COD_CTA,NR_PARC,COD_CCUS,HELP);
+	} //createR0300
+	
+	public static R0600 createR0600(int AD_Org_ID, Timestamp dateTo){
+		
+		MOrg org = MOrg.get(ctx, AD_Org_ID);
+		
+		Timestamp DT_ALT = org.getUpdated();
+		if (DT_ALT.after(dateTo)){
+			DT_ALT = dateTo;
+		}
+		
+		String COD_CCUS = org.getValue();
+		String CCUS = org.getName();
+		
+		return new R0600(DT_ALT,COD_CCUS,CCUS);
+	} //createR0600
 	
 	public static RC100 createRC100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
 		
@@ -713,20 +771,18 @@ public class EFDUtil{
 	
 	public static RE110 createRE110(Timestamp dateFrom, List<RegSped> regs){
 		
-		/*FIXME: 
-		 * Necessário fazer ajustes dos registroc C197.
-		 * Site da Receita ainda não tem as tabelas 5.3 dos estados para criar os registros
-		*/
+		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
+		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(ctx, period.get_ID(), AD_Org_ID);
 		
-		BigDecimal VL_TOT_DEBITOS     = Env.ZERO;
+		BigDecimal VL_TOT_DEBITOS     = Env.ZERO; //cálculo abaixo
 		BigDecimal VL_AJ_DEBITOS      = Env.ZERO;
-		BigDecimal VL_TOT_AJ_DEBITOS  = Env.ZERO;
-		BigDecimal VL_ESTORNOS_CRED   = Env.ZERO;
-		BigDecimal VL_TOT_CREDITOS    = Env.ZERO;
+		BigDecimal VL_TOT_AJ_DEBITOS  = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos);
+		BigDecimal VL_ESTORNOS_CRED   = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos);
+		BigDecimal VL_TOT_CREDITOS    = Env.ZERO; //cálculo abaixo
 		BigDecimal VL_AJ_CREDITOS     = Env.ZERO;
-		BigDecimal VL_TOT_AJ_CREDITOS = Env.ZERO;
-		BigDecimal VL_ESTORNOS_DEB    = Env.ZERO;
-		BigDecimal VL_SLD_CREDOR_ANT  = getVL_SLD_CREDOR_ANT(dateFrom);
+		BigDecimal VL_TOT_AJ_CREDITOS = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos);
+		BigDecimal VL_ESTORNOS_DEB    = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos);
+		BigDecimal VL_SLD_CREDOR_ANT  = MLBRApuracaoICMS.getCumulatedAmt(ctx,period.get_ID());
 		BigDecimal VL_SLD_APURADO     = Env.ZERO;
 		BigDecimal VL_TOT_DED         = Env.ZERO;
 		BigDecimal VL_ICMS_RECOLHER   = Env.ZERO;
@@ -766,6 +822,30 @@ public class EFDUtil{
 				VL_SLD_CREDOR_TRSP,DEB_ESP);
 	} //createRE110
 	
+	public static RE111[] createRE111(Timestamp dateFrom){
+		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
+		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(ctx, period.get_ID(), AD_Org_ID);
+		X_LBR_ApuracaoICMSLine[] lines = apICMS.getLines();
+		
+		List<RE111> list = new ArrayList<RE111>();
+		
+		for (X_LBR_ApuracaoICMSLine line :lines){
+			
+			boolean isST = false;
+			if (line.getLBR_ICMSBasis().getType().equals("S"))
+				isST = true;
+			
+			String COD_AJ_APUR = getCOD_AJ_APUR(line.getType(),isST);
+			String DESCR_COMPL_AJ = line.getDescription();
+			BigDecimal VL_AJ_APUR = line.getAmt();
+			list.add(new RE111(COD_AJ_APUR,DESCR_COMPL_AJ,VL_AJ_APUR));
+		}
+		
+		RE111[] retValue = new RE111[list.size()];
+		list.toArray(retValue);
+		return retValue;
+	} //createRE111
+	
 	public static RE510[] createRE510(Map<Integer,Set<RC170>> mapRC170){
 		
 		Map<Integer,RE510> _RE510 = new HashMap<Integer,RE510>();
@@ -797,15 +877,19 @@ public class EFDUtil{
 	
 	public static RE520 createRE520(Timestamp dateFrom, RE510[] arrayRE510){
 		
-		/*FIXME: 
-		 * Necessário fazer ajustes dos registroc E530
-		*/
+		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
+		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(ctx, period.get_ID(), AD_Org_ID);
 		
-		BigDecimal VL_SD_ANT_IPI  = getVL_SD_ANT_IPI(dateFrom);
+		BigDecimal VL_SD_ANT_IPI  = MLBRApuracaoIPI.getCumulatedAmt(ctx, period.get_ID());
 		BigDecimal VL_DEB_IPI  = Env.ZERO;
 		BigDecimal VL_CRED_IPI = Env.ZERO;
-		BigDecimal VL_OD_IPI   = Env.ZERO;
-		BigDecimal VL_OC_IPI   = Env.ZERO;
+		
+		BigDecimal VL_OD_IPI   = apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos)
+		                        .add(apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos));
+		
+		BigDecimal VL_OC_IPI   = apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos)
+                                .add(apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos));
+		
 		BigDecimal VL_SC_IPI   = Env.ZERO;
 		BigDecimal VL_SD_IPI   = Env.ZERO;
 		
@@ -835,6 +919,49 @@ public class EFDUtil{
 		return new RE520(VL_SD_ANT_IPI,VL_DEB_IPI,VL_CRED_IPI,VL_OD_IPI,VL_OC_IPI,
 				VL_SC_IPI,VL_SD_IPI);
 	} //createRE520
+	
+	public static RE530[] createRE530(Timestamp dateFrom){
+		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
+		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(ctx, period.get_ID(), AD_Org_ID);
+		X_LBR_ApuracaoIPILine[] lines = apIPI.getLines();
+		
+		List<RE530> list = new ArrayList<RE530>();
+		
+		for (X_LBR_ApuracaoIPILine line :lines){
+			
+			String IND_AJ = "0"; //Ajuste a débito
+			if (line.getType().equals(X_LBR_ApuracaoIPILine.TYPE_OutrosCréditos) ||
+				line.getType().equals(X_LBR_ApuracaoIPILine.TYPE_EstornoDeDébitos))
+				IND_AJ = "1"; //Ajuste a crédito
+			
+			BigDecimal VL_AJ = line.getAmt();
+			String COD_AJ = getCOD_AJ(line.getType());
+			String IND_DOC = ""; //TODO
+			String NUM_DOC = ""; //TODO
+			String DESCR_AJ = line.getDescription();
+			list.add(new RE530(IND_AJ,VL_AJ,COD_AJ,IND_DOC,NUM_DOC,DESCR_AJ));
+		}
+		
+		RE530[] retValue = new RE530[list.size()];
+		list.toArray(retValue);
+		return retValue;
+	} //createRE530
+	
+	public static RH005 createRH005(Timestamp dateFrom){
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(dateFrom);
+		
+		//TODO: REGISTROS DE INVENTÁRIO
+		if (cal.get(Calendar.MONTH) == 1){ //FEVEREIRO
+			cal.add(Calendar.MONTH, -2);
+			cal.set(Calendar.DAY_OF_MONTH, 31); //31/12 do ano anterior
+			
+			return new RH005(new Timestamp(cal.getTimeInMillis()),Env.ZERO);	
+		}
+		
+		return null;
+	} //createRH005
 	
 	public static R1100 createR1100(MLBRDE de){
 		
@@ -874,28 +1001,59 @@ public class EFDUtil{
 		return list.toArray(new R9900[list.size()]);
 	} //createR9900
 	
-	private static BigDecimal getVL_SLD_CREDOR_ANT(Timestamp dateFrom){
-		@SuppressWarnings("deprecation")
-		MPeriod period = MPeriod.get(ctx, AdempiereLBR.addDays(dateFrom, -1));
-		BigDecimal saldo = ProcApuracaoICMS.getCumulatedAmt(ctx, period.get_ID());
+	public static MAsset[] getAtivosCIAP(Timestamp dateTo){
 		
-		if (saldo.signum() == -1){ //saldo devedor no mês anterior
-			return Env.ZERO;
-		}
-		
-		return saldo;
-	}
+		String whereClause = "AD_Client_ID=? AND AD_Org_ID IN (0,?) " +
+				             "AND IsDepreciated='Y' " +
+				             "AND (IsFullyDepreciated='N' OR AssetDepreciationDate = ?)";
+		 
+		String orderBy = "Value";
+
+		MTable table = MTable.get(Env.getCtx(), MAsset.Table_Name);
+		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
+              q.setOrderBy(orderBy);
+              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateTo});
+
+        List<MAsset> list = q.list();
+        MAsset[] nfs = new MAsset[list.size()];
+        return list.toArray(nfs);
+	} //getAtivoCIAP
 	
-	private static BigDecimal getVL_SD_ANT_IPI(Timestamp dateFrom){
-		@SuppressWarnings("deprecation")
-		MPeriod period = MPeriod.get(ctx, AdempiereLBR.addDays(dateFrom, -1));
-		BigDecimal saldo = ProcApuracaoIPI.getCumulatedAmt(ctx, period.get_ID());
+	private static String getCOD_AJ_APUR(String type, boolean isST){
 		
-		if (saldo.signum() == -1){ //saldo devedor no mês anterior
-			return Env.ZERO;
-		}
+		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
+		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(), get_TrxName());
 		
-		return saldo;
-	}
+		String UF = orgLoc.getC_Region().getName();
+		String TIPO_OPR = isST ? "1" : "0"; //ST = Substituição Tributária
+		
+		String UTILIZACAO = "";	
+		if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos))
+			UTILIZACAO = "0";
+		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos))
+			UTILIZACAO = "1";
+		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos))
+			UTILIZACAO = "2";
+		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos))
+			UTILIZACAO = "3";
+		else
+			return null;
+		
+		return UF + TIPO_OPR + UTILIZACAO + "9999";
+	} //getCOD_AJ_APUR
+	
+	private static String getCOD_AJ(String type){
+		
+		if (type.equals(X_LBR_ApuracaoIPILine.TYPE_OutrosDébitos))
+			return "199";
+		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_EstornosDeCréditos))
+			return "101";
+		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_OutrosCréditos))
+			return "099";
+		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_EstornoDeDébitos))
+			return "001";
+		
+		return null;
+	} //getCOD_AJ
 	
 } //EFDUtil

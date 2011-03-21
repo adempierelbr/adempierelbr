@@ -12,36 +12,48 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.beans;
 
+import java.sql.Timestamp;
+
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0305 – INFORMAÇÃO SOBRE A UTILIZAÇÃO DO BEM
+ * REGISTRO 0600: CENTRO DE CUSTOS
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0305.java, 04/02/2011, 10:30:00, mgrigioni
+ * @version $Id: R0600.java, 03/03/2011, 16:50:00, mgrigioni
  */
-public class R0305 extends RegSped  {
+public class R0600 extends RegSped  {
+	
+	private Timestamp DT_ALT;
 	
 	private String COD_CCUS;
-	private String FUNC;
-	private int VIDA_UTIL;
+	private String CCUS;
 	
 	/**
 	 * Constructor
+	 * @param DT_ALT
 	 * @param COD_CCUS
-	 * @param FUNC
-	 * @param VIDA_UTIL
+	 * @param CCUS
 	 */
-	public R0305(String COD_CCUS, String FUNC, int VIDA_UTIL) {
+	public R0600(Timestamp DT_ALT, String COD_CCUS, String CCUS)
+	{
 		super();
-		this.COD_CCUS = COD_CCUS;
-		this.FUNC = FUNC;
-		this.VIDA_UTIL = VIDA_UTIL;
+		this.DT_ALT = DT_ALT;
+		setCOD_CCUS(COD_CCUS);
+		this.CCUS = CCUS;
+	}	//R0600
+	
+	private void setCOD_CCUS(String COD_CCUS){
+		this.COD_CCUS = TextUtil.checkSize(RemoverAcentos.remover(COD_CCUS), 60);
 	}
-
+	
+	public String getCOD_CCUS(){
+		return this.COD_CCUS;
+	}
+	
 	/**
-	 * Formata Bloco 0 Registro 305
+	 * Formata Bloco 0 Registro 600
 	 * 
 	 * @return
 	 */
@@ -49,12 +61,38 @@ public class R0305 extends RegSped  {
 		
 		StringBuilder format = new StringBuilder
                    (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COD_CCUS), 60))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(FUNC), 255))
-            .append(PIPE).append(VIDA_UTIL)
+            .append(PIPE).append(TextUtil.timeToString(DT_ALT, "ddMMyyyy"))
+            .append(PIPE).append(COD_CCUS)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CCUS), 60))
             .append(PIPE);
 
 		return (TextUtil.removeEOL(format).append(EOL)).toString();
 	} // toString
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((COD_CCUS == null) ? 0 : COD_CCUS.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		R0600 other = (R0600) obj;
+		if (COD_CCUS == null) {
+			if (other.COD_CCUS != null)
+				return false;
+		} else if (!COD_CCUS.equals(other.COD_CCUS))
+			return false;
+		return true;
+	}
 		
-}	// R0305
+}	// R0600

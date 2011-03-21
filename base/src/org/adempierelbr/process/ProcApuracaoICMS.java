@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MLBRApuracaoICMS;
 import org.adempierelbr.model.X_LBR_ApuracaoICMS;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
@@ -62,7 +63,7 @@ public class ProcApuracaoICMS extends SvrProcess
 		BigDecimal debit       = getDebit(period.getStartDate(),period.getEndDate());
 		BigDecimal otherDebit  = getOtherDebit(Record_ID);
 		
-		BigDecimal cumulatedAmt = getCumulatedAmt(getCtx(),period.get_ID());
+		BigDecimal cumulatedAmt = MLBRApuracaoICMS.getCumulatedAmt(getCtx(),period.get_ID());
 		
 		apuracao.setTotalCr(credit.setScale(2, RoundingMode.HALF_UP));
 		apuracao.setTotalDr(debit.setScale(2, RoundingMode.HALF_UP));	
@@ -143,25 +144,5 @@ public class ProcApuracaoICMS extends SvrProcess
 		
 		return amt;
 	} //getOtherDebit
-	
-	public static BigDecimal getCumulatedAmt(Properties ctx, int C_Period_ID){
 		
-		BigDecimal amt = null;
-		
-		String sql = "SELECT TotalAmt FROM LBR_ApuracaoICMS ai " +
-				     "WHERE ai.C_Period_ID = " +
-				     	"(SELECT p1.C_Period_ID FROM C_Period p1 " +
-				     	"WHERE p1.StartDate = " +
-				     		"(SELECT TRUNC(p2.StartDate-1,'MM') FROM C_Period p2 " +
-				     		"WHERE p2.C_Period_ID = ?) AND p1.AD_Client_ID = ?)";
-		
-		amt = DB.getSQLValueBD(null, sql, 
-				new Object[]{C_Period_ID,Env.getAD_Client_ID(ctx)});
-		
-		if (amt == null)
-			amt =  Env.ZERO;
-		
-		return amt;
-	} //getCumulatedAmt
-	
 } //ProcApuracaoICMS

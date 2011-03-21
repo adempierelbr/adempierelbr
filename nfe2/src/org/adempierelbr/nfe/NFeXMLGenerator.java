@@ -432,6 +432,19 @@ public class NFeXMLGenerator
 		
 
 		destinatario.setEnderDest(enderDest);
+		
+		/** 
+		 * AMBIENTE DE HOMOLOGACAO 
+		 * regra será aplicada a partir do dia 01/05/2011
+		 **/
+		if (tpAmb.equals("2")){
+			if (uf != null){ //DENTRO DO BRASIL
+				destinatario.setCPF(null);
+				destinatario.setCNPJ("99.999.999/0001-91");
+			}
+			destinatario.setxNome("NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL");
+			destinatario.setIE(null);
+		}
 
 		// Identificacao do Local de Entrega
 		entrega.setxLgr(RemoverAcentos.remover(nf.getlbr_BPDeliveryAddress1()));
