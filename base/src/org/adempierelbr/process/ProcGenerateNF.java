@@ -355,9 +355,9 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscalLine.setC_UOM_ID(uom.getC_UOM_ID());   /** C_UOM_ID **/
 					NotaFiscalLine.setlbr_UOMName(uom.getUOMSymbol());   //Unidade de Medida
 					NotaFiscalLine.setlbr_TaxStatus(iLine.get_ValueAsString("lbr_TaxStatus")); //Situação Tributária ICMS
-					NotaFiscalLine.setlbr_TaxStatusIPI(iLine.get_ValueAsString("lbr_TaxStatusIPI")); 
-					NotaFiscalLine.setlbr_TaxStatusPIS(iLine.get_ValueAsString("lbr_TaxStatusPIS")); 
-					NotaFiscalLine.setlbr_TaxStatusCOFINS(iLine.get_ValueAsString("lbr_TaxStatusCOFINS")); 
+					NotaFiscalLine.setlbr_TaxStatusIPI((String)iLine.get_Value("lbr_TaxStatusIPI")); 
+					NotaFiscalLine.setlbr_TaxStatusPIS((String)iLine.get_Value("lbr_TaxStatusPIS")); 
+					NotaFiscalLine.setlbr_TaxStatusCOFINS((String)iLine.get_Value("lbr_TaxStatusCOFINS")); 
 					NotaFiscalLine.setQty(iLine.getQtyEntered());   //Quantidade
 					NotaFiscalLine.setPrice(Price); //Preço
 					NotaFiscalLine.setPriceListAmt(PriceList); //Preço de Lista
