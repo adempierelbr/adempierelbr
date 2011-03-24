@@ -839,9 +839,9 @@ public class NFeXMLGenerator
 					{
 						ipigrupo.setCST(CST);
 						ipinfe.setcEnq("999");
-						ipinfe.setIPI(ipigrupo);
-						xstream.useAttributeFor(ImpostoIPIBean.class, "IPI");
-						xstream.aliasField("IPINT", ImpostoIPIBean.class, "IPI");
+						ipinfe.setIPINT(ipigrupo);
+						xstream.useAttributeFor(ImpostoIPIBean.class, "IPINT");
+						xstream.aliasField("IPINT", ImpostoIPIBean.class, "IPINT");
 						impostos.setIPI(ipinfe);
 					}
 				} //IPI

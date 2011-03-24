@@ -22,12 +22,19 @@ public class ImpostoIPIBean {
 	private String qSelo;
 	private String cEnq;
 	private ImpostoIPIGrupoBean IPI ;
+	private ImpostoIPIGrupoBean IPINT ;
 	
 	public ImpostoIPIGrupoBean getIPI() {
 		return IPI;
 	}
 	public void setIPI(ImpostoIPIGrupoBean ipi) {
 		IPI = ipi;
+	}
+	public ImpostoIPIGrupoBean getIPINT() {
+		return IPINT;
+	}
+	public void setIPINT(ImpostoIPIGrupoBean ipi) {
+		IPINT = ipi;
 	}
 	public String getClEnq() {
 		return clEnq;
