@@ -734,9 +734,13 @@ public class ProcGenerateEFD extends SvrProcess
 			for (RE530 re530 : arrayRE530){
 				BLOCOE.append(re530);
 			}
-			
-			BLOCOE.append(new RE990());
 		}
+		else{
+			BLOCOE.append(new RE001(false));
+		}
+		
+		
+		BLOCOE.append(new RE990());
 		//FIM BLOCO E
 		
 		return BLOCOE;

@@ -21,7 +21,6 @@ import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_ApuracaoICMSLine;
 import org.adempierelbr.model.X_LBR_ApuracaoIPILine;
 import org.adempierelbr.model.X_LBR_NFDI;
-import org.adempierelbr.process.ProcAssetDepreciate;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.efd.beans.R0000;
@@ -60,7 +59,6 @@ import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAsset;
-import org.compiere.model.MAssetGroupAcct;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
@@ -319,17 +317,13 @@ public class EFDUtil{
 	
 	public static R0300 createR0300(MAsset asset, String COD_CCUS){
 		
-		int C_AcctSchema_ID = Env.getContextAsInt(ctx, "$C_AcctSchema_ID");
-		
 		String COD_IND_BEM = asset.getValue();
 		String IDENT_MERC  = asset.getA_Parent_Asset_ID() <= 0 ? "1" : "2";
 		String DESCR_ITEM  = asset.getName();
 		String HELP        = asset.getHelp();
 		String COD_PRNC    = asset.getA_Parent_Asset().getValue();
 		String COD_CTA     = null;
-		
-		MAssetGroupAcct assetGroup = ProcAssetDepreciate.getMAssetGroupAcct(ctx,asset.getA_Asset_Group_ID(),C_AcctSchema_ID);
-		int NR_PARC = assetGroup.getUseLifeMonths();
+		int NR_PARC = 48;
 		
 		return new R0300(COD_IND_BEM,IDENT_MERC,DESCR_ITEM,COD_PRNC,COD_CTA,NR_PARC,COD_CCUS,HELP);
 	} //createR0300
@@ -1001,18 +995,18 @@ public class EFDUtil{
 		return list.toArray(new R9900[list.size()]);
 	} //createR9900
 	
-	public static MAsset[] getAtivosCIAP(Timestamp dateTo){
+	public static MAsset[] getAtivosCIAP(Timestamp dateFrom){
 		
 		String whereClause = "AD_Client_ID=? AND AD_Org_ID IN (0,?) " +
 				             "AND IsDepreciated='Y' " +
-				             "AND (IsFullyDepreciated='N' OR AssetDepreciationDate = ?)";
+				             "AND ADD_MONTHS(TRUNC(A_Asset_CreateDate,'MM'),47) >= ?";
 		 
 		String orderBy = "Value";
 
 		MTable table = MTable.get(Env.getCtx(), MAsset.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
               q.setOrderBy(orderBy);
-              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateTo});
+              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom});
 
         List<MAsset> list = q.list();
         MAsset[] nfs = new MAsset[list.size()];

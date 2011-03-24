@@ -63,7 +63,7 @@ public class R0300 extends RegSped  {
 			log.severe("COD_IND_BEM == NULL");
 		}
 		else
-			this.COD_IND_BEM = TextUtil.checkSize(RemoverAcentos.remover(COD_IND_BEM), 60);;
+			this.COD_IND_BEM = TextUtil.checkSize(RemoverAcentos.remover(COD_IND_BEM), 60);
 	}
 		
 	private void setIDENT_MERC(String IDENT_MERC) {
