@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MAssetGroupAcct;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCountry;
 import org.compiere.model.MLocator;
@@ -105,10 +106,39 @@ public abstract class AdempiereLBR{
 		String sql = "SELECT MAX(M_InOut_ID) FROM M_InOutLine WHERE M_InOutLine_ID " +
 				     "IN (SELECT M_InOutLine_ID FROM C_InvoiceLine WHERE C_Invoice_ID = ?)";
 
-		int M_InOut_ID = DB.getSQLValue(trx, sql,C_Invoice_ID);
+		int M_InOut_ID = DB.getSQLValue(trx, sql, C_Invoice_ID);
 
 		return M_InOut_ID > 0 ? M_InOut_ID : 0;
 	} //getM_InOut_ID
+	
+	public static MAssetGroupAcct getMAssetGroupAcct(Properties ctx, int A_Asset_Group_ID, int C_AcctSchema_ID){
+		
+		String sql = "SELECT * FROM A_Asset_Group_Acct " +
+				     "WHERE A_Asset_Group_ID = ? AND C_AcctSchema_ID = ? AND IsActive = 'Y'";
+		
+		MAssetGroupAcct assetGroupAcct = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, A_Asset_Group_ID);
+			pstmt.setInt(2, C_AcctSchema_ID);
+			rs = pstmt.executeQuery ();
+			if (rs.next()){
+				assetGroupAcct = new MAssetGroupAcct(ctx,rs,null);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return assetGroupAcct;
+	} // getMAssetGroupAcct
 
 	public static int getLBR_Bank_ID(String RoutingNo, String trx){
 
@@ -589,6 +619,15 @@ public abstract class AdempiereLBR{
 		Timestamp[] retValue = new Timestamp[months.size()];
 		months.toArray(retValue);
 		return retValue;
+	}
+	
+	public static int getCountMonths(Timestamp dateFrom, Timestamp dateTo){
+		Timestamp[] months = getMonths(dateFrom,dateTo);
+		if (months != null){
+			return months.length + 1;
+		}
+		
+		return 0;
 	}
 	
 	/**
