@@ -74,6 +74,9 @@ public abstract class NFeUtil
 
 	/** Reference NFeStatus */
 	public static final int NFeReference   = 1100004;
+	
+	/** Namespace padrão da NF-e */
+	public static final String NAMESPACE_NFE = "xmlns=\"http://www.portalfiscal.inf.br/nfe\"";
 
 	/**
 	 * Gera o cabeçalho da NFe
@@ -81,7 +84,7 @@ public abstract class NFeUtil
 	 * @return cabecalho
 	 */
 	public static String geraCabecNFe(){
-		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
+		String cabecalho = "<NFe " + NAMESPACE_NFE + ">";
 		return cabecalho;
 	} //geraCabecNFe
 
@@ -102,7 +105,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraCabecDistribuicao(){
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"  versao=\"" + VERSAO + "\">";
+		 "<nfeProc " + NAMESPACE_NFE + " versao=\"" + VERSAO + "\">";
 
 		return cabecalho;
 	}
@@ -122,7 +125,7 @@ public abstract class NFeUtil
 	public static String geraRodapDistribuicao (String chNFe, String nProt, String tpAmb, String dhRecbto,
 			                                    String digVal, String cStat, String xMotivo)
 	{
-		String dados = 	"<protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"" + VERSAO + "\"><infProt>" +
+		String dados = 	"<protNFe " + NAMESPACE_NFE + " versao=\"" + VERSAO + "\"><infProt>" +
 				        "<tpAmb>"+tpAmb+"</tpAmb>" +
 				        "<verAplic>"+VERSAO_APP+"</verAplic>" +
 				        "<chNFe>"+chNFe+"</chNFe>" +
@@ -162,7 +165,7 @@ public abstract class NFeUtil
 
 		String msg =
 			"<nfeDadosMsg>" +
-		    	"<consSitNFe versao=\"" + VERSAO + "\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
+		    	"<consSitNFe versao=\"" + VERSAO + "\" " + NAMESPACE_NFE + ">" +
 		        	"<tpAmb>"+envType+"</tpAmb>" +
 		        	"<xServ>CONSULTAR</xServ>" +
 		        	"<chNFe>"+chNFe+"</chNFe>"+
@@ -199,7 +202,7 @@ public abstract class NFeUtil
 
 		String msg =
 			"<nfeDadosMsg>" +
-		    	"<consStatServ versao=\"" + VERSAO + "\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
+		    	"<consStatServ versao=\"" + VERSAO + "\" " + NAMESPACE_NFE + ">" +
 		        	"<tpAmb>"+envType+"</tpAmb>" +
 		        	"<cUF>"+region+"</cUF>" +
 		        	"<xServ>STATUS</xServ>" +
@@ -250,9 +253,7 @@ public abstract class NFeUtil
 
 		String msg =
 			"<nfeDadosMsg>" +
-				"<ConsCad xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-					"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-					"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/consCad_v2.00.xsd\" versao=\"2.00\">" +
+				"<ConsCad " + NAMESPACE_NFE + " versao=\"2.00\">" +
 					"<infCons>" +
 		        		"<xServ>CONS-CAD</xServ>" +
 		        		"<UF>"+region+"</UF>" +
@@ -271,9 +272,7 @@ public abstract class NFeUtil
 	 * @return Cabeçalho do lote
 	 */
 	public static String geraCabecLoteNFe (String lote){
-		String cabecalho = "<enviNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-	     "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-	     "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/enviNFe_v2.00.xsd\" versao=\"2.00\">" +
+		String cabecalho = "<enviNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
 	   "<idLote>"+lote+"</idLote>";
 
 		return cabecalho;
@@ -321,9 +320,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraMsgRetRecepcao (String recibo, String envType)
 	{
-		String msg = 	"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-						"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-						"xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/consReciNFe_v2.00.xsd\" versao=\"2.00\">" +
+		String msg = 	"<consReciNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
 							"<tpAmb>"+envType+"</tpAmb>" +
 						"<nRec>"+recibo+"</nRec>"+
 						"</consReciNFe>";
@@ -357,9 +354,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraMsgCancelamento (String chNFe, String protocolNFe, String envType, String motivo)
 	{
-		String msg = "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" " +
-								  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-								  "xsi:schemaLocation=\"http://www.portalfiscal.inf.br/nfe/cancNFe_v2.00.xsd\" versao=\"2.00\">" +
+		String msg = "<cancNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
 							  "<infCanc Id=\"ID"+chNFe+"\">"+
 						          "<tpAmb>"+envType+"</tpAmb>"+
 						          "<xServ>CANCELAR</xServ>"+
