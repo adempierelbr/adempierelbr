@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO G110 – ICMS – ATIVO PERMANENTE – CIAP
@@ -61,6 +62,15 @@ public class RG110 extends RegSped
 		
 		StringBuilder format = new StringBuilder
 	               (PIPE).append(REG)
+	        .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy", false))
+	        .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy", false))
+	        .append(PIPE).append(TextUtil.toNumeric(SALDO_IN_ICMS, 2, false))
+	        .append(PIPE).append(TextUtil.toNumeric(SOM_PARC, 2, false))
+	        .append(PIPE).append(TextUtil.toNumeric(VL_TRIB_EXP, 2, false))
+	        .append(PIPE).append(TextUtil.toNumeric(VL_TOTAL, 2, false))
+	        .append(PIPE).append(TextUtil.toNumeric(IND_PER_SAI, 4, false))
+	        .append(PIPE).append(TextUtil.toNumeric(ICMS_APROP, 2, false))
+	        .append(PIPE).append(TextUtil.toNumeric(SOM_ICMS_OC, 2, false))
 	        .append(PIPE).append(EOL);
 	       
 		return format.toString();

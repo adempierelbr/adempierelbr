@@ -23,6 +23,7 @@ import org.adempierelbr.sped.efd.beans.R0150;
 import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
 import org.adempierelbr.sped.efd.beans.R0300;
+import org.adempierelbr.sped.efd.beans.R0500;
 import org.adempierelbr.sped.efd.beans.R0600;
 import org.adempierelbr.sped.efd.beans.R0990;
 import org.adempierelbr.sped.efd.beans.R1001;
@@ -59,6 +60,7 @@ import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE530;
 import org.adempierelbr.sped.efd.beans.RE990;
 import org.adempierelbr.sped.efd.beans.RG001;
+import org.adempierelbr.sped.efd.beans.RG125;
 import org.adempierelbr.sped.efd.beans.RG990;
 import org.adempierelbr.sped.efd.beans.RH001;
 import org.adempierelbr.sped.efd.beans.RH005;
@@ -66,9 +68,12 @@ import org.adempierelbr.sped.efd.beans.RH990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAsset;
+import org.compiere.model.MAssetGroupAcct;
+import org.compiere.model.MElementValue;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.Env;
 
 /**
  * ESCRITURAÇÃO FISCAL DIGITAL - EFD
@@ -94,7 +99,9 @@ public class ProcGenerateEFD extends SvrProcess
 	private Set<R0190> _R0190 = new LinkedHashSet<R0190>();
 	private Set<R0200> _R0200 = new LinkedHashSet<R0200>();
 	private Set<R0300> _R0300 = new LinkedHashSet<R0300>();
+	private Set<R0500> _R0500 = new LinkedHashSet<R0500>();
 	private Set<R0600> _R0600 = new LinkedHashSet<R0600>();
+	private Set<RG125> _RG125 = new LinkedHashSet<RG125>();
 	
 	private List<RegSped> _RE110 = new ArrayList<RegSped>(); //List de beans para saldo do icms
 	
@@ -246,7 +253,7 @@ public class ProcGenerateEFD extends SvrProcess
 		} //loop Nota Fiscal
 		
 		//BLOCO G: CIAP
-		createCIAPInfo(dateTo);
+		createCIAPInfo(dateFrom,dateTo);
 		
 		//BLOCO 1: OUTRAS INFORMAÇÕES
 		createDEInfo(dateFrom,dateTo);
@@ -256,7 +263,7 @@ public class ProcGenerateEFD extends SvrProcess
 		StringBuilder BLOCOC = montaBLOCOC(); //Documentos Fiscais I – Mercadorias (ICMS/IPI)
 		StringBuilder BLOCOD = montaBLOCOD(); //Documentos Fiscais II – Serviços (ICMS)
 		StringBuilder BLOCOE = montaBLOCOE(dateFrom,dateTo); //Apuração do ICMS e do IPI
-		StringBuilder BLOCOG = montaBLOCOG(); //Controle do Crédito de ICMS do Ativo Permanente – CIAP
+		StringBuilder BLOCOG = montaBLOCOG(dateFrom,dateTo); //Controle do Crédito de ICMS do Ativo Permanente – CIAP
 		StringBuilder BLOCOH = montaBLOCOH(dateFrom); //Inventário Físico
 		StringBuilder BLOCO1 = montaBLOCO1(); //Outras Informações
 		StringBuilder BLOCO9 = montaBLOCO9(); //Controle e Encerramento do Arquivo Digital
@@ -478,10 +485,22 @@ public class ProcGenerateEFD extends SvrProcess
 		
 	} //createDEInfo
 	
-	private void createCIAPInfo(Timestamp dateTo){
+	private void createCIAPInfo(Timestamp dateFrom, Timestamp dateTo){
 		
-		MAsset[] assets = EFDUtil.getAtivosCIAP(dateTo);
+		MAsset[] assets = EFDUtil.getAtivosCIAP(dateFrom,dateTo);
 		for (MAsset asset : assets){
+			
+			hasG = true;
+			
+			//Plano de Contas
+			MAssetGroupAcct assetAcct = AdempiereLBR.getMAssetGroupAcct(getCtx(),asset.getA_Asset_Group_ID(),
+					Env.getContextAsInt(getCtx(), "$C_AcctSchema_ID"));
+			MElementValue ev = new MElementValue(getCtx(),assetAcct.getA_Asset_A().getAccount().getC_ElementValue_ID(),get_TrxName());
+			R0500 r0500 = EFDUtil.createR0500(ev, dateTo);
+			if (_R0500.contains(r0500))
+				r0500.subtractCounter();
+			else
+				_R0500.add(r0500);
 			
 			//Cadastro de Centro de Custo
 			R0600 r0600 = EFDUtil.createR0600(asset.getAD_Org_ID(),dateTo);
@@ -491,12 +510,18 @@ public class ProcGenerateEFD extends SvrProcess
 				_R0600.add(r0600);
 			
 			//Cadastro de Ativos
-			R0300 r0300 = EFDUtil.createR0300(asset, r0600.getCOD_CCUS());
+			R0300 r0300 = EFDUtil.createR0300(asset, r0500.getCOD_CTA(), r0600.getCOD_CCUS());
 			if (_R0300.contains(r0300))
 				r0300.subtractCounter();
 			else
 				_R0300.add(r0300);			
 
+			//Movimentação de Ativos
+			List<RG125> listRG125 = EFDUtil.createRG125(asset, dateFrom);
+			for(RG125 rg125 : listRG125){
+				_RG125.add(rg125);
+			}
+			
 		} //loop asset
 		
 	} //createCIAPInfo
@@ -530,6 +555,10 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCO0.append(r0300);
 			if (r0300.getIDENT_MERC().equals("1")) //OBRIGATÓRIO QUANDO BEM
 				BLOCO0.append(EFDUtil.createR0305(r0300));
+		}
+		
+		for (R0500 r0500 : _R0500){ //PLANO DE CONTAS
+			BLOCO0.append(r0500);
 		}
 		
 		for (R0600 r0600 : _R0600){ //CENTRO DE CUSTO
@@ -746,12 +775,24 @@ public class ProcGenerateEFD extends SvrProcess
 		return BLOCOE;
 	} //monteBLOCOE
 	
-	private StringBuilder montaBLOCOG(){
+	private StringBuilder montaBLOCOG(Timestamp dateFrom, Timestamp dateTo){
 		
 		StringBuilder BLOCOG = new StringBuilder("");
 	
 		//MONTA BLOCO G
 		BLOCOG.append(new RG001(hasG));
+		if (hasG){
+			BLOCOG.append(EFDUtil.createRG110(dateFrom, dateTo, _RG125, _RC170));
+			for(RG125 rg125 : _RG125){
+				BLOCOG.append(rg125);
+				if (rg125.getTIPO_MOV().equals("IM")){
+					List<RegSped> listReg = EFDUtil.createRG130_RG140(rg125.getLBR_NotaFiscalLine_ID());
+					for(RegSped reg : listReg){
+						BLOCOG.append(reg);
+					}
+				}
+			} //loop RG125
+		}
 		BLOCOG.append(new RG990());
 		//FIM BLOCO G
 		

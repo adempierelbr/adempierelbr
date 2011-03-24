@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO G125 – MOVIMENTAÇÃO DE BEM OU COMPONENTE DO ATIVO IMOBILIZADO
@@ -39,10 +40,11 @@ public class RG125 extends RegSped
 	BigDecimal VL_PARC_PASS;
 	
 	int NUM_PARC;
+	int LBR_NotaFiscalLine_ID;
 	
 	public RG125(String COD_IND_BEM, Timestamp DT_MOV, String TIPO_MOV, BigDecimal VL_IMOB_ICMS_OP,
 			BigDecimal VL_IMOB_ICMS_ST, BigDecimal VL_IMOB_ICMS_FRT, BigDecimal VL_IMOB_ICMS_DIF,
-			int NUM_PARC, BigDecimal VL_PARC_PASS) 
+			int NUM_PARC, BigDecimal VL_PARC_PASS, int LBR_NotaFiscalLine_ID) 
 	{
 		super();
 		this.COD_IND_BEM = COD_IND_BEM;
@@ -54,8 +56,29 @@ public class RG125 extends RegSped
 		this.VL_IMOB_ICMS_DIF = VL_IMOB_ICMS_DIF;
 		this.NUM_PARC = NUM_PARC;
 		this.VL_PARC_PASS = VL_PARC_PASS;
+		this.LBR_NotaFiscalLine_ID = LBR_NotaFiscalLine_ID;
 	} //RG125
-
+	
+	public BigDecimal getVL_IMOB_ICMS_OP(){
+		return VL_IMOB_ICMS_OP == null ? Env.ZERO : VL_IMOB_ICMS_OP;
+	}
+	
+	public BigDecimal getVL_IMOB_ICMS_DIF(){
+		return VL_IMOB_ICMS_DIF == null ? Env.ZERO : VL_IMOB_ICMS_DIF;
+	}
+	
+	public BigDecimal getVL_PARC_PASS(){
+		return VL_PARC_PASS == null ? Env.ZERO : VL_PARC_PASS;
+	}
+	
+	public String getTIPO_MOV(){
+		return TIPO_MOV == null ? "" : TIPO_MOV;
+	}
+	
+	public int getLBR_NotaFiscalLine_ID(){
+		return this.LBR_NotaFiscalLine_ID;
+	}
+	
 	/**
 	 * Formata o Bloco G Registro 125
 	 * 
@@ -72,11 +95,44 @@ public class RG125 extends RegSped
 	        .append(PIPE).append(TextUtil.toNumeric(VL_IMOB_ICMS_ST,2,false))
 	        .append(PIPE).append(TextUtil.toNumeric(VL_IMOB_ICMS_FRT,2,false))
 	        .append(PIPE).append(TextUtil.toNumeric(VL_IMOB_ICMS_DIF,2,false))
-	        .append(PIPE).append(NUM_PARC)
+	        .append(PIPE).append(NUM_PARC == 0 ? "" : NUM_PARC)
 	        .append(PIPE).append(TextUtil.toNumeric(VL_PARC_PASS,2,false))
 	        .append(PIPE).append(EOL);
 	       
 		return format.toString();
 	} //toString
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((COD_IND_BEM == null) ? 0 : COD_IND_BEM.hashCode());
+		result = prime * result
+				+ ((TIPO_MOV == null) ? 0 : TIPO_MOV.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RG125 other = (RG125) obj;
+		if (COD_IND_BEM == null) {
+			if (other.COD_IND_BEM != null)
+				return false;
+		} else if (!COD_IND_BEM.equals(other.COD_IND_BEM))
+			return false;
+		if (TIPO_MOV == null) {
+			if (other.TIPO_MOV != null)
+				return false;
+		} else if (!TIPO_MOV.equals(other.TIPO_MOV))
+			return false;
+		return true;
+	}
+		
 } //RG125

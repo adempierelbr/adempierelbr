@@ -23,6 +23,7 @@ import org.adempierelbr.model.X_LBR_ApuracaoIPILine;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.ecd.ECDUtil;
 import org.adempierelbr.sped.efd.beans.R0000;
 import org.adempierelbr.sped.efd.beans.R0005;
 import org.adempierelbr.sped.efd.beans.R0100;
@@ -31,6 +32,7 @@ import org.adempierelbr.sped.efd.beans.R0190;
 import org.adempierelbr.sped.efd.beans.R0200;
 import org.adempierelbr.sped.efd.beans.R0300;
 import org.adempierelbr.sped.efd.beans.R0305;
+import org.adempierelbr.sped.efd.beans.R0500;
 import org.adempierelbr.sped.efd.beans.R0600;
 import org.adempierelbr.sped.efd.beans.R1100;
 import org.adempierelbr.sped.efd.beans.R9900;
@@ -54,14 +56,20 @@ import org.adempierelbr.sped.efd.beans.RE111;
 import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE520;
 import org.adempierelbr.sped.efd.beans.RE530;
+import org.adempierelbr.sped.efd.beans.RG110;
+import org.adempierelbr.sped.efd.beans.RG125;
+import org.adempierelbr.sped.efd.beans.RG130;
+import org.adempierelbr.sped.efd.beans.RG140;
 import org.adempierelbr.sped.efd.beans.RH005;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAsset;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
+import org.compiere.model.MElementValue;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
@@ -315,18 +323,32 @@ public class EFDUtil{
 		return new R0305(r0300.getCOD_CCUS(),r0300.getHELP(),r0300.getNR_PARC());
 	} //createR0305
 	
-	public static R0300 createR0300(MAsset asset, String COD_CCUS){
+	public static R0300 createR0300(MAsset asset, String COD_CTA, String COD_CCUS){
 		
 		String COD_IND_BEM = asset.getValue();
 		String IDENT_MERC  = asset.getA_Parent_Asset_ID() <= 0 ? "1" : "2";
 		String DESCR_ITEM  = asset.getName();
 		String HELP        = asset.getHelp();
 		String COD_PRNC    = asset.getA_Parent_Asset().getValue();
-		String COD_CTA     = null;
 		int NR_PARC = 48;
 		
 		return new R0300(COD_IND_BEM,IDENT_MERC,DESCR_ITEM,COD_PRNC,COD_CTA,NR_PARC,COD_CCUS,HELP);
 	} //createR0300
+	
+	public static R0500 createR0500(MElementValue ev, Timestamp dateTo){
+		
+		Timestamp DT_ALT = ev.getUpdated();
+		if (DT_ALT.after(dateTo)){
+			DT_ALT = dateTo;
+		}
+		
+		String COD_NAT_CC = ECDUtil.getCOD_NAT(ev.getAccountType());
+		String IND_CTA    = ev.isSummary() ? "S" : "A";
+		String COD_CTA    = ev.getValue();
+		String NOME_CTA   = ev.getName();
+		
+		return new R0500(DT_ALT,COD_NAT_CC,IND_CTA,COD_CTA,NOME_CTA);
+	} //createR0500
 	
 	public static R0600 createR0600(int AD_Org_ID, Timestamp dateTo){
 		
@@ -765,8 +787,8 @@ public class EFDUtil{
 	
 	public static RE110 createRE110(Timestamp dateFrom, List<RegSped> regs){
 		
-		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
-		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(ctx, period.get_ID(), AD_Org_ID);
+		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
+		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(getCtx(), period.get_ID(), AD_Org_ID);
 		
 		BigDecimal VL_TOT_DEBITOS     = Env.ZERO; //cálculo abaixo
 		BigDecimal VL_AJ_DEBITOS      = Env.ZERO;
@@ -776,7 +798,7 @@ public class EFDUtil{
 		BigDecimal VL_AJ_CREDITOS     = Env.ZERO;
 		BigDecimal VL_TOT_AJ_CREDITOS = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos);
 		BigDecimal VL_ESTORNOS_DEB    = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos);
-		BigDecimal VL_SLD_CREDOR_ANT  = MLBRApuracaoICMS.getCumulatedAmt(ctx,period.get_ID());
+		BigDecimal VL_SLD_CREDOR_ANT  = MLBRApuracaoICMS.getCumulatedAmt(getCtx(),period.get_ID());
 		BigDecimal VL_SLD_APURADO     = Env.ZERO;
 		BigDecimal VL_TOT_DED         = Env.ZERO;
 		BigDecimal VL_ICMS_RECOLHER   = Env.ZERO;
@@ -817,8 +839,8 @@ public class EFDUtil{
 	} //createRE110
 	
 	public static RE111[] createRE111(Timestamp dateFrom){
-		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
-		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(ctx, period.get_ID(), AD_Org_ID);
+		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
+		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(getCtx(), period.get_ID(), AD_Org_ID);
 		X_LBR_ApuracaoICMSLine[] lines = apICMS.getLines();
 		
 		List<RE111> list = new ArrayList<RE111>();
@@ -871,10 +893,10 @@ public class EFDUtil{
 	
 	public static RE520 createRE520(Timestamp dateFrom, RE510[] arrayRE510){
 		
-		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
-		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(ctx, period.get_ID(), AD_Org_ID);
+		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
+		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(getCtx(), period.get_ID(), AD_Org_ID);
 		
-		BigDecimal VL_SD_ANT_IPI  = MLBRApuracaoIPI.getCumulatedAmt(ctx, period.get_ID());
+		BigDecimal VL_SD_ANT_IPI  = MLBRApuracaoIPI.getCumulatedAmt(getCtx(), period.get_ID());
 		BigDecimal VL_DEB_IPI  = Env.ZERO;
 		BigDecimal VL_CRED_IPI = Env.ZERO;
 		
@@ -915,8 +937,8 @@ public class EFDUtil{
 	} //createRE520
 	
 	public static RE530[] createRE530(Timestamp dateFrom){
-		MPeriod period = MPeriod.get(ctx,dateFrom,AD_Org_ID);
-		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(ctx, period.get_ID(), AD_Org_ID);
+		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
+		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(getCtx(), period.get_ID(), AD_Org_ID);
 		X_LBR_ApuracaoIPILine[] lines = apIPI.getLines();
 		
 		List<RE530> list = new ArrayList<RE530>();
@@ -940,6 +962,111 @@ public class EFDUtil{
 		list.toArray(retValue);
 		return retValue;
 	} //createRE530
+	
+	public static RG110 createRG110(Timestamp dateFrom, Timestamp dateTo, 
+			Set<RG125> _RG125, Map<Integer,Set<RC170>> _RC170){
+		
+		Timestamp DT_INI = dateFrom;
+		Timestamp DT_FIN = dateTo;
+		
+		BigDecimal SALDO_IN_ICMS = Env.ZERO;
+		BigDecimal SOM_PARC = Env.ZERO;
+		for(RG125 rg125 : _RG125){
+			if (rg125.getTIPO_MOV().equals("SI")){
+				SALDO_IN_ICMS = SALDO_IN_ICMS.add(rg125.getVL_IMOB_ICMS_OP().add(rg125.getVL_IMOB_ICMS_DIF()));
+			}
+			SOM_PARC = SOM_PARC.add(rg125.getVL_PARC_PASS());
+		}
+		
+		BigDecimal VL_TRIB_EXP = Env.ZERO;
+		BigDecimal VL_TOTAL = Env.ZERO;
+		
+		Iterator<Integer> listRC100 = _RC170.keySet().iterator();
+		while(listRC100.hasNext()){
+			Set<RC170> setRC170 = _RC170.get(listRC100.next());
+			for (RC170 rc170 : setRC170){
+				Integer CFOP = Integer.parseInt(rc170.getCFOP().substring(0, 1));
+				if (CFOP.intValue() > 4){ //SAIDAS
+					VL_TOTAL = VL_TOTAL.add(rc170.getVL_OPR());
+					if (CFOP.intValue() == 7 || rc170.getVL_ICMS().signum() == 1){
+						VL_TRIB_EXP = VL_TRIB_EXP.add(rc170.getVL_OPR());
+					}
+				}
+			}
+		}
+		
+		BigDecimal IND_PER_SAI = VL_TRIB_EXP.divide(VL_TOTAL,TaxBR.MCROUND);
+		BigDecimal ICMS_APROP = SOM_PARC.multiply(IND_PER_SAI);
+		BigDecimal SOM_ICMS_OC = Env.ZERO;
+		
+		return new RG110(DT_INI,DT_FIN,SALDO_IN_ICMS,SOM_PARC,VL_TRIB_EXP,VL_TOTAL,IND_PER_SAI,ICMS_APROP,SOM_ICMS_OC);
+	} //createRG110
+	
+	public static List<RG125> createRG125(MAsset asset, Timestamp dateFrom){
+		
+		List<RG125> listRG125 = new ArrayList<RG125>();
+		
+		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),asset.get_ValueAsInt("LBR_NotaFiscalLine_ID"),get_TrxName());
+		
+		String COD_IND_BEM  = asset.getValue();
+		Timestamp DT_MOV    = asset.getA_Asset_CreateDate();
+		String TIPO_MOV     = "IM";
+		
+		if (DT_MOV.before(dateFrom)){
+			DT_MOV = dateFrom;
+			TIPO_MOV = "SI";
+		}
+		
+		BigDecimal VL_IMOB_ICMS_OP = nfLine.getICMSAmt().divide(nfLine.getQty(), TaxBR.MCROUND);
+		BigDecimal VL_IMOB_ICMS_ST = nfLine.getTaxAmt("ICMSST").divide(nfLine.getQty(), TaxBR.MCROUND);;
+		BigDecimal VL_IMOB_ICMS_FRT = Env.ZERO; //FIXME
+		BigDecimal VL_IMOB_ICMS_DIF = Env.ZERO; //FIXME
+		
+		int NUM_PARC = AdempiereLBR.getCountMonths(
+				asset.getA_Asset_CreateDate().after(dateFrom) ? dateFrom : asset.getA_Asset_CreateDate(), dateFrom);
+		
+		BigDecimal VL_PARC_PASS = (VL_IMOB_ICMS_OP.add(VL_IMOB_ICMS_DIF)).divide(new BigDecimal("48"), TaxBR.MCROUND);
+
+		listRG125.add(new RG125(COD_IND_BEM,DT_MOV,TIPO_MOV,VL_IMOB_ICMS_OP,VL_IMOB_ICMS_ST,
+				VL_IMOB_ICMS_FRT,VL_IMOB_ICMS_DIF,NUM_PARC,VL_PARC_PASS,nfLine.get_ID()));
+		
+		//SE É A ULTIMA PARCELA, CRIAR UM REGISTRO DE BAIXA
+		if (NUM_PARC == 48){
+			listRG125.add(new RG125(COD_IND_BEM,DT_MOV,"BA",null,null,null,null,0,null,0));
+		}
+		
+		return listRG125;
+	} //createRG125
+	
+	public static List<RegSped> createRG130_RG140(int LBR_NotaFiscalLine_ID){
+		
+		List<RegSped> listReg = new ArrayList<RegSped>();
+		
+		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),LBR_NotaFiscalLine_ID,get_TrxName());
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
+		
+		//RG130
+		String IND_EMIT = nf.islbr_IsOwnDocument() ? "0" : "1";
+		String COD_PART  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
+		if (COD_PART == null || COD_PART.trim().equals("")){
+			MBPartner bp = new MBPartner(getCtx(),nf.getC_BPartner_ID(),get_TrxName());
+			COD_PART = TextUtil.toNumeric(bp.getValue());
+		}
+		String COD_MOD     = nf.get_ValueAsString("lbr_NFModel").isEmpty() ? "01" : nf.get_ValueAsString("lbr_NFModel");
+		String SER         = nf.getSerieNo();
+		String NUM_DOC     = nf.getDocNo();
+		String CHV_NFE_CTE = nf.getlbr_NFeID();
+		Timestamp DT_DOC   = nf.getDateDoc();
+		
+		listReg.add(new RG130(IND_EMIT,COD_PART,COD_MOD,SER,NUM_DOC,CHV_NFE_CTE,DT_DOC));
+		
+		//RG140
+		String COD_ITEM = nfLine.getProductValue();
+		int NUM = nfLine.getLine();
+		listReg.add(new RG140(NUM,COD_ITEM));
+		
+		return listReg;
+	} //createRG130_RG140
 	
 	public static RH005 createRH005(Timestamp dateFrom){
 		
@@ -995,18 +1122,19 @@ public class EFDUtil{
 		return list.toArray(new R9900[list.size()]);
 	} //createR9900
 	
-	public static MAsset[] getAtivosCIAP(Timestamp dateFrom){
+	public static MAsset[] getAtivosCIAP(Timestamp dateFrom, Timestamp dateTo){
 		
 		String whereClause = "AD_Client_ID=? AND AD_Org_ID IN (0,?) " +
 				             "AND IsDepreciated='Y' " +
-				             "AND ADD_MONTHS(TRUNC(A_Asset_CreateDate,'MM'),47) >= ?";
+				             "AND ADD_MONTHS(TRUNC(A_Asset_CreateDate,'MM'),47) >= ? " +
+				             "AND A_Asset_CreateDate <= ?";
 		 
 		String orderBy = "Value";
 
 		MTable table = MTable.get(Env.getCtx(), MAsset.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
               q.setOrderBy(orderBy);
-              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom});
+              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom,dateTo});
 
         List<MAsset> list = q.list();
         MAsset[] nfs = new MAsset[list.size()];
