@@ -1021,7 +1021,7 @@ ALTER TABLE LBR_AverageCostLine ADD COLUMN LBR_AverageCost_ID NUMERIC(10) NOT NU
 
 -- 23/03/2011 9h32min47s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120301,454,0,30,3000028,1120020,'M_Product_ID',TO_TIMESTAMP('2011-03-23 09:32:46','YYYY-MM-DD HH24:MI:SS'),100,'Product, Service, Item','LBRA',22,'Identifies an item which is either purchased or sold in this organization.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Product',0,TO_TIMESTAMP('2011-03-23 09:32:46','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120301,454,0,30,null,1120020,'M_Product_ID',TO_TIMESTAMP('2011-03-23 09:32:46','YYYY-MM-DD HH24:MI:SS'),100,'Product, Service, Item','LBRA',22,'Identifies an item which is either purchased or sold in this organization.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Product',0,TO_TIMESTAMP('2011-03-23 09:32:46','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 23/03/2011 9h32min47s BRT
@@ -1719,17 +1719,7 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000000, SeqNo=3, Updated=CURRENT_TIMESTAMP W
 
 -- 23/03/2011 9h51min25s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_TreeNodeMM SET Parent_ID=1000000, SeqNo=4, Updated=CURRENT_TIMESTAMP WHERE AD_Tree_ID=10 AND Node_ID=3000079
-;
-
--- 23/03/2011 9h51min25s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 UPDATE AD_TreeNodeMM SET Parent_ID=1000000, SeqNo=5, Updated=CURRENT_TIMESTAMP WHERE AD_Tree_ID=10 AND Node_ID=1000037
-;
-
--- 23/03/2011 9h51min25s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_TreeNodeMM SET Parent_ID=1000000, SeqNo=6, Updated=CURRENT_TIMESTAMP WHERE AD_Tree_ID=10 AND Node_ID=3000118
 ;
 
 -- 23/03/2011 9h51min29s BRT
