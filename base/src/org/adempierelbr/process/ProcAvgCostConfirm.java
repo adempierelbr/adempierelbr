@@ -90,11 +90,6 @@ public class ProcAvgCostConfirm extends SvrProcess
 					false, trxName);
 		}
 		
-		if (lines.length <= 0) {
-			log.warning("No Lines");
-			return "ERR: No Lines";
-		}
-		
 		if(costType.equals(X_LBR_AverageCostLine.LBR_AVGCOSTTYPE_Purchased)){ //COMPRADO
 			avgCost.setlbr_AvgStep2(true);
 		}
