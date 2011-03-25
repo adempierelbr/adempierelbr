@@ -633,7 +633,7 @@ UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Custo Médio - Relançar Contab
 
 -- 23/03/2011 9h16min39s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Process (AD_Client_ID,AD_Org_ID,AD_Process_ID,AccessLevel,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES (0,0,1120016,'3','org.adempierelbr.process.ProcAvgRepostAcct','N',TO_TIMESTAMP('2011-03-23 09:16:38','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','N','N','N','N','AvgCost - RePost Acct','Y',0,0,TO_TIMESTAMP('2011-03-23 09:16:38','YYYY-MM-DD HH24:MI:SS'),100,'ProcAvgCostRepostAcct')
+INSERT INTO AD_Process (AD_Client_ID,AD_Org_ID,AD_Process_ID,AccessLevel,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES (0,0,1120016,'3','org.adempierelbr.process.ProcAvgCostRepostAcct','N',TO_TIMESTAMP('2011-03-23 09:16:38','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','N','N','N','N','AvgCost - RePost Acct','Y',0,0,TO_TIMESTAMP('2011-03-23 09:16:38','YYYY-MM-DD HH24:MI:SS'),100,'ProcAvgCostRepostAcct')
 ;
 
 -- 23/03/2011 9h16min39s BRT
