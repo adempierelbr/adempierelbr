@@ -12,49 +12,36 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.piscofins.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C110: COMPLEMENTO DO DOCUMENTO - INFORMAÇÃO COMPLEMENTAR DA NOTA FISCAL 
- * (CÓDIGOS 01, 1B, 04 e 55)
+ * REGISTRO F990: ENCERRAMENTO DO BLOCO F
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC110.java, 20/01/2011, 11:26:00, mgrigioni
+ * @version $Id: RF990.java, 17/02/2011, 16:56:00, mgrigioni
  */
-public class RC110 extends RegSped  {
-	
-	private String COD_INF;
-	private String TXT_COMPL;
+public class RF990 extends RegSped {
+
+	private String QTD_LIN_F = "";
 
 	/**
 	 * Constructor
-	 * 
-	 * @param COD_INF
-	 * @param TXT_COMPL
 	 */
-	public RC110(String COD_INF, String TXT_COMPL) 
+	public RF990() 
 	{
-		this.COD_INF = COD_INF;
-		this.TXT_COMPL = TXT_COMPL;
-		//
-		addCounter();
-	} //RC110
+		super();
+	} //RF990
 
-	/**
-	 * Formata o Bloco C Registro 110
-	 * 
-	 * @return
-	 */
-	public String toString() {
+	public String toString(){
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_INF, 1, 6)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(TXT_COMPL), 255)
-			+ PIPE;
-			
-		return TextUtil.removeEOL(format) + EOL;
-	}//toString
+		QTD_LIN_F = "" + CounterSped.getBlockCounter(REG);
+		
+		StringBuilder format = new StringBuilder 
+			       (PIPE).append(REG)
+	        .append(PIPE).append(QTD_LIN_F)
+	        .append(PIPE).append(EOL);
+		
+		return format.toString();
+	}
 	
-} //RC110
+} //RF990

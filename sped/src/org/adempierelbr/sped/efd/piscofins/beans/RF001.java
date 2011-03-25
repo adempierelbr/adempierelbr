@@ -13,38 +13,40 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C495: DETALHAMENTO DA CONSOLIDAÇÃO DE DOCUMENTOS EMITIDOS POR ECF
- * (CÓDIGOS 02, 2D e 59) – COFINS
+ * REGISTRO F001: ABERTURA DO BLOCO F
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC495.java, 31/01/2011, 09:16:00, mgrigioni
+ * @version $Id: RF001.java, 17/02/2011, 16:54:00, mgrigioni
  */
-public class RC495 extends RegSped {
-	
-	/**
-	 * TODO - RC495
-	 */
-	
-	public RC495()
-	{
-		//
-		addCounter();
-	}	//	RC495
+public class RF001 extends RegSped {
+
+	private String IND_MOV; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
 	/**
-	 * Formata o Bloco C Registro 495
+	 * Constructor
+	 * 
+	 * @param IND_MOV
+	 */
+	public RF001(Boolean hasTransaction) 
+	{
+		super();
+		this.IND_MOV = hasTransaction ? "0" : "1";
+	}	//RF001
+
+	/**
+	 * Formata o Bloco F Registro 001
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+	               (PIPE).append(REG)
+	        .append(PIPE).append(IND_MOV)
+	        .append(PIPE).append(EOL);
+	       
+		return format.toString();
+	} //toString
 	
-} // RC495
+} //RF001

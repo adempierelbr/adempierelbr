@@ -18,22 +18,20 @@ import org.adempierelbr.util.TextUtil;
 /**
  * REGISTRO D010: IDENTIFICAÇÃO DO ESTABELECIMENTO
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RD010.java, 31/01/2011, 10:22:00, mgrigioni
+ * @version $Id: RD010.java, 21/01/2011, 11:14:00, mgrigioni
  */
 public class RD010 extends RegSped {
-	
-	private String CNPJ;
 
+	private String CNPJ;
+	
 	/**
 	 * Constructor
-	 * 
 	 * @param CNPJ
 	 */
 	public RD010(String CNPJ) 
 	{
+		super();
 		this.CNPJ = CNPJ;
-		//
-		addCounter();
 	}	//RD010
 
 	/**
@@ -43,13 +41,12 @@ public class RD010 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
-	} //toString
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
+			
 } //RD010

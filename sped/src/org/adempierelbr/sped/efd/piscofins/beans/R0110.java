@@ -13,7 +13,6 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO 0110: REGIMES DE APURAÇÃO DA CONTRIBUIÇÃO SOCIAL E DE APROPRIAÇÃO DE CRÉDITO
@@ -34,11 +33,10 @@ public class R0110 extends RegSped {
 	 */
 	public R0110(String COD_INC_TRIB, String IND_APRO_CRED, String COD_TIPO_CONT)
 	{
+		super();
 		this.COD_INC_TRIB = COD_INC_TRIB;
 		this.IND_APRO_CRED = IND_APRO_CRED;
 		this.COD_TIPO_CONT = COD_TIPO_CONT;
-		//
-		addCounter();
 	}	//	R0110
 
 	/**
@@ -48,14 +46,14 @@ public class R0110 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + COD_INC_TRIB
-			+ PIPE + IND_APRO_CRED
-			+ PIPE + COD_TIPO_CONT
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(COD_INC_TRIB)
+            .append(PIPE).append(IND_APRO_CRED)
+            .append(PIPE).append(COD_TIPO_CONT)
+            .append(PIPE).append(EOL);
 
+		return format.toString();
+	} // toString
+		
 } // R0110

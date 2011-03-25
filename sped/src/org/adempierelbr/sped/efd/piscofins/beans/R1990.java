@@ -12,47 +12,36 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.piscofins.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO D111: PROCESSO REFERENCIADO
+ * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RD111.java, 31/01/2011, 10:59:00, mgrigioni
+ * @version $Id: R1990.java, 17/02/2011, 16:56:00, mgrigioni
  */
-public class RD111 extends RegSped  {
-	
-	private String NUM_PROC;
-	private String IND_PROC;
+public class R1990 extends RegSped {
+
+	private String QTD_LIN_1 = "";
 
 	/**
 	 * Constructor
-	 * 
-	 * @param NUM_PROC
-	 * @param IND_PROC
 	 */
-	public RD111(String NUM_PROC, String IND_PROC) 
+	public R1990() 
 	{
-		this.NUM_PROC = NUM_PROC;
-		this.IND_PROC = IND_PROC;
-		//
-		addCounter();
-	} //RD111
+		super();
+	} //MF990
 
-	/**
-	 * Formata o Bloco D Registro 111
-	 * 
-	 * @return
-	 */
-	public String toString() {
+	public String toString(){
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(NUM_PROC, 20)
-			+ PIPE + TextUtil.checkSize(IND_PROC, 1)
-			+ PIPE;
-			
-		return TextUtil.removeEOL(format) + EOL;
-	}//toString
+		QTD_LIN_1 = "" + CounterSped.getBlockCounter(REG);
 		
-} //RD111
+		StringBuilder format = new StringBuilder 
+			       (PIPE).append(REG)
+	        .append(PIPE).append(QTD_LIN_1)
+	        .append(PIPE).append(EOL);
+		
+		return format.toString();
+	}
+	
+} //R1990

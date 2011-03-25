@@ -30,9 +30,8 @@ public class RA010 extends RegSped {
 	 */
 	public RA010(String CNPJ) 
 	{
+		super();
 		this.CNPJ = CNPJ;
-		//
-		addCounter();
 	}	//RA010
 
 	/**
@@ -42,13 +41,12 @@ public class RA010 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
-	} //toString
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
+			
 } //RA010

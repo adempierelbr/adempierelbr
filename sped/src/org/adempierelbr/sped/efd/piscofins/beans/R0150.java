@@ -19,7 +19,7 @@ import org.adempierelbr.util.TextUtil;
 /**
  * REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0150.java, 19/01/2011, 09:40:00, mgrigioni
+ * @version $Id: R0150.java, 04/02/2011, 09:19:00, mgrigioni
  */
 public class R0150 extends RegSped {
 	
@@ -51,15 +51,15 @@ public class R0150 extends RegSped {
 	 * @param COMPL
 	 * @param BAIRRO
 	 */
-	public R0150(String COD_PART, String NOME, String COD_PAIS, String CNPJ, String CPF, 
+	public R0150(String COD_PART, String NOME, String COD_PAIS, String CNPJ, 
 			String IE, String COD_MUN, String SUFRAMA, String END, String NUM, 
 			String COMPL, String BAIRRO)
 	{
-		this.COD_PART = COD_PART;
+		super();
+		setCOD_PART(COD_PART);
 		this.NOME = NOME;
 		this.COD_PAIS = COD_PAIS;
-		this.CNPJ = CNPJ;
-		this.CPF = CPF;
+		setID(CNPJ);
 		this.IE = IE;
 		this.COD_MUN = COD_MUN;
 		this.SUFRAMA = SUFRAMA;
@@ -67,9 +67,27 @@ public class R0150 extends RegSped {
 		this.NUM = NUM;
 		this.COMPL = COMPL;
 		this.BAIRRO = BAIRRO;
-		//
-		addCounter();
 	}	//	R0150
+	
+	private void setCOD_PART(String COD_PART){
+		
+		if (COD_PART == null || COD_PART.isEmpty())
+			log.severe("COD_PART == NULL");
+		else
+			this.COD_PART = TextUtil.checkSize(RemoverAcentos.remover(COD_PART), 60);
+	}
+	
+	private void setID(String CNPJ){
+		CNPJ = TextUtil.toNumeric(CNPJ);
+		if (CNPJ.length() == 14)
+			this.CNPJ = CNPJ;
+		else
+			this.CPF = CNPJ;
+	}
+	
+	public String getCOD_PART(){
+		return this.COD_PART;
+	}
 
 	/**
 	 * Formata o Bloco 0 Registro 150
@@ -78,23 +96,49 @@ public class R0150 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COD_PART), 60)  
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 100)
-			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(COD_PAIS), '0', 5)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CPF),11)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(IE),14)
-			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(SUFRAMA),9)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(END), 60)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(NUM),255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COMPL), 60)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(BAIRRO), 60)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(COD_PART)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 100))
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(COD_PAIS), '0', 5))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CPF),11))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(IE),14))
+            .append(PIPE).append(TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(SUFRAMA),9))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(END), 60))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(NUM),10))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COMPL), 60))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(BAIRRO), 60))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((COD_PART == null) ? 0 : COD_PART.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		R0150 other = (R0150) obj;
+		if (COD_PART == null) {
+			if (other.COD_PART != null)
+				return false;
+		} else if (!COD_PART.equals(other.COD_PART))
+			return false;
+		return true;
+	}
+
 } // R0150

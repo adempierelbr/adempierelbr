@@ -14,7 +14,6 @@ package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO D990: ENCERRAMENTO DO BLOCO D
@@ -22,7 +21,7 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RD990.java, 31/01/2011, 11:14:00, mgrigioni
  */
 public class RD990 extends RegSped {
-
+	
 	private String QTD_LIN_D = "";
 
 	/**
@@ -30,20 +29,19 @@ public class RD990 extends RegSped {
 	 */
 	public RD990() 
 	{
-		//
-		addCounter();
+		super();
 	} //RD990
 
 	public String toString(){
 		
 		QTD_LIN_D = "" + CounterSped.getBlockCounter(REG);
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + QTD_LIN_D
-			+ PIPE;
+		StringBuilder format = new StringBuilder 
+			       (PIPE).append(REG)
+	        .append(PIPE).append(QTD_LIN_D)
+	        .append(PIPE).append(EOL);
 		
-		return TextUtil.removeEOL(format) + EOL;
+		return format.toString();
 	}
-	
+
 } //RD990

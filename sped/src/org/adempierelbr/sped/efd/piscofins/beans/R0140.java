@@ -46,7 +46,8 @@ public class R0140 extends RegSped {
 	public R0140(String COD_EST, String NOME, String CNPJ, String UF, String IE, 
 			String COD_MUN, String IM, String SUFRAMA)
 	{
-		this.COD_EST = COD_EST;
+		super();
+		setCOD_EST(COD_EST);
 		this.NOME = NOME;
 		this.CNPJ = CNPJ;
 		this.UF = UF;
@@ -54,9 +55,15 @@ public class R0140 extends RegSped {
 		this.COD_MUN = COD_MUN;
 		this.IM = IM;
 		this.SUFRAMA = SUFRAMA;
-		//
-		addCounter();
 	}	//	R0140
+	
+	private void setCOD_EST(String COD_EST){
+		
+		if (COD_EST == null || COD_EST.isEmpty())
+			log.severe("COD_EST == NULL");
+		else
+			this.COD_EST = TextUtil.checkSize(RemoverAcentos.remover(COD_EST), 60);
+	}
 
 	/**
 	 * Formata o Bloco 0 Registro 140
@@ -65,19 +72,19 @@ public class R0140 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COD_EST), 60)  
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 100)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14) 
-			+ PIPE + TextUtil.checkSize(UF, 2)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(IE),14)
-			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(IM),255)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(SUFRAMA),9)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(COD_EST)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 100))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14))
+            .append(PIPE).append(TextUtil.checkSize(UF, 2))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(IE),14))
+            .append(PIPE).append(TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(IM),255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(SUFRAMA),9))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
 	
 } // R0140

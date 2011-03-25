@@ -13,40 +13,40 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C600: CONSOLIDAÇÃO DIÁRIA DE NOTAS FISCAIS/CONTAS EMITIDAS DE ENERGIA ELÉTRICA 
- * (CÓDIGO 06), NOTA FISCAL/CONTA DE FORNECIMENTO D'ÁGUA CANALIZADA (CÓDIGO 29) E
- * NOTA FISCAL/CONTA DE FORNECIMENTO DE GÁS (CÓDIGO 28) 
- * (EMPRESAS OBRIGADAS OU NÃO OBRIGADAS AO CONVENIO ICMS 115/03) – DOCUMENTOS DE SAÍDA
+ * REGISTRO M001: ABERTURA DO BLOCO M
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC600.java, 31/01/2011, 09:46:00, mgrigioni
+ * @version $Id: RM001.java, 17/02/2011, 16:54:00, mgrigioni
  */
-public class RC600 extends RegSped {
-	
-	/**
-	 * TODO - RC600
-	 */
-	
-	public RC600()
-	{
-		//
-		addCounter();
-	}	//	RC600
+public class RM001 extends RegSped {
+
+	private String IND_MOV; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
 	/**
-	 * Formata o Bloco C Registro 600
+	 * Constructor
+	 * 
+	 * @param IND_MOV
+	 */
+	public RM001(Boolean hasTransaction) 
+	{
+		super();
+		this.IND_MOV = hasTransaction ? "0" : "1";
+	}	//RM001
+
+	/**
+	 * Formata o Bloco M Registro 001
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+	               (PIPE).append(REG)
+	        .append(PIPE).append(IND_MOV)
+	        .append(PIPE).append(EOL);
+	       
+		return format.toString();
+	} //toString
 	
-} // RC600
+} //RM001

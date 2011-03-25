@@ -13,15 +13,14 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO D001: ABERTURA DO BLOCO D
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RD001.java, 31/01/2011, 10:21:00, mgrigioni
  */
-public class RD001 extends RegSped {
-	
+public class RD001 extends RegSped
+{
 	private String IND_MOV; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
 	/**
@@ -31,10 +30,9 @@ public class RD001 extends RegSped {
 	 */
 	public RD001(Boolean hasTransaction) 
 	{
+		super();
 		this.IND_MOV = hasTransaction ? "0" : "1";
-		//
-		addCounter();
-	}	//RD001
+	} //RD001
 
 	/**
 	 * Formata o Bloco D Registro 001
@@ -43,13 +41,12 @@ public class RD001 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + IND_MOV
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
+		StringBuilder format = new StringBuilder
+	               (PIPE).append(REG)
+	        .append(PIPE).append(IND_MOV)
+	        .append(PIPE).append(EOL);
+	       
+		return format.toString();
 	} //toString
 	
 } //RD001

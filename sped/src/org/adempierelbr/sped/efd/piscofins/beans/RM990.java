@@ -12,48 +12,36 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.piscofins.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO A110: COMPLEMENTO DO DOCUMENTO - INFORMAÇÃO COMPLEMENTAR DA NF
+ * REGISTRO M990: ENCERRAMENTO DO BLOCO M
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RA110.java, 19/01/2011, 16:56:00, mgrigioni
+ * @version $Id: RM990.java, 17/02/2011, 16:56:00, mgrigioni
  */
-public class RA110 extends RegSped {
-	
-	private String COD_INF;
-	private String TXT_COMPL;
-	
+public class RM990 extends RegSped {
+
+	private String QTD_LIN_M = "";
+
 	/**
 	 * Constructor
-	 * @param COD_INF
-	 * @param TXT_COMPL
 	 */
-	public RA110(String COD_INF, String TXT_COMPL)  
+	public RM990() 
 	{
-		this.COD_INF = COD_INF;
-		this.TXT_COMPL = TXT_COMPL;
-		//
-		addCounter();
-	}	//RA110
+		super();
+	} //MF990
 
-	/**
-	 * Formata o Bloco A Registro 110
-	 * 
-	 * @return
-	 */
-	public String toString() {
+	public String toString(){
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_INF, 6)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(TXT_COMPL), 255)
-			+ PIPE;
+		QTD_LIN_M = "" + CounterSped.getBlockCounter(REG);
 		
-		return TextUtil.removeEOL(format) + EOL;
+		StringBuilder format = new StringBuilder 
+			       (PIPE).append(REG)
+	        .append(PIPE).append(QTD_LIN_M)
+	        .append(PIPE).append(EOL);
 		
-	} //toString
-
-} //RA110
+		return format.toString();
+	}
+	
+} //RM990

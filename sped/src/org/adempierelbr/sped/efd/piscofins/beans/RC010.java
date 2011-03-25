@@ -32,10 +32,9 @@ public class RC010 extends RegSped {
 	 */
 	public RC010(String CNPJ, String IND_ESCRI) 
 	{
+		super();
 		this.CNPJ = CNPJ;
 		this.IND_ESCRI = IND_ESCRI;
-		//
-		addCounter();
 	}	//RC010
 
 	/**
@@ -45,14 +44,13 @@ public class RC010 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14)
-			+ PIPE + TextUtil.checkSize(IND_ESCRI, 1)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
-	} //toString
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(CNPJ), 14))
+            .append(PIPE).append(TextUtil.checkSize(IND_ESCRI, 1))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
+			
 } //RC010

@@ -12,38 +12,36 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.piscofins.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C485: RESUMO DIÁRIO DE DOCUMENTOS EMITIDOS POR ECF – COFINS (CÓDIGOS 02 e 2D).
+ * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL.
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC485.java, 31/01/2011, 09:16:00, mgrigioni
+ * @version $Id: R9999.java, 07/02/2011, 14:48:00, mgrigioni
  */
-public class RC485 extends RegSped {
-	
-	/**
-	 * TODO - RC485
-	 */
-	
-	public RC485()
-	{
-		//
-		addCounter();
-	}	//	RC485
+public class R9999 extends RegSped {
 
+	private String QTD_LIN = ""; 
+	
 	/**
-	 * Formata o Bloco C Registro 485
-	 * 
-	 * @return
+	 * Constructor
 	 */
-	public String toString() {
+	public R9999() {
+		super();
+	} // R9999
+	
+	public String toString(){
+		
+		QTD_LIN = "" + CounterSped.getTotalCounter();
 		
 		String format = 
-			  PIPE + REG
-			+ PIPE;
+			PIPE + REG 
+		  + PIPE + QTD_LIN
+		  + PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+	}
 	
-} // RC485
+} // R9999

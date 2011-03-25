@@ -13,37 +13,35 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0205: ALTERAÇÃO DO ITEM
+ * REGISTRO 9900: REGISTROS DO ARQUIVO.
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0205.java, 19/01/2011, 11:23:00, mgrigioni
+ * @version $Id: R9900.java, 07/02/2011, 14:44:00, mgrigioni
  */
-public class R0205 extends RegSped {
+public class R9900 extends RegSped {
 	
-	/**
-	 * TODO - R0205
-	 */
-	
-	public R0205()
-	{
-		//
-		addCounter();
-	}	//	R0205
+	private String REG_BLC     = "";
+	private String QTD_REG_BLC = "";
 
 	/**
-	 * Formata o Bloco 0 Registro 205
-	 * 
-	 * @return
+	 * Constructor
 	 */
-	public String toString() {
+	public R9900(String REG_BLC, String QTD_REG_BLC) {
+		super();
+		this.REG_BLC = REG_BLC;
+		this.QTD_REG_BLC = QTD_REG_BLC;
+	} //R9900
+
+	public String toString(){
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG)
+            .append(PIPE).append(REG_BLC)
+            .append(PIPE).append(QTD_REG_BLC)
+            .append(PIPE).append(EOL);
+
+		return format.toString();
+	} //toString
 	
-} // R0205
+} //R9900

@@ -57,6 +57,7 @@ public class R0100 extends RegSped {
 			String END, String NUM, String COMPL, String BAIRRO, String FONE,
 			String FAX, String EMAIL, String COD_MUN)
 	{
+		super();
 		this.NOME = NOME;
 		this.CPF = CPF;
 		this.CRC = CRC;
@@ -70,8 +71,6 @@ public class R0100 extends RegSped {
 		this.FAX = FAX;
 		this.EMAIL = EMAIL;
 		this.COD_MUN = COD_MUN;
-		//
-		addCounter();
 	}	//	R0100
 
 	/**
@@ -81,24 +80,24 @@ public class R0100 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 100)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CPF),11)
-			+ PIPE + TextUtil.checkSize(CRC,15)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14)
-			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(CEP), '0', 8)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(END), 60)
-			+ PIPE + TextUtil.checkSize(TextUtil.toNumeric(NUM), 255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COMPL),60)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(BAIRRO), 60)
-			+ PIPE + TextUtil.checkSize(FONE, 10)
-			+ PIPE + TextUtil.checkSize(FAX, 10)
-			+ PIPE + TextUtil.checkSize(TextUtil.itrim(EMAIL),255)
-			+ PIPE + TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//	toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 100))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CPF),11))
+            .append(PIPE).append(TextUtil.checkSize(CRC,15))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CNPJ),14))
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(CEP), 8))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(END), 60))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(NUM), 10))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COMPL), 60))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(BAIRRO), 60))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(FONE), 10))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(FAX), 10))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.itrim(EMAIL),255))
+            .append(PIPE).append(TextUtil.rPad(TextUtil.toNumeric(COD_MUN), '0', 7))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	} // toString
 	
 } // R0100

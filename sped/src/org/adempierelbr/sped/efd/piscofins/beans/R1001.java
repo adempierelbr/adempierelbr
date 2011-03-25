@@ -13,46 +13,40 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO A111: PROCESSO REFERENCIADO 
+ * REGISTRO 1001: ABERTURA DO BLOCO 1
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RA111.java, 19/01/2011, 17:00:00, mgrigioni
+ * @version $Id: R1001.java, 17/02/2011, 16:54:00, mgrigioni
  */
-public class RA111 extends RegSped {
+public class R1001 extends RegSped {
 
-	private String NUM_PROC;
-	private String IND_PROC;
-	
+	private String IND_MOV; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
+
 	/**
 	 * Constructor
-	 * @param NUM_PROC
-	 * @param IND_PROC
+	 * 
+	 * @param IND_MOV
 	 */
-	public RA111(String NUM_PROC, String IND_PROC)  
+	public R1001(Boolean hasTransaction) 
 	{
-		this.NUM_PROC = NUM_PROC;
-		this.IND_PROC = IND_PROC;
-		//
-		addCounter();
-	}	//RA111
+		super();
+		this.IND_MOV = hasTransaction ? "0" : "1";
+	}	//R1001
 
 	/**
-	 * Formata o Bloco A Registro 111
+	 * Formata o Bloco 1 Registro 001
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(NUM_PROC, 15)
-			+ PIPE + TextUtil.checkSize(IND_PROC, 1)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
+		StringBuilder format = new StringBuilder
+	               (PIPE).append(REG)
+	        .append(PIPE).append(IND_MOV)
+	        .append(PIPE).append(EOL);
+	       
+		return format.toString();
 	} //toString
 	
-} //RA111
+} //R1001

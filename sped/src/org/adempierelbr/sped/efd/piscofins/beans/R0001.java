@@ -13,7 +13,6 @@
 package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO 0001: ABERTURA DO BLOCO 0
@@ -31,9 +30,8 @@ public class R0001 extends RegSped {
 	 */
 	public R0001(Boolean hasTransaction) 
 	{
+		super();
 		this.IND_MOV = hasTransaction ? "0" : "1";
-		//
-		addCounter();
 	}	//R0001
 
 	/**
@@ -43,13 +41,12 @@ public class R0001 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + IND_MOV
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-		
+		StringBuilder format = new StringBuilder
+	               (PIPE).append(REG)
+	        .append(PIPE).append(IND_MOV)
+	        .append(PIPE).append(EOL);
+	       
+		return format.toString();
 	} //toString
 	
 } //R0001

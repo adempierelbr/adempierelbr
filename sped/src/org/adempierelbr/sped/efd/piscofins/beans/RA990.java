@@ -14,7 +14,6 @@ package org.adempierelbr.sped.efd.piscofins.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO A990: ENCERRAMENTO DO BLOCO A
@@ -30,20 +29,19 @@ public class RA990 extends RegSped {
 	 */
 	public RA990() 
 	{
-		//
-		addCounter();
+		super();
 	} //RA990
 
 	public String toString(){
 		
 		QTD_LIN_A = "" + CounterSped.getBlockCounter(REG);
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + QTD_LIN_A
-			+ PIPE;
+		StringBuilder format = new StringBuilder 
+			       (PIPE).append(REG)
+	        .append(PIPE).append(QTD_LIN_A)
+	        .append(PIPE).append(EOL);
 		
-		return TextUtil.removeEOL(format) + EOL;
+		return format.toString();
 	}
 	
 } //RA990
