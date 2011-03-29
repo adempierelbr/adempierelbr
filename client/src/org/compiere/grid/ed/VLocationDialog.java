@@ -12,23 +12,47 @@
  *****************************************************************************/
 package org.compiere.grid.ed;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.List;
-import java.util.logging.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import org.adempierelbr.util.WebServiceCep;
-import org.compiere.apps.*;
-import org.compiere.model.*;
-import org.compiere.swing.*;
-import org.compiere.util.*;
+import org.compiere.apps.ADialog;
+import org.compiere.apps.AEnv;
+import org.compiere.apps.ConfirmPanel;
+import org.compiere.model.MCity;
+import org.compiere.model.MCountry;
+import org.compiere.model.MLocation;
+import org.compiere.model.MOrgInfo;
+import org.compiere.model.MRegion;
+import org.compiere.swing.CComboBox;
+import org.compiere.swing.CDialog;
+import org.compiere.swing.CLabel;
+import org.compiere.swing.CPanel;
+import org.compiere.swing.CTextField;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  *	Dialog to enter Location Info (Address)
@@ -38,17 +62,17 @@ import org.compiere.util.*;
  */
 public class VLocationDialog extends CDialog implements ActionListener
 {
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	public static String GOOGLE_MAPS_URL_PREFIX     = "http://local.google.com/maps?q=";
 	public static String GOOGLE_MAPS_ROUTE_PREFIX   = "http://maps.google.com/maps?f=d&geocode=";
 	public static String GOOGLE_SOURCE_ADDRESS      = "&saddr=";
 	public static String GOOGLE_DESTINATION_ADDRESS = "&daddr=";
-
+	
 	/**
 	 *	Constructor
 	 *
@@ -71,15 +95,13 @@ public class VLocationDialog extends CDialog implements ActionListener
 		if (m_location == null) {
 			m_location = m_tempLocation;
 		}
-
-		m_location.set_TrxName(null);
-
-		//	Overwrite title
+		
+		//	Overwrite title	
 		if (m_location.getC_Location_ID() == 0)
 			setTitle(Msg.getMsg(Env.getCtx(), "LocationNew"));
 		else
 			setTitle(Msg.getMsg(Env.getCtx(), "LocationUpdate"));
-
+		
 
 		//	Current Country
 		//MCountry.setDisplayLanguage(Env.getAD_Language(Env.getCtx()));
@@ -91,9 +113,14 @@ public class VLocationDialog extends CDialog implements ActionListener
 		if (m_location.getCountry().isHasRegion())
 			lRegion.setText(m_location.getCountry().getRegionName());	//	name for region
 		fRegion.setSelectedItem(m_location.getRegion());
-
-		// Kenos
-		fCity = new CComboBox();
+		
+		// Kenos - Faire 
+		//	Current City
+		if (m_location.getC_Region_ID()!=0){
+			fCity = new CComboBox(getCCity());
+			fCity.setSelectedItem(new MCity(Env.getCtx(), m_location.getC_City_ID(),null));
+		}
+		
 		//
 		initLocation();
 		fCountry.addActionListener(this);
@@ -138,17 +165,17 @@ public class VLocationDialog extends CDialog implements ActionListener
 	private CComboBox	fRegion;
 	private CComboBox   fCity; //Kenos - campo City = COMBO BOX
 	private CComboBox	fCountry;
-
+	
 	/** The "route" key  */
 	private static final String TO_ROUTE = "Rota";
 	/** The "to link" key  */
 	private static final String TO_LINK = "Mapa";
-
+	
 	private JButton toLink  	= new JButton();
 	private JButton toRoute 	= new JButton();
 	private JButton getAddress 	= new JButton();
 
-
+	
 	//
 	private GridBagConstraints gbc = new GridBagConstraints();
 	private Insets labelInsets = new Insets(2,15,2,0);		// 	top,left,bottom,right
@@ -169,17 +196,17 @@ public class VLocationDialog extends CDialog implements ActionListener
 		panel.add(mainPanel, BorderLayout.NORTH);
 		panel.add(southPanel, BorderLayout.SOUTH);
 		southPanel.add(confirmPanel, BorderLayout.CENTER);
-
+		
 		toLink.setText(TO_LINK);
 		toLink.addActionListener(this);
 		toLink.setMargin(ConfirmPanel.s_insets);
 		confirmPanel.addComponent(toLink);
-
+		
 		toRoute.setText(TO_ROUTE);
 		toRoute.addActionListener(this);
 		toRoute.setMargin(ConfirmPanel.s_insets);
 		confirmPanel.addComponent(toRoute);
-
+		
 		getAddress.setText("Procurar");
 		getAddress.addActionListener(this);
 		getAddress.setMargin(ConfirmPanel.s_insets);
@@ -197,7 +224,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 		fCity.setPreferredSize(new Dimension(225,25));
 		fCountry.setPreferredSize(new Dimension(225,25));
 		//
-
+		
 		MCountry country = m_location.getCountry();
 		log.fine(country.getName() + ", Region=" + country.isHasRegion() + " " + country.getDisplaySequence()
 			+ ", C_Location_ID=" + m_location.getC_Location_ID());
@@ -212,7 +239,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 					int C_Location_ID = MOrgInfo.get(Env.getCtx(),m_location.getAD_Org_ID()).getC_Location_ID();
 					if (C_Location_ID != 0)
 					{
-						MLocation location =
+						MLocation location = 
 							new MLocation(Env.getCtx(), C_Location_ID, null);
 						MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
 						fRegion.setSelectedItem(region);
@@ -228,6 +255,23 @@ public class VLocationDialog extends CDialog implements ActionListener
 			lRegion.setText(country.getRegionName());
 			s_oldCountry_ID = m_location.getC_Country_ID();
 		}
+		
+		// Kenos// Faire
+		if (m_location.getCountry().isHasRegion() && m_location.getRegion() != null && m_location.getCountry().getC_Country_ID() == 139) //139 = Brasil
+		{
+			fCity.setEditable(false);
+			fCity.removeAllItems();
+			fCity = new CComboBox(getCCity());
+			fCity.setSelectedItem(new MCity(Env.getCtx(), m_location.getC_City_ID(),null));
+		}
+		else
+		{
+			fCity.removeAllItems();
+			fCity.setEditable(true);
+			fCity.setSelectedItem(new MCity(Env.getCtx(), m_location.getC_City_ID(),null));
+		}
+		// Kenos
+		
 
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.gridy = 0;			//	line
@@ -286,44 +330,8 @@ public class VLocationDialog extends CDialog implements ActionListener
 			}
 			fCountry.setSelectedItem(country);
 		}
-
-		// Kenos
-		if (m_location.getCountry().isHasRegion() && m_location.getRegion() != null && m_location.getCountry().getC_Country_ID() == 139) //139 = Brasil
-		{
-			fCity.setEditable(false);
-			fCity.removeAllItems();
-			String sql = "SELECT Name FROM C_City WHERE C_Region_ID=? ORDER BY Name";
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try
-			{
-				pstmt = DB.prepareStatement(sql, null);
-				pstmt.setInt(1, m_location.getRegion().getC_Region_ID());
-				rs = pstmt.executeQuery();
-				while (rs.next())
-				{
-					fCity.addItem(rs.getString (1));
-				}
-			}
-			catch (SQLException e)
-			{
-				log.log(Level.SEVERE, sql, e);
-			}
-			finally{
-				DB.close(rs, pstmt);
-			}
-
-			fCity.setSelectedItem(m_location.getCity());
-		}
-		else
-		{
-			fCity.removeAllItems();
-			fCity.setEditable(true);
-			fCity.setSelectedItem(m_location.getCity());
-		}
-		// Kenos
-
-
+		
+		
 		//	Update UI
 		pack();
 	}	//	initLocation
@@ -395,12 +403,12 @@ public class VLocationDialog extends CDialog implements ActionListener
 		}
 		// Kenos
 		else if (e.getSource() == toLink)
-		{
+		{			
 			String urlString = GOOGLE_MAPS_URL_PREFIX + getGoogleMapsLocation(m_location);
 			String message = null;
 
 			try
-			{
+			{	
 				new URL(urlString);
 				Env.startBrowser(urlString);
 			}
@@ -411,18 +419,18 @@ public class VLocationDialog extends CDialog implements ActionListener
 			}
 		}
 		else if (e.getSource() == toRoute)
-		{
+		{			
 			int AD_Org_ID = Env.getAD_Org_ID(Env.getCtx());
 			if (AD_Org_ID != 0){
 				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), AD_Org_ID,null);
 				MLocation orgLocation = new MLocation(Env.getCtx(),orgInfo.getC_Location_ID(),null);
-
+				
 				String urlString = GOOGLE_MAPS_ROUTE_PREFIX +
 						         GOOGLE_SOURCE_ADDRESS + getGoogleMapsLocation(orgLocation) + //org
 						         GOOGLE_DESTINATION_ADDRESS + getGoogleMapsLocation(m_location); //partner
 				String message = null;
 				try
-				{
+				{	
 					new URL(urlString);
 					Env.startBrowser(urlString);
 				}
@@ -434,24 +442,24 @@ public class VLocationDialog extends CDialog implements ActionListener
 			}
 		}
 		else if (e.getSource() == getAddress)
-		{
-			if(fPostal != null
+		{	
+			if(fPostal != null 
 					&& !fPostal.getText().equals(""))
 			{
 				if (!fAddress1.getText().equals("")
 						|| !fAddress2.getText().equals("")
 						|| !fAddress3.getText().equals("")
 						|| !fAddress4.getText().equals("")
-						|| fCity.getSelectedIndex() > 0)
+						|| fCity.getSelectedIndex() > 0) 
 				{
-					String warningMsg = "O endereço atual será substituido. Deseja continuar?";
+					String warningMsg = "O endere�o atual ser� substituido. Deseja continuar?";
 					String warningTitle = "Aviso";
 					int response = JOptionPane.showConfirmDialog(null, warningMsg,
 							warningTitle, JOptionPane.YES_NO_OPTION);
 					if (response == JOptionPane.NO_OPTION)
 						return;
 				}
-
+				
 				WebServiceCep cep = WebServiceCep.searchCep(fPostal.getText());
 				if (cep.wasSuccessful())
 				{
@@ -471,7 +479,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 				else if (cep.getResulCode() == 14)
 					JOptionPane.showMessageDialog(null, "Não foi possível fazer a busca. (Possível problema com a Internet).");
 				else
-					JOptionPane.showMessageDialog(null, "Erro ao fazer a busca.");
+					JOptionPane.showMessageDialog(null, "Erro ao fazer a busca.");					
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Preencha o CEP.");
@@ -488,8 +496,6 @@ public class VLocationDialog extends CDialog implements ActionListener
 		m_location.setAddress3(fAddress3.getText());
 		m_location.setAddress4(fAddress4.getText());
 		//m_location.setCity(fCity.getText()); Kenos (linha comentada)
-		m_location.setCity((String) fCity.getSelectedItem()); // Kenos
-
 		m_location.setPostal(fPostal.getText());
 		m_location.setPostal_Add(fPostalAdd.getText());
 		//  Country/Region
@@ -502,16 +508,20 @@ public class VLocationDialog extends CDialog implements ActionListener
 		}
 		else
 			m_location.setC_Region_ID(0);
-
-		//C_City_ID
-		int C_City_ID = getC_City_ID(m_location.getCity(),m_location.getC_Region_ID());
-		m_location.setC_City_ID(C_City_ID);
-
+		
+		//BEGIN fernandom @ faire.com.br 
+		//SET C_City_ID
+		MCity city = (MCity)fCity.getSelectedItem();
+		m_location.setC_City_ID(city.getC_City_ID());
+		
 		//RegionName
-		m_location.setRegionName(new MRegion(Env.getCtx(),m_location.getC_Region_ID(),null).getName());
-
-		//	Save chnages
-		m_location.set_TrxName(null);
+		 m_location.setRegionName(new
+		 MRegion(Env.getCtx(),m_location.getC_Region_ID(),null).getName());
+		 
+		//Save chnages
+		 m_location.set_TrxName(null);
+		//
+		//	Save changes
 		m_location.save();
 	}	//	actionOK
 
@@ -557,17 +567,17 @@ public class VLocationDialog extends CDialog implements ActionListener
 		}
 		else
 			m_tempLocation.setC_Region_ID(0);
-
+		
 		return m_tempLocation.toString();
 	}*/
-
+	
 	/**
 	 * 	Get edited Value (MLocation) for GoogleMaps
 	 *  @param MLocation location
 	 *	@return String address
 	 */
 	private String getGoogleMapsLocation(MLocation location) {
-
+		
 		MRegion region = new MRegion(Env.getCtx(), location.getC_Region_ID(), null);
 		String address = "";
 		address = address + (location.getAddress1() != null ? location.getAddress1() + ", " : "");
@@ -575,35 +585,43 @@ public class VLocationDialog extends CDialog implements ActionListener
 		address = address + (location.getCity() != null ? location.getCity() + ", " : "");
 		address = address + (region.getName() != null ? region.getName() + ", " : "");
 		address = address + (location.getCountryName() != null ? location.getCountryName() : "");
-
+		
 		return address.replace(" ", "+");
 	}
-
-	private int getC_City_ID(String cityName,int C_Region_ID){
-
-			int C_City_ID = 0;
-
-			if (cityName == null || cityName.trim().equals(""))
-				return C_City_ID;
-
-			if (C_Region_ID < 1)
-				return C_City_ID;
-
-			String whereClause = "Name=? " +
-			                     "AND IsActive='Y' " +
-			                     "AND AD_Client_ID=0 " +
-			                     "AND C_Region_ID=?";
-			MTable table = MTable.get(Env.getCtx(), X_C_City.Table_Name);
-			Query query = new Query(Env.getCtx(), table, whereClause, null);
-			      query.setParameters(new Object[] { cityName, C_Region_ID });
-
-			List<X_C_City> listCity = query.list();
-			if (listCity.size() > 0){
-				X_C_City city = listCity.get(0);
-				C_City_ID = city.get_ID();
+	
+	/**
+	 * @author Fernando de O Moraes (fernando.moraes @ faire.com.br)
+	 * @return
+	 */
+	private MCity [] getCCity (){
+		ArrayList<MCity> list = new ArrayList<MCity>();
+		String sql = "SELECT * FROM C_City WHERE C_Region_ID=? ORDER BY Name";
+		try
+		{
+		
+			PreparedStatement stmt = DB.prepareStatement(sql,null);
+			stmt.setInt(1, m_location.getC_Region_ID());
+			
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+			{
+				MCity r = new MCity (Env.getCtx(), rs, null);
+				list.add(r);
 			}
+			
+			rs.close();
+			stmt.close();
+		}
+		catch (SQLException e)
+		{
+			log.log(Level.SEVERE, sql, e);
+		}
+		
+		MCity[] retValue = new MCity[list.size()];
+		list.toArray(retValue);
+		//Arrays.sort(retValue);
 
-			return C_City_ID;
+		return retValue;
 	}
-
+	
 }	//	VLocationDialog

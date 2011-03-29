@@ -134,9 +134,6 @@ public class VTaxes extends JComponent
 			setReadWrite (true);
 		setMandatory (mandatory);
 		//
-		mDelete = new CMenuItem(Msg.getMsg(Env.getCtx(), "Delete"), Env.getImageIcon ("Delete16.gif"));
-		mDelete.addActionListener(this);
-		popupMenu.add(mDelete);
 
 	}	//	VTaxes
 
