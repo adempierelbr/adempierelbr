@@ -273,6 +273,11 @@ public class EFDUtil{
 
 			COD_MUN  = BPartnerUtil.getCityCode(loc);
 			COD_PAIS = bpCountry.get_ValueAsString("lbr_CountryCode");
+			if (bpCountry.get_ID() != BPartnerUtil.BRASIL){
+				CNPJ     = "";
+				IE       = "";
+				SUFRAMA  = "";
+			}
 		}
 		else{
 			log.severe("EFD R0150 - PARCEIRO SEM ENDEREDO. " +
@@ -312,6 +317,11 @@ public class EFDUtil{
 
 			COD_MUN  = BPartnerUtil.getCityCode(loc);
 			COD_PAIS = bpCountry.get_ValueAsString("lbr_CountryCode");
+			if (bpCountry.get_ID() != BPartnerUtil.BRASIL){
+				CNPJ     = "";
+				IE       = "";
+				SUFRAMA  = "";
+			}
 		}
 		else{
 			log.severe("EFD R0150 - PARCEIRO SEM ENDEREDO. Parceiro: " + bp.getName());
@@ -980,7 +990,6 @@ public class EFDUtil{
 		BigDecimal VL_SC_IPI   = Env.ZERO;
 		BigDecimal VL_SD_IPI   = Env.ZERO;
 		
-		
 		for (RE510 re510 : arrayRE510){
 			//ENTRADA GERA CRÉDITO
 			if (!re510.isSOTrx()){
@@ -1209,7 +1218,7 @@ public class EFDUtil{
 	                                "FROM M_Transaction t " +
 	                                "INNER JOIN M_Locator l ON t.M_Locator_ID = l.M_Locator_ID " +
 	                                "INNER JOIN M_Warehouse w ON l.M_Warehouse_ID=w.M_Warehouse_ID " +
-	                             "WHERE TRUNC(t.MovementDate, 'DD') >= TRUNC(?, 'DD') " +
+	                             "WHERE TRUNC(t.MovementDate, 'DD') > TRUNC(?, 'DD') " +
 	                             "GROUP BY w.AD_Client_ID, w.AD_Org_ID, t.M_Product_ID, l.C_BPartner_ID, w.lbr_WarehouseType) Aux " +
 	                       "GROUP BY AD_Client_ID, AD_Org_ID, M_Product_ID, C_BPartner_ID, lbr_WarehouseType) " +
 	                 "WHERE QtyOnHand > 0 AND AD_Org_ID = ? ORDER BY M_Product_ID";

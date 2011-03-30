@@ -86,7 +86,7 @@ public class MLBRApuracaoIPI extends X_LBR_ApuracaoIPI {
 		amt = DB.getSQLValueBD(null, sql, 
 				new Object[]{C_Period_ID,Env.getAD_Client_ID(ctx)});
 		
-		if (amt == null)
+		if (amt == null || amt.signum() != 1)
 			amt =  Env.ZERO;
 		
 		return amt;

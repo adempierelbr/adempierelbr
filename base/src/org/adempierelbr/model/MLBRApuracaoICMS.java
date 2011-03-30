@@ -86,7 +86,7 @@ public class MLBRApuracaoICMS extends X_LBR_ApuracaoICMS {
 		amt = DB.getSQLValueBD(null, sql, 
 				new Object[]{C_Period_ID,Env.getAD_Client_ID(ctx)});
 		
-		if (amt == null)
+		if (amt == null || amt.signum() != 1)
 			amt =  Env.ZERO;
 		
 		return amt;
