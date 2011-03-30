@@ -56,6 +56,32 @@ public class RD500 extends RegSped implements Comparable<Object>{
 	
 	private boolean isCancelled = false; //Documento Cancelado
 	
+	/**
+	 * Constructor
+	 * @param IND_OPER
+	 * @param IND_EMIT
+	 * @param COD_PART
+	 * @param COD_MOD
+	 * @param COD_SIT
+	 * @param SER
+	 * @param SUB
+	 * @param NUM_DOC
+	 * @param DT_DOC
+	 * @param DT_A_P
+	 * @param VL_DOC
+	 * @param VL_DESC
+	 * @param VL_SERV
+	 * @param VL_SERV_NT
+	 * @param VL_TERC
+	 * @param VL_DA
+	 * @param VL_BC_ICMS
+	 * @param VL_ICMS
+	 * @param COD_INF
+	 * @param VL_PIS
+	 * @param VL_COFINS
+	 * @param COD_CTA
+	 * @param TP_ASSINANTE
+	 */
 	public RD500(String IND_OPER, String IND_EMIT, String COD_PART,
 			String COD_MOD, String COD_SIT, String SER, String SUB,
 			String NUM_DOC, Timestamp DT_DOC, Timestamp DT_A_P,

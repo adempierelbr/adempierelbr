@@ -35,13 +35,14 @@ public class R0300 extends RegSped  {
 	
 	/**
 	 * Constructor
-	 * 
 	 * @param COD_IND_BEM
 	 * @param IDENT_MERC
 	 * @param DESCR_ITEM
 	 * @param COD_PRNC
 	 * @param COD_CTA
 	 * @param NR_PARC
+	 * @param COD_CCUS
+	 * @param HELP
 	 */
 	public R0300(String COD_IND_BEM, String IDENT_MERC, String DESCR_ITEM,
 			String COD_PRNC, String COD_CTA, int NR_PARC, String COD_CCUS, String HELP)

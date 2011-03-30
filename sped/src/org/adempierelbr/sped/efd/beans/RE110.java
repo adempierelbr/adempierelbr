@@ -39,6 +39,23 @@ public class RE110 extends RegSped {
 	private BigDecimal VL_SLD_CREDOR_TRANSPORTAR;
 	private BigDecimal DEB_ESP;
 
+	/**
+	 * Constructor
+	 * @param VL_TOT_DEBITOS
+	 * @param VL_AJ_DEBITOS
+	 * @param VL_TOT_AJ_DEBITOS
+	 * @param VL_ESTORNOS_CRED
+	 * @param VL_TOT_CREDITOS
+	 * @param VL_AJ_CREDITOS
+	 * @param VL_TOT_AJ_CREDITOS
+	 * @param VL_ESTORNOS_DEB
+	 * @param VL_SLD_CREDOR_ANT
+	 * @param VL_SLD_APURADO
+	 * @param VL_TOT_DED
+	 * @param VL_ICMS_RECOLHER
+	 * @param VL_SLD_CREDOR_TRANSPORTAR
+	 * @param DEB_ESP
+	 */
 	public RE110(BigDecimal VL_TOT_DEBITOS, BigDecimal VL_AJ_DEBITOS, BigDecimal VL_TOT_AJ_DEBITOS,
 			BigDecimal VL_ESTORNOS_CRED, BigDecimal VL_TOT_CREDITOS, BigDecimal VL_AJ_CREDITOS,
 			BigDecimal VL_TOT_AJ_CREDITOS, BigDecimal VL_ESTORNOS_DEB, BigDecimal VL_SLD_CREDOR_ANT,

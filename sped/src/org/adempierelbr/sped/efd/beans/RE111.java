@@ -29,6 +29,12 @@ public class RE111 extends RegSped {
 	private String DESCR_COMPL_AJ;
 	private BigDecimal VL_AJ_APUR;
 
+	/**
+	 * Constructor
+	 * @param COD_AJ_APUR
+	 * @param DESCR_COMPL_AJ
+	 * @param VL_AJ_APUR
+	 */
 	public RE111(String COD_AJ_APUR, String DESCR_COMPL_AJ, BigDecimal VL_AJ_APUR)
 	{
 		super();

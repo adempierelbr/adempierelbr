@@ -35,6 +35,7 @@ import org.compiere.model.MTable;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
 import org.compiere.model.Query;
+import org.compiere.model.X_M_Product_Acct;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -110,6 +111,35 @@ public abstract class AdempiereLBR{
 
 		return M_InOut_ID > 0 ? M_InOut_ID : 0;
 	} //getM_InOut_ID
+	
+	public static X_M_Product_Acct getX_M_Product_Acct(Properties ctx, int M_Product_ID, int C_AcctSchema_ID){
+		
+		String sql = "SELECT * FROM M_Product_Acct " +
+				     "WHERE M_Product_ID = ? AND C_AcctSchema_ID = ? AND IsActive = 'Y'";
+		
+		X_M_Product_Acct productAcct = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement (sql, null);
+			pstmt.setInt(1, M_Product_ID);
+			pstmt.setInt(2, C_AcctSchema_ID);
+			rs = pstmt.executeQuery ();
+			if (rs.next()){
+				productAcct = new X_M_Product_Acct(ctx,rs,null);
+			}
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "", e);
+		}
+		finally{
+		       DB.close(rs, pstmt);
+		}
+		
+		return productAcct;
+	} // getX_M_Product_Acct
 	
 	public static MAssetGroupAcct getMAssetGroupAcct(Properties ctx, int A_Asset_Group_ID, int C_AcctSchema_ID){
 		

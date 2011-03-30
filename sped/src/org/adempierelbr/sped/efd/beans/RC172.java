@@ -37,7 +37,18 @@ public class RC172 extends RegSped {
 	private BigDecimal VL_BC_PREV;
 	private BigDecimal VL_PREV;
 
-
+	/**
+	 * Constructor
+	 * @param rc170
+	 * @param VL_SERV_NT
+	 * @param VL_BC_ISSQN
+	 * @param ALIQ_ISSQN
+	 * @param VL_ISSQN
+	 * @param VL_BC_IRRF
+	 * @param VL_IRRF
+	 * @param VL_BC_PREV
+	 * @param VL_PREV
+	 */
 	public RC172(RC170 rc170, BigDecimal VL_SERV_NT, BigDecimal VL_BC_ISSQN, BigDecimal ALIQ_ISSQN, 
 			BigDecimal VL_ISSQN,BigDecimal VL_BC_IRRF, BigDecimal VL_IRRF,
 			BigDecimal VL_BC_PREV, BigDecimal VL_PREV) {

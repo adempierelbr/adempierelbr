@@ -34,8 +34,11 @@ public class RE510 extends RegSped implements Comparable<Object>{
 
 	/**
 	 * Constructor
-	 * @param DT_INI
-	 * @param DT_FIN
+	 * @param CFOP
+	 * @param CST_IPI
+	 * @param VL_CONT_IPI
+	 * @param VL_BC_IPI
+	 * @param VL_IPI
 	 */
 	public RE510(String CFOP, String CST_IPI, BigDecimal VL_CONT_IPI,
 			BigDecimal VL_BC_IPI, BigDecimal VL_IPI)

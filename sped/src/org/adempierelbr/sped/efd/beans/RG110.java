@@ -37,6 +37,18 @@ public class RG110 extends RegSped
 	BigDecimal ICMS_APROP;
 	BigDecimal SOM_ICMS_OC;
 	
+	/**
+	 * Constructor
+	 * @param DT_INI
+	 * @param DT_FIN
+	 * @param SALDO_IN_ICMS
+	 * @param SOM_PARC
+	 * @param VL_TRIB_EXP
+	 * @param VL_TOTAL
+	 * @param IND_PER_SAI
+	 * @param ICMS_APROP
+	 * @param SOM_ICMS_OC
+	 */
 	public RG110(Timestamp DT_INI, Timestamp DT_FIN, BigDecimal SALDO_IN_ICMS, BigDecimal SOM_PARC,
 			BigDecimal VL_TRIB_EXP, BigDecimal VL_TOTAL, BigDecimal IND_PER_SAI,
 			BigDecimal ICMS_APROP, BigDecimal SOM_ICMS_OC) 

@@ -39,6 +39,20 @@ public class RC190 extends RegSped implements Comparable<Object> {
 	private BigDecimal VL_RED_BC;
 	private BigDecimal VL_IPI;
 	
+	/**
+	 * Constructor
+	 * @param CST_ICMS
+	 * @param CFOP
+	 * @param ALIQ_ICMS
+	 * @param VL_OPR
+	 * @param VL_BC_ICMS
+	 * @param VL_ICMS
+	 * @param VL_BC_ICMS_ST
+	 * @param VL_ICMS_ST
+	 * @param VL_RED_BC
+	 * @param VL_IPI
+	 * @param COD_OBS
+	 */
 	public RC190 (String CST_ICMS, String CFOP, BigDecimal ALIQ_ICMS, BigDecimal VL_OPR,
 			BigDecimal VL_BC_ICMS, BigDecimal VL_ICMS, BigDecimal VL_BC_ICMS_ST, 
 			BigDecimal VL_ICMS_ST, BigDecimal VL_RED_BC, BigDecimal VL_IPI, String COD_OBS)

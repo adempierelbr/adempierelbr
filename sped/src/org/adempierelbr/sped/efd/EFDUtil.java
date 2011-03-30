@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +14,7 @@ import java.util.Set;
 import org.adempierelbr.model.MLBRApuracaoICMS;
 import org.adempierelbr.model.MLBRApuracaoIPI;
 import org.adempierelbr.model.MLBRDE;
+import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_ApuracaoICMSLine;
@@ -60,7 +59,6 @@ import org.adempierelbr.sped.efd.beans.RG110;
 import org.adempierelbr.sped.efd.beans.RG125;
 import org.adempierelbr.sped.efd.beans.RG130;
 import org.adempierelbr.sped.efd.beans.RG140;
-import org.adempierelbr.sped.efd.beans.RH005;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TaxBR;
@@ -80,6 +78,7 @@ import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -286,10 +285,57 @@ public class EFDUtil{
 				SUFRAMA,END,NUM,COMPL,BAIRRO);
 	} //createR0150
 	
+	public static R0150 createR0150(MBPartner bp){
+		
+		MBPartnerLocation bpLoc = bp.getPrimaryC_BPartner_Location();
+		MLocation loc = new MLocation(getCtx(),bpLoc.getC_Location_ID(),null);
+		
+		String COD_PART  = TextUtil.toNumeric(BPartnerUtil.getCNPJ(bp, bpLoc));
+		if (COD_PART == null || COD_PART.trim().equals("")){
+			COD_PART = TextUtil.toNumeric(bp.getValue());
+		}
+
+		String NOME     = bp.getName();
+		String CNPJ     = BPartnerUtil.getCNPJ(bp, bpLoc);
+		String IE       = BPartnerUtil.getIE(bp, bpLoc);
+		String SUFRAMA  = BPartnerUtil.getSuframa(bp, bpLoc);
+		
+		String END      = loc.getAddress1();
+		String NUM      = loc.getAddress2();
+		String COMPL    = loc.getAddress4();
+		String BAIRRO   = loc.getAddress3();
+
+		String COD_MUN  = "";
+		String COD_PAIS = "01058"; //BRASIL
+		if (bpLoc.getC_BPartner_Location_ID() != 0){
+			MCountry bpCountry = new MCountry(getCtx(),loc.getC_Country_ID(),null);
+
+			COD_MUN  = BPartnerUtil.getCityCode(loc);
+			COD_PAIS = bpCountry.get_ValueAsString("lbr_CountryCode");
+		}
+		else{
+			log.severe("EFD R0150 - PARCEIRO SEM ENDEREDO. Parceiro: " + bp.getName());
+			return null; //SEM ENDERECO
+		}
+
+		return new R0150(COD_PART,NOME,COD_PAIS,CNPJ,IE,COD_MUN,
+				SUFRAMA,END,NUM,COMPL,BAIRRO);
+	} //createR0150
+	
 	public static R0190 createR0190(MLBRNotaFiscalLine nfLine){
 		
 		String UNID  = nfLine.getlbr_UOMName();
 		String DESCR = AdempiereLBR.getUOMDesc_trl(new MUOM(getCtx(),nfLine.getC_UOM_ID(),get_TrxName()));
+		
+		return new R0190(UNID,DESCR);
+	} //createR0190
+	
+	public static R0190 createR0190(MProduct product){
+		
+		MUOM uom = new MUOM(getCtx(),product.getC_UOM_ID(),get_TrxName());
+		
+		String UNID  = AdempiereLBR.getUOM_trl(uom);
+		String DESCR = AdempiereLBR.getUOMDesc_trl(uom);
 		
 		return new R0190(UNID,DESCR);
 	} //createR0190
@@ -310,6 +356,31 @@ public class EFDUtil{
 		String COD_NCM = nfLine.getlbr_NCMName();
 		if (COD_NCM == null || COD_NCM.trim().isEmpty())
 			COD_NCM = nfLine.getLBR_NCM().getValue();
+		
+		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
+		String COD_LST       = ""; //COD SERVIDO //TODO ???
+		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
+		
+		return new R0200(COD_ITEM,DESCR_ITEM,COD_BARRA,COD_ANT_ITEM,UNID_INV,TIPO_ITEM,
+				COD_NCM,EX_IPI,COD_LST,ALIQ_ICMS);
+	} //createR0200
+	
+	public static R0200 createR0200(MProduct product){
+		
+		String COD_ITEM      = product.getValue();
+		String DESCR_ITEM    = product.getName();
+		String COD_BARRA     = product.getUPC();
+		String COD_ANT_ITEM  = ""; //CODIGO ANTERIOR //TODO ???
+		String UNID_INV      = AdempiereLBR.getUOM_trl(new MUOM(getCtx(),product.getC_UOM_ID(),get_TrxName()));
+		String TIPO_ITEM     = product.get_ValueAsString("lbr_ItemTypeBR");
+		
+		String COD_NCM = "";
+		int LBR_NCM_ID = product.get_ValueAsInt("LBR_NCM_ID");
+		if (LBR_NCM_ID > 0)
+			COD_NCM = new MLBRNCM(getCtx(),LBR_NCM_ID,get_TrxName()).getValue();
+		else{
+			TIPO_ITEM = ""; //SEM NCM, DEIXAR COMO OUTROS
+		}
 		
 		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
 		String COD_LST       = ""; //COD SERVIDO //TODO ???
@@ -1067,23 +1138,7 @@ public class EFDUtil{
 		
 		return listReg;
 	} //createRG130_RG140
-	
-	public static RH005 createRH005(Timestamp dateFrom){
 		
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(dateFrom);
-		
-		//TODO: REGISTROS DE INVENTÁRIO
-		if (cal.get(Calendar.MONTH) == 1){ //FEVEREIRO
-			cal.add(Calendar.MONTH, -2);
-			cal.set(Calendar.DAY_OF_MONTH, 31); //31/12 do ano anterior
-			
-			return new RH005(new Timestamp(cal.getTimeInMillis()),Env.ZERO);	
-		}
-		
-		return null;
-	} //createRH005
-	
 	public static R1100 createR1100(MLBRDE de){
 		
 		String IND_DOC    = de.getType();
@@ -1140,6 +1195,32 @@ public class EFDUtil{
         MAsset[] nfs = new MAsset[list.size()];
         return list.toArray(nfs);
 	} //getAtivoCIAP
+	
+	public static String getSQLInv(){
+		String sql = "SELECT M_Product_ID, QtyOnHand, C_BPartner_ID, lbr_WarehouseType " +
+	                 "FROM (SELECT Aux.AD_Client_ID, Aux.AD_Org_ID, Aux.M_Product_ID, SUM(Aux.QtyOnHand) AS QtyOnHand, Aux.C_BPartner_ID, Aux.lbr_WarehouseType " +
+	                       "FROM (SELECT DISTINCT '1', w.AD_Client_ID, w.AD_Org_ID, s.M_Product_ID, SUM(s.QtyOnHand) AS QtyOnHand, l.C_BPartner_ID, w.lbr_WarehouseType " +
+	                                "FROM M_Storage s " +
+	                                "INNER JOIN M_Locator l ON s.M_Locator_ID = l.M_Locator_ID " +
+	                                "INNER JOIN M_Warehouse w ON l.M_Warehouse_ID=w.M_Warehouse_ID " +
+	                             "GROUP BY w.AD_Client_ID, w.AD_Org_ID, s.M_Product_ID, l.C_BPartner_ID, w.lbr_WarehouseType " +
+	                             "UNION ALL " +
+	                             "SELECT '2', w.AD_Client_ID, w.AD_Org_ID, t.M_Product_ID, SUM(t.MovementQty) * -1 AS QtyOnHand, l.C_BPartner_ID, w.lbr_WarehouseType " +
+	                                "FROM M_Transaction t " +
+	                                "INNER JOIN M_Locator l ON t.M_Locator_ID = l.M_Locator_ID " +
+	                                "INNER JOIN M_Warehouse w ON l.M_Warehouse_ID=w.M_Warehouse_ID " +
+	                             "WHERE TRUNC(t.MovementDate, 'DD') >= TRUNC(?, 'DD') " +
+	                             "GROUP BY w.AD_Client_ID, w.AD_Org_ID, t.M_Product_ID, l.C_BPartner_ID, w.lbr_WarehouseType) Aux " +
+	                       "GROUP BY AD_Client_ID, AD_Org_ID, M_Product_ID, C_BPartner_ID, lbr_WarehouseType) " +
+	                 "WHERE QtyOnHand > 0 AND AD_Org_ID = ? ORDER BY M_Product_ID";
+		
+		return sql;
+	} //getSQLInv
+	
+	public static BigDecimal getVL_UNIT(int AD_Client_ID, int M_Product_ID, Timestamp invDate){
+		String sql = "SELECT getCurrentCost(?,?,getPeriod(?,TRUNC(?,'MM'))) FROM AD_Client";
+		return DB.getSQLValueBD(null, sql, new Object[]{AD_Client_ID,M_Product_ID,AD_Client_ID,invDate});
+	} //getVL_UNIT
 	
 	private static String getCOD_AJ_APUR(String type, boolean isST){
 		

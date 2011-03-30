@@ -1,8 +1,14 @@
 package org.adempierelbr.process;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -64,15 +70,20 @@ import org.adempierelbr.sped.efd.beans.RG125;
 import org.adempierelbr.sped.efd.beans.RG990;
 import org.adempierelbr.sped.efd.beans.RH001;
 import org.adempierelbr.sped.efd.beans.RH005;
+import org.adempierelbr.sped.efd.beans.RH010;
 import org.adempierelbr.sped.efd.beans.RH990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAsset;
 import org.compiere.model.MAssetGroupAcct;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MElementValue;
 import org.compiere.model.MPeriod;
+import org.compiere.model.MProduct;
+import org.compiere.model.X_M_Product_Acct;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -95,6 +106,8 @@ public class ProcGenerateEFD extends SvrProcess
 	private boolean hasG = false;
 	private boolean hasH = false;
 	
+	private RH005 rh005 = null; //TOTAIS DO INVENTÁRIO
+	
 	private Set<R0150> _R0150 = new LinkedHashSet<R0150>();
 	private Set<R0190> _R0190 = new LinkedHashSet<R0190>();
 	private Set<R0200> _R0200 = new LinkedHashSet<R0200>();
@@ -104,6 +117,7 @@ public class ProcGenerateEFD extends SvrProcess
 	private Set<RG125> _RG125 = new LinkedHashSet<RG125>();
 	
 	private List<RegSped> _RE110 = new ArrayList<RegSped>(); //List de beans para saldo do icms
+	private List<RH010>   _RH010 = new ArrayList<RH010>();
 	
 	private Map<Integer,RC100> _RC100 = new HashMap<Integer,RC100>();
 	private Map<Integer,RC500> _RC500 = new HashMap<Integer,RC500>();
@@ -191,7 +205,7 @@ public class ProcGenerateEFD extends SvrProcess
 		int aux   = 1;
 		for (MLBRNotaFiscal nf : nfs){
 			
-			log.info("Processado: " + String.format("%,.5f",(((double)aux/(double)count)*100)) + "%");
+			log.info("Notas Fiscais - Processado: " + String.format("%,.5f",(((double)aux/(double)count)*100)) + "%");
 			aux++;
 			
 			String COD_MOD  = nf.get_ValueAsString("lbr_NFModel").isEmpty() ? "01" : nf.get_ValueAsString("lbr_NFModel");
@@ -254,6 +268,9 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		//BLOCO G: CIAP
 		createCIAPInfo(dateFrom,dateTo);
+		
+		//BLOCO H: INVENTÁRIO
+		createINVInfo(dateFrom);
 		
 		//BLOCO 1: OUTRAS INFORMAÇÕES
 		createDEInfo(dateFrom,dateTo);
@@ -525,6 +542,99 @@ public class ProcGenerateEFD extends SvrProcess
 		} //loop asset
 		
 	} //createCIAPInfo
+	
+	private void createINVInfo(Timestamp dateFrom){
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(dateFrom);
+		
+		if (cal.get(Calendar.MONTH) == 1){ //FEVEREIRO
+			cal.add(Calendar.MONTH, -2);
+			cal.set(Calendar.DAY_OF_MONTH, 31); //31/12 do ano anterior
+			
+			BigDecimal VL_INV = Env.ZERO;
+			Timestamp invDate = new Timestamp(cal.getTimeInMillis());
+			
+			String sql = EFDUtil.getSQLInv();
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			try
+			{
+				pstmt = DB.prepareStatement (sql, get_TrxName());
+				pstmt.setTimestamp(1, invDate);
+				pstmt.setInt(2, Env.getAD_Org_ID(getCtx()));
+				rs = pstmt.executeQuery ();
+				while (rs.next ())
+				{
+					int M_Product_ID = rs.getInt("M_Product_ID");
+					BigDecimal QtyOnHand = rs.getBigDecimal("QtyOnHand");
+					int C_BPartner_ID = rs.getInt("C_BPartner_ID");
+					String lbr_WarehouseType = rs.getString("lbr_WarehouseType");
+
+					MProduct product = new MProduct(getCtx(), M_Product_ID, get_TrxName());
+					R0190 r0190 = EFDUtil.createR0190(product);
+					if (_R0190.contains(r0190))
+						r0190.subtractCounter();
+					else
+						_R0190.add(r0190);
+					
+					R0200 r0200 = EFDUtil.createR0200(product);
+					if (_R0200.contains(r0200))
+						r0200.subtractCounter();
+					else
+						_R0200.add(r0200);
+					
+					String COD_ITEM = r0200.getCOD_ITEM();
+					String UNID     = r0190.getUNID();
+					BigDecimal VL_UNIT = EFDUtil.getVL_UNIT(Env.getAD_Client_ID(getCtx()), M_Product_ID, invDate).setScale(6, RoundingMode.HALF_UP);
+					BigDecimal VL_ITEM = QtyOnHand.multiply(VL_UNIT).setScale(2, RoundingMode.HALF_UP);;
+					
+					VL_INV = VL_INV.add(VL_ITEM);
+					
+					String IND_PROP = lbr_WarehouseType.equals("3RD") ? "2" :
+									  lbr_WarehouseType.equals("3WN") ? "1" : "0"; 
+					
+					String COD_PART = "";
+					if (IND_PROP.equals("1") || IND_PROP.equals("2")){
+						R0150 r0150 = EFDUtil.createR0150(new MBPartner(getCtx(),C_BPartner_ID,get_TrxName()));
+						if (r0150 != null){
+							if (_R0150.contains(r0150))
+								r0150.subtractCounter();
+							else
+								_R0150.add(r0150);
+							
+							COD_PART = r0150.getCOD_PART();
+						}
+					}
+					
+					X_M_Product_Acct productAcct = AdempiereLBR.getX_M_Product_Acct(getCtx(),M_Product_ID,
+							Env.getContextAsInt(getCtx(), "$C_AcctSchema_ID"));
+					MElementValue ev = new MElementValue(getCtx(),productAcct.getP_Asset_A().getAccount().getC_ElementValue_ID(),get_TrxName());
+					R0500 r0500 = EFDUtil.createR0500(ev, dateFrom);
+					if (_R0500.contains(r0500))
+						r0500.subtractCounter();
+					else
+						_R0500.add(r0500);
+					
+					RH010 rh010 = new RH010(COD_ITEM,UNID,QtyOnHand,VL_UNIT,VL_ITEM,
+							IND_PROP,COD_PART,"",r0500.getCOD_CTA());
+					_RH010.add(rh010);
+				} //loop linhas do inventário
+			}
+			catch (Exception e)
+			{
+				log.log(Level.SEVERE, "", e);
+			}
+			finally{
+		       DB.close(rs, pstmt);
+			}
+			
+			rh005 = new RH005(invDate,VL_INV);
+		} //INVENTÁRIO NA ESCRITURACAO DE FEVEREITO
+			
+	} //createINVInfo
 	
 	private StringBuilder montaBLOCO0(int count, Timestamp dateFrom, Timestamp dateTo){
 		
@@ -803,7 +913,6 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		StringBuilder BLOCOH = new StringBuilder("");
 	
-		RH005 rh005 = EFDUtil.createRH005(dateFrom);
 		if (rh005 != null)
 			hasH = true;
 		
@@ -811,6 +920,9 @@ public class ProcGenerateEFD extends SvrProcess
 		BLOCOH.append(new RH001(hasH));
 		if (hasH){
 			BLOCOH.append(rh005);
+			for(RH010 rh010 : _RH010){
+				BLOCOH.append(rh010);
+			}
 		}
 		BLOCOH.append(new RH990());
 		//FIM BLOCO H

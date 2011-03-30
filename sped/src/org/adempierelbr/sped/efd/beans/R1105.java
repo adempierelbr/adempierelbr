@@ -32,6 +32,15 @@ public class R1105 extends RegSped {
 	
 	Timestamp DT_DOC;
 	
+	/**
+	 * Constructor
+	 * @param COD_MOD
+	 * @param SERIE
+	 * @param NUM_DOC
+	 * @param CHV_NFE
+	 * @param DT_DOC
+	 * @param COD_ITEM
+	 */
 	public R1105(String COD_MOD, String SERIE, String NUM_DOC, String CHV_NFE,
 			Timestamp DT_DOC, String COD_ITEM) {
 		super();

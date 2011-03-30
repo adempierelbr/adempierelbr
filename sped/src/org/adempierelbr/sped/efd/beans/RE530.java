@@ -32,6 +32,15 @@ public class RE530 extends RegSped {
 	private String NUM_DOC;
 	private String DESCR_AJ;
 	
+	/**
+	 * Constructor
+	 * @param IND_AJ
+	 * @param VL_AJ
+	 * @param COD_AJ
+	 * @param IND_DOC
+	 * @param NUM_DOC
+	 * @param DESCR_AJ
+	 */
 	public RE530(String IND_AJ, BigDecimal VL_AJ, String COD_AJ, String IND_DOC,
 			String NUM_DOC, String DESCR_AJ)
 	{

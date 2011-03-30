@@ -36,7 +36,17 @@ public class RD190 extends RegSped implements Comparable<Object> {
 	private BigDecimal VL_ICMS;
 	private BigDecimal VL_RED_BC;
 
-
+	/**
+	 * Constructor
+	 * @param CST_ICMS
+	 * @param CFOP
+	 * @param ALIQ_ICMS
+	 * @param VL_OPR
+	 * @param VL_BC_ICMS
+	 * @param VL_ICMS
+	 * @param VL_RED_BC
+	 * @param COD_OBS
+	 */
 	public RD190 (String CST_ICMS, String CFOP, BigDecimal ALIQ_ICMS, BigDecimal VL_OPR,
 			BigDecimal VL_BC_ICMS, BigDecimal VL_ICMS, BigDecimal VL_RED_BC, String COD_OBS)
 	{	

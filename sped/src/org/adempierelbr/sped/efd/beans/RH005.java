@@ -30,8 +30,8 @@ public class RH005 extends RegSped
 
 	/**
 	 * Constructor
-	 * 
-	 * @param IND_MOV
+	 * @param DT_INV
+	 * @param VL_INV
 	 */
 	public RH005(Timestamp DT_INV, BigDecimal VL_INV) 
 	{

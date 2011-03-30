@@ -32,6 +32,16 @@ public class RE520 extends RegSped {
 	private BigDecimal VL_SC_IPI;
 	private BigDecimal VL_SD_IPI;
 
+	/**
+	 * Constructor
+	 * @param VL_SD_ANT_IPI
+	 * @param VL_DEB_IPI
+	 * @param VL_CRED_IPI
+	 * @param VL_OD_IPI
+	 * @param VL_OC_IPI
+	 * @param VL_SC_IPI
+	 * @param VL_SD_IPI
+	 */
 	public RE520(BigDecimal VL_SD_ANT_IPI, BigDecimal VL_DEB_IPI, BigDecimal VL_CRED_IPI,
 			BigDecimal VL_OD_IPI, BigDecimal VL_OC_IPI, BigDecimal VL_SC_IPI, BigDecimal VL_SD_IPI)
 	{

@@ -35,6 +35,16 @@ public class RG130 extends RegSped
 	
 	Timestamp DT_DOC;
 	
+	/**
+	 * Constructor
+	 * @param IND_EMIT
+	 * @param COD_PART
+	 * @param COD_MOD
+	 * @param SERIE
+	 * @param NUM_DOC
+	 * @param CHV_NFE_CTE
+	 * @param DT_DOC
+	 */
 	public RG130(String IND_EMIT, String COD_PART, String COD_MOD, String SERIE,
 			String NUM_DOC, String CHV_NFE_CTE, Timestamp DT_DOC) 
 	{

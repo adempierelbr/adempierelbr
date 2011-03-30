@@ -12,23 +12,47 @@
  *****************************************************************************/
 package org.compiere.grid.ed;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
-import java.util.logging.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import org.adempierelbr.util.WebServiceCep;
-import org.compiere.apps.*;
-import org.compiere.model.*;
-import org.compiere.swing.*;
-import org.compiere.util.*;
+import org.compiere.apps.ADialog;
+import org.compiere.apps.AEnv;
+import org.compiere.apps.ConfirmPanel;
+import org.compiere.model.MCity;
+import org.compiere.model.MCountry;
+import org.compiere.model.MLocation;
+import org.compiere.model.MOrgInfo;
+import org.compiere.model.MRegion;
+import org.compiere.swing.CComboBox;
+import org.compiere.swing.CDialog;
+import org.compiere.swing.CLabel;
+import org.compiere.swing.CPanel;
+import org.compiere.swing.CTextField;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  *	Dialog to enter Location Info (Address)
@@ -80,7 +104,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 		
 
 		//	Current Country
-		MCountry.setDisplayLanguage(Env.getAD_Language(Env.getCtx()));
+		//MCountry.setDisplayLanguage(Env.getAD_Language(Env.getCtx()));
 		fCountry = new CComboBox(MCountry.getCountries(Env.getCtx()));
 		fCountry.setSelectedItem(m_location.getCountry());
 		m_origCountry_ID = m_location.getC_Country_ID();
@@ -401,7 +425,7 @@ public class VLocationDialog extends CDialog implements ActionListener
 		{			
 			int AD_Org_ID = Env.getAD_Org_ID(Env.getCtx());
 			if (AD_Org_ID != 0){
-				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), AD_Org_ID);
+				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), AD_Org_ID,null);
 				MLocation orgLocation = new MLocation(Env.getCtx(),orgInfo.getC_Location_ID(),null);
 				
 				String urlString = GOOGLE_MAPS_ROUTE_PREFIX +
@@ -504,8 +528,6 @@ public class VLocationDialog extends CDialog implements ActionListener
 				m_location.setCity((String) fCity.getSelectedItem()); // Kenos
 				m_location.setC_City_ID(0);
 			}
-				
-
 		}
 		//END
 		

@@ -42,6 +42,19 @@ public class RG125 extends RegSped
 	int NUM_PARC;
 	int LBR_NotaFiscalLine_ID;
 	
+	/**
+	 * Constructor
+	 * @param COD_IND_BEM
+	 * @param DT_MOV
+	 * @param TIPO_MOV
+	 * @param VL_IMOB_ICMS_OP
+	 * @param VL_IMOB_ICMS_ST
+	 * @param VL_IMOB_ICMS_FRT
+	 * @param VL_IMOB_ICMS_DIF
+	 * @param NUM_PARC
+	 * @param VL_PARC_PASS
+	 * @param LBR_NotaFiscalLine_ID
+	 */
 	public RG125(String COD_IND_BEM, Timestamp DT_MOV, String TIPO_MOV, BigDecimal VL_IMOB_ICMS_OP,
 			BigDecimal VL_IMOB_ICMS_ST, BigDecimal VL_IMOB_ICMS_FRT, BigDecimal VL_IMOB_ICMS_DIF,
 			int NUM_PARC, BigDecimal VL_PARC_PASS, int LBR_NotaFiscalLine_ID) 

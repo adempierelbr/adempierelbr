@@ -12,46 +12,54 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.beans;
 
+import java.math.BigDecimal;
+
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
- * REGISTRO G140 – IDENTIFICAÇÃO DO ITEM DO DOCUMENTO FISCAL
+ * REGISTRO H010: INVENTÁRIO
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RG140.java, 24/03/2011, 11:01:00, mgrigioni
+ * @version $Id: RH0/10.java, 28/03/2011, 14:41:00, mgrigioni
  */
-public class RG140 extends RegSped
+public class RH010 extends RegSped
 {
-
-	int NUM_ITEM;
-	String COD_ITEM;
+	private String COD_ITEM;
+	private String UNID;
+	private String IND_PROP;
+	private String COD_PART;
+	private String TXT_COMPL;
+	private String COD_CTA;
 	
-	/**
-	 * Constructor
-	 * @param NUM_ITEM
-	 * @param COD_ITEM
-	 */
-	public RG140(int NUM_ITEM, String COD_ITEM) 
+	private BigDecimal QTD;
+	private BigDecimal VL_UNIT;
+	private BigDecimal VL_ITEM;
+
+
+	public RH010(String COD_ITEM, String UNID, BigDecimal QTD, BigDecimal VL_UNIT,
+			BigDecimal VL_ITEM, String IND_PROP, String COD_PART, String TXT_COMPL,
+			String COD_CTA) 
 	{
 		super();
-		this.NUM_ITEM = NUM_ITEM;
-		setCOD_ITEM(COD_ITEM);
-	} //RG140
+		this.COD_ITEM = COD_ITEM;
+		this.UNID = UNID;
+		this.QTD = QTD;
+		this.VL_UNIT = VL_UNIT;
+		this.VL_ITEM = VL_ITEM;
+		this.IND_PROP = IND_PROP;
+		this.COD_PART = COD_PART;
+		this.TXT_COMPL = TXT_COMPL;
+		this.COD_CTA = COD_CTA;
+	} //RH010
 	
-	private void setCOD_ITEM(String COD_ITEM){
-		
-		COD_ITEM   = TextUtil.checkSize(RemoverAcentos.remover(COD_ITEM), 60);
-		if (COD_ITEM.isEmpty()){
-			log.finer("DEFINIDO COD_ITEM PADRAO");
-			COD_ITEM = "SEM CODIGO";
-		}
-		
-		this.COD_ITEM   = COD_ITEM;
+	public BigDecimal getVL_ITEM(){
+		return VL_ITEM == null ? Env.ZERO : VL_ITEM;
 	}
 
 	/**
-	 * Formata o Bloco G Registro 140
+	 * Formata o Bloco H Registro 010
 	 * 
 	 * @return
 	 */
@@ -59,11 +67,18 @@ public class RG140 extends RegSped
 		
 		StringBuilder format = new StringBuilder
 	               (PIPE).append(REG)
-	        .append(PIPE).append(NUM_ITEM)
 	        .append(PIPE).append(COD_ITEM)
+	        .append(PIPE).append(UNID)
+	        .append(PIPE).append(TextUtil.toNumeric(QTD,3))
+	        .append(PIPE).append(TextUtil.toNumeric(VL_UNIT,6))
+	        .append(PIPE).append(TextUtil.toNumeric(VL_ITEM))
+	        .append(PIPE).append(IND_PROP)
+	        .append(PIPE).append(COD_PART)
+	        .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(TXT_COMPL), 255))
+	        .append(PIPE).append(COD_CTA)
 	        .append(PIPE).append(EOL);
 	       
 		return format.toString();
 	} //toString
 	
-} //RG140
+} //RH010

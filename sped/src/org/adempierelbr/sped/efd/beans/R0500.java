@@ -36,8 +36,10 @@ public class R0500 extends RegSped  {
 	/**
 	 * Constructor
 	 * @param DT_ALT
-	 * @param COD_CCUS
-	 * @param CCUS
+	 * @param COD_NAT_CC
+	 * @param IND_CTA
+	 * @param COD_CTA
+	 * @param NOME_CTA
 	 */
 	public R0500(Timestamp DT_ALT, String COD_NAT_CC, String IND_CTA, String COD_CTA, String NOME_CTA)
 	{
