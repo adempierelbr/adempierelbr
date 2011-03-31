@@ -30,6 +30,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MOrgInfo;
@@ -42,9 +43,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.thoughtworks.xstream.XStream;
+
 import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeConsulta2Stub;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferecepcao2.NfeRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeStatusServico2Stub;
@@ -680,7 +684,48 @@ public abstract class NFeUtil
         }
         return result;
     }
+	
+	/**
+	 * 	Cabeçalho da Inutilização
+	 * 
+	 * @param region
+	 * @return
+	 */
+	public static NfeInutilizacao2Stub.NfeCabecMsgE geraCabecInutilizacao (String region)
+	{
+		NfeInutilizacao2Stub.NfeCabecMsg cabecMsg = new NfeInutilizacao2Stub.NfeCabecMsg();
+		cabecMsg.setCUF(region);
+		cabecMsg.setVersaoDados(VERSAO);
 
+		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = new NfeInutilizacao2Stub.NfeCabecMsgE();
+		cabecMsgE.setNfeCabecMsg(cabecMsg);
+
+		return cabecMsgE;
+	}	//	geraCabecInutilizacao
+
+	/**
+	 * 	Gera o XML para inutilização da NF
+	 * 
+	 * 	@return cabeçalho de envio
+	 */
+	public static String geraInutilizacao (InutilizacaoNF nf)
+	{
+		XStream xml = new XStream();
+		//
+		xml.alias("infInut", InutilizacaoNF.class);
+		xml.useAttributeFor(InutilizacaoNF.class, "Id");
+		xml.omitField(InutilizacaoNF.class, "msg");
+		xml.omitField(InutilizacaoNF.class, "log");
+		// 
+		StringBuffer inut = new StringBuffer("");
+		//
+		inut.append("<inutNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">");
+		inut.append(xml.toXML(nf));
+		inut.append("</inutNFe>");
+		//
+		return inut.toString();
+	}	//	geraInutilizacao
+	
 	/**
 	 * 	packageNameOfClass
 	 *
