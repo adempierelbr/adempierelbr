@@ -59,29 +59,26 @@ SELECT ap.LBR_ApuracaoICMS_ID, 'C' as Type, '008 - Subtotal' as Info,
 UNION ALL
 SELECT ap.LBR_ApuracaoICMS_ID, 'C' as Type, '009 - Saldo Credor Período Anterior' as Info,
     COALESCE((SELECT TotalAmt FROM LBR_ApuracaoICMS ai WHERE ai.C_Period_ID =
-    (SELECT p1.C_Period_ID FROM C_Period p1 WHERE p1.StartDate =
+    (SELECT p1.C_Period_ID FROM C_Period p1 WHERE TotalAmt > 0 AND p1.StartDate =
     (SELECT TRUNC(p2.StartDate-1,'MM') FROM C_Period p2 WHERE p2.C_Period_ID = ap.C_Period_ID) AND p1.AD_Client_ID = ap.AD_Client_ID)),0) as Amt,
     null as Description FROM LBR_ApuracaoICMS ap
 UNION ALL
 SELECT LBR_ApuracaoICMS_ID, 'C' as Type, '010 - Total' as Info,
     COALESCE((SELECT TotalAmt FROM LBR_ApuracaoICMS ai WHERE ai.C_Period_ID =
-    (SELECT p1.C_Period_ID FROM C_Period p1 WHERE p1.StartDate =
+    (SELECT p1.C_Period_ID FROM C_Period p1 WHERE TotalAmt > 0 AND p1.StartDate =
     (SELECT TRUNC(p2.StartDate-1,'MM') FROM C_Period p2 WHERE p2.C_Period_ID = ap.C_Period_ID) AND p1.AD_Client_ID = ap.AD_Client_ID)),0) +
      COALESCE(ap.TotalCR,0) + COALESCE((SELECT SUM(Amt) FROM LBR_ApuracaoICMSLINE al WHERE al.LBR_ApuracaoICMS_ID = ap.LBR_ApuracaoICMS_ID AND al.Type IN ('006','007')),0) as Amt,
     null as Description FROM LBR_ApuracaoICMS ap
 UNION ALL
-SELECT LBR_ApuracaoICMS_ID, 'A' as Type, '011 - Saldo Devedor (Débito - Crédito)' as Info, 0 as Amt, null as Description FROM LBR_ApuracaoICMS
+SELECT LBR_ApuracaoICMS_ID, 'A' as Type, '011 - Saldo Devedor (Débito - Crédito)' as Info,
+	CASE WHEN (ap.TotalAmt < 0) THEN ap.TotalAmt * -1 ELSE 0 END as Amt, null as Description FROM LBR_ApuracaoICMS ap
 UNION ALL
 SELECT LBR_ApuracaoICMS_ID, 'A' as Type, '012 - Deduções' as Info, 0 as Amt, null as Description FROM LBR_ApuracaoICMS
 UNION ALL
 SELECT LBR_ApuracaoICMS_ID, 'A' as Type, '013 - Imposto a Recolher' as Info, 0 as Amt, null as Description FROM LBR_ApuracaoICMS
 UNION ALL
 SELECT ap.LBR_ApuracaoICMS_ID, 'A' as Type, '014 - Saldo Credor (Crédito - Débito) Transportar p/ o Período seguinte' as Info,
-    (COALESCE((SELECT TotalAmt FROM LBR_ApuracaoICMS ai WHERE ai.C_Period_ID =
-    (SELECT p1.C_Period_ID FROM C_Period p1 WHERE p1.StartDate =
-    (SELECT TRUNC(p2.StartDate-1,'MM') FROM C_Period p2 WHERE p2.C_Period_ID = ap.C_Period_ID) AND p1.AD_Client_ID = ap.AD_Client_ID)),0) +
-     COALESCE(ap.TotalCR,0) + COALESCE((SELECT SUM(Amt) FROM LBR_ApuracaoICMSLINE al WHERE al.LBR_ApuracaoICMS_ID = ap.LBR_ApuracaoICMS_ID AND al.Type IN ('006','007')),0)) -
-    (COALESCE(ap.TotalDR,0) + COALESCE((SELECT SUM(Amt) FROM LBR_ApuracaoICMSLINE al WHERE al.LBR_ApuracaoICMS_ID = ap.LBR_ApuracaoICMS_ID AND al.Type IN ('002','003')),0)) as Amt,
+    CASE WHEN (ap.TotalAmt > 0) THEN ap.TotalAmt ELSE 0 END as Amt,
     null as Description FROM LBR_ApuracaoICMS ap
 
 ORDER BY LBR_ApuracaoICMS_ID, Info, Description DESC ) apuracao
