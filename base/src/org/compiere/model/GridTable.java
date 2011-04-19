@@ -73,7 +73,7 @@ import org.compiere.util.ValueNamePair;
  * 	@author 	Jorg Janke
  * 	@version 	$Id: GridTable.java,v 1.9 2006/08/09 16:38:25 jjanke Exp $
  * 
- * @author Teo Sarca, SC ARHIPAC SERVICE SRL
+ * 	@author Teo Sarca, SC ARHIPAC SERVICE SRL
  * 			<li>BF [ 1901192 ] LogMigrationScripts: GridTable.dataSave: manual update
  *			<li>BF [ 1943682 ] Copy Record should not copy IsApproved and IsGenerated
  *			<li>BF [ 1949543 ] Window freeze if there is a severe exception
@@ -83,6 +83,8 @@ import org.compiere.util.ValueNamePair;
  *  			https://sourceforge.net/tracker/?func=detail&aid=2910358&group_id=176962&atid=879332
  *     		<li>BF [ 2910368 ] Error in context when IsActive field is found in different
  *  			https://sourceforge.net/tracker/?func=detail&aid=2910368&group_id=176962&atid=879332
+ *  @author Ricardo Santana (Kenos, www.kenos.com.br)
+ *  		<li>BF [ 3289763 ] Problema ao copiar Parceiro de Negócios
  */
 public class GridTable extends AbstractTableModel
 	implements Serializable
@@ -2510,6 +2512,8 @@ public class GridTable extends AbstractTableModel
 					// Bug [ 1807947 ] 
 					|| ( columnName.equals("C_DocType_ID") && hasDocTypeTargetField )
 					|| ( columnName.equals("Line") )
+					//	Bug [ 3289763 ]
+					|| columnName.equals("lbr_BPTypeBRIsValid")
 				)
 				{
 					rowData[i] = field.getDefault();
