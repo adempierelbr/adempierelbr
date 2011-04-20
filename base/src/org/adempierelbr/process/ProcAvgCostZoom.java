@@ -96,9 +96,9 @@ public class ProcAvgCostZoom extends SvrProcess
 			AD_Window_ID = 183;
 			restriction = "C_Invoice_ID IN (SELECT DISTINCT i.C_Invoice_ID " +
 						"FROM C_Invoice i " +
-							 "INNER JOIN C_InvoiceLine il ON i.C_Invoice_ID = il.C_Invoice_ID " +
-							 "INNER JOIN C_DocType dt ON dt.C_DocType_ID=i.C_DocTypeTarget_ID " +
-							 "INNER JOIN M_Product p ON p.M_Product_ID = il.M_Product_ID " +
+							 "INNER JOIN C_InvoiceLine il ON (i.C_Invoice_ID = il.C_Invoice_ID) " +
+							 "INNER JOIN C_DocType dt ON (dt.C_DocType_ID=i.C_DocTypeTarget_ID) " +
+							 "INNER JOIN M_Product p ON (p.M_Product_ID = il.M_Product_ID) " +
 						"WHERE i.DocStatus IN ('CL', 'CO') " +
 							 "AND p.ProductType = 'I' " +
 							 "AND i.AD_Client_ID = " + avgCost.getAD_Client_ID() + " " +

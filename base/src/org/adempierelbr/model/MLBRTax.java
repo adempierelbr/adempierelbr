@@ -612,14 +612,18 @@ public class MLBRTax extends X_LBR_Tax {
 		MLBRTax newTax = new MLBRTax(getCtx(),LBR_Tax_ID,get_TrxName());
 		copyLinesTo(newTax);
 	} //copyLines
+	
+	public static BigDecimal getTaxAmt(int LBR_Tax_ID, String trx){
+		return getTaxAmt(LBR_Tax_ID,trx,false);
+	}
 
 	/**************************************************************************
 	 *  getTaxAmt
 	 *  @return BigDecimal TaxAmt
 	 */
-	public static BigDecimal getTaxAmt(int LBR_Tax_ID,String trx){
+	public static BigDecimal getTaxAmt(int LBR_Tax_ID,String trx, boolean isPriceBR){
 
-		String sql = "SELECT lbr_TaxAmt " +
+		String sql = "SELECT LBR_TaxName_ID, lbr_TaxAmt " +
 				     "FROM LBR_TaxLine " +
 				     "WHERE LBR_Tax_ID = ?";
 
@@ -633,7 +637,14 @@ public class MLBRTax extends X_LBR_Tax {
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
-				BigDecimal amt = rs.getBigDecimal(1);
+				X_LBR_TaxName taxName = new X_LBR_TaxName(Env.getCtx(),rs.getInt(1),trx);
+				
+				if (isPriceBR){
+					if(taxName.getName().trim().indexOf("IPI") != -1 || taxName.isHasWithHold())
+						continue;
+				}
+				
+				BigDecimal amt = rs.getBigDecimal(2);
 				if (amt != null){
 					amt = amt.setScale(TaxBR.SCALE, RoundingMode.HALF_UP);
 					taxAmt = taxAmt.add(amt);

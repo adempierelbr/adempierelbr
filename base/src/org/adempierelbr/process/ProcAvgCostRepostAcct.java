@@ -93,6 +93,7 @@ public class ProcAvgCostRepostAcct extends SvrProcess
 		DB.executeUpdate("UPDATE M_Production SET Posted = 'N' WHERE TRUNC(MovementDate) >= ?", new Object[]{startDate}, false, trxName);
 		
 		avgCost.setlbr_AvgStep5(true);
+		avgCost.setProcessed(true);
 		avgCost.save(trxName);
 		
 		return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessOK", true);

@@ -218,7 +218,7 @@ public class ValidatorInOut implements ModelValidator
 			return Msg.getMsg(ctx, "NoLines");
 
 		for(MMovementLine line : lines) {
-			if(line.getM_Product_ID() <=0 || line.getM_Locator_ID() <=0){
+			if(line.getM_Product_ID() <=0 || line.getM_Locator_ID() <=0 || line.getM_LocatorTo_ID() <=0 ){
 				msg = "Produto ou Localizador inválido";
 				break;
 			}

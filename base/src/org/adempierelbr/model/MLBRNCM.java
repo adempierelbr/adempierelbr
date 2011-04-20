@@ -98,7 +98,7 @@ public class MLBRNCM extends X_LBR_NCM {
 				continue;
 
 			Integer LBR_NCM_ID = (Integer)line.get_Value("LBR_NCM_ID"); //	NCM da Fatura
-			if (LBR_NCM_ID == null)
+			if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
 				LBR_NCM_ID = (Integer)product.get_Value("LBR_NCM_ID"); //	NCM do Produto
 			if (LBR_NCM_ID == null)
 				LBR_NCM_ID = 0; //	Sem NCM
