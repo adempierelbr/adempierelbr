@@ -27,6 +27,7 @@ import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -1356,7 +1357,34 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 		return error;
 	} //authorizeNFe
-
+	
+	public boolean checkNFeID(){
+		return checkNFeID(getDocNo(),getlbr_NFeID());
+	} //checkNFeID
+	
+	public static boolean checkNFeID(String documentNo, String nfeID){
+		
+		if (documentNo == null || nfeID == null)
+			return false;
+		
+		documentNo = getDocNo(documentNo);
+		
+		if (nfeID.length() != 44)
+			return false;
+		
+		int digito = ChaveNFE.gerarDigito(nfeID.substring(0, 43));
+		if (digito != Integer.parseInt(nfeID.substring(43)))
+			return false;
+		
+		int nfNo  = Integer.parseInt(documentNo);		
+		int nfeNo = Integer.parseInt(nfeID.substring(25, 34));
+		
+		if (nfNo != nfeNo)
+			return false;
+		
+		return true;
+	} //checkNFeID
+	
 	/**
 	 * 	Encontra a NF pelo ID de NF-e
 	 *
