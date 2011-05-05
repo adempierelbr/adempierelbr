@@ -79,6 +79,7 @@ public class ProcAvgCostRepostAcct extends SvrProcess
 		DB.executeUpdate("DELETE Fact_Acct WHERE AD_Table_ID = 319 AND TRUNC(DateAcct) >= ?", new Object[]{startDate}, false, trxName);
 		DB.executeUpdate("DELETE Fact_Acct WHERE AD_Table_ID = 321 AND TRUNC(DateAcct) >= ?", new Object[]{startDate}, false, trxName);
 		DB.executeUpdate("DELETE Fact_Acct WHERE AD_Table_ID = 325 AND TRUNC(DateAcct) >= ?", new Object[]{startDate}, false, trxName);
+		DB.executeUpdate("DELETE M_CostDetail WHERE M_Production_ID IN (SELECT M_Production_ID FROM M_Production WHERE TRUNC(MovementDate) >= ?)", new Object[]{startDate},false, trxName);
 		DB.executeUpdate("UPDATE M_InOut SET Processing = 'N' WHERE Processing = 'Y'", trxName);
 		DB.executeUpdate("UPDATE M_InOut SET Posted = 'N' WHERE TRUNC(MovementDate) >= ?", new Object[]{startDate}, false, trxName);
 		DB.executeUpdate("UPDATE M_Inventory SET Processing = 'N' WHERE Processing = 'Y'", trxName);

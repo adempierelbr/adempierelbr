@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -197,7 +198,7 @@ public class NFeXMLGenerator
 		MBPartnerLocation bpartLoc = new MBPartnerLocation(ctx, nf.getC_BPartner_Location_ID(), trxName);
 		MLocation bpLoc = bpartLoc.getLocation(false);
 		if(bpLoc.getC_Country_ID() == 0){
-			return "Erro Parceiro sem Pais Cadastrado";
+			return "Erro Parceiro sem País Cadastrado";
 		}
 
 		MRegion bpRegion = bpLoc.getRegion();
@@ -430,13 +431,13 @@ public class NFeXMLGenerator
 		if(!suframa.isEmpty())	
 			destinatario.setISUF(suframa);					// Suframa BF: 3056992
 		
-
 		destinatario.setEnderDest(enderDest);
 		
 		/** 
 		 * AMBIENTE DE HOMOLOGACAO 
 		 * regra será aplicada a partir do dia 01/05/2011
 		 **/
+		/*
 		if (tpAmb.equals("2")){
 			if (uf != null){ //DENTRO DO BRASIL
 				destinatario.setCPF(null);
@@ -445,6 +446,7 @@ public class NFeXMLGenerator
 			destinatario.setxNome("NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL");
 			destinatario.setIE(null);
 		}
+		*/
 
 		// Identificacao do Local de Entrega
 		entrega.setxLgr(RemoverAcentos.remover(nf.getlbr_BPDeliveryAddress1()));
@@ -733,12 +735,28 @@ public class NFeXMLGenerator
 					}
 					else
 					{
-						icmsgrupo.setModBC("0");
+						icmsgrupo.setModBC("3");
 						icmsgrupo.setCST(taxStatus.substring(1));
 						icmsgrupo.setOrig(taxStatus.substring(0, 1));
 						icmsgrupo.setpICMS(TextUtil.bigdecimalToString(lt.getpImposto()));
 						icmsgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
 						icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto()));
+						
+						if (taxStatus.endsWith("10") ||
+							taxStatus.endsWith("30")){
+							icmsgrupo.setModBCST("4");
+							icmsgrupo.setvBCST(TextUtil.bigdecimalToString(lt.getvBCST()));
+							icmsgrupo.setpICMSST(TextUtil.bigdecimalToString(lt.getpImpostoST()));
+							icmsgrupo.setvICMSST(TextUtil.bigdecimalToString(lt.getvImpostoST()));
+						
+							BigDecimal iva = (BigDecimal)prdt.get_Value("lbr_ProfitPercentage");
+							if (iva != null) 
+								icmsgrupo.setpMVAST(TextUtil.bigdecimalToString(iva));
+							
+							if (taxStatus.endsWith("30")){
+								icmsgrupo.setpRedBCST(TextUtil.bigdecimalToString(lt.getpRedBCST()));
+							}
+						}
 
 						//BF - Redução Base de Cálculo
 						if (taxStatus.endsWith("20") ||
@@ -746,13 +764,12 @@ public class NFeXMLGenerator
 							icmsgrupo.setpRedBC(TextUtil.bigdecimalToString(lt.getpRedBC()));
 						}
 
-						if (taxStatus.endsWith("60") ||
-							taxStatus.endsWith("10"))
+						if (taxStatus.endsWith("60"))
 						{
 							icms60.setCST(taxStatus.substring(1));
 							icms60.setOrig(taxStatus.substring(0, 1));
-							icms60.setVBCSTRet(TextUtil.bigdecimalToString(lt.getvBC()));
-							icms60.setVICMSSTRet(TextUtil.bigdecimalToString(lt.getvImposto()));
+							icms60.setVBCSTRet(TextUtil.bigdecimalToString(lt.getvBCST()));
+							icms60.setVICMSSTRet(TextUtil.bigdecimalToString(lt.getvImpostoST()));
 						}
 					}
 

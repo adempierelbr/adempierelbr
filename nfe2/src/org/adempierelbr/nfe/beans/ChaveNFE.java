@@ -48,7 +48,7 @@ public class ChaveNFE {
 	 * @return	Digito
 	 */
 	
-	private static int gerarDigito (String chave)
+	public static int gerarDigito (String chave)
 	{
 		int x = 0;
 		int soma = 0;

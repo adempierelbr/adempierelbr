@@ -22,6 +22,13 @@ public class ICMSGrupoBean {
 	private String pICMS;
 	private String vICMS;
 	
+	private String modBCST;
+	private String pMVAST;
+	private String pRedBCST;
+	private String vBCST;
+	private String pICMSST;
+	private String vICMSST;
+	
 	public String getOrig() {
 		return orig;
 	}
@@ -85,5 +92,59 @@ public class ICMSGrupoBean {
 	
 		this.vICMS = vICMS;
 	}
+	public String getModBCST() {		
+		return modBCST;
+	}
+	public void setModBCST(String modBCST) {
+		if (modBCST != null)
+			modBCST = modBCST.trim();
+		
+		this.modBCST = modBCST;
+	}
+	public String getpMVAST() {
+		return pMVAST;
+	}
+	public void setpMVAST(String pMVAST) {
+		if (pMVAST != null)
+			pMVAST = pMVAST.trim();
+		
+		this.pMVAST = pMVAST;
+	}
+	public String getpRedBCST() {
+		return pRedBCST;
+	}
+	public void setpRedBCST(String pRedBCST) {
+		if (pRedBCST != null)
+			pRedBCST = pRedBCST.trim();
+		
+		this.pRedBCST = pRedBCST;
+	}
+	public String getvBCST() {
+		return vBCST;
+	}
+	public void setvBCST(String vBCST) {
+		if (vBCST != null)
+			vBCST = vBCST.trim();
+		
+		this.vBCST = vBCST;
+	}
+	public String getpICMSST() {
+		return pICMSST;
+	}
+	public void setpICMSST(String pICMSST) {
+		if (pICMSST != null)
+			pICMSST = pICMSST.trim();
+		
+		this.pICMSST = pICMSST;
+	}
+	public String getvICMSST() {
+		return vICMSST;
+	}
+	public void setvICMSST(String vICMSST) {
+		if (vICMSST != null)
+			vICMSST = vICMSST.trim();
+		
+		this.vICMSST = vICMSST;
+	}
 	
-}
+} //ICMSGrupoBean
