@@ -44,12 +44,11 @@ public class RJ005 extends RegSped {
 	 */
 	public RJ005(Timestamp DT_INI, Timestamp DT_FIN, BigDecimal ID_DEM,String CAB_DEM) 
 	{
+		super();
 		this.DT_INI = DT_INI;
 		this.DT_FIN = DT_FIN;
 		this.ID_DEM = ID_DEM;
 		this.CAB_DEM = CAB_DEM;
-		//
-		addCounter();
 	} //RJ005
 
 	/**
@@ -59,15 +58,15 @@ public class RJ005 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
-			+ PIPE + TextUtil.toNumeric(ID_DEM, 0, 1)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CAB_DEM), 65535)
-			+ PIPE;
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.toNumeric(ID_DEM, 0, 1))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CAB_DEM), 65535))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
-	
 } //RJ005 

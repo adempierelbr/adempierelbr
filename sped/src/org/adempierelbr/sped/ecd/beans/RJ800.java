@@ -41,10 +41,9 @@ public class RJ800 extends RegSped {
 	 * Constructor
 	 */
 	public RJ800(String ARQ_RTF, String IND_FIM_RTF) {
+		super();
 		this.ARQ_RTF = ARQ_RTF;
 		this.IND_FIM_RTF = IND_FIM_RTF;
-		//
-		addCounter();
 	} //RJ800
 
 	/**
@@ -54,13 +53,13 @@ public class RJ800 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + ARQ_RTF
-			+ PIPE + TextUtil.checkSize(IND_FIM_RTF, 7)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(ARQ_RTF)
+            .append(PIPE).append(TextUtil.checkSize(IND_FIM_RTF, 7))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RJ800

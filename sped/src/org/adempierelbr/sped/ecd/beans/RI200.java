@@ -41,12 +41,11 @@ public class RI200 extends RegSped{
 	 */
 	public RI200(String NUM_LCTO, Timestamp DT_LCTO, BigDecimal VL_LCTO, String IND_LCTO)
 	{
+		super();
 		this.NUM_LCTO = NUM_LCTO;
 		this.DT_LCTO  = DT_LCTO;
 		this.VL_LCTO  = VL_LCTO;
 		this.IND_LCTO = IND_LCTO;
-		//
-		addCounter();
 	} // RI200
 	
 	public void add (BigDecimal VL_LCTO)
@@ -77,15 +76,15 @@ public class RI200 extends RegSped{
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(NUM_LCTO, 255)
-			+ PIPE + TextUtil.timeToString(DT_LCTO, "ddMMyyyy")
-			+ PIPE + TextUtil.toNumeric(VL_LCTO, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_LCTO, 1) 
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(NUM_LCTO, 255))
+            .append(PIPE).append(TextUtil.timeToString(DT_LCTO, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.toNumeric(VL_LCTO, 0, 255))
+            .append(PIPE).append(TextUtil.checkSize(IND_LCTO, 1) )
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 
 } //RI200

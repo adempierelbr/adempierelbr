@@ -38,11 +38,10 @@ public class RI100 extends RegSped {
 	 * Constructor
 	 */
 	public RI100(Timestamp DT_ALT, String COD_CCUS, String CCUS) {
+		super();
 		this.DT_ALT = DT_ALT;
 		this.COD_CCUS = COD_CCUS;
 		this.CCUS = CCUS;
-		//
-		addCounter();
 	} //RI100
 
 	/**
@@ -52,14 +51,14 @@ public class RI100 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.timeToString(DT_ALT, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CCUS), 255)
-			+ PIPE;
-			
-		return TextUtil.removeEOL(format) + EOL;
-	} // format
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_ALT, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CCUS), 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
+		
 } //RI100

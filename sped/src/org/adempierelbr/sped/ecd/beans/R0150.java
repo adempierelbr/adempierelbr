@@ -47,10 +47,23 @@ public class R0150 extends RegSped {
 
 	/**
 	 * Constructor
+	 * @param COD_PART
+	 * @param NOME
+	 * @param COD_PAIS
+	 * @param CNPJ
+	 * @param CPF
+	 * @param NIT
+	 * @param UF
+	 * @param IE
+	 * @param IE_ST
+	 * @param COD_MUN
+	 * @param IM
+	 * @param SUFRAMA
 	 */
 	public R0150(String COD_PART, String NOME, String COD_PAIS,
 			String CNPJ, String CPF, String NIT, String UF, String IE,
 			String IE_ST, String COD_MUN, String IM, String SUFRAMA) {
+		super();
 		this.COD_PART = COD_PART;
 		this.NOME = NOME;
 		this.COD_PAIS = COD_PAIS;
@@ -63,8 +76,6 @@ public class R0150 extends RegSped {
 		this.COD_MUN = COD_MUN;
 		this.IM = IM;
 		this.SUFRAMA = SUFRAMA;
-		//
-		addCounter();
 	} //R0150
 
 	/**
@@ -74,23 +85,23 @@ public class R0150 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_PART, 255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255)
-			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(COD_PAIS), '0', 5)
-			+ PIPE + TextUtil.toNumeric(CNPJ)
-			+ PIPE + TextUtil.toNumeric(CPF) 
-			+ PIPE + TextUtil.toNumeric(NIT) 
-			+ PIPE + TextUtil.checkSize(UF, 2)
-			+ PIPE + TextUtil.toNumeric(IE) 
-			+ PIPE + TextUtil.checkSize(IE_ST, 255)
-			+ PIPE + TextUtil.toNumeric(COD_MUN) 
-			+ PIPE + TextUtil.checkSize(IM, 255)
-			+ PIPE + TextUtil.checkSize(SUFRAMA, 9)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_PART, 255))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))
+            .append(PIPE).append(TextUtil.lPad(TextUtil.toNumeric(COD_PAIS), '0', 5))
+            .append(PIPE).append(TextUtil.toNumeric(CNPJ))
+            .append(PIPE).append(TextUtil.toNumeric(CPF))
+            .append(PIPE).append(TextUtil.toNumeric(NIT))
+            .append(PIPE).append(TextUtil.checkSize(UF, 2))
+            .append(PIPE).append(TextUtil.toNumeric(IE))
+            .append(PIPE).append(TextUtil.checkSize(IE_ST, 255))
+            .append(PIPE).append(TextUtil.toNumeric(COD_MUN))
+            .append(PIPE).append(TextUtil.checkSize(IM, 255))
+            .append(PIPE).append(TextUtil.checkSize(SUFRAMA, 9))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //R0150

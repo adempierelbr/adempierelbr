@@ -20,7 +20,6 @@ import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
-import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
 /**
@@ -36,9 +35,6 @@ import org.compiere.util.Env;
  */
 
 public class RJ900 extends RegSped{
-	
-	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(RJ900.class);
 	
 	private final String DNRC_ENCER = "TERMO DE ENCERRAMENTO";
 	
@@ -64,6 +60,7 @@ public class RJ900 extends RegSped{
 	public RJ900 (String NAT_LIVRO, String NOME, BigDecimal QTD_LIN, 
 			Timestamp DT_INI_ESCR, Timestamp DT_FIN_ESCR)
 	{
+		super();
 		this.NUM_ORD = Env.ONEHUNDRED;
 		//
 		if (NAT_LIVRO == null){
@@ -91,8 +88,6 @@ public class RJ900 extends RegSped{
 		this.QTD_LIN = QTD_LIN;
 		this.DT_INI_ESCR = DT_INI_ESCR;
 		this.DT_FIN_ESCR = DT_FIN_ESCR;
-		//
-		addCounter();
 	} //RJ900
 
 	/**
@@ -102,18 +97,18 @@ public class RJ900 extends RegSped{
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(DNRC_ENCER, 21)
-			+ PIPE + TextUtil.toNumeric(NUM_ORD, 0)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVRO), 80)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255) 
-			+ PIPE + (QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0))
-			+ PIPE + TextUtil.timeToString(DT_INI_ESCR, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_FIN_ESCR, "ddMMyyyy")
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(DNRC_ENCER, 21))
+            .append(PIPE).append(TextUtil.toNumeric(NUM_ORD, 0))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVRO), 80))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))
+            .append(PIPE).append((QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0)))
+            .append(PIPE).append(TextUtil.timeToString(DT_INI_ESCR, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_FIN_ESCR, "ddMMyyyy"))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RJ900

@@ -120,19 +120,19 @@ public class RI050 extends RegSped {
 	 * @return
 	 */
 	public String toString() {
-					
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.timeToString(DT_ALT, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(COD_NAT, 2)
-			+ PIPE + TextUtil.checkSize(IND_CTA, 1, 1)
-			+ PIPE + TextUtil.toNumeric(NIVEL, 0)
-			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
-			+ PIPE + TextUtil.checkSize(COD_CTA_SUP, 255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CTA), 255)
-			+ PIPE;
 		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_ALT, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.checkSize(COD_NAT, 2))
+            .append(PIPE).append(TextUtil.checkSize(IND_CTA, 1, 1))
+            .append(PIPE).append(TextUtil.toNumeric(NIVEL, 0))
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA_SUP, 255))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CTA), 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI050

@@ -33,9 +33,8 @@ public class RI550 extends RegSped {
 	 * Constructor
 	 */
 	public RI550(String RZ_CONT) {
+		super();
 		this.RZ_CONT = RZ_CONT;
-		//
-		addCounter();
 	} //RI550
 
 	/**
@@ -45,12 +44,12 @@ public class RI550 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + RZ_CONT
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(RZ_CONT)
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI550

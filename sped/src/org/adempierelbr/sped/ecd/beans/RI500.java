@@ -36,10 +36,8 @@ public class RI500 extends RegSped {
 	 * Constructor
 	 */
 	public RI500(BigDecimal TAM_FONTE) {
-
-		this.TAM_FONTE = TAM_FONTE;
-		//
-		addCounter();
+		super();
+		this.TAM_FONTE = TAM_FONTE;		//
 	} //RI500
 
 	/**
@@ -49,11 +47,12 @@ public class RI500 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.toNumeric(TAM_FONTE, 2, 2)
-			+ PIPE;
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.toNumeric(TAM_FONTE, 2, 2))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI500

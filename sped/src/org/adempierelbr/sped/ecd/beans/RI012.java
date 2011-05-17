@@ -35,15 +35,18 @@ public class RI012 extends RegSped {
 
 	/**
 	 * Constructor
+	 * @param NUM_ORD
+	 * @param NAT_LIVR
+	 * @param TIPO
+	 * @param COD_HASH_AUX
 	 */
 	public RI012(int NUM_ORD, String NAT_LIVR, int TIPO, 
 			String COD_HASH_AUX) {
+		super();
 		this.NUM_ORD 		= NUM_ORD;
 		this.NAT_LIVR 		= NAT_LIVR;
 		this.TIPO 			= TIPO;
 		this.COD_HASH_AUX 	= COD_HASH_AUX;
-		//
-		addCounter();
 	} // BIRI012
 
 	/**
@@ -53,15 +56,15 @@ public class RI012 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + NUM_ORD
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80)
-			+ PIPE + TIPO	
-			+ PIPE + TextUtil.checkSize(COD_HASH_AUX, 40)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(NUM_ORD)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80))
+            .append(PIPE).append(TIPO)
+            .append(PIPE).append(TextUtil.checkSize(COD_HASH_AUX, 40))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI012

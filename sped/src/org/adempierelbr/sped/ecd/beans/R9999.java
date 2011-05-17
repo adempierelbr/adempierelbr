@@ -27,7 +27,6 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R9999.java, 16/11/2010, 15:52:00, mgrigioni
  */
-
 public class R9999 extends RegSped {
 
 	private String QTD_LIN = ""; 
@@ -36,8 +35,7 @@ public class R9999 extends RegSped {
 	 * Constructor
 	 */
 	public R9999() {
-		//
-		addCounter();
+		super();
 	} // R9999
 	
 	public String toString(){

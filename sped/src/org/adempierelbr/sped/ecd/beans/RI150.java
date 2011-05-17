@@ -36,10 +36,9 @@ public class RI150 extends RegSped {
 	 * Constructor
 	 */
 	public RI150(Timestamp DT_INI, Timestamp DT_FIN) {
+		super();
 		this.DT_INI = DT_INI;
 		this.DT_FIN = DT_FIN;
-		//
-		addCounter();
 	} // RI150
 
 	/**
@@ -49,13 +48,13 @@ public class RI150 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG 
-			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy"))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI150

@@ -50,13 +50,12 @@ public class RJ100 extends RegSped {
 	public RJ100(String COD_AGL, BigDecimal NIVEL_AGL,String IND_GPR_BAL, String DESCR_COD_AGL,
 			BigDecimal VL_CTA, String IND_DC_BAL) 
 	{
+		super();
 		this.COD_AGL       = COD_AGL;
 		this.NIVEL_AGL     = NIVEL_AGL;
 		this.DESCR_COD_AGL = DESCR_COD_AGL;
 		this.VL_CTA        = VL_CTA;
 		this.IND_DC_BAL    = IND_DC_BAL;
-		//
-		addCounter();
 	} // RJ100
 
 	/**
@@ -66,17 +65,17 @@ public class RJ100 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_AGL, 255)
-			+ PIPE + TextUtil.toNumeric(NIVEL_AGL, 0, 255) 
-			+ PIPE + TextUtil.checkSize(IND_GPR_BAL, 1)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESCR_COD_AGL), 255)
-			+ PIPE + TextUtil.toNumeric(VL_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_DC_BAL, 1)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} // format
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_AGL, 255))
+            .append(PIPE).append(TextUtil.toNumeric(NIVEL_AGL, 0, 255) )
+            .append(PIPE).append(TextUtil.checkSize(IND_GPR_BAL, 1))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESCR_COD_AGL), 255))
+            .append(PIPE).append(TextUtil.toNumeric(VL_CTA, 0, 255))
+            .append(PIPE).append(TextUtil.checkSize(IND_DC_BAL, 1))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } // RJ100

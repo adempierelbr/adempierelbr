@@ -37,13 +37,11 @@ public class RI355 extends RegSped {
 	 */
 	public RI355(String COD_CTA, String COD_CCUS, BigDecimal VL_CTA,
 			String IND_DC) {
-		
+		super();
 		this.COD_CTA  = COD_CTA;
 		this.COD_CCUS = COD_CCUS;
 		this.VL_CTA   = VL_CTA;
 		this.IND_DC   = IND_DC;
-		//
-		addCounter();
 	} // RI355
 
 	/**
@@ -53,15 +51,15 @@ public class RI355 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
-			+ PIPE + TextUtil.toNumeric(VL_CTA, 0, 255)
-			+ PIPE + TextUtil.checkSize(IND_DC, 1, 1)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
+            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
+            .append(PIPE).append(TextUtil.toNumeric(VL_CTA, 0, 255))
+            .append(PIPE).append(TextUtil.checkSize(IND_DC, 1, 1))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI355

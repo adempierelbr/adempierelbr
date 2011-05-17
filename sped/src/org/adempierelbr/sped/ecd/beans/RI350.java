@@ -34,9 +34,8 @@ public class RI350 extends RegSped{
 	 * Constructor
 	 */
 	public RI350(Timestamp DT_RES) {
+		super();
 		this.DT_RES = DT_RES;
-		//
-		addCounter();
 	} // RI350
 
 	/**
@@ -46,12 +45,12 @@ public class RI350 extends RegSped{
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.timeToString(DT_RES, "ddMMyyyy")
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_RES, "ddMMyyyy"))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI350

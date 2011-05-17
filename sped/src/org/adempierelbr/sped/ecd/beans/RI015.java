@@ -31,23 +31,22 @@ public class RI015 extends RegSped {
 	 * @param COD_CTA_RES
 	 */
 	public RI015(String COD_CTA_RES) {
+		super();
 		this.COD_CTA_RES = COD_CTA_RES;
-		//
-		addCounter();
 	}	//RI015
 	
 	/**
-	 * Formata Bloco I Resgistro i015
+	 * Formata Bloco I Resgistro I015
 	 * @return
 	 */
 	public String toString()  {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA_RES, 100)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	}	//toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA_RES, 100))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 }	//RI015

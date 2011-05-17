@@ -47,6 +47,7 @@ public class RI155 extends RegSped {
 	 */
 	public RI155(String COD_CTA, String COD_CCUS, BigDecimal VL_SLD_INI,String IND_DC_INI,
 			BigDecimal VL_DEB, BigDecimal VL_CRED, BigDecimal VL_SLD_FIN,String IND_DC_FIN) {
+		super();
 		this.COD_CTA    = COD_CTA;
 		this.COD_CCUS   = COD_CCUS;
 		this.VL_SLD_INI = VL_SLD_INI;
@@ -55,8 +56,6 @@ public class RI155 extends RegSped {
 		this.VL_CRED    = VL_CRED == null ? Env.ZERO : VL_CRED;
 		this.VL_SLD_FIN = VL_SLD_FIN;
 		this.IND_DC_FIN = IND_DC_FIN;
-		//
-		addCounter();
 	} // RI155
 	
 	/**
@@ -78,19 +77,19 @@ public class RI155 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_CTA, 255)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
-			+ PIPE + TextUtil.toNumeric(VL_SLD_INI)
-			+ PIPE + TextUtil.checkSize(IND_DC_INI, 255)
-			+ PIPE + TextUtil.toNumeric(VL_DEB) 
-			+ PIPE + TextUtil.toNumeric(VL_CRED)
-			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN)
-			+ PIPE + TextUtil.checkSize(IND_DC_FIN, 255)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} // toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
+            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
+            .append(PIPE).append(TextUtil.toNumeric(VL_SLD_INI))
+            .append(PIPE).append(TextUtil.checkSize(IND_DC_INI, 255))
+            .append(PIPE).append(TextUtil.toNumeric(VL_DEB))
+            .append(PIPE).append(TextUtil.toNumeric(VL_CRED))
+            .append(PIPE).append(TextUtil.toNumeric(VL_SLD_FIN))
+            .append(PIPE).append(TextUtil.checkSize(IND_DC_FIN, 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI155

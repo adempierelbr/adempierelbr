@@ -60,6 +60,7 @@ public class RI030 extends RegSped {
 			BigDecimal QTD_LIN, String NOME, String NIRE, String CNPJ,
 			Timestamp DT_ARQ, Timestamp DT_ARQ_CONV, String DESC_MUN)
 	{
+		super();
 		this.NUM_ORD = NUM_ORD;
 		this.NAT_LIVR = NAT_LIVR;
 		this.QTD_LIN = QTD_LIN;
@@ -69,8 +70,6 @@ public class RI030 extends RegSped {
 		this.DT_ARQ = DT_ARQ;
 		this.DT_ARQ_CONV = DT_ARQ_CONV;
 		this.DESC_MUN = DESC_MUN;
-		//
-		addCounter();
 	} // RI030
 
 	/**
@@ -80,21 +79,21 @@ public class RI030 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(DNRC_ABERT, 17) 
-			+ PIPE + TextUtil.toNumeric(NUM_ORD, 0) 
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80) 
-			+ PIPE + (QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0))
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255)
-			+ PIPE + TextUtil.toNumeric(NIRE) 
-			+ PIPE + TextUtil.toNumeric(CNPJ)
-			+ PIPE + TextUtil.timeToString(DT_ARQ, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_ARQ_CONV, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESC_MUN), 255)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(DNRC_ABERT, 17))
+            .append(PIPE).append(TextUtil.toNumeric(NUM_ORD, 0))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80) )
+            .append(PIPE).append((QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0)))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))
+            .append(PIPE).append(TextUtil.toNumeric(NIRE))
+            .append(PIPE).append(TextUtil.toNumeric(CNPJ))
+            .append(PIPE).append(TextUtil.timeToString(DT_ARQ, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_ARQ_CONV, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESC_MUN), 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } // RI030

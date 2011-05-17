@@ -34,16 +34,20 @@ public class RI020 extends RegSped {
 
 	/**
 	 * Constructor
+	 * @param REG_COD
+	 * @param NUM_AD
+	 * @param CAMPO
+	 * @param DESCRICAO
+	 * @param TIPO
 	 */
 	public RI020(String REG_COD, int NUM_AD, String CAMPO, 
 			String DESCRICAO, String TIPO) {
+		super();
 		this.REG_COD   = REG_COD;
 		this.NUM_AD    = NUM_AD;
 		this.CAMPO     = CAMPO;
 		this.DESCRICAO = DESCRICAO;
-		this.TIPO      = TIPO;
-		//
-		addCounter();
+		this.TIPO      = TIPO;;
 	} //RI012
 
 	/**
@@ -53,16 +57,16 @@ public class RI020 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(REG_COD, 4)
-			+ PIPE + NUM_AD
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(CAMPO), 100)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESCRICAO), 100)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(TIPO), 100)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
-	
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(REG_COD, 4))
+            .append(PIPE).append(NUM_AD)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CAMPO), 100))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESCRICAO), 100))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(TIPO), 100))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
+
 } //RI012

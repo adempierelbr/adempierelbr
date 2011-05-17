@@ -35,13 +35,15 @@ public class R0180 extends RegSped {
 
 	/**
 	 * Constructor
+	 * @param COD_REL
+	 * @param DT_INI_REL
+	 * @param DT_FIN_REL
 	 */
 	public R0180(String COD_REL, Timestamp DT_INI_REL, Timestamp DT_FIN_REL) {
+		super();
 		this.DT_FIN_REL 	= DT_FIN_REL;
 		this.DT_INI_REL 	= DT_INI_REL;
 		this.COD_REL 		= COD_REL;
-		//
-		addCounter();
 	}	//R0180
 
 	/**
@@ -51,14 +53,14 @@ public class R0180 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + COD_REL
-			+ PIPE + TextUtil.timeToString(DT_INI_REL, "ddMMyyyy") 
-			+ PIPE + TextUtil.timeToString(DT_FIN_REL, "ddMMyyyy")
-			+ PIPE;
-			
-		return TextUtil.removeEOL(format) + EOL;
-	}	//toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(COD_REL)
+            .append(PIPE).append(TextUtil.timeToString(DT_INI_REL, "ddMMyyyy"))
+            .append(PIPE).append(TextUtil.timeToString(DT_FIN_REL, "ddMMyyyy"))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 
 } 	//R0180

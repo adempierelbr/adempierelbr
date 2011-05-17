@@ -34,28 +34,29 @@ public class R0007 extends RegSped {
 
 	/**
 	 * Constructor
+	 * @param COD_ENT_REF
+	 * @param COD_INSCR
 	 */
 	public R0007(String COD_ENT_REF, String COD_INSCR) {
+		super();
 		this.COD_ENT_REF = COD_ENT_REF;
 		this.COD_INSCR = COD_INSCR;
-		//
-		addCounter();
 	} //R0007
 
 	/**
-	 * Formata o Bloco 0 Registro 000
+	 * Formata o Bloco 0 Registro 007
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_ENT_REF, 255)
-			+ PIPE + TextUtil.toNumeric(COD_INSCR)
-			+ PIPE;
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_ENT_REF, 255))
+            .append(PIPE).append(TextUtil.toNumeric(COD_INSCR))
+            .append(PIPE);
 
-		return TextUtil.removeEOL(format) + EOL;
-	} 	//toString
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //R0007

@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
@@ -42,18 +41,27 @@ public class R0000 extends RegSped {
 	private String IE;
 	private String COD_MUN;
 	private String IM;
+	private String IND_SIT_ESP;
 	
 	private Timestamp DT_INI;
 	private Timestamp DT_FIN;
 
-	private BigDecimal IND_SIT_ESP;
-
 	/**
 	 * Constructor
+	 * @param DT_INI
+	 * @param DT_FIN
+	 * @param NOME
+	 * @param CNPJ
+	 * @param UF
+	 * @param IE
+	 * @param COD_MUN
+	 * @param IM
+	 * @param IND_SIT_ESP
 	 */
 	public R0000(Timestamp DT_INI, Timestamp DT_FIN, String NOME, String CNPJ,
 			String UF, String IE, String COD_MUN, String IM,
-			BigDecimal IND_SIT_ESP) {
+			String IND_SIT_ESP) {
+		super();
 		this.DT_INI = DT_INI;
 		this.DT_FIN = DT_FIN;
 		this.NOME = NOME;
@@ -63,8 +71,6 @@ public class R0000 extends RegSped {
 		this.COD_MUN = COD_MUN;
 		this.IM = IM;
 		this.IND_SIT_ESP = IND_SIT_ESP;
-		//
-		addCounter();
 	} //R0000
 
 	/**
@@ -74,21 +80,21 @@ public class R0000 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG 
-			+ PIPE + LECD
-			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
-			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(NOME), 255)
-			+ PIPE + TextUtil.toNumeric(CNPJ)
-			+ PIPE + TextUtil.checkSize(UF, 0, 2)
-			+ PIPE + TextUtil.toNumeric(IE)
-			+ PIPE + TextUtil.toNumeric(COD_MUN)
-			+ PIPE + TextUtil.toNumeric(IM) 
-			+ PIPE + TextUtil.toNumeric(IND_SIT_ESP, 0, 1)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	}	//toString
+		StringBuilder format = new StringBuilder
+		           (PIPE).append(REG) 
+		    .append(PIPE).append(LECD)
+		    .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy"))
+		    .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy"))
+		    .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))
+		    .append(PIPE).append(TextUtil.toNumeric(CNPJ))
+		    .append(PIPE).append(TextUtil.checkSize(UF, 0, 2))
+		    .append(PIPE).append(TextUtil.toNumeric(IE))
+		    .append(PIPE).append(TextUtil.toNumeric(COD_MUN))
+		    .append(PIPE).append(TextUtil.toNumeric(IM))
+		    .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(IND_SIT_ESP), 1))
+		    .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //R0000

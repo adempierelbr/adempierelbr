@@ -13,7 +13,6 @@
 package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo
@@ -36,9 +35,8 @@ public class RJ001 extends RegSped{
 	 */
 	public RJ001(Boolean hasTransaction) 
 	{
+		super();
 		this.IND_DAD = hasTransaction ? "0" : "1";
-		//
-		addCounter();
 	} // RJ001
 
 	/**
@@ -48,12 +46,12 @@ public class RJ001 extends RegSped{
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + IND_DAD
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} // format
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(IND_DAD)
+            .append(PIPE).append(EOL);
+
+		return format.toString();
+	}
 	
 } //RJ001

@@ -33,9 +33,8 @@ public class RI300 extends RegSped {
 	 * Constructor
 	 */
 	public RI300(Timestamp DT_BCTE) {
+		super();
 		this.DT_BCTE = DT_BCTE;
-		//
-		addCounter();
 	} // RI300
 
 	/**
@@ -45,12 +44,12 @@ public class RI300 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.timeToString(DT_BCTE, "ddMMyyyy")
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.timeToString(DT_BCTE, "ddMMyyyy"))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 
 } //RI300

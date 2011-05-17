@@ -41,10 +41,9 @@ public class RI051 extends RegSped {
 	 * Constructor
 	 */
 	public RI051(String COD_CCUS, String COD_CTA_REF) {
+		super();
 		this.COD_CCUS = COD_CCUS;
 		this.COD_CTA_REF = COD_CTA_REF;
-		//
-		addCounter();
 	} //RI051
 
 	/**
@@ -54,14 +53,14 @@ public class RI051 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format = 
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(COD_ENT_REF, 2)
-			+ PIPE + TextUtil.checkSize(COD_CCUS, 255)
-			+ PIPE + TextUtil.checkSize(COD_CTA_REF, 255)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(COD_ENT_REF, 2))
+            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA_REF, 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI051

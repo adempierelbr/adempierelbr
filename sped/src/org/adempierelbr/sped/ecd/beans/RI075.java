@@ -34,10 +34,9 @@ public class RI075 extends RegSped {
 	 * Constructor
 	 */
 	public RI075(String COD_HIST, String DESCR_HIST) {
+		super();
 		this.COD_HIST = COD_HIST;
 		this.DESCR_HIST = DESCR_HIST;
-		//
-		addCounter();
 	} //RI075
 
 	/**
@@ -47,13 +46,13 @@ public class RI075 extends RegSped {
 	 */
 	public String toString() {
 		
-		String format =
-			  PIPE + REG
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COD_HIST), 255)
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(DESCR_HIST), 255)
-			+ PIPE;
-		
-		return TextUtil.removeEOL(format) + EOL;
-	} //toString
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COD_HIST), 255))
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESCR_HIST), 255))
+            .append(PIPE);
+
+		return (TextUtil.removeEOL(format).append(EOL)).toString();
+	}
 	
 } //RI075
