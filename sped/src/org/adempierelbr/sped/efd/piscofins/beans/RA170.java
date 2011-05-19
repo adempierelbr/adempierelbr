@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO A170: COMPLEMENTO DO DOCUMENTO - ITENS DO DOCUMENTO
@@ -35,6 +36,7 @@ public class RA170 extends RegSped implements Comparable<Object>{
 	private String CST_COFINS;
 	private String COD_CTA;
 	private String COD_CCUS;
+	private String CFOP;
 	
 	private BigDecimal VL_ITEM;
 	private BigDecimal VL_DESC;
@@ -44,6 +46,7 @@ public class RA170 extends RegSped implements Comparable<Object>{
 	private BigDecimal VL_BC_COFINS;
 	private BigDecimal ALIQ_COFINS;
 	private BigDecimal VL_COFINS;
+	private BigDecimal VL_OPR;
 	
 	/**
 	 * Constructor
@@ -64,12 +67,14 @@ public class RA170 extends RegSped implements Comparable<Object>{
 	 * @param VL_COFINS
 	 * @param COD_CTA
 	 * @param COD_CCUS
+	 * @param CFOP
+	 * @param VL_OPR
 	 */
 	public RA170(int NUM_ITEM, String COD_ITEM, String DESCR_COMPL, BigDecimal VL_ITEM, 
 			BigDecimal VL_DESC, String NAT_BC_CRED, String IND_ORIG_CRED,
 			String CST_PIS, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS, BigDecimal VL_PIS,
 			String CST_COFINS, BigDecimal VL_BC_COFINS, BigDecimal ALIQ_COFINS, 
-			BigDecimal VL_COFINS, String COD_CTA, String COD_CCUS)  
+			BigDecimal VL_COFINS, String COD_CTA, String COD_CCUS, String CFOP, BigDecimal VL_OPR)  
 	{
 		super();
 		this.NUM_ITEM = NUM_ITEM;
@@ -89,7 +94,25 @@ public class RA170 extends RegSped implements Comparable<Object>{
 		this.VL_BC_COFINS = VL_BC_COFINS;
 		this.ALIQ_COFINS = ALIQ_COFINS;
 		this.VL_COFINS = VL_COFINS;
+		this.CFOP = CFOP;
+		this.VL_OPR = VL_OPR;
 	}	//RA170
+	
+	public BigDecimal getVL_PIS(){
+		return VL_PIS == null ? Env.ZERO : VL_PIS;
+	}
+	
+	public BigDecimal getVL_COFINS(){
+		return VL_COFINS == null ? Env.ZERO : VL_COFINS;
+	}
+	
+	public BigDecimal getVL_OPR(){
+		return VL_OPR == null ? Env.ZERO : VL_OPR;
+	}
+	
+	public String getCFOP(){
+		return CFOP;
+	}
 
 	/**
 	 * Formata o Bloco A Registro 170

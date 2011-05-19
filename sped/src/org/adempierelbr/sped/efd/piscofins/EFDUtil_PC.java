@@ -15,7 +15,10 @@ package org.adempierelbr.sped.efd.piscofins;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -24,6 +27,7 @@ import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.piscofins.beans.R0000;
 import org.adempierelbr.sped.efd.piscofins.beans.R0100;
 import org.adempierelbr.sped.efd.piscofins.beans.R0110;
+import org.adempierelbr.sped.efd.piscofins.beans.R0111;
 import org.adempierelbr.sped.efd.piscofins.beans.R0140;
 import org.adempierelbr.sped.efd.piscofins.beans.R0150;
 import org.adempierelbr.sped.efd.piscofins.beans.R0190;
@@ -203,6 +207,40 @@ public class EFDUtil_PC
 		return new R0110(COD_INC_TRIB,IND_APRO_CRED,COD_TIPO_CONT);
 	} //createR0110
 	
+	public static R0111 createR0111(Map<Integer,Set<RC170>> _RC170){
+		
+		BigDecimal REC_BRU_NCUM_TRIB_MI = Env.ZERO;
+		BigDecimal REC_BRU_NCUM_NT_MI   = Env.ZERO;
+		BigDecimal REC_BRU_NCUM_EXP     = Env.ZERO;
+		BigDecimal REC_BRU_CUM          = Env.ZERO;
+		BigDecimal REC_BRU_TOTAL        = Env.ZERO;
+				
+		//PRODUTO
+		Iterator<Integer> listRC100 = _RC170.keySet().iterator();
+		while(listRC100.hasNext()){
+			Set<RC170> setRC170 = _RC170.get(listRC100.next());
+			for (RC170 rc170 : setRC170){
+				Integer CFOP = Integer.parseInt(rc170.getCFOP().substring(0, 1));
+				if (CFOP.intValue() > 4){ //SAIDAS
+					if (rc170.getVL_PIS().signum() == 1){
+						REC_BRU_NCUM_TRIB_MI = REC_BRU_NCUM_TRIB_MI.add(rc170.getVL_OPR());
+					}
+					else if (CFOP == 7){
+						REC_BRU_NCUM_EXP = REC_BRU_NCUM_EXP.add(rc170.getVL_OPR());
+					}
+					else{
+						REC_BRU_NCUM_NT_MI = REC_BRU_NCUM_NT_MI.add(rc170.getVL_OPR());
+					}
+				}
+			}
+		}
+		
+		REC_BRU_TOTAL = REC_BRU_NCUM_TRIB_MI.add(REC_BRU_NCUM_NT_MI).add(REC_BRU_NCUM_EXP)
+		            .add(REC_BRU_CUM);
+		
+		return new R0111(REC_BRU_NCUM_TRIB_MI,REC_BRU_NCUM_NT_MI,REC_BRU_NCUM_EXP,REC_BRU_CUM,REC_BRU_TOTAL);
+	} //createR0111
+	
 	public static R0140 createR0140(){
 		
 		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
@@ -350,9 +388,12 @@ public class EFDUtil_PC
 		String COD_CTA = ""; //TODO ???
 		String COD_CCUS = ""; //TODO ???
 		
+		String CFOP = nfLine.getCFOP();
+		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		
 		return new RA170(line,COD_ITEM,DESCR_COMPL,VL_ITEM,VL_DESC,NAT_BC_CRED,IND_ORIG_CRED,
 				CST_PIS,VL_BC_PIS,ALIQ_PIS,VL_PIS,CST_COFINS,VL_BC_COFINS,ALIQ_COFINS,
-				VL_COFINS,COD_CTA,COD_CCUS);
+				VL_COFINS,COD_CTA,COD_CCUS,CFOP,VL_OPR);
 	} //createRA170
 	
 	public static RC010 createRC010(){
@@ -461,11 +502,13 @@ public class EFDUtil_PC
 		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
 		String COD_CTA = ""; //TODO ???
 		
+		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		
 		return new RC170(line,COD_ITEM,DESCR_COMPL,QTD,UNID,VL_ITEM,VL_DESC,IND_MOV,CST_ICMS,
 				CFOP,COD_NAT,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
 				IND_APUR,CST_IPI,COD_ENQ,VL_BC_IPI,ALIQ_IPI,VL_IPI,CST_PIS,VL_BC_PIS,V_ALIQ_PIS,
 				QUANT_BC_PIS,ALIQ_PIS,VL_PIS,CST_COFINS,VL_BC_COFINS,ALIQ_COFINS,QUANT_BC_COFINS,
-				V_ALIQ_COFINS,VL_COFINS,COD_CTA);
+				V_ALIQ_COFINS,VL_COFINS,COD_CTA,VL_OPR);
 	} //createRC170
 	
 	public static RC500 createRC500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD){

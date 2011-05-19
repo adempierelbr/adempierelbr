@@ -577,6 +577,7 @@ public class ProcGenerateEFD_PC extends SvrProcess
 			BLOCO0.append(r0100);
 		
 		BLOCO0.append(EFDUtil_PC.createR0110());
+		BLOCO0.append(EFDUtil_PC.createR0111(_RC170));
 		BLOCO0.append(EFDUtil_PC.createR0140());
 		
 		for (R0150 r0150 : _R0150){ //PARCEIROS

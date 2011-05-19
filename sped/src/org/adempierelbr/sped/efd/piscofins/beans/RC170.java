@@ -63,6 +63,7 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	private BigDecimal          QUANT_BC_COFINS;
 	private BigDecimal          ALIQ_COFINS;
 	private BigDecimal          VL_COFINS;
+	private BigDecimal          VL_OPR;
 	
 	/**
 	 * Constructor
@@ -102,6 +103,7 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	 * @param ALIQ_COFINS
 	 * @param VL_COFINS
 	 * @param COD_CTA
+	 * @param VL_OPR
 	 */
 	public RC170 (int NUM_ITEM, String COD_ITEM, String DESCR_COMPL, BigDecimal QTD,
 			       String UNID, BigDecimal VL_ITEM, BigDecimal VL_DESC, String IND_MOV, 
@@ -111,7 +113,7 @@ public class RC170 extends RegSped implements Comparable<Object> {
 			       BigDecimal ALIQ_IPI, BigDecimal VL_IPI, String CST_PIS, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS,
 			       BigDecimal QUANT_BC_PIS, BigDecimal ALIQ_PIS_PER, BigDecimal VL_PIS, String CST_COFINS,
 			       BigDecimal VL_BC_COFINS, BigDecimal ALIQ_COFINS_PER, BigDecimal QUANT_BC_COFINS, BigDecimal ALIQ_COFINS,
-			       BigDecimal VL_COFINS, String COD_CTA)
+			       BigDecimal VL_COFINS, String COD_CTA, BigDecimal VL_OPR)
 	{	
 		super();
 		this.NUM_ITEM = NUM_ITEM;
@@ -150,6 +152,7 @@ public class RC170 extends RegSped implements Comparable<Object> {
 		this.ALIQ_COFINS = ALIQ_COFINS;
 		this.VL_COFINS = VL_COFINS;
 		this.COD_CTA = COD_CTA;
+		this.VL_OPR = VL_OPR;
 	}//RC170
 	
 	private void setCFOP(String CFOP){
@@ -204,6 +207,18 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	
 	public BigDecimal getVL_BC_IPI(){
 		return VL_BC_IPI == null ? Env.ZERO : VL_BC_IPI;
+	}
+	
+	public BigDecimal getVL_PIS(){
+		return VL_PIS == null ? Env.ZERO : VL_PIS;
+	}
+	
+	public BigDecimal getVL_COFINS(){
+		return VL_COFINS == null ? Env.ZERO : VL_COFINS;
+	}
+	
+	public BigDecimal getVL_OPR(){
+		return VL_OPR == null ? Env.ZERO : VL_OPR;
 	}
 	
 	/**
