@@ -50,7 +50,7 @@ public class R0305 extends RegSped  {
 		StringBuilder format = new StringBuilder
                    (PIPE).append(REG) 
             .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COD_CCUS), 60))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(FUNC), 255))
+            .append(PIPE).append(RemoverAcentos.remover(TextUtil.checkSize(FUNC, 255)))
             .append(PIPE).append(VIDA_UTIL)
             .append(PIPE);
 

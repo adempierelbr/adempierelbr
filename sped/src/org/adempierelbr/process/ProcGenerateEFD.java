@@ -478,6 +478,12 @@ public class ProcGenerateEFD extends SvrProcess
 				MLBRNotaFiscalLine[] nfLines = exp.getLines("Line");
 				for (MLBRNotaFiscalLine nfLine : nfLines){
 					
+					R0190 r0190 = EFDUtil.createR0190(nfLine);
+					if (_R0190.contains(r0190))
+						r0190.subtractCounter();
+					else
+						_R0190.add(r0190);
+					
 					R0200 r0200 = EFDUtil.createR0200(nfLine);
 					if (_R0200.contains(r0200))
 						r0200.subtractCounter();

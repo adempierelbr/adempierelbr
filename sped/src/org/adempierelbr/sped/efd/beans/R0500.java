@@ -49,7 +49,7 @@ public class R0500 extends RegSped  {
 		this.IND_CTA = IND_CTA;
 		setCOD_CTA(COD_CTA);
 		this.NOME_CTA = NOME_CTA;
-		setNIVEL(COD_CTA);
+		setNIVEL();
 	}	//R0500
 	
 	private void setCOD_CTA(String COD_CTA){
@@ -60,7 +60,7 @@ public class R0500 extends RegSped  {
 		return this.COD_CTA;
 	}
 	
-	private void setNIVEL(String COD_CTA){
+	private void setNIVEL(){
 		this.NIVEL = COD_CTA.replaceAll("[^.]","").length() + 1;
 	}
 	

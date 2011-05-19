@@ -367,6 +367,9 @@ public class EFDUtil{
 		if (COD_NCM == null || COD_NCM.trim().isEmpty())
 			COD_NCM = nfLine.getLBR_NCM().getValue();
 		
+		if (COD_NCM == null || COD_NCM.trim().isEmpty())
+			COD_NCM = new MLBRNCM(getCtx(),product.get_ValueAsInt("LBR_NCM_ID"),null).getValue();
+		
 		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
 		String COD_LST       = ""; //COD SERVIDO //TODO ???
 		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
@@ -720,7 +723,7 @@ public class EFDUtil{
 		String SER         = nf.getSerieNo();
 		String SUB         = ""; //TODO ???
 		String NUM_DOC     = nf.getDocNo();
-		String CHV_CTE     = nf.getlbr_NFeID();
+		String CHV_CTE     = (IND_EMIT.equals("0")) ? nf.getlbr_NFeID() : "";
 		Timestamp DT_DOC   = nf.getDateDoc();
 		Timestamp DT_A_P   = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
 		String TP_CT_e     = ""; //TODO (só para saída)
@@ -1159,6 +1162,9 @@ public class EFDUtil{
 		Timestamp DT_CHC  = de.getlbr_DateCHCEmb();
 		Timestamp DT_AVB  = de.getDateTrx();
 		String TP_CHC     = de.getlbr_CHCType();
+		
+		if (DT_RE == null)
+			DT_RE = DT_AVB;
 		
 		MCountry country = new MCountry(getCtx(),de.getC_Country_ID(),null);
 		String PAIS = country.get_ValueAsString("lbr_CountryCode");
