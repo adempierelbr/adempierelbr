@@ -56,6 +56,9 @@ public abstract class TextUtil
 	public static final String EOL_WIN32 = "\r\n";
 	public static final String EOL_LINUX = "\n";
 	public static final String EOL_MAC   = "\n\r";
+	
+	/** TAB             */
+	public static final String TAB = "\t";
 
 	/** ENCODING        */
 	public static final String UTF8     = "UTF-8";

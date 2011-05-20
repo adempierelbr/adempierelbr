@@ -70,7 +70,8 @@ public class CreateFromNFeLot extends CreateFrom {
 					"INNER JOIN AD_Attachment att ON (nf.LBR_NotaFiscal_ID = att.Record_ID " +
 					"AND att.AD_Table_ID = ?) "
 			+ "WHERE nf.LBR_NFeID IS NOT NULL AND nf.LBR_NFeLot_ID IS NULL "
-			+ "AND IsCancelled = 'N' "
+			+ "AND nf.IsCancelled = 'N' "
+			+ "AND nf.AD_Org_ID = ? "
 			+ "ORDER BY 1";
 		
 		PreparedStatement pstmt = null;
@@ -80,6 +81,7 @@ public class CreateFromNFeLot extends CreateFrom {
 		{
 			pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, X_LBR_NotaFiscal.Table_ID);
+			pstmt.setInt(2, Env.getAD_Org_ID(Env.getCtx()));
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
