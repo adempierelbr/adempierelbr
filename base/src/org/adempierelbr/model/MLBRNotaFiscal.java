@@ -196,6 +196,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 
 	public boolean beforeDelete(){
 
+		// Se for transmitida não exclui mais...
+		if(getlbr_NFModel() != null && getlbr_NFModel().equals("55") && 
+				getlbr_NFeProt() != null && !getlbr_NFeProt().isEmpty())
+			return false;
+		
 		String trxName = get_TrxName();
 
 		int C_Invoice_ID = getC_Invoice_ID();
@@ -290,7 +295,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			int LBR_TaxGroup_ID   = TaxBR.getTaxGroup_ID("ICMS");
 			if (LBR_TaxGroup_ID > 0){
 				MLBRNFLineTax nfLineTax = new MLBRNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
-						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "SISCOMEX", get_TrxName());
+						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "SISCOMEX", getAD_Org_ID(), get_TrxName());
 				if (!nfLineTax.save(get_TrxName())){
 					return false;
 				}
@@ -330,7 +335,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 			int LBR_TaxGroup_ID   = TaxBR.getTaxGroup_ID("ICMS");
 			if (LBR_TaxGroup_ID > 0){
 				MLBRNFLineTax nfLineTax = new MLBRNFLineTax(getCtx(), LBR_TaxGroup_ID, nfLine.get_ID(), TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND),
-						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "FRETE", get_TrxName());
+						TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND), ICMSRate, Env.ZERO, "FRETE", getAD_Org_ID(), get_TrxName());
 				if (!nfLineTax.save(get_TrxName())){
 					return false;
 				}

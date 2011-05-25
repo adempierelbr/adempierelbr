@@ -183,6 +183,9 @@ public class ProcGenerateNF extends SvrProcess
 			/** SET NOTA FISCAL **/
 			MLBRNotaFiscal NotaFiscal = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
 
+			// Org
+			NotaFiscal.setAD_Org_ID(invoice.getAD_Org_ID());
+			
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
 			NotaFiscal.setlbr_IsOwnDocument(IsOwnDocument);
 			NotaFiscal.setlbr_TransactionType((String)invoice.get_Value("lbr_TransactionType")); //CORRECAO ELTEK
@@ -310,6 +313,9 @@ public class ProcGenerateNF extends SvrProcess
 
 					MLBRNotaFiscalLine NotaFiscalLine = new MLBRNotaFiscalLine(ctx,0,trx);   /** NOTA FISCAL LINE**/
 
+					// Org
+					NotaFiscalLine.setAD_Org_ID(NotaFiscal.getAD_Org_ID());
+					
 					NotaFiscalLine.setLBR_NotaFiscal_ID(NotaFiscal.getLBR_NotaFiscal_ID());   /** LBR_NotaFiscal_ID **/
 					NotaFiscalLine.setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());   /** C_InvoiceLine_ID **/
 					NotaFiscalLine.setLine(LineNo);   //Linha Número
@@ -395,7 +401,7 @@ public class ProcGenerateNF extends SvrProcess
 					NotaFiscal.setLegalMessage(LBR_LegalMessage_ID);
 
 					NotaFiscalLine.save(trx);
-					MLBRNFLineTax.createLBR_NFLineTax(ctx, iLine.getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), trx);
+					MLBRNFLineTax.createLBR_NFLineTax(ctx, iLine.getC_InvoiceLine_ID(), NotaFiscalLine.getLBR_NotaFiscalLine_ID(), NotaFiscal.getAD_Org_ID(), trx);
 
 					if(NotaFiscalLine.islbr_IsService()){
 						NotaFiscalLine.setlbr_ServiceTaxes();
@@ -431,7 +437,7 @@ public class ProcGenerateNF extends SvrProcess
 			NotaFiscal.setFreightTax();
 			
 			/** Lançamento Impostos Nota Fiscal **/
-			MLBRNFTax.createLBR_NFTax(ctx, NotaFiscal.getLBR_NotaFiscal_ID(), trx);
+			MLBRNFTax.createLBR_NFTax(ctx, NotaFiscal.getLBR_NotaFiscal_ID(), NotaFiscal.getAD_Org_ID(), trx);
 			
 			/** Código de Barras **/
 			StringBuilder Barcode1 = new StringBuilder();

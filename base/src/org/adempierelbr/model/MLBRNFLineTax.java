@@ -77,8 +77,9 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 	 */
 	public MLBRNFLineTax(Properties ctx, int LBR_TaxGroup_ID, int LBR_NotaFiscalLine_ID,
 			BigDecimal lbr_TaxBaseAmt, BigDecimal lbr_TaxAmt, BigDecimal lbr_TaxRate,
-			BigDecimal lbr_TaxBase, String description, String trx){
+			BigDecimal lbr_TaxBase, String description, int AD_Org_ID, String trx){
 		super(ctx,0,trx);
+		setAD_Org_ID(AD_Org_ID);
 		setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
 		setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);
 		setlbr_TaxBaseAmt(lbr_TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND));
@@ -95,10 +96,10 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 	 * @param LBR_NotaFiscalLine_ID
 	 * @param trx
 	 */
-	public static boolean createLBR_NFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, String trx){
+	public static boolean createLBR_NFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, int AD_Org_ID, String trx){
 
 		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
-
+		
 		X_LBR_TaxName[] taxesName = ImpostoBR.getLBR_TaxName(ctx, C_InvoiceLine_ID, false, trx);
 		Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, iLine.get_ValueAsInt("LBR_Tax_ID"), trx);
 
@@ -119,8 +120,7 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 						MLBRNFLineTax nfLineTax = 
 							new MLBRNFLineTax(ctx,LBR_TaxGroup_ID,LBR_NotaFiscalLine_ID,taxLine.getlbr_TaxBaseAmt(),
 								taxLine.getlbr_TaxAmt().multiply(new BigDecimal(iTax.getTaxAmt().signum())),
-								taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(),
-								null,trx);
+								taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(), null, AD_Org_ID, trx);
 						if (!nfLineTax.save(trx)){
 							log.severe("Erro ao salvar LBR_NFLineTax." +
 									   " LBR_NotaFiscalLine_ID = " + LBR_NotaFiscalLine_ID +
@@ -147,7 +147,7 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 			return true;
 		
 		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),getLBR_NotaFiscalLine_ID(),get_TrxName());
-		if (!MLBRNFTax.createLBR_NFTax(getCtx(), nfLine.getLBR_NotaFiscal_ID(), get_TrxName())){
+		if (!MLBRNFTax.createLBR_NFTax(getCtx(), nfLine.getLBR_NotaFiscal_ID(), nfLine.getAD_Org_ID(), get_TrxName())){
 			return false;
 		}
 		

@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.compiere.model.MNote;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 
@@ -65,7 +66,7 @@ public class MLBRNFTax extends X_LBR_NFTax {
 	 * @param LBR_NotaFiscal_ID
 	 * @param trx
 	 */
-	public static boolean createLBR_NFTax(Properties ctx, int LBR_NotaFiscal_ID, String trx){
+	public static boolean createLBR_NFTax(Properties ctx, int LBR_NotaFiscal_ID, int AD_Org_ID, String trx){
 
 		MLBRNotaFiscal.deleteLBR_NFTax(LBR_NotaFiscal_ID, trx); //Imposto Cabeçalho
 
@@ -87,6 +88,7 @@ public class MLBRNFTax extends X_LBR_NFTax {
 				Integer LBR_TaxGroup_ID = rs.getInt(1);
 				if (LBR_TaxGroup_ID != null && LBR_TaxGroup_ID.intValue() != 0){
 					MLBRNFTax nfTax = new MLBRNFTax(ctx, 0, trx);
+					nfTax.setAD_Org_ID(AD_Org_ID);
 					nfTax.setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
 					nfTax.setLBR_NotaFiscal_ID(LBR_NotaFiscal_ID);
 					nfTax.setlbr_TaxBaseAmt(rs.getBigDecimal(2));
