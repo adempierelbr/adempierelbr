@@ -18,7 +18,7 @@ fi
 echo "AdempiereLBR"
 echo "."
 echo ". Mario Grigioni (Kenos, www.kenos.com.br) - 01/09/2008"
-echo ". Michel Silvestre - resultado.log - 23/08/2010
+echo ". Michel Silvestre - resultado.log - 23/08/2010"
 echo "."
 echo "Password (ADEMPIERE): "
 read variavel
