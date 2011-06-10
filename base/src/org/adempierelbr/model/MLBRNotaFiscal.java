@@ -130,7 +130,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	 * @return MNotaFiscal[]
 	 */
 	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo,String trxName){
-		return get(dateFrom, dateTo,null,trxName);
+		return get(dateFrom,dateTo,0,null,trxName);
+	}
+	
+	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, int AD_Org_ID, String trxName){
+		return get(dateFrom,dateTo,AD_Org_ID,null,trxName);
+	}
+	
+	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, Boolean isSOTrx, String trxName){
+		return get(dateFrom,dateTo,0,isSOTrx,trxName);
 	}
 
 	/**
@@ -140,7 +148,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	 * @param isSOTrx: true = venda, false = compra, null = ambos
 	 * @return MNotaFiscal[]
 	 */
-	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, Boolean isSOTrx, String trxName){
+	public static MLBRNotaFiscal[] get(Timestamp dateFrom, Timestamp dateTo, int AD_Org_ID, Boolean isSOTrx, String trxName){
 
 		String whereClause = "AD_Client_ID=? AND " +
 				             "AD_Org_ID IN (0,?) AND " +
@@ -156,7 +164,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), trxName);
 	          q.setOrderBy(orderBy);
-		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom,dateTo});
+		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),AD_Org_ID > 0 ? AD_Org_ID : Env.getAD_Org_ID(Env.getCtx()),dateFrom,dateTo});
 
 	    List<MLBRNotaFiscal> list = q.list();
 	    MLBRNotaFiscal[] nfs = new MLBRNotaFiscal[list.size()];

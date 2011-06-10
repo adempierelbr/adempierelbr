@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFDI;
@@ -80,8 +81,8 @@ public class EFDUtil_PC
 	
 	private static int AD_Org_ID = 0;
 	
-	public static void setEnv(Properties ctx, String trx){
-		EFDUtil_PC.AD_Org_ID = Env.getAD_Org_ID(ctx);
+	public static void setEnv(Properties ctx, String trx, int AD_Org_ID){
+		EFDUtil_PC.AD_Org_ID = AD_Org_ID;
 		EFDUtil_PC.ctx = ctx;
 		EFDUtil_PC.trx = trx;
 	}
@@ -324,6 +325,9 @@ public class EFDUtil_PC
 		if (COD_NCM == null || COD_NCM.trim().isEmpty())
 			COD_NCM = nfLine.getLBR_NCM().getValue();
 		
+		if (COD_NCM == null || COD_NCM.trim().isEmpty())
+			COD_NCM = new MLBRNCM(getCtx(),product.get_ValueAsInt("LBR_NCM_ID"),null).getValue();
+		
 		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
 		String COD_LST       = ""; //COD SERVIDO //TODO ???
 		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
@@ -522,7 +526,7 @@ public class EFDUtil_PC
 		String NUM_DOC    = nf.getDocNo();
 		Timestamp DT_DOC  = nf.getDateDoc();
 		Timestamp DT_ENT  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
-		BigDecimal VL_DOC = nf.getGrandTotal().subtract(nf.getlbr_ServiceTotalAmt());
+		BigDecimal VL_DOC = nf.getGrandTotal();
 		BigDecimal VL_ICMS = nf.getICMSAmt();
 		String COD_INF = ""; //TODO ???
 		BigDecimal VL_PIS = nf.getTaxAmt("PIS");
@@ -584,7 +588,7 @@ public class EFDUtil_PC
 		String SER         = nf.getSerieNo();
 		String SUB         = ""; //TODO ???
 		String NUM_DOC     = nf.getDocNo();
-		String CHV_CTE     = nf.getlbr_NFeID();
+		String CHV_CTE     = (IND_EMIT.equals("0")) ? nf.getlbr_NFeID() : "";
 		Timestamp DT_DOC   = nf.getDateDoc();
 		Timestamp DT_A_P   = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
 		String TP_CT_e     = ""; //TODO (só para saída)
@@ -731,8 +735,5 @@ public class EFDUtil_PC
 		
 		return list.toArray(new R9900[list.size()]);
 	} //createR9900
-		
-	
-	
 	
 } //EFDUtil_PC

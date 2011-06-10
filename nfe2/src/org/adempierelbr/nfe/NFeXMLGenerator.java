@@ -24,11 +24,13 @@ import java.util.Random;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRCFOP;
+import org.adempierelbr.model.MLBRNCMIVA;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFTax;
+import org.adempierelbr.model.X_LBR_TaxFormula;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfe.beans.AdicoesDI;
 import org.adempierelbr.nfe.beans.COFINSBean;
@@ -749,9 +751,12 @@ public class NFeXMLGenerator
 							icmsgrupo.setpICMSST(TextUtil.bigdecimalToString(lt.getpImpostoST()));
 							icmsgrupo.setvICMSST(TextUtil.bigdecimalToString(lt.getvImpostoST()));
 						
-							BigDecimal iva = (BigDecimal)prdt.get_Value("lbr_ProfitPercentage");
-							if (iva != null) 
-								icmsgrupo.setpMVAST(TextUtil.bigdecimalToString(iva));
+							BigDecimal iva = MLBRNCMIVA.getProfitPercentage(ctx, nfLine.getLBR_NCM_ID(), nf.getAD_Org_ID(), nf.getC_BPartner_Location());
+							if (nf.getlbr_TransactionType().equals(X_LBR_TaxFormula.LBR_TRANSACTIONTYPE_Resale)){
+								if (iva.signum() == 1){
+									icmsgrupo.setpMVAST(TextUtil.bigdecimalToString(iva));
+								}
+							}
 							
 							if (taxStatus.endsWith("30")){
 								icmsgrupo.setpRedBCST(TextUtil.bigdecimalToString(lt.getpRedBCST()));

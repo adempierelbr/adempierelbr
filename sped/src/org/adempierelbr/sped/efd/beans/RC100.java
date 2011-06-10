@@ -312,11 +312,12 @@ public class RC100 extends RegSped implements Comparable<Object>{
 
 		return (TextUtil.removeEOL(format).append(EOL)).toString();
 	} // toString
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((CHV_NFE == null) ? 0 : CHV_NFE.hashCode());
 		result = prime * result + ((COD_MOD == null) ? 0 : COD_MOD.hashCode());
 		result = prime * result
 				+ ((COD_PART == null) ? 0 : COD_PART.hashCode());
@@ -339,6 +340,11 @@ public class RC100 extends RegSped implements Comparable<Object>{
 		if (getClass() != obj.getClass())
 			return false;
 		RC100 other = (RC100) obj;
+		if (CHV_NFE == null) {
+			if (other.CHV_NFE != null)
+				return false;
+		} else if (!CHV_NFE.equals(other.CHV_NFE))
+			return false;
 		if (COD_MOD == null) {
 			if (other.COD_MOD != null)
 				return false;
@@ -376,7 +382,7 @@ public class RC100 extends RegSped implements Comparable<Object>{
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * 	Comparador para Collection
 	 * 

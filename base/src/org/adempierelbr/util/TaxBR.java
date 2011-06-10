@@ -25,7 +25,9 @@ import java.util.logging.Level;
 
 import javax.script.ScriptException;
 
+import org.adempierelbr.model.MLBRNCMIVA;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.X_LBR_TaxFormula;
 import org.adempierelbr.model.X_LBR_TaxLine;
 import org.adempierelbr.model.X_LBR_TaxName;
 import org.compiere.model.GridTab;
@@ -91,9 +93,11 @@ public abstract class TaxBR
 		lines = ImpostoBR.getImpostoBR(Line_ID, isOrder, trx);
 
 		MProduct product = null;
-
+		
 		boolean isTaxIncluded = false;
-		BigDecimal  lineamt  = Env.ZERO;
+		
+		BigDecimal lineamt  = Env.ZERO;
+		BigDecimal ivaPrct  = Env.ZERO;
 
 		if (isOrder)
 		{
@@ -101,7 +105,11 @@ public abstract class TaxBR
 			MOrder order = new MOrder(ctx,oLine.getC_Order_ID(),trx);
 			product = oLine.getProduct();
 			isTaxIncluded = order.isTaxIncluded();
-			lineamt = oLine.getPriceEntered().multiply(oLine.getQtyEntered()); //BF - não usar o LineNetAmt devido a casas decimais
+			lineamt = oLine.getPriceEntered().multiply(oLine.getQtyEntered());
+			if (product != null){
+				ivaPrct = MLBRNCMIVA.getProfitPercentage(ctx, product.get_ValueAsInt("LBR_NCM_ID"), 
+						order.getAD_Org_ID(), order.getBill_Location());
+			}
 		}
 		else
 		{
@@ -109,7 +117,11 @@ public abstract class TaxBR
 			MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
 			product = iLine.getProduct();
 			isTaxIncluded = invoice.isTaxIncluded();
-			lineamt = iLine.getPriceEntered().multiply(iLine.getQtyEntered()); //BF - não usar o LineNetAmt devido a casas decimais
+			lineamt = iLine.getPriceEntered().multiply(iLine.getQtyEntered());
+			if (product != null){
+				ivaPrct = MLBRNCMIVA.getProfitPercentage(ctx, product.get_ValueAsInt("LBR_NCM_ID"), 
+						invoice.getAD_Org_ID(), invoice.getC_BPartner_Location());
+			}
 		}
 
 		for (X_LBR_TaxName taxName : taxesName)
@@ -124,20 +136,20 @@ public abstract class TaxBR
 				X_LBR_TaxName s_taxName = new X_LBR_TaxName(ctx, taxName.getLBR_TaxSubstitution_ID(), trx);
 				String s_name  = s_taxName.getName().trim();
 				s_taxBR = lines.get(s_name);
-				calculateTaxAmt(s_taxBR, null, product, s_taxName, lines, isTaxIncluded, lineamt, trx);
+				calculateTaxAmt(s_taxBR, null, product, s_taxName, lines, isTaxIncluded, lineamt, ivaPrct, trx);
 				
 				//Calcula o imposto substituido
-				calculateTaxAmt(taxBR, s_taxBR, product, taxName, lines, isTaxIncluded, lineamt, trx);
+				calculateTaxAmt(taxBR, s_taxBR, product, taxName, lines, isTaxIncluded, lineamt, ivaPrct, trx);
 			}
 			else
-				calculateTaxAmt(taxBR, s_taxBR, product, taxName, lines, isTaxIncluded, lineamt, trx);
+				calculateTaxAmt(taxBR, s_taxBR, product, taxName, lines, isTaxIncluded, lineamt, ivaPrct, trx);
 
 		} //end for
 
 	} //calculateTaxes
 
 	private static void calculateTaxAmt(ImpostoBR taxBR, ImpostoBR s_taxBR, MProduct product, X_LBR_TaxName taxName,
-			Map<String, ImpostoBR> lines, boolean isTaxIncluded, BigDecimal lineamt, String trx) throws EvalError{
+			Map<String, ImpostoBR> lines, boolean isTaxIncluded, BigDecimal lineamt, BigDecimal ivaPrct, String trx) throws EvalError{
 
 		if (taxBR == null)
 			return;
@@ -159,26 +171,45 @@ public abstract class TaxBR
 		//Se o imposto for Substituição Tributária, e o produto estiver marcado
 		if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution))
 		{
-			if (product != null &&
-				product.get_ValueAsBoolean("lbr_HasSubstitution"))
-			{
-
+			if (product != null)
+			{				
+				BigDecimal subsBaseAmt = Env.ZERO;
+				
 				//Valor do Imposto Substituto
 				if (s_taxBR != null){
 					X_LBR_TaxLine s_taxLine = new X_LBR_TaxLine(Env.getCtx(),s_taxBR.getLBR_TaxLine_ID(),trx);
-					substamt = s_taxLine.getlbr_TaxAmt().setScale(SCALE, ROUND);
+					substamt    = s_taxLine.getlbr_TaxAmt().setScale(SCALE, ROUND);
+					subsBaseAmt = s_taxLine.getlbr_TaxBaseAmt().setScale(SCALE, ROUND);
 				}
 
 				//Valor + Margem de Lucro
-				BigDecimal iva = (BigDecimal)product.get_Value("lbr_ProfitPercentage");
-				//lineAmt*(1+(iva/100))
-				lineamt = lineamt.multiply((Env.ONE.add((iva.divide(Env.ONEHUNDRED, ROUND)))));
-
+				if (!taxBR.getTransactionType().equals(X_LBR_TaxFormula.LBR_TRANSACTIONTYPE_Resale))
+					ivaPrct = Env.ZERO;
+				
 				if (isTaxIncluded){
+					//lineAmt*(1+(iva/100))				
+					lineamt = lineamt.multiply((Env.ONE.add((ivaPrct.divide(Env.ONEHUNDRED, 12, RoundingMode.HALF_UP)))));
 					amt = calculateTaxBase(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
 				}
-				else
-					amt = calculateTaxBase(taxBR.getFormula(), lineamt, factor, lines);
+				else{
+					if (ivaPrct.signum() == 0)
+						amt = lineamt;
+					else{
+						lineamt = subsBaseAmt;
+						X_LBR_TaxLine ipiLine = taxBR.getLBR_Tax().getIPILine();
+						if (ipiLine != null){
+							BigDecimal rateIPI = ipiLine.getlbr_TaxRate();
+							BigDecimal baseIPI = Env.ONE.subtract((ipiLine.getlbr_TaxBase().divide(Env.ONEHUNDRED, MCROUND)));
+							BigDecimal ipiAmt = lineamt.multiply(rateIPI.divide(Env.ONEHUNDRED, MCROUND));
+						   		       ipiAmt = ipiAmt.multiply(baseIPI).stripTrailingZeros();
+
+						   	lineamt = lineamt.add(ipiAmt);
+						}
+						//lineAmt*(1+(iva/100))				
+						lineamt = lineamt.multiply((Env.ONE.add((ivaPrct.divide(Env.ONEHUNDRED, 12, RoundingMode.HALF_UP)))));
+						amt = calculateTaxBase(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
+					}
+				}
 			}
 		} //substituição tributária
 
@@ -205,9 +236,9 @@ public abstract class TaxBR
 
 	} //calculateTaxAmt
 
-	public static BigDecimal getTaxAmt(GridTab mTab, String trxType, Boolean isTaxIncluded) throws EvalError
+	public static BigDecimal getTaxAmt(GridTab mTab, String trxType, boolean isTaxIncluded) throws EvalError
 	{
-		ImpostoBR s_taxBR   = null;
+
 		BigDecimal amt      = Env.ZERO;
 		BigDecimal rateIPI  = Env.ZERO;
 		BigDecimal baseIPI  = Env.ZERO;
@@ -216,12 +247,6 @@ public abstract class TaxBR
 		BigDecimal totalamt = Env.ZERO;
 		BigDecimal substamt = Env.ZERO;
 		Properties ctx = Env.getCtx();
-		Integer product_ID = (Integer) mTab.getValue("M_Product_ID");
-
-		MProduct product = null;
-
-		if(product_ID != null)
-			product = new MProduct(ctx, product_ID, null);
 
 		if(!isTaxIncluded)
 			lineamt = (BigDecimal) mTab.getValue("PriceEntered");
@@ -270,7 +295,7 @@ public abstract class TaxBR
 
 			// Remover o IPI do calculo
 			if(taxName.getName().trim().indexOf("IPI") != -1
-			   || taxName.isHasWithHold())
+			   || taxName.isHasWithHold() || taxName.getlbr_TaxType().equals(X_LBR_TaxName.LBR_TAXTYPE_Substitution))
 				continue;
 
 			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Service))
@@ -281,28 +306,6 @@ public abstract class TaxBR
 			}
 			else{
 				amt = lineamt;
-			}
-			//Se o imposto for Substituição Tributária, e o produto estiver marcado
-			if (taxName.getlbr_TaxType().equalsIgnoreCase(TaxBR.taxType_Substitution)){
-				if (product != null &&
-					product.get_ValueAsBoolean("lbr_HasSubstitution")){
-
-					//Valor do Imposto Substituto
-					if (s_taxBR != null){
-						X_LBR_TaxLine s_taxLine = new X_LBR_TaxLine(Env.getCtx(),s_taxBR.getLBR_TaxLine_ID(),null);
-						substamt = s_taxLine.getlbr_TaxAmt().setScale(SCALE, ROUND);
-					}
-
-					//Valor + Margem de Lucro
-					BigDecimal iva = (BigDecimal)product.get_Value("lbr_ProfitPercentage");
-					lineamt = lineamt.multiply((Env.ONE.add((iva.divide(Env.ONEHUNDRED, MCROUND)))));
-
-					if (isTaxIncluded)
-						amt = calculateTaxBase(taxBR.getFormulaNetWorth(),lineamt,factor,lines);
-					else
-						amt = calculateTaxBase(taxBR.getFormula(), lineamt, factor, lines);
-
-				}
 			}
 
 			//Base de Cálculo

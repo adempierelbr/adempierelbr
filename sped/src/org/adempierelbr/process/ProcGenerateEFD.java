@@ -100,6 +100,9 @@ public class ProcGenerateEFD extends SvrProcess
 	/** Período   */
 	private int p_C_Period_ID = 0;
 	
+	/** Organização */
+	private int p_AD_Org_ID = 0;
+	
 	/** Controle para saber se existe registros no bloco **/
 	private boolean hasC = false;
 	private boolean hasD = false;
@@ -149,6 +152,8 @@ public class ProcGenerateEFD extends SvrProcess
 				p_FilePath = para[i].getParameter().toString();
 			else if (name.equals("C_Period_ID"))
 				p_C_Period_ID = para[i].getParameterAsInt();
+			else if (name.equals("AD_Org_ID"))
+				p_AD_Org_ID = para[i].getParameterAsInt();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}	//	for
@@ -161,7 +166,10 @@ public class ProcGenerateEFD extends SvrProcess
 	{
 		//
 		long start = System.currentTimeMillis();
-		//		
+		//
+		if (p_AD_Org_ID == 0)
+			p_AD_Org_ID = Env.getAD_Org_ID(getCtx());
+		
 		if (p_C_Period_ID == 0)
 			throw new IllegalArgumentException("@C_Period_ID@ @Mandatory@");
 		
@@ -195,11 +203,11 @@ public class ProcGenerateEFD extends SvrProcess
 	private StringBuilder runEFD(Timestamp dateFrom, Timestamp dateTo) throws Exception
 	{
 		log.fine("init");
-		EFDUtil.setEnv(getCtx(),get_TrxName());
+		EFDUtil.setEnv(getCtx(),get_TrxName(),p_AD_Org_ID);
 		CounterSped.clear();
 				
 		//Notas Fiscais Período
-		MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(dateFrom,dateTo,get_TrxName());
+		MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(dateFrom,dateTo,p_AD_Org_ID,get_TrxName());
 		
 		int count = nfs.length;
 		int aux   = 1;

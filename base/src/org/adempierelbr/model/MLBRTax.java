@@ -678,6 +678,17 @@ public class MLBRTax extends X_LBR_Tax {
 		X_LBR_TaxLine[] lines = new X_LBR_TaxLine[list.size()];
 		return list.toArray(lines);
 	} //getLines
+	
+	public X_LBR_TaxLine getIPILine(){
+		
+		String sql = "SELECT LBR_TaxLine_ID " +
+				     "FROM LBR_TaxLine " +
+				     "WHERE LBR_Tax_ID = ? " +
+				     "AND LBR_TaxName_ID IN (SELECT LBR_TaxName_ID FROM LBR_TaxName WHERE Name LIKE '%IPI%')";
+		
+		int LBR_TaxLine_ID = DB.getSQLValue(get_TrxName(), sql, getLBR_Tax_ID());
+		return LBR_TaxLine_ID > 0 ? new X_LBR_TaxLine(getCtx(),LBR_TaxLine_ID,get_TrxName()) : null;
+	} //getIPILine
 
 	/**************************************************************************
 	 *  getLines

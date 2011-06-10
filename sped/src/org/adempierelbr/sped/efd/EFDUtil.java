@@ -97,8 +97,8 @@ public class EFDUtil{
 	
 	private static int AD_Org_ID = 0;
 
-	public static void setEnv(Properties ctx, String trx){
-		EFDUtil.AD_Org_ID = Env.getAD_Org_ID(ctx);
+	public static void setEnv(Properties ctx, String trx, int AD_Org_ID){
+		EFDUtil.AD_Org_ID = AD_Org_ID;
 		EFDUtil.ctx = ctx;
 		EFDUtil.trx = trx;
 	}

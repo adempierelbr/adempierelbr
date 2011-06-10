@@ -46,27 +46,35 @@ public class ImpostoBR{
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ImpostoBR.class);
-
+	private String trxName;
+	
 	private static Map<Integer,TaxFormula> s_formula = new HashMap<Integer,TaxFormula>();
 
+	private MLBRTax LBR_Tax;
+	
 	private int     LBR_TaxLine_ID;
 	private String  TaxName;
 	private String  Formula;
 	private String  FormulaNetWorth;
 	private String  ServiceFactor;
+	private String  TransactionType;
 	private boolean PostTax;
 	private BigDecimal  TaxRate;
 	private BigDecimal  TaxBase;
-
-	public ImpostoBR(String Formula, String FormulaNetWorth, String ServiceFactor, int LBR_TaxLine_ID, String TaxName, BigDecimal TaxRate, BigDecimal TaxBase, boolean PostTax){
+	
+	public ImpostoBR(String Formula, String FormulaNetWorth, String ServiceFactor,int LBR_TaxLine_ID, 
+			String TaxName, BigDecimal TaxRate, BigDecimal TaxBase, boolean PostTax, String TransactionType,String trx){
+		setTrxName(trx);
 		setFormula(Formula);
 		setFormulaNetWorth(FormulaNetWorth);
 		setServiceFactor(ServiceFactor);
 		setLBR_TaxLine_ID(LBR_TaxLine_ID);
+		setLBR_Tax(LBR_TaxLine_ID);
 		setTaxName(TaxName);
 		setTaxRate(TaxRate);
 		setTaxBase(TaxBase);
 		setPostTax(PostTax);
+		setTransactionType(TransactionType);
 	}
 
 	public static Map<String, ImpostoBR> getImpostoBR(int Line_ID, boolean isOrder, String trx){
@@ -125,7 +133,8 @@ public class ImpostoBR{
 
 				String tax   = taxName.getName().trim();
 				ImpostoBR taxBR = new ImpostoBR(formula.getlbr_Formula(), formula.getlbr_FormulaNetWorth(),
-						                  formula.getlbr_ServiceFactor(), taxLine.get_ID(), tax, TaxRate, TaxBase, PostTax);
+						                  formula.getlbr_ServiceFactor(), taxLine.get_ID(), tax, TaxRate, TaxBase,
+						                  PostTax, transactionType,trx);
 
 				lines.put(tax,taxBR);
 			}
@@ -217,6 +226,23 @@ public class ImpostoBR{
 		return formula;
 	} //getlbr_Formula
 
+	public String get_TrxName(){
+		return trxName;
+	}
+	
+	public void setTrxName(String TrxName){
+		trxName = TrxName;
+	}
+	
+	public MLBRTax getLBR_Tax(){
+		return LBR_Tax;
+	}
+	
+	public void setLBR_Tax(int taxLine_ID){
+		X_LBR_TaxLine taxLine = new X_LBR_TaxLine(Env.getCtx(),taxLine_ID,get_TrxName());
+		LBR_Tax = new MLBRTax(Env.getCtx(),taxLine.getLBR_Tax_ID(),get_TrxName());
+	}
+	
 	/**
 	 * @return the lBR_TaxLine_ID
 	 */
@@ -338,6 +364,14 @@ public class ImpostoBR{
 		TaxBase = taxBase;
 	}
 
+	public String getTransactionType() {
+		return TransactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		TransactionType = transactionType;
+	}
+
 } //MTaxBR
 
 class TaxFormula{
@@ -409,5 +443,5 @@ class TaxFormula{
 
 		lbr_ServiceFactor = lbrServiceFactor;
 	}
-
+	
 } //taxFormula

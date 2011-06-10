@@ -672,19 +672,19 @@ public class CalloutTax extends CalloutEngine
 		if(M_Product_ID == 0)
 			return "";
 		
-		
-		
 		MOrder o = new MOrder(ctx, C_Order_ID, null);
 		trxType = (String) o.get_Value("lbr_TransactionType");
+		
+		boolean isTaxIncluded = mTab.getValueAsBoolean("lbr_IsPriceBR");
 		
 		if(mField.getColumnName().equals("lbr_PriceEnteredBR"))
 			mTab.setValue("lbr_IsPriceBR", true);
 		else if(mField.getColumnName().equals("PriceEntered"))
 			mTab.setValue("lbr_IsPriceBR", false);
 		
-		if(mTab.getValueAsBoolean("lbr_IsPriceBR"))
+		if(isTaxIncluded)
 		{
-			result = TaxBR.getTaxAmt(mTab, trxType, true);
+			result = TaxBR.getTaxAmt(mTab, trxType, isTaxIncluded);
 			if(result != null && !isCalloutActive())
 			{
 				BigDecimal PriceEntered = ((BigDecimal) mTab.getValue("lbr_PriceEnteredBR")).subtract(result);
@@ -703,7 +703,7 @@ public class CalloutTax extends CalloutEngine
 		}
 		else
 		{
-			result = TaxBR.getTaxAmt(mTab, trxType, false);
+			result = TaxBR.getTaxAmt(mTab, trxType, isTaxIncluded);
 			if(result != null && !isCalloutActive())
 			{
 				BigDecimal PriceEnteredBR = result.add((BigDecimal) mTab.getValue("PriceEntered"));
