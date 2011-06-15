@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.efd.beans;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
@@ -66,6 +67,8 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	private BigDecimal          VL_COFINS;
 	
 	 //UTILIZADO NA SOMATORIA DO C190
+	private String NUM_DOC;
+	private Timestamp DT_DOC;
 	private BigDecimal PERC_BC_ICMS;
 	private BigDecimal VL_OPR;
 	
@@ -109,6 +112,8 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	 * @param COD_CTA
 	 * @param PERC_BC_ICMS
 	 * @param VL_OPR
+	 * @param NUM_DOC
+	 * @param DT_DOC
 	 */
 	public RC170 (int NUM_ITEM, String COD_ITEM, String DESCR_COMPL, BigDecimal QTD,
 			       String UNID, BigDecimal VL_ITEM, BigDecimal VL_DESC, String IND_MOV, 
@@ -118,7 +123,7 @@ public class RC170 extends RegSped implements Comparable<Object> {
 			       BigDecimal ALIQ_IPI, BigDecimal VL_IPI, String CST_PIS, BigDecimal VL_BC_PIS, BigDecimal ALIQ_PIS,
 			       BigDecimal QUANT_BC_PIS, BigDecimal ALIQ_PIS_PER, BigDecimal VL_PIS, String CST_COFINS,
 			       BigDecimal VL_BC_COFINS, BigDecimal ALIQ_COFINS_PER, BigDecimal QUANT_BC_COFINS, BigDecimal ALIQ_COFINS,
-			       BigDecimal VL_COFINS, String COD_CTA, BigDecimal PERC_BC_ICMS, BigDecimal VL_OPR)
+			       BigDecimal VL_COFINS, String COD_CTA, BigDecimal PERC_BC_ICMS, BigDecimal VL_OPR, String NUM_DOC, Timestamp DT_DOC)
 	{	
 		super();
 		this.NUM_ITEM = NUM_ITEM;
@@ -159,6 +164,8 @@ public class RC170 extends RegSped implements Comparable<Object> {
 		this.COD_CTA = COD_CTA;
 		this.PERC_BC_ICMS = PERC_BC_ICMS;
 		this.VL_OPR = VL_OPR;
+		setNUM_DOC(NUM_DOC);
+		this.DT_DOC = DT_DOC;
 	}//RC170
 	
 	private void setCFOP(String CFOP){
@@ -169,6 +176,10 @@ public class RC170 extends RegSped implements Comparable<Object> {
 			log.severe("RC170 - CFOP INVALIDO (" + this.CFOP + "). " +
 					           "COD_ITEM = " + this.COD_ITEM);
 		}
+	}
+	
+	private void setNUM_DOC(String NUM_DOC){
+		this.NUM_DOC = TextUtil.checkSize(TextUtil.toNumeric(NUM_DOC), 9);
 	}
 	
 	public Integer getNUM_ITEM(){
@@ -185,6 +196,14 @@ public class RC170 extends RegSped implements Comparable<Object> {
 	
 	public String getCFOP(){
 		return CFOP;
+	}
+	
+	public String getNUM_DOC(){
+		return NUM_DOC;
+	}
+	
+	public Timestamp getDT_DOC(){
+		return DT_DOC;
 	}
 	
 	public BigDecimal getALIQ_ICMS(){

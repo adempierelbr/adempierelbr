@@ -52,6 +52,8 @@ import org.adempierelbr.sped.efd.beans.RD510;
 import org.adempierelbr.sped.efd.beans.RD590;
 import org.adempierelbr.sped.efd.beans.RE110;
 import org.adempierelbr.sped.efd.beans.RE111;
+import org.adempierelbr.sped.efd.beans.RE210;
+import org.adempierelbr.sped.efd.beans.RE250;
 import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE520;
 import org.adempierelbr.sped.efd.beans.RE530;
@@ -249,7 +251,7 @@ public class EFDUtil{
 		if (nf.isCancelled())
 			return null;
 		
-		String COD_PART  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
+		String COD_PART  = TextUtil.toNumeric(nf.getlbr_BPCNPJ()) + TextUtil.toNumeric(nf.getlbr_BPIE());
 		if (COD_PART == null || COD_PART.trim().equals("")){
 			MBPartner bp = new MBPartner(getCtx(),nf.getC_BPartner_ID(),get_TrxName());
 			COD_PART = TextUtil.toNumeric(bp.getValue());
@@ -451,6 +453,7 @@ public class EFDUtil{
 	
 	public static RC100 createRC100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
 		
+		String UF         = nf.getlbr_BPRegion();
 		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
 		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
 		String SER        = nf.getSerieNo();
@@ -484,7 +487,7 @@ public class EFDUtil{
 		BigDecimal VL_PIS_ST = Env.ZERO; //TODO ???
 		BigDecimal VL_COFINS_ST = Env.ZERO; //TODO ???
 	
-		return new RC100(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,NUM_DOC,CHV_NFE,
+		return new RC100(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,NUM_DOC,CHV_NFE,
 				DT_DOC,DT_E_S,VL_DOC,IND_PAG,VL_DESC,VL_ABAT_NT,VL_MERC,IND_FRT,VL_FRT,
 				VL_SEG,VL_OUT_DA,VL_BC_ICMS,VL_ICMS,VL_BC_ICMS_ST,VL_ICMS_ST,VL_IPI,
 				VL_PIS,VL_COFINS,VL_PIS_ST,VL_COFINS_ST);
@@ -536,6 +539,10 @@ public class EFDUtil{
 	public static RC170 createRC170(MLBRNotaFiscalLine nfLine, String COD_ITEM, String TIPO_ITEM, 
 			String UNID, int line){
 		
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
+		String NUM_DOC   = nf.getDocNo();
+		Timestamp DT_DOC = nf.getDateDoc();
+		
 		String DESCR_COMPL = nfLine.getDescription();
 		BigDecimal QTD = nfLine.getQty();
 		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
@@ -578,7 +585,7 @@ public class EFDUtil{
 				CFOP,COD_NAT,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
 				IND_APUR,CST_IPI,COD_ENQ,VL_BC_IPI,ALIQ_IPI,VL_IPI,CST_PIS,VL_BC_PIS,V_ALIQ_PIS,
 				QUANT_BC_PIS,ALIQ_PIS,VL_PIS,CST_COFINS,VL_BC_COFINS,ALIQ_COFINS,QUANT_BC_COFINS,
-				V_ALIQ_COFINS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
+				V_ALIQ_COFINS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
 	} //createRC170
 	
 	public static RC172 createRC172(RC170 rc170, MLBRNotaFiscalLine nfLine){
@@ -610,7 +617,8 @@ public class EFDUtil{
 			RC190 rc190 = new RC190(rc170.getCST_ICMS(), rc170.getCFOP(), rc170.getALIQ_ICMS(),
 					                rc170.getVL_OPR(), rc170.getVL_BC_ICMS(), rc170.getVL_ICMS(),
 					                rc170.getVL_BC_ICMS_ST(), rc170.getVL_ICMS_ST(), 
-					                rc170.getVL_RED_BC_ICMS(), rc170.getVL_IPI(),"");
+					                rc170.getVL_RED_BC_ICMS(), rc170.getVL_IPI(),"",
+					                rc170.getNUM_DOC(),rc170.getDT_DOC());
 			
 			if (_RC190.containsKey(rc190.hashCode())){
 				RC190 oldRC190 = _RC190.get(rc190.hashCode());
@@ -630,6 +638,7 @@ public class EFDUtil{
 	
 	public static RC500 createRC500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
 		
+		String UF         = nf.getlbr_BPRegion();
 		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
 		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
 		String SER        = nf.getSerieNo();
@@ -654,13 +663,17 @@ public class EFDUtil{
 		String TP_LIGACAO = ""; //TODO ???
 		String COD_GRUPO_TENSAO = ""; //TODO ???
 	
-		return new RC500(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,COD_CONS,
+		return new RC500(UF,IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,COD_CONS,
 				NUM_DOC,DT_DOC,DT_E_S,VL_DOC,VL_DESC,VL_FORN,VL_SERV_NT,VL_TERC,VL_DA,
 				VL_BC_ICMS, VL_ICMS, VL_BC_ICMS_ST, VL_ICMS_ST, COD_INF, VL_PIS, VL_COFINS, 
 				TP_LIGACAO, COD_GRUPO_TENSAO);
 	} //createRC500
 	
 	public static RC510 createRC510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
+		
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
+		String NUM_DOC   = nf.getDocNo();
+		Timestamp DT_DOC = nf.getDateDoc();
 		
 		String COD_CLASS = ""; //TODO ??? (para saída apenas)
 		BigDecimal QTD = nfLine.getQty();
@@ -686,7 +699,7 @@ public class EFDUtil{
 		
 		return new RC510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
 				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
-				IND_REC,COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
+				IND_REC,COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
 	} //createRC510
 	
 	public static RC590[] createRC590(Set<RC510> setRC510){
@@ -698,7 +711,7 @@ public class EFDUtil{
 			RC590 rc590 = new RC590(rc510.getCST_ICMS(), rc510.getCFOP(), rc510.getALIQ_ICMS(),
 					                rc510.getVL_OPR(), rc510.getVL_BC_ICMS(), rc510.getVL_ICMS(),
 					                rc510.getVL_BC_ICMS_ST(), rc510.getVL_ICMS_ST(), 
-					                rc510.getVL_RED_BC_ICMS(),"");
+					                rc510.getVL_RED_BC_ICMS(),"",rc510.getNUM_DOC(),rc510.getDT_DOC());
 			
 			if (_RC590.containsKey(rc590.hashCode())){
 				RC590 oldRC590 = _RC590.get(rc590.hashCode());
@@ -718,6 +731,7 @@ public class EFDUtil{
 	
 	public static RD100 createRD100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
 		
+		String UF          = nf.getlbr_BPRegion();
 		String IND_OPER    = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
 		String COD_SIT     = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
 		String SER         = nf.getSerieNo();
@@ -737,12 +751,16 @@ public class EFDUtil{
 		BigDecimal VL_NT = VL_SERV.subtract(VL_BC_ICMS);
 		String COD_INF = ""; //TODO ???
 		String COD_CTA = ""; //TODO ???
-		return new RD100(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
+		return new RD100(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
 				CHV_CTE,DT_DOC,DT_A_P,TP_CT_e,CHV_CTE_REF,VL_DOC,VL_DESC,IND_FRT,VL_SERV,
 				VL_BC_ICMS, VL_ICMS, VL_NT, COD_INF, COD_CTA);
 	} //createRD100
 	
 	public static RD110 createRD110(MLBRNotaFiscalLine nfLine, String COD_ITEM, int line){
+		
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
+		String NUM_DOC   = nf.getDocNo();
+		Timestamp DT_DOC = nf.getDateDoc();
 		
 		BigDecimal VL_SERV = nfLine.getLineTotalAmt();
 		BigDecimal VL_OUT  = Env.ZERO; //TODO Outros Valores
@@ -757,7 +775,7 @@ public class EFDUtil{
 		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
 		
 		return new RD110(line,COD_ITEM,VL_SERV,VL_OUT,CST_ICMS,CFOP,VL_BC_ICMS,
-				ALIQ_ICMS,VL_ICMS,PERC_BC_ICMS,VL_OPR);
+				ALIQ_ICMS,VL_ICMS,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
 	} //createRD110
 	
 	public static RD190[] createRD190(Set<RD110> setRD110){
@@ -768,7 +786,7 @@ public class EFDUtil{
 		
 			RD190 rd190 = new RD190(rd110.getCST_ICMS(), rd110.getCFOP(), rd110.getALIQ_ICMS(),
 					                rd110.getVL_OPR(), rd110.getVL_BC_ICMS(), rd110.getVL_ICMS(),
-					                rd110.getVL_RED_BC_ICMS(),"");
+					                rd110.getVL_RED_BC_ICMS(),"",rd110.getNUM_DOC(),rd110.getDT_DOC());
 			
 			if (_RD190.containsKey(rd190.hashCode())){
 				RD190 oldRD190 = _RD190.get(rd190.hashCode());
@@ -788,6 +806,7 @@ public class EFDUtil{
 	
 	public static RD500 createRD500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
 		
+		String UF         = nf.getlbr_BPRegion();
 		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
 		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
 		String SER        = nf.getSerieNo();
@@ -809,12 +828,16 @@ public class EFDUtil{
 		String COD_CTA = ""; //TODO ???
 		String TP_ASSINANTE = ""; //TODO ???
 	
-		return new RD500(IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
+		return new RD500(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
 				DT_DOC,DT_A_P,VL_DOC,VL_DESC,VL_SERV,VL_SERV_NT,VL_TERC,VL_DA,
 				VL_BC_ICMS, VL_ICMS, COD_INF, VL_PIS, VL_COFINS, COD_CTA, TP_ASSINANTE);
 	} //createRD500
 	
 	public static RD510 createRD510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
+		
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
+		String NUM_DOC   = nf.getDocNo();
+		Timestamp DT_DOC = nf.getDateDoc();
 		
 		String COD_CLASS = ""; //TODO ??? (para saída apenas)
 		BigDecimal QTD = nfLine.getQty();
@@ -839,7 +862,7 @@ public class EFDUtil{
 		
 		return new RD510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
 				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,VL_ICMS_ST, IND_REC,
-				COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR);
+				COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
 	} //createRD510
 	
 	public static RD590[] createRD590(Set<RD510> setRD510){
@@ -851,7 +874,7 @@ public class EFDUtil{
 			RD590 rd590 = new RD590(rd510.getCST_ICMS(), rd510.getCFOP(), rd510.getALIQ_ICMS(),
 					                rd510.getVL_OPR(), rd510.getVL_BC_ICMS(), rd510.getVL_ICMS(),
 					                rd510.getVL_BC_ICMS_ST(), rd510.getVL_ICMS_ST(), 
-					                rd510.getVL_RED_BC_ICMS(),"");
+					                rd510.getVL_RED_BC_ICMS(),"",rd510.getNUM_DOC(),rd510.getDT_DOC());
 			
 			if (_RD590.containsKey(rd590.hashCode())){
 				RD590 oldRD590 = _RD590.get(rd590.hashCode());
@@ -945,6 +968,76 @@ public class EFDUtil{
 		list.toArray(retValue);
 		return retValue;
 	} //createRE111
+	
+	public static RE210 createRE210(List<RegSped> regs){
+		
+		BigDecimal VL_SLD_CRED_ANT_ST = Env.ZERO;
+		BigDecimal VL_DEVOL_ST = Env.ZERO; //TODO - Devoluções ST CFOP (1410, 1411, 1414, 1415, 1660, 1661, 1662, 2410, 2411, 2414, 2415, 2660, 2661 ou 2662)
+		BigDecimal VL_RESSARC_ST = Env.ZERO; //TODO CFOP (1603 ou 2603)
+		BigDecimal VL_OUT_CRED_ST = Env.ZERO; //TODO Registro RE220
+		BigDecimal VL_AJ_CREDITOS_ST = Env.ZERO; //TODO Registro C197
+		BigDecimal VL_RETENÇAO_ST = Env.ZERO; //cálculo abaixo
+		BigDecimal VL_OUT_DEB_ST = Env.ZERO; //TODO Registro RE220;
+		BigDecimal VL_AJ_DEBITOS_ST  = Env.ZERO; //TODO Registro C197
+		BigDecimal VL_SLD_DEV_ANT_ST = Env.ZERO;
+		BigDecimal VL_DEDUÇÕES_ST = Env.ZERO; //TODO Registro C197
+		BigDecimal VL_ICMS_RECOL_ST = Env.ZERO; 
+		BigDecimal VL_SLD_CRED_ST_TRANSPORTAR = Env.ZERO;
+		BigDecimal DEB_ESP_ST = Env.ZERO; //TODO
+		
+		for (RegSped reg : regs){
+			//ENTRADA GERA CRÉDITO
+			if (reg.get_ValueAsBoolean("isSOTrx")){
+				VL_RETENÇAO_ST = VL_RETENÇAO_ST.add(reg.get_ValueAsBD("VL_ICMS_ST"));
+			}
+		}
+		
+		//SALDO = DEBITOS - (CREDITOS + SALDO ANTERIOR)
+		BigDecimal saldo = (VL_RETENÇAO_ST.add(VL_OUT_DEB_ST)
+				                           .add(VL_AJ_DEBITOS_ST))
+				   .subtract(VL_SLD_CRED_ANT_ST.add(VL_DEVOL_ST)
+						                       .add(VL_RESSARC_ST)
+						                       .add(VL_OUT_CRED_ST)
+						                       .add(VL_AJ_CREDITOS_ST));
+		
+		if (saldo.signum() == 1){
+			VL_SLD_DEV_ANT_ST = saldo;
+		}
+		else{
+			VL_SLD_CRED_ST_TRANSPORTAR = saldo.abs();
+		}
+		
+		VL_ICMS_RECOL_ST = VL_SLD_DEV_ANT_ST.subtract(VL_DEDUÇÕES_ST);
+		
+		return new RE210(VL_SLD_CRED_ANT_ST,VL_DEVOL_ST,VL_RESSARC_ST,VL_OUT_CRED_ST,
+				VL_AJ_CREDITOS_ST, VL_RETENÇAO_ST, VL_OUT_DEB_ST, VL_AJ_DEBITOS_ST, VL_SLD_DEV_ANT_ST, 
+				VL_DEDUÇÕES_ST, VL_ICMS_RECOL_ST, VL_SLD_CRED_ST_TRANSPORTAR, DEB_ESP_ST);
+	} //createRE210
+	
+	public static RE250 createRE250(RegSped reg, Timestamp dateTo){
+		
+		if (!reg.get_ValueAsBoolean("isSOTrx"))
+			return null;
+		
+		String COD_OR = "002"; //Revenda dentro do Estado
+		
+		if (!reg.get_ValueAsBoolean("isSameregion")){
+			COD_OR = "003"; //Dif. de Alíquota
+			if (reg.get_ValueAsBD("VL_BC_ICMS").compareTo(reg.get_ValueAsBD("VL_BC_ICMS_ST")) < 0){
+				COD_OR = "999"; //Revenda fora do Estado
+			}
+		}
+		
+		BigDecimal VL_OR  = reg.get_ValueAsBD("VL_ICMS_ST");
+		Timestamp DT_VCTO = reg.get_ValueAsTS("DT_DOC");
+		String COD_REC    = "10009-9"; //FIXME
+		String NUM_PROC   = ""; //TODO
+		String IND_PROC   = ""; //TODO
+		String PROC       = ""; //TODO
+		String TXT_COMPL  = reg.get_ValueAsString("NUM_DOC");
+		
+		return new RE250(COD_OR,VL_OR,DT_VCTO,COD_REC,NUM_PROC,IND_PROC,PROC,TXT_COMPL,dateTo);
+	} //createRE250
 	
 	public static RE510[] createRE510(Map<Integer,Set<RC170>> mapRC170){
 		

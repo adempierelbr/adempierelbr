@@ -59,9 +59,11 @@ public class RC500 extends RegSped implements Comparable<Object>{
 	private BigDecimal 	VL_COFINS;
 	
 	private boolean isCancelled = false; //Documento Cancelado
+	private String UF;
 	
 	/**
 	 * Constructor
+	 * @param UF
 	 * @param IND_OPER
 	 * @param IND_EMIT
 	 * @param COD_PART
@@ -89,7 +91,7 @@ public class RC500 extends RegSped implements Comparable<Object>{
 	 * @param TP_LIGACAO
 	 * @param COD_GRUPO_TENSAO
 	 */
-	public RC500(String IND_OPER, String IND_EMIT, String COD_PART,
+	public RC500(String UF, String IND_OPER, String IND_EMIT, String COD_PART,
 			String COD_MOD, String COD_SIT, String SER, String SUB, String COD_CONS,
 			String NUM_DOC, Timestamp DT_DOC, Timestamp DT_E_S,
 			BigDecimal VL_DOC, BigDecimal VL_DESC,
@@ -100,6 +102,7 @@ public class RC500 extends RegSped implements Comparable<Object>{
 			String TP_LIGACAO, String COD_GRUPO_TENSAO)
 	{		
 		super();
+		this.UF = UF;
 		this.IND_OPER 	= IND_OPER;
 		this.IND_EMIT 	= IND_EMIT;
 		setCOD_MOD(COD_MOD);
@@ -184,6 +187,10 @@ public class RC500 extends RegSped implements Comparable<Object>{
 	
 	private void setCOD_PART(String COD_PART){
 		this.COD_PART = TextUtil.checkSize(RemoverAcentos.remover(COD_PART), 60);
+	}
+	
+	public String getUF(){
+		return UF;
 	}
 	
 	public String getIND_EMIT(){

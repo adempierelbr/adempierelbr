@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.efd.beans;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
@@ -40,6 +41,9 @@ public class RC590 extends RegSped implements Comparable<Object> {
 	private BigDecimal VL_ICMS_ST;
 	private BigDecimal VL_RED_BC;
 
+	private String NUM_DOC;
+	private Timestamp DT_DOC;
+	
 	/**
 	 * Constructor
 	 * @param CST_ICMS
@@ -52,10 +56,12 @@ public class RC590 extends RegSped implements Comparable<Object> {
 	 * @param VL_ICMS_ST
 	 * @param VL_RED_BC
 	 * @param COD_OBS
+	 * @param NUM_DOC
+	 * @param DT_DOC
 	 */
 	public RC590 (String CST_ICMS, String CFOP, BigDecimal ALIQ_ICMS, BigDecimal VL_OPR,
 			BigDecimal VL_BC_ICMS, BigDecimal VL_ICMS, BigDecimal VL_BC_ICMS_ST, 
-			BigDecimal VL_ICMS_ST, BigDecimal VL_RED_BC, String COD_OBS)
+			BigDecimal VL_ICMS_ST, BigDecimal VL_RED_BC, String COD_OBS, String NUM_DOC, Timestamp DT_DOC)
 	{	
 		super();
 		this.CST_ICMS = CST_ICMS;
@@ -68,6 +74,8 @@ public class RC590 extends RegSped implements Comparable<Object> {
 		this.VL_ICMS_ST = VL_ICMS_ST;
 		this.VL_RED_BC = VL_RED_BC;
 		this.COD_OBS = COD_OBS;
+		setNUM_DOC(NUM_DOC);
+		this.DT_DOC = DT_DOC;
 	}//RC590
 	
 	public void addValues(RC590 otherC590){
@@ -79,8 +87,20 @@ public class RC590 extends RegSped implements Comparable<Object> {
 		this.VL_RED_BC     = getVL_RED_BC().add(otherC590.getVL_RED_BC());
 	}
 	
+	private void setNUM_DOC(String NUM_DOC){
+		this.NUM_DOC = TextUtil.checkSize(TextUtil.toNumeric(NUM_DOC), 9);
+	}
+	
 	public String getCFOP(){
 		return this.CFOP;
+	}
+	
+	public String getNUM_DOC(){
+		return NUM_DOC;
+	}
+	
+	public Timestamp getDT_DOC(){
+		return DT_DOC;
 	}
 	
 	protected Object get_Value(String attribute){
@@ -100,8 +120,38 @@ public class RC590 extends RegSped implements Comparable<Object> {
 			}
 		}
 		
+		if (attribute.equals("isSameRegion")){
+			
+			if (CFOP.startsWith("1") || CFOP.startsWith("5")){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
 		if (attribute.equals("VL_ICMS")){
 			return getVL_ICMS();
+		}
+		
+		if (attribute.equals("VL_BC_ICMS")){
+			return getVL_BC_ICMS();
+		}
+		
+		if (attribute.equals("VL_ICMS_ST")){
+			return getVL_ICMS_ST();
+		}
+		
+		if (attribute.equals("VL_BC_ICMS_ST")){
+			return getVL_BC_ICMS_ST();
+		}
+		
+		if (attribute.equals("NUM_DOC")){
+			return getNUM_DOC();
+		}
+		
+		if (attribute.equals("DT_DOC")){
+			return getDT_DOC();
 		}
 		
 		return "";

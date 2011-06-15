@@ -58,9 +58,35 @@ public class RD100 extends RegSped implements Comparable<Object>{
 	private BigDecimal 	VL_NT;
 	
 	private boolean isCancelled = false; //Documento Cancelado
+	private String UF;
 	
-
-	public RD100(String IND_OPER, String IND_EMIT, String COD_PART,
+	/**
+	 * Constructor
+	 * @param UF
+	 * @param IND_OPER
+	 * @param IND_EMIT
+	 * @param COD_PART
+	 * @param COD_MOD
+	 * @param COD_SIT
+	 * @param SER
+	 * @param SUB
+	 * @param NUM_DOC
+	 * @param CHV_CTE
+	 * @param DT_DOC
+	 * @param DT_A_P
+	 * @param TP_CT_e
+	 * @param CHV_CTE_REF
+	 * @param VL_DOC
+	 * @param VL_DESC
+	 * @param IND_FRT
+	 * @param VL_SERV
+	 * @param VL_BC_ICMS
+	 * @param VL_ICMS
+	 * @param VL_NT
+	 * @param COD_INF
+	 * @param COD_CTA
+	 */
+	public RD100(String UF, String IND_OPER, String IND_EMIT, String COD_PART,
 			String COD_MOD, String COD_SIT, String SER, String SUB, String NUM_DOC, 
 			String CHV_CTE, Timestamp DT_DOC, Timestamp DT_A_P, String TP_CT_e,
 			String CHV_CTE_REF, BigDecimal VL_DOC, BigDecimal VL_DESC,
@@ -68,6 +94,7 @@ public class RD100 extends RegSped implements Comparable<Object>{
 			BigDecimal VL_ICMS, BigDecimal VL_NT, String COD_INF, String COD_CTA)
 	{		
 		super();
+		this.UF = UF;
 		this.IND_OPER 	= IND_OPER;
 		this.IND_EMIT 	= IND_EMIT;
 		setCOD_MOD(COD_MOD);
@@ -149,6 +176,10 @@ public class RD100 extends RegSped implements Comparable<Object>{
 	
 	private void setCOD_PART(String COD_PART){
 		this.COD_PART = TextUtil.checkSize(RemoverAcentos.remover(COD_PART), 60);
+	}
+	
+	public String getUF(){
+		return UF;
 	}
 	
 	public String getIND_EMIT(){

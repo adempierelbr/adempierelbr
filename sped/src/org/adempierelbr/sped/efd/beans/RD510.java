@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.efd.beans;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TaxBR;
@@ -49,6 +50,8 @@ public class RD510 extends RegSped implements Comparable<Object> {
 	private BigDecimal          VL_COFINS;
 	
 	 //UTILIZADO NA SOMATORIA DO D590
+	private String NUM_DOC;
+	private Timestamp DT_DOC;
 	private BigDecimal PERC_BC_ICMS;
 	private BigDecimal VL_OPR;
 	
@@ -76,13 +79,15 @@ public class RD510 extends RegSped implements Comparable<Object> {
 	 * @param COD_CTA
 	 * @param PERC_BC_ICMS
 	 * @param VL_OPR
+	 * @param NUM_DOC
+	 * @param DT_DOC
 	 */
 	public RD510 (int NUM_ITEM, String COD_ITEM, String COD_CLASS, BigDecimal QTD,
 			       String UNID, BigDecimal VL_ITEM, BigDecimal VL_DESC, String CST_ICMS, 
 			       String CFOP, BigDecimal VL_BC_ICMS, BigDecimal ALIQ_ICMS, 
 			       BigDecimal VL_ICMS, BigDecimal VL_BC_ICMS_ST, BigDecimal VL_ICMS_ST,
 			       String IND_REC, String COD_PART, BigDecimal VL_PIS, BigDecimal VL_COFINS, 
-			       String COD_CTA, BigDecimal PERC_BC_ICMS, BigDecimal VL_OPR)
+			       String COD_CTA, BigDecimal PERC_BC_ICMS, BigDecimal VL_OPR, String NUM_DOC, Timestamp DT_DOC)
 	{	
 		super();
 		this.NUM_ITEM = NUM_ITEM;
@@ -106,6 +111,8 @@ public class RD510 extends RegSped implements Comparable<Object> {
 		this.COD_CTA = COD_CTA;
 		this.PERC_BC_ICMS = PERC_BC_ICMS;
 		this.VL_OPR = VL_OPR;
+		setNUM_DOC(NUM_DOC);
+		this.DT_DOC = DT_DOC;
 	}//RC510
 	
 	private void setCFOP(String CFOP){
@@ -118,12 +125,24 @@ public class RD510 extends RegSped implements Comparable<Object> {
 		}
 	}
 	
+	private void setNUM_DOC(String NUM_DOC){
+		this.NUM_DOC = TextUtil.checkSize(TextUtil.toNumeric(NUM_DOC), 9);
+	}
+	
 	public String getCST_ICMS(){
 		return CST_ICMS;
 	}
 		
 	public String getCFOP(){
 		return CFOP;
+	}
+	
+	public String getNUM_DOC(){
+		return NUM_DOC;
+	}
+	
+	public Timestamp getDT_DOC(){
+		return DT_DOC;
 	}
 	
 	public BigDecimal getALIQ_ICMS(){

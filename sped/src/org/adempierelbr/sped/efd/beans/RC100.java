@@ -60,10 +60,12 @@ public class RC100 extends RegSped implements Comparable<Object>{
 	private BigDecimal 	VL_PIS;
 
 	private boolean isCancelled = false; //Documento Cancelado
+	private String UF;
 	
 	/**
 	 * Constructor
 	 * 
+	 * @param UF
 	 * @param IND_OPER
 	 * @param IND_EMIT
 	 * @param COD_PART
@@ -93,7 +95,7 @@ public class RC100 extends RegSped implements Comparable<Object>{
 	 * @param VL_COFINS_ST
 	 * @param VL_PIS
 	 */
-	public RC100(String IND_OPER, String IND_EMIT, String COD_PART,
+	public RC100(String UF, String IND_OPER, String IND_EMIT, String COD_PART,
 			String COD_MOD, String COD_SIT, String SER, String NUM_DOC,
 			String CHV_NFE, Timestamp DT_DOC, Timestamp DT_E_S,
 			BigDecimal VL_DOC, String IND_PGTO, BigDecimal VL_DESC,
@@ -105,6 +107,7 @@ public class RC100 extends RegSped implements Comparable<Object>{
 			BigDecimal VL_PIS_ST, BigDecimal VL_COFINS_ST)
 	{		
 		super();
+		this.UF = UF;
 		this.IND_OPER 	= IND_OPER;
 		this.IND_EMIT 	= IND_EMIT;
 		setCOD_MOD(COD_MOD);
@@ -197,6 +200,10 @@ public class RC100 extends RegSped implements Comparable<Object>{
 	
 	private void setCOD_PART(String COD_PART){
 		this.COD_PART = TextUtil.checkSize(RemoverAcentos.remover(COD_PART), 60);
+	}
+	
+	public String getUF(){
+		return UF;
 	}
 	
 	public String getIND_EMIT(){
@@ -324,8 +331,6 @@ public class RC100 extends RegSped implements Comparable<Object>{
 		result = prime * result + ((COD_SIT == null) ? 0 : COD_SIT.hashCode());
 		result = prime * result
 				+ ((IND_EMIT == null) ? 0 : IND_EMIT.hashCode());
-		result = prime * result
-				+ ((IND_OPER == null) ? 0 : IND_OPER.hashCode());
 		result = prime * result + ((NUM_DOC == null) ? 0 : NUM_DOC.hashCode());
 		result = prime * result + ((SER == null) ? 0 : SER.hashCode());
 		return result;
@@ -364,11 +369,6 @@ public class RC100 extends RegSped implements Comparable<Object>{
 			if (other.IND_EMIT != null)
 				return false;
 		} else if (!IND_EMIT.equals(other.IND_EMIT))
-			return false;
-		if (IND_OPER == null) {
-			if (other.IND_OPER != null)
-				return false;
-		} else if (!IND_OPER.equals(other.IND_OPER))
 			return false;
 		if (NUM_DOC == null) {
 			if (other.NUM_DOC != null)

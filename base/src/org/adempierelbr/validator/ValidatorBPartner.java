@@ -496,6 +496,10 @@ public class ValidatorBPartner implements ModelValidator
 	@SuppressWarnings("deprecation")
 	public static String validaIE(String ie, UF uf){
 
+		if (ie == null || ie.trim().isEmpty()){
+			return "";
+		}
+		
 		if (uf != null && !ie.toUpperCase().contains("ISENT"))
 		{
 			InscricaoEstadual iEstadual = uf.getInscricaoEstadual();

@@ -1452,10 +1452,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 		if (documentNo == null || documentNo.startsWith("-"))
 			return "";
 		//
-		if (documentNo.indexOf('-') == -1)
-			return documentNo;
-		//
-		return documentNo.substring(0, documentNo.indexOf('-'));
+		if (documentNo.indexOf('-') == -1){
+			documentNo = TextUtil.toNumeric(documentNo);
+		}
+		else{
+			documentNo = TextUtil.toNumeric(documentNo.substring(0, documentNo.indexOf('-')));
+		}
+		
+		if (!documentNo.isEmpty())
+			return String.valueOf(Integer.parseInt(documentNo));
+		
+		return "";
 	}//getdocNo
 
 	public String getDocNo(){

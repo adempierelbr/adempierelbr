@@ -13,6 +13,7 @@
 package org.adempierelbr.sped;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
@@ -93,6 +94,22 @@ public abstract class RegSped {
 	
 	//Método genérico do RegSPED, sobreescrito em beans específicos
 	protected Object get_Value(String attribute){
+		return "";
+	}
+	
+	public Timestamp get_ValueAsTS(String attribute){
+		Object result = get_Value(attribute);
+		if (result instanceof Timestamp)
+			return (Timestamp) result;
+		
+		return null;
+	}
+	
+	public String get_ValueAsString(String attribute){
+		Object result = get_Value(attribute);
+		if (result instanceof String)
+			return (String) result;
+		
 		return "";
 	}
 	

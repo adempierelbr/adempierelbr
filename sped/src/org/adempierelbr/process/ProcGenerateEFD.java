@@ -61,6 +61,8 @@ import org.adempierelbr.sped.efd.beans.RD990;
 import org.adempierelbr.sped.efd.beans.RE001;
 import org.adempierelbr.sped.efd.beans.RE100;
 import org.adempierelbr.sped.efd.beans.RE111;
+import org.adempierelbr.sped.efd.beans.RE200;
+import org.adempierelbr.sped.efd.beans.RE250;
 import org.adempierelbr.sped.efd.beans.RE500;
 import org.adempierelbr.sped.efd.beans.RE510;
 import org.adempierelbr.sped.efd.beans.RE530;
@@ -127,8 +129,9 @@ public class ProcGenerateEFD extends SvrProcess
 	private Map<Integer,RD100> _RD100 = new HashMap<Integer,RD100>();
 	private Map<Integer,RD500> _RD500 = new HashMap<Integer,RD500>();
 	
-	private Map<Integer,ArrayList<RC120>> _RC120 = new HashMap<Integer,ArrayList<RC120>>();
-	private Map<Integer,ArrayList<RC172>> _RC172 = new HashMap<Integer,ArrayList<RC172>>();
+	private Map<Integer,ArrayList<RC120>>  _RC120 = new HashMap<Integer,ArrayList<RC120>>();
+	private Map<Integer,ArrayList<RC172>>  _RC172 = new HashMap<Integer,ArrayList<RC172>>();
+	private Map<String,List<RegSped>>      _RE210 = new HashMap<String,List<RegSped>>(); //List de beans para saldo do icms st (por UF)
 	
 	private Map<Integer,Set<RC170>> _RC170 = new HashMap<Integer,Set<RC170>>();
 	private Map<Integer,Set<RC510>> _RC510 = new HashMap<Integer,Set<RC510>>();
@@ -748,6 +751,16 @@ public class ProcGenerateEFD extends SvrProcess
 				RC190[] arrayRC190 = EFDUtil.createRC190(setRC170);
 				for(RC190 rc190 : arrayRC190){
 					_RE110.add(rc190);
+					
+					if ((rc190.get_ValueAsBD("VL_ICMS_ST")).signum() == 1){
+						List<RegSped> listRE210 = _RE210.get(rc100.getUF());
+						if (listRE210 == null)
+							listRE210 = new ArrayList<RegSped>();
+						
+						listRE210.add(rc190);
+						_RE210.put(rc100.getUF(), listRE210);
+					}
+					
 					BLOCOC.append(rc190);
 				} //loop C190
 				
@@ -777,6 +790,16 @@ public class ProcGenerateEFD extends SvrProcess
 				RC590[] arrayRC590 = EFDUtil.createRC590(setRC510);
 				for(RC590 rc590 : arrayRC590){
 					_RE110.add(rc590);
+					
+					if ((rc590.get_ValueAsBD("VL_ICMS_ST")).signum() == 1){
+						List<RegSped> listRE210 = _RE210.get(rc500.getUF());
+						if (listRE210 == null)
+							listRE210 = new ArrayList<RegSped>();
+						
+						listRE210.add(rc590);
+						_RE210.put(rc500.getUF(), listRE210);
+					}
+					
 					BLOCOC.append(rc590);
 				} //loop C590
 				
@@ -848,6 +871,16 @@ public class ProcGenerateEFD extends SvrProcess
 				RD590[] arrayRD590 = EFDUtil.createRD590(setRD510);
 				for(RD590 rd590 : arrayRD590){
 					_RE110.add(rd590);
+					
+					if ((rd590.get_ValueAsBD("VL_ICMS_ST")).signum() == 1){
+						List<RegSped> listRE210 = _RE210.get(rd500.getUF());
+						if (listRE210 == null)
+							listRE210 = new ArrayList<RegSped>();
+						
+						listRE210.add(rd590);
+						_RE210.put(rd500.getUF(), listRE210);
+					}
+					
 					BLOCOD.append(rd590);
 				} //loop D590
 				
@@ -875,6 +908,24 @@ public class ProcGenerateEFD extends SvrProcess
 			for (RE111 re111 : arrayRE111){
 				BLOCOE.append(re111);
 			}
+			
+			Iterator<String> ufs = _RE210.keySet().iterator();
+			while(ufs.hasNext()){
+				String uf = ufs.next();
+				List<RegSped> regs = _RE210.get(uf);
+				
+				if (regs != null && !regs.isEmpty()){
+					BLOCOE.append(new RE200(uf,dateFrom,dateTo));
+					BLOCOE.append(EFDUtil.createRE210(regs));
+				
+					for (RegSped reg : regs){
+						RE250 re250 = EFDUtil.createRE250(reg,dateTo);
+						if (re250 != null)
+							BLOCOE.append(re250);
+					}
+				}
+				
+			} //loop UF
 			
 			BLOCOE.append(new RE500(dateFrom,dateTo));
 			RE510[] arrayRE510 = EFDUtil.createRE510(_RC170);
