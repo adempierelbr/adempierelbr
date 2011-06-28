@@ -57,7 +57,7 @@ public class MLBRNCMIVA extends X_LBR_NCMIVA {
 		super(ctx, rs, trxName);
 	}
 
-	public static MLBRNCMIVA getLBR_NCMIVA(Properties ctx, int LBR_NCM_ID, int C_Region_ID, int To_Region_ID)
+	public static MLBRNCMIVA getLBR_NCMIVA(Properties ctx, int LBR_NCM_ID, int C_Region_ID, int To_Region_ID, boolean isSOTrx)
 	{
 
 		String sql = "SELECT MAX(LBR_NCMIVA_ID) FROM LBR_NCMIVA " +
@@ -65,22 +65,23 @@ public class MLBRNCMIVA extends X_LBR_NCMIVA {
 			       	 "AND C_Region_ID = ? AND To_Region_ID=? AND LBR_NCM_ID = ?";
 
 		int LBR_NCMIVA_ID = DB.getSQLValue(null, sql, 
-				new Object[]{Env.getAD_Client_ID(ctx),Env.getAD_Org_ID(ctx),C_Region_ID,To_Region_ID,LBR_NCM_ID});
+				new Object[]{Env.getAD_Client_ID(ctx),Env.getAD_Org_ID(ctx), (isSOTrx ? C_Region_ID : To_Region_ID),
+						(isSOTrx ? To_Region_ID : C_Region_ID),LBR_NCM_ID});
 
 		return LBR_NCMIVA_ID > 0 ? new MLBRNCMIVA(ctx,LBR_NCMIVA_ID,null) : null;
 	} //getLBR_NCMIVA
 
-	public static BigDecimal getProfitPercentage(Properties ctx, int LBR_NCM_ID, int C_Region_ID, int To_Region_ID){
-		MLBRNCMIVA iva = getLBR_NCMIVA(ctx,LBR_NCM_ID,C_Region_ID,To_Region_ID);
+	public static BigDecimal getProfitPercentage(Properties ctx, int LBR_NCM_ID, int C_Region_ID, int To_Region_ID, boolean isSOTrx){
+		MLBRNCMIVA iva = getLBR_NCMIVA(ctx,LBR_NCM_ID,C_Region_ID,To_Region_ID,isSOTrx);
 		if (iva != null)
 			return iva.getlbr_ProfitPercentage();
 		
 		return Env.ZERO;
 	} //getProfitPercentage
 	
-	public static BigDecimal getProfitPercentage(Properties ctx, int LBR_NCM_ID, int AD_Org_ID, I_C_BPartner_Location bpLocation){
+	public static BigDecimal getProfitPercentage(Properties ctx, int LBR_NCM_ID, int AD_Org_ID, I_C_BPartner_Location bpLocation, boolean isSOTrx){
 		MOrgInfo orgInfo = MOrgInfo.get(ctx,AD_Org_ID,null);
-		return getProfitPercentage(ctx,LBR_NCM_ID,orgInfo.getC_Location().getC_Region_ID(),bpLocation.getC_Location().getC_Region_ID());
+		return getProfitPercentage(ctx,LBR_NCM_ID,orgInfo.getC_Location().getC_Region_ID(),bpLocation.getC_Location().getC_Region_ID(),isSOTrx);
 	} //getProfitPercentage
 	
 } //MLBRNCMIVA

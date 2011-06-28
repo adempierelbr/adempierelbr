@@ -108,7 +108,7 @@ public abstract class TaxBR
 			lineamt = oLine.getPriceEntered().multiply(oLine.getQtyEntered());
 			if (product != null){
 				ivaPrct = MLBRNCMIVA.getProfitPercentage(ctx, product.get_ValueAsInt("LBR_NCM_ID"), 
-						order.getAD_Org_ID(), order.getBill_Location());
+						order.getAD_Org_ID(), order.getBill_Location(),order.isSOTrx());
 			}
 		}
 		else
@@ -120,7 +120,7 @@ public abstract class TaxBR
 			lineamt = iLine.getPriceEntered().multiply(iLine.getQtyEntered());
 			if (product != null){
 				ivaPrct = MLBRNCMIVA.getProfitPercentage(ctx, product.get_ValueAsInt("LBR_NCM_ID"), 
-						invoice.getAD_Org_ID(), invoice.getC_BPartner_Location());
+						invoice.getAD_Org_ID(), invoice.getC_BPartner_Location(),invoice.isSOTrx());
 			}
 		}
 

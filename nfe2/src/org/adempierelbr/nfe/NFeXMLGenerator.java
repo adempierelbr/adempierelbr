@@ -751,7 +751,7 @@ public class NFeXMLGenerator
 							icmsgrupo.setpICMSST(TextUtil.bigdecimalToString(lt.getpImpostoST()));
 							icmsgrupo.setvICMSST(TextUtil.bigdecimalToString(lt.getvImpostoST()));
 						
-							BigDecimal iva = MLBRNCMIVA.getProfitPercentage(ctx, nfLine.getLBR_NCM_ID(), nf.getAD_Org_ID(), nf.getC_BPartner_Location());
+							BigDecimal iva = MLBRNCMIVA.getProfitPercentage(ctx, nfLine.getLBR_NCM_ID(), nf.getAD_Org_ID(), nf.getC_BPartner_Location(),nf.isSOTrx());
 							if (nf.getlbr_TransactionType().equals(X_LBR_TaxFormula.LBR_TRANSACTIONTYPE_Resale)){
 								if (iva.signum() == 1){
 									icmsgrupo.setpMVAST(TextUtil.bigdecimalToString(iva));
