@@ -20,7 +20,6 @@ import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDUtil;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
-import org.compiere.util.Env;
 
 /**
  * Identificação do Arquivo
@@ -38,7 +37,7 @@ public class RJ900 extends RegSped{
 	
 	private final String DNRC_ENCER = "TERMO DE ENCERRAMENTO";
 	
-	private BigDecimal 	 NUM_ORD;
+	private int 	 NUM_ORD;
 	private String 		 NAT_LIVRO;
 	private String 		 NOME;
 	private BigDecimal 	 QTD_LIN;
@@ -48,20 +47,20 @@ public class RJ900 extends RegSped{
 	/**
 	 * Constructor
 	 */
-	public RJ900 (String NAT_LIVRO, String NOME, 
+	public RJ900 (int NUM_ORD, String NAT_LIVRO, String NOME, 
 			Timestamp DT_INI_ESCR, Timestamp DT_FIN_ESCR)
 	{
-		this (NAT_LIVRO, NOME, null, DT_INI_ESCR, DT_FIN_ESCR);
+		this (NUM_ORD, NAT_LIVRO, NOME, null, DT_INI_ESCR, DT_FIN_ESCR);
 	}
 	
 	/**
 	 * Constructor
 	 */
-	public RJ900 (String NAT_LIVRO, String NOME, BigDecimal QTD_LIN, 
+	public RJ900 (int NUM_ORD, String NAT_LIVRO, String NOME, BigDecimal QTD_LIN, 
 			Timestamp DT_INI_ESCR, Timestamp DT_FIN_ESCR)
 	{
 		super();
-		this.NUM_ORD = Env.ONEHUNDRED;
+		this.NUM_ORD = NUM_ORD;
 		//
 		if (NAT_LIVRO == null){
 			log.log (Level.SEVERE, "Tipo de Livro inválido");
@@ -100,7 +99,7 @@ public class RJ900 extends RegSped{
 		StringBuilder format = new StringBuilder
                    (PIPE).append(REG) 
             .append(PIPE).append(TextUtil.checkSize(DNRC_ENCER, 21))
-            .append(PIPE).append(TextUtil.toNumeric(NUM_ORD, 0))
+            .append(PIPE).append(NUM_ORD)
             .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVRO), 80))
             .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))
             .append(PIPE).append((QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0)))

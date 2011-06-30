@@ -32,7 +32,7 @@ public class RI030 extends RegSped {
 
 	private final String DNRC_ABERT = "TERMO DE ABERTURA";
 	
-	private BigDecimal NUM_ORD;
+	private int NUM_ORD;
 	private String NAT_LIVR;
 	private BigDecimal QTD_LIN;
 	private String NOME;
@@ -45,7 +45,7 @@ public class RI030 extends RegSped {
 	/**
 	 * Constructor
 	 */
-	public RI030(BigDecimal NUM_ORD, String NAT_LIVR,
+	public RI030(int NUM_ORD, String NAT_LIVR,
 			String NOME, String NIRE, String CNPJ,
 			Timestamp DT_ARQ, Timestamp DT_ARQ_CONV, String DESC_MUN)
 	{
@@ -56,7 +56,7 @@ public class RI030 extends RegSped {
 	/**
 	 * Constructor
 	 */
-	public RI030(BigDecimal NUM_ORD, String NAT_LIVR,
+	public RI030(int NUM_ORD, String NAT_LIVR,
 			BigDecimal QTD_LIN, String NOME, String NIRE, String CNPJ,
 			Timestamp DT_ARQ, Timestamp DT_ARQ_CONV, String DESC_MUN)
 	{
@@ -82,7 +82,7 @@ public class RI030 extends RegSped {
 		StringBuilder format = new StringBuilder
                    (PIPE).append(REG) 
             .append(PIPE).append(TextUtil.checkSize(DNRC_ABERT, 17))
-            .append(PIPE).append(TextUtil.toNumeric(NUM_ORD, 0))
+            .append(PIPE).append(NUM_ORD)
             .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80) )
             .append(PIPE).append((QTD_LIN == null ? "XXXXQtdTotalDeLinhasXXXX" : TextUtil.toNumeric(QTD_LIN, 0)))
             .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NOME), 255))

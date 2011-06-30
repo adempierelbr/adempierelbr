@@ -69,7 +69,6 @@ public class RI250 extends RegSped {
 			String COD_PART, Timestamp DT_LCTO, String NUM_LCTO)
 	{
 		super();
-		
 		this.COD_CTA 	  = COD_CTA;
 		this.COD_CCUS 	  = COD_CCUS;
 		this.VL_DC 		  = VL_DC.abs();

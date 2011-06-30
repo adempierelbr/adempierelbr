@@ -59,6 +59,8 @@ public class RI050 extends RegSped {
 	public RI050 (Timestamp DT_FIN, Timestamp DT_ALT, String COD_NAT, String IND_CTA, 
 			String COD_CTA, String CTA) {
 		
+		super();
+		
 		if (COD_CTA == null)
 			COD_CTA = "";
 		//
@@ -93,7 +95,7 @@ public class RI050 extends RegSped {
 			}
 		}
 		//
-		addCounter();
+		
 	}	//RI050
 	
 	/**

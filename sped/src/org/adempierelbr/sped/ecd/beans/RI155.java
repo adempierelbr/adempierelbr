@@ -62,7 +62,6 @@ public class RI155 extends RegSped {
 	 * Constructor
 	 */
 	public RI155(ECDBalance balance, BigDecimal VL_DEB, BigDecimal VL_CRED) {
-		
 		this(balance.getAccount().getValue(),"",balance.getBeginBalance().abs(),
 			 balance.getBeginBalance().signum() == 1 ? "D" : "C",
 			 VL_DEB.abs(), VL_CRED.abs(),

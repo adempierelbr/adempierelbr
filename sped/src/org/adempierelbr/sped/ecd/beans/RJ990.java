@@ -35,8 +35,7 @@ public class RJ990 extends RegSped {
 	 * Constructor
 	 */
 	public RJ990() {
-		//
-		addCounter();
+		super();
 	} //RJ990
 
 	/**
