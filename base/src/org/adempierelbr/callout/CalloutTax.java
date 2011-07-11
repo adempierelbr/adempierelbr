@@ -88,7 +88,7 @@ public class CalloutTax extends CalloutEngine
 	private String  lbr_TaxType         = TaxBR.taxType_Product;
 	private String  lbr_TaxStatus       = "00";
 	private Integer LBR_LegalMessage_ID = null;
-	private boolean hasSubstitution     = false;
+	private boolean hasSubstitution     = true;
 
 	/**
 	 *  getTaxes
@@ -308,16 +308,21 @@ public class CalloutTax extends CalloutEngine
 		 * indústria.
 		 *
 		 */
-		boolean bp_hasSubstitution   = bpartner.get_ValueAsBoolean("lbr_HasSubstitution");
-		boolean prod_hasSubstitution = product.get_ValueAsBoolean("lbr_HasSubstitution");
+		// Código abaixo comentando, não se enquadra corretamente no modo como funciona o ST
+		//
+		//boolean bp_hasSubstitution   = bpartner.get_ValueAsBoolean("lbr_HasSubstitution");
+		//boolean prod_hasSubstitution = product.get_ValueAsBoolean("lbr_HasSubstitution");
 		//boolean prod_isManufactured  = POLBR.get_ValueAsBoolean(product.get_Value("lbr_IsManufactured"));
 
+		/*
+		
 		if(bp_hasSubstitution && prod_hasSubstitution && !isSOTrx) {
 			hasSubstitution = true;
 		}
-		if (/*prod_isManufactured &&*/ prod_hasSubstitution && isSOTrx){
+		if (prod_isManufactured && prod_hasSubstitution && isSOTrx){
 			hasSubstitution = true;
 		}
+		*/
 		//END - fer_luck @ faire
 
 		/**
