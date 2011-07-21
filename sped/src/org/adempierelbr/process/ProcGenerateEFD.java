@@ -62,6 +62,7 @@ import org.adempierelbr.sped.efd.beans.RE001;
 import org.adempierelbr.sped.efd.beans.RE100;
 import org.adempierelbr.sped.efd.beans.RE111;
 import org.adempierelbr.sped.efd.beans.RE200;
+import org.adempierelbr.sped.efd.beans.RE210;
 import org.adempierelbr.sped.efd.beans.RE250;
 import org.adempierelbr.sped.efd.beans.RE500;
 import org.adempierelbr.sped.efd.beans.RE510;
@@ -916,10 +917,26 @@ public class ProcGenerateEFD extends SvrProcess
 				
 				if (regs != null && !regs.isEmpty()){
 					BLOCOE.append(new RE200(uf,dateFrom,dateTo));
-					BLOCOE.append(EFDUtil.createRE210(regs));
+					
+					RE210 re210 = EFDUtil.createRE210(regs);
+					BLOCOE.append(re210);
 				
+					BigDecimal VL_TOTAL    = re210.getVL_ICMS_RECOL_ST();
+					BigDecimal VL_TOTAL_OR = Env.ZERO;
+					
 					for (RegSped reg : regs){
-						RE250 re250 = EFDUtil.createRE250(reg,dateTo);
+						
+						//DEVOLUCOES
+						BigDecimal VL_OR  = reg.get_ValueAsBD("VL_ICMS_ST");
+						VL_TOTAL_OR = VL_TOTAL_OR.add(VL_OR);
+						if (VL_TOTAL_OR.compareTo(VL_TOTAL) == 1){
+							VL_OR = VL_OR.subtract(VL_TOTAL_OR.subtract(VL_TOTAL));
+							if (VL_OR.signum() != 1){
+								break;
+							}
+						}
+						
+						RE250 re250 = EFDUtil.createRE250(reg,VL_OR,dateTo);
 						if (re250 != null)
 							BLOCOE.append(re250);
 					}

@@ -186,8 +186,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		BigDecimal insuranceAmt = getInsuranceAmt();
 		BigDecimal discountAmt  = getDiscountAmt().negate();
 		BigDecimal siscomexAmt  = getlbr_LineTotalSISCOMEX();
-		BigDecimal taxAmt       = getIPIAmt();
-		BigDecimal icmsstAmt    = getTaxAmt("ICMSST");
+		BigDecimal taxAmt       = getIPIAmt().add(getTaxAmt("ICMSST"));
 		
 		String cfop = getCFOP();
 		//Para operações com exterior pegar todos os impostos
@@ -195,10 +194,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			taxAmt = getTotalTaxAmt();
 		}
 			
-		
 		//VALOR LINHA + FRETE + SEGURO + SISCOMEX + IPI = VALOR TOTAL DA OPERACAO
 		return (lineAmt.add(freightAmt).add(insuranceAmt).add(siscomexAmt).add
-			   (taxAmt).add(icmsstAmt).add(discountAmt)).setScale(TaxBR.SCALE, TaxBR.ROUND);
+			   (taxAmt).add(discountAmt)).setScale(TaxBR.SCALE, TaxBR.ROUND);
 	}
 	
 	/**

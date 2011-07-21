@@ -972,7 +972,7 @@ public class EFDUtil{
 	public static RE210 createRE210(List<RegSped> regs){
 		
 		BigDecimal VL_SLD_CRED_ANT_ST = Env.ZERO;
-		BigDecimal VL_DEVOL_ST = Env.ZERO; //TODO - Devoluções ST CFOP (1410, 1411, 1414, 1415, 1660, 1661, 1662, 2410, 2411, 2414, 2415, 2660, 2661 ou 2662)
+		BigDecimal VL_DEVOL_ST = Env.ZERO; // Devoluções ST CFOP (1410, 1411, 1414, 1415, 1660, 1661, 1662, 2410, 2411, 2414, 2415, 2660, 2661 ou 2662)
 		BigDecimal VL_RESSARC_ST = Env.ZERO; //TODO CFOP (1603 ou 2603)
 		BigDecimal VL_OUT_CRED_ST = Env.ZERO; //TODO Registro RE220
 		BigDecimal VL_AJ_CREDITOS_ST = Env.ZERO; //TODO Registro C197
@@ -989,6 +989,10 @@ public class EFDUtil{
 			//ENTRADA GERA CRÉDITO
 			if (reg.get_ValueAsBoolean("isSOTrx")){
 				VL_RETENÇAO_ST = VL_RETENÇAO_ST.add(reg.get_ValueAsBD("VL_ICMS_ST"));
+			}
+			else{
+				if (reg.get_ValueAsBoolean("isReversal"))
+					VL_DEVOL_ST = VL_DEVOL_ST.add(reg.get_ValueAsBD("VL_ICMS_ST"));
 			}
 		}
 		
@@ -1014,7 +1018,7 @@ public class EFDUtil{
 				VL_DEDUÇÕES_ST, VL_ICMS_RECOL_ST, VL_SLD_CRED_ST_TRANSPORTAR, DEB_ESP_ST);
 	} //createRE210
 	
-	public static RE250 createRE250(RegSped reg, Timestamp dateTo){
+	public static RE250 createRE250(RegSped reg, BigDecimal VL_OR, Timestamp dateTo){
 		
 		if (!reg.get_ValueAsBoolean("isSOTrx"))
 			return null;
@@ -1028,7 +1032,7 @@ public class EFDUtil{
 			}
 		}
 		
-		BigDecimal VL_OR  = reg.get_ValueAsBD("VL_ICMS_ST");
+		//BigDecimal VL_OR  = reg.get_ValueAsBD("VL_ICMS_ST");
 		Timestamp DT_VCTO = reg.get_ValueAsTS("DT_DOC");
 		String COD_REC    = "10009-9"; //FIXME
 		String NUM_PROC   = ""; //TODO

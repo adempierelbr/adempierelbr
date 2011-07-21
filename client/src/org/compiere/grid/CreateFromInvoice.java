@@ -96,7 +96,7 @@ public class CreateFromInvoice extends CreateFrom
 				+ "GROUP BY sl.M_InOut_ID,mi.M_InOutLine_ID,sl.MovementQty "
 				+ "HAVING (sl.MovementQty<>SUM(mi.Qty) AND mi.M_InOutLine_ID IS NOT NULL)"
 				+ " OR mi.M_InOutLine_ID IS NULL) "
-			+ "ORDER BY s.MovementDate, s.DocumentNo, s.M_InOut_ID");
+			+ "ORDER BY s.DocumentNo, s.MovementDate, s.M_InOut_ID");
 		try
 		{
 			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);

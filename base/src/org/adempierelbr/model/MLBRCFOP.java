@@ -103,6 +103,9 @@ public class MLBRCFOP extends X_LBR_CFOP {
 
 			isSOTrx = false;
 		}
+		
+		if (!dt.get_ValueAsBoolean("lbr_HasFiscalDocument")) //SEM NF NÃO VERIFICA CFOP
+			return null;
 
 		MInvoiceLine[] lines = invoice.getLines();
 		for(MInvoiceLine line : lines){

@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO E210: APURAÇÃO DO ICMS – SUBSTITUIÇÃO TRIBUTÁRIA.
@@ -61,6 +62,10 @@ public class RE210 extends RegSped {
 		this.VL_SLD_CRED_ST_TRANSPORTAR = VL_SLD_CRED_ST_TRANSPORTAR;
 		this.DEB_ESP_ST = DEB_ESP_ST;
 	}	// RE210
+	
+	public BigDecimal getVL_ICMS_RECOL_ST(){
+		return VL_ICMS_RECOL_ST == null ? Env.ZERO : VL_ICMS_RECOL_ST;
+	}
 
 	/**
 	 * Formata o Bloco E Registro 210

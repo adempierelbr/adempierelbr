@@ -15,6 +15,7 @@ package org.adempierelbr.sped.efd.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.adempierelbr.model.MLBRCFOP;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
@@ -127,6 +128,21 @@ public class RD590 extends RegSped implements Comparable<Object> {
 			else{
 				return false;
 			}
+		}
+		
+		if (attribute.equals("isReversal")){
+			
+			String CFOP = this.CFOP;
+			if (CFOP.length() == 4){
+				CFOP = CFOP.subSequence(0, 1) + "." + CFOP.substring(1);
+				MLBRCFOP cfop = MLBRCFOP.getCFOP(Env.getCtx(), CFOP, null);
+				
+				if (cfop.getDescription() != null && 
+					(cfop.getDescription().toUpperCase()).indexOf("DEVOL") != -1)
+					return true;		
+			}
+			
+			return false;
 		}
 		
 		if (attribute.equals("VL_ICMS")){

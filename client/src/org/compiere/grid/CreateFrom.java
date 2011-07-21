@@ -100,7 +100,7 @@ public abstract class CreateFrom implements ICreateFrom
 		{
 			sql = sql.append(" AND o.M_Warehouse_ID=? ");
 		}
-		sql = sql.append("ORDER BY o.DateOrdered");
+		sql = sql.append("ORDER BY o.DocumentNo, o.DateOrdered");
 		//
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
