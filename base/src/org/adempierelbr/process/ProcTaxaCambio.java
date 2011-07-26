@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MConversionRate;
+import org.compiere.model.MConversionType;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -83,6 +84,7 @@ public class ProcTaxaCambio extends SvrProcess
 		rate.setValidFrom(AdempiereLBR.addDays(dataCambio, 1));
 		rate.setValidTo(AdempiereLBR.addDays(dataCambio, 1));
 		rate.setMultiplyRate(taxaVenda);
+		rate.setC_ConversionType_ID(MConversionType.getDefault(Env.getAD_Client_ID(getCtx())));
 		rate.save(get_TrxName());
 		
 		return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessOK", true);
@@ -129,7 +131,7 @@ public class ProcTaxaCambio extends SvrProcess
             connection.setRequestProperty("Request-Method", "GET");
             connection.setDoInput(true);
             connection.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(),TextUtil.ISO88591));
             StringBuffer newData = new StringBuffer(10000);
             String s = "";
             while (null != ((s = br.readLine()))) {
