@@ -100,8 +100,10 @@ public class ProcApuracaoICMS extends SvrProcess
 		
 		BigDecimal amt = null;
 		
-		String sql = "(SELECT SUM(al.Amt) FROM LBR_ApuracaoICMSLine al " +
-				     "WHERE al.LBR_ApuracaoICMS_ID = ? AND al.Type IN ('006','007'))";
+		String sql = "(SELECT SUM(al.Amt) " +
+				     "FROM LBR_ApuracaoICMSLine al " +
+				     "INNER JOIN LBR_ICMSBasis ba ON (al.LBR_ICMSBasis_ID = ba.LBR_ICMSBasis_ID) " +
+				     "WHERE al.LBR_ApuracaoICMS_ID = ? AND al.Type IN ('006','007')  AND ba.Type='P')";
 		
 		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_ApuracaoICMS_ID);
 		
@@ -134,8 +136,10 @@ public class ProcApuracaoICMS extends SvrProcess
 		
 		BigDecimal amt = null;
 		
-		String sql = "(SELECT SUM(al.Amt) FROM LBR_ApuracaoICMSLine al " +
-				     "WHERE al.LBR_ApuracaoICMS_ID = ? AND al.Type IN ('002','003'))";
+		String sql = "(SELECT SUM(al.Amt) " +
+				     "FROM LBR_ApuracaoICMSLine al " +
+				     "INNER JOIN LBR_ICMSBasis ba ON (al.LBR_ICMSBasis_ID = ba.LBR_ICMSBasis_ID) " +
+				     "WHERE al.LBR_ApuracaoICMS_ID = ? AND al.Type IN ('002','003') AND ba.Type='P')";
 		
 		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_ApuracaoICMS_ID);
 		
