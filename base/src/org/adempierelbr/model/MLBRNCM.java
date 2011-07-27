@@ -12,12 +12,14 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.util.DB;
 
@@ -70,6 +72,19 @@ public class MLBRNCM extends X_LBR_NCM {
 
 		return LBR_NCM_ID > 0 ? LBR_NCM_ID : 0;
 	} //getDefaultNCM
+	
+	/**
+	 * check if NCM has ICMS ST
+	 * @param To_Region_ID
+	 * @param isSOTrx
+	 * @return boolean
+	 */
+	public boolean hasST(int To_Region_ID,boolean isSOTrx){
+		MOrgInfo orgInfo = MOrgInfo.get(getCtx(),getAD_Org_ID(),get_TrxName());
+		BigDecimal iva = MLBRNCMIVA.getProfitPercentage(getCtx(),get_ID(),orgInfo.getC_Location().getC_Region_ID(),To_Region_ID,isSOTrx);
+		
+		return iva.signum() == 	1 ? true : false;
+	} //hasST
 
 	public static String validateNCM(MInvoice invoice){
 

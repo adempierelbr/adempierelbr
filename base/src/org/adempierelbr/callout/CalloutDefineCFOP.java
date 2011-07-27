@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
@@ -133,18 +134,21 @@ public class CalloutDefineCFOP extends CalloutEngine {
 
 		//Check for the transaction type on the document header
 		String transactionType = null;
+		boolean isSOTrx        = true;
 
 		if (mo != null){
 			AD_Org_ID = mo.getAD_Org_ID();
 			C_DocTypeTarget_ID = mo.getC_DocTypeTarget_ID();
 			transactionType = (mo.get_Value("lbr_TransactionType") == null) ? ""
 					: mo.get_Value("lbr_TransactionType").toString();
+			isSOTrx = mo.isSOTrx();
 		}
 		else if (mi != null){
 			AD_Org_ID = mi.getAD_Org_ID();
 			C_DocTypeTarget_ID = mi.getC_DocTypeTarget_ID();
 			transactionType = (mi.get_Value("lbr_TransactionType") == null) ? ""
 					: mi.get_Value("lbr_TransactionType").toString();
+			isSOTrx = mi.isSOTrx();
 		}
 		else{
 			log.log(Level.WARNING, "Order and Invoice == null");
@@ -185,7 +189,7 @@ public class CalloutDefineCFOP extends CalloutEngine {
 		if (M_Product_ID > 0){
 			MProduct mp = new MProduct(ctx, M_Product_ID, null);
 			prdCat = (Integer) mp.get_Value("LBR_ProductCategory_ID");
-			isSubstitute = mp.get_ValueAsBoolean("lbr_HasSubstitution");
+			isSubstitute = new MLBRNCM(ctx,mp.get_ValueAsInt("LBR_NCM_ID"),null).hasST(mlbp.getC_Region_ID(),isSOTrx);
 			isManufactured = mp.get_ValueAsBoolean("lbr_IsManufactured");
 		}
 		else{

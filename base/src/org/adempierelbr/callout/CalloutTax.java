@@ -22,10 +22,10 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRICMSMatrix;
 import org.adempierelbr.model.MLBRISSMatrix;
+import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_CFOP;
 import org.adempierelbr.model.X_LBR_CFOPLine;
-import org.adempierelbr.model.X_LBR_NCM;
 import org.adempierelbr.model.X_LBR_TaxConfig_BPGroup;
 import org.adempierelbr.model.X_LBR_TaxConfig_BPartner;
 import org.adempierelbr.model.X_LBR_TaxConfig_Product;
@@ -270,7 +270,7 @@ public class CalloutTax extends CalloutEngine
 		MLocation location           = new MLocation(ctx, bpLocation.getC_Location_ID(), null);
 		//
 		LBR_NCM_ID = product.get_ValueAsInt("LBR_NCM_ID");
-		X_LBR_NCM ncm = new X_LBR_NCM(ctx,LBR_NCM_ID,null);
+		MLBRNCM ncm = new MLBRNCM(ctx,LBR_NCM_ID,null);
 		//
 		//	Grupos de Tributação
 		if (isSOTrx){
@@ -291,39 +291,7 @@ public class CalloutTax extends CalloutEngine
 		}
 
 		//Define se possui Substituição Tributária
-		//BEGIN - fer_luck @ faire
-		/**
-		 * Na venda, para verificarmos se existe ou não substituição, devemos checar
-		 * se o produto é produzido e se tem substituição, caso ambas as afirmações
-		 * sejam verdadeiras, calcula-se o icms normal da venda, e é feita a tomada
-		 * de crédito deste valor, e após isso, calcula-se o icms de substituição
-		 *
-		 * Na Revenda não cobra substituição, pois já foi cobrada pela indústria e
-		 * não destaca nada.
-		 *
-		 * Na compra, para verificarmos se existe ou não substituição, primeiro
-		 * verificamos se o parceiro é indústria e se tem o flag substituto marcado,
-		 * caso seja verdadeiro verifcamos se o produto tem substituição, se for verdadeiro
-		 * calcula o icms de substituição subtraindo do imposto que já foi recolhido pela
-		 * indústria.
-		 *
-		 */
-		// Código abaixo comentando, não se enquadra corretamente no modo como funciona o ST
-		//
-		//boolean bp_hasSubstitution   = bpartner.get_ValueAsBoolean("lbr_HasSubstitution");
-		//boolean prod_hasSubstitution = product.get_ValueAsBoolean("lbr_HasSubstitution");
-		//boolean prod_isManufactured  = POLBR.get_ValueAsBoolean(product.get_Value("lbr_IsManufactured"));
-
-		/*
-		
-		if(bp_hasSubstitution && prod_hasSubstitution && !isSOTrx) {
-			hasSubstitution = true;
-		}
-		if (prod_isManufactured && prod_hasSubstitution && isSOTrx){
-			hasSubstitution = true;
-		}
-		*/
-		//END - fer_luck @ faire
+		hasSubstitution = ncm.hasST(location.getC_Region_ID(),isSOTrx);
 
 		/**
 		 * setLines
