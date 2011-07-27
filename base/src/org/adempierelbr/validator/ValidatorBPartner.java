@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.adempierelbr.util.AdempiereLBR;
-import org.brazilutils.br.uf.UF;
-import org.brazilutils.br.uf.ie.InscricaoEstadual;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -32,6 +30,9 @@ import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
+import br.gov.sp.fazenda.dsge.brazilutils.uf.ie.InscricaoEstadual;
 
 /**
  *	ValidatorBPartner
@@ -493,7 +494,6 @@ public class ValidatorBPartner implements ModelValidator
 	 * @param uf
 	 * @return NULL if Invalid OR IE with onlynumbers
 	 */
-	@SuppressWarnings("deprecation")
 	public static String validaIE(String ie, UF uf){
 
 		if (ie == null || ie.trim().isEmpty()){
@@ -506,8 +506,11 @@ public class ValidatorBPartner implements ModelValidator
 			iEstadual.setNumber(ie);
 			//
 			if (!iEstadual.isValid()){
-				if (iEstadual.getInvalidCause() != null)
+				if (iEstadual.getInvalidCause() != null){
+					log.warning(iEstadual.getInvalidCause());
 					return null;
+				}
+					
 				else
 					return iEstadual.getNumber();
 			}

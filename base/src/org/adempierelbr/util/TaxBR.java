@@ -253,17 +253,18 @@ public abstract class TaxBR
 		else
 			lineamt = (BigDecimal) mTab.getValue("lbr_PriceEnteredBR");
 
-		if(mTab.getValue("LBR_Tax_ID") == null
-				|| mTab.getValue("C_Tax_ID") == null)
+		if(mTab.getValue("LBR_Tax_ID") == null || mTab.getValue("C_Tax_ID") == null)
 			return Env.ZERO;
 
 		Integer C_Tax_ID = (Integer) mTab.getValue("C_Tax_ID");
 		if (C_Tax_ID == null) C_Tax_ID = 0;
 
-		Integer LBR_Tax_ID = (Integer) mTab.getValue("LBR_Tax_ID");
-		if (LBR_Tax_ID == null) LBR_Tax_ID = 0;
+		Integer LBR_Tax_ID = 0;
+		if (mTab.getValue("LBR_Tax_ID") instanceof Integer){
+			LBR_Tax_ID = (Integer)mTab.getValue("LBR_Tax_ID");
+		}
 
-		MLBRTax tx = new MLBRTax(ctx, (Integer)mTab.getValue("LBR_Tax_ID"), null);
+		MLBRTax tx = new MLBRTax(ctx, LBR_Tax_ID, null);
 		X_LBR_TaxLine[] txLines = tx.getLines();
 		Map<String, ImpostoBR> lines = new HashMap<String, ImpostoBR>();
 		lines = ImpostoBR.getImpostoBR(C_Tax_ID, LBR_Tax_ID, trxType, null);

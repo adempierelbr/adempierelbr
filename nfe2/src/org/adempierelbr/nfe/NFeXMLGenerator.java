@@ -85,7 +85,6 @@ import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
 import org.adempierelbr.validator.ValidatorBPartner;
-import org.brazilutils.br.uf.UF;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -95,14 +94,14 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import com.sun.org.apache.xalan.internal.xsltc.cmdline.Transform;
+import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
