@@ -76,9 +76,20 @@ public class ProcTaxaCambio extends SvrProcess
 	protected String doIt() throws Exception
 	{
 		getPage(fonte);
+		
+		if (dataCambio == null || taxaVenda == null){
+			return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessFailed", true);
+		}
 	
 		int C_Conversion_Rate_ID = getC_Conversion_Rate_ID(AdempiereLBR.addDays(dataCambio, 1));
 		MConversionRate rate = new MConversionRate(getCtx(),C_Conversion_Rate_ID,get_TrxName());
+		
+		if (rate.getValidFrom().equals(AdempiereLBR.addDays(dataCambio, 1)) &&
+			rate.getMultiplyRate().equals(taxaVenda)){
+			return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessOK", true) + 
+				   "<br/>Câmbio já atualizado.";
+		}
+		
 		rate.setC_Currency_ID(USD);
 		rate.setC_Currency_ID_To(BRL);
 		rate.setValidFrom(AdempiereLBR.addDays(dataCambio, 1));
@@ -87,7 +98,9 @@ public class ProcTaxaCambio extends SvrProcess
 		rate.setC_ConversionType_ID(MConversionType.getDefault(Env.getAD_Client_ID(getCtx())));
 		rate.save(get_TrxName());
 		
-		return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessOK", true);
+		return Msg.getMsg(Env.getAD_Language(getCtx()), "ProcessOK", true) + 
+			   "<br/>Data de Câmbio: " + dataCambio + 
+			   "<br/> Taxa de Venda: " + taxaVenda;
 	}	//	doIt
 	
     /**
