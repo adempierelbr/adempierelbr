@@ -40,6 +40,7 @@ import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.apps.ConfirmPanel;
 import org.compiere.model.MCity;
+import org.compiere.model.MColumn;
 import org.compiere.model.MCountry;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
@@ -58,6 +59,9 @@ import org.compiere.util.Msg;
  *	Dialog to enter Location Info (Address)
  *
  *  @author 	Jorg Janke
+ *  
+ *  FR - Validação de campos obrigatórios (Cátia A. Feistler)
+ *  
  *  @version 	$Id: VLocationDialog.java,v 1.2 2006/07/30 00:51:28 jjanke Exp $
  */
 public class VLocationDialog extends CDialog implements ActionListener
@@ -213,6 +217,13 @@ public class VLocationDialog extends CDialog implements ActionListener
 		getAddress.setMargin(ConfirmPanel.s_insets);
 		confirmPanel.addComponent(getAddress);
 		//
+		
+		fAddress1.setMandatory(new MColumn(Env.getCtx(),MColumn.getColumn_ID("C_Location", "Address1"),null).isMandatory());
+		fAddress2.setMandatory(new MColumn(Env.getCtx(),MColumn.getColumn_ID("C_Location", "Address2"),null).isMandatory());
+		fAddress3.setMandatory(new MColumn(Env.getCtx(),MColumn.getColumn_ID("C_Location", "Address3"),null).isMandatory());
+		fAddress4.setMandatory(new MColumn(Env.getCtx(),MColumn.getColumn_ID("C_Location", "Address4"),null).isMandatory());
+		fPostal.setMandatory(new MColumn(Env.getCtx(),MColumn.getColumn_ID("C_Location", "Postal"),null).isMandatory());
+		
 		confirmPanel.addActionListener(this);
 	}	//	jbInit
 
@@ -373,9 +384,19 @@ public class VLocationDialog extends CDialog implements ActionListener
 	{
 		if (e.getActionCommand().equals(ConfirmPanel.A_OK))
 		{
-			action_OK();
-			m_change = true;
-			dispose();
+			if (fAddress1.isMandatory() && ((((String)fAddress1.getValue()).trim()).isEmpty()))
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
+			else if (fAddress2.isMandatory() && ((((String)fAddress2.getValue()).trim()).isEmpty()))
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
+			else if (fAddress3.isMandatory() && ((((String)fAddress3.getValue()).trim()).isEmpty())) 
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
+			else if (fPostal.isMandatory() && ((((String)fPostal.getValue()).trim()).isEmpty()))
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos corretamente");
+			else {
+				action_OK();
+				m_change = true;
+				dispose();
+			}
 		}
 		else if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))
 		{
