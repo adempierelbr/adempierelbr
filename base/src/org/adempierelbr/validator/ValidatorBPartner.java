@@ -198,6 +198,15 @@ public class ValidatorBPartner implements ModelValidator
 		}
 		else
 			return "CNPJ não corresponde com a Matriz.";
+		
+		String IE = bpl.get_ValueAsString("lbr_IE");
+		String uf = bpl.getC_Location().getC_Region().getName();
+		
+		if(!(IE.trim()).equals("")){
+			if(validaIE(IE,UF.valueOf(uf)) == null){
+				return "IE inválido";
+			}
+		}
 
 		bpl.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 
