@@ -205,8 +205,15 @@ public class NFeXMLGenerator
 		MRegion bpRegion = bpLoc.getRegion();
 		X_C_City bpCity = BPartnerUtil.getX_C_City(ctx,bpLoc,trxName);
 
+		
 		// Dados do documento da NF
+
+		// Validar NF-e Model
+		if(nf.getlbr_NFModel() == null || nf.getlbr_NFModel().isEmpty())
+			return "Modelo da Nota Fiscal é inválido! Para NF-e utiliza-se o modelo '55 - Nota Fiscal Eletrônica'";
 		String modNF = nf.getlbr_NFModel();
+
+		
 		String serie = nf.getSerieNo();
 		if (serie.isEmpty())
 			serie = "0";
@@ -434,15 +441,15 @@ public class NFeXMLGenerator
 		
 		destinatario.setEnderDest(enderDest);
 		
+
 		/** 
 		 * AMBIENTE DE HOMOLOGACAO 
 		 * regra será aplicada a partir do dia 01/05/2011
 		 **/
-		
 		if (tpAmb.equals("2")){
 			if (uf != null){ //DENTRO DO BRASIL
-				//destinatario.setCPF(null);
-				destinatario.setCNPJ("00000000000191");
+				destinatario.setCPF(null);
+				destinatario.setCNPJ("99999999000191");
 			}
 			destinatario.setxNome("NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL");
 			destinatario.setIE("");
