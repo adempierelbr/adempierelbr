@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import org.compiere.model.MAssetGroupAcct;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCountry;
+import org.compiere.model.MDocType;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
@@ -236,13 +237,31 @@ public abstract class AdempiereLBR{
 
 	public static int getARReceipt(){
 
-		String sql = "SELECT C_DocType_ID FROM C_DocType " +
-				     "WHERE DocBaseType = 'ARR' AND AD_Client_ID = ?";
-
-		int C_DocType_ID = DB.getSQLValue(null, sql, Env.getAD_Client_ID(Env.getCtx()));
+		int C_DocType_ID = 0;
+		
+		int[] docs = getDocumentType("ARR");
+		if (docs.length > 0)
+			C_DocType_ID = docs[0];
 
 		return C_DocType_ID;
 	}	//	getARReceipt
+	
+	public static int[] getMMReceipt(){
+		return getDocumentType("MMR");
+	}	//	getMRReceipt
+	
+	public static int[] getDocumentType(String DocBaseType){
+		
+		String whereClause = "IsActive = 'Y' AND DocBaseType=?";
+
+		MTable table = MTable.get(Env.getCtx(), MDocType.Table_Name);
+		Query q =  new Query(Env.getCtx(), table, whereClause, null);
+			  q.setParameters(new Object[]{DocBaseType});
+			  q.setClient_ID();
+			  q.setOrderBy("C_DocType_ID DESC");
+			  
+		return q.getIDs();
+	} //getDocumentType
 
 	public static int getDocTypeAcct(int C_DocType_ID){
 
