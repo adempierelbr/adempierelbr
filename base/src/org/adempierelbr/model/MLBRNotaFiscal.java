@@ -1345,9 +1345,26 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	        	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
 
 	        nf.setlbr_DigestValue(digVal);
-	        nf.setlbr_NFeStatus(cStat);
-	        nf.setlbr_NFeProt(nProt);
-	        nf.setDateTrx(ts);
+
+
+	        // BF ID: 3391601
+	        if(cStat != null)
+	        {
+	        	try {
+	        		nf.setlbr_NFeStatus(cStat);
+				} catch (Exception e) {
+					nf.setlbr_NFeStatus(MLBRNotaFiscal.LBR_NFESTATUS_RejeiçãoErroNãoCatalogado);
+				}
+	        }
+	        
+	        //
+	        if(nProt != null)
+	        	nf.setlbr_NFeProt(nProt);
+	        
+	        //
+	        if(ts != null)
+	        	nf.setDateTrx(ts);
+	        
 	        nf.setProcessed(true);
 			nf.save(trxName);
 
