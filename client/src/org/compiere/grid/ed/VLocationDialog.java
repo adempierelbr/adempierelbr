@@ -497,6 +497,10 @@ public class VLocationDialog extends CDialog implements ActionListener
 					fCity.setSelectedItem(cep.getCidade());
 					fAddress1.setText(cep.getLogradouroType() + " " + cep.getLogradouro());
 					fAddress3.setText(cep.getBairro());
+					if (cep.getCep().length() == 8)
+						fPostal.setText(cep.getCep().substring(0, 5) + "-" + cep.getCep().substring(5));
+					else
+						fPostal.setText(cep.getCep());
 				}
 				else if (cep.getResulCode() == 0)
 					JOptionPane.showMessageDialog(null, "CEP não encontrado na base de dados.");
