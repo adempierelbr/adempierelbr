@@ -34,7 +34,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110812L;
+	private static final long serialVersionUID = 20110822L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -2658,6 +2658,31 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_ProcCancelNF () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_ProcCancelNF);
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getLBR_RefNotaFiscal_ID(), get_TrxName());	}
+
+	/** Set Nota Fiscal Referenciada.
+		@param LBR_RefNotaFiscal_ID Nota Fiscal Referenciada	  */
+	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID)
+	{
+		if (LBR_RefNotaFiscal_ID < 1) 
+			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, Integer.valueOf(LBR_RefNotaFiscal_ID));
+	}
+
+	/** Get Nota Fiscal Referenciada.
+		@return Nota Fiscal Referenciada	  */
+	public int getLBR_RefNotaFiscal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_RefNotaFiscal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Service Total Amount.

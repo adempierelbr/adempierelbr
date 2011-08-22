@@ -1510,6 +1510,17 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_ProcCancelNF();
 
+    /** Column name LBR_RefNotaFiscal_ID */
+    public static final String COLUMNNAME_LBR_RefNotaFiscal_ID = "LBR_RefNotaFiscal_ID";
+
+	/** Set Nota Fiscal Referenciada	  */
+	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID);
+
+	/** Get Nota Fiscal Referenciada	  */
+	public int getLBR_RefNotaFiscal_ID();
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
+
     /** Column name lbr_ServiceTotalAmt */
     public static final String COLUMNNAME_lbr_ServiceTotalAmt = "lbr_ServiceTotalAmt";
 
