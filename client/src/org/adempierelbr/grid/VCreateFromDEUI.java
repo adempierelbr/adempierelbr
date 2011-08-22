@@ -33,8 +33,6 @@ import org.compiere.util.Env;
  */
 public class VCreateFromDEUI extends CreateFromDE implements VetoableChangeListener
 {
-	private static final long serialVersionUID = 1L;
-	
 	private VCreateFromDialog dialog;
 
 	public VCreateFromDEUI(GridTab mTab)
