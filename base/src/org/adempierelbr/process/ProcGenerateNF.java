@@ -34,6 +34,7 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
@@ -184,6 +185,8 @@ public class ProcGenerateNF extends SvrProcess
 			MLBRNotaFiscal NotaFiscal = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);   /** NOTA FISCAL **/
 
 			// Org
+			MOrgInfo orgInfo = MOrgInfo.get(ctx, invoice.getAD_Org_ID(), trx);
+			boolean isSCAN   = orgInfo.get_ValueAsBoolean("lbr_IsScan");
 			NotaFiscal.setAD_Org_ID(invoice.getAD_Org_ID());
 			
 			NotaFiscal.setIsSOTrx(isSOTrx);   //Entrada ou Saída
@@ -193,8 +196,8 @@ public class ProcGenerateNF extends SvrProcess
 			if (IsOwnDocument){
 
 				int C_DocType_ID = NotaFiscal.getLBR_DocTypeNF_ID(invoice); //DocumentNF da Fatura
-				if (C_DocType_ID == 0)
-					C_DocType_ID = MLBRNotaFiscal.getNFB(invoice.getAD_Org_ID(),isSOTrx); //Se estiver em branco busca no banco um documento de NF
+				if (C_DocType_ID == 0 || isSCAN)
+					C_DocType_ID = MLBRNotaFiscal.getNFB(invoice.getAD_Org_ID(),isSOTrx,isSCAN); //Se estiver em branco busca no banco um documento de NF
 
 				NotaFiscal.setC_DocType_ID(C_DocType_ID);   //Tipo de Documento Alvo
 				NotaFiscal.setC_DocTypeTarget_ID(C_DocType_ID);   //Tipo de Documento Alvo

@@ -48,6 +48,7 @@ public class NFeInutilizacao
 	{
 		log.fine("ini");
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		boolean isSCAN  = oi.get_ValueAsBoolean("lbr_IsScan");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
@@ -79,7 +80,7 @@ public class NFeInutilizacao
 		
 		NfeInutilizacao2Stub.NfeDadosMsg dadosMsg = NfeInutilizacao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecInutilizacao(region);
-		NfeInutilizacao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+		NfeInutilizacao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID(),isSCAN);
 		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub();
 
 		String respLote = stub.nfeInutilizacaoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();

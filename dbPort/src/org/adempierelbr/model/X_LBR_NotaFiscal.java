@@ -34,7 +34,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110214L;
+	private static final long serialVersionUID = 20110812L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -1439,6 +1439,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (Timestamp)get_Value(COLUMNNAME_lbr_DateInOut);
 	}
 
+	/** Set Data contingência.
+		@param lbr_DateScan Data contingência	  */
+	public void setlbr_DateScan (Timestamp lbr_DateScan)
+	{
+		set_Value (COLUMNNAME_lbr_DateScan, lbr_DateScan);
+	}
+
+	/** Get Data contingência.
+		@return Data contingência	  */
+	public Timestamp getlbr_DateScan () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_lbr_DateScan);
+	}
+
 	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_DE)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_DE.Table_Name)
@@ -1659,6 +1673,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_MotivoCancel () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_MotivoCancel);
+	}
+
+	/** Set Motivo contingência.
+		@param lbr_MotivoScan Motivo contingência	  */
+	public void setlbr_MotivoScan (String lbr_MotivoScan)
+	{
+		set_Value (COLUMNNAME_lbr_MotivoScan, lbr_MotivoScan);
+	}
+
+	/** Get Motivo contingência.
+		@return Motivo contingência	  */
+	public String getlbr_MotivoScan () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_MotivoScan);
 	}
 
 	/** Set NCM Reference.

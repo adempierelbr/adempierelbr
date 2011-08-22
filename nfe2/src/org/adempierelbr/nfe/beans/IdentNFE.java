@@ -36,6 +36,8 @@ public class IdentNFE {
 	private String finNFe;
 	private String procEmi;
 	private String verProc;
+	private String dhCont;
+	private String xJust;
 	
 	private NFERefenciadaBean NFref;
 
@@ -212,6 +214,24 @@ public class IdentNFE {
 			verProc = verProc.trim();
 	
 		this.verProc = verProc;
+	}
+	public String getDhCont() {
+		return dhCont;
+	}
+	public void setDhCont(String dhCont) {
+		if (dhCont != null)
+			dhCont = dhCont.trim();
+	
+		this.dhCont = dhCont;
+	}
+	public String getXJust() {
+		return xJust;
+	}
+	public void setXJust(String xJust) {
+		if (xJust != null)
+			xJust = xJust.trim();
+	
+		this.xJust = xJust;
 	}
 
 }

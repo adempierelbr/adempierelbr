@@ -254,7 +254,17 @@ public class NFeXMLGenerator
 		 * 4 - Contingência DPEC
 		 * 5 - Contingência FSDA
 		 */
-		String tpEmis = "1";
+		String tpEmis = docType.get_ValueAsString("lbr_NFeTpEmi");
+		if (tpEmis == null)
+			tpEmis = "1";
+		
+		String dhCont = null;
+		String xJust  = null;
+		
+		if (tpEmis.equals("3")){ //SCAN
+			dhCont = NFeUtil.timeToString(nf.getlbr_DateScan());
+			xJust  = nf.getlbr_MotivoScan();
+		}
 
 		/**
 		 * Finalidade da emissão da NF-e:
@@ -320,6 +330,8 @@ public class NFeXMLGenerator
 		identNFe.setFinNFe(FinNFE);
 		identNFe.setProcEmi(procEmi);
 		identNFe.setVerProc(verProc);
+		identNFe.setDhCont(dhCont);
+		identNFe.setXJust(xJust);
 
 		dados.setIde(identNFe);
 

@@ -102,6 +102,7 @@ public class ProcConsultaNFe extends SvrProcess
 
 		//MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),null);
 		String envType 	= orgInfo.get_ValueAsString("lbr_NFeEnv");
+		boolean isSCAN  = orgInfo.get_ValueAsBoolean("lbr_IsScan");
 
 		MBPartnerLocation bpl = new MBPartnerLocation(ctx,nf.getC_BPartner_Location_ID(),null);
 		MLocation bpLoc = new MLocation(ctx,bpl.getC_Location_ID(),null);
@@ -121,7 +122,7 @@ public class ProcConsultaNFe extends SvrProcess
 			NfeConsulta2Stub.NfeDadosMsg dadosMsg = NfeConsulta2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsulta(region);
 
-			NfeConsulta2Stub.setAmbiente(envType,bpLoc.getC_Region_ID());
+			NfeConsulta2Stub.setAmbiente(envType,bpLoc.getC_Region_ID(),isSCAN);
 			NfeConsulta2Stub stub = new NfeConsulta2Stub();
 
 			String respStatus = stub.nfeConsultaNF2(dadosMsg, cabecMsgE).getExtraElement().toString();

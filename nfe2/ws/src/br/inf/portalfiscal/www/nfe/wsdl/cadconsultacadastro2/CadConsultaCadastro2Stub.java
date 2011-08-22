@@ -30,9 +30,9 @@ import org.adempierelbr.model.MLBRNFeWebService;
     	// mgrigioni, 09/04/2010
     	private static String stubAddress = "";
 
-    	public static void setAmbiente(String ambiente, int C_Region_ID) {
-    		stubAddress = MLBRNFeWebService.getURL(MLBRNFeWebService.CADCONSULTACADASTRO,
-    				ambiente, "2.00", C_Region_ID);
+    	public static void setAmbiente(String ambiente, int C_Region_ID, boolean isSCAN) {
+    		stubAddress = isSCAN ?  MLBRNFeWebService.getSCANURL(MLBRNFeWebService.CADCONSULTACADASTRO,ambiente, "2.00")
+    			: MLBRNFeWebService.getURL(MLBRNFeWebService.CADCONSULTACADASTRO,ambiente, "2.00", C_Region_ID);
     	}
 
         private static synchronized java.lang.String getUniqueSuffix(){

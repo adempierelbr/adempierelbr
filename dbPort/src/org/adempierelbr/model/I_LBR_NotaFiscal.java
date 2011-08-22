@@ -1040,6 +1040,15 @@ public interface I_LBR_NotaFiscal
 	  */
 	public Timestamp getlbr_DateInOut();
 
+    /** Column name lbr_DateScan */
+    public static final String COLUMNNAME_lbr_DateScan = "lbr_DateScan";
+
+	/** Set Data contingência	  */
+	public void setlbr_DateScan (Timestamp lbr_DateScan);
+
+	/** Get Data contingência	  */
+	public Timestamp getlbr_DateScan();
+
     /** Column name LBR_DE_ID */
     public static final String COLUMNNAME_LBR_DE_ID = "LBR_DE_ID";
 
@@ -1174,6 +1183,15 @@ public interface I_LBR_NotaFiscal
 	  * Motivo do Cancelamento (Entre 15 e 255 caracteres)
 	  */
 	public String getlbr_MotivoCancel();
+
+    /** Column name lbr_MotivoScan */
+    public static final String COLUMNNAME_lbr_MotivoScan = "lbr_MotivoScan";
+
+	/** Set Motivo contingência	  */
+	public void setlbr_MotivoScan (String lbr_MotivoScan);
+
+	/** Get Motivo contingência	  */
+	public String getlbr_MotivoScan();
 
     /** Column name lbr_NCMReference */
     public static final String COLUMNNAME_lbr_NCMReference = "lbr_NCMReference";

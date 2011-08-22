@@ -922,18 +922,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal {
 	{
 		return getNFB(AD_Org_ID,true);
 	}
+	
+	public static int getNFB(int AD_Org_ID, boolean isSOTrx){
+		return getNFB(AD_Org_ID,isSOTrx,false);
+	}
 
-	public static int getNFB(int AD_Org_ID, boolean isSOTrx)
-	{
+	public static int getNFB(int AD_Org_ID, boolean isSOTrx, boolean isSCAN) {
 
 		String sql = "SELECT C_DocType_ID FROM C_DocType " +
 				     "WHERE DocBaseType = 'NFB' " +
 				     "AND AD_Client_ID = ? AND AD_Org_ID IN (0,?) " +
-				     "AND IsSOTrx = ? " +
+				     "AND IsSOTrx = ? AND lbr_NFeTpEmi = ?" +
 				     "order by C_DocType_ID, AD_Org_ID desc";
 
 		int C_DocType_ID = DB.getSQLValue(null, sql,
-				new Object[]{Env.getAD_Client_ID(Env.getCtx()), AD_Org_ID, isSOTrx});
+				new Object[]{Env.getAD_Client_ID(Env.getCtx()), AD_Org_ID, isSOTrx, isSCAN ? "3" : "1"});
 
 		return C_DocType_ID;
 	}	//	getNFB

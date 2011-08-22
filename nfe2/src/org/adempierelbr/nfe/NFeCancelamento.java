@@ -80,6 +80,11 @@ public class NFeCancelamento
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, nf.getAD_Org_ID(),null);
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		boolean isSCAN  = oi.get_ValueAsBoolean("lbr_IsScan");
+		
+		if (nf.getlbr_MotivoScan() != null && !nf.getlbr_MotivoScan().trim().isEmpty()){
+			isSCAN = true;
+		}
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
@@ -120,7 +125,7 @@ public class NFeCancelamento
 			NfeCancelamento2Stub.NfeDadosMsg dadosMsg = NfeCancelamento2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeCancelamento2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecCancelamento(region);
 
-			NfeCancelamento2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeCancelamento2Stub.setAmbiente(envType,orgLoc.getC_Region_ID(),isSCAN);
 			NfeCancelamento2Stub stub = new NfeCancelamento2Stub();
 
 			String respCanc = stub.nfeCancelamentoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();

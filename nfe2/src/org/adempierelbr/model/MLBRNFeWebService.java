@@ -76,6 +76,16 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 				new Object[]{name.toUpperCase(),envType,versionNo,C_Region_ID});
 	} //getURL
 	
+	public static String getSCANURL (String name, String envType, String versionNo){
+		
+		String sql = "SELECT URL FROM LBR_NFeWebService " +
+				     "WHERE UPPER(Name) LIKE ? AND lbr_NFeEnv = ? " +
+				     "AND VersionNo = ?";
+
+		return DB.getSQLValueString(null, sql, 
+				new Object[]{name.toUpperCase(),envType,versionNo});
+	} //getSCANURL
+	
 	public static String[] getURL (String envType){
 		
 		String sql = "SELECT URL FROM LBR_NFeWebService " +

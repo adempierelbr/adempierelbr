@@ -158,6 +158,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		boolean isSCAN  = oi.get_ValueAsBoolean("lbr_IsScan");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
@@ -189,7 +190,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			NfeRecepcao2Stub.NfeDadosMsg dadosMsg = NfeRecepcao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeRecepcao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecRecepcao(region);
 
-			NfeRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID(),isSCAN);
 			NfeRecepcao2Stub stub = new NfeRecepcao2Stub();
 
 			String respLote = stub.nfeRecepcaoLote2(dadosMsg, cabecMsgE).getExtraElement().toString();
@@ -263,6 +264,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx), null);
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		boolean isSCAN  = oi.get_ValueAsBoolean("lbr_IsScan");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
@@ -293,7 +295,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			NfeRetRecepcao2Stub.NfeDadosMsg dadosMsg = NfeRetRecepcao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeRetRecepcao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecRetRecepcao(region);
 
-			NfeRetRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeRetRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID(),isSCAN);
 			NfeRetRecepcao2Stub stub = new NfeRetRecepcao2Stub();
 
 			String respConsulta = stub.nfeRetRecepcao2(dadosMsg, cabecMsgE).getExtraElement().toString();

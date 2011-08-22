@@ -33,8 +33,6 @@ import org.compiere.util.Env;
  */
 public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableChangeListener
 {
-	private static final long serialVersionUID = 1L;
-	
 	private VCreateFromDialog dialog;
 
 	public VCreateFromNFeLotUI(GridTab mTab)

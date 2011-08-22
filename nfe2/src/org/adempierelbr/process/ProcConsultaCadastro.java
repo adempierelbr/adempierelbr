@@ -92,6 +92,8 @@ public class ProcConsultaCadastro extends SvrProcess
 		MOrgInfo orgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx),null);
 		if (orgInfo == null)
 			return null;
+		
+		boolean isSCAN  = orgInfo.get_ValueAsBoolean("lbr_IsScan");
 
 		//MLocation orgLoc = new MLocation(ctx,orgInfo.getC_Location_ID(),null);
 
@@ -107,7 +109,7 @@ public class ProcConsultaCadastro extends SvrProcess
 		try{
 			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpLoc.getC_Region().getName(),bpIE,bpCNPJ)));
 
-			CadConsultaCadastro2Stub.setAmbiente(envType,bpLoc.getC_Region_ID());
+			CadConsultaCadastro2Stub.setAmbiente(envType,bpLoc.getC_Region_ID(),isSCAN);
 			CadConsultaCadastro2Stub.NfeDadosMsg_type0 dadosMsg = CadConsultaCadastro2Stub.NfeDadosMsg_type0.Factory.parse(dadosXML);
 			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
 			CadConsultaCadastro2Stub.ConsultaCadastro2 consulta = new CadConsultaCadastro2Stub.ConsultaCadastro2();

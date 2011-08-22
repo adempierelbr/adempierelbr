@@ -28,11 +28,6 @@ import org.compiere.util.Env;
  */
 public class NFeTaxes
 {
-	/**
-	 * 	Default serial
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private String taxIndicator;
 
 	private BigDecimal vBC;
