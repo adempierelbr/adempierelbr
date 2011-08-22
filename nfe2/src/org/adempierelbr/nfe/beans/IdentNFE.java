@@ -29,6 +29,7 @@ public class IdentNFE {
 	private String hSaiEnt;
 	private String tpNF;
 	private String cMunFG;
+	private NFERefenciadaBean NFref;
 	private String tpImp;
 	private String tpEmis;
 	private String cDV;
@@ -39,8 +40,6 @@ public class IdentNFE {
 	private String dhCont;
 	private String xJust;
 	
-	private NFERefenciadaBean NFref;
-
 	public NFERefenciadaBean getNFref() {
 		return NFref;
 	}
