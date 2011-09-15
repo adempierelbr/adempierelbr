@@ -79,13 +79,19 @@ UPDATE AD_Field SET SeqNo=390,IsDisplayed='Y' WHERE AD_Field_ID=1120273
 ;
 
 -- 29/06/2011 16h0min21s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Field SET AD_FieldGroup_ID=3000008, DisplayLogic='@AD_Language@=''pt_BR''',Updated=TO_DATE('2011-06-29 16:00:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120274
+-- 15/09/2011 14h55min41s BRT
+-- BF # 3410066
+--UPDATE AD_Field SET AD_FieldGroup_ID=3000008, DisplayLogic='@AD_Language@=''pt_BR''',Updated=TO_DATE('2011-06-29 16:00:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120274
+--;
+UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR''',Updated=TO_DATE('2011-06-29 16:00:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120274
 ;
 
 -- 29/06/2011 16h0min26s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Field SET AD_FieldGroup_ID=3000008, DisplayLogic='@AD_Language@=''pt_BR''', IsSameLine='Y',Updated=TO_DATE('2011-06-29 16:00:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120273
+-- 15/09/2011 14h55min41s BRT
+-- BF # 3410066
+--UPDATE AD_Field SET AD_FieldGroup_ID=3000008, DisplayLogic='@AD_Language@=''pt_BR''', IsSameLine='Y',Updated=TO_DATE('2011-06-29 16:00:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120273
+--;
+UPDATE AD_Field SET DisplayLogic='@AD_Language@=''pt_BR''', IsSameLine='Y',Updated=TO_DATE('2011-06-29 16:00:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120273
 ;
 
 -- 29/06/2011 16h0min29s BRT
