@@ -12,11 +12,15 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-public class NFERefenciadaBean {
+public class NFEReferenciadaBean {
 
 	private String refNFe ;
 	private InformacoesNFEReferenciadaBean refNF;
 
+	public NFEReferenciadaBean(String refNFe){
+		setRefNFe(refNFe);
+	}
+	
 	public String getRefNFe() {
 		return refNFe;
 	}

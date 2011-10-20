@@ -94,9 +94,13 @@ public class ProcInutNF extends SvrProcess
 		if (regionCode.isEmpty())
 			return "UF Inválida";
 		//
+		String serie = dt.get_ValueAsString("lbr_NFSerie");
+		if (serie == null || serie.trim().isEmpty())
+			serie = "0";
+		
 		InutilizacaoNF iNF = new InutilizacaoNF (oi, regionCode);
 		iNF.setMod(dt.get_ValueAsString("lbr_NFModel"));
-		iNF.setSerie(dt.get_ValueAsString("lbr_NFSerie"));
+		iNF.setSerie(serie);
 		iNF.setnNFIni(p_DocumentNo.toString());
 		iNF.setnNFFin(p_DocumentNo_To.toString());
 		iNF.setxJust(p_Just);

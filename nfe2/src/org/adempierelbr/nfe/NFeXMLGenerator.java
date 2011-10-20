@@ -30,6 +30,7 @@ import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFTax;
+import org.adempierelbr.model.X_LBR_NotaFiscal;
 import org.adempierelbr.model.X_LBR_TaxFormula;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfe.beans.AdicoesDI;
@@ -60,7 +61,7 @@ import org.adempierelbr.nfe.beans.InfAssinatura;
 import org.adempierelbr.nfe.beans.InfComex;
 import org.adempierelbr.nfe.beans.Informacoes;
 import org.adempierelbr.nfe.beans.InformacoesNFEReferenciadaBean;
-import org.adempierelbr.nfe.beans.NFERefenciadaBean;
+import org.adempierelbr.nfe.beans.NFEReferenciadaBean;
 import org.adempierelbr.nfe.beans.PISBean;
 import org.adempierelbr.nfe.beans.PISGrupoBean;
 import org.adempierelbr.nfe.beans.ProdutosNFEBean;
@@ -138,7 +139,6 @@ public class NFeXMLGenerator
 		XStream xstream = new XStream();
 		
 		DadosNFE dados = new DadosNFE();
-		NFERefenciadaBean nfereferencia = new NFERefenciadaBean();
 		InformacoesNFEReferenciadaBean inforeferencia = new InformacoesNFEReferenciadaBean();
 		IdentNFE identNFe = new IdentNFE();
 		IdentEmit emitente = new IdentEmit();
@@ -328,6 +328,12 @@ public class NFeXMLGenerator
 		identNFe.setcDV("" + digitochave);
 		identNFe.setTpAmb(tpAmb);
 		identNFe.setFinNFe(FinNFE);
+		if (FinNFE.equals(X_LBR_NotaFiscal.LBR_FINNFE_NFeComplementar)){
+			NFEReferenciadaBean nfRef = new NFEReferenciadaBean(new MLBRNotaFiscal(ctx,nf.getLBR_RefNotaFiscal_ID(),null).getlbr_NFeID());
+			xstream.alias("NFRef", NFEReferenciadaBean.class);
+			identNFe.setNFref(nfRef);
+		}
+		
 		identNFe.setProcEmi(procEmi);
 		identNFe.setVerProc(verProc);
 		identNFe.setDhCont(dhCont);

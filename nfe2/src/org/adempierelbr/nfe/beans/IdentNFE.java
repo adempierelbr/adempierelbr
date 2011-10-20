@@ -29,7 +29,7 @@ public class IdentNFE {
 	private String hSaiEnt;
 	private String tpNF;
 	private String cMunFG;
-	private NFERefenciadaBean NFref;
+	private NFEReferenciadaBean NFref;
 	private String tpImp;
 	private String tpEmis;
 	private String cDV;
@@ -40,10 +40,10 @@ public class IdentNFE {
 	private String dhCont;
 	private String xJust;
 	
-	public NFERefenciadaBean getNFref() {
+	public NFEReferenciadaBean getNFref() {
 		return NFref;
 	}
-	public void setNFref(NFERefenciadaBean fref) {
+	public void setNFref(NFEReferenciadaBean fref) {
 		NFref = fref;
 	}
 	public String getcUF() {
