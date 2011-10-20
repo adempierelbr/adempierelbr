@@ -73,7 +73,7 @@ import org.compiere.util.ValueNamePair;
  * 	@author 	Jorg Janke
  * 	@version 	$Id: GridTable.java,v 1.9 2006/08/09 16:38:25 jjanke Exp $
  * 
- * 	@author Teo Sarca, SC ARHIPAC SERVICE SRL
+ * @author Teo Sarca, SC ARHIPAC SERVICE SRL
  * 			<li>BF [ 1901192 ] LogMigrationScripts: GridTable.dataSave: manual update
  *			<li>BF [ 1943682 ] Copy Record should not copy IsApproved and IsGenerated
  *			<li>BF [ 1949543 ] Window freeze if there is a severe exception
@@ -83,8 +83,6 @@ import org.compiere.util.ValueNamePair;
  *  			https://sourceforge.net/tracker/?func=detail&aid=2910358&group_id=176962&atid=879332
  *     		<li>BF [ 2910368 ] Error in context when IsActive field is found in different
  *  			https://sourceforge.net/tracker/?func=detail&aid=2910368&group_id=176962&atid=879332
- *  @author Ricardo Santana (Kenos, www.kenos.com.br)
- *  		<li>BF [ 3289763 ] Problema ao copiar Parceiro de Negócios
  */
 public class GridTable extends AbstractTableModel
 	implements Serializable
@@ -1187,13 +1185,7 @@ public class GridTable extends AbstractTableModel
 
 		//	Has anything changed?
 		Object oldValue = getValueAt(row, col);
-		if (!force && (!isValueChanged(oldValue, value)))
-			/*
-			(oldValue == null && value == null)
-			||	(oldValue != null && oldValue.equals(value))
-			||	(oldValue != null && value != null && oldValue.toString().equals(value.toString()))
-			))
-			*/
+		if (!force && !isValueChanged(oldValue, value) )
 		{
 			log.finest("r=" + row + " c=" + col + " - New=" + value + "==Old=" + oldValue + " - Ignored");
 			return;
@@ -2079,12 +2071,7 @@ public class GridTable extends AbstractTableModel
 				;	//	ignore
 			
 			//	***	Data changed ***
-			else if (m_inserting ||isValueChanged(oldValue, value))			  
-			/* BF - https://sourceforge.net/tracker/index.php?func=detail&aid=3090578&group_id=176962&atid=879332		
-			  || (oldValue == null && value != null)
-			  || (oldValue != null && value == null)
-			  || !oldValue.equals (value)) 			//	changed
-			 */
+			else if (m_inserting || isValueChanged(oldValue, value) )
 			{
 				//	Check existence
 				int poIndex = po.get_ColumnIndex(columnName);
@@ -2514,8 +2501,11 @@ public class GridTable extends AbstractTableModel
 					// Bug [ 1807947 ] 
 					|| ( columnName.equals("C_DocType_ID") && hasDocTypeTargetField )
 					|| ( columnName.equals("Line") )
-					//	Bug [ 3289763 ]
+					
+					//AdempiereLBR
 					|| columnName.equals("lbr_BPTypeBRIsValid")
+					|| columnName.equals("QtyInvoiced") || columnName.equals("QtyDelivered") 
+					
 				)
 				{
 					rowData[i] = field.getDefault();
@@ -3630,31 +3620,52 @@ public class GridTable extends AbstractTableModel
 		return tabNo;
 	}
 	
+	private boolean isNotNullAndIsEmpty (Object value) {
+		if (value != null 
+				&& (value instanceof String) 
+				&& value.toString().equals("")
+			) 
+		{
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
 	@SuppressWarnings("unchecked")
-	private boolean isValueChanged(Object oldValue,Object value) {
-		if(oldValue != null && (oldValue instanceof String) && oldValue.toString().equals(""))
+	private boolean	isValueChanged(Object oldValue, Object value)
+	{
+		if ( isNotNullAndIsEmpty(oldValue) ) {
 			oldValue = null;
+		}
 
-		if(value != null && (value instanceof String) && value.toString().equals(""))
+		if ( isNotNullAndIsEmpty(value) ) {
 			value = null;
+		}
 
-		boolean bChanged = (oldValue == null && value != null) || (oldValue != null && value == null);
+		boolean bChanged = (oldValue == null && value != null) 
+							|| (oldValue != null && value == null);
 
-		if(!bChanged && oldValue != null) {
-			if(oldValue.getClass().equals(value.getClass())) {
-				if(oldValue instanceof Comparable<?>) {
+		if (!bChanged && oldValue != null)
+		{
+			if (oldValue.getClass().equals(value.getClass()))
+			{
+				if (oldValue instanceof Comparable<?>)
+				{
 					bChanged = (((Comparable<Object>)oldValue).compareTo(value) != 0);
 				}
-				else {
+				else
+				{
 					bChanged = !oldValue.equals(value);
 				}
 			}
-			else if(value != null) {
+			else if(value != null)
+			{
 				bChanged = !(oldValue.toString().equals(value.toString()));
 			}
 		}
-
-		return bChanged;
-	} //isValueChanged
+		return bChanged;	
+	}
 	
-} //GridTable
+}
