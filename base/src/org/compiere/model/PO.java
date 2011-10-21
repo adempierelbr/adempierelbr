@@ -1414,7 +1414,6 @@ public abstract class PO
 			}
 			catch (SQLException e)
 			{
-				e.printStackTrace(); // @Trifon - MySQL Port
 				if (p_info.isVirtualColumn(index))	//	if rs constructor used
 					log.log(Level.FINER, "Virtual Column not loaded: " + columnName);
 				else
@@ -1423,6 +1422,7 @@ public abstract class PO
 						+ ": " + p_info.getTableName() + "." + p_info.getColumnName(index)
 						+ " (" + p_info.getColumnClass(index) + ") - " + e);
 					success = false;
+					e.printStackTrace(); // @Trifon - MySQL Port
 				}
 			}
 		}
