@@ -602,7 +602,7 @@ public final class Find extends CDialog
 		if (editor instanceof CTextField) {
 			((CTextField)editor).addActionListener(this);
 			
-			//Mario Grigioni
+            //Mario Grigioni
 			if (mField.getColumnName().equals("DocumentNo") || mField.getColumnName().equals("Value")){
 				((CTextField)editor).setText("%");
 			}
@@ -1024,34 +1024,19 @@ public final class Find extends CDialog
 		//
 		if ((hasName) && !nameField.getText().equals("%") && nameField.getText().length() != 0)
 		{
-			/*onhate*/
 			String value = nameField.getText().toUpperCase();
-			String values[] = SQLUtils.likeParameters(value);
-			for (String each : values) {
-				m_query.addRestriction("UPPER(Name)", MQuery.LIKE, each, nameLabel.getText(), each);
-			}
 			
-			/*
 			if (!value.endsWith("%"))
 				value += "%";
 			m_query.addRestriction("UPPER(Name)", MQuery.LIKE, value, nameLabel.getText(), value);
-			*/
 		}
 		//
 		if (hasDescription && !descriptionField.getText().equals("%") && descriptionField.getText().length() != 0)
 		{
-			/*onhate*/
 			String value = descriptionField.getText().toUpperCase();
-			String values[] = SQLUtils.likeParameters(value);
-			for (String each : values) {
-				m_query.addRestriction("UPPER(Name)", MQuery.LIKE, each, descriptionLabel.getText(), each);
-			}
-			
-			/*
 			if (!value.endsWith("%"))
 				value += "%";
 			m_query.addRestriction("UPPER(Description)", MQuery.LIKE, value, descriptionLabel.getText(), value);
-			*/
 		}
 		//	Special Editors
 		for (int i = 0; i < m_sEditors.size(); i++)
@@ -1079,7 +1064,16 @@ public final class Find extends CDialog
                     ColumnSQL = "UPPER("+ColumnSQL+")";
                     value = valueStr;
                 }
-                //
+                //onhate, mgrigioni
+                if (ColumnName.equals("Name") || ColumnName.equals("Description")){
+        			String values[] = SQLUtils.likeParameters(value.toString().toUpperCase());
+        			for (String each : values) {
+        				m_query.addRestriction("UPPER("+ColumnName+")", MQuery.LIKE, each, ColumnName, each);
+        			}
+                }
+                
+                else
+                
 				if (value.toString().indexOf('%') != -1)
 					m_query.addRestriction(ColumnSQL, MQuery.LIKE, value, ColumnName, ved.getDisplay());
 				else if (isProductCategoryField && value instanceof Integer) 
