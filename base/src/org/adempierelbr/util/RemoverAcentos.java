@@ -45,7 +45,7 @@ public abstract class RemoverAcentos {
 		String retorno = sb.toString();
 
 		retorno = retorno.replaceAll("½", "1/2").replaceAll("¼", "1/4").replaceAll("¾", "3/4");
-		retorno = retorno.replaceAll("\"", " ").replaceAll("[œ*ßƒµøπæΩ]", " ");
+		retorno = retorno.replaceAll("\"", " ").replaceAll("[œ*ßƒµøπæΩØ]", " ");
 
 		return retorno.trim();
 	}
