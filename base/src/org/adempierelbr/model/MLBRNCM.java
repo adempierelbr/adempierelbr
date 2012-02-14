@@ -1,5 +1,6 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -12,34 +13,33 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.Query;
+import org.compiere.model.X_M_Product;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
- *	MNCM
+ *		NCM Model
  *
- *	Model for X_LBR_NCM
- *
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *			<li> Sponsored by Soliton, www.soliton.com.br
+ *	
  *	@author Mario Grigioni
  *	@version $Id: MNCM.java, 01/12/2009 11:14:00 mgrigioni
  */
-public class MLBRNCM extends X_LBR_NCM {
-
+public class MLBRNCM extends X_LBR_NCM
+{
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**	Logger			*/
-	//private static CLogger log = CLogger.getCLogger(MNCM.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -47,9 +47,10 @@ public class MLBRNCM extends X_LBR_NCM {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRNCM(Properties ctx, int ID, String trx){
-		super(ctx,ID,trx);
-	}
+	public MLBRNCM (Properties ctx, int ID, String trx)
+	{
+		super (ctx, ID, trx);
+	}	//	MLBRNCM
 
 	/**
 	 *  Load Constructor
@@ -59,8 +60,8 @@ public class MLBRNCM extends X_LBR_NCM {
 	 */
 	public MLBRNCM (Properties ctx, ResultSet rs, String trxName)
 	{
-		super(ctx, rs, trxName);
-	}
+		super (ctx, rs, trxName);
+	}	//	MLBRNCM
 
 	public static int getDefaultNCM(int AD_Client_ID)
 	{
@@ -72,48 +73,25 @@ public class MLBRNCM extends X_LBR_NCM {
 
 		return LBR_NCM_ID > 0 ? LBR_NCM_ID : 0;
 	} //getDefaultNCM
-	
-	/**
-	 * check if NCM has ICMS ST
-	 * @param To_Region_ID
-	 * @param isSOTrx
-	 * @return boolean
-	 */
-	public boolean hasST(int To_Region_ID,boolean isSOTrx){
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(),getAD_Org_ID(),get_TrxName());
-		BigDecimal iva = MLBRNCMIVA.getProfitPercentage(getCtx(),get_ID(),orgInfo.getC_Location().getC_Region_ID(),To_Region_ID,isSOTrx);
-		
-		return iva.signum() == 	1 ? true : false;
-	} //hasST
 
-	public static String validateNCM(MInvoice invoice){
-
+	@Deprecated
+	public static String validateNCM (MInvoice invoice)
+	{
 		Properties ctx = invoice.getCtx();
 		String     trx = invoice.get_TrxName();
-		
-		MDocType dt = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
 
 		MInvoiceLine[] lines = invoice.getLines();
 		for(MInvoiceLine line : lines){
 
-			/* VALIDAÇÃO POR CFOP
 			if (line.getM_Product_ID() == 0) //Se produto não verifica
 				continue;
-			*/
-			
+
 			MProduct   product = new MProduct(ctx,line.getM_Product_ID(),trx);
-			//if (!product.getProductType().equals(X_M_Product.PRODUCTTYPE_Item))
-			//	continue;
-			
-			int LBR_CFOP_ID = line.get_ValueAsInt("LBR_CFOP_ID");
-			MLBRCFOP cfop = new MLBRCFOP(ctx,LBR_CFOP_ID,trx);
-			if (!dt.get_ValueAsBoolean("lbr_HasFiscalDocument") || 
-				cfop.islbr_IsService() || //Serviço
-				line.isDescription())
+			if (!product.getProductType().equals(X_M_Product.PRODUCTTYPE_Item))
 				continue;
 
 			Integer LBR_NCM_ID = (Integer)line.get_Value("LBR_NCM_ID"); //	NCM da Fatura
-			if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
+			if (LBR_NCM_ID == null)
 				LBR_NCM_ID = (Integer)product.get_Value("LBR_NCM_ID"); //	NCM do Produto
 			if (LBR_NCM_ID == null)
 				LBR_NCM_ID = 0; //	Sem NCM
@@ -130,5 +108,36 @@ public class MLBRNCM extends X_LBR_NCM {
 
 		return null;
 	}
+	
+	/**
+	 * 		Retorna o registro mais relevante do imposto do NCM
+	 * 
+	 * 	@param 	Organização
+	 * 	@param 	Valid From
+	 * 	@return NCM Tax
+	 */
+	public MLBRNCMTax getLBR_Tax_ID (int AD_Org_ID, int C_Region_ID, Timestamp validFrom)
+	{
+		String where = "AD_Org_ID IN (0, ?) AND LBR_NCM_ID=? AND (C_Region_ID IS NULL OR C_Region_ID=?) ";
+		//
+		if (validFrom != null)
+			where += "AND (ValidFrom IS NULL OR ValidFrom<=" + DB.TO_DATE(validFrom) + ") ";
+		//
+		MLBRNCMTax tcpg = new Query (Env.getCtx(), MLBRNCMTax.Table_Name, where, get_TrxName())
+			.setParameters(new Object[]{AD_Org_ID, getLBR_NCM_ID(), C_Region_ID})
+			.setOrderBy("AD_Org_ID DESC, C_Region_ID, ValidFrom DESC")
+			.first();
+		//
+		return tcpg;
+	}	//	getLBR_Tax_ID
+	
+	/**
+	 * 	Usar a aba de imposto do NCM
+	 */
+	@Deprecated
+	public int getLBR_Tax_ID ()
+	{
+		return super.getLBR_Tax_ID();
+	}	//	getLBR_Tax_ID
 
-} //MNCM
+} 	//	MLBRNCM

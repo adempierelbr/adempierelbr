@@ -176,18 +176,18 @@ public class MBancoBrasil implements I_Bank
 	        	cnab.setlbr_CNABField42(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); 	// CPF ou CPNJ
 	        }
 
-	        String nomeSacado = RemoverAcentos.remover(boleto.getlbr_ReceiverName());
+	        String nomeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getlbr_ReceiverName()));
 	        cnab.setlbr_CNABField43(nomeSacado.toUpperCase()); 											// NOME
 
 	        cnab.setlbr_CNABField44(null); 																// BRANCOS
 
-	        String enderecoSacado = RemoverAcentos.remover(boleto.getAddress());
+	        String enderecoSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getAddress()));
 	        cnab.setlbr_CNABField45(enderecoSacado.toUpperCase()); 										// Logradouro
 
 	        cnab.setlbr_CNABField46(null); 																// BRANCOS
 	        cnab.setlbr_CNABField47(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); 							// CEP
 
-	        String cidadeSacado = RemoverAcentos.remover(boleto.getCity());
+	        String cidadeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getCity()));
 	        cnab.setlbr_CNABField48(cidadeSacado.toUpperCase()); 										// Cidade Sacado
 
 	        cnab.setlbr_CNABField49(boleto.getRegionName()); 											// UF
@@ -312,18 +312,18 @@ public class MBancoBrasil implements I_Bank
 	        	cnab.setlbr_CNABField39(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); 	// Número do CNPJ ou CPF do Sacado
 	        }
 
-	        String nomeSacado = RemoverAcentos.remover(boleto.getlbr_ReceiverName());
+	        String nomeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getlbr_ReceiverName()));
 	        cnab.setlbr_CNABField40(nomeSacado.toUpperCase());											// Nome do Sacado
 
 	        cnab.setlbr_CNABField41(null); 																// BRANCOS
 
-	        String enderecoSacado = RemoverAcentos.remover(boleto.getAddress());
+	        String enderecoSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getAddress()));
 	        cnab.setlbr_CNABField42(enderecoSacado.toUpperCase()); 										// Endereço do Sacado
 
 	        cnab.setlbr_CNABField43(null); 																// BRANCOS
 	        cnab.setlbr_CNABField44(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); 							// CEP do Sacado
 
-	        String cidadeSacado = RemoverAcentos.remover(boleto.getCity());
+	        String cidadeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getCity()));
 	        cnab.setlbr_CNABField45(cidadeSacado.toUpperCase()); 										// Cidade do Sacado
 	        cnab.setlbr_CNABField46(boleto.getRegionName()); 											// UF do sacado
 	        cnab.setlbr_CNABField47(""); 																// Observações/Mensagem ou Sacador/Avalista

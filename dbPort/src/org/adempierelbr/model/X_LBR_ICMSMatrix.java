@@ -18,6 +18,7 @@
 package org.adempierelbr.model;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 
@@ -30,7 +31,7 @@ public class X_LBR_ICMSMatrix extends PO implements I_LBR_ICMSMatrix, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20111114L;
 
     /** Standard Constructor */
     public X_LBR_ICMSMatrix (Properties ctx, int LBR_ICMSMatrix_ID, String trxName)
@@ -100,6 +101,23 @@ public class X_LBR_ICMSMatrix extends PO implements I_LBR_ICMSMatrix, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set Description.
+		@param Description 
+		Optional short description of the record
+	  */
+	public void setDescription (String Description)
+	{
+		set_Value (COLUMNNAME_Description, Description);
+	}
+
+	/** Get Description.
+		@return Optional short description of the record
+	  */
+	public String getDescription () 
+	{
+		return (String)get_Value(COLUMNNAME_Description);
+	}
+
 	/** Set ICMS Matrix.
 		@param LBR_ICMSMatrix_ID 
 		Primary key table LBR_ICMSMatrix
@@ -118,6 +136,26 @@ public class X_LBR_ICMSMatrix extends PO implements I_LBR_ICMSMatrix, I_Persiste
 	public int getLBR_ICMSMatrix_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_ICMSMatrix_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set ST Tax.
+		@param LBR_STTax_ID ST Tax	  */
+	public void setLBR_STTax_ID (int LBR_STTax_ID)
+	{
+		if (LBR_STTax_ID < 1) 
+			set_Value (COLUMNNAME_LBR_STTax_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_STTax_ID, Integer.valueOf(LBR_STTax_ID));
+	}
+
+	/** Get ST Tax.
+		@return ST Tax	  */
+	public int getLBR_STTax_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_STTax_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -172,5 +210,22 @@ public class X_LBR_ICMSMatrix extends PO implements I_LBR_ICMSMatrix, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Valid from.
+		@param ValidFrom 
+		Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom)
+	{
+		set_Value (COLUMNNAME_ValidFrom, ValidFrom);
+	}
+
+	/** Get Valid from.
+		@return Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
 	}
 }

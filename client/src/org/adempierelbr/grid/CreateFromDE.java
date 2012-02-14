@@ -148,7 +148,7 @@ public class CreateFromDE extends CreateFrom {
 				int LBR_NotaFiscal_ID = pp.getKey();
 				//
 				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
-				nf.setLBR_DE_ID(LBR_DE_ID);
+//				nf.setLBR_DE_ID(LBR_DE_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//
 				if (!nf.save())

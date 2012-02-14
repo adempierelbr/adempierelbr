@@ -29,7 +29,7 @@ public class IdentNFE {
 	private String hSaiEnt;
 	private String tpNF;
 	private String cMunFG;
-	private NFEReferenciadaBean NFref;
+	private NFERefenciadaBean NFref;
 	private String tpImp;
 	private String tpEmis;
 	private String cDV;
@@ -37,13 +37,12 @@ public class IdentNFE {
 	private String finNFe;
 	private String procEmi;
 	private String verProc;
-	private String dhCont;
-	private String xJust;
 	
-	public NFEReferenciadaBean getNFref() {
+
+	public NFERefenciadaBean getNFref() {
 		return NFref;
 	}
-	public void setNFref(NFEReferenciadaBean fref) {
+	public void setNFref(NFERefenciadaBean fref) {
 		NFref = fref;
 	}
 	public String getcUF() {
@@ -213,24 +212,6 @@ public class IdentNFE {
 			verProc = verProc.trim();
 	
 		this.verProc = verProc;
-	}
-	public String getDhCont() {
-		return dhCont;
-	}
-	public void setDhCont(String dhCont) {
-		if (dhCont != null)
-			dhCont = dhCont.trim();
-	
-		this.dhCont = dhCont;
-	}
-	public String getXJust() {
-		return xJust;
-	}
-	public void setXJust(String xJust) {
-		if (xJust != null)
-			xJust = xJust.trim();
-	
-		this.xJust = xJust;
 	}
 
 }

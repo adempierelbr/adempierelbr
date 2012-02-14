@@ -30,7 +30,7 @@ public class X_LBR_TaxConfig_ProductGroup extends PO implements I_LBR_TaxConfig_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxConfig_ProductGroup (Properties ctx, int LBR_TaxConfig_ProductGroup_ID, String trxName)

@@ -20,6 +20,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.model.*;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Model for LBR_NCM
  *  @author ADempiereLBR (generated) 
@@ -30,7 +31,7 @@ public class X_LBR_NCM extends PO implements I_LBR_NCM, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110609L;
+	private static final long serialVersionUID = 20111216L;
 
     /** Standard Constructor */
     public X_LBR_NCM (Properties ctx, int LBR_NCM_ID, String trxName)
@@ -40,6 +41,8 @@ public class X_LBR_NCM extends PO implements I_LBR_NCM, I_Persistent
         {
 			setLBR_NCM_ID (0);
 			setValue (null);
+			setlbr_HasSubstitution (false);
+// N
         } */
     }
 
@@ -149,5 +152,37 @@ public class X_LBR_NCM extends PO implements I_LBR_NCM, I_Persistent
 	public String getValue () 
 	{
 		return (String)get_Value(COLUMNNAME_Value);
+	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), getValue());
+    }
+
+	/** Set Has Substitution.
+		@param lbr_HasSubstitution 
+		Defines if the record has Substituion
+	  */
+	public void setlbr_HasSubstitution (boolean lbr_HasSubstitution)
+	{
+		set_Value (COLUMNNAME_lbr_HasSubstitution, Boolean.valueOf(lbr_HasSubstitution));
+	}
+
+	/** Get Has Substitution.
+		@return Defines if the record has Substituion
+	  */
+	public boolean islbr_HasSubstitution () 
+	{
+		Object oo = get_Value(COLUMNNAME_lbr_HasSubstitution);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 }

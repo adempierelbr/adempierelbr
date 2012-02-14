@@ -325,6 +325,33 @@ public interface I_LBR_NotaFiscal
 	  */
 	public BigDecimal getGrandTotal();
 
+    /** Column name icms */
+    public static final String COLUMNNAME_icms = "icms";
+
+	/** Set icms	  */
+	public void seticms (BigDecimal icms);
+
+	/** Get icms	  */
+	public BigDecimal geticms();
+
+    /** Column name icmsst */
+    public static final String COLUMNNAME_icmsst = "icmsst";
+
+	/** Set icmsst	  */
+	public void seticmsst (BigDecimal icmsst);
+
+	/** Get icmsst	  */
+	public BigDecimal geticmsst();
+
+    /** Column name ipi */
+    public static final String COLUMNNAME_ipi = "ipi";
+
+	/** Set ipi	  */
+	public void setipi (BigDecimal ipi);
+
+	/** Get ipi	  */
+	public BigDecimal getipi();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -988,6 +1015,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPSuframa();
 
+    /** Column name lbr_Brand */
+    public static final String COLUMNNAME_lbr_Brand = "lbr_Brand";
+
+	/** Set Brand.
+	  * Brand transport volumes
+	  */
+	public void setlbr_Brand (String lbr_Brand);
+
+	/** Get Brand.
+	  * Brand transport volumes
+	  */
+	public String getlbr_Brand();
+
     /** Column name lbr_CFOPNote */
     public static final String COLUMNNAME_lbr_CFOPNote = "lbr_CFOPNote";
 
@@ -1040,26 +1080,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public Timestamp getlbr_DateInOut();
 
-    /** Column name lbr_DateScan */
-    public static final String COLUMNNAME_lbr_DateScan = "lbr_DateScan";
-
-	/** Set Data contingência	  */
-	public void setlbr_DateScan (Timestamp lbr_DateScan);
-
-	/** Get Data contingência	  */
-	public Timestamp getlbr_DateScan();
-
-    /** Column name LBR_DE_ID */
-    public static final String COLUMNNAME_LBR_DE_ID = "LBR_DE_ID";
-
-	/** Set DE	  */
-	public void setLBR_DE_ID (int LBR_DE_ID);
-
-	/** Get DE	  */
-	public int getLBR_DE_ID();
-
-	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException;
-
     /** Column name lbr_Delivery_Location_ID */
     public static final String COLUMNNAME_lbr_Delivery_Location_ID = "lbr_Delivery_Location_ID";
 
@@ -1083,6 +1103,15 @@ public interface I_LBR_NotaFiscal
 
 	/** Get Digest Value	  */
 	public String getlbr_DigestValue();
+
+    /** Column name lbr_EMailSent */
+    public static final String COLUMNNAME_lbr_EMailSent = "lbr_EMailSent";
+
+	/** Set lbr_EMailSent	  */
+	public void setlbr_EMailSent (boolean lbr_EMailSent);
+
+	/** Get lbr_EMailSent	  */
+	public boolean islbr_EMailSent();
 
     /** Column name lbr_FinNFe */
     public static final String COLUMNNAME_lbr_FinNFe = "lbr_FinNFe";
@@ -1174,24 +1203,11 @@ public interface I_LBR_NotaFiscal
     /** Column name lbr_MotivoCancel */
     public static final String COLUMNNAME_lbr_MotivoCancel = "lbr_MotivoCancel";
 
-	/** Set Motivo do Cancelamento.
-	  * Motivo do Cancelamento (Entre 15 e 255 caracteres)
-	  */
+	/** Set lbr_MotivoCancel	  */
 	public void setlbr_MotivoCancel (String lbr_MotivoCancel);
 
-	/** Get Motivo do Cancelamento.
-	  * Motivo do Cancelamento (Entre 15 e 255 caracteres)
-	  */
+	/** Get lbr_MotivoCancel	  */
 	public String getlbr_MotivoCancel();
-
-    /** Column name lbr_MotivoScan */
-    public static final String COLUMNNAME_lbr_MotivoScan = "lbr_MotivoScan";
-
-	/** Set Motivo contingência	  */
-	public void setlbr_MotivoScan (String lbr_MotivoScan);
-
-	/** Get Motivo contingência	  */
-	public String getlbr_MotivoScan();
 
     /** Column name lbr_NCMReference */
     public static final String COLUMNNAME_lbr_NCMReference = "lbr_NCMReference";
@@ -1286,19 +1302,6 @@ public interface I_LBR_NotaFiscal
 	  * Status of NFe
 	  */
 	public String getlbr_NFeStatus();
-
-    /** Column name lbr_NFModel */
-    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
-
-	/** Set NF Model.
-	  * Identifies the model of Nota Fiscal
-	  */
-	public void setlbr_NFModel (String lbr_NFModel);
-
-	/** Get NF Model.
-	  * Identifies the model of Nota Fiscal
-	  */
-	public String getlbr_NFModel();
 
     /** Column name lbr_NFReference */
     public static final String COLUMNNAME_lbr_NFReference = "lbr_NFReference";
@@ -1510,16 +1513,14 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_ProcCancelNF();
 
-    /** Column name LBR_RefNotaFiscal_ID */
-    public static final String COLUMNNAME_LBR_RefNotaFiscal_ID = "LBR_RefNotaFiscal_ID";
+    /** Column name lbr_RPSStatus */
+    public static final String COLUMNNAME_lbr_RPSStatus = "lbr_RPSStatus";
 
-	/** Set Nota Fiscal Referenciada	  */
-	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID);
+	/** Set RPS Status	  */
+	public void setlbr_RPSStatus (String lbr_RPSStatus);
 
-	/** Get Nota Fiscal Referenciada	  */
-	public int getLBR_RefNotaFiscal_ID();
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
+	/** Get RPS Status	  */
+	public String getlbr_RPSStatus();
 
     /** Column name lbr_ServiceTotalAmt */
     public static final String COLUMNNAME_lbr_ServiceTotalAmt = "lbr_ServiceTotalAmt";
@@ -1642,6 +1643,15 @@ public interface I_LBR_NotaFiscal
 	  */
 	public int getM_Shipper_ID();
 
+    /** Column name NFDetailsReport */
+    public static final String COLUMNNAME_NFDetailsReport = "NFDetailsReport";
+
+	/** Set Detalhes NF	  */
+	public void setNFDetailsReport (String NFDetailsReport);
+
+	/** Get Detalhes NF	  */
+	public String getNFDetailsReport();
+
     /** Column name NoPackages */
     public static final String COLUMNNAME_NoPackages = "NoPackages";
 
@@ -1713,6 +1723,19 @@ public interface I_LBR_NotaFiscal
 	  * This Process Reactivates the Nota Fiscal Document
 	  */
 	public String getProcReactivateNF();
+
+    /** Column name SendEMail */
+    public static final String COLUMNNAME_SendEMail = "SendEMail";
+
+	/** Set Send EMail.
+	  * Enable sending Document EMail
+	  */
+	public void setSendEMail (String SendEMail);
+
+	/** Get Send EMail.
+	  * Enable sending Document EMail
+	  */
+	public String getSendEMail();
 
     /** Column name TotalLines */
     public static final String COLUMNNAME_TotalLines = "TotalLines";

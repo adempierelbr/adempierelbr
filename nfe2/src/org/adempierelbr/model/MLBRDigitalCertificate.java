@@ -19,7 +19,6 @@ import java.util.Properties;
 
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MOrgInfo;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -62,47 +61,17 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	{
 		super(ctx, rs, trxName);
 	}
-	
-	/**
-	 * getJKS
-	 * Retorna o LBR_DigitalCertificate_ID referente ao Estado e Ambiente da NFe
-	 * @param ctx
-	 * @param envType
-	 * @param C_Region_ID
-	 * @return LBR_DigitalCertificate_ID
-	 */
-	public static int getJKS(Properties ctx, String envType){
-		
-		String sql = "SELECT MAX(LBR_DigitalCertificate_ID) " +
-				     "FROM LBR_DigitalCertificate " +
-				     "WHERE AD_Client_ID = ? AND lbr_NFeEnv = ? " +
-				     "AND lbr_CertType = ? AND IsActive = 'Y'";
-		
-		return DB.getSQLValue(null, sql, new Object[]{Env.getAD_Client_ID(ctx),envType,MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore});
-	} //getJKS
-	
-	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
-		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
-		int certWS = oi.get_ValueAsInt("LBR_DC_WS_ID");
-		setCertificate(ctx,oi,certWS);
-	}
-	
-	public static void setCertificate(Properties ctx, MOrgInfo oi) throws Exception{
-		setCertificate(ctx,oi,getJKS(ctx,oi.get_ValueAsString("lbr_NFeEnv")));
-	}
-	
+
 	/**
 	 * setCertificate
 	 * Set all System.property for webservice connection
 	 */
-	public static void setCertificate(Properties ctx, MOrgInfo oi, int certWS) throws Exception{
+	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
 
-		int certOrg = oi.get_ValueAsInt("LBR_DC_Org_ID");
-		
-		if (certOrg <= 0 || certWS <= 0)
-			throw new Exception("Erro com certificado. " +
-					        "Certificado Org = " + certOrg + " - Certificado WS = " + certWS);
-		
+		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
+
+		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
+		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 
@@ -131,23 +100,20 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		File certFileWS = NFeUtil.getAttachmentEntryFile(dcWS.getAttachment(true).getEntry(0));
 
 		//
+		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
 		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 		//
-		Properties props = System.getProperties();
-		props.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
+		System.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
+		System.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
+		System.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
 		//
-		props.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
-		props.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
-		props.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
-		//
-		props.setProperty("javax.net.ssl.trustStoreType", certTypeWS);	
-		props.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
+		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);
+		System.setProperty("javax.net.ssl.trustStore", certFileWS.toString());
 		if(dcWS.getPassword()!=null && !"".equals(dcWS.getPassword()))
-			props.setProperty("javax.net.ssl.trustStorePassword", dcWS.getPassword());
+			System.setProperty("javax.net.ssl.trustStorePassword", dcWS.getPassword());
 		// BF - JRE > 1.6.19
-		props.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
+		System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
 
-		System.setProperties(props);
 	} //setCertificate
 
 }	//	MDigitalCertificate

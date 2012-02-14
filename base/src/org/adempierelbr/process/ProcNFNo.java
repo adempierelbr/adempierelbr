@@ -14,31 +14,27 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.model.MDocType;
 import org.compiere.model.MSequence;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-
 
 /**
- *	ProcNFNo
- *
  *  Process to get Next NF Number
  *  
- *  [ 1986687 ] Criação de um Processo para Reativar Nota Fiscal
- *	 
  *	@author Mario Grigioni
- *	@version $Id: ProcNFNo.java, 06/06/2008 13:51:00 mgrigioni
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: ProcNFNo.java, v1.0 2008/06/06 13:51:55 AM, mgrigioni Exp $
  */
 public class ProcNFNo extends SvrProcess
 {
-
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcNFNo.class);
 
+	/**	Document Type	*/
+	private int p_C_DocType_ID = 0;
+	
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -50,6 +46,8 @@ public class ProcNFNo extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (MDocType.COLUMNNAME_C_DocType_ID.equals(name))
+				p_C_DocType_ID = para[i].getParameterAsInt();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -64,18 +62,15 @@ public class ProcNFNo extends SvrProcess
 	{
 		log.info("ProcNFNo Process");
 		
-		int C_DocType_ID = MLBRNotaFiscal.getNFB(Env.getAD_Org_ID(getCtx()));
-		if (C_DocType_ID <= 0)
+		if (p_C_DocType_ID <= 0)
 			return "Nenhum documento do tipo NFB cadastrado";
 
-		MDocType docType = new MDocType(getCtx(),C_DocType_ID,get_TrxName());
+		MDocType docType = new MDocType(getCtx(), p_C_DocType_ID, get_TrxName());
 		int AD_Sequence_ID = docType.getDocNoSequence_ID();
 		if (AD_Sequence_ID == 0)
 			return "Nenhum seqüência para Nota Fiscal";
 		
-		MSequence sequence = new MSequence(getCtx(),AD_Sequence_ID,get_TrxName());
+		MSequence sequence = new MSequence(getCtx(), AD_Sequence_ID, get_TrxName());
 		return "Nota Fiscal: " + sequence.getCurrentNext();
-		
 	}	//	doIt
-		
-}//ProcNFNo
+}	//	ProcNFNo

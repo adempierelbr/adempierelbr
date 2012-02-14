@@ -32,7 +32,7 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxName (Properties ctx, int LBR_TaxName_ID, String trxName)
@@ -44,12 +44,12 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 // 'N'
 			setLBR_TaxName_ID (0);
 			setLBR_TaxSubstitution_ID (0);
+			setName (null);
+			setWithHoldThreshold (Env.ZERO);
 			setlbr_TaxType (null);
 // 'P'
 			setlbr_WithholdFrequency (null);
 // 'M'
-			setName (null);
-			setWithHoldThreshold (Env.ZERO);
         } */
     }
 
@@ -60,7 +60,7 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
     }
 
     /** AccessLevel
-      * @return 3 - Client - Org 
+      * @return 6 - System - Client 
       */
     protected int get_AccessLevel()
     {
@@ -173,6 +173,43 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Name.
+		@param Name 
+		Alphanumeric identifier of the entity
+	  */
+	public void setName (String Name)
+	{
+		set_Value (COLUMNNAME_Name, Name);
+	}
+
+	/** Get Name.
+		@return Alphanumeric identifier of the entity
+	  */
+	public String getName () 
+	{
+		return (String)get_Value(COLUMNNAME_Name);
+	}
+
+	/** Set WithHold Threshold.
+		@param WithHoldThreshold 
+		Defines the WithHold Threshold 
+	  */
+	public void setWithHoldThreshold (BigDecimal WithHoldThreshold)
+	{
+		set_Value (COLUMNNAME_WithHoldThreshold, WithHoldThreshold);
+	}
+
+	/** Get WithHold Threshold.
+		@return Defines the WithHold Threshold 
+	  */
+	public BigDecimal getWithHoldThreshold () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_WithHoldThreshold);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** lbr_TaxType AD_Reference_ID=1000022 */
 	public static final int LBR_TAXTYPE_AD_Reference_ID=1000022;
 	/** Product = P */
@@ -219,42 +256,5 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	public String getlbr_WithholdFrequency () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_WithholdFrequency);
-	}
-
-	/** Set Name.
-		@param Name 
-		Alphanumeric identifier of the entity
-	  */
-	public void setName (String Name)
-	{
-		set_Value (COLUMNNAME_Name, Name);
-	}
-
-	/** Get Name.
-		@return Alphanumeric identifier of the entity
-	  */
-	public String getName () 
-	{
-		return (String)get_Value(COLUMNNAME_Name);
-	}
-
-	/** Set WithHold Threshold.
-		@param WithHoldThreshold 
-		Defines the WithHold Threshold 
-	  */
-	public void setWithHoldThreshold (BigDecimal WithHoldThreshold)
-	{
-		set_Value (COLUMNNAME_WithHoldThreshold, WithHoldThreshold);
-	}
-
-	/** Get WithHold Threshold.
-		@return Defines the WithHold Threshold 
-	  */
-	public BigDecimal getWithHoldThreshold () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_WithHoldThreshold);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 }

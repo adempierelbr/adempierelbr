@@ -105,19 +105,6 @@ public interface I_LBR_TaxConfiguration
 	  */
 	public boolean isSOTrx();
 
-    /** Column name lbr_ExceptionType */
-    public static final String COLUMNNAME_lbr_ExceptionType = "lbr_ExceptionType";
-
-	/** Set Exception Type.
-	  * Defines the Exception Type
-	  */
-	public void setlbr_ExceptionType (String lbr_ExceptionType);
-
-	/** Get Exception Type.
-	  * Defines the Exception Type
-	  */
-	public String getlbr_ExceptionType();
-
     /** Column name LBR_FiscalGroup_Product_ID */
     public static final String COLUMNNAME_LBR_FiscalGroup_Product_ID = "LBR_FiscalGroup_Product_ID";
 
@@ -132,19 +119,6 @@ public interface I_LBR_TaxConfiguration
 	public int getLBR_FiscalGroup_Product_ID();
 
 	public org.adempierelbr.model.I_LBR_FiscalGroup_Product getLBR_FiscalGroup_Product() throws RuntimeException;
-
-    /** Column name lbr_IsPOTrx */
-    public static final String COLUMNNAME_lbr_IsPOTrx = "lbr_IsPOTrx";
-
-	/** Set Purchase Transaction.
-	  * This is a Purchase Transaction
-	  */
-	public void setlbr_IsPOTrx (boolean lbr_IsPOTrx);
-
-	/** Get Purchase Transaction.
-	  * This is a Purchase Transaction
-	  */
-	public boolean islbr_IsPOTrx();
 
     /** Column name LBR_TaxConfiguration_ID */
     public static final String COLUMNNAME_LBR_TaxConfiguration_ID = "LBR_TaxConfiguration_ID";
@@ -189,4 +163,30 @@ public interface I_LBR_TaxConfiguration
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_ExceptionType */
+    public static final String COLUMNNAME_lbr_ExceptionType = "lbr_ExceptionType";
+
+	/** Set Exception Type.
+	  * Defines the Exception Type
+	  */
+	public void setlbr_ExceptionType (String lbr_ExceptionType);
+
+	/** Get Exception Type.
+	  * Defines the Exception Type
+	  */
+	public String getlbr_ExceptionType();
+
+    /** Column name lbr_IsPOTrx */
+    public static final String COLUMNNAME_lbr_IsPOTrx = "lbr_IsPOTrx";
+
+	/** Set Purchase Transaction.
+	  * This is a Purchase Transaction
+	  */
+	public void setlbr_IsPOTrx (boolean lbr_IsPOTrx);
+
+	/** Get Purchase Transaction.
+	  * This is a Purchase Transaction
+	  */
+	public boolean islbr_IsPOTrx();
 }

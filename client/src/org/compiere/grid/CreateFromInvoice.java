@@ -33,7 +33,6 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRMALine;
-import org.compiere.model.MUOMConversion;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
@@ -97,7 +96,7 @@ public class CreateFromInvoice extends CreateFrom
 				+ "GROUP BY sl.M_InOut_ID,mi.M_InOutLine_ID,sl.MovementQty "
 				+ "HAVING (sl.MovementQty<>SUM(mi.Qty) AND mi.M_InOutLine_ID IS NOT NULL)"
 				+ " OR mi.M_InOutLine_ID IS NULL) "
-			+ "ORDER BY s.DocumentNo, s.MovementDate, s.M_InOut_ID");
+			+ "ORDER BY s.MovementDate, s.DocumentNo, s.M_InOut_ID");
 		try
 		{
 			PreparedStatement pstmt = DB.prepareStatement(sql.toString(), null);
@@ -398,8 +397,6 @@ public class CreateFromInvoice extends CreateFrom
 		{
 			if (((Boolean)miniTable.getValueAt(i, 0)).booleanValue())
 			{
-				MProduct product = null;
-				
 				//ELTEK: Inicio
 				int AD_Org_ID = 0;
 				KeyNamePair pp = (KeyNamePair)miniTable.getValueAt(i, 1);
@@ -435,7 +432,7 @@ public class CreateFromInvoice extends CreateFrom
 				int precision = 2;
 				if (M_Product_ID != 0)
 				{
-					product = MProduct.get(Env.getCtx(), M_Product_ID);
+					MProduct product = MProduct.get(Env.getCtx(), M_Product_ID);
 					precision = product.getUOMPrecision();
 				}
 				QtyEntered = QtyEntered.setScale(precision, BigDecimal.ROUND_HALF_DOWN);
@@ -448,15 +445,6 @@ public class CreateFromInvoice extends CreateFrom
 				MInvoiceLine invoiceLine = new MInvoiceLine (invoice);
 				invoiceLine.setM_Product_ID(M_Product_ID, C_UOM_ID);	//	Line UOM
 				invoiceLine.setQty(QtyEntered);							//	Invoiced/Entered
-				
-				BigDecimal QtyInvoiced = null;
-				if (M_Product_ID > 0 && product.getC_UOM_ID() != C_UOM_ID) {
-					QtyInvoiced = MUOMConversion.convertProductFrom(Env.getCtx(), M_Product_ID, C_UOM_ID, QtyEntered);
-				}
-				if (QtyInvoiced == null)
-					QtyInvoiced = QtyEntered;
-				invoiceLine.setQtyInvoiced(QtyInvoiced);
-				
 				//ELTEK: Inserida a Linha Abaixo.
 				if (AD_Org_ID != 0)
 					invoiceLine.setAD_Org_ID(AD_Org_ID);
@@ -536,6 +524,10 @@ public class CreateFromInvoice extends CreateFrom
 				if (inoutLine != null)
 				{
 					invoiceLine.setShipLine(inoutLine);		//	overwrites
+					if (inoutLine.sameOrderLineUOM())
+						invoiceLine.setQtyInvoiced(QtyEntered);
+					else
+						invoiceLine.setQtyInvoiced(inoutLine.getMovementQty());
 				}
 				else {
 					log.fine("No Receipt Line");
@@ -543,6 +535,10 @@ public class CreateFromInvoice extends CreateFrom
 					if (orderLine != null)
 					{
 						invoiceLine.setOrderLine(orderLine);	//	overwrites
+						if (orderLine.getQtyEntered().compareTo(orderLine.getQtyOrdered()) != 0)
+							invoiceLine.setQtyInvoiced(QtyEntered
+								.multiply(orderLine.getQtyOrdered())
+								.divide(orderLine.getQtyEntered(), 12, BigDecimal.ROUND_HALF_UP));
 					}
 					else
 					{
@@ -555,6 +551,7 @@ public class CreateFromInvoice extends CreateFrom
 					if (rmaLine != null)
 					{
 						invoiceLine.setRMALine(rmaLine);		//	overwrites
+						invoiceLine.setQty(QtyEntered);
 					}
 					else
 						log.fine("No RMA Line");

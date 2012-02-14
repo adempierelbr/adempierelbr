@@ -32,14 +32,14 @@ import org.compiere.util.DB;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MTaxIncludedList.java, 01/12/2008 15:20:00 mgrigioni
  */
-public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
+@Deprecated public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
+	@Deprecated private static final long serialVersionUID = 1L;
 
-	private static CLogger log = CLogger.getCLogger(MLBRTaxIncludedList.class);
+	@Deprecated private static CLogger log = CLogger.getCLogger(MLBRTaxIncludedList.class);
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -47,7 +47,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRTaxIncludedList(Properties ctx, int ID, String trx){
+	@Deprecated public MLBRTaxIncludedList(Properties ctx, int ID, String trx){
 		super(ctx,ID,trx);
 	}
 
@@ -57,7 +57,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MLBRTaxIncludedList (Properties ctx, ResultSet rs, String trxName)
+	@Deprecated public MLBRTaxIncludedList (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}
@@ -66,7 +66,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  getTaxes
 	 *  @return ArrayList<Integer> C_Tax_ID
 	 */
-	public static ArrayList<Integer> getTaxes(Properties ctx, int M_PriceList_ID, String trx){
+	@Deprecated public static ArrayList<Integer> getTaxes(Properties ctx, int M_PriceList_ID, String trx){
 
 		String sql = "SELECT C_Tax_ID " +
 				     "FROM LBR_TaxIncludedList " +
@@ -104,7 +104,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  getLBRTaxes
 	 *  @return ArrayList<String> TaxName
 	 */
-	public static ArrayList<String> getLBRTaxes(Properties ctx, int M_PriceList_ID, String trx){
+	@Deprecated public static ArrayList<String> getLBRTaxes(Properties ctx, int M_PriceList_ID, String trx){
 
 		ArrayList<String>  names = new ArrayList<String>();
 		ArrayList<Integer> taxes = getTaxes(ctx,M_PriceList_ID,trx);
@@ -130,7 +130,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 	 *  getList
 	 *  @return List<MTaxIncludedList> list
 	 */
-	public static List<MLBRTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
+	@Deprecated public static List<MLBRTaxIncludedList> getList(Properties ctx, int M_PriceList_ID, String trx){
 
 		String whereClause = "M_PriceList_ID = ? AND IsActive = 'Y' ";
 
@@ -143,7 +143,7 @@ public class MLBRTaxIncludedList extends X_LBR_TaxIncludedList {
 		return list;
 	} //getList
 
-	public static MLBRTaxIncludedList[] getArray(Properties ctx, int M_PriceList_ID, String trx){
+	@Deprecated public static MLBRTaxIncludedList[] getArray(Properties ctx, int M_PriceList_ID, String trx){
 
 		List<MLBRTaxIncludedList> list = MLBRTaxIncludedList.getList(ctx, M_PriceList_ID, trx);
 		return list.toArray(new MLBRTaxIncludedList[list.size()]);

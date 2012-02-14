@@ -23,17 +23,16 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.NamePair;
 
 /**
- *	MTaxesLookup
- *
- *	Taxes Lookup
+ *		Taxes Lookup
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: MTaxesLookup.java, 14/11/2007 13:48:00 mgrigioni
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li>	Reforma no módulo de impostos
+ *	@version $Id: MLBRTaxesLookup.java, v1.0 2007/11/14 13:48:41 AM, mgrigioni Exp $
  */
 public final class MLBRTaxesLookup extends Lookup
 	implements Serializable
 {
-
 	/**
 	 * 
 	 */
@@ -44,11 +43,11 @@ public final class MLBRTaxesLookup extends Lookup
 	 *  @param ctx context
 	 *  @param WindowNo window no (to derive AD_Client/Org for new records)
 	 */
-	public MLBRTaxesLookup(Properties ctx, int WindowNo)
+	public MLBRTaxesLookup (Properties ctx, int WindowNo)
 	{
 		super (DisplayType.TableDir, WindowNo);
 		m_ctx = ctx;
-	}	//	X_LBR_Tax
+	}	//	MLBRTaxesLookup
 
 	/**	Context					*/
 	private Properties 		m_ctx;
@@ -65,7 +64,7 @@ public final class MLBRTaxesLookup extends Lookup
 		MLBRTax tax = getTax(value, null);
 		if (tax == null)
 			return "<" + value.toString() + ">";
-		return tax.toString();
+		return tax.getDescription();
 	}	//	getDisplay
 
 	/**
@@ -80,7 +79,7 @@ public final class MLBRTaxesLookup extends Lookup
 		MLBRTax tax = getTax (value, null);
 		if (tax == null)
 			return null;
-		return new KeyNamePair (tax.getLBR_Tax_ID(), tax.toString());
+		return new KeyNamePair (tax.getLBR_Tax_ID(), tax.getDescription());
 	}	//	get
 
 	/**
@@ -93,7 +92,6 @@ public final class MLBRTaxesLookup extends Lookup
 		return getTax(key, null) == null;
 	}   //  containsKey
 
-	
 	/**************************************************************************
 	 * 	Get Tax
 	 * 	@param key ID as string or integer
@@ -122,14 +120,14 @@ public final class MLBRTaxesLookup extends Lookup
 	public MLBRTax getTax (int LBR_Tax_ID, String trxName)
 	{
 		return new MLBRTax(m_ctx, LBR_Tax_ID, trxName);
-	}	//	getX_LBR_Tax
+	}	//	getTax
 
 	/**
 	 *	Get underlying fully qualified Table.Column Name.
 	 *	Used for VLookup.actionButton (Zoom)
 	 *  @return column name
 	 */
-	public String getColumnName()
+	public String getColumnName ()
 	{
 		return "LBR_Tax_ID";
 	}   //  getColumnName
@@ -146,6 +144,5 @@ public final class MLBRTaxesLookup extends Lookup
 	{
 		log.log(Level.SEVERE, "not implemented");
 		return null;
-	}   //  getArray
-
-}	//	MTaxesLookup
+	}   //  getData
+}	//	MLBRTaxesLookup

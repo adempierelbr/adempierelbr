@@ -112,44 +112,44 @@ public class ProcConsultaNFe extends SvrProcess
 			return "UF Inválida";
 
 		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(ctx, orgInfo);
+//		MLBRDigitalCertificate.setCertificate(ctx, orgInfo);
 		//
 		String status = "Erro na verificação de Status";
 
 		try{
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsulta(envType, nf.getlbr_NFeID())));
-
-			NfeConsulta2Stub.NfeDadosMsg dadosMsg = NfeConsulta2Stub.NfeDadosMsg.Factory.parse(dadosXML);
-			NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsulta(region);
-
-			NfeConsulta2Stub.setAmbiente(envType,bpLoc.getC_Region_ID(),isSCAN);
-			NfeConsulta2Stub stub = new NfeConsulta2Stub();
-
-			String respStatus = stub.nfeConsultaNF2(dadosMsg, cabecMsgE).getExtraElement().toString();
-
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));
-		    //
-		    //String tpAmb    = NFeUtil.getValue(doc, "tpAmb");
-		    //String verAplic = NFeUtil.getValue(doc, "verAplic");
-		    String cUF      = NFeUtil.getValue(doc, "cUF");
-		    String cStat    = NFeUtil.getValue(doc, "cStat");
-		    String xMotivo  = NFeUtil.getValue(doc, "xMotivo");
-
-		    status = "Status: " + cStat + " - " + xMotivo + " - UF: " + cUF;
-		    
-		    Timestamp now = new Timestamp(new Date().getTime());
-		    String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] "+xMotivo+"\n";
-		    nf.setlbr_NFeStatus(cStat);
-		    if (nf.getlbr_NFeDesc() == null)
-		    	nf.setlbr_NFeDesc(nfeDesc);
-		    else
-		    	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
-		    
-		    if (cStat.equals(NFeUtil.AUTORIZADA)){
-		    	nf.setProcessed(true);
-		    	nf.save(trx);
-		    }
+//			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsulta(envType, nf.getlbr_NFeID())));
+//
+//			NfeConsulta2Stub.NfeDadosMsg dadosMsg = NfeConsulta2Stub.NfeDadosMsg.Factory.parse(dadosXML);
+//			NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsulta(region);
+//
+//			NfeConsulta2Stub.setAmbiente(envType,bpLoc.getC_Region_ID(),isSCAN);
+//			NfeConsulta2Stub stub = new NfeConsulta2Stub();
+//
+//			String respStatus = stub.nfeConsultaNF2(dadosMsg, cabecMsgE).getExtraElement().toString();
+//
+//			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));
+//		    //
+//		    //String tpAmb    = NFeUtil.getValue(doc, "tpAmb");
+//		    //String verAplic = NFeUtil.getValue(doc, "verAplic");
+//		    String cUF      = NFeUtil.getValue(doc, "cUF");
+//		    String cStat    = NFeUtil.getValue(doc, "cStat");
+//		    String xMotivo  = NFeUtil.getValue(doc, "xMotivo");
+//
+//		    status = "Status: " + cStat + " - " + xMotivo + " - UF: " + cUF;
+//		    
+//		    Timestamp now = new Timestamp(new Date().getTime());
+//		    String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] "+xMotivo+"\n";
+//		    nf.setlbr_NFeStatus(cStat);
+//		    if (nf.getlbr_NFeDesc() == null)
+//		    	nf.setlbr_NFeDesc(nfeDesc);
+//		    else
+//		    	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
+//		    
+//		    if (cStat.equals(NFeUtil.AUTORIZADA)){
+//		    	nf.setProcessed(true);
+//		    	nf.save(trx);
+//		    }
 		    
 		}
 		catch (Throwable e1){

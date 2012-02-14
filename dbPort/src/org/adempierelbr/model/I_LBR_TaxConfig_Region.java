@@ -63,6 +63,21 @@ public interface I_LBR_TaxConfig_Region
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_Region_ID */
+    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+
+	/** Set Region.
+	  * Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID);
+
+	/** Get Region.
+	  * Identifies a geographical Region
+	  */
+	public int getC_Region_ID();
+
+	public I_C_Region getC_Region() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -78,21 +93,6 @@ public interface I_LBR_TaxConfig_Region
 	  * User who created this records
 	  */
 	public int getCreatedBy();
-
-    /** Column name C_Region_ID */
-    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
-
-	/** Set Region.
-	  * Identifies a geographical Region
-	  */
-	public void setC_Region_ID (int C_Region_ID);
-
-	/** Get Region.
-	  * Identifies a geographical Region
-	  */
-	public int getC_Region_ID();
-
-	public I_C_Region getC_Region() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -163,19 +163,6 @@ public interface I_LBR_TaxConfig_Region
 	  */
 	public int getLBR_Tax_ID();
 
-    /** Column name lbr_TaxStatus */
-    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
-
-	/** Set Tax Status.
-	  * Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus);
-
-	/** Get Tax Status.
-	  * Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus();
-
     /** Column name To_Region_ID */
     public static final String COLUMNNAME_To_Region_ID = "To_Region_ID";
 
@@ -206,4 +193,17 @@ public interface I_LBR_TaxConfig_Region
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_TaxStatus */
+    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
+
+	/** Set Tax Status.
+	  * Defines the Tax Status
+	  */
+	public void setlbr_TaxStatus (String lbr_TaxStatus);
+
+	/** Get Tax Status.
+	  * Defines the Tax Status
+	  */
+	public String getlbr_TaxStatus();
 }

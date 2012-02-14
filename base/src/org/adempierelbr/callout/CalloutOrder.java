@@ -12,8 +12,10 @@
  *****************************************************************************/
 package org.adempierelbr.callout;
 
+import java.math.BigDecimal;
 import java.util.Properties;
 
+import org.adempierelbr.model.MLBRADILine;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -26,6 +28,7 @@ import org.compiere.util.Env;
  * Callout for Table C_Order
  * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
+ * @author Ricardo Santana (Kenos, www.kenos.com.br)
  * @version $Id: CalloutOrder.java, 10/01/2008 10:44:00 mgrigioni
  */
 public class CalloutOrder extends CalloutEngine
@@ -104,5 +107,47 @@ public class CalloutOrder extends CalloutEngine
 		
 		return "";
 	}	//	PaymentRule
+
+	/**
+	 *  	Marca o flag para recalcular os impostos
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 */
+	public String recalculateTaxes (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		mTab.setValue("lbr_RecalculateTax", true);
+		return "";
+	}	//	recalculateTaxes
 	
-}
+	/**
+	 *  	Pega o valor do SISCOMEX
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 */
+	public String getSISCOMEX (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		BigDecimal siscomex = (BigDecimal) mTab.getValue("lbr_SISCOMEXAmt");
+		//
+		if (mField.getColumnName().equals("LBR_ADILine_ID")
+				&& value != null)
+		{
+			MLBRADILine adi = new MLBRADILine (ctx, (Integer) value, null);
+			//
+			siscomex = adi.getSISCOMEX();
+			//
+			if (siscomex != null)
+				mTab.setValue("lbr_SISCOMEXAmt", siscomex);
+		}
+		return "";
+	}	//	getSISCOMEX
+}	//	CalloutOrder

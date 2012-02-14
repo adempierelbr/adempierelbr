@@ -102,9 +102,9 @@ public class ProcGenerateCert extends SvrProcess
 	 */
 	protected String doIt() throws Exception
 	{
-		String[] passphrases = MLBRNFeWebService.getURL(p_envType);
-		
-		generateCertificate(passphrases,FilePath,FileName);
+//		String[] passphrases = MLBRNFeWebService.getURL(p_envType);
+//FIXME		
+//		generateCertificate(passphrases,FilePath,FileName);
 		
 		return "Certificado gerado com sucesso em: " + FilePath + " - " + FileName;
 	}

@@ -32,7 +32,7 @@ public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_NFTax (Properties ctx, int LBR_NFTax_ID, String trxName)
@@ -42,9 +42,9 @@ public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent
         {
 			setLBR_NFTax_ID (0);
 			setLBR_NotaFiscal_ID (0);
+			setLBR_TaxGroup_ID (0);
 			setlbr_TaxAmt (Env.ZERO);
 			setlbr_TaxBaseAmt (Env.ZERO);
-			setLBR_TaxGroup_ID (0);
         } */
     }
 
@@ -127,6 +127,34 @@ public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxGroup)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxGroup.Table_Name)
+			.getPO(getLBR_TaxGroup_ID(), get_TrxName());	}
+
+	/** Set Tax Group.
+		@param LBR_TaxGroup_ID 
+		Defines the Tax Group
+	  */
+	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
+	{
+		if (LBR_TaxGroup_ID < 1) 
+			set_Value (COLUMNNAME_LBR_TaxGroup_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_TaxGroup_ID, Integer.valueOf(LBR_TaxGroup_ID));
+	}
+
+	/** Get Tax Group.
+		@return Defines the Tax Group
+	  */
+	public int getLBR_TaxGroup_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxGroup_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Tax Amount.
 		@param lbr_TaxAmt 
 		Defines the Tax Amount
@@ -165,33 +193,5 @@ public class X_LBR_NFTax extends PO implements I_LBR_NFTax, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_TaxGroup)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxGroup.Table_Name)
-			.getPO(getLBR_TaxGroup_ID(), get_TrxName());	}
-
-	/** Set Tax Group.
-		@param LBR_TaxGroup_ID 
-		Defines the Tax Group
-	  */
-	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
-	{
-		if (LBR_TaxGroup_ID < 1) 
-			set_Value (COLUMNNAME_LBR_TaxGroup_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_TaxGroup_ID, Integer.valueOf(LBR_TaxGroup_ID));
-	}
-
-	/** Get Tax Group.
-		@return Defines the Tax Group
-	  */
-	public int getLBR_TaxGroup_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxGroup_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 }

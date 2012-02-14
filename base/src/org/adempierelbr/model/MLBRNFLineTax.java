@@ -14,43 +14,32 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.Map;
 import java.util.Properties;
 
-import org.adempierelbr.util.ImpostoBR;
-import org.adempierelbr.util.TaxBR;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MInvoiceTax;
-import org.compiere.model.MTax;
-import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 /**
- *	MLBRNFLineTax
  *
- *	Model for X_LBR_NFLineTax
- *
- *	@author Mario Grigioni
- *	@version $Id: MLBRNFLineTax.java, 18/02/2010 09:58:00 mgrigioni
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: MLBRNFLineTax.java, v1.0 2011/10/17 1:53:04 AM, ralexsander Exp $
  */
-public class MLBRNFLineTax extends X_LBR_NFLineTax {
-	
-	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MLBRNFLineTax.class);
-
+public class MLBRNFLineTax extends X_LBR_NFLineTax
+{
 	/**
-	 *
+	 * 	Serial
 	 */
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -6683920438972507538L;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRNFLineTax(Properties ctx, int ID, String trx){
-		super(ctx,ID,trx);
-	}
+	public MLBRNFLineTax (Properties ctx, int ID, String trxName)
+	{
+		super(ctx, ID, trxName);
+	}	//	MLBRNFLineTax
 
 	/**
 	 *  Load Constructor
@@ -61,97 +50,72 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax {
 	public MLBRNFLineTax (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MLBRNFLineTax
 	
 	/**
-	 * Constructor
-	 * @param ctx
-	 * @param LBR_TaxGroup_ID
-	 * @param LBR_NotaFiscalLine_ID
-	 * @param lbr_TaxBaseAmt
-	 * @param lbr_TaxAmt
-	 * @param lbr_TaxRate
-	 * @param lbr_TaxBase
-	 * @param description
-	 * @param trx
+	 *  Load Constructor
+	 *  @param ctx context
+	 *  @param rs result set record
+	 *  @param trxName transaction
 	 */
-	public MLBRNFLineTax(Properties ctx, int LBR_TaxGroup_ID, int LBR_NotaFiscalLine_ID,
-			BigDecimal lbr_TaxBaseAmt, BigDecimal lbr_TaxAmt, BigDecimal lbr_TaxRate,
-			BigDecimal lbr_TaxBase, String description, int AD_Org_ID, String trx){
-		super(ctx,0,trx);
-		setAD_Org_ID(AD_Org_ID);
-		setLBR_TaxGroup_ID(LBR_TaxGroup_ID);
-		setLBR_NotaFiscalLine_ID(LBR_NotaFiscalLine_ID);
-		setlbr_TaxBaseAmt(lbr_TaxBaseAmt.setScale(TaxBR.SCALE, TaxBR.ROUND));
-		setlbr_TaxAmt(lbr_TaxAmt.setScale(TaxBR.SCALE, TaxBR.ROUND));
-		setlbr_TaxRate(lbr_TaxRate.setScale(TaxBR.SCALE, TaxBR.ROUND));
-		setlbr_TaxBase(lbr_TaxBase.setScale(TaxBR.SCALE, TaxBR.ROUND));
-		setDescription(description);
-	}
+	public MLBRNFLineTax (MLBRNotaFiscalLine nfl)
+	{
+		super(nfl.getCtx(), 0, nfl.get_TrxName());
+		//
+		setLBR_NotaFiscalLine_ID(nfl.getLBR_NotaFiscalLine_ID());
+	}	//	MLBRNFLineTax
+	
+	public String getTaxStatus (boolean isSOTrx)
+	{
+		if (getLBR_TaxStatus_ID() <= 0)
+			return "";
+		//
+		if (!isSOTrx 
+				&& getLBR_TaxStatus().getPO_Name() != null
+				&& getLBR_TaxStatus().getPO_Name().length() > 0)
+			return getLBR_TaxStatus().getPO_Name();
+		//
+		return getLBR_TaxStatus().getName();
+	}	//	getTaxStatus
 	
 	/**
-	 * Cria registros na tabela LBR_NFLineTax
-	 * @param ctx
-	 * @param C_InvoiceLine_ID
-	 * @param LBR_NotaFiscalLine_ID
-	 * @param trx
+	 * 		Grava os impostos
+	 * 	@param tl
 	 */
-	public static boolean createLBR_NFLineTax(Properties ctx, int C_InvoiceLine_ID, int LBR_NotaFiscalLine_ID, int AD_Org_ID, String trx){
-
-		MInvoiceLine iLine = new MInvoiceLine(ctx,C_InvoiceLine_ID,trx);
-		
-		X_LBR_TaxName[] taxesName = ImpostoBR.getLBR_TaxName(ctx, C_InvoiceLine_ID, false, trx);
-		Map<Integer,X_LBR_TaxLine> lTaxes = MLBRTax.getLines(ctx, iLine.get_ValueAsInt("LBR_Tax_ID"), trx);
-
-		for (X_LBR_TaxName taxName : taxesName){
-
-			if (lTaxes.containsKey(taxName.get_ID())){
-
-				X_LBR_TaxLine taxLine = lTaxes.get(taxName.get_ID());
-				int C_Tax_ID = MLBRTax.getC_Tax_ID(iLine.getC_Tax_ID(), taxName.get_ID(), trx);
-				if (C_Tax_ID > 0 && taxLine.islbr_PostTax()){
-
-					MTax tax = new MTax(ctx,C_Tax_ID,trx);
-					int LBR_TaxGroup_ID = tax.get_ValueAsInt("LBR_TaxGroup_ID");
-					
-					MInvoiceTax iTax = TaxBR.getMInvoiceTax(ctx,iLine.getC_Invoice_ID(),tax.get_ID(),trx);
-					
-					if (LBR_TaxGroup_ID > 0 && iTax.getTaxAmt().signum() != 0) {
-						MLBRNFLineTax nfLineTax = 
-							new MLBRNFLineTax(ctx,LBR_TaxGroup_ID,LBR_NotaFiscalLine_ID,taxLine.getlbr_TaxBaseAmt(),
-								taxLine.getlbr_TaxAmt().multiply(new BigDecimal(iTax.getTaxAmt().signum())),
-								taxLine.getlbr_TaxRate(), taxLine.getlbr_TaxBase(), null, AD_Org_ID, trx);
-						if (!nfLineTax.save(trx)){
-							log.severe("Erro ao salvar LBR_NFLineTax." +
-									   " LBR_NotaFiscalLine_ID = " + LBR_NotaFiscalLine_ID +
-									   " LBR_TaxGroup_ID = " + LBR_TaxGroup_ID);
-							return false;
-						}
-					} //if TaxGroup
-
-				} //if PostTax/C_Tax_ID
-
-			} //if TaxName
-
-		}//loop TaxName
-		
-		return true;
-	} //createLBR_NFLineTax
+	public void setTaxes (MLBRTaxLine tl)
+	{
+		if (tl == null)
+			return;
+		//
+		setlbr_TaxAmt(tl.getlbr_TaxAmt());
+		setlbr_TaxBase(tl.getlbr_TaxBase());
+		setlbr_TaxBaseAmt(tl.getlbr_TaxBaseAmt());
+		setlbr_TaxRate(tl.getlbr_TaxRate());
+		//
+		setLBR_TaxStatus_ID(tl.getLBR_TaxStatus_ID());
+		setLBR_LegalMessage_ID(tl.getLBR_LegalMessage_ID());
+	}	//	setTaxes
 	
 	/**
-	 * Quando atualizar a LBR_NFLineTax, atualizar também a LBR_NFTax
+	 * 	Valor dos impostos que serão destacados como desconto na NF
+	 * 		Mecanismo criado para gerar NFs para Zona Franca
+	 * 
+	 * 	@param nota fiscal line
+	 * 	@return discount amount
 	 */
-	protected boolean afterSave(boolean newRecord, boolean success){
-		
-		if (newRecord || !success)
-			return true;
-		
-		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),getLBR_NotaFiscalLine_ID(),get_TrxName());
-		if (!MLBRNFTax.createLBR_NFTax(getCtx(), nfLine.getLBR_NotaFiscal_ID(), nfLine.getAD_Org_ID(), get_TrxName())){
-			return false;
+	public static BigDecimal getTaxesDiscount (MLBRNotaFiscalLine nfLine)
+	{
+		if (nfLine == null)
+			return Env.ZERO;
+		//
+		BigDecimal taxesDiscount = Env.ZERO;
+		//
+		for (MLBRNFLineTax nfLineTax : nfLine.getTaxes())
+		{
+			if (nfLineTax.getlbr_TaxRate().compareTo(Env.ZERO) == -1)
+				taxesDiscount = taxesDiscount.add (nfLineTax.getlbr_TaxAmt().abs());
 		}
-		
-		return true;
+		//
+		return taxesDiscount;
 	}
-
-} //MLBRNFLineTax
+}	//	MLBRNotaFiscal

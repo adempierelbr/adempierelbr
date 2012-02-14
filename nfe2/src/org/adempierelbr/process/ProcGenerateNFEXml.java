@@ -30,7 +30,6 @@ import org.compiere.util.CLogger;
  * 
  * @author Ricardo Santana (Kenos, www.kenos.com.br)
  * @contributor Mario Grigioni
-   @contributor Fernando de O. Moraes  - BF  [ 3169145  ]
  */
 public class ProcGenerateNFEXml extends SvrProcess 
 {
@@ -64,8 +63,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
-		
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
 		//
 		if (nf.get_Value("lbr_NFeProt") != null || nf.isProcessed())
 		{
@@ -77,15 +75,13 @@ public class ProcGenerateNFEXml extends SvrProcess
 		if (nf.getLBR_NFeLot_ID() > 0)
 		{
 			//Se lote não foi enviado apaga o lote ou processado
-			MLBRNFeLot lot = new MLBRNFeLot(getCtx(),nf.getLBR_NFeLot_ID(),get_TrxName());
+			MLBRNFeLot lot = new MLBRNFeLot(getCtx(),nf.getLBR_NFeLot_ID(),null);
 			if (lot.islbr_LotSent() && !lot.isProcessed())
 				return "Lote já enviado. Processar retorno para verificar erros.";
 			
-			//BF  3169145 
-			//if (!lot.isProcessed()){
-			if (!lot.islbr_LotSent()){
+			if (!lot.isProcessed()){
 				log.log(Level.WARNING, "Lote excluído: " + lot.getDocumentNo());
-				lot.delete(true); 
+				lot.delete(true); //Apaga Lote
 			}
 			
 			// Remove do Lote
@@ -109,7 +105,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 
 		nf.save();
 		//
-		String result = NFeXMLGenerator.geraCorpoNFe(p_LBR_NotaFiscal_ID,get_TrxName());
+		String result = NFeXMLGenerator.geraCorpoNFe(p_LBR_NotaFiscal_ID,null);
 		if (!result.equals(""))
 			return result;
 		//

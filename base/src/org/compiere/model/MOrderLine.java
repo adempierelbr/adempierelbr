@@ -793,7 +793,10 @@ public class MOrderLine extends X_C_OrderLine
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
-		if (newRecord && getParent().isComplete()) {
+		if (isProcessed())
+			return true;
+		
+		if ((newRecord && getParent().isComplete())) {
 			log.saveError("ParentComplete", Msg.translate(getCtx(), "C_OrderLine"));
 			return false;
 		}
@@ -898,8 +901,8 @@ public class MOrderLine extends X_C_OrderLine
 		}	//	SO instance
 		
 		//	FreightAmt Not used
-		if (Env.ZERO.compareTo(getFreightAmt()) != 0)
-			setFreightAmt(Env.ZERO);
+//		if (Env.ZERO.compareTo(getFreightAmt()) != 0)
+//			setFreightAmt(Env.ZERO);
 
 		//	Set Tax
 		if (getC_Tax_ID() == 0)
@@ -959,7 +962,7 @@ public class MOrderLine extends X_C_OrderLine
 	 */
 	protected boolean afterSave (boolean newRecord, boolean success)
 	{
-		if (!success)
+		if (!success || isProcessed())
 			return success;
 		if (!newRecord && is_ValueChanged("C_Tax_ID"))
 		{

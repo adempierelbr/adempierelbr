@@ -116,8 +116,8 @@ public class MItau implements I_Bank
 
 	        cnab.setlbr_CNABField34(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
 	        cnab.setlbr_CNABField35(null); //Preencher com Espaços em Branco
-	        cnab.setlbr_CNABField36(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase()); //Logradouro
-	        cnab.setlbr_CNABField37(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); //Bairro
+	        cnab.setlbr_CNABField36(RemoverAcentos.remover(boleto.getAddress()).toUpperCase()); 	//	Logradouro (Rua, Número e Complemento)
+	        cnab.setlbr_CNABField37(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); 	//	Bairro
 	        cnab.setlbr_CNABField38(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); //CEP
 	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getCity()).toUpperCase()); //Cidade
 	        cnab.setlbr_CNABField40(boleto.getRegionName()); //Estado

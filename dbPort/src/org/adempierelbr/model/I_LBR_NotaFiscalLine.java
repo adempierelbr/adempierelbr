@@ -267,8 +267,6 @@ public interface I_LBR_NotaFiscalLine
 	/** Get DI	  */
 	public int getLBR_NFDI_ID();
 
-	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException;
-
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
 
@@ -300,19 +298,19 @@ public interface I_LBR_NotaFiscalLine
     /** Column name lbr_NumAdicao */
     public static final String COLUMNNAME_lbr_NumAdicao = "lbr_NumAdicao";
 
-	/** Set Número da adição	  */
+	/** Set Numero da adição	  */
 	public void setlbr_NumAdicao (int lbr_NumAdicao);
 
-	/** Get Número da adição	  */
+	/** Get Numero da adição	  */
 	public int getlbr_NumAdicao();
 
     /** Column name lbr_NumSeqItem */
     public static final String COLUMNNAME_lbr_NumSeqItem = "lbr_NumSeqItem";
 
-	/** Set Núm. Seq. Item	  */
+	/** Set NÃºm. Seq. Item	  */
 	public void setlbr_NumSeqItem (int lbr_NumSeqItem);
 
-	/** Get Núm. Seq. Item	  */
+	/** Get NÃºm. Seq. Item	  */
 	public int getlbr_NumSeqItem();
 
     /** Column name lbr_ServiceTaxes */
@@ -341,19 +339,6 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_TaxStatus();
 
-    /** Column name lbr_TaxStatusCOFINS */
-    public static final String COLUMNNAME_lbr_TaxStatusCOFINS = "lbr_TaxStatusCOFINS";
-
-	/** Set Tax Status (COFINS).
-	  * Defines the Tax Status (COFINS)
-	  */
-	public void setlbr_TaxStatusCOFINS (String lbr_TaxStatusCOFINS);
-
-	/** Get Tax Status (COFINS).
-	  * Defines the Tax Status (COFINS)
-	  */
-	public String getlbr_TaxStatusCOFINS();
-
     /** Column name lbr_TaxStatusIPI */
     public static final String COLUMNNAME_lbr_TaxStatusIPI = "lbr_TaxStatusIPI";
 
@@ -366,19 +351,6 @@ public interface I_LBR_NotaFiscalLine
 	  * Defines the Tax Status (IPI)
 	  */
 	public String getlbr_TaxStatusIPI();
-
-    /** Column name lbr_TaxStatusPIS */
-    public static final String COLUMNNAME_lbr_TaxStatusPIS = "lbr_TaxStatusPIS";
-
-	/** Set Tax Status (PIS).
-	  * Defines the Tax Status (PIS)
-	  */
-	public void setlbr_TaxStatusPIS (String lbr_TaxStatusPIS);
-
-	/** Get Tax Status (PIS).
-	  * Defines the Tax Status (PIS)
-	  */
-	public String getlbr_TaxStatusPIS();
 
     /** Column name lbr_UOMName */
     public static final String COLUMNNAME_lbr_UOMName = "lbr_UOMName";

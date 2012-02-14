@@ -24,7 +24,7 @@ import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /** Generated Model for LBR_NotaFiscalLine
- *  @author ADempiereLBR (generated) 
+ *  @author OSEB (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_Persistent 
 {
@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110317L;
+	private static final long serialVersionUID = 20100930L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -86,9 +86,9 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public void setC_InvoiceLine_ID (int C_InvoiceLine_ID)
 	{
 		if (C_InvoiceLine_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_InvoiceLine_ID, null);
+			set_Value (COLUMNNAME_C_InvoiceLine_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+			set_Value (COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
 	}
 
 	/** Get Invoice Line.
@@ -349,11 +349,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_NCMName);
 	}
 
-	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NFDI)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NFDI.Table_Name)
-			.getPO(getLBR_NFDI_ID(), get_TrxName());	}
-
 	/** Set DI.
 		@param LBR_NFDI_ID DI	  */
 	public void setLBR_NFDI_ID (int LBR_NFDI_ID)
@@ -425,15 +420,15 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return ii.intValue();
 	}
 
-	/** Set Número da adição.
-		@param lbr_NumAdicao Número da adição	  */
+	/** Set Numero da adição.
+		@param lbr_NumAdicao Numero da adição	  */
 	public void setlbr_NumAdicao (int lbr_NumAdicao)
 	{
 		set_Value (COLUMNNAME_lbr_NumAdicao, Integer.valueOf(lbr_NumAdicao));
 	}
 
-	/** Get Número da adição.
-		@return Número da adição	  */
+	/** Get Numero da adição.
+		@return Numero da adição	  */
 	public int getlbr_NumAdicao () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NumAdicao);
@@ -442,15 +437,15 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return ii.intValue();
 	}
 
-	/** Set Núm. Seq. Item.
-		@param lbr_NumSeqItem Núm. Seq. Item	  */
+	/** Set NÃºm. Seq. Item.
+		@param lbr_NumSeqItem NÃºm. Seq. Item	  */
 	public void setlbr_NumSeqItem (int lbr_NumSeqItem)
 	{
 		set_Value (COLUMNNAME_lbr_NumSeqItem, Integer.valueOf(lbr_NumSeqItem));
 	}
 
-	/** Get Núm. Seq. Item.
-		@return Núm. Seq. Item	  */
+	/** Get NÃºm. Seq. Item.
+		@return NÃºm. Seq. Item	  */
 	public int getlbr_NumSeqItem () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NumSeqItem);
@@ -493,122 +488,36 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
 	}
 
-	/** lbr_TaxStatusCOFINS AD_Reference_ID=1120023 */
-	public static final int LBR_TAXSTATUSCOFINS_AD_Reference_ID=1120023;
-	/** 01 - Operação Tributável com Alíquota Básica = 01 */
-	public static final String LBR_TAXSTATUSCOFINS_01_OperaçãoTributávelComAlíquotaBásica = "01";
-	/** 02 - Operação Tributável com Alíquota Diferenciada = 02 */
-	public static final String LBR_TAXSTATUSCOFINS_02_OperaçãoTributávelComAlíquotaDiferenciada = "02";
-	/** 03 - Operação Tributável com Alíquota por Unidade de Medida de Produto = 03 */
-	public static final String LBR_TAXSTATUSCOFINS_03_OperaçãoTributávelComAlíquotaPorUnidadeDeMedidaDeProduto = "03";
-	/** 04 - Operação Tributável Monofásica - Revenda a Alíquota Zero = 04 */
-	public static final String LBR_TAXSTATUSCOFINS_04_OperaçãoTributávelMonofásica_RevendaAAlíquotaZero = "04";
-	/** 05 - Operação Tributável por Substituição Tributária = 05 */
-	public static final String LBR_TAXSTATUSCOFINS_05_OperaçãoTributávelPorSubstituiçãoTributária = "05";
-	/** 06 - Operação Tributável a Alíquota Zero = 06 */
-	public static final String LBR_TAXSTATUSCOFINS_06_OperaçãoTributávelAAlíquotaZero = "06";
-	/** 07 - Operação Isenta da Contribuição = 07 */
-	public static final String LBR_TAXSTATUSCOFINS_07_OperaçãoIsentaDaContribuição = "07";
-	/** 08 - Operação sem Incidência da Contribuição = 08 */
-	public static final String LBR_TAXSTATUSCOFINS_08_OperaçãoSemIncidênciaDaContribuição = "08";
-	/** 09 - Operação com Suspensão da Contribuição = 09 */
-	public static final String LBR_TAXSTATUSCOFINS_09_OperaçãoComSuspensãoDaContribuição = "09";
-	/** 49 - Outras Operações de Saída = 49 */
-	public static final String LBR_TAXSTATUSCOFINS_49_OutrasOperaçõesDeSaída = "49";
-	/** 50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno = 50 */
-	public static final String LBR_TAXSTATUSCOFINS_50_OperaçãoComDireitoACrédito_VinculadaExclusivamenteAReceitaTributadaNoMercadoInterno = "50";
-	/** 51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno = 51 */
-	public static final String LBR_TAXSTATUSCOFINS_51_OperaçãoComDireitoACréditoVinculadaExclusivamenteAReceitaNãoTributadaNoMercadoInterno = "51";
-	/** 52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação = 52 */
-	public static final String LBR_TAXSTATUSCOFINS_52_OperaçãoComDireitoACrédito_VinculadaExclusivamenteAReceitaDeExportação = "52";
-	/** 53 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno = 53 */
-	public static final String LBR_TAXSTATUSCOFINS_53_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasENão_TributadasNoMercadoInterno = "53";
-	/** 54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação = 54 */
-	public static final String LBR_TAXSTATUSCOFINS_54_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasNoMercadoInternoEDeExportação = "54";
-	/** 55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação = 55 */
-	public static final String LBR_TAXSTATUSCOFINS_55_OperaçãoComDireitoACrédito_VinculadaAReceitasNão_TributadasNoMercadoInternoEDeExportação = "55";
-	/** 56 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação = 56 */
-	public static final String LBR_TAXSTATUSCOFINS_56_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasENão_TributadasNoMercadoInternoEDeExportação = "56";
-	/** 60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno = 60 */
-	public static final String LBR_TAXSTATUSCOFINS_60_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaTributadaNoMercadoInterno = "60";
-	/** 61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno = 61 */
-	public static final String LBR_TAXSTATUSCOFINS_61_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaNão_TributadaNoMercadoInterno = "61";
-	/** 62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação = 62 */
-	public static final String LBR_TAXSTATUSCOFINS_62_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaDeExportação = "62";
-	/** 63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno = 63 */
-	public static final String LBR_TAXSTATUSCOFINS_63_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasENão_TributadasNoMercadoInterno = "63";
-	/** 64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação = 64 */
-	public static final String LBR_TAXSTATUSCOFINS_64_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasNoMercadoInternoEDeExportação = "64";
-	/** 65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação = 65 */
-	public static final String LBR_TAXSTATUSCOFINS_65_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasNão_TributadasNoMercadoInternoEDeExportação = "65";
-	/** 66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e Exp. = 66 */
-	public static final String LBR_TAXSTATUSCOFINS_66_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasENão_TributadasNoMercadoInternoEExp = "66";
-	/** 67 - Crédito Presumido - Outras Operações = 67 */
-	public static final String LBR_TAXSTATUSCOFINS_67_CréditoPresumido_OutrasOperações = "67";
-	/** 70 - Operação de Aquisição sem Direito a Crédito = 70 */
-	public static final String LBR_TAXSTATUSCOFINS_70_OperaçãoDeAquisiçãoSemDireitoACrédito = "70";
-	/** 71 - Operação de Aquisição com Isenção = 71 */
-	public static final String LBR_TAXSTATUSCOFINS_71_OperaçãoDeAquisiçãoComIsenção = "71";
-	/** 72 - Operação de Aquisição com Suspensão = 72 */
-	public static final String LBR_TAXSTATUSCOFINS_72_OperaçãoDeAquisiçãoComSuspensão = "72";
-	/** 73 - Operação de Aquisição a Alíquota Zero = 73 */
-	public static final String LBR_TAXSTATUSCOFINS_73_OperaçãoDeAquisiçãoAAlíquotaZero = "73";
-	/** 74 - Operação de Aquisição sem Incidência da Contribuição = 74 */
-	public static final String LBR_TAXSTATUSCOFINS_74_OperaçãoDeAquisiçãoSemIncidênciaDaContribuição = "74";
-	/** 75 - Operação de Aquisição por Substituição Tributária = 75 */
-	public static final String LBR_TAXSTATUSCOFINS_75_OperaçãoDeAquisiçãoPorSubstituiçãoTributária = "75";
-	/** 98 - Outras Operações de Entrada = 98 */
-	public static final String LBR_TAXSTATUSCOFINS_98_OutrasOperaçõesDeEntrada = "98";
-	/** 99 - Outras Operações = 99 */
-	public static final String LBR_TAXSTATUSCOFINS_99_OutrasOperações = "99";
-	/** Set Tax Status (COFINS).
-		@param lbr_TaxStatusCOFINS 
-		Defines the Tax Status (COFINS)
-	  */
-	public void setlbr_TaxStatusCOFINS (String lbr_TaxStatusCOFINS)
-	{
-
-		set_Value (COLUMNNAME_lbr_TaxStatusCOFINS, lbr_TaxStatusCOFINS);
-	}
-
-	/** Get Tax Status (COFINS).
-		@return Defines the Tax Status (COFINS)
-	  */
-	public String getlbr_TaxStatusCOFINS () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_TaxStatusCOFINS);
-	}
-
 	/** lbr_TaxStatusIPI AD_Reference_ID=1120000 */
 	public static final int LBR_TAXSTATUSIPI_AD_Reference_ID=1120000;
-	/** 00 - Entrada com recuperação de crédito = 00 */
-	public static final String LBR_TAXSTATUSIPI_00_EntradaComRecuperaçãoDeCrédito = "00";
-	/** 01 - Entrada tributada com alíquota zero = 01 */
-	public static final String LBR_TAXSTATUSIPI_01_EntradaTributadaComAlíquotaZero = "01";
+	/** 00 - Entrada com recuperaÃ§Ã£o de crÃ©dito = 00 */
+	public static final String LBR_TAXSTATUSIPI_00_EntradaComRecuperaÃÃ£oDeCrÃDito = "00";
+	/** 01 - Entrada tributada com alÃ­quota zero = 01 */
+	public static final String LBR_TAXSTATUSIPI_01_EntradaTributadaComAlÃ­quotaZero = "01";
 	/** 02 - Entrada isenta = 02 */
 	public static final String LBR_TAXSTATUSIPI_02_EntradaIsenta = "02";
-	/** 03 - Entrada não-tributada = 03 */
-	public static final String LBR_TAXSTATUSIPI_03_EntradaNão_Tributada = "03";
+	/** 03 - Entrada nÃ£o-tributada = 03 */
+	public static final String LBR_TAXSTATUSIPI_03_EntradaNÃ£o_Tributada = "03";
 	/** 04 - Entrada imune = 04 */
 	public static final String LBR_TAXSTATUSIPI_04_EntradaImune = "04";
-	/** 05 - Entrada com suspensão = 05 */
-	public static final String LBR_TAXSTATUSIPI_05_EntradaComSuspensão = "05";
+	/** 05 - Entrada com suspensÃ£o = 05 */
+	public static final String LBR_TAXSTATUSIPI_05_EntradaComSuspensÃ£o = "05";
 	/** 49 - Outras entradas = 49 */
 	public static final String LBR_TAXSTATUSIPI_49_OutrasEntradas = "49";
-	/** 50 - Saída tributada = 50 */
-	public static final String LBR_TAXSTATUSIPI_50_SaídaTributada = "50";
-	/** 51 - Saída tributada com alíquota zero = 51 */
-	public static final String LBR_TAXSTATUSIPI_51_SaídaTributadaComAlíquotaZero = "51";
-	/** 52 - Saída isenta = 52 */
-	public static final String LBR_TAXSTATUSIPI_52_SaídaIsenta = "52";
-	/** 53 - Saída não-tributada = 53 */
-	public static final String LBR_TAXSTATUSIPI_53_SaídaNão_Tributada = "53";
-	/** 54 - Saída imune = 54 */
-	public static final String LBR_TAXSTATUSIPI_54_SaídaImune = "54";
-	/** 55 - Saída com suspensão = 55 */
-	public static final String LBR_TAXSTATUSIPI_55_SaídaComSuspensão = "55";
-	/** 99 - Outras saídas = 99 */
-	public static final String LBR_TAXSTATUSIPI_99_OutrasSaídas = "99";
+	/** 50 - SaÃ­da tributada = 50 */
+	public static final String LBR_TAXSTATUSIPI_50_SaÃ­daTributada = "50";
+	/** 51 - SaÃ­da tributada com alÃ­quota zero = 51 */
+	public static final String LBR_TAXSTATUSIPI_51_SaÃ­daTributadaComAlÃ­quotaZero = "51";
+	/** 52 - SaÃ­da isenta = 52 */
+	public static final String LBR_TAXSTATUSIPI_52_SaÃ­daIsenta = "52";
+	/** 53 - SaÃ­da nÃ£o-tributada = 53 */
+	public static final String LBR_TAXSTATUSIPI_53_SaÃ­daNÃ£o_Tributada = "53";
+	/** 54 - SaÃ­da imune = 54 */
+	public static final String LBR_TAXSTATUSIPI_54_SaÃ­daImune = "54";
+	/** 55 - SaÃ­da com suspensÃ£o = 55 */
+	public static final String LBR_TAXSTATUSIPI_55_SaÃ­daComSuspensÃ£o = "55";
+	/** 99 - Outras saÃ­das = 99 */
+	public static final String LBR_TAXSTATUSIPI_99_OutrasSaÃ­das = "99";
 	/** Set Tax Status (IPI).
 		@param lbr_TaxStatusIPI 
 		Defines the Tax Status (IPI)
@@ -625,92 +534,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public String getlbr_TaxStatusIPI () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_TaxStatusIPI);
-	}
-
-	/** lbr_TaxStatusPIS AD_Reference_ID=1120023 */
-	public static final int LBR_TAXSTATUSPIS_AD_Reference_ID=1120023;
-	/** 01 - Operação Tributável com Alíquota Básica = 01 */
-	public static final String LBR_TAXSTATUSPIS_01_OperaçãoTributávelComAlíquotaBásica = "01";
-	/** 02 - Operação Tributável com Alíquota Diferenciada = 02 */
-	public static final String LBR_TAXSTATUSPIS_02_OperaçãoTributávelComAlíquotaDiferenciada = "02";
-	/** 03 - Operação Tributável com Alíquota por Unidade de Medida de Produto = 03 */
-	public static final String LBR_TAXSTATUSPIS_03_OperaçãoTributávelComAlíquotaPorUnidadeDeMedidaDeProduto = "03";
-	/** 04 - Operação Tributável Monofásica - Revenda a Alíquota Zero = 04 */
-	public static final String LBR_TAXSTATUSPIS_04_OperaçãoTributávelMonofásica_RevendaAAlíquotaZero = "04";
-	/** 05 - Operação Tributável por Substituição Tributária = 05 */
-	public static final String LBR_TAXSTATUSPIS_05_OperaçãoTributávelPorSubstituiçãoTributária = "05";
-	/** 06 - Operação Tributável a Alíquota Zero = 06 */
-	public static final String LBR_TAXSTATUSPIS_06_OperaçãoTributávelAAlíquotaZero = "06";
-	/** 07 - Operação Isenta da Contribuição = 07 */
-	public static final String LBR_TAXSTATUSPIS_07_OperaçãoIsentaDaContribuição = "07";
-	/** 08 - Operação sem Incidência da Contribuição = 08 */
-	public static final String LBR_TAXSTATUSPIS_08_OperaçãoSemIncidênciaDaContribuição = "08";
-	/** 09 - Operação com Suspensão da Contribuição = 09 */
-	public static final String LBR_TAXSTATUSPIS_09_OperaçãoComSuspensãoDaContribuição = "09";
-	/** 49 - Outras Operações de Saída = 49 */
-	public static final String LBR_TAXSTATUSPIS_49_OutrasOperaçõesDeSaída = "49";
-	/** 50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno = 50 */
-	public static final String LBR_TAXSTATUSPIS_50_OperaçãoComDireitoACrédito_VinculadaExclusivamenteAReceitaTributadaNoMercadoInterno = "50";
-	/** 51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno = 51 */
-	public static final String LBR_TAXSTATUSPIS_51_OperaçãoComDireitoACréditoVinculadaExclusivamenteAReceitaNãoTributadaNoMercadoInterno = "51";
-	/** 52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação = 52 */
-	public static final String LBR_TAXSTATUSPIS_52_OperaçãoComDireitoACrédito_VinculadaExclusivamenteAReceitaDeExportação = "52";
-	/** 53 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno = 53 */
-	public static final String LBR_TAXSTATUSPIS_53_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasENão_TributadasNoMercadoInterno = "53";
-	/** 54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação = 54 */
-	public static final String LBR_TAXSTATUSPIS_54_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasNoMercadoInternoEDeExportação = "54";
-	/** 55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação = 55 */
-	public static final String LBR_TAXSTATUSPIS_55_OperaçãoComDireitoACrédito_VinculadaAReceitasNão_TributadasNoMercadoInternoEDeExportação = "55";
-	/** 56 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação = 56 */
-	public static final String LBR_TAXSTATUSPIS_56_OperaçãoComDireitoACrédito_VinculadaAReceitasTributadasENão_TributadasNoMercadoInternoEDeExportação = "56";
-	/** 60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno = 60 */
-	public static final String LBR_TAXSTATUSPIS_60_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaTributadaNoMercadoInterno = "60";
-	/** 61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno = 61 */
-	public static final String LBR_TAXSTATUSPIS_61_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaNão_TributadaNoMercadoInterno = "61";
-	/** 62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação = 62 */
-	public static final String LBR_TAXSTATUSPIS_62_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaExclusivamenteAReceitaDeExportação = "62";
-	/** 63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno = 63 */
-	public static final String LBR_TAXSTATUSPIS_63_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasENão_TributadasNoMercadoInterno = "63";
-	/** 64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação = 64 */
-	public static final String LBR_TAXSTATUSPIS_64_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasNoMercadoInternoEDeExportação = "64";
-	/** 65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação = 65 */
-	public static final String LBR_TAXSTATUSPIS_65_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasNão_TributadasNoMercadoInternoEDeExportação = "65";
-	/** 66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e Exp. = 66 */
-	public static final String LBR_TAXSTATUSPIS_66_CréditoPresumido_OperaçãoDeAquisiçãoVinculadaAReceitasTributadasENão_TributadasNoMercadoInternoEExp = "66";
-	/** 67 - Crédito Presumido - Outras Operações = 67 */
-	public static final String LBR_TAXSTATUSPIS_67_CréditoPresumido_OutrasOperações = "67";
-	/** 70 - Operação de Aquisição sem Direito a Crédito = 70 */
-	public static final String LBR_TAXSTATUSPIS_70_OperaçãoDeAquisiçãoSemDireitoACrédito = "70";
-	/** 71 - Operação de Aquisição com Isenção = 71 */
-	public static final String LBR_TAXSTATUSPIS_71_OperaçãoDeAquisiçãoComIsenção = "71";
-	/** 72 - Operação de Aquisição com Suspensão = 72 */
-	public static final String LBR_TAXSTATUSPIS_72_OperaçãoDeAquisiçãoComSuspensão = "72";
-	/** 73 - Operação de Aquisição a Alíquota Zero = 73 */
-	public static final String LBR_TAXSTATUSPIS_73_OperaçãoDeAquisiçãoAAlíquotaZero = "73";
-	/** 74 - Operação de Aquisição sem Incidência da Contribuição = 74 */
-	public static final String LBR_TAXSTATUSPIS_74_OperaçãoDeAquisiçãoSemIncidênciaDaContribuição = "74";
-	/** 75 - Operação de Aquisição por Substituição Tributária = 75 */
-	public static final String LBR_TAXSTATUSPIS_75_OperaçãoDeAquisiçãoPorSubstituiçãoTributária = "75";
-	/** 98 - Outras Operações de Entrada = 98 */
-	public static final String LBR_TAXSTATUSPIS_98_OutrasOperaçõesDeEntrada = "98";
-	/** 99 - Outras Operações = 99 */
-	public static final String LBR_TAXSTATUSPIS_99_OutrasOperações = "99";
-	/** Set Tax Status (PIS).
-		@param lbr_TaxStatusPIS 
-		Defines the Tax Status (PIS)
-	  */
-	public void setlbr_TaxStatusPIS (String lbr_TaxStatusPIS)
-	{
-
-		set_Value (COLUMNNAME_lbr_TaxStatusPIS, lbr_TaxStatusPIS);
-	}
-
-	/** Get Tax Status (PIS).
-		@return Defines the Tax Status (PIS)
-	  */
-	public String getlbr_TaxStatusPIS () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_TaxStatusPIS);
 	}
 
 	/** Set UOM Name.

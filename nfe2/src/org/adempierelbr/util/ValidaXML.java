@@ -37,16 +37,25 @@ public class ValidaXML {
 		{
 			//	Grava o arquivo no tmp
 			URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-          //File xsdFile = new File(xsdPath.getPath());
 			//
 			Schema schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
 			Validator validator = schema.newValidator();
-			//Perform the validation:
+			//	Perform the validation:
 			validator.validate(new StreamSource(new StringReader(stringXml)));
 			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = fact.newDocumentBuilder();
 			builder.parse(new InputSource(new StringReader(stringXml)));
-		} catch (Exception e) {
+		} 
+		catch (IllegalArgumentException e) 
+		{
+			e.getMessage();
+		}
+		catch (SAXParseException e) 
+		{
+			e.getMessage();
+		}
+		catch (Exception e) 
+		{
 			if (e instanceof SAXParseException)
 				return "XML Parse Error on Col: "
 						+ ((SAXParseException) e).getColumnNumber()
@@ -97,12 +106,11 @@ public class ValidaXML {
 	public static String validaRetCancelamentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retCancNFe_v2.00.xsd");
 	}
-	
 	public static String validaPedInutilizacaoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "inutNFe_v2.00.xsd");
 	}
 	
 	public static String validaRetInutilizacaoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retInutNFe_v2.00.xsd");
-	}
+	}	
 }

@@ -159,4 +159,17 @@ public interface I_LBR_NCM
 	  * Search key for the record in the format required - must be unique
 	  */
 	public String getValue();
+
+    /** Column name lbr_HasSubstitution */
+    public static final String COLUMNNAME_lbr_HasSubstitution = "lbr_HasSubstitution";
+
+	/** Set Has Substitution.
+	  * Defines if the record has Substituion
+	  */
+	public void setlbr_HasSubstitution (boolean lbr_HasSubstitution);
+
+	/** Get Has Substitution.
+	  * Defines if the record has Substituion
+	  */
+	public boolean islbr_HasSubstitution();
 }

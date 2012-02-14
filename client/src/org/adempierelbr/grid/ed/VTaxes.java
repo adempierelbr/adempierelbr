@@ -134,6 +134,9 @@ public class VTaxes extends JComponent
 			setReadWrite (true);
 		setMandatory (mandatory);
 		//
+		mDelete = new CMenuItem(Msg.getMsg(Env.getCtx(), "Delete"), Env.getImageIcon ("Delete16.gif"));
+		mDelete.addActionListener(this);
+		popupMenu.add(mDelete);
 
 	}	//	VTaxes
 
@@ -258,7 +261,7 @@ public class VTaxes extends JComponent
 			if (m_value == null)
 				m_text.setText("<" + value + ">");
 			else
-				m_text.setText(m_value.toString());
+				m_text.setText(m_value.getDescription());
 		}
 	}	//	setValue
 
@@ -367,8 +370,6 @@ public class VTaxes extends JComponent
 		m_text.addActionListener(listener);
 	}   //  addActionListener
 
-	//	Field for Value Preference
-	private GridField          m_mField = null;
 	/**
 	 *  Set Field/WindowNo for ValuePreference (NOP)
 	 *  @param mField Model Field
@@ -379,10 +380,5 @@ public class VTaxes extends JComponent
 		if (m_GridField != null)
 			FieldRecordInfo.addMenu(this, popupMenu);
 	}   //  setField
-
-	@Override
-	public GridField getField() {
-		return m_mField;
-	}
 	
 }	//	VTaxes

@@ -23,7 +23,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_NFDI
- *  @author ADempiereLBR (generated) 
+ *  @author OSEB (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent 
 {
@@ -31,7 +31,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110214L;
+	private static final long serialVersionUID = 20100930L;
 
     /** Standard Constructor */
     public X_LBR_NFDI (Properties ctx, int LBR_NFDI_ID, String trxName)
@@ -40,9 +40,6 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
       /** if (LBR_NFDI_ID == 0)
         {
 			setLBR_NFDI_ID (0);
-			setLBR_NotaFiscal_ID (0);
-			setType (null);
-// 1
         } */
     }
 
@@ -108,15 +105,15 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 		return (String)get_Value(COLUMNNAME_lbr_BPRegion);
 	}
 
-	/** Set Código do exportador.
-		@param lbr_CodExportador Código do exportador	  */
+	/** Set CÛdigo do exportador.
+		@param lbr_CodExportador CÛdigo do exportador	  */
 	public void setlbr_CodExportador (String lbr_CodExportador)
 	{
 		set_Value (COLUMNNAME_lbr_CodExportador, lbr_CodExportador);
 	}
 
-	/** Get Código do exportador.
-		@return Código do exportador	  */
+	/** Get CÛdigo do exportador.
+		@return CÛdigo do exportador	  */
 	public String getlbr_CodExportador () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_CodExportador);
@@ -138,7 +135,7 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 
 	/** Set DI.
 		@param lbr_DI 
-		Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+		N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public void setlbr_DI (String lbr_DI)
 	{
@@ -146,39 +143,25 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	}
 
 	/** Get DI.
-		@return Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+		@return N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public String getlbr_DI () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_DI);
 	}
 
-	/** Set Drawback No.
-		@param lbr_Drawback 
-		Identifies the Drawback No
-	  */
-	public void setlbr_Drawback (String lbr_Drawback)
-	{
-		set_Value (COLUMNNAME_lbr_Drawback, lbr_Drawback);
-	}
-
-	/** Get Drawback No.
-		@return Identifies the Drawback No
-	  */
-	public String getlbr_Drawback () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_Drawback);
-	}
-
 	/** Set Local de Desembaraço.
-		@param lbr_LocDesemb Local de Desembaraço	  */
+		@param lbr_LocDesemb 
+		Local de Desembaraço
+	  */
 	public void setlbr_LocDesemb (String lbr_LocDesemb)
 	{
 		set_Value (COLUMNNAME_lbr_LocDesemb, lbr_LocDesemb);
 	}
 
 	/** Get Local de Desembaraço.
-		@return Local de Desembaraço	  */
+		@return Local de Desembaraço
+	  */
 	public String getlbr_LocDesemb () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_LocDesemb);
@@ -216,9 +199,9 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
 	{
 		if (LBR_NotaFiscal_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, null);
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
 	}
 
 	/** Get Nota Fiscal.
@@ -230,29 +213,5 @@ public class X_LBR_NFDI extends PO implements I_LBR_NFDI, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Type AD_Reference_ID=1120013 */
-	public static final int TYPE_AD_Reference_ID=1120013;
-	/** Declaração de Importação = 0 */
-	public static final String TYPE_DeclaraçãoDeImportação = "0";
-	/** Declaração Simplificada de Importação = 1 */
-	public static final String TYPE_DeclaraçãoSimplificadaDeImportação = "1";
-	/** Set Type.
-		@param Type 
-		Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public void setType (String Type)
-	{
-
-		set_Value (COLUMNNAME_Type, Type);
-	}
-
-	/** Get Type.
-		@return Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public String getType () 
-	{
-		return (String)get_Value(COLUMNNAME_Type);
 	}
 }
