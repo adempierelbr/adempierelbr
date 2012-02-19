@@ -154,6 +154,8 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	private VComboBox pickWarehouse = new VComboBox();
 	private CLabel labelVendor = new CLabel();
 	private CTextField fieldVendor = new CTextField(10);
+	private CLabel labelVendorValue = new CLabel();
+	private CTextField fieldVendorValue = new CTextField(10);
 	private CLabel labelProductCategory = new CLabel();
 	private VComboBox pickProductCategory = new VComboBox();
 	private CLabel labelAS = new CLabel(); // @Trifon
@@ -205,9 +207,9 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		fieldUPC.setBackground(AdempierePLAF.getInfoBackground());
 		fieldUPC.addActionListener(this);
 
-		labelSKU.setText(Msg.translate(Env.getCtx(), "SKU"));
-		fieldSKU.setBackground(AdempierePLAF.getInfoBackground());
-		fieldSKU.addActionListener(this);
+		//labelSKU.setText(Msg.translate(Env.getCtx(), "SKU"));
+		//fieldSKU.setBackground(AdempierePLAF.getInfoBackground());
+		//fieldSKU.addActionListener(this);
 
 		labelWarehouse.setText(Msg.getMsg(Env.getCtx(), "Warehouse"));
 		pickWarehouse.setBackground(AdempierePLAF.getInfoBackground());
@@ -229,6 +231,10 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		labelVendor.setText(Msg.translate(Env.getCtx(), "Vendor"));
 		fieldVendor.setBackground(AdempierePLAF.getInfoBackground());
 		fieldVendor.addActionListener(this);
+		
+		labelVendorValue.setText(Msg.translate(Env.getCtx(), "Vendor Product Value"));
+		fieldVendorValue.setBackground(AdempierePLAF.getInfoBackground());
+		fieldVendorValue.addActionListener(this);
 
 		//	Line 1
 		parameterPanel.setLayout(new ALayout());
@@ -242,10 +248,12 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		//	Line 2
 		parameterPanel.add(labelName, new ALayoutConstraint(1,0));
 		parameterPanel.add(fieldName, null);
-		parameterPanel.add(labelSKU, null);
-		parameterPanel.add(fieldSKU, null);
+		//parameterPanel.add(labelSKU, null);
+		//parameterPanel.add(fieldSKU, null);
 		parameterPanel.add(labelVendor, null);
 		parameterPanel.add(fieldVendor, null);
+		parameterPanel.add(labelVendorValue, null);
+		parameterPanel.add(fieldVendorValue, null);
 
 		// Line 3
 		parameterPanel.add(labelPriceList, new ALayoutConstraint(2,0));
@@ -254,6 +262,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		parameterPanel.add(pickProductCategory, null);
 		parameterPanel.add(labelAS, null); // @Trifon
 		parameterPanel.add(pickAS, null);  // @Trifon
+		
 
 		//	Product Attribute Instance
 		m_PAttributeButton = ConfirmPanel.createPAttributeButton(true);
@@ -410,7 +419,21 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			rs = null; pstmt = null;
 		}
 
-		m_M_Product_ID = getSelectedRowKey();
+		try {
+			sql = "SELECT M_Product_ID FROM M_Product WHERE Value = ?";
+			pstmt = DB.prepareStatement(sql, null);
+			pstmt.setString(1, (String)obj);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				m_M_Product_ID = rs.getInt(1);
+		} catch (Exception e) {
+			log.log(Level.WARNING, sql, e);
+		}
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null; pstmt = null;
+		}
 
 		sql = m_sqlSubstitute;
 		log.finest(sql);
@@ -742,6 +765,11 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		String vendor = fieldVendor.getText().toUpperCase();
 		if (!(vendor.equals("") || vendor.equals("%")))
 			where.append(" AND UPPER(bp.Name) LIKE ? AND ppo.IsCurrentVendor='Y'");
+		
+//		=> Vendor Product Value
+			String vendorProductValue = fieldVendorValue.getText().toUpperCase();
+			if (!(vendorProductValue.equals("") || vendorProductValue.equals("%")))
+				where.append(" AND UPPER(ppo.VendorProductNo) LIKE ? AND ppo.IsCurrentVendor='Y'");
 
 		return where.toString();
 	}	//	getSQLWhere
@@ -855,12 +883,22 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			pstmt.setString(index++, vendor);
 			log.fine("Vendor: " + vendor);
 		}
+		
+	    //  => Vendor Product Value
+			String vendorProductValue = fieldVendorValue.getText().toUpperCase();
+			if (!(vendorProductValue.equals("") || vendorProductValue.equals("%")))
+			{
+				if (!vendorProductValue.endsWith("%"))
+					vendorProductValue += "%";
+				pstmt.setString(index++, vendorProductValue);
+				log.fine("Vendor Product Value: " + vendorProductValue);
+			}
 
 	}   //  setParameters
 
 
 	/**************************************************************************
-	 *  Action Listener
+	 *  Action Listner
 	 *	@param e event
 	 */
 	public void actionPerformed (ActionEvent e)
@@ -878,7 +916,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		}
 		m_pAttributeWhere = null;
 
-		//	Query Product Attribute Instance
+		//	Query Product Attribure Instance
 		int row = p_table.getSelectedRow();
 		if (e.getSource().equals(m_PAttributeButton) && row != -1)
 		{
@@ -1069,6 +1107,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			}
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Margin"), "bomPriceStd(p.M_Product_ID, pr.M_PriceList_Version_ID)-bomPriceLimit(p.M_Product_ID, pr.M_PriceList_Version_ID) AS Margin", BigDecimal.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Vendor"), "bp.Name", String.class));
+			//list.add(new Info_Column(Msg.translate(Env.getCtx(), "Vendor Product Value"), "ppo.VendorProductNo", String.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "PriceLimit"), "bomPriceLimit(p.M_Product_ID, pr.M_PriceList_Version_ID) AS PriceLimit", BigDecimal.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsInstanceAttribute"), "pa.IsInstanceAttribute", Boolean.class));
 			s_productLayout = new Info_Column[list.size()];
@@ -1102,23 +1141,19 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	 * 	@param e event
 	 */
 	public void stateChanged(ChangeEvent e)
-	{		
+	{
 			if(e.getSource() instanceof CTabbedPane)
 			{
 				CTabbedPane tab = (CTabbedPane) e.getSource();
-				
+
 				if(tab.getSelectedIndex() == 4 & warehouseTbl.getRowCount() > 0)
-				{	
-					// If no warehouse row is selected in the warehouse tab, use the first warehouse
-					// row to prevent array index out of bounds. BF 3051361
-					int selectedRow = warehouseTbl.getSelectedRow();
-					if (selectedRow<0) selectedRow = 0;
-					String value = (String)warehouseTbl.getValueAt(selectedRow,0);		 
+				{
+					String value = (String)warehouseTbl.getValueAt(warehouseTbl.getSelectedRow(),0);
 					int M_Warehouse_ID = DB.getSQLValue(null, "SELECT M_Warehouse_ID FROM M_Warehouse WHERE UPPER(Name) = UPPER(?) AND AD_Client_ID=?", new Object[] { value ,Env.getAD_Client_ID(Env.getCtx())});
 					initAtpTab(M_Warehouse_ID);
-				}	
+				}
 			}
-			
+
 	}	//	stateChanged
 
 	/**

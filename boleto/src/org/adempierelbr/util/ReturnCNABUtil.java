@@ -123,8 +123,7 @@ public class ReturnCNABUtil
 						}
 
 						MPayment Payment = new MPayment(ctx,0,trx);
-						Payment.setAD_Org_ID(Invoice.getAD_Org_ID());
-						
+
 						Integer C_BankAccount_ID = boleto.getC_BankAccount_ID();
 						//
 						if (C_BankAccount_ID == null)

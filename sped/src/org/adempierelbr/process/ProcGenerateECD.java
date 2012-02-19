@@ -63,9 +63,6 @@ public class ProcGenerateECD extends SvrProcess {
 
 	/** Organização 						*/
 	private int p_AD_Org_ID = 0;
-	
-	/** Número da Ordem de Escrituração     */
-	private int p_NUM_ORD = 0;
 
 	/**	Contador de Registros	*/
 	private Map<String, ArrayList<RI250>> _I250 = new HashMap<String, ArrayList<RI250>>();
@@ -98,8 +95,6 @@ public class ProcGenerateECD extends SvrProcess {
 				p_AD_Org_ID = para[i].getParameterAsInt();
 			else if (name.equals("lbr_IndEscC"))
 				p_Type = para[i].getParameter().toString();
-			else if (name.equals("NUM_ORD"))
-				p_NUM_ORD = para[i].getParameterAsInt();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}	//	for
@@ -126,7 +121,7 @@ public class ProcGenerateECD extends SvrProcess {
 		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
 			fileName += AdempiereLBR.getFileSeparator();
 
-		fileName += "ECD_" + TextUtil.timeToString(p_DateFrom, "ddMMyyyy")
+		fileName += "SPED_" + TextUtil.timeToString(p_DateFrom, "ddMMyyyy")
 				+ TextUtil.timeToString(p_DateTo, "ddMMyyyy") + ".txt";
 
 		TextUtil.generateFile(result.toString(), fileName);
@@ -255,10 +250,10 @@ public class ProcGenerateECD extends SvrProcess {
 		//	Adiciona os saldos
 		result_BI_2.append(result_BI_2A);
 		
-		String NIRE = oi.get_ValueAsString("lbr_NIRE");
-		Timestamp dtArq = (Timestamp)oi.get_Value("lbr_DtArq");
+		String NIRE = "00.000.000.000"; //FIXME: COLOCAR CAMPO NA AD_ORG
+		Timestamp dtArq = TextUtil.stringToTime("22/12/2010", "dd/MM/yyyy"); //FIXME: COLOCAR CAMPO NA AD_ORG
 
-		RI030 rI030 = new RI030 (p_NUM_ORD, "DIARIO GERAL",
+		RI030 rI030 = new RI030 (Env.ONEHUNDRED, "DIARIO GERAL",
 				(String) oi.get_Value("lbr_LegalEntity"),
 				NIRE, (String) oi.get_Value("lbr_CNPJ"), dtArq, dtArq, lOrg.getCity());
 		result_BI_1.append(rI030);
@@ -286,7 +281,7 @@ public class ProcGenerateECD extends SvrProcess {
 		result.append(result_BI_3);
 		result.append(new RI990());
 		//
-		RJ900 rJ900 = new RJ900 (p_NUM_ORD, p_Type,
+		RJ900 rJ900 = new RJ900 (p_Type,
 				(String) oi.get_Value("lbr_LegalEntity"), p_DateFrom, p_DateTo);
 
 		MBPartner bpCont = new MBPartner (ctx, (Integer) oi.get_Value("LBR_BP_Accountant_ID"), null);

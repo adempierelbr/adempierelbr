@@ -47,7 +47,6 @@ import com.thoughtworks.xstream.XStream;
 
 import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeConsulta2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferecepcao2.NfeRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
@@ -78,9 +77,6 @@ public abstract class NFeUtil
 
 	/** Reference NFeStatus */
 	public static final int NFeReference   = 1100004;
-	
-	/** Namespace padrão da NF-e */
-	public static final String NAMESPACE_NFE = "xmlns=\"http://www.portalfiscal.inf.br/nfe\"";
 
 	/**
 	 * Gera o cabeçalho da NFe
@@ -88,7 +84,7 @@ public abstract class NFeUtil
 	 * @return cabecalho
 	 */
 	public static String geraCabecNFe(){
-		String cabecalho = "<NFe " + NAMESPACE_NFE + ">";
+		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
 		return cabecalho;
 	} //geraCabecNFe
 
@@ -109,7 +105,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraCabecDistribuicao(){
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-		 "<nfeProc " + NAMESPACE_NFE + " versao=\"" + VERSAO + "\">";
+		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"  versao=\"" + VERSAO + "\">";
 
 		return cabecalho;
 	}
@@ -129,7 +125,7 @@ public abstract class NFeUtil
 	public static String geraRodapDistribuicao (String chNFe, String nProt, String tpAmb, String dhRecbto,
 			                                    String digVal, String cStat, String xMotivo)
 	{
-		String dados = 	"<protNFe " + NAMESPACE_NFE + " versao=\"" + VERSAO + "\"><infProt>" +
+		String dados = 	"<protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"" + VERSAO + "\"><infProt>" +
 				        "<tpAmb>"+tpAmb+"</tpAmb>" +
 				        "<verAplic>"+VERSAO_APP+"</verAplic>" +
 				        "<chNFe>"+chNFe+"</chNFe>" +
@@ -141,43 +137,6 @@ public abstract class NFeUtil
 
 		return dados;
 	}	//	RodapDistribuicao
-	
-	/**
-	 * Método para gerar cabeçalho status da NFe
-	 * @param region
-	 * @return NfeConsulta2Stub.NfeCabecMsgE
-	 */
-	public static NfeConsulta2Stub.NfeCabecMsgE geraCabecConsulta(String region){
-
-		NfeConsulta2Stub.NfeCabecMsg cabecMsg = new NfeConsulta2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeConsulta2Stub.NfeCabecMsgE cabecMsgE = new NfeConsulta2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecConsulta
-	
-	/**
-	 * Método para gerar dados para consulta da NFe
-	 * @param envType
-	 * @param region
-	 * @return msg
-	 */
-	public static String geraMsgConsulta(String envType, String chNFe){
-
-		String msg =
-			"<nfeDadosMsg>" +
-		    	"<consSitNFe versao=\"" + VERSAO + "\" " + NAMESPACE_NFE + ">" +
-		        	"<tpAmb>"+envType+"</tpAmb>" +
-		        	"<xServ>CONSULTAR</xServ>" +
-		        	"<chNFe>"+chNFe+"</chNFe>"+
-		        "</consSitNFe>" +
-		    "</nfeDadosMsg>";
-
-		return msg;
-	} //geraMsgConsulta
 
 	/**
 	 * Método para gerar cabeçalho status serviço NF 2.00
@@ -206,7 +165,7 @@ public abstract class NFeUtil
 
 		String msg =
 			"<nfeDadosMsg>" +
-		    	"<consStatServ versao=\"" + VERSAO + "\" " + NAMESPACE_NFE + ">" +
+		    	"<consStatServ versao=\"" + VERSAO + "\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
 		        	"<tpAmb>"+envType+"</tpAmb>" +
 		        	"<cUF>"+region+"</cUF>" +
 		        	"<xServ>STATUS</xServ>" +
@@ -257,7 +216,7 @@ public abstract class NFeUtil
 
 		String msg =
 			"<nfeDadosMsg>" +
-				"<ConsCad " + NAMESPACE_NFE + " versao=\"2.00\">" +
+				"<ConsCad xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
 					"<infCons>" +
 		        		"<xServ>CONS-CAD</xServ>" +
 		        		"<UF>"+region+"</UF>" +
@@ -276,7 +235,7 @@ public abstract class NFeUtil
 	 * @return Cabeçalho do lote
 	 */
 	public static String geraCabecLoteNFe (String lote){
-		String cabecalho = "<enviNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
+		String cabecalho = "<enviNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
 	   "<idLote>"+lote+"</idLote>";
 
 		return cabecalho;
@@ -324,7 +283,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraMsgRetRecepcao (String recibo, String envType)
 	{
-		String msg = 	"<consReciNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
+		String msg = 	"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
 							"<tpAmb>"+envType+"</tpAmb>" +
 						"<nRec>"+recibo+"</nRec>"+
 						"</consReciNFe>";
@@ -358,7 +317,7 @@ public abstract class NFeUtil
 	 */
 	public static String geraMsgCancelamento (String chNFe, String protocolNFe, String envType, String motivo)
 	{
-		String msg = "<cancNFe " + NAMESPACE_NFE + " versao=\"2.00\">" +
+		String msg = "<cancNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
 							  "<infCanc Id=\"ID"+chNFe+"\">"+
 						          "<tpAmb>"+envType+"</tpAmb>"+
 						          "<xServ>CANCELAR</xServ>"+
@@ -478,9 +437,6 @@ public abstract class NFeUtil
 						i = endTag;
 				}
 				
-			}
-			else{ //BF - se não tiver ">" fica em loop infinito
-				break;
 			}
 		}
 					
@@ -684,10 +640,9 @@ public abstract class NFeUtil
         }
         return result;
     }
-	
+
 	/**
 	 * 	Cabeçalho da Inutilização
-	 * 
 	 * @param region
 	 * @return
 	 */
@@ -702,7 +657,7 @@ public abstract class NFeUtil
 
 		return cabecMsgE;
 	}	//	geraCabecInutilizacao
-
+	
 	/**
 	 * 	Gera o XML para inutilização da NF
 	 * 
@@ -725,7 +680,7 @@ public abstract class NFeUtil
 		//
 		return inut.toString();
 	}	//	geraInutilizacao
-	
+
 	/**
 	 * 	packageNameOfClass
 	 *

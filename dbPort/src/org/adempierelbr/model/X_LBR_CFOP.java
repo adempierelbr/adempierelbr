@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_CFOP
- *  @author ADempiereLBR (generated) 
+ *  @author OSEB (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20100930L;
 
     /** Standard Constructor */
     public X_LBR_CFOP (Properties ctx, int LBR_CFOP_ID, String trxName)
@@ -39,8 +39,6 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
       /** if (LBR_CFOP_ID == 0)
         {
 			setLBR_CFOP_ID (0);
-			setlbr_IsService (false);
-// N
 			setValue (null);
         } */
     }
@@ -111,30 +109,6 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Is Service.
-		@param lbr_IsService 
-		Defines if the lines is a Service
-	  */
-	public void setlbr_IsService (boolean lbr_IsService)
-	{
-		set_Value (COLUMNNAME_lbr_IsService, Boolean.valueOf(lbr_IsService));
-	}
-
-	/** Get Is Service.
-		@return Defines if the lines is a Service
-	  */
-	public boolean islbr_IsService () 
-	{
-		Object oo = get_Value(COLUMNNAME_lbr_IsService);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
 	}
 
 	/** Set Search Key.

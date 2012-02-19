@@ -20,10 +20,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.swing.JButton;
@@ -40,6 +45,7 @@ import org.compiere.grid.ed.VLookup;
 import org.compiere.grid.ed.VNumber;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
+import org.compiere.model.MLookupInfo;
 import org.compiere.swing.CDialog;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CPanel;
@@ -50,8 +56,6 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
 /**
- *	VTaxesDialog
- *
  *	Taxes Dialog
  *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
@@ -59,12 +63,19 @@ import org.compiere.util.Msg;
  *
  *	@version $Id: VTaxesDialog.java, 14/11/2007 13:45:00 mgrigioni
  */
-public class VTaxesDialog extends CDialog implements ActionListener
+public class VTaxesDialog extends CDialog implements ActionListener, VetoableChangeListener
 {
 	/**
 	 * Serial
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 	Mapa para definir o WHERE do TaxStatus
+	 */
+	private Map <VLookup, LineTax> map = new HashMap <VLookup, LineTax> (); 
+
+	int vSequence = 0;
 
 	/**
 	 *	Organiza como as linhas de impostos são tratadas no código.
@@ -79,9 +90,12 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		VNumber   	RATE;
 		VNumber	 	BASE;
 		VCheckBox 	POST;
+		VLookup   	TAXSTATUS;
+		VLookup   	TAXLM;
+		//
+		Integer 	SEQ;
 
 		/**
-		 *
 		 * 	Constructor
 		 *
 		 * @param line
@@ -92,14 +106,18 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		 * @param post
 		 */
 		private LineTax (Integer line, JButton delete, VLookup tax,
-					VNumber rate, VNumber base, VCheckBox post)
+					VNumber rate, VNumber base, VLookup taxStatus, VLookup taxLM, VCheckBox post, Integer seq)
 		{
 			this.LINE		=line;
 			this.DELETE		=delete;
 			this.TAX		=tax;
 			this.RATE		=rate;
 			this.BASE		=base;
+			this.TAXSTATUS	=taxStatus;
+			this.TAXLM		=taxLM;
 			this.POST		=post;
+			//
+			this.SEQ		=seq;
 		}	//	LineTax
 	}	//	LineTax
 
@@ -126,12 +144,14 @@ public class VTaxesDialog extends CDialog implements ActionListener
 			m_tax = new MLBRTax (Env.getCtx(), 0, null);
 		//
 		//	Overwrite title
-		if (m_tax.getLBR_Tax_ID() == 0){
+		if (m_tax.getLBR_Tax_ID() == 0)
+		{
 			setTitle(Msg.getMsg(Env.getCtx(), "New"));
 			initTaxes();
 			addLine();
 		}
-		else{
+		else
+		{
 			setTitle(Msg.getMsg(Env.getCtx(), "Update"));
 			initTaxes();
 			getLines();
@@ -151,14 +171,16 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	//
 	private JScrollPane scrollPanel = new JScrollPane(mainPanel,
 		    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	private BorderLayout  panelLayout   = new BorderLayout();
 	private GridBagLayout gridBagLayout = new GridBagLayout();
 	//
 	private CLabel		lSelect  = new CLabel(Msg.translate(Env.getCtx(), "Delete"));
 	private CLabel		lTax     = new CLabel(Msg.translate(Env.getCtx(), "LBR_TaxName_ID"));
-	private CLabel		lRate    = new CLabel(Msg.translate(Env.getCtx(), "lbr_TaxRate"));
-	private CLabel		lBase    = new CLabel(Msg.translate(Env.getCtx(), "lbr_TaxBase"));
+	private CLabel		lRate    = new CLabel("% " + Msg.translate(Env.getCtx(), "lbr_TaxRate"));
+	private CLabel		lBase    = new CLabel("% Red. " + Msg.translate(Env.getCtx(), "lbr_TaxBase"));
+	private CLabel		lTaxStatus = new CLabel(Msg.translate(Env.getCtx(), "LBR_TaxStatus_ID"));
+	private CLabel		lTaxLM   = new CLabel(Msg.translate(Env.getCtx(), "LBR_LegalMessage_ID"));
 	private CLabel		lPost    = new CLabel(Msg.translate(Env.getCtx(), "lbr_PostTax"));
 	//
 	private ArrayList<Integer> toDelete  = new ArrayList<Integer>();
@@ -184,7 +206,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		panelLayout.setHgap(5);
 		panelLayout.setVgap(5);
-		panel.setPreferredSize(new Dimension(750,270));
+		panel.setPreferredSize(new Dimension(500,270));
 		//
 		getContentPane().add(panel);
 		panel.add(scrollPanel, BorderLayout.CENTER);
@@ -201,6 +223,8 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		delRecordButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete"));
 		confirmPanel.addComponent(delRecordButton);
 		delRecordButton.addActionListener(this);
+		//
+		Env.setContext(Env.getCtx(), 0, "WHERE|ZERO", 0);
 		//
 		confirmPanel.addActionListener(this);
 	}	//	jbInit
@@ -233,8 +257,16 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		gbc.gridx = 3;
 		lBase.setHorizontalAlignment(SwingConstants.CENTER);
 		mainPanel.add(lBase, gbc);
-		//	Contabilizar
+		//	Tax Status
 		gbc.gridx = 4;
+		lTaxStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		mainPanel.add(lTaxStatus, gbc);
+		//	Tax Legal Message
+		gbc.gridx = 5;
+		lTaxLM.setHorizontalAlignment(SwingConstants.CENTER);
+		mainPanel.add(lTaxLM, gbc);
+		//	Contabilizar
+		gbc.gridx = 6;
 		lPost.setHorizontalAlignment(SwingConstants.CENTER);
 		mainPanel.add(lPost, gbc);
 		//	Update UI
@@ -251,6 +283,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//
 		MLookup TaxL = MLookupFactory.get (Env.getCtx(), 0, 0, 1000221, DisplayType.Search);
 		VLookup vTax = new VLookup ("LBR_TaxName_ID", true, false, true, TaxL);
+		vTax.addVetoableChangeListener(this);
 		//
 		VNumber vRate = new VNumber();
 		vRate.setValue(Env.ZERO);
@@ -258,10 +291,20 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		VNumber vBase = new VNumber();
 		vBase.setValue(Env.ZERO);
 		//
+		String where = "LBR_TaxStatus.LBR_TaxName_ID=@" + vSequence + "|LBR_TaxStatus_ID@";
+		MLookupInfo info = MLookupFactory.getLookupInfo (Env.getCtx(), 0, 1106067, DisplayType.Search,
+				Env.getLanguage(Env.getCtx()), "LBR_TaxStatus_ID", 0, false, where);
+		MLookup TaxStatusL = new MLookup(info, 0);
+		VLookup vTaxStatus = new VLookup ("LBR_TaxStatus_ID", false, false, true, TaxStatusL);
+		//
+		MLookup TaxLML = MLookupFactory.get (Env.getCtx(), 0, 0, 1106066, DisplayType.Search);
+		VLookup vTaxLM = new VLookup ("LBR_LegalMessage_ID", false, false, true, TaxLML);
+		//
 		VCheckBox vPost = new VCheckBox();
 		vPost.setValue(true);
 		//
-		LineTax lt = new LineTax(LBR_TaxLine_ID, getDelButton(), vTax, vRate, vBase, vPost);
+		Env.setContext(Env.getCtx(), 0, vSequence + "|LBR_TaxStatus_ID", 0);
+		LineTax lt = new LineTax(LBR_TaxLine_ID, getDelButton(), vTax, vRate, vBase, vTaxStatus, vTaxLM, vPost, vSequence++);
 		//
 		addLine(lt);
 	}	//	addLine
@@ -314,7 +357,15 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		mainPanel.add(lt.BASE, gbc);
 		//
 		gbc.gridx = 4;
+		mainPanel.add((VLookup) lt.TAXSTATUS, gbc);
+		//
+		gbc.gridx = 5;
+		mainPanel.add(lt.TAXLM, gbc);
+		//
+		gbc.gridx = 6;
 		mainPanel.add(lt.POST, gbc);
+		//		
+		map.put (lt.TAX, lt);
 		//
 		panel.revalidate();
 	}	//	addLine
@@ -349,7 +400,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 		//	Deletar Tudo
 		else if (e.getSource().equals(delRecordButton))
 		{
-			//FR [ 1863998 ] Criar confirmação ao apagar lbr_Impostos
+			//	FR [ 1863998 ] Criar confirmação ao apagar lbr_Impostos
 			if (ADialog.ask(1, this, Msg.translate(Env.getCtx(), "DeleteRecord?"))){
 				deleteRecord();
 				m_change = true;
@@ -374,6 +425,8 @@ public class VTaxesDialog extends CDialog implements ActionListener
 						mainPanel.remove(taxLines.get(i).TAX);
 						mainPanel.remove(taxLines.get(i).RATE);
 						mainPanel.remove(taxLines.get(i).BASE);
+						mainPanel.remove(taxLines.get(i).TAXSTATUS);
+						mainPanel.remove(taxLines.get(i).TAXLM);
 						mainPanel.remove(taxLines.get(i).POST);
 						//
 						taxLines.remove(i);
@@ -431,9 +484,26 @@ public class VTaxesDialog extends CDialog implements ActionListener
 			//
 			if (value != null && value != 0)
 			{
-				BigDecimal taxRate = (BigDecimal)lTax.RATE.getValue();
-				BigDecimal taxBase = (BigDecimal)lTax.BASE.getValue();
-				Boolean post = (Boolean)lTax.POST.getValue();
+				BigDecimal taxRate = (BigDecimal) lTax.RATE.getValue();
+				BigDecimal taxBase = (BigDecimal) lTax.BASE.getValue();
+				Integer taxStatus = 0;
+				Integer taxLM = 0;
+				Boolean post = (Boolean) lTax.POST.getValue();
+				VLookup look = ((VLookup) lTax.TAXSTATUS);
+				//
+				if (look.getValue() == null) 
+					; 	//	Do Nothing
+				else if (look.getValue() instanceof BigDecimal)
+					taxStatus = ((BigDecimal) look.getValue()).intValue();
+				else if (look.getValue() instanceof Integer)
+					taxStatus = (Integer) look.getValue();
+				//
+				if (lTax.TAXLM.getValue() == null) 
+					; 	//	Do Nothing
+				else if (lTax.TAXLM.getValue() instanceof BigDecimal)
+					taxLM = ((BigDecimal) lTax.TAXLM.getValue()).intValue();
+				else if (lTax.TAXLM.getValue() instanceof Integer)
+					taxLM = (Integer) lTax.TAXLM.getValue();
 				//
 				X_LBR_TaxLine taxLine = new X_LBR_TaxLine(Env.getCtx(), lTax.LINE, m_tax.get_TrxName());
 				taxLine.setLBR_Tax_ID(m_tax.getLBR_Tax_ID());
@@ -441,6 +511,8 @@ public class VTaxesDialog extends CDialog implements ActionListener
 				taxLine.setlbr_TaxRate(taxRate);
 				taxLine.setlbr_TaxBase(taxBase);
 				taxLine.setlbr_PostTax(post);
+				taxLine.setLBR_TaxStatus_ID(taxStatus.intValue());
+				taxLine.setLBR_LegalMessage_ID(taxLM.intValue());
 				taxLine.save();
 			}
 		}
@@ -500,7 +572,8 @@ public class VTaxesDialog extends CDialog implements ActionListener
 	{
 		//
 		String sql = "SELECT LBR_TaxLine_ID, LBR_TaxName_ID, " +	//	1..2
-				"lbr_TaxRate, lbr_TaxBase, lbr_PostTax " +			//	3..5
+				"lbr_TaxRate, lbr_TaxBase, LBR_TaxStatus_ID, " +	//	3..5
+				"LBR_LegalMessage_ID, lbr_PostTax " +				//	6..7
 			    "FROM LBR_TaxLine " +
 			    "WHERE LBR_Tax_ID = ?";
 		//
@@ -528,6 +601,7 @@ public class VTaxesDialog extends CDialog implements ActionListener
 				MLookup TaxL = MLookupFactory.get (Env.getCtx(), 0, 0, 1000221, DisplayType.Search);
 				VLookup vTax = new VLookup ("LBR_TaxName_ID", true, false, true, TaxL);
 				vTax.setValue(rs.getInt("LBR_TaxName_ID"));
+				Env.setContext(Env.getCtx(), 0, vSequence + "|LBR_TaxStatus_ID"	, rs.getInt("LBR_TaxName_ID"));
 				//
 				VNumber vRate = new VNumber();
 				vRate.setValue(taxRate);
@@ -535,11 +609,23 @@ public class VTaxesDialog extends CDialog implements ActionListener
 				VNumber vBase = new VNumber();
 				vBase.setValue(taxBase);
 				//
+				String where = "LBR_TaxStatus.LBR_TaxName_ID=@" + vSequence + "|LBR_TaxStatus_ID@";
+				MLookupInfo info = MLookupFactory.getLookupInfo (Env.getCtx(), 0, 1106067, DisplayType.Search,
+						Env.getLanguage(Env.getCtx()), "LBR_TaxStatus_ID", 0, false, where);
+				MLookup TaxStatusL = new MLookup(info, 0);
+				VLookup vTaxStatus = new VLookup ("LBR_TaxStatus_ID", false, false, true, TaxStatusL);
+				vTaxStatus.setValue(rs.getObject("LBR_TaxStatus_ID"));
+				//
+				MLookup TaxLML = MLookupFactory.get (Env.getCtx(), 0, 0, 1106066, DisplayType.Search);
+				VLookup vTaxLM = new VLookup ("LBR_LegalMessage_ID", false, false, true, TaxLML);
+				vTaxLM.setValue(rs.getObject("LBR_LegalMessage_ID"));
+				//
 				VCheckBox vPost = new VCheckBox();
 				boolean Post = "Y".equals(rs.getString("lbr_PostTax"));
 				vPost.setValue(Post);
 				//
-				LineTax lt = new LineTax(LBR_TaxLine_ID, getDelButton(), vTax, vRate, vBase, vPost);
+				Env.setContext(Env.getCtx(), 0, vSequence + "|LBR_TaxStatus_ID", rs.getInt("LBR_TaxName_ID"));
+				LineTax lt = new LineTax(LBR_TaxLine_ID, getDelButton(), vTax, vRate, vBase, vTaxStatus, vTaxLM, vPost, vSequence++);
 				//
 				addLine(lt);
 			}
@@ -557,4 +643,36 @@ public class VTaxesDialog extends CDialog implements ActionListener
 			addLine();
 
 	}	//	getLines
+	
+	/**
+	 * 	Limpa o contexto ao fechar a janela
+	 */
+	public void dispose ()
+	{
+		for (int i = 0; i < vSequence; i++)
+			Env.setContext(Env.getCtx(), 0, i + "|LBR_TaxStatus_ID", "");	//	Clear context
+		//
+		super.dispose();
+	}	//	dispose
+
+	/**
+	 * 	Ajusta o contexto
+	 */
+	public void vetoableChange (PropertyChangeEvent e) throws PropertyVetoException
+	{
+		if (e.getSource() instanceof VLookup)
+		{
+			VLookup tax = (VLookup) e.getSource();
+			//
+			if ("LBR_TaxName_ID".equals(tax.getName()))
+			{
+				LineTax lt = map.get(tax);
+				//
+				if (lt != null)
+				{
+					Env.setContext(Env.getCtx(), 0, lt.SEQ + "|LBR_TaxStatus_ID", (Integer) e.getNewValue());
+				}
+			}
+		}
+	}	//	vetoableChange
 }	//	VTaxesDialog

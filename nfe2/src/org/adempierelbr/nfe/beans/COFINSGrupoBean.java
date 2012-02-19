@@ -17,8 +17,26 @@ public class COFINSGrupoBean {
 	private String CST;
 	private String vBC;
 	private String pCOFINS;
+	private String qBCProd;
+	private String vAliqProd;
 	private String vCOFINS;
 	
+	public String getqBCProd()
+	{
+		return qBCProd;
+	}
+	public void setqBCProd(String qBCProd)
+	{
+		this.qBCProd = qBCProd;
+	}
+	public String getvAliqProd()
+	{
+		return vAliqProd;
+	}
+	public void setvAliqProd(String vAliqProd)
+	{
+		this.vAliqProd = vAliqProd;
+	}
 	public String getCST() {
 		return CST;
 	}

@@ -105,6 +105,21 @@ public interface I_LBR_NFLineTax
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_LegalMessage_ID */
+    public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
+
+	/** Set Legal Message.
+	  * Defines the Legal Message
+	  */
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID);
+
+	/** Get Legal Message.
+	  * Defines the Legal Message
+	  */
+	public int getLBR_LegalMessage_ID();
+
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
+
     /** Column name LBR_NFLineTax_ID */
     public static final String COLUMNNAME_LBR_NFLineTax_ID = "LBR_NFLineTax_ID";
 
@@ -132,6 +147,48 @@ public interface I_LBR_NFLineTax
 	public int getLBR_NotaFiscalLine_ID();
 
 	public org.adempierelbr.model.I_LBR_NotaFiscalLine getLBR_NotaFiscalLine() throws RuntimeException;
+
+    /** Column name LBR_TaxGroup_ID */
+    public static final String COLUMNNAME_LBR_TaxGroup_ID = "LBR_TaxGroup_ID";
+
+	/** Set Tax Group.
+	  * Defines the Tax Group
+	  */
+	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID);
+
+	/** Get Tax Group.
+	  * Defines the Tax Group
+	  */
+	public int getLBR_TaxGroup_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException;
+
+    /** Column name LBR_TaxStatus_ID */
+    public static final String COLUMNNAME_LBR_TaxStatus_ID = "LBR_TaxStatus_ID";
+
+	/** Set Tax Status	  */
+	public void setLBR_TaxStatus_ID (int LBR_TaxStatus_ID);
+
+	/** Get Tax Status	  */
+	public int getLBR_TaxStatus_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxStatus getLBR_TaxStatus() throws RuntimeException;
+
+    /** Column name Updated */
+    public static final String COLUMNNAME_Updated = "Updated";
+
+	/** Get Updated.
+	  * Date this record was updated
+	  */
+	public Timestamp getUpdated();
+
+    /** Column name UpdatedBy */
+    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
+
+	/** Get Updated By.
+	  * User who updated this records
+	  */
+	public int getUpdatedBy();
 
     /** Column name lbr_TaxAmt */
     public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
@@ -172,21 +229,6 @@ public interface I_LBR_NFLineTax
 	  */
 	public BigDecimal getlbr_TaxBaseAmt();
 
-    /** Column name LBR_TaxGroup_ID */
-    public static final String COLUMNNAME_LBR_TaxGroup_ID = "LBR_TaxGroup_ID";
-
-	/** Set Tax Group.
-	  * Defines the Tax Group
-	  */
-	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID);
-
-	/** Get Tax Group.
-	  * Defines the Tax Group
-	  */
-	public int getLBR_TaxGroup_ID();
-
-	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException;
-
     /** Column name lbr_TaxRate */
     public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
 
@@ -199,20 +241,4 @@ public interface I_LBR_NFLineTax
 	  * Indicates the Tax Rate
 	  */
 	public BigDecimal getlbr_TaxRate();
-
-    /** Column name Updated */
-    public static final String COLUMNNAME_Updated = "Updated";
-
-	/** Get Updated.
-	  * Date this record was updated
-	  */
-	public Timestamp getUpdated();
-
-    /** Column name UpdatedBy */
-    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
-
-	/** Get Updated By.
-	  * User who updated this records
-	  */
-	public int getUpdatedBy();
 }

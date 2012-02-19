@@ -148,19 +148,6 @@ public interface I_LBR_TaxConfig_Product
 	  */
 	public int getLBR_Tax_ID();
 
-    /** Column name lbr_TaxStatus */
-    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
-
-	/** Set Tax Status.
-	  * Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus);
-
-	/** Get Tax Status.
-	  * Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus();
-
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -191,4 +178,17 @@ public interface I_LBR_TaxConfig_Product
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_TaxStatus */
+    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
+
+	/** Set Tax Status.
+	  * Defines the Tax Status
+	  */
+	public void setlbr_TaxStatus (String lbr_TaxStatus);
+
+	/** Get Tax Status.
+	  * Defines the Tax Status
+	  */
+	public String getlbr_TaxStatus();
 }

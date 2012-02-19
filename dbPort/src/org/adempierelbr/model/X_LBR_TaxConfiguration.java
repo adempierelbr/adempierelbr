@@ -30,7 +30,7 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxConfiguration (Properties ctx, int LBR_TaxConfiguration_ID, String trxName)
@@ -41,10 +41,10 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 			setIsSOTrx (true);
 // Y
 			setLBR_FiscalGroup_Product_ID (0);
-			setlbr_IsPOTrx (true);
-// Y
 			setLBR_TaxConfiguration_ID (0);
 			setM_Product_ID (0);
+			setlbr_IsPOTrx (true);
+// Y
         } */
     }
 
@@ -100,30 +100,6 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 		return false;
 	}
 
-	/** lbr_ExceptionType AD_Reference_ID=1000020 */
-	public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
-	/** Product = P */
-	public static final String LBR_EXCEPTIONTYPE_Product = "P";
-	/** Fiscal Group = G */
-	public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
-	/** Set Exception Type.
-		@param lbr_ExceptionType 
-		Defines the Exception Type
-	  */
-	public void setlbr_ExceptionType (String lbr_ExceptionType)
-	{
-
-		set_Value (COLUMNNAME_lbr_ExceptionType, lbr_ExceptionType);
-	}
-
-	/** Get Exception Type.
-		@return Defines the Exception Type
-	  */
-	public String getlbr_ExceptionType () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_ExceptionType);
-	}
-
 	public org.adempierelbr.model.I_LBR_FiscalGroup_Product getLBR_FiscalGroup_Product() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_FiscalGroup_Product)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_FiscalGroup_Product.Table_Name)
@@ -150,30 +126,6 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Purchase Transaction.
-		@param lbr_IsPOTrx 
-		This is a Purchase Transaction
-	  */
-	public void setlbr_IsPOTrx (boolean lbr_IsPOTrx)
-	{
-		set_Value (COLUMNNAME_lbr_IsPOTrx, Boolean.valueOf(lbr_IsPOTrx));
-	}
-
-	/** Get Purchase Transaction.
-		@return This is a Purchase Transaction
-	  */
-	public boolean islbr_IsPOTrx () 
-	{
-		Object oo = get_Value(COLUMNNAME_lbr_IsPOTrx);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
 	}
 
 	/** Set Tax Configuration.
@@ -225,5 +177,53 @@ public class X_LBR_TaxConfiguration extends PO implements I_LBR_TaxConfiguration
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** lbr_ExceptionType AD_Reference_ID=1000020 */
+	public static final int LBR_EXCEPTIONTYPE_AD_Reference_ID=1000020;
+	/** Product = P */
+	public static final String LBR_EXCEPTIONTYPE_Product = "P";
+	/** Fiscal Group = G */
+	public static final String LBR_EXCEPTIONTYPE_FiscalGroup = "G";
+	/** Set Exception Type.
+		@param lbr_ExceptionType 
+		Defines the Exception Type
+	  */
+	public void setlbr_ExceptionType (String lbr_ExceptionType)
+	{
+
+		set_Value (COLUMNNAME_lbr_ExceptionType, lbr_ExceptionType);
+	}
+
+	/** Get Exception Type.
+		@return Defines the Exception Type
+	  */
+	public String getlbr_ExceptionType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_ExceptionType);
+	}
+
+	/** Set Purchase Transaction.
+		@param lbr_IsPOTrx 
+		This is a Purchase Transaction
+	  */
+	public void setlbr_IsPOTrx (boolean lbr_IsPOTrx)
+	{
+		set_Value (COLUMNNAME_lbr_IsPOTrx, Boolean.valueOf(lbr_IsPOTrx));
+	}
+
+	/** Get Purchase Transaction.
+		@return This is a Purchase Transaction
+	  */
+	public boolean islbr_IsPOTrx () 
+	{
+		Object oo = get_Value(COLUMNNAME_lbr_IsPOTrx);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 }

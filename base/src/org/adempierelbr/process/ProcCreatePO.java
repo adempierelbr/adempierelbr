@@ -13,22 +13,23 @@
 package org.adempierelbr.process;
 
 import java.util.Properties;
-import java.util.logging.*;
+import java.util.logging.Level;
 
-import org.adempierelbr.callout.CalloutDefineCFOP;
-import org.adempierelbr.callout.CalloutTax;
-import org.adempierelbr.util.TaxesException;
-import org.compiere.model.*;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
+import org.compiere.model.MRequisition;
+import org.compiere.model.MRequisitionLine;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
 /**
- *	ProcCreatePO
- *
- *	Process to Create lines from Requisition
+ *		Process to Create PO Lines from Requisition
  *	
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
- *	@version $Id: ProcCreatePO.java, 02/03/2008 15:17:00 mgrigioni
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li>	Compatibility to new Taxes System
+ *	@version $Id: ProcCreatePO.java, v2.0 2008/03/02 1:03:21 AM, mgrigioni Exp $
  */
 public class ProcCreatePO extends SvrProcess
 {
@@ -53,6 +54,8 @@ public class ProcCreatePO extends SvrProcess
 			else
 				log.log(Level.SEVERE, "Unknown Parameter: " + name);
 		}
+		//
+		p_C_Order_ID = getRecord_ID();
 	}	//	prepare
 
 	/**
@@ -64,63 +67,44 @@ public class ProcCreatePO extends SvrProcess
 	{
 		log.info("ProcCreatePO Process " + "Requisição: " + p_M_Requisition_ID);
 		
-		if (p_M_Requisition_ID == 0){
-			throw new IllegalArgumentException("Requisição == 0");
-		}
+		if (p_M_Requisition_ID == 0)
+			throw new IllegalArgumentException("Requisição Inválida");
 		
 		Properties ctx = getCtx();
 		String     trx = get_TrxName();
 		
-		p_C_Order_ID = getRecord_ID();
+		MRequisition requisition = new MRequisition (ctx, p_M_Requisition_ID, trx);
+		MOrder order = new MOrder (ctx, p_C_Order_ID, trx);
 		
-		MRequisition RC = new MRequisition(ctx,p_M_Requisition_ID,trx);
-		MOrder PC = new MOrder(ctx,p_C_Order_ID,trx);
-		
-		MRequisitionLine[] lines = RC.getLines();
-		for(int i=0;i<lines.length;i++){
-			
+		for(MRequisitionLine line : requisition.getLines())
+		{	
 			MOrderLine oLine = new MOrderLine(ctx,0,trx);
-			MProduct product = new MProduct(ctx,lines[i].getM_Product_ID(),trx);
-			
-			oLine.setC_Order_ID(PC.getC_Order_ID());
-			oLine.setC_BPartner_ID(PC.getC_BPartner_ID());
-			oLine.setC_BPartner_Location_ID(PC.getC_BPartner_Location_ID());
+			MProduct product = new MProduct(ctx,line.getM_Product_ID(),trx);
+			//
+			oLine.setC_Order_ID(order.getC_Order_ID());
+			oLine.setC_BPartner_ID(order.getC_BPartner_ID());
+			oLine.setC_BPartner_Location_ID(order.getC_BPartner_Location_ID());
 			oLine.setM_Product_ID(product.getM_Product_ID());
-			oLine.setM_AttributeSetInstance_ID(lines[i].getM_AttributeSetInstance_ID());
-			oLine.setC_Charge_ID(lines[i].getC_Charge_ID());
-			oLine.setQty(lines[i].getQty());
-			oLine.setPrice(lines[i].getPriceActual());
-			oLine.setDescription(lines[i].getDescription());
+			oLine.setM_AttributeSetInstance_ID(line.getM_AttributeSetInstance_ID());
+			oLine.setC_Charge_ID(line.getC_Charge_ID());
+			oLine.setQty(line.getQty());
+			oLine.setPrice(line.getPriceActual());
+			oLine.setDescription(line.getDescription());
+			oLine.save();
 			
-			//CFOP
-			Integer LBR_CFOP_ID = CalloutDefineCFOP.defineCFOP(ctx, product.getM_Product_ID(), PC, trx);
-			oLine.set_ValueOfColumn("LBR_CFOP_ID", LBR_CFOP_ID);
-			
-			//IMPOSTOS
-			CalloutTax cTax = new CalloutTax();
-			TaxesException tE = cTax.getException(ctx, PC, product, (Integer)lines[i].get_Value("LBR_Tax_ID"));
-			if (tE != null){
-				oLine.set_ValueOfColumn("LBR_Tax_ID", tE.getLBR_Tax_ID());
-				oLine.set_ValueOfColumn("LBR_LegalMessage_ID", tE.getLBR_LegalMessage_ID());
-				oLine.set_ValueOfColumn("lbr_TaxStatus", tE.getlbr_TaxStatus());
-			}
-			oLine.save(get_TrxName());
-			
-			lines[i].setC_OrderLine_ID(oLine.getC_OrderLine_ID());
-			lines[i].save(get_TrxName());
-		
+			line.setC_OrderLine_ID(oLine.getC_OrderLine_ID());
+			line.save();
 		}
 		
-		String description = RC.getDescription();
+		String description = requisition.getDescription();
 		if (description == null)
 			description = "";
 		
-		description = "Pedido No: " + PC.getDocumentNo() + " | " + description;
+		description = "Pedido No: " + order.getDocumentNo() + " | " + description;
 		
-		RC.setDescription(description);
-		RC.save(get_TrxName());
+		requisition.setDescription(description);
+		requisition.save();
 		
 		return "ProcCreatePO Process Completed " + "Requisição: " + p_M_Requisition_ID;
 	}	//	doIt
-	
-}	//ProcCreatePO
+}	//	ProcCreatePO

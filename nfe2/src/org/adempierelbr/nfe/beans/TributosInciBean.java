@@ -12,16 +12,22 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 public class TributosInciBean {
 
 	// Tributos Incidentes no Produto ou Serviço
-	
+ 
 	private ICMSBean ICMS;
 	private ImpostoIPIBean IPI;
+	@XStreamAlias(value="IPI")
+	@XStreamAsAttribute 	
+	private ImpostoIPINTBean IPINT;
 	private ImpostoDIBean II;
 	private PISBean PIS;
 	private COFINSBean COFINS;
-
+	
 	public ICMSBean getICMS() {
 		return ICMS;
 	}
@@ -37,6 +43,15 @@ public class TributosInciBean {
 	public void setIPI(ImpostoIPIBean ipi) {
 		IPI = ipi;
 	}
+ 
+	public void setIPINT(ImpostoIPINTBean ipi) {
+		IPINT = ipi;
+	}
+	
+	public ImpostoIPINTBean getIPINT() {
+		return IPINT;
+	}
+
 
 	public ImpostoDIBean getII() {
 		return II;

@@ -9,8 +9,6 @@
 	<classpathentry kind="src" path="nfse/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="gia/src"/>
-	<classpathentry kind="src" path="sacred/src"/>
-	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
@@ -41,7 +39,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-xmlbeans-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/commons-httpclient-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DSGEBrazilUtils.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere_370"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

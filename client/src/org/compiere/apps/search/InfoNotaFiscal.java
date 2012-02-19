@@ -36,6 +36,7 @@ import org.compiere.swing.CTextField;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 
 /**
  *  Info Nota Fiscal
@@ -115,7 +116,7 @@ public class InfoNotaFiscal extends Info
 	/**  Array of Column Info    */
 	private static final Info_Column[] s_nfLayout = {
 		new Info_Column(" ", "nf.LBR_NotaFiscal_ID", IDColumn.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "C_BPartner_ID"), "COALESCE((SELECT Name FROM C_BPartner bp WHERE bp.C_BPartner_ID=nf.C_BPartner_ID),nf.BPName)", String.class),
+		new Info_Column(Msg.translate(Env.getCtx(), "C_BPartner_ID"), "(SELECT Name FROM C_BPartner bp WHERE bp.C_BPartner_ID=nf.C_BPartner_ID)", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "DateDoc"), "nf.DateDoc", Timestamp.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "DocumentNo"), "nf.DocumentNo", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "lbr_NFeID"), "nf.lbr_NFeID", String.class),
@@ -176,6 +177,8 @@ public class InfoNotaFiscal extends Info
 
 		//  prepare table
 		StringBuffer where = new StringBuffer("nf.IsActive='Y'");
+		if (p_whereClause.length() > 0)
+			where.append(" AND ").append(Util.replace(p_whereClause, "LBR_NotaFiscal.", "nf."));
 		prepareTable(s_nfLayout,
 			" LBR_NotaFiscal nf",
 			where.toString(),

@@ -48,10 +48,25 @@
 		</unjar>
 	</target>
 	
-	<target name="compress">
+	<tstamp>
+	  <format property="TODAY"
+	          pattern="yyyyMMdd-HHmm"
+	          locale="en,UK"/>
+	</tstamp>
 	
-	    <!-- creates your jar with the contents inside "build_jar" -->
-	    <jar destfile="customization.jar" basedir="build_jar" duplicate="preserve" />	
+	<target name="compress">
+		<!-- creates your jar with the contents inside "build_jar" -->
+		<delete dir="build_jar/META-INF" />
+	    <jar destfile="customization.jar-${TODAY}" basedir="build_jar" duplicate="preserve">
+			<manifest>
+	            <!-- Who is building this jar? -->
+	            <attribute name="Built-By" value="${user.name}" />
+	            <!-- Information about the program itself -->
+	            <attribute name="Implementation-Vendor" value="${lbr.VENDOR}" />
+	            <attribute name="Implementation-Title" value="${lbr.TITLE}" />
+	            <attribute name="Implementation-Version" value="${lbr.VERSION}" />
+        	</manifest>
+    	</jar>
 		<delete dir="build_jar" />
 	
 	</target>

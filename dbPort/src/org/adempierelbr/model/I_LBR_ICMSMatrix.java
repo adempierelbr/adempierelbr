@@ -63,6 +63,21 @@ public interface I_LBR_ICMSMatrix
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_Region_ID */
+    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+
+	/** Set Region.
+	  * Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID);
+
+	/** Get Region.
+	  * Identifies a geographical Region
+	  */
+	public int getC_Region_ID();
+
+	public I_C_Region getC_Region() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -79,20 +94,18 @@ public interface I_LBR_ICMSMatrix
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_Region_ID */
-    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+    /** Column name Description */
+    public static final String COLUMNNAME_Description = "Description";
 
-	/** Set Region.
-	  * Identifies a geographical Region
+	/** Set Description.
+	  * Optional short description of the record
 	  */
-	public void setC_Region_ID (int C_Region_ID);
+	public void setDescription (String Description);
 
-	/** Get Region.
-	  * Identifies a geographical Region
+	/** Get Description.
+	  * Optional short description of the record
 	  */
-	public int getC_Region_ID();
-
-	public I_C_Region getC_Region() throws RuntimeException;
+	public String getDescription();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -119,6 +132,15 @@ public interface I_LBR_ICMSMatrix
 	  * Primary key table LBR_ICMSMatrix
 	  */
 	public int getLBR_ICMSMatrix_ID();
+
+    /** Column name LBR_STTax_ID */
+    public static final String COLUMNNAME_LBR_STTax_ID = "LBR_STTax_ID";
+
+	/** Set ST Tax	  */
+	public void setLBR_STTax_ID (int LBR_STTax_ID);
+
+	/** Get ST Tax	  */
+	public int getLBR_STTax_ID();
 
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
@@ -163,4 +185,17 @@ public interface I_LBR_ICMSMatrix
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
+
+	/** Set Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom);
+
+	/** Get Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom();
 }

@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-public class ICMSGrupoBean {
-
+public class ICMSGrupoBean 
+{
 	private String orig;
 	private String CST;
 	private String modBC;
@@ -21,15 +21,16 @@ public class ICMSGrupoBean {
 	private String vBC;
 	private String pICMS;
 	private String vICMS;
-	
+	private String motDesICMS;
 	private String modBCST;
 	private String pMVAST;
 	private String pRedBCST;
 	private String vBCST;
 	private String pICMSST;
 	private String vICMSST;
-	
-	public String getOrig() {
+	//
+	public String getOrig()
+	{
 		return orig;
 	}
 	public void setOrig(String orig) {
@@ -92,59 +93,79 @@ public class ICMSGrupoBean {
 	
 		this.vICMS = vICMS;
 	}
-	public String getModBCST() {		
-		return modBCST;
+	public String getmotDesICMS() {
+		return motDesICMS;
 	}
-	public void setModBCST(String modBCST) {
-		if (modBCST != null)
-			modBCST = modBCST.trim();
-		
-		this.modBCST = modBCST;
+	public void setmotDesICMS(String motDesICMS) {
+		if (motDesICMS != null)
+			motDesICMS = motDesICMS.trim();
+	
+		this.motDesICMS = motDesICMS;
 	}
-	public String getpMVAST() {
-		return pMVAST;
-	}
-	public void setpMVAST(String pMVAST) {
-		if (pMVAST != null)
-			pMVAST = pMVAST.trim();
-		
-		this.pMVAST = pMVAST;
-	}
-	public String getpRedBCST() {
+	public String getpRedBCST()
+	{
 		return pRedBCST;
 	}
-	public void setpRedBCST(String pRedBCST) {
+	public void setpRedBCST(String pRedBCST)
+	{
 		if (pRedBCST != null)
 			pRedBCST = pRedBCST.trim();
-		
+		//
 		this.pRedBCST = pRedBCST;
 	}
-	public String getvBCST() {
+	public String getvBCST()
+	{
 		return vBCST;
 	}
-	public void setvBCST(String vBCST) {
+	public void setvBCST(String vBCST)
+	{
 		if (vBCST != null)
 			vBCST = vBCST.trim();
-		
+		//
 		this.vBCST = vBCST;
 	}
-	public String getpICMSST() {
+	public String getpICMSST()
+	{
 		return pICMSST;
 	}
-	public void setpICMSST(String pICMSST) {
+	public void setpICMSST(String pICMSST)
+	{
 		if (pICMSST != null)
 			pICMSST = pICMSST.trim();
-		
+		//
 		this.pICMSST = pICMSST;
 	}
-	public String getvICMSST() {
+	public String getvICMSST()
+	{
 		return vICMSST;
 	}
-	public void setvICMSST(String vICMSST) {
+	public void setvICMSST(String vICMSST)
+	{
 		if (vICMSST != null)
 			vICMSST = vICMSST.trim();
-		
+		//
 		this.vICMSST = vICMSST;
 	}
-	
-} //ICMSGrupoBean
+	public String getModBCST()
+	{
+		return modBCST;
+	}
+	public void setModBCST(String modBCST)
+	{
+		if (modBCST != null)
+			modBCST = modBCST.trim();
+		//
+		this.modBCST = modBCST;
+	}
+	public String getpMVAST()
+	{
+		return pMVAST;
+	}
+	public void setpMVAST(String pMVAST)
+	{
+		if (pMVAST != null)
+			pMVAST = pMVAST.trim();
+		//
+		this.pMVAST = pMVAST;
+	}
+}	//	ICMSGrupoBean

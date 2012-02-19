@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -42,8 +41,7 @@ import br.gov.sp.fazenda.dsge.brazilutils.uf.ie.InscricaoEstadual;
  *	@author Mario Grigioni
  *	@contributor Ricardo Santana (www.kenos.com.br)
  *		BF [ 2808639 ] - Erro ao salvar registro na C_BPartner_Location
- *	@contributor Fernando de O. Moraes (www.faire.com.br)
- *		BF [ 3168869  ] - Erro na logica de marcar um parceiro de negocios como valido (lbr_BPTypeBRIsValid)
+ *
  *	@version $Id: ValidatorBPartner.java, 31/10/2007 10:51:00 mgrigioni
  */
 public class ValidatorBPartner implements ModelValidator
@@ -198,15 +196,6 @@ public class ValidatorBPartner implements ModelValidator
 		}
 		else
 			return "CNPJ não corresponde com a Matriz.";
-		
-		String IE = bpl.get_ValueAsString("lbr_IE");
-		String uf = bpl.getC_Location().getC_Region().getName();
-		
-		if(!(IE.trim()).equals("")){
-			if(validaIE(IE,UF.valueOf(uf)) == null){
-				return "IE inválido";
-			}
-		}
 
 		bpl.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 
@@ -219,10 +208,10 @@ public class ValidatorBPartner implements ModelValidator
 
 		boolean isValid = bp.get_ValueAsBoolean("lbr_BPTypeBRIsValid");
 
-		String  BPTypeBR = bp.get_ValueAsString("lbr_BPTypeBR");
+		String  BPTypeBR = (String)bp.get_Value("lbr_BPTypeBR");
 		String  AD_Language = bp.getAD_Language();
 
-		if (AD_Language == null || AD_Language.trim().isEmpty() || !AD_Language.equals(AdempiereLBR.AD_LANGUAGE)) return null;
+		if (AD_Language == null || AD_Language.equals("") || !AD_Language.equalsIgnoreCase("pt_BR")) return null;
 
 		//	If not validated or trying to activate an inactive record
 		if (!isValid || (bp.is_ValueChanged("IsActive") && bp.isActive())) {
@@ -246,11 +235,11 @@ public class ValidatorBPartner implements ModelValidator
 					if (!consultaCPF(CPF, AD_Client_ID, bp.get_ID())){
 						return "CPF Duplicado";
 					}
-					//BF - 3168869 
-					bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
+
 			}
 			//Else if Legal Entity - Validate CNPJ
-			else if (BPTypeBR.equalsIgnoreCase("PJ")) {
+			else if (BPTypeBR.equalsIgnoreCase("PJ"))
+			{
 				String CNPJ = (String)bp.get_Value("lbr_CNPJ");
 
 				if (CNPJ == null){
@@ -269,13 +258,9 @@ public class ValidatorBPartner implements ModelValidator
 
 				if(MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", false))
 					bp.set_CustomColumn("lbr_CNPJ", CNPJ.substring(0, 10) + "/0000-00");
-				
-				//BF - 3168869 
-				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 			}
-			else
-				//BF - 3168869 
-				bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", false);	
+
+			bp.set_ValueOfColumn("lbr_BPTypeBRIsValid", true);
 		}
 
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
@@ -503,32 +488,26 @@ public class ValidatorBPartner implements ModelValidator
 	 * @param uf
 	 * @return NULL if Invalid OR IE with onlynumbers
 	 */
-	public static String validaIE(String ie, UF uf){
-
-		if (ie == null || ie.trim().isEmpty()){
-			return "";
-		}
+	@SuppressWarnings("deprecation")
+	public static String validaIE(String ie, UF uf)
+	{
+		if (ie == null || uf == null)
+			return  "";
 		
-		if (uf != null && !ie.toUpperCase().contains("ISENT"))
+		else if (!ie.toUpperCase().contains("ISENT"))
 		{
 			InscricaoEstadual iEstadual = uf.getInscricaoEstadual();
 			iEstadual.setNumber(ie);
 			//
 			if (!iEstadual.isValid()){
-				if (iEstadual.getInvalidCause() != null){
-					log.warning(iEstadual.getInvalidCause());
+				if (iEstadual.getInvalidCause() != null)
 					return null;
-				}
-					
 				else
 					return iEstadual.getNumber();
 			}
 			else
 				return iEstadual.getNumber();
 		}
-
-		if (uf == null)
-			ie = "";
 
 		return ie;
 	} //validaIE

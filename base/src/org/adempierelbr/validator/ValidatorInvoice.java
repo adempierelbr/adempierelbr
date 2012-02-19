@@ -15,14 +15,13 @@ package org.adempierelbr.validator;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRBoleto;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.process.ProcGenerateNF;
-import org.adempierelbr.util.TaxBR;
-import org.adempierelbr.util.TaxesCalculation;
+import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MAllocationLine;
@@ -143,24 +142,28 @@ public class ValidatorInvoice implements ModelValidator
 		boolean isNew    = (TYPE_NEW == type);
 		boolean isDelete = (TYPE_BEFORE_DELETE == type);
 
-		// Executa quando uma Invoice é salva ou atualizada
-		if (po instanceof MInvoice && (isNew || isChange)){
-			return modelChange((MInvoice)po);
-		}
+		/**
+		 * 	
+		 */
+		if (po.get_TableName().equals(MInvoice.Table_Name))
+			return modelChange((MInvoice) po);
 
-		else
-
-		// Executa quando uma InvoiceLine é salva ou atualizada
-		if (po instanceof MInvoiceLine && (isChange || isNew || isDelete)){
-			return modelChange((MInvoiceLine)po, isNew, isDelete);
-		}
+		/**
+		 * 	Apaga os registros dos impostos quando a linha é apagada
+		 */
+		else if (po.get_TableName().equals(MInvoiceLine.Table_Name))
+			return modelChange((MInvoiceLine) po, type);
 
 		return null;
 	} // modelChange
 
-	// modelChange - Invoice
-	// @param MInvoice
-	public String modelChange(MInvoice invoice) throws Exception
+	/**
+	 * 
+	 * @param invoice
+	 * @return
+	 * @throws Exception
+	 */
+	public String modelChange (MInvoice invoice) throws Exception
 	{
 		int C_Order_ID = invoice.getC_Order_ID();
 		if (C_Order_ID <= 0)
@@ -202,77 +205,51 @@ public class ValidatorInvoice implements ModelValidator
 	 * @return	null or error msg
 	 * @throws Exception
 	 */
-	public String modelChange(MInvoiceLine iLine, boolean isNew, boolean isDelete) throws Exception
+	public String modelChange (MInvoiceLine iLine, int type) throws Exception
 	{
-		Properties ctx = iLine.getCtx();
-		String trx = iLine.get_TrxName();
-
-		MInvoice invoice = new MInvoice(ctx,iLine.getC_Invoice_ID(),trx);
-		int LBR_Tax_ID = iLine.get_ValueAsInt("LBR_Tax_ID");
-
-		if (isDelete)
-		{
-			if (LBR_Tax_ID != 0){
-				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
+		I_W_C_InvoiceLine iLineW = POWrapper.create(iLine, I_W_C_InvoiceLine.class);
+		//
+		if (type == TYPE_BEFORE_DELETE)
+		{			
+			if (iLineW.getLBR_Tax_ID() > 0)
+			{
+				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), iLineW.getLBR_Tax_ID() , iLine.get_TrxName());
 				lbrTax.delete(true, iLine.get_TrxName());
 			}
-		} //delete
-
-		else {
-			//PROCESSED - don't do any thing
-			if (iLine.isProcessed() || invoice.isProcessed() ||
-				invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Completed)){
-				TaxBR.deleteSummaryTax(invoice.get_ID(), false, trx);
-				return null;
-			}
-
-			if (isNew &&  LBR_Tax_ID == 0)
+		}
+		else if (type == TYPE_BEFORE_NEW && iLineW.getLBR_Tax_ID() == 0)
+		{
+			int C_OrderLine_ID = iLine.getC_OrderLine_ID();
+			if (C_OrderLine_ID != 0)
 			{
-				int C_OrderLine_ID = iLine.getC_OrderLine_ID();
-				if (C_OrderLine_ID != 0)
+				MOrderLine oLine = new MOrderLine(Env.getCtx(), C_OrderLine_ID, iLine.get_TrxName());
+				// CFOP, Sit. Tributária, Mensagem Legal
+				if (iLine.get_ValueAsInt("LBR_CFOP_ID") <= 0)
+					iLine.set_ValueOfColumn("LBR_CFOP_ID", oLine.get_Value("LBR_CFOP_ID"));
+
+				if (iLine.get_ValueAsInt("LBR_LegalMessage_ID") <= 0)
+					iLine.set_ValueOfColumn("LBR_LegalMessage_ID", oLine.get_Value("LBR_LegalMessage_ID"));
+
+				if (iLine.get_ValueAsString("lbr_TaxStatus").isEmpty())
+					iLine.set_ValueOfColumn("lbr_TaxStatus", oLine.get_Value("lbr_TaxStatus"));
+
+				if(iLine.getDescription() == null || iLine.getDescription().equals(""))
+					iLine.setDescription(oLine.getDescription());
+
+				//
+				int LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
+				if (LBR_Tax_ID != 0)
 				{
-					MOrderLine oLine = new MOrderLine(ctx, C_OrderLine_ID, trx);
-					// CFOP, Sit. Tributária, Mensagem Legal
-					if (iLine.get_ValueAsInt("LBR_CFOP_ID") <= 0)
-						iLine.set_ValueOfColumn("LBR_CFOP_ID", oLine.get_Value("LBR_CFOP_ID"));
-
-					if (iLine.get_ValueAsInt("LBR_LegalMessage_ID") <= 0)
-						iLine.set_ValueOfColumn("LBR_LegalMessage_ID", oLine.get_Value("LBR_LegalMessage_ID"));
-
-					if (iLine.get_ValueAsString("lbr_TaxStatus").isEmpty())
-						iLine.set_ValueOfColumn("lbr_TaxStatus", oLine.get_Value("lbr_TaxStatus"));
-
-					if(iLine.getDescription() == null || iLine.getDescription().equals(""))
-						iLine.setDescription(oLine.getDescription());
-
+					MLBRTax oTax = new MLBRTax(Env.getCtx(), LBR_Tax_ID, iLine.get_TrxName());
+					MLBRTax newTax = oTax.copyTo();
 					//
-					LBR_Tax_ID = oLine.get_ValueAsInt("LBR_Tax_ID");
-					if (LBR_Tax_ID != 0)
-					{
-						MLBRTax oTax = new MLBRTax(ctx, LBR_Tax_ID, trx);
-						MLBRTax newTax = oTax.copyTo();
-						//
-						iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
-					}
+					iLine.set_ValueOfColumn("LBR_Tax_ID", newTax.getLBR_Tax_ID());
 				}
-			} // new
-			else
-			{
-				// ModelChange
-				try
-				{
-					TaxesCalculation calc = new TaxesCalculation(iLine);
-					calc.modelChange();
-				}
-				catch (Exception e)
-				{
-					log.log(Level.SEVERE, "", e);
-				}
-			} // change
-		} // new or change
-
+			}
+		} // new
+		//
 		return null;
-	} // modelChange
+	} 	//	modelChange
 
 	/**
 	 * Validate Document. Called as first step of DocAction.prepareIt when you
@@ -297,19 +274,10 @@ public class ValidatorInvoice implements ModelValidator
 			if (timing == TIMING_AFTER_PREPARE){
 
 				MDocType docType = new MDocType(ctx,invoice.getC_DocTypeTarget_ID(),trx);
-				if (docType.get_ValueAsBoolean("lbr_HasFiscalDocument")){ //Gera documento fiscal
-					
-					if (invoice.get_ValueAsString("lbr_NFModel").isEmpty()){
-						//return "Necessário preencher o campo Modelo da Nota Fiscal";
-						log.warning("Modelo da Nota Fiscal não definido na Fatura");
-						
-						MDocType dt = new MDocType(ctx,invoice.getC_DocType_ID(),trx);
-						MDocType dtNF = new MDocType(ctx,dt.get_ValueAsInt("LBR_DocTypeNF_ID"),trx);
-						invoice.set_ValueOfColumn("lbr_NFModel", dtNF.get_Value("lbr_NFModel"));
-					}
-					
-					if (invoice.get_ValueAsString("lbr_NFEntrada").equals("") && 
-						!docType.get_ValueAsBoolean("lbr_IsOwnDocument"))
+				if (docType.get_ValueAsBoolean("lbr_HasFiscalDocument") && //	Gera Documento Fiscal
+					!docType.get_ValueAsBoolean("lbr_IsOwnDocument"))	   //	Não é um documento próprio
+				{
+					if (invoice.get_ValueAsString("lbr_NFEntrada").equals(""))
 					{
 						if (!invoice.isReversal())
 							return "Necessário preencher campo Referência do Pedido";
@@ -317,26 +285,15 @@ public class ValidatorInvoice implements ModelValidator
 				}
 			} //AFTER PREPARE
 
-			else if (timing == TIMING_AFTER_COMPLETE){
-
-				// DocValidate
-				try
-				{
-					TaxesCalculation calc = new TaxesCalculation(invoice);
-					calc.docValidate(timing);
-				}
-				catch (Exception e)
-				{
-					log.log(Level.SEVERE, "", e);
-				}
-
+			else if (timing == TIMING_AFTER_COMPLETE)
+			{
 				// Fix - Ajustar PaySchedule
 				MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
 				log.fine(pt.toString());
 				pt.apply(invoice);
 
 				// Validate Withhold
-				MLBRTax.validateWithhold(invoice);
+//				MLBRTax.validateWithhold(invoice);
 
 				MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 				boolean hasOpenItems      = dt.get_ValueAsBoolean("lbr_HasOpenItems");
@@ -370,7 +327,6 @@ public class ValidatorInvoice implements ModelValidator
 				} // don't have Open Items - create automatically allocation
 
 				boolean isSOTrx = true;
-				int LBR_NotaFiscal_ID = 0;
 
 				if (hasFiscalDocument && !invoice.isReversal()) {
 					if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)) {
@@ -381,11 +337,11 @@ public class ValidatorInvoice implements ModelValidator
 						isSOTrx = false;
 					} // documento de compra (entrada)
 
-					LBR_NotaFiscal_ID = ProcGenerateNF.generate(ctx, invoice, 0, isSOTrx, isOwnDocument, trx);
-					if (LBR_NotaFiscal_ID == 0)
-						return "Erro na geração da Nota Fiscal";
+					MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), 0, invoice.get_TrxName());
+					nf.generateNF(invoice, isOwnDocument);
+					nf.save();
 
-					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", LBR_NotaFiscal_ID);
+					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", nf.getLBR_NotaFiscal_ID());
 				} // geração de Documento Fiscal
 				
 				//FR 3079621 Onhate
@@ -464,7 +420,7 @@ public class ValidatorInvoice implements ModelValidator
 			else if ((timing == TIMING_BEFORE_REACTIVATE || timing == TIMING_BEFORE_VOID || timing == TIMING_BEFORE_CLOSE || timing == TIMING_BEFORE_REVERSECORRECT)) {
 
 				int whInvoice = invoice.get_ValueAsInt("LBR_Withhold_Invoice_ID");
-				if (whInvoice != 0)
+				if (whInvoice != 0 && whInvoice != invoice.getC_Invoice_ID())
 					return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
 			} //BEFORE REACTIVE AND REVERSE
 

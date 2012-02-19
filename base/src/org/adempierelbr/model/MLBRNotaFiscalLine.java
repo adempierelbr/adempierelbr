@@ -17,9 +17,20 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
-import org.adempierelbr.util.TaxBR;
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
+import org.adempierelbr.wrapper.I_W_C_OrderLine;
+import org.adempierelbr.wrapper.I_W_C_Tax;
+import org.adempierelbr.wrapper.I_W_M_Product;
+import org.compiere.model.MConversionRate;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
 import org.compiere.model.MTable;
+import org.compiere.model.MTax;
+import org.compiere.model.MUOM;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -31,14 +42,20 @@ import org.compiere.util.Env;
  *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MNotaFiscalLine.java, 08/01/2008 11:01:00 mgrigioni
+ *
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: MLBRNotaFiscalLine.java, v2.0 2011/10/15 2:52:22 AM, ralexsander Exp $
  */
 public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	/**
-	 *
+	 *	Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/** Parent					*/
+	private MLBRNotaFiscal			m_parent = null;
+	
 	/**	Process Message */
 	private String		m_processMsg = null;
 
@@ -56,9 +73,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRNotaFiscalLine(Properties ctx, int ID, String trx){
-		super(ctx,ID,trx);
-	}
+	public MLBRNotaFiscalLine (Properties ctx, int ID, String trx)
+	{
+		super(ctx, ID, trx);
+	}	//	MLBRNotaFiscalLine
 
 	/**
 	 *  Load Constructor
@@ -69,7 +87,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	public MLBRNotaFiscalLine (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MLBRNotaFiscalLine
+	
+	/**
+	 *  Constructor
+	 *  @param nf Nota Fiscal
+	 */
+	public MLBRNotaFiscalLine (MLBRNotaFiscal nf)
+	{
+		super(nf.getCtx(), 0, nf.get_TrxName());
+		setLBR_NotaFiscal_ID(nf.getLBR_NotaFiscal_ID());
+		//
+		m_parent = nf;
+	}	//	MLBRNotaFiscalLine
 
 	/**************************************************************************
 	 *  selbr_ServiceTaxes
@@ -95,151 +125,50 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	} //setlbr_ServiceTaxes
 
-	/**************************************************************************
-	 *  getTaxes
-	 *  @return X_LBR_NFLineTax[] taxes
-	 */
-	public X_LBR_NFLineTax[] getTaxes(){
-
-		String whereClause = "LBR_NotaFiscalLine_ID = ?";
-
-		MTable table = MTable.get(getCtx(), X_LBR_NFLineTax.Table_Name);
-		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
-	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID()});
-
-		List<X_LBR_NFLineTax> list = query.list();
-
-		return list.toArray(new X_LBR_NFLineTax[list.size()]);
-	} //getTaxes
 	
-	public BigDecimal getFreightAmt(){
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),getLBR_NotaFiscal_ID(),get_TrxName());
-		return getFreightAmt(nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt()),nf.getFreightAmt());
-	}
 
-	protected BigDecimal getFreightAmt(BigDecimal totalLinesAmt, BigDecimal totalFreightAmt){
+	@Deprecated
+	public BigDecimal getFreightAmt(BigDecimal totalLinesAmt, BigDecimal totalFreightAmt){
 
-		if (totalLinesAmt.signum() <= 0 || totalFreightAmt.signum() <= 0)
-			return Env.ZERO;
+//		BigDecimal lineAmt = getLineTotalAmt();
+//		BigDecimal freightAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
+//		           freightAmt = totalFreightAmt.multiply(freightAmt);
+
 		
-		BigDecimal lineAmt = getLineTotalAmt();
-		BigDecimal freightAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
-		           freightAmt = totalFreightAmt.multiply(freightAmt);
-
-		return freightAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
-	} //getFreightAmt
-	
-	public BigDecimal getInsuranceAmt(){
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),getLBR_NotaFiscal_ID(),get_TrxName());
-		return getFreightAmt(nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt()),nf.getlbr_InsuranceAmt());
-	}
-
-	protected BigDecimal getInsuranceAmt(BigDecimal totalLinesAmt, BigDecimal totalInsuranceAmt){
-
-		if (totalLinesAmt.signum() <= 0 || totalInsuranceAmt.signum() <= 0)
-			return Env.ZERO;
-		
-		BigDecimal lineAmt = getLineTotalAmt();
-		BigDecimal insuranceAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
-		           insuranceAmt = totalInsuranceAmt.multiply(insuranceAmt);
-
-		return insuranceAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
-	} //getInsuranceAmt
-	
-	public BigDecimal getDiscountAmt(){
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),getLBR_NotaFiscal_ID(),get_TrxName());
-		return getFreightAmt(nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt()),nf.getDiscountAmt());
-	}
-
-	protected BigDecimal getDiscountAmt(BigDecimal totalLinesAmt, BigDecimal totalDiscountAmt){
-
-		if (totalLinesAmt.signum() <= 0 || totalDiscountAmt.signum() <= 0)
-			return Env.ZERO;
-		
-		BigDecimal lineAmt = getLineTotalAmt();
-		BigDecimal discountAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
-		           discountAmt = totalDiscountAmt.multiply(discountAmt);
-
-		return discountAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
-	} //getDiscountAmt
-	
-	/**
-	 * Retorna a DIs da Linha
-	 * @return X_LBR_NFDI
-	 */
-	public X_LBR_NFDI getDI(){
-		
-		String   whereClause = "LBR_NotaFiscal_ID = ? AND lbr_NFDI_ID = ?";
-		Object[] parameters  = new Object[]{getLBR_NotaFiscal_ID(),getLBR_NFDI_ID()};
-		
-		MTable table = MTable.get(getCtx(), X_LBR_NFDI.Table_Name);
-		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
-	 		  query.setParameters(parameters);
-
-	 	return (X_LBR_NFDI)query.firstOnly();
-	} //getDI
-
-	public BigDecimal getTotalOperationAmt(){
-		
-		BigDecimal lineAmt      = getLineTotalAmt();
-		BigDecimal freightAmt   = getFreightAmt();		
-		BigDecimal insuranceAmt = getInsuranceAmt();
-		BigDecimal discountAmt  = getDiscountAmt().negate();
-		BigDecimal siscomexAmt  = getlbr_LineTotalSISCOMEX();
-		BigDecimal taxAmt       = getIPIAmt().add(getTaxAmt("ICMSST"));
-		
-		String cfop = getCFOP();
-		//Para operações com exterior pegar todos os impostos
-		if (cfop.startsWith("3") || cfop.startsWith("7")){
-			taxAmt = getTotalTaxAmt();
-		}
+		//	FIXME: O valor deve ser gravado em um campo criado na janela de NF
+		if (getC_InvoiceLine_ID() > 0)
+		{
+			I_W_C_InvoiceLine ilW = POWrapper.create(new MInvoiceLine (Env.getCtx(), getC_InvoiceLine_ID(), get_TrxName()), I_W_C_InvoiceLine.class);
 			
-		//VALOR LINHA + FRETE + SEGURO + SISCOMEX + IPI = VALOR TOTAL DA OPERACAO
-		return (lineAmt.add(freightAmt).add(insuranceAmt).add(siscomexAmt).add
-			   (taxAmt).add(discountAmt)).setScale(TaxBR.SCALE, TaxBR.ROUND);
-	}
-	
+			if (ilW.getFreightAmt() != null)
+				return ilW.getFreightAmt();
+		}
+		return Env.ZERO;// freightAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
+	} //getFreightAmt
+
+	@Deprecated
+	public BigDecimal getInsuranceAmt(BigDecimal totalLinesAmt, BigDecimal totalInsuranceAmt){
+
+//		BigDecimal lineAmt = getLineTotalAmt();
+//		BigDecimal insuranceAmt = lineAmt.divide(totalLinesAmt, TaxBR.MCROUND);
+//		           insuranceAmt = totalInsuranceAmt.multiply(insuranceAmt);
+
+//		FIXME: O valor deve ser gravado em um campo criado na janela de NF
+			if (getC_InvoiceLine_ID() > 0)
+			{
+				I_W_C_InvoiceLine ilW = POWrapper.create(new MInvoiceLine (Env.getCtx(), getC_InvoiceLine_ID(), get_TrxName()), I_W_C_InvoiceLine.class);
+				
+				if (ilW.getlbr_InsuranceAmt() != null)
+					return ilW.getlbr_InsuranceAmt();
+			}
+		return Env.ZERO;//insuranceAmt.setScale(TaxBR.SCALE, TaxBR.ROUND);
+	} //getInsuranceAmt
+
+
 	/**
-	 * Retorna CFOP sem formatação
-	 * Ex. CFOP 1.101 = 1101
-	 * Ex. CFOP Z.ZZZ = 0000
-	 * @return String CFOP formatação (só numeros)
-	 */
-	public String getCFOP(){
-		return TextUtil.lPad(TextUtil.toNumeric(getlbr_CFOPName()),4);
-	}
-	
-	/**
-	 * isAsset (verifica se a linha é um ativo fixo)
-	 * @return boolean
-	 */
-	public boolean isAsset(){
-		
-		boolean isAsset = false;
-		
-		//COMPRA DE ATIVO O CREDITO É LANÇADO NO BLOCO G
-		if (getCFOP().equals("1551") || getCFOP().equals("2551") || getCFOP().equals("3551"))
-			isAsset = true;
-		
-		return isAsset;
-	} //isAsset
-	
-	/**
-	 * Retorno o valor de TODOS os impostos da linha
-	 * @return TotalTaxAmt
-	 */
-	public BigDecimal getTotalTaxAmt(){
-		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
-                     "WHERE LBR_NotaFiscalLine_ID = ? AND lbr_TaxAmt >= 0 ";
-		//
-		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID()});
-		return result == null ? Env.ZERO : result;
-	} //getTotalTaxAmt
-	
-	/**
-	 * Retorno o valor do Imposto
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxAmt
+	 * Retorna o valor do Imposto
+	 *
+	 * @return BigDecimal amt
 	 */
 	public BigDecimal getTaxAmt(String taxIndicator){
 
@@ -247,8 +176,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? " +
-		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -256,8 +185,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	/**
 	 * Retorna a Base de Cálculo do Imposto
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxBaseAmt 
+	 *
+	 * @return BigDecimal amt
 	 */
 	public BigDecimal getTaxBaseAmt(String taxIndicator){
 
@@ -265,8 +194,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? " +
-		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
@@ -274,6 +203,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	/**
 	 * Retorna a redução da Base de Cálculo
+	 *
 	 * @return BigDecimal amt
 	 */
 	public BigDecimal getTaxBaseReduction(String taxIndicator){
@@ -291,8 +221,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 
 	/**
 	 * Retorna a Alíquota do Imposto
-	 * @param taxIndicator (Ex. PIS, COFINS, ICMS)
-	 * @return TaxRate 
+	 *
+	 * @return BigDecimal amt
 	 */
 	public BigDecimal getTaxRate(String taxIndicator){
 
@@ -300,8 +230,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			return Env.ZERO;
 
 		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
-		             "WHERE LBR_NotaFiscalLine_ID = ? " +
-		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "WHERE LBR_NotaFiscalLine_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscalLine_ID(),taxIndicator.toUpperCase()});
@@ -370,7 +300,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *
 	 *  @return	BigDecimal	Base ICMS
 	 */
-	public BigDecimal getICMSBaseAmt()
+	public BigDecimal getICMSBase()
 	{
 		return getTaxBaseAmt("ICMS");
 	}	//	getICMSBase
@@ -394,25 +324,6 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		return getTaxRate("ICMS");
 	}	//	getICMSRate
-	
-	/**
-	 * Formata e retorna a Situação Tributária do ICMS
-	 * 
-	 * @return String Situação Tributária do ICMS
-	 */
-	public String getCST_ICMS(){
-		String CST_ICMS = getlbr_TaxStatus();
-		
-		if (CST_ICMS == null || CST_ICMS.isEmpty() || CST_ICMS.length() != 3){
-			CST_ICMS = TextUtil.lPad(CST_ICMS, 3);
-		}
-		
-		if (CST_ICMS.equals("000") && getICMSAmt().signum() == 0){
-			CST_ICMS = "040"; //ISENTO
-		}
-		
-		return CST_ICMS;
-	} //getCST_ICMS
 
 	/**
 	 *  Retorno a LBR_NFLineTax do IPI
@@ -439,7 +350,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 *
 	 *  @return	BigDecimal	Base IPI
 	 */
-	public BigDecimal getIPIBaseAmt()
+	public BigDecimal getIPIBase()
 	{
 		return getTaxBaseAmt("IPI");
 	}	//	getIPIBase
@@ -454,75 +365,239 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		return getTaxRate("IPI");
 	}	//	getIPIRate
 	
+	
+	
+	/***	New Class	***/
+	
+	
 	/**
-	 * Formata e retorna a Situação Tributária do IPI
+	 * 		Define os valores referentes a Linha da Fatura
+	 * 	
+	 * 	@param iLine
+	 */
+	public void setInvoiceLine (MInvoiceLine iLine)
+	{
+		I_W_C_InvoiceLine iLineW = POWrapper.create (iLine, I_W_C_InvoiceLine.class);
+		
+		//	IDs
+		setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
+		setProduct (iLine.getProduct());
+		
+		//	Valores
+		setQty(iLine.getQtyEntered());
+		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList());
+		
+		setC_UOM_ID(iLine.getC_UOM_ID());
+//	TODO		setLBR_NCM_ID(iLineW.getLBR_NCM_ID());
+		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
+		
+		//	Impostos
+		MLBRTax tax = new MLBRTax (getCtx(), iLineW.getLBR_Tax_ID(), get_TrxName());
+				
+		for (MLBRTaxLine tl : tax.getLines())
+		{
+			int Child_Tax_ID = tl.getChild_Tax_ID (iLineW.getC_Tax_ID());
+			//
+			if (!tl.islbr_PostTax() || Child_Tax_ID < 1)
+				continue;
+			
+			I_W_C_Tax taxAD = POWrapper.create(new MTax (getCtx(), Child_Tax_ID, get_TrxName()), I_W_C_Tax.class);
+			
+			if (taxAD.getLBR_TaxGroup_ID() < 1)
+				continue;
+			
+			MLBRNFLineTax nfLineTax = new MLBRNFLineTax (this);
+			nfLineTax.setTaxes (tl);
+			nfLineTax.setLBR_TaxGroup_ID(taxAD.getLBR_TaxGroup_ID());
+			nfLineTax.save();
+		}
+	}	//	setInvoiceLine
+	
+	/**
+	 * 		Define os valores referentes a Linha da Fatura
+	 * 	
+	 * 	@param oLine
+	 */
+	public void setOrderLine (MOrderLine oLine, boolean isDescription)
+	{
+		I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
+		
+		//	IDs
+		if (get_ColumnIndex(MOrderLine.COLUMNNAME_C_OrderLine_ID) > 0)
+			set_CustomColumn(MOrderLine.COLUMNNAME_C_OrderLine_ID, oLine.getC_OrderLine_ID());	//	FIXME: Manter compatibilidade com LBRK, mudar quando criar todos os campos
+		setProduct (oLine.getProduct());
+		
+		if (!isDescription)
+		{
+			//	Valores
+			setQty(oLine.getQtyEntered());
+			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList());
+			
+			setC_UOM_ID(oLine.getC_UOM_ID());
+//	TODO		setLBR_NCM_ID(iLineW.getLBR_NCM_ID());
+			setLBR_CFOP_ID(oLineW.getLBR_CFOP_ID());
+//	TODO		Mover cadastro do TaxStatus para LBR_TaxLine
+			setlbr_TaxStatus(oLineW.getlbr_TaxStatus());
+		}
+	}	//	setOrderLine
+
+	/**
+	 * 		Define os preços
 	 * 
-	 * @return String Situação Tributária do IPI
+	 * 	@param 	Price
+	 * 	@param	Price List
 	 */
-	public String getCST_IPI(){
-		String CST_IPI = getlbr_TaxStatusIPI();
-		
-		if (CST_IPI == null || CST_IPI.isEmpty() || CST_IPI.length() != 2){
-			if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
-				CST_IPI = "00";
-			else
-				CST_IPI = "50";
+	public void setPrice (int C_Currency_ID, BigDecimal price, BigDecimal priceList)
+	{
+		//	Conversão
+		if (C_Currency_ID != MLBRNotaFiscal.CURRENCY_BRL)
+		{
+			price = MConversionRate.convert(Env.getCtx(), price, 
+					C_Currency_ID, MLBRNotaFiscal.CURRENCY_BRL, getAD_Client_ID(), getAD_Org_ID());
+			priceList = MConversionRate.convert(Env.getCtx(), priceList, 
+					C_Currency_ID, MLBRNotaFiscal.CURRENCY_BRL, getAD_Client_ID(), getAD_Org_ID());
 		}
-		
-		if (getIPIAmt().signum() == 0){ //ISENTO
-			if (CST_IPI.equals("00"))
-				CST_IPI = "02";
-			else if (CST_IPI.equals("50"))
-				CST_IPI = "52";
-		}
-		
-		return CST_IPI;
-	} //getCST_IPI
+		//
+		super.setPrice(price);
+		super.setPriceListAmt(priceList);
+		//
+		super.setLineTotalAmt(getPrice().multiply(getQty()));
+	}	//	setPrice
 	
 	/**
-	 * Formata e retorna a Situação Tributária do PIS
-	 * @return String Situação Tributária do PIS
+	 * 		Define qual é o produto
+	 * 	@param Product
 	 */
-	public String getCST_PIS(){
-
-		String CST_PIS = getlbr_TaxStatusPIS();
-		
-		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
-			CST_PIS = "50";
-		else
-			CST_PIS = "01";
-				
-		if (getTaxAmt("COFINS").signum() != 1){ //ISENTO
-			if (CST_PIS.equals("50"))
-				CST_PIS = "98";
-			else if (CST_PIS.equals("01"))
-				CST_PIS = "07";
+	public void setProduct (MProduct product)
+	{
+		if (product == null)
+			return;
+		//
+		I_W_M_Product productW = POWrapper.create(product, I_W_M_Product.class);
+		//
+		setM_Product_ID (product.getM_Product_ID());
+		setProductName (product.getName());
+		setProductValue (product.getValue());
+		setVendorProductNo(AdempiereLBR.getVendorProductNo(product.getM_Product_ID(), getParent().getC_BPartner_ID(), get_TrxName()));
+		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
+		//
+		setLBR_NCM_ID(productW.getLBR_NCM_ID());	//	TODO: Mover para C_OrderLine / C_InvoiceLine
+	}	//	setProduct
+	
+	/**	
+	 * 	Ajusta a Unidade de Medida
+	 */
+	public void setC_UOM_ID (int C_UOM_ID)
+	{
+		if (C_UOM_ID > 0)
+		{
+			MUOM uom = MUOM.get(getCtx(), C_UOM_ID);
+			setlbr_UOMName(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol));
 		}
-		
-		return CST_PIS;
-	} //getCST_PIS
+		//
+		super.setC_UOM_ID(C_UOM_ID);
+	}	//	setC_UOM_ID
+	
+	/**	
+	 * 	Ajusta a NCM
+	 */
+	public void setLBR_NCM_ID (int LBR_NCM_ID)
+	{
+		if (LBR_NCM_ID > 0)
+		{
+			MLBRNCM ncm = new MLBRNCM (getCtx(), LBR_NCM_ID, get_TrxName());
+			setlbr_NCMName(ncm.getValue());
+		}
+		//
+		super.setLBR_NCM_ID(LBR_NCM_ID);
+	}	//	setLBR_NCM_ID
+	
+	/**	
+	 * 	Ajusta o CFOP
+	 */
+	public void setLBR_CFOP_ID (int LBR_CFOP_ID)
+	{
+		if (LBR_CFOP_ID > 0)
+		{
+			MLBRCFOP cfop = new MLBRCFOP (getCtx(), LBR_CFOP_ID, get_TrxName());
+			setlbr_CFOPName(cfop.getValue());
+		}
+		//
+		super.setLBR_CFOP_ID(LBR_CFOP_ID);
+	}	//	setLBR_CFOP_ID
 	
 	/**
-	 * Formata e retorna a Situação Tributária do COFINS
-	 * @return String Situação Tributária do COFINS
+	 * 	Necessário para ajustar a precisão
+	 * 		de casas decimais
 	 */
-	public String getCST_COFINS(){
-		
-		String CST_COFINS = getlbr_TaxStatusCOFINS();
-		
-		if (Integer.valueOf(getCFOP().substring(0, 1)).intValue() < 5) //ENTRADA
-			CST_COFINS = "50";
-		else
-			CST_COFINS = "01";
-				
-		if (getTaxAmt("COFINS").signum() != 1){ //ISENTO
-			if (CST_COFINS.equals("50"))
-				CST_COFINS = "98";
-			else if (CST_COFINS.equals("01"))
-				CST_COFINS = "07";
+	public void setPrice (BigDecimal Price)
+	{
+		if (Price == null)
+			Price = Env.ZERO;
+		//
+		super.setPrice(Price.setScale(10, BigDecimal.ROUND_HALF_UP));
+	}	//	setPrice
+	
+	/**
+	 * 	Necessário para ajustar a precisão
+	 * 		de casas decimais
+	 */
+	public void setQty (BigDecimal Qty)
+	{
+		if (Qty == null)
+			Qty = Env.ZERO;
+		//
+		super.setQty(Qty.setScale(4, BigDecimal.ROUND_HALF_UP));
+	}	//	setQty
+	
+	/**
+	 * 	Executed before Delete operation.
+	 *	@return true if record can be deleted
+	 */
+	protected boolean beforeDelete()
+	{
+		for (MLBRNFLineTax nflt : getTaxes())
+		{
+			nflt.deleteEx(true);
 		}
-		
-		return CST_COFINS;
-	} //getCST_COFINS
+		return super.beforeDelete();
+	}	//	beforeDelete
+	
+	/**
+	 * 	Get NF Line Taxes
+	 * 	@return MLBRNFLineTax[]
+	 */
+	public MLBRNFLineTax[] getTaxes()
+	{
+		MTable table = MTable.get(getCtx(), MLBRNFLineTax.Table_Name);
+		Query query =  new Query(getCtx(), table, "LBR_NotaFiscalLine_ID=?", get_TrxName());
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscalLine_ID()});
 
-} //MNotaFiscalLine
+		List<MLBRNFLineTax> list = query.list();
+
+		return list.toArray(new MLBRNFLineTax[list.size()]);
+	}	//	getTaxes
+	
+	/**
+	 * 	Is Sales Transaction
+	 * 	@return
+	 */
+	public boolean isSOTrx ()
+	{
+		if (getParent() != null)
+			return getParent().isSOTrx();
+		//
+		return true;
+	}	//	isSOTrx
+	
+	/**
+	 * 	Get Parent
+	 *	@return parent
+	 */
+	public MLBRNotaFiscal getParent()
+	{
+		if (m_parent == null)
+			m_parent = new MLBRNotaFiscal (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
+		return m_parent;
+	}	//	getParent
+}	//	MLBRNotaFiscalLine

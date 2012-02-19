@@ -30,7 +30,7 @@ public class X_LBR_TaxConfig_Region extends PO implements I_LBR_TaxConfig_Region
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxConfig_Region (Properties ctx, int LBR_TaxConfig_Region_ID, String trxName)
@@ -204,6 +204,34 @@ public class X_LBR_TaxConfig_Region extends PO implements I_LBR_TaxConfig_Region
 		return ii.intValue();
 	}
 
+	public I_C_Region getTo_Region() throws RuntimeException
+    {
+		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+			.getPO(getTo_Region_ID(), get_TrxName());	}
+
+	/** Set To.
+		@param To_Region_ID 
+		Receiving Region
+	  */
+	public void setTo_Region_ID (int To_Region_ID)
+	{
+		if (To_Region_ID < 1) 
+			set_Value (COLUMNNAME_To_Region_ID, null);
+		else 
+			set_Value (COLUMNNAME_To_Region_ID, Integer.valueOf(To_Region_ID));
+	}
+
+	/** Get To.
+		@return Receiving Region
+	  */
+	public int getTo_Region_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_To_Region_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** lbr_TaxStatus AD_Reference_ID=1000029 */
 	public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
 	/** 00 - Tributada integralmente = 00 */
@@ -244,33 +272,5 @@ public class X_LBR_TaxConfig_Region extends PO implements I_LBR_TaxConfig_Region
 	public String getlbr_TaxStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
-	}
-
-	public I_C_Region getTo_Region() throws RuntimeException
-    {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
-			.getPO(getTo_Region_ID(), get_TrxName());	}
-
-	/** Set To.
-		@param To_Region_ID 
-		Receiving Region
-	  */
-	public void setTo_Region_ID (int To_Region_ID)
-	{
-		if (To_Region_ID < 1) 
-			set_Value (COLUMNNAME_To_Region_ID, null);
-		else 
-			set_Value (COLUMNNAME_To_Region_ID, Integer.valueOf(To_Region_ID));
-	}
-
-	/** Get To.
-		@return Receiving Region
-	  */
-	public int getTo_Region_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_To_Region_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 }

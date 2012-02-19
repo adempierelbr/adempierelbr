@@ -30,7 +30,7 @@ public class X_LBR_TaxIncludedList extends PO implements I_LBR_TaxIncludedList, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxIncludedList (Properties ctx, int LBR_TaxIncludedList_ID, String trxName)

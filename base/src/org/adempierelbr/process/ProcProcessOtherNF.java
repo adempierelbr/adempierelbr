@@ -22,7 +22,6 @@ import java.util.logging.Level;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.adempierelbr.callout.CalloutDefineCFOP;
 import org.adempierelbr.model.MLBROtherNF;
 import org.adempierelbr.model.MLBROtherNFLine;
 import org.adempierelbr.util.AdempiereLBR;
@@ -183,12 +182,7 @@ public class ProcProcessOtherNF extends SvrProcess
 		newOrdLine.set_ValueOfColumn("M_Locator_ID", line.getM_Locator_ID());
 		newOrdLine.setC_Order_ID(newC_Order_ID);
 		newOrdLine.set_ValueOfColumn("lbr_Ref_C_InvoiceLine_ID", invLine.getC_InvoiceLine_ID()); 
-		
-		Integer cfopID = CalloutDefineCFOP.defineCFOP(ctx, newOrdLine.getM_Product_ID(), 
-				new MOrder(ctx,newC_Order_ID,trx), trx);
-		newOrdLine.set_ValueOfColumn("LBR_CFOP_ID", cfopID);
-		
-		newOrdLine.save(trx);
+		newOrdLine.save();
 		
 		return newOrdLine.get_ID();
 	}

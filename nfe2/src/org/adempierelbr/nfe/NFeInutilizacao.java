@@ -2,6 +2,7 @@ package org.adempierelbr.nfe;
 
 import java.io.File;
 import java.io.StringReader;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,8 +16,10 @@ import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
+import org.compiere.Adempiere;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
@@ -48,7 +51,6 @@ public class NFeInutilizacao
 	{
 		log.fine("ini");
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
-		boolean isSCAN  = oi.get_ValueAsBoolean("lbr_IsScan");
 		//
 		if (envType == null || envType.equals(""))
 			return "Ambiente da NF-e deve ser preenchido.";
@@ -80,7 +82,7 @@ public class NFeInutilizacao
 		
 		NfeInutilizacao2Stub.NfeDadosMsg dadosMsg = NfeInutilizacao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecInutilizacao(region);
-		NfeInutilizacao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID(),isSCAN);
+		NfeInutilizacao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
 		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub();
 
 		String respLote = stub.nfeInutilizacaoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();
@@ -121,11 +123,11 @@ public class NFeInutilizacao
 //						String nNFFin 	= NFeUtil.getValue (node, "nNFFin");
 //						String dhRecbto = NFeUtil.getValue (node, "dhRecbto");
 //						String nProt 	= NFeUtil.getValue (node, "nProt");
-						//	TODO:	Criar uma janela para lançar as NF inutilizadas
+						//	TODO:	Criar uma janela para lanças as NF inutilizadas
 //						MNote note = new MNote(Env.getCtx(), 225, 100, null);
 //						note.setTextMsg(nfeResposta);
 //						note.save();
-						new File(TextUtil.generateTmpFile(respLote, iNF.getID()+"-inu.xml"));
+						new File(TextUtil.generateFile(respLote, iNF.getID()+"-inu.xml"));
 						//
 						return "NF-e Inutilizada com sucesso.";
 					}
@@ -147,4 +149,27 @@ public class NFeInutilizacao
 		//
 		return "Processo completado.";
 	}	//	invalidateNF
+	
+	/**
+	 * 
+	 */
+	public static void main (String[] args) 
+	{
+		Adempiere.startupEnvironment(false);
+		CLogMgt.setLevel(Level.FINE);
+		CLogMgt.enable(true);
+		System.out.println("NFe Status");
+		System.out.println("-----------------------");
+		//
+		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), 2000000);
+		try
+		{
+			System.out.print(invalidateNF(oi, null));
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	//	main
 }	//	NFeInutilizacao

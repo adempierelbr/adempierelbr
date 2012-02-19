@@ -15,8 +15,8 @@ package org.adempierelbr.util;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import org.adempierelbr.model.MLBRNFLineTax;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
-import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.compiere.util.Env;
 
@@ -31,14 +31,12 @@ public class NFeTaxes
 	private String taxIndicator;
 
 	private BigDecimal vBC;
+
 	private BigDecimal vImposto;
+
 	private BigDecimal pImposto;
+
 	private BigDecimal pRedBC;
-	
-	private BigDecimal vBCST;
-	private BigDecimal vImpostoST;
-	private BigDecimal pImpostoST;
-	private BigDecimal pRedBCST;
 
 	private String CST;
 
@@ -73,18 +71,13 @@ public class NFeTaxes
 	 * @param CST
 	 */
 	public NFeTaxes (String taxIndicator, BigDecimal vBC, BigDecimal vImposto,
-				BigDecimal pImposto, BigDecimal pRedBC, BigDecimal vBCST, BigDecimal vImpostoST,
-				BigDecimal pImpostoST, BigDecimal pRedBCST, String CST)
+				BigDecimal pImposto, BigDecimal pRedBC, String CST)
 	{
 		this (taxIndicator, CST);
 		setvBC(vBC);
 		setvImposto(vImposto);
 		setpImposto(pImposto);
 		setpRedBC(pRedBC);
-		setvBCST(vBCST);
-		setvImpostoST(vImpostoST);
-		setpImpostoST(pImpostoST);
-		setpRedBCST(pRedBCST);
 	}
 
 	/**
@@ -99,39 +92,25 @@ public class NFeTaxes
 	{
 		HashMap<String, NFeTaxes> txs = new HashMap<String, NFeTaxes>();
 		//
-		X_LBR_NFLineTax[] lineTaxes = nfl.getTaxes();
+		MLBRNFLineTax[] lineTaxes = nfl.getTaxes();
 		//
-		for (X_LBR_NFLineTax lt : lineTaxes)
+		for (MLBRNFLineTax lt : lineTaxes)
 		{
 			X_LBR_TaxGroup taxGroup =
 				new X_LBR_TaxGroup(Env.getCtx(), lt.getLBR_TaxGroup_ID(), null);
 			String taxIndicator = taxGroup.getName();
-			
-			boolean isST = false;
-			if (taxIndicator.endsWith("ST")){
-				isST = true;
-				taxIndicator = taxIndicator.substring(0, taxIndicator.length()-2);
-			}
-			
 			//
 			NFeTaxes tx = null;
 			if (txs.containsKey(taxIndicator))
 			{
 				tx = txs.get(taxIndicator);
-				tx.add (isST, lt.getlbr_TaxBaseAmt(), lt.getlbr_TaxAmt(), lt.getlbr_TaxRate(), lt.getlbr_TaxBase());
+				tx.add (lt.getlbr_TaxBaseAmt(), lt.getlbr_TaxAmt());
 			}
 			else
 			{
-				if (!isST){
-					tx = new NFeTaxes (taxIndicator, lt.getlbr_TaxBaseAmt(), lt.getlbr_TaxAmt(),
-							lt.getlbr_TaxRate(),lt.getlbr_TaxBase(), Env.ZERO, Env.ZERO, Env.ZERO,
-							Env.ZERO, nfl.getlbr_TaxStatus());
-				}
-				else {
-					tx = new NFeTaxes (taxIndicator,Env.ZERO, Env.ZERO, Env.ZERO, Env.ZERO, 
-							lt.getlbr_TaxBaseAmt(), lt.getlbr_TaxAmt(), lt.getlbr_TaxRate(), 
-							lt.getlbr_TaxBase(), nfl.getlbr_TaxStatus());
-				}
+				tx = new NFeTaxes (taxIndicator, lt.getlbr_TaxBaseAmt(),
+						lt.getlbr_TaxAmt(), lt.getlbr_TaxRate(),
+						lt.getlbr_TaxBase(), lt.getTaxStatus(nfl.isSOTrx()));
 			}
 			//	Inclui os impostos no mapa
 			txs.put(taxIndicator, tx);
@@ -158,29 +137,12 @@ public class NFeTaxes
 		//
 		return list;
 	}	//	NFeTaxes
-	
-	private void add (boolean isST, BigDecimal vBC, BigDecimal vImposto, BigDecimal pImposto, BigDecimal pRedBC){
-		if (isST)
-			addST(vBC,vImposto,pImposto,pRedBC);
-		else
-			add(vBC,vImposto,pImposto,pRedBC);
-	}
-	
-	private void add (BigDecimal vBC, BigDecimal vImposto, BigDecimal pImposto, BigDecimal pRedBC)
+
+	private void add (BigDecimal vBC, BigDecimal vImposto)
 	{
 		this.vBC = this.vBC.add(vBC);
 		this.vImposto = this.vImposto.add(vImposto);
-		this.pImposto = pImposto;
-		this.pRedBC = pRedBC;
 	}	//	add
-	
-	private void addST (BigDecimal vBCST, BigDecimal vImpostoST, BigDecimal pImpostoST, BigDecimal pRedBCST)
-	{
-		this.vBCST = this.vBCST.add(vBCST);
-		this.vImpostoST = this.vImpostoST.add(vImpostoST);
-		this.pImpostoST = pImpostoST;
-		this.pRedBCST = pRedBCST;
-	}	//	addST
 
 	public String getTaxIndicator()
 	{
@@ -230,38 +192,6 @@ public class NFeTaxes
 	public void setpRedBC(BigDecimal pRedBC)
 	{
 		this.pRedBC = pRedBC;
-	}
-	
-	public BigDecimal getvBCST() {
-		return vBCST;
-	}
-
-	public void setvBCST(BigDecimal vBCST) {
-		this.vBCST = vBCST;
-	}
-
-	public BigDecimal getvImpostoST() {
-		return vImpostoST;
-	}
-
-	public void setvImpostoST(BigDecimal vImpostoST) {
-		this.vImpostoST = vImpostoST;
-	}
-
-	public BigDecimal getpImpostoST() {
-		return pImpostoST;
-	}
-
-	public void setpImpostoST(BigDecimal pImpostoST) {
-		this.pImpostoST = pImpostoST;
-	}
-
-	public BigDecimal getpRedBCST() {
-		return pRedBCST;
-	}
-
-	public void setpRedBCST(BigDecimal pRedBCST) {
-		this.pRedBCST = pRedBCST;
 	}
 
 	public String getCST()

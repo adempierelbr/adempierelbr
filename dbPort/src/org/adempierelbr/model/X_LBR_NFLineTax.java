@@ -32,7 +32,7 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20111214L;
 
     /** Standard Constructor */
     public X_LBR_NFLineTax (Properties ctx, int LBR_NFLineTax_ID, String trxName)
@@ -42,9 +42,9 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
         {
 			setLBR_NFLineTax_ID (0);
 			setLBR_NotaFiscalLine_ID (0);
+			setLBR_TaxGroup_ID (0);
 			setlbr_TaxAmt (Env.ZERO);
 			setlbr_TaxBaseAmt (Env.ZERO);
-			setLBR_TaxGroup_ID (0);
         } */
     }
 
@@ -93,6 +93,34 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
+			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
+
+	/** Set Legal Message.
+		@param LBR_LegalMessage_ID 
+		Defines the Legal Message
+	  */
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
+	{
+		if (LBR_LegalMessage_ID < 1) 
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
+	}
+
+	/** Get Legal Message.
+		@return Defines the Legal Message
+	  */
+	public int getLBR_LegalMessage_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Nota Fiscal Line Tax.
 		@param LBR_NFLineTax_ID 
 		Defines the Nota Fiscal Line Tax
@@ -139,6 +167,59 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 	public int getLBR_NotaFiscalLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscalLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxGroup)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxGroup.Table_Name)
+			.getPO(getLBR_TaxGroup_ID(), get_TrxName());	}
+
+	/** Set Tax Group.
+		@param LBR_TaxGroup_ID 
+		Defines the Tax Group
+	  */
+	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
+	{
+		if (LBR_TaxGroup_ID < 1) 
+			set_Value (COLUMNNAME_LBR_TaxGroup_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_TaxGroup_ID, Integer.valueOf(LBR_TaxGroup_ID));
+	}
+
+	/** Get Tax Group.
+		@return Defines the Tax Group
+	  */
+	public int getLBR_TaxGroup_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxGroup_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_TaxStatus getLBR_TaxStatus() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxStatus)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxStatus.Table_Name)
+			.getPO(getLBR_TaxStatus_ID(), get_TrxName());	}
+
+	/** Set Tax Status.
+		@param LBR_TaxStatus_ID Tax Status	  */
+	public void setLBR_TaxStatus_ID (int LBR_TaxStatus_ID)
+	{
+		if (LBR_TaxStatus_ID < 1) 
+			set_Value (COLUMNNAME_LBR_TaxStatus_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_TaxStatus_ID, Integer.valueOf(LBR_TaxStatus_ID));
+	}
+
+	/** Get Tax Status.
+		@return Tax Status	  */
+	public int getLBR_TaxStatus_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxStatus_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -202,34 +283,6 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_TaxGroup)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxGroup.Table_Name)
-			.getPO(getLBR_TaxGroup_ID(), get_TrxName());	}
-
-	/** Set Tax Group.
-		@param LBR_TaxGroup_ID 
-		Defines the Tax Group
-	  */
-	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID)
-	{
-		if (LBR_TaxGroup_ID < 1) 
-			set_Value (COLUMNNAME_LBR_TaxGroup_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_TaxGroup_ID, Integer.valueOf(LBR_TaxGroup_ID));
-	}
-
-	/** Get Tax Group.
-		@return Defines the Tax Group
-	  */
-	public int getLBR_TaxGroup_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxGroup_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set Tax Rate.

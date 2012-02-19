@@ -97,7 +97,7 @@ public class MLBROpenItem{
 				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
 				     "C_PaymentTerm_ID " + //10
-					 "FROM RV_OpenItem " +
+					 "FROM RV_InvoicePaySchedule " +
 				     "WHERE IsSOTrx='Y' " +
 					 "AND C_Invoice_ID = ? order by DueDate"; //*1
 

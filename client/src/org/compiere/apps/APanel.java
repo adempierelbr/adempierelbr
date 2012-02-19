@@ -473,23 +473,32 @@ public final class APanel extends CPanel
 		aMailSupport = addAction("EMailSupport",	mHelp,	null,	false);
 		aAbout = 	addAction("About",			mHelp, 	null,	false);
 
+		boolean isIncludedTab = m_curGC != null;
+		boolean isDetailGrid = !isIncludedTab || !m_curGC.isDetailGrid();
+				
 		/**
 		 *	ToolBar
 		 */
-		toolBar.add(aIgnore.getButton());		//	ESC
+		toolBar.add(aIgnore.getButton(isIncludedTab));		//	ESC
 		toolBar.addSeparator();
-		toolBar.add(aHelp.getButton());			//	F1
-		toolBar.add(aNew.getButton());
-		toolBar.add(aCopy.getButton());
-		toolBar.add(aDelete.getButton());
-		toolBar.add(aDeleteSelection.getButton());
-		toolBar.add(aSave.getButton());
+		if (isDetailGrid)
+			toolBar.add(aHelp.getButton(isIncludedTab));			//	F1
+		toolBar.add(aNew.getButton(isIncludedTab));
+		if (isDetailGrid)
+			toolBar.add(aCopy.getButton(isIncludedTab));
+		toolBar.add(aDelete.getButton(isIncludedTab));
+		if (isDetailGrid)
+			toolBar.add(aDeleteSelection.getButton());
+		toolBar.add(aSave.getButton(isIncludedTab));
 		toolBar.addSeparator();
-		toolBar.add(aRefresh.getButton());      //  F5
-		toolBar.add(aFind.getButton());
-		toolBar.add(aAttachment.getButton());
-		toolBar.add(aChat.getButton());
-		toolBar.add(aMulti.getButton());
+		toolBar.add(aRefresh.getButton(isIncludedTab));      //  F5
+		toolBar.add(aFind.getButton(isIncludedTab));
+		if (isDetailGrid)
+		{
+			toolBar.add(aAttachment.getButton(isIncludedTab));
+			toolBar.add(aChat.getButton(isIncludedTab));
+			toolBar.add(aMulti.getButton(isIncludedTab));
+		}
 		toolBar.addSeparator();
 		//FR [ 1757088 ]
 		/*
@@ -501,30 +510,33 @@ public final class APanel extends CPanel
 			toolBar.addSeparator();
 		}
 		*/
-		toolBar.add(aFirst.getButton());
-		toolBar.add(aPrevious.getButton());
-		toolBar.add(aNext.getButton());
-		toolBar.add(aLast.getButton());
+		toolBar.add(aFirst.getButton(isIncludedTab));
+		toolBar.add(aPrevious.getButton(isIncludedTab));
+		toolBar.add(aNext.getButton(isIncludedTab));
+		toolBar.add(aLast.getButton(isIncludedTab));
 		toolBar.addSeparator();
-		toolBar.add(aReport.getButton());
-		toolBar.add(aArchive.getButton());
-		//toolBar.add(aPrintPreview.getButton());
-		toolBar.add(aPrint.getButton());
+		if (isDetailGrid)
+		{
+			toolBar.add(aReport.getButton(isIncludedTab));
+			toolBar.add(aArchive.getButton(isIncludedTab));
+			toolBar.add(aPrint.getButton(isIncludedTab));
+		}
 		// FR [ 1757088 ]
-		if((m_curGC == null) || (m_curGC != null && !m_curGC.isDetailGrid())){
+		if (isDetailGrid)
+		{
 			toolBar.addSeparator();
 			if (m_isPersonalLock)
-				toolBar.add(aLock.getButton());
-			toolBar.add(aZoomAcross.getButton());
+				toolBar.add(aLock.getButton(isIncludedTab));
+			toolBar.add(aZoomAcross.getButton(isIncludedTab));
 			if (aWorkflow != null)
-				toolBar.add(aWorkflow.getButton());
-			toolBar.add(aRequest.getButton());
+				toolBar.add(aWorkflow.getButton(isIncludedTab));
+			toolBar.add(aRequest.getButton(isIncludedTab));
 			if (MRole.getDefault().isAllow_Info_Product())
 			{
-				toolBar.add(aProduct.getButton());
+				toolBar.add(aProduct.getButton(isIncludedTab));
 			}
 			toolBar.addSeparator();
-			toolBar.add(aEnd.getButton());
+			toolBar.add(aEnd.getButton(isIncludedTab));
 		}
 
 		//
@@ -581,8 +593,7 @@ public final class APanel extends CPanel
 		{
 			StringBuffer sb = new StringBuffer();
 			sb.append(m_mWorkbench.getName()).append("  ")
-				.append(Env.getContext(m_ctx, "#AD_User_Name")).append(" (")
-				.append(Env.getContext(m_ctx, "#AD_Role_Name")).append(") @ ")
+				.append(Env.getContext(m_ctx, "#AD_User_Name")).append("@")
 				.append(Env.getContext(m_ctx, "#AD_Client_Name")).append(".")
 				.append(Env.getContext(m_ctx, "#AD_Org_Name")).append(" [")
 				.append(Env.getContext(m_ctx, "#DB_UID")).append("]");
@@ -1885,10 +1896,6 @@ public final class APanel extends CPanel
 			else    //  Don't save
 				m_curTab.dataIgnore();
 		}
-		
-		if (copy && m_curTab.getCurrentRow() < 0)
-			copy = false;
-		
 		m_curTab.dataNew (copy);
 		m_curGC.dynamicDisplay(0);
 	//	m_curTab.getTableModel().setChanged(false);
@@ -2236,7 +2243,20 @@ public final class APanel extends CPanel
 		pi.setAD_User_ID (Env.getAD_User_ID(m_ctx));
 		pi.setAD_Client_ID (Env.getAD_Client_ID(m_ctx));
 		pi.setPrintPreview(printPreview);
-
+		
+		String pref = Env.getPreference (Env.getCtx(), m_window.getAD_Window_ID(), "AD_PrintFormat_ID", false);
+		if (pref != null && pref.length() > 0)
+		{
+			try
+			{
+				pi.setAD_PrintFormat_ID(Integer.parseInt(pref));
+			}
+			catch (Exception e)
+			{
+				//	No preference
+				log.fine("Invalid preference");
+			}
+		}
 		ProcessCtl.process(this, m_curWindowNo, pi, null); //  calls lockUI, unlockUI
 		statusBar.setStatusLine(pi.getSummary(), pi.isError());
 	}   //  cmd_print

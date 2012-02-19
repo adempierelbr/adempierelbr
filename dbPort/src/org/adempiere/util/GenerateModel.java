@@ -36,10 +36,6 @@ import org.compiere.util.Env;
  *
  *  @author Jorg Janke
  *  @version $Id: GenerateModel.java,v 1.42 2005/05/08 15:16:56 jjanke Exp $
-  *  
- *  @author Teo Sarca, teo.sarca@gmail.com
- *  		<li>BF [ 3020640 ] GenerateModel is failing when we provide a list of tables
- *  			https://sourceforge.net/tracker/?func=detail&aid=3020640&group_id=176962&atid=879332
  */
 public class GenerateModel
 {
@@ -103,7 +99,7 @@ public class GenerateModel
 
 		//	third parameter
 		//String entityType = "'U','A'";	//	User, Application
-		String entityType = "'LBRA'";
+		String entityType = "'LBRA', 'U'";
 		if (args.length > 2)
 			entityType = args[2];
 		if (entityType == null || entityType.length() == 0)
@@ -117,25 +113,22 @@ public class GenerateModel
 		log.info("----------------------------------");
 
 		String tableLike = null;
-		tableLike = "'%'";	//	All tables
+		tableLike = "'LBR%TaxStatus%'";	//	All tables
 		// tableLike = "'AD_OrgInfo', 'AD_Role', 'C_CashLine', 'C_Currency', 'C_Invoice', 'C_Order', 'C_Payment', 'M_InventoryLine', 'M_PriceList', 'M_Product', 'U_POSTerminal'";	//	Only specific tables
 		if (args.length > 3)
 			tableLike = args[3];
 		log.info("Table Like: " + tableLike);
 
-		//complete sql
-			sql.insert(0, "SELECT AD_Table_ID "
-				+ "FROM AD_Table "
-				+ "WHERE (TableName IN ('RV_WarehousePrice','RV_BPartner')"	//	special views
-				+ " OR IsView='N')"
-				+ " AND IsActive = 'Y' AND TableName NOT LIKE '%_Trl' AND ");
-			// Autodetect if we need to use IN or LIKE clause - teo_sarca [ 3020640 ]
-			if (tableLike.indexOf(",") == -1)
-				sql.append(" AND TableName LIKE ").append(tableLike);
-			else
-				sql.append(" AND TableName IN (").append(tableLike).append(")"); // only specific tables
+		//	complete sql
+		sql.insert(0, "SELECT AD_Table_ID, EntityType "
+			+ "FROM AD_Table "
+			+ "WHERE (TableName IN ('RV_WarehousePrice','RV_BPartner')"	//	special views
+			+ " OR IsView='N')"
+			+ " AND IsActive = 'Y' AND TableName NOT LIKE '%_Trl' AND ");
+		sql.append(" AND TableName LIKE ").append(tableLike);
+		//sql.append(" AND TableName IN (").append(tableLike).append(")"); // only specific tables
 
-			sql.append(" ORDER BY TableName");
+		sql.append(" ORDER BY TableName");
 
 		//
 		int count = 0;

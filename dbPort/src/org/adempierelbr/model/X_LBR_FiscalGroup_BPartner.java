@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_FiscalGroup_BPartner
- *  @author ADempiereLBR (generated) 
+ *  @author OSEB (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_FiscalGroup_BPartner extends PO implements I_LBR_FiscalGroup_BPartner, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_FiscalGroup_BPartner extends PO implements I_LBR_FiscalGroup_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20100930L;
 
     /** Standard Constructor */
     public X_LBR_FiscalGroup_BPartner (Properties ctx, int LBR_FiscalGroup_BPartner_ID, String trxName)

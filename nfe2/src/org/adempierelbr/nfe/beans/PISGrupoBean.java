@@ -16,8 +16,26 @@ public class PISGrupoBean {
 	private String CST;
 	private String vBC;
 	private String pPIS;
+	private String qBCProd;
+	private String vAliqProd;
 	private String vPIS;
 	
+	public String getvAliqProd()
+	{
+		return vAliqProd;
+	}
+	public void setvAliqProd(String vAliqProd)
+	{
+		this.vAliqProd = vAliqProd;
+	}
+	public String getqBCProd()
+	{
+		return qBCProd;
+	}
+	public void setqBCProd(String qBCProd)
+	{
+		this.qBCProd = qBCProd;
+	}
 	public String getCST() {
 		return CST;
 	}

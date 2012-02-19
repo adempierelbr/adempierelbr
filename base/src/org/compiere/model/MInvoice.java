@@ -158,12 +158,8 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			from.setRef_Invoice_ID(to.getC_Invoice_ID());
 
 		//	Lines
-		// Check lines exist before copy
-		if ( from.getLines(true).length > 0 )
-		{
-			if (to.copyLinesFrom(from, counter, setOrder) == 0)
-				throw new IllegalStateException("Could not create Invoice Lines");
-		}
+		if (to.copyLinesFrom(from, counter, setOrder) == 0)
+			throw new IllegalStateException("Could not create Invoice Lines");
 
 		return to;
 	}
@@ -1626,16 +1622,9 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			approveIt();
 		log.info(toString());
 		StringBuffer info = new StringBuffer();
-		
-		// POS supports multiple payments
-		boolean fromPOS = false;
-		if ( getC_Order_ID() > 0 )
-		{
-			fromPOS = getC_Order().getC_POS_ID() > 0;
-		}
 
   		//	Create Cash
-		if (PAYMENTRULE_Cash.equals(getPaymentRule()) && !fromPOS )
+		if (PAYMENTRULE_Cash.equals(getPaymentRule()))
 		{
 			// Modifications for POSterita
             //
@@ -1933,12 +1922,12 @@ public class MInvoice extends X_C_Invoice implements DocAction
 		if (counterC_BPartner_ID == 0)
 			return null;
 		//	Business Partner needs to be linked to Org
-		MBPartner bp = new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName());
+		MBPartner bp = new MBPartner (getCtx(), getC_BPartner_ID(), null);
 		int counterAD_Org_ID = bp.getAD_OrgBP_ID_Int();
 		if (counterAD_Org_ID == 0)
 			return null;
 
-		MBPartner counterBP = new MBPartner (getCtx(), counterC_BPartner_ID, get_TrxName());
+		MBPartner counterBP = new MBPartner (getCtx(), counterC_BPartner_ID, null);
 //		MOrgInfo counterOrgInfo = MOrgInfo.get(getCtx(), counterAD_Org_ID);
 		log.info("Counter BP=" + counterBP.getName());
 

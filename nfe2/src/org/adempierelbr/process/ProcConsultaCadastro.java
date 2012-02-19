@@ -76,40 +76,41 @@ public class ProcConsultaCadastro extends SvrProcess
 	 */
 	protected String doIt() throws Exception
 	{
-		MBPartnerLocation bpl = new MBPartnerLocation(getCtx(),p_C_BPartner_Location_ID,get_TrxName());
-		MLocation bpLoc = new MLocation(getCtx(),bpl.getC_Location_ID(),get_TrxName());
-		
-		String CNPJ = BPartnerUtil.getCNPJ(getCtx(), p_C_BPartner_ID, p_C_BPartner_Location_ID);
-		String IE   = BPartnerUtil.getIE(getCtx(), p_C_BPartner_ID, p_C_BPartner_Location_ID);
-		return consultaCadastro(getCtx(),bpLoc,IE,CNPJ)[0];
+		if (p_C_BPartner_Location_ID < 1)
+			return "";
+		//
+		MBPartnerLocation bpl = new MBPartnerLocation (getCtx(), p_C_BPartner_Location_ID, get_TrxName());
+		//
+		String UF   = BPartnerUtil.getUF(getCtx(), p_C_BPartner_Location_ID);
+		String CNPJ = BPartnerUtil.getCNPJ_CPF(bpl);
+		String IE   = BPartnerUtil.getIE(bpl);
+		//
+		return consultaCadastro(getCtx(),UF,IE,CNPJ)[0];
 	}	//	doIt
 
-	public static String[] consultaCadastro(Properties ctx, MLocation bpLoc, String bpIE, String bpCNPJ) throws Exception{
+	public static String[] consultaCadastro(Properties ctx, String bpRegion, String bpIE, String bpCNPJ) throws Exception{
 
 		String habilitado = "Y";
-		String envType    = "1"; //Produção
 
 		MOrgInfo orgInfo = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx),null);
 		if (orgInfo == null)
 			return null;
-		
-		boolean isSCAN  = orgInfo.get_ValueAsBoolean("lbr_IsScan");
 
-		//MLocation orgLoc = new MLocation(ctx,orgInfo.getC_Location_ID(),null);
+		MLocation orgLoc = new MLocation(ctx,orgInfo.getC_Location_ID(),null);
 
-		String region = BPartnerUtil.getRegionCode(bpLoc);
+		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
 			return null;
 
 		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(ctx, orgInfo);
+		MLBRDigitalCertificate.setCertificate(ctx, Env.getAD_Org_ID(ctx));
 		//
 		String status = "Erro na verificação de Status";
 
 		try{
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpLoc.getC_Region().getName(),bpIE,bpCNPJ)));
+			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpRegion,bpIE,bpCNPJ)));
 
-			CadConsultaCadastro2Stub.setAmbiente(envType,bpLoc.getC_Region_ID(),isSCAN);
+			CadConsultaCadastro2Stub.setAmbiente("1",orgLoc.getC_Region_ID());
 			CadConsultaCadastro2Stub.NfeDadosMsg_type0 dadosMsg = CadConsultaCadastro2Stub.NfeDadosMsg_type0.Factory.parse(dadosXML);
 			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
 			CadConsultaCadastro2Stub.ConsultaCadastro2 consulta = new CadConsultaCadastro2Stub.ConsultaCadastro2();
