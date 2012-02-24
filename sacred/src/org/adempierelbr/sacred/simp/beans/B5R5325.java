@@ -48,10 +48,10 @@ public class B5R5325 implements RegSacred{
 		String format = 
 			REG
 			+ PIPE + COD_LEGAL
-			+ PIPE + TextUtil.toNumeric(IVA_UTILIZADO,4,true)
-			+ PIPE + TextUtil.toNumeric(PER_MED_ICMS,4,true)
-			+ PIPE + TextUtil.toNumeric(CRED_EST_ICMS,2,true)
-			+ PIPE + TextUtil.toNumeric(ICMS_GERA,2,true);
+			+ PIPE + TextUtil.bigdecimalToString(IVA_UTILIZADO,4).replace('.', ',')
+			+ PIPE + TextUtil.bigdecimalToString(PER_MED_ICMS,4).replace('.',',')
+			+ PIPE + TextUtil.bigdecimalToString(CRED_EST_ICMS,2).replace('.',',')
+			+ PIPE + TextUtil.bigdecimalToString(ICMS_GERA,2).replace('.', ',');
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

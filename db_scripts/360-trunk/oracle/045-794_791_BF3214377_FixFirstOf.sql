@@ -1,3 +1,0 @@
--- ONLY POSTGRESQL
-
-EXIT

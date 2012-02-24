@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -27,36 +28,41 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0007.java, 16/11/2010, 15:15:00, mgrigioni
  */
-public class R0007 extends RegSped {
+public class R0007 implements RegSped {
+
+	private final String REG   = "0007";
 	
 	private String COD_ENT_REF;
 	private String COD_INSCR;
 
 	/**
 	 * Constructor
-	 * @param COD_ENT_REF
-	 * @param COD_INSCR
 	 */
 	public R0007(String COD_ENT_REF, String COD_INSCR) {
-		super();
 		this.COD_ENT_REF = COD_ENT_REF;
 		this.COD_INSCR = COD_INSCR;
+		//
+		addCounter();
 	} //R0007
 
 	/**
-	 * Formata o Bloco 0 Registro 007
+	 * Formata o Bloco 0 Registro 000
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_ENT_REF, 255))
-            .append(PIPE).append(TextUtil.toNumeric(COD_INSCR))
-            .append(PIPE);
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_ENT_REF, 0, 255)
+			+ PIPE + TextUtil.toNumeric(COD_INSCR)
+			+ PIPE;
 
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		return TextUtil.removeEOL(format) + EOL;
+	} 	//toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R0007

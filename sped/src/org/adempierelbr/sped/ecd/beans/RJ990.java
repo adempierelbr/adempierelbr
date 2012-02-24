@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo
@@ -27,7 +28,9 @@ import org.adempierelbr.sped.RegSped;
  * @version $Id: RJ990.java, 18/11/2010, 14:30:00, mgrigioni
  */
 
-public class RJ990 extends RegSped {
+public class RJ990 implements RegSped {
+	
+	private final String REG = "J990";
 	
 	private String QTD_LIN_J;
 
@@ -35,7 +38,8 @@ public class RJ990 extends RegSped {
 	 * Constructor
 	 */
 	public RJ990() {
-		super();
+		//
+		addCounter();
 	} //RJ990
 
 	/**
@@ -43,16 +47,20 @@ public class RJ990 extends RegSped {
 	 * 
 	 * @return
 	 */
-	public String toString(){
+	public String toString() {
 		
 		QTD_LIN_J = "" + CounterSped.getBlockCounter(REG);
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_J)
-	        .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG
+			+ PIPE + QTD_LIN_J
+			+ PIPE;
 		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
+	}	//toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } // RJ990

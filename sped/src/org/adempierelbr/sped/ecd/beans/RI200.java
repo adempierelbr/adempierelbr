@@ -15,6 +15,7 @@ package org.adempierelbr.sped.ecd.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -29,8 +30,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI200.java, 17/11/2010, 11:54:00, mgrigioni
  */
-public class RI200 extends RegSped{
+public class RI200 implements RegSped{
 	
+	private final String REG   = "I200";
+	//
 	private String NUM_LCTO;
 	private Timestamp DT_LCTO;
 	private BigDecimal VL_LCTO;
@@ -41,11 +44,12 @@ public class RI200 extends RegSped{
 	 */
 	public RI200(String NUM_LCTO, Timestamp DT_LCTO, BigDecimal VL_LCTO, String IND_LCTO)
 	{
-		super();
 		this.NUM_LCTO = NUM_LCTO;
 		this.DT_LCTO  = DT_LCTO;
 		this.VL_LCTO  = VL_LCTO;
 		this.IND_LCTO = IND_LCTO;
+		//
+		addCounter();
 	} // RI200
 	
 	public void add (BigDecimal VL_LCTO)
@@ -76,15 +80,19 @@ public class RI200 extends RegSped{
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(NUM_LCTO, 255))
-            .append(PIPE).append(TextUtil.timeToString(DT_LCTO, "ddMMyyyy"))
-            .append(PIPE).append(TextUtil.toNumeric(VL_LCTO, 0, 255))
-            .append(PIPE).append(TextUtil.checkSize(IND_LCTO, 1) )
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(NUM_LCTO, 0, 255)
+			+ PIPE + TextUtil.timeToString(DT_LCTO, "ddMMyyyy")
+			+ PIPE + TextUtil.toNumeric(VL_LCTO, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_LCTO, 0, 1) 
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
+	
 } //RI200

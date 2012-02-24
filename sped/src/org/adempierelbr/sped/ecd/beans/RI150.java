@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.sql.Timestamp;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -27,8 +28,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI150.java, 17/11/2010, 11:28:00, mgrigioni
  */
-public class RI150 extends RegSped {
-
+public class RI150 implements RegSped {
+	
+	private final String REG   = "I150";
+	//
 	private Timestamp DT_INI;
 	private Timestamp DT_FIN;
 
@@ -36,9 +39,10 @@ public class RI150 extends RegSped {
 	 * Constructor
 	 */
 	public RI150(Timestamp DT_INI, Timestamp DT_FIN) {
-		super();
 		this.DT_INI = DT_INI;
 		this.DT_FIN = DT_FIN;
+		//
+		addCounter();
 	} // RI150
 
 	/**
@@ -48,13 +52,17 @@ public class RI150 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy"))
-            .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy"))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format = 
+			  PIPE + REG 
+			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
+			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI150

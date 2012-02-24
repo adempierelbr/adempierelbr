@@ -12,7 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo
@@ -27,31 +29,36 @@ import org.adempierelbr.sped.RegSped;
  * @version $Id: R9900.java, 16/11/2010, 15:49:00, mgrigioni
  */
 
-public class R9900 extends RegSped {
+public class R9900 implements RegSped {
+	
+	private final String REG   = "9900";
 	
 	private String REG_BLC     = "";
 	private String QTD_REG_BLC = "";
 
 	/**
 	 * Constructor
-	 * @param REG_BLC
-	 * @param QTD_REG_BLC
 	 */
 	public R9900(String REG_BLC, String QTD_REG_BLC) {
-		super();
 		this.REG_BLC = REG_BLC;
 		this.QTD_REG_BLC = QTD_REG_BLC;
+		//
+		addCounter();
 	} //R9900
 
 	public String toString(){
 		
-		StringBuilder format = new StringBuilder
-        		   (PIPE).append(REG) 
-            .append(PIPE).append(REG_BLC)
-            .append(PIPE).append(QTD_REG_BLC)
-            .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG 
+			+ PIPE + REG_BLC
+			+ PIPE + QTD_REG_BLC
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	}
 
-		return format.toString();
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R9900

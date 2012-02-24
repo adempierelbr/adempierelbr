@@ -1,24 +1,7 @@
 ﻿Release Notes - AdempiereLBR 3.6.0
 
-Versão (21/03/2011) - Trunk 360 (DB apenas Postgresql)
-IMPORTANTE: As janelas estão um pouco bagunçadas. Necessário arrumar no próximo release
+Versão (21/01/2011) - Sem nome definido
 FR 3079621 e 3079615 (http://sf.net/projects/adempiere) - Melhorias na Inserção de Itens em Pedido de Compra/Fatura(Fornecedor) (Marcelo Onhate)
-BF 3023520 - Inclusão da NFS-e, conforme discutido na integração do OSeB com o LBR, esta funcionalidade não havia sido mantida. (Ricardo Alexsander)
-BF 3148121 - Coluna errada na AD_OrgInfo, deveria ser LBR_ e estava OSEB_ (Ricardo Alexsander)
-FR 3165874 - Certificados com informação de ambiente e estado (Mario Grigioni)
-BF 3166678 - Problemas com webService e trustStore (Mario Grigioni)
-FR 3168718 - priceBr (Fernando Moraes)
-BF 3168869 - Avaliacao do flag lbr_BPTypeBRIsValid (Fernando Moraes)
-BF 3169145 - Controle de Lote (Fernando Moraes)
-FR 3170485 - Adicionar campo lbr_NFModel na Fatura/Nota Fiscal (Mario Grigioni)
-FR 3170580 - Adicionar campo lbr_IsService na tabela LBR_CFOP (Mario Grigioni)
-FR 3175772 - Adicionar campo DiscountAmt na LBR_NotaFiscal (Mario Grigioni)
-BF 3175799 - Problema com o botão de trocar entre PDF e Impressão. O botão não funcionava. (Ricardo Alexsander)
-BF 3175818 - Permitir gerar corretamente uma NF-e com mais de 41 tipos de NCM e/ou CFOPs. (Fernando Moraes)
-FR 3176418 - Livro de Apuração ICMS - Modelo9 (Mario Grigioni)
-FR 3176413 - Livro de Apuração IPI - Modelo8 (Mario Grigioni)
-FR 3178503 - Registro de Informação sobre Exportação (Mario Grigioni)
-FR 3189340, Callout Nota Fiscal - commit inicial, com callouts para LBR_CFOP_ID e LBR_NCM_ID (Mario Grigioni)
 
 Versão Inicial (22/12/2010) - AKA "Papai Noel"
 Integração do projeto OSeB 3.6.0 no AdempiereLBR (Mario Grigioni)

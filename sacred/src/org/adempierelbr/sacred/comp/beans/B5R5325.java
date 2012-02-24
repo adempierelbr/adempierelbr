@@ -43,8 +43,8 @@ public class B5R5325 implements RegSacred{
 		String format = 
 			REG
 			+ PIPE + COD_LEGAL
-			+ PIPE + TextUtil.toNumeric(VALOR_OP_ITEM,2,true)
-			+ PIPE + TextUtil.toNumeric(ICMS_GERA_ITEM,2,true);
+			+ PIPE + TextUtil.bigdecimalToString(VALOR_OP_ITEM,2).replace('.', ',')
+			+ PIPE + TextUtil.bigdecimalToString(ICMS_GERA_ITEM,2).replace('.',',');
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

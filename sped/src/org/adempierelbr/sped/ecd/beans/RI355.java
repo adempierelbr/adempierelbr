@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -25,7 +26,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI355.java, 18/11/2010, 10:13:00, mgrigioni
  */
-public class RI355 extends RegSped {
+public class RI355 implements RegSped {
+	
+	private final String REG   = "I355";
 	
 	private String COD_CTA;
 	private String COD_CCUS;
@@ -37,11 +40,13 @@ public class RI355 extends RegSped {
 	 */
 	public RI355(String COD_CTA, String COD_CCUS, BigDecimal VL_CTA,
 			String IND_DC) {
-		super();
+		
 		this.COD_CTA  = COD_CTA;
 		this.COD_CCUS = COD_CCUS;
 		this.VL_CTA   = VL_CTA;
 		this.IND_DC   = IND_DC;
+		//
+		addCounter();
 	} // RI355
 
 	/**
@@ -51,15 +56,19 @@ public class RI355 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
-            .append(PIPE).append(TextUtil.toNumeric(VL_CTA, 0, 255))
-            .append(PIPE).append(TextUtil.checkSize(IND_DC, 1, 1))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_CTA, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC, 1, 1)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI355

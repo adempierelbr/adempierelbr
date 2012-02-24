@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -25,7 +25,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI012.java, 16/11/2010, 16:09:00, mgrigioni
  */
-public class RI012 extends RegSped {
+public class RI012 implements RegSped {
+	
+	private final String REG   = "I012";
 
 	private String NAT_LIVR;
 	private String COD_HASH_AUX;
@@ -35,18 +37,15 @@ public class RI012 extends RegSped {
 
 	/**
 	 * Constructor
-	 * @param NUM_ORD
-	 * @param NAT_LIVR
-	 * @param TIPO
-	 * @param COD_HASH_AUX
 	 */
 	public RI012(int NUM_ORD, String NAT_LIVR, int TIPO, 
 			String COD_HASH_AUX) {
-		super();
 		this.NUM_ORD 		= NUM_ORD;
 		this.NAT_LIVR 		= NAT_LIVR;
 		this.TIPO 			= TIPO;
 		this.COD_HASH_AUX 	= COD_HASH_AUX;
+		//
+		addCounter();
 	} // BIRI012
 
 	/**
@@ -56,15 +55,19 @@ public class RI012 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(NUM_ORD)
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(NAT_LIVR), 80))
-            .append(PIPE).append(TIPO)
-            .append(PIPE).append(TextUtil.checkSize(COD_HASH_AUX, 40))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + NUM_ORD
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NAT_LIVR), 0, 80)
+			+ PIPE + TIPO	
+			+ PIPE + TextUtil.checkSize(COD_HASH_AUX, 0, 40)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI012

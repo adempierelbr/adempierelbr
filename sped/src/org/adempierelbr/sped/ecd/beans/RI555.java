@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -26,16 +27,19 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI555.java, 18/11/2010, 10:27:00, mgrigioni
  */
-public class RI555 extends RegSped {
-
+public class RI555 implements RegSped {
+	
+	private final String REG   = "I555";
+	
 	private String RZ_CONT_TOT;
 
 	/**
 	 * Constructor
 	 */
 	public RI555(String RZ_CONT_TOT) {
-		super();
 		this.RZ_CONT_TOT = RZ_CONT_TOT;
+		//
+		addCounter();
 	} // RI555
 
 	/**
@@ -45,12 +49,16 @@ public class RI555 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(RZ_CONT_TOT)
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + RZ_CONT_TOT
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
+	
 } //RI555

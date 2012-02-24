@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDBalance;
 import org.adempierelbr.util.TextUtil;
@@ -31,8 +32,10 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI155.java, 17/11/2010, 11:37:00, mgrigioni
  */
-public class RI155 extends RegSped {
+public class RI155 implements RegSped {
 	
+	private final String REG   = "I155";
+	//
 	private String COD_CTA;
 	private String COD_CCUS;
 	private BigDecimal VL_SLD_INI;
@@ -47,7 +50,6 @@ public class RI155 extends RegSped {
 	 */
 	public RI155(String COD_CTA, String COD_CCUS, BigDecimal VL_SLD_INI,String IND_DC_INI,
 			BigDecimal VL_DEB, BigDecimal VL_CRED, BigDecimal VL_SLD_FIN,String IND_DC_FIN) {
-		super();
 		this.COD_CTA    = COD_CTA;
 		this.COD_CCUS   = COD_CCUS;
 		this.VL_SLD_INI = VL_SLD_INI;
@@ -56,12 +58,15 @@ public class RI155 extends RegSped {
 		this.VL_CRED    = VL_CRED == null ? Env.ZERO : VL_CRED;
 		this.VL_SLD_FIN = VL_SLD_FIN;
 		this.IND_DC_FIN = IND_DC_FIN;
+		//
+		addCounter();
 	} // RI155
 	
 	/**
 	 * Constructor
 	 */
 	public RI155(ECDBalance balance, BigDecimal VL_DEB, BigDecimal VL_CRED) {
+		
 		this(balance.getAccount().getValue(),"",balance.getBeginBalance().abs(),
 			 balance.getBeginBalance().signum() == 1 ? "D" : "C",
 			 VL_DEB.abs(), VL_CRED.abs(),
@@ -76,19 +81,23 @@ public class RI155 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
-            .append(PIPE).append(TextUtil.toNumeric(VL_SLD_INI))
-            .append(PIPE).append(TextUtil.checkSize(IND_DC_INI, 255))
-            .append(PIPE).append(TextUtil.toNumeric(VL_DEB))
-            .append(PIPE).append(TextUtil.toNumeric(VL_CRED))
-            .append(PIPE).append(TextUtil.toNumeric(VL_SLD_FIN))
-            .append(PIPE).append(TextUtil.checkSize(IND_DC_FIN, 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_SLD_INI, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC_INI, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_DEB, 0, 255) 
+			+ PIPE + TextUtil.toNumeric(VL_CRED, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_SLD_FIN, 0, 255)
+			+ PIPE + TextUtil.checkSize(IND_DC_FIN, 0, 255)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} // toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI155

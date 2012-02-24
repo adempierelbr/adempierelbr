@@ -15,8 +15,8 @@ package org.adempierelbr.sped.ecd.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -32,7 +32,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RJ005.java, 18/11/2010, 10:48:00, mgrigioni
  */
-public class RJ005 extends RegSped {
+public class RJ005 implements RegSped {
+	
+	private final String REG   = "J005";
 	
 	private Timestamp DT_INI;
 	private Timestamp DT_FIN;
@@ -44,11 +46,12 @@ public class RJ005 extends RegSped {
 	 */
 	public RJ005(Timestamp DT_INI, Timestamp DT_FIN, BigDecimal ID_DEM,String CAB_DEM) 
 	{
-		super();
 		this.DT_INI = DT_INI;
 		this.DT_FIN = DT_FIN;
 		this.ID_DEM = ID_DEM;
 		this.CAB_DEM = CAB_DEM;
+		//
+		addCounter();
 	} //RJ005
 
 	/**
@@ -58,15 +61,19 @@ public class RJ005 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.timeToString(DT_INI, "ddMMyyyy"))
-            .append(PIPE).append(TextUtil.timeToString(DT_FIN, "ddMMyyyy"))
-            .append(PIPE).append(TextUtil.toNumeric(ID_DEM, 0, 1))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CAB_DEM), 65535))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
-	}
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.timeToString(DT_INI, "ddMMyyyy")
+			+ PIPE + TextUtil.timeToString(DT_FIN, "ddMMyyyy")
+			+ PIPE + TextUtil.toNumeric(ID_DEM, 0, 1)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CAB_DEM), 0, 65535)
+			+ PIPE;
 		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
 } //RJ005 

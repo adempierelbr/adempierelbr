@@ -47,21 +47,6 @@ public class CounterSped
 	}	//	register
 	
 	/**
-	 * 	Remove o registro no contador
-	 * 
-	 * @param regName
-	 */
-	public static void unregister (String regName)
-	{
-		if (regs.containsKey(regName))
-		{
-			Integer count = regs.get(regName);
-			regs.remove(regName);
-			regs.put(regName, count-1);
-		}
-	}	//	unregister
-		
-	/**
 	 * Retorna todos os registros do arquivo
 	 * @return String[] registros
 	 */
@@ -147,36 +132,56 @@ class SPEDComparator implements Comparator<Object>
 {
 	/**
 	 * 	Comparator para ordenar os Arrays
+	 *
+	 * 	Peso para cada bloco:
+	 *
+	 * 		0	=	0,
+	 * 		C	=	2,
+	 * 		D	=	3,
+	 * 		E	=	4,
+	 * 		G	=	5,
+	 * 		H	=	6,
+	 * 		1	=	7,
+	 * 		9	=	9
 	 */
 	public int compare (Object o1, Object o2)
 	{
-		String s1 = null, s2 = null;
+		String s1 = "0000";
+		String s2 = "0000";
 		//
 		if (o1 instanceof String)
-			s1 = (String)o1;
-		else if (o1 instanceof RegSped)
-			s1 = ((RegSped) o1).getReg();
-		
+			s1 = (String) o1;
 		if (o2 instanceof String)
-			s2 = (String)o2;
-		else if (o2 instanceof RegSped)
-			s2 = ((RegSped) o2).getReg();
+			s2 = (String) o2;
 
 		if (s1 == null || s2 == null)
 			return 0;
-		if (s1.isEmpty() || s2.isEmpty())
-			return 0;
-		//		
-		switch(s1.charAt(0)){
-			case '1' : s1 = "ZZ"  + s1; break;
-			case '9' : s1 = "ZZZ" + s1; break;
-		}
-		
-		switch(s2.charAt(0)){
-			case '1' : s2 = "ZZ"  + s2; break;
-			case '9' : s2 = "ZZZ" + s2; break;
-		}
-		
+		//
+		if (s1.startsWith("C"))
+			s1 = "2" + s1.substring(1);
+		if (s1.startsWith("D"))
+			s1 = "3" + s1.substring(1);
+		if (s1.startsWith("E"))
+			s1 = "4" + s1.substring(1);
+		if (s1.startsWith("G"))
+			s1 = "5" + s1.substring(1);
+		if (s1.startsWith("H"))
+			s1 = "6" + s1.substring(1);
+		if (s1.startsWith("1"))
+			s1 = "7" + s1.substring(1);
+		//
+		if (s2.startsWith("C"))
+			s2 = "2" + s2.substring(1);
+		if (s2.startsWith("D"))
+			s2 = "3" + s2.substring(1);
+		if (s2.startsWith("E"))
+			s2 = "4" + s2.substring(1);
+		if (s2.startsWith("G"))
+			s2 = "5" + s2.substring(1);
+		if (s2.startsWith("H"))
+			s2 = "6" + s2.substring(1);
+		if (s2.startsWith("1"))
+			s2 = "7" + s2.substring(1);
 		//
 		return s1.compareTo(s2);
 	}	//	compare
@@ -190,18 +195,4 @@ class SPEDComparator implements Comparator<Object>
 	{
 		return new SPEDComparator ();
 	}	//	get	
-	
-	public static void main (String[] args){
-		
-		Object[] keys = new Object[]{"0001","A100","9990","1001","C100","A150","M001","F102","D110","D100"};
-		Arrays.sort(keys, SPEDComparator.get());
-		
-		for (Object key : keys)
-		{
-			if (key instanceof String)
-				System.out.println(key);
-		}
-		
-	}
-	
 }

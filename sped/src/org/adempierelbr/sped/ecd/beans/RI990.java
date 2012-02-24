@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Bloco I Registro I990 - ENCERRAMENTO DO BLOCO I Registro obrigatório Nível
@@ -23,15 +24,17 @@ import org.adempierelbr.sped.RegSped;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI990.java, 18/11/2010, 10:30:00, mgrigioni
  */
-public class RI990 extends RegSped {
-
+public class RI990 implements RegSped {
+	
+	private final String REG   = "I990";
+	//
 	private String QTD_LIN_I;
 
 	/**
 	 * Constructor
 	 */
 	public RI990() {
-		super();
+		addCounter();
 	} // BIRI990
 
 	/**
@@ -39,16 +42,20 @@ public class RI990 extends RegSped {
 	 * 
 	 * @return
 	 */
-	public String toString(){
+	public String toString() {
 		
 		QTD_LIN_I = "" + CounterSped.getBlockCounter(REG);
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_I)
-	        .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG
+			+ PIPE + QTD_LIN_I
+			+ PIPE;
 		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
+	}	//toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 }//RI990

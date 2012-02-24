@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -27,7 +28,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0020.java, 16/11/2010, 15:15:00, mgrigioni
  */
-public class R0020 extends RegSped {
+public class R0020 implements RegSped {
+	
+	private final String REG   = "0020";
 	
 	private String IND_DEC;
 	private String CNPJ;
@@ -47,7 +50,6 @@ public class R0020 extends RegSped {
 	 */
 	public R0020(String IND_DEC, String CNPJ, String UF, String IE, String COD_MUN,
 			String IM, String NIRE ) {
-		super();
 		this.CNPJ = CNPJ;
 		this.UF = UF;
 		this.IE = IE;
@@ -55,6 +57,8 @@ public class R0020 extends RegSped {
 		this.IM = IM;
 		this.IND_DEC = IND_DEC;
 		this.NIRE = NIRE;
+		//
+		addCounter();
 	} //R0020
 
 	/**
@@ -64,18 +68,22 @@ public class R0020 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.toNumeric(CNPJ))
-            .append(PIPE).append(TextUtil.checkSize(UF, 2))
-            .append(PIPE).append(TextUtil.checkSize(IND_DEC, 1))
-            .append(PIPE).append(TextUtil.toNumeric(NIRE))
-            .append(PIPE).append(TextUtil.toNumeric(IE))
-            .append(PIPE).append(TextUtil.toNumeric(COD_MUN))
-            .append(PIPE).append(TextUtil.toNumeric(IM))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.toNumeric(CNPJ)
+			+ PIPE + TextUtil.checkSize(UF, 0, 2)
+			+ PIPE + TextUtil.checkSize(IND_DEC, 0, 1)
+			+ PIPE + TextUtil.toNumeric(NIRE)
+			+ PIPE + TextUtil.toNumeric(IE)
+			+ PIPE + TextUtil.toNumeric(COD_MUN)
+			+ PIPE + TextUtil.toNumeric(IM)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R0020

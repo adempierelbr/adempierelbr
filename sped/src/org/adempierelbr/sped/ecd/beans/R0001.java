@@ -12,7 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo
@@ -26,7 +28,9 @@ import org.adempierelbr.sped.RegSped;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0001.java, 16/11/2010, 15:15:00, mgrigioni
  */
-public class R0001 extends RegSped {
+public class R0001 implements RegSped {
+
+	private final String REG   = "0001";
 	
 	private String IND_DAD; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
@@ -37,8 +41,9 @@ public class R0001 extends RegSped {
 	 */
 	public R0001(Boolean hasTransaction) 
 	{
-		super();
 		this.IND_DAD = hasTransaction ? "0" : "1";
+		//
+		addCounter();
 	}	//R0001
 
 	/**
@@ -48,12 +53,17 @@ public class R0001 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(IND_DAD)
-            .append(PIPE).append(EOL);
-
-		return format.toString();
+		String format = 
+			  PIPE + REG
+			+ PIPE + IND_DAD
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+		
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R0001
