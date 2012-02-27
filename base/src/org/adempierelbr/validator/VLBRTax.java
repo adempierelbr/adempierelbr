@@ -47,7 +47,9 @@ public class VLBRTax implements ModelValidator
 	private static CLogger log = CLogger.getCLogger(VLBRTax.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
-
+	/**	IsActive		*/
+	private boolean isActive = false;
+	
 	/**
 	 *	Initialize Validation
 	 *	@param engine validation engine
@@ -109,11 +111,12 @@ public class VLBRTax implements ModelValidator
 		/**
 		 * 	Calcula o imposto quando uma linha é salva
 		 */
-		if ((type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
+		if ((MOrderLine.Table_Name.equals(po.get_TableName()) || MInvoiceLine.Table_Name.equals(po.get_TableName())) 
+				&& (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
 				&& isChangeAffectTaxes (po))
 		{
-			return calculateTaxesLine (po);
-//			String result = calculateTaxes ((MOrderLine) po);
+//			return calculateTaxesLine (po);
+			String result = calculateTaxesLine (po);
 			
 			/**
 			 * 	Não fazer o update no nível do pedido para BEFORE NEW, porque as 
@@ -121,10 +124,10 @@ public class VLBRTax implements ModelValidator
 			 * 	Especificamente para novos registros o lançamento é
 			 * 		feito pelo AFTER NEW.
 			 */
-//			if (result != null || type == TYPE_BEFORE_NEW)
-//				return result;
-//			
-//			return updateTax((MOrderLine) po, false) ? null : "@LBR|ErrorSavingTaxes@";
+			if (result != null || type == TYPE_BEFORE_NEW)
+				return result;
+			
+			return updateTax (po, false) ? null : "@LBR|ErrorSavingTaxes@";
 		}
 		
 		/**
@@ -133,7 +136,7 @@ public class VLBRTax implements ModelValidator
 		 * 		o lançamento do imposto é feito no BEFORE SAVE.
 		 * 	Também deve ser recalculado quando uma linha é deletada.
 		 */
-		else if ((type == TYPE_AFTER_NEW || type == TYPE_AFTER_DELETE || type == TYPE_AFTER_CHANGE))
+		else if ((type == TYPE_AFTER_NEW || type == TYPE_AFTER_DELETE))
 			return updateTaxLine(po, true) ? null : "@LBR|ErrorSavingTaxes@";
 		
 		/**
@@ -144,7 +147,7 @@ public class VLBRTax implements ModelValidator
 		else if (type == TYPE_BEFORE_CHANGE
 				&& isChangeAffectTaxes (po))
 		{
-			String result = calculateTaxes ((MOrder) po);
+			String result = calculateTaxes (po);
 			
 			if (result != null)
 				return result;
@@ -169,12 +172,12 @@ public class VLBRTax implements ModelValidator
 	 */
 	public String docValidate (PO po, int timing)
 	{
-		if (MSysConfig.getBooleanValue("LBR_RECALCULATE_TAXES_ON_COMPLETE", false) 
-				&& timing == TIMING_BEFORE_COMPLETE)
+		if (MSysConfig.getBooleanValue("LBR_RECALCULATE_TAXES_ON_COMPLETE", false, getAD_Client_ID()) 
+				&& timing == TIMING_BEFORE_PREPARE)
 		{
 			return calculateTaxes (po);
 		}
-		else if (timing == TIMING_AFTER_COMPLETE)
+		else if (timing == TIMING_AFTER_PREPARE)
 		{
 			return updateTax(po, true) ? null : "@LBR|ErrorSavingTaxes@";
 		}
@@ -338,12 +341,27 @@ public class VLBRTax implements ModelValidator
 	 * 	@return true if sucess
 	 */
 	private boolean updateTax (PO po, boolean save)
-	{
+	{		
+		//	Linha do Pedido - Pega o documento Pai
+		if (MOrderLine.Table_Name.equals(po.get_TableName()))
+		{
+			po = ((MOrderLine) po).getParent();
+		}
+		
+		//	Linha da Fatura - Pega o documento Pai
+		else if (MOrderLine.Table_Name.equals(po.get_TableName()))
+		{
+			po = ((MOrderLine) po).getParent();
+		}
+		
 		String tableName = po.get_TableName();
-		//
+
+		//	Cabeçalhos de Documentos
 		if (!MOrder.Table_Name.equals(tableName)
 				&& !MInvoice.Table_Name.equals(tableName))
+		{
 			return false;
+		}
 			
 		log.fine("[PO=" + po + ", Save=" + save + "]");
 		BigDecimal totalLines = Env.ZERO;

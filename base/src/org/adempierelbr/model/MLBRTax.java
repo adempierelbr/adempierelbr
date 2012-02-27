@@ -464,7 +464,7 @@ public class MLBRTax extends X_LBR_Tax
 		/**
 		 * 	Matriz de ICMS
 		 */
-		MLBRICMSMatrix mICMS = MLBRICMSMatrix.get (ctx, oi.getAD_Org_ID(), oi.getC_Location().getC_Region_ID(), bpLoc.getC_Location().getC_Region_ID(), dateAcct, null);
+		MLBRICMSMatrix mICMS = MLBRICMSMatrix.get (ctx, oi.getAD_Org_ID(), (oi.getC_Location_ID() < 1 ? -1 : oi.getC_Location().getC_Region_ID()), bpLoc.getC_Location().getC_Region_ID(), dateAcct, null);
 		//
 		if (mICMS != null && mICMS.getLBR_Tax_ID() > 0)
 		{
@@ -594,7 +594,7 @@ public class MLBRTax extends X_LBR_Tax
 		/**
 		 * 	Importação ou Exportação
 		 */
-		else if (bpLoc != null && bpLoc.getC_Location().getC_Country_ID() != oi.getC_Location().getC_Country_ID())
+		else if (bpLoc != null && (oi.getC_Location_ID() < 1 || bpLoc.getC_Location().getC_Country_ID() != oi.getC_Location().getC_Country_ID()))
 			lbr_DestionationType = X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro;
 		
 		/**
@@ -628,7 +628,7 @@ public class MLBRTax extends X_LBR_Tax
 		
 		//	Tax Definition
 		MLBRTaxDefinition[] taxesDef = MLBRTaxDefinition.get (oi.getAD_Org_ID(), bp.getC_BPartner_ID(), C_DocTypeTarget_ID, 
-				oi.getC_Location().getC_Region_ID(), (bpLoc != null ? bpLoc.getC_Location().getC_Region_ID() : 0),
+				(oi.getC_Location_ID() < 1 ? -1 : oi.getC_Location().getC_Region_ID()), (bpLoc != null ? bpLoc.getC_Location().getC_Region_ID() : 0),
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
 				(isSOTrx ? bp.getLBR_FiscalGroup_Customer_ID() : bp.getLBR_FiscalGroup_Vendor_ID()), p.getLBR_FiscalGroup_Product_ID(), 
 				p.getLBR_NCM_ID(),  p.getLBR_ProductCategory_ID(), hasSubstitution, isSOTrx, lbr_TransactionType, dateAcct);
