@@ -40,6 +40,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/commons-httpclient-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DSGEBrazilUtils.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Adempiere360LTS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
