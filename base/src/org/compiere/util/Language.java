@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
+ * Product: Adempiere ERP & CRM Smart Business Solution                        *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -16,20 +16,12 @@
  *****************************************************************************/
 package org.compiere.util;
 
-import java.awt.ComponentOrientation;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.logging.Logger;
-
-import javax.print.attribute.standard.MediaSize;
-
-import org.compiere.model.MLanguage;
-import org.compiere.model.Query;
+import java.awt.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import java.util.logging.*;
+import javax.print.attribute.standard.*;
 
 /**
  *  Language Management.
@@ -39,24 +31,16 @@ import org.compiere.model.Query;
  */
 public class Language implements Serializable
 {
-	/**
-	 * 
-	 */
 	/**************************************************************************
 	 *  Languages
 	 *      http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt
 	 *  Countries
-	 *      http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm
+	 *      http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html
 	 *************************************************************************/
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -964846521004545703L;
 	/** Base Language               */
-	public static Language	Base_Language = null;
+	public static final String  AD_Language_en_US = "en_US";
 	/** Additional Languages         */
-	public static final String AD_Language_en_US = "en_US";
 	private static final String AD_Language_en_GB = "en_GB";
 	private static final String AD_Language_en_AU = "en_AU";
 	private static final String AD_Language_ca_ES = "ca_ES";
@@ -68,7 +52,6 @@ public class Language implements Serializable
 	private static final String AD_Language_es_CO = "es_CO";
 	private static final String AD_Language_es_DO = "es_DO";
 	private static final String AD_Language_fr_FR = "fr_FR";
-	private static final String AD_Language_fr_CA = "fr_CA";
 	private static final String AD_Language_bg_BG = "bg_BG";
 	private static final String AD_Language_th_TH = "th_TH";
 	private static final String AD_Language_pl_PL = "pl_PL";
@@ -78,21 +61,18 @@ public class Language implements Serializable
 	private static final String AD_Language_pt_BR = "pt_BR";
 	private static final String AD_Language_ru_RU = "ru_RU";
 	private static final String AD_Language_sl_SI = "sl_SI";
-	private static final String AD_Language_sr_RS = "sr_RS";
 	private static final String AD_Language_sv_SE = "sv_SE";
 	private static final String AD_Language_vi_VN = "vi_VN";
 	private static final String AD_Language_zh_CN = "zh_CN";
 	private static final String AD_Language_da_DK = "da_DK";
-	private static final String AD_Language_ms_MY = "ms_MY";
+	private static final String AD_Language_ms_MY = "ml_ML";
 	private static final String AD_Language_fa_IR = "fa_IR";
 	private static final String AD_Language_fi_FI = "fi_FI";
 	private static final String AD_Language_ro_RO = "ro_RO";
 	private static final String AD_Language_ja_JP = "ja_JP";
 	private static final String AD_Language_in_ID = "in_ID";
 	private static final String AD_Language_ar_TN = "ar_TN";
-	private static final String AD_Language_hu_HU = "hu_HU";
-	private static final String AD_Language_el_GR = "el_GR";
-	
+
 	/***
 	 *  System Languages.
 	 *  If you want to add a language, extend the array
@@ -142,10 +122,7 @@ public class Language implements Serializable
 			MediaSize.ISO.A4),
 		new Language ("Espa\u00f1ol (DO)",
 			AD_Language_es_DO,  new Locale("es","DO"), new Boolean(true), "dd/MM/yyyy",
-			MediaSize.ISO.A4),
-		new Language ("\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac (GR)",
-			AD_Language_el_GR,  new Locale("el","GR"),  new Boolean(false), "dd/MM/yyyy",
-			MediaSize.ISO.A4),
+			MediaSize.ISO.A4),			
 		new Language ("Farsi",
 			AD_Language_fa_IR,  new Locale("fa","IR"),  new Boolean(false), "dd-MM-yyyy",
 			MediaSize.ISO.A4),
@@ -155,9 +132,6 @@ public class Language implements Serializable
 		new Language ("Fran\u00e7ais",
 			AD_Language_fr_FR,  Locale.FRANCE,  null, null,		//  dd.MM.yy
 			MediaSize.ISO.A4),
-		new Language ("Fran\u00e7ais (CA)",
-			AD_Language_fr_CA,  new Locale("fr","CA"),  new Boolean(true), "MM/dd/yyyy",	// MM/dd/yy
-			MediaSize.NA.LETTER),
 		new Language ("Hrvatski",
 			AD_Language_hr_HR, new Locale("hr", "HR"), null, "dd.MM.yyyy",
 			MediaSize.ISO.A4),
@@ -170,12 +144,9 @@ public class Language implements Serializable
 		new Language ("\u65e5\u672c\u8a9e (JP)",
 			AD_Language_ja_JP, Locale.JAPAN, null, null,
 			MediaSize.ISO.A4),
-		new Language ("Malaysian",
+		new Language ("Malay",
 			AD_Language_ms_MY, new Locale("ms","MY"), new Boolean(false), "dd-MM-yyyy",
 			MediaSize.ISO.A4),
-		new Language ("Magyar (HU)",
-			AD_Language_hu_HU,  new Locale("hu","HU"), new Boolean(false), "yyyy.MM.dd",
-			MediaSize.ISO.A4),			
 		new Language ("Nederlands",
 			AD_Language_nl_NL, new Locale("nl","NL"), new Boolean(false), "dd-MM-yyyy",
 			MediaSize.ISO.A4),
@@ -196,9 +167,6 @@ public class Language implements Serializable
 			MediaSize.ISO.A4),
 		new Language ("Slovenski",
 			AD_Language_sl_SI, new Locale("sl", "SI"), null, "dd.MM.yyyy",
-			MediaSize.ISO.A4),
-		new Language ("\u0421\u0440\u043F\u0441\u043A\u0438 (RS)",
-			AD_Language_sr_RS, new Locale("sr", "RS"), null, "dd.MM.yyyy",
 			MediaSize.ISO.A4),
 		new Language ("Svenska",
 			AD_Language_sv_SE,  new Locale("sv","SE"),  new Boolean(false), "yyyy-MM-dd",
@@ -261,7 +229,7 @@ public class Language implements Serializable
 
 	/**************************************************************************
 	 *  Get Language.
-	 * 	If language does not exist, create it on the fly assuming that it is valid
+	 * 	If language does not exist, create it on the fly assuming taht it is valid
 	 *  @param langInfo either language (en) or locale (en-US) or display name
 	 *  @return Name (e.g. Deutsch)
 	 */
@@ -308,9 +276,9 @@ public class Language implements Serializable
 	public static boolean isBaseLanguage (String langInfo)
 	{
 		if (langInfo == null || langInfo.length() == 0
-			|| langInfo.equals(getBaseLanguage().getName())
-			|| langInfo.equals(getBaseLanguage().getLanguageCode())
-			|| langInfo.equals(getBaseLanguage().getAD_Language()))
+			|| langInfo.equals(s_languages[0].getName())
+			|| langInfo.equals(s_languages[0].getLanguageCode())
+			|| langInfo.equals(s_languages[0].getAD_Language()))
 			return true;
 		return false;
 	}   //  isBaseLanguage
@@ -321,25 +289,8 @@ public class Language implements Serializable
 	 */
 	public static Language getBaseLanguage()
 	{
-		if (Base_Language == null)
-			return s_languages[0];
-		//
-		return Base_Language;
+		return s_languages[0];
 	}   //  getBase
-	
-	/**
-	 * 	Adjust base language after login
-	 */
-	public static void setLanguageAfterLogin ()
-	{
-		String whereClause = "IsBaseLanguage='Y'";
-	    MLanguage lang = new Query (Env.getCtx(), MLanguage.Table_Name, whereClause, null).first();
-	    //
-	    if (lang != null)
-	    	Base_Language = new Language (lang.getName(), lang.getAD_Language(), new Locale (lang.getLanguageISO(), lang.getCountryCode()), null, null, MediaSize.NA.LETTER);
-	    else
-	    	Base_Language = s_languages[0];
-	}	//	setLanguageAfterLogin
 
 	/**
 	 *  Get Base Language code. (e.g. en-US)
@@ -377,21 +328,23 @@ public class Language implements Serializable
 	 */
 	public static String getAD_Language (Locale locale)
 	{
-		if (locale != null)
-		{
-			for (int i = 0; i < s_languages.length; i++)
-			{
-				if (locale.getLanguage().equals(s_languages[i].getLocale().getLanguage()))
-					return s_languages[i].getAD_Language();
-			}
-		}
-		return s_loginLanguage.getAD_Language();
+		return "pt_BR";
+		//
+//		if (locale != null)
+//		{
+//			for (int i = 0; i < s_languages.length; i++)
+//			{
+//				if 	(locale.equals(s_languages[i].getLocale()))
+//					return s_languages[i].getAD_Language();
+//			}
+//		}
+//		return s_loginLanguage.getAD_Language();
 	}   //  getLocale
 
 	/**
 	 *  Get Language Name
 	 *  @param langInfo either language (en) or locale (en-US) or display name
-	 *  @return Language Name (e.g. English)
+	 *  @return Langauge Name (e.g. English)
 	 */
 	public static String getName (String langInfo)
 	{
@@ -447,7 +400,7 @@ public class Language implements Serializable
 	/**************************************************************************
 	 *  Define Language
 	 *  @param name - displayed value, e.g. English
-	 *  @param AD_Language - the code of system supported language, e.g. en_US
+	 *  @param AD_Language - the code of system supported langauge, e.g. en_US
 	 *  (might be different than Locale - i.e. if the system does not support the language)
 	 *  @param locale - the Locale, e.g. Locale.US
 	 *  @param decimalPoint true if Decimal Point - if null, derived from Locale
@@ -471,7 +424,7 @@ public class Language implements Serializable
 	/**
 	 *  Define Language with A4 and default decimal point and date format
 	 *  @param name - displayed value, e.g. English
-	 *  @param AD_Language - the code of system supported language, e.g. en_US
+	 *  @param AD_Language - the code of system supported langauge, e.g. en_US
 	 *  (might be different than Locale - i.e. if the system does not support the language)
 	 *  @param locale - the Locale, e.g. Locale.US
 	 */
@@ -630,13 +583,21 @@ public class Language implements Serializable
 			m_dateFormat = (SimpleDateFormat)DateFormat.getDateInstance
 				(DateFormat.SHORT, m_locale);
 			String sFormat = m_dateFormat.toPattern();
-			//	some short formats have only one M and/or d (e.g. ths US)
-			if (sFormat.indexOf("MM") == -1 || sFormat.indexOf("dd") == -1)
+			//	some short formats have only one M and d (e.g. ths US)
+			if (sFormat.indexOf("MM") == -1 && sFormat.indexOf("dd") == -1)
+			{
+				String nFormat = "";
+				for (int i = 0; i < sFormat.length(); i++)
 				{
-				sFormat = sFormat.replaceFirst("d+", "dd");
-				sFormat = sFormat.replaceFirst("M+", "MM");
+					if (sFormat.charAt(i) == 'M')
+						nFormat += "MM";
+					else if (sFormat.charAt(i) == 'd')
+						nFormat += "dd";
+					else
+						nFormat += sFormat.charAt(i);
+				}
 			//	log.finer(sFormat + " => " + nFormat);
-				m_dateFormat.applyPattern(sFormat);
+				m_dateFormat.applyPattern(nFormat);
 			}
 			//	Unknown short format => use JDBC
 			if (m_dateFormat.toPattern().length() != 8)
