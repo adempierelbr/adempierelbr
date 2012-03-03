@@ -8,5 +8,6 @@ UPDATE AD_Column SET CallOut = 'org.compiere.model.CalloutOrder.product;org.adem
 -- Remoção do CallOut taxBR que não é mais usado na linha da Fatura - pablobp
 UPDATE AD_Column SET CallOut = 'org.compiere.model.CalloutOrder.product;org.adempierelbr.callout.CalloutTax.getTaxes;' WHERE AD_Column_ID = 3840; 
 
-
 UPDATE AD_SysConfig SET Value='360-trunk/049-BF_LBR-5_RemocaoCallOutTaxBR.sql' WHERE AD_SysConfig_ID=1100006;
+
+EXIT
