@@ -47,7 +47,7 @@ public class VLBRTax implements ModelValidator
 	private static CLogger log = CLogger.getCLogger(VLBRTax.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
-
+	
 	/**
 	 *	Initialize Validation
 	 *	@param engine validation engine
@@ -109,11 +109,12 @@ public class VLBRTax implements ModelValidator
 		/**
 		 * 	Calcula o imposto quando uma linha é salva
 		 */
-		if ((type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
+		if ((MOrderLine.Table_Name.equals(po.get_TableName()) || MInvoiceLine.Table_Name.equals(po.get_TableName())) 
+				&& (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
 				&& isChangeAffectTaxes (po))
 		{
-			return calculateTaxesLine (po);
-//			String result = calculateTaxes ((MOrderLine) po);
+//			return calculateTaxesLine (po);
+			String result = calculateTaxesLine (po);
 			
 			/**
 			 * 	Não fazer o update no nível do pedido para BEFORE NEW, porque as 
@@ -121,10 +122,10 @@ public class VLBRTax implements ModelValidator
 			 * 	Especificamente para novos registros o lançamento é
 			 * 		feito pelo AFTER NEW.
 			 */
-//			if (result != null || type == TYPE_BEFORE_NEW)
-//				return result;
-//			
-//			return updateTax((MOrderLine) po, false) ? null : "@LBR|ErrorSavingTaxes@";
+			if (result != null || type == TYPE_BEFORE_NEW)
+				return result;
+			
+			return updateTax (po, false) ? null : "@LBR|ErrorSavingTaxes@";
 		}
 		
 		/**
@@ -133,7 +134,7 @@ public class VLBRTax implements ModelValidator
 		 * 		o lançamento do imposto é feito no BEFORE SAVE.
 		 * 	Também deve ser recalculado quando uma linha é deletada.
 		 */
-		else if ((type == TYPE_AFTER_NEW || type == TYPE_AFTER_DELETE || type == TYPE_AFTER_CHANGE))
+		else if ((type == TYPE_AFTER_NEW || type == TYPE_AFTER_DELETE))
 			return updateTaxLine(po, true) ? null : "@LBR|ErrorSavingTaxes@";
 		
 		/**
@@ -144,7 +145,7 @@ public class VLBRTax implements ModelValidator
 		else if (type == TYPE_BEFORE_CHANGE
 				&& isChangeAffectTaxes (po))
 		{
-			String result = calculateTaxes ((MOrder) po);
+			String result = calculateTaxes (po);
 			
 			if (result != null)
 				return result;
@@ -169,12 +170,12 @@ public class VLBRTax implements ModelValidator
 	 */
 	public String docValidate (PO po, int timing)
 	{
-		if (MSysConfig.getBooleanValue("LBR_RECALCULATE_TAXES_ON_COMPLETE", false) 
-				&& timing == TIMING_BEFORE_COMPLETE)
+		if (MSysConfig.getBooleanValue("LBR_RECALCULATE_TAXES_ON_COMPLETE", false, getAD_Client_ID()) 
+				&& timing == TIMING_BEFORE_PREPARE)
 		{
 			return calculateTaxes (po);
 		}
-		else if (timing == TIMING_AFTER_COMPLETE)
+		else if (timing == TIMING_AFTER_PREPARE)
 		{
 			return updateTax(po, true) ? null : "@LBR|ErrorSavingTaxes@";
 		}
@@ -193,72 +194,73 @@ public class VLBRTax implements ModelValidator
 			MOrder order = (MOrder) po;
 			//
 			for (MOrderLine oLine : order.getLines ())
-				calculateTaxes (oLine, false);
+				calculateTaxes (po, oLine, false);
 		}
-		else if (MOrder.Table_Name.equals(po.get_TableName()))
+		else if (MInvoice.Table_Name.equals(po.get_TableName()))
 		{
 			MInvoice invoice = (MInvoice) po;
 			//
 			for (MInvoiceLine iLine : invoice.getLines ())
-				calculateTaxes (iLine, false);
+				calculateTaxes (po, iLine, false);
 		}
 		//
 		return null;
 	}	//	validateTaxes
-	
+
 	/**
-		 * 	Calculate brazilian taxes
-		 * 	@param order
-		 * 	@param updateTaxes
-		 * 	@return error message or null
-		 */
-		private String calculateTaxes (PO poLine, boolean updateTaxes)
+	 * 	Calculate brazilian taxes
+	 * 	@param original order/invoice
+	 * 	@param line to be processed
+	 * 	@param updateTaxes
+	 * 	@return error message or null
+	 */
+	private String calculateTaxes (PO po, PO poLine, boolean updateTaxes)
+	{
+		if (MOrderLine.Table_Name.equals(poLine.get_TableName()))
 		{
-			if (MOrderLine.Table_Name.equals(poLine.get_TableName()))
-			{
-				MOrderLine oLine = (MOrderLine) poLine;
-				//
-				I_W_C_Order oW = POWrapper.create(oLine.getParent(), I_W_C_Order.class);
-				I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
-				
-				if (oLineW.getLBR_Tax_ID() > 0)
-				{
-					Map<String, BigDecimal> params = new HashMap<String, BigDecimal>();
-					params.put(MLBRTax.SISCOMEX, oLineW.getlbr_SISCOMEXAmt());
-					params.put(MLBRTax.INSURANCE, oLineW.getlbr_InsuranceAmt());
-					params.put(MLBRTax.FREIGHT, oLineW.getFreightAmt());
-					params.put(MLBRTax.AMT, oLine.getLineNetAmt());
-					//
-					MLBRTax tax = new MLBRTax (Env.getCtx(), oLineW.getLBR_Tax_ID(), oLine.get_TrxName());
-					tax.calculate (oW.isTaxIncluded(), oW.getDateOrdered(), params, oW.getlbr_TransactionType());
-				}
-				//
-				oLineW.setlbr_RecalculateTax(false);
-			}
-			else if (MInvoiceLine.Table_Name.equals(poLine.get_TableName()))
-			{
-				MInvoiceLine iLine = (MInvoiceLine) poLine;
-				//
-				I_W_C_Invoice iW = POWrapper.create(iLine.getParent(), I_W_C_Invoice.class);
-				I_W_C_InvoiceLine iLineW = POWrapper.create (iLine, I_W_C_InvoiceLine.class);
-				
-				if (iLineW.getLBR_Tax_ID() > 0)
-				{
-					Map<String, BigDecimal> params = new HashMap<String, BigDecimal>();
-					params.put(MLBRTax.SISCOMEX, iLineW.getlbr_SISCOMEXAmt());
-					params.put(MLBRTax.INSURANCE, iLineW.getlbr_InsuranceAmt());
-	//				params.put(MLBRTax.FREIGHT, iLineW.getFreightAmt());	FIXME
-					params.put(MLBRTax.AMT, iLine.getLineNetAmt());
-					//
-					MLBRTax tax = new MLBRTax (Env.getCtx(), iLineW.getLBR_Tax_ID(), iLine.get_TrxName());
-					tax.calculate (iW.isTaxIncluded(), iW.getDateOrdered(), params, iW.getlbr_TransactionType());
-				}
-				//
-				iLineW.setlbr_RecalculateTax(false);
-			}
+			MOrderLine oLine = (MOrderLine) poLine;
+			//
+			I_W_C_Order oW = POWrapper.create((po == null ? oLine.getParent() : po), I_W_C_Order.class);
+			I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
 			
-			return null;
-		}	//	validateTaxes
+			if (oLineW.getLBR_Tax_ID() > 0)
+			{
+				Map<String, BigDecimal> params = new HashMap<String, BigDecimal>();
+				params.put(MLBRTax.SISCOMEX, oLineW.getlbr_SISCOMEXAmt());
+				params.put(MLBRTax.INSURANCE, oLineW.getlbr_InsuranceAmt());
+				params.put(MLBRTax.FREIGHT, oLineW.getFreightAmt());
+				params.put(MLBRTax.AMT, oLine.getLineNetAmt());
+				//
+				MLBRTax tax = new MLBRTax (Env.getCtx(), oLineW.getLBR_Tax_ID(), oLine.get_TrxName());
+				tax.calculate (oW.isTaxIncluded(), oW.getDateOrdered(), params, oW.getlbr_TransactionType());
+			}
+			//
+			oLineW.setlbr_RecalculateTax(false);
+		}
+		else if (MInvoiceLine.Table_Name.equals(poLine.get_TableName()))
+		{
+			MInvoiceLine iLine = (MInvoiceLine) poLine;
+			//
+			I_W_C_Invoice iW = POWrapper.create((po == null ? iLine.getParent() : po), I_W_C_Invoice.class);
+			I_W_C_InvoiceLine iLineW = POWrapper.create (iLine, I_W_C_InvoiceLine.class);
+			
+			if (iLineW.getLBR_Tax_ID() > 0)
+			{
+				Map<String, BigDecimal> params = new HashMap<String, BigDecimal>();
+				params.put(MLBRTax.SISCOMEX, iLineW.getlbr_SISCOMEXAmt());
+				params.put(MLBRTax.INSURANCE, iLineW.getlbr_InsuranceAmt());
+				params.put(MLBRTax.FREIGHT, iLineW.getFreightAmt());
+				params.put(MLBRTax.AMT, iLine.getLineNetAmt());
+				//
+				MLBRTax tax = new MLBRTax (Env.getCtx(), iLineW.getLBR_Tax_ID(), iLine.get_TrxName());
+				tax.calculate (iW.isTaxIncluded(), iW.getDateOrdered(), params, iW.getlbr_TransactionType());
+			}
+			//
+			iLineW.setlbr_RecalculateTax(false);
+		}
+		
+		return null;
+	}	//	validateTaxes
 
 	/**
 	 * 	Calculate brazilian taxes
@@ -267,7 +269,8 @@ public class VLBRTax implements ModelValidator
 	 */
 	private String calculateTaxesLine (PO poLine)
 	{
-		return calculateTaxes (poLine, true);
+		
+		return calculateTaxes (null, poLine, true);
 	}	//	calculateTaxes
 	
 	/**
@@ -338,12 +341,27 @@ public class VLBRTax implements ModelValidator
 	 * 	@return true if sucess
 	 */
 	private boolean updateTax (PO po, boolean save)
-	{
+	{		
+		//	Linha do Pedido - Pega o documento Pai
+		if (MOrderLine.Table_Name.equals(po.get_TableName()))
+		{
+			po = ((MOrderLine) po).getParent();
+		}
+		
+		//	Linha da Fatura - Pega o documento Pai
+		else if (MInvoiceLine.Table_Name.equals(po.get_TableName()))
+		{
+			po = ((MInvoiceLine) po).getParent();
+		}
+		
 		String tableName = po.get_TableName();
-		//
+
+		//	Cabeçalhos de Documentos
 		if (!MOrder.Table_Name.equals(tableName)
 				&& !MInvoice.Table_Name.equals(tableName))
+		{
 			return false;
+		}
 			
 		log.fine("[PO=" + po + ", Save=" + save + "]");
 		BigDecimal totalLines = Env.ZERO;

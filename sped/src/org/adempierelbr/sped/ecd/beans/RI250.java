@@ -17,9 +17,9 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDBalance;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
 
@@ -47,8 +47,10 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI250.java, 17/11/2010, 14:42:00, mgrigioni
  */
-public class RI250 extends RegSped {
+public class RI250 implements RegSped {
 	
+	private final String 	REG   = "I250";
+	//
 	private String 			COD_CTA;
 	private String 			COD_CCUS;
 	private BigDecimal 		VL_DC;
@@ -68,14 +70,13 @@ public class RI250 extends RegSped {
 			String NUM_ARQ, String COD_HIST_PAD, String HIST,
 			String COD_PART, Timestamp DT_LCTO, String NUM_LCTO)
 	{
-		super();
 		this.COD_CTA 	  = COD_CTA;
 		this.COD_CCUS 	  = COD_CCUS;
 		this.VL_DC 		  = VL_DC.abs();
 		this.IND_DC 	  = VL_DC.signum() == 1 ? "D" : "C";
 		this.NUM_ARQ 	  = NUM_ARQ;
 		this.COD_HIST_PAD = COD_HIST_PAD;
-		this.HIST 		  = TextUtil.removeEOL(RemoverAcentos.remover(HIST));
+		this.HIST 		  = TextUtil.removeEOL(TextUtil.retiraEspecial(HIST));
 		//
 		if (COD_PART != null && !COD_PART.equals("0"))
 			this.COD_PART 	  = COD_PART;
@@ -94,6 +95,7 @@ public class RI250 extends RegSped {
 		}
 		_rI200.put (NUM_LCTO, rI200);
 		
+		addCounter();
 		ECDBalance.addBalance(COD_CTA, VL_DC);
 	} 	// R250
 	
@@ -112,20 +114,20 @@ public class RI250 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
-            .append(PIPE).append(TextUtil.toNumeric(VL_DC, 0, 255))
-            .append(PIPE).append(TextUtil.checkSize(IND_DC, 1))
-            .append(PIPE).append(TextUtil.checkSize(NUM_ARQ, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_HIST_PAD, 255))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(HIST), 65535))
-            .append(PIPE).append(TextUtil.checkSize(COD_PART, 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
-	}
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.toNumeric(VL_DC, 0, 255) 
+			+ PIPE + TextUtil.checkSize(IND_DC, 0, 1) 
+			+ PIPE + TextUtil.checkSize(NUM_ARQ, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_HIST_PAD, 0, 255)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(HIST), 0, 65535)
+			+ PIPE + TextUtil.checkSize(COD_PART, 0, 255)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
 	
 	/**
 	 * 	Get BIR200
@@ -137,5 +139,9 @@ public class RI250 extends RegSped {
 	{
 		return _rI200.get(key);
 	}	//	getRI200
+	
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
 	
 } //RI250

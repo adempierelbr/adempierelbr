@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -28,7 +28,9 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RJ930.java, 18/11/2010, 14:24:00, mgrigioni
  */
 
-public class RJ930 extends RegSped {
+public class RJ930 implements RegSped {
+	
+	private final String REG = "J930";
 	
 	private String IDENT_NOM;
 	private String IDENT_CPF;
@@ -42,12 +44,13 @@ public class RJ930 extends RegSped {
 	public RJ930(String IDENT_NOM, String IDENT_CPF, String IDENT_QUALIF,
 			String COD_ASSIM, String IND_CRC)
 	{
-		super();
 		this.IDENT_NOM = IDENT_NOM;
 		this.IDENT_CPF = IDENT_CPF;
 		this.IDENT_QUALIF = IDENT_QUALIF;
 		this.COD_ASSIM = COD_ASSIM;
 		this.IND_CRC = IND_CRC;
+		//
+		addCounter();
 	} // RJ930
 
 	/**
@@ -57,16 +60,20 @@ public class RJ930 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(IDENT_NOM), 255))
-            .append(PIPE).append(TextUtil.toNumeric(IDENT_CPF))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(IDENT_QUALIF), 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_ASSIM, 3))
-            .append(PIPE).append(TextUtil.checkSize(IND_CRC, 11))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IDENT_NOM), 0, 255)
+			+ PIPE + TextUtil.toNumeric(IDENT_CPF)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(IDENT_QUALIF), 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_ASSIM, 0, 3)
+			+ PIPE + TextUtil.checkSize(IND_CRC, 0, 11)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } // RJ930

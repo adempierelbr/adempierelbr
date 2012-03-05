@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -28,7 +29,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI500.java, 18/11/2010, 10:16:00, mgrigioni
  */
-public class RI500 extends RegSped {
+public class RI500 implements RegSped {
+	
+	private final String REG   = "I500";
 	
 	private BigDecimal TAM_FONTE;
 
@@ -36,8 +39,10 @@ public class RI500 extends RegSped {
 	 * Constructor
 	 */
 	public RI500(BigDecimal TAM_FONTE) {
-		super();
-		this.TAM_FONTE = TAM_FONTE;		//
+
+		this.TAM_FONTE = TAM_FONTE;
+		//
+		addCounter();
 	} //RI500
 
 	/**
@@ -47,12 +52,15 @@ public class RI500 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.toNumeric(TAM_FONTE, 2, 2))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.toNumeric(TAM_FONTE, 2, 2)
+			+ PIPE;
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI500

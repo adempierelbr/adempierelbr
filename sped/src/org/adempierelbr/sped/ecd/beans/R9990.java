@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo Bloco 9 Registro 9990 - ENCERRAMENTO DO BLOCO 9
@@ -23,7 +24,9 @@ import org.adempierelbr.sped.RegSped;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R9990.java, 16/11/2010, 15:49:00, mgrigioni
  */
-public class R9990 extends RegSped {
+public class R9990 implements RegSped {
+
+	private final String REG   = "9990";
 
 	private String QTD_LIN_9 = "";
 
@@ -32,19 +35,24 @@ public class R9990 extends RegSped {
 	 * 
 	 */
 	public R9990() {
-		super();
+		//
+		addCounter();
 	} //R9990
 
 	public String toString(){
 		
 		QTD_LIN_9 = "" + CounterSped.getBlockCounter(REG);
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_9)
-	        .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG 
+			+ PIPE + QTD_LIN_9
+			+ PIPE;
 		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
+	}
+
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R9990

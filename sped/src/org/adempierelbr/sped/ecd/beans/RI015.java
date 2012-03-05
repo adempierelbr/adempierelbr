@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -22,8 +23,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI015.java, 16/11/2010, 16:21:00, mgrigioni
  */
-public class RI015 extends RegSped {
+public class RI015 implements RegSped {
 
+	private final String REG   = "I015";
+	
 	private String COD_CTA_RES;
 	
 	/**
@@ -31,22 +34,27 @@ public class RI015 extends RegSped {
 	 * @param COD_CTA_RES
 	 */
 	public RI015(String COD_CTA_RES) {
-		super();
 		this.COD_CTA_RES = COD_CTA_RES;
+		//
+		addCounter();
 	}	//RI015
 	
 	/**
-	 * Formata Bloco I Resgistro I015
+	 * Formata Bloco I Resgistro i015
 	 * @return
 	 */
 	public String toString()  {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA_RES, 100))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_CTA_RES, 0, 100)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	}	//toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 }	//RI015

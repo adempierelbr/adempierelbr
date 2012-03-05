@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.sacred.CounterSacred;
 import org.adempierelbr.sacred.RegSacred;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -53,13 +52,13 @@ public class B5R5310 implements RegSacred{
 		
 		String format = 
 			REG 
-			+ PIPE + TextUtil.checkSize(RemoverAcentos.remover(COD_ITEM),255)
-			+ PIPE + TextUtil.toNumeric(QUANT_INI,5,true)
-			+ PIPE + TextUtil.toNumeric(CUS_INI,2,true)
-			+ PIPE + TextUtil.toNumeric(ICMS_INI,2,true)
-			+ PIPE + TextUtil.toNumeric(QUANT_FIM,5,true)
-			+ PIPE + TextUtil.toNumeric(CUS_FIM,2,true)
-			+ PIPE + TextUtil.toNumeric(ICMS_FIM,2,true);
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(COD_ITEM),0,255)
+			+ PIPE + TextUtil.bigdecimalToString(QUANT_INI,5).replace('.', ',')
+			+ PIPE + TextUtil.bigdecimalToString(CUS_INI,2).replace('.',',')
+			+ PIPE + TextUtil.bigdecimalToString(ICMS_INI,2).replace('.',',')
+			+ PIPE + TextUtil.bigdecimalToString(QUANT_FIM,5).replace('.', ',')
+			+ PIPE + TextUtil.bigdecimalToString(CUS_FIM,2).replace('.',',')
+			+ PIPE + TextUtil.bigdecimalToString(ICMS_FIM,2).replace('.',',');
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

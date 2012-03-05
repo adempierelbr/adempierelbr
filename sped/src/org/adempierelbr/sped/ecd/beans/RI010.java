@@ -12,8 +12,10 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.CLogger;
 
 /**
  * Identificação do Arquivo
@@ -24,17 +26,21 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI010.java, 16/11/2010, 16:03:00, mgrigioni
  */
-public class RI010 extends RegSped
+public class RI010 implements RegSped
 {
+	/** Logger */
+	private static CLogger log = CLogger.getCLogger(RI010.class);
+	//
+	private final String REG   = "I010";
 
 	/**
 	 * Indicador da forma de escrituração contábil:
 	 * 
-	 * G - Livro Diário (Completo, sem escrituração auxiliar); 
-	 * R - Livro Diário com Escrituração Resumida (com escrituração auxiliar); 
-	 * A - Livro Diário Auxiliar ao Diário com Escrituração Resumida;
-	 * B - Livro Balancetes Diários e Balanços;
-	 * Z – Razão Auxiliar (Livro Contábil Auxiliar)
+	 * G - Livro Diário (Completo, sem escrituração auxiliar); R - Livro Diário
+	 * com Escrituração Resumida (com escrituração auxiliar); A - Livro Diário
+	 * Auxiliar ao Diário com Escrituração Resumida; B - Livro Balancetes
+	 * Diários e Balanços; Z – Razão Auxiliar (Livro Contábil Auxiliar conforme
+	 * leiaute definido nos registros I500 a I555).
 	 * 
 	 */
 	private String IND_ESC;
@@ -42,21 +48,16 @@ public class RI010 extends RegSped
 
 	/**
 	 * Constructor
-	 * @param IND_ESC
 	 */
 	public RI010(String IND_ESC) {
-		super();
-		setIND_ESC(IND_ESC);
+		if (IND_ESC == null || IND_ESC.length() != 1 || "GRABZ".indexOf(IND_ESC) == -1)
+			log.warning("O indicador da forma de escrituração é inválido.");
+		//
+		this.IND_ESC = IND_ESC;
+		//
+		addCounter();
 	} //RI010
 
-	private void setIND_ESC(String IND_ESC){
-		if (IND_ESC == null || IND_ESC.length() != 1 || 
-			"GRABZ".indexOf(IND_ESC) == -1)
-			log.warning("O indicador da forma de escrituração é inválido.");
-		
-		this.IND_ESC = IND_ESC;
-	}
-	
 	/**
 	 * Formata
 	 * 
@@ -64,13 +65,17 @@ public class RI010 extends RegSped
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(IND_ESC, 1, 1))
-            .append(PIPE).append(TextUtil.checkSize(COD_VER_LC, 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format = 
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(IND_ESC, 1, 1)
+			+ PIPE + TextUtil.checkSize(COD_VER_LC, 0, 255)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI010

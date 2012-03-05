@@ -1,6 +1,8 @@
 package org.adempierelbr.sacred.comp;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -18,15 +20,14 @@ import org.adempierelbr.sacred.comp.beans.B0R0150;
 import org.adempierelbr.sacred.comp.beans.B0R0200;
 import org.adempierelbr.sacred.comp.beans.B0R0300;
 import org.adempierelbr.sacred.comp.beans.B5R5310;
+import org.adempierelbr.sacred.comp.beans.B5R5315;
 import org.adempierelbr.sacred.comp.beans.B5R5325;
 import org.adempierelbr.sacred.comp.beans.B5R5330;
 import org.adempierelbr.sacred.comp.beans.B5R5335;
 import org.adempierelbr.sacred.comp.beans.B5R5350;
 import org.adempierelbr.sacred.comp.beans.B9R9900;
-import org.adempierelbr.sacred.comp.beans.B5R5315;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -60,6 +61,8 @@ public class SacredCompUtil{
 	public static final String   NFF      = "01";
 	public static final String   CTRC     = "09";
 	public static final String   NFe      = "31";
+
+	public static final MathContext MCROUND = new MathContext(12, RoundingMode.HALF_UP);
 
 	public static final String   ARTIGO   = "71";
 	public static final String[] _Artigos =
@@ -183,10 +186,7 @@ public class SacredCompUtil{
 
 		String DESCR_ITEM = nfl.getProductName();
 		String UNI        = nfl.getlbr_UOMName();
-		
-		String COD_GEN = "00";
-		if (nfl.getlbr_NCMName() != null && nfl.getlbr_NCMName().length() > 2)
-			COD_GEN    = nfl.getlbr_NCMName().substring(0, 2);
+		String COD_GEN    = nfl.getlbr_NCMName().substring(0, 2);
 
 		_MProduct.add(COD_ITEM);
 
@@ -212,10 +212,10 @@ public class SacredCompUtil{
 		
 		BigDecimal QUANT_INI = getQuantidade(M_Product_ID,C_Period_ID,true);
 		BigDecimal CUS_INI   = QUANT_INI.multiply(getCusto(M_Product_ID,C_Period_ID,true));
-		BigDecimal ICMS_INI  = CUS_INI.multiply(medICMS_INI.divide(Env.ONEHUNDRED, TaxBR.MCROUND));
+		BigDecimal ICMS_INI  = CUS_INI.multiply(medICMS_INI.divide(Env.ONEHUNDRED, MCROUND));
 		BigDecimal QUANT_FIM = getQuantidade(M_Product_ID,C_Period_ID,false);
 		BigDecimal CUS_FIM   = QUANT_FIM.multiply(getCusto(M_Product_ID,C_Period_ID,false));
-		BigDecimal ICMS_FIM  = CUS_FIM.multiply(medICMS_FIM.divide(Env.ONEHUNDRED, TaxBR.MCROUND));
+		BigDecimal ICMS_FIM  = CUS_FIM.multiply(medICMS_FIM.divide(Env.ONEHUNDRED, MCROUND));
 		
 		if (QUANT_INI.signum() == -1 || QUANT_FIM.signum() == -1) //NAO LANCAR SE SALDO NEGATIVO
 			return null;
@@ -269,7 +269,7 @@ public class SacredCompUtil{
 		BigDecimal VALOR_OP_ITEM  = nfl.getLineTotalAmt();
 		//((custo*qtd)/medICMS) - valorICMS
 		BigDecimal ICMS_GERA_ITEM = (getCusto(nfl.getM_Product_ID(),C_Period_ID,false).multiply(nfl.getQty()).multiply
-		                            (medICMS.divide(Env.ONEHUNDRED, TaxBR.MCROUND))).subtract(nfl.getICMSAmt());
+		                            (medICMS.divide(Env.ONEHUNDRED, MCROUND))).subtract(nfl.getICMSAmt());
 		
 		credito = credito.add(ICMS_GERA_ITEM);
 		
@@ -280,7 +280,7 @@ public class SacredCompUtil{
 		
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
-		BigDecimal VALOR_BC_ITEM = nfl.getICMSBaseAmt();
+		BigDecimal VALOR_BC_ITEM = nfl.getICMSBase();
 		BigDecimal ALIQ_ITEM = nfl.getICMSRate();
 		BigDecimal ICMS_DEB_ITEM = nfl.getICMSAmt();
 		
@@ -292,7 +292,7 @@ public class SacredCompUtil{
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,nfl.getLBR_NotaFiscal_ID(),trx);
 		
-		String NUM_DECL_EXP = nf.getLBR_DE().getlbr_DE();
+		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
 		String COMP_OPER    = "0";
 		BigDecimal SERV_COMUN = Env.ZERO;
 
@@ -304,7 +304,7 @@ public class SacredCompUtil{
 		MLBRNotaFiscalLine nfl = new MLBRNotaFiscalLine(ctx,LBR_NotaFiscalLine_ID,trx);
 		
 		BigDecimal VALOR_OP_ITEM       = nfl.getLineTotalAmt();
-		BigDecimal VALOR_BC_ITEM       = nfl.getICMSBaseAmt();
+		BigDecimal VALOR_BC_ITEM       = nfl.getICMSBase();
 		BigDecimal ALIQ_ITEM           = nfl.getICMSRate();
 		BigDecimal ICMS_DEB_ITEM       = nfl.getICMSAmt();
 		BigDecimal ICMS_OPER_ITEM      = Env.ZERO;
@@ -531,9 +531,9 @@ public class SacredCompUtil{
 
 		BigDecimal medICMS = getValorICMS(dateFrom,dateTo,false);
 
-		medICMS = medICMS.divide(getValor(dateFrom,dateTo,false), TaxBR.MCROUND);
+		medICMS = medICMS.divide(getValor(dateFrom,dateTo,false), MCROUND);
 
-		return medICMS.setScale(4, TaxBR.ROUND).multiply(Env.ONEHUNDRED);
+		return medICMS.setScale(4, BigDecimal.ROUND_HALF_UP).multiply(Env.ONEHUNDRED);
 	} //getMedICMS
 	
 	/**

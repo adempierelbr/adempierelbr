@@ -7,11 +7,14 @@ import org.adempierelbr.nfe.NFeInutilizacao;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.Adempiere;
 import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
+import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
@@ -19,7 +22,7 @@ import org.compiere.util.Env;
  * 		Inutiliza uma NF ou uma Sequência de NF
  * 
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: ProcInutNF.java, v1.0 2010/12/01 3:45:29 PM, ralexsander Exp $
+ *	@version $Id: ProcInutNF.java, v1.0 2010/MM/DD 3:45:29 PM, ralexsander Exp $
  */
 public class ProcInutNF extends SvrProcess 
 {
@@ -88,19 +91,15 @@ public class ProcInutNF extends SvrProcess
 			throw new Exception ("@Mandatory@ @DocumentNo@");
 		//
 		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), p_AD_Org_ID, get_TrxName());
-		MDocType dt = new MDocType(Env.getCtx(), p_C_DocType_ID, get_TrxName());
+		MDocType dt = new MDocType(Env.getCtx(), p_C_DocType_ID, null);
 		//
 		String regionCode = BPartnerUtil.getRegionCode(new MLocation(getCtx(), oi.getC_Location_ID(), get_TrxName()));
 		if (regionCode.isEmpty())
 			return "UF Inválida";
 		//
-		String serie = dt.get_ValueAsString("lbr_NFSerie");
-		if (serie == null || serie.trim().isEmpty())
-			serie = "0";
-		
 		InutilizacaoNF iNF = new InutilizacaoNF (oi, regionCode);
 		iNF.setMod(dt.get_ValueAsString("lbr_NFModel"));
-		iNF.setSerie(serie);
+		iNF.setSerie(dt.get_ValueAsString("lbr_NFSerie"));
 		iNF.setnNFIni(p_DocumentNo.toString());
 		iNF.setnNFFin(p_DocumentNo_To.toString());
 		iNF.setxJust(p_Just);

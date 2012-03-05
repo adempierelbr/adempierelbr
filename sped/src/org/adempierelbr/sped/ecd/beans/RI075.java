@@ -12,8 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -25,8 +25,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: BIRI075.java, 17/11/2010, 10:48:00, mgrigioni
  */
-public class RI075 extends RegSped {
+public class RI075 implements RegSped {
 	
+	private final String REG   = "I075";
+
 	private String COD_HIST;
 	private String DESCR_HIST;
 
@@ -34,9 +36,10 @@ public class RI075 extends RegSped {
 	 * Constructor
 	 */
 	public RI075(String COD_HIST, String DESCR_HIST) {
-		super();
 		this.COD_HIST = COD_HIST;
 		this.DESCR_HIST = DESCR_HIST;
+		//
+		addCounter();
 	} //RI075
 
 	/**
@@ -46,13 +49,17 @@ public class RI075 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(COD_HIST), 255))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESCR_HIST), 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(COD_HIST), 0, 255)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESCR_HIST), 0, 255)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI075

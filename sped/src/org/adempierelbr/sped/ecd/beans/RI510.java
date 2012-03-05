@@ -14,8 +14,8 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -37,7 +37,9 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI510.java, 18/11/2010, 10:20:00, mgrigioni
  */
-public class RI510 extends RegSped {
+public class RI510 implements RegSped {
+	
+	private final String REG   = "I510";
 	
 	private String NM_CAMPO;
 	private String DESC_CAMPO;
@@ -51,13 +53,14 @@ public class RI510 extends RegSped {
 	 */
 	public RI510(String NM_CAMPO, String DESC_CAMPO, String TIPO_CAMPO,
 			BigDecimal TAM_CAMPO, BigDecimal DEC_CAMPO, BigDecimal COL_CAMPO) {
-		super();
 		this.NM_CAMPO   = NM_CAMPO;
 		this.DESC_CAMPO = DESC_CAMPO;
 		this.TIPO_CAMPO = TIPO_CAMPO;
 		this.TAM_CAMPO  = TAM_CAMPO;
 		this.DEC_CAMPO  = DEC_CAMPO;
 		this.COL_CAMPO  = COL_CAMPO;
+		//
+		addCounter();
 	} // RI510
 
 	/**
@@ -67,17 +70,21 @@ public class RI510 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(NM_CAMPO, 16))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESC_CAMPO), 50))
-            .append(PIPE).append(TextUtil.checkSize(TIPO_CAMPO, 1))
-            .append(PIPE).append(TextUtil.toNumeric(TAM_CAMPO, 0, 3))
-            .append(PIPE).append(TextUtil.toNumeric(DEC_CAMPO, 0, 2))
-            .append(PIPE).append(TextUtil.toNumeric(COL_CAMPO, 0, 3))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(NM_CAMPO, 0, 16)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(DESC_CAMPO), 0, 50)
+			+ PIPE + TextUtil.checkSize(TIPO_CAMPO, 1, 1)
+			+ PIPE + TextUtil.toNumeric(TAM_CAMPO, 0, 3)
+			+ PIPE + TextUtil.toNumeric(DEC_CAMPO, 0, 2)
+			+ PIPE + TextUtil.toNumeric(COL_CAMPO, 0, 3)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI510

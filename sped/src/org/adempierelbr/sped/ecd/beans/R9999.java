@@ -27,7 +27,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R9999.java, 16/11/2010, 15:52:00, mgrigioni
  */
-public class R9999 extends RegSped {
+
+public class R9999 implements RegSped {
+	
+	private final String REG     = "9999";
 
 	private String QTD_LIN = ""; 
 	
@@ -35,7 +38,8 @@ public class R9999 extends RegSped {
 	 * Constructor
 	 */
 	public R9999() {
-		super();
+		//
+		addCounter();
 	} // R9999
 	
 	public String toString(){
@@ -48,6 +52,10 @@ public class R9999 extends RegSped {
 		  + PIPE;
 		
 		return TextUtil.removeEOL(format) + EOL;
+	}
+
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } // R9999

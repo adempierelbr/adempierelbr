@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -32,8 +33,10 @@ import org.adempierelbr.util.TextUtil;
  * @version $Id: RJ800.java, 18/11/2010, 11:43:00, mgrigioni
  */
 
-public class RJ800 extends RegSped {
+public class RJ800 implements RegSped {
 
+	private final String REG = "J800";
+	
 	private String ARQ_RTF;
 	private String IND_FIM_RTF;
 
@@ -41,9 +44,10 @@ public class RJ800 extends RegSped {
 	 * Constructor
 	 */
 	public RJ800(String ARQ_RTF, String IND_FIM_RTF) {
-		super();
 		this.ARQ_RTF = ARQ_RTF;
 		this.IND_FIM_RTF = IND_FIM_RTF;
+		//
+		addCounter();
 	} //RJ800
 
 	/**
@@ -53,13 +57,17 @@ public class RJ800 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(ARQ_RTF)
-            .append(PIPE).append(TextUtil.checkSize(IND_FIM_RTF, 7))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + ARQ_RTF
+			+ PIPE + TextUtil.checkSize(IND_FIM_RTF, 0, 7)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RJ800

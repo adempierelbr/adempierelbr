@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import java.sql.Timestamp;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -25,16 +26,19 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI300.java, 17/11/2010, 14:44:00, mgrigioni
  */
-public class RI300 extends RegSped {
-
+public class RI300 implements RegSped {
+	
+	private final String REG   = "I300";
+	//
 	private Timestamp DT_BCTE;
 
 	/**
 	 * Constructor
 	 */
 	public RI300(Timestamp DT_BCTE) {
-		super();
 		this.DT_BCTE = DT_BCTE;
+		//
+		addCounter();
 	} // RI300
 
 	/**
@@ -44,12 +48,16 @@ public class RI300 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.timeToString(DT_BCTE, "ddMMyyyy"))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.timeToString(DT_BCTE, "ddMMyyyy")
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
+	
 } //RI300

@@ -14,6 +14,7 @@ package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * Identificação do Arquivo
@@ -27,7 +28,9 @@ import org.adempierelbr.sped.RegSped;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: R0990.java, 16/11/2010, 15:28:00, mgrigioni
  */
-public class R0990 extends RegSped {
+public class R0990 implements RegSped {
+	
+	private final String REG   = "0990";
 	
 	private String QTD_LIN_0 = "";
 
@@ -36,19 +39,24 @@ public class R0990 extends RegSped {
 	 */
 	public R0990() 
 	{
-		super();
+		//
+		addCounter();
 	} //R0990
 
 	public String toString(){
 		
 		QTD_LIN_0 = "" + CounterSped.getBlockCounter(REG);
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_0)
-	        .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG
+			+ PIPE + QTD_LIN_0
+			+ PIPE;
 		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
+	}
+
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //R0990

@@ -17,10 +17,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.ecd.ECDUtil;
 import org.adempierelbr.util.AdempiereLBR;
-import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MElementValue;
 import org.compiere.util.Env;
@@ -35,8 +35,10 @@ import org.compiere.util.Env;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RI050.java, 17/11/2010, 09:57:00, mgrigioni
  */
-public class RI050 extends RegSped {
+public class RI050 implements RegSped {
 	
+	private final String REG   = "I050";
+	//
 	private Timestamp DT_ALT;
 	private String COD_NAT;
 	private String IND_CTA;
@@ -58,8 +60,6 @@ public class RI050 extends RegSped {
 	 */
 	public RI050 (Timestamp DT_FIN, Timestamp DT_ALT, String COD_NAT, String IND_CTA, 
 			String COD_CTA, String CTA) {
-		
-		super();
 		
 		if (COD_CTA == null)
 			COD_CTA = "";
@@ -95,7 +95,7 @@ public class RI050 extends RegSped {
 			}
 		}
 		//
-		
+		addCounter();
 	}	//RI050
 	
 	/**
@@ -122,19 +122,23 @@ public class RI050 extends RegSped {
 	 * @return
 	 */
 	public String toString() {
+					
+		String format = 
+			  PIPE + REG
+			+ PIPE + TextUtil.timeToString(DT_ALT, "ddMMyyyy")
+			+ PIPE + TextUtil.checkSize(COD_NAT, 0, 2)
+			+ PIPE + TextUtil.checkSize(IND_CTA, 1, 1)
+			+ PIPE + TextUtil.toNumeric(NIVEL, 0)
+			+ PIPE + TextUtil.checkSize(COD_CTA, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_CTA_SUP, 0, 255)
+			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(CTA), 0, 255)
+			+ PIPE;
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.timeToString(DT_ALT, "ddMMyyyy"))
-            .append(PIPE).append(TextUtil.checkSize(COD_NAT, 2))
-            .append(PIPE).append(TextUtil.checkSize(IND_CTA, 1, 1))
-            .append(PIPE).append(TextUtil.toNumeric(NIVEL, 0))
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_CTA_SUP, 255))
-            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(CTA), 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } //RI050

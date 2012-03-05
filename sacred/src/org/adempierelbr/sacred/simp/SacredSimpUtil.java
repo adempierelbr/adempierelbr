@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.sacred.CounterSacred;
+import org.adempierelbr.sacred.comp.SacredCompUtil;
 import org.adempierelbr.sacred.simp.beans.B0R0000;
 import org.adempierelbr.sacred.simp.beans.B0R0150;
 import org.adempierelbr.sacred.simp.beans.B0R0300;
@@ -20,7 +21,6 @@ import org.adempierelbr.sacred.simp.beans.B5R5335;
 import org.adempierelbr.sacred.simp.beans.B5R5350;
 import org.adempierelbr.sacred.simp.beans.B9R9900;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -228,7 +228,7 @@ public class SacredSimpUtil{
 		BigDecimal cost = nf.getCost(2000000, 2000000);
 		custo = custo.add(cost);
 
-		BigDecimal CRED_EST_ICMS = cost.multiply(PER_MED_ICMS.divide(Env.ONEHUNDRED, TaxBR.MCROUND));
+		BigDecimal CRED_EST_ICMS = cost.multiply(PER_MED_ICMS.divide(Env.ONEHUNDRED, SacredCompUtil.MCROUND));
 		BigDecimal ICMS_GERA     = CRED_EST_ICMS.subtract(nf.getICMSDebAmt());
 
 		return new B5R5325(COD_LEGAL,IVA_UTILIZADO,PER_MED_ICMS,CRED_EST_ICMS,ICMS_GERA);
@@ -244,7 +244,7 @@ public class SacredSimpUtil{
 
 	public static B5R5335 createR5335(MLBRNotaFiscal nf){
 
-		String NUM_DECL_EXP = nf.getLBR_DE().getlbr_DE();
+		String NUM_DECL_EXP = nf.get_ValueAsString("z_nDE");
 		String COMP_OPER    = "0";
 
 		return new B5R5335(NUM_DECL_EXP,COMP_OPER);
@@ -282,9 +282,9 @@ public class SacredSimpUtil{
 		BigDecimal compras = getValor(dateFrom,dateTo,false);
 		BigDecimal vendas  = getValor(dateFrom,dateTo,true);
 
-		BigDecimal iva = (vendas.subtract(compras)).divide(compras, TaxBR.MCROUND);
+		BigDecimal iva = (vendas.subtract(compras)).divide(compras, SacredCompUtil.MCROUND);
 
-		return iva.setScale(4, TaxBR.ROUND);
+		return iva.setScale(4, BigDecimal.ROUND_HALF_UP);
 	} //getIVA
 
 	public static BigDecimal getValorICMS(Timestamp dateFrom, Timestamp dateTo, boolean isSOTrx){
@@ -332,9 +332,9 @@ public class SacredSimpUtil{
 
 		BigDecimal medICMS = getValorICMS(dateFrom,dateTo,false);
 
-		medICMS = medICMS.divide(getValor(dateFrom,dateTo,false), TaxBR.MCROUND);
+		medICMS = medICMS.divide(getValor(dateFrom,dateTo,false), SacredCompUtil.MCROUND);
 
-		return medICMS.setScale(4, TaxBR.ROUND).multiply(Env.ONEHUNDRED);
+		return medICMS.setScale(4, BigDecimal.ROUND_HALF_UP).multiply(Env.ONEHUNDRED);
 	} //getMedICMS
 
 	/**

@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
 
@@ -34,8 +35,10 @@ import org.adempierelbr.util.TextUtil;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: BIRI052.java, 17/11/2010, 10:05:00, mgrigioni
  */
-public class RI052 extends RegSped {
+public class RI052 implements RegSped {
 	
+	private final String REG   = "I052";
+	//
 	private String COD_CCUS;
 	private String COD_AGL;
 
@@ -43,9 +46,10 @@ public class RI052 extends RegSped {
 	 * Constructor
 	 */
 	public RI052(String COD_CCUS, String COD_AGL) {
-		super();
 		this.COD_CCUS = COD_CCUS;
 		this.COD_AGL = COD_AGL;
+		//
+		addCounter();
 	} //RI052
 
 	/**
@@ -55,13 +59,17 @@ public class RI052 extends RegSped {
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(COD_CCUS, 255))
-            .append(PIPE).append(TextUtil.checkSize(COD_AGL, 255))
-            .append(PIPE);
-
-		return (TextUtil.removeEOL(format).append(EOL)).toString();
+		String format =
+			  PIPE + REG 
+			+ PIPE + TextUtil.checkSize(COD_CCUS, 0, 255)
+			+ PIPE + TextUtil.checkSize(COD_AGL, 0, 255)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
 } // RI052
