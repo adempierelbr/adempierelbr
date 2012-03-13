@@ -146,6 +146,7 @@ public class ProcGenerateRPS extends SvrProcess
 		final String whereClause = "IsCancelled='N' AND DateDoc BETWEEN " + 
 			DB.TO_DATE(p_DateFrom) + " AND " + 
 			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=? AND IsPrinted='N' " +
+			"AND Processed='Y' "+
 			"AND C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType WHERE lbr_NFModel LIKE 'RPS%') ";
 		//
 		List<MLBRNotaFiscal> list = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, whereClause, trxName)
