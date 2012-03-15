@@ -1,7 +1,9 @@
 package org.adempierelbr.validator;
 
+import org.adempiere.webui.apps.form.WCreateFromFactory;
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRNFeLot;
+import org.adempierelbr.webui.apps.form.WCreateFromNFeLotUI;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
@@ -77,8 +79,9 @@ public class VLBRCommons implements ModelValidator
 	{
 		log.info ("AD_User_ID=" + AD_User_ID);
 		
-		//	Registra a classe de CreateFrom para o Lote da NFe
+		//	Registra a classe de CreateFrom para o Lote da NFe, SWING e ZK
 		VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
+		WCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, WCreateFromNFeLotUI.class);
 		
 		return null;
 	}	//	login
