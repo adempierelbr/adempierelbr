@@ -19,25 +19,29 @@ import java.util.logging.Level;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.grid.VCreateFromDialog;
+import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.GridTab;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
 /**
- *  Add NF to LOT
+ *  	Seleção de Faturas no Lote da NFe, classe criada com base na versão anterior
+ *	
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *			<li>Melhorias no funcionamento e classe original
  *
  *  @author Mario Grigioni
  *  @version  $Id: CreateFromNFeLotUI, 21/06/2010 17:04:00 mgrigioni Exp $
  */
 public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableChangeListener
-{
-	private static final long serialVersionUID = 1L;
-	
-	private VCreateFromDialog dialog;
-
-	public VCreateFromNFeLotUI(GridTab mTab)
+{	
+	/**
+	 * 	Constructor
+	 */
+	public VCreateFromNFeLotUI (GridTab mTab)
 	{
 		super(mTab);
 		log.info(getGridTab().toString());
@@ -59,12 +63,15 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 			setInitOK(false);
 		}
 		AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
-	}   //  VCreateFrom
+	}   //  VCreateFromNFeLotUI
 	
 	/** Window No               */
 	private int p_WindowNo;
 
-	/**	Logger			*/
+	/**	Dialog					*/
+	private VCreateFromDialog dialog;
+	
+	/**	Logger					*/
 	private CLogger log = CLogger.getCLogger(getClass());
 		
 	/**
@@ -85,7 +92,6 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 		return true;
 	}   //  dynInit
     
-	/*************************************************************************/
 	/**
 	 *  Change Listener
 	 *  @param e event
@@ -96,10 +102,13 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 		dialog.tableChanged(null);
 	}   //  vetoableChange
 		
-	protected void loadNFeLot()
+	/**
+	 * 	Load NFe Lot
+	 */
+	protected void loadNFeLot ()
 	{
-		loadTableOIS(getNFeLotData());
-	}
+		loadTableOIS (getNFeLotData());
+	}	//	loadNFeLot
 	
 	/**
 	 *  Load NFeLot data into Table
@@ -114,17 +123,35 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 		model.addTableModelListener(dialog);
 		dialog.getMiniTable().setModel(model);
 		// 
-		
 		configureMiniTable(dialog.getMiniTable());
 	}   //  loadOrder
 	
+	/**
+	 * 	Show Window
+	 */
 	public void showWindow()
 	{
 		dialog.setVisible(true);
-	}
+	}	//	showWindow
 	
+	/**
+	 * 	Close Window
+	 */
 	public void closeWindow()
 	{
 		dialog.dispose();
-	}
-}
+	}	//	closeWindow
+	
+	/**
+	 * 	Save
+	 */
+	public boolean save (IMiniTable miniTable, String trxName)
+	{
+		super.save (miniTable, trxName);
+		//
+		if (getResult().length() > 1)
+			ADialog.error (p_WindowNo, dialog, getResult());
+		
+		return true;
+	}	//	save
+}	//	VCreateFromNFeLotUI

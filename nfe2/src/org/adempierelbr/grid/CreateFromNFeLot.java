@@ -20,7 +20,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.X_LBR_NotaFiscal;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.grid.CreateFrom;
 import org.compiere.minigrid.IMiniTable;
@@ -31,28 +30,44 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 
 /**
- *  Add NF to LOT
+ *  	Código comum para a versão SWING e ZK da janela de criação de NF
+ *
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *			<li>Melhorias no funcionamento e classe original
  *
  *  @author Mario Grigioni
  *  @version  $Id: CreateFromNFeLot, 21/06/2010 16:51:00 mgrigioni Exp $
  */
-public class CreateFromNFeLot extends CreateFrom {
+public class CreateFromNFeLot extends CreateFrom 
+{
+	/**	Resultado	*/
+	protected String result = "";
 	
-	public CreateFromNFeLot(GridTab mTab)
+	/**
+	 * 	Constructor
+	 */
+	public CreateFromNFeLot (GridTab mTab)
 	{
 		super(mTab);
 		log.info(mTab.toString());
-	}
+	}	//	CreateFromNFeLot
 	
-	@Override
-	public boolean dynInit() throws Exception 
+	/**
+	 * 	Init
+	 */
+	public boolean dynInit () throws Exception 
 	{
-		log.config("");
-        setTitle(Msg.translate(Env.getCtx(), "LBR_NFeLot") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
-
+		log.config("init");
+		//
+        setTitle(Msg.translate(Env.getCtx(), "LBR_NFeLot_ID") + " .. " + Msg.translate(Env.getCtx(), "CreateFrom"));
 		return true;
-	}
+	}	//	dynInit
 	
+	/**
+	 * 	Retorna a Matriz com as informações das NFs
+	 * 
+	 * 	@return Matriz de NF
+	 */
 	protected Vector<Vector<Object>> getNFeLotData()
 	{
 		/**
@@ -79,7 +94,7 @@ public class CreateFromNFeLot extends CreateFrom {
 		try
 		{
 			pstmt = DB.prepareStatement(sql.toString(), null);
-			pstmt.setInt(1, X_LBR_NotaFiscal.Table_ID);
+			pstmt.setInt(1, MLBRNotaFiscal.Table_ID);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
@@ -109,12 +124,18 @@ public class CreateFromNFeLot extends CreateFrom {
         return data;
 	}
 
-	@Override
-	public void info() 
+	/**
+	 * 	Not Used
+	 */
+	public void info () 
 	{
 
-	}
+	}	//	info
 	
+	/**
+	 * 	Configuração das Colunas
+	 * 	@param miniTable
+	 */
 	protected void configureMiniTable (IMiniTable miniTable)
 	{
 		miniTable.setColumnClass(0, Boolean.class, false);      //  0-Selection
@@ -123,13 +144,15 @@ public class CreateFromNFeLot extends CreateFrom {
 		miniTable.setColumnClass(3, String.class, true);        //  3-BPName
 		miniTable.setColumnClass(4, String.class, true);    	//  4-lbr_CNPJ
 		miniTable.setColumnClass(5, String.class, true);    	//  5-lbr_BPRegion
-        
+		
         //  Table UI
 		miniTable.autoSize();
-	}
+	}	//	configureMiniTable
 
-	@Override
-	public boolean save(IMiniTable miniTable, String trxName) 
+	/**
+	 * 	Save
+	 */
+	public boolean save (IMiniTable miniTable, String trxName) 
 	{
 		log.config("");
 		int rows = miniTable.getRowCount();
@@ -149,25 +172,47 @@ public class CreateFromNFeLot extends CreateFrom {
 				//
 				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, null);
 				String nfeID = NFeUtil.checkXMLFile(nf);
-				if (nfeID == null){
-					log.severe("Anexo NFe não encontrado. Nota Fiscal: " + nf.getDocumentNo());
+				//
+				if (nfeID == null)
+				{
+					log.severe ("Anexo NFe não encontrado. Nota Fiscal: " + nf.getDocumentNo());
+					result += "Anexo NFe não encontrado. Nota Fiscal: " + nf.getDocumentNo() + "\n";
 					continue;
 				}
-					
+				
+				//	Atualiza o campo lbr_NFeID, caso ele esteja diferente do anexo
 				if (!nfeID.equals(nf.getlbr_NFeID()))
-					nf.setlbr_NFeID(nfeID); //Atualiza o campo lbr_NFeID, caso ele esteja diferente do anexo
+					nf.setlbr_NFeID(nfeID); 
 				
 				nf.setLBR_NFeLot_ID(LBR_NFeLot_ID);
 				log.fine("LBR_NotaFiscal_ID="+LBR_NotaFiscal_ID);
 				//
 				if (!nf.save())
-					log.log(Level.SEVERE, "NF not added to LOT, #" + i);
-				
+				{
+					result += "Problemas na inclusão da NF ao lote (Verifique LOG). Nota Fiscal: " + nf.getDocumentNo() + "\n";
+					log.log(Level.SEVERE, "Problemas na inclusão da NF ao lote (save). Nota Fiscal: " + nf.getDocumentNo());
+				}
 			}   //   if selected
 		}   //  for all rows
 		return true;
-	}
+	}	//	save
 	
+	/**
+	 * 	Retorna o resultado do processamento (save)
+	 * 
+	 * 	@return Resultado do processamento
+	 */
+	protected String getResult ()
+	{
+		if (result == null)
+			return "";
+		//
+		return result;
+	}	//	getResult
+	
+	/**
+	 * 	OIS Columns
+	 */
 	protected Vector<String> getOISColumnNames()
 	{
 		//  Header Info
@@ -180,5 +225,5 @@ public class CreateFromNFeLot extends CreateFrom {
 		columnNames.add(Msg.translate(Env.getCtx(), "lbr_BPRegion"));
 	    
 	    return columnNames;
-	}
-}
+	}	//	getOISColumnNames
+}	//	CreateFromNFeLot
