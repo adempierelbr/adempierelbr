@@ -16,7 +16,10 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.compiere.model.MInvoiceTax;
+import org.compiere.model.MTax;
 import org.compiere.util.Env;
 
 /**
@@ -99,7 +102,19 @@ public class MLBRNFTax extends X_LBR_NFTax
 		if (it == null)
 			return;
 		//
-		if (it.getTaxAmt().signum() == -1)
+		I_W_C_Tax tax = POWrapper.create (new MTax (getCtx(), it.getC_Tax_ID(), null), I_W_C_Tax.class);
+		Boolean hasWithhold = false;
+		
+		//	Verifica se o imposto é de retenção para destacar na NF
+		if (tax.getLBR_TaxName_ID() > 0)
+		{
+			MLBRTaxName tn = new MLBRTaxName (getCtx(), tax.getLBR_TaxName_ID(), null);
+			hasWithhold = tn.isHasWithHold();
+		}
+		
+		//	Caso não seja de retenção e tenha valor negativo, não deve-se destacar na NF
+		//		portanto o valor é zerado
+		if (it.getTaxAmt().signum() == -1 && !hasWithhold)
 		{
 			setlbr_TaxAmt(Env.ZERO);
 			setlbr_TaxBaseAmt(Env.ZERO);
