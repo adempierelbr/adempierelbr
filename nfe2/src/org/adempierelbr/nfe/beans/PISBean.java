@@ -17,6 +17,8 @@ public class PISBean {
 	// PIS - Definir Grupo do PIS
 	
 	private PISGrupoBean PIS;
+	private PISNTGrupoBean PISNT;
+	private PISOutrGrupoBean PISOutr;
 
 	public PISGrupoBean getPIS() {
 		return PIS;
@@ -24,6 +26,22 @@ public class PISBean {
 
 	public void setPIS(PISGrupoBean pis) {
 		PIS = pis;
+	}
+	
+	public PISNTGrupoBean getPISNT() {
+		return PISNT;
+	}
+
+	public void setPISNT(PISNTGrupoBean pis) {
+		PISNT = pis;
+	}
+	
+	public PISOutrGrupoBean getPISOutr() {
+		return PISOutr;
+	}
+
+	public void setPISOutr(PISOutrGrupoBean pis) {
+		PISOutr = pis;
 	}
 
 

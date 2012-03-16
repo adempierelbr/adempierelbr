@@ -33,6 +33,8 @@ import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfe.beans.AdicoesDI;
 import org.adempierelbr.nfe.beans.COFINSBean;
 import org.adempierelbr.nfe.beans.COFINSGrupoBean;
+import org.adempierelbr.nfe.beans.COFINSNTGrupoBean;
+import org.adempierelbr.nfe.beans.COFINSOutrGrupoBean;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.nfe.beans.Cobranca;
 import org.adempierelbr.nfe.beans.CobrancaGrupoDuplicata;
@@ -62,6 +64,8 @@ import org.adempierelbr.nfe.beans.InformacoesNFEReferenciadaBean;
 import org.adempierelbr.nfe.beans.NFERefenciadaBean;
 import org.adempierelbr.nfe.beans.PISBean;
 import org.adempierelbr.nfe.beans.PISGrupoBean;
+import org.adempierelbr.nfe.beans.PISNTGrupoBean;
+import org.adempierelbr.nfe.beans.PISOutrGrupoBean;
 import org.adempierelbr.nfe.beans.ProdutosNFEBean;
 import org.adempierelbr.nfe.beans.Transporte;
 import org.adempierelbr.nfe.beans.TransporteGrupo;
@@ -852,6 +856,7 @@ public class NFeXMLGenerator
 
 				else if (lt.getTaxIndicator().equals("PIS"))
 				{
+					
 					if (lt.getCST() != null && lt.getCST().length() > 0)
 						pisgrupo.setCST(lt.getCST());
 					else
@@ -866,24 +871,42 @@ public class NFeXMLGenerator
 						xstream.aliasField("PISAliq", PISBean.class, "PIS");
 						impostos.setPIS(pisnfe);
 					}
-					else {
-//						pisgrupo.setCST("04");
-						pisnfe.setPIS(pisgrupo);
-						xstream.useAttributeFor(PISBean.class, "PIS");
-						xstream.aliasField("PISNT", PISBean.class, "PIS");
+					else if (pisgrupo.getCST().equals("04")
+							|| pisgrupo.getCST().equals("06")
+							|| pisgrupo.getCST().equals("07")
+							|| pisgrupo.getCST().equals("08")
+							|| pisgrupo.getCST().equals("09")) 
+					{
+						PISNTGrupoBean cgrp = new PISNTGrupoBean ();
+						//
+						cgrp.setCST(lt.getCST());
+						pisnfe.setPISNT(cgrp);
+						impostos.setPIS(pisnfe);
+					}
+					else
+					{
+						PISOutrGrupoBean pgrp = new PISOutrGrupoBean();
+						//
+						pgrp.setCST(lt.getCST());
+						pgrp.setvPIS(TextUtil.bigdecimalToString(lt.getvImposto()));// vPIS - Valor do PIS
+						pgrp.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));// vBC - Base de calculo do PIS
+						pgrp.setpPIS(TextUtil.bigdecimalToString(lt.getpImposto()));// pPIS - percentual do pis
+						//
+						pisnfe.setPISOutr(pgrp);
 						impostos.setPIS(pisnfe);
 					}
 				} //PIS
 
 				else if (lt.getTaxIndicator().equals("COFINS"))
 				{
+					String CST = lt.getCST();
+					
 					if (lt.getCST() != null && lt.getCST().length() > 0)
 						cofinsgrupo.setCST(lt.getCST());
 					else
 						cofinsgrupo.setCST("01");
 					//
 					if (cofinsgrupo.getCST().equals("01")) {
-//						cofinsgrupo.setCST("01");
 						cofinsgrupo.setvCOFINS(TextUtil.bigdecimalToString(lt.getvImposto())); // vCOFINS - Valor do COFINS
 						cofinsgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC())); // vBC - Valor da Base de calculo
 						cofinsgrupo.setpCOFINS(TextUtil.bigdecimalToString(lt.getpImposto())); // pCofins - Aliquota cofins
@@ -892,11 +915,30 @@ public class NFeXMLGenerator
 						xstream.aliasField("COFINSAliq", COFINSBean.class, "COFINS");
 						impostos.setCOFINS(cofinsnfe);
 					}
-					else {
-//						cofinsgrupo.setCST("04");
-						cofinsnfe.setCOFINS(cofinsgrupo);
-						xstream.useAttributeFor(COFINSBean.class, "COFINS");
-						xstream.aliasField("COFINSNT", COFINSBean.class, "COFINS");
+					else if (cofinsgrupo.getCST().equals("04")
+							|| cofinsgrupo.getCST().equals("06")
+							|| cofinsgrupo.getCST().equals("07")
+							|| cofinsgrupo.getCST().equals("08")
+							|| cofinsgrupo.getCST().equals("09")) 
+					{
+						
+						COFINSNTGrupoBean cgrp = new COFINSNTGrupoBean ();
+						//
+						cgrp.setCST(CST);
+						cofinsnfe.setCOFINSNT(cgrp);
+						impostos.setCOFINS(cofinsnfe);
+						
+					}
+					else
+					{
+						COFINSOutrGrupoBean cgrp = new COFINSOutrGrupoBean();
+						//
+						cgrp.setCST(lt.getCST());
+						cgrp.setvCOFINS(TextUtil.bigdecimalToString(lt.getvImposto()));// vPIS - Valor do PIS
+						cgrp.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));// vBC - Base de calculo do PIS
+						cgrp.setpCOFINS(TextUtil.bigdecimalToString(lt.getpImposto()));// pPIS - percentual do pis
+						//
+						cofinsnfe.setCOFINSOutr(cgrp);
 						impostos.setCOFINS(cofinsnfe);
 					}
 				} //COFINS

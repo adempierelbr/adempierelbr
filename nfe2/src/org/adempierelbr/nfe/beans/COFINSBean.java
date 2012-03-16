@@ -17,6 +17,8 @@ public class COFINSBean {
 	// COFINS - Definir Grupo de COFINS
 	
 	private COFINSGrupoBean COFINS;
+	private COFINSNTGrupoBean COFINSNT;
+	private COFINSOutrGrupoBean COFINSOutr;
 
 	public COFINSGrupoBean getCOFINS() {
 		return COFINS;
@@ -24,6 +26,24 @@ public class COFINSBean {
 
 	public void setCOFINS(COFINSGrupoBean cofins) {
 		COFINS = cofins;
+	}
+	
+	public COFINSNTGrupoBean getCOFINSNT()
+	{
+		return COFINSNT;
+	}
+	public void setCOFINSNT(COFINSNTGrupoBean cofins)
+	{
+		COFINSNT = cofins;
+	}
+	public COFINSOutrGrupoBean getCOFINSOutr()
+	{
+		return COFINSOutr;
+	}
+	
+	public void setCOFINSOutr(COFINSOutrGrupoBean cofins)
+	{
+		COFINSOutr = cofins;
 	}
 
 	
