@@ -548,11 +548,22 @@ public abstract class NFeUtil
 		return null;
 	} //validateSize
 	
-	public static String checkXMLFile(MLBRNotaFiscal nf){
+	/**
+	 * 		Verifica a NF e retorna o ID da mesma
+	 * 
+	 * 	@param nf a ser verificada
+	 * 	@return	ID da NF Eletrônica ou NULL quando houver erro
+	 */
+	public static String checkXMLFile (MLBRNotaFiscal nf)
+	{
+		//	Validação preliminar
+		if (nf == null || nf.getAttachment() == null || nf.getAttachment().getEntry(0) == null)
+			return null;
 		
 		String nfeID = nf.getAttachment().getEntry(0).toString();
-		if(nfeID != null){
-			
+		//
+		if(nfeID != null)
+		{
 			int beginIndex = nfeID.lastIndexOf(File.separator)+1;
 			int endIndex   = nfeID.lastIndexOf('-');
 			
@@ -560,7 +571,7 @@ public abstract class NFeUtil
 		}
 		
 		return nfeID;
-	}
+	}	//	checkXMLFile
 
 
 	/**

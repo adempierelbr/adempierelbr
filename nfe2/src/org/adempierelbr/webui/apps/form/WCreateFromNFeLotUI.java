@@ -1,5 +1,6 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -10,45 +11,45 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.grid;
+package org.adempierelbr.webui.apps.form;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.VetoableChangeListener;
 import java.util.Vector;
 import java.util.logging.Level;
 
-import javax.swing.table.DefaultTableModel;
-
-import org.compiere.apps.ADialog;
-import org.compiere.apps.AEnv;
-import org.compiere.grid.VCreateFromDialog;
+import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.apps.form.WCreateFromWindow;
+import org.adempiere.webui.component.ListModelTable;
+import org.adempiere.webui.event.ValueChangeEvent;
+import org.adempiere.webui.event.ValueChangeListener;
+import org.adempiere.webui.window.FDialog;
+import org.adempierelbr.grid.CreateFromNFeLot;
 import org.compiere.minigrid.IMiniTable;
 import org.compiere.model.GridTab;
 import org.compiere.util.CLogger;
-import org.compiere.util.Env;
 
 /**
  *  	Seleção de Faturas no Lote da NFe, classe criada com base na versão anterior
  *	
  *	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *			<li>Melhorias no funcionamento e classe original
+ *	
+ *	@contributor Mario Grioni
+ *			<li>Adaptação da versão para o modelo do 360 na versão SWING
  *
- *  @author Mario Grigioni
- *  @version  $Id: CreateFromNFeLotUI, 21/06/2010 17:04:00 mgrigioni Exp $
+ *  @version $Id: WCreateFromNFeLotUI.java, v1.0 2012/03/15 6:37:56 PM, ralexsander Exp $
  */
-public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableChangeListener
+public class WCreateFromNFeLotUI extends CreateFromNFeLot implements ValueChangeListener
 {	
 	/**
 	 * 	Constructor
 	 */
-	public VCreateFromNFeLotUI (GridTab mTab)
+	public WCreateFromNFeLotUI (GridTab mTab)
 	{
 		super(mTab);
 		log.info(getGridTab().toString());
 		
-		dialog = new VCreateFromDialog(this, getGridTab().getWindowNo(), true);
-		
 		p_WindowNo = getGridTab().getWindowNo();
+		window = new WCreateFromWindow (this, p_WindowNo);
 
 		try
 		{
@@ -62,14 +63,14 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 			log.log(Level.SEVERE, "", e);
 			setInitOK(false);
 		}
-		AEnv.positionCenterWindow(Env.getWindow(p_WindowNo), dialog);
+		AEnv.showWindow (window);
 	}   //  VCreateFromNFeLotUI
-	
+
 	/** Window No               */
 	private int p_WindowNo;
-
+	
 	/**	Dialog					*/
-	private VCreateFromDialog dialog;
+	private WCreateFromWindow window;
 	
 	/**	Logger					*/
 	private CLogger log = CLogger.getCLogger(getClass());
@@ -81,12 +82,10 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 */
 	public boolean dynInit() throws Exception
 	{
-		log.config("");
+		log.config("init");
 		
 		super.dynInit();
-		
-		dialog.setTitle(getTitle());
-		
+		window.setTitle(getTitle());
 		loadNFeLot();
 		
 		return true;
@@ -96,10 +95,10 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 *  Change Listener
 	 *  @param e event
 	 */
-	public void vetoableChange (PropertyChangeEvent e)
+	public void valueChange (ValueChangeEvent e)
 	{
 		log.config(e.getPropertyName() + "=" + e.getNewValue());
-		dialog.tableChanged(null);
+		window.tableChanged(null);
 	}   //  vetoableChange
 		
 	/**
@@ -116,14 +115,17 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 */
 	protected void loadTableOIS (Vector<?> data)
 	{
+		window.getWListbox().clear();
+
 		//  Remove previous listeners
-		dialog.getMiniTable().getModel().removeTableModelListener(dialog);
+		window.getWListbox().getModel().removeTableModelListener(window);
+		
 		//  Set Model
-		DefaultTableModel model = new DefaultTableModel(data, getOISColumnNames());
-		model.addTableModelListener(dialog);
-		dialog.getMiniTable().setModel(model);
+		ListModelTable model = new ListModelTable (data);
+		model.addTableModelListener(window);
+		window.getWListbox().setData(model, getOISColumnNames());
 		// 
-		configureMiniTable(dialog.getMiniTable());
+		configureMiniTable(window.getWListbox());
 	}   //  loadOrder
 	
 	/**
@@ -131,7 +133,7 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 */
 	public void showWindow()
 	{
-		dialog.setVisible(true);
+		window.setVisible(true);
 	}	//	showWindow
 	
 	/**
@@ -139,7 +141,7 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 */
 	public void closeWindow()
 	{
-		dialog.dispose();
+		window.dispose();
 	}	//	closeWindow
 	
 	/**
@@ -150,8 +152,8 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 		super.save (miniTable, trxName);
 		//
 		if (getResult().length() > 1)
-			ADialog.error (p_WindowNo, dialog, getResult());
+			FDialog.error (p_WindowNo, getResult());
 		
 		return true;
 	}	//	save
-}	//	VCreateFromNFeLotUI
+}	//	WCreateFromNFeLotUI
