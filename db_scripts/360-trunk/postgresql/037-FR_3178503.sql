@@ -1,9 +1,4 @@
-/*** 
- * 
- * Este script esta desativado para novas instalacoes. Para ativa-lo,  
- * 		insira uma barra abaixo para fechar o comentario.
- *  /
- -- 14/02/2011 8h38min12s BRST
+-- 14/02/2011 8h38min12s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1120018,0,'lbr_Drawback',TO_TIMESTAMP('2011-02-14 08:38:11','YYYY-MM-DD HH24:MI:SS'),100,'Identifies the Drawback No','LBRA','Y','Drawback No','Drawback No',TO_TIMESTAMP('2011-02-14 08:38:11','YYYY-MM-DD HH24:MI:SS'),100)
 ;
@@ -1276,5 +1271,3 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000008, SeqNo=9, Updated=CURRENT_TIMESTAMP W
 ;
 
 UPDATE AD_SysConfig SET Value='360-trunk/037-FR_3178503.sql' WHERE AD_SysConfig_ID=1100006;
-
-/ *** END ***/
