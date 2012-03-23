@@ -35,12 +35,12 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 29/06/2011 15h59min36s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120404,1120094,0,15,228,'lbr_DtArq',TO_DATE('2011-06-29 15:59:35','YYYY-MM-DD HH24:MI:SS'),100,'Data do arquivamento dos atos constitutivos.','LBRA',7,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Data do Arquivamento',0,TO_DATE('2011-06-29 15:59:35','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1110404,1120094,0,15,228,'lbr_DtArq',TO_DATE('2011-06-29 15:59:35','YYYY-MM-DD HH24:MI:SS'),100,'Data do arquivamento dos atos constitutivos.','LBRA',7,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Data do Arquivamento',0,TO_DATE('2011-06-29 15:59:35','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 29/06/2011 15h59min36s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1120404 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1110404 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
 ;
 
 -- 29/06/2011 15h59min37s BRT
@@ -50,7 +50,7 @@ ALTER TABLE AD_OrgInfo ADD lbr_DtArq DATE DEFAULT NULL
 
 -- 29/06/2011 16h0min1s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120404,1120273,0,170,TO_DATE('2011-06-29 16:00:00','YYYY-MM-DD HH24:MI:SS'),100,'Data do arquivamento dos atos constitutivos.',7,'LBRA','Y','Y','Y','N','N','N','N','N','Data do Arquivamento',TO_DATE('2011-06-29 16:00:00','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1110404,1120273,0,170,TO_DATE('2011-06-29 16:00:00','YYYY-MM-DD HH24:MI:SS'),100,'Data do arquivamento dos atos constitutivos.',7,'LBRA','Y','Y','Y','N','N','N','N','N','Data do Arquivamento',TO_DATE('2011-06-29 16:00:00','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 29/06/2011 16h0min1s BRT

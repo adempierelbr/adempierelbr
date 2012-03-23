@@ -2,7 +2,7 @@
  * 
  * Este script esta desativado para novas instalacoes. Para ativa-lo,  
  * 		insira uma barra abaixo para fechar o comentario.
- *
+ * /
 -- 26/01/2011 10h16min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120110,1100011,0,17,1100001,1100000,'lbr_NFeEnv',TO_TIMESTAMP('2011-01-26 10:16:09','YYYY-MM-DD HH24:MI:SS'),100,'1','LBRA',1,'Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','NFe Environment',0,TO_TIMESTAMP('2011-01-26 10:16:09','YYYY-MM-DD HH24:MI:SS'),100,0)
@@ -110,4 +110,4 @@ UPDATE AD_Field SET DisplayLogic='@lbr_CertType@=''JKS''',Updated=TO_TIMESTAMP('
 
 UPDATE AD_SysConfig SET Value='360-trunk/028-FR_3165874.sql' WHERE AD_SysConfig_ID=1100006;
 
-/*** END ***/
+/ *** END ***/

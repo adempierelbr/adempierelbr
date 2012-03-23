@@ -1,3 +1,8 @@
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *  /
 -- 12/05/2011 14h31min59s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 DELETE FROM AD_Field_Trl WHERE AD_Field_ID=1000428
@@ -487,3 +492,5 @@ alter table lbr_ncm drop column lbr_profitpercentage;
 CREATE UNIQUE INDEX LBR_NCMIVA_UN ON LBR_NCMIVA(AD_CLIENT_ID, AD_ORG_ID, C_REGION_ID, TO_REGION_ID);
 
 UPDATE AD_SysConfig SET Value='360-trunk/044-FR_3301126.sql' WHERE AD_SysConfig_ID=1100006;
+
+/ *** END ***/

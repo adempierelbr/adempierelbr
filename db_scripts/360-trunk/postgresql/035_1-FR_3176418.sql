@@ -1,3 +1,8 @@
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *  /
 -- 09/02/2011 10h24min22s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Table (AD_Client_ID,AD_Org_ID,AD_Table_ID,AccessLevel,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsPersonalLock,IsSecurityEnabled,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES (0,0,1120009,'3','N',TO_TIMESTAMP('2011-02-09 10:24:20','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','N','Y','Y','N','Y','N','N','N','N',0,'Fundamentos Legais ICMS','L','LBR_ICMSBasis',TO_TIMESTAMP('2011-02-09 10:24:20','YYYY-MM-DD HH24:MI:SS'),100)
@@ -1902,3 +1907,5 @@ INSERT INTO LBR_ICMSBasis VALUES ('1000093','11','0','Y',now(),'100',now(),'100'
 INSERT INTO LBR_ICMSBasis VALUES ('1000094','11','0','Y',now(),'100',now(),'100','014.99','Deduções   RPA   ST   RES ','PREENCHIDA PELO CONTRIBUINTE','S');
 
 UPDATE AD_SysConfig SET Value='360-trunk/035-FR_3176418.sql' WHERE AD_SysConfig_ID=1100006;
+
+/ *** END ***/

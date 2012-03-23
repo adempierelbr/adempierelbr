@@ -2,7 +2,7 @@
  * 
  * Este script esta desativado para novas instalacoes. Para ativa-lo,  
  * 		insira uma barra abaixo para fechar o comentario.
- *
+ *  /
 -- 02/02/2011 10h29min15s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120115,1000273,0,20,1000010,'lbr_IsService',TO_TIMESTAMP('2011-02-02 10:29:14','YYYY-MM-DD HH24:MI:SS'),100,'N','Defines if the lines is a Service','LBRA',1,'Defines if the lines is a Service','Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Is Service',0,TO_TIMESTAMP('2011-02-02 10:29:14','YYYY-MM-DD HH24:MI:SS'),100,0)
@@ -32,4 +32,4 @@ UPDATE LBR_CFOP SET lbr_IsService = 'Y' where value like '%.933';
 
 UPDATE AD_SysConfig SET Value='360-trunk/033-FR_3170580.sql' WHERE AD_SysConfig_ID=1100006;
 
-/*** END ***/
+/ *** END ***/

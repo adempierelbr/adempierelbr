@@ -1,4 +1,9 @@
--- Author = Mario Grigioni
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *
+ -- Author = Mario Grigioni
 create or replace
 FUNCTION MascaraCFOP
 (
@@ -45,3 +50,5 @@ BEGIN
     RETURN v_Result;
     
 END MascaraCFOP;
+
+/*** END ***/

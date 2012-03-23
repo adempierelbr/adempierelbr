@@ -2,7 +2,7 @@
  * 
  * Este script esta PARCIALMENTE desativado para novas instalacoes. Para ativa-lo,  
  * 		insira uma barra abaixo para fechar o comentario.
- *
+ * /
 -- CORRECAO DO SCRIPT 028
 -- ELIMINADA A COLUNA C_REGION_ID, POIS FOI CRIADO UM PROCESSO DIFERENTE PARA PEGAR OS TRUSTSTORES
 DELETE FROM AD_Field_Trl WHERE AD_Field_ID IN (SELECT AD_Field_ID FROM AD_Field WHERE AD_Column_ID = 1120111);
@@ -12,7 +12,7 @@ DELETE FROM AD_Column WHERE AD_Column_ID = 1120111;
 
 ALTER TABLE LBR_DigitalCertificate DROP COLUMN C_Region_ID;
 
-/*** END ***/
+/ *** END ***/
 
 -- 28/01/2011 9h55min24s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
