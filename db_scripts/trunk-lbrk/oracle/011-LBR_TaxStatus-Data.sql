@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 INSERT INTO LBR_TaxStatus(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_taxname_id, lbr_taxstatus_id, name, po_description, po_name, updated, updatedby, validfrom, validto, script)
   VALUES(0, 0, '2011-11-18 15:27:34.0', 100, 'Tributada integralmente', 'Y', 1106000, 1120000, '00', NULL, NULL, '2011-11-18 15:27:34.0', 100, '2000-01-01 00:00:00.0', NULL, NULL);
 INSERT INTO LBR_TaxStatus(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_taxname_id, lbr_taxstatus_id, name, po_description, po_name, updated, updatedby, validfrom, validto, script)

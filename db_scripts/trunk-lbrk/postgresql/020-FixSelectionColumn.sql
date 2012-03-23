@@ -1,16 +1,16 @@
-// ******************************************************************************
-// * Copyright (C) 2011 Ricardo Santana                                         *
-// * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
-// * This program is free software; you can redistribute it and/or modify it    *
-// * under the terms version 2 of the GNU General Public License as published   *
-// * by the Free Software Foundation. This program is distributed in the hope   *
-// * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
-// * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
-// * See the GNU General Public License for more details.                       *
-// * You should have received a copy of the GNU General Public License along    *
-// * with this program; if not, write to the Free Software Foundation, Inc.,    *
-// * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
-// *****************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 UPDATE AD_Column SET IsSelectionColumn='Y' WHERE  ColumnName='AD_EntityType_ID' AND ColumnSQL IS NULL AND IsKey='N' AND AD_Table_ID IN (SELECT AD_Table_ID FROM AD_Table WHERE IsView='N');
 UPDATE AD_Column SET IsSelectionColumn='Y' WHERE  ColumnName='C_BPartner_ID' AND ColumnSQL IS NULL AND IsKey='N' AND AD_Table_ID IN (SELECT AD_Table_ID FROM AD_Table WHERE IsView='N');
 UPDATE AD_Column SET IsSelectionColumn='Y' WHERE  ColumnName='AD_ReportView_ID' AND ColumnSQL IS NULL AND IsKey='N' AND AD_Table_ID IN (SELECT AD_Table_ID FROM AD_Table WHERE IsView='N' AND TableName='AD_PrintFormat');

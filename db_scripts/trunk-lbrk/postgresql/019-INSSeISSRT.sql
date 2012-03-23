@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 -- 08/12/2011 12h16min26s BRST
 -- Impostos INSS e ISSRT
 INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,IsTaxIncluded,LBR_FormulaNet_ID,LBR_TaxFormula_ID,LBR_TaxName_ID,Updated,UpdatedBy,ValidFrom,lbr_TransactionType) VALUES (0,0,TO_TIMESTAMP('2011-12-08 12:16:25','YYYY-MM-DD HH24:MI:SS'),100,'Y','Y',1000013,1106054,1106010,TO_TIMESTAMP('2011-12-08 12:16:25','YYYY-MM-DD HH24:MI:SS'),100,TO_TIMESTAMP('2000-01-01','YYYY-MM-DD'),'END')
