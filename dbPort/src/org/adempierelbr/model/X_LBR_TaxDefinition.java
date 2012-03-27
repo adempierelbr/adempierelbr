@@ -31,7 +31,7 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20111114L;
+	private static final long serialVersionUID = 20120327L;
 
     /** Standard Constructor */
     public X_LBR_TaxDefinition (Properties ctx, int LBR_TaxDefinition_ID, String trxName)
@@ -39,9 +39,12 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
       super (ctx, LBR_TaxDefinition_ID, trxName);
       /** if (LBR_TaxDefinition_ID == 0)
         {
-			setLBR_TaxDefinition_ID (0);
+			setIsSOTrx (null);
+// B
 			setlbr_IsSubTributaria (null);
 // B
+			setLBR_TaxDefinition_ID (0);
+			setValidFrom (new Timestamp( System.currentTimeMillis() ));
         } */
     }
 
@@ -174,6 +177,32 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** IsSOTrx AD_Reference_ID=1000027 */
+	public static final int ISSOTRX_AD_Reference_ID=1000027;
+	/** Yes = Y */
+	public static final String ISSOTRX_Yes = "Y";
+	/** No = N */
+	public static final String ISSOTRX_No = "N";
+	/** Both = B */
+	public static final String ISSOTRX_Both = "B";
+	/** Set Sales Transaction.
+		@param IsSOTrx 
+		This is a Sales Transaction
+	  */
+	public void setIsSOTrx (String IsSOTrx)
+	{
+
+		set_Value (COLUMNNAME_IsSOTrx, IsSOTrx);
+	}
+
+	/** Get Sales Transaction.
+		@return This is a Sales Transaction
+	  */
+	public String getIsSOTrx () 
+	{
+		return (String)get_Value(COLUMNNAME_IsSOTrx);
+	}
+
 	public org.adempierelbr.model.I_LBR_BPartnerCategory getLBR_BPartnerCategory() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_BPartnerCategory)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_BPartnerCategory.Table_Name)
@@ -197,6 +226,34 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public int getLBR_BPartnerCategory_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_BPartnerCategory_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_CFOP)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CFOP.Table_Name)
+			.getPO(getLBR_CFOP_ID(), get_TrxName());	}
+
+	/** Set CFOP.
+		@param LBR_CFOP_ID 
+		Primary key table LBR_CFOP
+	  */
+	public void setLBR_CFOP_ID (int LBR_CFOP_ID)
+	{
+		if (LBR_CFOP_ID < 1) 
+			set_Value (COLUMNNAME_LBR_CFOP_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_CFOP_ID, Integer.valueOf(LBR_CFOP_ID));
+	}
+
+	/** Get CFOP.
+		@return Primary key table LBR_CFOP
+	  */
+	public int getLBR_CFOP_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CFOP_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -256,6 +313,32 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** lbr_IsSubTributaria AD_Reference_ID=1000027 */
+	public static final int LBR_ISSUBTRIBUTARIA_AD_Reference_ID=1000027;
+	/** Yes = Y */
+	public static final String LBR_ISSUBTRIBUTARIA_Yes = "Y";
+	/** No = N */
+	public static final String LBR_ISSUBTRIBUTARIA_No = "N";
+	/** Both = B */
+	public static final String LBR_ISSUBTRIBUTARIA_Both = "B";
+	/** Set Is Substituicao Tributaria.
+		@param lbr_IsSubTributaria 
+		Defines the Is Substituicao Tributaria Status
+	  */
+	public void setlbr_IsSubTributaria (String lbr_IsSubTributaria)
+	{
+
+		set_Value (COLUMNNAME_lbr_IsSubTributaria, lbr_IsSubTributaria);
+	}
+
+	/** Get Is Substituicao Tributaria.
+		@return Defines the Is Substituicao Tributaria Status
+	  */
+	public String getlbr_IsSubTributaria () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_IsSubTributaria);
 	}
 
 	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
@@ -385,6 +468,78 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return ii.intValue();
 	}
 
+	/** lbr_TaxStatus AD_Reference_ID=1000029 */
+	public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
+	/** 00 - Tributada integralmente = 00 */
+	public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
+	/** 10 - Tributada e com cobranca do ICMS por Sub. Tributaria = 10 */
+	public static final String LBR_TAXSTATUS_10_TributadaEComCobrancaDoICMSPorSubTributaria = "10";
+	/** 20 - Com reducao de base de calculo = 20 */
+	public static final String LBR_TAXSTATUS_20_ComReducaoDeBaseDeCalculo = "20";
+	/** 30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
+	public static final String LBR_TAXSTATUS_30_IsentaOuNao_TribEComCobrDoICMSPorSubTribut = "30";
+	/** 40 - Isenta = 40 */
+	public static final String LBR_TAXSTATUS_40_Isenta = "40";
+	/** 41 - Nao-tributada = 41 */
+	public static final String LBR_TAXSTATUS_41_Nao_Tributada = "41";
+	/** 50 - Suspensao = 50 */
+	public static final String LBR_TAXSTATUS_50_Suspensao = "50";
+	/** 51 - Diferimento  = 51 */
+	public static final String LBR_TAXSTATUS_51_Diferimento = "51";
+	/** 60 - ICMS cobrado anteriormente por substituicao tributaria = 60 */
+	public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituicaoTributaria = "60";
+	/** 70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib = 70 */
+	public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCalcECobrDoICMSPorSubTrib = "70";
+	/** 90 - Outras = 90 */
+	public static final String LBR_TAXSTATUS_90_Outras = "90";
+	/** Set Tax Status.
+		@param lbr_TaxStatus 
+		Defines the Tax Status
+	  */
+	public void setlbr_TaxStatus (String lbr_TaxStatus)
+	{
+
+		set_Value (COLUMNNAME_lbr_TaxStatus, lbr_TaxStatus);
+	}
+
+	/** Get Tax Status.
+		@return Defines the Tax Status
+	  */
+	public String getlbr_TaxStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
+	}
+
+	/** lbr_TransactionType AD_Reference_ID=1000024 */
+	public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
+	/** End User = END */
+	public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
+	/** Manufacturing = MAN */
+	public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
+	/** Import = IMP */
+	public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
+	/** Export = EXP */
+	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
+	/** Resale = RES */
+	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
+	/** Set Transaction Type.
+		@param lbr_TransactionType 
+		Defines the Transaction Type
+	  */
+	public void setlbr_TransactionType (String lbr_TransactionType)
+	{
+
+		set_Value (COLUMNNAME_lbr_TransactionType, lbr_TransactionType);
+	}
+
+	/** Get Transaction Type.
+		@return Defines the Transaction Type
+	  */
+	public String getlbr_TransactionType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_TransactionType);
+	}
+
 	public I_M_Product getM_Product() throws RuntimeException
     {
 		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
@@ -476,103 +631,5 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public Timestamp getValidFrom () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
-	}
-
-	/** lbr_IsSubTributaria AD_Reference_ID=1000027 */
-	public static final int LBR_ISSUBTRIBUTARIA_AD_Reference_ID=1000027;
-	/** Yes = Y */
-	public static final String LBR_ISSUBTRIBUTARIA_Yes = "Y";
-	/** No = N */
-	public static final String LBR_ISSUBTRIBUTARIA_No = "N";
-	/** Both = B */
-	public static final String LBR_ISSUBTRIBUTARIA_Both = "B";
-	/** Set Is Substituicao Tributaria.
-		@param lbr_IsSubTributaria 
-		Defines the Is Substituicao Tributaria Status
-	  */
-	public void setlbr_IsSubTributaria (String lbr_IsSubTributaria)
-	{
-
-		set_Value (COLUMNNAME_lbr_IsSubTributaria, lbr_IsSubTributaria);
-	}
-
-	/** Get Is Substituicao Tributaria.
-		@return Defines the Is Substituicao Tributaria Status
-	  */
-	public String getlbr_IsSubTributaria () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_IsSubTributaria);
-	}
-
-	/** lbr_TaxStatus AD_Reference_ID=1000029 */
-	public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
-	/** 00 - Tributada integralmente = 00 */
-	public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
-	/** 10 - Tributada e com cobranca do ICMS por Sub. Tributaria = 10 */
-	public static final String LBR_TAXSTATUS_10_TributadaEComCobrancaDoICMSPorSubTributaria = "10";
-	/** 20 - Com reducao de base de calculo = 20 */
-	public static final String LBR_TAXSTATUS_20_ComReducaoDeBaseDeCalculo = "20";
-	/** 30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
-	public static final String LBR_TAXSTATUS_30_IsentaOuNao_TribEComCobrDoICMSPorSubTribut = "30";
-	/** 40 - Isenta = 40 */
-	public static final String LBR_TAXSTATUS_40_Isenta = "40";
-	/** 41 - Nao-tributada = 41 */
-	public static final String LBR_TAXSTATUS_41_Nao_Tributada = "41";
-	/** 50 - Suspensao = 50 */
-	public static final String LBR_TAXSTATUS_50_Suspensao = "50";
-	/** 51 - Diferimento  = 51 */
-	public static final String LBR_TAXSTATUS_51_Diferimento = "51";
-	/** 60 - ICMS cobrado anteriormente por substituicao tributaria = 60 */
-	public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituicaoTributaria = "60";
-	/** 70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib = 70 */
-	public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCalcECobrDoICMSPorSubTrib = "70";
-	/** 90 - Outras = 90 */
-	public static final String LBR_TAXSTATUS_90_Outras = "90";
-	/** Set Tax Status.
-		@param lbr_TaxStatus 
-		Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus)
-	{
-
-		set_Value (COLUMNNAME_lbr_TaxStatus, lbr_TaxStatus);
-	}
-
-	/** Get Tax Status.
-		@return Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
-	}
-
-	/** lbr_TransactionType AD_Reference_ID=1000024 */
-	public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
-	/** End User = END */
-	public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
-	/** Manufacturing = MAN */
-	public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
-	/** Import = IMP */
-	public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
-	/** Export = EXP */
-	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
-	/** Resale = RES */
-	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
-	/** Set Transaction Type.
-		@param lbr_TransactionType 
-		Defines the Transaction Type
-	  */
-	public void setlbr_TransactionType (String lbr_TransactionType)
-	{
-
-		set_Value (COLUMNNAME_lbr_TransactionType, lbr_TransactionType);
-	}
-
-	/** Get Transaction Type.
-		@return Defines the Transaction Type
-	  */
-	public String getlbr_TransactionType () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_TransactionType);
 	}
 }

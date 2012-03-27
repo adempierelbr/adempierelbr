@@ -643,8 +643,9 @@ public class MLBRTax extends X_LBR_Tax
 			if (td.getlbr_TaxStatus() != null && td.getlbr_TaxStatus().length() > 0)
 				lbr_TaxStatus = td.getlbr_TaxStatus();
 			//
-//			if (td.getLBR_CFOP_ID() > 0)
-//				LBR_CFOP_ID = cFOPLine.getLBR_CFOP_ID();
+
+			if (td.getLBR_CFOP_ID() > 0)
+				LBR_CFOP_ID = td.getLBR_CFOP_ID();
 		}
 		
 		return new Object[]{taxes, LBR_LegalMessage_ID, LBR_CFOP_ID, lbr_TaxStatus};
