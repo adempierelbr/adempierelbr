@@ -8,6 +8,7 @@ import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MLocation;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -56,6 +57,7 @@ public class VLBRCommons implements ModelValidator
 
 		engine.addModelChange (MInvoiceLine.Table_Name, this);
 		engine.addModelChange (MInOutLine.Table_Name, this);
+		engine.addModelChange (MLocation.Table_Name, this);
 	}	//	initialize
 
 	/**
@@ -105,6 +107,10 @@ public class VLBRCommons implements ModelValidator
 		else if (MInOutLine.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MInOutLine) po, type);
 		
+		//	Linha do Recebimento/Remesssa
+		else if (MLocation.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MLocation) po, type);
+		
 		return null;
 	}	//	modelChange
 	
@@ -142,6 +148,26 @@ public class VLBRCommons implements ModelValidator
 		if (TYPE_BEFORE_NEW == type && il.getC_OrderLine_ID() > 0)
 		{
 			il.setAD_Org_ID(il.getC_OrderLine().getAD_Org_ID());
+		}
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MLocation loc, int type) throws Exception
+	{
+		//	Atualiza o nome da cidade
+		if (loc.getC_City_ID() > 0 && (TYPE_BEFORE_NEW == type 
+				|| (TYPE_BEFORE_CHANGE == type && loc.is_ValueChanged(MLocation.COLUMNNAME_C_City_ID))))
+		{
+			loc.setCity(loc.getC_City().getName());
 		}
 		return null;
 	}	//	modelChange
