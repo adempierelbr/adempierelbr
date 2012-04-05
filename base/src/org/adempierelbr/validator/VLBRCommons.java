@@ -1,9 +1,7 @@
 package org.adempierelbr.validator;
 
-import org.adempiere.webui.apps.form.WCreateFromFactory;
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRNFeLot;
-import org.adempierelbr.webui.apps.form.WCreateFromNFeLotUI;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
@@ -13,6 +11,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
+import org.compiere.util.Ini;
 
 /**
  * 		Procedimentos comuns, necessários para o LBR
@@ -81,9 +80,15 @@ public class VLBRCommons implements ModelValidator
 	{
 		log.info ("AD_User_ID=" + AD_User_ID);
 		
-		//	Registra a classe de CreateFrom para o Lote da NFe, SWING e ZK
-		VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
-		WCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, WCreateFromNFeLotUI.class);
+		//	Registra a classe de CreateFrom para o Lote da NFe - SWING
+		if (Ini.isClient())
+			VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
+		
+		/**
+		 * 	ZK: @see org.adempiere.webui.session.WebUIServlet
+		 */
+		else
+			;	
 		
 		return null;
 	}	//	login
