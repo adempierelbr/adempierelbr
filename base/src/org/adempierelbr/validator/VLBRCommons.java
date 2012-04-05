@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.validator;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
@@ -80,15 +93,12 @@ public class VLBRCommons implements ModelValidator
 	{
 		log.info ("AD_User_ID=" + AD_User_ID);
 		
-		//	Registra a classe de CreateFrom para o Lote da NFe - SWING
+		/**
+		 * Registra a classe de CreateFrom para o Lote da NFe para a versão SWING
+		 * 		para a versão ZK veja @see org.adempiere.webui.session.WebUIServlet
+		 */
 		if (Ini.isClient())
 			VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
-		
-		/**
-		 * 	ZK: @see org.adempiere.webui.session.WebUIServlet
-		 */
-		else
-			;	
 		
 		return null;
 	}	//	login
