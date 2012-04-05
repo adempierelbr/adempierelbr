@@ -1,9 +1,20 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.validator;
 
-import org.adempiere.webui.apps.form.WCreateFromFactory;
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRNFeLot;
-import org.adempierelbr.webui.apps.form.WCreateFromNFeLotUI;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
@@ -13,6 +24,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
+import org.compiere.util.Ini;
 
 /**
  * 		Procedimentos comuns, necessários para o LBR
@@ -81,9 +93,12 @@ public class VLBRCommons implements ModelValidator
 	{
 		log.info ("AD_User_ID=" + AD_User_ID);
 		
-		//	Registra a classe de CreateFrom para o Lote da NFe, SWING e ZK
-		VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
-		WCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, WCreateFromNFeLotUI.class);
+		/**
+		 * Registra a classe de CreateFrom para o Lote da NFe para a versão SWING
+		 * 		para a versão ZK veja @see org.adempiere.webui.session.WebUIServlet
+		 */
+		if (Ini.isClient())
+			VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
 		
 		return null;
 	}	//	login
