@@ -23,6 +23,7 @@ import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_Order;
+import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_M_Product;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
@@ -33,6 +34,7 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.PO;
 import org.compiere.util.Env;
 
 /**
@@ -212,4 +214,23 @@ public class CalloutTax extends CalloutEngine
 		//
 		return "";
 	}	//	taxes
+	
+	/**
+	 *		Processos para habilitar a Flag lbr_RecalculateTaxes que habilitará o ModelChange da tabela
+	 *
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return ""
+	 *  @author Priscila Pinheiro (contato@kenos.com.br)
+     *	        <li> Sponsored by Kenos, www.kenos.com.br
+	 */
+	public String recalculateTaxes (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		mTab.setValue(I_W_C_OrderLine.COLUMNNAME_lbr_RecalculateTax, true);
+		return "";
+	}	//	recalculateTaxes
+	
 }	//	CalloutTax
