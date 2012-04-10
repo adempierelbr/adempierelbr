@@ -14,6 +14,7 @@ package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
@@ -31,10 +32,12 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MInOutLine;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -210,7 +213,12 @@ public class ValidatorInvoice implements ModelValidator
 		I_W_C_InvoiceLine iLineW = POWrapper.create(iLine, I_W_C_InvoiceLine.class);
 		//
 		if (type == TYPE_BEFORE_DELETE)
-		{			
+		{	
+			if (iLineW.getM_InOutLine_ID() > 0)
+			{
+				return "Não é possível apagar uma linha que já foi expedida.";
+			}
+			
 			if (iLineW.getLBR_Tax_ID() > 0)
 			{
 				MLBRTax lbrTax = new MLBRTax(iLine.getCtx(), iLineW.getLBR_Tax_ID() , iLine.get_TrxName());
@@ -395,6 +403,18 @@ public class ValidatorInvoice implements ModelValidator
 				}
 				// Fim Processo de Consginação
 				*/
+				
+				for(MInvoiceLine iLine : invoice.getLines())
+				{
+						MInOutLine ioLine = new MInOutLine(ctx, iLine.getM_InOutLine_ID(), trx);
+						
+						if (!iLine.getQtyInvoiced().equals(ioLine.getQtyEntered()) && iLine.getM_InOutLine_ID() > 1)
+						{
+							return "A quantidade da Linha "+iLine.getLine()+" deve ser igual a quantidade entregue.";
+						}	
+				}
+				
+				
 			} //AFTER COMPLETE
 
 			else if ((timing == TIMING_AFTER_REACTIVATE || timing == TIMING_AFTER_VOID || timing == TIMING_AFTER_CLOSE || timing == TIMING_AFTER_REVERSECORRECT)){
