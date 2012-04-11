@@ -1021,9 +1021,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		//	Dados mestre
 		setDateDoc(invoice.getDateAcct());
-		setlbr_DateInOut(invoice.getDateAcct());
 		setIsSOTrx(isSOTrx);
 		setlbr_IsOwnDocument(IsOwnDocument);
+		
+		//PREENCHE A DATA DE SAIDA DA NF
+		if (!MSysConfig.getBooleanValue("LBR_DATEINOUT_NF", true, getAD_Client_ID()))
+			setlbr_DateInOut(invoice.getDateAcct());
 		
 		//	Dados da Organização
 		setOrgInfo(POWrapper.create(MOrgInfo.get(getCtx(), invoice.getAD_Org_ID(), get_TrxName()), I_W_AD_OrgInfo.class));
@@ -1135,9 +1138,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		//	Dados mestre
 		setDateDoc(order.getDateAcct());
-		setlbr_DateInOut(order.getDateAcct());
 		setIsSOTrx(isSOTrx);
 		setlbr_IsOwnDocument(IsOwnDocument);
+		if (!MSysConfig.getBooleanValue("LBR_DATEINOUT_NF", true, getAD_Client_ID()))
+			setlbr_DateInOut(order.getDateAcct());
 		
 		//	Dados da Organização
 		setOrgInfo(POWrapper.create(MOrgInfo.get(getCtx(), order.getAD_Org_ID(), get_TrxName()), I_W_AD_OrgInfo.class));
