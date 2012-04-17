@@ -399,6 +399,7 @@ public class WLocationDialog extends Window implements EventListener
 			txtAddress2.setText(m_location.getAddress2());
 			txtAddress3.setText(m_location.getAddress3());
 			txtAddress4.setText(m_location.getAddress4());
+			txtCity.refreshData(m_location.getCity());
 			txtCity.setText(m_location.getCity());
 			txtPostal.setText(m_location.getPostal());
 			txtPostalAdd.setText(m_location.getPostal_Add());
