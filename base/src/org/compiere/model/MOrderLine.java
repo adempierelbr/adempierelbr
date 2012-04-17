@@ -1027,7 +1027,7 @@ public class MOrderLine extends X_C_OrderLine
 			if (!updateOrderTax(false))
 				return false;
 		
-		//	Update Order Header
+		/*//	Update Order Header
 		String sql = "UPDATE C_Order i"
 			+ " SET TotalLines="
 				+ "(SELECT COALESCE(SUM(LineNetAmt),0) FROM C_OrderLine il WHERE i.C_Order_ID=il.C_Order_ID) "
@@ -1049,7 +1049,10 @@ public class MOrderLine extends X_C_OrderLine
 		if (no != 1)
 			log.warning("(2) #" + no);
 		m_parent = null;
-		return no == 1;
+		return no == 1;*/
+		
+		return true;
+		
 	}	//	updateHeaderTax
 	
 }	//	MOrderLine
