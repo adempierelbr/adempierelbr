@@ -766,7 +766,7 @@ public class NFeXMLGenerator
 						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
 						icmsgrupo.setCST(taxStatus);
 						//
-						if (suframa != null)
+						if (suframa != null && suframa.trim().length() > 0)
 						{
 							icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto().abs()));
 							icmsgrupo.setmotDesICMS("7");	//	7 – SUFRAMA
