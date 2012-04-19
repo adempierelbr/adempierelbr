@@ -99,6 +99,7 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -305,7 +306,8 @@ public class NFeXMLGenerator
 		identNFe.setSerie(serie);
 		identNFe.setnNF(nf.getDocumentNo());
 		identNFe.setdEmi(DEmi);
-		identNFe.setdSaiEnt(DSaiEnt);
+		if (!MSysConfig.getBooleanValue("LBR_DATEINOUT_NF", true, nf.getAD_Client_ID()))
+			identNFe.setdSaiEnt(DSaiEnt);
 		identNFe.sethSaiEnt(TextUtil.formatTimeString(hSaiEnt));
 		identNFe.setTpNF(nf.isSOTrx() ? "1" : "0");
 		Integer orgCityCode = 0;
@@ -766,7 +768,7 @@ public class NFeXMLGenerator
 						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
 						icmsgrupo.setCST(taxStatus);
 						//
-						if (suframa != null)
+						if (suframa != null && suframa.trim().length() > 0)
 						{
 							icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto().abs()));
 							icmsgrupo.setmotDesICMS("7");	//	7 – SUFRAMA
