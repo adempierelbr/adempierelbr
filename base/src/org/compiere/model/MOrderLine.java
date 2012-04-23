@@ -1027,7 +1027,7 @@ public class MOrderLine extends X_C_OrderLine
 			if (!updateOrderTax(false))
 				return false;
 		
-		/*//	Update Order Header
+		//	Update Order Header
 		String sql = "UPDATE C_Order i"
 			+ " SET TotalLines="
 				+ "(SELECT COALESCE(SUM(LineNetAmt),0) FROM C_OrderLine il WHERE i.C_Order_ID=il.C_Order_ID) "
@@ -1036,7 +1036,7 @@ public class MOrderLine extends X_C_OrderLine
 		if (no != 1)
 			log.warning("(1) #" + no);
 
-		if (isTaxIncluded())
+	/**	if (isTaxIncluded())
 			sql = "UPDATE C_Order i "
 				+ " SET GrandTotal=TotalLines "
 				+ "WHERE C_Order_ID=" + getC_Order_ID();
@@ -1044,15 +1044,17 @@ public class MOrderLine extends X_C_OrderLine
 			sql = "UPDATE C_Order i "
 				+ " SET GrandTotal=TotalLines+"
 					+ "(SELECT COALESCE(SUM(TaxAmt),0) FROM C_OrderTax it WHERE i.C_Order_ID=it.C_Order_ID) "
-					+ "WHERE C_Order_ID=" + getC_Order_ID();
+					+ "WHERE C_Order_ID=" + getC_Order_ID();	*/
+		sql = "UPDATE C_Order o"
+				+ " SET GrandTotal=TotalLines+"
+				+ "(SELECT COALESCE(SUM(TaxAmt),0) FROM C_OrderTax it WHERE o.C_Order_ID=it.C_Order_ID AND IsTaxIncluded='N')"
+				+ "WHERE C_Order_ID=" + getC_Order_ID();
+		
 		no = DB.executeUpdate(sql, get_TrxName());
 		if (no != 1)
 			log.warning("(2) #" + no);
 		m_parent = null;
-		return no == 1;*/
-		
-		return true;
-		
+		return no == 1;
 	}	//	updateHeaderTax
 	
 }	//	MOrderLine
