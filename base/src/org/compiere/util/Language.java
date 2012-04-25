@@ -380,7 +380,8 @@ public class Language implements Serializable
 	 */
 	public static Language getLoginLanguage ()
 	{
-		return s_loginLanguage;
+		// return s_loginLanguage; // See bug [2946164]
+		return Env.getLanguage(Env.getCtx());
 	}   //  getLanguage
 
 	/**
