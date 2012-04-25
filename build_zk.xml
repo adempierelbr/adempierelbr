@@ -43,6 +43,9 @@
 	    <copy todir="build_jar/WEB-INF/classes/org/adempierelbr/webui" overwrite="true">
 	    	<fileset dir="./bin/org/adempierelbr/webui" includes="**/*.*" />
 	    </copy>
+		<copy todir="build_jar/WEB-INF/classes/org/adempierelbr/apps/form" overwrite="true">
+		   	<fileset dir="./bin/org/adempierelbr/apps/form" includes="**/W*.*" />
+		</copy>
 	</target>
 	
 	<target name="zkwebui" if="zkwebui.present">
