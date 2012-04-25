@@ -75,6 +75,7 @@ import org.compiere.util.Msg;
  * @author Mario Grigioni, mgrigioni (Kenos, www.kenos.com.br) 
  * @version $Id: FormCNAB.java, 04/06/2008 16:25:00 mgrigioni
  */
+@Deprecated
 public class VFormCNAB extends CPanel
 	implements FormPanel, ActionListener, VetoableChangeListener, ChangeListener, TableModelListener, ASyncProcess
 {
