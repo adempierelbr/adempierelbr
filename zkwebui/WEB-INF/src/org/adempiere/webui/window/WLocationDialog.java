@@ -581,6 +581,7 @@ public class WLocationDialog extends Window implements EventListener
 							if (found)
 								break;
 						}
+					txtCity.refreshData(cep.getCidade());
 					txtCity.setRawValue(cep.getCidade());
 					txtAddress1.setText(cep.getLogradouroType() + " " + cep.getLogradouro());
 					txtAddress3.setText(cep.getBairro());
