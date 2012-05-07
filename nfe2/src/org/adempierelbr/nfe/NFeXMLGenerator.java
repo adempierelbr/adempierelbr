@@ -275,6 +275,7 @@ public class NFeXMLGenerator
 		String CRT = "3";
 
 		Timestamp datedoc = nf.getDateDoc();
+		Timestamp dateSaiEnt = nf.getlbr_DateInOut();
 		String hSaiEnt    = nf.getlbr_TimeInOut();
 		String aamm = TextUtil.timeToString(datedoc, "yyMM");
 		String orgCPNJ = TextUtil.toNumeric(nf.getlbr_CNPJ());
@@ -295,7 +296,7 @@ public class NFeXMLGenerator
 		dados.setId("NFe" + chaveNFE.toString() + digitochave);
 
 		String DEmi 	= TextUtil.timeToString(datedoc, "yyyy-MM-dd");
-		String DSaiEnt 	= TextUtil.timeToString(datedoc, "yyyy-MM-dd");
+		String DSaiEnt 	= TextUtil.timeToString(dateSaiEnt, "yyyy-MM-dd");
 
 		// Identificação NFE
 		identNFe.setcUF(chaveNFE.getCUF());
@@ -306,9 +307,11 @@ public class NFeXMLGenerator
 		identNFe.setSerie(serie);
 		identNFe.setnNF(nf.getDocumentNo());
 		identNFe.setdEmi(DEmi);
-		if (!MSysConfig.getBooleanValue("LBR_DATEINOUT_NF", true, nf.getAD_Client_ID()))
+		if (nf.getlbr_DateInOut() != null)
+		{
 			identNFe.setdSaiEnt(DSaiEnt);
-		identNFe.sethSaiEnt(TextUtil.formatTimeString(hSaiEnt));
+			identNFe.sethSaiEnt(TextUtil.formatTimeString(hSaiEnt));
+		}
 		identNFe.setTpNF(nf.isSOTrx() ? "1" : "0");
 		Integer orgCityCode = 0;
 
