@@ -327,7 +327,7 @@ public class RolePanel extends Window implements EventListener, Deferrable
                 {
                 	//	Avoid login with Organization *
                 	if (MSysConfig.getBooleanValue ("LBR_DISABLE_ORG_0", false, clientKNPair.getKey())
-                			&& orgKNPairs[i].getKey() == 0)
+                			&& clientKNPair.getKey() > 0 && orgKNPairs[i].getKey() == 0)
                 		continue;
                 	
                 	ComboItem ci = new ComboItem(orgKNPairs[i].getName(), orgKNPairs[i].getID());
