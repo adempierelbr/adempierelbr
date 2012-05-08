@@ -1046,6 +1046,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Nota da Fatura: Dados do Vencimento
 		setBillNote(invoice);
 		
+		//  Description
+		setDescription();
+		
 		//	Se não estiver salva
 		if (get_ID() < 1)
 			save ();
@@ -1747,9 +1750,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 */
 	public void setDescription ()
 	{
+		StringBuffer description = new StringBuffer();
 		//	Tipo de Documento
 		if (getC_DocTypeTarget_ID() > 0 && getC_DocTypeTarget().getDocumentNote() != null)
-			setDescription (parse (getC_DocTypeTarget().getDocumentNote().trim()));
+			description.append(parse (getC_DocTypeTarget().getDocumentNote().trim()));
+		
+		if (getC_Order_ID()>0){
+			MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
+			if (order.get_Value("lbr_NFDescription")!=null)
+				description.append(parse(order.get_Value("lbr_NFDescription").toString().trim()));
+		}
+		
+		setDescription(parse (description.toString()));
 	}	//	setDescription
 	
 	/**************************************************************************
