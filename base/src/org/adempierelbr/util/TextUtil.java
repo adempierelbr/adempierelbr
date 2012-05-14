@@ -83,6 +83,29 @@ public abstract class TextUtil
 						                  "AK","AL","AM","AN","AO"};
 
 	/**
+	 * 		Read File
+	 * 
+	 * 	@param file
+	 * 	@return
+	 */
+	public static String readFile (File file) throws Exception
+	{
+		StringBuffer result = new StringBuffer("");
+		//
+		String line;
+		FileInputStream stream = new FileInputStream (file);
+		InputStreamReader streamReader = new InputStreamReader(stream);
+		BufferedReader reader = new BufferedReader(streamReader);
+		
+		while ((line=reader.readLine()) != null)
+		{
+			result.append(line);
+		}
+		//
+		return result.toString();
+	}	//	readFile
+	
+	/**
 	 *  readFile
 	 *  Reads a file and return the lines into a string array
 	 *  @param  String FileName (FilePath)
