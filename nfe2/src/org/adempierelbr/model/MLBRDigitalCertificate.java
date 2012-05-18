@@ -21,11 +21,10 @@ import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.adempierelbr.util.SocketFactoryDinamico;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.Env;
-
-import br.com.javac.nfe.SocketFactoryDinamico;
 
 /**
  *	Model for LBR_DigitalCertificate

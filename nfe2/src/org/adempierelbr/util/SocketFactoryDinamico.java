@@ -8,11 +8,13 @@
  * @contributor Claudemir Todo Bom ( http://todobom.com )
  *     -- utilização de InputStream
  *     
+ * @contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ * 		-- Modificado o package e log para o padrão do Adempiere
+ *     
  * Original sem licença específica, obtida permissão por
  * e-mail do autor para republicação.
  */
-
-package br.com.javac.nfe;
+package org.adempierelbr.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -42,8 +44,13 @@ import javax.net.ssl.X509KeyManager;
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.compiere.util.CLogger;
 
 public class SocketFactoryDinamico implements ProtocolSocketFactory {
+	
+	/**	Logger						*/
+	private static CLogger log = CLogger.getCLogger (SocketFactoryDinamico.class);
+	
 	private SSLContext ssl = null;
 	private X509Certificate certificate;
 	private PrivateKey privateKey;
@@ -200,18 +207,15 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 	 * Log Error.
 	 * @param log
 	 */
-	private static void error(String log) {
-		System.out.println("ERROR: " + log);
+	private static void error(String error) {
+		log.severe(error);
 	}
 
 	public void setFileCacerts(String fileCacerts, String passwdCacerts) {
 		try {
 			setFileCacerts(new FileInputStream(fileCacerts),passwdCacerts);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}		
 	}
-
-}
+}	//	SocketFactoryDinamico
