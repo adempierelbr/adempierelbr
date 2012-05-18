@@ -21,7 +21,9 @@ import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.util.SocketFactoryDinamico;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.Env;
@@ -32,7 +34,7 @@ import org.compiere.util.Env;
  *	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@contributor Mario Grigioni
  *  @contributor Claudemir Todo Bom ( http://todobom.com )
- *         FR-LBR-34 - suporte a socket ssl dinâmico
+ *  				<li>FR-LBR-34 - suporte a socket ssl dinâmico
  */
 public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 {
@@ -60,18 +62,20 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	public MLBRDigitalCertificate (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MLBRDigitalCertificate
 
 	/**
 	 * setCertificate
 	 * Set all System.property for webservice connection
 	 */
-	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception{
-
-		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, null);
-
-		Integer certOrg = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		Integer certWS = (Integer) oi.get_Value("LBR_DC_WS_ID");
+	public static void setCertificate(Properties ctx, int AD_Org_ID) throws Exception
+	{
+		MOrgInfo oi = MOrgInfo.get (ctx, AD_Org_ID, null);
+		I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
+		
+		Integer certOrg = oiW.getLBR_DC_Org_ID();
+		Integer certWS = oiW.getLBR_DC_WS_ID();
+		
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 
