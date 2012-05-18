@@ -316,6 +316,10 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		attachCCe.addEntry(new File (xmlFile));
 		attachCCe.save();
 		
+		//	Transmissão
+		
+		
+		
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null)
