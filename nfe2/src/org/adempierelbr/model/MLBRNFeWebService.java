@@ -15,7 +15,9 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.compiere.model.Query;
 import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  *	Model for LBR_NFeWebService
@@ -30,13 +32,14 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final String CADCONSULTACADASTRO = "NfeConsultaCadastro";
-	public static final String STATUSSERVICO       = "NfeStatusServico";
-	public static final String CONSULTA            = "NfeConsultaProtocolo";
-	public static final String INUTILIZACAO        = "NfeInutilizacao";
-	public static final String CANCELAMENTO        = "NfeCancelamento";
-	public static final String RETRECEPCAO         = "NfeRetRecepcao";
-	public static final String RECEPCAO            = "NfeRecepcao";
+	public static final String CADCONSULTACADASTRO	= "NfeConsultaCadastro";
+	public static final String STATUSSERVICO		= "NfeStatusServico";
+	public static final String CONSULTA				= "NfeConsultaProtocolo";
+	public static final String INUTILIZACAO			= "NfeInutilizacao";
+	public static final String CANCELAMENTO			= "NfeCancelamento";
+	public static final String RETRECEPCAO			= "NfeRetRecepcao";
+	public static final String RECEPCAO				= "NfeRecepcao";
+	public static final String RECEPCAOEVENTO		= "RecepcaoEvento";
 	
 	/**************************************************************************
 	 *  Default Constructor
@@ -59,14 +62,37 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 		super(ctx, rs, trxName);
 	}
 	
-	public static String getURL (String name, String envType, String versionNo, int C_Region_ID){
-		
-		String sql = "SELECT URL FROM LBR_NFeWebService " +
-				     "WHERE UPPER(Name) LIKE ? AND lbr_NFeEnv = ? " +
-				     "AND VersionNo = ? AND C_Region_ID = ?";
+	/**
+	 * 		Retorna a URL do WebServices
+	 * 	@param name
+	 * 	@param envType
+	 * 	@param versionNo
+	 * 	@param C_Region_ID
+	 * 	@return
+	 */
+	public static String getURL (String name, String envType, String versionNo, int C_Region_ID)
+	{
+		MLBRNFeWebService ws = get (name, envType, versionNo, C_Region_ID);
+		//
+		if (ws == null)
+			return null;
+		//
+		return ws.getURL();
+	}	//	getURL
 
-		return DB.getSQLValueString(null, sql, 
-				new Object[]{name.toUpperCase(),envType,versionNo,C_Region_ID});
-	} //getURL
-
+	/**
+	 * 		Get
+	 * 	@param name
+	 * 	@param envType
+	 * 	@param versionNo
+	 * 	@param C_Region_ID
+	 * 	@return
+	 */
+	public static MLBRNFeWebService get (String name, String envType, String versionNo, int C_Region_ID)
+	{
+		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND C_Region_ID=?";
+		return new Query (Env.getCtx(),MLBRNFeWebService.Table_Name, where, null)
+						.setParameters(new Object[]{name.toUpperCase(), envType, versionNo, C_Region_ID})
+						.first();
+	}	//	get
 }	//	MNFeWebService

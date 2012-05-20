@@ -29,10 +29,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
+import org.adempierelbr.wrapper.I_W_C_City;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
+import org.compiere.model.MCity;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -43,14 +46,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.thoughtworks.xstream.XStream;
-
 import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferecepcao2.NfeRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeStatusServico2Stub;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -64,8 +68,9 @@ public abstract class NFeUtil
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 
 	/** Versão              */
-	public static final String VERSAO      = "2.00";
-	public static final String VERSAO_APP  = "2.00";
+	public static final String VERSAO			= "2.00";
+	public static final String VERSAO_APP		= "2.00";
+	public static final String VERSAO_CCE		= "1.00";
 
 	/** XML                 */
 	private static String FILE_EXT      = "-dst.xml";
@@ -109,6 +114,23 @@ public abstract class NFeUtil
 
 		return cabecalho;
 	}
+	
+	/**
+	 * Método para gerar cabeçalho envio do lote NF 2.00
+	 * @param region
+	 * @return NfeRecepcao2Stub.NfeCabecMsgE
+	 */
+	public static RecepcaoEventoStub.NfeCabecMsgE geraCabecEvento (String region)
+	{
+		RecepcaoEventoStub.NfeCabecMsg cabecMsg = new RecepcaoEventoStub.NfeCabecMsg();
+		cabecMsg.setCUF(region);
+		cabecMsg.setVersaoDados(VERSAO_CCE);
+
+		RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = new RecepcaoEventoStub.NfeCabecMsgE();
+		cabecMsgE.setNfeCabecMsg(cabecMsg);
+
+		return cabecMsgE;
+	}	//	geraCabecEvento
 
 	/**
 	 * Rodapé padrão Distribuição
@@ -711,4 +733,44 @@ public abstract class NFeUtil
         return result;
     }	//	packageNameOfClass
 	
+	/**
+	 * 	Pega o código da cidade
+	 * 	
+	 * 	@param oi
+	 * 	@return	region code
+	 */
+	public static String getCityCode (MOrgInfo oi)
+	{
+		if (oi == null || oi.getC_Location_ID() == 0 || oi.getC_Location().getC_City_ID() == 0)
+			return null;
+		//
+		I_W_C_City city = POWrapper.create(MCity.get (Env.getCtx(), oi.getC_Location().getC_City_ID()), I_W_C_City.class);
+		if (city.getlbr_CityCode() > 0)
+			return "" + city.getlbr_CityCode();
+		//
+		return null;
+	}	//	getCityCode
+	
+	/**
+	 * 	Pega o código do estado
+	 * 	
+	 * 	@param oi
+	 * 	@return	region code
+	 */
+	public static int getRegionCode (MOrgInfo oi)
+	{
+		String result = getCityCode(oi);
+		//
+		try
+		{
+			if (result != null && result.length() > 2)
+				return Integer.parseInt (result.substring(0, 2));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		//
+		return 0;
+	}	//	getRegionCode
 }	//	NFeUtil

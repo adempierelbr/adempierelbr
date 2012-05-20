@@ -14,20 +14,33 @@
 package org.adempierelbr.model;
 
 import java.io.File;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import javax.net.ssl.SSLException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.cce.beans.EnvEvento;
+import org.adempierelbr.cce.beans.RetEnvEvento;
 import org.adempierelbr.cce.beans.evento.Evento;
 import org.adempierelbr.cce.beans.evento.infevento.InfEvento;
 import org.adempierelbr.cce.beans.evento.infevento.detevento.DetEvento;
 import org.adempierelbr.util.AssinaturaDigital;
+import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.apache.axis2.databinding.ADBException;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MDocType;
 import org.compiere.model.MOrgInfo;
@@ -37,8 +50,11 @@ import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.Env;
 
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.CompactWriter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * 		Model for CC-e
@@ -225,30 +241,30 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 
 		//	Detalhes
 		DetEvento det = new DetEvento ();
-		det.setVersao("1.00");			//	FIXME
+		det.setVersao(NFeUtil.VERSAO_CCE);
 		det.setXCorrecao(getDescription());
 		
 		//	Informações do Evento da Carta de Correção
 		InfEvento cce = new InfEvento ();
-		cce.setCOrgao("35");			//	FIXME
+		cce.setCOrgao("" + NFeUtil.getRegionCode (oi));
 		cce.setTpAmb(oiW.getlbr_NFeEnv());
 		cce.setCNPJ(oiW.getlbr_CNPJ());
 		cce.setChNFe(nf.getlbr_NFeID());
 		cce.setDhEvento(getDateDoc());
 		cce.setNSeqEvento(getSeqNo());
-		cce.setVerEvento("1.00");		//	FIXME
+		cce.setVerEvento(NFeUtil.VERSAO_CCE);
 		cce.setDetEvento(det);
 		cce.setId();
 		
 		//	Dados do Evento da Carta de Correção
 		Evento evento = new Evento ();
-		evento.setVersao("1.00");		//	FIXME
+		evento.setVersao(NFeUtil.VERSAO_CCE);
 		evento.setInfEvento(cce);
 		
 		//	Dados do Envio
 		EnvEvento env = new EnvEvento();
-		env.setVersao("1.00");			//	FIXME
-		env.setIdLote("1");				//	FIXME
+		env.setVersao(NFeUtil.VERSAO_CCE);
+		env.setIdLote(getDocumentNo());
 		
 		//	Valida as informações
 		if (!cce.isValid())
@@ -266,8 +282,8 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		StringWriter sw = new StringWriter ();
 		xstream.marshal (evento,  new CompactWriter (sw));
 		
-		String xml = sw.toString();
-		String xmlFile = TextUtil.generateTmpFile (xml, cce.getId() + "-cce.xml");
+		StringBuilder xml = new StringBuilder (sw.toString());
+		String xmlFile = TextUtil.generateTmpFile (xml.toString(), cce.getId() + "-cce.xml");
 		
 		try
 		{
@@ -291,35 +307,130 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			 **/
 			sw = new StringWriter ();
 			xstream.marshal (env,  new CompactWriter (sw));
-			xml = header + sw.toString().replace("</idLote>", "</idLote>" + xmlSigned.substring(1+xmlSigned.indexOf(">")));
+			xml =  new StringBuilder (sw.toString().replace("</idLote>", "</idLote>" + xmlSigned.substring(1+xmlSigned.indexOf(">"))));
+
+		
+			log.fine ("XML: " + xml);
+			String result = ValidaXML.ValidaDoc (xml.toString(), "CCe_v1.00a/envCCe_v1.00.xsd");
+			
+			if (result != null && !result.isEmpty())
+			{
+				m_processMsg = result;
+				return DocAction.STATUS_Invalid;
+			}
+			
+			//	Arquivo final
+			xmlFile = TextUtil.generateTmpFile (xml.toString(), cce.getId() + "-cce.xml");
+			//
+			MAttachment attachCCe = createAttachment(true);
+			attachCCe.addEntry(new File (xmlFile));
+			attachCCe.save();
+			
+			//	Procura os endereços para Transmissão
+			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO, oi.getC_Location().getC_Region_ID());
+			
+			if (ws == null)
+			{
+				m_processMsg = "Erro ao transmitir a CC-e. Não foi encontrado um endereço WebServices válido.";
+				return DocAction.STATUS_Invalid;
+			}
+			
+			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(header + "<nfeDadosMsg>" + xml.toString() + "</nfeDadosMsg>"));
+
+			//	Prepara a Transmissão
+			MLBRDigitalCertificate.setCertificate (p_ctx, oi.getAD_Org_ID());
+			RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
+			RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
+			RecepcaoEventoStub.setAmbiente (ws);
+			RecepcaoEventoStub stub = new RecepcaoEventoStub();
+
+			//	Resposta do SEFAZ
+			StringBuilder respLote = new StringBuilder (header + stub.nfeRecepcaoEvento (dadosMsg, cabecMsgE).getExtraElement().toString());
+			log.fine (respLote.toString());
+						
+			xstream = new XStream (new DomDriver());
+			xstream.processAnnotations(org.adempierelbr.cce.beans.RetEnvEvento.class);
+			xstream.processAnnotations(org.adempierelbr.cce.beans.retevento.RetEvento.class);
+			xstream.processAnnotations(org.adempierelbr.cce.beans.retevento.infevento.InfEvento.class);
+			//
+			RetEnvEvento retEvent = (RetEnvEvento) xstream.fromXML (respLote.toString());
+			
+			if (!"128".equals (retEvent.getcStat()))
+				throw new AdempiereException (retEvent.getxMotivo());
+			
+			org.adempierelbr.cce.beans.retevento.infevento.InfEvento infReturn = retEvent.getRetEvento().getInfEvento();
+			
+			//	CC-e processada com sucesso
+			if ("135".equals (getlbr_NFeStatus()) || "136".equals (getlbr_NFeStatus()))
+			{
+				setDateTrx (infReturn.getDhRegEventoTS ());
+				setlbr_NFeStatus (infReturn.getcStat ());
+				setStatus (infReturn.getxMotivo ());
+				setlbr_CNPJ (infReturn.getCNPJDest ());
+				setlbr_CPF (infReturn.getCPFDest ());
+				setlbr_NFeProt (infReturn.getnProt ());
+				setEMail (infReturn.getEmailDest ());
+				saveEx ();
+
+				//	Arquivo de resposta final
+				xmlFile = TextUtil.generateTmpFile (xml.toString(), cce.getId() + "-resp-cce.xml");
+				//
+				attachCCe = createAttachment(true);
+				attachCCe.addEntry(new File (xmlFile));
+				attachCCe.save();
+			}
+			else
+				throw new AdempiereException (infReturn.getxMotivo());
+		}
+		catch (AdempiereException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Problema com o processamento do lote pela SEFAZ: " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (SSLException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao transmitir a CC-e. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (RemoteException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao transmitir a CC-e. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (ADBException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao converter o XML para transmissão da CC-e. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (XMLStreamException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao converter o XML para transmissão da CC-e. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (CertificateExpiredException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao assinar a CC-e. O certificado expirou. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
+		}
+		catch (CertificateNotYetValidException e)
+		{
+			e.printStackTrace();
+			m_processMsg = "Erro ao assinar a CC-e. O certificado não é válido para esta data. " + e.getMessage();
+			return DocAction.STATUS_Invalid;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao assinar a CC-e";
+			m_processMsg = "Erro no processo para gerar CC-e. Verifique o LOG.";
 			return DocAction.STATUS_Invalid;
 		}
-		
-		log.fine ("XML: " + xml);
-		String result = ValidaXML.ValidaDoc (xml, "CCe_v1.00a/envCCe_v1.00.xsd");
-		
-		if (result != null && !result.isEmpty())
-		{
-			m_processMsg = result;
-			return DocAction.STATUS_Invalid;
-		}
-		
-		//	Arquivo final
-		xmlFile = TextUtil.generateTmpFile (xml, cce.getId() + "-cce.xml");
-		//
-		MAttachment attachCCe = createAttachment(true);
-		attachCCe.addEntry(new File (xmlFile));
-		attachCCe.save();
-		
-		//	Transmissão
-		
-		
-		
+	
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null)
@@ -327,12 +438,10 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			m_processMsg = valid;
 			return DocAction.STATUS_Invalid;
 		}
-		// setDefiniteDocumentNo();
 
 		setProcessed(true);
 		setDocAction(DOCACTION_None);
 		return DocAction.STATUS_Completed;
-//		return DocAction.STATUS_InProgress;
 	}	//	completeIt
 
 	/**
@@ -390,23 +499,13 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		return false;
 	}	//	reActivateIt
 	
-	
 	/*************************************************************************
 	 * 	Get Summary
 	 *	@return Summary of Document
 	 */
 	public String getSummary()
 	{
-		StringBuffer sb = new StringBuffer();
-	//	sb.append(getDocumentNo());
-		//	: Total Lines = 123.00 (#1)
-	//	sb.append(": ")
-	//		.append(Msg.translate(getCtx(),"TotalLines")).append("=").append(getTotalLines())
-	//		.append(" (#").append(getLines(false).length).append(")");
-		//	 - Description
-	//	if (getDescription() != null && getDescription().length() > 0)
-	//		sb.append(" - ").append(getDescription());
-		return sb.toString();
+		return "";
 	}	//	getSummary
 
 	/**
@@ -454,4 +553,11 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		return 0;
 	}	//	getC_Currency_ID
 	
+	/**
+	 *	
+	 */
+	public String toString() 
+	{
+		return "MLBRCCe[ID=" + getLBR_CCe_ID() + ", DocStatus='" + getDocStatus() + "']";
+	}	//	toString
 }	//	MLBRCCe
