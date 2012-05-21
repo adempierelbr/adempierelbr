@@ -361,7 +361,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			org.adempierelbr.cce.beans.retevento.infevento.InfEvento infReturn = retEvent.getRetEvento().getInfEvento();
 			
 			//	CC-e processada com sucesso
-			if ("135".equals (getlbr_NFeStatus()) || "136".equals (getlbr_NFeStatus()))
+			if ("135".equals (infReturn.getcStat ()) || "136".equals (infReturn.getcStat ()))
 			{
 				setDateTrx (infReturn.getDhRegEventoTS ());
 				setlbr_NFeStatus (infReturn.getcStat ());
@@ -373,7 +373,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 				saveEx ();
 
 				//	Arquivo de resposta final
-				xmlFile = TextUtil.generateTmpFile (xml.toString(), cce.getId() + "-resp-cce.xml");
+				xmlFile = TextUtil.generateTmpFile (respLote.toString(), cce.getId() + "-resp-cce.xml");
 				//
 				attachCCe = createAttachment(true);
 				attachCCe.addEntry(new File (xmlFile));
@@ -507,15 +507,6 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	{
 		return "";
 	}	//	getSummary
-
-	/**
-	 * 	Get Document no
-	 *	@return Document No
-	 */
-	public String getDocumentNo()
-	{
-		return "-";
-	}	//	getDocumentNo
 
 	/**
 	 * 	Get Process Message
