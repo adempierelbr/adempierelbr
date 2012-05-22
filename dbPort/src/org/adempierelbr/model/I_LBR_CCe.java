@@ -227,13 +227,13 @@ public interface I_LBR_CCe
 	  * Method of ordering records;
  lowest number comes first
 	  */
-	public void setSeqNo (String SeqNo);
+	public void setSeqNo (int SeqNo);
 
 	/** Get Sequence.
 	  * Method of ordering records;
  lowest number comes first
 	  */
-	public String getSeqNo();
+	public int getSeqNo();
 
     /** Column name Status */
     public static final String COLUMNNAME_Status = "Status";

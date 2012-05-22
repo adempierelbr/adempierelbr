@@ -11,22 +11,23 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.cce.beans.retevento;
+package org.adempierelbr.cce.beans;
 
-import org.adempierelbr.cce.beans.retevento.infevento.InfEvento;
+import org.adempierelbr.cce.beans.evento.Evento;
+import org.adempierelbr.cce.beans.retevento.RetEvento;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * 		RetEvento Bean
+ * 		4.8.10 Armazenamento e Disponibilização da Carta de Correção
+ * 
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: RetEvento.java, v1.0 2012/05/20 7:11:11 PM, ralexsander Exp $
+ *	@version $Id: ProcEventoNFe.java, v1.0 2012/05/21 13:59:56 PM, ralexsander Exp $
  */
-@XStreamAlias ("retEvento")
-public class RetEvento
+@XStreamAlias ("procEventoNFe")
+public class ProcEventoNFe
 {
-	@SuppressWarnings("unused")
 	@XStreamAsAttribute
 	private String versao;
 	
@@ -34,10 +35,31 @@ public class RetEvento
 	@XStreamAsAttribute
 	private String xmlns="http://www.portalfiscal.inf.br/nfe";
 	
-	private InfEvento infEvento;
-
-	public InfEvento getInfEvento()
+	private Evento evento;
+	private RetEvento retEvento;
+	
+	public String getVersao()
 	{
-		return infEvento;
-	}	//	getInfEvento
-}	//	RetEvento
+		return versao;
+	}	//	getVersao
+	public void setVersao(String versao)
+	{
+		this.versao = versao;
+	}	//	setVersao
+	public Evento getEvento()
+	{
+		return evento;
+	}	//	getEvento
+	public void setEvento(Evento evento)
+	{
+		this.evento = evento;
+	}	//	setEvento
+	public RetEvento getRetEvento()
+	{
+		return retEvento;
+	}	//	getRetEvento
+	public void setRetEvento(RetEvento retEvento)
+	{
+		this.retEvento = retEvento;
+	}	//	setRetEvento
+}	//	ProcEventoNFe

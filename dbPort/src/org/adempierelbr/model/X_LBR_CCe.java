@@ -336,17 +336,23 @@ public class X_LBR_CCe extends PO implements I_LBR_CCe, I_Persistent
 		@param SeqNo 
 		Method of ordering records; lowest number comes first
 	  */
-	public void setSeqNo (String SeqNo)
+	public void setSeqNo (int SeqNo)
 	{
-		set_Value (COLUMNNAME_SeqNo, SeqNo);
+		if (SeqNo < 1) 
+			set_Value (COLUMNNAME_SeqNo, null);
+		else 
+			set_Value (COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
 	}
 
 	/** Get Sequence.
 		@return Method of ordering records; lowest number comes first
 	  */
-	public String getSeqNo () 
+	public int getSeqNo () 
 	{
-		return (String)get_Value(COLUMNNAME_SeqNo);
+		Integer ii = (Integer)get_Value(COLUMNNAME_SeqNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Status.

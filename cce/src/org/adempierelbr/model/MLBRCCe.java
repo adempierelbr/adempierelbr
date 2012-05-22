@@ -31,10 +31,13 @@ import javax.xml.stream.XMLStreamReader;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.cce.beans.EnvEvento;
+import org.adempierelbr.cce.beans.ProcEventoNFe;
 import org.adempierelbr.cce.beans.RetEnvEvento;
+import org.adempierelbr.cce.beans.Signature;
 import org.adempierelbr.cce.beans.evento.Evento;
 import org.adempierelbr.cce.beans.evento.infevento.InfEvento;
 import org.adempierelbr.cce.beans.evento.infevento.detevento.DetEvento;
+import org.adempierelbr.cce.beans.retevento.RetEvento;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
@@ -48,6 +51,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
@@ -233,7 +237,12 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			return DocAction.STATUS_Invalid;
 		
 		log.info(toString());
-		//
+		
+		//	Classes usadas para annotation
+		Class<?>[] classForAnnotation = new Class[]{DetEvento.class, InfEvento.class, Evento.class, EnvEvento.class, ProcEventoNFe.class, 
+				org.adempierelbr.cce.beans.retevento.infevento.InfEvento.class, RetEnvEvento.class, RetEvento.class, Signature.CanonicalizationMethod.class, 
+				Signature.DigestMethod.class, Signature.KeyInfo.class, Signature.Reference.class, Signature.SignatureMethod.class, 
+				Signature.SignedInfo.class, Signature.Transform.class, Signature.Transforms.class, Signature.X509Data.class};
 		
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), getLBR_NotaFiscal_ID(), null);
 		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), nf.getAD_Org_ID(), null);
@@ -251,7 +260,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		cce.setCNPJ(oiW.getlbr_CNPJ());
 		cce.setChNFe(nf.getlbr_NFeID());
 		cce.setDhEvento(getDateDoc());
-		cce.setNSeqEvento(getSeqNo());
+		cce.setNSeqEvento("" + getSeqNo());
 		cce.setVerEvento(NFeUtil.VERSAO_CCE);
 		cce.setDetEvento(det);
 		cce.setId();
@@ -274,10 +283,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		}
 		
 		XStream xstream = new XStream ();
-		xstream.processAnnotations(InfEvento.class);
-		xstream.processAnnotations(DetEvento.class);
-		xstream.processAnnotations(Evento.class);
-		xstream.processAnnotations(EnvEvento.class);
+		xstream.autodetectAnnotations(true);
 		
 		StringWriter sw = new StringWriter ();
 		xstream.marshal (evento,  new CompactWriter (sw));
@@ -289,26 +295,20 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		{
 			log.fine ("Assinando XML: " + xml);
 			AssinaturaDigital.Assinar (xmlFile, oi, AssinaturaDigital.CARTADECORRECAO_CCE);
-			String xmlSigned = TextUtil.readFile (new File(xmlFile));
 			
-			/**
-			 * 			Composição do XML de Envio de Evento de CC-e
-			 * 
-			 * 	Cabeçalho 
-			 * 		<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-			 * 
-			 *	Envio
-			 * 		<envEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">
-			 *			<idLote></idLote>
-			 *		</envEvento>
-			 *	
-			 *	Evento Assinado
-			 *		Inserido após <idLote></idLote>. Removido o cabeçalho do Evento
-			 **/
+			//	Lê o arquivo assinado
+			xstream = new XStream (new DomDriver());
+			xstream.processAnnotations (classForAnnotation);
+			evento = (Evento) xstream.fromXML (TextUtil.readFile (new File (xmlFile)));
+			
+			//	Popula o evio do Evento com o XML assinado
+			env.setEvento(evento);
+			
 			sw = new StringWriter ();
+			xstream = new XStream ();
+			xstream.processAnnotations (classForAnnotation);
 			xstream.marshal (env,  new CompactWriter (sw));
-			xml =  new StringBuilder (sw.toString().replace("</idLote>", "</idLote>" + xmlSigned.substring(1+xmlSigned.indexOf(">"))));
-
+			xml =  new StringBuilder (sw.toString());
 		
 			log.fine ("XML: " + xml);
 			String result = ValidaXML.ValidaDoc (xml.toString(), "CCe_v1.00a/envCCe_v1.00.xsd");
@@ -319,12 +319,8 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 				return DocAction.STATUS_Invalid;
 			}
 			
-			//	Arquivo final
+			//	Arquivo para transmitir
 			xmlFile = TextUtil.generateTmpFile (xml.toString(), cce.getId() + "-cce.xml");
-			//
-			MAttachment attachCCe = createAttachment(true);
-			attachCCe.addEntry(new File (xmlFile));
-			attachCCe.save();
 			
 			//	Procura os endereços para Transmissão
 			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO, oi.getC_Location().getC_Region_ID());
@@ -349,9 +345,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			log.fine (respLote.toString());
 						
 			xstream = new XStream (new DomDriver());
-			xstream.processAnnotations(org.adempierelbr.cce.beans.RetEnvEvento.class);
-			xstream.processAnnotations(org.adempierelbr.cce.beans.retevento.RetEvento.class);
-			xstream.processAnnotations(org.adempierelbr.cce.beans.retevento.infevento.InfEvento.class);
+			xstream.processAnnotations (classForAnnotation);
 			//
 			RetEnvEvento retEvent = (RetEnvEvento) xstream.fromXML (respLote.toString());
 			
@@ -372,12 +366,30 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 				setEMail (infReturn.getEmailDest ());
 				saveEx ();
 
+				//	Arquivo de Distribuição
+				ProcEventoNFe procEvento = new ProcEventoNFe ();
+				procEvento.setVersao (NFeUtil.VERSAO_CCE);
+				procEvento.setEvento(env.getEvento());
+				procEvento.setRetEvento(retEvent.getRetEvento());
+				
+				//	Preparando saida
+				xstream = new XStream ();
+				xstream.processAnnotations (classForAnnotation);
+				sw = new StringWriter ();
+				xstream.marshal (procEvento,  new CompactWriter (sw));
+				
 				//	Arquivo de resposta final
-				xmlFile = TextUtil.generateTmpFile (respLote.toString(), cce.getId() + "-resp-cce.xml");
+				xmlFile = TextUtil.generateTmpFile (header + sw.toString(), cce.getId() + "-cce-dst.xml");
 				//
-				attachCCe = createAttachment(true);
+				MAttachment attachCCe = createAttachment (true);
 				attachCCe.addEntry(new File (xmlFile));
 				attachCCe.save();
+				
+				//	Valida o resultado do SEFAZ, gerando um LOG, mas não impede o processo
+				result = ValidaXML.ValidaDoc (sw.toString(), "CCe_v1.00a/procCCeNFe_v1.00.xsd");
+				
+				if (result != null && !result.isEmpty())
+					log.severe ("Erro na validação da resposta: " + result);
 			}
 			else
 				throw new AdempiereException (infReturn.getxMotivo());
@@ -452,6 +464,13 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	public boolean voidIt()
 	{
 		log.info("voidIt - " + toString());
+		
+		if (!DOCSTATUS_Completed.equals(getDocStatus()))
+		{
+			setProcessed (true);
+			setDocAction (DOCACTION_None);
+			return true;
+		}
 		return closeIt();
 	}	//	voidIt
 	
@@ -463,7 +482,8 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	public boolean closeIt()
 	{
 		log.info("closeIt - " + toString());
-		return true;
+		m_processMsg = "Não é permitido fechar o documento.";
+		return false;
 	}	//	closeIt
 	
 	/**
@@ -543,6 +563,20 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	{
 		return 0;
 	}	//	getC_Currency_ID
+	
+	/**
+	 * 	Before Save
+	 */
+	protected boolean beforeSave (boolean newRecord)
+	{
+		if (newRecord)
+		{
+			int seqNo = DB.getSQLValue (get_TrxName(), "SELECT COALESCE(MAX(SeqNo), 0)+1 AS DefaultValue FROM LBR_CCe WHERE DocStatus IN ('CL','CO') AND LBR_NotaFiscal_ID=?", getLBR_NotaFiscal_ID());
+			//
+			setSeqNo (seqNo);
+		}
+		return true;
+	}	//	beforeSave
 	
 	/**
 	 *	

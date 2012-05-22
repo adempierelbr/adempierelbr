@@ -14,6 +14,7 @@
 package org.adempierelbr.cce.beans.evento;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.cce.beans.Signature;
 import org.adempierelbr.cce.beans.evento.infevento.InfEvento;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -38,6 +39,10 @@ public class Evento
 	
 	@XMLFieldProperties	(needsValidation=true, id = "HP06")
 	private InfEvento infEvento;
+	
+	@SuppressWarnings("unused")
+	@XStreamAlias ("Signature")
+	private Signature signature;
 
 	public String getVersao()
 	{
