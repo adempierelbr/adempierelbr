@@ -16,13 +16,13 @@ import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.compiere.model.Query;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
  *	Model for LBR_NFeWebService
  *
  *	@author Mario Grigioni
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MNFeWebService.java,27/08/2010 17:10:00 mgrigioni Exp $
  */
 public class MLBRNFeWebService extends X_LBR_NFeWebService
@@ -47,8 +47,9 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRNFeWebService(Properties ctx, int ID, String trx){
-		super(ctx,ID,trx);
+	public MLBRNFeWebService (Properties ctx, int ID, String trxName)
+	{
+		super (ctx, ID, trxName);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	public MLBRNFeWebService (Properties ctx, ResultSet rs, String trxName)
 	{
-		super(ctx, rs, trxName);
+		super (ctx, rs, trxName);
 	}
 	
 	/**

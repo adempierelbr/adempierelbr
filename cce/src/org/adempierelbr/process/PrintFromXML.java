@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.process;
 
 import java.io.IOException;
@@ -75,8 +88,8 @@ public class PrintFromXML extends SvrProcess
 		{
 			MLBRCCe cce = new MLBRCCe (Env.getCtx(), p_Record_ID, null);
 			
-//			if (!"135".equals (cce.getlbr_NFeStatus()) && !"136".equals (cce.getlbr_NFeStatus()))
-//				return "CC-e não processada corretamente, não é possível fazer a impressão";
+			if (!"135".equals (cce.getlbr_NFeStatus()) && !"136".equals (cce.getlbr_NFeStatus()))
+				return "CC-e não processada corretamente, não é possível fazer a impressão";
 			
 			att = cce.getAttachment (true);
 			
@@ -125,9 +138,9 @@ public class PrintFromXML extends SvrProcess
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject (files.remove (reportName));
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
-		JasperViewer.viewReport (jasperPrint, "Carta de Corre\u00E7\u00E3o Eletr\u00F4nica");
+		JasperViewer.viewReport (jasperPrint, "Impress\u00E7\u00E3o de Documento");
 		
-		return null;
+		return "@Success@";
 	}	//	doIt
 
 	/**
@@ -147,10 +160,10 @@ public class PrintFromXML extends SvrProcess
 		//	Anexa o relatório padrão caso não haja nenhum
 		if (att == null)
 		{	
-			InputStream report = Adempiere.class.getClassLoader().getResourceAsStream("reports/ReportCCe.jasper");
+			InputStream report = Adempiere.class.getClassLoader().getResourceAsStream("reports/" + reportName);
 			//
 			att = process.createAttachment (true);
-			att.addEntry ("ReportCCe.jasper", IOUtils.toByteArray (report));
+			att.addEntry (reportName, IOUtils.toByteArray (report));
 			att.save ();
 		}
 		
