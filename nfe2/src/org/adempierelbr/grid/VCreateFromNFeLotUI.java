@@ -49,6 +49,8 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 		dialog = new VCreateFromDialog(this, getGridTab().getWindowNo(), true);
 		
 		p_WindowNo = getGridTab().getWindowNo();
+		
+		AD_Org_ID = (Integer) mTab.getValue("AD_Org_ID");
 
 		try
 		{
@@ -73,6 +75,9 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	
 	/**	Logger					*/
 	private CLogger log = CLogger.getCLogger(getClass());
+	
+	/** Organization              */
+	private int AD_Org_ID;
 		
 	/**
 	 *  Dynamic Init
@@ -107,7 +112,7 @@ public class VCreateFromNFeLotUI extends CreateFromNFeLot implements VetoableCha
 	 */
 	protected void loadNFeLot ()
 	{
-		loadTableOIS (getNFeLotData());
+		loadTableOIS (getNFeLotData(AD_Org_ID));
 	}	//	loadNFeLot
 	
 	/**

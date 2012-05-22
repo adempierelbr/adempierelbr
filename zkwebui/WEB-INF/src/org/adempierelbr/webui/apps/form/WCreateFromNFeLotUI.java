@@ -50,6 +50,7 @@ public class WCreateFromNFeLotUI extends CreateFromNFeLot implements ValueChange
 		
 		p_WindowNo = getGridTab().getWindowNo();
 		window = new WCreateFromWindow (this, p_WindowNo);
+		AD_Org_ID= (Integer) mTab.getValue("AD_Org_ID");
 
 		try
 		{
@@ -74,6 +75,9 @@ public class WCreateFromNFeLotUI extends CreateFromNFeLot implements ValueChange
 	
 	/**	Logger					*/
 	private CLogger log = CLogger.getCLogger(getClass());
+	
+	/** Organization              */
+	private int AD_Org_ID;
 		
 	/**
 	 *  Dynamic Init
@@ -106,7 +110,7 @@ public class WCreateFromNFeLotUI extends CreateFromNFeLot implements ValueChange
 	 */
 	protected void loadNFeLot ()
 	{
-		loadTableOIS (getNFeLotData());
+		loadTableOIS (getNFeLotData(AD_Org_ID));
 	}	//	loadNFeLot
 	
 	/**

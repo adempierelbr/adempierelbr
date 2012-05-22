@@ -68,7 +68,7 @@ public class CreateFromNFeLot extends CreateFrom
 	 * 
 	 * 	@return Matriz de NF
 	 */
-	protected Vector<Vector<Object>> getNFeLotData()
+	protected Vector<Vector<Object>> getNFeLotData(int AD_Org_ID)
 	{
 		/**
 		 *  Selected        - 0
@@ -86,6 +86,7 @@ public class CreateFromNFeLot extends CreateFrom
 					"AND att.AD_Table_ID = ?) "
 			+ "WHERE nf.LBR_NFeID IS NOT NULL AND nf.LBR_NFeLot_ID IS NULL "
 			+ "AND IsCancelled = 'N' "
+			+ "AND nf.AD_Org_ID IN (?, 0) "
 			+ "ORDER BY 1";
 		
 		PreparedStatement pstmt = null;
@@ -95,6 +96,7 @@ public class CreateFromNFeLot extends CreateFrom
 		{
 			pstmt = DB.prepareStatement(sql.toString(), null);
 			pstmt.setInt(1, MLBRNotaFiscal.Table_ID);
+			pstmt.setInt(2, AD_Org_ID);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
