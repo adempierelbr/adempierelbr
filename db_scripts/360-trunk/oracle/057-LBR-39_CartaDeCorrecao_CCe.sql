@@ -1245,37 +1245,37 @@ UPDATE AD_WF_Node SET DocAction='--',Updated=TO_DATE('2012-05-22 15:53:00','YYYY
 
 -- 22/05/2012 15h54min8s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-INSERT INTO AD_Process (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Process_ID,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES ('3',0,0,2000004,'org.adempierelbr.process.PrintFromXML','N',TO_DATE('2012-05-22 15:54:07','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','N','Y','N','Print From XML','Y',0,0,TO_DATE('2012-05-22 15:54:07','YYYY-MM-DD HH24:MI:SS'),100,'10000001')
+INSERT INTO AD_Process (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Process_ID,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES ('3',0,0,1120040,'org.adempierelbr.process.PrintFromXML','N',TO_DATE('2012-05-22 15:54:07','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','N','Y','N','Print From XML','Y',0,0,TO_DATE('2012-05-22 15:54:07','YYYY-MM-DD HH24:MI:SS'),100,'10000001')
 ;
 
 -- 22/05/2012 15h54min8s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-INSERT INTO AD_Process_Trl (AD_Language,AD_Process_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Process_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Process t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Process_ID=2000004 AND NOT EXISTS (SELECT * FROM AD_Process_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Process_ID=t.AD_Process_ID)
+INSERT INTO AD_Process_Trl (AD_Language,AD_Process_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Process_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Process t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Process_ID=1120040 AND NOT EXISTS (SELECT * FROM AD_Process_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Process_ID=t.AD_Process_ID)
 ;
 
 -- 22/05/2012 15h54min18s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-UPDATE AD_Process SET Value='PrintFromXML',Updated=TO_DATE('2012-05-22 15:54:18','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=2000004
+UPDATE AD_Process SET Value='PrintFromXML',Updated=TO_DATE('2012-05-22 15:54:18','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120040
 ;
 
 -- 22/05/2012 15h54min27s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-UPDATE AD_Process_Trl SET Name='Imprime do XML',Updated=TO_DATE('2012-05-22 15:54:27','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=2000004 AND AD_Language='pt_BR'
+UPDATE AD_Process_Trl SET Name='Imprime do XML',Updated=TO_DATE('2012-05-22 15:54:27','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120040 AND AD_Language='pt_BR'
 ;
 
 -- 22/05/2012 15h54min40s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-UPDATE AD_Process_Trl SET Name='Relatório do XML',Updated=TO_DATE('2012-05-22 15:54:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=2000004 AND AD_Language='pt_BR'
+UPDATE AD_Process_Trl SET Name='Relatório do XML',Updated=TO_DATE('2012-05-22 15:54:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120040 AND AD_Language='pt_BR'
 ;
 
 -- 22/05/2012 15h55min23s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-UPDATE AD_Process SET EntityType='LBRA',Updated=TO_DATE('2012-05-22 15:55:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=2000004
+UPDATE AD_Process SET EntityType='LBRA',Updated=TO_DATE('2012-05-22 15:55:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120040
 ;
 
 -- 22/05/2012 15h55min40s BRT
 -- https://adempiere.atlassian.net/browse/LBR-39 - Carta de Correção Eletrônica
-UPDATE AD_Tab SET AD_Process_ID=2000004,Updated=TO_DATE('2012-05-22 15:55:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1120049
+UPDATE AD_Tab SET AD_Process_ID=1120040,Updated=TO_DATE('2012-05-22 15:55:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1120049
 ;
 
 -- 22/05/2012 15h56min34s BRT
