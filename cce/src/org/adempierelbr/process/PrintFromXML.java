@@ -185,7 +185,7 @@ public class PrintFromXML extends SvrProcess
 		if (!found)
 			throw new AdempiereException("Report not found");
 		
-		MPInstance pinstance = new MPInstance (getCtx(), getRecord_ID(), null);
+		MPInstance pinstance = new MPInstance (getCtx(), getAD_PInstance_ID(), null);
 		MOrgInfo oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);
 		
 		//	Logo not found
