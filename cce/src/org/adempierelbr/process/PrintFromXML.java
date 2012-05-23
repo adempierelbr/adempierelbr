@@ -13,13 +13,11 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import net.sf.jasperreports.engine.JRException;
@@ -39,7 +37,6 @@ import org.compiere.model.MImage;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
-import org.compiere.model.POInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.JasperViewer;
