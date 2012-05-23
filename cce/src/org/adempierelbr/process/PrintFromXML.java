@@ -13,10 +13,13 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import net.sf.jasperreports.engine.JRException;
@@ -32,7 +35,11 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.apache.commons.io.IOUtils;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
+import org.compiere.model.MImage;
+import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
+import org.compiere.model.POInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.JasperViewer;
@@ -89,7 +96,7 @@ public class PrintFromXML extends SvrProcess
 			MLBRCCe cce = new MLBRCCe (Env.getCtx(), p_Record_ID, null);
 			
 			if (!"135".equals (cce.getlbr_NFeStatus()) && !"136".equals (cce.getlbr_NFeStatus()))
-				return "CC-e não processada corretamente, não é possível fazer a impressão";
+				return "CC-e n\u00E3o processada corretamente, n\u00E3o \u00E9 poss\u00EDvel fazer a impress\u00E3o";
 			
 			att = cce.getAttachment (true);
 			
@@ -115,7 +122,7 @@ public class PrintFromXML extends SvrProcess
 			return "Not implemented yet";
 		
 		if (att == null)
-			return "Arquivo não encontrado";
+			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
 		MAttachmentEntry[] entries = att.getEntries();
 		InputStream xml = null;
@@ -130,7 +137,7 @@ public class PrintFromXML extends SvrProcess
 		}
 
 		if (xml == null)
-			return "Arquivo não encontrado";
+			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
 		Map<String, InputStream> files = getReportFile ();
 		//
@@ -181,6 +188,21 @@ public class PrintFromXML extends SvrProcess
 		if (!found)
 			throw new AdempiereException("Report not found");
 		
+		MPInstance pinstance = new MPInstance (getCtx(), getRecord_ID(), null);
+		MOrgInfo oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);
+		
+		//	Logo not found
+		if (oi.getLogo_ID() <= 0)
+			return map;
+		
+		MImage mImage = MImage.get (getCtx(), oi.getLogo_ID());
+		
+		if (mImage.getBinaryData () != null)
+		{
+			InputStream is = new ByteArrayInputStream (mImage.getBinaryData ());
+			map.put ("LOGO", is);
+		}
+
 		return map;
 	}	//	doIt
-}	//	PrintCCe
+}	//	PrintFromXML
