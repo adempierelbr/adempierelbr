@@ -1717,9 +1717,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		StringBuffer description = new StringBuffer("");
 		List<Integer> legalMsg = new ArrayList<Integer>();
 		
-		//	Mensagens Legais
+		//	Mensagens Legais Linha
 		for (MLBRNotaFiscalLine nfl : getLines())
 		{
+			// Por Imposto
+			for (MLBRNFLineTax nflt : nfl.getTaxes())
+			{
+				if (nflt.getLBR_LegalMessage_ID() <= 0 
+						|| legalMsg.contains(nflt.getLBR_LegalMessage_ID()))
+					continue;
+				else
+					legalMsg.add(nflt.getLBR_LegalMessage_ID());
+				//
+				if (description.length() > 0 && !description.toString().endsWith(" - "))
+					description.append(" - ");
+				//
+				description.append(nflt.getLBR_LegalMessage().getTextMsg());
+			}
+			
+		    // Por Linha de NF
 			if (nfl.getLBR_LegalMessage_ID() <= 0 
 					|| legalMsg.contains(nfl.getLBR_LegalMessage_ID()))
 				continue;
