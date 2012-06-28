@@ -391,6 +391,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 //	TODO		setLBR_NCM_ID(iLineW.getLBR_NCM_ID());
 		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
 		
+		//	Número de Série
+		if (iLine.getM_AttributeSetInstance_ID()>0)
+			setDescription(iLine.getM_AttributeSetInstance().getDescription());
+		
 		//	Impostos
 		MLBRTax tax = new MLBRTax (getCtx(), iLineW.getLBR_Tax_ID(), get_TrxName());
 				
