@@ -265,7 +265,6 @@ public class NFeXMLGenerator
 		 * 3 - NFe de ajuste
 		 */
 		String FinNFE = nf.getlbr_FinNFe();
-
 		/**
 		 * CRT
 		 * 1 – Simples Nacional
@@ -506,6 +505,8 @@ public class NFeXMLGenerator
 					nf.getlbr_BPShipperAddress4() + " - " +				//	Complemento
 					nf.getlbr_BPShipperAddress3();						//	Bairro
 				//
+				
+				transgrupo.setCNPJ(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
 				transgrupo.setIE(shipperIE);
 				transgrupo.setxNome(RemoverAcentos.remover(nf.getlbr_BPShipperName()));
 				transgrupo.setxEnder(RemoverAcentos.remover(end));
@@ -701,8 +702,8 @@ public class NFeXMLGenerator
 			produtos.setuCom(RemoverAcentos.remover(nfLine.getlbr_UOMName()));
 			produtos.setuTrib(RemoverAcentos.remover(nfLine.getlbr_UOMName()));
 			produtos.setvProd(TextUtil.bigdecimalToString(nfLine.getLineTotalAmt()));
-			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),4));
-			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),4));
+			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
+			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			
 			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
 				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
