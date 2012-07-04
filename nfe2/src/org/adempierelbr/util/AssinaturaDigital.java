@@ -59,7 +59,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
- * Assina o arquivo XML
+ * 	Assina o arquivo XML
  * 
  * @contributor Ricardo Santana
  */
@@ -69,6 +69,7 @@ public class AssinaturaDigital
 	public static final String RECEPCAO_NFE			="1";
 	public static final String CANCELAMENTO_NFE		="2";
 	public static final String INUTILIZACAO_NFE		="3";
+	public static final String CARTADECORRECAO_CCE	="4";
 	
 	/**		Algoritmos		*/
 	public static final String ALGORITIMO = "RSA";
@@ -88,7 +89,7 @@ public class AssinaturaDigital
 	private static InputStream jksData = null;
 	
 	/**	Logger				*/
-	private static CLogger log = CLogger.getCLogger(AssinaturaDigital.class);
+	private static CLogger log = CLogger.getCLogger (AssinaturaDigital.class);
 
 	/**
 	 * 	Assina o arquivo XML
@@ -118,8 +119,8 @@ public class AssinaturaDigital
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
 		//
-		AssinaturaDigital.loadKeys();
-		AssinaturaDigital.assinarDocumento(caminhoxml, docType);
+		AssinaturaDigital.loadKeys ();
+		AssinaturaDigital.assinarDocumento (caminhoxml, docType);
 	}	//	Assinar
 
 	public static PrivateKey getChavePrivada() throws Exception
@@ -137,13 +138,15 @@ public class AssinaturaDigital
 		KeyStore keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
 		Key key = keystore.getKey(alias, senha);
+		//
 		if (key instanceof PrivateKey)
 		{
-			java.security.cert.Certificate certTmp = keystore.getCertificate(alias);
+			java.security.cert.Certificate certTmp = keystore.getCertificate (alias);
 			PublicKey publicKey = certTmp.getPublicKey();
-			cert = (X509Certificate) keystore.getCertificate(alias);
+			cert = (X509Certificate) keystore.getCertificate (alias);
 			keyP = new KeyPair(publicKey, (PrivateKey) key);
 		}
+		cert.checkValidity();
 	}	//	loadKeys
 
 	public static boolean verificarAssinatura(PublicKey chave, byte[] buffer,
@@ -164,11 +167,11 @@ public class AssinaturaDigital
 		return assinatura.sign();
 	}	//	criarAssinatura
 
-	public static String getValidade(X509Certificate cert)
+	public static String getValidade (X509Certificate cert)
 	{
 		try
 		{
-			cert.checkValidity();
+			cert.checkValidity ();
 			return "Certificado valido!";
 		}
 		catch (CertificateExpiredException e)
@@ -207,17 +210,16 @@ public class AssinaturaDigital
 			tag = "infCanc";
 		else if (docType.equals(INUTILIZACAO_NFE))
 			tag = "infInut";
+		else if (docType.equals(CARTADECORRECAO_CCE))
+			tag = "infEvento";
 		
 		NodeList elements = doc.getElementsByTagName(tag);
 		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
 		String id = el.getAttribute("Id");
 		//
-		Reference r = sig.newReference("#".concat(id), sig.newDigestMethod(
-				DigestMethod.SHA1, null), transformList, null, null);
-		si = sig.newSignedInfo(sig.newCanonicalizationMethod(
-				CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
-				sig.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections
-						.singletonList(r));
+		Reference r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+				sig.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(r));
 
 		KeyInfoFactory kif = sig.getKeyInfoFactory();
 		List<X509Certificate> x509Content = new ArrayList<X509Certificate>();

@@ -23,7 +23,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_DigitalCertificate
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertificate, I_Persistent 
 {
@@ -31,7 +31,7 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20120523L;
 
     /** Standard Constructor */
     public X_LBR_DigitalCertificate (Properties ctx, int LBR_DigitalCertificate_ID, String trxName)
@@ -106,30 +106,6 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
-	}
-
-	/** lbr_CertType AD_Reference_ID=1100000 */
-	public static final int LBR_CERTTYPE_AD_Reference_ID=1100000;
-	/** Java Key Store = JKS */
-	public static final String LBR_CERTTYPE_JavaKeyStore = "JKS";
-	/** PKCS#12 = P12 */
-	public static final String LBR_CERTTYPE_PKCS12 = "P12";
-	/** Set Certificate Type.
-		@param lbr_CertType 
-		Define the type of Digital Certificate
-	  */
-	public void setlbr_CertType (String lbr_CertType)
-	{
-
-		set_Value (COLUMNNAME_lbr_CertType, lbr_CertType);
-	}
-
-	/** Get Certificate Type.
-		@return Define the type of Digital Certificate
-	  */
-	public String getlbr_CertType () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_CertType);
 	}
 
 	/** Set Digital Certificate.
@@ -218,5 +194,31 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	public Timestamp getValidTo () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
+	}
+
+	/** lbr_CertType AD_Reference_ID=1100000 */
+	public static final int LBR_CERTTYPE_AD_Reference_ID=1100000;
+	/** Java Key Store = JKS */
+	public static final String LBR_CERTTYPE_JavaKeyStore = "JKS";
+	/** PKCS#12 = P12 */
+	public static final String LBR_CERTTYPE_PKCS12 = "P12";
+	/** ICP TrustStore (JKS) = ICP */
+	public static final String LBR_CERTTYPE_ICPTrustStoreJKS = "ICP";
+	/** Set Certificate Type.
+		@param lbr_CertType 
+		Define the type of Digital Certificate
+	  */
+	public void setlbr_CertType (String lbr_CertType)
+	{
+
+		set_Value (COLUMNNAME_lbr_CertType, lbr_CertType);
+	}
+
+	/** Get Certificate Type.
+		@return Define the type of Digital Certificate
+	  */
+	public String getlbr_CertType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_CertType);
 	}
 }

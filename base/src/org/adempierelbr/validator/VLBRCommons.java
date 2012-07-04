@@ -14,8 +14,10 @@
 package org.adempierelbr.validator;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
+import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNFeLot;
 import org.compiere.grid.VCreateFromFactory;
+import org.compiere.model.MAttachment;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoiceLine;
@@ -24,6 +26,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 import org.compiere.util.Ini;
 
 /**
@@ -67,6 +70,7 @@ public class VLBRCommons implements ModelValidator
 		else 
 			log.info("Initializing global validator: "+this.toString());
 
+		engine.addModelChange (MAttachment.Table_Name, this);
 		engine.addModelChange (MInvoiceLine.Table_Name, this);
 		engine.addModelChange (MInOutLine.Table_Name, this);
 		engine.addModelChange (MLocation.Table_Name, this);
@@ -125,6 +129,32 @@ public class VLBRCommons implements ModelValidator
 		//	Linha do Recebimento/Remesssa
 		else if (MLocation.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MLocation) po, type);
+		
+		//	Anexo
+		else if (MAttachment.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MAttachment) po, type);
+		
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MAttachment att, int type) throws Exception
+	{
+		if (type == TYPE_BEFORE_DELETE && att.getAD_Table_ID() == MLBRCCe.Table_ID)
+		{
+			MLBRCCe cce = new MLBRCCe (Env.getCtx(), att.getRecord_ID(), att.get_TrxName());
+			
+			if (cce.isProcessed())
+				return "N\u00E3o \u00E9 permitido alterar um anexo de um registro j\u00E1 processado.";
+		}
 		
 		return null;
 	}	//	modelChange

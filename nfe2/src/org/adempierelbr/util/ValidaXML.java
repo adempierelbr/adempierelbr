@@ -48,11 +48,11 @@ public class ValidaXML {
 		} 
 		catch (IllegalArgumentException e) 
 		{
-			e.getMessage();
+			return e.getMessage();
 		}
 		catch (SAXParseException e) 
 		{
-			e.getMessage();
+			return e.getMessage();
 		}
 		catch (Exception e) 
 		{

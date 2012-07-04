@@ -118,19 +118,6 @@ public interface I_LBR_DigitalCertificate
 	  */
 	public boolean isActive();
 
-    /** Column name lbr_CertType */
-    public static final String COLUMNNAME_lbr_CertType = "lbr_CertType";
-
-	/** Set Certificate Type.
-	  * Define the type of Digital Certificate
-	  */
-	public void setlbr_CertType (String lbr_CertType);
-
-	/** Get Certificate Type.
-	  * Define the type of Digital Certificate
-	  */
-	public String getlbr_CertType();
-
     /** Column name LBR_DigitalCertificate_ID */
     public static final String COLUMNNAME_LBR_DigitalCertificate_ID = "LBR_DigitalCertificate_ID";
 
@@ -207,4 +194,17 @@ public interface I_LBR_DigitalCertificate
 	  * Valid to including this date (last day)
 	  */
 	public Timestamp getValidTo();
+
+    /** Column name lbr_CertType */
+    public static final String COLUMNNAME_lbr_CertType = "lbr_CertType";
+
+	/** Set Certificate Type.
+	  * Define the type of Digital Certificate
+	  */
+	public void setlbr_CertType (String lbr_CertType);
+
+	/** Get Certificate Type.
+	  * Define the type of Digital Certificate
+	  */
+	public String getlbr_CertType();
 }
