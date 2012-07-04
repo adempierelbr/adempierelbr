@@ -39,19 +39,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-xmlbeans-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/commons-httpclient-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DSGEBrazilUtils.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
-	<classpathentry kind="lib" path="/Applications/EclipseEE 3.7.1 64Bits/plugins/org.apache.axis_1.4.0.v201005080400/lib/axis.jar"/>
-	<classpathentry kind="lib" path="/Applications/EclipseEE 3.7.1 64Bits/plugins/javax.xml.rpc_1.1.0.v201005080400/lib/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/Applications/EclipseEE 3.7.1 64Bits/plugins/javax.xml.soap_1.2.0.v201005080501/lib/saaj.jar"/>
-	<classpathentry kind="lib" path="/Applications/EclipseEE 3.7.1 64Bits/plugins/javax.wsdl_1.6.2.v201012040545.jar"/>
-	<classpathentry kind="lib" path="/Applications/EclipseEE 3.7.1 64Bits/plugins/org.apache.commons.logging_1.0.4.v201101211617.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
