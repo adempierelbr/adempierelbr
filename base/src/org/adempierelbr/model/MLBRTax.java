@@ -466,7 +466,7 @@ public class MLBRTax extends X_LBR_Tax
 		 */
 		MLBRICMSMatrix mICMS = MLBRICMSMatrix.get (ctx, oi.getAD_Org_ID(), (oi.getC_Location_ID() < 1 ? -1 : oi.getC_Location().getC_Region_ID()), bpLoc.getC_Location().getC_Region_ID(), dateAcct, null);
 		//
-		if (mICMS != null && mICMS.getLBR_Tax_ID() > 0)
+		if (mICMS != null && mICMS.getLBR_Tax_ID() > 0 && !MProduct.PRODUCTTYPE_Service.equals(p.getProductType()))
 		{
 			processTaxes(taxes, mICMS.getLBR_Tax_ID());
 			//
