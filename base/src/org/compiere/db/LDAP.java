@@ -26,6 +26,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.ldap.InitialLdapContext;
 
+import org.compiere.model.MSysConfig;
 import org.compiere.util.CLogger;
 
 
@@ -48,14 +49,11 @@ public class LDAP
 	public static boolean validate (String ldapURL, String domain, String userName, String password)
 	{
 		Hashtable<String,String> env = new Hashtable<String,String>();
+		StringBuffer principal = new StringBuffer(domain == null ? "" : domain.replace("@UserName@", userName));
+		//
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-		//	ldap://dc.compiere.org
 		env.put(Context.PROVIDER_URL, ldapURL);
 		env.put(Context.SECURITY_AUTHENTICATION, "simple");
-		//	jjanke@compiere.org
-		// For OpenLDAP uncomment the next line  
-		// StringBuffer principal = new StringBuffer("uid=").append(userName).append(",").append(domain);
-		StringBuffer principal = new StringBuffer(userName).append("@").append(domain);
 		env.put(Context.SECURITY_PRINCIPAL, principal.toString());
 		env.put(Context.SECURITY_CREDENTIALS, password);
 		//
@@ -63,13 +61,12 @@ public class LDAP
 		{
 			// Create the initial context
 			InitialLdapContext ctx = new InitialLdapContext(env, null);
-		//	DirContext ctx = new InitialDirContext(env);
 			
 			//	Test - Get the attributes
 			Attributes answer = ctx.getAttributes("");
 
-		    // Print the answer
-		    if (false)
+		    // 	Print the answer
+		    if (MSysConfig.getBooleanValue("DEBUG_LDAP", false));
 		    	dump (answer);
 		}
 		catch (AuthenticationException e)
