@@ -265,6 +265,15 @@ public class NFeXMLGenerator
 		 * 3 - NFe de ajuste
 		 */
 		String FinNFE = nf.getlbr_FinNFe();
+		
+		// Identificação NFE
+		if (FinNFE.equals("2"))
+		{
+			xstream.alias("NFref", NFERefenciadaBean.class);
+			nfereferencia.setRefNFe(nf.getlbr_NFRefere().getlbr_NFeID());
+			identNFe.setNFref(nfereferencia);
+		}
+		
 		/**
 		 * CRT
 		 * 1 – Simples Nacional
