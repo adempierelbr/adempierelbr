@@ -343,11 +343,19 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 
 	protected boolean beforeDelete(){
 
-		String sql = "UPDATE LBR_NotaFiscal SET LBR_NFeLot_ID = null " +
-				     "WHERE LBR_NFeLot_ID = ?";
-
-		if (DB.executeUpdate(sql, get_ID(), get_TrxName()) == -1)
+		if (islbr_LotSent())
+		{
+			log.log(Level.SEVERE, "LOT sent. Can not be deleted");
 			return false;
+		}
+		else
+		{
+			String sql = "UPDATE LBR_NotaFiscal SET LBR_NFeLot_ID = null " +
+					"WHERE LBR_NFeLot_ID = ?";
+
+			if (DB.executeUpdate(sql, get_ID(), get_TrxName()) == -1)
+				return false;
+		}
 
 		return true;
 	}
