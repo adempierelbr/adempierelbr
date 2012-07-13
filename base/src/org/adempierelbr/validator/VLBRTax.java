@@ -34,6 +34,7 @@ import org.compiere.util.Env;
  */
 public class VLBRTax implements ModelValidator
 {
+
 	/**
 	 *	Constructor.
 	 *	The class is instanciated when logging in and client is selected/known
@@ -179,6 +180,7 @@ public class VLBRTax implements ModelValidator
 		{
 			return updateTax(po, true) ? null : "@LBR|ErrorSavingTaxes@";
 		}
+	
 		return null;
 	}	//	docValidate
 	
@@ -241,15 +243,17 @@ public class VLBRTax implements ModelValidator
 		{
 			MInvoiceLine iLine = (MInvoiceLine) poLine;
 			//
-			I_W_C_Invoice iW = POWrapper.create((po == null ? iLine.getParent() : po), I_W_C_Invoice.class);
+			MInvoice invoice = (MInvoice)(po == null ? iLine.getParent() : po);
+			I_W_C_Invoice iW = POWrapper.create(invoice, I_W_C_Invoice.class);
 			I_W_C_InvoiceLine iLineW = POWrapper.create (iLine, I_W_C_InvoiceLine.class);
 			
 			if (iLineW.getLBR_Tax_ID() > 0)
 			{
+				BigDecimal reversal = (iLine.getQtyEntered().signum()<0) ? Env.ONE.negate() : Env.ONE;
 				Map<String, BigDecimal> params = new HashMap<String, BigDecimal>();
-				params.put(MLBRTax.SISCOMEX, iLineW.getlbr_SISCOMEXAmt());
-				params.put(MLBRTax.INSURANCE, iLineW.getlbr_InsuranceAmt());
-				params.put(MLBRTax.FREIGHT, iLineW.getFreightAmt());
+				params.put(MLBRTax.SISCOMEX, iLineW.getlbr_SISCOMEXAmt().multiply(reversal));
+				params.put(MLBRTax.INSURANCE, iLineW.getlbr_InsuranceAmt().multiply(reversal));
+				params.put(MLBRTax.FREIGHT, iLineW.getFreightAmt().multiply(reversal));
 				params.put(MLBRTax.AMT, iLine.getLineNetAmt());
 				//
 				MLBRTax tax = new MLBRTax (Env.getCtx(), iLineW.getLBR_Tax_ID(), iLine.get_TrxName());
