@@ -28,6 +28,7 @@ import org.compiere.model.MConversionRate;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MProduct;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.MTax;
 import org.compiere.model.MUOM;
@@ -392,7 +393,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
 		
 		//	Número de Série
-		if (iLine.getM_AttributeSetInstance_ID()>0)
+		if (iLine.getM_AttributeSetInstance_ID()>0 && (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
 			setDescription(iLine.getM_AttributeSetInstance().getDescription());
 		
 		//	Impostos
