@@ -83,18 +83,30 @@ public abstract class TextUtil
 						                  "AK","AL","AM","AN","AO"};
 
 	/**
-	 * 		Read File
+	 * 		Read File, default encoding is UTF-8
 	 * 
 	 * 	@param file
 	 * 	@return
 	 */
 	public static String readFile (File file) throws Exception
 	{
+		return readFile (file, UTF8);
+	}	//	readFile
+	
+	/**
+	 * 		Read File
+	 * 
+	 * 	@param file
+	 * 	@param encoding
+	 * 	@return
+	 */
+	public static String readFile (File file, String encoding) throws Exception
+	{
 		StringBuffer result = new StringBuffer("");
 		//
 		String line;
 		FileInputStream stream = new FileInputStream (file);
-		InputStreamReader streamReader = new InputStreamReader(stream);
+		InputStreamReader streamReader = new InputStreamReader(stream, encoding);
 		BufferedReader reader = new BufferedReader(streamReader);
 		
 		while ((line=reader.readLine()) != null)

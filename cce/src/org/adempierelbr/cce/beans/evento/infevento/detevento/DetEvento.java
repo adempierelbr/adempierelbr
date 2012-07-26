@@ -65,6 +65,8 @@ public class DetEvento
 
 	public void setXCorrecao(String xCorrecao)
 	{
+		if (xCorrecao != null)
+			xCorrecao = xCorrecao.replace("\n", " | ");
 		this.xCorrecao = xCorrecao;
 	}	//	setXCorrecao
 

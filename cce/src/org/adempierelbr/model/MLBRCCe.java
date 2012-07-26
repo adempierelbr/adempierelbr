@@ -297,7 +297,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			AssinaturaDigital.Assinar (xmlFile, oi, AssinaturaDigital.CARTADECORRECAO_CCE);
 			
 			//	Lê o arquivo assinado
-			xstream = new XStream (new DomDriver());
+			xstream = new XStream (new DomDriver("UTF-8"));
 			xstream.processAnnotations (classForAnnotation);
 			evento = (Evento) xstream.fromXML (TextUtil.readFile (new File (xmlFile)));
 			
