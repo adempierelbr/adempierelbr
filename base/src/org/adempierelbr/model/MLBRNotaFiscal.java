@@ -874,108 +874,119 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 */
 	public void setlbr_ServiceTaxes()
 	{
-		String serviceDescription = "";
-		MLBRNotaFiscalLine[] lines = getLines(null);
-		//
-		for (MLBRNotaFiscalLine line : lines)
+		if (getC_DocType_ID() > 0)
 		{
-			if (line.getLBR_NotaFiscalLine_ID() <= 0
-					|| line.getQty().compareTo(Env.ZERO) <= 0)
-				continue;
-			//
-			serviceDescription += line.getQty() + " " + line.getlbr_UOMName() + "\t";
-			serviceDescription += line.getProductName();
-			//
-			if (line.getDescription() != null 
-					&& !line.getDescription().equals(""))
+			MDocType dtNF = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+			String model = dtNF.get_ValueAsString("lbr_NFModel");
+			
+			if (model != null && model.startsWith("RPS"))
 			{
-				if (line.getProductName() != null && !"".equals(line.getProductName()))
-					serviceDescription += ", " + line.getDescription();
+				String serviceDescription = "";
+				MLBRNotaFiscalLine[] lines = getLines();
+				//
+				for (MLBRNotaFiscalLine line : lines)
+				{
+					if (line.getLBR_NotaFiscalLine_ID() <= 0
+							|| line.getQty().compareTo(Env.ZERO) <= 0)
+						continue;
+					//
+					serviceDescription += line.getQty() + " " + line.getlbr_UOMName() + "\t";
+					serviceDescription += line.getProductName();
+					//
+					if (line.getDescription() != null 
+							&& !line.getDescription().equals(""))
+					{
+						if (line.getProductName() != null && !"".equals(line.getProductName()))
+							serviceDescription += ", " + line.getDescription();
+						else
+							serviceDescription += line.getDescription();
+					}
+					
+					if (line.getQty().compareTo(Env.ONE) == 1)
+						serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+					
+					serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
+					//
+					serviceDescription += "\n";
+				}
+			
+				//
+				X_LBR_NFTax[] taxes = getTaxes();
+				String header = "";
+				String content = "";
+				String footer = "";
+				Boolean printTaxes = false;
+				//
+				if (taxes == null)
+					;
 				else
-					serviceDescription += line.getDescription();
-			}
+				{
+					header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
+					header += "- R$ ";
+					header += TextUtil.lPad(getlbr_ServiceTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+					header += "\n\n";
+					//
+					if (taxes.length == 1)
+						header += "Retenção:\n";
+					else if (taxes.length > 1)
+						header += "Retenções:\n";
+					//
+					for (X_LBR_NFTax tax : taxes)
+					{
+						X_LBR_TaxGroup tg = new X_LBR_TaxGroup (Env.getCtx(), tax.getLBR_TaxGroup_ID(), null);
+						if (tg.getName() == null || tg.getName().equals("ISS"))	//	ISS ja e destacado normalmente
+							continue;
+						//
+						printTaxes = true;
+						//
+						content += TextUtil.rPad(tg.getName(), 15);
+						content += "- R$ ";
+						content += TextUtil.lPad(tax.getlbr_TaxAmt().abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+						content += "\n";
+					}
+					footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
+					footer += "- R$ ";
+					footer += TextUtil.lPad(getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+					footer += "\n";
+				}
 			
-			if (line.getQty().compareTo(Env.ONE) == 1)
-				serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
-			
-			serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
-			//
-			serviceDescription += "\n";
-		}
-		//
-		X_LBR_NFTax[] taxes = getTaxes();
-		String header = "";
-		String content = "";
-		String footer = "";
-		Boolean printTaxes = false;
-		//
-		if (taxes == null)
-			;
-		else
-		{
-			header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
-			header += "- R$ ";
-			header += TextUtil.lPad(getlbr_ServiceTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
-			header += "\n\n";
-			//
-			if (taxes.length == 1)
-				header += "Retenção:\n";
-			else if (taxes.length > 1)
-				header += "Retenções:\n";
-			//
-			for (X_LBR_NFTax tax : taxes)
-			{
-				X_LBR_TaxGroup tg = new X_LBR_TaxGroup (Env.getCtx(), tax.getLBR_TaxGroup_ID(), null);
-				if (tg.getName() == null || tg.getName().equals("ISS"))	//	ISS ja e destacado normalmente
-					continue;
 				//
-				printTaxes = true;
+				if (printTaxes)
+					serviceDescription += header + content + footer;
 				//
-				content += TextUtil.rPad(tg.getName(), 15);
-				content += "- R$ ";
-				content += TextUtil.lPad(tax.getlbr_TaxAmt().abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
-				content += "\n";
-			}
-			footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
-			footer += "- R$ ";
-			footer += TextUtil.lPad(getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
-			footer += "\n";
-		}
-		//
-		if (printTaxes)
-			serviceDescription += header + content + footer;
-		//
-		MLBROpenItem[] ois = MLBROpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
-		if (ois == null)
-			;
-		else if (ois.length == 1)
-			serviceDescription += "\nVencimento em " + TextUtil.timeToString(ois[0].getDueDate(), "dd/MM/yyyy");
-		else if (ois.length > 1)
-		{
-			serviceDescription += "\nVencimentos:\n";
-			//
-			for (MLBROpenItem oi : ois)
-			{
-				serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
-				serviceDescription += "     - R$ ";
-				serviceDescription += TextUtil.lPad(oi.getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
-				serviceDescription += "\n";
+				MLBROpenItem[] ois = MLBROpenItem.getOpenItem(getC_Invoice_ID(), get_TrxName());
+				if (ois == null)
+					;
+				else if (ois.length == 1)
+					serviceDescription += "\nVencimento em " + TextUtil.timeToString(ois[0].getDueDate(), "dd/MM/yyyy");
+				else if (ois.length > 1)
+				{
+					serviceDescription += "\nVencimentos:\n";
+					//
+					for (MLBROpenItem oi : ois)
+					{
+						serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
+						serviceDescription += "     - R$ ";
+						serviceDescription += TextUtil.lPad(oi.getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+						serviceDescription += "\n";
+					}
+				}
+				//	FIXME: Verificar como resolver o problema do POReference
+		//		if (getPOReference() != null 
+		//				&& !getPOReference().trim().equals(""))
+		//			serviceDescription += "\nReferência: " + getPOReference() + "\n";
+				//
+				if (getC_DocTypeTarget_ID() > 0)
+				{
+					MDocType dt = new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null);
+					//
+					if (dt.getDocumentNote() != null && !dt.getDocumentNote().trim().equals(""))
+						serviceDescription += "\n" + dt.getDocumentNote();
+				}
+				//
+				setDescription(serviceDescription.trim());
 			}
 		}
-		//	FIXME: Verificar como resolver o problema do POReference
-//		if (getPOReference() != null 
-//				&& !getPOReference().trim().equals(""))
-//			serviceDescription += "\nReferência: " + getPOReference() + "\n";
-		//
-		if (getC_DocTypeTarget_ID() > 0)
-		{
-			MDocType dt = new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null);
-			//
-			if (dt.getDocumentNote() != null && !dt.getDocumentNote().trim().equals(""))
-				serviceDescription += "\n" + dt.getDocumentNote();
-		}
-		//
-		setDescription(serviceDescription.trim());
 	}	//	setlbr_ServiceTaxes
 	
 	
@@ -1056,6 +1067,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Impostos
 		setTaxes(invoice);
 		
+		//	Description para Nota de Serviço
+		if (getC_DocType_ID() > 0)
+		{
+			MDocType dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+			String model = dt.get_ValueAsString("lbr_NFModel");
+			
+			if (model != null && model.startsWith("RPS"))
+				setlbr_ServiceTaxes();
+		}
+		
 		//	Linhas
 		for (MInvoiceLine iLine : invoice.getLines())
 		{
@@ -1104,6 +1125,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Nota do Documento (Mensagens Legais) e Descrição
 		setDocumentNote ();
 		setDescription ();
+		
+		//	Descrição para Nota de Serviço
+		setlbr_ServiceTaxes();
 		
 		return true;
 	}	//	generateNF
