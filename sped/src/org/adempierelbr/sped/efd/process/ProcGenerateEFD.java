@@ -163,8 +163,6 @@ public class ProcGenerateEFD extends SvrProcess
 		// Fatos Fiscais
 		MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
 		
-
-		
 		/*
 		 * Loop de Fatos Fiscais. 
 		 * 
