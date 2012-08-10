@@ -10,58 +10,60 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 1001: ABERTURA DO BLOCO 1
+ * Identificação do Arquivo
  * 
+ * Bloco 0 Registro 0001 - ABERTURA DO BLOCO 0
+ * 
+ * Deve ser informado exatamente 1 (um) registro por arquivo.
+ * 
+ * @author Ricardo Santana (Kenos, www.kenos.com.br)
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R1001.java, 08/02/2011, 12:03:00, mgrigioni
- * 
- * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: R0001.java, 16/11/2010, 15:15:00, mgrigioni
  */
-public class R1001 extends RegSped
-{
-	private String IND_MOV;
+public class R0001 implements RegSped {
+
+	private final String REG   = "0001";
+	
+	private String IND_DAD; //0 = CONTEM DADOS, 1 = NAO CONTEM DADOS
 
 	/**
 	 * Constructor
+	 * 
+	 * @param IND_MOV
 	 */
-	public R1001() 
+	public R0001(Boolean hasTransaction) 
 	{
-		super();
-	} 
-
-	
-	
-	public String getIND_MOV() {
-		return IND_MOV;
-	}
-
-
-
-	public void setIND_MOV(String iND_MOV) {
-		IND_MOV = iND_MOV;
-	}
-
-
+		this.IND_DAD = hasTransaction ? "0" : "1";
+		//
+		addCounter();
+	}	//R0001
 
 	/**
-	 * Formata o Bloco 1 Registro 001
+	 * Formata o Bloco 0 Registro 0001
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-	               (PIPE).append(REG)
-	        .append(PIPE).append(IND_MOV)
-	        .append(PIPE).append(EOL);
-	       
-		return format.toString();
+		String format = 
+			  PIPE + REG
+			+ PIPE + IND_DAD
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+		
 	} //toString
 	
-} //R1001
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
+} //R0001

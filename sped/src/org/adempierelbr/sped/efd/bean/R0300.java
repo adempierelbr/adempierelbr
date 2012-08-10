@@ -26,38 +26,37 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0300.java, 04/02/2011, 10:02:00, mgrigioni
  * 
  * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: 07/08/2012, 14:00, pablobp4
  */
-public class R0300 extends RegSped  {
-	
+public class R0300 extends RegSped {
+
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "COD_IND_BEM")
 	private String COD_IND_BEM;
-	
+
 	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IDENT_MERC")
 	private String IDENT_MERC;
-	
+
 	@XMLFieldProperties(minSize = 1, maxSize = 155, id = "DESCR_ITEM")
 	private String DESCR_ITEM;
-	
+
 	@XMLFieldProperties(minSize = 0, maxSize = 60, isMandatory = false, id = "COD_PRNC")
 	private String COD_PRNC;
-	
+
 	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "COD_CTA")
 	private String COD_CTA;
-	
+
 	@XMLFieldProperties(minSize = 0, maxSize = 60, isMandatory = false, id = "COD_PART")
 	private int NR_PARC;
-	
+
 	/**
 	 * Constructor
 	 */
-	public R0300()
-	{
+	public R0300() {
 		super();
 	}
-	
+
 	public String getCOD_IND_BEM() {
 		return COD_IND_BEM;
 	}
@@ -106,28 +105,6 @@ public class R0300 extends RegSped  {
 		NR_PARC = nR_PARC;
 	}
 
-
-	/**
-	 * Formata Bloco 0 Registro 300
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(COD_IND_BEM)
-            .append(PIPE).append(IDENT_MERC)
-            .append(PIPE).append(DESCR_ITEM)
-            .append(PIPE).append(COD_PRNC)
-            .append(PIPE).append(COD_CTA)
-            .append(PIPE).append(NR_PARC)
-            .append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -137,7 +114,6 @@ public class R0300 extends RegSped  {
 		return result;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -154,5 +130,11 @@ public class R0300 extends RegSped  {
 			return false;
 		return true;
 	}
-		
-}	// R0300
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+} // R0300

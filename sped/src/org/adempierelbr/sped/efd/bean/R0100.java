@@ -15,19 +15,20 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * REGISTRO 0005: DADOS COMPLEMENTARES DA ENTIDADE
+ * REGISTRO 0100: DADOS DO CONTABILISTA
  * 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0005.java, 03/02/2011, 16:52:00, mgrigioni
+ * @version $Id: R0100.java, 03/02/2011, 17:01:00, mgrigioni
  * 
  * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: 07/08/2012, 14:00, pablobp4
  */
+public class R0100 extends RegSped {
 
-public class R0005 extends RegSped  {
-
-
-	private String FANTASIA;
+	private String NOME;
+	private String CPF;
+	private String CRC;
+	private String CNPJ;
 	private String CEP;
 	private String END;
 	private String NUM;
@@ -36,33 +37,45 @@ public class R0005 extends RegSped  {
 	private String FONE;
 	private String FAX;
 	private String EMAIL;
+	private String COD_MUN;
 
-	
 	/**
 	 * Constructor
-	 * 
-	 * @param FANTASIA
-	 * @param CEP
-	 * @param END
-	 * @param NUM
-	 * @param COMPL
-	 * @param BAIRRO
-	 * @param FONE
-	 * @param FAX
-	 * @param EMAIL
 	 */
-	public R0005()
-	{
+	public R0100() {
 		super();
 	}
 
-	
-	public String getFANTASIA() {
-		return FANTASIA;
+	public String getNOME() {
+		return NOME;
 	}
 
-	public void setFANTASIA(String fANTASIA) {
-		FANTASIA = fANTASIA;
+	public void setNOME(String nOME) {
+		NOME = nOME;
+	}
+
+	public String getCPF() {
+		return CPF;
+	}
+
+	public void setCPF(String cPF) {
+		CPF = cPF;
+	}
+
+	public String getCRC() {
+		return CRC;
+	}
+
+	public void setCRC(String cRC) {
+		CRC = cRC;
+	}
+
+	public String getCNPJ() {
+		return CNPJ;
+	}
+
+	public void setCNPJ(String cNPJ) {
+		CNPJ = cNPJ;
 	}
 
 	public String getCEP() {
@@ -129,12 +142,19 @@ public class R0005 extends RegSped  {
 		EMAIL = eMAIL;
 	}
 
+	public String getCOD_MUN() {
+		return COD_MUN;
+	}
+
+	public void setCOD_MUN(String cOD_MUN) {
+		COD_MUN = cOD_MUN;
+	}
 
 	@Override
-	public int compareTo(Object arg0) 
-	{
+	public int compareTo(Object arg0) {
+
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-}	// R0005
+} // R0100

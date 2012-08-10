@@ -10,46 +10,49 @@
  * Software Foundation, Inc., * 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA. *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
-import java.util.ArrayList;
-
-import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
+import org.adempierelbr.util.TextUtil;
 
 /**
- * BLOCO C: DOCUMENTOS FISCAIS I - MERCADORIAS (ICMS/IPI)
+ * Identificação do Arquivo Bloco 9 Registro 9990 - ENCERRAMENTO DO BLOCO 9
+ * Ocorrência - um por Arquivo
  * 
- * 
- * @author Pablo Boff Pigozzo, pablobp4
- * @version $Id: Bloco0.java, 07/08/2012 11:03
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
+ * @author Mario Grigioni, mgrigioni
+ * @version $Id: R9990.java, 16/11/2010, 15:49:00, mgrigioni
  */
-public class BLOCOC extends RegSped {
-	
-	@XStreamAlias ("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties	(needsValidation=true, id = "RC001")
-	private RC001 rC001;
-	
-	@XMLFieldProperties	(needsValidation=true, id = "RC100")
-	private ArrayList<RC100> rC100 = new ArrayList<RC100>();
-	
-	@XMLFieldProperties	(needsValidation=true, id = "RC990")
-	private RC990 rC990;
+public class R9990 implements RegSped {
 
-	@Override
-	public int compareTo(Object arg0) 
-	{
+	private final String REG   = "9990";
+
+	private String QTD_LIN_9 = "";
+
+	/**
+	 * Constructor
+	 * 
+	 */
+	public R9990() {
+		//
+		addCounter();
+	} //R9990
+
+	public String toString(){
 		
+		QTD_LIN_9 = "" + CounterSped.getBlockCounter(REG);
 		
-		return 0;
+		String format = 
+			  PIPE + REG 
+			+ PIPE + QTD_LIN_9
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	}
+
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
 	
-
-	
-	
-}	//R0000
+} //R9990

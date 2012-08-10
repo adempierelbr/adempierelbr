@@ -233,4 +233,16 @@ public class R0150 extends RegSped {
 		return true;
 	}
 
+
+	@Override
+	public int compareTo(Object arg0) {
+	
+		if (arg0 == null)
+			return -1;
+
+		
+		
+		return 0;
+	}
+
 } // R0150

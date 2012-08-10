@@ -24,60 +24,46 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @autor Pablo Boff Pigozzo
  * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
  */
-public class R0460 extends RegSped  {
-	
+public class R0460 extends RegSped {
+
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 6, id = "COD_OBS")
 	private String COD_OBS;
-	
+
 	@XMLFieldProperties(minSize = 1, maxSize = 255, id = "TXT")
 	private String TXT;
-	
+
 	/**
 	 * Constructor
+	 * 
 	 * @param COD_OBS
 	 * @param TXT
 	 */
 	public R0460() {
 		super();
 	}
-	
 
 	public String getCOD_OBS() {
 		return COD_OBS;
 	}
 
-
 	public void setCOD_OBS(String cOD_OBS) {
 		COD_OBS = cOD_OBS;
 	}
-
 
 	public String getTXT() {
 		return TXT;
 	}
 
-
 	public void setTXT(String tXT) {
 		TXT = tXT;
 	}
 
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	/**
-	 * Formata Bloco 0 Registro 460
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(COD_OBS)
-            .append(PIPE).append(TXT)
-            .append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
-		
-}	// R0305
+} // R0305

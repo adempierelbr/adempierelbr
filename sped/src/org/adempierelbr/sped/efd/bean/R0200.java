@@ -74,33 +74,7 @@ public class R0200 extends RegSped {
 		super();
 	}
 	
-	/**
-	 * Formata o Bloco 0 Registro 200
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(COD_ITEM)
-            .append(PIPE).append(DESCR_ITEM)
-            .append(PIPE).append(COD_BARRA)
-            .append(PIPE).append(COD_ANT_ITEM)
-            .append(PIPE).append(UNID_INV)
-            .append(PIPE).append(TIPO_ITEM)
-            .append(PIPE).append(COD_NCM)
-            .append(PIPE).append(EX_IPI)
-            .append(PIPE).append(COD_GEN)
-            .append(PIPE).append(COD_LST)
-            .append(PIPE).append(ALIQ_ICMS)
-            .append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
 	
-	
-
 	public String getCOD_ITEM() {
 		return COD_ITEM;
 	}
@@ -215,6 +189,12 @@ public class R0200 extends RegSped {
 		} else if (!COD_ITEM.equals(other.COD_ITEM))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 } // R0200

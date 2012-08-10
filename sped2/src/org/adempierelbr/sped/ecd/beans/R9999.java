@@ -10,39 +10,52 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
+ * Identificação do Arquivo
+ * 
+ * Bloco 9 Registro 9999 - ENCERRAMENTO DO ARQUIVO DIGITAL
+ * 
+ * Registro obrigatório Nível hierárquico - 0 Ocorrência - um (por arquivo)
+ * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0990.java, 19/01/2011, 11:47:00, mgrigioni
+ * @version $Id: R9999.java, 16/11/2010, 15:52:00, mgrigioni
  */
-public class R0990 extends RegSped {
-	
-	private String QTD_LIN_0 = "";
 
+public class R9999 implements RegSped {
+	
+	private final String REG     = "9999";
+
+	private String QTD_LIN = ""; 
+	
 	/**
 	 * Constructor
 	 */
-	public R0990() 
-	{
-		super();
-	} //R0990
-
-	public String getQTD_LIN_0() {
-		return QTD_LIN_0;
+	public R9999() {
+		//
+		addCounter();
+	} // R9999
+	
+	public String toString(){
+		
+		QTD_LIN = "" + CounterSped.getTotalCounter();
+		
+		String format = 
+			PIPE + REG 
+		  + PIPE + QTD_LIN
+		  + PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
 	}
 
-	public void setQTD_LIN_0(String qTD_LIN_0) {
-		QTD_LIN_0 = qTD_LIN_0;
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-} //R0990
+	
+} // R9999

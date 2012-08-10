@@ -224,34 +224,13 @@ public class R0000 extends RegSped {
 	}
 
 
-	/**
-	 * Formata o Bloco 0 Registro 000
-	 * 
-	 * @return
-	 */
-	public String toString() {
-
-		StringBuilder format = new StringBuilder(PIPE)
-				.append(REG)
-				.append(PIPE).append(COD_VER)
-				.append(PIPE).append(COD_FIN)
-				.append(PIPE).append(DT_INI)
-				.append(PIPE).append(DT_FIN)
-				.append(PIPE).append(NOME)
-				.append(PIPE).append(CNPJ)
-				.append(PIPE).append(CPF)
-				.append(PIPE).append(UF)
-				.append(PIPE).append(IE)
-				.append(PIPE).append(COD_MUN)
-				.append(PIPE).append(IM)
-				.append(PIPE).append(SUFRAMA)
-				.append(PIPE).append(IND_PERFIL)
-				.append(PIPE).append(IND_ATIV)
-				.append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
-
+	@Override
+	public int compareTo(Object arg0) 
+	{
+		// TODO
+		
+		return 0;
+	}
 
 
 } // R0000

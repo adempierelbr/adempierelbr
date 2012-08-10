@@ -10,52 +10,53 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
+ * Identificação do Arquivo
  * 
+ * Bloco 0 Registro 0990 - ENCERRAMENTO DO BLOCO 0
+ * 
+ * Deve ser informado exatamente 1 (um) registro por arquivo.
+ * 
+ * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R1990.java, 08/02/2011, 12:08:00, mgrigioni
- * 
- * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: R0990.java, 16/11/2010, 15:28:00, mgrigioni
  */
-public class R1990 extends RegSped {
+public class R0990 implements RegSped {
 	
-	private String QTD_LIN_1 = "";
+	private final String REG   = "0990";
 	
+	private String QTD_LIN_0 = "";
+
 	/**
 	 * Constructor
 	 */
-	public R1990() 
+	public R0990() 
 	{
-		super();
-	} //R1990
-	
-	
-	public String getQTD_LIN_1() {
-		return QTD_LIN_1;
-	}
-
-	public void setQTD_LIN_1(String qTD_LIN_1) {
-		QTD_LIN_1 = qTD_LIN_1;
-	}
-
+		//
+		addCounter();
+	} //R0990
 
 	public String toString(){
 		
-		QTD_LIN_1 = "" + CounterSped.getBlockCounter(REG);
+		QTD_LIN_0 = "" + CounterSped.getBlockCounter(REG);
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_1)
-	        .append(PIPE).append(EOL);
+		String format = 
+			  PIPE + REG
+			+ PIPE + QTD_LIN_0
+			+ PIPE;
 		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
 	}
 
-} //R1990
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
+} //R0990

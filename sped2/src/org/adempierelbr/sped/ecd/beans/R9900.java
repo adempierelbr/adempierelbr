@@ -10,38 +10,55 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C990: ENCERRAMENTO DO BLOCO C
+ * Identificação do Arquivo
+ * 
+ * Bloco 9 Registro 9900 - REGISTROS DO ARQUIVO
+ * 
+ * Registro obrigatório Nível hierárquico - 2 Ocorrência - vários (por arquivo)
+ * Chave: [REG_BLC]
+ * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC990.java, 07/02/2011, 09:40:00, mgrigioni
+ * @version $Id: R9900.java, 16/11/2010, 15:49:00, mgrigioni
  */
-public class RC990 extends RegSped {
+
+public class R9900 implements RegSped {
 	
-	private String QTD_LIN_C = "";
+	private final String REG   = "9900";
+	
+	private String REG_BLC     = "";
+	private String QTD_REG_BLC = "";
 
 	/**
 	 * Constructor
 	 */
-	public RC990() 
-	{
-		super();
-	} //RC990
+	public R9900(String REG_BLC, String QTD_REG_BLC) {
+		this.REG_BLC = REG_BLC;
+		this.QTD_REG_BLC = QTD_REG_BLC;
+		//
+		addCounter();
+	} //R9900
 
 	public String toString(){
 		
-		QTD_LIN_C = "" + CounterSped.getBlockCounter(REG);
+		String format = 
+			  PIPE + REG 
+			+ PIPE + REG_BLC
+			+ PIPE + QTD_REG_BLC
+			+ PIPE;
 		
-		StringBuilder format = new StringBuilder 
-			       (PIPE).append(REG)
-	        .append(PIPE).append(QTD_LIN_C)
-	        .append(PIPE).append(EOL);
-		
-		return format.toString();
+		return TextUtil.removeEOL(format) + EOL;
 	}
 
-} //RC990
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
+} //R9900

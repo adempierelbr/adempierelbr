@@ -881,6 +881,19 @@ public interface I_LBR_FactFiscal
 	/** Get NFe Protocol	  */
 	public String getlbr_NFeProt();
 
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set Modelo de Documento Fiscal.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get Modelo de Documento Fiscal.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
+
     /** Column name lbr_NFSerie */
     public static final String COLUMNNAME_lbr_NFSerie = "lbr_NFSerie";
 

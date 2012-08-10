@@ -54,21 +54,13 @@ public class R0001 extends RegSped {
 	}
 
 	
-	/**
-	 * Formatar arquivo
-	 * 
-	 * @return
-	 */
-	public String toString() {
 
-		StringBuilder format = new StringBuilder(PIPE)
-		.append(REG)
-		.append(PIPE)
-		.append(IND_MOV)
-		.append(PIPE)
-		.append(EOL);
-
-		return format.toString();
-	} // toString
+	@Override
+	public int compareTo(Object arg0) {
+		
+		
+		// TODO
+		return 0;
+	}
 
 } // R0001

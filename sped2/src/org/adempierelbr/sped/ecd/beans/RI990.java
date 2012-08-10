@@ -10,56 +10,52 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C001: ABERTURA DO BLOCO C
+ * Bloco I Registro I990 - ENCERRAMENTO DO BLOCO I Registro obrigatório Nível
+ * hierárquico - 1 Ocorrência - um (por arquivo)
  * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RC001.java, 04/02/2011, 10:42:00, mgrigioni
- * 
- * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: RI990.java, 18/11/2010, 10:30:00, mgrigioni
  */
-public class RC001 extends RegSped
-{
-	private String IND_MOV;
+public class RI990 implements RegSped {
+	
+	private final String REG   = "I990";
+	//
+	private String QTD_LIN_I;
 
 	/**
 	 * Constructor
-	 * 
 	 */
-	public RC001() 
-	{
-		super();
-	} //RC001
-
-	
-	public String getIND_MOV() {
-		return IND_MOV;
-	}
-
-
-	public void setIND_MOV(String iND_MOV) {
-		IND_MOV = iND_MOV;
-	}
-
+	public RI990() {
+		addCounter();
+	} // BIRI990
 
 	/**
-	 * Formata o Bloco C Registro 001
+	 * Formata
 	 * 
 	 * @return
 	 */
 	public String toString() {
 		
-		StringBuilder format = new StringBuilder
-	               (PIPE).append(REG)
-	        .append(PIPE).append(IND_MOV)
-	        .append(PIPE).append(EOL);
-	       
-		return format.toString();
-	} //toString
+		QTD_LIN_I = "" + CounterSped.getBlockCounter(REG);
+		
+		String format = 
+			  PIPE + REG
+			+ PIPE + QTD_LIN_I
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	}	//toString
 	
-} //RC001
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
+}//RI990

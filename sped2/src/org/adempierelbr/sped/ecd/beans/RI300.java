@@ -10,39 +10,54 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import java.sql.Timestamp;
+
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
+ * Bloco I Registro I300 - BALANCETES DIÁRIOS – IDENTIFICAÇÃO DA DATA Ocorrência
+ * - vários (por arquivo) Chave: [DT_BCTE]
+ * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0990.java, 19/01/2011, 11:47:00, mgrigioni
+ * @version $Id: RI300.java, 17/11/2010, 14:44:00, mgrigioni
  */
-public class R0990 extends RegSped {
+public class RI300 implements RegSped {
 	
-	private String QTD_LIN_0 = "";
+	private final String REG   = "I300";
+	//
+	private Timestamp DT_BCTE;
 
 	/**
 	 * Constructor
 	 */
-	public R0990() 
-	{
-		super();
-	} //R0990
+	public RI300(Timestamp DT_BCTE) {
+		this.DT_BCTE = DT_BCTE;
+		//
+		addCounter();
+	} // RI300
 
-	public String getQTD_LIN_0() {
-		return QTD_LIN_0;
+	/**
+	 * Formata
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.timeToString(DT_BCTE, "ddMMyyyy")
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} //toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
-	public void setQTD_LIN_0(String qTD_LIN_0) {
-		QTD_LIN_0 = qTD_LIN_0;
-	}
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-} //R0990
+	
+} //RI300

@@ -10,55 +10,51 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO C195 – OBSERVAÇÃO DO LANÇAMENTO FISCAL
+ * Bloco I Registro I015 - IDENTIFICAÇÃO DAS CONTAS DA ESCRITURAÇÃO RESUMIDA A QUE SE REFERE A ESCRITURAÇÃO AUXILIAR
  * 
- * @author Pablo Boff Pigozzo, pablobp
- * @version $Id: RC195.java, 28/12/2011, 11:30:00, pablobp
+ * @author Luiz Henrique (Kenos, www.kenos.com.br)
+ * @author Mario Grigioni, mgrigioni
+ * @version $Id: RI015.java, 16/11/2010, 16:21:00, mgrigioni
  */
-public class RC195 extends RegSped {
+public class RI015 implements RegSped {
 
-	private String COD_OBS;
-	private String TXT;
-
+	private final String REG   = "I015";
+	
+	private String COD_CTA_RES;
+	
 	/**
 	 * Constructor
+	 * @param COD_CTA_RES
 	 */
-	public RC195() {
-		super();
-	}
-
-	public String getCOD_OBS() {
-		return COD_OBS;
-	}
-
-	public void setCOD_OBS(String cOD_OBS) {
-		COD_OBS = cOD_OBS;
-	}
-
-	public String getTXT() {
-		return TXT;
-	}
-
-	public void setTXT(String tXT) {
-		TXT = tXT;
-	}
-
+	public RI015(String COD_CTA_RES) {
+		this.COD_CTA_RES = COD_CTA_RES;
+		//
+		addCounter();
+	}	//RI015
+	
 	/**
-	 * Formata Bloco 0 Registro 460
-	 * 
+	 * Formata Bloco I Resgistro i015
 	 * @return
 	 */
-	public String toString() {
-
-		StringBuilder format = new StringBuilder(PIPE).append(REG).append(PIPE)
-				.append(COD_OBS).append(PIPE).append(TXT).append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
-
-} // R0305
+	public String toString()  {
+		
+		String format =
+			  PIPE + REG
+			+ PIPE + TextUtil.checkSize(COD_CTA_RES, 0, 100)
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	}	//toString
+	
+	public void addCounter() {
+		CounterSped.register(REG);
+	}
+	
+}	//RI015

@@ -35,7 +35,7 @@ import org.compiere.util.Env;
  * - Adicionado parte da validação das anottations
  * 
  */
-public abstract class RegSped {
+public abstract class RegSped implements Comparable<Object>{
 	
 	/**	
 	 * Logger			
@@ -58,11 +58,16 @@ public abstract class RegSped {
 	
 	
 	/**
+	 * Método abstrato para comparar os registros 
+	 */
+	public abstract int compareTo(Object arg0);
+	
+	/**
 	 * Método abstrato para retornar registro formatado
 	 * 
 	 * Todo registro do SPED deve iniciar com PIPE e terminar com PIPE
 	 */
-	public abstract String toString();
+	//public abstract String toString();
 	
 	
 	/**

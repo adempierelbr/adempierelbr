@@ -25,12 +25,10 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0190.java, 04/02/2011, 09:28:00, mgrigioni
  * 
  * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
- 
+ * @version $Id: 07/08/2012, 14:00, pablobp4
  */
-public class R0190 extends RegSped 
-{
-	
+public class R0190 extends RegSped {
+
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 6, id = "UNID")
@@ -38,60 +36,33 @@ public class R0190 extends RegSped
 
 	@XMLFieldProperties(minSize = 1, maxSize = 255, id = "DESCR")
 	private String DESCR;
-	
+
 	/**
 	 * Constructor
+	 * 
 	 * @param UNID
 	 * @param DESCR
 	 */
-	public R0190()
-	{
+	public R0190() {
 		super();
 	}
-	
-	
 
 	public String getUNID() {
 		return UNID;
 	}
 
-
-
 	public void setUNID(String uNID) {
 		UNID = uNID;
 	}
-
-
 
 	public String getDESCR() {
 		return DESCR;
 	}
 
-
-
 	public void setDESCR(String dESCR) {
 		DESCR = dESCR;
 	}
 
-
-
-	/**
-	 * Formata o Bloco 0 Registro 190
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder(PIPE)
-		.append(REG) 
-        .append(PIPE)
-        .append(UNID)
-        .append(PIPE)
-        .append(DESCR)
-        .append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
 
 	@Override
 	public int hashCode() {
@@ -116,6 +87,12 @@ public class R0190 extends RegSped
 		} else if (!UNID.equals(other.UNID))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 } // R0190

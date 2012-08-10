@@ -10,39 +10,57 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped.ecd.beans;
 
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
+ * Identificação do Arquivo
+ * 
+ * Bloco J Registro J001 - ABERTURA DO BLOCO J
+ * 
+ * Deve ser informado exatamente 1 (um) registro por arquivo.
+ * 
+ * 
+ * @author Priscila Pinheiro (Kenos, www.kenos.com.br)
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R0990.java, 19/01/2011, 11:47:00, mgrigioni
+ * @version $Id: RJ001.java, 18/11/2010, 10:46:00, mgrigioni
  */
-public class R0990 extends RegSped {
+public class RJ001 implements RegSped{
+
+	private final String REG   = "J001";
 	
-	private String QTD_LIN_0 = "";
+	private String IND_DAD = "0";
 
 	/**
 	 * Constructor
 	 */
-	public R0990() 
+	public RJ001(Boolean hasTransaction) 
 	{
-		super();
-	} //R0990
+		this.IND_DAD = hasTransaction ? "0" : "1";
+		//
+		addCounter();
+	} // RJ001
 
-	public String getQTD_LIN_0() {
-		return QTD_LIN_0;
+	/**
+	 * Formata o Bloco 0 Registro 0001
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		
+		String format =
+			  PIPE + REG
+			+ PIPE + IND_DAD
+			+ PIPE;
+		
+		return TextUtil.removeEOL(format) + EOL;
+	} // format
+	
+	public void addCounter() {
+		CounterSped.register(REG);
 	}
-
-	public void setQTD_LIN_0(String qTD_LIN_0) {
-		QTD_LIN_0 = qTD_LIN_0;
-	}
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-} //R0990
+	
+} //RJ001

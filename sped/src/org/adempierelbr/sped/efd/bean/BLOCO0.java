@@ -115,34 +115,14 @@ public class BLOCO0 extends RegSped {
 	}
 
 	
-	/**
-	 * Formata o Bloco 0
-	 * 
-	 * @return
-	 */
-	public String toString() {
+	@Override
+	public int compareTo(Object arg0) {
+	
 		
-		//
-		StringBuilder format = new StringBuilder()
-			.append(r0000.toString())
-			.append(r0001.toString());
+		
+		return 0;
+	}
 
-		// 
-		for(R0150 r0150 : this.r0150)
-			format.append(r0150.toString());
-		
-		// 
-		for(R0190 r0190 : this.r0190)
-			format.append(r0190.toString());
-		
-		// 
-		for(R0200 r0200 : this.r0200)
-			format.append(r0200.toString());
-		
-		// 
-		format.append(r0990.toString());
-		
-		return format.toString();
-	}	//	toString
+	
 	
 }	//R0000

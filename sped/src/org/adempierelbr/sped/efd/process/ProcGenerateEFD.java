@@ -4,8 +4,11 @@ import java.sql.Timestamp;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.sped.CounterSped;
+import org.adempierelbr.sped.efd.EFDUtil;
+import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.utils.SPEDUtil;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
@@ -149,13 +152,93 @@ public class ProcGenerateEFD extends SvrProcess
 	 */
 	private StringBuilder generateEFD(Timestamp dateFrom, Timestamp dateTo) throws Exception
 	{
+		// Variáveis auxiliares
+		int last_LBR_NotaFiscal_ID = 0;
+		
+		
 		// Zerar Contadores
 		CounterSped.clear();
 		
-		// Carregar NFs
-		MLBRNotaFiscal[] nfs = SPEDUtil.getNFs(getCtx(), p_AD_Org_ID, dateFrom, dateTo, null, get_TrxName());
 		
+		// Fatos Fiscais
+		MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
 		
+
+		
+		/*
+		 * Loop de Fatos Fiscais. 
+		 * 
+		 * 	Obs.: Os fatos fiscais repetem de acordo com o numero de linhas da NF. 
+		 * 		Ex.: Uma NF com 6 linhas, terá 6 fatos fiscais.
+		 * 
+		 * 	Devido a observação acima, deve-se tomar cuidado para tratar os registros agrupados, 
+		 * 	como dados do corpo da NF 
+		 */
+		for(MLBRFactFiscal factFiscal : factFiscals)
+		{
+
+			/*
+			 * Modelo da Nota Fiscal
+			 */
+			String nfModel = factFiscal.getlbr_NFModel();
+			
+			
+			/*
+			 * Verificar se é tem o modelo, se não tem, 
+			 * verificar se é eletronica e coloca 55, senão colocar 01
+			 */
+			if ((nfModel == null || nfModel.isEmpty()) && factFiscal.getlbr_NFeID() != null)
+				nfModel = "55"; // NF-e
+			else
+				nfModel = "01"; // NF
+			
+			
+			/*
+			 * Gerar somente dos blocos C(produtos) e D(servicos).
+			 */
+			if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") || EFDUtil.getBlocoNFModel(nfModel).startsWith("C")))
+				continue;
+
+
+			/*
+			 * Criar registros da NF, pois o fato fiscal se refere a uma nova NF
+			 */
+			if(last_LBR_NotaFiscal_ID != factFiscal.getLBR_NotaFiscal_ID())
+			{
+					
+					
+				/*
+				 * R0150 - Parceiros de Negócios
+				 */
+				
+				
+				
+				
+				/*
+				 * RC100 e RC500 e RD100 e RD500
+				 */
+				
+				
+				
+			}
+			
+			
+			BLOCO0 bloco0 = new BLOCO0();
+			
+			bloco0.setR0000(r0000);
+			
+			
+			
+			
+			
+			
+			/*
+			 * Preencher com o ID da NF do fato fiscal
+			 * para no próximo loop verificar se o próximo 
+			 * fato pertence a esta mesma nota
+			 */
+			last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
+		}
 		
 		
 		return null;

@@ -10,39 +10,31 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.efd.bean;
+package org.adempierelbr.sped;
 
-import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
- * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
- * @author Mario Grigioni, mgrigioni
- * @version $Id: R0990.java, 19/01/2011, 11:47:00, mgrigioni
+ * Interface de Registro do Projeto SPED
+ * 
+ * Sistema Público de Escrituração Digital
+ * http://www1.receita.fazenda.gov.br/
+ * 
+ * @author Mario Grigioni
+ * @version $Id: RegSped.java, 16/11/2010, 14:33, mgrigioni
  */
-public class R0990 extends RegSped {
+public interface RegSped {
 	
-	private String QTD_LIN_0 = "";
-
-	/**
-	 * Constructor
-	 */
-	public R0990() 
-	{
-		super();
-	} //R0990
-
-	public String getQTD_LIN_0() {
-		return QTD_LIN_0;
-	}
-
-	public void setQTD_LIN_0(String qTD_LIN_0) {
-		QTD_LIN_0 = qTD_LIN_0;
-	}
-
-	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-} //R0990
+	//String PIPE
+	public static final String PIPE = "|";
+	
+	//String EOL
+	public static final String EOL  = TextUtil.EOL_WIN32;
+	
+	//Método para retornar registro formatado
+	public String toString();
+	
+	//Método para adicionar registro ao contador
+	void addCounter();
+	
+} //RegSped
