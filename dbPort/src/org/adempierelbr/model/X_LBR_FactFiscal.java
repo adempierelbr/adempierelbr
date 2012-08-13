@@ -33,7 +33,7 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120810L;
+	private static final long serialVersionUID = 20120813L;
 
     /** Standard Constructor */
     public X_LBR_FactFiscal (Properties ctx, int LBR_FactFiscal_ID, String trxName)
@@ -71,6 +71,23 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set bpcitycode.
+		@param bpcitycode bpcitycode	  */
+	public void setbpcitycode (int bpcitycode)
+	{
+		set_Value (COLUMNNAME_bpcitycode, Integer.valueOf(bpcitycode));
+	}
+
+	/** Get bpcitycode.
+		@return bpcitycode	  */
+	public int getbpcitycode () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_bpcitycode);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set BP Name.
 		@param BPName BP Name	  */
@@ -1635,6 +1652,23 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	public String getlbr_OrgCity () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_OrgCity);
+	}
+
+	/** Set lbr_orgcitycode.
+		@param lbr_orgcitycode lbr_orgcitycode	  */
+	public void setlbr_orgcitycode (int lbr_orgcitycode)
+	{
+		set_Value (COLUMNNAME_lbr_orgcitycode, Integer.valueOf(lbr_orgcitycode));
+	}
+
+	/** Get lbr_orgcitycode.
+		@return lbr_orgcitycode	  */
+	public int getlbr_orgcitycode () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_orgcitycode);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public I_C_Location getlbr_org_location() throws RuntimeException

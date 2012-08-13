@@ -63,6 +63,15 @@ public interface I_LBR_FactFiscal
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name bpcitycode */
+    public static final String COLUMNNAME_bpcitycode = "bpcitycode";
+
+	/** Set bpcitycode	  */
+	public void setbpcitycode (int bpcitycode);
+
+	/** Get bpcitycode	  */
+	public int getbpcitycode();
+
     /** Column name BPName */
     public static final String COLUMNNAME_BPName = "BPName";
 
@@ -1010,6 +1019,15 @@ public interface I_LBR_FactFiscal
 	  * The City of the Organization
 	  */
 	public String getlbr_OrgCity();
+
+    /** Column name lbr_orgcitycode */
+    public static final String COLUMNNAME_lbr_orgcitycode = "lbr_orgcitycode";
+
+	/** Set lbr_orgcitycode	  */
+	public void setlbr_orgcitycode (int lbr_orgcitycode);
+
+	/** Get lbr_orgcitycode	  */
+	public int getlbr_orgcitycode();
 
     /** Column name lbr_org_location_id */
     public static final String COLUMNNAME_lbr_org_location_id = "lbr_org_location_id";

@@ -152,91 +152,132 @@ public class ProcGenerateEFD extends SvrProcess
 	 */
 	private StringBuilder generateEFD(Timestamp dateFrom, Timestamp dateTo) throws Exception
 	{
-		// Variáveis auxiliares
-		int last_LBR_NotaFiscal_ID = 0;
 		
-		
-		// Zerar Contadores
-		CounterSped.clear();
-		
-		
-		// Fatos Fiscais
-		MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
-		
-		/*
-		 * Loop de Fatos Fiscais. 
-		 * 
-		 * 	Obs.: Os fatos fiscais repetem de acordo com o numero de linhas da NF. 
-		 * 		Ex.: Uma NF com 6 linhas, terá 6 fatos fiscais.
-		 * 
-		 * 	Devido a observação acima, deve-se tomar cuidado para tratar os registros agrupados, 
-		 * 	como dados do corpo da NF 
-		 */
-		for(MLBRFactFiscal factFiscal : factFiscals)
+		try
 		{
-
-			/*
-			 * Modelo da Nota Fiscal
-			 */
-			String nfModel = factFiscal.getlbr_NFModel();
+		
+			// Variáveis auxiliares
+			int last_LBR_NotaFiscal_ID = 0;
 			
 			
-			/*
-			 * Verificar se é tem o modelo, se não tem, 
-			 * verificar se é eletronica e coloca 55, senão colocar 01
-			 */
-			if ((nfModel == null || nfModel.isEmpty()) && factFiscal.getlbr_NFeID() != null)
-				nfModel = "55"; // NF-e
-			else
-				nfModel = "01"; // NF
+			// Zerar Contadores
+			CounterSped.clear();
 			
 			
+			// Fatos Fiscais
+			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
+			
 			/*
-			 * Gerar somente dos blocos C(produtos) e D(servicos).
+			 * Loop de Fatos Fiscais. 
+			 * 
+			 * 	Obs.: Os fatos fiscais repetem de acordo com o numero de linhas da NF. 
+			 * 		Ex.: Uma NF com 6 linhas, terá 6 fatos fiscais.
+			 * 
+			 * 	Devido a observação acima, deve-se tomar cuidado para tratar os registros agrupados, 
+			 * 	como dados do corpo da NF 
 			 */
-			if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") || EFDUtil.getBlocoNFModel(nfModel).startsWith("C")))
-				continue;
-
-
-			/*
-			 * Criar registros da NF, pois o fato fiscal se refere a uma nova NF
-			 */
-			if(last_LBR_NotaFiscal_ID != factFiscal.getLBR_NotaFiscal_ID())
+			for(MLBRFactFiscal factFiscal : factFiscals)
 			{
-					
-					
+	
 				/*
-				 * R0150 - Parceiros de Negócios
+				 * Modelo da Nota Fiscal
 				 */
-				
-				
+				String nfModel = factFiscal.getlbr_NFModel();
 				
 				
 				/*
-				 * RC100 e RC500 e RD100 e RD500
+				 * Verificar se é tem o modelo, se não tem, 
+				 * verificar se é eletronica e coloca 55, senão colocar 01
 				 */
+				if ((nfModel == null || nfModel.isEmpty()) && factFiscal.getlbr_NFeID() != null)
+					nfModel = "55"; // NF-e
+				else
+					nfModel = "01"; // NF
+				
+				
+				/*
+				 * Gerar somente dos blocos C(produtos) e D(servicos).
+				 */
+				if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") || EFDUtil.getBlocoNFModel(nfModel).startsWith("C")))
+					continue;
+	
+	
+				/*
+				 * Criar registros da NF, pois o fato fiscal se refere a uma nova NF
+				 */
+				if(last_LBR_NotaFiscal_ID != factFiscal.getLBR_NotaFiscal_ID())
+				{
+						
+						
+					/*
+					 * R0150 - Parceiros de Negócios
+					 */
+					
+					
+					
+					
+					/*
+					 * RC100 e RC500 e RD100 e RD500
+					 */
+					
+					
+					
+				}
+				
+	
 				
 				
 				
+				
+				
+				
+				/*
+				 * Preencher com o ID da NF do fato fiscal
+				 * para no próximo loop verificar se o próximo 
+				 * fato pertence a esta mesma nota
+				 */
+				last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
 			}
 			
-
 			
+		}
+		catch (Exception e) 
+		{
 			
+			// mapear erro para facilitar o reconhecimento
+			String className = e.getStackTrace()[0].getClassName();
+			String methodName = e.getStackTrace()[0].getMethodName();
+			int lineNumber = e.getStackTrace()[0].getLineNumber();
+			String error = e.getLocalizedMessage();
 			
-			
-			
-			
-			/*
-			 * Preencher com o ID da NF do fato fiscal
-			 * para no próximo loop verificar se o próximo 
-			 * fato pertence a esta mesma nota
-			 */
-			last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
+			// lançar exception para retornar ao usuário
+			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
 		}
 		
 		
 		return null;
+	}
+	
+	
+	public void genTeste() throws Exception
+	{
+		try
+		{
+			EFDUtil.createR0000(null, null, null);
+			
+		}		
+		catch (Exception e) 
+		{
+			
+			// mapear erro para facilitar o reconhecimento
+			String className = e.getStackTrace()[0].getClassName();
+			String methodName = e.getStackTrace()[0].getMethodName();
+			int lineNumber = e.getStackTrace()[0].getLineNumber();
+			String error = e.getLocalizedMessage();
+			
+			// lançar exception para retornar ao usuário
+			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
+		}
 	}
 	
 	
@@ -246,11 +287,12 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		try 
 		{
-			efd.generateEFD(new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+			//efd.generateEFD(new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
+			efd.genTeste();
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 	

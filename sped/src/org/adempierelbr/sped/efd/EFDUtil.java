@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRNFLineTax;
@@ -77,11 +78,13 @@ public class EFDUtil
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 * 
-	 * Codigo da Versao
+	 * Código da Versao
 	 * Código da Finalidade
+	 * Código do Perfil
 	 */
 	private static final String COD_VER = "005"; // A Partir de Jan/12
 	private static final String COD_FIN = "0"; // Remessa do Arquivo Original
+	private static final String IND_PERFIL = "A"; // Perfil A
 	
 	/**
 	 * Retornar o bloco de registro ao qual o modelo de documento pertence
@@ -142,16 +145,16 @@ public class EFDUtil
 	
 	
 	/**
-	 * Formatar Registro 0000
+	 * Formatar Registro R0000
 	 * 
-	 * @param ctx
 	 * @param dateFrom
 	 * @param dateTo
 	 * @param factFiscal
-	 * @param trxName
 	 * @return
+	 * @throws Exception
 	 */
-	public static R0000 createR0000(Timestamp dateFrom, Timestamp dateTo, MLBRFactFiscal factFiscal)
+	 
+	public static R0000 createR0000(Timestamp dateFrom, Timestamp dateTo, MLBRFactFiscal factFiscal) throws Exception
 	{
 		
 		R0000 reg = new R0000();
@@ -164,35 +167,21 @@ public class EFDUtil
 		reg.setCNPJ(factFiscal.getlbr_CNPJ());
 		reg.setCPF(null);
 		reg.setUF(factFiscal.getlbr_OrgRegion());
-		reg.setIE(BPartnerUtil.getCityCode(factFiscal.getlbr_org_location()));
+		reg.setIE(factFiscal.getlbr_IE());
+		reg.setCOD_MUN(String.valueOf(factFiscal.getlbr_orgcitycode()));
+		reg.setIM(factFiscal.getlbr_OrgCCM());
+		reg.setSUFRAMA(factFiscal.getlbr_Suframa());
+		reg.setIND_PERFIL(IND_PERFIL);
 		
+		reg.setIND_ATIV(null);
 		
+		reg.getIND_ATIV().charAt(4);
 		
-		/*
-		 *
-		 *
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(), get_TrxName());
-
-		String COD_VER    = getCOD_VERSAO(dateFrom);
-		String COD_FIN    = "0"; //REMESSA ORIGINAL //FIXME
-		String NOME       = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_LegalEntity);
-		String CNPJ       = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_CNPJ);
-		String UF         = orgLoc.getC_Region().getName();
-		String IE         = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_IE);
-		String COD_MUN    = BPartnerUtil.getCityCode(orgLoc);
-		String IM         = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_CCM);
-		String SUFRAMA    = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_Suframa);
-		String IND_PERFIL = "A"; // FIXME
+		// 0 - Industria ou equiparado a Industrial / 1 - Outros 
+		reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
 		
-		*
-		 * Indicador de Atividade = 0-Industria  1-Outros(Comércio e outras coiasas)
-		 *
-		String IND_ATIV   = orgInfo.get_ValueAsString(I_W_AD_OrgInfo.COLUMNNAME_lbr_IndAtividade).endsWith("0") ? "0" : "1";
-		 */
-		
-
-		//return null;
-	} //createR0000
+		// return
+		return reg;		
+	} 
 	
 } //EFDUtil

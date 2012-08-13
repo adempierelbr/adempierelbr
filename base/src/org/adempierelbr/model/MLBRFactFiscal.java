@@ -77,7 +77,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * @param TrxName transação do BD 
 	 * @return
 	 */
-	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer AD_Org_ID, Boolean IsSOTrx, String trxName)
+	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer AD_Org_ID, Boolean IsSOTrx, String trxName) throws Exception
 	{
 		return get(ctx, DateFrom, DateTo, new Integer[]{AD_Org_ID}, IsSOTrx, trxName); 
 	}
@@ -94,7 +94,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * @param TrxName transação do BD 
 	 * @return
 	 */
-	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer[] AD_Org_IDs, Boolean IsSOTrx, String trxName)
+	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer[] AD_Org_IDs, Boolean IsSOTrx, String trxName) throws Exception
 	{
 		// Client
 		String whereClause = " AD_Client_ID = ? ";
