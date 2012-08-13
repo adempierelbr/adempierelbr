@@ -12,6 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.sql.Timestamp;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
@@ -29,7 +31,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class R0000 extends RegSped {
 
-	
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "COD_VER")
@@ -39,18 +40,18 @@ public class R0000 extends RegSped {
 	private String COD_FIN;
 
 	@XMLFieldProperties(minSize = 8, maxSize = 8, id = "DT_INI")
-	private String DT_INI;
+	private Timestamp DT_INI;
 
 	@XMLFieldProperties(minSize = 8, maxSize = 8, id = "DT_FIN")
-	private String DT_FIN;
+	private Timestamp DT_FIN;
 
 	@XMLFieldProperties(id = "NOME")
 	private String NOME;
 
-	@XMLFieldProperties(id = "CNPJ", isMandatory=false)
+	@XMLFieldProperties(id = "CNPJ", isMandatory = false)
 	private String CNPJ;
 
-	@XMLFieldProperties(id = "CPF", isMandatory=false)
+	@XMLFieldProperties(id = "CPF", isMandatory = false)
 	private String CPF;
 
 	@XMLFieldProperties(id = "UF")
@@ -62,10 +63,10 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(id = "COD_MUN")
 	private String COD_MUN;
 
-	@XMLFieldProperties(id = "IM", isMandatory=false)
+	@XMLFieldProperties(id = "IM", isMandatory = false)
 	private String IM;
 
-	@XMLFieldProperties(id = "SUFRAMA", isMandatory=false)
+	@XMLFieldProperties(id = "SUFRAMA", isMandatory = false)
 	private String SUFRAMA;
 
 	@XMLFieldProperties(id = "IND_PERFIL")
@@ -74,163 +75,130 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(id = "IND_ATIV")
 	private String IND_ATIV;
 
-	
 	/**
 	 * Constructor
 	 */
-	public R0000() 
-	{
+	public R0000() {
 		super();
 	}
-
 
 	public String getCOD_VER() {
 		return COD_VER;
 	}
 
+	public void setCOD_VER(String cOD_VER) {
+		COD_VER = cOD_VER;
+	}
 
 	public String getCOD_FIN() {
 		return COD_FIN;
 	}
 
+	public void setCOD_FIN(String cOD_FIN) {
+		COD_FIN = cOD_FIN;
+	}
 
-	public String getDT_INI() {
+	public Timestamp getDT_INI() {
 		return DT_INI;
 	}
 
+	public void setDT_INI(Timestamp dT_INI) {
+		DT_INI = dT_INI;
+	}
 
-	public String getDT_FIN() {
+	public Timestamp getDT_FIN() {
 		return DT_FIN;
 	}
 
+	public void setDT_FIN(Timestamp dT_FIN) {
+		DT_FIN = dT_FIN;
+	}
 
 	public String getNOME() {
 		return NOME;
 	}
 
+	public void setNOME(String nOME) {
+		NOME = nOME;
+	}
 
 	public String getCNPJ() {
 		return CNPJ;
 	}
 
+	public void setCNPJ(String cNPJ) {
+		CNPJ = cNPJ;
+	}
 
 	public String getCPF() {
 		return CPF;
 	}
 
+	public void setCPF(String cPF) {
+		CPF = cPF;
+	}
 
 	public String getUF() {
 		return UF;
 	}
 
+	public void setUF(String uF) {
+		UF = uF;
+	}
 
 	public String getIE() {
 		return IE;
 	}
 
+	public void setIE(String iE) {
+		IE = iE;
+	}
 
 	public String getCOD_MUN() {
 		return COD_MUN;
 	}
 
+	public void setCOD_MUN(String cOD_MUN) {
+		COD_MUN = cOD_MUN;
+	}
 
 	public String getIM() {
 		return IM;
 	}
 
+	public void setIM(String iM) {
+		IM = iM;
+	}
 
 	public String getSUFRAMA() {
 		return SUFRAMA;
 	}
 
+	public void setSUFRAMA(String sUFRAMA) {
+		SUFRAMA = sUFRAMA;
+	}
 
 	public String getIND_PERFIL() {
 		return IND_PERFIL;
 	}
 
+	public void setIND_PERFIL(String iND_PERFIL) {
+		IND_PERFIL = iND_PERFIL;
+	}
 
 	public String getIND_ATIV() {
 		return IND_ATIV;
 	}
 
-	
-	public void setCOD_VER(String cOD_VER) {
-		COD_VER = cOD_VER;
-	}
-
-
-	public void setCOD_FIN(String cOD_FIN) {
-		COD_FIN = cOD_FIN;
-	}
-
-
-	public void setDT_INI(String dT_INI) {
-		DT_INI = dT_INI;
-	}
-
-
-	public void setDT_FIN(String dT_FIN) {
-		DT_FIN = dT_FIN;
-	}
-
-
-	public void setNOME(String nOME) {
-		NOME = nOME;
-	}
-
-
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
-	}
-
-
-	public void setCPF(String cPF) {
-		CPF = cPF;
-	}
-
-
-	public void setUF(String uF) {
-		UF = uF;
-	}
-
-
-	public void setIE(String iE) {
-		IE = iE;
-	}
-
-
-	public void setCOD_MUN(String cOD_MUN) {
-		COD_MUN = cOD_MUN;
-	}
-
-
-	public void setIM(String iM) {
-		IM = iM;
-	}
-
-
-	public void setSUFRAMA(String sUFRAMA) {
-		SUFRAMA = sUFRAMA;
-	}
-
-
-	public void setIND_PERFIL(String iND_PERFIL) {
-		IND_PERFIL = iND_PERFIL;
-	}
-
-
 	public void setIND_ATIV(String iND_ATIV) {
 		IND_ATIV = iND_ATIV;
 	}
 
-
 	@Override
-	public int compareTo(Object arg0) 
-	{
+	public int compareTo(Object arg0) {
 		// TODO
-		
+
 		return 0;
 	}
-
 
 } // R0000

@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -36,7 +37,7 @@ public class BLOCOC extends RegSped {
 	private RC001 rC001;
 	
 	@XMLFieldProperties	(needsValidation=true, id = "RC100")
-	private ArrayList<RC100> rC100 = new ArrayList<RC100>();
+	private List<RC100> rC100 = new ArrayList<RC100>();
 	
 	@XMLFieldProperties	(needsValidation=true, id = "RC990")
 	private RC990 rC990;

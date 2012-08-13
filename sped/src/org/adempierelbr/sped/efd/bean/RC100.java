@@ -15,6 +15,7 @@ package org.adempierelbr.sped.efd.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -60,22 +61,22 @@ public class RC100 extends RegSped {
 	private BigDecimal VL_COFINS_ST;
 
 	@XMLFieldProperties(needsValidation = true, id = "RC120")
-	private ArrayList<RC120> rC120 = new ArrayList<RC120>();
+	private List<RC120> rC120 = new ArrayList<RC120>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RC130")
-	private ArrayList<RC130> rC130 = new ArrayList<RC130>();
+	private List<RC130> rC130 = new ArrayList<RC130>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RC140")
 	private RC140 rC140;
 
 	@XMLFieldProperties(needsValidation = true, id = "RC170")
-	private ArrayList<RC170> rC170 = new ArrayList<RC170>();
+	private List<RC170> rC170 = new ArrayList<RC170>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RC190")
-	private ArrayList<RC190> rC190 = new ArrayList<RC190>();
+	private List<RC190> rC190 = new ArrayList<RC190>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RC195")
-	private ArrayList<RC195> rC195 = new ArrayList<RC195>();
+	private List<RC195> rC195 = new ArrayList<RC195>();
 
 	/**
 	 * Constructor
@@ -308,7 +309,7 @@ public class RC100 extends RegSped {
 		VL_COFINS_ST = vL_COFINS_ST;
 	}
 
-	public ArrayList<RC120> getrC120() {
+	public List<RC120> getrC120() {
 		return rC120;
 	}
 
@@ -316,7 +317,7 @@ public class RC100 extends RegSped {
 		this.rC120 = rC120;
 	}
 
-	public ArrayList<RC130> getrC130() {
+	public List<RC130> getrC130() {
 		return rC130;
 	}
 
@@ -332,7 +333,7 @@ public class RC100 extends RegSped {
 		this.rC140 = rC140;
 	}
 
-	public ArrayList<RC170> getrC170() {
+	public List<RC170> getrC170() {
 		return rC170;
 	}
 
@@ -340,7 +341,7 @@ public class RC100 extends RegSped {
 		this.rC170 = rC170;
 	}
 
-	public ArrayList<RC190> getrC190() {
+	public List<RC190> getrC190() {
 		return rC190;
 	}
 
@@ -348,7 +349,7 @@ public class RC100 extends RegSped {
 		this.rC190 = rC190;
 	}
 
-	public ArrayList<RC195> getrC195() {
+	public List<RC195> getrC195() {
 		return rC195;
 	}
 

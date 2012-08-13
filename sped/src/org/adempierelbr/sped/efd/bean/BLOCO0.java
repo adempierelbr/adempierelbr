@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -39,13 +40,13 @@ public class BLOCO0 extends RegSped {
 	private R0001 r0001;
 	
 	@XMLFieldProperties	(needsValidation=true, id = "R0150")
-	private ArrayList<R0150> r0150 = new ArrayList<R0150>();
+	private List<R0150> r0150 = new ArrayList<R0150>();
 
 	@XMLFieldProperties	(needsValidation=true, id = "R0190")
-	private ArrayList<R0190> r0190 = new ArrayList<R0190>();
+	private List<R0190> r0190 = new ArrayList<R0190>();
 
 	@XMLFieldProperties	(needsValidation=true, id = "R0200")
-	private ArrayList<R0200> r0200 = new ArrayList<R0200>();
+	private List<R0200> r0200 = new ArrayList<R0200>();
 	
 	@XMLFieldProperties	(needsValidation=true, id = "R0990")
 	private R0990 r0990;
@@ -68,7 +69,7 @@ public class BLOCO0 extends RegSped {
 		this.r0001 = r0001;
 	}
 
-	public ArrayList<R0150> getR0150() {
+	public List<R0150> getR0150() {
 		return r0150;
 	}
 
@@ -76,7 +77,7 @@ public class BLOCO0 extends RegSped {
 		this.r0150 = r0150;
 	}
 
-	public ArrayList<R0190> getR0190() {
+	public List<R0190> getR0190() {
 		return r0190;
 	}
 
@@ -84,7 +85,7 @@ public class BLOCO0 extends RegSped {
 		this.r0190 = r0190;
 	}
 
-	public ArrayList<R0200> getR0200() {
+	public List<R0200> getR0200() {
 		return r0200;
 	}
 

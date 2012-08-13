@@ -69,10 +69,19 @@ import org.compiere.util.Env;
 public class EFDUtil
 {
 
-	/**	Logger			*/
+	/**	
+	 * Logger			
+	 */
 	private static CLogger log = CLogger.getCLogger(EFDUtil.class);
 
-	
+	/**
+	 * TODO: ALTERAR E DEIXAR DINAMICO
+	 * 
+	 * Codigo da Versao
+	 * Código da Finalidade
+	 */
+	private static final String COD_VER = "005"; // A Partir de Jan/12
+	private static final String COD_FIN = "0"; // Remessa do Arquivo Original
 	
 	/**
 	 * Retornar o bloco de registro ao qual o modelo de documento pertence
@@ -145,12 +154,17 @@ public class EFDUtil
 	public static R0000 createR0000(Timestamp dateFrom, Timestamp dateTo, MLBRFactFiscal factFiscal)
 	{
 		
-		R0000 a = new R0000();
-		
-		a.setCNPJ("123.423.423-1111");
-		
-		return a;
-		
+		R0000 reg = new R0000();
+			
+		reg.setCOD_VER(COD_VER);
+		reg.setCOD_FIN(COD_FIN);
+		reg.setDT_INI(dateFrom);
+		reg.setDT_INI(dateTo);
+		reg.setNOME(factFiscal.getlbr_OrgName());
+		reg.setCNPJ(factFiscal.getlbr_CNPJ());
+		reg.setCPF(null);
+		reg.setUF(factFiscal.getlbr_OrgRegion());
+		reg.setIE(BPartnerUtil.getCityCode(factFiscal.getlbr_org_location()));
 		
 		
 		

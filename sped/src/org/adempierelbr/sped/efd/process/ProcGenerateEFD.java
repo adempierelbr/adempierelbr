@@ -220,10 +220,7 @@ public class ProcGenerateEFD extends SvrProcess
 				
 			}
 			
-			
-			BLOCO0 bloco0 = new BLOCO0();
-			
-			bloco0.setR0000(r0000);
+
 			
 			
 			
