@@ -123,11 +123,6 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 			whereClause += " AND IsSOTrx = " + (IsSOTrx.booleanValue() ? "Y" : "N"); 
 		}		
 		
-		
-		// PARA TESTES TODO: APAGAR DEPOIS
-		whereClause += " AND LBR_NotaFiscal_ID = 2042476 ";
-		
-		
 		// Intervalo de Datas: se for venda, usa a DateDoc(mesma data contábil) 
 		// senão a lbr_DateInOut(data da entrada efetiva do material no sistama e contabilidade)
 		whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN ? AND ? ";

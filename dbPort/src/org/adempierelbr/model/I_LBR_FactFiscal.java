@@ -783,6 +783,15 @@ public interface I_LBR_FactFiscal
 	  */
 	public Timestamp getlbr_DateInOut();
 
+    /** Column name LBR_FactFiscal_ID */
+    public static final String COLUMNNAME_LBR_FactFiscal_ID = "LBR_FactFiscal_ID";
+
+	/** Set Detalhes de Fatos Fiscais	  */
+	public void setLBR_FactFiscal_ID (int LBR_FactFiscal_ID);
+
+	/** Get Detalhes de Fatos Fiscais	  */
+	public int getLBR_FactFiscal_ID();
+
     /** Column name lbr_Fantasia */
     public static final String COLUMNNAME_lbr_Fantasia = "lbr_Fantasia";
 

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -38,6 +37,9 @@ public class BLOCO0 {
 	
 	@XMLFieldProperties	(needsValidation=true, id = "R0001")
 	private R0001 r0001;
+
+	@XMLFieldProperties	(needsValidation=true, id = "R0005")
+	private R0005 r0005;
 	
 	@XMLFieldProperties	(needsValidation=true, id = "R0150")
 	private List<R0150> r0150 = new ArrayList<R0150>();
@@ -53,6 +55,14 @@ public class BLOCO0 {
 
 	
 	
+	public R0005 getR0005() {
+		return r0005;
+	}
+
+	public void setR0005(R0005 r0005) {
+		this.r0005 = r0005;
+	}
+
 	public R0000 getR0000() {
 		return r0000;
 	}

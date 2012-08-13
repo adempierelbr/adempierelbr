@@ -1,21 +1,29 @@
 package org.adempierelbr.sped.efd;
 
 import java.sql.Timestamp;
+import java.util.Properties;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.bean.R0000;
+import org.adempierelbr.sped.efd.bean.R0001;
 import org.adempierelbr.sped.efd.bean.R0005;
 import org.adempierelbr.sped.efd.bean.R0100;
 import org.adempierelbr.sped.efd.bean.R0150;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
+import org.adempierelbr.sped.efd.bean.R0990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
@@ -132,37 +140,54 @@ public class EFDUtil {
 	 * @throws Exception
 	 */
 
-	public static R0000 createR0000(Timestamp dateFrom, Timestamp dateTo,
-			MLBRFactFiscal factFiscal) throws Exception {
+	public static R0000 createR0000(Properties ctx, Timestamp dateFrom, Timestamp dateTo, int AD_Org_ID, String trxName) throws Exception {
 
+		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, trxName);
+		I_W_AD_OrgInfo oiW = POWrapper.create(oi, I_W_AD_OrgInfo.class);
+		
+		
+		//
 		R0000 reg = new R0000();
-
 		reg.setCOD_VER(COD_VER);
 		reg.setCOD_FIN(COD_FIN);
 		reg.setDT_INI(dateFrom);
 		reg.setDT_INI(dateTo);
-		reg.setNOME(factFiscal.getlbr_OrgName());
-		reg.setCNPJ(factFiscal.getlbr_CNPJ());
+		reg.setNOME(oiW.getlbr_LegalEntity());
+		reg.setCNPJ(oiW.getlbr_CNPJ());
 		reg.setCPF(null);
-		reg.setUF(factFiscal.getlbr_OrgRegion());
-		reg.setIE(factFiscal.getlbr_IE());
-		reg.setCOD_MUN(String.valueOf(factFiscal.getlbr_orgcitycode()));
-		reg.setIM(factFiscal.getlbr_OrgCCM());
-		reg.setSUFRAMA(factFiscal.getlbr_Suframa());
+		reg.setUF(oiW.getC_Location().getC_Region().getName());
+		reg.setIE(oiW.getlbr_IE());
+		
+		//
+		MCity city = new MCity(ctx, oiW.getC_Location().getC_City_ID(), trxName);
+		reg.setCOD_MUN(city.get_ValueAsString("lbr_CityCode"));
+		
+		//
+		reg.setIM(oiW.getlbr_CCM());
+		reg.setSUFRAMA(oiW.getlbr_Suframa());
 		reg.setIND_PERFIL(IND_PERFIL);
 
-		reg.setIND_ATIV(null);
-
-		reg.getIND_ATIV().charAt(4);
-
 		// 0 - Industria ou equiparado a Industrial / 1 - Outros
-		reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0"
-				: "1");
+		reg.setIND_ATIV(oi.get_ValueAsString("lbr_IndAtividade").equals("0") ? "0" : "1");
 
 		// return
 		return reg;
 	}
 
+	/**
+	 * REGISTRO 0001: ABERTURA DO BLOCO 0
+	 * 
+	 * @param hasInfo tem informação ou não
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0001 createR0001(boolean hasInfo) throws Exception
+	{
+		R0001 reg = new R0001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
 	
 	/**
 	 * REGISTRO 0005: DADOS COMPLEMENTARES DA ENTIDADE
@@ -170,18 +195,21 @@ public class EFDUtil {
 	 * @param factFiscal
 	 * @return
 	 */
-	public static R0005 createR0005(MLBRFactFiscal factFiscal) throws Exception
+	public static R0005 createR0005(Properties ctx, int AD_Org_ID, String trxName) throws Exception
 	{
-
+		// 
+		I_W_AD_OrgInfo oiW = POWrapper.create(MOrgInfo.get(ctx, AD_Org_ID, trxName), I_W_AD_OrgInfo.class);
+		
+		//
 		R0005 reg = new R0005();
-		reg.setFANTASIA(factFiscal.getlbr_Fantasia());
-		reg.setCEP(factFiscal.getlbr_OrgPostal());
-		reg.setEND(factFiscal.getlbr_OrgAddress1());
-		reg.setNUM(factFiscal.getlbr_OrgAddress2());
-		reg.setCOMPL(factFiscal.getlbr_OrgAddress4());
-		reg.setBAIRRO(factFiscal.getlbr_OrgAddress3());
-		reg.setFONE(factFiscal.getlbr_OrgPhone());
-		reg.setFONE(factFiscal.getEMail());
+		reg.setFANTASIA(oiW.getlbr_Fantasia());
+		reg.setCEP(oiW.getC_Location().getPostal());
+		reg.setEND(oiW.getC_Location().getAddress1());
+		reg.setNUM(oiW.getC_Location().getAddress2());
+		reg.setCOMPL(oiW.getC_Location().getAddress4());
+		reg.setBAIRRO(oiW.getC_Location().getAddress3());
+		reg.setFONE(oiW.getPhone());
+		reg.setFONE(oiW.getEMail());
 		
 		// return
 		return reg;			
@@ -196,18 +224,19 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static R0100 createR0100(MLBRFactFiscal factFiscal) throws Exception
+	public static R0100 createR0100(Properties ctx, int LBR_BP_Accountant_ID, String trxName) throws Exception
 	{
 
 		// carregar contador e endereço
-		MBPartner bpContador = new MBPartner(factFiscal.getCtx(), factFiscal.getLBR_BP_Accountant_ID(),	factFiscal.get_TrxName());
+		MBPartner bpContador = new MBPartner(ctx, LBR_BP_Accountant_ID,	trxName);
 		MBPartnerLocation bpcontLoc = bpContador.getPrimaryC_BPartner_Location();
-		MLocation contLoc = new MLocation(factFiscal.getCtx(), bpcontLoc.getC_Location_ID(), factFiscal.get_TrxName());
+		MLocation contLoc = new MLocation(ctx, bpcontLoc.getC_Location_ID(), trxName);
 	
 		// se não tiver, então deixar o erro para o annotation
 		if (bpContador == null || bpcontLoc == null || contLoc == null) 
 			return null;
 
+		// 
 		R0100 reg = new R0100();
 		reg.setNOME(bpContador.getName());
 		reg.setCPF(bpContador.get_ValueAsString("lbr_CPF"));
@@ -223,7 +252,7 @@ public class EFDUtil {
 		
 		// email
 		if (bpContador.getPrimaryAD_User_ID() > 0) 
-			reg.setEMAIL(MUser.get(factFiscal.getCtx(), bpContador.getPrimaryAD_User_ID()).getEMail());
+			reg.setEMAIL(MUser.get(ctx, bpContador.getPrimaryAD_User_ID()).getEMail());
 
 		// código do municipio do IBGM
 		reg.setCOD_MUN(BPartnerUtil.getCityCode(contLoc));
@@ -357,7 +386,8 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static R0200 createR0200(MProduct product) {
+	public static R0200 createR0200(MProduct product) throws Exception
+	{
 
 		
 		//
@@ -390,6 +420,23 @@ public class EFDUtil {
 		//
 		return reg;
 	} 
+	
+	
+	/**
+	 * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0990 createR0990() throws Exception 
+	{
+		R0990 reg = new R0990();
+		reg.setQTD_LIN_0(String.valueOf(reg.getClass().getName()));
+	
+		return reg;
+	}
+
+
 
 
 } // EFDUtil

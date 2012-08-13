@@ -8,6 +8,7 @@ import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
+import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -119,7 +120,7 @@ public class ProcGenerateEFD extends SvrProcess
 		 * EDF_CNPJ_DATA.txt
 		 */
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
-		fileName += "EFD_" + oi.getlbr_CNPJ() + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
+		fileName += "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
 		/*
 		 * Gerar Arquivo no disco
@@ -153,21 +154,31 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		try
 		{
-			// criar bloco zero
-			BLOCO0 bloco0 = new BLOCO0();
-			
-			
-			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
-			int last_LBR_NotaFiscal_ID = 0;
-			
 			
 			// Zerar Contadores (staticos)
 			CounterSped.clear();
-			
+
+			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
+			int last_LBR_NotaFiscal_ID = 0;
+
 			
 			// Fatos Fiscais
 			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
+
+			// criar blocos
+			BLOCO0 bloco0 = new BLOCO0();
+			BLOCOC blocoC = new BLOCOC();
 			
+			
+			// 0000 - abertura do arquivo
+			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, get_TrxName()));
+			
+			// 0001 - se tiver fatos fiscais, então contem dados
+			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
+
+			// 0005 - contador
+			bloco0.setR0005(EFDUtil.createR0005(getCtx(), p_AD_Org_ID, get_TrxName()));
+							
 			
 			/*
 			 * Loop de Fatos Fiscais. 
@@ -197,7 +208,8 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
 				 */
-				if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") || EFDUtil.getBlocoNFModel(nfModel).startsWith("C")))
+				if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") 
+						|| EFDUtil.getBlocoNFModel(nfModel).startsWith("D")))
 					continue;
 	
 	
@@ -240,8 +252,12 @@ public class ProcGenerateEFD extends SvrProcess
 				 * fato pertence a esta mesma nota
 				 */
 				last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
-			}
 			
+			} // loop fatos fiscais
+			
+			
+			// finalizar bloco zero
+			bloco0.setR0990(EFDUtil.createR0990());
 			
 		}
 		catch (Exception e) 
@@ -257,32 +273,9 @@ public class ProcGenerateEFD extends SvrProcess
 			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
 		}
 		
-		
-		return null;
+		return new StringBuilder("");
+		// return bloco0;
 	}
-	
-	
-	public void genTeste() throws Exception
-	{
-		try
-		{
-			EFDUtil.createR0000(null, null, null);
-			
-		}		
-		catch (Exception e) 
-		{
-			
-			// mapear erro para facilitar o reconhecimento
-			String className = e.getStackTrace()[0].getClassName();
-			String methodName = e.getStackTrace()[0].getMethodName();
-			int lineNumber = e.getStackTrace()[0].getLineNumber();
-			String error = e.getLocalizedMessage();
-			
-			// lançar exception para retornar ao usuário
-			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
-		}
-	}
-	
 	
 	public static void main(String args[])
 	{
@@ -291,7 +284,7 @@ public class ProcGenerateEFD extends SvrProcess
 		try 
 		{
 			//efd.generateEFD(new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
-			efd.genTeste();
+			//efd.genTeste();
 		} 
 		catch (Exception e) 
 		{

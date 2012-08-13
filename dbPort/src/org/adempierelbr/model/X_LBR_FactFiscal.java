@@ -1229,6 +1229,26 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return (Timestamp)get_Value(COLUMNNAME_lbr_DateInOut);
 	}
 
+	/** Set Detalhes de Fatos Fiscais.
+		@param LBR_FactFiscal_ID Detalhes de Fatos Fiscais	  */
+	public void setLBR_FactFiscal_ID (int LBR_FactFiscal_ID)
+	{
+		if (LBR_FactFiscal_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_LBR_FactFiscal_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_LBR_FactFiscal_ID, Integer.valueOf(LBR_FactFiscal_ID));
+	}
+
+	/** Get Detalhes de Fatos Fiscais.
+		@return Detalhes de Fatos Fiscais	  */
+	public int getLBR_FactFiscal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_FactFiscal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Fantasia.
 		@param lbr_Fantasia Fantasia	  */
 	public void setlbr_Fantasia (String lbr_Fantasia)
