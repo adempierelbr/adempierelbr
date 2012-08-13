@@ -63,14 +63,23 @@ public interface I_LBR_FactFiscal
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name bpcitycode */
-    public static final String COLUMNNAME_bpcitycode = "bpcitycode";
+    /** Column name BPCityCode */
+    public static final String COLUMNNAME_BPCityCode = "BPCityCode";
 
-	/** Set bpcitycode	  */
-	public void setbpcitycode (int bpcitycode);
+	/** Set Cod. Cidade do PN 	  */
+	public void setBPCityCode (int BPCityCode);
 
-	/** Get bpcitycode	  */
-	public int getbpcitycode();
+	/** Get Cod. Cidade do PN 	  */
+	public int getBPCityCode();
+
+    /** Column name BPCountryCode */
+    public static final String COLUMNNAME_BPCountryCode = "BPCountryCode";
+
+	/** Set Código do País do PN	  */
+	public void setBPCountryCode (int BPCountryCode);
+
+	/** Get Código do País do PN	  */
+	public int getBPCountryCode();
 
     /** Column name BPName */
     public static final String COLUMNNAME_BPName = "BPName";
@@ -693,6 +702,19 @@ public interface I_LBR_FactFiscal
 	  * BP Region - Copied from the BP Location into Brazilan Legal and Tax Books
 	  */
 	public String getlbr_BPRegion();
+
+    /** Column name lbr_BPSuframa */
+    public static final String COLUMNNAME_lbr_BPSuframa = "lbr_BPSuframa";
+
+	/** Set BP Suframa.
+	  * Defines the BP Suframa
+	  */
+	public void setlbr_BPSuframa (String lbr_BPSuframa);
+
+	/** Get BP Suframa.
+	  * Defines the BP Suframa
+	  */
+	public String getlbr_BPSuframa();
 
     /** Column name LBR_CFOP_ID */
     public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";

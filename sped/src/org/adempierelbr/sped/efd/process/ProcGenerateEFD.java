@@ -5,11 +5,8 @@ import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
-import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
-import org.adempierelbr.sped.efd.bean.BLOCO0;
-import org.adempierelbr.sped.utils.SPEDUtil;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;

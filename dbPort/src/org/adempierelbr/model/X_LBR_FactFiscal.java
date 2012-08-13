@@ -72,18 +72,35 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
       return sb.toString();
     }
 
-	/** Set bpcitycode.
-		@param bpcitycode bpcitycode	  */
-	public void setbpcitycode (int bpcitycode)
+	/** Set Cod. Cidade do PN .
+		@param BPCityCode Cod. Cidade do PN 	  */
+	public void setBPCityCode (int BPCityCode)
 	{
-		set_Value (COLUMNNAME_bpcitycode, Integer.valueOf(bpcitycode));
+		set_Value (COLUMNNAME_BPCityCode, Integer.valueOf(BPCityCode));
 	}
 
-	/** Get bpcitycode.
-		@return bpcitycode	  */
-	public int getbpcitycode () 
+	/** Get Cod. Cidade do PN .
+		@return Cod. Cidade do PN 	  */
+	public int getBPCityCode () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_bpcitycode);
+		Integer ii = (Integer)get_Value(COLUMNNAME_BPCityCode);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Código do País do PN.
+		@param BPCountryCode Código do País do PN	  */
+	public void setBPCountryCode (int BPCountryCode)
+	{
+		set_Value (COLUMNNAME_BPCountryCode, Integer.valueOf(BPCountryCode));
+	}
+
+	/** Get Código do País do PN.
+		@return Código do País do PN	  */
+	public int getBPCountryCode () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_BPCountryCode);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1097,6 +1114,23 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	public String getlbr_BPRegion () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_BPRegion);
+	}
+
+	/** Set BP Suframa.
+		@param lbr_BPSuframa 
+		Defines the BP Suframa
+	  */
+	public void setlbr_BPSuframa (String lbr_BPSuframa)
+	{
+		set_Value (COLUMNNAME_lbr_BPSuframa, lbr_BPSuframa);
+	}
+
+	/** Get BP Suframa.
+		@return Defines the BP Suframa
+	  */
+	public String getlbr_BPSuframa () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BPSuframa);
 	}
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
