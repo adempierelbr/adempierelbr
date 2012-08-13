@@ -35,6 +35,7 @@ public class ProdutosNFEBean {
 	private String vFrete;
 	private String vSeg;
 	private String vDesc;
+	private String vOutro;
 	private String indTot;
 	private DeclaracaoDI DI;
 
@@ -181,6 +182,12 @@ public class ProdutosNFEBean {
 	}
 	public void setvDesc(String vDesc) {
 		this.vDesc = vDesc;
+	}
+	public String getvOutro() {
+		return vOutro;
+	}
+	public void setvOutro(String vOutro) {
+		this.vOutro = vOutro;
 	}
 	public String getIndTot() {
 		return indTot;
