@@ -29,7 +29,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @author Pablo Boff Pigozzo, pablobp4
  * @version $Id: Bloco0.java, 07/08/2012 11:03
  */
-public class BLOCO0 extends RegSped {
+public class BLOCO0 {
 	
 	@XStreamAlias ("Id")
 	@XStreamAsAttribute
@@ -102,28 +102,55 @@ public class BLOCO0 extends RegSped {
 	}
 
 
-	public void addr0150(R0150 r0150) {
-		this.r0150.add(r0150);
+	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * Obs.: Se o registro já existir, fazer um subtract counter para 
+	 * adicionar aos totalizadores de registros
+	 * 
+	 * @param r0150
+	 */
+	public void addr0150(R0150 r0150) 
+	{
+		if(!this.r0150.contains(r0150))
+			this.r0150.add(r0150);
+		else
+			r0150.subtractCounter();
 	}
 
-	public void addr0190(R0190 r0190) {
-		this.r0190.add(r0190);
-	}
-
-
-	public void addr0200(R0200 r0200) {
-		this.r0200.add(r0200);
+	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * Obs.: Se o registro já existir, fazer um subtract counter para 
+	 * adicionar aos totalizadores de registros
+	 * 
+	 * @param r0190
+	 */
+	public void addr0190(R0190 r0190) 
+	{
+		
+		if(!this.r0190.contains(r0190))
+			this.r0190.add(r0190);
+		else
+			r0190.subtractCounter();
 	}
 
 	
-	@Override
-	public int compareTo(Object arg0) {
-	
-		
-		
-		return 0;
+	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * Obs.: Se o registro já existir, fazer um subtract counter para 
+	 * adicionar aos totalizadores de registros
+	 * 
+	 * @param r0200
+	 */
+	public void addr0200(R0200 r0200) 
+	{
+		if(!this.r0200.contains(r0200))
+			this.r0200.add(r0200);
+		else
+			r0200.subtractCounter();
 	}
-
 	
 	
 }	//R0000

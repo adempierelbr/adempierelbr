@@ -7,6 +7,7 @@ import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
+import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -152,17 +153,21 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		try
 		{
-		
-			// Variáveis auxiliares
+			// criar bloco zero
+			BLOCO0 bloco0 = new BLOCO0();
+			
+			
+			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
 			int last_LBR_NotaFiscal_ID = 0;
 			
 			
-			// Zerar Contadores
+			// Zerar Contadores (staticos)
 			CounterSped.clear();
 			
 			
 			// Fatos Fiscais
 			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
+			
 			
 			/*
 			 * Loop de Fatos Fiscais. 
@@ -177,15 +182,12 @@ public class ProcGenerateEFD extends SvrProcess
 			{
 	
 				/*
-				 * Modelo da Nota Fiscal
-				 */
-				String nfModel = factFiscal.getlbr_NFModel();
-				
-				
-				/*
+				 * Modelo da NF
+				 * 
 				 * Verificar se é tem o modelo, se não tem, 
 				 * verificar se é eletronica e coloca 55, senão colocar 01
-				 */
+				 */				
+				String nfModel = factFiscal.getlbr_NFModel();
 				if ((nfModel == null || nfModel.isEmpty()) && factFiscal.getlbr_NFeID() != null)
 					nfModel = "55"; // NF-e
 				else
@@ -209,7 +211,7 @@ public class ProcGenerateEFD extends SvrProcess
 					/*
 					 * R0150 - Parceiros de Negócios
 					 */
-					
+					bloco0.addr0150(EFDUtil.createR0150(factFiscal));
 					
 					
 					
@@ -221,11 +223,15 @@ public class ProcGenerateEFD extends SvrProcess
 					
 				}
 				
-	
+				/*
+				 * Unidades
+				 */
+				bloco0.addr0190(EFDUtil.createR0190(factFiscal));
 				
-				
-				
-				
+				/*
+				 * Produtos
+				 */
+				bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				
 				/*
