@@ -228,12 +228,15 @@ public class ValidatorInOut implements ModelValidator
 				break;
 			}
 
-			if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID())){
-				msg = "Duas linhas usando o mesmo produto na mesma posição";
-				break;
-			}
-			else{
-				prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+			if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_MOVEMENTLINE_ON_MOVEMENT", true, mov.getAD_Client_ID()))
+			{
+				if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID())){
+					msg = "Duas linhas usando o mesmo produto na mesma posição";
+					break;
+				}
+				else{
+					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+				}
 			}
 
 			BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID(), line.getM_AttributeSetInstance_ID());
