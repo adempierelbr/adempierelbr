@@ -20,7 +20,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-
 /**
  * BLOCO 0: ABERTURA, IDENTIFICAÇÃO E REFERÊNCIAS.
  * 
@@ -29,32 +28,41 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: Bloco0.java, 07/08/2012 11:03
  */
 public class BLOCO0 {
-	
-	@XStreamAlias ("Id")
+
+	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties	(needsValidation=true, id = "R0000")
+	@XMLFieldProperties(needsValidation = true, id = "R0000")
 	private R0000 r0000;
-	
-	@XMLFieldProperties	(needsValidation=true, id = "R0001")
+
+	@XMLFieldProperties(needsValidation = true, id = "R0001")
 	private R0001 r0001;
 
-	@XMLFieldProperties	(needsValidation=true, id = "R0005")
+	@XMLFieldProperties(needsValidation = true, id = "R0005")
 	private R0005 r0005;
-	
-	@XMLFieldProperties	(needsValidation=true, id = "R0150")
+
+	@XMLFieldProperties(needsValidation = true, id = "R0100")
+	private R0100 r0100;
+
+	@XMLFieldProperties(needsValidation = true, id = "R0150")
 	private List<R0150> r0150 = new ArrayList<R0150>();
 
-	@XMLFieldProperties	(needsValidation=true, id = "R0190")
+	@XMLFieldProperties(needsValidation = true, id = "R0190")
 	private List<R0190> r0190 = new ArrayList<R0190>();
 
-	@XMLFieldProperties	(needsValidation=true, id = "R0200")
+	@XMLFieldProperties(needsValidation = true, id = "R0200")
 	private List<R0200> r0200 = new ArrayList<R0200>();
-	
-	@XMLFieldProperties	(needsValidation=true, id = "R0990")
+
+	@XMLFieldProperties(needsValidation = true, id = "R0990")
 	private R0990 r0990;
 
-	
-	
+	public R0100 getR0100() {
+		return r0100;
+	}
+
+	public void setR0100(R0100 r0100) {
+		this.r0100 = r0100;
+	}
+
 	public R0005 getR0005() {
 		return r0005;
 	}
@@ -111,18 +119,16 @@ public class BLOCO0 {
 		this.r0990 = r0990;
 	}
 
-
 	/**
 	 * Adicionar a lista de registros
 	 * 
-	 * Obs.: Se o registro já existir, fazer um subtract counter para 
-	 * adicionar aos totalizadores de registros
+	 * Obs.: Se o registro já existir, fazer um subtract counter para adicionar
+	 * aos totalizadores de registros
 	 * 
 	 * @param r0150
 	 */
-	public void addr0150(R0150 r0150) 
-	{
-		if(!this.r0150.contains(r0150))
+	public void addr0150(R0150 r0150) {
+		if (!this.r0150.contains(r0150))
 			this.r0150.add(r0150);
 		else
 			r0150.subtractCounter();
@@ -131,36 +137,32 @@ public class BLOCO0 {
 	/**
 	 * Adicionar a lista de registros
 	 * 
-	 * Obs.: Se o registro já existir, fazer um subtract counter para 
-	 * adicionar aos totalizadores de registros
+	 * Obs.: Se o registro já existir, fazer um subtract counter para adicionar
+	 * aos totalizadores de registros
 	 * 
 	 * @param r0190
 	 */
-	public void addr0190(R0190 r0190) 
-	{
-		
-		if(!this.r0190.contains(r0190))
+	public void addr0190(R0190 r0190) {
+
+		if (!this.r0190.contains(r0190))
 			this.r0190.add(r0190);
 		else
 			r0190.subtractCounter();
 	}
 
-	
 	/**
 	 * Adicionar a lista de registros
 	 * 
-	 * Obs.: Se o registro já existir, fazer um subtract counter para 
-	 * adicionar aos totalizadores de registros
+	 * Obs.: Se o registro já existir, fazer um subtract counter para adicionar
+	 * aos totalizadores de registros
 	 * 
 	 * @param r0200
 	 */
-	public void addr0200(R0200 r0200) 
-	{
-		if(!this.r0200.contains(r0200))
+	public void addr0200(R0200 r0200) {
+		if (!this.r0200.contains(r0200))
 			this.r0200.add(r0200);
 		else
 			r0200.subtractCounter();
 	}
-	
-	
-}	//R0000
+
+} // R0000

@@ -9,6 +9,7 @@ import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
+import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -158,10 +159,6 @@ public class ProcGenerateEFD extends SvrProcess
 			// Zerar Contadores (staticos)
 			CounterSped.clear();
 
-			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
-			int last_LBR_NotaFiscal_ID = 0;
-
-			
 			// Fatos Fiscais
 			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
 
@@ -169,16 +166,26 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCO0 bloco0 = new BLOCO0();
 			BLOCOC blocoC = new BLOCOC();
 			
-			
 			// 0000 - abertura do arquivo
 			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, get_TrxName()));
 			
 			// 0001 - se tiver fatos fiscais, então contem dados
 			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
 
-			// 0005 - contador
+			// 0005 - dados adicionais da org
 			bloco0.setR0005(EFDUtil.createR0005(getCtx(), p_AD_Org_ID, get_TrxName()));
-							
+					 		
+			// 0100 - contator
+			bloco0.setR0100(EFDUtil.createR0100(getCtx(), p_AD_Org_ID, get_TrxName()));
+			
+			
+			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
+			int last_LBR_NotaFiscal_ID = 0;
+			
+			
+			// registro C100 - montado de acordo com os fatos fiscais e depois adicionado ao bloco C
+			RC100 rc100;
+
 			
 			/*
 			 * Loop de Fatos Fiscais. 
@@ -193,23 +200,12 @@ public class ProcGenerateEFD extends SvrProcess
 			{
 	
 				/*
-				 * Modelo da NF
-				 * 
-				 * Verificar se é tem o modelo, se não tem, 
-				 * verificar se é eletronica e coloca 55, senão colocar 01
-				 */				
-				String nfModel = factFiscal.getlbr_NFModel();
-				if ((nfModel == null || nfModel.isEmpty()) && factFiscal.getlbr_NFeID() != null)
-					nfModel = "55"; // NF-e
-				else
-					nfModel = "01"; // NF
-				
-				
-				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
 				 */
-				if(!(EFDUtil.getBlocoNFModel(nfModel).startsWith("C") 
-						|| EFDUtil.getBlocoNFModel(nfModel).startsWith("D")))
+				if(!(EFDUtil.getBlocoNFModel(EFDUtil.getNFModel(factFiscal.getlbr_NFModel(), 
+						factFiscal.getlbr_NFeID())).startsWith("C") 
+						|| EFDUtil.getBlocoNFModel(EFDUtil.getNFModel(factFiscal.getlbr_NFModel(), 
+								factFiscal.getlbr_NFeID())).startsWith("D")))
 					continue;
 	
 	
@@ -230,7 +226,7 @@ public class ProcGenerateEFD extends SvrProcess
 					/*
 					 * RC100 e RC500 e RD100 e RD500
 					 */
-					
+					rc100 = new RC100();
 					
 					
 				}
@@ -253,7 +249,21 @@ public class ProcGenerateEFD extends SvrProcess
 				 */
 				last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
 			
+				
+				
 			} // loop fatos fiscais
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			// finalizar bloco zero
@@ -292,4 +302,4 @@ public class ProcGenerateEFD extends SvrProcess
 		}
 	}
 	
-}	//	ProcGenerateEFD
+}	//	ProcGenerateEF

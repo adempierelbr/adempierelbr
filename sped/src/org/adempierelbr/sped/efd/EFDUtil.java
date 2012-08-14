@@ -65,7 +65,7 @@ public class EFDUtil {
 
 		//
 		String nfReg = "";
-
+		
 		/*
 		 * BLOCO C100 - Nota Fiscal Produto
 		 */
@@ -110,6 +110,31 @@ public class EFDUtil {
 		return nfReg;
 
 	} // getNFHeaderReg
+	
+	
+	
+	/**
+	 * Tratar NF Model. 
+	 * 
+	 * Obs: Se o modelo do documento fiscal é null ou vazio, então
+	 * verificar se é NF-e, se sim, colocar 55 NF-e, senão, colocar 01 NF Normal  
+	 * 
+	 * @param nfModel
+	 * @param nfID
+	 * @return
+	 */
+	public static String getNFModel(String nfModel, String nfID)
+	{
+		if (nfModel == null || nfModel.isEmpty())
+		{
+			if(nfID != null && !nfID.isEmpty())
+				nfModel = "55"; // NF-e
+			else
+				nfModel = "01"; // NF
+		}
+		
+		return nfModel;
+	}
 
 	
 	/**
@@ -224,11 +249,11 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static R0100 createR0100(Properties ctx, int LBR_BP_Accountant_ID, String trxName) throws Exception
+	public static R0100 createR0100(Properties ctx, int AD_Org_ID, String trxName) throws Exception
 	{
 
 		// carregar contador e endereço
-		MBPartner bpContador = new MBPartner(ctx, LBR_BP_Accountant_ID,	trxName);
+		MBPartner bpContador = new MBPartner(ctx, MOrgInfo.get(ctx, AD_Org_ID, trxName).get_ValueAsInt("LBR_BP_Accountant_ID"),	trxName);
 		MBPartnerLocation bpcontLoc = bpContador.getPrimaryC_BPartner_Location();
 		MLocation contLoc = new MLocation(ctx, bpcontLoc.getC_Location_ID(), trxName);
 	
@@ -257,9 +282,8 @@ public class EFDUtil {
 		// código do municipio do IBGM
 		reg.setCOD_MUN(BPartnerUtil.getCityCode(contLoc));
 
-		return reg;
-				
-				
+		//
+		return reg;				
 				
 	} // createR0100
 	
