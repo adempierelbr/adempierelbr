@@ -178,10 +178,8 @@ public class ProcGenerateEFD extends SvrProcess
 			// 0100 - contator
 			bloco0.setR0100(EFDUtil.createR0100(getCtx(), p_AD_Org_ID, get_TrxName()));
 			
-			
 			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
 			int last_LBR_NotaFiscal_ID = 0;
-			
 			
 			// registro C100 - montado de acordo com os fatos fiscais e depois adicionado ao bloco C
 			RC100 rc100;
@@ -202,10 +200,8 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
 				 */
-				if(!(EFDUtil.getBlocoNFModel(EFDUtil.getNFModel(factFiscal.getlbr_NFModel(), 
-						factFiscal.getlbr_NFeID())).startsWith("C") 
-						|| EFDUtil.getBlocoNFModel(EFDUtil.getNFModel(factFiscal.getlbr_NFModel(), 
-								factFiscal.getlbr_NFeID())).startsWith("D")))
+				if(!(EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)).startsWith("C") 
+						|| EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)).startsWith("D")))
 					continue;
 	
 	

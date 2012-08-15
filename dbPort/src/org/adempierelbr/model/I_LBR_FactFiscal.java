@@ -1257,6 +1257,19 @@ public interface I_LBR_FactFiscal
 	/** Get pis_taxstatus	  */
 	public String getpis_taxstatus();
 
+    /** Column name Price */
+    public static final String COLUMNNAME_Price = "Price";
+
+	/** Set Price.
+	  * Price
+	  */
+	public void setPrice (BigDecimal Price);
+
+	/** Get Price.
+	  * Price
+	  */
+	public BigDecimal getPrice();
+
     /** Column name ProductName */
     public static final String COLUMNNAME_ProductName = "ProductName";
 
@@ -1300,6 +1313,19 @@ public interface I_LBR_FactFiscal
 	  * Key of the Product
 	  */
 	public String getProductValue();
+
+    /** Column name Qty */
+    public static final String COLUMNNAME_Qty = "Qty";
+
+	/** Set Quantity.
+	  * Quantity
+	  */
+	public void setQty (BigDecimal Qty);
+
+	/** Get Quantity.
+	  * Quantity
+	  */
+	public BigDecimal getQty();
 
     /** Column name TotalLines */
     public static final String COLUMNNAME_TotalLines = "TotalLines";

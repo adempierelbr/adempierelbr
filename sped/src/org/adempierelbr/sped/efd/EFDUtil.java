@@ -1,12 +1,13 @@
 package org.adempierelbr.sped.efd;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRDI;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.sped.efd.bean.R0001;
 import org.adempierelbr.sped.efd.bean.R0005;
@@ -15,6 +16,9 @@ import org.adempierelbr.sped.efd.bean.R0150;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0990;
+import org.adempierelbr.sped.efd.bean.RC100;
+import org.adempierelbr.sped.efd.bean.RC120;
+import org.adempierelbr.sped.efd.bean.RC170;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
@@ -24,10 +28,13 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaySchedule;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 /**
  * Utilitarios para o EFD
@@ -47,12 +54,12 @@ public class EFDUtil {
 
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
-	 * 
-	 * Código da Versao Código da Finalidade Código do Perfil
 	 */
 	private static final String COD_VER = "005"; // A Partir de Jan/12
 	private static final String COD_FIN = "0"; // Remessa do Arquivo Original
 	private static final String IND_PERFIL = "A"; // Perfil A
+	private static final String COD_DOC_IMP = "0"; // Declaração de Importacao
+	private static final String IND_APUR = "0"; // Mensal (IPI - RC170)
 
 	
 	/**
@@ -123,11 +130,15 @@ public class EFDUtil {
 	 * @param nfID
 	 * @return
 	 */
-	public static String getNFModel(String nfModel, String nfID)
+	public static String getCOD_MOD(MLBRFactFiscal factFiscal)
 	{
+		//
+		String nfModel = factFiscal.getlbr_NFModel();
+		
+		//
 		if (nfModel == null || nfModel.isEmpty())
 		{
-			if(nfID != null && !nfID.isEmpty())
+			if(factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
 				nfModel = "55"; // NF-e
 			else
 				nfModel = "01"; // NF
@@ -153,6 +164,128 @@ public class EFDUtil {
 		return TextUtil.retiraEspecial(factFiscal.getC_BPartner().getValue());
 		
 	}
+	
+	
+	/**
+	 * Retornar Código da Situação do Documento
+	 * 
+	 * Tabela 4.1.2
+	 * 
+	 * Utilizado o código '08' para regime especial ou norma específica 
+	 * de acordo com o manual do SPED, descrição do registro C100. 
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getCOD_SIT(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// documento regular
+		String cod_sit = "00";
+		
+		// cancelada = 02
+		if(factFiscal.isCancelled())
+			cod_sit = "02";
+		
+		// regime especial ou norma especifica. CFOP 5/6.929
+		else if(factFiscal.getlbr_CFOPName().equals("5.929")
+				|| factFiscal.getlbr_CFOPName().equals("6.929"))
+			cod_sit = "08";
+		
+		//
+		return cod_sit;
+	}
+	
+	
+	/**
+	 * Retornar o Indicador de Frete
+	 * 
+	 * Obs.: A partir de 01/01/2012 passará a ser: Indicador do tipo do frete:
+	 * 0- Por conta do emitente;
+	 * 1- Por conta do destinatário/remetente;
+	 * 2- Por conta de terceiros; 
+	 * 9- Sem cobrança de frete.
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getIND_FRT(MLBRFactFiscal factFiscal) throws Exception
+	{
+		
+		
+		// incluso na nota (corpo da NF)
+		if(factFiscal.getFreightCostRule().equals("I"))
+			return "0";
+		
+		// excluso (conhecimento de frete)
+		else if(factFiscal.getFreightCostRule().equals("E"))
+			return "1";
+		
+		// por conta de terceiros
+		else if(factFiscal.getFreightCostRule().equals("T"))
+			return "2";
+		
+		// sem frete
+		else 
+			return "9";
+		
+	}
+	
+	
+	/**
+	 * Retornar o Indicador de Pgto
+	 * 
+	 * 0- À vista;
+	 * 1- A prazo;
+	 * 2 - Outros
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getIND_PGTO(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// sem fatura - ???
+		if(factFiscal.getC_Invoice_ID() <= 0)
+			return "2";
+		
+		// condição de pgto da fatura
+		MPaymentTerm pt = new MPaymentTerm(factFiscal.getCtx(), 
+				factFiscal.getC_Invoice().getC_PaymentTerm_ID(), 
+				factFiscal.get_TrxName());
+		MPaySchedule[] pts = pt.getSchedule(false);
+		
+		// se tiver dias devidos e/ou parcelas, então é a prazo
+		if (pt.getNetDays() > 0	|| (pts != null && pts.length > 0))
+			return "1";
+		
+		//
+		return "0";
+		
+	}
+	
+	
+	/**
+	 * Retornar a Série da NF
+	 * 
+	 * Somente retornar a série de NF-e's de emissão própria, pois 
+	 * não está tendo entrada de séries de NF-e's de terceiros. 
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getSER(MLBRFactFiscal factFiscal) throws Exception
+	{
+		if(factFiscal.islbr_IsOwnDocument() 
+				&& factFiscal.getlbr_NFeProt() != null 
+				&& !factFiscal.getlbr_NFeProt().isEmpty())
+			return factFiscal.getlbr_NFSerie();
+		else
+			return "";
+	}
+	
 	
 	
 	/**
@@ -460,7 +593,177 @@ public class EFDUtil {
 		return reg;
 	}
 
+	/**
+	 * REGISTRO C100: NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NF-e (CÓDIGO 55).
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC100 createRC100(MLBRFactFiscal factFiscal) throws Exception
+	{
+		
+		//
+		RC100 reg = new RC100();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0"); // Entrada = 0 | Saida = 1
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setCHV_NFE(factFiscal.getlbr_NFeID());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_E_S(factFiscal.getlbr_DateInOut());
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setIND_PGTO(getIND_PGTO(factFiscal));
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+		
+		// Abatimento da ZF - TODO
+		reg.setVL_ABAT_NT(Env.ZERO);
+		
+		// vlr mercadorias, frete e seguro
+		reg.setVL_MERC(factFiscal.getTotalLines());
+		reg.setIND_FRT(getIND_FRT(factFiscal));
+		reg.setVL_FRT(factFiscal.getFreightAmt());
+		reg.setVL_SEG(factFiscal.getlbr_InsuranceAmt());
+		
+		// outras despesas acessórias - TODO
+		reg.setVL_OUT_DA(Env.ZERO);
+		
+		// impostos - somatório das linha
+		reg.setVL_BC_ICMS(Env.ZERO);
+		reg.setVL_ICMS(Env.ZERO);
+		reg.setVL_BC_ICMS_ST(Env.ZERO);
+		reg.setVL_ICMS_ST(Env.ZERO);
+		reg.setVL_IPI(Env.ZERO);
+		reg.setVL_PIS(Env.ZERO);
+		reg.setVL_COFINS(Env.ZERO);
+		reg.setVL_PIS_ST(Env.ZERO);
+		reg.setVL_COFINS_ST(Env.ZERO);
+		
+		//
+		return reg;
+		
+	} //createRC100
+	
+	
+	/**
+	 * REGISTRO C120: OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC120 createRC120(Properties ctx, int LBR_DI_ID, String trxName) throws Exception
+	{
+		//
+		MLBRDI di = new MLBRDI(ctx, LBR_DI_ID, trxName);
+		
+		// 
+		RC120 reg = new RC120();
+		reg.setCOD_DOC_IMP(COD_DOC_IMP);
+		reg.setNUM_DOC_IMP(di.getDocumentNo());
+		
+		// valore preenchidos ao adicionar itens no RC100
+		reg.setPIS_IMP(Env.ZERO);
+		reg.setCOFINS_IMP(Env.ZERO);
+		
+		// TODO - verificar valor a preencher
+		reg.setNUM_ACDRAW("");
 
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO C170: ITENS DO DOCUMENTO (CÓDIGO 01, 1B, 04 e 55).
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC170 createRC170(MLBRFactFiscal factFiscal) throws Exception
+	{
 
+		RC170 reg = new RC170();
+		reg.setNUM_ITEM(factFiscal.getLine());
+		reg.setCOD_ITEM(factFiscal.getProductValue());
+		
+		// TODO - descrição da linha da NF
+		reg.setDESCR_COMPL("");
+		
+		reg.setQTD(factFiscal.getQty());
+		reg.setUNID(factFiscal.getlbr_UOMName());
+		reg.setVL_ITEM(factFiscal.getLineTotalAmt());
+		
+		// TODO - verificar possibilidades de desconto
+		reg.setVL_DESC(Env.ZERO);
+		
+		// TODO - se for serviço não movimenta, senão movimenta
+		reg.setIND_MOV(factFiscal.islbr_IsService() ? "0" : "1");
+		
+		//
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setCOD_NAT(factFiscal.getlbr_NCMName());
+		
+		// icms
+		reg.setCST_ICMS(factFiscal.geticms_taxstatus());
+		reg.setVL_BC_ICMS(factFiscal.geticms_taxbaseamt());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		
+		
+		// st
+		reg.setVL_BC_ICMS_ST(factFiscal.geticmsst_taxbaseamt());
+		reg.setALIQ_ST(factFiscal.geticmsst_taxrate());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_TaxAmt());
+		
+		// ipi
+		reg.setIND_APUR(IND_APUR);
+		reg.setCST_IPI(factFiscal.getipi_taxstatus());
+		
+		// TODO - ??
+		reg.setCOD_ENQ("");
+		reg.setVL_BC_IPI(factFiscal.getipi_taxbaseamt());
+		reg.setALIQ_IPI(factFiscal.getipi_taxrate());
+		reg.setVL_IPI(factFiscal.getIPI_TaxAmt());
+		
+		// pis
+		reg.setCST_PIS(factFiscal.getpis_taxstatus());
+		reg.setVL_BC_PIS(factFiscal.getpis_taxbaseamt());
+		reg.setALIQ_PIS(factFiscal.getpis_taxrate());
+		
+		// TODO: BC e Aliq por Qtde
+		reg.setQUANT_BC_PIS(Env.ZERO);
+		reg.setALIQ_PIS_REAIS(null);
+		
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		
+		// cofins
+		reg.setCST_COFINS(factFiscal.getcofins_taxstatus());
+		reg.setVL_BC_COFINS(factFiscal.getcofins_taxbaseamt());
+		reg.setALIQ_COFINS(factFiscal.getcofins_taxrate());
+		
+		// TODO: BC e Aliq por Qtde
+		reg.setQUANT_BC_COFINS(Env.ZERO);
+		reg.setALIQ_COFINS_REAIS(null);
+		
+		//
+		reg.setVL_COFINS(factFiscal.getCofins_TaxAmt());
 
+		// TODO: Código da conta contábil
+		reg.setCOD_CTA("");
+	
+		//
+		return reg;
+	}
+
+	
+	
+	
+	
+	
 } // EFDUtil
