@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO C100 - NOTA FISCAL DE PRODUTOR (CÓDIGO 04) e NF-e (CÓDIGO 55)
@@ -61,7 +62,7 @@ public class RC100 extends RegSped {
 	private BigDecimal VL_COFINS_ST;
 
 	@XMLFieldProperties(needsValidation = true, id = "RC120")
-	private List<RC120> rC120 = new ArrayList<RC120>();
+	private RC120 rC120;
 
 	@XMLFieldProperties(needsValidation = true, id = "RC130")
 	private List<RC130> rC130 = new ArrayList<RC130>();
@@ -309,11 +310,11 @@ public class RC100 extends RegSped {
 		VL_COFINS_ST = vL_COFINS_ST;
 	}
 
-	public List<RC120> getrC120() {
+	public RC120 getrC120() {
 		return rC120;
 	}
 
-	public void setrC120(ArrayList<RC120> rC120) {
+	public void setrC120(RC120 rC120) {
 		this.rC120 = rC120;
 	}
 
@@ -337,7 +338,7 @@ public class RC100 extends RegSped {
 		return rC170;
 	}
 
-	public void setrC170(ArrayList<RC170> rC170) {
+	public void setrC170(List<RC170> rC170) {
 		this.rC170 = rC170;
 	}
 
@@ -345,7 +346,7 @@ public class RC100 extends RegSped {
 		return rC190;
 	}
 
-	public void setrC190(ArrayList<RC190> rC190) {
+	public void setrC190(List<RC190> rC190) {
 		this.rC190 = rC190;
 	}
 
@@ -356,9 +357,77 @@ public class RC100 extends RegSped {
 	public void setrC195(ArrayList<RC195> rC195) {
 		this.rC195 = rC195;
 	}
+	
+	
+	
+	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * 
+	 * @param rc170
+	 */
+	public void addrC170(RC170 rc170) 
+	{
+		this.rC170.add(rc170);
+		
+		// atualizar totalizador C190;
+		updateC190(rc170);
+	}
+	
+	
+	/**
+	 * Atualizar registro C190 baseado nas linhas da NF
+	 * 
+	 * 
+	 */
+	public void updateC190(RC170 rc170)
+	{
 
+		// criar registo
+		RC190 rc190 = new RC190();
+		rc190.setCST_ICMS(rc170.getCST_ICMS());
+		rc190.setALIQ_ICMS(rc170.getALIQ_ICMS());
+		rc190.setVL_OPR(rc170.getVL_OPER());
+		rc190.setVL_BC_ICMS(rc170.getVL_BC_ICMS());
+		rc190.setVL_ICMS(rc170.getVL_ICMS());
+		rc190.setVL_BC_ICMS_ST(rc170.getVL_BC_ICMS_ST());
+		rc190.setVL_ICMS_ST(rc170.getVL_ICMS_ST());
+		
+		// valor cálculado na C170
+		rc190.setVL_RED_BC(rc170.getVL_RED_BC_ICMS());
+		
+		// 
+		rc190.setVL_IPI(rc170.getVL_IPI());
+		
+		// TODO: ??
+		rc190.setCOD_OBS("");
+		
+		
+		// verificar se existe
+		if(rC190.contains(rc190))
+		{
+			// remover da contagem
+			rc190.subtractCounter();
+			
+			// somar combinação de CST, ALIQ, CFOP 
+			rC190.get(rC190.indexOf(rc190)).addValues(rc190);
+		}
+		
+		// se não existir, simplismente add o totalizador
+		else
+		{
+			rC190.add(rc190);
+		}
+		
+		
+		
+	}
+	
+	
+	
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((CHV_NFE == null) ? 0 : CHV_NFE.hashCode());
@@ -456,5 +525,55 @@ public class RC100 extends RegSped {
 	public int compareTo(Object o) {
 		return compare(this, o);
 	}
+	
+	
+	/**
+	 * Formata o Bloco C Registro 100
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.checkSize(IND_OPER, 1, 1))
+            .append(PIPE).append(TextUtil.checkSize(IND_EMIT, 1))
+            .append(PIPE).append(COD_PART) //verifica se está cancelado
+            .append(PIPE).append(COD_MOD) 
+            .append(PIPE).append(COD_SIT)
+            .append(PIPE).append(SER)
+            .append(PIPE).append(NUM_DOC)
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CHV_NFE), 44))
+            .append(PIPE).append(TextUtil.timeToString(DT_DOC, "ddMMyyyy", false))
+            .append(PIPE).append(TextUtil.timeToString(DT_E_S, "ddMMyyyy", false))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_DOC), 255))
+            .append(PIPE).append(TextUtil.checkSize(IND_PGTO, 1))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_DESC), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ABAT_NT), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_MERC), 255))
+            .append(PIPE).append(TextUtil.checkSize(IND_FRT, 1))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_FRT), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_SEG), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_OUT_DA), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_BC_ICMS), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ICMS), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_BC_ICMS_ST), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ICMS_ST), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_IPI), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_PIS), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_COFINS), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_PIS_ST), 255))
+            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_COFINS_ST), 255))
+            .append(PIPE).append(EOL);
+
+		
+		for (RC170 rc170 : rC170)
+			format.append(rc170.toString());
+		
+		
+		return format.append(EOL).toString();
+	} // toString
+	
+	
 
 } // RC100

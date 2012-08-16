@@ -1,11 +1,9 @@
 package org.adempierelbr.sped.efd;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.model.MLBRDI;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.sped.efd.bean.R0000;
@@ -212,7 +210,9 @@ public class EFDUtil {
 	 */
 	public static String getIND_FRT(MLBRFactFiscal factFiscal) throws Exception
 	{
-		
+		// null = sem frete
+		if(factFiscal.getFreightCostRule() == null)
+			return "9";
 		
 		// incluso na nota (corpo da NF)
 		if(factFiscal.getFreightCostRule().equals("I"))
@@ -412,7 +412,7 @@ public class EFDUtil {
 		if (bpContador.getPrimaryAD_User_ID() > 0) 
 			reg.setEMAIL(MUser.get(ctx, bpContador.getPrimaryAD_User_ID()).getEMail());
 
-		// código do municipio do IBGM
+		// código do municipio do IBGE
 		reg.setCOD_MUN(BPartnerUtil.getCityCode(contLoc));
 
 		//
@@ -471,7 +471,7 @@ public class EFDUtil {
 		R0190 reg = new R0190();
 
 		reg.setUNID(factFiscal.getlbr_UOMName() == null ? "un" : factFiscal.getlbr_UOMName());
-		reg.setDESCR(factFiscal.getlbr_uomdescription() == null ? "un" : factFiscal.getlbr_uomdescription());
+		reg.setDESCR(factFiscal.getLBR_UOMDescription() == null ? "un" : factFiscal.getLBR_UOMDescription());
 		
 		
 		return reg;
@@ -620,7 +620,7 @@ public class EFDUtil {
 		reg.setVL_DESC(factFiscal.getDiscountAmt());
 		
 		// Abatimento da ZF - TODO
-		reg.setVL_ABAT_NT(Env.ZERO);
+		reg.setVL_ABAT_NT(factFiscal.getDiscountAmt());
 		
 		// vlr mercadorias, frete e seguro
 		reg.setVL_MERC(factFiscal.getTotalLines());
@@ -632,13 +632,13 @@ public class EFDUtil {
 		reg.setVL_OUT_DA(Env.ZERO);
 		
 		// impostos - somatório das linha
-		reg.setVL_BC_ICMS(Env.ZERO);
-		reg.setVL_ICMS(Env.ZERO);
-		reg.setVL_BC_ICMS_ST(Env.ZERO);
-		reg.setVL_ICMS_ST(Env.ZERO);
-		reg.setVL_IPI(Env.ZERO);
-		reg.setVL_PIS(Env.ZERO);
-		reg.setVL_COFINS(Env.ZERO);
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
+		reg.setVL_IPI(factFiscal.getIPI_NFTaxAmt());
+		reg.setVL_PIS(factFiscal.getPIS_NFTaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_NFTaxAmt());
 		reg.setVL_PIS_ST(Env.ZERO);
 		reg.setVL_COFINS_ST(Env.ZERO);
 		
@@ -655,24 +655,22 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RC120 createRC120(Properties ctx, int LBR_DI_ID, String trxName) throws Exception
+	public static RC120 createRC120(MLBRFactFiscal factFiscal) throws Exception
 	{
-		//
-		MLBRDI di = new MLBRDI(ctx, LBR_DI_ID, trxName);
 		
-		// 
+		//
 		RC120 reg = new RC120();
 		reg.setCOD_DOC_IMP(COD_DOC_IMP);
-		reg.setNUM_DOC_IMP(di.getDocumentNo());
-		
+		reg.setNUM_DOC_IMP(factFiscal.getLBR_NFDI().getlbr_DI());
+
 		// valore preenchidos ao adicionar itens no RC100
-		reg.setPIS_IMP(Env.ZERO);
-		reg.setCOFINS_IMP(Env.ZERO);
+		reg.setPIS_IMP(factFiscal.getPIS_NFTaxAmt());
+		reg.setCOFINS_IMP(factFiscal.getCOFINS_NFTaxAmt());
 		
 		// TODO - verificar valor a preencher
 		reg.setNUM_ACDRAW("");
-
 		
+		//
 		return reg;
 	}
 	
@@ -696,7 +694,7 @@ public class EFDUtil {
 		
 		reg.setQTD(factFiscal.getQty());
 		reg.setUNID(factFiscal.getlbr_UOMName());
-		reg.setVL_ITEM(factFiscal.getLineTotalAmt());
+		reg.setVL_ITEM(factFiscal.getLineNetAmt());
 		
 		// TODO - verificar possibilidades de desconto
 		reg.setVL_DESC(Env.ZERO);
@@ -709,59 +707,64 @@ public class EFDUtil {
 		reg.setCOD_NAT(factFiscal.getlbr_NCMName());
 		
 		// icms
-		reg.setCST_ICMS(factFiscal.geticms_taxstatus());
-		reg.setVL_BC_ICMS(factFiscal.geticms_taxbaseamt());
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
 		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
 		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
 		
 		
 		// st
-		reg.setVL_BC_ICMS_ST(factFiscal.geticmsst_taxbaseamt());
-		reg.setALIQ_ST(factFiscal.geticmsst_taxrate());
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_TaxBaseAmt());
+		reg.setALIQ_ST(factFiscal.getICMSST_TaxRate());
 		reg.setVL_ICMS_ST(factFiscal.getICMSST_TaxAmt());
 		
 		// ipi
 		reg.setIND_APUR(IND_APUR);
-		reg.setCST_IPI(factFiscal.getipi_taxstatus());
+		reg.setCST_IPI(factFiscal.getIPI_TaxStatus());
 		
 		// TODO - ??
 		reg.setCOD_ENQ("");
-		reg.setVL_BC_IPI(factFiscal.getipi_taxbaseamt());
-		reg.setALIQ_IPI(factFiscal.getipi_taxrate());
+		reg.setVL_BC_IPI(factFiscal.getIPI_TaxBaseAmt());
+		reg.setALIQ_IPI(factFiscal.getIPI_TaxRate());
 		reg.setVL_IPI(factFiscal.getIPI_TaxAmt());
 		
 		// pis
-		reg.setCST_PIS(factFiscal.getpis_taxstatus());
-		reg.setVL_BC_PIS(factFiscal.getpis_taxbaseamt());
-		reg.setALIQ_PIS(factFiscal.getpis_taxrate());
+		reg.setCST_PIS(factFiscal.getPIS_TaxStatus());
+		reg.setVL_BC_PIS(factFiscal.getPIS_TaxBaseAmt());
+		reg.setALIQ_PIS(factFiscal.getPIS_TaxRate());
 		
 		// TODO: BC e Aliq por Qtde
-		reg.setQUANT_BC_PIS(Env.ZERO);
+		reg.setQUANT_BC_PIS(null);
 		reg.setALIQ_PIS_REAIS(null);
 		
 		//
 		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
 		
 		// cofins
-		reg.setCST_COFINS(factFiscal.getcofins_taxstatus());
-		reg.setVL_BC_COFINS(factFiscal.getcofins_taxbaseamt());
-		reg.setALIQ_COFINS(factFiscal.getcofins_taxrate());
+		reg.setCST_COFINS(factFiscal.getCOFINS_TaxStatus());
+		reg.setVL_BC_COFINS(factFiscal.getCOFINS_TaxBaseAmt());
+		reg.setALIQ_COFINS(factFiscal.getCOFINS_TaxRate());
 		
 		// TODO: BC e Aliq por Qtde
-		reg.setQUANT_BC_COFINS(Env.ZERO);
+		reg.setQUANT_BC_COFINS(null);
 		reg.setALIQ_COFINS_REAIS(null);
 		
 		//
-		reg.setVL_COFINS(factFiscal.getCofins_TaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
 
 		// TODO: Código da conta contábil
 		reg.setCOD_CTA("");
+		
+		
+		/*
+		 * Definir valor da operação no registro C170 para
+		 * depois utilizar na geração do C190
+		 */
+		reg.setVL_OPER(factFiscal.getLineTotalAmt());
 	
 		//
 		return reg;
 	}
-
-	
 	
 	
 	

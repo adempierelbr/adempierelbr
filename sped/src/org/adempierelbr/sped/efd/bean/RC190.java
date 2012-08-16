@@ -145,6 +145,18 @@ public class RC190 extends RegSped {
 		COD_OBS = cOD_OBS;
 	}
 
+	
+	public void addValues(RC190 otherC190){
+		this.VL_OPR        = getVL_OPR().add(otherC190.getVL_OPR());
+		this.VL_BC_ICMS    = getVL_BC_ICMS().add(otherC190.getVL_BC_ICMS());
+		this.VL_ICMS       = getVL_ICMS().add(otherC190.getVL_ICMS());
+		this.VL_BC_ICMS_ST = getVL_BC_ICMS_ST().add(otherC190.getVL_BC_ICMS_ST());
+		this.VL_ICMS_ST    = getVL_ICMS_ST().add(otherC190.getVL_ICMS_ST());
+		this.VL_RED_BC     = getVL_RED_BC().add(otherC190.getVL_RED_BC());
+		this.VL_IPI        = getVL_IPI().add(otherC190.getVL_IPI());
+	}
+	
+	
 	@Override
 	public int hashCode() {
 
@@ -190,11 +202,15 @@ public class RC190 extends RegSped {
 	 * 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
-	public int compare(Object o1, Object o2) {
+	public int compare(Object o1, Object o2) 
+	{
+		
 		if (o1 == null) // Depois
 			return 1;
+		
 		else if (o2 == null)
 			return -1; // Antes
+		
 		else if (o1 instanceof RC190 && o2 instanceof RC190) {
 			RC190 e1 = (RC190) o1;
 			RC190 e2 = (RC190) o2;

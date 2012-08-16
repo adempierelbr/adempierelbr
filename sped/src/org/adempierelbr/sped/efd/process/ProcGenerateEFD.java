@@ -182,7 +182,7 @@ public class ProcGenerateEFD extends SvrProcess
 			int last_LBR_NotaFiscal_ID = 0;
 			
 			// registro C100 - montado de acordo com os fatos fiscais e depois adicionado ao bloco C
-			RC100 rc100;
+			RC100 rc100 = null;
 
 			
 			/*
@@ -197,11 +197,12 @@ public class ProcGenerateEFD extends SvrProcess
 			for(MLBRFactFiscal factFiscal : factFiscals)
 			{
 	
+				String REG = EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)); 
+				
 				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
 				 */
-				if(!(EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)).startsWith("C") 
-						|| EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)).startsWith("D")))
+				if(!(REG.startsWith("C") || REG.startsWith("D")))
 					continue;
 	
 	
@@ -218,13 +219,19 @@ public class ProcGenerateEFD extends SvrProcess
 					bloco0.addr0150(EFDUtil.createR0150(factFiscal));
 					
 					
-					
 					/*
-					 * RC100 e RC500 e RD100 e RD500
+					 * RC100
 					 */
-					rc100 = new RC100();
-					
-					
+					if(REG.startsWith("C"))
+					{
+						// C100 - NF
+						rc100 = EFDUtil.createRC100(factFiscal);
+
+						// C120 - DI
+						if(factFiscal.getLBR_NFDI_ID() > 0)
+							rc100.setrC120(EFDUtil.createRC120(factFiscal));
+						
+					}
 				}
 				
 				/*
@@ -239,6 +246,26 @@ public class ProcGenerateEFD extends SvrProcess
 				
 				
 				/*
+				 * C170 - itens da NF
+				 */
+				if(REG.startsWith("C"))
+					rc100.addrC170(EFDUtil.createRC170(factFiscal));
+				
+				
+				/*
+				 * Adicionar RC100 no bloco depois de adicionar as linhas
+				 * 
+				 * TODO - pensar em uma forma mais eficiente
+				 * 
+				 * Obs.: Irá repetir a cada iteração de fato fiscal, 
+				 * por isso foi criado uma validação para não adicionar o mesmo registro 
+				 * duas veses no bloco C
+				 */
+				if(REG.startsWith("C"))
+					blocoC.addrC100(rc100);
+				
+				
+				/*
 				 * Preencher com o ID da NF do fato fiscal
 				 * para no próximo loop verificar se o próximo 
 				 * fato pertence a esta mesma nota
@@ -250,20 +277,12 @@ public class ProcGenerateEFD extends SvrProcess
 			} // loop fatos fiscais
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			// finalizar bloco zero
 			bloco0.setR0990(EFDUtil.createR0990());
+			
+			
+			// 
+			return new StringBuilder(blocoC.toString());
 			
 		}
 		catch (Exception e) 
@@ -279,9 +298,11 @@ public class ProcGenerateEFD extends SvrProcess
 			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
 		}
 		
-		return new StringBuilder("");
 		// return bloco0;
 	}
+	
+	
+	
 	
 	public static void main(String args[])
 	{

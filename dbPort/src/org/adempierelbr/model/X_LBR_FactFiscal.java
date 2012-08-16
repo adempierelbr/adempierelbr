@@ -33,7 +33,7 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120815L;
+	private static final long serialVersionUID = 20120816L;
 
     /** Standard Constructor */
     public X_LBR_FactFiscal (Properties ctx, int LBR_FactFiscal_ID, String trxName)
@@ -51,7 +51,7 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
     }
 
     /** AccessLevel
-      * @return 4 - System 
+      * @return 3 - Client - Org 
       */
     protected int get_AccessLevel()
     {
@@ -204,86 +204,103 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set Valor do COFINS.
-		@param Cofins_TaxAmt Valor do COFINS	  */
-	public void setCofins_TaxAmt (BigDecimal Cofins_TaxAmt)
+	/** Set Total de Cofins da NF.
+		@param COFINS_NFTaxAmt Total de Cofins da NF	  */
+	public void setCOFINS_NFTaxAmt (BigDecimal COFINS_NFTaxAmt)
 	{
-		set_Value (COLUMNNAME_Cofins_TaxAmt, Cofins_TaxAmt);
+		set_Value (COLUMNNAME_COFINS_NFTaxAmt, COFINS_NFTaxAmt);
+	}
+
+	/** Get Total de Cofins da NF.
+		@return Total de Cofins da NF	  */
+	public BigDecimal getCOFINS_NFTaxAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_COFINS_NFTaxAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Valor do COFINS.
+		@param COFINS_TaxAmt Valor do COFINS	  */
+	public void setCOFINS_TaxAmt (BigDecimal COFINS_TaxAmt)
+	{
+		set_Value (COLUMNNAME_COFINS_TaxAmt, COFINS_TaxAmt);
 	}
 
 	/** Get Valor do COFINS.
 		@return Valor do COFINS	  */
-	public BigDecimal getCofins_TaxAmt () 
+	public BigDecimal getCOFINS_TaxAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Cofins_TaxAmt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_COFINS_TaxAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set cofins_taxbase.
-		@param cofins_taxbase cofins_taxbase	  */
-	public void setcofins_taxbase (BigDecimal cofins_taxbase)
+	/** Set Red. Base de Cálculo do COFINS.
+		@param COFINS_TaxBase Red. Base de Cálculo do COFINS	  */
+	public void setCOFINS_TaxBase (BigDecimal COFINS_TaxBase)
 	{
-		set_Value (COLUMNNAME_cofins_taxbase, cofins_taxbase);
+		set_Value (COLUMNNAME_COFINS_TaxBase, COFINS_TaxBase);
 	}
 
-	/** Get cofins_taxbase.
-		@return cofins_taxbase	  */
-	public BigDecimal getcofins_taxbase () 
+	/** Get Red. Base de Cálculo do COFINS.
+		@return Red. Base de Cálculo do COFINS	  */
+	public BigDecimal getCOFINS_TaxBase () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_cofins_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_COFINS_TaxBase);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set cofins_taxbaseamt.
-		@param cofins_taxbaseamt cofins_taxbaseamt	  */
-	public void setcofins_taxbaseamt (BigDecimal cofins_taxbaseamt)
+	/** Set Vlr. BC COFINS.
+		@param COFINS_TaxBaseAmt Vlr. BC COFINS	  */
+	public void setCOFINS_TaxBaseAmt (BigDecimal COFINS_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_cofins_taxbaseamt, cofins_taxbaseamt);
+		set_Value (COLUMNNAME_COFINS_TaxBaseAmt, COFINS_TaxBaseAmt);
 	}
 
-	/** Get cofins_taxbaseamt.
-		@return cofins_taxbaseamt	  */
-	public BigDecimal getcofins_taxbaseamt () 
+	/** Get Vlr. BC COFINS.
+		@return Vlr. BC COFINS	  */
+	public BigDecimal getCOFINS_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_cofins_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_COFINS_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set cofins_taxrate.
-		@param cofins_taxrate cofins_taxrate	  */
-	public void setcofins_taxrate (BigDecimal cofins_taxrate)
+	/** Set Alíq. Cofins.
+		@param COFINS_TaxRate Alíq. Cofins	  */
+	public void setCOFINS_TaxRate (BigDecimal COFINS_TaxRate)
 	{
-		set_Value (COLUMNNAME_cofins_taxrate, cofins_taxrate);
+		set_Value (COLUMNNAME_COFINS_TaxRate, COFINS_TaxRate);
 	}
 
-	/** Get cofins_taxrate.
-		@return cofins_taxrate	  */
-	public BigDecimal getcofins_taxrate () 
+	/** Get Alíq. Cofins.
+		@return Alíq. Cofins	  */
+	public BigDecimal getCOFINS_TaxRate () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_cofins_taxrate);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_COFINS_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set cofins_taxstatus.
-		@param cofins_taxstatus cofins_taxstatus	  */
-	public void setcofins_taxstatus (String cofins_taxstatus)
+	/** Set CST Cofins.
+		@param COFINS_TaxStatus CST Cofins	  */
+	public void setCOFINS_TaxStatus (String COFINS_TaxStatus)
 	{
-		set_Value (COLUMNNAME_cofins_taxstatus, cofins_taxstatus);
+		set_Value (COLUMNNAME_COFINS_TaxStatus, COFINS_TaxStatus);
 	}
 
-	/** Get cofins_taxstatus.
-		@return cofins_taxstatus	  */
-	public String getcofins_taxstatus () 
+	/** Get CST Cofins.
+		@return CST Cofins	  */
+	public String getCOFINS_TaxStatus () 
 	{
-		return (String)get_Value(COLUMNNAME_cofins_taxstatus);
+		return (String)get_Value(COLUMNNAME_COFINS_TaxStatus);
 	}
 
 	public I_C_Order getC_Order() throws RuntimeException
@@ -542,6 +559,74 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
+	/** Set Total de ICMS da NF.
+		@param ICMS_NFTaxAmt Total de ICMS da NF	  */
+	public void setICMS_NFTaxAmt (BigDecimal ICMS_NFTaxAmt)
+	{
+		set_Value (COLUMNNAME_ICMS_NFTaxAmt, ICMS_NFTaxAmt);
+	}
+
+	/** Get Total de ICMS da NF.
+		@return Total de ICMS da NF	  */
+	public BigDecimal getICMS_NFTaxAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMS_NFTaxAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tot da BC do ICMS.
+		@param ICMS_NFTaxBaseAmt Tot da BC do ICMS	  */
+	public void setICMS_NFTaxBaseAmt (BigDecimal ICMS_NFTaxBaseAmt)
+	{
+		set_Value (COLUMNNAME_ICMS_NFTaxBaseAmt, ICMS_NFTaxBaseAmt);
+	}
+
+	/** Get Tot da BC do ICMS.
+		@return Tot da BC do ICMS	  */
+	public BigDecimal getICMS_NFTaxBaseAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMS_NFTaxBaseAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Total de ICMSST da NF.
+		@param ICMSST_NFTaxAmt Total de ICMSST da NF	  */
+	public void setICMSST_NFTaxAmt (BigDecimal ICMSST_NFTaxAmt)
+	{
+		set_Value (COLUMNNAME_ICMSST_NFTaxAmt, ICMSST_NFTaxAmt);
+	}
+
+	/** Get Total de ICMSST da NF.
+		@return Total de ICMSST da NF	  */
+	public BigDecimal getICMSST_NFTaxAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMSST_NFTaxAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Total da BC ICMSST da NF.
+		@param ICMSST_NFTaxBaseAmt Total da BC ICMSST da NF	  */
+	public void setICMSST_NFTaxBaseAmt (BigDecimal ICMSST_NFTaxBaseAmt)
+	{
+		set_Value (COLUMNNAME_ICMSST_NFTaxBaseAmt, ICMSST_NFTaxBaseAmt);
+	}
+
+	/** Get Total da BC ICMSST da NF.
+		@return Total da BC ICMSST da NF	  */
+	public BigDecimal getICMSST_NFTaxBaseAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMSST_NFTaxBaseAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Valor do ICMSST.
 		@param ICMSST_TaxAmt Valor do ICMSST	  */
 	public void setICMSST_TaxAmt (BigDecimal ICMSST_TaxAmt)
@@ -559,69 +644,69 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set icmsst_taxbase.
-		@param icmsst_taxbase icmsst_taxbase	  */
-	public void seticmsst_taxbase (BigDecimal icmsst_taxbase)
+	/** Set Red. da BC do ICMSST.
+		@param ICMSST_TaxBase Red. da BC do ICMSST	  */
+	public void setICMSST_TaxBase (BigDecimal ICMSST_TaxBase)
 	{
-		set_Value (COLUMNNAME_icmsst_taxbase, icmsst_taxbase);
+		set_Value (COLUMNNAME_ICMSST_TaxBase, ICMSST_TaxBase);
 	}
 
-	/** Get icmsst_taxbase.
-		@return icmsst_taxbase	  */
-	public BigDecimal geticmsst_taxbase () 
+	/** Get Red. da BC do ICMSST.
+		@return Red. da BC do ICMSST	  */
+	public BigDecimal getICMSST_TaxBase () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icmsst_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMSST_TaxBase);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set icmsst_taxbaseamt.
-		@param icmsst_taxbaseamt icmsst_taxbaseamt	  */
-	public void seticmsst_taxbaseamt (BigDecimal icmsst_taxbaseamt)
+	/** Set Total da BC ICMSST.
+		@param ICMSST_TaxBaseAmt Total da BC ICMSST	  */
+	public void setICMSST_TaxBaseAmt (BigDecimal ICMSST_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_icmsst_taxbaseamt, icmsst_taxbaseamt);
+		set_Value (COLUMNNAME_ICMSST_TaxBaseAmt, ICMSST_TaxBaseAmt);
 	}
 
-	/** Get icmsst_taxbaseamt.
-		@return icmsst_taxbaseamt	  */
-	public BigDecimal geticmsst_taxbaseamt () 
+	/** Get Total da BC ICMSST.
+		@return Total da BC ICMSST	  */
+	public BigDecimal getICMSST_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icmsst_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMSST_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set icmsst_taxrate.
-		@param icmsst_taxrate icmsst_taxrate	  */
-	public void seticmsst_taxrate (BigDecimal icmsst_taxrate)
+	/** Set Alíq. do ICMSST.
+		@param ICMSST_TaxRate Alíq. do ICMSST	  */
+	public void setICMSST_TaxRate (BigDecimal ICMSST_TaxRate)
 	{
-		set_Value (COLUMNNAME_icmsst_taxrate, icmsst_taxrate);
+		set_Value (COLUMNNAME_ICMSST_TaxRate, ICMSST_TaxRate);
 	}
 
-	/** Get icmsst_taxrate.
-		@return icmsst_taxrate	  */
-	public BigDecimal geticmsst_taxrate () 
+	/** Get Alíq. do ICMSST.
+		@return Alíq. do ICMSST	  */
+	public BigDecimal getICMSST_TaxRate () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icmsst_taxrate);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMSST_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set icmsst_taxstatus.
-		@param icmsst_taxstatus icmsst_taxstatus	  */
-	public void seticmsst_taxstatus (String icmsst_taxstatus)
+	/** Set CST do ICMSST.
+		@param ICMSST_TaxStatus CST do ICMSST	  */
+	public void setICMSST_TaxStatus (String ICMSST_TaxStatus)
 	{
-		set_Value (COLUMNNAME_icmsst_taxstatus, icmsst_taxstatus);
+		set_Value (COLUMNNAME_ICMSST_TaxStatus, ICMSST_TaxStatus);
 	}
 
-	/** Get icmsst_taxstatus.
-		@return icmsst_taxstatus	  */
-	public String geticmsst_taxstatus () 
+	/** Get CST do ICMSST.
+		@return CST do ICMSST	  */
+	public String getICMSST_TaxStatus () 
 	{
-		return (String)get_Value(COLUMNNAME_icmsst_taxstatus);
+		return (String)get_Value(COLUMNNAME_ICMSST_TaxStatus);
 	}
 
 	/** Set Valor do ICMS.
@@ -641,35 +726,35 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set icms_taxbase.
-		@param icms_taxbase icms_taxbase	  */
-	public void seticms_taxbase (BigDecimal icms_taxbase)
+	/** Set Red. BC ICMS.
+		@param ICMS_TaxBase Red. BC ICMS	  */
+	public void setICMS_TaxBase (BigDecimal ICMS_TaxBase)
 	{
-		set_Value (COLUMNNAME_icms_taxbase, icms_taxbase);
+		set_Value (COLUMNNAME_ICMS_TaxBase, ICMS_TaxBase);
 	}
 
-	/** Get icms_taxbase.
-		@return icms_taxbase	  */
-	public BigDecimal geticms_taxbase () 
+	/** Get Red. BC ICMS.
+		@return Red. BC ICMS	  */
+	public BigDecimal getICMS_TaxBase () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icms_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMS_TaxBase);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set icms_taxbaseamt.
-		@param icms_taxbaseamt icms_taxbaseamt	  */
-	public void seticms_taxbaseamt (BigDecimal icms_taxbaseamt)
+	/** Set Vlr. BC ICMS.
+		@param ICMS_TaxBaseAmt Vlr. BC ICMS	  */
+	public void setICMS_TaxBaseAmt (BigDecimal ICMS_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_icms_taxbaseamt, icms_taxbaseamt);
+		set_Value (COLUMNNAME_ICMS_TaxBaseAmt, ICMS_TaxBaseAmt);
 	}
 
-	/** Get icms_taxbaseamt.
-		@return icms_taxbaseamt	  */
-	public BigDecimal geticms_taxbaseamt () 
+	/** Get Vlr. BC ICMS.
+		@return Vlr. BC ICMS	  */
+	public BigDecimal getICMS_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icms_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ICMS_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -692,18 +777,18 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set icms_taxstatus.
-		@param icms_taxstatus icms_taxstatus	  */
-	public void seticms_taxstatus (String icms_taxstatus)
+	/** Set CST do ICMS.
+		@param ICMS_TaxStatus CST do ICMS	  */
+	public void setICMS_TaxStatus (String ICMS_TaxStatus)
 	{
-		set_Value (COLUMNNAME_icms_taxstatus, icms_taxstatus);
+		set_Value (COLUMNNAME_ICMS_TaxStatus, ICMS_TaxStatus);
 	}
 
-	/** Get icms_taxstatus.
-		@return icms_taxstatus	  */
-	public String geticms_taxstatus () 
+	/** Get CST do ICMS.
+		@return CST do ICMS	  */
+	public String getICMS_TaxStatus () 
 	{
-		return (String)get_Value(COLUMNNAME_icms_taxstatus);
+		return (String)get_Value(COLUMNNAME_ICMS_TaxStatus);
 	}
 
 	/** Set Valor do II.
@@ -723,69 +808,55 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set ii_taxbase.
-		@param ii_taxbase ii_taxbase	  */
-	public void setii_taxbase (BigDecimal ii_taxbase)
+	/** Set Vlr. da BC do II.
+		@param II_TaxBaseAmt Vlr. da BC do II	  */
+	public void setII_TaxBaseAmt (BigDecimal II_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_ii_taxbase, ii_taxbase);
+		set_Value (COLUMNNAME_II_TaxBaseAmt, II_TaxBaseAmt);
 	}
 
-	/** Get ii_taxbase.
-		@return ii_taxbase	  */
-	public BigDecimal getii_taxbase () 
+	/** Get Vlr. da BC do II.
+		@return Vlr. da BC do II	  */
+	public BigDecimal getII_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ii_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_II_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set ii_taxbaseamt.
-		@param ii_taxbaseamt ii_taxbaseamt	  */
-	public void setii_taxbaseamt (BigDecimal ii_taxbaseamt)
+	/** Set Alíq. do II.
+		@param II_TaxRate Alíq. do II	  */
+	public void setII_TaxRate (BigDecimal II_TaxRate)
 	{
-		set_Value (COLUMNNAME_ii_taxbaseamt, ii_taxbaseamt);
+		set_Value (COLUMNNAME_II_TaxRate, II_TaxRate);
 	}
 
-	/** Get ii_taxbaseamt.
-		@return ii_taxbaseamt	  */
-	public BigDecimal getii_taxbaseamt () 
+	/** Get Alíq. do II.
+		@return Alíq. do II	  */
+	public BigDecimal getII_TaxRate () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ii_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_II_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set ii_taxrate.
-		@param ii_taxrate ii_taxrate	  */
-	public void setii_taxrate (BigDecimal ii_taxrate)
+	/** Set Total de IPI da NF.
+		@param IPI_NFTaxAmt Total de IPI da NF	  */
+	public void setIPI_NFTaxAmt (BigDecimal IPI_NFTaxAmt)
 	{
-		set_Value (COLUMNNAME_ii_taxrate, ii_taxrate);
+		set_Value (COLUMNNAME_IPI_NFTaxAmt, IPI_NFTaxAmt);
 	}
 
-	/** Get ii_taxrate.
-		@return ii_taxrate	  */
-	public BigDecimal getii_taxrate () 
+	/** Get Total de IPI da NF.
+		@return Total de IPI da NF	  */
+	public BigDecimal getIPI_NFTaxAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ii_taxrate);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_IPI_NFTaxAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	/** Set ii_taxstatus.
-		@param ii_taxstatus ii_taxstatus	  */
-	public void setii_taxstatus (String ii_taxstatus)
-	{
-		set_Value (COLUMNNAME_ii_taxstatus, ii_taxstatus);
-	}
-
-	/** Get ii_taxstatus.
-		@return ii_taxstatus	  */
-	public String getii_taxstatus () 
-	{
-		return (String)get_Value(COLUMNNAME_ii_taxstatus);
 	}
 
 	/** Set Valor do IPI.
@@ -805,69 +876,52 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set ipi_taxbase.
-		@param ipi_taxbase ipi_taxbase	  */
-	public void setipi_taxbase (BigDecimal ipi_taxbase)
+	/** Set Vlr da BC do IPI.
+		@param IPI_TaxBaseAmt Vlr da BC do IPI	  */
+	public void setIPI_TaxBaseAmt (BigDecimal IPI_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_ipi_taxbase, ipi_taxbase);
+		set_Value (COLUMNNAME_IPI_TaxBaseAmt, IPI_TaxBaseAmt);
 	}
 
-	/** Get ipi_taxbase.
-		@return ipi_taxbase	  */
-	public BigDecimal getipi_taxbase () 
+	/** Get Vlr da BC do IPI.
+		@return Vlr da BC do IPI	  */
+	public BigDecimal getIPI_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ipi_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_IPI_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set ipi_taxbaseamt.
-		@param ipi_taxbaseamt ipi_taxbaseamt	  */
-	public void setipi_taxbaseamt (BigDecimal ipi_taxbaseamt)
+	/** Set Alíq. do IPI.
+		@param IPI_TaxRate Alíq. do IPI	  */
+	public void setIPI_TaxRate (BigDecimal IPI_TaxRate)
 	{
-		set_Value (COLUMNNAME_ipi_taxbaseamt, ipi_taxbaseamt);
+		set_Value (COLUMNNAME_IPI_TaxRate, IPI_TaxRate);
 	}
 
-	/** Get ipi_taxbaseamt.
-		@return ipi_taxbaseamt	  */
-	public BigDecimal getipi_taxbaseamt () 
+	/** Get Alíq. do IPI.
+		@return Alíq. do IPI	  */
+	public BigDecimal getIPI_TaxRate () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ipi_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_IPI_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set ipi_taxrate.
-		@param ipi_taxrate ipi_taxrate	  */
-	public void setipi_taxrate (BigDecimal ipi_taxrate)
+	/** Set CST do IPI.
+		@param IPI_TaxStatus CST do IPI	  */
+	public void setIPI_TaxStatus (String IPI_TaxStatus)
 	{
-		set_Value (COLUMNNAME_ipi_taxrate, ipi_taxrate);
+		set_Value (COLUMNNAME_IPI_TaxStatus, IPI_TaxStatus);
 	}
 
-	/** Get ipi_taxrate.
-		@return ipi_taxrate	  */
-	public BigDecimal getipi_taxrate () 
+	/** Get CST do IPI.
+		@return CST do IPI	  */
+	public String getIPI_TaxStatus () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ipi_taxrate);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set ipi_taxstatus.
-		@param ipi_taxstatus ipi_taxstatus	  */
-	public void setipi_taxstatus (String ipi_taxstatus)
-	{
-		set_Value (COLUMNNAME_ipi_taxstatus, ipi_taxstatus);
-	}
-
-	/** Get ipi_taxstatus.
-		@return ipi_taxstatus	  */
-	public String getipi_taxstatus () 
-	{
-		return (String)get_Value(COLUMNNAME_ipi_taxstatus);
+		return (String)get_Value(COLUMNNAME_IPI_TaxStatus);
 	}
 
 	/** Set Cancelled.
@@ -1421,6 +1475,31 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_NCMName);
 	}
 
+	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NFDI)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NFDI.Table_Name)
+			.getPO(getLBR_NFDI_ID(), get_TrxName());	}
+
+	/** Set DI.
+		@param LBR_NFDI_ID DI	  */
+	public void setLBR_NFDI_ID (int LBR_NFDI_ID)
+	{
+		if (LBR_NFDI_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NFDI_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NFDI_ID, Integer.valueOf(LBR_NFDI_ID));
+	}
+
+	/** Get DI.
+		@return DI	  */
+	public int getLBR_NFDI_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFDI_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set NFe ID.
 		@param lbr_NFeID 
 		Identification of NFe
@@ -1708,40 +1787,43 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_OrgCity);
 	}
 
-	/** Set lbr_orgcitycode.
-		@param lbr_orgcitycode lbr_orgcitycode	  */
-	public void setlbr_orgcitycode (int lbr_orgcitycode)
+	/** Set Cód. da Cidade da Org.(IBGE).
+		@param LBR_OrgCityCode Cód. da Cidade da Org.(IBGE)	  */
+	public void setLBR_OrgCityCode (int LBR_OrgCityCode)
 	{
-		set_Value (COLUMNNAME_lbr_orgcitycode, Integer.valueOf(lbr_orgcitycode));
+		set_Value (COLUMNNAME_LBR_OrgCityCode, Integer.valueOf(LBR_OrgCityCode));
 	}
 
-	/** Get lbr_orgcitycode.
-		@return lbr_orgcitycode	  */
-	public int getlbr_orgcitycode () 
+	/** Get Cód. da Cidade da Org.(IBGE).
+		@return Cód. da Cidade da Org.(IBGE)	  */
+	public int getLBR_OrgCityCode () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_orgcitycode);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_OrgCityCode);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public I_C_Location getlbr_org_location() throws RuntimeException
+	public I_C_Location getLBR_Org_Location() throws RuntimeException
     {
 		return (I_C_Location)MTable.get(getCtx(), I_C_Location.Table_Name)
-			.getPO(getlbr_org_location_id(), get_TrxName());	}
+			.getPO(getLBR_Org_Location_ID(), get_TrxName());	}
 
-	/** Set lbr_org_location_id.
-		@param lbr_org_location_id lbr_org_location_id	  */
-	public void setlbr_org_location_id (int lbr_org_location_id)
+	/** Set Localização da Organização.
+		@param LBR_Org_Location_ID Localização da Organização	  */
+	public void setLBR_Org_Location_ID (int LBR_Org_Location_ID)
 	{
-		set_Value (COLUMNNAME_lbr_org_location_id, Integer.valueOf(lbr_org_location_id));
+		if (LBR_Org_Location_ID < 1) 
+			set_Value (COLUMNNAME_LBR_Org_Location_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_Org_Location_ID, Integer.valueOf(LBR_Org_Location_ID));
 	}
 
-	/** Get lbr_org_location_id.
-		@return lbr_org_location_id	  */
-	public int getlbr_org_location_id () 
+	/** Get Localização da Organização.
+		@return Localização da Organização	  */
+	public int getLBR_Org_Location_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_org_location_id);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_Org_Location_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1852,18 +1934,18 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set lbr_uomdescription.
-		@param lbr_uomdescription lbr_uomdescription	  */
-	public void setlbr_uomdescription (String lbr_uomdescription)
+	/** Set Descrição da UOM.
+		@param LBR_UOMDescription Descrição da UOM	  */
+	public void setLBR_UOMDescription (String LBR_UOMDescription)
 	{
-		set_Value (COLUMNNAME_lbr_uomdescription, lbr_uomdescription);
+		set_Value (COLUMNNAME_LBR_UOMDescription, LBR_UOMDescription);
 	}
 
-	/** Get lbr_uomdescription.
-		@return lbr_uomdescription	  */
-	public String getlbr_uomdescription () 
+	/** Get Descrição da UOM.
+		@return Descrição da UOM	  */
+	public String getLBR_UOMDescription () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_uomdescription);
+		return (String)get_Value(COLUMNNAME_LBR_UOMDescription);
 	}
 
 	/** Set UOM Name.
@@ -1901,6 +1983,26 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Line Amount.
+		@param LineNetAmt 
+		Line Extended Amount (Quantity * Actual Price) without Freight and Charges
+	  */
+	public void setLineNetAmt (BigDecimal LineNetAmt)
+	{
+		set_Value (COLUMNNAME_LineNetAmt, LineNetAmt);
+	}
+
+	/** Get Line Amount.
+		@return Line Extended Amount (Quantity * Actual Price) without Freight and Charges
+	  */
+	public BigDecimal getLineNetAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LineNetAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Line Total.
@@ -1951,6 +2053,23 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set Total de PIS da NF.
+		@param PIS_NFTaxAmt Total de PIS da NF	  */
+	public void setPIS_NFTaxAmt (BigDecimal PIS_NFTaxAmt)
+	{
+		set_Value (COLUMNNAME_PIS_NFTaxAmt, PIS_NFTaxAmt);
+	}
+
+	/** Get Total de PIS da NF.
+		@return Total de PIS da NF	  */
+	public BigDecimal getPIS_NFTaxAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PIS_NFTaxAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Valor do PIS.
 		@param PIS_TaxAmt Valor do PIS	  */
 	public void setPIS_TaxAmt (BigDecimal PIS_TaxAmt)
@@ -1968,69 +2087,69 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set pis_taxbase.
-		@param pis_taxbase pis_taxbase	  */
-	public void setpis_taxbase (BigDecimal pis_taxbase)
+	/** Set Red. da BC do PIS.
+		@param PIS_TaxBase Red. da BC do PIS	  */
+	public void setPIS_TaxBase (BigDecimal PIS_TaxBase)
 	{
-		set_Value (COLUMNNAME_pis_taxbase, pis_taxbase);
+		set_Value (COLUMNNAME_PIS_TaxBase, PIS_TaxBase);
 	}
 
-	/** Get pis_taxbase.
-		@return pis_taxbase	  */
-	public BigDecimal getpis_taxbase () 
+	/** Get Red. da BC do PIS.
+		@return Red. da BC do PIS	  */
+	public BigDecimal getPIS_TaxBase () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_pis_taxbase);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PIS_TaxBase);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set pis_taxbaseamt.
-		@param pis_taxbaseamt pis_taxbaseamt	  */
-	public void setpis_taxbaseamt (BigDecimal pis_taxbaseamt)
+	/** Set Vlr. da BC do PIS.
+		@param PIS_TaxBaseAmt Vlr. da BC do PIS	  */
+	public void setPIS_TaxBaseAmt (BigDecimal PIS_TaxBaseAmt)
 	{
-		set_Value (COLUMNNAME_pis_taxbaseamt, pis_taxbaseamt);
+		set_Value (COLUMNNAME_PIS_TaxBaseAmt, PIS_TaxBaseAmt);
 	}
 
-	/** Get pis_taxbaseamt.
-		@return pis_taxbaseamt	  */
-	public BigDecimal getpis_taxbaseamt () 
+	/** Get Vlr. da BC do PIS.
+		@return Vlr. da BC do PIS	  */
+	public BigDecimal getPIS_TaxBaseAmt () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_pis_taxbaseamt);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PIS_TaxBaseAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set pis_taxrate.
-		@param pis_taxrate pis_taxrate	  */
-	public void setpis_taxrate (BigDecimal pis_taxrate)
+	/** Set Alíq. do PIS.
+		@param PIS_TaxRate Alíq. do PIS	  */
+	public void setPIS_TaxRate (BigDecimal PIS_TaxRate)
 	{
-		set_Value (COLUMNNAME_pis_taxrate, pis_taxrate);
+		set_Value (COLUMNNAME_PIS_TaxRate, PIS_TaxRate);
 	}
 
-	/** Get pis_taxrate.
-		@return pis_taxrate	  */
-	public BigDecimal getpis_taxrate () 
+	/** Get Alíq. do PIS.
+		@return Alíq. do PIS	  */
+	public BigDecimal getPIS_TaxRate () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_pis_taxrate);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PIS_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** Set pis_taxstatus.
-		@param pis_taxstatus pis_taxstatus	  */
-	public void setpis_taxstatus (String pis_taxstatus)
+	/** Set CST do PIS.
+		@param PIS_TaxStatus CST do PIS	  */
+	public void setPIS_TaxStatus (String PIS_TaxStatus)
 	{
-		set_Value (COLUMNNAME_pis_taxstatus, pis_taxstatus);
+		set_Value (COLUMNNAME_PIS_TaxStatus, PIS_TaxStatus);
 	}
 
-	/** Get pis_taxstatus.
-		@return pis_taxstatus	  */
-	public String getpis_taxstatus () 
+	/** Get CST do PIS.
+		@return CST do PIS	  */
+	public String getPIS_TaxStatus () 
 	{
-		return (String)get_Value(COLUMNNAME_pis_taxstatus);
+		return (String)get_Value(COLUMNNAME_PIS_TaxStatus);
 	}
 
 	/** Set Price.
@@ -2070,32 +2189,32 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_ProductName);
 	}
 
-	/** Set productncm.
-		@param productncm productncm	  */
-	public void setproductncm (String productncm)
+	/** Set NCM do Produto.
+		@param ProductNCM NCM do Produto	  */
+	public void setProductNCM (String ProductNCM)
 	{
-		set_Value (COLUMNNAME_productncm, productncm);
+		set_Value (COLUMNNAME_ProductNCM, ProductNCM);
 	}
 
-	/** Get productncm.
-		@return productncm	  */
-	public String getproductncm () 
+	/** Get NCM do Produto.
+		@return NCM do Produto	  */
+	public String getProductNCM () 
 	{
-		return (String)get_Value(COLUMNNAME_productncm);
+		return (String)get_Value(COLUMNNAME_ProductNCM);
 	}
 
-	/** Set productuom.
-		@param productuom productuom	  */
-	public void setproductuom (String productuom)
+	/** Set UOM do Produto.
+		@param ProductUOM UOM do Produto	  */
+	public void setProductUOM (String ProductUOM)
 	{
-		set_Value (COLUMNNAME_productuom, productuom);
+		set_Value (COLUMNNAME_ProductUOM, ProductUOM);
 	}
 
-	/** Get productuom.
-		@return productuom	  */
-	public String getproductuom () 
+	/** Get UOM do Produto.
+		@return UOM do Produto	  */
+	public String getProductUOM () 
 	{
-		return (String)get_Value(COLUMNNAME_productuom);
+		return (String)get_Value(COLUMNNAME_ProductUOM);
 	}
 
 	/** Set Product Key.

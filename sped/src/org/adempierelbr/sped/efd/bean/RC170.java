@@ -13,9 +13,12 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.RemoverAcentos;
+import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO C170: ITENS DO DOCUMENTO (CÓDIGO 01, 1B, 04 e 55).
@@ -54,7 +57,6 @@ public class RC170 extends RegSped{
 	private BigDecimal QUANT_BC_PIS;
 	private BigDecimal ALIQ_PIS_REAIS;
 	private BigDecimal VL_PIS;
-
 	private String CST_COFINS;
 	private BigDecimal VL_BC_COFINS;
 	private BigDecimal ALIQ_COFINS;
@@ -63,20 +65,30 @@ public class RC170 extends RegSped{
 	private BigDecimal VL_COFINS;
 	private String COD_CTA;
 
-	// UTILIZADO NA SOMATORIA DO C190
-	private String NUM_DOC;
-	private Timestamp DT_DOC;
-	private BigDecimal PERC_BC_ICMS;
-	private BigDecimal VL_OPR;
-
-	private boolean hasST;
-
+	
+	/*
+	 * Variável auxiliar usada para fazer os somatórios do 
+	 * Registro C190. 
+	 * 
+	 * OBS.: Não validar e usar neste registro
+	 */
+	@XMLFieldProperties(needsValidation = false, id = "VL_OPER")
+	private BigDecimal VL_OPER = Env.ZERO;
+	
 	/**
 	 * Constructor
 	 */
 	public RC170() {
 		super();
 	}// RC170
+
+	public BigDecimal getVL_OPER() {
+		return VL_OPER;
+	}
+
+	public void setVL_OPER(BigDecimal vL_OPER) {
+		VL_OPER = vL_OPER;
+	}
 
 	public Integer getNUM_ITEM() {
 		return NUM_ITEM;
@@ -365,46 +377,34 @@ public class RC170 extends RegSped{
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
 	}
-
-	public String getNUM_DOC() {
-		return NUM_DOC;
+	
+	/**
+	 * Valor da redução da Base de Cálculo do ICMS
+	 * 
+	 * Valor da Linha - Valor da Base de Cálculo do ICMS
+	 * 
+	 * Obs.: Somente cálcular se houver redução no campo 
+	 * 
+	 * @return
+	 */
+	public BigDecimal getVL_RED_BC_ICMS(){
+		
+		// valor da base
+		BigDecimal baseICMS  = getVL_BC_ICMS();
+		
+		
+		// redução = 1-(PERC_BC_ICMS/100)
+		BigDecimal reduction = Env.ONE.subtract(getVL_RED_BC_ICMS().divide(Env.ONEHUNDRED, 12));
+		
+		// se for negativa ou zero, usar 1
+		if (reduction.signum() != 1)
+			reduction = Env.ONE;
+		
+		// BC/REDUCAO = VALOR DA BASE SEM REDUCAO
+		return (baseICMS.divide(reduction, 12)).subtract(baseICMS);
 	}
-
-	public void setNUM_DOC(String nUM_DOC) {
-		NUM_DOC = nUM_DOC;
-	}
-
-	public Timestamp getDT_DOC() {
-		return DT_DOC;
-	}
-
-	public void setDT_DOC(Timestamp dT_DOC) {
-		DT_DOC = dT_DOC;
-	}
-
-	public BigDecimal getPERC_BC_ICMS() {
-		return PERC_BC_ICMS;
-	}
-
-	public void setPERC_BC_ICMS(BigDecimal pERC_BC_ICMS) {
-		PERC_BC_ICMS = pERC_BC_ICMS;
-	}
-
-	public BigDecimal getVL_OPR() {
-		return VL_OPR;
-	}
-
-	public void setVL_OPR(BigDecimal vL_OPR) {
-		VL_OPR = vL_OPR;
-	}
-
-	public boolean isHasST() {
-		return hasST;
-	}
-
-	public void setHasST(boolean hasST) {
-		this.hasST = hasST;
-	}
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -462,5 +462,55 @@ public class RC170 extends RegSped{
 	public int compareTo(Object o) {
 		return compare(this, o);
 	}
+	
+	/**
+	 * Formata o Bloco C Registro 170
+	 * 
+	 * @return
+	 */
+	public String toString() {
+		
+		StringBuilder format = new StringBuilder
+                   (PIPE).append(REG) 
+            .append(PIPE).append(TextUtil.lPad(NUM_ITEM, 3))
+            .append(PIPE).append(COD_ITEM)
+            .append(PIPE).append(TextUtil.checkSize(RemoverAcentos.remover(DESCR_COMPL), 255).trim())
+            .append(PIPE).append(TextUtil.toNumeric(QTD, 5))
+            .append(PIPE).append(UNID)
+            .append(PIPE).append(TextUtil.toNumeric(VL_ITEM, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_DESC, 2))
+            .append(PIPE).append(TextUtil.checkSize(IND_MOV, 1,1))
+            .append(PIPE).append(TextUtil.checkSize(CST_ICMS, 3,3))
+            .append(PIPE).append(CFOP)
+            .append(PIPE).append(TextUtil.checkSize(COD_NAT, 10))
+            .append(PIPE).append(TextUtil.toNumeric(VL_BC_ICMS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_ICMS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_ICMS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_BC_ICMS_ST, 2))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_ST, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_ICMS_ST, 2))
+            .append(PIPE).append(TextUtil.checkSize(IND_APUR, 1,1))
+            .append(PIPE).append(TextUtil.checkSize(CST_IPI, 2))
+            .append(PIPE).append(TextUtil.checkSize(COD_ENQ, 3))
+            .append(PIPE).append(TextUtil.toNumeric(VL_BC_IPI, 2))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_IPI, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_IPI, 2))
+            .append(PIPE).append(TextUtil.checkSize(CST_PIS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_BC_PIS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_PIS_REAIS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(QUANT_BC_PIS, 3))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_PIS, 4))
+            .append(PIPE).append(TextUtil.toNumeric(VL_PIS, 2))
+            .append(PIPE).append(TextUtil.checkSize(CST_COFINS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(VL_BC_COFINS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_COFINS_REAIS, 2))
+            .append(PIPE).append(TextUtil.toNumeric(QUANT_BC_COFINS, 3))
+            .append(PIPE).append(TextUtil.toNumeric(ALIQ_COFINS, 4))
+            .append(PIPE).append(TextUtil.toNumeric(VL_COFINS, 2))
+            .append(PIPE).append(TextUtil.checkSize(COD_CTA, 255))
+            .append(PIPE);
+
+		return format.append(EOL).toString();
+	} // toString
 
 }// RC170

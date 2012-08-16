@@ -607,6 +607,10 @@ public abstract class TextUtil
 	public static String checkSize(String value, int min, int max){
 		return checkSize(value,min,max,' ');
 	}
+	
+	public static String checkSize(String value, int max){
+		return checkSize(value,0,max,' ');
+	}
 
 	/**
 	 * 	Verifica se a string está entre os valores minímos e máximo

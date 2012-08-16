@@ -36,9 +36,9 @@ public interface I_LBR_FactFiscal
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 4 - System 
+    /** AccessLevel = 3 - Client - Org 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(4);
+    BigDecimal accessLevel = BigDecimal.valueOf(3);
 
     /** Load Meta Data */
 
@@ -135,50 +135,59 @@ public interface I_LBR_FactFiscal
 
 	public I_C_Invoice getC_Invoice() throws RuntimeException;
 
-    /** Column name Cofins_TaxAmt */
-    public static final String COLUMNNAME_Cofins_TaxAmt = "Cofins_TaxAmt";
+    /** Column name COFINS_NFTaxAmt */
+    public static final String COLUMNNAME_COFINS_NFTaxAmt = "COFINS_NFTaxAmt";
+
+	/** Set Total de Cofins da NF	  */
+	public void setCOFINS_NFTaxAmt (BigDecimal COFINS_NFTaxAmt);
+
+	/** Get Total de Cofins da NF	  */
+	public BigDecimal getCOFINS_NFTaxAmt();
+
+    /** Column name COFINS_TaxAmt */
+    public static final String COLUMNNAME_COFINS_TaxAmt = "COFINS_TaxAmt";
 
 	/** Set Valor do COFINS	  */
-	public void setCofins_TaxAmt (BigDecimal Cofins_TaxAmt);
+	public void setCOFINS_TaxAmt (BigDecimal COFINS_TaxAmt);
 
 	/** Get Valor do COFINS	  */
-	public BigDecimal getCofins_TaxAmt();
+	public BigDecimal getCOFINS_TaxAmt();
 
-    /** Column name cofins_taxbase */
-    public static final String COLUMNNAME_cofins_taxbase = "cofins_taxbase";
+    /** Column name COFINS_TaxBase */
+    public static final String COLUMNNAME_COFINS_TaxBase = "COFINS_TaxBase";
 
-	/** Set cofins_taxbase	  */
-	public void setcofins_taxbase (BigDecimal cofins_taxbase);
+	/** Set Red. Base de Cálculo do COFINS	  */
+	public void setCOFINS_TaxBase (BigDecimal COFINS_TaxBase);
 
-	/** Get cofins_taxbase	  */
-	public BigDecimal getcofins_taxbase();
+	/** Get Red. Base de Cálculo do COFINS	  */
+	public BigDecimal getCOFINS_TaxBase();
 
-    /** Column name cofins_taxbaseamt */
-    public static final String COLUMNNAME_cofins_taxbaseamt = "cofins_taxbaseamt";
+    /** Column name COFINS_TaxBaseAmt */
+    public static final String COLUMNNAME_COFINS_TaxBaseAmt = "COFINS_TaxBaseAmt";
 
-	/** Set cofins_taxbaseamt	  */
-	public void setcofins_taxbaseamt (BigDecimal cofins_taxbaseamt);
+	/** Set Vlr. BC COFINS	  */
+	public void setCOFINS_TaxBaseAmt (BigDecimal COFINS_TaxBaseAmt);
 
-	/** Get cofins_taxbaseamt	  */
-	public BigDecimal getcofins_taxbaseamt();
+	/** Get Vlr. BC COFINS	  */
+	public BigDecimal getCOFINS_TaxBaseAmt();
 
-    /** Column name cofins_taxrate */
-    public static final String COLUMNNAME_cofins_taxrate = "cofins_taxrate";
+    /** Column name COFINS_TaxRate */
+    public static final String COLUMNNAME_COFINS_TaxRate = "COFINS_TaxRate";
 
-	/** Set cofins_taxrate	  */
-	public void setcofins_taxrate (BigDecimal cofins_taxrate);
+	/** Set Alíq. Cofins	  */
+	public void setCOFINS_TaxRate (BigDecimal COFINS_TaxRate);
 
-	/** Get cofins_taxrate	  */
-	public BigDecimal getcofins_taxrate();
+	/** Get Alíq. Cofins	  */
+	public BigDecimal getCOFINS_TaxRate();
 
-    /** Column name cofins_taxstatus */
-    public static final String COLUMNNAME_cofins_taxstatus = "cofins_taxstatus";
+    /** Column name COFINS_TaxStatus */
+    public static final String COLUMNNAME_COFINS_TaxStatus = "COFINS_TaxStatus";
 
-	/** Set cofins_taxstatus	  */
-	public void setcofins_taxstatus (String cofins_taxstatus);
+	/** Set CST Cofins	  */
+	public void setCOFINS_TaxStatus (String COFINS_TaxStatus);
 
-	/** Get cofins_taxstatus	  */
-	public String getcofins_taxstatus();
+	/** Get CST Cofins	  */
+	public String getCOFINS_TaxStatus();
 
     /** Column name C_Order_ID */
     public static final String COLUMNNAME_C_Order_ID = "C_Order_ID";
@@ -339,6 +348,42 @@ public interface I_LBR_FactFiscal
 	  */
 	public BigDecimal getGrandTotal();
 
+    /** Column name ICMS_NFTaxAmt */
+    public static final String COLUMNNAME_ICMS_NFTaxAmt = "ICMS_NFTaxAmt";
+
+	/** Set Total de ICMS da NF	  */
+	public void setICMS_NFTaxAmt (BigDecimal ICMS_NFTaxAmt);
+
+	/** Get Total de ICMS da NF	  */
+	public BigDecimal getICMS_NFTaxAmt();
+
+    /** Column name ICMS_NFTaxBaseAmt */
+    public static final String COLUMNNAME_ICMS_NFTaxBaseAmt = "ICMS_NFTaxBaseAmt";
+
+	/** Set Tot da BC do ICMS	  */
+	public void setICMS_NFTaxBaseAmt (BigDecimal ICMS_NFTaxBaseAmt);
+
+	/** Get Tot da BC do ICMS	  */
+	public BigDecimal getICMS_NFTaxBaseAmt();
+
+    /** Column name ICMSST_NFTaxAmt */
+    public static final String COLUMNNAME_ICMSST_NFTaxAmt = "ICMSST_NFTaxAmt";
+
+	/** Set Total de ICMSST da NF	  */
+	public void setICMSST_NFTaxAmt (BigDecimal ICMSST_NFTaxAmt);
+
+	/** Get Total de ICMSST da NF	  */
+	public BigDecimal getICMSST_NFTaxAmt();
+
+    /** Column name ICMSST_NFTaxBaseAmt */
+    public static final String COLUMNNAME_ICMSST_NFTaxBaseAmt = "ICMSST_NFTaxBaseAmt";
+
+	/** Set Total da BC ICMSST da NF	  */
+	public void setICMSST_NFTaxBaseAmt (BigDecimal ICMSST_NFTaxBaseAmt);
+
+	/** Get Total da BC ICMSST da NF	  */
+	public BigDecimal getICMSST_NFTaxBaseAmt();
+
     /** Column name ICMSST_TaxAmt */
     public static final String COLUMNNAME_ICMSST_TaxAmt = "ICMSST_TaxAmt";
 
@@ -348,41 +393,41 @@ public interface I_LBR_FactFiscal
 	/** Get Valor do ICMSST	  */
 	public BigDecimal getICMSST_TaxAmt();
 
-    /** Column name icmsst_taxbase */
-    public static final String COLUMNNAME_icmsst_taxbase = "icmsst_taxbase";
+    /** Column name ICMSST_TaxBase */
+    public static final String COLUMNNAME_ICMSST_TaxBase = "ICMSST_TaxBase";
 
-	/** Set icmsst_taxbase	  */
-	public void seticmsst_taxbase (BigDecimal icmsst_taxbase);
+	/** Set Red. da BC do ICMSST	  */
+	public void setICMSST_TaxBase (BigDecimal ICMSST_TaxBase);
 
-	/** Get icmsst_taxbase	  */
-	public BigDecimal geticmsst_taxbase();
+	/** Get Red. da BC do ICMSST	  */
+	public BigDecimal getICMSST_TaxBase();
 
-    /** Column name icmsst_taxbaseamt */
-    public static final String COLUMNNAME_icmsst_taxbaseamt = "icmsst_taxbaseamt";
+    /** Column name ICMSST_TaxBaseAmt */
+    public static final String COLUMNNAME_ICMSST_TaxBaseAmt = "ICMSST_TaxBaseAmt";
 
-	/** Set icmsst_taxbaseamt	  */
-	public void seticmsst_taxbaseamt (BigDecimal icmsst_taxbaseamt);
+	/** Set Total da BC ICMSST	  */
+	public void setICMSST_TaxBaseAmt (BigDecimal ICMSST_TaxBaseAmt);
 
-	/** Get icmsst_taxbaseamt	  */
-	public BigDecimal geticmsst_taxbaseamt();
+	/** Get Total da BC ICMSST	  */
+	public BigDecimal getICMSST_TaxBaseAmt();
 
-    /** Column name icmsst_taxrate */
-    public static final String COLUMNNAME_icmsst_taxrate = "icmsst_taxrate";
+    /** Column name ICMSST_TaxRate */
+    public static final String COLUMNNAME_ICMSST_TaxRate = "ICMSST_TaxRate";
 
-	/** Set icmsst_taxrate	  */
-	public void seticmsst_taxrate (BigDecimal icmsst_taxrate);
+	/** Set Alíq. do ICMSST	  */
+	public void setICMSST_TaxRate (BigDecimal ICMSST_TaxRate);
 
-	/** Get icmsst_taxrate	  */
-	public BigDecimal geticmsst_taxrate();
+	/** Get Alíq. do ICMSST	  */
+	public BigDecimal getICMSST_TaxRate();
 
-    /** Column name icmsst_taxstatus */
-    public static final String COLUMNNAME_icmsst_taxstatus = "icmsst_taxstatus";
+    /** Column name ICMSST_TaxStatus */
+    public static final String COLUMNNAME_ICMSST_TaxStatus = "ICMSST_TaxStatus";
 
-	/** Set icmsst_taxstatus	  */
-	public void seticmsst_taxstatus (String icmsst_taxstatus);
+	/** Set CST do ICMSST	  */
+	public void setICMSST_TaxStatus (String ICMSST_TaxStatus);
 
-	/** Get icmsst_taxstatus	  */
-	public String geticmsst_taxstatus();
+	/** Get CST do ICMSST	  */
+	public String getICMSST_TaxStatus();
 
     /** Column name ICMS_TaxAmt */
     public static final String COLUMNNAME_ICMS_TaxAmt = "ICMS_TaxAmt";
@@ -393,23 +438,23 @@ public interface I_LBR_FactFiscal
 	/** Get Valor do ICMS	  */
 	public BigDecimal getICMS_TaxAmt();
 
-    /** Column name icms_taxbase */
-    public static final String COLUMNNAME_icms_taxbase = "icms_taxbase";
+    /** Column name ICMS_TaxBase */
+    public static final String COLUMNNAME_ICMS_TaxBase = "ICMS_TaxBase";
 
-	/** Set icms_taxbase	  */
-	public void seticms_taxbase (BigDecimal icms_taxbase);
+	/** Set Red. BC ICMS	  */
+	public void setICMS_TaxBase (BigDecimal ICMS_TaxBase);
 
-	/** Get icms_taxbase	  */
-	public BigDecimal geticms_taxbase();
+	/** Get Red. BC ICMS	  */
+	public BigDecimal getICMS_TaxBase();
 
-    /** Column name icms_taxbaseamt */
-    public static final String COLUMNNAME_icms_taxbaseamt = "icms_taxbaseamt";
+    /** Column name ICMS_TaxBaseAmt */
+    public static final String COLUMNNAME_ICMS_TaxBaseAmt = "ICMS_TaxBaseAmt";
 
-	/** Set icms_taxbaseamt	  */
-	public void seticms_taxbaseamt (BigDecimal icms_taxbaseamt);
+	/** Set Vlr. BC ICMS	  */
+	public void setICMS_TaxBaseAmt (BigDecimal ICMS_TaxBaseAmt);
 
-	/** Get icms_taxbaseamt	  */
-	public BigDecimal geticms_taxbaseamt();
+	/** Get Vlr. BC ICMS	  */
+	public BigDecimal getICMS_TaxBaseAmt();
 
     /** Column name ICMS_TaxRate */
     public static final String COLUMNNAME_ICMS_TaxRate = "ICMS_TaxRate";
@@ -420,14 +465,14 @@ public interface I_LBR_FactFiscal
 	/** Get Aliquota ICMS	  */
 	public BigDecimal getICMS_TaxRate();
 
-    /** Column name icms_taxstatus */
-    public static final String COLUMNNAME_icms_taxstatus = "icms_taxstatus";
+    /** Column name ICMS_TaxStatus */
+    public static final String COLUMNNAME_ICMS_TaxStatus = "ICMS_TaxStatus";
 
-	/** Set icms_taxstatus	  */
-	public void seticms_taxstatus (String icms_taxstatus);
+	/** Set CST do ICMS	  */
+	public void setICMS_TaxStatus (String ICMS_TaxStatus);
 
-	/** Get icms_taxstatus	  */
-	public String geticms_taxstatus();
+	/** Get CST do ICMS	  */
+	public String getICMS_TaxStatus();
 
     /** Column name II_TaxAmt */
     public static final String COLUMNNAME_II_TaxAmt = "II_TaxAmt";
@@ -438,41 +483,32 @@ public interface I_LBR_FactFiscal
 	/** Get Valor do II	  */
 	public BigDecimal getII_TaxAmt();
 
-    /** Column name ii_taxbase */
-    public static final String COLUMNNAME_ii_taxbase = "ii_taxbase";
+    /** Column name II_TaxBaseAmt */
+    public static final String COLUMNNAME_II_TaxBaseAmt = "II_TaxBaseAmt";
 
-	/** Set ii_taxbase	  */
-	public void setii_taxbase (BigDecimal ii_taxbase);
+	/** Set Vlr. da BC do II	  */
+	public void setII_TaxBaseAmt (BigDecimal II_TaxBaseAmt);
 
-	/** Get ii_taxbase	  */
-	public BigDecimal getii_taxbase();
+	/** Get Vlr. da BC do II	  */
+	public BigDecimal getII_TaxBaseAmt();
 
-    /** Column name ii_taxbaseamt */
-    public static final String COLUMNNAME_ii_taxbaseamt = "ii_taxbaseamt";
+    /** Column name II_TaxRate */
+    public static final String COLUMNNAME_II_TaxRate = "II_TaxRate";
 
-	/** Set ii_taxbaseamt	  */
-	public void setii_taxbaseamt (BigDecimal ii_taxbaseamt);
+	/** Set Alíq. do II	  */
+	public void setII_TaxRate (BigDecimal II_TaxRate);
 
-	/** Get ii_taxbaseamt	  */
-	public BigDecimal getii_taxbaseamt();
+	/** Get Alíq. do II	  */
+	public BigDecimal getII_TaxRate();
 
-    /** Column name ii_taxrate */
-    public static final String COLUMNNAME_ii_taxrate = "ii_taxrate";
+    /** Column name IPI_NFTaxAmt */
+    public static final String COLUMNNAME_IPI_NFTaxAmt = "IPI_NFTaxAmt";
 
-	/** Set ii_taxrate	  */
-	public void setii_taxrate (BigDecimal ii_taxrate);
+	/** Set Total de IPI da NF	  */
+	public void setIPI_NFTaxAmt (BigDecimal IPI_NFTaxAmt);
 
-	/** Get ii_taxrate	  */
-	public BigDecimal getii_taxrate();
-
-    /** Column name ii_taxstatus */
-    public static final String COLUMNNAME_ii_taxstatus = "ii_taxstatus";
-
-	/** Set ii_taxstatus	  */
-	public void setii_taxstatus (String ii_taxstatus);
-
-	/** Get ii_taxstatus	  */
-	public String getii_taxstatus();
+	/** Get Total de IPI da NF	  */
+	public BigDecimal getIPI_NFTaxAmt();
 
     /** Column name IPI_TaxAmt */
     public static final String COLUMNNAME_IPI_TaxAmt = "IPI_TaxAmt";
@@ -483,41 +519,32 @@ public interface I_LBR_FactFiscal
 	/** Get Valor do IPI	  */
 	public BigDecimal getIPI_TaxAmt();
 
-    /** Column name ipi_taxbase */
-    public static final String COLUMNNAME_ipi_taxbase = "ipi_taxbase";
+    /** Column name IPI_TaxBaseAmt */
+    public static final String COLUMNNAME_IPI_TaxBaseAmt = "IPI_TaxBaseAmt";
 
-	/** Set ipi_taxbase	  */
-	public void setipi_taxbase (BigDecimal ipi_taxbase);
+	/** Set Vlr da BC do IPI	  */
+	public void setIPI_TaxBaseAmt (BigDecimal IPI_TaxBaseAmt);
 
-	/** Get ipi_taxbase	  */
-	public BigDecimal getipi_taxbase();
+	/** Get Vlr da BC do IPI	  */
+	public BigDecimal getIPI_TaxBaseAmt();
 
-    /** Column name ipi_taxbaseamt */
-    public static final String COLUMNNAME_ipi_taxbaseamt = "ipi_taxbaseamt";
+    /** Column name IPI_TaxRate */
+    public static final String COLUMNNAME_IPI_TaxRate = "IPI_TaxRate";
 
-	/** Set ipi_taxbaseamt	  */
-	public void setipi_taxbaseamt (BigDecimal ipi_taxbaseamt);
+	/** Set Alíq. do IPI	  */
+	public void setIPI_TaxRate (BigDecimal IPI_TaxRate);
 
-	/** Get ipi_taxbaseamt	  */
-	public BigDecimal getipi_taxbaseamt();
+	/** Get Alíq. do IPI	  */
+	public BigDecimal getIPI_TaxRate();
 
-    /** Column name ipi_taxrate */
-    public static final String COLUMNNAME_ipi_taxrate = "ipi_taxrate";
+    /** Column name IPI_TaxStatus */
+    public static final String COLUMNNAME_IPI_TaxStatus = "IPI_TaxStatus";
 
-	/** Set ipi_taxrate	  */
-	public void setipi_taxrate (BigDecimal ipi_taxrate);
+	/** Set CST do IPI	  */
+	public void setIPI_TaxStatus (String IPI_TaxStatus);
 
-	/** Get ipi_taxrate	  */
-	public BigDecimal getipi_taxrate();
-
-    /** Column name ipi_taxstatus */
-    public static final String COLUMNNAME_ipi_taxstatus = "ipi_taxstatus";
-
-	/** Set ipi_taxstatus	  */
-	public void setipi_taxstatus (String ipi_taxstatus);
-
-	/** Get ipi_taxstatus	  */
-	public String getipi_taxstatus();
+	/** Get CST do IPI	  */
+	public String getIPI_TaxStatus();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -899,6 +926,17 @@ public interface I_LBR_FactFiscal
 	  */
 	public String getlbr_NCMName();
 
+    /** Column name LBR_NFDI_ID */
+    public static final String COLUMNNAME_LBR_NFDI_ID = "LBR_NFDI_ID";
+
+	/** Set DI	  */
+	public void setLBR_NFDI_ID (int LBR_NFDI_ID);
+
+	/** Get DI	  */
+	public int getLBR_NFDI_ID();
+
+	public org.adempierelbr.model.I_LBR_NFDI getLBR_NFDI() throws RuntimeException;
+
     /** Column name lbr_NFeID */
     public static final String COLUMNNAME_lbr_NFeID = "lbr_NFeID";
 
@@ -1051,25 +1089,25 @@ public interface I_LBR_FactFiscal
 	  */
 	public String getlbr_OrgCity();
 
-    /** Column name lbr_orgcitycode */
-    public static final String COLUMNNAME_lbr_orgcitycode = "lbr_orgcitycode";
+    /** Column name LBR_OrgCityCode */
+    public static final String COLUMNNAME_LBR_OrgCityCode = "LBR_OrgCityCode";
 
-	/** Set lbr_orgcitycode	  */
-	public void setlbr_orgcitycode (int lbr_orgcitycode);
+	/** Set Cód. da Cidade da Org.(IBGE)	  */
+	public void setLBR_OrgCityCode (int LBR_OrgCityCode);
 
-	/** Get lbr_orgcitycode	  */
-	public int getlbr_orgcitycode();
+	/** Get Cód. da Cidade da Org.(IBGE)	  */
+	public int getLBR_OrgCityCode();
 
-    /** Column name lbr_org_location_id */
-    public static final String COLUMNNAME_lbr_org_location_id = "lbr_org_location_id";
+    /** Column name LBR_Org_Location_ID */
+    public static final String COLUMNNAME_LBR_Org_Location_ID = "LBR_Org_Location_ID";
 
-	/** Set lbr_org_location_id	  */
-	public void setlbr_org_location_id (int lbr_org_location_id);
+	/** Set Localização da Organização	  */
+	public void setLBR_Org_Location_ID (int LBR_Org_Location_ID);
 
-	/** Get lbr_org_location_id	  */
-	public int getlbr_org_location_id();
+	/** Get Localização da Organização	  */
+	public int getLBR_Org_Location_ID();
 
-	public I_C_Location getlbr_org_location() throws RuntimeException;
+	public I_C_Location getLBR_Org_Location() throws RuntimeException;
 
     /** Column name lbr_OrgName */
     public static final String COLUMNNAME_lbr_OrgName = "lbr_OrgName";
@@ -1149,14 +1187,14 @@ public interface I_LBR_FactFiscal
 	  */
 	public BigDecimal getlbr_TotalSISCOMEX();
 
-    /** Column name lbr_uomdescription */
-    public static final String COLUMNNAME_lbr_uomdescription = "lbr_uomdescription";
+    /** Column name LBR_UOMDescription */
+    public static final String COLUMNNAME_LBR_UOMDescription = "LBR_UOMDescription";
 
-	/** Set lbr_uomdescription	  */
-	public void setlbr_uomdescription (String lbr_uomdescription);
+	/** Set Descrição da UOM	  */
+	public void setLBR_UOMDescription (String LBR_UOMDescription);
 
-	/** Get lbr_uomdescription	  */
-	public String getlbr_uomdescription();
+	/** Get Descrição da UOM	  */
+	public String getLBR_UOMDescription();
 
     /** Column name lbr_UOMName */
     public static final String COLUMNNAME_lbr_UOMName = "lbr_UOMName";
@@ -1183,6 +1221,19 @@ public interface I_LBR_FactFiscal
 	  * Unique line for this document
 	  */
 	public int getLine();
+
+    /** Column name LineNetAmt */
+    public static final String COLUMNNAME_LineNetAmt = "LineNetAmt";
+
+	/** Set Line Amount.
+	  * Line Extended Amount (Quantity * Actual Price) without Freight and Charges
+	  */
+	public void setLineNetAmt (BigDecimal LineNetAmt);
+
+	/** Get Line Amount.
+	  * Line Extended Amount (Quantity * Actual Price) without Freight and Charges
+	  */
+	public BigDecimal getLineNetAmt();
 
     /** Column name LineTotalAmt */
     public static final String COLUMNNAME_LineTotalAmt = "LineTotalAmt";
@@ -1212,6 +1263,15 @@ public interface I_LBR_FactFiscal
 
 	public I_M_Product getM_Product() throws RuntimeException;
 
+    /** Column name PIS_NFTaxAmt */
+    public static final String COLUMNNAME_PIS_NFTaxAmt = "PIS_NFTaxAmt";
+
+	/** Set Total de PIS da NF	  */
+	public void setPIS_NFTaxAmt (BigDecimal PIS_NFTaxAmt);
+
+	/** Get Total de PIS da NF	  */
+	public BigDecimal getPIS_NFTaxAmt();
+
     /** Column name PIS_TaxAmt */
     public static final String COLUMNNAME_PIS_TaxAmt = "PIS_TaxAmt";
 
@@ -1221,41 +1281,41 @@ public interface I_LBR_FactFiscal
 	/** Get Valor do PIS	  */
 	public BigDecimal getPIS_TaxAmt();
 
-    /** Column name pis_taxbase */
-    public static final String COLUMNNAME_pis_taxbase = "pis_taxbase";
+    /** Column name PIS_TaxBase */
+    public static final String COLUMNNAME_PIS_TaxBase = "PIS_TaxBase";
 
-	/** Set pis_taxbase	  */
-	public void setpis_taxbase (BigDecimal pis_taxbase);
+	/** Set Red. da BC do PIS	  */
+	public void setPIS_TaxBase (BigDecimal PIS_TaxBase);
 
-	/** Get pis_taxbase	  */
-	public BigDecimal getpis_taxbase();
+	/** Get Red. da BC do PIS	  */
+	public BigDecimal getPIS_TaxBase();
 
-    /** Column name pis_taxbaseamt */
-    public static final String COLUMNNAME_pis_taxbaseamt = "pis_taxbaseamt";
+    /** Column name PIS_TaxBaseAmt */
+    public static final String COLUMNNAME_PIS_TaxBaseAmt = "PIS_TaxBaseAmt";
 
-	/** Set pis_taxbaseamt	  */
-	public void setpis_taxbaseamt (BigDecimal pis_taxbaseamt);
+	/** Set Vlr. da BC do PIS	  */
+	public void setPIS_TaxBaseAmt (BigDecimal PIS_TaxBaseAmt);
 
-	/** Get pis_taxbaseamt	  */
-	public BigDecimal getpis_taxbaseamt();
+	/** Get Vlr. da BC do PIS	  */
+	public BigDecimal getPIS_TaxBaseAmt();
 
-    /** Column name pis_taxrate */
-    public static final String COLUMNNAME_pis_taxrate = "pis_taxrate";
+    /** Column name PIS_TaxRate */
+    public static final String COLUMNNAME_PIS_TaxRate = "PIS_TaxRate";
 
-	/** Set pis_taxrate	  */
-	public void setpis_taxrate (BigDecimal pis_taxrate);
+	/** Set Alíq. do PIS	  */
+	public void setPIS_TaxRate (BigDecimal PIS_TaxRate);
 
-	/** Get pis_taxrate	  */
-	public BigDecimal getpis_taxrate();
+	/** Get Alíq. do PIS	  */
+	public BigDecimal getPIS_TaxRate();
 
-    /** Column name pis_taxstatus */
-    public static final String COLUMNNAME_pis_taxstatus = "pis_taxstatus";
+    /** Column name PIS_TaxStatus */
+    public static final String COLUMNNAME_PIS_TaxStatus = "PIS_TaxStatus";
 
-	/** Set pis_taxstatus	  */
-	public void setpis_taxstatus (String pis_taxstatus);
+	/** Set CST do PIS	  */
+	public void setPIS_TaxStatus (String PIS_TaxStatus);
 
-	/** Get pis_taxstatus	  */
-	public String getpis_taxstatus();
+	/** Get CST do PIS	  */
+	public String getPIS_TaxStatus();
 
     /** Column name Price */
     public static final String COLUMNNAME_Price = "Price";
@@ -1283,23 +1343,23 @@ public interface I_LBR_FactFiscal
 	  */
 	public String getProductName();
 
-    /** Column name productncm */
-    public static final String COLUMNNAME_productncm = "productncm";
+    /** Column name ProductNCM */
+    public static final String COLUMNNAME_ProductNCM = "ProductNCM";
 
-	/** Set productncm	  */
-	public void setproductncm (String productncm);
+	/** Set NCM do Produto	  */
+	public void setProductNCM (String ProductNCM);
 
-	/** Get productncm	  */
-	public String getproductncm();
+	/** Get NCM do Produto	  */
+	public String getProductNCM();
 
-    /** Column name productuom */
-    public static final String COLUMNNAME_productuom = "productuom";
+    /** Column name ProductUOM */
+    public static final String COLUMNNAME_ProductUOM = "ProductUOM";
 
-	/** Set productuom	  */
-	public void setproductuom (String productuom);
+	/** Set UOM do Produto	  */
+	public void setProductUOM (String ProductUOM);
 
-	/** Get productuom	  */
-	public String getproductuom();
+	/** Get UOM do Produto	  */
+	public String getProductUOM();
 
     /** Column name ProductValue */
     public static final String COLUMNNAME_ProductValue = "ProductValue";
