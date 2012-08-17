@@ -13,10 +13,12 @@ import org.adempierelbr.sped.efd.bean.R0100;
 import org.adempierelbr.sped.efd.bean.R0150;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
+import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0990;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC120;
 import org.adempierelbr.sped.efd.bean.RC170;
+import org.adempierelbr.sped.efd.bean.RC195;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
@@ -578,6 +580,37 @@ public class EFDUtil {
 		return reg;
 	} 
 	
+	/**
+	 * REGISTRO 0460: TABELA DE OBSERVAÇÕES DO LANÇAMENTO FISCAL
+	 * 
+	 * @param rc100 Registro C100
+	 * @param COD_OBS código sequencial da observação
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0460 createR0460(RC100 rc100, int COD_OBS) throws Exception 
+	{
+		
+		// se for Industria ou Saída, então não precisa, pois este ramo de empresas apura IPI e ST
+		if(rc100.getIND_ATIV().equals("0") || rc100.getIND_OPER().equals("1"))
+			return null;
+		
+		//
+		String obs = "";
+		if(rc100.getVL_ICMS_ST().signum() == 1)
+			obs += "VALOR DO ICMS ST: " + TextUtil.toNumeric(rc100.getVL_ICMS_ST()) + (rc100.getVL_IPI().signum() == 1 ? " / " : "");
+
+		//
+		if(rc100.getVL_IPI().signum() == 1)
+			obs += "VALOR DO IPI: " + TextUtil.toNumeric(rc100.getVL_IPI());
+		
+		// criar obs
+		R0460 reg = new R0460();
+		reg.setCOD_OBS(String.valueOf(COD_OBS));
+		reg.setTXT(obs);
+		
+		return reg;
+	}
 	
 	/**
 	 * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
@@ -641,6 +674,14 @@ public class EFDUtil {
 		reg.setVL_COFINS(factFiscal.getCOFINS_NFTaxAmt());
 		reg.setVL_PIS_ST(Env.ZERO);
 		reg.setVL_COFINS_ST(Env.ZERO);
+		
+		/*
+		 * Preencher a variável IND_ATIV para 
+		 * posterior verificação e definição se deve-se
+		 * ou não apurar alguns impostos bem como 
+		 * IPI e ST
+		 */
+		reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
 		
 		//
 		return reg;
@@ -766,7 +807,25 @@ public class EFDUtil {
 		return reg;
 	}
 	
-	
+	/**
+	 * REGISTRO C195: OBSERVAÇOES DO LANÇAMENTO FISCAL (CÓDIGO 01, 1B E 55)
+	 * 
+	 * @param r0460
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC195 createRC195(R0460 r0460) throws Exception
+	{
+		// se não tiver OBS nos registros zero, então não criar nos registros C195
+		if(r0460 == null)
+			return null;
+		
+		RC195 reg = new RC195();
+		reg.setCOD_OBS(r0460.getCOD_OBS());
+		reg.setTXT("");
+		
+		return reg;
+	}
 	
 	
 } // EFDUtil

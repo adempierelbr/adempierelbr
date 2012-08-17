@@ -9,6 +9,7 @@ import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
+import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
@@ -231,6 +232,12 @@ public class ProcGenerateEFD extends SvrProcess
 						if(factFiscal.getLBR_NFDI_ID() > 0)
 							rc100.setrC120(EFDUtil.createRC120(factFiscal));
 						
+						// 0460 - Obs do Lançamento Fiscal
+						R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
+						bloco0.addr0460(r0460);
+						
+						// C195 - Associar a Obs do Lançamento Fiscal à NF
+						rc100.addrC195(EFDUtil.createRC195(r0460));
 					}
 				}
 				
@@ -244,26 +251,11 @@ public class ProcGenerateEFD extends SvrProcess
 				 */
 				bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
-				
 				/*
-				 * C170 - itens da NF
+				 * Add C170 ao C100
 				 */
 				if(REG.startsWith("C"))
-					rc100.addrC170(EFDUtil.createRC170(factFiscal));
-				
-				
-				/*
-				 * Adicionar RC100 no bloco depois de adicionar as linhas
-				 * 
-				 * TODO - pensar em uma forma mais eficiente
-				 * 
-				 * Obs.: Irá repetir a cada iteração de fato fiscal, 
-				 * por isso foi criado uma validação para não adicionar o mesmo registro 
-				 * duas veses no bloco C
-				 */
-				if(REG.startsWith("C"))
-					blocoC.addrC100(rc100);
-				
+					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).addrC170(EFDUtil.createRC170(factFiscal));
 				
 				/*
 				 * Preencher com o ID da NF do fato fiscal

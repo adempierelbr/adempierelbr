@@ -13,6 +13,8 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO C100 - NOTA FISCAL DE PRODUTOR (CÓDIGO 04) e NF-e (CÓDIGO 55)
@@ -78,6 +81,10 @@ public class RC100 extends RegSped {
 
 	@XMLFieldProperties(needsValidation = true, id = "RC195")
 	private List<RC195> rC195 = new ArrayList<RC195>();
+	
+	@XMLFieldProperties(needsValidation = false, id = "IND_ATIV")
+	private String IND_ATIV;
+	
 
 	/**
 	 * Constructor
@@ -350,6 +357,22 @@ public class RC100 extends RegSped {
 		this.rC190 = rC190;
 	}
 
+	public String getIND_ATIV() {
+		return IND_ATIV;
+	}
+
+	public void setIND_ATIV(String iND_ATIV) {
+		IND_ATIV = iND_ATIV;
+	}
+
+	public void setrC130(List<RC130> rC130) {
+		this.rC130 = rC130;
+	}
+
+	public void setrC195(List<RC195> rC195) {
+		this.rC195 = rC195;
+	}
+
 	public List<RC195> getrC195() {
 		return rC195;
 	}
@@ -358,7 +381,10 @@ public class RC100 extends RegSped {
 		this.rC195 = rC195;
 	}
 	
-	
+	public void addrC195(RC195 rc195)
+	{
+		this.rC195.add(rc195);
+	}
 	
 	/**
 	 * Adicionar a lista de registros
@@ -368,6 +394,95 @@ public class RC100 extends RegSped {
 	 */
 	public void addrC170(RC170 rc170) 
 	{
+		
+		/*
+		 * PARA CASOS EM QUE A EMPRESA NÃO FAZ APURAÇÃO DE IPI E ST
+		 *  
+		 * - ST
+		 * 
+		 * Regra:
+		 * Produto: R$ 1000,00;
+		 * IVA: 40%;
+		 * Valor de Base para ST: R$ 1400,00;
+		 * Valor do ICMSST (aliq 17%): R$ 238,00;
+		 * Valor do ICMS (aliq 17%): R$ 170,00;
+		 * Diferença de ICMSST - ICMS = R$ 68,00;
+		 * Valor final do produto: R$ 1068,00
+		 *
+		 * Como fica para no SPED:
+		 * Valor do Produto: R$ 1000,00;
+		 * Valor, Base, Aliq do ICMSST: 0;
+		 * Valor, Base, Aliq do ICMS:  0;
+		 * 
+		 * *** Criar registro de Observação R0460 pada colocar os valores de 
+		 * IPI e ST para justificar a diferença nos totais da NF.
+		 * 
+		 * *** Explicação da regra acima: Os valores do ICMSST e ICMS devem ser zerados
+		 * pois não se apura ST e o ICMS é substituido, ou seja, já pago e
+		 * não dando direito a crédito.
+		 *
+		 * *** Para casos em que a mesma NF tem itens substituidos e itens não substituidos 
+		 * a regra é a seguinte:
+		 * 
+		 * 1 - Para os itens substituidos, aplica-se as regras acima;
+		 * 2 - Para os itens não substituidos, credita-se do ICMS normalmente;
+		 * 
+		 * - IPI 
+		 * 
+		 * *** Para o IPI, simplesmente zera-se os valores da BC, Valor, Aliq e coloca-se no registro
+		 * R0460 uma descrição para justificar a diferença no tatal da NF.
+		 * 
+		 * As regras acima, aplicam-se só para as entradas, pois as saídas 
+		 * de empresas que não apuram IPI e ST, não podem tributar esses impostos
+		 * nesse tipo de transação. As impresas que apurarm, tributam normalmente, sendo 
+		 * assim apurados, sem manipulação nenhuma.
+		 */
+		if(getIND_ATIV().equals("1") && getIND_OPER().equals("0")) // atividade = comércio | operacao = entrada
+		{
+			
+			// se a NF tiver substituição tributaria, trabalhar os valores
+			if(getVL_ICMS_ST().signum() == 1)
+			{
+			
+				// zerar o valor do ICMS e ICMSST da NF para abaixo adicionar só o icms que não é substituido
+				setVL_BC_ICMS(Env.ZERO);
+				setVL_ICMS(Env.ZERO);
+				setVL_BC_ICMS(Env.ZERO);
+				setVL_ICMS(Env.ZERO);
+				
+				
+				// se o ICMS da linha não for substituido, então soma ao total da NF, pois esse será creditado 				
+				if(rc170.getVL_ICMS_ST().signum() == 0)
+				{
+					// somar ICMS no totalizador da NF
+					setVL_BC_ICMS(getVL_BC_ICMS().add(rc170.getVL_BC_ICMS()));
+					setVL_ICMS(getVL_ICMS().add(rc170.getVL_ICMS()));
+					
+				}
+				// senão, zerar na linha também
+				else
+				{
+					// zerar icms
+					rc170.setVL_BC_ICMS(Env.ZERO);
+					rc170.setVL_ICMS(Env.ZERO);
+					rc170.setALIQ_ICMS(Env.ZERO);
+
+					// zerar st
+					rc170.setVL_BC_ICMS_ST(Env.ZERO);
+					rc170.setVL_ICMS_ST(Env.ZERO);
+					rc170.setALIQ_ST(Env.ZERO);
+				}
+			}
+			
+			// zerar ipi na nf
+			setVL_IPI(Env.ZERO);
+			
+			// zerar ipi na linha
+			rc170.setVL_IPI(Env.ZERO);
+			
+		}
+		
+		// adicionar o item ao RC100
 		this.rC170.add(rc170);
 		
 		// atualizar totalizador C190;

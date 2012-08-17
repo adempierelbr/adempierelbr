@@ -51,6 +51,9 @@ public class BLOCO0 {
 
 	@XMLFieldProperties(needsValidation = true, id = "R0200")
 	private List<R0200> r0200 = new ArrayList<R0200>();
+	
+	@XMLFieldProperties(needsValidation = true, id = "R0460")
+	private List<R0460> r0460 = new ArrayList<R0460>();
 
 	@XMLFieldProperties(needsValidation = true, id = "R0990")
 	private R0990 r0990;
@@ -119,6 +122,26 @@ public class BLOCO0 {
 		this.r0990 = r0990;
 	}
 
+	public List<R0460> getR0460() {
+		return r0460;
+	}
+
+	public void setR0460(List<R0460> r0460) {
+		this.r0460 = r0460;
+	}
+
+	public void setR0150(List<R0150> r0150) {
+		this.r0150 = r0150;
+	}
+
+	public void setR0190(List<R0190> r0190) {
+		this.r0190 = r0190;
+	}
+
+	public void setR0200(List<R0200> r0200) {
+		this.r0200 = r0200;
+	}
+
 	/**
 	 * Adicionar a lista de registros
 	 * 
@@ -163,6 +186,22 @@ public class BLOCO0 {
 			this.r0200.add(r0200);
 		else
 			r0200.subtractCounter();
+	}
+	
+	
+	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * Obs.: Se o registro já existir, fazer um subtract counter para adicionar
+	 * aos totalizadores de registros
+	 * 
+	 * @param r0460
+	 */
+	public void addr0460(R0460 r0460) {
+		if (!this.r0460.contains(r0460))
+			this.r0460.add(r0460);
+		else
+			r0460.subtractCounter();
 	}
 
 } // R0000
