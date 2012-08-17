@@ -15,10 +15,16 @@ import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0990;
+import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC120;
 import org.adempierelbr.sped.efd.bean.RC170;
 import org.adempierelbr.sped.efd.bean.RC195;
+import org.adempierelbr.sped.efd.bean.RC990;
+import org.adempierelbr.sped.efd.bean.RD001;
+import org.adempierelbr.sped.efd.bean.RD100;
+import org.adempierelbr.sped.efd.bean.RD110;
+import org.adempierelbr.sped.efd.bean.RD990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
@@ -375,8 +381,8 @@ public class EFDUtil {
 		return reg;			
 	}
 
-	
-	
+
+
 	/**
 	 * REGISTRO 0100: DADOS DO CONTABILISTA
 	 * 
@@ -591,12 +597,10 @@ public class EFDUtil {
 	public static R0460 createR0460(RC100 rc100, int COD_OBS) throws Exception 
 	{
 		
-		// se for Industria ou Saída, então não precisa, pois este ramo de empresas apura IPI e ST
-		if(rc100.getIND_ATIV().equals("0") || rc100.getIND_OPER().equals("1"))
-			return null;
-		
 		//
 		String obs = "";
+		
+		//
 		if(rc100.getVL_ICMS_ST().signum() == 1)
 			obs += "VALOR DO ICMS ST: " + TextUtil.toNumeric(rc100.getVL_ICMS_ST()) + (rc100.getVL_IPI().signum() == 1 ? " / " : "");
 
@@ -625,6 +629,23 @@ public class EFDUtil {
 	
 		return reg;
 	}
+	
+	
+	/**
+	 * REGISTRO C001: ABERTURA DO BLOCO C
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC001 createRC001(boolean hasInfo) throws Exception
+	{
+		RC001 reg = new RC001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
 
 	/**
 	 * REGISTRO C100: NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NF-e (CÓDIGO 55).
@@ -826,6 +847,152 @@ public class EFDUtil {
 		
 		return reg;
 	}
+	
+	/**
+	 * REGISTRO C990: ENCERRAMENTO DO BLOCO C
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC990 createRC990() throws Exception 
+	{
+		RC990 reg = new RC990();
+		reg.setQTD_LIN_C(String.valueOf(reg.getClass().getName()));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO D001: ABERTURA DO BLOCO D
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD001 createRD001(boolean hasInfo) throws Exception
+	{
+		RD001 reg = new RD001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * REGISTRO D100: NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E 
+	 * CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), 
+	 * CONHECIMENTOS DE TRANSPORTE DE CARGAS AVULSO (CÓDIGO 8B), 
+	 * AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11) 
+	 * E MULTIMODAL DE CARGAS (CÓDIGO 26), NOTA FISCAL DE TRANSPORTE 
+	 * FERROVIÁRIO DE CARGA ( CÓDIGO 27) E CONHECIMENTO DE TRANSPORTE 
+	 * ELETRÔNICO – CT-e (CÓDIGO 57).
+	 * 
+	 * @param rD100
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD100 createRD100(MLBRFactFiscal factFiscal) throws Exception
+	{
+		
+		//
+		RD100 reg = new RD100();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
+		
+		// TODO ??
+		reg.setSUB(""); 
+		
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setCHV_CTE(factFiscal.getlbr_NFeID());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_A_P(factFiscal.getlbr_DateInOut());
+		
+		// TODO - ??
+		reg.setTP_CT_e("");
+		
+		// TODO ??
+		reg.setCHV_CTE_REF("");
+		
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+		reg.setIND_FRT(getIND_FRT(factFiscal));
+		
+		// Total dos Itens + Total dos Serviços - ??
+		reg.setVL_SERV(factFiscal.getTotalLines());
+		
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		reg.setVL_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		
+		// 
+		reg.setCOD_INF(null);
+		reg.setCOD_CTA(null);
+		
+		//
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO D110: ITENS DO DOCUMENTO - NOTA FISCAL DE 
+	 * SERVIÇOS DE TRANSPORTE (CÓDIGO 07)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD110 createRD110(MLBRFactFiscal factFiscal) throws Exception
+	{
+		//
+		RD110 reg = new RD110();
+		reg.setNUM_ITEM(factFiscal.getLine());
+		reg.setCOD_ITEM(factFiscal.getProductValue());
+		
+		// Valor bruto
+		reg.setVL_SERV(factFiscal.getLineNetAmt());
+		
+		// TODO - ??
+		reg.setVL_OUT(null);
+		
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
+		reg.setPERCENT_REDUCAO_BC(factFiscal.getICMS_TaxBase());
+		
+
+		//
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO C990: ENCERRAMENTO DO BLOCO D
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD990 createRD990() throws Exception 
+	{
+		RD990 reg = new RD990();
+		reg.setQTD_LIN_D(String.valueOf(reg.getClass().getName()));
+	
+		return reg;
+	}
+	
 	
 	
 } // EFDUtil

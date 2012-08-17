@@ -9,8 +9,11 @@ import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
+import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.R0460;
+import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
+import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -160,19 +163,26 @@ public class ProcGenerateEFD extends SvrProcess
 			// Zerar Contadores (staticos)
 			CounterSped.clear();
 
+			
 			// Fatos Fiscais
 			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
 
+			
 			// criar blocos
 			BLOCO0 bloco0 = new BLOCO0();
 			BLOCOC blocoC = new BLOCOC();
+			BLOCOD blocoD = new BLOCOD();
 			
-			// 0000 - abertura do arquivo
+			
+			// Inicialização dos Blocos
+			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
+			blocoC.setrC001(EFDUtil.createRC001(factFiscals.length > 0));
+			blocoD.setrD001(EFDUtil.createRD001(factFiscals.length > 0));
+
+			
+			// 0000 - dados da empresa
 			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, get_TrxName()));
 			
-			// 0001 - se tiver fatos fiscais, então contem dados
-			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
-
 			// 0005 - dados adicionais da org
 			bloco0.setR0005(EFDUtil.createR0005(getCtx(), p_AD_Org_ID, get_TrxName()));
 					 		
@@ -182,9 +192,9 @@ public class ProcGenerateEFD extends SvrProcess
 			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
 			int last_LBR_NotaFiscal_ID = 0;
 			
-			// registro C100 - montado de acordo com os fatos fiscais e depois adicionado ao bloco C
+			// Headers
 			RC100 rc100 = null;
-
+			RD100 rd100 = null;
 			
 			/*
 			 * Loop de Fatos Fiscais. 
@@ -213,6 +223,10 @@ public class ProcGenerateEFD extends SvrProcess
 				if(last_LBR_NotaFiscal_ID != factFiscal.getLBR_NotaFiscal_ID())
 				{
 						
+					// 
+					rc100 = null;
+					rd100 = null;
+					
 						
 					/*
 					 * R0150 - Parceiros de Negócios
@@ -221,24 +235,45 @@ public class ProcGenerateEFD extends SvrProcess
 					
 					
 					/*
-					 * RC100
+					 * C100 - NFs
 					 */
-					if(REG.startsWith("C"))
+					if(REG.startsWith("C100"))
 					{
 						// C100 - NF
 						rc100 = EFDUtil.createRC100(factFiscal);
+						blocoC.addrC100(rc100);
 
 						// C120 - DI
 						if(factFiscal.getLBR_NFDI_ID() > 0)
 							rc100.setrC120(EFDUtil.createRC120(factFiscal));
 						
-						// 0460 - Obs do Lançamento Fiscal
-						R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
-						bloco0.addr0460(r0460);
+						/*
+						 *  0460 - Obs do Lançamento Fiscal
+						 *  
+						 *  Se não for industria, gerar a Obs do Lançamento Fiscal 
+						 *  de acordo com a descrição no método addrC170
+						 */
+						if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0")) // atividade = comércio | operacao = entrada
+						{						
+							R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
+							bloco0.addr0460(r0460);
 						
-						// C195 - Associar a Obs do Lançamento Fiscal à NF
-						rc100.addrC195(EFDUtil.createRC195(r0460));
+							// C195 - Associar a Obs do Lançamento Fiscal à NF
+							rc100.addrC195(EFDUtil.createRC195(r0460));
+						}
 					}
+					
+					
+					/*
+					 * D100 - Conhecimentos de Transportes
+					 */
+					else if(REG.startsWith("D100"))
+					{
+						// D100
+						rd100 = EFDUtil.createRD100(factFiscal);
+						blocoD.addrD100(rd100);
+					}
+							
 				}
 				
 				/*
@@ -254,8 +289,15 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Add C170 ao C100
 				 */
-				if(REG.startsWith("C"))
+				if(REG.startsWith("C100"))
 					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).addrC170(EFDUtil.createRC170(factFiscal));
+
+				/*
+				 * Add D110 ao D100
+				 */
+				if(REG.startsWith("D100"))
+					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100)).addrD110(EFDUtil.createRD110(factFiscal));
+				
 				
 				/*
 				 * Preencher com o ID da NF do fato fiscal
@@ -265,12 +307,16 @@ public class ProcGenerateEFD extends SvrProcess
 				last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
 			
 				
-				
 			} // loop fatos fiscais
 			
 			
-			// finalizar bloco zero
+			/*
+			 * Registros Totalizadores dos Blocos
+			 */
 			bloco0.setR0990(EFDUtil.createR0990());
+			blocoC.setrC990(EFDUtil.createRC990());
+			blocoD.setrD990(EFDUtil.createRD990());
+			
 			
 			
 			// 
@@ -280,14 +326,24 @@ public class ProcGenerateEFD extends SvrProcess
 		catch (Exception e) 
 		{
 			
-			// mapear erro para facilitar o reconhecimento
+			// mapear ultimo erro para facilitar o reconhecimento
 			String className = e.getStackTrace()[0].getClassName();
 			String methodName = e.getStackTrace()[0].getMethodName();
 			int lineNumber = e.getStackTrace()[0].getLineNumber();
-			String error = e.getLocalizedMessage();
+			String errorMsg = e.getLocalizedMessage();
+			String error = "[" + className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " ]";
+			
+			
+			// mapear penultimo erro para facilitar o reconhecimento
+			className = e.getStackTrace()[1].getClassName();
+			methodName = e.getStackTrace()[1].getMethodName();
+			lineNumber = e.getStackTrace()[1].getLineNumber();
+			
+			// ultimo erro
+			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " >> " + error;
 			
 			// lançar exception para retornar ao usuário
-			throw new Exception("Falha ao gerar o arquivo! [" + className + "." + methodName + " Linha:" + lineNumber + "] Erro: " + error );
+			throw new Exception("Falha ao gerar o EFD! \n" + error);
 		}
 		
 		// return bloco0;

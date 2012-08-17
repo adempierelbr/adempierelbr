@@ -13,8 +13,12 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.compiere.util.Env;
 
 /**
  * REGISTRO D110: ITENS DO DOCUMENTO - NOTA FISCAL DE SERVIÇOS DE TRANSPORTE
@@ -30,12 +34,94 @@ public class RD110 extends RegSped {
 	private BigDecimal VL_SERV;
 	private BigDecimal VL_OUT;
 
+	/*
+	 * Valores para apuração no D190
+	 * 
+	 * Obs.: Não devem ser validados pelo annotation
+	 */
+	@XMLFieldProperties(needsValidation = false, id = "CST_ICMS")
+	private String CST_ICMS;
+
+	@XMLFieldProperties(needsValidation = false, id = "CFOP")
+	private String CFOP;
+
+	@XMLFieldProperties(needsValidation = false, id = "VL_BC_ICMS")
+	private BigDecimal ALIQ_ICMS;
+
+	@XMLFieldProperties(needsValidation = false, id = "VL_BC_ICMS")
+	private BigDecimal VL_BC_ICMS;
+
+	@XMLFieldProperties(needsValidation = false, id = "VL_ICMS")
+	private BigDecimal VL_ICMS;
+
+	@XMLFieldProperties(needsValidation = false, id = "PERCENT_REDUCAO_BC")
+	private BigDecimal PERCENT_REDUCAO_BC = Env.ZERO;
+
+	@XMLFieldProperties(needsValidation = false, id = "VL_OPR")
+	private BigDecimal VL_OPR = Env.ZERO;
+
 	/**
 	 * Constructor
 	 */
 	public RD110() {
 		super();
 	}// RD110
+
+	public String getCST_ICMS() {
+		return CST_ICMS;
+	}
+
+	public void setCST_ICMS(String cST_ICMS) {
+		CST_ICMS = cST_ICMS;
+	}
+
+	public String getCFOP() {
+		return CFOP;
+	}
+
+	public void setCFOP(String cFOP) {
+		CFOP = cFOP;
+	}
+
+	public BigDecimal getALIQ_ICMS() {
+		return ALIQ_ICMS;
+	}
+
+	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS) {
+		ALIQ_ICMS = aLIQ_ICMS;
+	}
+
+	public BigDecimal getVL_OPR() {
+		return VL_OPR;
+	}
+
+	public void setVL_OPR(BigDecimal vL_OPR) {
+		VL_OPR = vL_OPR;
+	}
+
+	public BigDecimal getPERCENT_REDUCAO_BC() {
+		return PERCENT_REDUCAO_BC;
+	}
+
+	public void setPERCENT_REDUCAO_BC(BigDecimal pERCENT_REDUCAO_BC) {
+		PERCENT_REDUCAO_BC = pERCENT_REDUCAO_BC;
+	}
+
+	public BigDecimal getVL_BC_ICMS() {
+		return VL_BC_ICMS;
+	}
+
+	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS) {
+		VL_BC_ICMS = vL_BC_ICMS;
+	}
+
+	public BigDecimal getVL_ICMS() {
+		return VL_ICMS;
+	}
+
+	public void setVL_ICMS(BigDecimal vL_ICMS) {
+		VL_ICMS = vL_ICMS;
+	}
 
 	public Integer getNUM_ITEM() {
 		return NUM_ITEM;
@@ -67,6 +153,34 @@ public class RD110 extends RegSped {
 
 	public void setVL_OUT(BigDecimal vL_OUT) {
 		VL_OUT = vL_OUT;
+	}
+
+	/**
+	 * Valor da redução da Base de Cálculo do ICMS
+	 * 
+	 * Valor da Linha - Valor da Base de Cálculo do ICMS
+	 * 
+	 * Obs.: Somente cálcular se houver redução no campo
+	 * 
+	 * @return
+	 */
+	public BigDecimal getVL_RED_BC_ICMS() {
+
+		// mc
+		MathContext mc = new MathContext(12);
+		
+		// valor da base
+		BigDecimal baseICMS = getVL_BC_ICMS();
+
+		// redução = 1-(PERC_BC_ICMS/100)
+		BigDecimal reduction = Env.ONE.subtract(getPERCENT_REDUCAO_BC().divide(Env.ONEHUNDRED, mc));
+
+		// se for negativa ou zero, usar 1
+		if (reduction.signum() != 1)
+			reduction = Env.ONE;
+
+		// BC/REDUCAO = VALOR DA BASE SEM REDUCAO
+		return ((baseICMS.divide(reduction, mc)).subtract(baseICMS)).setScale(2, RoundingMode.HALF_UP);
 	}
 
 	@Override

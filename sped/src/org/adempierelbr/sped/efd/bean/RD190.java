@@ -106,6 +106,14 @@ public class RD190 extends RegSped implements Comparable<Object> {
 		COD_OBS = cOD_OBS;
 	}
 
+	public void addValues(RD190 otherD190){
+		this.VL_OPR        = getVL_OPR().add(otherD190.getVL_OPR());
+		this.VL_BC_ICMS    = getVL_BC_ICMS().add(otherD190.getVL_BC_ICMS());
+		this.VL_ICMS       = getVL_ICMS().add(otherD190.getVL_ICMS());
+		this.VL_RED_BC     = getVL_RED_BC().add(otherD190.getVL_RED_BC());
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

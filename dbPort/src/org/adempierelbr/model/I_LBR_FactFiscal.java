@@ -248,19 +248,6 @@ public interface I_LBR_FactFiscal
 	  */
 	public Timestamp getDateDoc();
 
-    /** Column name Discount */
-    public static final String COLUMNNAME_Discount = "Discount";
-
-	/** Set Discount %.
-	  * Discount in percent
-	  */
-	public void setDiscount (BigDecimal Discount);
-
-	/** Get Discount %.
-	  * Discount in percent
-	  */
-	public BigDecimal getDiscount();
-
     /** Column name DiscountAmt */
     public static final String COLUMNNAME_DiscountAmt = "DiscountAmt";
 

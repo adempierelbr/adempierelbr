@@ -33,7 +33,7 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120816L;
+	private static final long serialVersionUID = 20120817L;
 
     /** Standard Constructor */
     public X_LBR_FactFiscal (Properties ctx, int LBR_FactFiscal_ID, String trxName)
@@ -374,26 +374,6 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 	public Timestamp getDateDoc () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
-	}
-
-	/** Set Discount %.
-		@param Discount 
-		Discount in percent
-	  */
-	public void setDiscount (BigDecimal Discount)
-	{
-		set_Value (COLUMNNAME_Discount, Discount);
-	}
-
-	/** Get Discount %.
-		@return Discount in percent
-	  */
-	public BigDecimal getDiscount () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Discount);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** Set Discount Amount.

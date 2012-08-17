@@ -14,7 +14,10 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
@@ -53,6 +56,12 @@ public class RD100 extends RegSped implements Comparable<Object> {
 	private String COD_INF;
 	private String COD_CTA;
 
+	@XMLFieldProperties(needsValidation = true, id = "RD110")
+	private List<RD110> rD110 = new ArrayList<RD110>();
+
+	@XMLFieldProperties(needsValidation = true, id = "RD190")
+	private List<RD190> rD190 = new ArrayList<RD190>();
+	
 	/**
 	 * Constructor
 	 */
@@ -234,6 +243,57 @@ public class RD100 extends RegSped implements Comparable<Object> {
 
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
+	}
+	
+	public void addrD110(RD110 rd110)
+	{
+		// add linha
+		this.rD110.add(rd110);
+		
+		
+		// atualizar totalizadores
+		updateD190(rd110);
+	}
+	
+	/**
+	 * Atualizar registro D190 baseado nas linhas
+	 * 
+	 * 
+	 */
+	public void updateD190(RD110 rd110)
+	{
+
+		// criar registo
+		RD190 reg = new RD190();
+		reg.setCST_ICMS(rd110.getCST_ICMS());
+		reg.setCFOP(rd110.getCFOP());
+		reg.setALIQ_ICMS(rd110.getALIQ_ICMS());
+		reg.setVL_OPR(rd110.getVL_OPR());
+		reg.setVL_BC_ICMS(rd110.getVL_BC_ICMS());
+		reg.setVL_ICMS(rd110.getVL_ICMS());
+		
+		// valor cálculado na d110
+		reg.setVL_RED_BC(rd110.getVL_RED_BC_ICMS());
+		
+		// TODO: ??
+		reg.setCOD_OBS("");
+		
+		
+		// verificar se existe
+		if(rD190.contains(reg))
+		{
+			// remover da contagem
+			reg.subtractCounter();
+			
+			// somar combinação de CST, ALIQ, CFOP 
+			rD190.get(rD190.indexOf(reg)).addValues(reg);
+		}
+		
+		// se não existir, simplismente add o totalizador
+		else
+		{
+			rD190.add(reg);
+		}	
 	}
 
 	@Override

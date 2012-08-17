@@ -21,68 +21,57 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * BLOCO C: DOCUMENTOS FISCAIS I - MERCADORIAS (ICMS/IPI)
+ * BLOCO D: DOCUMENTOS FISCAIS II - SERVIÇOS (ICMS).
  * 
  * 
  * @author Pablo Boff Pigozzo, pablobp4
- * @version $Id: Bloco0.java, 07/08/2012 11:03
+ * @version $ 07/08/2012 11:03 $
  */
-public class BLOCOC {
+public class BLOCOD {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(needsValidation = true, id = "RC001")
-	private RC001 rC001;
+	@XMLFieldProperties(needsValidation = true, id = "RD001")
+	private RD001 rD001;
 
-	@XMLFieldProperties(needsValidation = true, id = "RC100")
-	private List<RC100> rC100 = new ArrayList<RC100>();
+	@XMLFieldProperties(needsValidation = true, id = "RD100")
+	private List<RD100> rD100 = new ArrayList<RD100>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RC990")
-	private RC990 rC990;
+	@XMLFieldProperties(needsValidation = true, id = "RD990")
+	private RD990 rD990;
 
-	public RC001 getrC001() {
-		return rC001;
+	public RD001 getrD001() {
+		return rD001;
 	}
 
-	public void setrC001(RC001 rC001) {
-		this.rC001 = rC001;
+	public void setrD001(RD001 rD001) {
+		this.rD001 = rD001;
 	}
 
-	public List<RC100> getrC100() {
-		return rC100;
+	public List<RD100> getrD100() {
+		return rD100;
 	}
 
-	public void setrC100(List<RC100> rC100) {
-		this.rC100 = rC100;
+	public void setrD100(List<RD100> rD100) {
+		this.rD100 = rD100;
 	}
 
-	public RC990 getrC990() {
-		return rC990;
+	public RD990 getrD990() {
+		return rD990;
 	}
 
-	public void setrC990(RC990 rC990) {
-		this.rC990 = rC990;
+	public void setrD990(RD990 rD990) {
+		this.rD990 = rD990;
 	}
 
 	/**
-	 * Adicionar registo RC100 ao bloco C
+	 * Adicionar registo RD100 ao bloco C
 	 * 
-	 * @param rc100
+	 * @param rd100
 	 */
-	public void addrC100(RC100 rc100) 
-	{
+	public void addrD100(RD100 rd100) {
 		// adicionar rc100
-		this.rC100.add(rc100);
-	}
-
-	
-	public String toString() {
-		StringBuilder format = new StringBuilder();
-
-		for (RC100 rc100 : rC100)
-			format.append(rc100.toString());
-
-		return format.toString();
+		this.rD100.add(rd100);
 	}
 
 } // R0000
