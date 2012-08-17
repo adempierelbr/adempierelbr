@@ -12,10 +12,14 @@
  *****************************************************************************/
 package org.adempierelbr.sped;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.adempierelbr.annotation.Validate;
+import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -195,4 +199,77 @@ public abstract class RegSped implements Comparable<Object>{
 		return FQClassName.substring(1);
 	}
 	
-} //RegSped
+	/**
+	 * 	To String
+	 */
+	public String toString ()
+	{
+		try
+		{
+			Class<?> clazz = getClass();
+			
+			if (!clazz.getSuperclass().equals (RegSped.class))
+				return "";
+
+			Field[] fields = clazz.getDeclaredFields();
+			StringBuilder result = new StringBuilder("|");
+			
+			for (Field field : fields) 
+			{
+				log.finer ("Processing SPED: " + field);
+	
+				String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);;
+				
+				Class<?> noparams[] = {};
+				Object[] noargs = null;
+				//
+				Method method = clazz.getDeclaredMethod ("get" + fieldName, noparams);
+				Object content = method.invoke (this, noargs);
+				
+				//	Do Nothing
+				if (content == null)
+					;
+				
+				//	BigDecimal
+				else if (content instanceof BigDecimal)
+				{
+					BigDecimal contentBD = (BigDecimal) content;
+					result.append(contentBD.setScale(2, BigDecimal.ROUND_HALF_UP));
+				}
+				
+				//	Timestamp
+				else if (content instanceof Timestamp)
+				{
+					Timestamp contentTS = (Timestamp) content;
+					result.append (TextUtil.timeToString (contentTS));
+				}
+				
+				//	Outros
+				else 
+					result.append (content);
+				
+				//	Commons
+				result.append("|");
+			}
+			//
+			return result.toString();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return "";
+		}
+	}	//	toString
+	
+	/**
+	 * 	Test
+	 */
+	public static void main (String[] args)
+	{
+		R0000 r0000 = new R0000();
+		r0000.setCNPJ("00.000.000/0000-00");
+		r0000.setDT_INI(new Timestamp(new Date().getTime()));
+		//
+		System.out.println (r0000.toString());
+	}
+}	//	RegSped
