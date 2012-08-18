@@ -29,4 +29,18 @@ public @interface XMLFieldProperties
 	int maxSize () default 0;
 	boolean isMandatory () default true;
 	boolean needsValidation () default false;
+	
+	/**
+	 * Verificar se é somente números, usado para campos como CPF, CNPJ...
+	 * @return
+	 */
+	boolean onlyNumber () default false;
+
+	/**
+	 * Verificar se a variavel é um campo do SPED
+	 * 
+	 * @return
+	 */
+	boolean isSPEDField () default true;
+	
 }	//	XMLFieldProperties

@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.adempierelbr.annotation.Validate;
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
@@ -216,12 +217,23 @@ public abstract class RegSped implements Comparable<Object>{
 			
 			for (Field field : fields) 
 			{
+				// log
 				log.finer ("Processing SPED: " + field);
+
+				// Carregar info das annotations
+				XMLFieldProperties annotation = field.getAnnotation (XMLFieldProperties.class);
+				
+				// verificar se é campo do SPED, senão não incluir no resultado
+				if(annotation != null && !annotation.isSPEDField())
+					continue;
 	
+				// 
 				String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);;
 				
+				//
 				Class<?> noparams[] = {};
 				Object[] noargs = null;
+				
 				//
 				Method method = clazz.getDeclaredMethod ("get" + fieldName, noparams);
 				Object content = method.invoke (this, noargs);
@@ -233,6 +245,7 @@ public abstract class RegSped implements Comparable<Object>{
 				//	BigDecimal
 				else if (content instanceof BigDecimal)
 				{
+					//
 					BigDecimal contentBD = (BigDecimal) content;
 					result.append(contentBD.setScale(2, BigDecimal.ROUND_HALF_UP));
 				}
@@ -240,8 +253,43 @@ public abstract class RegSped implements Comparable<Object>{
 				//	Timestamp
 				else if (content instanceof Timestamp)
 				{
+					//
 					Timestamp contentTS = (Timestamp) content;
-					result.append (TextUtil.timeToString (contentTS));
+					result.append (TextUtil.timeToString (contentTS, "ddMMyyyy"));
+				}
+				
+				//	String
+				else if (content instanceof String)
+				{
+					
+					// 
+					String contentSTR = (String) content;
+					
+					// sem annotation
+					if(annotation == null)
+						result.append(contentSTR);
+
+					// com validação de tamanhos
+					if(annotation.maxSize() > 0)
+					{
+						// só números - CPF, CityCode, CountryCode, CNPJ...Ex.: 1 -> 001 / 1058 >> 01058
+						if (annotation.onlyNumber())
+							result.append(TextUtil.lPad(TextUtil.toNumeric(contentSTR), annotation.maxSize()));
+						
+						// qualquer outra str
+						else
+							result.append(TextUtil.lPad(contentSTR, annotation.maxSize()));
+
+					}
+					
+					// sem validar tamanhos
+					else
+					{
+						if (annotation.onlyNumber())
+							result.append(TextUtil.toNumeric(contentSTR));
+						else
+							result.append(contentSTR);
+					}
 				}
 				
 				//	Outros
@@ -251,6 +299,7 @@ public abstract class RegSped implements Comparable<Object>{
 				//	Commons
 				result.append("|");
 			}
+			
 			//
 			return result.toString();
 		}
@@ -268,8 +317,13 @@ public abstract class RegSped implements Comparable<Object>{
 	{
 		R0000 r0000 = new R0000();
 		r0000.setCNPJ("00.000.000/0000-00");
+		r0000.setCOD_VER("1");
 		r0000.setDT_INI(new Timestamp(new Date().getTime()));
+		r0000.setCOD_MUN("1234");
+		
+		
 		//
+		
 		System.out.println (r0000.toString());
 	}
 }	//	RegSped

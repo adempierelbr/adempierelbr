@@ -172,32 +172,6 @@ public class R0150 extends RegSped {
 		BAIRRO = bAIRRO;
 	}
 
-	/**
-	 * Formata o Bloco 0 Registro 150
-	 * 
-	 * @return
-	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(COD_PART)
-            .append(PIPE).append(NOME)
-            .append(PIPE).append(COD_PAIS)
-            .append(PIPE).append(CNPJ)
-            .append(PIPE).append(CPF)
-            .append(PIPE).append(IE)
-            .append(PIPE).append(COD_MUN)
-            .append(PIPE).append(SUFRAMA)
-            .append(PIPE).append(END)
-            .append(PIPE).append(NUM)
-            .append(PIPE).append(COMPL)
-            .append(PIPE).append(BAIRRO)
-            .append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
-
 	
 	@Override
 	public int hashCode() 

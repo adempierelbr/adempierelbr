@@ -33,7 +33,7 @@ public class R0000 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "COD_VER")
+	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "COD_VER", onlyNumber = true)
 	private String COD_VER;
 
 	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "COD_FIN")
@@ -48,10 +48,10 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(id = "NOME")
 	private String NOME;
 
-	@XMLFieldProperties(id = "CNPJ", isMandatory = false)
+	@XMLFieldProperties(maxSize = 14, id = "CNPJ", isMandatory = false, onlyNumber = true)
 	private String CNPJ;
 
-	@XMLFieldProperties(id = "CPF", isMandatory = false)
+	@XMLFieldProperties(maxSize = 14, id = "CPF", isMandatory = false, onlyNumber = true)
 	private String CPF;
 
 	@XMLFieldProperties(id = "UF")
@@ -60,7 +60,7 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(id = "IE")
 	private String IE;
 
-	@XMLFieldProperties(id = "COD_MUN")
+	@XMLFieldProperties(maxSize = 7, id = "COD_MUN")
 	private String COD_MUN;
 
 	@XMLFieldProperties(id = "IM", isMandatory = false)
