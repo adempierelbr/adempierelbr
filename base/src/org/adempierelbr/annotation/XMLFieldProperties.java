@@ -28,8 +28,9 @@ public @interface XMLFieldProperties
 	int minSize () default 0;
 	int maxSize () default 0;
 	boolean isMandatory () default true;
-	boolean needsValidation () default false;
+	boolean needsValidation () default true;
 	
+	int scale () default 2;
 	/**
 	 * Verificar se é somente números, usado para campos como CPF, CNPJ...
 	 * @return
