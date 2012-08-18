@@ -160,7 +160,7 @@ public class ProcGenerateEFD extends SvrProcess
 		try
 		{
 			
-			// Zerar Contadores (staticos)
+			// Zerar Contadores (estaticos)
 			CounterSped.clear();
 
 			
@@ -250,11 +250,12 @@ public class ProcGenerateEFD extends SvrProcess
 						/*
 						 *  0460 - Obs do Lançamento Fiscal
 						 *  
-						 *  Se não for industria, gerar a Obs do Lançamento Fiscal 
+						 *  Se não for industria e for entrada, gerar a Obs do Lançamento Fiscal 
 						 *  de acordo com a descrição no método addrC170
 						 */
-						if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0")) // atividade = comércio | operacao = entrada
+						if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0"))
 						{						
+							//
 							R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
 							bloco0.addr0460(r0460);
 						
@@ -333,7 +334,6 @@ public class ProcGenerateEFD extends SvrProcess
 			String errorMsg = e.getLocalizedMessage();
 			String error = "[" + className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " ]";
 			
-			
 			// mapear penultimo erro para facilitar o reconhecimento
 			className = e.getStackTrace()[1].getClassName();
 			methodName = e.getStackTrace()[1].getMethodName();
@@ -343,7 +343,7 @@ public class ProcGenerateEFD extends SvrProcess
 			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " >> " + error;
 			
 			// lançar exception para retornar ao usuário
-			throw new Exception("Falha ao gerar o EFD! \n" + error);
+			throw new Exception("Falha ao gerar o EFD! " + error);
 		}
 		
 		// return bloco0;
