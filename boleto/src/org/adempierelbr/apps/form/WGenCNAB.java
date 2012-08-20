@@ -20,6 +20,7 @@ import java.util.logging.Level;
 
 import javax.swing.table.TableModel;
 
+import org.adempiere.pipo.CreateZipFile;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
@@ -269,12 +270,20 @@ public class WGenCNAB extends GenCNAB
 		File folder = new File (filePath);
 		if (!folder.exists())
 			folder.mkdirs();
-		
-		File file = genCNAB (miniTable, filePath, (KeyNamePair) fieldBankAccount.getSelectedItem().getValue());
 		//
+		deleteDir(folder);
+		
+		genCNAB (miniTable, filePath, (KeyNamePair) fieldBankAccount.getSelectedItem().getValue());
+		
+		File zipFile = new File(folder + ".zip");
+		if (zipFile.exists())
+			zipFile.delete();
+		//
+		CreateZipFile.zipFolder (folder, zipFile, "**");
+		
 		try
 		{
-			AMedia media = new AMedia(file.getName(), null, null, FileUtils.readFileToByteArray(file));
+			AMedia media = new AMedia(zipFile.getName(), null, null, FileUtils.readFileToByteArray(zipFile));
 			Filedownload.save(media);
 		}
 		catch (Exception e)
