@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.sped.efd.bean.R0001;
 import org.adempierelbr.sped.efd.bean.R0005;
@@ -481,7 +482,6 @@ public class EFDUtil {
 		reg.setUNID(factFiscal.getlbr_UOMName() == null ? "un" : factFiscal.getlbr_UOMName());
 		reg.setDESCR(factFiscal.getLBR_UOMDescription() == null ? "un" : factFiscal.getLBR_UOMDescription());
 		
-		
 		return reg;
 		
 	} 
@@ -625,7 +625,7 @@ public class EFDUtil {
 	public static R0990 createR0990() throws Exception 
 	{
 		R0990 reg = new R0990();
-		reg.setQTD_LIN_0(String.valueOf(reg.getClass().getName()));
+		reg.setQTD_LIN_0(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
 		return reg;
 	}
@@ -656,17 +656,17 @@ public class EFDUtil {
 	 */
 	public static RC100 createRC100(MLBRFactFiscal factFiscal) throws Exception
 	{
-		
 		//
 		RC100 reg = new RC100();
 		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0"); // Entrada = 0 | Saida = 1
 		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
-		reg.setCOD_PART(getCOD_PART(factFiscal));
 		reg.setCOD_MOD(getCOD_MOD(factFiscal));
 		reg.setCOD_SIT(getCOD_SIT(factFiscal));
 		reg.setSER(getSER(factFiscal));
 		reg.setNUM_DOC(factFiscal.getDocumentNo());
 		reg.setCHV_NFE(factFiscal.getlbr_NFeID());
+
+		reg.setCOD_PART(getCOD_PART(factFiscal));
 		reg.setDT_DOC(factFiscal.getDateDoc());
 		reg.setDT_E_S(factFiscal.getlbr_DateInOut());
 		reg.setVL_DOC(factFiscal.getGrandTotal());
@@ -857,7 +857,7 @@ public class EFDUtil {
 	public static RC990 createRC990() throws Exception 
 	{
 		RC990 reg = new RC990();
-		reg.setQTD_LIN_C(String.valueOf(reg.getClass().getName()));
+		reg.setQTD_LIN_C(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
 		return reg;
 	}
@@ -988,7 +988,7 @@ public class EFDUtil {
 	public static RD990 createRD990() throws Exception 
 	{
 		RD990 reg = new RD990();
-		reg.setQTD_LIN_D(String.valueOf(reg.getClass().getName()));
+		reg.setQTD_LIN_D(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
 		return reg;
 	}

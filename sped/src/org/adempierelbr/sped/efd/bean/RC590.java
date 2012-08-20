@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C590: REGISTRO ANALÍTICO DO DOCUMENTO - NOTA FISCAL/CONTA DE ENERGIA
@@ -26,15 +30,36 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC590 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "CST_ICMS", minSize = 3, maxSize = 3)
 	private String CST_ICMS;
+	
+	@XMLFieldProperties(id = "CFOP", minSize = 4, maxSize = 4)
 	private String CFOP;
+	
+	@XMLFieldProperties(id = "ALIQ_ICMS", isMandatory = false, maxSize = 6)
 	private BigDecimal ALIQ_ICMS;
+	
+	@XMLFieldProperties(id = "VL_OPR")
 	private BigDecimal VL_OPR;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_BC_ICMS_ST;
+	
+	@XMLFieldProperties(id = "VL_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_ICMS_ST;
+	
+	@XMLFieldProperties(id = "VL_RED_BC", isMandatory = false)
 	private BigDecimal VL_RED_BC;
+	
+	@XMLFieldProperties(id = "COD_OBS", isMandatory = false, maxSize = 6)
 	private String COD_OBS;
 
 	/**

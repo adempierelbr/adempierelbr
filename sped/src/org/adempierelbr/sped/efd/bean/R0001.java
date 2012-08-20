@@ -31,7 +31,7 @@ public class R0001 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
+	@XMLFieldProperties(id = "IND_MOV")
 	private String IND_MOV;
 
 	

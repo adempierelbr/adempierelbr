@@ -73,8 +73,10 @@ public class BLOCOC {
 	{
 		// adicionar rc100
 		this.rC100.add(rc100);
+		
 	}
-
+	
+	
 	/**
 	 * 	To String
 	 */
@@ -87,10 +89,34 @@ public class BLOCOC {
 		// init
 		result.append(rC001.toString());
 		
-		// NFs
+		// C100 e filhos
 		for(RC100 aux_rc100 : rC100)
+		{
+			// NF
 			result.append(aux_rc100.toString());
+		
+			// DI
+			if(aux_rc100.getrC120() != null)
+				result.append(aux_rc100.getrC120().toString());
+			
+			// ISS, ISSQN... 
+			for(RC130 aux_rc130 : aux_rc100.getrC130())
+				result.append(aux_rc130.toString());
+	
+			// Dados da Fatura
+			if(aux_rc100.getrC140() != null)
+				result.append(aux_rc100.getrC140().toString());
+	
+			// Itens da NF
+			for(RC170 aux_rc170 : aux_rc100.getrC170())
+				result.append(aux_rc170.toString());
+	
+			// Apuração pos CST, CFOP, ALIQ. ICMS
+			for(RC190 aux_rc190 : aux_rc100.getrC190())
+				result.append(aux_rc190.toString());
 
+		}
+		
 		// counter
 		result.append(rC990.toString());
 

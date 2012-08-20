@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO 0005: DADOS COMPLEMENTARES DA ENTIDADE
@@ -26,15 +30,33 @@ import org.adempierelbr.sped.RegSped;
 
 public class R0005 extends RegSped  {
 
-
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(maxSize = 60, id = "FANTASIA")
 	private String FANTASIA;
+	
+	@XMLFieldProperties(minSize = 8, maxSize = 8, id = "CEP", isNumber = true)
 	private String CEP;
+	
+	@XMLFieldProperties(maxSize = 60, id = "END")
 	private String END;
+	
+	@XMLFieldProperties(maxSize = 10, isMandatory = false, id = "NUM")
 	private String NUM;
+	
+	@XMLFieldProperties(maxSize = 60, isMandatory = false, id = "COMPL")
 	private String COMPL;
+	
+	@XMLFieldProperties(maxSize = 60, id = "BAIRRO")
 	private String BAIRRO;
+	
+	@XMLFieldProperties(maxSize = 11, isMandatory = false, id = "FONE", isNumber = true)
 	private String FONE;
+	
+	@XMLFieldProperties(maxSize = 11, isMandatory = false, id = "FAX")
 	private String FAX;
+	
+	@XMLFieldProperties(maxSize = 255, isMandatory = false, id = "EMAIL")
 	private String EMAIL;
 
 	

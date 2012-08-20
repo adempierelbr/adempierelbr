@@ -13,16 +13,16 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C100 - NOTA FISCAL DE PRODUTOR (CÓDIGO 04) e NF-e (CÓDIGO 55)
@@ -35,56 +35,112 @@ import org.compiere.util.Env;
  */
 public class RC100 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_OPER")
 	private String IND_OPER;
+
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_EMIT")
 	private String IND_EMIT;
+
+	@XMLFieldProperties(id = "COD_PART", maxSize = 60)
 	private String COD_PART;
+
+	@XMLFieldProperties(id = "COD_MOD", minSize = 2, maxSize = 2)
 	private String COD_MOD;
+
+	@XMLFieldProperties(id = "COD_SIT", minSize = 2, maxSize = 2)
 	private String COD_SIT;
+
+	@XMLFieldProperties(id = "SER", maxSize = 3, isMandatory = false)
 	private String SER;
+
+	@XMLFieldProperties(id = "NUM_DOC", maxSize = 9)
 	private String NUM_DOC;
+
+	@XMLFieldProperties(id = "CHV_NFE", minSize = 44, maxSize = 44, isNumber = true)
 	private String CHV_NFE;
+
+	@XMLFieldProperties(id = "DT_DOC", minSize = 6, maxSize = 6)
 	private Timestamp DT_DOC;
+
+	@XMLFieldProperties(id = "DT_E_S", minSize = 6, maxSize = 6, isMandatory = false)
 	private Timestamp DT_E_S;
+
+	@XMLFieldProperties(id = "VL_DOC")
 	private BigDecimal VL_DOC;
+
+	@XMLFieldProperties(id = "IND_PGTO", minSize = 1, maxSize = 1)
 	private String IND_PGTO;
+
+	@XMLFieldProperties(id = "VL_DESC", isMandatory = false)
 	private BigDecimal VL_DESC;
+
+	@XMLFieldProperties(id = "VL_ABAT_NT", isMandatory = false)
 	private BigDecimal VL_ABAT_NT;
+
+	@XMLFieldProperties(id = "VL_MERC", isMandatory = false)
 	private BigDecimal VL_MERC;
+
+	@XMLFieldProperties(id = "IND_FRT", minSize = 1, maxSize = 1)
 	private String IND_FRT;
+
+	@XMLFieldProperties(id = "VL_FRT", isMandatory = false)
 	private BigDecimal VL_FRT;
+
+	@XMLFieldProperties(id = "VL_SEG", isMandatory = false)
 	private BigDecimal VL_SEG;
+
+	@XMLFieldProperties(id = "VL_OUT_DA", isMandatory = false)
 	private BigDecimal VL_OUT_DA;
+
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+
+	@XMLFieldProperties(id = "VL_BC_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_BC_ICMS_ST;
+
+	@XMLFieldProperties(id = "VL_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_ICMS_ST;
+
+	@XMLFieldProperties(id = "VL_IPI", isMandatory = false)
 	private BigDecimal VL_IPI;
+
+	@XMLFieldProperties(id = "VL_PIS", isMandatory = false)
 	private BigDecimal VL_PIS;
+
+	@XMLFieldProperties(id = "VL_COFINS", isMandatory = false)
 	private BigDecimal VL_COFINS;
+
+	@XMLFieldProperties(id = "VL_PIS_ST", isMandatory = false)
 	private BigDecimal VL_PIS_ST;
+
+	@XMLFieldProperties(id = "VL_COFINS_ST", isMandatory = false)
 	private BigDecimal VL_COFINS_ST;
 
-	@XMLFieldProperties(needsValidation = true, id = "RC120")
+	@XMLFieldProperties(id = "RC120", isSPEDField = false)
 	private RC120 rC120;
 
-	@XMLFieldProperties(needsValidation = true, id = "RC130")
+	@XMLFieldProperties(id = "RC130", isSPEDField = false)
 	private List<RC130> rC130 = new ArrayList<RC130>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RC140")
+	@XMLFieldProperties(id = "RC140", isSPEDField = false)
 	private RC140 rC140;
 
-	@XMLFieldProperties(needsValidation = true, id = "RC170")
+	@XMLFieldProperties(id = "RC170", isSPEDField = false)
 	private List<RC170> rC170 = new ArrayList<RC170>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RC190")
+	@XMLFieldProperties(id = "RC190", isSPEDField = false)
 	private List<RC190> rC190 = new ArrayList<RC190>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RC195")
+	@XMLFieldProperties(id = "RC195", isSPEDField = false)
 	private List<RC195> rC195 = new ArrayList<RC195>();
-	
-	@XMLFieldProperties(needsValidation = false, id = "IND_ATIV")
+
+	@XMLFieldProperties(id = "IND_ATIV", isSPEDField = false)
 	private String IND_ATIV;
-	
 
 	/**
 	 * Constructor
@@ -380,12 +436,11 @@ public class RC100 extends RegSped {
 	public void setrC195(ArrayList<RC195> rC195) {
 		this.rC195 = rC195;
 	}
-	
-	public void addrC195(RC195 rc195)
-	{
+
+	public void addrC195(RC195 rc195) {
 		this.rC195.add(rc195);
 	}
-	
+
 	/**
 	 * Adicionar a lista de registros
 	 * 
@@ -397,70 +452,65 @@ public class RC100 extends RegSped {
 		
 		/*
 		 * PARA CASOS EM QUE A EMPRESA NÃO FAZ APURAÇÃO DE IPI E ST
-		 *  
+		 * 
 		 * - ST
 		 * 
-		 * Regra:
-		 * Produto: R$ 1000,00;
-		 * IVA: 40%;
-		 * Valor de Base para ST: R$ 1400,00;
-		 * Valor do ICMSST (aliq 17%): R$ 238,00;
-		 * Valor do ICMS (aliq 17%): R$ 170,00;
-		 * Diferença de ICMSST - ICMS = R$ 68,00;
-		 * Valor final do produto: R$ 1068,00
-		 *
-		 * Como fica para no SPED:
-		 * Valor do Produto: R$ 1000,00;
-		 * Valor, Base, Aliq do ICMSST: 0;
-		 * Valor, Base, Aliq do ICMS:  0;
+		 * Regra: Produto: R$ 1000,00; IVA: 40%; Valor de Base para ST: R$
+		 * 1400,00; Valor do ICMSST (aliq 17%): R$ 238,00; Valor do ICMS (aliq
+		 * 17%): R$ 170,00; Diferença de ICMSST - ICMS = R$ 68,00; Valor final
+		 * do produto: R$ 1068,00
 		 * 
-		 * *** Criar registro de Observação R0460 pada colocar os valores de 
-		 * IPI e ST para justificar a diferença nos totais da NF.
+		 * Como fica para no SPED: Valor do Produto: R$ 1000,00; Valor, Base,
+		 * Aliq do ICMSST: 0; Valor, Base, Aliq do ICMS: 0;
 		 * 
-		 * *** Explicação da regra acima: Os valores do ICMSST e ICMS devem ser zerados
-		 * pois não se apura ST e o ICMS é substituido, ou seja, já pago e
-		 * não dando direito a crédito.
-		 *
-		 * *** Para casos em que a mesma NF tem itens substituidos e itens não substituidos 
-		 * a regra é a seguinte:
+		 * *** Criar registro de Observação R0460 pada colocar os valores de IPI
+		 * e ST para justificar a diferença nos totais da NF.
 		 * 
-		 * 1 - Para os itens substituidos, aplica-se as regras acima;
-		 * 2 - Para os itens não substituidos, credita-se do ICMS normalmente;
+		 * *** Explicação da regra acima: Os valores do ICMSST e ICMS devem ser
+		 * zerados pois não se apura ST e o ICMS é substituido, ou seja, já pago
+		 * e não dando direito a crédito.
 		 * 
-		 * - IPI 
+		 * *** Para casos em que a mesma NF tem itens substituidos e itens não
+		 * substituidos a regra é a seguinte:
 		 * 
-		 * *** Para o IPI, simplesmente zera-se os valores da BC, Valor, Aliq e coloca-se no registro
-		 * R0460 uma descrição para justificar a diferença no tatal da NF.
+		 * 1 - Para os itens substituidos, aplica-se as regras acima; 2 - Para
+		 * os itens não substituidos, credita-se do ICMS normalmente;
 		 * 
-		 * As regras acima, aplicam-se só para as entradas, pois as saídas 
-		 * de empresas que não apuram IPI e ST, não podem tributar esses impostos
-		 * nesse tipo de transação. As impresas que apurarm, tributam normalmente, sendo 
-		 * assim apurados, sem manipulação nenhuma.
+		 * - IPI
+		 * 
+		 * *** Para o IPI, simplesmente zera-se os valores da BC, Valor, Aliq e
+		 * coloca-se no registro R0460 uma descrição para justificar a diferença
+		 * no tatal da NF.
+		 * 
+		 * As regras acima, aplicam-se só para as entradas, pois as saídas de
+		 * empresas que não apuram IPI e ST, não podem tributar esses impostos
+		 * nesse tipo de transação. As impresas que apurarm, tributam
+		 * normalmente, sendo assim apurados, sem manipulação nenhuma.
 		 */
-		if(getIND_ATIV().equals("1") && getIND_OPER().equals("0")) // atividade = comércio | operacao = entrada
+		if (getIND_ATIV().equals("1") && getIND_OPER().equals("0"))
 		{
-			
+
 			// se a NF tiver substituição tributaria, trabalhar os valores
-			if(getVL_ICMS_ST().signum() == 1)
-			{
-			
-				// zerar o valor do ICMS e ICMSST da NF para abaixo adicionar só o icms que não é substituido
+			if (getVL_ICMS_ST().signum() == 1) {
+
+				// zerar o valor do ICMS e ICMSST da NF para abaixo adicionar só
+				// o icms que não é substituido
 				setVL_BC_ICMS(Env.ZERO);
 				setVL_ICMS(Env.ZERO);
 				setVL_BC_ICMS(Env.ZERO);
 				setVL_ICMS(Env.ZERO);
-				
-				
-				// se o ICMS da linha não for substituido, então soma ao total da NF, pois esse será creditado 				
-				if(rc170.getVL_ICMS_ST().signum() == 0)
+
+				// se o ICMS da linha não for substituido, então soma ao total
+				// da NF, pois esse será creditado
+				if (rc170.getVL_ICMS_ST().signum() == 0) 
 				{
 					// somar ICMS no totalizador da NF
 					setVL_BC_ICMS(getVL_BC_ICMS().add(rc170.getVL_BC_ICMS()));
 					setVL_ICMS(getVL_ICMS().add(rc170.getVL_ICMS()));
-					
 				}
+				
 				// senão, zerar na linha também
-				else
+				else 
 				{
 					// zerar icms
 					rc170.setVL_BC_ICMS(Env.ZERO);
@@ -473,30 +523,32 @@ public class RC100 extends RegSped {
 					rc170.setALIQ_ST(Env.ZERO);
 				}
 			}
-			
+
 			// zerar ipi na nf
 			setVL_IPI(Env.ZERO);
-			
+
 			// zerar ipi na linha
+			rc170.setCST_IPI(null);
+			rc170.setVL_BC_IPI(Env.ZERO);
+			rc170.setALIQ_IPI(Env.ZERO);			
 			rc170.setVL_IPI(Env.ZERO);
-			
+
 		}
-		
+
 		// adicionar o item ao RC100
 		this.rC170.add(rc170);
-		
+
 		// atualizar totalizador C190;
 		updateC190(rc170);
+		
+		// verificar exceções ao adicionar novos itens
+		checkExceptions();
 	}
-	
-	
+
 	/**
 	 * Atualizar registro C190 baseado nas linhas da NF
-	 * 
-	 * 
 	 */
-	public void updateC190(RC170 rc170)
-	{
+	private void updateC190(RC170 rc170) {
 
 		// criar registo
 		RC190 rc190 = new RC190();
@@ -507,42 +559,239 @@ public class RC100 extends RegSped {
 		rc190.setVL_ICMS(rc170.getVL_ICMS());
 		rc190.setVL_BC_ICMS_ST(rc170.getVL_BC_ICMS_ST());
 		rc190.setVL_ICMS_ST(rc170.getVL_ICMS_ST());
-		
+
 		// valor cálculado na C170
 		rc190.setVL_RED_BC(rc170.getVL_RED_BC_ICMS());
-		
-		// 
+
+		//
 		rc190.setVL_IPI(rc170.getVL_IPI());
-		
+
 		// TODO: ??
 		rc190.setCOD_OBS("");
-		
-		
+
 		// verificar se existe
-		if(rC190.contains(rc190))
-		{
+		if (rC190.contains(rc190)) {
 			// remover da contagem
 			rc190.subtractCounter();
-			
-			// somar combinação de CST, ALIQ, CFOP 
+
+			// somar combinação de CST, ALIQ, CFOP
 			rC190.get(rC190.indexOf(rc190)).addValues(rc190);
 		}
-		
+
 		// se não existir, simplismente add o totalizador
-		else
-		{
+		else {
 			rC190.add(rc190);
 		}
-		
-		
-		
+
 	}
 	
-	
-	
-	@Override
-	public int hashCode() 
+	/**
+	 * Verificar e tratar as exceções impostas no manual do SPED EFD
+	 * para o registro C100.
+	 */
+	public void checkExceptions()
 	{
+
+		/*
+		 * Exceção 01:
+		 * Códigos de situação cancelado (código “02”), 
+		 * cancelado extemporâneo (código “03”), 
+		 * Nota Fiscal Eletrônica (NF-e) denegada (código “04”) 
+		 * preencher somente os campos REG, IND_OPER, IND_EMIT, COD_MOD, 
+		 * COD_SIT, SER, NUM_DOC e CHV_NF-e. Para COD-SIT = 05 (numeração inutilizada), 
+		 * todos os campos referidos anteriormente devem ser preenchidos, 
+		 * exceto o campo CHV_NF-e. Demais campos deverão ser apresentados 
+		 * com conteúdo VAZIO “||”. Não informar registros filhos. 
+		 */
+		if(getCOD_SIT().equals("02") 
+				|| getCOD_SIT().equals("03") 
+				|| getCOD_SIT().equals("04"))
+		{
+			
+			// Limpara campos do C100
+			setCOD_PART(null);
+			setDT_DOC(null);
+			setDT_E_S(null);
+			setVL_DOC(null);
+			setIND_PGTO(null);
+			setVL_DESC(null);
+			setVL_ABAT_NT(null);
+			setVL_MERC(null);
+			setIND_FRT(null);
+			setVL_FRT(null);
+			setVL_SEG(null);
+			setVL_OUT_DA(null);
+			setVL_BC_ICMS(null);
+			setVL_ICMS(null);
+			setVL_BC_ICMS_ST(null);
+			setVL_ICMS_ST(null);
+			setVL_IPI(null);
+			setVL_PIS(null);
+			setVL_COFINS(null);
+			setVL_PIS_ST(null);
+			setVL_COFINS_ST(null);
+			setIND_ATIV(null);
+
+			
+			// *** REMOVER FILHOS ***
+			// RC120
+			if(getrC120() != null) {
+				getrC120().subtractCounter();
+				setrC120(null);
+			}
+			
+			// RC130
+			for(RC130 rc130 : this.rC130)
+				rc130.subtractCounter();
+			 this.rC130 = new ArrayList<RC130>();
+			
+			
+			// RC170
+			for(RC170 rc170 : this.rC170)
+				rc170.subtractCounter();
+			 this.rC170 = new ArrayList<RC170>();
+			
+			// RC190
+			for(RC190 rc190 : this.rC190)
+				rc190.subtractCounter();
+			 this.rC190 = new ArrayList<RC190>();
+			 
+			 
+			// RC195
+			for(RC195 rc195 : this.rC195)
+				rc195.subtractCounter();
+			this.rC170 = new ArrayList<RC170>();
+			
+		}
+		
+		/*
+		 * Exceção 4: 
+		 * Notas Fiscais emitidas por regime especial ou norma específica 
+		 * (campo COD_SIT igual a “08”). Para documentos fiscais emitidos com base em 
+		 * regime especial ou norma específica, deverão ser apresentados os registros C100 e C190, 
+		 * obrigatoriamente, e os demais registros “filhos”, se estes forem exigidos pela legislação 
+		 * fiscal. Nesta situação, somente os campos REG, IND_EMIT, COD_PART, COD_MOD, COD_SIT, 
+		 * NUM_DOC e DT_DOC são de preenchimento obrigatório. Os demais campos, com exceção do campo 
+		 * NUM_ITEM do registro C170, são facultativos (se forem preenchidos, inclusive com valores 
+		 * iguais a Zero, serão validados e aplicadas as regras de campos existentes) e deverão ser 
+		 * preenchidos, quando houver informação a ser prestada. Exemplos: a) Nota fiscal emitida em 
+		 * substituição ao cupom fiscal – CFOP igual a 5.929 ou 6.929 – (lançamento efetuado em decorrência 
+		 * de emissão de documento fiscal relativo à operação ou à prestação também registrada em equipamento 
+		 * Emissor de Cupom Fiscal – ECF, exceto para o contribuinte do Estado do Paraná, que deve efetuar a 
+		 * escrituração de acordo com a regra estabelecida na tabela de código de ajustes); b) 
+		 * Nos casos em que a legislação estadual permitir a emissão de NF sem informações do destinatário, 
+		 * preencher os dados do próprio emitente. Obs.: a partir de janeiro de 2012, para todos os documentos 
+		 * diferentes de NF-e e com COD_SIT igual a “08”, deverá ser informada no registro C110 a norma legal 
+		 * que autoriza o preenchimento do documento fiscal nessa situação. 	
+		 */
+		else if(getCOD_SIT().equals("08"))
+		{
+			// zerar campos
+			setIND_OPER(null);
+			setSER(null);
+			setCHV_NFE(null);
+			setDT_E_S(null);
+			setVL_DOC(null);
+			setIND_PGTO(null);
+			setVL_DESC(null);
+			setVL_ABAT_NT(null);
+			setVL_MERC(null);
+			setIND_FRT(null);
+			setVL_FRT(null);
+			setVL_SEG(null);
+			setVL_OUT_DA(null);
+			setVL_BC_ICMS(null);
+			setVL_ICMS(null);
+			setVL_BC_ICMS_ST(null);
+			setVL_ICMS_ST(null);
+			setVL_IPI(null);
+			setVL_PIS(null);
+			setVL_COFINS(null);
+			setVL_PIS_ST(null);
+			setVL_COFINS_ST(null);
+			setIND_ATIV(null);
+
+			
+			// RC170 - deixar só o NUM_ITEM
+			for(RC170 rc170 : getrC170())
+			{
+				// remover dos itens o registro velho
+				getrC170().remove(rc170);
+				
+				// criar um novo, só com o núm item, obrigatório de acordo com essa exceção
+				RC170 new_rc170 = new RC170();
+				new_rc170.setNUM_ITEM(rc170.getNUM_ITEM());
+				new_rc170.subtractCounter();
+				
+				// adicionar o novo, não pelo método addrC170() pois lá ele recalcula o RC190
+				getrC170().add(new_rc170);
+			}
+
+			// *** REMOVER FILHOS ***
+			// RC120
+			if(getrC120() != null) {
+				getrC120().subtractCounter();
+				setrC120(null);
+			}
+			
+			// RC130
+			for(RC130 rc130 : this.rC130)
+				rc130.subtractCounter();
+			 this.rC130 = new ArrayList<RC130>();
+			
+			 
+			// RC195
+			for(RC195 rc195 : this.rC195)
+				rc195.subtractCounter();
+			this.rC170 = new ArrayList<RC170>();
+			
+		}
+		
+		/*
+		 * Exceção 2: 
+		 * Notas Fiscais Eletrônicas - NF-e de emissão própria: regra geral, 
+		 * devem ser apresentados somente os registros C100 e C190, e, se existirem ajustes 
+		 * de documento fiscais determinados por legislação estadual (tabela 5.3 do Ato COTEPE ICMS 09/08), 
+		 * devem ser apresentados também os registros C195 e C197; somente será admitida a informação do 
+		 * registro C170 quando também houver sido informado o registro C176, hipótese de emissão de documento 
+		 * fiscal quando houver direito a Ressarcimento de ICMS em Operações com Substituição Tributária; 
+		 * permitindo ainda a partir de julho de 2012, a apresentação dos registros C110 e C120;
+		 */
+		else if(getIND_EMIT().equals("0") && getCHV_NFE() != null && !getCHV_NFE().isEmpty())
+		{
+			
+			
+			// *** REMOVER FILHOS ***
+			// RC120
+			if(getrC120() != null) {
+				getrC120().subtractCounter();
+				setrC120(null);
+			}
+			
+			// RC130
+			for(RC130 rc130 : this.rC130)
+				rc130.subtractCounter();
+			 this.rC130 = new ArrayList<RC130>();
+			
+			
+			// RC170
+			for(RC170 rc170 : this.rC170)
+				rc170.subtractCounter();
+			 this.rC170 = new ArrayList<RC170>();
+			 
+			 
+			// RC195
+			for(RC195 rc195 : this.rC195)
+				rc195.subtractCounter();
+			this.rC170 = new ArrayList<RC170>();
+	
+		}
+			
+	}
+	
+
+	@Override
+	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((CHV_NFE == null) ? 0 : CHV_NFE.hashCode());
@@ -640,40 +889,5 @@ public class RC100 extends RegSped {
 	public int compareTo(Object o) {
 		return compare(this, o);
 	}
-	
-	
-	/**
-	 * 	To String
-	 */
-	@Override
-	public String toString ()
-	{
-		//
-		StringBuilder result = new StringBuilder();
-
-		// DI
-		result.append(rC120.toString());
-		
-		// ISS, ISSQN... 
-		for(RC130 aux_rc130 : rC130)
-			result.append(aux_rc130.toString());
-
-		// Dados da Fatura
-		result.append(rC140.toString());
-
-		// Itens da NF
-		for(RC170 aux_rc170 : rC170)
-			result.append(aux_rc170.toString());
-
-		// Apuração pos CST, CFOP, ALIQ. ICMS
-		for(RC190 aux_rc190 : rC190)
-			result.append(aux_rc190.toString());
-		
-		//
-		return result.toString();
-	}
-
-	
-	
 
 } // RC100

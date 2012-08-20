@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO D001: ABERTURA DO BLOCO D
@@ -20,7 +24,12 @@ import org.adempierelbr.sped.RegSped;
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RD001.java, 07/02/2011, 14:29:00, mgrigioni
  */
-public class RD001 extends RegSped {
+public class RD001 extends RegSped 
+{
+	
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
 	private String IND_MOV;
 
 	/**

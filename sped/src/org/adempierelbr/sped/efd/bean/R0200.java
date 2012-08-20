@@ -33,37 +33,37 @@ public class R0200 extends RegSped {
 	
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "COD_ITEM")
+	@XMLFieldProperties(maxSize = 60, id = "COD_ITEM")
 	private String COD_ITEM;
 	
-	@XMLFieldProperties(minSize = 1, maxSize = 255, id = "DESCR_ITEM")
+	@XMLFieldProperties(maxSize = 255, id = "DESCR_ITEM")
 	private String DESCR_ITEM;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 14, isMandatory = false, id = "COD_BARRA")
+	@XMLFieldProperties(maxSize = 14, isMandatory = false, id = "COD_BARRA", isNumber = true)
 	private String COD_BARRA;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 60, isMandatory = false, id = "COD_ANT_ITEM")
+	@XMLFieldProperties(maxSize = 60, isMandatory = false, id = "COD_ANT_ITEM")
 	private String COD_ANT_ITEM;
 	
-	@XMLFieldProperties(minSize = 1, maxSize = 6, id = "UNID_INV")
+	@XMLFieldProperties(maxSize = 6, id = "UNID_INV")
 	private String UNID_INV;
 	
 	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "TIPO_ITEM")
 	private String TIPO_ITEM;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 8, isMandatory = false, id = "COD_NCM")
+	@XMLFieldProperties( maxSize = 8, isMandatory = false, id = "COD_NCM")
 	private String COD_NCM;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 3, isMandatory = false, id = "EX_IPI")
+	@XMLFieldProperties( maxSize = 3, isMandatory = false, id = "EX_IPI")
 	private String EX_IPI;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 2, isMandatory = false, id = "COD_GEN")
+	@XMLFieldProperties( maxSize = 2, isMandatory = false, id = "COD_GEN")
 	private String COD_GEN;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 4, isMandatory = false, id = "COD_LST")
+	@XMLFieldProperties( maxSize = 4, isMandatory = false, id = "COD_LST")
 	private String COD_LST;
 	
-	@XMLFieldProperties(minSize = 0, maxSize = 4, isMandatory = false, id = "ALIQ_ICMS")
+	@XMLFieldProperties( maxSize = 4, isMandatory = false, id = "ALIQ_ICMS")
 	private BigDecimal ALIQ_ICMS;
 	
 	/**
@@ -192,9 +192,8 @@ public class R0200 extends RegSped {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
+	public int compareTo(Object obj) 
+	{
 		return 0;
 	}
-	
 } // R0200

@@ -87,9 +87,21 @@ public class BLOCOD {
 		// init
 		result.append(rD001.toString());
 		
-		// CTs
+		// CTs e registros filhos
 		for(RD100 aux_rd100 : rD100)
+		{
+			// CT
 			result.append(aux_rd100.toString());
+			
+			// Linhas
+			for(RD110 aux_rd110 : aux_rd100.getrD110())
+				result.append(aux_rd110);
+
+			// Totalizadores por CST, ALIQ e CFOP
+			for(RD190 aux_rd190 : aux_rd100.getrD190())
+				result.append(aux_rd190);
+
+		}
 
 		// counter
 		result.append(rD990.toString());

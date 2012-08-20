@@ -265,7 +265,6 @@ public class ProcGenerateEFD extends SvrProcess
 						}
 					}
 					
-					
 					/*
 					 * D100 - Conhecimentos de Transportes
 					 */

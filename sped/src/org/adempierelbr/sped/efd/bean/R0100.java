@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO 0100: DADOS DO CONTABILISTA
@@ -25,18 +29,45 @@ import org.adempierelbr.sped.RegSped;
  */
 public class R0100 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(maxSize = 100, id = "NOME")
 	private String NOME;
+	
+	@XMLFieldProperties(minSize = 11, maxSize = 11, id = "CPF", isNumber = true)
 	private String CPF;
+	
+	@XMLFieldProperties(maxSize = 15, id = "CRC")
 	private String CRC;
+	
+	@XMLFieldProperties(maxSize = 14, id = "CNPJ", isNumber = true)
 	private String CNPJ;
+	
+	@XMLFieldProperties(maxSize = 8, id = "CEP", isMandatory = false, isNumber = true)
 	private String CEP;
+	
+	@XMLFieldProperties(maxSize = 60, id = "END", isMandatory = false)
 	private String END;
+	
+	@XMLFieldProperties(maxSize = 10, id = "NUM", isMandatory = false)
 	private String NUM;
+	
+	@XMLFieldProperties(maxSize = 60, id = "COMPL", isMandatory = false)
 	private String COMPL;
+	
+	@XMLFieldProperties(maxSize = 60, id = "BAIRRO", isMandatory = false)
 	private String BAIRRO;
+	
+	@XMLFieldProperties(maxSize = 11, id = "FONE", isMandatory = false, isNumber = true)
 	private String FONE;
+	
+	@XMLFieldProperties(maxSize = 11, id = "FAX", isMandatory = false, isNumber = true)
 	private String FAX;
+	
+	@XMLFieldProperties(maxSize = 255, id = "EMAIL", isMandatory = false)
 	private String EMAIL;
+	
+	@XMLFieldProperties(maxSize = 7, id = "COD_MUN", isMandatory = false, isNumber = true)
 	private String COD_MUN;
 
 	/**

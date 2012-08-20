@@ -20,6 +20,9 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
  * REGISTRO D100: NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E
  * CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), CONHECIMENTOS
@@ -33,40 +36,101 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RD100 extends RegSped implements Comparable<Object> {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "IND_OPER", maxSize = 1)
 	private String IND_OPER;
+	
+	@XMLFieldProperties(id = "IND_EMIT", maxSize = 1)
 	private String IND_EMIT;
+	
+	@XMLFieldProperties(id = "COD_PART", maxSize = 60)
 	private String COD_PART;
+	
+	@XMLFieldProperties(id = "COD_MOD", maxSize = 2, minSize = 2)
 	private String COD_MOD;
+	
+	@XMLFieldProperties(id = "COD_SIT", maxSize = 2, minSize = 2)
 	private String COD_SIT;
+	
+	@XMLFieldProperties(id = "SER", maxSize = 4, isMandatory = false)
 	private String SER;
+	
+	@XMLFieldProperties(id = "SUB", maxSize = 3, isMandatory = false)
 	private String SUB;
+	
+	@XMLFieldProperties(id = "NUM_DOC", maxSize = 9)
 	private String NUM_DOC;
+	
+	@XMLFieldProperties(id = "CHV_CTE", maxSize = 44, minSize = 44, isMandatory = false, isNumber = true)
 	private String CHV_CTE;
+	
+	@XMLFieldProperties(id = "DT_DOC", maxSize = 8, minSize = 8, isNumber = true)
 	private Timestamp DT_DOC;
+	
+	@XMLFieldProperties(id = "DT_A_P", maxSize = 8, minSize = 8, isNumber = true, isMandatory = false)
 	private Timestamp DT_A_P;
+	
+	@XMLFieldProperties(id = "TP_CT_e", maxSize = 1, minSize = 1, isMandatory = false)
 	private String TP_CT_e;
+	
+	@XMLFieldProperties(id = "CHV_CTE_REF", maxSize = 44, minSize = 44, isNumber = true, isMandatory = false)
 	private String CHV_CTE_REF;
+	
+	@XMLFieldProperties(id = "VL_DOC")
 	private BigDecimal VL_DOC;
+	
+	@XMLFieldProperties(id = "VL_DESC", isMandatory = false)
 	private BigDecimal VL_DESC;
+	
+	@XMLFieldProperties(id = "IND_FRT", maxSize = 1)
 	private String IND_FRT;
+	
+	@XMLFieldProperties(id = "VL_SERV")
 	private BigDecimal VL_SERV;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+	
+	@XMLFieldProperties(id = "VL_NT", isMandatory = false)
 	private BigDecimal VL_NT;
+	
+	@XMLFieldProperties(id = "COD_INF", isMandatory = false, maxSize = 6)
 	private String COD_INF;
+	
+	@XMLFieldProperties(id = "COD_CTA", isMandatory = false)
 	private String COD_CTA;
 
-	@XMLFieldProperties(needsValidation = true, id = "RD110")
+	@XMLFieldProperties(needsValidation = true, id = "RD110", isSPEDField = false)
 	private List<RD110> rD110 = new ArrayList<RD110>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RD190")
+	@XMLFieldProperties(needsValidation = true, id = "RD190", isSPEDField = false)
 	private List<RD190> rD190 = new ArrayList<RD190>();
-	
+
 	/**
 	 * Constructor
 	 */
 	public RD100() {
 		super();
+	}
+
+	public List<RD110> getrD110() {
+		return rD110;
+	}
+
+	public void setrD110(List<RD110> rD110) {
+		this.rD110 = rD110;
+	}
+
+	public List<RD190> getrD190() {
+		return rD190;
+	}
+
+	public void setrD190(List<RD190> rD190) {
+		this.rD190 = rD190;
 	}
 
 	public String getIND_OPER() {
@@ -244,24 +308,21 @@ public class RD100 extends RegSped implements Comparable<Object> {
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
 	}
-	
-	public void addrD110(RD110 rd110)
-	{
+
+	public void addrD110(RD110 rd110) {
 		// add linha
 		this.rD110.add(rd110);
-		
-		
+
 		// atualizar totalizadores
 		updateD190(rd110);
 	}
-	
+
 	/**
 	 * Atualizar registro D190 baseado nas linhas
 	 * 
 	 * 
 	 */
-	public void updateD190(RD110 rd110)
-	{
+	public void updateD190(RD110 rd110) {
 
 		// criar registo
 		RD190 reg = new RD190();
@@ -271,54 +332,28 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		reg.setVL_OPR(rd110.getVL_OPR());
 		reg.setVL_BC_ICMS(rd110.getVL_BC_ICMS());
 		reg.setVL_ICMS(rd110.getVL_ICMS());
-		
+
 		// valor cálculado na d110
 		reg.setVL_RED_BC(rd110.getVL_RED_BC_ICMS());
-		
+
 		// TODO: ??
 		reg.setCOD_OBS("");
-		
-		
+
 		// verificar se existe
-		if(rD190.contains(reg))
-		{
+		if (rD190.contains(reg)) {
 			// remover da contagem
 			reg.subtractCounter();
-			
-			// somar combinação de CST, ALIQ, CFOP 
+
+			// somar combinação de CST, ALIQ, CFOP
 			rD190.get(rD190.indexOf(reg)).addValues(reg);
 		}
-		
+
 		// se não existir, simplismente add o totalizador
-		else
-		{
+		else {
 			rD190.add(reg);
-		}	
+		}
 	}
 
-	/**
-	 * 	To String
-	 */
-	@Override
-	public String toString ()
-	{
-		//
-		StringBuilder result = new StringBuilder();
-
-		// Linhas
-		for(RD110 aux_rd110 : rD110)
-			result.append(aux_rd110);
-
-		// Totalizadores por CST, ALIQ e CFOP
-		for(RD190 aux_rd190 : rD190)
-			result.append(aux_rd190);
-
-		//
-		return result.toString();
-	}
-	
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

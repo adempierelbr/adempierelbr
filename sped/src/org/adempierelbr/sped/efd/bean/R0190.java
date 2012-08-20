@@ -31,10 +31,10 @@ public class R0190 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 1, maxSize = 6, id = "UNID")
+	@XMLFieldProperties(maxSize = 6, id = "UNID")
 	private String UNID;
 
-	@XMLFieldProperties(minSize = 1, maxSize = 255, id = "DESCR")
+	@XMLFieldProperties(maxSize = 255, id = "DESCR")
 	private String DESCR;
 
 	/**
@@ -65,7 +65,8 @@ public class R0190 extends RegSped {
 
 
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((UNID == null) ? 0 : UNID.hashCode());
@@ -90,8 +91,11 @@ public class R0190 extends RegSped {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
+	public int compareTo(Object arg0) 
+	{
+	
+		
+		
 		return 0;
 	}
 

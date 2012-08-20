@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C130: ISSQN, IRRF E PREVIDÊNCIA SOCIAL.
@@ -24,12 +28,27 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC130 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "VL_SERV_NT")
 	private BigDecimal VL_SERV_NT;
+
+	@XMLFieldProperties(id = "VL_BC_ISSQN")
 	private BigDecimal VL_BC_ISSQN;
+	
+	@XMLFieldProperties(id = "VL_ISSQN", isMandatory = false)
 	private BigDecimal VL_ISSQN;
+	
+	@XMLFieldProperties(id = "VL_BC_IRRF", isMandatory = false)
 	private BigDecimal VL_BC_IRRF;
+	
+	@XMLFieldProperties(id = "VL_IRRF", isMandatory = false)
 	private BigDecimal VL_IRRF;
+	
+	@XMLFieldProperties(id = "VL_BC_PREV", isMandatory = false)
 	private BigDecimal VL_BC_PREV;
+	
+	@XMLFieldProperties(id = "VL_PREV", isMandatory = false)
 	private BigDecimal VL_PREV;
 
 	/**

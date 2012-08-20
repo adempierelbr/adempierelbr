@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
@@ -25,6 +29,9 @@ import org.adempierelbr.sped.RegSped;
  */
 public class R1990 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "QTD_LIN_1")
 	private String QTD_LIN_1 = "";
 
 	/**

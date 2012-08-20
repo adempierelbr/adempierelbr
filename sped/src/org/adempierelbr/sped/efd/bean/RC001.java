@@ -12,7 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C001: ABERTURA DO BLOCO C
@@ -23,7 +27,12 @@ import org.adempierelbr.sped.RegSped;
  * @contributor Pablo Boff Pigozzo
  * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
  */
-public class RC001 extends RegSped {
+public class RC001 extends RegSped 
+{
+	
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
 	private String IND_MOV;
 
 	/**

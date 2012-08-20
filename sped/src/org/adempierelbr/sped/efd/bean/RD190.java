@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO D190: REGISTRO ANALÍTICO DOS DOCUMENTOS (CÓDIGO 07, 08, 8B, 09, 10,
@@ -25,13 +29,30 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RD190 extends RegSped implements Comparable<Object> {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "CST_ICMS", minSize = 3, maxSize = 3)
 	private String CST_ICMS;
+	
+	@XMLFieldProperties(id = "CFOP", minSize = 4, maxSize = 4)
 	private String CFOP;
+	
+	@XMLFieldProperties(id = "ALIQ_ICMS", isMandatory = false, maxSize = 6)
 	private BigDecimal ALIQ_ICMS;
+	
+	@XMLFieldProperties(id = "VL_OPR")
 	private BigDecimal VL_OPR;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS")
 	private BigDecimal VL_BC_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS")
 	private BigDecimal VL_ICMS;
+	
+	@XMLFieldProperties(id = "VL_RED_BC")
 	private BigDecimal VL_RED_BC;
+	
+	@XMLFieldProperties(id = "COD_OBS", isMandatory = false, maxSize = 6)
 	private String COD_OBS;
 
 	/**

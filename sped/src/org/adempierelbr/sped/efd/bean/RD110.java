@@ -20,6 +20,9 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
  * REGISTRO D110: ITENS DO DOCUMENTO - NOTA FISCAL DE SERVIÇOS DE TRANSPORTE
  * (CÓDIGO 07)
@@ -29,9 +32,18 @@ import org.compiere.util.Env;
  */
 public class RD110 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "NUM_ITEM", maxSize = 3)
 	private Integer NUM_ITEM;
+	
+	@XMLFieldProperties(id = "COD_ITEM", maxSize = 60)
 	private String COD_ITEM;
+	
+	@XMLFieldProperties(id = "VL_SERV")
 	private BigDecimal VL_SERV;
+	
+	@XMLFieldProperties(id = "VL_OUT", isMandatory = false)
 	private BigDecimal VL_OUT;
 
 	/*
@@ -39,25 +51,25 @@ public class RD110 extends RegSped {
 	 * 
 	 * Obs.: Não devem ser validados pelo annotation
 	 */
-	@XMLFieldProperties(needsValidation = false, id = "CST_ICMS")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CST_ICMS")
 	private String CST_ICMS;
 
-	@XMLFieldProperties(needsValidation = false, id = "CFOP")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CFOP")
 	private String CFOP;
 
-	@XMLFieldProperties(needsValidation = false, id = "VL_BC_ICMS")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "VL_BC_ICMS")
 	private BigDecimal ALIQ_ICMS;
 
-	@XMLFieldProperties(needsValidation = false, id = "VL_BC_ICMS")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "VL_BC_ICMS")
 	private BigDecimal VL_BC_ICMS;
 
-	@XMLFieldProperties(needsValidation = false, id = "VL_ICMS")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "VL_ICMS")
 	private BigDecimal VL_ICMS;
 
-	@XMLFieldProperties(needsValidation = false, id = "PERCENT_REDUCAO_BC")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "PERCENT_REDUCAO_BC")
 	private BigDecimal PERCENT_REDUCAO_BC = Env.ZERO;
 
-	@XMLFieldProperties(needsValidation = false, id = "VL_OPR")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "VL_OPR")
 	private BigDecimal VL_OPR = Env.ZERO;
 
 	/**

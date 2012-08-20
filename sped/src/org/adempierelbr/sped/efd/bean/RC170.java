@@ -18,9 +18,10 @@ import java.math.RoundingMode;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C170: ITENS DO DOCUMENTO (CÓDIGO 01, 1B, 04 e 55).
@@ -30,41 +31,114 @@ import org.compiere.util.Env;
  */
 public class RC170 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(maxSize = 3, id = "NUM_ITEM")
 	private Integer NUM_ITEM;
+
+	@XMLFieldProperties(maxSize = 60, id = "COD_ITEM")
 	private String COD_ITEM;
+
+	@XMLFieldProperties(id = "DESCR_COMPL", isMandatory = false)
 	private String DESCR_COMPL;
+
+	@XMLFieldProperties(scale = 5, id = "QTD")
 	private BigDecimal QTD;
+
+	@XMLFieldProperties(maxSize = 6, id = "UNID")
 	private String UNID;
+
+	@XMLFieldProperties(id = "VL_ITEM")
 	private BigDecimal VL_ITEM;
+
+	@XMLFieldProperties(id = "VL_DESC", isMandatory = false)
 	private BigDecimal VL_DESC;
+
+	@XMLFieldProperties(maxSize = 1, minSize = 1, id = "IND_MOV")
 	private String IND_MOV;
+
+	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_ICMS")
 	private String CST_ICMS;
+
+	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "CFOP")
 	private String CFOP;
+
+	@XMLFieldProperties(maxSize = 10, id = "COD_NAT", isMandatory = false)
 	private String COD_NAT;
+
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+
+	@XMLFieldProperties(id = "ALIQ_ICMS", maxSize = 6, isMandatory = false)
 	private BigDecimal ALIQ_ICMS;
+
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+
+	@XMLFieldProperties(id = "VL_BC_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_BC_ICMS_ST;
+
+	@XMLFieldProperties(id = "ALIQ_ST", isMandatory = false)
 	private BigDecimal ALIQ_ST;
+
+	@XMLFieldProperties(id = "VL_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_ICMS_ST;
+
+	@XMLFieldProperties(id = "IND_APUR", maxSize = 1, isMandatory = false)
 	private String IND_APUR;
+
+	@XMLFieldProperties(id = "CST_IPI", maxSize = 2, isMandatory = false)
 	private String CST_IPI;
+
+	@XMLFieldProperties(id = "COD_ENQ", maxSize = 3, isMandatory = false)
 	private String COD_ENQ;
+
+	@XMLFieldProperties(id = "VL_BC_IPI", isMandatory = false)
 	private BigDecimal VL_BC_IPI;
+
+	@XMLFieldProperties(id = "ALIQ_IPI", maxSize = 6, isMandatory = false)
 	private BigDecimal ALIQ_IPI;
+
+	@XMLFieldProperties(id = "VL_IPI", isMandatory = false)
 	private BigDecimal VL_IPI;
+
+	@XMLFieldProperties(id = "CST_PIS", maxSize = 2, isMandatory = false)
 	private String CST_PIS;
+
+	@XMLFieldProperties(id = "VL_BC_PIS", isMandatory = false)
 	private BigDecimal VL_BC_PIS;
+
+	@XMLFieldProperties(id = "ALIQ_PIS", maxSize = 8, isMandatory = false)
 	private BigDecimal ALIQ_PIS;
+
+	@XMLFieldProperties(id = "QUANT_BC_PIS", isMandatory = false)
 	private BigDecimal QUANT_BC_PIS;
+
+	@XMLFieldProperties(id = "ALIQ_PIS_REAIS", isMandatory = false)
 	private BigDecimal ALIQ_PIS_REAIS;
+
+	@XMLFieldProperties(id = "VL_PIS", isMandatory = false)
 	private BigDecimal VL_PIS;
+
+	@XMLFieldProperties(id = "CST_COFINS", maxSize = 2, isMandatory = false)
 	private String CST_COFINS;
+
+	@XMLFieldProperties(id = "VL_BC_COFINS", isMandatory = false)
 	private BigDecimal VL_BC_COFINS;
+
+	@XMLFieldProperties(id = "ALIQ_COFINS", maxSize = 8, isMandatory = false)
 	private BigDecimal ALIQ_COFINS;
+
+	@XMLFieldProperties(id = "QUANT_BC_COFINS", isMandatory = false)
 	private BigDecimal QUANT_BC_COFINS;
+
+	@XMLFieldProperties(id = "ALIQ_COFINS_REAIS", isMandatory = false)
 	private BigDecimal ALIQ_COFINS_REAIS;
+
+	@XMLFieldProperties(id = "VL_COFINS", isMandatory = false)
 	private BigDecimal VL_COFINS;
+
+	@XMLFieldProperties(id = "COD_CTA", isMandatory = false)
 	private String COD_CTA;
 
 	/*
@@ -72,10 +146,10 @@ public class RC170 extends RegSped {
 	 * 
 	 * OBS.: Não validar e usar neste registro
 	 */
-	@XMLFieldProperties(needsValidation = false, id = "VL_OPER")
+	@XMLFieldProperties(needsValidation = false, id = "VL_OPER", isSPEDField = false)
 	private BigDecimal VL_OPER = Env.ZERO;
 
-	@XMLFieldProperties(needsValidation = false, id = "PERCENT_REDUCAO_BC")
+	@XMLFieldProperties(needsValidation = false, id = "PERCENT_REDUCAO_BC", isSPEDField = false)
 	private BigDecimal PERCENT_REDUCAO_BC = Env.ZERO;
 
 	/**
@@ -83,8 +157,8 @@ public class RC170 extends RegSped {
 	 */
 	public RC170() {
 		super();
-	}// RC170
-	
+	}
+
 	public BigDecimal getPERCENT_REDUCAO_BC() {
 		return PERCENT_REDUCAO_BC;
 	}
@@ -402,20 +476,21 @@ public class RC170 extends RegSped {
 
 		// MathCtx
 		MathContext mc = new MathContext(12);
-		
+
 		// valor da base
 		BigDecimal baseICMS = getVL_BC_ICMS();
 
 		// redução = 1-(PERC_BC_ICMS/100)
 		BigDecimal reduction = Env.ONE.subtract(getPERCENT_REDUCAO_BC().divide(
-				Env.ONEHUNDRED, mc));
+				Env.ONEHUNDRED, mc), mc);
 
 		// se for negativa ou zero, usar 1
 		if (reduction.signum() != 1)
 			reduction = Env.ONE;
 
 		// BC/REDUCAO = VALOR DA BASE SEM REDUCAO
-		return ((baseICMS.divide(reduction, mc)).subtract(baseICMS)).setScale(2, RoundingMode.HALF_UP);
+		return ((baseICMS.divide(reduction, mc)).subtract(baseICMS, mc)).setScale(
+				2, RoundingMode.HALF_UP);
 	}
 
 	@Override
@@ -474,57 +549,5 @@ public class RC170 extends RegSped {
 	public int compareTo(Object o) {
 		return compare(this, o);
 	}
-
-	/**
-	 * Formata o Bloco C Registro 170
-	 * 
-	 * @return
-	 */
-	public String toString() {
-
-		StringBuilder format = new StringBuilder(PIPE)
-				.append(REG)
-				.append(PIPE)
-				.append(TextUtil.lPad(NUM_ITEM, 3))
-				.append(PIPE)
-				.append(COD_ITEM)
-				.append(PIPE)
-				.append(TextUtil.checkSize(RemoverAcentos.remover(DESCR_COMPL),
-						255).trim()).append(PIPE)
-				.append(TextUtil.toNumeric(QTD, 5)).append(PIPE).append(UNID)
-				.append(PIPE).append(TextUtil.toNumeric(VL_ITEM, 2))
-				.append(PIPE).append(TextUtil.toNumeric(VL_DESC, 2))
-				.append(PIPE).append(TextUtil.checkSize(IND_MOV, 1, 1))
-				.append(PIPE).append(TextUtil.checkSize(CST_ICMS, 3, 3))
-				.append(PIPE).append(CFOP).append(PIPE)
-				.append(TextUtil.checkSize(COD_NAT, 10)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_BC_ICMS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_ICMS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_ICMS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_BC_ICMS_ST, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_ST, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_ICMS_ST, 2)).append(PIPE)
-				.append(TextUtil.checkSize(IND_APUR, 1, 1)).append(PIPE)
-				.append(TextUtil.checkSize(CST_IPI, 2)).append(PIPE)
-				.append(TextUtil.checkSize(COD_ENQ, 3)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_BC_IPI, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_IPI, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_IPI, 2)).append(PIPE)
-				.append(TextUtil.checkSize(CST_PIS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_BC_PIS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_PIS_REAIS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(QUANT_BC_PIS, 3)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_PIS, 4)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_PIS, 2)).append(PIPE)
-				.append(TextUtil.checkSize(CST_COFINS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_BC_COFINS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_COFINS_REAIS, 2)).append(PIPE)
-				.append(TextUtil.toNumeric(QUANT_BC_COFINS, 3)).append(PIPE)
-				.append(TextUtil.toNumeric(ALIQ_COFINS, 4)).append(PIPE)
-				.append(TextUtil.toNumeric(VL_COFINS, 2)).append(PIPE)
-				.append(TextUtil.checkSize(COD_CTA, 255)).append(PIPE);
-
-		return format.append(EOL).toString();
-	} // toString
 
 }// RC170

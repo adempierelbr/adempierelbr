@@ -45,7 +45,7 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(minSize = 8, maxSize = 8, id = "DT_FIN")
 	private Timestamp DT_FIN;
 
-	@XMLFieldProperties(id = "NOME")
+	@XMLFieldProperties(maxSize = 100, id = "NOME")
 	private String NOME;
 
 	@XMLFieldProperties(maxSize = 14, id = "CNPJ", isMandatory = false, isNumber = true)
@@ -54,25 +54,25 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(maxSize = 14, id = "CPF", isMandatory = false, isNumber = true)
 	private String CPF;
 
-	@XMLFieldProperties(id = "UF")
+	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "UF")
 	private String UF;
 
-	@XMLFieldProperties(id = "IE")
+	@XMLFieldProperties(minSize = 14, maxSize = 14, id = "IE")
 	private String IE;
 
-	@XMLFieldProperties(maxSize = 7, id = "COD_MUN")
+	@XMLFieldProperties(minSize = 7, maxSize = 7, isNumber = true, id = "COD_MUN")
 	private String COD_MUN;
 
 	@XMLFieldProperties(id = "IM", isMandatory = false)
 	private String IM;
 
-	@XMLFieldProperties(id = "SUFRAMA", isMandatory = false)
+	@XMLFieldProperties(maxSize = 9, id = "SUFRAMA", isMandatory = false)
 	private String SUFRAMA;
 
-	@XMLFieldProperties(id = "IND_PERFIL")
+	@XMLFieldProperties(minSize = 1, maxSize =1, id = "IND_PERFIL")
 	private String IND_PERFIL;
 
-	@XMLFieldProperties(id = "IND_ATIV")
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_ATIV")
 	private String IND_ATIV;
 
 	/**

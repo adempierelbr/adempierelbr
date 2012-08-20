@@ -15,7 +15,11 @@ package org.adempierelbr.sped.efd.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C500: NOTA FISCAL/CONTA DE ENERGIA ELÉTRICA (CÓDIGO 06), NOTA
@@ -27,32 +31,87 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC500 extends RegSped implements Comparable<Object> {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "IND_OPER", minSize = 1, maxSize = 1)
 	private String IND_OPER;
+	
+	@XMLFieldProperties(id = "IND_EMIT", minSize = 1, maxSize = 1)
 	private String IND_EMIT;
+	
+	@XMLFieldProperties(id = "COD_PART", maxSize = 60)
 	private String COD_PART;
+	
+	@XMLFieldProperties(id = "COD_MOD", minSize = 2, maxSize = 2)
 	private String COD_MOD;
+	
+	@XMLFieldProperties(id = "COD_SIT", minSize = 2, maxSize = 2)
 	private String COD_SIT;
+	
+	@XMLFieldProperties(id = "COD_SIT", isMandatory = false, maxSize = 4)
 	private String SER;
+	
+	@XMLFieldProperties(id = "SUB", isMandatory = false, maxSize = 3)
 	private String SUB;
+	
+	@XMLFieldProperties(id = "COD_CONS", isMandatory = false, minSize = 2, maxSize = 2)
 	private String COD_CONS;
+	
+	@XMLFieldProperties(id = "NUM_DOC", maxSize = 9)
 	private String NUM_DOC;
+	
+	@XMLFieldProperties(id = "DT_DOC", minSize = 8, maxSize =8, isNumber = true)
 	private Timestamp DT_DOC;
+	
+	@XMLFieldProperties(id = "DT_E_S", minSize = 8, maxSize =8, isNumber = true)
 	private Timestamp DT_E_S;
+	
+	@XMLFieldProperties(id = "VL_DOC")
 	private BigDecimal VL_DOC;
+	
+	@XMLFieldProperties(id = "VL_DESC", isMandatory = false)
 	private BigDecimal VL_DESC;
+	
+	@XMLFieldProperties(id = "VL_FORN", isMandatory = false)
 	private BigDecimal VL_FORN;
+	
+	@XMLFieldProperties(id = "VL_SERV_NT", isMandatory = false)
 	private BigDecimal VL_SERV_NT;
+	
+	@XMLFieldProperties(id = "VL_TERC", isMandatory = false)
 	private BigDecimal VL_TERC;
+	
+	@XMLFieldProperties(id = "VL_DA", isMandatory = false)
 	private BigDecimal VL_DA;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS_ST;
+	
+	@XMLFieldProperties(id = "VL_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_ICMS_ST;
+	
+	@XMLFieldProperties(id = "COD_INF", isMandatory = false, maxSize = 6)
 	private String COD_INF;
+	
+	@XMLFieldProperties(id = "VL_PIS", isMandatory = false)
 	private BigDecimal VL_PIS;
+	
+	@XMLFieldProperties(id = "VL_COFINS", isMandatory = false)
 	private BigDecimal VL_COFINS;
+	
+	@XMLFieldProperties(id = "TP_LIGACAO", isMandatory = false, maxSize = 1)
 	private String TP_LIGACAO;
+	
+	@XMLFieldProperties(id = "COD_GRUPO_TENSAO", isMandatory = false, maxSize = 2)
 	private String COD_GRUPO_TENSAO;
+	
+	
 
 	/**
 	 * Constructor

@@ -40,7 +40,7 @@ import org.compiere.util.Env;
  * - Adicionado parte da validação das anottations
  * 
  */
-public abstract class RegSped implements Comparable<Object>{
+public abstract class RegSped implements Comparable<Object> {
 	
 	/**	
 	 * Logger			
@@ -61,12 +61,7 @@ public abstract class RegSped implements Comparable<Object>{
 		
 	private String errorMsg;
 	
-	
-	/**
-	 * Método abstrato para comparar os registros 
-	 */
-	public abstract int compareTo(Object arg0);
-	
+		
 	/**
 	 * Método abstrato para retornar registro formatado
 	 * 
@@ -203,7 +198,7 @@ public abstract class RegSped implements Comparable<Object>{
 	/**
 	 * 	To String
 	 */
-	public String toString ()
+	public String toString()
 	{
 		try
 		{
@@ -214,6 +209,10 @@ public abstract class RegSped implements Comparable<Object>{
 
 			Field[] fields = clazz.getDeclaredFields();
 			StringBuilder result = new StringBuilder(PIPE);
+			
+			// registro
+			result.append(clazz.getSimpleName().substring(1, 5));			
+			result.append(PIPE);
 			
 			for (Field field : fields) 
 			{
@@ -323,7 +322,6 @@ public abstract class RegSped implements Comparable<Object>{
 		
 		
 		//
-		
 		System.out.println (r0000.toString());
 	}
 }	//	RegSped

@@ -31,40 +31,40 @@ public class R0150 extends RegSped {
 	
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "COD_PART")
+	@XMLFieldProperties(maxSize = 60, id = "COD_PART")
 	private String COD_PART;
 	
-	@XMLFieldProperties(minSize = 1, maxSize = 100, id = "NOME")
+	@XMLFieldProperties(maxSize = 100, id = "NOME")
 	private String NOME;
 	
-	@XMLFieldProperties(minSize = 5, maxSize = 5, id = "COD_PAIS")
+	@XMLFieldProperties(minSize = 5, maxSize = 5, id = "COD_PAIS", isNumber = true)
 	private String COD_PAIS;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 14, id = "CNPJ")
+	@XMLFieldProperties(isMandatory = false, maxSize = 14, id = "CNPJ", isNumber = true)
 	private String CNPJ;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 11, id = "CPF")
+	@XMLFieldProperties(isMandatory = false, maxSize = 11, id = "CPF", isNumber = true)
 	private String CPF;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 14, id = "IE")
+	@XMLFieldProperties(isMandatory = false, maxSize = 14, id = "IE", isNumber = true)
 	private String IE;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 7, id = "COD_MUN")
+	@XMLFieldProperties(isMandatory = false, maxSize = 7, id = "COD_MUN", isNumber = true)
 	private String COD_MUN;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 9, id = "SUFRAMA")
+	@XMLFieldProperties(isMandatory = false, maxSize = 9, id = "SUFRAMA", isNumber = true)
 	private String SUFRAMA;
 	
-	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "END")
+	@XMLFieldProperties(maxSize = 60, id = "END")
 	private String END;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 10, id = "NUM")
+	@XMLFieldProperties(isMandatory = false, maxSize = 10, id = "NUM")
 	private String NUM;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 60, id = "COMPL")
+	@XMLFieldProperties(isMandatory = false, maxSize = 60, id = "COMPL")
 	private String COMPL;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 0, maxSize = 60, id = "BAIRRO")
+	@XMLFieldProperties(isMandatory = false, maxSize = 60, id = "BAIRRO")
 	private String BAIRRO;
 	
 	/**

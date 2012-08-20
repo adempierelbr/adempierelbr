@@ -12,7 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
@@ -207,12 +209,9 @@ public class BLOCO0 {
 	/**
 	 * To String
 	 */
-	@Override
 	public String toString() {
 		//
-
 		StringBuilder result = new StringBuilder();
-		
 		
 		//
 		result.append(r0000.toString());
@@ -237,12 +236,30 @@ public class BLOCO0 {
 			result.append(aux_r0460.toString());
 
 		// counter
-		result.append(r0990);
+		result.append(r0990.toString());
 
 		//
-		return result.toString();
-	
-		
+		return result.toString();	
 	}
 
+	
+	/**
+	 * 	Test
+	 */
+	public static void main (String[] args)
+	{
+		
+		BLOCO0 blc = new BLOCO0();
+		
+		blc.r0000 = new R0000();
+		blc.r0000.setCNPJ("000-00");
+		blc.r0000.setCOD_VER("1");
+		blc.r0000.setDT_INI(new Timestamp(new Date().getTime()));
+		blc.r0000.setCOD_MUN("1234");
+		
+		
+		//
+		System.out.println (blc.r0000.toString());
+	}
+	
 } // R0000

@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C510: ITENS DO DOCUMENTO NOTA FISCAL/CONTA ENERGIA ELÉTRICA (CÓDIGO
@@ -26,25 +30,66 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC510 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "NUM_ITEM", maxSize = 3)
 	private Integer NUM_ITEM;
+	
+	@XMLFieldProperties(id = "COD_ITEM", maxSize = 60)
 	private String COD_ITEM;
+	
+	@XMLFieldProperties(id = "COD_CLASS", isMandatory = false, maxSize = 4)
 	private String COD_CLASS;
+	
+	@XMLFieldProperties(id = "QTD", scale = 3, isMandatory = false)
 	private BigDecimal QTD;
+	
+	@XMLFieldProperties(id = "UNID", isMandatory = false)
 	private String UNID;
+	
+	@XMLFieldProperties(id = "VL_ITEM")
 	private BigDecimal VL_ITEM;
+	
+	@XMLFieldProperties(id = "VL_DESC", isMandatory = false)
 	private BigDecimal VL_DESC;
+	
+	@XMLFieldProperties(id = "CST_ICMS", maxSize = 3, minSize = 3)
 	private String CST_ICMS;
+	
+	@XMLFieldProperties(id = "CFOP", maxSize = 4, minSize = 3)
 	private String CFOP;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)
 	private BigDecimal VL_BC_ICMS;
+	
+	@XMLFieldProperties(id = "ALIQ_ICMS", isMandatory = false, maxSize = 6)
 	private BigDecimal ALIQ_ICMS;
+	
+	@XMLFieldProperties(id = "VL_ICMS", isMandatory = false)
 	private BigDecimal VL_ICMS;
+	
+	@XMLFieldProperties(id = "VL_BC_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_BC_ICMS_ST;
+	
+	@XMLFieldProperties(id = "ALIQ_ST", isMandatory = false, maxSize = 6)
 	private BigDecimal ALIQ_ST;
+	
+	@XMLFieldProperties(id = "VL_ICMS_ST", isMandatory = false)
 	private BigDecimal VL_ICMS_ST;
+	
+	@XMLFieldProperties(id = "IND_REC", minSize = 1, maxSize = 1)
 	private String IND_REC;
+	
+	@XMLFieldProperties(id = "COD_PART", isMandatory = false, maxSize = 60)
 	private String COD_PART;
+	
+	@XMLFieldProperties(id = "VL_PIS", isMandatory = false)
 	private BigDecimal VL_PIS;
+	
+	@XMLFieldProperties(id = "VL_COFINS", isMandatory = false)
 	private BigDecimal VL_COFINS;
+	
+	@XMLFieldProperties(id = "COD_CTA", isMandatory = false)
 	private String COD_CTA;
 
 	/**

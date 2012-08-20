@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C172: OPERAÇÕES COM ISSQN (CÓDIGO 01)
@@ -24,8 +28,15 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC172 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "VL_BC_ISSQN")
 	private BigDecimal VL_BC_ISSQN;
+	
+	@XMLFieldProperties(maxSize = 6, id = "ALIQ_ISSQN")
 	private BigDecimal ALIQ_ISSQN;
+	
+	@XMLFieldProperties(id = "VL_ISSQN")
 	private BigDecimal VL_ISSQN;
 
 	/**

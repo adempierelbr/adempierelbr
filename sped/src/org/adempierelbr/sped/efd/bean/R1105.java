@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.sql.Timestamp;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO 1105: DOCUMENTOS FISCAIS DE EXPORTAÇÃO.
@@ -28,11 +32,24 @@ import org.adempierelbr.sped.RegSped;
  */
 public class R1105 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "COD_MOD", maxSize = 2, minSize = 2)
 	String COD_MOD;
+	
+	@XMLFieldProperties(id = "SERIE", maxSize = 3, isMandatory = false)
 	String SERIE;
+	
+	@XMLFieldProperties(id = "NUM_DOC", maxSize = 2)
 	String NUM_DOC;
+
+	@XMLFieldProperties(id = "CHV_NFE", maxSize = 44, minSize = 44, isNumber = true, isMandatory = false)
 	String CHV_NFE;
+
+	@XMLFieldProperties(id = "DT_DOC", maxSize = 8, minSize = 8, isNumber = true)
 	Timestamp DT_DOC;
+	
+	@XMLFieldProperties(id = "COD_ITEM", maxSize = 60)
 	String COD_ITEM;
 
 	/**

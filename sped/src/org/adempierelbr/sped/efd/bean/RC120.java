@@ -14,7 +14,11 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO C120: OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01).
@@ -24,10 +28,21 @@ import org.adempierelbr.sped.RegSped;
  */
 public class RC120 extends RegSped {
 
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "COD_DOC_IMP")
 	private String COD_DOC_IMP;
+	
+	@XMLFieldProperties(maxSize = 255, id = "NUM_DOC_IMP")
 	private String NUM_DOC_IMP;
+	
+	@XMLFieldProperties(id = "PIS_IMP", isMandatory = false)
 	private BigDecimal PIS_IMP;
+	
+	@XMLFieldProperties(id = "COFINS_IMP", isMandatory = false)
 	private BigDecimal COFINS_IMP;
+	
+	@XMLFieldProperties(id = "COFINS_IMP", isMandatory = false)
 	private String NUM_ACDRAW;
 
 	/**
