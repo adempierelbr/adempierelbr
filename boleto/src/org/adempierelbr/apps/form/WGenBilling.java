@@ -45,6 +45,7 @@ import org.adempiere.webui.window.FDialog;
 import org.adempierelbr.util.TextUtil;
 import org.apache.commons.io.FileUtils;
 import org.compiere.minigrid.IDColumn;
+import org.compiere.model.MBankAccount;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.ASyncProcess;
 import org.compiere.util.Env;
@@ -255,7 +256,10 @@ public class WGenBilling extends GenBilling
 		KeyNamePair bpartner = (KeyNamePair)fieldBPartner.getSelectedItem().getValue();
 		KeyNamePair docType = (KeyNamePair)fieldDtype.getSelectedItem().getValue();
 
-		loadTableInfo (bi, bpartner, docType, dateFrom, dateTo, isPrinted.isSelected(), miniTable);
+		MBankAccount bank = new MBankAccount(Env.getCtx(), bi.getKey(), null);
+		int org = bank.getAD_Org_ID();
+		
+		loadTableInfo (org, bi, bpartner, docType, dateFrom, dateTo, isPrinted.isSelected(), miniTable);
 		
 		calculateSelection();
 	}   //  loadTableInfo
@@ -290,7 +294,7 @@ public class WGenBilling extends GenBilling
 			dispose();
 
 		//  Update Open Invoices
-		else if (e.getTarget() == fieldBPartner || e.getTarget() == bRefresh || e.getTarget() == fieldDtype || e.getTarget() == isPrinted)
+		else if (e.getTarget() == fieldBankAccount || e.getTarget() == fieldBPartner || e.getTarget() == bRefresh || e.getTarget() == fieldDtype || e.getTarget() == isPrinted)
 			loadTableInfo();
 
 		//	Selct All
