@@ -149,7 +149,7 @@ public class GenCNAB
 	/**
 	 *  Query and create TableInfo
 	 */
-	public void loadTableInfo(KeyNamePair bi, IMiniTable miniTable)
+	public void loadTableInfo(int org, KeyNamePair bi, IMiniTable miniTable)
 	{
 		log.config("");
 		//  not yet initialized
@@ -157,10 +157,14 @@ public class GenCNAB
 			return;
 
 		String sql = m_sql;
-		//
+		//	AD_Org_ID
+		int AD_Org_ID = org;
+		if (AD_Org_ID != 0)
+			sql += " AND i.AD_org_ID=?";
+				
 		sql += " ORDER BY 2, 3";
 
-		log.finest(sql + " - Bank=" + bi);
+		log.finest(sql + " - Bank=" + bi + "AD_Org_ID=" + AD_Org_ID);
 		//  Get Open Invoices
 		try
 		{
@@ -168,6 +172,7 @@ public class GenCNAB
 			PreparedStatement pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(index++, bi.getKey());		//	Client
 			pstmt.setInt(index++, m_AD_Client_ID);		//	Client
+			pstmt.setInt(index++, AD_Org_ID);		//	Organization
 			//
 			ResultSet rs = pstmt.executeQuery();
 			miniTable.loadTable(rs);
