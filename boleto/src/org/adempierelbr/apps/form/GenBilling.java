@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRBoleto;
+import org.compiere.model.MBankAccount;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.IMiniTable;
@@ -242,7 +243,7 @@ public class GenBilling
 	/**
 	 *  Query and create TableInfo
 	 */
-	public void loadTableInfo(KeyNamePair bi, KeyNamePair bPartner, KeyNamePair docType, 
+	public void loadTableInfo(int org, KeyNamePair bi, KeyNamePair bPartner, KeyNamePair docType, 
 			Timestamp dateFrom, Timestamp dateTo, boolean isPrinted, IMiniTable miniTable)
 	{
 		log.config("");
@@ -265,6 +266,11 @@ public class GenBilling
 		if (C_DocType_ID   != 0)
 			sql += " AND i.C_DocType_ID =?";
 		
+		//	AD_Org_ID
+			int AD_Org_ID = org;
+			if (AD_Org_ID != 0)
+				sql += " AND i.AD_org_ID=?";
+		
 		//	Is Printed
 		sql += " AND i.lbr_IsBillPrinted=" + (isPrinted ? "'Y'" : "'N'");
 			
@@ -281,7 +287,7 @@ public class GenBilling
 		
 		sql += " ORDER BY 2, 3";
 
-		log.finest(sql + " - C_BPartner_ID=" + C_BPartner_ID + ", C_DocType_ID=" + C_DocType_ID);
+		log.finest(sql + " - C_BPartner_ID=" + C_BPartner_ID + ", C_DocType_ID=" + C_DocType_ID + ", AD_Org_ID=" + AD_Org_ID);
 		//  Get Open Invoices
 		try
 		{
@@ -293,6 +299,8 @@ public class GenBilling
 				pstmt.setInt(index++, C_BPartner_ID);
 			if (C_DocType_ID  != 0)                    //	Document type
 				pstmt.setInt(index++, C_DocType_ID);
+			if (AD_Org_ID  != 0)                    //	Organization
+				pstmt.setInt(index++, AD_Org_ID);
 			//
 			ResultSet rs = pstmt.executeQuery();
 			miniTable.loadTable(rs);
