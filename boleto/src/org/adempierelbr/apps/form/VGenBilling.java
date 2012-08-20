@@ -48,6 +48,7 @@ import org.compiere.grid.ed.VComboBox;
 import org.compiere.grid.ed.VDate;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
+import org.compiere.model.MBankAccount;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.print.CPrinter;
 import org.compiere.process.ProcessInfo;
@@ -278,8 +279,11 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 		
 		KeyNamePair bpartner = (KeyNamePair)fieldBPartner.getSelectedItem();
 		KeyNamePair docType = (KeyNamePair)fieldDtype.getSelectedItem();
+		
+		MBankAccount bank = new MBankAccount(Env.getCtx(), bi.getKey(), null);
+		int org = bank.getAD_Org_ID();
 
-		loadTableInfo (bi, bpartner, docType, dateFrom, dateTo, isPrinted.isSelected(), miniTable);
+		loadTableInfo (org, bi, bpartner, docType, dateFrom, dateTo, isPrinted.isSelected(), miniTable);
 		
 		calculateSelection();
 	}   //  loadTableInfo
@@ -323,7 +327,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 			dispose();
 
 		//  Update Open Invoices
-		else if (e.getSource() == fieldBPartner || e.getSource() == bRefresh || e.getSource() == fieldDtype  || e.getSource() == isPrinted)
+		else if (e.getSource() == fieldBankAccount || e.getSource() == fieldBPartner || e.getSource() == bRefresh || e.getSource() == fieldDtype  || e.getSource() == isPrinted)
 			loadTableInfo();
 		
 		//	Selct All
