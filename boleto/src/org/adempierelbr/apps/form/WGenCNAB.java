@@ -65,6 +65,7 @@ import org.zkoss.zul.Space;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *  @version $Id: WGenBilling.java, v1.0 2012/03/27 6:13:04 PM, ralexsander Exp $
  */
+
 public class WGenCNAB extends GenCNAB
 	implements IFormController, EventListener, WTableModelListener, ASyncProcess
 {	
