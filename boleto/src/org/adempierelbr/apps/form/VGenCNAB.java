@@ -43,6 +43,7 @@ import org.compiere.apps.form.FormPanel;
 import org.compiere.grid.ed.VComboBox;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.MiniTable;
+import org.compiere.model.MBankAccount;
 import org.compiere.plaf.CompiereColor;
 import org.compiere.process.ProcessInfo;
 import org.compiere.swing.CButton;
@@ -187,7 +188,11 @@ public class VGenCNAB extends GenCNAB implements FormPanel, ActionListener, Tabl
 	private void loadTableInfo()
 	{
 		KeyNamePair bi = (KeyNamePair)fieldBankAccount.getSelectedItem();
-		loadTableInfo (bi, miniTable);
+		
+		MBankAccount bank = new MBankAccount(Env.getCtx(), bi.getKey(), null);
+		int org = bank.getAD_Org_ID();
+		
+		loadTableInfo (org, bi, miniTable);
 		
 		calculateSelection();
 	}   //  loadTableInfo
