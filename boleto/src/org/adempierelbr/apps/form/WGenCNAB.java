@@ -42,6 +42,7 @@ import org.adempiere.webui.window.FDialog;
 import org.adempierelbr.util.TextUtil;
 import org.apache.commons.io.FileUtils;
 import org.compiere.minigrid.IDColumn;
+import org.compiere.model.MBankAccount;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.ASyncProcess;
 import org.compiere.util.Env;
@@ -185,7 +186,11 @@ public class WGenCNAB extends GenCNAB
 	private void loadTableInfo()
 	{	
 		KeyNamePair bi = (KeyNamePair)fieldBankAccount.getSelectedItem().getValue();
-		loadTableInfo (bi, miniTable);
+		
+		MBankAccount bank = new MBankAccount(Env.getCtx(), bi.getKey(), null);
+		int org = bank.getAD_Org_ID();
+		
+		loadTableInfo (org, bi, miniTable);
 		
 		calculateSelection();
 	}   //  loadTableInfo
