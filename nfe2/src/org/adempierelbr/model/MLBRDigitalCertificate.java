@@ -369,7 +369,7 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		else	//	Is Linux ?
 		{
 			library = getAttachmentData("so");
-			defaultDriver = "/usr/local/lib/libaetpkss.so";
+			defaultDriver = "/usr/lib/libaetpkss.so";
 		}
 		
 		try 
