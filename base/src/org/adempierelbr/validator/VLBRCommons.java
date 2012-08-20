@@ -18,6 +18,7 @@ import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNFeLot;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoiceLine;
@@ -74,6 +75,7 @@ public class VLBRCommons implements ModelValidator
 		engine.addModelChange (MInvoiceLine.Table_Name, this);
 		engine.addModelChange (MInOutLine.Table_Name, this);
 		engine.addModelChange (MLocation.Table_Name, this);
+		engine.addModelChange (MBankAccount.Table_Name, this);
 	}	//	initialize
 
 	/**
@@ -133,6 +135,10 @@ public class VLBRCommons implements ModelValidator
 		//	Anexo
 		else if (MAttachment.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MAttachment) po, type);
+		
+		//	Organização da Conta Bancária
+			else if (MBankAccount.Table_Name.equals(po.get_TableName()))
+				return modelChange ((MBankAccount) po, type);
 		
 		return null;
 	}	//	modelChange
@@ -213,6 +219,25 @@ public class VLBRCommons implements ModelValidator
 				|| (TYPE_BEFORE_CHANGE == type && loc.is_ValueChanged(MLocation.COLUMNNAME_C_City_ID))))
 		{
 			loc.setCity(loc.getC_City().getName());
+		}
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MBankAccount  bank, int type) throws Exception
+	{
+		//	Ajusta a Organização
+		if (TYPE_BEFORE_NEW == type && bank.getAD_Org_ID()==0)
+		{
+			return "A Organização deve ser diferente de * ";
 		}
 		return null;
 	}	//	modelChange
