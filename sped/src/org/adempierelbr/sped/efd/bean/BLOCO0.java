@@ -31,31 +31,31 @@ public class BLOCO0 {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(needsValidation = true, id = "R0000")
+	@XMLFieldProperties(id = "R0000")
 	private R0000 r0000;
 
-	@XMLFieldProperties(needsValidation = true, id = "R0001")
+	@XMLFieldProperties(id = "R0001")
 	private R0001 r0001;
 
-	@XMLFieldProperties(needsValidation = true, id = "R0005")
+	@XMLFieldProperties(id = "R0005")
 	private R0005 r0005;
 
-	@XMLFieldProperties(needsValidation = true, id = "R0100")
+	@XMLFieldProperties(id = "R0100")
 	private R0100 r0100;
 
-	@XMLFieldProperties(needsValidation = true, id = "R0150")
+	@XMLFieldProperties(id = "R0150")
 	private List<R0150> r0150 = new ArrayList<R0150>();
 
-	@XMLFieldProperties(needsValidation = true, id = "R0190")
+	@XMLFieldProperties(id = "R0190")
 	private List<R0190> r0190 = new ArrayList<R0190>();
 
-	@XMLFieldProperties(needsValidation = true, id = "R0200")
+	@XMLFieldProperties(id = "R0200")
 	private List<R0200> r0200 = new ArrayList<R0200>();
-	
-	@XMLFieldProperties(needsValidation = true, id = "R0460")
+
+	@XMLFieldProperties(id = "R0460")
 	private List<R0460> r0460 = new ArrayList<R0460>();
 
-	@XMLFieldProperties(needsValidation = true, id = "R0990")
+	@XMLFieldProperties(id = "R0990")
 	private R0990 r0990;
 
 	public R0100 getR0100() {
@@ -187,8 +187,7 @@ public class BLOCO0 {
 		else
 			r0200.subtractCounter();
 	}
-	
-	
+
 	/**
 	 * Adicionar a lista de registros
 	 * 
@@ -197,13 +196,53 @@ public class BLOCO0 {
 	 * 
 	 * @param r0460
 	 */
-	public void addr0460(R0460 r0460) 
-	{
+	public void addr0460(R0460 r0460) {
 
 		if (!this.r0460.contains(r0460))
 			this.r0460.add(r0460);
 		else
 			r0460.subtractCounter();
+	}
+
+	/**
+	 * To String
+	 */
+	@Override
+	public String toString() {
+		//
+
+		StringBuilder result = new StringBuilder();
+		
+		
+		//
+		result.append(r0000.toString());
+		result.append(r0001.toString());
+		result.append(r0005.toString());
+		result.append(r0100.toString());
+
+		// clientes
+		for (R0150 aux_r0150 : this.r0150)
+			result.append(aux_r0150.toString());
+
+		// uom
+		for (R0190 aux_r0190 : r0190)
+			result.append(aux_r0190.toString());
+
+		// produtos
+		for (R0200 aux_r0200 : r0200)
+			result.append(aux_r0200.toString());
+
+		// obs do lancamento fiscal
+		for (R0460 aux_r0460 : r0460)
+			result.append(aux_r0460.toString());
+
+		// counter
+		result.append(r0990);
+
+		//
+		return result.toString();
+	
+		
 	}
 
 } // R0000

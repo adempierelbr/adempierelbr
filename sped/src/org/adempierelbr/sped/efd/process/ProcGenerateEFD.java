@@ -208,6 +208,7 @@ public class ProcGenerateEFD extends SvrProcess
 			for(MLBRFactFiscal factFiscal : factFiscals)
 			{
 	
+				//
 				String REG = EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)); 
 				
 				/*
@@ -320,8 +321,17 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			
+			/*
+			 * Montar resultado
+			 */
+			StringBuilder result = new StringBuilder();
+			result.append(bloco0.toString());
+			result.append(blocoC.toString());
+			result.append(blocoD.toString());
+			
+			
 			// 
-			return new StringBuilder(blocoC.toString());
+			return result;
 			
 		}
 		catch (Exception e) 

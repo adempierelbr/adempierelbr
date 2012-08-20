@@ -73,5 +73,30 @@ public class BLOCOD {
 		// adicionar rc100
 		this.rD100.add(rd100);
 	}
+	
+	
+	/**
+	 * 	To String
+	 */
+	@Override
+	public String toString ()
+	{
+		//
+		StringBuilder result = new StringBuilder();
+
+		// init
+		result.append(rD001.toString());
+		
+		// CTs
+		for(RD100 aux_rd100 : rD100)
+			result.append(aux_rd100.toString());
+
+		// counter
+		result.append(rD990.toString());
+
+		//
+		return result.toString();
+	}
+	
 
 } // R0000

@@ -130,9 +130,6 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		
 		// order by (Date, LBR_NotaFiscal_ID, DocumentNo)
 		String orderBy = " (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END), LBR_NotaFiscal_ID, Line, DocumentNo ";
-	
-		
-		System.out.println(whereClause);
 		
 		// query
 		MTable table = MTable.get(ctx, MLBRFactFiscal.Table_Name);

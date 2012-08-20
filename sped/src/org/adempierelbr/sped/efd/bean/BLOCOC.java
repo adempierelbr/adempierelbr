@@ -75,14 +75,27 @@ public class BLOCOC {
 		this.rC100.add(rc100);
 	}
 
-	
-	public String toString() {
-		StringBuilder format = new StringBuilder();
+	/**
+	 * 	To String
+	 */
+	@Override
+	public String toString ()
+	{
+		//
+		StringBuilder result = new StringBuilder();
 
-		for (RC100 rc100 : rC100)
-			format.append(rc100.toString());
+		// init
+		result.append(rC001.toString());
+		
+		// NFs
+		for(RC100 aux_rc100 : rC100)
+			result.append(aux_rc100.toString());
 
-		return format.toString();
+		// counter
+		result.append(rC990.toString());
+
+		//
+		return result.toString();
 	}
 
 } // R0000

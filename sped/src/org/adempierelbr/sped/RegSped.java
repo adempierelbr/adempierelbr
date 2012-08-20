@@ -213,18 +213,22 @@ public abstract class RegSped implements Comparable<Object>{
 				return "";
 
 			Field[] fields = clazz.getDeclaredFields();
-			StringBuilder result = new StringBuilder("|");
+			StringBuilder result = new StringBuilder(PIPE);
 			
 			for (Field field : fields) 
 			{
 				// log
 				log.finer ("Processing SPED: " + field);
+				
+				// só gerar dos campos que tem annotation
+				if (!field.isAnnotationPresent (XMLFieldProperties.class))
+					continue;
 
-				// Carregar info das annotations
+				// 
 				XMLFieldProperties annotation = field.getAnnotation (XMLFieldProperties.class);
 				
-				// verificar se é campo do SPED, senão não incluir no resultado
-				if(annotation != null && !annotation.isSPEDField())
+				// verificar se é um SPED Field
+				if(!annotation.isSPEDField())
 					continue;
 	
 				// 
@@ -247,7 +251,7 @@ public abstract class RegSped implements Comparable<Object>{
 				{
 					//
 					BigDecimal contentBD = (BigDecimal) content;
-					result.append(contentBD.setScale(2, BigDecimal.ROUND_HALF_UP));
+					result.append(contentBD.setScale(annotation.scale(), BigDecimal.ROUND_HALF_UP));
 				}
 				
 				//	Timestamp
@@ -262,34 +266,20 @@ public abstract class RegSped implements Comparable<Object>{
 				else if (content instanceof String)
 				{
 					
-					// 
+					//   
 					String contentSTR = (String) content;
 					
-					// sem annotation
-					if(annotation == null)
-						result.append(contentSTR);
-
-					// com validação de tamanhos
-					if(annotation.maxSize() > 0)
-					{
-						// só números - CPF, CityCode, CountryCode, CNPJ...Ex.: 1 -> 001 / 1058 >> 01058
-						if (annotation.onlyNumber())
-							result.append(TextUtil.lPad(TextUtil.toNumeric(contentSTR), annotation.maxSize()));
-						
-						// qualquer outra str
-						else
-							result.append(TextUtil.lPad(contentSTR, annotation.maxSize()));
-
-					}
+					// preencher o tamanho mínimo com zeros a esquerda 
+					if(annotation.minSize() > 0)
+						contentSTR = TextUtil.lPad(contentSTR, annotation.maxSize());
 					
-					// sem validar tamanhos
-					else
-					{
-						if (annotation.onlyNumber())
-							result.append(TextUtil.toNumeric(contentSTR));
-						else
-							result.append(contentSTR);
-					}
+					// preencher, se for número, converter para tal. Ex.: CPF: 111.111.111-11 >> 11111111111
+					if(annotation.isNumber())
+						contentSTR = TextUtil.toNumeric(contentSTR);
+					
+					//
+					result.append(contentSTR);
+					
 				}
 				
 				//	Outros
@@ -297,17 +287,27 @@ public abstract class RegSped implements Comparable<Object>{
 					result.append (content);
 				
 				//	Commons
-				result.append("|");
+				result.append(PIPE);
 			}
+			
+			// 
+			result.append(EOL);
 			
 			//
 			return result.toString();
 		}
 		catch (Exception e)
 		{
+			
 			e.printStackTrace();
+			
+			log.severe("Falha no método toString() na Classe RegSped. Erro: " + 
+					e.getMessage() + "/ linha: " + e.getStackTrace()[0].getLineNumber());
+			
 			return "";
+			
 		}
+		
 	}	//	toString
 	
 	/**
@@ -316,7 +316,7 @@ public abstract class RegSped implements Comparable<Object>{
 	public static void main (String[] args)
 	{
 		R0000 r0000 = new R0000();
-		r0000.setCNPJ("00.000.000/0000-00");
+		r0000.setCNPJ("000-00");
 		r0000.setCOD_VER("1");
 		r0000.setDT_INI(new Timestamp(new Date().getTime()));
 		r0000.setCOD_MUN("1234");

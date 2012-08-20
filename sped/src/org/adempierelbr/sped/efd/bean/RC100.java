@@ -643,51 +643,36 @@ public class RC100 extends RegSped {
 	
 	
 	/**
-	 * Formata o Bloco C Registro 100
-	 * 
-	 * @return
+	 * 	To String
 	 */
-	public String toString() {
-		
-		StringBuilder format = new StringBuilder
-                   (PIPE).append(REG) 
-            .append(PIPE).append(TextUtil.checkSize(IND_OPER, 1, 1))
-            .append(PIPE).append(TextUtil.checkSize(IND_EMIT, 1))
-            .append(PIPE).append(COD_PART) //verifica se está cancelado
-            .append(PIPE).append(COD_MOD) 
-            .append(PIPE).append(COD_SIT)
-            .append(PIPE).append(SER)
-            .append(PIPE).append(NUM_DOC)
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(CHV_NFE), 44))
-            .append(PIPE).append(TextUtil.timeToString(DT_DOC, "ddMMyyyy", false))
-            .append(PIPE).append(TextUtil.timeToString(DT_E_S, "ddMMyyyy", false))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_DOC), 255))
-            .append(PIPE).append(TextUtil.checkSize(IND_PGTO, 1))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_DESC), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ABAT_NT), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_MERC), 255))
-            .append(PIPE).append(TextUtil.checkSize(IND_FRT, 1))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_FRT), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_SEG), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_OUT_DA), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_BC_ICMS), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ICMS), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_BC_ICMS_ST), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_ICMS_ST), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_IPI), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_PIS), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_COFINS), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_PIS_ST), 255))
-            .append(PIPE).append(TextUtil.checkSize(TextUtil.toNumeric(VL_COFINS_ST), 255))
-            .append(PIPE).append(EOL);
+	@Override
+	public String toString ()
+	{
+		//
+		StringBuilder result = new StringBuilder();
 
+		// DI
+		result.append(rC120.toString());
 		
-		for (RC170 rc170 : rC170)
-			format.append(rc170.toString());
+		// ISS, ISSQN... 
+		for(RC130 aux_rc130 : rC130)
+			result.append(aux_rc130.toString());
+
+		// Dados da Fatura
+		result.append(rC140.toString());
+
+		// Itens da NF
+		for(RC170 aux_rc170 : rC170)
+			result.append(aux_rc170.toString());
+
+		// Apuração pos CST, CFOP, ALIQ. ICMS
+		for(RC190 aux_rc190 : rC190)
+			result.append(aux_rc190.toString());
 		
-		
-		return format.append(EOL).toString();
-	} // toString
+		//
+		return result.toString();
+	}
+
 	
 	
 

@@ -296,6 +296,29 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		}	
 	}
 
+	/**
+	 * 	To String
+	 */
+	@Override
+	public String toString ()
+	{
+		//
+		StringBuilder result = new StringBuilder();
+
+		// Linhas
+		for(RD110 aux_rd110 : rD110)
+			result.append(aux_rd110);
+
+		// Totalizadores por CST, ALIQ e CFOP
+		for(RD190 aux_rd190 : rD190)
+			result.append(aux_rd190);
+
+		//
+		return result.toString();
+	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
