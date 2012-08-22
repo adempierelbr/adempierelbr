@@ -1,6 +1,10 @@
 package org.adempierelbr.sped.efd.process;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
@@ -10,17 +14,24 @@ import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
+import org.adempierelbr.sped.efd.bean.BLOCOH;
+import org.adempierelbr.sped.efd.bean.R0190;
+import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
-import org.adempierelbr.sped.efd.bean.RC001;
+import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.compiere.model.MElementValue;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
+import org.compiere.model.MProduct;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 /**
  * Processo para geração do SPED EFD
@@ -172,13 +183,15 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCO0 bloco0 = new BLOCO0();
 			BLOCOC blocoC = new BLOCOC();
 			BLOCOD blocoD = new BLOCOD();
+			BLOCOH blocoH = new BLOCOH();
 			
 			
 			// Inicialização dos Blocos
 			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
 			blocoC.setrC001(EFDUtil.createRC001(factFiscals.length > 0));
 			blocoD.setrD001(EFDUtil.createRD001(factFiscals.length > 0));
-
+			blocoH.setrH001(EFDUtil.createRH001(false));
+			
 			
 			// 0000 - dados da empresa
 			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, get_TrxName()));
@@ -311,12 +324,104 @@ public class ProcGenerateEFD extends SvrProcess
 			} // loop fatos fiscais
 			
 			
+			
+			
+			
+			/**
+			 * Inventário - Bloco H
+			 * 
+			 * Obs.: Só gerar o Bloco H no mês de fevereiro, sendo que os 
+			 * valores devem ser referentes ao mês de dezembro
+			 */
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(dateFrom);
+			if(calendar.get(Calendar.MONTH) == 1) // (indice do calendar: 0(mês 1), 1(mês 2), 2(mês 3)...)
+			{
+				
+				/*
+				 * Definir a data do ultimo dia do ano anterior ao que está sendo gerado o SPED
+				 */
+				calendar.set(Calendar.MONTH, 11); // (indice do calendar: 11(mês 12))
+				calendar.set(Calendar.DAY_OF_MONTH, 31);
+				calendar.add(Calendar.YEAR, -1); 
+				
+				/*
+				 * Registro RH005 com a data e o valor total do inventário. 
+				 * Obs.: Valor total é atualizado ao adicionar um novo registro RH010
+				 * Data: 31/12/ANO_ANTERIOR_AO_QUE_ESTA_SENDO_GERADO_O_EFD
+				 */
+				blocoH.setrH005(EFDUtil.createRH005(new Timestamp(calendar.getTimeInMillis())));
+				
+				// carregar informações do inventário
+				PreparedStatement pstmt = DB.prepareStatement (EFDUtil.getSQLInv(), get_TrxName());
+				
+				// params
+				pstmt.setInt(1, p_C_Period_ID);
+				pstmt.setString(2, "S");
+				pstmt.setInt(3, Env.getAD_Client_ID(getCtx()));
+				pstmt.setInt(4, p_AD_Org_ID);
+				pstmt.setTimestamp(5, new Timestamp(calendar.getTimeInMillis())); // Data: 31/12/ANO_ANTERIOR_AO_QUE_ESTA_SENDO_GERADO_O_EFD
+				
+				// rs
+				ResultSet rs  = pstmt.executeQuery ();
+				
+				/*
+				 *  para cada registro do inventário, gera-se um RH010 e totaliza com o RH005
+				 */
+				while (rs.next())
+				{
+					// carregar produto
+					MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), get_TrxName());
+
+					// criar R0190
+					R0190 r0190 = EFDUtil.createR0190(m_product);
+					bloco0.addr0190(r0190);
+					
+					// criar R0200
+					R0200 r0200 = EFDUtil.createR0200(m_product);
+					bloco0.addr0200(r0200);
+			
+					// conta contábil
+					String COD_CTA = "";
+					int C_ElementValue_ID = EFDUtil.getProductAsseAcct(m_product.getM_Product_ID(), get_TrxName());
+					if(C_ElementValue_ID > 0)
+					{
+						R0500 r0500 = EFDUtil.createR0500(new MElementValue(getCtx(), C_ElementValue_ID, get_TrxName()), dateTo);
+						bloco0.addr0500(r0500);
+						COD_CTA = r0500.getCOD_CTA();
+					}
+					
+					// indicador de quem está com o estoque
+					String IND_PROP = rs.getString("lbr_WarehouseType").equals("3RD") ? "2" :
+							rs.getString("lbr_WarehouseType").equals("3WN") ? "1" : "0"; 					
+					 
+							
+					// criar registro RH010 e adicionar ao RH005
+					blocoH.getrH005().addrH010(EFDUtil.createRH010(
+							r0200.getCOD_ITEM(), 
+							r0190.getUNID(), 
+							rs.getBigDecimal("QtyOnHand"),
+							rs.getBigDecimal("CurrentCostPrice"), 
+							rs.getBigDecimal("CurrentCostPrice"), 
+							IND_PROP, 
+							COD_CTA));
+					
+				}
+				
+				// atualizar cabeçalho do bloco H para definir se tem ou não dados
+				blocoH.getrH001().setIND_MOV(blocoH.getrH005().getrH010().size() > 0 ? "0" : "1");
+				
+			} // fim Bloco H
+			
+			
+			
 			/*
 			 * Registros Totalizadores dos Blocos
 			 */
 			bloco0.setR0990(EFDUtil.createR0990());
 			blocoC.setrC990(EFDUtil.createRC990());
 			blocoD.setrD990(EFDUtil.createRD990());
+			blocoH.setrH990(EFDUtil.createRH990());
 			
 			
 			
@@ -327,6 +432,7 @@ public class ProcGenerateEFD extends SvrProcess
 			result.append(bloco0.toString());
 			result.append(blocoC.toString());
 			result.append(blocoD.toString());
+			result.append(blocoH.toString());
 			
 			
 			// 
@@ -363,17 +469,15 @@ public class ProcGenerateEFD extends SvrProcess
 	
 	public static void main(String args[])
 	{
-		ProcGenerateEFD efd = new ProcGenerateEFD();
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(new Timestamp(System.currentTimeMillis()));
+		calendar.set(Calendar.DAY_OF_MONTH, 31);
+		calendar.set(Calendar.MONTH, 11);
+		calendar.add(Calendar.YEAR, -1);
 		
-		try 
-		{
-			//efd.generateEFD(new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));
-			//efd.genTeste();
-		} 
-		catch (Exception e) 
-		{
-			System.out.println(e.getMessage());
-		}
+		System.out.println(new Timestamp(calendar.getTimeInMillis()));
+		
+		
 	}
 	
 }	//	ProcGenerateEF

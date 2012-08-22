@@ -12,40 +12,44 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
- * REGISTRO 1001: ABERTURA DO BLOCO 1
+ * REGISTRO H990: ENCERRAMENTO DO BLOCO H
  * 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R1001.java, 08/02/2011, 12:03:00, mgrigioni
- * 
- * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: RH990.java, 08/02/2011, 12:07:00, mgrigioni
  */
-public class R1001 extends RegSped 
-{
-	private String IND_MOV;
+public class RH990 extends RegSped {
+
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "QTD_LIN_H")
+	private String QTD_LIN_H;
 
 	/**
 	 * Constructor
 	 */
-	public R1001() {
+	public RH990() {
 		super();
+	} // RG990
+
+	public String getQTD_LIN_H() {
+		return QTD_LIN_H;
 	}
 
-	public String getIND_MOV() {
-		return IND_MOV;
-	}
-
-	public void setIND_MOV(String iND_MOV) {
-		IND_MOV = iND_MOV;
+	public void setQTD_LIN_H(String qTD_LIN_H) {
+		QTD_LIN_H = qTD_LIN_H;
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-} // R1001
+} // RH990

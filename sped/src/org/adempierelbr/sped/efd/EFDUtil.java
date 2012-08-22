@@ -1,5 +1,6 @@
 package org.adempierelbr.sped.efd;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -15,6 +16,7 @@ import org.adempierelbr.sped.efd.bean.R0150;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
+import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.R0990;
 import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
@@ -26,6 +28,10 @@ import org.adempierelbr.sped.efd.bean.RD001;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD110;
 import org.adempierelbr.sped.efd.bean.RD990;
+import org.adempierelbr.sped.efd.bean.RH001;
+import org.adempierelbr.sped.efd.bean.RH005;
+import org.adempierelbr.sped.efd.bean.RH010;
+import org.adempierelbr.sped.efd.bean.RH990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
@@ -33,6 +39,7 @@ import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
+import org.compiere.model.MElementValue;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPaySchedule;
@@ -41,6 +48,7 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -68,6 +76,15 @@ public class EFDUtil {
 	private static final String COD_DOC_IMP = "0"; // Declaração de Importacao
 	private static final String IND_APUR = "0"; // Mensal (IPI - RC170)
 
+	//Código da natureza da conta/grupo de contas
+	public static final String CONTA_ATIVO        = "01";
+	public static final String CONTA_PASSIVO      = "02";
+	public static final String PATRIMONIO_LIQUIDO = "03";
+	public static final String CONTA_RESULTADO    = "04";
+	public static final String CONTA_COMPENSACAO  = "05";
+	public static final String OUTRAS             = "09";
+	
+	
 	
 	/**
 	 * Retornar o bloco de registro ao qual o modelo de documento pertence
@@ -295,6 +312,42 @@ public class EFDUtil {
 			return "";
 	}
 	
+	/**
+	 * Retornar o código de natureza da conta de acordo com o tipo no sistema
+	 * 
+	 * Código da natureza da conta/grupo de contas: 
+	 * 01 - Contas de ativo;
+	 * 02 - Contas de passivo;
+	 * 03 - Patrimônio líquido;
+	 * 04 - Contas de resultado;
+	 * 05 - Contas de compensação; 
+	 * 09 - Outras.
+	 * 
+	 * @param accountType
+	 * @return
+	 */
+	public static String getCOD_NAT(String accountType){
+		
+		if (accountType == null || accountType.isEmpty())
+			return OUTRAS;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Asset))
+			return CONTA_ATIVO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Liability))
+			return CONTA_PASSIVO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_OwnerSEquity))
+			return PATRIMONIO_LIQUIDO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Revenue))
+			return CONTA_RESULTADO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Expense))
+			return CONTA_RESULTADO;
+		
+		return OUTRAS;
+	} //getCOD_NAT
 	
 	
 	/**
@@ -615,6 +668,30 @@ public class EFDUtil {
 		
 		return reg;
 	}
+	
+	
+	public static R0500 createR0500(MElementValue ev, Timestamp dateTo) throws Exception 
+	{
+		//
+		R0500 reg = new R0500();
+		
+		// verificar se a data de alteração é posterior a data final do período
+		Timestamp DT_ALT = ev.getUpdated();
+		if (DT_ALT.after(dateTo))
+			DT_ALT = dateTo;
+		reg.setDT_ALT(DT_ALT);
+		reg.setCOD_NAT_CC(getCOD_NAT(ev.getAccountType()));
+		reg.setIND_CTA(ev.isSummary() ? "S" : "A");
+
+		// somente pontos('.') + 1 
+		reg.setNIVEL(ev.getValue().replaceAll("[^.]","").length() + 1);
+		reg.setCOD_CTA(ev.getValue());
+		reg.setNOME_CTA(ev.getName());
+				
+		return reg;
+		
+	} //createR0500
+	
 	
 	/**
 	 * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
@@ -993,6 +1070,158 @@ public class EFDUtil {
 		return reg;
 	}
 	
+	/**
+	 * REGISTRO H001: ABERTURA DO BLOCO H
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH001 createRH001(boolean hasInfo) throws Exception
+	{
+		RH001 reg = new RH001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
 	
+	
+	/**
+	 * REGISTRO H005: TOTAIS DO INVENTÁRIO
+	 * 
+	 * @param dtInv
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH005 createRH005(Timestamp dtInv) throws Exception 
+	{
+		RH005 reg = new RH005();
+		reg.setDT_INV(dtInv);
+		
+		// fazer soma do total ao adicionar as linhas do inventário
+		reg.setVL_INV(Env.ZERO);
+		
+		// TODO: Motivo do Inventário - 01 – No final no período;
+		reg.setMOT_INV("01");
+		
+		return reg;
+	
+	}
+	
+	
+	/**
+	 * REGISTRO H010: INVENTÁRIO.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH010 createRH010(String COD_ITEM, String UNID, BigDecimal QTD, 
+			BigDecimal VL_UNIT, BigDecimal VL_ITEM, String IND_PROP, String COD_CTA) throws Exception 
+	{
+		
+		RH010 reg = new RH010();
+		reg.setCOD_ITEM(COD_ITEM);
+		reg.setUNID(UNID);
+		reg.setQTD(QTD);
+		reg.setVL_UNIT(VL_UNIT);
+		reg.setVL_ITEM(VL_ITEM);
+		reg.setIND_PROP(IND_PROP);
+		reg.setCOD_CTA(COD_CTA);
+		reg.setCOD_PART(null);
+		reg.setTXT_COMPL(null);
+		
+		return reg;
+	}
+	
+	
+
+	
+	
+	
+	/**
+	 * REGISTRO C990: ENCERRAMENTO DO BLOCO H
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH990 createRH990() throws Exception 
+	{
+		RH990 reg = new RH990();
+		reg.setQTD_LIN_H(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * Retornar a conta do produto
+	 * 
+	 * @param C_ElementValue_ID ID do Elemento de Contas
+	 */
+	public static int getProductAsseAcct(int M_Product_ID, String trxName) throws Exception
+	{
+	
+		// sql
+		String sql = " SELECT C_ElementValue_ID 																" +
+					 "   FROM C_ElementValue 																	" +
+					 "  WHERE C_ElementValue_ID = (SELECT Account_ID 											" +
+					 "								 FROM C_ValidCombination									" +
+					 "								WHERE C_ValidCombination_ID = (SELECT P_Asset_Acct			" +
+					 "						  								         FROM M_Product_Acct 		" +
+					 "																WHERE M_Product_ID = ?))	" +
+					 "   AND IsActive = 'Y' 																	";
+		
+		// buscar valor
+		int ret =  DB.getSQLValue(trxName, sql, M_Product_ID);
+		
+		// 
+		if(ret == -1)
+			return 0;
+		
+		// 
+		return ret;
+	}
+	
+	
+	/**
+	 * Retornar a query para buscar as informações do inventário
+	 * 
+	 * Parametros do SQL
+	 * 
+	 * #1 - C_Period_ID
+	 * #2 - CostingMethod
+	 * #3 - AD_Client_ID
+	 * #4 - AD_Org_ID
+	 * #5 - MovementDate
+	 * 
+	 * 
+	 * @return Sql String
+	 */
+	public static String getSQLInv()  throws Exception
+	{
+		// sql
+		String sql = " SELECT 																			" +
+				" 	mt.M_Product_ID,																	" +
+				"   ROUND(SUM(MovementQty), 4) AS QtyOnHand, 											" +
+				"	MAX(wh.lbr_WarehouseType) AS lbr_WarehouseType,										" +
+				"	getCurrentCost(mt.AD_Client_ID, mt.M_Product_ID, ?, ?) AS CurrentCostPrice			" + // # 1, 2
+				" FROM M_Transaction mt																	" +
+				"	INNER JOIN M_Product p ON mt.M_Product_id = p.M_Product_id							" +
+				"	INNER JOIN M_Locator l ON mt.M_Locator_id = l.M_Locator_id 							" +
+				"	INNER JOIN M_Warehouse wh ON wh.M_Warehouse_id = l.M_Warehouse_id					" +
+				" WHERE mt.AD_Client_ID = ? 															" + // # 3
+				"   AND mt.AD_Org_ID = ?																" + // # 4
+				"	AND mt.MovementDate <= ?															" +	// # 5
+				"	AND wh.AD_Org_ID = mt.AD_Org_ID 													" +
+				" GROUP BY																				" +
+				" 	mt.AD_Client_ID, 																	" +
+				"	mt.M_Product_ID																		" +
+				" HAVING SUM(MovementQty) > 0															" +
+				" ORDER BY mt.M_Product_ID																";
+
+		//
+		return sql;
+	}
 	
 } // EFDUtil

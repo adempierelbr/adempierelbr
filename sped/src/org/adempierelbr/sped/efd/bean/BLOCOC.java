@@ -92,6 +92,9 @@ public class BLOCOC {
 		// C100 e filhos
 		for(RC100 aux_rc100 : rC100)
 		{
+			// verificar excessões do RC100
+			aux_rc100.checkExceptions();
+			
 			// NF
 			result.append(aux_rc100.toString());
 		

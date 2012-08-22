@@ -12,27 +12,33 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
- * REGISTRO 1001: ABERTURA DO BLOCO 1
+ * REGISTRO H001: ABERTURA DO BLOCO H
  * 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R1001.java, 08/02/2011, 12:03:00, mgrigioni
- * 
- * @contributor Pablo Boff Pigozzo
- * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
+ * @version $Id: RH001.java, 08/02/2011, 12:01:00, mgrigioni
  */
-public class R1001 extends RegSped 
-{
+public class RH001 extends RegSped {
+	
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
 	private String IND_MOV;
 
 	/**
 	 * Constructor
+	 * 
+	 * @param IND_MOV
 	 */
-	public R1001() {
+	public RH001() {
 		super();
-	}
+	} // RH001
 
 	public String getIND_MOV() {
 		return IND_MOV;
@@ -42,10 +48,11 @@ public class R1001 extends RegSped
 		IND_MOV = iND_MOV;
 	}
 
+	
 	@Override
 	public int compareTo(Object arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-} // R1001
+} // RH001

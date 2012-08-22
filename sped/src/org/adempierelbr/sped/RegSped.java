@@ -265,8 +265,8 @@ public abstract class RegSped implements Comparable<Object> {
 				else if (content instanceof String)
 				{
 					
-					//   
-					String contentSTR = (String) content;
+					// não permitir espaços em branco, antes e depois do conteúdo
+					String contentSTR = ((String) content).trim();
 					
 					// preencher o tamanho mínimo com zeros a esquerda 
 					if(annotation.minSize() > 0)

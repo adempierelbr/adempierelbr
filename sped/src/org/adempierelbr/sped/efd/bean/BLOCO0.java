@@ -57,6 +57,9 @@ public class BLOCO0 {
 	@XMLFieldProperties(id = "R0460")
 	private List<R0460> r0460 = new ArrayList<R0460>();
 
+	@XMLFieldProperties(id = "R0500")
+	private List<R0500> r0500 = new ArrayList<R0500>();
+	
 	@XMLFieldProperties(id = "R0990")
 	private R0990 r0990;
 
@@ -144,6 +147,14 @@ public class BLOCO0 {
 		this.r0200 = r0200;
 	}
 
+	public List<R0500> getR0500() {
+		return r0500;
+	}
+
+	public void setR0500(List<R0500> r0500) {
+		this.r0500 = r0500;
+	}
+
 	/**
 	 * Adicionar a lista de registros
 	 * 
@@ -207,6 +218,23 @@ public class BLOCO0 {
 	}
 
 	/**
+	 * Adicionar a lista de registros
+	 * 
+	 * Obs.: Se o registro já existir, fazer um subtract counter para adicionar
+	 * aos totalizadores de registros
+	 * 
+	 * @param r0460
+	 */
+	public void addr0500(R0500 r0500) {
+
+		if (!this.r0500.contains(r0500))
+			this.r0500.add(r0500);
+		else
+			r0500.subtractCounter();
+	}
+	
+	
+	/**
 	 * To String
 	 */
 	public String toString() {
@@ -235,6 +263,10 @@ public class BLOCO0 {
 		for (R0460 aux_r0460 : r0460)
 			result.append(aux_r0460.toString());
 
+		// contas contábeis
+		for (R0500 aux_r0500 : r0500)
+			result.append(aux_r0500.toString());
+		
 		// counter
 		result.append(r0990.toString());
 

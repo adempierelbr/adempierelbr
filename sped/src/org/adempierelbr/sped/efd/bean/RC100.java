@@ -540,9 +540,7 @@ public class RC100 extends RegSped {
 
 		// atualizar totalizador C190;
 		updateC190(rc170);
-		
-		// verificar exceções ao adicionar novos itens
-		checkExceptions();
+
 	}
 
 	/**
