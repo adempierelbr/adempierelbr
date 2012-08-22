@@ -15,8 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import java.sql.Timestamp;
 
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO 0600: CENTRO DE CUSTOS

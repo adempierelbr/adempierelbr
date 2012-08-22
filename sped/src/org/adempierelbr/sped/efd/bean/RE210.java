@@ -1,0 +1,199 @@
+/******************************************************************************
+ * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
+package org.adempierelbr.sped.efd.bean;
+
+import java.math.BigDecimal;
+
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+/**
+ * REGISTRO E210: APURAÇÃO DO ICMS – SUBSTITUIÇÃO TRIBUTÁRIA.
+ * 
+ * @author Mario Grigioni, mgrigioni
+ * @version $Id: RE210.java, 14/06/2011, 08:39:00, mgrigioni
+ */
+public class RE210 extends RegSped {
+
+	@XStreamAlias("Id")
+	@XStreamAsAttribute
+	@XMLFieldProperties(id = "IND_MOV_ST")
+	private String IND_MOV_ST;
+
+	@XMLFieldProperties(id = "VL_SLD_CRED_ANT_ST")
+	private BigDecimal VL_SLD_CRED_ANT_ST;
+
+	@XMLFieldProperties(id = "VL_DEVOL_ST")
+	private BigDecimal VL_DEVOL_ST;
+
+	@XMLFieldProperties(id = "VL_RESSARC_ST")
+	private BigDecimal VL_RESSARC_ST;
+
+	@XMLFieldProperties(id = "VL_OUT_CRED_ST")
+	private BigDecimal VL_OUT_CRED_ST;
+
+	@XMLFieldProperties(id = "VL_AJ_CREDITOS_ST")
+	private BigDecimal VL_AJ_CREDITOS_ST;
+
+	@XMLFieldProperties(id = "VL_RETENÇAO_ST")
+	private BigDecimal VL_RETENÇAO_ST;
+
+	@XMLFieldProperties(id = "VL_OUT_DEB_ST")
+	private BigDecimal VL_OUT_DEB_ST;
+
+	@XMLFieldProperties(id = "VL_AJ_DEBITOS_ST")
+	private BigDecimal VL_AJ_DEBITOS_ST;
+
+	@XMLFieldProperties(id = "VL_SLD_DEV_ANT_ST")
+	private BigDecimal VL_SLD_DEV_ANT_ST;
+
+	@XMLFieldProperties(id = "VL_DEDUÇÕES_ST")
+	private BigDecimal VL_DEDUÇÕES_ST;
+
+	@XMLFieldProperties(id = "VL_ICMS_RECOL_ST")
+	private BigDecimal VL_ICMS_RECOL_ST;
+
+	@XMLFieldProperties(id = "VL_SLD_CRED_ST_TRANSPORTAR")
+	private BigDecimal VL_SLD_CRED_ST_TRANSPORTAR;
+
+	@XMLFieldProperties(id = "DEB_ESP_ST")
+	private BigDecimal DEB_ESP_ST;
+
+	public RE210() {
+		super();
+
+	} // RE210
+
+	public String getIND_MOV_ST() {
+		return IND_MOV_ST;
+	}
+
+	public void setIND_MOV_ST(String iND_MOV_ST) {
+		IND_MOV_ST = iND_MOV_ST;
+	}
+
+	public BigDecimal getVL_SLD_CRED_ANT_ST() {
+		return VL_SLD_CRED_ANT_ST;
+	}
+
+	public void setVL_SLD_CRED_ANT_ST(BigDecimal vL_SLD_CRED_ANT_ST) {
+		VL_SLD_CRED_ANT_ST = vL_SLD_CRED_ANT_ST;
+	}
+
+	public BigDecimal getVL_DEVOL_ST() {
+		return VL_DEVOL_ST;
+	}
+
+	public void setVL_DEVOL_ST(BigDecimal vL_DEVOL_ST) {
+		VL_DEVOL_ST = vL_DEVOL_ST;
+	}
+
+	public BigDecimal getVL_RESSARC_ST() {
+		return VL_RESSARC_ST;
+	}
+
+	public void setVL_RESSARC_ST(BigDecimal vL_RESSARC_ST) {
+		VL_RESSARC_ST = vL_RESSARC_ST;
+	}
+
+	public BigDecimal getVL_OUT_CRED_ST() {
+		return VL_OUT_CRED_ST;
+	}
+
+	public void setVL_OUT_CRED_ST(BigDecimal vL_OUT_CRED_ST) {
+		VL_OUT_CRED_ST = vL_OUT_CRED_ST;
+	}
+
+	public BigDecimal getVL_AJ_CREDITOS_ST() {
+		return VL_AJ_CREDITOS_ST;
+	}
+
+	public void setVL_AJ_CREDITOS_ST(BigDecimal vL_AJ_CREDITOS_ST) {
+		VL_AJ_CREDITOS_ST = vL_AJ_CREDITOS_ST;
+	}
+
+	public BigDecimal getVL_RETENÇAO_ST() {
+		return VL_RETENÇAO_ST;
+	}
+
+	public void setVL_RETENÇAO_ST(BigDecimal vL_RETENÇAO_ST) {
+		VL_RETENÇAO_ST = vL_RETENÇAO_ST;
+	}
+
+	public BigDecimal getVL_OUT_DEB_ST() {
+		return VL_OUT_DEB_ST;
+	}
+
+	public void setVL_OUT_DEB_ST(BigDecimal vL_OUT_DEB_ST) {
+		VL_OUT_DEB_ST = vL_OUT_DEB_ST;
+	}
+
+	public BigDecimal getVL_AJ_DEBITOS_ST() {
+		return VL_AJ_DEBITOS_ST;
+	}
+
+	public void setVL_AJ_DEBITOS_ST(BigDecimal vL_AJ_DEBITOS_ST) {
+		VL_AJ_DEBITOS_ST = vL_AJ_DEBITOS_ST;
+	}
+
+	public BigDecimal getVL_SLD_DEV_ANT_ST() {
+		return VL_SLD_DEV_ANT_ST;
+	}
+
+	public void setVL_SLD_DEV_ANT_ST(BigDecimal vL_SLD_DEV_ANT_ST) {
+		VL_SLD_DEV_ANT_ST = vL_SLD_DEV_ANT_ST;
+	}
+
+	public BigDecimal getVL_DEDUÇÕES_ST() {
+		return VL_DEDUÇÕES_ST;
+	}
+
+	public void setVL_DEDUÇÕES_ST(BigDecimal vL_DEDUÇÕES_ST) {
+		VL_DEDUÇÕES_ST = vL_DEDUÇÕES_ST;
+	}
+
+	public BigDecimal getVL_ICMS_RECOL_ST() {
+		return VL_ICMS_RECOL_ST;
+	}
+
+	public void setVL_ICMS_RECOL_ST(BigDecimal vL_ICMS_RECOL_ST) {
+		VL_ICMS_RECOL_ST = vL_ICMS_RECOL_ST;
+	}
+
+	public BigDecimal getVL_SLD_CRED_ST_TRANSPORTAR() {
+		return VL_SLD_CRED_ST_TRANSPORTAR;
+	}
+
+	public void setVL_SLD_CRED_ST_TRANSPORTAR(
+			BigDecimal vL_SLD_CRED_ST_TRANSPORTAR) {
+		VL_SLD_CRED_ST_TRANSPORTAR = vL_SLD_CRED_ST_TRANSPORTAR;
+	}
+
+	public BigDecimal getDEB_ESP_ST() {
+		return DEB_ESP_ST;
+	}
+
+	public void setDEB_ESP_ST(BigDecimal dEB_ESP_ST) {
+		DEB_ESP_ST = dEB_ESP_ST;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+} // RE210
