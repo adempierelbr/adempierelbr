@@ -324,9 +324,6 @@ public class ProcGenerateEFD extends SvrProcess
 			} // loop fatos fiscais
 			
 			
-			
-			
-			
 			/**
 			 * Inventário - Bloco H
 			 * 
@@ -415,6 +412,16 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			
+			
+			/**
+			 * Gerar BLOCO E - Apurações de IPI, ICMS e ST
+			 * 
+			 */
+			
+			
+			
+			
+			
 			/*
 			 * Registros Totalizadores dos Blocos
 			 */
@@ -422,8 +429,6 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoC.setrC990(EFDUtil.createRC990());
 			blocoD.setrD990(EFDUtil.createRD990());
 			blocoH.setrH990(EFDUtil.createRH990());
-			
-			
 			
 			/*
 			 * Montar resultado

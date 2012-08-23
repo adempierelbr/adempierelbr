@@ -28,6 +28,10 @@ import org.adempierelbr.sped.efd.bean.RD001;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD110;
 import org.adempierelbr.sped.efd.bean.RD990;
+import org.adempierelbr.sped.efd.bean.RE001;
+import org.adempierelbr.sped.efd.bean.RE100;
+import org.adempierelbr.sped.efd.bean.RE110;
+import org.adempierelbr.sped.efd.bean.RE990;
 import org.adempierelbr.sped.efd.bean.RH001;
 import org.adempierelbr.sped.efd.bean.RH005;
 import org.adempierelbr.sped.efd.bean.RH010;
@@ -1148,6 +1152,88 @@ public class EFDUtil {
 	{
 		RH990 reg = new RH990();
 		reg.setQTD_LIN_H(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E001: ABERTURA DO BLOCO E
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE001 createRE001(boolean hasInfo) throws Exception
+	{
+		RE001 reg = new RE001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+
+	/**
+	 * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
+	 * 
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE100 createRE100(Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		RE100 reg = new RE100();
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO E110: APURAÇÃO DO ICMS – OPERAÇÕES PRÓPRIAS.
+	 * 
+	 * TODO: Montar a apuração ainda.
+	 * 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE110 createRE110() throws Exception
+	{
+		
+		RE110 reg = new RE110();
+		reg.setVL_TOT_DEBITOS(Env.ZERO);
+		reg.setVL_AJ_DEBITOS(Env.ZERO);
+		reg.setVL_TOT_AJ_DEBITOS(Env.ZERO);
+		reg.setVL_ESTORNOS_CRED(Env.ZERO);
+		reg.setVL_TOT_CREDITOS(Env.ZERO);
+		reg.setVL_AJ_CREDITOS(Env.ZERO);
+		reg.setVL_TOT_AJ_CREDITOS(Env.ZERO);
+		reg.setVL_ESTORNOS_DEB(Env.ZERO);
+		reg.setVL_SLD_CREDOR_ANT(Env.ZERO);
+		reg.setVL_SLD_APURADO(Env.ZERO);
+		reg.setVL_ICMS_RECOLHER(Env.ZERO);
+		reg.setVL_TOT_DED(Env.ZERO);
+		reg.setVL_SLD_CREDOR_TRANSPORTAR(Env.ZERO);
+		reg.setDEB_ESP(Env.ZERO);
+
+		return reg;
+		
+	}
+	
+	
+	/**
+	 * REGISTRO E990: ENCERRAMENTO DO BLOCO E
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE990 createRE990() throws Exception 
+	{
+		RE990 reg = new RE990();
+		reg.setQTD_LIN_E(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
 		return reg;
 	}
