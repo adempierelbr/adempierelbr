@@ -12,6 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -24,47 +27,54 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @author Pablo Boff Pigozzo, pablobp4
  * @version $ 07/08/2012 11:03 $
  */
-public class BLOCOH {
+public class BLOCO9 {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(needsValidation = true, id = "RH001")
-	private RH001 rH001;
+	@XMLFieldProperties(needsValidation = true, id = "R9001")
+	private R9001 r9001;
 
-	@XMLFieldProperties(needsValidation = true, id = "RH005")
-	private RH005 rH005;
+	@XMLFieldProperties(needsValidation = true, id = "R9900")
+	private List<R9900> r9900 = new ArrayList<R9900>();
 
-	@XMLFieldProperties(needsValidation = true, id = "RH990")
-	private RH990 rH990;
+	@XMLFieldProperties(needsValidation = true, id = "R9990")
+	private R9990 r9990;
 
-	public RH001 getrH001() {
-		return rH001;
+	@XMLFieldProperties(needsValidation = true, id = "R9999")
+	private R9999 r9999;
+
+	public R9001 getR9001() {
+		return r9001;
 	}
 
-	public void setrH001(RH001 rH001) {
-		this.rH001 = rH001;
+	public void setR9001(R9001 r9001) {
+		this.r9001 = r9001;
 	}
 
-	public RH005 getrH005() {
-		return rH005;
+	public List<R9900> getR9900() {
+		return r9900;
 	}
 
-	public void setrH005(RH005 rH005) {
-		this.rH005 = rH005;
+	public void setR9900(List<R9900> r9900) {
+		this.r9900 = r9900;
 	}
 
-	public RH990 getrH990() {
-		return rH990;
+	public R9990 getR9990() {
+		return r9990;
 	}
 
-	public void setrH990(RH990 rH990) {
-		this.rH990 = rH990;
+	public void setR9990(R9990 r9990) {
+		this.r9990 = r9990;
 	}
 
-	
-	
-	
-	
+	public R9999 getR9999() {
+		return r9999;
+	}
+
+	public void setR9999(R9999 r9999) {
+		this.r9999 = r9999;
+	}
+
 	/**
 	 * To String
 	 */
@@ -74,21 +84,19 @@ public class BLOCOH {
 		StringBuilder result = new StringBuilder();
 
 		// init
-		result.append(rH001);
+		result.append(r9001);
 
-		// período e valor final
-		result.append(rH005);
+		// counters de todos os registros
+		for (R9900 aux_r9900 : getR9900())
+			result.append(aux_r9900);
 
-		// itens, qtdes e valores
-		if(getrH005() != null)
-		{
-			for (RH010 aux_rH010 : getrH005().getrH010())
-				result.append(aux_rH010);
-		}
+		// encerramento do bloco 9
+		result.append(r9990);
 
-		// counter
-		result.append(rH990);
+		// encerramento do arquivo 
+		result.append(r9999);
 
+		
 		//
 		return result.toString();
 	}

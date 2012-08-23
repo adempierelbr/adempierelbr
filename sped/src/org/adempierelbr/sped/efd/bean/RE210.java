@@ -13,6 +13,8 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -71,11 +73,22 @@ public class RE210 extends RegSped {
 
 	@XMLFieldProperties(id = "DEB_ESP_ST")
 	private BigDecimal DEB_ESP_ST;
+	
+	@XMLFieldProperties(id = "RE250", isSPEDField = false)
+	private List<RE250> rE250 = new ArrayList<RE250>();
 
 	public RE210() {
 		super();
 
 	} // RE210
+
+	public List<RE250> getrE250() {
+		return rE250;
+	}
+
+	public void setrE250(List<RE250> rE250) {
+		this.rE250 = rE250;
+	}
 
 	public String getIND_MOV_ST() {
 		return IND_MOV_ST;
@@ -189,6 +202,15 @@ public class RE210 extends RegSped {
 	public void setDEB_ESP_ST(BigDecimal dEB_ESP_ST) {
 		DEB_ESP_ST = dEB_ESP_ST;
 	}
+	
+	/**
+	 * Adicionar registros E250 
+	 * @param reg
+	 */
+	public void addrE250(RE250 reg)
+	{
+		this.rE250.add(reg);
+	}	
 
 	@Override
 	public int compareTo(Object o) {

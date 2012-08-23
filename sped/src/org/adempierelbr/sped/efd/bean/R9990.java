@@ -13,84 +13,45 @@
 package org.adempierelbr.sped.efd.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.CounterSped;
+import org.adempierelbr.sped.RegSped;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * BLOCO H: INVENTÁRIO FÍSICO
+ * REGISTRO 9990: ENCERRAMENTO DO BLOCO 9
  * 
- * 
- * @author Pablo Boff Pigozzo, pablobp4
- * @version $ 07/08/2012 11:03 $
+ * @author Mario Grigioni, mgrigioni
+ * @version $Id: R9990.java, 19/01/2011, 14:47:00, mgrigioni
  */
-public class BLOCOH {
+public class R9990 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(needsValidation = true, id = "RH001")
-	private RH001 rH001;
+	@XMLFieldProperties(id = "QTD_LIN_9")
+	private String QTD_LIN_9;
 
-	@XMLFieldProperties(needsValidation = true, id = "RH005")
-	private RH005 rH005;
-
-	@XMLFieldProperties(needsValidation = true, id = "RH990")
-	private RH990 rH990;
-
-	public RH001 getrH001() {
-		return rH001;
-	}
-
-	public void setrH001(RH001 rH001) {
-		this.rH001 = rH001;
-	}
-
-	public RH005 getrH005() {
-		return rH005;
-	}
-
-	public void setrH005(RH005 rH005) {
-		this.rH005 = rH005;
-	}
-
-	public RH990 getrH990() {
-		return rH990;
-	}
-
-	public void setrH990(RH990 rH990) {
-		this.rH990 = rH990;
-	}
-
-	
-	
-	
-	
 	/**
-	 * To String
+	 * Constructor
+	 * 
 	 */
-	@Override
-	public String toString() {
-		//
-		StringBuilder result = new StringBuilder();
+	public R9990() {
+		super();
+	} // R9990
 
-		// init
-		result.append(rH001);
-
-		// período e valor final
-		result.append(rH005);
-
-		// itens, qtdes e valores
-		if(getrH005() != null)
-		{
-			for (RH010 aux_rH010 : getrH005().getrH010())
-				result.append(aux_rH010);
-		}
-
-		// counter
-		result.append(rH990);
-
-		//
-		return result.toString();
+	public String getQTD_LIN_9() {
+		return QTD_LIN_9;
 	}
 
-} // R0000
+	public void setQTD_LIN_9(String qTD_LIN_9) {
+		QTD_LIN_9 = qTD_LIN_9;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+} // R9990

@@ -13,6 +13,8 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -32,12 +34,18 @@ public class RE500 extends RegSped {
 	@XStreamAsAttribute
 	@XMLFieldProperties(id = "IND_APUR", maxSize = 1)
 	private String IND_APUR;
-	
+
 	@XMLFieldProperties(id = "DT_INI", maxSize = 8, minSize = 8)
 	private Timestamp DT_INI;
-	
+
 	@XMLFieldProperties(id = "DT_FIN", maxSize = 8, minSize = 8)
 	private Timestamp DT_FIN;
+
+	@XMLFieldProperties(id = "RE510", isSPEDField = false)
+	private List<RE510> rE510 = new ArrayList<RE510>();
+
+	@XMLFieldProperties(id = "RE520", isSPEDField = false)
+	private RE520 rE520;
 
 	/**
 	 * Constructor
@@ -48,6 +56,22 @@ public class RE500 extends RegSped {
 	public RE500() {
 		super();
 	} // RE500
+
+	public List<RE510> getrE510() {
+		return rE510;
+	}
+
+	public void setrE510(List<RE510> rE510) {
+		this.rE510 = rE510;
+	}
+
+	public RE520 getrE520() {
+		return rE520;
+	}
+
+	public void setrE520(RE520 rE520) {
+		this.rE520 = rE520;
+	}
 
 	public Timestamp getDT_INI() {
 		return DT_INI;

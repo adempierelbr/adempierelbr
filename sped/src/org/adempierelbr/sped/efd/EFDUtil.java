@@ -2,6 +2,8 @@ package org.adempierelbr.sped.efd;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
@@ -18,6 +20,10 @@ import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.R0990;
+import org.adempierelbr.sped.efd.bean.R9001;
+import org.adempierelbr.sped.efd.bean.R9900;
+import org.adempierelbr.sped.efd.bean.R9990;
+import org.adempierelbr.sped.efd.bean.R9999;
 import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC120;
@@ -31,6 +37,13 @@ import org.adempierelbr.sped.efd.bean.RD990;
 import org.adempierelbr.sped.efd.bean.RE001;
 import org.adempierelbr.sped.efd.bean.RE100;
 import org.adempierelbr.sped.efd.bean.RE110;
+import org.adempierelbr.sped.efd.bean.RE111;
+import org.adempierelbr.sped.efd.bean.RE200;
+import org.adempierelbr.sped.efd.bean.RE210;
+import org.adempierelbr.sped.efd.bean.RE250;
+import org.adempierelbr.sped.efd.bean.RE500;
+import org.adempierelbr.sped.efd.bean.RE510;
+import org.adempierelbr.sped.efd.bean.RE520;
 import org.adempierelbr.sped.efd.bean.RE990;
 import org.adempierelbr.sped.efd.bean.RH001;
 import org.adempierelbr.sped.efd.bean.RH005;
@@ -1176,6 +1189,7 @@ public class EFDUtil {
 	/**
 	 * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
 	 * 
+	 * TODO: Origem dos Dados?
 	 * 
 	 * @param dtIni
 	 * @param dtFin
@@ -1194,7 +1208,7 @@ public class EFDUtil {
 	/**
 	 * REGISTRO E110: APURAÇÃO DO ICMS – OPERAÇÕES PRÓPRIAS.
 	 * 
-	 * TODO: Montar a apuração ainda.
+	 * TODO: Origem dos Dados?
 	 * 
 	 * 
 	 * @return
@@ -1225,6 +1239,172 @@ public class EFDUtil {
 	
 	
 	/**
+	 * REGISTRO E111: AJUSTE/BENEFÍCIO/INCENTIVO DA APURAÇÃO DO ICMS.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE111 createRE111() throws Exception
+	{
+		RE111 reg = new RE111();
+		reg.setCOD_AJ_APUR("");
+		reg.setDESCR_COMPL_AJ("");
+		reg.setVL_AJ_APUR(Env.ZERO);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E200: PERÍODO DA APURAÇÃO DO ICMS - SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param UF
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE200 createRE200(String UF, Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		
+		RE200 reg = new RE200();
+		reg.setUF(UF);
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E210: APURAÇÃO DO ICMS – SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE210 createRE210() throws Exception
+	{
+		RE210 reg = new RE210();
+		reg.setIND_MOV_ST("");
+		reg.setVL_SLD_CRED_ANT_ST(Env.ZERO);
+		reg.setVL_DEVOL_ST(Env.ZERO);
+		reg.setVL_RESSARC_ST(Env.ZERO);
+		reg.setVL_OUT_CRED_ST(Env.ZERO);
+		reg.setVL_AJ_CREDITOS_ST(Env.ZERO);
+		reg.setVL_RETENÇAO_ST(Env.ZERO);
+		reg.setVL_OUT_DEB_ST(Env.ZERO);
+		reg.setVL_AJ_DEBITOS_ST(Env.ZERO);
+		reg.setVL_SLD_DEV_ANT_ST(Env.ZERO);
+		reg.setVL_DEVOL_ST(Env.ZERO);
+		reg.setVL_ICMS_RECOL_ST(Env.ZERO);
+		reg.setVL_SLD_CRED_ST_TRANSPORTAR(Env.ZERO);
+		reg.setDEB_ESP_ST(Env.ZERO);
+		
+		return reg;		
+	}
+	
+	
+	/**
+	 * REGISTRO E250: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE250 createRE250() throws Exception
+	{
+		RE250 reg = new RE250();
+		reg.setCOD_OR("");
+		reg.setVL_OR(Env.ZERO);
+		reg.setDT_VCTO(null);
+		reg.setCOD_REC("");
+		reg.setNUM_PROC("");
+		reg.setIND_PROC("");
+		reg.setPROC("");
+		reg.setTXT_COMPL("");
+		reg.setMES_REF(null);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E500: PERÍODO DE APURAÇÃO DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE500 createRE500(Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		RE500 reg = new RE500();
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E510: CONSOLIDAÇÃO DOS VALORES DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE510 createRE510() throws Exception
+	{
+		RE510 reg = new RE510();
+		reg.setCFOP("");
+		reg.setCST_IPI("");
+		reg.setVL_CONT_IPI(Env.ZERO);
+		reg.setVL_BC_IPI(Env.ZERO);
+		reg.setVL_IPI(Env.ZERO);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO E520: APURAÇÃO DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE520 createRE520() throws Exception
+	{
+		RE520 reg = new RE520();
+		reg.setVL_SD_ANT_IPI(Env.ZERO);
+		reg.setVL_DEB_IPI(Env.ZERO);
+		reg.setVL_CRED_IPI(Env.ZERO);
+		reg.setVL_OD_IPI(Env.ZERO);
+		reg.setVL_OC_IPI(Env.ZERO);
+		reg.setVL_SC_IPI(Env.ZERO);
+		reg.setVL_SD_IPI(Env.ZERO);
+		
+		return reg;
+	}
+	
+	/**
 	 * REGISTRO E990: ENCERRAMENTO DO BLOCO E
 	 * 
 	 * @return
@@ -1234,6 +1414,104 @@ public class EFDUtil {
 	{
 		RE990 reg = new RE990();
 		reg.setQTD_LIN_E(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO 9001: ABERTURA DO BLOCO 9
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9001 createR9001(boolean hasInfo) throws Exception
+	{
+		R9001 reg = new R9001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * REGISTRO 9900: REGISTROS DO ARQUIVO.
+	 * 
+	 * Obs.: Cria todos e retorna uma lista com estes
+	 * 
+	 * @return
+	 * @exception Exception
+	 */
+	public static List<R9900> createR9900() throws Exception
+	{
+
+		// nome do 9900 para criar seu totalizador
+		String regName = "9900";
+		
+		//
+		List<R9900> list = new ArrayList<R9900>();
+		
+		//
+		String[] regs = CounterSped.getRegsSped();
+
+		
+		// para todos os registros do sped
+		for(int i=0; i<regs.length; i++)
+		{
+			// criar totalizador
+			R9900 reg = new R9900();
+			reg.setREG_BLC(regs[i]);
+			reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regs[i]) + 1));
+
+			// add a lista 
+			list.add(reg);
+		}
+		
+		// totalizador do R9900
+		R9900 reg = new R9900();
+		reg.setREG_BLC(regName);
+		reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regName)+1));
+		
+		
+		// add à lista também
+		list.add(reg);
+		
+		
+		//
+		return list;
+		
+		
+	} //createR9900
+	
+	
+	
+	/**
+	 * REGISTRO 9990: ENCERRAMENTO DO BLOCO 9
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9990 createR9990() throws Exception 
+	{
+		R9990 reg = new R9990();
+		reg.setQTD_LIN_9(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9999 createR9999() throws Exception 
+	{
+		R9999 reg = new R9999();
+		reg.setQTD_LIN(String.valueOf(CounterSped.getTotalCounter()));
 	
 		return reg;
 	}

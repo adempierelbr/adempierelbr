@@ -12,84 +12,41 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.util.TextUtil;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
+ * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL.
  * 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RE100.java, 08/02/2011, 12:13:00, mgrigioni
+ * @version $Id: R9999.java, 07/02/2011, 14:48:00, mgrigioni
  */
-public class RE100 extends RegSped {
+public class R9999 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "DT_INI", maxSize = 8, isNumber = true)
-	private Timestamp DT_INI;
+	@XMLFieldProperties(id = "QTD_LIN")
+	private String QTD_LIN;
 
-	@XMLFieldProperties(id = "DT_FIN", maxSize = 8, isNumber = true)
-	private Timestamp DT_FIN;
+	public String getQTD_LIN() {
+		return QTD_LIN;
+	}
 
-	@XMLFieldProperties(id = "RE110", isSPEDField = false)
-	private RE110 rE110;
-
-	@XMLFieldProperties(id = "RE111", isSPEDField = false)
-	private List<RE111> rE111 = new ArrayList<RE111>();
+	public void setQTD_LIN(String qTD_LIN) {
+		QTD_LIN = qTD_LIN;
+	}
 
 	/**
 	 * Constructor
-	 * 
-	 * @param DT_INI
-	 * @param DT_FIN
 	 */
-	public RE100() {
+	public R9999() {
 		super();
-	} // RE100
-
-	public RE110 getrE110() {
-		return rE110;
-	}
-
-	public void setrE110(RE110 rE110) {
-		this.rE110 = rE110;
-	}
-
-	public List<RE111> getrE111() {
-		return rE111;
-	}
-
-	public void setrE111(List<RE111> rE111) {
-		this.rE111 = rE111;
-	}
-
-	public Timestamp getDT_INI() {
-		return DT_INI;
-	}
-
-	public void setDT_INI(Timestamp dT_INI) {
-		DT_INI = dT_INI;
-	}
-
-	public Timestamp getDT_FIN() {
-		return DT_FIN;
-	}
-
-	public void setDT_FIN(Timestamp dT_FIN) {
-		DT_FIN = dT_FIN;
-	}
-	
-	public void addrE111(RE111 reg)
-	{
-		this.rE111.add(reg);
-	}
+	} // R9999
 
 	@Override
 	public int compareTo(Object o) {
@@ -97,4 +54,4 @@ public class RE100 extends RegSped {
 		return 0;
 	}
 
-} // RE100
+} // R9999

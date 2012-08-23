@@ -12,8 +12,10 @@ import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
+import org.adempierelbr.sped.efd.bean.BLOCO9;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
+import org.adempierelbr.sped.efd.bean.BLOCOE;
 import org.adempierelbr.sped.efd.bean.BLOCOH;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
@@ -184,6 +186,8 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCOC blocoC = new BLOCOC();
 			BLOCOD blocoD = new BLOCOD();
 			BLOCOH blocoH = new BLOCOH();
+			BLOCOE blocoE = new BLOCOE();
+			BLOCO9 bloco9 = new BLOCO9();
 			
 			
 			// Inicialização dos Blocos
@@ -191,6 +195,8 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoC.setrC001(EFDUtil.createRC001(factFiscals.length > 0));
 			blocoD.setrD001(EFDUtil.createRD001(factFiscals.length > 0));
 			blocoH.setrH001(EFDUtil.createRH001(false));
+			blocoE.setrE001(EFDUtil.createRE001(true)); // sempre true
+			bloco9.setR9001(EFDUtil.createR9001(true)); // sempre true
 			
 			
 			// 0000 - dados da empresa
@@ -413,22 +419,35 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			
-			/**
+			/*
 			 * Gerar BLOCO E - Apurações de IPI, ICMS e ST
-			 * 
 			 */
+			
+			
+			
 			
 			
 			
 			
 			
 			/*
+			 * Gerar BLOCO 9 - Contadores do Fim do Arquivo
+			 */
+			bloco9.setR9900(EFDUtil.createR9900());
+			
+			
+			/*
 			 * Registros Totalizadores dos Blocos
 			 */
-			bloco0.setR0990(EFDUtil.createR0990());
-			blocoC.setrC990(EFDUtil.createRC990());
-			blocoD.setrD990(EFDUtil.createRD990());
-			blocoH.setrH990(EFDUtil.createRH990());
+			bloco0.setR0990(EFDUtil.createR0990()); // fim do 0
+			blocoC.setrC990(EFDUtil.createRC990()); // fim do C
+			blocoD.setrD990(EFDUtil.createRD990()); // fim do D
+			blocoH.setrH990(EFDUtil.createRH990()); // fim do H
+			blocoE.setrE990(EFDUtil.createRE990()); // fim do E
+			bloco9.setR9990(EFDUtil.createR9990()); // fim do 9
+			bloco9.setR9999(EFDUtil.createR9999()); // fim do arquivo
+			
+			
 			
 			/*
 			 * Montar resultado
@@ -438,6 +457,8 @@ public class ProcGenerateEFD extends SvrProcess
 			result.append(blocoC.toString());
 			result.append(blocoD.toString());
 			result.append(blocoH.toString());
+			result.append(blocoE.toString());
+			result.append(bloco9.toString());
 			
 			
 			// 

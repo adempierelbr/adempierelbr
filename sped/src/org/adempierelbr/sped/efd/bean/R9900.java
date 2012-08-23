@@ -12,10 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
@@ -23,78 +19,47 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
- * 
+ * REGISTRO 9900: REGISTROS DO ARQUIVO.
  * @author Mario Grigioni, mgrigioni
- * @version $Id: RE100.java, 08/02/2011, 12:13:00, mgrigioni
+ * @version $Id: R9900.java, 07/02/2011, 14:44:00, mgrigioni
  */
-public class RE100 extends RegSped {
+public class R9900 extends RegSped {
+	
+	public String getREG_BLC() {
+		return REG_BLC;
+	}
+
+	public void setREG_BLC(String rEG_BLC) {
+		REG_BLC = rEG_BLC;
+	}
+
+	public String getQTD_REG_BLC() {
+		return QTD_REG_BLC;
+	}
+
+	public void setQTD_REG_BLC(String qTD_REG_BLC) {
+		QTD_REG_BLC = qTD_REG_BLC;
+	}
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "DT_INI", maxSize = 8, isNumber = true)
-	private Timestamp DT_INI;
-
-	@XMLFieldProperties(id = "DT_FIN", maxSize = 8, isNumber = true)
-	private Timestamp DT_FIN;
-
-	@XMLFieldProperties(id = "RE110", isSPEDField = false)
-	private RE110 rE110;
-
-	@XMLFieldProperties(id = "RE111", isSPEDField = false)
-	private List<RE111> rE111 = new ArrayList<RE111>();
+	@XMLFieldProperties(id = "REG_BLC")
+	private String REG_BLC;
+	
+	@XMLFieldProperties(id = "QTD_REG_BLC")
+	private String QTD_REG_BLC;
 
 	/**
 	 * Constructor
-	 * 
-	 * @param DT_INI
-	 * @param DT_FIN
 	 */
-	public RE100() {
+	public R9900() {
 		super();
-	} // RE100
-
-	public RE110 getrE110() {
-		return rE110;
-	}
-
-	public void setrE110(RE110 rE110) {
-		this.rE110 = rE110;
-	}
-
-	public List<RE111> getrE111() {
-		return rE111;
-	}
-
-	public void setrE111(List<RE111> rE111) {
-		this.rE111 = rE111;
-	}
-
-	public Timestamp getDT_INI() {
-		return DT_INI;
-	}
-
-	public void setDT_INI(Timestamp dT_INI) {
-		DT_INI = dT_INI;
-	}
-
-	public Timestamp getDT_FIN() {
-		return DT_FIN;
-	}
-
-	public void setDT_FIN(Timestamp dT_FIN) {
-		DT_FIN = dT_FIN;
-	}
-	
-	public void addrE111(RE111 reg)
-	{
-		this.rE111.add(reg);
-	}
+	} //R9900
 
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-} // RE100
+	
+} //R9900

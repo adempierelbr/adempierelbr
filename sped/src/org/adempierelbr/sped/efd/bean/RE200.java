@@ -32,12 +32,15 @@ public class RE200 extends RegSped {
 	@XStreamAsAttribute
 	@XMLFieldProperties(id = "UF", maxSize = 2, minSize = 2)
 	private String UF;
-	
+
 	@XMLFieldProperties(id = "DT_INI", maxSize = 8, minSize = 8, isNumber = true)
 	private Timestamp DT_INI;
-	
+
 	@XMLFieldProperties(id = "DT_FIN", maxSize = 8, minSize = 8, isNumber = true)
 	private Timestamp DT_FIN;
+
+	@XMLFieldProperties(id = "RE210", isSPEDField = false)
+	private RE210 rE210;
 
 	/**
 	 * Constructor
@@ -49,6 +52,14 @@ public class RE200 extends RegSped {
 	public RE200() {
 		super();
 	} // RE200
+
+	public RE210 getrE210() {
+		return rE210;
+	}
+
+	public void setrE210(RE210 rE210) {
+		this.rE210 = rE210;
+	}
 
 	public String getUF() {
 		return UF;
