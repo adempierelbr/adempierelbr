@@ -20,6 +20,8 @@ import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.R0990;
+import org.adempierelbr.sped.efd.bean.R1001;
+import org.adempierelbr.sped.efd.bean.R1990;
 import org.adempierelbr.sped.efd.bean.R9001;
 import org.adempierelbr.sped.efd.bean.R9900;
 import org.adempierelbr.sped.efd.bean.R9990;
@@ -45,6 +47,8 @@ import org.adempierelbr.sped.efd.bean.RE500;
 import org.adempierelbr.sped.efd.bean.RE510;
 import org.adempierelbr.sped.efd.bean.RE520;
 import org.adempierelbr.sped.efd.bean.RE990;
+import org.adempierelbr.sped.efd.bean.RG001;
+import org.adempierelbr.sped.efd.bean.RG990;
 import org.adempierelbr.sped.efd.bean.RH001;
 import org.adempierelbr.sped.efd.bean.RH005;
 import org.adempierelbr.sped.efd.bean.RH010;
@@ -87,11 +91,11 @@ public class EFDUtil {
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 */
-	private static final String COD_VER = "005"; // A Partir de Jan/12
-	private static final String COD_FIN = "0"; // Remessa do Arquivo Original
-	private static final String IND_PERFIL = "A"; // Perfil A
-	private static final String COD_DOC_IMP = "0"; // Declaração de Importacao
-	private static final String IND_APUR = "0"; // Mensal (IPI - RC170)
+	private static final String COD_VER = "006";	// A Partir de Jan/12
+	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
+	private static final String IND_PERFIL = "A"; 	// Perfil A
+	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
+	private static final String IND_APUR = "0"; 	// Mensal (IPI - RC170)
 
 	//Código da natureza da conta/grupo de contas
 	public static final String CONTA_ATIVO        = "01";
@@ -231,6 +235,11 @@ public class EFDUtil {
 		// regime especial ou norma especifica. CFOP 5/6.929
 		else if(factFiscal.getlbr_CFOPName().equals("5.929")
 				|| factFiscal.getlbr_CFOPName().equals("6.929"))
+			cod_sit = "08";
+		
+		// regime especial ou norma específica: conhecimento de tranporte de terceiros
+		else if(getBlocoNFModel(getCOD_MOD(factFiscal)).startsWith("D")
+				&& !factFiscal.islbr_IsOwnDocument())
 			cod_sit = "08";
 		
 		//
@@ -388,7 +397,7 @@ public class EFDUtil {
 		reg.setCOD_VER(COD_VER);
 		reg.setCOD_FIN(COD_FIN);
 		reg.setDT_INI(dateFrom);
-		reg.setDT_INI(dateTo);
+		reg.setDT_FIN(dateTo);
 		reg.setNOME(oiW.getlbr_LegalEntity());
 		reg.setCNPJ(oiW.getlbr_CNPJ());
 		reg.setCPF(null);
@@ -1420,6 +1429,37 @@ public class EFDUtil {
 	
 	
 	/**
+	 * REGISTRO G001: ABERTURA DO BLOCO G
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RG001 createRG001(boolean hasInfo) throws Exception
+	{
+		RG001 reg = new RG001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO G990: ENCERRAMENTO DO BLOCO G
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RG990 createRG990() throws Exception 
+	{
+		RG990 reg = new RG990();
+		reg.setQTD_LIN_G(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	
+	/**
 	 * REGISTRO 9001: ABERTURA DO BLOCO 9
 	 * 
 	 * @param hasInfo
@@ -1447,9 +1487,7 @@ public class EFDUtil {
 	public static List<R9900> createR9900() throws Exception
 	{
 
-		// nome do 9900 para criar seu totalizador
-		String regName = "9900";
-		
+
 		//
 		List<R9900> list = new ArrayList<R9900>();
 		
@@ -1463,21 +1501,31 @@ public class EFDUtil {
 			// criar totalizador
 			R9900 reg = new R9900();
 			reg.setREG_BLC(regs[i]);
-			reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regs[i]) + 1));
+			reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regs[i])));
 
 			// add a lista 
 			list.add(reg);
 		}
 		
-		// totalizador do R9900
-		R9900 reg = new R9900();
-		reg.setREG_BLC(regName);
-		reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regName)+1));
+
 		
+		
+		// totalizador do R9900 o +1 é pq depoisa desse registro, será criado o totalizador do 9900
+		R9900 reg = new R9900();
+		reg.setREG_BLC("9900");
+		reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter("9900") + 1));
 		
 		// add à lista também
 		list.add(reg);
 		
+		
+		// totalizador do R999
+		reg = new R9900();
+		reg.setREG_BLC("9999");
+		reg.setQTD_REG_BLC(String.valueOf("1"));
+		
+		// add à lista também
+		list.add(reg);
 		
 		//
 		return list;
@@ -1515,6 +1563,39 @@ public class EFDUtil {
 	
 		return reg;
 	}
+	
+	/**
+	 * REGISTRO 1001: ABERTURA DO BLOCO 1
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1001 createR1001(boolean hasInfo) throws Exception
+	{
+		R1001 reg = new R1001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1990 createR1990() throws Exception 
+	{
+		R1990 reg = new R1990();
+		reg.setQTD_LIN_1(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+
 	
 	
 	

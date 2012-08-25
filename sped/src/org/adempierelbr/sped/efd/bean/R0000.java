@@ -36,7 +36,7 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "COD_VER", isNumber = true)
 	private String COD_VER;
 
-	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "COD_FIN")
+	@XMLFieldProperties(maxSize = 1, id = "COD_FIN")
 	private String COD_FIN;
 
 	@XMLFieldProperties(minSize = 8, maxSize = 8, id = "DT_INI")
@@ -69,10 +69,10 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(maxSize = 9, id = "SUFRAMA", isMandatory = false)
 	private String SUFRAMA;
 
-	@XMLFieldProperties(minSize = 1, maxSize =1, id = "IND_PERFIL")
+	@XMLFieldProperties( maxSize =1, id = "IND_PERFIL")
 	private String IND_PERFIL;
 
-	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_ATIV")
+	@XMLFieldProperties(maxSize = 1, id = "IND_ATIV")
 	private String IND_ATIV;
 
 	/**

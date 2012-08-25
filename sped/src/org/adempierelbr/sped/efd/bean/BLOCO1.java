@@ -12,45 +12,63 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * REGISTRO 9990: ENCERRAMENTO DO BLOCO 9
+ * REGISTRO 1001: ABERTURA DO BLOCO 1
  * 
- * @author Mario Grigioni, mgrigioni
- * @version $Id: R9990.java, 19/01/2011, 14:47:00, mgrigioni
+ * 
+ * @author Pablo Boff Pigozzo, pablobp4
+ * @version $ 07/08/2012 11:03 $
  */
-public class R9990 extends RegSped {
+public class BLOCO1 {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "QTD_LIN_9")
-	private String QTD_LIN_9;
+	@XMLFieldProperties(needsValidation = true, id = "R1001")
+	private R1001 r1001;
+
+	@XMLFieldProperties(needsValidation = true, id = "R1990")
+	private R1990 r1990;
+
+	public R1001 getR1001() {
+		return r1001;
+	}
+
+	public void setR1001(R1001 r1001) {
+		this.r1001 = r1001;
+	}
+
+	public R1990 getR1990() {
+		return r1990;
+	}
+
+	public void setR1990(R1990 r1990) {
+		this.r1990 = r1990;
+	}
 
 	/**
-	 * Constructor
-	 * 
+	 * To String
 	 */
-	public R9990() {
-		super();
-	} // R9990
-
-	public String getQTD_LIN_9() {
-		return QTD_LIN_9;
-	}
-
-	public void setQTD_LIN_9(String qTD_LIN_9) {
-		QTD_LIN_9 = qTD_LIN_9;
-	}
-
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String toString() {
+		//
+		StringBuilder result = new StringBuilder();
+
+		// init
+		result.append(r1001);
+
+		// encerramento do arquivo
+		result.append(r1990);
+
+		//
+		return result.toString();
 	}
 
-} // R9990
+} // R0000

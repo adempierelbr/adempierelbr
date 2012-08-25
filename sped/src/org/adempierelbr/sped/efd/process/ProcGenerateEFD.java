@@ -12,10 +12,12 @@ import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
+import org.adempierelbr.sped.efd.bean.BLOCO1;
 import org.adempierelbr.sped.efd.bean.BLOCO9;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.BLOCOE;
+import org.adempierelbr.sped.efd.bean.BLOCOG;
 import org.adempierelbr.sped.efd.bean.BLOCOH;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
@@ -185,18 +187,11 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCO0 bloco0 = new BLOCO0();
 			BLOCOC blocoC = new BLOCOC();
 			BLOCOD blocoD = new BLOCOD();
-			BLOCOH blocoH = new BLOCOH();
 			BLOCOE blocoE = new BLOCOE();
+			BLOCOG blocoG = new BLOCOG();
+			BLOCOH blocoH = new BLOCOH();
+			BLOCO1 bloco1 = new BLOCO1();
 			BLOCO9 bloco9 = new BLOCO9();
-			
-			
-			// Inicialização dos Blocos
-			bloco0.setR0001(EFDUtil.createR0001(factFiscals.length > 0));
-			blocoC.setrC001(EFDUtil.createRC001(factFiscals.length > 0));
-			blocoD.setrD001(EFDUtil.createRD001(factFiscals.length > 0));
-			blocoH.setrH001(EFDUtil.createRH001(false));
-			blocoE.setrE001(EFDUtil.createRE001(true)); // sempre true
-			bloco9.setR9001(EFDUtil.createR9001(true)); // sempre true
 			
 			
 			// 0000 - dados da empresa
@@ -215,7 +210,8 @@ public class ProcGenerateEFD extends SvrProcess
 			RC100 rc100 = null;
 			RD100 rd100 = null;
 			
-			/*
+			
+			/**
 			 * Loop de Fatos Fiscais. 
 			 * 
 			 * 	Obs.: Os fatos fiscais repetem de acordo com o numero de linhas da NF. 
@@ -242,7 +238,7 @@ public class ProcGenerateEFD extends SvrProcess
 				 */
 				if(last_LBR_NotaFiscal_ID != factFiscal.getLBR_NotaFiscal_ID())
 				{
-						
+					
 					// 
 					rc100 = null;
 					rd100 = null;
@@ -331,7 +327,15 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			/**
-			 * Inventário - Bloco H
+			 * VERIFICAR EXCEÇÕES
+			 */
+			blocoC.checkException();
+			blocoD.checkException();
+			
+			
+			
+			/**
+			 * INVENTÁRIO - BLOCO H
 			 * 
 			 * Obs.: Só gerar o Bloco H no mês de fevereiro, sendo que os 
 			 * valores devem ser referentes ao mês de dezembro
@@ -419,8 +423,8 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			
-			/*
-			 * Gerar BLOCO E - Apurações de IPI, ICMS e ST
+			/**
+			 * APURAÇÃO DE ICMS, IPI - BLOCO E
 			 */
 			
 			
@@ -428,12 +432,19 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			
-			
-			
 			/*
-			 * Gerar BLOCO 9 - Contadores do Fim do Arquivo
+			 * Inicialização dos Blocos 
 			 */
-			bloco9.setR9900(EFDUtil.createR9900());
+			bloco0.setR0001(EFDUtil.createR0001(bloco0.getR0150().size() > 0)); // init bloco 0
+			blocoC.setrC001(EFDUtil.createRC001(blocoC.getrC100().size() > 0)); // init bloco C
+			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0)); // init bloco D
+			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
+					&& blocoH.getrH005().getrH010().size() > 0));
+			blocoE.setrE001(EFDUtil.createRE001(false));						// init bloco E
+			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
+			bloco1.setR1001(EFDUtil.createR1001(false));						// init bloco 1
+			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
+
 			
 			
 			/*
@@ -442,11 +453,20 @@ public class ProcGenerateEFD extends SvrProcess
 			bloco0.setR0990(EFDUtil.createR0990()); // fim do 0
 			blocoC.setrC990(EFDUtil.createRC990()); // fim do C
 			blocoD.setrD990(EFDUtil.createRD990()); // fim do D
-			blocoH.setrH990(EFDUtil.createRH990()); // fim do H
 			blocoE.setrE990(EFDUtil.createRE990()); // fim do E
+			blocoG.setrG990(EFDUtil.createRG990()); // fim do G
+			blocoH.setrH990(EFDUtil.createRH990()); // fim do H
+			bloco1.setR1990(EFDUtil.createR1990()); // fim do 1
 			bloco9.setR9990(EFDUtil.createR9990()); // fim do 9
+			
+			// REGISTROS DE FIM DE ARQUIVO - BLOCO 9
+			bloco9.setR9900(EFDUtil.createR9900());
+			
+			// totalizador final do arquivo, criado depois que todos os outros registros já foram feitos
 			bloco9.setR9999(EFDUtil.createR9999()); // fim do arquivo
 			
+			// atualizar totalizador dos R9990
+			bloco9.getR9990().setQTD_LIN_9(String.valueOf(CounterSped.getBlockCounter(bloco9.getR9990().getReg())));
 			
 			
 			/*
@@ -456,8 +476,10 @@ public class ProcGenerateEFD extends SvrProcess
 			result.append(bloco0.toString());
 			result.append(blocoC.toString());
 			result.append(blocoD.toString());
-			result.append(blocoH.toString());
 			result.append(blocoE.toString());
+			result.append(blocoG.toString());
+			result.append(blocoH.toString());
+			result.append(bloco1.toString());
 			result.append(bloco9.toString());
 			
 			
@@ -480,8 +502,8 @@ public class ProcGenerateEFD extends SvrProcess
 			methodName = e.getStackTrace()[1].getMethodName();
 			lineNumber = e.getStackTrace()[1].getLineNumber();
 			
-			// ultimo erro
-			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " >> " + error;
+			// 
+			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " <BR> " + error;
 			
 			// lançar exception para retornar ao usuário
 			throw new Exception("Falha ao gerar o EFD! " + error);

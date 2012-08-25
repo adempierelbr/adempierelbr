@@ -19,32 +19,33 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL.
+ * REGISTRO G001: ABERTURA DO BLOCO G
  * 
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R9999.java, 07/02/2011, 14:48:00, mgrigioni
+ * @version $Id: RG001.java, 08/02/2011, 12:01:00, mgrigioni
  */
-public class R9999 extends RegSped {
-
+public class RG001 extends RegSped {
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "QTD_LIN")
-	private String QTD_LIN;
-
-	public String getQTD_LIN() {
-		return QTD_LIN;
-	}
-
-	public void setQTD_LIN(String qTD_LIN) {
-		QTD_LIN = qTD_LIN;
-	}
+	@XMLFieldProperties(maxSize = 1, id = "IND_MOV")
+	private String IND_MOV;
 
 	/**
 	 * Constructor
+	 * 
+	 * @param IND_MOV
 	 */
-	public R9999() {
+	public RG001() {
 		super();
-	} // R9999
+	} // RG001
+
+	public String getIND_MOV() {
+		return IND_MOV;
+	}
+
+	public void setIND_MOV(String iND_MOV) {
+		IND_MOV = iND_MOV;
+	}
 
 	@Override
 	public int compareTo(Object o) {
@@ -52,4 +53,4 @@ public class R9999 extends RegSped {
 		return 0;
 	}
 
-} // R9999
+} // RG001

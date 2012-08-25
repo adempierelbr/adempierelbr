@@ -242,33 +242,33 @@ public class BLOCO0 {
 		StringBuilder result = new StringBuilder();
 		
 		//
-		result.append(r0000.toString());
-		result.append(r0001.toString());
-		result.append(r0005.toString());
-		result.append(r0100.toString());
+		result.append(r0000);
+		result.append(r0001);
+		result.append(r0005);
+		result.append(r0100);
 
 		// clientes
 		for (R0150 aux_r0150 : this.r0150)
-			result.append(aux_r0150.toString());
+			result.append(aux_r0150);
 
 		// uom
 		for (R0190 aux_r0190 : r0190)
-			result.append(aux_r0190.toString());
+			result.append(aux_r0190);
 
 		// produtos
 		for (R0200 aux_r0200 : r0200)
-			result.append(aux_r0200.toString());
+			result.append(aux_r0200);
 
 		// obs do lancamento fiscal
 		for (R0460 aux_r0460 : r0460)
-			result.append(aux_r0460.toString());
+			result.append(aux_r0460);
 
 		// contas contábeis
 		for (R0500 aux_r0500 : r0500)
-			result.append(aux_r0500.toString());
+			result.append(aux_r0500);
 		
 		// counter
-		result.append(r0990.toString());
+		result.append(r0990);
 
 		//
 		return result.toString();	

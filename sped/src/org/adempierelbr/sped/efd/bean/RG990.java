@@ -19,32 +19,32 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
- * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL.
- * 
+ * REGISTRO G990: ENCERRAMENTO DO BLOCO G
  * @author Mario Grigioni, mgrigioni
- * @version $Id: R9999.java, 07/02/2011, 14:48:00, mgrigioni
+ * @version $Id: RG990.java, 08/02/2011, 12:06:00, mgrigioni
  */
-public class R9999 extends RegSped {
-
+public class RG990 extends RegSped {
+	
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "QTD_LIN")
-	private String QTD_LIN;
-
-	public String getQTD_LIN() {
-		return QTD_LIN;
-	}
-
-	public void setQTD_LIN(String qTD_LIN) {
-		QTD_LIN = qTD_LIN;
-	}
+	@XMLFieldProperties(id = "QTD_LIN_E")
+	private String QTD_LIN_G = "";
 
 	/**
 	 * Constructor
 	 */
-	public R9999() {
+	public RG990() 
+	{
 		super();
-	} // R9999
+	} //RG990
+
+	public String getQTD_LIN_G() {
+		return QTD_LIN_G;
+	}
+
+	public void setQTD_LIN_G(String qTD_LIN_G) {
+		QTD_LIN_G = qTD_LIN_G;
+	}
 
 	@Override
 	public int compareTo(Object o) {
@@ -52,4 +52,5 @@ public class R9999 extends RegSped {
 		return 0;
 	}
 
-} // R9999
+
+} //RG990

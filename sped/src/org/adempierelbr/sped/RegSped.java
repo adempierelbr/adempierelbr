@@ -202,11 +202,14 @@ public abstract class RegSped implements Comparable<Object> {
 	{
 		try
 		{
+			// carregar class
 			Class<?> clazz = getClass();
 			
+			// verificar superclass
 			if (!clazz.getSuperclass().equals (RegSped.class))
 				return "";
 
+			// campos 
 			Field[] fields = clazz.getDeclaredFields();
 			StringBuilder result = new StringBuilder(PIPE);
 			
@@ -216,8 +219,6 @@ public abstract class RegSped implements Comparable<Object> {
 			
 			for (Field field : fields) 
 			{
-				// log
-				log.finer ("Processing SPED: " + field);
 				
 				// só gerar dos campos que tem annotation
 				if (!field.isAnnotationPresent (XMLFieldProperties.class))
@@ -248,9 +249,12 @@ public abstract class RegSped implements Comparable<Object> {
 				//	BigDecimal
 				else if (content instanceof BigDecimal)
 				{
-					//
+					/*
+					 * 100.00 >> 10000
+					 * 0.1023 >> 01023
+					 */
 					BigDecimal contentBD = (BigDecimal) content;
-					result.append(contentBD.setScale(annotation.scale(), BigDecimal.ROUND_HALF_UP));
+					result.append(TextUtil.toNumeric(contentBD, annotation.scale()));
 				}
 				
 				//	Timestamp
@@ -268,13 +272,17 @@ public abstract class RegSped implements Comparable<Object> {
 					// não permitir espaços em branco, antes e depois do conteúdo
 					String contentSTR = ((String) content).trim();
 					
-					// preencher o tamanho mínimo com zeros a esquerda 
-					if(annotation.minSize() > 0)
-						contentSTR = TextUtil.lPad(contentSTR, annotation.maxSize());
-					
 					// preencher, se for número, converter para tal. Ex.: CPF: 111.111.111-11 >> 11111111111
 					if(annotation.isNumber())
 						contentSTR = TextUtil.toNumeric(contentSTR);
+					
+					// ajustar tamanho máximo
+					if(annotation.maxSize() > 0 && contentSTR.length() > annotation.maxSize())
+						contentSTR = contentSTR.substring(0, annotation.maxSize() -1);
+					
+					// preencher o tamanho mínimo com zeros a esquerda 
+					if(annotation.minSize() > contentSTR.length())
+						contentSTR = TextUtil.lPad(contentSTR, annotation.minSize());
 					
 					//
 					result.append(contentSTR);
@@ -289,10 +297,13 @@ public abstract class RegSped implements Comparable<Object> {
 				result.append(PIPE);
 			}
 			
-			// 
+			// remover algum possível fim de linha 
+			result = new StringBuilder(TextUtil.removeEOL(result.toString()));
+			
+			// adicionar o fim de linha correto
 			result.append(EOL);
 			
-			//
+			// retornar linha formatada
 			return result.toString();
 		}
 		catch (Exception e)

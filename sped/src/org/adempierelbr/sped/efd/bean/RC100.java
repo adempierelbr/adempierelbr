@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
@@ -58,7 +59,7 @@ public class RC100 extends RegSped {
 	@XMLFieldProperties(id = "NUM_DOC", maxSize = 9)
 	private String NUM_DOC;
 
-	@XMLFieldProperties(id = "CHV_NFE", minSize = 44, maxSize = 44, isNumber = true)
+	@XMLFieldProperties(id = "CHV_NFE", maxSize = 44, isNumber = true)
 	private String CHV_NFE;
 
 	@XMLFieldProperties(id = "DT_DOC", minSize = 6, maxSize = 6)
@@ -537,7 +538,7 @@ public class RC100 extends RegSped {
 
 		// adicionar o item ao RC100
 		this.rC170.add(rc170);
-
+		
 		// atualizar totalizador C190;
 		updateC190(rc170);
 

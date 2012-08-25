@@ -76,14 +76,17 @@ public class BLOCOH {
 		// init
 		result.append(rH001);
 
-		// período e valor final
-		result.append(rH005);
-
 		// itens, qtdes e valores
 		if(getrH005() != null)
 		{
-			for (RH010 aux_rH010 : getrH005().getrH010())
-				result.append(aux_rH010);
+
+			// H005
+			result.append(getrH005());
+
+			// H010
+			for (RH010 reg : getrH005().getrH010())
+				result.append(reg);
+			
 		}
 
 		// counter

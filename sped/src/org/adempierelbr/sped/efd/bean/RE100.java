@@ -54,7 +54,8 @@ public class RE100 extends RegSped {
 		super();
 	} // RE100
 
-	public RE110 getrE110() {
+	public RE110 getrE110() 
+	{	
 		return rE110;
 	}
 

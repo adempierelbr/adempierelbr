@@ -51,7 +51,7 @@ public class R0200 extends RegSped {
 	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "TIPO_ITEM")
 	private String TIPO_ITEM;
 	
-	@XMLFieldProperties( maxSize = 8, isMandatory = false, id = "COD_NCM")
+	@XMLFieldProperties( maxSize = 8, isMandatory = false, id = "COD_NCM", isNumber = true)
 	private String COD_NCM;
 	
 	@XMLFieldProperties( maxSize = 3, isMandatory = false, id = "EX_IPI")

@@ -74,6 +74,15 @@ public class BLOCOD {
 		this.rD100.add(rd100);
 	}
 	
+	/**
+	 * Verificar exceções dos registro C100 deste bloco
+	 */
+	public void checkException() throws Exception
+	{
+		// 
+		for(RD100 reg : getrD100())
+			reg.checkExceptions();
+	}
 	
 	/**
 	 * 	To String

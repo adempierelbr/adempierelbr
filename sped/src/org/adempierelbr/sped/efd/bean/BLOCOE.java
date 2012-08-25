@@ -90,21 +90,31 @@ public class BLOCOE {
 	 * To String
 	 */
 	@Override
-	public String toString() {
+	public String toString() 
+	{
+	
 		//
 		StringBuilder result = new StringBuilder();
 
+		
 		// init
 		result.append(rE001);
 
 		/*
 		 * E100 e filhos
 		 */
-		result.append(rE100);
+		if(rE100 != null)
+		{
+			// E100
+			result.append(rE100);
+			
+			// E110
+			result.append(rE100.getrE110() == null ? "" : rE100.getrE110());
 		
-		result.append(rE100.getrE110());
-		for (RE111 aux_rE111 : rE100.getrE111())
-			result.append(aux_rE111);
+			// E111
+			for (RE111 aux_rE111 : rE100.getrE111())
+				result.append(aux_rE111);
+		}
 
 		
 		/*
@@ -115,12 +125,13 @@ public class BLOCOE {
 			// E200
 			result.append(aux_re200);
 			
-			// E210
-			result.append(aux_re200.getrE210());
-			
-			// E250 dentro do E210
+			// 
 			if(aux_re200.getrE210() != null)
 			{
+				// E210
+				result.append(aux_re200.getrE210());
+			
+				// E250
 				for (RE250 aux_rE250 : aux_re200.getrE210().getrE250())
 					result.append(aux_rE250);
 			}
@@ -129,10 +140,18 @@ public class BLOCOE {
 		/*
 		 * E500 e filhos
 		 */
-		result.append(rE500);
-		for (RE510 aux_rE510 : rE500.getrE510())
-			result.append(aux_rE510);
-		result.append(rE500.getrE520());
+		if(rE500 != null)
+		{
+			// E500
+			result.append(rE500);
+			
+			// E520
+			for (RE510 aux_rE510 : rE500.getrE510())
+				result.append(aux_rE510);
+			
+			// E520
+			result.append(rE500.getrE520() == null ? "" : rE500.getrE520());
+		}			
 
 		// counter
 		result.append(rE990);
