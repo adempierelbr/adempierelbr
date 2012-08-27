@@ -31,10 +31,10 @@ public class RD190 extends RegSped implements Comparable<Object> {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(id = "CST_ICMS", minSize = 3, maxSize = 3)
+	@XMLFieldProperties(id = "CST_ICMS", minSize = 3, maxSize = 3, isNumber = true)
 	private String CST_ICMS;
 	
-	@XMLFieldProperties(id = "CFOP", minSize = 4, maxSize = 4)
+	@XMLFieldProperties(id = "CFOP", minSize = 4, maxSize = 4, isNumber = true)
 	private String CFOP;
 	
 	@XMLFieldProperties(id = "ALIQ_ICMS", isMandatory = false, maxSize = 6)

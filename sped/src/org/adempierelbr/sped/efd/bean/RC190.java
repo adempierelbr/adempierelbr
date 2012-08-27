@@ -30,10 +30,10 @@ public class RC190 extends RegSped {
 
 	@XStreamAlias("Id")
 	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_ICMS")
+	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_ICMS", isNumber = true)
 	private String CST_ICMS;
 	
-	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "CFOP")
+	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "CFOP", isNumber = true)
 	private String CFOP;
 	
 	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "ALIQ_ICMS")

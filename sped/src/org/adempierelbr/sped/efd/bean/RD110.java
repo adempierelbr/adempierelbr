@@ -51,10 +51,10 @@ public class RD110 extends RegSped {
 	 * 
 	 * Obs.: Não devem ser validados pelo annotation
 	 */
-	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CST_ICMS")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CST_ICMS", isNumber = true)
 	private String CST_ICMS;
 
-	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CFOP")
+	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "CFOP", isNumber = true)
 	private String CFOP;
 
 	@XMLFieldProperties(needsValidation = false, isSPEDField = false, id = "VL_BC_ICMS")

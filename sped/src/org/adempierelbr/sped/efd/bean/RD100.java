@@ -415,6 +415,8 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		 */
 		else if(getCOD_SIT().equals("08"))
 		{
+			
+			/*
 			setCHV_CTE(null);
 			setDT_A_P(null);
 			setTP_CT_e(null);
@@ -428,6 +430,8 @@ public class RD100 extends RegSped implements Comparable<Object> {
 			setVL_NT(null);
 			setCOD_INF(null);
 			setCOD_CTA(null);
+			*/
+			
 			
 			// remover filhos - RD110
 			for (RD110 reg : getrD110())

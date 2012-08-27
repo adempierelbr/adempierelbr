@@ -377,6 +377,72 @@ public class EFDUtil {
 	
 	
 	/**
+	 * Verificar necessidade de criar o registros 0150, 0190, 0200
+	 * 
+	 *  Obs.: Se o registro RC100, ou RD100 for Cancelado, Denegado, Inutilizado, 
+	 *  Emitido em Regime Especial ou de Emissão Própria, não é necessário
+	 *  preencher os registros filhos. OBSERVAR EXCEÇÕES DOS REGISTROS RC100 E D100
+	 * 
+	 * @param factFiscal Fato fiscal gerador do registro
+	 * @param reg Registro que será gerado. Ex.: R0150, R0190...
+	 * @return true/false
+	 */
+	public static boolean needCreateR0s(MLBRFactFiscal factFiscal, Class reg) throws Exception
+	{
+		
+		// 
+		if(factFiscal == null)
+			return false;
+		
+		// header - C100, D100...
+		String header = getBlocoNFModel(getCOD_MOD(factFiscal));
+		
+		// COD_SIT
+		String COD_SIT = getCOD_SIT(factFiscal);
+		
+		// IsNF-e
+		boolean isNFe = (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty()) && factFiscal.islbr_IsOwnDocument();
+		
+		// C100
+		if(header.equals("C100"))
+		{
+			/*
+			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
+			 */
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04")) 
+				return false;
+				
+			
+			/*
+			 * Se for em regime especial ou NF-e de emissão própria, criar só o Parceiro de Negócios
+			 */
+			if((COD_SIT.equals("08") || isNFe) && !reg.equals(R0150.class))
+				return false;			
+		}
+		
+		// D100
+		else if(header.equals("D100"))
+		{
+			/*
+			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
+			 */
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04")) 
+				return false;
+				
+			
+			/*
+			 * Se for em regime especial, criar só o Parceiro de Negócios
+			 */
+			if(COD_SIT.equals("08") && !reg.equals(R0150.class))
+				return false;	
+		}
+
+		// se não se enquadrar nas situações acima, criar registros
+		return true;
+	}
+	
+	
+	/**
 	 * REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA ENTIDADE
 	 * 
 	 * @param dateFrom
@@ -520,7 +586,11 @@ public class EFDUtil {
 	 */
 	public static R0150 createR0150(MLBRFactFiscal factFiscal) throws Exception
 	{
-
+		
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0150.class))
+			return null;
+		
 		R0150 reg = new R0150();
 		reg.setCOD_PART(getCOD_PART(factFiscal));
 		reg.setNOME(factFiscal.getBPName());
@@ -555,6 +625,9 @@ public class EFDUtil {
 	 */
 	public static R0190 createR0190(MLBRFactFiscal factFiscal) throws Exception
 	{
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0190.class))
+			return null;
 
 		R0190 reg = new R0190();
 
@@ -597,7 +670,10 @@ public class EFDUtil {
 	 */
 	public static R0200 createR0200(MLBRFactFiscal factFiscal) throws Exception
 	{
-
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0200.class))
+			return null;
+		
 		//
 		R0200 reg = new R0200();
 		reg.setCOD_ITEM(factFiscal.getProductValue());
@@ -847,11 +923,11 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RC170 createRC170(MLBRFactFiscal factFiscal) throws Exception
+	public static RC170 createRC170(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
 	{
 
 		RC170 reg = new RC170();
-		reg.setNUM_ITEM(factFiscal.getLine());
+		reg.setNUM_ITEM(NUM_ITEM);
 		reg.setCOD_ITEM(factFiscal.getProductValue());
 		
 		// TODO - descrição da linha da NF
@@ -869,7 +945,7 @@ public class EFDUtil {
 		
 		//
 		reg.setCFOP(factFiscal.getlbr_CFOPName());
-		reg.setCOD_NAT(factFiscal.getlbr_NCMName());
+		reg.setCOD_NAT(""); // TODO ???
 		
 		// icms
 		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
@@ -1052,11 +1128,11 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RD110 createRD110(MLBRFactFiscal factFiscal) throws Exception
+	public static RD110 createRD110(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
 	{
 		//
 		RD110 reg = new RD110();
-		reg.setNUM_ITEM(factFiscal.getLine());
+		reg.setNUM_ITEM(NUM_ITEM);
 		reg.setCOD_ITEM(factFiscal.getProductValue());
 		
 		// Valor bruto

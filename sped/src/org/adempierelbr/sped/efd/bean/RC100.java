@@ -553,6 +553,7 @@ public class RC100 extends RegSped {
 		RC190 rc190 = new RC190();
 		rc190.setCST_ICMS(rc170.getCST_ICMS());
 		rc190.setALIQ_ICMS(rc170.getALIQ_ICMS());
+		rc190.setCFOP(rc170.getCFOP());
 		rc190.setVL_OPR(rc170.getVL_OPER());
 		rc190.setVL_BC_ICMS(rc170.getVL_BC_ICMS());
 		rc190.setVL_ICMS(rc170.getVL_ICMS());
@@ -591,6 +592,10 @@ public class RC100 extends RegSped {
 	public void checkExceptions()
 	{
 
+		if(getNUM_DOC().equals("17339"))
+			System.out.println(getVL_DOC() + "  --  " + getNUM_DOC() + "  --  " + getCOD_PART());
+
+		
 		/*
 		 * Exceção 01:
 		 * Códigos de situação cancelado (código “02”), 
@@ -756,7 +761,7 @@ public class RC100 extends RegSped {
 		 * fiscal quando houver direito a Ressarcimento de ICMS em Operações com Substituição Tributária; 
 		 * permitindo ainda a partir de julho de 2012, a apresentação dos registros C110 e C120;
 		 */
-		else if(getIND_EMIT().equals("0") && getCHV_NFE() != null && !getCHV_NFE().isEmpty())
+		else if(getIND_EMIT().equals("0") && (getCHV_NFE() != null && !getCHV_NFE().isEmpty()))
 		{
 			
 			

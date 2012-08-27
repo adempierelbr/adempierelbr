@@ -127,6 +127,9 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		// senão a lbr_DateInOut(data da entrada efetiva do material no sistama e contabilidade)
 		whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN ? AND ? ";
 		
+		// transação de venda só trazer nfe transmitida
+		whereClause += " AND ((IsSOTrx = 'Y' AND lbr_NFeProt IS NOT NULL) OR IsSOTrx ='N') ";
+		
 		// order by (Date, LBR_NotaFiscal_ID, DocumentNo)
 		String orderBy = " (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END), LBR_NotaFiscal_ID, Line, DocumentNo ";
 		

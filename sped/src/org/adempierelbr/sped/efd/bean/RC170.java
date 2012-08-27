@@ -57,13 +57,13 @@ public class RC170 extends RegSped {
 	@XMLFieldProperties(maxSize = 1, minSize = 1, id = "IND_MOV")
 	private String IND_MOV;
 
-	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_ICMS")
+	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_ICMS", isNumber = true)
 	private String CST_ICMS;
 
-	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "CFOP")
+	@XMLFieldProperties(minSize = 4, maxSize = 4, id = "CFOP", isNumber = true)
 	private String CFOP;
 
-	@XMLFieldProperties(maxSize = 10, id = "COD_NAT", isMandatory = false)
+	@XMLFieldProperties(maxSize = 10, id = "COD_NAT", isMandatory = false, isNumber = true)
 	private String COD_NAT;
 
 	@XMLFieldProperties(id = "VL_BC_ICMS", isMandatory = false)

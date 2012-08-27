@@ -269,8 +269,8 @@ public abstract class RegSped implements Comparable<Object> {
 				else if (content instanceof String)
 				{
 					
-					// não permitir espaços em branco, antes e depois do conteúdo
-					String contentSTR = ((String) content).trim();
+					// remover especiais e não permitir espaços em branco, antes e depois do conteúdo
+					String contentSTR = TextUtil.retiraEspecial((String) content).trim();
 					
 					// preencher, se for número, converter para tal. Ex.: CPF: 111.111.111-11 >> 11111111111
 					if(annotation.isNumber())

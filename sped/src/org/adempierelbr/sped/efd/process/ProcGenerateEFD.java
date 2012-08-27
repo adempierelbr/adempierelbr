@@ -306,13 +306,15 @@ public class ProcGenerateEFD extends SvrProcess
 				 * Add C170 ao C100
 				 */
 				if(REG.startsWith("C100"))
-					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).addrC170(EFDUtil.createRC170(factFiscal));
+					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).
+						addrC170(EFDUtil.createRC170(factFiscal, blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).getrC170().size() + 1));
 
 				/*
 				 * Add D110 ao D100
 				 */
 				if(REG.startsWith("D100"))
-					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100)).addrD110(EFDUtil.createRD110(factFiscal));
+					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100))
+						.addrD110(EFDUtil.createRD110(factFiscal, blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100)).getrD110().size() + 1));
 				
 				
 				/*
@@ -467,7 +469,6 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			// atualizar totalizador dos R9990
 			bloco9.getR9990().setQTD_LIN_9(String.valueOf(CounterSped.getBlockCounter(bloco9.getR9990().getReg())));
-			
 			
 			/*
 			 * Montar resultado

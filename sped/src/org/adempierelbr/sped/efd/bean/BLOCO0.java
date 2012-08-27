@@ -164,6 +164,12 @@ public class BLOCO0 {
 	 * @param r0150
 	 */
 	public void addr0150(R0150 r0150) {
+		
+		//
+		if(r0150 == null)
+			return;
+		
+		//
 		if (!this.r0150.contains(r0150))
 			this.r0150.add(r0150);
 		else
@@ -179,7 +185,12 @@ public class BLOCO0 {
 	 * @param r0190
 	 */
 	public void addr0190(R0190 r0190) {
+		
+		//
+		if(r0190 == null)
+			return;
 
+		//
 		if (!this.r0190.contains(r0190))
 			this.r0190.add(r0190);
 		else
@@ -195,6 +206,12 @@ public class BLOCO0 {
 	 * @param r0200
 	 */
 	public void addr0200(R0200 r0200) {
+		
+		//
+		if(r0200 == null)
+			return;
+		
+		//
 		if (!this.r0200.contains(r0200))
 			this.r0200.add(r0200);
 		else
@@ -211,6 +228,11 @@ public class BLOCO0 {
 	 */
 	public void addr0460(R0460 r0460) {
 
+		//
+		if(r0460 == null)
+			return;
+		
+		//
 		if (!this.r0460.contains(r0460))
 			this.r0460.add(r0460);
 		else
@@ -226,7 +248,11 @@ public class BLOCO0 {
 	 * @param r0460
 	 */
 	public void addr0500(R0500 r0500) {
-
+		
+		//
+		if(r0500 == null)
+			return;
+		
 		if (!this.r0500.contains(r0500))
 			this.r0500.add(r0500);
 		else
