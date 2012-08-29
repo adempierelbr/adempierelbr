@@ -34,7 +34,6 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
-import org.compiere.model.PO;
 import org.compiere.util.Env;
 
 /**

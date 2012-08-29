@@ -34,13 +34,11 @@ public class Evento
 	private String versao;
 	
 	@XStreamAsAttribute
-	@SuppressWarnings("unused")
 	private final String xmlns="http://www.portalfiscal.inf.br/nfe";
 	
 	@XMLFieldProperties	(needsValidation=true, id = "HP06")
 	private InfEvento infEvento;
 	
-	@SuppressWarnings("unused")
 	@XStreamAlias ("Signature")
 	private Signature signature;
 

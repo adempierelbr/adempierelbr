@@ -184,7 +184,7 @@ public class NFeXMLGenerator
 			return "Nota fiscal inexistente";
 
 		X_LBR_NFTax[] nfTaxes = nf.getTaxes();
-		MLBRNotaFiscalLine[] nfLines = nf.getLines(null);
+		MLBRNotaFiscalLine[] nfLines = nf.getLines ();
 
 		// DADOS DA ORG DE VENDA/COMPRA
 		MOrg org = new MOrg(ctx, nf.getAD_Org_ID(), trxName);
@@ -1061,6 +1061,7 @@ public class NFeXMLGenerator
 
 			FileInputStream stream = new FileInputStream(file);
 			InputStreamReader streamReader = new InputStreamReader(stream);
+			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(streamReader);
 
 			String validar = "";

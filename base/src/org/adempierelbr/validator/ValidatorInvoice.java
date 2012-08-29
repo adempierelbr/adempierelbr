@@ -14,7 +14,6 @@ package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
@@ -28,16 +27,15 @@ import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MAllocationLine;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
+import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MInOutLine;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -138,12 +136,7 @@ public class ValidatorInvoice implements ModelValidator
 	 */
 	public String modelChange(PO po, int type) throws Exception
 	{
-
 		log.info(po.get_TableName() + " Type: "+type);
-
-		boolean isChange = (TYPE_AFTER_NEW == type || TYPE_AFTER_CHANGE == type);
-		boolean isNew    = (TYPE_NEW == type);
-		boolean isDelete = (TYPE_BEFORE_DELETE == type);
 
 		/**
 		 * 	
@@ -334,16 +327,11 @@ public class ValidatorInvoice implements ModelValidator
 
 				} // don't have Open Items - create automatically allocation
 
-				boolean isSOTrx = true;
 
 				if (hasFiscalDocument && !invoice.isReversal()) {
 					if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APCreditMemo) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)) {
-						isSOTrx = true;
 						isOwnDocument = true;
 					} // documento de venda (saída)
-					else if (dt.getDocBaseType().equals(MDocType.DOCBASETYPE_APInvoice) || dt.getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo)) {
-						isSOTrx = false;
-					} // documento de compra (entrada)
 
 					MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), 0, invoice.get_TrxName());
 					nf.generateNF(invoice, isOwnDocument);

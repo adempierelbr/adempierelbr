@@ -31,7 +31,6 @@ public class ProcEventoNFe
 	@XStreamAsAttribute
 	private String versao;
 	
-	@SuppressWarnings("unused")
 	@XStreamAsAttribute
 	private String xmlns="http://www.portalfiscal.inf.br/nfe";
 	

@@ -550,6 +550,7 @@ public class MAttachment extends X_AD_Attachment
 	 * 	Save Entry Data to the file system.
 	 *	@return true if saved
 	 */
+	@SuppressWarnings("resource")
 	private boolean saveLOBDataToFileSystem()
 	{
 		if("".equals(m_attachmentPathRoot)){

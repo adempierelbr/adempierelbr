@@ -60,9 +60,6 @@ public class WTaxesEditor extends WEditor implements ContextMenuListener
 	private Object m_value;
 
 	private GridTab m_GridTab;
-		
-	/**	No Instance Key					*/
-	private static Integer		NO_INSTANCE = new Integer(0);
 
 	public WTaxesEditor(GridTab gridTab, GridField gridField)
 	{

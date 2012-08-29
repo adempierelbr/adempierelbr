@@ -33,7 +33,6 @@ public class EnvEvento
 	private String versao;
 	
 	@XStreamAsAttribute
-	@SuppressWarnings("unused")
 	private final String xmlns="http://www.portalfiscal.inf.br/nfe";
 	
 	@XMLFieldProperties	(minSize=1, maxSize=15, id = "HP03")

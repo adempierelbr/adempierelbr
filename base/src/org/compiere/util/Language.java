@@ -38,6 +38,11 @@ public class Language implements Serializable
 	 *      http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html
 	 *************************************************************************/
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -964846521004545703L;
+	
 	/** Base Language               */
 	public static final String  AD_Language_en_US = "en_US";
 	/** Additional Languages         */

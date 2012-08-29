@@ -81,7 +81,7 @@ public class NFSeXMLGenerator
 		Properties ctx = Env.getCtx();
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
-		MLBRNotaFiscalLine[] nfLines = nf.getLines("");
+		MLBRNotaFiscalLine[] nfLines = nf.getLines ();
 		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), trxName);
 		//
 		MBPartnerLocation bpartLoc = new MBPartnerLocation(ctx, nf.getC_BPartner_Location_ID(), trxName);

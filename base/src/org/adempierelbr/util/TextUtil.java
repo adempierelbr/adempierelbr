@@ -107,6 +107,7 @@ public abstract class TextUtil
 		String line;
 		FileInputStream stream = new FileInputStream (file);
 		InputStreamReader streamReader = new InputStreamReader(stream, encoding);
+		@SuppressWarnings("resource")
 		BufferedReader reader = new BufferedReader(streamReader);
 		
 		while ((line=reader.readLine()) != null)

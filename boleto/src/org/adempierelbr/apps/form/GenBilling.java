@@ -28,7 +28,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRBoleto;
-import org.compiere.model.MBankAccount;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.minigrid.IMiniTable;

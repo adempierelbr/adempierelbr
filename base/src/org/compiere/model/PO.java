@@ -1954,6 +1954,7 @@ public abstract class PO
 	 * 	To reload call load() - not updated
 	 *  @return true if saved
 	 */
+	@SuppressWarnings("unused")
 	public boolean save()
 	{
 		CLogger.resetLast();

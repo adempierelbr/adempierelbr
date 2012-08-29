@@ -2,7 +2,6 @@ package org.adempierelbr.nfe;
 
 import java.io.File;
 import java.io.StringReader;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,10 +15,8 @@ import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.util.ValidaXML;
-import org.compiere.Adempiere;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
-import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
@@ -149,27 +146,4 @@ public class NFeInutilizacao
 		//
 		return "Processo completado.";
 	}	//	invalidateNF
-	
-	/**
-	 * 
-	 */
-	public static void main (String[] args) 
-	{
-		Adempiere.startupEnvironment(false);
-		CLogMgt.setLevel(Level.FINE);
-		CLogMgt.enable(true);
-		System.out.println("NFe Status");
-		System.out.println("-----------------------");
-		//
-		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), 2000000);
-		try
-		{
-			System.out.print(invalidateNF(oi, null));
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}	//	main
 }	//	NFeInutilizacao

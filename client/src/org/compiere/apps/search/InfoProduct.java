@@ -146,7 +146,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	private CTextField fieldName = new CTextField(10);
 	private CLabel labelUPC = new CLabel();
 	private CTextField fieldUPC = new CTextField(10);
-	private CLabel labelSKU = new CLabel();
+//	private CLabel labelSKU = new CLabel();
 	private CTextField fieldSKU = new CTextField(10);
 	private CLabel labelPriceList = new CLabel();
 	private VComboBox pickPriceList = new VComboBox();

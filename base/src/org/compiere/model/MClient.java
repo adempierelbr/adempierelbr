@@ -35,7 +35,6 @@ import org.adempiere.model.POWrapper;
 import org.compiere.db.CConnection;
 import org.compiere.interfaces.Server;
 import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.EMail;
 import org.compiere.util.Env;
@@ -106,8 +105,6 @@ public class MClient extends X_AD_Client
 		return get (ctx, Env.getAD_Client_ID(ctx));
 	}	//	get
 
-	/**	Static Logger				*/
-	private static CLogger	s_log	= CLogger.getCLogger (MClient.class);
 	/**	Cache						*/
 	private static CCache<Integer,MClient>	s_cache = new CCache<Integer,MClient>("AD_Client", 3);
 

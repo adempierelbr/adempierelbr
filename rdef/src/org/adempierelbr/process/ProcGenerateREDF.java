@@ -172,7 +172,7 @@ public class ProcGenerateREDF extends SvrProcess
 			if (NF.isCancelled())
 				continue;
 			//
-			for (MLBRNotaFiscalLine line : NF.getLines("Line"))
+			for (MLBRNotaFiscalLine line : NF.getLines ())
 			{
 				Registro30 r30 = new Registro30 (line.getProductValue(), line.getProductName(),
 						line.getlbr_NCMName(), line.getlbr_UOMName(), line.getQty(), line.getPrice().add(line.getICMSAmt().divide(line.getQty(), 12, RoundingMode.HALF_UP)),

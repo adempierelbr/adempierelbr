@@ -7,14 +7,11 @@ import org.adempierelbr.nfe.NFeInutilizacao;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
-import org.compiere.Adempiere;
 import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
-import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 

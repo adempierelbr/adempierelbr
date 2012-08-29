@@ -488,7 +488,6 @@ public class ValidatorBPartner implements ModelValidator
 	 * @param uf
 	 * @return NULL if Invalid OR IE with onlynumbers
 	 */
-	@SuppressWarnings("deprecation")
 	public static String validaIE(String ie, UF uf)
 	{
 		if (ie == null || uf == null)

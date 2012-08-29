@@ -26,11 +26,9 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 @XStreamAlias ("retEvento")
 public class RetEvento
 {
-	@SuppressWarnings("unused")
 	@XStreamAsAttribute
 	private String versao;
 	
-	@SuppressWarnings("unused")
 	@XStreamAsAttribute
 	private String xmlns="http://www.portalfiscal.inf.br/nfe";
 	

@@ -146,7 +146,7 @@ public class ModelWrapperGenerator
 			preffix = "";
 		
 		String tableName = "";
-		int accessLevel = 0;
+//		int accessLevel = 0;
 		String sql = "SELECT TableName, AccessLevel FROM AD_Table WHERE AD_Table_ID=?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -157,7 +157,7 @@ public class ModelWrapperGenerator
 			if (rs.next())
 			{
 				tableName = rs.getString(1);
-				accessLevel = rs.getInt(2);
+//				accessLevel = rs.getInt(2);
 			}
 		}
 		catch (SQLException e)
@@ -172,13 +172,13 @@ public class ModelWrapperGenerator
 		if (tableName == null)
 			throw new RuntimeException("TableName not found for ID=" + AD_Table_ID);
 		//
-		String accessLevelInfo = accessLevel + " ";
-		if (accessLevel >= 4 )
-			accessLevelInfo += "- System ";
-		if (accessLevel == 2 || accessLevel == 3 || accessLevel == 6 || accessLevel == 7)
-			accessLevelInfo += "- Client ";
-		if (accessLevel == 1 || accessLevel == 3 || accessLevel == 5 || accessLevel == 7)
-			accessLevelInfo += "- Org ";
+//		String accessLevelInfo = accessLevel + " ";
+//		if (accessLevel >= 4 )
+//			accessLevelInfo += "- System ";
+//		if (accessLevel == 2 || accessLevel == 3 || accessLevel == 6 || accessLevel == 7)
+//			accessLevelInfo += "- Client ";
+//		if (accessLevel == 1 || accessLevel == 3 || accessLevel == 5 || accessLevel == 7)
+//			accessLevelInfo += "- Org ";
 
 		//
 		String className = "I_" + preffix + tableName;

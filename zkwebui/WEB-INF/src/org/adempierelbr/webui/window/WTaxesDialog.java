@@ -172,11 +172,8 @@ public class WTaxesDialog extends Window implements EventListener, ValueChangeLi
 	private ConfirmPanel confirmPanel = new ConfirmPanel(true);
 	//
 	private Panel scrollPanel = new Panel();
-	
-	private Borderlayout  mainLayout   = new Borderlayout();
 
 	private Borderlayout  panelLayout   = new Borderlayout();
-	private Grid gridBagLayout = new Grid();
 	//
 	private Label		lSelect  = new Label(Msg.translate(Env.getCtx(), "Delete"));
 	private Label		lTax     = new Label(Msg.translate(Env.getCtx(), "LBR_TaxName_ID"));

@@ -407,6 +407,7 @@ public final class EMail implements Serializable
 			return;
 		try
 		{
+			@SuppressWarnings("rawtypes")
 			Enumeration e = m_msg.getAllHeaderLines ();
 			while (e.hasMoreElements ())
 				log.fine("- " + e.nextElement ());
