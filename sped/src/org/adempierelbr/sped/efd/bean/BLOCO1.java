@@ -12,9 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempierelbr.annotation.XMLFieldProperties;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

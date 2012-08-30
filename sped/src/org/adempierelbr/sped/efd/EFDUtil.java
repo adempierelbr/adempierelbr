@@ -1,15 +1,22 @@
 package org.adempierelbr.sped.efd;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
+import org.adempierelbr.sped.efd.bean.BLOCOC;
+import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.sped.efd.bean.R0001;
 import org.adempierelbr.sped.efd.bean.R0005;
@@ -30,11 +37,13 @@ import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC120;
 import org.adempierelbr.sped.efd.bean.RC170;
+import org.adempierelbr.sped.efd.bean.RC190;
 import org.adempierelbr.sped.efd.bean.RC195;
 import org.adempierelbr.sped.efd.bean.RC990;
 import org.adempierelbr.sped.efd.bean.RD001;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD110;
+import org.adempierelbr.sped.efd.bean.RD190;
 import org.adempierelbr.sped.efd.bean.RD990;
 import org.adempierelbr.sped.efd.bean.RE001;
 import org.adempierelbr.sped.efd.bean.RE100;
@@ -97,7 +106,7 @@ public class EFDUtil {
 	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
 	private static final String IND_APUR = "0"; 	// Mensal (IPI - RC170)
 
-	//Código da natureza da conta/grupo de contas
+	// Código da natureza da conta/grupo de contas
 	public static final String CONTA_ATIVO        = "01";
 	public static final String CONTA_PASSIVO      = "02";
 	public static final String PATRIMONIO_LIQUIDO = "03";
@@ -105,6 +114,30 @@ public class EFDUtil {
 	public static final String CONTA_COMPENSACAO  = "05";
 	public static final String OUTRAS             = "09";
 	
+	
+	// 
+	public static List<String> CFOP_DEVOL_ST = new ArrayList<String>(Arrays.asList("1410", "1411", "1414", "1415", "1660", 
+			"1661", "1662", "2410", "2411", "2414", "2415", "2660", "2661", "2662"));
+	
+
+	/**
+	 * Verificar se é CFOP de devolução
+	 * 
+	 * Utilizado para apurar ST
+	 *
+	 *@param CFOP
+	 */
+	public static boolean isCFOPDevolST(String CFOP)
+	{
+		//
+		for (String x : CFOP_DEVOL_ST)
+			if(x.equals(CFOP))
+				return true;
+			
+		// 
+		return false;
+		
+	}
 	
 	
 	/**
@@ -115,6 +148,7 @@ public class EFDUtil {
 	 */
 	public static String getBlocoNFModel(String nfModel) {
 
+		
 		//
 		String nfReg = "";
 		
@@ -880,8 +914,11 @@ public class EFDUtil {
 		 * posterior verificação e definição se deve-se
 		 * ou não apurar alguns impostos bem como 
 		 * IPI e ST
+		 * 
+		 * UF - Usado na apuração da ST
 		 */
 		reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
+		reg.setUF(factFiscal.getlbr_BPRegion());
 		
 		//
 		return reg;
@@ -1299,25 +1336,122 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE110 createRE110() throws Exception
+	public static RE110 createRE110(MLBRTaxAssessment m_taxassessment, BLOCOC blocoC, BLOCOD blocoD) throws Exception
 	{
 		
+		/* Montar Totais de Crédito/Débito
+		BigDecimal AmtCr = Env.ZERO;
+		BigDecimal AmtDr = Env.ZERO;
+		
+		// para cada nf
+		for (RC100 rc100 : blocoC.getrC100())
+		{
+			// cada totalizador da nf
+			for (RC190 rc190 : rc100.getrC190())
+			{
+				// se for compra, crédito senão débito
+				if(rc190.getCFOP().startsWith("1") 
+						|| rc190.getCFOP().startsWith("2")
+						|| rc190.getCFOP().startsWith("3"))
+					AmtCr = AmtCr.add(rc190.getVL_ICMS());
+				else
+					AmtDr = AmtDr.add(rc190.getVL_ICMS());
+			}
+		}
+		
+		// para cada ct
+		for (RD100 rd100 : blocoD.getrD100())
+		{
+			// cada totalizador do ct
+			for (RD190 rd190 : rd100.getrD190())
+			{
+				// se for entrada, crédito senão débito
+				if(rd190.getCFOP().startsWith("1") 
+						|| rd190.getCFOP().startsWith("2")
+						|| rd190.getCFOP().startsWith("3"))
+					AmtCr = AmtCr.add(rd190.getVL_ICMS());
+				else
+					AmtDr = AmtDr.add(rd190.getVL_ICMS());
+			}
+		}*/
+		
+		
 		RE110 reg = new RE110();
-		reg.setVL_TOT_DEBITOS(Env.ZERO);
-		reg.setVL_AJ_DEBITOS(Env.ZERO);
-		reg.setVL_TOT_AJ_DEBITOS(Env.ZERO);
-		reg.setVL_ESTORNOS_CRED(Env.ZERO);
-		reg.setVL_TOT_CREDITOS(Env.ZERO);
-		reg.setVL_AJ_CREDITOS(Env.ZERO);
-		reg.setVL_TOT_AJ_CREDITOS(Env.ZERO);
-		reg.setVL_ESTORNOS_DEB(Env.ZERO);
-		reg.setVL_SLD_CREDOR_ANT(Env.ZERO);
-		reg.setVL_SLD_APURADO(Env.ZERO);
-		reg.setVL_ICMS_RECOLHER(Env.ZERO);
-		reg.setVL_TOT_DED(Env.ZERO);
-		reg.setVL_SLD_CREDOR_TRANSPORTAR(Env.ZERO);
-		reg.setDEB_ESP(Env.ZERO);
+		// total de debito
+		// reg.setVL_TOT_DEBITOS(AmtDr.abs());
+		reg.setVL_TOT_DEBITOS(m_taxassessment.getTotalDr());
+		
+		// total ajuste débito
+		reg.setVL_AJ_DEBITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+		
+		// total ajuste débitos
+		reg.setVL_TOT_AJ_DEBITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+		
+		// total de estorno de créditos
+		reg.setVL_ESTORNOS_CRED(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_EstornosDeCréditos).abs());
+		
+		// total de créditos
+		reg.setVL_TOT_CREDITOS(m_taxassessment.getTotalCr());
+		
+		// total de ajustes de créditos
+		reg.setVL_AJ_CREDITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+		
+		// total ajuste créditos
+		reg.setVL_TOT_AJ_CREDITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+		
+		// total estorno débitos
+		reg.setVL_ESTORNOS_DEB(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_EstornoDeDébitos).abs());
+		
+		// Saldo anterior
+		reg.setVL_SLD_CREDOR_ANT(MLBRTaxAssessment.getCumulatedAmt(m_taxassessment.getCtx(), 
+				m_taxassessment.getC_Period_ID(),
+				m_taxassessment.getAD_Org_ID(), 
+				m_taxassessment.getLBR_TaxName_ID()).abs());
+		
+		/*
+		 * Campo 11 - Validação: O valor informado deve ser preenchido com base na expressão: 
+		 * 	soma do total de débitos (VL_TOT_DEBITOS) com total de ajustes (VL_AJ_DEBITOS + VL_TOT_AJ_DEBITOS) 
+		 * 	com total de estorno de crédito (VL_ESTORNOS_CRED) menos a soma do total de créditos (VL_TOT_CREDITOS) 
+		 * 	com total de ajuste de créditos (VL_,AJ_CREDITOS + VL_TOT_AJ_CREDITOS) com total de estorno de débito 
+		 * 	(VL_ESTORNOS_DEB) com saldo credor do período anterior (VL_SLD_CREDOR_ANT). Se o valor da expressão 
+		 * 	for maior ou igual a “0” (zero), então este valor deve ser informado neste campo e o 
+		 * 	campo 14 (VL_SLD_CREDOR_TRANSPORTAR) deve ser igual a “0” (zero). Se o valor da expressão
+		 * 	for menor que “0” (zero), então este campo deve ser preenchido com “0” (zero) e o valor absoluto 
+		 * 	da expressão deve ser informado no campo VL_SLD_CREDOR_TRANSPORTAR.
+		 * 
+		 * 
+		 *  ((VL_TOT_DEBITOS + VL_TOT_AJ_DEBITOS + VL_ESTORNOS_CRED) - 
+		 *  	(VL_AJ_CREDITOS + VL_TOT_AJ_CREDITOS + VL_ESTORNOS_DEB)) + 
+		 *  	(VL_SLD_CREDOR_ANT)
+		 *  
+		 */
+		BigDecimal saldo = ((reg.getVL_TOT_DEBITOS().add(reg.getVL_TOT_AJ_DEBITOS()).add(reg.getVL_ESTORNOS_CRED()))
+				.subtract(reg.getVL_TOT_CREDITOS().add(reg.getVL_TOT_AJ_CREDITOS()).add(reg.getVL_ESTORNOS_DEB()))
+				.add(reg.getVL_SLD_CREDOR_ANT())).setScale(2, RoundingMode.HALF_UP);
+		
+		// 
+		if(saldo.signum() == 1)
+		{
+			reg.setVL_SLD_APURADO(saldo.abs());
+			reg.setVL_SLD_CREDOR_TRANSPORTAR(Env.ZERO);
+		}	
+		else
+		{
+			reg.setVL_SLD_APURADO(Env.ZERO);
+			reg.setVL_SLD_CREDOR_TRANSPORTAR(saldo.abs());			
+		}
+		
 
+		// TODO
+		reg.setVL_TOT_DED(Env.ZERO);
+
+		//  VL_SLD_APURADO - VL_TOT_DED
+		reg.setVL_ICMS_RECOLHER(reg.getVL_SLD_APURADO().abs());
+		
+		// TODO
+		reg.setDEB_ESP(Env.ZERO);
+		
+		//
 		return reg;
 		
 	}
@@ -1328,16 +1462,63 @@ public class EFDUtil {
 	 * 
 	 * TODO: Origem dos Dados?
 	 * 
+	 * COD_AJ_APUR
+	 * 
+	 * 1. Os dois primeiros caracteres (UF) referem-se à unidade da federação do estabelecimento;
+	 * 
+	 * 2. O caracter seguinte refere-se à apuração própria ou da substituição tributária, onde:
+	 * 	0 – ICMS e
+	 * 	1 – ICMS ST.
+	 * 
+	 * 3. O quarto caracter refere-se à UTILIZAÇÃO e identificará o campo a ser ajustado:
+	 * 	0 – Outros débitos;
+	 * 	1 – Estorno de créditos;
+	 * 	2 – Outros créditos;
+	 * 	3 – Estorno de débitos;
+	 * 	4 – Deduções do imposto apurado.
+	 * 
+	 * 4.Os quatro caracteres seguintes, SEQÜÊNCIA, iniciando-se por 0001 deverá ser referente a identificação do tipo de ajuste deixando sempre um código genérico para a possibilidade de outras ocorrências não previstas.
+	 * 
+	 * 	0 – Outros Débitos 			0001 						
+	 * 	1 – Estorno de crédito   	0001
+	 * 	2 – Outros créditos			0001 (motivo a)
+	 * 	2 – Outros créditos			0001 (motivo a)
+	 * 	2 – Outros créditos			0002 (motivo b)apuração da Substituição Tributária
+	 * 	3 – Estorno de débito 		0001 (motivo c)
+	 * 	4 – Deduções				0001
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE111 createRE111() throws Exception
+	public static RE111 createRE111(String UF, boolean isICSM, X_LBR_TaxAssessmentLine line) throws Exception
 	{
+		
 		RE111 reg = new RE111();
-		reg.setCOD_AJ_APUR("");
-		reg.setDESCR_COMPL_AJ("");
-		reg.setVL_AJ_APUR(Env.ZERO);
+		
+		// UF + ICMS/ICMSST 
+		String COD_AJ_APUR = UF.concat(isICSM ? "0" : "1");
+		
+		// Type
+		if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos))
+			COD_AJ_APUR += "0";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_EstornosDeCréditos))
+			COD_AJ_APUR += "1";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos))
+			COD_AJ_APUR += "2";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_EstornoDeDébitos))
+			COD_AJ_APUR += "3";
+		
+		// Type 2
+		COD_AJ_APUR += "0001";
+		
+		// 
+		reg.setCOD_AJ_APUR(COD_AJ_APUR);
+		
+		// 
+		reg.setDESCR_COMPL_AJ(line.getDescription());
+		
+		// 
+		reg.setVL_AJ_APUR(line.getAmt());
 		
 		return reg;
 	}
@@ -1369,16 +1550,14 @@ public class EFDUtil {
 	/**
 	 * REGISTRO E210: APURAÇÃO DO ICMS – SUBSTITUIÇÃO TRIBUTÁRIA.
 	 * 
-	 * TODO: Origem dos Dados?
-	 * 
-	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public static RE210 createRE210() throws Exception
 	{
+		
 		RE210 reg = new RE210();
-		reg.setIND_MOV_ST("");
+		reg.setIND_MOV_ST("0");
 		reg.setVL_SLD_CRED_ANT_ST(Env.ZERO);
 		reg.setVL_DEVOL_ST(Env.ZERO);
 		reg.setVL_RESSARC_ST(Env.ZERO);
@@ -1453,14 +1632,14 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE510 createRE510() throws Exception
+	public static RE510 createRE510(RC170 rc170) throws Exception
 	{
 		RE510 reg = new RE510();
-		reg.setCFOP("");
-		reg.setCST_IPI("");
-		reg.setVL_CONT_IPI(Env.ZERO);
-		reg.setVL_BC_IPI(Env.ZERO);
-		reg.setVL_IPI(Env.ZERO);
+		reg.setCFOP(rc170.getCFOP());
+		reg.setCST_IPI(rc170.getCST_IPI());
+		reg.setVL_CONT_IPI(rc170.getVL_OPER());
+		reg.setVL_BC_IPI(rc170.getVL_BC_IPI());
+		reg.setVL_IPI(rc170.getVL_IPI());
 		
 		return reg;
 	}
@@ -1475,14 +1654,30 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE520 createRE520() throws Exception
+	public static RE520 createRE520(MLBRTaxAssessment m_taxassessment, List<RE510> re510s) throws Exception
 	{
 		RE520 reg = new RE520();
-		reg.setVL_SD_ANT_IPI(Env.ZERO);
-		reg.setVL_DEB_IPI(Env.ZERO);
-		reg.setVL_CRED_IPI(Env.ZERO);
-		reg.setVL_OD_IPI(Env.ZERO);
-		reg.setVL_OC_IPI(Env.ZERO);
+		
+		// saldo anterior
+		reg.setVL_SD_ANT_IPI(MLBRTaxAssessment.getCumulatedAmt(m_taxassessment.getCtx(), 
+				m_taxassessment.getC_Period_ID(), 
+				m_taxassessment.getAD_Org_ID(), 
+				m_taxassessment.getLBR_TaxName_ID()));
+		
+		// crédito e débito baseado nos RE510s
+		for(RE510 re510 : re510s)
+		{
+			// se for compra é crédito, venda é débito
+			if(re510.getCFOP().endsWith("1") 
+					|| re510.getCFOP().endsWith("2") 
+					|| re510.getCFOP().endsWith("3"))
+				reg.setVL_CRED_IPI(reg.getVL_CRED_IPI().add(re510.getVL_IPI()));	
+			else
+				reg.setVL_DEB_IPI(reg.getVL_DEB_IPI().add(re510.getVL_IPI()));
+		}
+		
+		reg.setVL_OD_IPI(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos));
+		reg.setVL_OC_IPI(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos));
 		reg.setVL_SC_IPI(Env.ZERO);
 		reg.setVL_SD_IPI(Env.ZERO);
 		

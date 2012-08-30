@@ -49,7 +49,7 @@ public class R0150 extends RegSped {
 	@XMLFieldProperties(isMandatory = false, maxSize = 14, id = "IE", isNumber = true)
 	private String IE;
 	
-	@XMLFieldProperties(isMandatory = false, minSize = 7, maxSize = 7, id = "COD_MUN", isNumber = true)
+	@XMLFieldProperties(isMandatory = false, minSize = 7, maxSize = 7, id = "COD_MUN")
 	private String COD_MUN;
 	
 	@XMLFieldProperties(isMandatory = false, maxSize = 9, id = "SUFRAMA", isNumber = true)

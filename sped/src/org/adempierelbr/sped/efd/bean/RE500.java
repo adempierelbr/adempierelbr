@@ -96,6 +96,23 @@ public class RE500 extends RegSped {
 	public String getIND_APUR() {
 		return IND_APUR;
 	}
+	
+	public void addrE520(RE510 reg)
+	{
+		// verificar se já existe
+		if(getrE510().contains(reg))
+		{
+			// subtrair contador
+			reg.subtractCounter();
+			
+			// somar valores
+			getrE510().get(getrE510().indexOf(reg)).addValues(reg);
+		}
+		else
+		{
+			this.rE510.add(reg);
+		}
+	}
 
 	@Override
 	public int compareTo(Object o) {

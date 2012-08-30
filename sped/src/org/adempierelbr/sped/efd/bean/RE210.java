@@ -62,8 +62,8 @@ public class RE210 extends RegSped {
 	@XMLFieldProperties(id = "VL_SLD_DEV_ANT_ST")
 	private BigDecimal VL_SLD_DEV_ANT_ST;
 
-	@XMLFieldProperties(id = "VL_DEDUÇÕES_ST")
-	private BigDecimal VL_DEDUÇÕES_ST;
+	@XMLFieldProperties(id = "VL_DEDUCOES_ST")
+	private BigDecimal VL_DEDUCOES_ST;
 
 	@XMLFieldProperties(id = "VL_ICMS_RECOL_ST")
 	private BigDecimal VL_ICMS_RECOL_ST;
@@ -73,7 +73,7 @@ public class RE210 extends RegSped {
 
 	@XMLFieldProperties(id = "DEB_ESP_ST")
 	private BigDecimal DEB_ESP_ST;
-	
+
 	@XMLFieldProperties(id = "RE250", isSPEDField = false)
 	private List<RE250> rE250 = new ArrayList<RE250>();
 
@@ -81,14 +81,6 @@ public class RE210 extends RegSped {
 		super();
 
 	} // RE210
-
-	public List<RE250> getrE250() {
-		return rE250;
-	}
-
-	public void setrE250(List<RE250> rE250) {
-		this.rE250 = rE250;
-	}
 
 	public String getIND_MOV_ST() {
 		return IND_MOV_ST;
@@ -170,12 +162,12 @@ public class RE210 extends RegSped {
 		VL_SLD_DEV_ANT_ST = vL_SLD_DEV_ANT_ST;
 	}
 
-	public BigDecimal getVL_DEDUÇÕES_ST() {
-		return VL_DEDUÇÕES_ST;
+	public BigDecimal getVL_DEDUCOES_ST() {
+		return VL_DEDUCOES_ST;
 	}
 
-	public void setVL_DEDUÇÕES_ST(BigDecimal vL_DEDUÇÕES_ST) {
-		VL_DEDUÇÕES_ST = vL_DEDUÇÕES_ST;
+	public void setVL_DEDUCOES_ST(BigDecimal vL_DEDUCOES_ST) {
+		VL_DEDUCOES_ST = vL_DEDUCOES_ST;
 	}
 
 	public BigDecimal getVL_ICMS_RECOL_ST() {
@@ -202,15 +194,23 @@ public class RE210 extends RegSped {
 	public void setDEB_ESP_ST(BigDecimal dEB_ESP_ST) {
 		DEB_ESP_ST = dEB_ESP_ST;
 	}
-	
+
+	public List<RE250> getrE250() {
+		return rE250;
+	}
+
+	public void setrE250(List<RE250> rE250) {
+		this.rE250 = rE250;
+	}
+
 	/**
-	 * Adicionar registros E250 
+	 * Adicionar registros E250
+	 * 
 	 * @param reg
 	 */
-	public void addrE250(RE250 reg)
-	{
+	public void addrE250(RE250 reg) {
 		this.rE250.add(reg);
-	}	
+	}
 
 	@Override
 	public int compareTo(Object o) {

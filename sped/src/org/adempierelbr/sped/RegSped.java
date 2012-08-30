@@ -280,12 +280,12 @@ public abstract class RegSped implements Comparable<Object> {
 					if(annotation.maxSize() > 0 && contentSTR.length() > annotation.maxSize())
 						contentSTR = contentSTR.substring(0, annotation.maxSize() -1);
 					
-					// preencher o tamanho mínimo com zeros a esquerda 
-					if(annotation.minSize() > contentSTR.length())
+					// preencher o tamanho mínimo com zeros a esquerda quando o campo não nulo
+					if(annotation.minSize() > contentSTR.length() && contentSTR.length() > 1)
 						contentSTR = TextUtil.lPad(contentSTR, annotation.minSize());
 					
-					//
-					result.append(contentSTR);
+					// trim novamente
+					result.append(contentSTR.trim());
 					
 				}
 				

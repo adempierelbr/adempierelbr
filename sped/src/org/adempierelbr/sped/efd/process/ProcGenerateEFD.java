@@ -9,6 +9,8 @@ import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
@@ -24,7 +26,10 @@ import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.RC100;
+import org.adempierelbr.sped.efd.bean.RC170;
+import org.adempierelbr.sped.efd.bean.RC190;
 import org.adempierelbr.sped.efd.bean.RD100;
+import org.adempierelbr.sped.efd.bean.RE200;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -180,7 +185,7 @@ public class ProcGenerateEFD extends SvrProcess
 
 			
 			// Fatos Fiscais
-			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, get_TrxName()); 
+			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, null); 
 
 			
 			// criar blocos
@@ -195,13 +200,13 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			// 0000 - dados da empresa
-			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, get_TrxName()));
+			bloco0.setR0000(EFDUtil.createR0000(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null));
 			
 			// 0005 - dados adicionais da org
-			bloco0.setR0005(EFDUtil.createR0005(getCtx(), p_AD_Org_ID, get_TrxName()));
+			bloco0.setR0005(EFDUtil.createR0005(getCtx(), p_AD_Org_ID, null));
 					 		
 			// 0100 - contator
-			bloco0.setR0100(EFDUtil.createR0100(getCtx(), p_AD_Org_ID, get_TrxName()));
+			bloco0.setR0100(EFDUtil.createR0100(getCtx(), p_AD_Org_ID, null));
 			
 			// ultima nota fiscal do loop de fatos fiscais (somente auxiliar)
 			int last_LBR_NotaFiscal_ID = 0;
@@ -307,14 +312,16 @@ public class ProcGenerateEFD extends SvrProcess
 				 */
 				if(REG.startsWith("C100"))
 					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).
-						addrC170(EFDUtil.createRC170(factFiscal, blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).getrC170().size() + 1));
+						addrC170(EFDUtil.createRC170(factFiscal, blocoC.getrC100().
+								get(blocoC.getrC100().indexOf(rc100)).getrC170().size() + 1));
 
 				/*
 				 * Add D110 ao D100
 				 */
 				if(REG.startsWith("D100"))
 					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100))
-						.addrD110(EFDUtil.createRD110(factFiscal, blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100)).getrD110().size() + 1));
+						.addrD110(EFDUtil.createRD110(factFiscal, blocoD.getrD100().
+								get(blocoD.getrD100().indexOf(rd100)).getrD110().size() + 1));
 				
 				
 				/*
@@ -333,6 +340,105 @@ public class ProcGenerateEFD extends SvrProcess
 			 */
 			blocoC.checkException();
 			blocoD.checkException();
+			
+			
+			
+			/**
+			 * APURAÇÃO DE ICMS, IPI - BLOCO E
+			 */
+			// Registro de Apuração ICMS do Período
+			MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "ICMSPROD", p_C_Period_ID, null);
+			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+			{				
+				// E100 - ICMS
+				blocoE.setrE100(EFDUtil.createRE100(dateFrom, dateTo));
+				
+				// E110 - gerar baseado nos blocos C e D
+				blocoE.getrE100().setrE110(EFDUtil.createRE110(m_taxAssessment, blocoC, blocoD));
+				
+	 			// Adicionar detalhes dos ajustes do E110
+				if(blocoE.getrE100().getrE110() != null)
+				{
+					
+					/* ATUALIZAR A APURAÇÃO NO ADEMPIERE BASEADO NA APURAÇÃO DO SPED
+					m_taxAssessment.setCumulatedAmt(blocoE.getrE100().getrE110().getVL_SLD_CREDOR_ANT());
+					m_taxAssessment.setTotalDr(blocoE.getrE100().getrE110().getVL_TOT_DEBITOS());
+					m_taxAssessment.setTotalCr(blocoE.getrE100().getrE110().getVL_TOT_CREDITOS());
+					m_taxAssessment.setAmtSourceCr(blocoE.getrE100().getrE110().getVL_AJ_CREDITOS());
+					m_taxAssessment.setAmtSourceDr(blocoE.getrE100().getrE110().getVL_AJ_DEBITOS());
+					m_taxAssessment.setTotalAmt(blocoE.getrE100().getrE110().getVL_SLD_APURADO());
+					m_taxAssessment.setLBR_SaldoCredorTrasnportar(blocoE.getrE100().getrE110().getVL_SLD_CREDOR_TRANSPORTAR());
+					m_taxAssessment.save();
+					*/
+					
+					// linhas de ajustes da apuração
+					for (X_LBR_TaxAssessmentLine line : m_taxAssessment.getLines())
+						blocoE.getrE100().addrE111(EFDUtil.createRE111(bloco0.getR0000().getUF(), true, line));
+				}
+			}
+			
+			
+			// ICMS ST 
+			for (RC100 aux_rc100 : blocoC.getrC100())
+			{
+
+				// somente gerar registros se a NF tiver ST
+				if(aux_rc100.getVL_ICMS_ST() != null  && aux_rc100.getVL_ICMS_ST().signum() == 1)
+				{
+					
+					// RE200 - criar registro da UF no período
+					RE200 re200 = EFDUtil.createRE200(aux_rc100.getUF(), dateFrom, dateTo);
+					
+					//
+					if(blocoE.getrE200().contains(re200))
+						re200.subtractCounter();
+					else 
+						blocoE.getrE200().add(re200);
+					
+					// criar o registro necessário da apuração, se já não existir
+					if(blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).getrE210() == null)
+						blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).setrE210(EFDUtil.createRE210());
+	
+					// linhas para extrarir os valores de ST, tanto de devolução quanto débito
+					for(RC190 aux_rc190 : aux_rc100.getrC190())
+					{
+						
+						// venda e tem débito, somar ao totalizador da UF
+						if(aux_rc100.getIND_OPER().equals("1") 
+								&& aux_rc190.getVL_ICMS_ST().signum() == 1)
+							blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).addValuesE210(Env.ZERO, aux_rc190.getVL_ICMS_ST());
+						
+						// se for devolução de venda
+						else if (EFDUtil.CFOP_DEVOL_ST.contains(aux_rc190.getCFOP()) 
+								&& aux_rc190.getVL_ICMS_ST().signum() == 1)
+							blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).addValuesE210(aux_rc190.getVL_ICMS_ST(), Env.ZERO);
+							
+					}
+				}
+			}
+			
+				
+			
+			/* 
+			 * APURACAO IPI
+			 */
+			m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "IPI", p_C_Period_ID, null);
+			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+			{				
+				// E500
+				blocoE.setrE500(EFDUtil.createRE500(dateFrom, dateTo));
+				
+				// E510 - Resumo baseado no RC170				
+				for (RC100 regRC100 : blocoC.getrC100())
+				{
+					for ( RC170 rc170 : regRC100.getrC170())
+						blocoE.getrE500().addrE520(EFDUtil.createRE510(rc170));
+				}
+				
+				//blocoE.getrE500().setrE520(EFDUtil.createRE520());
+			}
+			
+
 			
 			
 			
@@ -362,7 +468,7 @@ public class ProcGenerateEFD extends SvrProcess
 				blocoH.setrH005(EFDUtil.createRH005(new Timestamp(calendar.getTimeInMillis())));
 				
 				// carregar informações do inventário
-				PreparedStatement pstmt = DB.prepareStatement (EFDUtil.getSQLInv(), get_TrxName());
+				PreparedStatement pstmt = DB.prepareStatement (EFDUtil.getSQLInv(), null);
 				
 				// params
 				pstmt.setInt(1, p_C_Period_ID);
@@ -380,7 +486,7 @@ public class ProcGenerateEFD extends SvrProcess
 				while (rs.next())
 				{
 					// carregar produto
-					MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), get_TrxName());
+					MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), null);
 
 					// criar R0190
 					R0190 r0190 = EFDUtil.createR0190(m_product);
@@ -392,10 +498,10 @@ public class ProcGenerateEFD extends SvrProcess
 			
 					// conta contábil
 					String COD_CTA = "";
-					int C_ElementValue_ID = EFDUtil.getProductAsseAcct(m_product.getM_Product_ID(), get_TrxName());
+					int C_ElementValue_ID = EFDUtil.getProductAsseAcct(m_product.getM_Product_ID(), null);
 					if(C_ElementValue_ID > 0)
 					{
-						R0500 r0500 = EFDUtil.createR0500(new MElementValue(getCtx(), C_ElementValue_ID, get_TrxName()), dateTo);
+						R0500 r0500 = EFDUtil.createR0500(new MElementValue(getCtx(), C_ElementValue_ID, null), dateTo);
 						bloco0.addr0500(r0500);
 						COD_CTA = r0500.getCOD_CTA();
 					}
@@ -416,21 +522,7 @@ public class ProcGenerateEFD extends SvrProcess
 							COD_CTA));
 					
 				}
-				
-				// atualizar cabeçalho do bloco H para definir se tem ou não dados
-				blocoH.getrH001().setIND_MOV(blocoH.getrH005().getrH010().size() > 0 ? "0" : "1");
-				
 			} // fim Bloco H
-			
-			
-			
-			
-			/**
-			 * APURAÇÃO DE ICMS, IPI - BLOCO E
-			 */
-			
-			
-			
 			
 			
 			
@@ -442,12 +534,10 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0)); // init bloco D
 			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
 					&& blocoH.getrH005().getrH010().size() > 0));
-			blocoE.setrE001(EFDUtil.createRE001(false));						// init bloco E
+			blocoE.setrE001(EFDUtil.createRE001(true));							// init bloco E
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(false));						// init bloco 1
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
-
-			
 			
 			/*
 			 * Registros Totalizadores dos Blocos
@@ -461,18 +551,20 @@ public class ProcGenerateEFD extends SvrProcess
 			bloco1.setR1990(EFDUtil.createR1990()); // fim do 1
 			bloco9.setR9990(EFDUtil.createR9990()); // fim do 9
 			
+			
 			// REGISTROS DE FIM DE ARQUIVO - BLOCO 9
 			bloco9.setR9900(EFDUtil.createR9900());
+			
 			
 			// totalizador final do arquivo, criado depois que todos os outros registros já foram feitos
 			bloco9.setR9999(EFDUtil.createR9999()); // fim do arquivo
 			
+			
 			// atualizar totalizador dos R9990
 			bloco9.getR9990().setQTD_LIN_9(String.valueOf(CounterSped.getBlockCounter(bloco9.getR9990().getReg())));
 			
-			/*
-			 * Montar resultado
-			 */
+			
+			// Montar resultado			 
 			StringBuilder result = new StringBuilder();
 			result.append(bloco0.toString());
 			result.append(blocoC.toString());

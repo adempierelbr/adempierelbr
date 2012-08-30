@@ -91,7 +91,7 @@ public class RE100 extends RegSped {
 	{
 		this.rE111.add(reg);
 	}
-
+	
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub

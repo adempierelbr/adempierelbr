@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
@@ -143,6 +142,9 @@ public class RC100 extends RegSped {
 	@XMLFieldProperties(id = "IND_ATIV", isSPEDField = false)
 	private String IND_ATIV;
 
+	@XMLFieldProperties(id = "UF", isSPEDField = false)
+	private String UF;
+	
 	/**
 	 * Constructor
 	 */
@@ -438,6 +440,14 @@ public class RC100 extends RegSped {
 		this.rC195 = rC195;
 	}
 
+	public String getUF() {
+		return UF;
+	}
+
+	public void setUF(String uF) {
+		UF = uF;
+	}
+
 	public void addrC195(RC195 rc195) {
 		this.rC195.add(rc195);
 	}
@@ -591,11 +601,6 @@ public class RC100 extends RegSped {
 	 */
 	public void checkExceptions()
 	{
-
-		if(getNUM_DOC().equals("17339"))
-			System.out.println(getVL_DOC() + "  --  " + getNUM_DOC() + "  --  " + getCOD_PART());
-
-		
 		/*
 		 * Exceção 01:
 		 * Códigos de situação cancelado (código “02”), 
@@ -854,6 +859,7 @@ public class RC100 extends RegSped {
 				return false;
 		} else if (!SER.equals(other.SER))
 			return false;
+		
 		return true;
 	}
 

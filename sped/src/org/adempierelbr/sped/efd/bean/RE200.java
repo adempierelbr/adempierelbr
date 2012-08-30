@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
@@ -85,6 +86,71 @@ public class RE200 extends RegSped {
 		DT_FIN = dT_FIN;
 	}
 
+	public void addValuesE210(BigDecimal VL_DEVOL_ST, BigDecimal VL_RETENÇAO_ST)
+	{
+		if (getrE210() == null)
+			return;
+		
+		getrE210().setVL_DEVOL_ST(getrE210().getVL_DEVOL_ST().add(VL_DEVOL_ST));
+		getrE210().setVL_RETENÇAO_ST(getrE210().getVL_RETENÇAO_ST().add(VL_RETENÇAO_ST));
+		
+		System.out.println("VL_DEVOL_ST: " + VL_DEVOL_ST + "  VL_RETENÇAO_ST: " + VL_RETENÇAO_ST);
+		
+	}
+	
+	
+	@Override
+	public int hashCode() 
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		
+		result = prime * result	+ ((DT_INI == null) ? 0 : DT_INI.hashCode());
+		result = prime * result	+ ((DT_FIN == null) ? 0 : DT_FIN.hashCode());
+		result = prime * result	+ ((UF == null) ? 0 : UF.hashCode());
+		
+		return result;
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		
+		RE200 other = (RE200) obj;
+		
+		if (DT_INI == null && other.DT_INI != null) 
+				return false;
+		
+		else if (DT_FIN == null && other.DT_FIN != null) 
+			return false;
+	
+		else if (DT_FIN != null && other.DT_FIN == null) 
+			return false;
+		
+		else if (DT_INI.compareTo(other.DT_INI) != 0)
+			return false;
+		
+		else if (DT_FIN.compareTo(other.DT_FIN) != 0)
+			return false;
+		
+		else if (UF == null && other.UF != null)
+			return false;
+		
+		else if (!UF.equals(other.UF))			
+			return false;
+		
+		return true;
+	}
+	
+	
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub

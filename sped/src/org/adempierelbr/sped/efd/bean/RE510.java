@@ -92,6 +92,14 @@ public class RE510 extends RegSped implements Comparable<Object> {
 		VL_IPI = vL_IPI;
 	}
 
+	public void addValues(RE510 other)
+	{
+		setVL_BC_IPI(getVL_BC_IPI().add(other.getVL_BC_IPI()));
+		setVL_CONT_IPI(getVL_CONT_IPI().add(other.getVL_CONT_IPI()));
+		setVL_IPI(getVL_IPI().add(other.getVL_IPI()));
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
