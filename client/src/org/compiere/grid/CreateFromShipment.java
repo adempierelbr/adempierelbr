@@ -89,7 +89,7 @@ public class CreateFromShipment extends CreateFrom
 		ArrayList<KeyNamePair> list = new ArrayList<KeyNamePair>();
 
 		String sqlStmt = "SELECT r.M_RMA_ID, r.DocumentNo || '-' || r.Amt from M_RMA r "
-			+ "WHERE ISSOTRX='Y' AND r.DocStatus in ('CO', 'CL') " 
+			+ "WHERE r.DocStatus in ('CO', 'CL') " 
 			+ "AND r.C_BPartner_ID=? "
 			+ "AND r.M_RMA_ID in (SELECT rl.M_RMA_ID FROM M_RMALine rl "
 			+ "WHERE rl.M_RMA_ID=r.M_RMA_ID AND rl.QtyDelivered < rl.Qty " 
