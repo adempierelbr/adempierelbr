@@ -399,7 +399,7 @@ public class ValidatorInOut implements ModelValidator
 					return "Item com quantidade ZERO na linha: #" + line.getLine() + ".";
 
 				if (!MSysConfig.getBooleanValue("LBR_ALLOW_MM_SHIP_RECEIPT_WITHOUT_ORDER", true, inOut.getAD_Client_ID())
-						&& line.getC_OrderLine_ID() == 0)
+						&& line.getC_OrderLine_ID() == 0 && line.getM_RMALine_ID() == 0)
 					return "Ordem de Compra não disponível.";
 
 				MOrderLine oline = new MOrderLine(ctx, line.getC_OrderLine_ID(), trx);
