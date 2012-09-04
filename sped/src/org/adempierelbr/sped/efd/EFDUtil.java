@@ -1570,6 +1570,7 @@ public class EFDUtil {
 		reg.setVL_DEVOL_ST(Env.ZERO);
 		reg.setVL_ICMS_RECOL_ST(Env.ZERO);
 		reg.setVL_SLD_CRED_ST_TRANSPORTAR(Env.ZERO);
+		reg.setVL_DEDUCOES_ST(Env.ZERO);
 		reg.setDEB_ESP_ST(Env.ZERO);
 		
 		return reg;		

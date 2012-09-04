@@ -13,10 +13,12 @@
 package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.compiere.util.Env;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -94,8 +96,37 @@ public class RE200 extends RegSped {
 		getrE210().setVL_DEVOL_ST(getrE210().getVL_DEVOL_ST().add(VL_DEVOL_ST));
 		getrE210().setVL_RETENÇAO_ST(getrE210().getVL_RETENÇAO_ST().add(VL_RETENÇAO_ST));
 		
-		System.out.println("VL_DEVOL_ST: " + VL_DEVOL_ST + "  VL_RETENÇAO_ST: " + VL_RETENÇAO_ST);
 		
+		/*
+		 * Ajustar valores
+		 * (VL_RETENCAO_ST + VL_OUT_DEB_ST + VL_AJ_DEBITOS_ST) - (VL_SLD_CRED_ANT_ST + VL_DEVOL_ST + VL_RESSARC_ST + VL_OUT_CRED_ST + VL_AJ_CREDITOS_ST)
+		 */
+		BigDecimal result = (getrE210().getVL_RETENÇAO_ST()
+						.add(getrE210().getVL_OUT_DEB_ST())
+						.add(getrE210().getVL_AJ_DEBITOS_ST()))
+				.subtract(getrE210().getVL_SLD_CRED_ANT_ST()
+						.add(getrE210().getVL_DEVOL_ST())
+						.add(getrE210().getVL_RESSARC_ST())
+						.add(getrE210().getVL_OUT_CRED_ST())
+						.add(getrE210().getVL_AJ_CREDITOS_ST()));
+
+		if(result.signum() == 1)
+		{
+			getrE210().setVL_SLD_DEV_ANT_ST(result.setScale(2, RoundingMode.HALF_UP));
+			getrE210().setVL_SLD_CRED_ST_TRANSPORTAR(Env.ZERO);
+		}
+		else
+		{
+			getrE210().setVL_SLD_DEV_ANT_ST(Env.ZERO);
+			getrE210().setVL_SLD_CRED_ST_TRANSPORTAR(result.setScale(2, RoundingMode.HALF_UP));			
+		}
+		
+		/*
+ 	 	 * ST a recolher
+ 	 	 * 
+ 	 	 * VL_SLD_DEV_ANT_ST - VL_DEDUCOES_ST
+		 */
+		getrE210().setVL_ICMS_RECOL_ST(getrE210().getVL_SLD_DEV_ANT_ST().subtract(getrE210().getVL_DEDUCOES_ST()).setScale(2, RoundingMode.HALF_UP));
 	}
 	
 	

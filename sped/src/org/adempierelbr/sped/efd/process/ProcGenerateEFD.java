@@ -439,9 +439,6 @@ public class ProcGenerateEFD extends SvrProcess
 			}
 			
 
-			
-			
-			
 			/**
 			 * INVENTÁRIO - BLOCO H
 			 * 
@@ -523,7 +520,6 @@ public class ProcGenerateEFD extends SvrProcess
 					
 				}
 			} // fim Bloco H
-			
 			
 			
 			/*
