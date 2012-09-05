@@ -85,6 +85,25 @@ public class BLOCOE {
 	public void setrE990(RE990 rE990) {
 		this.rE990 = rE990;
 	}
+	
+	/**
+	 * Subtrair devoluções dos registros RE250, filhos do RE210
+	 */
+	public void subtractReversalRE250()
+	{
+		// 
+		for(RE200 aux_re200 : getrE200())
+		{
+			// 
+			if(aux_re200.getrE210() == null)
+				continue;
+			
+			// 
+			aux_re200.getrE210().subtractReversalRE250();
+		}
+			
+	}
+	
 
 	/**
 	 * To String

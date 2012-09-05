@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.compiere.util.Env;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -203,6 +204,41 @@ public class RE210 extends RegSped {
 		this.rE250 = rE250;
 	}
 
+	/**
+	 * Ajustar valores referentes a devoluções nos E250
+	 */
+	public void subtractReversalRE250()
+	{
+		// 
+		BigDecimal SLD_VL_DEVOL = getVL_DEVOL_ST();
+		
+		//
+		for(RE250 reg : getrE250())
+		{
+		
+			// se o valor do registro E250 for maior que o valor da devolução, então subtrair o valor do E250 e parar
+			if ( getrE250().get(getrE250().indexOf(reg)).getVL_OR().compareTo(SLD_VL_DEVOL) == 1)
+			{
+				getrE250().get(getrE250().indexOf(reg)).setVL_OR(getrE250().get(getrE250().indexOf(reg)).getVL_OR().subtract(SLD_VL_DEVOL));
+				SLD_VL_DEVOL = Env.ZERO;
+				break;
+			}
+			
+			// se o saldo das devoluções for maior, zerar o registro RE250 e subtrair o saldo das devoluções 
+			else if(getrE250().get(getrE250().indexOf(reg)).getVL_OR().compareTo(SLD_VL_DEVOL)  <= 0)
+			{
+				//
+				System.out.println("getrE250().indexOf(reg)).getVL_OR() >> " + getrE250().get(getrE250().indexOf(reg)).getVL_OR());
+				
+				//
+				SLD_VL_DEVOL = SLD_VL_DEVOL.subtract(getrE250().get(getrE250().indexOf(reg)).getVL_OR());
+				getrE250().get(getrE250().indexOf(reg)).setVL_OR(Env.ZERO);
+			}				
+		}
+		
+	}
+	
+	
 	/**
 	 * Adicionar registros E250
 	 * 

@@ -110,6 +110,15 @@ public class RE200 extends RegSped {
 						.add(getrE210().getVL_OUT_CRED_ST())
 						.add(getrE210().getVL_AJ_CREDITOS_ST()));
 
+		/*
+		 * SE RESULTADO FOR > 0 ENTAO 
+		 *	VL_SLD_DEV_ANT_ST = RESULTADO
+		 *	VL_SLD_CRED_ST_TRANSPORTAR = 0
+		 * SENAO 
+		 * 	VL_SLD_CRED_ST_TRANSPORTAR = RESULTADO
+		 * 	VL_SLD_DEV_ANT_ST = 0
+
+		 */
 		if(result.signum() == 1)
 		{
 			getrE210().setVL_SLD_DEV_ANT_ST(result.setScale(2, RoundingMode.HALF_UP));

@@ -116,7 +116,7 @@ public class EFDUtil {
 	
 	
 	// 
-	public static List<String> CFOP_DEVOL_ST = new ArrayList<String>(Arrays.asList("1410", "1411", "1414", "1415", "1660", 
+	private static List<String> CFOP_DEVOL_ST = new ArrayList<String>(Arrays.asList("1410", "1411", "1414", "1415", "1660", 
 			"1661", "1662", "2410", "2411", "2414", "2415", "2660", "2661", "2662"));
 	
 
@@ -129,6 +129,9 @@ public class EFDUtil {
 	 */
 	public static boolean isCFOPDevolST(String CFOP)
 	{
+		// 
+		CFOP = TextUtil.toNumeric(CFOP);
+		
 		//
 		for (String x : CFOP_DEVOL_ST)
 			if(x.equals(CFOP))
@@ -1580,24 +1583,35 @@ public class EFDUtil {
 	/**
 	 * REGISTRO E250: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – SUBSTITUIÇÃO TRIBUTÁRIA.
 	 * 
-	 * TODO: Origem dos Dados?
+	 * Código da obrigação a recolher, conforme a Tabela 5.4
+	 * 002 - Saídas para o Estados
+	 * 999 - Saídas para outros Estados
 	 * 
-	 * 
+	 * @param isSameRegion mesmo estado do emitente
+	 * @param DT_VCTO data de vcto
+	 * @param VL_OR valor da obrigação de icms st a recolher
+	 * @param MES_REF mês de referência
+	 *
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE250 createRE250() throws Exception
+	public static RE250 createRE250(boolean isSameRegion, Timestamp DT_VCTO, BigDecimal VL_OR, Timestamp dateTo, String DocumentNo) throws Exception
 	{
+		//
+		String COD_OR = "002";
+		if(!isSameRegion)
+			COD_OR = "999";
+			
 		RE250 reg = new RE250();
-		reg.setCOD_OR("");
-		reg.setVL_OR(Env.ZERO);
-		reg.setDT_VCTO(null);
-		reg.setCOD_REC("");
-		reg.setNUM_PROC("");
-		reg.setIND_PROC("");
-		reg.setPROC("");
-		reg.setTXT_COMPL("");
-		reg.setMES_REF(null);
+		reg.setCOD_OR(COD_OR);
+		reg.setVL_OR(VL_OR);
+		reg.setDT_VCTO(DT_VCTO);
+		reg.setCOD_REC("10009-9"); 	// TODO ??? 
+		reg.setNUM_PROC("");		// TODO ???
+		reg.setIND_PROC("");		// TODO ???
+		reg.setPROC("");			// TODO ???
+		reg.setTXT_COMPL(DocumentNo);
+		reg.setMES_REF(TextUtil.timeToString(dateTo, "MMyyyy"));
 		
 		return reg;
 	}

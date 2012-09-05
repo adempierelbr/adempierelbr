@@ -1,5 +1,6 @@
 package org.adempierelbr.sped.efd.process;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -344,9 +345,12 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			
 			/**
-			 * APURAÇÃO DE ICMS, IPI - BLOCO E
+			 * APURAÇÃO DE ICMS, IPI e ST - BLOCO E
 			 */
-			// Registro de Apuração ICMS do Período
+			
+			/**
+			 * ICMS
+			 */
 			MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "ICMSPROD", p_C_Period_ID, null);
 			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 			{				
@@ -360,17 +364,6 @@ public class ProcGenerateEFD extends SvrProcess
 				if(blocoE.getrE100().getrE110() != null)
 				{
 					
-					/* ATUALIZAR A APURAÇÃO NO ADEMPIERE BASEADO NA APURAÇÃO DO SPED
-					m_taxAssessment.setCumulatedAmt(blocoE.getrE100().getrE110().getVL_SLD_CREDOR_ANT());
-					m_taxAssessment.setTotalDr(blocoE.getrE100().getrE110().getVL_TOT_DEBITOS());
-					m_taxAssessment.setTotalCr(blocoE.getrE100().getrE110().getVL_TOT_CREDITOS());
-					m_taxAssessment.setAmtSourceCr(blocoE.getrE100().getrE110().getVL_AJ_CREDITOS());
-					m_taxAssessment.setAmtSourceDr(blocoE.getrE100().getrE110().getVL_AJ_DEBITOS());
-					m_taxAssessment.setTotalAmt(blocoE.getrE100().getrE110().getVL_SLD_APURADO());
-					m_taxAssessment.setLBR_SaldoCredorTrasnportar(blocoE.getrE100().getrE110().getVL_SLD_CREDOR_TRANSPORTAR());
-					m_taxAssessment.save();
-					*/
-					
 					// linhas de ajustes da apuração
 					for (X_LBR_TaxAssessmentLine line : m_taxAssessment.getLines())
 						blocoE.getrE100().addrE111(EFDUtil.createRE111(bloco0.getR0000().getUF(), true, line));
@@ -378,7 +371,9 @@ public class ProcGenerateEFD extends SvrProcess
 			}
 			
 			
-			// ICMS ST 
+			/**
+			 * ICMS ST 
+			 */
 			for (RC100 aux_rc100 : blocoC.getrC100())
 			{
 
@@ -389,38 +384,64 @@ public class ProcGenerateEFD extends SvrProcess
 					// RE200 - criar registro da UF no período
 					RE200 re200 = EFDUtil.createRE200(aux_rc100.getUF(), dateFrom, dateTo);
 					
+					
 					//
 					if(blocoE.getrE200().contains(re200))
 						re200.subtractCounter();
 					else 
 						blocoE.getrE200().add(re200);
 					
+					
 					// criar o registro necessário da apuração, se já não existir
 					if(blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).getrE210() == null)
 						blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).setrE210(EFDUtil.createRE210());
 	
+					
+					// Vlr Débito, Vlr Devolução de ST
+					BigDecimal VL_DEVOL_ST = Env.ZERO; 
+					BigDecimal VL_RETENÇAO_ST = Env.ZERO;
+					
+					
 					// linhas para extrarir os valores de ST, tanto de devolução quanto débito
 					for(RC190 aux_rc190 : aux_rc100.getrC190())
 					{
+						 // se for devolução de venda
+						if (EFDUtil.isCFOPDevolST(aux_rc190.getCFOP()) && aux_rc190.getVL_ICMS_ST().signum() == 1)
+							VL_DEVOL_ST = VL_DEVOL_ST.add(aux_rc190.getVL_ICMS_ST());
 						
 						// venda e tem débito, somar ao totalizador da UF
-						if(aux_rc100.getIND_OPER().equals("1") 
-								&& aux_rc190.getVL_ICMS_ST().signum() == 1)
-							blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).addValuesE210(Env.ZERO, aux_rc190.getVL_ICMS_ST());
+						else if(aux_rc100.getIND_OPER().equals("1") && aux_rc190.getVL_ICMS_ST().signum() == 1)
+							VL_RETENÇAO_ST = VL_RETENÇAO_ST.add(aux_rc190.getVL_ICMS_ST());
 						
-						// se for devolução de venda
-						else if (EFDUtil.CFOP_DEVOL_ST.contains(aux_rc190.getCFOP()) 
-								&& aux_rc190.getVL_ICMS_ST().signum() == 1)
-							blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).addValuesE210(aux_rc190.getVL_ICMS_ST(), Env.ZERO);
-							
-					}
-				}
-			}
+					} // for RC190s
+					
+					
+					// somar valores apurados no totalizador da NF
+					blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).addValuesE210(VL_DEVOL_ST, VL_RETENÇAO_ST);
+					
+					
+					// criar registro 250 e adicionar ao RE210, um por NF para discriminar o lançamento que gera o débido/ajuste
+					if(VL_RETENÇAO_ST.signum() == 1)
+					{
+						// adicionar o RE250 ao RE210
+						blocoE.getrE200().get(blocoE.getrE200().indexOf(re200)).getrE210().addrE250(
+								EFDUtil.createRE250(bloco0.getR0000().getUF().equals(aux_rc100.getUF()), 
+										aux_rc100.getDT_DOC(), VL_RETENÇAO_ST, dateTo, aux_rc100.getNUM_DOC()));
+						
+					} // end if retencao > 0
+					
+				} // end if st > 0
+			
+			} // for rc100s
+			
+			// validar valores da substitução tributária referentes as devoluções
+			blocoE.subtractReversalRE250();
+
 			
 				
 			
-			/* 
-			 * APURACAO IPI
+			/** 
+			 * IPI
 			 */
 			m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "IPI", p_C_Period_ID, null);
 			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)

@@ -56,7 +56,7 @@ public class RE250 extends RegSped {
 	private String TXT_COMPL;
 
 	@XMLFieldProperties(id = "MES_REF", maxSize = 6, minSize = 6)
-	private Timestamp MES_REF;
+	private String MES_REF;
 
 	/**
 	 * Constructor
@@ -129,11 +129,11 @@ public class RE250 extends RegSped {
 		TXT_COMPL = tXT_COMPL;
 	}
 
-	public Timestamp getMES_REF() {
+	public String getMES_REF() {
 		return MES_REF;
 	}
 
-	public void setMES_REF(Timestamp mES_REF) {
+	public void setMES_REF(String mES_REF) {
 		MES_REF = mES_REF;
 	}
 
@@ -143,4 +143,46 @@ public class RE250 extends RegSped {
 		return 0;
 	}
 
+	@Override
+	public int hashCode() 
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+		
+		result = prime * result	+ ((DT_VCTO == null) ? 0 : DT_VCTO.hashCode());
+		result = prime * result	+ ((TXT_COMPL == null) ? 0 : TXT_COMPL.hashCode());
+		
+		return result;
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) 
+	{
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		
+		RE250 other = (RE250) obj;
+		
+		if (DT_VCTO == null && other.DT_VCTO != null) 
+				return false;
+		
+		else if (TXT_COMPL == null && other.TXT_COMPL != null) 
+			return false;
+		
+		else if (DT_VCTO.compareTo(other.DT_VCTO) != 0)
+			return false;
+		
+		else if (TXT_COMPL.compareTo(other.TXT_COMPL) != 0)
+			return false;
+				
+		return true;
+	}
+	
+	
 } // RE250
