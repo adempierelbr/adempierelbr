@@ -358,7 +358,7 @@ public class ProcGenerateEFD extends SvrProcess
 				blocoE.setrE100(EFDUtil.createRE100(dateFrom, dateTo));
 				
 				// E110 - gerar baseado nos blocos C e D
-				blocoE.getrE100().setrE110(EFDUtil.createRE110(m_taxAssessment, blocoC, blocoD));
+				blocoE.getrE100().setrE110(EFDUtil.createRE110(m_taxAssessment));
 				
 	 			// Adicionar detalhes dos ajustes do E110
 				if(blocoE.getrE100().getrE110() != null)
@@ -367,6 +367,23 @@ public class ProcGenerateEFD extends SvrProcess
 					// linhas de ajustes da apuração
 					for (X_LBR_TaxAssessmentLine line : m_taxAssessment.getLines())
 						blocoE.getrE100().addrE111(EFDUtil.createRE111(bloco0.getR0000().getUF(), true, line));
+				}
+				
+				for(RC100 aux_rc100 : blocoC.getrC100())
+				{
+					// total de débitos
+					BigDecimal totalDeb = Env.ZERO;
+					
+					// RC190
+					for ( RC190 aux_rc190 : aux_rc100.getrC190())
+					{
+						if(aux_rc190.getCFOP().startsWith("5") || aux_rc190.getCFOP().startsWith("6"))
+							totalDeb = totalDeb.add(aux_rc190.getVL_ICMS());
+					}
+					
+					//
+					blocoE.getrE100().addrE116(EFDUtil.createRE116(aux_rc100.getUF().equals(bloco0.getR0000().getUF()), 
+							aux_rc100.getDT_DOC(), totalDeb, dateTo, aux_rc100.getNUM_DOC()));
 				}
 			}
 			
@@ -412,6 +429,7 @@ public class ProcGenerateEFD extends SvrProcess
 						// venda e tem débito, somar ao totalizador da UF
 						else if(aux_rc100.getIND_OPER().equals("1") && aux_rc190.getVL_ICMS_ST().signum() == 1)
 							VL_RETENÇAO_ST = VL_RETENÇAO_ST.add(aux_rc190.getVL_ICMS_ST());
+					
 						
 					} // for RC190s
 					
@@ -446,17 +464,24 @@ public class ProcGenerateEFD extends SvrProcess
 			m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "IPI", p_C_Period_ID, null);
 			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 			{				
+				
+				System.out.println("Apurou IPI");
+				
 				// E500
 				blocoE.setrE500(EFDUtil.createRE500(dateFrom, dateTo));
 				
 				// E510 - Resumo baseado no RC170				
 				for (RC100 regRC100 : blocoC.getrC100())
 				{
-					for ( RC170 rc170 : regRC100.getrC170())
-						blocoE.getrE500().addrE520(EFDUtil.createRE510(rc170));
+					for ( RC190 rc190 : regRC100.getrC190())
+					{
+						// só gerar de registros que tenham IPI
+						if(rc190.getVL_IPI().signum() == 1)
+							blocoE.getrE500().addrE510(EFDUtil.createRE510(rc190));
+					}
 				}
 				
-				//blocoE.getrE500().setrE520(EFDUtil.createRE520());
+				blocoE.getrE500().setrE520(EFDUtil.createRE520(m_taxAssessment, blocoE.getrE500().getrE510()));
 			}
 			
 

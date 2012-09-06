@@ -97,7 +97,7 @@ public class RE500 extends RegSped {
 		return IND_APUR;
 	}
 	
-	public void addrE520(RE510 reg)
+	public void addrE510(RE510 reg)
 	{
 		// verificar se já existe
 		if(getrE510().contains(reg))

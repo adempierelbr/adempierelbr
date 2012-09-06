@@ -75,7 +75,7 @@ public class MLBRTaxAssessment extends X_LBR_TaxAssessment
 					 "	FROM LBR_TaxAssessment											" +
 					 " WHERE LBR_TaxName_ID IN (SELECT LBR_TaxName_ID 					" +
 					 " 						FROM LBR_TaxName WHERE LBR_TaxType = 'P' 	" +
-					 "  					 AND Name Like ?) 							" +
+					 "  					 AND trim(Name) Like ?) 					" +
 					 " AND C_Period_ID = ? 												" +
 					 " AND AD_Org_ID = ?												";		
 		

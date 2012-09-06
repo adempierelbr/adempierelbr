@@ -44,6 +44,9 @@ public class RE100 extends RegSped {
 	@XMLFieldProperties(id = "RE111", isSPEDField = false)
 	private List<RE111> rE111 = new ArrayList<RE111>();
 
+	@XMLFieldProperties(id = "RE116", isSPEDField = false)
+	private List<RE116> rE116 = new ArrayList<RE116>();
+
 	/**
 	 * Constructor
 	 * 
@@ -54,8 +57,15 @@ public class RE100 extends RegSped {
 		super();
 	} // RE100
 
-	public RE110 getrE110() 
-	{	
+	public List<RE116> getrE116() {
+		return rE116;
+	}
+
+	public void setrE116(List<RE116> rE116) {
+		this.rE116 = rE116;
+	}
+
+	public RE110 getrE110() {
 		return rE110;
 	}
 
@@ -86,10 +96,13 @@ public class RE100 extends RegSped {
 	public void setDT_FIN(Timestamp dT_FIN) {
 		DT_FIN = dT_FIN;
 	}
-	
-	public void addrE111(RE111 reg)
-	{
+
+	public void addrE111(RE111 reg) {
 		this.rE111.add(reg);
+	}
+
+	public void addrE116(RE116 reg) {
+		this.rE116.add(reg);
 	}
 	
 	@Override

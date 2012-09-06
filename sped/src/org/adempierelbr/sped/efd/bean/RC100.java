@@ -569,7 +569,9 @@ public class RC100 extends RegSped {
 		rc190.setVL_ICMS(rc170.getVL_ICMS());
 		rc190.setVL_BC_ICMS_ST(rc170.getVL_BC_ICMS_ST());
 		rc190.setVL_ICMS_ST(rc170.getVL_ICMS_ST());
-
+		rc190.setVL_BC_IPI(rc170.getVL_BC_IPI());
+		rc190.setCST_IPI(rc170.getCST_IPI());
+		
 		// valor cálculado na C170
 		rc190.setVL_RED_BC(rc170.getVL_RED_BC_ICMS());
 

@@ -49,6 +49,7 @@ import org.adempierelbr.sped.efd.bean.RE001;
 import org.adempierelbr.sped.efd.bean.RE100;
 import org.adempierelbr.sped.efd.bean.RE110;
 import org.adempierelbr.sped.efd.bean.RE111;
+import org.adempierelbr.sped.efd.bean.RE116;
 import org.adempierelbr.sped.efd.bean.RE200;
 import org.adempierelbr.sped.efd.bean.RE210;
 import org.adempierelbr.sped.efd.bean.RE250;
@@ -1339,44 +1340,9 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE110 createRE110(MLBRTaxAssessment m_taxassessment, BLOCOC blocoC, BLOCOD blocoD) throws Exception
+	public static RE110 createRE110(MLBRTaxAssessment m_taxassessment) throws Exception
 	{
-		
-		/* Montar Totais de Crédito/Débito
-		BigDecimal AmtCr = Env.ZERO;
-		BigDecimal AmtDr = Env.ZERO;
-		
-		// para cada nf
-		for (RC100 rc100 : blocoC.getrC100())
-		{
-			// cada totalizador da nf
-			for (RC190 rc190 : rc100.getrC190())
-			{
-				// se for compra, crédito senão débito
-				if(rc190.getCFOP().startsWith("1") 
-						|| rc190.getCFOP().startsWith("2")
-						|| rc190.getCFOP().startsWith("3"))
-					AmtCr = AmtCr.add(rc190.getVL_ICMS());
-				else
-					AmtDr = AmtDr.add(rc190.getVL_ICMS());
-			}
-		}
-		
-		// para cada ct
-		for (RD100 rd100 : blocoD.getrD100())
-		{
-			// cada totalizador do ct
-			for (RD190 rd190 : rd100.getrD190())
-			{
-				// se for entrada, crédito senão débito
-				if(rd190.getCFOP().startsWith("1") 
-						|| rd190.getCFOP().startsWith("2")
-						|| rd190.getCFOP().startsWith("3"))
-					AmtCr = AmtCr.add(rd190.getVL_ICMS());
-				else
-					AmtDr = AmtDr.add(rd190.getVL_ICMS());
-			}
-		}*/
+
 		
 		
 		RE110 reg = new RE110();
@@ -1526,6 +1492,42 @@ public class EFDUtil {
 		return reg;
 	}
 	
+	/**
+	 * REGISTRO RE116: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – OPERAÇÕES PRÓPRIAS.
+	 * 
+	 * Código da obrigação a recolher, conforme a Tabela 5.4
+	 * 002 - Saídas para o Estados
+	 * 999 - Saídas para outros Estados
+	 * 
+	 * @param isSameRegion mesmo estado do emitente
+	 * @param DT_VCTO data de vcto
+	 * @param VL_OR valor da obrigação de icms st a recolher
+	 * @param MES_REF mês de referência
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE116 createRE116(boolean isSameRegion, Timestamp DT_VCTO, BigDecimal VL_OR, Timestamp dateTo, String DocumentNo) throws Exception
+	{
+		//
+		String COD_OR = "002";
+		if(!isSameRegion)
+			COD_OR = "999";
+			
+		RE116 reg = new RE116();
+		reg.setCOD_OR(COD_OR);
+		reg.setVL_OR(VL_OR);
+		reg.setDT_VCTO(DT_VCTO);
+		reg.setCOD_REC("10009-9"); 	// TODO ??? 
+		reg.setNUM_PROC("");		// TODO ???
+		reg.setIND_PROC("");		// TODO ???
+		reg.setPROC("");			// TODO ???
+		reg.setTXT_COMPL(DocumentNo);
+		reg.setMES_REF(TextUtil.timeToString(dateTo, "MMyyyy"));
+		
+		return reg;
+	}
+	
 	
 	/**
 	 * REGISTRO E200: PERÍODO DA APURAÇÃO DO ICMS - SUBSTITUIÇÃO TRIBUTÁRIA.
@@ -1630,6 +1632,7 @@ public class EFDUtil {
 	public static RE500 createRE500(Timestamp dtIni, Timestamp dtFin) throws Exception
 	{
 		RE500 reg = new RE500();
+		reg.setIND_APUR(IND_APUR);
 		reg.setDT_INI(dtIni);
 		reg.setDT_FIN(dtFin);
 		
@@ -1647,14 +1650,14 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE510 createRE510(RC170 rc170) throws Exception
+	public static RE510 createRE510(RC190 rc190) throws Exception
 	{
 		RE510 reg = new RE510();
-		reg.setCFOP(rc170.getCFOP());
-		reg.setCST_IPI(rc170.getCST_IPI());
-		reg.setVL_CONT_IPI(rc170.getVL_OPER());
-		reg.setVL_BC_IPI(rc170.getVL_BC_IPI());
-		reg.setVL_IPI(rc170.getVL_IPI());
+		reg.setCFOP(rc190.getCFOP());
+		reg.setCST_IPI(rc190.getCST_IPI());
+		reg.setVL_CONT_IPI(rc190.getVL_OPR());
+		reg.setVL_BC_IPI(rc190.getVL_BC_IPI());
+		reg.setVL_IPI(rc190.getVL_IPI());
 		
 		return reg;
 	}
@@ -1673,6 +1676,16 @@ public class EFDUtil {
 	{
 		RE520 reg = new RE520();
 		
+		// valores defaults == zero
+		reg.setVL_SD_ANT_IPI(Env.ZERO);
+		reg.setVL_DEB_IPI(Env.ZERO);
+		reg.setVL_CRED_IPI(Env.ZERO);
+		reg.setVL_OD_IPI(Env.ZERO);
+		reg.setVL_OC_IPI(Env.ZERO);
+		reg.setVL_SC_IPI(Env.ZERO);
+		reg.setVL_SD_IPI(Env.ZERO);
+		
+		
 		// saldo anterior
 		reg.setVL_SD_ANT_IPI(MLBRTaxAssessment.getCumulatedAmt(m_taxassessment.getCtx(), 
 				m_taxassessment.getC_Period_ID(), 
@@ -1683,11 +1696,13 @@ public class EFDUtil {
 		for(RE510 re510 : re510s)
 		{
 			// se for compra é crédito, venda é débito
-			if(re510.getCFOP().endsWith("1") 
-					|| re510.getCFOP().endsWith("2") 
-					|| re510.getCFOP().endsWith("3"))
+			if(re510.getCFOP().startsWith("1") 
+					|| re510.getCFOP().startsWith("2") 
+					|| re510.getCFOP().startsWith("3"))
 				reg.setVL_CRED_IPI(reg.getVL_CRED_IPI().add(re510.getVL_IPI()));	
-			else
+			
+			else if(re510.getCFOP().startsWith("5") 
+					|| re510.getCFOP().startsWith("6"))
 				reg.setVL_DEB_IPI(reg.getVL_DEB_IPI().add(re510.getVL_IPI()));
 		}
 		
@@ -1695,6 +1710,29 @@ public class EFDUtil {
 		reg.setVL_OC_IPI(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos));
 		reg.setVL_SC_IPI(Env.ZERO);
 		reg.setVL_SD_IPI(Env.ZERO);
+		
+		
+		/* 
+			Campo 07 - Validação: se a soma dos campos VL_DEB_IPI e VL_OD_IPI 
+			menos a soma dos campos VL_SD_ANT_IPI, VL_CRED_IPI e VL_OC_IPI 
+			for menor que “0” (zero), então o campo VL_SC_IPI deve ser igual 
+			ao valor absoluto da expressão, e o valor do campo VL_SD_IPI deve 
+			ser igual a “0” (zero).
+			 
+			 
+			Campo 08 - Validação: se a soma dos campos VL_DEB_IPI e VL_OD_IPI 
+			menos a soma dos campos VL_SD_ANT_IPI, VL_CRED_IPI e VL_OC_IPI for
+			maior ou igual a “0” (zero), então o campo 08 (VL_SD_IPI) deve ser
+			igual ao resultado da expressão, e o valor do campo VL_SC_IPI deve
+			ser igual a “0” (zero).
+		 */
+		BigDecimal SLD = (reg.getVL_DEB_IPI().add(reg.getVL_OD_IPI()))
+				.subtract((reg.getVL_SD_ANT_IPI().add(reg.getVL_CRED_IPI()).add(reg.getVL_OC_IPI())));
+
+		if(SLD.signum() == -1)
+			reg.setVL_SC_IPI(SLD.abs());
+		else
+			reg.setVL_SD_IPI(SLD);		
 		
 		return reg;
 	}

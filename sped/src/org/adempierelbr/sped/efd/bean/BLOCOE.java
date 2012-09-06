@@ -133,6 +133,10 @@ public class BLOCOE {
 			// E111
 			for (RE111 aux_rE111 : rE100.getrE111())
 				result.append(aux_rE111);
+			
+			// E116
+			for (RE116 aux_rE116 : rE100.getrE116())
+				result.append(aux_rE116);
 		}
 
 		
@@ -164,7 +168,7 @@ public class BLOCOE {
 			// E500
 			result.append(rE500);
 			
-			// E520
+			// E510
 			for (RE510 aux_rE510 : rE500.getrE510())
 				result.append(aux_rE510);
 			

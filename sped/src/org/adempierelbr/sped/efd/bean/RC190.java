@@ -62,6 +62,15 @@ public class RC190 extends RegSped {
 	
 	@XMLFieldProperties(id = "COD_OBS")
 	private String COD_OBS;
+	
+	/*
+	 * Valores auxiliares usado na apuração do IPI
+	 */
+	@XMLFieldProperties(id = "VL_BC_IPI", isSPEDField = false)
+	private BigDecimal VL_BC_IPI;
+	
+	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "CST_IPI", isNumber = true, isSPEDField = false)
+	private String CST_IPI;
 
 	/**
 	 * Constructor
@@ -83,6 +92,22 @@ public class RC190 extends RegSped {
 	public RC190() {
 		super();
 	}// RC190
+
+	public BigDecimal getVL_BC_IPI() {
+		return VL_BC_IPI;
+	}
+
+	public void setVL_BC_IPI(BigDecimal vL_BC_IPI) {
+		VL_BC_IPI = vL_BC_IPI;
+	}
+
+	public String getCST_IPI() {
+		return CST_IPI;
+	}
+
+	public void setCST_IPI(String cST_IPI) {
+		CST_IPI = cST_IPI;
+	}
 
 	public String getCST_ICMS() {
 		return CST_ICMS;
@@ -181,6 +206,7 @@ public class RC190 extends RegSped {
 		this.VL_ICMS_ST    = getVL_ICMS_ST().add(otherC190.getVL_ICMS_ST());
 		this.VL_RED_BC     = getVL_RED_BC().add(otherC190.getVL_RED_BC());
 		this.VL_IPI        = getVL_IPI().add(otherC190.getVL_IPI());
+		this.VL_BC_IPI     = getVL_BC_IPI().add(otherC190.getVL_BC_IPI());
 	}
 	
 	
