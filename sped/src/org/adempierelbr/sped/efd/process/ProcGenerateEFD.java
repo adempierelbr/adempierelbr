@@ -369,22 +369,6 @@ public class ProcGenerateEFD extends SvrProcess
 						blocoE.getrE100().addrE111(EFDUtil.createRE111(bloco0.getR0000().getUF(), true, line));
 				}
 				
-				for(RC100 aux_rc100 : blocoC.getrC100())
-				{
-					// total de débitos
-					BigDecimal totalDeb = Env.ZERO;
-					
-					// RC190
-					for ( RC190 aux_rc190 : aux_rc100.getrC190())
-					{
-						if(aux_rc190.getCFOP().startsWith("5") || aux_rc190.getCFOP().startsWith("6"))
-							totalDeb = totalDeb.add(aux_rc190.getVL_ICMS());
-					}
-					
-					//
-					blocoE.getrE100().addrE116(EFDUtil.createRE116(aux_rc100.getUF().equals(bloco0.getR0000().getUF()), 
-							aux_rc100.getDT_DOC(), totalDeb, dateTo, aux_rc100.getNUM_DOC()));
-				}
 			}
 			
 			
