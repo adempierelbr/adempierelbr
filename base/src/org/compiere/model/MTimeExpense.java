@@ -415,6 +415,17 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	}	//	completeIt
 	
 	/**
+	 * 	Before Delete
+	 *	@return true of it can be deleted
+	 */
+	protected boolean beforeDelete ()
+	{
+		if (isProcessed())
+			return false;
+		return true;
+	}	//	beforeDelete
+	
+	/**
 	 * 	Void Document.
 	 * 	Same as Close.
 	 * 	@return true if success 
@@ -519,7 +530,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 			return false;
 		
 	//	setProcessed(false);
-		return false;
+		return true;
 	}	//	reActivateIt
 	
 	

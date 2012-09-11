@@ -466,7 +466,7 @@ public class MRequisition extends X_M_Requisition implements DocAction
 		if (m_processMsg != null)
 			return false;
 
-		return false;
+		return true;
 	}	//	reverseCorrectionIt
 	
 	/**
