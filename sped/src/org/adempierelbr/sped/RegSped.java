@@ -42,6 +42,8 @@ import org.compiere.util.Env;
  */
 public abstract class RegSped implements Comparable<Object> {
 	
+
+
 	/**	
 	 * Logger			
 	 */
@@ -88,6 +90,11 @@ public abstract class RegSped implements Comparable<Object> {
 	}	//	isValid
 	
 	
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	/**
 	 * Retornar a mensagem de erro
 	 * 
@@ -106,6 +113,7 @@ public abstract class RegSped implements Comparable<Object> {
 		addCounter();
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
