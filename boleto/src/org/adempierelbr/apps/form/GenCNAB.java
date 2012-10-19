@@ -216,7 +216,7 @@ public class GenCNAB
 	
 	/**
 	 *	Save Selection & return selecion Query or ""
-	 *  @return where clause like C_Order_ID IN (...)
+	 *  @return where clause like LBR_CNAB_ID IN (...)
 	 */
 	private String saveSelection (IMiniTable miniTable)
 	{
@@ -263,7 +263,7 @@ public class GenCNAB
 	}	//	saveSelection
 	
 	/**
-	 *  Generate PaySelection
+	 *  Generate CNAB
 	 */
 	public File genCNAB (IMiniTable miniTable, String filePath, KeyNamePair bi)
 	{
@@ -296,7 +296,7 @@ public class GenCNAB
     		log.log(Level.SEVERE,"Erro ao gerar arquivo CNAB", e);
     	}
 		return file;
-	}   //  generatePaySelect
+	}   //  genCNAB
 	
 	/**
 	 * 	Delete folder

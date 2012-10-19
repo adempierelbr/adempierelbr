@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import org.adempierelbr.util.AdempiereLBR;
@@ -71,7 +72,10 @@ public class ProcReturnCNAB extends SvrProcess
 
 		String[] linhas = TextUtil.readFile(p_FileName);
 
-	    if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
+		if (p_FilePath == null || p_FilePath.trim().length() < 1)
+			p_FilePath = System.getProperty("java.io.tmpdir") + File.separator;
+			
+		else if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
 	    	p_FilePath += AdempiereLBR.getFileSeparator();
 
 		String RoutingNo = linhas[0].substring(76, 79); //Cód. Banco
