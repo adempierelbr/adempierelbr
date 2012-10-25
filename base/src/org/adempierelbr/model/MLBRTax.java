@@ -16,7 +16,9 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +79,23 @@ public class MLBRTax extends X_LBR_Tax
 	/**	Amount			*/
 	public static final String AMT 			= "AMT";
 	
+	/**	Qty			*/
+	public static final String QTY 			= "QTY";
+	
+	/**	Calculation Type	*/
+	public static final int TYPE_RATE_OR_IVA 	= 100;
+	public static final int TYPE_TARIFF 		= 101;
+	public static final int TYPE_LIST_MAX 		= 102;
+	public static final int TYPE_AMOUNT 		= 103;
+	public static final int TYPE_LIST_POSITIVE 	= 104;
+	public static final int TYPE_LIST_NEUTRAL 	= 105;
+	public static final int TYPE_LIST_NEGATIVE 	= 106;
+	
 	/**	ST				*/
-	private static boolean hasSubstitution    		= false;
+	private static boolean hasSubstitution    	= false;
+	
+	/**	Included Taxes	*/
+	private List<Integer> includedTaxes = new ArrayList<Integer>();
 
 	/**************************************************************************
 	 *  Default Constructor
@@ -115,7 +132,15 @@ public class MLBRTax extends X_LBR_Tax
 		/**
 		 * 	Os impostos de ST devem ser calculados por último
 		 */
-		Arrays.sort (taxLines);
+		Arrays.sort (taxLines, new Comparator<MLBRTaxLine>()
+		{
+			public int compare (MLBRTaxLine tl1, MLBRTaxLine tl2)
+			{
+				if (MLBRTaxName.LBR_TAXTYPE_Substitution.equals(tl1.getLBR_TaxName().getlbr_TaxType()))
+					return 1;
+				return -1;
+			}	//	compare
+		});
 		
 		/**
 		 * 	Faz o cálculo para todos os impostos
@@ -127,43 +152,88 @@ public class MLBRTax extends X_LBR_Tax
 			//
 			log.fine("[MLBRTaxName=" + taxName.getName() + ", MLBRTaxFormula=" + taxFormula + "]");
 			//
+			BigDecimal taxBase		= Env.ZERO;
 			BigDecimal taxBaseAdd 	= Env.ZERO;
+			BigDecimal taxAmt		= Env.ZERO;
 			BigDecimal amountBase 	= Env.ZERO;
 			BigDecimal factor 		= Env.ONE;
+			int calculationType = getCalculationType(taxLine);
 			
-			if (taxFormula != null)
+			/**
+			 * 		Valor da Operação
+			 * 	Apenas o valor dos produtos, sem cálculos adicionais
+			 */
+			if (calculationType == TYPE_AMOUNT)
 			{
-				//	Fator do imposto
-				factor 		= evalFormula (taxFormula.getFormula(isTaxIncludedPriceList), params);
-				
-				//	Valores adicionais para a BC
-				if (taxFormula.getLBR_FormulaAdd_ID() > 0)
-					taxBaseAdd = evalFormula (taxFormula.getLBR_FormulaAdd().getlbr_Formula(), params).setScale(17, BigDecimal.ROUND_HALF_UP);
-				
-				//	Valor base para ínicio do cálculo
-				if (taxFormula.getLBR_FormulaBase_ID() > 0)
-					amountBase = evalFormula (taxFormula.getLBR_FormulaBase().getlbr_Formula(), params).setScale(17, BigDecimal.ROUND_HALF_UP);
-				
-				//	Caso não tenha sido parametrizado, utilizar apenas o valor do documento
-				else
-					amountBase = params.get(AMT).setScale(17, BigDecimal.ROUND_HALF_UP);
-				
-				//	Marca se o imposto está incluso no preço
-				taxLine.setIsTaxIncluded(taxFormula.isTaxIncluded());
+				taxBase = params.get(AMT).setScale(17, BigDecimal.ROUND_HALF_UP);
+				taxAmt = getTaxAmt (taxBase, taxLine.getlbr_TaxRate(), false);
 			}
-			//	Caso não tenha uma fórmula atribuida, considerar o flag da Lista de Preços
-			else
-				taxLine.setIsTaxIncluded(isTaxIncludedPriceList);
 			
-			/****************************************
-			 *  	 	 Adicional x Fator			*
-			 *   Base = -------------------			*
-			 *  		1 - (Red. BC / 100)			*
-			 ***************************************/
-			BigDecimal taxBase = taxBaseAdd.add(factor.multiply(amountBase))
-					.multiply(ONE.subtract(taxLine.getlbr_TaxBase().setScale(17, BigDecimal.ROUND_HALF_UP).divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			/**
+			 * 		Valor de Pauta
+			 * 	Valor do imposto definido, multiplicado pela quantidade. Ex. Sêlo do IPI
+			 */
+			else if (calculationType == TYPE_TARIFF)
+			{
+				taxLine.setQty(params.get(QTY));
+				//
+//				taxBase = params.get(AMT).setScale(17, BigDecimal.ROUND_HALF_UP);
+				taxAmt = getTaxAmt (taxLine.getLBR_TaxListAmt(), params.get(QTY), true);
+			}
 			
-			BigDecimal taxAmt = taxBase.multiply(taxLine.getlbr_TaxRate().setScale(17, BigDecimal.ROUND_HALF_UP)).divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+			/**
+			 * 		Valor de Lista ou Máximo
+			 * 	Valor da BC definida, multiplicado pela quantidade, multiplicado pela alíquota. Ex. Substiruição por Valor Fixo
+			 */
+			else if (calculationType == TYPE_LIST_MAX)
+			{
+				taxLine.setQty(params.get(QTY));
+				//
+				taxBase = taxLine.getLBR_TaxListAmt().multiply(params.get(QTY)).add(getIncludedAmt(taxLines));
+				taxAmt = getTaxAmt (taxLine.getlbr_TaxBaseAmt(), taxLine.getlbr_TaxRate(), false);
+			}
+			
+			/**
+			 * 		Cálculo por Alíquota ou Margem de Valor Agregado
+			 */
+			else if (calculationType == TYPE_RATE_OR_IVA)
+			{
+				//	Calcular por fórmula
+				if (taxFormula != null)
+				{
+					//	Fator do imposto
+					factor 		= evalFormula (taxFormula.getFormula(isTaxIncludedPriceList), params);
+					
+					//	Valores adicionais para a BC
+					if (taxFormula.getLBR_FormulaAdd_ID() > 0)
+						taxBaseAdd = evalFormula (taxFormula.getLBR_FormulaAdd().getlbr_Formula(), params).setScale(17, BigDecimal.ROUND_HALF_UP);
+					
+					//	Valor base para ínicio do cálculo
+					if (taxFormula.getLBR_FormulaBase_ID() > 0)
+						amountBase = evalFormula (taxFormula.getLBR_FormulaBase().getlbr_Formula(), params).setScale(17, BigDecimal.ROUND_HALF_UP);
+					
+					//	Caso não tenha sido parametrizado, utilizar apenas o valor do documento
+					else
+						amountBase = params.get(AMT).setScale(17, BigDecimal.ROUND_HALF_UP);
+					
+					//	Marca se o imposto está incluso no preço
+					taxLine.setIsTaxIncluded(taxFormula.isTaxIncluded());
+				}
+				
+				//	Caso não tenha uma fórmula atribuida, considerar o flag da Lista de Preços
+				else
+					taxLine.setIsTaxIncluded(isTaxIncludedPriceList);
+				
+				/****************************************
+				 *  	 	 Adicional x Fator			*
+				 *   Base = -------------------			*
+				 *  		1 - (Red. BC / 100)			*
+				 ***************************************/
+				taxBase = taxBaseAdd.add(factor.multiply(amountBase))
+						.multiply(ONE.subtract(taxLine.getlbr_TaxBase().setScale(17, BigDecimal.ROUND_HALF_UP).divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP))).setScale(2, BigDecimal.ROUND_HALF_UP);
+				
+				taxAmt = getTaxAmt (taxBase, taxLine.getlbr_TaxRate(), false);
+			}
 			
 			//	Encontra o valor previamente calculado para ST
 			if (MLBRTaxName.LBR_TAXTYPE_Substitution.equals(taxName.getlbr_TaxType())
@@ -197,6 +267,50 @@ public class MLBRTax extends X_LBR_Tax
 			taxLine.save();
 		}
 	}	//	calculate
+
+	/**
+	 * 	Calculate Tax Amount
+	 * 
+	 * 	@param taxBase
+	 * 	@param taxRate
+	 * 	@return
+	 */
+	private BigDecimal getIncludedAmt (MLBRTaxLine[] taxLines)
+	{
+		BigDecimal included = Env.ZERO;
+		//
+		for (MLBRTaxLine taxLineSubs : taxLines)
+		{
+			//	Calcula a diferença do imposto
+			if (includedTaxes.contains(taxLineSubs.getLBR_TaxName_ID()))
+			{
+				included = included.add (taxLineSubs.getlbr_TaxAmt());
+				break;
+			}
+		}
+		//
+		return included;
+	}	//	getTaxAmt
+	
+	/**
+	 * 	Calculate Tax Amount
+	 * 
+	 * 	@param taxBase
+	 * 	@param taxRate
+	 * 	@return
+	 */
+	private BigDecimal getTaxAmt (BigDecimal taxBase, BigDecimal taxRateOrQty, boolean isQty)
+	{
+		if (taxBase == null || taxBase.signum() == 0 || taxRateOrQty == null || taxRateOrQty.signum() == 0)
+			return Env.ZERO;
+		//
+		if (isQty)
+			return taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP))
+																 .setScale(2, BigDecimal.ROUND_HALF_UP);
+		else
+			return taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP))
+				.divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+	}	//	getTaxAmt
 
 	/**
 	 * 	Get tax factor
@@ -268,6 +382,41 @@ public class MLBRTax extends X_LBR_Tax
 		
 		return result;
 	}	//	evalFormula
+	
+	/**
+	 * 		Eval the Script to find out the calculation type
+	 * 	@param line
+	 * 	@return
+	 */
+	private int getCalculationType (MLBRTaxLine line)
+	{
+		if (line == null || line.getLBR_TaxBaseType_ID() < 1)
+			return TYPE_RATE_OR_IVA;	//	Default Value
+		
+		String script = line.getLBR_TaxBaseType().getScript();
+		
+		if (script == null)
+			return TYPE_RATE_OR_IVA;
+		
+		Interpreter bsh = new Interpreter ();
+		
+		try
+		{
+			includedTaxes.clear();
+			bsh.set("includedTaxes", includedTaxes);
+			Object calcType = bsh.eval (script);
+			//
+			if (calcType != null && calcType instanceof Integer)
+				return (Integer) calcType;
+		}
+		catch (EvalError e)
+		{
+			log.warning("Invalid script");
+			return TYPE_RATE_OR_IVA;
+		}
+		
+		return TYPE_RATE_OR_IVA;
+	}	//	getCalculationType
 
 	/**
 	 * 	Set Description
