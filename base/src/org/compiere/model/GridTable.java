@@ -2512,6 +2512,7 @@ public class GridTable extends AbstractTableModel
 					|| ( columnName.equals("Line") )
 					//	Bug [ 3289763 ]
 					|| columnName.equals("lbr_BPTypeBRIsValid")
+					|| columnName.equals("LBR_Tax_ID")
 				)
 				{
 					rowData[i] = field.getDefault();
