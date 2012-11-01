@@ -23,14 +23,9 @@ import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
-import org.compiere.model.MRequisition;
-import org.compiere.model.MRequisitionLine;
-import org.compiere.model.MTimeExpense;
-import org.compiere.model.MTimeExpenseLine;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
@@ -76,17 +71,11 @@ public class VLBRCommons implements ModelValidator
 		else 
 			log.info("Initializing global validator: "+this.toString());
 
-		//	ModelChange
 		engine.addModelChange (MAttachment.Table_Name, this);
 		engine.addModelChange (MInvoiceLine.Table_Name, this);
 		engine.addModelChange (MInOutLine.Table_Name, this);
 		engine.addModelChange (MLocation.Table_Name, this);
 		engine.addModelChange (MBankAccount.Table_Name, this);
-		
-		//	DocValidate
-		engine.addDocValidate(MTimeExpense.Table_Name, this);
-		engine.addDocValidate(MRequisition.Table_Name, this);
-		
 	}	//	initialize
 
 	/**
@@ -148,8 +137,8 @@ public class VLBRCommons implements ModelValidator
 			return modelChange ((MAttachment) po, type);
 		
 		//	Organização da Conta Bancária
-		else if (MBankAccount.Table_Name.equals(po.get_TableName()))
-			return modelChange ((MBankAccount) po, type);
+			else if (MBankAccount.Table_Name.equals(po.get_TableName()))
+				return modelChange ((MBankAccount) po, type);
 		
 		return null;
 	}	//	modelChange
@@ -235,109 +224,6 @@ public class VLBRCommons implements ModelValidator
 	}	//	modelChange
 	
 	/**
-	 * 	Reativar ou Anular o Timesheet
-	 * 
-	 * 	@param po persistent object
-	 *	@param timing see TIMING_ constants
-     *	@return error message or null
-	 */
-	private String docValidate (MTimeExpense te, int timing)
-	{
-		/**
-		 * 	Código para Anular o Time Expense
-		 */
-		if (timing == TIMING_BEFORE_VOID || timing == TIMING_BEFORE_REVERSECORRECT)
-		{
-			for (MTimeExpenseLine tel : te.getLines())
-			{
-				tel.setQty(Env.ZERO);
-				tel.setQtyInvoiced(Env.ZERO);
-				tel.setQtyReimbursed(Env.ZERO);
-				tel.setPriceInvoiced(Env.ZERO);
-				tel.setPriceReimbursed(Env.ZERO);
-				tel.save();
-			}
-			//
-			te.setDocAction(DocAction.ACTION_None);
-			te.setDocStatus(MTimeExpense.DOCSTATUS_Voided);
-			te.save();
-		}
-		
-		/**
-		 * 	Código para Reativar o Time Expense
-		 */
-		else if (timing == TIMING_BEFORE_REACTIVATE)
-		{
-			//	Lines
-			for (MTimeExpenseLine tel : te.getLines())
-			{
-				tel.setProcessed(false);
-				tel.save();
-			}
-			
-			//	Head
-			if (!te.isActive())
-			{
-				te.setIsActive(true);
-			}
-			te.setProcessed(false);
-			te.setDocAction(DocAction.ACTION_Complete);
-			te.setDocStatus(MTimeExpense.DOCSTATUS_InProgress);
-			te.save();
-		}
-		//
-		return null;
-	}	//	docValidate
-	
-	/**
-	 * 	Reativa ou Anular a Requisição
-	 * 
-	 * 	@param po persistent object
-	 *	@param timing see TIMING_ constants
-     *	@return error message or null
-	 */
-	private String docValidate (MRequisition re, int timing)
-	{
-		/**
-		 * 	Código para Anular a Requisição
-		 */
-		if (timing == TIMING_BEFORE_VOID || timing == TIMING_BEFORE_REVERSECORRECT)
-		{
-			//Validar se alguma linha da Requisição está Relacionada a um Pedido de Compra
-			for (MRequisitionLine req : re.getLines())
-			{
-				if (req.getC_OrderLine_ID() != 0)
-				{
-					return "Não é Possivel Anular a Requisição. Requisição está relacionada com um Pedido de Compra";
-				}
-			}
-			
-			for (MRequisitionLine req : re.getLines())
-			{
-				req.setQty(Env.ZERO);
-				req.setPriceActual(Env.ZERO);
-				req.save();
-			}
-			//
-			re.setDocAction(DocAction.ACTION_None);
-			re.setDocStatus(MRequisition.DOCSTATUS_Voided);
-			re.save();
-		}
-		/**
-		 * 	Código para Reativar a Requisição
-		 */
-		else if (timing == TIMING_AFTER_REACTIVATE)
-		{
-			re.setProcessed(false);
-			re.setDocAction(DocAction.ACTION_Complete);
-			re.setDocStatus(MRequisition.DOCSTATUS_InProgress);
-			re.save();
-		}
-		//
-		return null;
-	}	//	docValidate	
-	
-	/**
      *	Model Change of a monitored Table.
      *	Called after PO.beforeSave/PO.beforeDelete
      *	when you called addModelChange for the table
@@ -367,18 +253,6 @@ public class VLBRCommons implements ModelValidator
 	 */
 	public String docValidate (PO po, int timing)
 	{
-		/**
-		 * 	Reativar/Anular Relatório de Horas (Timesheet)
-		 */
-		if (MTimeExpense.Table_Name.equals(po.get_TableName()))
-			return docValidate ((MTimeExpense) po, timing);
-		
-		/**
-		 * 	Reativar/Anular Requisição
-		 */
-		else if (MRequisition.Table_Name.equals(po.get_TableName()))
-			return docValidate ((MRequisition) po, timing);
-		
 		return null;
 	}	//	docValidate
 }	//	VLBRCommons

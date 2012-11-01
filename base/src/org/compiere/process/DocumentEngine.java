@@ -42,10 +42,8 @@ import org.compiere.model.MJournalBatch;
 import org.compiere.model.MMovement;
 import org.compiere.model.MOrder;
 import org.compiere.model.MPayment;
-import org.compiere.model.MRequisition;
 import org.compiere.model.MRole;
 import org.compiere.model.MTable;
-import org.compiere.model.MTimeExpense;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -1031,32 +1029,6 @@ public class DocumentEngine implements DocAction
 			if (docStatus.equals(DocumentEngine.STATUS_Completed))
 			{
 				options[index++] = DocumentEngine.ACTION_Void;
-			}
-		}
-		/********************
-		 *  Time Expense
-		 */
-		else if (AD_Table_ID == MTimeExpense.Table_ID)
-		{
-			//	Complete                    ..  CO
-			if (docStatus.equals(DocumentEngine.STATUS_Completed))
-			{
-				options[index++] = DocumentEngine.ACTION_Void;
-				options[index++] = DocumentEngine.ACTION_ReActivate;
-				
-			}
-		}
-		
-		/********************
-		 *  Requesition
-		 */
-		else if (AD_Table_ID == MRequisition.Table_ID)
-		{
-			//	Complete                    ..  CO
-			if (docStatus.equals(DocumentEngine.STATUS_Completed))
-			{
-				options[index++] = DocumentEngine.ACTION_Void;
-				options[index++] = DocumentEngine.ACTION_ReActivate;				
 			}
 		}
 		/********************
