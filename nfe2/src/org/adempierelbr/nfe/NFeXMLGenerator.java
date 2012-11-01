@@ -544,7 +544,7 @@ public class NFeXMLGenerator
 		transporte.setVol(transvol);
 		dados.setTransp(transporte);
 
-	    BigDecimal vDesc = nf.getDiscount(); // FIXME (BigDecimal) nf.get_Value("DiscountAmt");
+	    BigDecimal vDesc = nf.getDiscountAmt(); // Valor do Desconto total da NF
 	    
 		valoresicms.setvNF(TextUtil.bigdecimalToString(nf.getGrandTotal())); // vNF - Valor Total da NF-e
 		valoresicms.setvOutro(""); // vOutro - Outras Despesas acessórias
@@ -714,8 +714,8 @@ public class NFeXMLGenerator
 			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			
-			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
-				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
+			if (nfLine.getDiscountAmt() != null && nfLine.getDiscountAmt().compareTo(Env.ZERO) != 0)
+				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscountAmt().abs(),2));
 			
 			if (nf.getFreightAmt().signum() == 1) //FRETE
 				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt())));
