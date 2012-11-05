@@ -49,9 +49,10 @@ public class VLBROrder implements ModelValidator
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
 	/**	Charge Type		*/
-	public final static int	SISCOMEX 	= 0;
-	public final static int	FREIGHT 	= 1;
-	public final static int	INSURANCE 	= 2;
+	public final static int	SISCOMEX 	 = 0;
+	public final static int	FREIGHT 	 = 1;
+	public final static int	INSURANCE 	 = 2;
+	public final static int	OTHERCHARGES = 3;
 
 	/**
 	 *	Initialize Validation
@@ -213,6 +214,10 @@ public class VLBROrder implements ModelValidator
 			result = addCharge ((MInvoice) po, INSURANCE);
 			if (result != null)
 				return result;
+			
+			result = addCharge ((MInvoice) po, OTHERCHARGES);
+			if (result != null)
+				return result;
 			//
 			return result;
 		}
@@ -350,7 +355,8 @@ public class VLBROrder implements ModelValidator
 		//	Verifica se a despesa está cadastrada na empresa
 		if ((cInfoW.getLBR_ProductSISCOMEX_ID() <= 0 && chargeType == SISCOMEX)
 				|| (cInfoW.getM_ProductFreight_ID() <= 0 && chargeType == FREIGHT)
-				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == INSURANCE))
+				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == INSURANCE)
+				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == OTHERCHARGES))
 			return null;
 		
 		int M_Product_ID = 0;
@@ -361,6 +367,8 @@ public class VLBROrder implements ModelValidator
 			M_Product_ID = cInfoW.getM_ProductFreight_ID();
 		else if (chargeType == INSURANCE)
 			M_Product_ID = cInfoW.getLBR_ProductInsurance_ID();
+		else if (chargeType == OTHERCHARGES)
+			M_Product_ID = cInfoW.getLBR_ProductOtherCharges_ID();
 		
 		BigDecimal amount = getChargeAmt (invoice, chargeType);
 
@@ -403,7 +411,8 @@ public class VLBROrder implements ModelValidator
 	{
 		return 		  getChargeAmt (po, SISCOMEX)
 				.add (getChargeAmt (po, FREIGHT))
-				.add (getChargeAmt (po, INSURANCE));
+				.add (getChargeAmt (po, INSURANCE))
+				.add (getChargeAmt (po, OTHERCHARGES));
 	}	//	getChargeAmt
 	
 	/**
@@ -433,6 +442,8 @@ public class VLBROrder implements ModelValidator
 						amount = amount.add(olW.getFreightAmt());
 					else if (chargeType == INSURANCE)
 						amount = amount.add(olW.getlbr_InsuranceAmt());
+					else if (chargeType == OTHERCHARGES)
+						amount = amount.add(olW.getlbr_OtherChargesAmt());
 				}
 			}
 		
