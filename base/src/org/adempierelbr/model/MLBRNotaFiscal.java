@@ -1367,7 +1367,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setGrandTotal(wInvoice.getGrandTotal());
 		
 		//	Valores Totais
-		setlbr_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.OTHERCHARGES));
+		setLBR_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.OTHERCHARGES));
 		setlbr_InsuranceAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.INSURANCE));
 		setFreightAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.FREIGHT));
 		setlbr_TotalSISCOMEX(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.SISCOMEX));
@@ -1405,7 +1405,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setGrandTotal(wOrder.getGrandTotal());
 		
 		//	Valores Totais
-		setlbr_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.OTHERCHARGES));
+		setLBR_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.OTHERCHARGES));
 		setlbr_InsuranceAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.INSURANCE));
 		setFreightAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.FREIGHT));
 		setlbr_TotalSISCOMEX(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.SISCOMEX));
@@ -1699,7 +1699,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		setTotalLines(Env.ZERO);
 		setlbr_TotalCIF(Env.ZERO);
 		setlbr_TotalSISCOMEX(Env.ZERO);
-		setlbr_OtherChargesAmt(Env.ZERO);
+		setLBR_OtherChargesAmt(Env.ZERO);
 		setlbr_InsuranceAmt(Env.ZERO);
 		setlbr_NetWeight(Env.ZERO);
 		setlbr_GrossWeight(Env.ZERO);

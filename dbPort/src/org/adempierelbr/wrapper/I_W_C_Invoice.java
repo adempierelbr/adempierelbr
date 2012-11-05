@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.adempierelbr.wrapper;
 
+import java.math.BigDecimal;
 import org.compiere.model.*;
 
 /** Generated Interface for C_Invoice
@@ -53,6 +54,15 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	  * Primary key table LBR_NotaFiscal
 	  */
 	public int getLBR_NotaFiscal_ID();
+
+    /** Column name LBR_OtherChargesAmt */
+    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
+
+	/** Set Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
+
+	/** Get Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt();
 
     /** Column name LBR_Withhold_Invoice_ID */
     public static final String COLUMNNAME_LBR_Withhold_Invoice_ID = "LBR_Withhold_Invoice_ID";
@@ -133,6 +143,19 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	  * Number of the Customer NF
 	  */
 	public String getlbr_NFEntrada();
+
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
 
     /** Column name lbr_NFType */
     public static final String COLUMNNAME_lbr_NFType = "lbr_NFType";

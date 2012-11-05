@@ -41,6 +41,17 @@ public interface I_W_AD_ClientInfo extends I_AD_ClientInfo
 
 	public I_M_Product getLBR_ProductInsurance() throws RuntimeException;
 
+    /** Column name LBR_ProductOtherCharges_ID */
+    public static final String COLUMNNAME_LBR_ProductOtherCharges_ID = "LBR_ProductOtherCharges_ID";
+
+	/** Set Other Charges Product	  */
+	public void setLBR_ProductOtherCharges_ID (int LBR_ProductOtherCharges_ID);
+
+	/** Get Other Charges Product	  */
+	public int getLBR_ProductOtherCharges_ID();
+
+	public I_M_Product getLBR_ProductOtherCharges() throws RuntimeException;
+
     /** Column name LBR_ProductSISCOMEX_ID */
     public static final String COLUMNNAME_LBR_ProductSISCOMEX_ID = "LBR_ProductSISCOMEX_ID";
 
