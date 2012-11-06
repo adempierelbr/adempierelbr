@@ -105,6 +105,19 @@ public interface I_W_C_Order extends I_C_Order
 	  */
 	public String getlbr_BillNote();
 
+    /** Column name lbr_InsuranceAmt */
+    public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";
+
+	/** Set Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public void setlbr_InsuranceAmt (BigDecimal lbr_InsuranceAmt);
+
+	/** Get Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public BigDecimal getlbr_InsuranceAmt();
+
     /** Column name lbr_NFDescription */
     public static final String COLUMNNAME_lbr_NFDescription = "lbr_NFDescription";
 

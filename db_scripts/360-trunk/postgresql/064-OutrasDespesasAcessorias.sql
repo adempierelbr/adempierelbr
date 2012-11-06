@@ -362,6 +362,47 @@ UPDATE AD_Column SET AD_Reference_ID=30, AD_Reference_Value_ID=NULL,Updated=TO_T
 UPDATE AD_Column SET AD_Reference_Value_ID=162,Updated=TO_TIMESTAMP('2012-11-05 18:55:45','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1123598
 ;
 
+-- 06/11/2012 10h29min36s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1123605,1000223,0,12,259,'lbr_InsuranceAmt',TO_TIMESTAMP('2012-11-06 10:29:33','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Insurance Amt','U',13,'Defines the Insurance Amt','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Insurance Amt',0,TO_TIMESTAMP('2012-11-06 10:29:33','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 06/11/2012 10h29min36s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1123605 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 06/11/2012 10h31min5s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE C_Order ADD COLUMN lbr_InsuranceAmt NUMERIC DEFAULT NULL 
+;
+
+-- 06/11/2012 10h51min26s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1123605,1122785,0,186,TO_TIMESTAMP('2012-11-06 10:51:24','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Insurance Amt',13,'U','Defines the Insurance Amt','Y','Y','Y','N','N','N','N','N','Insurance Amt',TO_TIMESTAMP('2012-11-06 10:51:24','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 06/11/2012 10h51min26s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1122785 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 06/11/2012 11h39min10s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Column SET EntityType='LBRA',Updated=TO_TIMESTAMP('2012-11-06 11:39:10','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1123605
+;
+
+-- 06/11/2012 11h49min38s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1123605,1122786,0,294,TO_TIMESTAMP('2012-11-06 11:49:34','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Insurance Amt',13,'LBRA','Defines the Insurance Amt','Y','Y','Y','N','N','N','N','N','Insurance Amt',TO_TIMESTAMP('2012-11-06 11:49:34','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 06/11/2012 11h49min38s BRST
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1122786 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+
 
 
 
