@@ -482,6 +482,9 @@ public class MLBRTax extends X_LBR_Tax
 			newLine.setIsTaxIncluded(lines[i].isTaxIncluded());
 			newLine.setLBR_LegalMessage_ID(lines[i].getLBR_LegalMessage_ID());
 			newLine.setLBR_TaxStatus_ID(lines[i].getLBR_TaxStatus_ID());
+			newLine.setQty(lines[i].getQty());
+			newLine.setLBR_TaxBaseType_ID(lines[i].getLBR_TaxBaseType_ID());
+			newLine.setLBR_TaxListAmt(lines[i].getLBR_TaxListAmt());
 			newLine.save(get_TrxName());
 		}
 
