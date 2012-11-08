@@ -545,13 +545,13 @@ public class NFeXMLGenerator
 		transporte.setVol(transvol);
 		dados.setTransp(transporte);
 
-	    BigDecimal vDesc = nf.getDiscount(); // FIXME (BigDecimal) nf.get_Value("DiscountAmt");
+	    BigDecimal vDesc = nf.getDiscountAmt(); // Valor do Desconto total da NF
 	    
 		valoresicms.setvNF(TextUtil.bigdecimalToString(nf.getGrandTotal())); // vNF - Valor Total da NF-e
-		valoresicms.setvOutro(""); // vOutro - Outras Despesas acessórias
 		valoresicms.setvProd(TextUtil.bigdecimalToString(nf.getTotalLines())); // vProd - Valor Total dos produtos e serviços
 		valoresicms.setvFrete(TextUtil.bigdecimalToString(nf.getFreightAmt())); // vFrete - Valor Total do Frete
 		valoresicms.setvSeg(TextUtil.bigdecimalToString(nf.getlbr_InsuranceAmt())); // vSeg - Valor Total do Seguro
+		valoresicms.setvOutro(TextUtil.bigdecimalToString(nf.getLBR_OtherChargesAmt())); // vOutro - Despesa acessórias
 		valoresicms.setvDesc(TextUtil.bigdecimalToString(vDesc)); // vDesc - Valor Total do Desconto
 		valoresicms.setvBCST(TextUtil.ZERO_STRING); // vBCST - BC do ICMS ST
 		valoresicms.setvST(TextUtil.ZERO_STRING); // vST - Valor Total do ICMS ST
@@ -561,7 +561,6 @@ public class NFeXMLGenerator
 		valoresicms.setvCOFINS(TextUtil.ZERO_STRING); // vCOFINS - Valor do COFINS
 		valoresicms.setvIPI(TextUtil.ZERO_STRING); // vIPI - Valor Total do IPI
 		valoresicms.setvII(TextUtil.ZERO_STRING); // vII - Valor Total do II
-		valoresicms.setvOutro(TextUtil.ZERO_STRING); // vOutro - Despesa acessórias
 
 		log.fine("Gerando linhas da NF-e");
 		for (X_LBR_NFTax nfTax : nfTaxes){
@@ -714,9 +713,10 @@ public class NFeXMLGenerator
 			produtos.setvProd(TextUtil.bigdecimalToString(nfLine.getLineTotalAmt()));
 			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
+			produtos.setvOutro(TextUtil.bigdecimalToString(nfLine.getLBR_OtherChargesAmt()));
 			
-			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
-				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
+			if (nfLine.getDiscountAmt() != null && nfLine.getDiscountAmt().compareTo(Env.ZERO) != 0)
+				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscountAmt().abs(),2));
 			
 			if (nf.getFreightAmt().signum() == 1) //FRETE
 				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt())));
