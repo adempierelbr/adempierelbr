@@ -103,7 +103,6 @@ import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-import org.adempierelbr.model.MLBRTax;
 
 import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
 
@@ -561,7 +560,7 @@ public class NFeXMLGenerator
 		valoresicms.setvCOFINS(TextUtil.ZERO_STRING); // vCOFINS - Valor do COFINS
 		valoresicms.setvIPI(TextUtil.ZERO_STRING); // vIPI - Valor Total do IPI
 		valoresicms.setvII(TextUtil.ZERO_STRING); // vII - Valor Total do II
-
+		
 		log.fine("Gerando linhas da NF-e");
 		for (X_LBR_NFTax nfTax : nfTaxes){
 			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(ctx, nfTax.getLBR_TaxGroup_ID(), null);
@@ -713,7 +712,9 @@ public class NFeXMLGenerator
 			produtos.setvProd(TextUtil.bigdecimalToString(nfLine.getLineTotalAmt()));
 			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
-			produtos.setvOutro(TextUtil.bigdecimalToString(nfLine.getLBR_OtherChargesAmt()));
+			
+			if (nfLine.getLBR_OtherChargesAmt() != null && nfLine.getLBR_OtherChargesAmt().compareTo(Env.ZERO) != 0)
+				produtos.setvOutro(TextUtil.bigdecimalToString(nfLine.getLBR_OtherChargesAmt()));
 			
 			if (nfLine.getDiscountAmt() != null && nfLine.getDiscountAmt().compareTo(Env.ZERO) != 0)
 				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscountAmt().abs(),2));
@@ -984,19 +985,10 @@ public class NFeXMLGenerator
 					//
 					if (CST.endsWith("0") || CST.endsWith("9"))
 					{
-						if (("" + MLBRTax.TYPE_TARIFF).equals(lt.getmodBC()))
-						{
-							ipigrupo.setqUnid(TextUtil.bigdecimalToString(lt.getQty(),4));
-							ipigrupo.setvUnid(TextUtil.bigdecimalToString(lt.getvLisAmt(),4));
-						}
-						else
-						{
-							ipigrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
-							ipigrupo.setpIPI(TextUtil.bigdecimalToString(lt.getpImposto()));
-						}
-						
 						ipigrupo.setCST(CST);
 						ipigrupo.setvIPI(TextUtil.bigdecimalToString(lt.getvImposto()));
+						ipigrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
+						ipigrupo.setpIPI(TextUtil.bigdecimalToString(lt.getpImposto()));
 						ipinfe.setcEnq("999");	//	Deixar 999 até a RBF criar a regra.
 						ipinfe.setIPI(ipigrupo);
 						xstream.useAttributeFor(ImpostoIPIBean.class, "IPI");
