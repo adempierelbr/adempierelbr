@@ -1,22 +1,26 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
+ * Product: ADempiereLBR - ADempiere Localization Brazil				      *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
- * See the GNU General Public License for more details.                       *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.		   *
+ * See the GNU General Public License for more details.				       *
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.				     *
  *****************************************************************************/
 package org.adempierelbr.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.sql.ResultSet;
@@ -106,39 +110,73 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	 */
 	private static void setTrustStoreDynamic (MLBRDigitalCertificate dcOrg, MLBRDigitalCertificate dcICP) throws Exception
 	{
-		InputStream certFileOrg = dcOrg.getAttachment(true).getEntry(0).getInputStream();
-		if (certFileOrg == null) {
-			throw new Exception("Unable to find private key attachment");
-		}
-
 		String orgPassword = dcOrg.getPassword();
+		String certType = null;
+		InputStream certFileOrg = null;
+
+		//	PKCS11 - A3 (Cartão)
+		if (MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11.equals (dcOrg.getlbr_CertType()))
+		{
+			certType = "PKCS11";
+			//
+			Provider p = new sun.security.pkcs11.SunPKCS11(dcOrg.getConfigurationFile());
+			Security.addProvider(p);
+		}
 		
-		KeyStore ks = KeyStore.getInstance("PKCS12");
-		try {
-			ks.load(certFileOrg, orgPassword.toCharArray());
-		} catch (IOException e) {
+		//	PKCS12 - A1 (Arquivo)
+		else if (MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12.equals (dcOrg.getlbr_CertType()))
+		{
+			certType = "PKCS12";
+			//
+			certFileOrg = dcOrg.getAttachment(true).getEntry(0).getInputStream();
+			if (certFileOrg == null)
+				throw new Exception("Unable to find private key attachment");
+		}
+		
+		//	Unknown Certificate
+		else
+			return;
+		
+		//	Load Drivers
+		KeyStore ks = KeyStore.getInstance (certType);
+		
+		try 
+		{
+			ks.load (certFileOrg, orgPassword.toCharArray());
+		}
+		catch (IOException e)
+		{
 			throw new Exception("Incorrect Certificate Password");
 		}
 		
 		InputStream certFileWS = dcICP.getAttachment(true).getEntry(0).getInputStream();
-		if (certFileWS == null) {
+		if (certFileWS == null)
 			throw new Exception("Unable to find webservices keystore attachment");
+		
+		String alias = dcOrg.getAlias();
+		
+		//	Default Alias
+		if (alias != null 
+				&& ks.containsAlias(alias)
+				&& ks.isKeyEntry(alias))
+			;	//	Do Nothing
+		else
+		{
+			//	Try to find a valid key entry
+			Enumeration<String> aliasesEnum = ks.aliases();  
+			while (aliasesEnum.hasMoreElements()) 
+			{  
+				alias = (String) aliasesEnum.nextElement();  
+				if (ks.isKeyEntry(alias)) break;  
+			}
 		}
-
-        String alias = "";  
-        Enumeration<String> aliasesEnum = ks.aliases();  
-        while (aliasesEnum.hasMoreElements()) 
-        {  
-            alias = (String) aliasesEnum.nextElement();  
-            if (ks.isKeyEntry(alias)) break;  
-        }
   		X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
 		PrivateKey privateKey = (PrivateKey) ks.getKey(alias, orgPassword.toCharArray());
 		SocketFactoryDinamico socketFactoryDinamico = new SocketFactoryDinamico(certificate, privateKey);
 		socketFactoryDinamico.setFileCacerts (certFileWS, dcICP.getPassword());
 
-        Protocol protocol = new Protocol("https", socketFactoryDinamico, 443);  
-        Protocol.registerProtocol("https", protocol);
+		Protocol protocol = new Protocol("https", socketFactoryDinamico, 443);  
+		Protocol.registerProtocol("https", protocol);
 	}	//	setTrustStoreDynamic
 	
 	/**
@@ -156,6 +194,13 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		//	Certificado PFX
 		if (dcOrg.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
+		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
+		{
+			certTypeOrg = "PKCS11";
+			//
+			Provider p = new sun.security.pkcs11.SunPKCS11 (dcOrg.getConfigurationFile());
+			Security.addProvider(p);
+		}
 		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeOrg = "PKCS12";
 		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
@@ -264,7 +309,7 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			{
 				Enumeration<String> aliases = ks.aliases();
 				while (aliases.hasMoreElements()) 
-		        {
+				{
 					alias = aliases.nextElement();
 					X509Certificate tmp = (X509Certificate) ks.getCertificate (alias);
 					
@@ -274,7 +319,7 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 						setAlias(alias);
 						break;
 					}	
-		        }
+				}
 				
 				if (certificate == null)
 				{
@@ -297,4 +342,66 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		
 		return true;
 	}	//	beforeSave
+	
+	/**
+	 * 	Gera um arquivo de configuração para o SmartCard, de acordo com o SO
+	 * 	@return configuration file or null for error
+	 */
+	public String getConfigurationFile ()
+	{
+		String driverPath 		= null;
+		String defaultDriver 	= null;
+		String cfgFile 			= System.getProperty("java.io.tmpdir") + File.separator + "Token.cfg";
+
+		byte[] library = null;
+		//
+		if (Env.isWindows())
+		{
+			library = getAttachmentData("dll");
+			defaultDriver = "C:/Windows/System32/aetpkss1.dll";
+		}
+		
+		else if (Env.isMac())
+		{
+			library = getAttachmentData("dylib");
+			defaultDriver = "/usr/local/lib/libaetpkss.dylib";
+		}
+		else	//	Is Linux ?
+		{
+			library = getAttachmentData("so");
+			defaultDriver = "/usr/lib/libaetpkss.so";
+		}
+		
+		try 
+		{
+			//	Check driver - Default path
+			if (library == null)
+				driverPath = defaultDriver;
+	
+			//	Load from a file
+			else
+			{
+				driverPath = System.getProperty("java.io.tmpdir") + File.separator + "SmartCard.Driver";
+				//
+				FileOutputStream fos = new FileOutputStream(driverPath);
+				fos.write(library);
+				fos.close();
+			}
+			
+			FileWriter f = TextUtil.createFile (cfgFile, false);
+			f.write("name= SmartCard");
+			f.write("\nlibrary= " + driverPath);
+			f.flush();
+			f.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return cfgFile;
+	}	//	getConfigurationFile
 }	//	MDigitalCertificate

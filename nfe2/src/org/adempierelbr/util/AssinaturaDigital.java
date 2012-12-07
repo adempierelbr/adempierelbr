@@ -21,7 +21,9 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.Signature;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -84,6 +86,8 @@ public class AssinaturaDigital
 	static KeyPair keyP;
 	
 	private static String certType = "";
+	private static String cfgFile = "";
+	private static boolean isToken = false;
 	private static String alias = "";
 	private static char[] senha = "".toCharArray();
 	private static InputStream jksData = null;
@@ -112,6 +116,14 @@ public class AssinaturaDigital
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
+		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
+		{
+			certType = "PKCS11";
+			isToken = true;
+			jksData = null;
+			//
+			cfgFile = dc.getConfigurationFile();
+		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certType = "PKCS12";
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
@@ -135,6 +147,12 @@ public class AssinaturaDigital
 
 	public static void loadKeys() throws Exception
 	{
+		if (isToken)
+		{
+			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
+            Security.addProvider(p);
+		}
+		//
 		KeyStore keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
 		Key key = keystore.getKey(alias, senha);
