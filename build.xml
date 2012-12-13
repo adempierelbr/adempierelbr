@@ -1,0 +1,162 @@
+<!-- **************************************************************************** -->
+<!--  Copyright (C) 2011 Ricardo Santana                                          -->
+<!--  Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda          -->
+<!--  This program is free software; you can redistribute it and/or modify it     -->
+<!--  under the terms version 2 of the GNU General Public License as published    -->
+<!--  by the Free Software Foundation. This program is distributed in the hope    -->
+<!--  that it will be useful, but WITHOUT ANY WARRANTY; without even the implied  -->
+<!--  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.            -->
+<!--  See the GNU General Public License for more details.                        -->
+<!--  You should have received a copy of the GNU General Public License along     -->
+<!--  with this program; if not, write to the Free Software Foundation, Inc.,     -->
+<!--  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                      -->
+<!-- **************************************************************************** -->
+<!--  $Header: /utils_dev/build.xml,v 1.4 2009/05/08 23:29:11 ralexsander Exp $   -->
+<project name="adempierelbr" default="main" basedir="./">
+	
+	<property file="build.properties"/>
+	
+	<target name="main" depends="pre, bin-prjct, lib-prjct, prjct-ad-webui, prjct-lbr-webui, zkwebui, compress" description="Main target">
+		<echo message=" ===============================================" />
+		<echo message=" Process Finished" />
+		<echo message=" ===============================================" />
+    </target>
+	
+	<target name="pre" description="Checking conditions">
+		<echo message=" ===============================================" />
+		<echo message=" COMPILE YOUR PROJECT USING ECLIPSE FIRST" />
+		<echo message=" AdempiereLBR Folder: ${lbr.FOLDER}" />
+		<echo message=" ===============================================" />
+		<echo message=" Created By: Ricardo Santana (www.kenos.com.br)" />
+		<echo message=" ===============================================" />
+		
+		<!-- build files for customization -->
+		<available file="./bin" property="bin-prjct.present" />
+	    <available file="./lib" property="lib-prjct.present" />
+		<available file="${lbr.FOLDER}/bin" property="bin-lbr.present" />
+		<available file="${lbr.FOLDER}/lib" property="lib-lbr.present" />
+		
+		<!-- build files for zk customization -->
+		<available file="./bin/org/adempiere/webui" property="prjct-ad-webui.present" />
+		<available file="./bin/org/adempierelbr/webui" property="prjct-lbr-webui.present" />
+		<available file="./zkwebui/theme" property="zkwebui.present" />
+		<available file="${lbr.FOLDER}/bin/org/adempiere/webui" property="ad-webui.present" />
+		<available file="${lbr.FOLDER}/bin/org/adempierelbr/webui" property="lbr-webui.present" />
+		
+		<!-- deletes previously created jar -->
+	    <delete file="customization.jar" />
+	    <delete file="zkcustomization.jar" />
+	    
+		<!-- creates temp build directory -->
+	    <mkdir dir="build_jar" />
+    </target>
+
+	<target name="bin-prjct" if="bin-prjct.present">
+		<!-- copy the CLASSes from your custom project to "build_jar" directory  -->
+		<echo message=" ===============================================" />
+		<echo message=" Preparing the project files... " />
+		<echo message=" ===============================================" />
+	    <copy todir="build_jar" overwrite="true">
+	    	<fileset dir="./bin" includes="**/*.*" />
+	    </copy>
+	</target>
+	
+	<target name="lib-prjct" if="lib-prjct.present">
+		<echo message=" ===============================================" />
+		<echo message=" Preparing the project libraries... " />
+		<echo message=" ===============================================" />
+		<!-- extract and copy the JARs from your custom project to "build_jar" directory  -->
+		<unjar dest="build_jar" overwrite="false">
+		    <patternset>
+		        <include name="**/*.*" />
+		    </patternset>
+		    <fileset dir="./lib">
+		        <include name="**/*.jar" />
+		    </fileset>
+		</unjar>
+	</target>
+	
+	<!-- Preparing files to ZK  -->
+	<target name="prjct-ad-webui" if="prjct-ad-webui.present">
+		<echo message=" ===============================================" />
+		<echo message=" Preparing the project files for ZK... pack:LBR" />
+		<echo message=" ===============================================" />
+		<!-- copy the CLASSes from your custom project to "build_jar" directory  -->
+	    <copy todir="buildzk_jar/WEB-INF/classes/org/adempiere/webui" overwrite="true">
+	    	<fileset dir="./bin/org/adempiere/webui" includes="**/*.*" />
+	    </copy>
+	</target>
+	
+	<target name="prjct-lbr-webui" if="prjct-lbr-webui.present">
+		<echo message=" ===============================================" />
+		<echo message=" Preparing the LBR files for ZK... pack:LBR" />
+		<echo message=" ===============================================" />
+		<!-- copy the CLASSes from your custom project to "build_jar" directory  -->
+	    <copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/webui" overwrite="true">
+	    	<fileset dir="./bin/org/adempierelbr/webui" includes="**/*.*" />
+	    </copy>
+		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/apps/form" overwrite="true">
+		   	<fileset dir="./bin/org/adempierelbr/apps/form" includes="**/W*.*" />
+		</copy>
+		<!-- should copy RPS class to web environment  -->
+		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
+		   	<fileset dir="./bin/org/adempierelbr/process" includes="**/ProcGenerateRPS.*" />
+		</copy>
+	</target>
+	
+	<target name="zkwebui" if="zkwebui.present">
+		<echo message=" ===============================================" />
+		<echo message=" Preparing the project theme for ZK... " />
+		<echo message=" ===============================================" />
+		<!-- copy zul files from Project to "build_jar" directory  -->
+		<copy todir="buildzk_jar/theme" overwrite="false">
+			<fileset dir="./zkwebui/theme" includes="**/*.*" />
+		</copy>
+	</target>
+	
+	<!-- Timestamp  -->
+	<tstamp>
+	  <format property="TODAY"
+	          pattern="yyyyMMdd-HHmm"
+	          locale="en,UK"/>
+	</tstamp>
+	
+	<!-- creates the customization.jar and zkcustomization.jar -->
+	<target name="compress">
+		<echo message=" ===============================================" />
+		<echo message=" Creating JARs... " />
+		<echo message=" ===============================================" />
+		<!-- creates your jar with the contents inside "build_jar" -->
+		<delete dir="build_jar/META-INF" />
+	    <jar destfile="customization.jar-${TODAY}" basedir="build_jar" duplicate="preserve">
+			<manifest>
+	            <!-- Who is building this jar? -->
+	            <attribute name="Built-By" value="${user.name}" />
+	            <!-- Information about the program itself -->
+	            <attribute name="Implementation-Vendor" value="${lbr.VENDOR}" />
+	            <attribute name="Implementation-Title" value="${lbr.TITLE}" />
+	            <attribute name="Implementation-Version" value="${lbr.VERSION}" />
+        	</manifest>
+    	</jar>
+		
+		<!-- creates your jar with the contents inside "buildzk_jar" -->
+		<delete dir="buildzk_jar/META-INF" />
+	    <jar destfile="zkcustomization.jar-${TODAY}" basedir="buildzk_jar" duplicate="preserve">
+			<manifest>
+	            <!-- Who is building this jar? -->
+	            <attribute name="Built-By" value="${user.name}" />
+	            <!-- Information about the program itself -->
+	            <attribute name="Implementation-Vendor" value="${lbr.VENDOR}" />
+	            <attribute name="Implementation-Title" value="${lbr.TITLE}" />
+	            <attribute name="Implementation-Version" value="${lbr.VERSION}" />
+        	</manifest>
+    	</jar>
+		
+		<echo message=" ===============================================" />
+		<echo message=" Cleaning up... " />
+		<echo message=" ===============================================" />
+		<!-- delete processed files -->
+		<delete dir="build_jar" />
+		<delete dir="buildzk_jar" />
+	</target>
+</project>
