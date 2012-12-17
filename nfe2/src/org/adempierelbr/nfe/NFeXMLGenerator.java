@@ -711,8 +711,8 @@ public class NFeXMLGenerator
 			produtos.setuCom(RemoverAcentos.remover(nfLine.getlbr_UOMName()));
 			produtos.setuTrib(RemoverAcentos.remover(nfLine.getlbr_UOMName()));
 			produtos.setvProd(TextUtil.bigdecimalToString(nfLine.getLineTotalAmt()));
-			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),4));
-			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),4));
+			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
+			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			
 			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
 				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
