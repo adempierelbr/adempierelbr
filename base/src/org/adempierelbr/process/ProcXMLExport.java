@@ -13,6 +13,7 @@
 package org.adempierelbr.process;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
@@ -29,6 +30,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Ini;
 
 /**
  *	Process to export NF-e XML
@@ -123,11 +125,31 @@ public class ProcXMLExport extends SvrProcess
 				attachment.getEntryFile(index, new File(fileName));
 			}
 		}
-		//
-		String fileName = p_FilePath + "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
-					+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
-		CreateZipFile.zipFolder(new File(p_Temp), new File(fileName), p_FolderKey + File.separator + "**");
-		//
+		//		Versão SWING
+		if (Ini.isClient())
+		{
+			//
+			String fileName = p_FilePath + "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
+			+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
+			CreateZipFile.zipFolder(new File(p_Temp), new File(fileName), p_FolderKey + File.separator + "**");
+			//
+		}
+		else
+			try
+			{
+				//
+				String fileName = "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
+				+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
+				CreateZipFile.zipFolder(new File(p_Temp), new File(p_Temp+fileName), p_FolderKey + File.separator + "**");
+				Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.XMLExportAdapter");
+				Constructor<?> constructor = clazz.getConstructor (String.class, File.class);
+				//
+				constructor.newInstance (fileName, new File(p_Temp + fileName));
+			} 
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error saving XML", e);
+			}
 		log.info("finale");
 		//
 		return "Processo finalizado";
