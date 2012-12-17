@@ -16,3 +16,6 @@
 INSERT INTO AD_ModelValidator (AD_Client_ID,AD_ModelValidator_ID,AD_Org_ID,Created,CreatedBy,Description,EntityType,IsActive,ModelValidationClass,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1120002,0,TO_TIMESTAMP('2012-03-15 17:14:19','YYYY-MM-DD HH24:MI:SS'),100,'Commons Tasks Validator','LBRA','Y','org.adempierelbr.validator.VLBRCommons','Commons Tasks Validator',3,TO_TIMESTAMP('2012-03-15 17:14:19','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
+--	Atualiza o ultimo script
+UPDATE AD_SysConfig SET Value='trunk-lbrk/024-LBR-18-RemoverCreateFromDoLBR.sql' WHERE AD_SysConfig_ID=1100006
+;

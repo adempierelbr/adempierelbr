@@ -8,3 +8,5 @@ UPDATE AD_Column SET Callout='org.adempierelbr.callout.CalloutTax.recalculateTax
 UPDATE AD_Column SET Callout='org.adempierelbr.callout.CalloutTax.recalculateTaxes',Updated=TO_TIMESTAMP('2012-04-10 16:34:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000422
 ;
 
+UPDATE AD_SysConfig SET Value='360-trunk/054-Callout_LBR_Tax_ID.sql' WHERE AD_SysConfig_ID=1100006
+;

@@ -200,3 +200,6 @@ DELETE FROM AD_Column WHERE AD_Table_ID IN (SELECT AD_Table_ID FROM AD_Table WHE
 ;
 DROP TABLE LBR_NCMIVA
 ;
+
+UPDATE AD_SysConfig SET Value='360-trunk/053-LBR_26_RevertScripts.sql' WHERE AD_SysConfig_ID=1100006
+;

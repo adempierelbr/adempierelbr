@@ -170,3 +170,7 @@ UPDATE LBR_NFLINeTax SET LBR_TaxGroup_ID=1120006 WHERE LBR_TaxGroup_ID IN
 -- Tabela LBR_TaxGroup
 DELETE FROM LBR_TaxGroup WHERE LBR_TaxGroup_ID<>1120006 AND Name LIKE '%IR%';
 
+--	Atualiza o ultimo script
+UPDATE AD_SysConfig SET Value='trunk-lbrk/025-LBR_FixTaxGroup.sql' WHERE AD_SysConfig_ID=1100006
+;
+
