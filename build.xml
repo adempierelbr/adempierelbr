@@ -102,6 +102,10 @@
 		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
 		   	<fileset dir="./bin/org/adempierelbr/process" includes="**/ProcGenerateRPS.*" />
 		</copy>
+		<!-- should copy XMLExport class to web environment  -->
+		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
+		   	<fileset dir="./bin/org/adempierelbr/process" includes="**/ProcXMLExport.*" />
+		</copy>
 	</target>
 	
 	<target name="zkwebui" if="zkwebui.present">
