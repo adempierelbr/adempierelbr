@@ -73,6 +73,9 @@ public class MLBRTax extends X_LBR_Tax
 	/**	Freight			*/
 	public static final String FREIGHT 		= "FREIGHT";
 	
+	/**	OTHERCHARGES		*/
+	public static final String OTHERCHARGES = "OTHERCHARGES";
+	
 	/**	Insurance		*/
 	public static final String INSURANCE 	= "INSURANCE";
 	

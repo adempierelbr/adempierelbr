@@ -231,6 +231,7 @@ public class VLBRTax implements ModelValidator
 				params.put(MLBRTax.SISCOMEX, oLineW.getlbr_SISCOMEXAmt());
 				params.put(MLBRTax.INSURANCE, oLineW.getlbr_InsuranceAmt());
 				params.put(MLBRTax.FREIGHT, oLineW.getFreightAmt());
+				params.put(MLBRTax.OTHERCHARGES, oLineW.getLBR_OtherChargesAmt());
 				params.put(MLBRTax.AMT, oLine.getLineNetAmt());
 				params.put(MLBRTax.QTY, oLine.getQtyEntered());
 				//
@@ -255,6 +256,7 @@ public class VLBRTax implements ModelValidator
 				params.put(MLBRTax.SISCOMEX, iLineW.getlbr_SISCOMEXAmt().multiply(reversal));
 				params.put(MLBRTax.INSURANCE, iLineW.getlbr_InsuranceAmt().multiply(reversal));
 				params.put(MLBRTax.FREIGHT, iLineW.getFreightAmt().multiply(reversal));
+				params.put(MLBRTax.OTHERCHARGES, iLineW.getLBR_OtherChargesAmt().multiply(reversal));
 				params.put(MLBRTax.AMT, iLine.getLineNetAmt());
 				params.put(MLBRTax.QTY, iLine.getQtyEntered());
 				//
@@ -317,6 +319,7 @@ public class VLBRTax implements ModelValidator
 					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_C_Tax_ID)
 					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_LBR_CFOP_ID)
 					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_FreightAmt)
+					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_LBR_OtherChargesAmt)
 					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_lbr_SISCOMEXAmt)
 					|| po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_lbr_InsuranceAmt))
 				return true;
