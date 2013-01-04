@@ -39,9 +39,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-xmlbeans-1.5.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/commons-httpclient-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DSGEBrazilUtils.jar"/>
-	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
