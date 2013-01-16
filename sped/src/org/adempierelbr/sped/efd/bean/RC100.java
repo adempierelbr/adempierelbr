@@ -671,7 +671,7 @@ public class RC100 extends RegSped {
 			// RC195
 			for(RC195 rc195 : this.rC195)
 				rc195.subtractCounter();
-			this.rC170 = new ArrayList<RC170>();
+			this.rC195 = new ArrayList<RC195>();
 			
 		}
 		
@@ -698,7 +698,7 @@ public class RC100 extends RegSped {
 		else if(getCOD_SIT().equals("08"))
 		{
 			// zerar campos
-			setIND_OPER(null);
+			//setIND_OPER(null);
 			setSER(null);
 			setCHV_NFE(null);
 			setDT_E_S(null);
@@ -724,8 +724,10 @@ public class RC100 extends RegSped {
 
 			
 			// RC170 - deixar só o NUM_ITEM
-			for(RC170 rc170 : getrC170())
+			List<RC170> getrC170 = getrC170();
+			for (int i = 0; i < getrC170.size(); i++)
 			{
+				RC170 rc170 = getrC170.get(i);
 				// remover dos itens o registro velho
 				getrC170().remove(rc170);
 				
@@ -754,7 +756,7 @@ public class RC100 extends RegSped {
 			// RC195
 			for(RC195 rc195 : this.rC195)
 				rc195.subtractCounter();
-			this.rC170 = new ArrayList<RC170>();
+			this.rC195 = new ArrayList<RC195>();
 			
 		}
 		
@@ -794,7 +796,7 @@ public class RC100 extends RegSped {
 			// RC195
 			for(RC195 rc195 : this.rC195)
 				rc195.subtractCounter();
-			this.rC170 = new ArrayList<RC170>();
+			this.rC195 = new ArrayList<RC195>();
 	
 		}
 			

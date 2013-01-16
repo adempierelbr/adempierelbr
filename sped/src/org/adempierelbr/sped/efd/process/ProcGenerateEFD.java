@@ -560,7 +560,7 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0)); // init bloco D
 			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
 					&& blocoH.getrH005().getrH010().size() > 0));
-			blocoE.setrE001(EFDUtil.createRE001(true));							// init bloco E
+			blocoE.setrE001(EFDUtil.createRE001(false));						// init bloco E
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(false));						// init bloco 1
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
