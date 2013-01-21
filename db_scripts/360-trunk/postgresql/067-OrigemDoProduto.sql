@@ -1,3 +1,15 @@
+/******************************************************************************
+ * Copyright (C) 2013 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 -- 27/12/2012 15h20min11s BRST
 -- Novos CSTs para Origem do Produto - https://adempiere.atlassian.net/browse/LBR-71
 INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Reference_ID,AD_Ref_List_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1000031,1121320,TO_TIMESTAMP('2012-12-27 15:20:08','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Domestic with more than 40 percent Imported',TO_TIMESTAMP('2012-12-27 15:20:08','YYYY-MM-DD HH24:MI:SS'),100,'3')
