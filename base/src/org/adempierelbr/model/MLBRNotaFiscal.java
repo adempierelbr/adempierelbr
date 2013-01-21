@@ -1355,6 +1355,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//
 		setlbr_TransactionType (wInvoice.getlbr_TransactionType());
 		setC_PaymentTerm_ID(wInvoice.getC_PaymentTerm_ID());
+		setLBR_FreightCostRule(wInvoice.getLBR_FreightCostRule());
 		
 		//	Total da Fatura
 		if (wInvoice.getC_Currency_ID() != CURRENCY_BRL)

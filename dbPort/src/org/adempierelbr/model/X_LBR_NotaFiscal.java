@@ -1888,6 +1888,30 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_FiscalOBS);
 	}
 
+	/** LBR_FreightCostRule AD_Reference_ID=1120147 */
+	public static final int LBR_FREIGHTCOSTRULE_AD_Reference_ID=1120147;
+	/** 0 - Frete por conta do Emitente = 0 */
+	public static final String LBR_FREIGHTCOSTRULE_0_FretePorContaDoEmitente = "0";
+	/** 1 - Frete por conta do Destinatário = 1 */
+	public static final String LBR_FREIGHTCOSTRULE_1_FretePorContaDoDestinatário = "1";
+	/** Set Freight Cost Rule.
+		@param LBR_FreightCostRule 
+		Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule)
+	{
+
+		set_Value (COLUMNNAME_LBR_FreightCostRule, LBR_FreightCostRule);
+	}
+
+	/** Get Freight Cost Rule.
+		@return Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_FreightCostRule);
+	}
+	
 	/** Set Generate NFe XML.
 		@param lbr_GenerateNFeXML Generate NFe XML	  */
 	public void setlbr_GenerateNFeXML (String lbr_GenerateNFeXML)

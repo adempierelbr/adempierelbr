@@ -1094,6 +1094,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPShipperLicensePlate();
 
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
     /** Column name lbr_BPShipperName */
     public static final String COLUMNNAME_lbr_BPShipperName = "lbr_BPShipperName";
 

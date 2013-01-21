@@ -118,6 +118,19 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	  */
 	public String getlbr_BoletoComments();
 
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
     /** Column name lbr_IsBillPrinted */
     public static final String COLUMNNAME_lbr_IsBillPrinted = "lbr_IsBillPrinted";
 
