@@ -263,6 +263,7 @@ public class EFDUtil {
 	 */
 	public static String getCOD_SIT(MLBRFactFiscal factFiscal) throws Exception
 	{
+		System.out.println(factFiscal.getDocumentNo());
 		// documento regular
 		String cod_sit = "00";
 		
@@ -271,8 +272,9 @@ public class EFDUtil {
 			cod_sit = "02";
 		
 		// regime especial ou norma especifica. CFOP 5/6.929
-		else if(factFiscal.getlbr_CFOPName().equals("5.929")
-				|| factFiscal.getlbr_CFOPName().equals("6.929"))
+
+		else if(!factFiscal.islbr_IsService() && (factFiscal.getlbr_CFOPName().equals("5.929")
+				|| factFiscal.getlbr_CFOPName().equals("6.929")))
 			cod_sit = "08";
 		
 		// regime especial ou norma específica: conhecimento de tranporte de terceiros
