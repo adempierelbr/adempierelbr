@@ -517,7 +517,7 @@ public class EFDUtil {
 		//
 		reg.setIM(oiW.getlbr_CCM());
 		reg.setSUFRAMA(oiW.getlbr_Suframa());
-		reg.setIND_PERFIL(IND_PERFIL);
+		reg.setIND_PERFIL(oi.get_ValueAsString("lbr_IndPerfil"));
 
 		// 0 - Industria ou equiparado a Industrial / 1 - Outros
 		reg.setIND_ATIV(oi.get_ValueAsString("lbr_IndAtividade").equals("0") ? "0" : "1");
@@ -626,6 +626,7 @@ public class EFDUtil {
 	 */
 	public static R0150 createR0150(MLBRFactFiscal factFiscal) throws Exception
 	{
+		MLocation contLoc = new MLocation(factFiscal.getCtx(), factFiscal.getC_BPartner_Location().getC_Location_ID(), null);
 		
 		// verificar necessidade de criar esse registro
 		if(!needCreateR0s(factFiscal, R0150.class))
@@ -643,7 +644,7 @@ public class EFDUtil {
 			reg.setCNPJ(factFiscal.getlbr_BPCNPJ());
 		
 		reg.setIE(factFiscal.getlbr_BPIE());
-		reg.setCOD_MUN(String.valueOf(factFiscal.getBPCityCode()));
+		reg.setCOD_MUN(String.valueOf(BPartnerUtil.getCityCode(contLoc)));
 		reg.setSUFRAMA(factFiscal.getlbr_BPSuframa());
 		reg.setEND(factFiscal.getlbr_BPAddress1());
 		reg.setNUM(factFiscal.getlbr_BPAddress2());
