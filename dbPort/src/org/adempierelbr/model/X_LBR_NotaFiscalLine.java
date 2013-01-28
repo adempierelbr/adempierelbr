@@ -748,4 +748,31 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	{
 		return (String)get_Value(COLUMNNAME_VendorProductNo);
 	}
+	
+	/** lbr_ProductSource AD_Reference_ID=1000031 */
+	public static final int LBR_PRODUCTSOURCE_AD_Reference_ID=1000031;
+	/** Domestic = 0 */
+	public static final String LBR_PRODUCTSOURCE_Domestic = "0";
+	/** Imported = 1 */
+	public static final String LBR_PRODUCTSOURCE_Imported = "1";
+	/** Imported - Acquired from a domestic distributor = 2 */
+	public static final String LBR_PRODUCTSOURCE_Imported_AcquiredFromADomesticDistributor = "2";
+	/** Set Product Source.
+		@param lbr_ProductSource 
+		Defines the Product Source
+	  */
+	public void setlbr_ProductSource (String lbr_ProductSource)
+	{
+
+		set_Value (COLUMNNAME_lbr_ProductSource, lbr_ProductSource);
+	}
+
+	/** Get Product Source.
+		@return Defines the Product Source
+	  */
+	public String getlbr_ProductSource () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_ProductSource);
+	}
+	
 }

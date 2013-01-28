@@ -490,6 +490,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
 		//
 		setLBR_NCM_ID(productW.getLBR_NCM_ID());	//	TODO: Mover para C_OrderLine / C_InvoiceLine
+		//
+		setlbr_ProductSource(productW.getlbr_ProductSource());
 	}	//	setProduct
 	
 	/**	

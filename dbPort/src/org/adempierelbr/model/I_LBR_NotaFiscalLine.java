@@ -512,4 +512,17 @@ public interface I_LBR_NotaFiscalLine
 	  * Product Key of the Business Partner
 	  */
 	public String getVendorProductNo();
+	
+	 /** Column name lbr_ProductSource */
+    public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
+
+	/** Set Product Source.
+	  * Defines the Product Source
+	  */
+	public void setlbr_ProductSource (String lbr_ProductSource);
+
+	/** Get Product Source.
+	  * Defines the Product Source
+	  */
+	public String getlbr_ProductSource();
 }
