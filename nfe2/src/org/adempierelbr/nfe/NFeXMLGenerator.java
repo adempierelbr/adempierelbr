@@ -778,7 +778,7 @@ public class NFeXMLGenerator
 					// 3 - Valor da Operação
 					if (taxStatus.endsWith("40"))
 					{
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
+						icmsgrupo.setOrig(nfLine.getlbr_ProductSource());
 						icmsgrupo.setCST(taxStatus);
 						//
 						if (suframa != null && suframa.trim().length() > 0)
@@ -790,14 +790,14 @@ public class NFeXMLGenerator
 					else if (taxStatus.endsWith("41") ||
 					    taxStatus.endsWith("50"))
 					{
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
+						icmsgrupo.setOrig(nfLine.getlbr_ProductSource());
 						icmsgrupo.setCST(taxStatus);
 					}
 					else
 					{
 						icmsgrupo.setModBC("0");
 						icmsgrupo.setCST(taxStatus);
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
+						icmsgrupo.setOrig(nfLine.getlbr_ProductSource());
 						icmsgrupo.setpICMS(TextUtil.bigdecimalToString(lt.getpImposto()));
 						icmsgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
 						icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto()));
@@ -842,7 +842,7 @@ public class NFeXMLGenerator
 						else if (taxStatus.endsWith("60"))
 						{
 							icms60.setCST(taxStatus);
-							icms60.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
+							icms60.setOrig(nfLine.getlbr_ProductSource());
 							icms60.setVBCSTRet(TextUtil.bigdecimalToString(lt.getvBC()));
 							icms60.setVICMSSTRet(TextUtil.bigdecimalToString(lt.getvImposto()));
 						}
