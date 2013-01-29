@@ -57,7 +57,7 @@ public class R0000 extends RegSped {
 	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "UF")
 	private String UF;
 
-	@XMLFieldProperties(minSize = 14, maxSize = 14, id = "IE")
+	@XMLFieldProperties(minSize = 9, maxSize = 14, id = "IE")
 	private String IE;
 
 	@XMLFieldProperties(minSize = 7, maxSize = 7, isNumber = true, id = "COD_MUN")
