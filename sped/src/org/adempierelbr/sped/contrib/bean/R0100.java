@@ -14,6 +14,7 @@ package org.adempierelbr.sped.contrib.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_R0100;
 
 /**
  * 	REGISTRO 0100:
@@ -22,7 +23,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: R0100.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class R0100 extends RegSped
+public class R0100 extends RegSped implements I_R0100
 {
 	@XMLFieldProperties(maxSize=100, id="NOME")
 	private String NOME;
@@ -62,4 +63,69 @@ public class R0100 extends RegSped
 	
 	@XMLFieldProperties(maxSize=7, id="COD_MUN", isMandatory=false, isNumber=true)
 	private String COD_MUN;
+
+	public void setNOME(String nOME)
+	{
+		NOME = nOME;
+	}
+
+	public void setCPF(String cPF)
+	{
+		CPF = cPF;
+	}
+
+	public void setCRC(String cRC)
+	{
+		CRC = cRC;
+	}
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
+
+	public void setCEP(String cEP)
+	{
+		CEP = cEP;
+	}
+
+	public void setEND(String eND)
+	{
+		END = eND;
+	}
+
+	public void setNUM(String nUM)
+	{
+		NUM = nUM;
+	}
+
+	public void setCOMPL(String cOMPL)
+	{
+		COMPL = cOMPL;
+	}
+
+	public void setBAIRRO(String bAIRRO)
+	{
+		BAIRRO = bAIRRO;
+	}
+
+	public void setFONE(String fONE)
+	{
+		FONE = fONE;
+	}
+
+	public void setFAX(String fAX)
+	{
+		FAX = fAX;
+	}
+
+	public void setEMAIL(String eMAIL)
+	{
+		EMAIL = eMAIL;
+	}
+
+	public void setCOD_MUN(String cOD_MUN)
+	{
+		COD_MUN = cOD_MUN;
+	}
 }	//	R0100

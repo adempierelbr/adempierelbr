@@ -64,4 +64,134 @@ public class R0000 extends RegSped
 	
 	@XMLFieldProperties(minSize=1, maxSize=1, id="IND_ATIV", isNumber=true)
 	private String IND_ATIV;
+
+	public String getCOD_VER()
+	{
+		return COD_VER;
+	}
+
+	public void setCOD_VER(String cOD_VER)
+	{
+		COD_VER = cOD_VER;
+	}
+
+	public String getTIPO_ESCRIT()
+	{
+		return TIPO_ESCRIT;
+	}
+
+	public void setTIPO_ESCRIT(String tIPO_ESCRIT)
+	{
+		TIPO_ESCRIT = tIPO_ESCRIT;
+	}
+
+	public String getIND_SIT_ESP()
+	{
+		return IND_SIT_ESP;
+	}
+
+	public void setIND_SIT_ESP(String iND_SIT_ESP)
+	{
+		IND_SIT_ESP = iND_SIT_ESP;
+	}
+
+	public String getNUM_REC_ANTERIOR()
+	{
+		return NUM_REC_ANTERIOR;
+	}
+
+	public void setNUM_REC_ANTERIOR(String nUM_REC_ANTERIOR)
+	{
+		NUM_REC_ANTERIOR = nUM_REC_ANTERIOR;
+	}
+
+	public Timestamp getDT_INI()
+	{
+		return DT_INI;
+	}
+
+	public void setDT_INI(Timestamp dT_INI)
+	{
+		DT_INI = dT_INI;
+	}
+
+	public Timestamp getDT_FIN()
+	{
+		return DT_FIN;
+	}
+
+	public void setDT_FIN(Timestamp dT_FIN)
+	{
+		DT_FIN = dT_FIN;
+	}
+
+	public String getNOME()
+	{
+		return NOME;
+	}
+
+	public void setNOME(String nOME)
+	{
+		NOME = nOME;
+	}
+
+	public String getCNPJ()
+	{
+		return CNPJ;
+	}
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
+
+	public String getUF()
+	{
+		return UF;
+	}
+
+	public void setUF(String uF)
+	{
+		UF = uF;
+	}
+
+	public String getCOD_MUN()
+	{
+		return COD_MUN;
+	}
+
+	public void setCOD_MUN(String cOD_MUN)
+	{
+		COD_MUN = cOD_MUN;
+	}
+
+	public String getSUFRAMA()
+	{
+		return SUFRAMA;
+	}
+
+	public void setSUFRAMA(String sUFRAMA)
+	{
+		SUFRAMA = sUFRAMA;
+	}
+
+	public String getIND_NAT_PJ()
+	{
+		return IND_NAT_PJ;
+	}
+
+	public void setIND_NAT_PJ(String iND_NAT_PJ)
+	{
+		IND_NAT_PJ = iND_NAT_PJ;
+	}
+
+	public String getIND_ATIV()
+	{
+		return IND_ATIV;
+	}
+
+	public void setIND_ATIV(String iND_ATIV)
+	{
+		IND_ATIV = iND_ATIV;
+	}
 }	//	R0000

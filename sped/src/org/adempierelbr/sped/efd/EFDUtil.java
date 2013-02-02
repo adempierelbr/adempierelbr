@@ -15,6 +15,8 @@ import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
+import org.adempierelbr.sped.SPEDUtil;
+import org.adempierelbr.sped.contrib.SPEDContrib;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.R0000;
@@ -571,6 +573,7 @@ public class EFDUtil {
 
 	/**
 	 * REGISTRO 0100: DADOS DO CONTABILISTA
+	 * @deprecated see {@link SPEDUtil#fillR0100(org.adempierelbr.sped.bean.I_R0100, Properties, int, String)}
 	 * 
 	 * @param factFiscal
 	 * @return
