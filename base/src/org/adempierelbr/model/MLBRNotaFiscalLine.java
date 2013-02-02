@@ -500,11 +500,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	
 	public void setProduct(MCharge charge)
 	{
-		if (charge == null)
-		{
-			setlbr_IsService(true);
-			return;
-		}
+		
+		setlbr_IsService(true);
 		//
 		setProductName (charge.getName());
 		setProductValue (charge.getName());

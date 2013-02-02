@@ -319,7 +319,7 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Add D110 ao D100
 				 */
-				if(REG.startsWith("D100"))
+				if(REG.startsWith("D100") && factFiscal.getlbr_NFModel().equals("07"))
 					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100))
 						.addrD110(EFDUtil.createRD110(factFiscal, blocoD.getrD100().
 								get(blocoD.getrD100().indexOf(rd100)).getrD110().size() + 1));
