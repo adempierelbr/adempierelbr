@@ -1,0 +1,52 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
+package org.adempierelbr.sped.contrib.bean;
+
+import java.math.BigDecimal;
+
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
+
+/**
+ * 	REGISTRO D105:
+ * 		COMPLEMENTO DO DOCUMENTO - ITENS DO DOCUMENTO (CÓDIGOS 01, 1B, 04 e 55)
+ * 
+ * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
+ *	@version $Id: RD105.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
+ */
+public class RD105 extends RegSped
+{
+	@XMLFieldProperties(minSize=1, maxSize = 1, id = "IND_NAT_FRT")
+	private String IND_NAT_FRT;
+		
+	@XMLFieldProperties(id = "VL_ITEM")
+	private BigDecimal VL_ITEM;
+	
+	@XMLFieldProperties(minSize=2, maxSize = 2, id = "CST_COFINS", isNumber=true)
+	private String CST_COFINS;
+	
+	@XMLFieldProperties(minSize=2, maxSize = 2, id = "NAT_BC_CRED", isMandatory=false)
+	private String NAT_BC_CRED;
+	
+	@XMLFieldProperties(id = "VL_BC_COFINS", isMandatory=false)
+	private BigDecimal VL_BC_COFINS;
+	
+	@XMLFieldProperties(id = "ALIQ_COFINS", scale=4, isMandatory=false)
+	private BigDecimal ALIQ_COFINS;
+	
+	@XMLFieldProperties(id = "VL_COFINS", isMandatory=false)
+	private BigDecimal VL_COFINS;
+	
+	@XMLFieldProperties(maxSize = 60, id = "COD_CTA", isMandatory=false)
+	private String COD_CTA;
+}	//	RD105
