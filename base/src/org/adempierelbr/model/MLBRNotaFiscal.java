@@ -1083,7 +1083,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		else	
 			model = dt.get_ValueAsString("lbr_NFModel");
 
-		if (model != null)
+		if (!model.isEmpty())
 			setlbr_NFModel(model);
 		else
 			setlbr_NFModel("55");
