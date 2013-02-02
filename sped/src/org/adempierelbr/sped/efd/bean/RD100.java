@@ -312,9 +312,11 @@ public class RD100 extends RegSped implements Comparable<Object> {
 	public void addrD110(RD110 rd110) {
 		// add linha
 		this.rD110.add(rd110);
-
-		// atualizar totalizadores
-		updateD190(rd110);
+	}
+	
+	public void addrD190(RD190 rd190) {
+		// add linha
+		this.rD190.add(rd190);
 	}
 
 	/**

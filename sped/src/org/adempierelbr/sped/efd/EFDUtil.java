@@ -1185,6 +1185,15 @@ public class EFDUtil {
 		// TODO - ??
 		reg.setVL_OUT(null);
 		
+		//
+		return reg;
+	}
+	
+	public static RD190 createRD190(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RD190 reg = new RD190();
+		
 		/*
 		 * Valores auxiliares somente utilizados para apurar
 		 * o registro D190
@@ -1195,9 +1204,7 @@ public class EFDUtil {
 		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
 		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
 		reg.setVL_OPR(factFiscal.getLineTotalAmt());
-		reg.setPERCENT_REDUCAO_BC(factFiscal.getICMS_TaxBase());
 		
-
 		//
 		return reg;
 	}
