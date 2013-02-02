@@ -12,8 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
-import java.sql.Timestamp;
-
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
