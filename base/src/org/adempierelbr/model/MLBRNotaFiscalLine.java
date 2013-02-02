@@ -24,6 +24,7 @@ import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.adempierelbr.wrapper.I_W_M_Product;
+import org.compiere.model.MCharge;
 import org.compiere.model.MConversionRate;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrderLine;
@@ -382,7 +383,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		
 		//	IDs
 		setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
-		setProduct (iLine.getProduct());
+		if (iLine.getC_Charge_ID()>0)
+			setProduct ((MCharge)iLine.getC_Charge());
+		else
+			setProduct (iLine.getProduct());
 		
 		//	Valores
 		setQty(iLine.getQtyEntered());
@@ -417,7 +421,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			nfLineTax.save();
 		}
 	}	//	setInvoiceLine
-	
+
 	/**
 	 * 		Define os valores referentes a Linha da Fatura
 	 * 	
@@ -492,6 +496,18 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setLBR_NCM_ID(productW.getLBR_NCM_ID());	//	TODO: Mover para C_OrderLine / C_InvoiceLine
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
+	}	//	setProduct
+	
+	public void setProduct(MCharge charge)
+	{
+		if (charge == null)
+		{
+			setlbr_IsService(true);
+			return;
+		}
+		//
+		setProductName (charge.getName());
+		setProductValue (charge.getName());
 	}	//	setProduct
 	
 	/**	
