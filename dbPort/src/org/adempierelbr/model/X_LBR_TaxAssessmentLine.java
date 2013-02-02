@@ -153,8 +153,8 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 		return ii.intValue();
 	}
 
-	/** Type AD_Reference_ID=2000021 */
-	public static final int TYPE_AD_Reference_ID=2000021;
+	/** Type AD_Reference_ID=1120158 */
+	public static final int TYPE_AD_Reference_ID=1120158;
 	/** Outros Débitos = 002 */
 	public static final String TYPE_OutrosDébitos = "002";
 	/** Estornos de Créditos = 003 */
