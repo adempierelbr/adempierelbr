@@ -16,7 +16,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0150:
+ * 	REGISTRO 0150:
  * 		TABELA DE CADASTRO DO PARTICIPANTE
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

@@ -18,7 +18,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0111:
+ * 	REGISTRO 0111:
  * 		TABELA DE RECEITA BRUTA MENSAL PARA FINS DE RATEIO DE CRÉDITOS COMUNS
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

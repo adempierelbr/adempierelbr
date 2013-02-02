@@ -16,7 +16,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0100:
+ * 	REGISTRO 0100:
  * 		DADOS DO CONTABILISTA
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

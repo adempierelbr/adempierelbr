@@ -16,7 +16,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0110:
+ * 	REGISTRO 0110:
  * 		REGIMES DE APURAÇÃO DA CONTRIBUIÇÃO SOCIAL E DE APROPRIAÇÃO DE CRÉDITO
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

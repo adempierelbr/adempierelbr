@@ -16,7 +16,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0190:
+ * 	REGISTRO 0190:
  * 		IDENTIFICAÇÃO DAS UNIDADES DE MEDIDA
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

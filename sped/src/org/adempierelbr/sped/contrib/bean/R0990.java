@@ -18,7 +18,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0990:
+ * 	REGISTRO 0990:
  * 		ENCERRAMENTO DO BLOCO 0
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

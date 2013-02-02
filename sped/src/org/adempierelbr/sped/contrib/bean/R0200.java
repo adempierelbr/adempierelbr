@@ -18,7 +18,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0200:
+ * 	REGISTRO 0200:
  * 		TABELA DE IDENTIFICAÇÃO DO ITEM (PRODUTOS E SERVIÇOS)
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)

@@ -16,7 +16,7 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
 /**
- * 	REGISTRO R0140:
+ * 	REGISTRO 0140:
  * 		TABELA DE CADASTRO DE ESTABELECIMENTO
  * 
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
