@@ -1083,10 +1083,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		else	
 			model = dt.get_ValueAsString("lbr_NFModel");
 
-		if (!model.isEmpty())
-			setlbr_NFModel(model);
-		else
-			setlbr_NFModel("55");
+		setlbr_NFModel(model);
+
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)

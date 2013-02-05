@@ -1202,6 +1202,7 @@ public class EFDUtil {
 		reg.setCFOP(factFiscal.getlbr_CFOPName());
 		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
 		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
 		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
 		reg.setVL_OPR(factFiscal.getLineTotalAmt());
 		
