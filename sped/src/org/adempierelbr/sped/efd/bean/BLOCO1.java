@@ -30,6 +30,9 @@ public class BLOCO1 {
 	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "R1001")
 	private R1001 r1001;
+	
+	@XMLFieldProperties(needsValidation = true, id = "R1010")
+	private R1010 r1010;
 
 	@XMLFieldProperties(needsValidation = true, id = "R1990")
 	private R1990 r1990;
@@ -40,6 +43,14 @@ public class BLOCO1 {
 
 	public void setR1001(R1001 r1001) {
 		this.r1001 = r1001;
+	}
+	
+	public R1010 getR1010() {
+		return r1010;
+	}
+
+	public void setR1010(R1010 r1010) {
+		this.r1010 = r1010;
 	}
 
 	public R1990 getR1990() {

@@ -36,6 +36,9 @@ public class BLOCOD {
 
 	@XMLFieldProperties(needsValidation = true, id = "RD100")
 	private List<RD100> rD100 = new ArrayList<RD100>();
+	
+	@XMLFieldProperties(needsValidation = true, id = "RD500")
+	private List<RD100> rD500 = new ArrayList<RD100>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RD990")
 	private RD990 rD990;
@@ -54,6 +57,14 @@ public class BLOCOD {
 
 	public void setrD100(List<RD100> rD100) {
 		this.rD100 = rD100;
+	}
+	
+	public List<RD500> getrD500() {
+		return rD500;
+	}
+
+	public void setrD500(List<RD500> rD500) {
+		this.rD500 = rD500;
 	}
 
 	public RD990 getrD990() {

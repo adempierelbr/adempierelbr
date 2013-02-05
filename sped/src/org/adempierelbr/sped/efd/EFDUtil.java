@@ -28,6 +28,8 @@ import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.R0990;
 import org.adempierelbr.sped.efd.bean.R1001;
+import org.adempierelbr.sped.efd.bean.R1010;
+import org.adempierelbr.sped.efd.bean.R1600;
 import org.adempierelbr.sped.efd.bean.R1990;
 import org.adempierelbr.sped.efd.bean.R9001;
 import org.adempierelbr.sped.efd.bean.R9900;
@@ -90,6 +92,9 @@ import org.compiere.util.Env;
  * 
  * @author Pablo Boff Pigozzo
  * @version $ 08/08/2012, 15:30 pablobp4 $
+ * 
+ * @author Priscila Pinheiro, Kenos
+ * @version $ 02/02/2013, 15:30 ppinheiro $
  */
 public class EFDUtil {
 
@@ -1910,11 +1915,54 @@ public class EFDUtil {
 	{
 		R1001 reg = new R1001();
 		reg.setIND_MOV(hasInfo ? "0" : "1");
+		createR1010(); //Registro Obrigatório
 		
 		return reg;
 	}
 	
+	/**
+	 * REGISTRO 1010: REGISTROS DO BLOCO 1
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1010 createR1010() throws Exception
+	{
+		R1010 reg = new R1010();
+		reg.setREG("1010");
+		reg.setIND_EXP("N");
+		reg.setIND_CCRF("N");
+		reg.setIND_COMB("N");
+		reg.setIND_USINA("N");
+		reg.setIND_VA("N");
+		reg.setIND_EE("N");
+		reg.setIND_CART("S");
+		reg.setIND_FORM("N");
+		reg.setIND_AER("N");
+		
+		if (reg.getIND_CART().equals("S"))
+		{
+			createR1600("Cartao Visa", "31598.34", "0.00");
+			createR1600("Cartao Matercard", "6974.00", "0.00");
+		}
+		return reg;
+	}
 	
+	/**
+	 * REGISTRO 1600: INFORMACAO DE REGISTROS DE CARTAO DE CREDITO E DEBITO
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1600 createR1600(String nome, String credito, String debito) throws Exception
+	{
+		R1600 reg = new R1600();
+		reg.setREG("1600");
+		reg.setCOD_PART(nome);
+		reg.setTOT_CREDITO(credito);
+		reg.setTOT_DEBITO(debito);
+		return reg;
+	}
 	
 	/**
 	 * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
