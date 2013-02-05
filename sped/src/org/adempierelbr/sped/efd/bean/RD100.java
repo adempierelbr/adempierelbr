@@ -106,6 +106,9 @@ public class RD100 extends RegSped implements Comparable<Object> {
 
 	@XMLFieldProperties(needsValidation = true, id = "RD110", isSPEDField = false)
 	private List<RD110> rD110 = new ArrayList<RD110>();
+	
+	@XMLFieldProperties(needsValidation = true, id = "RD500", isSPEDField = false)
+	private List<RD500> rD500 = new ArrayList<RD500>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RD190", isSPEDField = false)
 	private List<RD190> rD190 = new ArrayList<RD190>();
@@ -123,6 +126,14 @@ public class RD100 extends RegSped implements Comparable<Object> {
 
 	public void setrD110(List<RD110> rD110) {
 		this.rD110 = rD110;
+	}
+	
+	public List<RD500> getrD500() {
+		return rD500;
+	}
+
+	public void setrD500(List<RD500> rD500) {
+		this.rD500 = rD500;
 	}
 
 	public List<RD190> getrD190() {
@@ -312,6 +323,11 @@ public class RD100 extends RegSped implements Comparable<Object> {
 	public void addrD110(RD110 rd110) {
 		// add linha
 		this.rD110.add(rd110);
+	}
+	
+	public void addrD500(RD500 rd500) {
+		// add linha
+		this.rD500.add(rd500);
 	}
 	
 	public void addrD190(RD190 rd190) {

@@ -46,6 +46,7 @@ import org.adempierelbr.sped.efd.bean.RD001;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD110;
 import org.adempierelbr.sped.efd.bean.RD190;
+import org.adempierelbr.sped.efd.bean.RD500;
 import org.adempierelbr.sped.efd.bean.RD990;
 import org.adempierelbr.sped.efd.bean.RE001;
 import org.adempierelbr.sped.efd.bean.RE100;
@@ -1211,6 +1212,70 @@ public class EFDUtil {
 		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
 		reg.setVL_OPR(factFiscal.getLineTotalAmt());
 		
+		//
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO D500: NOTA FISCAL DE TELEFONIA
+	 * 
+	 * @param rD500
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD500 createRD500(MLBRFactFiscal factFiscal) throws Exception
+	{
+		
+		//
+		RD500 reg = new RD500();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
+		
+		// TODO ??
+		reg.setSUB(""); 
+		
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_A_P(factFiscal.getlbr_DateInOut());
+
+		
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+
+		
+		// Total dos Itens + Total dos Serviços - ??
+		reg.setVL_SERV(factFiscal.getTotalLines());
+		
+		// Total dos Itens + Total dos Serviços que não são tributados pelo ICMS
+		reg.setVL_SERV_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		
+		// Valores cobrados em nome de terceiros
+		reg.setVL_TERC(Env.ZERO);
+		
+		// Valores Outras Despesas
+		reg.setVL_DA(Env.ZERO);
+		
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		
+		//
+		reg.setCOD_INF(null);
+		
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
+		
+		// 
+		reg.setCOD_CTA(null);
+		
+		// 
+		reg.setTP_ASSINANTE("1");
 		//
 		return reg;
 	}
