@@ -102,11 +102,8 @@ public class RD500 extends RegSped implements Comparable<Object> {
 	@XMLFieldProperties(id = "TP_ASSINANTE", isMandatory = false)
 	private String TP_ASSINANTE;
 
-	@XMLFieldProperties(needsValidation = true, id = "RD110", isSPEDField = false)
-	private List<RD110> rD110 = new ArrayList<RD110>();
-
-	@XMLFieldProperties(needsValidation = true, id = "RD190", isSPEDField = false)
-	private List<RD190> rD190 = new ArrayList<RD190>();
+	@XMLFieldProperties(needsValidation = true, id = "RD590", isSPEDField = false)
+	private List<RD590> rD590 = new ArrayList<RD590>();
 
 	/**
 	 * Constructor
@@ -115,20 +112,12 @@ public class RD500 extends RegSped implements Comparable<Object> {
 		super();
 	}
 
-	public List<RD110> getrD110() {
-		return rD110;
+	public List<RD590> getrD590() {
+		return rD590;
 	}
 
-	public void setrD110(List<RD110> rD110) {
-		this.rD110 = rD110;
-	}
-
-	public List<RD190> getrD190() {
-		return rD190;
-	}
-
-	public void setrD190(List<RD190> rD190) {
-		this.rD190 = rD190;
+	public void setrD590(List<RD590> rD590) {
+		this.rD590 = rD590;
 	}
 
 	public String getIND_OPER() {
@@ -315,141 +304,11 @@ public class RD500 extends RegSped implements Comparable<Object> {
 		TP_ASSINANTE = tP_ASSINANTE;
 	}
 
-	public void addrD110(RD110 rd110) {
+	public void addrD590(RD590 rD590) {
 		// add linha
-		this.rD110.add(rd110);
+		this.rD590.add(rD590);
 	}
-	
-	public void addrD190(RD190 rd190) {
-		// add linha
-		this.rD190.add(rd190);
-	}
-
-	/**
-	 * Atualizar registro D190 baseado nas linhas
-	 * 
-	 * 
-	 */
-	public void updateD190(RD110 rd110) {
-
-		// criar registo
-		RD190 reg = new RD190();
-		reg.setCST_ICMS(rd110.getCST_ICMS());
-		reg.setCFOP(rd110.getCFOP());
-		reg.setALIQ_ICMS(rd110.getALIQ_ICMS());
-		reg.setVL_OPR(rd110.getVL_OPR());
-		reg.setVL_BC_ICMS(rd110.getVL_BC_ICMS());
-		reg.setVL_ICMS(rd110.getVL_ICMS());
-
-		// valor cálculado na d110
-		reg.setVL_RED_BC(rd110.getVL_RED_BC_ICMS());
-
-		// TODO: ??
-		reg.setCOD_OBS("");
-
-		// verificar se existe
-		if (rD190.contains(reg)) 
-		{
-			
-			// remover da contagem
-			reg.subtractCounter();
-
-			// somar combinação de CST, ALIQ, CFOP
-			rD190.get(rD190.indexOf(reg)).addValues(reg);
-		}
-
-		// se não existir, simplismente add o totalizador
-		else {
-			rD190.add(reg);
-		}
-	}
-
-	public void checkExceptions()
-	{
-		
-		/*
-		 * Exceção 1: Para documentos com código de situação (campo COD_SIT) cancelado (código “02”) 
-		 * ou cancelado extemporâneo (código “03”), Conhecimento de Transporte Eletrônico (CT-e) denegada 
-		 * (código “04”) preencher somente os campos REG, IND_OPER, IND_EMIT, COD_MOD, 
-		 * COD_SIT, SER, SUB, NUM_DOC e CHV_CT-e. Para CT-e com COD_SIT igual a “05” (numeração inutilizada), 
-		 * devem ser informados todos os campos referidos anteriormente , exceto o campo CHV_CT-e.
-		 * Demais campos deverão ser apresentados com conteúdo VAZIO “||”. Não deverão ser informados registros filhos. 
-		 * A partir de janeiro de 2012, no caso de CT-e de emissão própria com código de situação (campo COD_SIT) 
-		 * cancelado (código “02”) e cancelado extemporâneo (código “03”) deverão ser informados os campos acima 
-		 * citados incluindo ainda a chave do CT-e. 
-		 */
-		if(getCOD_SIT().equals("02") 
-				|| getCOD_SIT().equals("03") 
-				|| getCOD_SIT().equals("04"))
-		{
-			// 
-			setCOD_PART(null);
-			setDT_DOC(null);
-			setDT_A_P(null);
-
-			setVL_DOC(null);
-			setVL_DESC(null);
-			setVL_SERV(null);
-			setVL_BC_ICMS(null);
-			setVL_ICMS(null);
-			setCOD_INF(null);
-			setCOD_CTA(null);
-			
-			// remover filhos - RD110
-			for (RD110 reg : getrD110())
-				reg.subtractCounter();
-			setrD110(new ArrayList<RD110>());
-
-			
-			// remover filhos - RD190
-			for (RD190 reg : getrD190())
-				reg.subtractCounter();
-			setrD190(new ArrayList<RD190>());
-
-		}
-		
-		/*
-		 * Exceção 3: Documentos de transporte emitidos por regime especial ou norma específica 
-		 * (campo COD_SIT igual a “08”). Para documentos fiscais emitidos com base em regime especial 
-		 * ou norma específica, (campo COD_SIT igual a “08”). Para documentos fiscais emitidos com base 
-		 * em regime especial ou norma específica, deverão ser apresentados os registros D100 e D190, 
-		 * obrigatoriamente, e os demais registros “filhos”, se estes forem exigidos pela legislação fiscal. 
-		 * Nesta situação, no registro D100, somente os campos REG, IND_OPER, IND_EMIT, COD_PART, COD_MOD, 
-		 * COD_SIT, SER, SUB, NUM_DOC e DT_DOC são obrigatórios. Os demais campos são facultativos 
-		 * (se forem preenchidos serão validados e aplicadas as regras de campos existentes).
-		 */
-		else if(getCOD_SIT().equals("08"))
-		{
-			
-			/*
-			setCHV_CTE(null);
-			setDT_A_P(null);
-			setTP_CT_e(null);
-			setCHV_CTE_REF(null);
-			setVL_DOC(null);
-			setVL_DESC(null);
-			setIND_FRT(null);
-			setVL_SERV(null);
-			setVL_BC_ICMS(null);
-			setVL_ICMS(null);
-			setVL_NT(null);
-			setCOD_INF(null);
-			setCOD_CTA(null);
-			*/
-			
-			
-			// remover filhos - RD110
-			for (RD110 reg : getrD110())
-				reg.subtractCounter();
-			setrD110(new ArrayList<RD110>());
-		}
-		
-	}
-	
-	
-	
-	
-	
+						
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -29,6 +29,7 @@ import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC190;
 import org.adempierelbr.sped.efd.bean.RD100;
+import org.adempierelbr.sped.efd.bean.RD500;
 import org.adempierelbr.sped.efd.bean.RE200;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
@@ -214,6 +215,7 @@ public class ProcGenerateEFD extends SvrProcess
 			// Headers
 			RC100 rc100 = null;
 			RD100 rd100 = null;
+			RD500 rd500 = null;
 			
 			
 			/**
@@ -294,6 +296,16 @@ public class ProcGenerateEFD extends SvrProcess
 						rd100 = EFDUtil.createRD100(factFiscal);
 						blocoD.addrD100(rd100);
 					}
+					
+					/*
+					 * D500 - Conhecimentos de Telefonia
+					 */
+					else if(REG.startsWith("D500"))
+					{
+						// D500
+						rd500 = EFDUtil.createRD500(factFiscal);
+						blocoD.addrD500(rd500);
+					}
 							
 				}
 				
@@ -324,10 +336,12 @@ public class ProcGenerateEFD extends SvrProcess
 								get(blocoD.getrD100().indexOf(rd100)).getrD110().size() + 1));
 				
 				/*
-				 * Add D500 ao D100
+				 * Add D590 ao D500
 				 */
 				if(REG.startsWith("D500"))
-					blocoD.addrD500(EFDUtil.createRD500(factFiscal));
+					blocoD.getrD500().get(blocoD.getrD500().indexOf(rd500))
+						.addrD590(EFDUtil.createRD590(factFiscal, blocoD.getrD500().
+								get(blocoD.getrD500().indexOf(rd500)).getrD590().size() + 1));
 				
 				/*
 				 * Add D190 ao D100
@@ -344,7 +358,6 @@ public class ProcGenerateEFD extends SvrProcess
 				 * fato pertence a esta mesma nota
 				 */
 				last_LBR_NotaFiscal_ID = factFiscal.getLBR_NotaFiscal_ID();
-			
 				
 			} // loop fatos fiscais
 			

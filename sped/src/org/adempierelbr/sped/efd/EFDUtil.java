@@ -47,6 +47,7 @@ import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD110;
 import org.adempierelbr.sped.efd.bean.RD190;
 import org.adempierelbr.sped.efd.bean.RD500;
+import org.adempierelbr.sped.efd.bean.RD590;
 import org.adempierelbr.sped.efd.bean.RD990;
 import org.adempierelbr.sped.efd.bean.RE001;
 import org.adempierelbr.sped.efd.bean.RE100;
@@ -1279,6 +1280,30 @@ public class EFDUtil {
 		
 		// 
 		reg.setTP_ASSINANTE("1");
+		//
+		return reg;
+	}
+	
+	public static RD590 createRD590(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RD590 reg = new RD590();
+		
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_BC_ICMS_UF(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS_UF(factFiscal.getICMS_TaxAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
+		reg.setCOD_OBS("");
+
 		//
 		return reg;
 	}

@@ -325,11 +325,6 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		this.rD110.add(rd110);
 	}
 	
-//	public void addrD500(RD500 rd500) {
-//		// add linha
-//		this.rD500.add(rd500);
-//	}
-	
 	public void addrD190(RD190 rd190) {
 		// add linha
 		this.rD190.add(rd190);
@@ -450,7 +445,6 @@ public class RD100 extends RegSped implements Comparable<Object> {
 			setCOD_CTA(null);
 			*/
 			
-			
 			// remover filhos - RD110
 			for (RD110 reg : getrD110())
 				reg.subtractCounter();
@@ -458,10 +452,6 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		}
 		
 	}
-	
-	
-	
-	
 	
 	@Override
 	public int hashCode() {
