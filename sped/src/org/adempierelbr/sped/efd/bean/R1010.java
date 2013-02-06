@@ -1,14 +1,14 @@
 /******************************************************************************
  * Product: ADempiereLBR - ADempiere Localization Brazil                      *
  * This program is free software; you can redistribute it and/or modify it    *
- * under the terms version 2 of the GNU General Public License as published   *
+ * under the terms version 1 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
  * See the GNU General Public License for more details.                       *
  * You should have received a copy of the GNU General Public License along    *
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ * 59 Temple Place, Suite 330, Boston, MA 01111-1307 USA.                     *
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
@@ -22,22 +22,36 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * REGISTRO 1010: REGISTROS DO BLOCO 1
  * 
  * @author Priscila Pinheiro, ppinheiro Kenos
- * @version $Id: R1010.java, 05/02/2013, 12:03:00, ppinheiro
+ * @version $Id: R1010.java, 05/01/1013, 11:03:00, ppinheiro
  */
 public class R1010 extends RegSped 
 {	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(id = "COD_MOD", maxSize = 2, minSize = 2)
-	private String REG;
+	
+	@XMLFieldProperties(id = "IND_EXP", maxSize = 1, minSize = 1)
 	private String IND_EXP;
+	
+	@XMLFieldProperties(id = "IND_CCRF", maxSize = 1, minSize = 1)
 	private String IND_CCRF;
+	
+	@XMLFieldProperties(id = "IND_COMB", maxSize = 1, minSize = 1)
 	private String IND_COMB;
+	
+	@XMLFieldProperties(id = "IND_USINA", maxSize = 1, minSize = 1)
 	private String IND_USINA;
+	
+	@XMLFieldProperties(id = "IND_VA", maxSize = 1, minSize = 1)
 	private String IND_VA;
+	
+	@XMLFieldProperties(id = "IND_EE", maxSize = 1, minSize = 1)
 	private String IND_EE;
+	
+	@XMLFieldProperties(id = "IND_CART", maxSize = 1, minSize = 1)
 	private String IND_CART;
+	
+	@XMLFieldProperties(id = "IND_FORM", maxSize = 1, minSize = 1)
 	private String IND_FORM;
+	
+	@XMLFieldProperties(id = "IND_AER", maxSize = 1, minSize = 1)
 	private String IND_AER;
 
 	/**
