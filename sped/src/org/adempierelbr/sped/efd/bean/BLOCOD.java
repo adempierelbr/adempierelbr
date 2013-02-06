@@ -128,7 +128,11 @@ public class BLOCOD {
 		}
 		
 		for (RD500 d500 : rD500)
+		{
 			result.append(d500);
+			for (RD590 d590 : d500.getrD590())
+				result.append(d590);
+		}
 
 		// counter
 		result.append(rD990.toString());
