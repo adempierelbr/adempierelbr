@@ -12,6 +12,9 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -33,6 +36,9 @@ public class BLOCO1 {
 	
 	@XMLFieldProperties(needsValidation = true, id = "R1010")
 	private R1010 r1010;
+	
+	@XMLFieldProperties(needsValidation = true, id = "R1600")
+	private List<R1600> r1600 = new ArrayList<R1600>();
 
 	@XMLFieldProperties(needsValidation = true, id = "R1990")
 	private R1990 r1990;
@@ -51,6 +57,14 @@ public class BLOCO1 {
 
 	public void setR1010(R1010 r1010) {
 		this.r1010 = r1010;
+	}
+	
+	public void addR1600(R1600 r1600) {
+		this.r1600.add(r1600);
+	}
+	
+	public List<R1600> getR1600() {
+		return r1600;
 	}
 
 	public R1990 getR1990() {
@@ -71,6 +85,10 @@ public class BLOCO1 {
 
 		// init
 		result.append(r1001);
+		result.append(r1010);
+		
+		for (R1600 r1600s : r1600)
+			result.append(r1600s);
 
 		// encerramento do arquivo
 		result.append(r1990);

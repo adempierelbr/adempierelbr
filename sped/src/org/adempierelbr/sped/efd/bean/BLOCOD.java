@@ -59,12 +59,12 @@ public class BLOCOD {
 		this.rD100 = rD100;
 	}
 	
-	public List<RD500> getrD500() {
-		return rD500;
-	}
-
-	public void setrD500(List<RD500> rD500) {
-		this.rD500 = rD500;
+//	public List<RD500> getrD500() {
+//		return rD500;
+//	}
+//
+	public void addrD500(RD500 rD500) {
+		this.rD500.add(rD500);
 	}
 
 	public RD990 getrD990() {
@@ -122,6 +122,9 @@ public class BLOCOD {
 				result.append(aux_rd190);
 
 		}
+		
+		for (RD500 d500 : rD500)
+			result.append(d500);
 
 		// counter
 		result.append(rD990.toString());

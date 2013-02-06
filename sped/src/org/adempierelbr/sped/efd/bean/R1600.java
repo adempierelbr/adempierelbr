@@ -12,11 +12,10 @@
  *****************************************************************************/
 package org.adempierelbr.sped.efd.bean;
 
+import java.math.BigDecimal;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
  * REGISTRO 1010: REGISTROS DO BLOCO 1
@@ -25,14 +24,15 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R1010.java, 05/02/2013, 12:03:00, ppinheiro
  */
 public class R1600 extends RegSped 
-{	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(id = "COD_MOD", maxSize = 2, minSize = 2)
-	private String REG;
+{		
+	@XMLFieldProperties(id = "COD_PART", maxSize = 60, minSize = 1)
 	private String COD_PART;
-	private String TOT_CREDITO;
-	private String TOT_DEBITO;
+	
+	@XMLFieldProperties(id = "TOT_CREDITO")
+	private BigDecimal TOT_CREDITO;
+	
+	@XMLFieldProperties(id = "TOT_DEBITO")
+	private BigDecimal TOT_DEBITO;
 
 	/**
 	 * Constructor
@@ -57,19 +57,19 @@ public class R1600 extends RegSped
 		COD_PART = cOD_PART;
 	}
 	
-	public String getTOT_CREDITO() {
+	public BigDecimal getTOT_CREDITO() {
 		return TOT_CREDITO;
 	}
 
-	public void setTOT_CREDITO(String tOT_CREDITO) {
+	public void setTOT_CREDITO(BigDecimal tOT_CREDITO) {
 		TOT_CREDITO = tOT_CREDITO;
 	}
 	
-	public String getTOT_DEBITO() {
+	public BigDecimal getTOT_DEBITO() {
 		return TOT_DEBITO;
 	}
 
-	public void setTOT_DEBITO(String tOT_DEBITO) {
+	public void setTOT_DEBITO(BigDecimal tOT_DEBITO) {
 		TOT_DEBITO = tOT_DEBITO;
 	}
 

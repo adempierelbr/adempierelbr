@@ -27,7 +27,6 @@ import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.RC100;
-import org.adempierelbr.sped.efd.bean.RC170;
 import org.adempierelbr.sped.efd.bean.RC190;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RE200;
@@ -178,8 +177,8 @@ public class ProcGenerateEFD extends SvrProcess
 	private StringBuilder generateEFD(Timestamp dateFrom, Timestamp dateTo) throws Exception
 	{
 		
-		try
-		{
+//		try
+//		{
 			
 			// Zerar Contadores (estaticos)
 			CounterSped.clear();
@@ -327,9 +326,8 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Add D500 ao D100
 				 */
-				if(REG.startsWith("D100") && factFiscal.getlbr_NFModel().equals("22"))
-					blocoD.getrD100().get(blocoD.getrD100().indexOf(rd100))
-						.addrD500(EFDUtil.createRD500(factFiscal));
+				if(REG.startsWith("D500"))
+					blocoD.addrD500(EFDUtil.createRD500(factFiscal));
 				
 				/*
 				 * Add D190 ao D100
@@ -578,6 +576,9 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoE.setrE001(EFDUtil.createRE001(true));						    // init bloco E
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
+			bloco1.setR1010(EFDUtil.createR1010());
+			bloco1.addR1600(EFDUtil.createR1600("Cartao Visa", new BigDecimal("31598.34"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Cartao Matercard", new BigDecimal("6974.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 			
 			/*
@@ -620,28 +621,30 @@ public class ProcGenerateEFD extends SvrProcess
 			// 
 			return result;
 			
-		}
-		catch (Exception e) 
-		{
+//		}
+//		catch (Exception e) 
+//		{
 			
 			// mapear ultimo erro para facilitar o reconhecimento
-			String className = e.getStackTrace()[0].getClassName();
-			String methodName = e.getStackTrace()[0].getMethodName();
-			int lineNumber = e.getStackTrace()[0].getLineNumber();
-			String errorMsg = e.getLocalizedMessage();
-			String error = "[" + className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " ]";
-			
-			// mapear penultimo erro para facilitar o reconhecimento
-			className = e.getStackTrace()[1].getClassName();
-			methodName = e.getStackTrace()[1].getMethodName();
-			lineNumber = e.getStackTrace()[1].getLineNumber();
-			
-			// 
-			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " <BR> " + error;
-			
-			// lançar exception para retornar ao usuário
-			throw new Exception("Falha ao gerar o EFD! " + error);
-		}
+//			String className = e.getStackTrace()[0].getClassName();
+//			String methodName = e.getStackTrace()[0].getMethodName();
+//			int lineNumber = e.getStackTrace()[0].getLineNumber();
+//			String errorMsg = e.getLocalizedMessage();
+//			String error = "[" + className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " ]";
+//			
+//			// mapear penultimo erro para facilitar o reconhecimento
+//			className = e.getStackTrace()[1].getClassName();
+//			methodName = e.getStackTrace()[1].getMethodName();
+//			lineNumber = e.getStackTrace()[1].getLineNumber();
+//			
+//			// 
+//			error = className + "." + methodName + " Linha:" + lineNumber + " Erro: " + errorMsg + " <BR> " + error;
+//			
+//			e.printStackTrace();
+//			
+//			// lançar exception para retornar ao usuário
+//			throw new Exception("Falha ao gerar o EFD! " + error);
+//		}
 		
 		// return bloco0;
 	}

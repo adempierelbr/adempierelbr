@@ -1252,7 +1252,10 @@ public class EFDUtil {
 		reg.setVL_SERV(factFiscal.getTotalLines());
 		
 		// Total dos Itens + Total dos Serviços que não são tributados pelo ICMS
-		reg.setVL_SERV_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		if (reg.getVL_SERV() != null && reg.getVL_BC_ICMS() != null)
+			reg.setVL_SERV_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		else
+			reg.setVL_SERV_NT(Env.ZERO);
 		
 		// Valores cobrados em nome de terceiros
 		reg.setVL_TERC(Env.ZERO);
@@ -1980,7 +1983,7 @@ public class EFDUtil {
 	{
 		R1001 reg = new R1001();
 		reg.setIND_MOV(hasInfo ? "0" : "1");
-		createR1010(); //Registro Obrigatório
+//		createR1010(); //Registro Obrigatório
 		
 		return reg;
 	}
@@ -2005,11 +2008,6 @@ public class EFDUtil {
 		reg.setIND_FORM("N");
 		reg.setIND_AER("N");
 		
-		if (reg.getIND_CART().equals("S"))
-		{
-			createR1600("Cartao Visa", "31598.34", "0.00");
-			createR1600("Cartao Matercard", "6974.00", "0.00");
-		}
 		return reg;
 	}
 	
@@ -2019,7 +2017,7 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static R1600 createR1600(String nome, String credito, String debito) throws Exception
+	public static R1600 createR1600(String nome, BigDecimal credito, BigDecimal debito) throws Exception
 	{
 		R1600 reg = new R1600();
 		reg.setREG("1600");
