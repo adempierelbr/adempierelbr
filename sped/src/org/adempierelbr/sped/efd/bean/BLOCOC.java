@@ -36,6 +36,9 @@ public class BLOCOC {
 
 	@XMLFieldProperties(needsValidation = true, id = "RC100")
 	private List<RC100> rC100 = new ArrayList<RC100>();
+	
+	@XMLFieldProperties(needsValidation = true, id = "RC500")
+	private List<RC500> rC500 = new ArrayList<RC500>();
 
 	@XMLFieldProperties(needsValidation = true, id = "RC990")
 	private RC990 rC990;
@@ -54,6 +57,18 @@ public class BLOCOC {
 
 	public void setrC100(List<RC100> rC100) {
 		this.rC100 = rC100;
+	}
+	
+	public List<RC500> getrC500() {
+		return rC500;
+	}
+
+	public void setrC500(List<RC500> rC500) {
+		this.rC500 = rC500;
+	}
+	
+	public void addrC500(RC500 rC500) {
+		this.rC500.add(rC500);
 	}
 
 	public RC990 getrC990() {
@@ -126,6 +141,13 @@ public class BLOCOC {
 			for(RC190 aux_rc190 : aux_rc100.getrC190())
 				result.append(aux_rc190.toString());
 
+		}
+		
+		for (RC500 c500 : rC500)
+		{
+			result.append(c500);
+			for (RC590 c590 : c500.getrC590())
+				result.append(c590);
 		}
 		
 		// counter

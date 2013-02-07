@@ -14,6 +14,8 @@ package org.adempierelbr.sped.efd.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -111,7 +113,14 @@ public class RC500 extends RegSped implements Comparable<Object> {
 	@XMLFieldProperties(id = "COD_GRUPO_TENSAO", isMandatory = false, maxSize = 2)
 	private String COD_GRUPO_TENSAO;
 	
+	@XMLFieldProperties(needsValidation = true, id = "RC590", isSPEDField = false)
+	private List<RC590> rC590 = new ArrayList<RC590>();
+
 	
+	public void addrC590(RC590 rC590) {
+		// add linha
+		this.rC590.add(rC590);
+	}
 
 	/**
 	 * Constructor
@@ -119,7 +128,15 @@ public class RC500 extends RegSped implements Comparable<Object> {
 	public RC500() {
 		super();
 	}
+	
+	public List<RC590> getrC590() {
+		return rC590;
+	}
 
+	public void setrC590(List<RC590> rC590) {
+		this.rC590 = rC590;
+	}
+	
 	public String getIND_OPER() {
 		return IND_OPER;
 	}

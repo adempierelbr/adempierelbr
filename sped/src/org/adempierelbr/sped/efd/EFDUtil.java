@@ -41,6 +41,8 @@ import org.adempierelbr.sped.efd.bean.RC120;
 import org.adempierelbr.sped.efd.bean.RC170;
 import org.adempierelbr.sped.efd.bean.RC190;
 import org.adempierelbr.sped.efd.bean.RC195;
+import org.adempierelbr.sped.efd.bean.RC500;
+import org.adempierelbr.sped.efd.bean.RC590;
 import org.adempierelbr.sped.efd.bean.RC990;
 import org.adempierelbr.sped.efd.bean.RD001;
 import org.adempierelbr.sped.efd.bean.RD100;
@@ -272,14 +274,14 @@ public class EFDUtil {
 	{
 		// documento regular
 		String cod_sit = "00";
-		
+		System.out.println(factFiscal.getDocumentNo());
 		// cancelada = 02
 		if(factFiscal.isCancelled())
 			cod_sit = "02";
 		
 		// regime especial ou norma especifica. CFOP 5/6.929
 
-		else if(!factFiscal.islbr_IsService() && (factFiscal.getlbr_CFOPName().equals("5.929")
+		else if(factFiscal.getlbr_CFOPName() != null && (factFiscal.getlbr_CFOPName().equals("5.929")
 				|| factFiscal.getlbr_CFOPName().equals("6.929")))
 			cod_sit = "08";
 		
@@ -1217,6 +1219,97 @@ public class EFDUtil {
 	}
 	
 	/**
+	 * REGISTRO C500: NOTA FISCAL DE ENERGIA
+	 * 
+	 * @param rC500
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC500 createRC500(MLBRFactFiscal factFiscal) throws Exception
+	{
+		
+		//
+		RC500 reg = new RC500();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
+		
+		// TODO ??
+		reg.setSUB(""); 
+		reg.setCOD_CONS("01");
+		
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_E_S(factFiscal.getlbr_DateInOut());
+		
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+		reg.setVL_FORN(factFiscal.getGrandTotal());
+
+		
+		// Total dos Itens + Total dos Serviços que não são tributados pelo ICMS
+		if (reg.getVL_DOC() != null && reg.getVL_BC_ICMS() != null)
+			reg.setVL_SERV_NT(reg.getVL_DOC().subtract(reg.getVL_BC_ICMS()));
+		else
+			reg.setVL_SERV_NT(Env.ZERO);
+		
+		// Valores cobrados em nome de terceiros
+		reg.setVL_TERC(Env.ZERO);
+		
+		// Valores Outras Despesas
+		reg.setVL_DA(Env.ZERO);
+		
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		
+		//
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
+		
+		//
+		reg.setCOD_INF(null);
+		
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
+		reg.setTP_LIGACAO("01");
+		reg.setCOD_GRUPO_TENSAO("01");
+
+		
+		//
+		return reg;
+	}
+	
+	public static RC590 createRC590(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RC590 reg = new RC590();
+		
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_TaxBaseAmt());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_TaxAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
+		reg.setCOD_OBS("");
+
+		//
+		return reg;
+	}
+	
+	/**
 	 * REGISTRO D500: NOTA FISCAL DE TELEFONIA
 	 * 
 	 * @param rD500
@@ -1308,7 +1401,7 @@ public class EFDUtil {
 	}
 	
 	/**
-	 * REGISTRO C990: ENCERRAMENTO DO BLOCO D
+	 * REGISTRO D990: ENCERRAMENTO DO BLOCO D
 	 * 
 	 * @return
 	 * @throws Exception
@@ -1390,7 +1483,7 @@ public class EFDUtil {
 	
 	
 	/**
-	 * REGISTRO C990: ENCERRAMENTO DO BLOCO H
+	 * REGISTRO H990: ENCERRAMENTO DO BLOCO H
 	 * 
 	 * @return
 	 * @throws Exception

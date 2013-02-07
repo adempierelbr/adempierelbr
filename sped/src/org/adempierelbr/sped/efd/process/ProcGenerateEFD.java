@@ -28,6 +28,7 @@ import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC190;
+import org.adempierelbr.sped.efd.bean.RC500;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD500;
 import org.adempierelbr.sped.efd.bean.RE200;
@@ -214,6 +215,7 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			// Headers
 			RC100 rc100 = null;
+			RC500 rc500 = null;
 			RD100 rd100 = null;
 			RD500 rd500 = null;
 			
@@ -306,6 +308,16 @@ public class ProcGenerateEFD extends SvrProcess
 						rd500 = EFDUtil.createRD500(factFiscal);
 						blocoD.addrD500(rd500);
 					}
+					
+					/*
+					 * C500 - Conhecimentos de Energia
+					 */
+					else if(REG.startsWith("C500"))
+					{
+						// C500
+						rc500 = EFDUtil.createRC500(factFiscal);
+						blocoC.addrC500(rc500);
+					}
 							
 				}
 				
@@ -317,7 +329,7 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Produtos
 				 */
-				if (!factFiscal.getProductName().equals("Telefone"))
+				if (!factFiscal.getlbr_NFModel().equals("22"))
 					bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				/*
@@ -327,6 +339,14 @@ public class ProcGenerateEFD extends SvrProcess
 					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).
 						addrC170(EFDUtil.createRC170(factFiscal, blocoC.getrC100().
 								get(blocoC.getrC100().indexOf(rc100)).getrC170().size() + 1));
+				
+				/*
+				 * Add C590 ao C500
+				 */
+				if(REG.startsWith("C500"))
+					blocoC.getrC500().get(blocoC.getrC500().indexOf(rc500))
+						.addrC590(EFDUtil.createRC590(factFiscal, blocoC.getrC500().
+								get(blocoC.getrC500().indexOf(rc500)).getrC590().size() + 1));
 
 				/*
 				 * Add D110 ao D100
@@ -584,15 +604,15 @@ public class ProcGenerateEFD extends SvrProcess
 			 */
 			bloco0.setR0001(EFDUtil.createR0001(bloco0.getR0150().size() > 0)); // init bloco 0
 			blocoC.setrC001(EFDUtil.createRC001(blocoC.getrC100().size() > 0)); // init bloco C
-			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0)); // init bloco D
+			blocoD.setrD001(EFDUtil.createRD001(true)); // init bloco D
 			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
 					&& blocoH.getrH005().getrH010().size() > 0));
 			blocoE.setrE001(EFDUtil.createRE001(true));						    // init bloco E
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
-			bloco1.addR1600(EFDUtil.createR1600("Cartao Visa", new BigDecimal("31598.34"), Env.ZERO));
-			bloco1.addR1600(EFDUtil.createR1600("Cartao Matercard", new BigDecimal("6974.00"), Env.ZERO));
+			//bloco1.addR1600(EFDUtil.createR1600("Cartao Visa", new BigDecimal("31598.34"), Env.ZERO));
+			//bloco1.addR1600(EFDUtil.createR1600("Cartao Mastercard", new BigDecimal("6974.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 			
 			/*
