@@ -106,6 +106,10 @@
 		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
 		   	<fileset dir="./bin/org/adempierelbr/process" includes="**/ProcXMLExport.*" />
 		</copy>
+		<!-- should copy ProcGenerateEFD class to web environment  -->
+		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
+		   	<fileset dir="./bin/org/adempierelbr/sped/efd/process" includes="**/ProcGenerateEFD.*" />
+		</copy>
 	</target>
 	
 	<target name="zkwebui" if="zkwebui.present">
