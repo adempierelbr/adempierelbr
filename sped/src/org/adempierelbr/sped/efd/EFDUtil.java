@@ -270,7 +270,6 @@ public class EFDUtil {
 	 */
 	public static String getCOD_SIT(MLBRFactFiscal factFiscal) throws Exception
 	{
-		System.out.println(factFiscal.getDocumentNo());
 		// documento regular
 		String cod_sit = "00";
 		
