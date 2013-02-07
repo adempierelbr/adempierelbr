@@ -1,5 +1,6 @@
 package org.adempierelbr.sped.efd.process;
 
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,6 +44,7 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Ini;
 
 /**
  * Processo para geração do SPED EFD
@@ -152,7 +154,22 @@ public class ProcGenerateEFD extends SvrProcess
 		/*
 		 * Gerar Arquivo no disco
 		 */
-		TextUtil.generateFile(result.toString(), fileName);
+		//	Versão SWING
+			if (Ini.isClient())
+				TextUtil.generateFile(result.toString(), fileName);
+			else
+				try
+				{
+					fileName = "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
+					Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.RPSAdapter");
+					Constructor<?> constructor = clazz.getConstructor (String.class, StringBuffer.class);
+					//
+					constructor.newInstance (fileName, new StringBuffer(result));
+				} 
+				catch (Exception e)
+				{
+					log.log (Level.SEVERE, "Error saving SPED", e);
+				}
 		
 		/*
 		 * Tempo Final
