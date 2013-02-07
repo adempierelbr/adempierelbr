@@ -317,7 +317,8 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Produtos
 				 */
-				bloco0.addr0200(EFDUtil.createR0200(factFiscal));
+				if (!factFiscal.getProductName().equals("Telefone"))
+					bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				/*
 				 * Add C170 ao C100
