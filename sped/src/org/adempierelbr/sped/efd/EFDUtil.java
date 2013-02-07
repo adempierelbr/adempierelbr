@@ -886,57 +886,60 @@ public class EFDUtil {
 	{
 		//
 		RC100 reg = new RC100();
-		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0"); // Entrada = 0 | Saida = 1
-		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
-		reg.setCOD_MOD(getCOD_MOD(factFiscal));
-		reg.setCOD_SIT(getCOD_SIT(factFiscal));
-		reg.setSER(getSER(factFiscal));
-		reg.setNUM_DOC(factFiscal.getDocumentNo());
-		reg.setCHV_NFE(factFiscal.getlbr_NFeID());
-
-		reg.setCOD_PART(getCOD_PART(factFiscal));
-		reg.setDT_DOC(factFiscal.getDateDoc());
-		reg.setDT_E_S(factFiscal.getlbr_DateInOut());
-		reg.setVL_DOC(factFiscal.getGrandTotal());
-		reg.setIND_PGTO(getIND_PGTO(factFiscal));
-		reg.setVL_DESC(factFiscal.getDiscountAmt());
-		
-		// Abatimento da ZF - TODO
-		reg.setVL_ABAT_NT(factFiscal.getDiscountAmt());
-		
-		// vlr mercadorias, frete e seguro
-		reg.setVL_MERC(factFiscal.getTotalLines());
-		reg.setIND_FRT(getIND_FRT(factFiscal));
-		reg.setVL_FRT(factFiscal.getFreightAmt());
-		reg.setVL_SEG(factFiscal.getlbr_InsuranceAmt());
-		
-		// outras despesas acessórias - TODO
-		reg.setVL_OUT_DA(Env.ZERO);
-		
-		// impostos - somatório das linha
-		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
-		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
-		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
-		reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
-		reg.setVL_IPI(factFiscal.getIPI_NFTaxAmt());
-		reg.setVL_PIS(factFiscal.getPIS_NFTaxAmt());
-		reg.setVL_COFINS(factFiscal.getCOFINS_NFTaxAmt());
-		reg.setVL_PIS_ST(Env.ZERO);
-		reg.setVL_COFINS_ST(Env.ZERO);
-		
-		/*
-		 * Preencher a variável IND_ATIV para 
-		 * posterior verificação e definição se deve-se
-		 * ou não apurar alguns impostos bem como 
-		 * IPI e ST
-		 * 
-		 * UF - Usado na apuração da ST
-		 */
-		reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
-		reg.setUF(factFiscal.getlbr_BPRegion());
-		
-		//
-		return reg;
+		if (factFiscal.getDocumentNo() !=null && !factFiscal.getDocumentNo().equals("") )
+		{
+			reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0"); // Entrada = 0 | Saida = 1
+			reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+			reg.setCOD_MOD(getCOD_MOD(factFiscal));
+			reg.setCOD_SIT(getCOD_SIT(factFiscal));
+			reg.setSER(getSER(factFiscal));
+			reg.setNUM_DOC(factFiscal.getDocumentNo());
+			reg.setCHV_NFE(factFiscal.getlbr_NFeID());
+	
+			reg.setCOD_PART(getCOD_PART(factFiscal));
+			reg.setDT_DOC(factFiscal.getDateDoc());
+			reg.setDT_E_S(factFiscal.getlbr_DateInOut());
+			reg.setVL_DOC(factFiscal.getGrandTotal());
+			reg.setIND_PGTO(getIND_PGTO(factFiscal));
+			reg.setVL_DESC(factFiscal.getDiscountAmt());
+			
+			// Abatimento da ZF - TODO
+			reg.setVL_ABAT_NT(factFiscal.getDiscountAmt());
+			
+			// vlr mercadorias, frete e seguro
+			reg.setVL_MERC(factFiscal.getTotalLines());
+			reg.setIND_FRT(getIND_FRT(factFiscal));
+			reg.setVL_FRT(factFiscal.getFreightAmt());
+			reg.setVL_SEG(factFiscal.getlbr_InsuranceAmt());
+			
+			// outras despesas acessórias - TODO
+			reg.setVL_OUT_DA(Env.ZERO);
+			
+			// impostos - somatório das linha
+			reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+			reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+			reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
+			reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
+			reg.setVL_IPI(factFiscal.getIPI_NFTaxAmt());
+			reg.setVL_PIS(factFiscal.getPIS_NFTaxAmt());
+			reg.setVL_COFINS(factFiscal.getCOFINS_NFTaxAmt());
+			reg.setVL_PIS_ST(Env.ZERO);
+			reg.setVL_COFINS_ST(Env.ZERO);
+			
+			/*
+			 * Preencher a variável IND_ATIV para 
+			 * posterior verificação e definição se deve-se
+			 * ou não apurar alguns impostos bem como 
+			 * IPI e ST
+			 * 
+			 * UF - Usado na apuração da ST
+			 */
+			reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
+			reg.setUF(factFiscal.getlbr_BPRegion());
+			
+			//
+		}
+			return reg;
 		
 	} //createRC100
 	

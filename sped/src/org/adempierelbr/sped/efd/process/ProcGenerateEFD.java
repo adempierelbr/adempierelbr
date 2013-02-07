@@ -252,6 +252,9 @@ public class ProcGenerateEFD extends SvrProcess
 				//
 				String REG = EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)); 
 				
+				if (factFiscal.getDocumentNo()==null)
+					REG="Z999"; //para não criar os blocos, apagar depois!
+				
 				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
 				 */
@@ -283,26 +286,29 @@ public class ProcGenerateEFD extends SvrProcess
 					{
 						// C100 - NF
 						rc100 = EFDUtil.createRC100(factFiscal);
-						blocoC.addrC100(rc100);
+						if (rc100.getNUM_DOC() != null)
+						{
+							blocoC.addrC100(rc100);
 
-						// C120 - DI
-						if(factFiscal.getLBR_NFDI_ID() > 0)
-							rc100.setrC120(EFDUtil.createRC120(factFiscal));
-						
-						/*
-						 *  0460 - Obs do Lançamento Fiscal
-						 *  
-						 *  Se não for industria e for entrada, gerar a Obs do Lançamento Fiscal 
-						 *  de acordo com a descrição no método addrC170
-						 */
-						if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0"))
-						{						
-							//
-							R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
-							bloco0.addr0460(r0460);
-						
-							// C195 - Associar a Obs do Lançamento Fiscal à NF
-							rc100.addrC195(EFDUtil.createRC195(r0460));
+							// C120 - DI
+							if(factFiscal.getLBR_NFDI_ID() > 0)
+								rc100.setrC120(EFDUtil.createRC120(factFiscal));
+							
+							/*
+							 *  0460 - Obs do Lançamento Fiscal
+							 *  
+							 *  Se não for industria e for entrada, gerar a Obs do Lançamento Fiscal 
+							 *  de acordo com a descrição no método addrC170
+							 */
+							if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0"))
+							{						
+								//
+								R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
+								bloco0.addr0460(r0460);
+							
+								// C195 - Associar a Obs do Lançamento Fiscal à NF
+								rc100.addrC195(EFDUtil.createRC195(r0460));
+							}
 						}
 					}
 					
@@ -346,7 +352,7 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Produtos
 				 */
-				if (!factFiscal.getlbr_NFModel().equals("22"))
+				if (factFiscal.getlbr_NFModel()!=null && !factFiscal.getlbr_NFModel().equals("22"))
 					bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				/*
@@ -628,8 +634,8 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
-			//bloco1.addR1600(EFDUtil.createR1600("Cartao Visa", new BigDecimal("31598.34"), Env.ZERO));
-			//bloco1.addR1600(EFDUtil.createR1600("Cartao Mastercard", new BigDecimal("6974.00"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Cartão Visa - BNDES", new BigDecimal("31598.34"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Cartão Mastercard - BNDES", new BigDecimal("6974.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 			
 			/*
