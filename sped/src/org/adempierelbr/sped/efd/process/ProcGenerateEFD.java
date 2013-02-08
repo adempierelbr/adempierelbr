@@ -351,9 +351,8 @@ public class ProcGenerateEFD extends SvrProcess
 				
 				/*
 				 * Produtos
-				 */
-				String X = factFiscal.getlbr_NFModel();
-				if (!factFiscal.getProductName().equals("Telefone"))
+				 */;
+				if (!factFiscal.getProductName().equals("Telefone") && !factFiscal.getProductName().equals("Energia Eletrica"))
 					bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				/*
