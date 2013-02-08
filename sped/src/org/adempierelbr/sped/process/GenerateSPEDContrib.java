@@ -20,6 +20,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
+import org.adempierelbr.sped.contrib.bean.BlocoA;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
 import org.compiere.model.MOrgInfo;
@@ -27,6 +28,7 @@ import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.AdempiereUserError;
+import org.compiere.util.CLogger;
 
 /**
  * 		Processo para validar e gerar os Registros do SPED
@@ -53,6 +55,9 @@ public class GenerateSPEDContrib extends SvrProcess
 	/** Cód. SPED 		*/
 	private String p_CodFin = "0";
 	private String p_RecAnterior = "";
+	
+	/** Log				*/
+	private CLogger log = CLogger.getCLogger (GenerateSPEDContrib.class);
 
 	/**
 	 *  Prepare, get Parameters.
@@ -148,13 +153,39 @@ public class GenerateSPEDContrib extends SvrProcess
 		
 		//	Inicio do Arquivo
 		Bloco0 b0 = new Bloco0();
-		b0.setR0000(SPEDUtil.fillR0000 (new R0000(), ctx, dateFrom, dateTo, p_CodFin, orgInfo, "", p_RecAnterior, trxName));
-		b0.setR0100((R0100) SPEDUtil.fillR0100 (new R0100 (), ctx, orgInfo, trxName));
+		BlocoA bA = new BlocoA();
 		
+		//	Registro 0000
+		b0.setR0000 (SPEDUtil.fillR0000 (new R0000(), ctx, dateFrom, dateTo, p_CodFin, orgInfo, "", p_RecAnterior, trxName));
 		
+		//	Registro 0100
+		b0.setR0100 ((R0100) SPEDUtil.fillR0100 (new R0100 (), ctx, orgInfo, trxName));
 		
+		//	Registro 0110
+		b0.setR0110 (SPEDUtil.getR0110 ("1", "2", "1", ""));	//	FIXME
 		
+		//	Registro 0140
+		b0.setR0140 (SPEDUtil.getR0140 (ctx, new MOrgInfo[]{orgInfo}, trxName));
 		
+		//	Registro 0150
+		b0.setR0150 (SPEDUtil.getR0150 ());
+		
+		//	Registro 0190
+		b0.setR0190 (SPEDUtil.getR0190 ());
+		
+		//	Registro 0200
+		b0.setR0200 (SPEDUtil.getR0200 ());
+		
+		//	Registro A010
+//		bA.s
+		
+		//	Fatos Fiscais
+		for (MLBRFactFiscal fact  : facts)
+		{
+			log.finer ("Running Fact inside Loop: " + fact);
+			
+			//	TODO
+		}
 	}	//	genSPEDContrib
 	
 	

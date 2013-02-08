@@ -12,6 +12,13 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import java.util.List;
+import java.util.Set;
+
+import org.adempierelbr.sped.bean.I_R0150;
+import org.adempierelbr.sped.bean.I_R0190;
+import org.adempierelbr.sped.bean.I_R0200;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
@@ -25,10 +32,10 @@ public class Bloco0
 	private R0100 r0100;
 	private R0110 r0110;
 	private R0111 r0111;
-	private R0140 r0140;
-	private R0150 r0150;
-	private R0190 r0190;
-	private R0200 r0200;
+	private Set<R0140> r0140;
+	private Set<I_R0150> r0150;
+	private Set<I_R0190> r0190;
+	private Set<I_R0200> r0200;
 	private R0990 r0990;
 	
 	public R0000 getR0000()
@@ -71,35 +78,35 @@ public class Bloco0
 	{
 		this.r0111 = r0111;
 	}
-	public R0140 getR0140()
+	public Set<R0140> getR0140()
 	{
 		return r0140;
 	}
-	public void setR0140(R0140 r0140)
+	public void setR0140(Set<R0140> r0140)
 	{
 		this.r0140 = r0140;
 	}
-	public R0150 getR0150()
+	public Set<I_R0150> getR0150()
 	{
 		return r0150;
 	}
-	public void setR0150(R0150 r0150)
+	public void setR0150(Set<I_R0150> r0150)
 	{
 		this.r0150 = r0150;
 	}
-	public R0190 getR0190()
+	public Set<I_R0190> getR0190()
 	{
 		return r0190;
 	}
-	public void setR0190(R0190 r0190)
+	public void setR0190(Set<I_R0190> r0190)
 	{
 		this.r0190 = r0190;
 	}
-	public R0200 getR0200()
+	public Set<I_R0200> getR0200()
 	{
 		return r0200;
 	}
-	public void setR0200(R0200 r0200)
+	public void setR0200(Set<I_R0200> r0200)
 	{
 		this.r0200 = r0200;
 	}

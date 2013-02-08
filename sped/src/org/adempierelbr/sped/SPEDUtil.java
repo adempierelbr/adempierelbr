@@ -13,13 +13,22 @@
 package org.adempierelbr.sped;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.bean.I_R0000;
 import org.adempierelbr.sped.bean.I_R0100;
+import org.adempierelbr.sped.bean.I_R0150;
+import org.adempierelbr.sped.bean.I_R0190;
+import org.adempierelbr.sped.bean.I_R0200;
 import org.adempierelbr.sped.contrib.bean.R0000;
+import org.adempierelbr.sped.contrib.bean.R0110;
+import org.adempierelbr.sped.contrib.bean.R0140;
+import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
@@ -37,9 +46,85 @@ import org.compiere.model.MUser;
  */
 public class SPEDUtil
 {
+	private static final String MODEL_RPS = "RS";	//	FIXME: Criar script para adicionar RPS, sendo a chave RS (2 Dígitos)
+	
+	public static final int TYPE_ECD 		= 0;
+	public static final int TYPE_EFD 		= 1;
+	public static final int TYPE_CONTRIB 	= 2;
+	
 	public static final String ECD_VERSION = "";
 	public static final String EFD_VERSION = "";
 	public static final String CONTRIB_VERSION = "002";
+	
+	public static MLBRFactFiscal[] facts = null;
+	
+	public static Set<I_R0150> _R0150;
+	public static Set<I_R0190> _R0190;
+	public static Set<I_R0200> _R0200;
+	public static Set<RA100> _RA100;
+	
+	/**
+	 * 	Processa todos os Fatos Fiscais
+	 * 
+	 * @param ctx Context
+	 * @param facts	Fatos Fiscais
+	 * @param trxName Nome da Transação
+	 */
+	public static void processFacts (Properties ctx, MLBRFactFiscal[] facts, int type, String trxName)
+	{
+		//	Initialize
+		_R0150 = new HashSet<I_R0150>();
+		_R0190 = new HashSet<I_R0190>();
+		_R0200 = new HashSet<I_R0200>();
+		_RA100 = new HashSet<RA100>();
+		//
+		for (MLBRFactFiscal fact : facts)
+		{
+			_R0150.add (fact.fillR0150 (ctx, (I_R0150) getReg ("R0150", type), trxName));
+			_R0190.add (fact.fillR0190 (ctx, (I_R0190) getReg ("R0190", type), trxName));
+			_R0200.add (fact.fillR0200 (ctx, (I_R0200) getReg ("R0200", type), trxName));
+			
+			//	Contratação de Serviço (Somente Contribuições)
+			if (MODEL_RPS.equals(fact.getlbr_NFModel()) && type == TYPE_CONTRIB)
+			{
+				RA100 rA100 = new RA100 ();
+			}
+		}	//	for
+	}	//	processFacts
+	
+	/**
+	 * 		Retorna a instância dos registros comuns ou similares entre os SPEDs.
+	 * 
+	 * 	@param regName Nome do Registro
+	 * 	@param type Tipo ECD, EFD ou Contribuições
+	 * 	@return Registro para ambos SPEDs
+	 */
+	private static Object getReg (String regName, int type)
+	{
+		Class<?> clazz = null;
+		
+		try
+		{
+			if (type == TYPE_EFD)
+				clazz = Class.forName("org.adempierelbr.sped.efd." + regName);
+			
+			else if (type == TYPE_CONTRIB)
+				clazz = Class.forName("org.adempierelbr.sped.contrib." + regName);
+			
+			else if (type == TYPE_ECD)
+				clazz = Class.forName("org.adempierelbr.sped.ecd." + regName);
+
+			else
+				throw new ClassNotFoundException (">>>>" + regName);
+			//
+			return clazz.newInstance();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}	//	getReg
 	
 	/**
 	 * 		Abertura do Arquivo
@@ -146,4 +231,105 @@ public class SPEDUtil
 		//	Retorno o mesmo objeto
 		return reg;
 	}	//	fillR0100
+	
+	/**
+	 * 		Este registro tem por objetivo definir o regime de incidência a que se 
+	 * 	submete a pessoa jurídica (não-cumulativo, cumulativo ou ambos os regimes) 
+	 * 	no período da escrituração. No caso de sujeição ao regime não-cumulativo, 
+	 * 	será informado também o método de apropriação do crédito incidente sobre operações 
+	 * 	comuns a mais de um tipo de receita adotado pela pessoa jurídica para o ano-calendário.
+	 * 
+	 * @param COD_INC_TRIB Código indicador da incidência tributária no período<br>
+	 * 			<li>1 – Escrituração de operações com incidência exclusivamente no 
+	 * 									regime não-cumulativo;
+	 *			<li>2 – Escrituração de operações com incidência exclusivamente no 
+	 *									regime cumulativo;
+	 *			<li>3 – Escrituração de operações com incidência nos regimes 
+	 *									não-cumulativo e cumulativo.
+	 * @param IND_APRO_CRED Código indicador de método de apropriação de créditos comuns
+	 * 			<li>1 – Método de Apropriação Direta;
+	 *			<li>2 – Método de Rateio Proporcional (Receita Bruta)
+	 * @param COD_TIPO_CONT Código indicador do Tipo de Contribuição Apurada no Período
+	 * 			<li>1 – Apuração da Contribuição Exclusivamente a Alíquota Básica
+	 * 			<li>2 – Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por 
+	 * 									Unidade de Medida de Produto)
+	 * @param IND_REG_CUM Código indicador do critério de escrituração e apuração adotado
+	 * 			<li>1 – Regime de Caixa – Escrituração consolidada (Registro F500);
+	 * 			<li>2 – Regime de Competência - Escrituração consolidada (Registro F550);
+	 * 			<li>9 – Regime de Competência - Escrituração detalhada, com base nos registros 
+	 * 									dos Blocos “A”, “C”, “D” e “F”
+	 * @return Registro 0110
+	 * @throws Exception
+	 */
+	public static R0110 getR0110 (String COD_INC_TRIB, String IND_APRO_CRED, String COD_TIPO_CONT, String IND_REG_CUM) throws Exception
+	{
+		R0110 r0110 = new R0110 ();
+		r0110.setCOD_INC_TRIB(COD_INC_TRIB);
+		r0110.setIND_APRO_CRED(IND_APRO_CRED);
+		r0110.setCOD_TIPO_CONT(COD_TIPO_CONT);
+		r0110.setIND_REG_CUM(IND_REG_CUM);
+		//
+		return r0110;
+	}	//	getR0110
+	
+	/**
+	 * 		Este registro tem por objetivo relacionar e informar os estabelecimentos da pessoa jurídica, 
+	 * 	no Brasil ou no exterior, que auferiram receitas no período da escrituração, realizaram operações 
+	 * 	com direito a créditos ou que sofreram retenções na fonte, no período da escrituração.
+	 * 
+	 * 	@param ctx Context
+	 * 	@param oi Organização
+	 * 	@param trxName Transaction Name
+	 * 	@return Registro 0140
+	 */
+	public static Set<R0140> getR0140 (Properties ctx, MOrgInfo[] ois, String trxName)
+	{
+		Set<R0140> r0140L = new HashSet<R0140>();
+		//
+		for (MOrgInfo oi : ois)
+		{
+			I_W_AD_OrgInfo oiW = POWrapper.create(oi, I_W_AD_OrgInfo.class);
+			MLocation location = new MLocation (ctx, oi.getC_Location_ID(), trxName);
+			//
+			R0140 r0140 = new R0140();
+			r0140.setCNPJ(oiW.getlbr_CNPJ());
+			r0140.setCOD_EST(String.valueOf (oi.getAD_Org_ID()));
+			r0140.setCOD_MUN(BPartnerUtil.getCityCode (location));
+			r0140.setIE(oiW.getlbr_IE());
+			r0140.setIM(oiW.getlbr_CCM());
+			r0140.setNOME(oiW.getlbr_LegalEntity());
+			r0140.setSUFRAMA(oiW.getlbr_Suframa());
+			r0140.setUF(oi.getC_Location().getRegionName());
+			//
+			r0140L.add(r0140);
+		}
+		return r0140L;
+	}	//	getR0140
+
+	/**
+	 * 		Parceiros
+	 * 	@return Registros 0150
+	 */
+	public static Set<I_R0150> getR0150 ()
+	{
+		return _R0150;
+	}	//	getR0150
+	
+	/**
+	 * 		UDMs
+	 * 	@return Registros 0190
+	 */
+	public static Set<I_R0190> getR0190 ()
+	{
+		return _R0190;
+	}	//	getR0150
+	
+	/**
+	 * 		UDMs
+	 * 	@return Registros 0200
+	 */
+	public static Set<I_R0200> getR0200 ()
+	{
+		return _R0200;
+	}	//	getR0150
 }	//	SPEDUtil

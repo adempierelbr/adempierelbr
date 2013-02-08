@@ -14,6 +14,7 @@ package org.adempierelbr.sped.contrib.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_R0150;
 
 /**
  * 	REGISTRO 0150:
@@ -22,7 +23,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: R0150.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class R0150 extends RegSped
+public class R0150 extends RegSped implements I_R0150
 {
 	@XMLFieldProperties(maxSize=60, id="COD_PART")
 	private String COD_PART;
@@ -59,4 +60,64 @@ public class R0150 extends RegSped
 	
 	@XMLFieldProperties(isMandatory=false, maxSize=60, id="BAIRRO")
 	private String BAIRRO;
+
+	public void setCOD_PART(String cOD_PART)
+	{
+		COD_PART = cOD_PART;
+	}
+
+	public void setNOME(String nOME)
+	{
+		NOME = nOME;
+	}
+
+	public void setCOD_PAIS(String cOD_PAIS)
+	{
+		COD_PAIS = cOD_PAIS;
+	}
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
+
+	public void setCPF(String cPF)
+	{
+		CPF = cPF;
+	}
+
+	public void setIE(String iE)
+	{
+		IE = iE;
+	}
+
+	public void setCOD_MUN(String cOD_MUN)
+	{
+		COD_MUN = cOD_MUN;
+	}
+
+	public void setSUFRAMA(String sUFRAMA)
+	{
+		SUFRAMA = sUFRAMA;
+	}
+
+	public void setEND(String eND)
+	{
+		END = eND;
+	}
+
+	public void setNUM(String nUM)
+	{
+		NUM = nUM;
+	}
+
+	public void setCOMPL(String cOMPL)
+	{
+		COMPL = cOMPL;
+	}
+
+	public void setBAIRRO(String bAIRRO)
+	{
+		BAIRRO = bAIRRO;
+	}
 }	//	R0150

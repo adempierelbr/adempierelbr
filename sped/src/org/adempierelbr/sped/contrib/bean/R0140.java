@@ -47,4 +47,44 @@ public class R0140 extends RegSped
 	
 	@XMLFieldProperties(minSize=9, maxSize=9, id="SUFRAMA", isMandatory=false)
 	private String SUFRAMA;
+
+	public void setCOD_EST(String cOD_EST)
+	{
+		COD_EST = cOD_EST;
+	}
+
+	public void setNOME(String nOME)
+	{
+		NOME = nOME;
+	}
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
+
+	public void setUF(String uF)
+	{
+		UF = uF;
+	}
+
+	public void setIE(String iE)
+	{
+		IE = iE;
+	}
+
+	public void setCOD_MUN(String cOD_MUN)
+	{
+		COD_MUN = cOD_MUN;
+	}
+
+	public void setIM(String iM)
+	{
+		IM = iM;
+	}
+
+	public void setSUFRAMA(String sUFRAMA)
+	{
+		SUFRAMA = sUFRAMA;
+	}
 }	//	R0140

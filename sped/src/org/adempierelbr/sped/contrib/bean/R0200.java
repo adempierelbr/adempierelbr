@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_R0200;
 
 /**
  * 	REGISTRO 0200:
@@ -24,7 +25,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: R0200.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class R0200 extends RegSped
+public class R0200 extends RegSped implements I_R0200
 {
 	@XMLFieldProperties(maxSize = 60, id = "COD_ITEM")
 	private String COD_ITEM;
@@ -57,5 +58,60 @@ public class R0200 extends RegSped
 	private String COD_LST;
 	
 	@XMLFieldProperties( maxSize = 6, isMandatory = false, id = "ALIQ_ICMS")
-	private BigDecimal ALIQ_ICMS;	
+	private BigDecimal ALIQ_ICMS;
+
+	public void setCOD_ITEM(String cOD_ITEM)
+	{
+		COD_ITEM = cOD_ITEM;
+	}
+
+	public void setDESCR_ITEM(String dESCR_ITEM)
+	{
+		DESCR_ITEM = dESCR_ITEM;
+	}
+
+	public void setCOD_BARRA(String cOD_BARRA)
+	{
+		COD_BARRA = cOD_BARRA;
+	}
+
+	public void setCOD_ANT_ITEM(String cOD_ANT_ITEM)
+	{
+		COD_ANT_ITEM = cOD_ANT_ITEM;
+	}
+
+	public void setUNID_INV(String uNID_INV)
+	{
+		UNID_INV = uNID_INV;
+	}
+
+	public void setTIPO_ITEM(String tIPO_ITEM)
+	{
+		TIPO_ITEM = tIPO_ITEM;
+	}
+
+	public void setCOD_NCM(String cOD_NCM)
+	{
+		COD_NCM = cOD_NCM;
+	}
+
+	public void setEX_IPI(String eX_IPI)
+	{
+		EX_IPI = eX_IPI;
+	}
+
+	public void setCOD_GEN(String cOD_GEN)
+	{
+		COD_GEN = cOD_GEN;
+	}
+
+	public void setCOD_LST(String cOD_LST)
+	{
+		COD_LST = cOD_LST;
+	}
+
+	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS)
+	{
+		ALIQ_ICMS = aLIQ_ICMS;
+	}
 }	//	R0200

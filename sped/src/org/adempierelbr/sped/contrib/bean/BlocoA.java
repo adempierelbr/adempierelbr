@@ -12,6 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import java.util.Set;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
@@ -22,8 +24,7 @@ package org.adempierelbr.sped.contrib.bean;
 public class BlocoA
 {
 	private RA001 rA001;
-	private RA010 rA010;
-	private RA100 rA100;
-	private RA170 rA170;
+	private Set<RA010> rA010;
+	private Set<RA100> rA100;
 	private RA990 rA990;
 }	//	BlocoA
