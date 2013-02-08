@@ -352,7 +352,8 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Produtos
 				 */
-				if (factFiscal.getlbr_NFModel()!=null && !factFiscal.getlbr_NFModel().equals("22"))
+				String X = factFiscal.getlbr_NFModel();
+				if (!factFiscal.getProductName().equals("Telefone"))
 					bloco0.addr0200(EFDUtil.createR0200(factFiscal));
 				
 				/*
@@ -634,8 +635,8 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
-			bloco1.addR1600(EFDUtil.createR1600("Cartão Visa - BNDES", new BigDecimal("31598.34"), Env.ZERO));
-			bloco1.addR1600(EFDUtil.createR1600("Cartão Mastercard - BNDES", new BigDecimal("6974.00"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Cartao Visa - BNDES", new BigDecimal("31598.34"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Cartao Mastercard - BNDES", new BigDecimal("6974.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 			
 			/*
