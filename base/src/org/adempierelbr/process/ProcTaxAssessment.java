@@ -89,8 +89,8 @@ public class ProcTaxAssessment extends SvrProcess
 			/*
 			 * CFOP - 5/6.929 - NF emitida em substituição do CUPOM FISCAL
 			 */
-			if (m_factfiscal.getlbr_CFOPName().equals("5.929")
-					|| m_factfiscal.getlbr_CFOPName().equals("6.929"))
+			if (m_factfiscal.getlbr_CFOPName()!=null && (m_factfiscal.getlbr_CFOPName().equals("5.929")
+					|| m_factfiscal.getlbr_CFOPName().equals("6.929")))
 				continue;
 			
 			/*
