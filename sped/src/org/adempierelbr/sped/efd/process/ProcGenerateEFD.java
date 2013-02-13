@@ -254,7 +254,7 @@ public class ProcGenerateEFD extends SvrProcess
 				String REG = EFDUtil.getBlocoNFModel(EFDUtil.getCOD_MOD(factFiscal)); 
 				
 				if (factFiscal.getDocumentNo()==null)
-					REG="Z999"; //para não criar os blocos, apagar depois!
+					REG="C999"; //para não criar os blocos, apagar depois!
 				
 				/*
 				 * Gerar somente dos blocos C(produtos) e D(servicos).
