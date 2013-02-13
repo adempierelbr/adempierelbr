@@ -1,6 +1,6 @@
 package org.adempierelbr.sped.efd.process;
 
-import java.lang.reflect.Constructor;
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_SPED;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
@@ -36,6 +37,7 @@ import org.adempierelbr.sped.efd.bean.RE200;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.compiere.model.MAttachment;
 import org.compiere.model.MElementValue;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
@@ -44,7 +46,6 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Ini;
 
 /**
  * Processo para geração do SPED EFD
@@ -74,6 +75,11 @@ public class ProcGenerateEFD extends SvrProcess
 	 */
 	private int p_AD_Org_ID = 0;
 	
+	/** 
+	 * SPED 
+	 */
+	private int p_LBR_SPED_ID = 0;
+	
 	
 	/**
 	 * Prepare - e.g., get Parameters.
@@ -86,13 +92,7 @@ public class ProcGenerateEFD extends SvrProcess
 		{
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
-				;
-			else if (name.equals("File_Directory"))
-				p_FilePath = para[i].getParameter().toString();
-			else if (name.equals("C_Period_ID"))
-				p_C_Period_ID = para[i].getParameterAsInt();
-			else if (name.equals("AD_Org_ID"))
-				p_AD_Org_ID = para[i].getParameterAsInt();
+				;			
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}	//	for
@@ -109,7 +109,16 @@ public class ProcGenerateEFD extends SvrProcess
 		 * Tempo inicial
 		 */
 		long start = System.currentTimeMillis();
-
+		
+		p_LBR_SPED_ID = getRecord_ID();
+		
+		/*
+		 * Objeto do Sped
+		 */
+		X_LBR_SPED SPED = new X_LBR_SPED(getCtx(),p_LBR_SPED_ID, get_TrxName());
+		
+		p_C_Period_ID = SPED.getC_Period_ID();
+		p_AD_Org_ID = SPED.getAD_Org_ID();		
 		
 		/*
 		 * Validar Organização e Periodo
@@ -130,7 +139,7 @@ public class ProcGenerateEFD extends SvrProcess
 		/*
 		 * Caminho do Arquivo
 		 */
-		String fileName = p_FilePath;
+		String fileName = "";
 		
 		/*
 		 * Rodar Processo
@@ -138,39 +147,31 @@ public class ProcGenerateEFD extends SvrProcess
 		StringBuilder result = generateEFD(dateFrom,dateTo);
 		
 		/*
-		 * Se o caminho não terminar com /, colocá-la 
-		 */
-		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-			fileName += AdempiereLBR.getFileSeparator();
-		
-		/*
 		 * Nome do arquivo
 		 * 
 		 * EDF_CNPJ_DATA.txt
 		 */
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
-		fileName += "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
+		fileName = "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
 		/*
 		 * Gerar Arquivo no disco
 		 */
-		//	Versão SWING
-			if (Ini.isClient())
-				TextUtil.generateFile(result.toString(), fileName);
-			else
-				try
-				{
-					fileName = "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
-					Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.RPSAdapter");
-					Constructor<?> constructor = clazz.getConstructor (String.class, StringBuffer.class);
-					//
-					constructor.newInstance (fileName, new StringBuffer(result));
-				} 
-				catch (Exception e)
-				{
-					log.log (Level.SEVERE, "Error saving SPED", e);
-				}
 		
+		File file = new File(TextUtil.generateFile(result.toString(), fileName));
+		
+		try
+		{
+			//	Anexa o XML na NF
+			MAttachment attachNFe = SPED.createAttachment();
+			attachNFe.addEntry(file);
+			attachNFe.save(null);
+		} 
+		catch (Exception e)
+		{
+			log.log (Level.SEVERE, "Error saving SPED", e);
+		}
+
 		/*
 		 * Tempo Final
 		 */
