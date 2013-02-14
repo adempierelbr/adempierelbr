@@ -118,9 +118,10 @@ public class GenerateSPEDContrib extends SvrProcess
 			p_To_Period_ID = p_C_Period_ID;
 		
 		MPeriod period = new MPeriod (ctx, p_C_Period_ID, trxName);
+		MPeriod toPeriod = new MPeriod (ctx, p_To_Period_ID, trxName);
 		
 		dateFrom = period.getStartDate();
-		dateTo   = period.getEndDate();
+		dateTo   = toPeriod.getEndDate();
 		//
 		orgInfo = MOrgInfo.get(ctx, p_AD_Org_ID, trxName);
 		
@@ -149,7 +150,7 @@ public class GenerateSPEDContrib extends SvrProcess
 	private void genSPEDContrib () throws AdempiereException, Exception
 	{
 		//	Fatos Fiscais
-		MLBRFactFiscal[] facts = MLBRFactFiscal.get (ctx, dateFrom, dateTo, p_AD_Org_ID, null, trxName);		
+				
 		
 		//	Inicio do Arquivo
 		Bloco0 b0 = new Bloco0();
@@ -177,15 +178,9 @@ public class GenerateSPEDContrib extends SvrProcess
 		b0.setR0200 (SPEDUtil.getR0200 ());
 		
 		//	Registro A010
-//		bA.s
+//		bA.setrA010 (SPEDUtil.getRA010 (new MOrgInfo[]{orgInfo}));
 		
-		//	Fatos Fiscais
-		for (MLBRFactFiscal fact  : facts)
-		{
-			log.finer ("Running Fact inside Loop: " + fact);
-			
-			//	TODO
-		}
+
 	}	//	genSPEDContrib
 	
 	

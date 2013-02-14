@@ -14,6 +14,7 @@ package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
@@ -111,4 +112,6 @@ public class RC100 extends RegSped
 	
 	@XMLFieldProperties(id = "VL_COFINS_ST", isMandatory=false)
 	private BigDecimal VL_COFINS_ST;
+	
+	private Set<RC120> _RC120;
 }	//	RC100

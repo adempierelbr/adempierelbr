@@ -13,20 +13,28 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
+import org.adempierelbr.sped.bean.I_RC100;
+import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
+import org.adempierelbr.sped.contrib.bean.RA170;
+import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.compiere.model.MLocation;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -69,6 +77,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		super(ctx, rs, trxName);
 	}	//	MLBRADI
 
+	public static MLBRFactFiscal[] get(Properties ctx, int LBR_NotaFiscal_ID, String trxName) throws Exception
+	{
+		return get (ctx, null, null, null, null, LBR_NotaFiscal_ID, trxName);
+	}
+	
 	/**
 	 * Retornar Fatos Fiscais de acorodo com os parâmetros abaixo
 	 * 
@@ -82,7 +95,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 */
 	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer AD_Org_ID, Boolean IsSOTrx, String trxName) throws Exception
 	{
-		return get(ctx, DateFrom, DateTo, new Integer[]{AD_Org_ID}, IsSOTrx, trxName); 
+		return get (ctx, DateFrom, DateTo, new Integer[]{AD_Org_ID}, IsSOTrx, -1, trxName); 
 	}	//	MLBRFactFiscal
 	
 	/**
@@ -96,15 +109,14 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * @param TrxName transação do BD 
 	 * @return
 	 */
-	public static MLBRFactFiscal[] get(Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer[] AD_Org_IDs, Boolean IsSOTrx, String trxName) throws Exception
+	public static MLBRFactFiscal[] get (Properties ctx, Timestamp DateFrom, Timestamp DateTo, Integer[] AD_Org_IDs, Boolean IsSOTrx, int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
-		// Client
+		//	Client
 		String whereClause = " AD_Client_ID = ? ";
 		
- 		// Organizações (2000000, 2000001...) ou (2000000) ou TODAS(null)
-		if(AD_Org_IDs != null && AD_Org_IDs.length > 0)
+ 		//	Organizações (2000000, 2000001...) ou (2000000) ou TODAS(null)
+		if (AD_Org_IDs != null && AD_Org_IDs.length > 0)
 		{
-			// 
 			whereClause += " AND AD_Org_ID IN (";			
 			for(int x = 0; x < AD_Org_IDs.length; x++)
 			{
@@ -119,31 +131,38 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 			}
 		}
 		
-		// Transação de Venda/Compra
-		if(IsSOTrx != null)
+		//	Transação de Venda/Compra
+		if (IsSOTrx != null)
 		{
 			whereClause += " AND IsSOTrx = " + (IsSOTrx.booleanValue() ? "Y" : "N"); 
-		}		
+		}
 		
-		// Intervalo de Datas: se for venda, usa a DateDoc(mesma data contábil) 
-		// senão a lbr_DateInOut(data da entrada efetiva do material no sistama e contabilidade)
-		whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN ? AND ? ";
+		//	Nota Fiscal
+		if (LBR_NotaFiscal_ID > 0)
+		{
+			whereClause += " AND LBR_NotaFiscal_ID=" + LBR_NotaFiscal_ID; 
+		}
 		
-		// transação de venda só trazer nfe transmitida
+		// 	Intervalo de Datas: se for venda, usa a DateDoc(mesma data contábil) 
+		// 		senão a lbr_DateInOut(data da entrada efetiva do material no sistama e contabilidade)
+		whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN " 
+				+ DB.TO_DATE (DateFrom) + " AND " + DB.TO_DATE (DateTo) + " ";
+		
+		// 	Transação de venda só trazer nfe transmitida
 		whereClause += " AND ((IsSOTrx = 'Y' AND lbr_NFeProt IS NOT NULL) OR IsSOTrx ='N') ";
 		
-		// order by (Date, LBR_NotaFiscal_ID, DocumentNo)
+		// 	Order By (Date, LBR_NotaFiscal_ID, DocumentNo)
 		String orderBy = " (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END), LBR_NotaFiscal_ID, Line, DocumentNo ";
 		
-		// query
+		// 	Query
 		MTable table = MTable.get(ctx, MLBRFactFiscal.Table_Name);
 		Query q = new Query(ctx, table, whereClause.toString(), trxName);
 		q.setOrderBy(orderBy);
 		
-		// parametros
-		q.setParameters(new Object[] { Env.getAD_Client_ID(ctx), DateFrom, DateTo });
+		// 	Parametros
+		q.setParameters(new Object[] { Env.getAD_Client_ID(ctx) });
 
-		// convert to array
+		// 	Convert to array
 		List<MLBRFactFiscal> list = q.list();
 		MLBRFactFiscal[] facts = new MLBRFactFiscal[list.size()];
 		return list.toArray(facts);
@@ -160,6 +179,23 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 			return "";
 		return TextUtil.retiraEspecial (getC_BPartner().getValue ());
 	}	//	getBPartnerValue
+	
+	/**
+	 * 	Obs.: A partir de 01/01/2012 passará a ser:
+	 * 	Indicador do tipo do frete:	
+	 * 		<li>0- Por conta do emitente;
+	 * 		<li>1- Por conta do destinatário/remetente;
+	 *  	<li>2- Por conta de terceiros;
+	 * 		<li>9- Sem cobrança de frete.
+	 * 	@return	Indicador do tipo do frete
+	 */
+	private String getIND_FRT ()
+	{
+		if (getFreightAmt() != null && getFreightAmt().signum() == 1)
+			return SPEDUtil.IND_FRT_DEST_REMT;
+		//
+		return SPEDUtil.IND_FRT_SEM;
+	}	//	getIND_FRET
 	
 	/**
 	 * 		Preenche os campos comuns do Registro 0150
@@ -239,27 +275,51 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	}	//	fillR0200
 	
 	/**
+	 * 		Este registro tem o objetivo de identificar o estabelecimento da pessoa jurídica 
+	 * 	a que se referem as operações e documentos fiscais informados neste bloco. Só devem 
+	 * 	ser escriturados no Registro A010 os estabelecimentos que efetivamente tenham realizado 
+	 * 	operações de prestação ou de contratação de serviços, mediante emissão de documento fiscal, 
+	 * 	que devam ser escrituradas no Bloco A.
+	 * 	
+	 * 		O estabelecimento que não realizou operações passíveis de registro nesse bloco, 
+	 * 	no período da escrituração, não deve ser identificado no Registro A010.
+	 * 
+	 * 		Para cada estabelecimento cadastrado em “A010”, deve ser informado nos registros 
+	 * 	de nível inferior (Registros Filho) as operações próprias de prestação ou de contratação 
+	 * 	de serviços, mediante emissão de documento fiscal, no mercado interno ou externo.
+	 * 	
+	 * 	@return Registro A010
+	 */
+	public RA010 getRA010 ()
+	{
+		RA010 rA010 = new RA010 ();
+		rA010.setCNPJ (getlbr_CNPJ());
+		return rA010;
+	}	//	getRA010
+	
+	/**
 	 * 		Deve ser gerado um Registro A100 para cada documento fiscal a ser relacionado na escrituração, 
 	 * 	referente à prestação ou à contratação de serviços, que envolvam a emissão de documentos fiscais 
 	 * 	estabelecidos pelos Municípios, eletrônicos ou em papel.
 	 *		Para cada registro A100, obrigatoriamente deve ser apresentado, pelo menos, um registro A170.
 	 *
 	 * 	@return Registro A100
+	 * 	@throws Exception 
 	 */
-	public RA100 getRA100 ()
+	public RA100 getRA100 (Properties ctx, String trxName) throws Exception
 	{
 		RA100 rA100 = new RA100 ();
-		rA100.setIND_OPER (isSOTrx() ? "1" : "0");
-		rA100.setIND_EMIT (isSOTrx() ? "0" : "1");
+		rA100.setIND_OPER (isSOTrx() ? SPEDUtil.IND_OPER_PRESTADO : SPEDUtil.IND_OPER_CONTRATADO);
+		rA100.setIND_EMIT (isSOTrx() ? SPEDUtil.IND_EMIT_PROPRIA : SPEDUtil.IND_EMIT_TERCEIROS);
 		rA100.setCOD_PART (getBPValue());
-		rA100.setCOD_SIT(isCancelled() ? "02" : "00");
+		rA100.setCOD_SIT(isCancelled() ? SPEDUtil.COD_SIT_CANCELADO : SPEDUtil.COD_SIT_REGULAR);
 		rA100.setSER(getlbr_NFSerie());
 		rA100.setSUB("");	//	FIXME
 		rA100.setNUM_DOC(getDocumentNo());
 		rA100.setCHV_NFSE(getlbr_NFeID());
 		rA100.setDT_DOC(getDateDoc());
 		rA100.setVL_DOC(getGrandTotal());
-		rA100.setIND_PGTO("0");	//	FIXME
+		rA100.setIND_PGTO(SPEDUtil.IND_PAGTO_VISTA);	//	FIXME
 		rA100.setVL_BC_PIS(getPIS_TaxBaseAmt());
 		rA100.setVL_PIS(getPIS_TaxAmt());
 		rA100.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());
@@ -267,8 +327,113 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rA100.setVL_PIS_RET(null);
 		rA100.setVL_COFINS_RET(null);
 		rA100.setVL_ISS(Env.ZERO);	//	FIXME: Modificar VIEW
+		
+		//	Process Lines
+		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
+		
+		for (MLBRFactFiscal line : lines)
+		{
+			rA100.addA170 (line.getRA170 ());
+		}
 		//
-		return null;
+		return rA100;
 	}	//	getRA100
+	
+	/**
+	 * 		Registro obrigatório para discriminar os itens da nota fiscal de serviço emitida 
+	 * 	pela pessoa jurídica ou por terceiros. Não podem ser informados para um mesmo documento 
+	 * 	fiscal, dois ou mais registros com o mesmo conteúdo no campo NUM_ITEM.
+	 * 
+	 * 	@return Registro A170
+	 */
+	private RA170 getRA170 ()
+	{
+		RA170 rA170 = new RA170 ();
+		rA170.setNUM_ITEM (String.valueOf (getLine()));
+		rA170.setCOD_ITEM (getProductValue());
+		rA170.setDESCR_COMPL (getProductName());
+		rA170.setVL_ITEM (getTotalLines());
+		rA170.setVL_DESC (getDiscountAmt());
+		rA170.setNAT_BC_CRED (null);	//	TODO: Não Obrigatório
+		rA170.setIND_ORIG_CRED (null);	//	TODO: Não Obrigatório
+		rA170.setCST_PIS (getPIS_TaxStatus());
+		rA170.setVL_BC_PIS (getPIS_TaxBaseAmt());
+		rA170.setALIQ_PIS (getPIS_TaxRate());
+		rA170.setVL_PIS (getPIS_TaxAmt());
+		rA170.setCST_COFINS (getCOFINS_TaxStatus());
+		rA170.setVL_BC_COFINS (getCOFINS_TaxBaseAmt());
+		rA170.setALIQ_COFINS (getCOFINS_TaxRate());
+		rA170.setVL_COFINS (getCOFINS_TaxAmt());
+		
+		//	Não Obrigatório, porém o Adempiere pode ter regras diferentes para esta informação
+		//		então não é possível preencher.
+		rA170.setCOD_CTA (null);
+		rA170.setCOD_CCUS (null);		//	TODO: Não Obrigatório
+		//
+		return rA170;
+	}	//	getRA170
+	
+	/**
+	 * 		Este registro tem o objetivo de identificar o estabelecimento da pessoa jurídica 
+	 * 	a que se referem as operações e documentos fiscais informados neste bloco. Só devem 
+	 * 	ser escriturados no Registro C010 os estabelecimentos que efetivamente tenham realizado 
+	 * 	aquisição, venda ou devolução de mercadorias, bens e produtos, mediante emissão de documento 
+	 * 	fiscal definido pela legislação do ICMS e do IPI, que devam ser escrituradas no Bloco C.
+	 * 
+	 * 		O estabelecimento que não realizou operações passíveis de registro nesse bloco, n
+	 * 	o período da escrituração, não deve ser identificado no Registro C010.
+	 * 
+	 * 		Para cada estabelecimento cadastrado em “C010”, deve ser informado nos registros de 
+	 * 	nível inferior (Registros Filho) as operações próprias de prestação ou de contratação de 
+	 * 	serviços, mediante emissão de documento fiscal, no mercado interno ou externo.
+	 * 
+	 *	@return	Registro C010
+	 *	@throws IllegalAccessException
+	 * 	@throws InvocationTargetException
+	 */
+	public RC010 getRC010 () throws IllegalAccessException, InvocationTargetException
+	{
+		RC010 rC010 = new RC010 ();
+		//
+		BeanUtils.copyProperties (rC010, getRA010 ());
+		//
+		return rC010;
+	}	//	getRC010
+	
+	/**
+	 * 
+	 * 	@param ctx
+	 * 	@param rC100
+	 * 	@param trxName
+	 * 	@return
+	 * 	@throws Exception
+	 */
+	public I_RC100 getRC100 (Properties ctx, I_RC100 rC100, String trxName) throws Exception
+	{
+		/**
+		 * 	Copia os dados comuns:
+		 * 		IND_OPER, IND_EMIT, COD_PART, COD_SIT, SER, NUM_DOC, 
+		 * 		DT_DOC, VL_DOC, IND_PGTO, VL_DESC, VL_PIS, VL_COFINS
+		 */
+		BeanUtils.copyProperties (rC100, getRA010());
+		//
+		rC100.setCOD_MOD (getlbr_NFModel());
+		rC100.setCHV_NFE (getlbr_NFeID());
+		rC100.setDT_E_S (getlbr_DateInOut());
+		rC100.setVL_MERC (getTotalLines());
+		rC100.setIND_FRT (getIND_FRT());
+		rC100.setVL_FRT (getFreightAmt());
+		rC100.setVL_SEG (getlbr_InsuranceAmt());
+		rC100.setVL_OUT_DA(null);		//	TODO
+		rC100.setVL_BC_ICMS(getICMS_TaxBaseAmt());
+		rC100.setVL_ICMS(getICMS_TaxAmt());
+		rC100.setVL_BC_ICMS_ST(getICMSST_TaxBaseAmt());
+		rC100.setVL_ICMS_ST(getICMSST_TaxAmt());
+		rC100.setVL_IPI(getIPI_TaxAmt());
+		rC100.setVL_PIS_ST(null);		//	TODO
+		rC100.setVL_COFINS_ST(null);	//	TODO
+		//
+		return rC100;
+	}	//	getRC100
 	
 }	//	MLBRFactFiscal

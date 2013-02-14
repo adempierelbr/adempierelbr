@@ -26,4 +26,9 @@ public class RA010 extends RegSped
 {
 	@XMLFieldProperties(minSize=14, maxSize=14, id = "CNPJ")
 	private String CNPJ;
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
 }	//	RA010

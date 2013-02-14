@@ -27,4 +27,21 @@ public class BlocoA
 	private Set<RA010> rA010;
 	private Set<RA100> rA100;
 	private RA990 rA990;
+	
+	public void setrA001(RA001 rA001)
+	{
+		this.rA001 = rA001;
+	}
+	public void setrA010(Set<RA010> rA010)
+	{
+		this.rA010 = rA010;
+	}
+	public void setrA100(Set<RA100> rA100)
+	{
+		this.rA100 = rA100;
+	}
+	public void setrA990(RA990 rA990)
+	{
+		this.rA990 = rA990;
+	}
 }	//	BlocoA

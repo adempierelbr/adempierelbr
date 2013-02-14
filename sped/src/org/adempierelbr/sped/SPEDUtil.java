@@ -13,7 +13,9 @@
 package org.adempierelbr.sped;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -25,10 +27,13 @@ import org.adempierelbr.sped.bean.I_R0100;
 import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
+import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0110;
 import org.adempierelbr.sped.contrib.bean.R0140;
+import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
+import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
@@ -48,20 +53,84 @@ public class SPEDUtil
 {
 	private static final String MODEL_RPS = "RS";	//	FIXME: Criar script para adicionar RPS, sendo a chave RS (2 Dígitos)
 	
+	/**	SPED ECD			*/
 	public static final int TYPE_ECD 		= 0;
-	public static final int TYPE_EFD 		= 1;
-	public static final int TYPE_CONTRIB 	= 2;
 	
-	public static final String ECD_VERSION = "";
-	public static final String EFD_VERSION = "";
-	public static final String CONTRIB_VERSION = "002";
+	/**	SPED EFD			*/
+	public static final int TYPE_EFD 				= 1;
 	
-	public static MLBRFactFiscal[] facts = null;
+	/** SPED Contribuições	*/
+	public static final int TYPE_CONTRIB 			= 2;
 	
-	public static Set<I_R0150> _R0150;
-	public static Set<I_R0190> _R0190;
-	public static Set<I_R0200> _R0200;
-	public static Set<RA100> _RA100;
+	/** Versão da ECD		*/
+	public static final String ECD_VERSION 			= "";
+	
+	/**	Versão da EFD		*/
+	public static final String EFD_VERSION 			= "";
+	
+	/**	Versão da EFD Contribuições */
+	public static final String CONTRIB_VERSION 		= "002";
+	
+	public static final String IND_OPER_CONTRATADO 	= "0";
+	public static final String IND_OPER_PRESTADO 	= "1";
+	
+	public static final String IND_EMIT_PROPRIA 	= "0";
+	public static final String IND_EMIT_TERCEIROS 	= "1";
+
+	public static final String COD_SIT_REGULAR 		= "00";
+	public static final String COD_SIT_CANCELADO 	= "02";
+	
+	public static final String IND_PAGTO_VISTA	 	= "0";
+	public static final String IND_PAGTO_PRAZO	 	= "1";
+	public static final String IND_PAGTO_SEM	 	= "9";
+	
+	/** Frete: Emitente						*/
+	public static final String IND_FRT_EMIT		 	= "0";
+	
+	/**	Frete: Destinatário ou Remetente	*/
+	public static final String IND_FRT_DEST_REMT 	= "1";
+	
+	/**	Frete: Terceiros					*/
+	public static final String IND_FRT_TERC		 	= "2";
+	
+	/**	Frete: Sem Cobrança					*/
+	public static final String IND_FRT_SEM		 	= "9";
+	
+
+	/**
+	 * 	Array com todos os Registros 0150 e seus filhos
+	 */
+	private static Set<I_R0150> _R0150;
+	
+	/**
+	 * 	Array com todos os Registros 0190 e seus filhos
+	 */
+	private static Set<I_R0190> _R0190;
+	
+	/**
+	 * 	Array com todos os Registros 0200 e seus filhos
+	 */
+	private static Set<I_R0200> _R0200;
+	
+	/**
+	 * 	Array com todos os Registros A010 e seus filhos
+	 */
+	private static Set<RA010> _RA010;
+	
+	/**
+	 * 	Array com todos os Registros A100 e seus filhos
+	 */
+	private static Set<RA100> _RA100;
+	
+	/**
+	 * 	Array com todos os Registros C010 e seus filhos
+	 */
+	private static Set<RC010> _RC010;
+	
+	/**
+	 * 	Array com todos os Registros A100 e seus filhos
+	 */
+	private static Set<I_RC100> _RC100;
 	
 	/**
 	 * 	Processa todos os Fatos Fiscais
@@ -69,17 +138,29 @@ public class SPEDUtil
 	 * @param ctx Context
 	 * @param facts	Fatos Fiscais
 	 * @param trxName Nome da Transação
+	 * @throws Exception 
 	 */
-	public static void processFacts (Properties ctx, MLBRFactFiscal[] facts, int type, String trxName)
+	public static void processFacts (Properties ctx, MLBRFactFiscal[] facts, int type, String trxName) throws Exception
 	{
+		//	FIXME: Assim até a Fact Fiscal ter identificação do tipo de
+		//		registro, Cabeçalho, Linha, Org, etc.
+		List<Integer> unqNF = new ArrayList<Integer>();
+		
 		//	Initialize
 		_R0150 = new HashSet<I_R0150>();
 		_R0190 = new HashSet<I_R0190>();
 		_R0200 = new HashSet<I_R0200>();
+		_RA010 = new HashSet<RA010>();
 		_RA100 = new HashSet<RA100>();
 		//
 		for (MLBRFactFiscal fact : facts)
 		{
+			//	TEMPORARIO VIDE unqNF
+			if (unqNF.contains(fact.getLBR_NotaFiscal_ID()))
+				continue;
+			else
+				unqNF.add(fact.getLBR_NotaFiscalLine_ID());
+			
 			_R0150.add (fact.fillR0150 (ctx, (I_R0150) getReg ("R0150", type), trxName));
 			_R0190.add (fact.fillR0190 (ctx, (I_R0190) getReg ("R0190", type), trxName));
 			_R0200.add (fact.fillR0200 (ctx, (I_R0200) getReg ("R0200", type), trxName));
@@ -87,7 +168,20 @@ public class SPEDUtil
 			//	Contratação de Serviço (Somente Contribuições)
 			if (MODEL_RPS.equals(fact.getlbr_NFModel()) && type == TYPE_CONTRIB)
 			{
-				RA100 rA100 = new RA100 ();
+				//	A010
+				_RA010.add (fact.getRA010 ());
+				
+				//	A100, A170
+				_RA100.add (fact.getRA100 (ctx, trxName));
+			}
+			
+			else 
+			{
+				//	C010
+				_RC010.add (fact.getRC010 ());
+				
+				//	C100, C120, C130, C140, C141, C170, C172, C190, C195
+				_RC100.add (fact.getRC100 (ctx, (I_RC100) getReg ("RC100", type), trxName));
 			}
 		}	//	for
 	}	//	processFacts
