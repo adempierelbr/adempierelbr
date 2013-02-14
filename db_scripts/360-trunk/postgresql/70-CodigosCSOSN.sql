@@ -48,3 +48,6 @@ INSERT INTO LBR_TaxStatus (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,
 INSERT INTO LBR_TaxStatus (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,IsActive,LBR_TaxName_ID,LBR_TaxStatus_ID,Name,Updated,UpdatedBy,ValidFrom) VALUES (0,0,TO_TIMESTAMP('2013-01-24 14:57:41','YYYY-MM-DD HH24:MI:SS'),100,'Outros','Y',1106000,1120104,'900',TO_TIMESTAMP('2013-01-24 14:57:41','YYYY-MM-DD HH24:MI:SS'),100,TO_TIMESTAMP('2013-01-24','YYYY-MM-DD'))
 ;
 
+--	Atualiza o ultimo script
+UPDATE AD_SysConfig SET Value='360-trunk/70-CodigosCSOSN.sql' WHERE AD_SysConfig_ID=1100006
+;

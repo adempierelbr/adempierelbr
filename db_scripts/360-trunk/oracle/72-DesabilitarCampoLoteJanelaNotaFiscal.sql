@@ -8,3 +8,6 @@ UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2013-02-14 14:15:15','YYYY-M
 UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2013-02-14 14:15:51','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1100048
 ;
 
+--	Atualiza o ultimo script
+UPDATE AD_SysConfig SET Value='360-trunk/72-DesabilitarCampoLoteJanelaNotaFiscal.sql' WHERE AD_SysConfig_ID=1100006
+;
