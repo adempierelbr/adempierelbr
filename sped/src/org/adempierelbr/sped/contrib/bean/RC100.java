@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_RC100;
 
 /**
  * 	REGISTRO C100:
@@ -28,7 +29,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: RC100.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class RC100 extends RegSped
+public class RC100 extends RegSped implements I_RC100
 {
 	@XMLFieldProperties(minSize=1, maxSize = 1, id = "IND_OPER")
 	private String IND_OPER;
@@ -118,6 +119,156 @@ public class RC100 extends RegSped
 	
 	private Set<RC170> _RC170 = new HashSet<RC170>();
 	
+	public void setIND_OPER(String iND_OPER)
+	{
+		IND_OPER = iND_OPER;
+	}
+
+	public void setIND_EMIT(String iND_EMIT)
+	{
+		IND_EMIT = iND_EMIT;
+	}
+
+	public void setCOD_PART(String cOD_PART)
+	{
+		COD_PART = cOD_PART;
+	}
+
+	public void setCOD_MOD(String cOD_MOD)
+	{
+		COD_MOD = cOD_MOD;
+	}
+
+	public void setCOD_SIT(String cOD_SIT)
+	{
+		COD_SIT = cOD_SIT;
+	}
+
+	public void setSER(String sER)
+	{
+		SER = sER;
+	}
+
+	public void setNUM_DOC(String nUM_DOC)
+	{
+		NUM_DOC = nUM_DOC;
+	}
+
+	public void setCHV_NFE(String cHV_NFE)
+	{
+		CHV_NFE = cHV_NFE;
+	}
+
+	public void setDT_DOC(Timestamp dT_DOC)
+	{
+		DT_DOC = dT_DOC;
+	}
+
+	public void setDT_E_S(Timestamp dT_E_S)
+	{
+		DT_E_S = dT_E_S;
+	}
+
+	public void setVL_DOC(BigDecimal vL_DOC)
+	{
+		VL_DOC = vL_DOC;
+	}
+
+	public void setIND_PGTO(String iND_PGTO)
+	{
+		IND_PGTO = iND_PGTO;
+	}
+
+	public void setVL_DESC(BigDecimal vL_DESC)
+	{
+		VL_DESC = vL_DESC;
+	}
+
+	public void setVL_ABAT_NT(BigDecimal vL_ABAT_NT)
+	{
+		VL_ABAT_NT = vL_ABAT_NT;
+	}
+
+	public void setVL_MERC(BigDecimal vL_MERC)
+	{
+		VL_MERC = vL_MERC;
+	}
+
+	public void setIND_FRT(String iND_FRT)
+	{
+		IND_FRT = iND_FRT;
+	}
+
+	public void setVL_FRT(BigDecimal vL_FRT)
+	{
+		VL_FRT = vL_FRT;
+	}
+
+	public void setVL_SEG(BigDecimal vL_SEG)
+	{
+		VL_SEG = vL_SEG;
+	}
+
+	public void setVL_OUT_DA(BigDecimal vL_OUT_DA)
+	{
+		VL_OUT_DA = vL_OUT_DA;
+	}
+
+	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
+	{
+		VL_BC_ICMS = vL_BC_ICMS;
+	}
+
+	public void setVL_ICMS(BigDecimal vL_ICMS)
+	{
+		VL_ICMS = vL_ICMS;
+	}
+
+	public void setVL_BC_ICMS_ST(BigDecimal vL_BC_ICMS_ST)
+	{
+		VL_BC_ICMS_ST = vL_BC_ICMS_ST;
+	}
+
+	public void setVL_ICMS_ST(BigDecimal vL_ICMS_ST)
+	{
+		VL_ICMS_ST = vL_ICMS_ST;
+	}
+
+	public void setVL_IPI(BigDecimal vL_IPI)
+	{
+		VL_IPI = vL_IPI;
+	}
+
+	public void setVL_PIS(BigDecimal vL_PIS)
+	{
+		VL_PIS = vL_PIS;
+	}
+
+	public void setVL_COFINS(BigDecimal vL_COFINS)
+	{
+		VL_COFINS = vL_COFINS;
+	}
+
+	public void setVL_PIS_ST(BigDecimal vL_PIS_ST)
+	{
+		VL_PIS_ST = vL_PIS_ST;
+	}
+
+	public void setVL_COFINS_ST(BigDecimal vL_COFINS_ST)
+	{
+		VL_COFINS_ST = vL_COFINS_ST;
+	}
+
+	public void set_RC120(Set<RC120> _RC120)
+	{
+		this._RC120 = _RC120;
+	}
+
+	public void set_RC170(Set<RC170> _RC170)
+	{
+		this._RC170 = _RC170;
+	}
+
 	public void addRC120 (RC120 rC120)
 	{
 		_RC120.add(rC120);

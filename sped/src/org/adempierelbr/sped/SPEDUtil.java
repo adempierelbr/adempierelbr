@@ -28,12 +28,14 @@ import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
 import org.adempierelbr.sped.bean.I_RC100;
+import org.adempierelbr.sped.bean.I_RC500;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0110;
 import org.adempierelbr.sped.contrib.bean.R0140;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RC010;
+import org.adempierelbr.sped.contrib.bean.RC500;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
@@ -134,9 +136,14 @@ public class SPEDUtil
 	private static Set<RC010> _RC010;
 	
 	/**
-	 * 	Array com todos os Registros A100 e seus filhos
+	 * 	Array com todos os Registros C100 e seus filhos
 	 */
 	private static Set<I_RC100> _RC100;
+	
+	/**
+	 * 	Array com todos os Registros C500 e seus filhos
+	 */
+	private static Set<I_RC500> _RC500;
 	
 	/**
 	 * 	Processa todos os Fatos Fiscais
@@ -179,6 +186,12 @@ public class SPEDUtil
 				
 				//	A100, A170
 				_RA100.add (fact.getRA100 (ctx, trxName));
+			}
+			
+			
+			else if (false)
+			{
+				_RC500.add (fact.getRC500(ctx, (I_RC500) getReg ("RC500", type), trxName));
 			}
 			
 			else 
@@ -422,14 +435,59 @@ public class SPEDUtil
 	public static Set<I_R0190> getR0190 ()
 	{
 		return _R0190;
-	}	//	getR0150
+	}	//	getR0190
 	
 	/**
-	 * 		UDMs
+	 * 		Produtos
 	 * 	@return Registros 0200
 	 */
 	public static Set<I_R0200> getR0200 ()
 	{
 		return _R0200;
-	}	//	getR0150
+	}	//	getR0200
+
+	/**
+	 * 		A010
+	 * 	@return Registros A010
+	 */
+	public static Set<RA010> getRA010 ()
+	{
+		return _RA010;
+	}	//	getRA010
+	
+	/**
+	 * 		A100
+	 * 	@return Registros A100
+	 */
+	public static Set<RA100> getRA100 ()
+	{
+		return _RA100;
+	}	//	getRA100
+	
+	/**
+	 * 		C010
+	 * 	@return Registros C010
+	 */
+	public static Set<RC010> getRC010 ()
+	{
+		return _RC010;
+	}	//	getRC010
+	
+	/**
+	 * 		C100
+	 * 	@return Registros C100
+	 */
+	public static Set<I_RC100> getRC100 ()
+	{
+		return _RC100;
+	}	//	getRC100
+	
+	/**
+	 * 		C500
+	 * 	@return Registros C500
+	 */
+	public static Set<I_RC500> getRC500 ()
+	{
+		return _RC500;
+	}	//	getRC500
 }	//	SPEDUtil

@@ -24,13 +24,16 @@ import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
 import org.adempierelbr.sped.bean.I_RC100;
+import org.adempierelbr.sped.bean.I_RC500;
 import org.adempierelbr.sped.bean.I_RD100;
 import org.adempierelbr.sped.bean.I_RD500;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RA170;
 import org.adempierelbr.sped.contrib.bean.RC010;
+import org.adempierelbr.sped.contrib.bean.RC100;
 import org.adempierelbr.sped.contrib.bean.RC170;
+import org.adempierelbr.sped.contrib.bean.RC500;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RD100;
 import org.adempierelbr.sped.contrib.bean.RD101;
@@ -448,7 +451,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		
 		for (MLBRFactFiscal line : lines)
 		{
-			rC100.addC170 (line.getRC170 ());
+			rC100.addRC170 (line.getRC170 ());
 		}
 			
 		return rC100;
@@ -488,6 +491,13 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		//
 		return rC170;
 	}	//	getRC170
+	
+	public I_RC500 getRC500 (Properties ctx, I_RC500 rC500, String trxName) throws Exception
+	{
+		
+		BeanUtils.copyProperties (rC500, getRC100 (ctx, (I_RC100) new RC100(), trxName));
+		return rC500;
+	}	//	getRC500
 	
 	/**
 	 * 		Este registro tem o objetivo de identificar o estabelecimento da pessoa jurídica a que 
@@ -563,6 +573,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	}	//	getRD105
 	
 	/**
+	 * 		Neste registro deverá a pessoa jurídica informar as operações referentes à contratação de 
+	 * 	serviços de comunicação ou de telecomunicação que, em função da natureza do serviço e da atividade 
+	 * 	econômica desenvolvida pela pessoa jurídica, permita a apuração de créditos de PIS/Pasep e de Cofins, 
+	 * 	na forma da legislação tributária.
+	 * 
 	 * 	@param ctx Contexto
 	 * 	@param rC100 Registro C100
 	 * 	@param trxName	Transação
@@ -583,8 +598,15 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		}
 		
 		return rD500;
-	}
+	}	//	getRD500
 	
+	/**
+	 * 		D501: COMPLEMENTO DA OPERAÇÃO (CÓDIGOS 21 e 22) – PIS/PASEP
+	 * 
+	 * 	@return Registro D501
+	 * 	@throws IllegalAccessException
+	 * 	@throws InvocationTargetException
+	 */
 	public RD501 getRD501 () throws IllegalAccessException, InvocationTargetException
 	{
 		RD501 rD501 = new RD501 ();
@@ -594,6 +616,13 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		return rD501;
 	}	//	getRD501
 	
+	/**
+	 * 		D505: COMPLEMENTO DA OPERAÇÃO (CÓDIGOS 21 e 22) – COFINS
+	 * 	
+	 * 	@return	Registro D505
+	 * 	@throws IllegalAccessException
+	 * 	@throws InvocationTargetException
+	 */
 	public RD505 getRD505 () throws IllegalAccessException, InvocationTargetException
 	{
 		RD505 rD505 = new RD505 ();

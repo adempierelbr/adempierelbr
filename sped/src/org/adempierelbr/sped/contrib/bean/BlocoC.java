@@ -12,6 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import java.util.Set;
+
+import org.adempierelbr.sped.bean.I_RC100;
+import org.adempierelbr.sped.bean.I_RC500;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
@@ -20,5 +25,50 @@ package org.adempierelbr.sped.contrib.bean;
  */
 public class BlocoC
 {
-
+	private RC001 rC001;
+	private Set<RC010> rC010;
+	private Set<I_RC100> rC100;
+	private Set<I_RC500> rC500;
+	private RC990 rC990;
+	
+	public RC001 getrC001()
+	{
+		return rC001;
+	}
+	public void setrC001(RC001 rC001)
+	{
+		this.rC001 = rC001;
+	}
+	public Set<RC010> getrC010()
+	{
+		return rC010;
+	}
+	public void setrC010(Set<RC010> rC010)
+	{
+		this.rC010 = rC010;
+	}
+	public Set<I_RC100> getrC100()
+	{
+		return rC100;
+	}
+	public void setrC100(Set<I_RC100> set)
+	{
+		this.rC100 = set;
+	}
+	public Set<I_RC500> getrC500()
+	{
+		return rC500;
+	}
+	public void setrC500(Set<I_RC500> rC500)
+	{
+		this.rC500 = rC500;
+	}
+	public RC990 getrC990()
+	{
+		return rC990;
+	}
+	public void setrC990(RC990 rC990)
+	{
+		this.rC990 = rC990;
+	}
 }	//	BlocoC

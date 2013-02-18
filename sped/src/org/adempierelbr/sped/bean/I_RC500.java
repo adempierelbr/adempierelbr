@@ -24,7 +24,7 @@ import org.adempierelbr.sped.contrib.bean.RC170;
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: I_RC100.java, v1.0 2013/02/14 16:40:57 PM, ralexsander Exp $
  */
-public interface I_RC100
+public interface I_RC500
 {
 	public void setCHV_NFE (String str);
 	public void setCOD_MOD (String str);
@@ -56,6 +56,6 @@ public interface I_RC100
 	public void setVL_SEG (BigDecimal bd);
 	
 	
-	public void addRC120(RC120 rC120);	//	FIXME Mudar para Interface
-	public void addRC170(RC170 rC170);
+	public void addC120(RC120 rC120);	//	FIXME Mudar para Interface
+	public void addC170(RC170 rC170);
 }	//	I_RC100
