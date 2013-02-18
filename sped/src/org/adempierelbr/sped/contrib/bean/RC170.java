@@ -133,4 +133,184 @@ public class RC170 extends RegSped
 	
 	@XMLFieldProperties(maxSize=60, id = "COD_CTA", isMandatory=false)
 	private String COD_CTA;
+
+	public void setNUM_ITEM(String nUM_ITEM)
+	{
+		NUM_ITEM = nUM_ITEM;
+	}
+
+	public void setCOD_ITEM(String cOD_ITEM)
+	{
+		COD_ITEM = cOD_ITEM;
+	}
+
+	public void setDESCR_COMPL(String dESCR_COMPL)
+	{
+		DESCR_COMPL = dESCR_COMPL;
+	}
+
+	public void setQTD(BigDecimal qTD)
+	{
+		QTD = qTD;
+	}
+
+	public void setUNID(String uNID)
+	{
+		UNID = uNID;
+	}
+
+	public void setVL_ITEM(BigDecimal vL_ITEM)
+	{
+		VL_ITEM = vL_ITEM;
+	}
+
+	public void setVL_DESC(BigDecimal vL_DESC)
+	{
+		VL_DESC = vL_DESC;
+	}
+
+	public void setIND_MOV(String iND_MOV)
+	{
+		IND_MOV = iND_MOV;
+	}
+
+	public void setCST_ICMS(String cST_ICMS)
+	{
+		CST_ICMS = cST_ICMS;
+	}
+
+	public void setCFOP(String cFOP)
+	{
+		CFOP = cFOP;
+	}
+
+	public void setCOD_NAT(String cOD_NAT)
+	{
+		COD_NAT = cOD_NAT;
+	}
+
+	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
+	{
+		VL_BC_ICMS = vL_BC_ICMS;
+	}
+
+	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS)
+	{
+		ALIQ_ICMS = aLIQ_ICMS;
+	}
+
+	public void setVL_ICMS(BigDecimal vL_ICMS)
+	{
+		VL_ICMS = vL_ICMS;
+	}
+
+	public void setVL_BC_ICMS_ST(BigDecimal vL_BC_ICMS_ST)
+	{
+		VL_BC_ICMS_ST = vL_BC_ICMS_ST;
+	}
+
+	public void setALIQ_ST(BigDecimal aLIQ_ST)
+	{
+		ALIQ_ST = aLIQ_ST;
+	}
+
+	public void setVL_ICMS_ST(BigDecimal vL_ICMS_ST)
+	{
+		VL_ICMS_ST = vL_ICMS_ST;
+	}
+
+	public void setIND_APUR(String iND_APUR)
+	{
+		IND_APUR = iND_APUR;
+	}
+
+	public void setCST_IPI(String cST_IPI)
+	{
+		CST_IPI = cST_IPI;
+	}
+
+	public void setCOD_ENQ(String cOD_ENQ)
+	{
+		COD_ENQ = cOD_ENQ;
+	}
+
+	public void setVL_BC_IPI(BigDecimal vL_BC_IPI)
+	{
+		VL_BC_IPI = vL_BC_IPI;
+	}
+
+	public void setALIQ_IPI(BigDecimal aLIQ_IPI)
+	{
+		ALIQ_IPI = aLIQ_IPI;
+	}
+
+	public void setVL_IPI(BigDecimal vL_IPI)
+	{
+		VL_IPI = vL_IPI;
+	}
+
+	public void setCST_PIS(String cST_PIS)
+	{
+		CST_PIS = cST_PIS;
+	}
+
+	public void setVL_BC_PIS(BigDecimal vL_BC_PIS)
+	{
+		VL_BC_PIS = vL_BC_PIS;
+	}
+
+	public void setALIQ_PIS(BigDecimal aLIQ_PIS)
+	{
+		ALIQ_PIS = aLIQ_PIS;
+	}
+
+	public void setQUANT_BC_PIS(String qUANT_BC_PIS)
+	{
+		QUANT_BC_PIS = qUANT_BC_PIS;
+	}
+
+	public void setALIQ_PIS_QUANT(BigDecimal aLIQ_PIS_QUANT)
+	{
+		ALIQ_PIS_QUANT = aLIQ_PIS_QUANT;
+	}
+
+	public void setVL_PIS(BigDecimal vL_PIS)
+	{
+		VL_PIS = vL_PIS;
+	}
+
+	public void setCST_COFINS(BigDecimal cST_COFINS)
+	{
+		CST_COFINS = cST_COFINS;
+	}
+
+	public void setVL_BC_COFINS(BigDecimal vL_BC_COFINS)
+	{
+		VL_BC_COFINS = vL_BC_COFINS;
+	}
+
+	public void setALIQ_COFINS(BigDecimal aLIQ_COFINS)
+	{
+		ALIQ_COFINS = aLIQ_COFINS;
+	}
+
+	public void setQUANT_BC_COFINS(BigDecimal qUANT_BC_COFINS)
+	{
+		QUANT_BC_COFINS = qUANT_BC_COFINS;
+	}
+
+	public void setALIQ_COFINS_QUANT(BigDecimal aLIQ_COFINS_QUANT)
+	{
+		ALIQ_COFINS_QUANT = aLIQ_COFINS_QUANT;
+	}
+
+	public void setVL_COFINS(BigDecimal vL_COFINS)
+	{
+		VL_COFINS = vL_COFINS;
+	}
+
+	public void setCOD_CTA(String cOD_CTA)
+	{
+		COD_CTA = cOD_CTA;
+	}
 }	//	RC170

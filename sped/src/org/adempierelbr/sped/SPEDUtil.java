@@ -96,6 +96,12 @@ public class SPEDUtil
 	/**	Frete: Sem Cobrança					*/
 	public static final String IND_FRT_SEM		 	= "9";
 	
+	/** Indicador de período de apuração do IPI Mensal 		*/
+	public static final String IND_APUR_MENSAL	 	= "0";
+	
+	/** Indicador de período de apuração do IPI Decendial	*/
+	public static final String IND_APUR_DECENDIAL 	= "1";
+	
 
 	/**
 	 * 	Array com todos os Registros 0150 e seus filhos

@@ -15,47 +15,39 @@ package org.adempierelbr.sped.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.contrib.bean.RC120;
-import org.adempierelbr.sped.contrib.bean.RC170;
+import org.adempierelbr.sped.contrib.bean.RD501;
+import org.adempierelbr.sped.contrib.bean.RD505;
 
 /**
- * 		Interface Produto
+ * 		Interface NF
  * 
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: I_RC100.java, v1.0 2013/02/14 16:40:57 PM, ralexsander Exp $
+ *	@version $Id: I_RD100.java, v1.0 2013/02/18 16:40:57 PM, ralexsander Exp $
  */
-public interface I_RC100
+public interface I_RD500
 {
-	public void setCHV_NFE (String str);
-	public void setCOD_MOD (String str);
-	public void setCOD_PART (String str);
-	public void setCOD_SIT (String str);
-	public void setDT_DOC (Timestamp ts);
-	public void setDT_E_S (Timestamp ts);
-	public void setIND_EMIT (String str);
-	public void setIND_FRT (String str);
 	public void setIND_OPER (String str);
-	public void setIND_PGTO (String str);
-	public void setNUM_DOC (String str);
+	public void setIND_EMIT (String str);
+	public void setCOD_PART (String str);
+	public void setCOD_MOD (String str);
+	public void setCOD_SIT (String str);
 	public void setSER (String str);
-	public void setVL_ABAT_NT (BigDecimal bd);
-	public void setVL_BC_ICMS (BigDecimal bd);
-	public void setVL_BC_ICMS_ST (BigDecimal bd);
-	public void setVL_COFINS (BigDecimal bd);
-	public void setVL_COFINS_ST (BigDecimal bd);
-	public void setVL_DESC (BigDecimal bd);
+	public void setSUB (String str);
+	public void setNUM_DOC (String str);
+	public void setDT_DOC (Timestamp ts);
+	public void setDT_A_P (Timestamp ts);
 	public void setVL_DOC (BigDecimal bd);
-	public void setVL_FRT (BigDecimal bd);
+	public void setVL_DESC (BigDecimal bd);
+	public void setVL_SERV (BigDecimal bd);
+	public void setVL_SERV_NT (BigDecimal bd);
+	public void setVL_TERC (BigDecimal bd);
+	public void setVL_DA (BigDecimal bd);
+	public void setVL_BC_ICMS (BigDecimal bd);
 	public void setVL_ICMS (BigDecimal bd);
-	public void setVL_ICMS_ST (BigDecimal bd);
-	public void setVL_IPI (BigDecimal bd);
-	public void setVL_MERC (BigDecimal bd);
-	public void setVL_OUT_DA (BigDecimal bd);
+	public void setCOD_INF (String str);
 	public void setVL_PIS (BigDecimal bd);
-	public void setVL_PIS_ST (BigDecimal bd);
-	public void setVL_SEG (BigDecimal bd);
+	public void setVL_COFINS (BigDecimal bd);
 	
-	
-	public void addC120(RC120 rC120);	//	FIXME Mudar para Interface
-	public void addC170(RC170 rC170);
-}	//	I_RC100
+	public void addD501 (RD501 reg);
+	public void addD505 (RD505 reg);
+}	//	I_RD100

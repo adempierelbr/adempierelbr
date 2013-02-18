@@ -24,10 +24,20 @@ import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
 import org.adempierelbr.sped.bean.I_RC100;
+import org.adempierelbr.sped.bean.I_RD100;
+import org.adempierelbr.sped.bean.I_RD500;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RA170;
 import org.adempierelbr.sped.contrib.bean.RC010;
+import org.adempierelbr.sped.contrib.bean.RC170;
+import org.adempierelbr.sped.contrib.bean.RD010;
+import org.adempierelbr.sped.contrib.bean.RD100;
+import org.adempierelbr.sped.contrib.bean.RD101;
+import org.adempierelbr.sped.contrib.bean.RD105;
+import org.adempierelbr.sped.contrib.bean.RD500;
+import org.adempierelbr.sped.contrib.bean.RD501;
+import org.adempierelbr.sped.contrib.bean.RD505;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
 import org.apache.commons.beanutils.BeanUtils;
@@ -432,8 +442,164 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rC100.setVL_IPI(getIPI_TaxAmt());
 		rC100.setVL_PIS_ST(null);		//	TODO
 		rC100.setVL_COFINS_ST(null);	//	TODO
-		//
+				
+		//	Process Lines
+		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
+		
+		for (MLBRFactFiscal line : lines)
+		{
+			rC100.addC170 (line.getRC170 ());
+		}
+			
 		return rC100;
 	}	//	getRC100
+
+	private RC170 getRC170 () throws IllegalAccessException, InvocationTargetException
+	{
+		RC170 rC170 = new RC170();
+		
+		/**
+		 * 	Copia os dados comuns:
+		 * 
+		 * 	NUM_ITEM, COD_ITEM, DESCR_COMPL, VL_ITEM, VL_DESC, 
+		 * 		CST_PIS, VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, 
+		 * 		ALIQ_COFINS, VL_COFINS, COD_CTA, 
+		 */
+		BeanUtils.copyProperties (rC170, getRA170 ());
+		//
+		rC170.setQTD (getQty());
+		rC170.setUNID (getlbr_UOMName());
+		rC170.setIND_MOV(null);			//	TODO
+		rC170.setCST_ICMS(getICMS_TaxStatus());
+		rC170.setCFOP(getlbr_CFOPName());
+		rC170.setCOD_NAT(null);			//	TODO
+		rC170.setVL_BC_ICMS(getICMS_TaxBaseAmt());
+		rC170.setALIQ_ICMS(getICMS_TaxRate());
+		rC170.setVL_ICMS(getICMS_TaxAmt());
+		rC170.setVL_BC_ICMS_ST(getICMSST_TaxBaseAmt());
+		rC170.setALIQ_ST(getICMSST_TaxRate());
+		rC170.setVL_ICMS_ST(getICMSST_TaxAmt());
+		rC170.setIND_APUR(SPEDUtil.IND_APUR_MENSAL);
+		rC170.setCST_IPI(getIPI_TaxStatus());
+		rC170.setCOD_ENQ(null);	//	TODO
+		rC170.setVL_BC_IPI(getIPI_TaxBaseAmt());
+		rC170.setALIQ_IPI(getIPI_TaxRate());
+		rC170.setVL_IPI(getIPI_TaxAmt());
+		//
+		return rC170;
+	}	//	getRC170
 	
+	/**
+	 * 		Este registro tem o objetivo de identificar o estabelecimento da pessoa jurídica a que 
+	 * 	se referem as operações e documentos fiscais informados neste bloco. Só devem ser escriturados 
+	 * 	no Registro D010 os estabelecimentos que efetivamente tenham realizado as operações especificadas 
+	 * 	no Bloco D (prestação ou contratação), relativas a serviços de transporte de cargas e/ou de passageiros, 
+	 * 	serviços de comunicação e de telecomunicação, mediante emissão de documento fiscal definido pela 
+	 * 	legislação do ICMS e do IPI, que devam ser escrituradas no Bloco D. 
+	 * 
+	 * 		O estabelecimento que não realizou operações passíveis de registro nesse bloco, no período 
+	 * 	da escrituração, não deve ser identificado no Registro D010. 
+	 * 
+	 * 		Para cada estabelecimento cadastrado em “D010”, deve ser informado nos registros de nível 
+	 * 	inferior (Registros Filho) as operações próprias de prestação ou de contratação, mediante emissão 
+	 * 	de documento fiscal, no mercado interno ou externo.
+	 * 
+	 * 	@return Registro D010
+	 * 	@throws IllegalAccessException
+	 * 	@throws InvocationTargetException
+	 */
+	public RD010 getRD010 () throws IllegalAccessException, InvocationTargetException
+	{
+		RD010 rD010 = new RD010 ();
+		//
+		BeanUtils.copyProperties (rD010, getRC010 ());
+		//
+		return rD010;
+	}	//	getRD010
+	
+	/**
+	 * 		Este registro deve ser apresentado por todos os contribuintes adquirentes dos serviços 
+	 * 	relacionados, que utilizem os documentos previstos para este registro, cuja operação dê 
+	 * 	direito à apuração de crédito à pessoa jurídica contratante, na forma da legislação tributária.
+	 * 	
+	 * 	@param ctx Contexto
+	 * 	@param rC100 Registro C100
+	 * 	@param trxName	Transação
+	 * 	@return Registro C100
+	 * 	@throws Exception
+	 */
+	public I_RD100 getRD100 (Properties ctx, I_RD100 rD100, String trxName) throws Exception
+	{
+		BeanUtils.copyProperties (rD100, getRC100 (ctx, (I_RC100) new RD100 (), trxName));
+		
+		//	Process Lines
+		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
+		
+		for (MLBRFactFiscal line : lines)
+		{
+			rD100.addD101 (line.getRD101());
+			rD100.addD105 (line.getRD105());
+		}
+		//
+		return rD100;
+	}	//	getRD100
+	
+	public RD101 getRD101 () throws IllegalAccessException, InvocationTargetException
+	{
+		RD101 rD101 = new RD101 ();
+		//
+		BeanUtils.copyProperties (rD101, getRC170 ());
+		//
+		return rD101;
+	}	//	getRD101
+	
+	public RD105 getRD105 () throws IllegalAccessException, InvocationTargetException
+	{
+		RD105 rD105 = new RD105 ();
+		//
+		BeanUtils.copyProperties (rD105, getRC170 ());
+		//
+		return rD105;
+	}	//	getRD105
+	
+	/**
+	 * 	@param ctx Contexto
+	 * 	@param rC100 Registro C100
+	 * 	@param trxName	Transação
+	 * 	@return Registro C100
+	 * 	@throws Exception
+	 */
+	public I_RD500 getRD500 (Properties ctx, I_RD500 rD500, String trxName) throws Exception
+	{
+		BeanUtils.copyProperties (rD500, getRD500 (ctx, (I_RD500) new RD500 (), trxName));
+		
+		//	Process Lines
+		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
+		
+		for (MLBRFactFiscal line : lines)
+		{
+			rD500.addD501 (line.getRD501());
+			rD500.addD505 (line.getRD505());
+		}
+		
+		return rD500;
+	}
+	
+	public RD501 getRD501 () throws IllegalAccessException, InvocationTargetException
+	{
+		RD501 rD501 = new RD501 ();
+		//
+		BeanUtils.copyProperties (rD501, getRD101 ());
+		//
+		return rD501;
+	}	//	getRD501
+	
+	public RD505 getRD505 () throws IllegalAccessException, InvocationTargetException
+	{
+		RD505 rD505 = new RD505 ();
+		//
+		BeanUtils.copyProperties (rD505, getRD105 ());
+		//
+		return rD505;
+	}	//	getRD505
 }	//	MLBRFactFiscal
