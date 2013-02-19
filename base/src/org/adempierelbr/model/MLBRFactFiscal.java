@@ -33,7 +33,6 @@ import org.adempierelbr.sped.contrib.bean.RA170;
 import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RC100;
 import org.adempierelbr.sped.contrib.bean.RC170;
-import org.adempierelbr.sped.contrib.bean.RC500;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RD100;
 import org.adempierelbr.sped.contrib.bean.RD101;

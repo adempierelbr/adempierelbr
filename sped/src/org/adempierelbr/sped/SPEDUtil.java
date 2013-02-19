@@ -29,14 +29,17 @@ import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
 import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.bean.I_RC500;
+import org.adempierelbr.sped.bean.I_RD100;
+import org.adempierelbr.sped.bean.I_RD500;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0110;
 import org.adempierelbr.sped.contrib.bean.R0140;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RC010;
-import org.adempierelbr.sped.contrib.bean.RC500;
+import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -53,8 +56,6 @@ import org.compiere.model.MUser;
  */
 public class SPEDUtil
 {
-	private static final String MODEL_RPS = "RS";	//	FIXME: Criar script para adicionar RPS, sendo a chave RS (2 Dígitos)
-	
 	/**	SPED ECD			*/
 	public static final int TYPE_ECD 		= 0;
 	
@@ -104,6 +105,104 @@ public class SPEDUtil
 	/** Indicador de período de apuração do IPI Decendial	*/
 	public static final String IND_APUR_DECENDIAL 	= "1";
 	
+	/** Nota Fiscal - 01 */
+	public static final String COD_MOD_NF 									= "01";
+
+	/** Nota Fiscal Avulsa - 1B */
+	public static final String COD_MOD_NF_AVULSA 							= "1B";
+
+	/** Nota Fiscal de Venda a Consumidor - 02 */
+	public static final String COD_MOD_NF_DE_VENDA_A_CONSUMIDOR 			= "02";
+
+	/** Cupom Fiscal emitido por ECF - 2D */
+	public static final String COD_MOD_CUPOM_FISCAL_EMITIDO_POR_ECF 		= "2D";
+
+	/** Bilhete de Passagem emitido por ECF - 2E */
+	public static final String COD_MOD_BILHETE_DE_PASSAGEM_EMITIDO_POR_ECF 	= "2E";
+
+	/** Nota Fiscal de Produtor - 04 */
+	public static final String COD_MOD_NF_DE_PRODUTOR 						= "04";
+
+	/** Nota Fiscal/Conta de Energia Elétrica - 06 */
+	public static final String COD_MOD_NF_CONTA_DE_ENERGIA_ELETRICA 		= "06";
+
+	/** Nota Fiscal de Serviço de Transporte - 07 */
+	public static final String COD_MOD_NF_DE_SERV_DE_TRANSP 				= "07";
+
+	/** Conhecimento de Transporte Rodoviário de Cargas - 08 */
+	public static final String COD_MOD_CT_RODOVIARIO_DE_CARGAS 				= "08";
+
+	/** Conhecimento de Transporte de Cargas Avulso - 8B */
+	public static final String COD_MOD_CT_DE_CARGAS_AVULSO 					= "8B";
+
+	/** Conhecimento de Transporte Aquaviário de Cargas - 09 */
+	public static final String COD_MOD_CT_AQUAVIARIO_DE_CARGAS 				= "09";
+
+	/** Conhecimento Aéreo - 10 */
+	public static final String COD_MOD_CONHECIMENTO_AEREO 					= "10";
+
+	/** Conhecimento de Transporte Ferroviário de Cargas - 11 */
+	public static final String COD_MOD_CT_FERROVIARIO_DE_CARGAS 			= "11";
+
+	/** Bilhete de Passagem Rodoviário - 13 */
+	public static final String COD_MOD_BILHETE_DE_PASSAGEM_RODOVIARIO 		= "13";
+
+	/** Bilhete de Passagem Aquaviário - 14 */
+	public static final String COD_MOD_BILHETE_DE_PASSAGEM_AQUAVIARIO 		= "14";
+
+	/** Bilhete de Passagem e Nota de Bagagem - 15 */
+	public static final String COD_MOD_BILHETE_DE_PASSAGEM_E_NOTA_DE_BAGAGEM  = "15";
+
+	/** Despacho de Transporte - 17 */
+	public static final String COD_MOD_DESPACHO_DE_TRANSP 					= "17";
+
+	/** Bilhete de Passagem Ferroviário - 16 */
+	public static final String COD_MOD_BILHETE_DE_PASSAGEM_FERROVIARIO 		= "16";
+
+	/** Resumo de Movimento Diário - 18 */
+	public static final String COD_MOD_RESUMO_DE_MOVIMENTO_DIARIO 			= "18";
+
+	/** Ordem de Coleta de Cargas - 20 */
+	public static final String COD_MOD_ORDEM_DE_COLETA_DE_CARGAS 			= "20";
+
+	/** Nota Fiscal de Serviço de Comunicação - 21 */
+	public static final String COD_MOD_NF_DE_SERV_DE_COMUNICACAO 			= "21";
+
+	/** Nota Fiscal de Serviço de Telecomunicação - 22 */
+	public static final String COD_MOD_NF_DE_SERV_DE_TELECOMUNICACAO 		= "22";
+
+	/** GNRE - 23 */
+	public static final String COD_MOD_GNRE 								= "23";
+
+	/** Autorização de Carregamento e Transporte - 24 */
+	public static final String COD_MOD_AUT_DE_CARREGAMENTO_E_TRANSP 		= "24";
+
+	/** Manifesto de Carga - 25 */
+	public static final String COD_MOD_MANIFESTO_DE_CARGA 					= "25";
+
+	/** Conhecimento de Transporte Multimodal de Cargas - 26 */
+	public static final String COD_MOD_CT_MULTIMODAL_DE_CARGAS 				= "26";
+
+	/** Nota Fiscal de Transporte Ferroviário de Cargas - 27 */
+	public static final String COD_MOD_NF_DE_TRANSP_FERROVIARIO_DE_CARGAS 	= "27";
+
+	/** Nota Fiscal/Conta de Fornecimento de Gás Canalizado - 28 */
+	public static final String COD_MOD_NF_CONTA_DE_FORN_DE_GAS_CANALIZADO 	= "28";
+
+	/** Nota Fiscal/Conta de Fornecimento de Água Canalizada - 29 */
+	public static final String COD_MOD_NF_CONTA_DE_FORN_DE_AGUA_CANALIZADA 	= "29";
+
+	/** Bilhete/Recibo do Passageiro - 30 */
+	public static final String COD_MOD_BILHETE_RECIBO_DO_PASSAGEIRO 		= "30";
+
+	/** Nota Fiscal Eletrônica - 55 */
+	public static final String COD_MOD_NF_ELETRONICA 						= "55";
+
+	/** Conhecimento de Transporte Eletrônico – CT-e - 57 */
+	public static final String COD_MOD_CT_ELETRONICO 						= "57";
+	
+	/**	Recibo Provisório de Serviço */
+	public static final String COD_MOD_RPS = "RS";	//	FIXME: Criar script para adicionar RPS, sendo a chave RS (2 Dígitos)
 
 	/**
 	 * 	Array com todos os Registros 0150 e seus filhos
@@ -146,6 +245,21 @@ public class SPEDUtil
 	private static Set<I_RC500> _RC500;
 	
 	/**
+	 * 	Array com todos os Registros D010 e seus filhos
+	 */
+	private static Set<RD010> _RD010;
+	
+	/**
+	 * 	Array com todos os Registros D100 e seus filhos
+	 */
+	private static Set<I_RD100> _RD100;
+	
+	/**
+	 * 	Array com todos os Registros D500 e seus filhos
+	 */
+	private static Set<I_RD500> _RD500;
+	
+	/**
 	 * 	Processa todos os Fatos Fiscais
 	 * 
 	 * @param ctx Context
@@ -165,6 +279,12 @@ public class SPEDUtil
 		_R0200 = new HashSet<I_R0200>();
 		_RA010 = new HashSet<RA010>();
 		_RA100 = new HashSet<RA100>();
+		_RC010 = new HashSet<RC010>();
+		_RC100 = new HashSet<I_RC100>();
+		_RC500 = new HashSet<I_RC500>();
+		_RD010 = new HashSet<RD010>();
+		_RD100 = new HashSet<I_RD100>();
+		_RD500 = new HashSet<I_RD500>();
 		//
 		for (MLBRFactFiscal fact : facts)
 		{
@@ -174,12 +294,19 @@ public class SPEDUtil
 			else
 				unqNF.add(fact.getLBR_NotaFiscalLine_ID());
 			
+			
+			String COD_MOD = fact.getlbr_NFModel();
+			
+			/**	Disparar Erro	*/
+			if (COD_MOD == null)
+				COD_MOD = "ZZ";
+			
 			_R0150.add (fact.fillR0150 (ctx, (I_R0150) getReg ("R0150", type), trxName));
 			_R0190.add (fact.fillR0190 (ctx, (I_R0190) getReg ("R0190", type), trxName));
 			_R0200.add (fact.fillR0200 (ctx, (I_R0200) getReg ("R0200", type), trxName));
 			
 			//	Contratação de Serviço (Somente Contribuições)
-			if (MODEL_RPS.equals(fact.getlbr_NFModel()) && type == TYPE_CONTRIB)
+			if (TextUtil.match (COD_MOD, COD_MOD_RPS) && type == TYPE_CONTRIB)
 			{
 				//	A010
 				_RA010.add (fact.getRA010 ());
@@ -188,19 +315,48 @@ public class SPEDUtil
 				_RA100.add (fact.getRA100 (ctx, trxName));
 			}
 			
-			
-			else if (false)
-			{
-				_RC500.add (fact.getRC500(ctx, (I_RC500) getReg ("RC500", type), trxName));
-			}
-			
-			else 
+			//	C100
+			else if (TextUtil.match (COD_MOD, COD_MOD_NF, COD_MOD_NF_AVULSA, 
+					COD_MOD_NF_DE_PRODUTOR, COD_MOD_NF_ELETRONICA))
 			{
 				//	C010
 				_RC010.add (fact.getRC010 ());
 				
 				//	C100, C120, C130, C140, C141, C170, C172, C190, C195
 				_RC100.add (fact.getRC100 (ctx, (I_RC100) getReg ("RC100", type), trxName));
+			}
+			
+			//	C400
+			else if (TextUtil.match (COD_MOD, COD_MOD_CUPOM_FISCAL_EMITIDO_POR_ECF, 
+					COD_MOD_NF_DE_VENDA_A_CONSUMIDOR))
+			{
+				//	TODO
+			}
+			
+			//	C500
+			else if (TextUtil.match (COD_MOD, COD_MOD_NF_CONTA_DE_ENERGIA_ELETRICA, 
+					COD_MOD_NF_CONTA_DE_FORN_DE_AGUA_CANALIZADA, COD_MOD_NF_CONTA_DE_FORN_DE_GAS_CANALIZADO))
+			{
+				_RC500.add (fact.getRC500 (ctx, (I_RC500) getReg ("RC500", type), trxName));
+			}
+			
+			//	D100
+			else if (TextUtil.match (COD_MOD, COD_MOD_NF_DE_SERV_DE_TRANSP, 
+					COD_MOD_CT_RODOVIARIO_DE_CARGAS, COD_MOD_CT_DE_CARGAS_AVULSO, 
+					COD_MOD_CT_AQUAVIARIO_DE_CARGAS, COD_MOD_CONHECIMENTO_AEREO, 
+					COD_MOD_CT_FERROVIARIO_DE_CARGAS, COD_MOD_CT_MULTIMODAL_DE_CARGAS, 
+					COD_MOD_NF_DE_TRANSP_FERROVIARIO_DE_CARGAS, COD_MOD_CT_ELETRONICO))
+			{
+				_RD010.add (fact.getRD010 ());
+				_RD100.add (fact.getRD100 (ctx, (I_RD100) getReg ("RD100", type), trxName));
+			}
+			
+			//	D500
+			else if (TextUtil.match (COD_MOD, COD_MOD_NF_DE_SERV_DE_COMUNICACAO, 
+					COD_MOD_NF_DE_SERV_DE_TELECOMUNICACAO))
+			{
+				_RD010.add (fact.getRD010 ());
+				_RD500.add (fact.getRD500 (ctx, (I_RD500) getReg ("RD500", type), trxName));
 			}
 		}	//	for
 	}	//	processFacts
@@ -489,5 +645,32 @@ public class SPEDUtil
 	public static Set<I_RC500> getRC500 ()
 	{
 		return _RC500;
+	}	//	getRC500
+	
+	/**
+	 * 		D010
+	 * 	@return Registros D010
+	 */
+	public static Set<RD010> getRD010 ()
+	{
+		return _RD010;
+	}	//	getRD010
+	
+	/**
+	 * 		D100
+	 * 	@return Registros D100
+	 */
+	public static Set<I_RD100> getRD100 ()
+	{
+		return _RD100;
+	}	//	getRD100
+	
+	/**
+	 * 		D500
+	 * 	@return Registros D500
+	 */
+	public static Set<I_RD500> getRD500 ()
+	{
+		return _RD500;
 	}	//	getRC500
 }	//	SPEDUtil

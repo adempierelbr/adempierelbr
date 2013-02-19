@@ -14,9 +14,12 @@ package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_RD100;
 
 /**
  * 	REGISTRO D100:
@@ -31,7 +34,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: RD100.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class RD100 extends RegSped
+public class RD100 extends RegSped implements I_RD100
 {
 	@XMLFieldProperties(minSize=1, maxSize = 1, id = "IND_OPER")
 	private String IND_OPER;
@@ -97,5 +100,128 @@ public class RD100 extends RegSped
 	private String COD_INF;
 	
 	@XMLFieldProperties(maxSize = 60, id = "COD_CTA", isMandatory=false)
-	private String COD_CTA;	
+	private String COD_CTA;
+	
+	private Set<RD101> _RD101 = new HashSet<RD101>();
+	private Set<RD105> _RD105 = new HashSet<RD105>();
+
+	public void setIND_OPER(String iND_OPER)
+	{
+		IND_OPER = iND_OPER;
+	}
+
+	public void setIND_EMIT(String iND_EMIT)
+	{
+		IND_EMIT = iND_EMIT;
+	}
+
+	public void setCOD_PART(String cOD_PART)
+	{
+		COD_PART = cOD_PART;
+	}
+
+	public void setCOD_MOD(String cOD_MOD)
+	{
+		COD_MOD = cOD_MOD;
+	}
+
+	public void setCOD_SIT(String cOD_SIT)
+	{
+		COD_SIT = cOD_SIT;
+	}
+
+	public void setSER(String sER)
+	{
+		SER = sER;
+	}
+
+	public void setSUB(String sUB)
+	{
+		SUB = sUB;
+	}
+
+	public void setNUM_DOC(String nUM_DOC)
+	{
+		NUM_DOC = nUM_DOC;
+	}
+
+	public void setCHV_CTE(String cHV_CTE)
+	{
+		CHV_CTE = cHV_CTE;
+	}
+
+	public void setDT_DOC(Timestamp dT_DOC)
+	{
+		DT_DOC = dT_DOC;
+	}
+
+	public void setDT_A_P(Timestamp dT_A_P)
+	{
+		DT_A_P = dT_A_P;
+	}
+
+	public void setTP_CT_e(String tP_CT_e)
+	{
+		TP_CT_e = tP_CT_e;
+	}
+
+	public void setCHV_CTE_REF(String cHV_CTE_REF)
+	{
+		CHV_CTE_REF = cHV_CTE_REF;
+	}
+
+	public void setVL_DOC(BigDecimal vL_DOC)
+	{
+		VL_DOC = vL_DOC;
+	}
+
+	public void setVL_DESC(BigDecimal vL_DESC)
+	{
+		VL_DESC = vL_DESC;
+	}
+
+	public void setIND_FRT(String iND_FRT)
+	{
+		IND_FRT = iND_FRT;
+	}
+
+	public void setVL_SERV(BigDecimal vL_SERV)
+	{
+		VL_SERV = vL_SERV;
+	}
+
+	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
+	{
+		VL_BC_ICMS = vL_BC_ICMS;
+	}
+
+	public void setVL_ICMS(BigDecimal vL_ICMS)
+	{
+		VL_ICMS = vL_ICMS;
+	}
+
+	public void setVL_NT(BigDecimal vL_NT)
+	{
+		VL_NT = vL_NT;
+	}
+
+	public void setCOD_INF(String cOD_INF)
+	{
+		COD_INF = cOD_INF;
+	}
+
+	public void setCOD_CTA(String cOD_CTA)
+	{
+		COD_CTA = cOD_CTA;
+	}
+
+	public void addD101(RD101 reg)
+	{
+		_RD101.add (reg);		
+	}
+
+	public void addD105(RD105 reg)
+	{
+		_RD105.add (reg);		
+	}	
 }	//	RD100

@@ -22,6 +22,7 @@ import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
 import org.adempierelbr.sped.contrib.bean.BlocoA;
 import org.adempierelbr.sped.contrib.bean.BlocoC;
+import org.adempierelbr.sped.contrib.bean.BlocoD;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
 import org.compiere.model.MOrgInfo;
@@ -150,13 +151,11 @@ public class GenerateSPEDContrib extends SvrProcess
 	 */
 	private void genSPEDContrib () throws AdempiereException, Exception
 	{
-		//	Fatos Fiscais
-				
-		
 		//	Inicio do Arquivo
 		Bloco0 b0 = new Bloco0();
 		BlocoA bA = new BlocoA();
 		BlocoC bC = new BlocoC();
+		BlocoD bD = new BlocoD();
 		
 		//	Registro 0000
 		b0.setR0000 (SPEDUtil.fillR0000 (new R0000(), ctx, dateFrom, dateTo, p_CodFin, orgInfo, "", p_RecAnterior, trxName));
@@ -185,9 +184,14 @@ public class GenerateSPEDContrib extends SvrProcess
 		//	Registro A100
 		bA.setrA100 (SPEDUtil.getRA100 ());
 		
-		bC.setrC010 (SPEDUtil.getRC010());
-		bC.setrC100 (SPEDUtil.getRC100());
-		bC.setrC500 (SPEDUtil.getRC500());
+		bC.setrC010 (SPEDUtil.getRC010 ());
+		bC.setrC100 (SPEDUtil.getRC100 ());
+		bC.setrC500 (SPEDUtil.getRC500 ());
+		
+		bD.setrD010 (SPEDUtil.getRD010 ());
+		bD.setrD100 (SPEDUtil.getRD100 ());
+		bD.setrD500 (SPEDUtil.getRD500 ());
+		
 
 	}	//	genSPEDContrib
 	

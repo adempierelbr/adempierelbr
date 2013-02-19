@@ -26,35 +26,18 @@ import org.adempierelbr.sped.contrib.bean.RC170;
  */
 public interface I_RC500
 {
-	public void setCHV_NFE (String str);
 	public void setCOD_MOD (String str);
 	public void setCOD_PART (String str);
 	public void setCOD_SIT (String str);
 	public void setDT_DOC (Timestamp ts);
-	public void setDT_E_S (Timestamp ts);
-	public void setIND_EMIT (String str);
-	public void setIND_FRT (String str);
-	public void setIND_OPER (String str);
-	public void setIND_PGTO (String str);
 	public void setNUM_DOC (String str);
 	public void setSER (String str);
-	public void setVL_ABAT_NT (BigDecimal bd);
-	public void setVL_BC_ICMS (BigDecimal bd);
-	public void setVL_BC_ICMS_ST (BigDecimal bd);
+	public void setSUB (String str);
+	public void setCOD_INF (String str);
 	public void setVL_COFINS (BigDecimal bd);
-	public void setVL_COFINS_ST (BigDecimal bd);
-	public void setVL_DESC (BigDecimal bd);
 	public void setVL_DOC (BigDecimal bd);
-	public void setVL_FRT (BigDecimal bd);
 	public void setVL_ICMS (BigDecimal bd);
-	public void setVL_ICMS_ST (BigDecimal bd);
-	public void setVL_IPI (BigDecimal bd);
-	public void setVL_MERC (BigDecimal bd);
-	public void setVL_OUT_DA (BigDecimal bd);
 	public void setVL_PIS (BigDecimal bd);
-	public void setVL_PIS_ST (BigDecimal bd);
-	public void setVL_SEG (BigDecimal bd);
-	
 	
 	public void addC120(RC120 rC120);	//	FIXME Mudar para Interface
 	public void addC170(RC170 rC170);

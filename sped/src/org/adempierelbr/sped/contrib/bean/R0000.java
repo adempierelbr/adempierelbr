@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_R0000;
 
 /**
  * 	REGISTRO 0000: 
@@ -24,7 +25,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: R0000.java, v1.0 2013/02/02 11:17:42 AM, ralexsander Exp $
  */
-public class R0000 extends RegSped
+public class R0000 extends RegSped implements I_R0000
 {
 	@XMLFieldProperties(minSize=3, maxSize=3, id="COD_VER", isNumber=true)
 	private String COD_VER;

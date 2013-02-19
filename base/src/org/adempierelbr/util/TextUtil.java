@@ -955,5 +955,24 @@ public abstract class TextUtil
 
 		return whereClause.trim();
 	} //checkWhereClause
+	
+	/**
+	 * 	Verifica se lista contém uma determinada string.
+	 * 
+	 * 	@param stra
+	 * 	@param strings
+	 * 	@return TRUE se a lista contém a string, senão FALSO
+	 */
+	public static boolean match (String stra, String... strings)
+	{
+		if (stra == null)
+			return false;
+		//
+		for (String string : strings)
+			if (stra.equals (string))
+				return true;
+		//
+		return false;	
+	}	//	match
 
 }	//	TextUtil
