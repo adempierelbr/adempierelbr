@@ -1,6 +1,6 @@
 -- 07/02/2013 17h18min41s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('4',0,0,1120328,'N',TO_TIMESTAMP('2013-02-07 17:18:40','YYYY-MM-DD HH24:MI:SS'),100,'U','N','Y','Y','N','Y','N','N','N','N',0,'LBR_SPED','L','LBR_SPED',TO_TIMESTAMP('2013-02-07 17:18:40','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('4',0,0,1120328,'N',TO_TIMESTAMP('2013-02-07 17:18:40','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','Y','Y','N','Y','N','N','N','N',0,'LBR_SPED','L','LBR_SPED',TO_TIMESTAMP('2013-02-07 17:18:40','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h18min41s BRST
@@ -15,7 +15,7 @@ UPDATE AD_Table SET AccessLevel='3',Updated=TO_TIMESTAMP('2013-02-07 17:20:17','
 
 -- 07/02/2013 17h21min53s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124140,102,0,19,1120328,129,'AD_Client_ID',TO_TIMESTAMP('2013-02-07 17:21:51','YYYY-MM-DD HH24:MI:SS'),100,'@#AD_Client_ID@','Client/Tenant for this installation.','U',22,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Client',0,TO_TIMESTAMP('2013-02-07 17:21:51','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124140,102,0,19,1120328,129,'AD_Client_ID',TO_TIMESTAMP('2013-02-07 17:21:51','YYYY-MM-DD HH24:MI:SS'),100,'@#AD_Client_ID@','Client/Tenant for this installation.','LBR',22,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Client',0,TO_TIMESTAMP('2013-02-07 17:21:51','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h21min53s BRST
@@ -30,7 +30,7 @@ UPDATE AD_Column SET Version=1.000000000000,Updated=TO_TIMESTAMP('2013-02-07 17:
 
 -- 07/02/2013 17h22min50s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124141,113,0,19,1120328,104,'AD_Org_ID',TO_TIMESTAMP('2013-02-07 17:22:48','YYYY-MM-DD HH24:MI:SS'),100,'@#AD_Org_ID@','Organizational entity within client','U',22,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Organization',0,TO_TIMESTAMP('2013-02-07 17:22:48','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124141,113,0,19,1120328,104,'AD_Org_ID',TO_TIMESTAMP('2013-02-07 17:22:48','YYYY-MM-DD HH24:MI:SS'),100,'@#AD_Org_ID@','Organizational entity within client','LBR',22,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Organization',0,TO_TIMESTAMP('2013-02-07 17:22:48','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h22min50s BRST
@@ -40,7 +40,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h23min43s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124142,245,0,16,1120328,'Created',TO_TIMESTAMP('2013-02-07 17:23:41','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','U',7,'The Created field indicates the date that this record was created.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Created',0,TO_TIMESTAMP('2013-02-07 17:23:41','YYYY-MM-DD HH24:MI:SS'),100,1.000000000000)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124142,245,0,16,1120328,'Created',TO_TIMESTAMP('2013-02-07 17:23:41','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','LBR',7,'The Created field indicates the date that this record was created.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Created',0,TO_TIMESTAMP('2013-02-07 17:23:41','YYYY-MM-DD HH24:MI:SS'),100,1.000000000000)
 ;
 
 -- 07/02/2013 17h23min43s BRST
@@ -50,7 +50,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h24min21s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124143,246,0,18,110,1120328,'CreatedBy',TO_TIMESTAMP('2013-02-07 17:24:18','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','U',22,'The Created By field indicates the user who created this record.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Created By',0,TO_TIMESTAMP('2013-02-07 17:24:18','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124143,246,0,18,110,1120328,'CreatedBy',TO_TIMESTAMP('2013-02-07 17:24:18','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','LBR',22,'The Created By field indicates the user who created this record.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Created By',0,TO_TIMESTAMP('2013-02-07 17:24:18','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h24min21s BRST
@@ -65,7 +65,7 @@ UPDATE AD_Column SET Version=1.000000000000,Updated=TO_TIMESTAMP('2013-02-07 17:
 
 -- 07/02/2013 17h25min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124144,348,0,20,1120328,'IsActive',TO_TIMESTAMP('2013-02-07 17:25:14','YYYY-MM-DD HH24:MI:SS'),100,'Y','The record is active in the system','U',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124144,348,0,20,1120328,'IsActive',TO_TIMESTAMP('2013-02-07 17:25:14','YYYY-MM-DD HH24:MI:SS'),100,'Y','The record is active in the system','LBR',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Active',0,TO_TIMESTAMP('2013-02-07 17:25:14','YYYY-MM-DD HH24:MI:SS'),100,1.000000000000)
@@ -78,7 +78,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h26min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124145,607,0,16,1120328,'Updated',TO_TIMESTAMP('2013-02-07 17:26:14','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','U',7,'The Updated field indicates the date that this record was updated.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Updated',0,TO_TIMESTAMP('2013-02-07 17:26:14','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124145,607,0,16,1120328,'Updated',TO_TIMESTAMP('2013-02-07 17:26:14','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','LBR',7,'The Updated field indicates the date that this record was updated.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Updated',0,TO_TIMESTAMP('2013-02-07 17:26:14','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h26min16s BRST
@@ -88,7 +88,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h26min48s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124146,608,0,18,110,1120328,'UpdatedBy',TO_TIMESTAMP('2013-02-07 17:26:47','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','U',22,'The Updated By field indicates the user who updated this record.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Updated By',0,TO_TIMESTAMP('2013-02-07 17:26:47','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124146,608,0,18,110,1120328,'UpdatedBy',TO_TIMESTAMP('2013-02-07 17:26:47','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','LBR',22,'The Updated By field indicates the user who updated this record.','Y','Y','N','N','N','N','N','Y','N','N','N','N','N','Updated By',0,TO_TIMESTAMP('2013-02-07 17:26:47','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h26min48s BRST
@@ -113,7 +113,7 @@ UPDATE AD_Column SET Version=1.000000000000,Updated=TO_TIMESTAMP('2013-02-07 17:
 
 -- 07/02/2013 17h41min33s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121261,0,'LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:41:15','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','LBR_SPED_ID','LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:41:15','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121261,0,'LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:41:15','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','LBR_SPED_ID','LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:41:15','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h41min33s BRST
@@ -123,7 +123,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 07/02/2013 17h43min0s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124147,1121261,0,13,1120328,'LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:42:58','YYYY-MM-DD HH24:MI:SS'),100,'U',22,'Y','Y','N','N','N','N','Y','Y','N','N','N','N','N','LBR_SPED_ID',0,TO_TIMESTAMP('2013-02-07 17:42:58','YYYY-MM-DD HH24:MI:SS'),100,1.000000000000)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124147,1121261,0,13,1120328,'LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:42:58','YYYY-MM-DD HH24:MI:SS'),100,'LBR',22,'Y','Y','N','N','N','N','Y','Y','N','N','N','N','N','LBR_SPED_ID',0,TO_TIMESTAMP('2013-02-07 17:42:58','YYYY-MM-DD HH24:MI:SS'),100,1.000000000000)
 ;
 
 -- 07/02/2013 17h43min0s BRST
@@ -133,7 +133,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h48min39s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124148,223,0,19,1120328,'C_Year_ID',TO_TIMESTAMP('2013-02-07 17:48:38','YYYY-MM-DD HH24:MI:SS'),100,'Calendar Year','U',22,'The Year uniquely identifies an accounting year for a calendar.','Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Year',0,TO_TIMESTAMP('2013-02-07 17:48:38','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124148,223,0,19,1120328,'C_Year_ID',TO_TIMESTAMP('2013-02-07 17:48:38','YYYY-MM-DD HH24:MI:SS'),100,'Calendar Year','LBR',22,'The Year uniquely identifies an accounting year for a calendar.','Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Year',0,TO_TIMESTAMP('2013-02-07 17:48:38','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h48min39s BRST
@@ -143,7 +143,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 07/02/2013 17h49min14s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124149,206,0,19,1120328,'C_Period_ID',TO_TIMESTAMP('2013-02-07 17:49:13','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar','U',10,'The Period indicates an exclusive range of dates for a calendar.','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Period',0,TO_TIMESTAMP('2013-02-07 17:49:13','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124149,206,0,19,1120328,'C_Period_ID',TO_TIMESTAMP('2013-02-07 17:49:13','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar','LBR',10,'The Period indicates an exclusive range of dates for a calendar.','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Period',0,TO_TIMESTAMP('2013-02-07 17:49:13','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 17h49min14s BRST
@@ -168,7 +168,7 @@ CREATE TABLE LBR_SPED (AD_Client_ID NUMERIC(10) NOT NULL, AD_Org_ID NUMERIC(10) 
 
 -- 07/02/2013 17h51min14s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Window (AD_Client_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WindowType,WinHeight,WinWidth) VALUES (0,0,1120076,TO_TIMESTAMP('2013-02-07 17:51:13','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','N','N','N','Sped','N',TO_TIMESTAMP('2013-02-07 17:51:13','YYYY-MM-DD HH24:MI:SS'),100,'M',0,0)
+INSERT INTO AD_Window (AD_Client_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WindowType,WinHeight,WinWidth) VALUES (0,0,1120076,TO_TIMESTAMP('2013-02-07 17:51:13','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','N','N','N','Sped','N',TO_TIMESTAMP('2013-02-07 17:51:13','YYYY-MM-DD HH24:MI:SS'),100,'M',0,0)
 ;
 
 -- 07/02/2013 17h51min14s BRST
@@ -188,7 +188,7 @@ INSERT INTO AD_Reference_Trl (AD_Language,AD_Reference_ID, Description,Help,Name
 
 -- 07/02/2013 17h55min23s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Tab (AD_Client_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,0,1120115,1120328,1120076,TO_TIMESTAMP('2013-02-07 17:55:17','YYYY-MM-DD HH24:MI:SS'),100,'U','N','N','Y','N','N','Y','N','N','N','N','Gerar SPED','N',10,0,TO_TIMESTAMP('2013-02-07 17:55:17','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Tab (AD_Client_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,0,1120115,1120328,1120076,TO_TIMESTAMP('2013-02-07 17:55:17','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','N','Y','N','N','Y','N','N','N','N','Gerar SPED','N',10,0,TO_TIMESTAMP('2013-02-07 17:55:17','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h55min23s BRST
@@ -213,7 +213,7 @@ UPDATE AD_Window_Trl SET Description=NULL,Help=NULL,Name='SPED',IsTranslated='Y'
 
 -- 07/02/2013 17h56min27s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124144,1123473,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:26','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'U','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124144,1123473,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:26','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'LBR','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','Y','Y','N','N','N','N','N','Active',TO_TIMESTAMP('2013-02-07 17:56:26','YYYY-MM-DD HH24:MI:SS'),100)
@@ -226,7 +226,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 07/02/2013 17h56min27s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124140,1123474,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',22,'U','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124140,1123474,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',22,'LBR','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h56min27s BRST
@@ -236,7 +236,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 07/02/2013 17h56min27s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124147,1123475,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100,22,'U','Y','Y','N','N','N','N','N','N','LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124147,1123475,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100,22,'LBR','Y','Y','N','N','N','N','N','N','LBR_SPED_ID',TO_TIMESTAMP('2013-02-07 17:56:27','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h56min27s BRST
@@ -246,7 +246,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 07/02/2013 17h56min28s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124141,1123476,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',22,'U','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124141,1123476,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',22,'LBR','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h56min28s BRST
@@ -256,7 +256,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 07/02/2013 17h56min28s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124149,1123477,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar',10,'U','The Period indicates an exclusive range of dates for a calendar.','Y','Y','Y','N','N','N','N','N','Period',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124149,1123477,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar',10,'LBR','The Period indicates an exclusive range of dates for a calendar.','Y','Y','Y','N','N','N','N','N','Period',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h56min28s BRST
@@ -266,7 +266,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 07/02/2013 17h56min29s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124148,1123478,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Calendar Year',22,'U','The Year uniquely identifies an accounting year for a calendar.','Y','Y','Y','N','N','N','N','N','Year',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124148,1123478,0,1120115,TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100,'Calendar Year',22,'LBR','The Year uniquely identifies an accounting year for a calendar.','Y','Y','Y','N','N','N','N','N','Year',TO_TIMESTAMP('2013-02-07 17:56:28','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h56min29s BRST
@@ -316,7 +316,7 @@ UPDATE AD_Field SET SeqNo=40,IsDisplayed='Y' WHERE AD_Field_ID=1123477
 
 -- 07/02/2013 17h59min28s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121263,0,'ToProcessSPED',TO_TIMESTAMP('2013-02-07 17:59:27','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','ToProcessSPED','ToProcessSPED',TO_TIMESTAMP('2013-02-07 17:59:27','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121263,0,'ToProcessSPED',TO_TIMESTAMP('2013-02-07 17:59:27','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','ToProcessSPED','ToProcessSPED',TO_TIMESTAMP('2013-02-07 17:59:27','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 17h59min28s BRST
@@ -326,7 +326,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 07/02/2013 18h0min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124150,1121263,0,28,1120328,'ToProcessSPED',TO_TIMESTAMP('2013-02-07 18:00:15','YYYY-MM-DD HH24:MI:SS'),100,'U',1,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','ToProcessSPED',0,TO_TIMESTAMP('2013-02-07 18:00:15','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1124150,1121263,0,28,1120328,'ToProcessSPED',TO_TIMESTAMP('2013-02-07 18:00:15','YYYY-MM-DD HH24:MI:SS'),100,'LBR',1,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','ToProcessSPED',0,TO_TIMESTAMP('2013-02-07 18:00:15','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 07/02/2013 18h0min16s BRST
@@ -341,7 +341,7 @@ ALTER TABLE LBR_SPED ADD COLUMN ToProcessSPED CHAR(1) DEFAULT NULL
 
 -- 07/02/2013 18h1min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124150,1123479,0,1120115,TO_TIMESTAMP('2013-02-07 18:01:08','YYYY-MM-DD HH24:MI:SS'),100,1,'U','Y','Y','Y','N','N','N','N','N','ToProcessSPED',TO_TIMESTAMP('2013-02-07 18:01:08','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124150,1123479,0,1120115,TO_TIMESTAMP('2013-02-07 18:01:08','YYYY-MM-DD HH24:MI:SS'),100,1,'LBR','Y','Y','Y','N','N','N','N','N','ToProcessSPED',TO_TIMESTAMP('2013-02-07 18:01:08','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 07/02/2013 18h1min10s BRST
@@ -371,7 +371,7 @@ INSERT INTO t_alter_column values('lbr_sped','ToProcessSPED','CHAR(1)',null,'NUL
 
 -- 14/02/2013 15h47min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Menu (AD_Client_ID,AD_Menu_ID,AD_Org_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES (0,1120179,0,TO_TIMESTAMP('2013-02-14 15:47:09','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Y','N','N','Y','SPED',TO_TIMESTAMP('2013-02-14 15:47:09','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Menu (AD_Client_ID,AD_Menu_ID,AD_Org_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES (0,1120179,0,TO_TIMESTAMP('2013-02-14 15:47:09','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','Y','N','N','Y','SPED',TO_TIMESTAMP('2013-02-14 15:47:09','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 15h47min10s BRST
@@ -426,7 +426,7 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000008, SeqNo=7, Updated=CURRENT_TIMESTAMP W
 
 -- 14/02/2013 15h50min55s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Menu ("action",AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES ('W',0,1120180,0,1120076,TO_TIMESTAMP('2013-02-14 15:50:54','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Y','N','N','N','Gerar SPED',TO_TIMESTAMP('2013-02-14 15:50:54','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Menu ("action",AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES ('W',0,1120180,0,1120076,TO_TIMESTAMP('2013-02-14 15:50:54','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','Y','N','N','N','Gerar SPED',TO_TIMESTAMP('2013-02-14 15:50:54','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 15h50min55s BRST
@@ -476,7 +476,7 @@ UPDATE AD_Sequence SET CurrentNext=2000000,Updated=TO_TIMESTAMP('2013-02-14 15:5
 
 -- 14/02/2013 16h25min30s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Process (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Process_ID,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES ('3',0,0,1120114,'org.adempierelbr.sped.efd.process.ProcGenerateEFD','N',TO_TIMESTAMP('2013-02-14 16:25:28','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','N','N','N','N','Processar SPED','Y',0,0,TO_TIMESTAMP('2013-02-14 16:25:28','YYYY-MM-DD HH24:MI:SS'),100,'Processar SPED')
+INSERT INTO AD_Process (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Process_ID,Classname,CopyFromProcess,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDirectPrint,IsReport,IsServerProcess,Name,ShowHelp,Statistic_Count,Statistic_Seconds,Updated,UpdatedBy,Value) VALUES ('3',0,0,1120114,'org.adempierelbr.sped.efd.process.ProcGenerateEFD','N',TO_TIMESTAMP('2013-02-14 16:25:28','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','N','N','N','N','Processar SPED','Y',0,0,TO_TIMESTAMP('2013-02-14 16:25:28','YYYY-MM-DD HH24:MI:SS'),100,'Processar SPED')
 ;
 
 -- 14/02/2013 16h25min30s BRST
@@ -716,7 +716,7 @@ UPDATE AD_TABLE_TRL SET Name = (SELECT e.Name || ' **' FROM AD_TABLE t INNER JOI
 
 -- 14/02/2013 16h47min18s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,1120331,'N',TO_TIMESTAMP('2013-02-14 16:47:16','YYYY-MM-DD HH24:MI:SS'),100,'U','N','Y','Y','N','Y','N','N','N','N',0,'Tax Assessment','L','LBR_TaxAssessment',TO_TIMESTAMP('2013-02-14 16:47:16','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,1120331,'N',TO_TIMESTAMP('2013-02-14 16:47:16','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','Y','Y','N','Y','N','N','N','N',0,'Tax Assessment','L','LBR_TaxAssessment',TO_TIMESTAMP('2013-02-14 16:47:16','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h47min18s BRST
@@ -731,7 +731,7 @@ INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy
 
 -- 14/02/2013 16h47min54s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121271,0,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Tax Assessment','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121271,0,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','Tax Assessment','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h47min54s BRST
@@ -741,7 +741,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 14/02/2013 16h47min55s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124166,1121271,0,13,1120331,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,'U',10,'Y','N','N','N','Y','Y','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124166,1121271,0,13,1120331,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,'LBR',10,'Y','N','N','N','Y','Y','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:47:52','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h47min55s BRST
@@ -751,7 +751,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h47min56s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124167,102,0,19,1120331,'AD_Client_ID',TO_TIMESTAMP('2013-02-14 16:47:55','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.','U',10,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','N','N','N','N','Y','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:47:55','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124167,102,0,19,1120331,'AD_Client_ID',TO_TIMESTAMP('2013-02-14 16:47:55','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.','LBR',10,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','N','N','N','N','Y','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:47:55','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h47min56s BRST
@@ -761,7 +761,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h47min57s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124168,113,0,19,1120331,'AD_Org_ID',TO_TIMESTAMP('2013-02-14 16:47:56','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client','U',10,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','N','N','N','N','Y','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:47:56','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124168,113,0,19,1120331,'AD_Org_ID',TO_TIMESTAMP('2013-02-14 16:47:56','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client','LBR',10,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','N','N','N','N','Y','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:47:56','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h47min57s BRST
@@ -771,7 +771,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h47min58s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124169,164,0,12,1120331,'AmtSourceCr',TO_TIMESTAMP('2013-02-14 16:47:57','YYYY-MM-DD HH24:MI:SS'),100,'Source Credit Amount','U',131089,'The Source Credit Amount indicates the credit amount for this line in the source currency.','Y','N','N','N','N','Y','N','N','N','Y','Source Credit',TO_TIMESTAMP('2013-02-14 16:47:57','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124169,164,0,12,1120331,'AmtSourceCr',TO_TIMESTAMP('2013-02-14 16:47:57','YYYY-MM-DD HH24:MI:SS'),100,'Source Credit Amount','LBR',131089,'The Source Credit Amount indicates the credit amount for this line in the source currency.','Y','N','N','N','N','Y','N','N','N','Y','Source Credit',TO_TIMESTAMP('2013-02-14 16:47:57','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h47min58s BRST
@@ -781,7 +781,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h47min59s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124170,165,0,12,1120331,'AmtSourceDr',TO_TIMESTAMP('2013-02-14 16:47:58','YYYY-MM-DD HH24:MI:SS'),100,'Source Debit Amount','U',131089,'The Source Debit Amount indicates the credit amount for this line in the source currency.','Y','N','N','N','N','Y','N','N','N','Y','Source Debit',TO_TIMESTAMP('2013-02-14 16:47:58','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124170,165,0,12,1120331,'AmtSourceDr',TO_TIMESTAMP('2013-02-14 16:47:58','YYYY-MM-DD HH24:MI:SS'),100,'Source Debit Amount','LBR',131089,'The Source Debit Amount indicates the credit amount for this line in the source currency.','Y','N','N','N','N','Y','N','N','N','Y','Source Debit',TO_TIMESTAMP('2013-02-14 16:47:58','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h47min59s BRST
@@ -791,7 +791,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h47min59s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121272,0,'booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','booknumber','booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121272,0,'booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','booknumber','booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h47min59s BRST
@@ -801,7 +801,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 14/02/2013 16h48min0s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124171,1121272,0,11,1120331,'booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,'U',10,'Y','N','N','N','N','Y','N','N','N','Y','booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124171,1121272,0,11,1120331,'booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,'LBR',10,'Y','N','N','N','N','Y','N','N','N','Y','booknumber',TO_TIMESTAMP('2013-02-14 16:47:59','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min0s BRST
@@ -811,7 +811,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min1s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124172,206,0,19,1120331,'C_Period_ID',TO_TIMESTAMP('2013-02-14 16:48:00','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar','U',10,'The Period indicates an exclusive range of dates for a calendar.','Y','N','N','N','N','Y','N','N','N','Y','Period',TO_TIMESTAMP('2013-02-14 16:48:00','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124172,206,0,19,1120331,'C_Period_ID',TO_TIMESTAMP('2013-02-14 16:48:00','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar','LBR',10,'The Period indicates an exclusive range of dates for a calendar.','Y','N','N','N','N','Y','N','N','N','Y','Period',TO_TIMESTAMP('2013-02-14 16:48:00','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min1s BRST
@@ -821,7 +821,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min1s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124173,245,0,16,1120331,'Created',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','U',29,'The Created field indicates the date that this record was created.','Y','N','N','N','N','Y','N','N','N','N','Created',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124173,245,0,16,1120331,'Created',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','LBR',29,'The Created field indicates the date that this record was created.','Y','N','N','N','N','Y','N','N','N','N','Created',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min1s BRST
@@ -831,7 +831,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min2s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124174,246,0,18,110,1120331,'CreatedBy',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','U',10,'The Created By field indicates the user who created this record.','Y','N','N','N','N','N','N','N','N','N','Created By',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124174,246,0,18,110,1120331,'CreatedBy',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','LBR',10,'The Created By field indicates the user who created this record.','Y','N','N','N','N','N','N','N','N','N','Created By',TO_TIMESTAMP('2013-02-14 16:48:01','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min2s BRST
@@ -841,7 +841,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min3s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124175,2822,0,12,1120331,'CumulatedAmt',TO_TIMESTAMP('2013-02-14 16:48:02','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount','U',131089,'Sum of all amounts','Y','N','N','N','N','Y','N','N','N','Y','Accumulated Amt',TO_TIMESTAMP('2013-02-14 16:48:02','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124175,2822,0,12,1120331,'CumulatedAmt',TO_TIMESTAMP('2013-02-14 16:48:02','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount','LBR',131089,'Sum of all amounts','Y','N','N','N','N','Y','N','N','N','Y','Accumulated Amt',TO_TIMESTAMP('2013-02-14 16:48:02','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min3s BRST
@@ -851,7 +851,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min3s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124176,348,0,20,1120331,'IsActive',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system','U',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124176,348,0,20,1120331,'IsActive',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system','LBR',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','N','N','N','N','Y','N','N','N','Y','Active',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,0)
@@ -864,7 +864,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min4s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121273,0,'pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','pagenumber','pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121273,0,'pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','pagenumber','pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h48min4s BRST
@@ -874,7 +874,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 14/02/2013 16h48min5s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124177,1121273,0,11,1120331,'pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'U',10,'Y','N','N','N','N','Y','N','N','N','Y','pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124177,1121273,0,11,1120331,'pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,'LBR',10,'Y','N','N','N','N','Y','N','N','N','Y','pagenumber',TO_TIMESTAMP('2013-02-14 16:48:03','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min5s BRST
@@ -884,7 +884,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min5s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124178,1047,0,20,1120331,'Processed',TO_TIMESTAMP('2013-02-14 16:48:05','YYYY-MM-DD HH24:MI:SS'),100,'The document has been processed','U',1,'The Processed checkbox indicates that a document has been processed.','Y','N','N','N','N','Y','N','N','N','Y','Processed',TO_TIMESTAMP('2013-02-14 16:48:05','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124178,1047,0,20,1120331,'Processed',TO_TIMESTAMP('2013-02-14 16:48:05','YYYY-MM-DD HH24:MI:SS'),100,'The document has been processed','LBR',1,'The Processed checkbox indicates that a document has been processed.','Y','N','N','N','N','Y','N','N','N','Y','Processed',TO_TIMESTAMP('2013-02-14 16:48:05','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min5s BRST
@@ -894,7 +894,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min6s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124179,524,0,20,1120331,'Processing',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,'U',1,'Y','N','N','N','N','N','N','N','N','Y','Process Now',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124179,524,0,20,1120331,'Processing',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,'LBR',1,'Y','N','N','N','N','N','N','N','N','Y','Process Now',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min6s BRST
@@ -904,7 +904,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min7s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124180,1539,0,12,1120331,'TotalAmt',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount','U',131089,'The Total Amount indicates the total document amount.','Y','N','N','N','N','Y','N','N','N','Y','Total Amount',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124180,1539,0,12,1120331,'TotalAmt',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount','LBR',131089,'The Total Amount indicates the total document amount.','Y','N','N','N','N','Y','N','N','N','Y','Total Amount',TO_TIMESTAMP('2013-02-14 16:48:06','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min7s BRST
@@ -914,7 +914,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min8s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124181,596,0,22,1120331,'TotalCr',TO_TIMESTAMP('2013-02-14 16:48:07','YYYY-MM-DD HH24:MI:SS'),100,'Total Credit in document currency','U',131089,'The Total Credit indicates the total credit amount for a journal or journal batch in the source currency','Y','N','N','N','N','Y','N','N','N','Y','Total Credit',TO_TIMESTAMP('2013-02-14 16:48:07','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124181,596,0,22,1120331,'TotalCr',TO_TIMESTAMP('2013-02-14 16:48:07','YYYY-MM-DD HH24:MI:SS'),100,'Total Credit in document currency','LBR',131089,'The Total Credit indicates the total credit amount for a journal or journal batch in the source currency','Y','N','N','N','N','Y','N','N','N','Y','Total Credit',TO_TIMESTAMP('2013-02-14 16:48:07','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min8s BRST
@@ -924,7 +924,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min8s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124182,597,0,22,1120331,'TotalDr',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,'Total debit in document currency','U',131089,'The Total Debit indicates the total debit amount for a journal or journal batch in the source currency','Y','N','N','N','N','Y','N','N','N','Y','Total Debit',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124182,597,0,22,1120331,'TotalDr',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,'Total debit in document currency','LBR',131089,'The Total Debit indicates the total debit amount for a journal or journal batch in the source currency','Y','N','N','N','N','Y','N','N','N','Y','Total Debit',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min8s BRST
@@ -934,7 +934,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min9s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124183,607,0,16,1120331,'Updated',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','U',29,'The Updated field indicates the date that this record was updated.','Y','N','N','N','N','Y','N','N','N','N','Updated',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124183,607,0,16,1120331,'Updated',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','LBR',29,'The Updated field indicates the date that this record was updated.','Y','N','N','N','N','Y','N','N','N','N','Updated',TO_TIMESTAMP('2013-02-14 16:48:08','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min9s BRST
@@ -944,7 +944,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min9s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124184,608,0,18,110,1120331,'UpdatedBy',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','U',10,'The Updated By field indicates the user who updated this record.','Y','N','N','N','N','Y','N','N','N','N','Updated By',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124184,608,0,18,110,1120331,'UpdatedBy',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','LBR',10,'The Updated By field indicates the user who updated this record.','Y','N','N','N','N','Y','N','N','N','N','Updated By',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min9s BRST
@@ -954,7 +954,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124185,1000169,0,19,1120331,'LBR_TaxName_ID',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_TaxName','U',10,'Primary key table LBR_TaxName','Y','N','N','N','N','Y','N','N','N','Y','Tax Name',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124185,1000169,0,19,1120331,'LBR_TaxName_ID',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_TaxName','LBR',10,'Primary key table LBR_TaxName','Y','N','N','N','N','Y','N','N','N','Y','Tax Name',TO_TIMESTAMP('2013-02-14 16:48:09','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min10s BRST
@@ -964,7 +964,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h48min11s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121274,0,'lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','lbr_saldocredortrasnportar','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121274,0,'lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','lbr_saldocredortrasnportar','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h48min11s BRST
@@ -974,7 +974,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 14/02/2013 16h48min12s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124186,1121274,0,22,1120331,'lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,'U',131089,'Y','N','N','N','N','Y','N','N','N','Y','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124186,1121274,0,22,1120331,'lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,'LBR',131089,'Y','N','N','N','N','Y','N','N','N','Y','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:48:10','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h48min12s BRST
@@ -1039,7 +1039,7 @@ UPDATE AD_Column SET FieldLength=13,Updated=TO_TIMESTAMP('2013-02-14 16:51:52','
 
 -- 14/02/2013 16h52min7s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,1120332,'N',TO_TIMESTAMP('2013-02-14 16:52:05','YYYY-MM-DD HH24:MI:SS'),100,'U','N','Y','Y','N','Y','N','N','N','N',0,'Tax Assessment Line','L','LBR_TaxAssessmentLine',TO_TIMESTAMP('2013-02-14 16:52:05','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Table (AccessLevel,AD_Client_ID,AD_Org_ID,AD_Table_ID,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES ('3',0,0,1120332,'N',TO_TIMESTAMP('2013-02-14 16:52:05','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','Y','Y','N','Y','N','N','N','N',0,'Tax Assessment Line','L','LBR_TaxAssessmentLine',TO_TIMESTAMP('2013-02-14 16:52:05','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h52min7s BRST
@@ -1054,7 +1054,7 @@ INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy
 
 -- 14/02/2013 16h52min11s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124187,1121271,0,19,1120332,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:52:10','YYYY-MM-DD HH24:MI:SS'),100,'U',10,'Y','N','N','N','N','Y','N','N','N','Y','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:52:10','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124187,1121271,0,19,1120332,'LBR_TaxAssessment_ID',TO_TIMESTAMP('2013-02-14 16:52:10','YYYY-MM-DD HH24:MI:SS'),100,'LBR',10,'Y','N','N','N','N','Y','N','N','N','Y','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:52:10','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min11s BRST
@@ -1064,7 +1064,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min12s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121275,0,'LBR_TaxAssessmentLine_ID',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Tax Assessment Line','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121275,0,'LBR_TaxAssessmentLine_ID',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','Tax Assessment Line','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h52min12s BRST
@@ -1074,7 +1074,7 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 
 -- 14/02/2013 16h52min12s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124188,1121275,0,13,1120332,'LBR_TaxAssessmentLine_ID',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,'U',10,'Y','N','N','N','Y','Y','N','N','N','N','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124188,1121275,0,13,1120332,'LBR_TaxAssessmentLine_ID',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,'LBR',10,'Y','N','N','N','Y','Y','N','N','N','N','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 16:52:11','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min12s BRST
@@ -1084,7 +1084,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min13s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124189,102,0,19,1120332,'AD_Client_ID',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.','U',10,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','N','N','N','N','Y','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124189,102,0,19,1120332,'AD_Client_ID',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.','LBR',10,'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','N','N','N','N','Y','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min13s BRST
@@ -1094,7 +1094,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min14s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124190,113,0,19,1120332,'AD_Org_ID',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client','U',10,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','N','N','N','N','Y','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124190,113,0,19,1120332,'AD_Org_ID',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client','LBR',10,'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','N','N','N','N','Y','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:52:13','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min14s BRST
@@ -1104,7 +1104,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min15s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124191,245,0,16,1120332,'Created',TO_TIMESTAMP('2013-02-14 16:52:14','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','U',29,'The Created field indicates the date that this record was created.','Y','N','N','N','N','Y','N','N','N','N','Created',TO_TIMESTAMP('2013-02-14 16:52:14','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124191,245,0,16,1120332,'Created',TO_TIMESTAMP('2013-02-14 16:52:14','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was created','LBR',29,'The Created field indicates the date that this record was created.','Y','N','N','N','N','Y','N','N','N','N','Created',TO_TIMESTAMP('2013-02-14 16:52:14','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min15s BRST
@@ -1114,7 +1114,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min15s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124192,246,0,18,110,1120332,'CreatedBy',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','U',10,'The Created By field indicates the user who created this record.','Y','N','N','N','N','N','N','N','N','N','Created By',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124192,246,0,18,110,1120332,'CreatedBy',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,'User who created this records','LBR',10,'The Created By field indicates the user who created this record.','Y','N','N','N','N','N','N','N','N','N','Created By',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min15s BRST
@@ -1124,7 +1124,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124193,160,0,12,1120332,'Amt',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,'Amount','U',131089,'Amount','Y','N','N','N','N','Y','N','N','N','Y','Amount',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124193,160,0,12,1120332,'Amt',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,'Amount','LBR',131089,'Amount','Y','N','N','N','N','Y','N','N','N','Y','Amount',TO_TIMESTAMP('2013-02-14 16:52:15','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min16s BRST
@@ -1134,7 +1134,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min17s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124194,348,0,20,1120332,'IsActive',TO_TIMESTAMP('2013-02-14 16:52:16','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system','U',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124194,348,0,20,1120332,'IsActive',TO_TIMESTAMP('2013-02-14 16:52:16','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system','LBR',1,'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','N','N','N','N','Y','N','N','N','Y','Active',TO_TIMESTAMP('2013-02-14 16:52:16','YYYY-MM-DD HH24:MI:SS'),100,0)
@@ -1147,7 +1147,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min17s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124195,600,0,10,1120332,'Type',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,'Type of Validation (SQL, Java Script, Java Language)','U',3,'The Type indicates the type of validation that will occur.  This can be SQL, Java Script or Java Language.','Y','N','N','N','N','N','N','N','N','Y','Type',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124195,600,0,10,1120332,'Type',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,'Type of Validation (SQL, Java Script, Java Language)','LBR',3,'The Type indicates the type of validation that will occur.  This can be SQL, Java Script or Java Language.','Y','N','N','N','N','N','N','N','N','Y','Type',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min17s BRST
@@ -1157,7 +1157,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min18s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124196,275,0,10,1120332,'Description',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,'Optional short description of the record','U',255,'A description is limited to 255 characters.','Y','N','N','N','N','N','N','N','N','Y','Description',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124196,275,0,10,1120332,'Description',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,'Optional short description of the record','LBR',255,'A description is limited to 255 characters.','Y','N','N','N','N','N','N','N','N','Y','Description',TO_TIMESTAMP('2013-02-14 16:52:17','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min18s BRST
@@ -1167,7 +1167,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min19s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124197,607,0,16,1120332,'Updated',TO_TIMESTAMP('2013-02-14 16:52:18','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','U',29,'The Updated field indicates the date that this record was updated.','Y','N','N','N','N','Y','N','N','N','N','Updated',TO_TIMESTAMP('2013-02-14 16:52:18','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124197,607,0,16,1120332,'Updated',TO_TIMESTAMP('2013-02-14 16:52:18','YYYY-MM-DD HH24:MI:SS'),100,'Date this record was updated','LBR',29,'The Updated field indicates the date that this record was updated.','Y','N','N','N','N','Y','N','N','N','N','Updated',TO_TIMESTAMP('2013-02-14 16:52:18','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min19s BRST
@@ -1177,7 +1177,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 14/02/2013 16h52min19s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124198,608,0,18,110,1120332,'UpdatedBy',TO_TIMESTAMP('2013-02-14 16:52:19','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','U',10,'The Updated By field indicates the user who updated this record.','Y','N','N','N','N','Y','N','N','N','N','Updated By',TO_TIMESTAMP('2013-02-14 16:52:19','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1124198,608,0,18,110,1120332,'UpdatedBy',TO_TIMESTAMP('2013-02-14 16:52:19','YYYY-MM-DD HH24:MI:SS'),100,'User who updated this records','LBR',10,'The Updated By field indicates the user who updated this record.','Y','N','N','N','N','Y','N','N','N','N','Updated By',TO_TIMESTAMP('2013-02-14 16:52:19','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 14/02/2013 16h52min19s BRST
@@ -1197,7 +1197,7 @@ UPDATE AD_Element_Trl SET Name='Outros Lançamentos',Updated=TO_TIMESTAMP('2013-
 
 -- 14/02/2013 16h53min28s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Window (AD_Client_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WindowType,WinHeight,WinWidth) VALUES (0,0,1120078,TO_TIMESTAMP('2013-02-14 16:53:26','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','N','N','Y','Apuração de Impostos','N',TO_TIMESTAMP('2013-02-14 16:53:26','YYYY-MM-DD HH24:MI:SS'),100,'M',0,0)
+INSERT INTO AD_Window (AD_Client_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsBetaFunctionality,IsDefault,IsSOTrx,Name,Processing,Updated,UpdatedBy,WindowType,WinHeight,WinWidth) VALUES (0,0,1120078,TO_TIMESTAMP('2013-02-14 16:53:26','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','N','N','Y','Apuração de Impostos','N',TO_TIMESTAMP('2013-02-14 16:53:26','YYYY-MM-DD HH24:MI:SS'),100,'M',0,0)
 ;
 
 -- 14/02/2013 16h53min28s BRST
@@ -1207,7 +1207,7 @@ INSERT INTO AD_Window_Trl (AD_Language,AD_Window_ID, Description,Help,Name, IsTr
 
 -- 14/02/2013 16h53min54s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Tab (AD_Client_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,0,1120117,1120331,1120078,TO_TIMESTAMP('2013-02-14 16:53:52','YYYY-MM-DD HH24:MI:SS'),100,'U','N','N','Y','N','N','Y','N','Y','N','N','Apuração de Impostos','N',10,0,TO_TIMESTAMP('2013-02-14 16:53:52','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Tab (AD_Client_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,0,1120117,1120331,1120078,TO_TIMESTAMP('2013-02-14 16:53:52','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','N','Y','N','N','Y','N','Y','N','N','Apuração de Impostos','N',10,0,TO_TIMESTAMP('2013-02-14 16:53:52','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h53min54s BRST
@@ -1217,7 +1217,7 @@ INSERT INTO AD_Tab_Trl (AD_Language,AD_Tab_ID, CommitWarning,Description,Help,Na
 
 -- 14/02/2013 16h54min7s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124175,1123489,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:06','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount',13,'U','Sum of all amounts','Y','Y','Y','N','N','N','N','N','Accumulated Amt',TO_TIMESTAMP('2013-02-14 16:54:06','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124175,1123489,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:06','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount',13,'LBR','Sum of all amounts','Y','Y','Y','N','N','N','N','N','Accumulated Amt',TO_TIMESTAMP('2013-02-14 16:54:06','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min7s BRST
@@ -1227,7 +1227,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min8s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124176,1123490,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:07','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'U','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124176,1123490,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:07','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'LBR','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','Y','Y','N','N','N','N','N','Active',TO_TIMESTAMP('2013-02-14 16:54:07','YYYY-MM-DD HH24:MI:SS'),100)
@@ -1240,7 +1240,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min9s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124171,1123491,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:08','YYYY-MM-DD HH24:MI:SS'),100,10,'U','Y','Y','Y','N','N','N','N','N','booknumber',TO_TIMESTAMP('2013-02-14 16:54:08','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124171,1123491,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:08','YYYY-MM-DD HH24:MI:SS'),100,10,'LBR','Y','Y','Y','N','N','N','N','N','booknumber',TO_TIMESTAMP('2013-02-14 16:54:08','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min9s BRST
@@ -1250,7 +1250,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min9s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124167,1123492,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',10,'U','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124167,1123492,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',10,'LBR','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min9s BRST
@@ -1260,7 +1260,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124186,1123493,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100,13,'U','Y','Y','Y','N','N','N','N','N','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124186,1123493,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100,13,'LBR','Y','Y','Y','N','N','N','N','N','lbr_saldocredortrasnportar',TO_TIMESTAMP('2013-02-14 16:54:09','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min10s BRST
@@ -1270,7 +1270,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min11s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124168,1123494,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:10','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',10,'U','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:54:10','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124168,1123494,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:10','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',10,'LBR','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 16:54:10','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min11s BRST
@@ -1280,7 +1280,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min11s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124177,1123495,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100,10,'U','Y','Y','Y','N','N','N','N','N','pagenumber',TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124177,1123495,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100,10,'LBR','Y','Y','Y','N','N','N','N','N','pagenumber',TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min11s BRST
@@ -1290,7 +1290,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min12s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124172,1123496,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar',10,'U','The Period indicates an exclusive range of dates for a calendar.','Y','Y','Y','N','N','N','N','N','Period',TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124172,1123496,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100,'Period of the Calendar',10,'LBR','The Period indicates an exclusive range of dates for a calendar.','Y','Y','Y','N','N','N','N','N','Period',TO_TIMESTAMP('2013-02-14 16:54:11','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min12s BRST
@@ -1300,7 +1300,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min13s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124178,1123497,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:12','YYYY-MM-DD HH24:MI:SS'),100,'The document has been processed',1,'U','The Processed checkbox indicates that a document has been processed.','Y','Y','Y','N','N','N','N','N','Processed',TO_TIMESTAMP('2013-02-14 16:54:12','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124178,1123497,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:12','YYYY-MM-DD HH24:MI:SS'),100,'The document has been processed',1,'LBR','The Processed checkbox indicates that a document has been processed.','Y','Y','Y','N','N','N','N','N','Processed',TO_TIMESTAMP('2013-02-14 16:54:12','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min13s BRST
@@ -1310,7 +1310,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min13s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124179,1123498,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100,1,'U','Y','Y','Y','N','N','N','N','N','Process Now',TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124179,1123498,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100,1,'LBR','Y','Y','Y','N','N','N','N','N','Process Now',TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min13s BRST
@@ -1320,7 +1320,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min14s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124169,1123499,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100,'Source Credit Amount',13,'U','The Source Credit Amount indicates the credit amount for this line in the source currency.','Y','Y','Y','N','N','N','N','N','Source Credit',TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124169,1123499,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100,'Source Credit Amount',13,'LBR','The Source Credit Amount indicates the credit amount for this line in the source currency.','Y','Y','Y','N','N','N','N','N','Source Credit',TO_TIMESTAMP('2013-02-14 16:54:13','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min14s BRST
@@ -1330,7 +1330,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min15s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124170,1123500,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:14','YYYY-MM-DD HH24:MI:SS'),100,'Source Debit Amount',13,'U','The Source Debit Amount indicates the credit amount for this line in the source currency.','Y','Y','Y','N','N','N','N','N','Source Debit',TO_TIMESTAMP('2013-02-14 16:54:14','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124170,1123500,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:14','YYYY-MM-DD HH24:MI:SS'),100,'Source Debit Amount',13,'LBR','The Source Debit Amount indicates the credit amount for this line in the source currency.','Y','Y','Y','N','N','N','N','N','Source Debit',TO_TIMESTAMP('2013-02-14 16:54:14','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min15s BRST
@@ -1340,7 +1340,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min15s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124166,1123501,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100,10,'U','Y','Y','N','N','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124166,1123501,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100,10,'LBR','Y','Y','N','N','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min15s BRST
@@ -1350,7 +1350,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124185,1123502,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_TaxName',10,'U','Primary key table LBR_TaxName','Y','Y','Y','N','N','N','N','N','Tax Name',TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124185,1123502,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_TaxName',10,'LBR','Primary key table LBR_TaxName','Y','Y','Y','N','N','N','N','N','Tax Name',TO_TIMESTAMP('2013-02-14 16:54:15','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min16s BRST
@@ -1360,7 +1360,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124180,1123503,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:16','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount',13,'U','The Total Amount indicates the total document amount.','Y','Y','Y','N','N','N','N','N','Total Amount',TO_TIMESTAMP('2013-02-14 16:54:16','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124180,1123503,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:16','YYYY-MM-DD HH24:MI:SS'),100,'Total Amount',13,'LBR','The Total Amount indicates the total document amount.','Y','Y','Y','N','N','N','N','N','Total Amount',TO_TIMESTAMP('2013-02-14 16:54:16','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min17s BRST
@@ -1370,7 +1370,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min17s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124181,1123504,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100,'Total Credit in document currency',13,'U','The Total Credit indicates the total credit amount for a journal or journal batch in the source currency','Y','Y','Y','N','N','N','N','N','Total Credit',TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124181,1123504,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100,'Total Credit in document currency',13,'LBR','The Total Credit indicates the total credit amount for a journal or journal batch in the source currency','Y','Y','Y','N','N','N','N','N','Total Credit',TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min17s BRST
@@ -1380,7 +1380,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 16h54min18s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124182,1123505,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100,'Total debit in document currency',13,'U','The Total Debit indicates the total debit amount for a journal or journal batch in the source currency','Y','Y','Y','N','N','N','N','N','Total Debit',TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124182,1123505,0,1120117,TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100,'Total debit in document currency',13,'LBR','The Total Debit indicates the total debit amount for a journal or journal batch in the source currency','Y','Y','Y','N','N','N','N','N','Total Debit',TO_TIMESTAMP('2013-02-14 16:54:17','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 16h54min18s BRST
@@ -1535,7 +1535,7 @@ UPDATE AD_Field SET IsSameLine='Y',Updated=TO_TIMESTAMP('2013-02-14 17:23:02','Y
 
 -- 14/02/2013 17h23min47s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Tab (AD_Client_ID,AD_Column_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,1124187,0,1120118,1120332,1120078,TO_TIMESTAMP('2013-02-14 17:23:45','YYYY-MM-DD HH24:MI:SS'),100,'U','N','N','Y','N','N','Y','N','Y','N','N','Outros Lançamentos','N',20,0,TO_TIMESTAMP('2013-02-14 17:23:45','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Tab (AD_Client_ID,AD_Column_ID,AD_Org_ID,AD_Tab_ID,AD_Table_ID,AD_Window_ID,Created,CreatedBy,EntityType,HasTree,ImportFields,IsActive,IsAdvancedTab,IsInfoTab,IsInsertRecord,IsReadOnly,IsSingleRow,IsSortTab,IsTranslationTab,Name,Processing,SeqNo,TabLevel,Updated,UpdatedBy) VALUES (0,1124187,0,1120118,1120332,1120078,TO_TIMESTAMP('2013-02-14 17:23:45','YYYY-MM-DD HH24:MI:SS'),100,'LBR','N','N','Y','N','N','Y','N','Y','N','N','Outros Lançamentos','N',20,0,TO_TIMESTAMP('2013-02-14 17:23:45','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h23min47s BRST
@@ -1545,7 +1545,7 @@ INSERT INTO AD_Tab_Trl (AD_Language,AD_Tab_ID, CommitWarning,Description,Help,Na
 
 -- 14/02/2013 17h23min51s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124194,1123506,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:50','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'U','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124194,1123506,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:50','YYYY-MM-DD HH24:MI:SS'),100,'The record is active in the system',1,'LBR','There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.','Y','Y','Y','N','N','N','N','N','Active',TO_TIMESTAMP('2013-02-14 17:23:50','YYYY-MM-DD HH24:MI:SS'),100)
@@ -1558,7 +1558,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h23min53s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124193,1123507,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:51','YYYY-MM-DD HH24:MI:SS'),100,'Amount',13,'U','Amount','Y','Y','Y','N','N','N','N','N','Amount',TO_TIMESTAMP('2013-02-14 17:23:51','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124193,1123507,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:51','YYYY-MM-DD HH24:MI:SS'),100,'Amount',13,'LBR','Amount','Y','Y','Y','N','N','N','N','N','Amount',TO_TIMESTAMP('2013-02-14 17:23:51','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h23min53s BRST
@@ -1568,7 +1568,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h23min55s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124189,1123508,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:53','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',10,'U','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 17:23:53','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124189,1123508,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:53','YYYY-MM-DD HH24:MI:SS'),100,'Client/Tenant for this installation.',10,'LBR','A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.','Y','Y','Y','N','N','N','N','N','Client',TO_TIMESTAMP('2013-02-14 17:23:53','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h23min55s BRST
@@ -1578,7 +1578,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h23min58s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124196,1123509,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:55','YYYY-MM-DD HH24:MI:SS'),100,'Optional short description of the record',255,'U','A description is limited to 255 characters.','Y','Y','Y','N','N','N','N','N','Description',TO_TIMESTAMP('2013-02-14 17:23:55','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124196,1123509,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:55','YYYY-MM-DD HH24:MI:SS'),100,'Optional short description of the record',255,'LBR','A description is limited to 255 characters.','Y','Y','Y','N','N','N','N','N','Description',TO_TIMESTAMP('2013-02-14 17:23:55','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h23min58s BRST
@@ -1588,7 +1588,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h24min2s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124190,1123510,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:58','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',10,'U','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 17:23:58','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124190,1123510,0,1120118,TO_TIMESTAMP('2013-02-14 17:23:58','YYYY-MM-DD HH24:MI:SS'),100,'Organizational entity within client',10,'LBR','An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.','Y','Y','Y','N','N','N','N','N','Organization',TO_TIMESTAMP('2013-02-14 17:23:58','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h24min2s BRST
@@ -1598,7 +1598,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h24min5s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124187,1123511,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:02','YYYY-MM-DD HH24:MI:SS'),100,10,'U','Y','Y','Y','N','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 17:24:02','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124187,1123511,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:02','YYYY-MM-DD HH24:MI:SS'),100,10,'LBR','Y','Y','Y','N','N','N','N','N','Tax Assessment',TO_TIMESTAMP('2013-02-14 17:24:02','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h24min5s BRST
@@ -1608,7 +1608,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h24min7s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124188,1123512,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:05','YYYY-MM-DD HH24:MI:SS'),100,10,'U','Y','Y','N','N','N','N','N','N','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 17:24:05','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124188,1123512,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:05','YYYY-MM-DD HH24:MI:SS'),100,10,'LBR','Y','Y','N','N','N','N','N','N','Tax Assessment Line',TO_TIMESTAMP('2013-02-14 17:24:05','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h24min7s BRST
@@ -1618,7 +1618,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 14/02/2013 17h24min10s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124195,1123513,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:07','YYYY-MM-DD HH24:MI:SS'),100,'Type of Validation (SQL, Java Script, Java Language)',3,'U','The Type indicates the type of validation that will occur.  This can be SQL, Java Script or Java Language.','Y','Y','Y','N','N','N','N','N','Type',TO_TIMESTAMP('2013-02-14 17:24:07','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124195,1123513,0,1120118,TO_TIMESTAMP('2013-02-14 17:24:07','YYYY-MM-DD HH24:MI:SS'),100,'Type of Validation (SQL, Java Script, Java Language)',3,'LBR','The Type indicates the type of validation that will occur.  This can be SQL, Java Script or Java Language.','Y','Y','Y','N','N','N','N','N','Type',TO_TIMESTAMP('2013-02-14 17:24:07','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h24min10s BRST
@@ -1678,7 +1678,7 @@ UPDATE AD_Field SET IsSameLine='Y',Updated=TO_TIMESTAMP('2013-02-14 17:24:41','Y
 
 -- 14/02/2013 17h39min32s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Menu ("action",AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES ('W',0,1120182,0,1120078,TO_TIMESTAMP('2013-02-14 17:39:30','YYYY-MM-DD HH24:MI:SS'),100,'U','Y','Y','N','N','N','Apuração de Impostos',TO_TIMESTAMP('2013-02-14 17:39:30','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Menu ("action",AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES ('W',0,1120182,0,1120078,TO_TIMESTAMP('2013-02-14 17:39:30','YYYY-MM-DD HH24:MI:SS'),100,'LBR','Y','Y','N','N','N','Apuração de Impostos',TO_TIMESTAMP('2013-02-14 17:39:30','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 14/02/2013 17h39min32s BRST
