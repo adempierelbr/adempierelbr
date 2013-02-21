@@ -208,7 +208,7 @@ public class GenerateSPEDContrib extends SvrProcess
 		//	Registro D010
 		bD.setRD500 (SPEDUtil.getRD500 ());
 		
-		String fileName = "";
+		String fileName = p_FilePath;
 		
 		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
 			fileName += AdempiereLBR.getFileSeparator();

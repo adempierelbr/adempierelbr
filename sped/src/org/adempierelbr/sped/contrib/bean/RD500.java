@@ -95,7 +95,10 @@ public class RD500 extends RegSped implements I_RD500
 	@XMLFieldProperties(id = "VL_COFINS", isMandatory=false)
 	private BigDecimal VL_COFINS;
 	
+	@XMLFieldProperties (id = "RD501")
 	private Set<RD501> _RD501 = new HashSet<RD501>();
+	
+	@XMLFieldProperties (id = "RD505")
 	private Set<RD505> _RD505 = new HashSet<RD505>();
 
 	public String getIND_OPER()

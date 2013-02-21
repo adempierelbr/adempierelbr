@@ -72,8 +72,11 @@ public class RC500 extends RegSped implements I_RC500
 	@XMLFieldProperties(id = "VL_COFINS", isMandatory=false)
 	private BigDecimal VL_COFINS;
 	
-	private Set<RC120> _RC120 = new HashSet<RC120>();
-	private Set<RC170> _RC170 = new HashSet<RC170>();
+	@XMLFieldProperties (id = "RC501")
+	private Set<RC501> _RC501 = new HashSet<RC501>();
+	
+	@XMLFieldProperties (id = "RC505")
+	private Set<RC505> _RC505 = new HashSet<RC505>();
 
 	public String getCOD_PART()
 	{
@@ -205,23 +208,23 @@ public class RC500 extends RegSped implements I_RC500
 		VL_COFINS = vL_COFINS;
 	}
 
-	public Set<RC120> get_RC120()
+	public Set<RC501> get_RC501()
 	{
-		return _RC120;
+		return _RC501;
 	}
 
-	public Set<RC170> get_RC170()
+	public Set<RC505> get_RC505()
 	{
-		return _RC170;
+		return _RC505;
 	}
 
-	public void addC120 (RC120 rC120)
+	public void addC501 (RC501 rC501)
 	{
-		_RC120.add (rC120);
+		_RC501.add (rC501);
 	}
 
-	public void addC170 (RC170 rC170)
+	public void addC505 (RC505 rC505)
 	{
-		_RC170.add (rC170);
+		_RC505.add (rC505);
 	}	
 }	//	RC500

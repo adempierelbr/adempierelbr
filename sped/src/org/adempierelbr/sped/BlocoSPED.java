@@ -32,7 +32,6 @@ public abstract class BlocoSPED
 	 * 	FIXME: Mudar para um método específico, pois toString 
 	 * 		pode ficar muito grande e lento para debugar
 	 */
-	@SuppressWarnings("rawtypes")
 	public String toString()
 	{
 		try
@@ -70,7 +69,7 @@ public abstract class BlocoSPED
 				//	List
 				else if (content instanceof List)
 				{
-					for (Object item : (List) content)
+					for (Object item : (List<?>) content)
 					{
 						result.append (TextUtil.removeEOL (item.toString()));
 						result.append (SPEDUtil.EOL);
@@ -80,7 +79,7 @@ public abstract class BlocoSPED
 				//	Set
 				else if (content instanceof Set)
 				{
-					for (Object item : (Set) content)
+					for (Object item : (Set<?>) content)
 					{
 						result.append (TextUtil.removeEOL (item.toString()));
 						result.append (SPEDUtil.EOL);

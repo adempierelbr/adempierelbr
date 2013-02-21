@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.adempierelbr.annotation.Validate;
 import org.adempierelbr.annotation.XMLFieldProperties;
@@ -295,20 +297,40 @@ public abstract class RegSped implements Comparable<Object> {
 						contentSTR = TextUtil.lPad(contentSTR, annotation.minSize());
 					
 					// trim novamente
-					result.append(contentSTR.trim());
-					
+					result.append(TextUtil.removeEOL (contentSTR.trim()));
+				}
+				
+				//	List
+				else if (content instanceof List)
+				{
+					for (Object item : (List<?>) content)
+					{
+						result.append (SPEDUtil.EOL);
+						result.append (TextUtil.removeEOL (item.toString()));
+					}
+					//
+					continue;
+				}
+				
+				//	Set
+				else if (content instanceof Set)
+				{
+					for (Object item : (Set<?>) content)
+					{
+						result.append (SPEDUtil.EOL);
+						result.append (TextUtil.removeEOL (item.toString()));
+					}
+					//
+					continue;
 				}
 				
 				//	Outros
 				else 
-					result.append (content);
+					result.append (TextUtil.removeEOL (content.toString()));
 				
 				//	Commons
 				result.append(PIPE);
 			}
-			
-			// remover algum possível fim de linha 
-			result = new StringBuilder(TextUtil.removeEOL(result.toString()));
 			
 			// adicionar o fim de linha correto
 			result.append(EOL);

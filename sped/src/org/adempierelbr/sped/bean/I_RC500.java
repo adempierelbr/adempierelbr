@@ -15,8 +15,8 @@ package org.adempierelbr.sped.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.adempierelbr.sped.contrib.bean.RC120;
-import org.adempierelbr.sped.contrib.bean.RC170;
+import org.adempierelbr.sped.contrib.bean.RC501;
+import org.adempierelbr.sped.contrib.bean.RC505;
 
 /**
  * 		Interface Produto
@@ -39,6 +39,6 @@ public interface I_RC500
 	public void setVL_ICMS (BigDecimal bd);
 	public void setVL_PIS (BigDecimal bd);
 	
-	public void addC120(RC120 rC120);	//	FIXME Mudar para Interface
-	public void addC170(RC170 rC170);
+	public void addC501 (RC501 rC501);	//	FIXME Mudar para Interface
+	public void addC505 (RC505 rC505);
 }	//	I_RC100

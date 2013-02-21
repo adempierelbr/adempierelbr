@@ -115,8 +115,10 @@ public class RC100 extends RegSped implements I_RC100
 	@XMLFieldProperties(id = "VL_COFINS_ST", isMandatory=false)
 	private BigDecimal VL_COFINS_ST;
 	
+	@XMLFieldProperties (id = "RC120")
 	private Set<RC120> _RC120 = new HashSet<RC120>();
 	
+	@XMLFieldProperties (id = "RC170")
 	private Set<RC170> _RC170 = new HashSet<RC170>();
 
 	public String getIND_OPER()

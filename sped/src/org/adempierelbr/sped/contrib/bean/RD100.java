@@ -102,7 +102,10 @@ public class RD100 extends RegSped implements I_RD100
 	@XMLFieldProperties(maxSize = 60, id = "COD_CTA", isMandatory=false)
 	private String COD_CTA;
 	
+	@XMLFieldProperties (id = "RD101")
 	private Set<RD101> _RD101 = new HashSet<RD101>();
+	
+	@XMLFieldProperties (id = "RD105")
 	private Set<RD105> _RD105 = new HashSet<RD105>();
 
 	public String getIND_OPER()
