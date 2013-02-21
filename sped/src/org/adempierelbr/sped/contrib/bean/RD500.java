@@ -98,9 +98,19 @@ public class RD500 extends RegSped implements I_RD500
 	private Set<RD501> _RD501 = new HashSet<RD501>();
 	private Set<RD505> _RD505 = new HashSet<RD505>();
 
+	public String getIND_OPER()
+	{
+		return IND_OPER;
+	}
+
 	public void setIND_OPER(String iND_OPER)
 	{
 		IND_OPER = iND_OPER;
+	}
+
+	public String getIND_EMIT()
+	{
+		return IND_EMIT;
 	}
 
 	public void setIND_EMIT(String iND_EMIT)
@@ -108,9 +118,19 @@ public class RD500 extends RegSped implements I_RD500
 		IND_EMIT = iND_EMIT;
 	}
 
+	public String getCOD_PART()
+	{
+		return COD_PART;
+	}
+
 	public void setCOD_PART(String cOD_PART)
 	{
 		COD_PART = cOD_PART;
+	}
+
+	public String getCOD_MOD()
+	{
+		return COD_MOD;
 	}
 
 	public void setCOD_MOD(String cOD_MOD)
@@ -118,9 +138,19 @@ public class RD500 extends RegSped implements I_RD500
 		COD_MOD = cOD_MOD;
 	}
 
+	public String getCOD_SIT()
+	{
+		return COD_SIT;
+	}
+
 	public void setCOD_SIT(String cOD_SIT)
 	{
 		COD_SIT = cOD_SIT;
+	}
+
+	public String getSER()
+	{
+		return SER;
 	}
 
 	public void setSER(String sER)
@@ -128,9 +158,19 @@ public class RD500 extends RegSped implements I_RD500
 		SER = sER;
 	}
 
+	public String getSUB()
+	{
+		return SUB;
+	}
+
 	public void setSUB(String sUB)
 	{
 		SUB = sUB;
+	}
+
+	public String getNUM_DOC()
+	{
+		return NUM_DOC;
 	}
 
 	public void setNUM_DOC(String nUM_DOC)
@@ -138,9 +178,19 @@ public class RD500 extends RegSped implements I_RD500
 		NUM_DOC = nUM_DOC;
 	}
 
+	public Timestamp getDT_DOC()
+	{
+		return DT_DOC;
+	}
+
 	public void setDT_DOC(Timestamp dT_DOC)
 	{
 		DT_DOC = dT_DOC;
+	}
+
+	public Timestamp getDT_A_P()
+	{
+		return DT_A_P;
 	}
 
 	public void setDT_A_P(Timestamp dT_A_P)
@@ -148,9 +198,19 @@ public class RD500 extends RegSped implements I_RD500
 		DT_A_P = dT_A_P;
 	}
 
+	public BigDecimal getVL_DOC()
+	{
+		return VL_DOC;
+	}
+
 	public void setVL_DOC(BigDecimal vL_DOC)
 	{
 		VL_DOC = vL_DOC;
+	}
+
+	public BigDecimal getVL_DESC()
+	{
+		return VL_DESC;
 	}
 
 	public void setVL_DESC(BigDecimal vL_DESC)
@@ -158,9 +218,19 @@ public class RD500 extends RegSped implements I_RD500
 		VL_DESC = vL_DESC;
 	}
 
+	public BigDecimal getVL_SERV()
+	{
+		return VL_SERV;
+	}
+
 	public void setVL_SERV(BigDecimal vL_SERV)
 	{
 		VL_SERV = vL_SERV;
+	}
+
+	public BigDecimal getVL_SERV_NT()
+	{
+		return VL_SERV_NT;
 	}
 
 	public void setVL_SERV_NT(BigDecimal vL_SERV_NT)
@@ -168,9 +238,19 @@ public class RD500 extends RegSped implements I_RD500
 		VL_SERV_NT = vL_SERV_NT;
 	}
 
+	public BigDecimal getVL_TERC()
+	{
+		return VL_TERC;
+	}
+
 	public void setVL_TERC(BigDecimal vL_TERC)
 	{
 		VL_TERC = vL_TERC;
+	}
+
+	public BigDecimal getVL_DA()
+	{
+		return VL_DA;
 	}
 
 	public void setVL_DA(BigDecimal vL_DA)
@@ -178,9 +258,19 @@ public class RD500 extends RegSped implements I_RD500
 		VL_DA = vL_DA;
 	}
 
+	public BigDecimal getVL_BC_ICMS()
+	{
+		return VL_BC_ICMS;
+	}
+
 	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
 	{
 		VL_BC_ICMS = vL_BC_ICMS;
+	}
+
+	public BigDecimal getVL_ICMS()
+	{
+		return VL_ICMS;
 	}
 
 	public void setVL_ICMS(BigDecimal vL_ICMS)
@@ -188,9 +278,19 @@ public class RD500 extends RegSped implements I_RD500
 		VL_ICMS = vL_ICMS;
 	}
 
+	public String getCOD_INF()
+	{
+		return COD_INF;
+	}
+
 	public void setCOD_INF(String cOD_INF)
 	{
 		COD_INF = cOD_INF;
+	}
+
+	public BigDecimal getVL_PIS()
+	{
+		return VL_PIS;
 	}
 
 	public void setVL_PIS(BigDecimal vL_PIS)
@@ -198,20 +298,33 @@ public class RD500 extends RegSped implements I_RD500
 		VL_PIS = vL_PIS;
 	}
 
+	public BigDecimal getVL_COFINS()
+	{
+		return VL_COFINS;
+	}
+
 	public void setVL_COFINS(BigDecimal vL_COFINS)
 	{
 		VL_COFINS = vL_COFINS;
 	}
 
-	@Override
+	public Set<RD501> get_RD501()
+	{
+		return _RD501;
+	}
+
+	public Set<RD505> get_RD505()
+	{
+		return _RD505;
+	}
+
 	public void addD501(RD501 rD501)
 	{
 		_RD501.add(rD501);
 	}
 
-	@Override
 	public void addD505(RD505 reg)
 	{
 		_RD505.add (reg);
-	}	
+	}
 }	//	RD500

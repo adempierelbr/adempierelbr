@@ -39,5 +39,55 @@ public class R0111 extends RegSped
 	private BigDecimal REC_BRU_CUM;
 	
 	@XMLFieldProperties(id="REC_BRU_TOTAL")
-	private BigDecimal REC_BRU_TOTAL;	
+	private BigDecimal REC_BRU_TOTAL;
+
+	public BigDecimal getREC_BRU_NCUM_TRIB_MI()
+	{
+		return REC_BRU_NCUM_TRIB_MI;
+	}
+
+	public void setREC_BRU_NCUM_TRIB_MI(BigDecimal rEC_BRU_NCUM_TRIB_MI)
+	{
+		REC_BRU_NCUM_TRIB_MI = rEC_BRU_NCUM_TRIB_MI;
+	}
+
+	public BigDecimal getREC_BRU_NCUM_NT_MI()
+	{
+		return REC_BRU_NCUM_NT_MI;
+	}
+
+	public void setREC_BRU_NCUM_NT_MI(BigDecimal rEC_BRU_NCUM_NT_MI)
+	{
+		REC_BRU_NCUM_NT_MI = rEC_BRU_NCUM_NT_MI;
+	}
+
+	public BigDecimal getREC_BRU_NCUM_EXP()
+	{
+		return REC_BRU_NCUM_EXP;
+	}
+
+	public void setREC_BRU_NCUM_EXP(BigDecimal rEC_BRU_NCUM_EXP)
+	{
+		REC_BRU_NCUM_EXP = rEC_BRU_NCUM_EXP;
+	}
+
+	public BigDecimal getREC_BRU_CUM()
+	{
+		return REC_BRU_CUM;
+	}
+
+	public void setREC_BRU_CUM(BigDecimal rEC_BRU_CUM)
+	{
+		REC_BRU_CUM = rEC_BRU_CUM;
+	}
+
+	public BigDecimal getREC_BRU_TOTAL()
+	{
+		return REC_BRU_TOTAL;
+	}
+
+	public void setREC_BRU_TOTAL(BigDecimal rEC_BRU_TOTAL)
+	{
+		REC_BRU_TOTAL = rEC_BRU_TOTAL;
+	}
 }	//	R0111

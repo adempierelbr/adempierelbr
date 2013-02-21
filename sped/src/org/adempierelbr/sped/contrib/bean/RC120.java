@@ -37,5 +37,55 @@ public class RC120 extends RegSped
 	private String VL_COFINS_IMP;
 	
 	@XMLFieldProperties(maxSize = 20, id = "NUM_ACDRAW", isMandatory=false)
-	private String NUM_ACDRAW;	
+	private String NUM_ACDRAW;
+
+	public String getCOD_DOC_IMP()
+	{
+		return COD_DOC_IMP;
+	}
+
+	public void setCOD_DOC_IMP(String cOD_DOC_IMP)
+	{
+		COD_DOC_IMP = cOD_DOC_IMP;
+	}
+
+	public String getNUM_DOC_IMP()
+	{
+		return NUM_DOC_IMP;
+	}
+
+	public void setNUM_DOC_IMP(String nUM_DOC_IMP)
+	{
+		NUM_DOC_IMP = nUM_DOC_IMP;
+	}
+
+	public String getVL_PIS_IMP()
+	{
+		return VL_PIS_IMP;
+	}
+
+	public void setVL_PIS_IMP(String vL_PIS_IMP)
+	{
+		VL_PIS_IMP = vL_PIS_IMP;
+	}
+
+	public String getVL_COFINS_IMP()
+	{
+		return VL_COFINS_IMP;
+	}
+
+	public void setVL_COFINS_IMP(String vL_COFINS_IMP)
+	{
+		VL_COFINS_IMP = vL_COFINS_IMP;
+	}
+
+	public String getNUM_ACDRAW()
+	{
+		return NUM_ACDRAW;
+	}
+
+	public void setNUM_ACDRAW(String nUM_ACDRAW)
+	{
+		NUM_ACDRAW = nUM_ACDRAW;
+	}	
 }	//	RC120

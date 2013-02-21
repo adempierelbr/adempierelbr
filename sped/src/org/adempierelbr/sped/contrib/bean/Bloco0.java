@@ -12,9 +12,10 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
-import java.util.List;
 import java.util.Set;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
@@ -25,17 +26,36 @@ import org.adempierelbr.sped.bean.I_R0200;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: Bloco0.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-public class Bloco0
+public class Bloco0 extends RegSped
 {
+	@XMLFieldProperties(id = "R0000")
 	private R0000 r0000;
+	
+	@XMLFieldProperties(id = "R0001")
 	private R0001 r0001;
+	
+	@XMLFieldProperties(id = "R0100")
 	private R0100 r0100;
+	
+	@XMLFieldProperties(id = "R0110")
 	private R0110 r0110;
+	
+	@XMLFieldProperties(id = "R0111")
 	private R0111 r0111;
+	
+	@XMLFieldProperties(id = "R0140")
 	private Set<R0140> r0140;
+	
+	@XMLFieldProperties(id = "R0150")
 	private Set<I_R0150> r0150;
+	
+	@XMLFieldProperties(id = "R0190")
 	private Set<I_R0190> r0190;
+	
+	@XMLFieldProperties(id = "R0200")
 	private Set<I_R0200> r0200;
+	
+	@XMLFieldProperties(id = "R0990")
 	private R0990 r0990;
 	
 	public R0000 getR0000()

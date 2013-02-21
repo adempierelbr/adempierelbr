@@ -75,9 +75,19 @@ public class RC500 extends RegSped implements I_RC500
 	private Set<RC120> _RC120 = new HashSet<RC120>();
 	private Set<RC170> _RC170 = new HashSet<RC170>();
 
+	public String getCOD_PART()
+	{
+		return COD_PART;
+	}
+
 	public void setCOD_PART(String cOD_PART)
 	{
 		COD_PART = cOD_PART;
+	}
+
+	public String getCOD_MOD()
+	{
+		return COD_MOD;
 	}
 
 	public void setCOD_MOD(String cOD_MOD)
@@ -85,9 +95,19 @@ public class RC500 extends RegSped implements I_RC500
 		COD_MOD = cOD_MOD;
 	}
 
+	public String getCOD_SIT()
+	{
+		return COD_SIT;
+	}
+
 	public void setCOD_SIT(String cOD_SIT)
 	{
 		COD_SIT = cOD_SIT;
+	}
+
+	public String getSER()
+	{
+		return SER;
 	}
 
 	public void setSER(String sER)
@@ -95,9 +115,19 @@ public class RC500 extends RegSped implements I_RC500
 		SER = sER;
 	}
 
+	public String getSUB()
+	{
+		return SUB;
+	}
+
 	public void setSUB(String sUB)
 	{
 		SUB = sUB;
+	}
+
+	public String getNUM_DOC()
+	{
+		return NUM_DOC;
 	}
 
 	public void setNUM_DOC(String nUM_DOC)
@@ -105,9 +135,19 @@ public class RC500 extends RegSped implements I_RC500
 		NUM_DOC = nUM_DOC;
 	}
 
+	public Timestamp getDT_DOC()
+	{
+		return DT_DOC;
+	}
+
 	public void setDT_DOC(Timestamp dT_DOC)
 	{
 		DT_DOC = dT_DOC;
+	}
+
+	public Timestamp getDT_ENT()
+	{
+		return DT_ENT;
 	}
 
 	public void setDT_ENT(Timestamp dT_ENT)
@@ -115,9 +155,19 @@ public class RC500 extends RegSped implements I_RC500
 		DT_ENT = dT_ENT;
 	}
 
+	public BigDecimal getVL_DOC()
+	{
+		return VL_DOC;
+	}
+
 	public void setVL_DOC(BigDecimal vL_DOC)
 	{
 		VL_DOC = vL_DOC;
+	}
+
+	public BigDecimal getVL_ICMS()
+	{
+		return VL_ICMS;
 	}
 
 	public void setVL_ICMS(BigDecimal vL_ICMS)
@@ -125,9 +175,19 @@ public class RC500 extends RegSped implements I_RC500
 		VL_ICMS = vL_ICMS;
 	}
 
+	public String getCOD_INF()
+	{
+		return COD_INF;
+	}
+
 	public void setCOD_INF(String cOD_INF)
 	{
 		COD_INF = cOD_INF;
+	}
+
+	public BigDecimal getVL_PIS()
+	{
+		return VL_PIS;
 	}
 
 	public void setVL_PIS(BigDecimal vL_PIS)
@@ -135,9 +195,24 @@ public class RC500 extends RegSped implements I_RC500
 		VL_PIS = vL_PIS;
 	}
 
+	public BigDecimal getVL_COFINS()
+	{
+		return VL_COFINS;
+	}
+
 	public void setVL_COFINS(BigDecimal vL_COFINS)
 	{
 		VL_COFINS = vL_COFINS;
+	}
+
+	public Set<RC120> get_RC120()
+	{
+		return _RC120;
+	}
+
+	public Set<RC170> get_RC170()
+	{
+		return _RC170;
 	}
 
 	public void addC120 (RC120 rC120)

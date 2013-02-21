@@ -12,15 +12,20 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoF.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-@SuppressWarnings ("unused")
-public class BlocoF
+public class BlocoF extends RegSped
 {
+	@XMLFieldProperties (id = "RF001")
 	private RF001 rF001;
+	
+	@XMLFieldProperties (id = "RF990")
 	private RF990 rF990;
 }	//	BlocoF

@@ -29,4 +29,24 @@ public class RC010 extends RegSped
 	
 	@XMLFieldProperties(minSize=1, maxSize = 1, id = "IND_ESCRI", isMandatory=false)
 	private String IND_ESCRI;
+
+	public String getCNPJ()
+	{
+		return CNPJ;
+	}
+
+	public void setCNPJ(String cNPJ)
+	{
+		CNPJ = cNPJ;
+	}
+
+	public String getIND_ESCRI()
+	{
+		return IND_ESCRI;
+	}
+
+	public void setIND_ESCRI(String iND_ESCRI)
+	{
+		IND_ESCRI = iND_ESCRI;
+	}
 }	//	RC010

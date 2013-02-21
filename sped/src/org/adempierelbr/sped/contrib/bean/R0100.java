@@ -64,9 +64,19 @@ public class R0100 extends RegSped implements I_R0100
 	@XMLFieldProperties(maxSize=7, id="COD_MUN", isMandatory=false, isNumber=true)
 	private String COD_MUN;
 
+	public String getNOME()
+	{
+		return NOME;
+	}
+
 	public void setNOME(String nOME)
 	{
 		NOME = nOME;
+	}
+
+	public String getCPF()
+	{
+		return CPF;
 	}
 
 	public void setCPF(String cPF)
@@ -74,9 +84,19 @@ public class R0100 extends RegSped implements I_R0100
 		CPF = cPF;
 	}
 
+	public String getCRC()
+	{
+		return CRC;
+	}
+
 	public void setCRC(String cRC)
 	{
 		CRC = cRC;
+	}
+
+	public String getCNPJ()
+	{
+		return CNPJ;
 	}
 
 	public void setCNPJ(String cNPJ)
@@ -84,9 +104,19 @@ public class R0100 extends RegSped implements I_R0100
 		CNPJ = cNPJ;
 	}
 
+	public String getCEP()
+	{
+		return CEP;
+	}
+
 	public void setCEP(String cEP)
 	{
 		CEP = cEP;
+	}
+
+	public String getEND()
+	{
+		return END;
 	}
 
 	public void setEND(String eND)
@@ -94,9 +124,19 @@ public class R0100 extends RegSped implements I_R0100
 		END = eND;
 	}
 
+	public String getNUM()
+	{
+		return NUM;
+	}
+
 	public void setNUM(String nUM)
 	{
 		NUM = nUM;
+	}
+
+	public String getCOMPL()
+	{
+		return COMPL;
 	}
 
 	public void setCOMPL(String cOMPL)
@@ -104,9 +144,19 @@ public class R0100 extends RegSped implements I_R0100
 		COMPL = cOMPL;
 	}
 
+	public String getBAIRRO()
+	{
+		return BAIRRO;
+	}
+
 	public void setBAIRRO(String bAIRRO)
 	{
 		BAIRRO = bAIRRO;
+	}
+
+	public String getFONE()
+	{
+		return FONE;
 	}
 
 	public void setFONE(String fONE)
@@ -114,14 +164,29 @@ public class R0100 extends RegSped implements I_R0100
 		FONE = fONE;
 	}
 
+	public String getFAX()
+	{
+		return FAX;
+	}
+
 	public void setFAX(String fAX)
 	{
 		FAX = fAX;
 	}
 
+	public String getEMAIL()
+	{
+		return EMAIL;
+	}
+
 	public void setEMAIL(String eMAIL)
 	{
 		EMAIL = eMAIL;
+	}
+
+	public String getCOD_MUN()
+	{
+		return COD_MUN;
 	}
 
 	public void setCOD_MUN(String cOD_MUN)

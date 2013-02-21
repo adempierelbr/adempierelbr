@@ -14,18 +14,27 @@ package org.adempierelbr.sped.contrib.bean;
 
 import java.util.Set;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoA.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-@SuppressWarnings("unused")
-public class BlocoA
+public class BlocoA extends RegSped
 {
+	@XMLFieldProperties (id = "RA001")
 	private RA001 rA001;
+	
+	@XMLFieldProperties (id = "RA010")
 	private Set<RA010> rA010;
+	
+	@XMLFieldProperties (id = "RA100")
 	private Set<RA100> rA100;
+	
+	@XMLFieldProperties (id = "RA990")
 	private RA990 rA990;
 	
 	public void setrA001(RA001 rA001)

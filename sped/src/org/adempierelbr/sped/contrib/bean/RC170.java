@@ -114,7 +114,7 @@ public class RC170 extends RegSped
 	private BigDecimal VL_PIS;
 	
 	@XMLFieldProperties(minSize=2, maxSize=2, id = "CST_COFINS", isNumber=true)
-	private BigDecimal CST_COFINS;
+	private String CST_COFINS;
 	
 	@XMLFieldProperties(id = "VL_BC_COFINS", isMandatory=false)
 	private BigDecimal VL_BC_COFINS;
@@ -134,9 +134,19 @@ public class RC170 extends RegSped
 	@XMLFieldProperties(maxSize=60, id = "COD_CTA", isMandatory=false)
 	private String COD_CTA;
 
+	public String getNUM_ITEM()
+	{
+		return NUM_ITEM;
+	}
+
 	public void setNUM_ITEM(String nUM_ITEM)
 	{
 		NUM_ITEM = nUM_ITEM;
+	}
+
+	public String getCOD_ITEM()
+	{
+		return COD_ITEM;
 	}
 
 	public void setCOD_ITEM(String cOD_ITEM)
@@ -144,9 +154,19 @@ public class RC170 extends RegSped
 		COD_ITEM = cOD_ITEM;
 	}
 
+	public String getDESCR_COMPL()
+	{
+		return DESCR_COMPL;
+	}
+
 	public void setDESCR_COMPL(String dESCR_COMPL)
 	{
 		DESCR_COMPL = dESCR_COMPL;
+	}
+
+	public BigDecimal getQTD()
+	{
+		return QTD;
 	}
 
 	public void setQTD(BigDecimal qTD)
@@ -154,9 +174,19 @@ public class RC170 extends RegSped
 		QTD = qTD;
 	}
 
+	public String getUNID()
+	{
+		return UNID;
+	}
+
 	public void setUNID(String uNID)
 	{
 		UNID = uNID;
+	}
+
+	public BigDecimal getVL_ITEM()
+	{
+		return VL_ITEM;
 	}
 
 	public void setVL_ITEM(BigDecimal vL_ITEM)
@@ -164,9 +194,19 @@ public class RC170 extends RegSped
 		VL_ITEM = vL_ITEM;
 	}
 
+	public BigDecimal getVL_DESC()
+	{
+		return VL_DESC;
+	}
+
 	public void setVL_DESC(BigDecimal vL_DESC)
 	{
 		VL_DESC = vL_DESC;
+	}
+
+	public String getIND_MOV()
+	{
+		return IND_MOV;
 	}
 
 	public void setIND_MOV(String iND_MOV)
@@ -174,9 +214,19 @@ public class RC170 extends RegSped
 		IND_MOV = iND_MOV;
 	}
 
+	public String getCST_ICMS()
+	{
+		return CST_ICMS;
+	}
+
 	public void setCST_ICMS(String cST_ICMS)
 	{
 		CST_ICMS = cST_ICMS;
+	}
+
+	public String getCFOP()
+	{
+		return CFOP;
 	}
 
 	public void setCFOP(String cFOP)
@@ -184,9 +234,19 @@ public class RC170 extends RegSped
 		CFOP = cFOP;
 	}
 
+	public String getCOD_NAT()
+	{
+		return COD_NAT;
+	}
+
 	public void setCOD_NAT(String cOD_NAT)
 	{
 		COD_NAT = cOD_NAT;
+	}
+
+	public BigDecimal getVL_BC_ICMS()
+	{
+		return VL_BC_ICMS;
 	}
 
 	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
@@ -194,9 +254,19 @@ public class RC170 extends RegSped
 		VL_BC_ICMS = vL_BC_ICMS;
 	}
 
+	public BigDecimal getALIQ_ICMS()
+	{
+		return ALIQ_ICMS;
+	}
+
 	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS)
 	{
 		ALIQ_ICMS = aLIQ_ICMS;
+	}
+
+	public BigDecimal getVL_ICMS()
+	{
+		return VL_ICMS;
 	}
 
 	public void setVL_ICMS(BigDecimal vL_ICMS)
@@ -204,9 +274,19 @@ public class RC170 extends RegSped
 		VL_ICMS = vL_ICMS;
 	}
 
+	public BigDecimal getVL_BC_ICMS_ST()
+	{
+		return VL_BC_ICMS_ST;
+	}
+
 	public void setVL_BC_ICMS_ST(BigDecimal vL_BC_ICMS_ST)
 	{
 		VL_BC_ICMS_ST = vL_BC_ICMS_ST;
+	}
+
+	public BigDecimal getALIQ_ST()
+	{
+		return ALIQ_ST;
 	}
 
 	public void setALIQ_ST(BigDecimal aLIQ_ST)
@@ -214,9 +294,19 @@ public class RC170 extends RegSped
 		ALIQ_ST = aLIQ_ST;
 	}
 
+	public BigDecimal getVL_ICMS_ST()
+	{
+		return VL_ICMS_ST;
+	}
+
 	public void setVL_ICMS_ST(BigDecimal vL_ICMS_ST)
 	{
 		VL_ICMS_ST = vL_ICMS_ST;
+	}
+
+	public String getIND_APUR()
+	{
+		return IND_APUR;
 	}
 
 	public void setIND_APUR(String iND_APUR)
@@ -224,9 +314,19 @@ public class RC170 extends RegSped
 		IND_APUR = iND_APUR;
 	}
 
+	public String getCST_IPI()
+	{
+		return CST_IPI;
+	}
+
 	public void setCST_IPI(String cST_IPI)
 	{
 		CST_IPI = cST_IPI;
+	}
+
+	public String getCOD_ENQ()
+	{
+		return COD_ENQ;
 	}
 
 	public void setCOD_ENQ(String cOD_ENQ)
@@ -234,9 +334,19 @@ public class RC170 extends RegSped
 		COD_ENQ = cOD_ENQ;
 	}
 
+	public BigDecimal getVL_BC_IPI()
+	{
+		return VL_BC_IPI;
+	}
+
 	public void setVL_BC_IPI(BigDecimal vL_BC_IPI)
 	{
 		VL_BC_IPI = vL_BC_IPI;
+	}
+
+	public BigDecimal getALIQ_IPI()
+	{
+		return ALIQ_IPI;
 	}
 
 	public void setALIQ_IPI(BigDecimal aLIQ_IPI)
@@ -244,9 +354,19 @@ public class RC170 extends RegSped
 		ALIQ_IPI = aLIQ_IPI;
 	}
 
+	public BigDecimal getVL_IPI()
+	{
+		return VL_IPI;
+	}
+
 	public void setVL_IPI(BigDecimal vL_IPI)
 	{
 		VL_IPI = vL_IPI;
+	}
+
+	public String getCST_PIS()
+	{
+		return CST_PIS;
 	}
 
 	public void setCST_PIS(String cST_PIS)
@@ -254,9 +374,19 @@ public class RC170 extends RegSped
 		CST_PIS = cST_PIS;
 	}
 
+	public BigDecimal getVL_BC_PIS()
+	{
+		return VL_BC_PIS;
+	}
+
 	public void setVL_BC_PIS(BigDecimal vL_BC_PIS)
 	{
 		VL_BC_PIS = vL_BC_PIS;
+	}
+
+	public BigDecimal getALIQ_PIS()
+	{
+		return ALIQ_PIS;
 	}
 
 	public void setALIQ_PIS(BigDecimal aLIQ_PIS)
@@ -264,9 +394,19 @@ public class RC170 extends RegSped
 		ALIQ_PIS = aLIQ_PIS;
 	}
 
+	public String getQUANT_BC_PIS()
+	{
+		return QUANT_BC_PIS;
+	}
+
 	public void setQUANT_BC_PIS(String qUANT_BC_PIS)
 	{
 		QUANT_BC_PIS = qUANT_BC_PIS;
+	}
+
+	public BigDecimal getALIQ_PIS_QUANT()
+	{
+		return ALIQ_PIS_QUANT;
 	}
 
 	public void setALIQ_PIS_QUANT(BigDecimal aLIQ_PIS_QUANT)
@@ -274,14 +414,29 @@ public class RC170 extends RegSped
 		ALIQ_PIS_QUANT = aLIQ_PIS_QUANT;
 	}
 
+	public BigDecimal getVL_PIS()
+	{
+		return VL_PIS;
+	}
+
 	public void setVL_PIS(BigDecimal vL_PIS)
 	{
 		VL_PIS = vL_PIS;
 	}
 
-	public void setCST_COFINS(BigDecimal cST_COFINS)
+	public String getCST_COFINS()
+	{
+		return CST_COFINS;
+	}
+
+	public void setCST_COFINS(String cST_COFINS)
 	{
 		CST_COFINS = cST_COFINS;
+	}
+
+	public BigDecimal getVL_BC_COFINS()
+	{
+		return VL_BC_COFINS;
 	}
 
 	public void setVL_BC_COFINS(BigDecimal vL_BC_COFINS)
@@ -289,9 +444,19 @@ public class RC170 extends RegSped
 		VL_BC_COFINS = vL_BC_COFINS;
 	}
 
+	public BigDecimal getALIQ_COFINS()
+	{
+		return ALIQ_COFINS;
+	}
+
 	public void setALIQ_COFINS(BigDecimal aLIQ_COFINS)
 	{
 		ALIQ_COFINS = aLIQ_COFINS;
+	}
+
+	public BigDecimal getQUANT_BC_COFINS()
+	{
+		return QUANT_BC_COFINS;
 	}
 
 	public void setQUANT_BC_COFINS(BigDecimal qUANT_BC_COFINS)
@@ -299,14 +464,29 @@ public class RC170 extends RegSped
 		QUANT_BC_COFINS = qUANT_BC_COFINS;
 	}
 
+	public BigDecimal getALIQ_COFINS_QUANT()
+	{
+		return ALIQ_COFINS_QUANT;
+	}
+
 	public void setALIQ_COFINS_QUANT(BigDecimal aLIQ_COFINS_QUANT)
 	{
 		ALIQ_COFINS_QUANT = aLIQ_COFINS_QUANT;
 	}
 
+	public BigDecimal getVL_COFINS()
+	{
+		return VL_COFINS;
+	}
+
 	public void setVL_COFINS(BigDecimal vL_COFINS)
 	{
 		VL_COFINS = vL_COFINS;
+	}
+
+	public String getCOD_CTA()
+	{
+		return COD_CTA;
 	}
 
 	public void setCOD_CTA(String cOD_CTA)

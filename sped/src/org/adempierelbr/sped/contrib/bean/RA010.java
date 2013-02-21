@@ -31,4 +31,9 @@ public class RA010 extends RegSped
 	{
 		CNPJ = cNPJ;
 	}
+
+	public String getCNPJ()
+	{
+		return CNPJ;
+	}
 }	//	RA010

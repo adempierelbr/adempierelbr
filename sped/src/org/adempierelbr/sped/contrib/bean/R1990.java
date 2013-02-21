@@ -28,4 +28,14 @@ public class R1990 extends RegSped
 {
 	@XMLFieldProperties(id = "QTD_LIN_1", scale=0)
 	private BigDecimal QTD_LIN_1;
+
+	public BigDecimal getQTD_LIN_1()
+	{
+		return QTD_LIN_1;
+	}
+
+	public void setQTD_LIN_1(BigDecimal qTD_LIN_1)
+	{
+		QTD_LIN_1 = qTD_LIN_1;
+	}
 }	//	R1990

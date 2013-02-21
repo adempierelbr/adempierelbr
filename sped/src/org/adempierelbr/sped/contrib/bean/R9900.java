@@ -31,4 +31,24 @@ public class R9900 extends RegSped
 	
 	@XMLFieldProperties(id = "QTD_REG_BLC", scale=0)
 	private BigDecimal QTD_REG_BLC;
+
+	public String getREG_BLC()
+	{
+		return REG_BLC;
+	}
+
+	public void setREG_BLC(String rEG_BLC)
+	{
+		REG_BLC = rEG_BLC;
+	}
+
+	public BigDecimal getQTD_REG_BLC()
+	{
+		return QTD_REG_BLC;
+	}
+
+	public void setQTD_REG_BLC(BigDecimal qTD_REG_BLC)
+	{
+		QTD_REG_BLC = qTD_REG_BLC;
+	}
 }	//	R9900

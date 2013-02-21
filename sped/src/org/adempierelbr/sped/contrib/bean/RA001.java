@@ -26,4 +26,14 @@ public class RA001 extends RegSped
 {
 	@XMLFieldProperties(id = "IND_MOV")
 	private String IND_MOV;
+
+	public String getIND_MOV()
+	{
+		return IND_MOV;
+	}
+
+	public void setIND_MOV(String iND_MOV)
+	{
+		IND_MOV = iND_MOV;
+	}
 }	//	RA001

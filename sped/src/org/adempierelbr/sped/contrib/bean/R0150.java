@@ -61,9 +61,19 @@ public class R0150 extends RegSped implements I_R0150
 	@XMLFieldProperties(isMandatory=false, maxSize=60, id="BAIRRO")
 	private String BAIRRO;
 
+	public String getCOD_PART()
+	{
+		return COD_PART;
+	}
+
 	public void setCOD_PART(String cOD_PART)
 	{
 		COD_PART = cOD_PART;
+	}
+
+	public String getNOME()
+	{
+		return NOME;
 	}
 
 	public void setNOME(String nOME)
@@ -71,9 +81,19 @@ public class R0150 extends RegSped implements I_R0150
 		NOME = nOME;
 	}
 
+	public String getCOD_PAIS()
+	{
+		return COD_PAIS;
+	}
+
 	public void setCOD_PAIS(String cOD_PAIS)
 	{
 		COD_PAIS = cOD_PAIS;
+	}
+
+	public String getCNPJ()
+	{
+		return CNPJ;
 	}
 
 	public void setCNPJ(String cNPJ)
@@ -81,9 +101,19 @@ public class R0150 extends RegSped implements I_R0150
 		CNPJ = cNPJ;
 	}
 
+	public String getCPF()
+	{
+		return CPF;
+	}
+
 	public void setCPF(String cPF)
 	{
 		CPF = cPF;
+	}
+
+	public String getIE()
+	{
+		return IE;
 	}
 
 	public void setIE(String iE)
@@ -91,9 +121,19 @@ public class R0150 extends RegSped implements I_R0150
 		IE = iE;
 	}
 
+	public String getCOD_MUN()
+	{
+		return COD_MUN;
+	}
+
 	public void setCOD_MUN(String cOD_MUN)
 	{
 		COD_MUN = cOD_MUN;
+	}
+
+	public String getSUFRAMA()
+	{
+		return SUFRAMA;
 	}
 
 	public void setSUFRAMA(String sUFRAMA)
@@ -101,9 +141,19 @@ public class R0150 extends RegSped implements I_R0150
 		SUFRAMA = sUFRAMA;
 	}
 
+	public String getEND()
+	{
+		return END;
+	}
+
 	public void setEND(String eND)
 	{
 		END = eND;
+	}
+
+	public String getNUM()
+	{
+		return NUM;
 	}
 
 	public void setNUM(String nUM)
@@ -111,9 +161,19 @@ public class R0150 extends RegSped implements I_R0150
 		NUM = nUM;
 	}
 
+	public String getCOMPL()
+	{
+		return COMPL;
+	}
+
 	public void setCOMPL(String cOMPL)
 	{
 		COMPL = cOMPL;
+	}
+
+	public String getBAIRRO()
+	{
+		return BAIRRO;
 	}
 
 	public void setBAIRRO(String bAIRRO)

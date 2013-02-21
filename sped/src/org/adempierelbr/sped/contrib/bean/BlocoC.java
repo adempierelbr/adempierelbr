@@ -14,6 +14,8 @@ package org.adempierelbr.sped.contrib.bean;
 
 import java.util.Set;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.bean.I_RC500;
 
@@ -23,12 +25,21 @@ import org.adempierelbr.sped.bean.I_RC500;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoC.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-public class BlocoC
+public class BlocoC extends RegSped
 {
+	@XMLFieldProperties (id = "RC001")
 	private RC001 rC001;
+	
+	@XMLFieldProperties (id = "RC010")
 	private Set<RC010> rC010;
+	
+	@XMLFieldProperties (id = "RC100")
 	private Set<I_RC100> rC100;
+	
+	@XMLFieldProperties (id = "RC500")
 	private Set<I_RC500> rC500;
+	
+	@XMLFieldProperties (id = "RC990")
 	private RC990 rC990;
 	
 	public RC001 getrC001()

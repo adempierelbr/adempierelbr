@@ -25,5 +25,15 @@ import org.adempierelbr.sped.RegSped;
 public class RC001 extends RegSped
 {
 	@XMLFieldProperties(minSize=1, maxSize = 1, id = "IND_MOV")
-	private String IND_MOV;	
+	private String IND_MOV;
+
+	public String getIND_MOV()
+	{
+		return IND_MOV;
+	}
+
+	public void setIND_MOV(String iND_MOV)
+	{
+		IND_MOV = iND_MOV;
+	}	
 }	//	RC001

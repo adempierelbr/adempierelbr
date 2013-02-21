@@ -48,9 +48,19 @@ public class R0140 extends RegSped
 	@XMLFieldProperties(minSize=9, maxSize=9, id="SUFRAMA", isMandatory=false)
 	private String SUFRAMA;
 
+	public String getCOD_EST()
+	{
+		return COD_EST;
+	}
+
 	public void setCOD_EST(String cOD_EST)
 	{
 		COD_EST = cOD_EST;
+	}
+
+	public String getNOME()
+	{
+		return NOME;
 	}
 
 	public void setNOME(String nOME)
@@ -58,9 +68,19 @@ public class R0140 extends RegSped
 		NOME = nOME;
 	}
 
+	public String getCNPJ()
+	{
+		return CNPJ;
+	}
+
 	public void setCNPJ(String cNPJ)
 	{
 		CNPJ = cNPJ;
+	}
+
+	public String getUF()
+	{
+		return UF;
 	}
 
 	public void setUF(String uF)
@@ -68,9 +88,19 @@ public class R0140 extends RegSped
 		UF = uF;
 	}
 
+	public String getIE()
+	{
+		return IE;
+	}
+
 	public void setIE(String iE)
 	{
 		IE = iE;
+	}
+
+	public String getCOD_MUN()
+	{
+		return COD_MUN;
 	}
 
 	public void setCOD_MUN(String cOD_MUN)
@@ -78,9 +108,19 @@ public class R0140 extends RegSped
 		COD_MUN = cOD_MUN;
 	}
 
+	public String getIM()
+	{
+		return IM;
+	}
+
 	public void setIM(String iM)
 	{
 		IM = iM;
+	}
+
+	public String getSUFRAMA()
+	{
+		return SUFRAMA;
 	}
 
 	public void setSUFRAMA(String sUFRAMA)

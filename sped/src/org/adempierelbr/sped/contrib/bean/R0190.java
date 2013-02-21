@@ -31,13 +31,23 @@ public class R0190 extends RegSped implements I_R0190
 	@XMLFieldProperties(id="DESCR")
 	private String DESCR;
 
+	public String getUNID()
+	{
+		return UNID;
+	}
+
 	public void setUNID(String uNID)
 	{
 		UNID = uNID;
 	}
 
+	public String getDESCR()
+	{
+		return DESCR;
+	}
+
 	public void setDESCR(String dESCR)
 	{
 		DESCR = dESCR;
-	}	
+	}
 }	//	R0190

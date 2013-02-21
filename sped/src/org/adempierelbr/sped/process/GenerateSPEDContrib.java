@@ -17,14 +17,19 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
 import org.adempierelbr.sped.contrib.bean.BlocoA;
 import org.adempierelbr.sped.contrib.bean.BlocoC;
 import org.adempierelbr.sped.contrib.bean.BlocoD;
+import org.adempierelbr.sped.contrib.bean.BlocoF;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
+import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
@@ -44,6 +49,8 @@ public class GenerateSPEDContrib extends SvrProcess
 	private Properties ctx;
 	private String trxName;
 	
+	private String p_FilePath = "";
+
 	/**	Periods			*/
 	private int p_C_Period_ID = 0;
 	private int p_To_Period_ID = 0;
@@ -138,6 +145,8 @@ public class GenerateSPEDContrib extends SvrProcess
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
+			
 			//	Erro genérico
 			throw new AdempiereException("Unkown Error: " + e.getLocalizedMessage());
 		}
@@ -151,60 +160,68 @@ public class GenerateSPEDContrib extends SvrProcess
 	 */
 	private void genSPEDContrib () throws AdempiereException, Exception
 	{
+		SPEDUtil.processFacts (ctx, MLBRFactFiscal.get (ctx, dateFrom, dateTo, p_AD_Org_ID, null, trxName), SPEDUtil.TYPE_CONTRIB, trxName);
+		
 		//	Inicio do Arquivo
 		Bloco0 b0 = new Bloco0();
 		BlocoA bA = new BlocoA();
 		BlocoC bC = new BlocoC();
 		BlocoD bD = new BlocoD();
+		BlocoF bF = new BlocoF();
 		
 		//	Registro 0000
 		b0.setR0000 (SPEDUtil.fillR0000 (new R0000(), ctx, dateFrom, dateTo, p_CodFin, orgInfo, "", p_RecAnterior, trxName));
-		
 		//	Registro 0100
 		b0.setR0100 ((R0100) SPEDUtil.fillR0100 (new R0100 (), ctx, orgInfo, trxName));
-		
 		//	Registro 0110
-		b0.setR0110 (SPEDUtil.getR0110 ("1", "2", "1", ""));	//	FIXME
-		
+		b0.setR0110 (SPEDUtil.getR0110 (SPEDUtil.COD_INC_TRIB_NAO_CUM, SPEDUtil.IND_APRO_CRED_PROPORCIONAL, 
+				SPEDUtil.COD_TIPO_CONT_ALIQ_BASICA, ""));	//	FIXME
 		//	Registro 0140
 		b0.setR0140 (SPEDUtil.getR0140 (ctx, new MOrgInfo[]{orgInfo}, trxName));
-		
 		//	Registro 0150
 		b0.setR0150 (SPEDUtil.getR0150 ());
-		
 		//	Registro 0190
 		b0.setR0190 (SPEDUtil.getR0190 ());
-		
 		//	Registro 0200
 		b0.setR0200 (SPEDUtil.getR0200 ());
 		
 		//	Registro A010
 		bA.setrA010 (SPEDUtil.getRA010 ());
-		
 		//	Registro A100
 		bA.setrA100 (SPEDUtil.getRA100 ());
 		
+		//	Registro C010
 		bC.setrC010 (SPEDUtil.getRC010 ());
+		//	Registro C010
 		bC.setrC100 (SPEDUtil.getRC100 ());
+		//	Registro C010
 		bC.setrC500 (SPEDUtil.getRC500 ());
 		
+		//	Registro D010
 		bD.setrD010 (SPEDUtil.getRD010 ());
+		//	Registro D010
 		bD.setrD100 (SPEDUtil.getRD100 ());
+		//	Registro D010
 		bD.setrD500 (SPEDUtil.getRD500 ());
 		
-
+		String fileName = "";
+		
+		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
+			fileName += AdempiereLBR.getFileSeparator();
+		
+		/*
+		 * Nome do arquivo
+		 * 
+		 * EDF_CNPJ_DATA.txt
+		 */
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
+		fileName += "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
+		
+		/*
+		 * Gerar Arquivo no disco
+		 */
+		TextUtil.generateFile (b0.toString() + bA.toString() + bC.toString() + bD.toString() + bF.toString(), fileName);
+		
 	}	//	genSPEDContrib
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }	//	GenerateSPEDContrib

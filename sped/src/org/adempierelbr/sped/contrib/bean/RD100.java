@@ -105,9 +105,19 @@ public class RD100 extends RegSped implements I_RD100
 	private Set<RD101> _RD101 = new HashSet<RD101>();
 	private Set<RD105> _RD105 = new HashSet<RD105>();
 
+	public String getIND_OPER()
+	{
+		return IND_OPER;
+	}
+
 	public void setIND_OPER(String iND_OPER)
 	{
 		IND_OPER = iND_OPER;
+	}
+
+	public String getIND_EMIT()
+	{
+		return IND_EMIT;
 	}
 
 	public void setIND_EMIT(String iND_EMIT)
@@ -115,9 +125,19 @@ public class RD100 extends RegSped implements I_RD100
 		IND_EMIT = iND_EMIT;
 	}
 
+	public String getCOD_PART()
+	{
+		return COD_PART;
+	}
+
 	public void setCOD_PART(String cOD_PART)
 	{
 		COD_PART = cOD_PART;
+	}
+
+	public String getCOD_MOD()
+	{
+		return COD_MOD;
 	}
 
 	public void setCOD_MOD(String cOD_MOD)
@@ -125,9 +145,19 @@ public class RD100 extends RegSped implements I_RD100
 		COD_MOD = cOD_MOD;
 	}
 
+	public String getCOD_SIT()
+	{
+		return COD_SIT;
+	}
+
 	public void setCOD_SIT(String cOD_SIT)
 	{
 		COD_SIT = cOD_SIT;
+	}
+
+	public String getSER()
+	{
+		return SER;
 	}
 
 	public void setSER(String sER)
@@ -135,9 +165,19 @@ public class RD100 extends RegSped implements I_RD100
 		SER = sER;
 	}
 
+	public String getSUB()
+	{
+		return SUB;
+	}
+
 	public void setSUB(String sUB)
 	{
 		SUB = sUB;
+	}
+
+	public String getNUM_DOC()
+	{
+		return NUM_DOC;
 	}
 
 	public void setNUM_DOC(String nUM_DOC)
@@ -145,9 +185,19 @@ public class RD100 extends RegSped implements I_RD100
 		NUM_DOC = nUM_DOC;
 	}
 
+	public String getCHV_CTE()
+	{
+		return CHV_CTE;
+	}
+
 	public void setCHV_CTE(String cHV_CTE)
 	{
 		CHV_CTE = cHV_CTE;
+	}
+
+	public Timestamp getDT_DOC()
+	{
+		return DT_DOC;
 	}
 
 	public void setDT_DOC(Timestamp dT_DOC)
@@ -155,9 +205,19 @@ public class RD100 extends RegSped implements I_RD100
 		DT_DOC = dT_DOC;
 	}
 
+	public Timestamp getDT_A_P()
+	{
+		return DT_A_P;
+	}
+
 	public void setDT_A_P(Timestamp dT_A_P)
 	{
 		DT_A_P = dT_A_P;
+	}
+
+	public String getTP_CT_e()
+	{
+		return TP_CT_e;
 	}
 
 	public void setTP_CT_e(String tP_CT_e)
@@ -165,9 +225,19 @@ public class RD100 extends RegSped implements I_RD100
 		TP_CT_e = tP_CT_e;
 	}
 
+	public String getCHV_CTE_REF()
+	{
+		return CHV_CTE_REF;
+	}
+
 	public void setCHV_CTE_REF(String cHV_CTE_REF)
 	{
 		CHV_CTE_REF = cHV_CTE_REF;
+	}
+
+	public BigDecimal getVL_DOC()
+	{
+		return VL_DOC;
 	}
 
 	public void setVL_DOC(BigDecimal vL_DOC)
@@ -175,9 +245,19 @@ public class RD100 extends RegSped implements I_RD100
 		VL_DOC = vL_DOC;
 	}
 
+	public BigDecimal getVL_DESC()
+	{
+		return VL_DESC;
+	}
+
 	public void setVL_DESC(BigDecimal vL_DESC)
 	{
 		VL_DESC = vL_DESC;
+	}
+
+	public String getIND_FRT()
+	{
+		return IND_FRT;
 	}
 
 	public void setIND_FRT(String iND_FRT)
@@ -185,9 +265,19 @@ public class RD100 extends RegSped implements I_RD100
 		IND_FRT = iND_FRT;
 	}
 
+	public BigDecimal getVL_SERV()
+	{
+		return VL_SERV;
+	}
+
 	public void setVL_SERV(BigDecimal vL_SERV)
 	{
 		VL_SERV = vL_SERV;
+	}
+
+	public BigDecimal getVL_BC_ICMS()
+	{
+		return VL_BC_ICMS;
 	}
 
 	public void setVL_BC_ICMS(BigDecimal vL_BC_ICMS)
@@ -195,9 +285,19 @@ public class RD100 extends RegSped implements I_RD100
 		VL_BC_ICMS = vL_BC_ICMS;
 	}
 
+	public BigDecimal getVL_ICMS()
+	{
+		return VL_ICMS;
+	}
+
 	public void setVL_ICMS(BigDecimal vL_ICMS)
 	{
 		VL_ICMS = vL_ICMS;
+	}
+
+	public BigDecimal getVL_NT()
+	{
+		return VL_NT;
 	}
 
 	public void setVL_NT(BigDecimal vL_NT)
@@ -205,14 +305,34 @@ public class RD100 extends RegSped implements I_RD100
 		VL_NT = vL_NT;
 	}
 
+	public String getCOD_INF()
+	{
+		return COD_INF;
+	}
+
 	public void setCOD_INF(String cOD_INF)
 	{
 		COD_INF = cOD_INF;
 	}
 
+	public String getCOD_CTA()
+	{
+		return COD_CTA;
+	}
+
 	public void setCOD_CTA(String cOD_CTA)
 	{
 		COD_CTA = cOD_CTA;
+	}
+
+	public Set<RD101> get_RD101()
+	{
+		return _RD101;
+	}
+
+	public Set<RD105> get_RD105()
+	{
+		return _RD105;
 	}
 
 	public void addD101(RD101 reg)
@@ -223,5 +343,5 @@ public class RD100 extends RegSped implements I_RD100
 	public void addD105(RD105 reg)
 	{
 		_RD105.add (reg);		
-	}	
+	}
 }	//	RD100

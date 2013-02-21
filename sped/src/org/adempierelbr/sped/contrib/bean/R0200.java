@@ -60,9 +60,19 @@ public class R0200 extends RegSped implements I_R0200
 	@XMLFieldProperties( maxSize = 6, isMandatory = false, id = "ALIQ_ICMS")
 	private BigDecimal ALIQ_ICMS;
 
+	public String getCOD_ITEM()
+	{
+		return COD_ITEM;
+	}
+
 	public void setCOD_ITEM(String cOD_ITEM)
 	{
 		COD_ITEM = cOD_ITEM;
+	}
+
+	public String getDESCR_ITEM()
+	{
+		return DESCR_ITEM;
 	}
 
 	public void setDESCR_ITEM(String dESCR_ITEM)
@@ -70,9 +80,19 @@ public class R0200 extends RegSped implements I_R0200
 		DESCR_ITEM = dESCR_ITEM;
 	}
 
+	public String getCOD_BARRA()
+	{
+		return COD_BARRA;
+	}
+
 	public void setCOD_BARRA(String cOD_BARRA)
 	{
 		COD_BARRA = cOD_BARRA;
+	}
+
+	public String getCOD_ANT_ITEM()
+	{
+		return COD_ANT_ITEM;
 	}
 
 	public void setCOD_ANT_ITEM(String cOD_ANT_ITEM)
@@ -80,9 +100,19 @@ public class R0200 extends RegSped implements I_R0200
 		COD_ANT_ITEM = cOD_ANT_ITEM;
 	}
 
+	public String getUNID_INV()
+	{
+		return UNID_INV;
+	}
+
 	public void setUNID_INV(String uNID_INV)
 	{
 		UNID_INV = uNID_INV;
+	}
+
+	public String getTIPO_ITEM()
+	{
+		return TIPO_ITEM;
 	}
 
 	public void setTIPO_ITEM(String tIPO_ITEM)
@@ -90,9 +120,19 @@ public class R0200 extends RegSped implements I_R0200
 		TIPO_ITEM = tIPO_ITEM;
 	}
 
+	public String getCOD_NCM()
+	{
+		return COD_NCM;
+	}
+
 	public void setCOD_NCM(String cOD_NCM)
 	{
 		COD_NCM = cOD_NCM;
+	}
+
+	public String getEX_IPI()
+	{
+		return EX_IPI;
 	}
 
 	public void setEX_IPI(String eX_IPI)
@@ -100,14 +140,29 @@ public class R0200 extends RegSped implements I_R0200
 		EX_IPI = eX_IPI;
 	}
 
+	public String getCOD_GEN()
+	{
+		return COD_GEN;
+	}
+
 	public void setCOD_GEN(String cOD_GEN)
 	{
 		COD_GEN = cOD_GEN;
 	}
 
+	public String getCOD_LST()
+	{
+		return COD_LST;
+	}
+
 	public void setCOD_LST(String cOD_LST)
 	{
 		COD_LST = cOD_LST;
+	}
+
+	public BigDecimal getALIQ_ICMS()
+	{
+		return ALIQ_ICMS;
 	}
 
 	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS)

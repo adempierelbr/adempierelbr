@@ -105,6 +105,37 @@ public class SPEDUtil
 	/** Indicador de período de apuração do IPI Decendial	*/
 	public static final String IND_APUR_DECENDIAL 	= "1";
 	
+	/** 1 – Escrituração de operações com incidência exclusivamente no regime não-cumulativo */
+	public static final String COD_INC_TRIB_NAO_CUM = "1";
+	
+	/** 2 – Escrituração de operações com incidência exclusivamente no regime cumulativo */
+	public static final String COD_INC_TRIB_CUM = "2";
+	
+	/** 3 – Escrituração de operações com incidência nos regimes não-cumulativo e cumulativo */
+	public static final String COD_INC_TRIB_AMBOS = "3";
+	
+	/** 1 – Método de Apropriação Direta */
+	public static final String IND_APRO_CRED_DIRETA 			= "1";
+	
+	/** 2 – Método de Rateio Proporcional (Receita Bruta) */
+	public static final String IND_APRO_CRED_PROPORCIONAL 		= "2";
+
+	/** 1 – Apuração da Contribuição Exclusivamente a Alíquota Básica */
+	public static final String COD_TIPO_CONT_ALIQ_BASICA 		= "1";
+	
+	/** 2 – Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou 
+	 * 			por Unidade de Medida de Produto)  */
+	public static final String COD_TIPO_CONT_ALIQ_ESPECIFICA 	= "2";
+	
+	/** 1 – Regime de Caixa – Escrituração consolidada (Registro F500) */
+	public static final String IND_REG_CUM_CAIXA 				= "1";
+	
+	/** 2 – Regime de Competência - Escrituração consolidada (Registro F550) */
+	public static final String IND_REG_CUM_COMPT 				= "2";
+	
+	/** 9 – Regime de Competência - Escrituração detalhada, com base nos registros dos Blocos “A”, “C”, “D” e “F” */
+	public static final String IND_REG_CUM_COMPT_DET 			= "9";
+	
 	/** Nota Fiscal - 01 */
 	public static final String COD_MOD_NF 									= "01";
 
@@ -375,10 +406,10 @@ public class SPEDUtil
 		try
 		{
 			if (type == TYPE_EFD)
-				clazz = Class.forName("org.adempierelbr.sped.efd." + regName);
+				clazz = Class.forName("org.adempierelbr.sped.efd.bean." + regName);
 			
 			else if (type == TYPE_CONTRIB)
-				clazz = Class.forName("org.adempierelbr.sped.contrib." + regName);
+				clazz = Class.forName("org.adempierelbr.sped.contrib.bean." + regName);
 			
 			else if (type == TYPE_ECD)
 				clazz = Class.forName("org.adempierelbr.sped.ecd." + regName);

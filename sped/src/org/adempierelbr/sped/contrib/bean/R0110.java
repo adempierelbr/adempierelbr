@@ -36,9 +36,19 @@ public class R0110 extends RegSped
 	@XMLFieldProperties(maxSize=1, id="IND_REG_CUM", isNumber=true, isMandatory=false)
 	private String IND_REG_CUM;
 
+	public String getCOD_INC_TRIB()
+	{
+		return COD_INC_TRIB;
+	}
+
 	public void setCOD_INC_TRIB(String cOD_INC_TRIB)
 	{
 		COD_INC_TRIB = cOD_INC_TRIB;
+	}
+
+	public String getIND_APRO_CRED()
+	{
+		return IND_APRO_CRED;
 	}
 
 	public void setIND_APRO_CRED(String iND_APRO_CRED)
@@ -46,13 +56,23 @@ public class R0110 extends RegSped
 		IND_APRO_CRED = iND_APRO_CRED;
 	}
 
+	public String getCOD_TIPO_CONT()
+	{
+		return COD_TIPO_CONT;
+	}
+
 	public void setCOD_TIPO_CONT(String cOD_TIPO_CONT)
 	{
 		COD_TIPO_CONT = cOD_TIPO_CONT;
 	}
 
+	public String getIND_REG_CUM()
+	{
+		return IND_REG_CUM;
+	}
+
 	public void setIND_REG_CUM(String iND_REG_CUM)
 	{
 		IND_REG_CUM = iND_REG_CUM;
-	}	
+	}
 }	//	R0110

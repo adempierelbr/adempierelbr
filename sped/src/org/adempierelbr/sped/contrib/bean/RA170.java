@@ -77,9 +77,19 @@ public class RA170 extends RegSped
 	@XMLFieldProperties(maxSize=60, isMandatory=false, id = "COD_CCUS")
 	private String COD_CCUS;
 
+	public String getNUM_ITEM()
+	{
+		return NUM_ITEM;
+	}
+
 	public void setNUM_ITEM(String nUM_ITEM)
 	{
 		NUM_ITEM = nUM_ITEM;
+	}
+
+	public String getCOD_ITEM()
+	{
+		return COD_ITEM;
 	}
 
 	public void setCOD_ITEM(String cOD_ITEM)
@@ -87,9 +97,19 @@ public class RA170 extends RegSped
 		COD_ITEM = cOD_ITEM;
 	}
 
+	public String getDESCR_COMPL()
+	{
+		return DESCR_COMPL;
+	}
+
 	public void setDESCR_COMPL(String dESCR_COMPL)
 	{
 		DESCR_COMPL = dESCR_COMPL;
+	}
+
+	public BigDecimal getVL_ITEM()
+	{
+		return VL_ITEM;
 	}
 
 	public void setVL_ITEM(BigDecimal vL_ITEM)
@@ -97,9 +117,19 @@ public class RA170 extends RegSped
 		VL_ITEM = vL_ITEM;
 	}
 
+	public BigDecimal getVL_DESC()
+	{
+		return VL_DESC;
+	}
+
 	public void setVL_DESC(BigDecimal vL_DESC)
 	{
 		VL_DESC = vL_DESC;
+	}
+
+	public String getNAT_BC_CRED()
+	{
+		return NAT_BC_CRED;
 	}
 
 	public void setNAT_BC_CRED(String nAT_BC_CRED)
@@ -107,9 +137,19 @@ public class RA170 extends RegSped
 		NAT_BC_CRED = nAT_BC_CRED;
 	}
 
+	public String getIND_ORIG_CRED()
+	{
+		return IND_ORIG_CRED;
+	}
+
 	public void setIND_ORIG_CRED(String iND_ORIG_CRED)
 	{
 		IND_ORIG_CRED = iND_ORIG_CRED;
+	}
+
+	public String getCST_PIS()
+	{
+		return CST_PIS;
 	}
 
 	public void setCST_PIS(String cST_PIS)
@@ -117,9 +157,19 @@ public class RA170 extends RegSped
 		CST_PIS = cST_PIS;
 	}
 
+	public BigDecimal getVL_BC_PIS()
+	{
+		return VL_BC_PIS;
+	}
+
 	public void setVL_BC_PIS(BigDecimal vL_BC_PIS)
 	{
 		VL_BC_PIS = vL_BC_PIS;
+	}
+
+	public BigDecimal getALIQ_PIS()
+	{
+		return ALIQ_PIS;
 	}
 
 	public void setALIQ_PIS(BigDecimal aLIQ_PIS)
@@ -127,9 +177,19 @@ public class RA170 extends RegSped
 		ALIQ_PIS = aLIQ_PIS;
 	}
 
+	public BigDecimal getVL_PIS()
+	{
+		return VL_PIS;
+	}
+
 	public void setVL_PIS(BigDecimal vL_PIS)
 	{
 		VL_PIS = vL_PIS;
+	}
+
+	public String getCST_COFINS()
+	{
+		return CST_COFINS;
 	}
 
 	public void setCST_COFINS(String cST_COFINS)
@@ -137,9 +197,19 @@ public class RA170 extends RegSped
 		CST_COFINS = cST_COFINS;
 	}
 
+	public BigDecimal getVL_BC_COFINS()
+	{
+		return VL_BC_COFINS;
+	}
+
 	public void setVL_BC_COFINS(BigDecimal vL_BC_COFINS)
 	{
 		VL_BC_COFINS = vL_BC_COFINS;
+	}
+
+	public BigDecimal getALIQ_COFINS()
+	{
+		return ALIQ_COFINS;
 	}
 
 	public void setALIQ_COFINS(BigDecimal aLIQ_COFINS)
@@ -147,14 +217,29 @@ public class RA170 extends RegSped
 		ALIQ_COFINS = aLIQ_COFINS;
 	}
 
+	public BigDecimal getVL_COFINS()
+	{
+		return VL_COFINS;
+	}
+
 	public void setVL_COFINS(BigDecimal vL_COFINS)
 	{
 		VL_COFINS = vL_COFINS;
 	}
 
+	public String getCOD_CTA()
+	{
+		return COD_CTA;
+	}
+
 	public void setCOD_CTA(String cOD_CTA)
 	{
 		COD_CTA = cOD_CTA;
+	}
+
+	public String getCOD_CCUS()
+	{
+		return COD_CCUS;
 	}
 
 	public void setCOD_CCUS(String cOD_CCUS)

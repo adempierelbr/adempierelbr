@@ -37,12 +37,11 @@ import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RD100;
 import org.adempierelbr.sped.contrib.bean.RD101;
 import org.adempierelbr.sped.contrib.bean.RD105;
-import org.adempierelbr.sped.contrib.bean.RD500;
 import org.adempierelbr.sped.contrib.bean.RD501;
 import org.adempierelbr.sped.contrib.bean.RD505;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.compiere.model.MLocation;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
@@ -157,8 +156,9 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		
 		// 	Intervalo de Datas: se for venda, usa a DateDoc(mesma data contábil) 
 		// 		senão a lbr_DateInOut(data da entrada efetiva do material no sistama e contabilidade)
-		whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN " 
-				+ DB.TO_DATE (DateFrom) + " AND " + DB.TO_DATE (DateTo) + " ";
+		if (DateFrom != null && DateTo != null)
+			whereClause += " AND (CASE WHEN IsSOTrx='Y' THEN DateDoc ELSE lbr_DateInOut END) BETWEEN " 
+					+ DB.TO_DATE (DateFrom) + " AND " + DB.TO_DATE (DateTo) + " ";
 		
 		// 	Transação de venda só trazer nfe transmitida
 		whereClause += " AND ((IsSOTrx = 'Y' AND lbr_NFeProt IS NOT NULL) OR IsSOTrx ='N') ";
@@ -402,12 +402,13 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 *	@return	Registro C010
 	 *	@throws IllegalAccessException
 	 * 	@throws InvocationTargetException
+	 * 	@throws NoSuchMethodException 
 	 */
-	public RC010 getRC010 () throws IllegalAccessException, InvocationTargetException
+	public RC010 getRC010 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RC010 rC010 = new RC010 ();
 		//
-		BeanUtils.copyProperties (rC010, getRA010 ());
+		PropertyUtils.copyProperties (rC010, getRA010 ());
 		//
 		return rC010;
 	}	//	getRC010
@@ -427,7 +428,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		 * 		IND_OPER, IND_EMIT, COD_PART, COD_SIT, SER, NUM_DOC, 
 		 * 		DT_DOC, VL_DOC, IND_PGTO, VL_DESC, VL_PIS, VL_COFINS
 		 */
-		BeanUtils.copyProperties (rC100, getRA010());
+		PropertyUtils.copyProperties (rC100, getRA100 (ctx, trxName));
 		//
 		rC100.setCOD_MOD (getlbr_NFModel());
 		rC100.setCHV_NFE (getlbr_NFeID());
@@ -456,7 +457,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		return rC100;
 	}	//	getRC100
 
-	private RC170 getRC170 () throws IllegalAccessException, InvocationTargetException
+	private RC170 getRC170 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RC170 rC170 = new RC170();
 		
@@ -467,7 +468,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		 * 		CST_PIS, VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, 
 		 * 		ALIQ_COFINS, VL_COFINS, COD_CTA, 
 		 */
-		BeanUtils.copyProperties (rC170, getRA170 ());
+		PropertyUtils.copyProperties (rC170, getRA170 ());
 		//
 		rC170.setQTD (getQty());
 		rC170.setUNID (getlbr_UOMName());
@@ -494,7 +495,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public I_RC500 getRC500 (Properties ctx, I_RC500 rC500, String trxName) throws Exception
 	{
 		
-		BeanUtils.copyProperties (rC500, getRC100 (ctx, (I_RC100) new RC100(), trxName));
+		PropertyUtils.copyProperties (rC500, getRC100 (ctx, (I_RC100) new RC100(), trxName));
 		return rC500;
 	}	//	getRC500
 	
@@ -514,14 +515,15 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * 	de documento fiscal, no mercado interno ou externo.
 	 * 
 	 * 	@return Registro D010
+	 * 	@throws NoSuchMethodException 
 	 * 	@throws IllegalAccessException
 	 * 	@throws InvocationTargetException
 	 */
-	public RD010 getRD010 () throws IllegalAccessException, InvocationTargetException
+	public RD010 getRD010 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException 
 	{
 		RD010 rD010 = new RD010 ();
 		//
-		BeanUtils.copyProperties (rD010, getRC010 ());
+		PropertyUtils.copyProperties (rD010, getRC010 ());
 		//
 		return rD010;
 	}	//	getRD010
@@ -539,7 +541,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 */
 	public I_RD100 getRD100 (Properties ctx, I_RD100 rD100, String trxName) throws Exception
 	{
-		BeanUtils.copyProperties (rD100, getRC100 (ctx, (I_RC100) new RD100 (), trxName));
+		PropertyUtils.copyProperties (rD100, getRC100 (ctx, (I_RC100) new RC100 (), trxName));
 		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
@@ -553,20 +555,20 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		return rD100;
 	}	//	getRD100
 	
-	public RD101 getRD101 () throws IllegalAccessException, InvocationTargetException
+	public RD101 getRD101 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RD101 rD101 = new RD101 ();
 		//
-		BeanUtils.copyProperties (rD101, getRC170 ());
+		PropertyUtils.copyProperties (rD101, getRC170 ());
 		//
 		return rD101;
 	}	//	getRD101
 	
-	public RD105 getRD105 () throws IllegalAccessException, InvocationTargetException
+	public RD105 getRD105 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RD105 rD105 = new RD105 ();
 		//
-		BeanUtils.copyProperties (rD105, getRC170 ());
+		PropertyUtils.copyProperties (rD105, getRC170 ());
 		//
 		return rD105;
 	}	//	getRD105
@@ -585,7 +587,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 */
 	public I_RD500 getRD500 (Properties ctx, I_RD500 rD500, String trxName) throws Exception
 	{
-		BeanUtils.copyProperties (rD500, getRD500 (ctx, (I_RD500) new RD500 (), trxName));
+		PropertyUtils.copyProperties (rD500, getRD100 (ctx, (I_RD100) new RD100 (), trxName));
 		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
@@ -605,12 +607,13 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * 	@return Registro D501
 	 * 	@throws IllegalAccessException
 	 * 	@throws InvocationTargetException
+	 * 	@throws NoSuchMethodException 
 	 */
-	public RD501 getRD501 () throws IllegalAccessException, InvocationTargetException
+	public RD501 getRD501 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RD501 rD501 = new RD501 ();
 		//
-		BeanUtils.copyProperties (rD501, getRD101 ());
+		PropertyUtils.copyProperties (rD501, getRD101 ());
 		//
 		return rD501;
 	}	//	getRD501
@@ -621,12 +624,13 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 * 	@return	Registro D505
 	 * 	@throws IllegalAccessException
 	 * 	@throws InvocationTargetException
+	 * 	@throws NoSuchMethodException 
 	 */
-	public RD505 getRD505 () throws IllegalAccessException, InvocationTargetException
+	public RD505 getRD505 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RD505 rD505 = new RD505 ();
 		//
-		BeanUtils.copyProperties (rD505, getRD105 ());
+		PropertyUtils.copyProperties (rD505, getRD105 ());
 		//
 		return rD505;
 	}	//	getRD505

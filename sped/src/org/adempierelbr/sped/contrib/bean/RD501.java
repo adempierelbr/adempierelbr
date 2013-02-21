@@ -46,4 +46,74 @@ public class RD501 extends RegSped
 	
 	@XMLFieldProperties(maxSize = 60, id = "COD_CTA", isMandatory=false)
 	private String COD_CTA;
+
+	public String getCST_PIS()
+	{
+		return CST_PIS;
+	}
+
+	public void setCST_PIS(String cST_PIS)
+	{
+		CST_PIS = cST_PIS;
+	}
+
+	public BigDecimal getVL_ITEM()
+	{
+		return VL_ITEM;
+	}
+
+	public void setVL_ITEM(BigDecimal vL_ITEM)
+	{
+		VL_ITEM = vL_ITEM;
+	}
+
+	public String getNAT_BC_CRED()
+	{
+		return NAT_BC_CRED;
+	}
+
+	public void setNAT_BC_CRED(String nAT_BC_CRED)
+	{
+		NAT_BC_CRED = nAT_BC_CRED;
+	}
+
+	public BigDecimal getVL_BC_PIS()
+	{
+		return VL_BC_PIS;
+	}
+
+	public void setVL_BC_PIS(BigDecimal vL_BC_PIS)
+	{
+		VL_BC_PIS = vL_BC_PIS;
+	}
+
+	public BigDecimal getALIQ_PIS()
+	{
+		return ALIQ_PIS;
+	}
+
+	public void setALIQ_PIS(BigDecimal aLIQ_PIS)
+	{
+		ALIQ_PIS = aLIQ_PIS;
+	}
+
+	public BigDecimal getVL_PIS()
+	{
+		return VL_PIS;
+	}
+
+	public void setVL_PIS(BigDecimal vL_PIS)
+	{
+		VL_PIS = vL_PIS;
+	}
+
+	public String getCOD_CTA()
+	{
+		return COD_CTA;
+	}
+
+	public void setCOD_CTA(String cOD_CTA)
+	{
+		COD_CTA = cOD_CTA;
+	}
 }	//	RC501
