@@ -56,8 +56,14 @@ import org.compiere.model.MUser;
  */
 public class SPEDUtil
 {
+	/** String PIPE			*/
+	public static final String PIPE 				= "|";
+	
+	/**	String EOL 			*/
+	public static final String EOL  				= TextUtil.EOL_WIN32;
+	
 	/**	SPED ECD			*/
-	public static final int TYPE_ECD 		= 0;
+	public static final int TYPE_ECD 				= 0;
 	
 	/**	SPED EFD			*/
 	public static final int TYPE_EFD 				= 1;

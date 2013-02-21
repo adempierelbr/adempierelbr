@@ -88,6 +88,10 @@ public class GenerateSPEDContrib extends SvrProcess
 			{
 				p_AD_Org_ID = para[i].getParameterAsInt();
 			}
+			else if (name.equals("File_Directory"))
+			{
+				p_FilePath = (String) para[i].getParameter();
+			}
 			else if (name.equals("p_CodFin"))	//	FIXME: Criar script e coluna
 			{
 				p_CodFin = (String) para[i].getParameter();
@@ -186,23 +190,23 @@ public class GenerateSPEDContrib extends SvrProcess
 		b0.setR0200 (SPEDUtil.getR0200 ());
 		
 		//	Registro A010
-		bA.setrA010 (SPEDUtil.getRA010 ());
+		bA.setRA010 (SPEDUtil.getRA010 ());
 		//	Registro A100
-		bA.setrA100 (SPEDUtil.getRA100 ());
+		bA.setRA100 (SPEDUtil.getRA100 ());
 		
 		//	Registro C010
-		bC.setrC010 (SPEDUtil.getRC010 ());
+		bC.setRC010 (SPEDUtil.getRC010 ());
 		//	Registro C010
-		bC.setrC100 (SPEDUtil.getRC100 ());
+		bC.setRC100 (SPEDUtil.getRC100 ());
 		//	Registro C010
-		bC.setrC500 (SPEDUtil.getRC500 ());
+		bC.setRC500 (SPEDUtil.getRC500 ());
 		
 		//	Registro D010
-		bD.setrD010 (SPEDUtil.getRD010 ());
+		bD.setRD010 (SPEDUtil.getRD010 ());
 		//	Registro D010
-		bD.setrD100 (SPEDUtil.getRD100 ());
+		bD.setRD100 (SPEDUtil.getRD100 ());
 		//	Registro D010
-		bD.setrD500 (SPEDUtil.getRD500 ());
+		bD.setRD500 (SPEDUtil.getRD500 ());
 		
 		String fileName = "";
 		

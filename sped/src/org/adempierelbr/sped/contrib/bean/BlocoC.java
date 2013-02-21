@@ -15,7 +15,7 @@ package org.adempierelbr.sped.contrib.bean;
 import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.BlocoSPED;
 import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.bean.I_RC500;
 
@@ -25,7 +25,7 @@ import org.adempierelbr.sped.bean.I_RC500;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoC.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-public class BlocoC extends RegSped
+public class BlocoC extends BlocoSPED
 {
 	@XMLFieldProperties (id = "RC001")
 	private RC001 rC001;
@@ -41,44 +41,53 @@ public class BlocoC extends RegSped
 	
 	@XMLFieldProperties (id = "RC990")
 	private RC990 rC990;
-	
-	public RC001 getrC001()
+
+	public RC001 getRC001()
 	{
 		return rC001;
 	}
-	public void setrC001(RC001 rC001)
+
+	public void setRC001(RC001 rC001)
 	{
 		this.rC001 = rC001;
 	}
-	public Set<RC010> getrC010()
+
+	public Set<RC010> getRC010()
 	{
 		return rC010;
 	}
-	public void setrC010(Set<RC010> rC010)
+
+	public void setRC010(Set<RC010> rC010)
 	{
 		this.rC010 = rC010;
 	}
-	public Set<I_RC100> getrC100()
+
+	public Set<I_RC100> getRC100()
 	{
 		return rC100;
 	}
-	public void setrC100(Set<I_RC100> set)
+
+	public void setRC100(Set<I_RC100> rC100)
 	{
-		this.rC100 = set;
+		this.rC100 = rC100;
 	}
-	public Set<I_RC500> getrC500()
+
+	public Set<I_RC500> getRC500()
 	{
 		return rC500;
 	}
-	public void setrC500(Set<I_RC500> rC500)
+
+	public void setRC500(Set<I_RC500> rC500)
 	{
 		this.rC500 = rC500;
 	}
-	public RC990 getrC990()
+
+	public RC990 getRC990()
 	{
 		return rC990;
 	}
-	public void setrC990(RC990 rC990)
+
+	public void setRC990(RC990 rC990)
 	{
 		this.rC990 = rC990;
 	}

@@ -13,7 +13,7 @@
 package org.adempierelbr.sped.contrib.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.BlocoSPED;
 
 /**
  * 	REGISTRO 0001:
@@ -22,7 +22,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: R0001.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class R0001 extends RegSped
+public class R0001 extends BlocoSPED
 {
 	@XMLFieldProperties(minSize=1, maxSize=1, id="IND_MOV", isNumber=true)
 	private String IND_MOV;

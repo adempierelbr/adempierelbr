@@ -15,7 +15,7 @@ package org.adempierelbr.sped.contrib.bean;
 import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.BlocoSPED;
 import org.adempierelbr.sped.bean.I_RD100;
 import org.adempierelbr.sped.bean.I_RD500;
 
@@ -25,7 +25,7 @@ import org.adempierelbr.sped.bean.I_RD500;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoD.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-public class BlocoD extends RegSped
+public class BlocoD extends BlocoSPED
 {
 	@XMLFieldProperties (id = "RD001")
 	private RD001 rD001;
@@ -41,44 +41,53 @@ public class BlocoD extends RegSped
 	
 	@XMLFieldProperties (id = "RD990")
 	private RD990 rD990;
-	
-	public RD001 getrD001()
+
+	public RD001 getRD001()
 	{
 		return rD001;
 	}
-	public void setrD001(RD001 rD001)
+
+	public void setRD001(RD001 rD001)
 	{
 		this.rD001 = rD001;
 	}
-	public Set<RD010> getrD010()
+
+	public Set<RD010> getRD010()
 	{
 		return rD010;
 	}
-	public void setrD010(Set<RD010> rD010)
+
+	public void setRD010(Set<RD010> rD010)
 	{
 		this.rD010 = rD010;
 	}
-	public Set<I_RD100> getrD100()
+
+	public Set<I_RD100> getRD100()
 	{
 		return rD100;
 	}
-	public void setrD100(Set<I_RD100> rD100)
+
+	public void setRD100(Set<I_RD100> rD100)
 	{
 		this.rD100 = rD100;
 	}
-	public Set<I_RD500> getrD500()
+
+	public Set<I_RD500> getRD500()
 	{
 		return rD500;
 	}
-	public void setrD500(Set<I_RD500> rD500)
+
+	public void setRD500(Set<I_RD500> rD500)
 	{
 		this.rD500 = rD500;
 	}
-	public RD990 getrD990()
+
+	public RD990 getRD990()
 	{
 		return rD990;
 	}
-	public void setrD990(RD990 rD990)
+
+	public void setRD990(RD990 rD990)
 	{
 		this.rD990 = rD990;
 	}

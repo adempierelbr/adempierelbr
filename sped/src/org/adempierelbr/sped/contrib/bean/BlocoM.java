@@ -12,16 +12,48 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.BlocoSPED;
+
 /**
  * 		Registro hierárquico do SPED Contribuições
  * 
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: BlocoM.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-@SuppressWarnings("unused")
-public class BlocoM
+public class BlocoM extends BlocoSPED
 {
+	@XMLFieldProperties (id = "RM001")
 	private RM001 rM001;
+	
+	@XMLFieldProperties (id = "RM100")
 	private RM100 rM100;
+	
+	@XMLFieldProperties (id = "RM990")
 	private RM990 rM990;
+	
+	public RM001 getRM001()
+	{
+		return rM001;
+	}
+	public void setRM001(RM001 rM001)
+	{
+		this.rM001 = rM001;
+	}
+	public RM100 getRM100()
+	{
+		return rM100;
+	}
+	public void setRM100(RM100 rM100)
+	{
+		this.rM100 = rM100;
+	}
+	public RM990 getRM990()
+	{
+		return rM990;
+	}
+	public void setRM990(RM990 rM990)
+	{
+		this.rM990 = rM990;
+	}
 }	//	BlocoM

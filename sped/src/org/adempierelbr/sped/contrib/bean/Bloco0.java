@@ -15,7 +15,7 @@ package org.adempierelbr.sped.contrib.bean;
 import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.BlocoSPED;
 import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
@@ -26,7 +26,7 @@ import org.adempierelbr.sped.bean.I_R0200;
  *  @author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: Bloco0.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
  */
-public class Bloco0 extends RegSped
+public class Bloco0 extends BlocoSPED
 {
 	@XMLFieldProperties(id = "R0000")
 	private R0000 r0000;

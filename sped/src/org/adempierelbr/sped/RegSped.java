@@ -115,12 +115,10 @@ public abstract class RegSped implements Comparable<Object> {
 
 	
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((REG == null) ? 0 : REG.hashCode());
-		return result;
-	}
+	public int hashCode ()
+	{
+		return toString().hashCode();
+	}	//	hashCode
 
 	@Override
 	public boolean equals(Object obj) {
