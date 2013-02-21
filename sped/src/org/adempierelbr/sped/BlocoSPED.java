@@ -72,7 +72,9 @@ public abstract class BlocoSPED
 					for (Object item : (List<?>) content)
 					{
 						result.append (TextUtil.removeEOL (item.toString()));
-						result.append (SPEDUtil.EOL);
+						//
+						if (!result.toString().endsWith(SPEDUtil.EOL))
+							result.append (SPEDUtil.EOL);
 					}
 				}
 				
@@ -81,16 +83,20 @@ public abstract class BlocoSPED
 				{
 					for (Object item : (Set<?>) content)
 					{
-						result.append (TextUtil.removeEOL (item.toString()));
-						result.append (SPEDUtil.EOL);
+						result.append (item.toString());
+						//
+						if (!result.toString().endsWith(SPEDUtil.EOL))
+							result.append (SPEDUtil.EOL);
 					}
 				}
 				
 				//	Outros
 				else 
 				{
-					result.append (TextUtil.removeEOL (content.toString()));
-					result.append (SPEDUtil.EOL);
+					result.append (content.toString());
+					//
+					if (!result.toString().endsWith(SPEDUtil.EOL))
+						result.append (SPEDUtil.EOL);
 				}
 			}
 			//
