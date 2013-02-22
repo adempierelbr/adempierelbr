@@ -1559,7 +1559,7 @@ public class EFDUtil {
 		reg.setVL_TOT_DEBITOS(m_taxassessment.getTotalDr());
 		
 		// total ajuste débito
-		reg.setVL_AJ_DEBITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+		reg.setVL_AJ_DEBITOS(Env.ZERO);
 		
 		// total ajuste débitos
 		reg.setVL_TOT_AJ_DEBITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
@@ -1571,7 +1571,7 @@ public class EFDUtil {
 		reg.setVL_TOT_CREDITOS(m_taxassessment.getTotalCr());
 		
 		// total de ajustes de créditos
-		reg.setVL_AJ_CREDITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+		reg.setVL_AJ_CREDITOS(Env.ZERO);
 		
 		// total ajuste créditos
 		reg.setVL_TOT_AJ_CREDITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
