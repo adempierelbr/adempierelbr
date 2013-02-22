@@ -338,6 +338,8 @@ public class ValidatorInvoice implements ModelValidator
 					nf.save();
 
 					invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", nf.getLBR_NotaFiscal_ID());
+					
+					nf.GenerateXMLAutomatic();
 				} // geração de Documento Fiscal
 				
 				//FR 3079621 Onhate
