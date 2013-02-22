@@ -1253,7 +1253,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		} catch(Exception ex) {
 			log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + getDocumentNo());
 		}
-	}
+	}//GenerateXMLAutomatic
 	
 	/**
 	 * 		Bill Note
