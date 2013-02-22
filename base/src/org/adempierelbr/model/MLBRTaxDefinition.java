@@ -63,7 +63,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 	public static MLBRTaxDefinition[] get (int AD_Org_ID, int C_BPartner_ID, int C_DocType_ID, 
 			int C_Region_ID, int To_Region_ID, int LBR_BPartnerCategory_ID, int LBR_FiscalGroup_BPartner_ID,
 			int LBR_FiscalGroup_Product_ID, int LBR_NCM_ID, int LBR_ProductCategory_ID, boolean lbr_IsSubTributaria,
-			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom)
+			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource)
 	{
 		String where = "AD_Org_ID IN (0, ?) ";
 		//
@@ -79,6 +79,9 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += "AND lbr_IsSubTributaria IN ('B', ?) ";
 		where += "AND IsSOTrx IN ('B', ?) ";
 		where += "AND (lbr_TransactionType IS NULL OR lbr_TransactionType=?) ";
+		
+		// product_source -> LBR-72
+		where += "AND (lbr_ProductSource IS NULL OR lbr_ProductSource=?) ";
 		//
 		if (validFrom != null)
 			where += "AND ValidFrom <= " + DB.TO_DATE(validFrom);
@@ -128,6 +131,12 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			priorityNo += 10;
 		if (getlbr_TransactionType() != null && getlbr_TransactionType().length() > 0)
 			priorityNo += 10;
+		
+		// product_source -> LBR-72
+		if (getlbr_ProductSource().length() > 0)
+			priorityNo += 10;
+		
+		
 		//
 		setPriorityNo(priorityNo);
 		//
