@@ -1686,7 +1686,7 @@ public class EFDUtil {
 			COD_AJ_APUR += "3";
 		
 		// Type 2
-		COD_AJ_APUR += "0001";
+		COD_AJ_APUR += line.getLBR_COD_AJ_APUR();
 		
 		// 
 		reg.setCOD_AJ_APUR(COD_AJ_APUR);
@@ -1702,36 +1702,23 @@ public class EFDUtil {
 	
 	/**
 	 * REGISTRO RE116: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – OPERAÇÕES PRÓPRIAS.
-	 * 
-	 * Código da obrigação a recolher, conforme a Tabela 5.4
-	 * 002 - Saídas para o Estados
-	 * 999 - Saídas para outros Estados
-	 * 
-	 * @param isSameRegion mesmo estado do emitente
-	 * @param DT_VCTO data de vcto
-	 * @param VL_OR valor da obrigação de icms st a recolher
-	 * @param MES_REF mês de referência
 	 *
 	 * @return
 	 * @throws Exception
 	 */
-	public static RE116 createRE116(boolean isSameRegion, Timestamp DT_VCTO, BigDecimal VL_OR, Timestamp dateTo, String DocumentNo) throws Exception
+	public static RE116 createRE116(MLBRTaxAssessment m_taxAssessment) throws Exception
 	{
-		//
-		String COD_OR = "002";
-		if(!isSameRegion)
-			COD_OR = "999";
-			
+		
 		RE116 reg = new RE116();
-		reg.setCOD_OR(COD_OR);
-		reg.setVL_OR(VL_OR);
-		reg.setDT_VCTO(DT_VCTO);
-		reg.setCOD_REC("10009-9"); 	// TODO ??? 
-		reg.setNUM_PROC("");		// TODO ???
-		reg.setIND_PROC("");		// TODO ???
-		reg.setPROC("");			// TODO ???
-		reg.setTXT_COMPL(DocumentNo);
-		reg.setMES_REF(TextUtil.timeToString(dateTo, "MMyyyy"));
+		reg.setCOD_OR(m_taxAssessment.getLBR_Cod_OR());
+		reg.setVL_OR(m_taxAssessment.getLBR_VL_OR());
+		reg.setDT_VCTO(m_taxAssessment.getLBR_Dt_Vcto());
+		reg.setCOD_REC(m_taxAssessment.getLBR_Cod_Rec());  
+		reg.setNUM_PROC(m_taxAssessment.getLBR_Num_Proc());	
+		reg.setIND_PROC(m_taxAssessment.getLBR_Ind_Proc());	
+		reg.setPROC(m_taxAssessment.getLBR_Proc());	
+		reg.setTXT_COMPL(m_taxAssessment.getLBR_Txt_Compl());
+		reg.setMES_REF(TextUtil.timeToString(m_taxAssessment.getC_Period().getEndDate(), "MMyyyy"));
 		
 		return reg;
 	}

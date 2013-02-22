@@ -31,7 +31,7 @@ public interface I_LBR_TaxAssessmentLine
     /** TableName=LBR_TaxAssessmentLine */
     public static final String Table_Name = "LBR_TaxAssessmentLine";
 
-    /** AD_Table_ID=2000061 */
+    /** AD_Table_ID=1120332 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -118,22 +118,37 @@ public interface I_LBR_TaxAssessmentLine
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_COD_AJ_APUR */
+    public static final String COLUMNNAME_LBR_COD_AJ_APUR = "LBR_COD_AJ_APUR";
+
+	/** Set Código do Ajuste.
+	  * Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
+	  */
+	public void setLBR_COD_AJ_APUR (String LBR_COD_AJ_APUR);
+
+	/** Get Código do Ajuste.
+	  * Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
+	  */
+	public String getLBR_COD_AJ_APUR();
+
     /** Column name LBR_TaxAssessment_ID */
     public static final String COLUMNNAME_LBR_TaxAssessment_ID = "LBR_TaxAssessment_ID";
 
-	/** Set Apuração de Impostos	  */
+	/** Set Tax Assessment	  */
 	public void setLBR_TaxAssessment_ID (int LBR_TaxAssessment_ID);
 
-	/** Get Apuração de Impostos	  */
+	/** Get Tax Assessment	  */
 	public int getLBR_TaxAssessment_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxAssessment getLBR_TaxAssessment() throws RuntimeException;
 
     /** Column name LBR_TaxAssessmentLine_ID */
     public static final String COLUMNNAME_LBR_TaxAssessmentLine_ID = "LBR_TaxAssessmentLine_ID";
 
-	/** Set Linhas da Apuração de Impostos	  */
+	/** Set Tax Assessment Line	  */
 	public void setLBR_TaxAssessmentLine_ID (int LBR_TaxAssessmentLine_ID);
 
-	/** Get Linhas da Apuração de Impostos	  */
+	/** Get Tax Assessment Line	  */
 	public int getLBR_TaxAssessmentLine_ID();
 
     /** Column name Type */

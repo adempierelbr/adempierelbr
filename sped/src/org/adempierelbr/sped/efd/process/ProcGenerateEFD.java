@@ -430,6 +430,7 @@ public class ProcGenerateEFD extends SvrProcess
 				
 				// E110 - gerar baseado nos blocos C e D
 				blocoE.getrE100().setrE110(EFDUtil.createRE110(m_taxAssessment));
+				blocoE.getrE100().setrE116(EFDUtil.createRE116(m_taxAssessment));
 				
 	 			// Adicionar detalhes dos ajustes do E110
 				if(blocoE.getrE100().getrE110() != null)

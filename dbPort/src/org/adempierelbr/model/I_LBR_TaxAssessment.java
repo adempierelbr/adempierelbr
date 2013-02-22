@@ -31,7 +31,7 @@ public interface I_LBR_TaxAssessment
     /** TableName=LBR_TaxAssessment */
     public static final String Table_Name = "LBR_TaxAssessment";
 
-    /** AD_Table_ID=2000060 */
+    /** AD_Table_ID=1120331 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -89,14 +89,14 @@ public interface I_LBR_TaxAssessment
 	  */
 	public BigDecimal getAmtSourceDr();
 
-    /** Column name BookNumber */
-    public static final String COLUMNNAME_BookNumber = "BookNumber";
+    /** Column name booknumber */
+    public static final String COLUMNNAME_booknumber = "booknumber";
 
-	/** Set Número do Livro	  */
-	public void setBookNumber (int BookNumber);
+	/** Set booknumber	  */
+	public void setbooknumber (int booknumber);
 
-	/** Get Número do Livro	  */
-	public int getBookNumber();
+	/** Get booknumber	  */
+	public int getbooknumber();
 
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
@@ -155,26 +155,76 @@ public interface I_LBR_TaxAssessment
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_Cod_OR */
+    public static final String COLUMNNAME_LBR_Cod_OR = "LBR_Cod_OR";
+
+	/** Set Código da Obrigação	  */
+	public void setLBR_Cod_OR (String LBR_Cod_OR);
+
+	/** Get Código da Obrigação	  */
+	public String getLBR_Cod_OR();
+
+    /** Column name LBR_Cod_Rec */
+    public static final String COLUMNNAME_LBR_Cod_Rec = "LBR_Cod_Rec";
+
+	/** Set Código da Receita	  */
+	public void setLBR_Cod_Rec (String LBR_Cod_Rec);
+
+	/** Get Código da Receita	  */
+	public String getLBR_Cod_Rec();
+
+    /** Column name LBR_Dt_Vcto */
+    public static final String COLUMNNAME_LBR_Dt_Vcto = "LBR_Dt_Vcto";
+
+	/** Set Data do Vencimento	  */
+	public void setLBR_Dt_Vcto (Timestamp LBR_Dt_Vcto);
+
+	/** Get Data do Vencimento	  */
+	public Timestamp getLBR_Dt_Vcto();
+
+    /** Column name LBR_Ind_Proc */
+    public static final String COLUMNNAME_LBR_Ind_Proc = "LBR_Ind_Proc";
+
+	/** Set Origem do Processo	  */
+	public void setLBR_Ind_Proc (String LBR_Ind_Proc);
+
+	/** Get Origem do Processo	  */
+	public String getLBR_Ind_Proc();
+
+    /** Column name LBR_Num_Proc */
+    public static final String COLUMNNAME_LBR_Num_Proc = "LBR_Num_Proc";
+
+	/** Set Número do Processo	  */
+	public void setLBR_Num_Proc (String LBR_Num_Proc);
+
+	/** Get Número do Processo	  */
+	public String getLBR_Num_Proc();
+
+    /** Column name LBR_Proc */
+    public static final String COLUMNNAME_LBR_Proc = "LBR_Proc";
+
+	/** Set Descrição do Processo	  */
+	public void setLBR_Proc (String LBR_Proc);
+
+	/** Get Descrição do Processo	  */
+	public String getLBR_Proc();
+
     /** Column name LBR_SaldoCredorTrasnportar */
     public static final String COLUMNNAME_LBR_SaldoCredorTrasnportar = "LBR_SaldoCredorTrasnportar";
 
-	/** Set Saldo Credor à Transportar.
-	  * Saldo Credor à Transportar para o mês seguinte
-	  */
+	/** Set Saldo Credor Trasnportar	  */
 	public void setLBR_SaldoCredorTrasnportar (BigDecimal LBR_SaldoCredorTrasnportar);
 
-	/** Get Saldo Credor à Transportar.
-	  * Saldo Credor à Transportar para o mês seguinte
-	  */
+	/** Get Saldo Credor Trasnportar	  */
 	public BigDecimal getLBR_SaldoCredorTrasnportar();
 
     /** Column name LBR_TaxAssessment_ID */
     public static final String COLUMNNAME_LBR_TaxAssessment_ID = "LBR_TaxAssessment_ID";
 
-	/** Set Apuração de Impostos	  */
+	/** Set Tax Assessment	  */
 	public void setLBR_TaxAssessment_ID (int LBR_TaxAssessment_ID);
 
-	/** Get Apuração de Impostos	  */
+	/** Get Tax Assessment	  */
 	public int getLBR_TaxAssessment_ID();
 
     /** Column name LBR_TaxName_ID */
@@ -190,14 +240,34 @@ public interface I_LBR_TaxAssessment
 	  */
 	public int getLBR_TaxName_ID();
 
-    /** Column name PageNumber */
-    public static final String COLUMNNAME_PageNumber = "PageNumber";
+	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
 
-	/** Set Número da Página	  */
-	public void setPageNumber (int PageNumber);
+    /** Column name LBR_Txt_Compl */
+    public static final String COLUMNNAME_LBR_Txt_Compl = "LBR_Txt_Compl";
 
-	/** Get Número da Página	  */
-	public int getPageNumber();
+	/** Set Descrição Complementar	  */
+	public void setLBR_Txt_Compl (String LBR_Txt_Compl);
+
+	/** Get Descrição Complementar	  */
+	public String getLBR_Txt_Compl();
+
+    /** Column name LBR_VL_OR */
+    public static final String COLUMNNAME_LBR_VL_OR = "LBR_VL_OR";
+
+	/** Set Valor à Recolher	  */
+	public void setLBR_VL_OR (BigDecimal LBR_VL_OR);
+
+	/** Get Valor à Recolher	  */
+	public BigDecimal getLBR_VL_OR();
+
+    /** Column name pagenumber */
+    public static final String COLUMNNAME_pagenumber = "pagenumber";
+
+	/** Set pagenumber	  */
+	public void setpagenumber (int pagenumber);
+
+	/** Get pagenumber	  */
+	public int getpagenumber();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

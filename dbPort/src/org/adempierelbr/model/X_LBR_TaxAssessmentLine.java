@@ -32,7 +32,7 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120829L;
+	private static final long serialVersionUID = 20130222L;
 
     /** Standard Constructor */
     public X_LBR_TaxAssessmentLine (Properties ctx, int LBR_TaxAssessmentLine_ID, String trxName)
@@ -41,10 +41,8 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
       /** if (LBR_TaxAssessmentLine_ID == 0)
         {
 			setAmt (Env.ZERO);
-			setDescription (null);
 			setLBR_TaxAssessment_ID (0);
 			setLBR_TaxAssessmentLine_ID (0);
-			setType (null);
         } */
     }
 
@@ -113,18 +111,40 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	/** Set Apuração de Impostos.
-		@param LBR_TaxAssessment_ID Apuração de Impostos	  */
+	/** Set Código do Ajuste.
+		@param LBR_COD_AJ_APUR 
+		Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
+	  */
+	public void setLBR_COD_AJ_APUR (String LBR_COD_AJ_APUR)
+	{
+		set_Value (COLUMNNAME_LBR_COD_AJ_APUR, LBR_COD_AJ_APUR);
+	}
+
+	/** Get Código do Ajuste.
+		@return Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
+	  */
+	public String getLBR_COD_AJ_APUR () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_COD_AJ_APUR);
+	}
+
+	public org.adempierelbr.model.I_LBR_TaxAssessment getLBR_TaxAssessment() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxAssessment)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxAssessment.Table_Name)
+			.getPO(getLBR_TaxAssessment_ID(), get_TrxName());	}
+
+	/** Set Tax Assessment.
+		@param LBR_TaxAssessment_ID Tax Assessment	  */
 	public void setLBR_TaxAssessment_ID (int LBR_TaxAssessment_ID)
 	{
 		if (LBR_TaxAssessment_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_TaxAssessment_ID, null);
+			set_Value (COLUMNNAME_LBR_TaxAssessment_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_TaxAssessment_ID, Integer.valueOf(LBR_TaxAssessment_ID));
+			set_Value (COLUMNNAME_LBR_TaxAssessment_ID, Integer.valueOf(LBR_TaxAssessment_ID));
 	}
 
-	/** Get Apuração de Impostos.
-		@return Apuração de Impostos	  */
+	/** Get Tax Assessment.
+		@return Tax Assessment	  */
 	public int getLBR_TaxAssessment_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxAssessment_ID);
@@ -133,8 +153,8 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 		return ii.intValue();
 	}
 
-	/** Set Linhas da Apuração de Impostos.
-		@param LBR_TaxAssessmentLine_ID Linhas da Apuração de Impostos	  */
+	/** Set Tax Assessment Line.
+		@param LBR_TaxAssessmentLine_ID Tax Assessment Line	  */
 	public void setLBR_TaxAssessmentLine_ID (int LBR_TaxAssessmentLine_ID)
 	{
 		if (LBR_TaxAssessmentLine_ID < 1) 
@@ -143,8 +163,8 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 			set_ValueNoCheck (COLUMNNAME_LBR_TaxAssessmentLine_ID, Integer.valueOf(LBR_TaxAssessmentLine_ID));
 	}
 
-	/** Get Linhas da Apuração de Impostos.
-		@return Linhas da Apuração de Impostos	  */
+	/** Get Tax Assessment Line.
+		@return Tax Assessment Line	  */
 	public int getLBR_TaxAssessmentLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxAssessmentLine_ID);
@@ -153,16 +173,16 @@ public class X_LBR_TaxAssessmentLine extends PO implements I_LBR_TaxAssessmentLi
 		return ii.intValue();
 	}
 
-	/** Type AD_Reference_ID=1120158 */
-	public static final int TYPE_AD_Reference_ID=1120158;
-	/** Outros Débitos = 002 */
-	public static final String TYPE_OutrosDébitos = "002";
-	/** Estornos de Créditos = 003 */
-	public static final String TYPE_EstornosDeCréditos = "003";
-	/** Outros Créditos = 006 */
-	public static final String TYPE_OutrosCréditos = "006";
-	/** Estorno de Débitos = 007 */
-	public static final String TYPE_EstornoDeDébitos = "007";
+	/** Type AD_Reference_ID=1120162 */
+	public static final int TYPE_AD_Reference_ID=1120162;
+	/** Outros Débitos = 0 */
+	public static final String TYPE_OutrosDébitos = "0";
+	/** Estornos de Créditos = 1 */
+	public static final String TYPE_EstornosDeCréditos = "1";
+	/** Outros Créditos = 2 */
+	public static final String TYPE_OutrosCréditos = "2";
+	/** Estorno de Débitos = 3 */
+	public static final String TYPE_EstornoDeDébitos = "3";
 	/** Set Type.
 		@param Type 
 		Type of Validation (SQL, Java Script, Java Language)

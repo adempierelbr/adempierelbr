@@ -135,8 +135,7 @@ public class BLOCOE {
 				result.append(aux_rE111);
 			
 			// E116
-			for (RE116 aux_rE116 : rE100.getrE116())
-				result.append(aux_rE116);
+			result.append(rE100.getrE116() == null ? "" : rE100.getrE116());
 		}
 
 		

@@ -19,6 +19,7 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
@@ -32,7 +33,7 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120829L;
+	private static final long serialVersionUID = 20130221L;
 
     /** Standard Constructor */
     public X_LBR_TaxAssessment (Properties ctx, int LBR_TaxAssessment_ID, String trxName)
@@ -41,28 +42,18 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
       /** if (LBR_TaxAssessment_ID == 0)
         {
 			setAmtSourceCr (Env.ZERO);
-// 0
 			setAmtSourceDr (Env.ZERO);
-// 0
-			setBookNumber (0);
-// 0
+			setbooknumber (0);
 			setC_Period_ID (0);
 			setCumulatedAmt (Env.ZERO);
-// 0
 			setLBR_SaldoCredorTrasnportar (Env.ZERO);
-// 0
 			setLBR_TaxAssessment_ID (0);
 			setLBR_TaxName_ID (0);
-			setPageNumber (0);
-// 0
+			setpagenumber (0);
 			setProcessed (false);
-// N
 			setTotalAmt (Env.ZERO);
-// 0
 			setTotalCr (Env.ZERO);
-// 0
 			setTotalDr (Env.ZERO);
-// 0
         } */
     }
 
@@ -100,7 +91,7 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	  */
 	public void setAmtSourceCr (BigDecimal AmtSourceCr)
 	{
-		set_ValueNoCheck (COLUMNNAME_AmtSourceCr, AmtSourceCr);
+		set_Value (COLUMNNAME_AmtSourceCr, AmtSourceCr);
 	}
 
 	/** Get Source Credit.
@@ -120,7 +111,7 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	  */
 	public void setAmtSourceDr (BigDecimal AmtSourceDr)
 	{
-		set_ValueNoCheck (COLUMNNAME_AmtSourceDr, AmtSourceDr);
+		set_Value (COLUMNNAME_AmtSourceDr, AmtSourceDr);
 	}
 
 	/** Get Source Debit.
@@ -134,18 +125,18 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return bd;
 	}
 
-	/** Set Número do Livro.
-		@param BookNumber Número do Livro	  */
-	public void setBookNumber (int BookNumber)
+	/** Set booknumber.
+		@param booknumber booknumber	  */
+	public void setbooknumber (int booknumber)
 	{
-		set_Value (COLUMNNAME_BookNumber, Integer.valueOf(BookNumber));
+		set_Value (COLUMNNAME_booknumber, Integer.valueOf(booknumber));
 	}
 
-	/** Get Número do Livro.
-		@return Número do Livro	  */
-	public int getBookNumber () 
+	/** Get booknumber.
+		@return booknumber	  */
+	public int getbooknumber () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_BookNumber);
+		Integer ii = (Integer)get_Value(COLUMNNAME_booknumber);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -185,7 +176,7 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	  */
 	public void setCumulatedAmt (BigDecimal CumulatedAmt)
 	{
-		set_ValueNoCheck (COLUMNNAME_CumulatedAmt, CumulatedAmt);
+		set_Value (COLUMNNAME_CumulatedAmt, CumulatedAmt);
 	}
 
 	/** Get Accumulated Amt.
@@ -199,18 +190,131 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return bd;
 	}
 
-	/** Set Saldo Credor à Transportar.
-		@param LBR_SaldoCredorTrasnportar 
-		Saldo Credor à Transportar para o mês seguinte
-	  */
+	/** LBR_Cod_OR AD_Reference_ID=1120160 */
+	public static final int LBR_COD_OR_AD_Reference_ID=1120160;
+	/** ICMS a recolher = 000 */
+	public static final String LBR_COD_OR_ICMSARecolher = "000";
+	/** ICMS da substituição tributária pelas entradas = 001 */
+	public static final String LBR_COD_OR_ICMSDaSubstituiçãoTributáriaPelasEntradas = "001";
+	/** ICMS da substituição tributária pelas saídas para o Estado = 002 */
+	public static final String LBR_COD_OR_ICMSDaSubstituiçãoTributáriaPelasSaídasParaOEstado = "002";
+	/** Antecipação do diferencial de alíquotas do ICMS = 003 */
+	public static final String LBR_COD_OR_AntecipaçãoDoDiferencialDeAlíquotasDoICMS = "003";
+	/** Antecipação do ICMS da importação = 004 */
+	public static final String LBR_COD_OR_AntecipaçãoDoICMSDaImportação = "004";
+	/** Antecipação tributária = 005 */
+	public static final String LBR_COD_OR_AntecipaçãoTributária = "005";
+	/** ICMS resultante da alíquota adicional dos itens incluídos no Fundo de Combate à Pobreza = 006 */
+	public static final String LBR_COD_OR_ICMSResultanteDaAlíquotaAdicionalDosItensIncluídosNoFundoDeCombateÀPobreza = "006";
+	/** Outras obrigações do ICMS = 090 */
+	public static final String LBR_COD_OR_OutrasObrigaçõesDoICMS = "090";
+	/** ICMS da substituição tributária pelas saídas para outro Estado = 999 */
+	public static final String LBR_COD_OR_ICMSDaSubstituiçãoTributáriaPelasSaídasParaOutroEstado = "999";
+	/** Set Código da Obrigação.
+		@param LBR_Cod_OR Código da Obrigação	  */
+	public void setLBR_Cod_OR (String LBR_Cod_OR)
+	{
+
+		set_Value (COLUMNNAME_LBR_Cod_OR, LBR_Cod_OR);
+	}
+
+	/** Get Código da Obrigação.
+		@return Código da Obrigação	  */
+	public String getLBR_Cod_OR () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Cod_OR);
+	}
+
+	/** Set Código da Receita.
+		@param LBR_Cod_Rec Código da Receita	  */
+	public void setLBR_Cod_Rec (String LBR_Cod_Rec)
+	{
+		set_Value (COLUMNNAME_LBR_Cod_Rec, LBR_Cod_Rec);
+	}
+
+	/** Get Código da Receita.
+		@return Código da Receita	  */
+	public String getLBR_Cod_Rec () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Cod_Rec);
+	}
+
+	/** Set Data do Vencimento.
+		@param LBR_Dt_Vcto Data do Vencimento	  */
+	public void setLBR_Dt_Vcto (Timestamp LBR_Dt_Vcto)
+	{
+		set_Value (COLUMNNAME_LBR_Dt_Vcto, LBR_Dt_Vcto);
+	}
+
+	/** Get Data do Vencimento.
+		@return Data do Vencimento	  */
+	public Timestamp getLBR_Dt_Vcto () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_LBR_Dt_Vcto);
+	}
+
+	/** LBR_Ind_Proc AD_Reference_ID=1120161 */
+	public static final int LBR_IND_PROC_AD_Reference_ID=1120161;
+	/** SEFAZ = 0 */
+	public static final String LBR_IND_PROC_SEFAZ = "0";
+	/** Justiça Federal = 1 */
+	public static final String LBR_IND_PROC_JustiçaFederal = "1";
+	/** Justiça Estadual = 2 */
+	public static final String LBR_IND_PROC_JustiçaEstadual = "2";
+	/** Outros = 9 */
+	public static final String LBR_IND_PROC_Outros = "9";
+	/** Set Origem do Processo.
+		@param LBR_Ind_Proc Origem do Processo	  */
+	public void setLBR_Ind_Proc (String LBR_Ind_Proc)
+	{
+
+		set_Value (COLUMNNAME_LBR_Ind_Proc, LBR_Ind_Proc);
+	}
+
+	/** Get Origem do Processo.
+		@return Origem do Processo	  */
+	public String getLBR_Ind_Proc () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Ind_Proc);
+	}
+
+	/** Set Número do Processo.
+		@param LBR_Num_Proc Número do Processo	  */
+	public void setLBR_Num_Proc (String LBR_Num_Proc)
+	{
+		set_Value (COLUMNNAME_LBR_Num_Proc, LBR_Num_Proc);
+	}
+
+	/** Get Número do Processo.
+		@return Número do Processo	  */
+	public String getLBR_Num_Proc () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Num_Proc);
+	}
+
+	/** Set Descrição do Processo.
+		@param LBR_Proc Descrição do Processo	  */
+	public void setLBR_Proc (String LBR_Proc)
+	{
+		set_Value (COLUMNNAME_LBR_Proc, LBR_Proc);
+	}
+
+	/** Get Descrição do Processo.
+		@return Descrição do Processo	  */
+	public String getLBR_Proc () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Proc);
+	}
+
+	/** Set Saldo Credor Trasnportar.
+		@param LBR_SaldoCredorTrasnportar Saldo Credor Trasnportar	  */
 	public void setLBR_SaldoCredorTrasnportar (BigDecimal LBR_SaldoCredorTrasnportar)
 	{
 		set_Value (COLUMNNAME_LBR_SaldoCredorTrasnportar, LBR_SaldoCredorTrasnportar);
 	}
 
-	/** Get Saldo Credor à Transportar.
-		@return Saldo Credor à Transportar para o mês seguinte
-	  */
+	/** Get Saldo Credor Trasnportar.
+		@return Saldo Credor Trasnportar	  */
 	public BigDecimal getLBR_SaldoCredorTrasnportar () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_SaldoCredorTrasnportar);
@@ -219,8 +323,8 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return bd;
 	}
 
-	/** Set Apuração de Impostos.
-		@param LBR_TaxAssessment_ID Apuração de Impostos	  */
+	/** Set Tax Assessment.
+		@param LBR_TaxAssessment_ID Tax Assessment	  */
 	public void setLBR_TaxAssessment_ID (int LBR_TaxAssessment_ID)
 	{
 		if (LBR_TaxAssessment_ID < 1) 
@@ -229,8 +333,8 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 			set_ValueNoCheck (COLUMNNAME_LBR_TaxAssessment_ID, Integer.valueOf(LBR_TaxAssessment_ID));
 	}
 
-	/** Get Apuração de Impostos.
-		@return Apuração de Impostos	  */
+	/** Get Tax Assessment.
+		@return Tax Assessment	  */
 	public int getLBR_TaxAssessment_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxAssessment_ID);
@@ -238,6 +342,11 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 			 return 0;
 		return ii.intValue();
 	}
+
+	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxName)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxName.Table_Name)
+			.getPO(getLBR_TaxName_ID(), get_TrxName());	}
 
 	/** Set Tax Name.
 		@param LBR_TaxName_ID 
@@ -262,18 +371,49 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return ii.intValue();
 	}
 
-	/** Set Número da Página.
-		@param PageNumber Número da Página	  */
-	public void setPageNumber (int PageNumber)
+	/** Set Descrição Complementar.
+		@param LBR_Txt_Compl Descrição Complementar	  */
+	public void setLBR_Txt_Compl (String LBR_Txt_Compl)
 	{
-		set_Value (COLUMNNAME_PageNumber, Integer.valueOf(PageNumber));
+		set_Value (COLUMNNAME_LBR_Txt_Compl, LBR_Txt_Compl);
 	}
 
-	/** Get Número da Página.
-		@return Número da Página	  */
-	public int getPageNumber () 
+	/** Get Descrição Complementar.
+		@return Descrição Complementar	  */
+	public String getLBR_Txt_Compl () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_PageNumber);
+		return (String)get_Value(COLUMNNAME_LBR_Txt_Compl);
+	}
+
+	/** Set Valor à Recolher.
+		@param LBR_VL_OR Valor à Recolher	  */
+	public void setLBR_VL_OR (BigDecimal LBR_VL_OR)
+	{
+		set_Value (COLUMNNAME_LBR_VL_OR, LBR_VL_OR);
+	}
+
+	/** Get Valor à Recolher.
+		@return Valor à Recolher	  */
+	public BigDecimal getLBR_VL_OR () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_VL_OR);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set pagenumber.
+		@param pagenumber pagenumber	  */
+	public void setpagenumber (int pagenumber)
+	{
+		set_Value (COLUMNNAME_pagenumber, Integer.valueOf(pagenumber));
+	}
+
+	/** Get pagenumber.
+		@return pagenumber	  */
+	public int getpagenumber () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_pagenumber);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
