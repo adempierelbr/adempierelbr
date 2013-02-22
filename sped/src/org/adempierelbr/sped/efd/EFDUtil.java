@@ -1689,7 +1689,7 @@ public class EFDUtil {
 		COD_AJ_APUR += line.getLBR_COD_AJ_APUR();
 		
 		// 
-		reg.setCOD_AJ_APUR(COD_AJ_APUR);
+		reg.setCOD_AJ_APUR(line.getLBR_COD_AJ_APUR());
 		
 		// 
 		reg.setDESCR_COMPL_AJ(line.getDescription());

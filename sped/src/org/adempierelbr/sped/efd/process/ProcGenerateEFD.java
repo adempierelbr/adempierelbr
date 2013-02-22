@@ -348,6 +348,7 @@ public class ProcGenerateEFD extends SvrProcess
 				/*
 				 * Unidades
 				 */
+				if(REG.startsWith("C100"))
 				bloco0.addr0190(EFDUtil.createR0190(factFiscal));
 				
 				/*

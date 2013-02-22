@@ -203,7 +203,7 @@ public class ProcTaxAssessment extends SvrProcess
 		String sql = "SELECT SUM(al.Amt) 					" +
 				     "  FROM LBR_TaxAssessmentLine al 		" +
 				     " WHERE al.LBR_TaxAssessment_ID = ? 	" +
-				     "   AND al.Type IN ('006','007') 		";
+				     "   AND al.Type IN ('2', '3') 		";
 		
 		
 		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_TaxAssessment_ID);
@@ -230,7 +230,7 @@ public class ProcTaxAssessment extends SvrProcess
 		String sql = "SELECT SUM(al.Amt) 					" +
 				     "  FROM LBR_TaxAssessmentLine al 		" +
 				     " WHERE al.LBR_TaxAssessment_ID = ? 	" +
-				     "   AND al.Type IN ('002','003')		";
+				     "   AND al.Type IN ('0','1')		";
 		
 		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_TaxAssessment_ID);
 		
