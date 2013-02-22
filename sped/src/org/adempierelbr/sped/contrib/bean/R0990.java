@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_RX990;
 
 /**
  * 	REGISTRO 0990:
@@ -24,7 +25,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: R0990.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class R0990 extends RegSped
+public class R0990 extends RegSped implements I_RX990
 {
 	@XMLFieldProperties(id="QTD_LIN_0",scale=0)
 	private BigDecimal QTD_LIN_0;
@@ -37,5 +38,10 @@ public class R0990 extends RegSped
 	public void setQTD_LIN_0(BigDecimal qTD_LIN_0)
 	{
 		QTD_LIN_0 = qTD_LIN_0;
+	}
+
+	public void setQTD_LIN (BigDecimal qtd)
+	{
+		setQTD_LIN_0 (qtd);
 	}
 }	//	R0990

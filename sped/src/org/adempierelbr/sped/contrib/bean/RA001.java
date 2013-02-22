@@ -14,6 +14,7 @@ package org.adempierelbr.sped.contrib.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.bean.I_RX001;
 
 /**
  * 	REGISTRO A001: 
@@ -22,7 +23,7 @@ import org.adempierelbr.sped.RegSped;
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: RA001.java, v1.0 2013/02/02 11:17:42 AM, ralexsander Exp $
  */
-public class RA001 extends RegSped
+public class RA001 extends RegSped implements I_RX001
 {
 	@XMLFieldProperties(id = "IND_MOV")
 	private String IND_MOV;

@@ -42,10 +42,8 @@ import org.compiere.util.Env;
  * - Adicionado parte da validação das anottations
  * 
  */
-public abstract class RegSped implements Comparable<Object> {
-	
-
-
+public abstract class RegSped implements Comparable<Object>
+{
 	/**	
 	 * Logger			
 	 */
@@ -65,6 +63,14 @@ public abstract class RegSped implements Comparable<Object> {
 		
 	private String errorMsg;
 	
+	/**
+	 * 		Contador do Bloco Atual
+	 * 	@return Contador do bloco
+	 */
+	public int getCount ()
+	{
+		return SPEDUtil.count (this);
+	}	//	getCount
 		
 	/**
 	 * Método abstrato para retornar registro formatado

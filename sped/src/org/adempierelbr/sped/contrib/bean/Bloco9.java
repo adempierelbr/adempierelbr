@@ -14,6 +14,8 @@ package org.adempierelbr.sped.contrib.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.BlocoSPED;
+import org.adempierelbr.sped.bean.I_RX001;
+import org.adempierelbr.sped.bean.I_RX990;
 
 /**
  * 		Registro hierárquico do SPED Contribuições
@@ -24,20 +26,20 @@ import org.adempierelbr.sped.BlocoSPED;
 public class Bloco9 extends BlocoSPED
 {
 	@XMLFieldProperties (id = "R9001")
-	private R9001 r9001;
+	private I_RX001 r9001;
 	
 	@XMLFieldProperties (id = "R9900")
 	private R9900 r9900;
 	
 	@XMLFieldProperties (id = "R9990")
-	private R9990 r9990;
+	private I_RX990 r9990;
 
-	public R9001 getR9001()
+	public I_RX001 getR9001()
 	{
 		return r9001;
 	}
 
-	public void setR9001(R9001 r9001)
+	public void setR9001(I_RX001 r9001)
 	{
 		this.r9001 = r9001;
 	}
@@ -52,12 +54,12 @@ public class Bloco9 extends BlocoSPED
 		this.r9900 = r9900;
 	}
 
-	public R9990 getR9990()
+	public I_RX990 getR9990()
 	{
 		return r9990;
 	}
 
-	public void setR9990(R9990 r9990)
+	public void setR9990(I_RX990 r9990)
 	{
 		this.r9990 = r9990;
 	}

@@ -12,6 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ import java.util.Set;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.bean.I_R0000;
 import org.adempierelbr.sped.bean.I_R0100;
@@ -92,6 +95,18 @@ public class SPEDUtil
 	public static final String IND_PAGTO_VISTA	 	= "0";
 	public static final String IND_PAGTO_PRAZO	 	= "1";
 	public static final String IND_PAGTO_SEM	 	= "9";
+	
+	/**
+	 * 	Indicador de movimento
+	 * 		<li>0 - Bloco com dados informados;
+	 */
+	public static final String IND_MOV_COM_DADOS 	= "0";
+	
+	/**
+	 * 	Indicador de movimento
+	 * 		<li>1 - Bloco sem dados informados
+	 */
+	public static final String IND_MOV_SEM_DADOS 	= "1";
 	
 	/** Frete: Emitente						*/
 	public static final String IND_FRT_EMIT		 	= "0";
@@ -398,6 +413,81 @@ public class SPEDUtil
 		}	//	for
 	}	//	processFacts
 	
+	public static int count (Object instance)
+	{
+		Class<?> clazz = instance.getClass();
+		int count = 0;
+		
+		try
+		{
+			Field[] fields = clazz.getDeclaredFields();
+						
+			for (Field field : fields) 
+			{
+				if (!field.isAnnotationPresent (XMLFieldProperties.class))
+					continue;
+
+				XMLFieldProperties annotation = field.getAnnotation (XMLFieldProperties.class);
+				
+				if(!annotation.isSPEDField())
+					continue;
+
+				String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);;
+				
+				Class<?> noparams[] = {};
+				Object[] noargs = null;
+				
+				Method method = clazz.getDeclaredMethod ("get" + fieldName, noparams);
+				Object content = method.invoke (instance, noargs);
+				
+				//	Do Nothing
+				if (content == null)
+					;
+				
+				//	List
+				else if (content instanceof List)
+				{
+					for (Object item : (List<?>) content)
+					{
+						if (item instanceof RegSped)
+							count += ((RegSped) item).getCount ();
+					}
+				}
+				
+				//	Set
+				else if (content instanceof Set)
+				{
+					for (Object item : (Set<?>) content)
+					{
+						if (item instanceof RegSped)
+							count += ((RegSped) item).getCount ();
+					}
+				}
+				
+				//	Registro SPED
+				else if (content instanceof RegSped)
+				{
+					count += ((RegSped) content).getCount ();
+				}
+//				
+//				//	Outros
+//				else
+//				{
+//					count ++;
+//				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		//
+		if (instance instanceof RegSped)
+			count ++;
+		//
+		return count;
+	}	//	count
+	
 	/**
 	 * 		Retorna a instância dos registros comuns ou similares entre os SPEDs.
 	 * 
@@ -405,7 +495,7 @@ public class SPEDUtil
 	 * 	@param type Tipo ECD, EFD ou Contribuições
 	 * 	@return Registro para ambos SPEDs
 	 */
-	private static Object getReg (String regName, int type)
+	public static Object getReg (String regName, int type)
 	{
 		Class<?> clazz = null;
 		

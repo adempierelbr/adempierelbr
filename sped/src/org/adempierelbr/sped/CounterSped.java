@@ -10,11 +10,15 @@ import java.util.logging.Level;
 import org.compiere.util.CLogger;
 
 /**
- *	Counter Sped
+ *		Contador SPED
  *
- * @author Mario Grigioni
- * @contributor Ricardo Santana, ralexsander
- * @version $Id: CounterSped.java, 16/11/2010, 14:36, mgrigioni
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ * 		<li> Classe original de Janeiro de 2010 CounterSPED
+ * 
+ * 	@author Mario Grigioni
+ * 		<li> Alterou a classe, mudando também o nome para CounterSped em Novembro de 2010
+ * 
+ * 	@version $Id: SPEDCounter.java, v1.0 2010/01/31 3:33:23 PM, ralexsander Exp $
  */
 public class CounterSped
 {
@@ -32,7 +36,7 @@ public class CounterSped
 	/**
 	 * 	Adiciona o registro no contador
 	 * 
-	 * @param regName
+	 * 	@param regName
 	 */
 	public static void register (String regName)
 	{
@@ -49,7 +53,7 @@ public class CounterSped
 	/**
 	 * 	Remove o registro no contador
 	 * 
-	 * @param regName
+	 * 	@param regName
 	 */
 	public static void unregister (String regName)
 	{

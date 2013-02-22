@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
 import org.adempierelbr.sped.contrib.bean.BlocoA;
@@ -27,6 +28,7 @@ import org.adempierelbr.sped.contrib.bean.BlocoD;
 import org.adempierelbr.sped.contrib.bean.BlocoF;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
+import org.adempierelbr.sped.contrib.bean.SPEDContrib;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -164,6 +166,8 @@ public class GenerateSPEDContrib extends SvrProcess
 	 */
 	private void genSPEDContrib () throws AdempiereException, Exception
 	{
+		CounterSped.clear ();
+		//
 		SPEDUtil.processFacts (ctx, MLBRFactFiscal.get (ctx, dateFrom, dateTo, p_AD_Org_ID, null, trxName), SPEDUtil.TYPE_CONTRIB, trxName);
 		
 		//	Inicio do Arquivo
@@ -221,10 +225,18 @@ public class GenerateSPEDContrib extends SvrProcess
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
 		fileName += "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
+		SPEDContrib sped = new SPEDContrib ();
+		sped.setB0 ((Bloco0) b0.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setBA ((BlocoA) bA.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setBC ((BlocoC) bC.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setBD ((BlocoD) bD.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setBF ((BlocoF) bF.get (SPEDUtil.TYPE_CONTRIB));
+//		sped.setB0 ((Bloco0) b0.get (SPEDUtil.TYPE_CONTRIB));
+		
 		/*
 		 * Gerar Arquivo no disco
 		 */
-		TextUtil.generateFile (b0.toString() + bA.toString() + bC.toString() + bD.toString() + bF.toString(), fileName);
+		TextUtil.generateFile (sped.toString(), fileName);
 		
 	}	//	genSPEDContrib
 

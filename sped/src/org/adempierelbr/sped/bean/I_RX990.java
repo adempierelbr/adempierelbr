@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2013 Kenos Assessoria e Consultoria de Sistemas Ltda         *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -10,15 +10,17 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-package org.adempierelbr.sped.contrib;
+package org.adempierelbr.sped.bean;
+
+import java.math.BigDecimal;
 
 /**
- * 		Registro hierárquico do SPED Contribuições
+ * 		Interface do Arquivo de Encerramento
  * 
- *  @author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: SPEDContrib.java, v1.0 2013/MM/DD 2:51:51 PM, ralexsander Exp $
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: I_RX990.java, v1.0 2013/02/22 16:40:57 PM, ralexsander Exp $
  */
-public class SPEDContrib
+public interface I_RX990
 {
-
-}	//	SPEDContrib
+	public void setQTD_LIN (BigDecimal qtd);
+}	//	I_RX990

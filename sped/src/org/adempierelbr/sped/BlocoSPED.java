@@ -14,10 +14,13 @@ package org.adempierelbr.sped;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.sped.bean.I_RX001;
+import org.adempierelbr.sped.bean.I_RX990;
 import org.adempierelbr.util.TextUtil;
 
 /**
@@ -28,6 +31,51 @@ import org.adempierelbr.util.TextUtil;
  */
 public abstract class BlocoSPED
 {
+	/**
+	 * 	Get complete block
+	 * 	@return block
+	 * 	@throws Exception 
+	 */
+	public BlocoSPED get (int type) throws Exception
+	{
+		String blockCode = getBlockCode ();
+		int counter = getCount ();
+
+		//	Monta a Abertura
+		I_RX001 x001 = (I_RX001) SPEDUtil.getReg ("R" + blockCode + "001", type);
+		x001.setIND_MOV (counter <= 0 ? SPEDUtil.IND_MOV_SEM_DADOS : SPEDUtil.IND_MOV_COM_DADOS);
+		//
+		Method method = this.getClass().getDeclaredMethod ("setR" + blockCode + "001", I_RX001.class);
+		method.invoke (this, x001);
+		
+		//	Monta o Encerramento
+		I_RX990 x990 = (I_RX990) SPEDUtil.getReg ("R" + blockCode + "990", type);
+		x990.setQTD_LIN (new BigDecimal (counter + 2));	//	+ 001 + 990
+		//
+		method = this.getClass().getDeclaredMethod ("setR" + blockCode + "990", I_RX990.class);
+		method.invoke (this, x990);
+		//
+		return this;
+	}	//	get
+
+	/**
+	 * 		Contador do Bloco Atual
+	 * 	@return Contador do bloco
+	 */
+	private int getCount ()
+	{
+		return SPEDUtil.count (this);
+	}	//	getCount
+
+	/**
+	 * 	Block Code
+	 * 	@return Block Code e.g. for Bloco0 returns 0
+	 */
+	private String getBlockCode ()
+	{
+		return this.getClass().getName().substring (this.getClass().getName().length() - 1);
+	}	//	getBlockCode
+	
 	/**
 	 * 	FIXME: Mudar para um método específico, pois toString 
 	 * 		pode ficar muito grande e lento para debugar

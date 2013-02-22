@@ -18,6 +18,8 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.BlocoSPED;
 import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.bean.I_RC500;
+import org.adempierelbr.sped.bean.I_RX001;
+import org.adempierelbr.sped.bean.I_RX990;
 
 /**
  * 		Registro hierárquico do SPED Contribuições
@@ -28,7 +30,7 @@ import org.adempierelbr.sped.bean.I_RC500;
 public class BlocoC extends BlocoSPED
 {
 	@XMLFieldProperties (id = "RC001")
-	private RC001 rC001;
+	private I_RX001 rC001;
 	
 	@XMLFieldProperties (id = "RC010")
 	private Set<RC010> rC010;
@@ -40,14 +42,14 @@ public class BlocoC extends BlocoSPED
 	private Set<I_RC500> rC500;
 	
 	@XMLFieldProperties (id = "RC990")
-	private RC990 rC990;
+	private I_RX990 rC990;
 
-	public RC001 getRC001()
+	public I_RX001 getRC001()
 	{
 		return rC001;
 	}
 
-	public void setRC001(RC001 rC001)
+	public void setRC001(I_RX001 rC001)
 	{
 		this.rC001 = rC001;
 	}
@@ -82,12 +84,12 @@ public class BlocoC extends BlocoSPED
 		this.rC500 = rC500;
 	}
 
-	public RC990 getRC990()
+	public I_RX990 getRC990()
 	{
 		return rC990;
 	}
 
-	public void setRC990(RC990 rC990)
+	public void setRC990(I_RX990 rC990)
 	{
 		this.rC990 = rC990;
 	}
