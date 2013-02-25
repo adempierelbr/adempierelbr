@@ -413,6 +413,12 @@ public class SPEDUtil
 		}	//	for
 	}	//	processFacts
 	
+	/**
+	 * 		Contador de Registros
+	 * 
+	 * 	@param instance
+	 * 	@return
+	 */
 	public static int count (Object instance)
 	{
 		Class<?> clazz = instance.getClass();
@@ -469,12 +475,6 @@ public class SPEDUtil
 				{
 					count += ((RegSped) content).getCount ();
 				}
-//				
-//				//	Outros
-//				else
-//				{
-//					count ++;
-//				}
 			}
 		}
 		catch (Exception e)
