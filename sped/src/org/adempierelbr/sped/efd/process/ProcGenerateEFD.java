@@ -637,10 +637,10 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
-			bloco1.addR1600(EFDUtil.createR1600("Cartao Visa - BNDES", new BigDecimal("31598.34"), Env.ZERO));
-			bloco1.addR1600(EFDUtil.createR1600("Cartao Mastercard - BNDES", new BigDecimal("6974.00"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("VISA DO BRASIL", new BigDecimal("3000.00"), Env.ZERO));
+			bloco1.addR1600(EFDUtil.createR1600("Diners Club", new BigDecimal("3000.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
-			
+
 			/*
 			 * Registros Totalizadores dos Blocos
 			 */
