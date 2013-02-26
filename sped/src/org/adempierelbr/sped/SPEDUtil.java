@@ -87,7 +87,7 @@ public class SPEDUtil
 	public static final String EFD_VERSION 			= "";
 	
 	/**	Versão da EFD Contribuições */
-	public static final String CONTRIB_VERSION 		= "002";
+	public static final String CONTRIB_VERSION 		= "003";
 	
 	public static final String IND_OPER_CONTRATADO 	= "0";
 	public static final String IND_OPER_PRESTADO 	= "1";

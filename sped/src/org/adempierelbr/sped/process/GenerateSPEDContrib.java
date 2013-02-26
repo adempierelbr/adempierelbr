@@ -24,11 +24,13 @@ import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
+import org.adempierelbr.sped.contrib.bean.Bloco1;
 import org.adempierelbr.sped.contrib.bean.Bloco9;
 import org.adempierelbr.sped.contrib.bean.BlocoA;
 import org.adempierelbr.sped.contrib.bean.BlocoC;
 import org.adempierelbr.sped.contrib.bean.BlocoD;
 import org.adempierelbr.sped.contrib.bean.BlocoF;
+import org.adempierelbr.sped.contrib.bean.BlocoM;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
 import org.adempierelbr.sped.contrib.bean.SPEDContrib;
@@ -179,6 +181,8 @@ public class GenerateSPEDContrib extends SvrProcess
 		BlocoC bC = new BlocoC();
 		BlocoD bD = new BlocoD();
 		BlocoF bF = new BlocoF();
+		BlocoM bM = new BlocoM();
+		Bloco1 b1 = new Bloco1();
 		Bloco9 b9 = new Bloco9();
 		
 		//	Registro 0000
@@ -227,7 +231,7 @@ public class GenerateSPEDContrib extends SvrProcess
 		 * EDF_CNPJ_DATA.txt
 		 */
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
-		fileName += "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
+		fileName += "EFD_Contrib_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
 		SPEDContrib sped = new SPEDContrib ();
 		sped.setB0 ((Bloco0) b0.get (SPEDUtil.TYPE_CONTRIB));
@@ -235,7 +239,8 @@ public class GenerateSPEDContrib extends SvrProcess
 		sped.setBC ((BlocoC) bC.get (SPEDUtil.TYPE_CONTRIB));
 		sped.setBD ((BlocoD) bD.get (SPEDUtil.TYPE_CONTRIB));
 		sped.setBF ((BlocoF) bF.get (SPEDUtil.TYPE_CONTRIB));
-//		sped.setB0 ((Bloco0) b0.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setBM ((BlocoM) bM.get (SPEDUtil.TYPE_CONTRIB));
+		sped.setB1 ((Bloco1) b1.get (SPEDUtil.TYPE_CONTRIB));
 		
 		//	Registro 9
 		Map<String, Integer> regCount = new HashMap<String, Integer>();
