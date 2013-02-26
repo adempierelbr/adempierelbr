@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.adempierelbr.annotation.Validate;
@@ -69,7 +70,16 @@ public abstract class RegSped implements Comparable<Object>
 	 */
 	public int getCount ()
 	{
-		return SPEDUtil.count (this);
+		return getCount (null);
+	}	//	getCount
+	
+	/**
+	 * 		Contador do Bloco Atual
+	 * 	@return Contador do bloco
+	 */
+	public int getCount (Map<String, Integer> map)
+	{
+		return SPEDUtil.count (this, map);
 	}	//	getCount
 		
 	/**

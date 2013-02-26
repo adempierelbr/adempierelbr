@@ -14,10 +14,13 @@ package org.adempierelbr.sped;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -30,6 +33,8 @@ import org.adempierelbr.sped.bean.I_R0100;
 import org.adempierelbr.sped.bean.I_R0150;
 import org.adempierelbr.sped.bean.I_R0190;
 import org.adempierelbr.sped.bean.I_R0200;
+import org.adempierelbr.sped.bean.I_R9900;
+import org.adempierelbr.sped.bean.I_R9999;
 import org.adempierelbr.sped.bean.I_RC100;
 import org.adempierelbr.sped.bean.I_RC500;
 import org.adempierelbr.sped.bean.I_RD100;
@@ -50,6 +55,7 @@ import org.compiere.model.MCity;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MUser;
+import org.compiere.util.Env;
 
 /**
  * 		Utilitários do SPED
@@ -421,6 +427,17 @@ public class SPEDUtil
 	 */
 	public static int count (Object instance)
 	{
+		return count (instance, null);
+	}	//	get
+	
+	/**
+	 * 		Contador de Registros
+	 * 
+	 * 	@param instance
+	 * 	@return
+	 */
+	public static int count (Object instance, Map<String, Integer> mapCount)
+	{
 		Class<?> clazz = instance.getClass();
 		int count = 0;
 		
@@ -456,7 +473,7 @@ public class SPEDUtil
 					for (Object item : (List<?>) content)
 					{
 						if (item instanceof RegSped)
-							count += ((RegSped) item).getCount ();
+							count += ((RegSped) item).getCount (mapCount);
 					}
 				}
 				
@@ -466,14 +483,20 @@ public class SPEDUtil
 					for (Object item : (Set<?>) content)
 					{
 						if (item instanceof RegSped)
-							count += ((RegSped) item).getCount ();
+							count += ((RegSped) item).getCount (mapCount);
 					}
 				}
 				
 				//	Registro SPED
 				else if (content instanceof RegSped)
 				{
-					count += ((RegSped) content).getCount ();
+					count += ((RegSped) content).getCount (mapCount);
+				}
+				
+				//	Bloco SPED
+				else if (content instanceof BlocoSPED)
+				{
+					((BlocoSPED) content).getCount (mapCount);
 				}
 			}
 		}
@@ -483,7 +506,17 @@ public class SPEDUtil
 		}
 		//
 		if (instance instanceof RegSped)
+		{
 			count ++;
+			//
+			if (mapCount != null)
+			{
+				String reg = ((RegSped) instance).getReg ();
+				//
+				Integer regCount = mapCount.remove (reg);
+				mapCount.put (reg, regCount == null ? 1 : regCount + 1);
+			}
+		}
 		//
 		return count;
 	}	//	count
@@ -800,4 +833,76 @@ public class SPEDUtil
 	{
 		return _RD500;
 	}	//	getRC500
+	
+	/**
+	 * 		Retorna o contador dos registros
+	 * 
+	 * 	@param type SPED ECD, EFD ou Contribuições
+	 * 	@param map Mapa com os contadores
+	 * 	@return 
+	 */
+	public static List<I_R9900> getR9900 (int type, Map<String, Integer> map)
+	{
+		List<I_R9900> listR9900 = new ArrayList<I_R9900> ();
+		Object[] keys = map.keySet().toArray();
+		Arrays.sort (keys, SPEDComparator.get ());
+		//
+		for (Object key : keys)
+		{
+			I_R9900 r9900 = (I_R9900) getReg ("R9900", type);
+			//
+			r9900.setREG_BLC ((String) key);
+			r9900.setQTD_REG_BLC (new BigDecimal (map.get(key)));
+			//
+			listR9900.add (r9900);
+		}
+		
+		//	9900|9001
+		I_R9900 r9900_9001 = (I_R9900) getReg ("R9900", type);
+		r9900_9001.setREG_BLC ("9001");
+		r9900_9001.setQTD_REG_BLC (Env.ONE);
+		
+		//	9900|9900
+		I_R9900 r9900_9900 = (I_R9900) getReg ("R9900", type);
+		r9900_9900.setREG_BLC ("9900");
+		r9900_9900.setQTD_REG_BLC (new BigDecimal (listR9900.size() + 4));	// Total + 9900|9001 + 9900|9900 + 9900|9990 + 9900|9999
+		
+		//	9900|9990
+		I_R9900 r9900_9990 = (I_R9900) getReg ("R9900", type);
+		r9900_9990.setREG_BLC ("9990");
+		r9900_9990.setQTD_REG_BLC (Env.ONE);
+		
+		//	9900|9999
+		I_R9900 r9900_9999 = (I_R9900) getReg ("R9900", type);
+		r9900_9999.setREG_BLC ("9999");
+		r9900_9999.setQTD_REG_BLC (Env.ONE);
+		
+		//	Adiciona na lista
+		listR9900.add (r9900_9001);
+		listR9900.add (r9900_9900);
+		listR9900.add (r9900_9990);
+		listR9900.add (r9900_9999);
+		//
+		return listR9900;
+	}	//	getR9900
+	
+	/**
+	 * 		Retorna o contador dos registros
+	 * 
+	 * 	@param type SPED ECD, EFD ou Contribuições
+	 * 	@param map Mapa com os contadores
+	 * 	@return 
+	 */
+	public static I_R9999 getR9999 (int type, Map<String, Integer> map)
+	{
+		I_R9999 r9999 = (I_R9999) getReg ("R9999", type);
+		Integer total = map.size() + 7;	// Total + 9001 + 9900|9001 + 9900|9900 + 9900|9990 + 9900|9999 + 9990 + 9999
+		//
+		for (String key : map.keySet())
+			total = total + map.get (key);
+		//
+		r9999.setQTD_LIN(new BigDecimal(total));
+		//
+		return r9999;
+	}	//	getR9999
 }	//	SPEDUtil

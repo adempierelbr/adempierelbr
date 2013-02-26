@@ -23,5 +23,6 @@ import java.math.BigDecimal;
 public interface I_R9900
 {
 	public void setREG_BLC (String str);
+	public String getREG_BLC ();
 	public void setQTD_REG_BLC (BigDecimal bd);
 }	//	I_R9900

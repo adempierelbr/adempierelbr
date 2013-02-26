@@ -16,40 +16,27 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.sped.bean.I_R9900;
+import org.adempierelbr.sped.bean.I_R9999;
 
 /**
- * 	REGISTRO 9900: 
- * 		REGISTROS DO ARQUIVO
+ * 	REGISTRO 9999: 
+ * 		Total de Registro
  * 
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: R9900.java, v1.0 2013/02/02 11:17:42 AM, ralexsander Exp $
+ *	@version $Id: R9999.java, v1.0 2013/02/26 11:17:42 AM, ralexsander Exp $
  */
-public class R9900 extends RegSped implements I_R9900
+public class R9999 extends RegSped implements I_R9999
 {
-	@XMLFieldProperties(maxSize=4, id = "REG_BLC")
-	private String REG_BLC;
-	
-	@XMLFieldProperties(id = "QTD_REG_BLC", scale=0)
-	private BigDecimal QTD_REG_BLC;
+	@XMLFieldProperties(id = "QTD_LIN", scale=0)
+	private BigDecimal QTD_LIN;
 
-	public String getREG_BLC()
+	public BigDecimal getQTD_LIN()
 	{
-		return REG_BLC;
+		return QTD_LIN;
 	}
 
-	public void setREG_BLC(String rEG_BLC)
+	public void setQTD_LIN(BigDecimal qTD_LIN)
 	{
-		REG_BLC = rEG_BLC;
+		QTD_LIN = qTD_LIN;
 	}
-
-	public BigDecimal getQTD_REG_BLC()
-	{
-		return QTD_REG_BLC;
-	}
-
-	public void setQTD_REG_BLC(BigDecimal qTD_REG_BLC)
-	{
-		QTD_REG_BLC = qTD_REG_BLC;
-	}
-}	//	R9900
+}	//	R9999
