@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRSalesCardTotal;
 import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.model.X_LBR_SPED;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
@@ -207,6 +209,8 @@ public class ProcGenerateEFD extends SvrProcess
 			// Fatos Fiscais
 			MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), dateFrom, dateTo, p_AD_Org_ID, null, null); 
 
+			// Vendas com cartão de crédito
+			MLBRSalesCardTotal[] cards = MLBRSalesCardTotal.get(getCtx(), p_C_Period_ID, null);
 			
 			// criar blocos
 			BLOCO0 bloco0 = new BLOCO0();
@@ -237,6 +241,10 @@ public class ProcGenerateEFD extends SvrProcess
 			RD100 rd100 = null;
 			RD500 rd500 = null;
 			
+			for(MLBRSalesCardTotal card : cards)
+			{
+				bloco1.addR1600(EFDUtil.createR1600(card));
+			}
 			
 			/**
 			 * Loop de Fatos Fiscais. 
@@ -262,7 +270,11 @@ public class ProcGenerateEFD extends SvrProcess
 				if(!(REG.startsWith("C") || REG.startsWith("D")))
 					continue;
 	
-	
+				/*
+				 * R0150 - Parceiros de Negócios
+				 */
+				bloco0.addr0150(EFDUtil.createR0150(factFiscal));
+				
 				/*
 				 * Criar registros da NF, pois o fato fiscal se refere a uma nova NF
 				 */
@@ -272,14 +284,7 @@ public class ProcGenerateEFD extends SvrProcess
 					// 
 					rc100 = null;
 					rd100 = null;
-					
-						
-					/*
-					 * R0150 - Parceiros de Negócios
-					 */
-					bloco0.addr0150(EFDUtil.createR0150(factFiscal));
-					
-					
+
 					/*
 					 * C100 - NFs
 					 */
@@ -637,8 +642,6 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
-			bloco1.addR1600(EFDUtil.createR1600("VISA DO BRASIL", new BigDecimal("3000.00"), Env.ZERO));
-			bloco1.addR1600(EFDUtil.createR1600("Diners Club", new BigDecimal("3000.00"), Env.ZERO));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 
 			/*

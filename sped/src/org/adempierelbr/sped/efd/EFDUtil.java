@@ -12,7 +12,9 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.model.MLBRSalesCardTotal;
 import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_SalesCardTotal;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
@@ -2128,13 +2130,12 @@ public class EFDUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static R1600 createR1600(String nome, BigDecimal credito, BigDecimal debito) throws Exception
+	public static R1600 createR1600(MLBRSalesCardTotal card) throws Exception
 	{
 		R1600 reg = new R1600();
-		reg.setREG("1600");
-		reg.setCOD_PART(nome);
-		reg.setTOT_CREDITO(credito);
-		reg.setTOT_DEBITO(debito);
+		reg.setCOD_PART(TextUtil.retiraEspecial(card.getC_BPartner().getValue()));
+		reg.setTOT_CREDITO(card.getLBR_CreditCardAmt());
+		reg.setTOT_DEBITO(card.getLBR_DebitCardAmt());
 		return reg;
 	}
 	
