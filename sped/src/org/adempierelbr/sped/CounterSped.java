@@ -19,6 +19,7 @@ import org.compiere.util.CLogger;
  * 
  * 	@version $Id: SPEDCounter.java, v1.0 2010/01/31 3:33:23 PM, ralexsander Exp $
  */
+@Deprecated
 public class CounterSped
 {
 	/**	Logger			*/
