@@ -461,6 +461,21 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		//
 		rC100.setCOD_MOD (getlbr_NFModel());
 		rC100.setCHV_NFE (getlbr_NFeID());
+		
+		//		Não preencher todo o Documento e
+		//	não gerar linhas para NF canceladas
+		if (isCancelled())
+		{
+			rC100.setCOD_PART(null);
+			rC100.setDT_DOC(null);
+			rC100.setVL_DOC(null);
+			rC100.setVL_DESC(null);
+			rC100.setIND_PGTO(null);
+			rC100.setVL_PIS(null);
+			rC100.setVL_COFINS(null);
+			return rC100;
+		}
+		
 		rC100.setDT_E_S (getlbr_DateInOut());
 		rC100.setVL_MERC (getTotalLines());
 		rC100.setIND_FRT (getIND_FRT());
@@ -474,10 +489,6 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rC100.setVL_IPI(getIPI_NFTaxAmt());
 		rC100.setVL_PIS_ST(null);		//	TODO
 		rC100.setVL_COFINS_ST(null);	//	TODO
-		
-		//	Não gerar linhas para NF canceladas
-		if (isCancelled())
-			return rC100;
 		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
@@ -575,6 +586,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public I_RD100 getRD100 (Properties ctx, I_RD100 rD100, String trxName) throws Exception
 	{
 		PropertyUtils.copyProperties (rD100, getRC100 (ctx, (I_RC100) new RC100 (), trxName));
+		rD100.setVL_SERV (getGrandTotal());
 		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
@@ -593,6 +605,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		RD101 rD101 = new RD101 ();
 		//
 		PropertyUtils.copyProperties (rD101, getRC170 ());
+		rD101.setIND_NAT_FRT (SPEDUtil.IND_FRT_SEM);		//	TODO
 		//
 		return rD101;
 	}	//	getRD101
@@ -602,6 +615,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		RD105 rD105 = new RD105 ();
 		//
 		PropertyUtils.copyProperties (rD105, getRC170 ());
+		rD105.setIND_NAT_FRT (SPEDUtil.IND_FRT_SEM);		//	TODO
 		//
 		return rD105;
 	}	//	getRD105
