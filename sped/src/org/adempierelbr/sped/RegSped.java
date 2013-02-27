@@ -107,9 +107,9 @@ public abstract class RegSped implements Comparable<Object>
 		return isValid;
 	}	//	isValid
 	
-	
-	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
+	@Deprecated
+	public int compareTo (Object arg0) 
+	{
 		return 0;
 	}
 	

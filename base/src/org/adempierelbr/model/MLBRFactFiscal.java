@@ -181,6 +181,19 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	}	//	MLBRFactFiscal
 	
 	/**
+	 * 		Monta o código do Produto concatenando o NCM,
+	 * 	para os casos que o NCM é diferente para alguns fornecedores
+	 */
+	@Override
+	public String getProductValue ()
+	{
+		if (getlbr_NCMName() != null && !getlbr_NCMName().isEmpty())
+			return TextUtil.retiraEspecial (super.getProductValue()) + "-" + TextUtil.retiraEspecial (getlbr_NCMName());
+		//
+		return super.getProductValue();
+	}	//	getProductValue
+	
+	/**
 	 * 		Get the Search Key from Business Partner
 	 * 
 	 * 	@return BPartner Value
@@ -189,7 +202,9 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	{
 		if (getC_BPartner_ID() == 0)
 			return "";
-		return TextUtil.retiraEspecial (getC_BPartner().getValue ());
+		return (getlbr_BPCNPJ() != null && !getlbr_BPCNPJ().trim().isEmpty()) 
+				? TextUtil.retiraEspecial (getlbr_BPCNPJ()) 
+						: "EX-" + TextUtil.retiraEspecial (getC_BPartner().getValue ());
 	}	//	getBPartnerValue
 	
 	/**
@@ -268,6 +283,10 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	 */
 	public I_R0200 fillR0200 (Properties ctx, I_R0200 r0200, String trxName)
 	{
+		//	Linha Inválida
+		if (getProductValue() == null || getProductValue().isEmpty())
+			return null;
+		//
 		r0200.setCOD_ITEM(getProductValue());
 		r0200.setDESCR_ITEM(getProductName());
 		r0200.setCOD_BARRA(getUPC());
@@ -410,6 +429,9 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		//
 		PropertyUtils.copyProperties (rC010, getRA010 ());
 		//
+		if (rC010.getCNPJ() == null || rC010.getCNPJ().isEmpty())
+			return null;
+		//
 		return rC010;
 	}	//	getRC010
 	
@@ -445,7 +467,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rC100.setVL_IPI(getIPI_TaxAmt());
 		rC100.setVL_PIS_ST(null);		//	TODO
 		rC100.setVL_COFINS_ST(null);	//	TODO
-				
+		
+		//	Não gerar linhas para NF canceladas
+		if (isCancelled())
+			return rC100;
+		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
 		
