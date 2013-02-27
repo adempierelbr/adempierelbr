@@ -27,6 +27,7 @@ public interface I_R0200
 	public void setCOD_BARRA (String str);
 	public void setCOD_GEN (String str);
 	public void setCOD_ITEM (String str);
+	public String getCOD_ITEM ();
 	public void setCOD_LST (String str);
 	public void setCOD_NCM (String str);
 	public void setDESCR_ITEM (String str);

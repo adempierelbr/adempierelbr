@@ -187,8 +187,12 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	@Override
 	public String getProductValue ()
 	{
-		if (getlbr_NCMName() != null && !getlbr_NCMName().isEmpty())
-			return TextUtil.retiraEspecial (super.getProductValue()) + "-" + TextUtil.retiraEspecial (getlbr_NCMName());
+//		TODO: Verificar se a melhor forma é concatenar o NCM
+//				para casos q a compra/venda foi feite com NCM
+//				diferente do cadastro do produto.
+//			  Solução atual foi modificar o comparador SPEDComparator
+//		if (getlbr_NCMName() != null && !getlbr_NCMName().isEmpty())
+//			return TextUtil.retiraEspecial (super.getProductValue()) + "-" + TextUtil.retiraEspecial (getlbr_NCMName());
 		//
 		return super.getProductValue();
 	}	//	getProductValue
@@ -351,10 +355,10 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rA100.setDT_DOC(getDateDoc());
 		rA100.setVL_DOC(getGrandTotal());
 		rA100.setIND_PGTO(SPEDUtil.IND_PAGTO_VISTA);	//	FIXME
-		rA100.setVL_BC_PIS(getPIS_TaxBaseAmt());
-		rA100.setVL_PIS(getPIS_TaxAmt());
-		rA100.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());
-		rA100.setVL_COFINS(getCOFINS_TaxAmt());
+		rA100.setVL_BC_PIS(getPIS_TaxBaseAmt());		//	FIXME: Criar PIS_NFTaxBaseAmt
+		rA100.setVL_PIS(getPIS_NFTaxAmt());
+		rA100.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());	//	FIXME: Criar COFINS_NFTaxBaseAmt
+		rA100.setVL_COFINS(getCOFINS_NFTaxAmt());
 		rA100.setVL_PIS_RET(null);
 		rA100.setVL_COFINS_RET(null);
 		rA100.setVL_ISS(Env.ZERO);	//	FIXME: Modificar VIEW
@@ -383,7 +387,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rA170.setNUM_ITEM (String.valueOf (getLine()));
 		rA170.setCOD_ITEM (getProductValue());
 		rA170.setDESCR_COMPL (getProductName());
-		rA170.setVL_ITEM (getTotalLines());
+		rA170.setVL_ITEM (getLineNetAmt());
 		rA170.setVL_DESC (getDiscountAmt());
 		rA170.setNAT_BC_CRED (null);	//	TODO: Não Obrigatório
 		rA170.setIND_ORIG_CRED (null);	//	TODO: Não Obrigatório
@@ -452,6 +456,9 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		 */
 		PropertyUtils.copyProperties (rC100, getRA100 (ctx, trxName));
 		//
+		if (rC100.getNUM_DOC() == null || rC100.getNUM_DOC().isEmpty())
+			return null;
+		//
 		rC100.setCOD_MOD (getlbr_NFModel());
 		rC100.setCHV_NFE (getlbr_NFeID());
 		rC100.setDT_E_S (getlbr_DateInOut());
@@ -460,11 +467,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		rC100.setVL_FRT (getFreightAmt());
 		rC100.setVL_SEG (getlbr_InsuranceAmt());
 		rC100.setVL_OUT_DA(null);		//	TODO
-		rC100.setVL_BC_ICMS(getICMS_TaxBaseAmt());
-		rC100.setVL_ICMS(getICMS_TaxAmt());
-		rC100.setVL_BC_ICMS_ST(getICMSST_TaxBaseAmt());
-		rC100.setVL_ICMS_ST(getICMSST_TaxAmt());
-		rC100.setVL_IPI(getIPI_TaxAmt());
+		rC100.setVL_BC_ICMS(getICMS_NFTaxBaseAmt());
+		rC100.setVL_ICMS(getICMS_NFTaxAmt());
+		rC100.setVL_BC_ICMS_ST(getICMSST_NFTaxBaseAmt());
+		rC100.setVL_ICMS_ST(getICMSST_NFTaxAmt());
+		rC100.setVL_IPI(getIPI_NFTaxAmt());
 		rC100.setVL_PIS_ST(null);		//	TODO
 		rC100.setVL_COFINS_ST(null);	//	TODO
 		

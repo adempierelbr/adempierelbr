@@ -37,6 +37,7 @@ public interface I_RC100
 	public void setIND_OPER (String str);
 	public void setIND_PGTO (String str);
 	public void setNUM_DOC (String str);
+	public String getNUM_DOC ();
 	public void setSER (String str);
 	public void setVL_ABAT_NT (BigDecimal bd);
 	public void setVL_BC_ICMS (BigDecimal bd);
