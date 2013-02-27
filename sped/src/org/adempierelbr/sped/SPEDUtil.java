@@ -332,17 +332,17 @@ public class SPEDUtil
 		List<Integer> unqNF = new ArrayList<Integer>();
 		
 		//	Initialize
-		_R0150 = new HashSet<I_R0150>();
-		_R0190 = new HashSet<I_R0190>();
-		_R0200 = new HashSet<I_R0200>();
-		_RA010 = new HashSet<RA010>();
-		_RA100 = new HashSet<RA100>();
-		_RC010 = new HashSet<RC010>();
-		_RC100 = new HashSet<I_RC100>();
-		_RC500 = new HashSet<I_RC500>();
-		_RD010 = new HashSet<RD010>();
-		_RD100 = new HashSet<I_RD100>();
-		_RD500 = new HashSet<I_RD500>();
+		_R0150 = new SPEDSet<I_R0150>();
+		_R0190 = new SPEDSet<I_R0190>();
+		_R0200 = new SPEDSet<I_R0200>();
+		_RA010 = new SPEDSet<RA010>();
+		_RA100 = new SPEDSet<RA100>();
+		_RC010 = new SPEDSet<RC010>();
+		_RC100 = new SPEDSet<I_RC100>();
+		_RC500 = new SPEDSet<I_RC500>();
+		_RD010 = new SPEDSet<RD010>();
+		_RD100 = new SPEDSet<I_RD100>();
+		_RD500 = new SPEDSet<I_RD500>();
 		//
 		for (MLBRFactFiscal fact : facts)
 		{
