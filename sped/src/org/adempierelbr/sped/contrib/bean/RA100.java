@@ -14,11 +14,11 @@ package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.SPEDSet;
 
 /**
  * 	REGISTRO A100: 
@@ -89,7 +89,7 @@ public class RA100 extends RegSped
 	@XMLFieldProperties(isMandatory=false, id = "VL_ISS")
 	private BigDecimal VL_ISS;
 	
-	private Set<RA170> _RA170 = new HashSet<RA170>();
+	private Set<RA170> _RA170 = new SPEDSet<RA170>();
 
 	/**
 	 * 	@param IND_OPER Indicador do tipo de operação:
