@@ -38,7 +38,7 @@ public class SPEDComparator implements Comparator<Object>
 			return ((I_R0200) o1).getCOD_ITEM().compareTo(((I_R0200) o2).getCOD_ITEM());
 		}
 		//
-		return o1.toString().compareTo (o2.toString());
+		return o1.toString().replace("|", "0").compareTo (o2.toString().replace("|", "0"));
 	}	//	compare
 
 	/**
