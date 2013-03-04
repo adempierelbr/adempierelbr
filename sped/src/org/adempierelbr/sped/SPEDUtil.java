@@ -17,7 +17,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -844,10 +843,8 @@ public class SPEDUtil
 	public static List<I_R9900> getR9900 (int type, Map<String, Integer> map)
 	{
 		List<I_R9900> listR9900 = new ArrayList<I_R9900> ();
-		Object[] keys = map.keySet().toArray();
-		Arrays.sort (keys, SPEDComparator.get ());
 		//
-		for (Object key : keys)
+		for (Object key : map.keySet())
 		{
 			I_R9900 r9900 = (I_R9900) getReg ("R9900", type);
 			//

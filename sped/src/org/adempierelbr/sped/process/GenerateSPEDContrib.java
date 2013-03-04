@@ -13,15 +13,15 @@
 package org.adempierelbr.sped.process;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
-import org.adempierelbr.sped.CounterSped;
+import org.adempierelbr.sped.SPEDComparator;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
 import org.adempierelbr.sped.contrib.bean.Bloco1;
@@ -171,8 +171,6 @@ public class GenerateSPEDContrib extends SvrProcess
 	 */
 	private void genSPEDContrib () throws AdempiereException, Exception
 	{
-		CounterSped.clear ();
-		//
 		SPEDUtil.processFacts (ctx, MLBRFactFiscal.get (ctx, dateFrom, dateTo, p_AD_Org_ID, null, trxName), SPEDUtil.TYPE_CONTRIB, trxName);
 		
 		//	Inicio do Arquivo
@@ -228,7 +226,7 @@ public class GenerateSPEDContrib extends SvrProcess
 		/*
 		 * Nome do arquivo
 		 * 
-		 * EDF_CNPJ_DATA.txt
+		 * EDF_Contrib_CNPJ_DATA.txt
 		 */
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
 		fileName += "EFD_Contrib_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
@@ -243,7 +241,7 @@ public class GenerateSPEDContrib extends SvrProcess
 		sped.setB1 ((Bloco1) b1.get (SPEDUtil.TYPE_CONTRIB));
 		
 		//	Registro 9
-		Map<String, Integer> regCount = new HashMap<String, Integer>();
+		Map<String, Integer> regCount = new TreeMap<String, Integer>(SPEDComparator.get());
 		sped.getCount (regCount);
 		
 		b9.setR9900 (SPEDUtil.getR9900 (SPEDUtil.TYPE_CONTRIB, regCount));
