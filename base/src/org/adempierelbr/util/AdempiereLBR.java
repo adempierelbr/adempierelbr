@@ -273,7 +273,7 @@ public abstract class AdempiereLBR{
 	
 	
 	public static String getUOMName_trl(MUOM uom){
-		return getUOM_trl(uom,AD_LANGUAGE);
+		return getUOMName_trl(uom,AD_LANGUAGE);
 	}
 
 	public static String getUOMName_trl(MUOM uom, String AD_Language){

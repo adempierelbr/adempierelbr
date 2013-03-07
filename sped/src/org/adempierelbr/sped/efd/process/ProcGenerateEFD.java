@@ -589,7 +589,50 @@ public class ProcGenerateEFD extends SvrProcess
 					
 					// rs
 					rs  = pstmt.executeQuery ();
-				}
+				
+					/*
+					 *  para cada registro do inventário, gera-se um RH010 e totaliza com o RH005
+					 */
+					while (rs.next())
+					{
+						// carregar produto
+						MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), null);
+	
+						// criar R0190
+						R0190 r0190 = EFDUtil.createR0190(m_product);
+						bloco0.addr0190(r0190);
+						
+						// criar R0200
+						R0200 r0200 = EFDUtil.createR0200(m_product);
+						bloco0.addr0200(r0200);
+				
+						// conta contábil
+						String COD_CTA = "";
+						int C_ElementValue_ID = EFDUtil.getProductAsseAcct(m_product.getM_Product_ID(), null);
+						if(C_ElementValue_ID > 0)
+						{
+							R0500 r0500 = EFDUtil.createR0500(new MElementValue(getCtx(), C_ElementValue_ID, null), dateTo);
+							bloco0.addr0500(r0500);
+							COD_CTA = r0500.getCOD_CTA();
+						}
+						
+						// indicador de quem está com o estoque
+						String IND_PROP = rs.getString("lbr_WarehouseType").equals("3RD") ? "2" :
+								rs.getString("lbr_WarehouseType").equals("3WN") ? "1" : "0"; 					
+						 
+								
+						// criar registro RH010 e adicionar ao RH005
+						blocoH.getrH005().addrH010(EFDUtil.createRH010(
+								r0200.getCOD_ITEM(), 
+								r0190.getUNID(), 
+								rs.getBigDecimal("QtyOnHand"),
+								rs.getBigDecimal("CurrentCostPrice"), 
+								rs.getBigDecimal("CurrentCostPrice"), 
+								IND_PROP, 
+								COD_CTA));
+						
+					}
+				} // fim Bloco H
 				catch (SQLException e)
 				{
 					log.log(Level.SEVERE, EFDUtil.getSQLInv(), e);
@@ -598,50 +641,8 @@ public class ProcGenerateEFD extends SvrProcess
 				finally{
 				       DB.close(rs, pstmt);
 				}
-				
-				/*
-				 *  para cada registro do inventário, gera-se um RH010 e totaliza com o RH005
-				 */
-				while (rs.next())
-				{
-					// carregar produto
-					MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), null);
+			}
 
-					// criar R0190
-					R0190 r0190 = EFDUtil.createR0190(m_product);
-					bloco0.addr0190(r0190);
-					
-					// criar R0200
-					R0200 r0200 = EFDUtil.createR0200(m_product);
-					bloco0.addr0200(r0200);
-			
-					// conta contábil
-					String COD_CTA = "";
-					int C_ElementValue_ID = EFDUtil.getProductAsseAcct(m_product.getM_Product_ID(), null);
-					if(C_ElementValue_ID > 0)
-					{
-						R0500 r0500 = EFDUtil.createR0500(new MElementValue(getCtx(), C_ElementValue_ID, null), dateTo);
-						bloco0.addr0500(r0500);
-						COD_CTA = r0500.getCOD_CTA();
-					}
-					
-					// indicador de quem está com o estoque
-					String IND_PROP = rs.getString("lbr_WarehouseType").equals("3RD") ? "2" :
-							rs.getString("lbr_WarehouseType").equals("3WN") ? "1" : "0"; 					
-					 
-							
-					// criar registro RH010 e adicionar ao RH005
-					blocoH.getrH005().addrH010(EFDUtil.createRH010(
-							r0200.getCOD_ITEM(), 
-							r0190.getUNID(), 
-							rs.getBigDecimal("QtyOnHand"),
-							rs.getBigDecimal("CurrentCostPrice"), 
-							rs.getBigDecimal("CurrentCostPrice"), 
-							IND_PROP, 
-							COD_CTA));
-					
-				}
-			} // fim Bloco H
 			
 			
 			/*
