@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -572,18 +573,31 @@ public class ProcGenerateEFD extends SvrProcess
 				 */
 				blocoH.setrH005(EFDUtil.createRH005(new Timestamp(calendar.getTimeInMillis())));
 				
-				// carregar informações do inventário
-				PreparedStatement pstmt = DB.prepareStatement (EFDUtil.getSQLInv(), null);
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
 				
-				// params
-				pstmt.setInt(1, p_C_Period_ID);
-				pstmt.setString(2, "S");
-				pstmt.setInt(3, Env.getAD_Client_ID(getCtx()));
-				pstmt.setInt(4, p_AD_Org_ID);
-				pstmt.setTimestamp(5, new Timestamp(calendar.getTimeInMillis())); // Data: 31/12/ANO_ANTERIOR_AO_QUE_ESTA_SENDO_GERADO_O_EFD
-				
-				// rs
-				ResultSet rs  = pstmt.executeQuery ();
+				try
+				{
+					// carregar informações do inventário
+					pstmt = DB.prepareStatement (EFDUtil.getSQLInv(), null);
+					// params
+					pstmt.setInt(1, p_C_Period_ID);
+					pstmt.setString(2, "S");
+					pstmt.setInt(3, Env.getAD_Client_ID(getCtx()));
+					pstmt.setInt(4, p_AD_Org_ID);
+					pstmt.setTimestamp(5, new Timestamp(calendar.getTimeInMillis())); // Data: 31/12/ANO_ANTERIOR_AO_QUE_ESTA_SENDO_GERADO_O_EFD
+					
+					// rs
+					rs  = pstmt.executeQuery ();
+				}
+				catch (SQLException e)
+				{
+					log.log(Level.SEVERE, EFDUtil.getSQLInv(), e);
+					return null;
+				}
+				finally{
+				       DB.close(rs, pstmt);
+				}
 				
 				/*
 				 *  para cada registro do inventário, gera-se um RH010 e totaliza com o RH005
