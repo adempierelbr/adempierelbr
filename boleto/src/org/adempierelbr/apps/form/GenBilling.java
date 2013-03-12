@@ -13,9 +13,7 @@
  *****************************************************************************/
 package org.adempierelbr.apps.form;
 
-import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,9 +67,6 @@ public class GenBilling
 	
 	/**	Logger					*/
 	public static CLogger log = CLogger.getCLogger(GenBilling.class);
-	
-	/**	Trx						*/
-	public Trx trx = null;
 
 	/**
 	 * 	Get Bank Accounts
@@ -348,9 +343,6 @@ public class GenBilling
 	{
 		log.info("");
 
-		String trxName = null;
-		trx = null;
-
 		//  Create Lines
 		int rows = miniTable.getRowCount();
 		for (int i = 0; i < rows; i++)
@@ -359,17 +351,21 @@ public class GenBilling
 			if (id.isSelected())
 			{
 				int C_Invoice_ID = id.getRecord_ID().intValue();
+				String trxName = Trx.createTrxName ("GenBilling");
+				//
 				try
 				{
 					MLBRBoleto.generateBoleto (Env.getCtx(), C_Invoice_ID, bi.getKey(), null, printerName, trxName);
+					Trx.get (trxName, false).commit ();
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
+					Trx.get (trxName, false).rollback ();
 					e.printStackTrace();
 				}
-				catch (PrinterException e)
+				finally
 				{
-					e.printStackTrace();
+					Trx.get (trxName, false).close ();
 				}
 				//
 				log.fine("C_Invoice_ID=" + C_Invoice_ID);
@@ -384,10 +380,7 @@ public class GenBilling
 	 */
 	public List<File> exportBilling (IMiniTable miniTable, String filePath, KeyNamePair bi)
 	{
-		log.info("");
-
-		String trxName = null;
-		trx = null;
+		log.info("");		
 		List<File> files = new ArrayList<File>();
 		
 		//  Create Lines
@@ -398,17 +391,20 @@ public class GenBilling
 			if (id.isSelected())
 			{
 				int C_Invoice_ID = id.getRecord_ID().intValue();
+				String trxName = Trx.createTrxName ("GenBilling");
+
 				try
 				{
 					files.addAll (MLBRBoleto.generateBoleto (Env.getCtx(), C_Invoice_ID, bi.getKey(), filePath, null, trxName));
 				}
-				catch (IOException e)
+				catch (Exception e)
 				{
+					Trx.get (trxName, false).rollback ();
 					e.printStackTrace();
 				}
-				catch (PrinterException e)
+				finally
 				{
-					e.printStackTrace();
+					Trx.get (trxName, false).close ();
 				}
 				//
 				log.fine("C_Invoice_ID=" + C_Invoice_ID);
