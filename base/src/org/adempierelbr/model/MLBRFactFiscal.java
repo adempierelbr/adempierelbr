@@ -212,6 +212,20 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	}	//	getBPartnerValue
 	
 	/**
+	 * 		IE - Inscrição Estadual
+	 * 	Trata a informação nos casos de Isenção de IE
+	 */
+	public String getlbr_BPIE ()
+	{
+		if (super.getlbr_BPIE() == null
+				|| super.getlbr_BPIE().isEmpty()
+				|| super.getlbr_BPIE().toUpperCase().indexOf("ISENT") > 0)
+			return "";
+		//
+		return super.getlbr_BPIE();
+	}	//	getlbr_BPIE
+	
+	/**
 	 * 	Obs.: A partir de 01/01/2012 passará a ser:
 	 * 	Indicador do tipo do frete:	
 	 * 		<li>0- Por conta do emitente;
