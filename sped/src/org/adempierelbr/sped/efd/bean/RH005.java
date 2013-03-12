@@ -37,7 +37,7 @@ public class RH005 extends RegSped {
 	@XMLFieldProperties(minSize = 8, maxSize = 8, isNumber = true, id = "DT_INV")
 	private Timestamp DT_INV;
 
-	@XMLFieldProperties(id = "DT_INV")
+	@XMLFieldProperties(id = "VL_INV")
 	private BigDecimal VL_INV;
 
 	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "MOT_INV")
