@@ -627,7 +627,7 @@ public class ProcGenerateEFD extends SvrProcess
 								r0190.getUNID(), 
 								rs.getBigDecimal("QtyOnHand"),
 								rs.getBigDecimal("CurrentCostPrice"), 
-								rs.getBigDecimal("CurrentCostPrice"), 
+								rs.getBigDecimal("CurrentCostPrice").multiply(rs.getBigDecimal("QtyOnHand")), 
 								IND_PROP, 
 								COD_CTA));
 						
