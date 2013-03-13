@@ -6,9 +6,7 @@ Segue o boleto da Empresa {0}. A Nota Fiscal é enviada pelo site da Prefeitura 
 
 Atenciosamente,
 Cobrança - {0}
-Telefone: {1}','0 - Empresa
-1 - Telefone
-2 - Número do Documento da Fatura','I',TO_DATE('2013-03-13 14:44:33','YYYY-MM-DD HH24:MI:SS'),100,'LBR_BillingEMailText')
+Telefone: {1}',null,'I',TO_DATE('2013-03-13 14:44:33','YYYY-MM-DD HH24:MI:SS'),100,'LBR_BillingEMailText')
 ;
 
 -- 13/03/2013 14h44min34s BRT
