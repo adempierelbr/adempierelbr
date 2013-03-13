@@ -649,10 +649,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public I_RD500 getRD500 (Properties ctx, I_RD500 rD500, String trxName) throws Exception
 	{
 		PropertyUtils.copyProperties (rD500, getRD100 (ctx, (I_RD100) new RD100 (), trxName));
-		
+		rD500.setDT_A_P(getlbr_DateInOut());
+
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
-		
+
 		for (MLBRFactFiscal line : lines)
 		{
 			rD500.addD501 (line.getRD501());
