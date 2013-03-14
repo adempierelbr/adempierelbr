@@ -13,11 +13,17 @@
  *****************************************************************************/
 package org.adempierelbr.validator;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNFeLot;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
@@ -25,6 +31,7 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
 import org.compiere.model.MRequisition;
 import org.compiere.model.MRequisitionLine;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTimeExpense;
 import org.compiere.model.MTimeExpenseLine;
 import org.compiere.model.ModelValidationEngine;
@@ -32,6 +39,7 @@ import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
 
@@ -82,6 +90,7 @@ public class VLBRCommons implements ModelValidator
 		engine.addModelChange (MInOutLine.Table_Name, this);
 		engine.addModelChange (MLocation.Table_Name, this);
 		engine.addModelChange (MBankAccount.Table_Name, this);
+		engine.addModelChange (MAttributeSetInstance.Table_Name, this);
 		
 		//	DocValidate
 		engine.addDocValidate(MTimeExpense.Table_Name, this);
@@ -150,6 +159,10 @@ public class VLBRCommons implements ModelValidator
 		//	Organização da Conta Bancária
 		else if (MBankAccount.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MBankAccount) po, type);
+		
+		//	Validar Número de Série Duplicados
+		else if (MAttributeSetInstance.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MAttributeSetInstance) po, type);
 		
 		return null;
 	}	//	modelChange
@@ -352,6 +365,56 @@ public class VLBRCommons implements ModelValidator
 		if (TYPE_BEFORE_NEW == type && bank.getAD_Org_ID()==0)
 		{
 			return "A Organização deve ser diferente de * ";
+		}
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MAttributeSetInstance asi, int type) throws Exception
+	{
+		//	Ajusta a Organização
+		if (TYPE_BEFORE_NEW == type || TYPE_BEFORE_CHANGE == type)
+		{
+			if(!MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
+			{
+				String sql = "SELECT M_AttributeSetInstance.serno "
+			
+					+ "FROM M_AttributeSetInstance "
+					+ "INNER JOIN M_Storage ON M_Storage.M_AttributeSetInstance_ID = M_AttributeSetInstance.M_AttributeSetInstance_ID "
+					+ "INNER JOIN M_AttributeSet ON M_AttributeSetInstance.M_AttributeSet_ID = "
+					+ "M_AttributeSet.M_AttributeSet_ID "
+					+ "WHERE M_AttributeSetInstance.serno=? AND M_AttributeSet.M_AttributeSet_ID=?";
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				try
+				{
+					pstmt = DB.prepareStatement(sql, null);
+					pstmt.setString(1, asi.getSerNo());
+					pstmt.setInt(2, asi.getM_AttributeSet_ID());
+					rs = pstmt.executeQuery();
+					if (rs.next())
+					{
+						return "Número de Série já existe";
+					}
+				}
+				catch (SQLException ex)
+				{
+					log.log(Level.SEVERE, sql, ex);
+				}
+				finally
+				{
+					DB.close(rs, pstmt);
+					rs = null; pstmt = null;
+				}
+			}
 		}
 		return null;
 	}	//	modelChange
