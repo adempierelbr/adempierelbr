@@ -13,9 +13,11 @@
 package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.SPEDSet;
 
 /**
  * 	REGISTRO M600: 
@@ -60,6 +62,9 @@ public class RM600 extends RegSped
 	@XMLFieldProperties(isMandatory=false, id = "VL_CONT_CUM_R")
 	private BigDecimal VL_CONT_CUM_R;
 
+	@XMLFieldProperties (id = "RM610")
+	private Set<RM610> _RM610 = new SPEDSet<RM610>();
+	
 
 	public BigDecimal getVL_TOT_CONT_NC_PER()
 	{
@@ -171,4 +176,13 @@ public class RM600 extends RegSped
 		VL_CONT_CUM_R = vL_CONT_CUM_R;
 	}
 	
+	public Set<RM610> get_RM610()
+	{
+		return _RM610;
+	}
+
+	public void addRM610 (RM610 rM610)
+	{
+		_RM610.add(rM610);
+	}
 }	//	RM600

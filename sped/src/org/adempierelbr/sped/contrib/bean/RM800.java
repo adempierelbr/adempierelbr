@@ -13,9 +13,11 @@
 package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.SPEDSet;
 
 /**
  * 	REGISTRO M800: 
@@ -38,6 +40,10 @@ public class RM800 extends RegSped
 	
 	@XMLFieldProperties(minSize=1, maxSize=255, id = "DESC_COMPL")
 	private String DESC_COMPL;
+	
+	@XMLFieldProperties (id = "RM810")
+	private Set<RM810> _RM810 = new SPEDSet<RM810>();
+	
 
 	public String getCST_COFINS()
 	{
@@ -77,5 +83,15 @@ public class RM800 extends RegSped
 	public void setDESC_COMPL(String dESC_COMPL)
 	{
 		DESC_COMPL = dESC_COMPL;
+	}
+	
+	public Set<RM810> get_RM810()
+	{
+		return _RM810;
+	}
+
+	public void addRM810 (RM810 rM810)
+	{
+		_RM810.add(rM810);
 	}
 }	//	RM800

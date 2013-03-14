@@ -13,9 +13,11 @@
 package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
+import org.adempierelbr.sped.SPEDSet;
 
 /**
  * 	REGISTRO M400: 
@@ -39,6 +41,9 @@ public class RM400 extends RegSped
 	@XMLFieldProperties(minSize=1, maxSize=255, id = "DESC_COMPL")
 	private String DESC_COMPL;
 
+	@XMLFieldProperties (id = "RM410")
+	private Set<RM410> _RM410 = new SPEDSet<RM410>();
+	
 	public String getCST_PIS()
 	{
 		return CST_PIS;
@@ -77,5 +82,15 @@ public class RM400 extends RegSped
 	public void setDESC_COMPL(String dESC_COMPL)
 	{
 		DESC_COMPL = dESC_COMPL;
+	}
+	
+	public Set<RM410> get_RM410()
+	{
+		return _RM410;
+	}
+
+	public void addRM410 (RM410 rM410)
+	{
+		_RM410.add(rM410);
 	}
 }	//	RM400
