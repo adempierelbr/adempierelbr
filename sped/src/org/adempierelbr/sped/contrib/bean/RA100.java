@@ -305,4 +305,9 @@ public class RA100 extends RegSped
 	{
 		_RA170.add(rA170);
 	}
+	
+	public Set<RA170> getRA170 ()
+	{
+		return _RA170;
+	}
 }	//	RA100

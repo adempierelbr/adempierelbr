@@ -14,6 +14,7 @@ package org.adempierelbr.sped.bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import org.adempierelbr.sped.contrib.bean.RC120;
 import org.adempierelbr.sped.contrib.bean.RC170;
@@ -58,5 +59,7 @@ public interface I_RC100
 	
 	
 	public void addRC120(RC120 rC120);	//	FIXME Mudar para Interface
+	public Set<RC120> getRC120 ();
 	public void addRC170(RC170 rC170);
+	public Set<RC170> getRC170 ();
 }	//	I_RC100

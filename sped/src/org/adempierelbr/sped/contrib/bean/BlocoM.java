@@ -12,6 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import java.util.Set;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.BlocoSPED;
 import org.adempierelbr.sped.bean.I_RX001;
@@ -31,6 +33,15 @@ public class BlocoM extends BlocoSPED
 	@XMLFieldProperties (id = "RM100")
 	private RM100 rM100;
 	
+	@XMLFieldProperties (id = "RM400")
+	private Set<RM400> rM400;
+	
+	@XMLFieldProperties (id = "RM600")
+	private Set<RM600> rM600;
+	
+	@XMLFieldProperties (id = "RM800")
+	private Set<RM800> rM800;
+	
 	@XMLFieldProperties (id = "RM990")
 	private I_RX990 rM990;
 	
@@ -49,6 +60,18 @@ public class BlocoM extends BlocoSPED
 	public void setRM100(RM100 rM100)
 	{
 		this.rM100 = rM100;
+	}
+	public void setRM400(Set<RM400> rM400)
+	{
+		this.rM400 = rM400;
+	}
+	public void setRM600(Set<RM600> rM600)
+	{
+		this.rM600 = rM600;
+	}
+	public void setRM800(Set<RM800> rM800)
+	{
+		this.rM800 = rM800;
 	}
 	public I_RX990 getRM990()
 	{

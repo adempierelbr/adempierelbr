@@ -27,6 +27,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.sped.bean.I_FiscalDocItem;
 import org.adempierelbr.sped.bean.I_R0000;
 import org.adempierelbr.sped.bean.I_R0100;
 import org.adempierelbr.sped.bean.I_R0150;
@@ -45,6 +46,10 @@ import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RD010;
+import org.adempierelbr.sped.contrib.bean.RM400;
+import org.adempierelbr.sped.contrib.bean.RM410;
+import org.adempierelbr.sped.contrib.bean.RM800;
+import org.adempierelbr.sped.contrib.bean.RM810;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -832,6 +837,97 @@ public class SPEDUtil
 	{
 		return _RD500;
 	}	//	getRC500
+
+	/**
+	 * 		M400
+	 * 	@return Registros M400
+	 */
+	public static Set<RM400> getRM400 ()
+	{
+		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
+		
+		Set<I_FiscalDocItem> items = new HashSet<I_FiscalDocItem>();
+		
+		for (RA100 a100 : _RA100)
+		{
+			items.addAll (a100.getRA170 ());
+		}
+		
+		for (I_RC100 c100 : _RC100)
+		{
+			items.addAll (c100.getRC170 ());
+		}
+		
+		for (I_FiscalDocItem item : items)
+		{
+			if (TextUtil.match (item.getCST_PIS(), "03", "04", "05", "06", "07", "08", "09"))	//	FIXME
+				map.put (item.getCST_PIS(), item.getVL_ITEM());
+		}
+		
+		Set<RM400> _RM400 = new SPEDSet<RM400> ();
+		
+		for (String key : map.keySet())
+		{
+			RM400 rM400 = new RM400 ();
+			rM400.setCST_PIS (key);
+			rM400.setVL_TOT_REC (map.get (key));
+			//
+			RM410 rM410 = new RM410 ();
+			rM410.setVL_REC (map.get (key));
+			//
+			rM400.addRM410 (rM410);
+			
+			_RM400.add (rM400);
+		}
+		
+		return _RM400;
+	}	//	getRM400
+
+	/**
+	 * 		M800
+	 * 	FIXME Deixar M400 e M800 num único método
+	 * 	@return Registros M800
+	 */
+	public static Set<RM800> getRM800 ()
+	{
+		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
+		
+		Set<I_FiscalDocItem> items = new HashSet<I_FiscalDocItem>();
+		
+		for (RA100 a100 : _RA100)
+		{
+			items.addAll (a100.getRA170 ());
+		}
+		
+		for (I_RC100 c100 : _RC100)
+		{
+			items.addAll (c100.getRC170 ());
+		}
+		
+		for (I_FiscalDocItem item : items)
+		{
+			if (TextUtil.match (item.getCST_COFINS(), "04", "05", "06", "07", "08", "09"))	//	FIXME
+				map.put (item.getCST_COFINS(), item.getVL_ITEM());
+		}
+		
+		Set<RM800> _RM800 = new SPEDSet<RM800> ();
+		
+		for (String key : map.keySet())
+		{
+			RM800 rM800 = new RM800 ();
+			rM800.setCST_COFINS (key);
+			rM800.setVL_TOT_REC (map.get (key));
+			//
+			RM810 rM810 = new RM810 ();
+			rM810.setVL_REC (map.get (key));
+			//
+			rM800.addRM810 (rM810);
+			
+			_RM800.add (rM800);
+		}
+		
+		return _RM800;
+	}	//	getRM800
 	
 	/**
 	 * 		Retorna o contador dos registros

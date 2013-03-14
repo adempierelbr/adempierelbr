@@ -420,4 +420,14 @@ public class RC100 extends RegSped implements I_RC100
 	{
 		_RC170.add(rC170);
 	}
+	
+	public Set<RC120> getRC120 ()
+	{
+		return _RC120;
+	}
+	
+	public Set<RC170> getRC170 ()
+	{
+		return _RC170;
+	}
 }	//	RC100
