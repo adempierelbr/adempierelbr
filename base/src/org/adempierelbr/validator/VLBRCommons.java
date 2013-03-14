@@ -383,7 +383,7 @@ public class VLBRCommons implements ModelValidator
 		//	Ajusta a Organização
 		if (TYPE_BEFORE_NEW == type || TYPE_BEFORE_CHANGE == type)
 		{
-			if(!MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
+			if(MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
 			{
 				String sql = "SELECT M_AttributeSetInstance.serno "
 			
