@@ -33,6 +33,9 @@ public class BlocoM extends BlocoSPED
 	@XMLFieldProperties (id = "RM100")
 	private RM100 rM100;
 	
+	@XMLFieldProperties (id = "RM200")
+	private Set<RM200> rM200;
+	
 	@XMLFieldProperties (id = "RM400")
 	private Set<RM400> rM400;
 	
@@ -60,6 +63,14 @@ public class BlocoM extends BlocoSPED
 	public void setRM100(RM100 rM100)
 	{
 		this.rM100 = rM100;
+	}
+	public Set<RM200> getRM200()
+	{
+		return rM200;
+	}
+	public void setRM200(Set<RM200> rM200)
+	{
+		this.rM200 = rM200;
 	}
 	public Set<RM400> getRM400()
 	{
