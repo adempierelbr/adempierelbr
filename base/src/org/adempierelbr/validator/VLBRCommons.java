@@ -380,7 +380,9 @@ public class VLBRCommons implements ModelValidator
      */
 	public String modelChange (MAttributeSetInstance asi, int type) throws Exception
 	{
-		//	Ajusta a Organização
+		/**
+		 * Não Permite duplicidade de Número de Série
+		 */
 		if (TYPE_BEFORE_NEW == type || TYPE_BEFORE_CHANGE == type)
 		{
 			if(MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
@@ -407,7 +409,7 @@ public class VLBRCommons implements ModelValidator
 				}
 				catch (SQLException ex)
 				{
-					log.log(Level.SEVERE, sql, ex);
+					log.log(Level.WARNING, sql, ex);
 				}
 				finally
 				{
