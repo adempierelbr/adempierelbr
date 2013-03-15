@@ -221,9 +221,9 @@ public class GenerateSPEDContrib extends SvrProcess
 		//	Registro M400
 		bM.setRM400 (SPEDUtil.getRM400 ());
 		//	Registro M600
-		bM.setRM400 (SPEDUtil.getRM400 ());
+		bM.setRM600 (SPEDUtil.getRM600 ());
 		//	Registro M800
-		bM.setRM400 (SPEDUtil.getRM400 ());
+		bM.setRM800 (SPEDUtil.getRM800 ());
 		
 		String fileName = p_FilePath;
 		

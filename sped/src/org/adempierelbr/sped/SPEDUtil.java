@@ -48,6 +48,8 @@ import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RM400;
 import org.adempierelbr.sped.contrib.bean.RM410;
+import org.adempierelbr.sped.contrib.bean.RM600;
+import org.adempierelbr.sped.contrib.bean.RM610;
 import org.adempierelbr.sped.contrib.bean.RM800;
 import org.adempierelbr.sped.contrib.bean.RM810;
 import org.adempierelbr.util.BPartnerUtil;
@@ -266,6 +268,9 @@ public class SPEDUtil
 	/**	Recibo Provisório de Serviço */
 	public static final String COD_MOD_RPS = "RS";	//	FIXME: Criar script para adicionar RPS, sendo a chave RS (2 Dígitos)
 
+	/**	Outras Receitas				*/
+	public static final String NAT_REC_OUTRAS_DESP = "999";
+	
 	/**
 	 * 	Array com todos os Registros 0150 e seus filhos
 	 */
@@ -846,7 +851,7 @@ public class SPEDUtil
 	{
 		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
 		
-		Set<I_FiscalDocItem> items = new HashSet<I_FiscalDocItem>();
+		List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
 		
 		for (RA100 a100 : _RA100)
 		{
@@ -873,6 +878,7 @@ public class SPEDUtil
 			rM400.setVL_TOT_REC (map.get (key));
 			//
 			RM410 rM410 = new RM410 ();
+			rM410.setNAT_REC (NAT_REC_OUTRAS_DESP);
 			rM410.setVL_REC (map.get (key));
 			//
 			rM400.addRM410 (rM410);
@@ -884,6 +890,41 @@ public class SPEDUtil
 	}	//	getRM400
 
 	/**
+	 * 		M600
+	 * 	FIXME Deixar M400, M600 e M800 num único método
+	 * 	@return Registros M600
+	 */
+	public static RM600 getRM600 ()
+	{
+		RM600 rM600 = new RM600();
+		rM600.setVL_CONT_CUM_R(Env.ZERO);
+		rM600.setVL_CONT_NC_REC(Env.ZERO);
+		rM600.setVL_OUT_DED_CUM(Env.ZERO);
+		rM600.setVL_OUT_DED_NC(Env.ZERO);
+		rM600.setVL_RET_CUM(Env.ZERO);
+		rM600.setVL_RET_NC(Env.ZERO);
+		rM600.setVL_TOT_CONT_CUM_PER(Env.ZERO);
+		rM600.setVL_TOT_CONT_NC_DEV(Env.ZERO);
+		rM600.setVL_TOT_CONT_NC_PER(Env.ZERO);
+		rM600.setVL_TOT_CONT_REC(Env.ZERO);
+		rM600.setVL_TOT_CRED_DESC(Env.ZERO);
+		rM600.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
+		//
+		RM610 rM610 = new RM610();
+		rM610.setCOD_CONT("51");
+		rM610.setVL_REC_BRT(Env.ZERO);
+		rM610.setVL_BC_CONT(Env.ZERO);
+		rM610.setVL_CONT_APUR(Env.ZERO);
+		rM610.setVL_AJUS_ACRES(Env.ZERO);
+		rM610.setVL_AJUS_REDUC(Env.ZERO);
+		//
+		rM610.setALIQ_COFINS(new BigDecimal(3));
+		rM600.addRM610(rM610);
+		//
+		return rM600;
+	}	//	getR6M00
+	
+	/**
 	 * 		M800
 	 * 	FIXME Deixar M400 e M800 num único método
 	 * 	@return Registros M800
@@ -892,7 +933,7 @@ public class SPEDUtil
 	{
 		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
 		
-		Set<I_FiscalDocItem> items = new HashSet<I_FiscalDocItem>();
+		List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
 		
 		for (RA100 a100 : _RA100)
 		{
@@ -919,6 +960,7 @@ public class SPEDUtil
 			rM800.setVL_TOT_REC (map.get (key));
 			//
 			RM810 rM810 = new RM810 ();
+			rM810.setNAT_REC (NAT_REC_OUTRAS_DESP);
 			rM810.setVL_REC (map.get (key));
 			//
 			rM800.addRM810 (rM810);

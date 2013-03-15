@@ -59,8 +59,11 @@ public class RM600 extends RegSped
 	@XMLFieldProperties(isMandatory=false, id = "VL_OUT_DED_CUM")
 	private BigDecimal VL_OUT_DED_CUM;
 
-	@XMLFieldProperties(isMandatory=false, id = "VL_CONT_CUM_R")
-	private BigDecimal VL_CONT_CUM_R;
+	@XMLFieldProperties(isMandatory=false, id = "VL_CONT_CUM_REC")
+	private BigDecimal VL_CONT_CUM_REC;
+	
+	@XMLFieldProperties(isMandatory=false, id = "VL_TOT_CONT_REC")
+	private BigDecimal VL_TOT_CONT_REC;
 
 	@XMLFieldProperties (id = "RM610")
 	private Set<RM610> _RM610 = new SPEDSet<RM610>();
@@ -166,14 +169,24 @@ public class RM600 extends RegSped
 		VL_OUT_DED_CUM = vL_OUT_DED_CUM;
 	}
 	
-	public BigDecimal getVL_CONT_CUM_R()
+	public BigDecimal getVL_CONT_CUM_REC()
 	{
-		return VL_CONT_CUM_R;
+		return VL_CONT_CUM_REC;
 	}
 
-	public void setVL_CONT_CUM_R(BigDecimal vL_CONT_CUM_R)
+	public void setVL_CONT_CUM_R(BigDecimal vL_CONT_CUM_REC)
 	{
-		VL_CONT_CUM_R = vL_CONT_CUM_R;
+		VL_CONT_CUM_REC = vL_CONT_CUM_REC;
+	}
+	
+	public BigDecimal getVL_TOT_CONT_REC()
+	{
+		return VL_TOT_CONT_REC;
+	}
+
+	public void setVL_TOT_CONT_REC(BigDecimal vL_TOT_CONT_REC)
+	{
+		VL_TOT_CONT_REC = vL_TOT_CONT_REC;
 	}
 	
 	public Set<RM610> get_RM610()
