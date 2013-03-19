@@ -327,6 +327,21 @@ public class SPEDUtil
 	private static Set<I_RD500> _RD500;
 	
 	/**
+	 * 	Array com todos os Registros M400 e seus filhos
+	 */
+	private static Set<RM400> _RM400;
+	
+	/**
+	 * 	Array com todos os Registros M600 e seus filhos
+	 */
+	private static RM600 _RM600;
+	
+	/**
+	 * 	Array com todos os Registros M800 e seus filhos
+	 */
+	private static Set<RM800> _RM800;
+	
+	/**
 	 * 	Processa todos os Fatos Fiscais
 	 * 
 	 * @param ctx Context
@@ -352,6 +367,9 @@ public class SPEDUtil
 		_RD010 = new SPEDSet<RD010>();
 		_RD100 = new SPEDSet<I_RD100>();
 		_RD500 = new SPEDSet<I_RD500>();
+		_RM400 = new SPEDSet<RM400>();
+		_RM800 = new SPEDSet<RM800>();
+		_RM600 = new RM600();
 		//
 		for (MLBRFactFiscal fact : facts)
 		{
@@ -847,27 +865,41 @@ public class SPEDUtil
 	 * 		M400
 	 * 	@return Registros M400
 	 */
+	public static void processRM400 (List<I_FiscalDocItem> items, Map<String, BigDecimal> map)
+	{
+		for (I_FiscalDocItem item : items)
+			processRM400 (item, map);
+	}	//	processRM400
+	
+	/**
+	 * 		M400
+	 * 	@return Registros M400
+	 */
+	public static void processRM400 (I_FiscalDocItem item, Map<String, BigDecimal> map)
+	{
+		if (item == null || map == null)
+			return;
+		//
+		if (TextUtil.match (item.getCST_PIS(), "03", "04", "05", "06", "07", "08", "09"))	//	FIXME
+			map.put (item.getCST_PIS(), item.getVL_ITEM());
+	}	//	processRM400
+	
+	/**
+	 * 		M400
+	 * 	@return Registros M400
+	 */
 	public static Set<RM400> getRM400 ()
 	{
 		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
 		
-		List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
-		
-		for (RA100 a100 : _RA100)
-		{
-			items.addAll (a100.getRA170 ());
-		}
-		
-		for (I_RC100 c100 : _RC100)
-		{
-			items.addAll (c100.getRC170 ());
-		}
-		
-		for (I_FiscalDocItem item : items)
-		{
-			if (TextUtil.match (item.getCST_PIS(), "03", "04", "05", "06", "07", "08", "09"))	//	FIXME
-				map.put (item.getCST_PIS(), item.getVL_ITEM());
-		}
+		if (_RA100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RA100).getMapM400 ());
+		//
+		if (_RC100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RC100).getMapM400 ());
+		//
+		if (_RD100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RD100).getMapM400 ());
 		
 		Set<RM400> _RM400 = new SPEDSet<RM400> ();
 		
@@ -926,6 +958,29 @@ public class SPEDUtil
 	
 	/**
 	 * 		M800
+	 * 	@return Registros M800
+	 */
+	public static void processRM800 (List<I_FiscalDocItem> items, Map<String, BigDecimal> map)
+	{
+		for (I_FiscalDocItem item : items)
+			processRM800 (item, map);
+	}
+	
+	/**
+	 * 		M800
+	 * 	@return Registros M800
+	 */
+	public static void processRM800 (I_FiscalDocItem item, Map<String, BigDecimal> map)
+	{
+		if (item == null || map == null)
+			return;
+		//		
+		if (TextUtil.match (item.getCST_COFINS(), "04", "05", "06", "07", "08", "09"))
+			map.put (item.getCST_COFINS(), item.getVL_ITEM());
+	}	//	processRM800
+	
+	/**
+	 * 		M800
 	 * 	FIXME Deixar M400 e M800 num único método
 	 * 	@return Registros M800
 	 */
@@ -933,23 +988,14 @@ public class SPEDUtil
 	{
 		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
 		
-		List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
-		
-		for (RA100 a100 : _RA100)
-		{
-			items.addAll (a100.getRA170 ());
-		}
-		
-		for (I_RC100 c100 : _RC100)
-		{
-			items.addAll (c100.getRC170 ());
-		}
-		
-		for (I_FiscalDocItem item : items)
-		{
-			if (TextUtil.match (item.getCST_COFINS(), "04", "05", "06", "07", "08", "09"))	//	FIXME
-				map.put (item.getCST_COFINS(), item.getVL_ITEM());
-		}
+		if (_RA100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RA100).getMapM800 ());
+		//
+		if (_RC100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RC100).getMapM800 ());
+		//
+		if (_RD100 instanceof SPEDSet)
+			map.putAll (((SPEDSet<?>) _RD100).getMapM800 ());
 		
 		Set<RM800> _RM800 = new SPEDSet<RM800> ();
 		

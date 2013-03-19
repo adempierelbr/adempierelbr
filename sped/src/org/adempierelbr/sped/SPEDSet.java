@@ -12,7 +12,12 @@
  *****************************************************************************/
 package org.adempierelbr.sped;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
+
+import org.adempierelbr.sped.bean.I_FiscalDocItem;
 
 /**
  * 		Set para manter o arquivo ordenado e impedir adição de NULL
@@ -29,13 +34,29 @@ public class SPEDSet<E> extends TreeSet<E>
 	 * 	Serial
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**		M400		*/
+	private Map<String, BigDecimal> mapM400 = new TreeSumMap<String, BigDecimal> ();
+	
+	public Map<String, BigDecimal> getMapM400()
+	{
+		return mapM400;
+	}
+
+	public Map<String, BigDecimal> getMapM800()
+	{
+		return mapM800;
+	}
+
+	/**		M800		*/
+	private Map<String, BigDecimal> mapM800 = new TreeSumMap<String, BigDecimal> ();
 
 	/**
 	 * 	Constructor
 	 */
 	public SPEDSet ()
 	{
-		super (SPEDComparator.get());
+		super (SPEDComparator.get ());
 	}	//	SPEDSet
 	
 	/**
@@ -46,6 +67,18 @@ public class SPEDSet<E> extends TreeSet<E>
 	{
 		if (e == null)
 			return false;
-		return super.add(e);
+		//
+		if (super.add (e))
+		{
+			if (e instanceof I_FiscalDocItem)
+			{
+				SPEDUtil.processRM400 ((I_FiscalDocItem) e, mapM400);
+				SPEDUtil.processRM800 ((I_FiscalDocItem) e, mapM800);
+			}
+			//
+			return true;
+		}
+		//
+		return false;
 	}	//	add
 }	//	SPEDSet

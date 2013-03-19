@@ -38,7 +38,7 @@ public class TreeSumMap<E, F> extends TreeMap<E, F>
 	 */
 	public TreeSumMap ()
 	{
-		super (SPEDComparator.get());
+		super (SPEDComparator.get ());
 	}	//	SPEDSet
 	
 	/**
