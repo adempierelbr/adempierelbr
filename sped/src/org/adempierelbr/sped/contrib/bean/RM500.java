@@ -20,63 +20,62 @@ import org.adempierelbr.sped.RegSped;
 import org.adempierelbr.sped.SPEDSet;
 
 /**
- * 	REGISTRO M100: 
- * 		CRÉDITO DE PIS/PASEP RELATIVO AO PERÍODO
+ * 	REGISTRO M500: 
+ * 		CRÉDITO DE COFINS RELATIVO AO PERÍODO
  * 
- * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
- *	@version $Id: RM100.java, v1.0 2013/02/02 11:17:42 AM, ralexsander Exp $
+ * 	@author Priscila Pinheiro (Kenos, www.kenos.com.br)
+ *	@version $Id: RM500.java, v1.0 2013/03/14 11:17:42 AM, ppinheiro Exp $
  */
-public class RM100 extends RegSped
+public class RM500 extends RegSped
 {
 	@XMLFieldProperties(minSize=3, maxSize=3, id = "COD_CRED")
 	private String COD_CRED;
 	
-	@XMLFieldProperties(minSize=1, maxSize=1, id = "IND_CRED_ORI", isNumber=true)
+	@XMLFieldProperties(minSize=1, maxSize=1, id = "IND_CRED_ORI")
 	private String IND_CRED_ORI;
+
+	@XMLFieldProperties(isMandatory=false, id = "VL_BC_COFINS")
+	private BigDecimal VL_BC_COFINS;
 	
-	@XMLFieldProperties(isMandatory=false, id = "VL_BC_PIS")
-	private BigDecimal VL_BC_PIS;
+	@XMLFieldProperties(isMandatory=false, id = "ALIQ_COFINS")
+	private BigDecimal ALIQ_COFINS;
 	
-	@XMLFieldProperties(isMandatory=false, id = "ALIQ_PIS", scale=4)
-	private BigDecimal ALIQ_PIS;
+	@XMLFieldProperties(isMandatory=false, id = "QUANT_BC_COFINS")
+	private BigDecimal QUANT_BC_COFINS;
 	
-	@XMLFieldProperties(isMandatory=false, id = "QUANT_BC_PIS", scale=3)
-	private BigDecimal QUANT_BC_PIS;
+	@XMLFieldProperties(isMandatory=false, id = "ALIQ_COFINS_QUANT")
+	private BigDecimal ALIQ_COFINS_QUANT;
 	
-	@XMLFieldProperties(isMandatory=false, id = "ALIQ_PIS_QUANT")
-	private BigDecimal ALIQ_PIS_QUANT;
-	
-	@XMLFieldProperties(id = "VL_CRED")
+	@XMLFieldProperties(isMandatory=false, id = "VL_CRED")
 	private BigDecimal VL_CRED;
 	
-	@XMLFieldProperties(id = "VL_AJUS_ACRES")
+	@XMLFieldProperties(isMandatory=false, id = "VL_AJUS_ACRES")
 	private BigDecimal VL_AJUS_ACRES;
 	
-	@XMLFieldProperties(id = "VL_AJUS_REDUC")
+	@XMLFieldProperties(isMandatory=false, id = "VL_AJUS_REDUC")
 	private BigDecimal VL_AJUS_REDUC;
 	
-	@XMLFieldProperties(id = "VL_CRED_DIF")
-	private BigDecimal VL_CRED_DIF;
+	@XMLFieldProperties(isMandatory=false, id = "VL_CRED_DIFER")
+	private BigDecimal VL_CRED_DIFER;
 	
-	@XMLFieldProperties(id = "VL_CRED_DISP")
+	@XMLFieldProperties(isMandatory=false, id = "VL_CRED_DISP")
 	private BigDecimal VL_CRED_DISP;
 	
 	@XMLFieldProperties(minSize=1, maxSize=1, id = "IND_DESC_CRED")
 	private String IND_DESC_CRED;
-	
+
 	@XMLFieldProperties(isMandatory=false, id = "VL_CRED_DESC")
 	private BigDecimal VL_CRED_DESC;
 	
-	@XMLFieldProperties(id = "SLD_CRED")
+	@XMLFieldProperties(isMandatory=false, id = "SLD_CRED")
 	private BigDecimal SLD_CRED;
 	
-	@XMLFieldProperties (id = "RM105")
-	private Set<RM105> _RM105 = new SPEDSet<RM105>();
+	@XMLFieldProperties (id = "RM505")
+	private Set<RM505> _RM505 = new SPEDSet<RM505>();
 	
-	@XMLFieldProperties (id = "RM110")
-	private Set<RM110> _RM110 = new SPEDSet<RM110>();
+	@XMLFieldProperties (id = "RM510")
+	private Set<RM510> _RM510 = new SPEDSet<RM510>();
 	
-
 	public String getCOD_CRED()
 	{
 		return COD_CRED;
@@ -96,46 +95,51 @@ public class RM100 extends RegSped
 	{
 		IND_CRED_ORI = iND_CRED_ORI;
 	}
+	
 
-	public BigDecimal getVL_BC_PIS()
+	public BigDecimal getVL_BC_COFINS()
 	{
-		return VL_BC_PIS;
+		return VL_BC_COFINS;
 	}
 
-	public void setVL_BC_PIS(BigDecimal vL_BC_PIS)
+	public void setVL_BC_COFINS(BigDecimal vL_BC_COFINS)
 	{
-		VL_BC_PIS = vL_BC_PIS;
+		VL_BC_COFINS = vL_BC_COFINS;
+	}
+	
+
+	public BigDecimal getALIQ_COFINS()
+	{
+		return ALIQ_COFINS;
 	}
 
-	public BigDecimal getALIQ_PIS()
+	public void setALIQ_COFINS(BigDecimal aLIQ_COFINS)
 	{
-		return ALIQ_PIS;
+		ALIQ_COFINS = aLIQ_COFINS;
+	}
+	
+
+	public BigDecimal getQUANT_BC_COFINS()
+	{
+		return QUANT_BC_COFINS;
 	}
 
-	public void setALIQ_PIS(BigDecimal aLIQ_PIS)
+	public void setQUANT_BC_COFINS(BigDecimal qUANT_BC_COFINS)
 	{
-		ALIQ_PIS = aLIQ_PIS;
+		QUANT_BC_COFINS = qUANT_BC_COFINS;
+	}
+	
+
+	public BigDecimal getALIQ_COFINS_QUANT()
+	{
+		return ALIQ_COFINS_QUANT;
 	}
 
-	public BigDecimal getQUANT_BC_PIS()
+	public void setALIQ_COFINS_QUANT(BigDecimal aLIQ_COFINS_QUANT)
 	{
-		return QUANT_BC_PIS;
+		ALIQ_COFINS_QUANT = aLIQ_COFINS_QUANT;
 	}
-
-	public void setQUANT_BC_PIS(BigDecimal qUANT_BC_PIS)
-	{
-		QUANT_BC_PIS = qUANT_BC_PIS;
-	}
-
-	public BigDecimal getALIQ_PIS_QUANT()
-	{
-		return ALIQ_PIS_QUANT;
-	}
-
-	public void setALIQ_PIS_QUANT(BigDecimal aLIQ_PIS_QUANT)
-	{
-		ALIQ_PIS_QUANT = aLIQ_PIS_QUANT;
-	}
+	
 
 	public BigDecimal getVL_CRED()
 	{
@@ -146,6 +150,7 @@ public class RM100 extends RegSped
 	{
 		VL_CRED = vL_CRED;
 	}
+	
 
 	public BigDecimal getVL_AJUS_ACRES()
 	{
@@ -156,6 +161,7 @@ public class RM100 extends RegSped
 	{
 		VL_AJUS_ACRES = vL_AJUS_ACRES;
 	}
+	
 
 	public BigDecimal getVL_AJUS_REDUC()
 	{
@@ -166,16 +172,18 @@ public class RM100 extends RegSped
 	{
 		VL_AJUS_REDUC = vL_AJUS_REDUC;
 	}
+	
 
-	public BigDecimal getVL_CRED_DIF()
+	public BigDecimal getVL_CRED_DIFER()
 	{
-		return VL_CRED_DIF;
+		return VL_CRED_DIFER;
 	}
 
-	public void setVL_CRED_DIF(BigDecimal vL_CRED_DIF)
+	public void setVL_CRED_DIFER(BigDecimal vL_CRED_DIFER)
 	{
-		VL_CRED_DIF = vL_CRED_DIF;
+		VL_CRED_DIFER = vL_CRED_DIFER;
 	}
+	
 
 	public BigDecimal getVL_CRED_DISP()
 	{
@@ -196,7 +204,7 @@ public class RM100 extends RegSped
 	{
 		IND_DESC_CRED = iND_DESC_CRED;
 	}
-
+	
 	public BigDecimal getVL_CRED_DESC()
 	{
 		return VL_CRED_DESC;
@@ -206,7 +214,7 @@ public class RM100 extends RegSped
 	{
 		VL_CRED_DESC = vL_CRED_DESC;
 	}
-
+	
 	public BigDecimal getSLD_CRED()
 	{
 		return SLD_CRED;
@@ -217,24 +225,23 @@ public class RM100 extends RegSped
 		SLD_CRED = sLD_CRED;
 	}
 	
-
-	public Set<RM105> get_RM105()
+	public Set<RM505> get_RM505()
 	{
-		return _RM105;
+		return _RM505;
 	}
 
-	public void addRM105 (RM105 rM105)
+	public void addRM505 (RM505 rM505)
 	{
-		_RM105.add(rM105);
+		_RM505.add(rM505);
 	}
 	
-	public Set<RM110> get_RM110()
+	public Set<RM510> get_RM510()
 	{
-		return _RM110;
+		return _RM510;
 	}
 
-	public void addRM110 (RM110 rM110)
+	public void addRM510 (RM510 rM510)
 	{
-		_RM110.add(rM110);
+		_RM510.add(rM510);
 	}
-}	//	RM100
+}	//	RM500
