@@ -16,6 +16,7 @@ package org.adempierelbr.validator;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
@@ -37,6 +38,7 @@ import org.compiere.model.MTimeExpenseLine;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -387,34 +389,18 @@ public class VLBRCommons implements ModelValidator
 		{
 			if(MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
 			{
-				String sql = "SELECT M_AttributeSetInstance.serno "
-			
-					+ "FROM M_AttributeSetInstance "
-					+ "INNER JOIN M_Storage ON M_Storage.M_AttributeSetInstance_ID = M_AttributeSetInstance.M_AttributeSetInstance_ID "
-					+ "INNER JOIN M_AttributeSet ON M_AttributeSetInstance.M_AttributeSet_ID = "
-					+ "M_AttributeSet.M_AttributeSet_ID "
-					+ "WHERE M_AttributeSetInstance.serno=? AND M_AttributeSet.M_AttributeSet_ID=?";
-				PreparedStatement pstmt = null;
-				ResultSet rs = null;
-				try
+				String whereClause = " M_AttributeSetInstance_ID IN (SELECT M_AttributeSetInstance.M_AttributeSetInstance_ID FROM M_AttributeSetInstance "
+									+ "INNER JOIN M_Storage ON M_Storage.M_AttributeSetInstance_ID = M_AttributeSetInstance.M_AttributeSetInstance_ID "
+									+ "INNER JOIN M_AttributeSet ON M_AttributeSetInstance.M_AttributeSet_ID = "
+									+ "M_AttributeSet.M_AttributeSet_ID "
+									+ "WHERE M_AttributeSetInstance.serno=? AND M_AttributeSet.M_AttributeSet_ID=?)";
+								
+				List <MAttributeSetInstance> asiList = new Query(asi.getCtx(),MAttributeSetInstance.Table_Name, whereClause, null)
+				.setParameters(asi.getSerNo(),asi.getM_AttributeSet_ID())
+				.list();					
+				if (!asiList.isEmpty())
 				{
-					pstmt = DB.prepareStatement(sql, null);
-					pstmt.setString(1, asi.getSerNo());
-					pstmt.setInt(2, asi.getM_AttributeSet_ID());
-					rs = pstmt.executeQuery();
-					if (rs.next())
-					{
-						return "Número de Série já existe";
-					}
-				}
-				catch (SQLException ex)
-				{
-					log.log(Level.WARNING, sql, ex);
-				}
-				finally
-				{
-					DB.close(rs, pstmt);
-					rs = null; pstmt = null;
+					return "Número de Série já existe";
 				}
 			}
 		}
