@@ -37,18 +37,26 @@ public class SPEDSet<E> extends TreeSet<E>
 	/**		M400		*/
 	private Map<String, BigDecimal> mapM400 = new TreeSumMap<String, BigDecimal> ();
 	
+	/**		M800		*/
+	private Map<String, BigDecimal> mapM800 = new TreeSumMap<String, BigDecimal> ();
+	
+	/**
+	 * 		Map for M400
+	 * 	@return Map for M400
+	 */
 	public Map<String, BigDecimal> getMapM400()
 	{
 		return mapM400;
 	}
 
+	/**
+	 * 		Map for M800
+	 * 	@return Map for M800
+	 */
 	public Map<String, BigDecimal> getMapM800()
 	{
 		return mapM800;
 	}
-
-	/**		M800		*/
-	private Map<String, BigDecimal> mapM800 = new TreeSumMap<String, BigDecimal> ();
 
 	/**
 	 * 	Constructor
