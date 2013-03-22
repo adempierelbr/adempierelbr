@@ -107,12 +107,7 @@ public class AssinaturaDigital
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
 		String aliascliente = dc.getAlias();
-		String password = dc.getPassword();
-		MAttachment attachJKS = dc.getAttachment();
-		File jksFile = NFeUtil.getAttachmentEntryFile(attachJKS.getEntry(0));
-		jksData = new FileInputStream(jksFile);
-		alias = aliascliente;
-		senha = password.toCharArray();
+		String password = dc.getPassword();				
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
@@ -125,7 +120,12 @@ public class AssinaturaDigital
 			cfgFile = dc.getConfigurationFile();
 		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		{
 			certType = "PKCS12";
+			jksData = new FileInputStream(NFeUtil.getAttachmentEntryFile((dc.getAttachment().getEntry(0))));
+			alias = aliascliente;
+			senha = password.toCharArray();
+		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
 		else
