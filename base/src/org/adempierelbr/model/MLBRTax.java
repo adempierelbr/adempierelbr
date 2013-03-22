@@ -192,7 +192,7 @@ public class MLBRTax extends X_LBR_Tax
 			{
 				taxLine.setQty(params.get(QTY));
 				//
-				taxBase = taxLine.getLBR_TaxListAmt().multiply(params.get(QTY)).add(getIncludedAmt(taxLines));
+				taxBase = taxLine.getLBR_TaxListAmt().multiply(params.get(QTY)).add(getIncludedAmt(taxLines).add(params.get(FREIGHT)));
 				taxAmt = getTaxAmt (taxBase, taxLine.getlbr_TaxRate(), false);
 			}
 			
