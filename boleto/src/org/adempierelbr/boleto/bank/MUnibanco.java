@@ -49,7 +49,7 @@ public class MUnibanco implements I_Bank
 		Properties ctx = Env.getCtx();
 
 		/*
-		MOrg    Org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    Org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 
 		int indexCC = BankA.getAccountNo().indexOf('-');
 		String cc   = BankA.getAccountNo().substring(0, indexCC);
