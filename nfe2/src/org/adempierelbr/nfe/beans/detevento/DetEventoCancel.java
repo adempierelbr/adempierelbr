@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: InfEvento.java, v1.0 2012/05/12 16:44:58 PM, ralexsander Exp $
  */
-public class DetEventoCancel
+public class DetEventoCancel implements I_DetEvento
 {
 	@XStreamAsAttribute
 	@XMLFieldProperties	(id = "HP18")

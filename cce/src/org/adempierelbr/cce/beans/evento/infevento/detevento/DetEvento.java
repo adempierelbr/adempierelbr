@@ -15,6 +15,7 @@ package org.adempierelbr.cce.beans.evento.infevento.detevento;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.cce.beans.Signature;
+import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -25,7 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: InfEvento.java, v1.0 2012/05/12 16:44:58 PM, ralexsander Exp $
  */
-public class DetEvento
+public class DetEvento implements I_DetEvento
 {
 	@XStreamAsAttribute
 	@XMLFieldProperties	(id = "HP18")

@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import org.adempierelbr.annotation.Validate;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.cce.beans.evento.infevento.detevento.DetEvento;
+import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MSysConfig;
 import org.compiere.util.Env;
@@ -72,7 +73,7 @@ public class InfEvento
 	private String verEvento;
 	
 	@XMLFieldProperties	(needsValidation=true, id = "HP17")
-	private DetEvento detEvento;
+	private I_DetEvento detEvento;
 
 	public String getId()
 	{
@@ -169,7 +170,7 @@ public class InfEvento
 		this.verEvento = verEvento;
 	}	//	setVerEvento
 
-	public DetEvento getDetEvento()
+	public I_DetEvento getDetEvento()
 	{
 		return detEvento;
 	}	//	getDetEvento
