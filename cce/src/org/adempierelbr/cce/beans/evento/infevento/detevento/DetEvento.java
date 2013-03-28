@@ -14,7 +14,9 @@
 package org.adempierelbr.cce.beans.evento.infevento.detevento;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
+import org.adempierelbr.cce.beans.Signature;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
@@ -42,6 +44,15 @@ public class DetEvento
 			"al\u00EDquota, diferen\u00E7a de pre\u00E7o, quantidade, valor da opera\u00E7\u00E3o ou da presta\u00E7\u00E3o; " +
 			"II - a corre\u00E7\u00E3o de dados cadastrais que implique mudan\u00E7a do remetente ou do destinat\u00E1rio; " +
 			"III - a data de emiss\u00E3o ou de sa\u00EDda.";
+	
+	@XMLFieldProperties	(minSize=15, maxSize=15, id = "HP20")
+	private String nProt;
+	
+	@XMLFieldProperties	(minSize=15, maxSize=255, id = "HP21")
+	private String xJust;
+	
+	@XStreamAlias ("Signature")
+	private Signature signature;
 
 	public String getVersao()
 	{
@@ -74,4 +85,15 @@ public class DetEvento
 	{
 		return xCondUso;
 	}	//	getXCondUso
+	
+	public String getNProt()
+	{
+		return nProt;
+	}	//	getNProt
+	
+	public String getXJust()
+	{
+		return xJust;
+	}	//	getXCondUso
+	
 }	//	DetEvento
