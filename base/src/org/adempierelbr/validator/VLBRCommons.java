@@ -387,7 +387,7 @@ public class VLBRCommons implements ModelValidator
 		 */
 		if (TYPE_BEFORE_NEW == type || TYPE_BEFORE_CHANGE == type)
 		{
-			if(MSysConfig.getBooleanValue("LBR_NOT_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
+			if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_SERIAL_NUMBER", true, asi.getAD_Client_ID()))
 			{
 				String whereClause = " M_AttributeSetInstance_ID IN (SELECT M_AttributeSetInstance.M_AttributeSetInstance_ID FROM M_AttributeSetInstance "
 									+ "INNER JOIN M_Storage ON M_Storage.M_AttributeSetInstance_ID = M_AttributeSetInstance.M_AttributeSetInstance_ID "
