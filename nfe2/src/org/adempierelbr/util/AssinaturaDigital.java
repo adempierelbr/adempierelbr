@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -53,7 +52,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
-import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;

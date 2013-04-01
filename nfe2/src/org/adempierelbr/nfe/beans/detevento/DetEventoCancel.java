@@ -31,8 +31,8 @@ public class DetEventoCancel implements I_DetEvento
 	@XMLFieldProperties	(id = "HP18")
 	private String versao;
 	
-	@XMLFieldProperties	(minSize=5, maxSize=60, id = "HP19")
-	private final String descEvento = "Cancelamento de NF-e";
+	@XMLFieldProperties	(minSize=12, maxSize=12, id = "HP19")
+	private final String descEvento = "Cancelamento";
 	
 	@XMLFieldProperties	(minSize=15, maxSize=15, id = "HP20")
 	private String nProt;
@@ -67,5 +67,20 @@ public class DetEventoCancel implements I_DetEvento
 	{
 		return xJust;
 	}	//	getXCondUso
+
+	public void setnProt(String nProt)
+	{
+		this.nProt = nProt;
+	}
+
+	public void setxJust(String xJust)
+	{
+		this.xJust = xJust;
+	}
+
+	public void setSignature(Signature signature)
+	{
+		this.signature = signature;
+	}
 	
 }	//	DetEvento
