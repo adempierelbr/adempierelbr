@@ -233,6 +233,8 @@ public class NFeCancelamento
 				nf.setIsCancelled(true);
 				if (!nf.isProcessed())
 					nf.setProcessed(true);
+				
+				nf.saveEx();
 
 				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
 					return "Problemas ao atualizar o XML para o padrão de distribuição";
