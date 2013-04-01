@@ -19,6 +19,7 @@ import java.rmi.RemoteException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -43,6 +44,7 @@ import org.adempierelbr.nfe.beans.detevento.DetEventoCancel;
 import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
@@ -184,13 +186,6 @@ public class NFeCancelamento
 			xml =  new StringBuilder (sw.toString());
 		
 			log.fine ("XML: " + xml);
-//			String result = ValidaXML.ValidaDoc (xml.toString(), "CCe_v1.00a/envCCe_v1.00.xsd");
-//			
-//			if (result != null && !result.isEmpty())
-//			{
-//				log.severe (result);
-//				return DocAction.STATUS_Invalid;
-//			}
 			
 			//	Arquivo para transmitir
 			xmlFile = TextUtil.generateTmpFile (xml.toString(), cancel.getId() + "-can.xml");
@@ -230,39 +225,19 @@ public class NFeCancelamento
 			//	CC-e processada com sucesso
 			if ("135".equals (infReturn.getcStat ()) || "136".equals (infReturn.getcStat ()))
 			{
-//				setDateTrx (infReturn.getDhRegEventoTS ());
-//				setlbr_NFeStatus (infReturn.getcStat ());
-//				setStatus (infReturn.getxMotivo ());
-//				setlbr_CNPJ (infReturn.getCNPJDest ());
-//				setlbr_CPF (infReturn.getCPFDest ());
-//				setlbr_NFeProt (infReturn.getnProt ());
-//				setEMail (infReturn.getEmailDest ());
-//				saveEx ();
-
-				//	Arquivo de Distribuição
-				ProcEventoNFe procEvento = new ProcEventoNFe ();
-				procEvento.setVersao (NFeUtil.VERSAO_CCE);
-				procEvento.setEvento(env.getEvento());
-				procEvento.setRetEvento(retEvent.getRetEvento());
-				
-				//	Preparando saida
-				xstream = new XStream ();
-				xstream.processAnnotations (classForAnnotation);
-				sw = new StringWriter ();
-				xstream.marshal (procEvento,  new CompactWriter (sw));
-				
-				//	Arquivo de resposta final
-				xmlFile = TextUtil.generateTmpFile (header + sw.toString(), cancel.getId() + "-can.xml");
+				nf.setlbr_NFeProt(infReturn.getnProt());
+				nf.setlbr_NFeStatus(infReturn.getcStat ());
+				nf.setDescription(nf.getDescription() + "\r" + infReturn.getxMotivo());
 				//
-//				MAttachment attachCCe = createAttachment (true);
-//				attachCCe.addEntry(new File (xmlFile));
-//				attachCCe.save();
-				
-				//	Valida o resultado do SEFAZ, gerando um LOG, mas não impede o processo
-//				result = ValidaXML.ValidaDoc (sw.toString(), "CCe_v1.00a/procCCeNFe_v1.00.xsd");
-//				
-//				if (result != null && !result.isEmpty())
-//					log.severe ("Erro na validação da resposta: " + result);
+				nf.setDateTrx(infReturn.getDhRegEventoTS());
+				nf.setIsCancelled(true);
+				if (!nf.isProcessed())
+					nf.setProcessed(true);
+
+				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
+					return "Problemas ao atualizar o XML para o padrão de distribuição";
+
+				NFeEmail.sendMail (nf);
 			}
 			else
 				throw new AdempiereException (infReturn.getxMotivo());
@@ -276,49 +251,46 @@ public class NFeCancelamento
 		catch (SSLException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao transmitir a CC-e. " + e.getMessage());
+			log.severe ("Erro ao transmitir o pedido de cancelamento. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (RemoteException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao transmitir a CC-e. " + e.getMessage());
+			log.severe ("Erro ao transmitir o pedido de cancelamento. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (ADBException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao converter o XML para transmissão da CC-e. " + e.getMessage());
+			log.severe ("Erro ao converter o XML para transmissão do pedido de cancelamento. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (XMLStreamException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao converter o XML para transmissão da CC-e. " + e.getMessage());
+			log.severe ("Erro ao converter o XML para transmissão do pedido de cancelamento. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (CertificateExpiredException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao assinar a CC-e. O certificado expirou. " + e.getMessage());
+			log.severe ("Erro ao assinar o pedido de cancelamento. O certificado expirou. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (CertificateNotYetValidException e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro ao assinar a CC-e. O certificado não é válido para esta data. " + e.getMessage());
+			log.severe ("Erro ao assinar o pedido de cancelamento. O certificado não é válido para esta data. " + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro no processo para gerar CC-e. Verifique o LOG.");
+			log.severe ("Erro no processo para gerar o pedido de cancelamento. Verifique o LOG.");
 			return DocAction.STATUS_Invalid;
 		}
-		
-
 		//
 		return "Processo completado.";
 	}	//	cancelNFe
-
 }	//	NFeCancelamento
