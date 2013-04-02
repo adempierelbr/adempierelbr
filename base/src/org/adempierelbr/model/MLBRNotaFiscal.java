@@ -1565,7 +1565,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
 			setNoPackages(new BigDecimal(io.getNoPackages()));
-			setlbr_PackingType("VOLUME");	//	FIXME
+
+			if (MSysConfig.getValue("LBR_NFESPECIE",  getAD_Client_ID()) != null )
+				setlbr_PackingType(MSysConfig.getValue("LBR_NFESPECIE", getAD_Client_ID()));
+			else
+				setlbr_PackingType(MSysConfig.getValue("VOLUME"));
 			
 			//	Transportadora
 			if (MInOut.DELIVERYVIARULE_Shipper.equals(io.getDeliveryViaRule())

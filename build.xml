@@ -110,6 +110,10 @@
 		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/sped/efd/process" overwrite="false">
 		   	<fileset dir="./bin/org/adempierelbr/sped/efd/process" includes="**/ProcGenerateEFD.*" />
 		</copy>
+		<!-- should copy ProcReturnCNAB class to web environment  -->
+		<copy todir="buildzk_jar/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
+		   	<fileset dir="./bin/org/adempierelbr/process" includes="**/ProcReturnCNAB.*" />
+		</copy>
 	</target>
 	
 	<target name="zkwebui" if="zkwebui.present">

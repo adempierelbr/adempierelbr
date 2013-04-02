@@ -166,6 +166,8 @@ public final class EMail implements Serializable
 	private String  			m_messageHTML;
 	/**	Mail SMTP Server			*/
 	private String  			m_smtpHost;
+	/**	Mail SMTP Port			*/
+	private String  			m_smtpPort;
 	/**	Mail SMTP Server Port		*/
 	// @TODO - make port configurable - private int  				m_smtpPort = 0;
 	/**	SMTP enable start TLS		*/
@@ -217,12 +219,16 @@ public final class EMail implements Serializable
 		{
 			if (m_auth != null)		//	createAuthenticator was called
 				props.put("mail.smtp.auth", "true");
-			if (m_smtpHost.equalsIgnoreCase("smtp.gmail.com")) {
-				// TODO: make it configurable
-				// Enable gmail port and ttls - Hardcoded
+			if (m_smtpHost.equalsIgnoreCase("smtp.gmail.com")) 
+			{
 				props.put("mail.smtp.port", "587");
 				props.put("mail.smtp.starttls.enable", "true");
 			}
+			if (m_smtpPort != null && !m_smtpPort.isEmpty())
+				props.put("mail.smtp.port", m_smtpPort);
+			
+			if(MSysConfig.getBooleanValue("SEND_EMAIL_USE_TLS", true, Env.getAD_Client_ID(Env.getCtx())))
+				props.put("mail.smtp.starttls.enable", "true");
 			
 			session = Session.getInstance(props, m_auth);
 			session.setDebug(CLogMgt.isLevelFinest());
@@ -937,7 +943,15 @@ public final class EMail implements Serializable
 		if (newSmtpHost == null || newSmtpHost.length() == 0)
 			m_valid = false;
 		else
-			m_smtpHost = newSmtpHost;
+		{
+			if (newSmtpHost.indexOf(":") > 0)
+			{
+				m_smtpHost = newSmtpHost.substring(0, newSmtpHost.indexOf(":"));
+				m_smtpPort = newSmtpHost.substring(1+ newSmtpHost.indexOf(":"));
+			}
+			else
+				m_smtpHost = newSmtpHost;
+		}
 	}   //  setSMTPHost
 
 	/**

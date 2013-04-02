@@ -64,22 +64,26 @@ import com.thoughtworks.xstream.XStream;
 public abstract class NFeUtil
 {
 
-	/**	Logger			    */
+	/**	Logger				*/
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 
-	/** Versão              */
+	/** Versão				*/
 	public static final String VERSAO			= "2.00";
 	public static final String VERSAO_APP		= "2.00";
 	public static final String VERSAO_CCE		= "1.00";
 
-	/** XML                 */
+	/** XML					*/
 	private static String FILE_EXT      = "-dst.xml";
 	public static final long XML_SIZE   = 500;
 
-	/** STATUS              */
+	/** Status				*/
 	public static final String AUTORIZADA = "100";
 	public static final String CANCELADA  = "101";
 
+	/** Eventos				*/
+	public static final String NFE_EVENTO_CCE 		= "110110";
+	public static final String NFE_EVENTO_CANCEL 	= "110111";
+	
 	/** Reference NFeStatus */
 	public static final int NFeReference   = 1100004;
 

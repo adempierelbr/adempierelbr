@@ -132,7 +132,7 @@ public class MSantander_033 implements I_Bank
 
 		Properties ctx = Env.getCtx();
 
-		MOrg    Org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    Org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 
 		TextUtil.addText(fw, "0"); //TIPO DE REGISTRO
 		TextUtil.addText(fw, "1"); //OPERAÇÃO
