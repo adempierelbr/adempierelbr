@@ -396,7 +396,7 @@ public class ValidatorInvoice implements ModelValidator
 				{
 						MInOutLine ioLine = new MInOutLine(ctx, iLine.getM_InOutLine_ID(), trx);
 						
-						if (iLine.getQtyInvoiced().compareTo(ioLine.getQtyEntered())!=0 && iLine.getM_InOutLine_ID() > 1)
+						if (iLine.getQtyEntered().compareTo(ioLine.getQtyEntered())!=0 && iLine.getM_InOutLine_ID() > 1)
 						{
 							return "A quantidade da Linha "+iLine.getLine()+" deve ser igual a quantidade entregue.";
 						}	
