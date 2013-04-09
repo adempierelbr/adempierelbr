@@ -72,6 +72,9 @@ public class ProcReactivateNF extends SvrProcess
 		if (nf.isCancelled())
 			return "Não é permitido reativar uma Nota Fiscal Cancelada";
 		
+		if ("110".equals(nf.getlbr_NFeStatus()))
+			return "Não é permitido reativar uma Nota Fiscal Denegada";
+		
 		nf.setProcessed(false);
 		nf.save(get_TrxName());
 		

@@ -93,3 +93,5 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 UPDATE AD_Field_Trl SET Name='Cancelado',Updated=TO_TIMESTAMP('2012-07-20 16:57:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1121481 AND AD_Language='pt_BR'
 ;
 
+UPDATE AD_SysConfig SET Value='360-trunk/059-ProcCancelProduction.sql' WHERE AD_SysConfig_ID=1100006
+;

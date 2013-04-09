@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -21,7 +20,9 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.Signature;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -51,7 +52,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
-import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -84,6 +84,8 @@ public class AssinaturaDigital
 	static KeyPair keyP;
 	
 	private static String certType = "";
+	private static String cfgFile = "";
+	private static boolean isToken = false;
 	private static String alias = "";
 	private static char[] senha = "".toCharArray();
 	private static InputStream jksData = null;
@@ -103,17 +105,25 @@ public class AssinaturaDigital
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
 		String aliascliente = dc.getAlias();
-		String password = dc.getPassword();
-		MAttachment attachJKS = dc.getAttachment();
-		File jksFile = NFeUtil.getAttachmentEntryFile(attachJKS.getEntry(0));
-		jksData = new FileInputStream(jksFile);
-		alias = aliascliente;
-		senha = password.toCharArray();
+		String password = dc.getPassword();				
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
+		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
+		{
+			certType = "PKCS11";
+			isToken = true;
+			jksData = null;
+			//
+			cfgFile = dc.getConfigurationFile();
+		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		{
 			certType = "PKCS12";
+			jksData = new FileInputStream(NFeUtil.getAttachmentEntryFile((dc.getAttachment().getEntry(0))));
+			alias = aliascliente;
+			senha = password.toCharArray();
+		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
 		else
@@ -135,6 +145,12 @@ public class AssinaturaDigital
 
 	public static void loadKeys() throws Exception
 	{
+		if (isToken)
+		{
+			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
+            Security.addProvider(p);
+		}
+		//
 		KeyStore keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
 		Key key = keystore.getKey(alias, senha);

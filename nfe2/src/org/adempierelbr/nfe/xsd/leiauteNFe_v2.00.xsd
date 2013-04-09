@@ -1507,9 +1507,10 @@ ambiente.</xs:documentation>
 																			<xs:sequence>
 																				<xs:element name="orig" type="Torig">
 																					<xs:annotation>
-																						<xs:documentation>origem da mercadoria: 0 - Nacional 
-1 - Estrangeira - Importação direta 
-2 - Estrangeira - Adquirida no mercado interno 
+																						<xs:documentation>origem da mercadoria: 0-Nacional 
+1-Estrangeira - Importação direta; 2-Estrangeira - Adquirida no mercado interno; 3-Nacional, conteudo superior 40%; 4-Nacional, processos produtivos 
+básicos; 5-Nacional, conteudo inferior 40%; 6-Estrangeira - Importação direta, com similar nacional, lista CAMEX; 7-Estrangeira - mercado interno, sem simular,
+lista CAMEX. 
 </xs:documentation>
 																					</xs:annotation>
 																				</xs:element>
@@ -5540,13 +5541,21 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 	</xs:simpleType>
 	<xs:simpleType name="Torig">
 		<xs:annotation>
-			<xs:documentation>Tipo Origem da mercadoria CST ICMS</xs:documentation>
+			<xs:documentation>Tipo Origem da mercadoria CST ICMS. origem da mercadoria: 0-Nacional 
+1-Estrangeira - Importação direta; 2-Estrangeira - Adquirida no mercado interno; 3-Nacional, conteudo superior 40%; 4-Nacional, processos produtivos 
+básicos; 5-Nacional, conteudo inferior 40%; 6-Estrangeira - Importação direta, com similar nacional, lista CAMEX; 7-Estrangeira - mercado interno, sem simular,
+lista CAMEX. </xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:whiteSpace value="preserve"/>
 			<xs:enumeration value="0"/>
 			<xs:enumeration value="1"/>
 			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TFinNFe">

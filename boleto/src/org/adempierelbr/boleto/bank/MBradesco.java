@@ -135,7 +135,7 @@ public class MBradesco implements I_Bank
 
 		Properties ctx = Env.getCtx();
 
-		MOrg    Org    = MOrg.get(ctx,Env.getAD_Org_ID(ctx));
+		MOrg    Org    = MOrg.get(ctx,BankA.getAD_Org_ID());
 		Integer LBR_DocSequence_ID = (Integer)BankA.get_Value("LBR_DocSequence_ID");
 
 		String seqFile = "MX" + TextUtil.pad(MLBRCNAB.CNABDateFormat(Env.getContextAsDate(ctx, "#Date")), '0', 7, true);

@@ -1019,7 +1019,7 @@ public class MOrder extends X_C_Order implements DocAction
 	 */
 	protected boolean afterSave (boolean newRecord, boolean success)
 	{
-		if (!success || newRecord)
+		if (!success || newRecord || !MSysConfig.getBooleanValue("LBR_REPLICATE_ORDER_CHANGES", true))
 			return success;
 
 		// TODO: The changes here with UPDATE are not being saved on change log - audit problem

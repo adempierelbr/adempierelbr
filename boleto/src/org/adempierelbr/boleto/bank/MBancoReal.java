@@ -233,7 +233,7 @@ public class MBancoReal implements I_Bank
 	{
 		Properties ctx = Env.getCtx();
 		//
-		MOrg    org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 		MOrgInfo oi	   = org.getInfo();
 		//
 		String cc      = BankA.getAccountNo();

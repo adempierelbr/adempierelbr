@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 
 import org.adempierelbr.annotation.Validate;
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.cce.beans.evento.infevento.detevento.DetEvento;
+import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MSysConfig;
 import org.compiere.util.Env;
@@ -63,7 +63,7 @@ public class InfEvento
 	private String dhEvento;
 	
 	@XMLFieldProperties	(minSize=6, maxSize=6, id = "HP14")
-	private final String tpEvento = "110110";
+	private String tpEvento;
 	
 	@XMLFieldProperties	(minSize=1, maxSize=2, id = "HP15")
 	private String nSeqEvento;
@@ -72,7 +72,7 @@ public class InfEvento
 	private String verEvento;
 	
 	@XMLFieldProperties	(needsValidation=true, id = "HP17")
-	private DetEvento detEvento;
+	private I_DetEvento detEvento;
 
 	public String getId()
 	{
@@ -144,6 +144,11 @@ public class InfEvento
 		this.dhEvento = TextUtil.timeToString (dhEvento, "yyyy-MM-dd'T'HH:mm:ss") + MSysConfig.getValue ("LBR_TIMEZONE", "-03:00", Env.getAD_Client_ID (Env.getCtx()));
 	}	//	setDhEvento
 
+	public void setTpEvento(String tpEvento)
+	{
+		this.tpEvento = tpEvento;
+	}
+
 	public String getTpEvento()
 	{
 		return tpEvento;
@@ -169,12 +174,12 @@ public class InfEvento
 		this.verEvento = verEvento;
 	}	//	setVerEvento
 
-	public DetEvento getDetEvento()
+	public I_DetEvento getDetEvento()
 	{
 		return detEvento;
 	}	//	getDetEvento
 
-	public void setDetEvento(DetEvento detEvento)
+	public void setDetEvento(I_DetEvento detEvento)
 	{
 		this.detEvento = detEvento;
 	}	//	setDetEvento
