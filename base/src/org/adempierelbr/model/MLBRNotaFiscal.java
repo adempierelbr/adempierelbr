@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
@@ -1089,6 +1090,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
 		{
+			dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+			model = dt.get_ValueAsString("lbr_NFModel");
+			
 			if (model != null && model.startsWith("RPS"))
 				setlbr_ServiceTaxes();
 		}
@@ -1242,6 +1246,33 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		return true;
 	}	//	generateNF
+	
+	public void GenerateXMLAutomatic()
+	{
+		// Gerar XML automaticamente
+		try
+		{
+			if (getC_DocType_ID() > 0)
+			{
+				MDocType dt = new MDocType(getCtx(), getC_DocTypeTarget_ID(), get_TrxName());
+				String model = dt.get_ValueAsString("lbr_NFModel");
+				//
+				if (model == null)
+					log.log(Level.INFO, "Tipo de NF não definido.");
+				else if (model.startsWith("RPS"))
+				{
+					setlbr_ServiceTaxes();
+					save(get_TrxName());
+				}
+				//
+				else if (model.equals("55") && 
+						MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
+					NFeXMLGenerator.geraCorpoNFe(getLBR_NotaFiscal_ID(), get_TrxName());
+			}
+		} catch(Exception ex) {
+			log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + getDocumentNo());
+		}
+	}//GenerateXMLAutomatic
 	
 	/**
 	 * 		Bill Note

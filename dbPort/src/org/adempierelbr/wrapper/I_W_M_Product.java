@@ -40,32 +40,6 @@ public interface I_W_M_Product extends I_M_Product
 	  */
 	public int getLBR_FiscalGroup_Product_ID();
 
-    /** Column name LBR_NCM_ID */
-    public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
-
-	/** Set NCM.
-	  * Primary key table LBR_NCM
-	  */
-	public void setLBR_NCM_ID (int LBR_NCM_ID);
-
-	/** Get NCM.
-	  * Primary key table LBR_NCM
-	  */
-	public int getLBR_NCM_ID();
-
-    /** Column name LBR_ProductCategory_ID */
-    public static final String COLUMNNAME_LBR_ProductCategory_ID = "LBR_ProductCategory_ID";
-
-	/** Set Product Category.
-	  * Primary key table LBR_ProductCategory
-	  */
-	public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID);
-
-	/** Get Product Category.
-	  * Primary key table LBR_ProductCategory
-	  */
-	public int getLBR_ProductCategory_ID();
-
     /** Column name lbr_HasSubstitution */
     public static final String COLUMNNAME_lbr_HasSubstitution = "lbr_HasSubstitution";
 
@@ -91,6 +65,41 @@ public interface I_W_M_Product extends I_M_Product
 	  * Defines if the Product is Manufactured
 	  */
 	public boolean islbr_IsManufactured();
+
+    /** Column name LBR_LegalProductDescription */
+    public static final String COLUMNNAME_LBR_LegalProductDescription = "LBR_LegalProductDescription";
+
+	/** Set Legal Product Description	  */
+	public void setLBR_LegalProductDescription (String LBR_LegalProductDescription);
+
+	/** Get Legal Product Description	  */
+	public String getLBR_LegalProductDescription();
+
+    /** Column name LBR_NCM_ID */
+    public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
+
+	/** Set NCM.
+	  * Primary key table LBR_NCM
+	  */
+	public void setLBR_NCM_ID (int LBR_NCM_ID);
+
+	/** Get NCM.
+	  * Primary key table LBR_NCM
+	  */
+	public int getLBR_NCM_ID();
+
+    /** Column name LBR_ProductCategory_ID */
+    public static final String COLUMNNAME_LBR_ProductCategory_ID = "LBR_ProductCategory_ID";
+
+	/** Set Product Category.
+	  * Primary key table LBR_ProductCategory
+	  */
+	public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID);
+
+	/** Get Product Category.
+	  * Primary key table LBR_ProductCategory
+	  */
+	public int getLBR_ProductCategory_ID();
 
     /** Column name lbr_ProductSource */
     public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
