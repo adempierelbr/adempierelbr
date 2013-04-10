@@ -484,7 +484,12 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		I_W_M_Product productW = POWrapper.create(product, I_W_M_Product.class);
 		//
 		setM_Product_ID (product.getM_Product_ID());
-		setProductName (product.getName());
+		
+		if (productW.getLBR_LegalProductDescription()!=null)
+			setProductName (productW.getLBR_LegalProductDescription());
+		else
+			setProductName (product.getName());
+		
 		setProductValue (product.getValue());
 		setVendorProductNo(AdempiereLBR.getVendorProductNo(product.getM_Product_ID(), getParent().getC_BPartner_ID(), get_TrxName()));
 		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
