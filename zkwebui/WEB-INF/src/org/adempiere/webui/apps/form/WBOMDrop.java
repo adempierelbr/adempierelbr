@@ -385,6 +385,7 @@ public class WBOMDrop extends ADForm implements EventListener
 		this.appendChild(confirmPanel);
 		this.appendChild(new Separator());
 		this.setBorder("normal");
+		this.setContentStyle("overflow:auto");
 		
 		Caption title = new Caption(Msg.getMsg(Env.getCtx(), "SelectProduct"));
 
