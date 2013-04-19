@@ -33,17 +33,7 @@ import org.compiere.util.Env;
  *	@version $Id: ValidatorTax.java, v1.0 2011/04/05 10:03:06 PM, ralexsander Exp $
  */
 public class VLBRTax implements ModelValidator
-{
-
-	/**
-	 *	Constructor.
-	 *	The class is instanciated when logging in and client is selected/known
-	 */
-	public VLBRTax ()
-	{
-		super ();
-	}	//	VLBRTax
-	
+{	
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(VLBRTax.class);
 	/** Client			*/

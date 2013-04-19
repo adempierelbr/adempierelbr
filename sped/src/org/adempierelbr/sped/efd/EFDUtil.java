@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,11 +13,9 @@ import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
 import org.adempierelbr.model.MLBRSalesCardTotal;
 import org.adempierelbr.model.MLBRTaxAssessment;
-import org.adempierelbr.model.X_LBR_SalesCardTotal;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
-import org.adempierelbr.sped.efd.bean.BLOCOC;
-import org.adempierelbr.sped.efd.bean.BLOCOD;
+import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.efd.bean.R0000;
 import org.adempierelbr.sped.efd.bean.R0001;
 import org.adempierelbr.sped.efd.bean.R0005;
@@ -581,6 +578,7 @@ public class EFDUtil {
 
 	/**
 	 * REGISTRO 0100: DADOS DO CONTABILISTA
+	 * @deprecated see {@link SPEDUtil#fillR0100(org.adempierelbr.sped.bean.I_R0100, Properties, int, String)}
 	 * 
 	 * @param factFiscal
 	 * @return
@@ -1704,6 +1702,15 @@ public class EFDUtil {
 	
 	/**
 	 * REGISTRO RE116: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – OPERAÇÕES PRÓPRIAS.
+	 * 
+	 * Código da obrigação a recolher, conforme a Tabela 5.4
+	 * 002 - Saídas para o Estados
+	 * 999 - Saídas para outros Estados
+	 * 
+	 * @param isSameRegion mesmo estado do emitente
+	 * @param DT_VCTO data de vcto
+	 * @param VL_OR valor da obrigação de icms st a recolher
+	 * @param MES_REF mês de referência
 	 *
 	 * @return
 	 * @throws Exception
