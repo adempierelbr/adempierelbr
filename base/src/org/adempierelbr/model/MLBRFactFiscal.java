@@ -32,6 +32,7 @@ import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RA170;
 import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RC100;
+import org.adempierelbr.sped.contrib.bean.RC120;
 import org.adempierelbr.sped.contrib.bean.RC170;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RD100;
@@ -264,7 +265,11 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		else
 			r0150.setCNPJ (getlbr_BPCNPJ());
 		
-		r0150.setIE(getlbr_BPIE());
+		if (getlbr_BPIE().equals("ISENTO"))
+			r0150.setIE("");
+		else
+			r0150.setIE(getlbr_BPIE());
+		
 		r0150.setCOD_MUN(String.valueOf (BPartnerUtil.getCityCode(contLoc)));
 		r0150.setSUFRAMA(getlbr_BPSuframa());
 		r0150.setEND(getlbr_BPAddress1());
@@ -286,7 +291,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public I_R0190 fillR0190 (Properties ctx, I_R0190 r0190, String trxName)
 	{
 		r0190.setUNID(getlbr_UOMName() == null ? "un" : getlbr_UOMName());
-		r0190.setDESCR(getLBR_UOMDescription() == null ? "un" : getLBR_UOMDescription());
+		r0190.setDESCR(getLBR_UOMDescription() == null ? "Unidade" : getLBR_UOMDescription());
 		//
 		return r0190;
 	}	//	fillR0190
@@ -358,31 +363,38 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public RA100 getRA100 (Properties ctx, String trxName) throws Exception
 	{
 		RA100 rA100 = new RA100 ();
+		rA100.setCOD_SIT(isCancelled() ? SPEDUtil.COD_SIT_CANCELADO : SPEDUtil.COD_SIT_REGULAR);
 		rA100.setIND_OPER (isSOTrx() ? SPEDUtil.IND_OPER_PRESTADO : SPEDUtil.IND_OPER_CONTRATADO);
 		rA100.setIND_EMIT (isSOTrx() ? SPEDUtil.IND_EMIT_PROPRIA : SPEDUtil.IND_EMIT_TERCEIROS);
-		rA100.setCOD_PART (getBPValue());
-		rA100.setCOD_SIT(isCancelled() ? SPEDUtil.COD_SIT_CANCELADO : SPEDUtil.COD_SIT_REGULAR);
 		rA100.setSER(getlbr_NFSerie());
-		rA100.setSUB("");	//	FIXME
+		rA100.setCOD_PART (getBPValue());
 		rA100.setNUM_DOC(getDocumentNo());
 		rA100.setCHV_NFSE(getlbr_NFeID());
-		rA100.setDT_DOC(getDateDoc());
-		rA100.setVL_DOC(getGrandTotal());
-		rA100.setIND_PGTO(SPEDUtil.IND_PAGTO_VISTA);	//	FIXME
-		rA100.setVL_BC_PIS(getPIS_TaxBaseAmt());		//	FIXME: Criar PIS_NFTaxBaseAmt
-		rA100.setVL_PIS(getPIS_NFTaxAmt());
-		rA100.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());	//	FIXME: Criar COFINS_NFTaxBaseAmt
-		rA100.setVL_COFINS(getCOFINS_NFTaxAmt());
-		rA100.setVL_PIS_RET(null);
-		rA100.setVL_COFINS_RET(null);
-		rA100.setVL_ISS(Env.ZERO);	//	FIXME: Modificar VIEW
+		
+		if (rA100.getCOD_SIT().equals(SPEDUtil.COD_SIT_REGULAR))
+		{
+			rA100.setSUB("");	//	FIXME
+			rA100.setDT_DOC(getDateDoc());
+			rA100.setVL_DOC(getGrandTotal());
+			rA100.setIND_PGTO(SPEDUtil.IND_PAGTO_VISTA);	//	FIXME
+			rA100.setVL_BC_PIS(getPIS_TaxBaseAmt());		//	FIXME: Criar PIS_NFTaxBaseAmt
+			rA100.setVL_PIS(getPIS_NFTaxAmt());
+			rA100.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());	//	FIXME: Criar COFINS_NFTaxBaseAmt
+			rA100.setVL_COFINS(getCOFINS_NFTaxAmt());
+			rA100.setVL_PIS_RET(null);
+			rA100.setVL_COFINS_RET(null);
+			rA100.setVL_ISS(Env.ZERO);	//	FIXME: Modificar VIEW
+		}
 		
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
 		
-		for (MLBRFactFiscal line : lines)
+		if (rA100.getCOD_SIT().equals(SPEDUtil.COD_SIT_REGULAR))
 		{
-			rA100.addA170 (line.getRA170 ());
+			for (MLBRFactFiscal line : lines)
+			{
+				rA100.addA170 (line.getRA170 ());
+			}
 		}
 		//
 		return rA100;
@@ -507,6 +519,8 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		//	Process Lines
 		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
 		
+		rC100.addRC120(getRC120());
+		
 		for (MLBRFactFiscal line : lines)
 		{
 			rC100.addRC170 (line.getRC170 ());
@@ -515,6 +529,27 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 		return rC100;
 	}	//	getRC100
 
+	private RC120 getRC120 () throws Exception
+	{
+		RC120 rC120 = new RC120();
+		
+		/**
+		 * 	Copia os dados comuns:
+		 * 
+		 * 	NUM_ITEM, COD_ITEM, DESCR_COMPL, VL_ITEM, VL_DESC, 
+		 * 		CST_PIS, VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, 
+		 * 		ALIQ_COFINS, VL_COFINS, COD_CTA, 
+		 */
+		PropertyUtils.copyProperties (rC120, getRA100(getCtx(), null));
+		//
+		rC120.setCOD_DOC_IMP("0");
+		rC120.setNUM_DOC_IMP("123");
+		rC120.setVL_COFINS_IMP(getCOFINS_NFTaxAmt());
+		rC120.setVL_PIS_IMP(getPIS_NFTaxAmt());
+		//
+		return rC120;
+	}	//	getRC170
+	
 	private RC170 getRC170 () throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		RC170 rC170 = new RC170();

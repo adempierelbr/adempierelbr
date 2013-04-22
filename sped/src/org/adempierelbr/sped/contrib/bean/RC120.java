@@ -12,6 +12,8 @@
  *****************************************************************************/
 package org.adempierelbr.sped.contrib.bean;
 
+import java.math.BigDecimal;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
@@ -30,11 +32,11 @@ public class RC120 extends RegSped
 	@XMLFieldProperties(minSize=1, maxSize = 10, id = "NUM_DOC_IMP")
 	private String NUM_DOC_IMP;
 	
-	@XMLFieldProperties(id = "VL_PIS_IMP", isMandatory=false)
-	private String VL_PIS_IMP;
+	@XMLFieldProperties(id = "VL_PIS_IMP")
+	private BigDecimal VL_PIS_IMP;
 	
-	@XMLFieldProperties(id = "VL_COFINS_IMP", isMandatory=false)
-	private String VL_COFINS_IMP;
+	@XMLFieldProperties(id = "VL_COFINS_IMP")
+	private BigDecimal VL_COFINS_IMP;
 	
 	@XMLFieldProperties(maxSize = 20, id = "NUM_ACDRAW", isMandatory=false)
 	private String NUM_ACDRAW;
@@ -59,22 +61,22 @@ public class RC120 extends RegSped
 		NUM_DOC_IMP = nUM_DOC_IMP;
 	}
 
-	public String getVL_PIS_IMP()
+	public BigDecimal getVL_PIS_IMP()
 	{
 		return VL_PIS_IMP;
 	}
 
-	public void setVL_PIS_IMP(String vL_PIS_IMP)
+	public void setVL_PIS_IMP(BigDecimal vL_PIS_IMP)
 	{
 		VL_PIS_IMP = vL_PIS_IMP;
 	}
 
-	public String getVL_COFINS_IMP()
+	public BigDecimal getVL_COFINS_IMP()
 	{
 		return VL_COFINS_IMP;
 	}
 
-	public void setVL_COFINS_IMP(String vL_COFINS_IMP)
+	public void setVL_COFINS_IMP(BigDecimal vL_COFINS_IMP)
 	{
 		VL_COFINS_IMP = vL_COFINS_IMP;
 	}

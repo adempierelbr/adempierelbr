@@ -83,6 +83,10 @@ public class BlocoM extends BlocoSPED
 	{
 		this.rM400 = rM400;
 	}
+	public Set<RM500> getRM500()
+	{
+		return rM500;
+	}
 	public void setRM500(Set<RM500> rM500)
 	{
 		this.rM500 = rM500;

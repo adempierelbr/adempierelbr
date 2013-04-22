@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRFactFiscal;
-import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.model.MLBRTaxName;
 import org.adempierelbr.model.X_LBR_TaxAssessment;
 import org.compiere.process.ProcessInfoParameter;
@@ -74,6 +73,10 @@ public class ProcTaxAssessment extends SvrProcess
 		BigDecimal IPIAmtDebit = Env.ZERO;
 		BigDecimal ICMSAmtCredit = Env.ZERO;
 		BigDecimal ICMSAmtDebit = Env.ZERO;
+		BigDecimal PISAmtCredit = Env.ZERO;
+		BigDecimal PISAmtDebit = Env.ZERO;
+		BigDecimal COFINSAmtCredit = Env.ZERO;
+		BigDecimal COFINSAmtDebit = Env.ZERO;
 		
 		// 
 		BigDecimal Credit = Env.ZERO;
@@ -124,6 +127,8 @@ public class ProcTaxAssessment extends SvrProcess
 			{
 				ICMSAmtDebit = ICMSAmtDebit.add(m_factfiscal.getICMS_TaxAmt(), mc);
 				IPIAmtDebit = IPIAmtDebit.add(m_factfiscal.getIPI_TaxAmt(), mc);
+				PISAmtDebit = PISAmtDebit.add(m_factfiscal.getPIS_TaxAmt(), mc);
+				COFINSAmtDebit = COFINSAmtDebit.add(m_factfiscal.getCOFINS_TaxAmt(), mc);
 			}
 			
 			// crédito
@@ -131,11 +136,13 @@ public class ProcTaxAssessment extends SvrProcess
 			{
 				ICMSAmtCredit = ICMSAmtCredit.add(m_factfiscal.getICMS_TaxAmt(), mc);
 				IPIAmtCredit = IPIAmtCredit.add(m_factfiscal.getIPI_TaxAmt(), mc);
+				PISAmtCredit = PISAmtCredit.add(m_factfiscal.getPIS_TaxAmt(), mc);
+				COFINSAmtCredit = COFINSAmtCredit.add(m_factfiscal.getCOFINS_TaxAmt(), mc);
 			}
 			
 		}
 		
-		// nome do imposto (ICMS/IPI)
+		// nome do imposto (ICMS/IPI/PIS/COFINS)
 		String taxName = new MLBRTaxName(getCtx(), m_taxassesment.getLBR_TaxName_ID(), get_TrxName()).getName();
 		
 		// outros crédito/débitos
@@ -143,21 +150,33 @@ public class ProcTaxAssessment extends SvrProcess
 		BigDecimal otherDebit  = getOtherDebit(Record_ID);
 		
 		// valor acumulado do mês anterior
-		BigDecimal cumulatedAmt = MLBRTaxAssessment.getCumulatedAmt(getCtx(), 
+		BigDecimal cumulatedAmt = Env.ZERO;/** MLBRTaxAssessment.getCumulatedAmt(getCtx(), 
 				m_taxassesment.getC_Period_ID(),
 				m_taxassesment.getAD_Org_ID(),
-				m_taxassesment.getLBR_TaxName_ID());
+				m_taxassesment.getLBR_TaxName_ID());**/
 		
 		// definir imposto que se está apurando
 		if(taxName.contains("IPI"))
 		{
 			Credit = IPIAmtCredit;
-			Debit = IPIAmtDebit;
+			Debit  = IPIAmtDebit;
 		} 
 		else if (taxName.contains("ICMS"))
 		{
 			Credit = ICMSAmtCredit;
-			Debit = ICMSAmtDebit;
+			Debit  = ICMSAmtDebit;
+		}
+		
+		else if (taxName.contains("PIS"))
+		{
+			Credit = PISAmtCredit;
+			Debit  = PISAmtDebit;
+		}
+		
+		else if (taxName.contains("COFINS"))
+		{
+			Credit = COFINSAmtCredit;
+			Debit  = COFINSAmtDebit;
 		}
 		
 		// crédito e débito
