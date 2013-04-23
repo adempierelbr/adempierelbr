@@ -411,7 +411,7 @@ public class MBancoBrasil implements I_Bank
 	{
 
 		Properties ctx = Env.getCtx();  					// Contexto
-		MOrg Org = MOrg.get(ctx,Env.getAD_Org_ID(ctx));		// Contexto
+		MOrg Org = MOrg.get(ctx,BankA.getAD_Org_ID());		// Contexto
 
 		// SEQUENCIA
 		Integer LBR_DocSequence_ID = (Integer)BankA.get_Value("LBR_DocSequence_ID");

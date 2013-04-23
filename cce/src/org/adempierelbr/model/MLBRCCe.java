@@ -38,6 +38,7 @@ import org.adempierelbr.cce.beans.evento.Evento;
 import org.adempierelbr.cce.beans.evento.infevento.InfEvento;
 import org.adempierelbr.cce.beans.evento.infevento.detevento.DetEvento;
 import org.adempierelbr.cce.beans.retevento.RetEvento;
+import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
@@ -263,6 +264,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		cce.setNSeqEvento("" + getSeqNo());
 		cce.setVerEvento(NFeUtil.VERSAO_CCE);
 		cce.setDetEvento(det);
+		cce.setTpEvento(NFeUtil.NFE_EVENTO_CCE);
 		cce.setId();
 		
 		//	Dados do Evento da Carta de Correção
@@ -283,6 +285,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		}
 		
 		XStream xstream = new XStream ();
+		xstream.aliasSystemAttribute(null, "class");
 		xstream.autodetectAnnotations(true);
 		
 		StringWriter sw = new StringWriter ();
@@ -298,6 +301,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			
 			//	Lê o arquivo assinado
 			xstream = new XStream (new DomDriver("UTF-8"));
+			xstream.alias("detEvento", I_DetEvento.class, DetEvento.class);
 			xstream.processAnnotations (classForAnnotation);
 			evento = (Evento) xstream.fromXML (TextUtil.readFile (new File (xmlFile)));
 			
@@ -306,6 +310,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			
 			sw = new StringWriter ();
 			xstream = new XStream ();
+			xstream.aliasSystemAttribute(null, "class");
 			xstream.processAnnotations (classForAnnotation);
 			xstream.marshal (env,  new CompactWriter (sw));
 			xml =  new StringBuilder (sw.toString());
