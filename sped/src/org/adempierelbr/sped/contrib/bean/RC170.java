@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.sped.bean.I_FiscalDocItem;
 
 /**
  * 	REGISTRO C170:
@@ -25,7 +24,7 @@ import org.adempierelbr.sped.bean.I_FiscalDocItem;
  * 	@author Rogério Feitosa (Kenos, www.kenos.com.br)
  *	@version $Id: RC170.java, v1.0 2013/02/02 11:39:22 AM, rfeitosa Exp $
  */
-public class RC170 extends RegSped implements I_FiscalDocItem
+public class RC170 extends RegSped
 {
 	@XMLFieldProperties(minSize=1, maxSize = 3, id = "NUM_ITEM", isNumber=true)
 	private String NUM_ITEM;

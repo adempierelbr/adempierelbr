@@ -174,7 +174,7 @@ public class RM600 extends RegSped
 		return VL_CONT_CUM_REC;
 	}
 
-	public void setVL_CONT_CUM_R(BigDecimal vL_CONT_CUM_REC)
+	public void setVL_CONT_CUM_REC(BigDecimal vL_CONT_CUM_REC)
 	{
 		VL_CONT_CUM_REC = vL_CONT_CUM_REC;
 	}

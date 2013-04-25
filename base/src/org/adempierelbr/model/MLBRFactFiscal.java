@@ -635,16 +635,20 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	public I_RD100 getRD100 (Properties ctx, I_RD100 rD100, String trxName) throws Exception
 	{
 		PropertyUtils.copyProperties (rD100, getRC100 (ctx, (I_RC100) new RC100 (), trxName));
-		rD100.setVL_SERV (getGrandTotal());
-		
-		//	Process Lines
-		MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
-		
-		for (MLBRFactFiscal line : lines)
+		if (!isCancelled())
 		{
-			rD100.addD101 (line.getRD101());
-			rD100.addD105 (line.getRD105());
+			rD100.setVL_SERV (getGrandTotal());
+			
+			//	Process Lines
+			MLBRFactFiscal[] lines = MLBRFactFiscal.get (ctx, getLBR_NotaFiscal_ID(), trxName);
+			
+			for (MLBRFactFiscal line : lines)
+			{
+				rD100.addD101 (line.getRD101());
+				rD100.addD105 (line.getRD105());
+			}
 		}
+		
 		//
 		return rD100;
 	}	//	getRD100

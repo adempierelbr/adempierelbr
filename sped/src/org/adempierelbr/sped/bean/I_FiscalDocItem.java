@@ -22,7 +22,19 @@ import java.math.BigDecimal;
  */
 public interface I_FiscalDocItem
 {
+	public void setVL_ITEM ( BigDecimal valor);
+	public void setCST_PIS (String cstPis);
+	public void setCST_COFINS (String cstCofins);
+	public void setALIQ_COFINS(BigDecimal aliq);
+	public void setALIQ_PIS(BigDecimal aliq);
+	public void setVL_PIS(BigDecimal vL_PIS);
+	public void setVL_COFINS(BigDecimal vL_COFINS);
 	public BigDecimal getVL_ITEM ();
 	public String getCST_PIS ();
 	public String getCST_COFINS ();
+	public BigDecimal getALIQ_COFINS();
+	public BigDecimal getALIQ_PIS();
+	public BigDecimal getVL_PIS();
+	public BigDecimal getVL_COFINS();
+	
 }	//	I_FiscalDocItem

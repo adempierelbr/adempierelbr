@@ -27,6 +27,8 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.bean.I_FiscalDocItem;
 import org.adempierelbr.sped.bean.I_R0000;
 import org.adempierelbr.sped.bean.I_R0100;
@@ -44,10 +46,15 @@ import org.adempierelbr.sped.contrib.bean.R0110;
 import org.adempierelbr.sped.contrib.bean.R0140;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
+import org.adempierelbr.sped.contrib.bean.RA170;
 import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RD010;
+import org.adempierelbr.sped.contrib.bean.RM100;
+import org.adempierelbr.sped.contrib.bean.RM200;
+import org.adempierelbr.sped.contrib.bean.RM210;
 import org.adempierelbr.sped.contrib.bean.RM400;
 import org.adempierelbr.sped.contrib.bean.RM410;
+import org.adempierelbr.sped.contrib.bean.RM500;
 import org.adempierelbr.sped.contrib.bean.RM600;
 import org.adempierelbr.sped.contrib.bean.RM610;
 import org.adempierelbr.sped.contrib.bean.RM800;
@@ -327,9 +334,24 @@ public class SPEDUtil
 	private static Set<I_RD500> _RD500;
 	
 	/**
+	 * 	Array com todos os Registros M600 e seus filhos
+	 */
+	private static RM100 _RM100;
+	
+	/**
+	 * 	Array com todos os Registros M600 e seus filhos
+	 */
+	private static RM200 _RM200;
+	
+	/**
 	 * 	Array com todos os Registros M400 e seus filhos
 	 */
 	private static Set<RM400> _RM400;
+	
+	/**
+	 * 	Array com todos os Registros M600 e seus filhos
+	 */
+	private static RM500 _RM500;
 	
 	/**
 	 * 	Array com todos os Registros M600 e seus filhos
@@ -340,6 +362,10 @@ public class SPEDUtil
 	 * 	Array com todos os Registros M800 e seus filhos
 	 */
 	private static Set<RM800> _RM800;
+	
+	static Map<String, BigDecimal> map= new TreeSumMap<String, BigDecimal> ();
+	static Map<BigDecimal, BigDecimal> mapCon= new TreeSumMap<BigDecimal, BigDecimal> ();
+	static List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
 	
 	/**
 	 * 	Processa todos os Fatos Fiscais
@@ -367,6 +393,7 @@ public class SPEDUtil
 		_RD010 = new SPEDSet<RD010>();
 		_RD100 = new SPEDSet<I_RD100>();
 		_RD500 = new SPEDSet<I_RD500>();
+		_RM200 = new RM200();
 		_RM400 = new SPEDSet<RM400>();
 		_RM800 = new SPEDSet<RM800>();
 		_RM600 = new RM600();
@@ -378,7 +405,6 @@ public class SPEDUtil
 				continue;
 			else
 				unqNF.add(fact.getLBR_NotaFiscalLine_ID());
-			
 			
 			String COD_MOD = fact.getlbr_NFModel();
 			
@@ -398,6 +424,7 @@ public class SPEDUtil
 				
 				//	A100, A170
 				_RA100.add (fact.getRA100 (ctx, trxName));
+
 			}
 			
 			//	C100
@@ -409,6 +436,15 @@ public class SPEDUtil
 				
 				//	C100, C120, C130, C140, C141, C170, C172, C190, C195
 				_RC100.add (fact.getRC100 (ctx, (I_RC100) getReg ("RC100", type), trxName));
+				
+				I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
+				item.setCST_COFINS(fact.getCOFINS_TaxStatus());
+				item.setCST_PIS(fact.getPIS_TaxStatus());
+				item.setVL_ITEM(fact.getLineTotalAmt());
+				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
+				item.setALIQ_PIS(fact.getPIS_TaxRate());
+				items.add(item);
+				
 			}
 			
 			//	C400
@@ -434,6 +470,15 @@ public class SPEDUtil
 			{
 				_RD010.add (fact.getRD010 ());
 				_RD100.add (fact.getRD100 (ctx, (I_RD100) getReg ("RD100", type), trxName));
+				
+				I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
+				item.setCST_COFINS(fact.getCOFINS_TaxStatus());
+				item.setCST_PIS(fact.getPIS_TaxStatus());
+				item.setVL_ITEM(fact.getLineTotalAmt());
+				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
+				item.setALIQ_PIS(fact.getPIS_TaxRate());
+				items.add(item);
+
 			}
 			
 			//	D500
@@ -443,7 +488,9 @@ public class SPEDUtil
 				_RD010.add (fact.getRD010 ());
 				_RD500.add (fact.getRD500 (ctx, (I_RD500) getReg ("RD500", type), trxName));
 			}
+			
 		}	//	for
+		
 	}	//	processFacts
 	
 	/**
@@ -862,11 +909,128 @@ public class SPEDUtil
 	}	//	getRC500
 
 	/**
+	 * 		M100
+	 */
+	public static RM100 getRM100 (Integer period, Integer p_AD_Org_ID)
+	{
+		RM100 rM100 = new RM100();
+
+		MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(Env.getCtx(), p_AD_Org_ID, "PISPROD", period, null);
+		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+		{	
+			rM100.setCOD_CRED(m_taxAssessment.getLBR_Cod_OR());
+			rM100.setIND_CRED_ORI("0");
+			rM100.setVL_BC_PIS(m_taxAssessment.getTotalAmt());
+			rM100.setALIQ_PIS(new BigDecimal(0.65));
+			rM100.setQUANT_BC_PIS(Env.ZERO);
+			rM100.setALIQ_PIS_QUANT(null);
+			rM100.setVL_CRED(m_taxAssessment.getTotalCr());
+			rM100.setVL_AJUS_ACRES(m_taxAssessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+			rM100.setVL_AJUS_REDUC(m_taxAssessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+			rM100.setVL_CRED_DIF(Env.ZERO);
+			rM100.setVL_CRED_DISP(rM100.getVL_CRED().add(rM100.getVL_AJUS_ACRES()).subtract(rM100.getVL_AJUS_REDUC()).subtract(rM100.getVL_CRED_DIF()));
+			rM100.setIND_DESC_CRED("0");
+			rM100.setVL_CRED_DESC(rM100.getVL_CRED_DISP());
+			rM100.setSLD_CRED(Env.ZERO);
+		}
+
+		//
+		return rM100;
+	}	//	getRM100
+	
+	/**
+	 * 		M200
+	 * 	FIXME Deixar M200, M400, M600 e M800 num único método
+	 * 	@return Registros M200
+	 */
+	public static RM200 getRM200 (Integer period, Integer p_AD_Org_ID)
+	{
+		RM200 rM200 = new RM200();
+		
+		MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(Env.getCtx(), p_AD_Org_ID, "PISPROD", period, null);
+		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+		{	
+			rM200.setVL_TOT_CONT_NC_PER(Env.ZERO);//m_taxAssessment.getTotalDr()
+			rM200.setVL_TOT_CRED_DESC(Env.ZERO); //m_taxAssessment.getTotalCr()
+			rM200.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
+			rM200.setVL_TOT_CONT_NC_DEV(Env.ZERO);
+			rM200.setVL_RET_NC(Env.ZERO);
+			rM200.setVL_OUT_DED_NC(Env.ZERO);
+			rM200.setVL_CONT_NC_REC(Env.ZERO);
+			rM200.setVL_TOT_CONT_CUM_PER(m_taxAssessment.getTotalDr());
+			rM200.setVL_RET_CUM(Env.ZERO);
+			rM200.setVL_OUT_DED_CUM(Env.ZERO);
+			rM200.setVL_CONT_CUM_REC(m_taxAssessment.getTotalDr());
+			rM200.setVL_TOT_CONT_REC(m_taxAssessment.getTotalDr());
+			
+			for (RM210 rM210: getRM210())
+			{
+				rM200.addRM210(rM210);
+			}
+		}
+		
+		return rM200;
+	}	//	getR6M00
+	
+	/**
+	 * 		M210
+	 * 	@return Registros M210
+	 */
+	public static void processRM210 ()
+	{
+		mapCon.clear();
+		for (I_FiscalDocItem item : items)
+			processRM210 (item);
+	}	//	processRM400
+	
+	/**
+	 * 		M400
+	 * 	@return Registros M400
+	 */
+	public static void processRM210 (I_FiscalDocItem item)
+	{
+		if (item == null)
+			return;
+		//
+		if (TextUtil.match (item.getALIQ_PIS().toString()))	//	FIXME
+			mapCon.put (item.getALIQ_PIS(), item.getVL_PIS());
+	}	//	processRM400
+	
+	public static Set<RM210> getRM210 ()
+	{
+			processRM210();
+			
+			Set<RM210> _RM210 = new SPEDSet<RM210> ();
+			
+			for (BigDecimal key : mapCon.keySet())
+			{
+				RM210 rM210 = new RM210 ();
+				rM210.setALIQ_PIS(key);
+				rM210.setCOD_CONT("51");
+				rM210.setVL_REC_BRT(Env.ZERO);
+				rM210.setVL_BC_CONT(Env.ZERO);
+				rM210.setQUANT_BC_PIS(Env.ZERO);
+				rM210.setALIQ_PIS_QUANT(Env.ZERO);
+				rM210.setVL_CONT_APUR(map.get(key));
+				rM210.setVL_AJUS_ACRES(Env.ZERO);
+				rM210.setVL_AJUS_REDUC(Env.ZERO);
+				rM210.setVL_CONT_DIFER(Env.ZERO);
+				rM210.setVL_CONT_DIFER_ANT(Env.ZERO);
+				rM210.setVL_CONT_PER(map.get(key));
+				_RM210.add(rM210);
+			}
+			
+			return _RM210;
+
+	}	//	getRM610
+	
+	/**
 	 * 		M400
 	 * 	@return Registros M400
 	 */
 	public static void processRM400 (List<I_FiscalDocItem> items, Map<String, BigDecimal> map)
 	{
+		map.clear();
 		for (I_FiscalDocItem item : items)
 			processRM400 (item, map);
 	}	//	processRM400
@@ -889,17 +1053,8 @@ public class SPEDUtil
 	 * 	@return Registros M400
 	 */
 	public static Set<RM400> getRM400 ()
-	{
-		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
-		
-		if (_RA100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RA100).getMapM400 ());
-		//
-		if (_RC100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RC100).getMapM400 ());
-		//
-		if (_RD100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RD100).getMapM400 ());
+	{	
+		processRM400(items, map);
 		
 		Set<RM400> _RM400 = new SPEDSet<RM400> ();
 		
@@ -922,39 +1077,121 @@ public class SPEDUtil
 	}	//	getRM400
 
 	/**
-	 * 		M600
-	 * 	FIXME Deixar M400, M600 e M800 num único método
-	 * 	@return Registros M600
+	 * 		M500
 	 */
-	public static RM600 getRM600 ()
+	public static RM500 getRM500 (Integer period, Integer p_AD_Org_ID)
+	{
+		RM500 rM500 = new RM500();
+		
+		MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(Env.getCtx(), p_AD_Org_ID, "PISPROD", period, null);
+		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+		{	
+			rM500.setCOD_CRED(m_taxAssessment.getLBR_Cod_OR());
+			rM500.setIND_CRED_ORI("0");
+			rM500.setVL_BC_COFINS(m_taxAssessment.getTotalAmt());
+			rM500.setALIQ_COFINS(new BigDecimal(3));
+			rM500.setQUANT_BC_COFINS(Env.ZERO);
+			rM500.setALIQ_COFINS_QUANT(null);
+			rM500.setVL_CRED(m_taxAssessment.getTotalCr());
+			rM500.setVL_AJUS_ACRES(m_taxAssessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+			rM500.setVL_AJUS_REDUC(m_taxAssessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+			rM500.setVL_CRED_DIFER(Env.ZERO);
+			rM500.setVL_CRED_DISP(rM500.getVL_CRED().add(rM500.getVL_AJUS_ACRES()).subtract(rM500.getVL_AJUS_REDUC()).subtract(rM500.getVL_CRED_DIFER()));
+			rM500.setIND_DESC_CRED("0");
+			rM500.setVL_CRED_DESC(rM500.getVL_CRED_DISP());
+			rM500.setSLD_CRED(Env.ZERO);
+		}
+		
+		//
+		return rM500;
+	}	//	getRM100
+	
+	/**
+	 * 		M600
+	 * 	FIXME Deixar M200, M400, M600 e M800 num único método
+	 * 	@return Registros M200
+	 */
+	public static RM600 getRM600 (Integer period, Integer p_AD_Org_ID)
 	{
 		RM600 rM600 = new RM600();
-		rM600.setVL_CONT_CUM_R(Env.ZERO);
-		rM600.setVL_CONT_NC_REC(Env.ZERO);
-		rM600.setVL_OUT_DED_CUM(Env.ZERO);
-		rM600.setVL_OUT_DED_NC(Env.ZERO);
-		rM600.setVL_RET_CUM(Env.ZERO);
-		rM600.setVL_RET_NC(Env.ZERO);
-		rM600.setVL_TOT_CONT_CUM_PER(Env.ZERO);
-		rM600.setVL_TOT_CONT_NC_DEV(Env.ZERO);
-		rM600.setVL_TOT_CONT_NC_PER(Env.ZERO);
-		rM600.setVL_TOT_CONT_REC(Env.ZERO);
-		rM600.setVL_TOT_CRED_DESC(Env.ZERO);
-		rM600.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
-		//
-		RM610 rM610 = new RM610();
-		rM610.setCOD_CONT("51");
-		rM610.setVL_REC_BRT(Env.ZERO);
-		rM610.setVL_BC_CONT(Env.ZERO);
-		rM610.setVL_CONT_APUR(Env.ZERO);
-		rM610.setVL_AJUS_ACRES(Env.ZERO);
-		rM610.setVL_AJUS_REDUC(Env.ZERO);
-		//
-		rM610.setALIQ_COFINS(new BigDecimal(3));
-		rM600.addRM610(rM610);
+		
+		MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(Env.getCtx(), p_AD_Org_ID, "PISPROD", period, null);
+		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
+		{	
+			
+			rM600.setVL_TOT_CONT_NC_PER(Env.ZERO);//m_taxAssessment.getTotalDr()
+			rM600.setVL_TOT_CRED_DESC(Env.ZERO); //m_taxAssessment.getTotalCr()
+			rM600.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
+			rM600.setVL_TOT_CONT_NC_DEV(Env.ZERO);
+			rM600.setVL_RET_NC(Env.ZERO);
+			rM600.setVL_OUT_DED_NC(Env.ZERO);
+			rM600.setVL_CONT_NC_REC(Env.ZERO);
+			rM600.setVL_TOT_CONT_CUM_PER(m_taxAssessment.getTotalDr());
+			rM600.setVL_RET_CUM(Env.ZERO);
+			rM600.setVL_OUT_DED_CUM(Env.ZERO);
+			rM600.setVL_CONT_CUM_REC(m_taxAssessment.getTotalDr());
+			rM600.setVL_TOT_CONT_REC(m_taxAssessment.getTotalDr());
+			
+			for (RM610 rM610: getRM610())
+			{
+				rM600.addRM610(rM610);
+			}
+		}
 		//
 		return rM600;
 	}	//	getR6M00
+	
+	/**
+	 * 		M210
+	 * 	@return Registros M210
+	 */
+	public static void processRM610 ()
+	{
+		//mapCon.clear();
+		for (I_FiscalDocItem item : items)
+			processRM610 (item);
+	}	//	processRM400
+	
+	/**
+	 * 		M400
+	 * 	@return Registros M400
+	 */
+	public static void processRM610 (I_FiscalDocItem item)
+	{
+		if (item == null)
+			return;
+		//
+		mapCon.put (item.getALIQ_COFINS(), item.getVL_COFINS());
+	}	//	processRM400
+	
+	public static Set<RM610> getRM610 ()
+	{
+			processRM610();
+			
+			
+			Set<RM610> _RM610 = new SPEDSet<RM610> ();
+			
+			for (BigDecimal key : mapCon.keySet())
+			{
+				RM610 rM610 = new RM610 ();
+				rM610.setALIQ_COFINS(key);
+				rM610.setCOD_CONT("51");
+				rM610.setVL_REC_BRT(Env.ZERO);
+				rM610.setVL_BC_CONT(Env.ZERO);
+				rM610.setQUANT_BC_COFINS(Env.ZERO);
+				rM610.setALIQ_COFINS_QUANT(Env.ZERO);
+				rM610.setVL_CONT_APUR(map.get(key));
+				rM610.setVL_AJUS_ACRES(Env.ZERO);
+				rM610.setVL_AJUS_REDUC(Env.ZERO);
+				rM610.setVL_CONT_DIFER(Env.ZERO);
+				rM610.setVL_CONT_DIFER_ANT(Env.ZERO);
+				rM610.setVL_CONT_PER(map.get(key));
+				_RM610.add(rM610);
+			}
+			
+			return _RM610;
+
+	}	//	getRM610
 	
 	/**
 	 * 		M800
@@ -962,6 +1199,7 @@ public class SPEDUtil
 	 */
 	public static void processRM800 (List<I_FiscalDocItem> items, Map<String, BigDecimal> map)
 	{
+		map.clear();
 		for (I_FiscalDocItem item : items)
 			processRM800 (item, map);
 	}
@@ -985,19 +1223,8 @@ public class SPEDUtil
 	 * 	@return Registros M800
 	 */
 	public static Set<RM800> getRM800 ()
-	{
-		Map<String, BigDecimal> map = new TreeSumMap<String, BigDecimal> ();
-		
-		if (_RA100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RA100).getMapM800 ());
-		//
-		if (_RC100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RC100).getMapM800 ());
-		//
-		if (_RD100 instanceof SPEDSet)
-			map.putAll (((SPEDSet<?>) _RD100).getMapM800 ());
-		
-		Set<RM800> _RM800 = new SPEDSet<RM800> ();
+	{	
+		processRM800(items, map);
 		
 		for (String key : map.keySet())
 		{
@@ -1084,6 +1311,8 @@ public class SPEDUtil
 		//
 		r9999.setQTD_LIN(new BigDecimal(total));
 		//
+		items.clear();
+		
 		return r9999;
 	}	//	getR9999
 }	//	SPEDUtil
