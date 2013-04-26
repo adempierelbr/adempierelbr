@@ -443,6 +443,8 @@ public class SPEDUtil
 				item.setVL_ITEM(fact.getLineTotalAmt());
 				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
 				item.setALIQ_PIS(fact.getPIS_TaxRate());
+				item.setVL_COFINS(fact.getCOFINS_TaxAmt());
+				item.setVL_PIS(fact.getPIS_TaxAmt());
 				items.add(item);
 				
 			}
@@ -477,6 +479,8 @@ public class SPEDUtil
 				item.setVL_ITEM(fact.getLineTotalAmt());
 				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
 				item.setALIQ_PIS(fact.getPIS_TaxRate());
+				item.setVL_COFINS(fact.getCOFINS_TaxAmt());
+				item.setVL_PIS(fact.getPIS_TaxAmt());
 				items.add(item);
 
 			}
@@ -972,6 +976,34 @@ public class SPEDUtil
 		return rM200;
 	}	//	getR6M00
 	
+	public static Set<RM210> getRM210 ()
+	{
+			processRM210();
+			
+			Set<RM210> _RM210 = new SPEDSet<RM210> ();
+			
+			for (BigDecimal key : mapCon.keySet())
+			{	
+				RM210 rM210 = new RM210 ();
+				rM210.setALIQ_PIS(key);
+				rM210.setCOD_CONT("51");
+				rM210.setVL_REC_BRT(Env.ZERO);
+				rM210.setVL_BC_CONT(Env.ZERO);
+				rM210.setQUANT_BC_PIS(Env.ZERO);
+				rM210.setALIQ_PIS_QUANT(Env.ZERO);
+				rM210.setVL_CONT_APUR(mapCon.get(key));
+				rM210.setVL_AJUS_ACRES(Env.ZERO);
+				rM210.setVL_AJUS_REDUC(Env.ZERO);
+				rM210.setVL_CONT_DIFER(Env.ZERO);
+				rM210.setVL_CONT_DIFER_ANT(Env.ZERO);
+				rM210.setVL_CONT_PER(mapCon.get(key));
+				_RM210.add(rM210);
+			}
+			
+			return _RM210;
+
+	}	//	getRM210
+	
 	/**
 	 * 		M210
 	 * 	@return Registros M210
@@ -981,7 +1013,7 @@ public class SPEDUtil
 		mapCon.clear();
 		for (I_FiscalDocItem item : items)
 			processRM210 (item);
-	}	//	processRM400
+	}	//	processRM210
 	
 	/**
 	 * 		M400
@@ -992,37 +1024,12 @@ public class SPEDUtil
 		if (item == null)
 			return;
 		//
-		if (TextUtil.match (item.getALIQ_PIS().toString()))	//	FIXME
-			mapCon.put (item.getALIQ_PIS(), item.getVL_PIS());
-	}	//	processRM400
-	
-	public static Set<RM210> getRM210 ()
-	{
-			processRM210();
-			
-			Set<RM210> _RM210 = new SPEDSet<RM210> ();
-			
-			for (BigDecimal key : mapCon.keySet())
-			{
-				RM210 rM210 = new RM210 ();
-				rM210.setALIQ_PIS(key);
-				rM210.setCOD_CONT("51");
-				rM210.setVL_REC_BRT(Env.ZERO);
-				rM210.setVL_BC_CONT(Env.ZERO);
-				rM210.setQUANT_BC_PIS(Env.ZERO);
-				rM210.setALIQ_PIS_QUANT(Env.ZERO);
-				rM210.setVL_CONT_APUR(map.get(key));
-				rM210.setVL_AJUS_ACRES(Env.ZERO);
-				rM210.setVL_AJUS_REDUC(Env.ZERO);
-				rM210.setVL_CONT_DIFER(Env.ZERO);
-				rM210.setVL_CONT_DIFER_ANT(Env.ZERO);
-				rM210.setVL_CONT_PER(map.get(key));
-				_RM210.add(rM210);
-			}
-			
-			return _RM210;
-
-	}	//	getRM610
+		BigDecimal aliqPIS = item.getALIQ_PIS();
+		BigDecimal valorPIS = item.getVL_PIS();
+		
+		if (aliqPIS.compareTo(Env.ZERO)==1)
+			mapCon.put(aliqPIS, valorPIS);
+	}	//	processRM210
 	
 	/**
 	 * 		M400
@@ -1147,7 +1154,7 @@ public class SPEDUtil
 	 */
 	public static void processRM610 ()
 	{
-		//mapCon.clear();
+		mapCon.clear();
 		for (I_FiscalDocItem item : items)
 			processRM610 (item);
 	}	//	processRM400
@@ -1161,7 +1168,11 @@ public class SPEDUtil
 		if (item == null)
 			return;
 		//
-		mapCon.put (item.getALIQ_COFINS(), item.getVL_COFINS());
+		BigDecimal aliqCOFINS = item.getALIQ_COFINS();
+		BigDecimal valorCOFINS = item.getVL_COFINS();
+		
+		if (aliqCOFINS.compareTo(Env.ZERO)==1) 
+			mapCon.put(aliqCOFINS, valorCOFINS);
 	}	//	processRM400
 	
 	public static Set<RM610> getRM610 ()
@@ -1180,12 +1191,12 @@ public class SPEDUtil
 				rM610.setVL_BC_CONT(Env.ZERO);
 				rM610.setQUANT_BC_COFINS(Env.ZERO);
 				rM610.setALIQ_COFINS_QUANT(Env.ZERO);
-				rM610.setVL_CONT_APUR(map.get(key));
+				rM610.setVL_CONT_APUR(mapCon.get(key));
 				rM610.setVL_AJUS_ACRES(Env.ZERO);
 				rM610.setVL_AJUS_REDUC(Env.ZERO);
 				rM610.setVL_CONT_DIFER(Env.ZERO);
 				rM610.setVL_CONT_DIFER_ANT(Env.ZERO);
-				rM610.setVL_CONT_PER(map.get(key));
+				rM610.setVL_CONT_PER(mapCon.get(key));
 				_RM610.add(rM610);
 			}
 			
