@@ -15,6 +15,7 @@ package org.adempierelbr.sped;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -424,6 +425,19 @@ public class SPEDUtil
 				
 				//	A100, A170
 				_RA100.add (fact.getRA100 (ctx, trxName));
+				
+				//if (fact.get_ValueAsBoolean("IsSoTrx"))
+				//{
+					I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
+					item.setCST_COFINS(fact.getCOFINS_TaxStatus());
+					item.setCST_PIS(fact.getPIS_TaxStatus());
+					item.setVL_ITEM(fact.getLineNetAmt());
+					item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
+					item.setALIQ_PIS(fact.getPIS_TaxRate());
+					item.setVL_COFINS(fact.getCOFINS_TaxAmt());
+					item.setVL_PIS(fact.getPIS_TaxAmt());
+					items.add(item);
+				//}
 
 			}
 			
@@ -437,15 +451,18 @@ public class SPEDUtil
 				//	C100, C120, C130, C140, C141, C170, C172, C190, C195
 				_RC100.add (fact.getRC100 (ctx, (I_RC100) getReg ("RC100", type), trxName));
 				
-				I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
-				item.setCST_COFINS(fact.getCOFINS_TaxStatus());
-				item.setCST_PIS(fact.getPIS_TaxStatus());
-				item.setVL_ITEM(fact.getLineTotalAmt());
-				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
-				item.setALIQ_PIS(fact.getPIS_TaxRate());
-				item.setVL_COFINS(fact.getCOFINS_TaxAmt());
-				item.setVL_PIS(fact.getPIS_TaxAmt());
-				items.add(item);
+				//if (fact.get_ValueAsBoolean("IsSoTrx"))
+				//{
+					I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
+					item.setCST_COFINS(fact.getCOFINS_TaxStatus());
+					item.setCST_PIS(fact.getPIS_TaxStatus());
+					item.setVL_ITEM(fact.getLineNetAmt());
+					item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
+					item.setALIQ_PIS(fact.getPIS_TaxRate());
+					item.setVL_COFINS(fact.getCOFINS_TaxAmt());
+					item.setVL_PIS(fact.getPIS_TaxAmt());
+					items.add(item);
+				//}
 				
 			}
 			
@@ -472,16 +489,6 @@ public class SPEDUtil
 			{
 				_RD010.add (fact.getRD010 ());
 				_RD100.add (fact.getRD100 (ctx, (I_RD100) getReg ("RD100", type), trxName));
-				
-				I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
-				item.setCST_COFINS(fact.getCOFINS_TaxStatus());
-				item.setCST_PIS(fact.getPIS_TaxStatus());
-				item.setVL_ITEM(fact.getLineTotalAmt());
-				item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
-				item.setALIQ_PIS(fact.getPIS_TaxRate());
-				item.setVL_COFINS(fact.getCOFINS_TaxAmt());
-				item.setVL_PIS(fact.getPIS_TaxAmt());
-				items.add(item);
 
 			}
 			
@@ -954,23 +961,27 @@ public class SPEDUtil
 		MLBRTaxAssessment m_taxAssessment = MLBRTaxAssessment.get(Env.getCtx(), p_AD_Org_ID, "PISPROD", period, null);
 		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 		{	
-			rM200.setVL_TOT_CONT_NC_PER(Env.ZERO);//m_taxAssessment.getTotalDr()
-			rM200.setVL_TOT_CRED_DESC(Env.ZERO); //m_taxAssessment.getTotalCr()
-			rM200.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
-			rM200.setVL_TOT_CONT_NC_DEV(Env.ZERO);
-			rM200.setVL_RET_NC(Env.ZERO);
-			rM200.setVL_OUT_DED_NC(Env.ZERO);
-			rM200.setVL_CONT_NC_REC(Env.ZERO);
-			rM200.setVL_TOT_CONT_CUM_PER(m_taxAssessment.getTotalDr());
-			rM200.setVL_RET_CUM(Env.ZERO);
-			rM200.setVL_OUT_DED_CUM(Env.ZERO);
-			rM200.setVL_CONT_CUM_REC(m_taxAssessment.getTotalDr());
-			rM200.setVL_TOT_CONT_REC(m_taxAssessment.getTotalDr());
+			BigDecimal vL_TOT_CONT_CUM_PER = new BigDecimal(0);
+			
+			rM200.setVL_TOT_CONT_NC_PER(Env.ZERO);//2 COD_CONT = 01, 02, 03, 04, 32 e 71
+			rM200.setVL_TOT_CRED_DESC(Env.ZERO); //3
+			rM200.setVL_TOT_CRED_DESC_ANT(Env.ZERO);//4
+			rM200.setVL_TOT_CONT_NC_DEV(Env.ZERO);//5 (02 – 03 - 04) 
+			rM200.setVL_RET_NC(Env.ZERO);//6
+			rM200.setVL_OUT_DED_NC(Env.ZERO);//7
+			rM200.setVL_CONT_NC_REC(Env.ZERO);//8 (05 – 06 - 07) 
+			rM200.setVL_RET_CUM(Env.ZERO);//10
+			rM200.setVL_OUT_DED_CUM(Env.ZERO);//11
 			
 			for (RM210 rM210: getRM210())
 			{
+				vL_TOT_CONT_CUM_PER=vL_TOT_CONT_CUM_PER.add(rM210.getVL_CONT_APUR());
 				rM200.addRM210(rM210);
 			}
+			
+			rM200.setVL_TOT_CONT_CUM_PER(vL_TOT_CONT_CUM_PER);//9 COD_CONT = 31, 32, 51, 52, 53, 54 e 72
+			rM200.setVL_CONT_CUM_REC(vL_TOT_CONT_CUM_PER);//12
+			rM200.setVL_TOT_CONT_REC(vL_TOT_CONT_CUM_PER);//13
 		}
 		
 		return rM200;
@@ -986,9 +997,6 @@ public class SPEDUtil
 			{	
 				RM210 rM210 = new RM210 ();
 				rM210.setALIQ_PIS(key);
-				rM210.setCOD_CONT("51");
-				rM210.setVL_REC_BRT(Env.ZERO);
-				rM210.setVL_BC_CONT(Env.ZERO);
 				rM210.setQUANT_BC_PIS(Env.ZERO);
 				rM210.setALIQ_PIS_QUANT(Env.ZERO);
 				rM210.setVL_CONT_APUR(mapCon.get(key));
@@ -997,6 +1005,8 @@ public class SPEDUtil
 				rM210.setVL_CONT_DIFER(Env.ZERO);
 				rM210.setVL_CONT_DIFER_ANT(Env.ZERO);
 				rM210.setVL_CONT_PER(mapCon.get(key));
+				rM210.setVL_REC_BRT(rM210.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM210.getALIQ_PIS(), 2, RoundingMode.HALF_UP));
+				rM210.setVL_BC_CONT(rM210.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM210.getALIQ_PIS(), 2, RoundingMode.HALF_UP));
 				_RM210.add(rM210);
 			}
 			
@@ -1126,23 +1136,27 @@ public class SPEDUtil
 		if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 		{	
 			
-			rM600.setVL_TOT_CONT_NC_PER(Env.ZERO);//m_taxAssessment.getTotalDr()
-			rM600.setVL_TOT_CRED_DESC(Env.ZERO); //m_taxAssessment.getTotalCr()
-			rM600.setVL_TOT_CRED_DESC_ANT(Env.ZERO);
-			rM600.setVL_TOT_CONT_NC_DEV(Env.ZERO);
-			rM600.setVL_RET_NC(Env.ZERO);
-			rM600.setVL_OUT_DED_NC(Env.ZERO);
-			rM600.setVL_CONT_NC_REC(Env.ZERO);
-			rM600.setVL_TOT_CONT_CUM_PER(m_taxAssessment.getTotalDr());
-			rM600.setVL_RET_CUM(Env.ZERO);
-			rM600.setVL_OUT_DED_CUM(Env.ZERO);
-			rM600.setVL_CONT_CUM_REC(m_taxAssessment.getTotalDr());
-			rM600.setVL_TOT_CONT_REC(m_taxAssessment.getTotalDr());
+			BigDecimal vL_TOT_CONT_CUM_PER = new BigDecimal(0);
+			
+			rM600.setVL_TOT_CONT_NC_PER(Env.ZERO);//2 COD_CONT = 01, 02, 03, 04, 32 e 71
+			rM600.setVL_TOT_CRED_DESC(Env.ZERO); //3
+			rM600.setVL_TOT_CRED_DESC_ANT(Env.ZERO);//4
+			rM600.setVL_TOT_CONT_NC_DEV(Env.ZERO);//5 (02 – 03 - 04) 
+			rM600.setVL_RET_NC(Env.ZERO);//6
+			rM600.setVL_OUT_DED_NC(Env.ZERO);//7
+			rM600.setVL_CONT_NC_REC(Env.ZERO);//8 (05 – 06 - 07) 
+			rM600.setVL_RET_CUM(Env.ZERO);//10
+			rM600.setVL_OUT_DED_CUM(Env.ZERO);//11
 			
 			for (RM610 rM610: getRM610())
 			{
+				vL_TOT_CONT_CUM_PER=vL_TOT_CONT_CUM_PER.add(rM610.getVL_CONT_APUR());
 				rM600.addRM610(rM610);
 			}
+			
+			rM600.setVL_TOT_CONT_CUM_PER(vL_TOT_CONT_CUM_PER);//9 COD_CONT = 31, 32, 51, 52, 53, 54 e 72
+			rM600.setVL_CONT_CUM_REC(vL_TOT_CONT_CUM_PER);//12
+			rM600.setVL_TOT_CONT_REC(vL_TOT_CONT_CUM_PER);//13
 		}
 		//
 		return rM600;
@@ -1187,8 +1201,6 @@ public class SPEDUtil
 				RM610 rM610 = new RM610 ();
 				rM610.setALIQ_COFINS(key);
 				rM610.setCOD_CONT("51");
-				rM610.setVL_REC_BRT(Env.ZERO);
-				rM610.setVL_BC_CONT(Env.ZERO);
 				rM610.setQUANT_BC_COFINS(Env.ZERO);
 				rM610.setALIQ_COFINS_QUANT(Env.ZERO);
 				rM610.setVL_CONT_APUR(mapCon.get(key));
@@ -1197,6 +1209,8 @@ public class SPEDUtil
 				rM610.setVL_CONT_DIFER(Env.ZERO);
 				rM610.setVL_CONT_DIFER_ANT(Env.ZERO);
 				rM610.setVL_CONT_PER(mapCon.get(key));
+				rM610.setVL_REC_BRT(rM610.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM610.getALIQ_COFINS(), 2, RoundingMode.HALF_UP));
+				rM610.setVL_BC_CONT(rM610.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM610.getALIQ_COFINS(), 2, RoundingMode.HALF_UP));
 				_RM610.add(rM610);
 			}
 			
