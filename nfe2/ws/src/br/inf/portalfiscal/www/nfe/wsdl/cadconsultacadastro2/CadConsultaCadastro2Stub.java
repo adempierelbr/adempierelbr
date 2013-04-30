@@ -2855,7 +2855,8 @@ import org.adempierelbr.model.MLBRNFeWebService;
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2","consultaCadastro2Result").equals(reader.getName())){
+                                    if (reader.isStartElement())// && new javax.xml.namespace.QName("http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2","consultaCadastro2Result").equals(reader.getName()))
+                                    {
                                 
                                                 object.setConsultaCadastro2Result(ConsultaCadastro2Result_type0.Factory.parse(reader));
                                               
