@@ -53,11 +53,13 @@ import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RM100;
 import org.adempierelbr.sped.contrib.bean.RM200;
 import org.adempierelbr.sped.contrib.bean.RM210;
+import org.adempierelbr.sped.contrib.bean.RM211;
 import org.adempierelbr.sped.contrib.bean.RM400;
 import org.adempierelbr.sped.contrib.bean.RM410;
 import org.adempierelbr.sped.contrib.bean.RM500;
 import org.adempierelbr.sped.contrib.bean.RM600;
 import org.adempierelbr.sped.contrib.bean.RM610;
+import org.adempierelbr.sped.contrib.bean.RM611;
 import org.adempierelbr.sped.contrib.bean.RM800;
 import org.adempierelbr.sped.contrib.bean.RM810;
 import org.adempierelbr.util.BPartnerUtil;
@@ -1007,7 +1009,9 @@ public class SPEDUtil
 				rM210.setVL_CONT_PER(mapCon.get(key));
 				rM210.setVL_REC_BRT(rM210.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM210.getALIQ_PIS(), 2, RoundingMode.HALF_UP));
 				rM210.setVL_BC_CONT(rM210.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM210.getALIQ_PIS(), 2, RoundingMode.HALF_UP));
+				rM210.setRM211(getRM211(rM210));
 				_RM210.add(rM210);
+				
 			}
 			
 			return _RM210;
@@ -1040,6 +1044,23 @@ public class SPEDUtil
 		if (aliqPIS.compareTo(Env.ZERO)==1)
 			mapCon.put(aliqPIS, valorPIS);
 	}	//	processRM210
+	
+	/**
+	 * 		M211
+	 * 	@return Registro M211
+	 */
+	public static RM211 getRM211 (RM210 rM210)
+	{
+		RM211 rM211 = new RM211();
+		
+		rM211.setIND_TIP_COOP("99");
+		rM211.setVL_BC_CONT(rM210.getVL_CONT_APUR());
+		rM211.setVL_BC_CONT_ANT_EXC_COOP(rM210.getVL_CONT_APUR());
+		rM211.setVL_EXC_COOP_GER(Env.ZERO);
+		rM211.setVL_EXC_ESP_COOP(Env.ZERO);
+		
+		return rM211;
+	}	//	getR6M00
 	
 	/**
 	 * 		M400
@@ -1211,12 +1232,30 @@ public class SPEDUtil
 				rM610.setVL_CONT_PER(mapCon.get(key));
 				rM610.setVL_REC_BRT(rM610.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM610.getALIQ_COFINS(), 2, RoundingMode.HALF_UP));
 				rM610.setVL_BC_CONT(rM610.getVL_CONT_APUR().multiply(Env.ONEHUNDRED).divide(rM610.getALIQ_COFINS(), 2, RoundingMode.HALF_UP));
+				rM610.setRM611(getRM611(rM610));
 				_RM610.add(rM610);
 			}
 			
 			return _RM610;
 
 	}	//	getRM610
+	
+	/**
+	 * 		M611
+	 * 	@return Registro M611
+	 */
+	public static RM611 getRM611 (RM610 rM610)
+	{
+		RM611 rM611 = new RM611();
+		
+		rM611.setIND_TIP_COOP("99");
+		rM611.setVL_BC_CONT(rM610.getVL_CONT_APUR());
+		rM611.setVL_BC_CONT_ANT_EXC_COOP(rM610.getVL_CONT_APUR());
+		rM611.setVL_EXC_COOP_GER(Env.ZERO);
+		rM611.setVL_EXC_ESP_COOP(Env.ZERO);
+		
+		return rM611;
+	}	//	getR6M00
 	
 	/**
 	 * 		M800

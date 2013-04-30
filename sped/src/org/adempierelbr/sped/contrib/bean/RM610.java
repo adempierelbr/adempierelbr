@@ -62,6 +62,9 @@ public class RM610 extends RegSped
 
 	@XMLFieldProperties(isMandatory=false, id = "VL_CONT_PER")
 	private BigDecimal VL_CONT_PER;
+	
+	@XMLFieldProperties (id = "RM611")
+	private RM611 _RM611 = new RM611();
 
 	public String getCOD_CONT()
 	{
@@ -183,4 +186,13 @@ public class RM610 extends RegSped
 		VL_CONT_PER = vL_CONT_PER;
 	}
 	
+	public RM611 get_RM611()
+	{
+		return _RM611;
+	}
+
+	public void setRM611 (RM611 rM611)
+	{
+		_RM611 = rM611;
+	}
 }	//	RM610
