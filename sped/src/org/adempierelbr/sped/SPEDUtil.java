@@ -45,6 +45,7 @@ import org.adempierelbr.sped.bean.I_RD500;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0110;
 import org.adempierelbr.sped.contrib.bean.R0140;
+import org.adempierelbr.sped.contrib.bean.R1100;
 import org.adempierelbr.sped.contrib.bean.RA010;
 import org.adempierelbr.sped.contrib.bean.RA100;
 import org.adempierelbr.sped.contrib.bean.RA170;
@@ -920,7 +921,7 @@ public class SPEDUtil
 	{
 		return _RD500;
 	}	//	getRC500
-
+	
 	/**
 	 * 		M100
 	 */
