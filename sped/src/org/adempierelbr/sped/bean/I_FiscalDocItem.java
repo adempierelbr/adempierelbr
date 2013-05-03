@@ -29,6 +29,8 @@ public interface I_FiscalDocItem
 	public void setALIQ_PIS(BigDecimal aliq);
 	public void setVL_PIS(BigDecimal vL_PIS);
 	public void setVL_COFINS(BigDecimal vL_COFINS);
+	public void setVL_BC_PIS(BigDecimal vL_PIS);
+	public void setVL_BC_COFINS(BigDecimal vL_COFINS);
 	public BigDecimal getVL_ITEM ();
 	public String getCST_PIS ();
 	public String getCST_COFINS ();
@@ -36,5 +38,7 @@ public interface I_FiscalDocItem
 	public BigDecimal getALIQ_PIS();
 	public BigDecimal getVL_PIS();
 	public BigDecimal getVL_COFINS();
+	public BigDecimal getVL_BC_PIS();
+	public BigDecimal getVL_BC_COFINS();
 	
 }	//	I_FiscalDocItem

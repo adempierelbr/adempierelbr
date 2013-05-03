@@ -191,7 +191,7 @@ public class RM610 extends RegSped
 		return _RM611;
 	}
 
-	public void setRM611 (RM611 rM611)
+	public void addRM611 (RM611 rM611)
 	{
 		_RM611 = rM611;
 	}

@@ -951,6 +951,30 @@ public class X_LBR_FactFiscal extends PO implements I_LBR_FactFiscal, I_Persiste
 		}
 		return false;
 	}
+	
+	/** Set Sales Transaction.
+	@param IsSOTrx 
+	This is a Sales Transaction
+  */
+	public void setLBR_IsOwnDocument (boolean IsOwnDocument)
+	{
+		set_Value (COLUMNNAME_lbr_IsOwnDocument, Boolean.valueOf(IsOwnDocument));
+	}
+	
+	/** Get Sales Transaction.
+		@return This is a Sales Transaction
+	  */
+	public boolean lbr_IsOwnDocument () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsSOTrx);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
 
 	public I_C_BPartner getLBR_BP_Accountant() throws RuntimeException
     {
