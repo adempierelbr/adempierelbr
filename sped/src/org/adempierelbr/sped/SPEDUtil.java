@@ -374,7 +374,6 @@ public class SPEDUtil
 	static Map<BigDecimal, BigDecimal> mapValorTax= new TreeSumMap<BigDecimal, BigDecimal> ();
 	
 	static List<I_FiscalDocItem> items = new ArrayList<I_FiscalDocItem>();
-	static List<I_FiscalDocItem> itemsES = new ArrayList<I_FiscalDocItem>();
 	
 	/**
 	 * 	Processa todos os Fatos Fiscais
@@ -456,46 +455,24 @@ public class SPEDUtil
 					item.setVL_ITEM(fact.getLineNetAmt());
 					item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
 					item.setALIQ_PIS(fact.getPIS_TaxRate());
-					item.setVL_BC_COFINS(fact.getCOFINS_TaxBaseAmt());
-					item.setVL_BC_PIS(fact.getPIS_TaxBaseAmt());
+					
 					
 					if (fact.isSOTrx())
 					{
 						item.setVL_COFINS(fact.getCOFINS_TaxAmt());
 						item.setVL_PIS(fact.getPIS_TaxAmt());
+						item.setVL_BC_COFINS(fact.getCOFINS_TaxBaseAmt());
+						item.setVL_BC_PIS(fact.getPIS_TaxBaseAmt());
 					}
 					else
 					{
 						item.setVL_COFINS(Env.ZERO);
 						item.setVL_PIS(Env.ZERO);
+						item.setVL_BC_COFINS(Env.ZERO);
+						item.setVL_BC_PIS(Env.ZERO);
 					}
 					
 					items.add(item);
-				}
-				
-				if (!fact.isCancelled())
-				{
-					I_FiscalDocItem item = (I_FiscalDocItem) new RA170();
-					item.setCST_COFINS(fact.getCOFINS_TaxStatus());
-					item.setCST_PIS(fact.getPIS_TaxStatus());
-					item.setVL_ITEM(fact.getLineNetAmt());
-					item.setALIQ_COFINS(fact.getCOFINS_TaxRate());
-					item.setALIQ_PIS(fact.getPIS_TaxRate());
-					item.setVL_BC_COFINS(fact.getCOFINS_TaxBaseAmt());
-					item.setVL_BC_PIS(fact.getPIS_TaxBaseAmt());
-					
-					if (fact.isSOTrx())
-					{
-						item.setVL_COFINS(fact.getCOFINS_TaxAmt());
-						item.setVL_PIS(fact.getPIS_TaxAmt());
-					}
-					else
-					{
-						item.setVL_COFINS(Env.ZERO);
-						item.setVL_PIS(Env.ZERO);
-					}
-					
-					itemsES.add(item);
 				}
 				
 			}
@@ -1040,16 +1017,8 @@ public class SPEDUtil
 				rM210.setVL_AJUS_REDUC(Env.ZERO);
 				rM210.setVL_CONT_DIFER(Env.ZERO);
 				rM210.setVL_CONT_DIFER_ANT(Env.ZERO);
-				
-				if (mapValorTax.get(key) == null){
-					rM210.setVL_CONT_PER(Env.ZERO);
-				}else{
-					rM210.setVL_CONT_PER(mapValorTax.get(key));
-				}
-				
-				
-				if (mapValorTax.get(key).equals(Env.ZERO))
-					rM210.setRM211(getRM211(rM210));
+				rM210.setVL_CONT_PER(Env.ZERO.add(mapValorTax.get(key)));
+				rM210.setRM211(getRM211(rM210));
 				
 				_RM210.add(rM210);
 				
@@ -1104,10 +1073,10 @@ public class SPEDUtil
 		RM211 rM211 = new RM211();
 		
 		rM211.setIND_TIP_COOP("99");
-		rM211.setVL_BC_CONT(Env.ZERO);
 		rM211.setVL_BC_CONT_ANT_EXC_COOP(rM210.getVL_BC_CONT());
 		rM211.setVL_EXC_COOP_GER(Env.ZERO);
 		rM211.setVL_EXC_ESP_COOP(Env.ZERO);
+		rM211.setVL_BC_CONT(rM210.getVL_BC_CONT());
 		
 		return rM211;
 	}	//	getR6M00
@@ -1142,7 +1111,7 @@ public class SPEDUtil
 	 */
 	public static Set<RM400> getRM400 ()
 	{	
-		processRM400(itemsES, map);
+		processRM400(items, map);
 		
 		Set<RM400> _RM400 = new SPEDSet<RM400> ();
 		
@@ -1286,15 +1255,8 @@ public class SPEDUtil
 				rM610.setVL_AJUS_REDUC(Env.ZERO);
 				rM610.setVL_CONT_DIFER(Env.ZERO);
 				rM610.setVL_CONT_DIFER_ANT(Env.ZERO);
-				
-				if (mapValorTax.get(key) == null){
-					rM610.setVL_CONT_PER(Env.ZERO);
-				}else{
-					rM610.setVL_CONT_PER(mapValorTax.get(key));
-				}
-				
-				if (mapValorTax.get(key).equals(Env.ZERO))
-					rM610.addRM611(getRM611(rM610));
+				rM610.setVL_CONT_PER(Env.ZERO.add(mapValorTax.get(key)));
+				rM610.addRM611(getRM611(rM610));
 				
 				_RM610.add(rM610);
 			}
@@ -1311,10 +1273,10 @@ public class SPEDUtil
 	{
 		RM611 rM611 = new RM611();
 		rM611.setIND_TIP_COOP("99");
-		rM611.setVL_BC_CONT(Env.ZERO);
 		rM611.setVL_BC_CONT_ANT_EXC_COOP(rM610.getVL_BC_CONT());
 		rM611.setVL_EXC_COOP_GER(Env.ZERO);
 		rM611.setVL_EXC_ESP_COOP(Env.ZERO);
+		rM611.setVL_BC_CONT(rM610.getVL_BC_CONT());
 		
 		return rM611;
 	}	//	getR6M00
@@ -1350,7 +1312,7 @@ public class SPEDUtil
 	 */
 	public static Set<RM800> getRM800 ()
 	{	
-		processRM800(itemsES, map);
+		processRM800(items, map);
 		
 		for (String key : map.keySet())
 		{
