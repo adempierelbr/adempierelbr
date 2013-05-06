@@ -220,7 +220,7 @@ public class GenerateSPEDContrib extends SvrProcess
 		// Registro M100
 		//bM.setRM100(SPEDUtil.getRM100 (p_C_Period_ID, orgInfo.getAD_Org_ID()));
 		//	Registro M200
-		bM.setRM200(SPEDUtil.getRM200 ());
+		bM.setRM200 (SPEDUtil.getRM200 ());
 		//	Registro M400
 		bM.setRM400 (SPEDUtil.getRM400 ());
 		// Registro M100

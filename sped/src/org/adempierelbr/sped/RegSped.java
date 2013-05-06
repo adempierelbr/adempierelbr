@@ -300,8 +300,9 @@ public abstract class RegSped implements Comparable<Object>
 				{
 					for (Object item : (List<?>) content)
 					{
-						result.append (SPEDUtil.EOL);
-						result.append (TextUtil.removeEOL (item.toString()));
+						if (!result.toString().endsWith(SPEDUtil.EOL))
+							result.append (SPEDUtil.EOL);
+						result.append (item.toString());
 					}
 					//
 					continue;
@@ -312,9 +313,20 @@ public abstract class RegSped implements Comparable<Object>
 				{
 					for (Object item : (Set<?>) content)
 					{
-						result.append (SPEDUtil.EOL);
-						result.append (TextUtil.removeEOL (item.toString()));
+						if (!result.toString().endsWith(SPEDUtil.EOL))
+							result.append (SPEDUtil.EOL);
+						result.append (item.toString());
 					}
+					//
+					continue;
+				}
+				
+				//	RegSped
+				else if (content instanceof RegSped)
+				{
+					if (!result.toString().endsWith(SPEDUtil.EOL))
+						result.append (SPEDUtil.EOL);
+					result.append (content.toString());
 					//
 					continue;
 				}
@@ -328,7 +340,8 @@ public abstract class RegSped implements Comparable<Object>
 			}
 			
 			// adicionar o fim de linha correto
-			result.append(EOL);
+			if (!result.toString().endsWith(SPEDUtil.EOL))
+				result.append(EOL);
 			
 			// retornar linha formatada
 			return result.toString();

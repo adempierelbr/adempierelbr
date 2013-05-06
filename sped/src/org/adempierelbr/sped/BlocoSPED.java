@@ -22,7 +22,6 @@ import java.util.Set;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.bean.I_RX001;
 import org.adempierelbr.sped.bean.I_RX990;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * 		Bloco SPED
@@ -129,7 +128,7 @@ public abstract class BlocoSPED
 				{
 					for (Object item : (List<?>) content)
 					{
-						result.append (TextUtil.removeEOL (item.toString()));
+						result.append (item.toString());
 						//
 						if (!result.toString().endsWith(SPEDUtil.EOL))
 							result.append (SPEDUtil.EOL);
