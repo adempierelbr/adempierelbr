@@ -14,6 +14,8 @@ package org.adempierelbr.util;
 
 import java.io.StringReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +28,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
 public class ValidaXML {
+	
+	/**
+	 * Variavel que armazena os arquivos para validação da Nota Fiscal de forma Static,
+	 * deixando os arquivos em memória após a primeira chamada.
+	 */
+	private static Map<String,Validator> mapurl = new HashMap<String,Validator>();
 
 	public static String ValidaDoc(String stringXml, String xsdFileName) {
 		//Define the type of schema - we use W3C
@@ -34,14 +42,19 @@ public class ValidaXML {
 		SchemaFactory factory = SchemaFactory.newInstance(schemaLang);
 		//Create schema by reading it from an XSD file
 		try 
-		{
-			//	Grava o arquivo no tmp
-			URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-			//
-			Schema schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
-			Validator validator = schema.newValidator();
+		{	
+			Schema schema = null;
+			Validator validator = null;			
+			if(mapurl == null || !mapurl.containsKey(xsdFileName))
+			{
+				//	Grava o arquivo no tmp e na Variavel Map
+				URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
+				schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
+				validator = schema.newValidator();
+				mapurl.put(xsdFileName, validator);
+			}			
 			//	Perform the validation:
-			validator.validate(new StreamSource(new StringReader(stringXml)));
+			mapurl.get(xsdFileName).validate(new StreamSource(new StringReader(stringXml)));
 			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = fact.newDocumentBuilder();
 			builder.parse(new InputSource(new StringReader(stringXml)));
