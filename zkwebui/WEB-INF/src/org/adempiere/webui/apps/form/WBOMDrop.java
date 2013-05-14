@@ -26,8 +26,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 
+import org.adempiere.model.POWrapper;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
@@ -40,14 +42,23 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.window.FDialog;
+import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxLine;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_M_Product;
+import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MProject;
 import org.compiere.model.MProjectLine;
 import org.compiere.model.MRole;
+import org.compiere.model.MSysConfig;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -739,6 +750,150 @@ public class WBOMDrop extends ADForm implements EventListener
 		
 		return retValue;
 	}	//	isSelected
+	
+	/**************************************************************************
+	 *	Pega Impostos para a Fatura
+	 */
+	@SuppressWarnings("unchecked")
+	public String getTaxes (MInvoice invoice, MInvoiceLine iLine)
+	{
+		Integer M_Product_ID = iLine.getM_Product_ID();
+		
+		if (M_Product_ID == null || M_Product_ID == 0)
+			return "";
+		
+		Integer C_InvoiceLine_ID = iLine.getC_InvoiceLine_ID();
+		Integer AD_Org_ID = invoice.getAD_Org_ID();
+		Integer C_BPartner_ID = invoice.getC_BPartner_ID();
+				
+		if (C_InvoiceLine_ID == null)
+			C_InvoiceLine_ID = 0;
+		
+		if (AD_Org_ID == null)
+			AD_Org_ID = 0;
+		
+		if (C_BPartner_ID == null)
+			C_BPartner_ID = 0;
+		
+		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), M_Product_ID, null), I_W_M_Product.class);
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), AD_Org_ID, null), I_W_AD_OrgInfo.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), invoice.getC_BPartner_ID(), null), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), invoice.getC_BPartner_Location_ID(), null); 
+
+		/**
+		 * 	0 = Taxes
+		 * 	1 = Legal Message
+		 * 	2 = CFOP
+		 * 	3 = CST
+		 */
+		Object[] taxation = MLBRTax.getTaxes (invoice.getC_DocTypeTarget_ID(), invoice.isSOTrx(), invoice.get_ValueAsString("lbr_TransactionType"), p, oi, bp, bpLoc, invoice.getDateAcct());
+		//
+		if (taxation == null)
+			return "";
+		//
+		Map<Integer, MLBRTaxLine> taxes = (Map<Integer, MLBRTaxLine>) taxation[0];
+		
+		if (((Integer) taxation[1]) > 0)
+		   iLine.set_ValueOfColumn("LBR_LegalMessage_ID", ((Integer) taxation[1]));
+		
+		if (((Integer) taxation[2]) > 0)
+			iLine.set_ValueOfColumn("LBR_CFOP_ID", ((Integer) taxation[2]));
+		
+//		if (((String) taxation[3]) != null && ((String) taxation[3]).length() > 0)
+//			mTab.setValue("lbr_TaxStatus", p.getlbr_ProductSource() + ((String) taxation[3]));
+		//
+		if (taxes.size() > 0)
+		{
+			MLBRTax tax = new MLBRTax (Env.getCtx(), 0, null);
+			tax.save();
+			//
+			for (Integer key : taxes.keySet())
+			{
+				MLBRTaxLine tl = taxes.get(key);
+				tl.setLBR_Tax_ID(tax.getLBR_Tax_ID());
+				tl.save();
+			}
+			//
+			tax.setDescription();
+			tax.save();
+			//
+			iLine.set_ValueOfColumn("LBR_Tax_ID", tax.getLBR_Tax_ID());
+		}
+		//
+		return "";
+	}	//	taxes
+	
+	/**************************************************************************
+	 *	Pega Impostos para a Pedido
+	 */
+	@SuppressWarnings("unchecked")
+	public String getTaxes (MOrder order, MOrderLine oLine)
+	{
+		Integer M_Product_ID = oLine.getM_Product_ID();
+		
+		if (M_Product_ID == null || M_Product_ID == 0)
+			return "";
+		
+		Integer C_OrderLine_ID = oLine.getC_OrderLine_ID();
+		Integer AD_Org_ID = order.getAD_Org_ID();
+		Integer C_BPartner_ID = order.getC_BPartner_ID();
+				
+		if (C_OrderLine_ID == null)
+			C_OrderLine_ID = 0;
+		
+		if (AD_Org_ID == null)
+			AD_Org_ID = 0;
+		
+		if (C_BPartner_ID == null)
+			C_BPartner_ID = 0;
+		
+		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), M_Product_ID, null), I_W_M_Product.class);
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), AD_Org_ID, null), I_W_AD_OrgInfo.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), order.getC_BPartner_ID(), null), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), order.getC_BPartner_Location_ID(), null); 
+
+		/**
+		 * 	0 = Taxes
+		 * 	1 = Legal Message
+		 * 	2 = CFOP
+		 * 	3 = CST
+		 */
+		Object[] taxation = MLBRTax.getTaxes (order.getC_DocTypeTarget_ID(), order.isSOTrx(), order.get_ValueAsString("lbr_TransactionType"), p, oi, bp, bpLoc, order.getDateAcct());
+		//
+		if (taxation == null)
+			return "";
+		//
+		Map<Integer, MLBRTaxLine> taxes = (Map<Integer, MLBRTaxLine>) taxation[0];
+		
+		if (((Integer) taxation[1]) > 0)
+		   oLine.set_ValueOfColumn("LBR_LegalMessage_ID", ((Integer) taxation[1]));
+		
+		if (((Integer) taxation[2]) > 0)
+			oLine.set_ValueOfColumn("LBR_CFOP_ID", ((Integer) taxation[2]));
+		
+//		if (((String) taxation[3]) != null && ((String) taxation[3]).length() > 0)
+//			mTab.setValue("lbr_TaxStatus", p.getlbr_ProductSource() + ((String) taxation[3]));
+		//
+		if (taxes.size() > 0)
+		{
+			MLBRTax tax = new MLBRTax (Env.getCtx(), 0, null);
+			tax.save();
+			//
+			for (Integer key : taxes.keySet())
+			{
+				MLBRTaxLine tl = taxes.get(key);
+				tl.setLBR_Tax_ID(tax.getLBR_Tax_ID());
+				tl.save();
+			}
+			//
+			tax.setDescription();
+			tax.save();
+			//
+			oLine.set_ValueOfColumn("LBR_Tax_ID", tax.getLBR_Tax_ID());
+		}
+		//
+		return "";
+	}	//	taxes
 
 	/**************************************************************************
 	 * 	Save Selection
@@ -813,6 +968,8 @@ public class WBOMDrop extends ADForm implements EventListener
 				ol.setQty(qty);
 				ol.setPrice();
 				ol.setTax();
+				if (MSysConfig.getBooleanValue("LBR_ALLOW_GETTAXES_BOMDROP",false,Env.getAD_Client_ID(Env.getCtx())))
+					getTaxes(order, ol);
 				if (ol.save())
 					lineCount++;
 				else
@@ -855,6 +1012,8 @@ public class WBOMDrop extends ADForm implements EventListener
 				il.setQty(qty);
 				il.setPrice();
 				il.setTax();
+				if (MSysConfig.getBooleanValue("LBR_ALLOW_GETTAXES_BOMDROP",false,Env.getAD_Client_ID(Env.getCtx())))
+					getTaxes(invoice, il);
 				if (il.save())
 					lineCount++;
 				else
