@@ -33,7 +33,7 @@ public class ValidaXML {
 	 * Variavel que armazena os arquivos para validação da Nota Fiscal de forma Static,
 	 * deixando os arquivos em memória após a primeira chamada.
 	 */
-	private static Map<String,Validator> mapurl = new HashMap<String,Validator>();
+	private static Map<String,DocumentBuilder> mapurl = new HashMap<String,DocumentBuilder>();
 
 	public static String ValidaDoc(String stringXml, String xsdFileName) {
 		//Define the type of schema - we use W3C
@@ -43,21 +43,19 @@ public class ValidaXML {
 		//Create schema by reading it from an XSD file
 		try 
 		{	
-			Schema schema = null;
-			Validator validator = null;			
-			if(mapurl == null || !mapurl.containsKey(xsdFileName))
-			{
-				//	Grava o arquivo no tmp e na Variavel Map
-				URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-				schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
-				validator = schema.newValidator();
-				mapurl.put(xsdFileName, validator);
-			}			
+			//	Grava o arquivo no tmp e na Variavel Map
+			URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
+			Schema schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
 			//	Perform the validation:
-			mapurl.get(xsdFileName).validate(new StreamSource(new StringReader(stringXml)));
+			Validator validator = schema.newValidator();
+			validator.validate(new StreamSource(new StringReader(stringXml)));
 			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = fact.newDocumentBuilder();
-			builder.parse(new InputSource(new StringReader(stringXml)));
+			if(!mapurl.containsKey(xsdFileName))
+			{
+				DocumentBuilder builder = fact.newDocumentBuilder();	
+				mapurl.put(xsdFileName, builder);
+			}			
+			mapurl.get(xsdFileName).parse(new InputSource(new StringReader(stringXml)));
 		} 
 		catch (IllegalArgumentException e) 
 		{
