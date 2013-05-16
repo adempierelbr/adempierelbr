@@ -63,9 +63,7 @@ public final class VString extends CTextField
 	private static final long serialVersionUID = 3142768153171970900L;
 	/** Max Display Length - 60 */
 	public static final int MAXDISPLAY_LENGTH = org.compiere.model.GridField.MAXDISPLAY_LENGTH;
-	/** Save VString Position on FocusGained*/
-	Integer p = 0;
-
+	
 	/******************************************************************************
 	 *	Mouse Listener
 	 */
@@ -387,7 +385,7 @@ public final class VString extends CTextField
 	 */
 	public void focusGained (FocusEvent e)
 	{
-		p = getCaretPosition();
+		Integer p = getCaretPosition();
 		m_infocus = true;
 		setText(getText());		//	clear
 		setCaretPosition(p);
