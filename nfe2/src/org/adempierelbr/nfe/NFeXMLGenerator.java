@@ -717,7 +717,7 @@ public class NFeXMLGenerator
 			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
 				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
 			
-			if (nf.getFreightAmt().signum() == 1) //FRETE
+			if (nf.getFreightAmt().signum() == 1 && nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt()).compareTo(Env.ZERO) != 0) //FRETE
 				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt())));
 			if (nf.getlbr_InsuranceAmt().signum() == 1) //SEGURO
 				produtos.setvSeg(TextUtil.bigdecimalToString(nfLine.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt())));
