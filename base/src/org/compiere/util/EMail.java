@@ -227,7 +227,7 @@ public final class EMail implements Serializable
 			if (m_smtpPort != null && !m_smtpPort.isEmpty())
 				props.put("mail.smtp.port", m_smtpPort);
 			
-			if(MSysConfig.getBooleanValue("SEND_EMAIL_USE_TLS", false, Env.getAD_Client_ID(Env.getCtx())))
+			if(MSysConfig.getBooleanValue("LBR_SEND_EMAIL_USING_TLS", false, Env.getAD_Client_ID(Env.getCtx())))
 				props.put("mail.smtp.starttls.enable", "true");
 			
 			session = Session.getInstance(props, m_auth);
