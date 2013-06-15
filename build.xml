@@ -16,18 +16,18 @@
 	
 	<!-- Variable	-->
 	<property file="build.properties"/>
-	<property name="build.dir" value="build" />
+	<property name="build.dir" value="${basedir}/build" />
 	<property name="dist.dir" value="dist" />
 	
 	<!-- Classpath	-->
-	<path id="compiles.classpath">
-		<!-- Adempiere Libraries -->
-		<fileset dir="${prj.adempiere.folder}/lib">
+	<path id="compile.classpath">
+		<!-- Local Libraries	-->
+		<fileset dir="lib">
 			<include name="**/*.jar"/>
 		</fileset>
 		
-		<!-- LBR Libraries	-->
-		<fileset dir="lib">
+		<!-- Adempiere Libraries -->
+		<fileset dir="${prj.adempiere.folder}/lib">
 			<include name="**/*.jar"/>
 		</fileset>
 		
@@ -53,8 +53,6 @@
 	
 	<target name="pre" description="Checking conditions">
 		<echo message=" ===============================================" />
-		<echo message=" AdempiereLBR Folder: ${prj.lbr.folder}" />
-		<echo message=" ===============================================" />
 		<echo message=" Created By: Ricardo Santana (www.kenos.com.br)" />
 		<echo message=" ===============================================" />
 		
@@ -68,8 +66,7 @@
 		<echo message=" ===============================================" />
 		<mkdir dir="${build.dir}"/>
 		
-		<unzip src="${prj.adempiere.folder}/lib/webui.war"
-		       dest="${prj.adempiere.folder}/lib/">
+		<unzip src="${prj.adempiere.folder}/lib/webui.war" dest="${prj.adempiere.folder}/lib/">
 		    <patternset>
 		        <include name="**/*.jar"/>
 		        <include name="**/*.class"/>
@@ -87,13 +84,18 @@
 			<src path="cce/src" />
 			<src path="rdef/src" />
 			<src path="zkwebui/WEB-INF/src" />
-			<classpath refid="compiles.classpath"/>
+			<classpath refid="compile.classpath"/>
 		</javac>
+		
+		<!-- copy theme -->
+		<copy failonerror="false" todir="${build.dir}/theme">
+			<fileset dir="zkwebui/theme" includes="**/*.*"/>
+		</copy>
 		
 		<echo message=" ===============================================" />
 		<echo message=" Copying media (images, sound, etc)... " />
 		<echo message=" ===============================================" />
-		<copy todir="${build.dir}">
+		<copy failonerror="false" todir="${build.dir}">
 			<fileset dir="client/src">
 				<include name="**/images/*"/>
 				<include name="**/*.gif"/>
@@ -128,34 +130,14 @@
 		    </fileset>
 		</unjar>
 		
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempiere/webui" overwrite="true">
-			<fileset dir="${build.dir}/org/adempiere/webui" includes="**/*.*" />
-		</copy>
-		<!-- copy the CLASSes from your custom project to "build_jar" directory  -->
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempierelbr/webui" overwrite="true">
-			<fileset dir="${build.dir}/org/adempierelbr/webui" includes="**/*.*" />
-		</copy>
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempierelbr/apps/form" overwrite="true">
-			<fileset dir="${build.dir}/org/adempierelbr/apps/form" includes="**/W*.*" />
-		</copy>
-		<!-- should copy RPS class to web environment  -->
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
-			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcGenerateRPS.*" />
-		</copy>
-		<!-- should copy XMLExport class to web environment  -->
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
-			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcXMLExport.*" />
-		</copy>
-		<copy todir="${build.dir}/WEB-INF/classes/org/adempierelbr/process" overwrite="false">
-		   	<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcReturnCNAB.*" />
-		</copy>
+		<!-- copy Web Artifacts -->
+		<ant inheritAll="false" target="copyWebArtifacts"/>
 		
-		<echo message=" ===============================================" />
-		<echo message=" Creating JARs... " />
-		<echo message=" ===============================================" />
 		<!-- creates your jar with the contents inside "build" -->
-		<delete dir="${build.dir}/META-INF" />
 		<jar destfile="${dist.dir}/customization.jar-${TODAY}" basedir="${build.dir}" duplicate="preserve">
+			<exclude name="META-INF/**" />
+			<exclude name="WEB-INF/**" />
+			<exclude name="theme/**"/>
 			<manifest>
 				<!-- Who is building this jar? -->
 				<attribute name="Built-By" value="${user.name}" />
@@ -167,7 +149,10 @@
 		</jar>
 
 		<!-- created the jar file for ZK -->
-		<jar destfile="${dist.dir}/zkcustomization.jar-${TODAY}" basedir="${build.dir}" includes="WEB-INF/**" duplicate="preserve">
+		<jar destfile="${dist.dir}/zkcustomization.jar-${TODAY}" basedir="${build.dir}" duplicate="preserve">
+			<exclude name="META-INF/**" />
+			<include name="WEB-INF/**" />
+			<include name="theme/**" />
 			<manifest>
 				<!-- Who is building this jar? -->
 				<attribute name="Built-By" value="${user.name}" />
@@ -178,5 +163,31 @@
 			</manifest>
 		</jar>
 		
+		<!-- Clean -->
+		<ant inheritAll="false" target="deletebuilddir"/>
+	</target>
+	
+	<target name="copyWebArtifacts" description="Copy files">
+		<!-- copy adempiere.webui  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempiere/webui" overwrite="true">
+			<fileset dir="${build.dir}/org/adempiere/webui" includes="**/*.*" />
+		</copy>
+		
+		<!-- copy adempierelbr.webui  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/webui" overwrite="true">
+			<fileset dir="${build.dir}/org/adempierelbr/webui" includes="**/*.*" />
+		</copy>
+		
+		<!-- copy apps.form.W*  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/apps/form" overwrite="true">
+			<fileset dir="${build.dir}/org/adempierelbr/apps/form" includes="**/W*.*" />
+		</copy>
+		
+		<!-- processes classes  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/process" overwrite="true">
+			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcGenerateRPS.*" />
+			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcXMLExport.*" />
+		   	<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcReturnCNAB.*" />
+		</copy>
 	</target>
 </project>
