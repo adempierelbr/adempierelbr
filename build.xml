@@ -92,6 +92,11 @@
 			<fileset dir="zkwebui/theme" includes="**/*.*"/>
 		</copy>
 		
+		<!-- copy XSD -->
+		<copy failonerror="false" todir="${build.dir}">
+			<fileset dir="nfe2/src" includes="**/*.xsd"/>
+		</copy>
+		
 		<echo message=" ===============================================" />
 		<echo message=" Copying media (images, sound, etc)... " />
 		<echo message=" ===============================================" />
