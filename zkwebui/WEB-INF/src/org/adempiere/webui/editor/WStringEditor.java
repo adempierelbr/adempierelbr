@@ -241,7 +241,7 @@ public class WStringEditor extends WEditor implements ContextMenuListener
 	{
 		if (WEditorPopupMenu.PREFERENCE_EVENT.equals(evt.getContextEvent()))
 		{
-			if (MRole.getDefault().isShowPreference())
+			if (!(this instanceof WPasswordEditor) && MRole.getDefault().isShowPreference())
 				ValuePreference.start (this.getGridField(), getValue());
 			return;
 		}
