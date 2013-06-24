@@ -505,7 +505,7 @@ public class SPEDUtil
 			
 			//	D500
 			else if (TextUtil.match (COD_MOD, COD_MOD_NF_DE_SERV_DE_COMUNICACAO, 
-					COD_MOD_NF_DE_SERV_DE_TELECOMUNICACAO))
+					COD_MOD_NF_DE_SERV_DE_TELECOMUNICACAO) && (TextUtil.match (fact.getCOFINS_TaxStatus(), "50", "51", "52", "53", "54", "55", "56"))	)
 			{
 				_RD010.add (fact.getRD010 ());
 				_RD500.add (fact.getRD500 (ctx, (I_RD500) getReg ("RD500", type), trxName));
@@ -1039,7 +1039,8 @@ public class SPEDUtil
 		mapValorTax.clear();
 		
 		for (I_FiscalDocItem item : items)
-			processRM210 (item);
+			if (TextUtil.match (item.getCST_PIS(), "01", "51", "02", "52", "31", "32"))	
+				processRM210 (item);
 	}	//	processRM210
 	
 	/**
@@ -1088,8 +1089,9 @@ public class SPEDUtil
 	public static void processRM400 (List<I_FiscalDocItem> items, Map<String, BigDecimal> map)
 	{
 		map.clear();
-		for (I_FiscalDocItem item : items)
-			processRM400 (item, map);
+		for (I_FiscalDocItem item : items)		
+			if (TextUtil.match (item.getCST_PIS(), "04", "05", "06", "07", "08", "09"))	
+				processRM400 (item, map);
 	}	//	processRM400
 	
 	/**
@@ -1101,7 +1103,7 @@ public class SPEDUtil
 		if (item == null || map == null)
 			return;
 		//
-		if (TextUtil.match (item.getCST_PIS(), "03", "04", "05", "06", "07", "08", "09"))	//	FIXME
+		if (TextUtil.match (item.getCST_PIS(), "04", "05", "06", "07", "08", "09"))	//	FIXME
 			map.put (item.getCST_PIS(), item.getVL_ITEM());
 	}	//	processRM400
 	
@@ -1210,7 +1212,8 @@ public class SPEDUtil
 		mapValorTax.clear();
 		
 		for (I_FiscalDocItem item : items)
-			processRM610 (item);
+			if (TextUtil.match (item.getCST_COFINS(), "01", "51", "02", "52", "31", "32"))	
+				processRM610 (item);
 	}	//	processRM400
 	
 	/**
@@ -1289,7 +1292,8 @@ public class SPEDUtil
 	{
 		map.clear();
 		for (I_FiscalDocItem item : items)
-			processRM800 (item, map);
+			if (TextUtil.match (item.getCST_COFINS(), "04","05", "06", "07", "08", "09"))	
+				processRM800 (item, map);
 	}
 	
 	/**
