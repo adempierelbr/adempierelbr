@@ -34,6 +34,8 @@ import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RC100;
 import org.adempierelbr.sped.contrib.bean.RC120;
 import org.adempierelbr.sped.contrib.bean.RC170;
+import org.adempierelbr.sped.contrib.bean.RC501;
+import org.adempierelbr.sped.contrib.bean.RC505;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RD100;
 import org.adempierelbr.sped.contrib.bean.RD101;
@@ -589,8 +591,54 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 	{
 		
 		PropertyUtils.copyProperties (rC500, getRC100 (ctx, (I_RC100) new RC100(), trxName));
+		rC500.addC501(getRC501());
+		rC500.addC505(getRC505());
 		return rC500;
 	}	//	getRC500
+	
+	private RC501 getRC501 () throws Exception
+	{
+		RC501 rC501 = new RC501();
+		
+		/**
+		 * 	Copia os dados comuns:
+		 * 
+		 * 	NUM_ITEM, COD_ITEM, DESCR_COMPL, VL_ITEM, VL_DESC, 
+		 * 		CST_PIS, VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, 
+		 * 		ALIQ_COFINS, VL_COFINS, COD_CTA, 
+		 */
+		PropertyUtils.copyProperties (rC501, getRA100(getCtx(), null));
+		//
+		rC501.setCST_PIS(getPIS_TaxStatus ());
+		rC501.setVL_ITEM(getLineNetAmt());
+		rC501.setVL_BC_PIS(getPIS_TaxBaseAmt());
+		rC501.setALIQ_PIS(getPIS_TaxRate());
+		rC501.setVL_PIS(getPIS_TaxAmt());
+		//
+		return rC501;
+	}	//	getRC170
+	
+	private RC505 getRC505 () throws Exception
+	{
+		RC505 rC505 = new RC505();
+		
+		/**
+		 * 	Copia os dados comuns:
+		 * 
+		 * 	NUM_ITEM, COD_ITEM, DESCR_COMPL, VL_ITEM, VL_DESC, 
+		 * 		CST_PIS, VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, 
+		 * 		ALIQ_COFINS, VL_COFINS, COD_CTA, 
+		 */
+		PropertyUtils.copyProperties (rC505, getRA100(getCtx(), null));
+		//
+		rC505.setCST_COFINS(getCOFINS_TaxStatus ());
+		rC505.setVL_ITEM(getLineNetAmt());
+		rC505.setVL_BC_COFINS(getCOFINS_TaxBaseAmt());
+		rC505.setALIQ_COFINS(getCOFINS_TaxRate());
+		rC505.setVL_COFINS(getCOFINS_TaxAmt());
+		//
+		return rC505;
+	}	//	getRC170
 	
 	/**
 	 * 		Este registro tem o objetivo de identificar o estabelecimento da pessoa jurídica a que 
