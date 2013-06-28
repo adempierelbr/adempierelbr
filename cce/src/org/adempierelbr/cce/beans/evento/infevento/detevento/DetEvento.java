@@ -14,10 +14,8 @@
 package org.adempierelbr.cce.beans.evento.infevento.detevento;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
-import org.adempierelbr.cce.beans.Signature;
 import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 /**
