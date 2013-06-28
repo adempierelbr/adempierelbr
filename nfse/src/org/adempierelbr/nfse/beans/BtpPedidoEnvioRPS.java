@@ -16,6 +16,8 @@ package org.adempierelbr.nfse.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.adempierelbr.cce.beans.Signature;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -42,6 +44,8 @@ public class BtpPedidoEnvioRPS
 	
 	@XStreamImplicit
 	List<BtpRPS> RPS = new ArrayList<BtpRPS>();
+	
+	Signature Signature;
 	
 	public BtpHeader getCabecalho()
 	{
