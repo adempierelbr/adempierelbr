@@ -1,6 +1,7 @@
 package org.adempierelbr.nfse.beans;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
@@ -33,7 +34,7 @@ public class RegistroNFSe
 			tpValor = Env.ZERO;
 		}
 		//
-		return tpValor (tpValor.setScale(2, BigDecimal.ROUND_HALF_UP).toString(), nullable);
+		return tpValor (tpValor.abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString(), nullable);
 	}
 	
 	protected String tpCodigoServico (String codigoServico)
@@ -154,4 +155,12 @@ public class RegistroNFSe
 		//
 		return discriminacao;
 	}
+	
+	protected String tpDate (Timestamp ts)
+	{
+		if (ts == null)
+			return null;
+		//
+		return 		TextUtil.timeToString(ts, "yyyy-MM-dd");
+	}	//	tpDate
 }

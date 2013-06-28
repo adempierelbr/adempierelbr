@@ -32,6 +32,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
+import org.adempierelbr.nfse.beans.BtpCPFCNPJ;
+import org.adempierelbr.nfse.beans.BtpHeader;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_City;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -777,4 +780,20 @@ public abstract class NFeUtil
 		//
 		return 0;
 	}	//	getRegionCode
+	
+	/**
+	 * 		Header
+	 * 	@return NFSE Header
+	 */
+	public static BtpHeader geraNFSEHeader (MOrgInfo oi)
+	{
+		BtpHeader header = new BtpHeader ();
+		//
+		I_W_AD_OrgInfo oiW = POWrapper.create(oi, I_W_AD_OrgInfo.class);
+		BtpCPFCNPJ cnpj = new BtpCPFCNPJ();
+		cnpj.setCNPJ(oiW.getlbr_CNPJ());
+		header.setCNPJRemetente(cnpj);
+		//
+		return header;
+	}	//	
 }	//	NFeUtil

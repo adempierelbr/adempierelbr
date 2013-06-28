@@ -3,13 +3,21 @@ package org.adempierelbr.nfse.beans;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+@XStreamAlias ("RPS")
 public class BtpRPS extends RegistroNFSe
 {
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(BtpRPS.class);
+	
+	@XStreamAsAttribute
+	final String xmlns="";
 	
 	String			Assinatura;
 	BtpChaveRPS		ChaveRPS;
@@ -24,10 +32,10 @@ public class BtpRPS extends RegistroNFSe
 	String			ValorINSS;
 	String			ValorIR;
 	String			ValorCSLL;
-	String			CodigoServicos;
+	String			CodigoServico;
 	String			AliquotaServicos;
 	String			ISSRetido;
-	BtpCPFCNPJ		CNPJCPFTomador;
+	BtpCPFCNPJ		CPFCNPJTomador;
 	String			InscricaoMunicipalTomador;
 	String			InscricaoEstadualTomador;
 	String			RazaoSocialTomador;
@@ -39,10 +47,31 @@ public class BtpRPS extends RegistroNFSe
 	{
 		return Assinatura;
 	}
-	
+
 	public void setAssinatura(String assinatura)
 	{
 		Assinatura = assinatura;
+	}
+	
+	public void setAssinatura(int AD_Org_ID)
+	{
+		StringBuilder ascii = new StringBuilder ("");
+		//
+		ascii.append(TextUtil.lPad (getChaveRPS().getInscricaoPrestador(), 8));
+		ascii.append(TextUtil.rPad (getChaveRPS().getSerieRPS(), 5));
+		ascii.append(TextUtil.lPad (getChaveRPS().getNumero(), 12));
+		//
+		ascii.append(TextUtil.lPad (getDataEmissao(), 8));
+		ascii.append(getTributacaoRPS());
+		ascii.append(getStatusRPS());
+		ascii.append(getISSRetido());
+		ascii.append(TextUtil.lPad (getValorServicos(), 15));
+		ascii.append(TextUtil.lPad (getValorDeducoes(), 15));
+		ascii.append(TextUtil.lPad (getCodigoServicos(), 5));
+		ascii.append(getCNPJCPFTomador().getIndicacaoCNPJF());
+		ascii.append(TextUtil.lPad (getCNPJCPFTomador().getDoc(), 14));
+		//
+		setAssinatura (AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID));
 	}
 	
 	public BtpChaveRPS getChaveRPS()
@@ -94,7 +123,7 @@ public class BtpRPS extends RegistroNFSe
 	
 	public void setDataEmissao(Timestamp dataEmissao)
 	{
-		setDataEmissao (TextUtil.timeToString(dataEmissao, "yyyy-MM-dd'T'HH:mm:ss"));
+		setDataEmissao (TextUtil.timeToString(dataEmissao, "yyyy-MM-dd"));
 	}
 	
 	public String getStatusRPS()
@@ -239,12 +268,12 @@ public class BtpRPS extends RegistroNFSe
 	
 	public String getCodigoServicos()
 	{
-		return CodigoServicos;
+		return CodigoServico;
 	}
 	
 	public void setCodigoServicos(String codigoServicos)
 	{
-		CodigoServicos = tpCodigoServico (codigoServicos);
+		CodigoServico = tpCodigoServico (codigoServicos);
 	}
 	
 	public String getAliquotaServicos()
@@ -279,12 +308,12 @@ public class BtpRPS extends RegistroNFSe
 	
 	public BtpCPFCNPJ getCNPJCPFTomador()
 	{
-		return CNPJCPFTomador;
+		return CPFCNPJTomador;
 	}
 	
 	public void setCNPJCPFTomador(BtpCPFCNPJ cNPJCPFTomador)
 	{
-		CNPJCPFTomador = cNPJCPFTomador;
+		CPFCNPJTomador = cNPJCPFTomador;
 	}
 	
 	public String getInscricaoMunicipalTomador()

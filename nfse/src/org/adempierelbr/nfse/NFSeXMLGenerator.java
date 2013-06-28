@@ -18,6 +18,7 @@ import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogMgt;
@@ -96,7 +97,7 @@ public class NFSeXMLGenerator
 		BtpChaveRPS tpChaveRPS 			= new BtpChaveRPS(); 
 		BtpRPS tpRPS					= new BtpRPS();
 		
-		tpChaveRPS.setInscricaoEstadual(nf.getlbr_IE());
+		tpChaveRPS.setInscricaoPrestador(MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM"));
 		tpChaveRPS.setNumero(nf.getDocumentNo());
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
@@ -168,7 +169,10 @@ public class NFSeXMLGenerator
 		tpRPS.setCodigoServicos(serviceCode);
 		tpRPS.setDiscriminacao(discriminacao);
 		//
-		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
+//		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());	//	FIXME
+		tpRPS.setISSRetido(false);
+		//
+		tpRPS.setAssinatura(nf.getAD_Org_ID());
 		//
 		return tpRPS;
 	}	//	generateNFSe

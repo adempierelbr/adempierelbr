@@ -3,6 +3,11 @@ package org.adempierelbr.nfse.beans;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
 
+/**
+ * 		Bean para CPF CNPJ
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: BtpCPFCNPJ.java, v1.0 2013/06/25 6:23:51 PM, ralexsander Exp $
+ */
 public class BtpCPFCNPJ
 {
 	/**	Logger			*/
@@ -50,4 +55,23 @@ public class BtpCPFCNPJ
 		else
 			return null;
 	}
-}
+	
+	/**
+	 * 	Indicador para CNPJ/CPF com 1 posição
+	 * 
+	 * 		Valor 1 para CPF
+	 * 		Valor 2 para CNPJ
+	 * 		Valor 3 para Não-Informado
+	 * 
+	 * 	@return Indicador de tipo de documento
+	 */
+	public String getIndicacaoCNPJF()
+	{
+		if (CNPJ != null && !CNPJ.equals(""))
+			return "2";
+		else if (CPF != null && !CPF.equals(""))
+			return "1";
+		else
+			return "3";
+	}	//	getIndicacaoCNPJF
+}	//	BtpCPFCNPJ

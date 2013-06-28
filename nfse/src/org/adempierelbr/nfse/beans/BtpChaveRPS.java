@@ -11,29 +11,29 @@ public class BtpChaveRPS
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(BtpChaveRPS.class);
 	
-	String InscricaoEstadual;
+	String InscricaoPrestador;
 	String SerieRPS;
-	String Numero;
+	String NumeroRPS;
 	/**
-	 * @return the tpInscricaoEstadual
+	 * @return the tpInscricaoPrestador
 	 */
-	public String getInscricaoEstadual()
+	public String getInscricaoPrestador()
 	{
-		return InscricaoEstadual;
+		return InscricaoPrestador;
 	}
 	
 	/**
-	 * @param inscricaoEstadual the tpInscricaoEstadual to set
+	 * @param inscricaoPrestador the tpInscricaoPrestador to set
 	 */
-	public void setInscricaoEstadual(String inscricaoEstadual)
+	public void setInscricaoPrestador(String inscricaoPrestador)
 	{
-		inscricaoEstadual = TextUtil.toNumeric(inscricaoEstadual);
+		inscricaoPrestador = TextUtil.toNumeric(inscricaoPrestador);
 		//
-		if (inscricaoEstadual == null || inscricaoEstadual.length() < 1 
-				|| inscricaoEstadual.length() > 19)
+		if (inscricaoPrestador == null || inscricaoPrestador.length() < 1 
+				|| inscricaoPrestador.length() > 19)
 			log.warning("tpInscricaoEstadual deve ter entre 1 e 19 caracteres");
 		//
-		this.InscricaoEstadual = inscricaoEstadual;
+		this.InscricaoPrestador = inscricaoPrestador;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class BtpChaveRPS
 	 */
 	public String getNumero()
 	{
-		return Numero;
+		return NumeroRPS;
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class BtpChaveRPS
 			numero = numero.substring(0, 12);
 		}
 		//
-		this.Numero = numero;
+		this.NumeroRPS = numero;
 	}
 	
 	/**

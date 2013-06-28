@@ -52,17 +52,13 @@ public class ValidaXML {
 		}
 		catch (SAXParseException e) 
 		{
-			return e.getMessage();
-		}
+			return "XML Parse Error on Col: "
+					+ ((SAXParseException) e).getColumnNumber()
+					+ " | Lin: " + ((SAXParseException) e).getLineNumber()
+					+ " - " + ((SAXParseException) e).getLocalizedMessage();		}
 		catch (Exception e) 
 		{
-			if (e instanceof SAXParseException)
-				return "XML Parse Error on Col: "
-						+ ((SAXParseException) e).getColumnNumber()
-						+ " | Lin: " + ((SAXParseException) e).getLineNumber()
-						+ " - " + ((SAXParseException) e).getLocalizedMessage();
-			else
-				return "Unknow error attemping to validate XML.";
+			return "Unknow error attemping to validate XML.";
 		}
 		return "";
 	}

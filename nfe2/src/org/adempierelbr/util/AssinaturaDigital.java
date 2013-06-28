@@ -51,12 +51,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import sun.misc.BASE64Encoder;
 
 /**
  * 	Assina o arquivo XML
@@ -70,6 +73,7 @@ public class AssinaturaDigital
 	public static final String CANCELAMENTO_NFE		="2";
 	public static final String INUTILIZACAO_NFE		="3";
 	public static final String CARTADECORRECAO_CCE	="4";
+	public static final String RPS					="5";
 	
 	/**		Algoritmos		*/
 	public static final String ALGORITIMO = "RSA";
@@ -100,10 +104,26 @@ public class AssinaturaDigital
 	 * @param OrgInfo
 	 * @throws Exception
 	 */
-	public static void Assinar(String caminhoxml, MOrgInfo oi, String docType) throws Exception
+	public static void Assinar (String caminhoxml, MOrgInfo oi, String docType) throws Exception
 	{
-		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
+		AssinaturaDigital.loadKeys (oi);
+		AssinaturaDigital.assinarDocumento (caminhoxml, docType);
+	}	//	Assinar
+
+	public static PrivateKey getChavePrivada() throws Exception
+	{
+		return keyP.getPrivate();
+	}	//	getChavePrivada
+
+	public static PublicKey getChavePublica() throws Exception
+	{
+		return keyP.getPublic();
+	}	//	getChavePublica
+
+	public static void loadKeys (MOrgInfo oi) throws Exception
+	{
+		Integer cert_ID = (Integer) oi.get_Value("LBR_DC_Org_ID");
+		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert_ID, null);
 		alias = dc.getAlias();
 		senha = dc.getPassword().toCharArray();			
 		//
@@ -126,23 +146,7 @@ public class AssinaturaDigital
 			certType = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
-		//
-		AssinaturaDigital.loadKeys ();
-		AssinaturaDigital.assinarDocumento (caminhoxml, docType);
-	}	//	Assinar
-
-	public static PrivateKey getChavePrivada() throws Exception
-	{
-		return keyP.getPrivate();
-	}	//	getChavePrivada
-
-	public static PublicKey getChavePublica() throws Exception
-	{
-		return keyP.getPublic();
-	}	//	getChavePublica
-
-	public static void loadKeys() throws Exception
-	{
+		
 		if (isToken)
 		{
 			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
@@ -226,12 +230,23 @@ public class AssinaturaDigital
 			tag = "infInut";
 		else if (docType.equals(CARTADECORRECAO_CCE))
 			tag = "infEvento";
-		
-		NodeList elements = doc.getElementsByTagName(tag);
-		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
-		String id = el.getAttribute("Id");
+		else if (docType.equals(RPS))
+			tag = "RPS";
 		//
-		Reference r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		Reference r = null;
+		
+		if (docType.equals(RPS))
+			r = sig.newReference("", sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		
+		else
+		{
+			NodeList elements = doc.getElementsByTagName(tag);
+			org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
+			String id = el.getAttribute("Id");
+			//
+			r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		}
+		
 		si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
 				sig.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(r));
 
@@ -250,4 +265,30 @@ public class AssinaturaDigital
 		Transformer trans = tf.newTransformer();
 		trans.transform(new DOMSource(doc), new StreamResult(os));
 	}	//	assinarDocumento
-}
+	
+	/**
+	 * 		Assinatura RPS
+	 * 
+	 * 	@param ascii
+	 * 	@return
+	 */
+	public static String signASCII (String ascii, int AD_Org_ID) 
+	{
+		log.fine("Signing: " + ascii);
+		//
+		try 
+		{
+			//	Prepare Certificates
+			loadKeys (MOrgInfo.get (Env.getCtx(), AD_Org_ID, null));
+			//
+			Signature dsa = Signature.getInstance ("SHA1withRSA");
+			dsa.initSign(getChavePrivada());
+			dsa.update(ascii.getBytes());
+			return new BASE64Encoder().encode (dsa.sign());
+		} 
+		catch (Exception ex) 
+		{
+			throw new AdempiereException ("Error siging RPS");
+		}
+	}	//	signASCII
+}	//	AssinaturaDigital
