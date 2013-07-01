@@ -52,6 +52,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 /**
  *  Attachment Viewer
@@ -345,7 +346,8 @@ public final class Attachment extends CDialog
 					xmlArea.setAutoscrolls(true);
 					xmlArea.setEditable(false);
 					xmlArea.select(0, 0);
-					xmlArea.setSyntaxEditingStyle("RSTA.tabLineColor");
+					xmlArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+					xmlArea.revalidate();
 					graphPanel.add(center, BorderLayout.CENTER);
 					graphPanel.setSize(200, 100);
 				}
