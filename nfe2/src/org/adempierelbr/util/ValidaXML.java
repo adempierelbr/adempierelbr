@@ -45,7 +45,7 @@ public class ValidaXML {
 	 * Variavel que armazena os arquivos para validação da Nota Fiscal de forma Static,
 	 * deixando os arquivos em memória após a primeira chamada.
 	 */
-	private static Map<String,Validator> mapurl = new HashMap<String,Validator>();
+	private static Map<String,Validator> mapvalidator = new HashMap<String,Validator>();
 	
 	 /** 
      * Método que faz a validação de arquivos XML. 
@@ -71,7 +71,7 @@ public class ValidaXML {
 	  
 	        // Atributos para validação.  
 	        documentBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");  
-	        documentBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaSource", xsdPath.toString());  
+	        documentBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaSource", xsdPath.toURI().toString());  
 	  
 	        // Crio uma builder para obter o Document de um .xml  
 	        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();  
@@ -88,7 +88,7 @@ public class ValidaXML {
 	  
 	        SchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);  
 	  
-	        if(!mapurl.containsKey(xsdFullFileName))
+	        if(!mapvalidator.containsKey(xsdFullFileName))
 	        {
 		        // carrega um WXS schema, representada por uma instacia Schema.  		       
 		        Source schemaFile = new StreamSource(xsdPath.toURI().toString());  
@@ -96,14 +96,14 @@ public class ValidaXML {
 		  
 		        // Cria um objeto ValidationHandler que pode ser usado para validar uma instancia document.  
 		        Validator validator = schema.newValidator();  
-		        mapurl.put(xsdFullFileName, validator);
+		        mapvalidator.put(xsdFullFileName, validator);
 			}		
 		        
 	        // Indica o objeto que irá tratar os error. Observe que ao encontrar  
 	        // um erro, este é simplesmente guardado e processo de validação continua.  
 	        try {  
 	            // Efetua a validação propriamente.  
-	        	mapurl.get(xsdFullFileName).validate(new DOMSource(document));  
+	        	mapvalidator.get(xsdFullFileName).validate(new DOMSource(document));  
 	        } catch (SAXParseException e) {  
 	        	String erros = "XML Validate Error: ";
 	            // Se algum erro foi encontrado, apresenta-o.  
