@@ -112,7 +112,7 @@ public class ValidaXML {
 	                	erros += "\n" + error;  
 	                }               
 	            }  
-	            return erros;  
+	            return erros.replaceAll("'", "");  
 	        }  
         
     	} catch (SAXException e) {  
