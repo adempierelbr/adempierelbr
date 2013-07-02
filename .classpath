@@ -11,7 +11,6 @@
 	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
-	<classpathentry kind="src" path="img"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>
