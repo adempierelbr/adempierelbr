@@ -12,20 +12,32 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+/** 
+* 
+* @author Dilnei Cunha. 
+*/  
 
 public class ValidaXML {
 	
@@ -34,52 +46,94 @@ public class ValidaXML {
 	 * deixando os arquivos em memória após a primeira chamada.
 	 */
 	private static Map<String,Validator> mapurl = new HashMap<String,Validator>();
-
-	public static String ValidaDoc(String stringXml, String xsdFileName) {
-		//Define the type of schema - we use W3C
-		String schemaLang = "http://www.w3.org/2001/XMLSchema";
-		//Get validation driver
-		SchemaFactory factory = SchemaFactory.newInstance(schemaLang);
-		//Create schema by reading it from an XSD file
-		try 
-		{	
-			Schema schema = null;
-			Validator validator = null;			
-			if(!mapurl.containsKey(xsdFileName))
-			{
-				//	Grava o arquivo no tmp e na Variavel Map
-				URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFileName);
-				schema = factory.newSchema(new StreamSource(xsdPath.toURI().toString()));
-				validator = schema.newValidator();
-				mapurl.put(xsdFileName, validator);
-			}			
-			//	Perform the validation:
-			mapurl.get(xsdFileName).validate(new StreamSource(new StringReader(stringXml)));
-			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = fact.newDocumentBuilder();
-			builder.parse(new InputSource(new StringReader(stringXml)));
+	
+	 /** 
+     * Método que faz a validação de arquivos XML. 
+     * 
+     * @param fullFileName 
+     * @param xsdFullFileName 
+     * @return 
+     * @throws Throwable 
+     */  
+    public static String ValidaDoc(String fullFileName, String xsdFullFileName){  
+  
+    	try { 
+    		
+    		// Caminho completo do xsd
+    		URL xsdPath = org.adempierelbr.util.ValidaXML.class.getResource("/org/adempierelbr/nfe/xsd/" + xsdFullFileName);
+    		 
+	        // Crio a fabrica.  
+	        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();  
+	  
+	        // Habilito suporte a namespace.   
+	        documentBuilderFactory.setNamespaceAware(true);  
+	        documentBuilderFactory.setValidating(true);  
+	  
+	        // Atributos para validação.  
+	        documentBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");  
+	        documentBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaSource", xsdPath.toString());  
+	  
+	        // Crio uma builder para obter o Document de um .xml  
+	        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();  
+	  
+	        // Guardo os erros de validação.   
+	        ErrorHandler errorHandler = new ErrorHandler();  
+	        documentBuilder.setErrorHandler(errorHandler);  
+	  
+	        // Declaro as variaveis a serem utilizadas.  
+	        Document document = null;	  
+	        		
+	        // Primeiro parse.  
+	        document = documentBuilder.parse(new InputSource(new StringReader(fullFileName))); 	        
+	  
+	        SchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);  
+	  
+	        if(!mapurl.containsKey(xsdFullFileName))
+	        {
+		        // carrega um WXS schema, representada por uma instacia Schema.  		       
+		        Source schemaFile = new StreamSource(xsdPath.toURI().toString());  
+		        Schema schema = schemaFactory.newSchema(schemaFile);  
+		  
+		        // Cria um objeto ValidationHandler que pode ser usado para validar uma instancia document.  
+		        Validator validator = schema.newValidator();  
+		        mapurl.put(xsdFullFileName, validator);
+			}		
+		        
+	        // Indica o objeto que irá tratar os error. Observe que ao encontrar  
+	        // um erro, este é simplesmente guardado e processo de validação continua.  
+	        try {  
+	            // Efetua a validação propriamente.  
+	        	mapurl.get(xsdFullFileName).validate(new DOMSource(document));  
+	        } catch (SAXParseException e) {  
+	        	String erros = "XML Validate Error: ";
+	            // Se algum erro foi encontrado, apresenta-o.  
+	            if (!errorHandler.handlerList.isEmpty()) {  
+	                for (String error : errorHandler.handlerList) {  
+	                	erros += "\n" + error;  
+	                }               
+	            }  
+	            return erros;  
+	        }  
+        
+    	} catch (SAXException e) {  
+            return e.getMessage();  
+        }
+		catch (ParserConfigurationException e)
+		{			
+			return e.getMessage();
+		}
+		catch (IOException e)
+		{			
+			return e.getMessage();
+		}
+		catch (URISyntaxException e)
+		{			
+			return e.getMessage();
 		} 
-		catch (IllegalArgumentException e) 
-		{
-			return e.getMessage();
-		}
-		catch (SAXParseException e) 
-		{
-			return e.getMessage();
-		}
-		catch (Exception e) 
-		{
-			if (e instanceof SAXParseException)
-				return "XML Parse Error on Col: "
-						+ ((SAXParseException) e).getColumnNumber()
-						+ " | Lin: " + ((SAXParseException) e).getLineNumber()
-						+ " - " + ((SAXParseException) e).getLocalizedMessage();
-			else
-				return "Unknow error attemping to validate XML.";
-		}
-		return "";
-	}
-
+    	
+        return "";  
+    }  	
+	
 	public static String validaEnvXML(String stringXml) {
 		return ValidaDoc(stringXml, "enviNFe_v2.00.xsd");
 	}
