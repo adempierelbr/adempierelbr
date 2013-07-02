@@ -61,8 +61,6 @@ public class BtpChaveRPS
 	 */
 	public void setSerieRPS(String serieRPS)
 	{
-		serieRPS = TextUtil.toNumeric(serieRPS);
-		//
 		if (serieRPS == null || serieRPS.length() < 1 
 				|| serieRPS.length() > 5)
 			log.warning("tpSerieRPS deve ter entre 1 e 5 dígitos");
