@@ -12,10 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -24,8 +25,6 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.Signature;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +57,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import sun.misc.BASE64Encoder;
 
@@ -76,16 +76,10 @@ public class AssinaturaDigital
 	public static final String RPS					="5";
 	
 	/**		Algoritmos		*/
-	public static final String ALGORITIMO = "RSA";
-	public static final String ALGORITMO_ASSINATURA = "MD5withRSA";
-	
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 	
-	static XMLSignatureFactory sig;
-	static X509Certificate cert;
-	static KeyInfo ki;
-	static SignedInfo si;
-	static KeyPair keyP;
+	private static X509Certificate cert;
+	private static KeyPair keyP;
 	
 	private static String certType = "";
 	private static String cfgFile = "";
@@ -104,23 +98,34 @@ public class AssinaturaDigital
 	 * @param OrgInfo
 	 * @throws Exception
 	 */
-	public static void Assinar (String caminhoxml, MOrgInfo oi, String docType) throws Exception
+	public static void Assinar (String xmlPath, MOrgInfo oi, String docType) throws Exception
+	{
+		//	Lê o arquivo e assina
+		StringBuilder xml = Assinar (new StringBuilder (TextUtil.readFile (new File (xmlPath))), oi, docType);
+		
+		//	Grava o arquivo
+		TextUtil.generateFile (xml.toString(), xmlPath);
+	}	//	Assinar
+	
+	/**
+	 * 	Assina o arquivo XML
+	 * 
+	 * @param String XML
+	 * @param OrgInfo
+	 * @throws Exception
+	 */
+	public static StringBuilder Assinar (StringBuilder xml, MOrgInfo oi, String docType) throws Exception
 	{
 		AssinaturaDigital.loadKeys (oi);
-		AssinaturaDigital.assinarDocumento (caminhoxml, docType);
+		return AssinaturaDigital.assinarDocumento (xml, docType);
 	}	//	Assinar
 
-	public static PrivateKey getChavePrivada() throws Exception
+	private static PrivateKey getChavePrivada() throws Exception
 	{
 		return keyP.getPrivate();
 	}	//	getChavePrivada
 
-	public static PublicKey getChavePublica() throws Exception
-	{
-		return keyP.getPublic();
-	}	//	getChavePublica
-
-	public static void loadKeys (MOrgInfo oi) throws Exception
+	private static void loadKeys (MOrgInfo oi) throws Exception
 	{
 		Integer cert_ID = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert_ID, null);
@@ -166,60 +171,36 @@ public class AssinaturaDigital
 		}
 		cert.checkValidity();
 	}	//	loadKeys
-
-	public static boolean verificarAssinatura(PublicKey chave, byte[] buffer,
-			byte[] assinado) throws Exception
-	{
-		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
-		assinatura.initVerify(chave);
-		assinatura.update(buffer, 0, buffer.length);
-		return assinatura.verify(assinado);
-	}	//	verificarAssinatura
-
-	public static byte[] criarAssinatura(PrivateKey chavePrivada, byte[] buffer)
-			throws Exception
-	{
-		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
-		assinatura.initSign(chavePrivada);
-		assinatura.update(buffer, 0, buffer.length);
-		return assinatura.sign();
-	}	//	criarAssinatura
-
-	public static String getValidade (X509Certificate cert)
-	{
-		try
-		{
-			cert.checkValidity ();
-			return "Certificado valido!";
-		}
-		catch (CertificateExpiredException e)
-		{
-			return "Certificado expirado!";
-		}
-		catch (CertificateNotYetValidException e)
-		{
-			return "Certificado invalido!";
-		}
-	}	//	getValidade
 	
-	public static void assinarDocumento(String localDocumento, String docType) throws Exception
+	/**
+	 * 	Assina o Documento XML
+	 * 
+	 * @param localDocumento
+	 * @param docType
+	 * @throws Exception
+	 */
+	public static StringBuilder assinarDocumento (StringBuilder xml, String docType) throws Exception
 	{
+		log.fine ("Signing document: " + xml);
+
+		//	Carrega o documento
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		Document doc = dbf.newDocumentBuilder().parse(
-				new FileInputStream(localDocumento));
-		log.info(localDocumento + " ok !");
+		Document doc = dbf.newDocumentBuilder().parse (new InputSource(new StringReader (xml.toString())));
 
-		sig = XMLSignatureFactory.getInstance("DOM");
+		//	Factory
+		XMLSignatureFactory sig = XMLSignatureFactory.getInstance("DOM");
 
+		//	Transformações
 		ArrayList<Transform> transformList = new ArrayList<Transform>();
-		Transform enveloped = sig.newTransform(Transform.ENVELOPED,
-				(TransformParameterSpec) null);
-		Transform c14n = sig.newTransform(C14N_TRANSFORM_METHOD,
-				(TransformParameterSpec) null);
-		transformList.add(enveloped);
-		transformList.add(c14n);
 		
+		//	Adiciona Transformação (1) Enveloped (http://www.w3c.org/2000/09/xmldsig#enveloped-signature)
+		transformList.add (sig.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+		
+		// 	Adiciona Transformação (2) C14N (http://www.w3c.org/TR/2001/REC-xml-c14n-20010315)
+		transformList.add (sig.newTransform(C14N_TRANSFORM_METHOD, (TransformParameterSpec) null));
+		
+		//	TAG de Referência para posicionar a Assinatura
 		String tag = null;
 
 		if (docType.equals(RECEPCAO_NFE))
@@ -235,11 +216,17 @@ public class AssinaturaDigital
 		//
 		Reference r = null;
 		
+		/**
+		 * 	Para RPS não é necessário assinar uma URI específica
+		 */
 		if (docType.equals(RPS))
 			r = sig.newReference("", sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
 		
 		else
 		{
+			/**
+			 * 	Encontra a URI ID para assiná-la
+			 */
 			NodeList elements = doc.getElementsByTagName(tag);
 			org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
 			String id = el.getAttribute("Id");
@@ -247,27 +234,30 @@ public class AssinaturaDigital
 			r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
 		}
 		
-		si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+		SignedInfo si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
 				sig.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(r));
 
 		KeyInfoFactory kif = sig.getKeyInfoFactory();
 		List<X509Certificate> x509Content = new ArrayList<X509Certificate>();
 		x509Content.add(cert);
 		X509Data xd = kif.newX509Data(x509Content);
-		ki = kif.newKeyInfo(Collections.singletonList(xd));
+		KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xd));
 
-		DOMSignContext dsc = new DOMSignContext(getChavePrivada(), doc
-				.getDocumentElement());
+		DOMSignContext dsc = new DOMSignContext(getChavePrivada(), doc.getDocumentElement());
 		XMLSignature signature = sig.newXMLSignature(si, ki);
 		signature.sign(dsc);
-		OutputStream os = new FileOutputStream(localDocumento);
+		//
+		StringWriter sw = new StringWriter ();
+		//
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer trans = tf.newTransformer();
-		trans.transform(new DOMSource(doc), new StreamResult(os));
+		trans.transform(new DOMSource(doc), new StreamResult (sw));
+		//
+		return new StringBuilder (sw.toString());
 	}	//	assinarDocumento
 	
 	/**
-	 * 		Assinatura RPS
+	 * 		Assinatura RPS usando SHA1withRSA + Base64
 	 * 
 	 * 	@param ascii
 	 * 	@return
