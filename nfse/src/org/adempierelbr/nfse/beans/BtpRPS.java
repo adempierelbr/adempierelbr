@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -77,7 +78,7 @@ public class BtpRPS extends RegistroNFSe
 		ascii.append(TextUtil.lPad (getDataEmissao(), 8));
 		ascii.append(getTributacaoRPS());
 		ascii.append(getStatusRPS());
-		ascii.append(getISSRetido());
+		ascii.append("true".equals (getISSRetido()) ? "S" : "N");
 		ascii.append(TextUtil.lPad (getValorServicos(), 15));
 		ascii.append(TextUtil.lPad (getValorDeducoes(), 15));
 		ascii.append(TextUtil.lPad (getCodigoServicos(), 5));
@@ -201,7 +202,7 @@ public class BtpRPS extends RegistroNFSe
 	
 	public void setValorDeducoes(BigDecimal valorDeducoes)
 	{
-		ValorDeducoes = tpValor (valorDeducoes, true);
+		ValorDeducoes = tpValor (valorDeducoes, false);
 	}
 	
 	public String getValorPIS()
@@ -291,7 +292,7 @@ public class BtpRPS extends RegistroNFSe
 	
 	public String getAliquotaServicos()
 	{
-		return AliquotaServicos;
+		return new BigDecimal(AliquotaServicos).multiply (Env.ONEHUNDRED).toString();
 	}
 	
 	public void setAliquotaServicos(String aliquotaServicos)
@@ -301,7 +302,7 @@ public class BtpRPS extends RegistroNFSe
 	
 	public void setAliquotaServicos(BigDecimal aliquotaServicos)
 	{
-		AliquotaServicos = tpAliquota (aliquotaServicos);
+		AliquotaServicos = tpAliquota (aliquotaServicos.divide (Env.ONEHUNDRED));
 	}
 	
 	public String getISSRetido()

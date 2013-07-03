@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.adempierelbr.nfse.beans;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -87,8 +88,8 @@ public class BtpHeader extends RegistroNFSe
 	{
 		return ValorTotalServicos;
 	}
-	public void setValorTotalServicos(String valorTotalServicos)
+	public void setValorTotalServicos(BigDecimal valorTotalServicos)
 	{
-		ValorTotalServicos = valorTotalServicos;
+		ValorTotalServicos = tpValor (valorTotalServicos, false);
 	}
 }	//	BtpHeader

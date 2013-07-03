@@ -13,10 +13,12 @@
  *****************************************************************************/
 package org.adempierelbr.nfse.beans;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.adempierelbr.cce.beans.Signature;
+import org.compiere.util.Env;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -61,6 +63,10 @@ public class BtpPedidoEnvioRPS
 			return RPS.get(0);
 		return null;
 	}
+	public List<BtpRPS> getRPSs()
+	{
+		return RPS;
+	}
 	public void setRPS(BtpRPS pRPS)
 	{
 		RPS = new ArrayList<BtpRPS>();
@@ -70,4 +76,19 @@ public class BtpPedidoEnvioRPS
 	{
 		RPS.add (pRPS);
 	}
+	public int getQtyRPS ()
+	{
+		if (RPS == null)
+			return 0;
+		return RPS.size();
+	}	//	getQtyRPS
+	public BigDecimal getTotalAmount ()
+	{
+		BigDecimal total = Env.ZERO;
+		//
+		for (BtpRPS rps : getRPSs())
+			total = total.add (new BigDecimal (rps.getValorServicos()));
+		//
+		return total;
+	}	//	getTotalAmount
 }	//	BtpPedidoEnvioRPS

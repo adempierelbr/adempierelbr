@@ -27,7 +27,7 @@ public class RegistroNFSe
 	
 	protected String tpValor (String tpValor, boolean nullable)
 	{
-		if (nullable && tpValor == null)
+		if (nullable && (tpValor == null || "0".equals(tpValor) || "0.00".equals(tpValor)))
 			return null;
 		else if (tpValor == null)
 			tpValor = "0";
@@ -39,7 +39,7 @@ public class RegistroNFSe
 	
 	protected String tpValor (BigDecimal tpValor, boolean nullable)
 	{
-		if (nullable && tpValor == null)
+		if (nullable && (tpValor == null || tpValor.signum() == 0))
 			return null;
 		else if (tpValor == null)
 		{
