@@ -43,6 +43,7 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 
 /**
  * 		Processo para validar e gerar os Registros do SPED
@@ -144,6 +145,9 @@ public class GenerateSPEDContrib extends SvrProcess
 		dateTo   = toPeriod.getEndDate();
 		//
 		orgInfo = MOrgInfo.get(ctx, p_AD_Org_ID, trxName);
+		
+		DB.executeUpdate("Drop table lbr_factfiscal", trxName);
+		DB.executeUpdate("CREATE TABLE lbr_factfiscal AS SELECT * FROM lbr_factfiscalBase", trxName);
 		
 		try
 		{
