@@ -146,8 +146,8 @@ public class GenerateSPEDContrib extends SvrProcess
 		//
 		orgInfo = MOrgInfo.get(ctx, p_AD_Org_ID, trxName);
 		
-		DB.executeUpdate("Drop table lbr_factfiscal", trxName);
-		DB.executeUpdate("CREATE TABLE lbr_factfiscal AS SELECT * FROM lbr_factfiscalBase", trxName);
+		DB.executeUpdate("Drop table lbr_factfiscal", null);
+		DB.executeUpdate("CREATE TABLE lbr_factfiscal AS SELECT * FROM lbr_factfiscalBase", null);
 		
 		try
 		{
