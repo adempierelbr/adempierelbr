@@ -1067,17 +1067,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		//	Impostos
 		setTaxes(invoice);
-		
-		//	Description para Nota de Serviço
-		if (getC_DocType_ID() > 0)
-		{
-			MDocType dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
-			String model = dt.get_ValueAsString("lbr_NFModel");
-			
-			if (model != null && model.startsWith("RPS"))
-				setlbr_ServiceTaxes();
-		}
-		
+						
 		//	Linhas
 		for (MInvoiceLine iLine : invoice.getLines())
 		{
@@ -1126,10 +1116,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Nota do Documento (Mensagens Legais) e Descrição
 		setDocumentNote ();
 		setDescription ();
-		
-		//	Descrição para Nota de Serviço
-		setlbr_ServiceTaxes();
-		
+				
 		return true;
 	}	//	generateNF
 	
