@@ -104,8 +104,10 @@ public class RegistroNFSe
 	{
 		inscricaoMunucipal = TextUtil.toNumeric(inscricaoMunucipal);
 		//
-		if (inscricaoMunucipal.length() != 8)
+		if (inscricaoMunucipal.length() > 0 && inscricaoMunucipal.length() != 8)
 			log.warning("tpInscricaoMunucipal deve ter 8 digitos");
+		if (inscricaoMunucipal == null || inscricaoMunucipal.trim().isEmpty())
+			inscricaoMunucipal = null;
 		//
 		return inscricaoMunucipal;
 	}
@@ -114,7 +116,9 @@ public class RegistroNFSe
 	{
 		inscricaoEstadual = TextUtil.toNumeric(inscricaoEstadual);
 		//
-		if (inscricaoEstadual.length() < 1 && inscricaoEstadual.length() > 18)
+		if (inscricaoEstadual.length() < 1)
+			return null;
+		if (inscricaoEstadual.length() > 18)
 			log.warning("tpInscricaoEstadual deve ter entre 1 e 18 digitos");
 		//
 		return inscricaoEstadual;

@@ -169,7 +169,9 @@ public class NFSeRPSGenerator
 	 */
 	private static String data (String data)
 	{
-		Timestamp ts = TextUtil.stringToTime(data, "yyyy-MM-dd'T'HH:mm:ss");
+		if (data == null)
+			return null;
+		Timestamp ts = TextUtil.stringToTime(data, "yyyy-MM-dd");
 		return TextUtil.timeToString(ts, "yyyyMMdd");
 	}	//	data
 	

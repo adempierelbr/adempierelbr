@@ -92,6 +92,19 @@ public class NFSeXMLGenerator
 	 */
 	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
+		return generateNFSe (LBR_NotaFiscal_ID, false, trxName);
+	}	//	generateNFSe
+	
+	/**
+	 * 	Gera a NFS-e
+	 * 
+	 * @param 	LBR_NotaFiscal_ID
+	 * @param	sign
+	 * @param 	TrxName
+	 * @return	Error msg or ""
+	 */
+	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
+	{
 		Properties ctx = Env.getCtx();
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
@@ -182,10 +195,11 @@ public class NFSeXMLGenerator
 		tpRPS.setCodigoServicos(serviceCode);
 		tpRPS.setDiscriminacao(discriminacao);
 		//
-//		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());	//	FIXME
+		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		//
-		tpRPS.setAssinatura(nf.getAD_Org_ID());
+		if (sign)
+			tpRPS.setAssinatura(nf.getAD_Org_ID());
 		//
 		return tpRPS;
 	}	//	generateNFSe
