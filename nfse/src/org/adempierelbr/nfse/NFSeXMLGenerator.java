@@ -33,6 +33,8 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.MSequence;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
@@ -119,6 +121,15 @@ public class NFSeXMLGenerator
 		//
 		if (c != null && c.get_ValueAsString("lbr_CityCode") != null)
 			cityCode = c.get_ValueAsString("lbr_CityCode");
+		
+		//	Gera a sequência de RPS neste momento
+		if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, nf.getAD_Client_ID())
+				&& MLBRNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
+		{
+			nf.setDocumentNo(MSequence.getDocumentNo(nf.getC_DocTypeTarget_ID(), trxName, false));
+			nf.save();
+		}
+		
 		//
 		BtpChaveRPS tpChaveRPS 			= new BtpChaveRPS(); 
 		BtpRPS tpRPS					= new BtpRPS();
