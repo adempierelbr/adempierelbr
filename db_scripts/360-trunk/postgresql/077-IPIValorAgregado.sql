@@ -607,4 +607,8 @@ UPDATE AD_Table SET AD_Window_ID=1000014,Updated=TO_TIMESTAMP('2012-10-25 17:23:
 UPDATE AD_Table SET EntityType='LBRA',Updated=TO_TIMESTAMP('2012-11-07 14:39:04','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Table_ID=1120302
 ;
 
+--	Atualiza o ultimo script
+UPDATE AD_SysConfig SET Value='360-trunk/077-IPIValorAgregado.sql' WHERE AD_SysConfig_ID=1100006
+;
+
 
