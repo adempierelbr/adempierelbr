@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -38,11 +39,13 @@ import org.compiere.grid.VTable;
 import org.compiere.model.GridField;
 import org.compiere.model.MChangeLog;
 import org.compiere.model.MColumn;
+import org.compiere.model.MField;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
 import org.compiere.model.MRole;
 import org.compiere.model.MTable;
 import org.compiere.model.MUser;
+import org.compiere.model.Query;
 import org.compiere.swing.CDialog;
 import org.compiere.swing.CMenuItem;
 import org.compiere.swing.CPanel;
@@ -174,7 +177,7 @@ public class FieldRecordInfo extends CDialog
 			m_info.append(table1.getTableName()).append(" - ");
 		}
 		
-		m_info.append(title).append("='").append(content).append("')");
+		m_info.append(getTextComment(title, content));
 
 		//	Only Client Preference can view Change Log
 		if (!MRole.PREFERENCETYPE_Client.equals(MRole.getDefault().getPreferenceType()))
@@ -385,4 +388,51 @@ public class FieldRecordInfo extends CDialog
 		new FieldRecordInfo(frame, mField.getColumnName(), content, mField.getGridTab().getAD_Table_ID(), 
 				mField.getAD_Column_ID(), mField.getGridTab().getRecord_ID());
 	}
+	
+	/**
+	 * 		Content from DB as Text
+	 * 
+	 * 	@param title
+	 * 	@param content
+	 * 	@return
+	 */
+	private String getTextComment (String title, String content)
+	{
+		MColumn column = new MColumn (Env.getCtx(), AD_Column_ID, null);
+		//
+		List<MField> list = new Query (Env.getCtx(), MField.Table_Name, "AD_Column_ID=?", null)
+ 			.setParameters(new Object[]{column.getAD_Column_ID ()}).list();
+		//
+		for (MField field : list)
+		{
+			if (field.isEncrypted())
+				return title + "='?'";
+		}
+		//
+		if (DisplayType.isText (column.getAD_Reference_ID ())
+				|| column.getAD_Reference_ID() == DisplayType.YesNo)
+		{
+			return title + "='" + content + "')";
+		}
+		else if (DisplayType.isNumeric (column.getAD_Reference_ID ())
+				|| column.getAD_Reference_ID() == DisplayType.Amount
+				|| column.getAD_Reference_ID() == DisplayType.Integer
+				|| DisplayType.isLookup(column.getAD_Reference_ID ()))
+		{
+			return title + "=" + content + ")";
+		}
+		else if (column.getAD_Reference_ID() == DisplayType.Date)
+		{
+			return title + "=" + (DB.isPostgreSQL() ? "TO_TIMESTAMP(" : "TO_DATE(") + content + ", 'yyyyMMdd'))";
+		}
+		else if (column.getAD_Reference_ID() == DisplayType.DateTime)
+		{
+			return title + "=" + (DB.isPostgreSQL() ? "TO_TIMESTAMP(" : "TO_DATE(") + content + ", 'yyyyMMdd hh:mm:ss'))";
+		}
+		else if (DisplayType.isLOB (column.getAD_Reference_ID ()))
+		{
+			return title + "='BLOB')";
+		}
+		return title;
+	}	//	getTextComment
 }	// FieldRecordInfo

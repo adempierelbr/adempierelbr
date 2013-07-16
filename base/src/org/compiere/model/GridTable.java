@@ -2514,6 +2514,19 @@ public class GridTable extends AbstractTableModel
 					|| columnName.equals("lbr_BPTypeBRIsValid")
 					|| columnName.equals("LBR_Tax_ID")
 					|| columnName.equals("QtyReserved")
+					// Business Partner Contact
+					|| columnName.equals("EMailVerifyDate")
+					|| columnName.equals("LastContact")
+					|| columnName.equals("EMailVerify")
+					|| columnName.equals("LastResult")
+					// Nota Fiscal
+					|| columnName.equals("lbr_NFeStatus")
+					|| columnName.equals("LBR_NFeLot_ID")
+					|| columnName.equals("lbr_NFeDesc")
+					|| columnName.equals("lbr_NFeID")
+					|| columnName.equals("lbr_NFeProt")
+					|| columnName.equals("DateTrx")
+					|| columnName.equals("lbr_DigestValue")
 				)
 				{
 					rowData[i] = field.getDefault();

@@ -94,6 +94,8 @@ public class ProcGenerateNF extends SvrProcess
 			
 			wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 			POWrapper.getPO(wInvoice).save();
+			
+			nf.GenerateXMLAutomatic();
 		}
 		return "Process Completed";
 	}	//	doIt

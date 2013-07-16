@@ -111,14 +111,11 @@ public class ProcConsultaCadastro extends SvrProcess
 			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpRegion,bpIE,bpCNPJ)));
 
 			CadConsultaCadastro2Stub.setAmbiente("1",orgLoc.getC_Region_ID());
-			CadConsultaCadastro2Stub.NfeDadosMsg_type0 dadosMsg = CadConsultaCadastro2Stub.NfeDadosMsg_type0.Factory.parse(dadosXML);
+			CadConsultaCadastro2Stub.NfeDadosMsg dadosMsg = CadConsultaCadastro2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
-			CadConsultaCadastro2Stub.ConsultaCadastro2 consulta = new CadConsultaCadastro2Stub.ConsultaCadastro2();
-			consulta.setNfeDadosMsg(dadosMsg);
-
 			CadConsultaCadastro2Stub stub = new CadConsultaCadastro2Stub();
 
-			String respStatus = stub.consultaCadastro2(consulta,cabecMsgE).getConsultaCadastro2Result().getExtraElement().toString();
+			String respStatus = stub.consultaCadastro2(dadosMsg,cabecMsgE).getExtraElement().toString();
 
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));

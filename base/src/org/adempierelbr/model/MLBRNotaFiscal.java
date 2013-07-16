@@ -15,6 +15,7 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
@@ -403,7 +405,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		return getTaxAmt("COFINS");
 	}	//	getCOFINSAmt
 
-	public static int getLBR_NotaFiscal_ID(String DocumentNo,boolean IsSOTrx, String trx)
+	public static int getLBR_NotaFiscal_ID(String DocumentNo, boolean IsSOTrx, String trx)
 	{
 
 		String sql = "SELECT LBR_NotaFiscal_ID FROM LBR_NotaFiscal " +
@@ -411,9 +413,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				     "AND IsSOTrx = ? " +
 				     "ORDER BY LBR_NotaFiscal_ID desc";
 
-		Integer LBR_NotaFiscal_ID = DB.getSQLValue(trx, sql,
-				new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
+		Integer LBR_NotaFiscal_ID = DB.getSQLValue (trx, sql, new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
 
+		//	RPS
+		if (LBR_NotaFiscal_ID < 1)
+			LBR_NotaFiscal_ID = DB.getSQLValue (trx, sql, new Object[]{TextUtil.lPad (DocumentNo, 12), Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
+		//
 		return LBR_NotaFiscal_ID;
 	}	//	getLBR_NotaFiscal_ID
 
@@ -1107,7 +1112,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			nfLine.setLine(lineNo++);
 			nfLine.setInvoiceLine(iLine);
 			nfLine.save();
-			
+			nfLine.setDiscount(MLBRNFLineTax.getTaxesDiscount(nfLine));
+			nfLine.save();
+			//
 			if (nfLine.islbr_IsService())
 				totalService = totalService.add(nfLine.getLineTotalAmt());
 			else
@@ -1127,10 +1134,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Nota do Documento (Mensagens Legais) e Descrição
 		setDocumentNote ();
 		setDescription ();
-		
-		//	Descrição para Nota de Serviço
-		setlbr_ServiceTaxes();
-		
+				
 		return true;
 	}	//	generateNF
 	
@@ -1232,6 +1236,32 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		return true;
 	}	//	generateNF
+	
+	public void GenerateXMLAutomatic()
+	{
+		// Gerar XML automaticamente
+		try
+		{
+			if (getC_DocType_ID() > 0)
+			{
+				MDocType dt = new MDocType(getCtx(), getC_DocTypeTarget_ID(), get_TrxName());
+				String model = dt.get_ValueAsString("lbr_NFModel");
+				//
+				if (model == null)
+					log.log(Level.INFO, "Tipo de NF não definido.");
+				else if (model.startsWith("RPS"))
+				{
+					save(get_TrxName());
+				}
+				//
+				else if (model.equals("55") && 
+						MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
+					NFeXMLGenerator.geraCorpoNFe(getLBR_NotaFiscal_ID(), get_TrxName());
+			}
+		} catch(Exception ex) {
+			log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + getDocumentNo());
+		}
+	}//GenerateXMLAutomatic
 	
 	/**
 	 * 		Bill Note
@@ -1815,7 +1845,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				description.append(parse(order.get_Value("lbr_NFDescription").toString().trim()));
 		}
 		
-		setDescription(parse (description.toString()));
+		setDescription(parse (description.toString()).replace("\n\n\n", "\n\n"));
 	}	//	setDescription
 	
 	/**************************************************************************
@@ -1971,6 +2001,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 */
 	private String parseVariable (String variable)
 	{
+		MessageFormat mf = new MessageFormat("{0,number,#,##0.00}", Env.getLanguage(getCtx()).getLocale());
+		//
 		if (variable == null)
 			return "";
 		else if (variable.startsWith("NF_VAR|"))
@@ -1987,7 +2019,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				if (tax == null)
 					tax = Env.ZERO;
 				//
-				return tax.setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+				return mf.format (new Object[]{tax});
 			}
 			
 			/**
@@ -2004,7 +2036,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 							|| line.getQty().compareTo(Env.ZERO) <= 0)
 						continue;
 					//
-					serviceDescription += line.getQty() + " " + line.getlbr_UOMName() + "\t";
+					serviceDescription += mf.format (new Object[]{line.getQty()}) + " " + line.getlbr_UOMName() + "\t";
 					serviceDescription += line.getProductName();
 					//
 					if (line.getDescription() != null 
@@ -2017,9 +2049,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 					}
 					
 					if (line.getQty().compareTo(Env.ONE) == 1)
-						serviceDescription += ", Valor Unitário R$ " + line.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+						serviceDescription += ", Valor Unitário R$ " + mf.format(new Object[]{line.getPrice()});
 					
-					serviceDescription += ", Valor Total R$ " + line.getLineTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',') + ".";
+					serviceDescription += ", Valor Total R$ " + mf.format(new Object[]{line.getLineTotalAmt()}) + ".";
 					//
 					serviceDescription += "\n";
 				}
@@ -2051,7 +2083,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				{
 					header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
 					header += "- R$ ";
-					header += TextUtil.lPad(getlbr_ServiceTotalAmt().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+					header += TextUtil.lPad (mf.format (new Object[]{getlbr_ServiceTotalAmt()}), ' ', 13);
 					header += "\n\n";
 					//
 					if (taxes.length == 1)
@@ -2067,14 +2099,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 						//
 						printTaxes = true;
 						//
-						content += TextUtil.rPad(tg.getName(), 15);
+						content += TextUtil.rPad (tg.getName(), 15);
 						content += "- R$ ";
-						content += TextUtil.lPad(tax.getlbr_TaxAmt().abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+						content += TextUtil.lPad (mf.format (new Object[]{tax.getlbr_TaxAmt().abs()}), ' ', 13);
 						content += "\n";
 					}
 					footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
 					footer += "- R$ ";
-					footer += TextUtil.lPad(getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+					footer += TextUtil.lPad (mf.format (new Object[]{getGrandTotal()}), ' ', 13);
 					footer += "\n";
 				}
 				//
@@ -2093,7 +2125,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				else if (ois.length == 1)
 				{
 					serviceDescription += "\nVencimento em " + TextUtil.timeToString(ois[0].getDueDate(), "dd/MM/yyyy") 
-							+ " no valor de " + ois[0].getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ',');
+							+ " no valor de " + mf.format (new Object[]{ois[0].getGrandTotal()});
 				}
 				else if (ois.length > 1)
 				{
@@ -2103,7 +2135,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 					{
 						serviceDescription += TextUtil.timeToString(oi.getDueDate(), "dd/MM/yyyy");
 						serviceDescription += "     - R$ ";
-						serviceDescription += TextUtil.lPad(oi.getGrandTotal().setScale(2, BigDecimal.ROUND_HALF_UP).toString().replace('.', ','), ' ', 13);
+						serviceDescription += TextUtil.lPad (mf.format (new Object[]{oi.getGrandTotal()}), ' ', 13);
 						serviceDescription += "\n";
 					}
 				}

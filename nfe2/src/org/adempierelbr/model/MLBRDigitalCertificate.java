@@ -25,6 +25,7 @@ import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -167,7 +168,7 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			while (aliasesEnum.hasMoreElements()) 
 			{  
 				alias = (String) aliasesEnum.nextElement();  
-				if (ks.isKeyEntry(alias)) break;  
+				if (ks.isKeyEntry(alias) && ((X509Certificate) ks.getCertificate(alias)).getNotAfter().after (new Date()))	break;
 			}
 		}
   		X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
@@ -200,15 +201,21 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			//
 			Provider p = new sun.security.pkcs11.SunPKCS11 (dcOrg.getConfigurationFile());
 			Security.addProvider(p);
+			//
+			System.setProperty("javax.net.ssl.keyStore", "NONE");
 		}
 		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
+		{
 			certTypeOrg = "PKCS12";
+			File certFileOrg = NFeUtil.getAttachmentEntryFile(dcOrg.getAttachment(true).getEntry(0));
+			//
+			Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+			System.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
+		}
 		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certTypeOrg = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
-
-		File certFileOrg = NFeUtil.getAttachmentEntryFile(dcOrg.getAttachment(true).getEntry(0));
 
 		//	Certificado do WS
 		if (dcWS.getlbr_CertType() == null)
@@ -222,12 +229,9 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 
 		File certFileWS = NFeUtil.getAttachmentEntryFile(dcWS.getAttachment(true).getEntry(0));
 
-		//
+		//	Commons
 		System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
-		Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-		//
 		System.setProperty("javax.net.ssl.keyStoreType", certTypeOrg);
-		System.setProperty("javax.net.ssl.keyStore", certFileOrg.toString());
 		System.setProperty("javax.net.ssl.keyStorePassword", dcOrg.getPassword());
 		//
 		System.setProperty("javax.net.ssl.trustStoreType", certTypeWS);

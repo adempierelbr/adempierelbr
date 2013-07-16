@@ -12,10 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -24,8 +25,6 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.Signature;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,12 +50,16 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import sun.misc.BASE64Encoder;
 
 /**
  * 	Assina o arquivo XML
@@ -70,18 +73,13 @@ public class AssinaturaDigital
 	public static final String CANCELAMENTO_NFE		="2";
 	public static final String INUTILIZACAO_NFE		="3";
 	public static final String CARTADECORRECAO_CCE	="4";
+	public static final String RPS					="5";
 	
 	/**		Algoritmos		*/
-	public static final String ALGORITIMO = "RSA";
-	public static final String ALGORITMO_ASSINATURA = "MD5withRSA";
-	
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 	
-	static XMLSignatureFactory sig;
-	static X509Certificate cert;
-	static KeyInfo ki;
-	static SignedInfo si;
-	static KeyPair keyP;
+	private static X509Certificate cert;
+	private static KeyPair keyP;
 	
 	private static String certType = "";
 	private static String cfgFile = "";
@@ -100,12 +98,39 @@ public class AssinaturaDigital
 	 * @param OrgInfo
 	 * @throws Exception
 	 */
-	public static void Assinar(String caminhoxml, MOrgInfo oi, String docType) throws Exception
+	public static void Assinar (String xmlPath, MOrgInfo oi, String docType) throws Exception
 	{
-		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
-		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
-		String aliascliente = dc.getAlias();
-		String password = dc.getPassword();				
+		//	Lê o arquivo e assina
+		StringBuilder xml = Assinar (new StringBuilder (TextUtil.readFile (new File (xmlPath))), oi, docType);
+		
+		//	Grava o arquivo
+		TextUtil.generateFile (xml.toString(), xmlPath);
+	}	//	Assinar
+	
+	/**
+	 * 	Assina o arquivo XML
+	 * 
+	 * @param String XML
+	 * @param OrgInfo
+	 * @throws Exception
+	 */
+	public static StringBuilder Assinar (StringBuilder xml, MOrgInfo oi, String docType) throws Exception
+	{
+		AssinaturaDigital.loadKeys (oi);
+		return AssinaturaDigital.assinarDocumento (xml, docType);
+	}	//	Assinar
+
+	private static PrivateKey getChavePrivada() throws Exception
+	{
+		return keyP.getPrivate();
+	}	//	getChavePrivada
+
+	private static void loadKeys (MOrgInfo oi) throws Exception
+	{
+		Integer cert_ID = (Integer) oi.get_Value("LBR_DC_Org_ID");
+		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert_ID, null);
+		alias = dc.getAlias();
+		senha = dc.getPassword().toCharArray();			
 		//
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
@@ -120,31 +145,13 @@ public class AssinaturaDigital
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 		{
 			certType = "PKCS12";
-			jksData = new FileInputStream(NFeUtil.getAttachmentEntryFile((dc.getAttachment().getEntry(0))));
-			alias = aliascliente;
-			senha = password.toCharArray();
+			jksData = new FileInputStream(NFeUtil.getAttachmentEntryFile((dc.getAttachment().getEntry(0))));			
 		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
 		else
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
-		//
-		AssinaturaDigital.loadKeys ();
-		AssinaturaDigital.assinarDocumento (caminhoxml, docType);
-	}	//	Assinar
-
-	public static PrivateKey getChavePrivada() throws Exception
-	{
-		return keyP.getPrivate();
-	}	//	getChavePrivada
-
-	public static PublicKey getChavePublica() throws Exception
-	{
-		return keyP.getPublic();
-	}	//	getChavePublica
-
-	public static void loadKeys() throws Exception
-	{
+		
 		if (isToken)
 		{
 			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
@@ -164,60 +171,36 @@ public class AssinaturaDigital
 		}
 		cert.checkValidity();
 	}	//	loadKeys
-
-	public static boolean verificarAssinatura(PublicKey chave, byte[] buffer,
-			byte[] assinado) throws Exception
-	{
-		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
-		assinatura.initVerify(chave);
-		assinatura.update(buffer, 0, buffer.length);
-		return assinatura.verify(assinado);
-	}	//	verificarAssinatura
-
-	public static byte[] criarAssinatura(PrivateKey chavePrivada, byte[] buffer)
-			throws Exception
-	{
-		Signature assinatura = Signature.getInstance(ALGORITMO_ASSINATURA);
-		assinatura.initSign(chavePrivada);
-		assinatura.update(buffer, 0, buffer.length);
-		return assinatura.sign();
-	}	//	criarAssinatura
-
-	public static String getValidade (X509Certificate cert)
-	{
-		try
-		{
-			cert.checkValidity ();
-			return "Certificado valido!";
-		}
-		catch (CertificateExpiredException e)
-		{
-			return "Certificado expirado!";
-		}
-		catch (CertificateNotYetValidException e)
-		{
-			return "Certificado invalido!";
-		}
-	}	//	getValidade
 	
-	public static void assinarDocumento(String localDocumento, String docType) throws Exception
+	/**
+	 * 	Assina o Documento XML
+	 * 
+	 * @param localDocumento
+	 * @param docType
+	 * @throws Exception
+	 */
+	public static StringBuilder assinarDocumento (StringBuilder xml, String docType) throws Exception
 	{
+		log.fine ("Signing document: " + xml);
+
+		//	Carrega o documento
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		Document doc = dbf.newDocumentBuilder().parse(
-				new FileInputStream(localDocumento));
-		log.info(localDocumento + " ok !");
+		Document doc = dbf.newDocumentBuilder().parse (new InputSource(new StringReader (xml.toString())));
 
-		sig = XMLSignatureFactory.getInstance("DOM");
+		//	Factory
+		XMLSignatureFactory sig = XMLSignatureFactory.getInstance("DOM");
 
+		//	Transformações
 		ArrayList<Transform> transformList = new ArrayList<Transform>();
-		Transform enveloped = sig.newTransform(Transform.ENVELOPED,
-				(TransformParameterSpec) null);
-		Transform c14n = sig.newTransform(C14N_TRANSFORM_METHOD,
-				(TransformParameterSpec) null);
-		transformList.add(enveloped);
-		transformList.add(c14n);
 		
+		//	Adiciona Transformação (1) Enveloped (http://www.w3c.org/2000/09/xmldsig#enveloped-signature)
+		transformList.add (sig.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+		
+		// 	Adiciona Transformação (2) C14N (http://www.w3c.org/TR/2001/REC-xml-c14n-20010315)
+		transformList.add (sig.newTransform(C14N_TRANSFORM_METHOD, (TransformParameterSpec) null));
+		
+		//	TAG de Referência para posicionar a Assinatura
 		String tag = null;
 
 		if (docType.equals(RECEPCAO_NFE))
@@ -228,28 +211,74 @@ public class AssinaturaDigital
 			tag = "infInut";
 		else if (docType.equals(CARTADECORRECAO_CCE))
 			tag = "infEvento";
-		
-		NodeList elements = doc.getElementsByTagName(tag);
-		org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
-		String id = el.getAttribute("Id");
+		else if (docType.equals(RPS))
+			tag = "RPS";
 		//
-		Reference r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
-		si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
+		Reference r = null;
+		
+		/**
+		 * 	Para RPS não é necessário assinar uma URI específica
+		 */
+		if (docType.equals(RPS))
+			r = sig.newReference("", sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		
+		else
+		{
+			/**
+			 * 	Encontra a URI ID para assiná-la
+			 */
+			NodeList elements = doc.getElementsByTagName(tag);
+			org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
+			String id = el.getAttribute("Id");
+			//
+			r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
+		}
+		
+		SignedInfo si = sig.newSignedInfo(sig.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null),
 				sig.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(r));
 
 		KeyInfoFactory kif = sig.getKeyInfoFactory();
 		List<X509Certificate> x509Content = new ArrayList<X509Certificate>();
 		x509Content.add(cert);
 		X509Data xd = kif.newX509Data(x509Content);
-		ki = kif.newKeyInfo(Collections.singletonList(xd));
+		KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xd));
 
-		DOMSignContext dsc = new DOMSignContext(getChavePrivada(), doc
-				.getDocumentElement());
+		DOMSignContext dsc = new DOMSignContext(getChavePrivada(), doc.getDocumentElement());
 		XMLSignature signature = sig.newXMLSignature(si, ki);
 		signature.sign(dsc);
-		OutputStream os = new FileOutputStream(localDocumento);
+		//
+		StringWriter sw = new StringWriter ();
+		//
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer trans = tf.newTransformer();
-		trans.transform(new DOMSource(doc), new StreamResult(os));
+		trans.transform(new DOMSource(doc), new StreamResult (sw));
+		//
+		return new StringBuilder (sw.toString());
 	}	//	assinarDocumento
-}
+	
+	/**
+	 * 		Assinatura RPS usando SHA1withRSA + Base64
+	 * 
+	 * 	@param ascii
+	 * 	@return
+	 */
+	public static String signASCII (String ascii, int AD_Org_ID) 
+	{
+		log.fine("Signing: " + ascii);
+		//
+		try 
+		{
+			//	Prepare Certificates
+			loadKeys (MOrgInfo.get (Env.getCtx(), AD_Org_ID, null));
+			//
+			Signature dsa = Signature.getInstance ("SHA1withRSA");
+			dsa.initSign(getChavePrivada());
+			dsa.update(ascii.getBytes());
+			return new BASE64Encoder().encode (dsa.sign());
+		} 
+		catch (Exception ex) 
+		{
+			throw new AdempiereException ("Error siging RPS");
+		}
+	}	//	signASCII
+}	//	AssinaturaDigital

@@ -460,7 +460,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * 	@param	Price List
 	 */
 	public void setPrice (int C_Currency_ID, BigDecimal price, BigDecimal priceList)
-	{	
+	{
 		//	Conversão
 		if (C_Currency_ID != MLBRNotaFiscal.CURRENCY_BRL)
 		{
@@ -502,12 +502,20 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	public void setProduct (MProduct product)
 	{
 		if (product == null)
+		{
+			setlbr_IsService(true);
 			return;
+		}
 		//
 		I_W_M_Product productW = POWrapper.create(product, I_W_M_Product.class);
 		//
 		setM_Product_ID (product.getM_Product_ID());
-		setProductName (product.getName());
+		
+		if (productW.getLBR_LegalProductDescription()!=null)
+			setProductName (productW.getLBR_LegalProductDescription());
+		else
+			setProductName (product.getName());
+		
 		setProductValue (product.getValue());
 		setVendorProductNo(AdempiereLBR.getVendorProductNo(product.getM_Product_ID(), getParent().getC_BPartner_ID(), get_TrxName()));
 		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));

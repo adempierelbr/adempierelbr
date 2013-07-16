@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfse;
 
 import java.math.BigDecimal;
@@ -18,7 +31,10 @@ import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.MSequence;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
@@ -78,6 +94,19 @@ public class NFSeXMLGenerator
 	 */
 	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
+		return generateNFSe (LBR_NotaFiscal_ID, false, trxName);
+	}	//	generateNFSe
+	
+	/**
+	 * 	Gera a NFS-e
+	 * 
+	 * @param 	LBR_NotaFiscal_ID
+	 * @param	sign
+	 * @param 	TrxName
+	 * @return	Error msg or ""
+	 */
+	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
+	{
 		Properties ctx = Env.getCtx();
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
@@ -92,11 +121,20 @@ public class NFSeXMLGenerator
 		//
 		if (c != null && c.get_ValueAsString("lbr_CityCode") != null)
 			cityCode = c.get_ValueAsString("lbr_CityCode");
+		
+		//	Gera a sequência de RPS neste momento
+		if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, nf.getAD_Client_ID())
+				&& MLBRNotaFiscal.RPS_TEMP.equals(nf.getDocumentNo()))
+		{
+			nf.setDocumentNo(MSequence.getDocumentNo(nf.getC_DocTypeTarget_ID(), trxName, false));
+			nf.save();
+		}
+		
 		//
 		BtpChaveRPS tpChaveRPS 			= new BtpChaveRPS(); 
 		BtpRPS tpRPS					= new BtpRPS();
 		
-		tpChaveRPS.setInscricaoEstadual(nf.getlbr_IE());
+		tpChaveRPS.setInscricaoPrestador(MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM"));
 		tpChaveRPS.setNumero(nf.getDocumentNo());
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
@@ -169,6 +207,10 @@ public class NFSeXMLGenerator
 		tpRPS.setDiscriminacao(discriminacao);
 		//
 		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
+		tpRPS.setISSRetido(false);
+		//
+		if (sign)
+			tpRPS.setAssinatura(nf.getAD_Org_ID());
 		//
 		return tpRPS;
 	}	//	generateNFSe

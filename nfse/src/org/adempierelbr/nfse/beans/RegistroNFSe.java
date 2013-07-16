@@ -1,6 +1,20 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfse.beans;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.CLogger;
@@ -13,7 +27,7 @@ public class RegistroNFSe
 	
 	protected String tpValor (String tpValor, boolean nullable)
 	{
-		if (nullable && tpValor == null)
+		if (nullable && (tpValor == null || "0".equals(tpValor) || "0.00".equals(tpValor)))
 			return null;
 		else if (tpValor == null)
 			tpValor = "0";
@@ -25,7 +39,7 @@ public class RegistroNFSe
 	
 	protected String tpValor (BigDecimal tpValor, boolean nullable)
 	{
-		if (nullable && tpValor == null)
+		if (nullable && (tpValor == null || tpValor.signum() == 0))
 			return null;
 		else if (tpValor == null)
 		{
@@ -33,7 +47,7 @@ public class RegistroNFSe
 			tpValor = Env.ZERO;
 		}
 		//
-		return tpValor (tpValor.setScale(2, BigDecimal.ROUND_HALF_UP).toString(), nullable);
+		return tpValor (tpValor.abs().setScale(2, BigDecimal.ROUND_HALF_UP).toString(), nullable);
 	}
 	
 	protected String tpCodigoServico (String codigoServico)
@@ -90,8 +104,10 @@ public class RegistroNFSe
 	{
 		inscricaoMunucipal = TextUtil.toNumeric(inscricaoMunucipal);
 		//
-		if (inscricaoMunucipal.length() != 8)
+		if (inscricaoMunucipal.length() > 0 && inscricaoMunucipal.length() != 8)
 			log.warning("tpInscricaoMunucipal deve ter 8 digitos");
+		if (inscricaoMunucipal == null || inscricaoMunucipal.trim().isEmpty())
+			inscricaoMunucipal = null;
 		//
 		return inscricaoMunucipal;
 	}
@@ -100,7 +116,9 @@ public class RegistroNFSe
 	{
 		inscricaoEstadual = TextUtil.toNumeric(inscricaoEstadual);
 		//
-		if (inscricaoEstadual.length() < 1 && inscricaoEstadual.length() > 18)
+		if (inscricaoEstadual.length() < 1)
+			return null;
+		if (inscricaoEstadual.length() > 18)
 			log.warning("tpInscricaoEstadual deve ter entre 1 e 18 digitos");
 		//
 		return inscricaoEstadual;
@@ -154,4 +172,12 @@ public class RegistroNFSe
 		//
 		return discriminacao;
 	}
+	
+	protected String tpDate (Timestamp ts)
+	{
+		if (ts == null)
+			return null;
+		//
+		return 		TextUtil.timeToString(ts, "yyyy-MM-dd");
+	}	//	tpDate
 }

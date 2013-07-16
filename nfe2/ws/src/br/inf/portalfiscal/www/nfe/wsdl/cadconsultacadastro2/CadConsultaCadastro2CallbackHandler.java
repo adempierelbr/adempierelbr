@@ -3,7 +3,7 @@
  * CadConsultaCadastro2CallbackHandler.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.2  Built on : Sep 06, 2010 (09:42:01 CEST)
+ * by the Apache Axis2 version: 1.5.6  Built on : Aug 30, 2011 (10:00:16 CEST)
  */
 
     package br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2;
@@ -49,7 +49,7 @@
             * override this method for handling normal response from consultaCadastro2 operation
             */
            public void receiveResultconsultaCadastro2(
-                    br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub.ConsultaCadastro2Response result
+                    br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub.ConsultaCadastro2Result result
                         ) {
            }
 
