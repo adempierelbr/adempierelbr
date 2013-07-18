@@ -163,7 +163,8 @@ public class CalloutTax extends CalloutEngine
 
 		Object[] taxation = null;
 		MBPartnerLocation bpLoc = null;
-		if (mTab.getTableName().equals(MOrder.Table_Name)) {
+
+		if (mTab.getTableName().equals(MOrderLine.Table_Name)) {
 			C_Order_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_C_Order_ID);
 
 			if (C_Order_ID == null)
@@ -175,7 +176,7 @@ public class CalloutTax extends CalloutEngine
 			bpLoc = (MBPartnerLocation) o.getBill_Location(); 
 			taxation = MLBRTax.getTaxes (o.getC_DocTypeTarget_ID(), o.isSOTrx(), o.getlbr_TransactionType(), p, oi, bp, bpLoc, o.getDateAcct());
 
-		} else if (mTab.getTableName().equals(MInvoice.Table_Name)) {
+		} else if (mTab.getTableName().equals(MInvoiceLine.Table_Name)) {
 			C_Invoice_ID = (Integer) mTab.getValue(MInvoiceLine.COLUMNNAME_C_Invoice_ID);
 
 			if (C_Invoice_ID == null)
