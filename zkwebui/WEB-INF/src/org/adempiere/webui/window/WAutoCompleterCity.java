@@ -93,6 +93,8 @@ public class WAutoCompleterCity extends AutoComplete implements EventListener
 		this.setDict(null);
 		this.setDescription(null);
 //		boolean truncated = false;
+		if (search == null)
+			search = "";
 		search = search.toUpperCase();
 		int i = 0;
 		for (CityVO vo : m_cities) {
