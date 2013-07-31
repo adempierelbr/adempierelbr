@@ -89,7 +89,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		List<MLBRTaxDefinition> list = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
 			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
-					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType})
+					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType}, LBR_ProductSource)
 			.setOrderBy("PriorityNo, ValidFrom").list();
 		//
 		return list.toArray(new MLBRTaxDefinition[list.size()]);
