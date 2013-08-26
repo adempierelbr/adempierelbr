@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
@@ -144,8 +143,8 @@ public class ProcGenerateEFD extends SvrProcess
 		 */
 		String fileName = "";
 		
-		DB.executeUpdate("Drop table lbr_factfiscal", null);
-		DB.executeUpdate("CREATE TABLE lbr_factfiscal AS SELECT * FROM lbr_factfiscalBase", null);
+		DB.executeUpdate("DROP TABLE LBR_FactFiscal", null);
+		DB.executeUpdate("CREATE TABLE LBR_FactFiscal AS SELECT * FROM LBR_FactFiscalBase", null);
 		
 		/*
 		 * Rodar Processo
