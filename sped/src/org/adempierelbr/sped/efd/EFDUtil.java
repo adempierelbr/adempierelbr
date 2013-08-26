@@ -1603,8 +1603,8 @@ public class EFDUtil {
 		 *  
 		 */
 		BigDecimal saldo = ((reg.getVL_TOT_DEBITOS().add(reg.getVL_TOT_AJ_DEBITOS()).add(reg.getVL_ESTORNOS_CRED()))
-				.subtract(reg.getVL_TOT_CREDITOS().add(reg.getVL_TOT_AJ_CREDITOS()).add(reg.getVL_ESTORNOS_DEB()))
-				.add(reg.getVL_SLD_CREDOR_ANT())).setScale(2, RoundingMode.HALF_UP);
+				.subtract(reg.getVL_TOT_CREDITOS().add(reg.getVL_TOT_AJ_CREDITOS()).add(reg.getVL_ESTORNOS_DEB())
+				.add(reg.getVL_SLD_CREDOR_ANT()))).setScale(2, RoundingMode.HALF_UP);
 		
 		// 
 		if(saldo.signum() == 1)
