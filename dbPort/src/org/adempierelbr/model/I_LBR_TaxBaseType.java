@@ -21,24 +21,24 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for LBR_NFLineTax
+/** Generated Interface for LBR_TaxBaseType
  *  @author Adempiere (generated) 
  *  @version Release 3.6.0LTS
  */
-public interface I_LBR_NFLineTax 
+public interface I_LBR_TaxBaseType 
 {
 
-    /** TableName=LBR_NFLineTax */
-    public static final String Table_Name = "LBR_NFLineTax";
+    /** TableName=LBR_TaxBaseType */
+    public static final String Table_Name = "LBR_TaxBaseType";
 
-    /** AD_Table_ID=1000035 */
+    /** AD_Table_ID=1120302 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org 
+    /** AccessLevel = 6 - System - Client 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(3);
+    BigDecimal accessLevel = BigDecimal.valueOf(6);
 
     /** Load Meta Data */
 
@@ -105,49 +105,6 @@ public interface I_LBR_NFLineTax
 	  */
 	public boolean isActive();
 
-    /** Column name LBR_LegalMessage_ID */
-    public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
-
-	/** Set Legal Message.
-	  * Defines the Legal Message
-	  */
-	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID);
-
-	/** Get Legal Message.
-	  * Defines the Legal Message
-	  */
-	public int getLBR_LegalMessage_ID();
-
-	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
-
-    /** Column name LBR_NFLineTax_ID */
-    public static final String COLUMNNAME_LBR_NFLineTax_ID = "LBR_NFLineTax_ID";
-
-	/** Set Nota Fiscal Line Tax.
-	  * Defines the Nota Fiscal Line Tax
-	  */
-	public void setLBR_NFLineTax_ID (int LBR_NFLineTax_ID);
-
-	/** Get Nota Fiscal Line Tax.
-	  * Defines the Nota Fiscal Line Tax
-	  */
-	public int getLBR_NFLineTax_ID();
-
-    /** Column name LBR_NotaFiscalLine_ID */
-    public static final String COLUMNNAME_LBR_NotaFiscalLine_ID = "LBR_NotaFiscalLine_ID";
-
-	/** Set Nota Fiscal Line.
-	  * Primary key table LBR_NotaFiscalLine
-	  */
-	public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID);
-
-	/** Get Nota Fiscal Line.
-	  * Primary key table LBR_NotaFiscalLine
-	  */
-	public int getLBR_NotaFiscalLine_ID();
-
-	public org.adempierelbr.model.I_LBR_NotaFiscalLine getLBR_NotaFiscalLine() throws RuntimeException;
-
     /** Column name LBR_TaxBaseType_ID */
     public static final String COLUMNNAME_LBR_TaxBaseType_ID = "LBR_TaxBaseType_ID";
 
@@ -156,32 +113,6 @@ public interface I_LBR_NFLineTax
 
 	/** Get Tax Base Type	  */
 	public int getLBR_TaxBaseType_ID();
-
-	public org.adempierelbr.model.I_LBR_TaxBaseType getLBR_TaxBaseType() throws RuntimeException;
-
-    /** Column name LBR_TaxGroup_ID */
-    public static final String COLUMNNAME_LBR_TaxGroup_ID = "LBR_TaxGroup_ID";
-
-	/** Set Tax Group.
-	  * Defines the Tax Group
-	  */
-	public void setLBR_TaxGroup_ID (int LBR_TaxGroup_ID);
-
-	/** Get Tax Group.
-	  * Defines the Tax Group
-	  */
-	public int getLBR_TaxGroup_ID();
-
-	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException;
-
-    /** Column name LBR_TaxListAmt */
-    public static final String COLUMNNAME_LBR_TaxListAmt = "LBR_TaxListAmt";
-
-	/** Set Tax List Amt	  */
-	public void setLBR_TaxListAmt (BigDecimal LBR_TaxListAmt);
-
-	/** Get Tax List Amt	  */
-	public BigDecimal getLBR_TaxListAmt();
 
     /** Column name LBR_TaxStatus_ID */
     public static final String COLUMNNAME_LBR_TaxStatus_ID = "LBR_TaxStatus_ID";
@@ -192,20 +123,31 @@ public interface I_LBR_NFLineTax
 	/** Get Tax Status	  */
 	public int getLBR_TaxStatus_ID();
 
-	public org.adempierelbr.model.I_LBR_TaxStatus getLBR_TaxStatus() throws RuntimeException;
+    /** Column name Name */
+    public static final String COLUMNNAME_Name = "Name";
 
-    /** Column name Qty */
-    public static final String COLUMNNAME_Qty = "Qty";
-
-	/** Set Quantity.
-	  * Quantity
+	/** Set Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public void setQty (BigDecimal Qty);
+	public void setName (String Name);
 
-	/** Get Quantity.
-	  * Quantity
+	/** Get Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public BigDecimal getQty();
+	public String getName();
+
+    /** Column name Script */
+    public static final String COLUMNNAME_Script = "Script";
+
+	/** Set Script.
+	  * Dynamic Java Language Script to calculate result
+	  */
+	public void setScript (String Script);
+
+	/** Get Script.
+	  * Dynamic Java Language Script to calculate result
+	  */
+	public String getScript();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -223,55 +165,16 @@ public interface I_LBR_NFLineTax
 	  */
 	public int getUpdatedBy();
 
-    /** Column name lbr_TaxAmt */
-    public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
 
-	/** Set Tax Amount.
-	  * Defines the Tax Amount
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
 	  */
-	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt);
+	public void setValue (String Value);
 
-	/** Get Tax Amount.
-	  * Defines the Tax Amount
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
 	  */
-	public BigDecimal getlbr_TaxAmt();
-
-    /** Column name lbr_TaxBase */
-    public static final String COLUMNNAME_lbr_TaxBase = "lbr_TaxBase";
-
-	/** Set Tax Base.
-	  * Indicates the Tax Base
-	  */
-	public void setlbr_TaxBase (BigDecimal lbr_TaxBase);
-
-	/** Get Tax Base.
-	  * Indicates the Tax Base
-	  */
-	public BigDecimal getlbr_TaxBase();
-
-    /** Column name lbr_TaxBaseAmt */
-    public static final String COLUMNNAME_lbr_TaxBaseAmt = "lbr_TaxBaseAmt";
-
-	/** Set Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt);
-
-	/** Get Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public BigDecimal getlbr_TaxBaseAmt();
-
-    /** Column name lbr_TaxRate */
-    public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
-
-	/** Set Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public void setlbr_TaxRate (BigDecimal lbr_TaxRate);
-
-	/** Get Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public BigDecimal getlbr_TaxRate();
+	public String getValue();
 }

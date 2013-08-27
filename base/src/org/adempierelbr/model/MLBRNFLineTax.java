@@ -78,6 +78,18 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		return getLBR_TaxStatus().getName();
 	}	//	getTaxStatus
 	
+	public String getmodBC ()
+	{
+		if (getLBR_TaxBaseType_ID() <= 0)
+			return "";
+		//
+		if (getLBR_TaxBaseType().getName() != null
+				&& getLBR_TaxBaseType().getValue().length() > 0)
+			return getLBR_TaxBaseType().getValue();
+		//
+		return getLBR_TaxBaseType().getValue();
+	}	//	getTaxStatus
+	
 	/**
 	 * 		Grava os impostos
 	 * 	@param tl
@@ -94,6 +106,9 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		//
 		setLBR_TaxStatus_ID(tl.getLBR_TaxStatus_ID());
 		setLBR_LegalMessage_ID(tl.getLBR_LegalMessage_ID());
+		setLBR_TaxBaseType_ID(tl.getLBR_TaxBaseType_ID());
+		setQty(tl.getQty());
+		setLBR_TaxListAmt(tl.getLBR_TaxListAmt());
 	}	//	setTaxes
 	
 	/**

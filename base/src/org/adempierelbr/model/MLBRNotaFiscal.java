@@ -1034,6 +1034,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			if (LBR_TRANSACTIONTYPE_Import.equals(POWrapper.create(invoice, I_W_C_Invoice.class).getlbr_TransactionType()))
 				IsOwnDocument = true;
 		}
+		// Imprime Descontos
+		setIsDiscountPrinted(invoice.isDiscountPrinted());
 		
 		//	Dados mestre
 		setDateDoc(invoice.getDateAcct());
@@ -1090,6 +1092,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			if (iLine.getM_Product_ID() > 0
 					&& (iLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
+					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
 				continue;
 			
@@ -1116,6 +1119,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Valores
 		setTotalLines(totalItem);
 		setlbr_ServiceTotalAmt(totalService);
+		setDiscountAmt(getDiscount());
 		
 		//	Nota do Documento (Mensagens Legais) e Descrição
 		setDocumentNote ();
@@ -1155,6 +1159,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			return false;
 		}
 		
+		// Imprime Descontos
+		setIsDiscountPrinted(order.isDiscountPrinted());
+				
 		//	Dados mestre
 		setDateDoc(order.getDateAcct());
 		setIsSOTrx(isSOTrx);
@@ -1198,6 +1205,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			if (oLine.getM_Product_ID() > 0
 					&& (oLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
+					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
 				continue;
 			
@@ -1367,6 +1375,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//
 		setlbr_TransactionType (wInvoice.getlbr_TransactionType());
 		setC_PaymentTerm_ID(wInvoice.getC_PaymentTerm_ID());
+		setLBR_FreightCostRule(wInvoice.getLBR_FreightCostRule());
 		
 		//	Total da Fatura
 		if (wInvoice.getC_Currency_ID() != CURRENCY_BRL)
@@ -1379,6 +1388,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setGrandTotal(wInvoice.getGrandTotal());
 		
 		//	Valores Totais
+		setLBR_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.OTHERCHARGES));
 		setlbr_InsuranceAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.INSURANCE));
 		setFreightAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.FREIGHT));
 		setlbr_TotalSISCOMEX(VLBROrder.getChargeAmt(POWrapper.getPO(wInvoice), VLBROrder.SISCOMEX));
@@ -1416,6 +1426,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setGrandTotal(wOrder.getGrandTotal());
 		
 		//	Valores Totais
+		setLBR_OtherChargesAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.OTHERCHARGES));
 		setlbr_InsuranceAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.INSURANCE));
 		setFreightAmt(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.FREIGHT));
 		setlbr_TotalSISCOMEX(VLBROrder.getChargeAmt(POWrapper.getPO(wOrder), VLBROrder.SISCOMEX));
@@ -1713,6 +1724,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		setTotalLines(Env.ZERO);
 		setlbr_TotalCIF(Env.ZERO);
 		setlbr_TotalSISCOMEX(Env.ZERO);
+		setLBR_OtherChargesAmt(Env.ZERO);
 		setlbr_InsuranceAmt(Env.ZERO);
 		setlbr_NetWeight(Env.ZERO);
 		setlbr_GrossWeight(Env.ZERO);
@@ -2155,7 +2167,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	}	//	getBPartner
 	
 	/**
-	 * 	FIXME Rever registro de desconto.
+	 * 	Retorna o total de desconto da Nota Fiscal
 	 * @return
 	 */
 	public BigDecimal getDiscount()
@@ -2164,7 +2176,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//
 		for (MLBRNotaFiscalLine nfl : getLines())
 		{
-			discount = discount.add(nfl.getDiscount());
+			discount = discount.add(nfl.getDiscountAmt());
 		}
 		//
 		if (discount.signum() == 1)

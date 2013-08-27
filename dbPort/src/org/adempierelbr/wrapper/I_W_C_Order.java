@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.adempierelbr.wrapper;
 
+import java.math.BigDecimal;
 import org.compiere.model.*;
 
 /** Generated Interface for C_Order
@@ -53,6 +54,15 @@ public interface I_W_C_Order extends I_C_Order
 	  * Process which will generate a new document lines based on an existing document
 	  */
 	public String getCreateFrom();
+
+    /** Column name LBR_OtherChargesAmt */
+    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
+
+	/** Set Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
+
+	/** Get Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt();
 
     /** Column name LBR_Withhold_Order_ID */
     public static final String COLUMNNAME_LBR_Withhold_Order_ID = "LBR_Withhold_Order_ID";
@@ -94,6 +104,32 @@ public interface I_W_C_Order extends I_C_Order
 	  * Bill Note
 	  */
 	public String getlbr_BillNote();
+
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
+    /** Column name lbr_InsuranceAmt */
+    public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";
+
+	/** Set Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public void setlbr_InsuranceAmt (BigDecimal lbr_InsuranceAmt);
+
+	/** Get Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public BigDecimal getlbr_InsuranceAmt();
 
     /** Column name lbr_NFDescription */
     public static final String COLUMNNAME_lbr_NFDescription = "lbr_NFDescription";

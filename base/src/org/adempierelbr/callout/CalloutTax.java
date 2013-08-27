@@ -22,6 +22,7 @@ import org.adempierelbr.model.X_LBR_CFOP;
 import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_M_Product;
@@ -30,6 +31,8 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
@@ -147,29 +150,46 @@ public class CalloutTax extends CalloutEngine
 		
 		if (M_Product_ID == null || M_Product_ID == 0)
 			return "";
+
+		Integer C_Order_ID = null;
+		Integer C_Invoice_ID = null;
 		
-		Integer C_Order_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_C_Order_ID);
-		Integer C_OrderLine_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_C_OrderLine_ID);
 		Integer AD_Org_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_AD_Org_ID);
-		Integer C_BPartner_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_C_BPartner_ID);
-		
-		if (C_Order_ID == null)
-			C_Order_ID = 0;
-		
-		if (C_OrderLine_ID == null)
-			C_OrderLine_ID = 0;
-		
+
 		if (AD_Org_ID == null)
 			AD_Org_ID = 0;
 		
-		if (C_BPartner_ID == null)
-			C_BPartner_ID = 0;
-		
-		I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), C_Order_ID, null), I_W_C_Order.class);
-		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), M_Product_ID, null), I_W_M_Product.class);
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), AD_Org_ID, null), I_W_AD_OrgInfo.class);
-		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), o.getC_BPartner_ID(), null), I_W_C_BPartner.class);
-		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), o.getBill_Location_ID(), null); 
+
+		Object[] taxation = null;
+		MBPartnerLocation bpLoc = null;
+
+		if (mTab.getTableName().equals(MOrderLine.Table_Name)) {
+			C_Order_ID = (Integer) mTab.getValue(MOrderLine.COLUMNNAME_C_Order_ID);
+
+			if (C_Order_ID == null)
+				C_Order_ID = 0;
+
+			I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), C_Order_ID, null), I_W_C_Order.class);
+			I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), M_Product_ID, null), I_W_M_Product.class);
+			I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), o.getC_BPartner_ID(), null), I_W_C_BPartner.class);
+			bpLoc = (MBPartnerLocation) o.getBill_Location(); 
+			taxation = MLBRTax.getTaxes (o.getC_DocTypeTarget_ID(), o.isSOTrx(), o.getlbr_TransactionType(), p, oi, bp, bpLoc, o.getDateAcct());
+
+		} else if (mTab.getTableName().equals(MInvoiceLine.Table_Name)) {
+			C_Invoice_ID = (Integer) mTab.getValue(MInvoiceLine.COLUMNNAME_C_Invoice_ID);
+
+			if (C_Invoice_ID == null)
+				C_Invoice_ID = 0;
+
+			I_W_C_Invoice i = POWrapper.create(new MInvoice (Env.getCtx(), C_Invoice_ID, null), I_W_C_Invoice.class);
+			I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), M_Product_ID, null), I_W_M_Product.class);
+			I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), i.getC_BPartner_ID(), null), I_W_C_BPartner.class);
+			bpLoc = (MBPartnerLocation) i.getC_BPartner_Location(); 
+			taxation = MLBRTax.getTaxes (i.getC_DocTypeTarget_ID(), i.isSOTrx(), i.getlbr_TransactionType(), p, oi, bp, bpLoc, i.getDateAcct());
+
+		}
+
 
 		/**
 		 * 	0 = Taxes
@@ -177,7 +197,6 @@ public class CalloutTax extends CalloutEngine
 		 * 	2 = CFOP
 		 * 	3 = CST
 		 */
-		Object[] taxation = MLBRTax.getTaxes (o.getC_DocTypeTarget_ID(), o.isSOTrx(), o.getlbr_TransactionType(), p, oi, bp, bpLoc, o.getDateAcct());
 		//
 		if (taxation == null)
 			return "";
