@@ -187,10 +187,10 @@ public class ProcTaxAssessment extends SvrProcess
 		BigDecimal totalAmt = cumulatedAmt.add((m_taxassesment.getTotalCr().add(otherCredit)).subtract(m_taxassesment.getTotalDr().add(otherDebit)));
 		
 		// salvar total
-		if(totalAmt.signum() == 1)
+		if(totalAmt.signum() == -1)
 		{
 			m_taxassesment.setLBR_SaldoCredorTrasnportar(Env.ZERO);
-			m_taxassesment.setTotalAmt(totalAmt.setScale(2, RoundingMode.HALF_UP));
+			m_taxassesment.setTotalAmt(totalAmt.abs().setScale(2, RoundingMode.HALF_UP));
 		}
 		else
 		{
