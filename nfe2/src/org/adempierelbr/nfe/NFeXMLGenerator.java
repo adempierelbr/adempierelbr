@@ -99,7 +99,7 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
-import org.compiere.model.MSysConfig;
+import org.compiere.model.MShipper;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -515,7 +515,12 @@ public class NFeXMLGenerator
 					nf.getlbr_BPShipperAddress3();						//	Bairro
 				//
 				
-				transgrupo.setCNPJ(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
+				MShipper shipper = new MShipper(Env.getCtx(),nf.getM_Shipper_ID(), null);
+				MBPartner bpshipper = MBPartner.get(Env.getCtx(), shipper.getC_BPartner_ID());
+				if (bpshipper.get_Value("lbr_BPTypeBR").equals("PJ"))
+					transgrupo.setCNPJ(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
+				else
+					transgrupo.setCPF(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
 				transgrupo.setIE(shipperIE);
 				transgrupo.setxNome(RemoverAcentos.remover(nf.getlbr_BPShipperName()));
 				transgrupo.setxEnder(RemoverAcentos.remover(end));
