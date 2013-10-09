@@ -230,6 +230,7 @@ public class AssinaturaDigital
 			NodeList elements = doc.getElementsByTagName(tag);
 			org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);
 			String id = el.getAttribute("Id");
+			el.setIdAttribute("Id", true);
 			//
 			r = sig.newReference("#".concat(id), sig.newDigestMethod(DigestMethod.SHA1, null), transformList, null, null);
 		}
