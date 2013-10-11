@@ -27,6 +27,19 @@ public interface I_W_C_InvoiceLine extends I_C_InvoiceLine
 {
 
 
+    /** Column name FreightAmt */
+    public static final String COLUMNNAME_FreightAmt = "FreightAmt";
+
+	/** Set Freight Amount.
+	  * Freight Amount 
+	  */
+	public void setFreightAmt (BigDecimal FreightAmt);
+
+	/** Get Freight Amount.
+	  * Freight Amount 
+	  */
+	public BigDecimal getFreightAmt();
+
     /** Column name LBR_ADILine_ID */
     public static final String COLUMNNAME_LBR_ADILine_ID = "LBR_ADILine_ID";
 
@@ -71,6 +84,15 @@ public interface I_W_C_InvoiceLine extends I_C_InvoiceLine
 	  */
 	public int getLBR_LegalMessage_ID();
 
+    /** Column name LBR_OtherChargesAmt */
+    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
+
+	/** Set Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
+
+	/** Get Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -84,7 +106,7 @@ public interface I_W_C_InvoiceLine extends I_C_InvoiceLine
 	  */
 	public int getLBR_Tax_ID();
 
-	/** Column name lbr_InsuranceAmt */
+    /** Column name lbr_InsuranceAmt */
     public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";
 
 	/** Set Insurance Amt.
@@ -96,19 +118,6 @@ public interface I_W_C_InvoiceLine extends I_C_InvoiceLine
 	  * Defines the Insurance Amt
 	  */
 	public BigDecimal getlbr_InsuranceAmt();
-	
-	/** Column name FreightAmt */
-    public static final String COLUMNNAME_FreightAmt = "FreightAmt";
-
-	/** Set FreightAmt.
-	  * Defines the FreightAmt
-	  */
-	public void setFreightAmt (BigDecimal FreightAmt);
-
-	/** Get FreightAmt.
-	  * Defines the FreightAmt
-	  */
-	public BigDecimal getFreightAmt();
 
     /** Column name lbr_RecalculateTax */
     public static final String COLUMNNAME_lbr_RecalculateTax = "lbr_RecalculateTax";

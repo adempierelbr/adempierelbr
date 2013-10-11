@@ -22,6 +22,7 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
+import org.adempierelbr.wrapper.I_W_C_Order;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MAllocationLine;
@@ -165,10 +166,15 @@ public class ValidatorInvoice implements ModelValidator
 		if (C_Order_ID <= 0)
 			return null;
 
-		MOrder order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());;
+		MOrder order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());
+		I_W_C_Order wOrder = POWrapper.create(order, I_W_C_Order.class);
 
 		if (invoice.get_ValueAsString("lbr_TransactionType").equals("")){
 			invoice.set_ValueOfColumn("lbr_TransactionType", order.get_Value("lbr_TransactionType"));
+		}
+		
+		if (invoice.get_ValueAsString("lbr_FreightCostRule").equals("")){
+			invoice.set_ValueOfColumn("lbr_FreightCostRule", wOrder.getLBR_FreightCostRule());
 		}
 
 		if (invoice.get_ValueAsString("lbr_PaymentRule").equals("")){

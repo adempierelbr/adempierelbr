@@ -71,6 +71,15 @@ public interface I_W_C_OrderLine extends I_C_OrderLine
 	  */
 	public int getLBR_LegalMessage_ID();
 
+    /** Column name LBR_OtherChargesAmt */
+    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
+
+	/** Set Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
+
+	/** Get Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -139,6 +148,24 @@ public interface I_W_C_OrderLine extends I_C_OrderLine
 	  * Defines the Insurance Amt
 	  */
 	public BigDecimal getlbr_InsuranceAmt();
+
+    /** Column name lbr_IsPriceBR */
+    public static final String COLUMNNAME_lbr_IsPriceBR = "lbr_IsPriceBR";
+
+	/** Set Is Price BR	  */
+	public void setlbr_IsPriceBR (boolean lbr_IsPriceBR);
+
+	/** Get Is Price BR	  */
+	public boolean islbr_IsPriceBR();
+
+    /** Column name lbr_PriceEnteredBR */
+    public static final String COLUMNNAME_lbr_PriceEnteredBR = "lbr_PriceEnteredBR";
+
+	/** Set Price Entered BR	  */
+	public void setlbr_PriceEnteredBR (BigDecimal lbr_PriceEnteredBR);
+
+	/** Get Price Entered BR	  */
+	public BigDecimal getlbr_PriceEnteredBR();
 
     /** Column name lbr_RecalculateTax */
     public static final String COLUMNNAME_lbr_RecalculateTax = "lbr_RecalculateTax";

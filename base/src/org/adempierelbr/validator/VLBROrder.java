@@ -49,9 +49,10 @@ public class VLBROrder implements ModelValidator
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
 	/**	Charge Type		*/
-	public final static int	SISCOMEX 	= 0;
-	public final static int	FREIGHT 	= 1;
-	public final static int	INSURANCE 	= 2;
+	public final static int	SISCOMEX 	 = 0;
+	public final static int	FREIGHT 	 = 1;
+	public final static int	INSURANCE 	 = 2;
+	public final static int	OTHERCHARGES = 3;
 
 	/**
 	 *	Initialize Validation
@@ -148,6 +149,12 @@ public class VLBROrder implements ModelValidator
 		 */
 		if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
 		{
+			if (isChangeAffectOtherCharges (order))
+					recalcuteOtherCharges (order);
+			
+			if (isChangeAffectInsurance (order))
+				recalcuteInsurance (order);
+			
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
 					&& Env.ZERO.compareTo(order.getFreightAmt()) >= 0)
 				return Msg.parseTranslation(Env.getCtx(), "@FillMandatory@ @FreightAmt@");
@@ -182,6 +189,7 @@ public class VLBROrder implements ModelValidator
 			iLineW.setFreightAmt(oLineW.getFreightAmt());
 			iLineW.setlbr_SISCOMEXAmt(oLineW.getlbr_SISCOMEXAmt());
 			iLineW.setlbr_InsuranceAmt(oLineW.getlbr_InsuranceAmt());
+			iLineW.setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());
 		}
 		return null;
 	}	//	modelChange
@@ -211,6 +219,10 @@ public class VLBROrder implements ModelValidator
 				return result;
 			
 			result = addCharge ((MInvoice) po, INSURANCE);
+			if (result != null)
+				return result;
+			
+			result = addCharge ((MInvoice) po, OTHERCHARGES);
 			if (result != null)
 				return result;
 			//
@@ -338,6 +350,155 @@ public class VLBROrder implements ModelValidator
 	}	//	recalcuteOrder
 	
 	/**
+	 * 	Verify if other charges must be recalculated to all lines
+	 * 	@param order
+	 * 	@return true if must recalculate
+	 */
+	private boolean isChangeAffectOtherCharges (PO po)
+	{
+		if (po instanceof MOrder || po instanceof MInvoice)
+		{
+			/**
+			 * 	Campos comuns entre Pedido e Fatura
+			 */
+			if (po.is_ValueChanged(I_W_C_Order.COLUMNNAME_LBR_OtherChargesAmt))
+				return true;
+		}
+		else if  (po instanceof MOrderLine || po instanceof MInvoiceLine)
+		{
+			/**
+			 * 	Campos comuns nas Linhas do Pedido e Fatura
+			 */
+			if (po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_LineNetAmt))
+				return true;
+		}
+		//
+		return false;
+	}	//	isChangeAffectOtherCharges
+	
+	/**
+	 * 	Refaz os cálculos de Despesas Acessórias por linha
+	 * 
+	 * 	@param order Pedido
+	 */
+	private void recalcuteOtherCharges (MOrder order)
+	{
+		I_W_C_Order orderW = POWrapper.create(order, I_W_C_Order.class);
+		I_W_AD_ClientInfo clientInfoW = POWrapper.create(MClientInfo.get(Env.getCtx()), I_W_AD_ClientInfo.class); 
+		
+		BigDecimal otherChargesAmt = orderW.getLBR_OtherChargesAmt();
+		int M_ProductOtherCharges_ID = clientInfoW.getLBR_ProductOtherCharges_ID();
+		
+		//	Total da NF sem considerar o valor de Despesas Acessórias
+		BigDecimal totalLines = Env.ZERO;
+		
+		//	Compõe o TotalLines
+		for (MOrderLine ol : order.getLines())
+		{
+			if (ol.getM_Product_ID() > 0 
+					&& ol.getM_Product_ID() != M_ProductOtherCharges_ID
+					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+				totalLines = totalLines.add(ol.getLineNetAmt());
+		}
+		
+		//	Rateia Despesas Acessórias
+		for (MOrderLine ol : order.getLines())
+		{
+			I_W_C_OrderLine olW = POWrapper.create(ol, I_W_C_OrderLine.class);
+			//	Não ratear a linha de Outras Despesas para serviços
+			if (ol.getM_Product_ID() == 0 
+					|| ol.getM_Product_ID() == M_ProductOtherCharges_ID
+					|| !ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item)
+					|| ol.getLineNetAmt().compareTo(Env.ZERO) == 0)
+				continue;
+			
+			//	Faz o rateiro do Outras Despesas por Linha
+			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
+			BigDecimal lineOtherChargesAmt 	= lineAmt.multiply(otherChargesAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			
+			olW.setLBR_OtherChargesAmt(lineOtherChargesAmt);
+			
+			//
+			ol.save();
+		}
+	}	//	recalcuteOrder
+	
+	/**
+	 * 	Verify if other charges must be recalculated to all lines
+	 * 	@param order
+	 * 	@return true if must recalculate
+	 */
+	private boolean isChangeAffectInsurance (PO po)
+	{
+		if (po instanceof MOrder || po instanceof MInvoice)
+		{
+			/**
+			 * 	Campos comuns entre Pedido e Fatura
+			 */
+			if (po.is_ValueChanged(I_W_C_Order.COLUMNNAME_lbr_InsuranceAmt))
+				return true;
+		}
+		else if  (po instanceof MOrderLine || po instanceof MInvoiceLine)
+		{
+			/**
+			 * 	Campos comuns nas Linhas do Pedido e Fatura
+			 */
+			if (po.is_ValueChanged (I_W_C_OrderLine.COLUMNNAME_LineNetAmt))
+				return true;
+		}
+		//
+		return false;
+	}	//	isChangeAffectInsurance
+	
+	/**
+	 * 	Refaz os cálculos de Seguro por linha
+	 * 
+	 * 	@param order Pedido
+	 */
+	private void recalcuteInsurance (MOrder order)
+	{
+		I_W_C_Order orderW = POWrapper.create(order, I_W_C_Order.class);
+		I_W_AD_ClientInfo clientInfoW = POWrapper.create(MClientInfo.get(Env.getCtx()), I_W_AD_ClientInfo.class); 
+		
+		BigDecimal insuranceAmt = orderW.getlbr_InsuranceAmt();
+		int M_ProductInsurance_ID = clientInfoW.getLBR_ProductInsurance_ID();
+		
+		//	Total da NF sem considerar o valor do seguro
+		BigDecimal totalLines = Env.ZERO;
+		
+		//	Compõe o TotalLines
+		for (MOrderLine ol : order.getLines())
+		{
+			if (ol.getM_Product_ID() > 0 
+					&& ol.getM_Product_ID() != M_ProductInsurance_ID
+					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+				totalLines = totalLines.add(ol.getLineNetAmt());
+		}
+		
+		//	Rateia o Seguro
+		for (MOrderLine ol : order.getLines())
+		{
+			I_W_C_OrderLine olW = POWrapper.create(ol, I_W_C_OrderLine.class);
+			//	Não ratear a linha de Seguro para serviços
+			if (ol.getM_Product_ID() == 0 
+					|| ol.getM_Product_ID() == M_ProductInsurance_ID
+					|| !ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item)
+					|| ol.getLineNetAmt().compareTo(Env.ZERO) == 0)
+				continue;
+			
+			//	Faz o rateiro do Seguro por Linha
+			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
+			BigDecimal lineInsuranceAmt 	= lineAmt.multiply(insuranceAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			
+			olW.setlbr_InsuranceAmt(lineInsuranceAmt);
+			
+			//
+			ol.save();
+		}
+	}	//	recalcuteOrder
+	
+	
+	/**
 	 * 	Adiciona o valor do Seguro
 	 * 	@param order
 	 */
@@ -350,7 +511,8 @@ public class VLBROrder implements ModelValidator
 		//	Verifica se a despesa está cadastrada na empresa
 		if ((cInfoW.getLBR_ProductSISCOMEX_ID() <= 0 && chargeType == SISCOMEX)
 				|| (cInfoW.getM_ProductFreight_ID() <= 0 && chargeType == FREIGHT)
-				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == INSURANCE))
+				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == INSURANCE)
+				|| (cInfoW.getLBR_ProductOtherCharges_ID() <= 0 && chargeType == OTHERCHARGES))
 			return null;
 		
 		int M_Product_ID = 0;
@@ -361,6 +523,8 @@ public class VLBROrder implements ModelValidator
 			M_Product_ID = cInfoW.getM_ProductFreight_ID();
 		else if (chargeType == INSURANCE)
 			M_Product_ID = cInfoW.getLBR_ProductInsurance_ID();
+		else if (chargeType == OTHERCHARGES)
+			M_Product_ID = cInfoW.getLBR_ProductOtherCharges_ID();
 		
 		BigDecimal amount = getChargeAmt (invoice, chargeType);
 
@@ -403,7 +567,8 @@ public class VLBROrder implements ModelValidator
 	{
 		return 		  getChargeAmt (po, SISCOMEX)
 				.add (getChargeAmt (po, FREIGHT))
-				.add (getChargeAmt (po, INSURANCE));
+				.add (getChargeAmt (po, INSURANCE))
+				.add (getChargeAmt (po, OTHERCHARGES));
 	}	//	getChargeAmt
 	
 	/**
@@ -433,6 +598,8 @@ public class VLBROrder implements ModelValidator
 						amount = amount.add(olW.getFreightAmt());
 					else if (chargeType == INSURANCE)
 						amount = amount.add(olW.getlbr_InsuranceAmt());
+					else if (chargeType == OTHERCHARGES)
+						amount = amount.add(olW.getLBR_OtherChargesAmt());
 				}
 			}
 		
@@ -451,6 +618,8 @@ public class VLBROrder implements ModelValidator
 						amount = amount.add(olW.getFreightAmt());
 					else if (chargeType == INSURANCE)
 						amount = amount.add(olW.getlbr_InsuranceAmt());
+					else if (chargeType == OTHERCHARGES)
+						amount = amount.add(olW.getLBR_OtherChargesAmt());
 				}
 			}
 		//

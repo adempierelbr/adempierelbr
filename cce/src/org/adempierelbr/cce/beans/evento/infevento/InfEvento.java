@@ -111,7 +111,7 @@ public class InfEvento
 
 	public void setCNPJ(String cNPJ)
 	{
-		this.CNPJ = TextUtil.retiraEspecial(cNPJ);
+		this.CNPJ = TextUtil.toNumeric(cNPJ);
 	}	//	setCNPJ
 
 	public String getCPF()

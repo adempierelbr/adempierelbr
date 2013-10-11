@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120202L;
+	private static final long serialVersionUID = 20121105L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -48,13 +48,13 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 // 'N'
 			setIsSOTrx (true);
 // 'Y'
+			setLBR_NotaFiscal_ID (0);
+			setProcessed (false);
+// 'N'
 			setlbr_FinNFe (null);
 // 1
 			setlbr_IsOwnDocument (false);
 // N
-			setLBR_NotaFiscal_ID (0);
-			setProcessed (false);
-// 'N'
         } */
     }
 
@@ -86,6 +86,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
       return sb.toString();
     }
 
+	/** Set BP Name.
+		@param BPName BP Name	  */
+	public void setBPName (String BPName)
+	{
+		set_Value (COLUMNNAME_BPName, BPName);
+	}
+
+	/** Get BP Name.
+		@return BP Name	  */
+	public String getBPName () 
+	{
+		return (String)get_Value(COLUMNNAME_BPName);
+	}
+
 	public I_C_BPartner_Location getBill_Location() throws RuntimeException
     {
 		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
@@ -112,20 +126,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set BP Name.
-		@param BPName BP Name	  */
-	public void setBPName (String BPName)
-	{
-		set_Value (COLUMNNAME_BPName, BPName);
-	}
-
-	/** Get BP Name.
-		@return BP Name	  */
-	public String getBPName () 
-	{
-		return (String)get_Value(COLUMNNAME_BPName);
 	}
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException
@@ -184,34 +184,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return ii.intValue();
 	}
 
-	public I_C_DocType getC_DocType() throws RuntimeException
-    {
-		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
-			.getPO(getC_DocType_ID(), get_TrxName());	}
-
-	/** Set Document Type.
-		@param C_DocType_ID 
-		Document type or rules
-	  */
-	public void setC_DocType_ID (int C_DocType_ID)
-	{
-		if (C_DocType_ID < 0) 
-			set_Value (COLUMNNAME_C_DocType_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-	}
-
-	/** Get Document Type.
-		@return Document type or rules
-	  */
-	public int getC_DocType_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	public I_C_DocType getC_DocTypeTarget() throws RuntimeException
     {
 		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
@@ -235,6 +207,34 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public int getC_DocTypeTarget_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocTypeTarget_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getC_DocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID)
+	{
+		if (C_DocType_ID < 0) 
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+	}
+
+	/** Get Document Type.
+		@return Document type or rules
+	  */
+	public int getC_DocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -499,54 +499,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return bd;
 	}
 
-	/** Set icms.
-		@param icms icms	  */
-	public void seticms (BigDecimal icms)
-	{
-		throw new IllegalArgumentException ("icms is virtual column");	}
-
-	/** Get icms.
-		@return icms	  */
-	public BigDecimal geticms () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icms);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set icmsst.
-		@param icmsst icmsst	  */
-	public void seticmsst (BigDecimal icmsst)
-	{
-		throw new IllegalArgumentException ("icmsst is virtual column");	}
-
-	/** Get icmsst.
-		@return icmsst	  */
-	public BigDecimal geticmsst () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_icmsst);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set ipi.
-		@param ipi ipi	  */
-	public void setipi (BigDecimal ipi)
-	{
-		throw new IllegalArgumentException ("ipi is virtual column");	}
-
-	/** Get ipi.
-		@return ipi	  */
-	public BigDecimal getipi () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ipi);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	/** Set Cancelled.
 		@param IsCancelled 
 		The transaction was cancelled
@@ -562,6 +514,30 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public boolean isCancelled () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsCancelled);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Discount Printed.
+		@param IsDiscountPrinted 
+		Print Discount on Invoice and Order
+	  */
+	public void setIsDiscountPrinted (boolean IsDiscountPrinted)
+	{
+		set_Value (COLUMNNAME_IsDiscountPrinted, Boolean.valueOf(IsDiscountPrinted));
+	}
+
+	/** Get Discount Printed.
+		@return Print Discount on Invoice and Order
+	  */
+	public boolean isDiscountPrinted () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsDiscountPrinted);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -619,55 +595,314 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return false;
 	}
 
-	/** Set Barcode 1.
-		@param lbr_Barcode1 
-		First Barcode of the Nota Fiscal
-	  */
-	public void setlbr_Barcode1 (String lbr_Barcode1)
+	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_DE)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_DE.Table_Name)
+			.getPO(getLBR_DE_ID(), get_TrxName());	}
+
+	/** Set DE.
+		@param LBR_DE_ID DE	  */
+	public void setLBR_DE_ID (int LBR_DE_ID)
 	{
-		set_Value (COLUMNNAME_lbr_Barcode1, lbr_Barcode1);
+		if (LBR_DE_ID < 1) 
+			set_Value (COLUMNNAME_LBR_DE_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_DE_ID, Integer.valueOf(LBR_DE_ID));
 	}
 
-	/** Get Barcode 1.
-		@return First Barcode of the Nota Fiscal
-	  */
-	public String getlbr_Barcode1 () 
+	/** Get DE.
+		@return DE	  */
+	public int getLBR_DE_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_Barcode1);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_DE_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
-	/** Set Barcode 2.
-		@param lbr_Barcode2 
-		Second Barcode of the Nota Fiscal
-	  */
-	public void setlbr_Barcode2 (String lbr_Barcode2)
+	public org.adempierelbr.model.I_LBR_NFeLot getLBR_NFeLot() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NFeLot)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NFeLot.Table_Name)
+			.getPO(getLBR_NFeLot_ID(), get_TrxName());	}
+
+	/** Set NFe Lot.
+		@param LBR_NFeLot_ID NFe Lot	  */
+	public void setLBR_NFeLot_ID (int LBR_NFeLot_ID)
 	{
-		set_Value (COLUMNNAME_lbr_Barcode2, lbr_Barcode2);
+		if (LBR_NFeLot_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NFeLot_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NFeLot_ID, Integer.valueOf(LBR_NFeLot_ID));
 	}
 
-	/** Get Barcode 2.
-		@return Second Barcode of the Nota Fiscal
-	  */
-	public String getlbr_Barcode2 () 
+	/** Get NFe Lot.
+		@return NFe Lot	  */
+	public int getLBR_NFeLot_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_Barcode2);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFeLot_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
-	/** Set Bill Note.
-		@param lbr_BillNote 
-		Bill Note
+	/** Set Nota Fiscal.
+		@param LBR_NotaFiscal_ID 
+		Primary key table LBR_NotaFiscal
 	  */
-	public void setlbr_BillNote (String lbr_BillNote)
+	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
 	{
-		set_Value (COLUMNNAME_lbr_BillNote, lbr_BillNote);
+		if (LBR_NotaFiscal_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
 	}
 
-	/** Get Bill Note.
-		@return Bill Note
+	/** Get Nota Fiscal.
+		@return Primary key table LBR_NotaFiscal
 	  */
-	public String getlbr_BillNote () 
+	public int getLBR_NotaFiscal_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_BillNote);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Other Charges Amount.
+		@param LBR_OtherChargesAmt Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt)
+	{
+		set_Value (COLUMNNAME_LBR_OtherChargesAmt, LBR_OtherChargesAmt);
+	}
+
+	/** Get Other Charges Amount.
+		@return Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_OtherChargesAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getLBR_RefNotaFiscal_ID(), get_TrxName());	}
+
+	/** Set Nota Fiscal Referenciada.
+		@param LBR_RefNotaFiscal_ID Nota Fiscal Referenciada	  */
+	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID)
+	{
+		if (LBR_RefNotaFiscal_ID < 1) 
+			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, Integer.valueOf(LBR_RefNotaFiscal_ID));
+	}
+
+	/** Get Nota Fiscal Referenciada.
+		@return Nota Fiscal Referenciada	  */
+	public int getLBR_RefNotaFiscal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_RefNotaFiscal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_InOut getM_InOut() throws RuntimeException
+    {
+		return (I_M_InOut)MTable.get(getCtx(), I_M_InOut.Table_Name)
+			.getPO(getM_InOut_ID(), get_TrxName());	}
+
+	/** Set Shipment/Receipt.
+		@param M_InOut_ID 
+		Material Shipment Document
+	  */
+	public void setM_InOut_ID (int M_InOut_ID)
+	{
+		if (M_InOut_ID < 1) 
+			set_Value (COLUMNNAME_M_InOut_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_InOut_ID, Integer.valueOf(M_InOut_ID));
+	}
+
+	/** Get Shipment/Receipt.
+		@return Material Shipment Document
+	  */
+	public int getM_InOut_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_InOut_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Shipper.
+		@param M_Shipper_ID 
+		Method or manner of product delivery
+	  */
+	public void setM_Shipper_ID (int M_Shipper_ID)
+	{
+		if (M_Shipper_ID < 1) 
+			set_Value (COLUMNNAME_M_Shipper_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Shipper_ID, Integer.valueOf(M_Shipper_ID));
+	}
+
+	/** Get Shipper.
+		@return Method or manner of product delivery
+	  */
+	public int getM_Shipper_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Shipper_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set No Packages.
+		@param NoPackages 
+		Number of packages shipped
+	  */
+	public void setNoPackages (BigDecimal NoPackages)
+	{
+		set_Value (COLUMNNAME_NoPackages, NoPackages);
+	}
+
+	/** Get No Packages.
+		@return Number of packages shipped
+	  */
+	public BigDecimal getNoPackages () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_NoPackages);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_Location getOrg_Location() throws RuntimeException
+    {
+		return (I_C_Location)MTable.get(getCtx(), I_C_Location.Table_Name)
+			.getPO(getOrg_Location_ID(), get_TrxName());	}
+
+	/** Set Org Address.
+		@param Org_Location_ID 
+		Organization Location/Address
+	  */
+	public void setOrg_Location_ID (int Org_Location_ID)
+	{
+		if (Org_Location_ID < 1) 
+			set_Value (COLUMNNAME_Org_Location_ID, null);
+		else 
+			set_Value (COLUMNNAME_Org_Location_ID, Integer.valueOf(Org_Location_ID));
+	}
+
+	/** Get Org Address.
+		@return Organization Location/Address
+	  */
+	public int getOrg_Location_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Org_Location_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Reactivate Nota Fiscal.
+		@param ProcReactivateNF 
+		This Process Reactivates the Nota Fiscal Document
+	  */
+	public void setProcReactivateNF (String ProcReactivateNF)
+	{
+		set_Value (COLUMNNAME_ProcReactivateNF, ProcReactivateNF);
+	}
+
+	/** Get Reactivate Nota Fiscal.
+		@return This Process Reactivates the Nota Fiscal Document
+	  */
+	public String getProcReactivateNF () 
+	{
+		return (String)get_Value(COLUMNNAME_ProcReactivateNF);
+	}
+
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Process Now.
+		@param Processing Process Now	  */
+	public void setProcessing (boolean Processing)
+	{
+		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public boolean isProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Process Now.
+		@param Processing2 Process Now	  */
+	public void setProcessing2 (String Processing2)
+	{
+		set_Value (COLUMNNAME_Processing2, Processing2);
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public String getProcessing2 () 
+	{
+		return (String)get_Value(COLUMNNAME_Processing2);
+	}
+
+	/** Set Total Lines.
+		@param TotalLines 
+		Total of all document lines
+	  */
+	public void setTotalLines (BigDecimal TotalLines)
+	{
+		set_Value (COLUMNNAME_TotalLines, TotalLines);
+	}
+
+	/** Get Total Lines.
+		@return Total of all document lines
+	  */
+	public BigDecimal getTotalLines () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalLines);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set BP Address 1.
@@ -738,23 +973,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_BPAddress4);
 	}
 
-	/** Set BP City.
-		@param lbr_BPCity 
-		BP City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPCity (String lbr_BPCity)
-	{
-		set_Value (COLUMNNAME_lbr_BPCity, lbr_BPCity);
-	}
-
-	/** Get BP City.
-		@return BP City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPCity () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_BPCity);
-	}
-
 	/** Set BP CNPJ.
 		@param lbr_BPCNPJ 
 		BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books
@@ -770,6 +988,23 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_BPCNPJ () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_BPCNPJ);
+	}
+
+	/** Set BP City.
+		@param lbr_BPCity 
+		BP City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPCity (String lbr_BPCity)
+	{
+		set_Value (COLUMNNAME_lbr_BPCity, lbr_BPCity);
+	}
+
+	/** Get BP City.
+		@return BP City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPCity () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BPCity);
 	}
 
 	/** Set BP Country.
@@ -857,23 +1092,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_BPDeliveryAddress4);
 	}
 
-	/** Set BP Delivery City.
-		@param lbr_BPDeliveryCity 
-		BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPDeliveryCity (String lbr_BPDeliveryCity)
-	{
-		set_Value (COLUMNNAME_lbr_BPDeliveryCity, lbr_BPDeliveryCity);
-	}
-
-	/** Get BP Delivery City.
-		@return BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPDeliveryCity () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_BPDeliveryCity);
-	}
-
 	/** Set BP Delivery CNPJ.
 		@param lbr_BPDeliveryCNPJ 
 		BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
@@ -889,6 +1107,23 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_BPDeliveryCNPJ () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_BPDeliveryCNPJ);
+	}
+
+	/** Set BP Delivery City.
+		@param lbr_BPDeliveryCity 
+		BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPDeliveryCity (String lbr_BPDeliveryCity)
+	{
+		set_Value (COLUMNNAME_lbr_BPDeliveryCity, lbr_BPDeliveryCity);
+	}
+
+	/** Get BP Delivery City.
+		@return BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPDeliveryCity () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BPDeliveryCity);
 	}
 
 	/** Set BP Delivery Country.
@@ -1044,23 +1279,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_BPInvoiceAddress4);
 	}
 
-	/** Set BP Invoice City.
-		@param lbr_BPInvoiceCity 
-		BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity)
-	{
-		set_Value (COLUMNNAME_lbr_BPInvoiceCity, lbr_BPInvoiceCity);
-	}
-
-	/** Get BP Invoice City.
-		@return BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPInvoiceCity () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_BPInvoiceCity);
-	}
-
 	/** Set BP Invoice CNPJ.
 		@param lbr_BPInvoiceCNPJ 
 		BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
@@ -1076,6 +1294,23 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_BPInvoiceCNPJ () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_BPInvoiceCNPJ);
+	}
+
+	/** Set BP Invoice City.
+		@param lbr_BPInvoiceCity 
+		BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity)
+	{
+		set_Value (COLUMNNAME_lbr_BPInvoiceCity, lbr_BPInvoiceCity);
+	}
+
+	/** Get BP Invoice City.
+		@return BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPInvoiceCity () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BPInvoiceCity);
 	}
 
 	/** Set BP Invoice Country.
@@ -1265,23 +1500,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_BPShipperAddress4);
 	}
 
-	/** Set BP Shipper City.
-		@param lbr_BPShipperCity 
-		BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPShipperCity (String lbr_BPShipperCity)
-	{
-		set_Value (COLUMNNAME_lbr_BPShipperCity, lbr_BPShipperCity);
-	}
-
-	/** Get BP Shipper City.
-		@return BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPShipperCity () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_BPShipperCity);
-	}
-
 	/** Set BP Shipper CNPJ.
 		@param lbr_BPShipperCNPJ 
 		BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
@@ -1297,6 +1515,23 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_BPShipperCNPJ () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_BPShipperCNPJ);
+	}
+
+	/** Set BP Shipper City.
+		@param lbr_BPShipperCity 
+		BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPShipperCity (String lbr_BPShipperCity)
+	{
+		set_Value (COLUMNNAME_lbr_BPShipperCity, lbr_BPShipperCity);
+	}
+
+	/** Get BP Shipper City.
+		@return BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPShipperCity () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BPShipperCity);
 	}
 
 	/** Set BP Shipper Country.
@@ -1418,6 +1653,57 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_BPSuframa);
 	}
 
+	/** Set Barcode 1.
+		@param lbr_Barcode1 
+		First Barcode of the Nota Fiscal
+	  */
+	public void setlbr_Barcode1 (String lbr_Barcode1)
+	{
+		set_Value (COLUMNNAME_lbr_Barcode1, lbr_Barcode1);
+	}
+
+	/** Get Barcode 1.
+		@return First Barcode of the Nota Fiscal
+	  */
+	public String getlbr_Barcode1 () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_Barcode1);
+	}
+
+	/** Set Barcode 2.
+		@param lbr_Barcode2 
+		Second Barcode of the Nota Fiscal
+	  */
+	public void setlbr_Barcode2 (String lbr_Barcode2)
+	{
+		set_Value (COLUMNNAME_lbr_Barcode2, lbr_Barcode2);
+	}
+
+	/** Get Barcode 2.
+		@return Second Barcode of the Nota Fiscal
+	  */
+	public String getlbr_Barcode2 () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_Barcode2);
+	}
+
+	/** Set Bill Note.
+		@param lbr_BillNote 
+		Bill Note
+	  */
+	public void setlbr_BillNote (String lbr_BillNote)
+	{
+		set_Value (COLUMNNAME_lbr_BillNote, lbr_BillNote);
+	}
+
+	/** Get Bill Note.
+		@return Bill Note
+	  */
+	public String getlbr_BillNote () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_BillNote);
+	}
+
 	/** Set Brand.
 		@param lbr_Brand 
 		Brand transport volumes
@@ -1503,6 +1789,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (Timestamp)get_Value(COLUMNNAME_lbr_DateInOut);
 	}
 
+	/** Set Data contingência.
+		@param lbr_DateScan Data contingência	  */
+	public void setlbr_DateScan (Timestamp lbr_DateScan)
+	{
+		set_Value (COLUMNNAME_lbr_DateScan, lbr_DateScan);
+	}
+
+	/** Get Data contingência.
+		@return Data contingência	  */
+	public Timestamp getlbr_DateScan () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_lbr_DateScan);
+	}
+
 	public I_C_BPartner_Location getlbr_Delivery_Location() throws RuntimeException
     {
 		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
@@ -1543,27 +1843,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_DigestValue () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_DigestValue);
-	}
-
-	/** Set lbr_EMailSent.
-		@param lbr_EMailSent lbr_EMailSent	  */
-	public void setlbr_EMailSent (boolean lbr_EMailSent)
-	{
-		set_Value (COLUMNNAME_lbr_EMailSent, Boolean.valueOf(lbr_EMailSent));
-	}
-
-	/** Get lbr_EMailSent.
-		@return lbr_EMailSent	  */
-	public boolean islbr_EMailSent () 
-	{
-		Object oo = get_Value(COLUMNNAME_lbr_EMailSent);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
 	}
 
 	/** lbr_FinNFe AD_Reference_ID=1100012 */
@@ -1609,6 +1888,30 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_FiscalOBS);
 	}
 
+	/** LBR_FreightCostRule AD_Reference_ID=1120147 */
+	public static final int LBR_FREIGHTCOSTRULE_AD_Reference_ID=1120147;
+	/** 0 - Frete por conta do Emitente = 0 */
+	public static final String LBR_FREIGHTCOSTRULE_0_FretePorContaDoEmitente = "0";
+	/** 1 - Frete por conta do Destinatário = 1 */
+	public static final String LBR_FREIGHTCOSTRULE_1_FretePorContaDoDestinatário = "1";
+	/** Set Freight Cost Rule.
+		@param LBR_FreightCostRule 
+		Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule)
+	{
+
+		set_Value (COLUMNNAME_LBR_FreightCostRule, LBR_FreightCostRule);
+	}
+
+	/** Get Freight Cost Rule.
+		@return Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_FreightCostRule);
+	}
+	
 	/** Set Generate NFe XML.
 		@param lbr_GenerateNFeXML Generate NFe XML	  */
 	public void setlbr_GenerateNFeXML (String lbr_GenerateNFeXML)
@@ -1704,18 +2007,35 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return false;
 	}
 
-	/** Set lbr_MotivoCancel.
-		@param lbr_MotivoCancel lbr_MotivoCancel	  */
+	/** Set Motivo do Cancelamento.
+		@param lbr_MotivoCancel 
+		Motivo do Cancelamento (Entre 15 e 255 caracteres)
+	  */
 	public void setlbr_MotivoCancel (String lbr_MotivoCancel)
 	{
 		set_Value (COLUMNNAME_lbr_MotivoCancel, lbr_MotivoCancel);
 	}
 
-	/** Get lbr_MotivoCancel.
-		@return lbr_MotivoCancel	  */
+	/** Get Motivo do Cancelamento.
+		@return Motivo do Cancelamento (Entre 15 e 255 caracteres)
+	  */
 	public String getlbr_MotivoCancel () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_MotivoCancel);
+	}
+
+	/** Set Motivo contingência.
+		@param lbr_MotivoScan Motivo contingência	  */
+	public void setlbr_MotivoScan (String lbr_MotivoScan)
+	{
+		set_Value (COLUMNNAME_lbr_MotivoScan, lbr_MotivoScan);
+	}
+
+	/** Get Motivo contingência.
+		@return Motivo contingência	  */
+	public String getlbr_MotivoScan () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_MotivoScan);
 	}
 
 	/** Set NCM Reference.
@@ -1735,24 +2055,231 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_NCMReference);
 	}
 
-	/** Set Net Weight.
-		@param lbr_NetWeight 
-		Defines the Net Weight
-	  */
-	public void setlbr_NetWeight (BigDecimal lbr_NetWeight)
+	/** Set NFe No.
+		@param lbr_NFENo NFe No	  */
+	public void setlbr_NFENo (String lbr_NFENo)
 	{
-		set_Value (COLUMNNAME_lbr_NetWeight, lbr_NetWeight);
+		set_Value (COLUMNNAME_lbr_NFENo, lbr_NFENo);
 	}
 
-	/** Get Net Weight.
-		@return Defines the Net Weight
-	  */
-	public BigDecimal getlbr_NetWeight () 
+	/** Get NFe No.
+		@return NFe No	  */
+	public String getlbr_NFENo () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_NetWeight);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		return (String)get_Value(COLUMNNAME_lbr_NFENo);
+	}
+
+	/** lbr_NFModel AD_Reference_ID=1120009 */
+	public static final int LBR_NFMODEL_AD_Reference_ID=1120009;
+	/** Nota Fiscal = 01 */
+	public static final String LBR_NFMODEL_NotaFiscal = "01";
+	/** Nota Fiscal Avulsa = 1B */
+	public static final String LBR_NFMODEL_NotaFiscalAvulsa = "1B";
+	/** Nota Fiscal de Venda a Consumidor = 02 */
+	public static final String LBR_NFMODEL_NotaFiscalDeVendaAConsumidor = "02";
+	/** Cupom Fiscal emitido por ECF = 2D */
+	public static final String LBR_NFMODEL_CupomFiscalEmitidoPorECF = "2D";
+	/** Bilhete de Passagem emitido por ECF = 2E */
+	public static final String LBR_NFMODEL_BilheteDePassagemEmitidoPorECF = "2E";
+	/** Nota Fiscal de Produtor = 04 */
+	public static final String LBR_NFMODEL_NotaFiscalDeProdutor = "04";
+	/** Nota Fiscal/Conta de Energia Elétrica = 06 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeEnergiaElétrica = "06";
+	/** Nota Fiscal de Serviço de Transporte = 07 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeTransporte = "07";
+	/** Conhecimento de Transporte Rodoviário de Cargas = 08 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteRodoviárioDeCargas = "08";
+	/** Conhecimento de Transporte de Cargas Avulso = 8B */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteDeCargasAvulso = "8B";
+	/** Conhecimento de Transporte Aquaviário de Cargas = 09 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteAquaviárioDeCargas = "09";
+	/** Conhecimento Aéreo = 10 */
+	public static final String LBR_NFMODEL_ConhecimentoAéreo = "10";
+	/** Conhecimento de Transporte Ferroviário de Cargas = 11 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteFerroviárioDeCargas = "11";
+	/** Bilhete de Passagem Rodoviário = 13 */
+	public static final String LBR_NFMODEL_BilheteDePassagemRodoviário = "13";
+	/** Bilhete de Passagem Aquaviário = 14 */
+	public static final String LBR_NFMODEL_BilheteDePassagemAquaviário = "14";
+	/** Bilhete de Passagem e Nota de Bagagem = 15 */
+	public static final String LBR_NFMODEL_BilheteDePassagemENotaDeBagagem = "15";
+	/** Despacho de Transporte = 17 */
+	public static final String LBR_NFMODEL_DespachoDeTransporte = "17";
+	/** Bilhete de Passagem Ferroviário = 16 */
+	public static final String LBR_NFMODEL_BilheteDePassagemFerroviário = "16";
+	/** Resumo de Movimento Diário = 18 */
+	public static final String LBR_NFMODEL_ResumoDeMovimentoDiário = "18";
+	/** Ordem de Coleta de Cargas = 20 */
+	public static final String LBR_NFMODEL_OrdemDeColetaDeCargas = "20";
+	/** Nota Fiscal de Serviço de Comunicação = 21 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeComunicação = "21";
+	/** Nota Fiscal de Serviço de Telecomunicação = 22 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeTelecomunicação = "22";
+	/** GNRE = 23 */
+	public static final String LBR_NFMODEL_GNRE = "23";
+	/** Autorização de Carregamento e Transporte = 24 */
+	public static final String LBR_NFMODEL_AutorizaçãoDeCarregamentoETransporte = "24";
+	/** Manifesto de Carga = 25 */
+	public static final String LBR_NFMODEL_ManifestoDeCarga = "25";
+	/** Conhecimento de Transporte Multimodal de Cargas = 26 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteMultimodalDeCargas = "26";
+	/** Nota Fiscal de Transporte Ferroviário de Cargas = 27 */
+	public static final String LBR_NFMODEL_NotaFiscalDeTransporteFerroviárioDeCargas = "27";
+	/** Nota Fiscal/Conta de Fornecimento de Gás Canalizado = 28 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeFornecimentoDeGásCanalizado = "28";
+	/** Nota Fiscal/Conta de Fornecimento de Água Canalizada = 29 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeFornecimentoDeÁguaCanalizada = "29";
+	/** Bilhete/Recibo do Passageiro = 30 */
+	public static final String LBR_NFMODEL_BilheteReciboDoPassageiro = "30";
+	/** Nota Fiscal Eletrônica = 55 */
+	public static final String LBR_NFMODEL_NotaFiscalEletrônica = "55";
+	/** Conhecimento de Transporte Eletrônico – CT-e = 57 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
+	/** RPS = RPS */
+	public static final String LBR_NFMODEL_RPS = "RPS";
+	/** Set NF Model.
+		@param lbr_NFModel 
+		Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel)
+	{
+
+		set_Value (COLUMNNAME_lbr_NFModel, lbr_NFModel);
+	}
+
+	/** Get NF Model.
+		@return Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_NFModel);
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getlbr_NFRefere() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getlbr_NFReference(), get_TrxName());	}
+
+	/** Set NF Reference.
+		@param lbr_NFReference 
+		Reference to other NF
+	  */
+	public void setlbr_NFReference (int lbr_NFReference)
+	{
+		set_Value (COLUMNNAME_lbr_NFReference, Integer.valueOf(lbr_NFReference));
+	}
+
+	/** Get NF Reference.
+		@return Reference to other NF
+	  */
+	public int getlbr_NFReference () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NFReference);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** lbr_NFType AD_Reference_ID=1000044 */
+	public static final int LBR_NFTYPE_AD_Reference_ID=1000044;
+	/** 001_ACT-Autorização de Carregamento de Transporte = 001 */
+	public static final String LBR_NFTYPE_001_ACT_AutorizaçãoDeCarregamentoDeTransporte = "001";
+	/** 002_AIMR-Atestado de Intervenção em Máquina = 002 */
+	public static final String LBR_NFTYPE_002_AIMR_AtestadoDeIntervençãoEmMáquina = "002";
+	/** 003_AIPDV-Atestado de Intervenção em PDV = 003 */
+	public static final String LBR_NFTYPE_003_AIPDV_AtestadoDeIntervençãoEmPDV = "003";
+	/** 004_BPA-Bilhete de Passagem Aquaviário = 004 */
+	public static final String LBR_NFTYPE_004_BPA_BilheteDePassagemAquaviário = "004";
+	/** 005_BPF-Bilhete de Passagem Ferroviário = 005 */
+	public static final String LBR_NFTYPE_005_BPF_BilheteDePassagemFerroviário = "005";
+	/** 006_BPNB-Bilhete de Passagem e Nota de Bagagem = 006 */
+	public static final String LBR_NFTYPE_006_BPNB_BilheteDePassagemENotaDeBagagem = "006";
+	/** 007_BPR-Bilhete de Passagem Rodoviário = 007 */
+	public static final String LBR_NFTYPE_007_BPR_BilheteDePassagemRodoviário = "007";
+	/** 008_CA-Conhecimento Aéreo = 008 */
+	public static final String LBR_NFTYPE_008_CA_ConhecimentoAéreo = "008";
+	/** 009_CTA-Conhecimento de Transporte Avulso = 009 */
+	public static final String LBR_NFTYPE_009_CTA_ConhecimentoDeTransporteAvulso = "009";
+	/** 010_CTAC-Conhecimento de Transporte Aquaviário de Cargas = 010 */
+	public static final String LBR_NFTYPE_010_CTAC_ConhecimentoDeTransporteAquaviárioDeCargas = "010";
+	/** 011_CTFC-Conhecimento de Transporte Ferroviário de Cargas = 011 */
+	public static final String LBR_NFTYPE_011_CTFC_ConhecimentoDeTransporteFerroviárioDeCargas = "011";
+	/** 012_CTRC-Conhecimento de Transporte Rodoviário de Cargas = 012 */
+	public static final String LBR_NFTYPE_012_CTRC_ConhecimentoDeTransporteRodoviárioDeCargas = "012";
+	/** 013_DAICMS-Demons. de Apuração do ICMS-DAICMS = 013 */
+	public static final String LBR_NFTYPE_013_DAICMS_DemonsDeApuraçãoDoICMS_DAICMS = "013";
+	/** 014_DCICMS-Demons. de Apuração do Compl. do ICMS-DCICMS = 014 */
+	public static final String LBR_NFTYPE_014_DCICMS_DemonsDeApuraçãoDoComplDoICMS_DCICMS = "014";
+	/** 015_DCL-Despacho de Cargas em Lotação = 015 */
+	public static final String LBR_NFTYPE_015_DCL_DespachoDeCargasEmLotação = "015";
+	/** 016_DCMS-Despacho de Cargas Modelo Simplificado = 016 */
+	public static final String LBR_NFTYPE_016_DCMS_DespachoDeCargasModeloSimplificado = "016";
+	/** 017_DEB-Documento de Excesso de Bagagem = 017 */
+	public static final String LBR_NFTYPE_017_DEB_DocumentoDeExcessoDeBagagem = "017";
+	/** 018_DSEP-Documento Simplificado de Embarque de Passageiro = 018 */
+	public static final String LBR_NFTYPE_018_DSEP_DocumentoSimplificadoDeEmbarqueDePassageiro = "018";
+	/** 019_DSICMS-Demons. de Contrib. Substituto do ICMS-DSICMS = 019 */
+	public static final String LBR_NFTYPE_019_DSICMS_DemonsDeContribSubstitutoDoICMS_DSICMS = "019";
+	/** 020_DT-Despacho de Transporte = 020 */
+	public static final String LBR_NFTYPE_020_DT_DespachoDeTransporte = "020";
+	/** 021_EF-Extrato de Faturamento = 021 */
+	public static final String LBR_NFTYPE_021_EF_ExtratoDeFaturamento = "021";
+	/** 022_GNR-Guia Nacional de Recolhimento de Tributos Estaduais = 022 */
+	public static final String LBR_NFTYPE_022_GNR_GuiaNacionalDeRecolhimentoDeTributosEstaduais = "022";
+	/** 023_MC-Manifesto de Carga = 023 */
+	public static final String LBR_NFTYPE_023_MC_ManifestoDeCarga = "023";
+	/** 024_NF-Nota Fiscal = 024 */
+	public static final String LBR_NFTYPE_024_NF_NotaFiscal = "024";
+	/** 025_NFA-Nota Fiscal Avulsa = 025 */
+	public static final String LBR_NFTYPE_025_NFA_NotaFiscalAvulsa = "025";
+	/** 026_NFCEE-Nota Fiscal/Conta de Energia Elétrica = 026 */
+	public static final String LBR_NFTYPE_026_NFCEE_NotaFiscalContaDeEnergiaElétrica = "026";
+	/** 027_NFCFA-Nota Fiscal/Conta de Fornecimento de Água = 027 */
+	public static final String LBR_NFTYPE_027_NFCFA_NotaFiscalContaDeFornecimentoDeÁgua = "027";
+	/** 028_NFE-Nota Fiscal de Entrada = 028 */
+	public static final String LBR_NFTYPE_028_NFE_NotaFiscalDeEntrada = "028";
+	/** 029_NFF-NFF = 029 */
+	public static final String LBR_NFTYPE_029_NFF_NFF = "029";
+	/** 030_NFME-Nota Fiscal Microempresa = 030 */
+	public static final String LBR_NFTYPE_030_NFME_NotaFiscalMicroempresa = "030";
+	/** 031_NFP-Nota Fiscal de Produtor = 031 */
+	public static final String LBR_NFTYPE_031_NFP_NotaFiscalDeProdutor = "031";
+	/** 032_NFS-Nota Fiscal Simplificada = 032 */
+	public static final String LBR_NFTYPE_032_NFS_NotaFiscalSimplificada = "032";
+	/** 033_NFSC-Nota Fiscal e Serviço de Comunicação = 033 */
+	public static final String LBR_NFTYPE_033_NFSC_NotaFiscalEServiçoDeComunicação = "033";
+	/** 034_NFSTC-Nota Fiscal de Serviço de Telecomunicações = 034 */
+	public static final String LBR_NFTYPE_034_NFSTC_NotaFiscalDeServiçoDeTelecomunicações = "034";
+	/** 035_NFSTR-Nota Fiscal de Serviço de Transporte = 035 */
+	public static final String LBR_NFTYPE_035_NFSTR_NotaFiscalDeServiçoDeTransporte = "035";
+	/** 036_NFVC-Nota Fiscal de Venda a Consumidor = 036 */
+	public static final String LBR_NFTYPE_036_NFVC_NotaFiscalDeVendaAConsumidor = "036";
+	/** 037_OCC-Ordem de Coleta de Carga = 037 */
+	public static final String LBR_NFTYPE_037_OCC_OrdemDeColetaDeCarga = "037";
+	/** 038_RD-Relação de Despachos = 038 */
+	public static final String LBR_NFTYPE_038_RD_RelaçãoDeDespachos = "038";
+	/** 039_RECA-Relatório de Emissão de Conhecimento Aéreos = 039 */
+	public static final String LBR_NFTYPE_039_RECA_RelatórioDeEmissãoDeConhecimentoAéreos = "039";
+	/** 040_REP-Relatório de Embarque de Passageiros = 040 */
+	public static final String LBR_NFTYPE_040_REP_RelatórioDeEmbarqueDePassageiros = "040";
+	/** 041_RMD-Resumo de Movimento Diário = 041 */
+	public static final String LBR_NFTYPE_041_RMD_ResumoDeMovimentoDiário = "041";
+	/** Set NF Type.
+		@param lbr_NFType 
+		Nota Fiscal Type
+	  */
+	public void setlbr_NFType (String lbr_NFType)
+	{
+
+		set_Value (COLUMNNAME_lbr_NFType, lbr_NFType);
+	}
+
+	/** Get NF Type.
+		@return Nota Fiscal Type
+	  */
+	public String getlbr_NFType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_NFType);
 	}
 
 	/** Set NFe Description.
@@ -1787,45 +2314,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_NFeID () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFeID);
-	}
-
-	public org.adempierelbr.model.I_LBR_NFeLot getLBR_NFeLot() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NFeLot)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NFeLot.Table_Name)
-			.getPO(getLBR_NFeLot_ID(), get_TrxName());	}
-
-	/** Set NFe Lot.
-		@param LBR_NFeLot_ID NFe Lot	  */
-	public void setLBR_NFeLot_ID (int LBR_NFeLot_ID)
-	{
-		if (LBR_NFeLot_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NFeLot_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_NFeLot_ID, Integer.valueOf(LBR_NFeLot_ID));
-	}
-
-	/** Get NFe Lot.
-		@return NFe Lot	  */
-	public int getLBR_NFeLot_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFeLot_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set NFe No.
-		@param lbr_NFENo NFe No	  */
-	public void setlbr_NFENo (String lbr_NFENo)
-	{
-		set_Value (COLUMNNAME_lbr_NFENo, lbr_NFENo);
-	}
-
-	/** Get NFe No.
-		@return NFe No	  */
-	public String getlbr_NFENo () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_NFENo);
 	}
 
 	/** Set NFe Protocol.
@@ -2166,6 +2654,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_529_RejeiçãoNCMDeInformaçãoObrigatóriaParaProdutoTr = "529";
 	/** 530-Rejeição: Operação com tributação de ISSQN sem informar = 530 */
 	public static final String LBR_NFESTATUS_530_RejeiçãoOperaçãoComTributaçãoDeISSQNSemInformar = "530";
+	/** 531-Rejeição: Total da BC ICMS difere do somatório dos iten = 531 */
+	public static final String LBR_NFESTATUS_531_RejeiçãoTotalDaBCICMSDifereDoSomatórioDosIten = "531";
 	/** 532-Rejeição: Total do ICMS difere do somatório dos itens = 532 */
 	public static final String LBR_NFESTATUS_532_RejeiçãoTotalDoICMSDifereDoSomatórioDosItens = "532";
 	/** 533-Rejeição: Total da BC ICMS-ST difere do somatório dos i = 533 */
@@ -2178,6 +2668,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_536_RejeiçãoTotalDoSeguroDifereDoSomatórioDosItens = "536";
 	/** 537-Rejeição: Total do Desconto difere do somatório dos ite = 537 */
 	public static final String LBR_NFESTATUS_537_RejeiçãoTotalDoDescontoDifereDoSomatórioDosIte = "537";
+	/** 538-Rejeição: Total do IPI difere do somatório dos itens = 538 */
+	public static final String LBR_NFESTATUS_538_RejeiçãoTotalDoIPIDifereDoSomatórioDosItens = "538";
 	/** 539-Rejeição: Duplicidade de NF-e, com diferença na Chave d = 539 */
 	public static final String LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveD = "539";
 	/** 540-Rejeição: CPF do Local de Retirada inválido = 540 */
@@ -2246,27 +2738,27 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_129_LoteDeEventoProcessado = "129";
 	/** 135-Evento registrado e vinculado a NF-e = 135 */
 	public static final String LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E = "135";
-	/** 136-Evento registrado, mas não vinculado a NF-e = 136 */
+	/** 136-Evento registrado, mas não vinculado a NF-e  = 136 */
 	public static final String LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANF_E = "136";
-	/** 489-Rejeição: CNPJ informado inválido (DV ou zeros) = 489 */
+	/** 489-Rejeição: CNPJ informado inválido (DV ou zeros)  = 489 */
 	public static final String LBR_NFESTATUS_489_RejeiçãoCNPJInformadoInválidoDVOuZeros = "489";
-	/** 490-Rejeição: CPF informado inválido (DV ou zeros) = 490 */
+	/** 490-Rejeição: CPF informado inválido (DV ou zeros)  = 490 */
 	public static final String LBR_NFESTATUS_490_RejeiçãoCPFInformadoInválidoDVOuZeros = "490";
-	/** 491-Rejeição: O tpEvento informado inválido = 491 */
+	/** 491-Rejeição: O tpEvento informado inválido  = 491 */
 	public static final String LBR_NFESTATUS_491_RejeiçãoOTpEventoInformadoInválido = "491";
 	/** 492-Rejeição: O verEvento informado inválido = 492 */
 	public static final String LBR_NFESTATUS_492_RejeiçãoOVerEventoInformadoInválido = "492";
-	/** 493-Rejeição: Evento não atende o Schema XML específico = 493 */
+	/** 493-Rejeição: Evento não atende o Schema XML específico  = 493 */
 	public static final String LBR_NFESTATUS_493_RejeiçãoEventoNãoAtendeOSchemaXMLEspecífico = "493";
-	/** 494-Rejeição: Chave de Acesso inexistente = 494 */
+	/** 494-Rejeição: Chave de Acesso inexistente  = 494 */
 	public static final String LBR_NFESTATUS_494_RejeiçãoChaveDeAcessoInexistente = "494";
-	/** 501-Rejeição: Pedido de Cancelamento intempestivo (NF-e aut = 501 */
-	public static final String LBR_NFESTATUS_501_RejeiçãoPedidoDeCancelamentoIntempestivoNF_EAut = "501";
+	/** 501-Rejeição: Prazo de cancelamento superior ao previsto na = 501 */
+	public static final String LBR_NFESTATUS_501_RejeiçãoPrazoDeCancelamentoSuperiorAoPrevistoNa = "501";
 	/** 572-Rejeição: Erro Atributo ID do evento não corresponde a  = 572 */
 	public static final String LBR_NFESTATUS_572_RejeiçãoErroAtributoIDDoEventoNãoCorrespondeA = "572";
-	/** 573-Rejeição: Duplicidade de Evento = 573 */
+	/** 573-Rejeição: Duplicidade de Evento  = 573 */
 	public static final String LBR_NFESTATUS_573_RejeiçãoDuplicidadeDeEvento = "573";
-	/** 574-Rejeição: O autor do evento diverge do emissor da NF-e = 574 */
+	/** 574-Rejeição: O autor do evento diverge do emissor da NF-e  = 574 */
 	public static final String LBR_NFESTATUS_574_RejeiçãoOAutorDoEventoDivergeDoEmissorDaNF_E = "574";
 	/** 575-Rejeição: O autor do evento diverge do destinatário da  = 575 */
 	public static final String LBR_NFESTATUS_575_RejeiçãoOAutorDoEventoDivergeDoDestinatárioDa = "575";
@@ -2278,8 +2770,10 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_578_RejeiçãoADataDoEventoNãoPodeSerMaiorQueADat = "578";
 	/** 579-Rejeição: A data do evento não pode ser menor que a dat = 579 */
 	public static final String LBR_NFESTATUS_579_RejeiçãoADataDoEventoNãoPodeSerMenorQueADat = "579";
-	/** 580-Rejeição: O evento exige uma NF-e autorizada = 580 */
+	/** 580-Rejeição: O evento exige uma NF-e autorizada  = 580 */
 	public static final String LBR_NFESTATUS_580_RejeiçãoOEventoExigeUmaNF_EAutorizada = "580";
+	/** 587-Rejeição: Usar somente o namespace padrão da NF-e  = 587 */
+	public static final String LBR_NFESTATUS_587_RejeiçãoUsarSomenteONamespacePadrãoDaNF_E = "587";
 	/** 588-Rejeição: Não é permitida a presença de caracteres de e = 588 */
 	public static final String LBR_NFESTATUS_588_RejeiçãoNãoÉPermitidaAPresençaDeCaracteresDeE = "588";
 	/** 590-Rejeição: Informado CST para emissor do Simples Naciona = 590 */
@@ -2288,20 +2782,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_591_RejeiçãoInformadoCSOSNParaEmissorQueNãoÉDoSim = "591";
 	/** 592-Rejeição: A NF-e deve ter pelo menos um item de produto = 592 */
 	public static final String LBR_NFESTATUS_592_RejeiçãoANF_EDeveTerPeloMenosUmItemDeProduto = "592";
-	/** 595-Rejeição: A versão do leiaute da NF-e utilizada não é m = 595 */
-	public static final String LBR_NFESTATUS_595_RejeiçãoAVersãoDoLeiauteDaNF_EUtilizadaNãoÉM = "595";
-	/** 596-Rejeição: Ambiente de homologação indisponível para rec = 596 */
-	public static final String LBR_NFESTATUS_596_RejeiçãoAmbienteDeHomologaçãoIndisponívelParaRec = "596";
+	/** 595-Rejeição: Obrigatória a informação da justificativa do  = 595 */
+	public static final String LBR_NFESTATUS_595_RejeiçãoObrigatóriaAInformaçãoDaJustificativaDo = "595";
+	/** 596-Rejeição: Evento apresentado fora do prazo: [prazo vige = 596 */
+	public static final String LBR_NFESTATUS_596_RejeiçãoEventoApresentadoForaDoPrazoPrazoVige = "596";
 	/** 597-Rejeição: CFOP de Importação e não informado dados de I = 597 */
 	public static final String LBR_NFESTATUS_597_RejeiçãoCFOPDeImportaçãoENãoInformadoDadosDeI = "597";
 	/** 598-Rejeição: NF-e emitida em ambiente de homologação com R = 598 */
 	public static final String LBR_NFESTATUS_598_RejeiçãoNF_EEmitidaEmAmbienteDeHomologaçãoComR = "598";
 	/** 599-Rejeição: CFOP de Importação e não informado dados de I = 599 */
 	public static final String LBR_NFESTATUS_599_RejeiçãoCFOPDeImportaçãoENãoInformadoDadosDeI = "599";
-	/** 128-Lote de Evento Processado = 128 */
-	public static final String LBR_NFESTATUS_128_LoteDeEventoProcessado = "128";
-	/** 594-Rejeição: O número de seqüencia do evento informado é m = 594 */
-	public static final String LBR_NFESTATUS_594_RejeiçãoONúmeroDeSeqüenciaDoEventoInformadoÉM = "594";
+	/** 128-Lote de Evento Processado 135 Evento registrado e vincu = 128 */
+	public static final String LBR_NFESTATUS_128_LoteDeEventoProcessado135EventoRegistradoEVincu = "128";
+	/** 594-Rejeição: O número de sequencia do evento informado é m = 594 */
+	public static final String LBR_NFESTATUS_594_RejeiçãoONúmeroDeSequenciaDoEventoInformadoÉM = "594";
 	/** 601-Rejeição: Total do II difere do somatório dos itens = 601 */
 	public static final String LBR_NFESTATUS_601_RejeiçãoTotalDoIIDifereDoSomatórioDosItens = "601";
 	/** 602-Rejeição: Total do PIS difere do somatório dos itens su = 602 */
@@ -2338,7 +2832,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_617_RejeiçãoChaveDeAcessoInválidaCNPJZeradoOuDígi = "617";
 	/** 618-Rejeição: Chave de Acesso inválida (modelo diferente de = 618 */
 	public static final String LBR_NFESTATUS_618_RejeiçãoChaveDeAcessoInválidaModeloDiferenteDe = "618";
-	/** 619-Rejeição: Chave de Acesso inválida (número NF = 0) = 619 */
+	/** 619-Rejeição: Chave de Acesso inválida (número NF = 0)  = 619 */
 	public static final String LBR_NFESTATUS_619_RejeiçãoChaveDeAcessoInválidaNúmeroNFEq0 = "619";
 	/** 621-Rejeição: CPF Emitente não cadastrado = 621 */
 	public static final String LBR_NFESTATUS_621_RejeiçãoCPFEmitenteNãoCadastrado = "621";
@@ -2364,12 +2858,40 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFESTATUS_635_RejeiçãoNF_EComMesmoNúmeroESérieJáTransmitida = "635";
 	/** 642-Rejeição: Falha na Consulta do Registro de Passagem, te = 642 */
 	public static final String LBR_NFESTATUS_642_RejeiçãoFalhaNaConsultaDoRegistroDePassagemTe = "642";
-	/** 587-Rejeição: Usar somente o namespace padrão da NF-e = 587 */
-	public static final String LBR_NFESTATUS_587_RejeiçãoUsarSomenteONamespacePadrãoDaNF_E = "587";
-	/** 531-Rejeição: Total da BC ICMS difere do somatório dos iten = 531 */
-	public static final String LBR_NFESTATUS_531_RejeiçãoTotalDaBCICMSDifereDoSomatórioDosIten = "531";
-	/** 538-Rejeição: Total do IPI difere do somatório dos itens = 538 */
-	public static final String LBR_NFESTATUS_538_RejeiçãoTotalDoIPIDifereDoSomatórioDosItens = "538";
+	/** 137-Nenhum documento localizado para o Destinatário  = 137 */
+	public static final String LBR_NFESTATUS_137_NenhumDocumentoLocalizadoParaODestinatário = "137";
+	/** 138-Documento localizado para o Destinatário  = 138 */
+	public static final String LBR_NFESTATUS_138_DocumentoLocalizadoParaODestinatário = "138";
+	/** 139-Pedido de Download processado  = 139 */
+	public static final String LBR_NFESTATUS_139_PedidoDeDownloadProcessado = "139";
+	/** 140-Download disponibilizado = 140 */
+	public static final String LBR_NFESTATUS_140_DownloadDisponibilizado = "140";
+	/** 589-Rejeição: Número do NSU informado superior ao maior NSU = 589 */
+	public static final String LBR_NFESTATUS_589_RejeiçãoNúmeroDoNSUInformadoSuperiorAoMaiorNSU = "589";
+	/** 593-Rejeição: CNPJ-Base consultado difere do CNPJ-Base do C = 593 */
+	public static final String LBR_NFESTATUS_593_RejeiçãoCNPJ_BaseConsultadoDifereDoCNPJ_BaseDoC = "593";
+	/** 631-Rejeição: CNPJ-Base do Destinatário difere do CNPJ-Base = 631 */
+	public static final String LBR_NFESTATUS_631_RejeiçãoCNPJ_BaseDoDestinatárioDifereDoCNPJ_Base = "631";
+	/** 632-Rejeição: Solicitação fora de prazo, a NF-e não está ma = 632 */
+	public static final String LBR_NFESTATUS_632_RejeiçãoSolicitaçãoForaDePrazoANF_ENãoEstáMa = "632";
+	/** 633-Rejeição: NF-e indisponível para download devido a ausê = 633 */
+	public static final String LBR_NFESTATUS_633_RejeiçãoNF_EIndisponívelParaDownloadDevidoAAusê = "633";
+	/** 634-Rejeição: Destinatário da NF-e não tem o mesmo CNPJ rai = 634 */
+	public static final String LBR_NFESTATUS_634_RejeiçãoDestinatárioDaNF_ENãoTemOMesmoCNPJRai = "634";
+	/** 640-Rejeição: Evento de "Ciência da Operação" não pode ser  = 640 */
+	public static final String LBR_NFESTATUS_640_RejeiçãoEventoDeCiênciaDaOperaçãoNãoPodeSer = "640";
+	/** 641-Rejeição: Consumo Indevido 645 = 641 */
+	public static final String LBR_NFESTATUS_641_RejeiçãoConsumoIndevido645 = "641";
+	/** 645-Rejeição: CNPJ do Certificado Digital não é emitente de = 645 */
+	public static final String LBR_NFESTATUS_645_RejeiçãoCNPJDoCertificadoDigitalNãoÉEmitenteDe = "645";
+	/** 646-Rejeição: NF-e Cancelada, arquivo indisponível para dow = 646 */
+	public static final String LBR_NFESTATUS_646_RejeiçãoNF_ECanceladaArquivoIndisponívelParaDow = "646";
+	/** 647-Rejeição: NF-e Denegada, arquivo indisponível para down = 647 */
+	public static final String LBR_NFESTATUS_647_RejeiçãoNF_EDenegadaArquivoIndisponívelParaDown = "647";
+	/** 650-Rejeição: Evento de "Ciência da Operação" para NF-e Can = 650 */
+	public static final String LBR_NFESTATUS_650_RejeiçãoEventoDeCiênciaDaOperaçãoParaNF_ECan = "650";
+	/** 651-Rejeição: Evento de "Desconhecimento da Operação" para  = 651 */
+	public static final String LBR_NFESTATUS_651_RejeiçãoEventoDeDesconhecimentoDaOperaçãoPara = "651";
 	/** Set NFe Status.
 		@param lbr_NFeStatus 
 		Status of NFe
@@ -2388,154 +2910,24 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_NFeStatus);
 	}
 
-	public org.adempierelbr.model.I_LBR_NotaFiscal getlbr_NFRefere() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
-			.getPO(getlbr_NFReference(), get_TrxName());	}
-
-	/** Set NF Reference.
-		@param lbr_NFReference 
-		Reference to other NF
+	/** Set Net Weight.
+		@param lbr_NetWeight 
+		Defines the Net Weight
 	  */
-	public void setlbr_NFReference (int lbr_NFReference)
+	public void setlbr_NetWeight (BigDecimal lbr_NetWeight)
 	{
-		set_Value (COLUMNNAME_lbr_NFReference, Integer.valueOf(lbr_NFReference));
+		set_Value (COLUMNNAME_lbr_NetWeight, lbr_NetWeight);
 	}
 
-	/** Get NF Reference.
-		@return Reference to other NF
+	/** Get Net Weight.
+		@return Defines the Net Weight
 	  */
-	public int getlbr_NFReference () 
+	public BigDecimal getlbr_NetWeight () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NFReference);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** lbr_NFType AD_Reference_ID=1000044 */
-	public static final int LBR_NFTYPE_AD_Reference_ID=1000044;
-	/** 001_ACT-Autorização de Carregamento de Transporte = 001 */
-	public static final String LBR_NFTYPE_001_ACT_AutorizaçãoDeCarregamentoDeTransporte = "001";
-	/** 002_AIMR-Atestado de Intervenção em Máquina = 002 */
-	public static final String LBR_NFTYPE_002_AIMR_AtestadoDeIntervençãoEmMáquina = "002";
-	/** 003_AIPDV-Atestado de Intervenção em PDV = 003 */
-	public static final String LBR_NFTYPE_003_AIPDV_AtestadoDeIntervençãoEmPDV = "003";
-	/** 004_BPA-Bilhete de Passagem Aquaviário = 004 */
-	public static final String LBR_NFTYPE_004_BPA_BilheteDePassagemAquaviário = "004";
-	/** 005_BPF-Bilhete de Passagem Ferroviário = 005 */
-	public static final String LBR_NFTYPE_005_BPF_BilheteDePassagemFerroviário = "005";
-	/** 006_BPNB-Bilhete de Passagem e Nota de Bagagem = 006 */
-	public static final String LBR_NFTYPE_006_BPNB_BilheteDePassagemENotaDeBagagem = "006";
-	/** 007_BPR-Bilhete de Passagem Rodoviário = 007 */
-	public static final String LBR_NFTYPE_007_BPR_BilheteDePassagemRodoviário = "007";
-	/** 008_CA-Conhecimento Aéreo = 008 */
-	public static final String LBR_NFTYPE_008_CA_ConhecimentoAéreo = "008";
-	/** 009_CTA-Conhecimento de Transporte Avulso = 009 */
-	public static final String LBR_NFTYPE_009_CTA_ConhecimentoDeTransporteAvulso = "009";
-	/** 010_CTAC-Conhecimento de Transporte Aquaviário de Cargas = 010 */
-	public static final String LBR_NFTYPE_010_CTAC_ConhecimentoDeTransporteAquaviárioDeCargas = "010";
-	/** 011_CTFC-Conhecimento de Transporte Ferroviário de Cargas = 011 */
-	public static final String LBR_NFTYPE_011_CTFC_ConhecimentoDeTransporteFerroviárioDeCargas = "011";
-	/** 012_CTRC-Conhecimento de Transporte Rodoviário de Cargas = 012 */
-	public static final String LBR_NFTYPE_012_CTRC_ConhecimentoDeTransporteRodoviárioDeCargas = "012";
-	/** 013_DAICMS-Demons. de Apuração do ICMS-DAICMS = 013 */
-	public static final String LBR_NFTYPE_013_DAICMS_DemonsDeApuraçãoDoICMS_DAICMS = "013";
-	/** 014_DCICMS-Demons. de Apuração do Compl. do ICMS-DCICMS = 014 */
-	public static final String LBR_NFTYPE_014_DCICMS_DemonsDeApuraçãoDoComplDoICMS_DCICMS = "014";
-	/** 015_DCL-Despacho de Cargas em Lotação = 015 */
-	public static final String LBR_NFTYPE_015_DCL_DespachoDeCargasEmLotação = "015";
-	/** 016_DCMS-Despacho de Cargas Modelo Simplificado = 016 */
-	public static final String LBR_NFTYPE_016_DCMS_DespachoDeCargasModeloSimplificado = "016";
-	/** 017_DEB-Documento de Excesso de Bagagem = 017 */
-	public static final String LBR_NFTYPE_017_DEB_DocumentoDeExcessoDeBagagem = "017";
-	/** 018_DSEP-Documento Simplificado de Embarque de Passageiro = 018 */
-	public static final String LBR_NFTYPE_018_DSEP_DocumentoSimplificadoDeEmbarqueDePassageiro = "018";
-	/** 019_DSICMS-Demons. de Contrib. Substituto do ICMS-DSICMS = 019 */
-	public static final String LBR_NFTYPE_019_DSICMS_DemonsDeContribSubstitutoDoICMS_DSICMS = "019";
-	/** 020_DT-Despacho de Transporte = 020 */
-	public static final String LBR_NFTYPE_020_DT_DespachoDeTransporte = "020";
-	/** 021_EF-Extrato de Faturamento = 021 */
-	public static final String LBR_NFTYPE_021_EF_ExtratoDeFaturamento = "021";
-	/** 022_GNR-Guia Nacional de Recolhimento de Tributos Estaduais = 022 */
-	public static final String LBR_NFTYPE_022_GNR_GuiaNacionalDeRecolhimentoDeTributosEstaduais = "022";
-	/** 023_MC-Manifesto de Carga = 023 */
-	public static final String LBR_NFTYPE_023_MC_ManifestoDeCarga = "023";
-	/** 024_NF-Nota Fiscal = 024 */
-	public static final String LBR_NFTYPE_024_NF_NotaFiscal = "024";
-	/** 025_NFA-Nota Fiscal Avulsa = 025 */
-	public static final String LBR_NFTYPE_025_NFA_NotaFiscalAvulsa = "025";
-	/** 026_NFCEE-Nota Fiscal/Conta de Energia Elétrica = 026 */
-	public static final String LBR_NFTYPE_026_NFCEE_NotaFiscalContaDeEnergiaElétrica = "026";
-	/** 027_NFCFA-Nota Fiscal/Conta de Fornecimento de Água = 027 */
-	public static final String LBR_NFTYPE_027_NFCFA_NotaFiscalContaDeFornecimentoDeÁgua = "027";
-	/** 028_NFE-Nota Fiscal de Entrada = 028 */
-	public static final String LBR_NFTYPE_028_NFE_NotaFiscalDeEntrada = "028";
-	/** 029_NFF-NFF = 029 */
-	public static final String LBR_NFTYPE_029_NFF_NFF = "029";
-	/** 030_NFME-Nota Fiscal Microempresa = 030 */
-	public static final String LBR_NFTYPE_030_NFME_NotaFiscalMicroempresa = "030";
-	/** 031_NFP-Nota Fiscal de Produtor = 031 */
-	public static final String LBR_NFTYPE_031_NFP_NotaFiscalDeProdutor = "031";
-	/** 032_NFS-Nota Fiscal Simplificada = 032 */
-	public static final String LBR_NFTYPE_032_NFS_NotaFiscalSimplificada = "032";
-	/** 033_NFSC-Nota Fiscal e Serviço de Comunicação = 033 */
-	public static final String LBR_NFTYPE_033_NFSC_NotaFiscalEServiçoDeComunicação = "033";
-	/** 034_NFSTC-Nota Fiscal de Serviço de Telecomunicações = 034 */
-	public static final String LBR_NFTYPE_034_NFSTC_NotaFiscalDeServiçoDeTelecomunicações = "034";
-	/** 035_NFSTR-Nota Fiscal de Serviço de Transporte = 035 */
-	public static final String LBR_NFTYPE_035_NFSTR_NotaFiscalDeServiçoDeTransporte = "035";
-	/** 036_NFVC-Nota Fiscal de Venda a Consumidor = 036 */
-	public static final String LBR_NFTYPE_036_NFVC_NotaFiscalDeVendaAConsumidor = "036";
-	/** 037_OCC-Ordem de Coleta de Carga = 037 */
-	public static final String LBR_NFTYPE_037_OCC_OrdemDeColetaDeCarga = "037";
-	/** 038_RD-Relação de Despachos = 038 */
-	public static final String LBR_NFTYPE_038_RD_RelaçãoDeDespachos = "038";
-	/** 039_RECA-Relatório de Emissão de Conhecimento Aéreos = 039 */
-	public static final String LBR_NFTYPE_039_RECA_RelatórioDeEmissãoDeConhecimentoAéreos = "039";
-	/** 040_REP-Relatório de Embarque de Passageiros = 040 */
-	public static final String LBR_NFTYPE_040_REP_RelatórioDeEmbarqueDePassageiros = "040";
-	/** 041_RMD-Resumo de Movimento Diário = 041 */
-	public static final String LBR_NFTYPE_041_RMD_ResumoDeMovimentoDiário = "041";
-	/** Set NF Type.
-		@param lbr_NFType 
-		Nota Fiscal Type
-	  */
-	public void setlbr_NFType (String lbr_NFType)
-	{
-
-		set_Value (COLUMNNAME_lbr_NFType, lbr_NFType);
-	}
-
-	/** Get NF Type.
-		@return Nota Fiscal Type
-	  */
-	public String getlbr_NFType () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_NFType);
-	}
-
-	/** Set Nota Fiscal.
-		@param LBR_NotaFiscal_ID 
-		Primary key table LBR_NotaFiscal
-	  */
-	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
-	{
-		if (LBR_NotaFiscal_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
-	}
-
-	/** Get Nota Fiscal.
-		@return Primary key table LBR_NotaFiscal
-	  */
-	public int getLBR_NotaFiscal_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscal_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_NetWeight);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Organization Address 1.
@@ -2808,6 +3200,23 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return bd;
 	}
 
+	/** Set Shipment Note.
+		@param lbr_ShipNote 
+		Extra Shipment Information 
+	  */
+	public void setlbr_ShipNote (String lbr_ShipNote)
+	{
+		set_Value (COLUMNNAME_lbr_ShipNote, lbr_ShipNote);
+	}
+
+	/** Get Shipment Note.
+		@return Extra Shipment Information 
+	  */
+	public String getlbr_ShipNote () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_ShipNote);
+	}
+
 	public I_C_BPartner_Location getlbr_Ship_Location() throws RuntimeException
     {
 		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
@@ -2834,23 +3243,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Shipment Note.
-		@param lbr_ShipNote 
-		Extra Shipment Information 
-	  */
-	public void setlbr_ShipNote (String lbr_ShipNote)
-	{
-		set_Value (COLUMNNAME_lbr_ShipNote, lbr_ShipNote);
-	}
-
-	/** Get Shipment Note.
-		@return Extra Shipment Information 
-	  */
-	public String getlbr_ShipNote () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_ShipNote);
 	}
 
 	/** Set Time InOut.
@@ -2938,231 +3330,5 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_TransactionType () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_TransactionType);
-	}
-
-	public I_M_InOut getM_InOut() throws RuntimeException
-    {
-		return (I_M_InOut)MTable.get(getCtx(), I_M_InOut.Table_Name)
-			.getPO(getM_InOut_ID(), get_TrxName());	}
-
-	/** Set Shipment/Receipt.
-		@param M_InOut_ID 
-		Material Shipment Document
-	  */
-	public void setM_InOut_ID (int M_InOut_ID)
-	{
-		if (M_InOut_ID < 1) 
-			set_Value (COLUMNNAME_M_InOut_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_InOut_ID, Integer.valueOf(M_InOut_ID));
-	}
-
-	/** Get Shipment/Receipt.
-		@return Material Shipment Document
-	  */
-	public int getM_InOut_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_InOut_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Shipper.
-		@param M_Shipper_ID 
-		Method or manner of product delivery
-	  */
-	public void setM_Shipper_ID (int M_Shipper_ID)
-	{
-		if (M_Shipper_ID < 1) 
-			set_Value (COLUMNNAME_M_Shipper_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_Shipper_ID, Integer.valueOf(M_Shipper_ID));
-	}
-
-	/** Get Shipper.
-		@return Method or manner of product delivery
-	  */
-	public int getM_Shipper_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_Shipper_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Detalhes NF.
-		@param NFDetailsReport Detalhes NF	  */
-	public void setNFDetailsReport (String NFDetailsReport)
-	{
-		set_Value (COLUMNNAME_NFDetailsReport, NFDetailsReport);
-	}
-
-	/** Get Detalhes NF.
-		@return Detalhes NF	  */
-	public String getNFDetailsReport () 
-	{
-		return (String)get_Value(COLUMNNAME_NFDetailsReport);
-	}
-
-	/** Set No Packages.
-		@param NoPackages 
-		Number of packages shipped
-	  */
-	public void setNoPackages (BigDecimal NoPackages)
-	{
-		set_Value (COLUMNNAME_NoPackages, NoPackages);
-	}
-
-	/** Get No Packages.
-		@return Number of packages shipped
-	  */
-	public BigDecimal getNoPackages () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_NoPackages);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	public I_C_Location getOrg_Location() throws RuntimeException
-    {
-		return (I_C_Location)MTable.get(getCtx(), I_C_Location.Table_Name)
-			.getPO(getOrg_Location_ID(), get_TrxName());	}
-
-	/** Set Org Address.
-		@param Org_Location_ID 
-		Organization Location/Address
-	  */
-	public void setOrg_Location_ID (int Org_Location_ID)
-	{
-		if (Org_Location_ID < 1) 
-			set_Value (COLUMNNAME_Org_Location_ID, null);
-		else 
-			set_Value (COLUMNNAME_Org_Location_ID, Integer.valueOf(Org_Location_ID));
-	}
-
-	/** Get Org Address.
-		@return Organization Location/Address
-	  */
-	public int getOrg_Location_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Org_Location_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Processed.
-		@param Processed 
-		The document has been processed
-	  */
-	public void setProcessed (boolean Processed)
-	{
-		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
-	}
-
-	/** Get Processed.
-		@return The document has been processed
-	  */
-	public boolean isProcessed () 
-	{
-		Object oo = get_Value(COLUMNNAME_Processed);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Process Now.
-		@param Processing Process Now	  */
-	public void setProcessing (boolean Processing)
-	{
-		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
-	}
-
-	/** Get Process Now.
-		@return Process Now	  */
-	public boolean isProcessing () 
-	{
-		Object oo = get_Value(COLUMNNAME_Processing);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Process Now.
-		@param Processing2 Process Now	  */
-	public void setProcessing2 (String Processing2)
-	{
-		set_Value (COLUMNNAME_Processing2, Processing2);
-	}
-
-	/** Get Process Now.
-		@return Process Now	  */
-	public String getProcessing2 () 
-	{
-		return (String)get_Value(COLUMNNAME_Processing2);
-	}
-
-	/** Set Reactivate Nota Fiscal.
-		@param ProcReactivateNF 
-		This Process Reactivates the Nota Fiscal Document
-	  */
-	public void setProcReactivateNF (String ProcReactivateNF)
-	{
-		set_Value (COLUMNNAME_ProcReactivateNF, ProcReactivateNF);
-	}
-
-	/** Get Reactivate Nota Fiscal.
-		@return This Process Reactivates the Nota Fiscal Document
-	  */
-	public String getProcReactivateNF () 
-	{
-		return (String)get_Value(COLUMNNAME_ProcReactivateNF);
-	}
-
-	/** Set Send EMail.
-		@param SendEMail 
-		Enable sending Document EMail
-	  */
-	public void setSendEMail (String SendEMail)
-	{
-		set_Value (COLUMNNAME_SendEMail, SendEMail);
-	}
-
-	/** Get Send EMail.
-		@return Enable sending Document EMail
-	  */
-	public String getSendEMail () 
-	{
-		return (String)get_Value(COLUMNNAME_SendEMail);
-	}
-
-	/** Set Total Lines.
-		@param TotalLines 
-		Total of all document lines
-	  */
-	public void setTotalLines (BigDecimal TotalLines)
-	{
-		set_Value (COLUMNNAME_TotalLines, TotalLines);
-	}
-
-	/** Get Total Lines.
-		@return Total of all document lines
-	  */
-	public BigDecimal getTotalLines () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalLines);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 }

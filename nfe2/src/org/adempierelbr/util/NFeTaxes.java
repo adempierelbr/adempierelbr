@@ -39,6 +39,12 @@ public class NFeTaxes
 	private BigDecimal pRedBC;
 
 	private String CST;
+	
+	private String modBC;
+	
+	private BigDecimal vQty;
+	
+	private BigDecimal vListAmt;
 
 	/**
 	 * 	Constructor
@@ -68,16 +74,22 @@ public class NFeTaxes
 	 * @param vImposto
 	 * @param pImposto
 	 * @param vRedBC
+	 * @param vQty
+	 * @param vListAmt
 	 * @param CST
+	 * @param modBC
 	 */
 	public NFeTaxes (String taxIndicator, BigDecimal vBC, BigDecimal vImposto,
-				BigDecimal pImposto, BigDecimal pRedBC, String CST)
+				BigDecimal pImposto, BigDecimal pRedBC, BigDecimal vQty, BigDecimal vListAmt, String CST, String modBC)
 	{
 		this (taxIndicator, CST);
 		setvBC(vBC);
 		setvImposto(vImposto);
 		setpImposto(pImposto);
 		setpRedBC(pRedBC);
+		setvQty(vQty);
+		setvListAmt(vListAmt);
+		setmodBC(modBC);
 	}
 
 	/**
@@ -110,7 +122,7 @@ public class NFeTaxes
 			{
 				tx = new NFeTaxes (taxIndicator, lt.getlbr_TaxBaseAmt(),
 						lt.getlbr_TaxAmt(), lt.getlbr_TaxRate(),
-						lt.getlbr_TaxBase(), lt.getTaxStatus(nfl.isSOTrx()));
+						lt.getlbr_TaxBase(), lt.getQty(), lt.getLBR_TaxListAmt(), lt.getTaxStatus(nfl.isSOTrx()), lt.getmodBC ());
 			}
 			//	Inclui os impostos no mapa
 			txs.put(taxIndicator, tx);
@@ -202,5 +214,35 @@ public class NFeTaxes
 	public void setCST(String cST)
 	{
 		CST = cST;
+	}
+	
+	public BigDecimal getvLisAmt()
+	{
+		return vListAmt;
+	}
+
+	public void setvListAmt(BigDecimal vListAmt)
+	{
+		this.vListAmt = vListAmt;
+	}
+	
+	public BigDecimal getQty()
+	{
+		return vQty;
+	}
+
+	public void setvQty(BigDecimal vQty)
+	{
+		this.vQty = vQty;
+	}
+	
+	public String getmodBC()
+	{
+		return modBC;
+	}
+
+	public void setmodBC(String modBC)
+	{
+		this.modBC = modBC;
 	}
 }	//	NFeTaxes

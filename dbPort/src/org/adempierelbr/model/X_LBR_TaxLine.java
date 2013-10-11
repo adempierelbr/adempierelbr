@@ -32,7 +32,7 @@ public class X_LBR_TaxLine extends PO implements I_LBR_TaxLine, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20111118L;
+	private static final long serialVersionUID = 20121025L;
 
     /** Standard Constructor */
     public X_LBR_TaxLine (Properties ctx, int LBR_TaxLine_ID, String trxName)
@@ -130,6 +130,31 @@ public class X_LBR_TaxLine extends PO implements I_LBR_TaxLine, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempierelbr.model.I_LBR_TaxBaseType getLBR_TaxBaseType() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxBaseType)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxBaseType.Table_Name)
+			.getPO(getLBR_TaxBaseType_ID(), get_TrxName());	}
+
+	/** Set Tax Base Type.
+		@param LBR_TaxBaseType_ID Tax Base Type	  */
+	public void setLBR_TaxBaseType_ID (int LBR_TaxBaseType_ID)
+	{
+		if (LBR_TaxBaseType_ID < 1) 
+			set_Value (COLUMNNAME_LBR_TaxBaseType_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_TaxBaseType_ID, Integer.valueOf(LBR_TaxBaseType_ID));
+	}
+
+	/** Get Tax Base Type.
+		@return Tax Base Type	  */
+	public int getLBR_TaxBaseType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxBaseType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Tax Line.
 		@param LBR_TaxLine_ID 
 		Primary key table LBR_TaxLine
@@ -151,6 +176,23 @@ public class X_LBR_TaxLine extends PO implements I_LBR_TaxLine, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Tax List Amt.
+		@param LBR_TaxListAmt Tax List Amt	  */
+	public void setLBR_TaxListAmt (BigDecimal LBR_TaxListAmt)
+	{
+		set_Value (COLUMNNAME_LBR_TaxListAmt, LBR_TaxListAmt);
+	}
+
+	/** Get Tax List Amt.
+		@return Tax List Amt	  */
+	public BigDecimal getLBR_TaxListAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_TaxListAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException
@@ -232,6 +274,26 @@ public class X_LBR_TaxLine extends PO implements I_LBR_TaxLine, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Quantity.
+		@param Qty 
+		Quantity
+	  */
+	public void setQty (BigDecimal Qty)
+	{
+		set_Value (COLUMNNAME_Qty, Qty);
+	}
+
+	/** Get Quantity.
+		@return Quantity
+	  */
+	public BigDecimal getQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Qty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Post Tax.

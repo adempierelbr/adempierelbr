@@ -1,3 +1,16 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfse.beans;
 
 import java.math.BigDecimal;
@@ -11,29 +24,29 @@ public class BtpChaveRPS
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(BtpChaveRPS.class);
 	
-	String InscricaoEstadual;
+	String InscricaoPrestador;
 	String SerieRPS;
-	String Numero;
+	String NumeroRPS;
 	/**
-	 * @return the tpInscricaoEstadual
+	 * @return the tpInscricaoPrestador
 	 */
-	public String getInscricaoEstadual()
+	public String getInscricaoPrestador()
 	{
-		return InscricaoEstadual;
+		return InscricaoPrestador;
 	}
 	
 	/**
-	 * @param inscricaoEstadual the tpInscricaoEstadual to set
+	 * @param inscricaoPrestador the tpInscricaoPrestador to set
 	 */
-	public void setInscricaoEstadual(String inscricaoEstadual)
+	public void setInscricaoPrestador(String inscricaoPrestador)
 	{
-		inscricaoEstadual = TextUtil.toNumeric(inscricaoEstadual);
+		inscricaoPrestador = TextUtil.toNumeric(inscricaoPrestador);
 		//
-		if (inscricaoEstadual == null || inscricaoEstadual.length() < 1 
-				|| inscricaoEstadual.length() > 19)
+		if (inscricaoPrestador == null || inscricaoPrestador.length() < 1 
+				|| inscricaoPrestador.length() > 19)
 			log.warning("tpInscricaoEstadual deve ter entre 1 e 19 caracteres");
 		//
-		this.InscricaoEstadual = inscricaoEstadual;
+		this.InscricaoPrestador = inscricaoPrestador;
 	}
 	
 	/**
@@ -48,21 +61,22 @@ public class BtpChaveRPS
 	 */
 	public void setSerieRPS(String serieRPS)
 	{
-		serieRPS = TextUtil.toNumeric(serieRPS);
-		//
-		if (serieRPS == null || serieRPS.length() < 1 
-				|| serieRPS.length() > 5)
+		if (serieRPS != null && (serieRPS.length() < 1 
+				|| serieRPS.length() > 5))
 			log.warning("tpSerieRPS deve ter entre 1 e 5 dígitos");
 		//
-		this.SerieRPS = serieRPS;
-	}
+		if (serieRPS != null && serieRPS.isEmpty())
+			this.SerieRPS = null;
+		else
+			this.SerieRPS = serieRPS;
+	}	//	setSerieRPS
 	
 	/**
 	 * @return the tpNumero
 	 */
 	public String getNumero()
 	{
-		return Numero;
+		return NumeroRPS;
 	}
 	
 	/**
@@ -78,7 +92,7 @@ public class BtpChaveRPS
 			numero = numero.substring(0, 12);
 		}
 		//
-		this.Numero = numero;
+		this.NumeroRPS = numero;
 	}
 	
 	/**

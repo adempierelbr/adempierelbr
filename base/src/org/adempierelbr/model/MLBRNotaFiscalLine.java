@@ -384,6 +384,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
 		setProduct (iLine.getProduct());
 		
+		//  Outras Despesas Acessórias
+		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
+		
 		//	Valores
 		setQty(iLine.getQtyEntered());
 		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList());
@@ -443,11 +446,15 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setLBR_CFOP_ID(oLineW.getLBR_CFOP_ID());
 //	TODO		Mover cadastro do TaxStatus para LBR_TaxLine
 			setlbr_TaxStatus(oLineW.getlbr_TaxStatus());
+			
+		    //  Outras Despesas Acessórias
+			setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());
 		}
 	}	//	setOrderLine
 
 	/**
 	 * 		Define os preços
+	 * 		Define o valor do Desconto
 	 * 
 	 * 	@param 	Price
 	 * 	@param	Price List
@@ -463,11 +470,30 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 					C_Currency_ID, MLBRNotaFiscal.CURRENCY_BRL, getAD_Client_ID(), getAD_Org_ID());
 		}
 		//
-		super.setPrice(price);
 		super.setPriceListAmt(priceList);
+		
+		if (getParent().isDiscountPrinted() && priceList.compareTo(price)==1)
+		{
+		    //  Desconto por Linha
+			setDiscount(price, priceList);
+			super.setPrice(priceList);	
+		}
+		else
+			super.setPrice(price);
 		//
 		super.setLineTotalAmt(getPrice().multiply(getQty()));
 	}	//	setPrice
+	
+	/**
+	 * 	Define o desconto por Linha da Nota Fiscal
+	 */
+	private void setDiscount(BigDecimal price, BigDecimal priceList)
+	{	
+		if (getParent().isDiscountPrinted())
+			setDiscountAmt(priceList.subtract(price).multiply(getQty()));
+		else
+			setDiscountAmt(Env.ZERO);
+	}	//	setDiscount
 	
 	/**
 	 * 		Define qual é o produto

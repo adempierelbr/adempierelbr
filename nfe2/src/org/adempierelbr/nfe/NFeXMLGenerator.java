@@ -99,7 +99,7 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
-import org.compiere.model.MSysConfig;
+import org.compiere.model.MShipper;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -515,7 +515,12 @@ public class NFeXMLGenerator
 					nf.getlbr_BPShipperAddress3();						//	Bairro
 				//
 				
-				transgrupo.setCNPJ(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
+				MShipper shipper = new MShipper(Env.getCtx(),nf.getM_Shipper_ID(), null);
+				MBPartner bpshipper = MBPartner.get(Env.getCtx(), shipper.getC_BPartner_ID());
+				if (bpshipper.get_Value("lbr_BPTypeBR").equals("PJ"))
+					transgrupo.setCNPJ(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
+				else
+					transgrupo.setCPF(TextUtil.toNumeric(nf.getlbr_BPShipperCNPJ()));
 				transgrupo.setIE(shipperIE);
 				transgrupo.setxNome(RemoverAcentos.remover(nf.getlbr_BPShipperName()));
 				transgrupo.setxEnder(RemoverAcentos.remover(end));
@@ -544,13 +549,13 @@ public class NFeXMLGenerator
 		transporte.setVol(transvol);
 		dados.setTransp(transporte);
 
-	    BigDecimal vDesc = nf.getDiscount(); // FIXME (BigDecimal) nf.get_Value("DiscountAmt");
+	    BigDecimal vDesc = nf.getDiscountAmt(); // Valor do Desconto total da NF
 	    
 		valoresicms.setvNF(TextUtil.bigdecimalToString(nf.getGrandTotal())); // vNF - Valor Total da NF-e
-		valoresicms.setvOutro(""); // vOutro - Outras Despesas acessórias
 		valoresicms.setvProd(TextUtil.bigdecimalToString(nf.getTotalLines())); // vProd - Valor Total dos produtos e serviços
 		valoresicms.setvFrete(TextUtil.bigdecimalToString(nf.getFreightAmt())); // vFrete - Valor Total do Frete
 		valoresicms.setvSeg(TextUtil.bigdecimalToString(nf.getlbr_InsuranceAmt())); // vSeg - Valor Total do Seguro
+		valoresicms.setvOutro(TextUtil.bigdecimalToString(nf.getLBR_OtherChargesAmt())); // vOutro - Despesa acessórias
 		valoresicms.setvDesc(TextUtil.bigdecimalToString(vDesc)); // vDesc - Valor Total do Desconto
 		valoresicms.setvBCST(TextUtil.ZERO_STRING); // vBCST - BC do ICMS ST
 		valoresicms.setvST(TextUtil.ZERO_STRING); // vST - Valor Total do ICMS ST
@@ -560,8 +565,7 @@ public class NFeXMLGenerator
 		valoresicms.setvCOFINS(TextUtil.ZERO_STRING); // vCOFINS - Valor do COFINS
 		valoresicms.setvIPI(TextUtil.ZERO_STRING); // vIPI - Valor Total do IPI
 		valoresicms.setvII(TextUtil.ZERO_STRING); // vII - Valor Total do II
-		valoresicms.setvOutro(TextUtil.ZERO_STRING); // vOutro - Despesa acessórias
-
+		
 		log.fine("Gerando linhas da NF-e");
 		for (X_LBR_NFTax nfTax : nfTaxes){
 			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(ctx, nfTax.getLBR_TaxGroup_ID(), null);
@@ -714,10 +718,13 @@ public class NFeXMLGenerator
 			produtos.setvUnCom(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			produtos.setvUnTrib(TextUtil.bigdecimalToString(nfLine.getPrice(),10));
 			
-			if (nfLine.getDiscount() != null && nfLine.getDiscount().compareTo(Env.ZERO) != 0)
-				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscount().abs(),2));
+			if (nfLine.getLBR_OtherChargesAmt() != null && nfLine.getLBR_OtherChargesAmt().compareTo(Env.ZERO) != 0)
+				produtos.setvOutro(TextUtil.bigdecimalToString(nfLine.getLBR_OtherChargesAmt()));
 			
-			if (nf.getFreightAmt().signum() == 1) //FRETE
+			if (nfLine.getDiscountAmt() != null && nfLine.getDiscountAmt().compareTo(Env.ZERO) != 0)
+				produtos.setvDesc(TextUtil.bigdecimalToString(nfLine.getDiscountAmt().abs(),2));
+			
+			if (nf.getFreightAmt().signum() == 1 && nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt()).compareTo(Env.ZERO) != 0) //FRETE
 				produtos.setvFrete(TextUtil.bigdecimalToString(nfLine.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt())));
 			if (nf.getlbr_InsuranceAmt().signum() == 1) //SEGURO
 				produtos.setvSeg(TextUtil.bigdecimalToString(nfLine.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt())));
