@@ -82,6 +82,7 @@ public abstract class NFeUtil
 	/** Status				*/
 	public static final String AUTORIZADA = "100";
 	public static final String CANCELADA  = "101";
+	public static final String CANCELADAPOREVENTO  = "135";
 
 	/** Eventos				*/
 	public static final String NFE_EVENTO_CCE 		= "110110";
@@ -370,7 +371,7 @@ public abstract class NFeUtil
 		if (status.equals(AUTORIZADA)){ //Autorizado o uso da NF-e
 			FILE_EXT = "-dst.xml";
 		}
-		else if (status.equals(CANCELADA)){ //Cancelamento de NF-e homologado
+		else if (status.equals(CANCELADA) || status.equals(CANCELADAPOREVENTO)){ //Cancelamento de NF-e homologado
 			FILE_EXT = "-can.xml";
 		}
 
