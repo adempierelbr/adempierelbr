@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="base/src"/>
 	<classpathentry kind="src" path="boleto/src"/>
+	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
 	<classpathentry kind="src" path="nfse/src"/>
-	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
@@ -40,6 +40,11 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/commons-httpclient-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/DSGEBrazilUtils.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ws/axis-ssl-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/XML/xbean_xpath-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/XML/xbean-fixed-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/XML/xmlpublic-2.4.0.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
