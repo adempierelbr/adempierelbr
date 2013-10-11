@@ -331,7 +331,7 @@ public final class Attachment extends CDialog
 				else
 					log.log(Level.SEVERE, "Could not create image");
 			}
-			else
+			else if (entry.toString().contains(".xml"))
 			{			
 				try
 				{
