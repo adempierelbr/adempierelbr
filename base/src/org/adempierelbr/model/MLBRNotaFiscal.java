@@ -752,7 +752,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 
 				if (error == null &&
 				   (nf.getlbr_NFeStatus().equals(NFeUtil.AUTORIZADA) ||
-				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADA)))
+				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADA) ||
+				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADAPOREVENTO)))
 					NFeEmail.sendMail(nf);
 
 			} 
