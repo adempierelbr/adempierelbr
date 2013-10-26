@@ -1,5 +1,7 @@
 package org.adempierelbr.webui.adapter;
 
+import java.io.InputStream;
+
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zul.Filedownload;
 
@@ -21,5 +23,16 @@ public class RPSAdapter
 	{
 		AMedia media = new AMedia (fileName, "txt", "charset=ISO8859_1", rps.toString());
 		Filedownload.save(media);
+	}	//	RPSAdapter
+	
+	/**
+	 * 	Constructor
+	 * 	@param fileName
+	 * 	@param rps
+	 */
+	public RPSAdapter (String fileName, InputStream is)
+	{
+		AMedia media = new AMedia (fileName, "txt", "charset=ISO8859_1", is);
+		Filedownload.save (media);
 	}	//	RPSAdapter
 }	//	RPSAdapter
