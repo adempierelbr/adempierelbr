@@ -18,6 +18,7 @@ import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MSysConfig;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -87,7 +88,7 @@ public class ProcGenerateNF extends SvrProcess
 			 */
 			if (wInvoice.getLBR_NotaFiscal_ID() > 0
 					&& wInvoice.getLBR_NotaFiscal_ID() != p_LBR_NotaFiscal_ID)
-				throw new IllegalArgumentException("Fatura já possui nota fiscal");
+				throw new IllegalArgumentException ("Fatura já possui nota fiscal");
 			
 			nf.generateNF((MInvoice) POWrapper.getPO(wInvoice), p_IsOwnDocument);
 			nf.save();
@@ -95,8 +96,10 @@ public class ProcGenerateNF extends SvrProcess
 			wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 			POWrapper.getPO(wInvoice).save();
 			
-			nf.GenerateXMLAutomatic();
+			//	Gera o XML da NF-e de acordo com o Modelo da NF
+			if (MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
+				nf.generateXML();
 		}
-		return "Process Completed";
+		return "@Success@ NF Re-processada com as informações atuais";
 	}	//	doIt
 }	//	ProcGenerateNF
