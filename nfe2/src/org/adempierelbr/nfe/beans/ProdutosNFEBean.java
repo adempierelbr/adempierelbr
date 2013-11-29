@@ -37,6 +37,8 @@ public class ProdutosNFEBean {
 	private String vDesc;
 	private String vOutro;
 	private String indTot;
+	private String xPed;
+	private String nItemPed;
 	private DeclaracaoDI DI;
 
 	public String getProd() {
@@ -194,6 +196,18 @@ public class ProdutosNFEBean {
 	}
 	public void setIndTot(String indTot) {
 		this.indTot = indTot;
+	}
+	public String getxPed() {
+		return xPed;
+	}
+	public void setxPed(String xPed) {
+		this.xPed = xPed;
+	}
+	public String getnItemPed() {
+		return nItemPed;
+	}
+	public void setnItemPed(String nItemPed) {
+		this.nItemPed = nItemPed;
 	}
 	public DeclaracaoDI getDI() {
 		return DI;

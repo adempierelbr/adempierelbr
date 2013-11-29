@@ -94,12 +94,16 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
 import org.compiere.model.MShipper;
+import org.compiere.model.Query;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -566,6 +570,10 @@ public class NFeXMLGenerator
 		valoresicms.setvIPI(TextUtil.ZERO_STRING); // vIPI - Valor Total do IPI
 		valoresicms.setvII(TextUtil.ZERO_STRING); // vII - Valor Total do II
 		
+		// PO Reference
+		MOrder order = new MOrder(Env.getCtx(),nf.getC_Order_ID(), null);
+		String poreference = order.getPOReference();
+		
 		log.fine("Gerando linhas da NF-e");
 		for (X_LBR_NFTax nfTax : nfTaxes){
 			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(ctx, nfTax.getLBR_TaxGroup_ID(), null);
@@ -740,6 +748,15 @@ public class NFeXMLGenerator
 
 			produtos.setNCM(TextUtil.toNumeric(ncm));
 			//
+			
+			
+			// Adicionando Pedido de Compra e Itens do Pedido de Compra na NFe
+			
+			MInvoiceLine invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
+			
+			MOrderLine orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+			produtos.setxPed(poreference);
+			produtos.setnItemPed(orderline.get_ValueAsString("POReferenceItem"));
 
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
 			if (desc != null && !desc.equals("")) {
