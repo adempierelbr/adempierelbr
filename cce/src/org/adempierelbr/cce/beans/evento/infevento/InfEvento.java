@@ -141,7 +141,10 @@ public class InfEvento
 
 	public void setDhEvento (Timestamp dhEvento)
 	{
-		this.dhEvento = TextUtil.timeToString (dhEvento, "yyyy-MM-dd'T'HH:mm:ss") + MSysConfig.getValue ("LBR_TIMEZONE", "-03:00", Env.getAD_Client_ID (Env.getCtx()));
+		//	allgood: LBR-82-horarioverao
+		StringBuffer defaultTimeZone = new StringBuffer((new java.text.SimpleDateFormat("Z")).format(dhEvento));
+		defaultTimeZone.insert(defaultTimeZone.length()-2, ":");
+		this.dhEvento = TextUtil.timeToString (dhEvento, "yyyy-MM-dd'T'HH:mm:ss") + MSysConfig.getValue ("LBR_TIMEZONE", defaultTimeZone.toString() , Env.getAD_Client_ID (Env.getCtx()));
 	}	//	setDhEvento
 
 	public void setTpEvento(String tpEvento)

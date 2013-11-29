@@ -25,6 +25,7 @@ import java.util.logging.Level;
 
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
@@ -97,8 +98,8 @@ public class MLBROpenItem{
 				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
 				     "C_PaymentTerm_ID " + //10
-					 "FROM RV_InvoicePaySchedule " +
-				     "WHERE IsSOTrx='Y' " +
+					 "FROM " + MSysConfig.getValue ("LBR_GENBILLING_TABLE", "RV_InvoicePaySchedule", Env.getAD_Client_ID(Env.getCtx())) +
+				     " WHERE IsSOTrx='Y' " +
 					 "AND C_Invoice_ID = ? order by DueDate"; //*1
 
 		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();

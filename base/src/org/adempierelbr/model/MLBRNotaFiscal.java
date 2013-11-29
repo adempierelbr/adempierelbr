@@ -1228,7 +1228,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		return true;
 	}	//	generateNF
 	
-	public void GenerateXMLAutomatic()
+	public void generateXML ()
 	{
 		// Gerar XML automaticamente
 		try
@@ -1240,19 +1240,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				//
 				if (model == null)
 					log.log(Level.INFO, "Tipo de NF não definido.");
-				else if (model.startsWith("RPS"))
-				{
-					save(get_TrxName());
-				}
-				//
-				else if (model.equals("55") && 
-						MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-					NFeXMLGenerator.geraCorpoNFe(getLBR_NotaFiscal_ID(), get_TrxName());
+
+				else if (model.equals("55"))
+					NFeXMLGenerator.geraCorpoNFe (getLBR_NotaFiscal_ID(), get_TrxName());
 			}
-		} catch(Exception ex) {
+		} 
+		catch(Exception ex) 
+		{
 			log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + getDocumentNo());
 		}
-	}//GenerateXMLAutomatic
+	}	//	GenerateXMLAutomatic
 	
 	/**
 	 * 		Bill Note
@@ -1262,7 +1259,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		if (invoice == null)
 			return;
 		//
-		MLBROpenItem[] ois = MLBROpenItem.getOpenItem(invoice.getC_Invoice_ID(), get_TrxName());
+		MLBROpenItem[] ois = MLBROpenItem.getOpenItem(invoice.getC_Invoice_ID(), invoice.get_TrxName());
 		String billNote= "";
 		
 		if (ois == null || ois.length <= 0)
@@ -2184,4 +2181,5 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			return discount;
 		return null;
 	}
+	
 }	//	MLBRNotaFiscal

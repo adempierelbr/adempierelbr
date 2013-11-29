@@ -19,7 +19,6 @@ import java.rmi.RemoteException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -222,8 +221,10 @@ public class NFeCancelamento
 			
 			org.adempierelbr.cce.beans.retevento.infevento.InfEvento infReturn = retEvent.getRetEvento().getInfEvento();
 			
-			//	CC-e processada com sucesso
-			if ("135".equals (infReturn.getcStat ()) || "136".equals (infReturn.getcStat ()))
+			//	Cancelamento processado com sucesso
+			if ("135".equals (infReturn.getcStat ())			//	Vinculado 
+					|| "136".equals (infReturn.getcStat ())		//	Não Vinculado
+					|| "155".equals (infReturn.getcStat ()))	//	Vinculado, fora do Prazo
 			{
 				nf.setlbr_NFeProt(infReturn.getnProt());
 				nf.setlbr_NFeStatus(infReturn.getcStat ());
