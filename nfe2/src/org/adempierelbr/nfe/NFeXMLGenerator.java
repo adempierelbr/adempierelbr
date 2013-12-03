@@ -569,11 +569,7 @@ public class NFeXMLGenerator
 		valoresicms.setvCOFINS(TextUtil.ZERO_STRING); // vCOFINS - Valor do COFINS
 		valoresicms.setvIPI(TextUtil.ZERO_STRING); // vIPI - Valor Total do IPI
 		valoresicms.setvII(TextUtil.ZERO_STRING); // vII - Valor Total do II
-		
-		// PO Reference
-		MOrder order = new MOrder(Env.getCtx(),nf.getC_Order_ID(), null);
-		String poreference = order.getPOReference();
-		
+						
 		log.fine("Gerando linhas da NF-e");
 		for (X_LBR_NFTax nfTax : nfTaxes){
 			X_LBR_TaxGroup taxGroup = new X_LBR_TaxGroup(ctx, nfTax.getLBR_TaxGroup_ID(), null);
@@ -752,11 +748,17 @@ public class NFeXMLGenerator
 			
 			// Adicionando Pedido de Compra e Itens do Pedido de Compra na NFe
 			
-			MInvoiceLine invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
+			MInvoiceLine invoiceline = null;
+			MOrderLine orderline = null;
 			
-			MOrderLine orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
-			produtos.setxPed(poreference);
-			produtos.setnItemPed(orderline.get_ValueAsString("POReferenceItem"));
+			if (nfLine.getC_InvoiceLine_ID() > 0)
+				invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
+			
+			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
+				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+						
+			produtos.setxPed(orderline == null ? "" : orderline.getParent().getDocumentNo());
+			produtos.setnItemPed(orderline == null ? "" : orderline.get_ValueAsString("POReference"));
 
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
 			if (desc != null && !desc.equals("")) {
