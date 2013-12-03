@@ -96,14 +96,12 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
-import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
 import org.compiere.model.MShipper;
-import org.compiere.model.Query;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -755,10 +753,12 @@ public class NFeXMLGenerator
 				invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
 			
 			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
-				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
-						
-			produtos.setxPed(orderline == null ? "" : orderline.getParent().getDocumentNo());
-			produtos.setnItemPed(orderline == null ? "" : orderline.get_ValueAsString("POReference"));
+			{
+				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);				
+				produtos.setxPed(orderline.getParent().getDocumentNo());
+				produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
+			}
+			
 
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
 			if (desc != null && !desc.equals("")) {
