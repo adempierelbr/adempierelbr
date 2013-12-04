@@ -754,9 +754,13 @@ public class NFeXMLGenerator
 			
 			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
 			{
-				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);				
-				produtos.setxPed(orderline.getParent().getDocumentNo());
-				produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
+				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+				System.out.println(orderline.getParent().getPOReference());
+				if (!"".equals(orderline.getParent().getPOReference()) && orderline.getParent().getPOReference() != null)
+				{
+					produtos.setxPed(orderline.getParent().getPOReference());
+					produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
+				}
 			}
 			
 
