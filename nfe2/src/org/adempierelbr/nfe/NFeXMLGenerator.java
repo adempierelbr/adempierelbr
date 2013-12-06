@@ -755,7 +755,6 @@ public class NFeXMLGenerator
 			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
 			{
 				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
-				System.out.println(orderline.getParent().getPOReference());
 				if (!"".equals(orderline.getParent().getPOReference()) && orderline.getParent().getPOReference() != null)
 				{
 					produtos.setxPed(orderline.getParent().getPOReference());
@@ -763,7 +762,6 @@ public class NFeXMLGenerator
 				}
 			}
 			
-
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
 			if (desc != null && !desc.equals("")) {
 				dados.add(new DetailsNFEBean(produtos, impostos, linhaNF++, desc));
