@@ -568,7 +568,7 @@ public class EFDUtil {
 		reg.setCOMPL(oiW.getC_Location().getAddress4());
 		reg.setBAIRRO(oiW.getC_Location().getAddress3());
 		reg.setFONE(oiW.getPhone());
-		reg.setFONE(oiW.getEMail());
+		reg.setEMAIL(oiW.getEMail());
 		
 		// return
 		return reg;			
