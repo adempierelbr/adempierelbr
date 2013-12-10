@@ -1043,7 +1043,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		setIsSOTrx(isSOTrx);
 		setlbr_IsOwnDocument(IsOwnDocument);
 		
-		//PREENCHE A DATA DE SAIDA DA NF
+		//	Preenche a data de saida da NF
 		if (!MSysConfig.getBooleanValue("LBR_DATEINOUT_NF", true, getAD_Client_ID()))
 			setlbr_DateInOut(invoice.getDateAcct());
 		
