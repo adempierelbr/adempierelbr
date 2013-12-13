@@ -741,25 +741,25 @@ public class NFeXMLGenerator
 				ncm = "99"; //SERVICO INFORMAR 99
 
 			produtos.setNCM(TextUtil.toNumeric(ncm));
-			//
-			
 			
 			// Adicionando Pedido de Compra e Itens do Pedido de Compra na NFe
 			
 			MInvoiceLine invoiceline = null;
-			MOrderLine orderline = null;
 			
 			if (nfLine.getC_InvoiceLine_ID() > 0)
 				invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
 			
 			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
 			{
-				orderline = new MOrderLine(Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
-				if (!"".equals(orderline.getParent().getPOReference()) && orderline.getParent().getPOReference() != null)
-				{
+				MOrderLine orderline = new MOrderLine (Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+				
+				//	Preenche o pedido referenciado (xPed)
+				if (orderline.getParent().getPOReference() != null && !orderline.getParent().getPOReference().trim().isEmpty())
 					produtos.setxPed(orderline.getParent().getPOReference());
+
+				//	Preenche o item do pedido referenciado (nItemPed)
+				if (orderline.get_ValueAsString("POReference") != null && !orderline.get_ValueAsString("POReference").trim().isEmpty())
 					produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
-				}
 			}
 			
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
