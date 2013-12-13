@@ -225,7 +225,7 @@ public class MLBRFactFiscal extends X_LBR_FactFiscal
 				|| super.getlbr_BPIE().toUpperCase().indexOf("ISENT") > 0)
 			return "";
 		//
-		return super.getlbr_BPIE();
+		return TextUtil.toNumeric (super.getlbr_BPIE().trim());
 	}	//	getlbr_BPIE
 	
 	/**
