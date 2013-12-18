@@ -102,6 +102,7 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRegion;
 import org.compiere.model.MShipper;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -744,22 +745,25 @@ public class NFeXMLGenerator
 			
 			// Adicionando Pedido de Compra e Itens do Pedido de Compra na NFe
 			
-			MInvoiceLine invoiceline = null;
-			
-			if (nfLine.getC_InvoiceLine_ID() > 0)
-				invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
-			
-			if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
-			{
-				MOrderLine orderline = new MOrderLine (Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+			if (MSysConfig.getBooleanValue("LBR_ADD_XPED_NITEMPED_XML_NFE", false, nf.getAD_Client_ID(), nf.getAD_Org_ID()))
+			{	
+				MInvoiceLine invoiceline = null;
 				
-				//	Preenche o pedido referenciado (xPed)
-				if (orderline.getParent().getPOReference() != null && !orderline.getParent().getPOReference().trim().isEmpty())
-					produtos.setxPed(orderline.getParent().getPOReference());
-
-				//	Preenche o item do pedido referenciado (nItemPed)
-				if (orderline.get_ValueAsString("POReference") != null && !orderline.get_ValueAsString("POReference").trim().isEmpty())
-					produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
+				if (nfLine.getC_InvoiceLine_ID() > 0)
+					invoiceline = new MInvoiceLine(Env.getCtx(),nfLine.getC_InvoiceLine_ID(), null); 
+				
+				if (invoiceline != null && invoiceline.getC_OrderLine_ID() > 0)
+				{
+					MOrderLine orderline = new MOrderLine (Env.getCtx(), invoiceline.getC_OrderLine_ID(), null);
+					
+					//	Preenche o pedido referenciado (xPed)
+					if (orderline.getParent().getPOReference() != null && !orderline.getParent().getPOReference().trim().isEmpty())
+						produtos.setxPed(orderline.getParent().getPOReference());
+	
+					//	Preenche o item do pedido referenciado (nItemPed)
+					if (orderline.get_ValueAsString("POReference") != null && !orderline.get_ValueAsString("POReference").trim().isEmpty())
+						produtos.setnItemPed(orderline.get_ValueAsString("POReference"));
+				}
 			}
 			
 			String desc = RemoverAcentos.remover(TextUtil.removeEOL(nfLine.getDescription()));
