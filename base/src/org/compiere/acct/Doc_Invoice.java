@@ -20,20 +20,17 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.model.X_LBR_DocType_Acct;
-import org.adempierelbr.model.X_LBR_TaxLine;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.model.X_LBR_TaxName;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MClientInfo;
 import org.compiere.model.MConversionRate;
 import org.compiere.model.MCostDetail;
 import org.compiere.model.MCurrency;
-import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLandedCostAllocation;
@@ -193,20 +190,20 @@ public class Doc_Invoice extends Doc
 				}
 			}	//	correct included Tax
 
-			/**	Total de imposto Brasil	*/
-			Integer LBR_Tax_ID = (Integer) line.get_Value("LBR_Tax_ID");
-			if(LBR_Tax_ID != null && LBR_Tax_ID > 0)
-			{
-				BigDecimal lineTaxAmt = Env.ZERO;
-
-				X_LBR_TaxLine[] taxLines = (new MLBRTax(getCtx(), LBR_Tax_ID, null)).getLines();
-				for(X_LBR_TaxLine taxLine : taxLines)
-					lineTaxAmt = lineTaxAmt.add(taxLine.getlbr_TaxAmt());
-
-				docLine.setLineTaxAmt(lineTaxAmt);
-			}
-			else
-				docLine.setLineTaxAmt(Env.ZERO);
+			///**	Total de imposto Brasil	*/
+			//Integer LBR_Tax_ID = (Integer) line.get_Value("LBR_Tax_ID");
+			//if(LBR_Tax_ID != null && LBR_Tax_ID > 0)
+			//{
+			//	BigDecimal lineTaxAmt = Env.ZERO;
+			//
+			//	X_LBR_TaxLine[] taxLines = (new MLBRTax(getCtx(), LBR_Tax_ID, null)).getLines();
+			//	for(X_LBR_TaxLine taxLine : taxLines)
+			//		lineTaxAmt = lineTaxAmt.add(taxLine.getlbr_TaxAmt());
+			//
+			//	docLine.setLineTaxAmt(lineTaxAmt);
+			//}
+			//else
+			//	docLine.setLineTaxAmt(Env.ZERO);
 
 			docLine.setAmount (LineNetAmt, PriceList, Qty);	//	qty for discount calc
 			if (docLine.isItem())
@@ -328,11 +325,11 @@ public class Doc_Invoice extends Doc
 		//  create Fact Header
 		Fact fact = new Fact(this, as, Fact.POST_Actual);
 
-		/**	Tipo de Documento	*/
-		MDocType dtInv = new MDocType(Env.getCtx(), getC_DocType_ID(), null);
-		Boolean hasOpenItems = (Boolean) dtInv.get_Value("lbr_HasOpenItems");
-		if(hasOpenItems == null)
-			hasOpenItems = true;
+		///**	Tipo de Documento	*/
+		//MDocType dtInv = new MDocType(Env.getCtx(), getC_DocType_ID(), null);
+		//Boolean hasOpenItems = (Boolean) dtInv.get_Value("lbr_HasOpenItems");
+		//if(hasOpenItems == null)
+		//	hasOpenItems = true;
 
 		//  Cash based accounting
 		if (!as.isAccrual())
@@ -360,18 +357,31 @@ public class Doc_Invoice extends Doc
 						getC_Currency_ID(), null, amt);
 					if (tl != null)
 						tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+					//
+					MTax t = new MTax (Env.getCtx(), m_taxes[i].getC_Tax_ID(), null);
+					Integer LBR_TaxName_ID = (Integer) t.get_Value("LBR_TaxName_ID");
+					if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
+					{
+						X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
+						if (!txName.isHasWithHold())
+						{
+							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
+									getC_Currency_ID(), amt, null);
+								if (tl != null)
+									tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+						}
+					}
 				}
 			}
 			//  Revenue                 CR
-			if (hasOpenItems){ //ELTEK
-				for (int i = 0; i < p_lines.length; i++)
-				{
-					//amt = p_lines[i].getAmtSource();
-					/**
-					 * A Receita de Vendas é contabilizado
-					 * com os valores dos impostos
-					 **/
-					amt = p_lines[i].getAmtSource().add(p_lines[i].getLineTaxAmt());
+			for (int i = 0; i < p_lines.length; i++)
+			{
+				//amt = p_lines[i].getAmtSource();
+				/**
+				 * A Receita de Vendas é contabilizado
+				 * com os valores dos impostos
+				 **/
+				amt = p_lines[i].getAmtSource();//.add(p_lines[i].getLineTaxAmt());
 
 
 					BigDecimal dAmt = null;
@@ -407,44 +417,26 @@ public class Doc_Invoice extends Doc
 					}
 				}
 
-				//  Receivables     DR
-				int receivables_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable, as);
-				int receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
-				if (m_allLinesItem || !as.isPostServices()
-					|| receivables_ID == receivablesServices_ID)
-				{
-					grossAmt = getAmount(Doc.AMTTYPE_Gross);
-					serviceAmt = Env.ZERO;
-				}
-				else if (m_allLinesService)
-				{
-					serviceAmt = getAmount(Doc.AMTTYPE_Gross);
-					grossAmt = Env.ZERO;
-				}
-				if (grossAmt.signum() != 0)
-					fact.createLine(null, MAccount.get(getCtx(), receivables_ID),
-						getC_Currency_ID(), grossAmt, null);
-				if (serviceAmt.signum() != 0)
-					fact.createLine(null, MAccount.get(getCtx(), receivablesServices_ID),
-						getC_Currency_ID(), serviceAmt, null);
-			} //hasOpenItems ELTEK
-
-			/**
-			 * Lança os impostos novamente,
-			 * mas agorar para recuperar.
-			 * */
-			for (int i = 0; i < m_taxes.length; i++)
+			//  Receivables     DR
+			int receivables_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable, as);
+			int receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
+			if (m_allLinesItem || !as.isPostServices()
+				|| receivables_ID == receivablesServices_ID)
 			{
-				amt = m_taxes[i].getAmount();
-				if (amt != null && amt.signum() != 0)
-				{
-					FactLine tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
-							getC_Currency_ID(), amt, null);
-						if (tl != null)
-							tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
-				}
+				grossAmt = getAmount(Doc.AMTTYPE_Gross);
+				serviceAmt = Env.ZERO;
 			}
-
+			else if (m_allLinesService)
+			{
+				serviceAmt = getAmount(Doc.AMTTYPE_Gross);
+				grossAmt = Env.ZERO;
+			}
+			if (grossAmt.signum() != 0)
+				fact.createLine(null, MAccount.get(getCtx(), receivables_ID),
+					getC_Currency_ID(), grossAmt, null);
+			if (serviceAmt.signum() != 0)
+				fact.createLine(null, MAccount.get(getCtx(), receivablesServices_ID),
+					getC_Currency_ID(), serviceAmt, null);
 		}
 		//  ARC
 		else if (getDocumentType().equals(DOCTYPE_ARCredit))
@@ -480,25 +472,25 @@ public class Doc_Invoice extends Doc
 				}
 			}
 			//  Revenue         CR
-			if(hasOpenItems)	//ELTEK
-			{
-				/**
-				 * Customização da conta de débito e crédito no lançamento.
-				 * */
-				int C_DocType_ID        = getC_DocType_ID();
-				int LBR_DocType_Acct_ID = AdempiereLBR.getDocTypeAcct(C_DocType_ID);
-				int LBR_DR				= 0;
-				int LBR_CR				= 0;
+			//if(hasOpenItems)	//ELTEK
+			 //{
+				///**
+			// * Customização da conta de débito e crédito no lançamento.
+			// * */
+			//int C_DocType_ID        = getC_DocType_ID();
+			//int LBR_DocType_Acct_ID = AdempiereLBR.getDocTypeAcct(C_DocType_ID);
+			//int LBR_DR				= 0;
+			//int LBR_CR				= 0;
 
-				/**
-				 * Tenta determinar qual é a conta customizada
-				 * */
-				if (LBR_DocType_Acct_ID > 0)
-				{
-					X_LBR_DocType_Acct DocAcct = new X_LBR_DocType_Acct(getCtx(),LBR_DocType_Acct_ID,null);
-					LBR_CR = DocAcct.getlbr_Acct_CR();
-					LBR_DR = DocAcct.getlbr_Acct_DR();
-				}
+			///**
+			// * Tenta determinar qual é a conta customizada
+			//* */
+			//if (LBR_DocType_Acct_ID > 0)
+			//{
+			//		X_LBR_DocType_Acct DocAcct = new X_LBR_DocType_Acct(getCtx(),LBR_DocType_Acct_ID,null);
+			//		LBR_CR = DocAcct.getlbr_Acct_CR();
+			//		LBR_DR = DocAcct.getlbr_Acct_DR();
+			//	}
 
 				for (int i = 0; i < p_lines.length; i++)
 				{
@@ -506,7 +498,7 @@ public class Doc_Invoice extends Doc
 					 * A Receita de Vendas é contabilizado
 					 * com os valores dos impostos
 					 **/
-					amt = p_lines[i].getAmtSource().add(p_lines[i].getLineTaxAmt());
+					amt = p_lines[i].getAmtSource();//.add(p_lines[i].getLineTaxAmt());
 					BigDecimal dAmt = null;
 					if (as.isTradeDiscountPosted())
 					{
@@ -521,8 +513,8 @@ public class Doc_Invoice extends Doc
 						}
 					}
 					fact.createLine (p_lines[i],
-							LBR_DR == 0 ? p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, as) :
-							MAccount.get(getCtx(), LBR_DR),
+							p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, as), //:
+							//MAccount.get(getCtx(), LBR_DR),
 							getC_Currency_ID(), amt, null);
 					if (!p_lines[i].isItem())
 					{
@@ -541,24 +533,24 @@ public class Doc_Invoice extends Doc
 					}
 				}
 				//  Receivables             CR
-				int receivables_ID = 0;
-				int receivablesServices_ID = 0;
+				int receivables_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable, as);
+				int receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
 
-				/**
-				 * KENOS
-				 *
-				 * Se não conseguir determinar a conta customizada
-				 * utiliza a conta default.
-				 * */
-				if (LBR_CR > 0)
-					receivables_ID = LBR_CR;
-				else
-					receivables_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable, as);
+				///**
+				// * KENOS
+				// *
+				// * Se não conseguir determinar a conta customizada
+				// * utiliza a conta default.
+				// * */
+				//if (LBR_CR > 0)
+				//	receivables_ID = LBR_CR;
+				//else
+				//	receivables_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable, as);
 
-				if (LBR_CR > 0)
-					receivablesServices_ID = LBR_CR;
-				else
-					receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
+				//if (LBR_CR > 0)
+				//	receivablesServices_ID = LBR_CR;
+				//else
+				//	receivablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_C_Receivable_Services, as);
 
 				if (m_allLinesItem || !as.isPostServices()
 					|| receivables_ID == receivablesServices_ID)
@@ -577,7 +569,7 @@ public class Doc_Invoice extends Doc
 				if (serviceAmt.signum() != 0)
 					fact.createLine(null, MAccount.get(getCtx(), receivablesServices_ID),
 						getC_Currency_ID(), null, serviceAmt);
-			} //hasOpenItems //ELTEK
+			//} //hasOpenItems //ELTEK
 		}
 
 		//  ** API
@@ -598,7 +590,7 @@ public class Doc_Invoice extends Doc
 					tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
 			}
 
-			if (hasOpenItems){ //ELTEK
+			//if (hasOpenItems){ //ELTEK
 
 				//  Expense         DR
 				for (int i = 0; i < p_lines.length; i++)
@@ -666,30 +658,30 @@ public class Doc_Invoice extends Doc
 					}
 				}
 
-				//  Liability               CR
-				int payables_ID = getValidCombination_ID (Doc.ACCTTYPE_V_Liability, as);
-				int payablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_V_Liability_Services, as);
-				if (m_allLinesItem || !as.isPostServices()
-					|| payables_ID == payablesServices_ID)
-				{
-					grossAmt = getAmount(Doc.AMTTYPE_Gross);
-					serviceAmt = Env.ZERO;
-				}
-				else if (m_allLinesService)
-				{
-					serviceAmt = getAmount(Doc.AMTTYPE_Gross);
-					grossAmt = Env.ZERO;
-				}
-				if (grossAmt.signum() != 0)
-					fact.createLine(null, MAccount.get(getCtx(), payables_ID),
-						getC_Currency_ID(), null, grossAmt);
-				if (serviceAmt.signum() != 0)
-					fact.createLine(null, MAccount.get(getCtx(), payablesServices_ID),
-						getC_Currency_ID(), null, serviceAmt);
-				//
-				updateProductPO(as);	//	Only API
-				updateProductInfo (as.getC_AcctSchema_ID());    //  only API
-			} //hasOpenItems //ELTEK
+			//  Liability               CR
+			int payables_ID = getValidCombination_ID (Doc.ACCTTYPE_V_Liability, as);
+			int payablesServices_ID = getValidCombination_ID (Doc.ACCTTYPE_V_Liability_Services, as);
+			if (m_allLinesItem || !as.isPostServices()
+				|| payables_ID == payablesServices_ID)
+			{
+				grossAmt = getAmount(Doc.AMTTYPE_Gross);
+				serviceAmt = Env.ZERO;
+			}
+			else if (m_allLinesService)
+			{
+				serviceAmt = getAmount(Doc.AMTTYPE_Gross);
+				grossAmt = Env.ZERO;
+			}
+			if (grossAmt.signum() != 0)
+				fact.createLine(null, MAccount.get(getCtx(), payables_ID),
+					getC_Currency_ID(), null, grossAmt);
+			if (serviceAmt.signum() != 0)
+				fact.createLine(null, MAccount.get(getCtx(), payablesServices_ID),
+					getC_Currency_ID(), null, serviceAmt);
+			//
+			updateProductPO(as);	//	Only API
+			updateProductInfo (as.getC_AcctSchema_ID());    //  only API
+			//} //hasOpenItems //ELTEK
 		}
 		//  APC
 		else if (getDocumentType().equals(DOCTYPE_APCredit))
@@ -708,7 +700,7 @@ public class Doc_Invoice extends Doc
 					tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
 			}
 			//  Expense                 CR
-			if (hasOpenItems){ //ELTEK
+			//if (hasOpenItems){ //ELTEK
 				for (int i = 0; i < p_lines.length; i++)
 				{
 					DocLine line = p_lines[i];
@@ -793,7 +785,7 @@ public class Doc_Invoice extends Doc
 				if (serviceAmt.signum() != 0)
 					fact.createLine(null, MAccount.get(getCtx(), payablesServices_ID),
 						getC_Currency_ID(), serviceAmt, null);
-			} //hasOpenItems //ELTEK
+			//} //hasOpenItems //ELTEK
 		}
 		else
 		{
@@ -814,6 +806,18 @@ public class Doc_Invoice extends Doc
 	 *	@return accounted amount
 	 */
 	public BigDecimal createFactCash (MAcctSchema as, Fact fact, BigDecimal multiplier)
+	{
+		return createFactCash (as, fact, multiplier, null);
+	}	//	createFactCash
+
+	/**
+	 * 	Create Fact Cash Based (i.e. only revenue/expense)
+	 *	@param as accounting schema
+	 *	@param fact fact to add lines to
+	 *	@param multiplier source amount multiplier
+	 *	@return accounted amount
+	 */
+	public BigDecimal createFactCash (MAcctSchema as, Fact fact, BigDecimal multiplier, Timestamp dataAcct)
 	{
 		boolean creditMemo = getDocumentType().equals(DOCTYPE_ARCredit)
 			|| getDocumentType().equals(DOCTYPE_APCredit);
@@ -872,7 +876,7 @@ public class Doc_Invoice extends Doc
 		//  Tax
 		for (int i = 0; i < m_taxes.length; i++)
 		{
-			BigDecimal amt = m_taxes[i].getAmount();
+			BigDecimal amt = m_taxes[i].getAmount().multiply(multiplier);
 			BigDecimal amt2 = null;
 			if (creditMemo)
 			{
@@ -884,17 +888,35 @@ public class Doc_Invoice extends Doc
 				tl = fact.createLine (null, m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
 					getC_Currency_ID(), amt, amt2);
 			else
+			{
 				tl = fact.createLine (null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxDue, as),
 					getC_Currency_ID(), amt2, amt);
+				//
+				MTax t = new MTax (Env.getCtx(), m_taxes[i].getC_Tax_ID(), null);
+				Integer LBR_TaxName_ID = (Integer) t.get_Value("LBR_TaxName_ID");
+				if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
+				{
+					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
+					if (!txName.isHasWithHold())
+					{
+						tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
+								getC_Currency_ID(), amt, null);
+							if (tl != null)
+								tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+					}
+				}
+			}
 			if (tl != null)
 				tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
 		}
-		//  Set Locations
+		//  Set Locations and Dates
 		FactLine[] fLines = fact.getLines();
 		for (int i = 0; i < fLines.length; i++)
 		{
 			if (fLines[i] != null)
 			{
+				fLines[i].setDateAcct(dataAcct);
+				//
 				if (payables)
 				{
 					fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true);  //  from Loc
