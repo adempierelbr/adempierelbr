@@ -363,7 +363,7 @@ public class Doc_Invoice extends Doc
 					if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
 					{
 						X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
-						if (!txName.isHasWithHold())
+						if (!txName.isHasWithHold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 						{
 							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
 									getC_Currency_ID(), amt, null);
@@ -588,6 +588,20 @@ public class Doc_Invoice extends Doc
 					getC_Currency_ID(), m_taxes[i].getAmount(), null);
 				if (tl != null)
 					tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+				
+				MTax t = new MTax (Env.getCtx(), m_taxes[i].getC_Tax_ID(), null);
+				Integer LBR_TaxName_ID = (Integer) t.get_Value("LBR_TaxName_ID");
+				if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
+				{
+					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
+					if (!txName.isHasWithHold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
+					{
+						tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxLiability, as),
+								getC_Currency_ID(), null, m_taxes[i].getAmount());
+							if (tl != null)
+								tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+					}
+				}
 			}
 
 			//if (hasOpenItems){ //ELTEK
