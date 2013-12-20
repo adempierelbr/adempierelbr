@@ -276,7 +276,10 @@ public class EFDUtil {
 		System.out.println(factFiscal.getDocumentNo());
 		// cancelada = 02
 		if(factFiscal.isCancelled())
-			cod_sit = "02";
+			if (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
+				cod_sit = "02";	//	Cancelado
+			else
+				cod_sit = "05";	//	Inutilizado
 		
 		// regime especial ou norma especifica. CFOP 5/6.929
 
