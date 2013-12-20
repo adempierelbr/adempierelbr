@@ -459,7 +459,7 @@ public class EFDUtil {
 			/*
 			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
 			 */
-			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04")) 
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04") || COD_SIT.equals("05")) 
 				return false;
 				
 			
@@ -476,7 +476,7 @@ public class EFDUtil {
 			/*
 			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
 			 */
-			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04")) 
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04") || COD_SIT.equals("05")) 
 				return false;
 				
 			

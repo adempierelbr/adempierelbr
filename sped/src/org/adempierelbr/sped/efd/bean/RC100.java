@@ -618,7 +618,8 @@ public class RC100 extends RegSped {
 		 */
 		if(getCOD_SIT().equals("02") 
 				|| getCOD_SIT().equals("03") 
-				|| getCOD_SIT().equals("04"))
+				|| getCOD_SIT().equals("04")
+				|| getCOD_SIT().equals("05"))
 		{
 			
 			// Limpara campos do C100

@@ -385,7 +385,8 @@ public class RD100 extends RegSped implements Comparable<Object> {
 		 */
 		if(getCOD_SIT().equals("02") 
 				|| getCOD_SIT().equals("03") 
-				|| getCOD_SIT().equals("04"))
+				|| getCOD_SIT().equals("04")
+				|| getCOD_SIT().equals("05"))
 		{
 			// 
 			setCOD_PART(null);
