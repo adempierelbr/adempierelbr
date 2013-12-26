@@ -72,6 +72,7 @@ public class InvoiceGen extends GenForm
 		miniTable.addColumn("C_BPartner_ID");
 		miniTable.addColumn("DateOrdered");
 		miniTable.addColumn("TotalLines");
+		miniTable.addColumn("GrandTotal");
 		//
 		miniTable.setMultiSelection(true);
 		//  set details
@@ -82,6 +83,7 @@ public class InvoiceGen extends GenForm
 		miniTable.setColumnClass(4, String.class, true, Msg.translate(Env.getCtx(), "C_BPartner_ID"));
 		miniTable.setColumnClass(5, Timestamp.class, true, Msg.translate(Env.getCtx(), "DateOrdered"));
 		miniTable.setColumnClass(6, BigDecimal.class, true, Msg.translate(Env.getCtx(), "TotalLines"));
+		miniTable.setColumnClass(7, BigDecimal.class, true, Msg.translate(Env.getCtx(), "GrandTotal"));
 		//
 		miniTable.autoSize();
 	}
@@ -93,7 +95,8 @@ public class InvoiceGen extends GenForm
 	private String getOrderSQL()
 	{
 	    StringBuffer sql = new StringBuffer(
-	            "SELECT C_Order_ID, o.Name, dt.Name, DocumentNo, bp.Name, DateOrdered, TotalLines"
+	            "SELECT C_Order_ID, o.Name, dt.Name, DocumentNo, bp.Name, DateOrdered, TotalLines, "
+	            + "(SELECT o.GrandTotal FROM C_Order o WHERE o.C_Order_ID=ic.C_Order_ID) AS GrandTotal"
 	            + " FROM C_Invoice_Candidate_v ic, AD_Org o, C_BPartner bp, C_DocType dt"
 	            + " WHERE ic.AD_Org_ID=o.AD_Org_ID"
 	            + " AND ic.C_BPartner_ID=bp.C_BPartner_ID"
@@ -130,7 +133,7 @@ public class InvoiceGen extends GenForm
 	private String getRMASql()
 	{
 		StringBuffer sql = new StringBuffer();
-	    sql.append("SELECT rma.M_RMA_ID, org.Name, dt.Name, rma.DocumentNo, bp.Name, rma.Created, rma.Amt ");
+	    sql.append("SELECT rma.M_RMA_ID, org.Name, dt.Name, rma.DocumentNo, bp.Name, rma.Created, rma.Amt, rma.Amt ");
         sql.append("FROM M_RMA rma INNER JOIN AD_Org org ON rma.AD_Org_ID=org.AD_Org_ID ");
         sql.append("INNER JOIN C_DocType dt ON rma.C_DocType_ID=dt.C_DocType_ID ");
         sql.append("INNER JOIN C_BPartner bp ON rma.C_BPartner_ID=bp.C_BPartner_ID ");
@@ -206,6 +209,7 @@ public class InvoiceGen extends GenForm
 				miniTable.setValueAt(rs.getString(5), row, 4);              //  BPartner
 				miniTable.setValueAt(rs.getTimestamp(6), row, 5);           //  DateOrdered
 				miniTable.setValueAt(rs.getBigDecimal(7), row, 6);          //  TotalLines
+				miniTable.setValueAt(rs.getBigDecimal(8), row, 7);          //  GrandTotal
 				//  prepare next
 				row++;
 			}
