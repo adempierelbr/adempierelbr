@@ -14,7 +14,9 @@ package org.adempierelbr.model;
 
 import java.sql.ResultSet;
 import java.util.Properties;
+import java.util.logging.Level;
 
+import org.compiere.util.CLogger;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
@@ -31,6 +33,9 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**	Logger			*/
+	private static CLogger log = CLogger.getCLogger(MLBRNFeWebService.class);
 	
 	public static final String CADCONSULTACADASTRO	= "NfeConsultaCadastro";
 	public static final String STATUSSERVICO		= "NfeStatusServico";
@@ -75,8 +80,10 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	{
 		MLBRNFeWebService ws = get (name, envType, versionNo, C_Region_ID);
 		//
-		if (ws == null)
+		if (ws == null) {
+			log.log(Level.SEVERE, "Webservice not found for " + name + " region " + Integer.toString(C_Region_ID)  + " environment " + envType  );
 			return null;
+		}
 		//
 		return ws.getURL();
 	}	//	getURL

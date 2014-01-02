@@ -271,6 +271,24 @@ public abstract class AdempiereLBR{
 		return UOMSymbol != null ? UOMSymbol : uom.getUOMSymbol();
 	} //getUOM_trl
 	
+	
+	public static String getUOMName_trl(MUOM uom){
+		return getUOMName_trl(uom,AD_LANGUAGE);
+	}
+
+	public static String getUOMName_trl(MUOM uom, String AD_Language){
+
+		String sql = "SELECT Name FROM C_Uom_Trl " +
+					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
+
+		String UOMSymbol = DB.getSQLValueString(null, sql,
+				new Object[]{uom.get_ID(),AD_Language});
+
+		return UOMSymbol != null ? UOMSymbol : uom.getUOMSymbol();
+	} //getUOM_trl
+	
+	
+	
 	public static int getPreviousPeriod_ID (Properties ctx, int C_Period_ID){
 		MPeriod period = MPeriod.get(ctx, C_Period_ID);
 		return C_Period_ID = MPeriod.getC_Period_ID(ctx, AdempiereLBR.addDays(period.getStartDate(), -1),0);

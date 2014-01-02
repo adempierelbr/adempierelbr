@@ -13,6 +13,8 @@
 package org.adempierelbr.model;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
@@ -1125,6 +1127,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Nota do Documento (Mensagens Legais) e Descrição
 		setDocumentNote ();
 		setDescription ();
+		
+		// IBPTax - LBR-81
+		setAproxTaxIBPT();
 				
 		return true;
 	}	//	generateNF
@@ -1250,6 +1255,62 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			log.log(Level.WARNING,"Falha ao gerar automaticamente o XML da Nota Fiscal " + getDocumentNo());
 		}
 	}	//	GenerateXMLAutomatic
+	
+	
+	
+	/**
+	 * Colocar no campo de descrição os valor aproximados 
+	 * de impostos de acordo com o manual do IBPT
+	 * 
+	 * Obs.: Ticket JIRA - LBR-81
+	 */
+	public void setAproxTaxIBPT()
+	{
+		
+		// somente para consumidor final, se no sisconfig tiver habilitado e for NF-e 
+		if(getlbr_TransactionType().equals(LBR_TRANSACTIONTYPE_EndUser) && MSysConfig.getBooleanValue("LBR_FILL_IBPTax_DESCRIPTION", false, getAD_Client_ID()) && isSOTrx())
+		{		
+
+			BigDecimal taxAmt = Env.ZERO;
+		
+			// para cada linha, somar calcular o valor aproximado dos impostos
+			for(MLBRNotaFiscalLine line : getLines())
+			{
+				// somente linhas que tenham NCM
+				if(line.getLBR_NCM_ID() > 0)
+				{
+					// origem pra definir se é importado ou nacional
+					String productSource = line.getlbr_ProductSource() != null ? line.getlbr_ProductSource() : MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_0_Domestic;
+	
+					// % rate
+					BigDecimal taxRate = MLBRIBPTax.getTaxRate(getCtx(), 
+							(productSource.equals(MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_1_Imported) || 
+									productSource.equals(MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_2_Imported_AcquiredFromADomesticDistributor)), line.getLBR_NCM_ID(), get_TrxName());
+					
+					// 
+					if(taxRate.signum() == 1)
+						taxRate = taxRate.divide(Env.ONEHUNDRED);
+					else
+						taxRate = Env.ZERO;
+					
+					// total do imposto
+					taxAmt = taxAmt.add(line.getLineTotalAmt().multiply(taxRate));
+				}
+			}
+			
+			// se teve total de impostos, definir no fim da descrição
+			if(taxAmt.signum() == 1)
+			{
+				// aliquota geral = valor do imposto dividido pelo valor total da NF - fonte: Manual IBPT
+				BigDecimal taxRateTotal = taxAmt.divide(getGrandTotal(), new MathContext(2, RoundingMode.HALF_UP));
+				String description = "Valor Aprox. de Impostos R$ " + taxAmt.setScale(2, RoundingMode.HALF_UP) + " (" + taxRateTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP) + " %) Fonte: IBPT";
+				
+				// definir na NF
+				setDescription(getDescription().concat("\n" + description)); 
+			}
+		}
+	}
+	
 	
 	/**
 	 * 		Bill Note

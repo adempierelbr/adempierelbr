@@ -28,5 +28,27 @@ public @interface XMLFieldProperties
 	int minSize () default 0;
 	int maxSize () default 0;
 	boolean isMandatory () default true;
-	boolean needsValidation () default false;
+	boolean needsValidation () default true;
+	
+	/**
+	 * Escala do BigDecimal
+	 * 
+	 * Default : 2 casas
+	 * @return
+	 */
+	int scale () default 2;
+	
+	/**
+	 * Verificar se é somente números, usado para campos como CPF, CNPJ...
+	 * @return
+	 */
+	boolean isNumber () default false;
+
+	/**
+	 * Verificar se a variavel é um campo do SPED
+	 * 
+	 * @return
+	 */
+	boolean isSPEDField () default true;
+	
 }	//	XMLFieldProperties

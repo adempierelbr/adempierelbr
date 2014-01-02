@@ -608,6 +608,10 @@ public abstract class TextUtil
 	public static String checkSize(String value, int min, int max){
 		return checkSize(value,min,max,' ');
 	}
+	
+	public static String checkSize(String value, int max){
+		return checkSize(value,0,max,' ');
+	}
 
 	/**
 	 * 	Verifica se a string está entre os valores minímos e máximo
@@ -951,5 +955,24 @@ public abstract class TextUtil
 
 		return whereClause.trim();
 	} //checkWhereClause
+	
+	/**
+	 * 	Verifica se lista contém uma determinada string.
+	 * 
+	 * 	@param stra
+	 * 	@param strings
+	 * 	@return TRUE se a lista contém a string, senão FALSO
+	 */
+	public static boolean match (String stra, String... strings)
+	{
+		if (stra == null)
+			return false;
+		//
+		for (String string : strings)
+			if (stra.equals (string))
+				return true;
+		//
+		return false;	
+	}	//	match
 
 }	//	TextUtil
