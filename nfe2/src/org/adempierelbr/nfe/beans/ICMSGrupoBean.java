@@ -16,6 +16,9 @@ public class ICMSGrupoBean
 {
 	private String orig;
 	private String CST;
+	private String CSOSN;
+	private String pCredSN;
+	private String vCredICMSSN;
 	private String modBC;
 	private String pRedBC;
 	private String vBC;
@@ -168,4 +171,39 @@ public class ICMSGrupoBean
 		//
 		this.pMVAST = pMVAST;
 	}
+	
+	// CSOSN
+ 	public void setCSOSN(String CSOSN)
+ 	{
+ 		if (CSOSN != null)
+ 			CSOSN = CSOSN.trim();
+ 		//
+ 		this.CSOSN = CSOSN;
+ 	}
+ 	public void setpCredSN(String pCredSN)
+ 	{
+ 		if (pCredSN != null)
+ 			pCredSN = pCredSN.trim();
+ 		//
+ 		this.pCredSN = pCredSN;
+ 	}
+ 	public void setvCredICMSSN(String vCredICMSSN)
+ 	{
+ 		if (vCredICMSSN != null)
+ 			vCredICMSSN = vCredICMSSN.trim();
+ 		//
+ 		this.vCredICMSSN = vCredICMSSN;
+ 	}
+ 	public String getCSOSN()
+ 	{
+ 		return this.CSOSN;
+ 	}
+ 	public String getpCredSN()
+ 	{
+ 		return this.pCredSN;
+ 	}
+ 	public String getvCredICMSSN()
+ 	{
+ 		return this.vCredICMSSN;
+ 	}
 }	//	ICMSGrupoBean
