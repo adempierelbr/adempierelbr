@@ -883,7 +883,7 @@ public abstract class TextUtil
 		if (value == null)
 			return ZERO_STRING;
 
-		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString();
 	} //bigdecimalToString
 
 	/**

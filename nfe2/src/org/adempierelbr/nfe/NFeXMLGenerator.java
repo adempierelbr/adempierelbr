@@ -609,7 +609,7 @@ public class NFeXMLGenerator
 			MDocType dt = MDocType.get(ctx, invoice.getC_DocTypeTarget_ID());
 			boolean HasOpenItems = dt.get_ValueAsBoolean("lbr_HasOpenItems");
 
-			if (HasOpenItems && nf.isSOTrx())
+			if ("1".equals (FinNFE) && HasOpenItems && nf.isSOTrx())
 			{
 				cobrfat = new CobrancaGrupoFatura();
 				cobrfat.setnFat(invoice.getDocumentNo()); // Codigo NFE
@@ -732,7 +732,11 @@ public class NFeXMLGenerator
 			if (nf.getlbr_InsuranceAmt().signum() == 1) //SEGURO
 				produtos.setvSeg(TextUtil.bigdecimalToString(nfLine.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt())));
 
-			produtos.setIndTot("1"); //v2.0 = 0 – VL Ñ ENTRA NO TOT 1 - VL ENTRA
+			/**
+			 * 	Para NFs complementares, não considerar o valor da linha
+			 */
+			produtos.setIndTot("1".equals (FinNFE) ? "1" : "0");
+			
 			String ncm = nfLine.getlbr_NCMName();
 
 			if (ncm == null && !nfLine.islbr_IsService())
