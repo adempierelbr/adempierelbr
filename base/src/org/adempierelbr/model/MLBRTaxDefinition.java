@@ -65,7 +65,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			int LBR_FiscalGroup_Product_ID, int LBR_NCM_ID, int LBR_ProductCategory_ID, boolean lbr_IsSubTributaria,
 			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom)
 	{
-		String where = "AD_Org_ID IN (0, ?) ";
+		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) ";
 		//
 		where += "AND (C_BPartner_ID IS NULL OR C_BPartner_ID=?) ";
 		where += "AND (C_DocType_ID IS NULL OR C_DocType_ID=?) ";
