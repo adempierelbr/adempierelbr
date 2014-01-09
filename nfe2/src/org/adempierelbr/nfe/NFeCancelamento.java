@@ -290,7 +290,7 @@ public class NFeCancelamento
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro no processo para gerar o pedido de cancelamento. Verifique o LOG.");
+			log.severe ("Erro no processo para gerar o pedido de cancelamento. Verifique o LOG." + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		//
