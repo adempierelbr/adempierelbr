@@ -28,6 +28,7 @@ public class ICMSBean {
 	private ICMS60Grp ICMS60;
 	private ICMSGrupoBean ICMS70;
 	private ICMSGrupoBean ICMS90;
+	private ICMSGrupoBean ICMSSN101;
 
 
 	public ICMSGrupoBean getICMS() {
@@ -108,6 +109,14 @@ public class ICMSBean {
 
 	public void setICMS70(ICMSGrupoBean icms70) {
 		ICMS70 = icms70;
+	}
+	
+	public ICMSGrupoBean getICMSSN101() {
+		return ICMSSN101;
+	}
+
+	public void setICMSSN101(ICMSGrupoBean icmssn101) {
+		ICMSSN101 = icmssn101;
 	}
 
 	 public static class ICMS60Grp {

@@ -829,6 +829,13 @@ public class NFeXMLGenerator
 						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
 						icmsgrupo.setCST(taxStatus);
 					}
+					else if (taxStatus.equals ("101"))
+					{
+						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
+						icmsgrupo.setCSOSN(taxStatus);
+						icmsgrupo.setpCredSN(TextUtil.bigdecimalToString(lt.getpImposto()));
+						icmsgrupo.setvCredICMSSN(TextUtil.bigdecimalToString(lt.getvImposto()));
+					}
 					else
 					{
 						icmsgrupo.setModBC("0");
@@ -884,7 +891,7 @@ public class NFeXMLGenerator
 						}
 					}
 
-					int taxStatusDV = Integer.parseInt(taxStatus.substring(taxStatus.length()-2));
+					int taxStatusDV = Integer.parseInt(taxStatus);
 
 					switch (taxStatusDV) {
 						case 0:  icmsnfe.setICMS00(icmsgrupo); break;
@@ -898,6 +905,7 @@ public class NFeXMLGenerator
 						case 60: icmsnfe.setICMS60(icms60); break;
 						case 70: icmsnfe.setICMS70(icmsgrupo); break;
 						case 90: icmsnfe.setICMS90(icmsgrupo); break;
+						case 101: icmsnfe.setICMSSN101(icmsgrupo); break;
 					}
 
 					//

@@ -259,11 +259,11 @@ public class MLBRTax extends X_LBR_Tax
 				taxAmt = taxAmt.negate();
 			
 			//	Não postar
-			if (!taxLine.islbr_PostTax())
-			{
-				taxBase = Env.ZERO;
-				taxAmt 	= Env.ZERO;
-			}
+//			if (!taxLine.islbr_PostTax())
+//			{
+//				taxBase = Env.ZERO;
+//				taxAmt 	= Env.ZERO;
+//			}
 			//
 			taxLine.setlbr_TaxBaseAmt(taxBase);
 			taxLine.setlbr_TaxAmt(taxAmt);
