@@ -1964,7 +1964,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	{
 		MTable table = MTable.get (getCtx(), MLBRNotaFiscalLine.Table_Name);
 		Query query =  new Query(getCtx(), table, "LBR_NotaFiscal_ID=?", get_TrxName());
-	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()});
+	 		  query.setParameters(new Object[]{getLBR_NotaFiscal_ID()}).setOrderBy("Line");
 	 	//
 	 	List<MLBRNotaFiscalLine> list = query.list();
 	 	return list.toArray(new MLBRNotaFiscalLine[list.size()]);

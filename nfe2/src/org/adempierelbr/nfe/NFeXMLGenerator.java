@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRCFOP;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -33,8 +34,6 @@ import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfe.beans.AdicoesDI;
 import org.adempierelbr.nfe.beans.COFINSBean;
 import org.adempierelbr.nfe.beans.COFINSGrupoBean;
-import org.adempierelbr.nfe.beans.COFINSNTGrupoBean;
-import org.adempierelbr.nfe.beans.COFINSOutrGrupoBean;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.nfe.beans.Cobranca;
 import org.adempierelbr.nfe.beans.CobrancaGrupoDuplicata;
@@ -55,7 +54,6 @@ import org.adempierelbr.nfe.beans.IdentNFE;
 import org.adempierelbr.nfe.beans.ImpostoDIBean;
 import org.adempierelbr.nfe.beans.ImpostoIPIBean;
 import org.adempierelbr.nfe.beans.ImpostoIPIGrupoBean;
-import org.adempierelbr.nfe.beans.ImpostoIPINTBean;
 import org.adempierelbr.nfe.beans.InfAdiFisco;
 import org.adempierelbr.nfe.beans.InfAssinatura;
 import org.adempierelbr.nfe.beans.InfComex;
@@ -64,8 +62,6 @@ import org.adempierelbr.nfe.beans.InformacoesNFEReferenciadaBean;
 import org.adempierelbr.nfe.beans.NFERefenciadaBean;
 import org.adempierelbr.nfe.beans.PISBean;
 import org.adempierelbr.nfe.beans.PISGrupoBean;
-import org.adempierelbr.nfe.beans.PISNTGrupoBean;
-import org.adempierelbr.nfe.beans.PISOutrGrupoBean;
 import org.adempierelbr.nfe.beans.ProdutosNFEBean;
 import org.adempierelbr.nfe.beans.Transporte;
 import org.adempierelbr.nfe.beans.TransporteGrupo;
@@ -128,6 +124,119 @@ public class NFeXMLGenerator
 	/** XML             */
 	private static final String FILE_EXT      = "-nfe.xml";
 	
+	/**	Indicação de Pagamento	*/
+	private static final String IND_PAG_A_VISTA		=	"0";
+	private static final String IND_PAG_A_PRAZO		=	"1";
+	private static final String IND_PAG_OUTROS		=	"2";
+	
+	/**	Finalidade da NF-e		*/
+	private static final String FIN_NFE_NORMAL			=	"1";
+	private static final String FIN_NFE_COMPLEMENTAR	=	"2";
+	private static final String FIN_NFE_AJUSTE			=	"3";
+	
+	/** Impostos						*/
+	private static final String PIS				= "PIS";
+	private static final String COFINS			= "COFINS";
+	private static final String ICMS			= "ICMS";
+	private static final String IPI				= "IPI";
+	private static final String II				= "II";
+	private static final String ISSQN			= "ISS";
+	
+	/** Código de Situaçnao Tributária	*/
+	public static final String CST_ICMS_00		= "00";
+	public static final String CST_ICMS_10		= "10";
+	public static final String CST_ICMS_20		= "20";
+	public static final String CST_ICMS_30		= "30";
+	public static final String CST_ICMS_40		= "40";
+	public static final String CST_ICMS_41		= "41";
+	public static final String CST_ICMS_50		= "50";
+	public static final String CST_ICMS_51		= "51";
+	public static final String CST_ICMS_60		= "60";
+	public static final String CST_ICMS_70		= "70";
+	public static final String CST_ICMS_90		= "90";
+	public static final String CST_ICMS_Part	= "Part";
+	public static final String CST_ICMS_ST		= "ST";
+	
+	/** Código de Situaçnao Tributária	- IPI */
+	public static final String CST_IPI_00		= "00";
+	public static final String CST_IPI_01		= "01";
+	public static final String CST_IPI_02		= "02";
+	public static final String CST_IPI_03		= "03";
+	public static final String CST_IPI_04		= "04";
+	public static final String CST_IPI_49		= "49";
+	public static final String CST_IPI_50		= "50";
+	public static final String CST_IPI_51		= "51";
+	public static final String CST_IPI_52		= "52";
+	public static final String CST_IPI_53		= "53";
+	public static final String CST_IPI_54		= "54";
+	public static final String CST_IPI_55		= "55";
+	public static final String CST_IPI_99		= "99";
+
+	/** Código de Situaçnao Tributária	- PIS e COFINS */
+	public static final String CST_PC_01		= "01";
+	public static final String CST_PC_02		= "02";
+	public static final String CST_PC_03		= "03";
+	public static final String CST_PC_04		= "04";
+	public static final String CST_PC_05		= "05";
+	public static final String CST_PC_06		= "06";
+	public static final String CST_PC_07		= "07";
+	public static final String CST_PC_08		= "08";
+	public static final String CST_PC_09		= "09";
+	public static final String CST_PC_49  		= "49";
+	public static final String CST_PC_50  		= "50";
+	public static final String CST_PC_51  		= "51";
+	public static final String CST_PC_52  		= "52";
+	public static final String CST_PC_53  		= "53";
+	public static final String CST_PC_54  		= "54";
+	public static final String CST_PC_55  		= "55";
+	public static final String CST_PC_56  		= "56";
+	public static final String CST_PC_60  		= "60";
+	public static final String CST_PC_61  		= "61";
+	public static final String CST_PC_62  		= "62";
+	public static final String CST_PC_63  		= "63";
+	public static final String CST_PC_64  		= "64";
+	public static final String CST_PC_65  		= "65";
+	public static final String CST_PC_66  		= "66";
+	public static final String CST_PC_67  		= "67";
+	public static final String CST_PC_70  		= "70";
+	public static final String CST_PC_71  		= "71";
+	public static final String CST_PC_72  		= "72";
+	public static final String CST_PC_73  		= "73";
+	public static final String CST_PC_74  		= "74";
+	public static final String CST_PC_75  		= "75";
+	public static final String CST_PC_98  		= "98";
+	public static final String CST_PC_99  		= "99";
+	
+	/**	Simples Nacional				*/
+	public static final String CSOSN_101	= "101";
+	public static final String CSOSN_102	= "102";
+	public static final String CSOSN_103	= "103";
+	public static final String CSOSN_300	= "300";
+	public static final String CSOSN_400	= "400";
+	public static final String CSOSN_201	= "201";
+	public static final String CSOSN_202	= "202";
+	public static final String CSOSN_203	= "203";
+	public static final String CSOSN_500	= "500";
+	public static final String CSOSN_900	= "900";
+	
+	/**	Modalidade de determinação da BC do ICMS		*/
+	private static final String MOD_BC_MVA			= "0";
+	private static final String MOD_BC_PAUTA		= "1";
+	private static final String MOD_BC_TABELADO		= "2";
+	private static final String MOD_BC_VALOR_OP		= "2";
+	
+	private static final String MOT_DESONERA_TAXI			= "1";
+	private static final String MOT_DESONERA_DEFICIENTE		= "2";
+	private static final String MOT_DESONERA_PRODUTOR		= "3";
+	private static final String MOT_DESONERA_FROTISTA		= "4";
+	private static final String MOT_DESONERA_DIPLOMAT		= "5";
+	private static final String MOT_DESONERA_AREA_LIVRE_COM	= "6";
+	private static final String MOT_DESONERA_SUFRAMA		= "7";
+	private static final String MOT_DESONERA_ORGAO_PUBLICO	= "8";
+	private static final String MOT_DESONERA_OUTROS			= "9";
+	
+	private static final String ENQ_IPI_999	= "999";
+
 	/**
 	 * Gera o corpo da NF
 	 * 
@@ -135,6 +244,7 @@ public class NFeXMLGenerator
 	 * @param trxName Transação
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String geraCorpoNFe (int LBR_NotaFiscal_ID, String trxName) throws Exception {
 		
 		log.fine("Gerando corpo NF-e");
@@ -143,6 +253,7 @@ public class NFeXMLGenerator
 		
 		//
 		XStream xstream = new XStream();
+		xstream.autodetectAnnotations(true);
 		
 		DadosNFE dados = new DadosNFE();
 		NFERefenciadaBean nfereferencia = new NFERefenciadaBean();
@@ -283,7 +394,7 @@ public class NFeXMLGenerator
 		 * 2 – Simples Nacional – excesso de sublimite de receita bruta;
 		 * 3 – Regime Normal
 		 */
-		String CRT = "3";
+		String CRT = MSysConfig.getValue ("Z_CRT", "3", nf.getAD_Client_ID(), nf.getAD_Org_ID());
 
 		Timestamp datedoc = nf.getDateDoc();
 		Timestamp dateSaiEnt = nf.getlbr_DateInOut();
@@ -679,7 +790,6 @@ public class NFeXMLGenerator
 			//
 			ICMSBean icmsnfe = new ICMSBean(); // ICMS
 			ICMSGrupoBean icmsgrupo = new ICMSGrupoBean(); // Grupo de ICMS
-			ICMSBean.ICMS60Grp icms60 = new ICMSBean.ICMS60Grp();
 			ImpostoIPIBean ipinfe = new ImpostoIPIBean(); // IPI
 			ImpostoIPIGrupoBean ipigrupo = new ImpostoIPIGrupoBean(); // Grupo IPI
 			Informacoes informacoes = new Informacoes();
@@ -789,284 +899,203 @@ public class NFeXMLGenerator
 			{
 				if (lt.getTaxIndicator().contains("ICMS")
 						&& lt.getTaxIndicator().contains("ST"))
-				{
 					taxST = lt;
-				}
 			}
 			//
 			for (NFeTaxes lt : lineTax) 
 			{
-				if (lt.getTaxIndicator().equals("ICMS")) 
+				String taxIndicator = lt.getTaxIndicator();
+				//
+				String taxStatus = lt.getCST();
+				
+				if (taxStatus == null && taxST != null)
+					taxStatus = taxST.getCST();
+				
+				else if (taxStatus == null)
+					throw new AdempiereException ("Invalid CST for Tax " + taxIndicator + " Line #" + nfLine.getLine());
+				
+				if (ICMS.equals (taxIndicator)) 
 				{
-					String taxStatus = lt.getCST();
+					icmsgrupo.setOrig (prdt.get_ValueAsString("lbr_ProductSource"));
 					
-					//	ST deve substituir o CST do ICMS padrão
-					if (taxST != null)
-						taxStatus = taxST.getCST();
-					//
-					if (taxStatus == null)
-						taxStatus = "00";
+					if (TextUtil.match (taxStatus, CST_ICMS_00, CST_ICMS_10, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70, CST_ICMS_90, CST_ICMS_Part, CSOSN_900))
+					{
+						//	Modalidade de determinação da BC do ICMS
+						icmsgrupo.setModBC (MOD_BC_MVA);
 
-					// Modalidade de determinação da BC do ICMS:
-					// 0 - Margem Valor Agregado (%);
-					// 1 - Pauta (valor);
-					// 2 - Preço Tabelado Máximo (valor);
-					// 3 - Valor da Operação
-					if (taxStatus.endsWith("40"))
-					{
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
-						icmsgrupo.setCST(taxStatus);
-						//
-						if (suframa != null && suframa.trim().length() > 0)
-						{
-							icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto().abs()));
-							icmsgrupo.setmotDesICMS("7");	//	7 – SUFRAMA
-						}
-					}
-					else if (taxStatus.endsWith("41") ||
-					    taxStatus.endsWith("50"))
-					{
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
-						icmsgrupo.setCST(taxStatus);
-					}
-					else if (taxStatus.equals ("101"))
-					{
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
-						icmsgrupo.setCSOSN(taxStatus);
-						icmsgrupo.setpCredSN(TextUtil.bigdecimalToString(lt.getpImposto()));
-						icmsgrupo.setvCredICMSSN(TextUtil.bigdecimalToString(lt.getvImposto()));
-					}
-					else
-					{
-						icmsgrupo.setModBC("0");
-						icmsgrupo.setCST(taxStatus);
-						icmsgrupo.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
-						icmsgrupo.setpICMS(TextUtil.bigdecimalToString(lt.getpImposto()));
-						icmsgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
-						icmsgrupo.setvICMS(TextUtil.bigdecimalToString(lt.getvImposto()));
-
-						//BF - Redução Base de Cálculo
-						if (taxStatus.endsWith("20") ||
-							taxStatus.endsWith("70")){
-							icmsgrupo.setpRedBC(TextUtil.bigdecimalToString(lt.getpRedBC()));
-							
-							if (taxST != null)
-							{
-								BigDecimal iva = (BigDecimal) prdt.get_Value("lbr_ProfitPercentage");
-//								if (iva != null && iva.signum() != 0)
-//									icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (iva));
-								icmsgrupo.setModBCST("4");
-								icmsgrupo.setvBCST(TextUtil.bigdecimalToString (taxST.getvBC()));
-								if (taxST.getpRedBC().signum() != 0)
-									icmsgrupo.setpRedBCST(TextUtil.bigdecimalToString (taxST.getpRedBC()));
-								icmsgrupo.setpICMSST(TextUtil.bigdecimalToString (taxST.getpImposto()));
-								icmsgrupo.setvICMSST(TextUtil.bigdecimalToString (taxST.getvImposto()));
-							}
-						}
+						//	Valor da BC do ICMS
+						icmsgrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
 						
-						/**
-						 * 	ST
-						 */
-						if (taxStatus.endsWith("10"))
-						{
-							if (taxST != null)
-							{
-								BigDecimal iva = (BigDecimal) prdt.get_Value("lbr_ProfitPercentage");
-//									if (iva != null && iva.signum() != 0)
-//										icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (iva));
-								icmsgrupo.setModBCST("4");
-								icmsgrupo.setvBCST(TextUtil.bigdecimalToString (taxST.getvBC()));
-								if (taxST.getpRedBC().signum() != 0)
-									icmsgrupo.setpRedBCST(TextUtil.bigdecimalToString (taxST.getpRedBC()));
-								icmsgrupo.setpICMSST(TextUtil.bigdecimalToString (taxST.getpImposto()));
-								icmsgrupo.setvICMSST(TextUtil.bigdecimalToString (taxST.getvImposto()));
-							}
-						}
-						else if (taxStatus.endsWith("60"))
-						{
-							icms60.setCST(taxStatus);
-							icms60.setOrig(prdt.get_ValueAsString("lbr_ProductSource"));
-							icms60.setVBCSTRet(TextUtil.bigdecimalToString(lt.getvBC()));
-							icms60.setVICMSSTRet(TextUtil.bigdecimalToString(lt.getvImposto()));
-						}
+						//	Alíquota do imposto
+						icmsgrupo.setpICMS (TextUtil.bigdecimalToString (lt.getpImposto()));
+						
+						//	Valor do ICMS
+						icmsgrupo.setvICMS (TextUtil.bigdecimalToString (lt.getvImposto()));
 					}
-
-					int taxStatusDV = Integer.parseInt(taxStatus);
-
-					switch (taxStatusDV) {
-						case 0:  icmsnfe.setICMS00(icmsgrupo); break;
-						case 10: icmsnfe.setICMS10(icmsgrupo); break;
-						case 20: icmsnfe.setICMS20(icmsgrupo); break;
-						case 30: icmsnfe.setICMS30(icmsgrupo); break;
-						case 40: icmsnfe.setICMS40(icmsgrupo); break;
-						case 41: icmsnfe.setICMS40(icmsgrupo); break;
-						case 50: icmsnfe.setICMS40(icmsgrupo); break;
-						case 51: icmsnfe.setICMS51(icmsgrupo); break;
-						case 60: icmsnfe.setICMS60(icms60); break;
-						case 70: icmsnfe.setICMS70(icmsgrupo); break;
-						case 90: icmsnfe.setICMS90(icmsgrupo); break;
-						case 101: icmsnfe.setICMSSN101(icmsgrupo); break;
-					}
-
-					//
-					xstream.useAttributeFor(ICMSBean.class, "ICMS");
-					impostos.setICMS(icmsnfe);
-				} //ICMS
-
-				else if (lt.getTaxIndicator().equals("PIS"))
-				{
 					
-					if (lt.getCST() != null && lt.getCST().length() > 0)
-						pisgrupo.setCST(lt.getCST());
-					else
-						pisgrupo.setCST("01");
-					//
-					if (pisgrupo.getCST().equals("01")) {
-						pisgrupo.setvPIS(TextUtil.bigdecimalToString(lt.getvImposto()));// vPIS - Valor do PIS
-						pisgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));// vBC - Base de calculo do PIS
-						pisgrupo.setpPIS(TextUtil.bigdecimalToString(lt.getpImposto()));// pPIS - percentual do pis
-						pisnfe.setPIS(pisgrupo);
-						xstream.useAttributeFor(PISBean.class, "PIS");
-						xstream.aliasField("PISAliq", PISBean.class, "PIS");
-						impostos.setPIS(pisnfe);
-					}
-					else if (pisgrupo.getCST().equals("04")
-							|| pisgrupo.getCST().equals("06")
-							|| pisgrupo.getCST().equals("07")
-							|| pisgrupo.getCST().equals("08")
-							|| pisgrupo.getCST().equals("09")) 
+					if (TextUtil.match (taxStatus, CST_ICMS_40, CST_ICMS_41, CST_ICMS_50) && lt.getvImposto().signum() > 0)
 					{
-						PISNTGrupoBean cgrp = new PISNTGrupoBean ();
-						//
-						cgrp.setCST(lt.getCST());
-						pisnfe.setPISNT(cgrp);
-						impostos.setPIS(pisnfe);
-					}
-					else
-					{
-						PISOutrGrupoBean pgrp = new PISOutrGrupoBean();
-						//
-						pgrp.setCST(lt.getCST());
-						pgrp.setvPIS(TextUtil.bigdecimalToString(lt.getvImposto()));// vPIS - Valor do PIS
-						pgrp.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));// vBC - Base de calculo do PIS
-						pgrp.setpPIS(TextUtil.bigdecimalToString(lt.getpImposto()));// pPIS - percentual do pis
-						//
-						pisnfe.setPISOutr(pgrp);
-						impostos.setPIS(pisnfe);
-					}
-				} //PIS
-
-				else if (lt.getTaxIndicator().equals("COFINS"))
-				{
-					String CST = lt.getCST();
-					
-					if (lt.getCST() != null && lt.getCST().length() > 0)
-						cofinsgrupo.setCST(lt.getCST());
-					else
-						cofinsgrupo.setCST("01");
-					//
-					if (cofinsgrupo.getCST().equals("01")) {
-						cofinsgrupo.setvCOFINS(TextUtil.bigdecimalToString(lt.getvImposto())); // vCOFINS - Valor do COFINS
-						cofinsgrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC())); // vBC - Valor da Base de calculo
-						cofinsgrupo.setpCOFINS(TextUtil.bigdecimalToString(lt.getpImposto())); // pCofins - Aliquota cofins
-						cofinsnfe.setCOFINS(cofinsgrupo);
-						xstream.useAttributeFor(COFINSBean.class, "COFINS");
-						xstream.aliasField("COFINSAliq", COFINSBean.class, "COFINS");
-						impostos.setCOFINS(cofinsnfe);
-					}
-					else if (cofinsgrupo.getCST().equals("04")
-							|| cofinsgrupo.getCST().equals("06")
-							|| cofinsgrupo.getCST().equals("07")
-							|| cofinsgrupo.getCST().equals("08")
-							|| cofinsgrupo.getCST().equals("09")) 
-					{
+						//	Valor do ICMS
+						icmsgrupo.setvICMS (TextUtil.bigdecimalToString (lt.getvImposto()));
 						
-						COFINSNTGrupoBean cgrp = new COFINSNTGrupoBean ();
-						//
-						cgrp.setCST(CST);
-						cofinsnfe.setCOFINSNT(cgrp);
-						impostos.setCOFINS(cofinsnfe);
+						//	Motivo da desoneração do ICMS
+						if (suframa != null && !suframa.trim().isEmpty())
+							icmsgrupo.setMotDesICMS (MOT_DESONERA_SUFRAMA);
 						
-					}
-					else
-					{
-						COFINSOutrGrupoBean cgrp = new COFINSOutrGrupoBean();
-						//
-						cgrp.setCST(lt.getCST());
-						cgrp.setvCOFINS(TextUtil.bigdecimalToString(lt.getvImposto()));// vPIS - Valor do PIS
-						cgrp.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));// vBC - Base de calculo do PIS
-						cgrp.setpCOFINS(TextUtil.bigdecimalToString(lt.getpImposto()));// pPIS - percentual do pis
-						//
-						cofinsnfe.setCOFINSOutr(cgrp);
-						impostos.setCOFINS(cofinsnfe);
-					}
-				} //COFINS
-
-				else if(lt.getTaxIndicator().toUpperCase().equals("IPI"))
-				{
-					String CST = lt.getCST();
-					//
-					if (CST == null || CST.isEmpty() || CST.length() != 2)
-					{
-						//	ENTRADA
-						if (Integer.valueOf(TextUtil.lPad(TextUtil.toNumeric(nfLine.getlbr_CFOPName()),4)
-								.substring(0, 1)).intValue() < 5)
-							CST = "00";
+						//	FIXME: Criar condições para preencher outros valores
 						else
-							CST = "50";
+							icmsgrupo.setMotDesICMS (MOT_DESONERA_OUTROS);
 					}
 					
-					if  (nfLine.getIPIAmt() == null || nfLine.getIPIAmt().signum() == 0)
-					{ 
-						//	ISENTO
-						if (CST.equals("00"))
-							CST = "02";
-						else if (CST.equals("50"))
-							CST = "52";
-					}
-					//
-					if (CST.endsWith("0") || CST.endsWith("9"))
+					//	Percentual da Redução de BC
+					if (TextUtil.match (taxStatus, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70))
+						icmsgrupo.setpRedBC (TextUtil.bigdecimalToString (lt.getpRedBC()));
+					
+					//	Percentual da Redução de BC
+					if (TextUtil.match (taxStatus, CST_ICMS_90, CST_ICMS_Part, CSOSN_900))
+						icmsgrupo.setpRedBC2 (TextUtil.bigdecimalToString (lt.getpRedBC()));
+					
+					//	Substituição Tributária
+					if (TextUtil.match (taxStatus, CST_ICMS_10, CST_ICMS_30, CST_ICMS_70, CST_ICMS_90, CST_ICMS_Part, CSOSN_201, CSOSN_202, CSOSN_203, CSOSN_900))
 					{
-						ipigrupo.setCST(CST);
-						ipigrupo.setvIPI(TextUtil.bigdecimalToString(lt.getvImposto()));
-						ipigrupo.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
-						ipigrupo.setpIPI(TextUtil.bigdecimalToString(lt.getpImposto()));
-						ipinfe.setcEnq("999");	//	Deixar 999 até a RBF criar a regra.
-						ipinfe.setIPI(ipigrupo);
-						xstream.useAttributeFor(ImpostoIPIBean.class, "IPI");
-						xstream.aliasField("IPITrib", ImpostoIPIBean.class, "IPI");
-						impostos.setIPI(ipinfe);
+						if (taxST == null)
+							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						
+						//	FIXME: Modalidade da BC
+						icmsgrupo.setModBCST (MOD_BC_MVA);
+						
+						//	TODO: IVA		
+//						icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+						if (taxST.getpRedBC() != null && taxST.getpRedBC().signum() > 0)
+							icmsgrupo.setpRedBCST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+						icmsgrupo.setvBCST (TextUtil.bigdecimalToString (taxST.getvBC()));
+						icmsgrupo.setpICMSST (TextUtil.bigdecimalToString (taxST.getpImposto()));
+						icmsgrupo.setvICMSST (TextUtil.bigdecimalToString (taxST.getvImposto()));
+					}
+
+					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST, CSOSN_500))
+					{
+						if (taxST == null)
+							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						//
+						icmsgrupo.setvBCSTRet (TextUtil.bigdecimalToString (taxST.getvBC()));
+						icmsgrupo.setvICMSSTRet (TextUtil.bigdecimalToString (taxST.getvImposto()));
+					}
+					
+					if (TextUtil.match (taxStatus, CST_ICMS_ST))
+					{
+						icmsgrupo.setvBCSTDest (TextUtil.bigdecimalToString (taxST.getvBC()));
+						icmsgrupo.setvICMSSTDest (TextUtil.bigdecimalToString (taxST.getvImposto()));
+					}
+					
+					if (TextUtil.match (taxStatus, CST_ICMS_Part))
+					{
+						icmsgrupo.setpBCOp (TextUtil.bigdecimalToString (lt.getpRedBC()));
+						icmsgrupo.setUFST (nf.getlbr_BPRegion());
+					}
+					
+					if (TextUtil.match (taxStatus, CSOSN_101, CSOSN_201, CSOSN_900))
+					{
+						icmsgrupo.setpCredSN (TextUtil.bigdecimalToString (lt.getpImposto()));
+						icmsgrupo.setvCredICMSSN (TextUtil.bigdecimalToString (lt.getvImposto()));
+					}
+					
+					icmsnfe.setDetails (icmsgrupo, taxStatus);
+					impostos.setICMS (icmsnfe);
+				} 	//	ICMS
+
+				else if	(IPI.equals (taxIndicator))
+				{
+					ipigrupo.setCST (taxStatus);
+					//
+					if (TextUtil.match (taxStatus, CST_IPI_00, CST_IPI_49, CST_IPI_50, CST_IPI_99))
+					{
+						ipigrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
+						ipigrupo.setpIPI (TextUtil.bigdecimalToString (lt.getpImposto()));
+//						ipigrupo.setqUnid("");
+//						ipigrupo.setvUnid("");
+						ipigrupo.setvIPI (TextUtil.bigdecimalToString (lt.getvImposto()));
+						//
+						ipinfe.setIPI (ipigrupo);
 					}
 					else
+						ipinfe.setIPINT (ipigrupo);
+					
+//					ipinfe.setcEnq ("");
+//					ipinfe.setCNPJProd ("");
+//					ipinfe.setcSelo ("");
+//					ipinfe.setqSelo ("");
+					ipinfe.setcEnq (ENQ_IPI_999);
+					impostos.setIPI(ipinfe);
+				}	//	IPI
+				
+				else if (PIS.equals (taxIndicator))
+				{
+					pisgrupo.setCST (taxStatus);
+					pisgrupo.setvPIS (TextUtil.bigdecimalToString (lt.getvImposto()));
+					
+					// Somente PISAliq e PISOutr
+					if (!TextUtil.match (taxStatus, CST_PC_03, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
 					{
-						ImpostoIPINTBean ipintnfe = new ImpostoIPINTBean(); // IPI
-						ipigrupo.setCST(CST);
-						ipintnfe.setcEnq("999");
-						ipintnfe.setIPI(ipigrupo);
-						xstream.useAttributeFor(ImpostoIPINTBean.class,"IPI");
-						xstream.aliasField("IPINT", ImpostoIPINTBean.class, "IPI");
-						xstream.processAnnotations(TributosInciBean.class);
-						impostos.setIPINT(ipintnfe);
+						pisgrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
+						pisgrupo.setpPIS (TextUtil.bigdecimalToString (lt.getpImposto()));
 					}
-				} //IPI
+					
+					//	Somente PISQtde e PISOutr 
+					if (!TextUtil.match (taxStatus, CST_PC_01, CST_PC_02, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
+					{
+						//	TODO
+//						pisgrupo.setqBCProd (TextUtil.bigdecimalToString (lt.getvBC()));
+//						pisgrupo.setvAliqProd (TextUtil.bigdecimalToString (lt.getpImposto()));
+					}
+					
+					pisnfe.setDetails (pisgrupo, taxStatus);
+					impostos.setPIS(pisnfe);
+				} 	//	PIS
 
-				else if(lt.getTaxIndicator().equals("II")) {
-					impostodi.setvBC(TextUtil.bigdecimalToString(lt.getvBC()));
-					impostodi.setvDespAdu(TextUtil.ZERO_STRING);
-					impostodi.setvII(TextUtil.bigdecimalToString(lt.getvImposto()));
-					impostodi.setvIOF(TextUtil.ZERO_STRING);
-					impostos.setII(impostodi);
-				} //II
+				else if (COFINS.equals (taxIndicator))
+				{
+					cofinsgrupo.setCST (taxStatus);
+					cofinsgrupo.setvCOFINS (TextUtil.bigdecimalToString (lt.getvImposto()));
+					
+					// Somente PISAliq e PISOutr
+					if (!TextUtil.match (taxStatus, CST_PC_03, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
+					{
+						cofinsgrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
+						cofinsgrupo.setpCOFINS (TextUtil.bigdecimalToString (lt.getpImposto()));
+					}
+					
+					//	Somente PISQtde e PISOutr 
+					if (!TextUtil.match (taxStatus, CST_PC_01, CST_PC_02, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
+					{
+						//	TODO
+//						cofinsgrupo.setqBCProd (TextUtil.bigdecimalToString (lt.getvBC()));
+//						cofinsgrupo.setvAliqProd (TextUtil.bigdecimalToString (lt.getpImposto()));
+					}
+					
+					cofinsnfe.setDetails (cofinsgrupo, taxStatus);
+					impostos.setCOFINS(cofinsnfe);
+				}	//	COFINS
 
-				else if(lt.getTaxIndicator().equals("ISSQN")) {
-					//TNFe.InfNFe.Det.Imposto.ISSQN issqn =
-					//obj.createTNFeInfNFeDetImpostoISSQN();
-					//imposto.setISSQN(issqn);
-				} //ISSQN
+				else if (II.equals (taxIndicator))
+				{
+					impostodi.setvBC (TextUtil.bigdecimalToString(lt.getvBC()));
+					impostodi.setvDespAdu (TextUtil.ZERO_STRING);
+					impostodi.setvII (TextUtil.bigdecimalToString(lt.getvImposto()));
+					impostodi.setvIOF (TextUtil.ZERO_STRING);
+					impostos.setII (impostodi);
+				}	//	II
 
-			}//Impostos das Linhas
+				else if (ISSQN.equals (taxIndicator))
+				{
+				}	//	ISSQN
+				
+				else
+					log.info("Tax not included in XML: " + taxIndicator);
 
-		}//	Linhas da NF
+			}	//	Impostos das Linhas
+
+		}	//	Linhas da NF
 
 
 		String dadosAdi = RemoverAcentos.remover(TextUtil.removeEOL(nf.getDescription()));

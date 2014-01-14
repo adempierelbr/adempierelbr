@@ -21,13 +21,20 @@ public class ImpostoIPIBean {
 	private String cSelo;
 	private String qSelo;
 	private String cEnq;
-	private ImpostoIPIGrupoBean IPI ;
+	private ImpostoIPIGrupoBean IPITrib ;
+	private ImpostoIPIGrupoBean IPINT ;
 	
 	public ImpostoIPIGrupoBean getIPI() {
-		return IPI;
+		return IPITrib;
 	}
 	public void setIPI(ImpostoIPIGrupoBean ipi) {
-		IPI = ipi;
+		IPITrib = ipi;
+	}	
+	public ImpostoIPIGrupoBean getIPINT() {
+		return IPINT;
+	}
+	public void setIPINT(ImpostoIPIGrupoBean ipi) {
+		IPINT = ipi;
 	}
 	public String getClEnq() {
 		return clEnq;
