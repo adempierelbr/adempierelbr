@@ -911,7 +911,7 @@ public class NFeXMLGenerator
 				if (taxStatus == null && taxST != null)
 					taxStatus = taxST.getCST();
 				
-				else if (taxStatus == null)
+				if (taxStatus == null)
 					throw new AdempiereException ("Invalid CST for Tax " + taxIndicator + " Line #" + nfLine.getLine());
 				
 				if (ICMS.equals (taxIndicator)) 
