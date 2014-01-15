@@ -16,9 +16,9 @@ public class ImpostoIPIGrupoBean {
 	private String CST;
 	private String vBC;
 	private String pIPI;
-	private String vIPI;
 	private String qUnid;
 	private String vUnid;
+	private String vIPI;
 	
 	public String getCST() {
 		return CST;

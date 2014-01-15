@@ -12,40 +12,68 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-public class COFINSBean {
+import org.adempierelbr.nfe.NFeXMLGenerator;
+import org.adempierelbr.util.TextUtil;
 
-	// COFINS - Definir Grupo de COFINS
-	
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+public class COFINSBean 
+{
+	@XStreamAlias ("COFINSAliq")
 	private COFINSGrupoBean COFINS;
-	private COFINSNTGrupoBean COFINSNT;
-	private COFINSOutrGrupoBean COFINSOutr;
+	private COFINSGrupoBean COFINSQtde;
+	private COFINSGrupoBean COFINSNT;
+	private COFINSGrupoBean COFINSOutr;
 
-	public COFINSGrupoBean getCOFINS() {
+	public COFINSGrupoBean getCOFINS()
+	{
 		return COFINS;
 	}
-
-	public void setCOFINS(COFINSGrupoBean cofins) {
+	public void setCOFINS(COFINSGrupoBean cofins) 
+	{
 		COFINS = cofins;
 	}
-	
-	public COFINSNTGrupoBean getCOFINSNT()
+	public COFINSGrupoBean getCOFINSQtde()
+	{
+		return COFINSQtde;
+	}
+	public void setCOFINSQtde(COFINSGrupoBean cofins)
+	{
+		COFINSQtde = cofins;
+	}
+	public COFINSGrupoBean getCOFINSNT()
 	{
 		return COFINSNT;
 	}
-	public void setCOFINSNT(COFINSNTGrupoBean cofins)
+	public void setCOFINSNT(COFINSGrupoBean cofins)
 	{
 		COFINSNT = cofins;
 	}
-	public COFINSOutrGrupoBean getCOFINSOutr()
+	public COFINSGrupoBean getCOFINSOutr()
 	{
 		return COFINSOutr;
 	}
-	
-	public void setCOFINSOutr(COFINSOutrGrupoBean cofins)
+	public void setCOFINSOutr(COFINSGrupoBean cofins)
 	{
 		COFINSOutr = cofins;
 	}
+	
+	public void setDetails (COFINSGrupoBean detCOFINS, String CST_CSOSN)
+	{
+		if (CST_CSOSN == null || detCOFINS == null)
+			return;
+		
+		if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_01, NFeXMLGenerator.CST_PC_02))
+			setCOFINS (detCOFINS);
 
-	
-	
-}
+		else if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_03))
+			setCOFINSQtde (detCOFINS);
+		
+		else if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_04, NFeXMLGenerator.CST_PC_06, NFeXMLGenerator.CST_PC_07, 
+								NFeXMLGenerator.CST_PC_08, NFeXMLGenerator.CST_PC_09))
+			setCOFINSNT (detCOFINS);
+		
+		else
+			setCOFINSOutr (detCOFINS);
+	}
+}	//	COFINSBean

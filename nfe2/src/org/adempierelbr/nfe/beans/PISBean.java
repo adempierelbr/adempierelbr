@@ -12,38 +12,68 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-public class PISBean {
+import org.adempierelbr.nfe.NFeXMLGenerator;
+import org.adempierelbr.util.TextUtil;
 
-	// PIS - Definir Grupo do PIS
-	
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+public class PISBean 
+{
+	@XStreamAlias ("PISAliq")
 	private PISGrupoBean PIS;
-	private PISNTGrupoBean PISNT;
-	private PISOutrGrupoBean PISOutr;
+	private PISGrupoBean PISQtde;
+	private PISGrupoBean PISNT;
+	private PISGrupoBean PISOutr;
 
-	public PISGrupoBean getPIS() {
+	public PISGrupoBean getPIS() 
+	{
 		return PIS;
 	}
-
-	public void setPIS(PISGrupoBean pis) {
+	public void setPIS(PISGrupoBean pis) 
+	{
 		PIS = pis;
 	}
-	
-	public PISNTGrupoBean getPISNT() {
+	public PISGrupoBean getPISQtde() 
+	{
+		return PISQtde;
+	}
+	public void setPISQtde(PISGrupoBean pis) 
+	{
+		PISQtde = pis;
+	}
+	public PISGrupoBean getPISNT() 
+	{
 		return PISNT;
 	}
-
-	public void setPISNT(PISNTGrupoBean pis) {
+	public void setPISNT(PISGrupoBean pis) 
+	{
 		PISNT = pis;
 	}
-	
-	public PISOutrGrupoBean getPISOutr() {
+	public PISGrupoBean getPISOutr() 
+	{
 		return PISOutr;
 	}
-
-	public void setPISOutr(PISOutrGrupoBean pis) {
+	public void setPISOutr(PISGrupoBean pis) 
+	{
 		PISOutr = pis;
 	}
-
-
 	
-}
+	public void setDetails (PISGrupoBean detPIS, String CST_CSOSN)
+	{
+		if (CST_CSOSN == null || detPIS == null)
+			return;
+		
+		if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_01, NFeXMLGenerator.CST_PC_02))
+			setPIS (detPIS);
+
+		else if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_03))
+			setPISQtde (detPIS);
+		
+		else if (TextUtil.match(CST_CSOSN, NFeXMLGenerator.CST_PC_04, NFeXMLGenerator.CST_PC_06, NFeXMLGenerator.CST_PC_07, 
+								NFeXMLGenerator.CST_PC_08, NFeXMLGenerator.CST_PC_09))
+			setPISNT (detPIS);
+		
+		else
+			setPISOutr (detPIS);
+	}
+}	//	PISBean
