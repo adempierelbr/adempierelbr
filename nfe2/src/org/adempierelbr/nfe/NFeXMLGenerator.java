@@ -908,15 +908,15 @@ public class NFeXMLGenerator
 				//
 				String taxStatus = lt.getCST();
 				
-				if (taxStatus == null && taxST != null)
-					taxStatus = taxST.getCST();
-				
 				if (taxStatus == null)
 					throw new AdempiereException ("Invalid CST for Tax " + taxIndicator + " Line #" + nfLine.getLine());
 				
 				if (ICMS.equals (taxIndicator)) 
 				{
 					icmsgrupo.setOrig (prdt.get_ValueAsString("lbr_ProductSource"));
+					
+					if (taxST != null && taxST.getCST() != null)
+						taxStatus = taxST.getCST();
 					
 					if (TextUtil.match (taxStatus, CST_ICMS_00, CST_ICMS_10, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70, CST_ICMS_90, CST_ICMS_Part, CSOSN_900))
 					{
