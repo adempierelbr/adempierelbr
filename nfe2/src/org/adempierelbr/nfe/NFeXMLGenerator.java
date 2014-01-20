@@ -918,29 +918,38 @@ public class NFeXMLGenerator
 					}
 					
 					//	Percentual da Redução de BC
-					if (TextUtil.match (taxStatus, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70))
+					if (TextUtil.match (taxStatus, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70)
+							&& lt.getpRedBC() != null && lt.getpRedBC().signum() > 0)
 						icmsgrupo.setpRedBC (TextUtil.bigdecimalToString (lt.getpRedBC()));
 					
 					//	Percentual da Redução de BC
-					if (TextUtil.match (taxStatus, CST_ICMS_90, CST_ICMS_Part, CSOSN_900))
-						icmsgrupo.setpRedBC2 (TextUtil.bigdecimalToString (lt.getpRedBC()));
+					if (TextUtil.match (taxStatus, CST_ICMS_90, CST_ICMS_Part, CSOSN_900)
+							&& lt.getpRedBC() != null && lt.getpRedBC().signum() > 0)
+							icmsgrupo.setpRedBC2 (TextUtil.bigdecimalToString (lt.getpRedBC()));
 					
 					//	Substituição Tributária
 					if (TextUtil.match (taxStatus, CST_ICMS_10, CST_ICMS_30, CST_ICMS_70, CST_ICMS_90, CST_ICMS_Part, CSOSN_201, CSOSN_202, CSOSN_203, CSOSN_900))
 					{
 						if (taxST == null)
-							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						{
+							if (!TextUtil.match (taxStatus, CSOSN_900))
+								throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						}
 						
-						//	FIXME: Modalidade da BC
-						icmsgrupo.setModBCST (MOD_BC_MVA);
-						
-						//	TODO: IVA		
-//						icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
-						if (taxST.getpRedBC() != null && taxST.getpRedBC().signum() > 0)
-							icmsgrupo.setpRedBCST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
-						icmsgrupo.setvBCST (TextUtil.bigdecimalToString (taxST.getvBC()));
-						icmsgrupo.setpICMSST (TextUtil.bigdecimalToString (taxST.getpImposto()));
-						icmsgrupo.setvICMSST (TextUtil.bigdecimalToString (taxST.getvImposto()));
+						//	Not null
+						else
+						{
+							//	FIXME: Modalidade da BC
+							icmsgrupo.setModBCST (MOD_BC_MVA);
+							
+							//	TODO: IVA		
+	//						icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+							if (taxST.getpRedBC() != null && taxST.getpRedBC().signum() > 0)
+								icmsgrupo.setpRedBCST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+							icmsgrupo.setvBCST (TextUtil.bigdecimalToString (taxST.getvBC()));
+							icmsgrupo.setpICMSST (TextUtil.bigdecimalToString (taxST.getpImposto()));
+							icmsgrupo.setvICMSST (TextUtil.bigdecimalToString (taxST.getvImposto()));
+						}
 					}
 
 					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST, CSOSN_500))
