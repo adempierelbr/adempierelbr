@@ -1032,11 +1032,11 @@ public class NFeXMLGenerator
 				else if (PIS.equals (taxIndicator))
 				{
 					pisgrupo.setCST (taxStatus);
-					pisgrupo.setvPIS (TextUtil.bigdecimalToString (lt.getvImposto()));
 					
 					// Somente PISAliq e PISOutr
 					if (!TextUtil.match (taxStatus, CST_PC_03, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
 					{
+						pisgrupo.setvPIS (TextUtil.bigdecimalToString (lt.getvImposto()));
 						pisgrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
 						pisgrupo.setpPIS (TextUtil.bigdecimalToString (lt.getpImposto()));
 					}
@@ -1045,6 +1045,7 @@ public class NFeXMLGenerator
 					if (!TextUtil.match (taxStatus, CST_PC_01, CST_PC_02, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
 					{
 						//	TODO
+						pisgrupo.setvPIS (TextUtil.bigdecimalToString (lt.getvImposto()));
 //						pisgrupo.setqBCProd (TextUtil.bigdecimalToString (lt.getvBC()));
 //						pisgrupo.setvAliqProd (TextUtil.bigdecimalToString (lt.getpImposto()));
 					}
@@ -1056,11 +1057,11 @@ public class NFeXMLGenerator
 				else if (COFINS.equals (taxIndicator))
 				{
 					cofinsgrupo.setCST (taxStatus);
-					cofinsgrupo.setvCOFINS (TextUtil.bigdecimalToString (lt.getvImposto()));
 					
 					// Somente PISAliq e PISOutr
 					if (!TextUtil.match (taxStatus, CST_PC_03, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
 					{
+						cofinsgrupo.setvCOFINS (TextUtil.bigdecimalToString (lt.getvImposto()));
 						cofinsgrupo.setvBC (TextUtil.bigdecimalToString (lt.getvBC()));
 						cofinsgrupo.setpCOFINS (TextUtil.bigdecimalToString (lt.getpImposto()));
 					}
@@ -1069,6 +1070,7 @@ public class NFeXMLGenerator
 					if (!TextUtil.match (taxStatus, CST_PC_01, CST_PC_02, CST_PC_04, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
 					{
 						//	TODO
+						cofinsgrupo.setvCOFINS (TextUtil.bigdecimalToString (lt.getvImposto()));
 //						cofinsgrupo.setqBCProd (TextUtil.bigdecimalToString (lt.getvBC()));
 //						cofinsgrupo.setvAliqProd (TextUtil.bigdecimalToString (lt.getpImposto()));
 					}
