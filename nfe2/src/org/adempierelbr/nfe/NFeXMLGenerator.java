@@ -975,11 +975,8 @@ public class NFeXMLGenerator
 
 					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST, CSOSN_500))
 					{
-						if (taxST == null)
-							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
-						//
-						icmsgrupo.setvBCSTRet (TextUtil.bigdecimalToString (taxST.getvBC()));
-						icmsgrupo.setvICMSSTRet (TextUtil.bigdecimalToString (taxST.getvImposto()));
+						icmsgrupo.setvBCSTRet (TextUtil.bigdecimalToString (taxST == null? Env.ZERO : taxST.getvBC()));
+						icmsgrupo.setvICMSSTRet (TextUtil.bigdecimalToString (taxST == null? Env.ZERO : taxST.getvImposto()));
 					}
 					
 					if (TextUtil.match (taxStatus, CST_ICMS_ST))
