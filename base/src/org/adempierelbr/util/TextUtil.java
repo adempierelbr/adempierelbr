@@ -70,7 +70,7 @@ public abstract class TextUtil
 	public static final String PIPE = "|";
 
 	/**	Round 			*/
-	public static final String ZERO_STRING = Env.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+	public static final String ZERO_STRING = Env.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
 
 	/** Alfabeto        */
 	public static final String[] ALFAB = {"A","B","C","D","E",

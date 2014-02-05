@@ -9,6 +9,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
@@ -79,7 +80,7 @@ public class NFeInutilizacao
 		
 		NfeInutilizacao2Stub.NfeDadosMsg dadosMsg = NfeInutilizacao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecInutilizacao(region);
-		NfeInutilizacao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+		NfeInutilizacao2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.INUTILIZACAO, envType, NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
 		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub();
 
 		String respLote = stub.nfeInutilizacaoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();

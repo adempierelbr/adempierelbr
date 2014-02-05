@@ -22,6 +22,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MBPartnerLocation;
@@ -48,7 +49,7 @@ public class ProcConsultaCadastro extends SvrProcess
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcConsultaCadastro.class);
 
-	private int p_C_BPartner_ID          = 0;
+//	private int p_C_BPartner_ID          = 0;
 	private int p_C_BPartner_Location_ID = 0;
 
 	/**
@@ -62,8 +63,8 @@ public class ProcConsultaCadastro extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
-			else if (name.equals("C_BPartner_ID"))
-				p_C_BPartner_ID = para[i].getParameterAsInt();
+//			else if (name.equals("C_BPartner_ID"))
+//				p_C_BPartner_ID = para[i].getParameterAsInt();
 			else if (name.equals("C_BPartner_Location_ID"))
 				p_C_BPartner_Location_ID = para[i].getParameterAsInt();
 			else
@@ -107,15 +108,16 @@ public class ProcConsultaCadastro extends SvrProcess
 		//
 		String status = "Erro na verificação de Status";
 
-		try{
+		try
+		{
 			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpRegion,bpIE,bpCNPJ)));
 
-			CadConsultaCadastro2Stub.setAmbiente("1",orgLoc.getC_Region_ID());
-			CadConsultaCadastro2Stub.NfeDadosMsg dadosMsg = CadConsultaCadastro2Stub.NfeDadosMsg.Factory.parse(dadosXML);
+			CadConsultaCadastro2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.CADCONSULTACADASTRO, "1", NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
+			CadConsultaCadastro2Stub.ConsultaCadastro2 dadosMsg = CadConsultaCadastro2Stub.ConsultaCadastro2.Factory.parse(dadosXML);
 			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
 			CadConsultaCadastro2Stub stub = new CadConsultaCadastro2Stub();
 
-			String respStatus = stub.consultaCadastro2(dadosMsg,cabecMsgE).getExtraElement().toString();
+			String respStatus = stub.consultaCadastro2 (dadosMsg,cabecMsgE).getConsultaCadastro2Result().getExtraElement().toString();
 
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));

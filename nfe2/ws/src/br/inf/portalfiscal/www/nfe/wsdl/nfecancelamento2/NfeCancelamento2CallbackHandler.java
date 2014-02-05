@@ -1,62 +1,66 @@
+
 /**
  * NfeCancelamento2CallbackHandler.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.1  Built on : Oct 19, 2009 (10:59:00 EDT)
+ * by the Apache Axis2 version: 1.6.2  Built on : Apr 17, 2012 (05:33:49 IST)
  */
 
-package br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2;
+    package br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2;
 
-/**
- * NfeCancelamento2CallbackHandler Callback class, Users can extend this class
- * and implement their own receiveResult and receiveError methods.
- */
-public abstract class NfeCancelamento2CallbackHandler {
+    /**
+     *  NfeCancelamento2CallbackHandler Callback class, Users can extend this class and implement
+     *  their own receiveResult and receiveError methods.
+     */
+    public abstract class NfeCancelamento2CallbackHandler{
 
-	protected Object clientData;
 
-	/**
-	 * User can pass in any object that needs to be accessed once the
-	 * NonBlocking Web service call is finished and appropriate method of this
-	 * CallBack is called.
-	 * 
-	 * @param clientData
-	 *            Object mechanism by which the user can pass in user data that
-	 *            will be avilable at the time this callback is called.
-	 */
-	public NfeCancelamento2CallbackHandler(Object clientData) {
-		this.clientData = clientData;
-	}
 
-	/**
-	 * Please use this constructor if you don't want to set any clientData
-	 */
-	public NfeCancelamento2CallbackHandler() {
-		this.clientData = null;
-	}
+    protected Object clientData;
 
-	/**
-	 * Get the client data
-	 */
+    /**
+    * User can pass in any object that needs to be accessed once the NonBlocking
+    * Web service call is finished and appropriate method of this CallBack is called.
+    * @param clientData Object mechanism by which the user can pass in user data
+    * that will be avilable at the time this callback is called.
+    */
+    public NfeCancelamento2CallbackHandler(Object clientData){
+        this.clientData = clientData;
+    }
 
-	public Object getClientData() {
-		return clientData;
-	}
+    /**
+    * Please use this constructor if you don't want to set any clientData
+    */
+    public NfeCancelamento2CallbackHandler(){
+        this.clientData = null;
+    }
 
-	/**
-	 * auto generated Axis2 call back method for nfeCancelamentoNF2 method
-	 * override this method for handling normal response from nfeCancelamentoNF2
-	 * operation
-	 */
-	public void receiveResultnfeCancelamentoNF2(
-			br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub.NfeCancelamentoNF2Result result) {
-	}
+    /**
+     * Get the client data
+     */
 
-	/**
-	 * auto generated Axis2 Error handler override this method for handling
-	 * error response from nfeCancelamentoNF2 operation
-	 */
-	public void receiveErrornfeCancelamentoNF2(java.lang.Exception e) {
-	}
+     public Object getClientData() {
+        return clientData;
+     }
 
-}
+        
+           /**
+            * auto generated Axis2 call back method for nfeCancelamentoNF2 method
+            * override this method for handling normal response from nfeCancelamentoNF2 operation
+            */
+           public void receiveResultnfeCancelamentoNF2(
+                    br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub.NfeCancelamentoNF2Result result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from nfeCancelamentoNF2 operation
+           */
+            public void receiveErrornfeCancelamentoNF2(java.lang.Exception e) {
+            }
+                
+
+
+    }
+    

@@ -21,6 +21,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MLocation;
@@ -90,7 +91,7 @@ public class ProcStatusServico extends SvrProcess
 			NfeStatusServico2Stub.NfeDadosMsg dadosMsg = NfeStatusServico2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeStatusServico2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecStatusServico(region);
 
-			NfeStatusServico2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeStatusServico2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, envType, NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
 			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();
 
 			String respStatus = stub.nfeStatusServicoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();
