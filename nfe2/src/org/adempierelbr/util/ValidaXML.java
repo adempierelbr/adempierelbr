@@ -31,6 +31,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.util.CLogger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -48,6 +49,21 @@ public class ValidaXML
 	 * deixando os arquivos em memória após a primeira chamada.
 	 */
 	private static Map<String,Validator> mapvalidator = new HashMap<String,Validator>();
+	
+	/** 
+	 * 		Método que faz a validação de arquivos XML. 
+	 * 
+	 * @param xmlContent 
+	 * @param xsdName 
+	 * @throws Throwable 
+	 */  
+	public static void ValidaDocEx (String xmlContent, String xsdName) throws AdempiereException
+	{
+		String result = ValidaDoc (xmlContent, xsdName);
+		//
+		if (result != null && result.length() > 0)
+			throw new AdempiereException ("Erro validando o XML\n\nXSD: " + xsdName + "\n\nErros: " + result);
+	}	//	ValidaDocEx
 	
 	 /** 
 	 * Método que faz a validação de arquivos XML. 

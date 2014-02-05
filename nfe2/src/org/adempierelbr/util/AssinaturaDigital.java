@@ -74,6 +74,7 @@ public class AssinaturaDigital
 	public static final String INUTILIZACAO_NFE		="3";
 	public static final String CARTADECORRECAO_CCE	="4";
 	public static final String RPS					="5";
+	public static final String RECEPCAO_MDFE		="6";
 	
 	/**		Algoritmos		*/
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
@@ -213,6 +214,8 @@ public class AssinaturaDigital
 			tag = "infEvento";
 		else if (docType.equals(RPS))
 			tag = "RPS";
+		else if (docType.equals(RECEPCAO_MDFE))
+			tag = "infMDFe";
 		//
 		Reference r = null;
 		
