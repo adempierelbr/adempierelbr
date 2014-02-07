@@ -32,6 +32,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -963,16 +964,12 @@ public abstract class TextUtil
 	 * 	@param strings
 	 * 	@return TRUE se a lista contém a string, senão FALSO
 	 */
-	public static boolean match (String stra, String... strings)
+	public static boolean match (Object obj, Object... objects)
 	{
-		if (stra == null)
+		if (obj == null || objects == null || objects.length == 0)
 			return false;
 		//
-		for (String string : strings)
-			if (stra.equals (string))
-				return true;
-		//
-		return false;	
+		return Arrays.asList (objects).contains (obj);
 	}	//	match
 
 }	//	TextUtil

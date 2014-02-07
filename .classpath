@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
-	<classpathentry kind="src" path="nfe2/src"/>
+	<classpathentry excluding="org/adempierelbr/nfe/xsd/PL_008b/" kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
 	<classpathentry kind="src" path="nfse/src"/>
 	<classpathentry kind="src" path="rdef/src"/>
