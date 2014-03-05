@@ -32,6 +32,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -70,7 +71,7 @@ public abstract class TextUtil
 	public static final String PIPE = "|";
 
 	/**	Round 			*/
-	public static final String ZERO_STRING = Env.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+	public static final String ZERO_STRING = Env.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
 
 	/** Alfabeto        */
 	public static final String[] ALFAB = {"A","B","C","D","E",
@@ -608,6 +609,10 @@ public abstract class TextUtil
 	public static String checkSize(String value, int min, int max){
 		return checkSize(value,min,max,' ');
 	}
+	
+	public static String checkSize(String value, int max){
+		return checkSize(value,0,max,' ');
+	}
 
 	/**
 	 * 	Verifica se a string está entre os valores minímos e máximo
@@ -879,7 +884,7 @@ public abstract class TextUtil
 		if (value == null)
 			return ZERO_STRING;
 
-		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString();
 	} //bigdecimalToString
 
 	/**
@@ -951,5 +956,20 @@ public abstract class TextUtil
 
 		return whereClause.trim();
 	} //checkWhereClause
+	
+	/**
+	 * 	Verifica se lista contém uma determinada string.
+	 * 
+	 * 	@param stra
+	 * 	@param strings
+	 * 	@return TRUE se a lista contém a string, senão FALSO
+	 */
+	public static boolean match (Object obj, Object... objects)
+	{
+		if (obj == null || objects == null || objects.length == 0)
+			return false;
+		//
+		return Arrays.asList (objects).contains (obj);
+	}	//	match
 
 }	//	TextUtil

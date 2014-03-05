@@ -15,10 +15,16 @@ package org.adempierelbr.nfe.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DadosNFE {
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+@XStreamAlias("infNFe")
+public class DadosNFE 
+{
 	// Dados da Nota Fiscal Eletronica
+	@XStreamAsAttribute
 	private String versao;
+	@XStreamAsAttribute
 	private String Id;
 	private String pk_nitem;	
 	private IdentNFE ide;

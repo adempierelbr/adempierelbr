@@ -15,6 +15,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
@@ -76,7 +77,7 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 		MLBRNFeWebService ws = get (name, envType, versionNo, C_Region_ID);
 		//
 		if (ws == null)
-			return null;
+			throw new AdempiereException ("Webservice not found for region [" + name + ", " + Integer.toString(C_Region_ID)  + "] environment [" + envType + "]");
 		//
 		return ws.getURL();
 	}	//	getURL

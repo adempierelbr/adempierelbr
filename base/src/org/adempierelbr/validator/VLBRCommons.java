@@ -13,23 +13,24 @@
  *****************************************************************************/
 package org.adempierelbr.validator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNFeLot;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
+import org.compiere.model.MOrder;
 import org.compiere.model.MRequisition;
 import org.compiere.model.MRequisitionLine;
 import org.compiere.model.MSysConfig;
@@ -44,6 +45,10 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
+import org.compiere.util.Msg;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * 		Procedimentos comuns, necessários para o LBR
@@ -93,6 +98,8 @@ public class VLBRCommons implements ModelValidator
 		engine.addModelChange (MLocation.Table_Name, this);
 		engine.addModelChange (MBankAccount.Table_Name, this);
 		engine.addModelChange (MAttributeSetInstance.Table_Name, this);
+		engine.addModelChange (MInvoice.Table_Name, this);
+		engine.addModelChange (MOrder.Table_Name, this);
 		
 		//	DocValidate
 		engine.addDocValidate(MTimeExpense.Table_Name, this);
@@ -161,10 +168,18 @@ public class VLBRCommons implements ModelValidator
 		//	Organização da Conta Bancária
 		else if (MBankAccount.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MBankAccount) po, type);
-		
+
 		//	Validar Número de Série Duplicados
 		else if (MAttributeSetInstance.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MAttributeSetInstance) po, type);
+
+		//	Validar Tipo de Documento
+		else if (MOrder.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MOrder) po, type);
+
+		//	Validar Tipo de Documento
+		else if (MInvoice.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MInvoice) po, type);
 		
 		return null;
 	}	//	modelChange
@@ -186,6 +201,28 @@ public class VLBRCommons implements ModelValidator
 			
 			if (cce.isProcessed())
 				return "N\u00E3o \u00E9 permitido alterar um anexo de um registro j\u00E1 processado.";
+		}
+		
+		if (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW)
+		{
+			if (att.getAD_Table_ID() == MLBRNotaFiscal.Table_ID)
+			{
+				MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(),att.getRecord_ID(), null);
+				
+				if (!nf.isSOTrx())
+				{
+					for (MAttachmentEntry entry : att.getEntries())
+					{
+						XStream stream = new XStream(new DomDriver());
+						stream.processAnnotations(XMLNotaFiscalEntrada.class);
+						stream.alias("XMLNotaFiscalEntrada", XMLNotaFiscalEntrada.class);
+						
+						XMLNotaFiscalEntrada nfeentrada = (XMLNotaFiscalEntrada) stream.fromXML(TextUtil.readFile(entry.getFile()));
+						
+						System.out.println(nfeentrada.getID());
+					}
+				}
+			}
 		}
 		
 		return null;
@@ -246,6 +283,64 @@ public class VLBRCommons implements ModelValidator
 		{
 			loc.setCity(loc.getC_City().getName());
 		}
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MOrder order, int type) throws Exception
+	{
+		if (type == TYPE_BEFORE_NEW)
+		{
+			String sql = "SELECT COUNT(*) "
+					+ "FROM C_DocType "
+					+ "WHERE C_DocType.DocBaseType IN ('SOO', 'POO') "
+					+ "AND C_DocType.IsSOTrx=? "
+					+ "AND COALESCE(C_DocType.DocSubTypeSO,' ')<>'RM' "
+					+ "AND C_DocType.C_DocType_ID=?";
+			//
+			int result = DB.getSQLValue (null, sql, new Object[]{order.isSOTrx(), order.getC_DocTypeTarget_ID()});
+			
+			if (result < 1)
+				return Msg.translate(Env.getCtx(), "Tipo de Documento Inválido");
+		}
+		
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MInvoice invoice, int type) throws Exception
+	{
+		if (type == TYPE_BEFORE_NEW)
+		{
+			String sql = "SELECT COUNT(*) "
+					+ "FROM C_DocType "
+					+ "WHERE C_DocType.DocBaseType IN ('SOO', 'POO') "
+					+ "AND C_DocType.IsSOTrx=? "
+					+ "AND COALESCE(C_DocType.DocSubTypeSO,' ')<>'RM' "
+					+ "AND C_DocType.C_DocType_ID=?";
+			//
+			int result = DB.getSQLValue (null, sql, new Object[]{invoice.isSOTrx(), invoice.getC_DocTypeTarget_ID()});
+			
+			if (result < 1)
+				return Msg.translate(Env.getCtx(), "Tipo de Documento Inválido");
+		}
+		
 		return null;
 	}	//	modelChange
 	

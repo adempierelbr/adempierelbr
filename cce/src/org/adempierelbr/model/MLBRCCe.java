@@ -252,7 +252,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		//	Detalhes
 		DetEvento det = new DetEvento ();
 		det.setVersao(NFeUtil.VERSAO_CCE);
-		det.setXCorrecao(getDescription());
+		det.setXCorrecao(getDescription().trim());
 		
 		//	Informações do Evento da Carta de Correção
 		InfEvento cce = new InfEvento ();
@@ -339,10 +339,10 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(header + "<nfeDadosMsg>" + xml.toString() + "</nfeDadosMsg>"));
 
 			//	Prepara a Transmissão
-			MLBRDigitalCertificate.setCertificate (p_ctx, oi.getAD_Org_ID());
+			MLBRDigitalCertificate.setCertificate (getCtx(), oi.getAD_Org_ID());
 			RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
 			RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
-			RecepcaoEventoStub.setAmbiente (ws);
+			RecepcaoEventoStub.setAmbiente (ws.getURL());
 			RecepcaoEventoStub stub = new RecepcaoEventoStub();
 
 			//	Resposta do SEFAZ

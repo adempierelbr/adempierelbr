@@ -259,11 +259,11 @@ public class MLBRTax extends X_LBR_Tax
 				taxAmt = taxAmt.negate();
 			
 			//	Não postar
-			if (!taxLine.islbr_PostTax())
-			{
-				taxBase = Env.ZERO;
-				taxAmt 	= Env.ZERO;
-			}
+//			if (!taxLine.islbr_PostTax())
+//			{
+//				taxBase = Env.ZERO;
+//				taxAmt 	= Env.ZERO;
+//			}
 			//
 			taxLine.setlbr_TaxBaseAmt(taxBase);
 			taxLine.setlbr_TaxAmt(taxAmt);
@@ -593,6 +593,7 @@ public class MLBRTax extends X_LBR_Tax
 		/**
 		 * 	Organization
 		 */
+		log.info ("######## Processing Tax for Organization: " + oi + ", Taxes: " + new MLBRTax(ctx, oi.getLBR_Tax_ID(), null));
 		processTaxes(taxes, oi.getLBR_Tax_ID());
 		
 		/**
@@ -607,11 +608,13 @@ public class MLBRTax extends X_LBR_Tax
 			if (ncmTax != null)
 			{
 				hasSubstitution = ncmTax.islbr_HasSubstitution();
+				log.info ("######## Processing Tax for NCM Line: " + ncmTax + ", Taxes: " + new MLBRTax(ctx, ncmTax.getLBR_Tax_ID(), null));
 				processTaxes(taxes, ncmTax.getLBR_Tax_ID());
 			}
 			else
 			{
 				hasSubstitution = ncm.islbr_HasSubstitution();
+				log.info ("######## Processing Tax for NCM: " + ncm + ", Taxes: " + new MLBRTax(ctx, ncm.getLBR_Tax_ID(), null));
 				processTaxes(taxes, ncm.getLBR_Tax_ID());	//	Legacy
 			}
 		}
@@ -623,10 +626,14 @@ public class MLBRTax extends X_LBR_Tax
 		//
 		if (mICMS != null && mICMS.getLBR_Tax_ID() > 0 && !MProduct.PRODUCTTYPE_Service.equals(p.getProductType()))
 		{
+			log.info ("######## Processing Tax for ICMS Matrix: " + mICMS + ", Taxes: " + new MLBRTax(ctx, mICMS.getLBR_Tax_ID(), null));
 			processTaxes(taxes, mICMS.getLBR_Tax_ID());
 			//
 			if (hasSubstitution && mICMS.getLBR_STTax_ID() > 0)
+			{
+				log.info ("######## Processing Tax for ICMS ST Matrix: " + mICMS + ", Taxes: " + new MLBRTax(ctx, mICMS.getLBR_STTax_ID(), null));
 				processTaxes(taxes, mICMS.getLBR_STTax_ID());
+			}
 		}
 		
 		/**
@@ -637,6 +644,7 @@ public class MLBRTax extends X_LBR_Tax
 		//
 		if (MProduct.PRODUCTTYPE_Service.equals(p.getProductType()) && mISS != null && mISS.getLBR_Tax_ID() > 0)
 		{
+			log.info ("######## Processing Tax for ISS Matrix: " + mISS + ", Taxes: " + new MLBRTax(ctx, mISS.getLBR_Tax_ID(), null));
 			processTaxes(taxes, mISS.getLBR_Tax_ID());
 		}
 		
@@ -657,6 +665,7 @@ public class MLBRTax extends X_LBR_Tax
 				
 				if (tcpg != null)
 				{
+					log.info ("######## Processing Tax for Product Group: " + tcpg + ", Taxes: " + new MLBRTax(ctx, tcpg.getLBR_Tax_ID(), null));
 					processTaxes(taxes, tcpg.getLBR_Tax_ID());
 					//
 					if (tcpg.getLBR_LegalMessage_ID() > 0)
@@ -676,6 +685,7 @@ public class MLBRTax extends X_LBR_Tax
 				
 				if (tcp != null)
 				{
+					log.info ("######## Processing Tax for Product: " + tcp + ", Taxes: " + new MLBRTax(ctx, tcp.getLBR_Tax_ID(), null));
 					processTaxes(taxes, tcp.getLBR_Tax_ID());
 					//
 					if (tcp.getLBR_LegalMessage_ID() > 0)
@@ -693,6 +703,7 @@ public class MLBRTax extends X_LBR_Tax
 			
 			if (tcr != null)
 			{
+				log.info ("######## Processing Tax for Region: " + tcr + ", Taxes: " + new MLBRTax(ctx, tcr.getLBR_Tax_ID(), null));
 				processTaxes(taxes, tcr.getLBR_Tax_ID());
 				//
 				if (tcr.getLBR_LegalMessage_ID() > 0)
@@ -709,6 +720,7 @@ public class MLBRTax extends X_LBR_Tax
 			
 			if (tcbpg != null)
 			{
+				log.info ("######## Processing Tax for BPartner Group: " + tcbpg + ", Taxes: " + new MLBRTax(ctx, tcbpg.getLBR_Tax_ID(), null));
 				processTaxes(taxes, tcbpg.getLBR_Tax_ID());
 				//
 				if (tcbpg.getLBR_LegalMessage_ID() > 0)
@@ -725,6 +737,7 @@ public class MLBRTax extends X_LBR_Tax
 			
 			if (tcbp != null)
 			{
+				log.info ("######## Processing Tax for BPartner: " + tcbp + ", Taxes: " + new MLBRTax(ctx, tcbp.getLBR_Tax_ID(), null));
 				processTaxes (taxes, tcbp.getLBR_Tax_ID());
 				//
 				if (tcbp.getLBR_LegalMessage_ID() > 0)
@@ -770,6 +783,7 @@ public class MLBRTax extends X_LBR_Tax
 		//
 		if (cFOPLine != null)
 		{
+			log.info ("######## Processing Tax for CFOP Line: " + cFOPLine + ", Taxes: " + new MLBRTax(ctx, cFOPLine.getLBR_Tax_ID(), null));
 			processTaxes (taxes, cFOPLine.getLBR_Tax_ID());
 			//
 			if (cFOPLine.getLBR_LegalMessage_ID() > 0)
@@ -790,6 +804,7 @@ public class MLBRTax extends X_LBR_Tax
 		//
 		for (MLBRTaxDefinition td : taxesDef)
 		{
+			log.info ("######## Processing Tax for Tax Definition: " + td + ", Taxes: " + new MLBRTax(ctx, td.getLBR_Tax_ID(), null));
 			processTaxes (taxes, td.getLBR_Tax_ID());
 			//
 			if (td.getLBR_LegalMessage_ID() > 0)

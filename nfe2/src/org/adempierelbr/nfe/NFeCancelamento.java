@@ -121,7 +121,7 @@ public class NFeCancelamento
 		DetEventoCancel det = new DetEventoCancel ();
 		det.setVersao(NFeUtil.VERSAO_CCE);
 		det.setnProt(nf.getlbr_NFeProt());
-		det.setxJust(nf.getlbr_MotivoCancel());
+		det.setxJust(TextUtil.retiraEspecial (nf.getlbr_MotivoCancel().trim()));
 		
 		//	Informações do Evento de Cancelamento
 		InfEvento cancel = new InfEvento ();
@@ -204,7 +204,7 @@ public class NFeCancelamento
 			MLBRDigitalCertificate.setCertificate (Env.getCtx(), oi.getAD_Org_ID());
 			RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
 			RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
-			RecepcaoEventoStub.setAmbiente (ws);
+			RecepcaoEventoStub.setAmbiente (ws.getURL());
 			RecepcaoEventoStub stub = new RecepcaoEventoStub();
 
 			//	Resposta do SEFAZ
@@ -290,7 +290,7 @@ public class NFeCancelamento
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			log.severe ("Erro no processo para gerar o pedido de cancelamento. Verifique o LOG.");
+			log.severe ("Erro no processo para gerar o pedido de cancelamento. Verifique o LOG." + e.getMessage());
 			return DocAction.STATUS_Invalid;
 		}
 		//

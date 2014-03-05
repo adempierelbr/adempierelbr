@@ -30,7 +30,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.apache.commons.io.IOUtils;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MImage;
@@ -40,7 +39,6 @@ import org.compiere.model.MProcess;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.ReportStarter;
-import org.compiere.sqlj.Adempiere;
 import org.compiere.util.Env;
 
 /**
@@ -86,9 +84,10 @@ public class PrintFromXML extends SvrProcess
 	protected String doIt() throws JRException, AdempiereException, IOException 
 	{
 		MAttachment att = null;
+	    int tableID = getProcessInfo().getTable_ID();
 		
 		//	Carta de Correção Eletrônica
-		if (getProcessInfo().getTable_ID() == MLBRCCe.Table_ID)
+		if (tableID == MLBRCCe.Table_ID)
 		{
 			MLBRCCe cce = new MLBRCCe (Env.getCtx(), p_Record_ID, null);
 			
@@ -98,22 +97,27 @@ public class PrintFromXML extends SvrProcess
 			att = cce.getAttachment (true);
 			
 			//	Verifica o nome do arquivo principal
-			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
+			if (process.getJasperReport() == null || process.getJasperReport().isEmpty()) {
 				reportName = "ReportCCe.jasper";
-			else
+			} else
 				reportName = process.getJasperReport();
 		}
 		
 		//	Nota Fiscal Eletrônica
-		else if (getProcessInfo().getTable_ID() == MLBRNotaFiscal.Table_ID)
+		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
+			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
+			if (doc.getlbr_NFeStatus().equals(
+					MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado) )
+				return "Nao eh permitido imprimir o DANFE - Cancelada ou Sem autorizacao";
+
+			att = doc.getAttachment (true);
+			
 			//	Verifica o nome do arquivo principal
-			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
-				reportName = "ImpressaoDanfePaisagemA4Report.jasper";
-			else
+			if (process.getJasperReport() == null || process.getJasperReport().isEmpty()) {
+				reportName = "DanfeMainPortraitA4.jasper";
+			} else
 				reportName = process.getJasperReport();
-			//
-			return "Not implemented yet";
 		}
 		else
 			return "Not implemented yet";
@@ -137,12 +141,12 @@ public class PrintFromXML extends SvrProcess
 			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
 		Map<String, InputStream> files = getReportFile ();
-		//
-		JRXmlDataSource dataSource = new JRXmlDataSource (xml);
-		JasperReport jasperReport = (JasperReport) JRLoader.loadObject (files.remove (reportName));
+
+		JasperReport jasperReport = (JasperReport) JRLoader.loadObject ( (InputStream) files.remove (reportName));
+		JRXmlDataSource dataSource = new JRXmlDataSource ( xml , jasperReport.getQuery().getText() );
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
-		ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E7\u00E3o de Documento");
+		ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de Documento");
 		
 		return "@Success@";
 	}	//	doIt
@@ -160,30 +164,26 @@ public class PrintFromXML extends SvrProcess
 		MAttachment att = process.getAttachment (true);
 		Map<String, InputStream> map = new HashMap<String, InputStream>();
 		boolean found = false;
-		
-		//	Anexa o relatório padrão caso não haja nenhum
-		if (att == null)
-		{	
-			InputStream report = Adempiere.class.getClassLoader().getResourceAsStream("reports/" + reportName);
-			//
-			att = process.createAttachment (true);
-			att.addEntry (reportName, IOUtils.toByteArray (report));
-			att.save ();
+
+		if (att != null) {
+			MAttachmentEntry[] entries = att.getEntries();
+			for (MAttachmentEntry entry : entries)
+			{
+				String name = entry.getName();
+				//
+				if (name.equals (reportName))
+					found = true;
+				//
+				map.put (name, entry.getInputStream());
+			}
 		}
-		
-		MAttachmentEntry[] entries = att.getEntries();		
-		for (MAttachmentEntry entry : entries)
-		{
-			String name = entry.getName();
-			//
-			if (name.equals (reportName))
-				found = true;
-			//
-			map.put (name, entry.getInputStream());
-		}
-		
+
+		// Se não existir anexado, utiliza o default do resource
 		if (!found)
-			throw new AdempiereException("Report not found");
+		{	
+			InputStream report = getClass().getClassLoader().getResourceAsStream("reports/" + reportName);
+			map.put( reportName, report );
+		}
 		
 		MPInstance pinstance = new MPInstance (getCtx(), getAD_PInstance_ID(), null);
 		MOrgInfo oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);

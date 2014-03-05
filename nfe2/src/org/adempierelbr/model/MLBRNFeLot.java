@@ -189,7 +189,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			NfeRecepcao2Stub.NfeDadosMsg dadosMsg = NfeRecepcao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeRecepcao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecRecepcao(region);
 
-			NfeRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeRecepcao2Stub.setAmbiente (MLBRNFeWebService.getURL (MLBRNFeWebService.RECEPCAO, envType, NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
 			NfeRecepcao2Stub stub = new NfeRecepcao2Stub();
 
 			String respLote = stub.nfeRecepcaoLote2(dadosMsg, cabecMsgE).getExtraElement().toString();
@@ -293,7 +293,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			NfeRetRecepcao2Stub.NfeDadosMsg dadosMsg = NfeRetRecepcao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
 			NfeRetRecepcao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecRetRecepcao(region);
 
-			NfeRetRecepcao2Stub.setAmbiente(envType,orgLoc.getC_Region_ID());
+			NfeRetRecepcao2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.RETRECEPCAO, envType, NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
 			NfeRetRecepcao2Stub stub = new NfeRetRecepcao2Stub();
 
 			String respConsulta = stub.nfeRetRecepcao2(dadosMsg, cabecMsgE).getExtraElement().toString();

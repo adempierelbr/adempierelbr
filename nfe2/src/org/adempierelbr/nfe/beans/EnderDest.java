@@ -23,7 +23,7 @@ public class EnderDest {
 	private String CEP;
 	private String cPais;
 	private String xPais;
-	//private String fone;
+	private String fone;
 	private String email;
 
 	public String getXLgr() {
@@ -104,7 +104,7 @@ public class EnderDest {
 
 		xPais = pais;
 	}
-	/*
+	
 	public String getFone() {
 		return fone;
 	}
@@ -114,7 +114,7 @@ public class EnderDest {
 
 		this.fone = fone;
 	}
-	*/
+
 	public String getEmail() {
 		return email;
 	}

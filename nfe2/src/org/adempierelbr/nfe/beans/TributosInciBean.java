@@ -21,9 +21,6 @@ public class TributosInciBean {
  
 	private ICMSBean ICMS;
 	private ImpostoIPIBean IPI;
-	@XStreamAlias(value="IPI")
-	@XStreamAsAttribute 	
-	private ImpostoIPINTBean IPINT;
 	private ImpostoDIBean II;
 	private PISBean PIS;
 	private COFINSBean COFINS;
@@ -43,15 +40,6 @@ public class TributosInciBean {
 	public void setIPI(ImpostoIPIBean ipi) {
 		IPI = ipi;
 	}
- 
-	public void setIPINT(ImpostoIPINTBean ipi) {
-		IPINT = ipi;
-	}
-	
-	public ImpostoIPINTBean getIPINT() {
-		return IPINT;
-	}
-
 
 	public ImpostoDIBean getII() {
 		return II;

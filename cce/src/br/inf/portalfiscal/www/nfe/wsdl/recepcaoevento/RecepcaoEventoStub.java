@@ -4,17 +4,11 @@
  */
 package br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento;
 
-import org.adempierelbr.model.MLBRNFeWebService;
 
-/**
- * 		RecepcaoEventoStub java implementation
- * 
- * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
- * 				<li>auto-generated from WSDL by the Apache
- * 
- * 	@version $Id: RecepcaoEventoStub.java, v1.0 2012/05/20 14:29:58 PM, ralexsander Exp $
+/*
+ * RecepcaoEventoStub java implementation
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "unused", "serial", "deprecation" })
+
 public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 {
 	protected org.apache.axis2.description.AxisOperation[] _operations;
@@ -28,9 +22,9 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 
 	private static String stubAddress = "";
 
-	public static void setAmbiente(MLBRNFeWebService ws)
+	public static void setAmbiente(String ws)
 	{
-		stubAddress = ws.getURL();
+		stubAddress = ws;
 	}
 
 	private static synchronized java.lang.String getUniqueSuffix()
@@ -41,13 +35,16 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 			counter = 0;
 		}
 		counter = counter + 1;
-		return java.lang.Long.toString(java.lang.System.currentTimeMillis()) + "_" + counter;
+		return java.lang.Long.toString(java.lang.System.currentTimeMillis()) + "_"
+				+ counter;
 	}
 
 	private void populateAxisService() throws org.apache.axis2.AxisFault
 	{
+
 		// creating the Service with a unique name
-		_service = new org.apache.axis2.description.AxisService("RecepcaoEvento" + getUniqueSuffix());
+		_service = new org.apache.axis2.description.AxisService("RecepcaoEvento"
+				+ getUniqueSuffix());
 		addAnonymousOperations();
 
 		// creating the operations
@@ -86,7 +83,8 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	/**
 	 * Constructor that takes in a configContext and useseperate listner
 	 */
-	public RecepcaoEventoStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+	public RecepcaoEventoStub(
+			org.apache.axis2.context.ConfigurationContext configurationContext,
 			java.lang.String targetEndpoint, boolean useSeparateListener)
 			throws org.apache.axis2.AxisFault
 	{
@@ -110,10 +108,13 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	/**
 	 * Default Constructor
 	 */
-	public RecepcaoEventoStub(org.apache.axis2.context.ConfigurationContext configurationContext)
+	public RecepcaoEventoStub(
+			org.apache.axis2.context.ConfigurationContext configurationContext)
 			throws org.apache.axis2.AxisFault
 	{
+
 		this(configurationContext, stubAddress);
+
 	}
 
 	/**
@@ -121,7 +122,9 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	 */
 	public RecepcaoEventoStub() throws org.apache.axis2.AxisFault
 	{
+
 		this(stubAddress);
+
 	}
 
 	/**
@@ -142,9 +145,12 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	 */
 
 	public br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeRecepcaoEventoResult nfeRecepcaoEvento(
+
 			br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeDadosMsg nfeDadosMsg0,
 			br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeCabecMsgE nfeCabecMsg1)
+
 	throws java.rmi.RemoteException
+
 	{
 		org.apache.axis2.context.MessageContext _messageContext = null;
 		try
@@ -219,7 +225,87 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		}
 		catch (org.apache.axis2.AxisFault f)
 		{
-			throw f;
+
+			org.apache.axiom.om.OMElement faultElt = f.getDetail();
+			if (faultElt != null)
+			{
+				if (faultExceptionNameMap
+						.containsKey(new org.apache.axis2.client.FaultMapKey(
+								faultElt.getQName(), "nfeRecepcaoEvento")))
+				{
+					// make the fault by reflection
+					try
+					{
+						java.lang.String exceptionClassName = (java.lang.String) faultExceptionClassNameMap
+								.get(new org.apache.axis2.client.FaultMapKey(
+										faultElt.getQName(), "nfeRecepcaoEvento"));
+						java.lang.Class exceptionClass = java.lang.Class
+								.forName(exceptionClassName);
+						java.lang.reflect.Constructor constructor = exceptionClass
+								.getConstructor(String.class);
+						java.lang.Exception ex = (java.lang.Exception) constructor
+								.newInstance(f.getMessage());
+						// message class
+						java.lang.String messageClassName = (java.lang.String) faultMessageMap
+								.get(new org.apache.axis2.client.FaultMapKey(
+										faultElt.getQName(), "nfeRecepcaoEvento"));
+						java.lang.Class messageClass = java.lang.Class
+								.forName(messageClassName);
+						java.lang.Object messageObject = fromOM(faultElt,
+								messageClass, null);
+						java.lang.reflect.Method m = exceptionClass.getMethod(
+								"setFaultMessage",
+								new java.lang.Class[] { messageClass });
+						m.invoke(ex, new java.lang.Object[] { messageObject });
+
+						throw new java.rmi.RemoteException(ex.getMessage(), ex);
+					}
+					catch (java.lang.ClassCastException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+					catch (java.lang.ClassNotFoundException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+					catch (java.lang.NoSuchMethodException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+					catch (java.lang.reflect.InvocationTargetException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+					catch (java.lang.IllegalAccessException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+					catch (java.lang.InstantiationException e)
+					{
+						// we cannot intantiate the class - throw the original
+						// Axis fault
+						throw f;
+					}
+				}
+				else
+				{
+					throw f;
+				}
+			}
+			else
+			{
+				throw f;
+			}
 		}
 		finally
 		{
@@ -239,9 +325,13 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	 * @param nfeDadosMsg0
 	 * @param nfeCabecMsg1
 	 */
-	public void startnfeRecepcaoEvento(br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeDadosMsg nfeDadosMsg0,
+	public void startnfeRecepcaoEvento(
+
+			br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeDadosMsg nfeDadosMsg0,
 			br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub.NfeCabecMsgE nfeCabecMsg1,
+
 			final br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoCallbackHandler callback)
+
 	throws java.rmi.RemoteException
 	{
 
@@ -319,10 +409,111 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 
 					public void onError(java.lang.Exception error)
 					{
-						callback.receiveErrornfeRecepcaoEvento(error);
+						if (error instanceof org.apache.axis2.AxisFault)
+						{
+							org.apache.axis2.AxisFault f = (org.apache.axis2.AxisFault) error;
+							org.apache.axiom.om.OMElement faultElt = f.getDetail();
+							if (faultElt != null)
+							{
+								if (faultExceptionNameMap
+										.containsKey(new org.apache.axis2.client.FaultMapKey(
+												faultElt.getQName(),
+												"nfeRecepcaoEvento")))
+								{
+									// make the fault by reflection
+									try
+									{
+										java.lang.String exceptionClassName = (java.lang.String) faultExceptionClassNameMap
+												.get(new org.apache.axis2.client.FaultMapKey(
+														faultElt.getQName(),
+														"nfeRecepcaoEvento"));
+										java.lang.Class exceptionClass = java.lang.Class
+												.forName(exceptionClassName);
+										java.lang.reflect.Constructor constructor = exceptionClass
+												.getConstructor(String.class);
+										java.lang.Exception ex = (java.lang.Exception) constructor
+												.newInstance(f.getMessage());
+										// message class
+										java.lang.String messageClassName = (java.lang.String) faultMessageMap
+												.get(new org.apache.axis2.client.FaultMapKey(
+														faultElt.getQName(),
+														"nfeRecepcaoEvento"));
+										java.lang.Class messageClass = java.lang.Class
+												.forName(messageClassName);
+										java.lang.Object messageObject = fromOM(
+												faultElt, messageClass, null);
+										java.lang.reflect.Method m = exceptionClass
+												.getMethod(
+														"setFaultMessage",
+														new java.lang.Class[] { messageClass });
+										m.invoke(
+												ex,
+												new java.lang.Object[] { messageObject });
+
+										callback.receiveErrornfeRecepcaoEvento(new java.rmi.RemoteException(
+												ex.getMessage(), ex));
+									}
+									catch (java.lang.ClassCastException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (java.lang.ClassNotFoundException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (java.lang.NoSuchMethodException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (java.lang.reflect.InvocationTargetException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (java.lang.IllegalAccessException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (java.lang.InstantiationException e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+									catch (org.apache.axis2.AxisFault e)
+									{
+										// we cannot intantiate the class -
+										// throw the original Axis fault
+										callback.receiveErrornfeRecepcaoEvento(f);
+									}
+								}
+								else
+								{
+									callback.receiveErrornfeRecepcaoEvento(f);
+								}
+							}
+							else
+							{
+								callback.receiveErrornfeRecepcaoEvento(f);
+							}
+						}
+						else
+						{
+							callback.receiveErrornfeRecepcaoEvento(error);
+						}
 					}
 
-					public void onFault(org.apache.axis2.context.MessageContext faultContext)
+					public void onFault(
+							org.apache.axis2.context.MessageContext faultContext)
 					{
 						org.apache.axis2.AxisFault fault = org.apache.axis2.util.Utils
 								.getInboundFaultFromMessageContext(faultContext);
@@ -353,12 +544,14 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 
 		// execute the operation client
 		_operationClient.execute(false);
+
 	}
 
 	/**
 	 * A utility method that copies the namepaces from the SOAPEnvelope
 	 */
-	private java.util.Map getEnvelopeNamespaces(org.apache.axiom.soap.SOAPEnvelope env)
+	private java.util.Map getEnvelopeNamespaces(
+			org.apache.axiom.soap.SOAPEnvelope env)
 	{
 		java.util.Map returnMap = new java.util.HashMap();
 		java.util.Iterator namespaceIterator = env.getAllDeclaredNamespaces();
@@ -393,6 +586,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 	// https://homologacao.nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx
 	public static class NfeDadosMsg implements org.apache.axis2.databinding.ADBBean
 	{
+
 		public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
 				"http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento",
 				"nfeDadosMsg", "ns1");
@@ -421,7 +615,9 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		 */
 		public void setExtraElement(org.apache.axiom.om.OMElement param)
 		{
+
 			this.localExtraElement = param;
+
 		}
 
 		/**
@@ -429,21 +625,14 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		 * @param factory
 		 * @return org.apache.axiom.om.OMElement
 		 */
-		public org.apache.axiom.om.OMElement getOMElement(final javax.xml.namespace.QName parentQName,
+		public org.apache.axiom.om.OMElement getOMElement(
+				final javax.xml.namespace.QName parentQName,
 				final org.apache.axiom.om.OMFactory factory)
 				throws org.apache.axis2.databinding.ADBException
 		{
-			org.apache.axiom.om.OMDataSource dataSource = new org.apache.axis2.databinding.ADBDataSource(
-					this, MY_QNAME)
-			{
 
-				public void serialize(
-						org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-						throws javax.xml.stream.XMLStreamException
-				{
-					NfeDadosMsg.this.serialize(MY_QNAME, factory, xmlWriter);
-				}
-			};
+			org.apache.axiom.om.OMDataSource dataSource = new org.apache.axis2.databinding.ADBDataSource(
+					this, MY_QNAME);
 			return factory.createOMElement(dataSource, MY_QNAME);
 
 		}
@@ -748,91 +937,6 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 			return prefix;
 		}
 
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-				throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-			serialize(parentQName, factory, xmlWriter, false);
-		}
-
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
-				boolean serializeType) throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-
-			java.lang.String prefix = null;
-			java.lang.String namespace = null;
-
-			prefix = parentQName.getPrefix();
-			namespace = parentQName.getNamespaceURI();
-
-			if ((namespace != null) && (namespace.trim().length() > 0))
-			{
-				java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-				if (writerPrefix != null)
-				{
-					xmlWriter.writeStartElement(namespace,
-							parentQName.getLocalPart());
-				}
-				else
-				{
-					if (prefix == null)
-					{
-						prefix = generatePrefix(namespace);
-					}
-
-					xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(),
-							namespace);
-					xmlWriter.writeNamespace(prefix, namespace);
-					xmlWriter.setPrefix(prefix, namespace);
-				}
-			}
-			else
-			{
-				xmlWriter.writeStartElement(parentQName.getLocalPart());
-			}
-
-			if (serializeType)
-			{
-
-				java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-						"http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento");
-				if ((namespacePrefix != null)
-						&& (namespacePrefix.trim().length() > 0))
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							namespacePrefix + ":nfeDadosMsg", xmlWriter);
-				}
-				else
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							"nfeDadosMsg", xmlWriter);
-				}
-
-			}
-
-			if (localExtraElement != null)
-			{
-				localExtraElement.serialize(xmlWriter);
-			}
-			else
-			{
-				throw new org.apache.axis2.databinding.ADBException(
-						"extraElement cannot be null!!");
-			}
-
-			xmlWriter.writeEndElement();
-
-		}
-
 		/**
 		 * databinding method to get an XML representation of this object
 		 */
@@ -1054,17 +1158,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		{
 
 			org.apache.axiom.om.OMDataSource dataSource = new org.apache.axis2.databinding.ADBDataSource(
-					this, MY_QNAME)
-			{
-
-				public void serialize(
-						org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-						throws javax.xml.stream.XMLStreamException
-				{
-					NfeRecepcaoEventoResult.this.serialize(MY_QNAME, factory,
-							xmlWriter);
-				}
-			};
+					this, MY_QNAME);
 			return factory.createOMElement(dataSource, MY_QNAME);
 
 		}
@@ -1518,91 +1612,6 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 
 		}// end of factory class
 
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-				throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-			serialize(parentQName, factory, xmlWriter, false);
-		}
-
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
-				boolean serializeType) throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-
-			java.lang.String prefix = null;
-			java.lang.String namespace = null;
-
-			prefix = parentQName.getPrefix();
-			namespace = parentQName.getNamespaceURI();
-
-			if ((namespace != null) && (namespace.trim().length() > 0))
-			{
-				java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-				if (writerPrefix != null)
-				{
-					xmlWriter.writeStartElement(namespace,
-							parentQName.getLocalPart());
-				}
-				else
-				{
-					if (prefix == null)
-					{
-						prefix = generatePrefix(namespace);
-					}
-
-					xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(),
-							namespace);
-					xmlWriter.writeNamespace(prefix, namespace);
-					xmlWriter.setPrefix(prefix, namespace);
-				}
-			}
-			else
-			{
-				xmlWriter.writeStartElement(parentQName.getLocalPart());
-			}
-
-			if (serializeType)
-			{
-
-				java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-						"http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento");
-				if ((namespacePrefix != null)
-						&& (namespacePrefix.trim().length() > 0))
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							namespacePrefix + ":nfeRecepcaoLote2Result", xmlWriter);
-				}
-				else
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							"nfeRecepcaoLote2Result", xmlWriter);
-				}
-
-			}
-
-			if (localExtraElement != null)
-			{
-				localExtraElement.serialize(xmlWriter);
-			}
-			else
-			{
-				throw new org.apache.axis2.databinding.ADBException(
-						"extraElement cannot be null!!");
-			}
-
-			xmlWriter.writeEndElement();
-
-		}
-
 	}
 
 	public static class NfeCabecMsgE implements org.apache.axis2.databinding.ADBBean
@@ -1653,16 +1662,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		{
 
 			org.apache.axiom.om.OMDataSource dataSource = new org.apache.axis2.databinding.ADBDataSource(
-					this, MY_QNAME)
-			{
-
-				public void serialize(
-						org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-						throws javax.xml.stream.XMLStreamException
-				{
-					NfeCabecMsgE.this.serialize(MY_QNAME, factory, xmlWriter);
-				}
-			};
+					this, MY_QNAME);
 			return factory.createOMElement(dataSource, MY_QNAME);
 
 		}
@@ -2028,36 +2028,6 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 
 		}// end of factory class
 
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-				throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-			serialize(parentQName, factory, xmlWriter, false);
-		}
-
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
-				boolean serializeType) throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-
-			// We can safely assume an element has only one type associated with
-			// it
-
-			if (localNfeCabecMsg == null)
-			{
-				throw new org.apache.axis2.databinding.ADBException(
-						"Property cannot be null!");
-			}
-			localNfeCabecMsg.serialize(MY_QNAME, factory, xmlWriter);
-
-		}
-
 	}
 
 	public static class NfeCabecMsg implements org.apache.axis2.databinding.ADBBean
@@ -2235,16 +2205,7 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 		{
 
 			org.apache.axiom.om.OMDataSource dataSource = new org.apache.axis2.databinding.ADBDataSource(
-					this, parentQName)
-			{
-
-				public void serialize(
-						org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-						throws javax.xml.stream.XMLStreamException
-				{
-					NfeCabecMsg.this.serialize(parentQName, factory, xmlWriter);
-				}
-			};
+					this, parentQName);
 			return factory.createOMElement(dataSource, parentQName);
 
 		}
@@ -2829,179 +2790,6 @@ public class RecepcaoEventoStub extends org.apache.axis2.client.Stub
 			}
 
 		}// end of factory class
-
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
-				throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-			serialize(parentQName, factory, xmlWriter, false);
-		}
-
-		public void serialize(
-				final javax.xml.namespace.QName parentQName,
-				final org.apache.axiom.om.OMFactory factory,
-				org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
-				boolean serializeType) throws javax.xml.stream.XMLStreamException,
-				org.apache.axis2.databinding.ADBException
-		{
-
-			java.lang.String prefix = null;
-			java.lang.String namespace = null;
-
-			prefix = parentQName.getPrefix();
-			namespace = parentQName.getNamespaceURI();
-
-			if ((namespace != null) && (namespace.trim().length() > 0))
-			{
-				java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-				if (writerPrefix != null)
-				{
-					xmlWriter.writeStartElement(namespace,
-							parentQName.getLocalPart());
-				}
-				else
-				{
-					if (prefix == null)
-					{
-						prefix = generatePrefix(namespace);
-					}
-
-					xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(),
-							namespace);
-					xmlWriter.writeNamespace(prefix, namespace);
-					xmlWriter.setPrefix(prefix, namespace);
-				}
-			}
-			else
-			{
-				xmlWriter.writeStartElement(parentQName.getLocalPart());
-			}
-
-			if (serializeType)
-			{
-
-				java.lang.String namespacePrefix = registerPrefix(xmlWriter,
-						"http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento");
-				if ((namespacePrefix != null)
-						&& (namespacePrefix.trim().length() > 0))
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							namespacePrefix + ":nfeCabecMsg", xmlWriter);
-				}
-				else
-				{
-					writeAttribute("xsi",
-							"http://www.w3.org/2001/XMLSchema-instance", "type",
-							"nfeCabecMsg", xmlWriter);
-				}
-
-			}
-
-			if (localExtraAttributes != null)
-			{
-				for (int i = 0; i < localExtraAttributes.length; i++)
-				{
-					writeAttribute(localExtraAttributes[i].getNamespace().getName(),
-							localExtraAttributes[i].getLocalName(),
-							localExtraAttributes[i].getAttributeValue(), xmlWriter);
-				}
-			}
-			if (localCUFTracker)
-			{
-				namespace = "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento";
-				if (!namespace.equals(""))
-				{
-					prefix = xmlWriter.getPrefix(namespace);
-
-					if (prefix == null)
-					{
-						prefix = generatePrefix(namespace);
-
-						xmlWriter.writeStartElement(prefix, "cUF", namespace);
-						xmlWriter.writeNamespace(prefix, namespace);
-						xmlWriter.setPrefix(prefix, namespace);
-
-					}
-					else
-					{
-						xmlWriter.writeStartElement(namespace, "cUF");
-					}
-
-				}
-				else
-				{
-					xmlWriter.writeStartElement("cUF");
-				}
-
-				if (localCUF == null)
-				{
-					// write the nil attribute
-
-					throw new org.apache.axis2.databinding.ADBException(
-							"cUF cannot be null!!");
-
-				}
-				else
-				{
-
-					xmlWriter.writeCharacters(localCUF);
-
-				}
-
-				xmlWriter.writeEndElement();
-			}
-			if (localVersaoDadosTracker)
-			{
-				namespace = "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento";
-				if (!namespace.equals(""))
-				{
-					prefix = xmlWriter.getPrefix(namespace);
-
-					if (prefix == null)
-					{
-						prefix = generatePrefix(namespace);
-
-						xmlWriter
-								.writeStartElement(prefix, "versaoDados", namespace);
-						xmlWriter.writeNamespace(prefix, namespace);
-						xmlWriter.setPrefix(prefix, namespace);
-
-					}
-					else
-					{
-						xmlWriter.writeStartElement(namespace, "versaoDados");
-					}
-
-				}
-				else
-				{
-					xmlWriter.writeStartElement("versaoDados");
-				}
-
-				if (localVersaoDados == null)
-				{
-					// write the nil attribute
-
-					throw new org.apache.axis2.databinding.ADBException(
-							"versaoDados cannot be null!!");
-
-				}
-				else
-				{
-
-					xmlWriter.writeCharacters(localVersaoDados);
-
-				}
-
-				xmlWriter.writeEndElement();
-			}
-			xmlWriter.writeEndElement();
-
-		}
 
 	}
 
