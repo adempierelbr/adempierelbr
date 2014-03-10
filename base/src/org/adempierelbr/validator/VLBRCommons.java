@@ -302,9 +302,8 @@ public class VLBRCommons implements ModelValidator
 		{
 			String sql = "SELECT COUNT(*) "
 					+ "FROM C_DocType "
-					+ "WHERE C_DocType.DocBaseType IN ('SOO', 'POO') "
+					+ "WHERE C_DocType.DocBaseType IN ('ARI', 'API', 'APC', 'ARC') "
 					+ "AND C_DocType.IsSOTrx=? "
-					+ "AND COALESCE(C_DocType.DocSubTypeSO,' ')<>'RM' "
 					+ "AND C_DocType.C_DocType_ID=?";
 			//
 			int result = DB.getSQLValue (null, sql, new Object[]{invoice.isSOTrx(), invoice.getC_DocTypeTarget_ID()});
