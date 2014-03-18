@@ -18,11 +18,18 @@ import java.util.List;
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
 import org.adempierelbr.model.MLBRCCe;
 import org.adempierelbr.model.MLBRNFeLot;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfe.NFeXMLLoader;
+import org.adempierelbr.nfe.NFeXMLLoader.NFe;
+import org.adempierelbr.nfe.NFeXMLLoader.infNFe;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -43,6 +50,11 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Msg;
+
+import com.sun.corba.ee.org.apache.bcel.classfile.Signature;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 /**
  * 		Procedimentos comuns, necessários para o LBR
@@ -195,6 +207,48 @@ public class VLBRCommons implements ModelValidator
 			
 			if (cce.isProcessed())
 				return "N\u00E3o \u00E9 permitido alterar um anexo de um registro j\u00E1 processado.";
+		}
+		
+		if (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW)
+		{
+			if (att.getAD_Table_ID() == MLBRNotaFiscal.Table_ID)
+			{
+				MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(),att.getRecord_ID(), null);
+				MDocType dt = new MDocType(Env.getCtx(), nf.getC_DocType_ID(), null);
+				
+				//Carrega o ID da NFe apenas para as Notas de Entrada que não seja documento próprio.
+				if (!nf.isSOTrx() && !dt.get_ValueAsBoolean("lbr_IsOwnDocument"))
+				{
+					for (MAttachmentEntry entry : att.getEntries())
+					{
+						XStream stream = new XStream(new DomDriver())
+						{  
+						    /**
+						     * Descarta os campos do XML não indicado nas classes
+						     */
+						    protected MapperWrapper wrapMapper(MapperWrapper next) {  
+						               return new MapperWrapper(next) {  
+						  
+						                   public boolean shouldSerializeMember(Class definedIn, String fieldName) {  
+						                       return definedIn != Object.class ? super.shouldSerializeMember(definedIn, fieldName) : false;  
+						                   }  
+						                     
+						               };  
+						           }  
+						      
+						};
+						
+						stream.processAnnotations(new Class<?>[] {NFeXMLLoader.class, NFe.class, infNFe.class, Signature.class});
+												
+						NFeXMLLoader nfeentrada = (NFeXMLLoader) stream.fromXML(TextUtil.readFile(entry.getFile()));
+																	
+						log.fine("lbr_NFeID: " + nfeentrada.getinfNFeID());
+						
+						nf.setlbr_NFeID(nfeentrada.getinfNFeID().replace("NFe", ""));
+						nf.save();
+					}
+				}
+			}
 		}
 		
 		return null;
