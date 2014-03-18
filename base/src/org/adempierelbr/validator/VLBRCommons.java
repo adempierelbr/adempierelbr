@@ -217,7 +217,7 @@ public class VLBRCommons implements ModelValidator
 				MDocType dt = new MDocType(Env.getCtx(), nf.getC_DocType_ID(), null);
 				
 				//Carrega o ID da NFe apenas para as Notas de Entrada que não seja documento próprio.
-				if (!nf.isSOTrx() && dt.get_ValueAsBoolean("lbr_IsOwnDocument"))
+				if (!nf.isSOTrx() && !dt.get_ValueAsBoolean("lbr_IsOwnDocument"))
 				{
 					for (MAttachmentEntry entry : att.getEntries())
 					{
@@ -242,7 +242,7 @@ public class VLBRCommons implements ModelValidator
 												
 						NFeXMLLoader nfeentrada = (NFeXMLLoader) stream.fromXML(TextUtil.readFile(entry.getFile()));
 																	
-						log.info("lbr_NFeID: " + nfeentrada.getinfNFeID());
+						log.fine("lbr_NFeID: " + nfeentrada.getinfNFeID());
 						
 						nf.setlbr_NFeID(nfeentrada.getinfNFeID().replace("NFe", ""));
 						nf.save();
