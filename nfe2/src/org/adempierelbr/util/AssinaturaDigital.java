@@ -104,9 +104,10 @@ public class AssinaturaDigital
 	{
 		Integer cert = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert, null);
-		String aliascliente = dc.getAlias();
-		String password = dc.getPassword();				
+		alias = dc.getAlias();
+		senha = dc.getPassword().toCharArray();				
 		//
+		
 		if (dc.getlbr_CertType() == null)
 			throw new Exception("Certificate Type is NULL");
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
@@ -121,8 +122,6 @@ public class AssinaturaDigital
 		{
 			certType = "PKCS12";
 			jksData = new FileInputStream(NFeUtil.getAttachmentEntryFile((dc.getAttachment().getEntry(0))));
-			alias = aliascliente;
-			senha = password.toCharArray();
 		}
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
