@@ -952,7 +952,8 @@ public class NFeXMLGenerator
 						}
 					}
 
-					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST, CSOSN_500))
+					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST)
+							|| (TextUtil.match (taxStatus, CSOSN_500) && taxST != null))
 					{
 						if (taxST == null)
 							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
