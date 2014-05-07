@@ -1837,8 +1837,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000230" trl="Y">
-<value column="Name" original="DocumentType Accounting">DocumentType Accounting</value>
-<value column="PrintName" original="DocumentType Accounting">DocumentType Accounting</value>
+<value column="Name" original="DocumentType Accounting">Contabilidade</value>
+<value column="PrintName" original="DocumentType Accounting">Contabilidade</value>
 <value column="Description" original="Primary key table LBR_DocType_Acct">Primary key table LBR_DocType_Acct</value>
 <value column="Help" original="Primary key table LBR_DocType_Acct">Primary key table LBR_DocType_Acct</value>
 <value column="PO_Description" original=""/>
@@ -1917,10 +1917,10 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000240" trl="Y">
-<value column="Name" original="Is Condensed">Is Condensed</value>
-<value column="PrintName" original="Is Condensed">Is Condensed</value>
-<value column="Description" original="Defines if Character is Condensed">Defines if Character is Condensed</value>
-<value column="Help" original="Defines if Character is Condensed">Defines if Character is Condensed</value>
+<value column="Name" original="Is Condensed">Condensado</value>
+<value column="PrintName" original="Is Condensed">Condensado</value>
+<value column="Description" original="Defines if Character is Condensed">Indica se usa caracteres condensados</value>
+<value column="Help" original="Defines if Character is Condensed">Indica se usa caracteres condensados</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -1937,8 +1937,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000242" trl="Y">
-<value column="Name" original="Is UnixPrinter">Is UnixPrinter</value>
-<value column="PrintName" original="Is UnixPrinter">Is UnixPrinter</value>
+<value column="Name" original="Is UnixPrinter">Impressora Unix</value>
+<value column="PrintName" original="Is UnixPrinter">Impressora Unix</value>
 <value column="Description" original="Define if this is an Unix Printer">Define if this is an Unix Printer</value>
 <value column="Help" original="Define if this is an Unix Printer">Define if this is an Unix Printer</value>
 <value column="PO_Description" original=""/>
@@ -1957,20 +1957,20 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000244" trl="Y">
-<value column="Name" original="Printer Path">Printer Path</value>
-<value column="PrintName" original="Printer Path">Printer Path</value>
-<value column="Description" original="Defines the Printer Path">Defines the Printer Path</value>
-<value column="Help" original="Defines the Printer Path">Defines the Printer Path</value>
+<value column="Name" original="Printer Path">Caminho da Impressora</value>
+<value column="PrintName" original="Printer Path">Caminho da Impressora</value>
+<value column="Description" original="Defines the Printer Path">Define o Caminho da Impressora</value>
+<value column="Help" original="Defines the Printer Path">Define o Caminho da Impressora</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000245" trl="Y">
-<value column="Name" original="Printer Type">Printer Type</value>
-<value column="PrintName" original="Printer Type">Printer Type</value>
-<value column="Description" original="Defines the Printer Type">Defines the Printer Type</value>
-<value column="Help" original="Defines the Printer Type">Defines the Printer Type</value>
+<value column="Name" original="Printer Type">Tipo de Impressora</value>
+<value column="PrintName" original="Printer Type">Tipo de Impressora</value>
+<value column="Description" original="Defines the Printer Type">Define o Tipo de Impressora</value>
+<value column="Help" original="Defines the Printer Type">Define o Tipo de Impressora</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2466,9 +2466,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000325" trl="N">
-<value column="Name" original="NFe No">NFe No</value>
-<value column="PrintName" original="NFe No">NFe No</value>
+<row id="1000325" trl="Y">
+<value column="Name" original="NFe No">No. da NF-e</value>
+<value column="PrintName" original="NFe No">No. da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2536,11 +2536,11 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000332" trl="N">
-<value column="Name" original="Other NF Line">Other NF Line</value>
-<value column="PrintName" original="Other NF Line">Other NF Line</value>
-<value column="Description" original="Other NF Line">Other NF Line</value>
-<value column="Help" original="Other NF Line">Other NF Line</value>
+<row id="1000332" trl="Y">
+<value column="Name" original="Other NF Line">Outras NF (Linha)</value>
+<value column="PrintName" original="Other NF Line">Outras NF (Linha)</value>
+<value column="Description" original="Other NF Line">Outras NF (Linha)</value>
+<value column="Help" original="Other NF Line">Outras NF (Linha)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2556,19 +2556,19 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000338" trl="N">
-<value column="Name" original="Brazilian PriceList">Brazilian PriceList</value>
-<value column="PrintName" original="Brazilian PriceList">Brazilian PriceList</value>
-<value column="Description" original="Defines if this is a Brazilian PriceList">Defines if this is a Brazilian PriceList</value>
-<value column="Help" original="Defines if this is a Brazilian PriceList">Defines if this is a Brazilian PriceList</value>
+<row id="1000338" trl="Y">
+<value column="Name" original="Brazilian PriceList">Preço de Lista BR</value>
+<value column="PrintName" original="Brazilian PriceList">Preço de Lista BR</value>
+<value column="Description" original="Defines if this is a Brazilian PriceList">Define o Preço de Lista BR</value>
+<value column="Help" original="Defines if this is a Brazilian PriceList">Define o Preço de Lista BR</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000339" trl="N">
-<value column="Name" original="Tax Included List">Tax Included List</value>
-<value column="PrintName" original="Tax Included List">Tax Included List</value>
+<row id="1000339" trl="Y">
+<value column="Name" original="Tax Included List">Lista de Impostos Inclusos</value>
+<value column="PrintName" original="Tax Included List">Lista de Impostos Inclusos</value>
 <value column="Description" original="Defines the Tax Included List">Defines the Tax Included List</value>
 <value column="Help" original="Primary key table LBR_TaxIncludedList">Primary key table LBR_TaxIncludedList</value>
 <value column="PO_Description" original=""/>
@@ -2606,7 +2606,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000347" trl="N">
+<row id="1000347" trl="Y">
 <value column="Name" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
 <value column="PrintName" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
 <value column="Description" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
@@ -2636,57 +2636,57 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000350" trl="N">
-<value column="Name" original="Barcode 1">Barcode 1</value>
-<value column="PrintName" original="Barcode 1">Barcode 1</value>
-<value column="Description" original="First Barcode of the Nota Fiscal">First Barcode of the Nota Fiscal</value>
-<value column="Help" original="First Barcode of the Nota Fiscal">First Barcode of the Nota Fiscal</value>
+<row id="1000350" trl="Y">
+<value column="Name" original="Barcode 1">Código de Barras 1</value>
+<value column="PrintName" original="Barcode 1">Código de Barras 1</value>
+<value column="Description" original="First Barcode of the Nota Fiscal">Código de Barras da Nota Fiscal</value>
+<value column="Help" original="First Barcode of the Nota Fiscal">Código de Barras da Nota Fiscal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000351" trl="N">
-<value column="Name" original="Barcode 2">Barcode 2</value>
-<value column="PrintName" original="Barcode 2">Barcode 2</value>
-<value column="Description" original="Second Barcode of the Nota Fiscal">Second Barcode of the Nota Fiscal</value>
-<value column="Help" original="Second Barcode of the Nota Fiscal">Second Barcode of the Nota Fiscal</value>
+<row id="1000351" trl="Y">
+<value column="Name" original="Barcode 2">Código de Barras 2</value>
+<value column="PrintName" original="Barcode 2">Código de Barras 2</value>
+<value column="Description" original="Second Barcode of the Nota Fiscal">Segundo Código de Barras da Nota Fiscal</value>
+<value column="Help" original="Second Barcode of the Nota Fiscal">Segundo Código de Barras da Nota Fiscal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000352" trl="N">
-<value column="Name" original="NF Type">NF Type</value>
-<value column="PrintName" original="NF Type">NF Type</value>
-<value column="Description" original="Nota Fiscal Type">Nota Fiscal Type</value>
-<value column="Help" original="Nota Fiscal Type">Nota Fiscal Type</value>
+<row id="1000352" trl="Y">
+<value column="Name" original="NF Type">Tipo da NF</value>
+<value column="PrintName" original="NF Type">Tipo da NF</value>
+<value column="Description" original="Nota Fiscal Type">Tipo da Nota Fiscal</value>
+<value column="Help" original="Nota Fiscal Type">Tipo da Nota Fiscal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000353" trl="N">
-<value column="Name" original="Fiscal Obs.">Fiscal Obs.</value>
-<value column="PrintName" original="Fiscal Obs.">Fiscal Obs.</value>
-<value column="Description" original="Fiscal Observation for the Fiscal Books">Fiscal Observation for the Fiscal Books</value>
-<value column="Help" original="Fiscal Observation for the Fiscal Books">Fiscal Observation for the Fiscal Books</value>
+<row id="1000353" trl="Y">
+<value column="Name" original="Fiscal Obs.">Obs. Fiscal</value>
+<value column="PrintName" original="Fiscal Obs.">Obs. Fiscal</value>
+<value column="Description" original="Fiscal Observation for the Fiscal Books">Observação Fiscal</value>
+<value column="Help" original="Fiscal Observation for the Fiscal Books">Observação Fiscal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000354" trl="N">
-<value column="Name" original="Shipment Note">Shipment Note</value>
-<value column="PrintName" original="Shipment Note">Shipment Note</value>
-<value column="Description" original="Extra Shipment Information ">Extra Shipment Information </value>
-<value column="Help" original="Extra Shipment Information">Extra Shipment Information</value>
+<row id="1000354" trl="Y">
+<value column="Name" original="Shipment Note">Nota de Entrega</value>
+<value column="PrintName" original="Shipment Note">Nota de Entrega</value>
+<value column="Description" original="Extra Shipment Information ">Informações adicionais da Entrega</value>
+<value column="Help" original="Extra Shipment Information">Informações adicionais da Entrega</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000355" trl="N">
+<row id="1000355" trl="Y">
 <value column="Name" original="CIF Total">CIF Total</value>
 <value column="PrintName" original="CIF Total">CIF Total</value>
 <value column="Description" original="CIF Total for all the document">CIF Total for all the document</value>
@@ -2696,7 +2696,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000356" trl="N">
+<row id="1000356" trl="Y">
 <value column="Name" original="SISCOMEX Total">SISCOMEX Total</value>
 <value column="PrintName" original="SISCOMEX Total">SISCOMEX Total</value>
 <value column="Description" original="SISCOMEX Total for all the document">SISCOMEX Total for all the document</value>
@@ -2706,187 +2706,187 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000357" trl="N">
-<value column="Name" original="NF Reference">NF Reference</value>
-<value column="PrintName" original="NF Reference">NF Reference</value>
-<value column="Description" original="Reference to other NF">Reference to other NF</value>
-<value column="Help" original="Reference to other NF">Reference to other NF</value>
+<row id="1000357" trl="Y">
+<value column="Name" original="NF Reference">Referência da NF</value>
+<value column="PrintName" original="NF Reference">Referência da NF</value>
+<value column="Description" original="Reference to other NF">Referência da NF</value>
+<value column="Help" original="Reference to other NF">Referência da NF</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000358" trl="N">
-<value column="Name" original="Ship Location">Ship Location</value>
-<value column="PrintName" original="Ship Location">Ship Location</value>
-<value column="Description" original="The Shipment Location ID">The Shipment Location ID</value>
-<value column="Help" original="The Shipment Location ID">The Shipment Location ID</value>
+<row id="1000358" trl="Y">
+<value column="Name" original="Ship Location">Local de Entrega</value>
+<value column="PrintName" original="Ship Location">Local de Entrega</value>
+<value column="Description" original="The Shipment Location ID">Local de Entrega</value>
+<value column="Help" original="The Shipment Location ID">Local de Entrega</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000359" trl="N">
-<value column="Name" original="Delivery Location">Delivery Location</value>
-<value column="PrintName" original="Delivery Location">Delivery Location</value>
-<value column="Description" original="The Delivery Location ID">The Delivery Location ID</value>
-<value column="Help" original="The Delivery Location ID">The Delivery Location ID</value>
+<row id="1000359" trl="Y">
+<value column="Name" original="Delivery Location">Local de Entrega</value>
+<value column="PrintName" original="Delivery Location">Local de Entrega</value>
+<value column="Description" original="The Delivery Location ID">Local de Entrega</value>
+<value column="Help" original="The Delivery Location ID">Local de Entrega</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000360" trl="N">
-<value column="Name" original="Line Total CIF">Line Total CIF</value>
-<value column="PrintName" original="Line Total CIF">Line Total CIF</value>
-<value column="Description" original="The total CIF for the line">The total CIF for the line</value>
-<value column="Help" original="The total Cost, Insurance and Freight for the Line">The total Cost, Insurance and Freight for the Line</value>
+<row id="1000360" trl="Y">
+<value column="Name" original="Line Total CIF">Total (CIF)</value>
+<value column="PrintName" original="Line Total CIF">Total (CIF)</value>
+<value column="Description" original="The total CIF for the line">Total da Linha (Valor CIF)</value>
+<value column="Help" original="The total Cost, Insurance and Freight for the Line">Total da Linha (Valor CIF)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000361" trl="N">
-<value column="Name" original="Line Total SISCOMEX">Line Total SISCOMEX</value>
-<value column="PrintName" original="Line Total SISCOMEX">Line Total SISCOMEX</value>
-<value column="Description" original="The total SISCOMEX for the Line">The total SISCOMEX for the Line</value>
-<value column="Help" original="The total SISCOMEX for the Line">The total SISCOMEX for the Line</value>
+<row id="1000361" trl="Y">
+<value column="Name" original="Line Total SISCOMEX">Total do SISCOMEX</value>
+<value column="PrintName" original="Line Total SISCOMEX">Total do SISCOMEX</value>
+<value column="Description" original="The total SISCOMEX for the Line">Total do SISCOMEX para a Linha</value>
+<value column="Help" original="The total SISCOMEX for the Line">Total do SISCOMEX para a Linha</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000363" trl="N">
-<value column="Name" original="Bill Note">Bill Note</value>
-<value column="PrintName" original="Bill Note">Bill Note</value>
-<value column="Description" original="Bill Note">Bill Note</value>
-<value column="Help" original="Bill Note">Bill Note</value>
+<row id="1000363" trl="Y">
+<value column="Name" original="Bill Note">Nota de Entrega</value>
+<value column="PrintName" original="Bill Note">Nota de Entrega</value>
+<value column="Description" original="Bill Note">Nota de Entrega</value>
+<value column="Help" original="Bill Note">Nota de Entrega</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000364" trl="N">
-<value column="Name" original="Customer NF Number">Customer NF Number</value>
-<value column="PrintName" original="Customer NF Number">Customer NF Number</value>
-<value column="Description" original="Number of the Customer NF">Number of the Customer NF</value>
-<value column="Help" original="Number of the Customer NF">Number of the Customer NF</value>
-<value column="PO_Description" original="Number of the Vendor NF">Number of the Vendor NF</value>
-<value column="PO_Help" original="Number of the Vendor NF">Number of the Vendor NF</value>
-<value column="PO_Name" original="Vendor NF Number">Vendor NF Number</value>
-<value column="PO_PrintName" original="Vendor NF Number">Vendor NF Number</value>
+<row id="1000364" trl="Y">
+<value column="Name" original="Customer NF Number">Número da NF</value>
+<value column="PrintName" original="Customer NF Number">Número da NF</value>
+<value column="Description" original="Number of the Customer NF">Número da NF</value>
+<value column="Help" original="Number of the Customer NF">Número da NF</value>
+<value column="PO_Description" original="Number of the Vendor NF">Número da NF</value>
+<value column="PO_Help" original="Number of the Vendor NF">Número da NF</value>
+<value column="PO_Name" original="Vendor NF Number">Número da NF</value>
+<value column="PO_PrintName" original="Vendor NF Number">Número da NF</value>
 </row>
-<row id="1000365" trl="N">
-<value column="Name" original="Organization Address 1">Organization Address 1</value>
-<value column="PrintName" original="Organization Address 1">Organization Address 1</value>
-<value column="Description" original="The issuer organization address 1">The issuer organization address 1</value>
-<value column="Help" original="The issuer organization address 1">The issuer organization address 1</value>
+<row id="1000365" trl="Y">
+<value column="Name" original="Organization Address 1">Logradouro</value>
+<value column="PrintName" original="Organization Address 1">Logradouro</value>
+<value column="Description" original="The issuer organization address 1">Logradouro</value>
+<value column="Help" original="The issuer organization address 1">Logradouro</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000366" trl="N">
-<value column="Name" original="Organization Address 2">Organization Address 2</value>
-<value column="PrintName" original="Organization Address 2">Organization Address 2</value>
-<value column="Description" original="The issuer organization address 2">The issuer organization address 2</value>
-<value column="Help" original="The issuer organization address 2">The issuer organization address 2</value>
+<row id="1000366" trl="Y">
+<value column="Name" original="Organization Address 2">Número</value>
+<value column="PrintName" original="Organization Address 2">Número</value>
+<value column="Description" original="The issuer organization address 2">Número</value>
+<value column="Help" original="The issuer organization address 2">Número</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000367" trl="N">
-<value column="Name" original="Organization Address 3">Organization Address 3</value>
-<value column="PrintName" original="Organization Address 3">Organization Address 3</value>
-<value column="Description" original="The issuer organization address 3">The issuer organization address 3</value>
-<value column="Help" original="The issuer organization address 3">The issuer organization address 3</value>
+<row id="1000367" trl="Y">
+<value column="Name" original="Organization Address 3">Bairro</value>
+<value column="PrintName" original="Organization Address 3">Bairro</value>
+<value column="Description" original="The issuer organization address 3">Bairro</value>
+<value column="Help" original="The issuer organization address 3">Bairro</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000368" trl="N">
-<value column="Name" original="Organization Address 4">Organization Address 4</value>
-<value column="PrintName" original="Organization Address 4">Organization Address 4</value>
-<value column="Description" original="The issuer organization address 4">The issuer organization address 4</value>
-<value column="Help" original="The issuer organization address 4">The issuer organization address 4</value>
+<row id="1000368" trl="Y">
+<value column="Name" original="Organization Address 4">Complemento</value>
+<value column="PrintName" original="Organization Address 4">Complemento</value>
+<value column="Description" original="The issuer organization address 4">Complemento</value>
+<value column="Help" original="The issuer organization address 4">Complemento</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000369" trl="N">
-<value column="Name" original="Organization City">Organization City</value>
-<value column="PrintName" original="Organization City">Organization City</value>
-<value column="Description" original="The City of the Organization">The City of the Organization</value>
-<value column="Help" original="The City of the Organization">The City of the Organization</value>
+<row id="1000369" trl="Y">
+<value column="Name" original="Organization City">Cidade</value>
+<value column="PrintName" original="Organization City">Cidade</value>
+<value column="Description" original="The City of the Organization">Cidade</value>
+<value column="Help" original="The City of the Organization">Cidade</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000370" trl="N">
-<value column="Name" original="Organization Postal Code">Organization Postal Code</value>
-<value column="PrintName" original="Organization Postal Code">Organization Postal Code</value>
-<value column="Description" original="The Postal Code of the Organization">The Postal Code of the Organization</value>
-<value column="Help" original="The Postal Code of the Organization">The Postal Code of the Organization</value>
+<row id="1000370" trl="Y">
+<value column="Name" original="Organization Postal Code">CEP</value>
+<value column="PrintName" original="Organization Postal Code">CEP</value>
+<value column="Description" original="The Postal Code of the Organization">CEP</value>
+<value column="Help" original="The Postal Code of the Organization">CEP</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000371" trl="N">
-<value column="Name" original="Organization Region">Organization Region</value>
-<value column="PrintName" original="Organization Region">Organization Region</value>
-<value column="Description" original="The Region of the Organization">The Region of the Organization</value>
-<value column="Help" original="The Region of the Organization">The Region of the Organization</value>
+<row id="1000371" trl="Y">
+<value column="Name" original="Organization Region">UF</value>
+<value column="PrintName" original="Organization Region">UF</value>
+<value column="Description" original="The Region of the Organization">UF</value>
+<value column="Help" original="The Region of the Organization">UF</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000372" trl="N">
-<value column="Name" original="Organization Country">Organization Country</value>
-<value column="PrintName" original="Organization Country">Organization Country</value>
-<value column="Description" original="The Country of the Organization">The Country of the Organization</value>
-<value column="Help" original="The Country of the Organizarion">The Country of the Organizarion</value>
+<row id="1000372" trl="Y">
+<value column="Name" original="Organization Country">País</value>
+<value column="PrintName" original="Organization Country">País</value>
+<value column="Description" original="The Country of the Organization">País</value>
+<value column="Help" original="The Country of the Organizarion">País</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000373" trl="N">
-<value column="Name" original="Organization CCM">Organization CCM</value>
-<value column="PrintName" original="Organization CCM">Organization CCM</value>
-<value column="Description" original="The Organization CCM">The Organization CCM</value>
-<value column="Help" original="The Organization CCM">The Organization CCM</value>
+<row id="1000373" trl="Y">
+<value column="Name" original="Organization CCM">CCM</value>
+<value column="PrintName" original="Organization CCM">CCM</value>
+<value column="Description" original="The Organization CCM">CCM</value>
+<value column="Help" original="The Organization CCM">CCM</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000374" trl="N">
-<value column="Name" original="Organization Phone">Organization Phone</value>
-<value column="PrintName" original="Organization Phone">Organization Phone</value>
-<value column="Description" original="The Organization Phone">The Organization Phone</value>
-<value column="Help" original="The Organization Phone">The Organization Phone</value>
+<row id="1000374" trl="Y">
+<value column="Name" original="Organization Phone">Telefone</value>
+<value column="PrintName" original="Organization Phone">Telefone</value>
+<value column="Description" original="The Organization Phone">Telefone</value>
+<value column="Help" original="The Organization Phone">Telefone</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000375" trl="N">
-<value column="Name" original="Organization Name">Organization Name</value>
-<value column="PrintName" original="Organization Name">Organization Name</value>
-<value column="Description" original="The Name of the Organization">The Name of the Organization</value>
-<value column="Help" original="The Name of the Organization">The Name of the Organization</value>
+<row id="1000375" trl="Y">
+<value column="Name" original="Organization Name">Nome</value>
+<value column="PrintName" original="Organization Name">Nome</value>
+<value column="Description" original="The Name of the Organization">Nome</value>
+<value column="Help" original="The Name of the Organization">Nome</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000650" trl="N">
+<row id="1000650" trl="Y">
 <value column="Name" original="Cod. Cidade">Cod. Cidade</value>
 <value column="PrintName" original="Cod. Cidade">Cod. Cidade</value>
 <value column="Description" original=""/>
@@ -2896,9 +2896,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000653" trl="N">
-<value column="Name" original="Fantasia">Fantasia</value>
-<value column="PrintName" original="Fantasia">Fantasia</value>
+<row id="1000653" trl="Y">
+<value column="Name" original="Fantasia">Nome Fantasia</value>
+<value column="PrintName" original="Fantasia">Nome Fantasia</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2906,9 +2906,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100005" trl="N">
-<value column="Name" original="Legal Entity">Legal Entity</value>
-<value column="PrintName" original="Legal Entity">Legal Entity</value>
+<row id="1100005" trl="Y">
+<value column="Name" original="Legal Entity">Razão Social</value>
+<value column="PrintName" original="Legal Entity">Razão Social</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2916,19 +2916,19 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100006" trl="N">
-<value column="Name" original="NF DocType">NF DocType</value>
-<value column="PrintName" original="NF DocType">NF DocType</value>
-<value column="Description" original="Defines the NF Document Type used for the Nota Fiscal Window">Defines the NF Document Type used for the Nota Fiscal Window</value>
-<value column="Help" original="Defines the NF Document Type used for the Nota Fiscal Window">Defines the NF Document Type used for the Nota Fiscal Window</value>
+<row id="1100006" trl="Y">
+<value column="Name" original="NF DocType">Tipo de Documento da NF</value>
+<value column="PrintName" original="NF DocType">Tipo de Documento da NF</value>
+<value column="Description" original="Defines the NF Document Type used for the Nota Fiscal Window">Define o Tipo de Documento usado na NF</value>
+<value column="Help" original="Defines the NF Document Type used for the Nota Fiscal Window">Define o Tipo de Documento usado na NF</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100007" trl="N">
-<value column="Name" original="Digital Certificate">Digital Certificate</value>
-<value column="PrintName" original="Digital Certificate">Digital Certificate</value>
+<row id="1100007" trl="Y">
+<value column="Name" original="Digital Certificate">Certificado Digital</value>
+<value column="PrintName" original="Digital Certificate">Certificado Digital</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2936,29 +2936,29 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100008" trl="N">
-<value column="Name" original="Certificate Type">Certificate Type</value>
-<value column="PrintName" original="Certificate Type">Certificate Type</value>
-<value column="Description" original="Define the type of Digital Certificate">Define the type of Digital Certificate</value>
+<row id="1100008" trl="Y">
+<value column="Name" original="Certificate Type">Tipo de Certificado</value>
+<value column="PrintName" original="Certificate Type">Tipo de Certificado</value>
+<value column="Description" original="Define the type of Digital Certificate">Define o Tipo de Certificado</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100009" trl="N">
-<value column="Name" original="NF Model">NF Model</value>
-<value column="PrintName" original="NF Model">NF Model</value>
-<value column="Description" original="Identifies the model of Nota Fiscal">Identifies the model of Nota Fiscal</value>
+<row id="1100009" trl="Y">
+<value column="Name" original="NF Model">Modelo da NF</value>
+<value column="PrintName" original="NF Model">Modelo da NF</value>
+<value column="Description" original="Identifies the model of Nota Fiscal">Identificação do modelo da Nota Fiscal</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100010" trl="N">
-<value column="Name" original="NF Serie">NF Serie</value>
-<value column="PrintName" original="NF Serie">NF Serie</value>
+<row id="1100010" trl="Y">
+<value column="Name" original="NF Serie">Série da NF</value>
+<value column="PrintName" original="NF Serie">Série da NF</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2966,9 +2966,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100011" trl="N">
-<value column="Name" original="NFe Environment">NFe Environment</value>
-<value column="PrintName" original="NFe Environment">NFe Environment</value>
+<row id="1100011" trl="Y">
+<value column="Name" original="NFe Environment">Ambiente da NF-e</value>
+<value column="PrintName" original="NFe Environment">Ambiente da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2976,9 +2976,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100012" trl="N">
-<value column="Name" original="DANFE Format">DANFE Format</value>
-<value column="PrintName" original="DANFE Format">DANFE Format</value>
+<row id="1100012" trl="Y">
+<value column="Name" original="DANFE Format">Formato da DANFE</value>
+<value column="PrintName" original="DANFE Format">Formato da DANFE</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2986,9 +2986,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100013" trl="N">
-<value column="Name" original="Certificado of Organization">Certificado of Organization</value>
-<value column="PrintName" original="Certificate of Organization">Certificate of Organization</value>
+<row id="1100013" trl="Y">
+<value column="Name" original="Certificado of Organization">Certificado da Organização</value>
+<value column="PrintName" original="Certificate of Organization">Certificado da Organização</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -2996,9 +2996,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100014" trl="N">
-<value column="Name" original="Certificado of Transmission">Certificado of Transmission</value>
-<value column="PrintName" original="Certificado of Transmission">Certificado of Transmission</value>
+<row id="1100014" trl="Y">
+<value column="Name" original="Certificado of Transmission">Certificado da Transmissão</value>
+<value column="PrintName" original="Certificado of Transmission">Certificado da Transmissão</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3006,9 +3006,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100016" trl="N">
-<value column="Name" original="NFe Lot">NFe Lot</value>
-<value column="PrintName" original="NFe Lot">NFe Lot</value>
+<row id="1100016" trl="Y">
+<value column="Name" original="NFe Lot">Lote da NF-e</value>
+<value column="PrintName" original="NFe Lot">Lote da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3016,29 +3016,29 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100017" trl="N">
-<value column="Name" original="NFe ID">NFe ID</value>
-<value column="PrintName" original="NFe ID">NFe ID</value>
-<value column="Description" original="Identification of NFe">Identification of NFe</value>
+<row id="1100017" trl="Y">
+<value column="Name" original="NFe ID">Chave da NF-e</value>
+<value column="PrintName" original="NFe ID">Chave da NF-e</value>
+<value column="Description" original="Identification of NFe">Chave da NF-e</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100018" trl="N">
-<value column="Name" original="NFe Status">NFe Status</value>
-<value column="PrintName" original="NFe Status">NFe Status</value>
-<value column="Description" original="Status of NFe">Status of NFe</value>
+<row id="1100018" trl="Y">
+<value column="Name" original="NFe Status">Estado da NF-e</value>
+<value column="PrintName" original="NFe Status">Estado da NF-e</value>
+<value column="Description" original="Status of NFe">Estado da NF-e</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100019" trl="N">
-<value column="Name" original="Recebimento ID">Recebimento ID</value>
-<value column="PrintName" original="Recebimento ID">Recebimento ID</value>
+<row id="1100019" trl="Y">
+<value column="Name" original="Recebimento ID">Cód. do Recebimento</value>
+<value column="PrintName" original="Recebimento ID">Cód. do Recebimento</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3046,7 +3046,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100020" trl="N">
+<row id="1100020" trl="Y">
 <value column="Name" original="CNAE">CNAE</value>
 <value column="PrintName" original="CNAE">CNAE</value>
 <value column="Description" original="Classificação Nacional de Atividades Econômicas">Classificação Nacional de Atividades Econômicas</value>
@@ -3056,9 +3056,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100021" trl="N">
-<value column="Name" original="Generate NFe XML">Generate NFe XML</value>
-<value column="PrintName" original="Generate NFe XML">Generate NFe XML</value>
+<row id="1100021" trl="Y">
+<value column="Name" original="Generate NFe XML">Gerar XML da NF-e</value>
+<value column="PrintName" original="Generate NFe XML">Gerar XML da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3066,9 +3066,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100022" trl="N">
-<value column="Name" original="Lot Sent">Lot Sent</value>
-<value column="PrintName" original="Lot Sent">Lot Sent</value>
+<row id="1100022" trl="Y">
+<value column="Name" original="Lot Sent">Lote Enviado</value>
+<value column="PrintName" original="Lot Sent">Lote Enviado</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3076,9 +3076,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100023" trl="N">
-<value column="Name" original="Lot Received">Lot Received</value>
-<value column="PrintName" original="Lot Received">Lot Received</value>
+<row id="1100023" trl="Y">
+<value column="Name" original="Lot Received">Lote Recebido</value>
+<value column="PrintName" original="Lot Received">Lote Recebido</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3086,9 +3086,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100024" trl="N">
-<value column="Name" original="Resposta ID">Resposta ID</value>
-<value column="PrintName" original="Resposta ID">Resposta ID</value>
+<row id="1100024" trl="Y">
+<value column="Name" original="Resposta ID">Cód. da Resposta</value>
+<value column="PrintName" original="Resposta ID">Cód. da Resposta</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3096,29 +3096,29 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100025" trl="N">
-<value column="Name" original="NFe Answer Status">NFe Answer Status</value>
-<value column="PrintName" original="NFe Answer Status">NFe Answer Status</value>
-<value column="Description" original="Status of Answer NFe">Status of Answer NFe</value>
+<row id="1100025" trl="Y">
+<value column="Name" original="NFe Answer Status">Estado da NF-e</value>
+<value column="PrintName" original="NFe Answer Status">Estado da NF-e</value>
+<value column="Description" original="Status of Answer NFe">Estado da NF-e</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100026" trl="N">
-<value column="Name" original="NFe Description">NFe Description</value>
-<value column="PrintName" original="NFe Description">NFe Description</value>
-<value column="Description" original="Description of NFe">Description of NFe</value>
+<row id="1100026" trl="Y">
+<value column="Name" original="NFe Description">Descrição da NF-e</value>
+<value column="PrintName" original="NFe Description">Descrição da NF-e</value>
+<value column="Description" original="Description of NFe">Descrição da NF-e</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100027" trl="N">
-<value column="Name" original="NFe Protocol">NFe Protocol</value>
-<value column="PrintName" original="NFe Protocol">NFe Protocol</value>
+<row id="1100027" trl="Y">
+<value column="Name" original="NFe Protocol">Protocolo da NF-e</value>
+<value column="PrintName" original="NFe Protocol">Protocolo da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3126,7 +3126,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100028" trl="N">
+<row id="1100028" trl="Y">
 <value column="Name" original="Digest Value">Digest Value</value>
 <value column="PrintName" original="Digest Value">Digest Value</value>
 <value column="Description" original=""/>
@@ -3136,7 +3136,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100029" trl="N">
+<row id="1100029" trl="Y">
 <value column="Name" original="DI">DI</value>
 <value column="PrintName" original="DI">DI</value>
 <value column="Description" original=""/>
@@ -3146,17 +3146,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100030" trl="N">
+<row id="1100030" trl="Y">
 <value column="Name" original="DI">DI</value>
 <value column="PrintName" original="DI">DI</value>
-<value column="Description" original="N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)">N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)</value>
-<value column="Help" original="N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)">N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)</value>
+<value column="Description" original="N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)">Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)</value>
+<value column="Help" original="N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)">Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100031" trl="N">
+<row id="1100031" trl="Y">
 <value column="Name" original="Local de Desembaraço">Local de Desembaraço</value>
 <value column="PrintName" original="Local de Desembaraço">Local de Desembaraço</value>
 <value column="Description" original="Local de Desembaraço">Local de Desembaraço</value>
@@ -3166,9 +3166,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100032" trl="N">
-<value column="Name" original="CÛdigo do exportador">CÛdigo do exportador</value>
-<value column="PrintName" original="CÛdigo do exportador">CÛdigo do exportador</value>
+<row id="1100032" trl="Y">
+<value column="Name" original="CÛdigo do exportador">Código do exportador</value>
+<value column="PrintName" original="CÛdigo do exportador">Código do exportador</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3176,7 +3176,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100033" trl="N">
+<row id="1100033" trl="Y">
 <value column="Name" original="Data do Desembaraço">Data do Desembaraço</value>
 <value column="PrintName" original="Data do Desembaraço">Data do Desembaraço</value>
 <value column="Description" original=""/>
@@ -3186,9 +3186,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100034" trl="N">
-<value column="Name" original="Numero da adição">Numero da adição</value>
-<value column="PrintName" original="Numero da adição">Numero da adição</value>
+<row id="1100034" trl="Y">
+<value column="Name" original="Numero da adição">Número da adição</value>
+<value column="PrintName" original="Numero da adição">Número da adição</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3196,7 +3196,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100035" trl="N">
+<row id="1100035" trl="Y">
 <value column="Name" original="Núm. Seq. Item">Núm. Seq. Item</value>
 <value column="PrintName" original="Núm. Seq. Item">Núm. Seq. Item</value>
 <value column="Description" original=""/>
@@ -3206,7 +3206,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100037" trl="N">
+<row id="1100037" trl="Y">
 <value column="Name" original="Motivo do Cancelamento">Motivo do Cancelamento</value>
 <value column="PrintName" original="Motivo do Cancelamento">Motivo do Cancelamento</value>
 <value column="Description" original="Motivo do Cancelamento (Entre 15 e 255 caracteres)">Motivo do Cancelamento (Entre 15 e 255 caracteres)</value>
@@ -3216,47 +3216,47 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100058" trl="N">
-<value column="Name" original="Country Code">Country Code</value>
-<value column="PrintName" original="Country Code">Country Code</value>
-<value column="Description" original="Country Code used for issue Nota Fiscal">Country Code used for issue Nota Fiscal</value>
-<value column="Help" original="Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)">Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)</value>
+<row id="1100058" trl="Y">
+<value column="Name" original="Country Code">Código do País</value>
+<value column="PrintName" original="Country Code">Código do País</value>
+<value column="Description" original="Country Code used for issue Nota Fiscal">Código do País para Nota Fiscal</value>
+<value column="Help" original="Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)">Código do País para Nota Fiscal. Códigos no padrão BCB (Banco Central do Brasil)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100059" trl="N">
-<value column="Name" original="Service Code">Service Code</value>
-<value column="PrintName" original="Service Code">Service Code</value>
-<value column="Description" original="Service Code used for Nota Fiscal de Servicos Eletronica">Service Code used for Nota Fiscal de Servicos Eletronica</value>
-<value column="Help" original="Service Code used for Nota Fiscal de Servicos Eletronica">Service Code used for Nota Fiscal de Servicos Eletronica</value>
+<row id="1100059" trl="Y">
+<value column="Name" original="Service Code">Código do Serviço</value>
+<value column="PrintName" original="Service Code">Código do Serviço</value>
+<value column="Description" original="Service Code used for Nota Fiscal de Servicos Eletronica">Código do Serviço usado na Nota Fiscal de Serviços Eletrônica</value>
+<value column="Help" original="Service Code used for Nota Fiscal de Servicos Eletronica">Código do Serviço usado na Nota Fiscal de Serviços Eletrônica</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100062" trl="N">
-<value column="Name" original="NFe Contact">NFe Contact</value>
-<value column="PrintName" original="NFe Contact">NFe Contact</value>
-<value column="Description" original="User is NFe Contact (receive email automatically)">User is NFe Contact (receive email automatically)</value>
+<row id="1100062" trl="Y">
+<value column="Name" original="NFe Contact">Contato da NF-e</value>
+<value column="PrintName" original="NFe Contact">Contato da NF-e</value>
+<value column="Description" original="User is NFe Contact (receive email automatically)">Usuário para Contato da NF-e (Recebimento de E-Mail)</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100064" trl="N">
-<value column="Name" original="BP Suframa">BP Suframa</value>
-<value column="PrintName" original="BP Suframa">BP Suframa</value>
-<value column="Description" original="Defines the BP Suframa">Defines the BP Suframa</value>
+<row id="1100064" trl="Y">
+<value column="Name" original="BP Suframa">SUFRAMA</value>
+<value column="PrintName" original="BP Suframa">SUFRAMA</value>
+<value column="Description" original="Defines the BP Suframa">Define o número da SUFRAMA</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100066" trl="N">
+<row id="1100066" trl="Y">
 <value column="Name" original="Finalidade NFe">Finalidade NFe</value>
 <value column="PrintName" original="Finalidade NFe">Finalidade NFe</value>
 <value column="Description" original="Define a Finalidade da NFe">Define a Finalidade da NFe</value>
@@ -3268,9 +3268,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1103000" trl="N">
-<value column="Name" original="Price Entered BR">Price Entered BR</value>
-<value column="PrintName" original="Price Entered BR">Price Entered BR</value>
+<row id="1103000" trl="Y">
+<value column="Name" original="Price Entered BR">Preço BR</value>
+<value column="PrintName" original="Price Entered BR">Preço BR</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3278,9 +3278,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1103001" trl="N">
-<value column="Name" original="Is Price BR">Is Price BR</value>
-<value column="PrintName" original="Is Price BR">Is Price BR</value>
+<row id="1103001" trl="Y">
+<value column="Name" original="Is Price BR">Preço BR</value>
+<value column="PrintName" original="Is Price BR">Preço BR</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3288,9 +3288,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1106000" trl="N">
-<value column="Name" original="Recalculate Tax">Recalculate Tax</value>
-<value column="PrintName" original="Recalculate Tax">Recalculate Tax</value>
+<row id="1106000" trl="Y">
+<value column="Name" original="Recalculate Tax">Recalcular Impostos</value>
+<value column="PrintName" original="Recalculate Tax">Recalcular Impostos</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3298,9 +3298,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1106001" trl="N">
-<value column="Name" original="NCM Tax">NCM Tax</value>
-<value column="PrintName" original="NCM Tax">NCM Tax</value>
+<row id="1106001" trl="Y">
+<value column="Name" original="NCM Tax">Imposto NCM</value>
+<value column="PrintName" original="NCM Tax">Imposto NCM</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3308,9 +3308,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1106002" trl="N">
-<value column="Name" original="Tax Definition">Tax Definition</value>
-<value column="PrintName" original="Tax Definition">Tax Definition</value>
+<row id="1106002" trl="Y">
+<value column="Name" original="Tax Definition">Definição de Impostos</value>
+<value column="PrintName" original="Tax Definition">Definição de Impostos</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3318,9 +3318,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1106003" trl="N">
-<value column="Name" original="ST Tax">ST Tax</value>
-<value column="PrintName" original="ST Tax">ST Tax</value>
+<row id="1106003" trl="Y">
+<value column="Name" original="ST Tax">Substituição Tributária</value>
+<value column="PrintName" original="ST Tax">Substituição Tributária</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3328,9 +3328,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1106004" trl="N">
-<value column="Name" original="Tax Status">Tax Status</value>
-<value column="PrintName" original="Tax Status">Tax Status</value>
+<row id="1106004" trl="Y">
+<value column="Name" original="Tax Status">Situação Tributária</value>
+<value column="PrintName" original="Tax Status">Situação Tributária</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3338,29 +3338,29 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120000" trl="N">
-<value column="Name" original="Tax Status (IPI)">Tax Status (IPI)</value>
-<value column="PrintName" original="Tax Status (IPI)">Tax Status (IPI)</value>
-<value column="Description" original="Defines the Tax Status (IPI)">Defines the Tax Status (IPI)</value>
-<value column="Help" original="Defines the Tax Status (IPI)">Defines the Tax Status (IPI)</value>
+<row id="1120000" trl="Y">
+<value column="Name" original="Tax Status (IPI)">Situação Tributária (IPI)</value>
+<value column="PrintName" original="Tax Status (IPI)">Situação Tributária (IPI)</value>
+<value column="Description" original="Defines the Tax Status (IPI)">Define a Situação Tributária (IPI)</value>
+<value column="Help" original="Defines the Tax Status (IPI)">Define a Situação Tributária (IPI)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120001" trl="N">
-<value column="Name" original="WebService NFe">WebService NFe</value>
-<value column="PrintName" original="WebService NFe">WebService NFe</value>
-<value column="Description" original="Defines the WebService NFe">Defines the WebService NFe</value>
+<row id="1120001" trl="Y">
+<value column="Name" original="WebService NFe">WebService NF-e</value>
+<value column="PrintName" original="WebService NFe">WebService NF-e</value>
+<value column="Description" original="Defines the WebService NFe">Define o WebService da NF-e</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120002" trl="N">
-<value column="Name" original="Contato NFe">Contato NFe</value>
-<value column="PrintName" original="Contato NFe">Contato NFe</value>
+<row id="1120002" trl="Y">
+<value column="Name" original="Contato NFe">Contato NF-e</value>
+<value column="PrintName" original="Contato NFe">Contato NF-e</value>
 <value column="Description" original="Email do Usuario/Contato que servirá como remetente do XML da NFe enviado automáticamente aos Usuários/Contatos do Parceiro de Negócio.">Email do Usuario/Contato que servirá como remetente do XML da NFe enviado automáticamente aos Usuários/Contatos do Parceiro de Negócio.</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3368,17 +3368,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120018" trl="N">
-<value column="Name" original="Drawback No">Drawback No</value>
-<value column="PrintName" original="Drawback No">Drawback No</value>
-<value column="Description" original="Identifies the Drawback No">Identifies the Drawback No</value>
+<row id="1120018" trl="Y">
+<value column="Name" original="Drawback No">No. Drawback</value>
+<value column="PrintName" original="Drawback No">No. Drawback</value>
+<value column="Description" original="Identifies the Drawback No">Identifica o número do Drawback</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120019" trl="N">
+<row id="1120019" trl="Y">
 <value column="Name" original="DE">DE</value>
 <value column="PrintName" original="DE">DE</value>
 <value column="Description" original=""/>
@@ -3388,7 +3388,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120020" trl="N">
+<row id="1120020" trl="Y">
 <value column="Name" original="DE">DE</value>
 <value column="PrintName" original="DE">DE</value>
 <value column="Description" original="Número do Documento de Exportação">Número do Documento de Exportação</value>
@@ -3398,7 +3398,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120021" trl="N">
+<row id="1120021" trl="Y">
 <value column="Name" original="No. RE">No. RE</value>
 <value column="PrintName" original="No. RE">No. RE</value>
 <value column="Description" original="No. do Registro de Exportação">No. do Registro de Exportação</value>
@@ -3408,7 +3408,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120022" trl="N">
+<row id="1120022" trl="Y">
 <value column="Name" original="Data RE">Data RE</value>
 <value column="PrintName" original="Data RE">Data RE</value>
 <value column="Description" original="Data do Registro de Exportação">Data do Registro de Exportação</value>
@@ -3418,17 +3418,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120023" trl="N">
+<row id="1120023" trl="Y">
 <value column="Name" original="No. Conhecimento de Embarque">No. Conhecimento de Embarque</value>
 <value column="PrintName" original="No. Conhecimento de Embarque">No. Conhecimento de Embarque</value>
-<value column="Description" original="NÃºmero do Conhecimento de Embarque">NÃºmero do Conhecimento de Embarque</value>
+<value column="Description" original="NÃºmero do Conhecimento de Embarque">Número do Conhecimento de Embarque</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120024" trl="N">
+<row id="1120024" trl="Y">
 <value column="Name" original="Data Conhecimento de Embarque">Data Conhecimento de Embarque</value>
 <value column="PrintName" original="Data Conhecimento de Embarque">Data Conhecimento de Embarque</value>
 <value column="Description" original="Data do Conhecimento de Embarque">Data do Conhecimento de Embarque</value>
@@ -3438,7 +3438,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120025" trl="N">
+<row id="1120025" trl="Y">
 <value column="Name" original="Tipo Conhecimento de Transporte">Tipo Conhecimento de Transporte</value>
 <value column="PrintName" original="Tipo Conhecimento de Transporte">Tipo Conhecimento de Transporte</value>
 <value column="Description" original="Define o Tipo de Conhecimento de Transporte">Define o Tipo de Conhecimento de Transporte</value>
@@ -3448,19 +3448,19 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120056" trl="N">
-<value column="Name" original="Average Cost">Average Cost</value>
-<value column="PrintName" original="Average Cost">Average Cost</value>
-<value column="Description" original="Defines the Average Cost">Defines the Average Cost</value>
+<row id="1120056" trl="Y">
+<value column="Name" original="Average Cost">Custo Médio</value>
+<value column="PrintName" original="Average Cost">Custo Médio</value>
+<value column="Description" original="Defines the Average Cost">Define o Custo Médio (BR)</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120057" trl="N">
-<value column="Name" original="AvgCost - Create Record Manufactured">AvgCost - Create Record Manufactured</value>
-<value column="PrintName" original="AvgCost - Create Record Manufactured">AvgCost - Create Record Manufactured</value>
+<row id="1120057" trl="Y">
+<value column="Name" original="AvgCost - Create Record Manufactured">Custo Médio - Criar (Fabricados)</value>
+<value column="PrintName" original="AvgCost - Create Record Manufactured">Custo Médio - Criar (Fabricados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3468,9 +3468,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120058" trl="N">
-<value column="Name" original="AvgCost Type">AvgCost Type</value>
-<value column="PrintName" original="AvgCost Type">AvgCost Type</value>
+<row id="1120058" trl="Y">
+<value column="Name" original="AvgCost Type">Tipo</value>
+<value column="PrintName" original="AvgCost Type">Tipo</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3478,9 +3478,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120059" trl="N">
-<value column="Name" original="AvgCost - Create Record Purchased">AvgCost - Create Record Purchased</value>
-<value column="PrintName" original="AvgCost - Create Record Purchased">AvgCost - Create Record Purchased</value>
+<row id="1120059" trl="Y">
+<value column="Name" original="AvgCost - Create Record Purchased">Custo Médio - Criar (Comprados)</value>
+<value column="PrintName" original="AvgCost - Create Record Purchased">Custo Médio - Criar (Comprados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3488,9 +3488,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120060" trl="N">
-<value column="Name" original="AvgCost - Confirm Manufactured">AvgCost - Confirm Manufactured</value>
-<value column="PrintName" original="AvgCost - Confirm Manufactured">AvgCost - Confirm Manufactured</value>
+<row id="1120060" trl="Y">
+<value column="Name" original="AvgCost - Confirm Manufactured">Custo Médio - Confirmar (Fabricados)</value>
+<value column="PrintName" original="AvgCost - Confirm Manufactured">Custo Médio - Confirmar (Fabricados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3498,9 +3498,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120061" trl="N">
-<value column="Name" original="AvgCost - Confirm Purchased">AvgCost - Confirm Purchased</value>
-<value column="PrintName" original="AvgCost - Confirm Purchased">AvgCost - Confirm Purchased</value>
+<row id="1120061" trl="Y">
+<value column="Name" original="AvgCost - Confirm Purchased">Custo Médio - Confirmar (Comprados)</value>
+<value column="PrintName" original="AvgCost - Confirm Purchased">Custo Médio - Confirmar (Comprados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3508,9 +3508,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120062" trl="N">
-<value column="Name" original="AvgCost - RePost Acct">AvgCost - RePost Acct</value>
-<value column="PrintName" original="AvgCost - RePost Acct">AvgCost - RePost Acct</value>
+<row id="1120062" trl="Y">
+<value column="Name" original="AvgCost - RePost Acct">Custo Médio - Re-Postar</value>
+<value column="PrintName" original="AvgCost - RePost Acct">Custo Médio - Re-Postar</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3518,9 +3518,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120063" trl="N">
-<value column="Name" original="Step 1">Step 1</value>
-<value column="PrintName" original="Step 1">Step 1</value>
+<row id="1120063" trl="Y">
+<value column="Name" original="Step 1">Passo 1</value>
+<value column="PrintName" original="Step 1">Passo 1</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3528,9 +3528,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120064" trl="N">
-<value column="Name" original="Step 2">Step 2</value>
-<value column="PrintName" original="Step 2">Step 2</value>
+<row id="1120064" trl="Y">
+<value column="Name" original="Step 2">Passo 2</value>
+<value column="PrintName" original="Step 2">Passo 2</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3538,9 +3538,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120065" trl="N">
-<value column="Name" original="Step 3">Step 3</value>
-<value column="PrintName" original="Step 3">Step 3</value>
+<row id="1120065" trl="Y">
+<value column="Name" original="Step 3">Passo 3</value>
+<value column="PrintName" original="Step 3">Passo 3</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3548,9 +3548,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120066" trl="N">
-<value column="Name" original="Step 4">Step 4</value>
-<value column="PrintName" original="Step 4">Step 4</value>
+<row id="1120066" trl="Y">
+<value column="Name" original="Step 4">Passo 4</value>
+<value column="PrintName" original="Step 4">Passo 4</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3558,9 +3558,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120067" trl="N">
-<value column="Name" original="Step 5">Step 5</value>
-<value column="PrintName" original="Step 5">Step 5</value>
+<row id="1120067" trl="Y">
+<value column="Name" original="Step 5">Passo 5</value>
+<value column="PrintName" original="Step 5">Passo 5</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3568,9 +3568,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120068" trl="N">
-<value column="Name" original="AvgCost - Line">AvgCost - Line</value>
-<value column="PrintName" original="AvgCost - Line">AvgCost - Line</value>
+<row id="1120068" trl="Y">
+<value column="Name" original="AvgCost - Line">Custo Médio - Linha</value>
+<value column="PrintName" original="AvgCost - Line">Custo Médio - Linha</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3578,9 +3578,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120069" trl="N">
-<value column="Name" original="AvgCost - Zoom">AvgCost - Zoom</value>
-<value column="PrintName" original="AvgCost - Zoom">AvgCost - Zoom</value>
+<row id="1120069" trl="Y">
+<value column="Name" original="AvgCost - Zoom">Custo Médio - Zoom</value>
+<value column="PrintName" original="AvgCost - Zoom">Custo Médio - Zoom</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3588,19 +3588,19 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120072" trl="N">
-<value column="Name" original="Warehouse Type">Warehouse Type</value>
-<value column="PrintName" original="Warehouse Type">Warehouse Type</value>
-<value column="Description" original="Defines the Warehouse Type">Defines the Warehouse Type</value>
+<row id="1120072" trl="Y">
+<value column="Name" original="Warehouse Type">Tipo de Armazém</value>
+<value column="PrintName" original="Warehouse Type">Tipo de Armazém</value>
+<value column="Description" original="Defines the Warehouse Type">Define o Tipo de Armazém</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120076" trl="N">
-<value column="Name" original="Formula (BR)">Formula (BR)</value>
-<value column="PrintName" original="Formula (BR)">Formula (BR)</value>
+<row id="1120076" trl="Y">
+<value column="Name" original="Formula (BR)">Fórmula (BR)</value>
+<value column="PrintName" original="Formula (BR)">Fórmula (BR)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3608,7 +3608,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120088" trl="N">
+<row id="1120088" trl="Y">
 <value column="Name" original="Additional Formula">Fórmula Adicional</value>
 <value column="PrintName" original="Additional Formula">Fórmula Adicional</value>
 <value column="Description" original="">Formula adicional para inclusão de despesas na B.C. (ex. Frete, SISCOMEX, etc.)</value>
@@ -3618,7 +3618,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120090" trl="N">
+<row id="1120090" trl="Y">
 <value column="Name" original="Formula Base">Fórmula Base</value>
 <value column="PrintName" original="Formula Base">Fórmula Base</value>
 <value column="Description" original="">Este fórmula é usada para encontrar o valor que será usado no cálculo dos impostos</value>
@@ -3628,7 +3628,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120091" trl="N">
+<row id="1120091" trl="Y">
 <value column="Name" original="RPS Status">Situação do RPS</value>
 <value column="PrintName" original="RPS Status">Situação do RPS</value>
 <value column="Description" original="">Indica a situação do RPS (Normal, Isento, Cancelado, Extraviado ou Suspenso) </value>
@@ -3638,7 +3638,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120093" trl="N">
+<row id="1120093" trl="Y">
 <value column="Name" original="NIRE">NIRE</value>
 <value column="PrintName" original="NIRE">NIRE</value>
 <value column="Description" original="Número de Identificação do Registro de Empresas da Junta Comercial">Número de Identificação do Registro de Empresas da Junta Comercial</value>
@@ -3648,7 +3648,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120094" trl="N">
+<row id="1120094" trl="Y">
 <value column="Name" original="Data do Arquivamento">Data do Arquivamento</value>
 <value column="PrintName" original="Data do Arquivamento">Data do Arquivamento</value>
 <value column="Description" original="Data do arquivamento dos atos constitutivos.">Data do arquivamento dos atos constitutivos.</value>
@@ -3658,19 +3658,19 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120095" trl="N">
-<value column="Name" original="Product for Insurance">Product for Insurance</value>
-<value column="PrintName" original="Product for Insurance">Product for Insurance</value>
-<value column="Description" original="Product for Insurance to be used in sales/purchase orders">Product for Insurance to be used in sales/purchase orders</value>
+<row id="1120095" trl="Y">
+<value column="Name" original="Product for Insurance">Produto para Seguro</value>
+<value column="PrintName" original="Product for Insurance">Produto para Seguro</value>
+<value column="Description" original="Product for Insurance to be used in sales/purchase orders">Produto para o seguro para ser usado nas Ordens de Compra (Geralmente Importação)</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120096" trl="N">
-<value column="Name" original="Product for SISCOMEX">Product for SISCOMEX</value>
-<value column="PrintName" original="Product for SISCOMEX">Product for SISCOMEX</value>
+<row id="1120096" trl="Y">
+<value column="Name" original="Product for SISCOMEX">Produto para SISCOMEX</value>
+<value column="PrintName" original="Product for SISCOMEX">Produto para SISCOMEX</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3678,9 +3678,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120097" trl="N">
-<value column="Name" original="Declaracao de Importacao">Declaracao de Importacao</value>
-<value column="PrintName" original="Declaracao de Importacao">Declaracao de Importacao</value>
+<row id="1120097" trl="Y">
+<value column="Name" original="Declaracao de Importacao">Declaração de Importação</value>
+<value column="PrintName" original="Declaracao de Importacao">Declaração de Importação</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3688,7 +3688,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120098" trl="N">
+<row id="1120098" trl="Y">
 <value column="Name" original="Custom Site">Custom Site</value>
 <value column="PrintName" original="Custom Site">Custom Site</value>
 <value column="Description" original=""/>
@@ -3698,7 +3698,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120099" trl="N">
+<row id="1120099" trl="Y">
 <value column="Name" original="Adição da DI">Adição da DI</value>
 <value column="PrintName" original="Adição da DI">Adição da DI</value>
 <value column="Description" original=""/>
@@ -3708,7 +3708,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120100" trl="N">
+<row id="1120100" trl="Y">
 <value column="Name" original="Linhas da Adição">Linhas da Adição</value>
 <value column="PrintName" original="Linhas da Adição">Linhas da Adição</value>
 <value column="Description" original=""/>
@@ -3718,9 +3718,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120101" trl="N">
-<value column="Name" original="SISCOMEX Amt">SISCOMEX Amt</value>
-<value column="PrintName" original="SISCOMEX Amt">SISCOMEX Amt</value>
+<row id="1120101" trl="Y">
+<value column="Name" original="SISCOMEX Amt">Valor do SISCOMEX</value>
+<value column="PrintName" original="SISCOMEX Amt">Valor do SISCOMEX</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3728,7 +3728,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120102" trl="N">
+<row id="1120102" trl="Y">
 <value column="Name" original="Tipo de Emissão NFe">Tipo de Emissão NFe</value>
 <value column="PrintName" original="Tipo de Emissão NFe">Tipo de Emissão NFe</value>
 <value column="Description" original=""/>
@@ -3738,7 +3738,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120103" trl="N">
+<row id="1120103" trl="Y">
 <value column="Name" original="Motivo contingência">Motivo contingência</value>
 <value column="PrintName" original="Justificativa da entrada em contingência">Justificativa da entrada em contingência</value>
 <value column="Description" original=""/>
@@ -3748,7 +3748,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120104" trl="N">
+<row id="1120104" trl="Y">
 <value column="Name" original="Data contingência">Data contingência</value>
 <value column="PrintName" original="Data e Hora da entrada em contingência">Data e Hora da entrada em contingência</value>
 <value column="Description" original=""/>
@@ -3758,17 +3758,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120105" trl="N">
-<value column="Name" original="Enable Scan">Enable Scan</value>
-<value column="PrintName" original="Enable Scan">Enable Scan</value>
-<value column="Description" original=""/>
+<row id="1120105" trl="Y">
+<value column="Name" original="Enable Scan">SCAN</value>
+<value column="PrintName" original="Enable Scan">SCAN</value>
+<value column="Description" original="">Habilitada o SCAN (Sistema de Contignência do Ambiente Nacional)</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120106" trl="N">
+<row id="1120106" trl="Y">
 <value column="Name" original="Nota Fiscal Referenciada">Nota Fiscal Referenciada</value>
 <value column="PrintName" original="Nota Fiscal Referenciada">Nota Fiscal Referenciada</value>
 <value column="Description" original=""/>
@@ -3778,9 +3778,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120496" trl="N">
-<value column="Name" original="Carta de Correcao">Carta de Correcao</value>
-<value column="PrintName" original="Carta de Correcao">Carta de Correcao</value>
+<row id="1120496" trl="Y">
+<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="PrintName" original="Carta de Correcao">Carta de Correção</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -3788,7 +3788,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1121416" trl="N">
+<row id="1121416" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
 <value column="PrintName" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
 <value column="Description" original=""/>
@@ -3798,11 +3798,11 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1121417" trl="N">
-<value column="Name" original="Tax Rate(Imported)">Tax Rate(Imported)</value>
-<value column="PrintName" original="Tax Rate(Imported)">Tax Rate(Imported)</value>
-<value column="Description" original="Indicates the Imported Tax Rate ">Indicates the Imported Tax Rate </value>
-<value column="Help" original="Indicates the Imported Tax Rate ">Indicates the Imported Tax Rate </value>
+<row id="1121417" trl="Y">
+<value column="Name" original="Tax Rate(Imported)">Alíquota (Importado)</value>
+<value column="PrintName" original="Tax Rate(Imported)">Alíquota (Importado)</value>
+<value column="Description" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
+<value column="Help" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>

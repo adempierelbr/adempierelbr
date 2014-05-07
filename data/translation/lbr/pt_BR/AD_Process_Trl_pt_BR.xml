@@ -82,77 +82,77 @@
 <value column="Description" original="Process to Generate RPS File (NFe)">Processo para Geração de Arquivo RPS (NFe)</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100001" trl="N">
-<value column="Name" original="Lot Transmission">Lot Transmission</value>
+<row id="1100001" trl="Y">
+<value column="Name" original="Lot Transmission">Transmitir Lote</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100002" trl="N">
-<value column="Name" original="Generate NFe XML">Generate NFe XML</value>
+<row id="1100002" trl="Y">
+<value column="Name" original="Generate NFe XML">Gerar XML da NF-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100003" trl="N">
-<value column="Name" original="Lot Return">Lot Return</value>
+<row id="1100003" trl="Y">
+<value column="Name" original="Lot Return">Retorno do Lote</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120000" trl="N">
-<value column="Name" original="ProcStatusServico">ProcStatusServico</value>
-<value column="Description" original="Testa o status do serviço da NF-e">Testa o status do serviço da NF-e</value>
+<row id="1120000" trl="Y">
+<value column="Name" original="ProcStatusServico">Consultar Disponibilidade da SeFaz</value>
+<value column="Description" original="Testa o status do serviço da NF-e">Testa o status do serviço de recepção da NF-e</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120001" trl="N">
-<value column="Name" original="ProcConsultaCadastro">ProcConsultaCadastro</value>
+<row id="1120001" trl="Y">
+<value column="Name" original="ProcConsultaCadastro">Consultar Cadastro</value>
 <value column="Description" original="Consulta o Cadastro de um Parceiro de Negócio no SEFAZ">Consulta o Cadastro de um Parceiro de Negócio no SEFAZ</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120004" trl="N">
-<value column="Name" original="Geração de Certificados NFe">Geração de Certificados NFe</value>
-<value column="Description" original="Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService">Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService</value>
+<row id="1120004" trl="Y">
+<value column="Name" original="Geração de Certificados NFe">Geração de Certificados NF-e</value>
+<value column="Description" original="Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService">Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService (obsoleto com a utilização do "Dinamic Factory")</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120012" trl="N">
-<value column="Name" original="AvgCost - Create Records (Manufactured)">AvgCost - Create Records (Manufactured)</value>
+<row id="1120012" trl="Y">
+<value column="Name" original="AvgCost - Create Records (Manufactured)">Custo Médio - Criar (Fabricados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120013" trl="N">
-<value column="Name" original="AvgCost - Create Records (Purchased)">AvgCost - Create Records (Purchased)</value>
+<row id="1120013" trl="Y">
+<value column="Name" original="AvgCost - Create Records (Purchased)">Custo Médio - Criar (Comprados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120014" trl="N">
-<value column="Name" original="AvgCost - Update Records (Manufactured)">AvgCost - Update Records (Manufactured)</value>
+<row id="1120014" trl="Y">
+<value column="Name" original="AvgCost - Update Records (Manufactured)">Custo Médio - Atualizar (Fabricados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120015" trl="N">
-<value column="Name" original="AvgCost - Update Records (Purchased)">AvgCost - Update Records (Purchased)</value>
+<row id="1120015" trl="Y">
+<value column="Name" original="AvgCost - Update Records (Purchased)">Custo Médio - Atualizar (Comprados)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120016" trl="N">
-<value column="Name" original="AvgCost - RePost Acct">AvgCost - RePost Acct</value>
+<row id="1120016" trl="Y">
+<value column="Name" original="AvgCost - RePost Acct">Custo Médio - Re-Postar Contabilidade</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120017" trl="N">
-<value column="Name" original="AvgCost Zoom">AvgCost Zoom</value>
+<row id="1120017" trl="Y">
+<value column="Name" original="AvgCost Zoom">Custo Médio Zoom</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120037" trl="N">
-<value column="Name" original="Process CCe">Process CCe</value>
+<row id="1120037" trl="Y">
+<value column="Name" original="Process CCe">Process CC-e</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120040" trl="N">
-<value column="Name" original="Print From XML">Print From XML</value>
+<row id="1120040" trl="Y">
+<value column="Name" original="Print From XML">Impressão pelo XML</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120126" trl="N">
+<row id="1120126" trl="Y">
 <value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
 <value column="Description" original="Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>
 <value column="Help" original=""/>

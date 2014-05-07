@@ -134,8 +134,8 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000022" trl="N">
-<value column="Name" original="DocType Acct">DocType Acct</value>
+<row id="1000022" trl="Y">
+<value column="Name" original="DocType Acct">Contabilidade</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -242,8 +242,8 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000041" trl="N">
-<value column="Name" original="Tax Included List">Tax Included List</value>
+<row id="1000041" trl="Y">
+<value column="Name" original="Tax Included List">Imposto Incluso</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -272,91 +272,91 @@
 <value column="Description" original="Consignation Invoice Line">Linha de Venda de Consignação</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100000" trl="N">
-<value column="Name" original="Digital Certificate">Digital Certificate</value>
+<row id="1100000" trl="Y">
+<value column="Name" original="Digital Certificate">Certificado Digital</value>
 <value column="CommitWarning" original=""/>
-<value column="Description" original="Store all digital certificates">Store all digital certificates</value>
+<value column="Description" original="Store all digital certificates">Armazena os certificados digitais</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100001" trl="N">
-<value column="Name" original="NFe Lot">NFe Lot</value>
+<row id="1100001" trl="Y">
+<value column="Name" original="NFe Lot">Lote da NF-e</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100002" trl="N">
+<row id="1100002" trl="Y">
 <value column="Name" original="DI">DI</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1106000" trl="N">
-<value column="Name" original="NCM Tax">NCM Tax</value>
+<row id="1106000" trl="Y">
+<value column="Name" original="NCM Tax">Imposto por NCM</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1106002" trl="N">
-<value column="Name" original="Tax Definition">Tax Definition</value>
+<row id="1106002" trl="Y">
+<value column="Name" original="Tax Definition">Definição de Impostos</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1106003" trl="N">
-<value column="Name" original="Tax Status">Tax Status</value>
+<row id="1106003" trl="Y">
+<value column="Name" original="Tax Status">Situação Tributária</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120000" trl="N">
+<row id="1120000" trl="Y">
 <value column="Name" original="WebService">WebService</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120012" trl="N">
+<row id="1120012" trl="Y">
 <value column="Name" original="DE">DE</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120015" trl="N">
-<value column="Name" original="Average Cost">Average Cost</value>
+<row id="1120015" trl="Y">
+<value column="Name" original="Average Cost">Custo Médio</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120016" trl="N">
-<value column="Name" original="Purchased Itens">Purchased Itens</value>
+<row id="1120016" trl="Y">
+<value column="Name" original="Purchased Itens">Itens Comprados</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120017" trl="N">
-<value column="Name" original="Manufactured Itens">Manufactured Itens</value>
+<row id="1120017" trl="Y">
+<value column="Name" original="Manufactured Itens">Itens Fabricados</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120020" trl="N">
+<row id="1120020" trl="Y">
 <value column="Name" original="DI">DI</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120021" trl="N">
-<value column="Name" original="Adicao">Adicao</value>
+<row id="1120021" trl="Y">
+<value column="Name" original="Adicao">Adição</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120049" trl="N">
-<value column="Name" original="Carta de Correcao">Carta de Correcao</value>
+<row id="1120049" trl="Y">
+<value column="Name" original="Carta de Correcao">Carta de Correção</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120124" trl="N">
+<row id="1120124" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>

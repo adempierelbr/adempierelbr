@@ -18,12 +18,12 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000003" trl="Y">
-<value column="Name" original="lbr_FieldAlignment">lbr_FieldAlignment</value>
+<value column="Name" original="lbr_FieldAlignment">LBR_FieldAlignment</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
 <row id="1000004" trl="Y">
-<value column="Name" original="lbr_PrintFormat">lbr_PrintFormat</value>
+<value column="Name" original="lbr_PrintFormat">LBR_PrintFormat</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -33,7 +33,7 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000007" trl="Y">
-<value column="Name" original="lbr_OccurType">lbr_OccurType</value>
+<value column="Name" original="lbr_OccurType">LBR_OccurType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -48,7 +48,7 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000012" trl="Y">
-<value column="Name" original="lbr_DestionationType">lbr_DestionationType</value>
+<value column="Name" original="lbr_DestionationType">LBR_DestionationType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -83,12 +83,12 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000020" trl="Y">
-<value column="Name" original="lbr_ExceptionType">lbr_ExceptionType</value>
+<value column="Name" original="lbr_ExceptionType">LBR_ExceptionType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
 <row id="1000022" trl="Y">
-<value column="Name" original="lbr_TaxType">lbr_TaxType</value>
+<value column="Name" original="lbr_TaxType">LBR_TaxType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -98,16 +98,16 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000024" trl="Y">
-<value column="Name" original="lbr_TransactionType (Sales/Purchase)">lbr_TransactionType (Sales/Purchase)</value>
+<value column="Name" original="lbr_TransactionType (Sales/Purchase)">LBR_TransactionType (Sales/Purchase)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000025" trl="N">
+<row id="1000025" trl="Y">
 <value column="Name" original="LBR_MatrixPrinter">LBR_MatrixPrinter</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000026" trl="N">
+<row id="1000026" trl="Y">
 <value column="Name" original="LBR_NotaFiscal">LBR_NotaFiscal</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -117,37 +117,37 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000028" trl="N">
-<value column="Name" original="lbr_WithholdFrequency">lbr_WithholdFrequency</value>
+<row id="1000028" trl="Y">
+<value column="Name" original="lbr_WithholdFrequency">LBR_WithholdFrequency</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000029" trl="N">
-<value column="Name" original="lbr_TaxStatus">lbr_TaxStatus</value>
+<row id="1000029" trl="Y">
+<value column="Name" original="lbr_TaxStatus">LBR_TaxStatus</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000030" trl="N">
+<row id="1000030" trl="Y">
 <value column="Name" original="LBR_LegalMessage">LBR_LegalMessage</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000031" trl="N">
-<value column="Name" original="lbr_ProductSource">lbr_ProductSource</value>
+<row id="1000031" trl="Y">
+<value column="Name" original="lbr_ProductSource">LBR_ProductSource</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000032" trl="N">
-<value column="Name" original="lbr_TaxGroup">lbr_TaxGroup</value>
+<row id="1000032" trl="Y">
+<value column="Name" original="lbr_TaxGroup">LBR_TaxGroup</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000033" trl="N">
+<row id="1000033" trl="Y">
 <value column="Name" original="LBR_NotaFiscalLine">LBR_NotaFiscalLine</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000034" trl="N">
+<row id="1000034" trl="Y">
 <value column="Name" original="C_City">C_City</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -157,133 +157,133 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000036" trl="N">
-<value column="Name" original="C_BankAccount ">C_BankAccount </value>
+<row id="1000036" trl="Y">
+<value column="Name" original="C_BankAccount ">C_BankAccount</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000038" trl="N">
+<row id="1000038" trl="Y">
 <value column="Name" original="LBR_OtherNFDocType">LBR_OtherNFDocType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000039" trl="N">
+<row id="1000039" trl="Y">
 <value column="Name" original="LBR_WHLocOtherNF">LBR_WHLocOtherNF</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000040" trl="N">
+<row id="1000040" trl="Y">
 <value column="Name" original="LBR_OtherNF_RequestType">LBR_OtherNF_RequestType</value>
 <value column="Description" original="Other NF Request Type">Other NF Request Type</value>
 <value column="Help" original="Other NF Request Type">Other NF Request Type</value>
 </row>
-<row id="1000042" trl="N">
+<row id="1000042" trl="Y">
 <value column="Name" original="LBR_C_InvoiceLine">LBR_C_InvoiceLine</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000043" trl="N">
+<row id="1000043" trl="Y">
 <value column="Name" original="LBR_DocBaseType">LBR_DocBaseType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000044" trl="N">
+<row id="1000044" trl="Y">
 <value column="Name" original="LBR_NFType">LBR_NFType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100000" trl="N">
+<row id="1100000" trl="Y">
 <value column="Name" original="LBR_DigitalCertificate - lbr_CertType">LBR_DigitalCertificate - lbr_CertType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100001" trl="N">
+<row id="1100001" trl="Y">
 <value column="Name" original="C_DocType - lbr_NFeEnv">C_DocType - lbr_NFeEnv</value>
 <value column="Description" original="NFe Environment">NFe Environment</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100002" trl="N">
+<row id="1100002" trl="Y">
 <value column="Name" original="C_DocType - lbr_DANFEFormat">C_DocType - lbr_DANFEFormat</value>
 <value column="Description" original="DANFE Format">DANFE Format</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100003" trl="N">
+<row id="1100003" trl="Y">
 <value column="Name" original="LBR_DigitalCertificate">LBR_DigitalCertificate</value>
 <value column="Description" original="Digital Certificate">Digital Certificate</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100004" trl="N">
+<row id="1100004" trl="Y">
 <value column="Name" original="LBR_NFeStatus">LBR_NFeStatus</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100005" trl="N">
+<row id="1100005" trl="Y">
 <value column="Name" original="LBR_NFDI - NF">LBR_NFDI - NF</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1100012" trl="N">
+<row id="1100012" trl="Y">
 <value column="Name" original="lbr_FinNFe">lbr_FinNFe</value>
 <value column="Description" original="Finalidade NFe">Finalidade NFe</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120000" trl="N">
-<value column="Name" original="lbr_TaxStatusIPI">lbr_TaxStatusIPI</value>
+<row id="1120000" trl="Y">
+<value column="Name" original="lbr_TaxStatusIPI">LBR_TaxStatusIPI</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120009" trl="N">
-<value column="Name" original="lbr_NFModel (Modelos de Documentos Fiscais)">lbr_NFModel (Modelos de Documentos Fiscais)</value>
+<row id="1120009" trl="Y">
+<value column="Name" original="lbr_NFModel (Modelos de Documentos Fiscais)">LBR_NFModel (Modelos de Documentos Fiscais)</value>
 <value column="Description" original="Tabela com códigos de Documentos Fiscais">Tabela com códigos de Documentos Fiscais</value>
 <value column="Help" original="http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal">http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal</value>
 </row>
-<row id="1120013" trl="N">
+<row id="1120013" trl="Y">
 <value column="Name" original="lbr_DIType">lbr_DIType</value>
 <value column="Description" original="Tipo do Documento de importação">Tipo do Documento de importação</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120014" trl="N">
+<row id="1120014" trl="Y">
 <value column="Name" original="lbr_DEType">lbr_DEType</value>
 <value column="Description" original="Tipo do Documento de exportação">Tipo do Documento de exportação</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120015" trl="N">
+<row id="1120015" trl="Y">
 <value column="Name" original="lbr_CHCType">lbr_CHCType</value>
 <value column="Description" original="Tipo de Conhecimento de Transporte">Tipo de Conhecimento de Transporte</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120016" trl="N">
+<row id="1120016" trl="Y">
 <value column="Name" original="LBR_DE">LBR_DE</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120024" trl="N">
-<value column="Name" original="lbr_AvgCostType">lbr_AvgCostType</value>
+<row id="1120024" trl="Y">
+<value column="Name" original="lbr_AvgCostType">LBR_AvgCostType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120025" trl="N">
-<value column="Name" original="lbr_AvgCostType_MAN">lbr_AvgCostType_MAN</value>
+<row id="1120025" trl="Y">
+<value column="Name" original="lbr_AvgCostType_MAN">LBR_AvgCostType_MAN</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120026" trl="N">
-<value column="Name" original="lbr_AvgCostType_PUR">lbr_AvgCostType_PUR</value>
+<row id="1120026" trl="Y">
+<value column="Name" original="lbr_AvgCostType_PUR">LBR_AvgCostType_PUR</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120027" trl="N">
-<value column="Name" original="lbr_WarehouseType">lbr_WarehouseType</value>
+<row id="1120027" trl="Y">
+<value column="Name" original="lbr_WarehouseType">LBR_WarehouseType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120034" trl="N">
-<value column="Name" original="LBR_NotaFiscal - lbr_RPSStatus">LBR_NotaFiscal - lbr_RPSStatus</value>
+<row id="1120034" trl="Y">
+<value column="Name" original="LBR_NotaFiscal - lbr_RPSStatus">LBR_NotaFiscal - LBR_RPSStatus</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1120035" trl="N">
-<value column="Name" original="lbr_NFeTpEmi">lbr_NFeTpEmi</value>
+<row id="1120035" trl="Y">
+<value column="Name" original="lbr_NFeTpEmi">LBR_NFeTpEmi</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
