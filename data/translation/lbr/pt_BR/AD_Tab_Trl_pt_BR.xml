@@ -296,6 +296,12 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1106001" trl="Y">
+<value column="Name" original="CFOP">CFOP</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1106002" trl="Y">
 <value column="Name" original="Tax Definition">Definição de Impostos</value>
 <value column="CommitWarning" original=""/>
@@ -338,6 +344,12 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120018" trl="Y">
+<value column="Name" original="Formulas">Formulas</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120020" trl="Y">
 <value column="Name" original="DI">DI</value>
 <value column="CommitWarning" original=""/>
@@ -350,8 +362,20 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120022" trl="Y">
+<value column="Name" original="Itens da Adicao">Itens da Adição</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Aba Incluida">Aba Incluida</value>
+<value column="Help" original=""/>
+</row>
 <row id="1120049" trl="Y">
 <value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120080" trl="Y">
+<value column="Name" original="Tax Base Type">Tipo da Base</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>

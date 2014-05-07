@@ -159,15 +159,15 @@
 <value column="Description" original=""/>
 </row>
 <row id="1000057" trl="Y">
-<value column="Name" original="0 - Domestic">Nacional</value>
+<value column="Name" original="0 - Domestic">0 - Nacional, exceto as indicadas nos códigos 3 a 5</value>
 <value column="Description" original=""/>
 </row>
 <row id="1000058" trl="Y">
-<value column="Name" original="1 - Imported">Importado</value>
+<value column="Name" original="1 - Imported">1 - Estrangeira - Importação direta, exceto a indicada no código 6</value>
 <value column="Description" original=""/>
 </row>
 <row id="1000059" trl="Y">
-<value column="Name" original="2 - Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Nacional</value>
+<value column="Name" original="2 - Imported - Acquired from a domestic distributor">2 - Estrangeira - Adquirida no mercado interno, exceto a indicada no código 7</value>
 <value column="Description" original=""/>
 </row>
 <row id="1000060" trl="Y">
@@ -1928,6 +1928,86 @@
 </row>
 <row id="1121184" trl="Y">
 <value column="Name" original="PKCS#11">PKCS#11</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121320" trl="Y">
+<value column="Name" original="3 - Domestic with more than 40 percent Imported">3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a  40%</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121321" trl="Y">
+<value column="Name" original="4 - Product acquired from Manaus">4 - Nacional, cuja produção tenha sido feita em conformidade com os processos produtivos básicos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121322" trl="Y">
+<value column="Name" original="5 - Domestic until 40 percent Imported">5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40%</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121323" trl="Y">
+<value column="Name" original="6 - Foreign - Direct import no similar national">6 - Estrangeira - Importação direta, sem similar nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121324" trl="Y">
+<value column="Name" original="7 - Foreign - Acquired from a domestic distributor no similar national">7 - Estrangeira - Adquirida no mercado interno, sem similar nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121327" trl="Y">
+<value column="Name" original="0 - Frete por conta do Emitente">0 - Frete por conta do Emitente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121328" trl="Y">
+<value column="Name" original="1 - Frete por conta do Destinatário">1 - Frete por conta do Destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121434" trl="Y">
+<value column="Name" original="EXW - Ex Works">EXW - Ex Works</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121435" trl="Y">
+<value column="Name" original="FCA - Free Carrier">FCA - Free Carrier</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121436" trl="Y">
+<value column="Name" original="FAS - Free Alongside Ship">FAS - Free Alongside Ship</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121437" trl="Y">
+<value column="Name" original="FOB - Free on Board">FOB - Free on Board</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121438" trl="Y">
+<value column="Name" original="CFR - Cost and Freight">CFR - Cost and Freight</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121439" trl="Y">
+<value column="Name" original="CIF - Cost, Insurance and Freight">CIF - Cost, Insurance and Freight</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121440" trl="Y">
+<value column="Name" original="CPT - Carriage Paid To">CPT - Carriage Paid To</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121441" trl="Y">
+<value column="Name" original="CIP - Carriage and Insurance Paid to">CIP - Carriage and Insurance Paid to</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121442" trl="Y">
+<value column="Name" original="DAF - Delivered At Frontier">DAF - Delivered At Frontier</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121443" trl="Y">
+<value column="Name" original="DES - Delivered Ex-Ship">DES - Delivered Ex-Ship</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121444" trl="Y">
+<value column="Name" original="DEQ - Delivered Ex-Quay">DEQ - Delivered Ex-Quay</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121445" trl="Y">
+<value column="Name" original="DDU - Delivered Duty Unpaid">DDU - Delivered Duty Unpaid</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121446" trl="Y">
+<value column="Name" original="DDP - Delivered Duty Paid">DDP - Delivered Duty Paid</value>
 <value column="Description" original=""/>
 </row>
 </adempiereTrl>

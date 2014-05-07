@@ -152,6 +152,11 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120074" trl="Y">
+<value column="Name" original="Cancel Production">Cancelar Produção</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120126" trl="Y">
 <value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
 <value column="Description" original="Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>

@@ -3338,6 +3338,16 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1106005" trl="Y">
+<value column="Name" original="Brand">Marca</value>
+<value column="PrintName" original="Brand">Marca</value>
+<value column="Description" original="Brand transport volumes">Marca</value>
+<value column="Help" original="Brand transport volumes">Marca</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1120000" trl="Y">
 <value column="Name" original="Tax Status (IPI)">Situação Tributária (IPI)</value>
 <value column="PrintName" original="Tax Status (IPI)">Situação Tributária (IPI)</value>
@@ -3788,6 +3798,77 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1120547" trl="Y">
+<value column="Name" original="Cancel Production">Cancelar Produção</value>
+<value column="PrintName" original="Cancel Production">Cancelar Produção</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1120923" trl="Y">
+<value column="Name" original="Tax List Amt">Valor de Pauta</value>
+<value column="PrintName" original="Tax List Amt">Valor de Pauta</value>
+<value column="Description" original=""/>
+<value column="Help" original="Valor da taxa Fixa estipulado pelo governo.">Valor da taxa Fixa estipulado pelo governo.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1120924" trl="Y">
+<value column="Name" original="Tax Base Type">Tipo de Base de Imposto</value>
+<value column="PrintName" original="Tax Base Type">Tipo de Base de Imposto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1120954" trl="Y">
+<value column="Name" original="Other Charges Product">Produto para Outras Despesas</value>
+<value column="PrintName" original="Other Charges Product">Produto para Outras Despesas</value>
+<value column="Description" original=""/>
+<value column="Help" original="Produto para destaque de Outras Despesas na Nota Fiscal.">Produto para destaque de Outras Despesas na Nota Fiscal.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1120955" trl="Y">
+<value column="Name" original="Other Charges Amount">Outras Despesas</value>
+<value column="PrintName" original="Other Charges Amount">utras Despesas</value>
+<value column="Description" original=""/>
+<value column="Help" original="Valor Total para Outras Despesas Acessórias&#10;">Valor Total para Outras Despesas Acessórias
+</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121100" trl="Y">
+<value column="Name" original="Freight Cost Rule">Regra de Custo de Frete</value>
+<value column="PrintName" original="Freight Cost Rule">Regra de Custo de Frete</value>
+<value column="Description" original="Method for charging Freight">Método de cobrança do Frete</value>
+<value column="Help" original="The Freight Cost Rule indicates the method used when charging for freight.">Indica o método de cobrança do Frete (Regra de Custo de Frete).</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121297" trl="Y">
+<value column="Name" original="Legal Product Description">Descrição Legal do Produto</value>
+<value column="PrintName" original="Legal Product Description">Descrição Legal do Produto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1121416" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
 <value column="PrintName" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
@@ -3803,6 +3884,17 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="Tax Rate(Imported)">Alíquota (Importado)</value>
 <value column="Description" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
 <value column="Help" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121432" trl="Y">
+<value column="Name" original="INCOTERMS">INCOTERMS</value>
+<value column="PrintName" original="INCOTERMS">INCOTERMS</value>
+<value column="Description" original="International Commercial Terms">International Commercial Terms</value>
+<value column="Help" original="The Incoterms rules or International Commercial Terms are a series of pre-defined commercial terms published by the International Chamber of Commerce (ICC) that are widely used in International commercial transactions or Procurement processes. A series of three-letter trade terms related to common contractual sales practices, the Incoterms rules are intended primarily to clearly communicate the tasks, costs, and risks associated with the transportation and delivery of goods.&#10;The Incoterms rules are accepted by governments, legal authorities, and practitioners worldwide for the interpretation of most commonly used terms in international trade. They are intended to reduce or remove altogether uncertainties arising from different interpretation of the rules in different countries. ">The Incoterms rules or International Commercial Terms are a series of pre-defined commercial terms published by the International Chamber of Commerce (ICC) that are widely used in International commercial transactions or Procurement processes. A series of three-letter trade terms related to common contractual sales practices, the Incoterms rules are intended primarily to clearly communicate the tasks, costs, and risks associated with the transportation and delivery of goods.
+The Incoterms rules are accepted by governments, legal authorities, and practitioners worldwide for the interpretation of most commonly used terms in international trade. They are intended to reduce or remove altogether uncertainties arising from different interpretation of the rules in different countries. </value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>

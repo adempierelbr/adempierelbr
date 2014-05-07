@@ -277,6 +277,11 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120031" trl="Y">
+<value column="Name" original="LBR_Formula">LBR_Formula</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120034" trl="Y">
 <value column="Name" original="LBR_NotaFiscal - lbr_RPSStatus">LBR_NotaFiscal - LBR_RPSStatus</value>
 <value column="Description" original=""/>
@@ -286,5 +291,15 @@
 <value column="Name" original="lbr_NFeTpEmi">LBR_NFeTpEmi</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
+</row>
+<row id="1120147" trl="Y">
+<value column="Name" original="LBR_FreightCostRule">LBR_FreightCostRule</value>
+<value column="Description" original="Regra de custo do frete">Regra de custo do frete</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120170" trl="Y">
+<value column="Name" original="C_Order - LBR_INCOTERMS">C_Order - LBR_INCOTERMS</value>
+<value column="Description" original="International Commercial Terms">International Commercial Terms</value>
+<value column="Help" original="International Commercial Terms">International Commercial Terms</value>
 </row>
 </adempiereTrl>
