@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Message">
+<row id="1000000" trl="Y">
+<value column="MsgText" original="The selected warehouse is not Third Party.">O Armazém selecionado não está em poder de terceiros.</value>
+<value column="MsgTip" original="Please, select a Third Party Warehouse.">Selecione um armazém que se encontra em poder de terceiros.</value>
+</row>
+<row id="1120032" trl="Y">
+<value column="MsgText" original="Prezado Cliente,&#10;&#10;Segue o boleto da Empresa {0}. A Nota Fiscal é enviada pelo site da Prefeitura de São Paulo.&#10;&#10;Atenciosamente,&#10;Cobrança - {0}&#10;Telefone: {1}">Prezado Cliente,
+
+Segue o boleto da Empresa {0}. A Nota Fiscal é enviada pelo site da Prefeitura de São Paulo.
+
+Atenciosamente,
+Cobrança - {0}
+Telefone: {1}</value>
+<value column="MsgTip" original=""/>
+</row>
+</adempiereTrl>

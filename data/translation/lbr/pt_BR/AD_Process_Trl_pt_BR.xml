@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Process">
+<row id="1000000" trl="Y">
+<value column="Name" original="Create Fields">Criar Campos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000001" trl="Y">
+<value column="Name" original="Generate CNAB">Geração CNAB</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000002" trl="Y">
+<value column="Name" original="Return CNAB">Retorno CNAB</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000003" trl="Y">
+<value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000004" trl="Y">
+<value column="Name" original="ProcGenerateNFS">Processar NF (Saída)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000005" trl="Y">
+<value column="Name" original="ProcGenerateNFE">Processar NF (Entrada)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000006" trl="Y">
+<value column="Name" original="ProcCancelNF">Cancelar Nota Fiscal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000007" trl="Y">
+<value column="Name" original="ProcCreatePO">Criar linhas do Pedido</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000011" trl="Y">
+<value column="Name" original="ProcCancelBoleto">Cancelar Boleto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000012" trl="Y">
+<value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000013" trl="Y">
+<value column="Name" original="ProcReactivateNF">Reativar Nota Fiscal</value>
+<value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
+<value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
+</row>
+<row id="1000014" trl="Y">
+<value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000015" trl="Y">
+<value column="Name" original="lbr_ProcessOtherNF">Processar</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000016" trl="Y">
+<value column="Name" original="lbr_VoidOtherNF">Anular</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000017" trl="Y">
+<value column="Name" original="Sobre ADempiereLBR">Sobre AdempiereLBR</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000018" trl="Y">
+<value column="Name" original="ProcGenerateRPS">Geração Arquivo RPS</value>
+<value column="Description" original="Process to Generate RPS File (NFe)">Processo para Geração de Arquivo RPS (NFe)</value>
+<value column="Help" original=""/>
+</row>
+<row id="1100001" trl="N">
+<value column="Name" original="Lot Transmission">Lot Transmission</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100002" trl="N">
+<value column="Name" original="Generate NFe XML">Generate NFe XML</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100003" trl="N">
+<value column="Name" original="Lot Return">Lot Return</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120000" trl="N">
+<value column="Name" original="ProcStatusServico">ProcStatusServico</value>
+<value column="Description" original="Testa o status do serviço da NF-e">Testa o status do serviço da NF-e</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120001" trl="N">
+<value column="Name" original="ProcConsultaCadastro">ProcConsultaCadastro</value>
+<value column="Description" original="Consulta o Cadastro de um Parceiro de Negócio no SEFAZ">Consulta o Cadastro de um Parceiro de Negócio no SEFAZ</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120004" trl="N">
+<value column="Name" original="Geração de Certificados NFe">Geração de Certificados NFe</value>
+<value column="Description" original="Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService">Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120012" trl="N">
+<value column="Name" original="AvgCost - Create Records (Manufactured)">AvgCost - Create Records (Manufactured)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120013" trl="N">
+<value column="Name" original="AvgCost - Create Records (Purchased)">AvgCost - Create Records (Purchased)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120014" trl="N">
+<value column="Name" original="AvgCost - Update Records (Manufactured)">AvgCost - Update Records (Manufactured)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120015" trl="N">
+<value column="Name" original="AvgCost - Update Records (Purchased)">AvgCost - Update Records (Purchased)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120016" trl="N">
+<value column="Name" original="AvgCost - RePost Acct">AvgCost - RePost Acct</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120017" trl="N">
+<value column="Name" original="AvgCost Zoom">AvgCost Zoom</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120037" trl="N">
+<value column="Name" original="Process CCe">Process CCe</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120040" trl="N">
+<value column="Name" original="Print From XML">Print From XML</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120126" trl="N">
+<value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
+<value column="Description" original="Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>
+<value column="Help" original=""/>
+</row>
+</adempiereTrl>

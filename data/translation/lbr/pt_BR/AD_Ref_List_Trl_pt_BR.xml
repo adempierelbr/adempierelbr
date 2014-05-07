@@ -1,0 +1,1933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Ref_List">
+<row id="1000000" trl="Y">
+<value column="Name" original="PJ - Legal Entity">PJ - Pessoa Jurídica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000001" trl="Y">
+<value column="Name" original="PF - Individual">PF - Pessoa Física</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000002" trl="Y">
+<value column="Name" original="Left">Esquerda</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000003" trl="Y">
+<value column="Name" original="Center">Centro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000004" trl="Y">
+<value column="Name" original="Right">Direita</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000005" trl="Y">
+<value column="Name" original="String">Texto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000006" trl="Y">
+<value column="Name" original="Date">Data</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000007" trl="Y">
+<value column="Name" original="Value">Valor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000008" trl="Y">
+<value column="Name" original="Liquidation">Liquidação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000009" trl="Y">
+<value column="Name" original="Occurrence">Ocorrência</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000021" trl="Y">
+<value column="Name" original="Estados Identicos">Estados Idênticos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000022" trl="Y">
+<value column="Name" original="Estados Diferentes">Estados Diferentes</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000023" trl="Y">
+<value column="Name" original="Estrangeiro">Estrangeiro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000024" trl="Y">
+<value column="Name" original="Zona Franca">Zona Franca</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000029" trl="Y">
+<value column="Name" original="Product">Produto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000030" trl="Y">
+<value column="Name" original="Fiscal Group">Grupo de Tributação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000033" trl="Y">
+<value column="Name" original="Product">Produto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000034" trl="Y">
+<value column="Name" original="Service">Serviço</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000035" trl="Y">
+<value column="Name" original="End User">Consumidor Final</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000036" trl="Y">
+<value column="Name" original="Manufacturing">Industrialização</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000037" trl="Y">
+<value column="Name" original="Import">Importação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000038" trl="Y">
+<value column="Name" original="Export">Exportação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000039" trl="Y">
+<value column="Name" original="Substitution">Substituição Tributária</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000040" trl="Y">
+<value column="Name" original="Yes">Sim</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000041" trl="Y">
+<value column="Name" original="No">Não</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000042" trl="Y">
+<value column="Name" original="Both">Ambos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000043" trl="Y">
+<value column="Name" original="Resale">Revenda</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000044" trl="Y">
+<value column="Name" original="Monthly">Mensal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000045" trl="Y">
+<value column="Name" original="00 - Tributada integralmente">00 - Tributada integralmente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000046" trl="Y">
+<value column="Name" original="10 - Tributada e com cobranca do ICMS por Sub. Tributaria">10 - Tributada e com cobrança do ICMS por Sub. Tributária</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000047" trl="Y">
+<value column="Name" original="20 - Com reducao de base de calculo">20 - Com redução de base de cálculo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000048" trl="Y">
+<value column="Name" original="30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut">30 - Isenta ou não-trib. e com cobr. do ICMS por Sub. Tribut</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000049" trl="Y">
+<value column="Name" original="40 - Isenta">40 - Isenta</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000050" trl="Y">
+<value column="Name" original="41 - Nao-tributada">41 - Não-tributada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000051" trl="Y">
+<value column="Name" original="50 - Suspensao">50 - Suspensão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000052" trl="Y">
+<value column="Name" original="51 - Diferimento ">51 - Diferimento </value>
+<value column="Description" original=""/>
+</row>
+<row id="1000053" trl="Y">
+<value column="Name" original="60 - ICMS cobrado anteriormente por substituicao tributaria">60 - ICMS cobrado anteriormente por substituição tributária</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000055" trl="Y">
+<value column="Name" original="70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib">70 - Com red. de base de cálc. e cobr. do ICMS por Sub. Trib</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000056" trl="Y">
+<value column="Name" original="90 - Outras">90 - Outras</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000057" trl="Y">
+<value column="Name" original="0 - Domestic">Nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000058" trl="Y">
+<value column="Name" original="1 - Imported">Importado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000059" trl="Y">
+<value column="Name" original="2 - Imported - Acquired from a domestic distributor">Importado - Adquirido no Mercado Nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000060" trl="N">
+<value column="Name" original="Nota Fiscal Brasil">Nota Fiscal Brasil</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000061" trl="Y">
+<value column="Name" original="Cash">Dinheiro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000062" trl="Y">
+<value column="Name" original="Check">Cheque</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000063" trl="Y">
+<value column="Name" original="Bill">Boleto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000064" trl="Y">
+<value column="Name" original="Direct Deposit">Depósito Direto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000065" trl="N">
+<value column="Name" original="Material Return">Material Return</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000066" trl="N">
+<value column="Name" original="Material Invoice">Material Invoice</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000067" trl="Y">
+<value column="Name" original="Consignation Sales Order">Ordem de Venda de Envio de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000068" trl="Y">
+<value column="Name" original="Consignation Shipment">Expedição de Envio de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000069" trl="Y">
+<value column="Name" original="Consignation Invoice">Fatura de Envio de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000070" trl="Y">
+<value column="Name" original="Consignation return sales order">Ordem de Venda de Retorno de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000071" trl="Y">
+<value column="Name" original="Consignation Return Shipment">Expedição de Retorno de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000072" trl="Y">
+<value column="Name" original="Consignation Return Invoice">Fatura de Retorno de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000073" trl="Y">
+<value column="Name" original="Consignation Invoice Sales Order">Ordem de Venda de Faturamento de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000074" trl="Y">
+<value column="Name" original="Consignation Invoice Shipment">Expedição de Faturamento de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000075" trl="Y">
+<value column="Name" original="Consignation Invoice Invoice">Fatura de Faturamento de Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000076" trl="Y">
+<value column="Name" original="Default">Padrão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000077" trl="Y">
+<value column="Name" original="001_ACT-Autorização de Carregamento de Transporte">001_ACT-Autorização de Carregamento de Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000078" trl="Y">
+<value column="Name" original="002_AIMR-Atestado de Intervenção em Máquina">002_AIMR-Atestado de Intervenção em Máquina</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000079" trl="Y">
+<value column="Name" original="003_AIPDV-Atestado de Intervenção em PDV">003_AIPDV-Atestado de Intervenção em PDV</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000080" trl="Y">
+<value column="Name" original="004_BPA-Bilhete de Passagem Aquaviário">004_BPA-Bilhete de Passagem Aquaviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000081" trl="Y">
+<value column="Name" original="005_BPF-Bilhete de Passagem Ferroviário">005_BPF-Bilhete de Passagem Ferroviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000082" trl="Y">
+<value column="Name" original="006_BPNB-Bilhete de Passagem e Nota de Bagagem">006_BPNB-Bilhete de Passagem e Nota de Bagagem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000083" trl="Y">
+<value column="Name" original="007_BPR-Bilhete de Passagem Rodoviário">007_BPR-Bilhete de Passagem Rodoviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000084" trl="Y">
+<value column="Name" original="008_CA-Conhecimento Aéreo">008_CA-Conhecimento Aéreo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000085" trl="Y">
+<value column="Name" original="009_CTA-Conhecimento de Transporte Avulso">009_CTA-Conhecimento de Transporte Avulso</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000086" trl="Y">
+<value column="Name" original="010_CTAC-Conhecimento de Transporte Aquaviário de Cargas">010_CTAC-Conhecimento de Transporte Aquaviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000087" trl="Y">
+<value column="Name" original="011_CTFC-Conhecimento de Transporte Ferroviário de Cargas">011_CTFC-Conhecimento de Transporte Ferroviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000088" trl="Y">
+<value column="Name" original="012_CTRC-Conhecimento de Transporte Rodoviário de Cargas">012_CTRC-Conhecimento de Transporte Rodoviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000089" trl="Y">
+<value column="Name" original="013_DAICMS-Demons. de Apuração do ICMS-DAICMS">013_DAICMS-Demons. de Apuração do ICMS-DAICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000090" trl="Y">
+<value column="Name" original="014_DCICMS-Demons. de Apuração do Compl. do ICMS-DCICMS">014_DCICMS-Demons. de Apuração do Compl. do ICMS-DCICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000091" trl="Y">
+<value column="Name" original="015_DCL-Despacho de Cargas em Lotação">015_DCL-Despacho de Cargas em Lotação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000092" trl="Y">
+<value column="Name" original="016_DCMS-Despacho de Cargas Modelo Simplificado">016_DCMS-Despacho de Cargas Modelo Simplificado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000093" trl="Y">
+<value column="Name" original="017_DEB-Documento de Excesso de Bagagem">017_DEB-Documento de Excesso de Bagagem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000094" trl="Y">
+<value column="Name" original="018_DSEP-Documento Simplificado de Embarque de Passageiro">018_DSEP-Documento Simplificado de Embarque de Passageiro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000095" trl="Y">
+<value column="Name" original="019_DSICMS-Demons. de Contrib. Substituto do ICMS-DSICMS">019_DSICMS-Demons. de Contrib. Substituto do ICMS-DSICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000096" trl="Y">
+<value column="Name" original="020_DT-Despacho de Transporte">020_DT-Despacho de Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000097" trl="Y">
+<value column="Name" original="021_EF-Extrato de Faturamento">021_EF-Extrato de Faturamento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000098" trl="Y">
+<value column="Name" original="022_GNR-Guia Nacional de Recolhimento de Tributos Estaduais">022_GNR-Guia Nacional de Recolhimento de Tributos Estaduais</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000099" trl="Y">
+<value column="Name" original="023_MC-Manifesto de Carga">023_MC-Manifesto de Carga</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000100" trl="Y">
+<value column="Name" original="024_NF-Nota Fiscal">024_NF-Nota Fiscal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000101" trl="Y">
+<value column="Name" original="025_NFA-Nota Fiscal Avulsa">025_NFA-Nota Fiscal Avulsa</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000102" trl="Y">
+<value column="Name" original="026_NFCEE-Nota Fiscal/Conta de Energia Elétrica">026_NFCEE-Nota Fiscal/Conta de Energia Elétrica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000103" trl="Y">
+<value column="Name" original="027_NFCFA-Nota Fiscal/Conta de Fornecimento de Água">027_NFCFA-Nota Fiscal/Conta de Fornecimento de Água</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000104" trl="Y">
+<value column="Name" original="028_NFE-Nota Fiscal de Entrada">028_NFE-Nota Fiscal de Entrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000105" trl="Y">
+<value column="Name" original="029_NFF-NFF">029_NFF-NFF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000106" trl="Y">
+<value column="Name" original="030_NFME-Nota Fiscal Microempresa">030_NFME-Nota Fiscal Microempresa</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000107" trl="Y">
+<value column="Name" original="031_NFP-Nota Fiscal de Produtor">031_NFP-Nota Fiscal de Produtor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000108" trl="Y">
+<value column="Name" original="032_NFS-Nota Fiscal Simplificada">032_NFS-Nota Fiscal Simplificada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000109" trl="Y">
+<value column="Name" original="033_NFSC-Nota Fiscal e Serviço de Comunicação">033_NFSC-Nota Fiscal e Serviço de Comunicação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000110" trl="Y">
+<value column="Name" original="034_NFSTC-Nota Fiscal de Serviço de Telecomunicações">034_NFSTC-Nota Fiscal de Serviço de Telecomunicações</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000111" trl="Y">
+<value column="Name" original="035_NFSTR-Nota Fiscal de Serviço de Transporte">035_NFSTR-Nota Fiscal de Serviço de Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000112" trl="Y">
+<value column="Name" original="036_NFVC-Nota Fiscal de Venda a Consumidor">036_NFVC-Nota Fiscal de Venda a Consumidor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000113" trl="Y">
+<value column="Name" original="037_OCC-Ordem de Coleta de Carga">037_OCC-Ordem de Coleta de Carga</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000114" trl="Y">
+<value column="Name" original="038_RD-Relação de Despachos">038_RD-Relação de Despachos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000115" trl="Y">
+<value column="Name" original="039_RECA-Relatório de Emissão de Conhecimento Aéreos">039_RECA-Relatório de Emissão de Conhecimento Aéreos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000116" trl="Y">
+<value column="Name" original="040_REP-Relatório de Embarque de Passageiros">040_REP-Relatório de Embarque de Passageiros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000117" trl="Y">
+<value column="Name" original="041_RMD-Resumo de Movimento Diário">041_RMD-Resumo de Movimento Diário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000119" trl="N">
+<value column="Name" original="Freight excluded">Freight excluded</value>
+<value column="Description" original="Freight cost excluded">Freight cost excluded</value>
+</row>
+<row id="1100000" trl="N">
+<value column="Name" original="Java Key Store">Java Key Store</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100001" trl="N">
+<value column="Name" original="PKCS#12">PKCS#12</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100002" trl="N">
+<value column="Name" original="Production">Production</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100003" trl="N">
+<value column="Name" original="Homologation">Homologation</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100004" trl="N">
+<value column="Name" original="Portrait">Portrait</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100005" trl="N">
+<value column="Name" original="Landscape">Landscape</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100006" trl="N">
+<value column="Name" original="100-Autorizado o uso da NF-e">100-Autorizado o uso da NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100007" trl="N">
+<value column="Name" original="101-Cancelamento de NF-e homologado">101-Cancelamento de NF-e homologado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100008" trl="N">
+<value column="Name" original="102-Inutilização de número homologado">102-Inutilização de número homologado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100009" trl="N">
+<value column="Name" original="103-Lote recebido com sucesso">103-Lote recebido com sucesso</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100010" trl="N">
+<value column="Name" original="104-Lote processado">104-Lote processado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100011" trl="N">
+<value column="Name" original="105-Lote em processamento">105-Lote em processamento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100012" trl="N">
+<value column="Name" original="106-Lote não localizado">106-Lote não localizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100013" trl="N">
+<value column="Name" original="107-Serviço em Operação">107-Serviço em Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100014" trl="N">
+<value column="Name" original="108-Serviço Paralisado Momentaneamente (curto prazo)">108-Serviço Paralisado Momentaneamente (curto prazo)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100015" trl="N">
+<value column="Name" original="109-Serviço Paralisado sem Previsão">109-Serviço Paralisado sem Previsão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100016" trl="N">
+<value column="Name" original="110-Uso Denegado">110-Uso Denegado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100017" trl="N">
+<value column="Name" original="111-Consulta cadastro com uma ocorrência">111-Consulta cadastro com uma ocorrência</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100018" trl="N">
+<value column="Name" original="112-Consulta cadastro com mais de uma ocorrência">112-Consulta cadastro com mais de uma ocorrência</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100019" trl="N">
+<value column="Name" original="201-Rejeição: O numero máximo de numeração de NF-e a inutil">201-Rejeição: O numero máximo de numeração de NF-e a inutil</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100020" trl="N">
+<value column="Name" original="202-Rejeição: Falha no reconhecimento da autoria ou integri">202-Rejeição: Falha no reconhecimento da autoria ou integri</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100021" trl="N">
+<value column="Name" original="203-Rejeição: Emissor não habilitado para emissão da NF-e">203-Rejeição: Emissor não habilitado para emissão da NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100022" trl="N">
+<value column="Name" original="204-Rejeição: Duplicidade de NF-e [999999999999999999999999">204-Rejeição: Duplicidade de NF-e [999999999999999999999999</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100023" trl="N">
+<value column="Name" original="205-Rejeição: NF-e está denegada na base de dados da SEFAZ">205-Rejeição: NF-e está denegada na base de dados da SEFAZ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100024" trl="N">
+<value column="Name" original="206-Rejeição: NF-e já está inutilizada na Base de dados da ">206-Rejeição: NF-e já está inutilizada na Base de dados da </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100025" trl="N">
+<value column="Name" original="207-Rejeição: CNPJ do emitente inválido">207-Rejeição: CNPJ do emitente inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100026" trl="N">
+<value column="Name" original="208-Rejeição: CNPJ do destinatário inválido">208-Rejeição: CNPJ do destinatário inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100027" trl="N">
+<value column="Name" original="209-Rejeição: IE do emitente inválida">209-Rejeição: IE do emitente inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100028" trl="N">
+<value column="Name" original="210-Rejeição: IE do destinatário inválida">210-Rejeição: IE do destinatário inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100029" trl="N">
+<value column="Name" original="211-Rejeição: IE do substituto inválida">211-Rejeição: IE do substituto inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100030" trl="N">
+<value column="Name" original="212-Rejeição: Data de emissão NF-e posterior a data de rece">212-Rejeição: Data de emissão NF-e posterior a data de rece</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100031" trl="N">
+<value column="Name" original="213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do ">213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100032" trl="N">
+<value column="Name" original="214-Rejeição: Tamanho da mensagem excedeu o limite estabele">214-Rejeição: Tamanho da mensagem excedeu o limite estabele</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100033" trl="N">
+<value column="Name" original="215-Rejeição: Falha no schema XML">215-Rejeição: Falha no schema XML</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100034" trl="N">
+<value column="Name" original="216-Rejeição: Chave de Acesso difere da cadastrada">216-Rejeição: Chave de Acesso difere da cadastrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100035" trl="N">
+<value column="Name" original="217-Rejeição: NF-e não consta na base de dados da SEFAZ">217-Rejeição: NF-e não consta na base de dados da SEFAZ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100036" trl="N">
+<value column="Name" original="218-Rejeição: NF-e já esta cancelada na base de dados da SE">218-Rejeição: NF-e já esta cancelada na base de dados da SE</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100037" trl="N">
+<value column="Name" original="219-Rejeição: Circulação da NF-e verificada">219-Rejeição: Circulação da NF-e verificada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100038" trl="N">
+<value column="Name" original="220-Rejeição: Prazo de Cancelamento Superior ao Previsto na">220-Rejeição: Prazo de Cancelamento Superior ao Previsto na</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100039" trl="N">
+<value column="Name" original="221-Rejeição: Confirmado o recebimento da NF-e pelo destina">221-Rejeição: Confirmado o recebimento da NF-e pelo destina</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100040" trl="N">
+<value column="Name" original="222-Rejeição: Protocolo de Autorização de Uso difere do cad">222-Rejeição: Protocolo de Autorização de Uso difere do cad</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100041" trl="N">
+<value column="Name" original="223-Rejeição: CNPJ do transmissor do lote difere do CNPJ do">223-Rejeição: CNPJ do transmissor do lote difere do CNPJ do</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100042" trl="N">
+<value column="Name" original="224-Rejeição: A faixa inicial é maior que a faixa final">224-Rejeição: A faixa inicial é maior que a faixa final</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100043" trl="N">
+<value column="Name" original="225-Rejeição: Falha no Schema XML do lote de NFe">225-Rejeição: Falha no Schema XML do lote de NFe</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100044" trl="N">
+<value column="Name" original="226-Rejeição: Código da UF do Emitente diverge da UF autori">226-Rejeição: Código da UF do Emitente diverge da UF autori</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100045" trl="N">
+<value column="Name" original="227-Rejeição: Erro na Chave de Acesso - Campo Id – falta a ">227-Rejeição: Erro na Chave de Acesso - Campo Id – falta a </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100046" trl="N">
+<value column="Name" original="228-Rejeição: Data de Emissão muito atrasada">228-Rejeição: Data de Emissão muito atrasada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100047" trl="N">
+<value column="Name" original="229-Rejeição: IE do emitente não informada">229-Rejeição: IE do emitente não informada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100048" trl="N">
+<value column="Name" original="230-Rejeição: IE do emitente não cadastrada">230-Rejeição: IE do emitente não cadastrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100049" trl="N">
+<value column="Name" original="231-Rejeição: IE do emitente não vinculada ao CNPJ">231-Rejeição: IE do emitente não vinculada ao CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100050" trl="N">
+<value column="Name" original="232-Rejeição: IE do destinatário não informada">232-Rejeição: IE do destinatário não informada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100051" trl="N">
+<value column="Name" original="233-Rejeição: IE do destinatário não cadastrada">233-Rejeição: IE do destinatário não cadastrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100052" trl="N">
+<value column="Name" original="234-Rejeição: IE do destinatário não vinculada ao CNPJ">234-Rejeição: IE do destinatário não vinculada ao CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100053" trl="N">
+<value column="Name" original="235-Rejeição: Inscrição SUFRAMA inválida">235-Rejeição: Inscrição SUFRAMA inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100054" trl="N">
+<value column="Name" original="236-Rejeição: Chave de Acesso com dígito verificador inváli">236-Rejeição: Chave de Acesso com dígito verificador inváli</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100055" trl="N">
+<value column="Name" original="237-Rejeição: CPF do destinatário inválido">237-Rejeição: CPF do destinatário inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100056" trl="N">
+<value column="Name" original="238-Rejeição: Cabeçalho - Versão do arquivo XML superior a ">238-Rejeição: Cabeçalho - Versão do arquivo XML superior a </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100057" trl="N">
+<value column="Name" original="239-Rejeição: Cabeçalho - Versão do arquivo XML não suporta">239-Rejeição: Cabeçalho - Versão do arquivo XML não suporta</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100058" trl="N">
+<value column="Name" original="240-Rejeição: Cancelamento/Inutilização - Irregularidade Fi">240-Rejeição: Cancelamento/Inutilização - Irregularidade Fi</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100059" trl="N">
+<value column="Name" original="241-Rejeição: Um número da faixa já foi utilizado">241-Rejeição: Um número da faixa já foi utilizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100060" trl="N">
+<value column="Name" original="242-Rejeição: Cabeçalho - Falha no Schema XML">242-Rejeição: Cabeçalho - Falha no Schema XML</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100061" trl="N">
+<value column="Name" original="243-Rejeição: XML Mal Formado">243-Rejeição: XML Mal Formado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100062" trl="N">
+<value column="Name" original="244-Rejeição: CNPJ do Certificado Digital difere do CNPJ da">244-Rejeição: CNPJ do Certificado Digital difere do CNPJ da</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100063" trl="N">
+<value column="Name" original="245-Rejeição: CNPJ Emitente não cadastrado">245-Rejeição: CNPJ Emitente não cadastrado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100064" trl="N">
+<value column="Name" original="246-Rejeição: CNPJ Destinatário não cadastrado">246-Rejeição: CNPJ Destinatário não cadastrado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100065" trl="N">
+<value column="Name" original="247-Rejeição: Sigla da UF do Emitente diverge da UF autoriz">247-Rejeição: Sigla da UF do Emitente diverge da UF autoriz</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100066" trl="N">
+<value column="Name" original="248-Rejeição: UF do Recibo diverge da UF autorizadora">248-Rejeição: UF do Recibo diverge da UF autorizadora</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100067" trl="N">
+<value column="Name" original="249-Rejeição: UF da Chave de Acesso diverge da UF autorizad">249-Rejeição: UF da Chave de Acesso diverge da UF autorizad</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100068" trl="N">
+<value column="Name" original="250-Rejeição: UF diverge da UF autorizadora">250-Rejeição: UF diverge da UF autorizadora</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100069" trl="N">
+<value column="Name" original="251-Rejeição: UF/Município destinatário não pertence a SUFR">251-Rejeição: UF/Município destinatário não pertence a SUFR</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100070" trl="N">
+<value column="Name" original="252-Rejeição: Ambiente informado diverge do Ambiente de rec">252-Rejeição: Ambiente informado diverge do Ambiente de rec</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100071" trl="N">
+<value column="Name" original="253-Rejeição: Digito Verificador da chave de acesso compost">253-Rejeição: Digito Verificador da chave de acesso compost</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100072" trl="N">
+<value column="Name" original="254-Rejeição: NF-e complementar não possui NF referenciada">254-Rejeição: NF-e complementar não possui NF referenciada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100073" trl="N">
+<value column="Name" original="255-Rejeição: NF-e complementar possui mais de uma NF refer">255-Rejeição: NF-e complementar possui mais de uma NF refer</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100074" trl="N">
+<value column="Name" original="256-Rejeição: Uma NF-e da faixa já está inutilizada na Base">256-Rejeição: Uma NF-e da faixa já está inutilizada na Base</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100075" trl="N">
+<value column="Name" original="257-Rejeição: Solicitante não habilitado para emissão da NF">257-Rejeição: Solicitante não habilitado para emissão da NF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100076" trl="N">
+<value column="Name" original="258-Rejeição: CNPJ da consulta inválido">258-Rejeição: CNPJ da consulta inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100077" trl="N">
+<value column="Name" original="259-Rejeição: CNPJ da consulta não cadastrado como contribu">259-Rejeição: CNPJ da consulta não cadastrado como contribu</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100078" trl="N">
+<value column="Name" original="260-Rejeição: IE da consulta inválida">260-Rejeição: IE da consulta inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100079" trl="N">
+<value column="Name" original="261-Rejeição: IE da consulta não cadastrada como contribuin">261-Rejeição: IE da consulta não cadastrada como contribuin</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100080" trl="N">
+<value column="Name" original="262-Rejeição: UF não fornece consulta por CPF">262-Rejeição: UF não fornece consulta por CPF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100081" trl="N">
+<value column="Name" original="263-Rejeição: CPF da consulta inválido">263-Rejeição: CPF da consulta inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100082" trl="N">
+<value column="Name" original="264-Rejeição: CPF da consulta não cadastrado como contribui">264-Rejeição: CPF da consulta não cadastrado como contribui</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100083" trl="N">
+<value column="Name" original="265-Rejeição: Sigla da UF da consulta difere da UF do Web S">265-Rejeição: Sigla da UF da consulta difere da UF do Web S</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100084" trl="N">
+<value column="Name" original="266-Rejeição: Série utilizada não permitida no Web Service">266-Rejeição: Série utilizada não permitida no Web Service</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100085" trl="N">
+<value column="Name" original="267-Rejeição: NF Complementar referencia uma NF-e inexisten">267-Rejeição: NF Complementar referencia uma NF-e inexisten</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100086" trl="N">
+<value column="Name" original="268-Rejeição: NF Complementar referencia uma outra NF-e Com">268-Rejeição: NF Complementar referencia uma outra NF-e Com</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100087" trl="N">
+<value column="Name" original="269-Rejeição: CNPJ Emitente da NF Complementar difere do CN">269-Rejeição: CNPJ Emitente da NF Complementar difere do CN</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100088" trl="N">
+<value column="Name" original="270-Rejeição: Código Município do Fato Gerador: dígito invá">270-Rejeição: Código Município do Fato Gerador: dígito invá</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100089" trl="N">
+<value column="Name" original="271-Rejeição: Código Município do Fato Gerador: difere da U">271-Rejeição: Código Município do Fato Gerador: difere da U</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100090" trl="N">
+<value column="Name" original="272-Rejeição: Código Município do Emitente: dígito inválido">272-Rejeição: Código Município do Emitente: dígito inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100091" trl="N">
+<value column="Name" original="273-Rejeição: Código Município do Emitente: difere da UF do">273-Rejeição: Código Município do Emitente: difere da UF do</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100092" trl="N">
+<value column="Name" original="274-Rejeição: Código Município do Destinatário: dígito invá">274-Rejeição: Código Município do Destinatário: dígito invá</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100093" trl="N">
+<value column="Name" original="275-Rejeição: Código Município do Destinatário: difere da U">275-Rejeição: Código Município do Destinatário: difere da U</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100094" trl="N">
+<value column="Name" original="276-Rejeição: Código Município do Local de Retirada: dígito">276-Rejeição: Código Município do Local de Retirada: dígito</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100095" trl="N">
+<value column="Name" original="277-Rejeição: Código Município do Local de Retirada: difere">277-Rejeição: Código Município do Local de Retirada: difere</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100096" trl="N">
+<value column="Name" original="278-Rejeição: Código Município do Local de Entrega: dígito ">278-Rejeição: Código Município do Local de Entrega: dígito </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100097" trl="N">
+<value column="Name" original="279-Rejeição: Código Município do Local de Entrega: difere ">279-Rejeição: Código Município do Local de Entrega: difere </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100098" trl="N">
+<value column="Name" original="280-Rejeição: Certificado Transmissor inválido">280-Rejeição: Certificado Transmissor inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100099" trl="N">
+<value column="Name" original="281-Rejeição: Certificado Transmissor Data Validade">281-Rejeição: Certificado Transmissor Data Validade</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100100" trl="N">
+<value column="Name" original="282-Rejeição: Certificado Transmissor sem CNPJ">282-Rejeição: Certificado Transmissor sem CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100101" trl="N">
+<value column="Name" original="283-Rejeição: Certificado Transmissor - erro Cadeia de Cert">283-Rejeição: Certificado Transmissor - erro Cadeia de Cert</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100102" trl="N">
+<value column="Name" original="284-Rejeição: Certificado Transmissor revogado">284-Rejeição: Certificado Transmissor revogado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100103" trl="N">
+<value column="Name" original="285-Rejeição: Certificado Transmissor difere ICP-Brasil">285-Rejeição: Certificado Transmissor difere ICP-Brasil</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100104" trl="N">
+<value column="Name" original="286-Rejeição: Certificado Transmissor erro no acesso a LCR">286-Rejeição: Certificado Transmissor erro no acesso a LCR</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100105" trl="N">
+<value column="Name" original="287-Rejeição: Código Município do FG - ISSQN: dígito inváli">287-Rejeição: Código Município do FG - ISSQN: dígito inváli</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100106" trl="N">
+<value column="Name" original="288-Rejeição: Código Município do FG - Transporte: dígito i">288-Rejeição: Código Município do FG - Transporte: dígito i</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100107" trl="N">
+<value column="Name" original="289-Rejeição: Código da UF informada diverge da UF solicita">289-Rejeição: Código da UF informada diverge da UF solicita</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100108" trl="N">
+<value column="Name" original="290-Rejeição: Certificado Assinatura inválido">290-Rejeição: Certificado Assinatura inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100109" trl="N">
+<value column="Name" original="291-Rejeição: Certificado Assinatura Data Validade">291-Rejeição: Certificado Assinatura Data Validade</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100110" trl="N">
+<value column="Name" original="292-Rejeição: Certificado Assinatura sem CNPJ">292-Rejeição: Certificado Assinatura sem CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100111" trl="N">
+<value column="Name" original="293-Rejeição: Certificado Assinatura - erro Cadeia de Certi">293-Rejeição: Certificado Assinatura - erro Cadeia de Certi</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100112" trl="N">
+<value column="Name" original="294-Rejeição: Certificado Assinatura revogado">294-Rejeição: Certificado Assinatura revogado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100113" trl="N">
+<value column="Name" original="295-Rejeição: Certificado Assinatura difere ICP-Brasil">295-Rejeição: Certificado Assinatura difere ICP-Brasil</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100114" trl="N">
+<value column="Name" original="296-Rejeição: Certificado Assinatura erro no acesso a LCR">296-Rejeição: Certificado Assinatura erro no acesso a LCR</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100115" trl="N">
+<value column="Name" original="297-Rejeição: Assinatura difere do calculado">297-Rejeição: Assinatura difere do calculado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100116" trl="N">
+<value column="Name" original="298-Rejeição: Assinatura difere do padrão do Projeto">298-Rejeição: Assinatura difere do padrão do Projeto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100117" trl="N">
+<value column="Name" original="299-Rejeição: XML da área de cabeçalho com codificação dife">299-Rejeição: XML da área de cabeçalho com codificação dife</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100118" trl="N">
+<value column="Name" original="401-Rejeição: CPF do remetente inválido">401-Rejeição: CPF do remetente inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100119" trl="N">
+<value column="Name" original="402-Rejeição: XML da área de dados com codificação diferent">402-Rejeição: XML da área de dados com codificação diferent</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100120" trl="N">
+<value column="Name" original="403-Rejeição: O grupo de informações da NF-e avulsa é de us">403-Rejeição: O grupo de informações da NF-e avulsa é de us</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100121" trl="N">
+<value column="Name" original="404-Rejeição: Uso de prefixo de namespace não permitido">404-Rejeição: Uso de prefixo de namespace não permitido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100122" trl="N">
+<value column="Name" original="405-Rejeição: Código do país do emitente: dígito inválido">405-Rejeição: Código do país do emitente: dígito inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100123" trl="N">
+<value column="Name" original="406-Rejeição: Código do país do destinatário: dígito inváli">406-Rejeição: Código do país do destinatário: dígito inváli</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100124" trl="N">
+<value column="Name" original="407-Rejeição: O CPF só pode ser informado no campo emitente">407-Rejeição: O CPF só pode ser informado no campo emitente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100125" trl="N">
+<value column="Name" original="453-Rejeição: Ano de inutilização não pode ser superior ao ">453-Rejeição: Ano de inutilização não pode ser superior ao </value>
+<value column="Description" original=""/>
+</row>
+<row id="1100126" trl="N">
+<value column="Name" original="454-Rejeição: Ano de inutilização não pode ser inferior a 2">454-Rejeição: Ano de inutilização não pode ser inferior a 2</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100127" trl="N">
+<value column="Name" original="478-Rejeição: Local da entrega não informado para faturamen">478-Rejeição: Local da entrega não informado para faturamen</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100128" trl="N">
+<value column="Name" original="999-Rejeição: Erro não catalogado (informar a mensagem de e">999-Rejeição: Erro não catalogado (informar a mensagem de e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100129" trl="N">
+<value column="Name" original="301-Uso Denegado: Irregularidade fiscal do emitente">301-Uso Denegado: Irregularidade fiscal do emitente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100130" trl="N">
+<value column="Name" original="302-Uso Denegado : Irregularidade fiscal do destinatário">302-Uso Denegado : Irregularidade fiscal do destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100254" trl="N">
+<value column="Name" original="NFe Normal">NFe Normal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100255" trl="N">
+<value column="Name" original="NFe Complementar">NFe Complementar</value>
+<value column="Description" original=""/>
+</row>
+<row id="1100256" trl="N">
+<value column="Name" original="NFe de Ajuste">NFe de Ajuste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120000" trl="N">
+<value column="Name" original="00 - Entrada com recuperação de crédito">00 - Entrada com recuperação de crédito</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120001" trl="N">
+<value column="Name" original="01 - Entrada tributada com alíquota zero">01 - Entrada tributada com alíquota zero</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120002" trl="N">
+<value column="Name" original="02 - Entrada isenta">02 - Entrada isenta</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120003" trl="N">
+<value column="Name" original="03 - Entrada não-tributada">03 - Entrada não-tributada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120004" trl="N">
+<value column="Name" original="04 - Entrada imune">04 - Entrada imune</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120005" trl="N">
+<value column="Name" original="05 - Entrada com suspensão">05 - Entrada com suspensão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120006" trl="N">
+<value column="Name" original="49 - Outras entradas">49 - Outras entradas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120007" trl="N">
+<value column="Name" original="50 - Saída tributada">50 - Saída tributada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120008" trl="N">
+<value column="Name" original="51 - Saída tributada com alíquota zero">51 - Saída tributada com alíquota zero</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120009" trl="N">
+<value column="Name" original="52 - Saída isenta">52 - Saída isenta</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120010" trl="N">
+<value column="Name" original="53 - Saída não-tributada">53 - Saída não-tributada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120011" trl="N">
+<value column="Name" original="54 - Saída imune">54 - Saída imune</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120012" trl="N">
+<value column="Name" original="55 - Saída com suspensão">55 - Saída com suspensão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120013" trl="N">
+<value column="Name" original="99 - Outras saídas">99 - Outras saídas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120022" trl="N">
+<value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120023" trl="N">
+<value column="Name" original="Nota Fiscal Avulsa">Nota Fiscal Avulsa</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120024" trl="N">
+<value column="Name" original="Nota Fiscal de Venda a Consumidor">Nota Fiscal de Venda a Consumidor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120025" trl="N">
+<value column="Name" original="Cupom Fiscal emitido por ECF">Cupom Fiscal emitido por ECF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120026" trl="N">
+<value column="Name" original="Bilhete de Passagem emitido por ECF">Bilhete de Passagem emitido por ECF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120027" trl="N">
+<value column="Name" original="Nota Fiscal de Produtor">Nota Fiscal de Produtor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120028" trl="N">
+<value column="Name" original="Nota Fiscal/Conta de Energia Elétrica">Nota Fiscal/Conta de Energia Elétrica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120029" trl="N">
+<value column="Name" original="Nota Fiscal de Serviço de Transporte">Nota Fiscal de Serviço de Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120030" trl="N">
+<value column="Name" original="Conhecimento de Transporte Rodoviário de Cargas">Conhecimento de Transporte Rodoviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120031" trl="N">
+<value column="Name" original="Conhecimento de Transporte de Cargas Avulso">Conhecimento de Transporte de Cargas Avulso</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120032" trl="N">
+<value column="Name" original="Conhecimento de Transporte Aquaviário de Cargas">Conhecimento de Transporte Aquaviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120033" trl="N">
+<value column="Name" original="Conhecimento Aéreo">Conhecimento Aéreo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120034" trl="N">
+<value column="Name" original="Conhecimento de Transporte Ferroviário de Cargas">Conhecimento de Transporte Ferroviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120035" trl="N">
+<value column="Name" original="Bilhete de Passagem Rodoviário">Bilhete de Passagem Rodoviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120036" trl="N">
+<value column="Name" original="Bilhete de Passagem Aquaviário">Bilhete de Passagem Aquaviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120037" trl="N">
+<value column="Name" original="Bilhete de Passagem e Nota de Bagagem">Bilhete de Passagem e Nota de Bagagem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120038" trl="N">
+<value column="Name" original="Despacho de Transporte">Despacho de Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120039" trl="N">
+<value column="Name" original="Bilhete de Passagem Ferroviário">Bilhete de Passagem Ferroviário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120040" trl="N">
+<value column="Name" original="Resumo de Movimento Diário">Resumo de Movimento Diário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120041" trl="N">
+<value column="Name" original="Ordem de Coleta de Cargas">Ordem de Coleta de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120042" trl="N">
+<value column="Name" original="Nota Fiscal de Serviço de Comunicação">Nota Fiscal de Serviço de Comunicação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120043" trl="N">
+<value column="Name" original="Nota Fiscal de Serviço de Telecomunicação">Nota Fiscal de Serviço de Telecomunicação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120044" trl="N">
+<value column="Name" original="GNRE">GNRE</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120045" trl="N">
+<value column="Name" original="Autorização de Carregamento e Transporte">Autorização de Carregamento e Transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120046" trl="N">
+<value column="Name" original="Manifesto de Carga">Manifesto de Carga</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120047" trl="N">
+<value column="Name" original="Conhecimento de Transporte Multimodal de Cargas">Conhecimento de Transporte Multimodal de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120048" trl="N">
+<value column="Name" original="Nota Fiscal de Transporte Ferroviário de Cargas">Nota Fiscal de Transporte Ferroviário de Cargas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120049" trl="N">
+<value column="Name" original="Nota Fiscal/Conta de Fornecimento de Gás Canalizado">Nota Fiscal/Conta de Fornecimento de Gás Canalizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120050" trl="N">
+<value column="Name" original="Nota Fiscal/Conta de Fornecimento de Água Canalizada">Nota Fiscal/Conta de Fornecimento de Água Canalizada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120051" trl="N">
+<value column="Name" original="Bilhete/Recibo do Passageiro">Bilhete/Recibo do Passageiro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120052" trl="N">
+<value column="Name" original="Nota Fiscal Eletrônica">Nota Fiscal Eletrônica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120053" trl="N">
+<value column="Name" original="Conhecimento de Transporte Eletrônico – CT-e">Conhecimento de Transporte Eletrônico – CT-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120060" trl="N">
+<value column="Name" original="Declaração de Importação">Declaração de Importação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120061" trl="N">
+<value column="Name" original="Declaração Simplificada de Importação">Declaração Simplificada de Importação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120062" trl="N">
+<value column="Name" original="Declaração de Exportação">Declaração de Exportação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120063" trl="N">
+<value column="Name" original="Declaração Simplificada de Exportação">Declaração Simplificada de Exportação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120064" trl="N">
+<value column="Name" original="AWB">AWB</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120065" trl="N">
+<value column="Name" original="MAWB">MAWB</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120066" trl="N">
+<value column="Name" original="HAWB">HAWB</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120067" trl="N">
+<value column="Name" original="COMAT">COMAT</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120068" trl="N">
+<value column="Name" original="R. EXPRESSAS">R. EXPRESSAS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120069" trl="N">
+<value column="Name" original="ETIQ. REXPRESSAS">ETIQ. REXPRESSAS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120070" trl="N">
+<value column="Name" original="HR. EXPRESSAS">HR. EXPRESSAS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120071" trl="N">
+<value column="Name" original="A V7">A V7</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120072" trl="N">
+<value column="Name" original="BL">BL</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120073" trl="N">
+<value column="Name" original="MBL">MBL</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120074" trl="N">
+<value column="Name" original="HBL">HBL</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120075" trl="N">
+<value column="Name" original="CRT">CRT</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120076" trl="N">
+<value column="Name" original="DSIC">DSIC</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120077" trl="N">
+<value column="Name" original="COMAT BL">COMAT BL</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120078" trl="N">
+<value column="Name" original="RWB">RWB</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120079" trl="N">
+<value column="Name" original="HRWB">HRWB</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120080" trl="N">
+<value column="Name" original="TIF/DTA">TIF/DTA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120081" trl="N">
+<value column="Name" original="CP2">CP2</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120082" trl="N">
+<value column="Name" original="NÃO IATA">NÃO IATA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120083" trl="N">
+<value column="Name" original="MNAO IATA">MNAO IATA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120084" trl="N">
+<value column="Name" original="HNAO IATA">HNAO IATA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120085" trl="N">
+<value column="Name" original="OUTROS">OUTROS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120129" trl="N">
+<value column="Name" original="Purchased">Purchased</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120130" trl="N">
+<value column="Name" original="Manufactured">Manufactured</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120131" trl="N">
+<value column="Name" original="Manufactured">Manufactured</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120132" trl="N">
+<value column="Name" original="Purchased">Purchased</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120136" trl="N">
+<value column="Name" original="Próprio">Próprio</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120137" trl="N">
+<value column="Name" original="Terceiros em Nosso Poder">Terceiros em Nosso Poder</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120138" trl="N">
+<value column="Name" original="Nosso em Poder de Terceiros">Nosso em Poder de Terceiros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120155" trl="N">
+<value column="Name" original="409-Rejeição: Campo cUF inexistente no elemento nfeCabecMsg">409-Rejeição: Campo cUF inexistente no elemento nfeCabecMsg</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120156" trl="N">
+<value column="Name" original="410-Rejeição: UF informada no campo cUF não é atendida pelo">410-Rejeição: UF informada no campo cUF não é atendida pelo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120157" trl="N">
+<value column="Name" original="411-Rejeição: Campo versaoDados inexistente no elemento nfe">411-Rejeição: Campo versaoDados inexistente no elemento nfe</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120158" trl="N">
+<value column="Name" original="420-Rejeição: Cancelamento para NF-e já cancelada">420-Rejeição: Cancelamento para NF-e já cancelada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120159" trl="N">
+<value column="Name" original="450-Rejeição: Modelo da NF-e diferente de 55">450-Rejeição: Modelo da NF-e diferente de 55</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120160" trl="N">
+<value column="Name" original="451-Rejeição: Processo de emissão informado inválido">451-Rejeição: Processo de emissão informado inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120161" trl="N">
+<value column="Name" original="452-Rejeição: Tipo Autorizador do Recibo diverge do Órgão A">452-Rejeição: Tipo Autorizador do Recibo diverge do Órgão A</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120162" trl="N">
+<value column="Name" original="502-Rejeição: Erro na Chave de Acesso - Campo Id não corres">502-Rejeição: Erro na Chave de Acesso - Campo Id não corres</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120163" trl="N">
+<value column="Name" original="503-Rejeição: Série utilizada fora da faixa permitida no SC">503-Rejeição: Série utilizada fora da faixa permitida no SC</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120164" trl="N">
+<value column="Name" original="504-Rejeição: Data de Entrada/Saída posterior ao permitido">504-Rejeição: Data de Entrada/Saída posterior ao permitido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120165" trl="N">
+<value column="Name" original="505-Rejeição: Data de Entrada/Saída anterior ao permitido">505-Rejeição: Data de Entrada/Saída anterior ao permitido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120166" trl="N">
+<value column="Name" original="506-Rejeição: Data de Saída menor que a Data de Emissão">506-Rejeição: Data de Saída menor que a Data de Emissão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120167" trl="N">
+<value column="Name" original="507-Rejeição: O CNPJ do destinatário/remetente não deve ser">507-Rejeição: O CNPJ do destinatário/remetente não deve ser</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120168" trl="N">
+<value column="Name" original="508-Rejeição: O CNPJ com conteúdo nulo só é válido em opera">508-Rejeição: O CNPJ com conteúdo nulo só é válido em opera</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120169" trl="N">
+<value column="Name" original="509-Rejeição: O CNPJ com conteúdo nulo só é válido em opera">509-Rejeição: O CNPJ com conteúdo nulo só é válido em opera</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120170" trl="N">
+<value column="Name" original="510-Rejeição: Operação com Exterior e Código País destinatá">510-Rejeição: Operação com Exterior e Código País destinatá</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120171" trl="N">
+<value column="Name" original="511-Rejeição: Não é de Operação com Exterior e Código País ">511-Rejeição: Não é de Operação com Exterior e Código País </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120172" trl="N">
+<value column="Name" original="512-Rejeição: CNPJ do Local de Retirada inválido">512-Rejeição: CNPJ do Local de Retirada inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120173" trl="N">
+<value column="Name" original="513-Rejeição: Código Município do Local de Retirada deve se">513-Rejeição: Código Município do Local de Retirada deve se</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120174" trl="N">
+<value column="Name" original="514-Rejeição: CNPJ do Local de Entrega inválido">514-Rejeição: CNPJ do Local de Entrega inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120175" trl="N">
+<value column="Name" original="515-Rejeição: Código Município do Local de Entrega deve ser">515-Rejeição: Código Município do Local de Entrega deve ser</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120176" trl="N">
+<value column="Name" original="516-Rejeição: Obrigatória a informação do NCM e/ou genero">516-Rejeição: Obrigatória a informação do NCM e/ou genero</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120177" trl="N">
+<value column="Name" original="517-Rejeição: Informação do NCM difere da informação de gên">517-Rejeição: Informação do NCM difere da informação de gên</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120178" trl="N">
+<value column="Name" original="518-Rejeição: CFOP de entrada para NF-e de saída">518-Rejeição: CFOP de entrada para NF-e de saída</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120179" trl="N">
+<value column="Name" original="519-Rejeição: CFOP de saída para NF-e de entrada">519-Rejeição: CFOP de saída para NF-e de entrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120180" trl="N">
+<value column="Name" original="520-Rejeição: CFOP de Operação com Exterior e UF destinatár">520-Rejeição: CFOP de Operação com Exterior e UF destinatár</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120181" trl="N">
+<value column="Name" original="521-Rejeição: CFOP de Operação Estadual e UF do emitente di">521-Rejeição: CFOP de Operação Estadual e UF do emitente di</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120182" trl="N">
+<value column="Name" original="522-Rejeição: CFOP de Operação Estadual e UF emitente difer">522-Rejeição: CFOP de Operação Estadual e UF emitente difer</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120183" trl="N">
+<value column="Name" original="523-Rejeição: CFOP não é de Operação Estadual e UF emitente">523-Rejeição: CFOP não é de Operação Estadual e UF emitente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120184" trl="N">
+<value column="Name" original="524-Rejeição: CFOP de Operação com Exterior e não informado">524-Rejeição: CFOP de Operação com Exterior e não informado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120185" trl="N">
+<value column="Name" original="525-Rejeição: CFOP de Importação e não informado dados da D">525-Rejeição: CFOP de Importação e não informado dados da D</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120186" trl="N">
+<value column="Name" original="526-Rejeição: CFOP de Exportação e não informado Local de E">526-Rejeição: CFOP de Exportação e não informado Local de E</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120187" trl="N">
+<value column="Name" original="527-Rejeição: Operação de Exportação com informação de ICMS">527-Rejeição: Operação de Exportação com informação de ICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120188" trl="N">
+<value column="Name" original="528-Rejeição: Valor do ICMS difere do produto BC e Alíquota">528-Rejeição: Valor do ICMS difere do produto BC e Alíquota</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120189" trl="N">
+<value column="Name" original="529-Rejeição: NCM de informação obrigatória para produto tr">529-Rejeição: NCM de informação obrigatória para produto tr</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120190" trl="N">
+<value column="Name" original="530-Rejeição: Operação com tributação de ISSQN sem informar">530-Rejeição: Operação com tributação de ISSQN sem informar</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120191" trl="N">
+<value column="Name" original="531-Rejeição: Total da BC ICMS difere do somatório dos iten">531-Rejeição: Total da BC ICMS difere do somatório dos iten</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120192" trl="N">
+<value column="Name" original="532-Rejeição: Total do ICMS difere do somatório dos itens">532-Rejeição: Total do ICMS difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120193" trl="N">
+<value column="Name" original="533-Rejeição: Total da BC ICMS-ST difere do somatório dos i">533-Rejeição: Total da BC ICMS-ST difere do somatório dos i</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120194" trl="N">
+<value column="Name" original="534-Rejeição: Total do ICMS-ST difere do somatório dos iten">534-Rejeição: Total do ICMS-ST difere do somatório dos iten</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120195" trl="N">
+<value column="Name" original="535-Rejeição: Total do Frete difere do somatório dos itens">535-Rejeição: Total do Frete difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120196" trl="N">
+<value column="Name" original="536-Rejeição: Total do Seguro difere do somatório dos itens">536-Rejeição: Total do Seguro difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120197" trl="N">
+<value column="Name" original="537-Rejeição: Total do Desconto difere do somatório dos ite">537-Rejeição: Total do Desconto difere do somatório dos ite</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120198" trl="N">
+<value column="Name" original="538-Rejeição: Total do IPI difere do somatório dos itens">538-Rejeição: Total do IPI difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120199" trl="N">
+<value column="Name" original="539-Rejeição: Duplicidade de NF-e, com diferença na Chave d">539-Rejeição: Duplicidade de NF-e, com diferença na Chave d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120200" trl="N">
+<value column="Name" original="540-Rejeição: CPF do Local de Retirada inválido">540-Rejeição: CPF do Local de Retirada inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120201" trl="N">
+<value column="Name" original="541-Rejeição: CPF do Local de Entrega inválido">541-Rejeição: CPF do Local de Entrega inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120202" trl="N">
+<value column="Name" original="542-Rejeição: CNPJ do Transportador inválido">542-Rejeição: CNPJ do Transportador inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120203" trl="N">
+<value column="Name" original="543-Rejeição: CPF do Transportador inválido">543-Rejeição: CPF do Transportador inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120204" trl="N">
+<value column="Name" original="544-Rejeição: IE do Transportador inválida">544-Rejeição: IE do Transportador inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120205" trl="N">
+<value column="Name" original="545-Rejeição: Falha no schema XML – versão informada na ver">545-Rejeição: Falha no schema XML – versão informada na ver</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120206" trl="N">
+<value column="Name" original="546-Rejeição: Erro na Chave de Acesso – Campo Id – falta a ">546-Rejeição: Erro na Chave de Acesso – Campo Id – falta a </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120207" trl="N">
+<value column="Name" original="547-Rejeição: Dígito Verificador da Chave de Acesso da NF-e">547-Rejeição: Dígito Verificador da Chave de Acesso da NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120208" trl="N">
+<value column="Name" original="548-Rejeição: CNPJ da NF referenciada inválido.">548-Rejeição: CNPJ da NF referenciada inválido.</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120209" trl="N">
+<value column="Name" original="549-Rejeição: CNPJ da NF referenciada de produtor inválido.">549-Rejeição: CNPJ da NF referenciada de produtor inválido.</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120210" trl="N">
+<value column="Name" original="550-Rejeição: CPF da NF referenciada de produtor inválido.">550-Rejeição: CPF da NF referenciada de produtor inválido.</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120211" trl="N">
+<value column="Name" original="551-Rejeição: IE da NF referenciada de produtor inválido.">551-Rejeição: IE da NF referenciada de produtor inválido.</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120212" trl="N">
+<value column="Name" original="552-Rejeição: Dígito Verificador da Chave de Acesso do CT-e">552-Rejeição: Dígito Verificador da Chave de Acesso do CT-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120213" trl="N">
+<value column="Name" original="553-Rejeição: Tipo autorizador do recibo diverge do Órgão A">553-Rejeição: Tipo autorizador do recibo diverge do Órgão A</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120214" trl="N">
+<value column="Name" original="554-Rejeição: Série difere da faixa 0-899">554-Rejeição: Série difere da faixa 0-899</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120215" trl="N">
+<value column="Name" original="555-Rejeição: Tipo autorizador do protocolo diverge do Órgã">555-Rejeição: Tipo autorizador do protocolo diverge do Órgã</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120216" trl="N">
+<value column="Name" original="556-Rejeição: Justificativa de entrada em contingência não ">556-Rejeição: Justificativa de entrada em contingência não </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120217" trl="N">
+<value column="Name" original="557-Rejeição: A Justificativa de entrada em contingência de">557-Rejeição: A Justificativa de entrada em contingência de</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120218" trl="N">
+<value column="Name" original="558-Rejeição: Data de entrada em contingência posterior a d">558-Rejeição: Data de entrada em contingência posterior a d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120219" trl="N">
+<value column="Name" original="559-Rejeição: UF do Transportador não informado">559-Rejeição: UF do Transportador não informado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120220" trl="N">
+<value column="Name" original="560-Rejeição: CNPJ base do emitente difere do CNPJ base da ">560-Rejeição: CNPJ base do emitente difere do CNPJ base da </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120221" trl="N">
+<value column="Name" original="561-Rejeição: Mês de Emissão informado na Chave de Acesso d">561-Rejeição: Mês de Emissão informado na Chave de Acesso d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120222" trl="N">
+<value column="Name" original="562-Rejeição: Código numérico informado na Chave de Acesso ">562-Rejeição: Código numérico informado na Chave de Acesso </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120223" trl="N">
+<value column="Name" original="563-Rejeição: Já existe pedido de Inutilização com a mesma ">563-Rejeição: Já existe pedido de Inutilização com a mesma </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120224" trl="N">
+<value column="Name" original="564-Rejeição: Total do Produto / Serviço difere do somatóri">564-Rejeição: Total do Produto / Serviço difere do somatóri</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120225" trl="N">
+<value column="Name" original="565-Rejeição: Falha no schema XML – inexiste a tag raiz esp">565-Rejeição: Falha no schema XML – inexiste a tag raiz esp</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120226" trl="N">
+<value column="Name" original="567-Rejeição: Falha no schema XML – versão informada na ver">567-Rejeição: Falha no schema XML – versão informada na ver</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120227" trl="N">
+<value column="Name" original="568-Rejeição: Falha no schema XML – inexiste atributo versa">568-Rejeição: Falha no schema XML – inexiste atributo versa</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120249" trl="N">
+<value column="Name" original="569-Rejeição: Data de entrada em contingência muito atrasad">569-Rejeição: Data de entrada em contingência muito atrasad</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120250" trl="N">
+<value column="Name" original="570-Rejeição: tpEmis = 2 só é válido na contingência SCAN">570-Rejeição: tpEmis = 2 só é válido na contingência SCAN</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120251" trl="N">
+<value column="Name" original="571-Rejeição: O tpEmis informado diferente de 2 para contin">571-Rejeição: O tpEmis informado diferente de 2 para contin</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120252" trl="N">
+<value column="Name" original="129-Lote de Evento Processado">129-Lote de Evento Processado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120253" trl="N">
+<value column="Name" original="135-Evento registrado e vinculado a NF-e">135-Evento registrado e vinculado a NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120254" trl="N">
+<value column="Name" original="136-Evento registrado, mas não vinculado a NF-e ">136-Evento registrado, mas não vinculado a NF-e </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120255" trl="N">
+<value column="Name" original="489-Rejeição: CNPJ informado inválido (DV ou zeros) ">489-Rejeição: CNPJ informado inválido (DV ou zeros) </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120256" trl="N">
+<value column="Name" original="490-Rejeição: CPF informado inválido (DV ou zeros) ">490-Rejeição: CPF informado inválido (DV ou zeros) </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120257" trl="N">
+<value column="Name" original="491-Rejeição: O tpEvento informado inválido ">491-Rejeição: O tpEvento informado inválido </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120258" trl="N">
+<value column="Name" original="492-Rejeição: O verEvento informado inválido">492-Rejeição: O verEvento informado inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120259" trl="N">
+<value column="Name" original="493-Rejeição: Evento não atende o Schema XML específico ">493-Rejeição: Evento não atende o Schema XML específico </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120260" trl="N">
+<value column="Name" original="494-Rejeição: Chave de Acesso inexistente ">494-Rejeição: Chave de Acesso inexistente </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120261" trl="N">
+<value column="Name" original="501-Rejeição: Prazo de cancelamento superior ao previsto na">501-Rejeição: Prazo de cancelamento superior ao previsto na</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120262" trl="N">
+<value column="Name" original="572-Rejeição: Erro Atributo ID do evento não corresponde a ">572-Rejeição: Erro Atributo ID do evento não corresponde a </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120263" trl="N">
+<value column="Name" original="573-Rejeição: Duplicidade de Evento ">573-Rejeição: Duplicidade de Evento </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120264" trl="N">
+<value column="Name" original="574-Rejeição: O autor do evento diverge do emissor da NF-e ">574-Rejeição: O autor do evento diverge do emissor da NF-e </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120265" trl="N">
+<value column="Name" original="575-Rejeição: O autor do evento diverge do destinatário da ">575-Rejeição: O autor do evento diverge do destinatário da </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120266" trl="N">
+<value column="Name" original="576-Rejeição: O autor do evento não é um órgão autorizado a">576-Rejeição: O autor do evento não é um órgão autorizado a</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120267" trl="N">
+<value column="Name" original="577-Rejeição: A data do evento não pode ser menor que a dat">577-Rejeição: A data do evento não pode ser menor que a dat</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120268" trl="N">
+<value column="Name" original="578-Rejeição: A data do evento não pode ser maior que a dat">578-Rejeição: A data do evento não pode ser maior que a dat</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120269" trl="N">
+<value column="Name" original="579-Rejeição: A data do evento não pode ser menor que a dat">579-Rejeição: A data do evento não pode ser menor que a dat</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120270" trl="N">
+<value column="Name" original="580-Rejeição: O evento exige uma NF-e autorizada ">580-Rejeição: O evento exige uma NF-e autorizada </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120271" trl="N">
+<value column="Name" original="587-Rejeição: Usar somente o namespace padrão da NF-e ">587-Rejeição: Usar somente o namespace padrão da NF-e </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120272" trl="N">
+<value column="Name" original="588-Rejeição: Não é permitida a presença de caracteres de e">588-Rejeição: Não é permitida a presença de caracteres de e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120273" trl="N">
+<value column="Name" original="590-Rejeição: Informado CST para emissor do Simples Naciona">590-Rejeição: Informado CST para emissor do Simples Naciona</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120274" trl="N">
+<value column="Name" original="591-Rejeição: Informado CSOSN para emissor que não é do Sim">591-Rejeição: Informado CSOSN para emissor que não é do Sim</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120275" trl="N">
+<value column="Name" original="592-Rejeição: A NF-e deve ter pelo menos um item de produto">592-Rejeição: A NF-e deve ter pelo menos um item de produto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120276" trl="N">
+<value column="Name" original="595-Rejeição: Obrigatória a informação da justificativa do ">595-Rejeição: Obrigatória a informação da justificativa do </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120277" trl="N">
+<value column="Name" original="596-Rejeição: Evento apresentado fora do prazo: [prazo vige">596-Rejeição: Evento apresentado fora do prazo: [prazo vige</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120278" trl="N">
+<value column="Name" original="597-Rejeição: CFOP de Importação e não informado dados de I">597-Rejeição: CFOP de Importação e não informado dados de I</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120279" trl="N">
+<value column="Name" original="598-Rejeição: NF-e emitida em ambiente de homologação com R">598-Rejeição: NF-e emitida em ambiente de homologação com R</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120280" trl="N">
+<value column="Name" original="599-Rejeição: CFOP de Importação e não informado dados de I">599-Rejeição: CFOP de Importação e não informado dados de I</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120281" trl="N">
+<value column="Name" original="128-Lote de Evento Processado 135 Evento registrado e vincu">128-Lote de Evento Processado 135 Evento registrado e vincu</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120282" trl="N">
+<value column="Name" original="594-Rejeição: O número de sequencia do evento informado é m">594-Rejeição: O número de sequencia do evento informado é m</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120285" trl="N">
+<value column="Name" original="601-Rejeição: Total do II difere do somatório dos itens">601-Rejeição: Total do II difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120286" trl="N">
+<value column="Name" original="602-Rejeição: Total do PIS difere do somatório dos itens su">602-Rejeição: Total do PIS difere do somatório dos itens su</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120287" trl="N">
+<value column="Name" original="603-Rejeição: Total do COFINS difere do somatório dos itens">603-Rejeição: Total do COFINS difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120288" trl="N">
+<value column="Name" original="604-Rejeição: Total do vOutro difere do somatório dos itens">604-Rejeição: Total do vOutro difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120289" trl="N">
+<value column="Name" original="605-Rejeição: Total do vServ difere do somatório do vProd d">605-Rejeição: Total do vServ difere do somatório do vProd d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120290" trl="N">
+<value column="Name" original="606-Rejeição: Total do vBC do ISS difere do somatório dos i">606-Rejeição: Total do vBC do ISS difere do somatório dos i</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120291" trl="N">
+<value column="Name" original="607-Rejeição: Total do ISS difere do somatório dos itens">607-Rejeição: Total do ISS difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120292" trl="N">
+<value column="Name" original="608-Rejeição: Total do PIS difere do somatório dos itens su">608-Rejeição: Total do PIS difere do somatório dos itens su</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120293" trl="N">
+<value column="Name" original="609-Rejeição: Total do COFINS difere do somatório dos itens">609-Rejeição: Total do COFINS difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120294" trl="N">
+<value column="Name" original="610-Rejeição: Total da NF difere do somatório dos Valores c">610-Rejeição: Total da NF difere do somatório dos Valores c</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120295" trl="N">
+<value column="Name" original="611-Rejeição: cEAN inválido">611-Rejeição: cEAN inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120296" trl="N">
+<value column="Name" original="612-Rejeição: cEANTrib inválido">612-Rejeição: cEANTrib inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120297" trl="N">
+<value column="Name" original="613-Rejeição: Chave de Acesso difere da existente em BD [99">613-Rejeição: Chave de Acesso difere da existente em BD [99</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120298" trl="N">
+<value column="Name" original="614-Rejeição: Chave de Acesso inválida (Código UF inválido)">614-Rejeição: Chave de Acesso inválida (Código UF inválido)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120299" trl="N">
+<value column="Name" original="615-Rejeição: Chave de Acesso inválida (Ano menor que 05 ou">615-Rejeição: Chave de Acesso inválida (Ano menor que 05 ou</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120300" trl="N">
+<value column="Name" original="616-Rejeição: Chave de Acesso inválida (Mês menor que 1 ou ">616-Rejeição: Chave de Acesso inválida (Mês menor que 1 ou </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120301" trl="N">
+<value column="Name" original="617-Rejeição: Chave de Acesso inválida (CNPJ zerado ou dígi">617-Rejeição: Chave de Acesso inválida (CNPJ zerado ou dígi</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120302" trl="N">
+<value column="Name" original="618-Rejeição: Chave de Acesso inválida (modelo diferente de">618-Rejeição: Chave de Acesso inválida (modelo diferente de</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120303" trl="N">
+<value column="Name" original="619-Rejeição: Chave de Acesso inválida (número NF = 0) ">619-Rejeição: Chave de Acesso inválida (número NF = 0) </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120304" trl="N">
+<value column="Name" original="621-Rejeição: CPF Emitente não cadastrado">621-Rejeição: CPF Emitente não cadastrado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120305" trl="N">
+<value column="Name" original="622-Rejeição: IE emitente não vinculada ao CPF">622-Rejeição: IE emitente não vinculada ao CPF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120306" trl="N">
+<value column="Name" original="623-Rejeição: CPF Destinatário não cadastrado">623-Rejeição: CPF Destinatário não cadastrado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120307" trl="N">
+<value column="Name" original="624-Rejeição: IE Destinatário não vinculada ao CPF">624-Rejeição: IE Destinatário não vinculada ao CPF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120308" trl="N">
+<value column="Name" original="625-Rejeição: Inscrição SUFRAMA deve ser informada na venda">625-Rejeição: Inscrição SUFRAMA deve ser informada na venda</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120309" trl="N">
+<value column="Name" original="626-Rejeição: O CFOP de operação isenta para ZFM deve ser 6">626-Rejeição: O CFOP de operação isenta para ZFM deve ser 6</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120310" trl="N">
+<value column="Name" original="627-Rejeição: O valor do ICMS desonerado deve ser informado">627-Rejeição: O valor do ICMS desonerado deve ser informado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120311" trl="N">
+<value column="Name" original="628-Rejeição: Total da NF superior ao valor limite estabele">628-Rejeição: Total da NF superior ao valor limite estabele</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120312" trl="N">
+<value column="Name" original="629-Rejeição: Valor do Produto difere do produto Valor Unit">629-Rejeição: Valor do Produto difere do produto Valor Unit</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120313" trl="N">
+<value column="Name" original="630-Rejeição: Valor do Produto difere do produto Valor Unit">630-Rejeição: Valor do Produto difere do produto Valor Unit</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120314" trl="N">
+<value column="Name" original="635-Rejeição: NF-e com mesmo número e série já transmitida ">635-Rejeição: NF-e com mesmo número e série já transmitida </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120335" trl="N">
+<value column="Name" original="642-Rejeição: Falha na Consulta do Registro de Passagem, te">642-Rejeição: Falha na Consulta do Registro de Passagem, te</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120336" trl="N">
+<value column="Name" original="137-Nenhum documento localizado para o Destinatário ">137-Nenhum documento localizado para o Destinatário </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120337" trl="N">
+<value column="Name" original="138-Documento localizado para o Destinatário ">138-Documento localizado para o Destinatário </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120338" trl="N">
+<value column="Name" original="139-Pedido de Download processado ">139-Pedido de Download processado </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120339" trl="N">
+<value column="Name" original="140-Download disponibilizado">140-Download disponibilizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120342" trl="N">
+<value column="Name" original="589-Rejeição: Número do NSU informado superior ao maior NSU">589-Rejeição: Número do NSU informado superior ao maior NSU</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120343" trl="N">
+<value column="Name" original="593-Rejeição: CNPJ-Base consultado difere do CNPJ-Base do C">593-Rejeição: CNPJ-Base consultado difere do CNPJ-Base do C</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120346" trl="N">
+<value column="Name" original="631-Rejeição: CNPJ-Base do Destinatário difere do CNPJ-Base">631-Rejeição: CNPJ-Base do Destinatário difere do CNPJ-Base</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120347" trl="N">
+<value column="Name" original="632-Rejeição: Solicitação fora de prazo, a NF-e não está ma">632-Rejeição: Solicitação fora de prazo, a NF-e não está ma</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120348" trl="N">
+<value column="Name" original="633-Rejeição: NF-e indisponível para download devido a ausê">633-Rejeição: NF-e indisponível para download devido a ausê</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120349" trl="N">
+<value column="Name" original="634-Rejeição: Destinatário da NF-e não tem o mesmo CNPJ rai">634-Rejeição: Destinatário da NF-e não tem o mesmo CNPJ rai</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120350" trl="N">
+<value column="Name" original="640-Rejeição: Evento de &quot;Ciência da Operação&quot; não pode ser ">640-Rejeição: Evento de "Ciência da Operação" não pode ser </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120351" trl="N">
+<value column="Name" original="641-Rejeição: Consumo Indevido 645">641-Rejeição: Consumo Indevido 645</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120352" trl="N">
+<value column="Name" original="645-Rejeição: CNPJ do Certificado Digital não é emitente de">645-Rejeição: CNPJ do Certificado Digital não é emitente de</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120353" trl="N">
+<value column="Name" original="646-Rejeição: NF-e Cancelada, arquivo indisponível para dow">646-Rejeição: NF-e Cancelada, arquivo indisponível para dow</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120354" trl="N">
+<value column="Name" original="647-Rejeição: NF-e Denegada, arquivo indisponível para down">647-Rejeição: NF-e Denegada, arquivo indisponível para down</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120355" trl="N">
+<value column="Name" original="650-Rejeição: Evento de &quot;Ciência da Operação&quot; para NF-e Can">650-Rejeição: Evento de "Ciência da Operação" para NF-e Can</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120356" trl="N">
+<value column="Name" original="651-Rejeição: Evento de &quot;Desconhecimento da Operação&quot; para ">651-Rejeição: Evento de "Desconhecimento da Operação" para </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120402" trl="N">
+<value column="Name" original="Operacao normal">Operação normal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120403" trl="N">
+<value column="Name" original="Operacao isenta ou nao tributavel">Operação isenta ou não tributável</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120404" trl="N">
+<value column="Name" original="Operacao isenta ou nao tributavel executada em outro Municipio">Operação isenta ou não tributável executada em outro Município</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120405" trl="N">
+<value column="Name" original="Cancelado">Cancelado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120406" trl="N">
+<value column="Name" original="Extraviado">Extraviado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120407" trl="N">
+<value column="Name" original="ISS Suspenso por Decisao Judicial">ISS Suspenso por Decisão Judicial</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120408" trl="N">
+<value column="Name" original="Normal">Normal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120409" trl="N">
+<value column="Name" original="Contingência FS">Contingência FS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120410" trl="N">
+<value column="Name" original="Contingência SCAN">Contingência SCAN</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120411" trl="N">
+<value column="Name" original="Contingência DPEC">Contingência DPEC</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120412" trl="N">
+<value column="Name" original="Contingência FSDA">Contingência FSDA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121053" trl="N">
+<value column="Name" original="ICP TrustStore (JKS)">ICP TrustStore (JKS)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121184" trl="N">
+<value column="Name" original="PKCS#11">PKCS#11</value>
+<value column="Description" original=""/>
+</row>
+</adempiereTrl>
