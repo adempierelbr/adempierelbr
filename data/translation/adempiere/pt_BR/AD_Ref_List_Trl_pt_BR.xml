@@ -300,7 +300,7 @@
     <value column="Description" original="" />
   </row>
   <row id="178" trl="Y">
-    <value column="Name" original="Complete">Completo</value>
+    <value column="Name" original="Complete">Completar</value>
     <value column="Description" original="Generate documents and complete transaction">Gerar documentos e completar transação</value>
   </row>
   <row id="179" trl="Y">
@@ -316,7 +316,7 @@
     <value column="Description" original="Post transaction">Lançar transação</value>
   </row>
   <row id="182" trl="Y">
-    <value column="Name" original="Void">Anulado</value>
+    <value column="Name" original="Void">Anular</value>
     <value column="Description" original="Set all quantities to zero and complete transaction">Coloque todos os valores em zero e complete a transação</value>
   </row>
   <row id="183" trl="Y">
@@ -1100,7 +1100,7 @@
     <value column="Description" original="" />
   </row>
   <row id="408" trl="Y">
-    <value column="Name" original="Void">Anulado</value>
+    <value column="Name" original="Void">Anular</value>
     <value column="Description" original="" />
   </row>
   <row id="409" trl="Y">
@@ -1996,7 +1996,7 @@
     <value column="Description" original="" />
   </row>
   <row id="647" trl="Y">
-    <value column="Name" original="Void">Anulado</value>
+    <value column="Name" original="Void">Anular</value>
     <value column="Description" original="" />
   </row>
   <row id="648" trl="Y">
