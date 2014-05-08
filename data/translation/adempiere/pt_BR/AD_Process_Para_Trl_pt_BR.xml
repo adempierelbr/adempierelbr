@@ -1,95 +1,232 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--Adempiere(r) Release 3.4.2s_2008-12-08 -Smart Suite ERP,CRM and SCM- (c) 1999-2007 Adempiere (r); Implementation: ADempiere - Supported by ADempiere community-->
-<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Process_Para">
- <row id="227" trl="Y">
-  <value column="Name" original="Delete existing Accounting Entries">Apagar Lançamentos Contábeis Existentes</value>
-  <value column="Description" original="The selected accounting entries will be deleted!  DANGEROUS !!!">Os lançamentos contábeis selecionados serão apagados!  PERIGOSO !!!</value>
-  <value column="Help" original=""/>
- </row>
- <row id="233" trl="Y">
-  <value column="Name" original="Pricelist Version">Versão da Lista de Preço</value>
-  <value column="Description" original="Only used if Price List is used to set future/standard cost price">Only used if Price List is used to set future/standard cost price</value>
-  <value column="Help" original=""/>
- </row>
- <row id="302" trl="Y">
-  <value column="Name" original="Overwrite Payment Rule">Overwrite Payment Rule</value>
-  <value column="Description" original="Overwrite how to pay the invoice">Overwrite how to pay the invoice</value>
-  <value column="Help" original="The Payment Rule indicates how the incoice will be settled - you can overwrite the value from the invoice.">The Payment Rule indicates how the incoice will be settled - you can overwrite the value from the invoice.</value>
- </row>
- <row id="315" trl="Y">
-  <value column="Name" original="From User">De: (Usuário)</value>
-  <value column="Description" original="Send EMail from user">Usuário que enviará o email</value>
-  <value column="Help" original="The email is sent from the user selected - otherwise it is sent from the request email address of the client">O email será enviado pelo usuário selecionado - ou então será enviado a partir do endereço ao qual o cliente enviou a requisição</value>
- </row>
- <row id="452" trl="Y">
-  <value column="Name" original="Maintenance Mode">Modo de Manutenção</value>
-  <value column="Description" original="Language Maintenance Mode">Modo de Manutenção de Idiomas</value>
-  <value column="Help" original=""/>
- </row>
- <row id="467" trl="Y">
-  <value column="Name" original="Existing Organization">Organização existente</value>
-  <value column="Description" original="Organizational entity within client - set to empty if you want to create a new organization">Entidade organizacional dentro de uma empresa - ajuste em vazio se você deseja criar uma nova organização</value>
-  <value column="Help" original="An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.">Uma "Organização" é uma unidade de sua "Empresa" ou "Entidade Legal" - os exemplos são loja, departamento. Você pode compartilhar dados entre organizações.</value>
- </row>
- <row id="469" trl="Y">
-  <value column="Name" original="Limit Access to Role">Limitar Acesso à Função (Papel)</value>
-  <value column="Description" original="If no Role is selected, grant access to all (non-manual) roles of the Client">Se nenhum Papel for selecionado, outorga acesso a todos (não-manual) papéis do Cliente</value>
-  <value column="Help" original="The Role determines security and access a user who has this Role will have in the System.">O "Papel (Função) determina o nível de segurança e acesso que um usuário que exerça este Papel terá no Sistema.</value>
- </row>
- <row id="493" trl="Y">
-  <value column="Name" original="New User/Contact">Novo Usuário/Contato</value>
-  <value column="Description" original="User within the system - Internal or Business Partner Contact">Usuário dentro do Sistema - Interno ou Contato de Parceiro de Negócios</value>
-  <value column="Help" original="The User identifies a unique user in the system. This could be an internal user or a business partner contact">O Usuário identifica um usuário único e exclusivo dentro do sistema. Este poderia ser um usuário interno ou um contato de parceiro de negócios</value>
- </row>
- <row id="494" trl="Y">
-  <value column="Name" original="New Workflow Responsible">Novo Responsável pelo Fluxo de Trabalho</value>
-  <value column="Description" original="Responsible for Workflow Execution">Responsável pela Execução do Fluxo de Trabalho</value>
-  <value column="Help" original="The ultimate responsibility for a workflow is with an actual user. The Workflow Responsible allows to define ways to find that actual User.">A responsabilidade final por um Fluxo de Trabalho é do usuário real. A Responsabilidade do Fluxo de Trabalho permite definir meios de encontrar aquele usuário real.</value>
- </row>
- <row id="496" trl="Y">
-  <value column="Name" original="New User/Contact">Novo Usuário/Contato</value>
-  <value column="Description" original="User within the system - Internal or Business Partner Contact">Usuário dentro do Sistema - Interno ou Contato de Parceiro de Negócios</value>
-  <value column="Help" original="The User identifies a unique user in the system. This could be an internal user or a business partner contact">O Usuário identifica um usuário único e exclusivo dentro do sistema. Este poderia ser um usuário interno ou um contato de parceiro de negócios</value>
- </row>
- <row id="497" trl="Y">
-  <value column="Name" original="New Workflow Responsible">Novo Responsável pelo Fluxo de Trabalho</value>
-  <value column="Description" original="Responsible for Workflow Execution">Responsável pela Execução do Fluxo de Trabalho</value>
-  <value column="Help" original="The ultimate responsibility for a workflow is with an actual user. The Workflow Responsible allows to define ways to find that actual User.">A responsabilidade final por um Fluxo de Trabalho é do usuário real. A Responsabilidade do Fluxo de Trabalho permite definir meios de encontrar aquele usuário real.</value>
- </row>
- <row id="523" trl="Y">
-  <value column="Name" original="Default Sales Rep">Representante de Vendas padrão (default)</value>
-  <value column="Description" original="If not defined on Business Partner Level">Se não estiver definido no Nível de Parceiro de Negócios</value>
-  <value column="Help" original=""/>
- </row>
- <row id="524" trl="Y">
-  <value column="Name" original="Dunning Currency">Moeda de Cobrança</value>
-  <value column="Description" original="Currency to create Dunning Letters">Moeda para criar Cartas de Cobrança</value>
-  <value column="Help" original=""/>
- </row>
- <row id="50019" trl="Y">
-  <value column="Name" original="Shipment Date">Shipment Date</value>
-  <value column="Description" original="Date printed on shipment">Date printed on shipment</value>
-  <value column="Help" original="The Shipment Date indicates the date printed on the shipment.">The Shipment Date indicates the date printed on the shipment.</value>
- </row>
- <row id="53011" trl="Y">
-  <value column="Name" original="Print Unprocessed Entries Only">Print Unprocessed Entries Only</value>
-  <value column="Description" original="Print the unprocessed (unprinted) entries of the dunning run only.">Print the unprocessed (unprinted) entries of the dunning run only.</value>
-  <value column="Help" original="Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.">Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.</value>
- </row>
- <row id="1000006" trl="Y">
-  <value column="Name" original="File_Directory">Diretório</value>
-  <value column="Description" original="">Diretório onde será salvo o Arquivo de Log do Retorno</value>
-  <value column="Help" original=""/>
- </row>
- <row id="1000009" trl="Y">
-  <value column="Name" original="Nota Fiscal">Nota Fiscal (de)</value>
-  <value column="Description" original="Primary key table LBR_NotaFiscal">Define a Nota Fiscal</value>
-  <value column="Help" original="Primary key table LBR_NotaFiscal">Chave primária tabela LBR_NotaFiscal</value>
- </row>
- <row id="1000010" trl="Y">
-  <value column="Name" original="LBR_NotaFiscal_ID_to">Nota Fiscal (para)</value>
-  <value column="Description" original="">Define a Nota Fiscal</value>
-  <value column="Help" original="">Chave primária tabela LBR_NotaFiscal</value>
- </row>
+  <row id="227" trl="Y">
+    <value column="Name" original="Delete existing Accounting Entries">Apagar Lançamentos Contábeis Existentes</value>
+    <value column="Description" original="The selected accounting entries will be deleted!  DANGEROUS !!!">Os lançamentos contábeis selecionados serão apagados!  PERIGOSO !!!</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="233" trl="Y">
+    <value column="Name" original="Pricelist Version">Versão da Lista de Preço</value>
+    <value column="Description" original="Only used if Price List is used to set future/standard cost price">Somente usado se lista de preço é usada para definir futuro/padrão preço de custo.</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="302" trl="Y">
+    <value column="Name" original="Overwrite Payment Rule">Sobreescrever regra de pagamento</value>
+    <value column="Description" original="Overwrite how to pay the invoice">Sobreescrever como</value>
+    <value column="Help" original="The Payment Rule indicates how the incoice will be settled - you can overwrite the value from the invoice.">A Regra de Pagamento indica como a fatura irá ser preenchida - você pode sobreescrever o valor da fatura</value>
+  </row>
+  <row id="315" trl="Y">
+    <value column="Name" original="From User">De: (Usuário)</value>
+    <value column="Description" original="Send EMail from user">Usuário que enviará o email</value>
+    <value column="Help" original="The email is sent from the user selected - otherwise it is sent from the request email address of the client">O email será enviado pelo usuário selecionado - ou então será enviado a partir do endereço ao qual o cliente enviou a requisição</value>
+  </row>
+  <row id="452" trl="Y">
+    <value column="Name" original="Maintenance Mode">Modo de Manutenção</value>
+    <value column="Description" original="Language Maintenance Mode">Modo de Manutenção de Idiomas</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="467" trl="Y">
+    <value column="Name" original="Existing Organization">Organização existente</value>
+    <value column="Description" original="Organizational entity within client - set to empty if you want to create a new organization">Entidade organizacional dentro de uma empresa - ajuste em vazio se você deseja criar uma nova organização</value>
+    <value column="Help" original="An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.">Uma "Organização" é uma unidade de sua "Empresa" ou "Entidade Legal" - os exemplos são loja, departamento. Você pode compartilhar dados entre organizações.</value>
+  </row>
+  <row id="469" trl="Y">
+    <value column="Name" original="Limit Access to Role">Limitar Acesso à Função (Papel)</value>
+    <value column="Description" original="If no Role is selected, grant access to all (non-manual) roles of the Client">Se nenhum Papel for selecionado, outorga acesso a todos (não-manual) papéis do Cliente</value>
+    <value column="Help" original="The Role determines security and access a user who has this Role will have in the System.">O "Papel (Função) determina o nível de segurança e acesso que um usuário que exerça este Papel terá no Sistema.</value>
+  </row>
+  <row id="493" trl="Y">
+    <value column="Name" original="New User/Contact">Novo Usuário/Contato</value>
+    <value column="Description" original="User within the system - Internal or Business Partner Contact">Usuário dentro do Sistema - Interno ou Contato de Parceiro de Negócios</value>
+    <value column="Help" original="The User identifies a unique user in the system. This could be an internal user or a business partner contact">O Usuário identifica um usuário único e exclusivo dentro do sistema. Este poderia ser um usuário interno ou um contato de parceiro de negócios</value>
+  </row>
+  <row id="494" trl="Y">
+    <value column="Name" original="New Workflow Responsible">Novo Responsável pelo Fluxo de Trabalho</value>
+    <value column="Description" original="Responsible for Workflow Execution">Responsável pela Execução do Fluxo de Trabalho</value>
+    <value column="Help" original="The ultimate responsibility for a workflow is with an actual user. The Workflow Responsible allows to define ways to find that actual User.">A responsabilidade final por um Fluxo de Trabalho é do usuário real. A Responsabilidade do Fluxo de Trabalho permite definir meios de encontrar aquele usuário real.</value>
+  </row>
+  <row id="496" trl="Y">
+    <value column="Name" original="New User/Contact">Novo Usuário/Contato</value>
+    <value column="Description" original="User within the system - Internal or Business Partner Contact">Usuário dentro do Sistema - Interno ou Contato de Parceiro de Negócios</value>
+    <value column="Help" original="The User identifies a unique user in the system. This could be an internal user or a business partner contact">O Usuário identifica um usuário único e exclusivo dentro do sistema. Este poderia ser um usuário interno ou um contato de parceiro de negócios</value>
+  </row>
+  <row id="497" trl="Y">
+    <value column="Name" original="New Workflow Responsible">Novo Responsável pelo Fluxo de Trabalho</value>
+    <value column="Description" original="Responsible for Workflow Execution">Responsável pela Execução do Fluxo de Trabalho</value>
+    <value column="Help" original="The ultimate responsibility for a workflow is with an actual user. The Workflow Responsible allows to define ways to find that actual User.">A responsabilidade final por um Fluxo de Trabalho é do usuário real. A Responsabilidade do Fluxo de Trabalho permite definir meios de encontrar aquele usuário real.</value>
+  </row>
+  <row id="523" trl="Y">
+    <value column="Name" original="Default Sales Rep">Representante de Vendas padrão (default)</value>
+    <value column="Description" original="If not defined on Business Partner Level">Se não estiver definido no Nível de Parceiro de Negócios</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="524" trl="Y">
+    <value column="Name" original="Dunning Currency">Moeda de Cobrança</value>
+    <value column="Description" original="Currency to create Dunning Letters">Moeda para criar Cartas de Cobrança</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="50001" trl="Y">
+    <value column="Name" original="Role To">Regra Para</value>
+    <value column="Description" original="Responsibility Role">Responsabilidade do Papel (Função)</value>
+    <value column="Help" original="The Role determines security and access a user who has this Role will have in the System.">O "Papel (Função) determina o nível de segurança e acesso que um usuário que exerça este Papel terá no Sistema.</value>
+  </row>
+  <row id="50002" trl="Y">
+    <value column="Name" original="Role From">Regra De</value>
+    <value column="Description" original="Responsibility Role">Responsabilidade do Papel (Função)</value>
+    <value column="Help" original="The Role determines security and access a user who has this Role will have in the System.">O "Papel (Função) determina o nível de segurança e acesso que um usuário que exerça este Papel terá no Sistema.</value>
+  </row>
+  <row id="50019" trl="Y">
+    <value column="Name" original="Shipment Date">Data de Embarque</value>
+    <value column="Description" original="Date printed on shipment">Data impressa no embarque</value>
+    <value column="Help" original="The Shipment Date indicates the date printed on the shipment.">A Data de Embarque indica a data impressa no embarque.</value>
+  </row>
+  <row id="53011" trl="Y">
+    <value column="Name" original="Print Unprocessed Entries Only">Imprimir Somente entradas não processadas</value>
+    <value column="Description" original="Print the unprocessed (unprinted) entries of the dunning run only.">Print the unprocessed (unprinted) entries of the dunning run only.</value>
+    <value column="Help" original="Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.">Print the unprocessed (unprinted) entries of the dunning run only. This allows you to reprint only certain dunning entries.</value>
+  </row>
+  <row id="53025" trl="Y">
+    <value column="Name" original="Purchase Price List Version">Verisão de Lista de Preços de Compra</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53030" trl="Y">
+    <value column="Name" original="New Product">Novo Produto</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53032" trl="Y">
+    <value column="Name" original="Action">Ação</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53066" trl="Y">
+    <value column="Name" original="Is Print Pack &amp; Tools List">Is Print Pack &amp; Tools List</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53068" trl="Y">
+    <value column="Name" original="Is Print Pick List">Is Print Pick List</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53069" trl="Y">
+    <value column="Name" original="Is Print Workflow">Is Print Workflow</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53127" trl="Y">
+    <value column="Name" original="Generate Fields">Criar Campos</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53131" trl="Y">
+    <value column="Name" original="Scripts Path">Caminho dos Scripts</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53142" trl="Y">
+    <value column="Name" original="Includes only the Tabs that Insert records">Inclui somente as abas que inserem registros</value>
+    <value column="Description" original="Generated Export Format for the Tabs with Insert Record is Yes">Generated Export Format for the Tabs with Insert Record is Yes</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53143" trl="Y">
+    <value column="Name" original="Includes only the mandatory columns">Incluir somente as colunas obrigatórias</value>
+    <value column="Description" original="Generated an Export Format Line  if the column is mandatory ">Generated an Export Format Line  if the column is mandatory </value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53219" trl="Y">
+    <value column="Name" original="Based in DRP Demand">Based in DRP Demand</value>
+    <value column="Description" original="Based in DRP Demand">Based in DRP Demand</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53232" trl="Y">
+    <value column="Name" original="Bank Account From">Conta Origem</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53233" trl="Y">
+    <value column="Name" original="Bank Account To">Conta Destino</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53243" trl="Y">
+    <value column="Name" original="Valid from">Válido desde</value>
+    <value column="Description" original="Valid from including this date (first day)">"Válido desde" incluindo esta data (primeiro dia)</value>
+    <value column="Help" original="The Valid From date indicates the first day of a date range">O campo "Válido desde" indica o primeiro dia de uma faixa de datas</value>
+  </row>
+  <row id="53246" trl="Y">
+    <value column="Name" original="Bank Account From">Conta Origem</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53247" trl="Y">
+    <value column="Name" original="Bank Account To">Conta Destino</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53263" trl="Y">
+    <value column="Name" original="Account Date">Data da Conta</value>
+    <value column="Description" original="Optional account date range">Optional account date range</value>
+    <value column="Help" original="Only documents within this date range which are also in open periods will be reset.">Somente documentos dentro da faixa de datas que também estão em períodos abertos irão ser reiniciados.</value>
+  </row>
+  <row id="53282" trl="Y">
+    <value column="Name" original="Client Name">Nome do Cliente</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53284" trl="Y">
+    <value column="Name" original="Administrative User Name">Usuário Administrativo</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53285" trl="Y">
+    <value column="Name" original="Normal User Name">Normal User Name</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53289" trl="Y">
+    <value column="Name" original="City Name">Nome da Cidade</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="53291" trl="Y">
+    <value column="Name" original="BP Accounting">BP Accounting</value>
+    <value column="Description" original="Use BP accounting dimension">Use BP accounting dimension</value>
+    <value column="Help" original="Define if this client will use business partner accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use business partner accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
+  </row>
+  <row id="53292" trl="Y">
+    <value column="Name" original="Product Accounting">Contabilidade de Produto</value>
+    <value column="Description" original="Use Product accounting dimension">Use Product accounting dimension</value>
+    <value column="Help" original="Define if this client will use product accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use product accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
+  </row>
+  <row id="53293" trl="Y">
+    <value column="Name" original="Project Accounting">Contabilidade de Projeto</value>
+    <value column="Description" original="Use Project accounting dimension">Use Project accounting dimension</value>
+    <value column="Help" original="Define if this client will use project accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use project accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
+  </row>
+  <row id="53294" trl="Y">
+    <value column="Name" original="Campaign Accounting">Contabilidade da Campanha</value>
+    <value column="Description" original="Use Campaign accounting dimension">Use Campaign accounting dimension</value>
+    <value column="Help" original="Define if this client will use campaign accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use campaign accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
+  </row>
+  <row id="53295" trl="Y">
+    <value column="Name" original="Sales Region Accounting">Contabilidade de Região de Vendas</value>
+    <value column="Description" original="Use Sales Region accounting dimension">Use Sales Region accounting dimension</value>
+    <value column="Help" original="Define if this client will use sales region accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use sales region accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
+  </row>
+  <row id="53296" trl="Y">
+    <value column="Name" original="Chart of Accounts File">Chart of Accounts File</value>
+    <value column="Description" original="Location of the chart of accounts to be used with this client.  At this stage just the default accounts will be created.">Location of the chart of accounts to be used with this client.  At this stage just the default accounts will be created.</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53314" trl="Y">
+    <value column="Name" original="Full rebuild">Full rebuild</value>
+    <value column="Description" original="Delete all existing summary data and recalculate.">Apagar todos dados resumidos e recalcular</value>
+    <value column="Help" original="If not selected, only those periods with recently posted accounting facts will be recalculated.">Se não selecionado, somente períodos com fatos contábeis recentemente postados irão ser recalculados.</value>
+  </row>
+  <row id="53316" trl="Y">
+    <value column="Name" original="Force">Forçar</value>
+    <value column="Description" original="Force rebuild of cube even if locked.">Force rebuild of cube even if locked.</value>
+    <value column="Help" original="" />
+  </row>
 </adempiereTrl>
