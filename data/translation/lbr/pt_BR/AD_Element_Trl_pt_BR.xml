@@ -2757,10 +2757,10 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000363" trl="Y">
-<value column="Name" original="Bill Note">Nota de Entrega</value>
-<value column="PrintName" original="Bill Note">Nota de Entrega</value>
-<value column="Description" original="Bill Note">Nota de Entrega</value>
-<value column="Help" original="Bill Note">Nota de Entrega</value>
+<value column="Name" original="Bill Note">Nota da Fatura</value>
+<value column="PrintName" original="Bill Note">Nota da Fatura</value>
+<value column="Description" original="Bill Note">Nota da Fatura</value>
+<value column="Help" original="Bill Note">Nota da Fatura</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -3850,9 +3850,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121100" trl="Y">
-<value column="Name" original="Freight Cost Rule">Regra de Custo de Frete</value>
-<value column="PrintName" original="Freight Cost Rule">Regra de Custo de Frete</value>
-<value column="Description" original="Method for charging Freight">Método de cobrança do Frete</value>
+<value column="Name" original="Freight Cost Rule">Método de Cobrança do Frete</value>
+<value column="PrintName" original="Freight Cost Rule">Método de Cobrança do Frete</value>
+<value column="Description" original="Method for charging Freight">Método de Cobrança do Frete</value>
 <value column="Help" original="The Freight Cost Rule indicates the method used when charging for freight.">Indica o método de cobrança do Frete (Regra de Custo de Frete).</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
