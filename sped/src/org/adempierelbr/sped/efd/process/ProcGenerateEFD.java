@@ -143,8 +143,8 @@ public class ProcGenerateEFD extends SvrProcess
 		 */
 		String fileName = "";
 		
-//		DB.executeUpdate("DROP TABLE LBR_FactFiscal", null);
-//		DB.executeUpdate("CREATE TABLE LBR_FactFiscal AS SELECT * FROM LBR_FactFiscalBase", null);
+		DB.executeUpdate("DROP TABLE LBR_FactFiscal", null);
+		DB.executeUpdate("CREATE TABLE LBR_FactFiscal AS SELECT * FROM LBR_FactFiscalBase", null);
 		
 		/*
 		 * Rodar Processo
