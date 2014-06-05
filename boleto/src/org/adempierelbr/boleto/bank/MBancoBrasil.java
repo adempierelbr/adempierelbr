@@ -236,7 +236,7 @@ public class MBancoBrasil implements I_Bank
 			cnab.setlbr_CNABField8(MLBRCNAB.CNABFormat(boleto.getlbr_ClientCode(), 7)); 	// Num. Convenio
 			cnab.setlbr_CNABField9(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); 	// Controle do Participanete (Preencher com Número de Documento)
 
-			cnab.setlbr_CNABField10(MLBRCNAB.CNABFormat(boleto.getDocumentNo() ,17)); 		// Nosso Número
+			cnab.setlbr_CNABField10(MLBRCNAB.CNABFormat(boleto.getlbr_ClientCode() + boleto.getDocumentNo() ,17)); 		// Nosso Número
 
 			String carteira = MLBRBoleto.getlbr_BillFoldNo(boleto.getlbr_BillFold());		// Get Carteira
 			
