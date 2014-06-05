@@ -71,6 +71,9 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.w3c.dom.Node;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 /**
  *		Nota Fiscal Model
  *
@@ -2190,6 +2193,24 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				}
 				//
 				return serviceDescription;
+			}
+			else if (variable.contains("EVAL_BD"))
+			{
+				Interpreter bsh = new Interpreter ();
+				String script = variable.substring(variable.indexOf("<")+1, variable.length()-1);
+				
+				try 
+				{
+					bsh.set("GrandTotal", getGrandTotal().doubleValue());
+					Double result = (Double) bsh.eval(script);
+					
+					MessageFormat mfs = new MessageFormat("{0,number,#,##0.00}");
+					return mfs.format(new Object[]{result}).toString();
+				} 
+				catch (EvalError e) 
+				{
+					e.printStackTrace();
+				}
 			}
 			else 
 			{
