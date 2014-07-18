@@ -1857,7 +1857,7 @@
     <value column="Name" original="Chat Type Update">Atualização de Tipo de Chat</value>
   </row>
   <row id="876" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
   </row>
   <row id="877" trl="Y">
     <value column="Name" original="Chat Entry">Entradas do Chat</value>

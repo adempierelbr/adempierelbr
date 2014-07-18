@@ -3141,7 +3141,7 @@ Você quer continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="882" trl="Y">
-    <value column="MsgText" original="Chat">Bate-Papo (Chat)</value>
+    <value column="MsgText" original="Chat">Anotações</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="883" trl="Y">

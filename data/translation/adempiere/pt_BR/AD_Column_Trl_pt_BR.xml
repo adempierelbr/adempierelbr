@@ -36807,7 +36807,7 @@
     <value column="Name" original="Self-Service">Auto-Serviço</value>
   </row>
   <row id="15504" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
   </row>
   <row id="15505" trl="Y">
     <value column="Name" original="Client">Empresa</value>
@@ -36870,7 +36870,7 @@
     <value column="Name" original="Updated By">Atualizado por</value>
   </row>
   <row id="15525" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
   </row>
   <row id="15526" trl="Y">
     <value column="Name" original="Confidentiality">Confidencialidade</value>
@@ -36879,7 +36879,7 @@
     <value column="Name" original="Character Data">Dados de Caracteres</value>
   </row>
   <row id="15528" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
   </row>
   <row id="15529" trl="Y">
     <value column="Name" original="User/Contact">Usuário/Contato</value>

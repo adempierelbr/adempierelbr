@@ -4193,7 +4193,7 @@ A medida deve suportar o dado, senão é ignorada.</value>
     <value column="Help" original="Subscribers receive updates per email or notice">Assinantes recebem atualizações por e-mail ou aviso</value>
   </row>
   <row id="821" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
     <value column="CommitWarning" original="" />
     <value column="Description" original="View Chat or discussion thread">Visualizar Bate-Papo ou Linha de Discussão</value>
     <value column="Help" original="Thread of discussion">Linha de discussão</value>

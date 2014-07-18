@@ -22401,8 +22401,8 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="3045" trl="Y">
-    <value column="Name" original="Chat">Bate-Papo (Chat)</value>
-    <value column="PrintName" original="Chat">Bate-Papo (Chat)</value>
+    <value column="Name" original="Chat">Anotações</value>
+    <value column="PrintName" original="Chat">Anotações</value>
     <value column="Description" original="Chat or discussion thread">Bate-Papo ou linha de discussão</value>
     <value column="Help" original="Thread of discussion">Linha de discussão</value>
     <value column="PO_Description" original="" />
