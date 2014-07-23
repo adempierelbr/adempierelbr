@@ -837,7 +837,11 @@ public class NFeXMLGenerator
 			/**
 			 * 	Para NFs complementares, não considerar o valor da linha
 			 */
-			produtos.setIndTot("1".equals (FinNFE) ? "1" : "0");
+			if (nfLine.get_ColumnIndex("Z_IncludeAmount") > 0
+					&& !nfLine.get_ValueAsBoolean("Z_IncludeAmount"))
+				produtos.setIndTot("0");
+			else
+				produtos.setIndTot("1");
 			
 			String ncm = nfLine.getlbr_NCMName();
 
