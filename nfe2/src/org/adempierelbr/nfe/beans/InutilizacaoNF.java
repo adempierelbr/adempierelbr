@@ -188,7 +188,7 @@ public class InutilizacaoNF
 				getnNFFin().length() > 9 || !AdempiereLBR.isNumber(getnNFFin()))
 			msg = "Número Final da NF para inutilização é inválido\n";
 		if (getxJust() == null || getxJust().length() < 15)
-			msg = "Código da UF inválido\n";
+			msg = "Motivo do Cancelamento Inválido\n";
 		//
 		if (msg.equals(""))
 		{
