@@ -18,6 +18,8 @@ import java.util.HashMap;
 import org.adempierelbr.model.MLBRNFLineTax;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_TaxGroup;
+import org.compiere.model.MOrg;
+import org.compiere.model.MOrgInfo;
 import org.compiere.util.Env;
 
 /**
@@ -140,7 +142,25 @@ public class NFeTaxes
 		}
 		if (!txs.containsKey("ICMS"))
 		{
-			NFeTaxes tx = new NFeTaxes ("ICMS", nfl.getlbr_TaxStatus());
+			NFeTaxes tx;
+			
+			if (nfl.getlbr_TaxStatus() == null)
+			{
+				MOrg org = new MOrg(Env.getCtx(), nfl.getAD_Org_ID(), null);
+				MOrgInfo orginf = MOrgInfo.get(Env.getCtx(), org.getAD_Org_ID(), null);
+				
+				// Definir um CST ou CSOSN do tipo Isento quando ICMS não for Especificado
+				if (orginf.get_ValueAsString("Z_TaxRegime").equals("S"))
+					tx = new NFeTaxes ("ICMS", "103");
+				else
+					tx = new NFeTaxes ("ICMS", "40");
+				
+			}
+			else
+			{
+				tx = new NFeTaxes ("ICMS", nfl.getlbr_TaxStatus());				
+			}
+			
 			txs.put("ICMS", tx);
 		}
 		//
