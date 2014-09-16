@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.adempierelbr.cce.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -26,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  *	@version $Id: Signature.java, v1.0 2012/05/21 3:47:28 PM, ralexsander Exp $
  */
 @XStreamAlias ("Signature")
-public class Signature
+public class Signature implements Serializable
 {
 	@XStreamAsAttribute
 	String xmlns;
@@ -40,7 +41,7 @@ public class Signature
 	@XStreamAlias ("KeyInfo")
 	KeyInfo keyInfo;
 	
-	public class SignedInfo
+	public class SignedInfo implements Serializable
 	{
 		@XStreamAlias ("CanonicalizationMethod")
 		CanonicalizationMethod canonicalizationMethod;
@@ -51,19 +52,19 @@ public class Signature
 		@XStreamAlias ("Reference")
 		Reference reference;
 	}	//	SignedInfo
-	public class CanonicalizationMethod
+	public class CanonicalizationMethod implements Serializable
 	{
 		@XStreamAlias ("Algorithm")
 		@XStreamAsAttribute
 		String algorithm;
 	}	//	CanonicalizationMethod
-	public class SignatureMethod
+	public class SignatureMethod implements Serializable
 	{
 		@XStreamAlias ("Algorithm")
 		@XStreamAsAttribute
 		String algorithm;
 	}	//	SignatureMethod
-	public class Reference
+	public class Reference implements Serializable
 	{
 		@XStreamAlias ("URI")
 		@XStreamAsAttribute
@@ -78,30 +79,30 @@ public class Signature
 		@XStreamAlias ("DigestValue")
 		String digestValue;
 	}	//	Reference
-	public class Transforms
+	public class Transforms implements Serializable
 	{
 		@XStreamAlias ("Transform")
 		@XStreamImplicit (itemFieldName = "Transform")
 		List<Transform> transform;
 	}	//	Transforms
-	public class Transform
+	public class Transform implements Serializable
 	{
 		@XStreamAlias ("Algorithm")
 		@XStreamAsAttribute
 		String algorithm;
 	}	//	Transform
-	public class DigestMethod
+	public class DigestMethod implements Serializable
 	{
 		@XStreamAlias ("Algorithm")
 		@XStreamAsAttribute
 		String algorithm;
 	}	//	DigestMethod
-	public class KeyInfo
+	public class KeyInfo implements Serializable
 	{
 		@XStreamAlias ("X509Data")
 		X509Data x509Data;
 	}	//	KeyInfo
-	public class X509Data
+	public class X509Data implements Serializable
 	{
 		@XStreamAlias ("X509Certificate")
 		String x509Certificate;
