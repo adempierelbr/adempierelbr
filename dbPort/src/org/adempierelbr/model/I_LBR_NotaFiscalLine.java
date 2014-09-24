@@ -18,7 +18,11 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import org.compiere.model.*;
+
+import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_UOM;
+import org.compiere.model.I_M_Product;
+import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LBR_NotaFiscalLine
@@ -547,17 +551,5 @@ public interface I_LBR_NotaFiscalLine
 	  * Product Key of the Business Partner
 	  */
 	public String getVendorProductNo();
-	
-	 /** Column name lbr_ProductSource */
-    public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
 
-	/** Set Product Source.
-	  * Defines the Product Source
-	  */
-	public void setlbr_ProductSource (String lbr_ProductSource);
-
-	/** Get Product Source.
-	  * Defines the Product Source
-	  */
-	public String getlbr_ProductSource();
 }

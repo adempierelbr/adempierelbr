@@ -385,7 +385,7 @@ public class ValidatorInvoice implements ModelValidator
 				
 				//	Gera o XML da NF-e de acordo com o Modelo da NF
 				if (MSysConfig.getBooleanValue ("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-					nf.generateXML ();
+					nf.GenerateXMLAutomatic ();
 			}	//	geração de Documento Fiscal
 			
 			/**
