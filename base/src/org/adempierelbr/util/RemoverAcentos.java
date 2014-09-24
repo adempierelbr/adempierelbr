@@ -76,11 +76,17 @@ public abstract class RemoverAcentos
 			char ch = str.charAt(i);
 			if (ch < 256) 
 			{
-				sb.append(tabela[ch]);
+				if (retiraEspecial)
+					sb.append(removeSpecial(tabela[ch]));
+				else				
+					sb.append(tabela[ch]);
 			}
 			else 
 			{
-				sb.append(ch);
+				if (retiraEspecial)
+					sb.append(removeSpecial(ch));
+				else
+					sb.append(ch);
 			}
 		}
 		
@@ -90,8 +96,20 @@ public abstract class RemoverAcentos
 		String retorno = sb.toString();
 		//
 		retorno = retorno.replaceAll("½", "1/2").replaceAll("¼", "1/4").replaceAll("¾", "3/4");
-		retorno = retorno.replaceAll("[^A-Za-z0-9 ]", " ").replaceAll(" +", " ");
+		retorno = retorno.replaceAll("\"", " ").replaceAll("[œ*ßƒµøπæΩØ]", " ");
 		//
 		return retorno.trim();
-	}	//	remover
-}	//	RemoverAcentos
+	}
+	
+	private static String removeSpecial(char value){
+		
+		if (Character.isLetterOrDigit(value) ||
+			String.valueOf(value).matches("[!?$%()--+/;:.,]") ||
+			value == ' '){
+			return String.valueOf(value);
+		}
+		
+		return "";
+	}
+	
+}
