@@ -324,8 +324,8 @@ public class NFeXMLGenerator
 		X_C_City bpCity = BPartnerUtil.getX_C_City(ctx,bpLoc,trxName);
 
 		// Dados do documento da NF
-		String modNF = docType.get_ValueAsString("lbr_NFModel");
-		String serie = docType.get_ValueAsString("lbr_NFSerie");
+		String modNF = nf.getlbr_NFModel();
+		String serie = nf.getlbr_NFSerie();
 
 		/**
 		 * Indicador da forma de pagamento:
@@ -947,36 +947,49 @@ public class NFeXMLGenerator
 							icmsgrupo.setMotDesICMS (MOT_DESONERA_OUTROS);
 					}
 					
-					//	Percentual da Redução de BC
-					if (TextUtil.match (taxStatus, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70))
+//					Percentual da Redução de BC
+					if (TextUtil.match (taxStatus, CST_ICMS_20, CST_ICMS_51, CST_ICMS_70)
+							&& lt.getpRedBC() != null && lt.getpRedBC().signum() > 0)
 						icmsgrupo.setpRedBC (TextUtil.bigdecimalToString (lt.getpRedBC()));
 					
-					//	Percentual da Redução de BC
-					if (TextUtil.match (taxStatus, CST_ICMS_90, CST_ICMS_Part, CSOSN_900))
-						icmsgrupo.setpRedBC2 (TextUtil.bigdecimalToString (lt.getpRedBC()));
+//					Percentual da Redução de BC
+					if (TextUtil.match (taxStatus, CST_ICMS_90, CST_ICMS_Part, CSOSN_900)
+							&& lt.getpRedBC() != null && lt.getpRedBC().signum() > 0)
+							icmsgrupo.setpRedBC2 (TextUtil.bigdecimalToString (lt.getpRedBC()));
 					
 					//	Substituição Tributária
 					if (TextUtil.match (taxStatus, CST_ICMS_10, CST_ICMS_30, CST_ICMS_70, CST_ICMS_90, CST_ICMS_Part, CSOSN_201, CSOSN_202, CSOSN_203, CSOSN_900))
 					{
 						if (taxST == null)
-							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						{
+							if (!TextUtil.match (taxStatus, CSOSN_900))
+								throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						}
 						
-						//	FIXME: Modalidade da BC
-						icmsgrupo.setModBCST (MOD_BC_MVA);
-						
-						//	TODO: IVA		
-//						icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
-						if (taxST.getpRedBC() != null && taxST.getpRedBC().signum() > 0)
-							icmsgrupo.setpRedBCST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
-						icmsgrupo.setvBCST (TextUtil.bigdecimalToString (taxST.getvBC()));
-						icmsgrupo.setpICMSST (TextUtil.bigdecimalToString (taxST.getpImposto()));
-						icmsgrupo.setvICMSST (TextUtil.bigdecimalToString (taxST.getvImposto()));
+						//	Not null
+						else
+						{
+							//	FIXME: Modalidade da BC
+							icmsgrupo.setModBCST (MOD_BC_MVA);
+							
+							//	TODO: IVA		
+	//						icmsgrupo.setpMVAST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+							if (taxST.getpRedBC() != null && taxST.getpRedBC().signum() > 0)
+								icmsgrupo.setpRedBCST (TextUtil.bigdecimalToString (taxST.getpRedBC()));
+							icmsgrupo.setvBCST (TextUtil.bigdecimalToString (taxST.getvBC()));
+							icmsgrupo.setpICMSST (TextUtil.bigdecimalToString (taxST.getpImposto()));
+							icmsgrupo.setvICMSST (TextUtil.bigdecimalToString (taxST.getvImposto()));
+						}
 					}
 
-					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST, CSOSN_500))
+					if (TextUtil.match (taxStatus, CST_ICMS_60, CST_ICMS_ST)
+							|| (TextUtil.match (taxStatus, CSOSN_500) && taxST != null))
 					{
-						icmsgrupo.setvBCSTRet (TextUtil.bigdecimalToString (taxST == null? Env.ZERO : taxST.getvBC()));
-						icmsgrupo.setvICMSSTRet (TextUtil.bigdecimalToString (taxST == null? Env.ZERO : taxST.getvImposto()));
+						if (taxST == null)
+							throw new AdempiereException ("CST ou CSOSN de Substituição Tributária, porém o imposto ST não foi encontrado");
+						//
+						icmsgrupo.setvBCSTRet (TextUtil.bigdecimalToString (taxST.getvBC()));
+						icmsgrupo.setvICMSSTRet (TextUtil.bigdecimalToString (taxST.getvImposto()));
 					}
 					
 					if (TextUtil.match (taxStatus, CST_ICMS_ST))

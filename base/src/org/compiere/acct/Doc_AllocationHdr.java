@@ -292,9 +292,17 @@ public class Doc_AllocationHdr extends Doc
 				// End Avoid usage of clearing accounts
 
 				//	Discount		DR
-				if (Env.ZERO.compareTo(line.getDiscountAmt()) != 0)
+				if (Env.ZERO.compareTo(line.getDiscountAmt()) < 0)
 				{
 					fl = fact.createLine (line, getAccount(Doc.ACCTTYPE_DiscountExp, as),
+						getC_Currency_ID(), line.getDiscountAmt(), null);
+					if (fl != null && payment != null)
+						fl.setAD_Org_ID(payment.getAD_Org_ID());
+				}
+				//	Interest		DR
+				else if (Env.ZERO.compareTo(line.getDiscountAmt()) > 0)
+				{
+					fl = fact.createLine (line, getAccount(Doc.ACCTTYPE_InterestRev, as),
 						getC_Currency_ID(), line.getDiscountAmt(), null);
 					if (fl != null && payment != null)
 						fl.setAD_Org_ID(payment.getAD_Org_ID());
@@ -393,6 +401,16 @@ public class Doc_AllocationHdr extends Doc
 					if (fl != null && payment != null)
 						fl.setAD_Org_ID(payment.getAD_Org_ID());
 				}
+				
+				//	Interest		CR
+				if (Env.ZERO.compareTo(line.getDiscountAmt()) < 0)
+				{
+					fl = fact.createLine (line, getAccount(Doc.ACCTTYPE_InterestExp, as),
+						getC_Currency_ID(), null, line.getDiscountAmt().negate());
+					if (fl != null && payment != null)
+						fl.setAD_Org_ID(payment.getAD_Org_ID());
+				}
+				
 				//	Write off		CR
 				if (Env.ZERO.compareTo(line.getWriteOffAmt()) != 0)
 				{
@@ -441,7 +459,7 @@ public class Doc_AllocationHdr extends Doc
 			}
 
 			//	Realized Gain & Loss
-			if (invoice != null
+			if (invoice != null && as.isAccrual()
 				&& (getC_Currency_ID() != as.getC_Currency_ID()			//	payment allocation in foreign currency
 					|| getC_Currency_ID() != line.getInvoiceC_Currency_ID()))	//	allocation <> invoice currency
 			{
@@ -591,7 +609,7 @@ public class Doc_AllocationHdr extends Doc
 	{
 		BigDecimal allocationAccounted = Env.ZERO;
 		//	Multiplier
-		double percent = invoice.getGrandTotal().doubleValue() / allocationSource.doubleValue();
+		double percent = allocationSource.doubleValue() / invoice.getGrandTotal().doubleValue();
 		if (percent > 0.99 && percent < 1.01)
 			percent = 1.0;
 		log.config("Multiplier=" + percent + " - GrandTotal=" + invoice.getGrandTotal()
@@ -601,7 +619,7 @@ public class Doc_AllocationHdr extends Doc
 		Doc_Invoice docInvoice = (Doc_Invoice)Doc.get(new MAcctSchema[]{as},
 			MInvoice.Table_ID, invoice.getC_Invoice_ID(), getTrxName());
 		docInvoice.loadDocumentDetails();
-		allocationAccounted = docInvoice.createFactCash(as, fact, new BigDecimal(percent));
+		allocationAccounted = docInvoice.createFactCash(as, fact, new BigDecimal(percent), getDateAcct());
 		log.config("Allocation Accounted=" + allocationAccounted);
 
 		//	Cash Based Commitment Release

@@ -418,7 +418,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				     "AND IsSOTrx = ? " +
 				     "ORDER BY LBR_NotaFiscal_ID desc";
 
-		Integer LBR_NotaFiscal_ID = DB.getSQLValue (trx, sql, new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
+		Integer LBR_NotaFiscal_ID = DB.getSQLValue(trx, sql,
+				new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
 
 		//	RPS
 		if (LBR_NotaFiscal_ID < 1)
@@ -1079,7 +1080,36 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		//	Impostos
 		setTaxes(invoice);
-						
+		
+		MDocType dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+		String serie = "";
+		String model = "";
+		
+		if (!dt.get_ValueAsString("lbr_NFSerie").isEmpty())
+			serie = dt.get_ValueAsString("lbr_NFSerie");
+		else	
+			serie = "1";
+		
+		setlbr_NFSerie(serie);
+		
+		if (!dtInvoice.get_ValueAsString("lbr_NFModel").isEmpty())
+			model = dtInvoice.get_ValueAsString("lbr_NFModel");
+		else	
+			model = dt.get_ValueAsString("lbr_NFModel");
+
+		setlbr_NFModel(model);
+
+		
+		//	Description para Nota de Serviço
+		if (getC_DocType_ID() > 0)
+		{
+			dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+			model = dt.get_ValueAsString("lbr_NFModel");
+			
+			if (model != null && model.startsWith("RPS"))
+				setlbr_ServiceTaxes();
+		}
+		
 		//	Linhas
 		for (MInvoiceLine iLine : invoice.getLines())
 		{
@@ -1133,6 +1163,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		
 		// IBPTax - LBR-81
 		setAproxTaxIBPT();
+		
+		//	Descrição para Nota de Serviço
+		setlbr_ServiceTaxes();
 				
 		return true;
 	}	//	generateNF
@@ -1236,7 +1269,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		return true;
 	}	//	generateNF
 	
-	public void generateXML ()
+	public void GenerateXMLAutomatic()
 	{
 		// Gerar XML automaticamente
 		try
@@ -1248,9 +1281,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				//
 				if (model == null)
 					log.log(Level.INFO, "Tipo de NF não definido.");
-
-				else if (model.equals("55"))
-					NFeXMLGenerator.geraCorpoNFe (getLBR_NotaFiscal_ID(), get_TrxName());
+				else if (model.startsWith("RPS"))
+				{
+					setlbr_ServiceTaxes();
+					save(get_TrxName());
+				}
+				//
+				else if (model.equals("55") && 
+						MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
+					NFeXMLGenerator.geraCorpoNFe(getLBR_NotaFiscal_ID(), get_TrxName());
 			}
 		} 
 		catch(Exception ex) 

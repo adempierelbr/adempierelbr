@@ -2,7 +2,6 @@ package org.adempierelbr.sped;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -10,12 +9,17 @@ import java.util.logging.Level;
 import org.compiere.util.CLogger;
 
 /**
- *	Counter Sped
+ *		Contador SPED
  *
- * @author Mario Grigioni
- * @contributor Ricardo Santana, ralexsander
- * @version $Id: CounterSped.java, 16/11/2010, 14:36, mgrigioni
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ * 		<li> Classe original de Janeiro de 2010 CounterSPED
+ * 
+ * 	@author Mario Grigioni
+ * 		<li> Alterou a classe, mudando também o nome para CounterSped em Novembro de 2010
+ * 
+ * 	@version $Id: SPEDCounter.java, v1.0 2010/01/31 3:33:23 PM, ralexsander Exp $
  */
+@Deprecated
 public class CounterSped
 {
 	/**	Logger			*/
@@ -32,7 +36,7 @@ public class CounterSped
 	/**
 	 * 	Adiciona o registro no contador
 	 * 
-	 * @param regName
+	 * 	@param regName
 	 */
 	public static void register (String regName)
 	{
@@ -46,6 +50,21 @@ public class CounterSped
 			regs.put(regName, 1);
 	}	//	register
 	
+	/**
+	 * 	Remove o registro no contador
+	 * 
+	 * 	@param regName
+	 */
+	public static void unregister (String regName)
+	{
+		if (regs.containsKey(regName))
+		{
+			Integer count = regs.get(regName);
+			regs.remove(regName);
+			regs.put(regName, count-1);
+		}
+	}	//	unregister
+		
 	/**
 	 * Retorna todos os registros do arquivo
 	 * @return String[] registros
@@ -127,72 +146,3 @@ public class CounterSped
 	} // getTotalCounter
 	
 }	// CounterSped
-
-class SPEDComparator implements Comparator<Object>
-{
-	/**
-	 * 	Comparator para ordenar os Arrays
-	 *
-	 * 	Peso para cada bloco:
-	 *
-	 * 		0	=	0,
-	 * 		C	=	2,
-	 * 		D	=	3,
-	 * 		E	=	4,
-	 * 		G	=	5,
-	 * 		H	=	6,
-	 * 		1	=	7,
-	 * 		9	=	9
-	 */
-	public int compare (Object o1, Object o2)
-	{
-		String s1 = "0000";
-		String s2 = "0000";
-		//
-		if (o1 instanceof String)
-			s1 = (String) o1;
-		if (o2 instanceof String)
-			s2 = (String) o2;
-
-		if (s1 == null || s2 == null)
-			return 0;
-		//
-		if (s1.startsWith("C"))
-			s1 = "2" + s1.substring(1);
-		if (s1.startsWith("D"))
-			s1 = "3" + s1.substring(1);
-		if (s1.startsWith("E"))
-			s1 = "4" + s1.substring(1);
-		if (s1.startsWith("G"))
-			s1 = "5" + s1.substring(1);
-		if (s1.startsWith("H"))
-			s1 = "6" + s1.substring(1);
-		if (s1.startsWith("1"))
-			s1 = "7" + s1.substring(1);
-		//
-		if (s2.startsWith("C"))
-			s2 = "2" + s2.substring(1);
-		if (s2.startsWith("D"))
-			s2 = "3" + s2.substring(1);
-		if (s2.startsWith("E"))
-			s2 = "4" + s2.substring(1);
-		if (s2.startsWith("G"))
-			s2 = "5" + s2.substring(1);
-		if (s2.startsWith("H"))
-			s2 = "6" + s2.substring(1);
-		if (s2.startsWith("1"))
-			s2 = "7" + s2.substring(1);
-		//
-		return s1.compareTo(s2);
-	}	//	compare
-
-	/**
-	 * 	Get new Comparator
-	 *
-	 * 	@return SPEDComparator
-	 */
-	static SPEDComparator get ()
-	{
-		return new SPEDComparator ();
-	}	//	get	
-}

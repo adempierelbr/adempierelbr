@@ -398,8 +398,8 @@ public interface I_LBR_NotaFiscal
 	  */
 	public void setlbr_Barcode1 (String lbr_Barcode1);
 
-	/** Get Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
+	/** Get Barcode 1.
+	  * First Barcode of the Nota Fiscal
 	  */
 	public String getlbr_Barcode1();
 
@@ -411,8 +411,8 @@ public interface I_LBR_NotaFiscal
 	  */
 	public void setlbr_Barcode2 (String lbr_Barcode2);
 
-	/** Get Shipment/Receipt.
-	  * Material Shipment Document
+	/** Get Barcode 2.
+	  * Second Barcode of the Nota Fiscal
 	  */
 	public String getlbr_Barcode2();
 
@@ -424,8 +424,8 @@ public interface I_LBR_NotaFiscal
 	  */
 	public void setlbr_BillNote (String lbr_BillNote);
 
-	/** Get Shipper.
-	  * Method or manner of product delivery
+	/** Get Bill Note.
+	  * Bill Note
 	  */
 	public String getlbr_BillNote();
 
@@ -1253,8 +1253,8 @@ public interface I_LBR_NotaFiscal
 	  */
 	public void setlbr_NetWeight (BigDecimal lbr_NetWeight);
 
-	/** Get NF Model.
-	  * Identifies the model of Nota Fiscal
+	/** Get Net Weight.
+	  * Defines the Net Weight
 	  */
 	public BigDecimal getlbr_NetWeight();
 
@@ -1329,13 +1329,13 @@ public interface I_LBR_NotaFiscal
     /** Column name lbr_NFModel */
     public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
 
-	/** Set Net Weight.
-	  * Defines the Net Weight
+    /** Set NF Model.
+	  * Identifies the model of Nota Fiscal
 	  */
 	public void setlbr_NFModel (String lbr_NFModel);
 
-	/** Get Net Weight.
-	  * Defines the Net Weight
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
 	  */
 	public String getlbr_NFModel();
 

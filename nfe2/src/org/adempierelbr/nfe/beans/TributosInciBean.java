@@ -12,8 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 public class TributosInciBean {
 

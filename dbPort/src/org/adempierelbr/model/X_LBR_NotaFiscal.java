@@ -189,9 +189,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
-	/** Set Target Document Type.
-		@param C_DocTypeTarget_ID 
-		Target document type for conversing documents
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
 	  */
 	public void setC_DocType_ID (int C_DocType_ID)
 	{
@@ -201,8 +201,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
 	}
 
-	/** Get Target Document Type.
-		@return Target document type for conversing documents
+	/** Get Document Type.
+		@return Document type or rules
 	  */
 	public int getC_DocType_ID () 
 	{
@@ -217,9 +217,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypeTarget_ID(), get_TrxName());	}
 
-	/** Set Document Type.
-		@param C_DocType_ID 
-		Document type or rules
+	/** Set Target Document Type.
+		@param C_DocTypeTarget_ID 
+		Target document type for conversing documents
 	  */
 	public void setC_DocTypeTarget_ID (int C_DocTypeTarget_ID)
 	{
@@ -229,8 +229,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			set_Value (COLUMNNAME_C_DocTypeTarget_ID, Integer.valueOf(C_DocTypeTarget_ID));
 	}
 
-	/** Get Document Type.
-		@return Document type or rules
+	/** Get Target Document Type.
+		@return Target document type for conversing documents
 	  */
 	public int getC_DocTypeTarget_ID () 
 	{
@@ -526,7 +526,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/** Set Discount Printed.
 		@param IsDiscountPrinted 
 		Print Discount on Invoice and Order
-	  */
+	 	*/
 	public void setIsDiscountPrinted (boolean IsDiscountPrinted)
 	{
 		set_Value (COLUMNNAME_IsDiscountPrinted, Boolean.valueOf(IsDiscountPrinted));
@@ -604,9 +604,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		set_Value (COLUMNNAME_lbr_Barcode1, lbr_Barcode1);
 	}
 
-	/** Get Nota Fiscal.
-		@return Primary key table LBR_NotaFiscal
-	  */
+	/** Get Barcode 1.
+		@return First Barcode of the Nota Fiscal
+ 	 */
 	public String getlbr_Barcode1 () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_Barcode1);
@@ -621,25 +621,25 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		set_Value (COLUMNNAME_lbr_Barcode2, lbr_Barcode2);
 	}
 
-	/** Get Shipment/Receipt.
-		@return Material Shipment Document
+	/** Get Barcode 2.
+		@return Second Barcode of the Nota Fiscal
 	  */
 	public String getlbr_Barcode2 () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_Barcode2);
 	}
 
-	/** Set Shipper.
-		@param M_Shipper_ID 
-		Method or manner of product delivery
+	/** Set Bill Note.
+		@param lbr_BillNote 
+		Bill Note
 	  */
 	public void setlbr_BillNote (String lbr_BillNote)
 	{
 		set_Value (COLUMNNAME_lbr_BillNote, lbr_BillNote);
 	}
 
-	/** Get Shipper.
-		@return Method or manner of product delivery
+	/** Get Bill Note.
+		@return Bill Note
 	  */
 	public String getlbr_BillNote () 
 	{
@@ -1779,9 +1779,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		set_Value (COLUMNNAME_lbr_NetWeight, lbr_NetWeight);
 	}
 
-	/** Get NF Model.
-		@return Identifies the model of Nota Fiscal
-	  */
+	/** Get Net Weight.
+		@return Defines the Net Weight
+	 */
 	public BigDecimal getlbr_NetWeight () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_NetWeight);
@@ -2451,7 +2451,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 
 	/** Get NFe Status.
 		@return Status of NFe
-	  */
+	 */
 	public String getlbr_NFeStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFeStatus);
@@ -2533,9 +2533,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		set_Value (COLUMNNAME_lbr_NFModel, lbr_NFModel);
 	}
 
-	/** Get Net Weight.
-		@return Defines the Net Weight
-	  */
+	/** Get NF Model.
+		@return Identifies the model of Nota Fiscal
+	 */
 	public String getlbr_NFModel () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFModel);
