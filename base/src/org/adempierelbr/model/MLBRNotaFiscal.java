@@ -1310,7 +1310,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	{
 		
 		// somente para consumidor final, se no sisconfig tiver habilitado e for NF-e 
-		if(getlbr_TransactionType().equals(LBR_TRANSACTIONTYPE_EndUser) && MSysConfig.getBooleanValue("LBR_FILL_IBPTax_DESCRIPTION", false, getAD_Client_ID()) && isSOTrx())
+		if(LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType()) && MSysConfig.getBooleanValue("LBR_FILL_IBPTax_DESCRIPTION", false, getAD_Client_ID()) && isSOTrx())
 		{		
 
 			BigDecimal taxAmt = Env.ZERO;
