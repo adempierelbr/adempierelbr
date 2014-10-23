@@ -75,6 +75,8 @@
 	
 		<javac destdir="${build.dir}"  debug="true" deprecation="false" optimize="false" encoding="UTF-8">
 			<src path="base/src" />
+			<src path="sacred/src" />
+			<src path="sped/src" />
 			<src path="boleto/src" />
 			<src path="client/src" />
 			<src path="dbPort/src" />
