@@ -172,7 +172,8 @@ public class GenCNAB
 			PreparedStatement pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(index++, bi.getKey());		//	Client
 			pstmt.setInt(index++, m_AD_Client_ID);		//	Client
-			pstmt.setInt(index++, AD_Org_ID);		//	Organization
+			if (AD_Org_ID != 0)
+				pstmt.setInt(index++, AD_Org_ID);		//	Organization
 			//
 			ResultSet rs = pstmt.executeQuery();
 			miniTable.loadTable(rs);
