@@ -229,6 +229,8 @@ public final class EMail implements Serializable
 			
 			if(MSysConfig.getBooleanValue("LBR_SEND_EMAIL_USING_TLS", false, Env.getAD_Client_ID(Env.getCtx())))
 				props.put("mail.smtp.starttls.enable", "true");
+			else
+				props.put("mail.smtp.starttls.enable", "false");
 			
 			session = Session.getInstance(props, m_auth);
 			session.setDebug(CLogMgt.isLevelFinest());
