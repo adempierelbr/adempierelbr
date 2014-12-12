@@ -28,6 +28,8 @@ import java.security.Signature;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -161,6 +163,25 @@ public class AssinaturaDigital
 		//
 		KeyStore keystore = KeyStore.getInstance(certType);
 		keystore.load(jksData, senha);
+		
+		//		Default Alias
+		if (alias != null 
+				&& keystore.containsAlias(alias)
+				&& keystore.isKeyEntry(alias))
+			;	//	Do Nothing
+		else
+		{
+			//	Try to find a valid key entry
+			Enumeration<String> aliasesEnum = keystore.aliases();  
+			while (aliasesEnum.hasMoreElements()) 
+			{  
+				alias = (String) aliasesEnum.nextElement();  
+				if (keystore.isKeyEntry(alias) && ((X509Certificate) keystore.getCertificate(alias)).getNotAfter().after (new Date()))
+					break;
+			}
+		}
+		
+		//	Get the private key
 		Key key = keystore.getKey(alias, senha);
 		//
 		if (key instanceof PrivateKey)
@@ -170,6 +191,7 @@ public class AssinaturaDigital
 			cert = (X509Certificate) keystore.getCertificate (alias);
 			keyP = new KeyPair(publicKey, (PrivateKey) key);
 		}
+		
 		cert.checkValidity();
 	}	//	loadKeys
 	
