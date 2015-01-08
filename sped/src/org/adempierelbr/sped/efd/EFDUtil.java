@@ -273,11 +273,15 @@ public class EFDUtil {
 	{
 		// documento regular
 		String cod_sit = "00";
-		System.out.println(factFiscal.getDocumentNo());
+
 		// cancelada = 02
-		if(factFiscal.isCancelled())
-			if (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
+		if (factFiscal.isCancelled())
+			if ("110".equals (factFiscal.getLBR_NotaFiscal().getlbr_NFeStatus()))
+				cod_sit = "04";	//	Denegado;
+			
+			else if (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
 				cod_sit = "02";	//	Cancelado
+			
 			else
 				cod_sit = "05";	//	Inutilizado
 		
