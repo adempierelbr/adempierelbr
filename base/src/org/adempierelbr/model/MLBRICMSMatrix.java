@@ -69,7 +69,7 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix
 		if (!MSysConfig.getBooleanValue("Z_USE_ICMS_MATRIX", true, Env.getAD_Client_ID(ctx)))
 			return null;
 		//
-		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) AND AD_Client_ID=? " +
+		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) AND AD_Client_ID IN (0, ?) " +
 				"AND C_Region_ID=? AND To_Region_ID=? ";
 		//
 		if (validFrom != null)
