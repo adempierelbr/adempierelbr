@@ -558,7 +558,7 @@ public class ProcGenerateEFD extends SvrProcess
 			 */
 			GregorianCalendar calendar = new GregorianCalendar();
 			calendar.setTime(dateFrom);
-			if(calendar.get(Calendar.MONTH) == 1) // (indice do calendar: 0(mês 1), 1(mês 2), 2(mês 3)...)
+			if(calendar.get(Calendar.MONTH) == 0) // (indice do calendar: 0(mês 1), 1(mês 2), 2(mês 3)...)
 			{
 				
 				/*
