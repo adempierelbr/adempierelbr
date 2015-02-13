@@ -59,7 +59,7 @@ public abstract class NFeEmail {
 			MOrgInfo orgInfo = MOrgInfo.get(ctx, nf.getAD_Org_ID(), trx);
 
 			final MUser from = new MUser(ctx,
-					orgInfo.get_ValueAsInt("lbr_ContatoNFe"), trx);
+					orgInfo.get_ValueAsInt("LBR_ContatoNFe_ID"), trx);
 
 			// Check from email user
 			if (from.getEMailUser() == null && from.getEMailUserPW() == null)

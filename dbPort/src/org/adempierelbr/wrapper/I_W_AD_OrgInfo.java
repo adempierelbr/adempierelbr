@@ -53,18 +53,18 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public String getContactName();
 
-    /** Column name LBR_ContatoNFe */
-    public static final String COLUMNNAME_LBR_ContatoNFe = "LBR_ContatoNFe";
+    /** Column name LBR_ContatoNFe_ID */
+    public static final String COLUMNNAME_LBR_ContatoNFe_ID = "LBR_ContatoNFe_ID";
 
 	/** Set Contato NFe.
 	  * Email do Usuario/Contato que servirá como remetente do XML da NFe enviado automáticamente aos Usuários/Contatos do Parceiro de Negócio.
 	  */
-	public void setLBR_ContatoNFe (int LBR_ContatoNFe);
+	public void setLBR_ContatoNFe_ID (int LBR_ContatoNFe_ID);
 
 	/** Get Contato NFe.
 	  * Email do Usuario/Contato que servirá como remetente do XML da NFe enviado automáticamente aos Usuários/Contatos do Parceiro de Negócio.
 	  */
-	public int getLBR_ContatoNFe();
+	public int getLBR_ContatoNFe_ID();
 
 	public I_AD_User getLBR_Contato() throws RuntimeException;
 
