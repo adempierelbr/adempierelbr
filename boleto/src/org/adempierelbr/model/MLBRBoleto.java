@@ -46,6 +46,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
@@ -625,8 +626,10 @@ public class MLBRBoleto extends X_LBR_Boleto
 					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
 					newBoleto.setC_BankAccount_ID(BankA.getC_BankAccount_ID()); //Conta Bancária
 					newBoleto.setAD_Org_ID(BankA.getAD_Org_ID());
-					//
-					newBoleto.setlbr_Cessionary(Org.getDescription()); //Nome do Cedente (Descrição da Empresa)
+					// Buscar nome da Empresa do campo Razão Social na Janela
+					// Organização Aba Informações da Organização
+					MOrgInfo orginf = MOrgInfo.get(Env.getCtx(), Org.getAD_Org_ID(), trx);
+					newBoleto.setlbr_Cessionary(orginf.get_ValueAsString("lbr_LegalEntity")); //Nome do Cedente (Descrição da Empresa)
 					//
 					newBoleto.setlbr_ReceiverName(BPartner.getName()); //Nome do Sacado
 					newBoleto.setAddress1(Location.getAddress1()); //Endereço
