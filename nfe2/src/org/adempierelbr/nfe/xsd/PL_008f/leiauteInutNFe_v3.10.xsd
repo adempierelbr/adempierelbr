@@ -3,7 +3,7 @@
 <!--  PL_006c versao com correcoes 24/12/2009 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.portalfiscal.inf.br/nfe" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://www.portalfiscal.inf.br/nfe" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema_v1.01.xsd"/>
-	<xs:include schemaLocation="tiposBasico_v1.03.xsd"/>
+	<xs:include schemaLocation="tiposBasico_v3.10.xsd"/>
 	<xs:complexType name="TInutNFe">
 		<xs:annotation>
 			<xs:documentation>Tipo Pedido de Inutilização de Numeração da Nota Fiscal Eletrônica</xs:documentation>
@@ -49,7 +49,7 @@
 						</xs:element>
 						<xs:element name="mod" type="TMod">
 							<xs:annotation>
-								<xs:documentation>Modelo da NF-e (55, etc.)</xs:documentation>
+								<xs:documentation>Modelo da NF-e (55, 65 etc.)</xs:documentation>
 							</xs:annotation>
 						</xs:element>
 						<xs:element name="serie" type="TSerie">
@@ -154,7 +154,7 @@
 								<xs:documentation>Número da NF-e final</xs:documentation>
 							</xs:annotation>
 						</xs:element>
-						<xs:element name="dhRecbto" type="xs:dateTime" minOccurs="0">
+						<xs:element name="dhRecbto" type="TDateTimeUTC">
 							<xs:annotation>
 								<xs:documentation>Data e hora de recebimento, no formato AAAA-MM-DDTHH:MM:SS. Deve ser preenchida com data e hora da gravação no Banco em caso de Confirmação. Em caso de Rejeição, com data e hora do recebimento do Pedido de Inutilização.</xs:documentation>
 							</xs:annotation>
@@ -184,10 +184,10 @@
 	</xs:complexType>
 	<xs:simpleType name="TVerInutNFe">
 		<xs:annotation>
-			<xs:documentation>Tipo Versão do leiaute de Inutilização 2.00</xs:documentation>
+			<xs:documentation>Tipo Versão do leiaute de Inutilização 3.10</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:token">
-			<xs:pattern value="2\.00"/>
+			<xs:pattern value="3\.10"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>
