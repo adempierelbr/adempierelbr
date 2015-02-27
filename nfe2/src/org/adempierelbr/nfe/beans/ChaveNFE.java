@@ -12,8 +12,19 @@
  *****************************************************************************/
 package org.adempierelbr.nfe.beans;
 
-public class ChaveNFE {
-	
+import java.sql.Timestamp;
+import java.util.Random;
+
+import org.adempierelbr.util.TextUtil;
+
+/**
+ * 		Chave da NF-e
+ * 
+ * 	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: ChaveNFE.java, v1.0 2015/02/27 10:33:28 AM, ralexsander Exp $
+ */
+public class ChaveNFE
+{
 	/**			Peso			**/
 	private static final String PESO = "4329876543298765432987654329876543298765432";
 
@@ -25,21 +36,39 @@ public class ChaveNFE {
 	private String tpEmis; 	// Tipo de Emissão
 	private String nNF; 	// Numero do Documento Fiscal
 	private String cNF; 	// Codigo Numerico que compoe a Chave de Acesso
+	private String digito; 	// Dígito da Chave da NF-e
 
-	public String toString(){
+	/**
+	 * 	Representação da Chave da NF-e
+	 */
+	public String toString ()
+	{
 		return getCUF()    + getAAMM()  + getCNPJ()
              + getMod()    + getSerie() + getNNF()
              + getTpEmis() + getCNF();
-	} //toString
+	}	//	toString
+	
+	/**
+	 * 	Dígito da NF-e
+	 * 	@return
+	 */
+	public String getDigito ()
+	{
+		if (digito == null || digito.isEmpty())
+			gerarDigito();
+		//
+		return digito;
+	}	//	getDigito
 	
 	/**
 	 * 	Retorna o digito na NFe através da chave de acesso.
 	 * 
 	 * @return	Digito
 	 */
-	public int gerarDigito(){
-		return gerarDigito(toString());
-	}
+	private int gerarDigito ()
+	{
+		return gerarDigito (toString());
+	}	//	gerarDigito
 	
 	/**
 	 * 	Retorna o digito na NFe através da chave de acesso.
@@ -47,7 +76,6 @@ public class ChaveNFE {
 	 * @param chave
 	 * @return	Digito
 	 */
-	
 	private static int gerarDigito (String chave)
 	{
 		int x = 0;
@@ -94,6 +122,10 @@ public class ChaveNFE {
 		AAMM = aamm;
 	}
 
+	public void setAAMM(Timestamp ts) {
+		AAMM = TextUtil.timeToString(ts, "yyMM");;
+	}
+
 	public String getCNPJ() {
 		return CNPJ;
 	}
@@ -115,7 +147,7 @@ public class ChaveNFE {
 	}
 
 	public void setSerie(String serie) {
-		this.serie = serie;
+		this.serie = TextUtil.lPad (serie, 3);
 	}
 
 	public String getNNF() {
@@ -141,4 +173,9 @@ public class ChaveNFE {
 	public void setCNF(String cnf) {
 		cNF = cnf;
 	}
-}
+
+	public void setCNF() {
+		cNF = TextUtil.lPad (String.valueOf (new Random ().nextInt (99999999)), 8);
+		digito = null;
+	}
+}	//	ChaveNFE

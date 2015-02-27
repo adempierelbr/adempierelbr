@@ -24,6 +24,7 @@ import org.compiere.model.MAttachment;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 /**
  * 	Processo para geração do XML
@@ -63,7 +64,7 @@ public class ProcGenerateNFEXml extends SvrProcess
 	 */
 	protected String doIt() throws Exception 
 	{
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, null);
+		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
 		//
 		if (nf.get_Value("lbr_NFeProt") != null || nf.isProcessed())
 		{
@@ -105,15 +106,11 @@ public class ProcGenerateNFEXml extends SvrProcess
 
 		nf.save();
 		//
-		String result = NFeXMLGenerator.geraCorpoNFe(p_LBR_NotaFiscal_ID,null);
-		if (!result.equals(""))
-			return result;
-		//
-		
-		return "Processo finalizado";
+		return NFeXMLGenerator.geraCorpoNFe (nf);
 	}	//	doIt
 	
-	private Timestamp getTime(){
+	private Timestamp getTime()
+	{
 		return new Timestamp(new Date().getTime());
 	}
 	

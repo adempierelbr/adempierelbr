@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.AdempiereLBR;
@@ -71,6 +72,8 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.w3c.dom.Node;
 
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide.IdDest.Enum;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -114,6 +117,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	
 	/**	RPS sem número do documento	*/
 	public static final String RPS_TEMP = "RPS-TEMP";
+	
+	/**
+	 * 		Identificador de local de destino da operação
+	 * 
+	 * 	1=Operação interna;	
+	 * 	2=Operação interestadual;
+	 * 	3=Operação com exterior.
+	 */
+	private Enum idDest = null;
 
 	public String getProcessMsg() {
 
@@ -2303,4 +2315,86 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		return null;
 	}
 	
+	/**
+	 * 	Identificador de local de destino da operação
+	 * 
+	 * 	O local é pesquisado com base no CFOP das linhas
+	 * 
+	 * 	@return idDest code
+	 */
+	public Ide.IdDest.Enum getIdDest () throws AdempiereException
+	{
+		if (idDest == null)
+		{
+			for (MLBRNotaFiscalLine line : getLines())
+			{
+				if (line.getlbr_CFOPName() == null)
+					continue;
+				
+				else if (line.getlbr_CFOPName().startsWith("1")		//	Entrada Interna
+						|| line.getlbr_CFOPName().startsWith("5"))	//	Saida Interna
+				{
+					idDest = Ide.IdDest.X_1;
+					break;
+				}
+				else if (line.getlbr_CFOPName().startsWith("2")		//	Entrada Outro Estado Brasileiro
+						|| line.getlbr_CFOPName().startsWith("6"))	//	Saída Outro Estado Brasileiro
+				{
+					idDest = Ide.IdDest.X_2;
+					break;
+				}
+				else if (line.getlbr_CFOPName().startsWith("3")		//	Entrada Outro País
+						|| line.getlbr_CFOPName().startsWith("7"))	//	Saída Outro País
+				{
+					idDest = Ide.IdDest.X_3;
+					break;
+				}
+			}
+		}
+		if (idDest == null)
+			throw new AdempiereException ("CFOP Inválido, não foi possível determinar o Identificador de local de destino da operação (Ref. B11a)");
+		
+		return idDest;
+	}	//	getIdDest
+
+	/**
+	 * 	Is Same Pickup Address as Org Address
+	 * 	@return
+	 */
+	public boolean isSamePickUpAddr()
+	{
+		String orgAddr 		= getlbr_OrgPostal() + getlbr_OrgAddress2() + getlbr_OrgAddress4();
+		String pickUpAddr 	= getlbr_BPDeliveryPostal() + getlbr_BPDeliveryAddress2() + getlbr_BPDeliveryAddress4();
+		
+		if (orgAddr == null || pickUpAddr == null)
+			return false;
+		
+		//	Same Address
+		if (orgAddr.trim().toUpperCase().equals(pickUpAddr.trim().toUpperCase()))
+			return true;
+		
+		//	Different Address
+		return false;
+	}	//	isSamePickUpAddr
+	
+
+	/**
+	 * 	Is Same Delivery Address as Businnes Partner Address
+	 * 	@return
+	 */
+	public boolean isSameDeliveryAddr()
+	{
+		String bpAddr 		= getlbr_BPPostal() + getlbr_BPAddress2() + getlbr_BPAddress4();
+		String deliveryAddr 	= getlbr_BPDeliveryPostal() + getlbr_BPDeliveryAddress2() + getlbr_BPDeliveryAddress4();
+		
+		if (bpAddr == null || deliveryAddr == null)
+			return false;
+		
+		//	Same Address
+		if (bpAddr.trim().toUpperCase().equals(deliveryAddr.trim().toUpperCase()))
+			return true;
+		
+		//	Different Address
+		return false;
+	}	//	isSamePickUpAddr
 }	//	MLBRNotaFiscal
