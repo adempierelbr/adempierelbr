@@ -444,7 +444,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro no processo para gerar CC-e. Verifique o LOG.";
+			m_processMsg = "Erro no processo para gerar CC-e. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 	

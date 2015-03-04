@@ -422,6 +422,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		return getTaxAmt("COFINS");
 	}	//	getCOFINSAmt
 
+	/**
+	 *  Retorno o valor do II
+	 *
+	 *  @return	BigDecimal	II
+	 */
+	public BigDecimal getIIAmt()
+	{
+		return getTaxAmt("II");
+	}	//	getIIAmt
+
 	public static int getLBR_NotaFiscal_ID(String DocumentNo, boolean IsSOTrx, String trx)
 	{
 
@@ -2322,7 +2332,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 * 
 	 * 	@return idDest code
 	 */
-	public Ide.IdDest.Enum getIdDest () throws AdempiereException
+	public Ide.IdDest.Enum getIdDestinoOp () throws AdempiereException
 	{
 		if (idDest == null)
 		{

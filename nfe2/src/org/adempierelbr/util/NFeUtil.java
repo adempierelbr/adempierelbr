@@ -29,6 +29,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.beans.InutilizacaoNF;
@@ -96,6 +97,7 @@ public abstract class NFeUtil
 	 *
 	 * @return cabecalho
 	 */
+	@Deprecated
 	public static String geraCabecNFe(){
 		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
 		return cabecalho;
@@ -106,6 +108,7 @@ public abstract class NFeUtil
 	 *
 	 * return rodape
 	 */
+	@Deprecated
 	public static String geraRodapNFe(){
 		String rodape = "</NFe>";
 		return rodape;
@@ -442,6 +445,7 @@ public abstract class NFeUtil
 	 * @param xml
 	 * @return
 	 */
+	@Deprecated
 	public static String removeIndent(String xml){
 		
 		StringBuilder newXML = new StringBuilder("");
@@ -566,17 +570,31 @@ public abstract class NFeUtil
 	 * @param file
 	 * @return error or null
 	 */
-	public static String validateSize(File file){
-
-		long size = file.length(); //bytes
-		if ((size/1024) > XML_SIZE){ //check kbytes
+	@Deprecated
+	public static String validateSize (File file)
+	{
+		long size = file.length();
+		if ((size/1024) > XML_SIZE)
+		{
 			String erro = "Tamanho do Arquivo XML inválido > " + XML_SIZE + " kbytes";
 			log.severe(erro);
 			return erro;
 		}
 
 		return null;
-	} //validateSize
+	}	//	validateSize
+
+	/**
+	 * Valida tamanho do Arquivo XML
+	 * @param file
+	 * @return error or null
+	 */
+	public static void validateSize (StringBuilder file)
+	{
+		long size = file.length();
+		if ((size/1024) > XML_SIZE)
+			throw new AdempiereException ("Tamanho do Arquivo XML inválido > " + XML_SIZE + " kbytes");
+	}	//	validateSize
 	
 	/**
 	 * 		Verifica a NF e retorna o ID da mesma

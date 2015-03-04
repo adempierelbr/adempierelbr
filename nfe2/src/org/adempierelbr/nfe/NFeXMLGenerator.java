@@ -12,61 +12,104 @@
  *****************************************************************************/
 package org.adempierelbr.nfe;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.exceptions.ValidationXMLException;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
+import org.adempierelbr.model.X_LBR_NFDI;
+import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.util.ValidaXML;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
+import org.adempierelbr.wrapper.I_W_M_Product;
+import org.apache.xmlbeans.XmlOptions;
+import org.compiere.model.MAttachment;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
-import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MProduct;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
-import sun.security.action.GetLongAction;
 import br.inf.portalfiscal.nfe.NFeDocument;
 import br.inf.portalfiscal.nfe.TAmb;
+import br.inf.portalfiscal.nfe.TCfop;
 import br.inf.portalfiscal.nfe.TCodUfIBGE;
 import br.inf.portalfiscal.nfe.TEnderEmi;
 import br.inf.portalfiscal.nfe.TEndereco;
 import br.inf.portalfiscal.nfe.TFinNFe;
+import br.inf.portalfiscal.nfe.TIpi;
+import br.inf.portalfiscal.nfe.TIpi.IPINT;
+import br.inf.portalfiscal.nfe.TIpi.IPITrib;
 import br.inf.portalfiscal.nfe.TLocal;
 import br.inf.portalfiscal.nfe.TMod;
 import br.inf.portalfiscal.nfe.TNFe;
-import br.inf.portalfiscal.nfe.Tpais;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.AutXML;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Cana;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Cobr;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Compra;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Cobr.Dup;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Cobr.Fat;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Dest;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.ImpostoDevol;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.COFINS.COFINSAliq;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.COFINS.COFINSNT;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.COFINS.COFINSOutr;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.COFINS.COFINSQtde;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.COFINSST;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS00;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS10;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS20;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS30;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS40;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS51;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS60;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS70;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMS90;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN101;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN102;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN201;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN202;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN500;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN900;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.II;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PIS.PISAliq;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PIS.PISNT;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PIS.PISOutr;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PIS.PISQtde;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PISST;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI.Adi;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Emit;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide.NFref;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Pag;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.InfAdic;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.InfAdic.ObsCont;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Total.ICMSTot;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Total.ISSQNtot;
-import br.inf.portalfiscal.nfe.TNFe.InfNFe.Total.RetTrib;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Transp;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Transp.Transporta;
 import br.inf.portalfiscal.nfe.TProcEmi;
 import br.inf.portalfiscal.nfe.TUf;
 import br.inf.portalfiscal.nfe.TUfEmi;
+import br.inf.portalfiscal.nfe.Torig;
+import br.inf.portalfiscal.nfe.Tpais;
 
 /**
  * 	Gera o arquivo XML
@@ -88,8 +131,9 @@ public class NFeXMLGenerator
 	private static final String FILE_EXT      = "-nfe.xml";
 	
 	/** Versão do Layout		*/
-	private static final String VERSAO_LAYOUT	=	"2.0";
-	private static final String VERSAO_APP		=	"Kenos Adempiere NF-e 3.10.0";
+	private static final String VERSAO_XSD		=	"PL_008f";
+	private static final String VERSAO_LAYOUT	=	"3.10";
+	private static final String VERSAO_APP		=	"Kenos ERP 3.10";
 
 	/**
 	 * 		Tipo de Emissão da NF-e
@@ -154,6 +198,22 @@ public class NFeXMLGenerator
 	private static final Dest.IndIEDest.Enum IND_IE_ISENTO		= Dest.IndIEDest.X_2;
 	private static final Dest.IndIEDest.Enum IND_IE_NAO_CONTRIB = Dest.IndIEDest.X_9;
 	
+	/**	Homologação						*/
+	private static final String HOMOLOG_BPNAME	=	"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	private static final String HOMOLOG_BPCNPJ	=	"99999999000191";
+	
+	/** NCM	para serviços				*/
+	private static final String NCM_SERVICE		=	"00";
+	
+	/**	Indicação do  Total				*/
+	private static final Det.Prod.IndTot.Enum IND_TOT_NAO_COMPOE 	= Det.Prod.IndTot.X_0;
+	private static final Det.Prod.IndTot.Enum IND_TOT_COMPOE 		= Det.Prod.IndTot.X_1;
+	
+	/**	Identificador de local de destino da operação	*/
+	private static final Ide.IdDest.Enum ID_DEST_INTERNA 			= Ide.IdDest.X_1;
+	private static final Ide.IdDest.Enum ID_DEST_INTERESTADUAL 		= Ide.IdDest.X_2;
+	private static final Ide.IdDest.Enum ID_DEST_EXTERIOR 			= Ide.IdDest.X_3;
+	
 	/** Impostos						*/
 	private static final String PIS				= "PIS";
 	private static final String COFINS			= "COFINS";
@@ -183,6 +243,7 @@ public class NFeXMLGenerator
 	public static final String CST_IPI_02		= "02";
 	public static final String CST_IPI_03		= "03";
 	public static final String CST_IPI_04		= "04";
+	public static final String CST_IPI_05		= "05";
 	public static final String CST_IPI_49		= "49";
 	public static final String CST_IPI_50		= "50";
 	public static final String CST_IPI_51		= "51";
@@ -192,6 +253,9 @@ public class NFeXMLGenerator
 	public static final String CST_IPI_55		= "55";
 	public static final String CST_IPI_99		= "99";
 
+	/**	Código de Enquadramento Legal do IPI			*/
+	public static final String CENQ_IPI_999		= "999";
+	
 	/** Código de Situaçnao Tributária	- PIS e COFINS */
 	public static final String CST_PC_01		= "01";
 	public static final String CST_PC_02		= "02";
@@ -309,7 +373,7 @@ public class NFeXMLGenerator
 		
 		chaveNFE.setAAMM(nf.getDateDoc());
 		chaveNFE.setCUF(BPartnerUtil.getRegionCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
-		chaveNFE.setCNPJ(nf.getlbr_CNPJ());
+		chaveNFE.setCNPJ(toNumericStr (nf.getlbr_CNPJ()));
 		chaveNFE.setMod(nf.getlbr_NFModel());
 		chaveNFE.setSerie(nf.getlbr_NFSerie());
 		chaveNFE.setTpEmis(tpEmissao.toString());
@@ -348,13 +412,13 @@ public class NFeXMLGenerator
 		ide.setMod(TMod.Enum.forString (chaveNFE.getMod()));
 		ide.setSerie(nf.getlbr_NFSerie());
 		ide.setNNF(nf.getDocumentNo());
-		ide.setDhEmi(convertDate (nf.getDateDoc()));
+		ide.setDhEmi(normalizeTZ (nf.getDateDoc()));
 		
 		if (nf.getlbr_DateInOut() != null)
-			ide.setDhSaiEnt(convertDate (nf.getlbr_DateInOut()));
+			ide.setDhSaiEnt(normalizeTZ (nf.getlbr_DateInOut()));
 		
 		ide.setTpNF (nf.isSOTrx() ? TP_NF_SAIDA : TP_NF_ENTRADA);
-		ide.setIdDest (nf.getIdDest ());
+		ide.setIdDest (nf.getIdDestinoOp ());
 		ide.setCMunFG (BPartnerUtil.getCityCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
 		ide.setTpImp (Ide.TpImp.Enum.forString (docType.get_ValueAsString ("lbr_DANFEFormat")));
 		ide.setTpEmis (tpEmissao);
@@ -388,7 +452,7 @@ public class NFeXMLGenerator
 		ide.setVerProc (VERSAO_APP);
 		
 		//	BA. Documento Fiscal Referenciado
-		NFref nFref = ide.addNewNFref();
+//		NFref nFref = ide.addNewNFref();
 		
 		//	C. Identificação do Emitente da Nota Fiscal eletrônica
 		Emit emit = infNFe.addNewEmit();
@@ -399,18 +463,24 @@ public class NFeXMLGenerator
 		TEnderEmi enderEmit = emit.addNewEnderEmit();
 		enderEmit.setXLgr(normalize (nf.getlbr_OrgAddress1()));
 		enderEmit.setNro(normalize (nf.getlbr_OrgAddress2()));
-		enderEmit.setXCpl(normalize (nf.getlbr_OrgAddress4()));
+		
+		if (nf.getlbr_OrgAddress4() != null)
+			enderEmit.setXCpl(normalize (nf.getlbr_OrgAddress4()));
+		
 		enderEmit.setXBairro(normalize (nf.getlbr_OrgAddress3()));
 		enderEmit.setCMun(BPartnerUtil.getCityCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
 		enderEmit.setXMun(normalize (normalize (nf.getlbr_OrgCity())));
 		enderEmit.setUF(TUfEmi.Enum.forString (nf.getlbr_OrgRegion()));
-		enderEmit.setCEP(nf.getlbr_OrgPostal());
+		enderEmit.setCEP(toNumericStr (nf.getlbr_OrgPostal()));
 		enderEmit.setCPais(TEnderEmi.CPais.X_1058);	//	Emitente, somente Brasil
 		enderEmit.setXPais(TEnderEmi.XPais.BRASIL);	//	Emitente, somente Brasil
-		enderEmit.setFone(nf.getlbr_OrgPhone());
+		
+		if (nf.getlbr_OrgPhone() != null)
+			enderEmit.setFone(nf.getlbr_OrgPhone());
 		
 		//	IE
 		emit.setIE(nf.getlbr_IE());
+		emit.setCRT(Emit.CRT.X_3);
 		
 		//	D. Identificação do Fisco Emitente da NF-e
 		//		USO EXCLUSIVO DO FISCO
@@ -418,10 +488,25 @@ public class NFeXMLGenerator
 		
 		//	E. Identificação do Destinatário da Nota Fiscal eletrônica
 		Dest dest = infNFe.addNewDest();
-		dest.setCNPJ(arg0);
-		dest.setCPF(arg0);
-		dest.setIdEstrangeiro(arg0);
-		dest.setXNome(arg0);
+		
+		//	Homologação
+		if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+		{
+			dest.setCNPJ (HOMOLOG_BPCNPJ);
+			dest.setXNome (HOMOLOG_BPNAME);
+		}
+		
+		//	Produção
+		else
+		{
+			if (true) //"PF".equals(nf.getlbr_BPTypeBR()))
+				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+			else
+				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+
+//			dest.setIdEstrangeiro(arg0);
+			dest.setXNome(nf.getBPName());
+		}
 		
 		//	Endereço do destinatário
 		I_W_C_Country country = POWrapper.create(new MCountry(ctx, nf.getC_BPartner_Location().getC_Location().getC_Country_ID(), trxName), I_W_C_Country.class);
@@ -432,7 +517,10 @@ public class NFeXMLGenerator
 		TEndereco enderDest = dest.addNewEnderDest();
 		enderDest.setXLgr(normalize (nf.getlbr_BPAddress1()));
 		enderDest.setNro(normalize (nf.getlbr_BPAddress2()));
-		enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
+		
+		if (nf.getlbr_BPAddress4() != null)
+			enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
+		
 		enderDest.setXBairro(normalize (nf.getlbr_BPAddress3()));
 		
 		//	Brazil
@@ -455,7 +543,7 @@ public class NFeXMLGenerator
 						&& !nf.getlbr_BPIE().toUpperCase().contains("ISENT"))
 				{
 					dest.setIndIEDest (IND_IE_CONTRIB);
-					dest.setIE (TextUtil.toNumeric (nf.getlbr_BPIE()));
+					dest.setIE (toNumericStr (nf.getlbr_BPIE()));
 				}
 				else
 					dest.setIndIEDest (IND_IE_ISENTO);
@@ -480,10 +568,12 @@ public class NFeXMLGenerator
 			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
 		}
 		
-		enderDest.setCEP(nf.getlbr_BPPostal());
-		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode()));
+		enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
+		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
 		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
-		enderDest.setFone(nf.getlbr_OrgPhone());
+		
+		if (nf.getlbr_OrgPhone() != null)
+			enderDest.setFone(nf.getlbr_OrgPhone());
 		
 		//	F. Identificação do Local de Retirada
 		//	G. Identificação do Local de Entrega
@@ -504,13 +594,16 @@ public class NFeXMLGenerator
 		{
 			//	CNPJ ou CPF
 			if (false) //"PF".equals(nf.getlbr_BPTypeBR()))
-				retOuEntreg.setCPF(nf.getlbr_BPDeliveryCNPJ());
+				retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 			else
-				retOuEntreg.setCNPJ(nf.getlbr_BPDeliveryCNPJ());
+				retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 			//
 			retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
 			retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
-			retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
+			
+			if (nf.getlbr_BPDeliveryAddress4() != null)
+				retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
+			
 			retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
 			
 			if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
@@ -526,95 +619,715 @@ public class NFeXMLGenerator
 				retOuEntreg.setUF(TUf.Enum.forString (nf.getlbr_BPDeliveryRegion()));
 			}
 		}
+		
 		//	GA. Autorização para obter XML
-		AutXML autXML = infNFe.addNewAutXML();
+		//	AutXML autXML = infNFe.addNewAutXML(); //	CRM-52363
 		
-		//	H. Detalhamento de Produtos e Serviços da NF-e
-		Det det = infNFe.addNewDet();
-		
-		//	I. Produtos e Serviços da NF-e
-		Prod prod = det.addNewProd();
-		
-		//	I01. Produtos e Serviços / Declaração de Importação
-		DI di = prod.addNewDI();
-		
-		//	I03. Produtos e Serviços / Grupo de Exportação
-		DetExport detExport = prod.addNewDetExport();
-		
-		//	I05. Produtos e Serviços / Pedido de Compra
-		prod.setXPed("");
-		prod.setNItemPed("");
-		
-		//	I07. Produtos e Serviços / Grupo Diversos
-		prod.setNFCI("");
-		
-		/**
-		 * 	J. Produto Específico
-		 * 
-		 * 		Grupo opcional, somente um 
-		 * 	deles poderá ser informado: Veículo, Medicamentos, Armas, Combustível.
-		 * 	
-		 * 	JA. Detalhamento Específico de Veículos novos
-		 * 	K. Detalhamento Específico de Medicamento e de 
-		 * 		matérias-primas farmacêuticas
-		 * 	L. Detalhamento Específico de Armamentos
-		 * 	LA. Detalhamento Específico de Combustíveis
-		 * 	LB. Detalhamento Específico para Operação com Papel Imune
-		 */
-//		if (product.getType . equals ( Veiculo ))
-//			;
-//		else if (product.getType . equals ( Medicamento ))
-//			;
-//		....
-		
-		//	M. Tributos incidentes no Produto ou Serviço
-		Imposto imposto = det.addNewImposto();
-		
-		//	UA. Tributos Devolvidos (para o item da NF-e)
-		ImpostoDevol impostoDevol = det.addNewImpostoDevol();
-		
-		//	V. Informações adicionais (para o item da NF-e)
-//		det.setInfAdProd("");
+		//	Linhas do documento
+		for (MLBRNotaFiscalLine nfl : nf.getLines())
+		{
+			//	H. Detalhamento de Produtos e Serviços da NF-e
+			Det det = infNFe.addNewDet();	
+			det.setNItem (String.valueOf (nfl.getLine ()));
+			
+			//	I. Produtos e Serviços da NF-e
+			Prod prod = det.addNewProd();
+			prod.setCProd(nfl.getProductValue());
+			
+			//	EAN
+			String ean = nfl.getM_Product().getUPC();
+			if (ean == null)
+			{
+				prod.setCEAN("");
+				prod.setCEANTrib("");
+			}
+			else
+			{
+				prod.setCEAN(ean);
+				prod.setCEANTrib(ean);
+			}
+			
+			prod.setXProd(nfl.getProductName());
+			
+			//	Serviço
+			if (nfl.islbr_IsService())
+				prod.setNCM(NCM_SERVICE);
+			else
+				prod.setNCM (toNumericStr (nfl.getlbr_NCMName ()));
+			
+//			prod.addNVE(arg0);		//	FIXME
+//			prod.setEXTIPI(arg0);	//	FIXME
+			prod.setCFOP(TCfop.Enum.forString (toNumericStr (nfl.getlbr_CFOPName())));
+			prod.setUCom(normalize (nfl.getlbr_UOMName()));
+			prod.setQCom(normalize4  (nfl.getQty()));
+			prod.setVUnCom(normalize10  (nfl.getPrice()));
+			prod.setVProd(normalize  (nfl.getLineTotalAmt()));
+//			prod.setCEANTrib();		//	Check above (after setCEAN)
+			prod.setUTrib(normalize (nfl.getlbr_UOMName()));
+			prod.setQTrib(normalize4  (nfl.getQty()));
+			prod.setVUnTrib(normalize10  (nfl.getPrice()));
+			
+			//	Valores adicionais
+			BigDecimal freightAmt 		= nfl.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt());
+			BigDecimal insuranceAmt	 	= nfl.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt());
+			BigDecimal discountAmt 		= nfl.getDiscountAmt();
+			BigDecimal otherChargesAmt 	= nfl.getLBR_OtherChargesAmt();
+			
+			//	Frete
+			if (freightAmt != null && freightAmt.signum() == 1)
+				prod.setVFrete(normalize  (freightAmt));
+			
+			//	Seguro
+			if (insuranceAmt != null && insuranceAmt.signum() == 1)			
+				prod.setVSeg(normalize  (insuranceAmt));
+			
+			//	Desconto
+			if (discountAmt != null && discountAmt.signum() == 1)
+				prod.setVDesc(normalize  (discountAmt));
+			
+			//	Outras despesas
+			if (otherChargesAmt != null && otherChargesAmt.signum() == 1)
+				prod.setVOutro(normalize  (otherChargesAmt));
+			
+			prod.setIndTot (IND_TOT_COMPOE);	//	FIXME
+			
+			//	Operação com o Exterior
+			if (ID_DEST_EXTERIOR.equals (ide.getIdDest()))
+
+				//	I01. Produtos e Serviços / Declaração de Importação
+				if (TP_NF_ENTRADA.equals (ide.getTpNF())
+						&& nfl.get_Value ("LBR_NFDI_ID") != null)
+				{
+					DI di = prod.addNewDI();
+					
+					X_LBR_NFDI nfdi = new X_LBR_NFDI (ctx, (Integer) nfl.get_Value ("LBR_NFDI_ID"), null);
+					//
+					di.setNDI(nfdi.getlbr_DI ());
+					di.setDDI(TextUtil.timeToString (nfdi.getDateTrx(), "yyyy-MM-dd"));
+					di.setXLocDesemb(normalize (nfdi.getlbr_LocDesemb()));
+					di.setUFDesemb(TUfEmi.Enum.forString (nfdi.getlbr_BPRegion()));
+					di.setDDesemb(TextUtil.timeToString (nfdi.getlbr_DataDesemb(), "yyyy-MM-dd"));
+//					di.setTpViaTransp(arg0);	//FIXME
+//					di.setVAFRMM(arg0);			//FIXME
+//					di.setTpIntermedio(arg0);	//FIXME
+					di.setCExportador (normalize (nfdi.getlbr_CodExportador()));
+
+					Adi adi = di.addNewAdi();
+					adi.setNAdicao(nfl.get_ValueAsString("lbr_NumAdicao"));
+					adi.setNSeqAdic(nfl.get_ValueAsString("lbr_NumSeqItem"));
+					adi.setCFabricante(normalize (nfl.get_ValueAsString("Manufacturer")));
+//					adi.setVDescDI(Env.ZERO);	//TODO
+//					adi.setNDraw(arg0);			//TODO
+				}
+			
+				//	I03. Produtos e Serviços / Grupo de Exportação
+				else if (TP_NF_SAIDA.equals (ide.getTpNF())
+						&& false)	//FIXME TODO
+				{
+					DetExport detExport = prod.addNewDetExport();
+				}
+			
+			//	I05. Produtos e Serviços / Pedido de Compra
+			if (nfl.getC_InvoiceLine_ID() > 0 && nfl.getC_InvoiceLine().getC_OrderLine_ID() > 0)
+			{
+				MOrderLine orderline = new MOrderLine (Env.getCtx(), nfl.getC_InvoiceLine().getC_OrderLine_ID(), null);
+				
+				//	Preenche o pedido referenciado (xPed)
+				String xPed = orderline.getParent().getPOReference();
+				if (xPed != null && !xPed.trim().isEmpty())
+					prod.setXPed (xPed);
+
+				//	Preenche o item do pedido referenciado (nItemPed)
+				String nItemPed = orderline.get_ValueAsString("POReference");
+				if (nItemPed != null && !nItemPed.trim().isEmpty())
+					prod.setNItemPed(nItemPed);
+			}
+			
+			//	I07. Produtos e Serviços / Grupo Diversos
+			String nFCI = nfl.get_ValueAsString ("LBR_FCIValue");
+			if (nFCI != null && !nFCI.trim().isEmpty())
+				prod.setNFCI (nFCI);
+			
+			/**
+			 * 	J. Produto Específico
+			 * 
+			 * 		Grupo opcional, somente um 
+			 * 	deles poderá ser informado: Veículo, Medicamentos, Armas, Combustível.
+			 * 	
+			 * 	JA. Detalhamento Específico de Veículos novos
+			 * 	K. Detalhamento Específico de Medicamento e de 
+			 * 		matérias-primas farmacêuticas
+			 * 	L. Detalhamento Específico de Armamentos
+			 * 	LA. Detalhamento Específico de Combustíveis
+			 * 	LB. Detalhamento Específico para Operação com Papel Imune
+			 */
+//			if (product.getType . equals ( Veiculo ))
+//				;
+//			else if (product.getType . equals ( Medicamento ))
+//				;
+//			....
+			
+			//	M. Tributos incidentes no Produto ou Serviço
+			Imposto imposto = det.addNewImposto();
+			
+			//	N. ICMS Normal e ST
+			if (nfl.getICMSTax() != null)
+			{
+				X_LBR_NFLineTax icmsTax = nfl.getICMSTax();
+
+				//	ICMS ST
+				X_LBR_NFLineTax icmsSTTax = nfl.getICMSTax();
+
+				//	CST = Código de Situação Tributária
+				String taxStatus = icmsTax.getLBR_TaxStatus().getName();
+				
+				//	Product Source
+				I_W_M_Product prdct = POWrapper.create(MProduct.get(ctx, nfl.getM_Product_ID()), I_W_M_Product.class);
+				String productSource = prdct.getlbr_ProductSource();
+				
+				if (CST_ICMS_00.equals (taxStatus))
+				{
+					ICMS00 icms00 = imposto.addNewICMS().addNewICMS00();
+					icms00.setOrig(Torig.Enum.forString(productSource));
+					icms00.setCST(Det.Imposto.ICMS.ICMS00.CST.X_00);
+					icms00.setModBC(InfNFe.Det.Imposto.ICMS.ICMS00.ModBC.X_0);	//	FIXME
+					icms00.setVBC(normalize  (icmsTax.getlbr_TaxBaseAmt()));
+					icms00.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
+					icms00.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+				}
+				else if (CST_ICMS_10.equals (taxStatus))
+				{
+					if (icmsSTTax != null)
+					{
+						ICMS10 icms10 = imposto.addNewICMS().addNewICMS10();
+						icms10.setOrig(Torig.Enum.forString(productSource));
+						icms10.setCST(Det.Imposto.ICMS.ICMS10.CST.X_10);
+						icms10.setModBC(InfNFe.Det.Imposto.ICMS.ICMS10.ModBC.X_0);		//	FIXME
+						icms10.setVBC(normalize  (icmsSTTax.getlbr_TaxBaseAmt()));
+						icms10.setPICMS(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icms10.setVICMS(normalize  (icmsSTTax.getlbr_TaxAmt()));
+						icms10.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS10.ModBCST.X_4);	//	FIXME: MVA %
+						
+						//	MVA - IVA
+//						if (nfl.getMVA)	//	FIXME
+//						icms10.setPMVAST(normalize4  (nfl.getMVA, 4));
+						
+						//	Redução na BC
+						if (icmsSTTax.getlbr_TaxBase() != null 
+								&& icmsSTTax.getlbr_TaxBase().signum() == 1
+								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
+							icms10.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+					}
+				}
+				else if (CST_ICMS_20.equals (taxStatus))
+				{
+					ICMS20 icms20 = imposto.addNewICMS().addNewICMS20();
+					icms20.setOrig(Torig.Enum.forString(productSource));
+					icms20.setCST(Det.Imposto.ICMS.ICMS20.CST.X_20);
+					icms20.setModBC(InfNFe.Det.Imposto.ICMS.ICMS20.ModBC.X_0);		//	FIXME
+					icms20.setPRedBC(normalize4  (icmsTax.getlbr_TaxBase()));
+					icms20.setVBC(normalize  (icmsTax.getlbr_TaxBaseAmt()));
+					icms20.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
+					icms20.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+				}
+				else if (CST_ICMS_30.equals (taxStatus))
+				{
+					if (icmsSTTax != null)
+					{
+						ICMS30 icms30 = imposto.addNewICMS().addNewICMS30();
+						icms30.setOrig(Torig.Enum.forString(productSource));
+						icms30.setCST(Det.Imposto.ICMS.ICMS30.CST.X_30);
+						icms30.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS30.ModBCST.X_4);	//	FIXME: MVA %
+						
+						//	MVA - IVA
+//						if (nfl.getMVA)	//	FIXME
+//						icms10.setPMVAST(normalize4  (nfl.getMVA, 4));
+						
+						//	Redução na BC
+						if (icmsSTTax.getlbr_TaxBase() != null 
+								&& icmsSTTax.getlbr_TaxBase().signum() == 1
+								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
+							icms30.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+						
+						icms30.setVBCST(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxBaseAmt()));
+						icms30.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icms30.setVICMSST(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxAmt()));
+					}
+				}
+				else if (CST_ICMS_40.equals (taxStatus)
+						|| CST_ICMS_41.equals (taxStatus)
+						|| CST_ICMS_50.equals (taxStatus))
+				{
+					ICMS40 icms40 = imposto.addNewICMS().addNewICMS40();
+					icms40.setOrig(Torig.Enum.forString(productSource));
+					icms40.setCST(Det.Imposto.ICMS.ICMS40.CST.Enum.forString (taxStatus));
+				}
+				else if (CST_ICMS_51.equals (taxStatus))
+				{
+					ICMS51 icms51 = imposto.addNewICMS().addNewICMS51();
+					icms51.setOrig(Torig.Enum.forString(productSource));
+					icms51.setCST(Det.Imposto.ICMS.ICMS51.CST.X_51);
+					icms51.setModBC(InfNFe.Det.Imposto.ICMS.ICMS51.ModBC.X_0);	//	FIXME: MVA %
+				}
+				else if (CST_ICMS_60.equals (taxStatus))
+				{
+					ICMS60 icms60 = imposto.addNewICMS().addNewICMS60();
+					icms60.setOrig(Torig.Enum.forString(productSource));
+					icms60.setCST(Det.Imposto.ICMS.ICMS60.CST.X_60);
+					
+					if (icmsSTTax != null)
+					{
+						icms60.setVBCSTRet(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxBaseAmt()));
+						icms60.setVICMSSTRet(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxAmt()));
+					}
+				}
+				else if (CST_ICMS_70.equals (taxStatus))
+				{
+					if (icmsSTTax != null)
+					{
+						ICMS70 icms70 = imposto.addNewICMS().addNewICMS70();
+						icms70.setOrig(Torig.Enum.forString(productSource));
+						icms70.setCST(Det.Imposto.ICMS.ICMS70.CST.X_70);
+						icms70.setPRedBC(TextUtil.bigdecimalFormat (icmsTax.getlbr_TaxBase()));
+						icms70.setVBC(TextUtil.bigdecimalFormat (icmsTax.getlbr_TaxBaseAmt()));
+						icms70.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
+						icms70.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+						
+						//	Redução na BC
+						if (icmsSTTax.getlbr_TaxBase() != null 
+								&& icmsSTTax.getlbr_TaxBase().signum() == 1
+								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
+							icms70.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+						
+						icms70.setVBCST(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxBaseAmt()));
+						icms70.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icms70.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+					}
+				}
+				else if (CST_ICMS_90.equals (taxStatus))
+				{
+					ICMS90 icms90 = imposto.addNewICMS().addNewICMS90();
+					icms90.setOrig(Torig.Enum.forString(productSource));
+					icms90.setCST(Det.Imposto.ICMS.ICMS90.CST.X_90);
+				}
+				else if (CSOSN_101.equals (taxStatus))
+				{
+					ICMSSN101 icmssn101 = imposto.addNewICMS().addNewICMSSN101();
+					icmssn101.setOrig(Torig.Enum.forString(productSource));
+					icmssn101.setCSOSN(Det.Imposto.ICMS.ICMSSN101.CSOSN.X_101);
+					icmssn101.setPCredSN(normalize4  (icmsTax.getlbr_TaxRate()));
+					icmssn101.setVCredICMSSN(normalize  (icmsTax.getlbr_TaxAmt()));
+				}
+				else if (TextUtil.match(taxStatus, CSOSN_102, CSOSN_103, CSOSN_300, CSOSN_400))
+				{
+					ICMSSN102 icmssn102 = imposto.addNewICMS().addNewICMSSN102();
+					icmssn102.setOrig(Torig.Enum.forString(productSource));
+					icmssn102.setCSOSN(Det.Imposto.ICMS.ICMSSN102.CSOSN.Enum.forString (taxStatus));
+				}
+				else if (CSOSN_201.equals (taxStatus))
+				{
+					if (icmsSTTax != null)
+					{
+						ICMSSN201 icmssn201 = imposto.addNewICMS().addNewICMSSN201();
+						icmssn201.setOrig(Torig.Enum.forString(productSource));
+						icmssn201.setCSOSN(Det.Imposto.ICMS.ICMSSN201.CSOSN.X_201);
+						icmssn201.setModBCST(Det.Imposto.ICMS.ICMSSN201.ModBCST.X_4);
+						
+						//	Redução na BC
+						if (icmsSTTax.getlbr_TaxBase() != null 
+								&& icmsSTTax.getlbr_TaxBase().signum() == 1
+								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
+							icmssn201.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+						
+						icmssn201.setVBCST(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxBaseAmt()));
+						icmssn201.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icmssn201.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+						icmssn201.setPCredSN(normalize4  (icmsTax.getlbr_TaxRate()));
+						icmssn201.setVCredICMSSN(normalize  (icmsTax.getlbr_TaxAmt()));
+					}
+				}
+				else if (TextUtil.match(taxStatus, CSOSN_202, CSOSN_203))
+				{
+					if (icmsSTTax != null)
+					{
+						ICMSSN202 icmssn202 = imposto.addNewICMS().addNewICMSSN202();
+						icmssn202.setOrig(Torig.Enum.forString(productSource));
+						icmssn202.setCSOSN(Det.Imposto.ICMS.ICMSSN202.CSOSN.Enum.forString(taxStatus));
+						icmssn202.setModBCST(Det.Imposto.ICMS.ICMSSN202.ModBCST.X_4);
+						
+						//	Redução na BC
+						if (icmsSTTax.getlbr_TaxBase() != null 
+								&& icmsSTTax.getlbr_TaxBase().signum() == 1
+								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
+							icmssn202.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+						
+						icmssn202.setVBCST(TextUtil.bigdecimalFormat (icmsSTTax.getlbr_TaxBaseAmt()));
+						icmssn202.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icmssn202.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+					}
+				}
+				else if (CSOSN_500.equals (taxStatus))
+				{
+					ICMSSN500 icmssn500 = imposto.addNewICMS().addNewICMSSN500();
+					icmssn500.setOrig(Torig.Enum.forString(productSource));
+					icmssn500.setCSOSN(Det.Imposto.ICMS.ICMSSN500.CSOSN.X_500);
+				}
+				else if (CSOSN_900.equals (taxStatus))
+				{
+					ICMSSN900 icmssn900 = imposto.addNewICMS().addNewICMSSN900();
+					icmssn900.setOrig(Torig.Enum.forString(productSource));
+					icmssn900.setCSOSN(Det.Imposto.ICMS.ICMSSN900.CSOSN.X_900);
+				}
+			}
+			
+			//	O. Imposto sobre Produtos Industrializados
+			if (nfl.getIPITax() != null)
+			{
+				X_LBR_NFLineTax ipiTax = nfl.getIPITax();
+
+				//	CST = Código de Situação Tributária
+				String taxStatus = ipiTax.getLBR_TaxStatus().getName();
+				
+				//	IPI
+				TIpi ipi = imposto.addNewIPI();
+				ipi.setCEnq (CENQ_IPI_999);
+				
+				//	IPI Tributado
+				if (TextUtil.match (taxStatus, CST_IPI_00, CST_IPI_49, CST_IPI_50, CST_IPI_99))
+				{
+					IPITrib ipiTrib = ipi.addNewIPITrib();
+					ipiTrib.setCST(TIpi.IPITrib.CST.Enum.forString(taxStatus));
+					ipiTrib.setVBC(normalize  (ipiTax.getlbr_TaxBaseAmt()));
+					ipiTrib.setPIPI(normalize4  (ipiTax.getlbr_TaxRate()));
+					ipiTrib.setVIPI(normalize  (ipiTax.getlbr_TaxAmt()));
+				}
+				
+				//	IPI NT
+				else if (TextUtil.match (taxStatus, CST_IPI_01, CST_IPI_02, CST_IPI_03, CST_IPI_04, CST_IPI_05, 
+													CST_IPI_51, CST_IPI_52, CST_IPI_53, CST_IPI_54, CST_IPI_55))
+				{
+					IPINT ipiNT = ipi.addNewIPINT();
+					ipiNT.setCST(TIpi.IPINT.CST.Enum.forString (taxStatus));
+				}
+			}
+			
+			//	P. Imposto de Importação
+			if (nfl.getIITax() != null)
+			{
+				X_LBR_NFLineTax iiTax = nfl.getIITax();
+				//	
+				II ii = imposto.addNewII();
+				ii.setVBC (normalize  (iiTax.getlbr_TaxBaseAmt()));
+				ii.setVDespAdu(TextUtil.ZERO_STRING);
+				ii.setVII (normalize  (iiTax.getlbr_TaxAmt()));
+				ii.setVIOF(TextUtil.ZERO_STRING);
+			}
+			
+			//	Q. PIS
+			if (nfl.getPISTax() != null)
+			{
+				X_LBR_NFLineTax pisTax = nfl.getPISTax();
+
+				//	CST = Código de Situação Tributária
+				String taxStatus = pisTax.getLBR_TaxStatus().getName();
+
+				//	PIS Tributado
+				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
+				{
+					PISAliq pisAliq = imposto.addNewPIS().addNewPISAliq();
+					pisAliq.setCST(Det.Imposto.PIS.PISAliq.CST.Enum.forString (taxStatus));
+					pisAliq.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
+					pisAliq.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisAliq.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_03))
+				{
+					PISQtde pisQtde = imposto.addNewPIS().addNewPISQtde();
+					pisQtde.setCST(Det.Imposto.PIS.PISQtde.CST.X_03);
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_04, CST_PC_05, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
+				{
+					PISNT pisNT = imposto.addNewPIS().addNewPISNT();
+					pisNT.setCST(Det.Imposto.PIS.PISNT.CST.Enum.forString (taxStatus));
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_49, CST_PC_50, CST_PC_51, CST_PC_52, CST_PC_53, 
+								CST_PC_54, CST_PC_55, CST_PC_56, CST_PC_60, CST_PC_61, CST_PC_62, CST_PC_63, 
+								CST_PC_64, CST_PC_65, CST_PC_66, CST_PC_67, CST_PC_70, CST_PC_71, CST_PC_72, 
+								CST_PC_73, CST_PC_74, CST_PC_75, CST_PC_98, CST_PC_99))
+				{
+					PISOutr pisOutr = imposto.addNewPIS().addNewPISOutr();
+					pisOutr.setCST(Det.Imposto.PIS.PISOutr.CST.Enum.forString (taxStatus));
+					pisOutr.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
+					pisOutr.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisOutr.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
+				}
+				else if (false)	//	FIXME PIS ST
+				{
+					PISST pisST = imposto.addNewPISST();
+					pisST.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
+					pisST.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisST.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
+				}
+			}
+			
+			//	S. COFINS
+			X_LBR_NFLineTax cofinsTax = nfl.getCOFINSTax();
+			if (cofinsTax != null)
+			{
+				//	CST = Código de Situação Tributária
+				String taxStatus = cofinsTax.getLBR_TaxStatus().getName();
+
+				//	PIS Tributado
+				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
+				{
+					COFINSAliq cofinsAliq = imposto.addNewCOFINS().addNewCOFINSAliq();
+					cofinsAliq.setCST(Det.Imposto.COFINS.COFINSAliq.CST.Enum.forString (taxStatus));
+					cofinsAliq.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
+					cofinsAliq.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsAliq.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_03))
+				{
+					COFINSQtde cofinsQtde = imposto.addNewCOFINS().addNewCOFINSQtde();
+					cofinsQtde.setCST(Det.Imposto.COFINS.COFINSQtde.CST.X_03);
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_04, CST_PC_05, CST_PC_06, CST_PC_07, CST_PC_08, CST_PC_09))
+				{
+					COFINSNT cofinsNT = imposto.addNewCOFINS().addNewCOFINSNT();
+					cofinsNT.setCST(Det.Imposto.COFINS.COFINSNT.CST.Enum.forString (taxStatus));
+				}
+				else if (TextUtil.match (taxStatus, CST_PC_49, CST_PC_50, CST_PC_51, CST_PC_52, CST_PC_53, 
+								CST_PC_54, CST_PC_55, CST_PC_56, CST_PC_60, CST_PC_61, CST_PC_62, CST_PC_63, 
+								CST_PC_64, CST_PC_65, CST_PC_66, CST_PC_67, CST_PC_70, CST_PC_71, CST_PC_72, 
+								CST_PC_73, CST_PC_74, CST_PC_75, CST_PC_98, CST_PC_99))
+				{
+					COFINSOutr cofinsOutr = imposto.addNewCOFINS().addNewCOFINSOutr();
+					cofinsOutr.setCST(Det.Imposto.COFINS.COFINSOutr.CST.Enum.forString (taxStatus));
+					cofinsOutr.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
+					cofinsOutr.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsOutr.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
+				}
+				else if (false)	//	FIXME COFINS ST
+				{
+					COFINSST cofinsST = imposto.addNewCOFINSST();
+					cofinsST.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
+					cofinsST.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsST.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
+				}
+			}
+			
+			//	TODO 	U. ISSQN
+			
+			//	TODO	UA. Tributos Devolvidos (para o item da NF-e)
+//			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
+			
+			//	V. Informações adicionais (para o item da NF-e)
+			String nflDesc = nf.getDescription();
+			if (nflDesc != null && !nflDesc.isEmpty())
+				det.setInfAdProd (nflDesc);
+		}
 		
 		//	W. Total da NF-e
 		Total total = infNFe.addNewTotal();
 		ICMSTot icmsTot = total.addNewICMSTot();
+		icmsTot.setVBC(normalize (nf.getICMSBase()));
+		icmsTot.setVICMS(normalize (nf.getICMSAmt()));
+		icmsTot.setVICMSDeson(TextUtil.ZERO_STRING);
+		icmsTot.setVBCST(normalize (nf.getICMSSTBase()));
+		icmsTot.setVST(normalize (nf.getICMSSTAmt()));
+		icmsTot.setVProd(normalize (nf.getTotalLines()));
+		icmsTot.setVFrete(normalize (nf.getFreightAmt()));
+		icmsTot.setVSeg(normalize (nf.getlbr_InsuranceAmt()));
+		icmsTot.setVDesc(normalize (nf.getDiscountAmt()));
+		icmsTot.setVII(normalize (nf.getIIAmt()));
+		icmsTot.setVIPI(normalize (nf.getIPIAmt()));
+		icmsTot.setVPIS(normalize (nf.getPISAmt()));
+		icmsTot.setVCOFINS(normalize (nf.getCOFINSAmt()));
+		icmsTot.setVOutro(normalize (nf.getLBR_OtherChargesAmt()));
+		icmsTot.setVNF(normalize (nf.getGrandTotal()));
+//		icmsTot.setVTotTrib(arg0);
 		
 		//	W01. Total da NF-e / ISSQN
-		ISSQNtot issqNtot = total.addNewISSQNtot();
+//		ISSQNtot issqNtot = total.addNewISSQNtot();
 		
 		//	W02. Total da NF-e / Retenção de Tributos
-		RetTrib retTrib = total.addNewRetTrib();
+//		RetTrib retTrib = total.addNewRetTrib();
 		
 		//	X. Informações do Transporte da NF-e
 		Transp transp = infNFe.addNewTransp();
+		//
+		if (nf.getLBR_FreightCostRule() != null)
+			transp.setModFrete (Transp.ModFrete.Enum.forString (nf.getLBR_FreightCostRule()));
+		else
+			transp.setModFrete(Transp.ModFrete.X_0);
 		
-		//	Y. Dados da Cobrança
-		Cobr cobr = infNFe.addNewCobr();
+		if (nf.getM_Shipper_ID() > 0)
+		{
+			Transporta transporta = transp.addNewTransporta();
+			transporta.setCNPJ(toNumericStr (nf.getlbr_BPShipperCNPJ()));
+			transporta.setXNome(normalize (nf.getlbr_BPShipperName()));
+			
+			if (nf.getlbr_BPShipperIE() != null)
+				transporta.setIE (normalize (nf.getlbr_BPShipperIE()));
+			
+			//	Endereço opcional
+			transporta.setXEnder(nf.getlbr_BPShipperAddress1());
+			transporta.setXMun(nf.getlbr_BPShipperCity());
+			transporta.setUF(TUf.Enum.forString(nf.getlbr_BPShipperRegion()));
+		}
+
+		//	Dados da cobrança
+		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
+		{
+			//	Y. Dados da Cobrança
+			Cobr cobr = infNFe.addNewCobr();
+			
+			BigDecimal discountAmt = nf.getDiscountAmt();
+			
+			if (discountAmt == null || discountAmt.signum() == -1)
+				discountAmt = Env.ZERO;
+			
+			//	Fatura
+			Fat fat = cobr.addNewFat();
+			String fatNo = nf.getC_Invoice().getDocumentNo();
+			
+			fat.setNFat (fatNo); 				// 	Codigo NFE
+			fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
+			
+			if (discountAmt.signum() == 1)
+				fat.setVDesc (normalize (discountAmt));
+			
+			fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
+
+			//	Contador de duplicata
+			int dupCounter = 1;
+			
+		    //	Adiciona as duplicatas da fatura
+		    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+		    {
+		    	Dup dup = cobr.addNewDup();
+		    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+		    	dup.setDVenc(normalize (openItem.getDueDate()));
+		    	dup.setVDup(normalize (openItem.getGrandTotal()));
+			}
+		}
 		
 		//	YA. Formas de Pagamento
-		Pag pag = infNFe.addNewPag();
+//		Pag pag = infNFe.addNewPag();	//	FIXME NFC-e
 		
 		//	Z. Informações Adicionais da NF-e
-		infNFe.addNewInfAdic();
+		InfAdic infAdic = infNFe.addNewInfAdic();
+
+		String descriptionNF = nf.getDescription();
+		if (descriptionNF != null && !descriptionNF.isEmpty())
+			infAdic.setInfCpl(normalize (descriptionNF));
+		
+		ObsCont obsCont = infAdic.addNewObsCont();
+		obsCont.setXCampo("site-developer");
+		obsCont.setXTexto("www.kenos.com.br");
 		
 		//	ZA. Informações de Comércio Exterior
-		Exporta exporta = infNFe.addNewExporta();
+//		Exporta exporta = infNFe.addNewExporta();
 		
 		//	ZB. Informações de Compras
-		Compra compra = infNFe.addNewCompra();
+//		Compra compra = infNFe.addNewCompra();
 		
 		//	ZC. Informações do Registro de Aquisição de Cana
-		Cana cana = infNFe.addNewCana();
+//		Cana cana = infNFe.addNewCana();
 		
-		//	ZZ. Informações da Assinatura Digital
+		//	Remove Namespace
+		Map<String, String> nsMap = new HashMap<String, String>();
+//		nsMap.put("", "http://www.portalfiscal.inf.br/nfe");
+//		nsMap.put("", "http://www.w3.org/2001/XMLSchema-instance");
 		
+		XmlOptions xmlOptions = new XmlOptions();
+		xmlOptions.setUseDefaultNamespace();
+		xmlOptions.setSaveImplicitNamespaces(nsMap);
+		
+		//	XML
+		StringBuilder xmlNFe = new StringBuilder (document.xmlText(xmlOptions));
+		String nfeID = infNFe.getId().substring(3);
+		
+		try
+		{
+			log.fine ("Assinando NF-e");
+			
+			//	ZZ. Informações da Assinatura Digital
+			xmlNFe = AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
+			
+			log.fine ("Validando NF-e");
+			NFeUtil.validateSize (xmlNFe);
+			ValidaXML.validaDocEx (xmlNFe.toString(), VERSAO_XSD + File.separator + ValidaXML.DOC_NFE + VERSAO_LAYOUT);
+		}
+		catch (ValidationXMLException e)
+		{
+			return "@Error@ Falha durante a validação do arquivo via XSD " + e.getMessage();
+		}
+		catch (Exception e)
+		{
+			return "@Error@ Falha durante a assinatura do arquivo " + e.getMessage();
+		}
+		
+		//	Grava ID
+		nf.setlbr_NFeID(nfeID);
+		nf.setProcessed(true);
+		nf.save();
+		
+		//	Anexa o XML na NF
+		MAttachment attachNFe = nf.createAttachment();
+		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes());
+		attachNFe.save();
 		
 		return "@Success@";
 	}	//	geraCorpoNFe
+
+	/**
+	 * 	Converts BD to String, with 2 decimals (fixed)
+	 * 
+	 * 	E.g. 	10.12000 	->  10.12
+	 * 			100.00		-> 100.00
+	 * 			100.1234	-> 100.12
+	 * 			40.789		->  40.79
+	 * @param value
+	 * @return
+	 */
+	private static String normalize (BigDecimal value)
+	{
+		return TextUtil.bigdecimalToString (value);
+	}	//	normalize
+
+	/**
+	 * 	Converts BD to String, with up to 4 decimals,
+	 * 		with no trailing zeroes
+	 * 
+	 * 	E.g. 	10.12000 	->  10.12
+	 * 			100.00		-> 100
+	 * 			100.12345	-> 100.1235
+	 * @param value
+	 * @return
+	 */
+	private static String normalize4 (BigDecimal value)
+	{
+		return TextUtil.bdToStringNoTrail (value, 4);
+	}	//	normalize4
 	
 	/**
-	 * 	Normalize
+	 * 	Converts BD to String, with up to 10 decimals,
+	 * 		with no trailing zeroes.
+	 * 
+	 * 	E.g. 	10.12000 	->  10.12
+	 * 			100.00		-> 100
+	 * 			100.12345	-> 100.12345
+	 * @param value
+	 * @return
+	 */
+	private static String normalize10 (BigDecimal value)
+	{
+		return TextUtil.bdToStringNoTrail  (value, 10);
+	}	//	normalize10
+	
+	/**
+	 * 	Normalize to XML standards
 	 * 
 	 * 	@param text
 	 * 	@return
@@ -624,13 +1337,24 @@ public class NFeXMLGenerator
 		if (text == null || text.isEmpty())
 			return text;
 		//
-		text = text.replaceAll ("<", "&lt;");
-		text = text.replaceAll (">", "&gt;");
-		text = text.replaceAll ("&", "&amp;");
-		text = text.replaceAll ("\"", "&quot;");
-		text = text.replaceAll ("'", "&#39;");
+//		text = text.replaceAll ("<", "&lt;");
+//		text = text.replaceAll (">", "&gt;");
+//		text = text.replaceAll ("&", "&amp;");
+//		text = text.replaceAll ("\"", "&quot;");
+//		text = text.replaceAll ("'", "&#39;");
 		//
 		return text.trim();
+	}	//	normalize
+	
+	/**
+	 * 	Convert Timestamp to String with pattern yyyy-MM-dd
+	 * 
+	 *	@param ts
+	 * 	@return
+	 */
+	private static String normalize (Timestamp ts)
+	{
+		return TextUtil.timeToString (ts,"yyyy-MM-dd");
 	}	//	normalize
 	
 	/**
@@ -638,9 +1362,14 @@ public class NFeXMLGenerator
 	 * 	@param ts
 	 * 	@return
 	 */
-	private static String convertDate (Timestamp ts)
+	private static String normalizeTZ (Timestamp ts)
 	{
-		TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssZ");
-		return "";
+		StringBuffer timeStr = new StringBuffer (TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssZ"));
+		return timeStr.insert (timeStr.length() - 2, ':').toString();
 	}	//	convertDate
+	
+	private static String toNumericStr (String value)
+	{
+		return TextUtil.toNumeric(value);
+	}
 }	//	NFeXMLGenerator

@@ -338,6 +338,36 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}	//	getIPITax
 
 	/**
+	 *  Retorno a LBR_NFLineTax do II
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getIITax()
+	{
+		return getTax("II");
+	}	//	getIITax
+
+	/**
+	 *  Retorno a LBR_NFLineTax do PIS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getPISTax()
+	{
+		return getTax("PIS");
+	}	//	getPISTax
+
+	/**
+	 *  Retorno a LBR_NFLineTax do COFINS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getCOFINSTax()
+	{
+		return getTax("COFINS");
+	}	//	getCOFINSTax
+
+	/**
 	 *  Retorno o valor do IPI
 	 *
 	 *  @return	BigDecimal	Valor IPI

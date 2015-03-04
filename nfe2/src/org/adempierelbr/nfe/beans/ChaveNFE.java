@@ -55,7 +55,7 @@ public class ChaveNFE
 	public String getDigito ()
 	{
 		if (digito == null || digito.isEmpty())
-			gerarDigito();
+			digito = Integer.toString (gerarDigito());
 		//
 		return digito;
 	}	//	getDigito
