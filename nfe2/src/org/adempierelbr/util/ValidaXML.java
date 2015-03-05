@@ -210,7 +210,7 @@ public class ValidaXML
 	@Deprecated
 	public static String validaRetInutilizacaoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retInutNFe_v2.00.xsd");
-	}	
+	}
 }
 
 /**

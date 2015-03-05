@@ -12,16 +12,17 @@
  *****************************************************************************/
 package org.adempierelbr.nfe;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.exceptions.ValidationXMLException;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
@@ -33,11 +34,12 @@ import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
-import org.adempierelbr.util.ValidaXML;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
 import org.adempierelbr.wrapper.I_W_M_Product;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
+import org.apache.xmlbeans.XmlValidationError;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
@@ -322,21 +324,21 @@ public class NFeXMLGenerator
 	private static final String ENQ_IPI_999	= "999";
 
 	/**
-	 * Gera o corpo da NF
+	 * 	Gera o corpo da NF
 	 * 
 	 * @param ctx Context
 	 * @param LBR_NotaFiscal_ID
 	 * @param trxName Transação
 	 * @return
 	 */
-	public static String geraCorpoNFe (Properties ctx, int LBR_NotaFiscal_ID, String trxName) throws Exception
+	public static String generate (Properties ctx, int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		if (ctx == null || LBR_NotaFiscal_ID <= 0)
 			return "@Error@ - Invalid context";
 		
 		//	Gera o XML
-		return geraCorpoNFe (new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName));
-	}	//	geraCorpoNFe
+		return generate (new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName));
+	}	//	generate
 	
 	/**
 	 * Gera o corpo da NF
@@ -345,7 +347,7 @@ public class NFeXMLGenerator
 	 * @return Success or Error message
 	 * @throws Exception
 	 */
-	public static String geraCorpoNFe (MLBRNotaFiscal nf) throws Exception
+	public static String generate (MLBRNotaFiscal nf) throws Exception
 	{
 		log.finer ("init");		
 		
@@ -480,7 +482,7 @@ public class NFeXMLGenerator
 		
 		//	IE
 		emit.setIE(nf.getlbr_IE());
-		emit.setCRT(Emit.CRT.X_3);
+		emit.setCRT(Emit.CRT.X_3);	//	FIXME
 		
 		//	D. Identificação do Fisco Emitente da NF-e
 		//		USO EXCLUSIVO DO FISCO
@@ -1242,7 +1244,6 @@ public class NFeXMLGenerator
 		
 		XmlOptions xmlOptions = new XmlOptions();
 		xmlOptions.setUseDefaultNamespace();
-		xmlOptions.setSaveImplicitNamespaces(nsMap);
 		
 		//	XML
 		StringBuilder xmlNFe = new StringBuilder (document.xmlText(xmlOptions));
@@ -1256,15 +1257,11 @@ public class NFeXMLGenerator
 			xmlNFe = AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
 			
 			log.fine ("Validando NF-e");
-			NFeUtil.validateSize (xmlNFe);
-			ValidaXML.validaDocEx (xmlNFe.toString(), VERSAO_XSD + File.separator + ValidaXML.DOC_NFE + VERSAO_LAYOUT);
-		}
-		catch (ValidationXMLException e)
-		{
-			return "@Error@ Falha durante a validação do arquivo via XSD " + e.getMessage();
+			validate (xmlNFe);
 		}
 		catch (Exception e)
 		{
+			log.severe (e.getMessage());
 			return "@Error@ Falha durante a assinatura do arquivo " + e.getMessage();
 		}
 		
@@ -1274,12 +1271,15 @@ public class NFeXMLGenerator
 		nf.save();
 		
 		//	Anexa o XML na NF
+		if (nf.getAttachment (true) != null)
+			nf.getAttachment ().delete (true);
+		
 		MAttachment attachNFe = nf.createAttachment();
 		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes());
 		attachNFe.save();
 		
 		return "@Success@";
-	}	//	geraCorpoNFe
+	}	//	generate
 
 	/**
 	 * 	Converts BD to String, with 2 decimals (fixed)
@@ -1372,4 +1372,51 @@ public class NFeXMLGenerator
 	{
 		return TextUtil.toNumeric(value);
 	}
+	
+	/**
+	 * 	Validate
+	 * 
+	 * @param xmlNFe
+	 * @throws XmlException
+	 */
+	private static void validate (StringBuilder xmlNFe) throws XmlException
+	{
+		//	Validar o tamanho do arquivo
+		NFeUtil.validateSize (xmlNFe);
+
+		// 	Set up the validation error listener.
+		List<XmlValidationError> validationErrors = new ArrayList<XmlValidationError>();
+		XmlOptions xmlOptions = new XmlOptions();
+		xmlOptions.setErrorListener(validationErrors);
+		
+		NFeDocument nfeDocument = NFeDocument.Factory.parse (xmlNFe.toString());
+
+		// 	During validation, errors are added to the ArrayList for
+		// 		retrieval and printing by the printErrors method.
+		boolean isValid = nfeDocument.validate (xmlOptions);
+		
+		// 	Print the errors if the XML is invalid.
+		if (!isValid)
+		{
+			//	Result
+			String result = "";
+			int counter = 1;
+			
+			Iterator<XmlValidationError> iter = validationErrors.iterator();
+			while (iter.hasNext())
+			{
+				//	Exemplo : [1] Erro XYZ
+				result += "[" + counter++ + "] " + iter.next() + "\n";
+			}
+			
+			//	Clean result log
+			result = result.replace ("error: cvc-complex-type.2.4c: ", "");
+			result = result.replace ("@http://www.w3.org/2000/09/xmldsig#", "");
+			result = result.replace ("@http://www.portalfiscal.inf.br/nfe", "");
+			result = result.replace ("'", "");
+			
+			//	Errors
+			throw new AdempiereException (result.toString());
+		}
+	}	//	validate
 }	//	NFeXMLGenerator

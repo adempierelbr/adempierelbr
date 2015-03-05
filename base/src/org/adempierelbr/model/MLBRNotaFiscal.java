@@ -1311,7 +1311,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				//
 				else if (model.equals("55") && 
 						MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-					NFeXMLGenerator.geraCorpoNFe(getLBR_NotaFiscal_ID(), get_TrxName());
+					NFeXMLGenerator.generate (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
 			}
 		} 
 		catch(Exception ex) 
