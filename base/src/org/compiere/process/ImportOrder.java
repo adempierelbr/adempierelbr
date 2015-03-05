@@ -21,9 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempierelbr.model.MLBRCFOP;
 import org.adempierelbr.model.MLBRDI;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.MLBRTaxLine;
@@ -32,9 +32,6 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MPriceList;
-import org.compiere.model.MPriceListVersion;
-import org.compiere.model.MProductPrice;
 import org.compiere.model.MUser;
 import org.compiere.model.X_I_Order;
 import org.compiere.util.DB;
@@ -499,6 +496,15 @@ public class ImportOrder extends SvrProcess
 		if (no != 0)
 			log.warning ("Invalid Tax=" + no);
 
+		//	INSERT Prices
+		sql = new StringBuffer ("INSERT INTO M_ProductPrice "
+				+ "SELECT M_PriceList_Version_ID, M_Product_ID, o.AD_Client_ID, 0, 'Y', now(), 100, now(), "
+				+ "100, o.PriceActual, o.PriceActual, o.PriceActual "
+				+ "FROM M_PriceList_Version plv, I_Order o "
+				+ "WHERE plv.M_PriceList_ID=o.M_PriceList_ID AND o.I_IsImported<>'Y' "
+				+ "AND NOT EXISTS (SELECT '1' FROM M_ProductPrice pp WHERE pp.M_Product_ID=o.M_Product_ID AND pp.M_PriceList_Version_ID=plv.M_PriceList_Version_ID)");
+		no = DB.executeUpdate(sql.toString(), get_TrxName());
+		
 		commitEx();
 		
 		//	-- New BPartner ---------------------------------------------------
@@ -783,10 +789,11 @@ public class ImportOrder extends SvrProcess
 				line.set_CustomColumn("lbr_InsuranceAmt", imp.get_Value("lbr_InsuranceAmt"));
 				line.set_CustomColumn("LBR_OtherChargesAmt", imp.get_Value("LBR_OtherChargesAmt"));
 				
-				//	Price List
-				setPriceList(line);
+				//	CFOP
+				MLBRCFOP cfop = MLBRCFOP.getCFOP (getCtx(), imp.get_ValueAsString("lbr_CFOPName"), get_TrxName());
 				
-				MProductPrice.get(line.getCtx(), 0, line.getM_Product_ID(), line.get_TrxName());
+				if (cfop != null)
+					line.set_CustomColumn("LBR_CFOP_ID", cfop.getLBR_CFOP_ID());
 				
 				line.save();
 				imp.setC_OrderLine_ID(line.getC_OrderLine_ID());
@@ -878,26 +885,4 @@ public class ImportOrder extends SvrProcess
 		ol.set_CustomColumn("LBR_DI_ID", di.getLBR_DI_ID());
 		ol.set_CustomColumn("LBR_ADILine_ID", LBR_ADILine_ID);
 	}	//	setDI
-
-	/**
-	 * 	Include product on price list
-	 * 	@param ol
-	 */
-	private void setPriceList (MOrderLine ol)
-	{
-		MOrder order 	= ol.getParent();
-		Properties ctx 	= ol.getCtx();
-		String trxName 	= ol.get_TrxName();
-		//
-		MPriceList pl = new MPriceList (ctx, order.getM_PriceList_ID(), trxName);
-		MPriceListVersion version = pl.getPriceListVersion(order.getDateOrdered());
-		//
-		MProductPrice price = MProductPrice.get(ctx, version.getM_PriceList_Version_ID(), ol.getM_Product_ID(), trxName);
-		if (price == null)
-		{
-			price = new MProductPrice(ctx, version.getM_PriceList_Version_ID(), ol.getM_Product_ID(), null);
-			price.setPrices(ol.getPriceActual(), ol.getPriceActual(), ol.getPriceActual());
-			price.save();
-		}
-	}	//	setPriceList
 }	//	ImportOrder
