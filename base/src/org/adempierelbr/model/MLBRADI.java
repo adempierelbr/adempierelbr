@@ -52,6 +52,12 @@ public class MLBRADI extends X_LBR_ADI
 		super(ctx, ID, trx);	
 	}	//	MLBRADI
 	
+	public MLBRADI (MLBRDI di)
+	{
+		super(di.getCtx(), 0, di.get_TrxName());
+		setLBR_DI_ID(di.getLBR_DI_ID());
+	}	//	MLBRADI
+	
 	/**
 	 *  Load Constructor
 	 *  @param ctx context
@@ -123,8 +129,20 @@ public class MLBRADI extends X_LBR_ADI
 	 */
 	public MLBRADILine[] getLines ()
 	{
-		String whereClause = COLUMNNAME_LBR_ADI_ID+"=?"; 
-		List<MLBRADILine> list = new Query(Env.getCtx(), MLBRADILine.Table_Name, whereClause, null)
+		return getLines (null);
+	}
+	
+	/**
+	 * 	Get Lines
+	 * 	@return
+	 */
+	public MLBRADILine[] getLines (String whereClause)
+	{
+		if (whereClause == null)
+			whereClause = " TRUE ";
+		
+		whereClause += " AND " + COLUMNNAME_LBR_ADI_ID+"=?"; 
+		List<MLBRADILine> list = new Query(Env.getCtx(), MLBRADILine.Table_Name, whereClause, get_TrxName())
 			.setParameters(new Object[]{getLBR_ADI_ID()})
 			.list();
 		//

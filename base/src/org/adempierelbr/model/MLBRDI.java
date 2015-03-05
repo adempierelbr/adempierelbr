@@ -56,6 +56,11 @@ public class MLBRDI extends X_LBR_DI
 		super(ctx, rs, trxName);
 	}	//	MLBRDI
 	
+	public static MLBRDI get (Properties ctx, String noDI, String trxName)
+	{
+		return new Query (ctx, Table_Name, "DocumentNo=?", trxName).setParameters(noDI).setClient_ID().first();
+	}	//	get
+	
 	/**
 	 * 	Count
 	 * 	@return count
@@ -86,11 +91,64 @@ public class MLBRDI extends X_LBR_DI
 	 */
 	public MLBRADI[] getLines ()
 	{
-		String whereClause = COLUMNNAME_LBR_DI_ID+"=?"; 
-		List<MLBRADI> list = new Query(Env.getCtx(), MLBRADI.Table_Name, whereClause, null)
+		return getLines (null);
+	}	//	getLines
+	
+	/**
+	 * 	Get Lines
+	 * 	@return
+	 */
+	public MLBRADI[] getLines (String whereClause)
+	{
+		if (whereClause == null)
+			whereClause = " TRUE ";
+		
+		whereClause += " AND " + COLUMNNAME_LBR_DI_ID+"=?"; 
+		List<MLBRADI> list = new Query(Env.getCtx(), MLBRADI.Table_Name, whereClause, get_TrxName())
 			.setParameters(new Object[]{getLBR_DI_ID()})
 			.list();
 		//
 		return list.toArray(new MLBRADI[list.size()]);
 	}	//	getLines
+	
+	/**
+	 * 	Get DI Addition line
+	 * 
+	 * @param noAdi
+	 * @param M_Product_ID
+	 * @return
+	 */
+	public int getLBR_ADILine_ID (String noAdi, int M_Product_ID)
+	{
+		MLBRADI adi = null;
+		MLBRADILine adl = null;
+		
+		for (MLBRADI current : getLines("SeqNo='" + noAdi + "'"))
+		{
+			adi = current;
+			break;
+		}
+		
+		if (adi == null)
+		{
+			adi = new MLBRADI (this);
+			adi.setSeqNo(Integer.parseInt(noAdi));
+			adi.save();
+		}
+		
+		for (MLBRADILine current : adi.getLines("M_Product_ID=" + M_Product_ID))
+		{
+			adl = current;
+			break;
+		}
+		
+		if (adl == null)
+		{
+			adl = new MLBRADILine (adi);
+			adl.setM_Product_ID(M_Product_ID);
+			adl.save();
+		}
+
+		return adl.getLBR_ADILine_ID();
+	}
 }	//	MLBRDI

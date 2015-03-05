@@ -394,6 +394,33 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//  Outras Despesas Acessórias
 		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
 		
+		if (iLineW.getLBR_ADILine_ID() > 0)
+		{
+			MLBRADILine adil = new MLBRADILine (getCtx(), iLineW.getLBR_ADILine_ID(), get_TrxName());
+			MLBRDI di = adil.getParent().getParent();
+			//
+			X_LBR_NFDI nfdi = new Query (getCtx(), X_LBR_NFDI.Table_Name, "LBR_NotaFiscal_ID=? AND LBR_DI=?", get_TrxName())
+				.setParameters(getLBR_NotaFiscal_ID(), TextUtil.toNumeric(di.getDocumentNo())).first();
+			
+			if (nfdi == null)
+			{
+				nfdi = new X_LBR_NFDI (getCtx(), 0, get_TrxName());
+				nfdi.setLBR_NotaFiscal_ID(getLBR_NotaFiscal_ID());
+				nfdi.setlbr_DI(TextUtil.toNumeric (di.getDocumentNo()));
+				nfdi.setDateTrx(di.getDateTrx());
+				nfdi.setlbr_DataDesemb(di.getDateDoc());
+				nfdi.setlbr_LocDesemb(di.getlbr_CustomSite());
+				if (di.getC_Region_ID() > 0)
+					nfdi.setlbr_BPRegion(di.getC_Region().getName());
+				nfdi.setlbr_CodExportador(di.getBPartnerValue());
+				nfdi.save();
+			}
+			setLBR_NFDI_ID(nfdi.getLBR_NFDI_ID());
+			setManufacturer(di.getBPartnerValue());
+			setlbr_NumAdicao(adil.getParent().getSeqNo());
+			setlbr_NumSeqItem(adil.getSeqNo());
+		}
+		
 		//	Valores
 		setQty(iLine.getQtyEntered());
 		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList());
@@ -456,6 +483,33 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			
 		    //  Outras Despesas Acessórias
 			setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());
+			
+			if (oLineW.getLBR_ADILine_ID() > 0)
+			{
+				MLBRADILine adil = new MLBRADILine (getCtx(), oLineW.getLBR_ADILine_ID(), get_TrxName());
+				MLBRDI di = adil.getParent().getParent();
+				//
+				X_LBR_NFDI nfdi = new Query (getCtx(), X_LBR_NFDI.Table_Name, "LBR_NotaFiscal_ID=? AND LBR_DI=?", get_TrxName())
+					.setParameters(getLBR_NotaFiscal_ID(), di.getDocumentNo()).first();
+				
+				if (nfdi == null)
+				{
+					nfdi = new X_LBR_NFDI (getCtx(), 0, get_TrxName());
+					nfdi.setLBR_NotaFiscal_ID(getLBR_NotaFiscal_ID());
+					nfdi.setlbr_DI(di.getDocumentNo());
+					nfdi.setDateTrx(di.getDateTrx());
+					nfdi.setlbr_DataDesemb(di.getDateDoc());
+					nfdi.setlbr_LocDesemb(di.getlbr_CustomSite());
+					if (di.getC_Region_ID() > 0)
+						nfdi.setlbr_BPRegion(di.getC_Region().getName());
+					nfdi.setlbr_CodExportador(di.getBPartnerValue());
+					nfdi.save();
+				}
+				setLBR_NFDI_ID(nfdi.getLBR_NFDI_ID());
+				setManufacturer(di.getBPartnerValue());
+				setlbr_NumAdicao(adil.getParent().getSeqNo());
+				setlbr_NumSeqItem(adil.getSeqNo());
+			}
 		}
 	}	//	setOrderLine
 

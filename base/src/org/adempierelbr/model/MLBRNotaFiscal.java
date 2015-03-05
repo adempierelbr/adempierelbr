@@ -1839,6 +1839,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		{
 			nfl.deleteEx(true);
 		}
+		DB.executeUpdate ("DELETE LBR_NFDI WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
 	}	//	clearAmounts
 	
 	/**
