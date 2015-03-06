@@ -98,6 +98,8 @@ import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Imposto.PISST;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI.Adi;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
+import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Emit;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
@@ -501,12 +503,12 @@ public class NFeXMLGenerator
 		//	Produção
 		else
 		{
-			if (true) //"PF".equals(nf.getlbr_BPTypeBR()))
-				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			else
-				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+//			if (false) //"PF".equals(nf.getlbr_BPTypeBR()))
+//				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+//			else
+//				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 
-//			dest.setIdEstrangeiro(arg0);
+			dest.setIdEstrangeiro("");
 			dest.setXNome(nf.getBPName());
 		}
 		
@@ -531,6 +533,7 @@ public class NFeXMLGenerator
 			enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
 			enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
 			enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
+			enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
 
 			/**
 			 * 	Nota 1: No caso de NFC-e informar indIEDest=9 e não
@@ -570,7 +573,6 @@ public class NFeXMLGenerator
 			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
 		}
 		
-		enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
 		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
 		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
 		
@@ -645,11 +647,11 @@ public class NFeXMLGenerator
 			}
 			else
 			{
-				prod.setCEAN(ean);
-				prod.setCEANTrib(ean);
+				prod.setCEAN(toNumericStr (ean));
+				prod.setCEANTrib(toNumericStr (ean));
 			}
 			
-			prod.setXProd(nfl.getProductName());
+			prod.setXProd(normalize (nfl.getProductName()));
 			
 			//	Serviço
 			if (nfl.islbr_IsService())
@@ -709,9 +711,9 @@ public class NFeXMLGenerator
 					di.setXLocDesemb(normalize (nfdi.getlbr_LocDesemb()));
 					di.setUFDesemb(TUfEmi.Enum.forString (nfdi.getlbr_BPRegion()));
 					di.setDDesemb(TextUtil.timeToString (nfdi.getlbr_DataDesemb(), "yyyy-MM-dd"));
-//					di.setTpViaTransp(arg0);	//FIXME
-//					di.setVAFRMM(arg0);			//FIXME
-//					di.setTpIntermedio(arg0);	//FIXME
+					di.setTpViaTransp(TpViaTransp.X_1);		//FIXME
+//					di.setVAFRMM(arg0);						//FIXME
+					di.setTpIntermedio(TpIntermedio.X_1);	//FIXME
 					di.setCExportador (normalize (nfdi.getlbr_CodExportador()));
 
 					Adi adi = di.addNewAdi();
@@ -1262,7 +1264,7 @@ public class NFeXMLGenerator
 		catch (Exception e)
 		{
 			log.severe (e.getMessage());
-			return "@Error@ Falha durante a assinatura do arquivo " + e.getMessage();
+			return "@Error@ " + e.getMessage();
 		}
 		
 		//	Grava ID
@@ -1308,7 +1310,8 @@ public class NFeXMLGenerator
 	 */
 	private static String normalize4 (BigDecimal value)
 	{
-		return TextUtil.bdToStringNoTrail (value, 4);
+		return TextUtil.bigdecimalToString (value);
+		//return TextUtil.bdToStringNoTrail (value, 4);
 	}	//	normalize4
 	
 	/**
@@ -1406,14 +1409,20 @@ public class NFeXMLGenerator
 			while (iter.hasNext())
 			{
 				//	Exemplo : [1] Erro XYZ
-				result += "[" + counter++ + "] " + iter.next() + "\n";
+				String msg = iter.next().toString();
+
+				msg = msg.substring(1 + msg.indexOf(":"));
+				msg = msg.substring(1 + msg.indexOf(":"));
+				
+				result += "[" + counter++ + "] " + msg + "\n";
 			}
 			
 			//	Clean result log
-			result = result.replace ("error: cvc-complex-type.2.4c: ", "");
 			result = result.replace ("@http://www.w3.org/2000/09/xmldsig#", "");
 			result = result.replace ("@http://www.portalfiscal.inf.br/nfe", "");
 			result = result.replace ("'", "");
+			
+			log.fine (xmlNFe.toString());
 			
 			//	Errors
 			throw new AdempiereException (result.toString());
