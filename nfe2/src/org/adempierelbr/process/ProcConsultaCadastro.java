@@ -12,19 +12,11 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
-import java.io.StringReader;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import org.adempierelbr.model.MLBRDigitalCertificate;
-import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.NFeUtil;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
@@ -32,10 +24,6 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
-import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
 
 /**
  * 	Processo para consultar o cadastro do contribuinte
@@ -110,65 +98,65 @@ public class ProcConsultaCadastro extends SvrProcess
 
 		try
 		{
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpRegion,bpIE,bpCNPJ)));
-
-			CadConsultaCadastro2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.CADCONSULTACADASTRO, "1", NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
-			CadConsultaCadastro2Stub.ConsultaCadastro2 dadosMsg = CadConsultaCadastro2Stub.ConsultaCadastro2.Factory.parse(dadosXML);
-			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
-			CadConsultaCadastro2Stub stub = new CadConsultaCadastro2Stub();
-
-			String respStatus = stub.consultaCadastro2 (dadosMsg,cabecMsgE).getConsultaCadastro2Result().getExtraElement().toString();
-
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));
-		    //
-		    String cStat    = NFeUtil.getValue(doc, "cStat");
-		    if (cStat.equals("111") || cStat.equals("112")){
-
-		    	String xNome    = NFeUtil.getValue(doc, "xNome");
-		    	String xRegApur = NFeUtil.getValue(doc, "xRegApur");
-		    	String dIniAtiv = NFeUtil.getValue(doc, "dIniAtiv");
-		    	String dBaixa   = NFeUtil.getValue(doc, "dBaixa");
-		    	String IE       = NFeUtil.getValue(doc, "IE");
-		    	String CNPJ     = NFeUtil.getValue(doc, "CNPJ");
-		    	String CPF      = NFeUtil.getValue(doc, "CPF");
-		    	String xLgr     = NFeUtil.getValue(doc, "xLgr");
-		    	String xMun     = NFeUtil.getValue(doc, "xMun");
-
-		    	String cSit     = NFeUtil.getValue(doc, "cSit");
-		    	if (cSit.equals("0")){
-		    		cSit = "NÃO HABILITADO";
-		    		habilitado = "N";
-		    	}
-		    	else
-		    		cSit = "HABILITADO";
-
-		    	String credNFe = "";
-		    	char indCredNFe = NFeUtil.getValue(doc, "indCredNFe").charAt(0);
-		    	switch (indCredNFe){
-		    		case '0' : credNFe = "Não credenciado para emissão da NF-e"; break;
-		    		case '1' : credNFe = "Credenciado"; break;
-		    		case '2' : credNFe = "Credenciado com obrigatoriedade para todas operações"; break;
-		    		case '3' : credNFe = "Credenciado com obrigatoriedade parcial"; break;
-		    		case '4' : credNFe = "A SEFAZ não fornece informação"; break;
-		    	}
-
-		    	 status = "<br/>" +
-	    		 "Nome: " + xNome + "<br/>" +
-	    		 "Endereço: " + xLgr + ", Cidade: " + xMun + "<br/>" +
-	             "Regime Apuração: " + xRegApur + "<br/>" +
-	             "Data Início Atividade: " + dIniAtiv + "<br/>" +
-	             "Data Baixa Contribuinte: " + dBaixa + "<br/>" +
-	             "IE: " + IE + "<br/>" +
-	             "CNPJ: " + CNPJ + "<br/>" +
-	             "CPF: " + CPF + "<br/>" +
-	             "Situação: " + cSit + "<br/>" +
-	             "Credenciado emissão NFe: " + credNFe;
-
-		    }
-		    else if (cStat.equals("259")){
-		    	status = "Rejeição: CNPJ da consulta não cadastrado como contribuinte na UF";
-		    }
+//			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgConsultaCadastro(bpRegion,bpIE,bpCNPJ)));
+//
+//			CadConsultaCadastro2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.CADCONSULTACADASTRO, "1", NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID()));
+//			CadConsultaCadastro2Stub.ConsultaCadastro2 dadosMsg = CadConsultaCadastro2Stub.ConsultaCadastro2.Factory.parse(dadosXML);
+//			CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecConsultaCadastro(region);
+//			CadConsultaCadastro2Stub stub = new CadConsultaCadastro2Stub();
+//
+//			String respStatus = stub.consultaCadastro2 (dadosMsg,cabecMsgE).getConsultaCadastro2Result().getExtraElement().toString();
+//
+//			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));
+//		    
+//		    String cStat    = NFeUtil.getValue(doc, "cStat");
+//		    if (cStat.equals("111") || cStat.equals("112")){
+//
+//		    	String xNome    = NFeUtil.getValue(doc, "xNome");
+//		    	String xRegApur = NFeUtil.getValue(doc, "xRegApur");
+//		    	String dIniAtiv = NFeUtil.getValue(doc, "dIniAtiv");
+//		    	String dBaixa   = NFeUtil.getValue(doc, "dBaixa");
+//		    	String IE       = NFeUtil.getValue(doc, "IE");
+//		    	String CNPJ     = NFeUtil.getValue(doc, "CNPJ");
+//		    	String CPF      = NFeUtil.getValue(doc, "CPF");
+//		    	String xLgr     = NFeUtil.getValue(doc, "xLgr");
+//		    	String xMun     = NFeUtil.getValue(doc, "xMun");
+//
+//		    	String cSit     = NFeUtil.getValue(doc, "cSit");
+//		    	if (cSit.equals("0")){
+//		    		cSit = "NÃO HABILITADO";
+//		    		habilitado = "N";
+//		    	}
+//		    	else
+//		    		cSit = "HABILITADO";
+//
+//		    	String credNFe = "";
+//		    	char indCredNFe = NFeUtil.getValue(doc, "indCredNFe").charAt(0);
+//		    	switch (indCredNFe){
+//		    		case '0' : credNFe = "Não credenciado para emissão da NF-e"; break;
+//		    		case '1' : credNFe = "Credenciado"; break;
+//		    		case '2' : credNFe = "Credenciado com obrigatoriedade para todas operações"; break;
+//		    		case '3' : credNFe = "Credenciado com obrigatoriedade parcial"; break;
+//		    		case '4' : credNFe = "A SEFAZ não fornece informação"; break;
+//		    	}
+//
+//		    	 status = "<br/>" +
+//	    		 "Nome: " + xNome + "<br/>" +
+//	    		 "Endereço: " + xLgr + ", Cidade: " + xMun + "<br/>" +
+//	             "Regime Apuração: " + xRegApur + "<br/>" +
+//	             "Data Início Atividade: " + dIniAtiv + "<br/>" +
+//	             "Data Baixa Contribuinte: " + dBaixa + "<br/>" +
+//	             "IE: " + IE + "<br/>" +
+//	             "CNPJ: " + CNPJ + "<br/>" +
+//	             "CPF: " + CPF + "<br/>" +
+//	             "Situação: " + cSit + "<br/>" +
+//	             "Credenciado emissão NFe: " + credNFe;
+//
+//		    }
+//		    else if (cStat.equals("259")){
+//		    	status = "Rejeição: CNPJ da consulta não cadastrado como contribuinte na UF";
+//		    }
 
 		}
 		catch (Throwable e1){

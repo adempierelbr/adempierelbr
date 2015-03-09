@@ -190,7 +190,7 @@ public class NFeCancelamento
 			xmlFile = TextUtil.generateTmpFile (xml.toString(), cancel.getId() + "-can.xml");
 			
 			//	Procura os endereços para Transmissão
-			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO, oi.getC_Location().getC_Region_ID());
+			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
 			
 			if (ws == null)
 			{

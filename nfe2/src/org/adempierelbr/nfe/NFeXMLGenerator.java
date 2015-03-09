@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +37,7 @@ import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
 import org.adempierelbr.wrapper.I_W_M_Product;
 import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.apache.xmlbeans.XmlValidationError;
 import org.compiere.model.MAttachment;
@@ -132,12 +132,7 @@ public class NFeXMLGenerator
 	private static CLogger log = CLogger.getCLogger(NFeXMLGenerator.class);
 
 	/** XML             */
-	private static final String FILE_EXT      = "-nfe.xml";
-	
-	/** Versão do Layout		*/
-	private static final String VERSAO_XSD		=	"PL_008f";
-	private static final String VERSAO_LAYOUT	=	"3.10";
-	private static final String VERSAO_APP		=	"Kenos ERP 3.10";
+	public static final String FILE_EXT      = "-nfe.xml";
 
 	/**
 	 * 		Tipo de Emissão da NF-e
@@ -386,7 +381,7 @@ public class NFeXMLGenerator
 		
 		//	A. Dados da Nota Fiscal eletrônica
 		InfNFe infNFe = nfe.addNewInfNFe();
-		infNFe.setVersao(VERSAO_LAYOUT);
+		infNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 		infNFe.setId("NFe" + chaveNFE.toString() + chaveNFE.getDigito());
 		
 		//	B. Identificação da Nota Fiscal eletrônica
@@ -453,7 +448,7 @@ public class NFeXMLGenerator
 		
 		//	0 = Emissão de NF-e com aplicativo do contribuinte
 		ide.setProcEmi (TProcEmi.X_0);
-		ide.setVerProc (VERSAO_APP);
+		ide.setVerProc (NFeUtil.VERSAO_APP);
 		
 		//	BA. Documento Fiscal Referenciado
 //		NFref nFref = ide.addNewNFref();
@@ -1244,11 +1239,10 @@ public class NFeXMLGenerator
 //		nsMap.put("", "http://www.portalfiscal.inf.br/nfe");
 //		nsMap.put("", "http://www.w3.org/2001/XMLSchema-instance");
 		
-		XmlOptions xmlOptions = new XmlOptions();
-		xmlOptions.setUseDefaultNamespace();
+		
 		
 		//	XML
-		StringBuilder xmlNFe = new StringBuilder (document.xmlText(xmlOptions));
+		StringBuilder xmlNFe = new StringBuilder (document.xmlText(NFeUtil.getXmlOpt()));
 		String nfeID = infNFe.getId().substring(3);
 		
 		try
@@ -1256,10 +1250,10 @@ public class NFeXMLGenerator
 			log.fine ("Assinando NF-e");
 			
 			//	ZZ. Informações da Assinatura Digital
-			xmlNFe = AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
+			AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
 			
 			log.fine ("Validando NF-e");
-			validate (xmlNFe);
+			NFeUtil.validate (NFeDocument.Factory.parse(xmlNFe.toString()));
 		}
 		catch (Exception e)
 		{
@@ -1371,61 +1365,15 @@ public class NFeXMLGenerator
 		return timeStr.insert (timeStr.length() - 2, ':').toString();
 	}	//	convertDate
 	
+	/**
+	 * 	Convert String to Numeric String
+	 * 	@param value
+	 * 	@return
+	 */
 	private static String toNumericStr (String value)
 	{
 		return TextUtil.toNumeric(value);
-	}
-	
-	/**
-	 * 	Validate
-	 * 
-	 * @param xmlNFe
-	 * @throws XmlException
-	 */
-	private static void validate (StringBuilder xmlNFe) throws XmlException
-	{
-		//	Validar o tamanho do arquivo
-		NFeUtil.validateSize (xmlNFe);
+	}	//	toNumericStr
 
-		// 	Set up the validation error listener.
-		List<XmlValidationError> validationErrors = new ArrayList<XmlValidationError>();
-		XmlOptions xmlOptions = new XmlOptions();
-		xmlOptions.setErrorListener(validationErrors);
-		
-		NFeDocument nfeDocument = NFeDocument.Factory.parse (xmlNFe.toString());
 
-		// 	During validation, errors are added to the ArrayList for
-		// 		retrieval and printing by the printErrors method.
-		boolean isValid = nfeDocument.validate (xmlOptions);
-		
-		// 	Print the errors if the XML is invalid.
-		if (!isValid)
-		{
-			//	Result
-			String result = "";
-			int counter = 1;
-			
-			Iterator<XmlValidationError> iter = validationErrors.iterator();
-			while (iter.hasNext())
-			{
-				//	Exemplo : [1] Erro XYZ
-				String msg = iter.next().toString();
-
-				msg = msg.substring(1 + msg.indexOf(":"));
-				msg = msg.substring(1 + msg.indexOf(":"));
-				
-				result += "[" + counter++ + "] " + msg + "\n";
-			}
-			
-			//	Clean result log
-			result = result.replace ("@http://www.w3.org/2000/09/xmldsig#", "");
-			result = result.replace ("@http://www.portalfiscal.inf.br/nfe", "");
-			result = result.replace ("'", "");
-			
-			log.fine (xmlNFe.toString());
-			
-			//	Errors
-			throw new AdempiereException (result.toString());
-		}
-	}	//	validate
 }	//	NFeXMLGenerator

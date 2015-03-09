@@ -43,7 +43,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-http-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-local-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/httpcore-4.0.jar"/>
-	<classpathentry kind="lib" path="lib/nfebeans-v8f.jar" sourcepath="lib/nfebeans-v8f-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8f.jar" sourcepath="lib/nfebeans-v8f-sources.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>

@@ -15,31 +15,43 @@ package org.adempierelbr.process;
 import java.io.StringReader;
 import java.util.logging.Level;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFeWebService;
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfe.api.NfeStatusServico2Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.apache.axiom.om.OMElement;
+import org.apache.xmlbeans.XmlOptions;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MRefList;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeStatusServico2Stub;
+import br.inf.portalfiscal.nfe.ConsStatServDocument;
+import br.inf.portalfiscal.nfe.RetConsStatServDocument;
+import br.inf.portalfiscal.nfe.TAmb;
+import br.inf.portalfiscal.nfe.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.TConsStatServ;
+import br.inf.portalfiscal.nfe.TConsStatServ.XServ;
+import br.inf.portalfiscal.nfe.TRetConsStatServ;
+import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeCabecMsg;
+import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeCabecMsgE;
+import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeDadosMsg;
 
 /**
  * 	Processo para consultar o Status do Serviço
  *
- * @author Mario Grigioni
- * @version $Id: ProcStatusServico.java, 08/04/2010 15:35:00 mgrigioni
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li> Tornar compatível com a NF-e 3.10
+ *
+ *	@author Mario Grigioni
+ *	@version $Id: ProcStatusServico.java, 08/04/2010 15:35:00 mgrigioni
  */
 public class ProcStatusServico extends SvrProcess
 {
@@ -47,6 +59,12 @@ public class ProcStatusServico extends SvrProcess
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ProcStatusServico.class);
 
+	/**	Organization	*/
+	private int p_AD_Org_ID = 0;
+	
+	/**	Environment		*/
+	private String p_LBR_EnvType = null;
+	
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -56,8 +74,12 @@ public class ProcStatusServico extends SvrProcess
 		for (int i = 0; i < para.length; i++)
 		{
 			String name = para[i].getParameterName();
-			if (para[i].getParameter() == null)
+			if (name == null)
 				;
+			else if (name.equals("AD_Org_ID"))
+				p_AD_Org_ID = para[i].getParameterAsInt();
+			else if (name.equals("lbr_NFeEnv"))
+				p_LBR_EnvType = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -68,53 +90,102 @@ public class ProcStatusServico extends SvrProcess
 	 */
 	protected String doIt() throws Exception
 	{
+		if (p_AD_Org_ID == 0)
+			p_AD_Org_ID = Env.getAD_Org_ID(getCtx());
 
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), Env.getAD_Org_ID(getCtx()),null);
+		MOrgInfo orgInfo = MOrgInfo.get (getCtx(), p_AD_Org_ID, null);
 		if (orgInfo == null)
 			return "Organização não encontrada";
 
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(),null);
-		String envType 	= orgInfo.get_ValueAsString("lbr_NFeEnv");
+		MLocation orgLoc = new MLocation (getCtx(), orgInfo.getC_Location_ID(), null);
+		
+		if (p_LBR_EnvType == null)
+			p_LBR_EnvType = orgInfo.get_ValueAsString ("lbr_NFeEnv");
 
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
 
-		//INICIALIZA CERTIFICADO
-		MLBRDigitalCertificate.setCertificate(getCtx(), Env.getAD_Org_ID(getCtx()));
+		//	Inicializa o Certificado
+		MLBRDigitalCertificate.setCertificate (getCtx(), p_AD_Org_ID);
 		//
-		String status = "Erro na verificação de Status";
+		StringBuilder msg = new StringBuilder ();
+				
+		try
+		{
+			//	Status Service Object
+			ConsStatServDocument statServDoc = ConsStatServDocument.Factory.newInstance();
+			TConsStatServ statServ = statServDoc.addNewConsStatServ();
+			statServ.setTpAmb(TAmb.Enum.forString(p_LBR_EnvType));
+			statServ.setCUF(TCodUfIBGE.Enum.forString(region));
+			statServ.setXServ(XServ.STATUS);
+			statServ.setVersao(NFeUtil.VERSAO_LAYOUT);
+			
+			//	XML
+			StringReader xml = new StringReader (NFeUtil.wrapMsg (statServDoc.xmlText(NFeUtil.getXmlOpt())));
+			
+			//	Mensagem
+			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
+			
+			//	Cabeçalho
+			NfeCabecMsg cabecMsg = new NfeCabecMsg ();
+			cabecMsg.setCUF(region);
+			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
 
-		try{
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(NFeUtil.geraMsgStatusServico(envType, region)));
+			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
+			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			NfeStatusServico2Stub.NfeDadosMsg dadosMsg = NfeStatusServico2Stub.NfeDadosMsg.Factory.parse(dadosXML);
-			NfeStatusServico2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecStatusServico(region);
-
-			NfeStatusServico2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, envType, NFeUtil.VERSAO, orgLoc.getC_Region_ID()));
+			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+			NfeStatusServico2Stub.setAmbiente(url);
 			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();
 
-			String respStatus = stub.nfeStatusServicoNF2(dadosMsg, cabecMsgE).getExtraElement().toString();
+			OMElement nfeStatusServicoNF2 = stub.nfeStatusServicoNF2(dadosMsg.getExtraElement(), cabecMsgE);
+			String respStatus = nfeStatusServicoNF2.toString();
 
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		    Document doc = builder.parse(new InputSource(new StringReader(respStatus)));
-		    //
-		    String tpAmb    = NFeUtil.getValue(doc, "tpAmb");
-		    String verAplic = NFeUtil.getValue(doc, "verAplic");
-		    String cStat    = NFeUtil.getValue(doc, "cStat");
-		    String xMotivo  = NFeUtil.getValue(doc, "xMotivo");
-
-		    status = "<br/>" +
-		    		 "Ambiente: " + tpAmb + "<br/>" +
-		             "Versão:   " + verAplic + "<br/>" +
-		             "Status:   " + cStat + " - " + xMotivo;
+			//	Resposta
+			RetConsStatServDocument retConsStatServDoc = RetConsStatServDocument.Factory.parse (respStatus);
+			TRetConsStatServ ret = retConsStatServDoc.getRetConsStatServ();
+			
+			msg = new StringBuilder("@Success@<br />");
+			msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), 1100001, ret.getTpAmb().toString()));
+			msg.append("<br />Versão: ").append(ret.getVerAplic());
+			
+			if (MLBRNotaFiscal.LBR_NFESTATUS_107_ServiçoEmOperação.equals(ret.getCStat()))	//	OK
+			{
+				msg.append("<font color=\"008800\">");
+				msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
+				msg.append("</font>");
+			}
+			else
+			{
+				msg.append("<font color=\"880000\">");
+				msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
+				msg.append("</font>");
+			}
+			msg.append("<br />UF: ").append(ret.getCUF());
+			msg.append("<br />Data/Hora: ").append (NFeUtil.formatTime (ret.getDhRecbto().toString()));
+			
+			if (ret.getTMed() != null)
+				msg.append("<br />Tempo Médio de Processamento: ").append(ret.getTMed()).append(" minuto(s)");
+			
+			if (ret.getDhRetorno() != null)
+			{
+				msg.append("<font color=\"880000\">");
+				msg.append("<br />Previsão de Retorno: ").append(ret.getDhRetorno());
+				msg.append("</font>");
+			}
+			
+			if (ret.getXObs() != null)
+				msg.append("<br />Obs: ").append(ret.getXObs());
 		}
-		catch (Throwable e1){
-			log.severe(e1.getLocalizedMessage());
-			e1.printStackTrace();
+		catch (Throwable e)
+		{
+			log.severe (e.getLocalizedMessage());
+			e.printStackTrace();
+			//
+			msg = new StringBuilder("@Error@ - Falha na verificação de Status - " + e.getMessage());
 		}
 
-		return status;
+		return msg.toString();
 	}	//	doIt
-
 }	//	ProcStatusServico

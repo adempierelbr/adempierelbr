@@ -279,7 +279,10 @@ public class AssinaturaDigital
 		Transformer trans = tf.newTransformer();
 		trans.transform(new DOMSource(doc), new StreamResult (sw));
 		//
-		return new StringBuilder (sw.toString());
+		xml.setLength(0);	//	Clear the XML
+		xml.append(sw.toString());
+		//
+		return xml;
 	}	//	assinarDocumento
 	
 	/**
