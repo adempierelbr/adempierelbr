@@ -40,7 +40,7 @@ public class NFSeRPSGenerator
 	private static CLogger log = CLogger.getCLogger(NFSeRPSGenerator.class);
 	
 	/** Versão			*/
-	private static final String VERSAO = "001";
+	private static final String VERSAO = "002";
 	
 	/**	Contadores		*/
 	private static int 			COUNT_REGS = 0;
@@ -118,7 +118,7 @@ public class NFSeRPSGenerator
 		log.info("init");
 		//
 		BtpRPS tpRPS = NFSeXMLGenerator.generateNFSe(LBR_NotaFiscal_ID, trxName);
-		StringBuffer rps = new StringBuffer("2");
+		StringBuffer rps = new StringBuffer("6");
 		//
 		rps.append(TextUtil.rPad(tpRPS.getTipoRPS(), 5));
 		rps.append(TextUtil.rPad(tpRPS.getChaveRPS().getSerieRPS(), 5));
@@ -151,9 +151,23 @@ public class NFSeRPSGenerator
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getUF(), 2));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getCEP(), 8));
 		rps.append(TextUtil.pad(tpRPS.getEmailTomador(), ' ', 75, false, false, false)); //	Não retira caracteres especiais
+		
+		rps.append(TextUtil.lPad(tpRPS.getValorPIS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorCOFINS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorINSS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorIR(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorCSLL(), 15));
+		rps.append(TextUtil.lPad("", 15)); // ValorCargaTributaria
+		rps.append(TextUtil.lPad("", 5)); // PercentCargaTributaria
+		rps.append(TextUtil.rPad("", 10)); // FonteCargaTributaria
+		rps.append(TextUtil.lPad("", 12));// tpRPS.getCEI()
+		rps.append(TextUtil.lPad("", 12));// MatriculaObra
+		rps.append(TextUtil.lPad("", 7));// tpRPS.getCodMunicipioPrestacao()
+		rps.append(TextUtil.rPad("", 200)); //Campo Reservado
+		
 		rps.append(TextUtil.checkSize(tpRPS.getDiscriminacao(), 0, 1000));
 		rps.append(TextUtil.EOL_WIN32);
-		//	Contadores
+		//	Contadores-
 		COUNT_REGS++;
 		TOTAL_SERVICO  = TOTAL_SERVICO .add(new BigDecimal(tpRPS.getValorServicos()));
 		TOTAL_DEDUCOES = TOTAL_DEDUCOES.add(new BigDecimal(tpRPS.getValorDeducoes()));
