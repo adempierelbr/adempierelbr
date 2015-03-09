@@ -74,6 +74,8 @@ import org.w3c.dom.Node;
 
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.TProtNFe;
+import br.inf.portalfiscal.nfe.TProtNFe.InfProt;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -731,20 +733,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 * return null (success) or error message
 	 * @throws Exception
 	 */
-	public static String authorizeNFe(Node node, String trxName){
-
+	public static String authorizeNFe (InfProt infProt, String trxName)
+	{
 		String error = null;
 
-		if (node.getNodeType() == Node.ELEMENT_NODE)
-		{
-			String chNFe	= NFeUtil.getValue (node, "chNFe");
-			String xMotivo 	= NFeUtil.getValue (node, "xMotivo");
-			String digVal 	= NFeUtil.getValue (node, "digVal");
-			String dhRecbto = NFeUtil.getValue (node, "dhRecbto");
-			String cStat 	= NFeUtil.getValue (node, "cStat");
-			String nProt 	= NFeUtil.getValue (node, "nProt");
+		if (infProt != null)
+		{			
+			String chNFe	= infProt.getChNFe();
+			String xMotivo 	= infProt.getXMotivo();
+			String digVal 	= new String (infProt.getDigVal());
+			String dhRecbto = infProt.getDhRecbto().toString();
+			String cStat 	= infProt.getCStat();
+			String nProt 	= infProt.getNProt();
 			//
-			MLBRNotaFiscal nf = getNFe(chNFe, trxName);
+			MLBRNotaFiscal nf = getNFe (chNFe, trxName);
 			if (nf == null)
 			{
 				error = "NF não encontrada: " + chNFe;
@@ -752,19 +754,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				return error;
 			}
 
-			if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals(NFeUtil.AUTORIZADA)){ //
+			if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
+			{
 				log.fine("NF já processada. " + nf.getDocumentNo());
 				return error;
 			}
 
-	        Timestamp ts = NFeUtil.stringToTime(dhRecbto);
+	        Timestamp ts = NFeUtil.stringToTime (dhRecbto);
 	        //
-	        String nfeDesc = "["+dhRecbto.replace('T', ' ')+"] " + xMotivo + "\n";
-	        if (nf.getlbr_NFeDesc() == null)
-	        	nf.setlbr_NFeDesc(nfeDesc);
-	        else
-	        	nf.setlbr_NFeDesc(nf.getlbr_NFeDesc() + nfeDesc);
-
 	        nf.setlbr_DigestValue(digVal);
 	        nf.setlbr_NFeStatus(cStat);
 	        nf.setlbr_NFeProt(nProt);
@@ -783,7 +780,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADA) ||
 				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADAPOREVENTO)))
 					NFeEmail.sendMail(nf);
-
 			} 
 			catch (Exception e) 
 			{

@@ -67,7 +67,7 @@ public class ProcLotReturn extends SvrProcess
 		else if (!lot.islbr_LotSent())
 			return "Lote ainda não enviado";
 		//
-		return lot.consultaNFe();
+		return lot.consultaLoteNFe();
 	}	//	doIt
 	
 }	//	ProcLotReturn

@@ -63,7 +63,7 @@ public class ProcLotTransmission extends SvrProcess
 		else if (lot.isEmpty())
 			return "Lote vazio";
 		//
-		return lot.enviaNFe();
+		return lot.enviaLoteNFe();
 	}	//	doIt
 	
 }	//	ProcLotTransmission

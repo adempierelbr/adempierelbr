@@ -12,30 +12,22 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.nfe.api.NfeAutorizacao;
 import org.adempierelbr.nfe.api.NfeAutorizacaoStub;
-import org.adempierelbr.nfe.api.NfeStatusServico2Stub;
+import org.adempierelbr.nfe.api.NfeRetAutorizacaoStub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
-import org.adempierelbr.util.TextUtil;
-import org.adempierelbr.util.ValidaXML;
 import org.apache.axiom.om.OMElement;
 import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MAttachment;
@@ -47,15 +39,19 @@ import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
+import br.inf.portalfiscal.nfe.ConsReciNFeDocument;
 import br.inf.portalfiscal.nfe.EnviNFeDocument;
 import br.inf.portalfiscal.nfe.NFeDocument;
+import br.inf.portalfiscal.nfe.RetConsReciNFeDocument;
+import br.inf.portalfiscal.nfe.RetEnviNFeDocument;
+import br.inf.portalfiscal.nfe.TAmb;
+import br.inf.portalfiscal.nfe.TConsReciNFe;
 import br.inf.portalfiscal.nfe.TEnviNFe;
 import br.inf.portalfiscal.nfe.TNFe;
+import br.inf.portalfiscal.nfe.TProtNFe;
+import br.inf.portalfiscal.nfe.TRetConsReciNFe;
+import br.inf.portalfiscal.nfe.TRetEnviNFe;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeCabecMsgE;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeDadosMsg;
@@ -157,7 +153,6 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
-		//
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
@@ -189,33 +184,24 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			attachLotNFe.addEntry(getDocumentNo()+"-rec.xml", respAutorizacao.getBytes());
 			attachLotNFe.save();
 			//
-		   
+			TRetEnviNFe retEnviNFe = RetEnviNFeDocument.Factory.parse(respAutorizacao).getRetEnviNFe();
 			//
-			String cStat = doc.getElementsByTagName("cStat").item(0).getTextContent();
-			String xMotivo = doc.getElementsByTagName("xMotivo").item(0).getTextContent();
+			String cStat = retEnviNFe.getCStat();
+			String xMotivo = retEnviNFe.getXMotivo();
 
-			String nRec = null;
-			if (doc.getElementsByTagName("nRec") != null) //BF - Quando ocorre erro não retorna o nRec
-				nRec = NFeUtil.getValue(doc, "nRec");
-
-			String dhRecbto = null;
-			if (doc.getElementsByTagName("dhRecbto") != null)
-				dhRecbto = NFeUtil.getValue(doc, "dhRecbto");
-			//
-			String lotDesc = "["+dhRecbto.replace('T', ' ')+"] " + xMotivo + "\n";
 			setlbr_NFeStatus(cStat);
-			if (getDescription() == null)
-				setDescription(lotDesc);
-			else
-				setDescription(getDescription() + lotDesc);
-			//
-			setlbr_NFeRecID(nRec);
-			//
-			Timestamp timestamp = NFeUtil.stringToTime(dhRecbto);
-			setDateTrx(timestamp);
-			setlbr_LotSent(true);
-			save();
 
+			if (MLBRNFeLot.LBR_NFEANSWERSTATUS_LoteRecebidoComSucesso.equals(cStat))
+			{
+				setlbr_NFeRecID(retEnviNFe.getInfRec().getNRec());
+				//
+				Timestamp timestamp = NFeUtil.stringToTime(retEnviNFe.getDhRecbto());
+				setDateTrx(timestamp);
+				setlbr_LotSent(true);
+				save();
+			}
+			
+			return "@Success@. " + xMotivo;
 		}
 		catch (Throwable e1)
 		{
@@ -224,8 +210,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		}
 
 		//
-		return "Processo completado.";
-	}
+		return "@Success@";
+	}	//	enviaLoteNFe
 
 	/**
 	 * 	Consulta Lote NFe
@@ -257,69 +243,67 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
-		//
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
 		//
 		try
 		{
-			String nfeConsultaDadosMsg 	= NFeUtil.geraMsgRetRecepcao(getlbr_NFeRecID(), envType);
+			ConsReciNFeDocument consReciNFeDoc = ConsReciNFeDocument.Factory.newInstance();
+			TConsReciNFe consReciNFe = consReciNFeDoc.addNewConsReciNFe();
+			consReciNFe.setNRec(getlbr_NFeRecID());
+			consReciNFe.setTpAmb(TAmb.Enum.forString(envType));
+			consReciNFe.setVersao(NFeUtil.VERSAO_APP);
+			
+			
+			//	XML
+			StringReader xml = new StringReader (NFeUtil.wrapMsg (consReciNFeDoc.xmlText(NFeUtil.getXmlOpt())));
+			
+			//	Mensagem
+			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
+			
+			//	Cabeçalho
+			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsg cabecMsg = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsg ();
+			cabecMsg.setCUF(region);
+			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
 
-			//	Validação envio
-			String validation = ValidaXML.validaConsultaProt(nfeConsultaDadosMsg);
-			if (!validation.equals(""))
-				return validation;
+			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
+			cabecMsgE.setNfeCabecMsg(cabecMsg);
+
+			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETRECEPCAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+//			NfeRetAutorizacaoStub.setAmbiente(url);
+			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
+
+			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
+			String respRetAutorizacao = nfeRetAutorizacao.toString();
+			
+			TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();
 			//
-
-			nfeConsultaDadosMsg   = "<nfeDadosMsg>" + nfeConsultaDadosMsg + "</nfeDadosMsg>";
-
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(nfeConsultaDadosMsg));
-
-			NfeRetRecepcao2Stub.NfeDadosMsg dadosMsg = NfeRetRecepcao2Stub.NfeDadosMsg.Factory.parse(dadosXML);
-			NfeRetRecepcao2Stub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecRetRecepcao(region);
-
-			NfeRetRecepcao2Stub.setAmbiente(MLBRNFeWebService.getURL (MLBRNFeWebService.RETRECEPCAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID()));
-			NfeRetRecepcao2Stub stub = new NfeRetRecepcao2Stub();
-
-			String respConsulta = stub.nfeRetRecepcao2(dadosMsg, cabecMsgE).getExtraElement().toString();
-
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document doc = builder.parse(new InputSource(new StringReader(respConsulta)));
+			String cStat = retConsReciNFe.getCStat();
+			String xMotivo = retConsReciNFe.getXMotivo();
+			
+			setlbr_NFeAnswerStatus(cStat);
 			//
-			String cStatL = NFeUtil.getValue(doc, "cStat");
-			String xMotivoL = NFeUtil.getValue(doc, "xMotivo");
-			String nRec = NFeUtil.getValue(doc, "nRec");
-			NodeList infProt =  doc.getElementsByTagName("infProt");
-			//
-			if (cStatL.equals("104") || cStatL.equals("999")) 
-			{	//	Lote Processado ou 999 Erro não catalogado
+			if (MLBRNFeLot.LBR_NFEANSWERSTATUS_LoteProcessado.equals(cStat)
+				|| MLBRNFeLot.LBR_NFEANSWERSTATUS_RejeiçãoErroNãoCatalogado.equals(cStat))
+			{	
+				//	Lote Processado ou 999 Erro não catalogado
 				//	Marcar como processado somente em 104 ou 999
 				setlbr_LotReceived(true);
 				setProcessed(true);
+				
+				setlbr_NFeRespID(retConsReciNFe.getNRec());
+				setDateFinish(NFeUtil.stringToTime(retConsReciNFe.getDhRecbto()));
 				//
-				for (int i=0; i< infProt.getLength(); i++)
+				for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
 				{
-					Node node = infProt.item(i);
-					String error = MLBRNotaFiscal.authorizeNFe(node,trxName);
+					String error = MLBRNotaFiscal.authorizeNFe (protNFe.getInfProt(), trxName);
 					if (error != null)
 						throw new Exception(error);
 				}	//	for
 			}	//	if
-
-			Timestamp now = new Timestamp(new Date().getTime());
-			String nfeDesc = "["+TextUtil.timeToString(now, "yyyy-MM-dd HH:mm:ss")+"] "+xMotivoL+"\n";
-			setlbr_NFeAnswerStatus(cStatL);
-			if (getDescription() == null)
-				setDescription(nfeDesc);
-			else
-				setDescription(getDescription() + nfeDesc);
 			//
-			setlbr_NFeRespID(nRec);
-			setDateFinish(now);
-			//
-			save(trxName);
-
+			save();
 		}
 		catch (Throwable e1)
 		{
