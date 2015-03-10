@@ -741,10 +741,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		{			
 			String chNFe	= infProt.getChNFe();
 			String xMotivo 	= infProt.getXMotivo();
-			String digVal 	= new String (infProt.getDigVal());
+			String digVal 	= null;
 			String dhRecbto = infProt.getDhRecbto().toString();
 			String cStat 	= infProt.getCStat();
 			String nProt 	= infProt.getNProt();
+			
+			if (infProt.getDigVal() != null)
+				digVal = new String (infProt.getDigVal());
 			//
 			MLBRNotaFiscal nf = getNFe (chNFe, trxName);
 			if (nf == null)

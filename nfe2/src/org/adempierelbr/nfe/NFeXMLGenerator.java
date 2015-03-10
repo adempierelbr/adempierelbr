@@ -14,9 +14,7 @@ package org.adempierelbr.nfe;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -36,10 +34,6 @@ import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
 import org.adempierelbr.wrapper.I_W_M_Product;
-import org.apache.xmlbeans.XmlException;
-import org.apache.xmlbeans.XmlObject;
-import org.apache.xmlbeans.XmlOptions;
-import org.apache.xmlbeans.XmlValidationError;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
@@ -167,12 +161,12 @@ public class NFeXMLGenerator
 	private static final Ide.IndPag.Enum IND_PAG_OUTROS		=	Ide.IndPag.X_2;
 	
 	/**	Modelo da NF			*/
-	private static final TMod.Enum MOD_NFE_55				=	TMod.X_55;
-	private static final TMod.Enum MOD_NFCE_65				=	TMod.X_65;
+	private static final TMod.Enum MOD_NFE_55			=	TMod.X_55;
+	private static final TMod.Enum MOD_NFCE_65			=	TMod.X_65;
 
 	/**	Tipo de NF				*/
-	private static final Ide.TpNF.Enum TP_NF_SAIDA			=	Ide.TpNF.X_0;
-	private static final Ide.TpNF.Enum TP_NF_ENTRADA		=	Ide.TpNF.X_1;
+	private static final Ide.TpNF.Enum TP_NF_ENTRADA	=	Ide.TpNF.X_0;
+	private static final Ide.TpNF.Enum TP_NF_SAIDA		=	Ide.TpNF.X_1;
 	
 	/**	Tipo de Ambiente				*/
 	private static final TAmb.Enum 	T_AMB_PRODUCAO		=	TAmb.X_1;

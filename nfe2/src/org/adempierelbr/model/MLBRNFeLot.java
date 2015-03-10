@@ -253,8 +253,10 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 			TConsReciNFe consReciNFe = consReciNFeDoc.addNewConsReciNFe();
 			consReciNFe.setNRec(getlbr_NFeRecID());
 			consReciNFe.setTpAmb(TAmb.Enum.forString(envType));
-			consReciNFe.setVersao(NFeUtil.VERSAO_APP);
+			consReciNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 			
+			//	Validate
+			NFeUtil.validate (consReciNFeDoc);
 			
 			//	XML
 			StringReader xml = new StringReader (NFeUtil.wrapMsg (consReciNFeDoc.xmlText(NFeUtil.getXmlOpt())));
@@ -309,9 +311,10 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 		{
 			log.severe(e1.getLocalizedMessage());
 			e1.printStackTrace();
+			return "@Error@ " + e1.getMessage();
 		}
 
-		return "Processo completado.";
+		return "@Success@";
 	}	//	consultaNFe
 
 	/**
@@ -390,7 +393,11 @@ public class MLBRNFeLot extends X_LBR_NFeLot
 	 		if (NF == null)
 	 			continue;
 
-	 		MAttachment attachment = NF.getAttachment();
+	 		MAttachment attachment = NF.getAttachment(true);
+	 		
+	 		if (attachment == null)
+	 			continue;
+	 		
 	 		for (MAttachmentEntry entry : attachment.getEntries())
 	 		{
 	 			//	Check if attachment is a NFe
