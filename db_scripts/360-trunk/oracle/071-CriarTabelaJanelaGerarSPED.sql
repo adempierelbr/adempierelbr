@@ -2410,6 +2410,11 @@ UPDATE AD_Column SET Description='Código do ajuste da apuração e dedução, c
 UPDATE AD_Field SET Name='Código do Ajuste', Description='Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.', Help='Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.' WHERE AD_Column_ID=1124207 AND IsCentrallyMaintained='Y'
 ;
 
+-- 11/03/2015 23h20min38s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+CREATE TABLE LBR_TaxAssessmentLine (AD_Client_ID NUMBER(10) NOT NULL, AD_Org_ID NUMBER(10) NOT NULL, Amt NUMBER NOT NULL, Created DATE NOT NULL, CreatedBy NUMBER(10) DEFAULT NULL , Description NVARCHAR2(255) DEFAULT NULL , IsActive CHAR(1) CHECK (IsActive IN ('Y','N')) NOT NULL, LBR_TaxAssessmentLine_ID NUMBER(10) NOT NULL, LBR_TaxAssessment_ID NUMBER(10) NOT NULL, Type NVARCHAR2(3) DEFAULT NULL , Updated DATE NOT NULL, UpdatedBy NUMBER(10) NOT NULL, CONSTRAINT LBR_TaxAssessmentLine_Key PRIMARY KEY (LBR_TaxAssessmentLine_ID))
+;
+
 -- 22/02/2013 11h21min32s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 ALTER TABLE LBR_TaxAssessmentLine ADD LBR_COD_AJ_APUR NVARCHAR2(10) DEFAULT NULL 
@@ -2418,11 +2423,6 @@ ALTER TABLE LBR_TaxAssessmentLine ADD LBR_COD_AJ_APUR NVARCHAR2(10) DEFAULT NULL
 -- 22/02/2013 11h26min25s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 UPDATE AD_Table SET AD_Window_ID=1120078,Updated=TO_DATE('2013-02-22 11:26:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Table_ID=1120332
-;
-
--- 22/02/2013 11h26min27s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Sequence (AD_Client_ID,AD_Org_ID,AD_Sequence_ID,Created,CreatedBy,CurrentNext,CurrentNextSys,Description,IncrementNo,IsActive,IsAudited,IsAutoSequence,IsTableID,Name,StartNewYear,StartNo,Updated,UpdatedBy) VALUES (0,0,1152720,TO_DATE('2013-02-22 11:26:25','YYYY-MM-DD HH24:MI:SS'),100,1000000,50000,'Table LBR_TaxAssessmentLine',1,'Y','N','Y','Y','LBR_TaxAssessmentLine','N',1000000,TO_DATE('2013-02-22 11:26:25','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 22/02/2013 11h26min43s BRT
