@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
@@ -55,6 +56,12 @@ public class MLBRADILine extends X_LBR_ADILine
 		super(ctx, rs, trxName);
 	}	//	MLBRADILine
 	
+	public MLBRADILine(MLBRADI adi)
+	{
+		super(adi.getCtx(), 0, adi.get_TrxName());
+		setLBR_ADI_ID(adi.getLBR_ADI_ID());
+	}
+
 	/**
 	 * 	Get Parent
 	 *	@return parent
@@ -95,6 +102,30 @@ public class MLBRADILine extends X_LBR_ADILine
 		
 		return total;
 	}	//	getSISCOMEX
+	
+	/**
+	 * 	Called before Save for Pre-Save Operation
+	 * 	@param newRecord new record
+	 *	@return true if record can be saved
+	 */
+	@Override
+	protected boolean beforeSave(boolean newRecord)
+	{
+		if (newRecord)
+		{
+			if (getProductValue() == null)
+				setProductValue(getM_Product().getValue());
+			
+			//	Sequence
+			if (getSeqNo() == 0)
+			{
+				String sql = "SELECT COALESCE(MAX(SeqNo),0)+1 FROM LBR_ADILine WHERE LBR_ADI_ID=?";
+				int ii = DB.getSQLValue (get_TrxName(), sql, getLBR_ADI_ID());
+				setSeqNo (ii);
+			}
+		}
+		return true;
+	}	//	beforeSave
 	
 	/**
 	 * 	Before Delete

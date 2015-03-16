@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.compiere.model.MTax;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -135,6 +136,26 @@ public class MLBRTaxLine extends X_LBR_TaxLine implements Comparator, Comparable
 		//
 		return tl;
 	}	//	copy
+	
+	/**
+	 * 	Set Tax Info
+	 * @param taxIndicator
+	 * @param CST
+	 * @param taxRate
+	 */
+	public void setTaxInfo (String taxIndicator, String CST, BigDecimal taxRate)
+	{
+		int LBR_TaxName_ID = DB.getSQLValue(null, "SELECT LBR_TaxName_ID FROM LBR_TaxName WHERE Name LIKE ?", taxIndicator + "%");
+		int LBR_TaxStatus_ID = DB.getSQLValue(null, "SELECT LBR_TaxStatus_ID FROM LBR_TaxStatus WHERE LBR_TaxName_ID=? AND (Name=? OR PO_Name=?)", new Object[]{LBR_TaxName_ID, CST, CST});
+		//
+		if (LBR_TaxName_ID > 0)
+			setLBR_TaxName_ID(LBR_TaxName_ID);
+		
+		if (LBR_TaxStatus_ID > 0)
+			setLBR_TaxStatus_ID(LBR_TaxStatus_ID);
+		//
+		setlbr_TaxRate(taxRate);
+	}	//	setTaxInfo
 	
 	/**
 	 * 	To String
