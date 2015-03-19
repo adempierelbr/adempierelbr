@@ -57,6 +57,9 @@ public class RH010 extends RegSped
 	
 	@XMLFieldProperties(id = "COD_CTA")
 	private String COD_CTA;
+	
+	@XMLFieldProperties(id = "VL_ITEM_IR")
+	private BigDecimal VL_ITEM_IR;
 
 	public RH010() {
 		super();
@@ -108,6 +111,14 @@ public class RH010 extends RegSped
 
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
+	}
+	
+	public BigDecimal getVL_ITEM_IR() {
+		return VL_ITEM_IR;
+	}
+
+	public void setVL_ITEM_IR(BigDecimal vL_ITEM_IR) {
+		VL_ITEM_IR = vL_ITEM_IR;
 	}
 
 	public BigDecimal getQTD() {

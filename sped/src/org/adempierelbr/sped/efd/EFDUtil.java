@@ -1487,6 +1487,7 @@ public class EFDUtil {
 		reg.setCOD_CTA(COD_CTA);
 		reg.setCOD_PART(null);
 		reg.setTXT_COMPL(null);
+		reg.setVL_ITEM_IR(null);
 		
 		return reg;
 	}
