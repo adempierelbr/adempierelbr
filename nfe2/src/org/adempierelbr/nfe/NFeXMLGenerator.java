@@ -661,8 +661,8 @@ public class NFeXMLGenerator
 			prod.setVUnTrib(normalize10  (nfl.getPrice()));
 			
 			//	Valores adicionais
-			BigDecimal freightAmt 		= nfl.getFreightAmt(nf.getTotalLines(), nf.getFreightAmt());
-			BigDecimal insuranceAmt	 	= nfl.getInsuranceAmt(nf.getTotalLines(), nf.getlbr_InsuranceAmt());
+			BigDecimal freightAmt 		= nfl.getFreightAmt();
+			BigDecimal insuranceAmt	 	= nfl.getlbr_InsuranceAmt();
 			BigDecimal discountAmt 		= nfl.getDiscountAmt();
 			BigDecimal otherChargesAmt 	= nfl.getLBR_OtherChargesAmt();
 			
@@ -1228,13 +1228,6 @@ public class NFeXMLGenerator
 		//	ZC. Informações do Registro de Aquisição de Cana
 //		Cana cana = infNFe.addNewCana();
 		
-		//	Remove Namespace
-		Map<String, String> nsMap = new HashMap<String, String>();
-//		nsMap.put("", "http://www.portalfiscal.inf.br/nfe");
-//		nsMap.put("", "http://www.w3.org/2001/XMLSchema-instance");
-		
-		
-		
 		//	XML
 		StringBuilder xmlNFe = new StringBuilder (document.xmlText(NFeUtil.getXmlOpt()));
 		String nfeID = infNFe.getId().substring(3);
@@ -1264,7 +1257,7 @@ public class NFeXMLGenerator
 		if (nf.getAttachment (true) != null)
 			nf.getAttachment ().delete (true);
 		
-		MAttachment attachNFe = nf.createAttachment();
+		MAttachment attachNFe = nf.createAttachment(true);
 		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes());
 		attachNFe.save();
 		

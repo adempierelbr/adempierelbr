@@ -58,16 +58,26 @@ public class ProcLotReturn extends SvrProcess
 	{
 		MLBRNFeLot lot = new MLBRNFeLot (Env.getCtx(), p_LBR_NFeLot_ID, get_TrxName());
 		//
-		if (lot.isProcessed())
-			return "Lote já processado";
-		else if (lot.isEmpty())
-			return "Lote vazio";
-		else if (lot.islbr_LotReceived())
-			return "Lote já Recebido";
-		else if (!lot.islbr_LotSent())
-			return "Lote ainda não enviado";
-		//
-		return lot.consultaLoteNFe();
+		try
+		{
+			if (lot.isProcessed())
+				throw new Exception ("Lote já processado");
+			else if (lot.isEmpty())
+				throw new Exception ("Lote vazio");
+			else if (lot.islbr_LotReceived())
+				throw new Exception ("Lote já Recebido");
+			else if (!lot.islbr_LotSent())
+				throw new Exception ("Lote ainda não enviado");
+			//
+			if (!lot.enviaLoteNFe())
+				throw new Exception ("Falha na transmissão do XML");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return "@Error@ - " + e.getMessage();
+		}
+		return "@Success@";
 	}	//	doIt
 	
 }	//	ProcLotReturn

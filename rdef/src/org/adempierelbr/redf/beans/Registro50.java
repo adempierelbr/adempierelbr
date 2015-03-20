@@ -54,7 +54,7 @@ public class Registro50
 	public Registro50 (String ModalidadeFrete, String CNPJ_CPF,
 			String RazaoSocial,	String IE, String EnderecoCompleto,
 			String NomeMunicipio, String UF, String PLACA, String SiglaUFPlaca, 
-			BigDecimal QtdVolumes, String EspecieVolumes, String MarcaVolumes,
+			int QtdVolumes, String EspecieVolumes, String MarcaVolumes,
 			String NumDosVolumes, BigDecimal PesoLiq, BigDecimal PesoBruto)
 	{	
 		this.ModalidadeFrete 	= ModalidadeFrete;
@@ -66,7 +66,7 @@ public class Registro50
 		this.UF 				= UF;
 		this.PLACA 				= PLACA;
 		this.SiglaUFPlaca 		= SiglaUFPlaca;
-		this.QtdVolumes 		= QtdVolumes;
+		this.QtdVolumes 		= new BigDecimal (QtdVolumes);
 		this.EspecieVolumes 	= EspecieVolumes;
 		this.MarcaVolumes 		= MarcaVolumes;
 		this.NumDosVolumes 		= NumDosVolumes;

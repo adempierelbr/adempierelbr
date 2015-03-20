@@ -18,11 +18,7 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
-import org.compiere.model.I_C_InvoiceLine;
-import org.compiere.model.I_C_UOM;
-import org.compiere.model.I_M_Product;
-import org.compiere.model.MTable;
+import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LBR_NotaFiscalLine
@@ -82,6 +78,21 @@ public interface I_LBR_NotaFiscalLine
 
 	public I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException;
 
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public I_C_UOM getC_UOM() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -97,21 +108,6 @@ public interface I_LBR_NotaFiscalLine
 	  * User who created this records
 	  */
 	public int getCreatedBy();
-
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	  * Unit of Measure
-	  */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	  * Unit of Measure
-	  */
-	public int getC_UOM_ID();
-
-	public I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -152,6 +148,19 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public BigDecimal getDiscountAmt();
 
+    /** Column name FreightAmt */
+    public static final String COLUMNNAME_FreightAmt = "FreightAmt";
+
+	/** Set Freight Amount.
+	  * Freight Amount 
+	  */
+	public void setFreightAmt (BigDecimal FreightAmt);
+
+	/** Get Freight Amount.
+	  * Freight Amount 
+	  */
+	public BigDecimal getFreightAmt();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -180,31 +189,18 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
 
-    /** Column name lbr_CFOPName */
-    public static final String COLUMNNAME_lbr_CFOPName = "lbr_CFOPName";
+    /** Column name LBR_IndTot */
+    public static final String COLUMNNAME_LBR_IndTot = "LBR_IndTot";
 
-	/** Set CFOP Name.
-	  * Defines the CFOP Name
+	/** Set Composes NFe Total.
+	  * Indicates which NFe's lines composes the NFe's total value
 	  */
-	public void setlbr_CFOPName (String lbr_CFOPName);
+	public void setLBR_IndTot (String LBR_IndTot);
 
-	/** Get CFOP Name.
-	  * Defines the CFOP Name
+	/** Get Composes NFe Total.
+	  * Indicates which NFe's lines composes the NFe's total value
 	  */
-	public String getlbr_CFOPName();
-
-    /** Column name lbr_IsService */
-    public static final String COLUMNNAME_lbr_IsService = "lbr_IsService";
-
-	/** Set Is Service.
-	  * Defines if the lines is a Service
-	  */
-	public void setlbr_IsService (boolean lbr_IsService);
-
-	/** Get Is Service.
-	  * Defines if the lines is a Service
-	  */
-	public boolean islbr_IsService();
+	public String getLBR_IndTot();
 
     /** Column name LBR_LegalMessage_ID */
     public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
@@ -221,32 +217,6 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
 
-    /** Column name lbr_LineTotalCIF */
-    public static final String COLUMNNAME_lbr_LineTotalCIF = "lbr_LineTotalCIF";
-
-	/** Set Line Total CIF.
-	  * The total CIF for the line
-	  */
-	public void setlbr_LineTotalCIF (BigDecimal lbr_LineTotalCIF);
-
-	/** Get Line Total CIF.
-	  * The total CIF for the line
-	  */
-	public BigDecimal getlbr_LineTotalCIF();
-
-    /** Column name lbr_LineTotalSISCOMEX */
-    public static final String COLUMNNAME_lbr_LineTotalSISCOMEX = "lbr_LineTotalSISCOMEX";
-
-	/** Set Line Total SISCOMEX.
-	  * The total SISCOMEX for the Line
-	  */
-	public void setlbr_LineTotalSISCOMEX (BigDecimal lbr_LineTotalSISCOMEX);
-
-	/** Get Line Total SISCOMEX.
-	  * The total SISCOMEX for the Line
-	  */
-	public BigDecimal getlbr_LineTotalSISCOMEX();
-
     /** Column name LBR_NCM_ID */
     public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
 
@@ -262,19 +232,6 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_NCM getLBR_NCM() throws RuntimeException;
 
-    /** Column name lbr_NCMName */
-    public static final String COLUMNNAME_lbr_NCMName = "lbr_NCMName";
-
-	/** Set NCM Name.
-	  * Defines the NCM Name
-	  */
-	public void setlbr_NCMName (String lbr_NCMName);
-
-	/** Get NCM Name.
-	  * Defines the NCM Name
-	  */
-	public String getlbr_NCMName();
-
     /** Column name LBR_NFDI_ID */
     public static final String COLUMNNAME_LBR_NFDI_ID = "LBR_NFDI_ID";
 
@@ -283,6 +240,19 @@ public interface I_LBR_NotaFiscalLine
 
 	/** Get DI	  */
 	public int getLBR_NFDI_ID();
+
+    /** Column name LBR_NotaFiscalLine_ID */
+    public static final String COLUMNNAME_LBR_NotaFiscalLine_ID = "LBR_NotaFiscalLine_ID";
+
+	/** Set Nota Fiscal Line.
+	  * Primary key table LBR_NotaFiscalLine
+	  */
+	public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID);
+
+	/** Get Nota Fiscal Line.
+	  * Primary key table LBR_NotaFiscalLine
+	  */
+	public int getLBR_NotaFiscalLine_ID();
 
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
@@ -299,37 +269,6 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException;
 
-    /** Column name LBR_NotaFiscalLine_ID */
-    public static final String COLUMNNAME_LBR_NotaFiscalLine_ID = "LBR_NotaFiscalLine_ID";
-
-	/** Set Nota Fiscal Line.
-	  * Primary key table LBR_NotaFiscalLine
-	  */
-	public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID);
-
-	/** Get Nota Fiscal Line.
-	  * Primary key table LBR_NotaFiscalLine
-	  */
-	public int getLBR_NotaFiscalLine_ID();
-
-    /** Column name lbr_NumAdicao */
-    public static final String COLUMNNAME_lbr_NumAdicao = "lbr_NumAdicao";
-
-	/** Set Numero da adição	  */
-	public void setlbr_NumAdicao (int lbr_NumAdicao);
-
-	/** Get Numero da adição	  */
-	public int getlbr_NumAdicao();
-
-    /** Column name lbr_NumSeqItem */
-    public static final String COLUMNNAME_lbr_NumSeqItem = "lbr_NumSeqItem";
-
-	/** Set Núm. Seq. Item	  */
-	public void setlbr_NumSeqItem (int lbr_NumSeqItem);
-
-	/** Get Núm. Seq. Item	  */
-	public int getlbr_NumSeqItem();
-
     /** Column name LBR_OtherChargesAmt */
     public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
 
@@ -338,71 +277,6 @@ public interface I_LBR_NotaFiscalLine
 
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
-
-    /** Column name lbr_ProductSource */
-    public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
-
-	/** Set Product Source.
-	  * Defines the Product Source
-	  */
-	public void setlbr_ProductSource (String lbr_ProductSource);
-
-	/** Get Product Source.
-	  * Defines the Product Source
-	  */
-	public String getlbr_ProductSource();
-
-    /** Column name lbr_ServiceTaxes */
-    public static final String COLUMNNAME_lbr_ServiceTaxes = "lbr_ServiceTaxes";
-
-	/** Set Service Taxes.
-	  * String with all Taxes Names and Taxes Rates
-	  */
-	public void setlbr_ServiceTaxes (String lbr_ServiceTaxes);
-
-	/** Get Service Taxes.
-	  * String with all Taxes Names and Taxes Rates
-	  */
-	public String getlbr_ServiceTaxes();
-
-    /** Column name lbr_TaxStatus */
-    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
-
-	/** Set Tax Status.
-	  * Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus);
-
-	/** Get Tax Status.
-	  * Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus();
-
-    /** Column name lbr_TaxStatusIPI */
-    public static final String COLUMNNAME_lbr_TaxStatusIPI = "lbr_TaxStatusIPI";
-
-	/** Set Tax Status (IPI).
-	  * Defines the Tax Status (IPI)
-	  */
-	public void setlbr_TaxStatusIPI (String lbr_TaxStatusIPI);
-
-	/** Get Tax Status (IPI).
-	  * Defines the Tax Status (IPI)
-	  */
-	public String getlbr_TaxStatusIPI();
-
-    /** Column name lbr_UOMName */
-    public static final String COLUMNNAME_lbr_UOMName = "lbr_UOMName";
-
-	/** Set UOM Name.
-	  * Defines the UOM Name
-	  */
-	public void setlbr_UOMName (String lbr_UOMName);
-
-	/** Get UOM Name.
-	  * Defines the UOM Name
-	  */
-	public String getlbr_UOMName();
 
     /** Column name Line */
     public static final String COLUMNNAME_Line = "Line";
@@ -430,19 +304,6 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public BigDecimal getLineTotalAmt();
 
-    /** Column name Manufacturer */
-    public static final String COLUMNNAME_Manufacturer = "Manufacturer";
-
-	/** Set Manufacturer.
-	  * Manufacturer of the Product
-	  */
-	public void setManufacturer (String Manufacturer);
-
-	/** Get Manufacturer.
-	  * Manufacturer of the Product
-	  */
-	public String getManufacturer();
-
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -457,6 +318,19 @@ public interface I_LBR_NotaFiscalLine
 	public int getM_Product_ID();
 
 	public I_M_Product getM_Product() throws RuntimeException;
+
+    /** Column name Manufacturer */
+    public static final String COLUMNNAME_Manufacturer = "Manufacturer";
+
+	/** Set Manufacturer.
+	  * Manufacturer of the Product
+	  */
+	public void setManufacturer (String Manufacturer);
+
+	/** Get Manufacturer.
+	  * Manufacturer of the Product
+	  */
+	public String getManufacturer();
 
     /** Column name Price */
     public static final String COLUMNNAME_Price = "Price";
@@ -552,4 +426,164 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getVendorProductNo();
 
+    /** Column name lbr_CFOPName */
+    public static final String COLUMNNAME_lbr_CFOPName = "lbr_CFOPName";
+
+	/** Set CFOP Name.
+	  * Defines the CFOP Name
+	  */
+	public void setlbr_CFOPName (String lbr_CFOPName);
+
+	/** Get CFOP Name.
+	  * Defines the CFOP Name
+	  */
+	public String getlbr_CFOPName();
+
+    /** Column name lbr_InsuranceAmt */
+    public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";
+
+	/** Set Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public void setlbr_InsuranceAmt (BigDecimal lbr_InsuranceAmt);
+
+	/** Get Insurance Amt.
+	  * Defines the Insurance Amt
+	  */
+	public BigDecimal getlbr_InsuranceAmt();
+
+    /** Column name lbr_IsService */
+    public static final String COLUMNNAME_lbr_IsService = "lbr_IsService";
+
+	/** Set Is Service.
+	  * Defines if the lines is a Service
+	  */
+	public void setlbr_IsService (boolean lbr_IsService);
+
+	/** Get Is Service.
+	  * Defines if the lines is a Service
+	  */
+	public boolean islbr_IsService();
+
+    /** Column name lbr_LineTotalCIF */
+    public static final String COLUMNNAME_lbr_LineTotalCIF = "lbr_LineTotalCIF";
+
+	/** Set Line Total CIF.
+	  * The total CIF for the line
+	  */
+	public void setlbr_LineTotalCIF (BigDecimal lbr_LineTotalCIF);
+
+	/** Get Line Total CIF.
+	  * The total CIF for the line
+	  */
+	public BigDecimal getlbr_LineTotalCIF();
+
+    /** Column name lbr_LineTotalSISCOMEX */
+    public static final String COLUMNNAME_lbr_LineTotalSISCOMEX = "lbr_LineTotalSISCOMEX";
+
+	/** Set Line Total SISCOMEX.
+	  * The total SISCOMEX for the Line
+	  */
+	public void setlbr_LineTotalSISCOMEX (BigDecimal lbr_LineTotalSISCOMEX);
+
+	/** Get Line Total SISCOMEX.
+	  * The total SISCOMEX for the Line
+	  */
+	public BigDecimal getlbr_LineTotalSISCOMEX();
+
+    /** Column name lbr_NCMName */
+    public static final String COLUMNNAME_lbr_NCMName = "lbr_NCMName";
+
+	/** Set NCM Name.
+	  * Defines the NCM Name
+	  */
+	public void setlbr_NCMName (String lbr_NCMName);
+
+	/** Get NCM Name.
+	  * Defines the NCM Name
+	  */
+	public String getlbr_NCMName();
+
+    /** Column name lbr_NumAdicao */
+    public static final String COLUMNNAME_lbr_NumAdicao = "lbr_NumAdicao";
+
+	/** Set Numero da adição	  */
+	public void setlbr_NumAdicao (int lbr_NumAdicao);
+
+	/** Get Numero da adição	  */
+	public int getlbr_NumAdicao();
+
+    /** Column name lbr_NumSeqItem */
+    public static final String COLUMNNAME_lbr_NumSeqItem = "lbr_NumSeqItem";
+
+	/** Set Núm. Seq. Item	  */
+	public void setlbr_NumSeqItem (int lbr_NumSeqItem);
+
+	/** Get Núm. Seq. Item	  */
+	public int getlbr_NumSeqItem();
+
+    /** Column name lbr_ProductSource */
+    public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
+
+	/** Set Product Source.
+	  * Defines the Product Source
+	  */
+	public void setlbr_ProductSource (String lbr_ProductSource);
+
+	/** Get Product Source.
+	  * Defines the Product Source
+	  */
+	public String getlbr_ProductSource();
+
+    /** Column name lbr_ServiceTaxes */
+    public static final String COLUMNNAME_lbr_ServiceTaxes = "lbr_ServiceTaxes";
+
+	/** Set Service Taxes.
+	  * String with all Taxes Names and Taxes Rates
+	  */
+	public void setlbr_ServiceTaxes (String lbr_ServiceTaxes);
+
+	/** Get Service Taxes.
+	  * String with all Taxes Names and Taxes Rates
+	  */
+	public String getlbr_ServiceTaxes();
+
+    /** Column name lbr_TaxStatus */
+    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
+
+	/** Set Tax Status.
+	  * Defines the Tax Status
+	  */
+	public void setlbr_TaxStatus (String lbr_TaxStatus);
+
+	/** Get Tax Status.
+	  * Defines the Tax Status
+	  */
+	public String getlbr_TaxStatus();
+
+    /** Column name lbr_TaxStatusIPI */
+    public static final String COLUMNNAME_lbr_TaxStatusIPI = "lbr_TaxStatusIPI";
+
+	/** Set Tax Status (IPI).
+	  * Defines the Tax Status (IPI)
+	  */
+	public void setlbr_TaxStatusIPI (String lbr_TaxStatusIPI);
+
+	/** Get Tax Status (IPI).
+	  * Defines the Tax Status (IPI)
+	  */
+	public String getlbr_TaxStatusIPI();
+
+    /** Column name lbr_UOMName */
+    public static final String COLUMNNAME_lbr_UOMName = "lbr_UOMName";
+
+	/** Set UOM Name.
+	  * Defines the UOM Name
+	  */
+	public void setlbr_UOMName (String lbr_UOMName);
+
+	/** Get UOM Name.
+	  * Defines the UOM Name
+	  */
+	public String getlbr_UOMName();
 }

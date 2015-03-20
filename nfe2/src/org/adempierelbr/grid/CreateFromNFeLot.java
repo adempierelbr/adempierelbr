@@ -85,9 +85,10 @@ public class CreateFromNFeLot extends CreateFrom
 					"INNER JOIN AD_Attachment att ON (nf.LBR_NotaFiscal_ID = att.Record_ID " +
 					"AND att.AD_Table_ID = ?) "
 			+ "WHERE nf.LBR_NFeID IS NOT NULL AND nf.LBR_NFeLot_ID IS NULL "
-			+ "AND IsCancelled = 'N' "
+			+ "AND nf.IsCancelled = 'N' "
 			+ "AND nf.AD_Org_ID IN (?, 0) "
 			+ "AND nf.LBR_IsOwnDocument='Y' "
+			+ "AND nf.DocStatus='IP' "
 			+ "ORDER BY 1";
 		
 		PreparedStatement pstmt = null;

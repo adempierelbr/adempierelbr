@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -26,6 +27,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.util.AdempiereLBR;
@@ -57,8 +59,8 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
-import org.compiere.model.MSequence;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
@@ -67,14 +69,14 @@ import org.compiere.model.MUser;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.Query;
-import org.compiere.util.CLogger;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocOptions;
+import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.w3c.dom.Node;
 
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide.IdDest.Enum;
-import br.inf.portalfiscal.nfe.TProtNFe;
 import br.inf.portalfiscal.nfe.TProtNFe.InfProt;
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -89,19 +91,12 @@ import bsh.Interpreter;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MLBRNotaFiscal.java, 08/01/2008 10:56:00 mgrigioni
  */
-public class MLBRNotaFiscal extends X_LBR_NotaFiscal 
+public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOptions
 {
-
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(MLBRNotaFiscal.class);
-
-	/**	Process Message */
-	private String		m_processMsg = null;
 
 	/** REFERENCE */
 	public Map<String,String> m_refNCM  = new HashMap<String, String>(); //Referência NCM
@@ -128,14 +123,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 * 	3=Operação com exterior.
 	 */
 	private Enum idDest = null;
-
-	public String getProcessMsg() {
-
-		if (m_processMsg == null)
-			m_processMsg = "";
-
-		return m_processMsg;
-	}
 	
 	public static final int CURRENCY_BRL = 297;
 
@@ -526,104 +513,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		}
 	} //setLegalMessage
 
-
-	/**
-	 * 	Void Document.
-	 * 	@return true if success
-	 */
-	public boolean voidIt(){
-
-		log.info(toString());
-		// Before Void
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_VOID);
-		if (m_processMsg != null)
-			return false;
-
-		if (isCancelled()) return false; //Já está cancelada
-
-		if (isPrinted()){
-
-			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
-			if (invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Voided) || //Already Voided
-				invoice.getDocStatus().equals(MInvoice.DOCSTATUS_Reversed))
-				;
-			else
-				if (invoice.voidIt()){
-					invoice.save(get_TrxName());
-				}
-				else {
-					m_processMsg = invoice.getProcessMsg();
-					return false;
-				}
-
-			if (getM_InOut_ID() != 0){
-				MInOut shipment = new MInOut(getCtx(),getM_InOut_ID(),get_TrxName());
-				if (shipment.getDocStatus().equals(MInOut.DOCSTATUS_Voided) || //Already Voided
-				    shipment.getDocStatus().equals(MInOut.DOCSTATUS_Reversed))
-						;
-				else
-					if (shipment.voidIt()){
-						shipment.save(get_TrxName());
-					}
-					else {
-						m_processMsg = shipment.getProcessMsg();
-						return false;
-					}
-			}
-
-			/* CANCELA OV - Utilizar código no validator do cliente no AFTER_VOID
-			if (getC_Order_ID() != 0){
-				MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
-				if (order.getDocStatus().equals(MOrder.DOCSTATUS_Voided) || //Already Voided
-				    order.getDocStatus().equals(MOrder.DOCSTATUS_Reversed))
-						;
-				else
-					if (order.voidIt()){
-						order.save(get_TrxName());
-					}
-					else return false;
-			}
-			*/
-
-		} //printed
-		else{
-
-			MInvoice invoice = new MInvoice(getCtx(),getC_Invoice_ID(),get_TrxName());
-			invoice.set_ValueOfColumn("LBR_NotaFiscal_ID", null);
-			invoice.save(get_TrxName());
-
-			if (getC_DocTypeTarget_ID() != 0){
-
-				MDocType docType = new MDocType(getCtx(),getC_DocTypeTarget_ID(),get_TrxName());
-				if (docType.getDocNoSequence_ID() != 0){
-					MSequence sequence = new MSequence(getCtx(), docType.getDocNoSequence_ID(), get_TrxName());
-
-					int actual = sequence.getCurrentNext()-1;
-					if (actual == Integer.parseInt(getDocumentNo())){
-						sequence.setCurrentNext(sequence.getCurrentNext()-1);
-						sequence.save(get_TrxName());
-					}
-					else{
-						log.log(Level.SEVERE, "Existem notas com numeração superior " +
-								"no sistema. Nota: " + getDocumentNo());
-						return false;
-					}
-				}
-
-			}
-
-		}
-
-		setIsCancelled(true);
-
-		// After Void
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
-		if (m_processMsg != null)
-			return false;
-
-		return true;
-	}
-
 	public String getNCMReference()
 	{
 		return TextUtil.retiraPontoFinal(m_NCMReference);
@@ -740,26 +629,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		if (infProt != null)
 		{			
 			String chNFe	= infProt.getChNFe();
-			String xMotivo 	= infProt.getXMotivo();
 			String digVal 	= null;
 			String dhRecbto = infProt.getDhRecbto().toString();
 			String cStat 	= infProt.getCStat();
 			String nProt 	= infProt.getNProt();
 			
 			if (infProt.getDigVal() != null)
-				digVal = new String (infProt.getDigVal());
+				digVal = infProt.xgetDigVal().getStringValue();
 			//
 			MLBRNotaFiscal nf = getNFe (chNFe, trxName);
 			if (nf == null)
 			{
 				error = "NF não encontrada: " + chNFe;
-				log.severe(error);
+//				log.severe(error);
 				return error;
 			}
 
 			if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
 			{
-				log.fine("NF já processada. " + nf.getDocumentNo());
+//				log.fine("NF já processada. " + nf.getDocumentNo());
 				return error;
 			}
 
@@ -770,24 +658,48 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	        nf.setlbr_NFeProt(nProt);
 	        nf.setDateTrx(ts);
 	        nf.setProcessed(true);
-			nf.save(trxName);
 
 			//	Atualiza XML para padrão de distribuição
 			try 
 			{
-				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
-					error = "Problemas ao atualizar o XML para o padrão de distribuição";
-
-				if (error == null &&
-				   (nf.getlbr_NFeStatus().equals(NFeUtil.AUTORIZADA) ||
-				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADA) ||
-				    nf.getlbr_NFeStatus().equals(NFeUtil.CANCELADAPOREVENTO)))
-					NFeEmail.sendMail(nf);
+				//	Estados Finais
+				if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
+						LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
+						LBR_NFESTATUS_110_UsoDenegado,
+						LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
+						LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeE))
+				{
+					nf.setDocStatus(DOCSTATUS_Completed);
+					nf.setDocAction(DOCACTION_Void);
+					nf.setProcessed(true);
+					//
+					if (TextUtil.match (cStat, LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
+						LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E))
+						nf.setIsCancelled(true);
+					
+					//
+					if (!NFeUtil.updateAttach (nf, NFeUtil.generateDistribution(nf)))
+						error = "Problemas ao atualizar o XML para o padrão de distribuição";
+					
+					else
+						NFeEmail.sendMail(nf);
+				}
+				
+				//	Reativar o documento para correção
+				else
+				{
+					nf.setDocStatus(DOCSTATUS_Invalid);
+					nf.setDocAction(DOCACTION_Complete);
+					nf.setProcessed(false);
+				}
 			} 
 			catch (Exception e) 
 			{
-				log.log(Level.WARNING,"",e);
+//				log.log(Level.WARNING,"",e);
 			}
+			
+			//	Save changes
+			nf.save();
 		}
 
 		return error;
@@ -811,7 +723,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			return new MLBRNotaFiscal (Env.getCtx(), LBR_NotaFiscal_ID, trxName);
 		else
 		{
-			log.warning("NFe " + NFeID);
+//			log.warning("NFe " + NFeID);
 			return null;
 		}
 	}	//	get
@@ -1699,7 +1611,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 			setM_InOut_ID(io.getM_InOut_ID());
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
-			setNoPackages(new BigDecimal(io.getNoPackages()));
+			setNoPackages(io.getNoPackages());
 
 			if (MSysConfig.getValue("LBR_NFESPECIE",  getAD_Client_ID()) != null )
 				setlbr_PackingType(MSysConfig.getValue("LBR_NFESPECIE", getAD_Client_ID()));
@@ -1968,6 +1880,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		if (getC_DocTypeTarget_ID () == 0
+				|| !"NFB".equals (getC_DocTypeTarget().getDocBaseType()))
+			throw new FillMandatoryException (COLUMNNAME_C_DocTypeTarget_ID);
+		
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
@@ -2407,4 +2323,420 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal
 		//	Different Address
 		return false;
 	}	//	isSamePickUpAddr
+
+	
+	/**			DocAction		*/
+	
+	/**
+	 * 	Get Document Info
+	 *	@return document info (untranslated)
+	 */
+	public String getDocumentInfo()
+	{
+		MDocType dt = MDocType.get(getCtx(), 0);
+		return dt.getName() + " " + getDocumentNo();
+	}	//	getDocumentInfo
+
+	/**
+	 * 	Create PDF
+	 *	@return File or null
+	 */
+	public File createPDF ()
+	{
+		try
+		{
+			File temp = File.createTempFile(get_TableName()+get_ID()+"_", ".pdf");
+			return createPDF (temp);
+		}
+		catch (Exception e)
+		{
+			log.severe("Could not create PDF - " + e.getMessage());
+		}
+		return null;
+	}	//	getPDF
+
+	/**
+	 * 	Create PDF file
+	 *	@param file output file
+	 *	@return file if success
+	 */
+	public File createPDF (File file)
+	{
+		return null;
+	}	//	createPDF
+
+	/**************************************************************************
+	 * 	Process document
+	 *	@param processAction document action
+	 *	@return true if performed
+	 */
+	public boolean processIt (String processAction)
+	{
+		m_processMsg = null;
+		DocumentEngine engine = new DocumentEngine (this, getDocStatus());
+		return engine.processIt (processAction, getDocAction());
+	}	//	processIt
+	
+	/**	Process Message 			*/
+	private String		m_processMsg = null;
+	/**	Just Prepared Flag			*/
+	private boolean		m_justPrepared = false;
+	
+	/**
+	 * 	Unlock Document.
+	 * 	@return true if success 
+	 */
+	public boolean unlockIt()
+	{
+		log.info("unlockIt - " + toString());
+		return reActivateIt();
+	}	//	unlockIt
+	
+	/**
+	 * 	Invalidate Document
+	 * 	@return true if success 
+	 */
+	public boolean invalidateIt()
+	{
+		log.info("invalidateIt - " + toString());
+		return true;
+	}	//	invalidateIt
+	
+	/**
+	 *	Prepare Document
+	 * 	@return new status (In Progress or Invalid) 
+	 */
+	public String prepareIt()
+	{
+		log.info(toString());
+		
+		if (m_justPrepared || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock))
+			return DOCSTATUS_InProgress;
+		
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
+		if (m_processMsg != null)
+			return DocAction.STATUS_Invalid;
+		
+		if (TextUtil.match (getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
+		{
+			//	Valida a Org do Tipo de Documento vs Org da NF
+			if (islbr_IsOwnDocument() 
+					&& getC_DocTypeTarget().getAD_Org_ID() > 0 
+					&& getAD_Org_ID() != getC_DocTypeTarget().getAD_Org_ID())
+			{
+				m_processMsg = "Organização do Tipo de Documento não confere com a da Nota Fiscal";
+				return DocAction.STATUS_Invalid;
+			}
+			
+			//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
+			setlbr_NFeStatus (null);
+			setlbr_NFeID (null);
+			setLBR_NFeLot_ID (0);
+			try
+			{
+				//	Gera o XML da NF-e
+				NFeXMLGenerator.generate (this);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				//
+				m_processMsg = e.getMessage();
+				return DOCSTATUS_Invalid;
+			}
+			
+			//	Set action
+//			setDocAction(DOCACTION_Complete);
+			setProcessed(true);
+		}
+		
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
+		if (m_processMsg != null)
+			return DocAction.STATUS_Invalid;
+
+		m_justPrepared = true;
+		
+		return DocAction.STATUS_InProgress;
+	}	//	prepareIt
+	
+	/**
+	 * 	Approve Document
+	 * 	@return true if success 
+	 */
+	public boolean  approveIt()
+	{
+		log.info("approveIt - " + toString());
+		return true;
+	}	//	approveIt
+	
+	/**
+	 * 	Reject Approval
+	 * 	@return true if success 
+	 */
+	public boolean rejectIt()
+	{
+		log.info("rejectIt - " + toString());
+		return true;
+	}	//	rejectIt
+	
+	/**
+	 * 	Complete Document
+	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
+	 */
+	public String completeIt()
+	{
+		log.info(toString());
+		
+		try
+		{
+			if (DOCSTATUS_WaitingConfirmation.equals (getDocStatus()))
+			{
+				//	Verifica se a NF já pertence a um lote
+				if (getLBR_NFeLot_ID() > 0)
+				{
+					MLBRNFeLot lot = new MLBRNFeLot (getCtx(), getLBR_NFeLot_ID(), get_TrxName());
+					if (!lot.consultaLoteNFe())
+						throw new Exception ("Falha na transmissão da NF-e");
+					
+					return getDocStatus();
+				}
+			}
+				
+			else if (DOCSTATUS_InProgress.equals (getDocStatus()))
+			{
+				//	Cria um novo lote para a transmissão
+				MLBRNFeLot lot = new MLBRNFeLot (getCtx(), 0, get_TrxName());
+				lot.setName("[Auto] NF: " + getDocumentNo());
+				lot.setAD_Org_ID(getAD_Org_ID());
+				lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
+				lot.save();
+				
+				//	Vincula o lote criado a NF-e
+				setLBR_NFeLot_ID (lot.getLBR_NFeLot_ID());
+				save();
+				
+				if (!lot.enviaLoteNFe())
+					throw new Exception ("Falha na transmissão da NF-e");
+				
+				if (!lot.islbr_LotSent())
+					throw new Exception ("Erro na transmissão da NF-e. " + MRefList.getListName(getCtx(), LBR_NFESTATUS_AD_Reference_ID, lot.getlbr_NFeStatus()));
+				
+				//	Set status
+				setDocStatus(DOCSTATUS_WaitingConfirmation);
+				setDocAction(DOCACTION_None);
+			}
+
+			//	Valida e prepara a NF
+//			else if (TextUtil.match (getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
+//			{
+//				//	Valida a Org do Tipo de Documento vs Org da NF
+//				if (islbr_IsOwnDocument() 
+//						&& getC_DocTypeTarget().getAD_Org_ID() > 0 
+//						&& getAD_Org_ID() != getC_DocTypeTarget().getAD_Org_ID())
+//				{
+//					m_processMsg = "Organização do Tipo de Documento não confere com a da Nota Fiscal";
+//					return DocAction.STATUS_Invalid;
+//				}
+//				
+//				//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
+//				setlbr_NFeStatus (null);
+//				setlbr_NFeID (null);
+//				setLBR_NFeLot_ID (0);
+//				
+//				//	Gera o XML da NF-e
+//				NFeXMLGenerator.generate (this);
+//				
+//				//	Set status
+//				setDocStatus(DOCSTATUS_WaitingConfirmation);
+//				setDocAction(DOCACTION_Complete);
+//			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			//
+			m_processMsg = e.getMessage();
+			return getDocStatus();
+		}
+
+		return getDocStatus();
+	}	//	completeIt
+
+	/**
+	 * 	Void Document.
+	 * 	Same as Close.
+	 * 	@return true if success 
+	 */
+	public boolean voidIt()
+	{
+		log.info("voidIt - " + toString());
+		
+		if (!DOCSTATUS_Completed.equals(getDocStatus()))
+		{
+			setProcessed (true);
+			setDocAction (DOCACTION_None);
+			return true;
+		}
+		return closeIt();
+	}	//	voidIt
+	
+	/**
+	 * 	Close Document.
+	 * 	Cancel not delivered Qunatities
+	 * 	@return true if success 
+	 */
+	public boolean closeIt()
+	{
+		log.info("closeIt - " + toString());
+		m_processMsg = "Não é permitido fechar o documento.";
+		return false;
+	}	//	closeIt
+	
+	/**
+	 * 	Reverse Correction
+	 * 	@return true if success 
+	 */
+	public boolean reverseCorrectIt()
+	{
+		log.info("reverseCorrectIt - " + toString());
+		return false;
+	}	//	reverseCorrectionIt
+	
+	/**
+	 * 	Reverse Accrual - none
+	 * 	@return true if success 
+	 */
+	public boolean reverseAccrualIt()
+	{
+		log.info("reverseAccrualIt - " + toString());
+		return false;
+	}	//	reverseAccrualIt
+	
+	/** 
+	 * 	Re-activate
+	 * 	@return true if success 
+	 */
+	public boolean reActivateIt()
+	{
+		log.info("reActivateIt - " + toString());
+		
+		//	Verifica se a NF está cancelada
+		if (isCancelled())
+		{
+			m_processMsg = "NF Cancelada, impossível reativar";
+			return false;
+		}
+		
+		//	Valida o Lote da NF-e
+		int LBR_NFeLot_ID = getLBR_NFeLot_ID();
+		if (LBR_NFeLot_ID > 0)
+		{
+			MLBRNFeLot lot = new MLBRNFeLot (getCtx(), LBR_NFeLot_ID, get_TrxName());
+			
+			if (DOCSTATUS_WaitingConfirmation.equals (lot.getDocStatus()))
+			{
+				m_processMsg = "Lote da NF não processado, impossível reativar";
+				return false;
+			}
+			
+			//	Apaga o Lote da NF em questão
+			setLBR_NFeLot_ID(0);
+		}
+
+		setDocStatus(DOCSTATUS_Drafted);
+		setDocAction(DOCACTION_Prepare);
+		setProcessed(false);
+		return true;
+	}	//	reActivateIt
+	
+	/*************************************************************************
+	 * 	Get Summary
+	 *	@return Summary of Document
+	 */
+	public String getSummary()
+	{
+		return "";
+	}	//	getSummary
+
+	/**
+	 * 	Get Process Message
+	 *	@return clear text error message
+	 */
+	public String getProcessMsg()
+	{
+		if (m_processMsg == null)
+			m_processMsg = "";
+
+		return m_processMsg;
+	}	//	getProcessMsg
+	
+	/**
+	 * 	Get Document Owner (Responsible)
+	 *	@return AD_User_ID
+	 */
+	public int getDoc_User_ID()
+	{
+		return 0;
+	}	//	getDoc_User_ID
+
+	/**
+	 * 	Get Document Approval Amount
+	 *	@return amount
+	 */
+	public BigDecimal getApprovalAmt()
+	{
+		return null;
+	}	//	getApprovalAmt
+	
+	/**
+	 * 	Get Document Currency
+	 *	@return C_Currency_ID
+	 */
+	public int getC_Currency_ID()
+	{
+		return 0;
+	}	//	getC_Currency_ID
+	
+	/**
+	 * 	Status
+	 */
+	@Override
+	public int customizeValidActions (String docStatus, Object processing,
+			String orderType, String isSOTrx, int AD_Table_ID, String[] docAction,
+			String[] options, int index)
+	{
+		options[0] = null;
+		options[1] = null;
+		options[2] = null;
+		options[3] = null;
+		options[4] = null;
+		
+		if (DOCSTATUS_InProgress.equals(docStatus))
+		{
+			options[0] = DOCACTION_Complete;
+			options[1] = DOCACTION_Unlock;
+			options[2] = DOCACTION_Void;
+			index=3;
+		}
+		else if (DOCSTATUS_Drafted.equals(docStatus)
+				|| DOCSTATUS_Invalid.equals(docStatus))
+		{
+			options[0] = DOCACTION_Prepare;
+			options[1] = DOCACTION_Complete;
+			options[2] = DOCACTION_Void;
+			index=3;
+		}
+		else if (DOCSTATUS_WaitingConfirmation.equals(docStatus))
+		{
+			options[0] = DOCACTION_Complete;
+			index=1;
+		}
+		else if (DOCSTATUS_Completed.equals(docStatus))
+		{
+			options[0] = DOCACTION_Void;
+			index=1;
+		}
+		//
+		return index;
+	}	//	docStatus
 }	//	MLBRNotaFiscal
