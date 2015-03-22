@@ -300,9 +300,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 				//
 				for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
 				{
-					String error = MLBRNotaFiscal.authorizeNFe (protNFe.getInfProt(), trxName);
-					if (error != null)
-						throw new Exception(error);
+					MLBRNotaFiscal.authorizeNFe (protNFe, trxName);
 				}	//	for
 			}	//	if
 			//

@@ -43,6 +43,8 @@ import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.compiere.model.MAcctSchema;
+import org.compiere.model.MAttachment;
+import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClientInfo;
@@ -75,8 +77,12 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
+import br.inf.portalfiscal.nfe.NFeDocument;
+import br.inf.portalfiscal.nfe.NfeProcDocument;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide;
 import br.inf.portalfiscal.nfe.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.TNfeProc;
+import br.inf.portalfiscal.nfe.TProtNFe;
 import br.inf.portalfiscal.nfe.TProtNFe.InfProt;
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -622,87 +628,107 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * return null (success) or error message
 	 * @throws Exception
 	 */
-	public static String authorizeNFe (InfProt infProt, String trxName)
-	{
-		String error = null;
+	public static void authorizeNFe (TProtNFe protNFe, String trxName) throws Exception
+	{		
+		if (protNFe == null || protNFe.getInfProt() == null)
+			throw new Exception ("Protocolo inválido");
 
-		if (infProt != null)
-		{			
-			String chNFe	= infProt.getChNFe();
-			String digVal 	= null;
-			String dhRecbto = infProt.getDhRecbto().toString();
-			String cStat 	= infProt.getCStat();
-			String nProt 	= infProt.getNProt();
+		InfProt infProt = protNFe.getInfProt();
 			
-			if (infProt.getDigVal() != null)
-				digVal = infProt.xgetDigVal().getStringValue();
+		String chNFe	= infProt.getChNFe();
+		String digVal 	= null;
+		String dhRecbto = infProt.getDhRecbto().toString();
+		String cStat 	= infProt.getCStat();
+		String nProt 	= infProt.getNProt();
+		
+		if (infProt.getDigVal() != null)
+			digVal = infProt.xgetDigVal().getStringValue();
+		//
+		MLBRNotaFiscal nf = getNFe (chNFe, trxName);
+		if (nf == null)
+			throw new Exception ("NF não encontrada: " + chNFe);
+
+		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
+			throw new Exception ("NF já processada. " + nf.getDocumentNo());
+
+        Timestamp ts = NFeUtil.stringToTime (dhRecbto);
+        //
+        nf.setlbr_DigestValue(digVal);
+        nf.setlbr_NFeStatus(cStat);
+        nf.setlbr_NFeProt(nProt);
+        nf.setDateTrx(ts);
+        nf.setProcessed(true);
+
+		//	Estados Finais
+		if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
+				LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
+				LBR_NFESTATUS_110_UsoDenegado,
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
+				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeE))
+		{
+			nf.setDocStatus(DOCSTATUS_Completed);
+			nf.setDocAction(DOCACTION_Void);
+			nf.setProcessed(true);
 			//
-			MLBRNotaFiscal nf = getNFe (chNFe, trxName);
-			if (nf == null)
+			if (TextUtil.match (cStat, LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E))
+				nf.setIsCancelled(true);
+			
+			/**	
+			 * 	Gera o arquivo de distribuição
+			 */
+			MAttachment attachment = nf.getAttachment(true);
+			
+			//	Anexo não encontrado
+			if (attachment == null || attachment.getEntryCount() == 0)
+				throw new Exception ("Arquivo XML não encontrado na NF");
+			
+			//	Entries
+			String xml = null;
+			
+			// 	Procura o XML nos registros
+			for (MAttachmentEntry entry : attachment.getEntries())
 			{
-				error = "NF não encontrada: " + chNFe;
-//				log.severe(error);
-				return error;
-			}
-
-			if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
-			{
-//				log.fine("NF já processada. " + nf.getDocumentNo());
-				return error;
-			}
-
-	        Timestamp ts = NFeUtil.stringToTime (dhRecbto);
-	        //
-	        nf.setlbr_DigestValue(digVal);
-	        nf.setlbr_NFeStatus(cStat);
-	        nf.setlbr_NFeProt(nProt);
-	        nf.setDateTrx(ts);
-	        nf.setProcessed(true);
-
-			//	Atualiza XML para padrão de distribuição
-			try 
-			{
-				//	Estados Finais
-				if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
-						LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-						LBR_NFESTATUS_110_UsoDenegado,
-						LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
-						LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeE))
+				if ((nf.getlbr_NFeID() + "-nfe.xml").equals(entry.getName()))
 				{
-					nf.setDocStatus(DOCSTATUS_Completed);
-					nf.setDocAction(DOCACTION_Void);
-					nf.setProcessed(true);
-					//
-					if (TextUtil.match (cStat, LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-						LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E))
-						nf.setIsCancelled(true);
-					
-					//
-					if (!NFeUtil.updateAttach (nf, NFeUtil.generateDistribution(nf)))
-						error = "Problemas ao atualizar o XML para o padrão de distribuição";
-					
-					else
-						NFeEmail.sendMail(nf);
+					xml = new String (entry.getData());
+					attachment.deleteEntry(entry.getIndex());
+					break;
 				}
-				
-				//	Reativar o documento para correção
-				else
-				{
-					nf.setDocStatus(DOCSTATUS_Invalid);
-					nf.setDocAction(DOCACTION_Complete);
-					nf.setProcessed(false);
-				}
-			} 
-			catch (Exception e) 
-			{
-//				log.log(Level.WARNING,"",e);
 			}
 			
-			//	Save changes
-			nf.save();
+			//	Falha, não encontrado
+			if (xml == null)
+				throw new Exception ("Arquivo XML não encontrado na NF");
+			
+			//	Converte em objeto
+			NFeDocument nfe = NFeDocument.Factory.parse(xml);
+			
+			//	Cria um novo arquivo de distribuição
+			NfeProcDocument nfeProcDoc = NfeProcDocument.Factory.newInstance();
+			TNfeProc nfeProc = nfeProcDoc.addNewNfeProc();
+			nfeProc.setVersao(NFeUtil.VERSAO_LAYOUT);
+			nfeProc.setNFe(nfe.getNFe());
+			nfeProc.setProtNFe(protNFe);
+			
+			//	Atualiza o anexo
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes());
+			attachment.save();
+			
+			//	Envia o e-mail para o cliente
+			NFeEmail.sendMail(nf);
 		}
-
-		return error;
+		
+		//	Reativar o documento para correção
+		else
+		{
+			nf.setDocStatus(DOCSTATUS_Invalid);
+			nf.setDocAction(DOCACTION_Complete);
+			nf.setProcessed(false);
+		}
+		
+		//	Save changes
+		nf.save();
 	}	//	authorizeNFe
 
 	/**
@@ -2428,25 +2454,28 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				return DocAction.STATUS_Invalid;
 			}
 			
-			//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
-			setlbr_NFeStatus (null);
-			setlbr_NFeID (null);
-			setLBR_NFeLot_ID (0);
-			try
+			//	Nota Fiscal Eletrônica
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica))
 			{
-				//	Gera o XML da NF-e
-				NFeXMLGenerator.generate (this);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				//
-				m_processMsg = e.getMessage();
-				return DOCSTATUS_Invalid;
+				//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
+				setlbr_NFeStatus (null);
+				setlbr_NFeID (null);
+				setLBR_NFeLot_ID (0);
+				try
+				{
+					//	Gera o XML da NF-e
+					NFeXMLGenerator.generate (this);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					//
+					m_processMsg = e.getMessage();
+					return DOCSTATUS_Invalid;
+				}
 			}
 			
 			//	Set action
-//			setDocAction(DOCACTION_Complete);
 			setProcessed(true);
 		}
 		
@@ -2489,67 +2518,51 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		try
 		{
-			if (DOCSTATUS_WaitingConfirmation.equals (getDocStatus()))
+			//	Nota Fiscal Eletrônica
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica))
 			{
-				//	Verifica se a NF já pertence a um lote
-				if (getLBR_NFeLot_ID() > 0)
+				//	Aguardando a confirmação da SeFaz
+				if (DOCSTATUS_WaitingConfirmation.equals (getDocStatus()))
 				{
-					MLBRNFeLot lot = new MLBRNFeLot (getCtx(), getLBR_NFeLot_ID(), get_TrxName());
-					if (!lot.consultaLoteNFe())
+					//	Verifica se a NF já pertence a um lote
+					if (getLBR_NFeLot_ID() > 0)
+					{
+						MLBRNFeLot lot = new MLBRNFeLot (getCtx(), getLBR_NFeLot_ID(), get_TrxName());
+						if (!lot.consultaLoteNFe())
+							throw new Exception ("Falha na transmissão da NF-e");
+						
+						if (DOCSTATUS_Completed.equals(lot.getDocStatus()))
+							return DOCSTATUS_Completed;
+						//
+						return getDocStatus();
+					}
+				}
+				
+				//	XML gerado, pronto para ser adicionado ao lote
+				else if (DOCSTATUS_InProgress.equals (getDocStatus()))
+				{
+					//	Cria um novo lote para a transmissão
+					MLBRNFeLot lot = new MLBRNFeLot (getCtx(), 0, get_TrxName());
+					lot.setName("[Auto] NF: " + getDocumentNo());
+					lot.setAD_Org_ID(getAD_Org_ID());
+					lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
+					lot.save();
+					
+					//	Vincula o lote criado a NF-e
+					setLBR_NFeLot_ID (lot.getLBR_NFeLot_ID());
+					save();
+					
+					if (!lot.enviaLoteNFe())
 						throw new Exception ("Falha na transmissão da NF-e");
 					
-					return getDocStatus();
+					if (!lot.islbr_LotSent())
+						throw new Exception ("Erro na transmissão da NF-e. " + MRefList.getListName(getCtx(), LBR_NFESTATUS_AD_Reference_ID, lot.getlbr_NFeStatus()));
+					
+					//	Set status
+					setDocStatus(DOCSTATUS_WaitingConfirmation);
+					setDocAction(DOCACTION_Complete);
 				}
 			}
-				
-			else if (DOCSTATUS_InProgress.equals (getDocStatus()))
-			{
-				//	Cria um novo lote para a transmissão
-				MLBRNFeLot lot = new MLBRNFeLot (getCtx(), 0, get_TrxName());
-				lot.setName("[Auto] NF: " + getDocumentNo());
-				lot.setAD_Org_ID(getAD_Org_ID());
-				lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
-				lot.save();
-				
-				//	Vincula o lote criado a NF-e
-				setLBR_NFeLot_ID (lot.getLBR_NFeLot_ID());
-				save();
-				
-				if (!lot.enviaLoteNFe())
-					throw new Exception ("Falha na transmissão da NF-e");
-				
-				if (!lot.islbr_LotSent())
-					throw new Exception ("Erro na transmissão da NF-e. " + MRefList.getListName(getCtx(), LBR_NFESTATUS_AD_Reference_ID, lot.getlbr_NFeStatus()));
-				
-				//	Set status
-				setDocStatus(DOCSTATUS_WaitingConfirmation);
-				setDocAction(DOCACTION_None);
-			}
-
-			//	Valida e prepara a NF
-//			else if (TextUtil.match (getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
-//			{
-//				//	Valida a Org do Tipo de Documento vs Org da NF
-//				if (islbr_IsOwnDocument() 
-//						&& getC_DocTypeTarget().getAD_Org_ID() > 0 
-//						&& getAD_Org_ID() != getC_DocTypeTarget().getAD_Org_ID())
-//				{
-//					m_processMsg = "Organização do Tipo de Documento não confere com a da Nota Fiscal";
-//					return DocAction.STATUS_Invalid;
-//				}
-//				
-//				//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
-//				setlbr_NFeStatus (null);
-//				setlbr_NFeID (null);
-//				setLBR_NFeLot_ID (0);
-//				
-//				//	Gera o XML da NF-e
-//				NFeXMLGenerator.generate (this);
-//				
-//				//	Set status
-//				setDocStatus(DOCSTATUS_WaitingConfirmation);
-//				setDocAction(DOCACTION_Complete);
-//			}
 		}
 		catch (Exception e)
 		{
@@ -2627,22 +2640,26 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			return false;
 		}
 		
-		//	Valida o Lote da NF-e
-		int LBR_NFeLot_ID = getLBR_NFeLot_ID();
-		if (LBR_NFeLot_ID > 0)
+		//	Nota Fiscal Eletrônica
+		if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica))
 		{
-			MLBRNFeLot lot = new MLBRNFeLot (getCtx(), LBR_NFeLot_ID, get_TrxName());
-			
-			if (DOCSTATUS_WaitingConfirmation.equals (lot.getDocStatus()))
+			//	Valida o Lote da NF-e
+			int LBR_NFeLot_ID = getLBR_NFeLot_ID();
+			if (LBR_NFeLot_ID > 0)
 			{
-				m_processMsg = "Lote da NF não processado, impossível reativar";
-				return false;
+				MLBRNFeLot lot = new MLBRNFeLot (getCtx(), LBR_NFeLot_ID, get_TrxName());
+				
+				if (DOCSTATUS_WaitingConfirmation.equals (lot.getDocStatus()))
+				{
+					m_processMsg = "Lote da NF não processado, impossível reativar";
+					return false;
+				}
+				
+				//	Apaga o Lote da NF em questão
+				setLBR_NFeLot_ID(0);
 			}
-			
-			//	Apaga o Lote da NF em questão
-			setLBR_NFeLot_ID(0);
 		}
-
+		
 		setDocStatus(DOCSTATUS_Drafted);
 		setDocAction(DOCACTION_Prepare);
 		setProcessed(false);

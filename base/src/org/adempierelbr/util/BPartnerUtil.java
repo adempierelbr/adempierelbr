@@ -358,7 +358,7 @@ public abstract class BPartnerUtil
 			else if (listCity.size() > 1)
 				log.warning ("More than one code found for City: " + location.getCity() + ", Region:" + location.getRegionName());
 			else
-				log.warning ("Code not found for City: " + location.getCity() + ", Region:" + location.getRegionName());
+				log.warning ("Code not found for City: " + cityName + ", Region:" + C_Region_ID + ", Location:" + location);
 		}
 		else
 			city = new X_C_City (ctx, location.getC_City_ID(), trxName);

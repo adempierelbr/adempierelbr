@@ -120,6 +120,7 @@ public abstract class NFeUtil
 	 *
 	 * @return Cabeçalho distribuiçãi
 	 */
+	@Deprecated
 	public static String geraCabecDistribuicao(){
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
 		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"  versao=\"" + VERSAO_LAYOUT + "\">";
@@ -156,6 +157,7 @@ public abstract class NFeUtil
 	 * @param xMotivo
 	 * @return XML
 	 */
+	@Deprecated
 	public static String geraRodapDistribuicao (String chNFe, String nProt, String tpAmb, String dhRecbto,
 			                                    String digVal, String cStat, String xMotivo)
 	{
@@ -194,6 +196,7 @@ public abstract class NFeUtil
 		return msg;
 	}	// geraMsgCancelamento
 
+	@Deprecated
 	public static File generateDistribution(MLBRNotaFiscal nf) throws Exception{
 
 		File attach = null;
@@ -236,6 +239,7 @@ public abstract class NFeUtil
 	 * @param xml
 	 * @return true = success, false = error
 	 */
+	@Deprecated
 	public static boolean updateAttach(MLBRNotaFiscal nf, File xml){
 
 		if (xml != null){

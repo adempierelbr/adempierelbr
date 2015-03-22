@@ -1231,22 +1231,14 @@ public class NFeXMLGenerator
 		//	XML
 		StringBuilder xmlNFe = new StringBuilder (document.xmlText(NFeUtil.getXmlOpt()));
 		String nfeID = infNFe.getId().substring(3);
+
+		log.fine ("Assinando NF-e");
 		
-		try
-		{
-			log.fine ("Assinando NF-e");
-			
-			//	ZZ. Informações da Assinatura Digital
-			AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
-			
-			log.fine ("Validando NF-e");
-			NFeUtil.validate (NFeDocument.Factory.parse(xmlNFe.toString()));
-		}
-		catch (Exception e)
-		{
-			log.severe (e.getMessage());
-			return "@Error@ " + e.getMessage();
-		}
+		//	ZZ. Informações da Assinatura Digital
+		AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
+		
+		log.fine ("Validando NF-e");
+		NFeUtil.validate (NFeDocument.Factory.parse(xmlNFe.toString()));
 		
 		//	Grava ID
 		nf.setlbr_NFeID(nfeID);
