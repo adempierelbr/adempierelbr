@@ -2455,7 +2455,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 			
 			//	Nota Fiscal Eletrônica
-			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica))
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica, LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
 			{
 				//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
 				setlbr_NFeStatus (null);
@@ -2519,7 +2519,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		try
 		{
 			//	Nota Fiscal Eletrônica
-			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica))
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica, LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
 			{
 				//	Aguardando a confirmação da SeFaz
 				if (DOCSTATUS_WaitingConfirmation.equals (getDocStatus()))
@@ -2563,6 +2563,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setDocAction(DOCACTION_Complete);
 				}
 			}
+			
+			//	NF Serviço
+			else if (LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS.equals(getlbr_NFModel()))
+			{
+				
+			}
+			
+			//	Outras NF
+			else
+				setDocStatus(DOCSTATUS_Completed);
 		}
 		catch (Exception e)
 		{

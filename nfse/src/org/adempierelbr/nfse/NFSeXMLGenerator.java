@@ -14,6 +14,8 @@
 package org.adempierelbr.nfse;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -21,11 +23,8 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
-import org.adempierelbr.nfse.beans.BtpCPFCNPJ;
-import org.adempierelbr.nfse.beans.BtpChaveRPS;
-import org.adempierelbr.nfse.beans.BtpEndereco;
-import org.adempierelbr.nfse.beans.BtpRPS;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.NFeUtil;
 import org.compiere.Adempiere;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -40,7 +39,12 @@ import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.XStream;
+import br.gov.sp.prefeitura.nfe.tipos.TpCPFCNPJ;
+import br.gov.sp.prefeitura.nfe.tipos.TpChaveRPS;
+import br.gov.sp.prefeitura.nfe.tipos.TpEndereco;
+import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
+import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
+import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
 
 /**
  * Gera o arquivo XML da NFS-e (Nota Fiscal de Serviços Eletrônica)
@@ -76,9 +80,8 @@ public class NFSeXMLGenerator
 	public static String generateXML (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		log.info("init");
-		XStream xs = new XStream();
-		xs.alias("RPS", BtpRPS.class);
-		String result = xs.toXML(generateNFSe(LBR_NotaFiscal_ID, trxName));
+		TpRPS rps = generateNFSe (LBR_NotaFiscal_ID, trxName);
+		String result = rps.xmlText (NFeUtil.getXmlOpt ());
 		log.finer(result);
 		log.fine("final");
 		//
@@ -92,7 +95,7 @@ public class NFSeXMLGenerator
 	 * @param 	TrxName
 	 * @return	Error msg or ""
 	 */
-	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
+	public static TpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		return generateNFSe (LBR_NotaFiscal_ID, false, trxName);
 	}	//	generateNFSe
@@ -105,7 +108,7 @@ public class NFSeXMLGenerator
 	 * @param 	TrxName
 	 * @return	Error msg or ""
 	 */
-	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
+	public static TpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
 	{
 		Properties ctx = Env.getCtx();
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
@@ -131,17 +134,20 @@ public class NFSeXMLGenerator
 		}
 		
 		//
-		BtpChaveRPS tpChaveRPS 			= new BtpChaveRPS(); 
-		BtpRPS tpRPS					= new BtpRPS();
+		TpChaveRPS tpChaveRPS 		= TpChaveRPS.Factory.newInstance(); 
+		TpRPS tpRPS					= TpRPS.Factory.newInstance();
 		
-		tpChaveRPS.setInscricaoPrestador(MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM"));
-		tpChaveRPS.setNumero(nf.getDocumentNo());
+		tpChaveRPS.setInscricaoPrestador(toLong (MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM")));
+		tpChaveRPS.setNumeroRPS(toLong (nf.getDocumentNo()));
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
+		Calendar cal = new GregorianCalendar ();
+		cal.setTimeInMillis (nf.getDateDoc().getTime());
+		
 		tpRPS.setChaveRPS(tpChaveRPS);
-		tpRPS.setTipoRPS(dt.get_ValueAsString("lbr_NFModel"));
-		tpRPS.setDataEmissao(nf.getDateDoc());
-		tpRPS.setStatusRPS("N");						//	FIXME
+		tpRPS.setTipoRPS(TpTipoRPS.RPS);
+		tpRPS.setDataEmissao(cal);
+		tpRPS.setStatusRPS(TpStatusNFe.N);				//	FIXME
 		tpRPS.setTributacaoRPS("T");					//	FIXME
 		tpRPS.setValorServicos(nf.getlbr_ServiceTotalAmt());
 		tpRPS.setValorDeducoes(Env.ZERO);
@@ -151,30 +157,28 @@ public class NFSeXMLGenerator
 		tpRPS.setValorIR(nf.getTaxAmt("IR"));
 		tpRPS.setValorCSLL(nf.getTaxAmt("CSLL"));
 		//
-		BtpCPFCNPJ cpfcnpj = new BtpCPFCNPJ();
+		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
-		if ("PF".equals(BPartnerUtil.getBPTypeBR(bp)))
-			cpfcnpj.setCPF(nf.getlbr_BPCNPJ());
+		if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(BPartnerUtil.getBPTypeBR (bp)))
+			tpCPFCNPJ.setCPF(nf.getlbr_BPCNPJ());
 		else
-			cpfcnpj.setCNPJ(nf.getlbr_BPCNPJ());
+			tpCPFCNPJ.setCNPJ(nf.getlbr_BPCNPJ());
 		//
-		tpRPS.setCNPJCPFTomador(cpfcnpj);
 		if (bp != null && "3550308".equals(cityCode)) // São Paulo
-			tpRPS.setInscricaoMunicipalTomador(bp.get_ValueAsString("lbr_CCM"));
+			tpRPS.setInscricaoMunicipalTomador (toLong (bp.get_ValueAsString ("lbr_CCM")));
 		//
-		tpRPS.setInscricaoEstadualTomador(nf.getlbr_BPIE());
+		tpRPS.setInscricaoEstadualTomador(toLong (nf.getlbr_BPIE()));
 		tpRPS.setRazaoSocialTomador(nf.getBPName());
 		//
-		BtpEndereco end = new BtpEndereco();
+		TpEndereco end = tpRPS.addNewEnderecoTomador();
 		end.setTipoLogradouro(nf.getlbr_BPAddress1());
 		end.setLogradouro(nf.getlbr_BPAddress1());
 		end.setNumeroEndereco(nf.getlbr_BPAddress2());
 		end.setBairro(nf.getlbr_BPAddress3());
 		end.setComplementoEndereco(nf.getlbr_BPAddress4());
-		end.setCEP(nf.getlbr_BPPostal());
-		end.setCidade(cityCode);	//	Cod. da Cidade
+		end.setCEP(toInt (nf.getlbr_BPPostal()));
+		end.setCidade(toInt (cityCode));	//	Cod. da Cidade
 		end.setUF(nf.getlbr_BPRegion());
-		tpRPS.setEnderecoTomador(end);
 		//
 		BigDecimal aliquota = Env.ZERO;
 		String serviceCode = "";
@@ -203,14 +207,14 @@ public class NFSeXMLGenerator
 			log.log(Level.SEVERE, "No Service Code for Nota Fiscal");
 		//
 		tpRPS.setAliquotaServicos(aliquota);
-		tpRPS.setCodigoServicos(serviceCode);
+		tpRPS.setCodigoServico(toInt (serviceCode));
 		tpRPS.setDiscriminacao(discriminacao);
 		//
 		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		//
-		if (sign)
-			tpRPS.setAssinatura(nf.getAD_Org_ID());
+//		if (sign)
+//			tpRPS.setAssinatura(nf.getAD_Org_ID());
 		//
 		return tpRPS;
 	}	//	generateNFSe
@@ -239,6 +243,26 @@ public class NFSeXMLGenerator
 		//
 		return deducoes;
 	}	//	getDeducoes
+
+	private static Long toLong (String longStr)
+	{
+		if (longStr == null)
+			return null;
+		return new Long (longStr);
+	}	//	toLong
+	
+	private static int toInt (String intStr)
+	{
+		if (intStr == null)
+			return 0;
+		
+		try
+		{
+			return Integer.parseInt(intStr);
+		}
+		catch (Exception e)	{}
+		return 0;
+	}	//	toLong
 	
 	/**
 	 * 	Testes

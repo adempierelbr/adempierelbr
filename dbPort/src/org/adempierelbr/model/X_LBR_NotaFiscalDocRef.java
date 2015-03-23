@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150319L;
+	private static final long serialVersionUID = 20150322L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalDocRef (Properties ctx, int LBR_NotaFiscalDocRef_ID, String trxName)
@@ -394,6 +394,10 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public static final String LBR_NFMODEL_NotaFiscalEletrônica = "55";
 	/** Conhecimento de Transporte Eletrônico – CT-e = 57 */
 	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
+	/** Nota Fiscal de Serviço Eletrônica (RPS) = S1 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS = "S1";
+	/** Nota Fiscal de Consumidor Eletrônica = 65 */
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "65";
 	/** Set NF Model.
 		@param lbr_NFModel 
 		Identifies the model of Nota Fiscal
