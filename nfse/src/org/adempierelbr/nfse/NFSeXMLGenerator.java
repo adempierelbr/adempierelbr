@@ -23,8 +23,10 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
+import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.Adempiere;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -149,33 +151,35 @@ public class NFSeXMLGenerator
 		tpRPS.setDataEmissao(cal);
 		tpRPS.setStatusRPS(TpStatusNFe.N);				//	FIXME
 		tpRPS.setTributacaoRPS("T");					//	FIXME
-		tpRPS.setValorServicos(nf.getlbr_ServiceTotalAmt());
+		tpRPS.setValorServicos(toBD (nf.getlbr_ServiceTotalAmt()));
 		tpRPS.setValorDeducoes(Env.ZERO);
-		tpRPS.setValorPIS(nf.getTaxAmt("PIS"));
-		tpRPS.setValorCOFINS(nf.getTaxAmt("COFINS"));
-		tpRPS.setValorINSS(nf.getTaxAmt("INSS"));
-		tpRPS.setValorIR(nf.getTaxAmt("IR"));
-		tpRPS.setValorCSLL(nf.getTaxAmt("CSLL"));
+		tpRPS.setValorPIS(toBD (nf.getTaxAmt("PIS")));
+		tpRPS.setValorCOFINS(toBD (nf.getTaxAmt("COFINS")));
+		tpRPS.setValorINSS(toBD (nf.getTaxAmt("INSS")));
+		tpRPS.setValorIR(toBD (nf.getTaxAmt("IR")));
+		tpRPS.setValorCSLL(toBD (nf.getTaxAmt("CSLL")));
 		//
 		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
 		if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(BPartnerUtil.getBPTypeBR (bp)))
-			tpCPFCNPJ.setCPF(nf.getlbr_BPCNPJ());
+			tpCPFCNPJ.setCPF(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		else
-			tpCPFCNPJ.setCNPJ(nf.getlbr_BPCNPJ());
+			tpCPFCNPJ.setCNPJ(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		//
-		if (bp != null && "3550308".equals(cityCode)) // São Paulo
-			tpRPS.setInscricaoMunicipalTomador (toLong (bp.get_ValueAsString ("lbr_CCM")));
+		String ccm = bp.get_ValueAsString ("lbr_CCM");
+		if (bp != null && ccm != null && !ccm.trim().isEmpty() && "3550308".equals(cityCode)) // São Paulo
+			tpRPS.setInscricaoMunicipalTomador (toLong (ccm));
 		//
 		tpRPS.setInscricaoEstadualTomador(toLong (nf.getlbr_BPIE()));
 		tpRPS.setRazaoSocialTomador(nf.getBPName());
 		//
 		TpEndereco end = tpRPS.addNewEnderecoTomador();
-		end.setTipoLogradouro(nf.getlbr_BPAddress1());
+//		end.setTipoLogradouro(nf.getlbr_BPAddress1());
 		end.setLogradouro(nf.getlbr_BPAddress1());
 		end.setNumeroEndereco(nf.getlbr_BPAddress2());
 		end.setBairro(nf.getlbr_BPAddress3());
-		end.setComplementoEndereco(nf.getlbr_BPAddress4());
+		if (nf.getlbr_BPAddress4() != null)
+			end.setComplementoEndereco(nf.getlbr_BPAddress4());
 		end.setCEP(toInt (nf.getlbr_BPPostal()));
 		end.setCidade(toInt (cityCode));	//	Cod. da Cidade
 		end.setUF(nf.getlbr_BPRegion());
@@ -197,7 +201,7 @@ public class NFSeXMLGenerator
 						&& p.get_ValueAsString("lbr_ServiceCode") != null)
 				{
 					serviceCode = p.get_ValueAsString("lbr_ServiceCode");	//	FIXME : Copiar para LBR_NotaFiscalLine
-					aliquota = nfLine.getTaxRate("ISS");
+					aliquota = toBD (nfLine.getTaxRate("ISS"));
 					break;
 				}
 			}
@@ -213,8 +217,8 @@ public class NFSeXMLGenerator
 		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		//
-//		if (sign)
-//			tpRPS.setAssinatura(nf.getAD_Org_ID());
+		if (sign)
+			sign (nf.getAD_Org_ID(), tpRPS);
 		//
 		return tpRPS;
 	}	//	generateNFSe
@@ -244,11 +248,18 @@ public class NFSeXMLGenerator
 		return deducoes;
 	}	//	getDeducoes
 
+	private static BigDecimal toBD (BigDecimal value)
+	{
+		if (value == null)
+			return Env.ZERO;
+		return value.setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
+	
 	private static Long toLong (String longStr)
 	{
-		if (longStr == null)
-			return null;
-		return new Long (longStr);
+		if (longStr == null || TextUtil.toNumeric(longStr).trim().isEmpty())
+			return (long) 0;
+		return new Long (TextUtil.toNumeric(longStr));
 	}	//	toLong
 	
 	private static int toInt (String intStr)
@@ -258,11 +269,34 @@ public class NFSeXMLGenerator
 		
 		try
 		{
-			return Integer.parseInt(intStr);
+			return Integer.parseInt(TextUtil.toNumeric(intStr));
 		}
 		catch (Exception e)	{}
 		return 0;
 	}	//	toLong
+	
+	private static void sign (int AD_Org_ID, TpRPS rps)
+	{
+		StringBuilder ascii = new StringBuilder ("");
+		//
+		String indicador = rps.getCPFCNPJTomador().getCPF() == null ? "1" : "2";
+		
+		ascii.append(TextUtil.lPad (rps.getChaveRPS().getInscricaoPrestador()+"", 8));
+		ascii.append(TextUtil.rPad (rps.getChaveRPS().getSerieRPS(), 5));
+		ascii.append(TextUtil.lPad (rps.getChaveRPS().getNumeroRPS()+"", 12));
+		//
+		ascii.append(TextUtil.lPad (rps.getDataEmissao()+"", 8));
+		ascii.append(rps.getTributacaoRPS());
+		ascii.append(rps.getStatusRPS());
+		ascii.append("true".equals (rps.getISSRetido()) ? "S" : "N");
+		ascii.append(TextUtil.lPad (rps.getValorServicos(), 15));
+		ascii.append(TextUtil.lPad (rps.getValorDeducoes(), 15));
+		ascii.append(TextUtil.lPad (rps.getCodigoServico(), 5));
+		ascii.append(indicador);
+		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
+		//
+		rps.setAssinatura (AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID).getBytes());
+	}
 	
 	/**
 	 * 	Testes
