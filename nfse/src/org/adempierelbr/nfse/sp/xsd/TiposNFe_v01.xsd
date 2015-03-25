@@ -59,7 +59,7 @@
     <xs:annotation>
       <xs:documentation>Tipo CEP.</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:int">
+    <xs:restriction base="xs:string">
       <xs:pattern value="[0-9]{7,8}" />
     </xs:restriction>
   </xs:simpleType>
@@ -83,7 +83,7 @@
     <xs:annotation>
       <xs:documentation>Tipo código de serviço.</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:int">
+    <xs:restriction base="xs:string">
       <xs:pattern value="[0-9]{4,5}" />
     </xs:restriction>
   </xs:simpleType>

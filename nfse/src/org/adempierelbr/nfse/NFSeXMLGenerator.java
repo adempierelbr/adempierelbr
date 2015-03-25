@@ -145,6 +145,7 @@ public class NFSeXMLGenerator
 		
 		Calendar cal = new GregorianCalendar ();
 		cal.setTimeInMillis (nf.getDateDoc().getTime());
+		//cal.setTimeZone(TimeZone.getTimeZone("UTC"));
 		
 		tpRPS.setChaveRPS(tpChaveRPS);
 		tpRPS.setTipoRPS(TpTipoRPS.RPS);
@@ -153,11 +154,27 @@ public class NFSeXMLGenerator
 		tpRPS.setTributacaoRPS("T");					//	FIXME
 		tpRPS.setValorServicos(toBD (nf.getlbr_ServiceTotalAmt()));
 		tpRPS.setValorDeducoes(Env.ZERO);
-		tpRPS.setValorPIS(toBD (nf.getTaxAmt("PIS")));
-		tpRPS.setValorCOFINS(toBD (nf.getTaxAmt("COFINS")));
-		tpRPS.setValorINSS(toBD (nf.getTaxAmt("INSS")));
-		tpRPS.setValorIR(toBD (nf.getTaxAmt("IR")));
-		tpRPS.setValorCSLL(toBD (nf.getTaxAmt("CSLL")));
+		
+		BigDecimal v_PIS 	= toBD (nf.getTaxAmt("PIS")).abs();
+		BigDecimal v_COFINS = toBD (nf.getTaxAmt("COFINS")).abs();
+		BigDecimal v_INSS 	= toBD (nf.getTaxAmt("INSS")).abs();
+		BigDecimal v_IR 	= toBD (nf.getTaxAmt("IR")).abs();
+		BigDecimal v_CSLL 	= toBD (nf.getTaxAmt("CSLL")).abs();
+		
+		if (v_PIS.signum() == 1)
+			tpRPS.setValorPIS(v_PIS);
+		
+		if (v_COFINS.signum() == 1)
+			tpRPS.setValorCOFINS(v_COFINS);
+		
+		if (v_INSS.signum() == 1)
+			tpRPS.setValorINSS(v_INSS);
+		
+		if (v_IR.signum() == 1)
+			tpRPS.setValorIR(v_IR);
+		
+		if (v_CSLL.signum() == 1)
+			tpRPS.setValorCSLL(v_CSLL);
 		//
 		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
@@ -180,7 +197,7 @@ public class NFSeXMLGenerator
 		end.setBairro(nf.getlbr_BPAddress3());
 		if (nf.getlbr_BPAddress4() != null)
 			end.setComplementoEndereco(nf.getlbr_BPAddress4());
-		end.setCEP(toInt (nf.getlbr_BPPostal()));
+		end.setCEP(TextUtil.toNumeric (nf.getlbr_BPPostal()));
 		end.setCidade(toInt (cityCode));	//	Cod. da Cidade
 		end.setUF(nf.getlbr_BPRegion());
 		//
@@ -211,10 +228,11 @@ public class NFSeXMLGenerator
 			log.log(Level.SEVERE, "No Service Code for Nota Fiscal");
 		//
 		tpRPS.setAliquotaServicos(aliquota);
-		tpRPS.setCodigoServico(toInt (serviceCode));
+		tpRPS.setCodigoServico(TextUtil.toNumeric (serviceCode));
 		tpRPS.setDiscriminacao(discriminacao);
 		//
-		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
+		if (nf.getInvoiceContactEMail() != null && nf.getInvoiceContactEMail().indexOf("@") > 1)
+			tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		//
 		if (sign)
@@ -252,7 +270,7 @@ public class NFSeXMLGenerator
 	{
 		if (value == null)
 			return Env.ZERO;
-		return value.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return value.setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
 	}
 	
 	private static Long toLong (String longStr)
