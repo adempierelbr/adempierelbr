@@ -15,7 +15,6 @@ package org.adempierelbr.nfse;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -27,6 +26,7 @@ import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
+import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.Adempiere;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -41,6 +41,7 @@ import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
+import br.gov.sp.prefeitura.nfe.tipos.TpAssinatura;
 import br.gov.sp.prefeitura.nfe.tipos.TpCPFCNPJ;
 import br.gov.sp.prefeitura.nfe.tipos.TpChaveRPS;
 import br.gov.sp.prefeitura.nfe.tipos.TpEndereco;
@@ -143,9 +144,8 @@ public class NFSeXMLGenerator
 		tpChaveRPS.setNumeroRPS(toLong (nf.getDocumentNo()));
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
-		Calendar cal = new GregorianCalendar ();
+		Calendar cal = new XmlCalendar ();
 		cal.setTimeInMillis (nf.getDateDoc().getTime());
-		//cal.setTimeZone(TimeZone.getTimeZone("UTC"));
 		
 		tpRPS.setChaveRPS(tpChaveRPS);
 		tpRPS.setTipoRPS(TpTipoRPS.RPS);
@@ -229,6 +229,11 @@ public class NFSeXMLGenerator
 		//
 		tpRPS.setAliquotaServicos(aliquota);
 		tpRPS.setCodigoServico(TextUtil.toNumeric (serviceCode));
+		
+		if (discriminacao == null)
+			discriminacao = "Prestação de Serviços";
+		else
+			discriminacao = discriminacao.replace("\n", "|").replace("  ", "").trim();
 		tpRPS.setDiscriminacao(discriminacao);
 		//
 		if (nf.getInvoiceContactEMail() != null && nf.getInvoiceContactEMail().indexOf("@") > 1)
@@ -297,13 +302,13 @@ public class NFSeXMLGenerator
 	{
 		StringBuilder ascii = new StringBuilder ("");
 		//
-		String indicador = rps.getCPFCNPJTomador().getCPF() == null ? "1" : "2";
+		String indicador = rps.getCPFCNPJTomador().getCPF() != null ? "1" : "2";
 		
 		ascii.append(TextUtil.lPad (rps.getChaveRPS().getInscricaoPrestador()+"", 8));
 		ascii.append(TextUtil.rPad (rps.getChaveRPS().getSerieRPS(), 5));
 		ascii.append(TextUtil.lPad (rps.getChaveRPS().getNumeroRPS()+"", 12));
 		//
-		ascii.append(TextUtil.lPad (rps.getDataEmissao()+"", 8));
+		ascii.append(TextUtil.lPad ((rps.getDataEmissao()+"").substring(0, 10), 8));
 		ascii.append(rps.getTributacaoRPS());
 		ascii.append(rps.getStatusRPS());
 		ascii.append("true".equals (rps.getISSRetido()) ? "S" : "N");
@@ -313,7 +318,9 @@ public class NFSeXMLGenerator
 		ascii.append(indicador);
 		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
 		//
-		rps.setAssinatura (AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID).getBytes());
+		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance();
+		tpAssinatura.setStringValue(AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID));
+		rps.xsetAssinatura (tpAssinatura);
 	}
 	
 	/**

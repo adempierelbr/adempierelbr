@@ -294,6 +294,7 @@ public class AssinaturaDigital
 	public static String signASCII (String ascii, int AD_Org_ID) 
 	{
 		log.fine("Signing: " + ascii);
+		String encoded = null;
 		//
 		try 
 		{
@@ -302,12 +303,16 @@ public class AssinaturaDigital
 			//
 			Signature dsa = Signature.getInstance ("SHA1withRSA");
 			dsa.initSign(getChavePrivada());
-			dsa.update(ascii.getBytes());
-			return new BASE64Encoder().encode (dsa.sign());
+			dsa.update(ascii.getBytes("UTF-8"));
+			encoded = new BASE64Encoder().encode (dsa.sign());
+			//
+			log.fine("Signature: " + encoded);
 		} 
 		catch (Exception ex) 
 		{
 			throw new AdempiereException ("Error siging RPS");
 		}
+		
+		return encoded;
 	}	//	signASCII
 }	//	AssinaturaDigital
