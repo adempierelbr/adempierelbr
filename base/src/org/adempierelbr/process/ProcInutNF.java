@@ -24,13 +24,13 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.InutNFeDocument;
-import br.inf.portalfiscal.nfe.RetInutNFeDocument;
-import br.inf.portalfiscal.nfe.TAmb;
-import br.inf.portalfiscal.nfe.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.TInutNFe;
-import br.inf.portalfiscal.nfe.TInutNFe.InfInut;
-import br.inf.portalfiscal.nfe.TMod;
+import br.inf.portalfiscal.nfe.v8f.InutNFeDocument;
+import br.inf.portalfiscal.nfe.v8f.RetInutNFeDocument;
+import br.inf.portalfiscal.nfe.v8f.TAmb;
+import br.inf.portalfiscal.nfe.v8f.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v8f.TInutNFe;
+import br.inf.portalfiscal.nfe.v8f.TInutNFe.InfInut;
+import br.inf.portalfiscal.nfe.v8f.TMod;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsgE;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeDadosMsg;
@@ -187,7 +187,7 @@ public class ProcInutNF extends SvrProcess
 		
 		//	Processa o retorno
 		RetInutNFeDocument retInutNFeDocument = RetInutNFeDocument.Factory.parse (respStatus);
-		br.inf.portalfiscal.nfe.TRetInutNFe.InfInut ret = retInutNFeDocument.getRetInutNFe().getInfInut();
+		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut ret = retInutNFeDocument.getRetInutNFe().getInfInut();
 		
 		StringBuilder msg = new StringBuilder("@Success@<br />");
 		msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), 1100001, ret.getTpAmb().toString()));
