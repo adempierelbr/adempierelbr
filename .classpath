@@ -38,7 +38,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-http-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-local-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/httpcore-4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8f.jar" sourcepath="lib/nfebeans-v8f-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v6v.jar" sourcepath="lib/nfebeans-v6v-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/jsr173_1.0_api.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/resolver.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xbean_xpath.jar"/>
@@ -46,8 +48,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlbeans-qname.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v6v.jar" sourcepath="lib/nfebeans-v6v-sources.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>

@@ -218,7 +218,7 @@ public class NFSeXMLGenerator
 						&& p.get_ValueAsString("lbr_ServiceCode") != null)
 				{
 					serviceCode = p.get_ValueAsString("lbr_ServiceCode");	//	FIXME : Copiar para LBR_NotaFiscalLine
-					aliquota = toBD (nfLine.getTaxRate("ISS"));
+					aliquota = toBD (nfLine.getTaxRate("ISS").divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP));
 					break;
 				}
 			}

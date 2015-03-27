@@ -30,12 +30,14 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
+import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
+import org.adempierelbr.webui.adapter.RPSAdapter;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_DocType;
@@ -2478,7 +2480,30 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	NFS-e
 			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS))
 			{
-				
+				INFSe infSe = RPSAdapter.get (this);
+				//
+				if (infSe != null)
+				{
+					try
+					{
+						byte[] xml = infSe.getXML (this);
+
+						//	Anexa o XML na NF
+						if (getAttachment (true) != null)
+							getAttachment ().delete (true);
+						
+						MAttachment attachNFe = createAttachment(true);
+						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml);
+						attachNFe.save();
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+						//
+						m_processMsg = e.getMessage();
+						return DOCSTATUS_Invalid;
+					}
+				}
 			}
 			
 			//	Set action
@@ -2573,7 +2598,26 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	NF Serviço
 			else if (LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS.equals(getlbr_NFModel()))
 			{
-				
+				INFSe infSe = RPSAdapter.get (this);
+				//
+				if (infSe != null)
+				{
+					try
+					{
+						if (!infSe.transmit(this))
+						{
+							m_processMsg = "Falha na transmissão do RPS";
+							return DOCSTATUS_Invalid;
+						}
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+						//
+						m_processMsg = e.getMessage();
+						return DOCSTATUS_Invalid;
+					}
+				}
 			}
 			
 			//	Outras NF
