@@ -5223,4 +5223,353 @@ UPDATE AD_Column SET ReadOnlyLogic='@IsManual@!Y' WHERE AD_Table_ID=1120447
 UPDATE LBR_NotaFiscal SET IsManual='Y'
 ;
 
+-- NF-e Entrada
+-- 25/03/2015 9h53min36s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100177,1124995,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:35','YYYY-MM-DD HH24:MI:SS'),100,'Defines the BP Suframa',30,'LBRA','Y','Y','Y','N','N','N','N','N','BP Suframa',TO_TIMESTAMP('2015-03-25 09:53:35','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min36s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1124995 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1106073,1124996,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:36','YYYY-MM-DD HH24:MI:SS'),100,'Brand transport volumes',60,'LBRA','Brand transport volumes','Y','Y','Y','N','N','N','N','N','Brand',TO_TIMESTAMP('2015-03-25 09:53:36','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1124996 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126449,1124997,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100,10,'LBRA','Y','Y','Y','N','N','N','N','N','Cod. Cidade',TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1124997 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126448,1124998,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100,10,'LBRA','Y','Y','Y','N','N','N','N','N','Cod. Cidade',TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min37s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1124998 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126450,1124999,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100,'Country Code used for issue Nota Fiscal',5,'LBRA','Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)','Y','Y','Y','N','N','N','N','N','Country Code',TO_TIMESTAMP('2015-03-25 09:53:37','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1124999 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120211,1125000,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100,22,'LBRA','Y','Y','Y','N','N','N','N','N','DE',TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125000 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126451,1125001,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100,'How the order will be delivered',1,'LBRA','The Delivery Via indicates how the products should be delivered. For example, will the order be picked up or shipped.','Y','Y','Y','N','N','N','N','N','Delivery Via',TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min38s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125001 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min39s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100082,1125002,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100,255,'LBRA','Y','Y','Y','N','N','N','N','N','Digest Value',TO_TIMESTAMP('2015-03-25 09:53:38','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min39s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125002 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min39s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1123545,1125003,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:39','YYYY-MM-DD HH24:MI:SS'),100,'Print Discount on Invoice and Order',1,'LBRA','The Discount Printed Checkbox indicates if the discount will be printed on the document.','Y','Y','Y','N','N','N','N','N','Discount Printed',TO_TIMESTAMP('2015-03-25 09:53:39','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min39s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125003 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126536,1125004,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:39','YYYY-MM-DD HH24:MI:SS'),100,'The targeted status of the document',2,'LBRA','You find the current status in the Document Status field. The options are listed in a popup','Y','Y','Y','N','N','N','N','N','Document Action',TO_TIMESTAMP('2015-03-25 09:53:39','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125004 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126535,1125005,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100,'The current status of the document',2,'LBRA','The Document Status indicates the status of a document at this time.  If you want to change the document status, use the Document Action field','Y','Y','Y','N','N','N','N','N','Document Status',TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125005 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100073,1125006,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100,1,'LBRA','Y','Y','Y','N','N','N','N','N','Generate NFe XML',TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min40s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125006 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100019,1125007,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100,'Identifies this is an own document',1,'LBRA','Identifies this is an own document','Y','Y','Y','N','N','N','N','N','Is Own Document',TO_TIMESTAMP('2015-03-25 09:53:40','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125007 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1126533,1125008,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100,'This is a manual process',1,'LBRA','The Manual check box indicates if the process will done manually.','Y','Y','Y','N','N','N','N','N','Manual',TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125008 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100105,1125009,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100,'Motivo do Cancelamento (Entre 15 e 255 caracteres)',255,'LBRA','Campo para ser lancado o motivo do cancelamento da NF, deve conter entre 15 e 255 caracteres e é obrigatório para cancelar uma NF-e.','Y','Y','Y','N','N','N','N','N','Motivo do Cancelamento',TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min41s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125009 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100080,1125010,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100,'Description of NFe',512,'LBRA','Y','Y','Y','N','N','N','N','N','NFe Description',TO_TIMESTAMP('2015-03-25 09:53:41','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125010 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100064,1125011,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100,'Identification of NFe',255,'LBRA','Y','Y','Y','N','N','N','N','N','NFe ID',TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125011 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100071,1125012,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100,10,'LBRA','Y','Y','Y','N','N','N','N','N','NFe Lot',TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min42s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125012 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100081,1125013,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100,60,'LBRA','Y','Y','Y','N','N','N','N','N','NFe Protocol',TO_TIMESTAMP('2015-03-25 09:53:42','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125013 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100065,1125014,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100,'Status of NFe',3,'LBRA','Y','Y','Y','N','N','N','N','N','NFe Status',TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125014 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120112,1125015,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100,'Identifies the model of Nota Fiscal',2,'LBRA','Y','Y','Y','N','N','N','N','N','NF Model',TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min43s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125015 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min44s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1124123,1125016,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100,3,'LBRA','Y','Y','Y','N','N','N','N','N','NF Serie',TO_TIMESTAMP('2015-03-25 09:53:43','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min44s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125016 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min44s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120390,1125017,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:44','YYYY-MM-DD HH24:MI:SS'),100,1,'LBRA','Y','Y','Y','N','N','N','N','N','RPS Status',TO_TIMESTAMP('2015-03-25 09:53:44','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min44s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125017 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min45s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100083,1125018,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:44','YYYY-MM-DD HH24:MI:SS'),100,'Transaction Date',7,'LBRA','The Transaction Date indicates the date of the transaction.','Y','Y','Y','N','N','N','N','N','Transaction Date',TO_TIMESTAMP('2015-03-25 09:53:44','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min45s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125018 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 25/03/2015 9h53min45s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1100176,1125019,0,1000028,TO_TIMESTAMP('2015-03-25 09:53:45','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Transaction Type',3,'LBRA','Defines the Transaction Type','Y','Y','Y','N','N','N','N','N','Transaction Type',TO_TIMESTAMP('2015-03-25 09:53:45','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/03/2015 9h53min45s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125019 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=300, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000534;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=290, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000533;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000617;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000515;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=500, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000658;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=230, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000525;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=2, SeqNo=330, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000527;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic='@DeliveryViaRule@=S', DisplayLength=22, SeqNo=480, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000558;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=10, SeqNo=540, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000569;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=255, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001096;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001116;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic='@Processed@=''Y''', DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001115;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=790, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000499;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=18, SeqNo=780, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000500;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=280, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000532;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=310, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000528;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=340, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000530;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=610, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000556;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000570;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=630, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000571;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=640, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000572;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=10, SeqNo=510, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000573;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=10, SeqNo=520, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000574;
+
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=650, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000620;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120052, IsDisplayed='Y', DisplayLogic='@DeliveryViaRule@=S', DisplayLength=255, SeqNo=560, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000624;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000498;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=5, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000881;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001100;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=810, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001104;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=830, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001106;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=255, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001095;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=125, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=64, SeqNo=590, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001099;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic='@lbr_NFENo@!''''', DisplayLength=60, SeqNo=180, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001102;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=800, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001103;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=900, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001112;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=320, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000526;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=0, SeqNo=660, SortNo=0, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1120082;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic='@lbr_FinNFe@=2', DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1120326;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=13, SeqNo=670, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1122769;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=1, SeqNo=530, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1123452;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=210, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000522;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=120, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000511;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=150, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000512;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1100002, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=760, SortNo=0, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124926;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=20, SeqNo=130, SortNo=0, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1100147;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=160, SortNo=0, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124846;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125006;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1100002, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=750, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125012;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1100002, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=730, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125013;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1100002, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=740, SortNo=null, IsSameLine='Y', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125002;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=350, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000529;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=30, SeqNo=260, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124995;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=240, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000523;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=270, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000531;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120052, IsDisplayed='Y', DisplayLogic='@DeliveryViaRule@=S', DisplayLength=255, SeqNo=570, SortNo=0, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124868;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000559;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000560;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000561;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000563;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=2, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000562;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000564;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000565;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000566;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000567;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=130, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000568;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000545;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000546;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000547;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000548;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=2, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000549;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000550;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000551;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000552;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000553;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000554;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=131, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000555;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120049, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=250, SortNo=0, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124870;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=2, SeqNo=440, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000538;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=370, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000536;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=390, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000542;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=400, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000543;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=420, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000539;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=430, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000537;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=450, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000540;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=255, SeqNo=460, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001118;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=380, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000541;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=410, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000544;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=470, SortNo=0, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125001;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=490, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001117;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120051, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=7, SeqNo=550, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000880;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120052, IsDisplayed='Y', DisplayLogic='@DeliveryViaRule@=S', DisplayLength=8, SeqNo=580, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000657;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=10, SeqNo=850, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001113;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=820, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001105;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=860, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001109;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=870, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001114;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=880, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001110;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=5, SeqNo=890, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124999;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=770, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001111;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120053, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=840, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001107;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120054, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=40, SeqNo=910, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125009;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120055, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=40, SeqNo=930, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1120325;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120055, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=7, SeqNo=920, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1120324;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125003;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000507;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000509;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=70, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000506;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=1, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1000505;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=10, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124998;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=10, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124997;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001097;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001098;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125000;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125018;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000514;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=255, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001094;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=30, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001108;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=300, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000520;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=300, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000518;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=300, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000519;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=6, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1001101;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1124996;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=60, SeqNo=0, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125010;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=1, SeqNo=100, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue='Y' WHERE AD_Field_ID=1125007;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=1, SeqNo=110, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue='Y' WHERE AD_Field_ID=1125008;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=1, SeqNo=710, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1000504;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=1, SeqNo=720, SortNo=null, IsSameLine='Y', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1000516;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=2, SeqNo=30, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125015;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=2, SeqNo=690, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125005;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=2, SeqNo=700, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125004;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=10, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1000502;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=140, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000513;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=20, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000503;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=220, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000524;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=50, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000508;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=620, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000557;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=680, SortNo=null, IsSameLine='Y', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1000501;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=255, SeqNo=600, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000510;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=3, SeqNo=40, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125016;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=3, SeqNo=80, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125019;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=300, SeqNo=90, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000636;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=170, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125014;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=60, SeqNo=190, SortNo=null, IsSameLine='N', IsReadOnly='Y', DefaultValue=NULL WHERE AD_Field_ID=1125011;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=7, SeqNo=60, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000517;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='N', DisplayLogic=NULL, DisplayLength=22, SeqNo=0, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1125017;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=200, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000521;
+UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=1120050, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=22, SeqNo=360, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000535;
+
 SELECT register_migration_script('102-NFe-3.10.sql') FROM dual;
