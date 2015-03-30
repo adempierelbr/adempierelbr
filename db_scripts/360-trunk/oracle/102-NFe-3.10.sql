@@ -1274,7 +1274,7 @@ INSERT INTO LBR_NFeWebService (AD_Client_ID,AD_Org_ID,Created,CreatedBy,C_Region
 ;
 
 -- 10/03/2015 9h43min38s BRT
-INSERT INTO LBR_NFeWebService (AD_Client_ID,AD_Org_ID,Created,CreatedBy,C_Region_ID,IsActive,lbr_NFeEnv,LBR_NFeWebService_ID,Name,Updated,UpdatedBy,URL,VersionNo) VALUES (0,0,TO_DATE('2015-03-10 09:43:38','YYYY-MM-DD HH24:MI:SS'),100,465,'Y','2',1120831,'NfeStatusServico',TO_DATE('2015-03-10 09:43:38','YYYY-MM-DD HH24:MI:SS'),100,'https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx','3.1')
+INSERT INTO LBR_NFeWebService (AD_Client_ID,AD_Org_ID,Created,CreatedBy,C_Region_ID,IsActive,lbr_NFeEnv,LBR_NFeWebService_ID,Name,Updated,UpdatedBy,URL,VersionNo) VALUES (0,0,TO_DATE('2015-03-10 09:43:38','YYYY-MM-DD HH24:MI:SS'),100,465,'Y','2',1120831,'NfeStatusServico',TO_DATE('2015-03-10 09:43:38','YYYY-MM-DD HH24:MI:SS'),100,'https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx','3.10')
 ;
 
 -- 10/03/2015 9h44min3s BRT
