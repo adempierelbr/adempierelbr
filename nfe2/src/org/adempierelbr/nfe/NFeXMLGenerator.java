@@ -470,7 +470,7 @@ public class NFeXMLGenerator
 			enderEmit.setFone(TextUtil.toNumeric (nf.getlbr_OrgPhone()));
 		
 		//	IE
-		emit.setIE(nf.getlbr_IE());
+		emit.setIE(TextUtil.toNumeric (nf.getlbr_IE()));
 		emit.setCRT(Emit.CRT.X_3);	//	FIXME
 		
 		//	D. Identificação do Fisco Emitente da NF-e
