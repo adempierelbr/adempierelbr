@@ -1945,9 +1945,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				|| is_ValueChanged(COLUMNNAME_GrandTotal))
 			setBarCodeModel1A();
 		
-		//	Força o estado de Inválido caso a NF não esteja processada
-		if (isProcessed() && DOCSTATUS_Completed.equals(getDocStatus()))
-			setDocStatus(DOCSTATUS_Invalid);
 		return true;
 	}	//	beforeSave
 	
@@ -2566,9 +2563,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 						MLBRNFeLot lot = new MLBRNFeLot (getCtx(), getLBR_NFeLot_ID(), get_TrxName());
 						if (!lot.consultaLoteNFe())
 							throw new Exception ("Falha na transmissão da NF-e");
-						
-						if (DOCSTATUS_Completed.equals(lot.getDocStatus()))
-							return DOCSTATUS_Completed;
 						//
 						return getDocStatus();
 					}
