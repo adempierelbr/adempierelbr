@@ -175,7 +175,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 		
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RECEPCAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.AUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
 		NfeAutorizacaoStub.setAmbiente(url);
 		NfeAutorizacaoStub stub = new NfeAutorizacaoStub();
 
@@ -183,7 +183,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		String respAutorizacao = nfeAutorizacao.toString();
 		//	
 		MAttachment attachLotNFe = createAttachment();
-		attachLotNFe.addEntry(getDocumentNo()+"-rec.xml", respAutorizacao.getBytes());
+		attachLotNFe.addEntry(getDocumentNo()+"-rec.xml", respAutorizacao.getBytes("UTF-8"));
 		attachLotNFe.save();
 		//
 		TRetEnviNFe retEnviNFe = RetEnviNFeDocument.Factory.parse(respAutorizacao).getRetEnviNFe();
@@ -269,14 +269,14 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETRECEPCAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETAUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
 			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
 
 			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
 			String respRetAutorizacao = nfeRetAutorizacao.toString();
 			
 			MAttachment attachLotNFe = createAttachment();
-			attachLotNFe.addEntry(getDocumentNo()+"-pro-rec.xml", respRetAutorizacao.getBytes());
+			attachLotNFe.addEntry(getDocumentNo()+"-pro-rec.xml", respRetAutorizacao.getBytes("UTF-8"));
 			attachLotNFe.save();
 			
 			TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();

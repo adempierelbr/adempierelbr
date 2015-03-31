@@ -467,7 +467,7 @@ public class NFeXMLGenerator
 		enderEmit.setXPais(TEnderEmi.XPais.BRASIL);	//	Emitente, somente Brasil
 		
 		if (nf.getlbr_OrgPhone() != null)
-			enderEmit.setFone(nf.getlbr_OrgPhone());
+			enderEmit.setFone(TextUtil.toNumeric (nf.getlbr_OrgPhone()));
 		
 		//	IE
 		emit.setIE(nf.getlbr_IE());
@@ -564,7 +564,7 @@ public class NFeXMLGenerator
 		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
 		
 		if (nf.getlbr_OrgPhone() != null)
-			enderDest.setFone(nf.getlbr_OrgPhone());
+			enderDest.setFone(TextUtil.toNumeric (nf.getlbr_OrgPhone()));
 		
 		//	F. Identificação do Local de Retirada
 		//	G. Identificação do Local de Entrega
@@ -1115,7 +1115,7 @@ public class NFeXMLGenerator
 			//	V. Informações adicionais (para o item da NF-e)
 			String nflDesc = nf.getDescription();
 			if (nflDesc != null && !nflDesc.isEmpty())
-				det.setInfAdProd (nflDesc);
+				det.setInfAdProd (normalize (nflDesc));
 		}
 		
 		//	W. Total da NF-e
@@ -1248,7 +1248,7 @@ public class NFeXMLGenerator
 			nf.getAttachment ().delete (true);
 		
 		MAttachment attachNFe = nf.createAttachment(true);
-		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes());
+		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes("UTF-8"));
 		attachNFe.save();
 		
 		return "@Success@";
@@ -1316,6 +1316,8 @@ public class NFeXMLGenerator
 //		text = text.replaceAll ("&", "&amp;");
 //		text = text.replaceAll ("\"", "&quot;");
 //		text = text.replaceAll ("'", "&#39;");
+//		text = text.replaceAll ("( )+", " ");
+		text = text.replaceAll ("\n", ". ");
 		//
 		return text.trim();
 	}	//	normalize

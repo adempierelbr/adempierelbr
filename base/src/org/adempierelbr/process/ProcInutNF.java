@@ -2,11 +2,13 @@ package org.adempierelbr.process;
 
 import java.io.StringReader;
 import java.sql.Timestamp;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.xml.stream.XMLInputFactory;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNFSkipped;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
@@ -123,16 +125,75 @@ public class ProcInutNF extends SvrProcess
 		if (p_LBR_EnvType == null)
 			p_LBR_EnvType = oi.get_ValueAsString ("lbr_NFeEnv");
 		//
+		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
+									dt.get_ValueAsString("lbr_NFModel"), p_DocumentNo, p_DocumentNo_To, dt.get_ValueAsString("lbr_NFSerie"), p_Just, p_DateDoc);
+		
+		StringBuilder msg = new StringBuilder("@Success@<br />");
+		msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), 1100001, ret.getTpAmb().toString()));
+		msg.append("<br />Versão: ").append(ret.getVerAplic());
+		
+		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(ret.getCStat()))	//	OK
+		{
+			msg.append("<font color=\"008800\">");
+			msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
+			msg.append("</font>");
+		}
+		else
+		{
+			msg.append("<font color=\"880000\">");
+			msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
+			msg.append("</font>");
+		}
+		msg.append("<br />UF: ").append(ret.getCUF());
+		msg.append("<br />Data/Hora: ").append (NFeUtil.formatTime (ret.getDhRecbto().toString()));
+		
+		if (ret.getNProt() != null)
+			msg.append("<br />Protocolo: ").append(ret.getNProt());
+		
+		if (ret.getDhRecbto() != null)
+			msg.append("<br />Data do Recebimento: ").append(ret.getDhRecbto());
+		
+		return msg.toString();
+	}	//	doIt
+
+	/**
+	 * 	Invalidate
+	 * 
+	 * @param ctx
+	 * @param p_AD_Org_ID
+	 * @param cnpj
+	 * @param regionCode
+	 * @param p_LBR_EnvType
+	 * @param nfModel
+	 * @param p_DocumentNo
+	 * @param nfSerie
+	 * @param p_DocumentNo_To
+	 * @param p_Just
+	 * @param p_DateDoc
+	 * @return
+	 * @throws Exception
+	 */
+	public static br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
+			String regionCode, String p_LBR_EnvType, String nfModel, Integer p_DocumentNo, 
+			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
+	{
+		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
+		//
+		if (p_LBR_EnvType == null)
+			p_LBR_EnvType = oi.get_ValueAsString("lbr_NFeEnv");
+		if (p_Just == null)
+			p_Just = "Erro na emissão da NFe";
+		
 		InutNFeDocument inutNFeDocument = InutNFeDocument.Factory.newInstance();
 		TInutNFe inutNFe = inutNFeDocument.addNewInutNFe();
 		inutNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 		
 		InfInut infInut = inutNFe.addNewInfInut();
-		infInut.setMod(TMod.Enum.forString (dt.get_ValueAsString("lbr_NFModel")));
-		infInut.setCNPJ(TextUtil.toNumeric(oi.get_ValueAsString("lbr_CNPJ")));
+		infInut.setMod(TMod.Enum.forString (nfModel));
+		infInut.setCNPJ(TextUtil.toNumeric(cnpj));
 		infInut.setTpAmb(TAmb.Enum.forString (p_LBR_EnvType));
 		infInut.setCUF(TCodUfIBGE.Enum.forString(regionCode));
-		infInut.setSerie(dt.get_ValueAsString("lbr_NFSerie"));
+		infInut.setSerie(nfSerie);
 		infInut.setNNFIni(p_DocumentNo.toString());
 		infInut.setNNFFin(p_DocumentNo_To.toString());
 		infInut.setXJust(p_Just);
@@ -172,12 +233,12 @@ public class ProcInutNF extends SvrProcess
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 		//	Inicializa o Certificado
-		MLBRDigitalCertificate.setCertificate (getCtx(), p_AD_Org_ID);
+		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
 			
 		//	Recupera a URL de Transmissão
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.INUTILIZACAO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, orgLocation.getC_Region_ID());
-		NfeInutilizacao2Stub.setAmbiente(url);
-		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub();
+		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.INUTILIZACAO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
+		
+		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub(url);
 
 		//	Faz a chamada
 		OMElement nfeStatusServicoNF2 = stub.nfeInutilizacaoNF2(dadosMsg.getExtraElement(), cabecMsgE);
@@ -186,34 +247,11 @@ public class ProcInutNF extends SvrProcess
 		log.finer (respStatus);
 		
 		//	Processa o retorno
-		RetInutNFeDocument retInutNFeDocument = RetInutNFeDocument.Factory.parse (respStatus);
-		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut ret = retInutNFeDocument.getRetInutNFe().getInfInut();
+		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
 		
-		StringBuilder msg = new StringBuilder("@Success@<br />");
-		msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), 1100001, ret.getTpAmb().toString()));
-		msg.append("<br />Versão: ").append(ret.getVerAplic());
-		
-		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(ret.getCStat()))	//	OK
-		{
-			msg.append("<font color=\"008800\">");
-			msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
-			msg.append("</font>");
-		}
-		else
-		{
-			msg.append("<font color=\"880000\">");
-			msg.append("<br />Estado: ").append(ret.getCStat()).append(" - ").append(ret.getXMotivo());
-			msg.append("</font>");
-		}
-		msg.append("<br />UF: ").append(ret.getCUF());
-		msg.append("<br />Data/Hora: ").append (NFeUtil.formatTime (ret.getDhRecbto().toString()));
-		
-		if (ret.getNProt() != null)
-			msg.append("<br />Protocolo: ").append(ret.getNProt());
-		
-		if (ret.getDhRecbto() != null)
-			msg.append("<br />Data do Recebimento: ").append(ret.getDhRecbto());
-		
-		return msg.toString();
-	}	//	doIt
+		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(retInutNFe.getCStat()))
+			MLBRNFSkipped.register (retInutNFe);
+
+		return retInutNFe;
+	}
 }	//	ProcInutNF

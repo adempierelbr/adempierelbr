@@ -31,6 +31,7 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfse.INFSe;
+import org.adempierelbr.process.ProcInutNF;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
@@ -86,6 +87,7 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.IdDest.Enum;
 import br.inf.portalfiscal.nfe.v8f.TNfeProc;
 import br.inf.portalfiscal.nfe.v8f.TProtNFe;
 import br.inf.portalfiscal.nfe.v8f.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -714,7 +716,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setProtNFe(protNFe);
 			
 			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes());
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes("UTF-8"));
 			attachment.save();
 			
 			//	Envia o e-mail para o cliente
@@ -2438,7 +2440,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		log.info(toString());
 		
-		if (m_justPrepared || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock))
+		if (m_justPrepared || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock, DOCACTION_Void))
 			return DOCSTATUS_InProgress;
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
@@ -2644,13 +2646,51 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		log.info("voidIt - " + toString());
 		
-		if (!DOCSTATUS_Completed.equals(getDocStatus()))
+		//	Anular a NF
+		if (DOCSTATUS_Completed.equals(getDocStatus()))
 		{
 			setProcessed (true);
 			setDocAction (DOCACTION_None);
 			return true;
 		}
-		return closeIt();
+		
+		//	Inutilizar a numeração
+		else if (TextUtil.match(getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
+		{
+			try
+			{
+				String regionCode = BPartnerUtil.getRegionCode (new MLocation (p_ctx, getOrg_Location_ID(), null));
+				//
+				InfInut ret = ProcInutNF.invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), regionCode, getlbr_NFeEnv(), 
+							getlbr_NFModel(), Integer.parseInt(getDocumentNo()), Integer.parseInt(getDocumentNo()), 
+							getlbr_NFSerie(), getlbr_MotivoCancel(), getDateDoc());
+				//
+				if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(ret.getCStat()))	//	OK
+				{
+					setDocAction (DOCACTION_None);
+					setDocStatus (DOCSTATUS_Voided);
+					setProcessed(true);
+					setIsCancelled(true);
+					//
+					setlbr_NFeStatus (ret.getCStat());
+					return true;
+				}
+				else
+				{
+					m_processMsg = ret.getXMotivo();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				m_processMsg = e.getMessage();
+			}
+		}
+		
+		else
+			m_processMsg = "Estado inválido não é permitido anular o documento neste estado.";
+		
+		return false;
 	}	//	voidIt
 	
 	/**
