@@ -625,6 +625,7 @@ public abstract class NFeUtil
 		{
 			xmlOptions = new XmlOptions();
 			xmlOptions.setUseDefaultNamespace();
+			xmlOptions.setCharacterEncoding("UTF-8");
 		}
 		//
 		return xmlOptions;

@@ -1945,6 +1945,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				|| is_ValueChanged(COLUMNNAME_GrandTotal))
 			setBarCodeModel1A();
 		
+		//	Força o estado de Inválido caso a NF não esteja processada
+		if (isProcessed() && DOCSTATUS_Completed.equals(getDocStatus()))
+			setDocStatus(DOCSTATUS_Invalid);
 		return true;
 	}	//	beforeSave
 	

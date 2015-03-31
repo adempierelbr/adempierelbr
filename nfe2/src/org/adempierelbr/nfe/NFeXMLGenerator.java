@@ -531,7 +531,8 @@ public class NFeXMLGenerator
 			else 
 			{
 				//	Contribuinte de ICMS, possuí IE
-				if (nf.getlbr_BPIE() != null
+				if (T_AMB_PRODUCAO.equals(ide.getTpAmb())
+						&& nf.getlbr_BPIE() != null
 						&& !nf.getlbr_BPIE().toUpperCase().contains("ISENT"))
 				{
 					dest.setIndIEDest (IND_IE_CONTRIB);
