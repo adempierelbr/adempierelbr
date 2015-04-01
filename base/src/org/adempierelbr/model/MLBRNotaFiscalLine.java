@@ -276,7 +276,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		return getTaxBaseAmt("ICMSST");
 	}	//	getICMSSTBase
 	
-	
+
 	/**
 	 *  Retorno a LBR_NFLineTax do ICMS
 	 *
@@ -285,6 +285,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	public X_LBR_NFLineTax getICMSTax()
 	{
 		return getTax("ICMS");
+	}	//	getICMSTax
+	
+	/**
+	 *  Retorno a LBR_NFLineTax do ICMS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getICMSSTTax()
+	{
+		return getTax("ICMSST");
 	}	//	getICMSTax
 
 	/**

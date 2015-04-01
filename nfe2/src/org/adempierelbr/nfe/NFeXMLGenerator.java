@@ -773,7 +773,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax icmsTax = nfl.getICMSTax();
 
 				//	ICMS ST
-				X_LBR_NFLineTax icmsSTTax = nfl.getICMSTax();
+				X_LBR_NFLineTax icmsSTTax = nfl.getICMSSTTax();
 
 				//	CST = Código de Situação Tributária
 				String taxStatus = icmsTax.getLBR_TaxStatus().getName();
@@ -800,9 +800,9 @@ public class NFeXMLGenerator
 						icms10.setOrig(Torig.Enum.forString(productSource));
 						icms10.setCST(Det.Imposto.ICMS.ICMS10.CST.X_10);
 						icms10.setModBC(InfNFe.Det.Imposto.ICMS.ICMS10.ModBC.X_0);		//	FIXME
-						icms10.setVBC(normalize  (icmsSTTax.getlbr_TaxBaseAmt()));
-						icms10.setPICMS(normalize4  (icmsSTTax.getlbr_TaxRate()));
-						icms10.setVICMS(normalize  (icmsSTTax.getlbr_TaxAmt()));
+						icms10.setVBC(normalize  (icmsTax.getlbr_TaxBaseAmt()));
+						icms10.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
+						icms10.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
 						icms10.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS10.ModBCST.X_4);	//	FIXME: MVA %
 						
 						//	MVA - IVA
@@ -814,6 +814,11 @@ public class NFeXMLGenerator
 								&& icmsSTTax.getlbr_TaxBase().signum() == 1
 								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
 							icms10.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
+						
+						//	ICMS ST
+						icms10.setVBCST(normalize  (icmsSTTax.getlbr_TaxBaseAmt()));
+						icms10.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
+						icms10.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_20.equals (taxStatus))
