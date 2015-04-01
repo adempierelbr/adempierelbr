@@ -119,6 +119,8 @@ public class AssinaturaDigital
 	 */
 	public static StringBuilder Assinar (StringBuilder xml, MOrgInfo oi, String docType) throws Exception
 	{
+		log.fine ("Signing document: " + xml);
+		//
 		AssinaturaDigital.loadKeys (oi);
 		return AssinaturaDigital.assinarDocumento (xml, docType);
 	}	//	Assinar
@@ -204,8 +206,6 @@ public class AssinaturaDigital
 	 */
 	public static StringBuilder assinarDocumento (StringBuilder xml, String docType) throws Exception
 	{
-		log.fine ("Signing document: " + xml);
-
 		//	Carrega o documento
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
