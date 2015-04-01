@@ -1166,16 +1166,31 @@ public class NFeXMLGenerator
 		if (nf.getM_Shipper_ID() > 0)
 		{
 			Transporta transporta = transp.addNewTransporta();
-			transporta.setCNPJ(toNumericStr (nf.getlbr_BPShipperCNPJ()));
-			transporta.setXNome(normalize (nf.getlbr_BPShipperName()));
 			
-			if (nf.getlbr_BPShipperIE() != null)
-				transporta.setIE (normalize (nf.getlbr_BPShipperIE()));
+			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
+			String shipperName 		= normalize (nf.getlbr_BPShipperName());
+			String shipperIE 		= normalize (nf.getlbr_BPShipperIE());
+			String shipperAddress 	= nf.getlbr_BPShipperAddress1();
+			String shipperCity 		= nf.getlbr_BPShipperCity();
+			String shipperRegion 	= nf.getlbr_BPShipperRegion();
 			
-			//	Endereço opcional
-			transporta.setXEnder(nf.getlbr_BPShipperAddress1());
-			transporta.setXMun(nf.getlbr_BPShipperCity());
-			transporta.setUF(TUf.Enum.forString(nf.getlbr_BPShipperRegion()));
+			if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
+				transporta.setCNPJ(shipperCNPJ);
+			
+			if (shipperName != null && !shipperName.trim().isEmpty())
+				transporta.setXNome(shipperName);
+			
+			if (shipperIE != null && !shipperIE.trim().isEmpty())
+				transporta.setIE (shipperIE);
+			
+			if (shipperAddress != null && !shipperAddress.trim().isEmpty())
+				transporta.setXEnder(shipperAddress);
+			
+			if (shipperCity != null && !shipperCity.trim().isEmpty())
+				transporta.setXMun(shipperCity);
+			
+			if (shipperRegion != null && !shipperRegion.trim().isEmpty())
+				transporta.setUF(TUf.Enum.forString(shipperRegion));
 		}
 
 		//	Dados da cobrança
