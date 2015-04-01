@@ -490,12 +490,16 @@ public class NFeXMLGenerator
 		//	Produção
 		else
 		{
-//			if (false) //"PF".equals(nf.getlbr_BPTypeBR()))
-//				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-//			else
-//				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+			
+			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 
-			dest.setIdEstrangeiro("");
+			else if (nf.getC_BPartner_ID() > 0
+					&& nf.getC_BPartner().getTaxID() != null)
+				dest.setIdEstrangeiro(nf.getC_BPartner().getTaxID());
+			
 			dest.setXNome(nf.getBPName());
 		}
 		
@@ -585,9 +589,10 @@ public class NFeXMLGenerator
 		if (retOuEntreg != null)
 		{
 			//	CNPJ ou CPF
-			if (false) //"PF".equals(nf.getlbr_BPTypeBR()))
+			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
 				retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			else
+			
+			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
 				retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 			//
 			retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
