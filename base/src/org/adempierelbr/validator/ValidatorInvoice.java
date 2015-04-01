@@ -389,9 +389,8 @@ public class ValidatorInvoice implements ModelValidator
 				//	Ajusta o número gerado da NF para a Fatura
 				wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 				
-				//	Gera o XML da NF-e de acordo com o Modelo da NF
-				if (MSysConfig.getBooleanValue ("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-					nf.GenerateXMLAutomatic ();
+				//	Gera o XML da NF-e efetuando a ação Preparar na NF
+				nf.prepareIt();
 			}	//	geração de Documento Fiscal
 			
 			/**
