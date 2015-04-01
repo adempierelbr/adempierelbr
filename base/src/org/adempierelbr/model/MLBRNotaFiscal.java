@@ -1945,6 +1945,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 						setDocumentNo(RPS_TEMP);
 				}
 			}
+			
+			//	Preenche o ambiente da NF caso esteja em branco
+			if (getlbr_NFeEnv() == null)
+				setlbr_NFeEnv (MOrgInfo.get (getCtx(), getAD_Org_ID(), null).get_ValueAsString("lbr_NFeEnv"));
 		}
 		
 		//	Configura o código de Barras
