@@ -658,7 +658,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
         Timestamp ts = NFeUtil.stringToTime (dhRecbto);
         //
         nf.setlbr_DigestValue(digVal);
-        nf.setlbr_NFeStatus(cStat);
+        
+        try
+        {
+        	nf.setlbr_NFeStatus(cStat);
+        }
+        catch (IllegalArgumentException e)
+        {
+        	e.printStackTrace();
+        }
+        
         nf.setlbr_NFeProt(nProt);
         nf.setDateTrx(ts);
         nf.setProcessed(true);
@@ -1232,6 +1241,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return true;
 	}	//	generateNF
 	
+	@Deprecated
 	public void GenerateXMLAutomatic()
 	{
 		// Gerar XML automaticamente
@@ -1547,8 +1557,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPPhone(bpLocation.getPhone());   				//	Telefone
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
-		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); //Suframa
-
+		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
+		setlbr_BPTypeBR(BPartnerUtil.getBPTypeBR(new MBPartner (getCtx(), bpLocation.getC_BPartner_ID(), null)));
+		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
 		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
 
@@ -2669,7 +2680,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setProcessed(true);
 					setIsCancelled(true);
 					//
-					setlbr_NFeStatus (ret.getCStat());
+					try
+			        {
+						setlbr_NFeStatus (ret.getCStat());
+			        }
+			        catch (IllegalArgumentException e)
+			        {
+			        	e.printStackTrace();
+			        }
 					return true;
 				}
 				else
