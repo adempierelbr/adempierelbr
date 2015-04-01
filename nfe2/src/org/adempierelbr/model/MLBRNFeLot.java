@@ -189,8 +189,16 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		TRetEnviNFe retEnviNFe = RetEnviNFeDocument.Factory.parse(respAutorizacao).getRetEnviNFe();
 		//
 		String cStat = retEnviNFe.getCStat();
-		setlbr_NFeStatus(cStat);
-
+		
+		try
+        {
+			setlbr_NFeStatus(cStat);
+        }
+        catch (IllegalArgumentException e)
+        {
+        	e.printStackTrace();
+        }
+		
 		if (LBR_NFELOTMETHOD_Synchronous.equals (getLBR_NFeLotMethod())
 				&& retEnviNFe.getProtNFe() == null)
 			setLBR_NFeLotMethod (LBR_NFELOTMETHOD_Asynchronous);		//	Método Síncrono não suportado

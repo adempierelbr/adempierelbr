@@ -227,7 +227,16 @@ public class NFeCancelamento
 					|| "155".equals (infReturn.getcStat ()))	//	Vinculado, fora do Prazo
 			{
 				nf.setlbr_NFeProt(infReturn.getnProt());
-				nf.setlbr_NFeStatus(infReturn.getcStat ());
+				
+				try
+		        {
+					nf.setlbr_NFeStatus(infReturn.getcStat ());
+		        }
+		        catch (IllegalArgumentException e)
+		        {
+		        	e.printStackTrace();
+		        }
+				
 				nf.setDescription(nf.getDescription() + "\r" + infReturn.getxMotivo());
 				//
 				nf.setDateTrx(infReturn.getDhRegEventoTS());
