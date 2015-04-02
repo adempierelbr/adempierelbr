@@ -31,6 +31,7 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfse.INFSe;
+import org.adempierelbr.nfse.NFSeUtil;
 import org.adempierelbr.process.ProcInutNF;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
@@ -38,7 +39,6 @@ import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
-import org.adempierelbr.webui.adapter.RPSAdapter;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_DocType;
@@ -2496,7 +2496,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	NFS-e
 			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS))
 			{
-				INFSe infSe = RPSAdapter.get (this);
+				INFSe infSe = NFSeUtil.get (this);
 				//
 				if (infSe != null)
 				{
@@ -2618,7 +2618,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	NF Serviço
 			else if (LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS.equals(getlbr_NFModel()))
 			{
-				INFSe infSe = RPSAdapter.get (this);
+				INFSe infSe = NFSeUtil.get (this);
 				//
 				if (infSe != null)
 				{
