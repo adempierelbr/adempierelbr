@@ -309,14 +309,15 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();
 			//
 			String cStat = retConsReciNFe.getCStat();
-			setlbr_NFeAnswerStatus(cStat);
+			try
+			{
+				setlbr_NFeAnswerStatus(cStat);
+			}
+			catch (Exception e) {}
 			//
 			
-			if (LBR_NFEANSWERSTATUS_104_LoteProcessado.equals(cStat)
-				|| LBR_NFEANSWERSTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeE.equals(cStat))
-			{	
-				//	Lote Processado ou 999 Erro não catalogado
-				//	Marcar como processado somente em 104 ou 999
+			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat))
+			{
 				setDocStatus(DOCSTATUS_Completed);
 				setDocAction(DOCACTION_None);
 				setlbr_LotReceived(true);
@@ -325,10 +326,30 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 				setlbr_NFeRespID(retConsReciNFe.getNRec());
 				setDateFinish(NFeUtil.stringToTime(retConsReciNFe.getDhRecbto()));
 				//
-				for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
+				TProtNFe[] protNFes = retConsReciNFe.getProtNFeArray();
+				
+				//	Processa as NFes
+				if (protNFes != null && protNFes.length > 0)
+					for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
+					{
+						MLBRNotaFiscal.authorizeNFe (protNFe, trxName);
+					}	//	for
+				
+				//	Libera as NFs para envio em outro lote
+				else
 				{
-					MLBRNotaFiscal.authorizeNFe (protNFe, trxName);
-				}	//	for
+					List<MLBRNotaFiscal> nfs = new Query (Env.getCtx(),MLBRNotaFiscal.Table_Name, COLUMNNAME_LBR_NFeLot_ID + "=?", get_TrxName())
+						.setParameters(getLBR_NFeLot_ID()).list();
+					//
+					for (MLBRNotaFiscal nf : nfs)
+					{
+						nf.setLBR_NFeLot_ID(0);
+						nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Invalid);
+						nf.setDocAction(MLBRNotaFiscal.DOCACTION_Complete);
+						nf.setProcessed(false);
+						nf.save();
+					}
+				}
 			}	//	if
 			//
 			save();
