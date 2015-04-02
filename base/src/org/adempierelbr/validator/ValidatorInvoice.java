@@ -390,7 +390,14 @@ public class ValidatorInvoice implements ModelValidator
 				wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 				
 				//	Gera o XML da NF-e efetuando a ação Preparar na NF
-				nf.prepareIt();
+				try
+				{
+					nf.prepareIt();
+				}
+				catch (Exception e) 
+				{
+					log.warning ("Erro ao preparar a NF");
+				}
 			}	//	geração de Documento Fiscal
 			
 			/**

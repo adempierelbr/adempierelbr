@@ -467,11 +467,21 @@ public class NFeXMLGenerator
 		enderEmit.setXPais(TEnderEmi.XPais.BRASIL);	//	Emitente, somente Brasil
 		
 		if (nf.getlbr_OrgPhone() != null)
-			enderEmit.setFone(TextUtil.toNumeric (nf.getlbr_OrgPhone()));
+			enderEmit.setFone(toNumericStr (nf.getlbr_OrgPhone()));
 		
 		//	IE
-		emit.setIE(TextUtil.toNumeric (nf.getlbr_IE()));
-		emit.setCRT(Emit.CRT.X_3);	//	FIXME
+		emit.setIE(toNumericStr (nf.getlbr_IE()));
+		
+		String regime = (String) MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null).get_Value("Z_TaxRegime");
+		
+		//	Regime Normal
+		String crt = "3";
+		
+		//	Simples Nacional
+		if (regime != null && regime.equals("S"))
+			crt = "1";
+		
+		emit.setCRT(InfNFe.Emit.CRT.Enum.forString (crt));
 		
 		//	D. Identificação do Fisco Emitente da NF-e
 		//		USO EXCLUSIVO DO FISCO
@@ -569,14 +579,14 @@ public class NFeXMLGenerator
 		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
 		
 		if (nf.getlbr_OrgPhone() != null)
-			enderDest.setFone(TextUtil.toNumeric (nf.getlbr_OrgPhone()));
+			enderDest.setFone(toNumericStr (nf.getlbr_OrgPhone()));
 		
 		//	F. Identificação do Local de Retirada
 		//	G. Identificação do Local de Entrega
 		TLocal retOuEntreg = null;
 
 		//	Retirada
-		if (false) 	//	MOrder.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
+		if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
 			if (!nf.isSamePickUpAddr())
 				retOuEntreg = infNFe.addNewRetirada();
 		
@@ -1169,7 +1179,7 @@ public class NFeXMLGenerator
 			
 			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
 			String shipperName 		= normalize (nf.getlbr_BPShipperName());
-			String shipperIE 		= normalize (nf.getlbr_BPShipperIE());
+			String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
 			String shipperAddress 	= nf.getlbr_BPShipperAddress1();
 			String shipperCity 		= nf.getlbr_BPShipperCity();
 			String shipperRegion 	= nf.getlbr_BPShipperRegion();
@@ -1377,7 +1387,7 @@ public class NFeXMLGenerator
 	 */
 	private static String toNumericStr (String value)
 	{
-		return TextUtil.toNumeric(value);
+		return TextUtil.toNumeric (value);
 	}	//	toNumericStr
 
 

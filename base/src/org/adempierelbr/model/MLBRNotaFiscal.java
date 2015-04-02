@@ -2455,7 +2455,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		log.info(toString());
 		
-		if (m_justPrepared || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock, DOCACTION_Void))
+		if (m_justPrepared || !islbr_IsOwnDocument() || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock, DOCACTION_Void))
 			return DOCSTATUS_InProgress;
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
@@ -2465,8 +2465,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (TextUtil.match (getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
 		{
 			//	Valida a Org do Tipo de Documento vs Org da NF
-			if (islbr_IsOwnDocument() 
-					&& getC_DocTypeTarget().getAD_Org_ID() > 0 
+			if (getC_DocTypeTarget().getAD_Org_ID() > 0 
 					&& getAD_Org_ID() != getC_DocTypeTarget().getAD_Org_ID())
 			{
 				m_processMsg = "Organização do Tipo de Documento não confere com a da Nota Fiscal";
@@ -2566,6 +2565,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		try
 		{
+			if (!islbr_IsOwnDocument())
+			{
+				setDocAction(DOCACTION_None);
+				setDocStatus(DOCSTATUS_Completed);
+				//
+				return DOCSTATUS_Completed;
+			}
 			//	Nota Fiscal Eletrônica
 			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica, LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
 			{
