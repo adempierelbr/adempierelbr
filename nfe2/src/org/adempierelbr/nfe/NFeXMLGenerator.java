@@ -1180,26 +1180,26 @@ public class NFeXMLGenerator
 			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
 			String shipperName 		= normalize (nf.getlbr_BPShipperName());
 			String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
-			String shipperAddress 	= nf.getlbr_BPShipperAddress1();
-			String shipperCity 		= nf.getlbr_BPShipperCity();
-			String shipperRegion 	= nf.getlbr_BPShipperRegion();
+			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress1());
+			String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
+			String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
 			
 			if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
 				transporta.setCNPJ(shipperCNPJ);
 			
-			if (shipperName != null && !shipperName.trim().isEmpty())
+			if (shipperName != null && !shipperName.isEmpty())
 				transporta.setXNome(shipperName);
 			
 			if (shipperIE != null && !shipperIE.trim().isEmpty())
 				transporta.setIE (shipperIE);
 			
-			if (shipperAddress != null && !shipperAddress.trim().isEmpty())
+			if (shipperAddress != null && !shipperAddress.isEmpty())
 				transporta.setXEnder(shipperAddress);
 			
-			if (shipperCity != null && !shipperCity.trim().isEmpty())
+			if (shipperCity != null && !shipperCity.isEmpty())
 				transporta.setXMun(shipperCity);
 			
-			if (shipperRegion != null && !shipperRegion.trim().isEmpty())
+			if (shipperRegion != null && !shipperRegion.isEmpty())
 				transporta.setUF(TUf.Enum.forString(shipperRegion));
 		}
 
