@@ -212,9 +212,28 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			setlbr_LotSent(true);
 			setDocStatus(DOCSTATUS_WaitingConfirmation);
 			setDocAction(DOCACTION_Complete);
-			save();
+		}
+		else if (MLBRNFeLot.LBR_NFEANSWERSTATUS_104_LoteProcessado.equals(cStat))
+		{
+			setlbr_NFeRecID(retEnviNFe.getInfRec().getNRec());
+			//
+			Timestamp timestamp = NFeUtil.stringToTime(retEnviNFe.getDhRecbto());
+			setDateTrx(timestamp);
+			setDateFinish(timestamp);
+			setlbr_LotSent(true);
+			setlbr_LotReceived(true);
+			
+			setDocStatus(DOCSTATUS_Completed);
+			setDocAction(DOCACTION_None);
+			setProcessed(true);
+			
+			setlbr_NFeRespID(retEnviNFe.getInfRec().getNRec());
+			//
+			MLBRNotaFiscal.authorizeNFe (retEnviNFe.getProtNFe(), get_TrxName());
 		}
 		
+		save();
+
 		return true;
 	}	//	enviaLoteNFe
 
