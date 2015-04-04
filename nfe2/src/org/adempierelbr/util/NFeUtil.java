@@ -680,11 +680,9 @@ public abstract class NFeUtil
 		XmlOptions xmlOptions = new XmlOptions();
 		xmlOptions.setErrorListener(validationErrors);
 		
-		XmlObject nfeDocument = XmlObject.Factory.parse (xmlNFe.toString());
-
 		// 	During validation, errors are added to the ArrayList for
 		// 		retrieval and printing by the printErrors method.
-		boolean isValid = nfeDocument.validate (xmlOptions);
+		boolean isValid = xmlNFe.validate (xmlOptions);
 		
 		// 	Print the errors if the XML is invalid.
 		if (!isValid)

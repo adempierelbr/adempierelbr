@@ -1342,7 +1342,7 @@ public class NFeXMLGenerator
 	 * 	@param text
 	 * 	@return
 	 */
-	private static String normalize (String text)
+	static String normalize (String text)
 	{
 		if (text == null || text.isEmpty())
 			return text;
@@ -1374,7 +1374,7 @@ public class NFeXMLGenerator
 	 * 	@param ts
 	 * 	@return
 	 */
-	private static String normalizeTZ (Timestamp ts)
+	public static String normalizeTZ (Timestamp ts)
 	{
 		StringBuffer timeStr = new StringBuffer (TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssZ"));
 		return timeStr.insert (timeStr.length() - 2, ':').toString();

@@ -1,14 +1,7 @@
 package org.adempierelbr.webui.adapter;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfse.INFSe;
-import org.adempierelbr.nfse.sp.NFSeImpl;
-import org.compiere.model.MOrgInfo;
-import org.compiere.util.CLogger;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zul.Filedownload;
 

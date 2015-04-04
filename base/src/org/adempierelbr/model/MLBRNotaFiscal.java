@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.nfe.NFeCancelamento;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
@@ -2667,9 +2668,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Anular a NF
 		if (DOCSTATUS_Completed.equals(getDocStatus()))
 		{
-			setProcessed (true);
-			setDocAction (DOCACTION_None);
-			return true;
+			if (LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(getlbr_NFeStatus())
+					&& LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+			{
+				try
+				{
+					NFeCancelamento.cancelNFeEx (this);
+					return true;
+				}
+				catch (Exception e)
+				{
+					m_processMsg = e.getMessage();
+				}
+			}
+			else
+			{
+				setProcessed (true);
+				setDocAction (DOCACTION_None);
+				return true;
+			}
 		}
 		
 		//	Inutilizar a numeração

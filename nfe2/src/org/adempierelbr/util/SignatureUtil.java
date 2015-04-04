@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -54,9 +53,12 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlObject;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.w3.x2000.x09.xmldsig.SignatureDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -68,7 +70,7 @@ import sun.misc.BASE64Encoder;
  * 
  * @contributor Ricardo Santana
  */
-public class AssinaturaDigital
+public class SignatureUtil
 {
 	/**		Document Type 	*/
 	public static final String RECEPCAO_NFE			="1";
@@ -83,56 +85,47 @@ public class AssinaturaDigital
 	/**		Algoritmos		*/
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 	
-	private static X509Certificate cert;
-	private static KeyPair keyP;
+	private X509Certificate cert	= null;
+	private KeyPair keyP			= null;
 	
-	private static String certType = "";
-	private static String cfgFile = "";
-	private static boolean isToken = false;
-	private static String alias = "";
-	private static char[] senha = "".toCharArray();
-	private static InputStream jksData = null;
+	private String certType 		= "";
+	private String cfgFile 			= "";
+	private boolean isToken 		= false;
+	private String alias 			= "";
+	private char[] senha 			= "".toCharArray();
+	private InputStream jksData 	= null;
+	
+	private MOrgInfo oi				= null;
+	private String docType			= null;
 	
 	/**	Logger				*/
-	private static CLogger log = CLogger.getCLogger (AssinaturaDigital.class);
+	private static CLogger log = CLogger.getCLogger (SignatureUtil.class);
 
 	/**
-	 * 	Assina o arquivo XML
-	 * 
-	 * @param String XML
-	 * @param OrgInfo
-	 * @throws Exception
+	 * 	Signature Constructor
 	 */
-	public static void Assinar (String xmlPath, MOrgInfo oi, String docType) throws Exception
+	public SignatureUtil (MOrgInfo oi, String docType)
 	{
-		//	Lê o arquivo e assina
-		StringBuilder xml = Assinar (new StringBuilder (TextUtil.readFile (new File (xmlPath))), oi, docType);
-		
-		//	Grava o arquivo
-		TextUtil.generateFile (xml.toString(), xmlPath);
-	}	//	Assinar
-	
-	/**
-	 * 	Assina o arquivo XML
-	 * 
-	 * @param String XML
-	 * @param OrgInfo
-	 * @throws Exception
-	 */
-	public static StringBuilder Assinar (StringBuilder xml, MOrgInfo oi, String docType) throws Exception
-	{
-		log.fine ("Signing document: " + xml);
-		//
-		AssinaturaDigital.loadKeys (oi);
-		return AssinaturaDigital.assinarDocumento (xml, docType);
-	}	//	Assinar
+		this.oi 		= oi;
+		this.docType 	= docType;
+	}	//	SignatureUtil
 
-	private static PrivateKey getChavePrivada() throws AdempiereException
+	/**
+	 * 	Private Key
+	 * @return
+	 * @throws AdempiereException
+	 */
+	private PrivateKey getPrivateKey() throws AdempiereException
 	{
 		return keyP.getPrivate();
 	}	//	getChavePrivada
 
-	private static void loadKeys (MOrgInfo oi) throws Exception
+	/**
+	 * 	Load Keys
+	 * @param oi
+	 * @throws Exception
+	 */
+	private void loadKeys (MOrgInfo oi) throws Exception
 	{
 		Integer cert_ID = (Integer) oi.get_Value("LBR_DC_Org_ID");
 		MLBRDigitalCertificate dc = new MLBRDigitalCertificate(Env.getCtx(), cert_ID, null);
@@ -206,12 +199,17 @@ public class AssinaturaDigital
 	 * @param docType
 	 * @throws Exception
 	 */
-	public static StringBuilder assinarDocumento (StringBuilder xml, String docType) throws Exception
+	public void sign (XmlObject xml, XmlCursor rootCursor) throws Exception
 	{
+		log.fine ("Signing document: " + xml);
+
+		//	Load Certificates
+		loadKeys (oi);
+
 		//	Carrega o documento
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
-		Document doc = dbf.newDocumentBuilder().parse (new InputSource(new StringReader (xml.toString())));
+		Document doc = dbf.newDocumentBuilder().parse (new InputSource(new StringReader (xml.xmlText (NFeUtil.getXmlOpt()))));
 
 		//	Factory
 		XMLSignatureFactory sig = XMLSignatureFactory.getInstance("DOM");
@@ -271,7 +269,7 @@ public class AssinaturaDigital
 		X509Data xd = kif.newX509Data(x509Content);
 		KeyInfo ki = kif.newKeyInfo(Collections.singletonList(xd));
 
-		DOMSignContext dsc = new DOMSignContext(getChavePrivada(), doc.getDocumentElement());
+		DOMSignContext dsc = new DOMSignContext(getPrivateKey(), doc.getDocumentElement());
 		XMLSignature signature = sig.newXMLSignature(si, ki);
 		signature.sign(dsc);
 		//
@@ -281,10 +279,19 @@ public class AssinaturaDigital
 		Transformer trans = tf.newTransformer();
 		trans.transform(new DOMSource(doc), new StreamResult (sw));
 		//
-		xml.setLength(0);	//	Clear the XML
-		xml.append(sw.toString());
-		//
-		return xml;
+		String xmlSignature = sw.toString();
+		xmlSignature = xmlSignature.substring(xmlSignature.indexOf("<Signature"), xmlSignature.indexOf("</Signature>")+12);
+		
+		SignatureDocument signatureDocument = SignatureDocument.Factory.parse (xmlSignature);
+		
+		//	Cursor da assinatura
+		XmlCursor cursor = signatureDocument.newCursor();
+		cursor.toStartDoc();
+		cursor.toNextToken();
+		
+		//	Adiciona a assinatura no documento
+		rootCursor.toEndToken();
+		cursor.moveXml(rootCursor);
 	}	//	assinarDocumento
 	
 	/**
@@ -293,7 +300,7 @@ public class AssinaturaDigital
 	 * 	@param ascii
 	 * 	@return
 	 */
-	public static String signASCII (String ascii, int AD_Org_ID) 
+	public String signASCII (String ascii, int AD_Org_ID) 
 	{
 		log.fine("Signing: " + ascii);
 		String encoded = null;
@@ -304,7 +311,7 @@ public class AssinaturaDigital
 			loadKeys (MOrgInfo.get (Env.getCtx(), AD_Org_ID, null));
 			//
 			Signature dsa = Signature.getInstance ("SHA1withRSA");
-			dsa.initSign(getChavePrivada());
+			dsa.initSign(getPrivateKey());
 			dsa.update(ascii.getBytes("UTF-8"));
 			encoded = new BASE64Encoder().encode (dsa.sign());
 			//

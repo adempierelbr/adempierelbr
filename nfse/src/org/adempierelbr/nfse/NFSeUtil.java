@@ -37,6 +37,7 @@ public class NFSeUtil
 		s_registeredClasses.put (NFSeImpl.C_City_ID, NFSeImpl.class);
 	}
 	
+
 	/**
 	 *  Factory - called from APanel
 	 *  @param  mTab        Model Tab for the trx
@@ -47,6 +48,16 @@ public class NFSeUtil
 		MOrgInfo oi = MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), nf.get_TrxName());
 		int C_City_ID = oi.getC_Location().getC_City_ID();
 		//
+		return get (C_City_ID);
+	}
+	
+	/**
+	 *  Factory - called from APanel
+	 *  @param  mTab        Model Tab for the trx
+	 *  @return JDialog
+	 */
+	public static INFSe get (int C_City_ID)
+	{
 		INFSe retValue = null;
 		Class<? extends INFSe> cl = s_registeredClasses.get (C_City_ID);
 		if (cl != null)

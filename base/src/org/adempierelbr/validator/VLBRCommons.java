@@ -205,7 +205,7 @@ public class VLBRCommons implements ModelValidator
 		{
 			if (att.getAD_Table_ID() == MLBRNotaFiscal.Table_ID)
 			{
-				MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(),att.getRecord_ID(), null);
+				MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(),att.getRecord_ID(), att.get_TrxName());
 				
 				//	Carrega o ID da NFe apenas para as Notas de Entrada que não seja documento próprio.
 				if (!nf.isSOTrx() && !nf.islbr_IsOwnDocument())
