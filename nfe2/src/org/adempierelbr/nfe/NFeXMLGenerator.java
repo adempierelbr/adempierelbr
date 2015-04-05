@@ -18,6 +18,7 @@ import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRAuthorizedAccessXML;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
@@ -55,6 +56,7 @@ import br.inf.portalfiscal.nfe.v8f.TLocal;
 import br.inf.portalfiscal.nfe.v8f.TMod;
 import br.inf.portalfiscal.nfe.v8f.TNFe;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.AutXML;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Cobr;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Cobr.Dup;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Cobr.Fat;
@@ -628,7 +630,22 @@ public class NFeXMLGenerator
 		}
 		
 		//	GA. Autorização para obter XML
-		//	AutXML autXML = infNFe.addNewAutXML(); //	CRM-52363
+		MLBRAuthorizedAccessXML[] autXMLs = MLBRAuthorizedAccessXML.get (oi.getAD_Org_ID(), nf.getC_BPartner_ID());
+		
+		for (MLBRAuthorizedAccessXML autAccessXML : autXMLs)
+		{
+			AutXML autXML = infNFe.addNewAutXML();
+
+			if (MLBRAuthorizedAccessXML.LBR_BPTYPEBR_PJ_LegalEntity.equals(autAccessXML.getlbr_BPTypeBR()))
+				autXML.setCNPJ (toNumericStr (autAccessXML.getlbr_CNPJ ()));
+			
+			else if (MLBRAuthorizedAccessXML.LBR_BPTYPEBR_PF_Individual.equals(autAccessXML.getlbr_BPTypeBR()))
+					autXML.setCPF (toNumericStr (autAccessXML.getlbr_CPF()));
+			
+			//	Limit de 10 registros por NF
+			if (infNFe.getAutXMLArray().length == 10)
+				break;
+		}
 		
 		//	Linhas do documento
 		for (MLBRNotaFiscalLine nfl : nf.getLines())
