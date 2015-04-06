@@ -428,8 +428,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		else
 			setProduct (iLine.getProduct());
 		
-		//  Outras Despesas Acessórias
-		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
+		//  Seguro
+		setlbr_InsuranceAmt(iLineW.getlbr_InsuranceAmt());
+		
+		//	Frete
+		setFreightAmt(iLineW.getFreightAmt());
 		
 		//  Outras Despesas Acessórias
 		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
@@ -520,6 +523,12 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setLBR_CFOP_ID(oLineW.getLBR_CFOP_ID());
 //	TODO		Mover cadastro do TaxStatus para LBR_TaxLine
 			setlbr_TaxStatus(oLineW.getlbr_TaxStatus());
+			
+			//  Seguro
+			setlbr_InsuranceAmt(oLineW.getlbr_InsuranceAmt());
+			
+			//	Frete
+			setFreightAmt(oLineW.getFreightAmt());
 			
 		    //  Outras Despesas Acessórias
 			setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());
