@@ -512,7 +512,7 @@ public class NFeXMLGenerator
 					&& nf.getC_BPartner().getTaxID() != null)
 				dest.setIdEstrangeiro(nf.getC_BPartner().getTaxID());
 			
-			dest.setXNome(nf.getBPName());
+			dest.setXNome(normalize (nf.getBPName()));
 		}
 		
 		//	Endereço do destinatário
