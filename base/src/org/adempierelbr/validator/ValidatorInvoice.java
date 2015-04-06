@@ -392,6 +392,9 @@ public class ValidatorInvoice implements ModelValidator
 				try
 				{
 					nf.prepareIt();
+					nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_InProgress);
+					nf.setDocAction(MLBRNotaFiscal.DOCACTION_Complete);
+					nf.saveEx();
 				}
 				catch (Exception e) 
 				{
