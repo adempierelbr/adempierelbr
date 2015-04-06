@@ -158,6 +158,11 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		if (region.isEmpty())
 			throw new Exception ("UF Inválida");
 
+		//	Método síncrono somente para 1 NF
+		int count = count();
+		if (count == 1 && LBR_NFELOTMETHOD_Synchronous.equals(getLBR_NFeLotMethod()))
+			setLBR_NFeLotMethod(LBR_NFELOTMETHOD_Asynchronous);
+		
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
 
@@ -789,4 +794,14 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		//
 		return index;
 	}	//	docStatus
+	
+	/**
+	 * 	Count how many NF in this lot
+	 * 	@return
+	 */
+	private int count()
+	{
+		int retVal = DB.getSQLValue(get_TrxName(), "SELECT COUNT(*) FROM LBR_NotaFiscal WHERE LBR_NFeLot_ID=?", getLBR_NFeLot_ID());
+		return retVal;
+	}
 }	//	MNFeLot
