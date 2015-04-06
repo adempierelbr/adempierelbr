@@ -57,11 +57,14 @@ public class MLBROpenItem{
 	private BigDecimal DiscountRate;
 	private BigDecimal InterestAmt;
 	private BigDecimal GrandTotal;
+	
+	private int AD_Org_ID;
 
 	private MLBROpenItem(ResultSet rs){
 
 		try
 		{
+			setAD_Org_ID(rs.getInt("AD_Org_ID"));
 			setC_BPartner_ID(rs.getInt("C_BPartner_ID"));
 			setC_Invoice_ID(rs.getInt("C_Invoice_ID"));
 			setNetDays(rs.getInt("NetDays"));
@@ -97,10 +100,11 @@ public class MLBROpenItem{
 				     "DiscountAmt, " + //7
 				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
-				     "C_PaymentTerm_ID " + //10
+				     "C_PaymentTerm_ID, " + //10
+				     "AD_Org_ID " + //11
 					 "FROM " + MSysConfig.getValue ("LBR_GENBILLING_TABLE", "RV_InvoicePaySchedule", Env.getAD_Client_ID(Env.getCtx())) +
 				     " WHERE IsSOTrx='Y' " +
-					 "AND C_Invoice_ID = ? order by DueDate"; //*1
+					 "AND C_Invoice_ID=? ORDER BY DueDate"; //*1
 
 		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
 		PreparedStatement pstmt = null;
@@ -139,7 +143,8 @@ public class MLBROpenItem{
 				     "DiscountAmt, " + //7
 				     "OpenAmt, " + //8
 				     "C_InvoicePaySchedule_ID, " + //9
-				     "C_PaymentTerm_ID " + //10
+				     "C_PaymentTerm_ID, " + //10
+				     "AD_Org_ID " + //11
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' " +
 					 "AND DateInvoiced = ? " + //*1
@@ -327,6 +332,14 @@ public class MLBROpenItem{
 		return GrandTotal;
 	}
 
+	private void setAD_Org_ID(int value){
+		AD_Org_ID = value;
+	}
+
+	public int getAD_Org_ID(){
+		return AD_Org_ID;
+	}
+	
 	public void setDiscountRate(BigDecimal amt, BigDecimal discountamt){
 		//(discountamt/amt)*100
 		DiscountRate = (discountamt.divide(amt, 12, RoundingMode.HALF_UP)).multiply(Env.ONEHUNDRED);
@@ -339,7 +352,7 @@ public class MLBROpenItem{
 
 	public void setInterestAmt(BigDecimal amt){
 
-		MOrgInfo orgInfo     = MOrgInfo.get(Env.getCtx(), Env.getAD_Org_ID(Env.getCtx()),null);
+		MOrgInfo orgInfo     = MOrgInfo.get(Env.getCtx(), AD_Org_ID,null);
 		BigDecimal interest  = (BigDecimal)orgInfo.get_Value("lbr_Interest");
 		if (interest == null)
 			interest = Env.ZERO;
