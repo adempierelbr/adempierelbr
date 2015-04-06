@@ -45,7 +45,11 @@ public class ProcXMLExport extends SvrProcess
 	private final String p_FolderKey = MSysConfig.getValue("LBR_FOLDERKEY", "ADempiereLBR", Env.getAD_Client_ID(Env.getCtx()));
 	
 	/**	Document Type	*/
-	private int p_C_DocTypeTarget_ID = 0;
+	private int p_C_DocTypeTarget_ID 	= 0;
+	private int p_AD_Org_ID 			= 0;
+	private int p_C_BPartner_ID 		= 0;
+	private int p_C_BP_Group_ID 		= 0;
+	private int p_M_Shipper_ID 			= 0;
 	
 	/**	Period			*/
 	private Timestamp dateFrom;
@@ -77,6 +81,14 @@ public class ProcXMLExport extends SvrProcess
 				p_C_DocTypeTarget_ID = para[i].getParameterAsInt();
 			else if (name.equals("File_Directory"))
 				p_FilePath = para[i].getParameter().toString();
+			else if (name.equals("AD_Org_ID"))
+				p_AD_Org_ID = para[i].getParameterAsInt();
+			else if (name.equals("C_BPartner_ID"))
+				p_C_BPartner_ID = para[i].getParameterAsInt();
+			else if (name.equals("C_BP_Group_ID"))
+				p_C_BP_Group_ID = para[i].getParameterAsInt();
+			else if (name.equals("M_Shipper_ID"))
+				p_M_Shipper_ID = para[i].getParameterAsInt();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -104,6 +116,20 @@ public class ProcXMLExport extends SvrProcess
 		.append(" AND C_DocTypeTarget_ID=?")
 		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
+		
+		if (p_AD_Org_ID > 0)
+			whereClause.append(" AND AD_Org_ID="+p_AD_Org_ID);
+
+		if (p_C_BPartner_ID > 0)
+			whereClause.append(" AND C_BPartner_ID="+p_C_BPartner_ID);
+		
+		if (p_M_Shipper_ID > 0)
+			whereClause.append(" AND M_Shipper_ID="+p_M_Shipper_ID);
+		
+		if (p_C_BP_Group_ID > 0)
+			whereClause.append(" AND EXISTS (SELECT '1' FROM C_BPartner bp WHERE bp.C_BPartner_ID=LBR_NotaFiscal.C_BPartner_ID AND bp.C_BP_Group_ID ="+p_C_BP_Group_ID+")");
+		
+		whereClause.append(" AND LBR_NFeStatus <> '101' ");	//	Canceladas
 		//
 		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);		
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
