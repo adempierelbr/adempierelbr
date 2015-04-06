@@ -362,7 +362,6 @@ public class NFSeImpl implements INFSe
 		int p_AD_Org_ID = AD_Org_ID;
 		
 		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
-		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
 		
 		PedidoEnvioLoteRPSDocument envioLoteRPSDoc = PedidoEnvioLoteRPSDocument.Factory.newInstance();
 		PedidoEnvioLoteRPS envioLoteRPS = envioLoteRPSDoc.addNewPedidoEnvioLoteRPS();
@@ -443,6 +442,9 @@ public class NFSeImpl implements INFSe
 		
 		//	Valida o documento
 		NFeUtil.validate (envioLoteRPSDoc);
+
+		//	Set certificate
+		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
 
 		//	Stub
 		LoteNFeStub stub = new LoteNFeStub();
