@@ -20,6 +20,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRAuthorizedAccessXML;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.X_LBR_NFDI;
@@ -97,6 +98,10 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Emit;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref.RefECF;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref.RefNF;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref.RefNFP;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.InfAdic;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.InfAdic.ObsCont;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Total;
@@ -445,7 +450,57 @@ public class NFeXMLGenerator
 		ide.setVerProc (NFeUtil.VERSAO_APP);
 		
 		//	BA. Documento Fiscal Referenciado
-//		NFref nFref = ide.addNewNFref();
+		MLBRNotaFiscalDocRef[] docRefs = MLBRNotaFiscalDocRef.get (nf.getLBR_NotaFiscal_ID(), nf.get_TrxName());		
+		for (MLBRNotaFiscalDocRef docRef: docRefs)
+		{
+			NFref nFref = ide.addNewNFref();
+			
+			//	NF-e
+			if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NF_E.equals(docRef.getLBR_FiscalDocRefType()))
+				nFref.setRefNFe(docRef.getlbr_NFeID());
+			
+			//	NF Modelo 1 e 1-A
+			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NFManual11A.equals(docRef.getLBR_FiscalDocRefType()))
+			{
+				RefNF refNF = nFref.addNewRefNF();
+				refNF.setCUF(TCodUfIBGE.Enum.forString(BPartnerUtil.getRegionCode (docRef.getC_Region_ID())));
+				refNF.setAAMM(TextUtil.timeToString(docRef.getDateDoc(), "yyMM"));
+				refNF.setCNPJ(toNumericStr(docRef.getlbr_CNPJ()));
+				refNF.setMod(InfNFe.Ide.NFref.RefNF.Mod.Enum.forString(toNumericStr(docRef.getlbr_NFModel())));
+				refNF.setSerie(toNumericStr(docRef.getlbr_NFSerie()));
+				refNF.setNNF(toNumericStr(docRef.getDocumentNo()));
+			}
+			
+			//	NF de Produtor Rural
+			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_CT_EProdutorRural.equals(docRef.getLBR_FiscalDocRefType()))
+			{
+				RefNFP refNFP = nFref.addNewRefNFP();
+				refNFP.setCUF(TCodUfIBGE.Enum.forString(BPartnerUtil.getRegionCode (docRef.getC_Region_ID())));
+				refNFP.setAAMM(TextUtil.timeToString(docRef.getDateDoc(), "yyMM"));
+				
+				if (MLBRNotaFiscalDocRef.LBR_BPTYPEBR_PJ_LegalEntity.equals(docRef.getlbr_BPTypeBR()))
+					refNFP.setCNPJ(toNumericStr(docRef.getlbr_CNPJ()));
+				else
+					refNFP.setCPF(toNumericStr(docRef.getlbr_CPF()));
+				refNFP.setIE(toNumericStr(docRef.getlbr_IE()));
+				refNFP.setMod(InfNFe.Ide.NFref.RefNFP.Mod.Enum.forString(toNumericStr(docRef.getlbr_NFModel())));
+				refNFP.setSerie(toNumericStr(docRef.getlbr_NFSerie()));
+				refNFP.setNNF(toNumericStr(docRef.getDocumentNo()));
+			}
+			
+			//	CT-e
+			else if ("CTe".equals(docRef.getLBR_FiscalDocRefType()))
+				nFref.setRefCTe(docRef.getlbr_NFeID());
+			
+			//	ECF
+			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_CupomFiscalECF.equals(docRef.getLBR_FiscalDocRefType()))
+			{
+				RefECF refECF = nFref.addNewRefECF();
+				refECF.setMod(InfNFe.Ide.NFref.RefECF.Mod.Enum.forString(toNumericStr(docRef.getlbr_NFModel())));
+				refECF.setNECF(toNumericStr(docRef.getDocumentNo()));
+				refECF.setNCOO(toNumericStr(docRef.getLBR_COOno()));
+			}
+		}
 		
 		//	C. Identificação do Emitente da Nota Fiscal eletrônica
 		Emit emit = infNFe.addNewEmit();
@@ -1369,7 +1424,7 @@ public class NFeXMLGenerator
 //		text = text.replaceAll ("&", "&amp;");
 //		text = text.replaceAll ("\"", "&quot;");
 //		text = text.replaceAll ("'", "&#39;");
-//		text = text.replaceAll ("( )+", " ");
+		text = text.replaceAll ("–", "-");
 		text = text.replaceAll ("\n", ". ");
 		//
 		return text.trim();

@@ -217,6 +217,21 @@ public abstract class BPartnerUtil
 	 * 	@param location
 	 * 	@return
 	 */
+	public static String getRegionCode (int C_Region_ID)
+	{
+		String cityCode = DB.getSQLValueString (null, "SELECT MAX(LBR_CityCode) FROM C_City WHERE LBR_CityCode IS NOT NULL AND C_Region_ID=?", C_Region_ID);
+		if (cityCode.length() < 2)
+			return "";
+		//
+		return cityCode.substring(0, 2);
+	} 	//	getRegionCode
+	
+	/**
+	 * 		Get 2-digit region code
+	 * 
+	 * 	@param location
+	 * 	@return
+	 */
 	public static String getRegionCode (MLocation location)
 	{
 		String cityCode = BPartnerUtil.getCityCode(location);
