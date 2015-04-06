@@ -2806,11 +2806,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				
 				//	Apaga o Lote da NF em questão
 				setLBR_NFeLot_ID(0);
-				
-				//	Marca a NF como Manual
-				setIsManual(true);
 			}
 		}
+		
+		//	Marca a NF como Manual
+		setIsManual(true);
 		
 		setDocStatus(DOCSTATUS_Drafted);
 		setDocAction(DOCACTION_Prepare);
