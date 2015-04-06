@@ -1559,7 +1559,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
 		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
-		setlbr_BPTypeBR(BPartnerUtil.getBPTypeBR(new MBPartner (getCtx(), bpLocation.getC_BPartner_ID(), null)));
+		String BPTypeBR = BPartnerUtil.getBPTypeBR(new MBPartner (getCtx(), bpLocation.getC_BPartner_ID(), null));
+		if (BPTypeBR != null && !BPTypeBR.equals(""))
+			setlbr_BPTypeBR(BPTypeBR);
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
 		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
