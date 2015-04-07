@@ -257,7 +257,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
-		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
 	} 	//	getTaxAmt
 
@@ -275,7 +275,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
-		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
 		return result == null ? Env.ZERO : result;
 	} 	//	getTaxAmt
 
@@ -355,7 +355,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		String sql = "SELECT SUM(ValorICMS) FROM lbr_SitICMS_V " +
                      "WHERE LBR_NotaFiscal_ID = ?";
         //
-		BigDecimal result = DB.getSQLValueBD(null, sql, new Object[]{getLBR_NotaFiscal_ID()});
+		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID()});
 		return result == null ? Env.ZERO : result;
 	} // getICMSDebAmt
 
