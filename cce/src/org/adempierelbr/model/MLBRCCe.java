@@ -348,7 +348,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 					
 					//	Arquivo de resposta final
 					MAttachment attachCCe = createAttachment (true);
-					attachCCe.addEntry (cce.getId() + "-cce-dst.xml", (header + procEventoNFeDoc.xmlText(NFeUtil.getXmlOpt())).getBytes());
+					attachCCe.addEntry (cce.getId() + "-cce-dst.xml", (header + procEventoNFeDoc.xmlText(NFeUtil.getXmlOpt())).getBytes("UTF-8"));
 					attachCCe.save();
 				}
 				else
