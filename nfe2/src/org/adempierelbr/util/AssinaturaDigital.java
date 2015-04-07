@@ -74,7 +74,9 @@ public class AssinaturaDigital
 	public static final String RECEPCAO_NFE			="1";
 	public static final String CANCELAMENTO_NFE		="2";
 	public static final String INUTILIZACAO_NFE		="3";
+	@Deprecated
 	public static final String CARTADECORRECAO_CCE	="4";
+	public static final String EVENTO				="4";
 	public static final String RPS					="5";
 	public static final String RECEPCAO_MDFE		="6";
 	
@@ -119,11 +121,13 @@ public class AssinaturaDigital
 	 */
 	public static StringBuilder Assinar (StringBuilder xml, MOrgInfo oi, String docType) throws Exception
 	{
+		log.fine ("Signing document: " + xml);
+		//
 		AssinaturaDigital.loadKeys (oi);
 		return AssinaturaDigital.assinarDocumento (xml, docType);
 	}	//	Assinar
 
-	private static PrivateKey getChavePrivada() throws Exception
+	private static PrivateKey getChavePrivada() throws AdempiereException
 	{
 		return keyP.getPrivate();
 	}	//	getChavePrivada
@@ -136,7 +140,7 @@ public class AssinaturaDigital
 		senha = dc.getPassword().toCharArray();			
 		//
 		if (dc.getlbr_CertType() == null)
-			throw new Exception("Certificate Type is NULL");
+			throw new AdempiereException("Certificate Type is NULL");
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
 		{
 			certType = "PKCS11";
@@ -153,7 +157,7 @@ public class AssinaturaDigital
 		else if (dc.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
 			certType = "JKS";
 		else
-			throw new Exception("Unknow Certificate Type or Not implemented yet");
+			throw new AdempiereException("Unknow Certificate Type or Not implemented yet");
 		
 		if (isToken)
 		{
@@ -204,8 +208,6 @@ public class AssinaturaDigital
 	 */
 	public static StringBuilder assinarDocumento (StringBuilder xml, String docType) throws Exception
 	{
-		log.fine ("Signing document: " + xml);
-
 		//	Carrega o documento
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
@@ -232,7 +234,7 @@ public class AssinaturaDigital
 			tag = "infCanc";
 		else if (docType.equals(INUTILIZACAO_NFE))
 			tag = "infInut";
-		else if (docType.equals(CARTADECORRECAO_CCE))
+		else if (docType.equals(EVENTO))
 			tag = "infEvento";
 		else if (docType.equals(RPS))
 			tag = "RPS";
@@ -279,7 +281,10 @@ public class AssinaturaDigital
 		Transformer trans = tf.newTransformer();
 		trans.transform(new DOMSource(doc), new StreamResult (sw));
 		//
-		return new StringBuilder (sw.toString());
+		xml.setLength(0);	//	Clear the XML
+		xml.append(sw.toString());
+		//
+		return xml;
 	}	//	assinarDocumento
 	
 	/**
@@ -291,6 +296,7 @@ public class AssinaturaDigital
 	public static String signASCII (String ascii, int AD_Org_ID) 
 	{
 		log.fine("Signing: " + ascii);
+		String encoded = null;
 		//
 		try 
 		{
@@ -299,12 +305,16 @@ public class AssinaturaDigital
 			//
 			Signature dsa = Signature.getInstance ("SHA1withRSA");
 			dsa.initSign(getChavePrivada());
-			dsa.update(ascii.getBytes());
-			return new BASE64Encoder().encode (dsa.sign());
+			dsa.update(ascii.getBytes("UTF-8"));
+			encoded = new BASE64Encoder().encode (dsa.sign());
+			//
+			log.fine("Signature: " + encoded);
 		} 
 		catch (Exception ex) 
 		{
 			throw new AdempiereException ("Error siging RPS");
 		}
+		
+		return encoded;
 	}	//	signASCII
 }	//	AssinaturaDigital

@@ -18,7 +18,6 @@ import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.compiere.model.MInvoice;
-import org.compiere.model.MSysConfig;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -95,10 +94,6 @@ public class ProcGenerateNF extends SvrProcess
 			
 			wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 			POWrapper.getPO(wInvoice).save();
-			
-			//	Gera o XML da NF-e de acordo com o Modelo da NF
-			if (MSysConfig.getBooleanValue("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-				nf.GenerateXMLAutomatic();
 		}
 		return "@Success@ NF Re-processada com as informações atuais";
 	}	//	doIt

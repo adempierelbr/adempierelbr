@@ -38,6 +38,8 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	public static final String CONSULTA				= "NfeConsultaProtocolo";
 	public static final String INUTILIZACAO			= "NfeInutilizacao";
 	public static final String CANCELAMENTO			= "NfeCancelamento";
+	public static final String RETAUTORIZACAO		= "NfeRetAutorizacao";
+	public static final String AUTORIZACAO			= "NfeAutorizacao";
 	public static final String RETRECEPCAO			= "NfeRetRecepcao";
 	public static final String RECEPCAO				= "NfeRecepcao";
 	public static final String RECEPCAOEVENTO		= "RecepcaoEvento";
@@ -74,7 +76,20 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	public static String getURL (String name, String envType, String versionNo, int C_Region_ID)
 	{
-		MLBRNFeWebService ws = get (name, envType, versionNo, C_Region_ID);
+		return getURL(name, envType, versionNo, LBR_WSTYPE_Normal, C_Region_ID);
+	}	//	getURL
+	
+	/**
+	 * 		Retorna a URL do WebServices
+	 * 	@param name
+	 * 	@param envType
+	 * 	@param versionNo
+	 * 	@param C_Region_ID
+	 * 	@return
+	 */
+	public static String getURL (String name, String envType, String versionNo, String type, int C_Region_ID)
+	{
+		MLBRNFeWebService ws = get (name, envType, versionNo, type, C_Region_ID);
 		//
 		if (ws == null)
 			throw new AdempiereException ("Webservice not found for region [" + name + ", " + Integer.toString(C_Region_ID)  + "] environment [" + envType + "]");
@@ -92,9 +107,22 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	public static MLBRNFeWebService get (String name, String envType, String versionNo, int C_Region_ID)
 	{
-		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND C_Region_ID=?";
+		return get (name, envType, versionNo, LBR_WSTYPE_Normal, C_Region_ID);
+	}	//	get
+	
+	/**
+	 * 		Get
+	 * 	@param name
+	 * 	@param envType
+	 * 	@param versionNo
+	 * 	@param C_Region_ID
+	 * 	@return
+	 */
+	public static MLBRNFeWebService get (String name, String envType, String versionNo, String type, int C_Region_ID)
+	{
+		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND LBR_WSType=? AND C_Region_ID=?";
 		return new Query (Env.getCtx(),MLBRNFeWebService.Table_Name, where, null)
-						.setParameters(new Object[]{name.toUpperCase(), envType, versionNo, C_Region_ID})
+						.setParameters(new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID})
 						.first();
 	}	//	get
 }	//	MNFeWebService

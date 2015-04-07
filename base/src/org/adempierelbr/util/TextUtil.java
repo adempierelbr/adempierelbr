@@ -335,6 +335,7 @@ public abstract class TextUtil
 	 * formatStringCodes
 	 * @param code
 	 * @return String with onlynumbers
+	 * @deprecated Use {@link #toNumeric(String)}
 	 */
 	public static String formatStringCodes (String text)
 	{
@@ -874,27 +875,46 @@ public abstract class TextUtil
 	}
 
 	/**
-	 * bigdecimalToString
-	 * @param BigDecimal value
-	 * @param int Scale
-	 * @return String with scale
+	 * 	Convet a BD to String with scale removing trailing zeros
+	 * 	@param BigDecimal value
+	 * 	@param int Scale
+	 * 	@return rounded string representation
 	 */
-	public static String bigdecimalToString(BigDecimal value, int scale){
-
+	public static String bdToStringNoTrail (BigDecimal value, int scale)
+	{
 		if (value == null)
 			return ZERO_STRING;
-
-		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString();
-	} //bigdecimalToString
+		//
+		return value
+				.setScale (scale, BigDecimal.ROUND_HALF_UP)	//	Set scale
+				.stripTrailingZeros()						//	Remove trailing zeros
+				.toPlainString();							//	Convert to String
+	}	//	bigdecimalToString
 
 	/**
-	 * getValor
-	 * @param value
-	 * @return String with scale
+	 * 	Convet a BD to String with scale
+	 * 	@param BigDecimal value
+	 * 	@param int Scale
+	 * 	@return rounded string representation
 	 */
-	public static String bigdecimalToString(BigDecimal value){
-		return bigdecimalToString(value,2);
-	} //bigdecimalToString
+	public static String bigdecimalToString (BigDecimal value, int scale)
+	{
+		if (value == null)
+			return ZERO_STRING;
+		//
+		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString();
+	}	//	bigdecimalToString
+
+	/**
+	 * 	Convet a BD to String with scale 2, if you want 
+	 * 		a different scale use {@link #bigdecimalToString(BigDecimal, int)}
+	 * 	@param value
+	 * 	@return rounded string representation
+	 */
+	public static String bigdecimalToString (BigDecimal value)
+	{
+		return bigdecimalToString (value,2);
+	}	//	bigdecimalToString
 
     /**
      *  iTrim

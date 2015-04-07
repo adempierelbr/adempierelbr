@@ -63,6 +63,21 @@ public interface I_LBR_NFeWebService
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_Region_ID */
+    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+
+	/** Set Region.
+	  * Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID);
+
+	/** Get Region.
+	  * Identifies a geographical Region
+	  */
+	public int getC_Region_ID();
+
+	public I_C_Region getC_Region() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -79,21 +94,6 @@ public interface I_LBR_NFeWebService
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_Region_ID */
-    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
-
-	/** Set Region.
-	  * Identifies a geographical Region
-	  */
-	public void setC_Region_ID (int C_Region_ID);
-
-	/** Get Region.
-	  * Identifies a geographical Region
-	  */
-	public int getC_Region_ID();
-
-	public I_C_Region getC_Region() throws RuntimeException;
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -106,15 +106,6 @@ public interface I_LBR_NFeWebService
 	  * The record is active in the system
 	  */
 	public boolean isActive();
-
-    /** Column name lbr_NFeEnv */
-    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
-
-	/** Set NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv);
-
-	/** Get NFe Environment	  */
-	public String getlbr_NFeEnv();
 
     /** Column name LBR_NFeWebService_ID */
     public static final String COLUMNNAME_LBR_NFeWebService_ID = "LBR_NFeWebService_ID";
@@ -129,6 +120,19 @@ public interface I_LBR_NFeWebService
 	  */
 	public int getLBR_NFeWebService_ID();
 
+    /** Column name LBR_WSType */
+    public static final String COLUMNNAME_LBR_WSType = "LBR_WSType";
+
+	/** Set WS Type.
+	  * WebService Type
+	  */
+	public void setLBR_WSType (String LBR_WSType);
+
+	/** Get WS Type.
+	  * WebService Type
+	  */
+	public String getLBR_WSType();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
@@ -141,6 +145,19 @@ public interface I_LBR_NFeWebService
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
+
+    /** Column name URL */
+    public static final String COLUMNNAME_URL = "URL";
+
+	/** Set URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL);
+
+	/** Get URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -158,19 +175,6 @@ public interface I_LBR_NFeWebService
 	  */
 	public int getUpdatedBy();
 
-    /** Column name URL */
-    public static final String COLUMNNAME_URL = "URL";
-
-	/** Set URL.
-	  * Full URL address - e.g. http://www.adempiere.org
-	  */
-	public void setURL (String URL);
-
-	/** Get URL.
-	  * Full URL address - e.g. http://www.adempiere.org
-	  */
-	public String getURL();
-
     /** Column name VersionNo */
     public static final String COLUMNNAME_VersionNo = "VersionNo";
 
@@ -183,4 +187,13 @@ public interface I_LBR_NFeWebService
 	  * Version Number
 	  */
 	public String getVersionNo();
+
+    /** Column name lbr_NFeEnv */
+    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
+
+	/** Set NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv);
+
+	/** Get NFe Environment	  */
+	public String getlbr_NFeEnv();
 }

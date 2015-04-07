@@ -31,14 +31,14 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.adempiere.exceptions.AdempiereException;
+import org.adempierelbr.exceptions.ValidationXMLException;
 import org.compiere.util.CLogger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-
+@Deprecated
 public class ValidaXML
 {
 	/**	Logger						*/
@@ -50,6 +50,8 @@ public class ValidaXML
 	 */
 	private static Map<String,Validator> mapvalidator = new HashMap<String,Validator>();
 	
+	public static final String DOC_NFE = "nfe_v";
+	
 	/** 
 	 * 		Método que faz a validação de arquivos XML. 
 	 * 
@@ -57,26 +59,29 @@ public class ValidaXML
 	 * @param xsdName 
 	 * @throws Throwable 
 	 */  
-	public static void ValidaDocEx (String xmlContent, String xsdName) throws AdempiereException
+	public static void validaDocEx (String xmlContent, String xsdName) throws ValidationXMLException
 	{
 		String result = ValidaDoc (xmlContent, xsdName);
 		//
 		if (result != null && result.length() > 0)
-			throw new AdempiereException ("Erro validando o XML\n\nXSD: " + xsdName + "\n\nErros: " + result);
+			throw new ValidationXMLException ("Erro validando o XML\n\nXSD: " + xsdName + "\n\nErros: " + result);
 	}	//	ValidaDocEx
 	
 	 /** 
 	 * Método que faz a validação de arquivos XML. 
 	 * 
-	 * @param fullFileName 
+	 * @param xmlContent 
 	 * @param xsdFullFileName 
 	 * @return 
 	 * @throws Throwable 
 	 */  
-	public static String ValidaDoc (String fullFileName, String xsdFullFileName)
+	public static String ValidaDoc (String xmlContent, String xsdFullFileName)
 	{ 
 		// Guardo os erros de validação.   
 		ErrorHandler errorHandler = new ErrorHandler();
+		
+		if (!xsdFullFileName.endsWith (".xsd"))
+			xsdFullFileName += ".xsd";
 		
 		try 
 		{
@@ -103,8 +108,8 @@ public class ValidaXML
 			Document document = null;	  
 					
 			// Primeiro parse.
-			log.fine ("Parsing: " + fullFileName);
-			document = documentBuilder.parse(new InputSource(new StringReader(fullFileName)));
+			log.fine ("Parsing: " + xmlContent);
+			document = documentBuilder.parse(new InputSource(new StringReader(xmlContent)));
 	  
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
 	  
@@ -158,54 +163,54 @@ public class ValidaXML
 		
 		return "";  
 	}	//	ValidaDoc
-
+	@Deprecated
 	public static String validaEnvXML(String stringXml) {
 		return ValidaDoc(stringXml, "enviNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaXML(String stringXml) {
 		return ValidaDoc(stringXml, "nfe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaRetXML(String stringXml) {
 		return ValidaDoc(stringXml, "retEnviNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaConsultaProt(String stringXml) {
 		return ValidaDoc(stringXml, "consReciNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaRetornoConsultaProt(String stringXml) {
 		return ValidaDoc(stringXml, "retConsReciNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaConsultaNFe(String stringXml) {
 		return ValidaDoc(stringXml, "consSitNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaRetConsultaNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retConsSitNFe_v2.00.xsd");
 	}
-
+	@Deprecated
 	public static String validaRecebimentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "procNFe_v2.00.xsd");
 	}
-	
+	@Deprecated
 	public static String validaPedCancelamentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "cancNFe_v2.00.xsd");
 	}
-	
+	@Deprecated
 	public static String validaRetCancelamentoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retCancNFe_v2.00.xsd");
 	}	
-	
+	@Deprecated
 	public static String validaPedInutilizacaoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "inutNFe_v2.00.xsd");
 	}
-	
+	@Deprecated
 	public static String validaRetInutilizacaoNFe(String stringXml) {
 		return ValidaDoc(stringXml, "retInutNFe_v2.00.xsd");
-	}	
+	}
 }
 
 /**

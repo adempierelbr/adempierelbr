@@ -54,16 +54,28 @@ public class ProcLotTransmission extends SvrProcess
 	/**
 	 * 	DoIt
 	 */
-	protected String doIt() throws Exception 
+	protected String doIt()
 	{
 		MLBRNFeLot lot = new MLBRNFeLot (Env.getCtx(), p_LBR_NFeLot_ID, get_TrxName());
 		//
 		if (lot.isProcessed())
-			return "Lote já processado";
+			return "@Error@ - Lote já processado";
 		else if (lot.isEmpty())
-			return "Lote vazio";
+			return "@Error@ - Lote vazio";
 		//
-		return lot.enviaNFe();
+		
+		try
+		{
+			if (!lot.enviaLoteNFe())
+				throw new Exception ("Falha na transmissão do XML");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return "@Error@ - " + e.getMessage();
+		}
+		
+		return "@Success@";
 	}	//	doIt
 	
 }	//	ProcLotTransmission

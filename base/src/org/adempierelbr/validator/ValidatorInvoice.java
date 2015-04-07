@@ -35,7 +35,6 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPaymentTerm;
-import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -389,9 +388,18 @@ public class ValidatorInvoice implements ModelValidator
 				//	Ajusta o número gerado da NF para a Fatura
 				wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 				
-				//	Gera o XML da NF-e de acordo com o Modelo da NF
-				if (MSysConfig.getBooleanValue ("LBR_AUTO_GENERATE_XML", false, getAD_Client_ID()))
-					nf.GenerateXMLAutomatic ();
+				//	Gera o XML da NF-e efetuando a ação Preparar na NF
+				try
+				{
+					nf.prepareIt();
+					nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_InProgress);
+					nf.setDocAction(MLBRNotaFiscal.DOCACTION_Complete);
+					nf.saveEx();
+				}
+				catch (Exception e) 
+				{
+					log.warning ("Erro ao preparar a NF");
+				}
 			}	//	geração de Documento Fiscal
 			
 			/**

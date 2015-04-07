@@ -12,9 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.nfe;
 
-import java.io.File;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -29,36 +27,36 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.cce.beans.EnvEvento;
-import org.adempierelbr.cce.beans.ProcEventoNFe;
-import org.adempierelbr.cce.beans.RetEnvEvento;
-import org.adempierelbr.cce.beans.Signature;
-import org.adempierelbr.cce.beans.evento.Evento;
-import org.adempierelbr.cce.beans.evento.infevento.InfEvento;
-import org.adempierelbr.cce.beans.retevento.RetEvento;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfe.beans.detevento.DetEventoCancel;
-import org.adempierelbr.nfe.beans.detevento.I_DetEvento;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.apache.axis2.databinding.ADBException;
+import org.apache.xmlbeans.SchemaTypeLoader;
+import org.apache.xmlbeans.XmlBeans;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
+import br.inf.portalfiscal.nfe.evento.cancelamento.EnvEventoDocument;
+import br.inf.portalfiscal.nfe.evento.cancelamento.RetEnvEventoDocument;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TAmb;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TCOrgaoIBGE;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TEnvEvento;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TEvento;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TEvento.InfEvento;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TEvento.InfEvento.DetEvento;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TRetEnvEvento;
+import br.inf.portalfiscal.nfe.evento.cancelamento.TRetEvento;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.CompactWriter;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * 	Consulta dos Lotes Processados de NF-e
@@ -82,7 +80,7 @@ public class NFeCancelamento
 	 * @return
 	 * @throws Exception
 	 */
-	public static String cancelNFe (MLBRNotaFiscal nf) throws Exception
+	public static void cancelNFeEx (MLBRNotaFiscal nf) throws Exception
 	{
 		Properties ctx = Env.getCtx();
 		
@@ -91,159 +89,148 @@ public class NFeCancelamento
 		String motivoCanc = nf.getlbr_MotivoCancel();
 
 		if (motivoCanc == null)
-			return "Sem motivo de cancelamento";
+			throw new AdempiereException ("Sem motivo de cancelamento");
 		else if (motivoCanc.length() < 16)
-			return "Motivo de cancelamento muito curto. Min: 15 letras.";
+			throw new AdempiereException ("Motivo de cancelamento muito curto. Min: 15 letras.");
 		else if (motivoCanc.length() >= 255)
-			return "Motivo de cancelamento muito longo. Max: 255 letras.";
+			throw new AdempiereException ("Motivo de cancelamento muito longo. Max: 255 letras.");
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, nf.getAD_Org_ID(),null);
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
 		//
 		if (envType == null || envType.equals(""))
-			return "Ambiente da NF-e deve ser preenchido.";
+			throw new AdempiereException ("Ambiente da NF-e deve ser preenchido.");
 		//
 		MLocation orgLoc = new MLocation(ctx,oi.getC_Location_ID(),null);
 
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
-			return "UF Inválida";
-		
-		//	Classes usadas para annotation
-		Class<?>[] classForAnnotation = new Class[]{DetEventoCancel.class, InfEvento.class, Evento.class, EnvEvento.class, ProcEventoNFe.class, 
-				org.adempierelbr.cce.beans.retevento.infevento.InfEvento.class, RetEnvEvento.class, RetEvento.class, Signature.CanonicalizationMethod.class, 
-				Signature.DigestMethod.class, Signature.KeyInfo.class, Signature.Reference.class, Signature.SignatureMethod.class, 
-				Signature.SignedInfo.class, Signature.Transform.class, Signature.Transforms.class, Signature.X509Data.class};
+			throw new AdempiereException ("UF Inválida");
 		
 		I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
 
-		//	Detalhes
-		DetEventoCancel det = new DetEventoCancel ();
-		det.setVersao(NFeUtil.VERSAO_CCE);
-		det.setnProt(nf.getlbr_NFeProt());
-		det.setxJust(TextUtil.retiraEspecial (nf.getlbr_MotivoCancel().trim()));
-		
-		//	Informações do Evento de Cancelamento
-		InfEvento cancel = new InfEvento ();
-		cancel.setCOrgao("" + NFeUtil.getRegionCode (oi));
-		cancel.setTpAmb(oiW.getlbr_NFeEnv());
-		cancel.setCNPJ(oiW.getlbr_CNPJ());
-		cancel.setChNFe(nf.getlbr_NFeID());
-		cancel.setDhEvento(new Timestamp (Calendar.getInstance().getTimeInMillis()));
-		cancel.setNSeqEvento("1");
-		cancel.setVerEvento(NFeUtil.VERSAO_CCE);
-		cancel.setDetEvento(det);
-		cancel.setTpEvento(NFeUtil.NFE_EVENTO_CANCEL);
-		cancel.setId();
-		
-		//	Dados do Evento da Carta de Correção
-		Evento evento = new Evento ();
-		evento.setVersao(NFeUtil.VERSAO_CCE);
-		evento.setInfEvento(cancel);
-		
 		//	Dados do Envio
-		EnvEvento env = new EnvEvento();
+		EnvEventoDocument envDoc = EnvEventoDocument.Factory.newInstance();
+		TEnvEvento env = envDoc.addNewEnvEvento();
 		env.setVersao(NFeUtil.VERSAO_CCE);
 		env.setIdLote("" + nf.getLBR_NotaFiscal_ID());
 		
-		//	Valida as informações
-		if (!cancel.isValid())
-		{
-			log.severe (cancel.getErrorMsg());
-			return DocAction.STATUS_Invalid;
-		}
+		//	Dados do Evento de Cancelamento
+		TEvento evento = env.addNewEvento();
+		evento.setVersao(NFeUtil.VERSAO_CCE);
 		
-		XStream xstream = new XStream ();
-		xstream.autodetectAnnotations(true);
-		xstream.aliasSystemAttribute(null, "class");
-		 
-		StringWriter sw = new StringWriter ();
-		xstream.marshal (evento,  new CompactWriter (sw));
+		//	Informações do Evento de Cancelamento
+		InfEvento infCancel = evento.addNewInfEvento();
+		infCancel.setCOrgao(TCOrgaoIBGE.Enum.forString (Integer.toString (NFeUtil.getRegionCode (oi))));
+		infCancel.setTpAmb(TAmb.Enum.forString (oiW.getlbr_NFeEnv()));
+		infCancel.setCNPJ (TextUtil.toNumeric (oiW.getlbr_CNPJ()));
+		infCancel.setChNFe(nf.getlbr_NFeID());
+		infCancel.setDhEvento(NFeXMLGenerator.normalizeTZ (new Timestamp (Calendar.getInstance().getTimeInMillis())));
+		infCancel.setNSeqEvento("1");
+		infCancel.setVerEvento(TEvento.InfEvento.VerEvento.X_1_00);
+		infCancel.setTpEvento(TEvento.InfEvento.TpEvento.X_110111);
 		
-		StringBuilder xml = new StringBuilder (sw.toString());
-		String xmlFile = TextUtil.generateTmpFile (xml.toString(), cancel.getId() + "-can.xml");
+		//	Chave
+		String key = "ID" + infCancel.getTpEvento() + infCancel.getChNFe() + TextUtil.lPad (infCancel.getNSeqEvento(), 2);
+		infCancel.setId(key);
 		
-		try
-		{
-			log.fine ("Assinando XML: " + xml);
-			AssinaturaDigital.Assinar (xmlFile, oi, AssinaturaDigital.CARTADECORRECAO_CCE);
-			
-			//	Lê o arquivo assinado
-			xstream = new XStream (new DomDriver("UTF-8"));
-			xstream.processAnnotations (classForAnnotation);
-			xstream.alias("detEvento", I_DetEvento.class, DetEventoCancel.class);
-			evento = (Evento) xstream.fromXML (TextUtil.readFile (new File (xmlFile)));
-			
-			//	Popula o evio do Evento com o XML assinado
-			env.setEvento(evento);
-			
-			sw = new StringWriter ();
-			xstream = new XStream ();
-			xstream.aliasSystemAttribute(null, "class");
-			xstream.processAnnotations (classForAnnotation);
-			xstream.marshal (env,  new CompactWriter (sw));
-			xml =  new StringBuilder (sw.toString());
+		//	Detalhes
+		DetEvento det = infCancel.addNewDetEvento();
+		det.setVersao(DetEvento.Versao.X_1_00);
+		det.setDescEvento(InfEvento.DetEvento.DescEvento.CANCELAMENTO);
+		det.setNProt(nf.getlbr_NFeProt());
+		det.setXJust(NFeXMLGenerator.normalize (nf.getlbr_MotivoCancel()));
 		
-			log.fine ("XML: " + xml);
-			
-			//	Arquivo para transmitir
-			xmlFile = TextUtil.generateTmpFile (xml.toString(), cancel.getId() + "-can.xml");
-			
-			//	Procura os endereços para Transmissão
-			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO, oi.getC_Location().getC_Region_ID());
-			
-			if (ws == null)
-			{
-				log.severe ("Erro ao transmitir a CC-e. Não foi encontrado um endereço WebServices válido.");
-				return DocAction.STATUS_Invalid;
-			}
-			
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(header + "<nfeDadosMsg>" + xml.toString() + "</nfeDadosMsg>"));
+		//	Assinatura
+		new SignatureUtil(oi, AssinaturaDigital.EVENTO).sign(envDoc, evento.newCursor());
+//		AssinaturaDigital.Assinar (xml, oi, AssinaturaDigital.EVENTO);
 
-			//	Prepara a Transmissão
-			MLBRDigitalCertificate.setCertificate (Env.getCtx(), oi.getAD_Org_ID());
-			RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
-			RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
-			RecepcaoEventoStub.setAmbiente (ws.getURL());
-			RecepcaoEventoStub stub = new RecepcaoEventoStub();
+		//	Validação
+		NFeUtil.validate (envDoc);
 
-			//	Resposta do SEFAZ
-			StringBuilder respLote = new StringBuilder (header + stub.nfeRecepcaoEvento (dadosMsg, cabecMsgE).getExtraElement().toString());
-			log.fine (respLote.toString());
-						
-			xstream = new XStream (new DomDriver());
-			xstream.processAnnotations (classForAnnotation);
-			//
-			RetEnvEvento retEvent = (RetEnvEvento) xstream.fromXML (respLote.toString());
-			
-			if (!"128".equals (retEvent.getcStat()))
-				throw new AdempiereException (retEvent.getxMotivo());
-			
-			org.adempierelbr.cce.beans.retevento.infevento.InfEvento infReturn = retEvent.getRetEvento().getInfEvento();
+		//	XML
+		StringBuilder xml = new StringBuilder (envDoc.xmlText (NFeUtil.getXmlOpt()));
+
+		//	Procura os endereços para Transmissão
+		MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
+		
+		if (ws == null)
+			throw new AdempiereException ("Erro ao transmitir a CC-e. Não foi encontrado um endereço WebServices válido.");
+		
+		XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(header + "<nfeDadosMsg>" + xml.toString() + "</nfeDadosMsg>"));
+
+		//	Prepara a Transmissão
+		MLBRDigitalCertificate.setCertificate (Env.getCtx(), oi.getAD_Org_ID());
+		RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
+		RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
+		RecepcaoEventoStub.setAmbiente (ws.getURL());
+		RecepcaoEventoStub stub = new RecepcaoEventoStub();
+
+		//	Resposta do SEFAZ
+		String respLote = header + stub.nfeRecepcaoEvento (dadosMsg, cabecMsgE).getExtraElement().toString();
+		log.fine (respLote);
+		
+		//	SchemaTypeLoader necessário, pois o RetEnvEventoDocument existe com a mesma namespace para outros docs
+		//		ref. http://ateneatech.com/blog/desenredando-xmlbeans
+		SchemaTypeLoader stl = XmlBeans.typeLoaderUnion(new SchemaTypeLoader[]{RetEnvEventoDocument.type.getTypeSystem(), XmlBeans.getContextTypeLoader()});			
+		TRetEnvEvento retEnvEvento = ((RetEnvEventoDocument) stl.parse (respLote, null, null)).getRetEnvEvento();
+		
+		if (!MLBRNotaFiscal.LBR_NFESTATUS_128_LoteDeEventoProcessado135EventoRegistradoEVincu.equals (retEnvEvento.getCStat()))
+			throw new AdempiereException (retEnvEvento.getXMotivo());
+		
+		for (TRetEvento retEvento : retEnvEvento.getRetEventoArray())
+		{
+			br.inf.portalfiscal.nfe.evento.cancelamento.TRetEvento.InfEvento infReturn = retEvento.getInfEvento();
 			
 			//	Cancelamento processado com sucesso
-			if ("135".equals (infReturn.getcStat ())			//	Vinculado 
-					|| "136".equals (infReturn.getcStat ())		//	Não Vinculado
-					|| "155".equals (infReturn.getcStat ()))	//	Vinculado, fora do Prazo
+			if (TextUtil.match(infReturn.getCStat (), 
+					MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
+					MLBRNotaFiscal.LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANF_E,
+					"155"))	//	Vinculado, fora do Prazo
 			{
-				nf.setlbr_NFeProt(infReturn.getnProt());
-				nf.setlbr_NFeStatus(infReturn.getcStat ());
-				nf.setDescription(nf.getDescription() + "\r" + infReturn.getxMotivo());
+				nf.setlbr_NFeProt(infReturn.getNProt());
+				
+				try
+		        {
+					nf.setlbr_NFeStatus(infReturn.getCStat ());
+		        }
+		        catch (IllegalArgumentException e)
+		        {
+		        	e.printStackTrace();
+		        }
 				//
-				nf.setDateTrx(infReturn.getDhRegEventoTS());
+				nf.setDateTrx (NFeUtil.stringToTime (infReturn.getDhRegEvento()));
 				nf.setIsCancelled(true);
+				nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Voided);
+				nf.setDocAction(MLBRNotaFiscal.DOCACTION_None);
 				if (!nf.isProcessed())
 					nf.setProcessed(true);
 				
 				nf.saveEx();
 
 				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
-					return "Problemas ao atualizar o XML para o padrão de distribuição";
+					throw new AdempiereException ("Problemas ao atualizar o XML para o padrão de distribuição");
 
 				NFeEmail.sendMail (nf);
 			}
 			else
-				throw new AdempiereException (infReturn.getxMotivo());
+				throw new AdempiereException (infReturn.getXMotivo());
+		}
+	}
+	
+	/**
+	 * 	Consulta dos Lotes Processados de NF-e
+	 *
+	 * @param xmlGerado
+	 * @param oi
+	 * @return
+	 * @throws Exception
+	 */
+	public static String cancelNFe (MLBRNotaFiscal nf)
+	{
+		try
+		{
+			cancelNFeEx (nf);
 		}
 		catch (AdempiereException e)
 		{

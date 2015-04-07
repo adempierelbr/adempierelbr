@@ -63,6 +63,15 @@ public interface I_LBR_NotaFiscal
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name BPName */
+    public static final String COLUMNNAME_BPName = "BPName";
+
+	/** Set BP Name	  */
+	public void setBPName (String BPName);
+
+	/** Get BP Name	  */
+	public String getBPName();
+
     /** Column name Bill_Location_ID */
     public static final String COLUMNNAME_Bill_Location_ID = "Bill_Location_ID";
 
@@ -77,15 +86,6 @@ public interface I_LBR_NotaFiscal
 	public int getBill_Location_ID();
 
 	public I_C_BPartner_Location getBill_Location() throws RuntimeException;
-
-    /** Column name BPName */
-    public static final String COLUMNNAME_BPName = "BPName";
-
-	/** Set BP Name	  */
-	public void setBPName (String BPName);
-
-	/** Get BP Name	  */
-	public String getBPName();
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -117,21 +117,6 @@ public interface I_LBR_NotaFiscal
 
 	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
-    /** Column name C_DocType_ID */
-    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
-
-	/** Set Document Type.
-	  * Document type or rules
-	  */
-	public void setC_DocType_ID (int C_DocType_ID);
-
-	/** Get Document Type.
-	  * Document type or rules
-	  */
-	public int getC_DocType_ID();
-
-	public I_C_DocType getC_DocType() throws RuntimeException;
-
     /** Column name C_DocTypeTarget_ID */
     public static final String COLUMNNAME_C_DocTypeTarget_ID = "C_DocTypeTarget_ID";
 
@@ -146,6 +131,21 @@ public interface I_LBR_NotaFiscal
 	public int getC_DocTypeTarget_ID();
 
 	public I_C_DocType getC_DocTypeTarget() throws RuntimeException;
+
+    /** Column name C_DocType_ID */
+    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+
+	/** Set Document Type.
+	  * Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID);
+
+	/** Get Document Type.
+	  * Document type or rules
+	  */
+	public int getC_DocType_ID();
+
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name C_Invoice_ID */
     public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
@@ -234,6 +234,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public Timestamp getDateTrx();
 
+    /** Column name DeliveryViaRule */
+    public static final String COLUMNNAME_DeliveryViaRule = "DeliveryViaRule";
+
+	/** Set Delivery Via.
+	  * How the order will be delivered
+	  */
+	public void setDeliveryViaRule (String DeliveryViaRule);
+
+	/** Get Delivery Via.
+	  * How the order will be delivered
+	  */
+	public String getDeliveryViaRule();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -259,6 +272,32 @@ public interface I_LBR_NotaFiscal
 	  * Calculated amount of discount
 	  */
 	public BigDecimal getDiscountAmt();
+
+    /** Column name DocAction */
+    public static final String COLUMNNAME_DocAction = "DocAction";
+
+	/** Set Document Action.
+	  * The targeted status of the document
+	  */
+	public void setDocAction (String DocAction);
+
+	/** Get Document Action.
+	  * The targeted status of the document
+	  */
+	public String getDocAction();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
 
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
@@ -364,6 +403,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public boolean isDiscountPrinted();
 
+    /** Column name IsManual */
+    public static final String COLUMNNAME_IsManual = "IsManual";
+
+	/** Set Manual.
+	  * This is a manual process
+	  */
+	public void setIsManual (boolean IsManual);
+
+	/** Get Manual.
+	  * This is a manual process
+	  */
+	public boolean isManual();
+
     /** Column name IsPrinted */
     public static final String COLUMNNAME_IsPrinted = "IsPrinted";
 
@@ -390,44 +442,215 @@ public interface I_LBR_NotaFiscal
 	  */
 	public boolean isSOTrx();
 
-    /** Column name lbr_Barcode1 */
-    public static final String COLUMNNAME_lbr_Barcode1 = "lbr_Barcode1";
+    /** Column name LBR_DE_ID */
+    public static final String COLUMNNAME_LBR_DE_ID = "LBR_DE_ID";
 
-	/** Set Barcode 1.
-	  * First Barcode of the Nota Fiscal
+	/** Set DE	  */
+	public void setLBR_DE_ID (int LBR_DE_ID);
+
+	/** Get DE	  */
+	public int getLBR_DE_ID();
+
+	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException;
+
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
 	  */
-	public void setlbr_Barcode1 (String lbr_Barcode1);
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
 
-	/** Get Barcode 1.
-	  * First Barcode of the Nota Fiscal
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
 	  */
-	public String getlbr_Barcode1();
+	public String getLBR_FreightCostRule();
 
-    /** Column name lbr_Barcode2 */
-    public static final String COLUMNNAME_lbr_Barcode2 = "lbr_Barcode2";
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
 
-	/** Set Barcode 2.
-	  * Second Barcode of the Nota Fiscal
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
 	  */
-	public void setlbr_Barcode2 (String lbr_Barcode2);
+	public void setLBR_IndPres (String LBR_IndPres);
 
-	/** Get Barcode 2.
-	  * Second Barcode of the Nota Fiscal
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
 	  */
-	public String getlbr_Barcode2();
+	public String getLBR_IndPres();
 
-    /** Column name lbr_BillNote */
-    public static final String COLUMNNAME_lbr_BillNote = "lbr_BillNote";
+    /** Column name LBR_NFeLot_ID */
+    public static final String COLUMNNAME_LBR_NFeLot_ID = "LBR_NFeLot_ID";
 
-	/** Set Bill Note.
-	  * Bill Note
+	/** Set NFe Lot	  */
+	public void setLBR_NFeLot_ID (int LBR_NFeLot_ID);
+
+	/** Get NFe Lot	  */
+	public int getLBR_NFeLot_ID();
+
+	public org.adempierelbr.model.I_LBR_NFeLot getLBR_NFeLot() throws RuntimeException;
+
+    /** Column name LBR_NotaFiscal_ID */
+    public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
+
+	/** Set Nota Fiscal.
+	  * Primary key table LBR_NotaFiscal
 	  */
-	public void setlbr_BillNote (String lbr_BillNote);
+	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID);
 
-	/** Get Bill Note.
-	  * Bill Note
+	/** Get Nota Fiscal.
+	  * Primary key table LBR_NotaFiscal
 	  */
-	public String getlbr_BillNote();
+	public int getLBR_NotaFiscal_ID();
+
+    /** Column name LBR_OtherChargesAmt */
+    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
+
+	/** Set Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
+
+	/** Get Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt();
+
+    /** Column name LBR_RefNotaFiscal_ID */
+    public static final String COLUMNNAME_LBR_RefNotaFiscal_ID = "LBR_RefNotaFiscal_ID";
+
+	/** Set Nota Fiscal Referenciada	  */
+	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID);
+
+	/** Get Nota Fiscal Referenciada	  */
+	public int getLBR_RefNotaFiscal_ID();
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
+
+    /** Column name M_InOut_ID */
+    public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
+
+	/** Set Shipment/Receipt.
+	  * Material Shipment Document
+	  */
+	public void setM_InOut_ID (int M_InOut_ID);
+
+	/** Get Shipment/Receipt.
+	  * Material Shipment Document
+	  */
+	public int getM_InOut_ID();
+
+	public I_M_InOut getM_InOut() throws RuntimeException;
+
+    /** Column name M_Shipper_ID */
+    public static final String COLUMNNAME_M_Shipper_ID = "M_Shipper_ID";
+
+	/** Set Shipper.
+	  * Method or manner of product delivery
+	  */
+	public void setM_Shipper_ID (int M_Shipper_ID);
+
+	/** Get Shipper.
+	  * Method or manner of product delivery
+	  */
+	public int getM_Shipper_ID();
+
+    /** Column name NoPackages */
+    public static final String COLUMNNAME_NoPackages = "NoPackages";
+
+	/** Set No Packages.
+	  * Number of packages shipped
+	  */
+	public void setNoPackages (int NoPackages);
+
+	/** Get No Packages.
+	  * Number of packages shipped
+	  */
+	public int getNoPackages();
+
+    /** Column name Org_Location_ID */
+    public static final String COLUMNNAME_Org_Location_ID = "Org_Location_ID";
+
+	/** Set Org Address.
+	  * Organization Location/Address
+	  */
+	public void setOrg_Location_ID (int Org_Location_ID);
+
+	/** Get Org Address.
+	  * Organization Location/Address
+	  */
+	public int getOrg_Location_ID();
+
+	public I_C_Location getOrg_Location() throws RuntimeException;
+
+    /** Column name ProcReactivateNF */
+    public static final String COLUMNNAME_ProcReactivateNF = "ProcReactivateNF";
+
+	/** Set Reactivate Nota Fiscal.
+	  * This Process Reactivates the Nota Fiscal Document
+	  */
+	public void setProcReactivateNF (String ProcReactivateNF);
+
+	/** Get Reactivate Nota Fiscal.
+	  * This Process Reactivates the Nota Fiscal Document
+	  */
+	public String getProcReactivateNF();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
+
+    /** Column name Processing */
+    public static final String COLUMNNAME_Processing = "Processing";
+
+	/** Set Process Now	  */
+	public void setProcessing (boolean Processing);
+
+	/** Get Process Now	  */
+	public boolean isProcessing();
+
+    /** Column name Processing2 */
+    public static final String COLUMNNAME_Processing2 = "Processing2";
+
+	/** Set Process Now	  */
+	public void setProcessing2 (String Processing2);
+
+	/** Get Process Now	  */
+	public String getProcessing2();
+
+    /** Column name TotalLines */
+    public static final String COLUMNNAME_TotalLines = "TotalLines";
+
+	/** Set Total Lines.
+	  * Total of all document lines
+	  */
+	public void setTotalLines (BigDecimal TotalLines);
+
+	/** Get Total Lines.
+	  * Total of all document lines
+	  */
+	public BigDecimal getTotalLines();
+
+    /** Column name Updated */
+    public static final String COLUMNNAME_Updated = "Updated";
+
+	/** Get Updated.
+	  * Date this record was updated
+	  */
+	public Timestamp getUpdated();
+
+    /** Column name UpdatedBy */
+    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
+
+	/** Get Updated By.
+	  * User who updated this records
+	  */
+	public int getUpdatedBy();
 
     /** Column name lbr_BPAddress1 */
     public static final String COLUMNNAME_lbr_BPAddress1 = "lbr_BPAddress1";
@@ -481,19 +704,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPAddress4();
 
-    /** Column name lbr_BPCity */
-    public static final String COLUMNNAME_lbr_BPCity = "lbr_BPCity";
-
-	/** Set BP City.
-	  * BP City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPCity (String lbr_BPCity);
-
-	/** Get BP City.
-	  * BP City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPCity();
-
     /** Column name lbr_BPCNPJ */
     public static final String COLUMNNAME_lbr_BPCNPJ = "lbr_BPCNPJ";
 
@@ -507,6 +717,28 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPCNPJ();
 
+    /** Column name lbr_BPCity */
+    public static final String COLUMNNAME_lbr_BPCity = "lbr_BPCity";
+
+	/** Set BP City.
+	  * BP City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPCity (String lbr_BPCity);
+
+	/** Get BP City.
+	  * BP City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPCity();
+
+    /** Column name lbr_BPCityCode */
+    public static final String COLUMNNAME_lbr_BPCityCode = "lbr_BPCityCode";
+
+	/** Set Cod. Cidade	  */
+	public void setlbr_BPCityCode (int lbr_BPCityCode);
+
+	/** Get Cod. Cidade	  */
+	public int getlbr_BPCityCode();
+
     /** Column name lbr_BPCountry */
     public static final String COLUMNNAME_lbr_BPCountry = "lbr_BPCountry";
 
@@ -519,6 +751,19 @@ public interface I_LBR_NotaFiscal
 	  * BP Country - Copied from the BP Location into Brazilan Legal and Tax Books
 	  */
 	public String getlbr_BPCountry();
+
+    /** Column name lbr_BPCountryCode */
+    public static final String COLUMNNAME_lbr_BPCountryCode = "lbr_BPCountryCode";
+
+	/** Set Country Code.
+	  * Country Code used for issue Nota Fiscal
+	  */
+	public void setlbr_BPCountryCode (String lbr_BPCountryCode);
+
+	/** Get Country Code.
+	  * Country Code used for issue Nota Fiscal
+	  */
+	public String getlbr_BPCountryCode();
 
     /** Column name lbr_BPDeliveryAddress1 */
     public static final String COLUMNNAME_lbr_BPDeliveryAddress1 = "lbr_BPDeliveryAddress1";
@@ -572,6 +817,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPDeliveryAddress4();
 
+    /** Column name lbr_BPDeliveryCNPJ */
+    public static final String COLUMNNAME_lbr_BPDeliveryCNPJ = "lbr_BPDeliveryCNPJ";
+
+	/** Set BP Delivery CNPJ.
+	  * BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPDeliveryCNPJ (String lbr_BPDeliveryCNPJ);
+
+	/** Get BP Delivery CNPJ.
+	  * BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPDeliveryCNPJ();
+
     /** Column name lbr_BPDeliveryCity */
     public static final String COLUMNNAME_lbr_BPDeliveryCity = "lbr_BPDeliveryCity";
 
@@ -585,18 +843,14 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPDeliveryCity();
 
-    /** Column name lbr_BPDeliveryCNPJ */
-    public static final String COLUMNNAME_lbr_BPDeliveryCNPJ = "lbr_BPDeliveryCNPJ";
+    /** Column name lbr_BPDeliveryCityCode */
+    public static final String COLUMNNAME_lbr_BPDeliveryCityCode = "lbr_BPDeliveryCityCode";
 
-	/** Set BP Delivery CNPJ.
-	  * BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPDeliveryCNPJ (String lbr_BPDeliveryCNPJ);
+	/** Set Cod. Cidade	  */
+	public void setlbr_BPDeliveryCityCode (int lbr_BPDeliveryCityCode);
 
-	/** Get BP Delivery CNPJ.
-	  * BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPDeliveryCNPJ();
+	/** Get Cod. Cidade	  */
+	public int getlbr_BPDeliveryCityCode();
 
     /** Column name lbr_BPDeliveryCountry */
     public static final String COLUMNNAME_lbr_BPDeliveryCountry = "lbr_BPDeliveryCountry";
@@ -715,19 +969,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPInvoiceAddress4();
 
-    /** Column name lbr_BPInvoiceCity */
-    public static final String COLUMNNAME_lbr_BPInvoiceCity = "lbr_BPInvoiceCity";
-
-	/** Set BP Invoice City.
-	  * BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity);
-
-	/** Get BP Invoice City.
-	  * BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPInvoiceCity();
-
     /** Column name lbr_BPInvoiceCNPJ */
     public static final String COLUMNNAME_lbr_BPInvoiceCNPJ = "lbr_BPInvoiceCNPJ";
 
@@ -740,6 +981,19 @@ public interface I_LBR_NotaFiscal
 	  * BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
 	  */
 	public String getlbr_BPInvoiceCNPJ();
+
+    /** Column name lbr_BPInvoiceCity */
+    public static final String COLUMNNAME_lbr_BPInvoiceCity = "lbr_BPInvoiceCity";
+
+	/** Set BP Invoice City.
+	  * BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPInvoiceCity (String lbr_BPInvoiceCity);
+
+	/** Get BP Invoice City.
+	  * BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPInvoiceCity();
 
     /** Column name lbr_BPInvoiceCountry */
     public static final String COLUMNNAME_lbr_BPInvoiceCountry = "lbr_BPInvoiceCountry";
@@ -832,6 +1086,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPRegion();
 
+    /** Column name lbr_BPShipperAddress */
+    public static final String COLUMNNAME_lbr_BPShipperAddress = "lbr_BPShipperAddress";
+
+	/** Set BP Shipper Address.
+	  * BP Shipper Address on a String
+	  */
+	public void setlbr_BPShipperAddress (String lbr_BPShipperAddress);
+
+	/** Get BP Shipper Address.
+	  * BP Shipper Address on a String
+	  */
+	public String getlbr_BPShipperAddress();
+
     /** Column name lbr_BPShipperAddress1 */
     public static final String COLUMNNAME_lbr_BPShipperAddress1 = "lbr_BPShipperAddress1";
 
@@ -884,19 +1151,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPShipperAddress4();
 
-    /** Column name lbr_BPShipperCity */
-    public static final String COLUMNNAME_lbr_BPShipperCity = "lbr_BPShipperCity";
-
-	/** Set BP Shipper City.
-	  * BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public void setlbr_BPShipperCity (String lbr_BPShipperCity);
-
-	/** Get BP Shipper City.
-	  * BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
-	  */
-	public String getlbr_BPShipperCity();
-
     /** Column name lbr_BPShipperCNPJ */
     public static final String COLUMNNAME_lbr_BPShipperCNPJ = "lbr_BPShipperCNPJ";
 
@@ -909,6 +1163,19 @@ public interface I_LBR_NotaFiscal
 	  * BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books
 	  */
 	public String getlbr_BPShipperCNPJ();
+
+    /** Column name lbr_BPShipperCity */
+    public static final String COLUMNNAME_lbr_BPShipperCity = "lbr_BPShipperCity";
+
+	/** Set BP Shipper City.
+	  * BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public void setlbr_BPShipperCity (String lbr_BPShipperCity);
+
+	/** Get BP Shipper City.
+	  * BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books
+	  */
+	public String getlbr_BPShipperCity();
 
     /** Column name lbr_BPShipperCountry */
     public static final String COLUMNNAME_lbr_BPShipperCountry = "lbr_BPShipperCountry";
@@ -1001,6 +1268,58 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_BPSuframa();
 
+    /** Column name lbr_BPTypeBR */
+    public static final String COLUMNNAME_lbr_BPTypeBR = "lbr_BPTypeBR";
+
+	/** Set Brazilian BP Type.
+	  * Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual)
+	  */
+	public void setlbr_BPTypeBR (String lbr_BPTypeBR);
+
+	/** Get Brazilian BP Type.
+	  * Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual)
+	  */
+	public String getlbr_BPTypeBR();
+
+    /** Column name lbr_Barcode1 */
+    public static final String COLUMNNAME_lbr_Barcode1 = "lbr_Barcode1";
+
+	/** Set Barcode 1.
+	  * First Barcode of the Nota Fiscal
+	  */
+	public void setlbr_Barcode1 (String lbr_Barcode1);
+
+	/** Get Barcode 1.
+	  * First Barcode of the Nota Fiscal
+	  */
+	public String getlbr_Barcode1();
+
+    /** Column name lbr_Barcode2 */
+    public static final String COLUMNNAME_lbr_Barcode2 = "lbr_Barcode2";
+
+	/** Set Barcode 2.
+	  * Second Barcode of the Nota Fiscal
+	  */
+	public void setlbr_Barcode2 (String lbr_Barcode2);
+
+	/** Get Barcode 2.
+	  * Second Barcode of the Nota Fiscal
+	  */
+	public String getlbr_Barcode2();
+
+    /** Column name lbr_BillNote */
+    public static final String COLUMNNAME_lbr_BillNote = "lbr_BillNote";
+
+	/** Set Bill Note.
+	  * Bill Note
+	  */
+	public void setlbr_BillNote (String lbr_BillNote);
+
+	/** Get Bill Note.
+	  * Bill Note
+	  */
+	public String getlbr_BillNote();
+
     /** Column name lbr_Brand */
     public static final String COLUMNNAME_lbr_Brand = "lbr_Brand";
 
@@ -1075,17 +1394,6 @@ public interface I_LBR_NotaFiscal
 	/** Get Data contingência	  */
 	public Timestamp getlbr_DateScan();
 
-    /** Column name LBR_DE_ID */
-    public static final String COLUMNNAME_LBR_DE_ID = "LBR_DE_ID";
-
-	/** Set DE	  */
-	public void setLBR_DE_ID (int LBR_DE_ID);
-
-	/** Get DE	  */
-	public int getLBR_DE_ID();
-
-	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException;
-
     /** Column name lbr_Delivery_Location_ID */
     public static final String COLUMNNAME_lbr_Delivery_Location_ID = "lbr_Delivery_Location_ID";
 
@@ -1135,19 +1443,6 @@ public interface I_LBR_NotaFiscal
 	  * Fiscal Observation for the Fiscal Books
 	  */
 	public String getlbr_FiscalOBS();
-
-    /** Column name LBR_FreightCostRule */
-    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
-
-	/** Set Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
-
-	/** Get Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public String getLBR_FreightCostRule();
 
     /** Column name lbr_GenerateNFeXML */
     public static final String COLUMNNAME_lbr_GenerateNFeXML = "lbr_GenerateNFeXML";
@@ -1245,56 +1540,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_NCMReference();
 
-    /** Column name lbr_NetWeight */
-    public static final String COLUMNNAME_lbr_NetWeight = "lbr_NetWeight";
-
-	/** Set Net Weight.
-	  * Defines the Net Weight
-	  */
-	public void setlbr_NetWeight (BigDecimal lbr_NetWeight);
-
-	/** Get Net Weight.
-	  * Defines the Net Weight
-	  */
-	public BigDecimal getlbr_NetWeight();
-
-    /** Column name lbr_NFeDesc */
-    public static final String COLUMNNAME_lbr_NFeDesc = "lbr_NFeDesc";
-
-	/** Set NFe Description.
-	  * Description of NFe
-	  */
-	public void setlbr_NFeDesc (String lbr_NFeDesc);
-
-	/** Get NFe Description.
-	  * Description of NFe
-	  */
-	public String getlbr_NFeDesc();
-
-    /** Column name lbr_NFeID */
-    public static final String COLUMNNAME_lbr_NFeID = "lbr_NFeID";
-
-	/** Set NFe ID.
-	  * Identification of NFe
-	  */
-	public void setlbr_NFeID (String lbr_NFeID);
-
-	/** Get NFe ID.
-	  * Identification of NFe
-	  */
-	public String getlbr_NFeID();
-
-    /** Column name LBR_NFeLot_ID */
-    public static final String COLUMNNAME_LBR_NFeLot_ID = "LBR_NFeLot_ID";
-
-	/** Set NFe Lot	  */
-	public void setLBR_NFeLot_ID (int LBR_NFeLot_ID);
-
-	/** Get NFe Lot	  */
-	public int getLBR_NFeLot_ID();
-
-	public org.adempierelbr.model.I_LBR_NFeLot getLBR_NFeLot() throws RuntimeException;
-
     /** Column name lbr_NFENo */
     public static final String COLUMNNAME_lbr_NFENo = "lbr_NFENo";
 
@@ -1304,32 +1549,10 @@ public interface I_LBR_NotaFiscal
 	/** Get NFe No	  */
 	public String getlbr_NFENo();
 
-    /** Column name lbr_NFeProt */
-    public static final String COLUMNNAME_lbr_NFeProt = "lbr_NFeProt";
-
-	/** Set NFe Protocol	  */
-	public void setlbr_NFeProt (String lbr_NFeProt);
-
-	/** Get NFe Protocol	  */
-	public String getlbr_NFeProt();
-
-    /** Column name lbr_NFeStatus */
-    public static final String COLUMNNAME_lbr_NFeStatus = "lbr_NFeStatus";
-
-	/** Set NFe Status.
-	  * Status of NFe
-	  */
-	public void setlbr_NFeStatus (String lbr_NFeStatus);
-
-	/** Get NFe Status.
-	  * Status of NFe
-	  */
-	public String getlbr_NFeStatus();
-
     /** Column name lbr_NFModel */
     public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
 
-    /** Set NF Model.
+	/** Set NF Model.
 	  * Identifies the model of Nota Fiscal
 	  */
 	public void setlbr_NFModel (String lbr_NFModel);
@@ -1376,18 +1599,75 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_NFType();
 
-    /** Column name LBR_NotaFiscal_ID */
-    public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
+    /** Column name lbr_NFeDesc */
+    public static final String COLUMNNAME_lbr_NFeDesc = "lbr_NFeDesc";
 
-	/** Set Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
+	/** Set NFe Description.
+	  * Description of NFe
 	  */
-	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID);
+	public void setlbr_NFeDesc (String lbr_NFeDesc);
 
-	/** Get Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
+	/** Get NFe Description.
+	  * Description of NFe
 	  */
-	public int getLBR_NotaFiscal_ID();
+	public String getlbr_NFeDesc();
+
+    /** Column name lbr_NFeEnv */
+    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
+
+	/** Set NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv);
+
+	/** Get NFe Environment	  */
+	public String getlbr_NFeEnv();
+
+    /** Column name lbr_NFeID */
+    public static final String COLUMNNAME_lbr_NFeID = "lbr_NFeID";
+
+	/** Set NFe ID.
+	  * Identification of NFe
+	  */
+	public void setlbr_NFeID (String lbr_NFeID);
+
+	/** Get NFe ID.
+	  * Identification of NFe
+	  */
+	public String getlbr_NFeID();
+
+    /** Column name lbr_NFeProt */
+    public static final String COLUMNNAME_lbr_NFeProt = "lbr_NFeProt";
+
+	/** Set NFe Protocol	  */
+	public void setlbr_NFeProt (String lbr_NFeProt);
+
+	/** Get NFe Protocol	  */
+	public String getlbr_NFeProt();
+
+    /** Column name lbr_NFeStatus */
+    public static final String COLUMNNAME_lbr_NFeStatus = "lbr_NFeStatus";
+
+	/** Set NFe Status.
+	  * Status of NFe
+	  */
+	public void setlbr_NFeStatus (String lbr_NFeStatus);
+
+	/** Get NFe Status.
+	  * Status of NFe
+	  */
+	public String getlbr_NFeStatus();
+
+    /** Column name lbr_NetWeight */
+    public static final String COLUMNNAME_lbr_NetWeight = "lbr_NetWeight";
+
+	/** Set Net Weight.
+	  * Defines the Net Weight
+	  */
+	public void setlbr_NetWeight (BigDecimal lbr_NetWeight);
+
+	/** Get Net Weight.
+	  * Defines the Net Weight
+	  */
+	public BigDecimal getlbr_NetWeight();
 
     /** Column name lbr_OrgAddress1 */
     public static final String COLUMNNAME_lbr_OrgAddress1 = "lbr_OrgAddress1";
@@ -1532,15 +1812,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_OrgRegion();
 
-    /** Column name LBR_OtherChargesAmt */
-    public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
-
-	/** Set Other Charges Amount	  */
-	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt);
-
-	/** Get Other Charges Amount	  */
-	public BigDecimal getLBR_OtherChargesAmt();
-
     /** Column name lbr_PackingType */
     public static final String COLUMNNAME_lbr_PackingType = "lbr_PackingType";
 
@@ -1567,17 +1838,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_ProcCancelNF();
 
-    /** Column name LBR_RefNotaFiscal_ID */
-    public static final String COLUMNNAME_LBR_RefNotaFiscal_ID = "LBR_RefNotaFiscal_ID";
-
-	/** Set Nota Fiscal Referenciada	  */
-	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID);
-
-	/** Get Nota Fiscal Referenciada	  */
-	public int getLBR_RefNotaFiscal_ID();
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
-
     /** Column name lbr_RPSStatus */
     public static final String COLUMNNAME_lbr_RPSStatus = "lbr_RPSStatus";
 
@@ -1600,6 +1860,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public BigDecimal getlbr_ServiceTotalAmt();
 
+    /** Column name lbr_ShipNote */
+    public static final String COLUMNNAME_lbr_ShipNote = "lbr_ShipNote";
+
+	/** Set Shipment Note.
+	  * Extra Shipment Information 
+	  */
+	public void setlbr_ShipNote (String lbr_ShipNote);
+
+	/** Get Shipment Note.
+	  * Extra Shipment Information 
+	  */
+	public String getlbr_ShipNote();
+
     /** Column name lbr_Ship_Location_ID */
     public static final String COLUMNNAME_lbr_Ship_Location_ID = "lbr_Ship_Location_ID";
 
@@ -1614,19 +1887,6 @@ public interface I_LBR_NotaFiscal
 	public int getlbr_Ship_Location_ID();
 
 	public I_C_BPartner_Location getlbr_Ship_Location() throws RuntimeException;
-
-    /** Column name lbr_ShipNote */
-    public static final String COLUMNNAME_lbr_ShipNote = "lbr_ShipNote";
-
-	/** Set Shipment Note.
-	  * Extra Shipment Information 
-	  */
-	public void setlbr_ShipNote (String lbr_ShipNote);
-
-	/** Get Shipment Note.
-	  * Extra Shipment Information 
-	  */
-	public String getlbr_ShipNote();
 
     /** Column name lbr_TimeInOut */
     public static final String COLUMNNAME_lbr_TimeInOut = "lbr_TimeInOut";
@@ -1679,133 +1939,4 @@ public interface I_LBR_NotaFiscal
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
-
-    /** Column name M_InOut_ID */
-    public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
-
-	/** Set Shipment/Receipt.
-	  * Material Shipment Document
-	  */
-	public void setM_InOut_ID (int M_InOut_ID);
-
-	/** Get Shipment/Receipt.
-	  * Material Shipment Document
-	  */
-	public int getM_InOut_ID();
-
-	public I_M_InOut getM_InOut() throws RuntimeException;
-
-    /** Column name M_Shipper_ID */
-    public static final String COLUMNNAME_M_Shipper_ID = "M_Shipper_ID";
-
-	/** Set Shipper.
-	  * Method or manner of product delivery
-	  */
-	public void setM_Shipper_ID (int M_Shipper_ID);
-
-	/** Get Shipper.
-	  * Method or manner of product delivery
-	  */
-	public int getM_Shipper_ID();
-
-    /** Column name NoPackages */
-    public static final String COLUMNNAME_NoPackages = "NoPackages";
-
-	/** Set No Packages.
-	  * Number of packages shipped
-	  */
-	public void setNoPackages (BigDecimal NoPackages);
-
-	/** Get No Packages.
-	  * Number of packages shipped
-	  */
-	public BigDecimal getNoPackages();
-
-    /** Column name Org_Location_ID */
-    public static final String COLUMNNAME_Org_Location_ID = "Org_Location_ID";
-
-	/** Set Org Address.
-	  * Organization Location/Address
-	  */
-	public void setOrg_Location_ID (int Org_Location_ID);
-
-	/** Get Org Address.
-	  * Organization Location/Address
-	  */
-	public int getOrg_Location_ID();
-
-	public I_C_Location getOrg_Location() throws RuntimeException;
-
-    /** Column name Processed */
-    public static final String COLUMNNAME_Processed = "Processed";
-
-	/** Set Processed.
-	  * The document has been processed
-	  */
-	public void setProcessed (boolean Processed);
-
-	/** Get Processed.
-	  * The document has been processed
-	  */
-	public boolean isProcessed();
-
-    /** Column name Processing */
-    public static final String COLUMNNAME_Processing = "Processing";
-
-	/** Set Process Now	  */
-	public void setProcessing (boolean Processing);
-
-	/** Get Process Now	  */
-	public boolean isProcessing();
-
-    /** Column name Processing2 */
-    public static final String COLUMNNAME_Processing2 = "Processing2";
-
-	/** Set Process Now	  */
-	public void setProcessing2 (String Processing2);
-
-	/** Get Process Now	  */
-	public String getProcessing2();
-
-    /** Column name ProcReactivateNF */
-    public static final String COLUMNNAME_ProcReactivateNF = "ProcReactivateNF";
-
-	/** Set Reactivate Nota Fiscal.
-	  * This Process Reactivates the Nota Fiscal Document
-	  */
-	public void setProcReactivateNF (String ProcReactivateNF);
-
-	/** Get Reactivate Nota Fiscal.
-	  * This Process Reactivates the Nota Fiscal Document
-	  */
-	public String getProcReactivateNF();
-
-    /** Column name TotalLines */
-    public static final String COLUMNNAME_TotalLines = "TotalLines";
-
-	/** Set Total Lines.
-	  * Total of all document lines
-	  */
-	public void setTotalLines (BigDecimal TotalLines);
-
-	/** Get Total Lines.
-	  * Total of all document lines
-	  */
-	public BigDecimal getTotalLines();
-
-    /** Column name Updated */
-    public static final String COLUMNNAME_Updated = "Updated";
-
-	/** Get Updated.
-	  * Date this record was updated
-	  */
-	public Timestamp getUpdated();
-
-    /** Column name UpdatedBy */
-    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
-
-	/** Get Updated By.
-	  * User who updated this records
-	  */
-	public int getUpdatedBy();
 }

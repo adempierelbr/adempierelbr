@@ -276,7 +276,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		return getTaxBaseAmt("ICMSST");
 	}	//	getICMSSTBase
 	
-	
+
 	/**
 	 *  Retorno a LBR_NFLineTax do ICMS
 	 *
@@ -285,6 +285,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	public X_LBR_NFLineTax getICMSTax()
 	{
 		return getTax("ICMS");
+	}	//	getICMSTax
+	
+	/**
+	 *  Retorno a LBR_NFLineTax do ICMS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getICMSSTTax()
+	{
+		return getTax("ICMSST");
 	}	//	getICMSTax
 
 	/**
@@ -338,6 +348,36 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}	//	getIPITax
 
 	/**
+	 *  Retorno a LBR_NFLineTax do II
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getIITax()
+	{
+		return getTax("II");
+	}	//	getIITax
+
+	/**
+	 *  Retorno a LBR_NFLineTax do PIS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getPISTax()
+	{
+		return getTax("PIS");
+	}	//	getPISTax
+
+	/**
+	 *  Retorno a LBR_NFLineTax do COFINS
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getCOFINSTax()
+	{
+		return getTax("COFINS");
+	}	//	getCOFINSTax
+
+	/**
 	 *  Retorno o valor do IPI
 	 *
 	 *  @return	BigDecimal	Valor IPI
@@ -388,8 +428,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		else
 			setProduct (iLine.getProduct());
 		
-		//  Outras Despesas Acessórias
-		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
+		//  Seguro
+		setlbr_InsuranceAmt(iLineW.getlbr_InsuranceAmt());
+		
+		//	Frete
+		setFreightAmt(iLineW.getFreightAmt());
 		
 		//  Outras Despesas Acessórias
 		setLBR_OtherChargesAmt(iLineW.getLBR_OtherChargesAmt());
@@ -480,6 +523,12 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setLBR_CFOP_ID(oLineW.getLBR_CFOP_ID());
 //	TODO		Mover cadastro do TaxStatus para LBR_TaxLine
 			setlbr_TaxStatus(oLineW.getlbr_TaxStatus());
+			
+			//  Seguro
+			setlbr_InsuranceAmt(oLineW.getlbr_InsuranceAmt());
+			
+			//	Frete
+			setFreightAmt(oLineW.getFreightAmt());
 			
 		    //  Outras Despesas Acessórias
 			setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());

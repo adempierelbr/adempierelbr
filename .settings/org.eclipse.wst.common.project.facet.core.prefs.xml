@@ -1,0 +1,7 @@
+<root>
+  <facet id="jpt.jaxb">
+    <node name="classgen">
+      <attribute name="package" value="org.adempierelbr.nfe.beans"/>
+    </node>
+  </facet>
+</root>

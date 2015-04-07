@@ -14,6 +14,7 @@
 package org.adempierelbr.nfse;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -21,11 +22,11 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
-import org.adempierelbr.nfse.beans.BtpCPFCNPJ;
-import org.adempierelbr.nfse.beans.BtpChaveRPS;
-import org.adempierelbr.nfse.beans.BtpEndereco;
-import org.adempierelbr.nfse.beans.BtpRPS;
+import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.TextUtil;
+import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.Adempiere;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -40,7 +41,13 @@ import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.XStream;
+import br.gov.sp.prefeitura.nfe.tipos.TpAssinatura;
+import br.gov.sp.prefeitura.nfe.tipos.TpCPFCNPJ;
+import br.gov.sp.prefeitura.nfe.tipos.TpChaveRPS;
+import br.gov.sp.prefeitura.nfe.tipos.TpEndereco;
+import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
+import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
+import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
 
 /**
  * Gera o arquivo XML da NFS-e (Nota Fiscal de Serviços Eletrônica)
@@ -76,9 +83,8 @@ public class NFSeXMLGenerator
 	public static String generateXML (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		log.info("init");
-		XStream xs = new XStream();
-		xs.alias("RPS", BtpRPS.class);
-		String result = xs.toXML(generateNFSe(LBR_NotaFiscal_ID, trxName));
+		TpRPS rps = generateNFSe (LBR_NotaFiscal_ID, trxName);
+		String result = rps.xmlText (NFeUtil.getXmlOpt ());
 		log.finer(result);
 		log.fine("final");
 		//
@@ -92,7 +98,7 @@ public class NFSeXMLGenerator
 	 * @param 	TrxName
 	 * @return	Error msg or ""
 	 */
-	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
+	public static TpRPS generateNFSe (int LBR_NotaFiscal_ID, String trxName) throws Exception
 	{
 		return generateNFSe (LBR_NotaFiscal_ID, false, trxName);
 	}	//	generateNFSe
@@ -105,7 +111,7 @@ public class NFSeXMLGenerator
 	 * @param 	TrxName
 	 * @return	Error msg or ""
 	 */
-	public static BtpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
+	public static TpRPS generateNFSe (int LBR_NotaFiscal_ID, Boolean sign, String trxName) throws Exception
 	{
 		Properties ctx = Env.getCtx();
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
@@ -131,50 +137,69 @@ public class NFSeXMLGenerator
 		}
 		
 		//
-		BtpChaveRPS tpChaveRPS 			= new BtpChaveRPS(); 
-		BtpRPS tpRPS					= new BtpRPS();
+		TpChaveRPS tpChaveRPS 		= TpChaveRPS.Factory.newInstance(); 
+		TpRPS tpRPS					= TpRPS.Factory.newInstance();
 		
-		tpChaveRPS.setInscricaoPrestador(MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM"));
-		tpChaveRPS.setNumero(nf.getDocumentNo());
+		tpChaveRPS.setInscricaoPrestador(toLong (MOrgInfo.get(ctx, nf.getAD_Org_ID(), null).get_ValueAsString("lbr_CCM")));
+		tpChaveRPS.setNumeroRPS(toLong (nf.getDocumentNo()));
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
+		Calendar cal = new XmlCalendar ();
+		cal.setTimeInMillis (nf.getDateDoc().getTime());
+		
 		tpRPS.setChaveRPS(tpChaveRPS);
-		tpRPS.setTipoRPS(dt.get_ValueAsString("lbr_NFModel"));
-		tpRPS.setDataEmissao(nf.getDateDoc());
-		tpRPS.setStatusRPS("N");						//	FIXME
+		tpRPS.setTipoRPS(TpTipoRPS.RPS);
+		tpRPS.setDataEmissao(cal);
+		tpRPS.setStatusRPS(TpStatusNFe.N);				//	FIXME
 		tpRPS.setTributacaoRPS("T");					//	FIXME
-		tpRPS.setValorServicos(nf.getlbr_ServiceTotalAmt());
+		tpRPS.setValorServicos(toBD (nf.getlbr_ServiceTotalAmt()));
 		tpRPS.setValorDeducoes(Env.ZERO);
-		tpRPS.setValorPIS(nf.getTaxAmt("PIS"));
-		tpRPS.setValorCOFINS(nf.getTaxAmt("COFINS"));
-		tpRPS.setValorINSS(nf.getTaxAmt("INSS"));
-		tpRPS.setValorIR(nf.getTaxAmt("IR"));
-		tpRPS.setValorCSLL(nf.getTaxAmt("CSLL"));
+		
+		BigDecimal v_PIS 	= toBD (nf.getTaxAmt("PIS")).abs();
+		BigDecimal v_COFINS = toBD (nf.getTaxAmt("COFINS")).abs();
+		BigDecimal v_INSS 	= toBD (nf.getTaxAmt("INSS")).abs();
+		BigDecimal v_IR 	= toBD (nf.getTaxAmt("IR")).abs();
+		BigDecimal v_CSLL 	= toBD (nf.getTaxAmt("CSLL")).abs();
+		
+		if (v_PIS.signum() == 1)
+			tpRPS.setValorPIS(v_PIS);
+		
+		if (v_COFINS.signum() == 1)
+			tpRPS.setValorCOFINS(v_COFINS);
+		
+		if (v_INSS.signum() == 1)
+			tpRPS.setValorINSS(v_INSS);
+		
+		if (v_IR.signum() == 1)
+			tpRPS.setValorIR(v_IR);
+		
+		if (v_CSLL.signum() == 1)
+			tpRPS.setValorCSLL(v_CSLL);
 		//
-		BtpCPFCNPJ cpfcnpj = new BtpCPFCNPJ();
+		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
-		if ("PF".equals(BPartnerUtil.getBPTypeBR(bp)))
-			cpfcnpj.setCPF(nf.getlbr_BPCNPJ());
+		if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(BPartnerUtil.getBPTypeBR (bp)))
+			tpCPFCNPJ.setCPF(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		else
-			cpfcnpj.setCNPJ(nf.getlbr_BPCNPJ());
+			tpCPFCNPJ.setCNPJ(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		//
-		tpRPS.setCNPJCPFTomador(cpfcnpj);
-		if (bp != null && "3550308".equals(cityCode)) // São Paulo
-			tpRPS.setInscricaoMunicipalTomador(bp.get_ValueAsString("lbr_CCM"));
+		String ccm = bp.get_ValueAsString ("lbr_CCM");
+		if (bp != null && ccm != null && !ccm.trim().isEmpty() && "3550308".equals(cityCode)) // São Paulo
+			tpRPS.setInscricaoMunicipalTomador (toLong (ccm));
 		//
-		tpRPS.setInscricaoEstadualTomador(nf.getlbr_BPIE());
+		tpRPS.setInscricaoEstadualTomador(toLong (nf.getlbr_BPIE()));
 		tpRPS.setRazaoSocialTomador(nf.getBPName());
 		//
-		BtpEndereco end = new BtpEndereco();
-		end.setTipoLogradouro(nf.getlbr_BPAddress1());
+		TpEndereco end = tpRPS.addNewEnderecoTomador();
+//		end.setTipoLogradouro(nf.getlbr_BPAddress1());
 		end.setLogradouro(nf.getlbr_BPAddress1());
 		end.setNumeroEndereco(nf.getlbr_BPAddress2());
 		end.setBairro(nf.getlbr_BPAddress3());
-		end.setComplementoEndereco(nf.getlbr_BPAddress4());
-		end.setCEP(nf.getlbr_BPPostal());
-		end.setCidade(cityCode);	//	Cod. da Cidade
+		if (nf.getlbr_BPAddress4() != null)
+			end.setComplementoEndereco(nf.getlbr_BPAddress4());
+		end.setCEP(TextUtil.toNumeric (nf.getlbr_BPPostal()));
+		end.setCidade(toInt (cityCode));	//	Cod. da Cidade
 		end.setUF(nf.getlbr_BPRegion());
-		tpRPS.setEnderecoTomador(end);
 		//
 		BigDecimal aliquota = Env.ZERO;
 		String serviceCode = "";
@@ -193,7 +218,7 @@ public class NFSeXMLGenerator
 						&& p.get_ValueAsString("lbr_ServiceCode") != null)
 				{
 					serviceCode = p.get_ValueAsString("lbr_ServiceCode");	//	FIXME : Copiar para LBR_NotaFiscalLine
-					aliquota = nfLine.getTaxRate("ISS");
+					aliquota = toBD (nfLine.getTaxRate("ISS").divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP));
 					break;
 				}
 			}
@@ -203,14 +228,20 @@ public class NFSeXMLGenerator
 			log.log(Level.SEVERE, "No Service Code for Nota Fiscal");
 		//
 		tpRPS.setAliquotaServicos(aliquota);
-		tpRPS.setCodigoServicos(serviceCode);
+		tpRPS.setCodigoServico(TextUtil.toNumeric (serviceCode));
+		
+		if (discriminacao == null)
+			discriminacao = "Prestação de Serviços";
+		else
+			discriminacao = discriminacao.replace("\n", "|").replace("  ", "").trim();
 		tpRPS.setDiscriminacao(discriminacao);
 		//
-		tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
+		if (nf.getInvoiceContactEMail() != null && nf.getInvoiceContactEMail().indexOf("@") > 1)
+			tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		//
 		if (sign)
-			tpRPS.setAssinatura(nf.getAD_Org_ID());
+			sign (nf.getAD_Org_ID(), tpRPS);
 		//
 		return tpRPS;
 	}	//	generateNFSe
@@ -239,6 +270,58 @@ public class NFSeXMLGenerator
 		//
 		return deducoes;
 	}	//	getDeducoes
+
+	private static BigDecimal toBD (BigDecimal value)
+	{
+		if (value == null)
+			return Env.ZERO;
+		return value.setScale(2, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+	}
+	
+	private static Long toLong (String longStr)
+	{
+		if (longStr == null || TextUtil.toNumeric(longStr).trim().isEmpty())
+			return (long) 0;
+		return new Long (TextUtil.toNumeric(longStr));
+	}	//	toLong
+	
+	private static int toInt (String intStr)
+	{
+		if (intStr == null)
+			return 0;
+		
+		try
+		{
+			return Integer.parseInt(TextUtil.toNumeric(intStr));
+		}
+		catch (Exception e)	{}
+		return 0;
+	}	//	toLong
+	
+	private static void sign (int AD_Org_ID, TpRPS rps)
+	{
+		StringBuilder ascii = new StringBuilder ("");
+		//
+		String indicador = rps.getCPFCNPJTomador().getCPF() != null ? "1" : "2";
+		
+		ascii.append(TextUtil.lPad (rps.getChaveRPS().getInscricaoPrestador()+"", 8));
+		ascii.append(TextUtil.rPad (rps.getChaveRPS().getSerieRPS(), 5));
+		ascii.append(TextUtil.lPad (rps.getChaveRPS().getNumeroRPS()+"", 12));
+		//
+		ascii.append(TextUtil.lPad ((rps.getDataEmissao()+"").substring(0, 10), 8));
+		ascii.append(rps.getTributacaoRPS());
+		ascii.append(rps.getStatusRPS());
+		ascii.append("true".equals (rps.getISSRetido()) ? "S" : "N");
+		ascii.append(TextUtil.lPad (rps.getValorServicos(), 15));
+		ascii.append(TextUtil.lPad (rps.getValorDeducoes(), 15));
+		ascii.append(TextUtil.lPad (rps.getCodigoServico(), 5));
+		ascii.append(indicador);
+		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
+		//
+		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance();
+		tpAssinatura.setStringValue(AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID));
+		rps.xsetAssinatura (tpAssinatura);
+	}
 	
 	/**
 	 * 	Testes

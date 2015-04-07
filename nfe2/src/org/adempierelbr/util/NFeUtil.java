@@ -20,6 +20,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,13 +32,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfe.beans.InutilizacaoNF;
-import org.adempierelbr.nfse.beans.BtpCPFCNPJ;
-import org.adempierelbr.nfse.beans.BtpHeader;
-import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_City;
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
+import org.apache.xmlbeans.XmlOptions;
+import org.apache.xmlbeans.XmlValidationError;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MCity;
@@ -49,15 +53,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.inf.portalfiscal.www.nfe.wsdl.cadconsultacadastro2.CadConsultaCadastro2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nfecancelamento2.NfeCancelamento2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeInutilizacao2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nferecepcao2.NfeRecepcao2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nferetrecepcao2.NfeRetRecepcao2Stub;
-import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeStatusServico2Stub;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
-
-import com.thoughtworks.xstream.XStream;
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -71,8 +67,8 @@ public abstract class NFeUtil
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 
 	/** Versão				*/
-	public static final String VERSAO			= "2.00";
-	public static final String VERSAO_APP		= "2.00";
+	public static final String VERSAO_LAYOUT			= "3.10";
+	public static final String VERSAO_APP		= "Kenos ERP 3.10";
 	public static final String VERSAO_CCE		= "1.00";
 
 	/** XML					*/
@@ -91,11 +87,15 @@ public abstract class NFeUtil
 	/** Reference NFeStatus */
 	public static final int NFeReference   = 1100004;
 
+	/**	XML Options			*/
+	private static XmlOptions xmlOptions = null;
+			
 	/**
 	 * Gera o cabeçalho da NFe
 	 *
 	 * @return cabecalho
 	 */
+	@Deprecated
 	public static String geraCabecNFe(){
 		String cabecalho = "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">";
 		return cabecalho;
@@ -106,6 +106,7 @@ public abstract class NFeUtil
 	 *
 	 * return rodape
 	 */
+	@Deprecated
 	public static String geraRodapNFe(){
 		String rodape = "</NFe>";
 		return rodape;
@@ -116,9 +117,10 @@ public abstract class NFeUtil
 	 *
 	 * @return Cabeçalho distribuiçãi
 	 */
+	@Deprecated
 	public static String geraCabecDistribuicao(){
 		String cabecalho = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"  versao=\"" + VERSAO + "\">";
+		 "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"  versao=\"" + VERSAO_LAYOUT + "\">";
 
 		return cabecalho;
 	}
@@ -152,10 +154,11 @@ public abstract class NFeUtil
 	 * @param xMotivo
 	 * @return XML
 	 */
+	@Deprecated
 	public static String geraRodapDistribuicao (String chNFe, String nProt, String tpAmb, String dhRecbto,
 			                                    String digVal, String cStat, String xMotivo)
 	{
-		String dados = 	"<protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"" + VERSAO + "\"><infProt>" +
+		String dados = 	"<protNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"" + VERSAO_LAYOUT + "\"><infProt>" +
 				        "<tpAmb>"+tpAmb+"</tpAmb>" +
 				        "<verAplic>"+VERSAO_APP+"</verAplic>" +
 				        "<chNFe>"+chNFe+"</chNFe>" +
@@ -167,175 +170,6 @@ public abstract class NFeUtil
 
 		return dados;
 	}	//	RodapDistribuicao
-
-	/**
-	 * Método para gerar cabeçalho status serviço NF 2.00
-	 * @param region
-	 * @return NfeStatusServico2Stub.NfeCabecMsgE
-	 */
-	public static NfeStatusServico2Stub.NfeCabecMsgE geraCabecStatusServico(String region){
-
-		NfeStatusServico2Stub.NfeCabecMsg cabecMsg = new NfeStatusServico2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeStatusServico2Stub.NfeCabecMsgE cabecMsgE = new NfeStatusServico2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecStatusServico
-
-	/**
-	 * Método para gerar dados para consulta status serviço NF 2.00
-	 * @param envType
-	 * @param region
-	 * @return msg
-	 */
-	public static String geraMsgStatusServico(String envType, String region){
-
-		String msg =
-			"<nfeDadosMsg>" +
-		    	"<consStatServ versao=\"" + VERSAO + "\" xmlns=\"http://www.portalfiscal.inf.br/nfe\">" +
-		        	"<tpAmb>"+envType+"</tpAmb>" +
-		        	"<cUF>"+region+"</cUF>" +
-		        	"<xServ>STATUS</xServ>" +
-		        "</consStatServ>" +
-		    "</nfeDadosMsg>";
-
-		return msg;
-	} //geraMsgStatusServico
-
-	/**
-	 * Método para gerar cabeçalho consulta cadastro NF 2.00
-	 * @param region
-	 * @return CadConsultaCadastro2Stub.NfeCabecMsgE
-	 */
-	public static CadConsultaCadastro2Stub.NfeCabecMsgE geraCabecConsultaCadastro(String region){
-
-		CadConsultaCadastro2Stub.NfeCabecMsg cabecMsg = new CadConsultaCadastro2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		CadConsultaCadastro2Stub.NfeCabecMsgE cabecMsgE = new CadConsultaCadastro2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecConsultaCadastro
-
-	/**
-	 * Método para gerar dados para consulta cadastro NF 2.00
-	 * @param envType
-	 * @param region
-	 * @return msg
-	 */
-	public static String geraMsgConsultaCadastro(String region, String IE, String CNPJ){
-
-		String arg = "";
-
-		if (CNPJ != null && CNPJ.length() == 18){ //CNPJ
-			//if (IE != null && !IE.equalsIgnoreCase("ISENTO")){ //BUG NO WEBSERVICE -- NAO RETORNA CONSULTA DE IE CORRETA
-			//	arg = "<IE>"+TextUtil.toNumeric(IE)+"</IE>";
-			//}
-			//else{
-				arg = "<CNPJ>"+TextUtil.toNumeric(CNPJ)+"</CNPJ>";
-			//}
-		}
-		else{ //CPF
-			arg = "<CPF>"+TextUtil.toNumeric(CNPJ)+"</CPF>";
-		}
-
-		String msg =
-			"<nfeDadosMsg>" +
-				"<ConsCad xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
-					"<infCons>" +
-		        		"<xServ>CONS-CAD</xServ>" +
-		        		"<UF>"+region+"</UF>" +
-		        		arg +
-		    		"</infCons>" +
-		        "</ConsCad>" +
-		    "</nfeDadosMsg>";
-
-		return msg;
-	} //geraMsgConsultaCadastro
-
-
-	/**
-	 * Gera o cabeçalho do lote
-	 *
-	 * @return Cabeçalho do lote
-	 */
-	public static String geraCabecLoteNFe (String lote){
-		String cabecalho = "<enviNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
-	   "<idLote>"+lote+"</idLote>";
-
-		return cabecalho;
-	} // geraCabecLoteNFe
-
-	/**
-	 * Método para gerar cabeçalho envio do lote NF 2.00
-	 * @param region
-	 * @return NfeRecepcao2Stub.NfeCabecMsgE
-	 */
-	public static NfeRecepcao2Stub.NfeCabecMsgE geraCabecRecepcao(String region){
-
-		NfeRecepcao2Stub.NfeCabecMsg cabecMsg = new NfeRecepcao2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeRecepcao2Stub.NfeCabecMsgE cabecMsgE = new NfeRecepcao2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecRecepcao
-
-	/**
-	 * Método para gerar cabeçalho consulta lote NF 2.00
-	 * @param region
-	 * @return NfeRetRecepcao2Stub.NfeCabecMsgE
-	 */
-	public static NfeRetRecepcao2Stub.NfeCabecMsgE geraCabecRetRecepcao(String region){
-
-		NfeRetRecepcao2Stub.NfeCabecMsg cabecMsg = new NfeRetRecepcao2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeRetRecepcao2Stub.NfeCabecMsgE cabecMsgE = new NfeRetRecepcao2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecRetRecepcao
-
-	/**
-	 * Método para gerar dados para consulta do lote NF 2.00
-	 * @param envType
-	 * @param region
-	 * @return msg
-	 */
-	public static String geraMsgRetRecepcao (String recibo, String envType)
-	{
-		String msg = 	"<consReciNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">" +
-							"<tpAmb>"+envType+"</tpAmb>" +
-						"<nRec>"+recibo+"</nRec>"+
-						"</consReciNFe>";
-		return msg;
-	}	//geraMsgRetRecepcao
-
-	/**
-	 * Método para gerar cabeçalho cancelamento NF 2.00
-	 * @param region
-	 * @return NfeCancelamento2Stub.NfeCabecMsgE
-	 */
-	public static NfeCancelamento2Stub.NfeCabecMsgE geraCabecCancelamento(String region){
-
-		NfeCancelamento2Stub.NfeCabecMsg cabecMsg = new NfeCancelamento2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeCancelamento2Stub.NfeCabecMsgE cabecMsgE = new NfeCancelamento2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	} //geraCabecCancelamento
 
 	/**
 	 * Método para gerar dados para cancelamento NF 2.00
@@ -359,6 +193,7 @@ public abstract class NFeUtil
 		return msg;
 	}	// geraMsgCancelamento
 
+	@Deprecated
 	public static File generateDistribution(MLBRNotaFiscal nf) throws Exception{
 
 		File attach = null;
@@ -401,6 +236,7 @@ public abstract class NFeUtil
 	 * @param xml
 	 * @return true = success, false = error
 	 */
+	@Deprecated
 	public static boolean updateAttach(MLBRNotaFiscal nf, File xml){
 
 		if (xml != null){
@@ -412,6 +248,7 @@ public abstract class NFeUtil
 		return true;
 	}
 
+	@Deprecated
 	public static String XMLtoString(File xml) throws Exception{
 
 		String dados = "";
@@ -442,6 +279,7 @@ public abstract class NFeUtil
 	 * @param xml
 	 * @return
 	 */
+	@Deprecated
 	public static String removeIndent(String xml){
 		
 		StringBuilder newXML = new StringBuilder("");
@@ -566,17 +404,31 @@ public abstract class NFeUtil
 	 * @param file
 	 * @return error or null
 	 */
-	public static String validateSize(File file){
-
-		long size = file.length(); //bytes
-		if ((size/1024) > XML_SIZE){ //check kbytes
+	@Deprecated
+	public static String validateSize (File file)
+	{
+		long size = file.length();
+		if ((size/1024) > XML_SIZE)
+		{
 			String erro = "Tamanho do Arquivo XML inválido > " + XML_SIZE + " kbytes";
 			log.severe(erro);
 			return erro;
 		}
 
 		return null;
-	} //validateSize
+	}	//	validateSize
+
+	/**
+	 * Valida tamanho do Arquivo XML
+	 * @param file
+	 * @return error or null
+	 */
+	public static void validateSize (StringBuilder file)
+	{
+		long size = file.length();
+		if ((size/1024) > XML_SIZE)
+			throw new AdempiereException ("Tamanho do Arquivo XML inválido > " + XML_SIZE + " kbytes");
+	}	//	validateSize
 	
 	/**
 	 * 		Verifica a NF e retorna o ID da mesma
@@ -683,46 +535,6 @@ public abstract class NFeUtil
     }
 
 	/**
-	 * 	Cabeçalho da Inutilização
-	 * @param region
-	 * @return
-	 */
-	public static NfeInutilizacao2Stub.NfeCabecMsgE geraCabecInutilizacao (String region)
-	{
-		NfeInutilizacao2Stub.NfeCabecMsg cabecMsg = new NfeInutilizacao2Stub.NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO);
-
-		NfeInutilizacao2Stub.NfeCabecMsgE cabecMsgE = new NfeInutilizacao2Stub.NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	}	//	geraCabecInutilizacao
-	
-	/**
-	 * 	Gera o XML para inutilização da NF
-	 * 
-	 * 	@return cabeçalho de envio
-	 */
-	public static String geraInutilizacao (InutilizacaoNF nf)
-	{
-		XStream xml = new XStream();
-		//
-		xml.alias("infInut", InutilizacaoNF.class);
-		xml.useAttributeFor(InutilizacaoNF.class, "Id");
-		xml.omitField(InutilizacaoNF.class, "msg");
-		xml.omitField(InutilizacaoNF.class, "log");
-		// 
-		StringBuffer inut = new StringBuffer("");
-		//
-		inut.append("<inutNFe xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"2.00\">");
-		inut.append(xml.toXML(nf));
-		inut.append("</inutNFe>");
-		//
-		return inut.toString();
-	}	//	geraInutilizacao
-
-	/**
 	 * 	packageNameOfClass
 	 *
 	 * @param clazz
@@ -783,18 +595,103 @@ public abstract class NFeUtil
 	}	//	getRegionCode
 	
 	/**
-	 * 		Header
-	 * 	@return NFSE Header
+	 * 	Wrap the Msg
+	 * 
+	 * 	@param msg
+	 * 	@return
 	 */
-	public static BtpHeader geraNFSEHeader (MOrgInfo oi)
+	public static String wrapMsg (String msg)
 	{
-		BtpHeader header = new BtpHeader ();
+		return "<Wrapper>" + msg + "</Wrapper>";
+	}	//	wrapMsg
+	
+	/**
+	 * 	Format Date and Time to XML Standard
+	 * 	@param ts
+	 * 	@return
+	 */
+	public static String formatTime (String ts)
+	{
+		return TextUtil.timeToString (TextUtil.stringToTime(ts, "yyyy-MM-dd'T'HH:mm:ss"), "dd/MM/yyyy' 'HH:mm:ss");
+	}	//	formatTime
+	
+	/**
+	 * 	Get XML Option to correctly convert the xml in text
+	 * 	@return XmlOptions
+	 */
+	public static XmlOptions getXmlOpt ()
+	{
+		if (xmlOptions == null)
+		{
+			xmlOptions = new XmlOptions();
+			xmlOptions.setUseDefaultNamespace();
+			xmlOptions.setCharacterEncoding("UTF-8");
+		}
 		//
-		I_W_AD_OrgInfo oiW = POWrapper.create(oi, I_W_AD_OrgInfo.class);
-		BtpCPFCNPJ cnpj = new BtpCPFCNPJ();
-		cnpj.setCNPJ(oiW.getlbr_CNPJ());
-		header.setCNPJRemetente(cnpj);
-		//
-		return header;
-	}	//	
+		return xmlOptions;
+	}	//	getXmlOpt
+
+	/**
+	 * 	Format Error Msg
+	 * 	@param validationErrors
+	 * 	@return
+	 */
+	private static String formatErrorMsg (List<XmlValidationError> validationErrors)
+	{
+		//	Result
+		String result = "";
+		
+		//	Counter
+		int counter = 1;
+
+		Iterator<XmlValidationError> iter = validationErrors.iterator();
+		while (iter.hasNext())
+		{
+			//	Exemplo : [1] Erro XYZ
+			String msg = iter.next().toString();
+
+			msg = msg.substring(1 + msg.indexOf(":"));
+			msg = msg.substring(1 + msg.indexOf(":"));
+			
+			result += "[" + counter++ + "] " + msg + "\n";
+		}
+		
+		//	Clean result log
+		result = result.replace ("@http://www.w3.org/2000/09/xmldsig#", "");
+		result = result.replace ("@http://www.portalfiscal.inf.br/nfe", "");
+		result = result.replace ("'", "");
+		
+		return result;
+	}	//	formatErrorMsg
+	
+	/**
+	 * 	Validate
+	 * 
+	 * @param xmlNFe
+	 * @throws XmlException
+	 */
+	public static void validate (XmlObject xmlNFe) throws XmlException
+	{
+		//	Validar o tamanho do arquivo
+//		NFeUtil.validateSize (xmlNFe);
+
+		// 	Set up the validation error listener.
+		List<XmlValidationError> validationErrors = new ArrayList<XmlValidationError>();
+		XmlOptions xmlOptions = new XmlOptions();
+		xmlOptions.setErrorListener(validationErrors);
+		
+		// 	During validation, errors are added to the ArrayList for
+		// 		retrieval and printing by the printErrors method.
+		boolean isValid = xmlNFe.validate (xmlOptions);
+		
+		// 	Print the errors if the XML is invalid.
+		if (!isValid)
+		{
+			String result = NFeUtil.formatErrorMsg (validationErrors);
+			log.fine (xmlNFe.toString());
+			
+			//	Errors
+			throw new AdempiereException (result.toString());
+		}
+	}	//	validate
 }	//	NFeUtil

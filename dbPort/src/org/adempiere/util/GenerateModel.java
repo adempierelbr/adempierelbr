@@ -99,7 +99,7 @@ public class GenerateModel
 
 		//	third parameter
 		//String entityType = "'U','A'";	//	User, Application
-		String entityType = "'LBRA', 'U'";
+		String entityType = "'LBRA'";
 		if (args.length > 2)
 			entityType = args[2];
 		if (entityType == null || entityType.length() == 0)
@@ -113,7 +113,7 @@ public class GenerateModel
 		log.info("----------------------------------");
 
 		String tableLike = null;
-		tableLike = "'LBR_SalesCardTotal'";	//	All tables
+		tableLike = "'LBR_Nota%'";	//	All tables
 		// tableLike = "'AD_OrgInfo', 'AD_Role', 'C_CashLine', 'C_Currency', 'C_Invoice', 'C_Order', 'C_Payment', 'M_InventoryLine', 'M_PriceList', 'M_Product', 'U_POSTerminal'";	//	Only specific tables
 		if (args.length > 3)
 			tableLike = args[3];
