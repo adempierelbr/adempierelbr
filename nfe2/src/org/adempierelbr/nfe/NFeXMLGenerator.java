@@ -1418,14 +1418,15 @@ public class NFeXMLGenerator
 	{
 		if (text == null || text.isEmpty())
 			return text;
-		//
-//		text = text.replaceAll ("<", "&lt;");
-//		text = text.replaceAll (">", "&gt;");
-//		text = text.replaceAll ("&", "&amp;");
-//		text = text.replaceAll ("\"", "&quot;");
-//		text = text.replaceAll ("'", "&#39;");
+		
+		//	Substitui o travessão por hífen
 		text = text.replaceAll ("–", "-");
-		text = text.replaceAll ("\n", ". ");
+		
+		//	Remove espaços duplos e tabulações
+		text = text.replaceAll ("[ \t]{2,}|\t", " ");
+		
+		//	Remove múltiplas quebra de linha, tabulações e espaços
+		text = text.replaceAll ("\\s\\s*\\s|\n*\n", ". ");
 		//
 		return text.trim();
 	}	//	normalize
@@ -1462,5 +1463,11 @@ public class NFeXMLGenerator
 		return TextUtil.toNumeric (value);
 	}	//	toNumericStr
 
+	public static void main (String[] args)
+	{
+		String string = "lorem ipsum   dolor  as das 	adad		hadad	asdfghjkl\n\nqwertyuiop\nzxcvbnm \n \n \n  \n   \n 1234567890  1 2  3   4    asdfghjkl\t \n  \n\t\t\t 45678";
+		System.out.println (string);
+		System.out.println (normalize (string));
+	}
 
 }	//	NFeXMLGenerator
