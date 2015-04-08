@@ -984,6 +984,7 @@ public class NFeXMLGenerator
 								&& icmsSTTax.getlbr_TaxBase().compareTo(Env.ONEHUNDRED) != 0)
 							icms70.setPRedBCST(normalize4  (icmsSTTax.getlbr_TaxBase()));
 						
+						icms70.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS70.ModBCST.X_4);
 						icms70.setVBCST(normalize (icmsSTTax.getlbr_TaxBaseAmt()));
 						icms70.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
 						icms70.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
