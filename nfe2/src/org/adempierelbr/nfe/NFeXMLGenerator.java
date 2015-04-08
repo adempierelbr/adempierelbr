@@ -786,7 +786,7 @@ public class NFeXMLGenerator
 					di.setXLocDesemb(normalize (nfdi.getlbr_LocDesemb()));
 					di.setUFDesemb(TUfEmi.Enum.forString (nfdi.getlbr_BPRegion()));
 					di.setDDesemb(TextUtil.timeToString (nfdi.getlbr_DataDesemb(), "yyyy-MM-dd"));
-					di.setTpViaTransp(TpViaTransp.X_1);		//FIXME
+					di.setTpViaTransp(TpViaTransp.X_4);		//FIXME
 //					di.setVAFRMM(arg0);						//FIXME
 					di.setTpIntermedio(TpIntermedio.X_1);	//FIXME
 					di.setCExportador (normalize (nfdi.getlbr_CodExportador()));
@@ -976,6 +976,7 @@ public class NFeXMLGenerator
 						icms70.setVBC(normalize (icmsTax.getlbr_TaxBaseAmt()));
 						icms70.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
 						icms70.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+						icms70.setModBC(InfNFe.Det.Imposto.ICMS.ICMS70.ModBC.X_0);
 						
 						//	Redução na BC
 						if (icmsSTTax.getlbr_TaxBase() != null 
