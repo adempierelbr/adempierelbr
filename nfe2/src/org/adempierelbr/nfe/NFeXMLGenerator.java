@@ -686,16 +686,45 @@ public class NFeXMLGenerator
 		
 		//	GA. Autorização para obter XML
 		MLBRAuthorizedAccessXML[] autXMLs = MLBRAuthorizedAccessXML.get (oi.getAD_Org_ID(), nf.getC_BPartner_ID());
+
+		// Registra os CNPJ e CPF já adicionados no XML
+		String duplicado = "";
 		
 		for (MLBRAuthorizedAccessXML autAccessXML : autXMLs)
 		{
-			AutXML autXML = infNFe.addNewAutXML();
-
+			// Não Adicionar CNPJ do Emissor
+			if (toNumericStr(autAccessXML.getlbr_CNPJ()).equals(toNumericStr(nf.getlbr_CNPJ())))
+				continue;
+			
 			if (MLBRAuthorizedAccessXML.LBR_BPTYPEBR_PJ_LegalEntity.equals(autAccessXML.getlbr_BPTypeBR()))
-				autXML.setCNPJ (toNumericStr (autAccessXML.getlbr_CNPJ ()));
+			{
+				if (toNumericStr(autAccessXML.getlbr_CNPJ()).equals(toNumericStr (nf.getlbr_BPDeliveryCNPJ())))
+					continue;
+				
+				else if (!duplicado.contains(toNumericStr (autAccessXML.getlbr_CNPJ ())))
+				{
+					//	Adiciona os CNPJ/CPF Validados no XML			
+					AutXML autXML = infNFe.addNewAutXML();
+					
+					autXML.setCNPJ (toNumericStr (autAccessXML.getlbr_CNPJ ()));
+					duplicado += toNumericStr (autAccessXML.getlbr_CNPJ ()) + "; ";
+				}	
+			}
 			
 			else if (MLBRAuthorizedAccessXML.LBR_BPTYPEBR_PF_Individual.equals(autAccessXML.getlbr_BPTypeBR()))
+			{
+				if (toNumericStr(autAccessXML.getlbr_CPF()).equals(toNumericStr (nf.getlbr_BPDeliveryCNPJ())))
+					continue;				
+					
+				else if (!duplicado.contains(toNumericStr (autAccessXML.getlbr_CPF())))
+				{
+					//	Adiciona os CNPJ/CPF Validados no XML			
+					AutXML autXML = infNFe.addNewAutXML();
+					
 					autXML.setCPF (toNumericStr (autAccessXML.getlbr_CPF()));
+					duplicado += toNumericStr (autAccessXML.getlbr_CPF()) + "; ";
+				}
+			}
 			
 			//	Limit de 10 registros por NF
 			if (infNFe.getAutXMLArray().length == 10)
