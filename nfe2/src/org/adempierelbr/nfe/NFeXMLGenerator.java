@@ -564,8 +564,13 @@ public class NFeXMLGenerator
 				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 
 			else if (nf.getC_BPartner_ID() > 0
-					&& nf.getC_BPartner().getTaxID() != null)
+					&& nf.getC_BPartner().getTaxID() != null
+					&& nf.getC_BPartner().getTaxID().trim().length() >= 5)
 				dest.setIdEstrangeiro(nf.getC_BPartner().getTaxID());
+			
+			//	ID do Estrangeiro não especificado
+			else
+				dest.setIdEstrangeiro("");
 			
 			dest.setXNome(normalize (nf.getBPName()));
 		}
