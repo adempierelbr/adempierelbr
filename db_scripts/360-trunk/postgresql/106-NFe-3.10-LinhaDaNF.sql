@@ -98,4 +98,4 @@ UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplay
 UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=255, SeqNo=80, SortNo=null, IsSameLine='N', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000386;
 UPDATE AD_Field SET IsCentrallyMaintained='Y',  AD_FieldGroup_ID=null, IsDisplayed='Y', DisplayLogic=NULL, DisplayLength=3, SeqNo=50, SortNo=null, IsSameLine='Y', IsReadOnly='N', DefaultValue=NULL WHERE AD_Field_ID=1000388;
 
-SELECT register_migration_script('106-NFeInutilizadas.sql') FROM dual;
+SELECT register_migration_script('106-NFe-3.10-LinhaDaNF.sql') FROM dual;
