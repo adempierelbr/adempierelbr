@@ -666,6 +666,8 @@ public class NFSeImpl implements INFSe
 		nf.setProcessed(true);
 		nf.setlbr_NFENo(p_NFe);
 		nf.setlbr_NFeProt(p_VerifCode);
+		nf.setDocAction(MLBRNotaFiscal.DOCACTION_None);
+		nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Completed);
 		nf.save();
 	}	//	proccessNFSe
 }	//	NFSeImpl
