@@ -705,7 +705,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				if ((nf.getlbr_NFeID() + "-nfe.xml").equals(entry.getName()))
 				{
-					xml = new String (entry.getData());
+					xml = new String (entry.getData(), "UTF-8");
 					attachment.deleteEntry(entry.getIndex());
 					break;
 				}
@@ -2565,6 +2565,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public String completeIt()
 	{
 		log.info(toString());
+		
+		//	Previamente completado
+		if (DOCSTATUS_Completed.equals(getDocStatus()))
+			return getDocStatus();
 		
 		try
 		{
