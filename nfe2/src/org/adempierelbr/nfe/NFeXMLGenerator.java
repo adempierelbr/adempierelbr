@@ -620,7 +620,7 @@ public class NFeXMLGenerator
 			
 			//	SUFRAMA
 			if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
-				dest.setISUF (nf.getlbr_BPSuframa());
+				dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
 		}
 		
 		//	Other countries
