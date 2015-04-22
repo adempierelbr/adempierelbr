@@ -31,7 +31,7 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120327L;
+	private static final long serialVersionUID = 20130222L;
 
     /** Standard Constructor */
     public X_LBR_TaxDefinition (Properties ctx, int LBR_TaxDefinition_ID, String trxName)
@@ -425,6 +425,32 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return ii.intValue();
 	}
 
+	/** lbr_ProductSource AD_Reference_ID=1000031 */
+	public static final int LBR_PRODUCTSOURCE_AD_Reference_ID=1000031;
+	/** Domestic = 0 */
+	public static final String LBR_PRODUCTSOURCE_Domestic = "0";
+	/** Imported = 1 */
+	public static final String LBR_PRODUCTSOURCE_Imported = "1";
+	/** Imported - Acquired from a domestic distributor = 2 */
+	public static final String LBR_PRODUCTSOURCE_Imported_AcquiredFromADomesticDistributor = "2";
+	/** Set Product Source.
+		@param lbr_ProductSource 
+		Defines the Product Source
+	  */
+	public void setlbr_ProductSource (String lbr_ProductSource)
+	{
+
+		set_Value (COLUMNNAME_lbr_ProductSource, lbr_ProductSource);
+	}
+
+	/** Get Product Source.
+		@return Defines the Product Source
+	  */
+	public String getlbr_ProductSource () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_ProductSource);
+	}
+
 	/** Set Tax Definition.
 		@param LBR_TaxDefinition_ID Tax Definition	  */
 	public void setLBR_TaxDefinition_ID (int LBR_TaxDefinition_ID)
@@ -522,6 +548,8 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
 	/** Resale = RES */
 	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
+	/** Zona de Livre Comércio = ZLC */
+	public static final String LBR_TRANSACTIONTYPE_ZonaDeLivreComércio = "ZLC";
 	/** Set Transaction Type.
 		@param lbr_TransactionType 
 		Defines the Transaction Type

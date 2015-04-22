@@ -281,6 +281,19 @@ public interface I_LBR_TaxDefinition
 
 	public org.adempierelbr.model.I_LBR_ProductCategory getLBR_ProductCategory() throws RuntimeException;
 
+    /** Column name lbr_ProductSource */
+    public static final String COLUMNNAME_lbr_ProductSource = "lbr_ProductSource";
+
+	/** Set Product Source.
+	  * Defines the Product Source
+	  */
+	public void setlbr_ProductSource (String lbr_ProductSource);
+
+	/** Get Product Source.
+	  * Defines the Product Source
+	  */
+	public String getlbr_ProductSource();
+
     /** Column name LBR_TaxDefinition_ID */
     public static final String COLUMNNAME_LBR_TaxDefinition_ID = "LBR_TaxDefinition_ID";
 
