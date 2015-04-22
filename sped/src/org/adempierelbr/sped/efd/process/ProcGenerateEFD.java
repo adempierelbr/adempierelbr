@@ -369,10 +369,20 @@ public class ProcGenerateEFD extends SvrProcess
 				 * Add C170 ao C100
 				 */
 				if(REG.startsWith("C100"))
+				{
 					blocoC.getrC100().get(blocoC.getrC100().indexOf(rc100)).
 						addrC170(EFDUtil.createRC170(factFiscal, blocoC.getrC100().
 								get(blocoC.getrC100().indexOf(rc100)).getrC170().size() + 1));
-				
+					//
+//					TODO: Criar campo na VIEW
+//					Object cfopNote = factFiscal.get_Value ("LBR_CFOPNote");
+//					if (!cfopNote.equals(""))
+//					{
+//						R0400 r0400 = createR0400(factFiscal);
+//						reg.setCOD_NAT(r0400.getCOD_NAT());
+//						bloco0.addr0400( r0400 );
+//					}
+				}
 				/*
 				 * Add C590 ao C500
 				 */

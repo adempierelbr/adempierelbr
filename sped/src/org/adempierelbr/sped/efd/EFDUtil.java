@@ -23,6 +23,7 @@ import org.adempierelbr.sped.efd.bean.R0100;
 import org.adempierelbr.sped.efd.bean.R0150;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
+import org.adempierelbr.sped.efd.bean.R0400;
 import org.adempierelbr.sped.efd.bean.R0460;
 import org.adempierelbr.sped.efd.bean.R0500;
 import org.adempierelbr.sped.efd.bean.R0990;
@@ -800,6 +801,20 @@ public class EFDUtil {
 		//
 		return reg;
 	} 
+
+	/**
+	 * REGISTRO 0400: TABELA DE NATUREZA DA OPERAÇÃO/PRESTAÇÃO
+	 * 
+	 * @param factFiscal - FactFiscal a que se refere o registro
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0400 createR0400(MLBRFactFiscal factFiscal) throws Exception 
+	{
+		R0400 reg = new R0400();
+		reg.setDESCR_NAT(factFiscal.get_ValueAsString("lbr_cfopnote"));
+		return reg;
+	}
 	
 	/**
 	 * REGISTRO 0460: TABELA DE OBSERVAÇÕES DO LANÇAMENTO FISCAL
