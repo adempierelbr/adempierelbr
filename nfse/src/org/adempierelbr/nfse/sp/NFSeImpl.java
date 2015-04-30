@@ -14,7 +14,6 @@ import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfse.INFSe;
-import org.adempierelbr.nfse.NFSeXMLGenerator;
 import org.adempierelbr.nfse.sp.api.LoteNFeStub;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
@@ -60,7 +59,7 @@ public class NFSeImpl implements INFSe
 	public static final Integer C_City_ID = 1005287;
 
 	/** Log				*/
-	private static CLogger log = CLogger.getCLogger(NFSeXMLGenerator.class);
+	private static CLogger log = CLogger.getCLogger(NFSeImpl.class);
 	
 	/** Versão RPS		*/
 	private static final String VERSAO_RPS = "002";

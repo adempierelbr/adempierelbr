@@ -312,7 +312,7 @@ public class AssinaturaDigital
 		} 
 		catch (Exception ex) 
 		{
-			throw new AdempiereException ("Error siging RPS");
+			log.warning ("Error siging RPS: " + ex.getMessage());
 		}
 		
 		return encoded;
