@@ -19,7 +19,7 @@ public class RPSAdapter
 	 * 	@param fileName
 	 * 	@param rps
 	 */
-	public RPSAdapter (String fileName, StringBuffer rps)
+	public RPSAdapter (String fileName, StringBuilder rps)
 	{
 		AMedia media = new AMedia (fileName, "txt", "charset=ISO8859_1", rps.toString());
 		Filedownload.save(media);
