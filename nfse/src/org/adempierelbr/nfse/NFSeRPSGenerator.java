@@ -36,6 +36,7 @@ import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
  * @author Ricardo Santana
  * @version $Id: NFSeXMLGenerator.java, v1.0 2010/05/18 5:21:12 PM, ralexsander Exp $
  */
+@Deprecated
 public class NFSeRPSGenerator
 {
 	/** Log				*/
