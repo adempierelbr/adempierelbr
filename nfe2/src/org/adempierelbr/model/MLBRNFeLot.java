@@ -261,7 +261,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			throw new Exception("LOT not sent yet");
 		}
 		//
-		MOrgInfo oi = MOrgInfo.get(ctx, Env.getAD_Org_ID(ctx), null);
+		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
 		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
 		//
 		if (envType == null || envType.equals(""))

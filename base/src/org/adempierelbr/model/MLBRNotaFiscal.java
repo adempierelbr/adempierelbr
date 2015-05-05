@@ -2703,40 +2703,51 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Inutilizar a numeração
 		else if (TextUtil.match(getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
 		{
-			try
+			MDocType doctype = (MDocType)getC_DocType();
+			
+			if (!doctype.get_ValueAsBoolean("lbr_IsOwnDocument"))
 			{
-				String regionCode = BPartnerUtil.getRegionCode (new MLocation (p_ctx, getOrg_Location_ID(), null));
-				//
-				InfInut ret = ProcInutNF.invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), regionCode, getlbr_NFeEnv(), 
-							getlbr_NFModel(), Integer.parseInt(getDocumentNo()), Integer.parseInt(getDocumentNo()), 
-							getlbr_NFSerie(), getlbr_MotivoCancel(), getDateDoc());
-				//
-				if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(ret.getCStat()))	//	OK
-				{
-					setDocAction (DOCACTION_None);
-					setDocStatus (DOCSTATUS_Voided);
-					setProcessed(true);
-					setIsCancelled(true);
-					//
-					try
-			        {
-						setlbr_NFeStatus (ret.getCStat());
-			        }
-			        catch (IllegalArgumentException e)
-			        {
-			        	e.printStackTrace();
-			        }
-					return true;
-				}
-				else
-				{
-					m_processMsg = ret.getXMotivo();
-				}
+				setProcessed (true);
+				setDocAction (DOCACTION_None);
+				return true;
 			}
-			catch (Exception e)
+			else
 			{
-				e.printStackTrace();
-				m_processMsg = e.getMessage();
+				try
+				{
+					String regionCode = BPartnerUtil.getRegionCode (new MLocation (p_ctx, getOrg_Location_ID(), null));
+					//
+					InfInut ret = ProcInutNF.invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), regionCode, getlbr_NFeEnv(), 
+								getlbr_NFModel(), Integer.parseInt(getDocumentNo()), Integer.parseInt(getDocumentNo()), 
+								getlbr_NFSerie(), getlbr_MotivoCancel(), getDateDoc());
+					//
+					if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(ret.getCStat()))	//	OK
+					{
+						setDocAction (DOCACTION_None);
+						setDocStatus (DOCSTATUS_Voided);
+						setProcessed(true);
+						setIsCancelled(true);
+						//
+						try
+				        {
+							setlbr_NFeStatus (ret.getCStat());
+				        }
+				        catch (IllegalArgumentException e)
+				        {
+				        	e.printStackTrace();
+				        }
+						return true;
+					}
+					else
+					{
+						m_processMsg = ret.getXMotivo();
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					m_processMsg = e.getMessage();
+				}
 			}
 		}
 		
