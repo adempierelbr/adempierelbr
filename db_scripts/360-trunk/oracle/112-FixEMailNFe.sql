@@ -7,6 +7,8 @@ DELETE FROM AD_Column c WHERE c.AD_Table_ID=1000027 AND c.ColumnName IN ('lbr_Se
 ;
 DELETE FROM AD_Column c WHERE c.AD_Table_ID=291 AND c.ColumnName='lbr_EMailNFe'
 ;
+DELETE FROM AD_Element e WHERE e.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent', 'lbr_EMailNFe')
+;
 ALTER TABLE LBR_NotaFiscal DROP COLUMN lbr_SentXML
 ;
 
