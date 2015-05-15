@@ -68,6 +68,7 @@ import sun.misc.BASE64Encoder;
  * 
  * @contributor Ricardo Santana
  */
+@Deprecated
 public class AssinaturaDigital
 {
 	/**		Document Type 	*/

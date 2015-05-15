@@ -127,6 +127,7 @@ public abstract class AdempiereLBR{
 			return fixedIVA;
 	}	//	getIVA
 	
+	@Deprecated
 	public static int getC_ElementValue_ID (String account,String trx)
 	{
 		if (account == null || account.isEmpty())
@@ -141,6 +142,7 @@ public abstract class AdempiereLBR{
 		return C_ElementValue_ID;
 	}	//getC_ElementValue_ID
 
+	@Deprecated
 	public static int getC_Region_ID(String regionName, String trx){
 
 		String sql = "SELECT C_Region_ID FROM C_Region " +
@@ -182,6 +184,7 @@ public abstract class AdempiereLBR{
 		return vendorProductNo;
 	}//getVendorProductNo
 
+	@Deprecated
 	public static int getProduct_IDfromVendor(int C_BPartner_ID, String VendorProductNo, String trx){
 
 		String sql = "SELECT M_Product_ID FROM C_BPartner_Product " +
@@ -193,6 +196,7 @@ public abstract class AdempiereLBR{
 		return M_Product_ID;
 	}//getProduct_IDfromVendor
 
+	@Deprecated
 	public static int getProduct_IDfromValue(String value, String trx){
 
 		String sql = "SELECT M_Product_ID FROM M_Product " +
@@ -276,6 +280,7 @@ public abstract class AdempiereLBR{
 		return C_Period_ID = MPeriod.getC_Period_ID(ctx, AdempiereLBR.addDays(period.getStartDate(), -1),0);
 	} //getPreviousPeriod_ID
 
+	@Deprecated
 	public static Integer getlbr_Ref_C_InvoiceLine_ID(Integer C_OrderLine_ID, String trx){
 
 		String sql = "SELECT lbr_Ref_C_InvoiceLine_ID FROM C_OrderLine " +
@@ -356,6 +361,7 @@ public abstract class AdempiereLBR{
 		return false;
 	} //isRegionBR
 
+	@Deprecated
 	public static MOrderLine getLastPurchase(Properties ctx, int M_Product_ID, String trx){
 		return getLastPurchase(ctx,0,0,M_Product_ID,trx);
 	}
@@ -368,6 +374,7 @@ public abstract class AdempiereLBR{
 	 * @param trx
 	 * @return last MOrderLine
 	 */
+	@Deprecated
 	public static MOrderLine getLastPurchase(Properties ctx, int C_Order_ID, int C_BPartner_ID, int M_Product_ID, String trx){
 
 		Integer C_OrderLine_ID = null;
@@ -426,13 +433,6 @@ public abstract class AdempiereLBR{
 		return tempo;
 	} //executionTime
 
-	public static String getOsName(){
-
-		String osname = System.getProperty("os.name");
-
-		return osname.toLowerCase();
-	}
-
 	public static String getFileSeparator(){
 
 		String FileSeparator = System.getProperty("file.separator");
@@ -440,6 +440,7 @@ public abstract class AdempiereLBR{
 		return FileSeparator;
 	}
 
+	@Deprecated
 	public static String getLineSeparator(){
 
 		String LineSeparator = System.getProperty("line.separator");
@@ -457,6 +458,7 @@ public abstract class AdempiereLBR{
 		return Path;
 	}
 
+	@Deprecated
 	public static void setPath(){
 
 		String tmpDir = System.getProperty("java.io.tmpdir");
@@ -488,6 +490,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addDays
 
+	@Deprecated
 	public static Timestamp addWeeks (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -505,6 +508,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addWeeks
 
+	@Deprecated
 	public static Timestamp addMonths (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -523,6 +527,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addMonths
 
+	@Deprecated
 	public static Timestamp addYears (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -547,6 +552,7 @@ public abstract class AdempiereLBR{
 	 * @param dateTo
 	 * @return Timestamp[]
 	 */
+	@Deprecated
 	public static Timestamp[] getMonths(Timestamp dateFrom, Timestamp dateTo){
 		
 		if (dateFrom.after(dateTo))
@@ -578,6 +584,7 @@ public abstract class AdempiereLBR{
 	 * @param date
 	 * @return Timestamp - Primeiro dia do mês
 	 */
+	@Deprecated
 	public static Timestamp firstDayMonth(Timestamp date){
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
@@ -592,6 +599,7 @@ public abstract class AdempiereLBR{
 	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
 	 * @return Timestamp - Primeiro dia do mês
 	 */
+	@Deprecated
 	public static Timestamp firstDayMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -604,6 +612,7 @@ public abstract class AdempiereLBR{
 	 * @param date
 	 * @return Timestamp - Último dia do mês
 	 */
+	@Deprecated
 	public static Timestamp lastDayMonth(Timestamp date){
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
@@ -618,6 +627,7 @@ public abstract class AdempiereLBR{
 	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
 	 * @return Timestamp - Último dia do mês
 	 */
+	@Deprecated
 	public static Timestamp lastDayMonth(Integer Ano, Integer Mes){
 		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
 		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -631,6 +641,7 @@ public abstract class AdempiereLBR{
 	 * @param documentNo
 	 * @return
 	 */
+	@Deprecated
 	public static boolean isNumber(String documentNo)
 	{
 		if (documentNo == null)
