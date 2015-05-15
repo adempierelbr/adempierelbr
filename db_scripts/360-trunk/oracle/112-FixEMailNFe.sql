@@ -168,6 +168,10 @@ UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocS
 UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocStatus@!DR & @DocStatus@!WC & @DocStatus@!IN',Updated=TO_DATE('2015-05-14 19:20:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125370
 ;
 
+-- 15/05/2015 12h42min39s BRT
+UPDATE AD_Column SET IsAlwaysUpdateable='Y',Updated=TO_DATE('2015-05-15 12:42:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1126601
+;
+
 -- 15/05/2015 11h27min50s BRT
 INSERT INTO AD_Message (AD_Client_ID,AD_Message_ID,AD_Org_ID,Created,CreatedBy,EntityType,IsActive,MsgText,MsgType,Updated,UpdatedBy,Value) VALUES (0,1120033,0,TO_DATE('2015-05-15 11:27:49','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Prezado cliente,<br><br>Anexo à este e-mail você está recebendo o arquivo XML da Nota Fiscal Eletrônica. Este arquivo deve ser armazenado eletronicamente por sua empresa pelo prazo de 05 (cinco) anos, conforme previsto na legislação tributária (Art. 173 do Código Tributário Nacional e § 4º da Lei 5.172 de 25/10/1966).<br><br>O DANFE em papel seguirá junto com a mercadoria e poderá ser arquivado para apresentação ao fisco quando solicitado. Todavia, se sua empresa também for emitente de NF-e, o arquivamento eletrônico do XML de seus fornecedores é obrigatório, sendo passível de fiscalização.<br><br>Para se certificar que esta NF-e é válida, queira por favor consultar sua autenticidade no site nacional do projeto NF-e (www.nfe.fazenda.gov.br), utilizando a chave de acesso contida no DANFE.<br><br>Atenciosamente,<br>@AD_Org_ID<Name>@.
 Nota Fiscal emitida pelo sistema Kenos ERP Adempiere (www.kenos.com.br)','I',TO_DATE('2015-05-15 11:27:49','YYYY-MM-DD HH24:MI:SS'),100,'LBR_EMailNFe')
