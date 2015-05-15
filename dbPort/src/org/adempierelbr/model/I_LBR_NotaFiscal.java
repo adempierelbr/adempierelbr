@@ -453,6 +453,19 @@ public interface I_LBR_NotaFiscal
 
 	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException;
 
+    /** Column name LBR_EMailSent */
+    public static final String COLUMNNAME_LBR_EMailSent = "LBR_EMailSent";
+
+	/** Set EMail Sent.
+	  * Indicates if the email was sent
+	  */
+	public void setLBR_EMailSent (boolean LBR_EMailSent);
+
+	/** Get EMail Sent.
+	  * Indicates if the email was sent
+	  */
+	public boolean isLBR_EMailSent();
+
     /** Column name LBR_FreightCostRule */
     public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
 
@@ -522,6 +535,19 @@ public interface I_LBR_NotaFiscal
 	public int getLBR_RefNotaFiscal_ID();
 
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
+
+    /** Column name LBR_SendEMail */
+    public static final String COLUMNNAME_LBR_SendEMail = "LBR_SendEMail";
+
+	/** Set Send EMail.
+	  * Send EMail with Nota Fiscal
+	  */
+	public void setLBR_SendEMail (String LBR_SendEMail);
+
+	/** Get Send EMail.
+	  * Send EMail with Nota Fiscal
+	  */
+	public String getLBR_SendEMail();
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";

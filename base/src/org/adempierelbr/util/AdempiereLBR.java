@@ -31,10 +31,7 @@ import org.compiere.model.MLocator;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MProduct;
-import org.compiere.model.MTable;
 import org.compiere.model.MUOM;
-import org.compiere.model.MUser;
-import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -226,21 +223,6 @@ public abstract class AdempiereLBR{
 
 		return LBR_DocType_Acct_ID > 0 ? LBR_DocType_Acct_ID : 0;
 	} //getDocTypeAcct
-
-	public static List<MUser> getContacts(int C_BPartner_ID, String customWhere){
-
-		String whereClause = "IsActive = 'Y' AND C_BPartner_ID = ?";
-
-		if (customWhere != null && !customWhere.trim().isEmpty()){
-			whereClause += " AND " + TextUtil.checkWhereClause(customWhere);
-		}
-
-		MTable table = MTable.get(Env.getCtx(), MUser.Table_Name);
-		Query q =  new Query(Env.getCtx(), table, whereClause, null);
-		      q.setParameters(new Object[]{C_BPartner_ID});
-
-	    return q.list();
-	} //getContacts
 
 	public static String getCountry_trl(MCountry country){
 		return getCountry_trl(country,AD_LANGUAGE);

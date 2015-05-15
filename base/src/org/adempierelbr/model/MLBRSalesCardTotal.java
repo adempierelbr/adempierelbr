@@ -1,7 +1,6 @@
 package org.adempierelbr.model;
 
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
@@ -9,14 +8,30 @@ import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
+/**
+ * 		Sales with Credit Card
+ * 
+ * 	@author Priscila Pinheiro (Kenos, www.kenos.com.br)
+ *	@version $Id: MLBRSalesCardTotal.java, v1.0 2013/02/26 11:04:57 AM, ralexsander Exp $
+ */
 public class MLBRSalesCardTotal extends X_LBR_SalesCardTotal
 {
-
-	public MLBRSalesCardTotal(Properties ctx, int LBR_SalesCardTotal_ID, String trxName)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 	Constructor
+	 * 
+	 * @param ctx
+	 * @param LBR_SalesCardTotal_ID
+	 * @param trxName
+	 */
+	public MLBRSalesCardTotal (Properties ctx, int LBR_SalesCardTotal_ID, String trxName)
 	{
-		super(ctx, LBR_SalesCardTotal_ID, trxName);
-		// TODO Auto-generated constructor stub
-	}
+		super (ctx, LBR_SalesCardTotal_ID, trxName);
+	}	//	MLBRSalesCardTotal
 
 	/**
 	 *  Load Constructor
@@ -26,8 +41,8 @@ public class MLBRSalesCardTotal extends X_LBR_SalesCardTotal
 	 */
 	public MLBRSalesCardTotal (Properties ctx, ResultSet rs, String trxName)
 	{
-		super(ctx, rs, trxName);
-	}	//	MLBRADI
+		super (ctx, rs, trxName);
+	}	//	MLBRSalesCardTotal
 	
 	/**
 	 * Retornar Vendas com cartão de crédito e débito
@@ -37,7 +52,7 @@ public class MLBRSalesCardTotal extends X_LBR_SalesCardTotal
 	 * @param AD_Org_IDs Array com um conjunto de organizações ou NULL para todas 
 	 * @return
 	 */
-	public static MLBRSalesCardTotal[] get(Properties ctx, Integer C_Period_ID, String trxName) throws Exception
+	public static MLBRSalesCardTotal[] get (Properties ctx, Integer C_Period_ID, String trxName) throws Exception
 	{
 		// Client
 		String whereClause = " AD_Client_ID = ? ";
@@ -59,11 +74,5 @@ public class MLBRSalesCardTotal extends X_LBR_SalesCardTotal
 		List<MLBRSalesCardTotal> list = q.list();
 		MLBRSalesCardTotal[] cards = new MLBRSalesCardTotal[list.size()];
 		return list.toArray(cards);
-
-	}
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-}
+	}	//	get
+}	//	MLBRSalesCardTotal

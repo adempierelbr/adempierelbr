@@ -32,7 +32,6 @@ import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -175,7 +174,7 @@ public class NFeCancelamento
 		SchemaTypeLoader stl = XmlBeans.typeLoaderUnion(new SchemaTypeLoader[]{RetEnvEventoDocument.type.getTypeSystem(), XmlBeans.getContextTypeLoader()});			
 		TRetEnvEvento retEnvEvento = ((RetEnvEventoDocument) stl.parse (respLote, null, null)).getRetEnvEvento();
 		
-		if (!MLBRNotaFiscal.LBR_NFESTATUS_128_LoteDeEventoProcessado135EventoRegistradoEVincu.equals (retEnvEvento.getCStat()))
+		if (!MLBRNotaFiscal.LBR_NFESTATUS_128_LoteDeEventoProcessado.equals (retEnvEvento.getCStat()))
 			throw new AdempiereException (retEnvEvento.getXMotivo());
 		
 		for (TRetEvento retEvento : retEnvEvento.getRetEventoArray())
@@ -184,8 +183,8 @@ public class NFeCancelamento
 			
 			//	Cancelamento processado com sucesso
 			if (TextUtil.match(infReturn.getCStat (), 
-					MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
-					MLBRNotaFiscal.LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANF_E,
+					MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
+					MLBRNotaFiscal.LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANFC_E,
 					"155"))	//	Vinculado, fora do Prazo
 			{
 				nf.setlbr_NFeProt(infReturn.getNProt());
@@ -211,7 +210,8 @@ public class NFeCancelamento
 				if (!NFeUtil.updateAttach(nf, NFeUtil.generateDistribution(nf)))
 					throw new AdempiereException ("Problemas ao atualizar o XML para o padrão de distribuição");
 
-				NFeEmail.sendMail (nf);
+//				TODO: Verificar a necessidade de enviar email no cancelamento
+//				ProcEMailNFe.sendEmailNFe (nf, false);
 			}
 			else
 				throw new AdempiereException (infReturn.getXMotivo());

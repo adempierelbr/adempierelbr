@@ -33,10 +33,10 @@ import org.adempierelbr.nfe.NFeCancelamento;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.process.ProcInutNF;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.NFeEmail;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
@@ -677,15 +677,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
 				LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
 				LBR_NFESTATUS_110_UsoDenegado,
-				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
-				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeE))
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
+				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))
 		{
 			nf.setDocStatus(DOCSTATUS_Completed);
-			nf.setDocAction(DOCACTION_Void);
+			nf.setDocAction(DOCACTION_VoidInvalidate);
 			nf.setProcessed(true);
 			//
 			if (TextUtil.match (cStat, LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E))
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E))
 				nf.setIsCancelled(true);
 			
 			/**	
@@ -730,7 +730,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			attachment.save();
 			
 			//	Envia o e-mail para o cliente
-			NFeEmail.sendMail(nf);
+			ProcEMailNFe.sendEmailNFe (nf, false);
 		}
 		
 		//	Reativar o documento para correção
@@ -2458,7 +2458,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		log.info(toString());
 		
-		if (m_justPrepared || !islbr_IsOwnDocument() || TextUtil.match (getDocAction(), DOCACTION_Re_Activate, DOCACTION_Unlock, DOCACTION_Void))
+		if (m_justPrepared || !islbr_IsOwnDocument() || TextUtil.match (getDocAction(), DOCACTION_Unlock, DOCACTION_Unlock, DOCACTION_VoidInvalidate))
 			return DOCSTATUS_InProgress;
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
@@ -2497,7 +2497,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 			
 			//	NFS-e
-			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS))
+			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS))
 			{
 				INFSe infSe = NFSeUtil.get (this);
 				//
@@ -2628,7 +2628,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 			
 			//	NF Serviço
-			else if (LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS.equals(getlbr_NFModel()))
+			else if (LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getlbr_NFModel()))
 			{
 				INFSe infSe = NFSeUtil.get (this);
 				//
@@ -2898,7 +2898,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			options[0] = DOCACTION_Complete;
 			options[1] = DOCACTION_Unlock;
-			options[2] = DOCACTION_Void;
+			options[2] = DOCACTION_VoidInvalidate;
 			index=3;
 		}
 		else if (DOCSTATUS_Drafted.equals(docStatus)
@@ -2906,7 +2906,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			options[0] = DOCACTION_Prepare;
 			options[1] = DOCACTION_Complete;
-			options[2] = DOCACTION_Void;
+			options[2] = DOCACTION_VoidInvalidate;
 			index=3;
 		}
 		else if (DOCSTATUS_WaitingConfirmation.equals(docStatus))
@@ -2916,7 +2916,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		else if (DOCSTATUS_Completed.equals(docStatus))
 		{
-			options[0] = DOCACTION_Void;
+			options[0] = DOCACTION_VoidInvalidate;
 			index=1;
 		}
 		//

@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.NFeUtil;
+import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
 import org.compiere.model.MShipper;
@@ -83,13 +84,13 @@ public class ProcEMailNFe extends SvrProcess
 		if (nf.getlbr_NFeProt() == null || nf.getlbr_NFeProt().length() <= 1
 				|| nf.getlbr_NFeStatus() == null || !nf.getlbr_NFeStatus().equals("100"))
 		{
-			log.severe("NF-e não foi autorizada");
+			log.warning("NF-e não foi autorizada");
 			return "NF-e não foi autorizada";
 		}
 		
 		if (nf.get_ValueAsBoolean("lbr_EMailSent") && !force)
 		{
-			log.severe("E-Mail já enviado");
+			log.warning("E-Mail já enviado");
 			return "E-Mail já enviado";
 		}
 		
@@ -115,21 +116,36 @@ public class ProcEMailNFe extends SvrProcess
 		
 		if (toEMails == null || toEMails.indexOf('@') == -1)
 		{
-			log.severe("E-mail para recepção de NF-e inválido");
+			log.warning("E-mail para recepção de NF-e inválido");
 			return "E-mail para recepção de NF-e inválido";
 		}
 		else
 			toEMails = toEMails.replace(",", ";");
 		//
-		String message = Env.parseVariable(Msg.getMsg(Env.getCtx(), "EMailNFe"), 
+		String message = Env.parseVariable (Msg.getMsg(Env.getCtx(), "EMailNFe"), 
 				nf, nf.get_TrxName(), false);
 		//
-		String subject = "Nota Fiscal Eletronica, no. " + nf.getDocumentNo();
-		//
-		MClient client = MClient.get(Env.getCtx());
+		String subject = "Nota Fiscal Eletrônica - Chave " + nf.getlbr_NFeID();
+		
+		if (message == null || message.length() == 0)
+		{
+			log.severe("Mensagem do corpo do e-mail não encontrada");
+			return "Mensagem do corpo do e-mail não encontrada";
+		}
+		
+		MClient client = MClient.get (Env.getCtx());
 		//
 		EMail mail = client.createEMail(null, client.getRequestEMail(), subject,  message, true);
-		mail.addAttachment(NFeUtil.getAttachmentEntryFile(nf.getAttachment(true).getEntry(0)));
+		
+		MAttachmentEntry entryXML = null;
+		
+		for (MAttachmentEntry entry : nf.getAttachment(true).getEntries())
+		{
+			if (entry.getName().endsWith ("dst.xml"))
+				entryXML = entry;
+		}
+		
+		mail.addAttachment (NFeUtil.getAttachmentEntryFile (entryXML));
 		//
 		StringTokenizer st = new StringTokenizer(toEMails, ";");
 		while (st.hasMoreTokens())
@@ -139,15 +155,15 @@ public class ProcEMailNFe extends SvrProcess
 				continue;
 			//
 			toEMail = toEMail.trim();
-			if (toEMail.length() == 0)
+			if (toEMail.length() == 0 || toEMail.indexOf("@") == -1)
 				continue;
 			//
-			mail.addTo(toEMail);
+			mail.addCc(toEMail);
 		}
 		//
 		if (mail.send().equals(EMail.SENT_OK))
 		{
-			nf.set_CustomColumn("lbr_EMailSent", true);
+			nf.setLBR_EMailSent (true);
 			nf.save();
 		}
 		//
