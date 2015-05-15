@@ -18,6 +18,7 @@ import org.adempierelbr.nfse.sp.api.LoteNFeStub;
 import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.model.MBPartner;
@@ -430,7 +431,7 @@ public class NFSeImpl implements INFSe
 		//	Gera o XML em arquivo para Assinatura	
 		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
 		
-		AssinaturaDigital.Assinar (xml, oi, AssinaturaDigital.RPS);
+		new SignatureUtil (oi, SignatureUtil.RPS).sign (envioLoteRPSDoc, envioLoteRPSDoc.newCursor());
 		envioLoteRPSDoc = PedidoEnvioLoteRPSDocument.Factory.parse (xml.toString());
 		
 		//	Log
@@ -563,7 +564,9 @@ public class NFSeImpl implements INFSe
 		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
 		//
 		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance();
-		tpAssinatura.setStringValue(AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID));
+		
+		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), AD_Org_ID, null);
+		tpAssinatura.setStringValue(new SignatureUtil (oi, SignatureUtil.RPS).signASCII (ascii.toString()));
 		rps.xsetAssinatura (tpAssinatura);
 	}	//	sign
 
