@@ -13,6 +13,7 @@
 package org.adempierelbr.sped.contrib.bean;
 
 import java.math.BigDecimal;
+
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 

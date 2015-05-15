@@ -16,8 +16,6 @@ import java.sql.Timestamp;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO G130 – IDENTIFICAÇÃO DO DOCUMENTO FISCAL

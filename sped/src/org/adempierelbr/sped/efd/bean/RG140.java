@@ -14,8 +14,6 @@ package org.adempierelbr.sped.efd.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 
 /**
  * REGISTRO G140 – IDENTIFICAÇÃO DO ITEM DO DOCUMENTO FISCAL

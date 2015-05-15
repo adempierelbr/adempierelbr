@@ -16,12 +16,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.util.RemoverAcentos;
-import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
