@@ -153,19 +153,19 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 ;
 
 -- 14/05/2015 19h20min5s BRT
-UPDATE AD_Field SET DisplayLogic='@DocStatus@=CO | @DocStatus@=VO',Updated=TO_TIMESTAMP('2015-05-14 19:20:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125372
+UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocStatus@!DR & @DocStatus@!WC & @DocStatus@!IN',Updated=TO_TIMESTAMP('2015-05-14 19:20:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125372
 ;
 
 -- 14/05/2015 19h20min10s BRT
-UPDATE AD_Field SET DisplayLogic='@DocStatus@=CO | @DocStatus@=VO',Updated=TO_TIMESTAMP('2015-05-14 19:20:10','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125374
+UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocStatus@!DR & @DocStatus@!WC & @DocStatus@!IN',Updated=TO_TIMESTAMP('2015-05-14 19:20:10','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125374
 ;
 
 -- 14/05/2015 19h20min25s BRT
-UPDATE AD_Field SET DisplayLogic='@DocStatus@=CO | @DocStatus@=VO',Updated=TO_TIMESTAMP('2015-05-14 19:20:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125373
+UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocStatus@!DR & @DocStatus@!WC & @DocStatus@!IN',Updated=TO_TIMESTAMP('2015-05-14 19:20:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125373
 ;
 
 -- 14/05/2015 19h20min28s BRT
-UPDATE AD_Field SET DisplayLogic='@DocStatus@=CO | @DocStatus@=VO',Updated=TO_TIMESTAMP('2015-05-14 19:20:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125370
+UPDATE AD_Field SET DisplayLogic='@lbr_IsOwnDocument@=Y & @DocStatus@!IP & @DocStatus@!DR & @DocStatus@!WC & @DocStatus@!IN',Updated=TO_TIMESTAMP('2015-05-14 19:20:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125370
 ;
 
 -- 15/05/2015 11h27min50s BRT
