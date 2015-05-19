@@ -3,13 +3,19 @@ DELETE FROM AD_Field f WHERE f.AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Colu
 ;
 DELETE FROM AD_Field f WHERE f.AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column c WHERE c.AD_Table_ID=1000027 AND c.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent'))
 ;
-DELETE FROM AD_Column c WHERE c.AD_Table_ID=1000027 AND c.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent')
+DELETE FROM AD_Field f WHERE f.AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column c WHERE c.AD_Table_ID=114 AND c.ColumnName IN ('lbr_IsNFeContact'))
 ;
 DELETE FROM AD_Column c WHERE c.AD_Table_ID=291 AND c.ColumnName='lbr_EMailNFe'
 ;
-DELETE FROM AD_Element e WHERE e.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent', 'lbr_EMailNFe')
+DELETE FROM AD_Column c WHERE c.AD_Table_ID=1000027 AND c.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent')
+;
+DELETE FROM AD_Column c WHERE c.AD_Table_ID=114 AND c.ColumnName IN ('lbr_IsNFeContact')
+;
+DELETE FROM AD_Element e WHERE e.ColumnName IN ('lbr_SentXML', 'lbr_EMailSent', 'lbr_EMailNFe', 'lbr_IsNFeContact')
 ;
 ALTER TABLE LBR_NotaFiscal DROP COLUMN lbr_SentXML
+;
+ALTER TABLE AD_User DROP COLUMN lbr_IsNFeContact
 ;
 
 -- 14/05/2015 17h54min51s BRT
