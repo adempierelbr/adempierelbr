@@ -9,6 +9,7 @@ import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
 import org.compiere.model.MShipper;
+import org.compiere.model.MSysConfig;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -122,7 +123,8 @@ public class ProcEMailNFe extends SvrProcess
 		else
 			toEMails = toEMails.replace(",", ";");
 		//
-		String message = Env.parseVariable (Msg.getMsg(Env.getCtx(), "EMailNFe"), 
+		String emailMsgTag = MSysConfig.getValue ("LBR_CUSTOM_NFE_EMAIL_MESSAGE", "LBR_EMailNFe", nf.getAD_Client_ID());
+		String message = Env.parseVariable (Msg.getMsg(Env.getCtx(), emailMsgTag), 
 				nf, nf.get_TrxName(), false);
 		//
 		String subject = "Nota Fiscal Eletrônica - Chave " + nf.getlbr_NFeID();
