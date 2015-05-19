@@ -114,7 +114,7 @@ public class GenerateWrapper
 		log.info("----------------------------------");
 
 		String tableLike = null;
-		tableLike = "'%'";	//	All tables
+		tableLike = "'C_BPartner'";	//	All tables
 		// tableLike = "'AD_OrgInfo', 'AD_Role', 'C_CashLine', 'C_Currency', 'C_Invoice', 'C_Order', 'C_Payment', 'M_InventoryLine', 'M_PriceList', 'M_Product', 'U_POSTerminal'";	//	Only specific tables
 		if (args.length > 3)
 			tableLike = args[3];

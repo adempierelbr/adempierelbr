@@ -54,6 +54,19 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public int getLBR_CustomerCategory_ID();
 
+    /** Column name LBR_EMailNFe */
+    public static final String COLUMNNAME_LBR_EMailNFe = "LBR_EMailNFe";
+
+	/** Set NFe EMail.
+	  * NFe EMail separated by semicolon
+	  */
+	public void setLBR_EMailNFe (String LBR_EMailNFe);
+
+	/** Get NFe EMail.
+	  * NFe EMail separated by semicolon
+	  */
+	public String getLBR_EMailNFe();
+
     /** Column name LBR_FiscalGroup_Customer_ID */
     public static final String COLUMNNAME_LBR_FiscalGroup_Customer_ID = "LBR_FiscalGroup_Customer_ID";
 
@@ -209,6 +222,19 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  * Description Printed on Nota Fiscal
 	  */
 	public String getlbr_NFDescription();
+
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
 
     /** Column name lbr_PaymentRule */
     public static final String COLUMNNAME_lbr_PaymentRule = "lbr_PaymentRule";
