@@ -15,7 +15,6 @@ import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.sp.api.LoteNFeStub;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
