@@ -3,13 +3,17 @@ package org.adempierelbr.process;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
+import org.compiere.model.MUser;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
@@ -135,12 +139,22 @@ public class ProcEMailNFe extends SvrProcess
 			return "Mensagem do corpo do e-mail não encontrada";
 		}
 		
-		MClient client = MClient.get (Env.getCtx());
-		//
-		EMail mail = client.createEMail(null, client.getRequestEMail(), subject,  message, true);
+		//	Empresa
+		MClient client = MClient.get (nf.getCtx());
+
+		//	Organização
+		I_W_AD_OrgInfo oi = POWrapper.create (MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
+		
+		//	E-mail
+		//	Caso o contato não esteja configurado na Organização
+		//		o XML é enviado pelo e-mail da empresa
+		MUser from = null;
+		if (oi.getLBR_ContatoNFe_ID() > 0)
+			from = new MUser (nf.getCtx(), oi.getLBR_ContatoNFe_ID(), null);
+		
+		EMail mail = client.createEMail (from, client.getRequestEMail(), subject,  message, true);
 		
 		MAttachmentEntry entryXML = null;
-		
 		for (MAttachmentEntry entry : nf.getAttachment(true).getEntries())
 		{
 			if (entry.getName().endsWith ("dst.xml"))
