@@ -1021,12 +1021,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 
 				String subject = getNode().getDescription()
 				+ ": " + mailtext.getMailHeader();
+				
+				mailtext.setPO(m_po);
 
 				String message = mailtext.getMailText(true)
 				+ "\n-----\n" + getNodeHelp();
 				String to = getNode().getEMail();
 
-				client.sendEMail(to, subject, message, null);
+				client.sendEMail(to, subject, message, null, mailtext.isHtml());
 			}
 			return true;	//	done
 		}	//	EMail
