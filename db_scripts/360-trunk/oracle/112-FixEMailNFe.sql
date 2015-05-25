@@ -186,6 +186,18 @@ INSERT INTO AD_Message (AD_Client_ID,AD_Message_ID,AD_Org_ID,Created,CreatedBy,E
 INSERT INTO AD_Message_Trl (AD_Language,AD_Message_ID, MsgText,MsgTip, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Message_ID, t.MsgText,t.MsgTip, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Message t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Message_ID=1120033 AND NOT EXISTS (SELECT * FROM AD_Message_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Message_ID=t.AD_Message_ID)
 ;
 
+-- 25/05/2015 15h4min16s BRT
+UPDATE AD_Field SET IsDisplayed='N',Updated=TO_DATE('2015-05-25 15:04:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125346
+;
+
+-- 25/05/2015 15h7min33s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,DisplayLogic,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1126599,1000000,1125377,0,223,TO_DATE('2015-05-25 15:07:30','YYYY-MM-DD HH24:MI:SS'),100,'NFe EMail separated by semicolon',255,'@IsCustomer@=Y','LBRA','NFe EMail separated by semicolon','Y','Y','Y','N','N','N','N','N','NFe EMail',295,TO_DATE('2015-05-25 15:07:30','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 25/05/2015 15h7min33s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125377 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
 UPDATE AD_Reference SET EntityType='LBRA' WHERE EntityType='U' AND AD_Reference_ID IN (1120160,1120161,1120162,1120183);
 UPDATE AD_Element SET EntityType='LBRA' WHERE EntityType='U' AND AD_Element_ID IN (1121277,1121276,1121278,1121279,1121280,1121281,1121282,1121283,1121285,1121286,1121287,1121288,1121529,1121695,1121696,1121702,1121699,1121719);
 UPDATE AD_Window SET EntityType='LBRA' WHERE EntityType='U' AND AD_Window_ID IN (1120079);
