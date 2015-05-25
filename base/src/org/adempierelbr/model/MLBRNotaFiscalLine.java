@@ -720,8 +720,29 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		{
 			nflt.deleteEx(true);
 		}
-		return super.beforeDelete();
+		return true;
 	}	//	beforeDelete
+	
+	/**
+	 * 	Called before Save for Pre-Save Operation
+	 * 	@param newRecord new record
+	 *	@return true if record can be saved
+	 */
+	@Override
+	protected boolean beforeSave(boolean newRecord)
+	{
+		//	Ajusta o valor do CFOP
+		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_CFOP_ID))
+				&& getLBR_CFOP_ID() > 0)
+			setlbr_CFOPName(getLBR_CFOP().getValue());
+		
+		//	Ajusta o valor do NCM
+		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_NCM_ID))
+				&& getLBR_NCM_ID() > 0)
+			setlbr_NCMName(getLBR_NCM().getValue());
+		
+		return true;
+	}	//	beforeSave
 	
 	/**
 	 * 	Get NF Line Taxes
