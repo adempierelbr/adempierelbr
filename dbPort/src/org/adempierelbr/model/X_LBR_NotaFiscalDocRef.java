@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150322L;
+	private static final long serialVersionUID = 20150526L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalDocRef (Properties ctx, int LBR_NotaFiscalDocRef_ID, String trxName)
@@ -152,12 +152,14 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public static final int LBR_FISCALDOCREFTYPE_AD_Reference_ID=1120208;
 	/** NF Manual (1/1A) = M */
 	public static final String LBR_FISCALDOCREFTYPE_NFManual11A = "M";
-	/** CT-e (Produtor Rural) = R */
-	public static final String LBR_FISCALDOCREFTYPE_CT_EProdutorRural = "R";
+	/** NF (Produtor Rural) = R */
+	public static final String LBR_FISCALDOCREFTYPE_NFProdutorRural = "R";
 	/** Cupom Fiscal (ECF) = C */
 	public static final String LBR_FISCALDOCREFTYPE_CupomFiscalECF = "C";
 	/** NF-e = N */
 	public static final String LBR_FISCALDOCREFTYPE_NF_E = "N";
+	/** CT-e = T */
+	public static final String LBR_FISCALDOCREFTYPE_CT_E = "T";
 	/** Set Type Fiscal Document Referenced.
 		@param LBR_FiscalDocRefType Type Fiscal Document Referenced	  */
 	public void setLBR_FiscalDocRefType (String LBR_FiscalDocRefType)
@@ -394,10 +396,8 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public static final String LBR_NFMODEL_NotaFiscalEletrônica = "55";
 	/** Conhecimento de Transporte Eletrônico – CT-e = 57 */
 	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
-	/** Nota Fiscal de Serviço Eletrônica (RPS) = S1 */
-	public static final String LBR_NFMODEL_NotaFiscalDeServiçoEletrônicaRPS = "S1";
-	/** Nota Fiscal de Consumidor Eletrônica = 65 */
-	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "65";
+	/** Nota Fiscal de Serviços Eletrônica (RPS) = S1 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
 	/** Set NF Model.
 		@param lbr_NFModel 
 		Identifies the model of Nota Fiscal

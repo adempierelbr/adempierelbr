@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  * 		Model for X_LBR_NotaFiscalDocRef
@@ -77,4 +79,41 @@ public class MLBRNotaFiscalDocRef extends X_LBR_NotaFiscalDocRef
 		list.toArray(retValue);
 		return retValue;
 	}	//	get
+	
+	/**
+	 * Called before Save for Pre-Save Operation
+	 * 	@param newRecord new record
+	 *	@return true if record can be saved
+	 */
+	@Override
+	protected boolean beforeSave(boolean newRecord)
+	{
+		//	Sem tipo de documento
+		if (getLBR_FiscalDocRefType() == null)
+		{
+			log.saveError ("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_LBR_FiscalDocRefType));
+			return false;
+		}
+		
+		//	Tipo NF-e e CT-e
+		else if (TextUtil.match (getLBR_FiscalDocRefType(), LBR_FISCALDOCREFTYPE_NF_E, LBR_FISCALDOCREFTYPE_CT_E))
+		{
+			//	Campo obrigatório
+			if (getlbr_NFeID() == null)
+			{
+				log.saveError ("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_lbr_NFeID));
+				return false;
+			}
+			
+			//	Campo inválido
+			else if (!TextUtil.isNumber (getlbr_NFeID())
+						|| getlbr_NFeID().length() != 44)
+			{
+				log.saveError ("FillMandatory", Msg.parseTranslation(getCtx(), "@Invalid@ @lbr_NFeID@"));
+				return false;
+			}
+		}
+		
+		return true;
+	}	//	beforeSave
 }	//	MLBRADI
