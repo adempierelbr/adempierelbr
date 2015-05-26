@@ -340,10 +340,12 @@ public class ValidatorInvoice implements ModelValidator
 			/**
 			 * 	1 - Validação da Condição de Pagamento
 			 */
-			MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
-			log.fine(pt.toString());
-			pt.apply(invoice);
-
+			if (!invoice.validatePaySchedule())
+			{
+				MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
+				log.fine(pt.toString());
+				pt.apply(invoice);
+			}
 			/**
 			 * 	2 - Alocação de Faturas que não geram itens em aberto
 			 */

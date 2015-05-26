@@ -1357,7 +1357,8 @@ public class MInvoice extends X_C_Invoice implements DocAction
 			return DocAction.STATUS_Invalid;
 		}
 
-		createPaySchedule();
+		if (!validatePaySchedule())
+			createPaySchedule();
 
 		//	Credit Status
 		if (isSOTrx() && !isReversal())
