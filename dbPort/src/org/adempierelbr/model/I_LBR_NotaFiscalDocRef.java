@@ -290,4 +290,13 @@ public interface I_LBR_NotaFiscalDocRef
 	  * Identification of NFe
 	  */
 	public String getlbr_NFeID();
+	
+	/** Column name LBR_NFeReferenced_ID */
+    public static final String COLUMNNAME_LBR_NFeReferenced_ID = "LBR_NFeReferenced_ID";
+
+	/** Set NF-e Referenced	  */
+	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID);
+
+	/** Get NF-e Referenced	  */
+	public int getLBR_NFeReferenced_ID();
 }

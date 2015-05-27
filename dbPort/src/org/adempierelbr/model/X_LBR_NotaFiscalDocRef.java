@@ -446,4 +446,24 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFeID);
 	}
+	
+	/** Set NF-e Referenced.
+	@param LBR_NFeReferenced_ID NF-e Referenced	  */
+	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID)
+	{
+		if (LBR_NFeReferenced_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, Integer.valueOf(LBR_NFeReferenced_ID));
+	}
+	
+	/** Get NF-e Referenced.
+		@return NF-e Referenced	  */
+	public int getLBR_NFeReferenced_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFeReferenced_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 }
