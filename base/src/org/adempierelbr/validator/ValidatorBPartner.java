@@ -216,6 +216,10 @@ public class ValidatorBPartner implements ModelValidator
 	{
 		log.fine ("ini");
 
+		//	Ignorar a validação do CNPJ
+		if (bp_po.getC_BPartner_ID() <= 0)
+			return null;
+		
 		I_W_C_BPartner bp = POWrapper.create(bp_po, I_W_C_BPartner.class);
 		
 		//	Validação do E-mail
