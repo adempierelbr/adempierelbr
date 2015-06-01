@@ -488,6 +488,9 @@ public class VLocationDialog extends CDialog implements ActionListener
 				WebServiceCep cep = WebServiceCep.searchCep(fPostal.getText());
 				if (cep.wasSuccessful())
 				{
+					//	Brazil
+					fCountry.setSelectedItem(MCountry.get(Env.getCtx(), 139));
+					//
 					MRegion[] regions = MRegion.getRegions(Env.getCtx(), 139);
 					for (MRegion r : regions)
 						if (r.getName() != null && r.getName().equals(cep.getUf()))
