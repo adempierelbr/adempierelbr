@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
@@ -579,6 +580,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			priceList = MConversionRate.convert(Env.getCtx(), priceList, 
 					C_Currency_ID, MLBRNotaFiscal.CURRENCY_BRL, getAD_Client_ID(), getAD_Org_ID());
 		}
+		
+		//	Verifica o preço após a conversão para BRL
+		if (price == null || priceList == null)
+			throw new AdempiereException ("Impossível converter o valor fatura para Real (BRL) na geração da NF");
 		//
 		super.setPriceListAmt(priceList);
 		
