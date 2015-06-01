@@ -35,8 +35,6 @@ import org.adempierelbr.boleto.bank.MUnibanco;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
 import org.adempierelbr.model.X_LBR_Bank;
-import org.adempierelbr.util.AdempiereLBR;
-import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MPayment;
 import org.compiere.process.DocAction;
@@ -123,8 +121,7 @@ public class ReturnCNABUtil
 						}
 
 						MPayment Payment = new MPayment(ctx,0,trx);
-						Payment.setAD_Org_ID(Invoice.getAD_Org_ID());
-						
+
 						Integer C_BankAccount_ID = boleto.getC_BankAccount_ID();
 						//
 						if (C_BankAccount_ID == null)

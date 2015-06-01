@@ -105,6 +105,21 @@ public interface I_LBR_NFLineTax
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_LegalMessage_ID */
+    public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
+
+	/** Set Legal Message.
+	  * Defines the Legal Message
+	  */
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID);
+
+	/** Get Legal Message.
+	  * Defines the Legal Message
+	  */
+	public int getLBR_LegalMessage_ID();
+
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
+
     /** Column name LBR_NFLineTax_ID */
     public static final String COLUMNNAME_LBR_NFLineTax_ID = "LBR_NFLineTax_ID";
 
@@ -172,6 +187,17 @@ public interface I_LBR_NFLineTax
 	  */
 	public BigDecimal getlbr_TaxBaseAmt();
 
+    /** Column name LBR_TaxBaseType_ID */
+    public static final String COLUMNNAME_LBR_TaxBaseType_ID = "LBR_TaxBaseType_ID";
+
+	/** Set Tax Base Type	  */
+	public void setLBR_TaxBaseType_ID (int LBR_TaxBaseType_ID);
+
+	/** Get Tax Base Type	  */
+	public int getLBR_TaxBaseType_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxBaseType getLBR_TaxBaseType() throws RuntimeException;
+
     /** Column name LBR_TaxGroup_ID */
     public static final String COLUMNNAME_LBR_TaxGroup_ID = "LBR_TaxGroup_ID";
 
@@ -187,6 +213,15 @@ public interface I_LBR_NFLineTax
 
 	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException;
 
+    /** Column name LBR_TaxListAmt */
+    public static final String COLUMNNAME_LBR_TaxListAmt = "LBR_TaxListAmt";
+
+	/** Set Tax List Amt	  */
+	public void setLBR_TaxListAmt (BigDecimal LBR_TaxListAmt);
+
+	/** Get Tax List Amt	  */
+	public BigDecimal getLBR_TaxListAmt();
+
     /** Column name lbr_TaxRate */
     public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
 
@@ -199,6 +234,30 @@ public interface I_LBR_NFLineTax
 	  * Indicates the Tax Rate
 	  */
 	public BigDecimal getlbr_TaxRate();
+
+    /** Column name LBR_TaxStatus_ID */
+    public static final String COLUMNNAME_LBR_TaxStatus_ID = "LBR_TaxStatus_ID";
+
+	/** Set Tax Status	  */
+	public void setLBR_TaxStatus_ID (int LBR_TaxStatus_ID);
+
+	/** Get Tax Status	  */
+	public int getLBR_TaxStatus_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxStatus getLBR_TaxStatus() throws RuntimeException;
+
+    /** Column name Qty */
+    public static final String COLUMNNAME_Qty = "Qty";
+
+	/** Set Quantity.
+	  * Quantity
+	  */
+	public void setQty (BigDecimal Qty);
+
+	/** Get Quantity.
+	  * Quantity
+	  */
+	public BigDecimal getQty();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -19,24 +19,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.compiere.model.MAssetGroupAcct;
+import org.adempierelbr.model.MLBRAgreement;
+import org.adempierelbr.model.MLBRAgreementLine;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCountry;
-import org.compiere.model.MDocType;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
-import org.compiere.model.MTable;
+import org.compiere.model.MProduct;
 import org.compiere.model.MUOM;
-import org.compiere.model.MUser;
-import org.compiere.model.Query;
-import org.compiere.model.X_M_Product_Acct;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -59,9 +54,6 @@ public abstract class AdempiereLBR{
 
 	public static final String AD_LANGUAGE = "pt_BR";
 	public static final int    BRASIL      = 139;
-	
-	//UDM cache
-	private static Map<Integer,String[]> _UOM = new HashMap<Integer,String[]>();
 
 	public static int getC_Invoice_ID(String DocumentNo,String trx)
 	{
@@ -78,6 +70,64 @@ public abstract class AdempiereLBR{
 		return C_Invoice_ID;
 	}	//	getC_Invoice_ID
 	
+	/**
+	 * 	Retorna a Margem de Lucro (IVA) de um produto
+	 * 		de acordo com as dos Convênios Estaduais
+	 * 
+	 * @param 	Product
+	 * @return	IVA
+	 */
+	public static BigDecimal getIVA (MProduct prod)
+	{
+		String trxType = Env.getContext(Env.getCtx(), "LBR|TrxType");
+		//
+		if ("END".equals(trxType))
+			return Env.ZERO;
+		
+		int C_Region_ID = Env.getContextAsInt(Env.getCtx(), "LBR|RegionFrom");
+		int To_Region_ID = Env.getContextAsInt(Env.getCtx(), "LBR|RegionTo");
+		BigDecimal fixedIVA = (BigDecimal) prod.get_Value("lbr_ProfitPercentage");
+		BigDecimal prdIVA = Env.ZERO;
+		BigDecimal ncmIVA = Env.ZERO;
+		Timestamp prdValid = null, ncmValid = null;
+		Timestamp dateDoc = TextUtil.stringToTime(Env.getContext(Env.getCtx(), "LBR|DateDoc"), "yyyy-MM-dd");
+		//
+		Integer ncm = (Integer) prod.get_Value("LBR_NCM_ID");
+		if (ncm == null)
+			ncm = -1;
+		//
+		MLBRAgreement ag = MLBRAgreement.get(C_Region_ID, To_Region_ID);
+		if (ag == null)
+			return fixedIVA == null ? Env.ZERO : fixedIVA;
+		//
+		MLBRAgreementLine[] lines = ag.getLines(dateDoc);
+		for (MLBRAgreementLine line : lines)
+		{
+			if (line.getM_Product_ID() == prod.getM_Product_ID()
+					&& (prdValid == null || prdValid.before(line.getValidFrom())))
+			{
+				prdIVA 		= line.getlbr_ProfitPercentage();
+				prdValid 	= line.getValidFrom();
+			}
+			else if (line.getLBR_NCM_ID() == ncm
+					&& (ncmValid == null || ncmValid.before(line.getValidFrom())))
+			{
+				ncmIVA 		= line.getlbr_ProfitPercentage();
+				ncmValid 	= line.getValidFrom();
+			}
+		}
+		//	Produto sobrescreve NCM
+		if (prdIVA.compareTo(Env.ZERO) == 1)
+			return prdIVA;
+		//	NCM sobrescreve fixo
+		else if (ncmIVA.compareTo(Env.ZERO) == 1)
+			return ncmIVA;
+		//	Fixo
+		else
+			return fixedIVA;
+	}	//	getIVA
+	
+	@Deprecated
 	public static int getC_ElementValue_ID (String account,String trx)
 	{
 		if (account == null || account.isEmpty())
@@ -92,6 +142,7 @@ public abstract class AdempiereLBR{
 		return C_ElementValue_ID;
 	}	//getC_ElementValue_ID
 
+	@Deprecated
 	public static int getC_Region_ID(String regionName, String trx){
 
 		String sql = "SELECT C_Region_ID FROM C_Region " +
@@ -108,68 +159,10 @@ public abstract class AdempiereLBR{
 		String sql = "SELECT MAX(M_InOut_ID) FROM M_InOutLine WHERE M_InOutLine_ID " +
 				     "IN (SELECT M_InOutLine_ID FROM C_InvoiceLine WHERE C_Invoice_ID = ?)";
 
-		int M_InOut_ID = DB.getSQLValue(trx, sql, C_Invoice_ID);
+		int M_InOut_ID = DB.getSQLValue(trx, sql,C_Invoice_ID);
 
 		return M_InOut_ID > 0 ? M_InOut_ID : 0;
 	} //getM_InOut_ID
-	
-	public static X_M_Product_Acct getX_M_Product_Acct(Properties ctx, int M_Product_ID, int C_AcctSchema_ID){
-		
-		String sql = "SELECT * FROM M_Product_Acct " +
-				     "WHERE M_Product_ID = ? AND C_AcctSchema_ID = ? AND IsActive = 'Y'";
-		
-		X_M_Product_Acct productAcct = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, null);
-			pstmt.setInt(1, M_Product_ID);
-			pstmt.setInt(2, C_AcctSchema_ID);
-			rs = pstmt.executeQuery ();
-			if (rs.next()){
-				productAcct = new X_M_Product_Acct(ctx,rs,null);
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-		
-		return productAcct;
-	} // getX_M_Product_Acct
-	
-	public static MAssetGroupAcct getMAssetGroupAcct(Properties ctx, int A_Asset_Group_ID, int C_AcctSchema_ID){
-		
-		String sql = "SELECT * FROM A_Asset_Group_Acct " +
-				     "WHERE A_Asset_Group_ID = ? AND C_AcctSchema_ID = ? AND IsActive = 'Y'";
-		
-		MAssetGroupAcct assetGroupAcct = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, null);
-			pstmt.setInt(1, A_Asset_Group_ID);
-			pstmt.setInt(2, C_AcctSchema_ID);
-			rs = pstmt.executeQuery ();
-			if (rs.next()){
-				assetGroupAcct = new MAssetGroupAcct(ctx,rs,null);
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-		
-		return assetGroupAcct;
-	} // getMAssetGroupAcct
 
 	public static int getLBR_Bank_ID(String RoutingNo, String trx){
 
@@ -191,6 +184,7 @@ public abstract class AdempiereLBR{
 		return vendorProductNo;
 	}//getVendorProductNo
 
+	@Deprecated
 	public static int getProduct_IDfromVendor(int C_BPartner_ID, String VendorProductNo, String trx){
 
 		String sql = "SELECT M_Product_ID FROM C_BPartner_Product " +
@@ -202,6 +196,7 @@ public abstract class AdempiereLBR{
 		return M_Product_ID;
 	}//getProduct_IDfromVendor
 
+	@Deprecated
 	public static int getProduct_IDfromValue(String value, String trx){
 
 		String sql = "SELECT M_Product_ID FROM M_Product " +
@@ -212,56 +207,16 @@ public abstract class AdempiereLBR{
 
 		return M_Product_ID;
 	}//getProduct_IDfromValue
-	
-	public static int getLocator_IDfromValue(int M_Warehouse_ID, String value, String trx){
-
-		String sql = "SELECT M_Locator_ID FROM M_Locator " +
-	                 "WHERE IsActive = 'Y' AND M_Warehouse_ID = ? " +
-	                 "AND Value = ?";
-
-		int M_Locator_ID = DB.getSQLValue(trx, sql,
-				new Object[]{M_Warehouse_ID,value});
-
-		return M_Locator_ID;
-	}//getLocator_IDfromValue
-	
-	public static BigDecimal getQtyOnHand(int M_Product_ID, int M_Locator_ID, String trx){
-		
-		String sql = "SELECT SUM(s.QtyOnHand) FROM M_Storage s " +
-					 "WHERE s.M_Product_ID = ? AND s.M_Locator_ID = ?";
-		
-		BigDecimal qtyOnHand = DB.getSQLValueBD(trx, sql, new Object[]{M_Product_ID,M_Locator_ID});
-		
-		return qtyOnHand == null ? Env.ZERO : qtyOnHand;
-	}
 
 	public static int getARReceipt(){
 
-		int C_DocType_ID = 0;
-		
-		int[] docs = getDocumentType("ARR");
-		if (docs.length > 0)
-			C_DocType_ID = docs[0];
+		String sql = "SELECT C_DocType_ID FROM C_DocType " +
+				     "WHERE DocBaseType = 'ARR' AND AD_Client_ID = ?";
+
+		int C_DocType_ID = DB.getSQLValue(null, sql, Env.getAD_Client_ID(Env.getCtx()));
 
 		return C_DocType_ID;
 	}	//	getARReceipt
-	
-	public static int[] getMMReceipt(){
-		return getDocumentType("MMR");
-	}	//	getMRReceipt
-	
-	public static int[] getDocumentType(String DocBaseType){
-		
-		String whereClause = "IsActive = 'Y' AND DocBaseType=?";
-
-		MTable table = MTable.get(Env.getCtx(), MDocType.Table_Name);
-		Query q =  new Query(Env.getCtx(), table, whereClause, null);
-			  q.setParameters(new Object[]{DocBaseType});
-			  q.setClient_ID();
-			  q.setOrderBy("C_DocType_ID DESC");
-			  
-		return q.getIDs();
-	} //getDocumentType
 
 	public static int getDocTypeAcct(int C_DocType_ID){
 
@@ -272,21 +227,6 @@ public abstract class AdempiereLBR{
 
 		return LBR_DocType_Acct_ID > 0 ? LBR_DocType_Acct_ID : 0;
 	} //getDocTypeAcct
-
-	public static List<MUser> getContacts(int C_BPartner_ID, String customWhere){
-
-		String whereClause = "IsActive = 'Y' AND C_BPartner_ID = ?";
-
-		if (customWhere != null && !customWhere.trim().isEmpty()){
-			whereClause += " AND " + TextUtil.checkWhereClause(customWhere);
-		}
-
-		MTable table = MTable.get(Env.getCtx(), MUser.Table_Name);
-		Query q =  new Query(Env.getCtx(), table, whereClause, null);
-		      q.setParameters(new Object[]{C_BPartner_ID});
-
-	    return q.list();
-	} //getContacts
 
 	public static String getCountry_trl(MCountry country){
 		return getCountry_trl(country,AD_LANGUAGE);
@@ -301,64 +241,13 @@ public abstract class AdempiereLBR{
 
 		return countryName != null ? countryName : country.getName();
 	} //getCountry_trl
-	
-	private static void loadUOM(){
-		
-		if (_UOM.isEmpty()){
-		
-			String sql = "SELECT C_UOM_ID, Name, UOMSymbol FROM C_Uom_Trl " +
-			             "WHERE AD_Language = ?";
-			
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try{
-				pstmt = DB.prepareStatement (sql, null);
-				pstmt.setString(1, AD_LANGUAGE);
-				rs = pstmt.executeQuery ();
-				while (rs.next ()){
-					_UOM.put(rs.getInt("C_UOM_ID"), 
-							new String[]{rs.getString("Name"),rs.getString("UOMSymbol")});
-				}
-			}
-			catch (Exception e){
-				log.log(Level.SEVERE, "", e);
-			}
-			finally{
-			  DB.close(rs, pstmt);
-			}
-		}
-	}
-	
-	
-	public static String getUOMDesc_trl(MUOM uom){
-		return getUOMDesc_trl(uom,AD_LANGUAGE);
-	}
-	
-	public static String getUOMDesc_trl(MUOM uom, String AD_Language){
 
-		loadUOM();
-		if (_UOM.containsKey(uom.get_ID()) && AD_Language.equals(AD_LANGUAGE))
-			return _UOM.get(uom.get_ID())[0];
-		
-		String sql = "SELECT Name FROM C_Uom_Trl " +
-					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
-
-		String UOMName = DB.getSQLValueString(null, sql,
-				new Object[]{uom.get_ID(),AD_Language});
-
-		return UOMName != null ? UOMName : uom.getName();
-	} //getUOMDesc_trl
-	
 	public static String getUOM_trl(MUOM uom){
 		return getUOM_trl(uom,AD_LANGUAGE);
 	}
 
 	public static String getUOM_trl(MUOM uom, String AD_Language){
 
-		loadUOM();
-		if (_UOM.containsKey(uom.get_ID()) && AD_Language.equals(AD_LANGUAGE))
-			return _UOM.get(uom.get_ID())[1];
-		
 		String sql = "SELECT UomSymbol FROM C_Uom_Trl " +
 					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
 
@@ -368,11 +257,30 @@ public abstract class AdempiereLBR{
 		return UOMSymbol != null ? UOMSymbol : uom.getUOMSymbol();
 	} //getUOM_trl
 	
+	
+	public static String getUOMName_trl(MUOM uom){
+		return getUOMName_trl(uom,AD_LANGUAGE);
+	}
+
+	public static String getUOMName_trl(MUOM uom, String AD_Language){
+
+		String sql = "SELECT Name FROM C_Uom_Trl " +
+					 "WHERE C_UOM_ID = ? AND AD_Language = ?";
+
+		String UOMSymbol = DB.getSQLValueString(null, sql,
+				new Object[]{uom.get_ID(),AD_Language});
+
+		return UOMSymbol != null ? UOMSymbol : uom.getUOMSymbol();
+	} //getUOM_trl
+	
+	
+	
 	public static int getPreviousPeriod_ID (Properties ctx, int C_Period_ID){
 		MPeriod period = MPeriod.get(ctx, C_Period_ID);
 		return C_Period_ID = MPeriod.getC_Period_ID(ctx, AdempiereLBR.addDays(period.getStartDate(), -1),0);
 	} //getPreviousPeriod_ID
 
+	@Deprecated
 	public static Integer getlbr_Ref_C_InvoiceLine_ID(Integer C_OrderLine_ID, String trx){
 
 		String sql = "SELECT lbr_Ref_C_InvoiceLine_ID FROM C_OrderLine " +
@@ -453,6 +361,7 @@ public abstract class AdempiereLBR{
 		return false;
 	} //isRegionBR
 
+	@Deprecated
 	public static MOrderLine getLastPurchase(Properties ctx, int M_Product_ID, String trx){
 		return getLastPurchase(ctx,0,0,M_Product_ID,trx);
 	}
@@ -465,6 +374,7 @@ public abstract class AdempiereLBR{
 	 * @param trx
 	 * @return last MOrderLine
 	 */
+	@Deprecated
 	public static MOrderLine getLastPurchase(Properties ctx, int C_Order_ID, int C_BPartner_ID, int M_Product_ID, String trx){
 
 		Integer C_OrderLine_ID = null;
@@ -523,13 +433,6 @@ public abstract class AdempiereLBR{
 		return tempo;
 	} //executionTime
 
-	public static String getOsName(){
-
-		String osname = System.getProperty("os.name");
-
-		return osname.toLowerCase();
-	}
-
 	public static String getFileSeparator(){
 
 		String FileSeparator = System.getProperty("file.separator");
@@ -537,6 +440,7 @@ public abstract class AdempiereLBR{
 		return FileSeparator;
 	}
 
+	@Deprecated
 	public static String getLineSeparator(){
 
 		String LineSeparator = System.getProperty("line.separator");
@@ -554,6 +458,7 @@ public abstract class AdempiereLBR{
 		return Path;
 	}
 
+	@Deprecated
 	public static void setPath(){
 
 		String tmpDir = System.getProperty("java.io.tmpdir");
@@ -585,6 +490,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addDays
 
+	@Deprecated
 	public static Timestamp addWeeks (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -602,6 +508,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addWeeks
 
+	@Deprecated
 	public static Timestamp addMonths (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -620,6 +527,7 @@ public abstract class AdempiereLBR{
 		return new Timestamp (cal.getTimeInMillis());
 	}	//	addMonths
 
+	@Deprecated
 	public static Timestamp addYears (Timestamp day, int offset)
 	{
 		if (day == null)
@@ -644,6 +552,7 @@ public abstract class AdempiereLBR{
 	 * @param dateTo
 	 * @return Timestamp[]
 	 */
+	@Deprecated
 	public static Timestamp[] getMonths(Timestamp dateFrom, Timestamp dateTo){
 		
 		if (dateFrom.after(dateTo))
@@ -670,65 +579,81 @@ public abstract class AdempiereLBR{
 		return retValue;
 	}
 	
-	public static int getCountMonths(Timestamp dateFrom, Timestamp dateTo){
-		Timestamp[] months = getMonths(dateFrom,dateTo);
-		if (months != null){
-			return months.length + 1;
+	/**
+	 * firstDayMonth
+	 * @param date
+	 * @return Timestamp - Primeiro dia do mês
+	 */
+	@Deprecated
+	public static Timestamp firstDayMonth(Timestamp date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+
+		return new Timestamp(cal.getTimeInMillis());
+	}
+	
+	/**
+	 * firstDayMonth
+	 * @param Ano Ex. 2010
+	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
+	 * @return Timestamp - Primeiro dia do mês
+	 */
+	@Deprecated
+	public static Timestamp firstDayMonth(Integer Ano, Integer Mes){
+		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
+		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+
+		return new Timestamp(cal.getTimeInMillis());
+	}
+
+	/**
+	 * lastDayMonth
+	 * @param date
+	 * @return Timestamp - Último dia do mês
+	 */
+	@Deprecated
+	public static Timestamp lastDayMonth(Timestamp date){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+		return new Timestamp(cal.getTimeInMillis());
+	}
+	
+	/**
+	 * lastDayMonth
+	 * @param Ano Ex. 2010
+	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
+	 * @return Timestamp - Último dia do mês
+	 */
+	@Deprecated
+	public static Timestamp lastDayMonth(Integer Ano, Integer Mes){
+		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
+		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+		return new Timestamp(cal.getTimeInMillis());
+	}
+	
+	/**
+	 * Verifica se uma String contém exclusivamente dígitos
+	 * 
+	 * @param documentNo
+	 * @return
+	 */
+	@Deprecated
+	public static boolean isNumber(String documentNo)
+	{
+		if (documentNo == null)
+			return false;
+		else
+		{
+			for (int i=0; i<documentNo.length(); i++)
+			{
+				if (!Character.isDigit(documentNo.charAt(i)))
+					return false;;
+			}
 		}
-		
-		return 0;
-	}
-	
-	/**
-	 * firstDayMonth
-	 * @param date
-	 * @return Timestamp - Primeiro dia do mês
-	 */
-	public static Timestamp getFirstDayOfMonth(Timestamp date){
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-
-		return new Timestamp(cal.getTimeInMillis());
-	}
-	
-	/**
-	 * firstDayMonth
-	 * @param Ano Ex. 2010
-	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
-	 * @return Timestamp - Primeiro dia do mês
-	 */
-	public static Timestamp getFirstDayOfMonth(Integer Ano, Integer Mes){
-		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
-		cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-
-		return new Timestamp(cal.getTimeInMillis());
-	}
-
-	/**
-	 * lastDayMonth
-	 * @param date
-	 * @return Timestamp - Último dia do mês
-	 */
-	public static Timestamp getLastDayOfMonth(Timestamp date){
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-
-		return new Timestamp(cal.getTimeInMillis());
-	}
-	
-	/**
-	 * lastDayMonth
-	 * @param Ano Ex. 2010
-	 * @param Mes Ex. 1=Janeiro, 2=Fevereiro, 3=Março....
-	 * @return Timestamp - Último dia do mês
-	 */
-	public static Timestamp getLastDayOfMonth(Integer Ano, Integer Mes){
-		Calendar cal = new GregorianCalendar(Ano, Mes - 1, 1);
-		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-
-		return new Timestamp(cal.getTimeInMillis());
-	}
-
+		return true;
+	}	//	isNumber
 } //AdempiereLBR

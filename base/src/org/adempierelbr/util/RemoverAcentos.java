@@ -12,41 +12,92 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-public abstract class RemoverAcentos {
+/**
+ * 		Remover acento
+ * 
+ * 	@author Unkown
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li> Melhoria na chamada dos métodos
+ */
+public abstract class RemoverAcentos 
+{
 	static String acentuado = "çÇáéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙãõñäëïöüÿÄËÏÖÜÃÕÑâêîôûÂÊÎÔÛ¹²³ªº";
 	static String semAcento = "cCaeiouyAEIOUYaeiouAEIOUaonaeiouyAEIOUAONaeiouAEIOU123ao";
 	static char[] tabela;
-	static {
+	static 
+	{
 		tabela = new char[256];
-		for (int i = 0; i < tabela.length; ++i) {
+		for (int i = 0; i < tabela.length; ++i) 
+		{
 			tabela[i] = (char) i;
 		}
-		for (int i = 0; i < acentuado.length(); ++i) {
+		for (int i = 0; i < acentuado.length(); ++i) 
+		{
 			tabela[acentuado.charAt(i)] = semAcento.charAt(i);
 		}
-	}
+	}	//	static
 
-	public static StringBuffer remover(final StringBuffer s){
-		return new StringBuffer(RemoverAcentos.remover(s.toString()));
-	}
+	/**
+	 * 		Remove acentos de uma string
+	 * 
+	 * 	@param s
+	 * 	@return
+	 */
+	public static String remover (final String str)
+	{
+		return remover (str, true);
+	}	//	remover
+	
+	/**
+	 * 		Remove acentos de uma string
+	 * 
+	 * 	@param s
+	 * 	@return
+	 */
+	public static StringBuffer remover (final StringBuffer str, boolean special)
+	{
+		return new StringBuffer (RemoverAcentos.remover (str.toString(), special));
+	}	//	remover
 
-	public static String remover(final String s) {
+	/**
+	 * 		Remove acentos de uma string
+	 * 	@param str
+	 * 	@param retiraEspecial
+	 * 	@return
+	 */
+	public static String remover (final String str, boolean retiraEspecial) 
+	{
 		StringBuffer sb = new StringBuffer();
-		if (s == null)
+		if (str == null)
 			return "";
-		for (int i = 0; i < s.length(); ++i) {
-			char ch = s.charAt(i);
-			if (ch < 256) {
-				sb.append(removeSpecial(tabela[ch]));
-			} else {
-				sb.append(removeSpecial(ch));
+		
+		for (int i = 0; i < str.length(); ++i) 
+		{
+			char ch = str.charAt(i);
+			if (ch < 256) 
+			{
+				if (retiraEspecial)
+					sb.append(removeSpecial(tabela[ch]));
+				else				
+					sb.append(tabela[ch]);
+			}
+			else 
+			{
+				if (retiraEspecial)
+					sb.append(removeSpecial(ch));
+				else
+					sb.append(ch);
 			}
 		}
+		
+		if (!retiraEspecial)
+			return sb.toString().trim();
+		
 		String retorno = sb.toString();
-
+		//
 		retorno = retorno.replaceAll("½", "1/2").replaceAll("¼", "1/4").replaceAll("¾", "3/4");
 		retorno = retorno.replaceAll("\"", " ").replaceAll("[œ*ßƒµøπæΩØ]", " ");
-
+		//
 		return retorno.trim();
 	}
 	

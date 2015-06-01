@@ -1,0 +1,6 @@
+<adempiereTrl language="pt_BR" table="C_TaxCategory">
+  <row id="107" trl="Y">
+    <value column="Name" original="Standard">Padrão</value>
+    <value column="Description" original="" />
+  </row>
+</adempiereTrl>

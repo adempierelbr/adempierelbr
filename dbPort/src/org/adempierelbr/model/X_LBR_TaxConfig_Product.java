@@ -30,7 +30,7 @@ public class X_LBR_TaxConfig_Product extends PO implements I_LBR_TaxConfig_Produ
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxConfig_Product (Properties ctx, int LBR_TaxConfig_Product_ID, String trxName)
@@ -174,6 +174,30 @@ public class X_LBR_TaxConfig_Product extends PO implements I_LBR_TaxConfig_Produ
 		return ii.intValue();
 	}
 
+	public I_M_Product getM_Product() throws RuntimeException
+    {
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getM_Product_ID(), get_TrxName());	}
+
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		throw new IllegalArgumentException ("M_Product_ID is virtual column");	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** lbr_TaxStatus AD_Reference_ID=1000029 */
 	public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
 	/** 00 - Tributada integralmente = 00 */
@@ -214,29 +238,5 @@ public class X_LBR_TaxConfig_Product extends PO implements I_LBR_TaxConfig_Produ
 	public String getlbr_TaxStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
-	}
-
-	public I_M_Product getM_Product() throws RuntimeException
-    {
-		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
-			.getPO(getM_Product_ID(), get_TrxName());	}
-
-	/** Set Product.
-		@param M_Product_ID 
-		Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID)
-	{
-		throw new IllegalArgumentException ("M_Product_ID is virtual column");	}
-
-	/** Get Product.
-		@return Product, Service, Item
-	  */
-	public int getM_Product_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 }

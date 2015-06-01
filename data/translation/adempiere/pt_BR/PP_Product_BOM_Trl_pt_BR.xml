@@ -1,0 +1,37 @@
+<adempiereTrl language="pt_BR" table="PP_Product_BOM">
+  <row id="145" trl="Y">
+    <value column="Name" original="Patio Furniture Set">Conjunto de Mobília de Pátio</value>
+    <value column="Description" original="1 table, 4 Chairs and 1 Sun Screen">1 mesa, 4 cadeiras e 1 Protetor Solar</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="50000" trl="Y">
+    <value column="Name" original="Patio Chair">Cadeira de Pátio</value>
+    <value column="Description" original="Nice Chair for outdoors">Cadeira Agradável para Exterior</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="50001" trl="Y">
+    <value column="Name" original="Assembly Back Leg">Montagem de Perna Trazeira</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="50003" trl="Y">
+    <value column="Name" original="Assembly Front Leg">Montagem de Perna Dianteira</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+  <row id="50004" trl="Y">
+    <value column="Name" original="Fertilizer #50">Fertilizante #50</value>
+    <value column="Description" original="50 # Bag of Lawn Fertilizer">Saco de Fertilizante Agrícola 50 #</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="50005" trl="Y">
+    <value column="Name" original="Fertilizer #70">Fertilizante #70</value>
+    <value column="Description" original="70 # Bag of Lawn Fertilizer">Saco de Fertilizante Agrícola 70 #</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="50006" trl="Y">
+    <value column="Name" original="Lawn Fertilizer">Fertilizante Agrícola</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+</adempiereTrl>

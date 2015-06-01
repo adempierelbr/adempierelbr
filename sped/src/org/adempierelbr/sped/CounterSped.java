@@ -2,7 +2,6 @@ package org.adempierelbr.sped;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -10,12 +9,17 @@ import java.util.logging.Level;
 import org.compiere.util.CLogger;
 
 /**
- *	Counter Sped
+ *		Contador SPED
  *
- * @author Mario Grigioni
- * @contributor Ricardo Santana, ralexsander
- * @version $Id: CounterSped.java, 16/11/2010, 14:36, mgrigioni
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ * 		<li> Classe original de Janeiro de 2010 CounterSPED
+ * 
+ * 	@author Mario Grigioni
+ * 		<li> Alterou a classe, mudando também o nome para CounterSped em Novembro de 2010
+ * 
+ * 	@version $Id: SPEDCounter.java, v1.0 2010/01/31 3:33:23 PM, ralexsander Exp $
  */
+@Deprecated
 public class CounterSped
 {
 	/**	Logger			*/
@@ -32,7 +36,7 @@ public class CounterSped
 	/**
 	 * 	Adiciona o registro no contador
 	 * 
-	 * @param regName
+	 * 	@param regName
 	 */
 	public static void register (String regName)
 	{
@@ -49,7 +53,7 @@ public class CounterSped
 	/**
 	 * 	Remove o registro no contador
 	 * 
-	 * @param regName
+	 * 	@param regName
 	 */
 	public static void unregister (String regName)
 	{
@@ -142,66 +146,3 @@ public class CounterSped
 	} // getTotalCounter
 	
 }	// CounterSped
-
-class SPEDComparator implements Comparator<Object>
-{
-	/**
-	 * 	Comparator para ordenar os Arrays
-	 */
-	public int compare (Object o1, Object o2)
-	{
-		String s1 = null, s2 = null;
-		//
-		if (o1 instanceof String)
-			s1 = (String)o1;
-		else if (o1 instanceof RegSped)
-			s1 = ((RegSped) o1).getReg();
-		
-		if (o2 instanceof String)
-			s2 = (String)o2;
-		else if (o2 instanceof RegSped)
-			s2 = ((RegSped) o2).getReg();
-
-		if (s1 == null || s2 == null)
-			return 0;
-		if (s1.isEmpty() || s2.isEmpty())
-			return 0;
-		//		
-		switch(s1.charAt(0)){
-			case '1' : s1 = "ZZ"  + s1; break;
-			case '9' : s1 = "ZZZ" + s1; break;
-		}
-		
-		switch(s2.charAt(0)){
-			case '1' : s2 = "ZZ"  + s2; break;
-			case '9' : s2 = "ZZZ" + s2; break;
-		}
-		
-		//
-		return s1.compareTo(s2);
-	}	//	compare
-
-	/**
-	 * 	Get new Comparator
-	 *
-	 * 	@return SPEDComparator
-	 */
-	static SPEDComparator get ()
-	{
-		return new SPEDComparator ();
-	}	//	get	
-	
-	public static void main (String[] args){
-		
-		Object[] keys = new Object[]{"0001","A100","9990","1001","C100","A150","M001","F102","D110","D100"};
-		Arrays.sort(keys, SPEDComparator.get());
-		
-		for (Object key : keys)
-		{
-			if (key instanceof String)
-				System.out.println(key);
-		}
-		
-	}
-	
-}

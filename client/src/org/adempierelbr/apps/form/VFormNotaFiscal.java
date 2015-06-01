@@ -68,9 +68,7 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
-/**
- * FormNotaFiscal
- * 
+/** 
  * Form to Print Nota Fiscal
  * 
  * FR [2343379] - Definição de Impressão de Documento NF na Org

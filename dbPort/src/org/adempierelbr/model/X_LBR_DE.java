@@ -31,7 +31,7 @@ public class X_LBR_DE extends PO implements I_LBR_DE, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110214L;
+	private static final long serialVersionUID = 20121030L;
 
     /** Standard Constructor */
     public X_LBR_DE (Properties ctx, int LBR_DE_ID, String trxName)
@@ -154,7 +154,7 @@ public class X_LBR_DE extends PO implements I_LBR_DE, I_Persistent
 
 	/** Set No. Conhecimento de Embarque.
 		@param lbr_CHCEmb 
-		Número do Conhecimento de Embarque
+		NÃºmero do Conhecimento de Embarque
 	  */
 	public void setlbr_CHCEmb (String lbr_CHCEmb)
 	{
@@ -162,7 +162,7 @@ public class X_LBR_DE extends PO implements I_LBR_DE, I_Persistent
 	}
 
 	/** Get No. Conhecimento de Embarque.
-		@return Número do Conhecimento de Embarque
+		@return NÃºmero do Conhecimento de Embarque
 	  */
 	public String getlbr_CHCEmb () 
 	{

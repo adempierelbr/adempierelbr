@@ -25,10 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -78,7 +75,7 @@ public class GridField
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6007475135643071025L;
+	private static final long serialVersionUID = 1124123543602986028L;
 
 	/**
 	 *  Field Constructor.
@@ -805,18 +802,6 @@ public class GridField
 		}
 		return true;
 	}	//	isDisplayed
-	
-	// Should the column be hidden by default in list view
-	public boolean isHideInListView() {
-		return(m_vo.HideInListView);
-	}
-	
-	/**
-	 * Preferred width in list view
-	 */
-	public int getPreferredWidthInListView() {
-		return(m_vo.PreferredWidth);
-	}
 
 	/**
 	 * 	Get Variable Value (Evaluatee)
@@ -1350,16 +1335,8 @@ public class GridField
 			{
 				Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.ColumnName, (Timestamp)m_value);
 			}
-			// BUG:3075946 KTU - Fix Thai Date
-			String stringValue = null;
-			if (m_value != null && !m_value.toString().equals("")) {
-				Calendar c1 = Calendar.getInstance();
-				c1.setTime((Date) m_value);
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				stringValue = sdf.format(c1.getTime());
-			}
-			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, stringValue);
-				// KTU - Fix Thai Date		
+			Env.setContext(m_vo.ctx, m_vo.WindowNo, m_vo.TabNo, m_vo.ColumnName, 
+					m_value==null ? null : m_value.toString().substring(0, m_value.toString().indexOf(".")));
 		}
 		else
 		{
@@ -1859,13 +1836,6 @@ public class GridField
 	{
 		if (m_gridTab == null)
 			return false;
-		
-		// this functionality must preserve the value of the parent tab JUST when is an included tab
-		// not included tabs can have Processed fields and is valid to add records in details on these cases
-		// like the Payment Schedule tab on Invoice (Customer) window
-		if (!m_gridTab.isIncluded())
-			return false;
-
 		GridTab parentTab = m_gridTab.getParentTab();
 		if (parentTab == null)
 			return false;

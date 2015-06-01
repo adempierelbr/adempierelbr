@@ -120,32 +120,6 @@ public interface I_LBR_NFTax
 
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException;
 
-    /** Column name lbr_TaxAmt */
-    public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
-
-	/** Set Tax Amount.
-	  * Defines the Tax Amount
-	  */
-	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt);
-
-	/** Get Tax Amount.
-	  * Defines the Tax Amount
-	  */
-	public BigDecimal getlbr_TaxAmt();
-
-    /** Column name lbr_TaxBaseAmt */
-    public static final String COLUMNNAME_lbr_TaxBaseAmt = "lbr_TaxBaseAmt";
-
-	/** Set Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt);
-
-	/** Get Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public BigDecimal getlbr_TaxBaseAmt();
-
     /** Column name LBR_TaxGroup_ID */
     public static final String COLUMNNAME_LBR_TaxGroup_ID = "LBR_TaxGroup_ID";
 
@@ -176,4 +150,30 @@ public interface I_LBR_NFTax
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_TaxAmt */
+    public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
+
+	/** Set Tax Amount.
+	  * Defines the Tax Amount
+	  */
+	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt);
+
+	/** Get Tax Amount.
+	  * Defines the Tax Amount
+	  */
+	public BigDecimal getlbr_TaxAmt();
+
+    /** Column name lbr_TaxBaseAmt */
+    public static final String COLUMNNAME_lbr_TaxBaseAmt = "lbr_TaxBaseAmt";
+
+	/** Set Tax Base Amount.
+	  * Defines the Tax Base Amount
+	  */
+	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt);
+
+	/** Get Tax Base Amount.
+	  * Defines the Tax Base Amount
+	  */
+	public BigDecimal getlbr_TaxBaseAmt();
 }

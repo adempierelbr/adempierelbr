@@ -99,7 +99,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 		//The user decides which warehouse the product will be returned to
 		MWarehouse warehouse = new MWarehouse(ctx,otherNF.getM_Warehouse_ID(),trx);
 
-		if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("mi") && !warehouse.get_ValueAsString("lbr_WarehouseType").equals("3RD"))
+		if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("mi") && !warehouse.get_ValueAsBoolean("lbr_IsThirdParty"))
 		{
 			returnMsg.append(org.compiere.util.Msg.translate(ctx, "@WarehouseNotThirdParty@"));
 			return false;

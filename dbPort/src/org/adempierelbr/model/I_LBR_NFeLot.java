@@ -63,6 +63,19 @@ public interface I_LBR_NFeLot
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name CreateFrom */
+    public static final String COLUMNNAME_CreateFrom = "CreateFrom";
+
+	/** Set Create lines from.
+	  * Process which will generate a new document lines based on an existing document
+	  */
+	public void setCreateFrom (String CreateFrom);
+
+	/** Get Create lines from.
+	  * Process which will generate a new document lines based on an existing document
+	  */
+	public String getCreateFrom();
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -78,19 +91,6 @@ public interface I_LBR_NFeLot
 	  * User who created this records
 	  */
 	public int getCreatedBy();
-
-    /** Column name CreateFrom */
-    public static final String COLUMNNAME_CreateFrom = "CreateFrom";
-
-	/** Set Create lines from.
-	  * Process which will generate a new document lines based on an existing document
-	  */
-	public void setCreateFrom (String CreateFrom);
-
-	/** Get Create lines from.
-	  * Process which will generate a new document lines based on an existing document
-	  */
-	public String getCreateFrom();
 
     /** Column name DateFinish */
     public static final String COLUMNNAME_DateFinish = "DateFinish";
@@ -131,6 +131,32 @@ public interface I_LBR_NFeLot
 	  */
 	public String getDescription();
 
+    /** Column name DocAction */
+    public static final String COLUMNNAME_DocAction = "DocAction";
+
+	/** Set Document Action.
+	  * The targeted status of the document
+	  */
+	public void setDocAction (String DocAction);
+
+	/** Get Document Action.
+	  * The targeted status of the document
+	  */
+	public String getDocAction();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
 
@@ -157,36 +183,18 @@ public interface I_LBR_NFeLot
 	  */
 	public boolean isActive();
 
-    /** Column name lbr_LotReceived */
-    public static final String COLUMNNAME_lbr_LotReceived = "lbr_LotReceived";
+    /** Column name LBR_NFeLotMethod */
+    public static final String COLUMNNAME_LBR_NFeLotMethod = "LBR_NFeLotMethod";
 
-	/** Set Lot Received	  */
-	public void setlbr_LotReceived (boolean lbr_LotReceived);
-
-	/** Get Lot Received	  */
-	public boolean islbr_LotReceived();
-
-    /** Column name lbr_LotSent */
-    public static final String COLUMNNAME_lbr_LotSent = "lbr_LotSent";
-
-	/** Set Lot Sent	  */
-	public void setlbr_LotSent (boolean lbr_LotSent);
-
-	/** Get Lot Sent	  */
-	public boolean islbr_LotSent();
-
-    /** Column name lbr_NFeAnswerStatus */
-    public static final String COLUMNNAME_lbr_NFeAnswerStatus = "lbr_NFeAnswerStatus";
-
-	/** Set NFe Answer Status.
-	  * Status of Answer NFe
+	/** Set Lot Method.
+	  * Method of transmission of NFe Lot
 	  */
-	public void setlbr_NFeAnswerStatus (String lbr_NFeAnswerStatus);
+	public void setLBR_NFeLotMethod (String LBR_NFeLotMethod);
 
-	/** Get NFe Answer Status.
-	  * Status of Answer NFe
+	/** Get Lot Method.
+	  * Method of transmission of NFe Lot
 	  */
-	public String getlbr_NFeAnswerStatus();
+	public String getLBR_NFeLotMethod();
 
     /** Column name LBR_NFeLot_ID */
     public static final String COLUMNNAME_LBR_NFeLot_ID = "LBR_NFeLot_ID";
@@ -196,37 +204,6 @@ public interface I_LBR_NFeLot
 
 	/** Get NFe Lot	  */
 	public int getLBR_NFeLot_ID();
-
-    /** Column name lbr_NFeRecID */
-    public static final String COLUMNNAME_lbr_NFeRecID = "lbr_NFeRecID";
-
-	/** Set Recebimento ID	  */
-	public void setlbr_NFeRecID (String lbr_NFeRecID);
-
-	/** Get Recebimento ID	  */
-	public String getlbr_NFeRecID();
-
-    /** Column name lbr_NFeRespID */
-    public static final String COLUMNNAME_lbr_NFeRespID = "lbr_NFeRespID";
-
-	/** Set Resposta ID	  */
-	public void setlbr_NFeRespID (String lbr_NFeRespID);
-
-	/** Get Resposta ID	  */
-	public String getlbr_NFeRespID();
-
-    /** Column name lbr_NFeStatus */
-    public static final String COLUMNNAME_lbr_NFeStatus = "lbr_NFeStatus";
-
-	/** Set NFe Status.
-	  * Status of NFe
-	  */
-	public void setlbr_NFeStatus (String lbr_NFeStatus);
-
-	/** Get NFe Status.
-	  * Status of NFe
-	  */
-	public String getlbr_NFeStatus();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -287,4 +264,66 @@ public interface I_LBR_NFeLot
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_LotReceived */
+    public static final String COLUMNNAME_lbr_LotReceived = "lbr_LotReceived";
+
+	/** Set Lot Received	  */
+	public void setlbr_LotReceived (boolean lbr_LotReceived);
+
+	/** Get Lot Received	  */
+	public boolean islbr_LotReceived();
+
+    /** Column name lbr_LotSent */
+    public static final String COLUMNNAME_lbr_LotSent = "lbr_LotSent";
+
+	/** Set Lot Sent	  */
+	public void setlbr_LotSent (boolean lbr_LotSent);
+
+	/** Get Lot Sent	  */
+	public boolean islbr_LotSent();
+
+    /** Column name lbr_NFeAnswerStatus */
+    public static final String COLUMNNAME_lbr_NFeAnswerStatus = "lbr_NFeAnswerStatus";
+
+	/** Set NFe Answer Status.
+	  * Status of Answer NFe
+	  */
+	public void setlbr_NFeAnswerStatus (String lbr_NFeAnswerStatus);
+
+	/** Get NFe Answer Status.
+	  * Status of Answer NFe
+	  */
+	public String getlbr_NFeAnswerStatus();
+
+    /** Column name lbr_NFeRecID */
+    public static final String COLUMNNAME_lbr_NFeRecID = "lbr_NFeRecID";
+
+	/** Set Recebimento ID	  */
+	public void setlbr_NFeRecID (String lbr_NFeRecID);
+
+	/** Get Recebimento ID	  */
+	public String getlbr_NFeRecID();
+
+    /** Column name lbr_NFeRespID */
+    public static final String COLUMNNAME_lbr_NFeRespID = "lbr_NFeRespID";
+
+	/** Set Resposta ID	  */
+	public void setlbr_NFeRespID (String lbr_NFeRespID);
+
+	/** Get Resposta ID	  */
+	public String getlbr_NFeRespID();
+
+    /** Column name lbr_NFeStatus */
+    public static final String COLUMNNAME_lbr_NFeStatus = "lbr_NFeStatus";
+
+	/** Set NFe Status.
+	  * Status of NFe
+	  */
+	public void setlbr_NFeStatus (String lbr_NFeStatus);
+
+	/** Get NFe Status.
+	  * Status of NFe
+	  */
+	public String getlbr_NFeStatus();
 }

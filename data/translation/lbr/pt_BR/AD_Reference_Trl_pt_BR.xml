@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Reference">
+  <row id="10" trl="Y">
+    <value column="Name" original="String">Texto (String)</value>
+    <value column="Description" original="Character String">Texto de caracteres alfa-numéricos</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="14" trl="Y">
+    <value column="Name" original="Text">Texto (Text)</value>
+    <value column="Description" original="Character String up to 2000 characters">Texto alfa-numérico com até 2000 caracteres</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="36" trl="Y">
+    <value column="Name" original="Text Long">Texto Longo (HTML)</value>
+    <value column="Description" original="Text (Long) - Text &gt; 2000 characters">Texto (Longo) - Texto &gt; 2000 caracteres</value>
+    <value column="Help" original="" />
+  </row>
+<row id="1000000" trl="Y">
+<value column="Name" original="BPTypeBR">Tipo de Pessoa</value>
+<value column="Description" original="">Usado para Idenficar se o Parceiro é Pessoa Física ou Pessoa Jurídica</value>
+<value column="Help" original=""/>
+</row>
+<row id="1000001" trl="Y">
+<value column="Name" original="Brazilian Banks">Bancos Brasileiros</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000002" trl="Y">
+<value column="Name" original="LBR_DocPrint">LBR_DocPrint</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000003" trl="Y">
+<value column="Name" original="lbr_FieldAlignment">LBR_FieldAlignment</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000004" trl="Y">
+<value column="Name" original="lbr_PrintFormat">LBR_PrintFormat</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000006" trl="Y">
+<value column="Name" original="lbr_Taxes">lbr_Impostos</value>
+<value column="Description" original="LBR DisplayType - lbr_Taxes">LBR Tipo de Exibição - lbr_Impostos</value>
+<value column="Help" original=""/>
+</row>
+<row id="1000007" trl="Y">
+<value column="Name" original="lbr_OccurType">LBR_OccurType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000008" trl="Y">
+<value column="Name" original="LBR_Boleto">LBR_Boleto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000009" trl="Y">
+<value column="Name" original="C_BankAccount (Bill Print)">C_BankAccount (Impressão de Boleto)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000012" trl="Y">
+<value column="Name" original="lbr_DestionationType">LBR_DestionationType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000013" trl="Y">
+<value column="Name" original="LBR_ProductCategory">LBR_ProductCategory</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000015" trl="Y">
+<value column="Name" original="LBR_BPartnerCategory">LBR_BPartnerCategory</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000016" trl="Y">
+<value column="Name" original="LBR_CFOP">LBR_CFOP</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000017" trl="Y">
+<value column="Name" original="LBR_NCM">LBR_NCM</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000018" trl="Y">
+<value column="Name" original="LBR_FiscalGroup_Product">LBR_FiscalGroup_Product</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000019" trl="Y">
+<value column="Name" original="LBR_FiscalGroup_BPartner">LBR_FiscalGroup_BPartner</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000020" trl="Y">
+<value column="Name" original="lbr_ExceptionType">LBR_ExceptionType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000022" trl="Y">
+<value column="Name" original="lbr_TaxType">LBR_TaxType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000023" trl="Y">
+<value column="Name" original="LBR_TaxName">LBR_TaxName</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000024" trl="Y">
+<value column="Name" original="lbr_TransactionType (Sales/Purchase)">LBR_TransactionType (Sales/Purchase)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000025" trl="Y">
+<value column="Name" original="LBR_MatrixPrinter">LBR_MatrixPrinter</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000026" trl="Y">
+<value column="Name" original="LBR_NotaFiscal">LBR_NotaFiscal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000027" trl="Y">
+<value column="Name" original="lbr_Yes_No_Both">Sim-Não-Ambos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000028" trl="Y">
+<value column="Name" original="lbr_WithholdFrequency">LBR_WithholdFrequency</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000029" trl="Y">
+<value column="Name" original="lbr_TaxStatus">LBR_TaxStatus</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000030" trl="Y">
+<value column="Name" original="LBR_LegalMessage">LBR_LegalMessage</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000031" trl="Y">
+<value column="Name" original="lbr_ProductSource">LBR_ProductSource</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000032" trl="Y">
+<value column="Name" original="lbr_TaxGroup">LBR_TaxGroup</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000033" trl="Y">
+<value column="Name" original="LBR_NotaFiscalLine">LBR_NotaFiscalLine</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000034" trl="Y">
+<value column="Name" original="C_City">C_City</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000035" trl="Y">
+<value column="Name" original="lbr_PaymentRule">Forma de Pagamento</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000036" trl="Y">
+<value column="Name" original="C_BankAccount ">C_BankAccount</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000038" trl="Y">
+<value column="Name" original="LBR_OtherNFDocType">LBR_OtherNFDocType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000039" trl="Y">
+<value column="Name" original="LBR_WHLocOtherNF">LBR_WHLocOtherNF</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000040" trl="Y">
+<value column="Name" original="LBR_OtherNF_RequestType">LBR_OtherNF_RequestType</value>
+<value column="Description" original="Other NF Request Type">Other NF Request Type</value>
+<value column="Help" original="Other NF Request Type">Other NF Request Type</value>
+</row>
+<row id="1000042" trl="Y">
+<value column="Name" original="LBR_C_InvoiceLine">LBR_C_InvoiceLine</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000043" trl="Y">
+<value column="Name" original="LBR_DocBaseType">LBR_DocBaseType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000044" trl="Y">
+<value column="Name" original="LBR_NFType">LBR_NFType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100000" trl="Y">
+<value column="Name" original="LBR_DigitalCertificate - lbr_CertType">LBR_DigitalCertificate - lbr_CertType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100001" trl="Y">
+<value column="Name" original="C_DocType - lbr_NFeEnv">C_DocType - lbr_NFeEnv</value>
+<value column="Description" original="NFe Environment">NFe Environment</value>
+<value column="Help" original=""/>
+</row>
+<row id="1100002" trl="Y">
+<value column="Name" original="C_DocType - lbr_DANFEFormat">C_DocType - lbr_DANFEFormat</value>
+<value column="Description" original="DANFE Format">DANFE Format</value>
+<value column="Help" original=""/>
+</row>
+<row id="1100003" trl="Y">
+<value column="Name" original="LBR_DigitalCertificate">LBR_DigitalCertificate</value>
+<value column="Description" original="Digital Certificate">Digital Certificate</value>
+<value column="Help" original=""/>
+</row>
+<row id="1100004" trl="Y">
+<value column="Name" original="LBR_NFeStatus">LBR_NFeStatus</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100005" trl="Y">
+<value column="Name" original="LBR_NFDI - NF">LBR_NFDI - NF</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100012" trl="Y">
+<value column="Name" original="lbr_FinNFe">lbr_FinNFe</value>
+<value column="Description" original="Finalidade NFe">Finalidade NFe</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120000" trl="Y">
+<value column="Name" original="lbr_TaxStatusIPI">LBR_TaxStatusIPI</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120009" trl="Y">
+<value column="Name" original="lbr_NFModel (Modelos de Documentos Fiscais)">LBR_NFModel (Modelos de Documentos Fiscais)</value>
+<value column="Description" original="Tabela com códigos de Documentos Fiscais">Tabela com códigos de Documentos Fiscais</value>
+<value column="Help" original="http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal">http://www.sped.fazenda.gov.br/spedtabelas/AppConsulta/publico/aspx/ConsultaTabelasExternas.aspx?CodSistema=SpedFiscal</value>
+</row>
+<row id="1120013" trl="Y">
+<value column="Name" original="lbr_DIType">lbr_DIType</value>
+<value column="Description" original="Tipo do Documento de importação">Tipo do Documento de importação</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120014" trl="Y">
+<value column="Name" original="lbr_DEType">lbr_DEType</value>
+<value column="Description" original="Tipo do Documento de exportação">Tipo do Documento de exportação</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120015" trl="Y">
+<value column="Name" original="lbr_CHCType">lbr_CHCType</value>
+<value column="Description" original="Tipo de Conhecimento de Transporte">Tipo de Conhecimento de Transporte</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120016" trl="Y">
+<value column="Name" original="LBR_DE">LBR_DE</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120024" trl="Y">
+<value column="Name" original="lbr_AvgCostType">LBR_AvgCostType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120025" trl="Y">
+<value column="Name" original="lbr_AvgCostType_MAN">LBR_AvgCostType_MAN</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120026" trl="Y">
+<value column="Name" original="lbr_AvgCostType_PUR">LBR_AvgCostType_PUR</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120027" trl="Y">
+<value column="Name" original="lbr_WarehouseType">LBR_WarehouseType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120031" trl="Y">
+<value column="Name" original="LBR_Formula">LBR_Formula</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120034" trl="Y">
+<value column="Name" original="LBR_NotaFiscal - lbr_RPSStatus">LBR_NotaFiscal - LBR_RPSStatus</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120035" trl="Y">
+<value column="Name" original="lbr_NFeTpEmi">LBR_NFeTpEmi</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120147" trl="Y">
+<value column="Name" original="LBR_FreightCostRule">LBR_FreightCostRule</value>
+<value column="Description" original="Regra de custo do frete">Regra de custo do frete</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120170" trl="Y">
+<value column="Name" original="C_Order - LBR_INCOTERMS">C_Order - LBR_INCOTERMS</value>
+<value column="Description" original="International Commercial Terms">International Commercial Terms</value>
+<value column="Help" original="International Commercial Terms">International Commercial Terms</value>
+</row>
+</adempiereTrl>

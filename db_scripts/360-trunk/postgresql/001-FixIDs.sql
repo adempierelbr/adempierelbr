@@ -1,0 +1,11 @@
+\set AUTOCOMMIT OFF
+
+UPDATE AD_Field SET AD_Column_ID=1110404 WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Column_ID=1120404 AND ColumnName='lbr_DtArq')
+;
+UPDATE AD_Column_Trl SET AD_Column_ID=1110404 WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Column_ID=1120404 AND ColumnName='lbr_DtArq')
+;
+UPDATE AD_Column SET AD_Column_ID=1110404 WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Column_ID=1120404 AND ColumnName='lbr_DtArq')
+;
+COMMIT;
+
+\set AUTOCOMMIT ON

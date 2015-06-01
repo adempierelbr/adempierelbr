@@ -1,3 +1,8 @@
+/*** 
+ * 
+ * Este script esta PARCIALMENTE desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ * /
 -- CORRECAO DO SCRIPT 028
 -- ELIMINADA A COLUNA C_REGION_ID, POIS FOI CRIADO UM PROCESSO DIFERENTE PARA PEGAR OS TRUSTSTORES
 DELETE FROM AD_Field_Trl WHERE AD_Field_ID IN (SELECT AD_Field_ID FROM AD_Field WHERE AD_Column_ID = 1120111);
@@ -6,6 +11,8 @@ DELETE FROM AD_Column_Trl WHERE AD_Column_ID = 1120111;
 DELETE FROM AD_Column WHERE AD_Column_ID = 1120111;
 
 ALTER TABLE LBR_DigitalCertificate DROP COLUMN C_Region_ID;
+
+/ *** END ***/
 
 -- 28/01/2011 9h55min24s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
@@ -136,6 +143,5 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000023, SeqNo=13, Updated=CURRENT_TIMESTAMP 
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 UPDATE AD_TreeNodeMM SET Parent_ID=1000023, SeqNo=14, Updated=CURRENT_TIMESTAMP WHERE AD_Tree_ID=10 AND Node_ID=1000038
 ;
-
 
 UPDATE AD_SysConfig SET Value='360-trunk/029-FR_3165874.sql' WHERE AD_SysConfig_ID=1100006;

@@ -1,3 +1,8 @@
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *
 -- 09/02/2011 16h7min58s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Table (AD_Client_ID,AD_Org_ID,AD_Table_ID,AccessLevel,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsPersonalLock,IsSecurityEnabled,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES (0,0,1120012,'3','N',TO_DATE('2011-02-09 16:07:47','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','N','Y','Y','N','Y','N','N','N','N',0,'Apuração do IPI','L','LBR_ApuracaoIPI',TO_DATE('2011-02-09 16:07:47','YYYY-MM-DD HH24:MI:SS'),100)
@@ -1122,5 +1127,7 @@ UPDATE AD_Field SET IsSameLine='Y',Updated=TO_DATE('2011-02-09 16:49:09','YYYY-M
 ;
 
 UPDATE AD_SysConfig SET Value='360-trunk/036-FR_3176413.sql' WHERE AD_SysConfig_ID=1100006;
+
+/*** END ***/
 
 exit

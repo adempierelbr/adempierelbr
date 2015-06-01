@@ -1,0 +1,241 @@
+<adempiereTrl language="pt_BR" table="AD_Form">
+  <row id="100" trl="Y">
+    <value column="Name" original="Generate Invoices (manual)">Gerar Faturas / Notas Fiscais  (Manual)</value>
+    <value column="Description" original="Select and generate invoices">Selecionar e Gerar Notas Fiscais</value>
+    <value column="Help" original="Generate Invoices from Orders.  
+Select the orders to generate the invoice for.">Gerar faturas a partir dos Pedidos.  
+Selecione os pedidos para gerar as faturas.</value>
+  </row>
+  <row id="101" trl="Y">
+    <value column="Name" original="Import File Loader">Carregador de Arquivo de Importação</value>
+    <value column="Description" original="Load flat Files into import tables">Carregar arquivos planos nas tabelas de importação</value>
+    <value column="Help" original="The Import File Loader parses the content of a flat file and loads it into import tables. Comments start with a &apos;[&apos; and end with a &apos;]&apos; and are ignored; example: [Some Heading].">O Carregador de Arquivo de Importação analisa o conteúdo de um arquivo plano e o carrega nas tabelas de importação. Comentários começam com um '[' e terminam com um ']' e são ignorados; exemplo: [Algum Título].</value>
+  </row>
+  <row id="102" trl="Y">
+    <value column="Name" original="Initial Client Setup">Configuração Inicial da Empresa</value>
+    <value column="Description" original="Initial new Client/Tenant Setup">Configuração Inicial da Empresa/Locador</value>
+    <value column="Help" original="Set up a new Client/Tenant of the system">Configure uma nova Empresa/Locatário do sistema</value>
+  </row>
+  <row id="103" trl="Y">
+    <value column="Name" original="Material Transactions">Transações de Materiais</value>
+    <value column="Description" original="Material Transactions">Transações de Materiais</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="104" trl="Y">
+    <value column="Name" original="Payment Allocation">Alocação de Pagamentos</value>
+    <value column="Description" original="Allocate invoices and payments">Alocar faturas e pagamentos</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="105" trl="Y">
+    <value column="Name" original="Generate Charges">Gerar Despesas</value>
+    <value column="Description" original="Generate Charges from natural accounts">Gerar Despesas a partir das Contas Naturais</value>
+    <value column="Help" original="Use the upper portion to create new charges using the general charge accounts.  Use the lower portion to create charges based on the natural account.">Use a parte superior para criar novos débitos usando as contas de despesas gerais .  Use a parte inferior para criar débitos baseado nas contas naturais.</value>
+  </row>
+  <row id="106" trl="Y">
+    <value column="Name" original="Payment Print/Export">Imprimir/Exportar Pagamentos</value>
+    <value column="Description" original="Print or export your payments">Imprimir ou exportar seus pagamentos</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="107" trl="Y">
+    <value column="Name" original="Payment Selection (manual)">Seleção de Pagamento (manual)</value>
+    <value column="Description" original="Manual Payment Selection">Seleção de Pagamento Manual</value>
+    <value column="Help" original="Select vendor invoices for payment. If you don&apos;t see an invoice, make sure that it is not included in a different (nprocessed) Payment Selection.">Selecione as Faturas de Fornecedor para pagamento. Se você não vir uma fatura, certifique-se que ela não esteja incluida em um Seleção de Pagamento diferente (nprocessed).</value>
+  </row>
+  <row id="108" trl="Y">
+    <value column="Name" original="Matching PO-Receipt-Invoice">Confrontando Pedido de Compra-Recibo-Fatura</value>
+    <value column="Description" original="Match Purchase Orders, Receipts, Vendor Invoices">Confrontar Pedidos de Compra, Recibos, Notas Fiscais de Fornecedores</value>
+    <value column="Help" original="Make sure that the Receipts and Invoices are processed. If you want to match partial shipment, make sure that &quot;Same Quantity&quot; is not selected.">Certifique-se que os Recibos e Faturas sejam processados. Se você deseja confrontar entregas parciais, Certifique-se que "Mesma Quantidade" não esteja selecionado.</value>
+  </row>
+  <row id="109" trl="Y">
+    <value column="Name" original="Translation Import/Export">Importação/Exportação de Traduções</value>
+    <value column="Description" original="Import or Export Language Translation">Importar ou Exportar Traduções de Idiomas</value>
+    <value column="Help" original="Export/Import Translation info to/from xml for translation in external tool. Please note that the Language MUST be an enabled and verified System Langage.">Exportar/Importar Informações de Tradução de/para arquivos xml para tradução em uma ferramenta externa. Note que o Idioma TEM que ser um Idioma de Sistema liberado e verificado.</value>
+  </row>
+  <row id="110" trl="Y">
+    <value column="Name" original="Generate Shipments (manual)">Gerar Remessas (manual)</value>
+    <value column="Description" original="Select and generate shipments">Selecionar e gerar remessas</value>
+    <value column="Help" original="Generate Shipments from Orders.  
+Select the orders to generate the shipments for.">Gerar expedição a partir dos Pedidos.  
+Selecione os pedidos para gerar as expedições.</value>
+  </row>
+  <row id="111" trl="Y">
+    <value column="Name" original="SQL Process">Processo SQL</value>
+    <value column="Description" original="Process SQL Statements">Processar Declarações SQL</value>
+    <value column="Help" original="Process SQL DDL Statements">Processar Declarações SQL DDL</value>
+  </row>
+  <row id="112" trl="Y">
+    <value column="Name" original="Merge Entities">Fundir Entidades</value>
+    <value column="Description" original="Merge From Entity to To Entity - Delete From">Fundir "de Entidade" para "para Entidade" - Apagar "de"</value>
+    <value column="Help" original="&lt;i&gt;Dangerous - Please are aware of what you are doing!&lt;/i&gt;
+All instances of the From entity (e.g. Customer A) are changed to the To entity (e.g. Customer B). 
+The From entity (e.g. Customer A) is deleted. 
+&lt;p&gt;&lt;b&gt;There is NO undo nor trace !  Please do a backup first&lt;/b&gt; Please be aware that you may be changing history records (e.g. invoices, etc.) ! &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Side effects:&lt;/b&gt; Merging Products are likely to distort product costs; Merging Business Partners may result in incorrect open item balance. Check with support on remedies.
+&lt;p&gt;&lt;b&gt;Restrictions:&lt;/b&gt; Accounting and Inventory conflicts are not resolved in this version.">&lt;i&gt;Perigo - Por favor, tenha certeza de que você sabe o que está fazendo!&lt;/i&gt;
+Todas as instâncias da entidade de origem (por exemplo, Cliente A) serão alteradas para a entidade destino (por exemplo, Cliente B). 
+A entidade de origem (por exemplo, Cliente A) será apagada.
+&lt;p&gt;&lt;b&gt;NÃO há modo de desfazer ou rastrear essa operação! Favor efetuar um backup primeiro&lt;/b&gt; Por favor, observe que registros de histórico serão modificados (por exemplo, faturas etc.) ! &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Side effects:&lt;/b&gt; Mesclagem de produtos podem distorcer custos de produtos; Mesclagem de parceiros de negócios podem resultar em erro no saldo de itens em aberto. Verificar soluções com o suporte.
+&lt;p&gt;&lt;b&gt;Restrições:&lt;/b&gt; Conflitos contábeis e de inventário não são resolvidos nesta versão.</value>
+  </row>
+  <row id="113" trl="Y">
+    <value column="Name" original="POS">PDV</value>
+    <value column="Description" original="Point Of Sales Terminal">Terminal de Ponto de Vendas</value>
+    <value column="Help" original="Enter Transactions via a POS Terminal.  Automatically, scans or credit card swipes are recongized.">Digitar Transações por meio de um Terminal de PDV.  Leituras de cartões de crédito são reconhecidas automaticamente.</value>
+  </row>
+  <row id="114" trl="Y">
+    <value column="Name" original="BOM Drop">Abrir LDM</value>
+    <value column="Description" original="Drop (expand) Bill of Materials">Abrir (expandir) Lista de Materiais</value>
+    <value column="Help" original="Drop the extended Bill of Materials into an Order, Invoice, etc.  The documents need to be in a Drafted stage.  Make sure that the items included in the BOM are on the price list of the Order, Invoice, etc. as otherwise the price will be zero!">Expandir a Lista de Materiais estendida em um Pedido, Fatura, etc.  Os documentos tem de estar em um estágio de rascunho.  Certifique-se que os itens incluídos na LDM estão na lista de preços do Pedido, Fatura, etc. já que de outro modo o preço será zero!</value>
+  </row>
+  <row id="115" trl="Y">
+    <value column="Name" original="Tree Maintenance">Manutenção de Árvore</value>
+    <value column="Description" original="Maintain Trees">Gerenciamento de Árvores</value>
+    <value column="Help" original="View and change trees. Maintain the entries in their specific Windows.">Visualiza e edita árvores. Gerenciamento de registros em suas janelas específicas.</value>
+  </row>
+  <row id="116" trl="Y">
+    <value column="Name" original="Workflow Editor">Editor de Fluxo de Trabalho</value>
+    <value column="Description" original="Edit Workflows">Edita Fluxos de Trabalho</value>
+    <value column="Help" original="Edit the graphical layout of workflows">Edita o layout gráfico dos fluxos de trabalho</value>
+  </row>
+  <row id="117" trl="Y">
+    <value column="Name" original="Workflow Activities">Atividades de Fluxo de Trabalho</value>
+    <value column="Description" original="My active workflow activities">Minhas atividades de fluxo de trabalho ativas</value>
+    <value column="Help" original="View active worflow activities">Visualização das atividades de fluxo de trabalho ativas</value>
+  </row>
+  <row id="118" trl="Y">
+    <value column="Name" original="Archive Viewer">Visualizador de Arquivos</value>
+    <value column="Description" original="View automatically archived Documents">Visualizar automaticamente documentos arquivados</value>
+    <value column="Help" original="Depending on the Client Automatic Archive Level documents and reports are saved and available for view. In the Report Viewer you can manually archive Documents or Reports.  You can only view archives, if you have access to the original document.">Dependendo do "Nível de Arquivamento Automático da Empresa" os documentos e relatórios são salvos e disponibilizados para visualização. No "Visualizador de Relatório" você pode arquivar manualmente documentos ou relatórios.  Você só pode visualizar arquivos, se você tiver acesso ao documento original.</value>
+  </row>
+  <row id="119" trl="Y">
+    <value column="Name" original="Performance Indicators">Indicadores de Desempenho</value>
+    <value column="Description" original="View Performance Indicators">Visualizar os Indicadores de Desempenho</value>
+    <value column="Help" original="View all Performance Indicators and Goals">Visualizar todos os Indicadores de Desempenho e Metas</value>
+  </row>
+  <row id="120" trl="Y">
+    <value column="Name" original="Product Attribute Grid">Grade de Atributo de Produto</value>
+    <value column="Description" original="Maintain Products with Attributes in a Table Grid">Gerenciamento de Produtos com Atributos em uma Grade de Tabela</value>
+    <value column="Help" original="Select one or two attributes if a Product Attribute and display/maintain products in a row or table grid.">Selecione um ou dois atributos de um Atributo de Produto e exiba/gerencie os produto em uma linha ou uma grade de tabela.</value>
+  </row>
+  <row id="53001" trl="Y">
+    <value column="Name" original="BOM &amp; Formula Info">Informações de LDM &amp; Fórmula</value>
+    <value column="Description" original="Shows in two different panels the parent-component relationship for the product entered in the Product field.">Mostra em dois painéis diferentes a relação dos componentes-pai para o produto entrado no campo Produto.</value>
+    <value column="Help" original="The BOM &amp; Formula Review option menu shows in two different panels the parent-component relationship for the product entered in the Product field.
+
+You need to introduce the parent product you want to see its components then click the OK button, next drag the left margin of the panel to the right and you will have the two panels.
+
+When you need to consult an implosion, click the implosion check box and enter the component you wish to consult and tick the Implosion check box.
+
+You need to introduce the parent product you want to see its components then click the OK button, next drag the left margin of the panel to the right and you will have the two panels.
+
+The left panel shows the BOM hierarchies in a tree form. The right panel shows the information connected with the BOM for every product in it">The BOM &amp; Formula Review option menu shows in two different panels the parent-component relationship for the product entered in the Product field.
+
+You need to introduce the parent product you want to see its components then click the OK button, next drag the left margin of the panel to the right and you will have the two panels.
+
+When you need to consult an implosion, click the implosion check box and enter the component you wish to consult and tick the Implosion check box.
+
+You need to introduce the parent product you want to see its components then click the OK button, next drag the left margin of the panel to the right and you will have the two panels.
+
+The left panel shows the BOM hierarchies in a tree form. The right panel shows the information connected with the BOM for every product in it</value>
+  </row>
+  <row id="53002" trl="Y">
+    <value column="Name" original="Product Configuration BOM">Configuração de LDM de Produto</value>
+    <value column="Description" original="This form let create a product configure with multy level using options and variants">Este formulário permite criar uma configurar o produto com multi níveis usando opções e variantes</value>
+    <value column="Help" original="A configurable Bill of Material (CBOM) is used by industries that have multiple options and highly configurable products.
+
+The CBOM is used to dynamically create &quot;end-items&quot; that a company sells. The benefit of using CBOM structure is it reduces the work-effort needed to maintain product structures. The configurable BOM is most frequently driven by &quot;configurator&quot; software, however it can be enabled manually (manual maintenance is infrequent because its unwieldy to manage the number of permutaions and combinations of possible configurations) The development of the CBOM is dependent on having a Modular BOM structure in place (see Modular BOM). The Modular BOM structure provides the assemblies/sub-systems that can be selected to &quot;configure&quot; an end-item.">A configurable Bill of Material (CBOM) is used by industries that have multiple options and highly configurable products.
+
+The CBOM is used to dynamically create "end-items" that a company sells. The benefit of using CBOM structure is it reduces the work-effort needed to maintain product structures. The configurable BOM is most frequently driven by "configurator" software, however it can be enabled manually (manual maintenance is infrequent because its unwieldy to manage the number of permutaions and combinations of possible configurations) The development of the CBOM is dependent on having a Modular BOM structure in place (see Modular BOM). The Modular BOM structure provides the assemblies/sub-systems that can be selected to "configure" an end-item.</value>
+  </row>
+  <row id="53003" trl="Y">
+    <value column="Name" original="MRP Info">Informação PNM</value>
+    <value column="Description" original="Show the detail of MRP calculation">Mostra o detalhe do cálculo PNM</value>
+    <value column="Help" original="Show the detail of MRP calculation">Mostra o detalhe do cálculo PNM</value>
+  </row>
+  <row id="53004" trl="Y">
+    <value column="Name" original="Planned Order Approval ">Aprovação de Ordem Planejada </value>
+    <value column="Description" original="A planned manufacturing order is a manufacturing order suggested by the MRP process and contains its quantity and its release and promise dates.">Uma ordem de fabricação planejada é uma ordem de fabricação sugerida pelo processo PNM e contém sua quantidade e sua liberação e datas prometidas.</value>
+    <value column="Help" original="A planned manufacturing order is a manufacturing order suggested by the MRP process and contains its quantity and its release and promise dates. when you approve a manufacturing planned order you convert it in a manufacturing order with the status of In Process.
+
+When you approve a planned order you are telling the system that the manufacturing order is ready to start its process with the approval you change the order status from Draft to In Process.">Um ordem de produção planejada é uma ordem de produção sugerida pelo processo MRP e contém sua quantidade e versão e data prometida. Quando você aprova a ordem de produção planejada você converte-a em uma ordem de produção com o Estado de Em Andamento.
+
+Quando você aprova uma ordem planejada, você está dizendo ao sistema que a ordem de produção está pronta para começar seu processo com a aprovação que você mudou o estado da ordem de Esboço para Em Andamento.</value>
+  </row>
+  <row id="53005" trl="Y">
+    <value column="Name" original="CRP Info">Informação PNC</value>
+    <value column="Description" original="It shows graphically of the required and available time for each manufacturing resource.">Mostra graficamente os tempos requeridos e disponíveis para cada recurso de fabricação</value>
+    <value column="Help" original="It shows graphically of the required and available time for each manufacturing resource.">Mostra graficamente os tempos requeridos e disponíveis para cada recurso de fabricação</value>
+  </row>
+  <row id="53006" trl="Y">
+    <value column="Name" original="Resource Load View">Visualização da Carga de Recursos</value>
+    <value column="Description" original="It shows graphically of the required and available time for each manufacturing resource.">Mostra graficamente os tempos requeridos e disponíveis para cada recurso de fabricação</value>
+    <value column="Help" original="It shows graphically of the required and available time for each manufacturing resource.">Mostra graficamente os tempos requeridos e disponíveis para cada recurso de fabricação</value>
+  </row>
+  <row id="53007" trl="Y">
+    <value column="Name" original="Order Receipt &amp; Issue">Recebimento da Ordem &amp; Emissão</value>
+    <value column="Description" original="Order Receipt &amp; Issue">Recebimento da Ordem &amp; Emissão</value>
+    <value column="Help" original="The form shows at the upper side static information around the product and the manufacturing resource where it has to be made, it also shows a summary of the quantities to be controlled in the MO such as the Original and delivered quantities and the Quantity to deliver for the MO up to date.
+
+If the production process requires production in batch, then the Qty Batchs shows the Number of batches the shop floor needs to do and the Qty Batch Size contains the size of every batch to be produced.
+
+
+If you want to issue the MO components before you receive the finished product you should tick the checkbox Is Delivery, this case is recommended when you have a long to medium lead time and you want to have the inventory quantities as reliable as possible at every moment.
+
+If you have small lead time and you wish to save clerk time then you must tick Is Backflush checkbox and you will receive the finished product at the same time you issue automatically the components
+
+The Backflush Group field is used when you want to issue just components belonging to this group. (This characteristic could not be included in the current version).
+
+At the lower part of the window you can find the list of every MO component, this can be modified according with the real products and quantities given to the shop floor.
+
+The quantities to be issued are selected with the checkbox at the first column of the list of components. If the actual quantity is different from the standard quantity showed in the column Qty to deliver you should edit this field to enter the right quantity to be issued.
+
+Finally a message box asks if you want to close the OM document, you should click the ok button if this MO does not have any more transactions and has to be closed.
+
+">O formulário mostra no lado superior a informação estática em torno do produto e os recursos de fabricação, onde ele tem que ser feito, ele mostra também um resumo das quantidades a ser controladas na OP tais como as quantidades Original e enviadas e a Quantidade a enviar para a OP até a presente data.
+
+Se o processo de produção requer a produção em lote, então as Quantidades do Lote mostra o Número de lotes que o chão de fabrica precisa fazer e o Tamanho da Quantidade do Lote contém o tamanho de cada lote a ser produzido.
+
+
+Se você quiser emitir os componentes da OP antes de receber o produto acabado, você deve marcar a opção É Entrega, neste caso, é recomendado quando você tem um prazo de execução de longo à médio e você quer ter as quantidades de estoque tão confiável quanto possível a cada momento.
+
+Se você tem prazo de execução pequeno e quiser poupar tempo empregado, então você deve marcar a opção de Pós-Dedução e você receberá o produto acabado, ao mesmo tempo que você emite automaticamente os componentes.
+
+O campo Grupo de Pós-Dedução é usado quando você quiser emitir apenas os componentes pertencentes a este grupo. (Essa característica não pôde ser incluído na versão atual).
+
+Na parte inferior da janela, você pode encontrar a lista de cada componente da OP, isso pode ser modificado de acordo com os produtos e quantidades reais dados para o chão de fábrica.
+
+As quantidades a serem emitidas são selecionados com a caixa de seleção na primeira coluna da lista de componentes. Se a quantidade real é diferente da quantidade padrão mostrado na coluna Quantidade para entregar, você deve editar este campo para informar a quantidade certa para ser emitida.
+
+Por último, uma caixa de mensagem perguntando se você deseja fechar o documento de OP, você deve clicar no botão ok se esta OP não possui mais transações e tem de ser fechada.
+
+</value>
+  </row>
+  <row id="53008" trl="Y">
+    <value column="Name" original="Generate Movement Manual">Gerar Movimentação Manual</value>
+    <value column="Description" original="Generate Movement to a Order Distribution">Gerar Movimentação para uma Ordem de Distribuição</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53009" trl="Y">
+    <value column="Name" original="Payroll Action Notice">Aviso de Ação de Folha de Pagamento</value>
+    <value column="Description" original="Payroll Action Notice let entry the events that happend with any Employee">Aviso de Ação de Folha de Pagamento permite entrar os eventos que acontecem com cada Empregado</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53010" trl="Y">
+    <value column="Name" original="Generate Shipments &amp; Invoices (manual)">Gerar Remessas &amp; Faturas (manual)</value>
+    <value column="Description" original="Select and generate shipments &amp; Invoices">Selecionar e gerar remessas &amp; Faturas</value>
+    <value column="Help" original="Generate Shipments &amp; Invoices from Orders.  
+Select the orders to generate the shipments &amp; Invoices for.">Gerar Remessas &amp; Faturas de Pedidos.  
+Selecione o pedido para gerar a remessa &amp; Fatura para.</value>
+  </row>
+  <row id="53012" trl="Y">
+    <value column="Name" original="Material Receipt Distribution Order">Ordem de Distribuição de Material Recebido</value>
+    <value column="Description" original="Material Receipt Distribution Order">Ordem de Distribuição de Material Recebido</value>
+    <value column="Help" original="" />
+  </row>
+  <row id="53013" trl="Y">
+    <value column="Name" original="Manufacturing Workflow Editor">Editor de Fluxo de Trabalho de Fabricação</value>
+    <value column="Description" original="Edit Manufacturing Workflows">Editar Fluxos de Trabalhos de Fabricação</value>
+    <value column="Help" original="Edit the graphical layout of manufacturing workflows">Edite o leioute gráfico do fluxo de trabalho de fabricação</value>
+  </row>
+</adempiereTrl>

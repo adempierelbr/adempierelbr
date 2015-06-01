@@ -30,7 +30,7 @@ public class X_LBR_NFeWebService extends PO implements I_LBR_NFeWebService, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20150330L;
 
     /** Standard Constructor */
     public X_LBR_NFeWebService (Properties ctx, int LBR_NFeWebService_ID, String trxName)
@@ -38,11 +38,10 @@ public class X_LBR_NFeWebService extends PO implements I_LBR_NFeWebService, I_Pe
       super (ctx, LBR_NFeWebService_ID, trxName);
       /** if (LBR_NFeWebService_ID == 0)
         {
-			setC_Region_ID (0);
-			setlbr_NFeEnv (null);
 			setLBR_NFeWebService_ID (0);
 			setName (null);
 			setURL (null);
+			setlbr_NFeEnv (null);
         } */
     }
 
@@ -102,27 +101,6 @@ public class X_LBR_NFeWebService extends PO implements I_LBR_NFeWebService, I_Pe
 		return ii.intValue();
 	}
 
-	/** lbr_NFeEnv AD_Reference_ID=1100001 */
-	public static final int LBR_NFEENV_AD_Reference_ID=1100001;
-	/** Production = 1 */
-	public static final String LBR_NFEENV_Production = "1";
-	/** Homologation = 2 */
-	public static final String LBR_NFEENV_Homologation = "2";
-	/** Set NFe Environment.
-		@param lbr_NFeEnv NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv)
-	{
-
-		set_Value (COLUMNNAME_lbr_NFeEnv, lbr_NFeEnv);
-	}
-
-	/** Get NFe Environment.
-		@return NFe Environment	  */
-	public String getlbr_NFeEnv () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_NFeEnv);
-	}
-
 	/** Set WebService NFe.
 		@param LBR_NFeWebService_ID 
 		Defines the WebService NFe
@@ -144,6 +122,30 @@ public class X_LBR_NFeWebService extends PO implements I_LBR_NFeWebService, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** LBR_WSType AD_Reference_ID=1120210 */
+	public static final int LBR_WSTYPE_AD_Reference_ID=1120210;
+	/** Normal = 1 */
+	public static final String LBR_WSTYPE_Normal = "1";
+	/** SCAN = 2 */
+	public static final String LBR_WSTYPE_SCAN = "2";
+	/** Set WS Type.
+		@param LBR_WSType 
+		WebService Type
+	  */
+	public void setLBR_WSType (String LBR_WSType)
+	{
+
+		set_Value (COLUMNNAME_LBR_WSType, LBR_WSType);
+	}
+
+	/** Get WS Type.
+		@return WebService Type
+	  */
+	public String getLBR_WSType () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_WSType);
 	}
 
 	/** Set Name.
@@ -195,5 +197,26 @@ public class X_LBR_NFeWebService extends PO implements I_LBR_NFeWebService, I_Pe
 	public String getVersionNo () 
 	{
 		return (String)get_Value(COLUMNNAME_VersionNo);
+	}
+
+	/** lbr_NFeEnv AD_Reference_ID=1100001 */
+	public static final int LBR_NFEENV_AD_Reference_ID=1100001;
+	/** Production = 1 */
+	public static final String LBR_NFEENV_Production = "1";
+	/** Homologation = 2 */
+	public static final String LBR_NFEENV_Homologation = "2";
+	/** Set NFe Environment.
+		@param lbr_NFeEnv NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv)
+	{
+
+		set_Value (COLUMNNAME_lbr_NFeEnv, lbr_NFeEnv);
+	}
+
+	/** Get NFe Environment.
+		@return NFe Environment	  */
+	public String getlbr_NFeEnv () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_NFeEnv);
 	}
 }

@@ -91,12 +91,12 @@ import org.w3c.dom.Element;
  */
 @SuppressWarnings("rawtypes")
 public abstract class PO
-	implements Serializable, Comparator, Evaluatee, Cloneable
+	implements Serializable, Comparator, Evaluatee
 {
 	/**
-	 * 
+	 *
 	 */
-	private static final long serialVersionUID = -4708137979682082002L;
+	private static final long serialVersionUID = 6604764467216189092L;
 
 	private static final String USE_TIMEOUT_FOR_UPDATE = "org.adempiere.po.useTimeoutForUpdate";
 
@@ -685,7 +685,7 @@ public abstract class PO
 				value = Integer.parseInt((String)value);
 			}
 		}
-		
+
 		return set_Value (index, value);
 	}   //  setValue
 
@@ -722,7 +722,7 @@ public abstract class PO
 			log.log(Level.WARNING, "Virtual Column" + colInfo);
 			return false;
 		}
-		
+
 		//
 		// globalqss -- Bug 1618469 - is throwing not updateable even on new records
 		// if (!p_info.isColumnUpdateable(index))
@@ -820,16 +820,16 @@ public abstract class PO
 				log.finest(ColumnName + " = " + m_newValues[index] + " (OldValue="+m_oldValues[index]+")");
 		}
 		set_Keys (ColumnName, m_newValues[index]);
-		
+
 		// FR 2962094 Fill ProcessedOn when the Processed column is changing from N to Y
 		setProcessedOn(ColumnName, value, m_oldValues[index]);
-		
+
 		return true;
 	}   //  setValue
 
 	/* FR 2962094 - Finish implementation of weighted average costing
-	   Fill the column ProcessedOn (if it exists) with a bigdecimal representation of current timestamp (with nanoseconds) 
-	*/ 
+	   Fill the column ProcessedOn (if it exists) with a bigdecimal representation of current timestamp (with nanoseconds)
+	*/
 	public void setProcessedOn(String ColumnName, Object value, Object oldValue) {
 		if ("Processed".equals(ColumnName)
 				&& value instanceof Boolean
@@ -927,7 +927,7 @@ public abstract class PO
 
 		// FR 2962094 Fill ProcessedOn when the Processed column is changing from N to Y
 		setProcessedOn(ColumnName, value, m_oldValues[index]);
-		
+
 		return true;
 	}   //  set_ValueNoCheck
 
@@ -1308,11 +1308,18 @@ public abstract class PO
 	{
 		m_trxName = trxName;
 		boolean success = true;
-		StringBuffer sql = p_info.buildSelect();
-		sql.append(" WHERE ")
-			.append(get_WhereClause(false))
-		;
+		StringBuffer sql = new StringBuffer("SELECT ");
 		int size = get_ColumnCount();
+		for (int i = 0; i < size; i++)
+		{
+			if (i != 0)
+				sql.append(",");
+			sql.append(p_info.getColumnSQL(i));	//	Normal and Virtual Column
+		}
+		sql.append(" FROM ").append(p_info.getTableName())
+			.append(" WHERE ")
+			.append(get_WhereClause(false));
+
 		//
 	//	int index = -1;
 		if (CLogMgt.isLevelFinest())
@@ -1422,7 +1429,6 @@ public abstract class PO
 						+ ": " + p_info.getTableName() + "." + p_info.getColumnName(index)
 						+ " (" + p_info.getColumnClass(index) + ") - " + e);
 					success = false;
-					e.printStackTrace(); // @Trifon - MySQL Port
 				}
 			}
 		}
@@ -1948,6 +1954,7 @@ public abstract class PO
 	 * 	To reload call load() - not updated
 	 *  @return true if saved
 	 */
+	@SuppressWarnings("unused")
 	public boolean save()
 	{
 		CLogger.resetLast();
@@ -1975,7 +1982,6 @@ public abstract class PO
 			{
 				reset = get_AccessLevel() == ACCESSLEVEL_CLIENT
 					|| get_AccessLevel() == ACCESSLEVEL_SYSTEMCLIENT
-					|| get_AccessLevel() == ACCESSLEVEL_ALL
 					|| get_AccessLevel() == ACCESSLEVEL_CLIENTORG;
 			}
 			if (reset)
@@ -2012,7 +2018,7 @@ public abstract class PO
 			// If not a localTrx we need to set a savepoint for rollback
 			if (localTrx == null)
 				savepoint = trx.setSavepoint(null);
-			
+
 			if (!beforeSave(newRecord))
 			{
 				log.warning("beforeSave failed - " + toString());
@@ -2114,7 +2120,11 @@ public abstract class PO
 		catch (SQLException e)
 		{
 			log.log(Level.WARNING, "afterSave - " + toString(), e);
-			if (savepoint != null)
+			if (localTrx != null)
+			{
+				localTrx.rollback();
+			}
+			else if (savepoint != null)
 			{
 				try
 				{
@@ -2538,7 +2548,7 @@ public abstract class PO
 			int no = saveNew_getID();
 			if (no <= 0)
 				no = DB.getNextID(getAD_Client_ID(), p_info.getTableName(), m_trxName);
-			// the primary key is not overwrite with the local sequence	
+			// the primary key is not overwrite with the local sequence
 			if (isReplication())
 			{
 				if (get_ID() > 0)
@@ -3231,7 +3241,41 @@ public abstract class PO
 		sql.append(" WHERE ")
 			.append(keyColumn).append("=").append(get_ID());
 		int no = DB.executeUpdate(sql.toString(), m_trxName);
-		log.fine("#" + no);
+		
+		//	Force Auto Update for Client Language
+		if (!client.isAutoUpdateTrl(tableName))
+		{
+			sql = new StringBuffer ("UPDATE ")
+				.append(tableName).append("_Trl SET ");
+			//
+			for (int i = 0; i < p_info.getColumnCount(); i++)
+			{
+				if (p_info.isColumnTranslated(i))
+				{
+					String columnName = p_info.getColumnName(i);
+					sql.append(columnName).append("=");
+					Object value = get_Value(columnName);
+					if (value == null)
+						sql.append("NULL");
+					else if (value instanceof String)
+						sql.append(DB.TO_STRING((String)value));
+					else if (value instanceof Boolean)
+						sql.append(((Boolean)value).booleanValue() ? "'Y'" : "'N'");
+					else if (value instanceof Timestamp)
+						sql.append(DB.TO_DATE((Timestamp)value));
+					else
+						sql.append(value.toString());
+					sql.append(",");
+				}
+			}
+			sql.append("IsTranslated='Y'");
+			//
+			sql.append(" WHERE AD_Language='").append(MClient.get(p_ctx).getAD_Language()).append("' AND ")
+				.append(keyColumn).append("=").append(get_ID());
+			no += DB.executeUpdate(sql.toString(), m_trxName);
+			//
+			log.fine("#" + no);
+		}
 		return no >= 0;
 	}	//	updateTranslations
 
@@ -3515,14 +3559,14 @@ public abstract class PO
 	public MAttachment getAttachment (boolean requery)
 	{
 		if (m_attachment == null || requery)
-			m_attachment = MAttachment.get (getCtx(), p_info.getAD_Table_ID(), get_ID());
+			m_attachment = MAttachment.get (getCtx(), p_info.getAD_Table_ID(), get_ID(), get_TrxName());
 		return m_attachment;
 	}	//	getAttachment
 
 	public MAttachment createAttachment(){
 		return createAttachment(false);
 	}
-	
+
 	/**
 	 * 	Create/return Attachment for PO.
 	 * 	If not exist, create new
@@ -3532,7 +3576,7 @@ public abstract class PO
 	{
 		getAttachment (requery);
 		if (m_attachment == null)
-			m_attachment = new MAttachment (getCtx(), p_info.getAD_Table_ID(), get_ID(), null);
+			m_attachment = new MAttachment (getCtx(), p_info.getAD_Table_ID(), get_ID(), get_TrxName());
 		return m_attachment;
 	}	//	createAttachment
 
@@ -3960,7 +4004,7 @@ public abstract class PO
 		for (PO line : lines)
 			line.set_TrxName(trxName);
 	}
-	
+
 	/**
 	 * Get Integer Value
 	 * @param columnName
@@ -3975,64 +4019,22 @@ public abstract class PO
 		}
 		return get_ValueAsInt(idx);
 	}
-	
+
 	/**
-	 * Get value as Boolean 
+	 * Get value as Boolean
 	 * @param columnName
 	 * @return boolean value
 	 */
 	public boolean get_ValueAsBoolean(String columnName)
 	{
 		Object oo = get_Value(columnName);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		PO clone = (PO) super.clone();
-		clone.m_trxName = null;
-		if (m_custom != null)
-		{
-			clone.m_custom = new HashMap<String, String>();
-			clone.m_custom.putAll(m_custom);
-		}
-		if (m_newValues != null)
-		{
-			clone.m_newValues = new Object[m_newValues.length];
-			for(int i = 0; i < m_newValues.length; i++)
-			{
-				clone.m_newValues[i] = m_newValues[i];
-			}
-		}
-		if (m_oldValues != null)
-		{
-			clone.m_oldValues = new Object[m_oldValues.length];
-			for(int i = 0; i < m_oldValues.length; i++)
-			{
-				clone.m_oldValues[i] = m_oldValues[i];
-			}
-		}
-		if (m_IDs != null)
-		{
-			clone.m_IDs = new Object[m_IDs.length];
-			for(int i = 0; i < m_IDs.length; i++)
-			{
-				clone.m_IDs[i] = m_IDs[i];
-			}
-		}
-		clone.p_ctx = Env.getCtx();
-		clone.m_doc = null;
-		clone.m_lobInfo = null;
-		clone.m_attachment = null;
-		clone.m_isReplication = false;
-		return clone;
-	}
-
 
 }   //  PO

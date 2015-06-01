@@ -123,9 +123,12 @@ public class ValidatorDocType implements ModelValidator
 			return modelChange((MDocType)po);
 		}
 
-		else if (po instanceof X_LBR_TaxConfiguration && (isChange || isNew)){
-			return modelChange((X_LBR_TaxConfiguration)po);
-		}
+		/**
+		 * 	Para tabelas do LBR usar a classe modelo
+		 */
+//		else if (po instanceof X_LBR_TaxConfiguration && (isChange || isNew)){
+//			return modelChange((X_LBR_TaxConfiguration)po);
+//		}
 
 		else if (po instanceof MSequence && isChange){
 			return modelChange((MSequence)po);
@@ -151,7 +154,12 @@ public class ValidatorDocType implements ModelValidator
 		log.info(doc.toString());
 		return null;
 	}
-
+	/**
+	 * 	
+	 * @param taxConfig
+	 * @return
+	 */
+	@Deprecated //	Usar a classe model para checar
 	public String modelChange(X_LBR_TaxConfiguration taxConfig){
 
 		Properties ctx = taxConfig.getCtx();

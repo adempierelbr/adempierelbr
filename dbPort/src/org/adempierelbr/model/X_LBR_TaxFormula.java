@@ -18,6 +18,7 @@
 package org.adempierelbr.model;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 
@@ -30,7 +31,7 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20110921L;
 
     /** Standard Constructor */
     public X_LBR_TaxFormula (Properties ctx, int LBR_TaxFormula_ID, String trxName)
@@ -38,11 +39,12 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
       super (ctx, LBR_TaxFormula_ID, trxName);
       /** if (LBR_TaxFormula_ID == 0)
         {
-			setlbr_Formula (null);
-			setlbr_FormulaNetWorth (null);
-			setlbr_ServiceFactor (null);
+			setIsTaxIncluded (false);
+// N
 			setLBR_TaxFormula_ID (0);
 			setLBR_TaxName_ID (0);
+			setValidFrom (new Timestamp( System.currentTimeMillis() ));
+			setlbr_ServiceFactor (null);
 			setlbr_TransactionType (null);
         } */
     }
@@ -54,7 +56,7 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
     }
 
     /** AccessLevel
-      * @return 3 - Client - Org 
+      * @return 6 - System - Client 
       */
     protected int get_AccessLevel()
     {
@@ -75,55 +77,128 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
       return sb.toString();
     }
 
-	/** Set Formula.
-		@param lbr_Formula 
-		Defines the Tax Formula
+	/** Set Price includes Tax.
+		@param IsTaxIncluded 
+		Tax is included in the price 
 	  */
-	public void setlbr_Formula (String lbr_Formula)
+	public void setIsTaxIncluded (boolean IsTaxIncluded)
 	{
-		set_Value (COLUMNNAME_lbr_Formula, lbr_Formula);
+		set_Value (COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
 	}
 
-	/** Get Formula.
-		@return Defines the Tax Formula
+	/** Get Price includes Tax.
+		@return Tax is included in the price 
 	  */
-	public String getlbr_Formula () 
+	public boolean isTaxIncluded () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_Formula);
+		Object oo = get_Value(COLUMNNAME_IsTaxIncluded);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
-	/** Set Formula NetWorth.
-		@param lbr_FormulaNetWorth 
-		Defines the Tax Formula NetWorth
-	  */
-	public void setlbr_FormulaNetWorth (String lbr_FormulaNetWorth)
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaAdd() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_Formula)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_Formula.Table_Name)
+			.getPO(getLBR_FormulaAdd_ID(), get_TrxName());	}
+
+	/** Set Additional Formula.
+		@param LBR_FormulaAdd_ID Additional Formula	  */
+	public void setLBR_FormulaAdd_ID (int LBR_FormulaAdd_ID)
 	{
-		set_Value (COLUMNNAME_lbr_FormulaNetWorth, lbr_FormulaNetWorth);
+		if (LBR_FormulaAdd_ID < 1) 
+			set_Value (COLUMNNAME_LBR_FormulaAdd_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_FormulaAdd_ID, Integer.valueOf(LBR_FormulaAdd_ID));
 	}
 
-	/** Get Formula NetWorth.
-		@return Defines the Tax Formula NetWorth
-	  */
-	public String getlbr_FormulaNetWorth () 
+	/** Get Additional Formula.
+		@return Additional Formula	  */
+	public int getLBR_FormulaAdd_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_FormulaNetWorth);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_FormulaAdd_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
-	/** Set Service Factor.
-		@param lbr_ServiceFactor 
-		Define the Service Factor Formula
-	  */
-	public void setlbr_ServiceFactor (String lbr_ServiceFactor)
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaBase() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_Formula)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_Formula.Table_Name)
+			.getPO(getLBR_FormulaBase_ID(), get_TrxName());	}
+
+	/** Set Formula Base.
+		@param LBR_FormulaBase_ID Formula Base	  */
+	public void setLBR_FormulaBase_ID (int LBR_FormulaBase_ID)
 	{
-		set_Value (COLUMNNAME_lbr_ServiceFactor, lbr_ServiceFactor);
+		if (LBR_FormulaBase_ID < 1) 
+			set_Value (COLUMNNAME_LBR_FormulaBase_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_FormulaBase_ID, Integer.valueOf(LBR_FormulaBase_ID));
 	}
 
-	/** Get Service Factor.
-		@return Define the Service Factor Formula
-	  */
-	public String getlbr_ServiceFactor () 
+	/** Get Formula Base.
+		@return Formula Base	  */
+	public int getLBR_FormulaBase_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_ServiceFactor);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_FormulaBase_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaNet() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_Formula)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_Formula.Table_Name)
+			.getPO(getLBR_FormulaNet_ID(), get_TrxName());	}
+
+	/** Set Formula Net (BR).
+		@param LBR_FormulaNet_ID Formula Net (BR)	  */
+	public void setLBR_FormulaNet_ID (int LBR_FormulaNet_ID)
+	{
+		if (LBR_FormulaNet_ID < 1) 
+			set_Value (COLUMNNAME_LBR_FormulaNet_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_FormulaNet_ID, Integer.valueOf(LBR_FormulaNet_ID));
+	}
+
+	/** Get Formula Net (BR).
+		@return Formula Net (BR)	  */
+	public int getLBR_FormulaNet_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_FormulaNet_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_Formula() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_Formula)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_Formula.Table_Name)
+			.getPO(getLBR_Formula_ID(), get_TrxName());	}
+
+	/** Set Formula (BR).
+		@param LBR_Formula_ID Formula (BR)	  */
+	public void setLBR_Formula_ID (int LBR_Formula_ID)
+	{
+		if (LBR_Formula_ID < 1) 
+			set_Value (COLUMNNAME_LBR_Formula_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_Formula_ID, Integer.valueOf(LBR_Formula_ID));
+	}
+
+	/** Get Formula (BR).
+		@return Formula (BR)	  */
+	public int getLBR_Formula_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_Formula_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Tax Formula.
@@ -177,6 +252,74 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set Valid from.
+		@param ValidFrom 
+		Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom)
+	{
+		set_Value (COLUMNNAME_ValidFrom, ValidFrom);
+	}
+
+	/** Get Valid from.
+		@return Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
+	}
+
+	/** Set Formula.
+		@param lbr_Formula 
+		Defines the Tax Formula
+	  */
+	public void setlbr_Formula (String lbr_Formula)
+	{
+		set_Value (COLUMNNAME_lbr_Formula, lbr_Formula);
+	}
+
+	/** Get Formula.
+		@return Defines the Tax Formula
+	  */
+	public String getlbr_Formula () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_Formula);
+	}
+
+	/** Set Formula NetWorth.
+		@param lbr_FormulaNetWorth 
+		Defines the Tax Formula NetWorth
+	  */
+	public void setlbr_FormulaNetWorth (String lbr_FormulaNetWorth)
+	{
+		set_Value (COLUMNNAME_lbr_FormulaNetWorth, lbr_FormulaNetWorth);
+	}
+
+	/** Get Formula NetWorth.
+		@return Defines the Tax Formula NetWorth
+	  */
+	public String getlbr_FormulaNetWorth () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_FormulaNetWorth);
+	}
+
+	/** Set Service Factor.
+		@param lbr_ServiceFactor 
+		Define the Service Factor Formula
+	  */
+	public void setlbr_ServiceFactor (String lbr_ServiceFactor)
+	{
+		set_Value (COLUMNNAME_lbr_ServiceFactor, lbr_ServiceFactor);
+	}
+
+	/** Get Service Factor.
+		@return Define the Service Factor Formula
+	  */
+	public String getlbr_ServiceFactor () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_ServiceFactor);
+	}
+
 	/** lbr_TransactionType AD_Reference_ID=1000024 */
 	public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
 	/** End User = END */
@@ -189,8 +332,6 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
 	/** Resale = RES */
 	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
-	/** Imp Courier = COU */
-	public static final String LBR_TRANSACTIONTYPE_ImpCourier = "COU";
 	/** Set Transaction Type.
 		@param lbr_TransactionType 
 		Defines the Transaction Type

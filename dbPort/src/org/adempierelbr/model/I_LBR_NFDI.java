@@ -121,10 +121,10 @@ public interface I_LBR_NFDI
     /** Column name lbr_CodExportador */
     public static final String COLUMNNAME_lbr_CodExportador = "lbr_CodExportador";
 
-	/** Set Código do exportador	  */
+	/** Set CÛdigo do exportador	  */
 	public void setlbr_CodExportador (String lbr_CodExportador);
 
-	/** Get Código do exportador	  */
+	/** Get CÛdigo do exportador	  */
 	public String getlbr_CodExportador();
 
     /** Column name lbr_DataDesemb */
@@ -140,35 +140,26 @@ public interface I_LBR_NFDI
     public static final String COLUMNNAME_lbr_DI = "lbr_DI";
 
 	/** Set DI.
-	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	  * N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public void setlbr_DI (String lbr_DI);
 
 	/** Get DI.
-	  * Número do Documento de Importação DI/DSI/DA (DI/DSI/DA)
+	  * N˙mero do Documento de Importação DI/DSI/DA (DI/DSI/DA)
 	  */
 	public String getlbr_DI();
-
-    /** Column name lbr_Drawback */
-    public static final String COLUMNNAME_lbr_Drawback = "lbr_Drawback";
-
-	/** Set Drawback No.
-	  * Identifies the Drawback No
-	  */
-	public void setlbr_Drawback (String lbr_Drawback);
-
-	/** Get Drawback No.
-	  * Identifies the Drawback No
-	  */
-	public String getlbr_Drawback();
 
     /** Column name lbr_LocDesemb */
     public static final String COLUMNNAME_lbr_LocDesemb = "lbr_LocDesemb";
 
-	/** Set Local de Desembaraço	  */
+	/** Set Local de Desembaraço.
+	  * Local de Desembaraço
+	  */
 	public void setlbr_LocDesemb (String lbr_LocDesemb);
 
-	/** Get Local de Desembaraço	  */
+	/** Get Local de Desembaraço.
+	  * Local de Desembaraço
+	  */
 	public String getlbr_LocDesemb();
 
     /** Column name LBR_NFDI_ID */
@@ -194,19 +185,6 @@ public interface I_LBR_NFDI
 	public int getLBR_NotaFiscal_ID();
 
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException;
-
-    /** Column name Type */
-    public static final String COLUMNNAME_Type = "Type";
-
-	/** Set Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public void setType (String Type);
-
-	/** Get Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public String getType();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

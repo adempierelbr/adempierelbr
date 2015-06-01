@@ -23,8 +23,8 @@ import java.util.logging.Level;
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
-import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
@@ -116,8 +116,8 @@ public class MItau implements I_Bank
 
 	        cnab.setlbr_CNABField34(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
 	        cnab.setlbr_CNABField35(null); //Preencher com Espaços em Branco
-	        cnab.setlbr_CNABField36(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase()); //Logradouro
-	        cnab.setlbr_CNABField37(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); //Bairro
+	        cnab.setlbr_CNABField36(RemoverAcentos.remover(boleto.getAddress()).toUpperCase()); 	//	Logradouro (Rua, Número e Complemento)
+	        cnab.setlbr_CNABField37(RemoverAcentos.remover(boleto.getAddress3()).toUpperCase()); 	//	Bairro
 	        cnab.setlbr_CNABField38(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); //CEP
 	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getCity()).toUpperCase()); //Cidade
 	        cnab.setlbr_CNABField40(boleto.getRegionName()); //Estado
@@ -143,7 +143,7 @@ public class MItau implements I_Bank
 
 		Properties ctx = Env.getCtx();
 
-		MOrg    Org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    Org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 
 		int indexCC = BankA.getAccountNo().indexOf('-');
 		String cc   = BankA.getAccountNo().substring(0, indexCC);

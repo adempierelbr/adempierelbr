@@ -36,9 +36,9 @@ public interface I_LBR_TaxFormula
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org 
+    /** AccessLevel = 6 - System - Client 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(3);
+    BigDecimal accessLevel = BigDecimal.valueOf(6);
 
     /** Load Meta Data */
 
@@ -92,6 +92,120 @@ public interface I_LBR_TaxFormula
 	  */
 	public boolean isActive();
 
+    /** Column name IsTaxIncluded */
+    public static final String COLUMNNAME_IsTaxIncluded = "IsTaxIncluded";
+
+	/** Set Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public void setIsTaxIncluded (boolean IsTaxIncluded);
+
+	/** Get Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public boolean isTaxIncluded();
+
+    /** Column name LBR_FormulaAdd_ID */
+    public static final String COLUMNNAME_LBR_FormulaAdd_ID = "LBR_FormulaAdd_ID";
+
+	/** Set Additional Formula	  */
+	public void setLBR_FormulaAdd_ID (int LBR_FormulaAdd_ID);
+
+	/** Get Additional Formula	  */
+	public int getLBR_FormulaAdd_ID();
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaAdd() throws RuntimeException;
+
+    /** Column name LBR_FormulaBase_ID */
+    public static final String COLUMNNAME_LBR_FormulaBase_ID = "LBR_FormulaBase_ID";
+
+	/** Set Formula Base	  */
+	public void setLBR_FormulaBase_ID (int LBR_FormulaBase_ID);
+
+	/** Get Formula Base	  */
+	public int getLBR_FormulaBase_ID();
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaBase() throws RuntimeException;
+
+    /** Column name LBR_FormulaNet_ID */
+    public static final String COLUMNNAME_LBR_FormulaNet_ID = "LBR_FormulaNet_ID";
+
+	/** Set Formula Net (BR)	  */
+	public void setLBR_FormulaNet_ID (int LBR_FormulaNet_ID);
+
+	/** Get Formula Net (BR)	  */
+	public int getLBR_FormulaNet_ID();
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_FormulaNet() throws RuntimeException;
+
+    /** Column name LBR_Formula_ID */
+    public static final String COLUMNNAME_LBR_Formula_ID = "LBR_Formula_ID";
+
+	/** Set Formula (BR)	  */
+	public void setLBR_Formula_ID (int LBR_Formula_ID);
+
+	/** Get Formula (BR)	  */
+	public int getLBR_Formula_ID();
+
+	public org.adempierelbr.model.I_LBR_Formula getLBR_Formula() throws RuntimeException;
+
+    /** Column name LBR_TaxFormula_ID */
+    public static final String COLUMNNAME_LBR_TaxFormula_ID = "LBR_TaxFormula_ID";
+
+	/** Set Tax Formula.
+	  * Primary key table LBR_TaxFormula
+	  */
+	public void setLBR_TaxFormula_ID (int LBR_TaxFormula_ID);
+
+	/** Get Tax Formula.
+	  * Primary key table LBR_TaxFormula
+	  */
+	public int getLBR_TaxFormula_ID();
+
+    /** Column name LBR_TaxName_ID */
+    public static final String COLUMNNAME_LBR_TaxName_ID = "LBR_TaxName_ID";
+
+	/** Set Tax Name.
+	  * Primary key table LBR_TaxName
+	  */
+	public void setLBR_TaxName_ID (int LBR_TaxName_ID);
+
+	/** Get Tax Name.
+	  * Primary key table LBR_TaxName
+	  */
+	public int getLBR_TaxName_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
+
+    /** Column name Updated */
+    public static final String COLUMNNAME_Updated = "Updated";
+
+	/** Get Updated.
+	  * Date this record was updated
+	  */
+	public Timestamp getUpdated();
+
+    /** Column name UpdatedBy */
+    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
+
+	/** Get Updated By.
+	  * User who updated this records
+	  */
+	public int getUpdatedBy();
+
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
+
+	/** Set Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom);
+
+	/** Get Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom();
+
     /** Column name lbr_Formula */
     public static final String COLUMNNAME_lbr_Formula = "lbr_Formula";
 
@@ -131,34 +245,6 @@ public interface I_LBR_TaxFormula
 	  */
 	public String getlbr_ServiceFactor();
 
-    /** Column name LBR_TaxFormula_ID */
-    public static final String COLUMNNAME_LBR_TaxFormula_ID = "LBR_TaxFormula_ID";
-
-	/** Set Tax Formula.
-	  * Primary key table LBR_TaxFormula
-	  */
-	public void setLBR_TaxFormula_ID (int LBR_TaxFormula_ID);
-
-	/** Get Tax Formula.
-	  * Primary key table LBR_TaxFormula
-	  */
-	public int getLBR_TaxFormula_ID();
-
-    /** Column name LBR_TaxName_ID */
-    public static final String COLUMNNAME_LBR_TaxName_ID = "LBR_TaxName_ID";
-
-	/** Set Tax Name.
-	  * Primary key table LBR_TaxName
-	  */
-	public void setLBR_TaxName_ID (int LBR_TaxName_ID);
-
-	/** Get Tax Name.
-	  * Primary key table LBR_TaxName
-	  */
-	public int getLBR_TaxName_ID();
-
-	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
-
     /** Column name lbr_TransactionType */
     public static final String COLUMNNAME_lbr_TransactionType = "lbr_TransactionType";
 
@@ -171,20 +257,4 @@ public interface I_LBR_TaxFormula
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
-
-    /** Column name Updated */
-    public static final String COLUMNNAME_Updated = "Updated";
-
-	/** Get Updated.
-	  * Date this record was updated
-	  */
-	public Timestamp getUpdated();
-
-    /** Column name UpdatedBy */
-    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
-
-	/** Get Updated By.
-	  * User who updated this records
-	  */
-	public int getUpdatedBy();
 }

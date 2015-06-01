@@ -42,7 +42,7 @@ public class B5R5335 implements RegSacred{
 			REG
 			+ PIPE + NUM_DECL_EXP
 			+ PIPE + COMP_OPER
-			+ PIPE + TextUtil.toNumeric(SERV_COMUN,2,true);
+			+ PIPE + TextUtil.bigdecimalToString(SERV_COMUN,2).replace('.', ',');
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

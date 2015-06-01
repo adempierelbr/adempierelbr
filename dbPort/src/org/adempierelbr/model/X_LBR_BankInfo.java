@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_BankInfo
- *  @author ADempiereLBR (generated) 
+ *  @author OSEB (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_BankInfo extends PO implements I_LBR_BankInfo, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_BankInfo extends PO implements I_LBR_BankInfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20100930L;
 
     /** Standard Constructor */
     public X_LBR_BankInfo (Properties ctx, int LBR_BankInfo_ID, String trxName)

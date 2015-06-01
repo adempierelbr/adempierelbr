@@ -1,0 +1,7 @@
+<adempiereTrl language="pt_BR" table="AD_Desktop">
+  <row id="100" trl="Y">
+    <value column="Name" original="FrontOffice">Linha de Frente</value>
+    <value column="Description" original="Front Office Desktop">Área de trabalho da linha de frente</value>
+    <value column="Help" original="" />
+  </row>
+</adempiereTrl>

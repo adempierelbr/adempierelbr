@@ -1,4 +1,9 @@
--- 03/03/2011 8h13min26s BRT
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *  /
+ -- 03/03/2011 8h13min26s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120225,1946,0,11,542,'UseLifeMonths',TO_TIMESTAMP('2011-03-03 08:13:25','YYYY-MM-DD HH24:MI:SS'),100,'Months of the usable life of the asset','LBRA',3,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Usable Life - Months',0,TO_TIMESTAMP('2011-03-03 08:13:25','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
@@ -1527,3 +1532,5 @@ UPDATE AD_Column SET IsUpdateable='N',Updated=TO_TIMESTAMP('2011-03-04 09:30:54'
 ;
 
 UPDATE AD_SysConfig SET Value='360-trunk/043-FR_3191322.sql' WHERE AD_SysConfig_ID=1100006;
+
+/ *** END ***/

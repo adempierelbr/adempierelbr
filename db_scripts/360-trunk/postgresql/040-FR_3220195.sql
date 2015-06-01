@@ -1,4 +1,9 @@
--- 17/03/2011 9h3min12s BRT
+/*** 
+ * 
+ * Este script esta desativado para novas instalacoes. Para ativa-lo,  
+ * 		insira uma barra abaixo para fechar o comentario.
+ *  /
+ -- 17/03/2011 9h3min12s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1120054,0,'lbr_TaxStatusPIS',TO_TIMESTAMP('2011-03-17 09:03:10','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Tax Status (PIS)','LBRA','Defines the Tax Status (PIS)','Y','Tax Status (PIS)','Tax Status (PIS)',TO_TIMESTAMP('2011-03-17 09:03:10','YYYY-MM-DD HH24:MI:SS'),100)
 ;
@@ -469,3 +474,5 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 ;
 
 UPDATE AD_SysConfig SET Value='360-trunk/040-FR_3220195.sql' WHERE AD_SysConfig_ID=1100006;
+
+/ *** END ***/

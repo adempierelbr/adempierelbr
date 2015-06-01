@@ -58,7 +58,7 @@ public class ProcSystemInfo extends SvrProcess
 		
 		msg.append("<br><font color=\"#000000\">");
 		msg.append("<b>Sistema Operacional: </b>");
-		msg.append(AdempiereLBR.getOsName() + "<br>");
+		msg.append(System.getProperty ("os.name") + "<br>");
 		msg.append("<b>Default Path: </b>");
 		msg.append(AdempiereLBR.getPath() + "<br><br>");
 		msg.append("</font>");

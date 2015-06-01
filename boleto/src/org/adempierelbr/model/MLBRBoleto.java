@@ -46,9 +46,11 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoicePaySchedule;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSequence;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
@@ -99,15 +101,19 @@ public class MLBRBoleto extends X_LBR_Boleto
 	}
 	
 	/** Get Parcela da Fatura
-	 * @param DocumentNo Número de Controle da Empresa
+	 * @param documentNo Número de Controle da Empresa
 	 * @return LBR_PayScheduleNo */
-	public static String getLBR_PayScheduleNo(String DocumentNo){
-
-		int index = DocumentNo.indexOf("/") + 1;
-		String LBR_PayScheduleNo = DocumentNo.substring(index, index + 2).trim();
+	public static String getLBR_PayScheduleNo (String documentNo)
+	{
+		//	Ocorrência para cobranças não registradas
+		if (documentNo == null || documentNo.length() <= 0)
+			return  "";
+		//
+		int index = documentNo.indexOf("/") + 1;
+		String LBR_PayScheduleNo = documentNo.substring(index, index + 2).trim();
 		
 		return LBR_PayScheduleNo;
-	}
+	}	//	getLBR_PayScheduleNo
 	
 	/** Atualizar o DocumentNo do Boleto (Somente para casos onde o Banco gera o NossoNumero)
 	 * @param LBR_Boleto_ID Boleto
@@ -593,27 +599,12 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 			X_LBR_Bank lbrBank = new X_LBR_Bank(ctx, Bank.get_ValueAsInt("LBR_Bank_ID"),trx);
 
-			// Localização do Parceiro de Negócio
-			int C_Location_ID = 0;
+			MBPartnerLocation BPLocation = null;
 			MLocation Location = null;
 			MRegion Region = null;
-			MBPartnerLocation BPLocation = new MBPartnerLocation(ctx, invoice.getC_BPartner_Location_ID(), trx);
-			if(BPLocation.isActive() && BPLocation.isPayFrom()) {
-				C_Location_ID = BPLocation.getC_Location_ID();
-			} else {
-				MBPartnerLocation BPLocations[] = BPartner.getLocations(true);
-				for(MBPartnerLocation BPLoc: BPLocations)
-				{
-					if(BPLoc.isActive() && BPLoc.isPayFrom())
-					{
-						C_Location_ID = BPLoc.getC_Location_ID();
-						break;
-					}
-				}
-			}
-						
-			
-			Location = MLocation.get(ctx, C_Location_ID, trx);
+
+			BPLocation = BPartner.getLocation(invoice.getC_BPartner_Location_ID());
+			Location = MLocation.get(ctx, BPLocation.getC_Location_ID(), trx);
 			Region = new MRegion(ctx, Location.getC_Region_ID(),trx);
 
 			MLBROpenItem[] oi = null;
@@ -634,8 +625,11 @@ public class MLBRBoleto extends X_LBR_Boleto
 					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
 					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
 					newBoleto.setC_BankAccount_ID(BankA.getC_BankAccount_ID()); //Conta Bancária
-					//
-					newBoleto.setlbr_Cessionary(Org.getDescription()); //Nome do Cedente (Descrição da Empresa)
+					newBoleto.setAD_Org_ID(BankA.getAD_Org_ID());
+					// Buscar nome da Empresa do campo Razão Social na Janela
+					// Organização Aba Informações da Organização
+					MOrgInfo orginf = MOrgInfo.get(Env.getCtx(), Org.getAD_Org_ID(), trx);
+					newBoleto.setlbr_Cessionary(orginf.get_ValueAsString("lbr_LegalEntity")); //Nome do Cedente (Descrição da Empresa)
 					//
 					newBoleto.setlbr_ReceiverName(BPartner.getName()); //Nome do Sacado
 					newBoleto.setAddress1(Location.getAddress1()); //Endereço
@@ -700,7 +694,8 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 					//Nota Fiscal
 					Integer LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
-					if (LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
+					if (MSysConfig.getBooleanValue("LBR_PRINTNFENOONBILLING", true) 
+							&& LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
 						MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
 						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
 					}

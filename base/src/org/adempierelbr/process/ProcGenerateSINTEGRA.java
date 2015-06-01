@@ -439,7 +439,7 @@ public class ProcGenerateSINTEGRA extends SvrProcess
 							nfLine.getQty(),
 							nfLine.getLineTotalAmt(),
 							Env.ZERO,				//	FIXME	Desconto
-							nfLine.getICMSBaseAmt(),
+							nfLine.getICMSBase(),
 							nfLine.getICMSSTBase(),
 							nfLine.getIPIAmt(),
 							nfLine.getICMSRate()));

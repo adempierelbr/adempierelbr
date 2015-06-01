@@ -92,6 +92,137 @@ public interface I_LBR_TaxLine
 	  */
 	public boolean isActive();
 
+    /** Column name IsTaxIncluded */
+    public static final String COLUMNNAME_IsTaxIncluded = "IsTaxIncluded";
+
+	/** Set Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public void setIsTaxIncluded (boolean IsTaxIncluded);
+
+	/** Get Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public boolean isTaxIncluded();
+
+    /** Column name LBR_LegalMessage_ID */
+    public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
+
+	/** Set Legal Message.
+	  * Defines the Legal Message
+	  */
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID);
+
+	/** Get Legal Message.
+	  * Defines the Legal Message
+	  */
+	public int getLBR_LegalMessage_ID();
+
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
+
+    /** Column name LBR_TaxBaseType_ID */
+    public static final String COLUMNNAME_LBR_TaxBaseType_ID = "LBR_TaxBaseType_ID";
+
+	/** Set Tax Base Type	  */
+	public void setLBR_TaxBaseType_ID (int LBR_TaxBaseType_ID);
+
+	/** Get Tax Base Type	  */
+	public int getLBR_TaxBaseType_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxBaseType getLBR_TaxBaseType() throws RuntimeException;
+
+    /** Column name LBR_TaxLine_ID */
+    public static final String COLUMNNAME_LBR_TaxLine_ID = "LBR_TaxLine_ID";
+
+	/** Set Tax Line.
+	  * Primary key table LBR_TaxLine
+	  */
+	public void setLBR_TaxLine_ID (int LBR_TaxLine_ID);
+
+	/** Get Tax Line.
+	  * Primary key table LBR_TaxLine
+	  */
+	public int getLBR_TaxLine_ID();
+
+    /** Column name LBR_TaxListAmt */
+    public static final String COLUMNNAME_LBR_TaxListAmt = "LBR_TaxListAmt";
+
+	/** Set Tax List Amt	  */
+	public void setLBR_TaxListAmt (BigDecimal LBR_TaxListAmt);
+
+	/** Get Tax List Amt	  */
+	public BigDecimal getLBR_TaxListAmt();
+
+    /** Column name LBR_TaxName_ID */
+    public static final String COLUMNNAME_LBR_TaxName_ID = "LBR_TaxName_ID";
+
+	/** Set Tax Name.
+	  * Primary key table LBR_TaxName
+	  */
+	public void setLBR_TaxName_ID (int LBR_TaxName_ID);
+
+	/** Get Tax Name.
+	  * Primary key table LBR_TaxName
+	  */
+	public int getLBR_TaxName_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
+
+    /** Column name LBR_TaxStatus_ID */
+    public static final String COLUMNNAME_LBR_TaxStatus_ID = "LBR_TaxStatus_ID";
+
+	/** Set Tax Status	  */
+	public void setLBR_TaxStatus_ID (int LBR_TaxStatus_ID);
+
+	/** Get Tax Status	  */
+	public int getLBR_TaxStatus_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxStatus getLBR_TaxStatus() throws RuntimeException;
+
+    /** Column name LBR_Tax_ID */
+    public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
+
+	/** Set Brazilian Tax.
+	  * Primary key table LBR_Tax
+	  */
+	public void setLBR_Tax_ID (int LBR_Tax_ID);
+
+	/** Get Brazilian Tax.
+	  * Primary key table LBR_Tax
+	  */
+	public int getLBR_Tax_ID();
+
+	public org.adempierelbr.model.I_LBR_Tax getLBR_Tax() throws RuntimeException;
+
+    /** Column name Qty */
+    public static final String COLUMNNAME_Qty = "Qty";
+
+	/** Set Quantity.
+	  * Quantity
+	  */
+	public void setQty (BigDecimal Qty);
+
+	/** Get Quantity.
+	  * Quantity
+	  */
+	public BigDecimal getQty();
+
+    /** Column name Updated */
+    public static final String COLUMNNAME_Updated = "Updated";
+
+	/** Get Updated.
+	  * Date this record was updated
+	  */
+	public Timestamp getUpdated();
+
+    /** Column name UpdatedBy */
+    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
+
+	/** Get Updated By.
+	  * User who updated this records
+	  */
+	public int getUpdatedBy();
+
     /** Column name lbr_PostTax */
     public static final String COLUMNNAME_lbr_PostTax = "lbr_PostTax";
 
@@ -144,49 +275,6 @@ public interface I_LBR_TaxLine
 	  */
 	public BigDecimal getlbr_TaxBaseAmt();
 
-    /** Column name LBR_Tax_ID */
-    public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
-
-	/** Set Brazilian Tax.
-	  * Primary key table LBR_Tax
-	  */
-	public void setLBR_Tax_ID (int LBR_Tax_ID);
-
-	/** Get Brazilian Tax.
-	  * Primary key table LBR_Tax
-	  */
-	public int getLBR_Tax_ID();
-
-	public org.adempierelbr.model.I_LBR_Tax getLBR_Tax() throws RuntimeException;
-
-    /** Column name LBR_TaxLine_ID */
-    public static final String COLUMNNAME_LBR_TaxLine_ID = "LBR_TaxLine_ID";
-
-	/** Set Tax Line.
-	  * Primary key table LBR_TaxLine
-	  */
-	public void setLBR_TaxLine_ID (int LBR_TaxLine_ID);
-
-	/** Get Tax Line.
-	  * Primary key table LBR_TaxLine
-	  */
-	public int getLBR_TaxLine_ID();
-
-    /** Column name LBR_TaxName_ID */
-    public static final String COLUMNNAME_LBR_TaxName_ID = "LBR_TaxName_ID";
-
-	/** Set Tax Name.
-	  * Primary key table LBR_TaxName
-	  */
-	public void setLBR_TaxName_ID (int LBR_TaxName_ID);
-
-	/** Get Tax Name.
-	  * Primary key table LBR_TaxName
-	  */
-	public int getLBR_TaxName_ID();
-
-	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
-
     /** Column name lbr_TaxRate */
     public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
 
@@ -199,20 +287,4 @@ public interface I_LBR_TaxLine
 	  * Indicates the Tax Rate
 	  */
 	public BigDecimal getlbr_TaxRate();
-
-    /** Column name Updated */
-    public static final String COLUMNNAME_Updated = "Updated";
-
-	/** Get Updated.
-	  * Date this record was updated
-	  */
-	public Timestamp getUpdated();
-
-    /** Column name UpdatedBy */
-    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
-
-	/** Get Updated By.
-	  * User who updated this records
-	  */
-	public int getUpdatedBy();
 }

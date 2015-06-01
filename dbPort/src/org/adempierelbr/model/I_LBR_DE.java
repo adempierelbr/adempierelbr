@@ -148,12 +148,12 @@ public interface I_LBR_DE
     public static final String COLUMNNAME_lbr_CHCEmb = "lbr_CHCEmb";
 
 	/** Set No. Conhecimento de Embarque.
-	  * Número do Conhecimento de Embarque
+	  * NÃºmero do Conhecimento de Embarque
 	  */
 	public void setlbr_CHCEmb (String lbr_CHCEmb);
 
 	/** Get No. Conhecimento de Embarque.
-	  * Número do Conhecimento de Embarque
+	  * NÃºmero do Conhecimento de Embarque
 	  */
 	public String getlbr_CHCEmb();
 

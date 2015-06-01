@@ -1,1374 +1,2260 @@
 package org.adempierelbr.sped.efd;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
-import org.adempierelbr.model.MLBRApuracaoICMS;
-import org.adempierelbr.model.MLBRApuracaoIPI;
-import org.adempierelbr.model.MLBRDE;
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
-import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.MLBRNotaFiscalLine;
-import org.adempierelbr.model.X_LBR_ApuracaoICMSLine;
-import org.adempierelbr.model.X_LBR_ApuracaoIPILine;
-import org.adempierelbr.model.X_LBR_NFDI;
+import org.adempierelbr.model.MLBRSalesCardTotal;
+import org.adempierelbr.model.MLBRTaxAssessment;
+import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
 import org.adempierelbr.sped.CounterSped;
-import org.adempierelbr.sped.RegSped;
-import org.adempierelbr.sped.ecd.ECDUtil;
-import org.adempierelbr.sped.efd.beans.R0000;
-import org.adempierelbr.sped.efd.beans.R0005;
-import org.adempierelbr.sped.efd.beans.R0100;
-import org.adempierelbr.sped.efd.beans.R0150;
-import org.adempierelbr.sped.efd.beans.R0190;
-import org.adempierelbr.sped.efd.beans.R0200;
-import org.adempierelbr.sped.efd.beans.R0300;
-import org.adempierelbr.sped.efd.beans.R0305;
-import org.adempierelbr.sped.efd.beans.R0500;
-import org.adempierelbr.sped.efd.beans.R0600;
-import org.adempierelbr.sped.efd.beans.R1100;
-import org.adempierelbr.sped.efd.beans.R9900;
-import org.adempierelbr.sped.efd.beans.RC100;
-import org.adempierelbr.sped.efd.beans.RC120;
-import org.adempierelbr.sped.efd.beans.RC130;
-import org.adempierelbr.sped.efd.beans.RC170;
-import org.adempierelbr.sped.efd.beans.RC172;
-import org.adempierelbr.sped.efd.beans.RC190;
-import org.adempierelbr.sped.efd.beans.RC500;
-import org.adempierelbr.sped.efd.beans.RC510;
-import org.adempierelbr.sped.efd.beans.RC590;
-import org.adempierelbr.sped.efd.beans.RD100;
-import org.adempierelbr.sped.efd.beans.RD110;
-import org.adempierelbr.sped.efd.beans.RD190;
-import org.adempierelbr.sped.efd.beans.RD500;
-import org.adempierelbr.sped.efd.beans.RD510;
-import org.adempierelbr.sped.efd.beans.RD590;
-import org.adempierelbr.sped.efd.beans.RE110;
-import org.adempierelbr.sped.efd.beans.RE111;
-import org.adempierelbr.sped.efd.beans.RE210;
-import org.adempierelbr.sped.efd.beans.RE250;
-import org.adempierelbr.sped.efd.beans.RE510;
-import org.adempierelbr.sped.efd.beans.RE520;
-import org.adempierelbr.sped.efd.beans.RE530;
-import org.adempierelbr.sped.efd.beans.RG110;
-import org.adempierelbr.sped.efd.beans.RG125;
-import org.adempierelbr.sped.efd.beans.RG130;
-import org.adempierelbr.sped.efd.beans.RG140;
+import org.adempierelbr.sped.SPEDUtil;
+import org.adempierelbr.sped.efd.bean.R0000;
+import org.adempierelbr.sped.efd.bean.R0001;
+import org.adempierelbr.sped.efd.bean.R0005;
+import org.adempierelbr.sped.efd.bean.R0100;
+import org.adempierelbr.sped.efd.bean.R0150;
+import org.adempierelbr.sped.efd.bean.R0190;
+import org.adempierelbr.sped.efd.bean.R0200;
+import org.adempierelbr.sped.efd.bean.R0400;
+import org.adempierelbr.sped.efd.bean.R0460;
+import org.adempierelbr.sped.efd.bean.R0500;
+import org.adempierelbr.sped.efd.bean.R0990;
+import org.adempierelbr.sped.efd.bean.R1001;
+import org.adempierelbr.sped.efd.bean.R1010;
+import org.adempierelbr.sped.efd.bean.R1600;
+import org.adempierelbr.sped.efd.bean.R1990;
+import org.adempierelbr.sped.efd.bean.R9001;
+import org.adempierelbr.sped.efd.bean.R9900;
+import org.adempierelbr.sped.efd.bean.R9990;
+import org.adempierelbr.sped.efd.bean.R9999;
+import org.adempierelbr.sped.efd.bean.RC001;
+import org.adempierelbr.sped.efd.bean.RC100;
+import org.adempierelbr.sped.efd.bean.RC120;
+import org.adempierelbr.sped.efd.bean.RC170;
+import org.adempierelbr.sped.efd.bean.RC190;
+import org.adempierelbr.sped.efd.bean.RC195;
+import org.adempierelbr.sped.efd.bean.RC500;
+import org.adempierelbr.sped.efd.bean.RC590;
+import org.adempierelbr.sped.efd.bean.RC990;
+import org.adempierelbr.sped.efd.bean.RD001;
+import org.adempierelbr.sped.efd.bean.RD100;
+import org.adempierelbr.sped.efd.bean.RD110;
+import org.adempierelbr.sped.efd.bean.RD190;
+import org.adempierelbr.sped.efd.bean.RD500;
+import org.adempierelbr.sped.efd.bean.RD590;
+import org.adempierelbr.sped.efd.bean.RD990;
+import org.adempierelbr.sped.efd.bean.RE001;
+import org.adempierelbr.sped.efd.bean.RE100;
+import org.adempierelbr.sped.efd.bean.RE110;
+import org.adempierelbr.sped.efd.bean.RE111;
+import org.adempierelbr.sped.efd.bean.RE116;
+import org.adempierelbr.sped.efd.bean.RE200;
+import org.adempierelbr.sped.efd.bean.RE210;
+import org.adempierelbr.sped.efd.bean.RE250;
+import org.adempierelbr.sped.efd.bean.RE500;
+import org.adempierelbr.sped.efd.bean.RE510;
+import org.adempierelbr.sped.efd.bean.RE520;
+import org.adempierelbr.sped.efd.bean.RE990;
+import org.adempierelbr.sped.efd.bean.RG001;
+import org.adempierelbr.sped.efd.bean.RG990;
+import org.adempierelbr.sped.efd.bean.RH001;
+import org.adempierelbr.sped.efd.bean.RH005;
+import org.adempierelbr.sped.efd.bean.RH010;
+import org.adempierelbr.sped.efd.bean.RH990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
-import org.adempierelbr.util.TaxBR;
 import org.adempierelbr.util.TextUtil;
-import org.compiere.model.MAsset;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
-import org.compiere.model.MCountry;
+import org.compiere.model.MCity;
 import org.compiere.model.MElementValue;
 import org.compiere.model.MLocation;
-import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPeriod;
+import org.compiere.model.MPaySchedule;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
-import org.compiere.model.MTable;
 import org.compiere.model.MUOM;
 import org.compiere.model.MUser;
-import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	Utilitarios para o EFD
- *
+ * Utilitarios para o EFD
+ * 
  * @author Mario Grigioni, mgrigioni
  * @version $Id: EFDUtil.java, 20/01/2011, 09:50:00, mgrigioni
+ * 
+ * @author Pablo Boff Pigozzo
+ * @version $ 08/08/2012, 15:30 pablobp4 $
+ * 
+ * @author Priscila Pinheiro, Kenos
+ * @version $ 02/02/2013, 15:30 ppinheiro $
  */
-public class EFDUtil{
+public class EFDUtil {
 
-	/**	Logger			*/
+	/**
+	 * Logger
+	 */
 	private static CLogger log = CLogger.getCLogger(EFDUtil.class);
 
-	private static Properties ctx = null;
-	private static String     trx = null;
-	
-	private static int AD_Org_ID = 0;
+	/**
+	 * TODO: ALTERAR E DEIXAR DINAMICO
+	 */
+	private static final String COD_VER = "009";	// A Partir de Jan/12
+	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
+	private static final String IND_PERFIL = "A"; 	// Perfil A
+	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
+	private static final String IND_APUR = "0"; 	// Mensal (IPI - RC170)
 
-	public static void setEnv(Properties ctx, String trx, int AD_Org_ID){
-		EFDUtil.AD_Org_ID = AD_Org_ID;
-		EFDUtil.ctx = ctx;
-		EFDUtil.trx = trx;
-	}
+	// Código da natureza da conta/grupo de contas
+	public static final String CONTA_ATIVO        = "01";
+	public static final String CONTA_PASSIVO      = "02";
+	public static final String PATRIMONIO_LIQUIDO = "03";
+	public static final String CONTA_RESULTADO    = "04";
+	public static final String CONTA_COMPENSACAO  = "05";
+	public static final String OUTRAS             = "09";
+	
+	
+	// 
+	private static List<String> CFOP_DEVOL_ST = new ArrayList<String>(Arrays.asList("1410", "1411", "1414", "1415", "1660", 
+			"1661", "1662", "2410", "2411", "2414", "2415", "2660", "2661", "2662"));
+	
 
-	public static Properties getCtx(){
-		return ctx;
-	}
-
-	public static String get_TrxName(){
-		return trx;
+	/**
+	 * Verificar se é CFOP de devolução
+	 * 
+	 * Utilizado para apurar ST
+	 *
+	 *@param CFOP
+	 */
+	public static boolean isCFOPDevolST(String CFOP)
+	{
+		// 
+		CFOP = TextUtil.toNumeric(CFOP);
+		
+		//
+		for (String x : CFOP_DEVOL_ST)
+			if(x.equals(CFOP))
+				return true;
+			
+		// 
+		return false;
+		
 	}
 	
-	public static String getCOD_VERSAO(Timestamp dateFrom){
-		
-		if (dateFrom == null){
-			log.severe("DATA INVÁLIDA");
-			return null;
-		}
-		
-		if (dateFrom.before(TextUtil.stringToTime("01/01/2011", "dd/MM/yyyy"))){
-			return "003"; //ANTES DE 2011 - VERSAO 003
-		}
-		else{
-			return "004"; //A PARTIR DE 2011 - VERSAO 004
-		}
-	}
 	
-	public static String getNFHeaderReg(String nfModel){
+	/**
+	 * Retornar o bloco de registro ao qual o modelo de documento pertence
+	 * 
+	 * @param nfModel
+	 * @return C100, C400, C500, D100, D500
+	 */
+	public static String getBlocoNFModel(String nfModel) {
+
 		
+		//
 		String nfReg = "";
 		
-		//BLOCO C100 - Nota Fiscal Produto
-		if (nfModel.equals("01") || nfModel.equals("1B") ||
-			nfModel.equals("04") || nfModel.equals("55")){
+		/*
+		 * BLOCO C100 - Nota Fiscal Produto
+		 */
+		if (nfModel.equals("01") || nfModel.equals("1B")
+				|| nfModel.equals("04") || nfModel.equals("55")) {
 			nfReg = "C100";
 		}
-		//BLOCO C500 - Nota Fiscal Energia Elétrica
-		else if (nfModel.equals("06") || nfModel.equals("28") ||
-				 nfModel.equals("29")){
+
+		/*
+		 * BLOCO C400 - Cupom Fiscal
+		 */
+		else if (nfModel.equals("02") || nfModel.equals("2D")) {
+			nfReg = "C400";
+		}
+
+		/*
+		 * BLOCO C500 - Nota Fiscal Energia Elétrica
+		 */
+		else if (nfModel.equals("06") || nfModel.equals("28")
+				|| nfModel.equals("29")) {
 			nfReg = "C500";
 		}
-		//BLOCO D100 - Serviço de Transporte
-		else if (nfModel.equals("07") || nfModel.equals("08") ||
-				 nfModel.equals("8B") || nfModel.equals("09") ||
-				 nfModel.equals("10") || nfModel.equals("11") ||
-				 nfModel.equals("26") || nfModel.equals("27") ||
-				 nfModel.equals("57")){
+
+		/*
+		 * BLOCO D100 - Serviço de Transporte
+		 */
+		else if (nfModel.equals("07") || nfModel.equals("08")
+				|| nfModel.equals("8B") || nfModel.equals("09")
+				|| nfModel.equals("10") || nfModel.equals("11")
+				|| nfModel.equals("26") || nfModel.equals("27")
+				|| nfModel.equals("57")) {
 			nfReg = "D100";
 		}
-		//BLOCO D500 - Serviço de Telecomunicações
-		else if (nfModel.equals("21") || nfModel.equals("22")){
+
+		/*
+		 * BLOCO D500 - Serviço de Telecomunicações
+		 */
+		else if (nfModel.equals("21") || nfModel.equals("22")) {
 			nfReg = "D500";
 		}
-		
+
 		return nfReg;
-	} //getNFHeaderReg
+
+	} // getNFHeaderReg
 	
-	public static R0000 createR0000(Timestamp dateFrom, Timestamp dateTo){
-		
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(), get_TrxName());
-
-		String COD_VER    = getCOD_VERSAO(dateFrom);
-		String COD_FIN    = "0"; //REMESSA ORIGINAL //FIXME
-		String NOME       = orgInfo.get_ValueAsString("lbr_LegalEntity");
-		String CNPJ       = orgInfo.get_ValueAsString("lbr_CNPJ");
-		String UF         = orgLoc.getC_Region().getName();
-		String IE         = orgInfo.get_ValueAsString("lbr_IE");
-		String COD_MUN    = BPartnerUtil.getCityCode(orgLoc);
-		String IM         = orgInfo.get_ValueAsString("lbr_CCM");
-		String SUFRAMA    = orgInfo.get_ValueAsString("lbr_Suframa");
-		String IND_PERFIL = orgInfo.get_ValueAsString("lbr_IndPerfil");
-		String IND_ATIV   = orgInfo.get_ValueAsString("lbr_IndAtividade");
-
-		return new R0000(COD_VER, COD_FIN, dateFrom, dateTo, NOME, CNPJ, null, UF,
-				IE, COD_MUN, IM, SUFRAMA, IND_PERFIL, IND_ATIV);
-	} //createR0000
 	
-	public static R0005 createR0005(){
-		
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(), get_TrxName());
-
-		String FANTASIA = orgInfo.get_ValueAsString("lbr_Fantasia");
-		String CEP      = orgLoc.getPostal();
-		String END      = orgLoc.getAddress1();
-		String NUM      = orgLoc.getAddress2();
-		String COMPL    = orgLoc.getAddress4();
-		String BAIRRO   = orgLoc.getAddress3();
-		String FONE     = orgInfo.get_ValueAsString("Phone"); 
-		String FAX      = orgInfo.get_ValueAsString("Fax"); 
-		String EMAIL    = ""; //TODO EMAIL DE CONTATO
-
-		return new R0005(FANTASIA,CEP,END,NUM,COMPL,BAIRRO,FONE,FAX,EMAIL);
-	} //createR0005
 	
-	public static R0100 createR0100(){
+	/**
+	 * Tratar NF Model. 
+	 * 
+	 * Obs: Se o modelo do documento fiscal é null ou vazio, então
+	 * verificar se é NF-e, se sim, colocar 55 NF-e, senão, colocar 01 NF Normal  
+	 * 
+	 * @param nfModel
+	 * @param nfID
+	 * @return
+	 */
+	public static String getCOD_MOD(MLBRFactFiscal factFiscal)
+	{
+		//
+		String nfModel = factFiscal.getlbr_NFModel();
 		
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
-		
-		int BPAccountant_ID = orgInfo.get_ValueAsInt("LBR_BP_Accountant_ID");
-		if (BPAccountant_ID <= 0){
-			log.severe("EFD R0100 - CONTADOR NAO CADASTRADO");
-			return null;
+		//
+		if (nfModel == null || nfModel.isEmpty())
+		{
+			if(factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
+				nfModel = "55"; // NF-e
+			else
+				nfModel = "01"; // NF
 		}
 		
-		MBPartner bpContador = new MBPartner(getCtx(),BPAccountant_ID,get_TrxName());
-		MBPartnerLocation bpcontLoc = bpContador.getPrimaryC_BPartner_Location();
-		if (bpcontLoc == null){
-			log.severe("EFD R0100 - CONTADOR SEM ENDERECO CADASTRADO");
-			return null;
-		}
-				
-		MLocation contLoc = new MLocation(getCtx(),bpcontLoc.getC_Location_ID(),get_TrxName());
+		return nfModel;
+	}
 
-		String NOME = bpContador.getName();
-		String CPF  = bpContador.get_ValueAsString("lbr_CPF");
-		String CRC  = bpContador.get_ValueAsString("lbr_CRC");
-		String CNPJ = "";
-		if (bpContador.get_ValueAsString("lbr_BPTypeBR").equals("PJ")){
-			CNPJ = BPartnerUtil.getCNPJ(bpContador, bpcontLoc);
-		}
+	
+	/**
+	 * Retornar Código do Participante
+	 * 
+	 * TODO: VERIFICAR FORMA DE DEIXÁ-LO UNICO MESMO COM MAIS DE UM ENDERECO
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getCOD_PART(MLBRFactFiscal factFiscal) throws Exception
+	{
 		
-		String CEP      = contLoc.getPostal();
-		String END      = contLoc.getAddress1();
-		String NUM      = contLoc.getAddress2();
-		String COMPL    = contLoc.getAddress4();
-		String BAIRRO   = contLoc.getAddress3();
-		String FONE     = bpcontLoc.getPhone();
-		String FAX      = bpcontLoc.getFax(); 
-		String EMAIL    = "";
+		// Código do PN
+		return TextUtil.retiraEspecial(factFiscal.getC_BPartner().getValue());
 		
-		int contact_ID = bpContador.getPrimaryAD_User_ID();
-		if (contact_ID > 0){
-			MUser contact = new MUser(getCtx(),contact_ID,get_TrxName());
-			EMAIL = contact.getEMail();
-		}
+	}
+	
+	
+	/**
+	 * Retornar Código da Situação do Documento
+	 * 
+	 * Tabela 4.1.2
+	 * 
+	 * Utilizado o código '08' para regime especial ou norma específica 
+	 * de acordo com o manual do SPED, descrição do registro C100. 
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getCOD_SIT(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// documento regular
+		String cod_sit = "00";
+
+		// cancelada = 02
+		if (factFiscal.isCancelled())
+			if ("110".equals (factFiscal.getLBR_NotaFiscal().getlbr_NFeStatus()))
+				cod_sit = "04";	//	Denegado;
+			
+			else if (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty())
+				cod_sit = "02";	//	Cancelado
+			
+			else
+				cod_sit = "05";	//	Inutilizado
+		
+		// regime especial ou norma especifica. CFOP 5/6.929
+
+		else if(factFiscal.getlbr_CFOPName() != null && (factFiscal.getlbr_CFOPName().equals("5.929")
+				|| factFiscal.getlbr_CFOPName().equals("6.929")))
+			cod_sit = "08";
+		
+		// regime especial ou norma específica: conhecimento de tranporte de terceiros
+		else if(getBlocoNFModel(getCOD_MOD(factFiscal)).startsWith("D")
+				&& !factFiscal.islbr_IsOwnDocument())
+			cod_sit = "08";
+		
+		//
+		return cod_sit;
+	}
+	
+	
+	/**
+	 * Retornar o Indicador de Frete
+	 * 
+	 * Obs.: A partir de 01/01/2012 passará a ser: Indicador do tipo do frete:
+	 * 0- Por conta do emitente;
+	 * 1- Por conta do destinatário/remetente;
+	 * 2- Por conta de terceiros; 
+	 * 9- Sem cobrança de frete.
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getIND_FRT(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// null = sem frete
+		if(factFiscal.getFreightCostRule() == null)
+			return "9";
+		
+		// incluso na nota (corpo da NF)
+		if(factFiscal.getFreightCostRule().equals("I"))
+			return "0";
+		
+		// excluso (conhecimento de frete)
+		else if(factFiscal.getFreightCostRule().equals("E"))
+			return "1";
+		
+		// por conta de terceiros
+		else if(factFiscal.getFreightCostRule().equals("T"))
+			return "2";
+		
+		// sem frete
+		else 
+			return "9";
+		
+	}
+	
+	
+	/**
+	 * Retornar o Indicador de Pgto
+	 * 
+	 * 0- À vista;
+	 * 1- A prazo;
+	 * 2 - Outros
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getIND_PGTO(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// sem fatura - ???
+		if(factFiscal.getC_Invoice_ID() <= 0)
+			return "2";
+		
+		// condição de pgto da fatura
+		MPaymentTerm pt = new MPaymentTerm(factFiscal.getCtx(), 
+				factFiscal.getC_Invoice().getC_PaymentTerm_ID(), 
+				factFiscal.get_TrxName());
+		MPaySchedule[] pts = pt.getSchedule(false);
+		
+		// se tiver dias devidos e/ou parcelas, então é a prazo
+		if (pt.getNetDays() > 0	|| (pts != null && pts.length > 0))
+			return "1";
+		
+		//
+		return "0";
+		
+	}
+	
+	
+	/**
+	 * Retornar a Série da NF
+	 * 
+	 * Somente retornar a série de NF-e's de emissão própria, pois 
+	 * não está tendo entrada de séries de NF-e's de terceiros. 
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getSER(MLBRFactFiscal factFiscal) throws Exception
+	{
+		if(factFiscal.islbr_IsOwnDocument() 
+				&& factFiscal.getlbr_NFeProt() != null 
+				&& !factFiscal.getlbr_NFeProt().isEmpty())
+			return factFiscal.getlbr_NFSerie();
 		else
-			log.warning("EFD R0100 - CONTADOR SEM USUARIO DE CONTATO");
-		
-		String COD_MUN  = BPartnerUtil.getCityCode(contLoc);
-
-		return new R0100(NOME,CPF,CRC,CNPJ,CEP,END,NUM,COMPL,BAIRRO,FONE,FAX,EMAIL,COD_MUN);
-	} //createR0100
+			return "";
+	}
 	
-	public static R0150 createR0150(MLBRNotaFiscal nf){
+	/**
+	 * Retornar o código de natureza da conta de acordo com o tipo no sistema
+	 * 
+	 * Código da natureza da conta/grupo de contas: 
+	 * 01 - Contas de ativo;
+	 * 02 - Contas de passivo;
+	 * 03 - Patrimônio líquido;
+	 * 04 - Contas de resultado;
+	 * 05 - Contas de compensação; 
+	 * 09 - Outras.
+	 * 
+	 * @param accountType
+	 * @return
+	 */
+	public static String getCOD_NAT(String accountType){
 		
-		if (nf.isCancelled())
+		if (accountType == null || accountType.isEmpty())
+			return OUTRAS;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Asset))
+			return CONTA_ATIVO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Liability))
+			return CONTA_PASSIVO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_OwnerSEquity))
+			return PATRIMONIO_LIQUIDO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Revenue))
+			return CONTA_RESULTADO;
+		
+		if (accountType.equals(MElementValue.ACCOUNTTYPE_Expense))
+			return CONTA_RESULTADO;
+		
+		return OUTRAS;
+	} //getCOD_NAT
+	
+	
+	/**
+	 * Verificar necessidade de criar o registros 0150, 0190, 0200
+	 * 
+	 *  Obs.: Se o registro RC100, ou RD100 for Cancelado, Denegado, Inutilizado, 
+	 *  Emitido em Regime Especial ou de Emissão Própria, não é necessário
+	 *  preencher os registros filhos. OBSERVAR EXCEÇÕES DOS REGISTROS RC100 E D100
+	 * 
+	 * @param factFiscal Fato fiscal gerador do registro
+	 * @param reg Registro que será gerado. Ex.: R0150, R0190...
+	 * @return true/false
+	 */
+	public static boolean needCreateR0s(MLBRFactFiscal factFiscal, Class reg) throws Exception
+	{
+		
+		// 
+		if(factFiscal == null)
+			return false;
+		
+		// header - C100, D100...
+		String header = getBlocoNFModel(getCOD_MOD(factFiscal));
+		
+		// COD_SIT
+		String COD_SIT = getCOD_SIT(factFiscal);
+		
+		// IsNF-e
+		boolean isNFe = (factFiscal.getlbr_NFeID() != null && !factFiscal.getlbr_NFeID().isEmpty()) && factFiscal.islbr_IsOwnDocument();
+		
+		// C100
+		if(header.equals("C100"))
+		{
+			/*
+			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
+			 */
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04") || COD_SIT.equals("05")) 
+				return false;
+				
+			
+			/*
+			 * Se for em regime especial ou NF-e de emissão própria, criar só o Parceiro de Negócios
+			 */
+			if((COD_SIT.equals("08") || isNFe) && !reg.equals(R0150.class))
+				return false;			
+		}
+		
+		// D100
+		else if(header.equals("D100"))
+		{
+			/*
+			 * Se for cancelada, denegada ou inutilizada, não deixar criar nada
+			 */
+			if(COD_SIT.equals("02") || COD_SIT.equals("03") || COD_SIT.equals("04") || COD_SIT.equals("05")) 
+				return false;
+				
+			
+			/*
+			 * Se for em regime especial, criar só o Parceiro de Negócios
+			 */
+			if(COD_SIT.equals("08") && !reg.equals(R0150.class))
+				return false;	
+		}
+
+		// se não se enquadrar nas situações acima, criar registros
+		return true;
+	}
+	
+	
+	/**
+	 * REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA ENTIDADE
+	 * 
+	 * @param dateFrom
+	 * @param dateTo
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+
+	public static R0000 createR0000(Properties ctx, Timestamp dateFrom, Timestamp dateTo, int AD_Org_ID, String trxName) throws Exception {
+
+		MOrgInfo oi = MOrgInfo.get(ctx, AD_Org_ID, trxName);
+		I_W_AD_OrgInfo oiW = POWrapper.create(oi, I_W_AD_OrgInfo.class);
+		
+		
+		//
+		R0000 reg = new R0000();
+		reg.setCOD_VER(COD_VER);
+		reg.setCOD_FIN(COD_FIN);
+		reg.setDT_INI(dateFrom);
+		reg.setDT_FIN(dateTo);
+		reg.setNOME(oiW.getlbr_LegalEntity());
+		reg.setCNPJ(oiW.getlbr_CNPJ());
+		reg.setCPF(null);
+		reg.setUF(oiW.getC_Location().getC_Region().getName());
+		reg.setIE(oiW.getlbr_IE());
+		
+		//
+		MCity city = new MCity(ctx, oiW.getC_Location().getC_City_ID(), trxName);
+		reg.setCOD_MUN(city.get_ValueAsString("lbr_CityCode"));
+		
+		//
+		reg.setIM(oiW.getlbr_CCM());
+		reg.setSUFRAMA(oiW.getlbr_Suframa());
+		reg.setIND_PERFIL(oi.get_ValueAsString("lbr_IndPerfil"));
+
+		// 0 - Industria ou equiparado a Industrial / 1 - Outros
+		reg.setIND_ATIV(oi.get_ValueAsString("lbr_IndAtividade").equals("0") ? "0" : "1");
+
+		// return
+		return reg;
+	}
+
+	/**
+	 * REGISTRO 0001: ABERTURA DO BLOCO 0
+	 * 
+	 * @param hasInfo tem informação ou não
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0001 createR0001(boolean hasInfo) throws Exception
+	{
+		R0001 reg = new R0001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO 0005: DADOS COMPLEMENTARES DA ENTIDADE
+	 * 
+	 * @param factFiscal
+	 * @return
+	 */
+	public static R0005 createR0005(Properties ctx, int AD_Org_ID, String trxName) throws Exception
+	{
+		// 
+		I_W_AD_OrgInfo oiW = POWrapper.create(MOrgInfo.get(ctx, AD_Org_ID, trxName), I_W_AD_OrgInfo.class);
+		
+		//
+		R0005 reg = new R0005();
+		reg.setFANTASIA(oiW.getlbr_Fantasia());
+		reg.setCEP(oiW.getC_Location().getPostal());
+		reg.setEND(oiW.getC_Location().getAddress1());
+		reg.setNUM(oiW.getC_Location().getAddress2());
+		reg.setCOMPL(oiW.getC_Location().getAddress4());
+		reg.setBAIRRO(oiW.getC_Location().getAddress3());
+		reg.setFONE(oiW.getPhone());
+		reg.setEMAIL(oiW.getEMail());
+		
+		// return
+		return reg;			
+	}
+
+
+
+	/**
+	 * REGISTRO 0100: DADOS DO CONTABILISTA
+	 * @deprecated see {@link SPEDUtil#fillR0100(org.adempierelbr.sped.bean.I_R0100, Properties, int, String)}
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0100 createR0100(Properties ctx, int AD_Org_ID, String trxName) throws Exception
+	{
+
+		// carregar contador e endereço
+		MBPartner bpContador = new MBPartner(ctx, MOrgInfo.get(ctx, AD_Org_ID, trxName).get_ValueAsInt("LBR_BP_Accountant_ID"),	trxName);
+		MBPartnerLocation bpcontLoc = bpContador.getPrimaryC_BPartner_Location();
+		MLocation contLoc = new MLocation(ctx, bpcontLoc.getC_Location_ID(), trxName);
+	
+		// se não tiver, então deixar o erro para o annotation
+		if (bpContador == null || bpcontLoc == null || contLoc == null) 
+			return null;
+
+		// 
+		R0100 reg = new R0100();
+		reg.setNOME(bpContador.getName());
+		reg.setCPF(bpContador.get_ValueAsString("lbr_CPF"));
+		reg.setCRC(bpContador.get_ValueAsString("lbr_CRC"));
+		reg.setCNPJ(bpContador.get_ValueAsString("lbr_CNPJ"));
+		reg.setCEP(contLoc.getPostal());
+		reg.setEND(contLoc.getAddress1());
+		reg.setNUM(contLoc.getAddress2());
+		reg.setCOMPL(contLoc.getAddress4());
+		reg.setBAIRRO(contLoc.getAddress3());
+		reg.setFONE(bpcontLoc.getPhone());
+		reg.setFAX(bpcontLoc.getFax());
+		
+		// email
+		if (bpContador.getPrimaryAD_User_ID() > 0) 
+			reg.setEMAIL(MUser.get(ctx, bpContador.getPrimaryAD_User_ID()).getEMail());
+
+		// código do municipio do IBGE
+		reg.setCOD_MUN(BPartnerUtil.getCityCode(contLoc));
+
+		//
+		return reg;				
+				
+	} // createR0100
+	
+	
+	
+	/**
+	 * REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * 
+	 * @throws Exception
+	 */
+	public static R0150 createR0150(MLBRFactFiscal factFiscal) throws Exception
+	{
+		MLocation contLoc = new MLocation(factFiscal.getCtx(), factFiscal.getC_BPartner_Location().getC_Location_ID(), null);
+		
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0150.class))
 			return null;
 		
-		String COD_PART  = TextUtil.toNumeric(nf.getlbr_BPCNPJ()) + TextUtil.toNumeric(nf.getlbr_BPIE());
-		if (COD_PART == null || COD_PART.trim().equals("")){
-			MBPartner bp = new MBPartner(getCtx(),nf.getC_BPartner_ID(),get_TrxName());
-			COD_PART = TextUtil.toNumeric(bp.getValue());
-		}
+		R0150 reg = new R0150();
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setNOME(factFiscal.getBPName());
+		reg.setCOD_PAIS(String.valueOf(factFiscal.getBPCountryCode()));
+		
+		// CPF/CNPJ
+		if(TextUtil.toNumeric(factFiscal.getlbr_BPCNPJ()).length() == 11)
+			reg.setCPF(factFiscal.getlbr_BPCNPJ());
+		else
+			reg.setCNPJ(factFiscal.getlbr_BPCNPJ());
+		
+		reg.setIE(factFiscal.getlbr_BPIE());
+		reg.setCOD_MUN(String.valueOf(BPartnerUtil.getCityCode(contLoc)));
+		reg.setSUFRAMA(factFiscal.getlbr_BPSuframa());
+		reg.setEND(factFiscal.getlbr_BPAddress1());
+		reg.setNUM(factFiscal.getlbr_BPAddress2());
+		reg.setCOMPL(factFiscal.getlbr_BPAddress4());
+		reg.setBAIRRO(factFiscal.getlbr_BPAddress3());
 
-		String NOME     = nf.getBPName();
-		String CNPJ     = nf.getlbr_BPCNPJ();
-		String IE       = nf.getlbr_BPIE();
-		String SUFRAMA  = nf.getlbr_BPSuframa();
-		String END      = nf.getlbr_BPAddress1();
-		String NUM      = nf.getlbr_BPAddress2();
-		String COMPL    = nf.getlbr_BPAddress4();
-		String BAIRRO   = nf.getlbr_BPAddress3();
+		return reg;
+		
+	} // createR0150
 
-		String COD_MUN  = "";
-		String COD_PAIS = "01058"; //BRASIL
-		if (nf.getC_BPartner_Location_ID() != 0){
-			MBPartnerLocation bpl = new MBPartnerLocation(getCtx(),nf.getC_BPartner_Location_ID(),null);
-			MLocation loc = new MLocation(getCtx(),bpl.getC_Location_ID(),null);
-			MCountry bpCountry = new MCountry(getCtx(),loc.getC_Country_ID(),null);
-
-			COD_MUN  = BPartnerUtil.getCityCode(loc);
-			COD_PAIS = bpCountry.get_ValueAsString("lbr_CountryCode");
-			if (bpCountry.get_ID() != BPartnerUtil.BRASIL){
-				CNPJ     = "";
-				IE       = "";
-				SUFRAMA  = "";
-			}
-		}
-		else{
-			log.severe("EFD R0150 - PARCEIRO SEM ENDEREDO. " +
-					   "Parceiro: " + nf.getBPName() + " NF: " + nf.getDocumentNo() + 
-					   " Data: " + nf.getDateDoc());
-			return null; //SEM ENDERECO
-		}
-
-		return new R0150(COD_PART,NOME,COD_PAIS,CNPJ,IE,COD_MUN,
-				SUFRAMA,END,NUM,COMPL,BAIRRO);
-	} //createR0150
 	
-	public static R0150 createR0150(MBPartner bp){
-		
-		MBPartnerLocation bpLoc = bp.getPrimaryC_BPartner_Location();
-		MLocation loc = new MLocation(getCtx(),bpLoc.getC_Location_ID(),null);
-		
-		String COD_PART  = TextUtil.toNumeric(BPartnerUtil.getCNPJ(bp, bpLoc));
-		if (COD_PART == null || COD_PART.trim().equals("")){
-			COD_PART = TextUtil.toNumeric(bp.getValue());
-		}
 
-		String NOME     = bp.getName();
-		String CNPJ     = BPartnerUtil.getCNPJ(bp, bpLoc);
-		String IE       = BPartnerUtil.getIE(bp, bpLoc);
-		String SUFRAMA  = BPartnerUtil.getSuframa(bp, bpLoc);
-		
-		String END      = loc.getAddress1();
-		String NUM      = loc.getAddress2();
-		String COMPL    = loc.getAddress4();
-		String BAIRRO   = loc.getAddress3();
+	/**
+	 * REGISTRO 0190: IDENTIFICAÇÃO DAS UNIDADES DE MEDIDA
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0190 createR0190(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0190.class))
+			return null;
 
-		String COD_MUN  = "";
-		String COD_PAIS = "01058"; //BRASIL
-		if (bpLoc.getC_BPartner_Location_ID() != 0){
-			MCountry bpCountry = new MCountry(getCtx(),loc.getC_Country_ID(),null);
+		R0190 reg = new R0190();
 
-			COD_MUN  = BPartnerUtil.getCityCode(loc);
-			COD_PAIS = bpCountry.get_ValueAsString("lbr_CountryCode");
-			if (bpCountry.get_ID() != BPartnerUtil.BRASIL){
-				CNPJ     = "";
-				IE       = "";
-				SUFRAMA  = "";
-			}
-		}
-		else{
-			log.severe("EFD R0150 - PARCEIRO SEM ENDEREDO. Parceiro: " + bp.getName());
-			return null; //SEM ENDERECO
-		}
+		reg.setUNID(factFiscal.getlbr_UOMName() == null ? "un" : factFiscal.getlbr_UOMName());
+		reg.setDESCR(factFiscal.getLBR_UOMDescription() == null ? "un" : factFiscal.getLBR_UOMDescription());
+		
+		return reg;
+		
+	} 
 
-		return new R0150(COD_PART,NOME,COD_PAIS,CNPJ,IE,COD_MUN,
-				SUFRAMA,END,NUM,COMPL,BAIRRO);
-	} //createR0150
 	
-	public static R0190 createR0190(MLBRNotaFiscalLine nfLine){
-		
-		String UNID  = nfLine.getlbr_UOMName();
-		String DESCR = AdempiereLBR.getUOMDesc_trl(new MUOM(getCtx(),nfLine.getC_UOM_ID(),get_TrxName()));
-		
-		return new R0190(UNID,DESCR);
-	} //createR0190
+	/**
+	 * REGISTRO 0190: IDENTIFICAÇÃO DAS UNIDADES DE MEDIDA
+	 * 
+	 * @param product
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0190 createR0190(MProduct product) {
+
+		//
+		MUOM uom = new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName());
+
+		//
+		R0190 reg = new R0190();
+		reg.setUNID(AdempiereLBR.getUOM_trl(uom));
+		reg.setDESCR(AdempiereLBR.getUOMName_trl(uom));
 	
-	public static R0190 createR0190(MProduct product){
-		
-		MUOM uom = new MUOM(getCtx(),product.getC_UOM_ID(),get_TrxName());
-		
-		String UNID  = AdempiereLBR.getUOM_trl(uom);
-		String DESCR = AdempiereLBR.getUOMDesc_trl(uom);
-		
-		return new R0190(UNID,DESCR);
-	} //createR0190
+		//
+		return reg;
+	} // createR0190
 	
-	public static R0200 createR0200(MLBRNotaFiscalLine nfLine){
+
+	/**
+	 * REGISTRO 0200: TABELA DE IDENTIFICAÇÃO DO ITEM (PRODUTO E SERVIÇOS)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0200 createR0200(MLBRFactFiscal factFiscal) throws Exception
+	{
+		// verificar necessidade de criar esse registro
+		if(!needCreateR0s(factFiscal, R0200.class))
+			return null;
 		
-		MProduct product = new MProduct(getCtx(),nfLine.getM_Product_ID(),get_TrxName());
+		//
+		R0200 reg = new R0200();
+		reg.setCOD_ITEM(factFiscal.getProductValue());
+		reg.setDESCR_ITEM(factFiscal.getProductName());
+		reg.setCOD_BARRA(factFiscal.getUPC());
+		reg.setCOD_ANT_ITEM(null); // TODO
+		reg.setUNID_INV(factFiscal.getlbr_UOMName() == null ? "un" : factFiscal.getlbr_UOMName());
 		
-		String COD_ITEM      = nfLine.getProductValue();
-		String DESCR_ITEM    = product.getName();
-		String COD_BARRA     = product.getUPC();
-		String COD_ANT_ITEM  = ""; //CODIGO ANTERIOR //TODO ???
-		String UNID_INV      = nfLine.getlbr_UOMName();
-		String TIPO_ITEM     = product.get_ValueAsString("lbr_ItemTypeBR");
-		if (nfLine.islbr_IsService())
-			TIPO_ITEM = "09"; //SERVICO
+		if (factFiscal.islbr_IsService() && factFiscal.getlbr_ItemTypeBR()==null)
+			reg.setTIPO_ITEM(factFiscal.getlbr_ItemTypeBR());
+		else
+			reg.setTIPO_ITEM("09");//marcar como serviço quando for despesa
 		
-		String COD_NCM = nfLine.getlbr_NCMName();
-		if (COD_NCM == null || COD_NCM.trim().isEmpty())
-			COD_NCM = nfLine.getLBR_NCM().getValue();
+		// serviço na linha
+		if(factFiscal.islbr_IsService())
+			reg.setTIPO_ITEM(factFiscal.getlbr_ItemTypeBR());
 		
-		if (COD_NCM == null || COD_NCM.trim().isEmpty())
-			COD_NCM = new MLBRNCM(getCtx(),product.get_ValueAsInt("LBR_NCM_ID"),null).getValue();
+		//
+		reg.setCOD_NCM(factFiscal.getlbr_NCMName());
+		reg.setEX_IPI(null); // TODO
+		reg.setCOD_GEN(null); // TODO
+		reg.setCOD_LST(null); // TODO
+		reg.setALIQ_ICMS(null);// TODO
 		
-		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
-		String COD_LST       = ""; //COD SERVIDO //TODO ???
-		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
-		
-		return new R0200(COD_ITEM,DESCR_ITEM,COD_BARRA,COD_ANT_ITEM,UNID_INV,TIPO_ITEM,
-				COD_NCM,EX_IPI,COD_LST,ALIQ_ICMS);
-	} //createR0200
+		return reg;
+				
+	} // createR0200
+
 	
-	public static R0200 createR0200(MProduct product){
+	/**
+	 * REGISTRO 0200: TABELA DE IDENTIFICAÇÃO DO ITEM (PRODUTO E SERVIÇOS)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0200 createR0200(MProduct product) throws Exception
+	{
+
 		
-		String COD_ITEM      = product.getValue();
-		String DESCR_ITEM    = product.getName();
-		String COD_BARRA     = product.getUPC();
-		String COD_ANT_ITEM  = ""; //CODIGO ANTERIOR //TODO ???
-		String UNID_INV      = AdempiereLBR.getUOM_trl(new MUOM(getCtx(),product.getC_UOM_ID(),get_TrxName()));
-		String TIPO_ITEM     = product.get_ValueAsString("lbr_ItemTypeBR");
+		//
+		R0200 reg = new R0200();
+		reg.setCOD_ITEM(product.getValue());
+		reg.setDESCR_ITEM(product.getName());
+		reg.setCOD_BARRA(product.getUPC());
+		reg.setCOD_ANT_ITEM(null); // TODO
 		
-		String COD_NCM = "";
-		int LBR_NCM_ID = product.get_ValueAsInt("LBR_NCM_ID");
-		if (LBR_NCM_ID > 0)
-			COD_NCM = new MLBRNCM(getCtx(),LBR_NCM_ID,get_TrxName()).getValue();
-		else{
-			TIPO_ITEM = ""; //SEM NCM, DEIXAR COMO OUTROS
+		// unidade
+		reg.setUNID_INV(AdempiereLBR.getUOM_trl(new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName())));
+		
+		// tipo do item
+		reg.setTIPO_ITEM(product.get_ValueAsString("lbr_ItemTypeBR"));
+		
+		// ncm
+		Integer LBR_NCM_ID = (Integer) product.get_Value("LBR_NCM_ID");
+		if (LBR_NCM_ID != null && LBR_NCM_ID > 0)
+			reg.setCOD_NCM(new MLBRNCM(product.getCtx(), LBR_NCM_ID, product.get_TrxName()).getValue());
+		else {
+			reg.setCOD_NCM(null);
 		}
 		
-		String EX_IPI        = ""; //EXCECAO TABELA TIPI //TODO ???
-		String COD_LST       = ""; //COD SERVIDO //TODO ???
-		BigDecimal ALIQ_ICMS = Env.ZERO; //ALIQ ICMS //TODO ???
+		// 
+		reg.setEX_IPI(null); // TODO
+		reg.setCOD_GEN(null); // TODO
+		reg.setCOD_LST(null); // TODO
+		reg.setALIQ_ICMS(null);// TODO
 		
-		return new R0200(COD_ITEM,DESCR_ITEM,COD_BARRA,COD_ANT_ITEM,UNID_INV,TIPO_ITEM,
-				COD_NCM,EX_IPI,COD_LST,ALIQ_ICMS);
-	} //createR0200
+		//
+		return reg;
+	} 
+
+	/**
+	 * REGISTRO 0400: TABELA DE NATUREZA DA OPERAÇÃO/PRESTAÇÃO
+	 * 
+	 * @param factFiscal - FactFiscal a que se refere o registro
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0400 createR0400(MLBRFactFiscal factFiscal) throws Exception 
+	{
+		R0400 reg = new R0400();
+		reg.setDESCR_NAT(factFiscal.get_ValueAsString("lbr_cfopnote"));
+		return reg;
+	}
 	
-	public static R0305 createR0305(R0300 r0300){		
-		return new R0305(r0300.getCOD_CCUS(),r0300.getHELP(),r0300.getNR_PARC());
-	} //createR0305
+	/**
+	 * REGISTRO 0460: TABELA DE OBSERVAÇÕES DO LANÇAMENTO FISCAL
+	 * 
+	 * @param rc100 Registro C100
+	 * @param COD_OBS código sequencial da observação
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0460 createR0460(RC100 rc100, int COD_OBS) throws Exception 
+	{
+		
+		//
+		String obs = "";
+		
+		//
+		if(rc100.getVL_ICMS_ST().signum() == 1)
+			obs += "VALOR DO ICMS ST: " + TextUtil.toNumeric(rc100.getVL_ICMS_ST()) + (rc100.getVL_IPI().signum() == 1 ? " / " : "");
+
+		//
+		if(rc100.getVL_IPI().signum() == 1)
+			obs += "VALOR DO IPI: " + TextUtil.toNumeric(rc100.getVL_IPI());
+		
+		// criar obs
+		R0460 reg = new R0460();
+		reg.setCOD_OBS(String.valueOf(COD_OBS));
+		reg.setTXT(obs);
+		
+		return reg;
+	}
 	
-	public static R0300 createR0300(MAsset asset, String COD_CTA, String COD_CCUS){
-		
-		String COD_IND_BEM = asset.getValue();
-		String IDENT_MERC  = asset.getA_Parent_Asset_ID() <= 0 ? "1" : "2";
-		String DESCR_ITEM  = asset.getName();
-		String HELP        = asset.getHelp();
-		String COD_PRNC    = asset.getA_Parent_Asset().getValue();
-		int NR_PARC = 48;
-		
-		return new R0300(COD_IND_BEM,IDENT_MERC,DESCR_ITEM,COD_PRNC,COD_CTA,NR_PARC,COD_CCUS,HELP);
-	} //createR0300
 	
-	public static R0500 createR0500(MElementValue ev, Timestamp dateTo){
+	public static R0500 createR0500(MElementValue ev, Timestamp dateTo) throws Exception 
+	{
+		//
+		R0500 reg = new R0500();
 		
+		// verificar se a data de alteração é posterior a data final do período
 		Timestamp DT_ALT = ev.getUpdated();
-		if (DT_ALT.after(dateTo)){
+		if (DT_ALT.after(dateTo))
 			DT_ALT = dateTo;
-		}
+		reg.setDT_ALT(DT_ALT);
+		reg.setCOD_NAT_CC(getCOD_NAT(ev.getAccountType()));
+		reg.setIND_CTA(ev.isSummary() ? "S" : "A");
+
+		// somente pontos('.') + 1 
+		reg.setNIVEL(ev.getValue().replaceAll("[^.]","").length() + 1);
+		reg.setCOD_CTA(ev.getValue());
+		reg.setNOME_CTA(ev.getName());
+				
+		return reg;
 		
-		String COD_NAT_CC = ECDUtil.getCOD_NAT(ev.getAccountType());
-		String IND_CTA    = ev.isSummary() ? "S" : "A";
-		String COD_CTA    = ev.getValue();
-		String NOME_CTA   = ev.getName();
-		
-		return new R0500(DT_ALT,COD_NAT_CC,IND_CTA,COD_CTA,NOME_CTA);
 	} //createR0500
 	
-	public static R0600 createR0600(int AD_Org_ID, Timestamp dateTo){
+	
+	/**
+	 * REGISTRO 0990: ENCERRAMENTO DO BLOCO 0
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R0990 createR0990() throws Exception 
+	{
+		R0990 reg = new R0990();
+		reg.setQTD_LIN_0(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO C001: ABERTURA DO BLOCO C
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC001 createRC001(boolean hasInfo) throws Exception
+	{
+		RC001 reg = new RC001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
 		
-		MOrg org = MOrg.get(ctx, AD_Org_ID);
-		
-		Timestamp DT_ALT = org.getUpdated();
-		if (DT_ALT.after(dateTo)){
-			DT_ALT = dateTo;
+		return reg;
+	}
+	
+
+	/**
+	 * REGISTRO C100: NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NF-e (CÓDIGO 55).
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC100 createRC100(MLBRFactFiscal factFiscal) throws Exception
+	{
+		//
+		RC100 reg = new RC100();
+		if (factFiscal.getDocumentNo() !=null && !factFiscal.getDocumentNo().equals("") )
+		{
+			reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0"); // Entrada = 0 | Saida = 1
+			reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+			reg.setCOD_MOD(getCOD_MOD(factFiscal));
+			reg.setCOD_SIT(getCOD_SIT(factFiscal));
+			reg.setSER(getSER(factFiscal));
+			reg.setNUM_DOC(factFiscal.getDocumentNo());
+			reg.setCHV_NFE(factFiscal.getlbr_NFeID());
+	
+			reg.setCOD_PART(getCOD_PART(factFiscal));
+			reg.setDT_DOC(factFiscal.getDateDoc());
+			reg.setDT_E_S(factFiscal.getlbr_DateInOut());
+			reg.setVL_DOC(factFiscal.getGrandTotal());
+			reg.setIND_PGTO(getIND_PGTO(factFiscal));
+			reg.setVL_DESC(factFiscal.getDiscountAmt());
+			
+			// Abatimento da ZF - TODO
+			reg.setVL_ABAT_NT(factFiscal.getDiscountAmt());
+			
+			// vlr mercadorias, frete e seguro
+			reg.setVL_MERC(factFiscal.getTotalLines());
+			reg.setIND_FRT(getIND_FRT(factFiscal));
+			reg.setVL_FRT(factFiscal.getFreightAmt());
+			reg.setVL_SEG(factFiscal.getlbr_InsuranceAmt());
+			
+			// outras despesas acessórias - TODO
+			reg.setVL_OUT_DA(Env.ZERO);
+			
+			// impostos - somatório das linha
+			reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+			reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+			reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
+			reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
+			reg.setVL_IPI(factFiscal.getIPI_NFTaxAmt());
+			reg.setVL_PIS(factFiscal.getPIS_NFTaxAmt());
+			reg.setVL_COFINS(factFiscal.getCOFINS_NFTaxAmt());
+			reg.setVL_PIS_ST(Env.ZERO);
+			reg.setVL_COFINS_ST(Env.ZERO);
+			
+			/*
+			 * Preencher a variável IND_ATIV para 
+			 * posterior verificação e definição se deve-se
+			 * ou não apurar alguns impostos bem como 
+			 * IPI e ST
+			 * 
+			 * UF - Usado na apuração da ST
+			 */
+			reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
+			reg.setUF(factFiscal.getlbr_BPRegion());
+			
+			//
 		}
+			return reg;
 		
-		String COD_CCUS = org.getValue();
-		String CCUS = org.getName();
-		
-		return new R0600(DT_ALT,COD_CCUS,CCUS);
-	} //createR0600
-	
-	public static RC100 createRC100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
-		
-		String UF         = nf.getlbr_BPRegion();
-		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
-		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
-		String SER        = nf.getSerieNo();
-		String NUM_DOC    = nf.getDocNo();
-		String CHV_NFE    = nf.getlbr_NFeID();
-		Timestamp DT_DOC  = nf.getDateDoc();
-		Timestamp DT_E_S  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
-		BigDecimal VL_DOC = nf.getGrandTotal();
-		String IND_PAG    = nf.getIndPag();
-		if (IND_PAG.equals("2")) // 2 é usado na NFe
-			IND_PAG = "1";
-		
-		BigDecimal VL_DESC = nf.getDiscountAmt();
-		BigDecimal VL_ABAT_NT  = Env.ZERO; //TODO ???
-		BigDecimal VL_MERC = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
-		String IND_FRT = nf.getFreightCostRule() == null ? "9" : (nf.getFreightCostRule().equals("E") ? "2" : "1");
-		BigDecimal VL_FRT = nf.getFreightAmt();
-		BigDecimal VL_SEG = nf.getlbr_InsuranceAmt();
-		BigDecimal VL_OUT_DA = Env.ZERO; //TODO ???
-		
-		//BF: Para ativos fixo, lançar o crédito no bloco G
-		BigDecimal[] assetAmt = nf.getAssetTaxAmt();
-		BigDecimal VL_BC_ICMS = nf.getICMSBase().subtract(assetAmt[0]);
-		BigDecimal VL_ICMS = nf.getICMSAmt().subtract(assetAmt[1]);
-		
-		BigDecimal VL_BC_ICMS_ST = nf.getTaxBaseAmt("ICMSST");
-		BigDecimal VL_ICMS_ST = nf.getTaxAmt("ICMSST");
-		BigDecimal VL_IPI = nf.getIPIAmt();
-		BigDecimal VL_PIS = nf.getPISAmt();
-		BigDecimal VL_COFINS = nf.getCOFINSAmt();
-		BigDecimal VL_PIS_ST = Env.ZERO; //TODO ???
-		BigDecimal VL_COFINS_ST = Env.ZERO; //TODO ???
-	
-		return new RC100(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,NUM_DOC,CHV_NFE,
-				DT_DOC,DT_E_S,VL_DOC,IND_PAG,VL_DESC,VL_ABAT_NT,VL_MERC,IND_FRT,VL_FRT,
-				VL_SEG,VL_OUT_DA,VL_BC_ICMS,VL_ICMS,VL_BC_ICMS_ST,VL_ICMS_ST,VL_IPI,
-				VL_PIS,VL_COFINS,VL_PIS_ST,VL_COFINS_ST);
 	} //createRC100
 	
-	public static RC120 createRC120(MLBRNotaFiscalLine nfLine){
+	
+	/**
+	 * REGISTRO C120: OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC120 createRC120(MLBRFactFiscal factFiscal) throws Exception
+	{
 		
-		if (!nfLine.getCFOP().startsWith("3"))
+		//
+		RC120 reg = new RC120();
+		reg.setCOD_DOC_IMP(COD_DOC_IMP);
+		reg.setNUM_DOC_IMP(factFiscal.getLBR_NFDI().getlbr_DI());
+
+		// valore preenchidos ao adicionar itens no RC100
+		reg.setPIS_IMP(factFiscal.getPIS_NFTaxAmt());
+		reg.setCOFINS_IMP(factFiscal.getCOFINS_NFTaxAmt());
+		
+		// TODO - verificar valor a preencher
+		reg.setNUM_ACDRAW("");
+		
+		//
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO C170: ITENS DO DOCUMENTO (CÓDIGO 01, 1B, 04 e 55).
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC170 createRC170(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+
+		RC170 reg = new RC170();
+		reg.setNUM_ITEM(NUM_ITEM);
+		reg.setCOD_ITEM(factFiscal.getProductValue());
+		
+		// TODO - descrição da linha da NF
+		reg.setDESCR_COMPL("");
+		
+		reg.setQTD(factFiscal.getQty());
+		reg.setUNID(factFiscal.getlbr_UOMName());
+		reg.setVL_ITEM(factFiscal.getLineNetAmt());
+		
+		// TODO - verificar possibilidades de desconto
+		reg.setVL_DESC(Env.ZERO);
+		
+		// TODO - se for serviço não movimenta, senão movimenta
+		reg.setIND_MOV(factFiscal.islbr_IsService() ? "0" : "1");
+		
+		//
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setCOD_NAT(""); // TODO ???
+		
+		// icms
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		
+		
+		// st
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_TaxBaseAmt());
+		reg.setALIQ_ST(factFiscal.getICMSST_TaxRate());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_TaxAmt());
+		
+		// ipi
+		reg.setIND_APUR(IND_APUR);
+		reg.setCST_IPI(factFiscal.getIPI_TaxStatus());
+		
+		// TODO - ??
+		reg.setCOD_ENQ("");
+		reg.setVL_BC_IPI(factFiscal.getIPI_TaxBaseAmt());
+		reg.setALIQ_IPI(factFiscal.getIPI_TaxRate());
+		reg.setVL_IPI(factFiscal.getIPI_TaxAmt());
+		
+		// pis
+		reg.setCST_PIS(factFiscal.getPIS_TaxStatus());
+		reg.setVL_BC_PIS(factFiscal.getPIS_TaxBaseAmt());
+		reg.setALIQ_PIS(factFiscal.getPIS_TaxRate());
+		
+		// TODO: BC e Aliq por Qtde
+		reg.setQUANT_BC_PIS(null);
+		reg.setALIQ_PIS_REAIS(null);
+		
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		
+		// cofins
+		reg.setCST_COFINS(factFiscal.getCOFINS_TaxStatus());
+		reg.setVL_BC_COFINS(factFiscal.getCOFINS_TaxBaseAmt());
+		reg.setALIQ_COFINS(factFiscal.getCOFINS_TaxRate());
+		
+		// TODO: BC e Aliq por Qtde
+		reg.setQUANT_BC_COFINS(null);
+		reg.setALIQ_COFINS_REAIS(null);
+		
+		//
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
+
+		// TODO: Código da conta contábil
+		reg.setCOD_CTA("");
+		
+		
+		/*
+		 * Definir valor da operação no registro C170 para
+		 * depois utilizar na geração do C190
+		 */
+		reg.setVL_OPER(factFiscal.getLineTotalAmt());
+	
+		//
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO C195: OBSERVAÇOES DO LANÇAMENTO FISCAL (CÓDIGO 01, 1B E 55)
+	 * 
+	 * @param r0460
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC195 createRC195(R0460 r0460) throws Exception
+	{
+		// se não tiver OBS nos registros zero, então não criar nos registros C195
+		if(r0460 == null)
 			return null;
 		
-		X_LBR_NFDI di = nfLine.getDI();
-		if (di != null){
-			String COD_DOC_IMP = di.getType();
-			String NUM_DOC_IMP = di.getlbr_DI();
-			BigDecimal PIS_IMP = nfLine.getTaxAmt("PIS");
-			BigDecimal COFINS_IMP = nfLine.getTaxAmt("COFINS");
-			String NUM_ACDRAW = di.getlbr_Drawback();
-			
-			return new RC120(COD_DOC_IMP,NUM_DOC_IMP,PIS_IMP,COFINS_IMP,NUM_ACDRAW);
-		}
+		RC195 reg = new RC195();
+		reg.setCOD_OBS(r0460.getCOD_OBS());
+		reg.setTXT("");
 		
-		return null;
-	} //createRC120
+		return reg;
+	}
 	
-	public static RC130 createRC130(ArrayList<RC172> listRC172){
-		
-		BigDecimal VL_SERV_NT = Env.ZERO;
-		BigDecimal VL_BC_ISSQN = Env.ZERO;
-		BigDecimal VL_ISSQN = Env.ZERO;
-		BigDecimal VL_BC_IRRF = Env.ZERO;
-		BigDecimal VL_IRRF = Env.ZERO;
-		BigDecimal VL_BC_PREV = Env.ZERO;
-		BigDecimal VL_PREV = Env.ZERO;
-		
-		for(RC172 rc172 : listRC172){
-			VL_SERV_NT  = VL_SERV_NT.add(rc172.getVL_SERV_NT());
-			VL_BC_ISSQN = VL_BC_ISSQN.add(rc172.getVL_BC_ISSQN());
-			VL_ISSQN    = VL_ISSQN.add(rc172.getVL_ISSQN());
-			VL_BC_IRRF  = VL_BC_IRRF.add(rc172.getVL_BC_IRRF());
-			VL_IRRF     = VL_IRRF.add(rc172.getVL_IRRF());
-			VL_BC_PREV  = VL_BC_PREV.add(rc172.getVL_BC_PREV());
-			VL_PREV     = VL_PREV.add(rc172.getVL_PREV());
-		}
-		
-		return new RC130(VL_SERV_NT,VL_BC_ISSQN,VL_ISSQN,VL_BC_IRRF,
-				VL_IRRF,VL_BC_PREV,VL_PREV);
-	} //createRC130
+	/**
+	 * REGISTRO C990: ENCERRAMENTO DO BLOCO C
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC990 createRC990() throws Exception 
+	{
+		RC990 reg = new RC990();
+		reg.setQTD_LIN_C(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
-	public static RC170 createRC170(MLBRNotaFiscalLine nfLine, String COD_ITEM, String TIPO_ITEM, 
-			String UNID, int line){
-		
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
-		String NUM_DOC   = nf.getDocNo();
-		Timestamp DT_DOC = nf.getDateDoc();
-		
-		String DESCR_COMPL = nfLine.getDescription();
-		BigDecimal QTD = nfLine.getQty();
-		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
-		BigDecimal VL_DESC = nfLine.getDiscountAmt();
-		String     IND_MOV = TIPO_ITEM.equals("09") ? "1" : "0"; //1=SEM MOV, 0=COM MOV
-		String CST_ICMS = nfLine.getCST_ICMS();
-		String CFOP     = nfLine.getCFOP();
-		String COD_NAT  = ""; //TODO ???		
-		BigDecimal VL_BC_ICMS    = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSBaseAmt();
-		BigDecimal ALIQ_ICMS     = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSRate();
-		BigDecimal VL_ICMS       = nfLine.isAsset() ? Env.ZERO : nfLine.getICMSAmt();
-		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
-		BigDecimal ALIQ_ST       = nfLine.getTaxRate("ICMSST");
-		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
-		String IND_APUR = "0"; //APURACAO MENSAL
-		String CST_IPI = nfLine.getCST_IPI();
-		String COD_ENQ = ""; //TODO ???
-		BigDecimal VL_BC_IPI = nfLine.getIPIBaseAmt();
-		BigDecimal ALIQ_IPI  = nfLine.getIPIRate();
-		BigDecimal VL_IPI    = nfLine.getIPIAmt();
-		String CST_PIS = nfLine.getCST_PIS();
-		BigDecimal VL_BC_PIS = nfLine.getTaxBaseAmt("PIS");
-		BigDecimal ALIQ_PIS = nfLine.getTaxRate("PIS");
-		BigDecimal QUANT_BC_PIS = Env.ZERO; //TODO ???
-		BigDecimal V_ALIQ_PIS = Env.ZERO; //TODO
-		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
-		String CST_COFINS = nfLine.getCST_COFINS();
-		BigDecimal VL_BC_COFINS = nfLine.getTaxBaseAmt("COFINS");
-		BigDecimal ALIQ_COFINS = nfLine.getTaxRate("COFINS");
-		BigDecimal QUANT_BC_COFINS = Env.ZERO; //TODO ???
-		BigDecimal V_ALIQ_COFINS = Env.ZERO; //TODO
-		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
-		String COD_CTA = ""; //TODO ???
-		
-		//INFORMAÇÕES PARA O REGISTRO C190
-		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
-		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
-		
-		return new RC170(line,COD_ITEM,DESCR_COMPL,QTD,UNID,VL_ITEM,VL_DESC,IND_MOV,CST_ICMS,
-				CFOP,COD_NAT,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
-				IND_APUR,CST_IPI,COD_ENQ,VL_BC_IPI,ALIQ_IPI,VL_IPI,CST_PIS,VL_BC_PIS,V_ALIQ_PIS,
-				QUANT_BC_PIS,ALIQ_PIS,VL_PIS,CST_COFINS,VL_BC_COFINS,ALIQ_COFINS,QUANT_BC_COFINS,
-				V_ALIQ_COFINS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
-	} //createRC170
+		return reg;
+	}
 	
-	public static RC172 createRC172(RC170 rc170, MLBRNotaFiscalLine nfLine){
-		
-		if (!(nfLine.getCFOP().equals("5933") ||
-			  nfLine.getCFOP().equals("6933") ||
-			  nfLine.getCFOP().equals("7933")))
-			return null;
-		
-		BigDecimal VL_SERV_NT = nfLine.getTotalOperationAmt().subtract(nfLine.getICMSAmt());
-		BigDecimal VL_BC_ISSQN = nfLine.getTaxBaseAmt("ISS");
-		BigDecimal ALIQ_ISSQN = nfLine.getTaxRate("ISS");
-		BigDecimal VL_ISSQN = nfLine.getTaxAmt("ISS");
-		BigDecimal VL_BC_IRRF = nfLine.getTaxBaseAmt("IR").abs();
-		BigDecimal VL_IRRF = nfLine.getTaxAmt("IR").abs();
-		BigDecimal VL_BC_PREV = nfLine.getTaxBaseAmt("INSS").abs();
-		BigDecimal VL_PREV = nfLine.getTaxAmt("INSS"); 
-		
-		return new RC172(rc170,VL_SERV_NT,VL_BC_ISSQN,ALIQ_ISSQN,VL_ISSQN,
-				VL_BC_IRRF,VL_IRRF,VL_BC_PREV,VL_PREV);
-	} //createRC172
 	
-	public static RC190[] createRC190(Set<RC170> setRC170){
+	/**
+	 * REGISTRO D001: ABERTURA DO BLOCO D
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD001 createRD001(boolean hasInfo) throws Exception
+	{
+		RD001 reg = new RD001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
 		
-		Map<Integer,RC190> _RC190 = new HashMap<Integer,RC190>();
-		
-		for (RC170 rc170 : setRC170){
-		
-			RC190 rc190 = new RC190(rc170.getCST_ICMS(), rc170.getCFOP(), rc170.getALIQ_ICMS(),
-					                rc170.getVL_OPR(), rc170.getVL_BC_ICMS(), rc170.getVL_ICMS(),
-					                rc170.getVL_BC_ICMS_ST(), rc170.getVL_ICMS_ST(), 
-					                rc170.getVL_RED_BC_ICMS(), rc170.getVL_IPI(),"",
-					                rc170.getNUM_DOC(),rc170.getDT_DOC());
-			
-			if (_RC190.containsKey(rc190.hashCode())){
-				RC190 oldRC190 = _RC190.get(rc190.hashCode());
-				rc190.addValues(oldRC190);
-				rc190.subtractCounter();
-			}
-			_RC190.put(rc190.hashCode(),rc190);
-			
-		} //loop C170
-		
-		RC190[] arrayRC190 = new RC190[_RC190.size()];
-		_RC190.values().toArray(arrayRC190);
-		Arrays.sort(arrayRC190);
-				
-		return arrayRC190;
-	} //createRC190
+		return reg;
+	}
 	
-	public static RC500 createRC500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
-		
-		String UF         = nf.getlbr_BPRegion();
-		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
-		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
-		String SER        = nf.getSerieNo();
-		String SUB        = ""; //TODO ???
-		String COD_CONS   = ""; //Opcional - Só informa na saída
-		String NUM_DOC    = nf.getDocNo();
-		Timestamp DT_DOC  = nf.getDateDoc();
-		Timestamp DT_E_S  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
-		BigDecimal VL_DOC = nf.getGrandTotal();	
-		BigDecimal VL_DESC = nf.getDiscountAmt();
-		BigDecimal VL_FORN = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
-		BigDecimal VL_TERC = Env.ZERO; //TODO ???
-		BigDecimal VL_DA = Env.ZERO; //TODO ???
-		BigDecimal VL_BC_ICMS = nf.getICMSBase();
-		BigDecimal VL_ICMS = nf.getICMSAmt();
-		BigDecimal VL_BC_ICMS_ST = nf.getTaxBaseAmt("ICMSST");
-		BigDecimal VL_ICMS_ST = nf.getTaxAmt("ICMSST");
-		BigDecimal VL_PIS = nf.getPISAmt();
-		BigDecimal VL_COFINS = nf.getCOFINSAmt();
-		BigDecimal VL_SERV_NT = VL_FORN.subtract(VL_BC_ICMS);
-		String COD_INF = ""; //TODO ???
-		String TP_LIGACAO = ""; //TODO ???
-		String COD_GRUPO_TENSAO = ""; //TODO ???
 	
-		return new RC500(UF,IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,COD_CONS,
-				NUM_DOC,DT_DOC,DT_E_S,VL_DOC,VL_DESC,VL_FORN,VL_SERV_NT,VL_TERC,VL_DA,
-				VL_BC_ICMS, VL_ICMS, VL_BC_ICMS_ST, VL_ICMS_ST, COD_INF, VL_PIS, VL_COFINS, 
-				TP_LIGACAO, COD_GRUPO_TENSAO);
-	} //createRC500
 	
-	public static RC510 createRC510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
+	/**
+	 * REGISTRO D100: NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E 
+	 * CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), 
+	 * CONHECIMENTOS DE TRANSPORTE DE CARGAS AVULSO (CÓDIGO 8B), 
+	 * AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11) 
+	 * E MULTIMODAL DE CARGAS (CÓDIGO 26), NOTA FISCAL DE TRANSPORTE 
+	 * FERROVIÁRIO DE CARGA ( CÓDIGO 27) E CONHECIMENTO DE TRANSPORTE 
+	 * ELETRÔNICO – CT-e (CÓDIGO 57).
+	 * 
+	 * @param rD100
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD100 createRD100(MLBRFactFiscal factFiscal) throws Exception
+	{
 		
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
-		String NUM_DOC   = nf.getDocNo();
-		Timestamp DT_DOC = nf.getDateDoc();
+		//
+		RD100 reg = new RD100();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
 		
-		String COD_CLASS = ""; //TODO ??? (para saída apenas)
-		BigDecimal QTD = nfLine.getQty();
-		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
-		BigDecimal VL_DESC = nfLine.getDiscountAmt();
-		String CST_ICMS = nfLine.getCST_ICMS();
-		String CFOP     = nfLine.getCFOP();
-		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
-		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
-		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
-		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
-		BigDecimal ALIQ_ST       = nfLine.getTaxRate("ICMSST");
-		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
-		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
-		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
-		String COD_CTA = ""; //TODO ???
-		String IND_REC = "0"; //TODO ??? (para saída apenas)
-		String COD_PART = ""; //TODO ??? (para saída apenas)
+		// TODO ??
+		reg.setSUB(""); 
 		
-		//INFORMAÇÕES PARA O REGISTRO C590
-		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
-		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setCHV_CTE(factFiscal.getlbr_NFeID());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_A_P(factFiscal.getlbr_DateInOut());
 		
-		return new RC510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
-				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,ALIQ_ST,VL_ICMS_ST,
-				IND_REC,COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
-	} //createRC510
+		// TODO - ??
+		reg.setTP_CT_e("");
+		
+		// TODO ??
+		reg.setCHV_CTE_REF("");
+		
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+		reg.setIND_FRT(getIND_FRT(factFiscal));
+		
+		// Total dos Itens + Total dos Serviços - ??
+		reg.setVL_SERV(factFiscal.getTotalLines());
+		
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		reg.setVL_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		
+		// 
+		reg.setCOD_INF(null);
+		reg.setCOD_CTA(null);
+		
+		//
+		return reg;
+	}
 	
-	public static RC590[] createRC590(Set<RC510> setRC510){
-		
-		Map<Integer,RC590> _RC590 = new HashMap<Integer,RC590>();
-		
-		for (RC510 rc510 : setRC510){
-		
-			RC590 rc590 = new RC590(rc510.getCST_ICMS(), rc510.getCFOP(), rc510.getALIQ_ICMS(),
-					                rc510.getVL_OPR(), rc510.getVL_BC_ICMS(), rc510.getVL_ICMS(),
-					                rc510.getVL_BC_ICMS_ST(), rc510.getVL_ICMS_ST(), 
-					                rc510.getVL_RED_BC_ICMS(),"",rc510.getNUM_DOC(),rc510.getDT_DOC());
-			
-			if (_RC590.containsKey(rc590.hashCode())){
-				RC590 oldRC590 = _RC590.get(rc590.hashCode());
-				rc590.addValues(oldRC590);
-				rc590.subtractCounter();
-			}
-			_RC590.put(rc590.hashCode(),rc590);
-			
-		} //loop D510
-		
-		RC590[] arrayRC590 = new RC590[_RC590.size()];
-		_RC590.values().toArray(arrayRC590);
-		Arrays.sort(arrayRC590);
-				
-		return arrayRC590;
-	} //createRC590
 	
-	public static RD100 createRD100(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
+	/**
+	 * REGISTRO D110: ITENS DO DOCUMENTO - NOTA FISCAL DE 
+	 * SERVIÇOS DE TRANSPORTE (CÓDIGO 07)
+	 * 
+	 * @param factFiscal
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD110 createRD110(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RD110 reg = new RD110();
+		reg.setNUM_ITEM(NUM_ITEM);
+		reg.setCOD_ITEM(factFiscal.getProductValue());
 		
-		String UF          = nf.getlbr_BPRegion();
-		String IND_OPER    = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
-		String COD_SIT     = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
-		String SER         = nf.getSerieNo();
-		String SUB         = ""; //TODO ???
-		String NUM_DOC     = nf.getDocNo();
-		String CHV_CTE     = (IND_EMIT.equals("0")) ? nf.getlbr_NFeID() : "";
-		Timestamp DT_DOC   = nf.getDateDoc();
-		Timestamp DT_A_P   = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
-		String TP_CT_e     = ""; //TODO (só para saída)
-		String CHV_CTE_REF = ""; //TODO (só para saída)
-		BigDecimal VL_DOC = nf.getGrandTotal();	
-		BigDecimal VL_DESC = nf.getDiscountAmt();
-		String IND_FRT = nf.getFreightCostRule() == null ? "9" : (nf.getFreightCostRule().equals("E") ? "2" : "1");
-		BigDecimal VL_SERV = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
-		BigDecimal VL_BC_ICMS = nf.getICMSBase();
-		BigDecimal VL_ICMS = nf.getICMSAmt();
-		BigDecimal VL_NT = VL_SERV.subtract(VL_BC_ICMS);
-		String COD_INF = ""; //TODO ???
-		String COD_CTA = ""; //TODO ???
-		return new RD100(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
-				CHV_CTE,DT_DOC,DT_A_P,TP_CT_e,CHV_CTE_REF,VL_DOC,VL_DESC,IND_FRT,VL_SERV,
-				VL_BC_ICMS, VL_ICMS, VL_NT, COD_INF, COD_CTA);
-	} //createRD100
+		// Valor bruto
+		reg.setVL_SERV(factFiscal.getLineNetAmt());
+		
+		// TODO - ??
+		reg.setVL_OUT(null);
+		
+		//
+		return reg;
+	}
 	
-	public static RD110 createRD110(MLBRNotaFiscalLine nfLine, String COD_ITEM, int line){
+	public static RD190 createRD190(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RD190 reg = new RD190();
 		
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
-		String NUM_DOC   = nf.getDocNo();
-		Timestamp DT_DOC = nf.getDateDoc();
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
 		
-		BigDecimal VL_SERV = nfLine.getLineTotalAmt();
-		BigDecimal VL_OUT  = Env.ZERO; //TODO Outros Valores
-		String CST_ICMS = nfLine.getCST_ICMS();
-		String CFOP     = nfLine.getCFOP();
-		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
-		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
-		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
-		
-		//INFORMAÇÕES PARA O REGISTRO D190
-		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
-		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
-		
-		return new RD110(line,COD_ITEM,VL_SERV,VL_OUT,CST_ICMS,CFOP,VL_BC_ICMS,
-				ALIQ_ICMS,VL_ICMS,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
-	} //createRD110
+		//
+		return reg;
+	}
 	
-	public static RD190[] createRD190(Set<RD110> setRD110){
+	/**
+	 * REGISTRO C500: NOTA FISCAL DE ENERGIA
+	 * 
+	 * @param rC500
+	 * @return
+	 * @throws Exception
+	 */
+	public static RC500 createRC500(MLBRFactFiscal factFiscal) throws Exception
+	{
 		
-		Map<Integer,RD190> _RD190 = new HashMap<Integer,RD190>();
+		//
+		RC500 reg = new RC500();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
 		
-		for (RD110 rd110 : setRD110){
+		// TODO ??
+		reg.setSUB(""); 
+		reg.setCOD_CONS("01");
 		
-			RD190 rd190 = new RD190(rd110.getCST_ICMS(), rd110.getCFOP(), rd110.getALIQ_ICMS(),
-					                rd110.getVL_OPR(), rd110.getVL_BC_ICMS(), rd110.getVL_ICMS(),
-					                rd110.getVL_RED_BC_ICMS(),"",rd110.getNUM_DOC(),rd110.getDT_DOC());
-			
-			if (_RD190.containsKey(rd190.hashCode())){
-				RD190 oldRD190 = _RD190.get(rd190.hashCode());
-				rd190.addValues(oldRD190);
-				rd190.subtractCounter();
-			}
-			_RD190.put(rd190.hashCode(),rd190);
-			
-		} //loop D110
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_E_S(factFiscal.getlbr_DateInOut());
 		
-		RD190[] arrayRD190 = new RD190[_RD190.size()];
-		_RD190.values().toArray(arrayRD190);
-		Arrays.sort(arrayRD190);
-				
-		return arrayRD190;
-	} //createRD190
-	
-	public static RD500 createRD500(MLBRNotaFiscal nf, String COD_PART, String COD_MOD, String IND_EMIT){
-		
-		String UF         = nf.getlbr_BPRegion();
-		String IND_OPER   = nf.isSOTrx() ? "1" : "0"; //0 = Entrada, 1 = Saída
-		String COD_SIT    = nf.isCancelled() ? "02" : ("2".equals(nf.getlbr_FinNFe()) ? "06" : "00");
-		String SER        = nf.getSerieNo();
-		String SUB        = ""; //TODO ???
-		String NUM_DOC    = nf.getDocNo();
-		Timestamp DT_DOC  = nf.getDateDoc();
-		Timestamp DT_A_P  = nf.getlbr_DateInOut() == null ? nf.getDateDoc() : nf.getlbr_DateInOut();
-		BigDecimal VL_DOC = nf.getGrandTotal();	
-		BigDecimal VL_DESC = nf.getDiscountAmt();
-		BigDecimal VL_SERV = nf.getTotalLines().add(nf.getlbr_ServiceTotalAmt());
-		BigDecimal VL_TERC = Env.ZERO; //TODO ???
-		BigDecimal VL_DA = Env.ZERO; //TODO ???
-		BigDecimal VL_BC_ICMS = nf.getICMSBase();
-		BigDecimal VL_ICMS = nf.getICMSAmt();
-		BigDecimal VL_PIS = nf.getPISAmt();
-		BigDecimal VL_COFINS = nf.getCOFINSAmt();
-		BigDecimal VL_SERV_NT = VL_SERV.subtract(VL_BC_ICMS);
-		String COD_INF = ""; //TODO ???
-		String COD_CTA = ""; //TODO ???
-		String TP_ASSINANTE = ""; //TODO ???
-	
-		return new RD500(UF, IND_OPER,IND_EMIT,COD_PART,COD_MOD,COD_SIT,SER,SUB,NUM_DOC,
-				DT_DOC,DT_A_P,VL_DOC,VL_DESC,VL_SERV,VL_SERV_NT,VL_TERC,VL_DA,
-				VL_BC_ICMS, VL_ICMS, COD_INF, VL_PIS, VL_COFINS, COD_CTA, TP_ASSINANTE);
-	} //createRD500
-	
-	public static RD510 createRD510(MLBRNotaFiscalLine nfLine, String COD_ITEM, String UNID, int line){
-		
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
-		String NUM_DOC   = nf.getDocNo();
-		Timestamp DT_DOC = nf.getDateDoc();
-		
-		String COD_CLASS = ""; //TODO ??? (para saída apenas)
-		BigDecimal QTD = nfLine.getQty();
-		BigDecimal VL_ITEM = nfLine.getLineTotalAmt();
-		BigDecimal VL_DESC = nfLine.getDiscountAmt();
-		String CST_ICMS = nfLine.getCST_ICMS();
-		String CFOP     = nfLine.getCFOP();
-		BigDecimal VL_BC_ICMS = nfLine.getICMSBaseAmt();
-		BigDecimal ALIQ_ICMS  = nfLine.getICMSRate();
-		BigDecimal VL_ICMS    = nfLine.getICMSAmt();
-		BigDecimal VL_BC_ICMS_ST = nfLine.getTaxBaseAmt("ICMSST");
-		BigDecimal VL_ICMS_ST    = nfLine.getTaxAmt("ICMSST");
-		BigDecimal VL_PIS = nfLine.getTaxAmt("PIS");
-		BigDecimal VL_COFINS = nfLine.getTaxAmt("COFINS");
-		String COD_CTA = ""; //TODO ???
-		String IND_REC = "0"; //TODO ??? (para saída apenas)
-		String COD_PART = ""; //TODO ??? (para saída apenas)
-		
-		//INFORMAÇÕES PARA O REGISTRO D590
-		BigDecimal PERC_BC_ICMS = nfLine.getICMSBaseReduction();
-		BigDecimal VL_OPR = nfLine.getTotalOperationAmt();
-		
-		return new RD510(line,COD_ITEM,COD_CLASS,QTD,UNID,VL_ITEM,VL_DESC,CST_ICMS,
-				CFOP,VL_BC_ICMS,ALIQ_ICMS,VL_ICMS,VL_BC_ICMS_ST,VL_ICMS_ST, IND_REC,
-				COD_PART,VL_PIS,VL_COFINS,COD_CTA,PERC_BC_ICMS,VL_OPR,NUM_DOC,DT_DOC);
-	} //createRD510
-	
-	public static RD590[] createRD590(Set<RD510> setRD510){
-		
-		Map<Integer,RD590> _RD590 = new HashMap<Integer,RD590>();
-		
-		for (RD510 rd510 : setRD510){
-		
-			RD590 rd590 = new RD590(rd510.getCST_ICMS(), rd510.getCFOP(), rd510.getALIQ_ICMS(),
-					                rd510.getVL_OPR(), rd510.getVL_BC_ICMS(), rd510.getVL_ICMS(),
-					                rd510.getVL_BC_ICMS_ST(), rd510.getVL_ICMS_ST(), 
-					                rd510.getVL_RED_BC_ICMS(),"",rd510.getNUM_DOC(),rd510.getDT_DOC());
-			
-			if (_RD590.containsKey(rd590.hashCode())){
-				RD590 oldRD590 = _RD590.get(rd590.hashCode());
-				rd590.addValues(oldRD590);
-				rd590.subtractCounter();
-			}
-			_RD590.put(rd590.hashCode(),rd590);
-			
-		} //loop D510
-		
-		RD590[] arrayRD590 = new RD590[_RD590.size()];
-		_RD590.values().toArray(arrayRD590);
-		Arrays.sort(arrayRD590);
-				
-		return arrayRD590;
-	} //createRD590
-	
-	public static RE110 createRE110(Timestamp dateFrom, List<RegSped> regs){
-		
-		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
-		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(getCtx(), period.get_ID(), AD_Org_ID);
-		
-		BigDecimal VL_TOT_DEBITOS     = Env.ZERO; //cálculo abaixo
-		BigDecimal VL_AJ_DEBITOS      = Env.ZERO;
-		BigDecimal VL_TOT_AJ_DEBITOS  = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos);
-		BigDecimal VL_ESTORNOS_CRED   = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos);
-		BigDecimal VL_TOT_CREDITOS    = Env.ZERO; //cálculo abaixo
-		BigDecimal VL_AJ_CREDITOS     = Env.ZERO;
-		BigDecimal VL_TOT_AJ_CREDITOS = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos);
-		BigDecimal VL_ESTORNOS_DEB    = apICMS.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos);
-		BigDecimal VL_SLD_CREDOR_ANT  = MLBRApuracaoICMS.getCumulatedAmt(getCtx(),period.get_ID());
-		BigDecimal VL_SLD_APURADO     = Env.ZERO;
-		BigDecimal VL_TOT_DED         = Env.ZERO;
-		BigDecimal VL_ICMS_RECOLHER   = Env.ZERO;
-		BigDecimal VL_SLD_CREDOR_TRSP = Env.ZERO;
-		BigDecimal DEB_ESP            = Env.ZERO;
-		
-		for (RegSped reg : regs){
-			//ENTRADA GERA CRÉDITO
-			if (!reg.get_ValueAsBoolean("isSOTrx")){
-				VL_TOT_CREDITOS = VL_TOT_CREDITOS.add(reg.get_ValueAsBD("VL_ICMS"));
-			}
-			//SAÍDA GERA DÉBITO
-			else{
-				VL_TOT_DEBITOS = VL_TOT_DEBITOS.add(reg.get_ValueAsBD("VL_ICMS"));
-			}
-		}
-		
-		//SALDO = DEBITOS - (CREDITOS + SALDO ANTERIOR)
-		BigDecimal saldo = (VL_TOT_DEBITOS.add(VL_AJ_DEBITOS)
-		                                  .add(VL_TOT_AJ_DEBITOS)
-		                                  .add(VL_ESTORNOS_CRED))
-		          .subtract((VL_TOT_CREDITOS.add(VL_AJ_CREDITOS)
-		        		                    .add(VL_TOT_AJ_CREDITOS)
-		        		                    .add(VL_ESTORNOS_DEB)
-		        		                    .add(VL_SLD_CREDOR_ANT)));
-		
-		if (saldo.signum() == 1){
-			VL_SLD_APURADO = saldo;
-		}
-		else{
-			VL_SLD_CREDOR_TRSP = saldo.abs();
-		}
-	
-		return new RE110(VL_TOT_DEBITOS,VL_AJ_DEBITOS,VL_TOT_AJ_DEBITOS,VL_ESTORNOS_CRED,
-				VL_TOT_CREDITOS,VL_AJ_CREDITOS,VL_TOT_AJ_CREDITOS,VL_ESTORNOS_DEB,
-				VL_SLD_CREDOR_ANT,VL_SLD_APURADO,VL_TOT_DED,VL_ICMS_RECOLHER,
-				VL_SLD_CREDOR_TRSP,DEB_ESP);
-	} //createRE110
-	
-	public static RE111[] createRE111(Timestamp dateFrom){
-		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
-		MLBRApuracaoICMS apICMS = MLBRApuracaoICMS.get(getCtx(), period.get_ID(), AD_Org_ID);
-		X_LBR_ApuracaoICMSLine[] lines = apICMS.getLines();
-		
-		List<RE111> list = new ArrayList<RE111>();
-		
-		for (X_LBR_ApuracaoICMSLine line :lines){
-			
-			boolean isST = false;
-			if (line.getLBR_ICMSBasis().getType().equals("S"))
-				isST = true;
-			
-			String COD_AJ_APUR = getCOD_AJ_APUR(line.getType(),isST);
-			String DESCR_COMPL_AJ = line.getDescription();
-			BigDecimal VL_AJ_APUR = line.getAmt();
-			list.add(new RE111(COD_AJ_APUR,DESCR_COMPL_AJ,VL_AJ_APUR));
-		}
-		
-		RE111[] retValue = new RE111[list.size()];
-		list.toArray(retValue);
-		return retValue;
-	} //createRE111
-	
-	public static RE210 createRE210(List<RegSped> regs){
-		
-		BigDecimal VL_SLD_CRED_ANT_ST = Env.ZERO;
-		BigDecimal VL_DEVOL_ST = Env.ZERO; // Devoluções ST CFOP (1410, 1411, 1414, 1415, 1660, 1661, 1662, 2410, 2411, 2414, 2415, 2660, 2661 ou 2662)
-		BigDecimal VL_RESSARC_ST = Env.ZERO; //TODO CFOP (1603 ou 2603)
-		BigDecimal VL_OUT_CRED_ST = Env.ZERO; //TODO Registro RE220
-		BigDecimal VL_AJ_CREDITOS_ST = Env.ZERO; //TODO Registro C197
-		BigDecimal VL_RETENÇAO_ST = Env.ZERO; //cálculo abaixo
-		BigDecimal VL_OUT_DEB_ST = Env.ZERO; //TODO Registro RE220;
-		BigDecimal VL_AJ_DEBITOS_ST  = Env.ZERO; //TODO Registro C197
-		BigDecimal VL_SLD_DEV_ANT_ST = Env.ZERO;
-		BigDecimal VL_DEDUÇÕES_ST = Env.ZERO; //TODO Registro C197
-		BigDecimal VL_ICMS_RECOL_ST = Env.ZERO; 
-		BigDecimal VL_SLD_CRED_ST_TRANSPORTAR = Env.ZERO;
-		BigDecimal DEB_ESP_ST = Env.ZERO; //TODO
-		
-		for (RegSped reg : regs){
-			//ENTRADA GERA CRÉDITO
-			if (reg.get_ValueAsBoolean("isSOTrx")){
-				VL_RETENÇAO_ST = VL_RETENÇAO_ST.add(reg.get_ValueAsBD("VL_ICMS_ST"));
-			}
-			else{
-				if (reg.get_ValueAsBoolean("isReversal"))
-					VL_DEVOL_ST = VL_DEVOL_ST.add(reg.get_ValueAsBD("VL_ICMS_ST"));
-			}
-		}
-		
-		//SALDO = DEBITOS - (CREDITOS + SALDO ANTERIOR)
-		BigDecimal saldo = (VL_RETENÇAO_ST.add(VL_OUT_DEB_ST)
-				                           .add(VL_AJ_DEBITOS_ST))
-				   .subtract(VL_SLD_CRED_ANT_ST.add(VL_DEVOL_ST)
-						                       .add(VL_RESSARC_ST)
-						                       .add(VL_OUT_CRED_ST)
-						                       .add(VL_AJ_CREDITOS_ST));
-		
-		if (saldo.signum() == 1){
-			VL_SLD_DEV_ANT_ST = saldo;
-		}
-		else{
-			VL_SLD_CRED_ST_TRANSPORTAR = saldo.abs();
-		}
-		
-		VL_ICMS_RECOL_ST = VL_SLD_DEV_ANT_ST.subtract(VL_DEDUÇÕES_ST);
-		
-		return new RE210(VL_SLD_CRED_ANT_ST,VL_DEVOL_ST,VL_RESSARC_ST,VL_OUT_CRED_ST,
-				VL_AJ_CREDITOS_ST, VL_RETENÇAO_ST, VL_OUT_DEB_ST, VL_AJ_DEBITOS_ST, VL_SLD_DEV_ANT_ST, 
-				VL_DEDUÇÕES_ST, VL_ICMS_RECOL_ST, VL_SLD_CRED_ST_TRANSPORTAR, DEB_ESP_ST);
-	} //createRE210
-	
-	public static RE250 createRE250(RegSped reg, BigDecimal VL_OR, Timestamp dateTo){
-		
-		if (!reg.get_ValueAsBoolean("isSOTrx"))
-			return null;
-		
-		String COD_OR = "002"; //Revenda dentro do Estado
-		
-		if (!reg.get_ValueAsBoolean("isSameregion")){
-			COD_OR = "003"; //Dif. de Alíquota
-			if (reg.get_ValueAsBD("VL_BC_ICMS").compareTo(reg.get_ValueAsBD("VL_BC_ICMS_ST")) < 0){
-				COD_OR = "999"; //Revenda fora do Estado
-			}
-		}
-		
-		//BigDecimal VL_OR  = reg.get_ValueAsBD("VL_ICMS_ST");
-		Timestamp DT_VCTO = reg.get_ValueAsTS("DT_DOC");
-		String COD_REC    = "10009-9"; //FIXME
-		String NUM_PROC   = ""; //TODO
-		String IND_PROC   = ""; //TODO
-		String PROC       = ""; //TODO
-		String TXT_COMPL  = reg.get_ValueAsString("NUM_DOC");
-		
-		return new RE250(COD_OR,VL_OR,DT_VCTO,COD_REC,NUM_PROC,IND_PROC,PROC,TXT_COMPL,dateTo);
-	} //createRE250
-	
-	public static RE510[] createRE510(Map<Integer,Set<RC170>> mapRC170){
-		
-		Map<Integer,RE510> _RE510 = new HashMap<Integer,RE510>();
-		
-		Iterator<Integer> notas = mapRC170.keySet().iterator();
-		while(notas.hasNext()){
-			Integer nota = notas.next();
-			Set<RC170> setRC170 = mapRC170.get(nota);
-			for (RC170 rc170 : setRC170){
-				RE510 re510 = new RE510(rc170.getCFOP(), rc170.getCST_IPI(),
-		                rc170.getVL_OPR(), rc170.getVL_BC_IPI(), rc170.getVL_IPI());
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+		reg.setVL_FORN(factFiscal.getGrandTotal());
 
-				if (_RE510.containsKey(re510.hashCode())){
-					RE510 oldRE510 = _RE510.get(re510.hashCode());
-					re510.addValues(oldRE510);
-					re510.subtractCounter();
-				}
-				_RE510.put(re510.hashCode(),re510);
-			} //loop C170
-			
-		} //loop notas
 		
-		RE510[] arrayRE510 = new RE510[_RE510.size()];
-		_RE510.values().toArray(arrayRE510);
-		Arrays.sort(arrayRE510);
-				
-		return arrayRE510;
-	} //createRE510
-	
-	public static RE520 createRE520(Timestamp dateFrom, RE510[] arrayRE510){
+		// Total dos Itens + Total dos Serviços que não são tributados pelo ICMS
+		if (reg.getVL_DOC() != null && reg.getVL_BC_ICMS() != null)
+			reg.setVL_SERV_NT(reg.getVL_DOC().subtract(reg.getVL_BC_ICMS()));
+		else
+			reg.setVL_SERV_NT(Env.ZERO);
 		
-		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
-		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(getCtx(), period.get_ID(), AD_Org_ID);
+		// Valores cobrados em nome de terceiros
+		reg.setVL_TERC(Env.ZERO);
 		
-		BigDecimal VL_SD_ANT_IPI  = MLBRApuracaoIPI.getCumulatedAmt(getCtx(), period.get_ID());
-		BigDecimal VL_DEB_IPI  = Env.ZERO;
-		BigDecimal VL_CRED_IPI = Env.ZERO;
+		// Valores Outras Despesas
+		reg.setVL_DA(Env.ZERO);
 		
-		BigDecimal VL_OD_IPI   = apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos)
-		                        .add(apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos));
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
 		
-		BigDecimal VL_OC_IPI   = apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos)
-                                .add(apIPI.getAmtByType(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos));
+		//
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_NFTaxBaseAmt());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_NFTaxAmt());
 		
-		BigDecimal VL_SC_IPI   = Env.ZERO;
-		BigDecimal VL_SD_IPI   = Env.ZERO;
+		//
+		reg.setCOD_INF(null);
 		
-		for (RE510 re510 : arrayRE510){
-			//ENTRADA GERA CRÉDITO
-			if (!re510.isSOTrx()){
-				VL_CRED_IPI = VL_CRED_IPI.add(re510.getVL_IPI());
-			}
-			//SAÍDA GERA DÉBITO
-			else{
-				VL_DEB_IPI = VL_DEB_IPI.add(re510.getVL_IPI());
-			}
-		}
-		
-		//SALDO = DEBITOS - (CREDITOS + SALDO ANTERIOR)
-		BigDecimal saldo = (VL_DEB_IPI.add(VL_OD_IPI))
-		          .subtract((VL_CRED_IPI.add(VL_OC_IPI).add(VL_SD_ANT_IPI)));
-		
-		if (saldo.signum() == 1){
-			VL_SD_IPI = saldo;
-		}
-		else{
-			VL_SC_IPI = saldo.abs();
-		}
-		
-		return new RE520(VL_SD_ANT_IPI,VL_DEB_IPI,VL_CRED_IPI,VL_OD_IPI,VL_OC_IPI,
-				VL_SC_IPI,VL_SD_IPI);
-	} //createRE520
-	
-	public static RE530[] createRE530(Timestamp dateFrom){
-		MPeriod period = MPeriod.get(getCtx(),dateFrom,AD_Org_ID);
-		MLBRApuracaoIPI apIPI = MLBRApuracaoIPI.get(getCtx(), period.get_ID(), AD_Org_ID);
-		X_LBR_ApuracaoIPILine[] lines = apIPI.getLines();
-		
-		List<RE530> list = new ArrayList<RE530>();
-		
-		for (X_LBR_ApuracaoIPILine line :lines){
-			
-			String IND_AJ = "0"; //Ajuste a débito
-			if (line.getType().equals(X_LBR_ApuracaoIPILine.TYPE_OutrosCréditos) ||
-				line.getType().equals(X_LBR_ApuracaoIPILine.TYPE_EstornoDeDébitos))
-				IND_AJ = "1"; //Ajuste a crédito
-			
-			BigDecimal VL_AJ = line.getAmt();
-			String COD_AJ = getCOD_AJ(line.getType());
-			String IND_DOC = ""; //TODO
-			String NUM_DOC = ""; //TODO
-			String DESCR_AJ = line.getDescription();
-			list.add(new RE530(IND_AJ,VL_AJ,COD_AJ,IND_DOC,NUM_DOC,DESCR_AJ));
-		}
-		
-		RE530[] retValue = new RE530[list.size()];
-		list.toArray(retValue);
-		return retValue;
-	} //createRE530
-	
-	public static RG110 createRG110(Timestamp dateFrom, Timestamp dateTo, 
-			Set<RG125> _RG125, Map<Integer,Set<RC170>> _RC170){
-		
-		Timestamp DT_INI = dateFrom;
-		Timestamp DT_FIN = dateTo;
-		
-		BigDecimal SALDO_IN_ICMS = Env.ZERO;
-		BigDecimal SOM_PARC = Env.ZERO;
-		for(RG125 rg125 : _RG125){
-			if (rg125.getTIPO_MOV().equals("SI")){
-				SALDO_IN_ICMS = SALDO_IN_ICMS.add(rg125.getVL_IMOB_ICMS_OP().add(rg125.getVL_IMOB_ICMS_DIF()));
-			}
-			SOM_PARC = SOM_PARC.add(rg125.getVL_PARC_PASS());
-		}
-		
-		BigDecimal VL_TRIB_EXP = Env.ZERO;
-		BigDecimal VL_TOTAL = Env.ZERO;
-		
-		Iterator<Integer> listRC100 = _RC170.keySet().iterator();
-		while(listRC100.hasNext()){
-			Set<RC170> setRC170 = _RC170.get(listRC100.next());
-			for (RC170 rc170 : setRC170){
-				Integer CFOP = Integer.parseInt(rc170.getCFOP().substring(0, 1));
-				if (CFOP.intValue() > 4){ //SAIDAS
-					VL_TOTAL = VL_TOTAL.add(rc170.getVL_OPR());
-					if (CFOP.intValue() == 7 || rc170.getVL_ICMS().signum() == 1){
-						VL_TRIB_EXP = VL_TRIB_EXP.add(rc170.getVL_OPR());
-					}
-				}
-			}
-		}
-		
-		BigDecimal IND_PER_SAI = VL_TRIB_EXP.divide(VL_TOTAL,TaxBR.MCROUND);
-		BigDecimal ICMS_APROP = SOM_PARC.multiply(IND_PER_SAI);
-		BigDecimal SOM_ICMS_OC = Env.ZERO;
-		
-		return new RG110(DT_INI,DT_FIN,SALDO_IN_ICMS,SOM_PARC,VL_TRIB_EXP,VL_TOTAL,IND_PER_SAI,ICMS_APROP,SOM_ICMS_OC);
-	} //createRG110
-	
-	public static List<RG125> createRG125(MAsset asset, Timestamp dateFrom){
-		
-		List<RG125> listRG125 = new ArrayList<RG125>();
-		
-		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),asset.get_ValueAsInt("LBR_NotaFiscalLine_ID"),get_TrxName());
-		
-		String COD_IND_BEM  = asset.getValue();
-		Timestamp DT_MOV    = asset.getA_Asset_CreateDate();
-		String TIPO_MOV     = "IM";
-		
-		if (DT_MOV.before(dateFrom)){
-			DT_MOV = dateFrom;
-			TIPO_MOV = "SI";
-		}
-		
-		BigDecimal VL_IMOB_ICMS_OP = nfLine.getICMSAmt().divide(nfLine.getQty(), TaxBR.MCROUND);
-		BigDecimal VL_IMOB_ICMS_ST = nfLine.getTaxAmt("ICMSST").divide(nfLine.getQty(), TaxBR.MCROUND);;
-		BigDecimal VL_IMOB_ICMS_FRT = Env.ZERO; //FIXME
-		BigDecimal VL_IMOB_ICMS_DIF = Env.ZERO; //FIXME
-		
-		int NUM_PARC = AdempiereLBR.getCountMonths(
-				asset.getA_Asset_CreateDate().after(dateFrom) ? dateFrom : asset.getA_Asset_CreateDate(), dateFrom);
-		
-		BigDecimal VL_PARC_PASS = (VL_IMOB_ICMS_OP.add(VL_IMOB_ICMS_DIF)).divide(new BigDecimal("48"), TaxBR.MCROUND);
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
+		reg.setTP_LIGACAO("01");
+		reg.setCOD_GRUPO_TENSAO("01");
 
-		listRG125.add(new RG125(COD_IND_BEM,DT_MOV,TIPO_MOV,VL_IMOB_ICMS_OP,VL_IMOB_ICMS_ST,
-				VL_IMOB_ICMS_FRT,VL_IMOB_ICMS_DIF,NUM_PARC,VL_PARC_PASS,nfLine.get_ID()));
 		
-		//SE É A ULTIMA PARCELA, CRIAR UM REGISTRO DE BAIXA
-		if (NUM_PARC == 48){
-			listRG125.add(new RG125(COD_IND_BEM,DT_MOV,"BA",null,null,null,null,0,null,0));
-		}
-		
-		return listRG125;
-	} //createRG125
+		//
+		return reg;
+	}
 	
-	public static List<RegSped> createRG130_RG140(int LBR_NotaFiscalLine_ID){
+	public static RC590 createRC590(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RC590 reg = new RC590();
 		
-		List<RegSped> listReg = new ArrayList<RegSped>();
-		
-		MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine(getCtx(),LBR_NotaFiscalLine_ID,get_TrxName());
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(),nfLine.getLBR_NotaFiscal_ID(),get_TrxName());
-		
-		//RG130
-		String IND_EMIT = nf.islbr_IsOwnDocument() ? "0" : "1";
-		String COD_PART  = TextUtil.toNumeric(nf.getlbr_BPCNPJ());
-		if (COD_PART == null || COD_PART.trim().equals("")){
-			MBPartner bp = new MBPartner(getCtx(),nf.getC_BPartner_ID(),get_TrxName());
-			COD_PART = TextUtil.toNumeric(bp.getValue());
-		}
-		String COD_MOD     = nf.get_ValueAsString("lbr_NFModel").isEmpty() ? "01" : nf.get_ValueAsString("lbr_NFModel");
-		String SER         = nf.getSerieNo();
-		String NUM_DOC     = nf.getDocNo();
-		String CHV_NFE_CTE = nf.getlbr_NFeID();
-		Timestamp DT_DOC   = nf.getDateDoc();
-		
-		listReg.add(new RG130(IND_EMIT,COD_PART,COD_MOD,SER,NUM_DOC,CHV_NFE_CTE,DT_DOC));
-		
-		//RG140
-		String COD_ITEM = nfLine.getProductValue();
-		int NUM = nfLine.getLine();
-		listReg.add(new RG140(NUM,COD_ITEM));
-		
-		return listReg;
-	} //createRG130_RG140
-		
-	public static R1100 createR1100(MLBRDE de){
-		
-		String IND_DOC    = de.getType();
-		String NRO_DE     = de.getlbr_DE();
-		Timestamp DT_DE   = de.getDateDoc();
-		String NRO_RE     = de.getlbr_RE();
-		Timestamp DT_RE   = de.getlbr_DateRE();
-		String CHC_EMB    = de.getlbr_CHCEmb();
-		Timestamp DT_CHC  = de.getlbr_DateCHCEmb();
-		Timestamp DT_AVB  = de.getDateTrx();
-		String TP_CHC     = de.getlbr_CHCType();
-		
-		if (DT_RE == null)
-			DT_RE = DT_AVB;
-		
-		MCountry country = new MCountry(getCtx(),de.getC_Country_ID(),null);
-		String PAIS = country.get_ValueAsString("lbr_CountryCode");
-		if (!PAIS.trim().isEmpty() && PAIS.length() > 3)
-			PAIS = PAIS.substring(1, PAIS.length()-1); //PAIS SISCOMEX são só 3 dígitos
-		
-		return new R1100(IND_DOC,NRO_DE,DT_DE,NRO_RE,DT_RE,CHC_EMB,
-				DT_CHC,DT_AVB,TP_CHC,PAIS);
-	} //createR1100
-		
-	public static R9900[] createR9900(){
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_BC_ICMS_ST(factFiscal.getICMSST_TaxBaseAmt());
+		reg.setVL_ICMS_ST(factFiscal.getICMSST_TaxAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
+		reg.setCOD_OBS("");
 
-		String regName = "9900";
+		//
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO D500: NOTA FISCAL DE TELEFONIA
+	 * 
+	 * @param rD500
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD500 createRD500(MLBRFactFiscal factFiscal) throws Exception
+	{
 		
-		ArrayList<R9900> list = new ArrayList<R9900>();
+		//
+		RD500 reg = new RD500();
+		reg.setIND_OPER(factFiscal.isSOTrx() ? "1" : "0");
+		reg.setIND_EMIT(factFiscal.islbr_IsOwnDocument() ? "0" : "1");
+		reg.setCOD_PART(getCOD_PART(factFiscal));
+		reg.setCOD_MOD(getCOD_MOD(factFiscal));
+		reg.setCOD_SIT(getCOD_SIT(factFiscal));
+		reg.setSER(getSER(factFiscal));
+		
+		// TODO ??
+		reg.setSUB(""); 
+		
+		reg.setNUM_DOC(factFiscal.getDocumentNo());
+		reg.setDT_DOC(factFiscal.getDateDoc());
+		reg.setDT_A_P(factFiscal.getlbr_DateInOut());
+
+		
+		//
+		reg.setVL_DOC(factFiscal.getGrandTotal());
+		reg.setVL_DESC(factFiscal.getDiscountAmt());
+
+		
+		// Total dos Itens + Total dos Serviços - ??
+		reg.setVL_SERV(factFiscal.getTotalLines());
+		
+		// Total dos Itens + Total dos Serviços que não são tributados pelo ICMS
+		if (reg.getVL_SERV() != null && reg.getVL_BC_ICMS() != null)
+			reg.setVL_SERV_NT(reg.getVL_SERV().subtract(reg.getVL_BC_ICMS()));
+		else
+			reg.setVL_SERV_NT(Env.ZERO);
+		
+		// Valores cobrados em nome de terceiros
+		reg.setVL_TERC(Env.ZERO);
+		
+		// Valores Outras Despesas
+		reg.setVL_DA(Env.ZERO);
+		
+		//
+		reg.setVL_BC_ICMS(factFiscal.getICMS_NFTaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_NFTaxAmt());
+		
+		//
+		reg.setCOD_INF(null);
+		
+		//
+		reg.setVL_PIS(factFiscal.getPIS_TaxAmt());
+		reg.setVL_COFINS(factFiscal.getCOFINS_TaxAmt());
+		
+		// 
+		reg.setCOD_CTA(null);
+		
+		// 
+		reg.setTP_ASSINANTE("1");
+		//
+		return reg;
+	}
+	
+	public static RD590 createRD590(MLBRFactFiscal factFiscal, int NUM_ITEM) throws Exception
+	{
+		//
+		RD590 reg = new RD590();
+		
+		/*
+		 * Valores auxiliares somente utilizados para apurar
+		 * o registro D190
+		 */
+		reg.setCST_ICMS(factFiscal.getICMS_TaxStatus());
+		reg.setCFOP(factFiscal.getlbr_CFOPName());
+		reg.setALIQ_ICMS(factFiscal.getICMS_TaxRate());
+		reg.setVL_OPR(factFiscal.getLineTotalAmt());
+		reg.setVL_BC_ICMS(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS(factFiscal.getICMS_TaxAmt());
+		reg.setVL_BC_ICMS_UF(factFiscal.getICMS_TaxBaseAmt());
+		reg.setVL_ICMS_UF(factFiscal.getICMS_TaxAmt());
+		reg.setVL_RED_BC(factFiscal.getICMS_TaxBase());
+		reg.setCOD_OBS("");
+
+		//
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO D990: ENCERRAMENTO DO BLOCO D
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RD990 createRD990() throws Exception 
+	{
+		RD990 reg = new RD990();
+		reg.setQTD_LIN_D(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO H001: ABERTURA DO BLOCO H
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH001 createRH001(boolean hasInfo) throws Exception
+	{
+		RH001 reg = new RH001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO H005: TOTAIS DO INVENTÁRIO
+	 * 
+	 * @param dtInv
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH005 createRH005(Timestamp dtInv) throws Exception 
+	{
+		RH005 reg = new RH005();
+		reg.setDT_INV(dtInv);
+		
+		// fazer soma do total ao adicionar as linhas do inventário
+		reg.setVL_INV(Env.ZERO);
+		
+		// TODO: Motivo do Inventário - 01 – No final no período;
+		reg.setMOT_INV("01");
+		
+		return reg;
+	
+	}
+	
+	
+	/**
+	 * REGISTRO H010: INVENTÁRIO.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH010 createRH010(String COD_ITEM, String UNID, BigDecimal QTD, 
+			BigDecimal VL_UNIT, BigDecimal VL_ITEM, String IND_PROP, String COD_CTA) throws Exception 
+	{
+		
+		RH010 reg = new RH010();
+		reg.setCOD_ITEM(COD_ITEM);
+		reg.setUNID(UNID);
+		reg.setQTD(QTD);
+		reg.setVL_UNIT(VL_UNIT);
+		reg.setVL_ITEM(VL_ITEM);
+		reg.setIND_PROP(IND_PROP);
+		reg.setCOD_CTA(COD_CTA);
+		reg.setCOD_PART(null);
+		reg.setTXT_COMPL(null);
+		reg.setVL_ITEM_IR(null);
+		
+		return reg;
+	}
+	
+	
+
+	
+	
+	
+	/**
+	 * REGISTRO H990: ENCERRAMENTO DO BLOCO H
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RH990 createRH990() throws Exception 
+	{
+		RH990 reg = new RH990();
+		reg.setQTD_LIN_H(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E001: ABERTURA DO BLOCO E
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE001 createRE001(boolean hasInfo) throws Exception
+	{
+		RE001 reg = new RE001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+
+	/**
+	 * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE100 createRE100(Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		RE100 reg = new RE100();
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO E110: APURAÇÃO DO ICMS – OPERAÇÕES PRÓPRIAS.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE110 createRE110(MLBRTaxAssessment m_taxassessment) throws Exception
+	{
+
+		
+		
+		RE110 reg = new RE110();
+		// total de debito
+		// reg.setVL_TOT_DEBITOS(AmtDr.abs());
+		reg.setVL_TOT_DEBITOS(m_taxassessment.getTotalDr());
+		
+		// total ajuste débito
+		reg.setVL_AJ_DEBITOS(Env.ZERO);
+		
+		// total ajuste débitos
+		reg.setVL_TOT_AJ_DEBITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos).abs());
+		
+		// total de estorno de créditos
+		reg.setVL_ESTORNOS_CRED(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_EstornosDeCréditos).abs());
+		
+		// total de créditos
+		reg.setVL_TOT_CREDITOS(m_taxassessment.getTotalCr());
+		
+		// total de ajustes de créditos
+		reg.setVL_AJ_CREDITOS(Env.ZERO);
+		
+		// total ajuste créditos
+		reg.setVL_TOT_AJ_CREDITOS(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos).abs());
+		
+		// total estorno débitos
+		reg.setVL_ESTORNOS_DEB(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_EstornoDeDébitos).abs());
+		
+		// Saldo anterior
+		reg.setVL_SLD_CREDOR_ANT(MLBRTaxAssessment.getCumulatedAmt(m_taxassessment.getCtx(), 
+				m_taxassessment.getC_Period_ID(),
+				m_taxassessment.getAD_Org_ID(), 
+				m_taxassessment.getLBR_TaxName_ID()).abs());
+		
+		/*
+		 * Campo 11 - Validação: O valor informado deve ser preenchido com base na expressão: 
+		 * 	soma do total de débitos (VL_TOT_DEBITOS) com total de ajustes (VL_AJ_DEBITOS + VL_TOT_AJ_DEBITOS) 
+		 * 	com total de estorno de crédito (VL_ESTORNOS_CRED) menos a soma do total de créditos (VL_TOT_CREDITOS) 
+		 * 	com total de ajuste de créditos (VL_,AJ_CREDITOS + VL_TOT_AJ_CREDITOS) com total de estorno de débito 
+		 * 	(VL_ESTORNOS_DEB) com saldo credor do período anterior (VL_SLD_CREDOR_ANT). Se o valor da expressão 
+		 * 	for maior ou igual a “0” (zero), então este valor deve ser informado neste campo e o 
+		 * 	campo 14 (VL_SLD_CREDOR_TRANSPORTAR) deve ser igual a “0” (zero). Se o valor da expressão
+		 * 	for menor que “0” (zero), então este campo deve ser preenchido com “0” (zero) e o valor absoluto 
+		 * 	da expressão deve ser informado no campo VL_SLD_CREDOR_TRANSPORTAR.
+		 * 
+		 * 
+		 *  ((VL_TOT_DEBITOS + VL_TOT_AJ_DEBITOS + VL_ESTORNOS_CRED) - 
+		 *  	(VL_AJ_CREDITOS + VL_TOT_AJ_CREDITOS + VL_ESTORNOS_DEB)) + 
+		 *  	(VL_SLD_CREDOR_ANT)
+		 *  
+		 */
+		BigDecimal saldo = ((reg.getVL_TOT_DEBITOS().add(reg.getVL_TOT_AJ_DEBITOS()).add(reg.getVL_ESTORNOS_CRED()))
+				.subtract(reg.getVL_TOT_CREDITOS().add(reg.getVL_TOT_AJ_CREDITOS()).add(reg.getVL_ESTORNOS_DEB())
+				.add(reg.getVL_SLD_CREDOR_ANT()))).setScale(2, RoundingMode.HALF_UP);
+		
+		// 
+		if(saldo.signum() == 1)
+		{
+			reg.setVL_SLD_APURADO(saldo.abs());
+			reg.setVL_SLD_CREDOR_TRANSPORTAR(Env.ZERO);
+		}	
+		else
+		{
+			reg.setVL_SLD_APURADO(Env.ZERO);
+			reg.setVL_SLD_CREDOR_TRANSPORTAR(saldo.abs());			
+		}
+		
+
+		// TODO
+		reg.setVL_TOT_DED(Env.ZERO);
+
+		//  VL_SLD_APURADO - VL_TOT_DED
+		reg.setVL_ICMS_RECOLHER(reg.getVL_SLD_APURADO().abs());
+		
+		// TODO
+		reg.setDEB_ESP(Env.ZERO);
+		
+		//
+		return reg;
+		
+	}
+	
+	
+	/**
+	 * REGISTRO E111: AJUSTE/BENEFÍCIO/INCENTIVO DA APURAÇÃO DO ICMS.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * COD_AJ_APUR
+	 * 
+	 * 1. Os dois primeiros caracteres (UF) referem-se à unidade da federação do estabelecimento;
+	 * 
+	 * 2. O caracter seguinte refere-se à apuração própria ou da substituição tributária, onde:
+	 * 	0 – ICMS e
+	 * 	1 – ICMS ST.
+	 * 
+	 * 3. O quarto caracter refere-se à UTILIZAÇÃO e identificará o campo a ser ajustado:
+	 * 	0 – Outros débitos;
+	 * 	1 – Estorno de créditos;
+	 * 	2 – Outros créditos;
+	 * 	3 – Estorno de débitos;
+	 * 	4 – Deduções do imposto apurado.
+	 * 
+	 * 4.Os quatro caracteres seguintes, SEQÜÊNCIA, iniciando-se por 0001 deverá ser referente a identificação do tipo de ajuste deixando sempre um código genérico para a possibilidade de outras ocorrências não previstas.
+	 * 
+	 * 	0 – Outros Débitos 			0001 						
+	 * 	1 – Estorno de crédito   	0001
+	 * 	2 – Outros créditos			0001 (motivo a)
+	 * 	2 – Outros créditos			0001 (motivo a)
+	 * 	2 – Outros créditos			0002 (motivo b)apuração da Substituição Tributária
+	 * 	3 – Estorno de débito 		0001 (motivo c)
+	 * 	4 – Deduções				0001
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE111 createRE111(String UF, boolean isICSM, X_LBR_TaxAssessmentLine line) throws Exception
+	{
+		
+		RE111 reg = new RE111();
+		
+		// UF + ICMS/ICMSST 
+		String COD_AJ_APUR = UF.concat(isICSM ? "0" : "1");
+		
+		// Type
+		if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos))
+			COD_AJ_APUR += "0";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_EstornosDeCréditos))
+			COD_AJ_APUR += "1";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos))
+			COD_AJ_APUR += "2";
+		else if ( line.getType().equals(X_LBR_TaxAssessmentLine.TYPE_EstornoDeDébitos))
+			COD_AJ_APUR += "3";
+		
+		// Type 2
+		COD_AJ_APUR += line.getLBR_COD_AJ_APUR();
+		
+		// 
+		reg.setCOD_AJ_APUR(line.getLBR_COD_AJ_APUR());
+		
+		// 
+		reg.setDESCR_COMPL_AJ(line.getDescription());
+		
+		// 
+		reg.setVL_AJ_APUR(line.getAmt());
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO RE116: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – OPERAÇÕES PRÓPRIAS.
+	 * 
+	 * Código da obrigação a recolher, conforme a Tabela 5.4
+	 * 002 - Saídas para o Estados
+	 * 999 - Saídas para outros Estados
+	 * 
+	 * @param isSameRegion mesmo estado do emitente
+	 * @param DT_VCTO data de vcto
+	 * @param VL_OR valor da obrigação de icms st a recolher
+	 * @param MES_REF mês de referência
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE116 createRE116(MLBRTaxAssessment m_taxAssessment) throws Exception
+	{
+		
+		RE116 reg = new RE116();
+		reg.setCOD_OR(m_taxAssessment.getLBR_Cod_OR());
+		reg.setVL_OR(m_taxAssessment.getLBR_VL_OR());
+		reg.setDT_VCTO(m_taxAssessment.getLBR_Dt_Vcto());
+		reg.setCOD_REC(m_taxAssessment.getLBR_Cod_Rec());  
+		reg.setNUM_PROC(m_taxAssessment.getLBR_Num_Proc());	
+		reg.setIND_PROC(m_taxAssessment.getLBR_Ind_Proc());	
+		reg.setPROC(m_taxAssessment.getLBR_Proc());	
+		reg.setTXT_COMPL(m_taxAssessment.getLBR_Txt_Compl());
+		reg.setMES_REF(TextUtil.timeToString(m_taxAssessment.getC_Period().getEndDate(), "MMyyyy"));
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E200: PERÍODO DA APURAÇÃO DO ICMS - SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param UF
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE200 createRE200(String UF, Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		
+		RE200 reg = new RE200();
+		reg.setUF(UF);
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E210: APURAÇÃO DO ICMS – SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE210 createRE210() throws Exception
+	{
+		
+		RE210 reg = new RE210();
+		reg.setIND_MOV_ST("0");
+		reg.setVL_SLD_CRED_ANT_ST(Env.ZERO);
+		reg.setVL_DEVOL_ST(Env.ZERO);
+		reg.setVL_RESSARC_ST(Env.ZERO);
+		reg.setVL_OUT_CRED_ST(Env.ZERO);
+		reg.setVL_AJ_CREDITOS_ST(Env.ZERO);
+		reg.setVL_RETENÇAO_ST(Env.ZERO);
+		reg.setVL_OUT_DEB_ST(Env.ZERO);
+		reg.setVL_AJ_DEBITOS_ST(Env.ZERO);
+		reg.setVL_SLD_DEV_ANT_ST(Env.ZERO);
+		reg.setVL_DEVOL_ST(Env.ZERO);
+		reg.setVL_ICMS_RECOL_ST(Env.ZERO);
+		reg.setVL_SLD_CRED_ST_TRANSPORTAR(Env.ZERO);
+		reg.setVL_DEDUCOES_ST(Env.ZERO);
+		reg.setDEB_ESP_ST(Env.ZERO);
+		
+		return reg;		
+	}
+	
+	
+	/**
+	 * REGISTRO E250: OBRIGAÇÕES DO ICMS RECOLHIDO OU A RECOLHER – SUBSTITUIÇÃO TRIBUTÁRIA.
+	 * 
+	 * Código da obrigação a recolher, conforme a Tabela 5.4
+	 * 002 - Saídas para o Estados
+	 * 999 - Saídas para outros Estados
+	 * 
+	 * @param isSameRegion mesmo estado do emitente
+	 * @param DT_VCTO data de vcto
+	 * @param VL_OR valor da obrigação de icms st a recolher
+	 * @param MES_REF mês de referência
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE250 createRE250(boolean isSameRegion, Timestamp DT_VCTO, BigDecimal VL_OR, Timestamp dateTo, String DocumentNo) throws Exception
+	{
+		//
+		String COD_OR = "002";
+		if(!isSameRegion)
+			COD_OR = "999";
+			
+		RE250 reg = new RE250();
+		reg.setCOD_OR(COD_OR);
+		reg.setVL_OR(VL_OR);
+		reg.setDT_VCTO(DT_VCTO);
+		reg.setCOD_REC("10009-9"); 	// TODO ??? 
+		reg.setNUM_PROC("");		// TODO ???
+		reg.setIND_PROC("");		// TODO ???
+		reg.setPROC("");			// TODO ???
+		reg.setTXT_COMPL(DocumentNo);
+		reg.setMES_REF(TextUtil.timeToString(dateTo, "MMyyyy"));
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E500: PERÍODO DE APURAÇÃO DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE500 createRE500(Timestamp dtIni, Timestamp dtFin) throws Exception
+	{
+		RE500 reg = new RE500();
+		reg.setIND_APUR(IND_APUR);
+		reg.setDT_INI(dtIni);
+		reg.setDT_FIN(dtFin);
+		
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO E510: CONSOLIDAÇÃO DOS VALORES DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE510 createRE510(RC190 rc190) throws Exception
+	{
+		RE510 reg = new RE510();
+		reg.setCFOP(rc190.getCFOP());
+		reg.setCST_IPI(rc190.getCST_IPI());
+		reg.setVL_CONT_IPI(rc190.getVL_OPR());
+		reg.setVL_BC_IPI(rc190.getVL_BC_IPI());
+		reg.setVL_IPI(rc190.getVL_IPI());
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO E520: APURAÇÃO DO IPI.
+	 * 
+	 * TODO: Origem dos Dados?
+	 * 
+	 * @param dtIni
+	 * @param dtFin
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE520 createRE520(MLBRTaxAssessment m_taxassessment, List<RE510> re510s) throws Exception
+	{
+		RE520 reg = new RE520();
+		
+		// valores defaults == zero
+		reg.setVL_SD_ANT_IPI(Env.ZERO);
+		reg.setVL_DEB_IPI(Env.ZERO);
+		reg.setVL_CRED_IPI(Env.ZERO);
+		reg.setVL_OD_IPI(Env.ZERO);
+		reg.setVL_OC_IPI(Env.ZERO);
+		reg.setVL_SC_IPI(Env.ZERO);
+		reg.setVL_SD_IPI(Env.ZERO);
+		
+		
+		// saldo anterior
+		reg.setVL_SD_ANT_IPI(MLBRTaxAssessment.getCumulatedAmt(m_taxassessment.getCtx(), 
+				m_taxassessment.getC_Period_ID(), 
+				m_taxassessment.getAD_Org_ID(), 
+				m_taxassessment.getLBR_TaxName_ID()));
+		
+		// crédito e débito baseado nos RE510s
+		for(RE510 re510 : re510s)
+		{
+			// se for compra é crédito, venda é débito
+			if(re510.getCFOP().startsWith("1") 
+					|| re510.getCFOP().startsWith("2") 
+					|| re510.getCFOP().startsWith("3"))
+				reg.setVL_CRED_IPI(reg.getVL_CRED_IPI().add(re510.getVL_IPI()));	
+			
+			else if(re510.getCFOP().startsWith("5") 
+					|| re510.getCFOP().startsWith("6"))
+				reg.setVL_DEB_IPI(reg.getVL_DEB_IPI().add(re510.getVL_IPI()));
+		}
+		
+		reg.setVL_OD_IPI(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosDébitos));
+		reg.setVL_OC_IPI(m_taxassessment.getAmtByType(X_LBR_TaxAssessmentLine.TYPE_OutrosCréditos));
+		reg.setVL_SC_IPI(Env.ZERO);
+		reg.setVL_SD_IPI(Env.ZERO);
+		
+		
+		/* 
+			Campo 07 - Validação: se a soma dos campos VL_DEB_IPI e VL_OD_IPI 
+			menos a soma dos campos VL_SD_ANT_IPI, VL_CRED_IPI e VL_OC_IPI 
+			for menor que “0” (zero), então o campo VL_SC_IPI deve ser igual 
+			ao valor absoluto da expressão, e o valor do campo VL_SD_IPI deve 
+			ser igual a “0” (zero).
+			 
+			 
+			Campo 08 - Validação: se a soma dos campos VL_DEB_IPI e VL_OD_IPI 
+			menos a soma dos campos VL_SD_ANT_IPI, VL_CRED_IPI e VL_OC_IPI for
+			maior ou igual a “0” (zero), então o campo 08 (VL_SD_IPI) deve ser
+			igual ao resultado da expressão, e o valor do campo VL_SC_IPI deve
+			ser igual a “0” (zero).
+		 */
+		BigDecimal SLD = (reg.getVL_DEB_IPI().add(reg.getVL_OD_IPI()))
+				.subtract((reg.getVL_SD_ANT_IPI().add(reg.getVL_CRED_IPI()).add(reg.getVL_OC_IPI())));
+
+		if(SLD.signum() == -1)
+			reg.setVL_SC_IPI(SLD.abs());
+		else
+			reg.setVL_SD_IPI(SLD);		
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO E990: ENCERRAMENTO DO BLOCO E
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RE990 createRE990() throws Exception 
+	{
+		RE990 reg = new RE990();
+		reg.setQTD_LIN_E(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO G001: ABERTURA DO BLOCO G
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RG001 createRG001(boolean hasInfo) throws Exception
+	{
+		RG001 reg = new RG001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO G990: ENCERRAMENTO DO BLOCO G
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RG990 createRG990() throws Exception 
+	{
+		RG990 reg = new RG990();
+		reg.setQTD_LIN_G(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * REGISTRO 9001: ABERTURA DO BLOCO 9
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9001 createR9001(boolean hasInfo) throws Exception
+	{
+		R9001 reg = new R9001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	
+	/**
+	 * REGISTRO 9900: REGISTROS DO ARQUIVO.
+	 * 
+	 * Obs.: Cria todos e retorna uma lista com estes
+	 * 
+	 * @return
+	 * @exception Exception
+	 */
+	public static List<R9900> createR9900() throws Exception
+	{
+
+
+		//
+		List<R9900> list = new ArrayList<R9900>();
+		
+		//
 		String[] regs = CounterSped.getRegsSped();
-		for(int i=0; i<regs.length; i++){
-			String reg = regs[i];
-			int    qtd = CounterSped.getCounter(reg);
-			list.add(new R9900(reg,""+qtd));
-		}
 
-		list.add(new R9900(regName,String.valueOf(CounterSped.getCounter(regName)+1)));
 		
-		return list.toArray(new R9900[list.size()]);
+		// para todos os registros do sped
+		for(int i=0; i<regs.length; i++)
+		{
+			// criar totalizador
+			R9900 reg = new R9900();
+			reg.setREG_BLC(regs[i]);
+			reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter(regs[i])));
+
+			// add a lista 
+			list.add(reg);
+		}
+		
+
+		
+		
+		// totalizador do R9900 o +1 é pq depoisa desse registro, será criado o totalizador do 9900
+		R9900 reg = new R9900();
+		reg.setREG_BLC("9900");
+		reg.setQTD_REG_BLC(String.valueOf(CounterSped.getCounter("9900") + 1));
+		
+		// add à lista também
+		list.add(reg);
+		
+		
+		// totalizador do R999
+		reg = new R9900();
+		reg.setREG_BLC("9999");
+		reg.setQTD_REG_BLC(String.valueOf("1"));
+		
+		// add à lista também
+		list.add(reg);
+		
+		//
+		return list;
+		
+		
 	} //createR9900
 	
-	public static MAsset[] getAtivosCIAP(Timestamp dateFrom, Timestamp dateTo){
-		
-		String whereClause = "AD_Client_ID=? AND AD_Org_ID IN (0,?) " +
-				             "AND IsDepreciated='Y' " +
-				             "AND ADD_MONTHS(TRUNC(A_Asset_CreateDate,'MM'),47) >= ? " +
-				             "AND A_Asset_CreateDate <= ?";
-		 
-		String orderBy = "Value";
-
-		MTable table = MTable.get(Env.getCtx(), MAsset.Table_Name);
-		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
-              q.setOrderBy(orderBy);
-              q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()),Env.getAD_Org_ID(Env.getCtx()),dateFrom,dateTo});
-
-        List<MAsset> list = q.list();
-        MAsset[] nfs = new MAsset[list.size()];
-        return list.toArray(nfs);
-	} //getAtivoCIAP
 	
-	public static String getSQLInv(){
-		String sql = "SELECT M_Product_ID, QtyOnHand, C_BPartner_ID, lbr_WarehouseType " +
-	                 "FROM (SELECT Aux.AD_Client_ID, Aux.AD_Org_ID, Aux.M_Product_ID, SUM(Aux.QtyOnHand) AS QtyOnHand, Aux.C_BPartner_ID, Aux.lbr_WarehouseType " +
-	                       "FROM (SELECT DISTINCT '1', w.AD_Client_ID, w.AD_Org_ID, s.M_Product_ID, SUM(s.QtyOnHand) AS QtyOnHand, l.C_BPartner_ID, w.lbr_WarehouseType " +
-	                                "FROM M_Storage s " +
-	                                "INNER JOIN M_Locator l ON s.M_Locator_ID = l.M_Locator_ID " +
-	                                "INNER JOIN M_Warehouse w ON l.M_Warehouse_ID=w.M_Warehouse_ID " +
-	                             "GROUP BY w.AD_Client_ID, w.AD_Org_ID, s.M_Product_ID, l.C_BPartner_ID, w.lbr_WarehouseType " +
-	                             "UNION ALL " +
-	                             "SELECT '2', w.AD_Client_ID, w.AD_Org_ID, t.M_Product_ID, SUM(t.MovementQty) * -1 AS QtyOnHand, l.C_BPartner_ID, w.lbr_WarehouseType " +
-	                                "FROM M_Transaction t " +
-	                                "INNER JOIN M_Locator l ON t.M_Locator_ID = l.M_Locator_ID " +
-	                                "INNER JOIN M_Warehouse w ON l.M_Warehouse_ID=w.M_Warehouse_ID " +
-	                             "WHERE TRUNC(t.MovementDate, 'DD') > TRUNC(?, 'DD') " +
-	                             "GROUP BY w.AD_Client_ID, w.AD_Org_ID, t.M_Product_ID, l.C_BPartner_ID, w.lbr_WarehouseType) Aux " +
-	                       "GROUP BY AD_Client_ID, AD_Org_ID, M_Product_ID, C_BPartner_ID, lbr_WarehouseType) " +
-	                 "WHERE QtyOnHand > 0 AND AD_Org_ID = ? ORDER BY M_Product_ID";
+	
+	/**
+	 * REGISTRO 9990: ENCERRAMENTO DO BLOCO 9
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9990 createR9990() throws Exception 
+	{
+		R9990 reg = new R9990();
+		reg.setQTD_LIN_9(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+	
+	/**
+	 * REGISTRO 9999: ENCERRAMENTO DO ARQUIVO
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R9999 createR9999() throws Exception 
+	{
+		R9999 reg = new R9999();
+		reg.setQTD_LIN(String.valueOf(CounterSped.getTotalCounter()));
+	
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO 1001: ABERTURA DO BLOCO 1
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1001 createR1001(boolean hasInfo) throws Exception
+	{
+		R1001 reg = new R1001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+//		createR1010(); //Registro Obrigatório
 		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO 1010: REGISTROS DO BLOCO 1
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1010 createR1010() throws Exception
+	{
+		R1010 reg = new R1010();
+		reg.setREG("1010");
+		reg.setIND_EXP("N");
+		reg.setIND_CCRF("N");
+		reg.setIND_COMB("N");
+		reg.setIND_USINA("N");
+		reg.setIND_VA("N");
+		reg.setIND_EE("N");
+		reg.setIND_CART("S");
+		reg.setIND_FORM("N");
+		reg.setIND_AER("N");
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO 1600: INFORMACAO DE REGISTROS DE CARTAO DE CREDITO E DEBITO
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1600 createR1600(MLBRSalesCardTotal card) throws Exception
+	{
+		R1600 reg = new R1600();
+		reg.setCOD_PART(TextUtil.retiraEspecial(card.getC_BPartner().getValue()));
+		reg.setTOT_CREDITO(card.getLBR_CreditCardAmt());
+		reg.setTOT_DEBITO(card.getLBR_DebitCardAmt());
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static R1990 createR1990() throws Exception 
+	{
+		R1990 reg = new R1990();
+		reg.setQTD_LIN_1(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
+
+	
+	
+	
+	/**
+	 * Retornar a conta do produto
+	 * 
+	 * @param C_ElementValue_ID ID do Elemento de Contas
+	 */
+	public static int getProductAsseAcct(int M_Product_ID, String trxName) throws Exception
+	{
+	
+		// sql
+		String sql = " SELECT C_ElementValue_ID 																" +
+					 "   FROM C_ElementValue 																	" +
+					 "  WHERE C_ElementValue_ID = (SELECT Account_ID 											" +
+					 "								 FROM C_ValidCombination									" +
+					 "								WHERE C_ValidCombination_ID = (SELECT P_Asset_Acct			" +
+					 "						  								         FROM M_Product_Acct 		" +
+					 "																WHERE M_Product_ID = ?))	" +
+					 "   AND IsActive = 'Y' 																	";
+		
+		// buscar valor
+		int ret =  DB.getSQLValue(trxName, sql, M_Product_ID);
+		
+		// 
+		if(ret == -1)
+			return 0;
+		
+		// 
+		return ret;
+	}
+	
+	
+	/**
+	 * Retornar a query para buscar as informações do inventário
+	 * 
+	 * Parametros do SQL
+	 * 
+	 * #1 - C_Period_ID
+	 * #2 - CostingMethod
+	 * #3 - AD_Client_ID
+	 * #4 - AD_Org_ID
+	 * #5 - MovementDate
+	 * 
+	 * 
+	 * @return Sql String
+	 */
+	public static String getSQLInv()  throws Exception
+	{
+		// sql
+		String sql = " SELECT 																			" +
+				" 	mt.M_Product_ID,																	" +
+				"   ROUND(SUM(MovementQty), 4) AS QtyOnHand, 											" +
+				"	MAX(wh.lbr_WarehouseType) AS lbr_WarehouseType,										" +
+				"	getCurrentCost(mt.AD_Client_ID, mt.M_Product_ID, ?, ?) AS CurrentCostPrice			" + // # 1, 2
+				" FROM M_Transaction mt																	" +
+				"	INNER JOIN M_Product p ON mt.M_Product_id = p.M_Product_id							" +
+				"	INNER JOIN M_Locator l ON mt.M_Locator_id = l.M_Locator_id 							" +
+				"	INNER JOIN M_Warehouse wh ON wh.M_Warehouse_id = l.M_Warehouse_id					" +
+				" WHERE mt.AD_Client_ID = ? 															" + // # 3
+				"   AND mt.AD_Org_ID = ?																" + // # 4
+				"	AND mt.MovementDate <= ?															" +	// # 5
+				"	AND wh.AD_Org_ID = mt.AD_Org_ID 													" +
+				" GROUP BY																				" +
+				" 	mt.AD_Client_ID, 																	" +
+				"	mt.M_Product_ID																		" +
+				" HAVING SUM(MovementQty) > 0															" +
+				" ORDER BY mt.M_Product_ID																";
+
+		//
 		return sql;
-	} //getSQLInv
+	}
 	
-	public static BigDecimal getVL_UNIT(int AD_Client_ID, int M_Product_ID, Timestamp invDate){
-		String sql = "SELECT getCurrentCost(?,?,getPeriod(?,TRUNC(?,'MM'))) FROM AD_Client";
-		return DB.getSQLValueBD(null, sql, new Object[]{AD_Client_ID,M_Product_ID,AD_Client_ID,invDate});
-	} //getVL_UNIT
-	
-	private static String getCOD_AJ_APUR(String type, boolean isST){
-		
-		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), AD_Org_ID, get_TrxName());
-		MLocation orgLoc = new MLocation(getCtx(),orgInfo.getC_Location_ID(), get_TrxName());
-		
-		String UF = orgLoc.getC_Region().getName();
-		String TIPO_OPR = isST ? "1" : "0"; //ST = Substituição Tributária
-		
-		String UTILIZACAO = "";	
-		if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_OutrosDébitos))
-			UTILIZACAO = "0";
-		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_EstornosDeCréditos))
-			UTILIZACAO = "1";
-		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_OutrosCréditos))
-			UTILIZACAO = "2";
-		else if (type.equals(X_LBR_ApuracaoICMSLine.TYPE_EstornoDeDébitos))
-			UTILIZACAO = "3";
-		else
-			return null;
-		
-		return UF + TIPO_OPR + UTILIZACAO + "9999";
-	} //getCOD_AJ_APUR
-	
-	private static String getCOD_AJ(String type){
-		
-		if (type.equals(X_LBR_ApuracaoIPILine.TYPE_OutrosDébitos))
-			return "199";
-		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_EstornosDeCréditos))
-			return "101";
-		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_OutrosCréditos))
-			return "099";
-		else if (type.equals(X_LBR_ApuracaoIPILine.TYPE_EstornoDeDébitos))
-			return "001";
-		
-		return null;
-	} //getCOD_AJ
-	
-} //EFDUtil
+} // EFDUtil

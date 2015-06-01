@@ -121,7 +121,7 @@ public class MAttachment extends X_AD_Attachment
 	public MAttachment(Properties ctx, int AD_Table_ID, int Record_ID, String trxName)
 	{
 		this (ctx
-				, MAttachment.get(ctx, AD_Table_ID, Record_ID) == null ? 0 : MAttachment.get(ctx, AD_Table_ID, Record_ID).get_ID()
+				, MAttachment.get(ctx, AD_Table_ID, Record_ID, trxName) == null ? 0 : MAttachment.get(ctx, AD_Table_ID, Record_ID, trxName).get_ID()
 				, trxName);
 		if (get_ID() == 0) {
 			setAD_Table_ID (AD_Table_ID);
@@ -550,6 +550,7 @@ public class MAttachment extends X_AD_Attachment
 	 * 	Save Entry Data to the file system.
 	 *	@return true if saved
 	 */
+	@SuppressWarnings("resource")
 	private boolean saveLOBDataToFileSystem()
 	{
 		if("".equals(m_attachmentPathRoot)){

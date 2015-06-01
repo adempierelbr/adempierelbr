@@ -36,9 +36,9 @@ public interface I_LBR_TaxName
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org 
+    /** AccessLevel = 6 - System - Client 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(3);
+    BigDecimal accessLevel = BigDecimal.valueOf(6);
 
     /** Load Meta Data */
 
@@ -146,32 +146,6 @@ public interface I_LBR_TaxName
 
 	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxSubstitution() throws RuntimeException;
 
-    /** Column name lbr_TaxType */
-    public static final String COLUMNNAME_lbr_TaxType = "lbr_TaxType";
-
-	/** Set Tax Type.
-	  * Define the Tax Type
-	  */
-	public void setlbr_TaxType (String lbr_TaxType);
-
-	/** Get Tax Type.
-	  * Define the Tax Type
-	  */
-	public String getlbr_TaxType();
-
-    /** Column name lbr_WithholdFrequency */
-    public static final String COLUMNNAME_lbr_WithholdFrequency = "lbr_WithholdFrequency";
-
-	/** Set Withhold Frequency.
-	  * Defines the Withhold Frequency
-	  */
-	public void setlbr_WithholdFrequency (String lbr_WithholdFrequency);
-
-	/** Get Withhold Frequency.
-	  * Defines the Withhold Frequency
-	  */
-	public String getlbr_WithholdFrequency();
-
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
@@ -213,4 +187,30 @@ public interface I_LBR_TaxName
 	  * Defines the WithHold Threshold 
 	  */
 	public BigDecimal getWithHoldThreshold();
+
+    /** Column name lbr_TaxType */
+    public static final String COLUMNNAME_lbr_TaxType = "lbr_TaxType";
+
+	/** Set Tax Type.
+	  * Define the Tax Type
+	  */
+	public void setlbr_TaxType (String lbr_TaxType);
+
+	/** Get Tax Type.
+	  * Define the Tax Type
+	  */
+	public String getlbr_TaxType();
+
+    /** Column name lbr_WithholdFrequency */
+    public static final String COLUMNNAME_lbr_WithholdFrequency = "lbr_WithholdFrequency";
+
+	/** Set Withhold Frequency.
+	  * Defines the Withhold Frequency
+	  */
+	public void setlbr_WithholdFrequency (String lbr_WithholdFrequency);
+
+	/** Get Withhold Frequency.
+	  * Defines the Withhold Frequency
+	  */
+	public String getlbr_WithholdFrequency();
 }

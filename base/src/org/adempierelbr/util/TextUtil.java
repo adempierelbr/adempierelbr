@@ -26,14 +26,15 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.Locale;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 
 import org.compiere.util.CLogger;
@@ -56,9 +57,6 @@ public abstract class TextUtil
 	public static final String EOL_WIN32 = "\r\n";
 	public static final String EOL_LINUX = "\n";
 	public static final String EOL_MAC   = "\n\r";
-	
-	/** TAB             */
-	public static final String TAB = "\t";
 
 	/** ENCODING        */
 	public static final String UTF8     = "UTF-8";
@@ -73,32 +71,54 @@ public abstract class TextUtil
 	public static final String PIPE = "|";
 
 	/**	Round 			*/
-	public static final String ZERO_STRING = Env.ZERO.setScale(TaxBR.SCALE, TaxBR.ROUND).toString();
+	public static final String ZERO_STRING = Env.ZERO.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
 
 	/** Alfabeto        */
-	private static final String[] ALFAB = {"A","B","C","D","E",
+	public static final String[] ALFAB = {"A","B","C","D","E",
 						                  "F","G","H","I","J",
 						                  "K","L","M","N","O",
 						                  "P","Q","R","S","T",
-						                  "U","V","X","W","Y","Z"};
+						                  "U","V","X","W","Y","Z",
+						                  "AA","AB","AC","AD","AE",
+						                  "AF","AG","AH","AI","AJ",
+						                  "AK","AL","AM","AN","AO"};
+
+	/**
+	 * 		Read File, default encoding is UTF-8
+	 * 
+	 * 	@param file
+	 * 	@return
+	 */
+	public static String readFile (File file) throws Exception
+	{
+		return readFile (file, UTF8);
+	}	//	readFile
 	
 	/**
-	 * Metodo para gerar combinacao de letras do alfabeto
-	 * @author Fernando Moraes (fernando.moraes @ faire.com.br)
-	 * @param num numero da combinacao a ser gerada
-	 * @return referente ao numero desejado 
-	 *  0=A, 26 = AA, 42 = AP
-	 *  52=BA
+	 * 		Read File
+	 * 
+	 * 	@param file
+	 * 	@param encoding
+	 * 	@return
 	 */
-	public static String getALFAB(int num){
-		int quociente = num /ALFAB.length;
-		int resto = num % ALFAB.length;
-		if (quociente == 0 )
-			return ALFAB[resto];
-		else
-			return ALFAB[quociente-1]+ getALFAB(resto);
+	public static String readFile (File file, String encoding) throws Exception
+	{
+		StringBuffer result = new StringBuffer("");
+		//
+		String line;
+		FileInputStream stream = new FileInputStream (file);
+		InputStreamReader streamReader = new InputStreamReader(stream, encoding);
+		@SuppressWarnings("resource")
+		BufferedReader reader = new BufferedReader(streamReader);
 		
-	}
+		while ((line=reader.readLine()) != null)
+		{
+			result.append(line);
+		}
+		//
+		return result.toString();
+	}	//	readFile
+	
 	/**
 	 *  readFile
 	 *  Reads a file and return the lines into a string array
@@ -155,11 +175,11 @@ public abstract class TextUtil
 	 * @param codificação (ex. UTF-8, ISO-8859-1, etc)
 	 */
 	public static String generateFile (String data, String filePath, String encoding)
-	{				
+	{
 		try
 		{
 			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), encoding));
-			out.write(data == null ? "" : data);
+			out.write(data);
 			out.close();
 		}
 		catch (UnsupportedEncodingException e)
@@ -290,7 +310,6 @@ public abstract class TextUtil
 		//else
 		//   fw.write(EOL_LINUX);
 	} //addEOL
-	
 
 	/**
 	 * removeEOL
@@ -300,14 +319,6 @@ public abstract class TextUtil
 	 */
 	public static String removeEOL(String text){
 		return removeEOL(text," ");
-	} //removeEOL
-	
-	public static StringBuilder removeEOL(StringBuilder text){
-		return new StringBuilder(removeEOL(text.toString()));
-	} //removeEOL
-	
-	public static StringBuffer removeEOL(StringBuffer text){
-		return new StringBuffer(removeEOL(text.toString()));
 	} //removeEOL
 	
 	public static String removeEOL(String text, String replaceStr){
@@ -324,6 +335,7 @@ public abstract class TextUtil
 	 * formatStringCodes
 	 * @param code
 	 * @return String with onlynumbers
+	 * @deprecated Use {@link #toNumeric(String)}
 	 */
 	public static String formatStringCodes (String text)
 	{
@@ -617,10 +629,7 @@ public abstract class TextUtil
 			value = "";
 		if (min > max)
 			min=max;
-		
-		//bf remove spaces before check length
-		value = value.trim();
-		
+		//
 		if (value.length() < min)
 			return rPad(value, filler, min);
 		//
@@ -733,22 +742,12 @@ public abstract class TextUtil
 	 * */
 	public static String toNumeric(BigDecimal value, int scale)
 	{
-		return toNumeric(value,scale,false);
+		if (value == null)
+			return "";
+		//
+		return value.setScale(scale, RoundingMode.HALF_UP).toString().replace('.', ',');
 	}	//	toNumeric
 
-	public static String toNumeric(BigDecimal value, int scale, boolean mandatory){
-		
-		if (value == null){
-			if (!mandatory)
-				return "";
-			
-			value = new BigDecimal("0");
-		}
-	
-		return value.setScale(scale, TaxBR.ROUND).toString().replace('.', ',');
-	}
-	
-	
 	/**
 	 * Retorna somente os digitos de 0..9<BR>
 	 * e as letras de a..z e A..Z, desconsiderando<BR>
@@ -769,15 +768,14 @@ public abstract class TextUtil
 		StringBuffer result = new StringBuffer("");
 		value = RemoverAcentos.remover(value);
 
-		for (int i=0; i<value.length(); i++){
-			if (Character.isLetterOrDigit(value.charAt(i)) || 
-				value.charAt(i) == ' '){
+		for (int i=0; i<value.length(); i++)
+			if (Character.isDigit(value.charAt(i))
+					|| Character.isLetter(value.charAt(i))
+					|| value.charAt(i) == ' ')
 				result.append(value.charAt(i));
-			}
-		}
 
 		return result.toString();
-	}	//retiraEspecial
+	}	//	retiraEspecial
 
 	/**
 	 * Retorna a data formatada de acordo com o formato
@@ -850,6 +848,9 @@ public abstract class TextUtil
 	 */
 	public static Timestamp stringToTime(String data,String dateFormat) {
 
+		if (data == null || data.length() == 0)
+			return null;
+		
 		SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
 		ParsePosition pos = new ParsePosition(0);
 		java.util.Date date = null;
@@ -874,27 +875,46 @@ public abstract class TextUtil
 	}
 
 	/**
-	 * bigdecimalToString
-	 * @param BigDecimal value
-	 * @param int Scale
-	 * @return String with scale
+	 * 	Convet a BD to String with scale removing trailing zeros
+	 * 	@param BigDecimal value
+	 * 	@param int Scale
+	 * 	@return rounded string representation
 	 */
-	public static String bigdecimalToString(BigDecimal value, int scale){
-		
+	public static String bdToStringNoTrail (BigDecimal value, int scale)
+	{
 		if (value == null)
 			return ZERO_STRING;
-		
-		return value.setScale(scale, TaxBR.ROUND).toString();
-	} //bigdecimalToString
+		//
+		return value
+				.setScale (scale, BigDecimal.ROUND_HALF_UP)	//	Set scale
+				.stripTrailingZeros()						//	Remove trailing zeros
+				.toPlainString();							//	Convert to String
+	}	//	bigdecimalToString
 
 	/**
-	 * getValor
-	 * @param value
-	 * @return String with default scale (2)
+	 * 	Convet a BD to String with scale
+	 * 	@param BigDecimal value
+	 * 	@param int Scale
+	 * 	@return rounded string representation
 	 */
-	public static String bigdecimalToString(BigDecimal value){
-		return bigdecimalToString(value,TaxBR.SCALE);
-	} //bigdecimalToString
+	public static String bigdecimalToString (BigDecimal value, int scale)
+	{
+		if (value == null)
+			return ZERO_STRING;
+		//
+		return value.setScale(scale, BigDecimal.ROUND_HALF_UP).toPlainString();
+	}	//	bigdecimalToString
+
+	/**
+	 * 	Convet a BD to String with scale 2, if you want 
+	 * 		a different scale use {@link #bigdecimalToString(BigDecimal, int)}
+	 * 	@param value
+	 * 	@return rounded string representation
+	 */
+	public static String bigdecimalToString (BigDecimal value)
+	{
+		return bigdecimalToString (value,2);
+	}	//	bigdecimalToString
 
     /**
      *  iTrim
@@ -907,11 +927,9 @@ public abstract class TextUtil
     
     public static String itrim(String source, String replaceStr){	
     	if (source != null)
-    		source = source.replaceAll("\\b\\s{2,}\\b", replaceStr);
-    	else
-    		source = "";
+    		return source.replaceAll("\\b\\s{2,}\\b", replaceStr);
     	
-    	return source.trim();
+    	return "";
     }
     
 	/**
@@ -958,5 +976,20 @@ public abstract class TextUtil
 
 		return whereClause.trim();
 	} //checkWhereClause
+	
+	/**
+	 * 	Verifica se lista contém uma determinada string.
+	 * 
+	 * 	@param stra
+	 * 	@param strings
+	 * 	@return TRUE se a lista contém a string, senão FALSO
+	 */
+	public static boolean match (Object obj, Object... objects)
+	{
+		if (obj == null || objects == null || objects.length == 0)
+			return false;
+		//
+		return Arrays.asList (objects).contains (obj);
+	}	//	match
 
 }	//	TextUtil

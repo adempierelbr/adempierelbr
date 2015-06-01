@@ -12,24 +12,26 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.adempierelbr.util.AdempiereLBR;
+import org.compiere.model.MSysConfig;
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
- *	MICMSMatrix
+ *	Model for ICMS Matrix
  *
- *	Model for X_LBR_ICMSMatrix
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *	@version $Id: MLBRICMSMatrix.java, v1.0 2011/11/10 15:57:20 PM, ralexsander Exp $
  *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MICMSMatrix.java, 15/12/2007 14:50:00 mgrigioni
  */
-public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
-
+public class MLBRICMSMatrix extends X_LBR_ICMSMatrix
+{
 	/**
 	 *
 	 */
@@ -41,9 +43,10 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRICMSMatrix(Properties ctx, int ID, String trx){
-		super(ctx,ID,trx);
-	}
+	public MLBRICMSMatrix (Properties ctx, int ID, String trx)
+	{
+		super (ctx, ID, trx);
+	}	//	MLBRICMSMatrix
 
 	/**
 	 *  Load Constructor
@@ -54,39 +57,29 @@ public class MLBRICMSMatrix extends X_LBR_ICMSMatrix {
 	public MLBRICMSMatrix (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
-	}
+	}	//	MLBRICMSMatrix
 
-	public static BigDecimal getICMSRate(Properties ctx, String regionName, String trx){
-
-		int C_Region_ID = AdempiereLBR.getC_Region_ID(regionName, trx);
-		if (C_Region_ID <= 0)
-			return null;
-
-		int LBR_Tax_ID = getLBR_Tax_ID(ctx,C_Region_ID,C_Region_ID,trx);
-
-		String sql = "SELECT MAX(tl.lbr_TaxRate) FROM LBR_TaxLine tl " +
-				     "WHERE tl.LBR_Tax_ID = ?";
-
-		BigDecimal rate = DB.getSQLValueBD(trx, sql, LBR_Tax_ID);
-
-		return rate != null ? rate : Env.ZERO;
-	} //getICMSRate
-
-
-	/**************************************************************************
-	 *  get Matrix_ID
-	 *  @return X_LBR_TaxLine[] lines
+	/**
+	 *  	Retorna a configuração da Matriz de ICMS
+	 *  
+	 *  @return MLBRICMSMatrix matriz
 	 */
-	public static int getLBR_Tax_ID(Properties ctx, int C_Region_ID, int To_Region_ID, String trx){
-
-		String sql = "SELECT LBR_Tax_ID FROM LBR_ICMSMatrix " +
-				     "WHERE C_Region_ID = ? AND To_Region_ID = ? " +
-				     "AND AD_Client_ID = ?";
-
-		int Matrix_ID = DB.getSQLValue(trx, sql,
-				new Object[]{C_Region_ID, To_Region_ID, Env.getAD_Client_ID(ctx)});
-
-		return Matrix_ID > 0 ? Matrix_ID : 0;
-	}
-
-} //MICMSMatrix
+	public static MLBRICMSMatrix get (Properties ctx, int AD_Org_ID, int C_Region_ID, int To_Region_ID, Timestamp validFrom, String trxName)
+	{	
+		if (!MSysConfig.getBooleanValue("Z_USE_ICMS_MATRIX", true, Env.getAD_Client_ID(ctx), AD_Org_ID))
+			return null;
+		//
+		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) AND AD_Client_ID IN (0, ?) " +
+				"AND C_Region_ID=? AND To_Region_ID=? ";
+		//
+		if (validFrom != null)
+			where += "AND (ValidFrom IS NULL OR ValidFrom>=" + DB.TO_DATE(validFrom) + ") ";
+		//
+		MLBRICMSMatrix icmsMatrix = new Query (Env.getCtx(), Table_Name, where, trxName)
+			.setParameters(new Object[]{AD_Org_ID, Env.getAD_Client_ID(ctx), C_Region_ID, To_Region_ID})
+			.setOrderBy("AD_Org_ID DESC, ValidFrom DESC")
+			.first();
+		//
+		return icmsMatrix;
+	}	//	get
+}	//	MLBRICMSMatrix

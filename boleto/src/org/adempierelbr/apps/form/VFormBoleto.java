@@ -80,6 +80,7 @@ import org.compiere.util.Msg;
  * @contributor Jone Luis, jd15k (Ruston, www.fantastico.com.br)
  * @version $Id: MBoleto.java, 08/11/2007 10:43:02 mgrigioni
  */
+@Deprecated
 public class VFormBoleto extends CPanel
 	implements FormPanel, ActionListener, VetoableChangeListener, ChangeListener, TableModelListener, ASyncProcess
 {

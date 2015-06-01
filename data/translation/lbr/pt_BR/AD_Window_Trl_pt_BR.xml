@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Window">
+<row id="1000000" trl="Y">
+<value column="Name" original="Brazilian Banks">Bancos Brasileiros</value>
+<value column="Description" original="Brazilian Banks">Bancos Brasileiros</value>
+<value column="Help" original=""/>
+</row>
+<row id="1000001" trl="Y">
+<value column="Name" original="Document Print">Impressão de Documento</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000002" trl="Y">
+<value column="Name" original="NCM">NCM</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000003" trl="Y">
+<value column="Name" original="CFOP">CFOP</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000008" trl="Y">
+<value column="Name" original="Product Category (CFOP)">Categoria do Produto (CFOP)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000009" trl="Y">
+<value column="Name" original="BPartner Category (CFOP)">Categoria do Parceiro (CFOP)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000010" trl="Y">
+<value column="Name" original="ICMS Matrix">Matriz de ICMS (Estados)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000011" trl="Y">
+<value column="Name" original="Fiscal Group - Product">Grupo de Tributação (Produto)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000012" trl="Y">
+<value column="Name" original="Fiscal Group - Business Partner">Grupo de Tributação (Parceiro de Negócios)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000013" trl="Y">
+<value column="Name" original="Tax Configuration">Configuração de Impostos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000014" trl="Y">
+<value column="Name" original="Tax Brazil">Imposto (Brasil)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000015" trl="Y">
+<value column="Name" original="Nota Fiscal (SO)">Nota Fiscal (Saída)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000016" trl="Y">
+<value column="Name" original="Matrix Printer">Impressora Matricial</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000017" trl="Y">
+<value column="Name" original="Legal Message">Mensagem Legal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000018" trl="Y">
+<value column="Name" original="Tax Group (LBR)">Grupo de Impostos (Nota Fiscal)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000019" trl="Y">
+<value column="Name" original="Nota Fiscal (PO)">Nota Fiscal (Entrada)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000020" trl="Y">
+<value column="Name" original="ISS Matrix">Matriz de ISS</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000022" trl="Y">
+<value column="Name" original="Boleto">Boleto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000023" trl="Y">
+<value column="Name" original="Manufacture">Industrialização</value>
+<value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
+<value column="Help" original=""/>
+</row>
+<row id="1000024" trl="Y">
+<value column="Name" original="Other NF">Outras Notas Fiscais</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1000025" trl="Y">
+<value column="Name" original="Consignation Return">Retorno de Consignação</value>
+<value column="Description" original="Process all the Consignation Returns steps">Executa o processo de retorno de cosnginação</value>
+<value column="Help" original=""/>
+</row>
+<row id="1000026" trl="Y">
+<value column="Name" original="Consignation Invoice">Venda de Consignação</value>
+<value column="Description" original="Process all the Consignation Invoice Processes">Executa o processo de venda de consignação</value>
+<value column="Help" original=""/>
+</row>
+<row id="1100000" trl="Y">
+<value column="Name" original="Digital Certificate">Certificado Digital</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1100001" trl="Y">
+<value column="Name" original="NFe Lot">Lote da NF-e</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120000" trl="Y">
+<value column="Name" original="NFe WebService">WebService da NF-e</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120008" trl="Y">
+<value column="Name" original="Export Declaration">Declaração de Exportação</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120009" trl="Y">
+<value column="Name" original="AvgCost BR">Custo Médio BR</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120010" trl="Y">
+<value column="Name" original="Formula">Fórmula</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120011" trl="Y">
+<value column="Name" original="Declaracao de Importação">Declaração de Importação</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120053" trl="Y">
+<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120081" trl="Y">
+<value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+</adempiereTrl>

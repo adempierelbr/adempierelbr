@@ -12,13 +12,19 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 
+import org.adempiere.pipo.CreateZipFile;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
+import org.compiere.model.MSysConfig;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.Env;
+import org.compiere.util.Ini;
 
 
 /**
@@ -36,6 +42,11 @@ public class ProcReturnCNAB extends SvrProcess
 	private String p_FileName = "";
 	/** Diretório Arquivo de Log */
 	private String p_FilePath = "";
+	
+	/** Folder on the Server  */
+	private final String p_FolderKey = MSysConfig.getValue("LBR_FOLDERKEY", "ADempiereLBR", Env.getAD_Client_ID(Env.getCtx()));
+	/** FileName CNAB Return        */
+	private static final String FileName = "LogRetorno.CSV";
 
 	/**
 	 *  Prepare - e.g., get Parameters.
@@ -71,7 +82,10 @@ public class ProcReturnCNAB extends SvrProcess
 
 		String[] linhas = TextUtil.readFile(p_FileName);
 
-	    if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
+		if (p_FilePath == null || p_FilePath.trim().length() < 1)
+			p_FilePath = System.getProperty("java.io.tmpdir") + File.separator;
+			
+		else if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
 	    	p_FilePath += AdempiereLBR.getFileSeparator();
 
 		String RoutingNo = linhas[0].substring(76, 79); //Cód. Banco
@@ -80,6 +94,23 @@ public class ProcReturnCNAB extends SvrProcess
 		if (LBR_Bank_ID == -1) throw new IllegalArgumentException("Arquivo Inválido");
 
 		ReturnCNABUtil.returnCNAB(LBR_Bank_ID, p_FilePath, linhas, get_TrxName());
+		
+		//	Versão SWING
+		if (Ini.isClient())
+			return "ReturnCNAB Process Completed " + "Arquivo: " + p_FileName;
+		else
+			try
+			{
+				CreateZipFile.zipFolder(new File (p_FilePath), new File(p_FilePath+FileName), p_FolderKey + File.separator + "**");
+				Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.XMLExportAdapter");
+				Constructor<?> constructor = clazz.getConstructor (String.class, File.class);
+				//
+				constructor.newInstance (FileName, new File(p_FilePath+FileName));
+			} 
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error saving Return CNAB", e);
+			}
 
 		return "ReturnCNAB Process Completed " + "Arquivo: " + p_FileName;
 

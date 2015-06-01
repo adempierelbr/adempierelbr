@@ -36,8 +36,8 @@ public class B5R5330 implements RegSacred{
 		
 		String format = 
 			REG
-			+ PIPE + TextUtil.toNumeric(VALOR_BC,2,true)
-			+ PIPE + TextUtil.toNumeric(ICMS_DEB,2,true);
+			+ PIPE + TextUtil.bigdecimalToString(VALOR_BC,2).replace('.', ',')
+			+ PIPE + TextUtil.bigdecimalToString(ICMS_DEB,2).replace('.',',');
 		
 		return TextUtil.removeEOL(format) + EOL;
 	}

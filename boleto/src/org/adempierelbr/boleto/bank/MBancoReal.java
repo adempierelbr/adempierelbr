@@ -24,8 +24,8 @@ import java.util.logging.Level;
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
-import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
@@ -233,7 +233,7 @@ public class MBancoReal implements I_Bank
 	{
 		Properties ctx = Env.getCtx();
 		//
-		MOrg    org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 		MOrgInfo oi	   = org.getInfo();
 		//
 		String cc      = BankA.getAccountNo();

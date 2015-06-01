@@ -1,0 +1,10 @@
+<adempiereTrl language="pt_BR" table="C_Charge">
+  <row id="100" trl="Y">
+    <value column="Name" original="Bank Charge">Tarifas Bancárias</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="101" trl="Y">
+    <value column="Name" original="Commissions Paid">Comissões Pagas</value>
+    <value column="Description" original="" />
+  </row>
+</adempiereTrl>

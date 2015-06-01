@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Workflow">
+<row id="1120007" trl="Y">
+<value column="Name" original="Process_LBR_CCe">Process_LBR_CCe</value>
+<value column="Description" original="(Standard Process CCe)">(Standard Process CCe)</value>
+<value column="Help" original=""/>
+</row>
+</adempiereTrl>

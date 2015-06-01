@@ -23,8 +23,8 @@ import java.util.logging.Level;
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
-import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
@@ -136,7 +136,7 @@ public class MHsbc implements I_Bank
 
 		Properties ctx = Env.getCtx();
 
-		MOrg    Org    = MOrg.get(ctx, Env.getContextAsInt(ctx,"#AD_Org_ID"));
+		MOrg    Org    = MOrg.get(ctx, BankA.getAD_Org_ID());
 
 		String cc      = BankA.getAccountNo();
 		String agencia = BankA.get_ValueAsString("lbr_AgencyNo");

@@ -1,0 +1,7 @@
+<adempiereTrl language="pt_BR" table="AD_Workbench">
+  <row id="100" trl="Y">
+    <value column="Name" original="Sales">Vendas</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
+</adempiereTrl>

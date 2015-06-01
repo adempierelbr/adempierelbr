@@ -31,7 +31,7 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110202L;
+	private static final long serialVersionUID = 20120523L;
 
     /** Standard Constructor */
     public X_LBR_DigitalCertificate (Properties ctx, int LBR_DigitalCertificate_ID, String trxName)
@@ -40,8 +40,6 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
       /** if (LBR_DigitalCertificate_ID == 0)
         {
 			setLBR_DigitalCertificate_ID (0);
-			setlbr_NFeEnv (null);
-// 1
 			setName (null);
 			setValidFrom (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
@@ -110,30 +108,6 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	/** lbr_CertType AD_Reference_ID=1100000 */
-	public static final int LBR_CERTTYPE_AD_Reference_ID=1100000;
-	/** Java Key Store = JKS */
-	public static final String LBR_CERTTYPE_JavaKeyStore = "JKS";
-	/** PKCS#12 = P12 */
-	public static final String LBR_CERTTYPE_PKCS12 = "P12";
-	/** Set Certificate Type.
-		@param lbr_CertType 
-		Define the type of Digital Certificate
-	  */
-	public void setlbr_CertType (String lbr_CertType)
-	{
-
-		set_Value (COLUMNNAME_lbr_CertType, lbr_CertType);
-	}
-
-	/** Get Certificate Type.
-		@return Define the type of Digital Certificate
-	  */
-	public String getlbr_CertType () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_CertType);
-	}
-
 	/** Set Digital Certificate.
 		@param LBR_DigitalCertificate_ID Digital Certificate	  */
 	public void setLBR_DigitalCertificate_ID (int LBR_DigitalCertificate_ID)
@@ -152,27 +126,6 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** lbr_NFeEnv AD_Reference_ID=1100001 */
-	public static final int LBR_NFEENV_AD_Reference_ID=1100001;
-	/** Production = 1 */
-	public static final String LBR_NFEENV_Production = "1";
-	/** Homologation = 2 */
-	public static final String LBR_NFEENV_Homologation = "2";
-	/** Set NFe Environment.
-		@param lbr_NFeEnv NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv)
-	{
-
-		set_Value (COLUMNNAME_lbr_NFeEnv, lbr_NFeEnv);
-	}
-
-	/** Get NFe Environment.
-		@return NFe Environment	  */
-	public String getlbr_NFeEnv () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_NFeEnv);
 	}
 
 	/** Set Name.
@@ -241,5 +194,33 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	public Timestamp getValidTo () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
+	}
+
+	/** lbr_CertType AD_Reference_ID=1100000 */
+	public static final int LBR_CERTTYPE_AD_Reference_ID=1100000;
+	/** Java Key Store = JKS */
+	public static final String LBR_CERTTYPE_JavaKeyStore = "JKS";
+	/** PKCS#11 = P11 */
+	public static final String LBR_CERTTYPE_PKCS11 = "P11";
+	/** PKCS#12 = P12 */
+	public static final String LBR_CERTTYPE_PKCS12 = "P12";
+	/** ICP TrustStore (JKS) = ICP */
+	public static final String LBR_CERTTYPE_ICPTrustStoreJKS = "ICP";
+	/** Set Certificate Type.
+		@param lbr_CertType 
+		Define the type of Digital Certificate
+	  */
+	public void setlbr_CertType (String lbr_CertType)
+	{
+
+		set_Value (COLUMNNAME_lbr_CertType, lbr_CertType);
+	}
+
+	/** Get Certificate Type.
+		@return Define the type of Digital Certificate
+	  */
+	public String getlbr_CertType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_CertType);
 	}
 }

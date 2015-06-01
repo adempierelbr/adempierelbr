@@ -24,8 +24,8 @@ import java.util.logging.Level;
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
-import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.RemoverAcentos;
+import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
@@ -176,18 +176,18 @@ public class MBancoBrasil implements I_Bank
 	        	cnab.setlbr_CNABField42(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); 	// CPF ou CPNJ
 	        }
 
-	        String nomeSacado = RemoverAcentos.remover(boleto.getlbr_ReceiverName());
+	        String nomeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getlbr_ReceiverName()));
 	        cnab.setlbr_CNABField43(nomeSacado.toUpperCase()); 											// NOME
 
 	        cnab.setlbr_CNABField44(null); 																// BRANCOS
 
-	        String enderecoSacado = RemoverAcentos.remover(boleto.getAddress());
+	        String enderecoSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getAddress()));
 	        cnab.setlbr_CNABField45(enderecoSacado.toUpperCase()); 										// Logradouro
 
 	        cnab.setlbr_CNABField46(null); 																// BRANCOS
 	        cnab.setlbr_CNABField47(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); 							// CEP
 
-	        String cidadeSacado = RemoverAcentos.remover(boleto.getCity());
+	        String cidadeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getCity()));
 	        cnab.setlbr_CNABField48(cidadeSacado.toUpperCase()); 										// Cidade Sacado
 
 	        cnab.setlbr_CNABField49(boleto.getRegionName()); 											// UF
@@ -236,7 +236,7 @@ public class MBancoBrasil implements I_Bank
 			cnab.setlbr_CNABField8(MLBRCNAB.CNABFormat(boleto.getlbr_ClientCode(), 7)); 	// Num. Convenio
 			cnab.setlbr_CNABField9(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); 	// Controle do Participanete (Preencher com Número de Documento)
 
-			cnab.setlbr_CNABField10(MLBRCNAB.CNABFormat(boleto.getDocumentNo() ,17)); 		// Nosso Número
+			cnab.setlbr_CNABField10(MLBRCNAB.CNABFormat(boleto.getlbr_ClientCode() + boleto.getDocumentNo() ,17)); 		// Nosso Número
 
 			String carteira = MLBRBoleto.getlbr_BillFoldNo(boleto.getlbr_BillFold());		// Get Carteira
 			
@@ -312,18 +312,18 @@ public class MBancoBrasil implements I_Bank
 	        	cnab.setlbr_CNABField39(MLBRCNAB.CNABFormat(bpartner.get_ValueAsString("lbr_CNPJ"),14)); 	// Número do CNPJ ou CPF do Sacado
 	        }
 
-	        String nomeSacado = RemoverAcentos.remover(boleto.getlbr_ReceiverName());
+	        String nomeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getlbr_ReceiverName()));
 	        cnab.setlbr_CNABField40(nomeSacado.toUpperCase());											// Nome do Sacado
 
 	        cnab.setlbr_CNABField41(null); 																// BRANCOS
 
-	        String enderecoSacado = RemoverAcentos.remover(boleto.getAddress());
+	        String enderecoSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getAddress()));
 	        cnab.setlbr_CNABField42(enderecoSacado.toUpperCase()); 										// Endereço do Sacado
 
 	        cnab.setlbr_CNABField43(null); 																// BRANCOS
 	        cnab.setlbr_CNABField44(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); 							// CEP do Sacado
 
-	        String cidadeSacado = RemoverAcentos.remover(boleto.getCity());
+	        String cidadeSacado = TextUtil.retiraEspecial(RemoverAcentos.remover(boleto.getCity()));
 	        cnab.setlbr_CNABField45(cidadeSacado.toUpperCase()); 										// Cidade do Sacado
 	        cnab.setlbr_CNABField46(boleto.getRegionName()); 											// UF do sacado
 	        cnab.setlbr_CNABField47(""); 																// Observações/Mensagem ou Sacador/Avalista
@@ -411,7 +411,7 @@ public class MBancoBrasil implements I_Bank
 	{
 
 		Properties ctx = Env.getCtx();  					// Contexto
-		MOrg Org = MOrg.get(ctx,Env.getAD_Org_ID(ctx));		// Contexto
+		MOrg Org = MOrg.get(ctx,BankA.getAD_Org_ID());		// Contexto
 
 		// SEQUENCIA
 		Integer LBR_DocSequence_ID = (Integer)BankA.get_Value("LBR_DocSequence_ID");

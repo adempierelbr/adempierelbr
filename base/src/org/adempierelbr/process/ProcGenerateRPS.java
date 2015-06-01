@@ -13,6 +13,7 @@
 package org.adempierelbr.process;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Ini;
 
 /**
  *	ProcGenerateRPS
@@ -108,12 +110,18 @@ public class ProcGenerateRPS extends SvrProcess
 		//
 		if (p_AD_Org_ID <= 0)
 			return "No organization found";
+		
+		else if (p_FilePath == null && Ini.isClient())
+			return "Selecione onde deseja salvar o arquivo";
+		
+		else if (!Ini.isClient())
+			p_FilePath = "";
 		//
 		Properties ctx = getCtx();
 		String     trxName = get_TrxName();
 		String     fileName = p_FilePath;
 		//
-	    if (!fileName.endsWith(AdempiereLBR.getFileSeparator())) 
+	    if (!fileName.endsWith(AdempiereLBR.getFileSeparator()) && Ini.isClient()) 
 	    	fileName += AdempiereLBR.getFileSeparator();
 		//
 		String dateFrom = TextUtil.timeToString(p_DateFrom, "ddMMyyyy");
@@ -146,6 +154,7 @@ public class ProcGenerateRPS extends SvrProcess
 		final String whereClause = "IsCancelled='N' AND DateDoc BETWEEN " + 
 			DB.TO_DATE(p_DateFrom) + " AND " + 
 			DB.TO_DATE(p_DateTo) + " AND AD_Org_ID=? AND IsPrinted='N' " +
+			"AND Processed='Y' "+
 			"AND C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType WHERE lbr_NFModel LIKE 'RPS%') ";
 		//
 		List<MLBRNotaFiscal> list = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, whereClause, trxName)
@@ -164,6 +173,23 @@ public class ProcGenerateRPS extends SvrProcess
 			result.append(NFSeRPSGenerator.generateRPS(nf.getLBR_NotaFiscal_ID(), trxName));
 		}
 		result.append(NFSeRPSGenerator.generateFooter());
-		TextUtil.generateFile(result.toString(), fileName, ISO88591.displayName());
-	}	//	generate	
+		
+		//	Versão SWING
+		if (Ini.isClient())
+			TextUtil.generateFile(result.toString(), fileName, ISO88591.displayName());
+		
+		else
+			try
+			{
+				Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.RPSAdapter");
+				Constructor<?> constructor = clazz.getConstructor (String.class, StringBuffer.class);
+				//
+				constructor.newInstance (fileName, result);
+			} 
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error saving RPS", e);
+			}
+	}	//	generate
+
 }	//	ProcGenerateRPS

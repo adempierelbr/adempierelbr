@@ -44,9 +44,6 @@ import org.compiere.util.Msg;
  *	manipulam materiais, como Movimentações, Inventário e Entrada/Saída.
  *
  *	@author Ricardo Santana (ralexsander)
- *  
- *  BF [3378743] - ValidatorInOut - Erro validações com conversão de UDM, mgrigioni
- *  
  *	@version $Id: ValidatorInOut.java, 04/01/2008 15:56:00 ralexsander
  */
 public class ValidatorInOut implements ModelValidator
@@ -221,7 +218,7 @@ public class ValidatorInOut implements ModelValidator
 			return Msg.getMsg(ctx, "NoLines");
 
 		for(MMovementLine line : lines) {
-			if(line.getM_Product_ID() <=0 || line.getM_Locator_ID() <=0 || line.getM_LocatorTo_ID() <=0 ){
+			if(line.getM_Product_ID() <=0 || line.getM_Locator_ID() <=0){
 				msg = "Produto ou Localizador inválido";
 				break;
 			}
@@ -231,12 +228,15 @@ public class ValidatorInOut implements ModelValidator
 				break;
 			}
 
-			if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID())){
-				msg = "Duas linhas usando o mesmo produto na mesma posição";
-				break;
-			}
-			else{
-				prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+			if(!MSysConfig.getBooleanValue("LBR_ALLOW_DUPLICATED_MOVEMENTLINE_ON_MOVEMENT", true, mov.getAD_Client_ID()))
+			{
+				if(prod.contains("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID())){
+					msg = "Duas linhas usando o mesmo produto na mesma posição";
+					break;
+				}
+				else{
+					prod.add("" + line.getM_Product_ID() + "|" + line.getM_Locator_ID());
+				}
 			}
 
 			BigDecimal qtdOnHand = getQtyOnHand(line.getM_Product_ID(), line.getM_Locator_ID(), line.getM_AttributeSetInstance_ID());
@@ -378,10 +378,11 @@ public class ValidatorInOut implements ModelValidator
 				MInOutLine line = lines[i];
 				int M_Product_ID = line.getM_Product_ID();
 				int C_Charge_ID  = line.getC_Charge_ID();
-				if (M_Product_ID == 0 && C_Charge_ID == 0){
-					line.deleteEx(true, trx);
+				if (M_Product_ID == 0 && C_Charge_ID == 0)
+					return "Linha #" + line.getLine() + " inválida, verifique o produto/despesa.";
+
+				if (C_Charge_ID > 0)
 					continue;
-				}
 
 				int M_AttributeSetInstance_ID = 0; //line.getM_AttributeSetInstance_ID();
 				int M_Locator_ID = line.getM_Locator_ID();
@@ -394,11 +395,11 @@ public class ValidatorInOut implements ModelValidator
 				if (M_Locator_ID == 0)
 					return "Localizador do estoque não definida na linha: #" + line.getLine() + ".";
 
-				if (line.getMovementQty() == Env.ZERO)
+				if (line.getQtyEntered() == Env.ZERO)
 					return "Item com quantidade ZERO na linha: #" + line.getLine() + ".";
 
 				if (!MSysConfig.getBooleanValue("LBR_ALLOW_MM_SHIP_RECEIPT_WITHOUT_ORDER", true, inOut.getAD_Client_ID())
-						&& line.getC_OrderLine_ID() == 0)
+						&& line.getC_OrderLine_ID() == 0 && line.getM_RMALine_ID() == 0)
 					return "Ordem de Compra não disponível.";
 
 				MOrderLine oline = new MOrderLine(ctx, line.getC_OrderLine_ID(), trx);
@@ -420,15 +421,15 @@ public class ValidatorInOut implements ModelValidator
 				}
 
 				/**
-				 *  BF: Utilizar UDM padrão do produto para fazer as comparação devido a conversão de UDM
-				 *  M_InOutLine.MovementQty
-				 *  C_OrderLine.QtyOrdered, C_OrderLine.QtyDelivered
+				 *  FIXME: QtyDelivered é na UDM padrão, QtyEntered pode ser outra,
+				 *  com isso a comparação, pode não funcionar corretamente.
+				 *
 				 */
 
-				log.info("Delivered: " + oline.getQtyDelivered() + " Ordered: " + oline.getQtyOrdered() + " Trying: " + line.getMovementQty());
+				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
 				if (timing == TIMING_BEFORE_COMPLETE
 						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, inOut.getAD_Client_ID())
-						&& (oline.getQtyDelivered().add(line.getMovementQty())).compareTo(oline.getQtyOrdered()) == 1)
+						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
 					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();
 
 				onHand = getQtyOnHand(M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID); //QtyOnHand
@@ -440,7 +441,7 @@ public class ValidatorInOut implements ModelValidator
 					if(lines[j].getM_Product_ID() == line.getM_Product_ID()
 							&& lines[j].getM_Locator_ID() == line.getM_Locator_ID())
 					{
-						qtyToShip = qtyToShip.add(lines[j].getMovementQty());
+						qtyToShip = qtyToShip.add(lines[j].getQtyEntered());
 					}
 				}
 
@@ -452,12 +453,12 @@ public class ValidatorInOut implements ModelValidator
 					if (movementType.charAt(1) == '-')
 					{
 						if (timing == TIMING_BEFORE_COMPLETE
-								&& (onHand.subtract(qtyToShip)).signum() < 0)
+								&& onHand.subtract(qtyToShip).doubleValue() < 0)
 							return "Sem quantidade disponivel na linha #" + line.getLine() + ".";
 					}
 					else
 					{
-						if ((onHand.add(line.getMovementQty())).signum() < 0)
+						if (onHand.add(line.getQtyEntered()).doubleValue() < 0)
 							return "Sem quantidade disponível na linha #" + line.getLine() + ".";
 					}
 

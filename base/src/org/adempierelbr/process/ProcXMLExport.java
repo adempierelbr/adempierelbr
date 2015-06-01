@@ -13,6 +13,7 @@
 package org.adempierelbr.process;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
@@ -29,6 +30,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Ini;
 
 /**
  *	Process to export NF-e XML
@@ -43,7 +45,11 @@ public class ProcXMLExport extends SvrProcess
 	private final String p_FolderKey = MSysConfig.getValue("LBR_FOLDERKEY", "ADempiereLBR", Env.getAD_Client_ID(Env.getCtx()));
 	
 	/**	Document Type	*/
-	private int p_C_DocTypeTarget_ID = 0;
+	private int p_C_DocTypeTarget_ID 	= 0;
+	private int p_AD_Org_ID 			= 0;
+	private int p_C_BPartner_ID 		= 0;
+	private int p_C_BP_Group_ID 		= 0;
+	private int p_M_Shipper_ID 			= 0;
 	
 	/**	Period			*/
 	private Timestamp dateFrom;
@@ -75,6 +81,14 @@ public class ProcXMLExport extends SvrProcess
 				p_C_DocTypeTarget_ID = para[i].getParameterAsInt();
 			else if (name.equals("File_Directory"))
 				p_FilePath = para[i].getParameter().toString();
+			else if (name.equals("AD_Org_ID"))
+				p_AD_Org_ID = para[i].getParameterAsInt();
+			else if (name.equals("C_BPartner_ID"))
+				p_C_BPartner_ID = para[i].getParameterAsInt();
+			else if (name.equals("C_BP_Group_ID"))
+				p_C_BP_Group_ID = para[i].getParameterAsInt();
+			else if (name.equals("M_Shipper_ID"))
+				p_M_Shipper_ID = para[i].getParameterAsInt();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -102,6 +116,20 @@ public class ProcXMLExport extends SvrProcess
 		.append(" AND C_DocTypeTarget_ID=?")
 		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
+		
+		if (p_AD_Org_ID > 0)
+			whereClause.append(" AND AD_Org_ID="+p_AD_Org_ID);
+
+		if (p_C_BPartner_ID > 0)
+			whereClause.append(" AND C_BPartner_ID="+p_C_BPartner_ID);
+		
+		if (p_M_Shipper_ID > 0)
+			whereClause.append(" AND M_Shipper_ID="+p_M_Shipper_ID);
+		
+		if (p_C_BP_Group_ID > 0)
+			whereClause.append(" AND EXISTS (SELECT '1' FROM C_BPartner bp WHERE bp.C_BPartner_ID=LBR_NotaFiscal.C_BPartner_ID AND bp.C_BP_Group_ID ="+p_C_BP_Group_ID+")");
+		
+		whereClause.append(" AND LBR_NFeStatus <> '101' ");	//	Canceladas
 		//
 		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);		
 		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
@@ -123,11 +151,31 @@ public class ProcXMLExport extends SvrProcess
 				attachment.getEntryFile(index, new File(fileName));
 			}
 		}
-		//
-		String fileName = p_FilePath + "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
-					+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
-		CreateZipFile.zipFolder(new File(p_Temp), new File(fileName), p_FolderKey + File.separator + "**");
-		//
+		//		Versão SWING
+		if (Ini.isClient())
+		{
+			//
+			String fileName = p_FilePath + "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
+			+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
+			CreateZipFile.zipFolder(new File(p_Temp), new File(fileName), p_FolderKey + File.separator + "**");
+			//
+		}
+		else
+			try
+			{
+				//
+				String fileName = "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
+				+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";
+				CreateZipFile.zipFolder(new File(p_Temp), new File(p_Temp+fileName), p_FolderKey + File.separator + "**");
+				Class<?> clazz = Class.forName("org.adempierelbr.webui.adapter.XMLExportAdapter");
+				Constructor<?> constructor = clazz.getConstructor (String.class, File.class);
+				//
+				constructor.newInstance (fileName, new File(p_Temp + fileName));
+			} 
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error saving XML", e);
+			}
 		log.info("finale");
 		//
 		return "Processo finalizado";

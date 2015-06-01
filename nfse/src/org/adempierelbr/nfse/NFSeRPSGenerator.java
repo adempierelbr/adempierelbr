@@ -1,16 +1,31 @@
+/******************************************************************************
+ * Copyright (C) 2011 Kenos Assessoria e Consultoria de Sistemas Ltda         *
+ * Copyright (C) 2011 Ricardo Santana                                         *
+ * This program is free software; you can redistribute it and/or modify it    *
+ * under the terms version 2 of the GNU General Public License as published   *
+ * by the Free Software Foundation. This program is distributed in the hope   *
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
+ * See the GNU General Public License for more details.                       *
+ * You should have received a copy of the GNU General Public License along    *
+ * with this program; if not, write to the Free Software Foundation, Inc.,    *
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ *****************************************************************************/
 package org.adempierelbr.nfse;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.logging.Level;
 
-import org.adempierelbr.nfse.beans.BtpRPS;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.Adempiere;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
 
 /**
  * Gera o arquivo de RPS com base no XML para
@@ -21,13 +36,14 @@ import org.compiere.util.Env;
  * @author Ricardo Santana
  * @version $Id: NFSeXMLGenerator.java, v1.0 2010/05/18 5:21:12 PM, ralexsander Exp $
  */
+@Deprecated
 public class NFSeRPSGenerator
 {
 	/** Log				*/
 	private static CLogger log = CLogger.getCLogger(NFSeRPSGenerator.class);
 	
 	/** Versão			*/
-	private static final String VERSAO = "001";
+	private static final String VERSAO = "002";
 	
 	/**	Contadores		*/
 	private static int 			COUNT_REGS = 0;
@@ -104,60 +120,74 @@ public class NFSeRPSGenerator
 	{
 		log.info("init");
 		//
-		BtpRPS tpRPS = NFSeXMLGenerator.generateNFSe(LBR_NotaFiscal_ID, trxName);
-		StringBuffer rps = new StringBuffer("2");
+		TpRPS tpRPS = NFSeXMLGenerator.generateNFSe(LBR_NotaFiscal_ID, trxName);
+		StringBuffer rps = new StringBuffer("6");
 		//
-		rps.append(TextUtil.rPad(tpRPS.getTipoRPS(), 5));
+		rps.append(TextUtil.rPad(tpRPS.xgetTipoRPS().getStringValue(), 5));
 		rps.append(TextUtil.rPad(tpRPS.getChaveRPS().getSerieRPS(), 5));
-		rps.append(TextUtil.lPad(tpRPS.getChaveRPS().getNumero(), 12));
-		rps.append(data(tpRPS.getDataEmissao()));
-		rps.append(TextUtil.rPad(statusRPS(tpRPS.getStatusRPS()), 1));
+		rps.append(TextUtil.lPad(tpRPS.getChaveRPS().xgetNumeroRPS().getStringValue(), 12));
+		rps.append(data (tpRPS.getDataEmissao()));
+		rps.append(TextUtil.rPad(statusRPS(tpRPS.xgetStatusRPS().getStringValue()), 1));
 		rps.append(TextUtil.lPad(tpRPS.getValorServicos(), 15));
 		rps.append(TextUtil.lPad(tpRPS.getValorDeducoes(), 15));
-		rps.append(TextUtil.lPad(tpRPS.getCodigoServicos(), 5));
+		rps.append(TextUtil.lPad(tpRPS.xgetCodigoServico().getStringValue(), 5));
 		rps.append(TextUtil.lPad(tpRPS.getAliquotaServicos(), 4));
 		rps.append(TextUtil.lPad(issRetido(tpRPS.getISSRetido()), 1));
 		//
-		if (tpRPS.getCNPJCPFTomador() != null)
+		if (tpRPS.getCPFCNPJTomador() != null)
 		{
-			rps.append(TextUtil.lPad(cnpj(tpRPS.getCNPJCPFTomador().getDoc()), 1));
-			rps.append(TextUtil.lPad(tpRPS.getCNPJCPFTomador().getDoc(), 14));
+			rps.append(TextUtil.lPad(cnpj(tpRPS.getCPFCNPJTomador().getCNPJ()), 1));
+			rps.append(TextUtil.lPad(tpRPS.getCPFCNPJTomador().getCNPJ(), 14));
 		}
 		else
 			rps.append("3"+TextUtil.lPad("0", 14));
 		//
-		rps.append(TextUtil.lPad(tpRPS.getInscricaoMunicipalTomador(), 8));
-		rps.append(TextUtil.lPad(tpRPS.getInscricaoEstadualTomador(), 12));
+		rps.append(TextUtil.lPad("" + tpRPS.getInscricaoMunicipalTomador(), 8));
+		rps.append(TextUtil.lPad("" + tpRPS.getInscricaoEstadualTomador(), 12));
 		rps.append(TextUtil.rPad(tpRPS.getRazaoSocialTomador(), 75));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getTipoLogradouro(), 3));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getLogradouro(), 50));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getNumeroEndereco(), 10));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getComplementoEndereco(), 30));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getBairro(), 30));
-		rps.append(TextUtil.rPad(cidade(tpRPS.getEnderecoTomador().getCidade()), 50));
+		rps.append(TextUtil.rPad(cidade("" + tpRPS.getEnderecoTomador().getCidade()), 50));
 		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getUF(), 2));
-		rps.append(TextUtil.rPad(tpRPS.getEnderecoTomador().getCEP(), 8));
+		rps.append(TextUtil.rPad("" + tpRPS.getEnderecoTomador().getCEP(), 8));
 		rps.append(TextUtil.pad(tpRPS.getEmailTomador(), ' ', 75, false, false, false)); //	Não retira caracteres especiais
+		
+		rps.append(TextUtil.lPad(tpRPS.getValorPIS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorCOFINS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorINSS(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorIR(), 15));
+		rps.append(TextUtil.lPad(tpRPS.getValorCSLL(), 15));
+		rps.append(TextUtil.lPad("", 15)); // ValorCargaTributaria
+		rps.append(TextUtil.lPad("", 5)); // PercentCargaTributaria
+		rps.append(TextUtil.rPad("", 10)); // FonteCargaTributaria
+		rps.append(TextUtil.lPad("", 12));// tpRPS.getCEI()
+		rps.append(TextUtil.lPad("", 12));// MatriculaObra
+		rps.append(TextUtil.lPad("", 7));// tpRPS.getCodMunicipioPrestacao()
+		rps.append(TextUtil.rPad("", 200)); //Campo Reservado
+		
 		rps.append(TextUtil.checkSize(tpRPS.getDiscriminacao(), 0, 1000));
 		rps.append(TextUtil.EOL_WIN32);
-		//	Contadores
+		//	Contadores-
 		COUNT_REGS++;
-		TOTAL_SERVICO  = TOTAL_SERVICO .add(new BigDecimal(tpRPS.getValorServicos()));
-		TOTAL_DEDUCOES = TOTAL_DEDUCOES.add(new BigDecimal(tpRPS.getValorDeducoes()));
+		TOTAL_SERVICO  = TOTAL_SERVICO .add(tpRPS.getValorServicos());
+		TOTAL_DEDUCOES = TOTAL_DEDUCOES.add(tpRPS.getValorDeducoes());
 		//
 		return rps.toString();
 	}	//	generateRPS
 	
+
 	/**
 	 * 	Formata a data
 	 * 
 	 * @param data
 	 * @return
 	 */
-	private static String data (String data)
+	private static String data (Calendar cal)
 	{
-		Timestamp ts = TextUtil.stringToTime(data, "yyyy-MM-dd'T'HH:mm:ss");
-		return TextUtil.timeToString(ts, "yyyyMMdd");
+		return TextUtil.timeToString (new Timestamp (cal.getTimeInMillis()), "yyyyMMdd");
 	}	//	data
 	
 	/**
@@ -195,12 +225,12 @@ public class NFSeRPSGenerator
 	 * @param 	iss
 	 * @return	1-true, 2-false
 	 */
-	private static String issRetido (String iss)
+	private static String issRetido (boolean iss)
 	{
-		if (iss==null || iss.equals("false"))
-			return "2";
-		else 
+		if (iss)
 			return "1";
+		else 
+			return "2";
 	}	//	issRetido
 	
 	/**

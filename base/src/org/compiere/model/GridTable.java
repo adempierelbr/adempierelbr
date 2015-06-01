@@ -1185,7 +1185,13 @@ public class GridTable extends AbstractTableModel
 
 		//	Has anything changed?
 		Object oldValue = getValueAt(row, col);
-		if (!force && !isValueChanged(oldValue, value) )
+		if (!force && (!isValueChanged(oldValue, value)))
+			/*
+			(oldValue == null && value == null)
+			||	(oldValue != null && oldValue.equals(value))
+			||	(oldValue != null && value != null && oldValue.toString().equals(value.toString()))
+			))
+			*/
 		{
 			log.finest("r=" + row + " c=" + col + " - New=" + value + "==Old=" + oldValue + " - Ignored");
 			return;
@@ -1964,8 +1970,6 @@ public class GridTable extends AbstractTableModel
 
 			log.fine("Committing ...");
 			DB.commit(true, null);	//	no Trx
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
 			//
 			lobSave(whereClause);
 			
@@ -2071,7 +2075,12 @@ public class GridTable extends AbstractTableModel
 				;	//	ignore
 			
 			//	***	Data changed ***
-			else if (m_inserting || isValueChanged(oldValue, value) )
+			else if (m_inserting ||isValueChanged(oldValue, value))			  
+			/* BF - https://sourceforge.net/tracker/index.php?func=detail&aid=3090578&group_id=176962&atid=879332		
+			  || (oldValue == null && value != null)
+			  || (oldValue != null && value == null)
+			  || !oldValue.equals (value)) 			//	changed
+			 */
 			{
 				//	Check existence
 				int poIndex = po.get_ColumnIndex(columnName);
@@ -2501,11 +2510,23 @@ public class GridTable extends AbstractTableModel
 					// Bug [ 1807947 ] 
 					|| ( columnName.equals("C_DocType_ID") && hasDocTypeTargetField )
 					|| ( columnName.equals("Line") )
-					
-					//AdempiereLBR
+					//	Bug [ 3289763 ]
 					|| columnName.equals("lbr_BPTypeBRIsValid")
-					|| columnName.equals("QtyInvoiced") || columnName.equals("QtyDelivered") 
-					
+					|| columnName.equals("LBR_Tax_ID")
+					|| columnName.equals("QtyReserved")
+					// Business Partner Contact
+					|| columnName.equals("EMailVerifyDate")
+					|| columnName.equals("LastContact")
+					|| columnName.equals("EMailVerify")
+					|| columnName.equals("LastResult")
+					// Nota Fiscal
+					|| columnName.equals("lbr_NFeStatus")
+					|| columnName.equals("LBR_NFeLot_ID")
+					|| columnName.equals("lbr_NFeDesc")
+					|| columnName.equals("lbr_NFeID")
+					|| columnName.equals("lbr_NFeProt")
+					|| columnName.equals("DateTrx")
+					|| columnName.equals("lbr_DigestValue")
 				)
 				{
 					rowData[i] = field.getDefault();
@@ -3620,52 +3641,31 @@ public class GridTable extends AbstractTableModel
 		return tabNo;
 	}
 	
-	private boolean isNotNullAndIsEmpty (Object value) {
-		if (value != null 
-				&& (value instanceof String) 
-				&& value.toString().equals("")
-			) 
-		{
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-	
 	@SuppressWarnings("unchecked")
-	private boolean	isValueChanged(Object oldValue, Object value)
-	{
-		if ( isNotNullAndIsEmpty(oldValue) ) {
+	private boolean isValueChanged(Object oldValue,Object value) {
+		if(oldValue != null && (oldValue instanceof String) && oldValue.toString().equals(""))
 			oldValue = null;
-		}
 
-		if ( isNotNullAndIsEmpty(value) ) {
+		if(value != null && (value instanceof String) && value.toString().equals(""))
 			value = null;
-		}
 
-		boolean bChanged = (oldValue == null && value != null) 
-							|| (oldValue != null && value == null);
+		boolean bChanged = (oldValue == null && value != null) || (oldValue != null && value == null);
 
-		if (!bChanged && oldValue != null)
-		{
-			if (oldValue.getClass().equals(value.getClass()))
-			{
-				if (oldValue instanceof Comparable<?>)
-				{
+		if(!bChanged && oldValue != null) {
+			if(oldValue.getClass().equals(value.getClass())) {
+				if(oldValue instanceof Comparable<?>) {
 					bChanged = (((Comparable<Object>)oldValue).compareTo(value) != 0);
 				}
-				else
-				{
+				else {
 					bChanged = !oldValue.equals(value);
 				}
 			}
-			else if(value != null)
-			{
+			else if(value != null) {
 				bChanged = !(oldValue.toString().equals(value.toString()));
 			}
 		}
-		return bChanged;	
-	}
+
+		return bChanged;
+	} //isValueChanged
 	
-}
+} //GridTable
