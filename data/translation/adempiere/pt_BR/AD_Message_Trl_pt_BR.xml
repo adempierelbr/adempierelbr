@@ -4977,7 +4977,7 @@ Você quer continuar?</value>
     <value column="MsgTip" original="Prix(excl. TVA)">Prix(excl. TVA)</value>
   </row>
   <row id="52438" trl="Y">
-    <value column="MsgText" original="Log Out">Sair</value>
+    <value column="MsgText" original="Log Out">Log Out</value>
     <value column="MsgTip" original="Sortir">Sortir</value>
   </row>
   <row id="52439" trl="Y">
