@@ -14,6 +14,14 @@
     <value column="MsgText" original="Histor&amp;Y records">&amp;Registros Históricos</value>
     <value column="MsgTip" original="" />
   </row>
+  <row id="293" trl="Y">
+    <value column="MsgText" original="&amp;Menu">Menu</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="334" trl="Y">
+    <value column="MsgText" original="&amp;Menu">Menu</value>
+    <value column="MsgTip" original="" />
+  </row>
   <row id="340" trl="Y">
     <value column="MsgText" original="Grid t&amp;Oggle">Gra&amp;de</value>
     <value column="MsgTip" original="" />

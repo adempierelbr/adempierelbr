@@ -772,7 +772,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="293" trl="Y">
-    <value column="MsgText" original="&amp;Menu">&amp;Menu</value>
+    <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="294" trl="Y">
@@ -936,7 +936,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="334" trl="Y">
-    <value column="MsgText" original="&amp;Menu">&amp;Menu</value>
+    <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="335" trl="Y">
