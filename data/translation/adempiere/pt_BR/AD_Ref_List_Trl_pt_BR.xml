@@ -80,7 +80,7 @@
     <value column="Description" original="" />
   </row>
   <row id="113" trl="Y">
-    <value column="Name" original="Query Only">Somente Questionar</value>
+    <value column="Name" original="Query Only">Somente Pesquisa</value>
     <value column="Description" original="" />
   </row>
   <row id="114" trl="Y">

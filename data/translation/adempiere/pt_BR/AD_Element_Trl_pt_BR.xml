@@ -24311,8 +24311,8 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53222" trl="Y">
-    <value column="Name" original="Activity Value">ActivityValue</value>
-    <value column="PrintName" original="Activity Value">ActivityValue</value>
+    <value column="Name" original="Activity Value">Valor da Atividade</value>
+    <value column="PrintName" original="Activity Value">Valor da Atividade</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
@@ -24321,8 +24321,8 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53223" trl="Y">
-    <value column="Name" original="Dunning Grace Date">Dunning Grace</value>
-    <value column="PrintName" original="Dunning Grace Date">Dunning Grace</value>
+    <value column="Name" original="Dunning Grace Date">Tolerar Cobrança Até</value>
+    <value column="PrintName" original="Dunning Grace Date">Tolerar Cobrança Até</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />

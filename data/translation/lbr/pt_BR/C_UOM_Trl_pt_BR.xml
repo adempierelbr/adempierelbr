@@ -1,0 +1,7 @@
+<adempiereTrl language="pt_BR" table="C_UOM">
+  <row id="100" trl="Y">
+    <value column="Name" original="Each">Unidade</value>
+    <value column="Description" original="" />
+    <value column="UOMSymbol" original="Ea ">Un </value>
+  </row>
+</adempiereTrl>

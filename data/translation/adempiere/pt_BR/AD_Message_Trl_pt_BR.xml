@@ -544,7 +544,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="236" trl="Y">
-    <value column="MsgText" original="e&amp;Xit Window">e&amp;Xit Window</value>
+    <value column="MsgText" original="e&amp;Xit Window">F&amp;echar Janela</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="237" trl="Y">
@@ -736,7 +736,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="284" trl="Y">
-    <value column="MsgText" original="&amp;Go">&amp;Vá</value>
+    <value column="MsgText" original="&amp;Go">&amp;Ir</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="285" trl="Y">
@@ -768,7 +768,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="292" trl="Y">
-    <value column="MsgText" original="Histor&amp;Y records">Histor&amp;Y records</value>
+    <value column="MsgText" original="Histor&amp;Y records">&amp;Registros Históricos</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="293" trl="Y">
@@ -963,7 +963,7 @@ Problema: </value>
     <value column="MsgTip" original="" />
   </row>
   <row id="340" trl="Y">
-    <value column="MsgText" original="Grid t&amp;Oggle">Grid t&amp;Oggle</value>
+    <value column="MsgText" original="Grid t&amp;Oggle">Gra&amp;de</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="341" trl="Y">
@@ -1467,7 +1467,7 @@ Entre com o pagamento depois de completar a transação.</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="465" trl="Y">
-    <value column="MsgText" original="Re&amp;Query">Re&amp;Query</value>
+    <value column="MsgText" original="Re&amp;Query">A&amp;tualizar</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="466" trl="Y">

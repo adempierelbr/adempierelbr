@@ -2,6 +2,26 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Message">
+  <row id="236" trl="Y">
+    <value column="MsgText" original="e&amp;Xit Window">F&amp;echar Janela</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="284" trl="Y">
+    <value column="MsgText" original="&amp;Go">&amp;Ir</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="292" trl="Y">
+    <value column="MsgText" original="Histor&amp;Y records">&amp;Registros Históricos</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="340" trl="Y">
+    <value column="MsgText" original="Grid t&amp;Oggle">Gra&amp;de</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="465" trl="Y">
+    <value column="MsgText" original="Re&amp;Query">A&amp;tualizar</value>
+    <value column="MsgTip" original="" />
+  </row>
 <row id="1000000" trl="Y">
 <value column="MsgText" original="The selected warehouse is not Third Party.">O Armazém selecionado não está em poder de terceiros.</value>
 <value column="MsgTip" original="Please, select a Third Party Warehouse.">Selecione um armazém que se encontra em poder de terceiros.</value>
