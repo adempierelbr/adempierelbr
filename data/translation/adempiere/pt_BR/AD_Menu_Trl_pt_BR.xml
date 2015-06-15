@@ -2017,7 +2017,7 @@
   </row>
   <row id="53050" trl="Y">
     <value column="Name" original="Distribution Resource Planning Setup">Configuração do Planejamento dos Recursos de Distribuição</value>
-    <value column="Description" original="is a method used in business administration for planning orders within a supply chain. DRP enables the user to set certain inventory control parameters (like a safety stock) and calculate the time-phased inventory requirements.">é um método usado em administração de negócios para planejar ordens dentro da cadeia de suprimentos. PRD permite ao usuário definir certos parâmetros de controle de estoque (como segurança de estoque) e calcula escalonando no tempo os requisitos de estoque.</value>
+    <value column="Description" original="is a method used in business administration for planning orders within a supply chain. DRP enables the user to set certain inventory control parameters (like a safety stock) and calculate the time-phased inventory requirements.">é um método usado em administração de negócios para planejar ordens dentro da cadeia de suprimentos. PRD permite ao usuário definir certos parâmetros de controle de estoque (como segurança de estoque) e calcula escalonando no tempo os req de estoque</value>
   </row>
   <row id="53051" trl="Y">
     <value column="Name" original="DRP Details">Detalhes PRD</value>

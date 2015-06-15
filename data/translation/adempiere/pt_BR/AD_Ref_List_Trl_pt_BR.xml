@@ -3449,7 +3449,7 @@
   </row>
   <row id="53254" trl="Y">
     <value column="Name" original="Job Shop">Produção Organizada por Equipamento</value>
-    <value column="Description" original="A Job Shop is characterized by the organitation of similar equipmnnet by function. As Job flow from Work Center to Work Center or Departament to Departament and the diferent type of operation is performance in each center or departament">A Produção Organizada por Equipamento é caracterizada pela organização de equipamento similar por função. Como o fluxo de trabalho de Centro de Trabalho para Centro de Trabalho ou Departamento para Departamento e o tipo diferente de operação é realizada em cada centro ou departamento</value>
+    <value column="Description" original="A Job Shop is characterized by the organitation of similar equipmnnet by function. As Job flow from Work Center to Work Center or Departament to Departament and the diferent type of operation is performance in each center or departament">A Produção Organizada por Equipamento é caracterizada pela organização de equipamento similar por função. Como o fluxo de trabalho de Centro de Trabalho para Centro de Trabalho ou Departamento para Departamento</value>
   </row>
   <row id="53255" trl="Y">
     <value column="Name" original="Mixed Repetitive Flow">Fluxo Repetitivo Misto</value>
