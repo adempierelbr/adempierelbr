@@ -157,9 +157,29 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120114" trl="N">
+<value column="Name" original="Processar SPED">Processar SPED</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120126" trl="Y">
 <value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
 <value column="Description" original="Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>
 <value column="Help" original=""/>
+</row>
+<row id="1120147" trl="N">
+<value column="Name" original="Process Nota Fiscal">Processar Nota Fiscal</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120148" trl="N">
+<value column="Name" original="Process NFe Lot">Processar Lote da NFe</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120151" trl="Y">
+<value column="Name" original="Send EMail">Enviar EMail</value>
+<value column="Description" original="Send EMail with Nota Fiscal">Enviar EMail com a Nota Fiscal</value>
+<value column="Help" original="Send EMail with Nota Fiscal">Envia o EMail da Nota Fiscal com o XML e DANFE para Notas Fiscais modelo 55 e 56. Para RPS e Notas Fiscais de Serviço é enviado apenas o PDF da Nota Fiscal.</value>
 </row>
 </adempiereTrl>

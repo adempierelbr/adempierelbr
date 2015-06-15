@@ -152,8 +152,28 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120076" trl="Y">
+<value column="Name" original="Gerar SPED">Gerar SPED</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120078" trl="N">
+<value column="Name" original="Apuração de Impostos">Apuração de Impostos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120079" trl="N">
+<value column="Name" original="Total de Transações com Cartão">Total de Transações com Cartão</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120081" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120103" trl="Y">
+<value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>

@@ -32,4 +32,28 @@
 <row id="1120002" trl="Y">
 <value column="Name" original="Step 3 - RePost">Passo 3 - Re-Postar</value>
 </row>
+<row id="1120049" trl="N">
+<value column="Name" original="NF Detalhes do Parceiro de Negócios">NF Detalhes do Parceiro de Negócios</value>
+</row>
+<row id="1120050" trl="N">
+<value column="Name" original="NF Local de Entrega ou Retirada">NF Local de Entrega ou Retirada</value>
+</row>
+<row id="1120051" trl="N">
+<value column="Name" original="NF Transportadora">NF Transportadora e Volumes</value>
+</row>
+<row id="1120052" trl="N">
+<value column="Name" original="NF Detalhes da Transportadora">NF Detalhes da Transportadora</value>
+</row>
+<row id="1120053" trl="N">
+<value column="Name" original="NF Detalhes da Organização">NF Detalhes da Organização</value>
+</row>
+<row id="1120054" trl="N">
+<value column="Name" original="NF Cancelamento">NF Cancelamento</value>
+</row>
+<row id="1120055" trl="N">
+<value column="Name" original="NF Contingencia">NF Contingência</value>
+</row>
+<row id="1120056" trl="N">
+<value column="Name" original="NF Importação">NF Importação</value>
+</row>
 </adempiereTrl>
