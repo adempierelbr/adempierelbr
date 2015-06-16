@@ -1097,6 +1097,10 @@ public class NFeXMLGenerator
 					ICMSSN900 icmssn900 = imposto.addNewICMS().addNewICMSSN900();
 					icmssn900.setOrig(Torig.Enum.forString(productSource));
 					icmssn900.setCSOSN(Det.Imposto.ICMS.ICMSSN900.CSOSN.X_900);
+					icmssn900.setModBC(Det.Imposto.ICMS.ICMSSN900.ModBC.X_0);
+					icmssn900.setVBC(normalize (icmsTax.getlbr_TaxBaseAmt()));
+					icmssn900.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
+					icmssn900.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
 				}
 			}
 			
