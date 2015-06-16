@@ -1728,15 +1728,15 @@
     <value column="Description" original="" />
   </row>
   <row id="577" trl="Y">
-    <value column="Name" original="Credit Stop">Cancelar Crédito</value>
+    <value column="Name" original="Credit Stop">Crédito Interrompido</value>
     <value column="Description" original="" />
   </row>
   <row id="578" trl="Y">
-    <value column="Name" original="Credit Hold">Segurar Crédito</value>
+    <value column="Name" original="Credit Hold">Crédito Retido</value>
     <value column="Description" original="" />
   </row>
   <row id="579" trl="Y">
-    <value column="Name" original="Credit Watch">Observar Crédito</value>
+    <value column="Name" original="Credit Watch">Crédito Assistido</value>
     <value column="Description" original="" />
   </row>
   <row id="580" trl="Y">
