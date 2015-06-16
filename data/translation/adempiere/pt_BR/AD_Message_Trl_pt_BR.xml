@@ -2745,7 +2745,7 @@ Thank you for using Adempiere Customer Asset Management
     <value column="MsgTip" original="" />
   </row>
   <row id="785" trl="Y">
-    <value column="MsgText" original="Log Out">Sair</value>
+    <value column="MsgText" original="Log Out">Log Out</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="786" trl="Y">
