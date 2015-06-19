@@ -472,7 +472,7 @@ public class NFeXMLGenerator
 			}
 			
 			//	NF de Produtor Rural
-			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_CT_E.equals(docRef.getLBR_FiscalDocRefType()))
+			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NFProdutorRural.equals(docRef.getLBR_FiscalDocRefType()))
 			{
 				RefNFP refNFP = nFref.addNewRefNFP();
 				refNFP.setCUF(TCodUfIBGE.Enum.forString(BPartnerUtil.getRegionCode (docRef.getC_Region_ID())));
@@ -489,7 +489,7 @@ public class NFeXMLGenerator
 			}
 			
 			//	CT-e
-			else if ("CTe".equals(docRef.getLBR_FiscalDocRefType()))
+			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_CT_E.equals(docRef.getLBR_FiscalDocRefType()))
 				nFref.setRefCTe(docRef.getlbr_NFeID());
 			
 			//	ECF
