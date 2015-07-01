@@ -94,3 +94,5 @@ UPDATE AD_Field SET DisplayLogic='@LBR_FiscalDocRefType@ ! N & @LBR_FiscalDocRef
 ;
 
 SELECT register_migration_script('107-Ajuste-AcessoXMLNFe-NFReferenciada.sql') FROM dual;
+
+EXIT

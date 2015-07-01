@@ -86,3 +86,4 @@ UPDATE AD_Field SET DisplayLength=22, SeqNo=100,Updated=TO_DATE('2011-12-14 11:2
 UPDATE AD_Field SET DisplayLength=22, IsSameLine='Y', SeqNo=110,Updated=TO_DATE('2011-12-14 11:22:15','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1106070
 ;
 
+EXIT

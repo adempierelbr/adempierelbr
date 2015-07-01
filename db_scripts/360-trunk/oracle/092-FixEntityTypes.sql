@@ -179,3 +179,5 @@ UPDATE AD_Tab SET EntityType='LBRA' WHERE EntityType='U' AND AD_Tab_ID=1120022;
 UPDATE AD_Tab SET EntityType='LBRA' WHERE EntityType='U' AND AD_Tab_ID=1120080;
 UPDATE AD_Val_Rule SET EntityType='LBRA' WHERE EntityType='U' AND AD_Val_Rule_ID=1120092;
 UPDATE AD_Val_Rule SET EntityType='LBRA' WHERE EntityType='U' AND AD_Val_Rule_ID=1120093;
+
+EXIT

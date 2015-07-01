@@ -25,3 +25,5 @@ FROM LBR_TaxName WHERE AD_Client_ID <> 0 AND TRIM(Name) IN (SELECT TRIM(tn.Name)
 SELECT 'DELETE FROM LBR_TaxName WHERE LBR_TaxName_ID=' || LBR_TaxName_ID || ';'
 FROM LBR_TaxName WHERE AD_Client_ID <> 0 AND TRIM(Name) IN (SELECT TRIM(tn.Name) FROM LBR_TaxName tn WHERE tn.AD_Client_ID=0)
 ;
+
+EXIT

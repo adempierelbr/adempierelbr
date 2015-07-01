@@ -26,3 +26,5 @@ UPDATE AD_Tab SET WhereClause='AD_Language NOT IN (SELECT AD_Language FROM AD_Cl
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='trunk-lbrk/023-FixNoBaseLanguage.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

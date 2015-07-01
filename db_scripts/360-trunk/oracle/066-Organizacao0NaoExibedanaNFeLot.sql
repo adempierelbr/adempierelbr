@@ -7,3 +7,4 @@ UPDATE AD_Column SET AD_Val_Rule_ID=202,Updated=TO_DATE('2013-01-11 17:04:06','Y
 UPDATE AD_SysConfig SET Value='360-trunk/069-Organizacao0NaoExibedanaNFeLot.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
+EXIT

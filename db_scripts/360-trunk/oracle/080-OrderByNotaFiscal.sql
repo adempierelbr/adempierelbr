@@ -22,3 +22,4 @@ UPDATE AD_Tab SET OrderByClause='Line',Updated=TO_DATE('2013-07-25 15:20:19','YY
 UPDATE AD_SysConfig SET Value='360-trunk/080-OrderByNotaFiscalOracle.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
+EXIT

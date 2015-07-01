@@ -113,3 +113,5 @@ WHERE AD_Ref_List_ID IN (SELECT AD_Ref_List_ID FROM AD_Ref_List WHERE AD_Referen
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/067-OrigemDoProduto.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

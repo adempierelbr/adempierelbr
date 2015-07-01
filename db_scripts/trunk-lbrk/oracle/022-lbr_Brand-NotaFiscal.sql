@@ -81,3 +81,4 @@ UPDATE AD_Element_Trl SET Description='Marca dos Volumes transportados',Help='Ma
 ALTER TABLE LBR_NotaFiscal ADD lbr_Brand NVARCHAR2(60) DEFAULT NULL 
 ;
 
+EXIT

@@ -29,3 +29,5 @@ WHERE AD_Client_ID=2000000
 UPDATE C_OrderTax SET IsTaxIncluded = NVL ((SELECT tbr.IsTaxIncluded FROM C_Tax t, LBR_TaxFormula tbr, C_Order o WHERE t.C_Tax_ID=C_OrderTax.C_Tax_ID AND o.C_Order_ID=C_OrderTax.C_Order_ID AND o.lbr_TransactionType=tbr.lbr_TransactionType AND t.LBR_TaxName_ID=tbr.LBR_TaxName_ID), 'Y')
 WHERE AD_Client_ID=2000000
 ;
+
+EXIT

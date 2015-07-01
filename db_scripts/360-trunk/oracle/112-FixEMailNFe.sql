@@ -210,3 +210,5 @@ UPDATE AD_Tab SET EntityType='LBRA' WHERE EntityType='U' AND AD_Tab_ID IN (11201
 
 SELECT Register_Migration_Script ('112-FixEMailNFe.sql') FROM DUAL
 ;
+
+EXIT

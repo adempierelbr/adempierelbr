@@ -61,3 +61,4 @@ INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,Is
 UPDATE LBR_TaxName SET HasWithHold='Y', WithHoldThreshold=263.630000000000,Updated=TO_DATE('2011-12-08 12:19:09','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE LBR_TaxName_ID=1106010
 ;
 
+EXIT

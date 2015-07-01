@@ -51,3 +51,5 @@ INSERT INTO LBR_TaxStatus (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/70-CodigosCSOSN.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

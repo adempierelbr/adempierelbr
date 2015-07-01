@@ -24,3 +24,4 @@ UPDATE LBR_NotaFiscal SET Processed = 'Y' WHERE DocStatus NOT IN ('CO', 'VO') AN
 
 SELECT register_migration_script('103-RetroCompatibilidadeInterfaceDocActionNFe-3.sql') FROM dual;
 
+EXIT

@@ -1,4 +1,4 @@
-﻿create or replace
+create or replace
 FUNCTION getCurrentCost
 (
     p_AD_Client_ID    NUMBER,
@@ -65,3 +65,5 @@ BEGIN
   RETURN v_CurrentCost;
     
 END getCurrentCost;
+/
+EXIT

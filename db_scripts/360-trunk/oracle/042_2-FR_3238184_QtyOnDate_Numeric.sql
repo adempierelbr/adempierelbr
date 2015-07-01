@@ -44,3 +44,5 @@ UNION ALL
         
         
 END QtyOnDate;
+/
+EXIT

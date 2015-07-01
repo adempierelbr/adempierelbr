@@ -406,4 +406,4 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 UPDATE AD_SysConfig SET Value='360-trunk/076-OutrasDespesasAcessorias.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
-
+EXIT

@@ -47,5 +47,4 @@ ALTER TABLE LBR_NotaFiscal ADD IsDiscountPrinted CHAR(1) DEFAULT 'N' CHECK (IsDi
 UPDATE AD_SysConfig SET Value='360-trunk/075-DiscountAmtNotaFiscalLine.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
-
-
+EXIT

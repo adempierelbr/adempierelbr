@@ -14,3 +14,5 @@ UPDATE LBR_TaxFormula SET IsTaxIncluded='N' WHERE IsTaxIncluded='Y' AND LBR_TaxN
 
 UPDATE AD_SysConfig SET Value='360-trunk/063-AjustarImpostosFlagNaoIncluiImposto.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

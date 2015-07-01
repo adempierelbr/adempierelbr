@@ -31,3 +31,5 @@ BEGIN
     RETURN v_Period;
     
 END getPeriod;
+/
+EXIT

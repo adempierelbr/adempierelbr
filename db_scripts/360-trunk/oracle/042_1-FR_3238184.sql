@@ -84,3 +84,5 @@ UPDATE AD_Field SET IsDisplayed='N',Updated=TO_DATE('2011-03-29 10:27:55','YYYY-
 ;
 
 UPDATE M_Warehouse SET lbr_WarehouseType = '3RD' where lbr_isthirdparty = 'Y';
+
+EXIT

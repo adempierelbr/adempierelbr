@@ -203,3 +203,4 @@ UPDATE AD_Field SET DisplayLogic='@lbr_TransactionType@=''IMP''',Updated=TO_DATE
 UPDATE AD_Field SET IsSameLine='Y', SeqNo=75,Updated=TO_DATE('2013-10-28 12:22:14','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000284
 ;
 
+EXIT

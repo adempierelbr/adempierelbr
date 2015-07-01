@@ -611,3 +611,4 @@ UPDATE AD_Table SET EntityType='LBRA',Updated=TO_DATE('2012-11-07 14:39:04','YYY
 UPDATE AD_SysConfig SET Value='360-trunk/077-IPIValorAgregado.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
+EXIT

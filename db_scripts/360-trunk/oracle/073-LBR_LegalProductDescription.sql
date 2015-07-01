@@ -56,3 +56,5 @@ UPDATE AD_Field SET SeqNo=55,Updated=TO_DATE('2013-10-29 16:33:14','YYYY-MM-DD H
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/073-LBR_LegalProductDescription.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

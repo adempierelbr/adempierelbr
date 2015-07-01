@@ -110,3 +110,5 @@ UPDATE AD_Column SET DefaultValue='N',Updated=TO_DATE('2015-05-27 12:32:01','YYY
 
 SELECT Register_Migration_Script ('113-PermitirSelecionarNFReferenciada.sql') FROM DUAL
 ;
+
+EXIT

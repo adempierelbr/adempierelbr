@@ -19,3 +19,5 @@ UPDATE AD_Field SET AD_FieldGroup_ID=131, IsSameLine='Y', SeqNo=255,Updated=TO_D
 ;
 
 SELECT register_migration_script('100-Fix-SalesOrderFields.sql') FROM dual;
+
+EXIT

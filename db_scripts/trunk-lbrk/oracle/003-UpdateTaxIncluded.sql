@@ -185,3 +185,5 @@ UPDATE AD_Column SET EntityType='LBRA',Updated=TO_DATE('2011-09-21 10:26:17','YY
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 UPDATE LBR_TaxFormula SET IsTaxIncluded='Y',Updated=TO_DATE('2011-09-22 17:36:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE LBR_TaxFormula_ID=1106013
 ;
+
+EXIT

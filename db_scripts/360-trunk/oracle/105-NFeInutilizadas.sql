@@ -573,3 +573,5 @@ UPDATE AD_Window SET WindowType='Q',Updated=TO_DATE('2015-03-31 11:36:33','YYYY-
 ;
 
 SELECT register_migration_script('105-NFeInutilizadas.sql') FROM dual;
+
+EXIT

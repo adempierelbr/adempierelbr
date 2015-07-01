@@ -53,8 +53,7 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 30/11/2011 17h45min38s BRST
 -- Rule para setar o Idioma
-INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,EntityType,EventType,Help,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120000,TO_DATE('2011-11-30 17:45:37','YYYY-MM-DD HH24:MI:SS'),100,'U','L','Set Base Language after Login','Y','beanshell:SetLanguage','S','org.compiere.util.Language.setLanguageAfterLogin ();
-
-return "";',TO_DATE('2011-11-30 17:45:37','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:SetLanguage')
+INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,EntityType,EventType,Help,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120000,TO_DATE('2011-11-30 17:45:37','YYYY-MM-DD HH24:MI:SS'),100,'U','L','Set Base Language after Login','Y','beanshell:SetLanguage','S','org.compiere.util.Language.setLanguageAfterLogin ();\n\nreturn "";',TO_DATE('2011-11-30 17:45:37','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:SetLanguage')
 ;
 
+EXIT

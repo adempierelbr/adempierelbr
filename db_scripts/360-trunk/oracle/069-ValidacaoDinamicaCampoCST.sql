@@ -11,3 +11,5 @@ UPDATE AD_Column SET AD_Val_Rule_ID=1120093,Updated=TO_DATE('2013-03-01 15:35:58
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/73-ValidacaoDinamicaCampoCST.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT
