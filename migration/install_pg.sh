@@ -1,7 +1,5 @@
 #!/bin/bash
 
-## 05-Jan-2009 - Make the file executable for Linux/Unix platforms
-
 if [ -z "$1" ]; then
    echo "Usage: $0 DIRECTORY DATABASE USER"
    exit 0
@@ -25,7 +23,11 @@ read -s -p "Enter Password: " pass
 echo ""
 export PGPASSWORD=$pass
 for f in $(ls $1/postgresql/*.sql); do
-echo ". Execultando Script" $f >> resultado.log
-psql -d $2 -U $3 -f $f >>resultado.log 2>&1
+	echo ". Execultando Script" $f >> result.log
+	psql -d $2 -U $3 -f $f >> result.log 2>&1
+done
+for f in $(ls post_install/postgresql/*.sql); do
+	echo ". Execultando Script" $f >> result.log
+	psql -d $2 -U $3 -f $f >> result.log 2>&1
 done
 export PGPASSWORD=

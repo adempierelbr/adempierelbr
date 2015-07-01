@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ -z "$1" ]; then
    echo "Usage: $0 DIRECTORY ORACLE_INSTANCE USER"
    exit 0
@@ -21,6 +22,10 @@ echo "."
 read -s -p "Enter Password: " pass
 echo ""
 for f in $(ls $1/oracle/*.sql); do
-	echo ". Executando Script" $f >> resultado.log
-	sqlplus $3/$pass@$2 @$f >> resultado.log 2>&1
+	echo ". Executando Script" $f >> result.log
+	sqlplus $3/$pass@$2 @$f >> result.log 2>&1
+done
+for f in $(ls post_install/oracle/*.sql); do
+	echo ". Executando Script" $f >> result.log
+	sqlplus $3/$pass@$2 @$f >> result.log 2>&1
 done
