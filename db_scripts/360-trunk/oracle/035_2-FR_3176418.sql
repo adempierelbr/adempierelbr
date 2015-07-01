@@ -52,3 +52,5 @@ BEGIN
 END MascaraCFOP;
 
 /*** END ***/
+
+EXIT

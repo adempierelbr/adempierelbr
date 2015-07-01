@@ -26,3 +26,4 @@ UPDATE AD_Window SET WindowType='T',Updated=TO_DATE('2011-11-24 16:05:47','YYYY-
 UPDATE AD_Table SET IsHighVolume='N',Updated=TO_DATE('2011-11-24 16:06:04','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Table_ID=1000027
 ;
 
+EXIT

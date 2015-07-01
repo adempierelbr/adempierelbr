@@ -6,3 +6,5 @@ INSERT INTO AD_SysConfig (AD_Client_ID,AD_Org_ID,AD_SysConfig_ID,ConfigurationLe
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/76-DesabilitarOrganizacao0.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

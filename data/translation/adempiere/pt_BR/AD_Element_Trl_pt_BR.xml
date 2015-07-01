@@ -3121,10 +3121,10 @@ Data storage encryption (in Table/Column) - data is stored encrypted in the data
     <value column="PO_PrintName" original="" />
   </row>
   <row id="549" trl="Y">
-    <value column="Name" original="SKU">UCE</value>
-    <value column="PrintName" original="SKU">UCE</value>
-    <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque</value>
-    <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
+    <value column="Name" original="SKU">SKU (UCE)</value>
+    <value column="PrintName" original="SKU">SKU (UCE)</value>
+    <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque (UCE / SKU)</value>
+    <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE/SKU indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -24311,8 +24311,8 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53222" trl="Y">
-    <value column="Name" original="Activity Value">ActivityValue</value>
-    <value column="PrintName" original="Activity Value">ActivityValue</value>
+    <value column="Name" original="Activity Value">Valor da Atividade</value>
+    <value column="PrintName" original="Activity Value">Valor da Atividade</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
@@ -24321,8 +24321,8 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53223" trl="Y">
-    <value column="Name" original="Dunning Grace Date">Dunning Grace</value>
-    <value column="PrintName" original="Dunning Grace Date">Dunning Grace</value>
+    <value column="Name" original="Dunning Grace Date">Tolerar Cobrança Até</value>
+    <value column="PrintName" original="Dunning Grace Date">Tolerar Cobrança Até</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />

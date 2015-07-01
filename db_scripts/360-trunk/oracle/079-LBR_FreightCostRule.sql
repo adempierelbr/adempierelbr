@@ -32,7 +32,7 @@ VALUES (0,1123947,1121100,0,17,318,'LBR_FreightCostRule',TO_TIMESTAMP('2013-01-2
 
 -- 21/01/2013 11h32min16s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-ALTER TABLE C_Invoice ADD COLUMN LBR_FreightCostRule CHAR(1) DEFAULT NULL 
+ALTER TABLE C_Invoice ADD LBR_FreightCostRule CHAR(1) DEFAULT NULL 
 ;
 
 -- 21/01/2013 11h33min53s BRST
@@ -154,4 +154,4 @@ UPDATE AD_Column SET AD_Reference_Value_ID=1120147,Updated=TO_DATE('2013-01-21 1
 UPDATE AD_SysConfig SET Value='360-trunk/079-LBR_FreightCostRule.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
-
+EXIT

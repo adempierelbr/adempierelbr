@@ -68,3 +68,5 @@ UPDATE LBR_TaxDefinition SET lbr_ProductSource=NULL
 
 SELECT Register_Migration_Script ('110-LBR72-TaxDefinitionProductSource.sql') FROM DUAL
 ;
+
+EXIT

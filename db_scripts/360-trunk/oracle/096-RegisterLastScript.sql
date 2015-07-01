@@ -44,10 +44,7 @@ IS
     v_scriptid INTEGER;
 BEGIN
     v_return := p_script || ' successfully registered';
-    UPDATE AD_System
-      SET LastMigrationScriptApplied=p_script
-    WHERE LastMigrationScriptApplied<p_script
-       OR LastMigrationScriptApplied IS NULL;
+
     SELECT MAX(AD_MigrationScript_ID)
 	INTO v_scriptid
         FROM AD_MigrationScript
@@ -55,15 +52,15 @@ BEGIN
     IF (v_scriptid IS NULL)
     THEN
         INSERT INTO ad_migrationscript 
-            (isapply, scriptroll, ad_migrationscript_uu, 
+            (isapply, scriptroll, 
              status, projectname, releaseno, 
              name, filename, ad_client_id, 
              ad_org_id, created, createdby, 
              updated, updatedby, isactive, 
              ad_migrationscript_id) 
         VALUES
-            ('Y', 'N', generate_uuid(),
-             'CO', 'iDempiere', (select releaseno from ad_system), 
+            ('Y', 'N',
+             'CO', 'ADDempiere', substr((select releaseno from ad_system), 0, 4),
              p_script, 'oracle/'||p_script, 0, 
              0, SYSDATE, 100, 
              SYSDATE, 100, 'Y', 
@@ -80,8 +77,9 @@ BEGIN
 END register_migration_script;
 /
 
-ALTER TABLE AD_MigrationScript ADD ReleaseNo NVARCHAR(20) DEFAULT NULL 
-;
+-- Oracle already has this column
+--ALTER TABLE AD_MigrationScript ADD ReleaseNo NVARCHAR2(20) DEFAULT NULL 
+--;
 
 --	iDempiere Scripts
 SELECT register_migration_script('816_IDEMPIERE-139_LastMigrationScriptApplied.sql') FROM dual;
@@ -369,3 +367,5 @@ SELECT register_migration_script('094-CriarRegimeTributario.sql') FROM dual;
 SELECT register_migration_script('095-CorrigirCampoContatoNFeOrganizacao.sql') FROM dual;
 
 SELECT register_migration_script('096-RegisterLastScript.sql') FROM dual;
+
+EXIT

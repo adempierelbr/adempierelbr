@@ -34,3 +34,5 @@ UPDATE AD_Field SET AD_FieldGroup_ID=1000000, SeqNo=500,Updated=TO_DATE('2015-03
 ;
 
 SELECT register_migration_script('101-Fix-PurchaseOrderFields.sql') FROM dual;
+
+EXIT

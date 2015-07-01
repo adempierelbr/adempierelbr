@@ -11,7 +11,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-//	Remove a CalloutCFOP
+--	Remove a CalloutCFOP
 UPDATE AD_Column SET Callout=REPLACE (Callout, ';org.adempierelbr.callout.CalloutDefineCFOP.getCFOP', '') WHERE Callout LIKE '%CFOP%'
 ;
 UPDATE AD_Column SET Callout=REPLACE (Callout, 'org.adempierelbr.callout.CalloutDefineCFOP.getCFOP;', '') WHERE Callout LIKE '%CFOP%'
@@ -19,10 +19,12 @@ UPDATE AD_Column SET Callout=REPLACE (Callout, 'org.adempierelbr.callout.Callout
 UPDATE AD_Column SET Callout=REPLACE (Callout, 'org.adempierelbr.callout.CalloutDefineCFOP.getCFOP', '') WHERE Callout LIKE '%CFOP%'
 ;
 
-//	Remove a CalloutTaxConfiguration
+--	Remove a CalloutTaxConfiguration
 UPDATE AD_Column SET Callout=REPLACE (Callout, ';org.adempierelbr.callout.CalloutTaxConfiguration.exceptionType', '') WHERE Callout LIKE '%CalloutTaxConfiguration%'
 ;
 UPDATE AD_Column SET Callout=REPLACE (Callout, 'org.adempierelbr.callout.CalloutTaxConfiguration.exceptionType;', '') WHERE Callout LIKE '%CalloutTaxConfiguration%'
 ;
 UPDATE AD_Column SET Callout=REPLACE (Callout, 'org.adempierelbr.callout.CalloutTaxConfiguration.exceptionType', '') WHERE Callout LIKE '%CalloutTaxConfiguration%'
 ;
+
+EXIT

@@ -1,1 +1,3 @@
 --- CORRIGIR O SCRIPT ---
+
+exit

@@ -312,9 +312,64 @@
 <value column="Description" original="Regra de custo do frete">Regra de custo do frete</value>
 <value column="Help" original=""/>
 </row>
+<row id="1120160" trl="N">
+<value column="Name" original="LBR_COD_OR">LBR_COD_OR</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120161" trl="N">
+<value column="Name" original="LBR_Ind_Proc">LBR_Ind_Proc</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120162" trl="N">
+<value column="Name" original="LBR_TypeCodAjustes">LBR_TypeCodAjustes</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120170" trl="Y">
 <value column="Name" original="C_Order - LBR_INCOTERMS">C_Order - LBR_INCOTERMS</value>
 <value column="Description" original="International Commercial Terms">International Commercial Terms</value>
 <value column="Help" original="International Commercial Terms">International Commercial Terms</value>
+</row>
+<row id="1120183" trl="Y">
+<value column="Name" original="Tax Regime">Regime Tributário</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120204" trl="Y">
+<value column="Name" original="LBR_IndPres">LBR_IndPres</value>
+<value column="Description" original="Indicador de presença do comprador no estabelecimento comercial no momento da operação">Indicador de presença do comprador no estabelecimento comercial no momento da operação</value>
+<value column="Help" original="Criado para ser usado no Elemento LBR_IndPres">Criado para ser usado no Elemento LBR_IndPres</value>
+</row>
+<row id="1120207" trl="N">
+<value column="Name" original="LBR_IndTot">LBR_IndTot</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120208" trl="N">
+<value column="Name" original="LBR_FiscalDocRefType">LBR_FiscalDocRefType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120209" trl="N">
+<value column="Name" original="LBR_NFeLot - LBR_NFeLotMethod">LBR_NFeLot - LBR_NFeLotMethod</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120210" trl="N">
+<value column="Name" original="LBR_NFeWebService - LBR_WSType">LBR_NFeWebService - LBR_WSType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120211" trl="N">
+<value column="Name" original="_Document Action NF-e">_Document Action NF-e</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120212" trl="N">
+<value column="Name" original="_Document Status NF-e">_Document Status NF-e</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
 </row>
 </adempiereTrl>

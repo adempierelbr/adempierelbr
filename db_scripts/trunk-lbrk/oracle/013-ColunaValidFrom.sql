@@ -11,10 +11,12 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  *****************************************************************************/
-ALTER TABLE LBR_TaxConfig_Region ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_TaxConfig_ProductGroup ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_TaxConfig_Product ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_TaxConfig_BPGroup ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_TaxConfig_BPartner ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_ICMSMatrix ADD COLUMN ValidFrom TIMESTAMP;
-ALTER TABLE LBR_ISSMatrix ADD COLUMN ValidFrom TIMESTAMP;
+ALTER TABLE LBR_TaxConfig_Region ADD ValidFrom DATE;
+ALTER TABLE LBR_TaxConfig_ProductGroup ADD ValidFrom DATE;
+ALTER TABLE LBR_TaxConfig_Product ADD ValidFrom DATE;
+ALTER TABLE LBR_TaxConfig_BPGroup ADD ValidFrom DATE;
+ALTER TABLE LBR_TaxConfig_BPartner ADD ValidFrom DATE;
+ALTER TABLE LBR_ICMSMatrix ADD ValidFrom DATE;
+ALTER TABLE LBR_ISSMatrix ADD ValidFrom DATE;
+
+EXIT

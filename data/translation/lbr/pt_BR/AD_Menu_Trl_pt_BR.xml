@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
+<!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
+<adempiereTrl language="pt_BR" table="AD_Menu">
+<row id="1000000" trl="Y">
+<value column="Name" original="Localization Brazil">Localização Brasil</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000001" trl="Y">
+<value column="Name" original="Bank">Banco</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000004" trl="Y">
+<value column="Name" original="Print">Impressão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000014" trl="Y">
+<value column="Name" original="CFOP">CFOP</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000015" trl="Y">
+<value column="Name" original="Taxes">Impostos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000023" trl="Y">
+<value column="Name" original="Nota Fiscal">Nota Fiscal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000035" trl="Y">
+<value column="Name" original="Manufacture">Industrialização</value>
+<value column="Description" original=""/>
+</row>
+<row id="1000039" trl="Y">
+<value column="Name" original="Consignation">Consignação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120017" trl="N">
+<value column="Name" original="Contabilidade">Contabilidade</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120179" trl="N">
+<value column="Name" original="SPED">SPED</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120196" trl="N">
+<value column="Name" original="IBPT (Tabela de Impostos Aproximados)">IBPT (Tabela de Impostos Aproximados)</value>
+<value column="Description" original=""/>
+</row>
+</adempiereTrl>

@@ -121,3 +121,5 @@ UPDATE AD_Ref_List_Trl SET Description='Reabre o documento e estorna os document
 --	Atualiza o ultimo script
 UPDATE AD_SysConfig SET Value='360-trunk/74-CorrecaoTraducaoAcaoDocumento.sql' WHERE AD_SysConfig_ID=1100006
 ;
+
+EXIT

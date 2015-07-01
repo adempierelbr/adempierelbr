@@ -21,3 +21,4 @@ UPDATE AD_Column SET AD_Val_Rule_ID=1120092,Updated=TO_DATE('2013-01-17 15:39:10
 UPDATE AD_Field SET DisplayLogic='@lbr_HasFiscalDocument@=''Y'' & @DocBaseType@=''API'' | @DocBaseType@=''ARC'' | @DocBaseType@=''ARI'' | @DocBaseType@=''APC''',Updated=TO_DATE('2013-01-17 15:57:37','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1100004
 ;
 
+EXIT

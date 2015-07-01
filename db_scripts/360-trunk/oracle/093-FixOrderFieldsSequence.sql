@@ -62,3 +62,5 @@ UPDATE AD_Field SET AD_FieldGroup_ID=1000000,Updated=TO_DATE('2014-05-08 10:30:1
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 UPDATE AD_Field SET SeqNo=255,Updated=TO_DATE('2014-05-08 10:32:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1120010
 ;
+
+EXIT

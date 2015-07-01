@@ -190,8 +190,8 @@
     <value column="Help" original="" />
   </row>
   <row id="53291" trl="Y">
-    <value column="Name" original="BP Accounting">BP Accounting</value>
-    <value column="Description" original="Use BP accounting dimension">Use BP accounting dimension</value>
+    <value column="Name" original="BP Accounting">Contabilidade de Parceiro</value>
+    <value column="Description" original="Use BP accounting dimension">Usas a dimensão de contabilidade de Parceiro de Negócios</value>
     <value column="Help" original="Define if this client will use business partner accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use business partner accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
   </row>
   <row id="53292" trl="Y">
@@ -215,7 +215,7 @@
     <value column="Help" original="Define if this client will use sales region accounting dimension.  This can be changed later in Accounting Schema window of the client.">Define if this client will use sales region accounting dimension.  This can be changed later in Accounting Schema window of the client.</value>
   </row>
   <row id="53296" trl="Y">
-    <value column="Name" original="Chart of Accounts File">Chart of Accounts File</value>
+    <value column="Name" original="Chart of Accounts File">Plano de Contas</value>
     <value column="Description" original="Location of the chart of accounts to be used with this client.  At this stage just the default accounts will be created.">Location of the chart of accounts to be used with this client.  At this stage just the default accounts will be created.</value>
     <value column="Help" original="" />
   </row>

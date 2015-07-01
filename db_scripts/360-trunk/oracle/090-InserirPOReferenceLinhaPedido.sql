@@ -32,3 +32,4 @@ UPDATE AD_Field SET SeqNo=149,Updated=TO_DATE('2013-12-17 17:56:00','YYYY-MM-DD 
 UPDATE AD_SysConfig SET Value='360-trunk/090-InserirPOReferenceLinhaPedido.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
+EXIT

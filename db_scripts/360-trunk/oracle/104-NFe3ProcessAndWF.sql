@@ -539,3 +539,5 @@ UPDATE AD_Workflow SET IsValid='Y', AD_WF_Node_ID=1120083,Updated=TO_DATE('2015-
 ;
 
 SELECT register_migration_script('104-NFe3ProcessAndWF.sql') FROM dual;
+
+EXIT

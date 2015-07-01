@@ -110,7 +110,6 @@ UPDATE AD_Field SET DisplayLogic='@lbr_CertType@=''JKS''',Updated=TO_DATE('2011-
 
 UPDATE AD_SysConfig SET Value='360-trunk/028-FR_3165874.sql' WHERE AD_SysConfig_ID=1100006;
 
-/*** END ***/
- * 
- */
+/ *** END ***/
+
 exit

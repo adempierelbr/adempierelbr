@@ -33,4 +33,4 @@ UPDATE AD_Form SET ClassName='org.adempierelbr.apps.form.VGenCNAB' WHERE AD_Form
 UPDATE AD_SysConfig SET Value='360-trunk/056-LBR-36_BoletoWeb.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
-
+EXIT

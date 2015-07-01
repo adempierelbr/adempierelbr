@@ -380,8 +380,62 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120115" trl="Y">
+<value column="Name" original="Gerar SPED">Gerar SPED</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120117" trl="N">
+<value column="Name" original="Apuração de Impostos">Apuração de Impostos</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120118" trl="N">
+<value column="Name" original="Outros Lançamentos">Outros Lançamentos</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120119" trl="N">
+<value column="Name" original="Total de Transações com Cartão">Total de Transações com Cartão</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120124" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120175" trl="N">
+<value column="Name" original="Authorized Access to XML NFe">Acesso ao XML</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120176" trl="N">
+<value column="Name" original="Authorized Access to XML NFe">Acesso ao XML</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120177" trl="Y">
+<value column="Name" original="Referenced Documents">Documento Referenciado</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120178" trl="N">
+<value column="Name" original="Referenced Documents">Documento Referenciado</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120179" trl="Y">
+<value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>

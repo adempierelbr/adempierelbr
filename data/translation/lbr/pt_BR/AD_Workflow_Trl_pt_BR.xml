@@ -7,4 +7,14 @@
 <value column="Description" original="(Standard Process CCe)">(Standard Process CCe)</value>
 <value column="Help" original=""/>
 </row>
+<row id="1120020" trl="N">
+<value column="Name" original="Process_LBR_NotaFiscal">Process_LBR_NotaFiscal</value>
+<value column="Description" original="(Standard Process Nota Fiscal)">(Standard Process Nota Fiscal)</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120021" trl="N">
+<value column="Name" original="Process_LBR_NFeLot">Process_LBR_NFeLot</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 </adempiereTrl>

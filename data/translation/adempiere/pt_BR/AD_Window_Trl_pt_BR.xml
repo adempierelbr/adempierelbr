@@ -765,7 +765,7 @@ A mais alta prioridade tem o Formato de Impressão, você define em um Tipo de D
     <value column="Help" original="Create new documents based on existing one">Criar novos documentos baseado em um documento existente</value>
   </row>
   <row id="267" trl="Y">
-    <value column="Name" original="Import Inventory">Importar Estoques</value>
+    <value column="Name" original="Import Inventory">Importar Inventário</value>
     <value column="Description" original="Import Inventory Transactions">Importar Transações de Estoque</value>
     <value column="Help" original="Validate and Import Inventory Transactions">Validar e Importar Transações de Estoque</value>
   </row>

@@ -2,6 +2,11 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Window">
+  <row id="267" trl="Y">
+    <value column="Name" original="Import Inventory">Importar Inventário</value>
+    <value column="Description" original="Import Inventory Transactions">Importar Transações de Estoque</value>
+    <value column="Help" original="Validate and Import Inventory Transactions">Validar e Importar Transações de Estoque</value>
+  </row>
 <row id="1000000" trl="Y">
 <value column="Name" original="Brazilian Banks">Bancos Brasileiros</value>
 <value column="Description" original="Brazilian Banks">Bancos Brasileiros</value>
@@ -152,8 +157,28 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120076" trl="Y">
+<value column="Name" original="Gerar SPED">Gerar SPED</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120078" trl="N">
+<value column="Name" original="Apuração de Impostos">Apuração de Impostos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120079" trl="N">
+<value column="Name" original="Total de Transações com Cartão">Total de Transações com Cartão</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120081" trl="Y">
 <value column="Name" original="Tabela de Impostos do IBPT">Tabela de Impostos do IBPT</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120103" trl="Y">
+<value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>

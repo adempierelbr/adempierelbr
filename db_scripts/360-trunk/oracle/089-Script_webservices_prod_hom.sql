@@ -2035,3 +2035,4 @@ UPDATE LBR_NFeWebService SET C_Region_ID=445,Updated=TO_DATE('2013-08-28 15:57:3
 UPDATE AD_SysConfig SET Value='360-trunk/089-Script_webservices_prod_hom.sql' WHERE AD_SysConfig_ID=1100006
 ;
 
+EXIT

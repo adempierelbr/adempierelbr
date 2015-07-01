@@ -8,3 +8,4 @@ UPDATE AD_Column SET Callout='org.adempierelbr.callout.CalloutTax.recalculateTax
 UPDATE AD_Column SET Callout='org.adempierelbr.callout.CalloutTax.recalculateTaxes',Updated=TO_DATE('2012-04-10 16:34:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000422
 ;
 
+EXIT

@@ -194,3 +194,4 @@ UPDATE AD_Ref_Table SET AD_Display=1000269, IsValueDisplayed='Y',Updated=TO_DATE
 UPDATE AD_Column SET AD_Reference_ID=30, IsUpdateable='N',Updated=TO_DATE('2011-11-10 17:05:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000284
 ;
 
+EXIT

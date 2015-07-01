@@ -14,217 +14,217 @@
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1120076, 0, 0, 'Y', '2011-04-05 21:12:45.0', 100, '2011-04-05 21:12:45.0', 100, 'LBR_Formula_ID', 'LBRA', 'Formula (BR)', 'Formula (BR)', NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120076, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_Formula_ID', 'LBRA', 'Formula (BR)', 'Formula (BR)', NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1120077, 0, 0, 'Y', '2011-04-05 21:40:55.0', 100, '2011-04-05 21:40:55.0', 100, 'LBR_FormulaNet_ID', 'U', 'Formula Net (BR)', 'Formula Net (BR)', NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120077, 0, 0, 'Y', TO_DATE('2011-04-05 21:40:55','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:40:55','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_FormulaNet_ID', 'U', 'Formula Net (BR)', 'Formula Net (BR)', NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1120088, 0, 0, 'Y', '2011-05-17 16:16:55.0', 100, '2011-05-17 16:16:55.0', 100, 'LBR_FormulaAdd_ID', 'LBRA', 'Additional Formula', 'Additional Formula', NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120088, 0, 0, 'Y', TO_DATE('2011-05-17 16:16:55','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 16:16:55','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_FormulaAdd_ID', 'LBRA', 'Additional Formula', 'Additional Formula', NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1120090, 0, 0, 'Y', '2011-05-17 17:11:05.0', 100, '2011-05-17 17:11:05.0', 100, 'LBR_FormulaBase_ID', 'LBRA', 'Formula Base', 'Formula Base', NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120090, 0, 0, 'Y', TO_DATE('2011-05-17 17:11:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:11:05','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_FormulaBase_ID', 'LBRA', 'Formula Base', 'Formula Base', NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element(ad_element_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, columnname, entitytype, name, printname, description, help, po_name, po_printname, po_description, po_help)
-  VALUES(1120091, 0, 0, 'Y', '2011-05-30 10:32:27.0', 100, '2011-05-30 10:32:27.0', 100, 'lbr_RPSStatus', 'LBRA', 'RPS Status', 'RPS Status', NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120091, 0, 0, 'Y', TO_DATE('2011-05-30 10:32:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 10:32:27','YYYY-MM-DD HH24:MI:SS'), 100, 'lbr_RPSStatus', 'LBRA', 'RPS Status', 'RPS Status', NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element_Trl(ad_element_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, printname, description, help, po_name, po_printname, po_description, po_help, istranslated)
-  VALUES(1120076, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:45.0', 100, '2011-04-05 21:12:45.0', 100, 'Formula (BR)', 'Formula (BR)', NULL, NULL, NULL, NULL, NULL, NULL, 'N')
+  VALUES(1120076, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', 'Formula (BR)', NULL, NULL, NULL, NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element_Trl(ad_element_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, printname, description, help, po_name, po_printname, po_description, po_help, istranslated)
-  VALUES(1120077, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:40:55.0', 100, '2011-04-05 21:40:55.0', 100, 'Formula Net (BR)', 'Formula Net (BR)', NULL, NULL, NULL, NULL, NULL, NULL, 'N')
+  VALUES(1120077, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:40:55','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:40:55','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Net (BR)', 'Formula Net (BR)', NULL, NULL, NULL, NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element_Trl(ad_element_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, printname, description, help, po_name, po_printname, po_description, po_help, istranslated)
-  VALUES(1120088, 'pt_BR', 0, 0, 'Y', '2011-05-17 16:16:55.0', 100, '2011-05-17 16:19:39.0', 100, 'Fórmula Adicional', 'Fórmula Adicional', 'Formula adicional para inclusão de despesas na B.C. (ex. Frete, SISCOMEX, etc.)', 'Utilize a fórmula adicional para incluir o valor do resultado da fórmula na base de cáclulo do impostos. Você pode usar para facilmente adicionar taxas ao cálculo de imposto, como por exemplo Frete, Seguro, SISCOMEX, etc. Note que esta fórmula tem um comportamento diferente, o valor do resultado será somado a B.C. do imposto e a fórmula não irá gerar um fator.', NULL, NULL, NULL, NULL, 'N')
+  VALUES(1120088, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 16:16:55','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 16:19:39','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula Adicional', 'Fórmula Adicional', 'Formula adicional para inclusão de despesas na B.C. (ex. Frete, SISCOMEX, etc.)', 'Utilize a fórmula adicional para incluir o valor do resultado da fórmula na base de cáclulo do impostos. Você pode usar para facilmente adicionar taxas ao cálculo de imposto, como por exemplo Frete, Seguro, SISCOMEX, etc. Note que esta fórmula tem um comportamento diferente, o valor do resultado será somado a B.C. do imposto e a fórmula não irá gerar um fator.', NULL, NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element_Trl(ad_element_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, printname, description, help, po_name, po_printname, po_description, po_help, istranslated)
-  VALUES(1120090, 'pt_BR', 0, 0, 'Y', '2011-05-17 17:11:05.0', 100, '2011-05-17 17:15:16.0', 100, 'Fórmula Base', 'Fórmula Base', 'Este fórmula é usada para encontrar o valor que será usado no cálculo dos impostos', NULL, NULL, NULL, NULL, NULL, 'N')
+  VALUES(1120090, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 17:11:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:15:16','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula Base', 'Fórmula Base', 'Este fórmula é usada para encontrar o valor que será usado no cálculo dos impostos', NULL, NULL, NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Element_Trl(ad_element_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, printname, description, help, po_name, po_printname, po_description, po_help, istranslated)
-  VALUES(1120091, 'pt_BR', 0, 0, 'Y', '2011-05-30 10:32:27.0', 100, '2011-05-30 10:32:55.098', 100, 'Situação do RPS', 'Situação do RPS', 'Indica a situação do RPS (Normal, Isento, Cancelado, Extraviado ou Suspenso) ', 'Indica a situação do RPS (Normal, Isento ou Não Tributado, Cancelado, Extraviado ou Suspenso)', NULL, NULL, NULL, NULL, 'N')
+  VALUES(1120091, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 10:32:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 10:32:55','YYYY-MM-DD HH24:MI:SS'), 100, 'Situação do RPS', 'Situação do RPS', 'Indica a situação do RPS (Normal, Isento, Cancelado, Extraviado ou Suspenso) ', 'Indica a situação do RPS (Normal, Isento ou Não Tributado, Cancelado, Extraviado ou Suspenso)', NULL, NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Reference(ad_reference_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, validationtype, vformat, entitytype, isorderbyvalue)
-  VALUES(1120031, 0, 0, 'Y', '2011-04-05 21:41:35.0', 100, '2011-04-05 21:41:35.0', 100, 'LBR_Formula', NULL, NULL, 'T', NULL, 'U', 'N')
+  VALUES(1120031, 0, 0, 'Y', TO_DATE('2011-04-05 21:41:35','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:41:35','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_Formula', NULL, NULL, 'T', NULL, 'U', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Reference(ad_reference_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, validationtype, vformat, entitytype, isorderbyvalue)
-  VALUES(1120034, 0, 0, 'Y', '2011-05-30 11:02:27.0', 100, '2011-05-30 11:02:27.0', 100, 'LBR_NotaFiscal - lbr_RPSStatus', NULL, NULL, 'L', NULL, 'LBRA', 'N')
+  VALUES(1120034, 0, 0, 'Y', TO_DATE('2011-05-30 11:02:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:02:27','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_NotaFiscal - lbr_RPSStatus', NULL, NULL, 'L', NULL, 'LBRA', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Reference_Trl(ad_reference_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120031, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:41:35.0', 100, '2011-04-05 21:41:35.0', 100, 'LBR_Formula', NULL, NULL, 'N')
+  VALUES(1120031, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:41:35','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:41:35','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_Formula', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Reference_Trl(ad_reference_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120034, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:02:27.0', 100, '2011-05-30 11:02:27.0', 100, 'LBR_NotaFiscal - lbr_RPSStatus', NULL, NULL, 'N')
+  VALUES(1120034, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:02:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:02:27','YYYY-MM-DD HH24:MI:SS'), 100, 'LBR_NotaFiscal - lbr_RPSStatus', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120402, 0, 0, 'Y', '2011-05-30 11:05:36.0', 100, '2011-05-30 11:05:46.0', 100, 'T', 'Operacao normal', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120402, 0, 0, 'Y', TO_DATE('2011-05-30 11:05:36','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:05:46','YYYY-MM-DD HH24:MI:SS'), 100, 'T', 'Operacao normal', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120403, 0, 0, 'Y', '2011-05-30 11:06:11.0', 100, '2011-05-30 11:06:29.0', 100, 'I', 'Operacao isenta ou nao tributavel', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120403, 0, 0, 'Y', TO_DATE('2011-05-30 11:06:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:06:29','YYYY-MM-DD HH24:MI:SS'), 100, 'I', 'Operacao isenta ou nao tributavel', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120404, 0, 0, 'Y', '2011-05-30 11:07:48.0', 100, '2011-05-30 11:08:06.0', 100, 'F', 'Operacao isenta ou nao tributavel executada em outro Municipio', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120404, 0, 0, 'Y', TO_DATE('2011-05-30 11:07:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:08:06','YYYY-MM-DD HH24:MI:SS'), 100, 'F', 'Operacao isenta ou nao tributavel executada em outro Municipio', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120405, 0, 0, 'Y', '2011-05-30 11:08:57.0', 100, '2011-05-30 11:08:57.0', 100, 'C', 'Cancelado', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120405, 0, 0, 'Y', TO_DATE('2011-05-30 11:08:57','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:08:57','YYYY-MM-DD HH24:MI:SS'), 100, 'C', 'Cancelado', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120406, 0, 0, 'Y', '2011-05-30 11:09:09.0', 100, '2011-05-30 11:09:09.0', 100, 'E', 'Extraviado', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120406, 0, 0, 'Y', TO_DATE('2011-05-30 11:09:09','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:09:09','YYYY-MM-DD HH24:MI:SS'), 100, 'E', 'Extraviado', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List(ad_ref_list_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, value, name, description, ad_reference_id, validfrom, validto, entitytype)
-  VALUES(1120407, 0, 0, 'Y', '2011-05-30 11:09:27.0', 100, '2011-05-30 11:09:33.0', 100, 'J', 'ISS Suspenso por Decisao Judicial', NULL, 1120034, NULL, NULL, 'LBRA')
+  VALUES(1120407, 0, 0, 'Y', TO_DATE('2011-05-30 11:09:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:09:33','YYYY-MM-DD HH24:MI:SS'), 100, 'J', 'ISS Suspenso por Decisao Judicial', NULL, 1120034, NULL, NULL, 'LBRA')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120402, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:05:36.0', 100, '2011-05-30 11:05:36.0', 100, 'Operação normal', NULL, 'N')
+  VALUES(1120402, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:05:36','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:05:36','YYYY-MM-DD HH24:MI:SS'), 100, 'Operação normal', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120403, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:06:11.0', 100, '2011-05-30 11:06:11.0', 100, 'Operação isenta ou não tributável', NULL, 'N')
+  VALUES(1120403, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:06:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:06:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Operação isenta ou não tributável', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120404, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:07:48.0', 100, '2011-05-30 11:07:48.0', 100, 'Operação isenta ou não tributável executada em outro Município', NULL, 'N')
+  VALUES(1120404, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:07:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:07:48','YYYY-MM-DD HH24:MI:SS'), 100, 'Operação isenta ou não tributável executada em outro Município', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120405, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:08:57.0', 100, '2011-05-30 11:08:57.0', 100, 'Cancelado', NULL, 'N')
+  VALUES(1120405, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:08:57','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:08:57','YYYY-MM-DD HH24:MI:SS'), 100, 'Cancelado', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120406, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:09:09.0', 100, '2011-05-30 11:09:09.0', 100, 'Extraviado', NULL, 'N')
+  VALUES(1120406, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:09:09','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:09:09','YYYY-MM-DD HH24:MI:SS'), 100, 'Extraviado', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_List_Trl(ad_ref_list_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120407, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:09:27.0', 100, '2011-05-30 11:09:27.0', 100, 'ISS Suspenso por Decisão Judicial', NULL, 'N')
+  VALUES(1120407, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:09:27','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:09:27','YYYY-MM-DD HH24:MI:SS'), 100, 'ISS Suspenso por Decisão Judicial', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window(ad_window_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, windowtype, issotrx, entitytype, processing, ad_image_id, ad_color_id, isdefault, winheight, winwidth, isbetafunctionality)
-  VALUES(1120010, 0, 0, 'Y', '2011-04-05 21:16:10.0', 100, '2011-04-05 21:16:10.0', 100, 'Formula', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N')
+  VALUES(1120010, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:10','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:10','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', NULL, NULL, 'M', 'Y', 'LBRA', 'N', NULL, NULL, 'N', 0, 0, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Trl(ad_window_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120010, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:10.0', 100, '2011-04-05 21:16:10.0', 100, 'Formula', NULL, NULL, 'N')
+  VALUES(1120010, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:10','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:10','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Table(ad_table_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, tablename, isview, accesslevel, entitytype, ad_window_id, ad_val_rule_id, loadseq, issecurityenabled, isdeleteable, ishighvolume, importtable, ischangelog, replicationtype, po_window_id, copycolumnsfromtable, iscentrallymaintained, ispersonallock)
-  VALUES(1120021, 0, 0, 'Y', '2011-04-05 21:11:52.0', 100, '2011-04-05 21:17:45.0', 100, 'Formula (BR)', NULL, NULL, 'LBR_Formula', 'N', '6', 'LBRA', 1120010, NULL, 0, 'N', 'Y', 'N', 'N', 'N', 'L', NULL, 'N', 'Y', NULL)
+  VALUES(1120021, 0, 0, 'Y', TO_DATE('2011-04-05 21:11:52','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:17:45','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', NULL, NULL, 'LBR_Formula', 'N', '6', 'LBRA', 1120010, NULL, 0, 'N', 'Y', 'N', 'N', 'N', 'L', NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Table_Trl(ad_table_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120021, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:11:52.0', 100, '2011-04-05 21:11:52.0', 100, 'Formula (BR)', 'N')
+  VALUES(1120021, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:11:52','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:11:52','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120319, 0, 0, 'Y', '2011-04-05 21:12:45.0', '2011-04-05 21:12:45.0', 100, 100, 'Formula (BR)', NULL, NULL, 1, 'LBRA', 'LBR_Formula_ID', 1120021, 13, NULL, NULL, 22, NULL, 'Y', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120076, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120319, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Formula (BR)', NULL, NULL, 1, 'LBRA', 'LBR_Formula_ID', 1120021, 13, NULL, NULL, 22, NULL, 'Y', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120076, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120320, 0, 0, 'Y', '2011-04-05 21:12:47.0', '2011-04-05 21:12:47.0', 100, 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 1, 'LBRA', 'AD_Client_ID', 1120021, 19, NULL, NULL, 22, '@#AD_Client_ID@', 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 102, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120320, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 1, 'LBRA', 'AD_Client_ID', 1120021, 19, NULL, NULL, 22, '@#AD_Client_ID@', 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 102, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120321, 0, 0, 'Y', '2011-04-05 21:12:47.0', '2011-04-05 21:12:47.0', 100, 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 1, 'LBRA', 'AD_Org_ID', 1120021, 19, NULL, 104, 22, '@#AD_Org_ID@', 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 113, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120321, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 1, 'LBRA', 'AD_Org_ID', 1120021, 19, NULL, 104, 22, '@#AD_Org_ID@', 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 113, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120322, 0, 0, 'Y', '2011-04-05 21:12:48.0', '2011-04-05 21:12:48.0', 100, 100, 'Created', 'Date this record was created', 'The Created field indicates the date that this record was created.', 1, 'LBRA', 'Created', 1120021, 16, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 245, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120322, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:48','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:48','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Created', 'Date this record was created', 'The Created field indicates the date that this record was created.', 1, 'LBRA', 'Created', 1120021, 16, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 245, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120323, 0, 0, 'Y', '2011-04-05 21:12:49.0', '2011-04-05 21:12:49.0', 100, 100, 'Created By', 'User who created this records', 'The Created By field indicates the user who created this record.', 1, 'LBRA', 'CreatedBy', 1120021, 18, 110, NULL, 22, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 246, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120323, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Created By', 'User who created this records', 'The Created By field indicates the user who created this record.', 1, 'LBRA', 'CreatedBy', 1120021, 18, 110, NULL, 22, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 246, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120324, 0, 0, 'Y', '2011-04-05 21:12:49.0', '2011-04-05 21:12:49.0', 100, 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+  VALUES(1120324, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.', 1, 'LBRA', 'IsActive', 1120021, 20, NULL, NULL, 1, 'Y', 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 348, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
@@ -233,271 +233,271 @@ There are two reasons for de-activating and not deleting records:
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120325, 0, 0, 'Y', '2011-04-05 21:12:50.0', '2011-04-05 21:12:50.0', 100, 100, 'Updated', 'Date this record was updated', 'The Updated field indicates the date that this record was updated.', 1, 'LBRA', 'Updated', 1120021, 16, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 607, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120325, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:50','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:50','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Updated', 'Date this record was updated', 'The Updated field indicates the date that this record was updated.', 1, 'LBRA', 'Updated', 1120021, 16, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 607, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120326, 0, 0, 'Y', '2011-04-05 21:12:51.0', '2011-04-05 21:12:51.0', 100, 100, 'Updated By', 'User who updated this records', 'The Updated By field indicates the user who updated this record.', 1, 'LBRA', 'UpdatedBy', 1120021, 18, 110, NULL, 22, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 608, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120326, 0, 0, 'Y', TO_DATE('2011-04-05 21:12:51','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:12:51','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Updated By', 'User who updated this records', 'The Updated By field indicates the user who updated this record.', 1, 'LBRA', 'UpdatedBy', 1120021, 18, 110, NULL, 22, NULL, 'N', 'N', 'Y', 'N', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 608, NULL, 'Y', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120327, 0, 0, 'Y', '2011-04-05 21:13:34.0', '2011-04-05 21:19:44.0', 100, 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 0, 'U', 'Description', 1120021, 14, NULL, NULL, 512, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 275, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120327, 0, 0, 'Y', TO_DATE('2011-04-05 21:13:34','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:19:44','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 0, 'U', 'Description', 1120021, 14, NULL, NULL, 512, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 275, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120328, 0, 0, 'Y', '2011-04-05 21:14:20.0', '2011-04-05 21:23:07.0', 100, 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 0, 'U', 'lbr_Formula', 1120021, 34, NULL, NULL, 512, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1000174, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120328, 0, 0, 'Y', TO_DATE('2011-04-05 21:14:20','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:23:07','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 0, 'U', 'lbr_Formula', 1120021, 34, NULL, NULL, 512, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1000174, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120331, 0, 0, 'Y', '2011-04-05 21:40:05.0', '2011-04-05 21:40:05.0', 100, 100, 'Formula (BR)', NULL, NULL, 0, 'U', 'LBR_Formula_ID', 1000026, 19, NULL, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120076, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120331, 0, 0, 'Y', TO_DATE('2011-04-05 21:40:05','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:40:05','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Formula (BR)', NULL, NULL, 0, 'U', 'LBR_Formula_ID', 1000026, 19, NULL, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120076, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120329, 0, 0, 'Y', '2011-04-05 21:21:05.0', '2011-04-05 21:41:58.0', 100, 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 0, 'U', 'Name', 1120021, 10, NULL, NULL, 40, NULL, 'N', 'N', 'Y', 'Y', NULL, 'Y', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 469, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120329, 0, 0, 'Y', TO_DATE('2011-04-05 21:21:05','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:41:58','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 0, 'U', 'Name', 1120021, 10, NULL, NULL, 40, NULL, 'N', 'N', 'Y', 'Y', NULL, 'Y', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 469, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Ref_Table(ad_reference_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, ad_table_id, ad_key, ad_display, isvaluedisplayed, whereclause, orderbyclause, entitytype, ad_window_id)
-  VALUES(1120031, 0, 0, 'Y', '2011-04-05 21:42:02.0', 100, '2011-04-05 21:42:02.0', 100, 1120021, 1120319, 1120329, 'N', NULL, NULL, 'U', NULL)
+  VALUES(1120031, 0, 0, 'Y', TO_DATE('2011-04-05 21:42:02','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:42:02','YYYY-MM-DD HH24:MI:SS'), 100, 1120021, 1120319, 1120329, 'N', NULL, NULL, 'U', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120332, 0, 0, 'Y', '2011-04-05 21:42:13.0', '2011-04-05 21:42:13.0', 100, 100, 'Formula Net (BR)', NULL, NULL, 0, 'U', 'LBR_FormulaNet_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120077, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120332, 0, 0, 'Y', TO_DATE('2011-04-05 21:42:13','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:42:13','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Formula Net (BR)', NULL, NULL, 0, 'U', 'LBR_FormulaNet_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120077, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120333, 0, 0, 'Y', '2011-04-05 21:42:54.0', '2011-04-05 21:43:13.0', 100, 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 0, 'U', 'ValidFrom', 1000026, 15, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 617, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120333, 0, 0, 'Y', TO_DATE('2011-04-05 21:42:54','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-04-05 21:43:13','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 0, 'U', 'ValidFrom', 1000026, 15, NULL, NULL, 7, NULL, 'N', 'N', 'Y', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 617, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120387, 0, 0, 'Y', '2011-05-13 13:38:57.0', '2011-05-13 13:38:57.0', 100, 100, 'Tax Amount', 'Tax Amount for a document', 'The Tax Amount displays the total tax amount for a document.', 0, 'LBRA', 'TaxAmt', 260, 12, NULL, NULL, 10, '0', 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1133, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120387, 0, 0, 'Y', TO_DATE('2011-05-13 13:38:57','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-05-13 13:38:57','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Tax Amount', 'Tax Amount for a document', 'The Tax Amount displays the total tax amount for a document.', 0, 'LBRA', 'TaxAmt', 260, 12, NULL, NULL, 10, '0', 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1133, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120388, 0, 0, 'Y', '2011-05-17 16:20:43.0', '2011-05-17 16:20:43.0', 100, 100, 'Additional Formula', NULL, NULL, 0, 'U', 'LBR_FormulaAdd_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120088, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120388, 0, 0, 'Y', TO_DATE('2011-05-17 16:20:43','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-05-17 16:20:43','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Additional Formula', NULL, NULL, 0, 'U', 'LBR_FormulaAdd_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120088, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120389, 0, 0, 'Y', '2011-05-17 17:15:31.0', '2011-05-17 17:15:31.0', 100, 100, 'Formula Base', NULL, NULL, 0, 'U', 'LBR_FormulaBase_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120090, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120389, 0, 0, 'Y', TO_DATE('2011-05-17 17:15:31','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-05-17 17:15:31','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'Formula Base', NULL, NULL, 0, 'U', 'LBR_FormulaBase_ID', 1000026, 18, 1120031, NULL, 10, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120090, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column(ad_column_id, ad_client_id, ad_org_id, isactive, created, updated, createdby, updatedby, name, description, help, version, entitytype, columnname, ad_table_id, ad_reference_id, ad_reference_value_id, ad_val_rule_id, fieldlength, defaultvalue, iskey, isparent, ismandatory, isupdateable, readonlylogic, isidentifier, seqno, istranslated, isencrypted, callout, vformat, valuemin, valuemax, isselectioncolumn, ad_element_id, ad_process_id, issyncdatabase, isalwaysupdateable, columnsql, mandatorylogic, infofactoryclass, isautocomplete, isallowlogging, formatpattern)
-  VALUES(1120390, 0, 0, 'Y', '2011-05-30 11:00:40.0', '2011-05-30 11:10:25.0', 100, 100, 'RPS Status', NULL, NULL, 0, 'LBRA', 'lbr_RPSStatus', 1000027, 17, 1120034, NULL, 1, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120091, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
+  VALUES(1120390, 0, 0, 'Y', TO_DATE('2011-05-30 11:00:40','YYYY-MM-DD HH24:MI:SS'), TO_DATE('2011-05-30 11:10:25','YYYY-MM-DD HH24:MI:SS'), 100, 100, 'RPS Status', NULL, NULL, 0, 'LBRA', 'lbr_RPSStatus', 1000027, 17, 1120034, NULL, 1, NULL, 'N', 'N', 'N', 'Y', NULL, 'N', 0, 'N', 'N', NULL, NULL, NULL, NULL, 'N', 1120091, NULL, 'N', 'N', NULL, NULL, NULL, 'N', 'Y', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120319, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:45.0', 100, '2011-04-05 21:12:45.0', 100, 'Formula (BR)', 'N')
+  VALUES(1120319, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:45','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120320, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:47.0', 100, '2011-04-05 21:12:47.0', 100, 'Client', 'N')
+  VALUES(1120320, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, 'Client', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120321, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:47.0', 100, '2011-04-05 21:12:47.0', 100, 'Organization', 'N')
+  VALUES(1120321, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:47','YYYY-MM-DD HH24:MI:SS'), 100, 'Organization', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120322, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:48.0', 100, '2011-04-05 21:12:48.0', 100, 'Created', 'N')
+  VALUES(1120322, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:48','YYYY-MM-DD HH24:MI:SS'), 100, 'Created', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120323, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:49.0', 100, '2011-04-05 21:12:49.0', 100, 'Created By', 'N')
+  VALUES(1120323, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, 'Created By', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120324, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:49.0', 100, '2011-04-05 21:12:49.0', 100, 'Active', 'N')
+  VALUES(1120324, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:49','YYYY-MM-DD HH24:MI:SS'), 100, 'Active', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120325, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:50.0', 100, '2011-04-05 21:12:50.0', 100, 'Updated', 'N')
+  VALUES(1120325, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:50','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:50','YYYY-MM-DD HH24:MI:SS'), 100, 'Updated', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120326, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:12:51.0', 100, '2011-04-05 21:12:51.0', 100, 'Updated By', 'N')
+  VALUES(1120326, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:12:51','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:12:51','YYYY-MM-DD HH24:MI:SS'), 100, 'Updated By', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120327, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:13:34.0', 100, '2011-04-05 21:13:34.0', 100, 'Description', 'N')
+  VALUES(1120327, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:13:34','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:13:34','YYYY-MM-DD HH24:MI:SS'), 100, 'Description', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120328, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:14:20.0', 100, '2011-04-05 21:14:20.0', 100, 'Formula', 'N')
+  VALUES(1120328, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:14:20','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:14:20','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120329, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:21:05.0', 100, '2011-04-05 21:21:05.0', 100, 'Name', 'N')
+  VALUES(1120329, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:21:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:21:05','YYYY-MM-DD HH24:MI:SS'), 100, 'Name', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120331, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:40:05.0', 100, '2011-04-05 21:40:05.0', 100, 'Formula (BR)', 'N')
+  VALUES(1120331, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:40:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:40:05','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120332, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:42:13.0', 100, '2011-04-05 21:42:13.0', 100, 'Formula Net (BR)', 'N')
+  VALUES(1120332, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:42:13','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:42:13','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Net (BR)', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120333, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:42:54.0', 100, '2011-04-05 21:42:54.0', 100, 'Valid from', 'N')
+  VALUES(1120333, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:42:54','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:42:54','YYYY-MM-DD HH24:MI:SS'), 100, 'Valid from', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120387, 'pt_BR', 0, 0, 'Y', '2011-05-13 13:38:57.0', 100, '2011-05-13 13:38:57.0', 100, 'Tax Amount', 'N')
+  VALUES(1120387, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-13 13:38:57','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-13 13:38:57','YYYY-MM-DD HH24:MI:SS'), 100, 'Tax Amount', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120388, 'pt_BR', 0, 0, 'Y', '2011-05-17 16:20:43.0', 100, '2011-05-17 16:20:43.0', 100, 'Additional Formula', 'N')
+  VALUES(1120388, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 16:20:43','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 16:20:43','YYYY-MM-DD HH24:MI:SS'), 100, 'Additional Formula', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120389, 'pt_BR', 0, 0, 'Y', '2011-05-17 17:15:31.0', 100, '2011-05-17 17:15:31.0', 100, 'Formula Base', 'N')
+  VALUES(1120389, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 17:15:31','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:15:31','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Base', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Column_Trl(ad_column_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, istranslated)
-  VALUES(1120390, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:00:40.0', 100, '2011-05-30 11:00:40.0', 100, 'RPS Status', 'N')
+  VALUES(1120390, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:00:40','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:00:40','YYYY-MM-DD HH24:MI:SS'), 100, 'RPS Status', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Access(ad_window_id, ad_role_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, isreadwrite)
-  VALUES(1120010, 50002, 0, 0, 'Y', '2011-04-05 21:16:11.0', 100, '2011-04-05 21:16:11.0', 100, 'Y')
+  VALUES(1120010, 50002, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Access(ad_window_id, ad_role_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, isreadwrite)
-  VALUES(1120010, 0, 0, 0, 'Y', '2011-04-05 21:16:11.0', 100, '2011-04-05 21:16:11.0', 100, 'Y')
+  VALUES(1120010, 0, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Access(ad_window_id, ad_role_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, isreadwrite)
-  VALUES(1120010, 102, 11, 0, 'Y', '2011-04-05 21:16:11.0', 100, '2011-04-05 21:16:11.0', 100, 'Y')
+  VALUES(1120010, 102, 11, 0, 'Y', TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Access(ad_window_id, ad_role_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, isreadwrite)
-  VALUES(1120010, 103, 11, 0, 'Y', '2011-04-05 21:16:11.0', 100, '2011-04-05 21:16:11.0', 100, 'Y')
+  VALUES(1120010, 103, 11, 0, 'Y', TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Window_Access(ad_window_id, ad_role_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, isreadwrite)
-  VALUES(1120010, 50001, 0, 0, 'Y', '2011-04-05 21:16:11.0', 100, '2011-04-05 21:16:11.0', 100, 'Y')
+  VALUES(1120010, 50001, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Tab(ad_tab_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, ad_table_id, ad_window_id, seqno, tablevel, issinglerow, isinfotab, istranslationtab, isreadonly, ad_column_id, hastree, whereclause, orderbyclause, commitwarning, ad_process_id, processing, ad_image_id, importfields, ad_columnsortorder_id, ad_columnsortyesno_id, issorttab, entitytype, included_tab_id, readonlylogic, displaylogic, isinsertrecord, isadvancedtab, parent_column_id)
-  VALUES(1120018, 0, 0, 'Y', '2011-04-05 21:16:40.0', 100, '2011-04-05 21:16:40.0', 100, 'Formulas', NULL, NULL, 1120021, 1120010, 10, 0, 'N', 'N', 'N', 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N', NULL, 'N', NULL, NULL, 'N', 'U', NULL, NULL, NULL, 'Y', 'N', NULL)
+  VALUES(1120018, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:40','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:40','YYYY-MM-DD HH24:MI:SS'), 100, 'Formulas', NULL, NULL, 1120021, 1120010, 10, 0, 'N', 'N', 'N', 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N', NULL, 'N', NULL, NULL, 'N', 'U', NULL, NULL, NULL, 'Y', 'N', NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Tab_Trl(ad_tab_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, commitwarning, istranslated)
-  VALUES(1120018, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:40.0', 100, '2011-04-05 21:16:40.0', 100, 'Formulas', NULL, NULL, NULL, 'N')
+  VALUES(1120018, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:40','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:40','YYYY-MM-DD HH24:MI:SS'), 100, 'Formulas', NULL, NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120255, 0, 0, 'Y', '2011-04-05 21:16:48.0', 100, '2011-04-05 21:16:48.0', 100, 'Formula (BR)', NULL, NULL, 'Y', 1120018, 1120319, NULL, 'N', NULL, 22, 'N', NULL, NULL, 'N', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120255, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', NULL, NULL, 'Y', 1120018, 1120319, NULL, 'N', NULL, 22, 'N', NULL, NULL, 'N', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120252, 0, 0, 'Y', '2011-04-05 21:16:46.0', 100, '2011-04-05 21:16:46.0', 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 'Y', 1120018, 1120320, NULL, 'Y', NULL, 22, 'N', 10, NULL, 'N', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120252, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 'Y', 1120018, 1120320, NULL, 'Y', NULL, 22, 'N', 10, NULL, 'N', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120257, 0, 0, 'Y', '2011-04-05 21:21:29.0', 100, '2011-04-05 21:22:32.0', 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 'Y', 1120018, 1120329, NULL, 'Y', NULL, 22, 'N', 25, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120257, 0, 0, 'Y', TO_DATE('2011-04-05 21:21:29','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:22:32','YYYY-MM-DD HH24:MI:SS'), 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 'Y', 1120018, 1120329, NULL, 'Y', NULL, 22, 'N', 25, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120253, 0, 0, 'Y', '2011-04-05 21:16:46.0', 100, '2011-04-05 21:16:46.0', 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 'Y', 1120018, 1120327, NULL, 'Y', NULL, 512, 'N', 40, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120253, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 'Y', 1120018, 1120327, NULL, 'Y', NULL, 512, 'N', 40, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120254, 0, 0, 'Y', '2011-04-05 21:16:47.0', 100, '2011-04-05 21:16:47.0', 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 'Y', 1120018, 1120328, NULL, 'Y', NULL, 512, 'N', 50, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120254, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:47','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:47','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 'Y', 1120018, 1120328, NULL, 'Y', NULL, 512, 'N', 50, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120256, 0, 0, 'Y', '2011-04-05 21:16:48.0', 100, '2011-04-05 21:17:10.0', 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 'Y', 1120018, 1120321, NULL, 'Y', NULL, 22, 'N', 20, NULL, 'Y', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120256, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:17:10','YYYY-MM-DD HH24:MI:SS'), 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 'Y', 1120018, 1120321, NULL, 'Y', NULL, 22, 'N', 20, NULL, 'Y', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120251, 0, 0, 'Y', '2011-04-05 21:16:44.0', 100, '2011-04-05 21:21:41.0', 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+  VALUES(1120251, 0, 0, 'Y', TO_DATE('2011-04-05 21:16:44','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:21:41','YYYY-MM-DD HH24:MI:SS'), 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.', 'Y', 1120018, 1120324, NULL, 'Y', NULL, 22, 'N', 30, NULL, 'Y', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
@@ -506,43 +506,43 @@ There are two reasons for de-activating and not deleting records:
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120258, 0, 0, 'Y', '2011-04-05 21:45:05.0', 100, '2011-04-05 21:45:05.0', 100, 'Formula (BR)', NULL, NULL, 'Y', 1000019, 1120331, NULL, 'Y', NULL, 10, 'N', 70, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120258, 0, 0, 'Y', TO_DATE('2011-04-05 21:45:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:45:05','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', NULL, NULL, 'Y', 1000019, 1120331, NULL, 'Y', NULL, 10, 'N', 70, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120259, 0, 0, 'Y', '2011-04-05 21:45:07.0', 100, '2011-04-05 21:45:47.0', 100, 'Formula Net (BR)', NULL, NULL, 'Y', 1000019, 1120332, NULL, 'Y', NULL, 10, 'N', 80, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120259, 0, 0, 'Y', TO_DATE('2011-04-05 21:45:07','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:45:47','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Net (BR)', NULL, NULL, 'Y', 1000019, 1120332, NULL, 'Y', NULL, 10, 'N', 80, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120260, 0, 0, 'Y', '2011-04-05 21:45:08.0', 100, '2011-05-17 16:21:30.0', 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 'Y', 1000019, 1120333, NULL, 'Y', NULL, 7, 'N', 65, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120260, 0, 0, 'Y', TO_DATE('2011-04-05 21:45:08','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 16:21:30','YYYY-MM-DD HH24:MI:SS'), 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 'Y', 1000019, 1120333, NULL, 'Y', NULL, 7, 'N', 65, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120263, 0, 0, 'Y', '2011-05-17 17:18:20.0', 100, '2011-05-17 17:19:09.0', 100, 'Formula Base', NULL, NULL, 'Y', 1000019, 1120389, NULL, 'Y', NULL, 10, 'N', 100, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120263, 0, 0, 'Y', TO_DATE('2011-05-17 17:18:20','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:19:09','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Base', NULL, NULL, 'Y', 1000019, 1120389, NULL, 'Y', NULL, 10, 'N', 100, NULL, 'Y', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120262, 0, 0, 'Y', '2011-05-17 16:21:08.0', 100, '2011-05-17 17:19:12.0', 100, 'Additional Formula', NULL, NULL, 'Y', 1000019, 1120388, NULL, 'Y', NULL, 10, 'N', 90, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120262, 0, 0, 'Y', TO_DATE('2011-05-17 16:21:08','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:19:12','YYYY-MM-DD HH24:MI:SS'), 100, 'Additional Formula', NULL, NULL, 'Y', 1000019, 1120388, NULL, 'Y', NULL, 10, 'N', 90, NULL, 'N', 'N', 'N', 'N', 'U', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field(ad_field_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, iscentrallymaintained, ad_tab_id, ad_column_id, ad_fieldgroup_id, isdisplayed, displaylogic, displaylength, isreadonly, seqno, sortno, issameline, isheading, isfieldonly, isencrypted, entitytype, obscuretype, ad_reference_id, ismandatory, included_tab_id, defaultvalue, ad_reference_value_id, ad_val_rule_id, infofactoryclass)
-  VALUES(1120264, 0, 0, 'Y', '2011-05-30 11:13:34.0', 100, '2011-05-30 11:13:34.0', 100, 'RPS Status', NULL, NULL, 'Y', 1000020, 1120390, 131, 'Y', NULL, 22, 'N', 715, NULL, 'Y', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+  VALUES(1120264, 0, 0, 'Y', TO_DATE('2011-05-30 11:13:34','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:13:34','YYYY-MM-DD HH24:MI:SS'), 100, 'RPS Status', NULL, NULL, 'Y', 1000020, 1120390, 131, 'Y', NULL, 22, 'N', 715, NULL, 'Y', 'N', 'N', 'N', 'LBRA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120251, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:44.0', 100, '2011-04-05 21:16:44.0', 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+  VALUES(1120251, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:44','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:44','YYYY-MM-DD HH24:MI:SS'), 100, 'Active', 'The record is active in the system', 'There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
 There are two reasons for de-activating and not deleting records:
 (1) The system requires the record for audit purposes.
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.', 'N')
@@ -551,97 +551,97 @@ There are two reasons for de-activating and not deleting records:
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120252, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:46.0', 100, '2011-04-05 21:16:46.0', 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 'N')
+  VALUES(1120252, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, 'Client', 'Client/Tenant for this installation.', 'A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120253, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:46.0', 100, '2011-04-05 21:16:46.0', 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 'N')
+  VALUES(1120253, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:46','YYYY-MM-DD HH24:MI:SS'), 100, 'Description', 'Optional short description of the record', 'A description is limited to 255 characters.', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120254, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:47.0', 100, '2011-04-05 21:16:47.0', 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 'N')
+  VALUES(1120254, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:47','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:47','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', 'Defines the Tax Formula', 'Defines the Tax Formula', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120255, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:48.0', 100, '2011-04-05 21:16:48.0', 100, 'Formula (BR)', NULL, NULL, 'N')
+  VALUES(1120255, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120256, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:16:48.0', 100, '2011-04-05 21:16:48.0', 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 'N')
+  VALUES(1120256, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:16:48','YYYY-MM-DD HH24:MI:SS'), 100, 'Organization', 'Organizational entity within client', 'An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120257, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:21:29.0', 100, '2011-04-05 21:21:29.0', 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 'N')
+  VALUES(1120257, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:21:29','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:21:29','YYYY-MM-DD HH24:MI:SS'), 100, 'Name', 'Alphanumeric identifier of the entity', 'The name of an entity (record) is used as an default search option in addition to the search key. The name is up to 60 characters in length.', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120258, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:45:05.0', 100, '2011-04-05 21:45:05.0', 100, 'Formula (BR)', NULL, NULL, 'N')
+  VALUES(1120258, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:45:05','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:45:05','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula (BR)', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120259, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:45:07.0', 100, '2011-04-05 21:45:07.0', 100, 'Formula Net (BR)', NULL, NULL, 'N')
+  VALUES(1120259, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:45:07','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:45:07','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Net (BR)', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120260, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:45:08.0', 100, '2011-04-05 21:45:08.0', 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 'N')
+  VALUES(1120260, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:45:08','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:45:08','YYYY-MM-DD HH24:MI:SS'), 100, 'Valid from', 'Valid from including this date (first day)', 'The Valid From date indicates the first day of a date range', 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120262, 'pt_BR', 0, 0, 'Y', '2011-05-17 16:21:08.0', 100, '2011-05-17 16:21:08.0', 100, 'Additional Formula', NULL, NULL, 'N')
+  VALUES(1120262, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 16:21:08','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 16:21:08','YYYY-MM-DD HH24:MI:SS'), 100, 'Additional Formula', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120263, 'pt_BR', 0, 0, 'Y', '2011-05-17 17:18:20.0', 100, '2011-05-17 17:18:20.0', 100, 'Formula Base', NULL, NULL, 'N')
+  VALUES(1120263, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-17 17:18:20','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-17 17:18:20','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula Base', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Field_Trl(ad_field_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, help, istranslated)
-  VALUES(1120264, 'pt_BR', 0, 0, 'Y', '2011-05-30 11:13:34.0', 100, '2011-05-30 11:13:34.0', 100, 'RPS Status', NULL, NULL, 'N')
+  VALUES(1120264, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-05-30 11:13:34','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-30 11:13:34','YYYY-MM-DD HH24:MI:SS'), 100, 'RPS Status', NULL, NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Menu(ad_menu_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, name, updatedby, description, issummary, issotrx, isreadonly, action, ad_window_id, ad_workflow_id, ad_task_id, ad_process_id, ad_form_id, ad_workbench_id, entitytype, iscentrallymaintained)
-  VALUES(1120018, 0, 0, 'Y', '2011-04-05 21:18:10.0', 100, '2011-04-05 21:18:10.0', 'Formula', 100, NULL, 'N', 'N', 'N', 'W', 1120010, NULL, NULL, NULL, NULL, NULL, 'U', 'Y')
+  VALUES(1120018, 0, 0, 'Y', TO_DATE('2011-04-05 21:18:10','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:18:10','YYYY-MM-DD HH24:MI:SS'), 'Formula', 100, NULL, 'N', 'N', 'N', 'W', 1120010, NULL, NULL, NULL, NULL, NULL, 'U', 'Y')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_Menu_Trl(ad_menu_id, ad_language, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, name, description, istranslated)
-  VALUES(1120018, 'pt_BR', 0, 0, 'Y', '2011-04-05 21:18:10.0', 100, '2011-04-05 21:18:10.0', 100, 'Formula', NULL, 'N')
+  VALUES(1120018, 'pt_BR', 0, 0, 'Y', TO_DATE('2011-04-05 21:18:10','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-04-05 21:18:10','YYYY-MM-DD HH24:MI:SS'), 100, 'Formula', NULL, 'N')
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_ModelValidator(ad_client_id, ad_modelvalidator_id, ad_org_id, created, createdby, updated, updatedby, isactive, name, description, help, entitytype, modelvalidationclass, seqno)
-  VALUES(0, 1120000, 0, '2011-05-13 13:48:11.0', 100, '2011-05-13', 100, 'Y', 'New Validator Order', 'New Validator Order', NULL, 'LBRA', 'org.adempierelbr.validator.VLBROrder', 1)
+  VALUES(0, 1120000, 0, TO_DATE('2011-05-13 13:48:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-13 13:48:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y', 'New Validator Order', 'New Validator Order', NULL, 'LBRA', 'org.adempierelbr.validator.VLBROrder', 1)
 ;
 
 -- 27/07/2011 16h17min20s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 INSERT INTO AD_ModelValidator(ad_client_id, ad_modelvalidator_id, ad_org_id, created, createdby, updated, updatedby, isactive, name, description, help, entitytype, modelvalidationclass, seqno)
-  VALUES(0, 1120001, 0, '2011-05-13 13:48:11.0', 100, '2011-05-13', 100, 'Y', 'New Validator Tax', 'New Validator Tax', NULL, 'LBRA', 'org.adempierelbr.validator.VLBRTax', 2)
+  VALUES(0, 1120001, 0, TO_DATE('2011-05-13 13:48:11','YYYY-MM-DD HH24:MI:SS'), 100, TO_DATE('2011-05-13 13:48:11','YYYY-MM-DD HH24:MI:SS'), 100, 'Y', 'New Validator Tax', 'New Validator Tax', NULL, 'LBRA', 'org.adempierelbr.validator.VLBRTax', 2)
 ;
 
 -- 28/07/2011 16h58min18s BRT
@@ -694,11 +694,6 @@ ALTER TABLE LBR_TaxFormula MODIFY lbr_Formula NVARCHAR2(2000) DEFAULT NULL
 ALTER TABLE LBR_TaxFormula MODIFY lbr_FormulaNetWorth NVARCHAR2(2000) DEFAULT NULL 
 ;
 
--- 28/07/2011 21h33min7s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-ALTER TABLE LBR_TaxFormula ADD ValidFrom DATE DEFAULT NULL
-;
-
 -- 28/07/2011 17h51min50s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
 UPDATE AD_Column SET IsIdentifier='Y',Updated=TO_DATE('2011-07-28 17:51:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000450
@@ -745,52 +740,52 @@ UPDATE AD_Table SET AccessLevel='6',Updated=TO_DATE('2011-07-28 18:02:49','YYYY-
 ;
 
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-15 18:33:44.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA. Para operações onde o IPI não entra na Base de Cálculo do ICMS (ICMSPROD).', 'Y', 1000005, '2011-04-16 16:10:45.0', 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD))*(1+IPI)*(1+IVA)', 'FLBR06')
+  VALUES(0, 0, TO_DATE('2011-04-15 18:33:44','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA. Para operações onde o IPI não entra na Base de Cálculo do ICMS (ICMSPROD).', 'Y', 1000005, TO_DATE('2011-04-16 16:10:45','YYYY-MM-DD HH24:MI:SS'), 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD))*(1+IPI)*(1+IVA)', 'FLBR06')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-05 21:27:19.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações onde o IPI entra na base de cálculo do ICMS.', 'Y', 1000000, '2011-04-16 16:10:22.0', 100, '(1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI))', 'FLBR01')
+  VALUES(0, 0, TO_DATE('2011-04-05 21:27:19','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações onde o IPI entra na base de cálculo do ICMS.', 'Y', 1000000, TO_DATE('2011-04-16 16:10:22','YYYY-MM-DD HH24:MI:SS'), 100, '(1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI))', 'FLBR01')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-15 18:34:12.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA e Diferencial de Alíquota. Para operações onde o IPI não entra na Base de Cálculo do ICMS (ICMSPROD).', 'Y', 1000006, '2011-04-16 16:12:38.0', 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD))*(1+IPI)*((1+IVA)*((1-ICMSPROD)/(1-ICMSINTERNO)))-FLBR06', 'FLBR07')
+  VALUES(0, 0, TO_DATE('2011-04-15 18:34:12','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA e Diferencial de Alíquota. Para operações onde o IPI não entra na Base de Cálculo do ICMS (ICMSPROD).', 'Y', 1000006, TO_DATE('2011-04-16 16:12:38','YYYY-MM-DD HH24:MI:SS'), 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD))*(1+IPI)*((1+IVA)*((1-ICMSPROD)/(1-ICMSINTERNO)))-FLBR06', 'FLBR07')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-15 16:42:04.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA e Diferencial de Alíquota. Para operações onde o IPI entra na Base de Cálculo do ICMS.', 'Y', 1000004, '2011-04-16 16:12:43.0', 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI))*((1+IVA)*((1-ICMSPROD)/(1-ICMSINTERNO)))-FLBR04', 'FLBR05')
+  VALUES(0, 0, TO_DATE('2011-04-15 16:42:04','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA e Diferencial de Alíquota. Para operações onde o IPI entra na Base de Cálculo do ICMS.', 'Y', 1000004, TO_DATE('2011-04-16 16:12:43','YYYY-MM-DD HH24:MI:SS'), 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI))*((1+IVA)*((1-ICMSPROD)/(1-ICMSINTERNO)))-FLBR04', 'FLBR05')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-05 21:28:41.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS e IPI. Para operações onde o IPI entra na base de cálculo do ICMS.', 'Y', 1000001, '2011-04-16 16:10:29.0', 100, '((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI)', 'FLBR02')
+  VALUES(0, 0, TO_DATE('2011-04-05 21:28:41','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS e IPI. Para operações onde o IPI entra na base de cálculo do ICMS.', 'Y', 1000001, TO_DATE('2011-04-16 16:10:29','YYYY-MM-DD HH24:MI:SS'), 100, '((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI)', 'FLBR02')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-05 21:32:24.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações onde o IPI não entra na Base de Cálculo do ICMS.', 'Y', 1000002, '2011-04-16 16:10:34.0', 100, '((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD)', 'FLBR03')
+  VALUES(0, 0, TO_DATE('2011-04-05 21:32:24','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações onde o IPI não entra na Base de Cálculo do ICMS.', 'Y', 1000002, TO_DATE('2011-04-16 16:10:34','YYYY-MM-DD HH24:MI:SS'), 100, '((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD)))/(1-ICMSPROD)', 'FLBR03')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-15 16:41:27.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA. Para operações onde o IPI entra na Base de Cálculo do ICMS.', 'Y', 1000003, '2011-04-16 16:10:38.0', 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI))*(1+IVA)', 'FLBR04')
+  VALUES(0, 0, TO_DATE('2011-04-15 16:41:27','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS, ICMS com o IVA. Para operações onde o IPI entra na Base de Cálculo do ICMS.', 'Y', 1000003, TO_DATE('2011-04-16 16:10:38','YYYY-MM-DD HH24:MI:SS'), 100, '(((1+(PISPROD+COFINSPROD)/(1-(PISPROD+COFINSPROD)-ICMSPROD*(1+IPI)))/(1-ICMSPROD*(1+IPI)))*(1+IPI))*(1+IVA)', 'FLBR04')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-05-17 16:47:31.0', 100, 'Valor do Frete + Valor', 'Y', 1000014, '2011-05-17 17:20:56.0', 100, '(AMT + FREIGHT)', 'Frete + Valor')
+  VALUES(0, 0, TO_DATE('2011-05-17 16:47:31','YYYY-MM-DD HH24:MI:SS'), 100, 'Valor do Frete + Valor', 'Y', 1000014, TO_DATE('2011-05-17 17:20:56','YYYY-MM-DD HH24:MI:SS'), 100, '(AMT + FREIGHT)', 'Frete + Valor')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-20 23:52:17.0', 100, 'Fator 1, ou seja, o próprio valor é a base.', 'Y', 1000007, '2011-08-05 17:26:20.0', 100, '(1.0)', 'FLBR08')
+  VALUES(0, 0, TO_DATE('2011-04-20 23:52:17','YYYY-MM-DD HH24:MI:SS'), 100, 'Fator 1, ou seja, o próprio valor é a base.', 'Y', 1000007, TO_DATE('2011-08-05 17:26:20','YYYY-MM-DD HH24:MI:SS'), 100, '(1.0)', 'FLBR08')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-20 23:52:39.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS. Para operações de Importação.', 'Y', 1000008, '2011-08-05 17:27:23.0', 100, '(1/(1+II))*((((1+ICMSPROD*(II+IPI*(1+II)))/((1-PISPROD-COFINSPROD)*(1-ICMSPROD)))))', 'FLBR09')
+  VALUES(0, 0, TO_DATE('2011-04-20 23:52:39','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor líquido teremos um fator para chegar no valor com PIS, COFINS. Para operações de Importação.', 'Y', 1000008, TO_DATE('2011-08-05 17:27:23','YYYY-MM-DD HH24:MI:SS'), 100, '(1/(1+II))*((((1+ICMSPROD*(II+IPI*(1+II)))/((1-PISPROD-COFINSPROD)*(1-ICMSPROD)))))', 'FLBR09')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-20 23:53:16.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor CIF+II teremos um fator para chegar no valor CIF. Para operações de Importação.', 'Y', 1000010, '2011-08-05 17:28:35.0', 100, '1/(1+II)', 'FLBR11')
+  VALUES(0, 0, TO_DATE('2011-04-20 23:53:16','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor CIF+II teremos um fator para chegar no valor CIF. Para operações de Importação.', 'Y', 1000010, TO_DATE('2011-08-05 17:28:35','YYYY-MM-DD HH24:MI:SS'), 100, '1/(1+II)', 'FLBR11')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-04-20 23:53:00.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o CIF+II teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações de Importação.', 'Y', 1000009, '2011-08-05 17:29:02.0', 100, '((1+((FLBR09*(PISPROD+COFINSPROD))+(IPI)))/(1-ICMSPROD))', 'FLBR10')
+  VALUES(0, 0, TO_DATE('2011-04-20 23:53:00','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o CIF+II teremos um fator para chegar no valor com PIS, COFINS e ICMS. Para operações de Importação.', 'Y', 1000009, TO_DATE('2011-08-05 17:29:02','YYYY-MM-DD HH24:MI:SS'), 100, '((1+((FLBR09*(PISPROD+COFINSPROD))+(IPI)))/(1-ICMSPROD))', 'FLBR10')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-05-06 14:07:38.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor CIF+II teremos um fator para chegar no valor do Imposto sobre SISCOMEX. Para operações de Importação.', 'Y', 1000011, '2011-08-05 17:29:50.0', 100, 'SISCOMEX/(1-ICMSPROD)', 'FLBR12')
+  VALUES(0, 0, TO_DATE('2011-05-06 14:07:38','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor CIF+II teremos um fator para chegar no valor do Imposto sobre SISCOMEX. Para operações de Importação.', 'Y', 1000011, TO_DATE('2011-08-05 17:29:50','YYYY-MM-DD HH24:MI:SS'), 100, 'SISCOMEX/(1-ICMSPROD)', 'FLBR12')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-05-12 00:35:10.0', 100, 'Fator de Serviço', 'Y', 1000013, '2011-08-05 17:30:17.0', 100, '1/(1-(PISSERV+COFINSSERV+IR+ISS+CSLL))', 'FLBR13')
+  VALUES(0, 0, TO_DATE('2011-05-12 00:35:10','YYYY-MM-DD HH24:MI:SS'), 100, 'Fator de Serviço', 'Y', 1000013, TO_DATE('2011-08-05 17:30:17','YYYY-MM-DD HH24:MI:SS'), 100, '1/(1-(PISSERV+COFINSSERV+IR+ISS+CSLL))', 'FLBR13')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-08-05 17:30:46.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor com PIS, COFINS e ICMS, adiciona o IPI e o IVA.', 'Y', 1000015, '2011-08-05 17:32:20.0', 100, '(1+IPI)*(1+IVA)', 'FLBR14')
+  VALUES(0, 0, TO_DATE('2011-08-05 17:30:46','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor com PIS, COFINS e ICMS, adiciona o IPI e o IVA.', 'Y', 1000015, TO_DATE('2011-08-05 17:32:20','YYYY-MM-DD HH24:MI:SS'), 100, '(1+IPI)*(1+IVA)', 'FLBR14')
 ;
 INSERT INTO lbr_formula(ad_client_id, ad_org_id, created, createdby, description, isactive, lbr_formula_id, updated, updatedby, lbr_formula, name)
-  VALUES(0, 0, '2011-08-05 17:36:02.0', 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor com PIS, COFINS e ICMS, adiciona o IPI.', 'Y', 1000016, '2011-08-05 17:36:02.0', 100, '(1+IPI)', 'FLBR15')
+  VALUES(0, 0, TO_DATE('2011-08-05 17:36:02','YYYY-MM-DD HH24:MI:SS'), 100, 'Fórmula para cálculo de imposto de produto, levando em consideração o valor com PIS, COFINS e ICMS, adiciona o IPI.', 'Y', 1000016, TO_DATE('2011-08-05 17:36:02','YYYY-MM-DD HH24:MI:SS'), 100, '(1+IPI)', 'FLBR15')
 ;
 
 -- 28/07/2011 21h40min15s BRT
@@ -890,7 +885,7 @@ ALTER TABLE LBR_TaxFormula MODIFY lbr_Formula NVARCHAR2(2000) DEFAULT NULL
 
 -- 28/07/2011 22h6min52s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
-ALTER TABLE LBR_TaxFormula MODIFY lbr_Formula NULL
+ALTER TABLE LBR_TaxFormula MODIFY lbr_Formula DEFAULT NULL
 ;
 
 -- 28/07/2011 22h6min59s BRT
@@ -900,7 +895,7 @@ ALTER TABLE LBR_TaxFormula MODIFY lbr_FormulaNetWorth NVARCHAR2(2000) DEFAULT NU
 
 -- 28/07/2011 22h6min59s BRT
 -- Novos Impostos - Kenos - www.kenos.com.br
-ALTER TABLE LBR_TaxFormula MODIFY lbr_FormulaNetWorth NULL
+ALTER TABLE LBR_TaxFormula MODIFY lbr_FormulaNetWorth DEFAULT NULL
 ;
 
 -- 28/07/2011 22h8min15s BRT
@@ -1709,7 +1704,6 @@ UPDATE AD_PrintFormatItem pi SET PrintName='Declaracao de Importacao', Name='Dec
 -- 12/08/2011 12h6min39s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120414,290,0,10,1120027,'DocumentNo',TO_DATE('2011-08-12 12:06:38','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document','U',40,'The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>".
-
 If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Document No',0,TO_DATE('2011-08-12 12:06:38','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
@@ -1934,7 +1928,6 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 -- 12/08/2011 13h13min13s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1120431,290,0,10,1120028,'DocumentNo',TO_DATE('2011-08-12 13:13:07','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document','LBRA',10,'The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>".
-
 If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Document No',0,TO_DATE('2011-08-12 13:13:07','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
@@ -2357,7 +2350,6 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 -- 12/08/2011 13h27min22s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120414,1120285,0,1120020,TO_DATE('2011-08-12 13:27:22','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document',40,'LBRA','The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>".
-
 If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','Y','Y','N','N','N','N','N','Document No',TO_DATE('2011-08-12 13:27:22','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
@@ -2657,7 +2649,6 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 -- 12/08/2011 13h30min11s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1120431,1120296,0,1120021,TO_DATE('2011-08-12 13:30:10','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document',10,'LBRA','The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>".
-
 If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','Y','Y','N','N','N','N','N','Document No',TO_DATE('2011-08-12 13:30:10','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
@@ -3529,3 +3520,4 @@ UPDATE AD_Column SET SeqNo=3,Updated=TO_DATE('2011-08-12 18:44:08','YYYY-MM-DD H
 UPDATE AD_Column SET IsIdentifier='Y', SeqNo=2,Updated=TO_DATE('2011-08-12 18:44:17','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1120442
 ;
 
+EXIT

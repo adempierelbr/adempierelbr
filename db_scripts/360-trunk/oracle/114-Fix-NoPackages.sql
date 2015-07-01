@@ -16,3 +16,5 @@ ALTER TABLE LBR_NotaFiscal MODIFY NoPackages NOT NULL
 
 SELECT Register_Migration_Script ('114-Fix-NoPackages.sql') FROM DUAL
 ;
+
+EXIT

@@ -2,6 +2,46 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Element">
+  <row id="549" trl="Y">
+    <value column="Name" original="SKU">SKU (UCE)</value>
+    <value column="PrintName" original="SKU">SKU (UCE)</value>
+    <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque (UCE / SKU)</value>
+    <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE/SKU indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="53222" trl="Y">
+    <value column="Name" original="Activity Value">Valor da Atividade</value>
+    <value column="PrintName" original="Activity Value">Valor da Atividade</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="53223" trl="Y">
+    <value column="Name" original="Dunning Grace Date">Tolerar Cobrança Até</value>
+    <value column="PrintName" original="Dunning Grace Date">Tolerar Cobrança Até</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+<row id="200002" trl="N">
+<value column="Name" original="Last Migration Script Applied">Last Migration Script Applied</value>
+<value column="PrintName" original="Last Migration Script Applied">Last Migration Script Applied</value>
+<value column="Description" original="Register of the filename for the last migration script applied on this database">Register of the filename for the last migration script applied on this database</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1000000" trl="Y">
 <value column="Name" original="Bill Fold">Carteira</value>
 <value column="PrintName" original="Bill Fold">Carteira</value>
@@ -3236,16 +3276,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1100062" trl="Y">
-<value column="Name" original="NFe Contact">Contato da NF-e</value>
-<value column="PrintName" original="NFe Contact">Contato da NF-e</value>
-<value column="Description" original="User is NFe Contact (receive email automatically)">Usuário para Contato da NF-e (Recebimento de E-Mail)</value>
-<value column="Help" original=""/>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1100064" trl="Y">
 <value column="Name" original="BP Suframa">SUFRAMA</value>
 <value column="PrintName" original="BP Suframa">SUFRAMA</value>
@@ -3260,7 +3290,7 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="Name" original="Finalidade NFe">Finalidade NFe</value>
 <value column="PrintName" original="Finalidade NFe">Finalidade NFe</value>
 <value column="Description" original="Define a Finalidade da NFe">Define a Finalidade da NFe</value>
-<value column="Help" original="1 - NFe normal&#10;2 - NFe complementar&#10;3 - NFe de ajuste">1 - NFe normal
+<value column="Help" original="1 - NFe normal&#10;2 - NFe complementar&#10;3 - NFe de ajuste&#10;4 - Devolução/Retorno de Mercadoria">1 - NFe normal
 2 - NFe complementar
 3 - NFe de ajuste</value>
 <value column="PO_Description" original=""/>
@@ -3618,6 +3648,16 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1120077" trl="N">
+<value column="Name" original="Formula Net (BR)">Formula Net (BR)</value>
+<value column="PrintName" original="Formula Net (BR)">Formula Net (BR)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1120088" trl="Y">
 <value column="Name" original="Additional Formula">Fórmula Adicional</value>
 <value column="PrintName" original="Additional Formula">Fórmula Adicional</value>
@@ -3778,16 +3818,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1120106" trl="Y">
-<value column="Name" original="Nota Fiscal Referenciada">Nota Fiscal Referenciada</value>
-<value column="PrintName" original="Nota Fiscal Referenciada">Nota Fiscal Referenciada</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1120496" trl="Y">
 <value column="Name" original="Carta de Correcao">Carta de Correção</value>
 <value column="PrintName" original="Carta de Correcao">Carta de Correção</value>
@@ -3859,6 +3889,196 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1121261" trl="N">
+<value column="Name" original="LBR_SPED_ID">SPED (ID)</value>
+<value column="PrintName" original="LBR_SPED_ID">SPED (ID)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121263" trl="Y">
+<value column="Name" original="ToProcessSPED">Processar SPED</value>
+<value column="PrintName" original="ToProcessSPED">Processar SPED</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121271" trl="N">
+<value column="Name" original="Tax Assessment">Apuração de Impostos</value>
+<value column="PrintName" original="Tax Assessment">Apuração de Impostos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121272" trl="N">
+<value column="Name" original="booknumber">Número do Livro</value>
+<value column="PrintName" original="booknumber">Número do Livro</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121273" trl="N">
+<value column="Name" original="pagenumber">Número da Página</value>
+<value column="PrintName" original="pagenumber">pagenumber</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121274" trl="N">
+<value column="Name" original="Saldo Credor Trasnportar">Saldo Credor Transportar</value>
+<value column="PrintName" original="Saldo Credor Trasnportar">Saldo Credor Transportar</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121275" trl="N">
+<value column="Name" original="Tax Assessment Line">Outros Lançamentos</value>
+<value column="PrintName" original="Tax Assessment Line">Tax Assessment Line</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121276" trl="N">
+<value column="Name" original="Código da Obrigação">Código da Obrigação</value>
+<value column="PrintName" original="Código da Obrigação">Código da Obrigação</value>
+<value column="Description" original=""/>
+<value column="Help" original="Código da Obrigação à recolher conforme tabela 5.4"/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121277" trl="N">
+<value column="Name" original="Valor à Recolher">Valor à Recolher</value>
+<value column="PrintName" original="Valor à Recolher">Valor à Recolher</value>
+<value column="Description" original=""/>
+<value column="Help" original="Valor da Obrigação à Recolher">Valor da Obrigação à Recolher</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121278" trl="N">
+<value column="Name" original="Data do Vencimento">Data do Vencimento</value>
+<value column="PrintName" original="Data do Vencimento">Data do Vencimento</value>
+<value column="Description" original=""/>
+<value column="Help" original="Data do Vencimento à Recolher">Data do Vencimento à Recolher</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121279" trl="N">
+<value column="Name" original="Código da Receita">Código da Receita</value>
+<value column="PrintName" original="Código da Receita">Código da Receita</value>
+<value column="Description" original=""/>
+<value column="Help" original="Código da Receita referente a obrigação, próprio da unidade de federação, conforme legislação estadual.">Código da Receita referente a obrigação, próprio da unidade de federação, conforme legislação estadual.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121280" trl="N">
+<value column="Name" original="Número do Processo">Número do Processo</value>
+<value column="PrintName" original="Número do Processo">Número do Processo</value>
+<value column="Description" original=""/>
+<value column="Help" original="Número do Processo ou auto de infração ao qual a obrigação está vinculada, se houver.">Número do Processo ou auto de infração ao qual a obrigação está vinculada, se houver.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121281" trl="N">
+<value column="Name" original="Origem do Processo">Origem do Processo</value>
+<value column="PrintName" original="Origem do Processo">Origem do Processo</value>
+<value column="Description" original=""/>
+<value column="Help" original="Indicador da origem do Processo">Indicador da origem do Processo</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121282" trl="N">
+<value column="Name" original="Descrição do Processo">Descrição do Processo</value>
+<value column="PrintName" original="Descrição do Processo">Descrição do Processo</value>
+<value column="Description" original=""/>
+<value column="Help" original="Descrição resumida do processo que embasou o lançamento.">Descrição resumida do processo que embasou o lançamento.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121283" trl="N">
+<value column="Name" original="Descrição Complementar">Descrição Complementar</value>
+<value column="PrintName" original="Descrição Complementar">Descrição Complementar</value>
+<value column="Description" original=""/>
+<value column="Help" original="Descrição Complementar das obrigações a Recolher.">Descrição Complementar das obrigações a Recolher.</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121285" trl="N">
+<value column="Name" original="Código do Ajuste">Código do Ajuste</value>
+<value column="PrintName" original="Código do Ajuste">Código do Ajuste</value>
+<value column="Description" original=""/>
+<value column="Help" original="Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.">Código do Ajuste da apuração</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121286" trl="N">
+<value column="Name" original="Total de Vendas no Cartão">Total de Vendas no Cartão</value>
+<value column="PrintName" original="Total de Vendas no Cartão">Total de Vendas no Cartão</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121287" trl="N">
+<value column="Name" original="Credit Card Amount">Total Cartão de Crédito</value>
+<value column="PrintName" original="Credit Card Amount">Total Cartão de Crédito</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121288" trl="N">
+<value column="Name" original="Debit Card Amount">Total Cartão de Débito</value>
+<value column="PrintName" original="Debit Card Amount">Total Cartão de Débito</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1121297" trl="Y">
 <value column="Name" original="Legal Product Description">Descrição Legal do Produto</value>
 <value column="PrintName" original="Legal Product Description">Descrição Legal do Produto</value>
@@ -3895,6 +4115,216 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="Description" original="International Commercial Terms">International Commercial Terms</value>
 <value column="Help" original="The Incoterms rules or International Commercial Terms are a series of pre-defined commercial terms published by the International Chamber of Commerce (ICC) that are widely used in International commercial transactions or Procurement processes. A series of three-letter trade terms related to common contractual sales practices, the Incoterms rules are intended primarily to clearly communicate the tasks, costs, and risks associated with the transportation and delivery of goods.&#10;The Incoterms rules are accepted by governments, legal authorities, and practitioners worldwide for the interpretation of most commonly used terms in international trade. They are intended to reduce or remove altogether uncertainties arising from different interpretation of the rules in different countries. ">The Incoterms rules or International Commercial Terms are a series of pre-defined commercial terms published by the International Chamber of Commerce (ICC) that are widely used in International commercial transactions or Procurement processes. A series of three-letter trade terms related to common contractual sales practices, the Incoterms rules are intended primarily to clearly communicate the tasks, costs, and risks associated with the transportation and delivery of goods.
 The Incoterms rules are accepted by governments, legal authorities, and practitioners worldwide for the interpretation of most commonly used terms in international trade. They are intended to reduce or remove altogether uncertainties arising from different interpretation of the rules in different countries. </value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121529" trl="Y">
+<value column="Name" original="Tax Regime">Regime Tributário</value>
+<value column="PrintName" original="Tax Regime">Regime Tributário</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121694" trl="Y">
+<value column="Name" original="Indicação de Atendimento Presencial">Atendimento Presencial</value>
+<value column="PrintName" original="Indicação de Atendimento Presencial">Atendimento Presencial</value>
+<value column="Description" original="Indicador de presença do comprador no estabelecimento comercial no momento da operação">Indicador de presença do comprador no estabelecimento comercial no momento da operação</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121695" trl="N">
+<value column="Name" original="Cod. Cidade">Cod. Cidade</value>
+<value column="PrintName" original="Cod. Cidade">Cod. Cidade</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121696" trl="N">
+<value column="Name" original="Cod. Cidade">Cod. Cidade</value>
+<value column="PrintName" original="Cod. Cidade">Cod. Cidade</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121697" trl="N">
+<value column="Name" original="Country Code">Cód. do País</value>
+<value column="PrintName" original="Country Code">Cód. do País</value>
+<value column="Description" original="Country Code used for issue Nota Fiscal">Country Code used for issue Nota Fiscal</value>
+<value column="Help" original="Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)">Country Code used for issue Nota Fiscal. Codes from BCB (Banco Central do Brasil)</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121698" trl="N">
+<value column="Name" original="Authorized Access to XML">Acesso ao XML</value>
+<value column="PrintName" original="Authorized Access to XML">Acesso ao XML</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121699" trl="N">
+<value column="Name" original="BP Shipper Address">Endereço da Transportadora</value>
+<value column="PrintName" original="BP Shipper Address">Endereço da Transportadora</value>
+<value column="Description" original="BP Shipper Address on a String">Endereço da Transportadora</value>
+<value column="Help" original="BP Shipper Address on a String">Endereço da Transportadora</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121700" trl="Y">
+<value column="Name" original="Composes NFe Total">Compõe o Total da NFe</value>
+<value column="PrintName" original="Composes NFe Total">Compõe o Total da NFe</value>
+<value column="Description" original="Indicates which NFe's lines composes the NFe's total value">Indica se o valor da linha entra no valor total da NFe</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121701" trl="N">
+<value column="Name" original="Referenced Documents">Documentos Referenciados</value>
+<value column="PrintName" original="Referenced Documents">Documentos Referenciados</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121702" trl="Y">
+<value column="Name" original="CCO Number">No CCO</value>
+<value column="PrintName" original="CCO Number">No CCO</value>
+<value column="Description" original="">Número do Contador de Ordem de Operação - COO</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121715" trl="Y">
+<value column="Name" original="Type Fiscal Document Referenced">Tipo</value>
+<value column="PrintName" original="Type Fiscal Document Referenced">Tipo</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121717" trl="N">
+<value column="Name" original="NF-e Skipped">NF-e Invalidada</value>
+<value column="PrintName" original="NF-e Skipped">NF-e Invalidada</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121718" trl="Y">
+<value column="Name" original="Year">Ano</value>
+<value column="PrintName" original="Year">Ano</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121719" trl="Y">
+<value column="Name" original="No NF-e Initial">No NF-e Inicial</value>
+<value column="PrintName" original="No NF-e Initial">No NF-e Inicial</value>
+<value column="Description" original="">Número da NF-e inicial a ser inutilizada</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121720" trl="Y">
+<value column="Name" original="No NF-e End">No NF-e Final</value>
+<value column="PrintName" original="No NF-e End">No NF-e Final</value>
+<value column="Description" original="">Número da NF-e final a ser inutilizada</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121724" trl="Y">
+<value column="Name" original="Lot Method">Método de Transmissão</value>
+<value column="PrintName" original="Lot Method">Método de Transmissão</value>
+<value column="Description" original="Method of transmission of NFe Lot">Método de Transmissão do Lote da NF-e</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121725" trl="Y">
+<value column="Name" original="WS Type">Tipo de WS</value>
+<value column="PrintName" original="WS Type">Tipo de WS</value>
+<value column="Description" original="WebService Type">Tipo de WebService para a transmissão da chamada</value>
+<value column="Help" original="">O tipo de WebService define para qual ambiente será destinada a chamada da emissão da NF-e. Ex. Normal para o documento ser emitido para a UF do emitente ou SCAN para ser emitido no Sistema de Contingência do Ambiente Nacional</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121728" trl="Y">
+<value column="Name" original="NFe EMail">EMail NFe</value>
+<value column="PrintName" original="NFe EMail">EMail NFe</value>
+<value column="Description" original="NFe EMail separated by semicolon">EMail para recepção do XML da NFe</value>
+<value column="Help" original="NFe EMail separated by semicolon">EMail para recepção do XML da NFe (para adicionar mais de um e-mail separe por vírgula ou ponto-e-vírgula)</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121729" trl="Y">
+<value column="Name" original="EMail Sent">EMail Enviado</value>
+<value column="PrintName" original="EMail Sent">EMail Enviado</value>
+<value column="Description" original="Indicates if the email was sent">Indica se o email foi enviado com sucesso</value>
+<value column="Help" original="Indicates if the email was sent">Indica se o email foi enviado com sucesso</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121730" trl="Y">
+<value column="Name" original="Send EMail">Enviar EMail</value>
+<value column="PrintName" original="Send EMail">Enviar EMail</value>
+<value column="Description" original="Send EMail with Nota Fiscal">Enviar EMail da Nota Fiscal</value>
+<value column="Help" original="Send EMail with Nota Fiscal">Enviar EMail da Nota Fiscal com o XML e DANFE para Notas Fiscais modelo 55 e 56. Para RPS e Notas Fiscais de Serviço é enviado apenas o PDF da Nota Fiscal</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121731" trl="N">
+<value column="Name" original="NF-e Referenced">NF-e Referenciada</value>
+<value column="PrintName" original="NF-e Referenced">NF-e Referenciada</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>

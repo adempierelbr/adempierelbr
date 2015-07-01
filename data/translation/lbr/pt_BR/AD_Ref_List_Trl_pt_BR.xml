@@ -2,6 +2,10 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Ref_List">
+  <row id="113" trl="Y">
+    <value column="Name" original="Query Only">Somente Pesquisa</value>
+    <value column="Description" original="" />
+  </row>
   <row id="409" trl="Y">
     <value column="Name" original="Checking">Conta-Corrente</value>
     <value column="Description" original="" />
@@ -9,6 +13,30 @@
   <row id="410" trl="Y">
     <value column="Name" original="Savings">Conta-Poupança</value>
     <value column="Description" original="" />
+  </row>
+  <row id="577" trl="Y">
+    <value column="Name" original="Credit Stop">Crédito Interrompido</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="578" trl="Y">
+    <value column="Name" original="Credit Hold">Crédito Retido</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="579" trl="Y">
+    <value column="Name" original="Credit Watch">Crédito Assistido</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="580" trl="Y">
+    <value column="Name" original="No Credit Check">Sem Verificação de Crédito</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="581" trl="Y">
+    <value column="Name" original="Credit OK">Crédito OK</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="53254" trl="Y">
+    <value column="Name" original="Job Shop">Produção Organizada por Equipamento</value>
+    <value column="Description" original="A Job Shop is characterized by the organitation of similar equipmnnet by function. As Job flow from Work Center to Work Center or Departament to Departament and the diferent type of operation is performance in each center or departament">A Produção Organizada por Equipamento é caracterizada pela organização de equipamento similar por função. Como o fluxo de trabalho de Centro de Trabalho para Centro de Trabalho ou Departamento para Departamento</value>
   </row>
 <row id="1000000" trl="Y">
 <value column="Name" original="PJ - Legal Entity">PJ - Pessoa Jurídica</value>
@@ -431,11 +459,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100004" trl="Y">
-<value column="Name" original="Portrait">Retrato</value>
+<value column="Name" original="1 - Normal DANFE - Portrait">1 - Retrato</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100005" trl="Y">
-<value column="Name" original="Landscape">Paisagem</value>
+<value column="Name" original="2 - Normal DANFE - Landscape">2 - Paisagem</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100006" trl="Y">
@@ -499,7 +527,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100021" trl="Y">
-<value column="Name" original="203-Rejeição: Emissor não habilitado para emissão da NF-e">203-Rejeição: Emissor não habilitado para emissão da NF-e</value>
+<value column="Name" original="203-Rejeição: Emissor não habilitado para emissão de NFC-e">203-Rejeição: Emissor não habilitado para emissão da NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100022" trl="Y">
@@ -511,7 +539,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100024" trl="Y">
-<value column="Name" original="206-Rejeição: NF-e já está inutilizada na Base de dados da ">206-Rejeição: NF-e já está inutilizada na Base de dados da </value>
+<value column="Name" original="206-Rejeição: NFC-e já está inutilizada na Base de Dados da">206-Rejeição: NF-e já está inutilizada na Base de dados da </value>
 <value column="Description" original=""/>
 </row>
 <row id="1100025" trl="Y">
@@ -535,11 +563,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100030" trl="Y">
-<value column="Name" original="212-Rejeição: Data de emissão NF-e posterior a data de rece">212-Rejeição: Data de emissão NF-e posterior a data de rece</value>
+<value column="Name" original="212-Rejeição: Data de emissão NFC-e posterior a data de rec">212-Rejeição: Data de emissão NF-e posterior a data de rece</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100031" trl="Y">
-<value column="Name" original="213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do ">213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do </value>
+<value column="Name" original="213-Rejeição: CNPJ-Base do Autor difere do CNPJ-Base do Cer">213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do </value>
 <value column="Description" original=""/>
 </row>
 <row id="1100032" trl="Y">
@@ -547,7 +575,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100033" trl="Y">
-<value column="Name" original="215-Rejeição: Falha no schema XML">215-Rejeição: Falha no schema XML</value>
+<value column="Name" original="215-Rejeição: Falha Schema XML">215-Rejeição: Falha no schema XML</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100034" trl="Y">
@@ -655,7 +683,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100060" trl="Y">
-<value column="Name" original="242-Rejeição: Cabeçalho - Falha no Schema XML">242-Rejeição: Cabeçalho - Falha no Schema XML</value>
+<value column="Name" original="242-Rejeição: Elemento nfeCabecMsg inexistente no SOAP Head">242-Rejeição: Cabeçalho - Falha no Schema XML</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100061" trl="Y">
@@ -755,7 +783,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100085" trl="Y">
-<value column="Name" original="267-Rejeição: NF Complementar referencia uma NF-e inexisten">267-Rejeição: NF Complementar referencia uma NF-e inexisten</value>
+<value column="Name" original="267-Rejeição: Chave de Acesso referenciada inexistente">267-Rejeição: NF Complementar referencia uma NF-e inexisten</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100086" trl="Y">
@@ -927,15 +955,15 @@
 <value column="Description" original=""/>
 </row>
 <row id="1100128" trl="Y">
-<value column="Name" original="999-Rejeição: Erro não catalogado (informar a mensagem de e">999-Rejeição: Erro não catalogado (informar a mensagem de e</value>
+<value column="Name" original="999-Rejeição: Erro não catalogado">999-Rejeição: Erro não catalogado (informar a mensagem de e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100129" trl="Y">
-<value column="Name" original="301-Uso Denegado: Irregularidade fiscal do emitente">301-Uso Denegado: Irregularidade fiscal do emitente</value>
+<value column="Name" original="301-Rejeição: Irregularidade Cadastral do Emitente">301-Uso Denegado: Irregularidade fiscal do emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100130" trl="Y">
-<value column="Name" original="302-Uso Denegado : Irregularidade fiscal do destinatário">302-Uso Denegado : Irregularidade fiscal do destinatário</value>
+<value column="Name" original="302-Rejeição: Irregularidade fiscal do destinatário">302-Uso Denegado : Irregularidade fiscal do destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1100254" trl="Y">
@@ -1351,11 +1379,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120176" trl="Y">
-<value column="Name" original="516-Rejeição: Obrigatória a informação do NCM e/ou genero">516-Rejeição: Obrigatória a informação do NCM e/ou genero</value>
+<value column="Name" original="516-Rejeição: Falha Schema XML, inexiste a tag raiz esperad">516-Rejeição: Obrigatória a informação do NCM e/ou genero</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120177" trl="Y">
-<value column="Name" original="517-Rejeição: Informação do NCM difere da informação de gên">517-Rejeição: Informação do NCM difere da informação de gên</value>
+<value column="Name" original="517-Rejeição: Falha Schema XML, inexiste atributo versão na">517-Rejeição: Informação do NCM difere da informação de gên</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120178" trl="Y">
@@ -1443,7 +1471,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120199" trl="Y">
-<value column="Name" original="539-Rejeição: Duplicidade de NF-e, com diferença na Chave d">539-Rejeição: Duplicidade de NF-e, com diferença na Chave d</value>
+<value column="Name" original="539-Rejeição: Duplicidade de NFC-e com diferença na Chave d">539-Rejeição: Duplicidade de NF-e, com diferença na Chave d</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120200" trl="Y">
@@ -1563,11 +1591,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120250" trl="Y">
-<value column="Name" original="570-Rejeição: tpEmis = 2 só é válido na contingência SCAN">570-Rejeição: tpEmis = 2 só é válido na contingência SCAN</value>
+<value column="Name" original="570-Rejeição: Tipo de emissão 3, 6 e 7 só é valido nas cont">570-Rejeição: tpEmis = 2 só é válido na contingência SCAN</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120251" trl="Y">
-<value column="Name" original="571-Rejeição: O tpEmis informado diferente de 2 para contin">571-Rejeição: O tpEmis informado diferente de 2 para contin</value>
+<value column="Name" original="571-Rejeição:  O tpEmis informado diferente de 3 para conti">571-Rejeição: O tpEmis informado diferente de 2 para contin</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120252" trl="Y">
@@ -1575,23 +1603,23 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120253" trl="Y">
-<value column="Name" original="135-Evento registrado e vinculado a NF-e">135-Evento registrado e vinculado a NF-e</value>
+<value column="Name" original="135-Evento registrado e vinculado a NFC-e">135-Evento registrado e vinculado a NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120254" trl="Y">
-<value column="Name" original="136-Evento registrado, mas não vinculado a NF-e ">136-Evento registrado, mas não vinculado a NF-e </value>
+<value column="Name" original="136-Evento registrado, mas não vinculado a NFC-e">136-Evento registrado, mas não vinculado a NF-e </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120255" trl="Y">
-<value column="Name" original="489-Rejeição: CNPJ informado inválido (DV ou zeros) ">489-Rejeição: CNPJ informado inválido (DV ou zeros) </value>
+<value column="Name" original="489-Rejeição: CNPJ informado inválido (DV ou zeros)">489-Rejeição: CNPJ informado inválido (DV ou zeros) </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120256" trl="Y">
-<value column="Name" original="490-Rejeição: CPF informado inválido (DV ou zeros) ">490-Rejeição: CPF informado inválido (DV ou zeros) </value>
+<value column="Name" original="490-Rejeição: CPF informado inválido (DV ou zeros)">490-Rejeição: CPF informado inválido (DV ou zeros) </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120257" trl="Y">
-<value column="Name" original="491-Rejeição: O tpEvento informado inválido ">491-Rejeição: O tpEvento informado inválido </value>
+<value column="Name" original="491-Rejeição: O tpEvento informado inválido">491-Rejeição: O tpEvento informado inválido </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120258" trl="Y">
@@ -1599,7 +1627,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120259" trl="Y">
-<value column="Name" original="493-Rejeição: Evento não atende o Schema XML específico ">493-Rejeição: Evento não atende o Schema XML específico </value>
+<value column="Name" original="493-Rejeição: Evento não atende o Schema XML específico">493-Rejeição: Evento não atende o Schema XML específico </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120260" trl="Y">
@@ -1615,11 +1643,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120263" trl="Y">
-<value column="Name" original="573-Rejeição: Duplicidade de Evento ">573-Rejeição: Duplicidade de Evento </value>
+<value column="Name" original="573-Rejeição: Duplicidade de Evento">573-Rejeição: Duplicidade de Evento </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120264" trl="Y">
-<value column="Name" original="574-Rejeição: O autor do evento diverge do emissor da NF-e ">574-Rejeição: O autor do evento diverge do emissor da NF-e </value>
+<value column="Name" original="574-Rejeição: O autor do evento diverge do emissor da NFC-e">574-Rejeição: O autor do evento diverge do emissor da NF-e </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120265" trl="Y">
@@ -1647,7 +1675,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120271" trl="Y">
-<value column="Name" original="587-Rejeição: Usar somente o namespace padrão da NF-e ">587-Rejeição: Usar somente o namespace padrão da NF-e </value>
+<value column="Name" original="587-Rejeição: Usar somente o namespace padrão da NFC-e">587-Rejeição: Usar somente o namespace padrão da NF-e </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120272" trl="Y">
@@ -1667,11 +1695,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120276" trl="Y">
-<value column="Name" original="595-Rejeição: Obrigatória a informação da justificativa do ">595-Rejeição: Obrigatória a informação da justificativa do </value>
+<value column="Name" original="595-Rejeição: A versão do leiaute da NF-e utilizada não é m">595-Rejeição: Obrigatória a informação da justificativa do </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120277" trl="Y">
-<value column="Name" original="596-Rejeição: Evento apresentado fora do prazo: [prazo vige">596-Rejeição: Evento apresentado fora do prazo: [prazo vige</value>
+<value column="Name" original="596-Rejeição: Ambiente de homologação indisponível para rec">596-Rejeição: Evento apresentado fora do prazo: [prazo vige</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120278" trl="Y">
@@ -1679,7 +1707,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120279" trl="Y">
-<value column="Name" original="598-Rejeição: NF-e emitida em ambiente de homologação com R">598-Rejeição: NF-e emitida em ambiente de homologação com R</value>
+<value column="Name" original="598-Rejeição: NF-e emitida em ambiente de homologação com r">598-Rejeição: NF-e emitida em ambiente de homologação com R</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120280" trl="Y">
@@ -1687,7 +1715,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120281" trl="Y">
-<value column="Name" original="128-Lote de Evento Processado 135 Evento registrado e vincu">128-Lote de Evento Processado 135 Evento registrado e vincu</value>
+<value column="Name" original="128-Lote de Evento Processado">128-Lote de Evento Processado 135 Evento registrado e vincu</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120282" trl="Y">
@@ -1751,7 +1779,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120299" trl="Y">
-<value column="Name" original="615-Rejeição: Chave de Acesso inválida (Ano menor que 05 ou">615-Rejeição: Chave de Acesso inválida (Ano menor que 05 ou</value>
+<value column="Name" original="615-Rejeição: Chave de Acesso inválida (Ano menor que 06 ou">615-Rejeição: Chave de Acesso inválida (Ano menor que 05 ou</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120300" trl="Y">
@@ -1767,7 +1795,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120303" trl="Y">
-<value column="Name" original="619-Rejeição: Chave de Acesso inválida (número NF = 0) ">619-Rejeição: Chave de Acesso inválida (número NF = 0) </value>
+<value column="Name" original="619-Rejeição: Chave de Acesso inválida (número NF = 0)">619-Rejeição: Chave de Acesso inválida (número NF = 0) </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120304" trl="Y">
@@ -1791,7 +1819,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120309" trl="Y">
-<value column="Name" original="626-Rejeição: O CFOP de operação isenta para ZFM deve ser 6">626-Rejeição: O CFOP de operação isenta para ZFM deve ser 6</value>
+<value column="Name" original="626-Rejeição: CFOP de operação isenta para ZFM diferente do">626-Rejeição: O CFOP de operação isenta para ZFM deve ser 6</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120310" trl="Y">
@@ -1819,11 +1847,11 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120336" trl="Y">
-<value column="Name" original="137-Nenhum documento localizado para o Destinatário ">137-Nenhum documento localizado para o Destinatário </value>
+<value column="Name" original="137-Nenhum documento localizado">137-Nenhum documento localizado para o Destinatário </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120337" trl="Y">
-<value column="Name" original="138-Documento localizado para o Destinatário ">138-Documento localizado para o Destinatário </value>
+<value column="Name" original="138-Documento localizado">138-Documento localizado para o Destinatário </value>
 <value column="Description" original=""/>
 </row>
 <row id="1120338" trl="Y">
@@ -1886,6 +1914,182 @@
 <value column="Name" original="651-Rejeição: Evento de &quot;Desconhecimento da Operação&quot; para ">651-Rejeição: Evento de "Desconhecimento da Operação" para </value>
 <value column="Description" original=""/>
 </row>
+<row id="1120357" trl="N">
+<value column="Name" original="653-Rejeição: NF-e Cancelada, arquivo indisponível para dow">653-Rejeição: NF-e Cancelada, arquivo indisponível para dow</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120358" trl="N">
+<value column="Name" original="654-Rejeição: NF-e Denegada, arquivo indisponível para down">654-Rejeição: NF-e Denegada, arquivo indisponível para down</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120359" trl="N">
+<value column="Name" original="655-Rejeição: Evento de Ciência da Operação informado após ">655-Rejeição: Evento de Ciência da Operação informado após </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120360" trl="N">
+<value column="Name" original="656-Rejeição: Consumo Indevido">656-Rejeição: Consumo Indevido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120361" trl="N">
+<value column="Name" original="657-Rejeição: Código do Órgão diverge do órgão autorizador">657-Rejeição: Código do Órgão diverge do órgão autorizador</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120362" trl="N">
+<value column="Name" original="658-Rejeição: UF do destinatário da Chave de Acesso diverge">658-Rejeição: UF do destinatário da Chave de Acesso diverge</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120363" trl="N">
+<value column="Name" original="150-Consulta de CSC realizada com sucesso, com CSC ativo(s)">150-Consulta de CSC realizada com sucesso, com CSC ativo(s)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120364" trl="N">
+<value column="Name" original="151-Consulta de CSC realizada com sucesso, sem CSC ativo">151-Consulta de CSC realizada com sucesso, sem CSC ativo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120365" trl="N">
+<value column="Name" original="479-Rejeição: Emissor em situação irregular perante o fisco">479-Rejeição: Emissor em situação irregular perante o fisco</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120366" trl="N">
+<value column="Name" original="480-Rejeição: CNPJ da Chave de acesso da NF-e informada div">480-Rejeição: CNPJ da Chave de acesso da NF-e informada div</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120367" trl="N">
+<value column="Name" original="481-Rejeição: UF da Chave de acesso diverge do código da UF">481-Rejeição: UF da Chave de acesso diverge do código da UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120368" trl="N">
+<value column="Name" original="482-Rejeição: AA da Chave de acesso inválida">482-Rejeição: AA da Chave de acesso inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120369" trl="N">
+<value column="Name" original="483-Rejeição: MM da chave de acesso inválido">483-Rejeição: MM da chave de acesso inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120370" trl="N">
+<value column="Name" original="484-Rejeição: Chave de Acesso com tipo de emissão diferente">484-Rejeição: Chave de Acesso com tipo de emissão diferente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120371" trl="N">
+<value column="Name" original="485-Rejeição: Duplicidade de numeração do EPEC (Modelo, CNP">485-Rejeição: Duplicidade de numeração do EPEC (Modelo, CNP</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120372" trl="N">
+<value column="Name" original="486-Rejeição: DPEC não localizada para o número de registro">486-Rejeição: DPEC não localizada para o número de registro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120373" trl="N">
+<value column="Name" original="487-Rejeição: Nenhuma DPEC localizada para a chave de acess">487-Rejeição: Nenhuma DPEC localizada para a chave de acess</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120374" trl="N">
+<value column="Name" original="488-Rejeição: Requisitante de Consulta não tem o mesmo CNPJ">488-Rejeição: Requisitante de Consulta não tem o mesmo CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120375" trl="N">
+<value column="Name" original="660-Rejeição: CFOP de Combustível e não informado grupo de ">660-Rejeição: CFOP de Combustível e não informado grupo de </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120376" trl="N">
+<value column="Name" original="661-Rejeição: NFC-e já existente para o número do EPEC info">661-Rejeição: NFC-e já existente para o número do EPEC info</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120377" trl="N">
+<value column="Name" original="662-Rejeição: Numeração do EPEC está inutilizada na Base de">662-Rejeição: Numeração do EPEC está inutilizada na Base de</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120378" trl="N">
+<value column="Name" original="678-Rejeição: NF referenciada com UF diferente da UF da NF-">678-Rejeição: NF referenciada com UF diferente da UF da NF-</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120379" trl="N">
+<value column="Name" original="679-Rejeição: Modelo da NF-e referenciada diferente de 55">679-Rejeição: Modelo da NF-e referenciada diferente de 55</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120380" trl="N">
+<value column="Name" original="680-Rejeição: Duplicidade de NF-e referenciada (Chave de Ac">680-Rejeição: Duplicidade de NF-e referenciada (Chave de Ac</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120381" trl="N">
+<value column="Name" original="681-Rejeição: Duplicidade de NF Modelo 1 referenciada (CNPJ">681-Rejeição: Duplicidade de NF Modelo 1 referenciada (CNPJ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120382" trl="N">
+<value column="Name" original="682-Rejeição: Duplicidade de NF de Produtor referenciada (I">682-Rejeição: Duplicidade de NF de Produtor referenciada (I</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120383" trl="N">
+<value column="Name" original="683-Rejeição: Modelo do CT-e referenciado diferente de 57">683-Rejeição: Modelo do CT-e referenciado diferente de 57</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120384" trl="N">
+<value column="Name" original="684-Rejeição: Duplicidade de Cupom Fiscal referenciado (Mod">684-Rejeição: Duplicidade de Cupom Fiscal referenciado (Mod</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120385" trl="N">
+<value column="Name" original="685-Rejeição: Total do Valor Aproximado dos Tributos difere">685-Rejeição: Total do Valor Aproximado dos Tributos difere</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120386" trl="N">
+<value column="Name" original="686-Rejeição: NF Complementar referencia uma NF-e cancelada">686-Rejeição: NF Complementar referencia uma NF-e cancelada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120387" trl="N">
+<value column="Name" original="687-Rejeição: NF Complementar referencia uma NF-e denegada">687-Rejeição: NF Complementar referencia uma NF-e denegada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120388" trl="N">
+<value column="Name" original="688-Rejeição: NF referenciada de Produtor com IE inexistent">688-Rejeição: NF referenciada de Produtor com IE inexistent</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120389" trl="N">
+<value column="Name" original="689-Rejeição: NF referenciada de Produtor com IE não vincul">689-Rejeição: NF referenciada de Produtor com IE não vincul</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120390" trl="N">
+<value column="Name" original="690-Rejeição: Pedido de Cancelamento para NF-e com CT-e ou ">690-Rejeição: Pedido de Cancelamento para NF-e com CT-e ou </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120391" trl="N">
+<value column="Name" original="304-Rejeição: Pedido de Cancelamento para NF-e com evento d">304-Rejeição: Pedido de Cancelamento para NF-e com evento d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120392" trl="N">
+<value column="Name" original="152-CSC gerado">152-CSC gerado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120393" trl="N">
+<value column="Name" original="153-CSC revogado">153-CSC revogado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120394" trl="N">
+<value column="Name" original="802-Rejeição: Contribuinte possui número máximo de CSC ativ">802-Rejeição: Contribuinte possui número máximo de CSC ativ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120395" trl="N">
+<value column="Name" original="803-Rejeição: O CSC e o identificador informado não possuem">803-Rejeição: O CSC e o identificador informado não possuem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120396" trl="N">
+<value column="Name" original="804-Rejeição: O CSC informado não pertence ao solicitante d">804-Rejeição: O CSC informado não pertence ao solicitante d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120397" trl="N">
+<value column="Name" original="805-Rejeição: O CSC informado está revogado">805-Rejeição: O CSC informado está revogado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120398" trl="N">
+<value column="Name" original="695-Rejeição: Solicitante não autorizado para a consulta">695-Rejeição: Solicitante não autorizado para a consulta</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120399" trl="N">
+<value column="Name" original="124-EPEC Autorizado">124-EPEC Autorizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120400" trl="N">
+<value column="Name" original="142-Ambiente de Contingência EPEC bloqueado para o Emitente">142-Ambiente de Contingência EPEC bloqueado para o Emitente</value>
+<value column="Description" original=""/>
+</row>
 <row id="1120402" trl="Y">
 <value column="Name" original="Operacao normal">Operação normal</value>
 <value column="Description" original=""/>
@@ -1930,6 +2134,626 @@
 <value column="Name" original="Contingência FSDA">Contingência FSDA</value>
 <value column="Description" original=""/>
 </row>
+<row id="1120413" trl="N">
+<value column="Name" original="473-Rejeição: Certificado Transmissor sem CNPJ ou CPF">473-Rejeição: Certificado Transmissor sem CNPJ ou CPF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120414" trl="N">
+<value column="Name" original="719-Rejeição: NFC-e com valor total superior ao permitido p">719-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120415" trl="N">
+<value column="Name" original="408-Rejeição: Evento não disponível para Autor pessoa físic">408-Rejeição: Evento não disponível para Autor pessoa físic</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120416" trl="N">
+<value column="Name" original="417-Rejeição: Total do ICMS superior ao valor limite estabe">417-Rejeição: Total do ICMS superior ao valor limite estabe</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120417" trl="N">
+<value column="Name" original="418-Rejeição: Total do ICMS ST superior ao valor limite est">418-Rejeição: Total do ICMS ST superior ao valor limite est</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120418" trl="N">
+<value column="Name" original="455-Rejeição: Órgão Autor do evento diferente da UF da Chav">455-Rejeição: Órgão Autor do evento diferente da UF da Chav</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120419" trl="N">
+<value column="Name" original="466-Rejeição: Evento com Tipo de Autor incompatível">466-Rejeição: Evento com Tipo de Autor incompatível</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120420" trl="N">
+<value column="Name" original="467-Rejeição: Dados da NFC-e divergentes do EPEC">467-Rejeição: Dados da NFC-e divergentes do EPEC</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120421" trl="N">
+<value column="Name" original="468-Rejeição: NFC-e com Tipo Emissão = 4, sem EPEC correspo">468-Rejeição: NFC-e com Tipo Emissão = 4, sem EPEC correspo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120422" trl="N">
+<value column="Name" original="659-Rejeição: Ano-Mês da Data de Emissão diverge do Ano-Mês">659-Rejeição: Ano-Mês da Data de Emissão diverge do Ano-Mês</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120423" trl="N">
+<value column="Name" original="720-Rejeição: Na operação com Exterior deve ser informada t">720-Rejeição: Na operação com Exterior deve ser informada t</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120424" trl="N">
+<value column="Name" original="721-Rejeição: Operação interestadual não deve informar idEs">721-Rejeição: Operação interestadual não deve informar idEs</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120425" trl="N">
+<value column="Name" original="792-Rejeição: Informada a IE do destinatário para operação ">792-Rejeição: Informada a IE do destinatário para operação </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120426" trl="N">
+<value column="Name" original="472-Rejeição: CPF consultado difere do CPF do Certificado D">472-Rejeição: CPF consultado difere do CPF do Certificado D</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120427" trl="N">
+<value column="Name" original="113-SCAN será desabilitado para a UF às hh:mm">113-SCAN será desabilitado para a UF às hh:mm</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120428" trl="N">
+<value column="Name" original="114-SCAN desabilitado pela SEFAZ Origem">114-SCAN desabilitado pela SEFAZ Origem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120429" trl="N">
+<value column="Name" original="155-Cancelamento de NF-e homologado fora de prazo">155-Cancelamento de NF-e homologado fora de prazo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120430" trl="N">
+<value column="Name" original="303-Uso Denegado : Destinatário não habilitado a operar na ">303-Uso Denegado : Destinatário não habilitado a operar na </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120431" trl="N">
+<value column="Name" original="321-Rejeição: NF-e de devolução não possui conhecimento fis">321-Rejeição: NF-e de devolução não possui conhecimento fis</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120432" trl="N">
+<value column="Name" original="322-Rejeição: NF-e de devolução com mais de um documento fi">322-Rejeição: NF-e de devolução com mais de um documento fi</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120433" trl="N">
+<value column="Name" original="323-Rejeição: CNPJ autorizado para download inválido">323-Rejeição: CNPJ autorizado para download inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120434" trl="N">
+<value column="Name" original="324-Rejeição: CNPJ do destinatário ja autorizado para downl">324-Rejeição: CNPJ do destinatário ja autorizado para downl</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120435" trl="N">
+<value column="Name" original="325-Rejeição: CPF autorizado para download inválido">325-Rejeição: CPF autorizado para download inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120436" trl="N">
+<value column="Name" original="326-Rejeição: CPF do destinatário autorizado para download">326-Rejeição: CPF do destinatário autorizado para download</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120437" trl="N">
+<value column="Name" original="327-Rejeição: CFOP inválido para NF-e com finalidade de dev">327-Rejeição: CFOP inválido para NF-e com finalidade de dev</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120438" trl="N">
+<value column="Name" original="328-Rejeição: CFOP inválido para NF-e que não tem finalidad">328-Rejeição: CFOP inválido para NF-e que não tem finalidad</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120439" trl="N">
+<value column="Name" original="329-Rejeição: Número da DI/DSI inválido">329-Rejeição: Número da DI/DSI inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120440" trl="N">
+<value column="Name" original="330-Rejeição: Informar o valor da AFRMM na importação por v">330-Rejeição: Informar o valor da AFRMM na importação por v</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120441" trl="N">
+<value column="Name" original="331-Rejeição: Informar o CNPJ do adquirente ou do encomenda">331-Rejeição: Informar o CNPJ do adquirente ou do encomenda</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120442" trl="N">
+<value column="Name" original="332-Rejeição: CNPJ do adquirente ou do encomendante da impo">332-Rejeição: CNPJ do adquirente ou do encomendante da impo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120443" trl="N">
+<value column="Name" original="333-Rejeição: Informar a UF do adquirente ou do encomendant">333-Rejeição: Informar a UF do adquirente ou do encomendant</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120444" trl="N">
+<value column="Name" original="334-Rejeição: Número do processo de drawback não informado ">334-Rejeição: Número do processo de drawback não informado </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120445" trl="N">
+<value column="Name" original="335-Rejeição: Número do processo de drawback na importação ">335-Rejeição: Número do processo de drawback na importação </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120446" trl="N">
+<value column="Name" original="336-Rejeição: Informado o grupo de exportação no item para ">336-Rejeição: Informado o grupo de exportação no item para </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120447" trl="N">
+<value column="Name" original="337-Rejeição: Não informado o grupo de exportação no item">337-Rejeição: Não informado o grupo de exportação no item</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120448" trl="N">
+<value column="Name" original="338-Rejeição: Número de processo de drawback não informado ">338-Rejeição: Número de processo de drawback não informado </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120449" trl="N">
+<value column="Name" original="339-Rejeição: Número de processo de drawback na exportação ">339-Rejeição: Número de processo de drawback na exportação </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120450" trl="N">
+<value column="Name" original="340-Rejeição: Não informado o grupo de exportação indireta ">340-Rejeição: Não informado o grupo de exportação indireta </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120451" trl="N">
+<value column="Name" original="341-Rejeição: Número do registro de exportação inválido">341-Rejeição: Número do registro de exportação inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120452" trl="N">
+<value column="Name" original="342-Rejeição: Chave de acesso informada na exportação indir">342-Rejeição: Chave de acesso informada na exportação indir</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120453" trl="N">
+<value column="Name" original="343-Rejeição: Modelo da NF-e informada na exportação indire">343-Rejeição: Modelo da NF-e informada na exportação indire</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120454" trl="N">
+<value column="Name" original="344-Rejeição: Duplicidade de NF-e informada na exportação i">344-Rejeição: Duplicidade de NF-e informada na exportação i</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120455" trl="N">
+<value column="Name" original="345-Rejeição: Chave de acesso informada na exportação indir">345-Rejeição: Chave de acesso informada na exportação indir</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120456" trl="N">
+<value column="Name" original="346-Rejeição: Somatório quantidades informadas na exportaçã">346-Rejeição: Somatório quantidades informadas na exportaçã</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120457" trl="N">
+<value column="Name" original="347-Rejeição: Descrição do combustível diverge da descrição">347-Rejeição: Descrição do combustível diverge da descrição</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120458" trl="N">
+<value column="Name" original="348-Rejeição: NFC-e com grupo RECOPI">348-Rejeição: NFC-e com grupo RECOPI</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120459" trl="N">
+<value column="Name" original="349-Rejeição: Número RECOPI não informado">349-Rejeição: Número RECOPI não informado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120460" trl="N">
+<value column="Name" original="350-Rejeição: Número RECOPI inválido">350-Rejeição: Número RECOPI inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120461" trl="N">
+<value column="Name" original="351-Rejeição: Valor do ICMS da operação no ICMS-ST=51 difer">351-Rejeição: Valor do ICMS da operação no ICMS-ST=51 difer</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120462" trl="N">
+<value column="Name" original="352-Rejeição: Valor do ICMS diferido no CST=51 difere do pr">352-Rejeição: Valor do ICMS diferido no CST=51 difere do pr</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120463" trl="N">
+<value column="Name" original="353-Rejeição: Valor do ICMS no CST=51 não corresponde a dif">353-Rejeição: Valor do ICMS no CST=51 não corresponde a dif</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120464" trl="N">
+<value column="Name" original="354-Rejeição: Informado grupo de devoluçãode tributos para ">354-Rejeição: Informado grupo de devoluçãode tributos para </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120465" trl="N">
+<value column="Name" original="355-Rejeição: Informar o local de saída do país no caso de ">355-Rejeição: Informar o local de saída do país no caso de </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120466" trl="N">
+<value column="Name" original="356-Rejeição: Informar o clocal de saída do pís somente no ">356-Rejeição: Informar o clocal de saída do pís somente no </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120467" trl="N">
+<value column="Name" original="357-Rejeição: Chave de acesso do grupo de exportação indire">357-Rejeição: Chave de acesso do grupo de exportação indire</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120468" trl="N">
+<value column="Name" original="358-Rejeição: Chave de acesso no grupo de exportação indire">358-Rejeição: Chave de acesso no grupo de exportação indire</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120469" trl="N">
+<value column="Name" original="359-Rejeição: NF-e de venda a Órgão público sem informar a ">359-Rejeição: NF-e de venda a Órgão público sem informar a </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120470" trl="N">
+<value column="Name" original="360-Rejeição: NF-e com Nota de Empenho inválida para UF">360-Rejeição: NF-e com Nota de Empenho inválida para UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120471" trl="N">
+<value column="Name" original="361-Rejeição: NF-e com Nota de Empenho inexistente na UF">361-Rejeição: NF-e com Nota de Empenho inexistente na UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120472" trl="N">
+<value column="Name" original="362-Rejeição: Venda de combustível sem informação do Transp">362-Rejeição: Venda de combustível sem informação do Transp</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120473" trl="N">
+<value column="Name" original="363-Rejeição: Total do ISS difere do somatório dos itens">363-Rejeição: Total do ISS difere do somatório dos itens</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120474" trl="N">
+<value column="Name" original="364-Rejeição: Total do valor da dedução do ISS difere do so">364-Rejeição: Total do valor da dedução do ISS difere do so</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120475" trl="N">
+<value column="Name" original="365-Rejeição: Total de outras retenções difere do somatório">365-Rejeição: Total de outras retenções difere do somatório</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120476" trl="N">
+<value column="Name" original="366-Rejeição: Total do desconto incondicionado do ISS difer">366-Rejeição: Total do desconto incondicionado do ISS difer</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120477" trl="N">
+<value column="Name" original="367-Rejeição: Total do desconto condicionado do ISS difere ">367-Rejeição: Total do desconto condicionado do ISS difere </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120478" trl="N">
+<value column="Name" original="368-Rejeição: Total do ISS retido difere do somatório dos i">368-Rejeição: Total do ISS retido difere do somatório dos i</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120479" trl="N">
+<value column="Name" original="369-Rejeição: Não informado o grupo avulsa na emissão pelo ">369-Rejeição: Não informado o grupo avulsa na emissão pelo </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120480" trl="N">
+<value column="Name" original="370-Rejeição: Nota Fiscal Avusa com tipo de emissão inválid">370-Rejeição: Nota Fiscal Avusa com tipo de emissão inválid</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120481" trl="N">
+<value column="Name" original="461-Rejeição: Informado percentual de gás natural na mistur">461-Rejeição: Informado percentual de gás natural na mistur</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120482" trl="N">
+<value column="Name" original="465-Rejeição: Número de controle da FCI inexistente">465-Rejeição: Número de controle da FCI inexistente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120490" trl="N">
+<value column="Name" original="620-Rejeição: Chave de Acesso difere da existente em BD">620-Rejeição: Chave de Acesso difere da existente em BD</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120491" trl="N">
+<value column="Name" original="663-Rejeição: Alíq. ICMS maior que 4% na saída interestadua">663-Rejeição: Alíq. ICMS maior que 4% na saída interestadua</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120492" trl="N">
+<value column="Name" original="701-Rejeição: NF-e não pode utilizar verão 3.00">701-Rejeição: NF-e não pode utilizar verão 3.00</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120493" trl="N">
+<value column="Name" original="702-Rejeição: NFC-e não é aceita pela UF do Emitente">702-Rejeição: NFC-e não é aceita pela UF do Emitente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120494" trl="N">
+<value column="Name" original="703-Rejeição: Data-hora de emissão posterior ao horário de ">703-Rejeição: Data-hora de emissão posterior ao horário de </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120495" trl="N">
+<value column="Name" original="704-Rejeição: NFC-e com data-hora de emissão atrasada">704-Rejeição: NFC-e com data-hora de emissão atrasada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120496" trl="N">
+<value column="Name" original="705-Rejeição: NFC-e com data de entrada/saida">705-Rejeição: NFC-e com data de entrada/saida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120497" trl="N">
+<value column="Name" original="706-Rejeição: NFC-e para operação de entrada">706-Rejeição: NFC-e para operação de entrada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120498" trl="N">
+<value column="Name" original="707-Rejeição: NFC-e para operação interestadual ou com o ex">707-Rejeição: NFC-e para operação interestadual ou com o ex</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120499" trl="N">
+<value column="Name" original="708-Rejeição: NFC-e nao pode referenciar um documento fisca">708-Rejeição: NFC-e nao pode referenciar um documento fisca</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120500" trl="N">
+<value column="Name" original="709-Rejeição: NFC-e com formato de DANFE inválido">709-Rejeição: NFC-e com formato de DANFE inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120501" trl="N">
+<value column="Name" original="710-Rejeição: NF-e com formado de DANFE inválido">710-Rejeição: NF-e com formado de DANFE inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120502" trl="N">
+<value column="Name" original="711-Rejeição: NF-e com contingência off-line">711-Rejeição: NF-e com contingência off-line</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120503" trl="N">
+<value column="Name" original="712-Rejeição: NFC-e com contingência off-line para a UF">712-Rejeição: NFC-e com contingência off-line para a UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120504" trl="N">
+<value column="Name" original="713-Rejeição: Tipo de emissão diferente de 6 ou 7 para cont">713-Rejeição: Tipo de emissão diferente de 6 ou 7 para cont</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120505" trl="N">
+<value column="Name" original="714-Rejeição: NFC-e com contingência DPEC inexistente">714-Rejeição: NFC-e com contingência DPEC inexistente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120506" trl="N">
+<value column="Name" original="715-Rejeição: NFC-e com finalidade inválida">715-Rejeição: NFC-e com finalidade inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120507" trl="N">
+<value column="Name" original="716-Rejeição: NFC-e em operaçoã não destinada a consumidor ">716-Rejeição: NFC-e em operaçoã não destinada a consumidor </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120508" trl="N">
+<value column="Name" original="717-Rejeição: NFC-e em operação não presencial">717-Rejeição: NFC-e em operação não presencial</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120509" trl="N">
+<value column="Name" original="718-Rejeição: NFC-e não deve informar IE de substituto trib">718-Rejeição: NFC-e não deve informar IE de substituto trib</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120510" trl="N">
+<value column="Name" original="722-Rejeição: Operação interna com idEstrangeiro informado ">722-Rejeição: Operação interna com idEstrangeiro informado </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120511" trl="N">
+<value column="Name" original="723-Rejeição: Operação interna com idEstrangeiro informado ">723-Rejeição: Operação interna com idEstrangeiro informado </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120512" trl="N">
+<value column="Name" original="724-Rejeição: NF-e sem o nome do destinatário">724-Rejeição: NF-e sem o nome do destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120513" trl="N">
+<value column="Name" original="725-Rejeição: NFC-e com CFOP inválido">725-Rejeição: NFC-e com CFOP inválido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120514" trl="N">
+<value column="Name" original="726-Rejeição: NF-e sem a informação de endereço do destinat">726-Rejeição: NF-e sem a informação de endereço do destinat</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120515" trl="N">
+<value column="Name" original="727-Rejeição: Operação com exterior e UF diferente de EX">727-Rejeição: Operação com exterior e UF diferente de EX</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120516" trl="N">
+<value column="Name" original="728-Rejeição: NF-e sem informação da IE do destinatário">728-Rejeição: NF-e sem informação da IE do destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120517" trl="N">
+<value column="Name" original="729-Rejeição: NFC-e sem informação da IE do destinatário">729-Rejeição: NFC-e sem informação da IE do destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120518" trl="N">
+<value column="Name" original="730-Rejeição: NFC-e com inscrição SUFRAMA">730-Rejeição: NFC-e com inscrição SUFRAMA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120519" trl="N">
+<value column="Name" original="731-Rejeição: CFOP de operação com exterior e idDest &lt;&gt; 3"><![CDATA[731-Rejeição: CFOP de operação com exterior e idDest <> 3]]></value>
+<value column="Description" original=""/>
+</row>
+<row id="1120520" trl="N">
+<value column="Name" original="732-Rejeição: CFOP de operação com interestadual e idDest &lt;"><![CDATA[732-Rejeição: CFOP de operação com interestadual e idDest <]]></value>
+<value column="Description" original=""/>
+</row>
+<row id="1120521" trl="N">
+<value column="Name" original="733-Rejeição: CFOP de operação interna e idDest &lt;&gt; 1"><![CDATA[733-Rejeição: CFOP de operação interna e idDest <> 1]]></value>
+<value column="Description" original=""/>
+</row>
+<row id="1120522" trl="N">
+<value column="Name" original="734-Rejeição: NFC-e com unidade de comercialização inválida">734-Rejeição: NFC-e com unidade de comercialização inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120523" trl="N">
+<value column="Name" original="735-Rejeição: NFC-e com unidade de tributação inválida">735-Rejeição: NFC-e com unidade de tributação inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120524" trl="N">
+<value column="Name" original="736-Rejeição: NFC-e com grupo de veículos novos">736-Rejeição: NFC-e com grupo de veículos novos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120525" trl="N">
+<value column="Name" original="737-Rejeição: NFC-e com grupo de medicamentos">737-Rejeição: NFC-e com grupo de medicamentos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120526" trl="N">
+<value column="Name" original="738-Rejeição: NFC-e com grupo de armamentos">738-Rejeição: NFC-e com grupo de armamentos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120527" trl="N">
+<value column="Name" original="739-Rejeição: NFC-e com grupo de combustíveis">739-Rejeição: NFC-e com grupo de combustíveis</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120528" trl="N">
+<value column="Name" original="740-Rejeição: NFC-e com CST 51 - diferimento">740-Rejeição: NFC-e com CST 51 - diferimento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120529" trl="N">
+<value column="Name" original="741-Rejeição: NFC-e com partilha de CIMS entre UF">741-Rejeição: NFC-e com partilha de CIMS entre UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120530" trl="N">
+<value column="Name" original="742-Rejeição: NFC-e com grupo do IPI">742-Rejeição: NFC-e com grupo do IPI</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120531" trl="N">
+<value column="Name" original="743-Rejeição: NFC-e com grupo do II">743-Rejeição: NFC-e com grupo do II</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120532" trl="N">
+<value column="Name" original="745-Rejeição: NF-e sem grupo do PIS">745-Rejeição: NF-e sem grupo do PIS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120533" trl="N">
+<value column="Name" original="746-Rejeição: NFC-e com grupo do PIS-ST">746-Rejeição: NFC-e com grupo do PIS-ST</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120534" trl="N">
+<value column="Name" original="748-Rejeição: NF-e sem grupo do COFINS">748-Rejeição: NF-e sem grupo do COFINS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120535" trl="N">
+<value column="Name" original="749-Rejeição: NF-e sem grupo do COFINS-ST">749-Rejeição: NF-e sem grupo do COFINS-ST</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120536" trl="N">
+<value column="Name" original="750-Rejeição: NFC-e com valor total superior ao permitido p">750-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120537" trl="N">
+<value column="Name" original="751-Rejeição: NFC-e com valor total superior ao permitido p">751-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120538" trl="N">
+<value column="Name" original="752-Rejeição: NFC-e com valor total superior ao permitido p">752-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120539" trl="N">
+<value column="Name" original="753-Rejeição: NFC-e sem frete">753-Rejeição: NFC-e sem frete</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120540" trl="N">
+<value column="Name" original="754-Rejeição: NFC-e com dados do transportador">754-Rejeição: NFC-e com dados do transportador</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120541" trl="N">
+<value column="Name" original="755-Rejeição: NFC-e com dados de retenção do ICMS no transp">755-Rejeição: NFC-e com dados de retenção do ICMS no transp</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120542" trl="N">
+<value column="Name" original="756-Rejeição: NFC-e com dados do veículo de transporte">756-Rejeição: NFC-e com dados do veículo de transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120543" trl="N">
+<value column="Name" original="757-Rejeição: NFC-e com dados de reboque do veículo de tran">757-Rejeição: NFC-e com dados de reboque do veículo de tran</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120544" trl="N">
+<value column="Name" original="758-Rejeição: NFC-e com dados do vagão de transporte">758-Rejeição: NFC-e com dados do vagão de transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120545" trl="N">
+<value column="Name" original="759-Rejeição: NFC-e co dados da balsa de transporte">759-Rejeição: NFC-e co dados da balsa de transporte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120546" trl="N">
+<value column="Name" original="760-Rejeição: NFC-e com dados de cobrança (fatura, duplicat">760-Rejeição: NFC-e com dados de cobrança (fatura, duplicat</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120547" trl="N">
+<value column="Name" original="762-Rejeição: NFC-e com dados de compra (empenho, pedido, c">762-Rejeição: NFC-e com dados de compra (empenho, pedido, c</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120548" trl="N">
+<value column="Name" original="763-Rejeição: NFC-e com dados de aquisiçãod e cana">763-Rejeição: NFC-e com dados de aquisiçãod e cana</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120549" trl="N">
+<value column="Name" original="765-Rejeição: Lote só poderá conter NF-e ou NFC-e">765-Rejeição: Lote só poderá conter NF-e ou NFC-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120550" trl="N">
+<value column="Name" original="766-Rejeição: NFC-e com CST 50-suspenção">766-Rejeição: NFC-e com CST 50-suspenção</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120551" trl="N">
+<value column="Name" original="767-Rejeição: NFC-e com somatório dos pagamentos diferente ">767-Rejeição: NFC-e com somatório dos pagamentos diferente </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120552" trl="N">
+<value column="Name" original="768-Rejeição: NF-e não deve possuir o grupo de formas de pa">768-Rejeição: NF-e não deve possuir o grupo de formas de pa</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120553" trl="N">
+<value column="Name" original="769-Rejeição: NFC-e deve possuir o grupo de formas de pagam">769-Rejeição: NFC-e deve possuir o grupo de formas de pagam</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120554" trl="N">
+<value column="Name" original="771-Rejeição: Operação interestadual e UF de destino com EX">771-Rejeição: Operação interestadual e UF de destino com EX</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120555" trl="N">
+<value column="Name" original="772-Rejeição: Operação interestadual e UF de destino igual ">772-Rejeição: Operação interestadual e UF de destino igual </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120556" trl="N">
+<value column="Name" original="773-Rejeição: Operação interna e UF de destino difere da UF">773-Rejeição: Operação interna e UF de destino difere da UF</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120557" trl="N">
+<value column="Name" original="774-Rejeição: NFC-e com indicador de item não participante ">774-Rejeição: NFC-e com indicador de item não participante </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120558" trl="N">
+<value column="Name" original="775-Rejeição: Modelo da NFC-e diferente de 65">775-Rejeição: Modelo da NFC-e diferente de 65</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120559" trl="N">
+<value column="Name" original="777-Rejeição: NFC-e deve informar NCM completo">777-Rejeição: NFC-e deve informar NCM completo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120560" trl="N">
+<value column="Name" original="778-Rejeição: Informado NCM inexistente">778-Rejeição: Informado NCM inexistente</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120561" trl="N">
+<value column="Name" original="779-Rejeição:NFC-e com NCM incompatível">779-Rejeição:NFC-e com NCM incompatível</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120562" trl="N">
+<value column="Name" original="780-Rejeição: Total da NFC-e superior ao valor limite estab">780-Rejeição: Total da NFC-e superior ao valor limite estab</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120563" trl="N">
+<value column="Name" original="781-Rejeição: Emissor não habilitado para emissão de NFC-e">781-Rejeição: Emissor não habilitado para emissão de NFC-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120564" trl="N">
+<value column="Name" original="782-Rejeição: NFC-e não é autorizada pelo SCAN">782-Rejeição: NFC-e não é autorizada pelo SCAN</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120565" trl="N">
+<value column="Name" original="783-Rejeição: NFC-e não é autorizada pelo SVC">783-Rejeição: NFC-e não é autorizada pelo SVC</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120566" trl="N">
+<value column="Name" original="784-Rejeição: NF-e com indicativo de NFC-e com entrega a do">784-Rejeição: NF-e com indicativo de NFC-e com entrega a do</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120567" trl="N">
+<value column="Name" original="785-Rejeição: NFC-e com entrega a domicilio não permitida p">785-Rejeição: NFC-e com entrega a domicilio não permitida p</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120568" trl="N">
+<value column="Name" original="786-Rejeiçao: NFC-e de entrega a domicilio sem dados dos tr">786-Rejeiçao: NFC-e de entrega a domicilio sem dados dos tr</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120569" trl="N">
+<value column="Name" original="787-Rejeição: NFC-e de entrega a domicilio sem a identifica">787-Rejeição: NFC-e de entrega a domicilio sem a identifica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120570" trl="N">
+<value column="Name" original="788-Rejeição: NFC-e de entrega a domicílio sem o endereço d">788-Rejeição: NFC-e de entrega a domicílio sem o endereço d</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120571" trl="N">
+<value column="Name" original="789-Rejeição: NFC-e para destinatário contribuinte de ICMS">789-Rejeição: NFC-e para destinatário contribuinte de ICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120572" trl="N">
+<value column="Name" original="790-Rejeição: Operação com exterior para destinatário contr">790-Rejeição: Operação com exterior para destinatário contr</value>
+<value column="Description" original=""/>
+</row>
+<row id="1120573" trl="N">
+<value column="Name" original="791-Rejeição: NF-e com indicação de destinatário isento de ">791-Rejeição: NF-e com indicação de destinatário isento de </value>
+<value column="Description" original=""/>
+</row>
+<row id="1120574" trl="N">
+<value column="Name" original="793-Rejeição: Informado capítulo do NCM inexistente">793-Rejeição: Informado capítulo do NCM inexistente</value>
+<value column="Description" original=""/>
+</row>
 <row id="1121053" trl="Y">
 <value column="Name" original="ICP TrustStore (JKS)">ICP TrustStore (JKS)</value>
 <value column="Description" original=""/>
@@ -1964,6 +2788,74 @@
 </row>
 <row id="1121328" trl="Y">
 <value column="Name" original="1 - Frete por conta do Destinatário">1 - Frete por conta do Destinatário</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121374" trl="N">
+<value column="Name" original="ICMS a recolher">ICMS a recolher</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121375" trl="N">
+<value column="Name" original="ICMS da substituição tributária pelas entradas">ICMS da substituição tributária pelas entradas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121376" trl="N">
+<value column="Name" original="ICMS da substituição tributária pelas saídas para o Estado">ICMS da substituição tributária pelas saídas para o Estado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121377" trl="N">
+<value column="Name" original="Antecipação do diferencial de alíquotas do ICMS">Antecipação do diferencial de alíquotas do ICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121378" trl="N">
+<value column="Name" original="Antecipação do ICMS da importação">Antecipação do ICMS da importação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121379" trl="N">
+<value column="Name" original="Antecipação tributária">Antecipação tributária</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121380" trl="N">
+<value column="Name" original="ICMS resultante da alíquota adicional dos itens incluídos no Fundo de Combate à Pobreza">ICMS resultante da alíquota adicional dos itens incluídos no Fundo de Combate à Pobreza</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121381" trl="N">
+<value column="Name" original="Outras obrigações do ICMS">Outras obrigações do ICMS</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121382" trl="N">
+<value column="Name" original="ICMS da substituição tributária pelas saídas para outro Estado">ICMS da substituição tributária pelas saídas para outro Estado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121383" trl="N">
+<value column="Name" original="SEFAZ">0 - SEFAZ</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121384" trl="N">
+<value column="Name" original="Justiça Federal">Justiça Federal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121385" trl="N">
+<value column="Name" original="Justiça Estadual">Justiça Estadual</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121386" trl="N">
+<value column="Name" original="Outros">Outros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121387" trl="N">
+<value column="Name" original="Outros Débitos">Outros Débitos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121388" trl="N">
+<value column="Name" original="Estornos de Créditos">Estornos de Créditos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121389" trl="N">
+<value column="Name" original="Outros Créditos">Outros Créditos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121390" trl="N">
+<value column="Name" original="Estorno de Débitos">Estornos de Débitos</value>
 <value column="Description" original=""/>
 </row>
 <row id="1121434" trl="Y">
@@ -2016,6 +2908,150 @@
 </row>
 <row id="1121446" trl="Y">
 <value column="Name" original="DDP - Delivered Duty Paid">DDP - Delivered Duty Paid</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121483" trl="Y">
+<value column="Name" original="Simple National">Simples Nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121484" trl="Y">
+<value column="Name" original="Presumed Profit">Lucro Presumido</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121485" trl="Y">
+<value column="Name" original="Real Profit">Lucro Real</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121532" trl="N">
+<value column="Name" original="Devolução/Retorno de Mercadoria">Devolução/Retorno de Mercadoria</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121533" trl="N">
+<value column="Name" original="Não se Aplica">Não se aplica</value>
+<value column="Description" original="Utilizar para Nota Fiscal complementar ou de ajuste">Utilizar para Nota Fiscal complementar ou de ajuste</value>
+</row>
+<row id="1121534" trl="N">
+<value column="Name" original="Operação Presencial">Operação Presencial</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121536" trl="N">
+<value column="Name" original="Operação não Presencial, pela Internet">Operação não Presencial, pela Internet</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121537" trl="N">
+<value column="Name" original="Operação não Presencial, Teleatendimento">Operação não Presencial, Teleatendimento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121538" trl="N">
+<value column="Name" original="NFC-e em Operação com Entrega em Domicílio">NFC-e em Operação com Entrega em Domicílio</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121539" trl="N">
+<value column="Name" original="Operação não Presencial, Outros">Operação não Presencial, Outros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121540" trl="Y">
+<value column="Name" original="Not Composes">Não Compõe</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121541" trl="Y">
+<value column="Name" original="Composes">Compõe</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121542" trl="Y">
+<value column="Name" original="NF Manual (1/1A)">NF Manual (1/1A)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121543" trl="Y">
+<value column="Name" original="NF (Produtor Rural)">NF (Produtor Rural)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121544" trl="Y">
+<value column="Name" original="Cupom Fiscal (ECF)">Cupom Fiscal (ECF)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121545" trl="Y">
+<value column="Name" original="NF-e">NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121546" trl="Y">
+<value column="Name" original="0 - No DANFE">0 - Sem Geração de DANFE</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121547" trl="Y">
+<value column="Name" original="3 - Simple DANFE">3 - DANFE Simplificada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121548" trl="Y">
+<value column="Name" original="4 - DANFE NFC-e">4 - DANFE NFC-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121549" trl="Y">
+<value column="Name" original="5 - DANFE NFC-e in Eletronic Message">5 - DANFE NFC-e em Mensagem Eletrônica</value>
+<value column="Description" original="">O envio de mensagem eletrônica pode ser feita de forma simultânea com a impressão do DANFE; usar o tpImp=5 quando esta for a única forma de disponibilização do DANFE</value>
+</row>
+<row id="1121550" trl="Y">
+<value column="Name" original="Asynchronous">Assíncrono</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121551" trl="Y">
+<value column="Name" original="Synchronous">Síncrono</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121552" trl="N">
+<value column="Name" original="Normal">Normal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121553" trl="N">
+<value column="Name" original="SCAN">SCAN</value>
+<value column="Description" original="Sistema de Contingencia do Ambiente Nacional">Sistema de Contingência do Ambiente Nacional</value>
+</row>
+<row id="1121554" trl="N">
+<value column="Name" original="Nota Fiscal de Serviços Eletrônica (RPS)">Nota Fiscal de Serviços Eletrônica (RPS)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121556" trl="Y">
+<value column="Name" original="&lt;None&gt;"><![CDATA[<Sem Ação>]]></value>
+<value column="Description" original="No Action">Sem Ação</value>
+</row>
+<row id="1121557" trl="Y">
+<value column="Name" original="Complete">Complete</value>
+<value column="Description" original="Generate XML and Transmmit the NF-e">Gera o XML e Transmite a NF-e</value>
+</row>
+<row id="1121558" trl="Y">
+<value column="Name" original="Prepare">Preparar</value>
+<value column="Description" original="Validate and Generate XML">Valida a NF e gera o XML</value>
+</row>
+<row id="1121559" trl="Y">
+<value column="Name" original="Unlock">Destravar (Reativar)</value>
+<value column="Description" original="Unlock and Re-activate">Reativa a NF e destrava para edição</value>
+</row>
+<row id="1121560" trl="Y">
+<value column="Name" original="Void/Invalidate">Cancelar / Invalidar</value>
+<value column="Description" original="Void or invalidate">Cancale a NF se já tiver sido autorizada ou inutiliza a numeração</value>
+</row>
+<row id="1121561" trl="Y">
+<value column="Name" original="Completed">Completada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121562" trl="Y">
+<value column="Name" original="Drafted">Rascunho/Esboçado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121563" trl="Y">
+<value column="Name" original="Invalid">Inválida</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121564" trl="Y">
+<value column="Name" original="In Progress">Em Progresso (Validada)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121565" trl="Y">
+<value column="Name" original="Voided">Anulada / Inutilizada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121566" trl="Y">
+<value column="Name" original="Waiting Confirmation">Aguardando a SeFaz</value>
 <value column="Description" original=""/>
 </row>
 </adempiereTrl>

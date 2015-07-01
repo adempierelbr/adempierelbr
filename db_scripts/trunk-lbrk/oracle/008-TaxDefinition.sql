@@ -921,3 +921,4 @@ UPDATE AD_Column SET AD_Reference_ID=18, AD_Reference_Value_ID=1000015, EntityTy
 UPDATE AD_Column SET AD_Reference_Value_ID=1000013, EntityType='LBRA', Updated=TO_DATE('2011-11-17 15:06:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1106038
 ;
 
+EXIT

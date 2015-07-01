@@ -13,3 +13,4 @@ UPDATE AD_ModelValidator SET SeqNo=20,Updated=TO_DATE('2012-04-17 17:38:17','YYY
 UPDATE AD_ModelValidator SET SeqNo=30,Updated=TO_DATE('2012-04-17 17:38:37','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_ModelValidator_ID=1120002
 ;
 
+EXIT

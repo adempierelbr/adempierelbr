@@ -2104,3 +2104,5 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000023, SeqNo=15, Updated=SysDate WHERE AD_T
 ;
 
 SELECT register_migration_script('098-Fix-Menu.sql') FROM dual;
+
+EXIT
