@@ -17,13 +17,15 @@ fi
 
 echo "AdempiereLBR"
 echo "."
-echo ". Mario Grigioni (Kenos, www.kenos.com.br) - 01/09/2008"
-echo ". Michel Silvestre - resultado.log - 23/08/2010"
+echo ". Mario Grigioni (Kenos, www.kenos.com.br) - 01-Sep-2008"
+echo ". Michel Silvestre (resultado.log)         - 23-Aug-2010"
+echo ". Ricardo Santana (password prompt)        - 30-Jun-2015"
 echo "."
-echo "Password (ADEMPIERE): "
-read variavel
-export PGPASSWORD=$variavel
+read -s -p "Enter Password: " pass
+echo ""
+export PGPASSWORD=$pass
 for f in $(ls $1/postgresql/*.sql); do
 echo ". Execultando Script" $f >> resultado.log
 psql -d $2 -U $3 -f $f >>resultado.log 2>&1
 done
+export PGPASSWORD=
