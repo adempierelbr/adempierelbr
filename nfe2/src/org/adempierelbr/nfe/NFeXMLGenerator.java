@@ -1376,7 +1376,7 @@ public class NFeXMLGenerator
 		log.fine ("Assinando NF-e");
 		
 		//	ZZ. Informações da Assinatura Digital
-		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, infNFe.newCursor());
+		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, nfe.newCursor());
 		
 		log.fine ("Validando NF-e");
 		NFeUtil.validate (document);
