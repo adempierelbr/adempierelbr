@@ -55,6 +55,26 @@ Existem várias maneiras de ajudar, você pode reportar um BUG [clicando aqui][3
 
 Você pode entrar em contato com os desenvolveres através do [fórum da Kenos][8].
 
+Versões
+=======
+
+Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
+
+1. LBR-201507 [[Download]][14] [[Seed PostgreSQL]][15] [[Seed OracleXE]][16]
+
+	* Melhorias na tradução
+	* Correção de bugs
+	* Revisão do suporte ao Oracle XE
+	* Correção na adição de NF-e Referenciada
+	* Melhoria no suporte para CSOSN 900
+	* Correção do ícone de localização para interface web
+	* [Mais detalhes][13]
+	
+1. LBR-201506 [[Download]][11] [[Seed PostgreSQL]][12]
+
+	* Versão Inicial
+	* [Mais detalhes][10]
+
 Patrocinadores desta versão
 ===========================
 
@@ -69,3 +89,11 @@ Patrocinadores desta versão
 [6]: http://www.soliton.com.br/
 [7]: https://bitbucket.org/AdempiereLBR/adempierelbr/pull-requests
 [8]: http://forum.kenos.com.br/
+[9]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/all
+[10]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201506
+[11]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201506.tgz
+[12]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201506_PG.tgz
+[13]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201507
+[14]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201507.tgz
+[15]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_PG.tgz
+[16]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_ORA.tgz
