@@ -7,6 +7,11 @@
     <value column="Description" original="Import Inventory Transactions">Importar Transações de Estoque</value>
     <value column="Help" original="Validate and Import Inventory Transactions">Validar e Importar Transações de Estoque</value>
   </row>
+  <row id="363" trl="Y">
+    <value column="Name" original="System Issue Report">Relatório de Erros do Sistema</value>
+    <value column="Description" original="Automatically created or manually entered System Issue Reports">Relatório de Erros do Sistema criados automaticamente ou manualmente</value>
+    <value column="Help" original="System Issues are created to speed up the resolution of any system related issues (potential bugs).  If enabled, they are automatically reported to Adempiere.  No data or confidential information is transferred.">System Issues are created to speed up the resolution of any system related issues (potential bugs).  If enabled, they are automatically reported to Compiere.  No data or confidential information is transferred.</value>
+  </row>
 <row id="1000000" trl="Y">
 <value column="Name" original="Brazilian Banks">Bancos Brasileiros</value>
 <value column="Description" original="Brazilian Banks">Bancos Brasileiros</value>

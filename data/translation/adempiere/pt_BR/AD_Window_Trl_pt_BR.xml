@@ -1264,8 +1264,8 @@ Segmentos de Contabilidade como Organização, Conta, Produto podem ter várias 
     <value column="Help" original="General Ledger Funds Control allows you to restrict the use of funds.  This is independent from budget control.">O Controle de Fundos do Razão Geral permite a você restringir o uso dos fundos.  Isto é independente do controle de orçamento.</value>
   </row>
   <row id="363" trl="Y">
-    <value column="Name" original="System Issue Report">Relatório de Questões do Sistema</value>
-    <value column="Description" original="Automatically created or manually entered System Issue Reports">Criado automaticamente ou entrada manual do Sistema de Emissão de Relatórios</value>
+    <value column="Name" original="System Issue Report">Relatório de Erros do Sistema</value>
+    <value column="Description" original="Automatically created or manually entered System Issue Reports">Relatório de Erros do Sistema criados automaticamente ou manualmente</value>
     <value column="Help" original="System Issues are created to speed up the resolution of any system related issues (potential bugs).  If enabled, they are automatically reported to Adempiere.  No data or confidential information is transferred.">System Issues are created to speed up the resolution of any system related issues (potential bugs).  If enabled, they are automatically reported to Compiere.  No data or confidential information is transferred.</value>
   </row>
   <row id="364" trl="Y">

@@ -32,6 +32,16 @@
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="53342" trl="Y">
+    <value column="Name" original="Decimal Pattern">Decimal Pattern</value>
+    <value column="PrintName" original="Decimal Pattern">Decimal Pattern</value>
+    <value column="Description" original="Java Decimal Pattern">Decimal Pattern Java</value>
+    <value column="Help" original="Option Decimal pattern in Java notation. Examples: 0000 will format 23 to 0023">Opção Decimal padrão em notação Java. Exemplos: 0000 formatará 23 para 0023</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
 <row id="200002" trl="N">
 <value column="Name" original="Last Migration Script Applied">Last Migration Script Applied</value>
 <value column="PrintName" original="Last Migration Script Applied">Last Migration Script Applied</value>

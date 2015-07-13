@@ -14,6 +14,10 @@
     <value column="Name" original="Savings">Conta-Poupança</value>
     <value column="Description" original="" />
   </row>
+  <row id="447" trl="Y">
+    <value column="Name" original="Receipt">Recebimento</value>
+    <value column="Description" original="" />
+  </row>
   <row id="577" trl="Y">
     <value column="Name" original="Credit Stop">Crédito Interrompido</value>
     <value column="Description" original="" />

@@ -640,8 +640,8 @@ public class NFeXMLGenerator
 		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
 		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
 		
-		if (nf.getlbr_OrgPhone() != null)
-			enderDest.setFone(toNumericStr (nf.getlbr_OrgPhone()));
+		if (nf.getlbr_BPPhone() != null)
+			enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
 		
 		//	F. Identificação do Local de Retirada
 		//	G. Identificação do Local de Entrega

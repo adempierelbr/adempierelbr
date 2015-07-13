@@ -73,7 +73,8 @@
 		    </patternset>
 		</unzip>
 	
-		<javac destdir="${build.dir}"  debug="true" deprecation="false" optimize="false" encoding="UTF-8">
+		<javac destdir="${build.dir}" debug="true" deprecation="false" 
+				source="${java.version}" target="${java.version}" optimize="false" encoding="UTF-8">
 			<src path="base/src" />
 			<src path="sacred/src" />
 			<src path="sped/src" />
@@ -92,6 +93,11 @@
 		<!-- copy theme -->
 		<copy failonerror="false" todir="${build.dir}/theme">
 			<fileset dir="zkwebui/theme" includes="**/*.*"/>
+		</copy>
+		
+		<!-- copy js -->
+		<copy failonerror="false" todir="${build.dir}/js">
+			<fileset dir="zkwebui/js" includes="**/*.*"/>
 		</copy>
 		
 		<!-- copy XSD -->
@@ -168,6 +174,7 @@
 			<exclude name="META-INF/maven/**" />
 			<include name="WEB-INF/**" />
 			<include name="theme/**" />
+			<include name="js/**" />
 			<manifest>
 				<!-- Who is building this jar? -->
 				<attribute name="Built-By" value="${user.name}" />

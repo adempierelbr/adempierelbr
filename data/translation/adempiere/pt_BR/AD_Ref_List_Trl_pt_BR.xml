@@ -1220,7 +1220,7 @@
     <value column="Description" original="" />
   </row>
   <row id="447" trl="Y">
-    <value column="Name" original="Receipt">Recibo</value>
+    <value column="Name" original="Receipt">Recebimento</value>
     <value column="Description" original="" />
   </row>
   <row id="448" trl="Y">
