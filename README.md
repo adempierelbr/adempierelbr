@@ -1,6 +1,8 @@
 AdempiereLBR
 ============
 
+[![Build Status](https://drone.io/bitbucket.org/AdempiereLBR/adempierelbr/status.png)](https://drone.io/bitbucket.org/AdempiereLBR/adempierelbr/latest)
+
 AdempiereLBR é a extensão para o projeto Adempiere contendo a tropicalização para o Brasil. Esta versão do LBR é compatível com o Adempiere 360 LTS.
 
 Instalando
