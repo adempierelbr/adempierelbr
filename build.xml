@@ -74,7 +74,7 @@
 		</unzip>
 	
 		<javac destdir="${build.dir}" debug="true" deprecation="false" 
-				source="${java.version}" target="${java.version}" optimize="false" encoding="UTF-8">
+				source="${lbr.java.version}" target="${lbr.java.version}" optimize="false" encoding="UTF-8">
 			<src path="base/src" />
 			<src path="sacred/src" />
 			<src path="sped/src" />
