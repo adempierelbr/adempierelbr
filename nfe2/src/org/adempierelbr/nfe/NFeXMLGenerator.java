@@ -108,6 +108,7 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Total.ICMSTot;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp.Transporta;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp.Vol;
 import br.inf.portalfiscal.nfe.v8f.TProcEmi;
 import br.inf.portalfiscal.nfe.v8f.TUf;
 import br.inf.portalfiscal.nfe.v8f.TUfEmi;
@@ -1314,7 +1315,15 @@ public class NFeXMLGenerator
 			if (shipperRegion != null && !shipperRegion.isEmpty())
 				transporta.setUF(TUf.Enum.forString(shipperRegion));
 		}
-
+		
+		// Adicionar Volume no XMl da NF-e
+		if ( nf.getNoPackages() != 0  )
+		{
+			Vol vol = transp.addNewVol();
+				
+			vol.setQVol(Integer.toString(nf.getNoPackages()));
+		}		
+				
 		//	Dados da cobrança
 		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
 		{
