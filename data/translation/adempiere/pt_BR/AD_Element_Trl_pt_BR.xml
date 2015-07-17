@@ -940,8 +940,8 @@
     <value column="PO_PrintName" original="" />
   </row>
   <row id="224" trl="Y">
-    <value column="Name" original="Callout">Chamada</value>
-    <value column="PrintName" original="Callout">Chamada</value>
+    <value column="Name" original="Callout">Callout</value>
+    <value column="PrintName" original="Callout">Callout</value>
     <value column="Description" original="Fully qualified class names and method - separated by semicolons">Métodos e Nomes de Classe Totalmente Qualificados - separados por ponto e vírgula</value>
     <value column="Help" original="A Callout allow you to create Java extensions to perform certain tasks always after a value changed. Callouts should not be used for validation but consequences of a user selecting a certain value.
 The callout is a Java class implementing org.compiere.model.Callout and a method name to call.  Example: &quot;org.compiere.model.CalloutRequest.copyText&quot; instantiates the class &quot;CalloutRequest&quot; and calls the method &quot;copyText&quot;. You can have multiple callouts by separating them via a semicolon">Uma "Callout" permite a você criar extensões Java para executar determinadas tarefas sempre que um valor é alterado. Elas não são utilizadas para validação, mas como consequência do usuário selecionar certo valor. A "Callout" é uma classe Java que implementa org.compiere.model.Callout e um nome de método para chamar. Exemplo: "org.compiere.model.CalloutRequest.copyText" cria uma instância da classe "CalloutRequest" e chama o método "copyText". Você pode ter múltiplas callouts separados por ponto e vírgula</value>
