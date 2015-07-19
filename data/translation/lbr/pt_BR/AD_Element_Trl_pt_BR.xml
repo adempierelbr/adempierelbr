@@ -13,11 +13,31 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="530" trl="Y">
+    <value column="Name" original="On Hand Quantity">Quantidade Em Mãos</value>
+    <value column="PrintName" original="On Hand Qty">Qde Em Mãos</value>
+    <value column="Description" original="On Hand Quantity">Quantidade Em Mãos</value>
+    <value column="Help" original="The On Hand Quantity indicates the quantity of a product that is on hand in a warehouse.">A "Quantidade Disponível" indica a quantidade de um produto que está disponível (em mãos) em um armazém.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="549" trl="Y">
     <value column="Name" original="SKU">SKU (UCE)</value>
     <value column="PrintName" original="SKU">SKU (UCE)</value>
     <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque (UCE / SKU)</value>
     <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE/SKU indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2968" trl="Y">
+    <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
+    <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
+    <value column="Description" original="Set the value of the inventory count to Zero or On Hand Quantity">Defina o valor da contagem de estoque para Zero ou para Quantidade em Mãos</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -48,6 +68,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PrintName" original="Decimal Pattern">Decimal Pattern</value>
     <value column="Description" original="Java Decimal Pattern">Decimal Pattern Java</value>
     <value column="Help" original="Option Decimal pattern in Java notation. Examples: 0000 will format 23 to 0023">Opção Decimal padrão em notação Java. Exemplos: 0000 formatará 23 para 0023</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="54087" trl="Y">
+    <value column="Name" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
+    <value column="PrintName" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
+    <value column="Description" original="Summary of product on hand in all locators">Resumo de produtos em mãos em todas as localizações</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
