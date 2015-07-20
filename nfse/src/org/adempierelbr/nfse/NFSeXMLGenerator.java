@@ -22,9 +22,9 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.Adempiere;
@@ -320,7 +320,8 @@ public class NFSeXMLGenerator
 		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
 		//
 		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance();
-		tpAssinatura.setStringValue(AssinaturaDigital.signASCII (ascii.toString(), AD_Org_ID));
+		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), AD_Org_ID, null);
+		tpAssinatura.setStringValue(new SignatureUtil (oi, SignatureUtil.RPS).signASCII (ascii.toString()));
 		rps.xsetAssinatura (tpAssinatura);
 	}
 	

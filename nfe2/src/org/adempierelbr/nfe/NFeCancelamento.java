@@ -30,7 +30,6 @@ import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
@@ -141,8 +140,7 @@ public class NFeCancelamento
 		det.setXJust(NFeXMLGenerator.normalize (nf.getlbr_MotivoCancel()));
 		
 		//	Assinatura
-		new SignatureUtil(oi, AssinaturaDigital.EVENTO).sign(envDoc, evento.newCursor());
-//		AssinaturaDigital.Assinar (xml, oi, AssinaturaDigital.EVENTO);
+		new SignatureUtil(oi, SignatureUtil.EVENTO).sign(envDoc, evento.newCursor());
 
 		//	Validação
 		NFeUtil.validate (envDoc);

@@ -281,10 +281,20 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	/** Set Transaction Type.
 	  * Defines the Transaction Type
 	  */
-	public void setlbr_TransactionType (String lbr_TransactionType);
+	public void setlbr_TransactionType (String lbr_TransactionTypeVendor);
 
 	/** Get Transaction Type.
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
+	
+	/** Set Transaction Type.
+	  * Defines the Transaction Type
+	  */
+	public void setlbr_TransactionTypeVendor (String lbr_TransactionTypeVendor);
+
+	/** Get Transaction Type.
+	  * Defines the Transaction Type
+	  */
+	public String getlbr_TransactionTypeVendor();
 }

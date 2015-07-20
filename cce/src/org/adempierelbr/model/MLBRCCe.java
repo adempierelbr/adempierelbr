@@ -30,7 +30,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -278,7 +277,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		try
 		{
 			//	Assinando o documento
-			new SignatureUtil (oi, AssinaturaDigital.EVENTO).sign (envDoc, evento.newCursor());
+			new SignatureUtil (oi, SignatureUtil.EVENTO).sign (envDoc, evento.newCursor());
 
 			//	Validação
 			NFeUtil.validate (envDoc);

@@ -27,9 +27,9 @@ import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.util.AdempiereLBR;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
@@ -1384,16 +1384,15 @@ public class NFeXMLGenerator
 //		Cana cana = infNFe.addNewCana();
 		
 		//	XML
-		StringBuilder xmlNFe = new StringBuilder (document.xmlText(NFeUtil.getXmlOpt()));
 		String nfeID = infNFe.getId().substring(3);
 
 		log.fine ("Assinando NF-e");
 		
 		//	ZZ. Informações da Assinatura Digital
-		AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
+		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, nfe.newCursor());
 		
 		log.fine ("Validando NF-e");
-		NFeUtil.validate (NFeDocument.Factory.parse(xmlNFe.toString()));
+		NFeUtil.validate (document);
 		
 		//	Grava ID
 		nf.setlbr_NFeID(nfeID);
@@ -1405,7 +1404,7 @@ public class NFeXMLGenerator
 			nf.getAttachment ().delete (true);
 		
 		MAttachment attachNFe = nf.createAttachment(true);
-		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes("UTF-8"));
+		attachNFe.addEntry(nfeID + FILE_EXT, document.xmlText(NFeUtil.getXmlOpt()).toString().getBytes("UTF-8"));
 		attachNFe.save();
 		
 		return "@Success@";
