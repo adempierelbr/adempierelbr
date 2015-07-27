@@ -12,6 +12,7 @@
 	<classpathentry kind="src" path="sacred/src"/>
 	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-1.9.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>

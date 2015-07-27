@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150526L;
+	private static final long serialVersionUID = 20150727L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalDocRef (Properties ctx, int LBR_NotaFiscalDocRef_ID, String trxName)
@@ -40,6 +40,8 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
       super (ctx, LBR_NotaFiscalDocRef_ID, trxName);
       /** if (LBR_NotaFiscalDocRef_ID == 0)
         {
+			setLBR_FiscalDocRefType (null);
+// N
 			setLBR_NotaFiscalDocRef_ID (0);
         } */
     }
@@ -173,6 +175,31 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public String getLBR_FiscalDocRefType () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_FiscalDocRefType);
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NFeReferenced() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getLBR_NFeReferenced_ID(), get_TrxName());	}
+
+	/** Set NF-e Referenced.
+		@param LBR_NFeReferenced_ID NF-e Referenced	  */
+	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID)
+	{
+		if (LBR_NFeReferenced_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, Integer.valueOf(LBR_NFeReferenced_ID));
+	}
+
+	/** Get NF-e Referenced.
+		@return NF-e Referenced	  */
+	public int getLBR_NFeReferenced_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFeReferenced_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Referenced Documents.
@@ -398,6 +425,8 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
 	/** Nota Fiscal de Serviços Eletrônica (RPS) = S1 */
 	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
+	/** Nota Fiscal de Consumidor Eletrônica = 56 */
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
 	/** Set NF Model.
 		@param lbr_NFModel 
 		Identifies the model of Nota Fiscal
@@ -445,25 +474,5 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public String getlbr_NFeID () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFeID);
-	}
-	
-	/** Set NF-e Referenced.
-	@param LBR_NFeReferenced_ID NF-e Referenced	  */
-	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID)
-	{
-		if (LBR_NFeReferenced_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_NFeReferenced_ID, Integer.valueOf(LBR_NFeReferenced_ID));
-	}
-	
-	/** Get NF-e Referenced.
-		@return NF-e Referenced	  */
-	public int getLBR_NFeReferenced_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFeReferenced_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 }

@@ -151,6 +151,17 @@ public interface I_LBR_NotaFiscalDocRef
 	/** Get Type Fiscal Document Referenced	  */
 	public String getLBR_FiscalDocRefType();
 
+    /** Column name LBR_NFeReferenced_ID */
+    public static final String COLUMNNAME_LBR_NFeReferenced_ID = "LBR_NFeReferenced_ID";
+
+	/** Set NF-e Referenced	  */
+	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID);
+
+	/** Get NF-e Referenced	  */
+	public int getLBR_NFeReferenced_ID();
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NFeReferenced() throws RuntimeException;
+
     /** Column name LBR_NotaFiscalDocRef_ID */
     public static final String COLUMNNAME_LBR_NotaFiscalDocRef_ID = "LBR_NotaFiscalDocRef_ID";
 
@@ -290,13 +301,4 @@ public interface I_LBR_NotaFiscalDocRef
 	  * Identification of NFe
 	  */
 	public String getlbr_NFeID();
-	
-	/** Column name LBR_NFeReferenced_ID */
-    public static final String COLUMNNAME_LBR_NFeReferenced_ID = "LBR_NFeReferenced_ID";
-
-	/** Set NF-e Referenced	  */
-	public void setLBR_NFeReferenced_ID (int LBR_NFeReferenced_ID);
-
-	/** Get NF-e Referenced	  */
-	public int getLBR_NFeReferenced_ID();
 }
