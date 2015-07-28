@@ -678,7 +678,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 					//Protesto
 					Integer sueDays = (Integer)paymentTerm.get_Value("lbr_SueDays");
-					if (paymentTerm.get_ValueAsBoolean("lbr_HasSue") && sueDays.intValue() >= 5){
+					if (paymentTerm.get_ValueAsBoolean("lbr_HasSue") && sueDays.intValue() >= 3){
 						newBoleto.setlbr_SueDays(sueDays);
 						newBoleto.setlbr_HasSue(true);
 						inst2 += ("PROTESTO AUTOMATICO NO " + sueDays.intValue() + " DIA APOS O VENCIMENTO");
