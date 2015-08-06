@@ -1956,7 +1956,7 @@ Este processo deve ser implementado quando os usuário não estão conectados.</
     <value column="Help" original="" />
   </row>
   <row id="53199" trl="Y">
-    <value column="Name" original="Reset Allocation Direct">Restabeler Alocação Direta</value>
+    <value column="Name" original="Reset Allocation Direct">Apagar Alocação</value>
     <value column="Description" original="Reset (delete) allocation of invoices to payments">Resetar (apagar) a alocação de faturas para pagamento</value>
     <value column="Help" original="Delete individual allocation. In contrast to &quot;Reverse&quot;, the allocation is deleted (no trace), if the period is open.">Eliminar alocação individual. Em contraste a "Reversão", a alocação é eliminada (sem rastro), se o período está aberto.</value>
   </row>

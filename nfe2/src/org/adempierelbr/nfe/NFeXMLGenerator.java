@@ -27,9 +27,9 @@ import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.util.AdempiereLBR;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
@@ -108,6 +108,7 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Total.ICMSTot;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp.Transporta;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Transp.Vol;
 import br.inf.portalfiscal.nfe.v8f.TProcEmi;
 import br.inf.portalfiscal.nfe.v8f.TUf;
 import br.inf.portalfiscal.nfe.v8f.TUfEmi;
@@ -418,7 +419,7 @@ public class NFeXMLGenerator
 		ide.setTpNF (nf.isSOTrx() ? TP_NF_SAIDA : TP_NF_ENTRADA);
 		ide.setIdDest (nf.getIdDestinoOp ());
 		ide.setCMunFG (BPartnerUtil.getCityCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
-		ide.setTpImp (Ide.TpImp.Enum.forString (docType.get_ValueAsString ("lbr_DANFEFormat")));
+		ide.setTpImp (Ide.TpImp.Enum.forString (nf.getlbr_DANFEFormat()));
 		ide.setTpEmis (tpEmissao);
 		ide.setCDV (chaveNFE.getDigito());
 		
@@ -1314,7 +1315,15 @@ public class NFeXMLGenerator
 			if (shipperRegion != null && !shipperRegion.isEmpty())
 				transporta.setUF(TUf.Enum.forString(shipperRegion));
 		}
-
+		
+		// Adicionar Volume no XMl da NF-e
+		if ( nf.getNoPackages() != 0  )
+		{
+			Vol vol = transp.addNewVol();
+				
+			vol.setQVol(Integer.toString(nf.getNoPackages()));
+		}		
+				
 		//	Dados da cobrança
 		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
 		{
@@ -1375,16 +1384,15 @@ public class NFeXMLGenerator
 //		Cana cana = infNFe.addNewCana();
 		
 		//	XML
-		StringBuilder xmlNFe = new StringBuilder (document.xmlText(NFeUtil.getXmlOpt()));
 		String nfeID = infNFe.getId().substring(3);
 
 		log.fine ("Assinando NF-e");
 		
 		//	ZZ. Informações da Assinatura Digital
-		AssinaturaDigital.Assinar (xmlNFe, (MOrgInfo) POWrapper.getPO (oi), AssinaturaDigital.RECEPCAO_NFE);
+		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, nfe.newCursor());
 		
 		log.fine ("Validando NF-e");
-		NFeUtil.validate (NFeDocument.Factory.parse(xmlNFe.toString()));
+		NFeUtil.validate (document);
 		
 		//	Grava ID
 		nf.setlbr_NFeID(nfeID);
@@ -1396,7 +1404,7 @@ public class NFeXMLGenerator
 			nf.getAttachment ().delete (true);
 		
 		MAttachment attachNFe = nf.createAttachment(true);
-		attachNFe.addEntry(nfeID + FILE_EXT, xmlNFe.toString().getBytes("UTF-8"));
+		attachNFe.addEntry(nfeID + FILE_EXT, document.xmlText(NFeUtil.getXmlOpt()).toString().getBytes("UTF-8"));
 		attachNFe.save();
 		
 		return "@Success@";

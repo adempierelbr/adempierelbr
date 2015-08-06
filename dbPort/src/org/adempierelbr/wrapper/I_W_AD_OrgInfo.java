@@ -17,6 +17,7 @@
 package org.adempierelbr.wrapper;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import org.compiere.model.*;
 
 /** Generated Interface for AD_OrgInfo
@@ -66,7 +67,7 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public int getLBR_ContatoNFe_ID();
 
-	public I_AD_User getLBR_Contato() throws RuntimeException;
+	public I_AD_User getLBR_ContatoNFe() throws RuntimeException;
 
     /** Column name LBR_DC_Org_ID */
     public static final String COLUMNNAME_LBR_DC_Org_ID = "LBR_DC_Org_ID";
@@ -99,6 +100,19 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public int getLBR_DocPrint_ID();
 
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
+
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public void setLBR_IndPres (String LBR_IndPres);
+
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public String getLBR_IndPres();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -111,6 +125,15 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  * Primary key table LBR_Tax
 	  */
 	public int getLBR_Tax_ID();
+
+    /** Column name Z_TaxRegime */
+    public static final String COLUMNNAME_Z_TaxRegime = "Z_TaxRegime";
+
+	/** Set Tax Regime	  */
+	public void setZ_TaxRegime (String Z_TaxRegime);
+
+	/** Get Tax Regime	  */
+	public String getZ_TaxRegime();
 
     /** Column name lbr_CCM */
     public static final String COLUMNNAME_lbr_CCM = "lbr_CCM";
@@ -151,6 +174,28 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public String getlbr_CNPJ();
 
+    /** Column name lbr_DANFEFormat */
+    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
+
+	/** Set DANFE Format	  */
+	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
+
+	/** Get DANFE Format	  */
+	public String getlbr_DANFEFormat();
+
+    /** Column name lbr_DtArq */
+    public static final String COLUMNNAME_lbr_DtArq = "lbr_DtArq";
+
+	/** Set Data do Arquivamento.
+	  * Data do arquivamento dos atos constitutivos.
+	  */
+	public void setlbr_DtArq (Timestamp lbr_DtArq);
+
+	/** Get Data do Arquivamento.
+	  * Data do arquivamento dos atos constitutivos.
+	  */
+	public Timestamp getlbr_DtArq();
+
     /** Column name lbr_Fantasia */
     public static final String COLUMNNAME_lbr_Fantasia = "lbr_Fantasia";
 
@@ -186,6 +231,15 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public BigDecimal getlbr_Interest();
 
+    /** Column name lbr_IsScan */
+    public static final String COLUMNNAME_lbr_IsScan = "lbr_IsScan";
+
+	/** Set Enable Scan	  */
+	public void setlbr_IsScan (boolean lbr_IsScan);
+
+	/** Get Enable Scan	  */
+	public boolean islbr_IsScan();
+
     /** Column name lbr_LegalEntity */
     public static final String COLUMNNAME_lbr_LegalEntity = "lbr_LegalEntity";
 
@@ -203,6 +257,19 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 
 	/** Get NFe Environment	  */
 	public String getlbr_NFeEnv();
+
+    /** Column name lbr_NIRE */
+    public static final String COLUMNNAME_lbr_NIRE = "lbr_NIRE";
+
+	/** Set NIRE.
+	  * Número de Identificação do Registro de Empresas da Junta Comercial
+	  */
+	public void setlbr_NIRE (String lbr_NIRE);
+
+	/** Get NIRE.
+	  * Número de Identificação do Registro de Empresas da Junta Comercial
+	  */
+	public String getlbr_NIRE();
 
     /** Column name lbr_Suframa */
     public static final String COLUMNNAME_lbr_Suframa = "lbr_Suframa";

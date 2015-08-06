@@ -42,6 +42,10 @@
     <value column="Name" original="Job Shop">Produção Organizada por Equipamento</value>
     <value column="Description" original="A Job Shop is characterized by the organitation of similar equipmnnet by function. As Job flow from Work Center to Work Center or Departament to Departament and the diferent type of operation is performance in each center or departament">A Produção Organizada por Equipamento é caracterizada pela organização de equipamento similar por função. Como o fluxo de trabalho de Centro de Trabalho para Centro de Trabalho ou Departamento para Departamento</value>
   </row>
+  <row id="53293" trl="Y">
+    <value column="Name" original="Callout">Callout</value>
+    <value column="Description" original="" />
+  </row>
 <row id="1000000" trl="Y">
 <value column="Name" original="PJ - Legal Entity">PJ - Pessoa Jurídica</value>
 <value column="Description" original=""/>

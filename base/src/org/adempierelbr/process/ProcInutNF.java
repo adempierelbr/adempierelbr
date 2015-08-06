@@ -12,9 +12,9 @@ import org.adempierelbr.model.MLBRNFSkipped;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
-import org.adempierelbr.util.AssinaturaDigital;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.apache.axiom.om.OMElement;
 import org.compiere.model.MDocType;
@@ -203,17 +203,9 @@ public class ProcInutNF extends SvrProcess
 		String id = "ID" + infInut.getCUF() + infInut.getAno() + infInut.getCNPJ() + infInut.getMod() + 
 				TextUtil.lPad (infInut.getSerie(), 3) + TextUtil.lPad (infInut.getNNFIni(), 9) + TextUtil.lPad (infInut.getNNFFin(), 9);
 		infInut.setId(id);
-
-		//	Convert in text
-		StringBuilder xmlNFe = new StringBuilder (inutNFeDocument.xmlText(NFeUtil.getXmlOpt()));
 		
 		//	Sign
-		AssinaturaDigital.Assinar (xmlNFe, oi, AssinaturaDigital.INUTILIZACAO_NFE);
-		
-		log.finer (xmlNFe.toString());
-
-		//	Get Signed XML
-		inutNFeDocument = InutNFeDocument.Factory.parse (xmlNFe.toString());
+		new SignatureUtil (oi, SignatureUtil.INUTILIZACAO_NFE).sign (inutNFeDocument, infInut.newCursor());
 		
 		//	Validate XML
 		NFeUtil.validate (inutNFeDocument);

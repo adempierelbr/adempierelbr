@@ -525,17 +525,6 @@ public interface I_LBR_NotaFiscal
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
 
-    /** Column name LBR_RefNotaFiscal_ID */
-    public static final String COLUMNNAME_LBR_RefNotaFiscal_ID = "LBR_RefNotaFiscal_ID";
-
-	/** Set Nota Fiscal Referenciada	  */
-	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID);
-
-	/** Get Nota Fiscal Referenciada	  */
-	public int getLBR_RefNotaFiscal_ID();
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException;
-
     /** Column name LBR_SendEMail */
     public static final String COLUMNNAME_LBR_SendEMail = "LBR_SendEMail";
 
@@ -1397,6 +1386,15 @@ public interface I_LBR_NotaFiscal
 	  * Used to identify Legal Entities in Brazil
 	  */
 	public String getlbr_CNPJ();
+
+    /** Column name lbr_DANFEFormat */
+    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
+
+	/** Set DANFE Format	  */
+	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
+
+	/** Get DANFE Format	  */
+	public String getlbr_DANFEFormat();
 
     /** Column name lbr_DateInOut */
     public static final String COLUMNNAME_lbr_DateInOut = "lbr_DateInOut";

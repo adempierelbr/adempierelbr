@@ -85,12 +85,12 @@ Email of the responsible person for the system (registered in WebStore)">Usuári
 Email da pessoa responsável pelo sistema (registrado na WebStore)</value>
   </row>
   <row id="13424" trl="Y">
-    <value column="Name" original="Mandatory Overwrite">Obrigatório Sobreescrever</value>
-    <value column="Description" original="Overwrite Field Mandatory status">Estado do Campo de Sobreescrita Obrigatório</value>
+    <value column="Name" original="Mandatory Overwrite">Sobreescrever: Obrigatório</value>
+    <value column="Description" original="Overwrite Field Mandatory status">Sobrescrever Obrigatoriedade do Campo</value>
     <value column="Help" original="The field must have a value for the record to be saved to the database.">O campo tem que ter um valor para que o registro seja salvo no banco de dados.</value>
   </row>
   <row id="13425" trl="Y">
-    <value column="Name" original="Reference Overwrite">Sobreescrever Referência</value>
+    <value column="Name" original="Reference Overwrite">Sobreescrever: Referência</value>
     <value column="Description" original="System Reference - optional Overwrite">Referência do Sistema - Sobrescrita Opcional</value>
     <value column="Help" original="You can overwrite the Display Type, but only use this if you aware of the consequences.">Você pode sobreescrever o tipo de exibição, mas somente faça isso se você estiver ciente das conseqüências.</value>
   </row>

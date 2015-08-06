@@ -14,18 +14,15 @@
 package org.adempierelbr.process;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRCCe;
@@ -40,6 +37,13 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * 		Processo para imprimir documentos fiscais
@@ -83,6 +87,12 @@ public class PrintFromXML extends SvrProcess
 	 */
 	protected String doIt() throws JRException, AdempiereException, IOException 
 	{
+		String message 			= null;
+		String extension 		= "dst.xml";
+		String datePattern 		= "yyyy-MM-dd'T'HH:mm:ssZ";
+		String numberPattern 	= "###0.00";
+		Locale locale			= Locale.US;
+		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
 		
@@ -97,9 +107,9 @@ public class PrintFromXML extends SvrProcess
 			att = cce.getAttachment (true);
 			
 			//	Verifica o nome do arquivo principal
-			if (process.getJasperReport() == null || process.getJasperReport().isEmpty()) {
+			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
 				reportName = "ReportCCe.jasper";
-			} else
+			else
 				reportName = process.getJasperReport();
 		}
 		
@@ -107,22 +117,33 @@ public class PrintFromXML extends SvrProcess
 		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
 			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
-			if (doc.getlbr_NFeStatus().equals(
-					MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado) )
-				return "Nao eh permitido imprimir o DANFE - Cancelada ou Sem autorizacao";
+			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
+				return "N\u00E3o \u00E9 permitido imprimir o DANFE - Cancelada ou Sem autorizac\u00E3o";
 
 			att = doc.getAttachment (true);
 			
 			//	Verifica o nome do arquivo principal
-			if (process.getJasperReport() == null || process.getJasperReport().isEmpty()) {
+			if (MLBRNotaFiscal.LBR_DANFEFORMAT_1_NormalDANFE_Portrait.equals(doc.getlbr_DANFEFormat()))
 				reportName = "DanfeMainPortraitA4.jasper";
-			} else
-				reportName = process.getJasperReport();
+			else if (MLBRNotaFiscal.LBR_DANFEFORMAT_2_NormalDANFE_Landscape.equals(doc.getlbr_DANFEFormat()))
+				reportName = "DanfeMainLandscapeA4.jasper";
+//			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
+////				reportName = "DanfeMainPortraitA4.jasper";
+//				reportName = "DanfeMainLandscapeA4.jasper";
+//			else
+//				reportName = process.getJasperReport();
+			
+			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
+				message = "CANCELADO    CANCELADO\nCÓPIA DE SEGURANÇA";
+			
+			else if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(doc.getlbr_NFeStatus()))
+				message = "C\u00D3PIA DE SEGURAN\u00C7A     Sem autorizac\u00E3o";
 		}
+		
 		else
 			return "Not implemented yet";
 		
-		if (att == null)
+		if (att == null || att.getEntryCount() == 0)
 			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
 		MAttachmentEntry[] entries = att.getEntries();
@@ -130,7 +151,7 @@ public class PrintFromXML extends SvrProcess
 		
 		for (MAttachmentEntry entry : entries)
 		{
-			if (entry.getName().endsWith("dst.xml"))
+			if (entry.getName().endsWith(extension))
 			{
 				xml = entry.getInputStream();
 				break;
@@ -140,10 +161,17 @@ public class PrintFromXML extends SvrProcess
 		if (xml == null)
 			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
-		Map<String, InputStream> files = getReportFile ();
+		Map<String, Object> files = getReportFile ();
+		
+		if (message != null)
+			files.put("msgPrevisualizacao", message);
 
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject ( (InputStream) files.remove (reportName));
 		JRXmlDataSource dataSource = new JRXmlDataSource ( xml , jasperReport.getQuery().getText() );
+		dataSource.setDatePattern(datePattern);
+		dataSource.setNumberPattern(numberPattern);
+		dataSource.setLocale(locale);
+		//
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
 		ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de Documento");
@@ -158,14 +186,15 @@ public class PrintFromXML extends SvrProcess
 	 * 	@throws AdempiereException
 	 * 	@throws IOException 
 	 */
-	private Map<String, InputStream> getReportFile () throws AdempiereException, IOException
+	private Map<String, Object> getReportFile () throws AdempiereException, IOException
 	{
 		//	Procura o relatório anexado no processo
 		MAttachment att = process.getAttachment (true);
-		Map<String, InputStream> map = new HashMap<String, InputStream>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		boolean found = false;
 
-		if (att != null) {
+		if (att != null)
+		{
 			MAttachmentEntry[] entries = att.getEntries();
 			for (MAttachmentEntry entry : entries)
 			{
@@ -178,11 +207,28 @@ public class PrintFromXML extends SvrProcess
 			}
 		}
 
-		// Se não existir anexado, utiliza o default do resource
+		//	Se não existir anexado, utiliza o default do resource
 		if (!found)
-		{	
-			InputStream report = getClass().getClassLoader().getResourceAsStream("reports/" + reportName);
-			map.put( reportName, report );
+		{
+			ClassLoader cl = getClass().getClassLoader();
+			InputStream report = cl.getResourceAsStream("reports/" + reportName);
+			
+			if (report == null)
+				throw new AdempiereException ("@Error@ report not found");
+			
+			//	Main Report
+			map.put (reportName, report);
+			
+			//	SubReports and Resources
+			String subreport = reportName.replace(".jasper", "").replace(".jrxml", "");
+			//
+			for (String resourceName : getResourceListing (getClass(), "reports/"))
+			{
+				if (resourceName != null 
+						&&	!resourceName.endsWith("jrxml")
+						&& (resourceName.startsWith (subreport + "_Sub_") || resourceName.startsWith (subreport + "_Res_")))
+					map.put (resourceName.replace(".jasper", "").replace(".jrxml", ""), cl.getResourceAsStream("reports/" + resourceName));
+			}
 		}
 		
 		MPInstance pinstance = new MPInstance (getCtx(), getAD_PInstance_ID(), null);
@@ -202,4 +248,39 @@ public class PrintFromXML extends SvrProcess
 
 		return map;
 	}	//	doIt
+	
+	/**
+	 * 	List directory contents for a resource folder. Not recursive.
+	 * 	This is basically a brute-force implementation.
+	 * 	Works for regular files and also JARs.
+	 * 
+	 * 	http://www.uofr.net/~greg/java/get-resource-listing.html
+	 * 
+	 * @author Greg Briggs
+	 * @param clazz Any java class that lives in the same place as the resources you want.
+	 * @param path Should end with "/", but not start with one.
+	 * @return Just the name of each member item, not the full paths.
+	 */
+	private String[] getResourceListing (Class<?> clazz, String path)
+	{
+		URL dirURL = clazz.getClassLoader().getResource(path);
+		if (dirURL != null && dirURL.getProtocol().equals("file"))
+		{
+			try
+			{
+				/* A file path: easy enough */
+				return new File(dirURL.toURI()).list();
+			}
+			catch (URISyntaxException e)
+			{
+				e.printStackTrace();
+			}
+		} 
+
+		//	MDFe
+		if (reportName.startsWith("DAMDFeRetratoA4"))
+			return new String[]{"DAMDFeRetratoA4_Sub_ValePedagio.jasper", "DAMDFeRetratoA4_Sub_Motoristas.jasper"};
+
+		throw new UnsupportedOperationException("Cannot list files for URL "+dirURL);
+	}	//	getResourceListing
 }	//	PrintFromXML

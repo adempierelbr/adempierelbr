@@ -31,12 +31,14 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.MWindow;
 import org.compiere.util.Env;
 
 /**
@@ -117,15 +119,19 @@ public class CalloutTax extends CalloutEngine
 	{
 		Integer C_BPartner_ID = (Integer) mTab.getValue("C_BPartner_ID");
 		String trxType = (String) mTab.getValue("lbr_TransactionType");
+		String IsSoTrx = Env.getContext(ctx, WindowNo, mTab.getTabNo(), "IsSOTrx");
 		//
 		if (C_BPartner_ID == null || C_BPartner_ID.intValue() == 0
 				|| (trxType != null && trxType.length() > 0))	//	Não substituir a transação caso já preenchida
-			return "";
+			return "";		
 		//
 		I_W_C_BPartner bp = POWrapper.create (new MBPartner(ctx,C_BPartner_ID,null), I_W_C_BPartner.class);
 		//
-		mTab.setValue("lbr_TransactionType", bp.getlbr_TransactionType());
-//		mTab.setValue("lbr_NFType", bp.getlbr_NFType());	//	TODO: Verificar campo lbr_NFType
+		if (IsSoTrx.equals("Y"))
+			mTab.setValue("lbr_TransactionType", bp.getlbr_TransactionType());
+			//	mTab.setValue("lbr_NFType", bp.getlbr_NFType());	//	TODO: Verificar campo lbr_NFType
+		else
+			mTab.setValue("lbr_TransactionType", bp.getlbr_TransactionTypeVendor());
 		//
 		return "";
 	}	//	getTransactionType

@@ -940,8 +940,8 @@
     <value column="PO_PrintName" original="" />
   </row>
   <row id="224" trl="Y">
-    <value column="Name" original="Callout">Chamada</value>
-    <value column="PrintName" original="Callout">Chamada</value>
+    <value column="Name" original="Callout">Callout</value>
+    <value column="PrintName" original="Callout">Callout</value>
     <value column="Description" original="Fully qualified class names and method - separated by semicolons">Métodos e Nomes de Classe Totalmente Qualificados - separados por ponto e vírgula</value>
     <value column="Help" original="A Callout allow you to create Java extensions to perform certain tasks always after a value changed. Callouts should not be used for validation but consequences of a user selecting a certain value.
 The callout is a Java class implementing org.compiere.model.Callout and a method name to call.  Example: &quot;org.compiere.model.CalloutRequest.copyText&quot; instantiates the class &quot;CalloutRequest&quot; and calls the method &quot;copyText&quot;. You can have multiple callouts by separating them via a semicolon">Uma "Callout" permite a você criar extensões Java para executar determinadas tarefas sempre que um valor é alterado. Elas não são utilizadas para validação, mas como consequência do usuário selecionar certo valor. A "Callout" é uma classe Java que implementa org.compiere.model.Callout e um nome de método para chamar. Exemplo: "org.compiere.model.CalloutRequest.copyText" cria uma instância da classe "CalloutRequest" e chama o método "copyText". Você pode ter múltiplas callouts separados por ponto e vírgula</value>
@@ -2991,9 +2991,9 @@ Data storage encryption (in Table/Column) - data is stored encrypted in the data
     <value column="PO_PrintName" original="" />
   </row>
   <row id="530" trl="Y">
-    <value column="Name" original="On Hand Quantity">Quantidade Disponível</value>
-    <value column="PrintName" original="On Hand Qty">Qde Disponível</value>
-    <value column="Description" original="On Hand Quantity">Quantidade Disponível</value>
+    <value column="Name" original="On Hand Quantity">Quantidade Em Mãos</value>
+    <value column="PrintName" original="On Hand Qty">Qde Em Mãos</value>
+    <value column="Description" original="On Hand Quantity">Quantidade Em Mãos</value>
     <value column="Help" original="The On Hand Quantity indicates the quantity of a product that is on hand in a warehouse.">A "Quantidade Disponível" indica a quantidade de um produto que está disponível (em mãos) em um armazém.</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
@@ -21698,7 +21698,7 @@ Tempo representa um valor em dado momento (ex., Valor da Fatura em 1/1) - Histó
   <row id="2968" trl="Y">
     <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
     <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
-    <value column="Description" original="Set the value of the inventory count to Zero or On Hand Quantity">Defina o valor da contagem de estoque para zero ou na quantidade à mão</value>
+    <value column="Description" original="Set the value of the inventory count to Zero or On Hand Quantity">Defina o valor da contagem de estoque para Zero ou para Quantidade em Mãos</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
@@ -29462,8 +29462,8 @@ Credita Conta Trabalho em Processamento </value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="54087" trl="Y">
-    <value column="Name" original="Sum Qty on Hand">Quantidade Somada à Mão</value>
-    <value column="PrintName" original="Sum Qty on Hand">Quantidade Somada à Mão</value>
+    <value column="Name" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
+    <value column="PrintName" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
     <value column="Description" original="Summary of product on hand in all locators">Resumo de produtos em mãos em todas as localizações</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />

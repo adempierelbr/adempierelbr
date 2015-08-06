@@ -2,11 +2,42 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Element">
+  <row id="224" trl="Y">
+    <value column="Name" original="Callout">Callout</value>
+    <value column="PrintName" original="Callout">Callout</value>
+    <value column="Description" original="Fully qualified class names and method - separated by semicolons">Métodos e Nomes de Classe Totalmente Qualificados - separados por ponto e vírgula</value>
+    <value column="Help" original="A Callout allow you to create Java extensions to perform certain tasks always after a value changed. Callouts should not be used for validation but consequences of a user selecting a certain value.
+The callout is a Java class implementing org.compiere.model.Callout and a method name to call.  Example: &quot;org.compiere.model.CalloutRequest.copyText&quot; instantiates the class &quot;CalloutRequest&quot; and calls the method &quot;copyText&quot;. You can have multiple callouts by separating them via a semicolon">Uma "Callout" permite a você criar extensões Java para executar determinadas tarefas sempre que um valor é alterado. Elas não são utilizadas para validação, mas como consequência do usuário selecionar certo valor. A "Callout" é uma classe Java que implementa org.compiere.model.Callout e um nome de método para chamar. Exemplo: "org.compiere.model.CalloutRequest.copyText" cria uma instância da classe "CalloutRequest" e chama o método "copyText". Você pode ter múltiplas callouts separados por ponto e vírgula</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="530" trl="Y">
+    <value column="Name" original="On Hand Quantity">Quantidade Em Mãos</value>
+    <value column="PrintName" original="On Hand Qty">Qde Em Mãos</value>
+    <value column="Description" original="On Hand Quantity">Quantidade Em Mãos</value>
+    <value column="Help" original="The On Hand Quantity indicates the quantity of a product that is on hand in a warehouse.">A "Quantidade Disponível" indica a quantidade de um produto que está disponível (em mãos) em um armazém.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="549" trl="Y">
     <value column="Name" original="SKU">SKU (UCE)</value>
     <value column="PrintName" original="SKU">SKU (UCE)</value>
     <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque (UCE / SKU)</value>
     <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE/SKU indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2968" trl="Y">
+    <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
+    <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
+    <value column="Description" original="Set the value of the inventory count to Zero or On Hand Quantity">Defina o valor da contagem de estoque para Zero ou para Quantidade em Mãos</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -37,6 +68,16 @@
     <value column="PrintName" original="Decimal Pattern">Decimal Pattern</value>
     <value column="Description" original="Java Decimal Pattern">Decimal Pattern Java</value>
     <value column="Help" original="Option Decimal pattern in Java notation. Examples: 0000 will format 23 to 0023">Opção Decimal padrão em notação Java. Exemplos: 0000 formatará 23 para 0023</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="54087" trl="Y">
+    <value column="Name" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
+    <value column="PrintName" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
+    <value column="Description" original="Summary of product on hand in all locators">Resumo de produtos em mãos em todas as localizações</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -1377,8 +1418,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000178" trl="Y">
-<value column="Name" original="BP Address 1">PN Endereço 1</value>
-<value column="PrintName" original="BP Address 1">PN Endereço 1</value>
+<value column="Name" original="BP Address 1">Endereço</value>
+<value column="PrintName" original="BP Address 1">Endereço</value>
 <value column="Description" original="BP Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1387,8 +1428,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000179" trl="Y">
-<value column="Name" original="BP Address 2">PN Endereço 2</value>
-<value column="PrintName" original="BP Address 2">PN Endereço 2</value>
+<value column="Name" original="BP Address 2">Número</value>
+<value column="PrintName" original="BP Address 2">Número</value>
 <value column="Description" original="BP Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1397,8 +1438,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000180" trl="Y">
-<value column="Name" original="BP Address 3">PN Endereço 3</value>
-<value column="PrintName" original="BP Address 3">PN Endereço 3</value>
+<value column="Name" original="BP Address 3">Bairro</value>
+<value column="PrintName" original="BP Address 3">Bairro</value>
 <value column="Description" original="BP Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1407,8 +1448,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000181" trl="Y">
-<value column="Name" original="BP Address 4">PN Endereço 4</value>
-<value column="PrintName" original="BP Address 4">PN Endereço 4</value>
+<value column="Name" original="BP Address 4">Complemento</value>
+<value column="PrintName" original="BP Address 4">Complemento</value>
 <value column="Description" original="BP Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1417,8 +1458,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000182" trl="Y">
-<value column="Name" original="BP City">PN Cidade</value>
-<value column="PrintName" original="BP City">PN Cidade</value>
+<value column="Name" original="BP City">Cidade</value>
+<value column="PrintName" original="BP City">Cidade</value>
 <value column="Description" original="BP City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1427,8 +1468,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000183" trl="Y">
-<value column="Name" original="BP Country">PN País</value>
-<value column="PrintName" original="BP Country">PN País</value>
+<value column="Name" original="BP Country">País</value>
+<value column="PrintName" original="BP Country">País</value>
 <value column="Description" original="BP Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1437,8 +1478,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000184" trl="Y">
-<value column="Name" original="BP Postal">PN CEP</value>
-<value column="PrintName" original="BP Postal">PN CEP</value>
+<value column="Name" original="BP Postal">CEP</value>
+<value column="PrintName" original="BP Postal">CEP</value>
 <value column="Description" original="BP Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1447,8 +1488,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000185" trl="Y">
-<value column="Name" original="BP Region">PN Estado</value>
-<value column="PrintName" original="BP Region">PN Estado</value>
+<value column="Name" original="BP Region">Estado</value>
+<value column="PrintName" original="BP Region">Estado</value>
 <value column="Description" original="BP Region - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Region - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1457,8 +1498,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000186" trl="Y">
-<value column="Name" original="BP Phone">PN Telefone</value>
-<value column="PrintName" original="BP Phone">PN Telefone</value>
+<value column="Name" original="BP Phone">Telefone</value>
+<value column="PrintName" original="BP Phone">Telefone</value>
 <value column="Description" original="BP Phone - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Phone - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1467,8 +1508,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000187" trl="Y">
-<value column="Name" original="BP CNPJ">PN CNPJ</value>
-<value column="PrintName" original="BP CNPJ">PN CNPJ</value>
+<value column="Name" original="BP CNPJ">CNPJ</value>
+<value column="PrintName" original="BP CNPJ">CNPJ</value>
 <value column="Description" original="BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP CNPJ - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1477,8 +1518,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000188" trl="Y">
-<value column="Name" original="BP IE">PN IE</value>
-<value column="PrintName" original="BP IE">PN IE</value>
+<value column="Name" original="BP IE">IE</value>
+<value column="PrintName" original="BP IE">IE</value>
 <value column="Description" original="BP IE - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP IE - Copied from the BP into Brazilan Legal and Tax Books">Copiado do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1487,8 +1528,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000189" trl="Y">
-<value column="Name" original="BP Delivery Address 1">Endereço de Entrega 1</value>
-<value column="PrintName" original="BP Delivery Address 1">Endereço de Entreda 1</value>
+<value column="Name" original="BP Delivery Address 1">Endereço (Entrega)</value>
+<value column="PrintName" original="BP Delivery Address 1">Endereço (Entrega)</value>
 <value column="Description" original="BP Delivery Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1497,8 +1538,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000190" trl="Y">
-<value column="Name" original="BP Delivery Address 2">Endereço de Entrega 2</value>
-<value column="PrintName" original="BP Delivery Address 2">Endereço de Entrega 2</value>
+<value column="Name" original="BP Delivery Address 2">Número (Entrega)</value>
+<value column="PrintName" original="BP Delivery Address 2">Número (Entrega)</value>
 <value column="Description" original="BP Delivery Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1507,8 +1548,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000191" trl="Y">
-<value column="Name" original="BP Delivery Address 3">Endereço de Entrega 3</value>
-<value column="PrintName" original="BP Delivery Address 3">Endereço de Entrega 3</value>
+<value column="Name" original="BP Delivery Address 3">Bairro (Entrega)</value>
+<value column="PrintName" original="BP Delivery Address 3">Bairro (Entrega)</value>
 <value column="Description" original="BP Delivery Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1517,8 +1558,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000192" trl="Y">
-<value column="Name" original="BP Delivery Address 4">Endereço de Entrega 4</value>
-<value column="PrintName" original="BP Delivery Address 4">Endereço de Entrega 4</value>
+<value column="Name" original="BP Delivery Address 4">Complemento (Entrega)</value>
+<value column="PrintName" original="BP Delivery Address 4">Complemento (Entrega)</value>
 <value column="Description" original="BP Delivery Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1527,8 +1568,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000193" trl="Y">
-<value column="Name" original="BP Invoice Address 1">Endereço de Fatura 1</value>
-<value column="PrintName" original="BP Invoice Address 1">Endereço de Fatura 1</value>
+<value column="Name" original="BP Invoice Address 1">Endereço (Fatura)</value>
+<value column="PrintName" original="BP Invoice Address 1">Endereço (Fatura)</value>
 <value column="Description" original="BP Invoice Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1537,8 +1578,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000194" trl="Y">
-<value column="Name" original="BP Invoice Address 2">Endereço de Fatura 2</value>
-<value column="PrintName" original="BP Invoice Address 2">Endereço de Fatura 2</value>
+<value column="Name" original="BP Invoice Address 2">Número (Fatura)</value>
+<value column="PrintName" original="BP Invoice Address 2">Número (Fatura)</value>
 <value column="Description" original="BP Invoice Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1547,8 +1588,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000195" trl="Y">
-<value column="Name" original="BP Invoice Address 3">Endereço de Fatura 3</value>
-<value column="PrintName" original="BP Invoice Address 3">Endereço de Fatura 3</value>
+<value column="Name" original="BP Invoice Address 3">Bairro (Fatura)</value>
+<value column="PrintName" original="BP Invoice Address 3">Bairro (Fatura)</value>
 <value column="Description" original="BP Invoice Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1557,8 +1598,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000196" trl="Y">
-<value column="Name" original="BP Invoice Address 4">Endereço de Fatura 4</value>
-<value column="PrintName" original="BP Invoice Address 4">Endereço de Fatura 4</value>
+<value column="Name" original="BP Invoice Address 4">Complemento (Fatura)</value>
+<value column="PrintName" original="BP Invoice Address 4">Complemento (Fatura)</value>
 <value column="Description" original="BP Invoice Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1567,8 +1608,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000197" trl="Y">
-<value column="Name" original="BP Shipper Address 1">Endereço Transportadora 1</value>
-<value column="PrintName" original="BP Shipper Address 1">Endereço Transportadora 1</value>
+<value column="Name" original="BP Shipper Address 1">Endereço (Transp)</value>
+<value column="PrintName" original="BP Shipper Address 1">Endereço (Transp)</value>
 <value column="Description" original="BP Shipper Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Address 1 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1577,8 +1618,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000198" trl="Y">
-<value column="Name" original="BP Shipper Address 2">Endereço Transportadora 2</value>
-<value column="PrintName" original="BP Shipper Address 2">Endereço Transportadora 2</value>
+<value column="Name" original="BP Shipper Address 2">Número (Transp)</value>
+<value column="PrintName" original="BP Shipper Address 2">Número (Transp)</value>
 <value column="Description" original="BP Shipper Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Address 2 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1587,8 +1628,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000199" trl="Y">
-<value column="Name" original="BP Shipper Address 3">Endereço Transportadora 3</value>
-<value column="PrintName" original="BP Shipper Address 3">Endereço Transportadora 3</value>
+<value column="Name" original="BP Shipper Address 3">Bairro (Transp)</value>
+<value column="PrintName" original="BP Shipper Address 3">Bairro (Transp)</value>
 <value column="Description" original="BP Shipper Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Address 3 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1597,8 +1638,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000200" trl="Y">
-<value column="Name" original="BP Shipper Address 4">Endereço Transportadora 4</value>
-<value column="PrintName" original="BP Shipper Address 4">Endereço Transportadora 4</value>
+<value column="Name" original="BP Shipper Address 4">Complemento (Transp)</value>
+<value column="PrintName" original="BP Shipper Address 4">Complemento (Transp)</value>
 <value column="Description" original="BP Shipper Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Address 4 - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1607,8 +1648,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000201" trl="Y">
-<value column="Name" original="BP Delivery City">Endereço de Entrega - Cidade</value>
-<value column="PrintName" original="BP Delivery City">Endereço de Entrega - Cidade</value>
+<value column="Name" original="BP Delivery City">Cidade (Entrega)</value>
+<value column="PrintName" original="BP Delivery City">Cidade (Entrega)</value>
 <value column="Description" original="BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1617,8 +1658,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000202" trl="Y">
-<value column="Name" original="BP Delivery Country">Endereço de Entrega - País</value>
-<value column="PrintName" original="BP Delivery Country">Endereço de Entrega - País</value>
+<value column="Name" original="BP Delivery Country">País (Entrega)</value>
+<value column="PrintName" original="BP Delivery Country">País (Entrega)</value>
 <value column="Description" original="BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1627,8 +1668,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000203" trl="Y">
-<value column="Name" original="BP Delivery CNPJ">Endereço de Entrega - CNPJ</value>
-<value column="PrintName" original="BP Delivery CNPJ">Endereço de Entrega - CNPJ</value>
+<value column="Name" original="BP Delivery CNPJ">CNPJ (Entrega)</value>
+<value column="PrintName" original="BP Delivery CNPJ">CNPJ (Entrega)</value>
 <value column="Description" original="BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1637,8 +1678,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000204" trl="Y">
-<value column="Name" original="BP Delivery IE">Endereço de Entrega - IE</value>
-<value column="PrintName" original="BP Delivery IE">Endereço de Entrega - IE</value>
+<value column="Name" original="BP Delivery IE">IE (Entrega)</value>
+<value column="PrintName" original="BP Delivery IE">IE (Entrega)</value>
 <value column="Description" original="BP Delivery IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1647,8 +1688,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000205" trl="Y">
-<value column="Name" original="BP Delivery Postal">Endereço de Entrega - CEP</value>
-<value column="PrintName" original="BP Delivery Postal">Endereço de Entrega - CEP</value>
+<value column="Name" original="BP Delivery Postal">CEP (Entrega)</value>
+<value column="PrintName" original="BP Delivery Postal">CEP (Entrega)</value>
 <value column="Description" original="BP Delivery Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Delivery Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1657,8 +1698,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000206" trl="Y">
-<value column="Name" original="BP Invoice City">Endereço de Fatura - Cidade</value>
-<value column="PrintName" original="BP Invoice City">Endereço de Fatura - Cidade</value>
+<value column="Name" original="BP Invoice City">Cidade (Fatura)</value>
+<value column="PrintName" original="BP Invoice City">Cidade (Fatura)</value>
 <value column="Description" original="BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1667,8 +1708,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000207" trl="Y">
-<value column="Name" original="BP Invoice Country">Endereço de Fatura - País</value>
-<value column="PrintName" original="BP Invoice Country">Endereço de Fatura - País</value>
+<value column="Name" original="BP Invoice Country">País (Fatura)</value>
+<value column="PrintName" original="BP Invoice Country">País (Fatura)</value>
 <value column="Description" original="BP Invoice Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1677,8 +1718,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000208" trl="Y">
-<value column="Name" original="BP Invoice CNPJ">Endereço de Fatura - CNPJ</value>
-<value column="PrintName" original="BP Invoice CNPJ">Endereço de Fatura - CNPJ</value>
+<value column="Name" original="BP Invoice CNPJ">CNPJ (Fatura)</value>
+<value column="PrintName" original="BP Invoice CNPJ">CNPJ (Fatura)</value>
 <value column="Description" original="BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1687,8 +1728,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000209" trl="Y">
-<value column="Name" original="BP Invoice IE">Endereço de Fatura - IE</value>
-<value column="PrintName" original="BP Invoice IE">Endereço de Fatura - IE</value>
+<value column="Name" original="BP Invoice IE">IE (Fatura)</value>
+<value column="PrintName" original="BP Invoice IE">IE (Fatura)</value>
 <value column="Description" original="BP Invoice IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1697,8 +1738,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000211" trl="Y">
-<value column="Name" original="BP DeliveryRegion">Endereço de Entrega - Estado</value>
-<value column="PrintName" original="BP DeliveryRegion">Endereço de Entrega - Estado</value>
+<value column="Name" original="BP DeliveryRegion">Estado (Entrega)</value>
+<value column="PrintName" original="BP DeliveryRegion">Estado (Entrega)</value>
 <value column="Description" original="BP DeliveryRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP DeliveryRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1707,8 +1748,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000212" trl="Y">
-<value column="Name" original="BP InvoiceRegion">Endereço de Fatura - Estado</value>
-<value column="PrintName" original="BP InvoiceRegion">Endereço de Fatura - Estado</value>
+<value column="Name" original="BP InvoiceRegion">Estado (Fatura)</value>
+<value column="PrintName" original="BP InvoiceRegion">Estado (Fatura)</value>
 <value column="Description" original="BP InvoiceRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP InvoiceRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1717,8 +1758,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000213" trl="Y">
-<value column="Name" original="BP Shipper CNPJ">Endereço Transportadora - CNPJ</value>
-<value column="PrintName" original="BP Shipper CNPJ">Endereço Transportadora - CNPJ</value>
+<value column="Name" original="BP Shipper CNPJ">CNPJ (Transp)</value>
+<value column="PrintName" original="BP Shipper CNPJ">CNPJ (Transp)</value>
 <value column="Description" original="BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper CNPJ - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1727,8 +1768,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000214" trl="Y">
-<value column="Name" original="BP Shipper City">Endereço Transportadora - Cidade</value>
-<value column="PrintName" original="BP Shipper City">Endereço Transportadora - Cidade</value>
+<value column="Name" original="BP Shipper City">Cidade (Transp)</value>
+<value column="PrintName" original="BP Shipper City">Cidade (Transp)</value>
 <value column="Description" original="BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper City - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1737,8 +1778,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000215" trl="Y">
-<value column="Name" original="BP Shipper Country">Endereço Transportadora - País</value>
-<value column="PrintName" original="BP Shipper Country">Endereço Transportadora - País</value>
+<value column="Name" original="BP Shipper Country">País (Transp)</value>
+<value column="PrintName" original="BP Shipper Country">País (Transp)</value>
 <value column="Description" original="BP Shipper Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Country - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1747,8 +1788,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000216" trl="Y">
-<value column="Name" original="BP Shipper IE">Endereço Transportadora - IE</value>
-<value column="PrintName" original="BP Shipper IE">Endereço Transportadora - IE</value>
+<value column="Name" original="BP Shipper IE">IE (Transp)</value>
+<value column="PrintName" original="BP Shipper IE">IE (Transp)</value>
 <value column="Description" original="BP Shipper IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper IE - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1757,8 +1798,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000217" trl="Y">
-<value column="Name" original="BP Shipper Postal">Endereço Transportadora - CEP</value>
-<value column="PrintName" original="BP Shipper Postal">Endereço Transportadora - CEP</value>
+<value column="Name" original="BP Shipper Postal">CEP (Transp)</value>
+<value column="PrintName" original="BP Shipper Postal">CEP (Transp</value>
 <value column="Description" original="BP Shipper Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Shipper Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1767,8 +1808,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000218" trl="Y">
-<value column="Name" original="BP ShipperRegion">Endereço Transportadora - Estado</value>
-<value column="PrintName" original="BP ShipperRegion">Endereço Transportadora - Estado</value>
+<value column="Name" original="BP ShipperRegion">Estado (Transp)</value>
+<value column="PrintName" original="BP ShipperRegion">Estado (Transp)</value>
 <value column="Description" original="BP ShipperRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP ShipperRegion - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -1787,8 +1828,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000220" trl="Y">
-<value column="Name" original="BP Invoice Postal">Endereço de Fatura - CEP</value>
-<value column="PrintName" original="BP Invoice Postal">Endereço de Fatura - CEP</value>
+<value column="Name" original="BP Invoice Postal">CEP (Fatura)</value>
+<value column="PrintName" original="BP Invoice Postal">CEP (Fatura)</value>
 <value column="Description" original="BP Invoice Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="Help" original="BP Invoice Postal - Copied from the BP Location into Brazilan Legal and Tax Books">Copiado da Localização do Parceiro para Impressão de Livros Fiscais</value>
 <value column="PO_Description" original=""/>
@@ -2207,8 +2248,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000275" trl="Y">
-<value column="Name" original="BPShipper Name">Nome Transportadora</value>
-<value column="PrintName" original="BPShipper Name">Nome Transportadora</value>
+<value column="Name" original="BPShipper Name">Nome da Transportadora</value>
+<value column="PrintName" original="BPShipper Name">Nome da Transportadora</value>
 <value column="Description" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
 <value column="Help" original="Defines the Shipper Name">Define o Nome da Transportadora</value>
 <value column="PO_Description" original=""/>
@@ -2287,8 +2328,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000286" trl="Y">
-<value column="Name" original="BP Shipper License Plate">Transportadora - Placa</value>
-<value column="PrintName" original="BP Shipper License Plate">Transportadora - Placa</value>
+<value column="Name" original="BP Shipper License Plate">Placa (Transp)</value>
+<value column="PrintName" original="BP Shipper License Plate">Placa (Transp)</value>
 <value column="Description" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
 <value column="Help" original="Defines the BP Shipper License Plate">Define a Placa da Transportadora</value>
 <value column="PO_Description" original=""/>
@@ -4191,8 +4232,8 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121699" trl="N">
-<value column="Name" original="BP Shipper Address">Endereço da Transportadora</value>
-<value column="PrintName" original="BP Shipper Address">Endereço da Transportadora</value>
+<value column="Name" original="BP Shipper Address">Endereço (Transp)</value>
+<value column="PrintName" original="BP Shipper Address">Endereço (Transp)</value>
 <value column="Description" original="BP Shipper Address on a String">Endereço da Transportadora</value>
 <value column="Help" original="BP Shipper Address on a String">Endereço da Transportadora</value>
 <value column="PO_Description" original=""/>

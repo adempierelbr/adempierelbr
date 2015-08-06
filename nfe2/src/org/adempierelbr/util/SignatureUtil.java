@@ -300,7 +300,7 @@ public class SignatureUtil
 	 * 	@param ascii
 	 * 	@return
 	 */
-	public String signASCII (String ascii, int AD_Org_ID) 
+	public String signASCII (String ascii) 
 	{
 		log.fine("Signing: " + ascii);
 		String encoded = null;
@@ -308,7 +308,7 @@ public class SignatureUtil
 		try 
 		{
 			//	Prepare Certificates
-			loadKeys (MOrgInfo.get (Env.getCtx(), AD_Org_ID, null));
+			loadKeys (oi);
 			//
 			Signature dsa = Signature.getInstance ("SHA1withRSA");
 			dsa.initSign(getPrivateKey());
@@ -324,4 +324,4 @@ public class SignatureUtil
 		
 		return encoded;
 	}	//	signASCII
-}	//	AssinaturaDigital
+}	//	SignatureUtil

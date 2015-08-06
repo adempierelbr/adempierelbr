@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150515L;
+	private static final long serialVersionUID = 20150727L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -55,6 +55,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			setLBR_EMailSent (false);
 // N
 			setLBR_NotaFiscal_ID (0);
+			setNoPackages (0);
+// 1
 			setProcessed (false);
 // 'N'
 			setlbr_FinNFe (null);
@@ -881,31 +883,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_RefNotaFiscal() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
-			.getPO(getLBR_RefNotaFiscal_ID(), get_TrxName());	}
-
-	/** Set Nota Fiscal Referenciada.
-		@param LBR_RefNotaFiscal_ID Nota Fiscal Referenciada	  */
-	public void setLBR_RefNotaFiscal_ID (int LBR_RefNotaFiscal_ID)
-	{
-		if (LBR_RefNotaFiscal_ID < 1) 
-			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_RefNotaFiscal_ID, Integer.valueOf(LBR_RefNotaFiscal_ID));
-	}
-
-	/** Get Nota Fiscal Referenciada.
-		@return Nota Fiscal Referenciada	  */
-	public int getLBR_RefNotaFiscal_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_RefNotaFiscal_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set Send EMail.
@@ -2079,6 +2056,35 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_lbr_CNPJ);
 	}
 
+	/** lbr_DANFEFormat AD_Reference_ID=1100002 */
+	public static final int LBR_DANFEFORMAT_AD_Reference_ID=1100002;
+	/** 1 - Normal DANFE - Portrait = 1 */
+	public static final String LBR_DANFEFORMAT_1_NormalDANFE_Portrait = "1";
+	/** 2 - Normal DANFE - Landscape = 2 */
+	public static final String LBR_DANFEFORMAT_2_NormalDANFE_Landscape = "2";
+	/** 0 - No DANFE = 0 */
+	public static final String LBR_DANFEFORMAT_0_NoDANFE = "0";
+	/** 3 - Simple DANFE = 3 */
+	public static final String LBR_DANFEFORMAT_3_SimpleDANFE = "3";
+	/** 4 - DANFE NFC-e = 4 */
+	public static final String LBR_DANFEFORMAT_4_DANFENFC_E = "4";
+	/** 5 - DANFE NFC-e in Eletronic Message = 5 */
+	public static final String LBR_DANFEFORMAT_5_DANFENFC_EInEletronicMessage = "5";
+	/** Set DANFE Format.
+		@param lbr_DANFEFormat DANFE Format	  */
+	public void setlbr_DANFEFormat (String lbr_DANFEFormat)
+	{
+
+		set_Value (COLUMNNAME_lbr_DANFEFormat, lbr_DANFEFormat);
+	}
+
+	/** Get DANFE Format.
+		@return DANFE Format	  */
+	public String getlbr_DANFEFormat () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_DANFEFormat);
+	}
+
 	/** Set Date InOut.
 		@param lbr_DateInOut 
 		Defines the InOut Date
@@ -2418,12 +2424,12 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_NFMODEL_BilheteReciboDoPassageiro = "30";
 	/** Nota Fiscal Eletrônica = 55 */
 	public static final String LBR_NFMODEL_NotaFiscalEletrônica = "55";
-	/** Nota Fiscal Eletrônica = 55 */
-	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
 	/** Conhecimento de Transporte Eletrônico – CT-e = 57 */
 	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
 	/** Nota Fiscal de Serviços Eletrônica (RPS) = S1 */
 	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
+	/** Nota Fiscal de Consumidor Eletrônica = 56 */
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
 	/** Set NF Model.
 		@param lbr_NFModel 
 		Identifies the model of Nota Fiscal
