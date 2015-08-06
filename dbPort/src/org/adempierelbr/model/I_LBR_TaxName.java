@@ -146,6 +146,28 @@ public interface I_LBR_TaxName
 
 	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxSubstitution() throws RuntimeException;
 
+    /** Column name LBR_WithholdGroup */
+    public static final String COLUMNNAME_LBR_WithholdGroup = "LBR_WithholdGroup";
+
+	/** Set Withhold Group.
+	  * Withhold Group
+	  */
+	public void setLBR_WithholdGroup (String LBR_WithholdGroup);
+
+	/** Get Withhold Group.
+	  * Withhold Group
+	  */
+	public String getLBR_WithholdGroup();
+
+    /** Column name LBR_WithholdType */
+    public static final String COLUMNNAME_LBR_WithholdType = "LBR_WithholdType";
+
+	/** Set Withhold Type	  */
+	public void setLBR_WithholdType (String LBR_WithholdType);
+
+	/** Get Withhold Type	  */
+	public String getLBR_WithholdType();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 

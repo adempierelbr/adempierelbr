@@ -32,7 +32,7 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110921L;
+	private static final long serialVersionUID = 20150728L;
 
     /** Standard Constructor */
     public X_LBR_TaxName (Properties ctx, int LBR_TaxName_ID, String trxName)
@@ -171,6 +171,44 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Withhold Group.
+		@param LBR_WithholdGroup 
+		Withhold Group
+	  */
+	public void setLBR_WithholdGroup (String LBR_WithholdGroup)
+	{
+		set_Value (COLUMNNAME_LBR_WithholdGroup, LBR_WithholdGroup);
+	}
+
+	/** Get Withhold Group.
+		@return Withhold Group
+	  */
+	public String getLBR_WithholdGroup () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_WithholdGroup);
+	}
+
+	/** LBR_WithholdType AD_Reference_ID=1120214 */
+	public static final int LBR_WITHHOLDTYPE_AD_Reference_ID=1120214;
+	/** Paid Amount Sum = P */
+	public static final String LBR_WITHHOLDTYPE_PaidAmountSum = "P";
+	/** Tax Amount = T */
+	public static final String LBR_WITHHOLDTYPE_TaxAmount = "T";
+	/** Set Withhold Type.
+		@param LBR_WithholdType Withhold Type	  */
+	public void setLBR_WithholdType (String LBR_WithholdType)
+	{
+
+		set_Value (COLUMNNAME_LBR_WithholdType, LBR_WithholdType);
+	}
+
+	/** Get Withhold Type.
+		@return Withhold Type	  */
+	public String getLBR_WithholdType () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_WithholdType);
 	}
 
 	/** Set Name.

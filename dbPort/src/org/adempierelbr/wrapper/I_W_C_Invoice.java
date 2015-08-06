@@ -42,6 +42,45 @@ public interface I_W_C_Invoice extends I_C_Invoice
 
 	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
+    /** Column name HasWithHold */
+    public static final String COLUMNNAME_HasWithHold = "HasWithHold";
+
+	/** Set Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public void setHasWithHold (boolean HasWithHold);
+
+	/** Get Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public boolean isHasWithHold();
+
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
+
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public void setLBR_IndPres (String LBR_IndPres);
+
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public String getLBR_IndPres();
+
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
 
@@ -117,19 +156,6 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	  * Define the Boleto Comments
 	  */
 	public String getlbr_BoletoComments();
-
-    /** Column name LBR_FreightCostRule */
-    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
-
-	/** Set Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
-
-	/** Get Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public String getLBR_FreightCostRule();
 
     /** Column name lbr_IsBillPrinted */
     public static final String COLUMNNAME_lbr_IsBillPrinted = "lbr_IsBillPrinted";

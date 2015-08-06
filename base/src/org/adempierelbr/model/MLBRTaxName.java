@@ -111,14 +111,19 @@ public class MLBRTaxName extends X_LBR_TaxName
 	{
 		if (getName() == null)
 		{
-			log.saveError("FillMandatory", Msg.getElement(getCtx(), "Name"));
+			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_Name));
 			return false;
 		}
 		//
 		String taxName = getName().trim().replaceAll("[^A-Za-z]*", "");	//	Salva sempre sem espaços
 		if (taxName.length() == 0)
 		{
-			log.saveError("FillMandatory", Msg.getElement(getCtx(), "Name"));
+			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_Name));
+			return false;
+		}
+		if (isHasWithHold() && getLBR_WithholdType() == null)
+		{
+			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_LBR_WithholdType));
 			return false;
 		}
 		//

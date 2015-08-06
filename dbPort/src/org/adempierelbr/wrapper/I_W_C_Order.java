@@ -55,6 +55,58 @@ public interface I_W_C_Order extends I_C_Order
 	  */
 	public String getCreateFrom();
 
+    /** Column name HasWithHold */
+    public static final String COLUMNNAME_HasWithHold = "HasWithHold";
+
+	/** Set Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public void setHasWithHold (boolean HasWithHold);
+
+	/** Get Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public boolean isHasWithHold();
+
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
+    /** Column name LBR_INCOTERMS */
+    public static final String COLUMNNAME_LBR_INCOTERMS = "LBR_INCOTERMS";
+
+	/** Set INCOTERMS.
+	  * International Commercial Terms
+	  */
+	public void setLBR_INCOTERMS (String LBR_INCOTERMS);
+
+	/** Get INCOTERMS.
+	  * International Commercial Terms
+	  */
+	public String getLBR_INCOTERMS();
+
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
+
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public void setLBR_IndPres (String LBR_IndPres);
+
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public String getLBR_IndPres();
+
     /** Column name LBR_OtherChargesAmt */
     public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
 
@@ -104,19 +156,6 @@ public interface I_W_C_Order extends I_C_Order
 	  * Bill Note
 	  */
 	public String getlbr_BillNote();
-
-    /** Column name LBR_FreightCostRule */
-    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
-
-	/** Set Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
-
-	/** Get Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public String getLBR_FreightCostRule();
 
     /** Column name lbr_InsuranceAmt */
     public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";

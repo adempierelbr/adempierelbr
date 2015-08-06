@@ -41,6 +41,19 @@ public interface I_W_C_BPartner extends I_C_BPartner
 
 	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
+    /** Column name HasWithHold */
+    public static final String COLUMNNAME_HasWithHold = "HasWithHold";
+
+	/** Set Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public void setHasWithHold (boolean HasWithHold);
+
+	/** Get Has WithHold.
+	  * Defines if the Tax, has WithHold
+	  */
+	public boolean isHasWithHold();
+
     /** Column name LBR_CustomerCategory_ID */
     public static final String COLUMNNAME_LBR_CustomerCategory_ID = "LBR_CustomerCategory_ID";
 
@@ -281,20 +294,10 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	/** Set Transaction Type.
 	  * Defines the Transaction Type
 	  */
-	public void setlbr_TransactionType (String lbr_TransactionTypeVendor);
+	public void setlbr_TransactionType (String lbr_TransactionType);
 
 	/** Get Transaction Type.
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
-	
-	/** Set Transaction Type.
-	  * Defines the Transaction Type
-	  */
-	public void setlbr_TransactionTypeVendor (String lbr_TransactionTypeVendor);
-
-	/** Get Transaction Type.
-	  * Defines the Transaction Type
-	  */
-	public String getlbr_TransactionTypeVendor();
 }
