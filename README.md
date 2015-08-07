@@ -62,6 +62,17 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201508 [[Download]][18] [[Seed PostgreSQL]][19] [[Seed OracleXE]][20]
+
+	* Melhorias na tradução
+	* Redução no mínimo de dias para protesto de boleto
+	* Impressão das DANFEs via arquivo XML
+	* Correção na VIEW de exibição de impostos
+	* Adição da TAG Número de Volumes no XML
+	* Correção da calculadora na interface web
+	* Adição do Java Target na compilação
+	* [Mais detalhes][17]
+	
 1. LBR-201507 [[Download]][14] [[Seed PostgreSQL]][15] [[Seed OracleXE]][16]
 
 	* Melhorias na tradução
@@ -99,3 +110,7 @@ Patrocinadores desta versão
 [14]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201507.tgz
 [15]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_PG.tgz
 [16]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_ORA.tgz
+[17]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201508
+[18]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201508.tgz
+[19]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_PG.tgz
+[20]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_ORA.tgz
