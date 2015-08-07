@@ -64,6 +64,9 @@ public class RM600 extends RegSped
 	
 	@XMLFieldProperties(isMandatory=false, id = "VL_TOT_CONT_REC")
 	private BigDecimal VL_TOT_CONT_REC;
+	
+	@XMLFieldProperties (id = "RM605")
+	private RM605 _RM605 = new RM605();
 
 	@XMLFieldProperties (id = "RM610")
 	private Set<RM610> _RM610 = new SPEDSet<RM610>();
@@ -187,6 +190,16 @@ public class RM600 extends RegSped
 	public void setVL_TOT_CONT_REC(BigDecimal vL_TOT_CONT_REC)
 	{
 		VL_TOT_CONT_REC = vL_TOT_CONT_REC;
+	}
+	
+	public RM605 get_RM605()
+	{
+		return _RM605;
+	}
+
+	public void setRM605 (RM605 rM605)
+	{
+		_RM605 = rM605;
 	}
 	
 	public Set<RM610> get_RM610()

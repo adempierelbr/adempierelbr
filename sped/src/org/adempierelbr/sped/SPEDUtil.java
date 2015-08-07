@@ -51,12 +51,14 @@ import org.adempierelbr.sped.contrib.bean.RC010;
 import org.adempierelbr.sped.contrib.bean.RD010;
 import org.adempierelbr.sped.contrib.bean.RM100;
 import org.adempierelbr.sped.contrib.bean.RM200;
+import org.adempierelbr.sped.contrib.bean.RM205;
 import org.adempierelbr.sped.contrib.bean.RM210;
 import org.adempierelbr.sped.contrib.bean.RM211;
 import org.adempierelbr.sped.contrib.bean.RM400;
 import org.adempierelbr.sped.contrib.bean.RM410;
 import org.adempierelbr.sped.contrib.bean.RM500;
 import org.adempierelbr.sped.contrib.bean.RM600;
+import org.adempierelbr.sped.contrib.bean.RM605;
 import org.adempierelbr.sped.contrib.bean.RM610;
 import org.adempierelbr.sped.contrib.bean.RM611;
 import org.adempierelbr.sped.contrib.bean.RM800;
@@ -993,6 +995,32 @@ public class SPEDUtil
 		return rM200;
 	}	//	getR6M00
 	
+	/**
+	 *		M205
+	 *	@return Registro M205
+	 */
+	public static RM205 getRM205(MLBRTaxAssessment m_taxassessment)	
+	{
+		RM205 rM205 = new RM205();
+		
+		if (!m_taxassessment.get_ValueAsBoolean("LBR_IsCumulativeRegime"))
+		{
+			//	Campo 08 no Registro M200 referente a Valor Não Cumulativo
+			rM205.setNUM_CAMPO("08");
+			rM205.setCOD_REC(m_taxassessment.getLBR_Cod_Rec());
+			rM205.setVL_DEBITO(m_taxassessment.getLBR_VL_OR());
+		}
+		else
+		{
+			//	Campo 12 no Registro M200 referente a Valor Cumulativo
+			rM205.setNUM_CAMPO("12");
+			rM205.setCOD_REC(m_taxassessment.getLBR_Cod_Rec());
+			rM205.setVL_DEBITO(m_taxassessment.getLBR_VL_OR());
+		}
+		
+		return rM205;		
+	}	//	getRM205
+	
 	public static Set<RM210> getRM210 ()
 	{
 			processRM210();
@@ -1197,6 +1225,34 @@ public class SPEDUtil
 		//
 		return rM600;
 	}	//	getR6M00
+	
+	/**
+	 *		M605
+	 *	@return Registro M605
+	 */
+	public static RM605 getRM605(MLBRTaxAssessment m_taxassessment)
+	{
+		//		Adicionar M605
+		//	Contribuição não Cumulativa
+		RM605 rM605 = new RM605();
+		
+		if (!m_taxassessment.get_ValueAsBoolean("LBR_IsCumulativeRegime"))
+		{
+			//	Campo 08 no Registro M600 referente a Valor Não Cumulativo
+			rM605.setNUM_CAMPO("08");
+			rM605.setCOD_REC(m_taxassessment.getLBR_Cod_Rec());
+			rM605.setVL_DEBITO(m_taxassessment.getLBR_VL_OR());			
+		}
+		else
+		{
+			//	Campo 12 no Registro M600 referente a Valor Cumulativo
+			rM605.setNUM_CAMPO("12");
+			rM605.setCOD_REC(m_taxassessment.getLBR_Cod_Rec());
+			rM605.setVL_DEBITO(m_taxassessment.getLBR_VL_OR());
+		}
+		
+		return rM605;		
+	}	//	getRM605
 	
 	/**
 	 * 		M210
