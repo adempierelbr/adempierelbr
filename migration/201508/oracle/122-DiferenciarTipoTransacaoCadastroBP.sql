@@ -65,3 +65,5 @@ UPDATE AD_Column SET AD_Reference_Value_ID=1000024,Updated=TO_DATE('2015-07-22 1
 
 SELECT Register_Migration_Script ('122-DiferenciarTipoTransacaoCadastroBP.sql') FROM DUAL
 ;
+
+EXIT
