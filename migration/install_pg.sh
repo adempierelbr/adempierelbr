@@ -12,6 +12,9 @@ if [ -z "$3" ]; then
    echo "Usage: $0 DIRECTORY DATABASE USER"
    exit 0
 fi
+if [ -z "$PSQL" ]; then
+	PSQL=psql
+fi
 
 echo "AdempiereLBR"
 echo "."
@@ -23,11 +26,11 @@ read -s -p "Enter Password: " pass
 echo ""
 export PGPASSWORD=$pass
 for f in $(ls $1/postgresql/*.sql); do
-	echo ". Execultando Script" $f >> result.log
-	psql -d $2 -U $3 -f $f >> result.log 2>&1
+	echo ". Execultando Script" $f >> result_pg.log
+	$PSQL -d $2 -U $3 -f $f >> result_pg.log 2>&1
 done
 for f in $(ls post_install/postgresql/*.sql); do
-	echo ". Execultando Script" $f >> result.log
-	psql -d $2 -U $3 -f $f >> result.log 2>&1
+	echo ". Execultando Script" $f >> result_pg.log
+	$PSQL -d $2 -U $3 -f $f >> result_pg.log 2>&1
 done
 export PGPASSWORD=
