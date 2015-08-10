@@ -992,4 +992,19 @@ public abstract class TextUtil
 		return Arrays.asList (objects).contains (obj);
 	}	//	match
 
+	/**
+	 * 	Check if an object is blank (string only) or null
+	 * 	@param obj
+	 * 	@return
+	 */
+	public static boolean isBlankOrNull (Object obj)
+	{
+		if (obj == null)
+			return true;
+		
+		else if (obj instanceof String && ((String) obj).trim().isEmpty())
+			return true;
+		
+		return false;
+	}	//	isBlankOrNull
 }	//	TextUtil

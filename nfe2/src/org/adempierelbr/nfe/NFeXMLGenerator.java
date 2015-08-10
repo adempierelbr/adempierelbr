@@ -419,7 +419,7 @@ public class NFeXMLGenerator
 		ide.setTpNF (nf.isSOTrx() ? TP_NF_SAIDA : TP_NF_ENTRADA);
 		ide.setIdDest (nf.getIdDestinoOp ());
 		ide.setCMunFG (BPartnerUtil.getCityCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
-		ide.setTpImp (Ide.TpImp.Enum.forString (docType.get_ValueAsString ("lbr_DANFEFormat")));
+		ide.setTpImp (Ide.TpImp.Enum.forString (nf.getlbr_DANFEFormat()));
 		ide.setTpEmis (tpEmissao);
 		ide.setCDV (chaveNFE.getDigito());
 		

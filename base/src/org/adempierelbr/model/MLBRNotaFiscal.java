@@ -1950,8 +1950,23 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 			
 			//	Preenche o ambiente da NF caso esteja em branco
-			if (getlbr_NFeEnv() == null)
-				setlbr_NFeEnv (MOrgInfo.get (getCtx(), getAD_Org_ID(), null).get_ValueAsString("lbr_NFeEnv"));
+			I_W_AD_OrgInfo orgInfo = POWrapper.create (MOrgInfo.get (getCtx(), getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
+			String orgEnv = orgInfo.getlbr_NFeEnv();
+			if (getlbr_NFeEnv() == null && orgEnv != null && !orgEnv.isEmpty())
+				setlbr_NFeEnv (orgEnv);
+			
+			if (getlbr_DANFEFormat() == null)
+			{
+				I_W_C_DocType dt = POWrapper.create(new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null), I_W_C_DocType.class);
+				
+				//	Formato da DANFE pelo Tipo de Documento
+				if (dt.getlbr_DANFEFormat() != null)
+					setlbr_DANFEFormat(dt.getlbr_DANFEFormat());
+				
+				//	Formato da DANFE pela Organização
+				else if (orgInfo.getlbr_DANFEFormat() != null)
+					setlbr_DANFEFormat(orgInfo.getlbr_DANFEFormat());
+			}
 		}
 		
 		//	Configura o código de Barras

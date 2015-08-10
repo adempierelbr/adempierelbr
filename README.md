@@ -1,6 +1,8 @@
 AdempiereLBR
 ============
 
+[![Build Status](https://drone.io/bitbucket.org/AdempiereLBR/adempierelbr/status.png)](https://drone.io/bitbucket.org/AdempiereLBR/adempierelbr/latest)
+
 AdempiereLBR é a extensão para o projeto Adempiere contendo a tropicalização para o Brasil. Esta versão do LBR é compatível com o Adempiere 360 LTS.
 
 Instalando
@@ -55,6 +57,37 @@ Existem várias maneiras de ajudar, você pode reportar um BUG [clicando aqui][3
 
 Você pode entrar em contato com os desenvolveres através do [fórum da Kenos][8].
 
+Versões
+=======
+
+Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
+
+1. LBR-201508 [[Download]][18] [[Seed PostgreSQL]][19] [[Seed OracleXE]][20]
+
+	* Melhorias na tradução
+	* Redução no mínimo de dias para protesto de boleto
+	* Impressão das DANFEs via arquivo XML
+	* Correção na VIEW de exibição de impostos
+	* Adição da TAG Número de Volumes no XML
+	* Correção da calculadora na interface web
+	* Adição do Java Target na compilação
+	* [Mais detalhes][17]
+	
+1. LBR-201507 [[Download]][14] [[Seed PostgreSQL]][15] [[Seed OracleXE]][16]
+
+	* Melhorias na tradução
+	* Correção de bugs
+	* Revisão do suporte ao Oracle XE
+	* Correção na adição de NF-e Referenciada
+	* Melhoria no suporte para CSOSN 900
+	* Correção do ícone de localização para interface web
+	* [Mais detalhes][13]
+	
+1. LBR-201506 [[Download]][11] [[Seed PostgreSQL]][12]
+
+	* Versão Inicial
+	* [Mais detalhes][10]
+
 Patrocinadores desta versão
 ===========================
 
@@ -69,3 +102,15 @@ Patrocinadores desta versão
 [6]: http://www.soliton.com.br/
 [7]: https://bitbucket.org/AdempiereLBR/adempierelbr/pull-requests
 [8]: http://forum.kenos.com.br/
+[9]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/all
+[10]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201506
+[11]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201506.tgz
+[12]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201506_PG.tgz
+[13]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201507
+[14]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201507.tgz
+[15]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_PG.tgz
+[16]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_ORA.tgz
+[17]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201508
+[18]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201508.tgz
+[19]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_PG.tgz
+[20]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_ORA.tgz

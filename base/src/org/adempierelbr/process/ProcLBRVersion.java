@@ -17,11 +17,15 @@ import java.util.logging.Level;
 import org.compiere.model.MSysConfig;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+import org.compiere.util.DB;
 
 /**
  *	ProcLBRVersion
  *
  *	Process to show AdempiereLBR About
+ *	
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li> Version Name
  *
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: ProcLBRVersion.java, 26/11/2008 10:07:00 mgrigioni
@@ -57,14 +61,15 @@ public class ProcLBRVersion extends SvrProcess
 		StringBuffer msg = new StringBuffer();
 
 		msg.append("<br><font color=\"#000000\">");
-		msg.append("<b>Versão ADempiereLBR: </b>");
+		msg.append("<br/>Verifique a versão mais recente da Localização Brasil em ");
+		msg.append("<br/><a href=\"http://bitbucket.org/AdempiereLBR/adempierelbr\">http://bitbucket.org/AdempiereLBR/adempierelbr</a>");
+		msg.append("<br/><br/><b>Versão ADempiereLBR: </b>");
 		msg.append(MSysConfig.getValue("LBR_VERSION_NO") + "<br>");
 		msg.append("<b>Último Script Executado: </b>");
-		msg.append(MSysConfig.getValue("LBR_LAST_SCRIPT_EXECUTED") + "<br><br>");
+		msg.append(DB.getSQLValueString(null, "SELECT Name FROM AD_MigrationScript ORDER BY Created DESC") + "<br><br>");
 		msg.append("</font>");
 
-		return msg.toString();
+		return "@Success@" + msg.toString();
 	}	//	doIt
-
 
 }	//	ProcLBRVersion

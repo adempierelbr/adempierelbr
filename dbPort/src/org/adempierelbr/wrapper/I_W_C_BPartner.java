@@ -300,4 +300,18 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
+
+	
+	/** Column name lbr_TransactionType */
+    public static final String COLUMNNAME_lbr_TransactionTypeVendor = "lbr_TransactionTypeVendor";
+	
+	/** Set Transaction Type.
+	  * Defines the Transaction Type
+	  */
+	public void setlbr_TransactionTypeVendor (String lbr_TransactionTypeVendor);
+
+	/** Get Transaction Type.
+	  * Defines the Transaction Type
+	  */
+	public String getlbr_TransactionTypeVendor();
 }
