@@ -333,23 +333,6 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		//
 		addLine(lt);
 	}	//	addLine
-
-	/**
-	 * 	Create a new delete button
-	 *
-	 * @return JButton Delete
-	 */
-	private JButton createTaxButton(String title)
-	{
-		JButton     delLineButton = new JButton();
-//		delLineButton.setIcon(Env.getImageIcon("Delete24.gif"));
-		delLineButton.setMargin(new Insets(0,10,0,10));
-		delLineButton.setToolTipText(title);
-		delLineButton.setText(title);
-		delLineButton.addActionListener(this);
-		//
-		return delLineButton;
-	}	//	getDelButton
 	
 	/**
 	 * 	Create a new delete button
