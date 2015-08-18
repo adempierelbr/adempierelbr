@@ -73,6 +73,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="54086" trl="Y">
+    <value column="Name" original="Discontinued At">Descontinuado Em</value>
+    <value column="PrintName" original="Discontinued At">Descontinuado Em</value>
+    <value column="Description" original="Discontinued At indicates Date when product was discontinued">Descontinuado Em indica a Data quando um produto foi descontinuado</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="54087" trl="Y">
     <value column="Name" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>
     <value column="PrintName" original="Sum Qty on Hand">Qde em Mãos (Soma)</value>

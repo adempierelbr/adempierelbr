@@ -29452,9 +29452,9 @@ Credita Conta Trabalho em Processamento </value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="54086" trl="Y">
-    <value column="Name" original="Discontinued At">Descontinuado Até</value>
-    <value column="PrintName" original="Discontinued At">Descontinuado Até</value>
-    <value column="Description" original="Discontinued At indicates Date when product was discontinued">Descontinuado Até indica a Data quando um produto foi descontinuado</value>
+    <value column="Name" original="Discontinued At">Descontinuado Em</value>
+    <value column="PrintName" original="Discontinued At">Descontinuado Em</value>
+    <value column="Description" original="Discontinued At indicates Date when product was discontinued">Descontinuado Em indica a Data quando um produto foi descontinuado</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
