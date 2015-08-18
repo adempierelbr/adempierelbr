@@ -18,6 +18,10 @@
     <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />
   </row>
+  <row id="329" trl="Y">
+    <value column="MsgText" original="Match From">Confrontar (origem)</value>
+    <value column="MsgTip" original="" />
+  </row>
   <row id="334" trl="Y">
     <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />

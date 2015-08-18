@@ -4725,8 +4725,8 @@ Sub Tipo PV de &lt;b&gt;PDV&lt;/b&gt; (Ponto de Venda) irá gerar todos os docum
     <value column="Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
     <value column="PO_Description" original="Material Receipt Document">Documento de Recebimento de Material</value>
     <value column="PO_Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
-    <value column="PO_Name" original="Receipt">Recibo</value>
-    <value column="PO_PrintName" original="Receipt">Recibo</value>
+    <value column="PO_Name" original="Receipt">Recebimento</value>
+    <value column="PO_PrintName" original="Receipt">Recebimento</value>
   </row>
   <row id="1026" trl="Y">
     <value column="Name" original="Shipment/Receipt Line">Linha de Remessa/Recebimento</value>

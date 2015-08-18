@@ -33,6 +33,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="1025" trl="Y">
+    <value column="Name" original="Shipment/Receipt">Remessa/Recebimento</value>
+    <value column="PrintName" original="Shipment/Receipt">Remessa/Recebimento</value>
+    <value column="Description" original="Material Shipment Document">Documento de Remessa de Material</value>
+    <value column="Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
+    <value column="PO_Description" original="Material Receipt Document">Documento de Recebimento de Material</value>
+    <value column="PO_Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
+    <value column="PO_Name" original="Receipt">Recebimento</value>
+    <value column="PO_PrintName" original="Receipt">Recebimento</value>
+  </row>
   <row id="2968" trl="Y">
     <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
     <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>

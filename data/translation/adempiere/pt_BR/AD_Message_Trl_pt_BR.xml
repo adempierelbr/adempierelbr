@@ -916,7 +916,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="329" trl="Y">
-    <value column="MsgText" original="Match From">Confrontar com</value>
+    <value column="MsgText" original="Match From">Confrontar (origem)</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="330" trl="Y">
