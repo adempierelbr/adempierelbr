@@ -55,15 +55,6 @@ public class ValidatorBPartner implements ModelValidator
 
 	/** RegEx para validação de múltiplos e-mails */
 	public static final String REGEX_EMAIL = "^(([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5}){1,25})+)*$";
-	
-	/**
-	 *	Constructor.
-	 *	The class is instanciated when logging in and client is selected/known
-	 */
-	public ValidatorBPartner ()
-	{
-		super ();
-	}	//	ValidatorBPartner
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ValidatorBPartner.class);
@@ -140,7 +131,6 @@ public class ValidatorBPartner implements ModelValidator
 	public String modelChange (PO po, int type) throws Exception
 	{
 		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_NEW);
-		boolean isAfterChange = type == TYPE_AFTER_CHANGE;
 
 		if (po instanceof MBPartner && isChange)
 			return modelChange((MBPartner) po);
@@ -148,20 +138,44 @@ public class ValidatorBPartner implements ModelValidator
 		else if (po instanceof MBPartnerLocation && isChange)
 			return modelChange ((MBPartnerLocation) po);
 
-		else if (po instanceof MOrgInfo && (isChange || isAfterChange))
+		else if (po instanceof MOrgInfo)
+			return modelChange ((MOrgInfo) po, type);
+
+		return null;
+	}	//	modelChange
+
+	/**
+	 *  Validate MBPartnerLocation
+	 *
+	 * @param bpl
+	 * @return
+	 */
+	private String modelChange(MOrgInfo oi, int type)
+	{
+		if (type == TYPE_CHANGE || type == TYPE_NEW)
 		{
-			I_W_AD_OrgInfo oi = POWrapper.create (po, I_W_AD_OrgInfo.class);
-			String CNPJ = oi.getlbr_CNPJ();
+			/**
+			 * 	Validação do CNPJ
+			 */
+			I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
+			String CNPJ = oiW.getlbr_CNPJ();
 			//
 			if (CNPJ != null 
 					&& !CNPJ.trim().isEmpty()
 					&& !validaCNPJ(CNPJ))
 					return "CNPJ Inválido";
+			
+			/**
+			 * 	Preenchimento do campo de CNPJ no TaxID
+			 */
+			if ((type == TYPE_NEW || oi.is_ValueChanged(I_W_AD_OrgInfo.COLUMNNAME_lbr_CNPJ))
+					&& oiW.getlbr_CNPJ() != null)
+				oiW.setTaxID(oiW.getlbr_CNPJ());
 		}
-
+		//
 		return null;
-	}	//	modelChange
-
+	}
+	
 	/**
 	 *  Validate MBPartnerLocation
 	 *
