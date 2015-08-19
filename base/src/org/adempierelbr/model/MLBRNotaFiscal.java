@@ -146,6 +146,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public MLBRNotaFiscal (Properties ctx, int ID, String trxName)
 	{
 		super (ctx, ID, trxName);
+		//
+		MClientInfo cInfo = MClientInfo.get (ctx, Env.getAD_Client_ID (ctx));
+		cInfoW = POWrapper.create (cInfo, I_W_AD_ClientInfo.class);
 	}	//	MLBRNotaFiscal
 
 	/**
@@ -157,6 +160,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public MLBRNotaFiscal (Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
+		//
+		MClientInfo cInfo = MClientInfo.get (ctx, Env.getAD_Client_ID (ctx));
+		cInfoW = POWrapper.create (cInfo, I_W_AD_ClientInfo.class);
 	}	//	MLBRNotaFiscal
 
 	/**
@@ -1102,7 +1108,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					&& (iLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
-					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
+					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()
+					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductWithhold_ID()))
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
@@ -1209,10 +1216,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (oLine.isDescription())
 				continue;
 			
-			//	Despesas Adicionais
-			MClientInfo cInfo = MClientInfo.get (order.getCtx(), order.getAD_Client_ID());
-			I_W_AD_ClientInfo cInfoW = POWrapper.create(cInfo, I_W_AD_ClientInfo.class);
-			
 			/**
 			 * 	Estes valores já foram ajustado no nível do cabeçalho,
 			 * 		portanto devem ser ignorados
@@ -1221,7 +1224,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					&& (oLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
-					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
+					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()
+					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductWithhold_ID()))
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
@@ -2155,55 +2159,35 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			 * 	Valores, por exemplo @NF_VAR|AMOUNTS@:
 			 * 
 			 * 		Valor Bruto    - R$       4135,48
-			 *
-			 *		Retenções:
-			 *		IR             - R$         62,03
-			 *
+			 *		Retenção Total - R$         62,03
 			 *		Valor Liquido  - R$       4073,45
 			 */
 			else if (variable.endsWith("AMOUNTS"))
 			{
-				X_LBR_NFTax[] taxes = getTaxes();
-				String header = "";
-				String content = "";
-				String footer = "";
+				BigDecimal withholdAmt = getWithholdAmt();
+				String result = "";
 				Boolean printTaxes = false;
 				//
-				if (taxes == null)
+				if (withholdAmt == null || withholdAmt.signum() == 0)
 					;
 				else
 				{
-					header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
-					header += "- R$ ";
-					header += TextUtil.lPad (mf.format (new Object[]{getlbr_ServiceTotalAmt()}), ' ', 13);
-					header += "\n\n";
+					printTaxes = true;
 					//
-					if (taxes.length == 1)
-						header += "Retenção:\n";
-					else if (taxes.length > 1)
-						header += "Retenções:\n";
-					//
-					for (X_LBR_NFTax tax : taxes)
-					{
-						X_LBR_TaxGroup tg = new X_LBR_TaxGroup (Env.getCtx(), tax.getLBR_TaxGroup_ID(), null);
-						if (tg.getName() == null || tg.getName().equals("ISS"))	//	ISS ja e destacado normalmente
-							continue;
-						//
-						printTaxes = true;
-						//
-						content += TextUtil.rPad (tg.getName(), 15);
-						content += "- R$ ";
-						content += TextUtil.lPad (mf.format (new Object[]{tax.getlbr_TaxAmt().abs()}), ' ', 13);
-						content += "\n";
-					}
-					footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
-					footer += "- R$ ";
-					footer += TextUtil.lPad (mf.format (new Object[]{getGrandTotal()}), ' ', 13);
-					footer += "\n";
+					result += "\n" + TextUtil.rPad("Valor Bruto", 15);
+					result += "- R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{getlbr_ServiceTotalAmt()}), ' ', 13);
+					result += "\n";
+					result += "Retenção Total - R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{withholdAmt.abs()}), ' ', 13);
+					result += "\n" + TextUtil.rPad("Valor Líquido", 15);
+					result += "- R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{getGrandTotal()}), ' ', 13);
+					result += "\n";
 				}
 				//
 				if (printTaxes)
-					return header + content + footer;
+					return result;
 				else
 					return "";
 			}
@@ -2276,6 +2260,23 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 		return list.toArray(new MLBRNFTax[list.size()]);
 	}	//	getTaxes
+	
+	/**
+	 * 	
+	 * 	@return
+	 */
+	public BigDecimal getWithholdAmt ()
+	{
+		String sql = "SELECT SUM (LineNetAmt) "
+				+ "FROM C_InvoiceLine il "
+				+ "WHERE C_Invoice_ID=? AND M_Product_ID=?";
+		//
+		BigDecimal amount = DB.getSQLValueBD (get_TrxName(), sql, getC_Invoice_ID(), cInfoW.getLBR_ProductWithhold_ID());
+		//
+		if (amount == null)
+			return Env.ZERO;
+		return amount;
+	}	//	getWithholdAmt
 	
 	/**
 	 * 	Get Business Partner
@@ -2444,6 +2445,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
+
+	private I_W_AD_ClientInfo cInfoW;
 	
 	/**
 	 * 	Unlock Document.

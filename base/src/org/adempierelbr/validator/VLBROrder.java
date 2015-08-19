@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
@@ -24,6 +25,7 @@ import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
@@ -53,6 +55,7 @@ public class VLBROrder implements ModelValidator
 	public final static int	FREIGHT 	 = 1;
 	public final static int	INSURANCE 	 = 2;
 	public final static int	OTHERCHARGES = 3;
+	public final static int	WITHHOLD 	 = 4;
 
 	/**
 	 *	Initialize Validation
@@ -210,21 +213,28 @@ public class VLBROrder implements ModelValidator
 		{			
 			String result = null;
 			//
-			result = addCharge ((MInvoice) po, SISCOMEX);
+			MInvoice invoice = (MInvoice) po;
+			I_W_C_Invoice wInvoice = POWrapper.create(invoice, I_W_C_Invoice.class);
+			//
+			result = addCharge (invoice, SISCOMEX);
 			if (result != null)
 				return result;
 			
-			result = addCharge ((MInvoice) po, FREIGHT);
+			result = addCharge (invoice, FREIGHT);
 			if (result != null)
 				return result;
 			
-			result = addCharge ((MInvoice) po, INSURANCE);
+			result = addCharge (invoice, INSURANCE);
 			if (result != null)
 				return result;
 			
-			result = addCharge ((MInvoice) po, OTHERCHARGES);
+			result = addCharge (invoice, OTHERCHARGES);
 			if (result != null)
 				return result;
+			
+			//	Calcula a retenção dos impostos de serviço
+			if (wInvoice.isHasWithHold())
+				result = addCharge (invoice, WITHHOLD);
 			//
 			return result;
 		}
@@ -509,13 +519,16 @@ public class VLBROrder implements ModelValidator
 		MInvoiceLine chgLine = null;
 		
 		//	Verifica se a despesa está cadastrada na empresa
-		if ((cInfoW.getLBR_ProductSISCOMEX_ID() <= 0 && chargeType == SISCOMEX)
-				|| (cInfoW.getM_ProductFreight_ID() <= 0 && chargeType == FREIGHT)
-				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 && chargeType == INSURANCE)
-				|| (cInfoW.getLBR_ProductOtherCharges_ID() <= 0 && chargeType == OTHERCHARGES))
+		if ((cInfoW.getLBR_ProductSISCOMEX_ID() <= 0 			&& chargeType == SISCOMEX)
+				|| (cInfoW.getM_ProductFreight_ID() <= 0 		&& chargeType == FREIGHT)
+				|| (cInfoW.getLBR_ProductInsurance_ID() <= 0 	&& chargeType == INSURANCE)
+				|| (cInfoW.getLBR_ProductOtherCharges_ID() <= 0 && chargeType == OTHERCHARGES)
+				|| (cInfoW.getLBR_ProductWithhold_ID() <= 0 	&& chargeType == WITHHOLD))
 			return null;
 		
 		int M_Product_ID = 0;
+		
+		BigDecimal amount = Env.ZERO;
 		
 		if (chargeType 		== SISCOMEX)
 			M_Product_ID = cInfoW.getLBR_ProductSISCOMEX_ID();
@@ -525,8 +538,38 @@ public class VLBROrder implements ModelValidator
 			M_Product_ID = cInfoW.getLBR_ProductInsurance_ID();
 		else if (chargeType == OTHERCHARGES)
 			M_Product_ID = cInfoW.getLBR_ProductOtherCharges_ID();
+		else if (chargeType == WITHHOLD)
+		{
+			M_Product_ID = cInfoW.getLBR_ProductWithhold_ID();
+			
+			//	Withhold Amount
+			String sql = "SELECT   " + 
+						"        COALESCE (SUM (TaxAmt), 0) " + 
+						"FROM " + 
+						" " + 
+						"   (SELECT  " + 
+						"            tn.LBR_WithholdGroup,  " + 
+						"            SUM (TaxAmt) AS TaxAmt,  " + 
+						"            AVG (WithholdThreshold) AS WithholdThreshold " + 
+						"    FROM  " + 
+						"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
+						"    WHERE  " + 
+						"            TRUE " + 
+						"            AND it.C_Invoice_ID=?  " + 
+						"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
+						"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
+						"            AND tn.LBR_WithholdType='T' " + 
+						"    GROUP BY  " + 
+						"            tn.LBR_WithholdGroup) a " + 
+						"WHERE " + 
+						"        TaxAmt >= WithholdThreshold"; 
+			
+			amount = DB.getSQLValueBD (invoice.get_TrxName(), sql, invoice.getC_Invoice_ID()).negate();
+		}
 		
-		BigDecimal amount = getChargeAmt (invoice, chargeType);
+		//	Charge Amount
+		if (chargeType != WITHHOLD)
+			amount = getChargeAmt (invoice, chargeType);
 
 		if (amount == null 
 				|| amount.compareTo(Env.ZERO) == 0)
