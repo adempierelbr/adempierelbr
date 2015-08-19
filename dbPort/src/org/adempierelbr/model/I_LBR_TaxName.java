@@ -92,19 +92,6 @@ public interface I_LBR_TaxName
 	  */
 	public String getDescription();
 
-    /** Column name HasWithHold */
-    public static final String COLUMNNAME_HasWithHold = "HasWithHold";
-
-	/** Set Has WithHold.
-	  * Defines if the Tax, has WithHold
-	  */
-	public void setHasWithHold (boolean HasWithHold);
-
-	/** Get Has WithHold.
-	  * Defines if the Tax, has WithHold
-	  */
-	public boolean isHasWithHold();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -117,6 +104,19 @@ public interface I_LBR_TaxName
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name LBR_HasWithhold */
+    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
+
+	/** Set Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
+
+	/** Get Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public boolean isLBR_HasWithhold();
 
     /** Column name LBR_TaxName_ID */
     public static final String COLUMNNAME_LBR_TaxName_ID = "LBR_TaxName_ID";
@@ -159,6 +159,19 @@ public interface I_LBR_TaxName
 	  */
 	public String getLBR_WithholdGroup();
 
+    /** Column name LBR_WithholdThreshold */
+    public static final String COLUMNNAME_LBR_WithholdThreshold = "LBR_WithholdThreshold";
+
+	/** Set Withhold Threshold.
+	  * Defines the Withhold Threshold 
+	  */
+	public void setLBR_WithholdThreshold (BigDecimal LBR_WithholdThreshold);
+
+	/** Get Withhold Threshold.
+	  * Defines the Withhold Threshold 
+	  */
+	public BigDecimal getLBR_WithholdThreshold();
+
     /** Column name LBR_WithholdType */
     public static final String COLUMNNAME_LBR_WithholdType = "LBR_WithholdType";
 
@@ -196,19 +209,6 @@ public interface I_LBR_TaxName
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
-
-    /** Column name WithHoldThreshold */
-    public static final String COLUMNNAME_WithHoldThreshold = "WithHoldThreshold";
-
-	/** Set WithHold Threshold.
-	  * Defines the WithHold Threshold 
-	  */
-	public void setWithHoldThreshold (BigDecimal WithHoldThreshold);
-
-	/** Get WithHold Threshold.
-	  * Defines the WithHold Threshold 
-	  */
-	public BigDecimal getWithHoldThreshold();
 
     /** Column name lbr_TaxType */
     public static final String COLUMNNAME_lbr_TaxType = "lbr_TaxType";

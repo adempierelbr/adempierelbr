@@ -233,7 +233,7 @@ public class VLBROrder implements ModelValidator
 				return result;
 			
 			//	Calcula a retenção dos impostos de serviço
-			if (wInvoice.isHasWithHold())
+			if (wInvoice.isLBR_HasWithhold())
 				result = addCharge (invoice, WITHHOLD);
 			//
 			return result;

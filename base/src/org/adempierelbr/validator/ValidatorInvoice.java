@@ -192,7 +192,7 @@ public class ValidatorInvoice implements ModelValidator
 			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
 		
 		//	Has tax Withhold
-		wInvoice.setHasWithHold(wOrder.isHasWithHold());
+		wInvoice.setLBR_HasWithhold(wOrder.isLBR_HasWithhold());
 
 		return null;
 	}	//	modelChange

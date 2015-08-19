@@ -41,6 +41,28 @@ public interface I_W_M_Production extends I_M_Production
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
+    /** Column name IsCancelled */
+    public static final String COLUMNNAME_IsCancelled = "IsCancelled";
+
+	/** Set Cancelled.
+	  * The transaction was cancelled
+	  */
+	public void setIsCancelled (boolean IsCancelled);
+
+	/** Get Cancelled.
+	  * The transaction was cancelled
+	  */
+	public boolean isCancelled();
+
+    /** Column name LBR_ProcCancelProduction */
+    public static final String COLUMNNAME_LBR_ProcCancelProduction = "LBR_ProcCancelProduction";
+
+	/** Set Cancel Production	  */
+	public void setLBR_ProcCancelProduction (String LBR_ProcCancelProduction);
+
+	/** Get Cancel Production	  */
+	public String getLBR_ProcCancelProduction();
+
     /** Column name lbr_IsManufactured */
     public static final String COLUMNNAME_lbr_IsManufactured = "lbr_IsManufactured";
 

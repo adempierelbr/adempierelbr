@@ -113,6 +113,15 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public String getLBR_IndPres();
 
+    /** Column name LBR_TaxRegime */
+    public static final String COLUMNNAME_LBR_TaxRegime = "LBR_TaxRegime";
+
+	/** Set Tax Regime	  */
+	public void setLBR_TaxRegime (String LBR_TaxRegime);
+
+	/** Get Tax Regime	  */
+	public String getLBR_TaxRegime();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -125,15 +134,6 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  * Primary key table LBR_Tax
 	  */
 	public int getLBR_Tax_ID();
-
-    /** Column name Z_TaxRegime */
-    public static final String COLUMNNAME_Z_TaxRegime = "Z_TaxRegime";
-
-	/** Set Tax Regime	  */
-	public void setZ_TaxRegime (String Z_TaxRegime);
-
-	/** Get Tax Regime	  */
-	public String getZ_TaxRegime();
 
     /** Column name lbr_CCM */
     public static final String COLUMNNAME_lbr_CCM = "lbr_CCM";

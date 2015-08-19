@@ -121,7 +121,7 @@ public class MLBRTaxName extends X_LBR_TaxName
 			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_Name));
 			return false;
 		}
-		if (isHasWithHold() && getLBR_WithholdType() == null)
+		if (isLBR_HasWithhold() && getLBR_WithholdType() == null)
 		{
 			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_LBR_WithholdType));
 			return false;

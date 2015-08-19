@@ -109,7 +109,7 @@ public class MLBRNFTax extends X_LBR_NFTax
 		if (tax.getLBR_TaxName_ID() > 0)
 		{
 			MLBRTaxName tn = new MLBRTaxName (getCtx(), tax.getLBR_TaxName_ID(), null);
-			hasWithhold = tn.isHasWithHold();
+			hasWithhold = tn.isLBR_HasWithhold();
 		}
 		
 		//	Caso não seja de retenção e tenha valor negativo, não deve-se destacar na NF

@@ -114,7 +114,7 @@ public class CalloutOrder extends CalloutEngine
 			mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
 		
 		mTab.setValue(I_W_C_Order.COLUMNNAME_PaymentRule, MOrder.PAYMENTRULE_OnCredit);
-		mTab.setValue(I_W_C_Order.COLUMNNAME_HasWithHold, bpartner.isHasWithHold());
+		mTab.setValue(I_W_C_Order.COLUMNNAME_LBR_HasWithhold, bpartner.isLBR_HasWithhold());
 		
 		return "";
 	}	//	PaymentRule

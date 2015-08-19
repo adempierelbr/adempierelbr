@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150727L;
+	private static final long serialVersionUID = 20150819L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -885,6 +885,37 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return bd;
 	}
 
+	/** Set Reactivate Nota Fiscal.
+		@param LBR_ProcReactivateNF 
+		This Process Reactivates the Nota Fiscal Document
+	  */
+	public void setLBR_ProcReactivateNF (String LBR_ProcReactivateNF)
+	{
+		set_Value (COLUMNNAME_LBR_ProcReactivateNF, LBR_ProcReactivateNF);
+	}
+
+	/** Get Reactivate Nota Fiscal.
+		@return This Process Reactivates the Nota Fiscal Document
+	  */
+	public String getLBR_ProcReactivateNF () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_ProcReactivateNF);
+	}
+
+	/** Set Process Now.
+		@param LBR_Processing2 Process Now	  */
+	public void setLBR_Processing2 (String LBR_Processing2)
+	{
+		set_Value (COLUMNNAME_LBR_Processing2, LBR_Processing2);
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public String getLBR_Processing2 () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Processing2);
+	}
+
 	/** Set Send EMail.
 		@param LBR_SendEMail 
 		Send EMail with Nota Fiscal
@@ -1001,23 +1032,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set Reactivate Nota Fiscal.
-		@param ProcReactivateNF 
-		This Process Reactivates the Nota Fiscal Document
-	  */
-	public void setProcReactivateNF (String ProcReactivateNF)
-	{
-		set_Value (COLUMNNAME_ProcReactivateNF, ProcReactivateNF);
-	}
-
-	/** Get Reactivate Nota Fiscal.
-		@return This Process Reactivates the Nota Fiscal Document
-	  */
-	public String getProcReactivateNF () 
-	{
-		return (String)get_Value(COLUMNNAME_ProcReactivateNF);
-	}
-
 	/** Set Processed.
 		@param Processed 
 		The document has been processed
@@ -1061,20 +1075,6 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			return "Y".equals(oo);
 		}
 		return false;
-	}
-
-	/** Set Process Now.
-		@param Processing2 Process Now	  */
-	public void setProcessing2 (String Processing2)
-	{
-		set_Value (COLUMNNAME_Processing2, Processing2);
-	}
-
-	/** Get Process Now.
-		@return Process Now	  */
-	public String getProcessing2 () 
-	{
-		return (String)get_Value(COLUMNNAME_Processing2);
 	}
 
 	/** Set Total Lines.
