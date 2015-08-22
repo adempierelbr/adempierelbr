@@ -42,6 +42,7 @@ import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
@@ -1554,6 +1555,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (bpLocation == null)
 			return;
 
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (bpLocation.getCtx(), bpLocation.getC_BPartner_ID(), bpLocation.get_TrxName()), I_W_C_BPartner.class);
+		
 		setC_BPartner_ID(bpLocation.getC_BPartner_ID());
 		setC_BPartner_Location_ID(bpLocation.getC_BPartner_Location_ID());
 		
@@ -1563,8 +1566,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
 		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
-		String BPTypeBR = BPartnerUtil.getBPTypeBR(new MBPartner (getCtx(), bpLocation.getC_BPartner_ID(), null));
-		if (BPTypeBR != null && !BPTypeBR.equals(""))
+		String BPTypeBR = bp.getlbr_BPTypeBR();
+		if (BPTypeBR != null && !BPTypeBR.isEmpty())
 			setlbr_BPTypeBR(BPTypeBR);
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
