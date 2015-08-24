@@ -352,20 +352,22 @@ public class VLBRTax implements ModelValidator
 	 * 	@return true if sucess
 	 */
 	private boolean updateTax (PO po, boolean save)
-	{		
+	{
+		PO parentPO = po;
+		
 		//	Linha do Pedido - Pega o documento Pai
 		if (MOrderLine.Table_Name.equals(po.get_TableName()))
 		{
-			po = ((MOrderLine) po).getParent();
+			parentPO = ((MOrderLine) po).getParent();
 		}
 		
 		//	Linha da Fatura - Pega o documento Pai
 		else if (MInvoiceLine.Table_Name.equals(po.get_TableName()))
 		{
-			po = ((MInvoiceLine) po).getParent();
+			parentPO = ((MInvoiceLine) po).getParent();
 		}
 		
-		String tableName = po.get_TableName();
+		String tableName = parentPO.get_TableName();
 
 		//	Cabeçalhos de Documentos
 		if (!MOrder.Table_Name.equals(tableName)
@@ -374,20 +376,24 @@ public class VLBRTax implements ModelValidator
 			return false;
 		}
 			
-		log.fine("[PO=" + po + ", Save=" + save + "]");
+		log.fine("[PO=" + parentPO + ", Save=" + save + "]");
 		BigDecimal totalLines = Env.ZERO;
 
 		//	Delete Taxes
 		DB.executeUpdateEx("DELETE " + tableName + "Tax " +
-				"WHERE " + tableName + "_ID=" + po.get_ID(), po.get_TrxName());
+				"WHERE " + tableName + "_ID=" + parentPO.get_ID(), po.get_TrxName());
 		
 		//	Array para somar os impostos de todas as linhas
 		Map<Integer, Object[]> taxes = new HashMap<Integer, Object[]>();
 		
 		//	All Lines - Order
 		if (MOrder.Table_Name.equals(tableName))
-			for (MOrderLine oLine : ((MOrder) po).getLines())
+			for (MOrderLine oLine : ((MOrder) parentPO).getLines())
 			{
+				//	User original PO
+				if (oLine.get_ID() == po.get_ID() && MOrderLine.Table_Name.equals(po.get_TableName()))
+					oLine = (MOrderLine) po;
+				
 				I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
 				
 				if (oLineW.getLBR_Tax_ID() > 0)
@@ -401,8 +407,12 @@ public class VLBRTax implements ModelValidator
 		
 		//	All Lines - Invoice
 		else if (MInvoice.Table_Name.equals(tableName))
-			for (MInvoiceLine iLine : ((MInvoice) po).getLines())
+			for (MInvoiceLine iLine : ((MInvoice) parentPO).getLines())
 			{
+				//	User original PO
+				if (iLine.get_ID() == po.get_ID() && MInvoiceLine.Table_Name.equals(po.get_TableName()))
+					iLine = (MInvoiceLine) po;
+				
 				I_W_C_InvoiceLine iLineW = POWrapper.create (iLine, I_W_C_InvoiceLine.class);
 				
 				if (iLineW.getLBR_Tax_ID() > 0)
@@ -424,33 +434,33 @@ public class VLBRTax implements ModelValidator
 			BigDecimal taxBaseAmt		= (BigDecimal) taxes.get(C_Tax_ID)[1];
 			Boolean isTaxItaxncluded 	= (Boolean) taxes.get(C_Tax_ID)[2];
 			
-			if (!po.get_ValueAsBoolean("IsTaxIncluded"))
+			if (!parentPO.get_ValueAsBoolean("IsTaxIncluded"))
 				isTaxItaxncluded = false;
 			
 			if (MOrder.Table_Name.equals(tableName))
 			{
-				MOrderTax newOTax = new MOrderTax(Env.getCtx(), 0, po.get_TrxName());
-				newOTax.setAD_Org_ID(po.getAD_Org_ID());
-				newOTax.setC_Order_ID(po.get_ID());
+				MOrderTax newOTax = new MOrderTax(Env.getCtx(), 0, parentPO.get_TrxName());
+				newOTax.setAD_Org_ID(parentPO.getAD_Org_ID());
+				newOTax.setC_Order_ID(parentPO.get_ID());
 				newOTax.setC_Tax_ID(C_Tax_ID);
 				newOTax.setIsTaxIncluded(isTaxItaxncluded);
 				newOTax.setTaxBaseAmt(taxBaseAmt.setScale(2, BigDecimal.ROUND_HALF_UP));
 				newOTax.setTaxAmt(taxAmt.setScale(2, BigDecimal.ROUND_HALF_UP));
 				//
-				if (!newOTax.save(po.get_TrxName()))
+				if (!newOTax.save(parentPO.get_TrxName()))
 					return false;
 			}
 			else if (MInvoice.Table_Name.equals(tableName))
 			{
-				MInvoiceTax newITax = new MInvoiceTax(Env.getCtx(), 0, po.get_TrxName());
-				newITax.setAD_Org_ID(po.getAD_Org_ID());
-				newITax.setC_Invoice_ID(po.get_ID());
+				MInvoiceTax newITax = new MInvoiceTax(Env.getCtx(), 0, parentPO.get_TrxName());
+				newITax.setAD_Org_ID(parentPO.getAD_Org_ID());
+				newITax.setC_Invoice_ID(parentPO.get_ID());
 				newITax.setC_Tax_ID(C_Tax_ID);
 				newITax.setIsTaxIncluded(isTaxItaxncluded);
 				newITax.setTaxBaseAmt(taxBaseAmt.setScale(2, BigDecimal.ROUND_HALF_UP));
 				newITax.setTaxAmt(taxAmt.setScale(2, BigDecimal.ROUND_HALF_UP));
 				//
-				if (!newITax.save(po.get_TrxName()))
+				if (!newITax.save(parentPO.get_TrxName()))
 					return false;
 			}
 			//
@@ -465,20 +475,20 @@ public class VLBRTax implements ModelValidator
 			 * 		são adicionados no total, já para a fatura
 			 * 		é adicionado uma nova linha.
 			 */
-			totalLines = totalLines.add(VLBROrder.getChargeAmt(po));
-			grandTotal = grandTotal.add(VLBROrder.getChargeAmt(po));
+			totalLines = totalLines.add(VLBROrder.getChargeAmt(parentPO));
+			grandTotal = grandTotal.add(VLBROrder.getChargeAmt(parentPO));
 			//
-			((MOrder)po).setTotalLines(totalLines);
-			((MOrder)po).setGrandTotal(grandTotal);
+			((MOrder)parentPO).setTotalLines(totalLines);
+			((MOrder)parentPO).setGrandTotal(grandTotal);
 		}
 		else if (MInvoice.Table_Name.equals(tableName))
 		{
-			((MInvoice)po).setTotalLines(totalLines);
-			((MInvoice)po).setGrandTotal(grandTotal);
+			((MInvoice)parentPO).setTotalLines(totalLines);
+			((MInvoice)parentPO).setGrandTotal(grandTotal);
 		}
 		
 		if (save)
-			po.save();
+			parentPO.save();
 		
 		return true;
 	}	//	updateTax
