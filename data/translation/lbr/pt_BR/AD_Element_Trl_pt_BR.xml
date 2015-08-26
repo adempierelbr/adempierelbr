@@ -13,6 +13,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="369" trl="Y">
+    <value column="Name" original="Document Controlled">Controlada por Documento</value>
+    <value column="PrintName" original="Doc Controlled">Controlada por Documento</value>
+    <value column="Description" original="Control account - If an account is controlled by a document, you cannot post manually to it">Conta de Controle - Se uma conta for controlada por um documento, você não pode fazer lançamentos manuais nessa conta</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="530" trl="Y">
     <value column="Name" original="On Hand Quantity">Quantidade Em Mãos</value>
     <value column="PrintName" original="On Hand Qty">Qde Em Mãos</value>

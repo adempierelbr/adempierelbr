@@ -1988,8 +1988,8 @@ Há duas razões para desativar e não excluir registros:
     <value column="PO_PrintName" original="" />
   </row>
   <row id="369" trl="Y">
-    <value column="Name" original="Document Controlled">Documento Controlado</value>
-    <value column="PrintName" original="Doc Controlled">Documento Controlado</value>
+    <value column="Name" original="Document Controlled">Controlada por Documento</value>
+    <value column="PrintName" original="Doc Controlled">Controlada por Documento</value>
     <value column="Description" original="Control account - If an account is controlled by a document, you cannot post manually to it">Conta de Controle - Se uma conta for controlada por um documento, você não pode fazer lançamentos manuais nessa conta</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
