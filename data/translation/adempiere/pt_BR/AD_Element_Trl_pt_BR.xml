@@ -12668,8 +12668,8 @@ Se todos os elementos na coluna de uma tabela são Nulo e se selecionados, a col
     <value column="PO_PrintName" original="" />
   </row>
   <row id="2019" trl="Y">
-    <value column="Name" original="Attribute Set Instance">Instância do Conjunto de Atributos</value>
-    <value column="PrintName" original="Attribute Set Instance">Instância do Conjunto de Atributos</value>
+    <value column="Name" original="Attribute Set Instance">Instância de Atributos</value>
+    <value column="PrintName" original="Attribute Set Instance">Instância de Atributos</value>
     <value column="Description" original="Product Attribute Set Instance">Instância de Conjunto de Atributos de Produto</value>
     <value column="Help" original="The values of the actual Product Attribute Instances.  The product level attributes are defined on Product level.">São os valores dos "Atributos das Instâncias de Produtos" reais.  Os atributos de nível de produto são definidos no nível de Produto.</value>
     <value column="PO_Description" original="" />
@@ -20072,8 +20072,8 @@ Exemplo: "Alterada-Criada" poderia listar a idade das entradas em dias</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="2799" trl="Y">
-    <value column="Name" original="Attribute Set Instance To">Instância Alvo do Conjunto de Atributos</value>
-    <value column="PrintName" original="Attribute Set Instance To">Instância Alvo do Conjunto de Atributos</value>
+    <value column="Name" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
+    <value column="PrintName" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
     <value column="Description" original="Target Product Attribute Set Instance">É o alvo da Instância de Conjunto de Atributos de Produto</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />

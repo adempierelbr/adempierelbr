@@ -53,6 +53,26 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="Receipt">Recebimento</value>
     <value column="PO_PrintName" original="Receipt">Recebimento</value>
   </row>
+  <row id="2019" trl="Y">
+    <value column="Name" original="Attribute Set Instance">Instância de Atributos</value>
+    <value column="PrintName" original="Attribute Set Instance">Instância de Atributos</value>
+    <value column="Description" original="Product Attribute Set Instance">Instância de Conjunto de Atributos de Produto</value>
+    <value column="Help" original="The values of the actual Product Attribute Instances.  The product level attributes are defined on Product level.">São os valores dos "Atributos das Instâncias de Produtos" reais.  Os atributos de nível de produto são definidos no nível de Produto.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2799" trl="Y">
+    <value column="Name" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
+    <value column="PrintName" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
+    <value column="Description" original="Target Product Attribute Set Instance">É o alvo da Instância de Conjunto de Atributos de Produto</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="2968" trl="Y">
     <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
     <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
