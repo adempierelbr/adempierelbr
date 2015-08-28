@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -19,6 +20,7 @@ import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -81,7 +83,7 @@ public class NFSeImpl implements INFSe
 		//
 		MDocType dt = new MDocType (ctx, nf.getC_DocTypeTarget_ID(), trxName);
 		MLBRNotaFiscalLine[] nfLines = nf.getLines ();
-		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), trxName);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), trxName), I_W_C_BPartner.class);
 		//
 		MBPartnerLocation bpartLoc = new MBPartnerLocation(ctx, nf.getC_BPartner_Location_ID(), trxName);
 		MLocation bpLoc = bpartLoc.getLocation(false);
@@ -142,12 +144,12 @@ public class NFSeImpl implements INFSe
 		//
 		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
-		if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(BPartnerUtil.getBPTypeBR (bp)))
+		if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(bp.getlbr_BPTypeBR()))
 			tpCPFCNPJ.setCPF(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		else
 			tpCPFCNPJ.setCNPJ(TextUtil.toNumeric (nf.getlbr_BPCNPJ()));
 		//
-		String ccm = bp.get_ValueAsString ("lbr_CCM");
+		String ccm = bp.getlbr_CCM();
 		if (bp != null && ccm != null && !ccm.trim().isEmpty() && "3550308".equals(cityCode)) // São Paulo
 			tpRPS.setInscricaoMunicipalTomador (toLong (ccm));
 		//
@@ -204,7 +206,13 @@ public class NFSeImpl implements INFSe
 			tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
 		tpRPS.setISSRetido(false);
 		
-		sign (nf.getAD_Org_ID(), tpRPS);
+		try
+		{
+			sign (nf.getAD_Org_ID(), tpRPS);
+		}
+		
+		//	Ignorar o erro, pois há casos que é gerado o arquivo RPS e não necessita de assinatura
+		catch (Exception e){}
 		//
 		return tpRPS.xmlText(NFeUtil.getXmlOpt()).getBytes();
 	}	//	getXML
