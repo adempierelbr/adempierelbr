@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150819L;
+	private static final long serialVersionUID = 20150820L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -1919,6 +1919,10 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 	/** PF - Individual = PF */
 	public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+	/** PM - Individual Minor = PM */
+	public static final String LBR_BPTYPEBR_PM_IndividualMinor = "PM";
+	/** XX - Foreigner = XX */
+	public static final String LBR_BPTYPEBR_XX_Foreigner = "XX";
 	/** Set Brazilian BP Type.
 		@param lbr_BPTypeBR 
 		Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual)
