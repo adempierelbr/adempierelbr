@@ -1060,13 +1060,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Impostos
 		setTaxes(invoice);
 		
-		MDocType dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+		I_W_C_DocType dt = POWrapper.create(new MDocType (getCtx(), getC_DocType_ID(), get_TrxName()), I_W_C_DocType.class);
 		String serie = "";
 		String model = "";
 		
-		if (!dt.get_ValueAsString("lbr_NFSerie").isEmpty())
-			serie = dt.get_ValueAsString("lbr_NFSerie");
-		else	
+		if (dt.getlbr_NFSerie() != null && !dt.getlbr_NFSerie().isEmpty())
+			serie = dt.getlbr_NFSerie();
+		
+		//	Não permitir a NF sem série
+		else
 			serie = "1";
 		
 		setlbr_NFSerie(serie);
@@ -1074,16 +1076,19 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (!dtInvoice.get_ValueAsString("lbr_NFModel").isEmpty())
 			model = dtInvoice.get_ValueAsString("lbr_NFModel");
 		else	
-			model = dt.get_ValueAsString("lbr_NFModel");
+			model = dt.getlbr_NFModel();
 
-		setlbr_NFModel(model);
+		if (model == null || model.isEmpty())
+			setlbr_NFModel(null);
+		else
+			setlbr_NFModel(model);
 
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
 		{
-			dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
-			model = dt.get_ValueAsString("lbr_NFModel");
+			dt = POWrapper.create(new MDocType (getCtx(), getC_DocType_ID(), get_TrxName()), I_W_C_DocType.class);
+			model = dt.getlbr_NFModel();
 			
 			if (model != null && model.startsWith("RPS"))
 				setlbr_ServiceTaxes();
