@@ -320,6 +320,13 @@ public class ModelWrapperGenerator
 
 		StringBuffer sb = new StringBuffer();
 
+		//	List Validation
+		if (AD_Reference_ID != 0 && String.class == clazz)
+		{
+			String staticVar = addListValidation (sb, AD_Reference_ID, columnName);
+			sb.insert(0, staticVar);
+		}
+			
 		if (isGenerateSetter(columnName))
 		{
 			// Create Java Comment
@@ -835,5 +842,124 @@ public class ModelWrapperGenerator
 		log.info("Generated = " + count);
 
 	}
+	
+	/**
+	 * 	Add List Validation
+	 * 	@param sb buffer - example:
+		if (NextAction.equals("N") || NextAction.equals("F"));
+		else throw new IllegalArgumentException ("NextAction Invalid value - Reference_ID=219 - N - F");
+	 * 	@param AD_Reference_ID reference
+	 * 	@param columnName column
+	 * 	@return static parameter - Example:
+		public static final int NEXTACTION_AD_Reference_ID=219;
+		public static final String NEXTACTION_None = "N";
+		public static final String NEXTACTION_FollowUp = "F";
+	 */
+	private String addListValidation (StringBuffer sb, int AD_Reference_ID,
+		String columnName)
+	{
+		StringBuffer retValue = new StringBuffer();
+		retValue.append("\n\t/** ").append(columnName).append(" AD_Reference_ID=").append(AD_Reference_ID) .append(" */")
+			.append("\n\tpublic static final int ").append(columnName.toUpperCase())
+			.append("_AD_Reference_ID=").append(AD_Reference_ID).append(";");
+		//
+		boolean found = false;
+		StringBuffer values = new StringBuffer("Reference_ID=")
+			.append(AD_Reference_ID);
+		StringBuffer statement = new StringBuffer();
+		//
+		String sql = "SELECT Value, Name FROM AD_Ref_List WHERE AD_Reference_ID=? ORDER BY AD_Ref_List_ID";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, null);
+			pstmt.setInt(1, AD_Reference_ID);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				String value = rs.getString(1);
+				values.append(" - ").append(value);
+				if (statement.length() == 0)
+					statement.append("\n\t\tif (").append(columnName)
+						.append(".equals(\"").append(value).append("\")");
+				else
+					statement.append(" || ").append(columnName)
+						.append(".equals(\"").append(value).append("\")");
+				//
+				if (!found)
+				{
+					found = true;
+				}
+
+
+				//	Name (SmallTalkNotation)
+				String name = rs.getString(2);
+				char[] nameArray = name.toCharArray();
+				StringBuffer nameClean = new StringBuffer();
+				boolean initCap = true;
+				for (int i = 0; i < nameArray.length; i++)
+				{
+					char c = nameArray[i];
+					if (Character.isJavaIdentifierPart(c))
+					{
+						if (initCap)
+							nameClean.append(Character.toUpperCase(c));
+						else
+							nameClean.append(c);
+						initCap = false;
+					}
+					else
+					{
+						if (c == '+')
+							nameClean.append("Plus");
+						else if (c == '-')
+							nameClean.append("_");
+						else if (c == '>')
+						{
+							if (name.indexOf('<') == -1)	//	ignore <xx>
+								nameClean.append("Gt");
+						}
+						else if (c == '<')
+						{
+							if (name.indexOf('>') == -1)	//	ignore <xx>
+								nameClean.append("Le");
+						}
+						else if (c == '!')
+							nameClean.append("Not");
+						else if (c == '=')
+							nameClean.append("Eq");
+						else if (c == '~')
+							nameClean.append("Like");
+						initCap = true;
+					}
+				}
+				retValue.append("\n\t/** ").append(name).append(" = ").append(value).append(" */");
+				retValue.append("\n\tpublic static final String ").append(columnName.toUpperCase())
+					.append("_").append(nameClean)
+					.append(" = \"").append(value).append("\";");
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new DBException(e, sql);
+		}
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null; pstmt = null;
+		}
+		statement.append(")"
+			+ "; "
+			+ "else "
+			+ "throw new IllegalArgumentException (\"").append(columnName)
+			.append(" Invalid value - \" + ").append(columnName)
+			.append(" + \" - ").append(values).append("\");");
+		// [1762461] - Remove hardcoded list items checking in generated models
+		// if (found && !columnName.equals("EntityType"))
+		//	sb.append (statement);
+		sb.append("\n");
+		return retValue.toString();
+	}	//	addListValidation
 
 }
