@@ -753,3 +753,6 @@ UPDATE AD_Process_Trl SET IsTranslated='Y',Name='Importar Níveis de Estoque',Up
 UPDATE AD_Process_Trl SET Description='Importar Níveis de Reabastecimento de um Produto no Estoque',Updated=TO_TIMESTAMP('2015-08-31 11:54:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120154 AND AD_Language='pt_BR'
 ;
 
+-- 31/08/2015 11h54min22s BRT
+SELECT Register_Migration_Script ('135-ImportReplenishProduct.sql') FROM DUAL
+;
