@@ -252,7 +252,13 @@ public class MLBRTax extends X_LBR_Tax
 			
 			//	Inverte o valor dos impostos para os casos de retenção
 			if (MLBRTaxName.LBR_TAXTYPE_Service.equals(taxName.getlbr_TaxType())
-					&& taxName.isHasWithHold())
+					&& taxName.isLBR_HasWithhold()
+					
+					//	Compatibilidade com o sistema antigo
+					//		a partir do novo sistema de retenção, os valores
+					//		são retidos na linha do pedido/fatura
+					&& (taxName.getLBR_WithholdType() == null 
+						|| taxName.getLBR_WithholdType().equals(MLBRTaxName.LBR_WITHHOLDTYPE_PaidAmountSum)))
 				taxAmt = taxAmt.negate();
 			
 			//	Não postar

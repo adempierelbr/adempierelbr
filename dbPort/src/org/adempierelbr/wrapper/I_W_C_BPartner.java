@@ -93,6 +93,19 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public int getLBR_FiscalGroup_Vendor_ID();
 
+    /** Column name LBR_HasWithhold */
+    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
+
+	/** Set Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
+
+	/** Get Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public boolean isLBR_HasWithhold();
+
     /** Column name LBR_VendorCategory_ID */
     public static final String COLUMNNAME_LBR_VendorCategory_ID = "LBR_VendorCategory_ID";
 
@@ -287,17 +300,17 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
-	
-	/** Column name lbr_TransactionType */
+
+    /** Column name lbr_TransactionTypeVendor */
     public static final String COLUMNNAME_lbr_TransactionTypeVendor = "lbr_TransactionTypeVendor";
-	
-	/** Set Transaction Type.
-	  * Defines the Transaction Type
+
+	/** Set Transaction Type Vendor.
+	  * Defines the Transaction Type of a Vendor on Business Partner
 	  */
 	public void setlbr_TransactionTypeVendor (String lbr_TransactionTypeVendor);
 
-	/** Get Transaction Type.
-	  * Defines the Transaction Type
+	/** Get Transaction Type Vendor.
+	  * Defines the Transaction Type of a Vendor on Business Partner
 	  */
 	public String getlbr_TransactionTypeVendor();
 }

@@ -33,7 +33,7 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130221L;
+	private static final long serialVersionUID = 20150819L;
 
     /** Standard Constructor */
     public X_LBR_TaxAssessment (Properties ctx, int LBR_TaxAssessment_ID, String trxName)
@@ -43,13 +43,13 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
         {
 			setAmtSourceCr (Env.ZERO);
 			setAmtSourceDr (Env.ZERO);
-			setbooknumber (0);
 			setC_Period_ID (0);
 			setCumulatedAmt (Env.ZERO);
+			setLBR_BookNo (0);
+			setLBR_PageNo (0);
 			setLBR_SaldoCredorTrasnportar (Env.ZERO);
 			setLBR_TaxAssessment_ID (0);
 			setLBR_TaxName_ID (0);
-			setpagenumber (0);
 			setProcessed (false);
 			setTotalAmt (Env.ZERO);
 			setTotalCr (Env.ZERO);
@@ -125,23 +125,6 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return bd;
 	}
 
-	/** Set booknumber.
-		@param booknumber booknumber	  */
-	public void setbooknumber (int booknumber)
-	{
-		set_Value (COLUMNNAME_booknumber, Integer.valueOf(booknumber));
-	}
-
-	/** Get booknumber.
-		@return booknumber	  */
-	public int getbooknumber () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_booknumber);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	public I_C_Period getC_Period() throws RuntimeException
     {
 		return (I_C_Period)MTable.get(getCtx(), I_C_Period.Table_Name)
@@ -188,6 +171,23 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Book No.
+		@param LBR_BookNo Book No	  */
+	public void setLBR_BookNo (int LBR_BookNo)
+	{
+		set_Value (COLUMNNAME_LBR_BookNo, Integer.valueOf(LBR_BookNo));
+	}
+
+	/** Get Book No.
+		@return Book No	  */
+	public int getLBR_BookNo () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_BookNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** LBR_Cod_OR AD_Reference_ID=1120160 */
@@ -278,6 +278,30 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		return (String)get_Value(COLUMNNAME_LBR_Ind_Proc);
 	}
 
+	/** Set Cumulative Regime.
+		@param LBR_IsCumulativeRegime 
+		For PIS and COFINS Tax
+	  */
+	public void setLBR_IsCumulativeRegime (boolean LBR_IsCumulativeRegime)
+	{
+		set_Value (COLUMNNAME_LBR_IsCumulativeRegime, Boolean.valueOf(LBR_IsCumulativeRegime));
+	}
+
+	/** Get Cumulative Regime.
+		@return For PIS and COFINS Tax
+	  */
+	public boolean isLBR_IsCumulativeRegime () 
+	{
+		Object oo = get_Value(COLUMNNAME_LBR_IsCumulativeRegime);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Número do Processo.
 		@param LBR_Num_Proc Número do Processo	  */
 	public void setLBR_Num_Proc (String LBR_Num_Proc)
@@ -290,6 +314,23 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 	public String getLBR_Num_Proc () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_Num_Proc);
+	}
+
+	/** Set Page No.
+		@param LBR_PageNo Page No	  */
+	public void setLBR_PageNo (int LBR_PageNo)
+	{
+		set_Value (COLUMNNAME_LBR_PageNo, Integer.valueOf(LBR_PageNo));
+	}
+
+	/** Get Page No.
+		@return Page No	  */
+	public int getLBR_PageNo () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_PageNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Descrição do Processo.
@@ -400,23 +441,6 @@ public class X_LBR_TaxAssessment extends PO implements I_LBR_TaxAssessment, I_Pe
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	/** Set pagenumber.
-		@param pagenumber pagenumber	  */
-	public void setpagenumber (int pagenumber)
-	{
-		set_Value (COLUMNNAME_pagenumber, Integer.valueOf(pagenumber));
-	}
-
-	/** Get pagenumber.
-		@return pagenumber	  */
-	public int getpagenumber () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_pagenumber);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set Processed.

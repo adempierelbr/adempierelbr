@@ -75,14 +75,14 @@ import org.jdesktop.swingx.JXTaskPane;
  *
  *  @author     Jorg Janke
  *  @version    $Id: InfoProduct.java,v 1.4 2006/07/30 00:51:27 jjanke Exp $
- *
+ * 
  * @author Bogdan Ioan, SC ARHIPAC SERVICE SRL
- * 				<li>FR [ 2012362 ] Info Product: Add Product Category
+ * 				<li>FR [ 2012362 ] Info Product: Add Product Category 
  */
 public class InfoProduct extends Info implements ActionListener, ChangeListener
 {
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 2076229793041196087L;
 
@@ -119,7 +119,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		p_loadedOK = true;
 		//	Focus
 		fieldValue.requestFocus();
-
+		
 		//Begin - fer_luck @ centuryon
 		mWindowNo = WindowNo;
 		//End - fer_luck @ centuryon
@@ -146,7 +146,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	private CTextField fieldName = new CTextField(10);
 	private CLabel labelUPC = new CLabel();
 	private CTextField fieldUPC = new CTextField(10);
-//	private CLabel labelSKU = new CLabel();
+	private CLabel labelSKU = new CLabel();
 	private CTextField fieldSKU = new CTextField(10);
 	private CLabel labelPriceList = new CLabel();
 	private VComboBox pickPriceList = new VComboBox();
@@ -154,13 +154,11 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	private VComboBox pickWarehouse = new VComboBox();
 	private CLabel labelVendor = new CLabel();
 	private CTextField fieldVendor = new CTextField(10);
-	private CLabel labelVendorValue = new CLabel();
-	private CTextField fieldVendorValue = new CTextField(10);
 	private CLabel labelProductCategory = new CLabel();
 	private VComboBox pickProductCategory = new VComboBox();
 	private CLabel labelAS = new CLabel(); // @Trifon
 	private VComboBox pickAS = new VComboBox(); // @Trifon
-
+	
 	//Begin - fer_luck @ centuryon
 	private CTextArea fieldDescription = new CTextArea();
 	JXTaskPane warehouseStockPanel = new JXTaskPane();
@@ -198,7 +196,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		labelValue.setText(Msg.getMsg(Env.getCtx(), "Value"));
 		fieldValue.setBackground(AdempierePLAF.getInfoBackground());
 		fieldValue.addActionListener(this);
-
+		
 		labelName.setText(Msg.getMsg(Env.getCtx(), "Name"));
 		fieldName.setBackground(AdempierePLAF.getInfoBackground());
 		fieldName.addActionListener(this);
@@ -207,34 +205,30 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		fieldUPC.setBackground(AdempierePLAF.getInfoBackground());
 		fieldUPC.addActionListener(this);
 
-		//labelSKU.setText(Msg.translate(Env.getCtx(), "SKU"));
-		//fieldSKU.setBackground(AdempierePLAF.getInfoBackground());
-		//fieldSKU.addActionListener(this);
-
+		labelSKU.setText(Msg.translate(Env.getCtx(), "SKU"));
+		fieldSKU.setBackground(AdempierePLAF.getInfoBackground());
+		fieldSKU.addActionListener(this);
+		
 		labelWarehouse.setText(Msg.getMsg(Env.getCtx(), "Warehouse"));
 		pickWarehouse.setBackground(AdempierePLAF.getInfoBackground());
-
+		
 		labelPriceList.setText(Msg.getMsg(Env.getCtx(), "PriceListVersion"));
 		pickPriceList.setBackground(AdempierePLAF.getInfoBackground());
 
 		labelProductCategory.setText(Msg.translate(Env.getCtx(), "M_Product_Category_ID"));
 		pickProductCategory.setBackground(AdempierePLAF.getInfoBackground());
-
+		
 		// @Trifon
 		labelAS.setText(Msg.translate(Env.getCtx(), "M_AttributeSet_ID"));
 		pickAS.setBackground(AdempierePLAF.getInfoBackground());
-
+		
 		m_InfoPAttributeButton.setMargin(new Insets(2,2,2,2));
 		m_InfoPAttributeButton.setToolTipText(Msg.getMsg(Env.getCtx(), "InfoPAttribute"));
 		m_InfoPAttributeButton.addActionListener(this);
-
+		
 		labelVendor.setText(Msg.translate(Env.getCtx(), "Vendor"));
 		fieldVendor.setBackground(AdempierePLAF.getInfoBackground());
 		fieldVendor.addActionListener(this);
-		
-		labelVendorValue.setText(Msg.translate(Env.getCtx(), "Vendor Product Value"));
-		fieldVendorValue.setBackground(AdempierePLAF.getInfoBackground());
-		fieldVendorValue.addActionListener(this);
 
 		//	Line 1
 		parameterPanel.setLayout(new ALayout());
@@ -248,13 +242,11 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		//	Line 2
 		parameterPanel.add(labelName, new ALayoutConstraint(1,0));
 		parameterPanel.add(fieldName, null);
-		//parameterPanel.add(labelSKU, null);
-		//parameterPanel.add(fieldSKU, null);
+		parameterPanel.add(labelSKU, null);
+		parameterPanel.add(fieldSKU, null);
 		parameterPanel.add(labelVendor, null);
 		parameterPanel.add(fieldVendor, null);
-		parameterPanel.add(labelVendorValue, null);
-		parameterPanel.add(fieldVendorValue, null);
-
+		
 		// Line 3
 		parameterPanel.add(labelPriceList, new ALayoutConstraint(2,0));
 		parameterPanel.add(pickPriceList, null);
@@ -263,13 +255,12 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		parameterPanel.add(labelAS, null); // @Trifon
 		parameterPanel.add(pickAS, null);  // @Trifon
 		
-
 		//	Product Attribute Instance
 		m_PAttributeButton = ConfirmPanel.createPAttributeButton(true);
 		confirmPanel.addButton(m_PAttributeButton);
 		m_PAttributeButton.addActionListener(this);
 		m_PAttributeButton.setEnabled(false);
-
+		
 		//Begin - fer_luck @ centuryon
 		//add taskpane
 		fieldDescription.setBackground(AdempierePLAF.getInfoBackground());
@@ -280,7 +271,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
         warehouseStockPanel.setUI(new AdempiereTaskPaneUI());
         warehouseStockPanel.getContentPane().setBackground(new ColorUIResource(251,248,241));
         warehouseStockPanel.getContentPane().setForeground(new ColorUIResource(251,0,0));
-
+        
         ColumnInfo[] s_layoutWarehouse = new ColumnInfo[]{
         		new ColumnInfo(Msg.translate(Env.getCtx(), "Warehouse"), "Warehouse", String.class),
         		new ColumnInfo(Msg.translate(Env.getCtx(), "QtyAvailable"), "sum(QtyAvailable)", Double.class),
@@ -298,13 +289,13 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		warehouseTbl.getSelectionModel().addListSelectionListener(this);
 		warehouseTbl.setShowTotals(true);
         warehouseTbl.autoSize();
-
+        
         ColumnInfo[] s_layoutSubstitute = new ColumnInfo[]{
         		new ColumnInfo(Msg.translate(Env.getCtx(), "Warehouse"), "orgname", String.class),
         		new ColumnInfo(
     					Msg.translate(Env.getCtx(), "Value"),
     					"(Select Value from M_Product p where p.M_Product_ID=M_PRODUCT_SUBSTITUTERELATED_V.Substitute_ID)",
-    					String.class),
+    					String.class), 
     			new ColumnInfo(Msg.translate(Env.getCtx(), "Name"), "Name", String.class),
     			new ColumnInfo(Msg.translate(Env.getCtx(), "QtyAvailable"), "QtyAvailable", Double.class),
   	        	new ColumnInfo(Msg.translate(Env.getCtx(), "QtyOnHand"), "QtyOnHand", Double.class),
@@ -318,7 +309,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
         substituteTbl.addMouseListener(this);
         substituteTbl.getSelectionModel().addListSelectionListener(this);
         substituteTbl.autoSize();
-
+        
         ColumnInfo[] s_layoutRelated = new ColumnInfo[]{
         		new ColumnInfo(Msg.translate(Env.getCtx(), "Warehouse"), "orgname", String.class),
         		new ColumnInfo(
@@ -338,11 +329,11 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
         relatedTbl.addMouseListener(this);
         relatedTbl.getSelectionModel().addListSelectionListener(this);
         relatedTbl.autoSize();
-
+        
         //Available to Promise Tab
         m_tableAtp.setRowSelectionAllowed(false);
         m_tableAtp.setMultiSelection(false);
-
+              
         CTabbedPane jTab  = new CTabbedPane();
         jTab.addTab(Msg.translate(Env.getCtx(), "Warehouse"), new JScrollPane(warehouseTbl));
         jTab.setPreferredSize(new Dimension(INFO_WIDTH, SCREEN_HEIGHT > 600 ? 250 : 105));
@@ -352,12 +343,12 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		jTab.addTab (Msg.getMsg(Env.getCtx(), "ATP"), new JScrollPane(m_tableAtp));
 		jTab.addChangeListener(this);
         tablePanel.setPreferredSize(new Dimension(INFO_WIDTH, SCREEN_HEIGHT > 600 ? 255 : 110));
-        tablePanel.add(jTab);
+        tablePanel.add(jTab);        
 
         warehouseStockPanel.setCollapsed(true);
         warehouseStockPanel.add(tablePanel);
         this.addonPanel.add(warehouseStockPanel);
-
+        
         this.p_table.addKeyListener(new KeyAdapter() {
         	public void keyReleased(KeyEvent ke){
         		int row = ((MiniTable)ke.getSource()).getSelectedRow();
@@ -366,10 +357,10 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
         			new BigDecimal(pickWarehouse.getValue().toString()).intValue(),
         			new BigDecimal(pickPriceList.getValue().toString()).intValue()
         			);
-        		warehouseStockPanel.setCollapsed(false);
+//        		warehouseStockPanel.setCollapsed(false);
         	}
         });
-
+        
         this.p_table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
             	int row = ((MiniTable)me.getSource()).getSelectedRow();
@@ -378,7 +369,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
             		new BigDecimal(pickWarehouse.getValue().toString()).intValue(),
             		new BigDecimal(pickPriceList.getValue().toString()).intValue()
             		);
-            	warehouseStockPanel.setCollapsed(false);
+//            	warehouseStockPanel.setCollapsed(false);
             }
         });
 		//End - fer_luck @ centuryon
@@ -418,7 +409,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			DB.close(rs, pstmt);
 			rs = null; pstmt = null;
 		}
-
+				
 		try {
 			sql = "SELECT M_Product_ID FROM M_Product WHERE Value = ?";
 			pstmt = DB.prepareStatement(sql, null);
@@ -434,7 +425,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			DB.close(rs, pstmt);
 			rs = null; pstmt = null;
 		}
-
+		
 		sql = m_sqlSubstitute;
 		log.finest(sql);
 		try {
@@ -452,7 +443,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			DB.close(rs, pstmt);
 			rs = null; pstmt = null;
 		}
-
+		
 		sql = m_sqlRelated;
 		log.finest(sql);
 		try {
@@ -473,7 +464,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		initAtpTab(M_Warehouse_ID);
 	}	//	refresh
 	//End - fer_luck @ centuryon
-
+	
 	/**
 	 *	Dynamic Init
 	 *
@@ -487,13 +478,17 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		fillPicks(M_PriceList_ID);
 		int M_PriceList_Version_ID = findPLV (M_PriceList_ID);
 		//	Set Value or Name
-		if (value.startsWith("@") && value.endsWith("@")){				
+		if (value.startsWith("@") && value.endsWith("@"))
+		{
 			fieldName.setText(value.substring(1,value.length()-1));
 			fieldName.requestFocus();
-		}else if (MSysConfig.getValue("LBR_INFO_PRODUCT_FOCUS","").equals("NAME")){
+		}
+		else if (MSysConfig.getValue("LBR_INFO_PRODUCT_FOCUS", "", Env.getAD_Client_ID(Env.getCtx())).trim().toUpperCase().equals("NAME"))
+		{
 			fieldName.setText(value);
 			fieldName.requestFocus();
-		}else
+		}
+		else
 			fieldValue.setText(value);
 		//	Set Warehouse
 		if (M_Warehouse_ID == 0)
@@ -545,7 +540,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			SQL += " AND EXISTS (SELECT * FROM M_PriceList xp WHERE xp.M_PriceList_ID=" + M_PriceList_ID
 				+ " AND pl.C_Currency_ID=xp.C_Currency_ID)";
 		//	Add Access & Order
-		SQL = MRole.getDefault().addAccessSQL (SQL, "M_PriceList_Version", true, false)	// fully qualidfied - RO
+		SQL = MRole.getDefault().addAccessSQL (SQL, "M_PriceList_Version", true, false)	// fully qualidfied - RO 
 			+ " ORDER BY M_PriceList_Version.Name";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -578,7 +573,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 				pickWarehouse.addItem(kn);
 			}
 			DB.close(rs, pstmt);
-
+			
 			//	Product Category
 			SQL = MRole.getDefault().addAccessSQL (
 				"SELECT M_Product_Category_ID, Value || ' - ' || Name FROM M_Product_Category WHERE IsActive='Y'",
@@ -587,7 +582,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			for (KeyNamePair kn : DB.getKeyNamePairs(SQL, true)) {
 				pickProductCategory.addItem(kn);
 			}
-
+			
 			// Attribute Set - @Trifon
 			SQL = MRole.getDefault().addAccessSQL (
 					"SELECT M_AttributeSet_ID, Name FROM M_AttributeSet WHERE IsActive='Y'",
@@ -657,7 +652,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	{
 		Timestamp priceDate = null;
 		//	Sales Order Date
-		String dateStr = Env.getContext(Env.getCtx(), p_WindowNo, "DateOrdered");
+		String dateStr = Env.getContext(Env.getCtx(), p_WindowNo, "DateOrdered"); 
 		if (dateStr != null && dateStr.length() > 0)
 			priceDate = Env.getContextAsDate(Env.getCtx(), p_WindowNo, "DateOrdered");
 		else	//	Invoice Date
@@ -667,7 +662,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 				priceDate = Env.getContextAsDate(Env.getCtx(), p_WindowNo, "DateInvoiced");
 		}
 		//	Today
-		if (priceDate == null)
+		if (priceDate == null) 
 			priceDate = new Timestamp(System.currentTimeMillis());
 		//
 		log.config("M_PriceList_ID=" + M_PriceList_ID + " - " + priceDate);
@@ -705,7 +700,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		return retValue;
 	}	//	findPLV
 
-
+	
 	/**************************************************************************
 	 *	Construct SQL Where Clause and define parameters
 	 *  (setParameters needs to set parameters)
@@ -715,7 +710,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 	protected String getSQLWhere()
 	{
 		StringBuffer where = new StringBuffer();
-
+		
 		//	Optional PLV
 		int M_PriceList_Version_ID = 0;
 		KeyNamePair pl = (KeyNamePair)pickPriceList.getSelectedItem();
@@ -723,17 +718,17 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			M_PriceList_Version_ID = pl.getKey();
 		if (M_PriceList_Version_ID != 0)
 			where.append(" AND pr.M_PriceList_Version_ID=?");
-
+		
 		//  Optional Product Category
 		if (getM_Product_Category_ID() > 0) {
 			where.append(" AND p.M_Product_Category_ID=?");
 		}
-
+		
 		//  Optional Attribute Set
 		if (getM_AttributeSet_ID() > 0) {
 			where.append(" AND p.M_AttributeSet_ID=?");
 		}
-
+		
 		//	Product Attribute Search
 		if (m_pAttributeWhere != null)
 		{
@@ -744,13 +739,12 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		//  => Value
 		String value = fieldValue.getText().toUpperCase();
 		if (!(value.equals("") || value.equals("%")))
-			where.append(" AND UPPER(p.Value) LIKE ?");
+			where.append(" AND (UPPER(p.Value) LIKE ? OR UPPER(ppo.VendorProductNo) LIKE ?)");
 
 		//  => Name
 		String name = fieldName.getText().toUpperCase();
 		if (!(name.equals("") || name.equals("%")))
 			where.append(SQLUtils.likeField("p.Name", name));
-			//where.append(" AND UPPER(p.Name) LIKE ?");
 
 		//  => UPC
 		String upc = fieldUPC.getText().toUpperCase();
@@ -766,11 +760,6 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if (!(vendor.equals("") || vendor.equals("%")))
 			where.append(" AND UPPER(bp.Name) LIKE ? AND ppo.IsCurrentVendor='Y'");
 		
-//		=> Vendor Product Value
-			String vendorProductValue = fieldVendorValue.getText().toUpperCase();
-			if (!(vendorProductValue.equals("") || vendorProductValue.equals("%")))
-				where.append(" AND UPPER(ppo.VendorProductNo) LIKE ? AND ppo.IsCurrentVendor='Y'");
-
 		return where.toString();
 	}	//	getSQLWhere
 
@@ -833,7 +822,10 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		{
 			if (!value.endsWith("%"))
 				value += "%";
+			if (!value.startsWith("%"))
+				value = "%" + value;
 			pstmt.setString(index++, value);
+			pstmt.setString(index++, value);	//	Vendor Product No
 			log.fine("Value: " + value);
 		}
 
@@ -841,12 +833,6 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		String name = fieldName.getText().toUpperCase();
 		if (!(name.equals("") || name.equals("%")))
 		{
-			/*
-			if (!name.endsWith("%"))
-				name += "%";
-			pstmt.setString(index++, name);
-			log.fine("Name: " + name);
-			*/
 			String names[] = SQLUtils.likeParameters(name);
 			for (int i = 0; i < names.length; i++) {
 				pstmt.setString(index++, names[i]);
@@ -860,6 +846,8 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		{
 			if (!upc.endsWith("%"))
 				upc += "%";
+			if (!upc.startsWith("%"))
+				upc = "%" + upc;
 			pstmt.setString(index++, upc);
 			log.fine("UPC: " + upc);
 		}
@@ -870,6 +858,8 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		{
 			if (!sku.endsWith("%"))
 				sku += "%";
+			if (!sku.startsWith("%"))
+				sku = "%" + sku;
 			pstmt.setString(index++, sku);
 			log.fine("SKU: " + sku);
 		}
@@ -880,25 +870,17 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		{
 			if (!vendor.endsWith("%"))
 				vendor += "%";
+			if (!vendor.startsWith("%"))
+				vendor = "%" + vendor;
 			pstmt.setString(index++, vendor);
 			log.fine("Vendor: " + vendor);
 		}
-		
-	    //  => Vendor Product Value
-			String vendorProductValue = fieldVendorValue.getText().toUpperCase();
-			if (!(vendorProductValue.equals("") || vendorProductValue.equals("%")))
-			{
-				if (!vendorProductValue.endsWith("%"))
-					vendorProductValue += "%";
-				pstmt.setString(index++, vendorProductValue);
-				log.fine("Vendor Product Value: " + vendorProductValue);
-			}
 
 	}   //  setParameters
 
-
+	
 	/**************************************************************************
-	 *  Action Listner
+	 *  Action Listener
 	 *	@param e event
 	 */
 	public void actionPerformed (ActionEvent e)
@@ -907,16 +889,16 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if ((e.getSource() == pickWarehouse || e.getSource() == pickPriceList)
 			&& (fieldValue.getText().length() == 0 && fieldName.getText().length() == 0))
 			return;
-
+			
 		//	Product Attribute Search
 		if (e.getSource().equals(m_InfoPAttributeButton))
 		{
 			cmd_InfoPAttribute();
-			return;
+			return;		
 		}
 		m_pAttributeWhere = null;
-
-		//	Query Product Attribure Instance
+		
+		//	Query Product Attribute Instance
 		int row = p_table.getSelectedRow();
 		if (e.getSource().equals(m_PAttributeButton) && row != -1)
 		{
@@ -926,13 +908,13 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			if (productInteger == null || productInteger.intValue() == 0 || warehouse == null)
 				return;
 			String title = warehouse.getName() + " - " + productName;
-			PAttributeInstance pai = new PAttributeInstance (this, title,
+			PAttributeInstance pai = new PAttributeInstance (this, title, 
 				warehouse.getKey(), 0, productInteger.intValue(), m_C_BPartner_ID);
 			m_M_AttributeSetInstance_ID = pai.getM_AttributeSetInstance_ID();
 			m_M_Locator_ID = pai.getM_Locator_ID();
 			if (m_M_AttributeSetInstance_ID != -1)
 				dispose(true);
-			return;
+			return;			
 		}
 		//
 		super.actionPerformed(e);
@@ -990,7 +972,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if (m_M_AttributeSetInstance_ID < -1)	//	not selected
 			M_AttributeSetInstance_ID = 0;
 		//
-		InvoiceHistory ih = new InvoiceHistory (this, 0,
+		InvoiceHistory ih = new InvoiceHistory (this, 0, 
 			M_Product_ID.intValue(), M_Warehouse_ID, M_AttributeSetInstance_ID);
 		ih.setVisible(true);
 		ih = null;
@@ -1016,7 +998,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if (M_Product_ID == null)
 			return;
 	//	AEnv.zoom(MProduct.Table_ID, M_Product_ID.intValue(), true);	//	SO
-
+		
 		MQuery query = new MQuery("M_Product");
 		query.addRestriction("M_Product_ID", MQuery.EQUAL, M_Product_ID);
 		query.setRecordCount(1);
@@ -1070,9 +1052,9 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		}
 		else
 		{
-			Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "M_AttributeSetInstance_ID",
+			Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "M_AttributeSetInstance_ID", 
 				String.valueOf(m_M_AttributeSetInstance_ID));
-			Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "M_Locator_ID",
+			Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "M_Locator_ID", 
 				String.valueOf(m_M_Locator_ID));
 		}
 	}	//	saveSelectionDetail
@@ -1107,7 +1089,6 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			}
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Margin"), "bomPriceStd(p.M_Product_ID, pr.M_PriceList_Version_ID)-bomPriceLimit(p.M_Product_ID, pr.M_PriceList_Version_ID) AS Margin", BigDecimal.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Vendor"), "bp.Name", String.class));
-			//list.add(new Info_Column(Msg.translate(Env.getCtx(), "Vendor Product Value"), "ppo.VendorProductNo", String.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "PriceLimit"), "bomPriceLimit(p.M_Product_ID, pr.M_PriceList_Version_ID) AS PriceLimit", BigDecimal.class));
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsInstanceAttribute"), "pa.IsInstanceAttribute", Boolean.class));
 			s_productLayout = new Info_Column[list.size()];
@@ -1117,51 +1098,51 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		}
 		return s_productLayout;
 	}   //  getProductLayout
-
+	
 	/**
 	 * 	System has Unconfirmed records
 	 *	@return true if unconfirmed
 	 */
 	private boolean isUnconfirmed()
 	{
-		int no = DB.getSQLValue(null,
-			"SELECT COUNT(*) FROM M_InOutLineConfirm WHERE AD_Client_ID=?",
+		int no = DB.getSQLValue(null, 
+			"SELECT COUNT(*) FROM M_InOutLineConfirm WHERE AD_Client_ID=?", 
 			Env.getAD_Client_ID(Env.getCtx()));
 		if (no > 0)
 			return true;
-		no = DB.getSQLValue(null,
-			"SELECT COUNT(*) FROM M_MovementLineConfirm WHERE AD_Client_ID=?",
+		no = DB.getSQLValue(null, 
+			"SELECT COUNT(*) FROM M_MovementLineConfirm WHERE AD_Client_ID=?", 
 			Env.getAD_Client_ID(Env.getCtx()));
 		return no > 0;
 	}	//	isUnconfirmed
-
-
+	
+	
 	/**
 	 * 	Tab Changed
 	 * 	@param e event
 	 */
 	public void stateChanged(ChangeEvent e)
-	{
+	{		
 			if(e.getSource() instanceof CTabbedPane)
 			{
 				CTabbedPane tab = (CTabbedPane) e.getSource();
-
+				
 				if(tab.getSelectedIndex() == 4 & warehouseTbl.getRowCount() > 0)
-				{
+				{	
 					String value = (String)warehouseTbl.getValueAt(warehouseTbl.getSelectedRow(),0);
 					int M_Warehouse_ID = DB.getSQLValue(null, "SELECT M_Warehouse_ID FROM M_Warehouse WHERE UPPER(Name) = UPPER(?) AND AD_Client_ID=?", new Object[] { value ,Env.getAD_Client_ID(Env.getCtx())});
 					initAtpTab(M_Warehouse_ID);
-				}
+				}	
 			}
-
+			
 	}	//	stateChanged
-
+	
 	/**
 	 *	Query ATP
 	 */
 	private void initAtpTab (int  m_M_Warehouse_ID)
 	{
-
+			
 		//	Header
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add(Msg.translate(Env.getCtx(), "Date"));
@@ -1194,7 +1175,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		if (!showDetail)
 			sql += " GROUP BY productAttribute(s.M_AttributeSetInstance_ID), w.Name, l.Value";
 		sql += " ORDER BY l.Value";
-
+		
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		double qty = 0;
 		PreparedStatement pstmt = null;
@@ -1306,7 +1287,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 
 		//  Table
 		MiniTable table = null;
-		m_modelAtp = new DefaultTableModel(data, columnNames);
+		m_modelAtp = new DefaultTableModel(data, columnNames); 
 		m_tableAtp.setModel(m_modelAtp);
 		table = m_tableAtp;
 		//
@@ -1333,7 +1314,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			M_Product_Category_ID = pc.getKey();
 		return M_Product_Category_ID;
 	}
-
+	
 	/**
 	 * @return selected Attribute Set ID
 	 */

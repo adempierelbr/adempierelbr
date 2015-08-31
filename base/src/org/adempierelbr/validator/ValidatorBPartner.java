@@ -55,15 +55,6 @@ public class ValidatorBPartner implements ModelValidator
 
 	/** RegEx para validação de múltiplos e-mails */
 	public static final String REGEX_EMAIL = "^(([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5}){1,25})+)*$";
-	
-	/**
-	 *	Constructor.
-	 *	The class is instanciated when logging in and client is selected/known
-	 */
-	public ValidatorBPartner ()
-	{
-		super ();
-	}	//	ValidatorBPartner
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ValidatorBPartner.class);
@@ -139,8 +130,7 @@ public class ValidatorBPartner implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_NEW);
-		boolean isAfterChange = type == TYPE_AFTER_CHANGE;
+		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_AFTER_NEW);
 
 		if (po instanceof MBPartner && isChange)
 			return modelChange((MBPartner) po);
@@ -148,20 +138,44 @@ public class ValidatorBPartner implements ModelValidator
 		else if (po instanceof MBPartnerLocation && isChange)
 			return modelChange ((MBPartnerLocation) po);
 
-		else if (po instanceof MOrgInfo && (isChange || isAfterChange))
+		else if (po instanceof MOrgInfo)
+			return modelChange ((MOrgInfo) po, type);
+
+		return null;
+	}	//	modelChange
+
+	/**
+	 *  Validate MBPartnerLocation
+	 *
+	 * @param bpl
+	 * @return
+	 */
+	private String modelChange(MOrgInfo oi, int type)
+	{
+		if (type == TYPE_CHANGE || type == TYPE_NEW)
 		{
-			I_W_AD_OrgInfo oi = POWrapper.create (po, I_W_AD_OrgInfo.class);
-			String CNPJ = oi.getlbr_CNPJ();
+			/**
+			 * 	Validação do CNPJ
+			 */
+			I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
+			String CNPJ = oiW.getlbr_CNPJ();
 			//
 			if (CNPJ != null 
 					&& !CNPJ.trim().isEmpty()
 					&& !validaCNPJ(CNPJ))
 					return "CNPJ Inválido";
+			
+			/**
+			 * 	Preenchimento do campo de CNPJ no TaxID
+			 */
+			if ((type == TYPE_NEW || oi.is_ValueChanged(I_W_AD_OrgInfo.COLUMNNAME_lbr_CNPJ))
+					&& oiW.getlbr_CNPJ() != null)
+				oiW.setTaxID(oiW.getlbr_CNPJ());
 		}
-
+		//
 		return null;
-	}	//	modelChange
-
+	}
+	
 	/**
 	 *  Validate MBPartnerLocation
 	 *
@@ -226,37 +240,46 @@ public class ValidatorBPartner implements ModelValidator
 		if (bp_po.is_ValueChanged(I_W_C_BPartner.COLUMNNAME_LBR_EMailNFe) && !isEmailNFeValid (bp))
 			return "E-mail de envio de NFe inválido";
 		
+		if (bp_po.is_ValueChanged(I_W_C_BPartner.COLUMNNAME_lbr_BPTypeBR))
+			bp.setlbr_BPTypeBRIsValid(false);
+		
+		String bpType = bp.getlbr_BPTypeBR();
 		boolean isValid = bp.islbr_BPTypeBRIsValid();
-
-		//	Ignorar no caso de outro idioma FIXME
-		if (bp.getAD_Language() == null 
-				|| bp.getAD_Language().equals("") 
-				|| !bp.getAD_Language().equalsIgnoreCase("pt_BR"))
-			return null;
 
 		//	If not validated or trying to activate an inactive record
 		if (!isValid || (bp_po.is_ValueChanged(I_W_C_BPartner.COLUMNNAME_IsActive) && bp.isActive()))
-		{
+		{			
 			//	If Individual - Validate CPF
-			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals (bp.getlbr_BPTypeBR()))
+			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals (bpType)
+					|| (MLBRNotaFiscal.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType)))
 			{
-					String CPF = bp.getlbr_CPF();
+				String CPF = bp.getlbr_CPF();
 
-					if (CPF == null)
+				if (CPF == null || CPF.isEmpty())
+				{
+					//	Não dá erro se o cadastro for de Indivíduo Menor
+					if (!MLBRNotaFiscal.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType))
 						return "CPF Nulo";
-
+				}
+				//	Somente valida o CPF se ele não for nulo
+				else
+				{
 					if (CPF.indexOf('.') == -1 || CPF.length() < 14)
 						return "CPF Inválido";
 
 					if (!validaCPF (CPF))
 						return "CPF Inválido";
 
-					if (!consultaCPF (CPF, m_AD_Client_ID, bp.getC_BPartner_ID()))
+					if (!consultaCPF (CPF, bp.getAD_Client_ID(), bp.getC_BPartner_ID()))
 						return "CPF Duplicado";
+					
+					//	Remove o CNPJ
+					bp.setlbr_CNPJ (null);
+				}
 			}
 			
 			//	If Legal Entity - Validate CNPJ
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals (bp.getlbr_BPTypeBR()))
+			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals (bpType))
 			{
 				String CNPJ = bp.getlbr_CNPJ();
 
@@ -274,9 +297,21 @@ public class ValidatorBPartner implements ModelValidator
 
 				if (MSysConfig.getBooleanValue ("LBR_USE_UNIFIED_BP", false))
 					bp.setlbr_CNPJ (CNPJ.substring(0, 10) + "/0000-00");
+				
+				//	Remove o CPF
+				bp.setlbr_CPF (null);
+			}
+			
+			//	Foreigner
+			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals (bpType))
+			{
+				//	Remove o CPF e CNPJ
+				bp.setlbr_CPF (null);
+				bp.setlbr_CNPJ (null);
 			}
 
-			bp.setlbr_BPTypeBRIsValid (true);
+			if (bp.getlbr_BPTypeBR() != null && !bp.getlbr_BPTypeBR().isEmpty())
+				bp.setlbr_BPTypeBRIsValid (true);
 		}
 
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
@@ -310,6 +345,16 @@ public class ValidatorBPartner implements ModelValidator
 		if (lbr_TransactionType == null || lbr_TransactionType.isEmpty())
 			bp.setlbr_TransactionType (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser);
 
+		//	Validação do flag funcionário
+		//		não permitir o cadastro de funcionários sem o preenchimento do campo Tipo de Parceiro
+		if (bp_po.is_ValueChanged(MBPartner.COLUMNNAME_IsEmployee) && bp.isEmployee()
+				&& (bp.getlbr_BPTypeBR() == null || bp.getlbr_BPTypeBR().isEmpty()))
+			return "Obrigatório o preenchimento do campo Tipo de Parceiro para marcar um Parceiro de Negócios como Funcionário";
+		
+		//	Desmarcar Perspectiva quando o parceiro for um funcionário
+		if (bp.isEmployee() && bp.isProspect())
+			bp.setIsProspect(false);
+		
 		return null;
 	}	//	modelChange - BPartner
 

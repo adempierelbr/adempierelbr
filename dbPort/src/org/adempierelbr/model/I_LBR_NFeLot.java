@@ -205,6 +205,15 @@ public interface I_LBR_NFeLot
 	/** Get NFe Lot	  */
 	public int getLBR_NFeLot_ID();
 
+    /** Column name LBR_Processing2 */
+    public static final String COLUMNNAME_LBR_Processing2 = "LBR_Processing2";
+
+	/** Set Process Now	  */
+	public void setLBR_Processing2 (String LBR_Processing2);
+
+	/** Get Process Now	  */
+	public String getLBR_Processing2();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
@@ -239,15 +248,6 @@ public interface I_LBR_NFeLot
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
-
-    /** Column name Processing2 */
-    public static final String COLUMNNAME_Processing2 = "Processing2";
-
-	/** Set Process Now	  */
-	public void setProcessing2 (String Processing2);
-
-	/** Get Process Now	  */
-	public String getProcessing2();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -89,15 +89,6 @@ public interface I_LBR_TaxAssessment
 	  */
 	public BigDecimal getAmtSourceDr();
 
-    /** Column name booknumber */
-    public static final String COLUMNNAME_booknumber = "booknumber";
-
-	/** Set booknumber	  */
-	public void setbooknumber (int booknumber);
-
-	/** Get booknumber	  */
-	public int getbooknumber();
-
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
 
@@ -155,6 +146,15 @@ public interface I_LBR_TaxAssessment
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_BookNo */
+    public static final String COLUMNNAME_LBR_BookNo = "LBR_BookNo";
+
+	/** Set Book No	  */
+	public void setLBR_BookNo (int LBR_BookNo);
+
+	/** Get Book No	  */
+	public int getLBR_BookNo();
+
     /** Column name LBR_Cod_OR */
     public static final String COLUMNNAME_LBR_Cod_OR = "LBR_Cod_OR";
 
@@ -191,6 +191,19 @@ public interface I_LBR_TaxAssessment
 	/** Get Origem do Processo	  */
 	public String getLBR_Ind_Proc();
 
+    /** Column name LBR_IsCumulativeRegime */
+    public static final String COLUMNNAME_LBR_IsCumulativeRegime = "LBR_IsCumulativeRegime";
+
+	/** Set Cumulative Regime.
+	  * For PIS and COFINS Tax
+	  */
+	public void setLBR_IsCumulativeRegime (boolean LBR_IsCumulativeRegime);
+
+	/** Get Cumulative Regime.
+	  * For PIS and COFINS Tax
+	  */
+	public boolean isLBR_IsCumulativeRegime();
+
     /** Column name LBR_Num_Proc */
     public static final String COLUMNNAME_LBR_Num_Proc = "LBR_Num_Proc";
 
@@ -199,6 +212,15 @@ public interface I_LBR_TaxAssessment
 
 	/** Get Número do Processo	  */
 	public String getLBR_Num_Proc();
+
+    /** Column name LBR_PageNo */
+    public static final String COLUMNNAME_LBR_PageNo = "LBR_PageNo";
+
+	/** Set Page No	  */
+	public void setLBR_PageNo (int LBR_PageNo);
+
+	/** Get Page No	  */
+	public int getLBR_PageNo();
 
     /** Column name LBR_Proc */
     public static final String COLUMNNAME_LBR_Proc = "LBR_Proc";
@@ -259,15 +281,6 @@ public interface I_LBR_TaxAssessment
 
 	/** Get Valor à Recolher	  */
 	public BigDecimal getLBR_VL_OR();
-
-    /** Column name pagenumber */
-    public static final String COLUMNNAME_pagenumber = "pagenumber";
-
-	/** Set pagenumber	  */
-	public void setpagenumber (int pagenumber);
-
-	/** Get pagenumber	  */
-	public int getpagenumber();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

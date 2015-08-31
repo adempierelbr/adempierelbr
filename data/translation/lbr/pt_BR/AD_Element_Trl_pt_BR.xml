@@ -13,6 +13,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="369" trl="Y">
+    <value column="Name" original="Document Controlled">Controlada por Documento</value>
+    <value column="PrintName" original="Doc Controlled">Controlada por Documento</value>
+    <value column="Description" original="Control account - If an account is controlled by a document, you cannot post manually to it">Conta de Controle - Se uma conta for controlada por um documento, você não pode fazer lançamentos manuais nessa conta</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="530" trl="Y">
     <value column="Name" original="On Hand Quantity">Quantidade Em Mãos</value>
     <value column="PrintName" original="On Hand Qty">Qde Em Mãos</value>
@@ -28,6 +38,36 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PrintName" original="SKU">SKU (UCE)</value>
     <value column="Description" original="Stock Keeping Unit">Unidade de Controle de Estoque (UCE / SKU)</value>
     <value column="Help" original="The SKU indicates a user defined stock keeping unit.  It may be used for an additional bar code symbols or your own schema.">A UCE/SKU indica uma unidade de controle de estoque definida pelo usuário.  Ela pode ser usada para símbolos de código de barras adicionais ou seu próprio esquema.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="1025" trl="Y">
+    <value column="Name" original="Shipment/Receipt">Remessa/Recebimento</value>
+    <value column="PrintName" original="Shipment/Receipt">Remessa/Recebimento</value>
+    <value column="Description" original="Material Shipment Document">Documento de Remessa de Material</value>
+    <value column="Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
+    <value column="PO_Description" original="Material Receipt Document">Documento de Recebimento de Material</value>
+    <value column="PO_Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
+    <value column="PO_Name" original="Receipt">Recebimento</value>
+    <value column="PO_PrintName" original="Receipt">Recebimento</value>
+  </row>
+  <row id="2019" trl="Y">
+    <value column="Name" original="Attribute Set Instance">Instância de Atributos</value>
+    <value column="PrintName" original="Attribute Set Instance">Instância de Atributos</value>
+    <value column="Description" original="Product Attribute Set Instance">Instância de Conjunto de Atributos de Produto</value>
+    <value column="Help" original="The values of the actual Product Attribute Instances.  The product level attributes are defined on Product level.">São os valores dos "Atributos das Instâncias de Produtos" reais.  Os atributos de nível de produto são definidos no nível de Produto.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2799" trl="Y">
+    <value column="Name" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
+    <value column="PrintName" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
+    <value column="Description" original="Target Product Attribute Set Instance">É o alvo da Instância de Conjunto de Atributos de Produto</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -68,6 +108,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PrintName" original="Decimal Pattern">Decimal Pattern</value>
     <value column="Description" original="Java Decimal Pattern">Decimal Pattern Java</value>
     <value column="Help" original="Option Decimal pattern in Java notation. Examples: 0000 will format 23 to 0023">Opção Decimal padrão em notação Java. Exemplos: 0000 formatará 23 para 0023</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="54086" trl="Y">
+    <value column="Name" original="Discontinued At">Descontinuado Em</value>
+    <value column="PrintName" original="Discontinued At">Descontinuado Em</value>
+    <value column="Description" original="Discontinued At indicates Date when product was discontinued">Descontinuado Em indica a Data quando um produto foi descontinuado</value>
+    <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />

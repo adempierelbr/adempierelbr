@@ -62,4 +62,19 @@ public interface I_W_AD_ClientInfo extends I_AD_ClientInfo
 	public int getLBR_ProductSISCOMEX_ID();
 
 	public I_M_Product getLBR_ProductSISCOMEX() throws RuntimeException;
+
+    /** Column name LBR_ProductWithhold_ID */
+    public static final String COLUMNNAME_LBR_ProductWithhold_ID = "LBR_ProductWithhold_ID";
+
+	/** Set Product for Withhold.
+	  * Product for Withhold to be used in sales/purchase orders
+	  */
+	public void setLBR_ProductWithhold_ID (int LBR_ProductWithhold_ID);
+
+	/** Get Product for Withhold.
+	  * Product for Withhold to be used in sales/purchase orders
+	  */
+	public int getLBR_ProductWithhold_ID();
+
+	public I_M_Product getLBR_ProductWithhold() throws RuntimeException;
 }

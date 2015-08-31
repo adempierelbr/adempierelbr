@@ -46,6 +46,7 @@ import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zkex.zul.Borderlayout;
@@ -205,16 +206,16 @@ public class WTaxesDialog extends Window implements EventListener, ValueChangeLi
 		panel.appendChild(confirmPanel);
 		//
 		newButton.setImage("/images/New24.png");
-		newButton.setLabel(Msg.translate(Env.getCtx(), "New"));
+		newButton.setLabel(Util.cleanAmp(Msg.translate(Env.getCtx(), "New")));
 		//newButton.setMargin(ConfirmPanel.s_insets);
-		newButton.setTooltiptext(Msg.translate(Env.getCtx(), "New"));
+		newButton.setTooltiptext(Util.cleanAmp(Msg.translate(Env.getCtx(), "New")));
 		confirmPanel.appendChild(newButton);
 		newButton.addActionListener(this);
 		//
 		delRecordButton.setImage("/images/Delete24.png");
-		delRecordButton.setLabel(Msg.translate(Env.getCtx(), "Delete"));
+		delRecordButton.setLabel(Util.cleanAmp(Msg.translate(Env.getCtx(), "Delete")));
 		//delRecordButton.setMargin(ConfirmPanel.s_insets);
-		delRecordButton.setTooltiptext(Msg.translate(Env.getCtx(), "Delete"));
+		delRecordButton.setTooltiptext(Util.cleanAmp(Msg.translate(Env.getCtx(), "Delete")));
 		confirmPanel.appendChild(delRecordButton);
 		delRecordButton.addActionListener(this);
 		//
@@ -286,7 +287,7 @@ public class WTaxesDialog extends Window implements EventListener, ValueChangeLi
 		delLineButton.setImage("/images/Delete16.png");
 		delLineButton.setLabel("");
 		//delLineButton.setMargin(new Insets(0,10,0,10));
-		delLineButton.setTooltiptext(Msg.translate(Env.getCtx(), "Delete"));
+		delLineButton.setTooltiptext(Util.cleanAmp (Msg.translate(Env.getCtx(), "Delete")));
 		delLineButton.addActionListener(this);
 		//
 		return delLineButton;

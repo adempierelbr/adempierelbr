@@ -42,6 +42,45 @@ public interface I_W_C_Invoice extends I_C_Invoice
 
 	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
+    /** Column name LBR_HasWithhold */
+    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
+
+	/** Set Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
+
+	/** Get Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public boolean isLBR_HasWithhold();
+
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
+
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public void setLBR_IndPres (String LBR_IndPres);
+
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public String getLBR_IndPres();
+
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
 
@@ -64,6 +103,19 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
 
+    /** Column name LBR_ProcCancelBoleto */
+    public static final String COLUMNNAME_LBR_ProcCancelBoleto = "LBR_ProcCancelBoleto";
+
+	/** Set Process Cancel Boleto.
+	  * Process to Cancel Boleto
+	  */
+	public void setLBR_ProcCancelBoleto (String LBR_ProcCancelBoleto);
+
+	/** Get Process Cancel Boleto.
+	  * Process to Cancel Boleto
+	  */
+	public String getLBR_ProcCancelBoleto();
+
     /** Column name LBR_Withhold_Invoice_ID */
     public static final String COLUMNNAME_LBR_Withhold_Invoice_ID = "LBR_Withhold_Invoice_ID";
 
@@ -78,19 +130,6 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	public int getLBR_Withhold_Invoice_ID();
 
 	public I_C_Invoice getLBR_Withhold_Invoice() throws RuntimeException;
-
-    /** Column name ProcCancelBoleto */
-    public static final String COLUMNNAME_ProcCancelBoleto = "ProcCancelBoleto";
-
-	/** Set Process Cancel Boleto.
-	  * Process to Cancel Boleto
-	  */
-	public void setProcCancelBoleto (String ProcCancelBoleto);
-
-	/** Get Process Cancel Boleto.
-	  * Process to Cancel Boleto
-	  */
-	public String getProcCancelBoleto();
 
     /** Column name lbr_BillNote */
     public static final String COLUMNNAME_lbr_BillNote = "lbr_BillNote";
@@ -117,19 +156,6 @@ public interface I_W_C_Invoice extends I_C_Invoice
 	  * Define the Boleto Comments
 	  */
 	public String getlbr_BoletoComments();
-
-    /** Column name LBR_FreightCostRule */
-    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
-
-	/** Set Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
-
-	/** Get Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public String getLBR_FreightCostRule();
 
     /** Column name lbr_IsBillPrinted */
     public static final String COLUMNNAME_lbr_IsBillPrinted = "lbr_IsBillPrinted";

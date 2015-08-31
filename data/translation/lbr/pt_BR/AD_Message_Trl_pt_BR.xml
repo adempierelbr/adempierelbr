@@ -18,6 +18,10 @@
     <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />
   </row>
+  <row id="329" trl="Y">
+    <value column="MsgText" original="Match From">Confrontar (origem)</value>
+    <value column="MsgTip" original="" />
+  </row>
   <row id="334" trl="Y">
     <value column="MsgText" original="&amp;Menu">Menu</value>
     <value column="MsgTip" original="" />
@@ -32,6 +36,10 @@
   </row>
   <row id="785" trl="Y">
     <value column="MsgText" original="Log Out">Log Out</value>
+    <value column="MsgTip" original="" />
+  </row>
+  <row id="817" trl="Y">
+    <value column="MsgText" original="Show active Requests">Mostrar Solicitações ativas</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="52438" trl="Y">

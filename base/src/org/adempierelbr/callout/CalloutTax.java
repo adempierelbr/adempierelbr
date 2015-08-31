@@ -31,14 +31,12 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
-import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
-import org.compiere.model.MWindow;
 import org.compiere.util.Env;
 
 /**

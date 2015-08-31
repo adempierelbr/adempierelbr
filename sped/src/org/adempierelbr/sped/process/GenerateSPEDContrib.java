@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.sped.SPEDComparator;
 import org.adempierelbr.sped.SPEDUtil;
 import org.adempierelbr.sped.contrib.bean.Bloco0;
@@ -225,12 +226,34 @@ public class GenerateSPEDContrib extends SvrProcess
 		//bM.setRM100(SPEDUtil.getRM100 (p_C_Period_ID, orgInfo.getAD_Org_ID()));
 		//	Registro M200
 		bM.setRM200 (SPEDUtil.getRM200 ());
+		
+		/**
+		 * PIS - M205
+		 */
+		
+		MLBRTaxAssessment m_taxAssessmentPIS = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "PISPROD", p_C_Period_ID, null);
+		if(m_taxAssessmentPIS != null && m_taxAssessmentPIS.get_ID() > 0)
+		{
+			bM.getRM200().setRM205(SPEDUtil.getRM205(m_taxAssessmentPIS));
+		}
+		
 		//	Registro M400
 		bM.setRM400 (SPEDUtil.getRM400 ());
 		// Registro M100
 		//bM.setRM500(SPEDUtil.getRM500 (p_C_Period_ID, orgInfo.getAD_Org_ID()));
 		//	Registro M600
-		bM.setRM600 (SPEDUtil.getRM600 ());
+		bM.setRM600 (SPEDUtil.getRM600 ());		
+		
+		/**
+		 * COFINS - M605
+		 */
+		
+		MLBRTaxAssessment m_taxAssessmentCOFINS = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "COFINSPROD", p_C_Period_ID, null);
+		if(m_taxAssessmentCOFINS != null && m_taxAssessmentCOFINS.get_ID() > 0)
+		{
+			bM.getRM600().setRM605(SPEDUtil.getRM605(m_taxAssessmentCOFINS));
+		}
+		
 		//	Registro M800
 		bM.setRM800 (SPEDUtil.getRM800 ());
 		

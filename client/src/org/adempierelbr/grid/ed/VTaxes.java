@@ -343,10 +343,9 @@ public class VTaxes extends JComponent
 		//	Data Binding
 		try
 		{
-			int LBR_Tax_ID = 0;
+			Integer ii = null;
 			if (m_value != null)
-				LBR_Tax_ID = m_value.getLBR_Tax_ID();
-			Integer ii = new Integer(LBR_Tax_ID);
+				ii = new Integer(m_value.getLBR_Tax_ID());
 	
 			//  force Change - user does not realize that embedded object is already saved.
 			fireVetoableChange(m_columnName, null, null);

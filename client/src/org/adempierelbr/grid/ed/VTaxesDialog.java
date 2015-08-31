@@ -222,13 +222,13 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		//
 		newButton.setIcon(Env.getImageIcon("New24.gif"));
 		newButton.setMargin(ConfirmPanel.s_insets);
-		newButton.setToolTipText(Msg.translate(Env.getCtx(), "New"));
+		newButton.setToolTipText(Msg.translate(Env.getCtx(), "New").replace("&", ""));
 		confirmPanel.addComponent(newButton);
 		newButton.addActionListener(this);
 		//
 		delRecordButton.setIcon(Env.getImageIcon("DeleteSelection24.gif"));
 		delRecordButton.setMargin(ConfirmPanel.s_insets);
-		delRecordButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete"));
+		delRecordButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete").replace("&", ""));
 		confirmPanel.addComponent(delRecordButton);
 		delRecordButton.addActionListener(this);
 		//
@@ -333,23 +333,6 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		//
 		addLine(lt);
 	}	//	addLine
-
-	/**
-	 * 	Create a new delete button
-	 *
-	 * @return JButton Delete
-	 */
-	private JButton createTaxButton(String title)
-	{
-		JButton     delLineButton = new JButton();
-//		delLineButton.setIcon(Env.getImageIcon("Delete24.gif"));
-		delLineButton.setMargin(new Insets(0,10,0,10));
-		delLineButton.setToolTipText(title);
-		delLineButton.setText(title);
-		delLineButton.addActionListener(this);
-		//
-		return delLineButton;
-	}	//	getDelButton
 	
 	/**
 	 * 	Create a new delete button
@@ -361,7 +344,7 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		JButton     delLineButton = new JButton();
 		delLineButton.setIcon(Env.getImageIcon("Delete24.gif"));
 		delLineButton.setMargin(new Insets(0,10,0,10));
-		delLineButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete"));
+		delLineButton.setToolTipText(Msg.translate(Env.getCtx(), "Delete").replace("&", ""));
 		delLineButton.addActionListener(this);
 		//
 		return delLineButton;

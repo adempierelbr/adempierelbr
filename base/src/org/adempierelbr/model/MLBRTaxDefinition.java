@@ -133,7 +133,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			priorityNo += 10;
 		
 		// product_source -> LBR-72
-		if (getlbr_ProductSource().length() > 0)
+		if (getlbr_ProductSource() != null && getlbr_ProductSource().length() > 0)
 			priorityNo += 10;
 		
 		

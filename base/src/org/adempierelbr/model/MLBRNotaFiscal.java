@@ -42,6 +42,7 @@ import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
@@ -146,6 +147,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public MLBRNotaFiscal (Properties ctx, int ID, String trxName)
 	{
 		super (ctx, ID, trxName);
+		//
+		MClientInfo cInfo = MClientInfo.get (ctx, Env.getAD_Client_ID (ctx));
+		cInfoW = POWrapper.create (cInfo, I_W_AD_ClientInfo.class);
 	}	//	MLBRNotaFiscal
 
 	/**
@@ -157,6 +161,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public MLBRNotaFiscal (Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
+		//
+		MClientInfo cInfo = MClientInfo.get (ctx, Env.getAD_Client_ID (ctx));
+		cInfoW = POWrapper.create (cInfo, I_W_AD_ClientInfo.class);
 	}	//	MLBRNotaFiscal
 
 	/**
@@ -1054,13 +1061,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Impostos
 		setTaxes(invoice);
 		
-		MDocType dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
+		I_W_C_DocType dt = POWrapper.create(new MDocType (getCtx(), getC_DocType_ID(), get_TrxName()), I_W_C_DocType.class);
 		String serie = "";
 		String model = "";
 		
-		if (!dt.get_ValueAsString("lbr_NFSerie").isEmpty())
-			serie = dt.get_ValueAsString("lbr_NFSerie");
-		else	
+		if (dt.getlbr_NFSerie() != null && !dt.getlbr_NFSerie().isEmpty())
+			serie = dt.getlbr_NFSerie();
+		
+		//	Não permitir a NF sem série
+		else
 			serie = "1";
 		
 		setlbr_NFSerie(serie);
@@ -1068,16 +1077,19 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (!dtInvoice.get_ValueAsString("lbr_NFModel").isEmpty())
 			model = dtInvoice.get_ValueAsString("lbr_NFModel");
 		else	
-			model = dt.get_ValueAsString("lbr_NFModel");
+			model = dt.getlbr_NFModel();
 
-		setlbr_NFModel(model);
+		if (model == null || model.isEmpty())
+			setlbr_NFModel(null);
+		else
+			setlbr_NFModel(model);
 
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
 		{
-			dt = new MDocType (getCtx(), getC_DocType_ID(), get_TrxName());
-			model = dt.get_ValueAsString("lbr_NFModel");
+			dt = POWrapper.create(new MDocType (getCtx(), getC_DocType_ID(), get_TrxName()), I_W_C_DocType.class);
+			model = dt.getlbr_NFModel();
 			
 			if (model != null && model.startsWith("RPS"))
 				setlbr_ServiceTaxes();
@@ -1102,7 +1114,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					&& (iLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
 					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
-					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
+					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()
+					|| iLine.getM_Product_ID() == cInfoW.getLBR_ProductWithhold_ID()))
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
@@ -1209,10 +1222,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (oLine.isDescription())
 				continue;
 			
-			//	Despesas Adicionais
-			MClientInfo cInfo = MClientInfo.get (order.getCtx(), order.getAD_Client_ID());
-			I_W_AD_ClientInfo cInfoW = POWrapper.create(cInfo, I_W_AD_ClientInfo.class);
-			
 			/**
 			 * 	Estes valores já foram ajustado no nível do cabeçalho,
 			 * 		portanto devem ser ignorados
@@ -1221,7 +1230,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					&& (oLine.getM_Product_ID() == cInfoW.getM_ProductFreight_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductInsurance_ID()
 					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductOtherCharges_ID()
-					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()))
+					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductSISCOMEX_ID()
+					|| oLine.getM_Product_ID() == cInfoW.getLBR_ProductWithhold_ID()))
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
@@ -1550,6 +1560,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (bpLocation == null)
 			return;
 
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (bpLocation.getCtx(), bpLocation.getC_BPartner_ID(), bpLocation.get_TrxName()), I_W_C_BPartner.class);
+		
 		setC_BPartner_ID(bpLocation.getC_BPartner_ID());
 		setC_BPartner_Location_ID(bpLocation.getC_BPartner_Location_ID());
 		
@@ -1559,8 +1571,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
 		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
-		String BPTypeBR = BPartnerUtil.getBPTypeBR(new MBPartner (getCtx(), bpLocation.getC_BPartner_ID(), null));
-		if (BPTypeBR != null && !BPTypeBR.equals(""))
+		String BPTypeBR = bp.getlbr_BPTypeBR();
+		if (BPTypeBR != null && !BPTypeBR.isEmpty())
 			setlbr_BPTypeBR(BPTypeBR);
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
@@ -2155,55 +2167,35 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			 * 	Valores, por exemplo @NF_VAR|AMOUNTS@:
 			 * 
 			 * 		Valor Bruto    - R$       4135,48
-			 *
-			 *		Retenções:
-			 *		IR             - R$         62,03
-			 *
+			 *		Retenção Total - R$         62,03
 			 *		Valor Liquido  - R$       4073,45
 			 */
 			else if (variable.endsWith("AMOUNTS"))
 			{
-				X_LBR_NFTax[] taxes = getTaxes();
-				String header = "";
-				String content = "";
-				String footer = "";
+				BigDecimal withholdAmt = getWithholdAmt();
+				String result = "";
 				Boolean printTaxes = false;
 				//
-				if (taxes == null)
+				if (withholdAmt == null || withholdAmt.signum() == 0)
 					;
 				else
 				{
-					header += "\n" + TextUtil.rPad("Valor Bruto:", 15);
-					header += "- R$ ";
-					header += TextUtil.lPad (mf.format (new Object[]{getlbr_ServiceTotalAmt()}), ' ', 13);
-					header += "\n\n";
+					printTaxes = true;
 					//
-					if (taxes.length == 1)
-						header += "Retenção:\n";
-					else if (taxes.length > 1)
-						header += "Retenções:\n";
-					//
-					for (X_LBR_NFTax tax : taxes)
-					{
-						X_LBR_TaxGroup tg = new X_LBR_TaxGroup (Env.getCtx(), tax.getLBR_TaxGroup_ID(), null);
-						if (tg.getName() == null || tg.getName().equals("ISS"))	//	ISS ja e destacado normalmente
-							continue;
-						//
-						printTaxes = true;
-						//
-						content += TextUtil.rPad (tg.getName(), 15);
-						content += "- R$ ";
-						content += TextUtil.lPad (mf.format (new Object[]{tax.getlbr_TaxAmt().abs()}), ' ', 13);
-						content += "\n";
-					}
-					footer += "\n" + TextUtil.rPad("Valor Líquido:", 15);
-					footer += "- R$ ";
-					footer += TextUtil.lPad (mf.format (new Object[]{getGrandTotal()}), ' ', 13);
-					footer += "\n";
+					result += "\n" + TextUtil.rPad("Valor Bruto", 15);
+					result += "- R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{getlbr_ServiceTotalAmt()}), ' ', 13);
+					result += "\n";
+					result += "Retenção Total - R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{withholdAmt.abs()}), ' ', 13);
+					result += "\n" + TextUtil.rPad("Valor Líquido", 15);
+					result += "- R$ ";
+					result += TextUtil.lPad (mf.format (new Object[]{getGrandTotal()}), ' ', 13);
+					result += "\n";
 				}
 				//
 				if (printTaxes)
-					return header + content + footer;
+					return result;
 				else
 					return "";
 			}
@@ -2276,6 +2268,23 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 		return list.toArray(new MLBRNFTax[list.size()]);
 	}	//	getTaxes
+	
+	/**
+	 * 	
+	 * 	@return
+	 */
+	public BigDecimal getWithholdAmt ()
+	{
+		String sql = "SELECT SUM (LineNetAmt) "
+				+ "FROM C_InvoiceLine il "
+				+ "WHERE C_Invoice_ID=? AND M_Product_ID=?";
+		//
+		BigDecimal amount = DB.getSQLValueBD (get_TrxName(), sql, getC_Invoice_ID(), cInfoW.getLBR_ProductWithhold_ID());
+		//
+		if (amount == null)
+			return Env.ZERO;
+		return amount;
+	}	//	getWithholdAmt
 	
 	/**
 	 * 	Get Business Partner
@@ -2444,6 +2453,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
+
+	private I_W_AD_ClientInfo cInfoW;
 	
 	/**
 	 * 	Unlock Document.

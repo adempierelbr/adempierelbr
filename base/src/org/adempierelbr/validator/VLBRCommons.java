@@ -133,6 +133,19 @@ public class VLBRCommons implements ModelValidator
 		if (Ini.isClient())
 			VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
 		
+		/**
+		 * 	Grava a variável que permite saber se a LBR está habilitada
+		 */
+		boolean enabled = MSysConfig.getBooleanValue ("LBR_ENABLED", false, MClient.get (Env.getCtx()).getAD_Client_ID());
+		
+		if (enabled)
+			log.fine ("LBR is ENABLED.");
+		else
+			log.fine ("LBR is DISABLED.");
+
+		//	Set Enviroment
+		Env.setContext(Env.getCtx(), "#LBR_ENABLED", enabled);
+		
 		return null;
 	}	//	login
 

@@ -15,11 +15,15 @@ package org.adempierelbr.callout;
 import java.math.BigDecimal;
 import java.util.Properties;
 
+import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRADILine;
+import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_Order;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MOrder;
 import org.compiere.util.Env;
 
 /**
@@ -94,16 +98,23 @@ public class CalloutOrder extends CalloutEngine
 		
 		boolean isSOTrx = (Env.getContext(ctx, WindowNo, "IsSOTrx")).equalsIgnoreCase("Y");
 		
-		if (!isSOTrx) return "";
+		if (!isSOTrx) 
+			return "";
 		
-		MBPartner bpartner = new MBPartner(ctx,C_BPartner_ID,null);
+		//	Valores padrão do LBR
+		I_W_C_BPartner bpartner = POWrapper.create (new MBPartner(ctx, C_BPartner_ID, null), I_W_C_BPartner.class);
 		
-		String  lbr_PaymentRule  = bpartner.get_ValueAsString("lbr_PaymentRule");
-		Integer C_BankAccount_ID = (Integer)bpartner.get_Value("C_BankAccount_ID");
+		String  paymentRule  = bpartner.getlbr_PaymentRule();
+		Integer C_BankAccount_ID = bpartner.getC_BankAccount_ID();
 		
-		mTab.setValue("lbr_PaymentRule", lbr_PaymentRule);
-		mTab.setValue("C_BankAccount_ID", C_BankAccount_ID);
-		mTab.setValue("PaymentRule", "P");
+		if (paymentRule != null)
+			mTab.setValue(I_W_C_Order.COLUMNNAME_lbr_PaymentRule, paymentRule);
+		
+		if (C_BankAccount_ID != null)
+			mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
+		
+		mTab.setValue(I_W_C_Order.COLUMNNAME_PaymentRule, MOrder.PAYMENTRULE_OnCredit);
+		mTab.setValue(I_W_C_Order.COLUMNNAME_LBR_HasWithhold, bpartner.isLBR_HasWithhold());
 		
 		return "";
 	}	//	PaymentRule

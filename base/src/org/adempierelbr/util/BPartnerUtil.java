@@ -53,7 +53,9 @@ public abstract class BPartnerUtil
 	 * 
 	 * @param bp Business Partner
 	 * @return PF, PJ or null
+	 * @deprecated use {@link I_W_C_BPartner#getlbr_BPTypeBR()}
 	 */
+	@Deprecated 
 	public static String getBPTypeBR (MBPartner bp)
 	{
 		if (bp == null)
@@ -61,8 +63,6 @@ public abstract class BPartnerUtil
 		//
 		return bp.get_ValueAsString("lbr_BPTypeBR");
 	}	//	getBPTypeBR
-
-
 	
 	/**
 	 * 		Retorna o Cadastro Nacional de Pessoa Jurídica (CNPJ) do Parceiro
@@ -192,8 +192,7 @@ public abstract class BPartnerUtil
 		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), bpLocation.getC_BPartner_ID(), null), I_W_C_BPartner.class);
 		String lbr_BPTypeBR = bp.getlbr_BPTypeBR();
 		//
-		if (lbr_BPTypeBR != null 
-				&& !lbr_BPTypeBR.equals(""))
+		if (lbr_BPTypeBR != null && !lbr_BPTypeBR.isEmpty())
 		{
 			/**
 			 * 	Parceiro com IE definido no cadastro de Parceiro 

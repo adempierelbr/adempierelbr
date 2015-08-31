@@ -32,7 +32,7 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110921L;
+	private static final long serialVersionUID = 20150819L;
 
     /** Standard Constructor */
     public X_LBR_TaxName (Properties ctx, int LBR_TaxName_ID, String trxName)
@@ -40,12 +40,13 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
       super (ctx, LBR_TaxName_ID, trxName);
       /** if (LBR_TaxName_ID == 0)
         {
-			setHasWithHold (false);
+			setLBR_HasWithhold (false);
 // 'N'
 			setLBR_TaxName_ID (0);
 			setLBR_TaxSubstitution_ID (0);
+			setLBR_WithholdThreshold (Env.ZERO);
+// 0
 			setName (null);
-			setWithHoldThreshold (Env.ZERO);
 			setlbr_TaxType (null);
 // 'P'
 			setlbr_WithholdFrequency (null);
@@ -98,21 +99,21 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	/** Set Has WithHold.
-		@param HasWithHold 
-		Defines if the Tax, has WithHold
+	/** Set Has Withhold.
+		@param LBR_HasWithhold 
+		Defines if the Tax, has Withhold
 	  */
-	public void setHasWithHold (boolean HasWithHold)
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold)
 	{
-		set_Value (COLUMNNAME_HasWithHold, Boolean.valueOf(HasWithHold));
+		set_Value (COLUMNNAME_LBR_HasWithhold, Boolean.valueOf(LBR_HasWithhold));
 	}
 
-	/** Get Has WithHold.
-		@return Defines if the Tax, has WithHold
+	/** Get Has Withhold.
+		@return Defines if the Tax, has Withhold
 	  */
-	public boolean isHasWithHold () 
+	public boolean isLBR_HasWithhold () 
 	{
-		Object oo = get_Value(COLUMNNAME_HasWithHold);
+		Object oo = get_Value(COLUMNNAME_LBR_HasWithhold);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -173,6 +174,64 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Withhold Group.
+		@param LBR_WithholdGroup 
+		Withhold Group
+	  */
+	public void setLBR_WithholdGroup (String LBR_WithholdGroup)
+	{
+		set_Value (COLUMNNAME_LBR_WithholdGroup, LBR_WithholdGroup);
+	}
+
+	/** Get Withhold Group.
+		@return Withhold Group
+	  */
+	public String getLBR_WithholdGroup () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_WithholdGroup);
+	}
+
+	/** Set Withhold Threshold.
+		@param LBR_WithholdThreshold 
+		Defines the Withhold Threshold 
+	  */
+	public void setLBR_WithholdThreshold (BigDecimal LBR_WithholdThreshold)
+	{
+		set_Value (COLUMNNAME_LBR_WithholdThreshold, LBR_WithholdThreshold);
+	}
+
+	/** Get Withhold Threshold.
+		@return Defines the Withhold Threshold 
+	  */
+	public BigDecimal getLBR_WithholdThreshold () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_WithholdThreshold);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** LBR_WithholdType AD_Reference_ID=1120214 */
+	public static final int LBR_WITHHOLDTYPE_AD_Reference_ID=1120214;
+	/** Paid Amount Sum = P */
+	public static final String LBR_WITHHOLDTYPE_PaidAmountSum = "P";
+	/** Tax Amount = T */
+	public static final String LBR_WITHHOLDTYPE_TaxAmount = "T";
+	/** Set Withhold Type.
+		@param LBR_WithholdType Withhold Type	  */
+	public void setLBR_WithholdType (String LBR_WithholdType)
+	{
+
+		set_Value (COLUMNNAME_LBR_WithholdType, LBR_WithholdType);
+	}
+
+	/** Get Withhold Type.
+		@return Withhold Type	  */
+	public String getLBR_WithholdType () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_WithholdType);
+	}
+
 	/** Set Name.
 		@param Name 
 		Alphanumeric identifier of the entity
@@ -188,26 +247,6 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	public String getName () 
 	{
 		return (String)get_Value(COLUMNNAME_Name);
-	}
-
-	/** Set WithHold Threshold.
-		@param WithHoldThreshold 
-		Defines the WithHold Threshold 
-	  */
-	public void setWithHoldThreshold (BigDecimal WithHoldThreshold)
-	{
-		set_Value (COLUMNNAME_WithHoldThreshold, WithHoldThreshold);
-	}
-
-	/** Get WithHold Threshold.
-		@return Defines the WithHold Threshold 
-	  */
-	public BigDecimal getWithHoldThreshold () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_WithHoldThreshold);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** lbr_TaxType AD_Reference_ID=1000022 */

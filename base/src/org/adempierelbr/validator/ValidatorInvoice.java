@@ -190,6 +190,9 @@ public class ValidatorInvoice implements ModelValidator
 		//	Billing Bank Account
 		if (wInvoice.getC_BankAccount_ID() <= 0)
 			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
+		
+		//	Has tax Withhold
+		wInvoice.setLBR_HasWithhold(wOrder.isLBR_HasWithhold());
 
 		return null;
 	}	//	modelChange
@@ -236,10 +239,10 @@ public class ValidatorInvoice implements ModelValidator
 				I_W_C_OrderLine wOLine = POWrapper.create (oLine, I_W_C_OrderLine.class);
 				
 				// CFOP, Sit. Tributária, Mensagem Legal
-				if (iLineW.getLBR_CFOP_ID() <= 0)
+				if (iLineW.getLBR_CFOP_ID() <= 0 && wOLine.getLBR_CFOP_ID() > 0)
 					iLineW.setLBR_CFOP_ID (wOLine.getLBR_CFOP_ID());
 
-				if (iLineW.getLBR_LegalMessage_ID() <= 0)
+				if (iLineW.getLBR_LegalMessage_ID() <= 0 && wOLine.getLBR_LegalMessage_ID() > 0)
 					iLineW.setLBR_LegalMessage_ID (wOLine.getLBR_LegalMessage_ID());
 
 				if (iLineW.getlbr_TaxStatus() == null || iLineW.getlbr_TaxStatus().isEmpty())
@@ -248,10 +251,10 @@ public class ValidatorInvoice implements ModelValidator
 				if (iLineW.getDescription() == null || iLineW.getDescription().isEmpty())
 					iLineW.setDescription(wOLine.getDescription());
 
-				if (iLineW.getLBR_DI_ID() <= 0)
+				if (iLineW.getLBR_DI_ID() <= 0 && wOLine.getLBR_DI_ID() > 0)
 					iLineW.setLBR_DI_ID(wOLine.getLBR_DI_ID());
 				
-				if (iLineW.getLBR_ADILine_ID() <= 0)
+				if (iLineW.getLBR_ADILine_ID() <= 0 && wOLine.getLBR_ADILine_ID() > 0)
 					iLineW.setLBR_ADILine_ID(wOLine.getLBR_ADILine_ID());
 				
 				//

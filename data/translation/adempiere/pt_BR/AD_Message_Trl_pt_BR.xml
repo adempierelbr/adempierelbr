@@ -916,7 +916,7 @@ Continuar?</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="329" trl="Y">
-    <value column="MsgText" original="Match From">Confrontar com</value>
+    <value column="MsgText" original="Match From">Confrontar (origem)</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="330" trl="Y">
@@ -2877,7 +2877,7 @@ Verifique o log de erros e o formato do arquivo Accounting*.csv - Nenhuma Conta 
     <value column="MsgTip" original="" />
   </row>
   <row id="817" trl="Y">
-    <value column="MsgText" original="Show active Requests">Mostrar Requisições ativas</value>
+    <value column="MsgText" original="Show active Requests">Mostrar Solicitações ativas</value>
     <value column="MsgTip" original="" />
   </row>
   <row id="818" trl="Y">

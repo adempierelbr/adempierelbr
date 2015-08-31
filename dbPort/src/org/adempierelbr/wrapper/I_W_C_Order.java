@@ -55,6 +55,58 @@ public interface I_W_C_Order extends I_C_Order
 	  */
 	public String getCreateFrom();
 
+    /** Column name LBR_FreightCostRule */
+    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
+
+	/** Set Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
+
+	/** Get Freight Cost Rule.
+	  * Method for charging Freight
+	  */
+	public String getLBR_FreightCostRule();
+
+    /** Column name LBR_HasWithhold */
+    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
+
+	/** Set Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
+
+	/** Get Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public boolean isLBR_HasWithhold();
+
+    /** Column name LBR_INCOTERMS */
+    public static final String COLUMNNAME_LBR_INCOTERMS = "LBR_INCOTERMS";
+
+	/** Set INCOTERMS.
+	  * International Commercial Terms
+	  */
+	public void setLBR_INCOTERMS (String LBR_INCOTERMS);
+
+	/** Get INCOTERMS.
+	  * International Commercial Terms
+	  */
+	public String getLBR_INCOTERMS();
+
+    /** Column name LBR_IndPres */
+    public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
+
+	/** Set Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public void setLBR_IndPres (String LBR_IndPres);
+
+	/** Get Indicação de Atendimento Presencial.
+	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
+	  */
+	public String getLBR_IndPres();
+
     /** Column name LBR_OtherChargesAmt */
     public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
 
@@ -63,6 +115,19 @@ public interface I_W_C_Order extends I_C_Order
 
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
+
+    /** Column name LBR_ProcCreatePO */
+    public static final String COLUMNNAME_LBR_ProcCreatePO = "LBR_ProcCreatePO";
+
+	/** Set Create PO.
+	  * Process to Create PO Lines from Requisition
+	  */
+	public void setLBR_ProcCreatePO (String LBR_ProcCreatePO);
+
+	/** Get Create PO.
+	  * Process to Create PO Lines from Requisition
+	  */
+	public String getLBR_ProcCreatePO();
 
     /** Column name LBR_Withhold_Order_ID */
     public static final String COLUMNNAME_LBR_Withhold_Order_ID = "LBR_Withhold_Order_ID";
@@ -79,19 +144,6 @@ public interface I_W_C_Order extends I_C_Order
 
 	public I_C_Order getLBR_Withhold_Order() throws RuntimeException;
 
-    /** Column name ProcCreatePO */
-    public static final String COLUMNNAME_ProcCreatePO = "ProcCreatePO";
-
-	/** Set Create PO.
-	  * Process to Create PO Lines from Requisition
-	  */
-	public void setProcCreatePO (String ProcCreatePO);
-
-	/** Get Create PO.
-	  * Process to Create PO Lines from Requisition
-	  */
-	public String getProcCreatePO();
-
     /** Column name lbr_BillNote */
     public static final String COLUMNNAME_lbr_BillNote = "lbr_BillNote";
 
@@ -104,19 +156,6 @@ public interface I_W_C_Order extends I_C_Order
 	  * Bill Note
 	  */
 	public String getlbr_BillNote();
-
-    /** Column name LBR_FreightCostRule */
-    public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
-
-	/** Set Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public void setLBR_FreightCostRule (String LBR_FreightCostRule);
-
-	/** Get Freight Cost Rule.
-	  * Method for charging Freight
-	  */
-	public String getLBR_FreightCostRule();
 
     /** Column name lbr_InsuranceAmt */
     public static final String COLUMNNAME_lbr_InsuranceAmt = "lbr_InsuranceAmt";

@@ -481,7 +481,7 @@ public class NFeXMLGenerator
 				
 				if (MLBRNotaFiscalDocRef.LBR_BPTYPEBR_PJ_LegalEntity.equals(docRef.getlbr_BPTypeBR()))
 					refNFP.setCNPJ(toNumericStr(docRef.getlbr_CNPJ()));
-				else
+				else if (MLBRNotaFiscalDocRef.LBR_BPTYPEBR_PF_Individual.equals(docRef.getlbr_BPTypeBR()))
 					refNFP.setCPF(toNumericStr(docRef.getlbr_CPF()));
 				refNFP.setIE(toNumericStr(docRef.getlbr_IE()));
 				refNFP.setMod(InfNFe.Ide.NFref.RefNFP.Mod.Enum.forString(toNumericStr(docRef.getlbr_NFModel())));
@@ -530,7 +530,7 @@ public class NFeXMLGenerator
 		//	IE
 		emit.setIE(toNumericStr (nf.getlbr_IE()));
 		
-		String regime = (String) MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null).get_Value("Z_TaxRegime");
+		String regime = (String) MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null).get_Value("LBR_TaxRegime");
 		
 		//	Regime Normal
 		String crt = "3";
@@ -564,15 +564,19 @@ public class NFeXMLGenerator
 			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
 				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 
-			else if (nf.getC_BPartner_ID() > 0
-					&& nf.getC_BPartner().getTaxID() != null
-					&& nf.getC_BPartner().getTaxID().trim().length() >= 5)
-				dest.setIdEstrangeiro(nf.getC_BPartner().getTaxID());
+			//	Estrangeiro
+			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals(nf.getlbr_BPTypeBR()))
+			{
+				String taxID = nf.getC_BPartner().getTaxID();
+				
+				//	ID do Estrangeiro OK
+				if (taxID != null && taxID.trim().length() >= 5)
+					dest.setIdEstrangeiro(taxID);
 			
-			//	ID do Estrangeiro não especificado
-			else
-				dest.setIdEstrangeiro("");
-			
+				//	ID do Estrangeiro não especificado
+				else
+					dest.setIdEstrangeiro("");
+			}
 			dest.setXNome(normalize (nf.getBPName()));
 		}
 		

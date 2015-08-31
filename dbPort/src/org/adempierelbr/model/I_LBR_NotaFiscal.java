@@ -525,6 +525,28 @@ public interface I_LBR_NotaFiscal
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
 
+    /** Column name LBR_ProcReactivateNF */
+    public static final String COLUMNNAME_LBR_ProcReactivateNF = "LBR_ProcReactivateNF";
+
+	/** Set Reactivate Nota Fiscal.
+	  * This Process Reactivates the Nota Fiscal Document
+	  */
+	public void setLBR_ProcReactivateNF (String LBR_ProcReactivateNF);
+
+	/** Get Reactivate Nota Fiscal.
+	  * This Process Reactivates the Nota Fiscal Document
+	  */
+	public String getLBR_ProcReactivateNF();
+
+    /** Column name LBR_Processing2 */
+    public static final String COLUMNNAME_LBR_Processing2 = "LBR_Processing2";
+
+	/** Set Process Now	  */
+	public void setLBR_Processing2 (String LBR_Processing2);
+
+	/** Get Process Now	  */
+	public String getLBR_Processing2();
+
     /** Column name LBR_SendEMail */
     public static final String COLUMNNAME_LBR_SendEMail = "LBR_SendEMail";
 
@@ -594,19 +616,6 @@ public interface I_LBR_NotaFiscal
 
 	public I_C_Location getOrg_Location() throws RuntimeException;
 
-    /** Column name ProcReactivateNF */
-    public static final String COLUMNNAME_ProcReactivateNF = "ProcReactivateNF";
-
-	/** Set Reactivate Nota Fiscal.
-	  * This Process Reactivates the Nota Fiscal Document
-	  */
-	public void setProcReactivateNF (String ProcReactivateNF);
-
-	/** Get Reactivate Nota Fiscal.
-	  * This Process Reactivates the Nota Fiscal Document
-	  */
-	public String getProcReactivateNF();
-
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 
@@ -628,15 +637,6 @@ public interface I_LBR_NotaFiscal
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
-
-    /** Column name Processing2 */
-    public static final String COLUMNNAME_Processing2 = "Processing2";
-
-	/** Set Process Now	  */
-	public void setProcessing2 (String Processing2);
-
-	/** Get Process Now	  */
-	public String getProcessing2();
 
     /** Column name TotalLines */
     public static final String COLUMNNAME_TotalLines = "TotalLines";

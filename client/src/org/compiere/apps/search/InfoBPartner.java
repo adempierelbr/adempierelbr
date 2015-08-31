@@ -22,8 +22,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JFormattedTextField;
+import javax.swing.text.MaskFormatter;
+
 import org.adempiere.plaf.AdempierePLAF;
 import org.adempierelbr.util.SQLUtils;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.apps.AEnv;
 import org.compiere.apps.ALayout;
 import org.compiere.apps.ALayoutConstraint;
@@ -124,9 +128,9 @@ public class InfoBPartner extends Info
 	//private CLabel labelEMail = new CLabel();
 	//private CTextField fieldEMail = new CTextField(10);
 	private CLabel labelCNPJ = new CLabel();
-	private CTextField fieldCNPJ = new CTextField(10);
+	private JFormattedTextField fieldCNPJ = new JFormattedTextField(10);
 	private CLabel labelCPF = new CLabel();
-	private CTextField fieldCPF = new CTextField(10);
+	private JFormattedTextField fieldCPF = new JFormattedTextField(10);
 	private VCheckBox checkAND = new VCheckBox();
 	private VCheckBox checkCustomer = new VCheckBox();
 
@@ -150,14 +154,27 @@ public class InfoBPartner extends Info
 		//labelEMail.setText(Msg.getMsg(Env.getCtx(), "EMail"));
 		//fieldEMail.setBackground(AdempierePLAF.getInfoBackground());
 		//fieldEMail.addActionListener(this);
-
-		labelCNPJ.setText("CNPJ");
-		fieldCNPJ.setBackground(AdempierePLAF.getInfoBackground());
-		fieldCNPJ.addActionListener(this);
-
-		labelCPF.setText("CPF");
-		fieldCPF.setBackground(AdempierePLAF.getInfoBackground());
-		fieldCPF.addActionListener(this);
+		
+		try
+		{
+			MaskFormatter cnpj= new MaskFormatter("##.###.###/####-##"); 
+			labelCNPJ.setText("CNPJ");
+			fieldCNPJ = new JFormattedTextField(cnpj);
+			fieldCNPJ.setBackground(AdempierePLAF.getInfoBackground());			
+			fieldCNPJ.setFocusLostBehavior(JFormattedTextField.PERSIST);
+			fieldCNPJ.addActionListener(this);
+	
+			MaskFormatter cpf= new MaskFormatter("###.###.###-##"); 
+			labelCPF.setText("CPF");
+			fieldCPF = new JFormattedTextField(cpf);
+			fieldCPF.setBackground(AdempierePLAF.getInfoBackground());
+			fieldCPF.setFocusLostBehavior(JFormattedTextField.PERSIST);
+			fieldCPF.addActionListener(this);
+		}
+		catch (Exception e)
+		{
+			log.warning(e.getMessage());
+		}		
 
 		checkAND.setText(Msg.getMsg(Env.getCtx(), "SearchAND"));
 		checkAND.setToolTipText(Msg.getMsg(Env.getCtx(), "SearchANDInfo"));
@@ -273,11 +290,11 @@ public class InfoBPartner extends Info
 			list.add ("UPPER(c.EMail) LIKE ?");
 		*/
 		//	=> CPF
-		String cpf = fieldCPF.getText().toUpperCase();
+		String cpf = TextUtil.retiraEspecial(fieldCPF.getText().toUpperCase()).trim().equals("") ? "" : fieldCPF.getText().toUpperCase();
 		if (!(cpf.equals("") || cpf.equals("%")))
 			list.add ("UPPER(C_BPartner.lbr_CPF) LIKE ?");
 		//	=> CNPJ
-		String cnpj = fieldCNPJ.getText().toUpperCase();
+		String cnpj = TextUtil.retiraEspecial(fieldCNPJ.getText().toUpperCase()).trim().equals("")  ? "" : fieldCNPJ.getText().toUpperCase();		
 		if (!(cnpj.equals("") || cnpj.equals("%")))
 			list.add ("UPPER(C_BPartner.lbr_CNPJ) LIKE ?");
 
@@ -375,7 +392,7 @@ public class InfoBPartner extends Info
 		}
 		*/
 		//	=> CPF
-		String cpf = fieldCPF.getText().toUpperCase();
+		String cpf = TextUtil.retiraEspecial(fieldCPF.getText().toUpperCase()).trim().equals("") ? "" : fieldCPF.getText().toUpperCase();
 		if (!(cpf.equals("") || cpf.equals("%")))
 		{
 			if (!cpf.endsWith("%"))
@@ -384,7 +401,7 @@ public class InfoBPartner extends Info
 			log.fine("CPF: " + cpf);
 		}
 		//	=> CNPJ
-		String cnpj = fieldCNPJ.getText().toUpperCase();
+		String cnpj = TextUtil.retiraEspecial(fieldCNPJ.getText().toUpperCase()).trim().equals("") ? "" : fieldCNPJ.getText().toUpperCase();
 		if (!(cnpj.equals("") || cnpj.equals("%")))
 		{
 			if (!cnpj.endsWith("%"))

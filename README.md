@@ -62,6 +62,18 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201509 [[Download]][22] [[Seed PostgreSQL]][23] [[Seed OracleXE]][24]
+
+	* Melhorias na tradução
+	* Novo esquema de retenções de impostos de serviços
+	* Permitir acesso ao Adempiere a partir do Java 8
+	* Correção na numeração dos scripts
+	* Criação de Novos Tipos de Parceiro de Negócio (Menor de 18 e Estrangeiros)
+	* Novo Processo de Importação de Níveis de Reabastecimento de Produto
+	* Correção de Bug ao registrar Log de Erro
+	* Padronização de Janelas e Sequências de Campos
+	* [Mais detalhes][21]
+
 1. LBR-201508 [[Download]][18] [[Seed PostgreSQL]][19] [[Seed OracleXE]][20]
 
 	* Melhorias na tradução
@@ -114,3 +126,7 @@ Patrocinadores desta versão
 [18]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201508.tgz
 [19]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_PG.tgz
 [20]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_ORA.tgz
+[21]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201509
+[22]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201509.tgz
+[23]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_PG.tgz
+[24]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_ORA.tgz

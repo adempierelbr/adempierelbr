@@ -363,7 +363,7 @@ public class Doc_Invoice extends Doc
 					if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
 					{
 						X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
-						if (!txName.isHasWithHold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
+						if (!txName.isLBR_HasWithhold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 						{
 							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
 									getC_Currency_ID(), amt, null);
@@ -594,7 +594,7 @@ public class Doc_Invoice extends Doc
 				if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
 				{
 					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
-					if (!txName.isHasWithHold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
+					if (!txName.isLBR_HasWithhold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 					{
 						tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxLiability, as),
 								getC_Currency_ID(), null, m_taxes[i].getAmount());
@@ -911,7 +911,7 @@ public class Doc_Invoice extends Doc
 				if (LBR_TaxName_ID != null && LBR_TaxName_ID > 0)
 				{
 					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
-					if (!txName.isHasWithHold())
+					if (!txName.isLBR_HasWithhold())
 					{
 						tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
 								getC_Currency_ID(), amt, null);
