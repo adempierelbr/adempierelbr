@@ -264,3 +264,9 @@ UPDATE C_BPartner SET IsProspect='Y' WHERE IsProspect='N' AND (lbr_BPTypeBR NOT 
 
 UPDATE C_BPartner SET lbr_BPTypeBRIsValid='Y', lbr_BPTypeBR='XX' WHERE IsEmployee='Y' AND lbr_BPTypeBR IS NULL AND AD_Client_ID=11
 ;
+
+-- 28/08/2015 10h7min21s BRT
+SELECT Register_Migration_Script ('130-NewBPTypes.sql') FROM DUAL
+;
+
+EXIT
