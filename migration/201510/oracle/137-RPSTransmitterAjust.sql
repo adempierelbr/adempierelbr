@@ -33,5 +33,3 @@ SELECT Register_Migration_Script ('137-RPSTransmitterAjust.sql') FROM DUAL
 ;
 
 EXIT
-
-
