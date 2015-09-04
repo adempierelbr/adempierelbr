@@ -205,7 +205,7 @@ public class ProcInutNF extends SvrProcess
 		infInut.setId(id);
 		
 		//	Sign
-		new SignatureUtil (oi, SignatureUtil.INUTILIZACAO_NFE).sign (inutNFeDocument, infInut.newCursor());
+		new SignatureUtil (oi, SignatureUtil.INUTILIZACAO_NFE).sign (inutNFeDocument, inutNFe.newCursor());
 		
 		//	Validate XML
 		NFeUtil.validate (inutNFeDocument);
