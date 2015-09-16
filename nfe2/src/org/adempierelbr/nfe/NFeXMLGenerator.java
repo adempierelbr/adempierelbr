@@ -1326,6 +1326,31 @@ public class NFeXMLGenerator
 			Vol vol = transp.addNewVol();
 				
 			vol.setQVol(Integer.toString(nf.getNoPackages()));
+			//
+			BigDecimal grossWeight = nf.getlbr_GrossWeight();
+			BigDecimal netWeight = nf.getlbr_NetWeight();
+			
+			//	Not null
+			if (grossWeight == null)
+				grossWeight = Env.ZERO;
+			if (netWeight == null)
+				netWeight = Env.ZERO;
+			
+			//	Fix invalid net weight
+			if (grossWeight.compareTo(netWeight) == -1)
+				netWeight = grossWeight;
+
+			//	Set gross and net weight in TON
+			if (netWeight.signum() == 1)
+				vol.setPesoL(normalize3 (netWeight));
+			if (grossWeight.signum() == 1)
+				vol.setPesoB(normalize3 (grossWeight));
+			
+			//	Package Type
+			String packType = nf.getlbr_PackingType();
+			
+			if (packType != null && !packType.isEmpty())
+				vol.setEsp(packType.trim());
 		}		
 				
 		//	Dados da cobrança
@@ -1429,6 +1454,21 @@ public class NFeXMLGenerator
 		return TextUtil.bigdecimalToString (value);
 	}	//	normalize
 
+	/**
+	 * 	Converts BD to String, with up to 4 decimals,
+	 * 		with no trailing zeroes
+	 * 
+	 * 	E.g. 	10.12000 	->  10.120
+	 * 			100.00		-> 100.000
+	 * 			100.12345	-> 100.123
+	 * @param value
+	 * @return
+	 */
+	private static String normalize3 (BigDecimal value)
+	{
+		return TextUtil.bigdecimalToString (value, 3);
+	}	//	normalize4
+	
 	/**
 	 * 	Converts BD to String, with up to 4 decimals,
 	 * 		with no trailing zeroes
