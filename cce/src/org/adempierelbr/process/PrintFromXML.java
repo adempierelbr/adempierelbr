@@ -148,16 +148,32 @@ public class PrintFromXML extends SvrProcess
 		
 		MAttachmentEntry[] entries = att.getEntries();
 		InputStream xml = null;
+		InputStream xmlTmp = null;
 		
 		for (MAttachmentEntry entry : entries)
 		{
+			//	Try to find the right file
 			if (entry.getName().endsWith(extension))
 			{
 				xml = entry.getInputStream();
 				break;
 			}
+			
+			//	XML without authorization, preview only
+			else if (entry.getName().endsWith("nfe.xml"))
+			{
+				xmlTmp = entry.getInputStream();
+				break;
+			}
 		}
 
+		//	Uses temp xml for preview
+		if (xml == null && xmlTmp != null)
+		{
+			xml = xmlTmp;
+			message = "C\u00D3PIA DE SEGURAN\u00C7A     N\u00E3o Transmitido";
+		}
+		
 		if (xml == null)
 			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
@@ -263,6 +279,19 @@ public class PrintFromXML extends SvrProcess
 	 */
 	private String[] getResourceListing (Class<?> clazz, String path)
 	{
+		//	MDFe
+		if (reportName.startsWith("DAMDFeRetratoA4"))
+			return new String[]{"DAMDFeRetratoA4_Sub_ValePedagio.jasper", "DAMDFeRetratoA4_Sub_Motoristas.jasper"};
+		
+		// NF-e Landscape
+		if (reportName.startsWith("DanfeMainLandscapeA4"))
+			return new String[]{"DanfeMainLandscapeA4_Sub_Item.jasper"};
+		
+		//	NF-e Portrait
+		if (reportName.startsWith("DanfeMainPortraitA4"))
+			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper"};
+		
+		//	Not found, try to catch all from the given path
 		URL dirURL = clazz.getClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file"))
 		{
@@ -276,10 +305,6 @@ public class PrintFromXML extends SvrProcess
 				e.printStackTrace();
 			}
 		} 
-
-		//	MDFe
-		if (reportName.startsWith("DAMDFeRetratoA4"))
-			return new String[]{"DAMDFeRetratoA4_Sub_ValePedagio.jasper", "DAMDFeRetratoA4_Sub_Motoristas.jasper"};
 
 		throw new UnsupportedOperationException("Cannot list files for URL "+dirURL);
 	}	//	getResourceListing
