@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="41"/>
+	<property name="ireport.y" value="508"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -184,10 +184,10 @@
 	<field name="transportadorNumeracao" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/transp/vol[*]/nVol]]></fieldDescription>
 	</field>
-	<field name="transportadorPesoBruto" class="java.lang.String">
+	<field name="transportadorPesoBruto" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[infNFe/transp/vol[*]/pesoB]]></fieldDescription>
 	</field>
-	<field name="transportadorPesoLiquido" class="java.lang.String">
+	<field name="transportadorPesoLiquido" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[infNFe/transp/vol[*]/pesoL]]></fieldDescription>
 	</field>
 	<field name="inscricaoMunicipal" class="java.lang.String">
@@ -2141,7 +2141,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorNumeracao}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement key="textField-62" mode="Transparent" x="387" y="221" width="66" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2152,9 +2152,9 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorPesoBruto}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{transportadorPesoBruto}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
 					<reportElement key="textField-63" mode="Transparent" x="462" y="221" width="68" height="12"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -2165,7 +2165,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorPesoLiquido}]]></textFieldExpression>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{transportadorPesoLiquido}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
 					<reportElement key="textField-64" mode="Transparent" x="441" y="147" width="88" height="12"/>
@@ -2520,7 +2520,8 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 				<textElement textAlignment="Left" markup="styled">
 					<font fontName="Monospaced" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") + $F{informacoesComplementares2}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
+($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
