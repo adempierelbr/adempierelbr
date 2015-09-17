@@ -163,7 +163,6 @@ public class PrintFromXML extends SvrProcess
 			else if (entry.getName().endsWith("nfe.xml"))
 			{
 				xmlTmp = entry.getInputStream();
-				break;
 			}
 		}
 
