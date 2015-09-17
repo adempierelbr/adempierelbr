@@ -23,6 +23,7 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
+import org.adempierelbr.model.MLBRTaxStatus;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
@@ -897,7 +898,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax icmsSTTax = nfl.getICMSSTTax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = icmsTax.getLBR_TaxStatus().getName();
+				String taxStatus = MLBRTaxStatus.getTaxStatusName(icmsTax, nf.isSOTrx());
 				
 				//	Product Source
 				I_W_M_Product prdct = POWrapper.create(MProduct.get(ctx, nfl.getM_Product_ID()), I_W_M_Product.class);
@@ -1115,7 +1116,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax ipiTax = nfl.getIPITax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = ipiTax.getLBR_TaxStatus().getName();
+				String taxStatus = MLBRTaxStatus.getTaxStatusName(ipiTax, nf.isSOTrx());
 				
 				//	IPI
 				TIpi ipi = imposto.addNewIPI();
@@ -1158,7 +1159,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax pisTax = nfl.getPISTax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = pisTax.getLBR_TaxStatus().getName();
+				String taxStatus = MLBRTaxStatus.getTaxStatusName(pisTax, nf.isSOTrx());
 
 				//	PIS Tributado
 				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
@@ -1204,7 +1205,7 @@ public class NFeXMLGenerator
 			if (cofinsTax != null)
 			{
 				//	CST = Código de Situação Tributária
-				String taxStatus = cofinsTax.getLBR_TaxStatus().getName();
+				String taxStatus = MLBRTaxStatus.getTaxStatusName(cofinsTax, nf.isSOTrx());
 
 				//	PIS Tributado
 				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
