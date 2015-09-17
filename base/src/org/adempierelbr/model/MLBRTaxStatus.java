@@ -60,15 +60,12 @@ public class MLBRTaxStatus extends X_LBR_TaxStatus
 	 * @param isSoTrx
 	 * @return
 	 */
-	public static String getTaxStatusName(X_LBR_NFLineTax nfLineTax, Boolean isSoTrx)
+	public String getTaxStatus (Boolean isSOTrx)
 	{
-		if (nfLineTax == null)
-			return null;
-		
-		if (!isSoTrx && nfLineTax.getLBR_TaxStatus().getPO_Name() != null)
-			return nfLineTax.getLBR_TaxStatus().getPO_Name();
+		if (!isSOTrx && getPO_Name() != null)
+			return getPO_Name();
 		else
-			return nfLineTax.getLBR_TaxStatus().getName();
-	}	//getTaxStatusName
+			return getName();
+	}	//	getTaxStatusName
 
-}	//MLBRTaxStatus
+}	//	MLBRTaxStatus
