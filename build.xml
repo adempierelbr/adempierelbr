@@ -103,6 +103,8 @@
 		<!-- copy XSD -->
 		<copy failonerror="false" todir="${build.dir}">
 			<fileset dir="nfe2/src" includes="**/*.xsd"/>
+			<fileset dir="nfe2/src" includes="**/*.jasper"/>
+			<fileset dir="nfe2/src" includes="**/*.jrxml"/>
 		</copy>
 		
 		<echo message=" ===============================================" />
