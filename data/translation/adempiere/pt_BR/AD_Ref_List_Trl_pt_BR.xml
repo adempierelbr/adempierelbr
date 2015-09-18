@@ -2368,11 +2368,11 @@
     <value column="Description" original="" />
   </row>
   <row id="742" trl="Y">
-    <value column="Name" original="Current Active">Ativo Corrente</value>
+    <value column="Name" original="Current Active">Corrente (Ativa)</value>
     <value column="Description" original="" />
   </row>
   <row id="743" trl="Y">
-    <value column="Name" original="Make-To-Order">Feito por Encomenda</value>
+    <value column="Name" original="Make-To-Order">Make-To-Order</value>
     <value column="Description" original="" />
   </row>
   <row id="744" trl="Y">
@@ -3400,7 +3400,7 @@
     <value column="Description" original="" />
   </row>
   <row id="53242" trl="Y">
-    <value column="Name" original="Product Configure">Configurar Produto</value>
+    <value column="Name" original="Product Configure">Produto Configurável</value>
     <value column="Description" original="" />
   </row>
   <row id="53243" trl="Y">
