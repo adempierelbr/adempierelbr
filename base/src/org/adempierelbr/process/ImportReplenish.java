@@ -81,7 +81,7 @@ public class ImportReplenish extends SvrProcess
 		//	Delete Old Imported
 		if (p_DeleteOldImported)
 		{
-			sql = new StringBuffer ("DELETE I_Replanish "
+			sql = new StringBuffer ("DELETE FROM I_Replanish "
 				  + "WHERE I_IsImported='Y'").append (clientCheck);
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
 			log.fine("Delete Old Impored =" + no);
