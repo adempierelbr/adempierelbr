@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="933"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -106,7 +106,7 @@
 		<fieldDescription><![CDATA[infNFe/dest/IE]]></fieldDescription>
 	</field>
 	<field name="fatura" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/infAdic/obsCont[2]/xTexto]]></fieldDescription>
+		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/infAdic/obsCont[@xCampo='billnote']/xTexto]]></fieldDescription>
 	</field>
 	<field name="baseIcms" class="java.lang.Long">
 		<fieldDescription><![CDATA[infNFe/total/ICMSTot/vBC]]></fieldDescription>
