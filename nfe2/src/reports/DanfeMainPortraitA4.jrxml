@@ -108,7 +108,7 @@
 		<fieldDescription><![CDATA[infNFe/dest/IE]]></fieldDescription>
 	</field>
 	<field name="fatura" class="java.lang.String">
-		<fieldDescription><![CDATA[infNFe/ide/indPag]]></fieldDescription>
+		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/infAdic/obsCont[2]/xTexto]]></fieldDescription>
 	</field>
 	<field name="baseIcms" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[infNFe/total/ICMSTot/vBC]]></fieldDescription>

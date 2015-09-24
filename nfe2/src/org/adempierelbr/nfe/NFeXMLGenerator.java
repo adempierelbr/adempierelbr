@@ -1405,6 +1405,13 @@ public class NFeXMLGenerator
 		obsCont.setXCampo("site-developer");
 		obsCont.setXTexto("www.kenos.com.br");
 		
+		if (nf.getlbr_BillNote() != null || !nf.getlbr_BillNote().isEmpty())
+		{
+			obsCont = infAdic.addNewObsCont();
+			obsCont.setXCampo("billnote");
+			obsCont.setXTexto(nf.getlbr_BillNote());
+		}
+		
 		//	ZA. Informações de Comércio Exterior
 //		Exporta exporta = infNFe.addNewExporta();
 		
