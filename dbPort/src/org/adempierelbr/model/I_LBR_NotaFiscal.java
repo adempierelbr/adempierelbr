@@ -453,6 +453,15 @@ public interface I_LBR_NotaFiscal
 
 	public org.adempierelbr.model.I_LBR_DE getLBR_DE() throws RuntimeException;
 
+    /** Column name LBR_DispatchPlace */
+    public static final String COLUMNNAME_LBR_DispatchPlace = "LBR_DispatchPlace";
+
+	/** Set LBR_DispatchPlace	  */
+	public void setLBR_DispatchPlace (String LBR_DispatchPlace);
+
+	/** Get LBR_DispatchPlace	  */
+	public String getLBR_DispatchPlace();
+
     /** Column name LBR_EMailSent */
     public static final String COLUMNNAME_LBR_EMailSent = "LBR_EMailSent";
 
@@ -465,6 +474,15 @@ public interface I_LBR_NotaFiscal
 	  * Indicates if the email was sent
 	  */
 	public boolean isLBR_EMailSent();
+
+    /** Column name LBR_ExportPlace */
+    public static final String COLUMNNAME_LBR_ExportPlace = "LBR_ExportPlace";
+
+	/** Set LBR_ExportPlace	  */
+	public void setLBR_ExportPlace (String LBR_ExportPlace);
+
+	/** Get LBR_ExportPlace	  */
+	public String getLBR_ExportPlace();
 
     /** Column name LBR_FreightCostRule */
     public static final String COLUMNNAME_LBR_FreightCostRule = "LBR_FreightCostRule";
@@ -546,6 +564,17 @@ public interface I_LBR_NotaFiscal
 
 	/** Get Process Now	  */
 	public String getLBR_Processing2();
+
+    /** Column name LBR_RegionExport_ID */
+    public static final String COLUMNNAME_LBR_RegionExport_ID = "LBR_RegionExport_ID";
+
+	/** Set LBR_RegionExport_ID	  */
+	public void setLBR_RegionExport_ID (int LBR_RegionExport_ID);
+
+	/** Get LBR_RegionExport_ID	  */
+	public int getLBR_RegionExport_ID();
+
+	public I_C_Region getLBR_RegionExport() throws RuntimeException;
 
     /** Column name LBR_SendEMail */
     public static final String COLUMNNAME_LBR_SendEMail = "LBR_SendEMail";

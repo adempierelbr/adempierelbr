@@ -98,6 +98,7 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Emit;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref.RefECF;
@@ -1413,7 +1414,17 @@ public class NFeXMLGenerator
 		}
 		
 		//	ZA. Informações de Comércio Exterior
-//		Exporta exporta = infNFe.addNewExporta();
+		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ())
+				&& nf.getLBR_RegionExport_ID() > 0)
+		{
+			Exporta exporta = infNFe.addNewExporta();
+			
+			exporta.setUFSaidaPais(TUfEmi.Enum.forString (nf.getLBR_RegionExport().getName()));
+			exporta.setXLocExporta(normalize (nf.getLBR_ExportPlace()));	
+			
+			if (nf.getLBR_DispatchPlace() != null && !nf.getLBR_DispatchPlace().isEmpty())
+				exporta.setXLocExporta(normalize (nf.getLBR_DispatchPlace()));	
+		}
 		
 		//	ZB. Informações de Compras
 //		Compra compra = infNFe.addNewCompra();
