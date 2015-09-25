@@ -1409,7 +1409,7 @@ public class NFeXMLGenerator
 		{
 			obsCont = infAdic.addNewObsCont();
 			obsCont.setXCampo("billnote");
-			obsCont.setXTexto(nf.getlbr_BillNote());
+			obsCont.setXTexto(normalize(nf.getlbr_BillNote()));
 		}
 		
 		//	ZA. Informações de Comércio Exterior
