@@ -201,6 +201,11 @@
 		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/webui" overwrite="true">
 			<fileset dir="${build.dir}/org/adempierelbr/webui" includes="**/*.*" />
 		</copy>
+
+		<!-- copy kenos.webui  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/br/com/kenos/webui" overwrite="true">
+			<fileset dir="${build.dir}/br/com/kenos/webui" includes="**/*.*" />
+		</copy>
 		
 		<!-- copy apps.form.W*  -->
 		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/apps/form" overwrite="true">
