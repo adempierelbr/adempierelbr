@@ -103,9 +103,23 @@ INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,
 INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125485 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
 ;
 
+-- 28/09/2015 16h30min36s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE LBR_NotaFiscal ADD LBR_DispatchPlace NVARCHAR2(60) DEFAULT NULL 
+;
+
+-- 28/09/2015 16h30min49s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE LBR_NotaFiscal ADD LBR_ExportPlace NVARCHAR2(60) DEFAULT NULL 
+;
+
+-- 28/09/2015 16h31min8s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE LBR_NotaFiscal ADD LBR_RegionExport_ID NUMBER(10) DEFAULT NULL 
+;
+
 -- 25/09/2015 16h15min56s BRT
 SELECT Register_Migration_Script ('139-UFFieldToExport.sql') FROM DUAL
 ;
 
 EXIT
-
