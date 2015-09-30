@@ -284,11 +284,11 @@ public class PrintFromXML extends SvrProcess
 		
 		// NF-e Landscape
 		if (reportName.startsWith("DanfeMainLandscapeA4"))
-			return new String[]{"DanfeMainLandscapeA4_Sub_Item.jasper"};
+			return new String[]{"DanfeMainLandscapeA4_Sub_Item.jasper", "DanfeMainLandscapeA4_Sub_Invoice.jasper"};
 		
 		//	NF-e Portrait
 		if (reportName.startsWith("DanfeMainPortraitA4"))
-			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper"};
+			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper", "DanfeMainPortraitA4_Sub_Invoice.jasper"};
 		
 		//	Not found, try to catch all from the given path
 		URL dirURL = clazz.getClassLoader().getResource(path);
