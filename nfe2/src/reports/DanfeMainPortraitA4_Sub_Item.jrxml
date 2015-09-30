@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="596"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -66,6 +66,9 @@
 	</field>
 	<field name="unidadeComercial" class="java.lang.String">
 		<fieldDescription><![CDATA[prod/uCom]]></fieldDescription>
+	</field>
+	<field name="descricaoAdicional" class="java.lang.String">
+		<fieldDescription><![CDATA[infAdProd]]></fieldDescription>
 	</field>
 	<title>
 		<band splitType="Stretch"/>
@@ -603,7 +606,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao} + ($F{descricaoAdicional} == null ? "" : ("\n" + $F{descricaoAdicional}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-3" mode="Transparent" x="516" y="2" width="17" height="7"/>

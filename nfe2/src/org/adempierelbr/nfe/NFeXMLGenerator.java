@@ -1254,7 +1254,7 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	V. Informações adicionais (para o item da NF-e)
-			String nflDesc = nf.getDescription();
+			String nflDesc = nfl.getDescription();
 			if (nflDesc != null && !nflDesc.isEmpty())
 				det.setInfAdProd (normalize (nflDesc));
 		}

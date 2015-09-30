@@ -73,6 +73,9 @@
 	<field name="valorIcmsST" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[imposto/ICMS/ICMS10/vICMSST | imposto/ICMS/ICMS30/vICMSST | imposto/ICMS/ICMS60/vICMSST | imposto/ICMS/ICMS70/vICMSST | imposto/ICMS/ICMS90/vICMSST]]></fieldDescription>
 	</field>
+	<field name="descricaoAdicional" class="java.lang.String">
+		<fieldDescription><![CDATA[infAdProd]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -447,7 +450,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao} + ($F{descricaoAdicional} == null ? "" : ("\n" + $F{descricaoAdicional}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-3" mode="Transparent" x="318" y="2" width="37" height="7" isRemoveLineWhenBlank="true"/>
