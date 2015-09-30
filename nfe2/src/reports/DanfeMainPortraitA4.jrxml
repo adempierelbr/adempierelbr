@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="208"/>
+	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -703,7 +703,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Série: " + org.adempierelbr.util.JasperUtil.maskSerieNo ($F{serieNfe})]]></textFieldExpression>
 				</textField>
-				<image hAlign="Center" vAlign="Middle">
+				<image hAlign="Center" vAlign="Middle" isUsingCache="true">
 					<reportElement key="image-1" mode="Opaque" x="5" y="4" width="45" height="45"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1268,11 +1268,11 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 			<band height="11" splitType="Stretch">
 				<subreport isUsingCache="true">
 					<reportElement key="subreport-1" mode="Transparent" x="-31" y="1" width="90" height="10" isRemoveLineWhenBlank="true"/>
-					<subreportParameter name="PreImp">
-						<subreportParameterExpression><![CDATA[$P{PreImpresso}]]></subreportParameterExpression>
-					</subreportParameter>
 					<subreportParameter name="ImpFrente">
 						<subreportParameterExpression><![CDATA[$P{Frente}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PreImp">
+						<subreportParameterExpression><![CDATA[$P{PreImpresso}]]></subreportParameterExpression>
 					</subreportParameter>
 					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/NFe/infNFe/cobr//dup")]]></dataSourceExpression>
 					<subreportExpression class="java.io.InputStream"><![CDATA[$P{DanfeMainPortraitA4_Sub_Invoice}]]></subreportExpression>
