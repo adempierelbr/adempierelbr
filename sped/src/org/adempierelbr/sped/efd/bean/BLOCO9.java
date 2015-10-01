@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO H: INVENTÁRIO FÍSICO
  * 
@@ -29,8 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class BLOCO9 {
 
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "R9001")
 	private R9001 r9001;
 

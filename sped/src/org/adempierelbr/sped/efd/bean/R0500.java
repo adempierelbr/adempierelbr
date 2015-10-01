@@ -17,9 +17,6 @@ import java.sql.Timestamp;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
  * 
@@ -27,10 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0500.java, 24/03/2011, 15:04:00, mgrigioni
  */
 public class R0500 extends RegSped {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(maxSize = 8, minSize = 8, isNumber = true, id = "DT_ALT")
+		@XMLFieldProperties(maxSize = 8, minSize = 8, isNumber = true, id = "DT_ALT")
 	private Timestamp DT_ALT;
 
 	@XMLFieldProperties(minSize = 2, maxSize = 2, id = "COD_NAT_CC")

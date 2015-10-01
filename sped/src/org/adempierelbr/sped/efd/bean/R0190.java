@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0190: IDENTIFICAÇÃO DAS UNIDADES DE MEDIDA
  * 
@@ -28,9 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: 07/08/2012, 14:00, pablobp4
  */
 public class R0190 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(maxSize = 6, id = "UNID")
 	private String UNID;
 

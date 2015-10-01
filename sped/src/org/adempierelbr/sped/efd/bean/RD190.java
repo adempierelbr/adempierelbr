@@ -17,9 +17,6 @@ import java.math.BigDecimal;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO D190: REGISTRO ANALÍTICO DOS DOCUMENTOS (CÓDIGO 07, 08, 8B, 09, 10,
  * 11, 26, 27 e 57).
@@ -28,9 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RD190.java, 10/02/2011, 17:12:00, mgrigioni
  */
 public class RD190 extends RegSped implements Comparable<Object> {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "CST_ICMS", minSize = 3, maxSize = 3, isNumber = true)
 	private String CST_ICMS;
 	

@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0100: DADOS DO CONTABILISTA
  * 
@@ -28,9 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: 07/08/2012, 14:00, pablobp4
  */
 public class R0100 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(maxSize = 100, id = "NOME")
 	private String NOME;
 	

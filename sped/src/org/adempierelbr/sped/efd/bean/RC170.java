@@ -20,9 +20,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO C170: ITENS DO DOCUMENTO (CÓDIGO 01, 1B, 04 e 55).
  * 
@@ -30,9 +27,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RC170.java, 07/02/2011, 09:39:00, mgrigioni
  */
 public class RC170 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(maxSize = 3, id = "NUM_ITEM")
 	private Integer NUM_ITEM;
 

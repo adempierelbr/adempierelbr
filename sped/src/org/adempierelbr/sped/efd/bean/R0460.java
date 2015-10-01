@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0460 – TABELA DE OBSERVAÇÃO DO LANÇAMENTO FISCAL
  * 
@@ -25,9 +22,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
  */
 public class R0460 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 6, id = "COD_OBS")
 	private String COD_OBS;
 

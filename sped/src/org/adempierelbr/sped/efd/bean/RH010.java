@@ -17,9 +17,6 @@ import java.math.BigDecimal;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO H010: INVENTÁRIO
  * 
@@ -28,10 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class RH010 extends RegSped 
 {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties( maxSize = 60, id = "COD_ITEM")
+		@XMLFieldProperties( maxSize = 60, id = "COD_ITEM")
 	private String COD_ITEM;
 	
 	@XMLFieldProperties( maxSize = 6, id = "UNID")

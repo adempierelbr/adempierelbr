@@ -19,9 +19,6 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO E100: PERÍODO DA APURAÇÃO DO ICMS.
  * 
@@ -29,9 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RE100.java, 08/02/2011, 12:13:00, mgrigioni
  */
 public class RE100 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "DT_INI", maxSize = 8, isNumber = true)
 	private Timestamp DT_INI;
 

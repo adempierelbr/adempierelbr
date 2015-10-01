@@ -17,9 +17,6 @@ import java.math.BigDecimal;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO C130: ISSQN, IRRF E PREVIDÊNCIA SOCIAL.
  * 
@@ -27,9 +24,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RC130.java, 11/02/2011, 14:22:00, mgrigioni
  */
 public class RC130 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "VL_SERV_NT")
 	private BigDecimal VL_SERV_NT;
 

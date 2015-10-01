@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO C990: ENCERRAMENTO DO BLOCO C
  * 
@@ -25,9 +22,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RC990.java, 07/02/2011, 09:40:00, mgrigioni
  */
 public class RC990 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(maxSize = 60, id = "QTD_LIN_C")
 	private String QTD_LIN_C;
 

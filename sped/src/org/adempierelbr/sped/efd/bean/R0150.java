@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
  * 
@@ -28,10 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
  */
 public class R0150 extends RegSped {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(maxSize = 60, id = "COD_PART")
+		@XMLFieldProperties(maxSize = 60, id = "COD_PART")
 	private String COD_PART;
 	
 	@XMLFieldProperties(maxSize = 100, id = "NOME")

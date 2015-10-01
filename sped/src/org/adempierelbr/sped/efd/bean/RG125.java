@@ -21,9 +21,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO G125 – MOVIMENTAÇÃO DE BEM OU COMPONENTE DO ATIVO IMOBILIZADO
  * @author Mario Grigioni, mgrigioni
@@ -34,9 +31,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class RG125 extends RegSped
 {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 60, id = "COD_IND_BEM")
 	private String COD_IND_BEM;
 

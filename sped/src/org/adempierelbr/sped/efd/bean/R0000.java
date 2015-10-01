@@ -17,9 +17,6 @@ import java.sql.Timestamp;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA ENTIDADE
  * 
@@ -30,9 +27,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0000.java, 07/08/2012, 14:00, pablobp4
  */
 public class R0000 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 3, maxSize = 3, id = "COD_VER", isNumber = true)
 	private String COD_VER;
 

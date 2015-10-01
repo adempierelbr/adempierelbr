@@ -19,9 +19,6 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO 0: ABERTURA, IDENTIFICAÇÃO E REFERÊNCIAS.
  * 
@@ -31,8 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class BLOCO0 {
 
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
+
 	@XMLFieldProperties(id = "R0000")
 	private R0000 r0000;
 
