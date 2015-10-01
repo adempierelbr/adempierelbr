@@ -44,7 +44,7 @@
 						<printWhenExpression><![CDATA[$V{REPORT_COUNT}.intValue() == 0]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="6"/>
+						<font fontName="Arial" size="6"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{counter}.intValue() > 16 ?
 (" e mais " + ($F{counter}.intValue() - 16) + " parcela(s)")
@@ -62,7 +62,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" isBold="true" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Valor"]]></textFieldExpression>
 				</textField>
@@ -75,7 +75,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{vDup}]]></textFieldExpression>
 				</textField>
@@ -98,7 +98,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" isBold="true" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Vencimento"]]></textFieldExpression>
 				</textField>
@@ -113,7 +113,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" isBold="true" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Duplicata"]]></textFieldExpression>
 				</textField>
@@ -126,7 +126,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6"/>
 					</textElement>
 					<textFieldExpression class="java.sql.Timestamp"><![CDATA[org.adempierelbr.util.JasperUtil.toTS ($F{dVenc})]]></textFieldExpression>
 				</textField>
@@ -139,7 +139,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="Single">
-						<font fontName="Helvetica" size="6" isBold="true" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="6" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{nDup}]]></textFieldExpression>
 				</textField>
@@ -174,7 +174,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="7" isBold="true" isItalic="false" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[FATURA]]></text>
 			</staticText>

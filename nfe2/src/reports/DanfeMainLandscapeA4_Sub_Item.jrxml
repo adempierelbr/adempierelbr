@@ -98,7 +98,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="7" isBold="true" isItalic="false" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[DADOS DO PRODUTO/SERVIÇO]]></text>
 			</staticText>
@@ -118,7 +118,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CÓDIGO]]></text>
 			</staticText>
@@ -138,7 +138,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[DESCRIÇÃO DO PRODUTO/SERVIÇO]]></text>
 			</staticText>
@@ -158,7 +158,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[NCM/SH]]></text>
 			</staticText>
@@ -178,7 +178,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CST]]></text>
 			</staticText>
@@ -198,7 +198,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CFOP]]></text>
 			</staticText>
@@ -218,7 +218,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[UNID.]]></text>
 			</staticText>
@@ -238,7 +238,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[QTD.]]></text>
 			</staticText>
@@ -258,7 +258,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[VLR. UNIT.]]></text>
 			</staticText>
@@ -278,7 +278,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[VLR. TOTAL]]></text>
 			</staticText>
@@ -298,7 +298,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[BC ICMS]]></text>
 			</staticText>
@@ -318,7 +318,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[VLR. ICMS]]></text>
 			</staticText>
@@ -338,7 +338,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[VLR. IPI]]></text>
 			</staticText>
@@ -358,7 +358,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[ALÍQ. ICMS]]></text>
 			</staticText>
@@ -378,7 +378,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[ALÍQ. IPI]]></text>
 			</staticText>
@@ -398,7 +398,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[BC ICMS ST]]></text>
 			</staticText>
@@ -418,7 +418,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Helvetica" size="5" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[VLR. ICMS ST]]></text>
 			</staticText>
@@ -435,7 +435,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle" lineSpacing="Single">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
@@ -448,7 +448,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao} + ($F{descricaoAdicional} == null ? "" : ("\n" + $F{descricaoAdicional}))]]></textFieldExpression>
 			</textField>
@@ -461,7 +461,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskNCM ($F{ncm})]]></textFieldExpression>
 			</textField>
@@ -474,7 +474,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cst}]]></textFieldExpression>
 			</textField>
@@ -487,7 +487,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCFOP ($F{cfop})]]></textFieldExpression>
 			</textField>
@@ -500,7 +500,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadeComercial}]]></textFieldExpression>
 			</textField>
@@ -513,7 +513,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{quantidadeComercial}]]></textFieldExpression>
 			</textField>
@@ -526,7 +526,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitarioComercial}]]></textFieldExpression>
 			</textField>
@@ -539,7 +539,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotal}]]></textFieldExpression>
 			</textField>
@@ -552,7 +552,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIcms}]]></textFieldExpression>
 			</textField>
@@ -565,7 +565,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIcms}]]></textFieldExpression>
 			</textField>
@@ -578,7 +578,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIpi}]]></textFieldExpression>
 			</textField>
@@ -591,7 +591,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{aliquotaIcms}]]></textFieldExpression>
 			</textField>
@@ -604,7 +604,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{aliquotaIpi}]]></textFieldExpression>
 			</textField>
@@ -622,7 +622,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIcmsST}]]></textFieldExpression>
 			</textField>
@@ -635,7 +635,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="6" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIcmsST}]]></textFieldExpression>
 			</textField>

@@ -265,7 +265,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[INSCRIÇÃO MUNICIPAL]]></text>
 				</staticText>
@@ -285,7 +285,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR TOTAL DOS SERVIÇOS]]></text>
 				</staticText>
@@ -305,7 +305,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[BASE DE CÁLCULO DO ISSQN]]></text>
 				</staticText>
@@ -325,7 +325,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO ISSQN]]></text>
 				</staticText>
@@ -340,7 +340,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CÁLCULO DO ISSQN]]></text>
 				</staticText>
@@ -353,7 +353,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{inscricaoMunicipal}]]></textFieldExpression>
 				</textField>
@@ -366,7 +366,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotalServicos}]]></textFieldExpression>
 				</textField>
@@ -379,7 +379,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIssqn}]]></textFieldExpression>
 				</textField>
@@ -392,7 +392,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIssqn}]]></textFieldExpression>
 				</textField>
@@ -439,7 +439,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[DANFE]]></text>
 				</staticText>
@@ -454,7 +454,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<text><![CDATA[Documento Auxiliar da Nota Fiscal Eletrônica]]></text>
 				</staticText>
@@ -469,7 +469,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<text><![CDATA[1 - Saída]]></text>
 				</staticText>
@@ -484,7 +484,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<text><![CDATA[0 - Entrada]]></text>
 				</staticText>
@@ -504,7 +504,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CONTROLE DO FISCO]]></text>
 				</staticText>
@@ -524,7 +524,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[NATUREZA DA OPERAÇÃO]]></text>
 				</staticText>
@@ -544,7 +544,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[INSCRIÇÃO ESTADUAL]]></text>
 				</staticText>
@@ -564,7 +564,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[INSCRIÇÃO ESTADUAL DO SUBST. TRIB. TRIBUTARIO]]></text>
 				</staticText>
@@ -584,7 +584,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CNPJ]]></text>
 				</staticText>
@@ -604,7 +604,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CHAVE DE ACESSO]]></text>
 				</staticText>
@@ -617,7 +617,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
@@ -630,7 +630,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
@@ -643,7 +643,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{emitenteRazaoSocial}]]></textFieldExpression>
 				</textField>
@@ -656,7 +656,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{emitenteEndereco}  + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{emitenteEnderecoNro}) ? "" : ", " + $F{emitenteEnderecoNro} ) + " - " + $F{emitenteBairro} +", " + $F{emitenteMunicipio} +
 ", " + $F{emitenteUf} +
@@ -673,7 +673,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{saidaEntrada}]]></textFieldExpression>
 				</textField>
@@ -686,7 +686,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskNFeNo ($F{numeroNfe})]]></textFieldExpression>
 				</textField>
@@ -699,7 +699,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Série: " + org.adempierelbr.util.JasperUtil.maskSerieNo ($F{serieNfe})]]></textFieldExpression>
 				</textField>
@@ -722,7 +722,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{naturezaOperacao}]]></textFieldExpression>
 				</textField>
@@ -735,7 +735,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{emitenteInscricaoEstadual}]]></textFieldExpression>
 				</textField>
@@ -748,7 +748,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{emitenteInscricaoEstadualSubtributario}]]></textFieldExpression>
 				</textField>
@@ -761,7 +761,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCNPJF ($F{emitenteCnpj})]]></textFieldExpression>
 				</textField>
@@ -774,7 +774,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskDANFE ($F{chaveAcesso})]]></textFieldExpression>
 				</textField>
@@ -797,7 +797,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[( $F{codigoTipoEmissao} != null && ( $F{codigoTipoEmissao}.equals("2") || $F{codigoTipoEmissao}.equals("5") ) ? $F{dadosNfe} : (!org.adempierelbr.util.TextUtil.isBlankOrNull($F{numeroRegistroDPEC})? $F{numeroRegistroDPEC}+" "+$F{dataRegistroDPEC} : ($F{situacao}.equals("100") ? org.adempierelbr.util.JasperUtil.protocol ($F{protocoloDataAutorizacao}, $F{dhRecbto}) :"" ) ) )]]></textFieldExpression>
 				</textField>
@@ -810,7 +810,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[($F{codigoTipoEmissao} != null && ( $F{codigoTipoEmissao}.equals("2") || $F{codigoTipoEmissao}.equals("5") ) ? "DADOS DA NF-E" : (!org.adempierelbr.util.TextUtil.isBlankOrNull($F{numeroRegistroDPEC})? "NÚMERO DE REGISTRO DPEC" : ($F{situacao}.equals("100") ? "PROTOCOLO DE AUTORIZAÇÃO DE USO" :"" ) ) )]]></textFieldExpression>
 				</textField>
@@ -825,7 +825,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="9" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="9"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA["Consulta de autenticidade no portal nacional da NF-e www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"]]></textFieldExpression>
 				</textField>
@@ -876,7 +876,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[DESTINATÁRIO/REMETENTE]]></text>
 				</staticText>
@@ -896,7 +896,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[NOME/RAZÃO SOCIAL]]></text>
 				</staticText>
@@ -911,7 +911,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CNPJ/CPF]]></text>
 				</staticText>
@@ -926,7 +926,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[DATA DA EMISSÃO]]></text>
 				</staticText>
@@ -941,7 +941,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[DATA DE ENTRADA/SAÍDA]]></text>
 				</staticText>
@@ -956,7 +956,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[HORA DE ENTRADA/SAÍDA]]></text>
 				</staticText>
@@ -976,7 +976,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[ENDEREÇO]]></text>
 				</staticText>
@@ -996,7 +996,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[BAIRRO/DISTRITO]]></text>
 				</staticText>
@@ -1016,7 +1016,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CEP]]></text>
 				</staticText>
@@ -1036,7 +1036,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[MUNÍCIPIO]]></text>
 				</staticText>
@@ -1056,7 +1056,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[FONE/FAX]]></text>
 				</staticText>
@@ -1076,7 +1076,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[UF]]></text>
 				</staticText>
@@ -1096,7 +1096,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[INSCRIÇÃO ESTADUAL]]></text>
 				</staticText>
@@ -1109,7 +1109,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioRazaoSocial}]]></textFieldExpression>
 				</textField>
@@ -1122,7 +1122,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCNPJF ($F{destinatarioCnpjCpf})]]></textFieldExpression>
 				</textField>
@@ -1135,7 +1135,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.sql.Timestamp"><![CDATA[org.adempierelbr.util.JasperUtil.toTS ($F{dataEmissao})]]></textFieldExpression>
 				</textField>
@@ -1148,7 +1148,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.sql.Timestamp"><![CDATA[org.adempierelbr.util.JasperUtil.toTS ($F{dataSaidaEntrada})]]></textFieldExpression>
 				</textField>
@@ -1161,7 +1161,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCEP ($F{destinatarioCep})]]></textFieldExpression>
 				</textField>
@@ -1174,7 +1174,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioBairro}]]></textFieldExpression>
 				</textField>
@@ -1187,7 +1187,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco} + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )]]></textFieldExpression>
 				</textField>
@@ -1200,7 +1200,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioMunicipio}]]></textFieldExpression>
 				</textField>
@@ -1213,7 +1213,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioFoneFax}]]></textFieldExpression>
 				</textField>
@@ -1226,7 +1226,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioUf}]]></textFieldExpression>
 				</textField>
@@ -1239,7 +1239,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioInscricaoEstadual}]]></textFieldExpression>
 				</textField>
@@ -1252,7 +1252,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.sql.Timestamp"><![CDATA[org.adempierelbr.util.JasperUtil.toTS ($F{horaSaida})]]></textFieldExpression>
 				</textField>
@@ -1308,7 +1308,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[BASE DE CÁLCULO DO ICMS]]></text>
 				</staticText>
@@ -1328,7 +1328,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO ICMS]]></text>
 				</staticText>
@@ -1348,7 +1348,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[BASE DE CÁLCULO DO ICMS ST SUBSTITUIÇÃO]]></text>
 				</staticText>
@@ -1368,7 +1368,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO ICMS ST]]></text>
 				</staticText>
@@ -1388,7 +1388,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR TOTAL DOS PRODUTOS]]></text>
 				</staticText>
@@ -1403,7 +1403,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[TRANSPORTADOR/VOLUMES TRANSPORTADOS]]></text>
 				</staticText>
@@ -1423,7 +1423,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[RAZÃO SOCIAL]]></text>
 				</staticText>
@@ -1443,7 +1443,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[FRETE POR CONTA]]></text>
 				</staticText>
@@ -1463,7 +1463,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CÓDIGO ANTT]]></text>
 				</staticText>
@@ -1483,7 +1483,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[PLACA DO VEÍCULO]]></text>
 				</staticText>
@@ -1503,7 +1503,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[UF]]></text>
 				</staticText>
@@ -1518,7 +1518,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CNPJ/CPF]]></text>
 				</staticText>
@@ -1533,7 +1533,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[ENDEREÇO]]></text>
 				</staticText>
@@ -1548,7 +1548,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[MUNICÍPIO]]></text>
 				</staticText>
@@ -1568,7 +1568,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[UF]]></text>
 				</staticText>
@@ -1588,7 +1588,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[INSCRIÇÃO ESTADUAL]]></text>
 				</staticText>
@@ -1608,7 +1608,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[QUANTIDADE]]></text>
 				</staticText>
@@ -1628,7 +1628,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[ESPÉCIE]]></text>
 				</staticText>
@@ -1648,7 +1648,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[MARCA]]></text>
 				</staticText>
@@ -1668,7 +1668,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[PESO LÍQUIDO]]></text>
 				</staticText>
@@ -1688,7 +1688,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[PESO BRUTO]]></text>
 				</staticText>
@@ -1708,7 +1708,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[NUMERAÇÃO]]></text>
 				</staticText>
@@ -1723,7 +1723,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO FRETE]]></text>
 				</staticText>
@@ -1738,7 +1738,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO SEGURO]]></text>
 				</staticText>
@@ -1753,7 +1753,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[DESCONTO]]></text>
 				</staticText>
@@ -1773,7 +1773,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[OUTRAS DESPESAS ACESSÓRIAS]]></text>
 				</staticText>
@@ -1788,7 +1788,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR DO IPI]]></text>
 				</staticText>
@@ -1801,7 +1801,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIcms}]]></textFieldExpression>
 				</textField>
@@ -1814,7 +1814,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIcms}]]></textFieldExpression>
 				</textField>
@@ -1827,7 +1827,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIcmsSubstituicao}]]></textFieldExpression>
 				</textField>
@@ -1840,7 +1840,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIcmsSubstituicao}]]></textFieldExpression>
 				</textField>
@@ -1853,7 +1853,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotalProduto}]]></textFieldExpression>
 				</textField>
@@ -1868,7 +1868,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="5" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[VALOR TOTAL DA NOTA]]></text>
 				</staticText>
@@ -1881,7 +1881,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIpi}]]></textFieldExpression>
 				</textField>
@@ -1894,7 +1894,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{outrasDespesas}]]></textFieldExpression>
 				</textField>
@@ -1907,7 +1907,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{desconto}]]></textFieldExpression>
 				</textField>
@@ -1920,7 +1920,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorSeguro}]]></textFieldExpression>
 				</textField>
@@ -1933,7 +1933,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorFrete}]]></textFieldExpression>
 				</textField>
@@ -1946,7 +1946,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorRazaoSocial}]]></textFieldExpression>
 				</textField>
@@ -1959,7 +1959,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorPlacaVeiculo}]]></textFieldExpression>
 				</textField>
@@ -1972,7 +1972,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorUfVeiculo}]]></textFieldExpression>
 				</textField>
@@ -1985,7 +1985,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCNPJF ($F{transportadorCnpjCpf})]]></textFieldExpression>
 				</textField>
@@ -1998,7 +1998,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorInscricaoEstadual}]]></textFieldExpression>
 				</textField>
@@ -2011,7 +2011,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorUf}]]></textFieldExpression>
 				</textField>
@@ -2024,7 +2024,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorMunicipio}]]></textFieldExpression>
 				</textField>
@@ -2037,7 +2037,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorEndereço}]]></textFieldExpression>
 				</textField>
@@ -2050,7 +2050,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorQuantidade}]]></textFieldExpression>
 				</textField>
@@ -2063,7 +2063,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorEspecie}]]></textFieldExpression>
 				</textField>
@@ -2076,7 +2076,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorMarca}]]></textFieldExpression>
 				</textField>
@@ -2089,7 +2089,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorNumeracao}]]></textFieldExpression>
 				</textField>
@@ -2102,7 +2102,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{transportadorPesoBruto}]]></textFieldExpression>
 				</textField>
@@ -2115,7 +2115,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{transportadorPesoLiquido}]]></textFieldExpression>
 				</textField>
@@ -2128,7 +2128,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotalNota}]]></textFieldExpression>
 				</textField>
@@ -2141,7 +2141,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.freightCostRule ($F{transportadorFretePorConta})]]></textFieldExpression>
 				</textField>
@@ -2154,7 +2154,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Helvetica" size="7" pdfFontName="Helvetica"/>
+						<font fontName="Arial" size="7"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{transportadorCodigoAntt}]]></textFieldExpression>
 				</textField>
@@ -2204,7 +2204,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+						<font fontName="Arial" size="7" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[CÁLCULO DO IMPOSTO]]></text>
 				</staticText>
@@ -2251,7 +2251,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" rotation="Left">
-					<font fontName="Helvetica" size="30" isBold="true" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="30" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Danfe em contingência.
 Impresso em decorrência de problemas técnicos.]]></text>
@@ -2265,7 +2265,7 @@ Impresso em decorrência de problemas técnicos.]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
-					<font fontName="Helvetica" size="30" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="30" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{msgVersaoTeste}]]></textFieldExpression>
 			</textField>
@@ -2280,7 +2280,7 @@ Impresso em decorrência de problemas técnicos.]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" rotation="Left">
-					<font fontName="Helvetica" size="30" isBold="true" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="30" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DANFE impresso em contingência -
 DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
@@ -2294,7 +2294,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
-					<font fontName="Helvetica" size="40" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="40" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{msgPrevisualizacao}]]></textFieldExpression>
 			</textField>
@@ -2307,7 +2307,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle" rotation="Left">
-					<font fontName="Helvetica" size="6" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="6" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Emitido pelo sistema AdempiereLBR (www.adempierelbr.org) fornecido pela Kenos (www.kenos.com.br)"]]></textFieldExpression>
 			</textField>
@@ -2357,7 +2357,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[DATA DE RECEBIMENTO]]></text>
 			</staticText>
@@ -2372,7 +2372,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR]]></text>
 			</staticText>
@@ -2387,7 +2387,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="9" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="9" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[NF-e]]></text>
 			</staticText>
@@ -2402,7 +2402,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskNFeNo ($F{numeroNfe})]]></textFieldExpression>
 			</textField>
@@ -2417,7 +2417,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Helvetica" size="8" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["SÉRIE: " + org.adempierelbr.util.JasperUtil.maskSerieNo ($F{serieNfe})]]></textFieldExpression>
 			</textField>
@@ -2432,7 +2432,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["RECEBEMOS DE " + $F{emitenteRazaoSocial} + " OS PRODUTOS/SERVIÇOS CONSTANTES DA NOTA FISCAL INDICADA AO LADO"]]></textFieldExpression>
 			</textField>
@@ -2466,7 +2466,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="7" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[DADOS ADICIONAIS]]></text>
 			</staticText>
@@ -2481,7 +2481,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[INFORMAÇÕES COMPLEMENTARES]]></text>
 			</staticText>
@@ -2501,7 +2501,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Helvetica" size="5" isItalic="false" pdfFontName="Helvetica"/>
+					<font fontName="Arial" size="5" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[RESERVADO AO FISCO]]></text>
 			</staticText>
@@ -2514,7 +2514,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" markup="styled">
-					<font fontName="Monospaced" size="7" pdfFontName="Courier"/>
+					<font fontName="Monospaced" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
 ($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></textFieldExpression>
