@@ -51,6 +51,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlbeans-qname.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/xalan.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
