@@ -1,3 +1,7 @@
+--	Fix ID
+DELETE FROM AD_Element WHERE AD_Element_ID=2000000 AND ColumnName='LBR_NFETransmitter'
+;
+
 -- 31/08/2015 15h48min2s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1121779,0,'LBR_NFETransmitter',TO_TIMESTAMP('2015-08-31 15:48:01','YYYY-MM-DD HH24:MI:SS'),100,'Function to send RPS file','U','Y','LBR_NFETransmitter','Transmit',TO_TIMESTAMP('2015-08-31 15:48:01','YYYY-MM-DD HH24:MI:SS'),100)
