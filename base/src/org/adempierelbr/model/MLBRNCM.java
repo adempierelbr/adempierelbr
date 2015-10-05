@@ -73,41 +73,6 @@ public class MLBRNCM extends X_LBR_NCM
 
 		return LBR_NCM_ID > 0 ? LBR_NCM_ID : 0;
 	} //getDefaultNCM
-
-	@Deprecated
-	public static String validateNCM (MInvoice invoice)
-	{
-		Properties ctx = invoice.getCtx();
-		String     trx = invoice.get_TrxName();
-
-		MInvoiceLine[] lines = invoice.getLines();
-		for(MInvoiceLine line : lines){
-
-			if (line.getM_Product_ID() == 0) //Se produto não verifica
-				continue;
-
-			MProduct   product = new MProduct(ctx,line.getM_Product_ID(),trx);
-			if (!product.getProductType().equals(X_M_Product.PRODUCTTYPE_Item))
-				continue;
-
-			Integer LBR_NCM_ID = (Integer)line.get_Value("LBR_NCM_ID"); //	NCM da Fatura
-			if (LBR_NCM_ID == null)
-				LBR_NCM_ID = (Integer)product.get_Value("LBR_NCM_ID"); //	NCM do Produto
-			if (LBR_NCM_ID == null)
-				LBR_NCM_ID = 0; //	Sem NCM
-
-			int defaultNCM_ID = MLBRNCM.getDefaultNCM(line.getAD_Client_ID());
-
-			/** Não laçar se o NCM estiver padrão.	*/
-			if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0 || LBR_NCM_ID.intValue() == defaultNCM_ID)
-			{
-				return "Erro: NCM não cadastrado. Linha: " + line.getLine();
-			}
-
-		}
-
-		return null;
-	}
 	
 	/**
 	 * 		Retorna o registro mais relevante do imposto do NCM
