@@ -31,7 +31,7 @@ UPDATE AD_PrintFormatItem pi SET PrintName='Book No', Name='Book No' WHERE IsCen
 ;
 
 -- 19/08/2015 14h27min21s BRT
-ALTER TABLE LBR_TaxAssessment ADD LBR_BookNo NUMBER(10) NOT NULL
+ALTER TABLE LBR_TaxAssessment ADD LBR_BookNo NUMBER(10) DEFAULT 0 NOT NULL
 ;
 
 -- 19/08/2015 14h29min11s BRT
@@ -119,7 +119,7 @@ UPDATE AD_Element_Trl SET PrintName='Número da Página',Updated=TO_DATE('2015-0
 ;
 
 -- 19/08/2015 14h31min31s BRT
-ALTER TABLE LBR_TaxAssessment ADD LBR_PageNo NUMBER(10) NOT NULL
+ALTER TABLE LBR_TaxAssessment ADD LBR_PageNo NUMBER(10) DEFAULT 0 NOT NULL
 ;
 
 -- 19/08/2015 14h32min1s BRT

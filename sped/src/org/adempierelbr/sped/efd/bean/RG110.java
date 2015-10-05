@@ -22,9 +22,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO G110 – ICMS – ATIVO PERMANENTE – CIAP
  * @author Mario Grigioni, mgrigioni
@@ -35,10 +32,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class RG110 extends RegSped
 {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(id = "DT_INI")
+		@XMLFieldProperties(id = "DT_INI")
 	private Timestamp DT_INI;
 	@XMLFieldProperties(id = "DT_FIN")
 	private Timestamp DT_FIN;

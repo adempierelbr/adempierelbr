@@ -14,9 +14,6 @@ package org.adempierelbr.sped.efd.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO G: CRÉDITO DE ICMS ATIVO PERMANENTE
  * 
@@ -28,9 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * 
  */
 public class BLOCOG {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "RG001")
 	private RG001 rG001;
 

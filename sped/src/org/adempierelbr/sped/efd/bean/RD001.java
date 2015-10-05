@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO D001: ABERTURA DO BLOCO D
  * 
@@ -26,10 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class RD001 extends RegSped 
 {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
+		@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_MOV")
 	private String IND_MOV;
 
 	/**

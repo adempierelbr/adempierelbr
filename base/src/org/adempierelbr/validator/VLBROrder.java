@@ -550,7 +550,7 @@ public class VLBROrder implements ModelValidator
 						"   (SELECT  " + 
 						"            tn.LBR_WithholdGroup,  " + 
 						"            SUM (TaxAmt) AS TaxAmt,  " + 
-						"            AVG (WithholdThreshold) AS WithholdThreshold " + 
+						"            AVG (LBR_WithholdThreshold) AS LBR_WithholdThreshold " + 
 						"    FROM  " + 
 						"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
 						"    WHERE  " + 
@@ -562,7 +562,7 @@ public class VLBROrder implements ModelValidator
 						"    GROUP BY  " + 
 						"            tn.LBR_WithholdGroup) a " + 
 						"WHERE " + 
-						"        TaxAmt >= WithholdThreshold"; 
+						"        TaxAmt >= LBR_WithholdThreshold"; 
 			
 			amount = DB.getSQLValueBD (invoice.get_TrxName(), sql, invoice.getC_Invoice_ID()).negate();
 		}

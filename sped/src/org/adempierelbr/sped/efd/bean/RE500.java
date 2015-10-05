@@ -19,9 +19,6 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO E500: PERÍODO DE APURAÇÃO DO IPI.
  * 
@@ -29,9 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RE500.java, 09/02/2011, 09:41:00, mgrigioni
  */
 public class RE500 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "IND_APUR", maxSize = 1)
 	private String IND_APUR;
 

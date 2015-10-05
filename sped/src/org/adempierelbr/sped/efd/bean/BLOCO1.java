@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 1001: ABERTURA DO BLOCO 1
  * 
@@ -29,8 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class BLOCO1 {
 
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "R1001")
 	private R1001 r1001;
 	

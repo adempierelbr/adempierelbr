@@ -14,9 +14,6 @@ package org.adempierelbr.sped.efd.bean;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO H: INVENTÁRIO FÍSICO
  * 
@@ -25,9 +22,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $ 07/08/2012 11:03 $
  */
 public class BLOCOH {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "RH001")
 	private RH001 rH001;
 

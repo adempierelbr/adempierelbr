@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO E: APURAÇÃO DO ICMS E DO IPI
  * 
@@ -29,8 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class BLOCOE {
 
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "RE001")
 	private RE001 rE001;
 

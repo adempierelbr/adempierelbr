@@ -81,7 +81,7 @@ public class ImportReplenish extends SvrProcess
 		//	Delete Old Imported
 		if (p_DeleteOldImported)
 		{
-			sql = new StringBuffer ("DELETE I_Replanish "
+			sql = new StringBuffer ("DELETE FROM I_Replenish "
 				  + "WHERE I_IsImported='Y'").append (clientCheck);
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
 			log.fine("Delete Old Impored =" + no);
@@ -107,7 +107,7 @@ public class ImportReplenish extends SvrProcess
 				+ "AND I_IsImported<>'Y'");
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
 			if (no != 0)
-				log.warning ("Invalid Replanish=" + no);
+				log.warning ("Invalid Replenish=" + no);
 			
 			//	Error Warehouse
 			sql = new StringBuffer ("UPDATE I_Replenish r "
@@ -116,7 +116,7 @@ public class ImportReplenish extends SvrProcess
 				+ "AND I_IsImported<>'Y'");
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
 			if (no != 0)
-				log.warning ("Invalid Replanish=" + no);
+				log.warning ("Invalid Replenish=" + no);
 			
 			//	Error ReplenishType
 			sql = new StringBuffer ("UPDATE I_Replenish r "
@@ -125,7 +125,7 @@ public class ImportReplenish extends SvrProcess
 				+ "AND I_IsImported<>'Y'");
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
 			if (no != 0)
-				log.warning ("Invalid Replanish=" + no);
+				log.warning ("Invalid Replenish=" + no);
 			
 			commitEx();
 			/*********************************************************************/

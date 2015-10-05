@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0005: DADOS COMPLEMENTARES DA ENTIDADE
  * 
@@ -29,9 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 
 public class R0005 extends RegSped  {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(maxSize = 60, id = "FANTASIA")
 	private String FANTASIA;
 	

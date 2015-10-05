@@ -20,9 +20,6 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO D500: NOTA FISCAL DE TELEFONIA
  * 
@@ -30,9 +27,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RD500.java, 10/02/2011, 16:03:00, Kenos
  */
 public class RD500 extends RegSped implements Comparable<Object> {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "IND_OPER", maxSize = 1)
 	private String IND_OPER;
 	

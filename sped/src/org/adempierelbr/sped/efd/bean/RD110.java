@@ -20,9 +20,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO D110: ITENS DO DOCUMENTO - NOTA FISCAL DE SERVIÇOS DE TRANSPORTE
  * (CÓDIGO 07)
@@ -31,9 +28,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RD110.java, 10/02/2011, 17:04:00, mgrigioni
  */
 public class RD110 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "NUM_ITEM", maxSize = 3)
 	private Integer NUM_ITEM;
 	

@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 
 import javax.swing.text.MaskFormatter;
 
-import org.compiere.model.MRefList;
-import org.compiere.util.Env;
-
 public class JasperUtil
 {
 	public static String maskCNPJF (String p_cnpjf)
@@ -141,8 +138,15 @@ public class JasperUtil
 		
 		try
 		{
-			String ts = p_TS.length() == 19 ? p_TS : p_TS.substring(0, p_TS.length()-6);
-			return TextUtil.stringToTime (ts, "yyyy-MM-dd'T'HH:mm:ss");
+			String ts = (p_TS.length() == 19 || p_TS.length() == 10) ? p_TS : p_TS.substring(0, p_TS.length()-6);
+			String mask = "";
+			
+			if (p_TS.length() == 10)
+				mask = "yyyy-MM-dd";
+			else
+				mask = "yyyy-MM-dd'T'HH:mm:ss";
+			
+			return TextUtil.stringToTime (ts, mask);
 		}
 		catch (Exception e){}
 		return null;

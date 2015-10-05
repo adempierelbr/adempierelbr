@@ -23,6 +23,7 @@ import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
 import org.adempierelbr.model.MLBROpenItem;
+import org.adempierelbr.model.MLBRTaxStatus;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
@@ -97,6 +98,7 @@ import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Emit;
+import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref;
 import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.NFref.RefECF;
@@ -897,7 +899,8 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax icmsSTTax = nfl.getICMSSTTax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = icmsTax.getLBR_TaxStatus().getName();
+				
+				String taxStatus = new MLBRTaxStatus (nf.getCtx(), icmsTax.getLBR_TaxStatus_ID(), null).getTaxStatus(nf.isSOTrx());
 				
 				//	Product Source
 				I_W_M_Product prdct = POWrapper.create(MProduct.get(ctx, nfl.getM_Product_ID()), I_W_M_Product.class);
@@ -1115,7 +1118,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax ipiTax = nfl.getIPITax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = ipiTax.getLBR_TaxStatus().getName();
+				String taxStatus = new MLBRTaxStatus (nf.getCtx(), ipiTax.getLBR_TaxStatus_ID(), null).getTaxStatus(nf.isSOTrx());
 				
 				//	IPI
 				TIpi ipi = imposto.addNewIPI();
@@ -1158,7 +1161,7 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax pisTax = nfl.getPISTax();
 
 				//	CST = Código de Situação Tributária
-				String taxStatus = pisTax.getLBR_TaxStatus().getName();
+				String taxStatus = new MLBRTaxStatus (nf.getCtx(), pisTax.getLBR_TaxStatus_ID(), null).getTaxStatus(nf.isSOTrx());
 
 				//	PIS Tributado
 				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
@@ -1204,7 +1207,7 @@ public class NFeXMLGenerator
 			if (cofinsTax != null)
 			{
 				//	CST = Código de Situação Tributária
-				String taxStatus = cofinsTax.getLBR_TaxStatus().getName();
+				String taxStatus = new MLBRTaxStatus (nf.getCtx(), cofinsTax.getLBR_TaxStatus_ID(), null).getTaxStatus(nf.isSOTrx());
 
 				//	PIS Tributado
 				if (TextUtil.match (taxStatus, CST_PC_01, CST_PC_02))
@@ -1251,7 +1254,7 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	V. Informações adicionais (para o item da NF-e)
-			String nflDesc = nf.getDescription();
+			String nflDesc = nfl.getDescription();
 			if (nflDesc != null && !nflDesc.isEmpty())
 				det.setInfAdProd (normalize (nflDesc));
 		}
@@ -1326,6 +1329,31 @@ public class NFeXMLGenerator
 			Vol vol = transp.addNewVol();
 				
 			vol.setQVol(Integer.toString(nf.getNoPackages()));
+			//
+			BigDecimal grossWeight = nf.getlbr_GrossWeight();
+			BigDecimal netWeight = nf.getlbr_NetWeight();
+			
+			//	Not null
+			if (grossWeight == null)
+				grossWeight = Env.ZERO;
+			if (netWeight == null)
+				netWeight = Env.ZERO;
+			
+			//	Fix invalid net weight
+			if (grossWeight.compareTo(netWeight) == -1)
+				netWeight = grossWeight;
+
+			//	Set gross and net weight in TON
+			if (netWeight.signum() == 1)
+				vol.setPesoL(normalize3 (netWeight));
+			if (grossWeight.signum() == 1)
+				vol.setPesoB(normalize3 (grossWeight));
+			
+			//	Package Type
+			String packType = nf.getlbr_PackingType();
+			
+			if (packType != null && !packType.isEmpty())
+				vol.setEsp(packType.trim());
 		}		
 				
 		//	Dados da cobrança
@@ -1379,7 +1407,17 @@ public class NFeXMLGenerator
 		obsCont.setXTexto("www.kenos.com.br");
 		
 		//	ZA. Informações de Comércio Exterior
-//		Exporta exporta = infNFe.addNewExporta();
+		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ())
+				&& nf.getLBR_RegionExport_ID() > 0)
+		{
+			Exporta exporta = infNFe.addNewExporta();
+			
+			exporta.setUFSaidaPais(TUfEmi.Enum.forString (nf.getLBR_RegionExport().getName()));
+			exporta.setXLocExporta(normalize (nf.getLBR_ExportPlace()));	
+			
+			if (nf.getLBR_DispatchPlace() != null && !nf.getLBR_DispatchPlace().isEmpty())
+				exporta.setXLocExporta(normalize (nf.getLBR_DispatchPlace()));	
+		}
 		
 		//	ZB. Informações de Compras
 //		Compra compra = infNFe.addNewCompra();
@@ -1429,6 +1467,21 @@ public class NFeXMLGenerator
 		return TextUtil.bigdecimalToString (value);
 	}	//	normalize
 
+	/**
+	 * 	Converts BD to String, with up to 4 decimals,
+	 * 		with no trailing zeroes
+	 * 
+	 * 	E.g. 	10.12000 	->  10.120
+	 * 			100.00		-> 100.000
+	 * 			100.12345	-> 100.123
+	 * @param value
+	 * @return
+	 */
+	private static String normalize3 (BigDecimal value)
+	{
+		return TextUtil.bigdecimalToString (value, 3);
+	}	//	normalize4
+	
 	/**
 	 * 	Converts BD to String, with up to 4 decimals,
 	 * 		with no trailing zeroes

@@ -19,18 +19,12 @@ import java.security.NoSuchAlgorithmException;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 0400 – TABELA DE NATUREZA DA OPERAÇÃO/PRESTAÇÃO
  * 
  * @autor Claudemir Todo Bom ( http://todobom.com )
  */
 public class R0400 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 10, id = "COD_NAT")
 	private String COD_NAT;
 

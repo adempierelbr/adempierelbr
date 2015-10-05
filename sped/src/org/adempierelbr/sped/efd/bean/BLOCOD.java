@@ -17,9 +17,6 @@ import java.util.List;
 
 import org.adempierelbr.annotation.XMLFieldProperties;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * BLOCO D: DOCUMENTOS FISCAIS II - SERVIÇOS (ICMS).
  * 
@@ -29,8 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  */
 public class BLOCOD {
 
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(needsValidation = true, id = "RD001")
 	private RD001 rD001;
 

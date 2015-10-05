@@ -15,19 +15,13 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO E990: ENCERRAMENTO DO BLOCO E
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RE990.java, 08/02/2011, 12:04:00, mgrigioni
  */
 public class RE990 extends RegSped {
-	
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(id = "QTD_LIN_E")
+		@XMLFieldProperties(id = "QTD_LIN_E")
 	private String QTD_LIN_E;
 
 	/**

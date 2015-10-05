@@ -21,9 +21,6 @@ import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 import org.compiere.util.Env;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO C100 - NOTA FISCAL DE PRODUTOR (CÓDIGO 04) e NF-e (CÓDIGO 55)
  * 
@@ -34,9 +31,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version 07/08/2012, 14:00, pablobp4
  */
 public class RC100 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(minSize = 1, maxSize = 1, id = "IND_OPER")
 	private String IND_OPER;
 

@@ -341,6 +341,11 @@ public class VBOMDrop extends CPanel
 	private void addBOMLines (MProduct product, BigDecimal qty)
 	{
 		MPPProductBOM bom = MPPProductBOM.getDefault(product, null);
+		if (bom == null)
+		{
+			log.warning("BOM Not Found for Product: " + product.getValue());
+			return;
+		}
 		MPPProductBOMLine[] bomLines = bom.getLines(true);
 		for (int i = 0; i < bomLines.length; i++)
 			addBOMLine (bomLines[i], qty);

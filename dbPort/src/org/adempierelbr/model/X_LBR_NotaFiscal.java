@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150820L;
+	private static final long serialVersionUID = 20150925L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -740,6 +740,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set LBR_DispatchPlace.
+		@param LBR_DispatchPlace LBR_DispatchPlace	  */
+	public void setLBR_DispatchPlace (String LBR_DispatchPlace)
+	{
+		set_Value (COLUMNNAME_LBR_DispatchPlace, LBR_DispatchPlace);
+	}
+
+	/** Get LBR_DispatchPlace.
+		@return LBR_DispatchPlace	  */
+	public String getLBR_DispatchPlace () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_DispatchPlace);
+	}
+
 	/** Set EMail Sent.
 		@param LBR_EMailSent 
 		Indicates if the email was sent
@@ -762,6 +776,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set LBR_ExportPlace.
+		@param LBR_ExportPlace LBR_ExportPlace	  */
+	public void setLBR_ExportPlace (String LBR_ExportPlace)
+	{
+		set_Value (COLUMNNAME_LBR_ExportPlace, LBR_ExportPlace);
+	}
+
+	/** Get LBR_ExportPlace.
+		@return LBR_ExportPlace	  */
+	public String getLBR_ExportPlace () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_ExportPlace);
 	}
 
 	/** LBR_FreightCostRule AD_Reference_ID=1120147 */
@@ -914,6 +942,31 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getLBR_Processing2 () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_Processing2);
+	}
+
+	public I_C_Region getLBR_RegionExport() throws RuntimeException
+    {
+		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+			.getPO(getLBR_RegionExport_ID(), get_TrxName());	}
+
+	/** Set LBR_RegionExport_ID.
+		@param LBR_RegionExport_ID LBR_RegionExport_ID	  */
+	public void setLBR_RegionExport_ID (int LBR_RegionExport_ID)
+	{
+		if (LBR_RegionExport_ID < 1) 
+			set_Value (COLUMNNAME_LBR_RegionExport_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_RegionExport_ID, Integer.valueOf(LBR_RegionExport_ID));
+	}
+
+	/** Get LBR_RegionExport_ID.
+		@return LBR_RegionExport_ID	  */
+	public int getLBR_RegionExport_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_RegionExport_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Send EMail.

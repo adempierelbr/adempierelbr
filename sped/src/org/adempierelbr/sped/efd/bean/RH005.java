@@ -22,19 +22,13 @@ import java.util.List;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO H005: TOTAIS DO INVENTÁRIO
  * 
  * @author Mario Grigioni, mgrigioni
  * @version $Id: RH005.java, 21/03/2011, 10:55:00, mgrigioni
  */
-public class RH005 extends RegSped {
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
-	@XMLFieldProperties(minSize = 8, maxSize = 8, isNumber = true, id = "DT_INV")
+public class RH005 extends RegSped {	@XMLFieldProperties(minSize = 8, maxSize = 8, isNumber = true, id = "DT_INV")
 	private Timestamp DT_INV;
 
 	@XMLFieldProperties(id = "VL_INV")

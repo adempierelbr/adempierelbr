@@ -13,10 +13,9 @@
 package org.adempierelbr.validator;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
-import org.adempierelbr.model.MLBRTaxConfiguration;
-import org.adempierelbr.model.X_LBR_TaxConfiguration;
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
@@ -39,22 +38,13 @@ import org.compiere.util.CLogger;
  *
  *	@author Alvaro Montenegro
  *	@contributor Mario Grigioni
+ *	@contributor Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li> Remover funções obsoletas
  *	@version $Id: ValidatorBPartner.java, 27/02/2008 08:44:00 amontenegro
- *
  */
+@Deprecated
 public class ValidatorDocType implements ModelValidator
 {
-
-
-	/**
-	 *	Constructor.
-	 *	The class is instanciated when logging in and client is selected/known
-	 */
-	public ValidatorDocType()
-	{
-		super ();
-	}
-
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(ValidatorDocType.class);
 	/** Client			*/
@@ -78,7 +68,6 @@ public class ValidatorDocType implements ModelValidator
 
 		engine.addModelChange(MDocType.Table_Name, this); //Document Type
 		engine.addModelChange(MSequence.Table_Name, this); //Document Sequence
-		engine.addModelChange(MLBRTaxConfiguration.Table_Name, this); //Tax Configuration
 	}	//	initialize
 
 	/**
@@ -115,34 +104,31 @@ public class ValidatorDocType implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-
 		boolean isChange = type == TYPE_CHANGE;
 		boolean isNew    = type == TYPE_NEW;
 
-		if (po instanceof MDocType && (isChange || isNew)){
-			return modelChange((MDocType)po);
-		}
+		if (po instanceof MDocType && (isChange || isNew))
+			return modelChange((MDocType) po);
 
-		/**
-		 * 	Para tabelas do LBR usar a classe modelo
-		 */
-//		else if (po instanceof X_LBR_TaxConfiguration && (isChange || isNew)){
-//			return modelChange((X_LBR_TaxConfiguration)po);
-//		}
-
-		else if (po instanceof MSequence && isChange){
-			return modelChange((MSequence)po);
-		}
+		else if (po instanceof MSequence && isChange)
+			return modelChange((MSequence) po);
 
 		return null;
-	} //modelChange
+	}	//	modelChange
 
-	public String modelChange(MDocType doc){
-
-
-		boolean lbr_IsAutomaticInvoice = doc.get_ValueAsBoolean("lbr_IsAutomaticInvoice");
-		boolean lbr_IsAutomaticShipment = doc.get_ValueAsBoolean("lbr_IsAutomaticShipment");
-		if(lbr_IsAutomaticInvoice && lbr_IsAutomaticShipment)
+	/**
+	 * 	Validação da função de gerar Fatura e Remessa automaticamente
+	 * 		- Não permitir o uso desta função quando a Remessa possuir confirmação
+	 * 	@param doc
+	 * 	@return
+	 */
+	public String modelChange(MDocType doc)
+	{
+		I_W_C_DocType docW = POWrapper.create(doc, I_W_C_DocType.class);
+		//
+		
+		if (docW.islbr_IsAutomaticInvoice() 
+				&& docW.islbr_IsAutomaticShipment())
 		{
 			MDocType shpDoc = new MDocType(doc.getCtx(),doc.getC_DocTypeShipment_ID(),doc.get_TrxName());
 			if((Boolean)shpDoc.get_Value("IsShipConfirm"))
@@ -153,41 +139,8 @@ public class ValidatorDocType implements ModelValidator
 
 		log.info(doc.toString());
 		return null;
-	}
-	/**
-	 * 	
-	 * @param taxConfig
-	 * @return
-	 */
-	@Deprecated //	Usar a classe model para checar
-	public String modelChange(X_LBR_TaxConfiguration taxConfig){
+	}	//	modelChange
 
-		Properties ctx = taxConfig.getCtx();
-		String     trx = taxConfig.get_TrxName();
-
-		boolean isSOTrx = taxConfig.isSOTrx();
-		boolean isPOTrx = taxConfig.islbr_IsPOTrx();
-
-		int LBR_TaxConfiguration_ID    = taxConfig.getLBR_TaxConfiguration_ID();
-		int M_Product_ID               = taxConfig.getM_Product_ID();
-		int LBR_FiscalGroup_Product_ID = taxConfig.getLBR_FiscalGroup_Product_ID();
-
-		if (!isSOTrx && !isPOTrx)
-			return "Necessário selecionar ao menos uma das opções de Transação";
-
-		if (isSOTrx){
-			if (MLBRTaxConfiguration.hasSOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
-					return "Já existe uma exceção cadastrada com estes parâmetros";
-		}
-
-		if (isPOTrx){
-			if (MLBRTaxConfiguration.hasPOTrx(ctx, LBR_TaxConfiguration_ID, M_Product_ID, LBR_FiscalGroup_Product_ID, trx))
-					return "Já existe uma exceção cadastrada com estes parâmetros";
-		}
-
-		log.info(taxConfig.toString());
-		return null;
-	}
 
 	public String modelChange(MSequence sequence){
 

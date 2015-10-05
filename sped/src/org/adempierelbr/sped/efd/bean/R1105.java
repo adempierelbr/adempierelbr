@@ -17,9 +17,6 @@ import java.sql.Timestamp;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 1105: DOCUMENTOS FISCAIS DE EXPORTAÇÃO.
  * 
@@ -31,9 +28,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: R0005.java, 07/08/2012, 14:00, pablobp4
  */
 public class R1105 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "COD_MOD", maxSize = 2, minSize = 2)
 	String COD_MOD;
 	

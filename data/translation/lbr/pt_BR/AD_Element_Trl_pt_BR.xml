@@ -63,6 +63,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="2784" trl="Y">
+    <value column="Name" original="BOM Use">Uso da LDM</value>
+    <value column="PrintName" original="BOM Use">Uso da LDM</value>
+    <value column="Description" original="The use of the Bill of Material">É o uso de determinada Lista de Materiais (LDM)</value>
+    <value column="Help" original="By default the Master BOM is used, if the alternatives are not defined">A LDM Mestre será utilizada caso não tenham sido definidas listas alternativas</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="2799" trl="Y">
     <value column="Name" original="Attribute Set Instance To">Instância de Atributos Alvo</value>
     <value column="PrintName" original="Attribute Set Instance To">Instância de Atributos Alvo</value>

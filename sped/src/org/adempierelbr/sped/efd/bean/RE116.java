@@ -18,9 +18,6 @@ import java.sql.Timestamp;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO E250: OBRIGAÇÕES DO ICMS A RECOLHER – SUBSTITUIÇÃO TRIBUTÁRIA.
  * 
@@ -28,9 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * @version $Id: RE250.java, 14/06/2011, 11:13:00, mgrigioni
  */
 public class RE116 extends RegSped {
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "COD_OR", maxSize = 3, minSize = 3)
 	private String COD_OR;
 

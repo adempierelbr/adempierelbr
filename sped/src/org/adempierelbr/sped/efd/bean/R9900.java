@@ -15,9 +15,6 @@ package org.adempierelbr.sped.efd.bean;
 import org.adempierelbr.annotation.XMLFieldProperties;
 import org.adempierelbr.sped.RegSped;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
 /**
  * REGISTRO 9900: REGISTROS DO ARQUIVO.
  * @author Mario Grigioni, mgrigioni
@@ -40,9 +37,6 @@ public class R9900 extends RegSped {
 	public void setQTD_REG_BLC(String qTD_REG_BLC) {
 		QTD_REG_BLC = qTD_REG_BLC;
 	}
-
-	@XStreamAlias("Id")
-	@XStreamAsAttribute
 	@XMLFieldProperties(id = "REG_BLC")
 	private String REG_BLC;
 	
