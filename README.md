@@ -62,6 +62,15 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201510 [[Download]][26] [[Seed PostgreSQL]][27] [[Seed OracleXE]][28]
+
+	* Melhorias na tradução
+	* Atualização das libs Xalan e Serializer para 2.7.1
+	* Remoção de classes obsoletas
+	* Melhoria na DANFE
+	* Correção na captura do CST para operações de entrada (IPI)
+	* [Mais detalhes][25]
+	
 1. LBR-201509 [[Download]][22] [[Seed PostgreSQL]][23] [[Seed OracleXE]][24]
 
 	* Melhorias na tradução
@@ -130,3 +139,7 @@ Patrocinadores desta versão
 [22]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201509.tgz
 [23]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_PG.tgz
 [24]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_ORA.tgz
+[25]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201510
+[26]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201510.tgz
+[27]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_PG.tgz
+[28]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_ORA.tgz
