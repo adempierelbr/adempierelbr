@@ -1406,13 +1406,6 @@ public class NFeXMLGenerator
 		obsCont.setXCampo("site-developer");
 		obsCont.setXTexto("www.kenos.com.br");
 		
-		if (nf.getlbr_BillNote() != null && !nf.getlbr_BillNote().isEmpty())
-		{
-			obsCont = infAdic.addNewObsCont();
-			obsCont.setXCampo("billnote");
-			obsCont.setXTexto(normalize(nf.getlbr_BillNote()));
-		}
-		
 		//	ZA. Informações de Comércio Exterior
 		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ())
 				&& nf.getLBR_RegionExport_ID() > 0)
