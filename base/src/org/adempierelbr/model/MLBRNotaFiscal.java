@@ -1668,6 +1668,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
 			setNoPackages(io.getNoPackages());
+			setDeliveryViaRule(io.getDeliveryViaRule());
 
 			if (MSysConfig.getValue("LBR_NFESPECIE",  getAD_Client_ID()) != null )
 				setlbr_PackingType(MSysConfig.getValue("LBR_NFESPECIE", getAD_Client_ID()));
