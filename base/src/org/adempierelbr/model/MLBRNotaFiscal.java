@@ -1656,6 +1656,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		MBPartnerLocation bpLocation = null;
 
+		int M_Shipper_ID = 0;
+		
 		/**
 		 * 	Pega os dados da Expedição / Recebimento
 		 */
@@ -1670,15 +1672,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setNoPackages(io.getNoPackages());
 			setDeliveryViaRule(io.getDeliveryViaRule());
 
+			M_Shipper_ID = io.getM_Shipper_ID();
+			
 			if (MSysConfig.getValue("LBR_NFESPECIE",  getAD_Client_ID()) != null )
 				setlbr_PackingType(MSysConfig.getValue("LBR_NFESPECIE", getAD_Client_ID()));
 			else
 				setlbr_PackingType(MSysConfig.getValue("VOLUME"));
-			
-			//	Transportadora
-			if (MInOut.DELIVERYVIARULE_Shipper.equals(io.getDeliveryViaRule())
-					&& io.getM_Shipper_ID() > 0)
-				setShipper(new MShipper (Env.getCtx(), io.getM_Shipper_ID(), get_TrxName()));
 		}
 		
 		/**
@@ -1697,20 +1696,31 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		/**
 		 * 	Caso seja baseado em um pedido
 		 */
-		else if (order != null 
-				&& order.isDropShip()
-				&& order.getDropShip_BPartner_ID() > 0)
+		else if (order != null && order.getC_Order_ID() > 0)
 		{
-			bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(),get_TrxName());
+			//	Transportadora
+			setDeliveryViaRule(order.getDeliveryViaRule());
+			M_Shipper_ID = order.getM_Shipper_ID();
 			
-			//	Dado obrigatório, não encontrado na Expedição/Recebimento
-			if (order.getC_Order_ID() > 0)
-				setFreightCostRule(order.getFreightCostRule());
+			//	Drop shipment
+			if (order.isDropShip() && order.getDropShip_BPartner_ID() > 0)
+			{
+				bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(),get_TrxName());
+				
+				//	Dado obrigatório, não encontrado na Expedição/Recebimento
+				if (order.getC_Order_ID() > 0)
+					setFreightCostRule(order.getFreightCostRule());
+			}
 		}
 		
 		//	Nothing to do
 		else 
 			return;
+		
+		//	Transportadora
+		if (MInOut.DELIVERYVIARULE_Shipper.equals(getDeliveryViaRule())
+				&& M_Shipper_ID > 0)
+			setShipper(new MShipper (Env.getCtx(), M_Shipper_ID, get_TrxName()));
 		
 		MLocation location = new MLocation (getCtx(), bpLocation.getC_Location_ID(), get_TrxName());
 		MCountry country = new MCountry (getCtx(), location.getC_Country_ID(), get_TrxName());
