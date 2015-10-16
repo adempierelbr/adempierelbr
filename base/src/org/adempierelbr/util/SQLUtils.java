@@ -32,7 +32,7 @@ public class SQLUtils {
 	 * SQL, para o exemplo acima seria ["%calculadora%","%hp12c"]
 	 */
 	public static String[] likeParameters(String value){
-		String [] values = value.split(" ");
+		String [] values = value.split("[ /-]");
 		for (int i = 0; i < values.length; i++) {
 			if(!values[i].startsWith("%")) values[i]="%"+values[i];
 			if(!values[i].endsWith("%")) values[i]=values[i]+"%";
@@ -50,7 +50,7 @@ public class SQLUtils {
 	 */
 	public static String likeField(String field, String value){
 		value = value.toUpperCase(Locale.getDefault());
-		String[] values = value.split(" ");
+		String[] values = value.split("[ /-]");
 		String ret="";
 		for (int i = 0; i < values.length; i++) {
 			ret += " AND (UPPER("+field+") LIKE ?)";

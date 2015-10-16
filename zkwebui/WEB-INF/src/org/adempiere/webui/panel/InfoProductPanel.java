@@ -873,7 +873,9 @@ public class InfoProductPanel extends InfoPanel implements EventListener
 		//  => Value
 		String value = fieldValue.getText().toUpperCase();
 		if (!(value.equals("") || value.equals("%")))
-			where.append(" AND (UPPER(p.Value) LIKE ? OR UPPER(ppo.VendorProductNo) LIKE ?)");
+			where.append(" AND ((TRUE ").append(SQLUtils.likeField("p.Value", value))
+				 .append(") OR (TRUE ").append(SQLUtils.likeField("ppo.VendorProductNo", value))
+				 .append(")) ");
 
 		//  => Name
 		String name = fieldName.getText().toUpperCase();
@@ -958,9 +960,18 @@ public class InfoProductPanel extends InfoPanel implements EventListener
 				value += "%";
 			if (!value.startsWith("%"))
 				value = "%" + value;
-			pstmt.setString(index++, value);
-			pstmt.setString(index++, value);	//	Vendor Product No
-			log.fine("Value: " + value);
+			
+			//	Values
+			String values[] = SQLUtils.likeParameters(value);
+			for (int i = 0; i < values.length; i++) {
+				pstmt.setString(index++, values[i]);
+				log.fine("Name"+index+": " + values[i]);
+			}
+			//	Vendor Product No
+			for (int i = 0; i < values.length; i++) {
+				pstmt.setString(index++, values[i]);
+				log.fine("Name"+index+": " + values[i]);
+			}
 		}
 
 		//  => Name
