@@ -188,7 +188,7 @@ public class ValidatorInvoice implements ModelValidator
 			wInvoice.setlbr_ShipNote(wOrder.getlbr_ShipNote());
 		
 		//	Billing Bank Account
-		if (wInvoice.getC_BankAccount_ID() <= 0)
+		if (wInvoice.getC_BankAccount_ID() <= 0 && wOrder.getC_BankAccount_ID() > 0)
 			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
 		
 		//	Has tax Withhold
