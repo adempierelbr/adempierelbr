@@ -82,14 +82,14 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v8f.NFeDocument;
-import br.inf.portalfiscal.nfe.v8f.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.IdDest.Enum;
-import br.inf.portalfiscal.nfe.v8f.TNfeProc;
-import br.inf.portalfiscal.nfe.v8f.TProtNFe;
-import br.inf.portalfiscal.nfe.v8f.TProtNFe.InfProt;
-import br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut;
+import br.inf.portalfiscal.nfe.v8g.NFeDocument;
+import br.inf.portalfiscal.nfe.v8g.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.v8g.TNfeProc;
+import br.inf.portalfiscal.nfe.v8g.TProtNFe;
+import br.inf.portalfiscal.nfe.v8g.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut;
 import bsh.EvalError;
 import bsh.Interpreter;
 

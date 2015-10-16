@@ -26,13 +26,13 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v8f.InutNFeDocument;
-import br.inf.portalfiscal.nfe.v8f.RetInutNFeDocument;
-import br.inf.portalfiscal.nfe.v8f.TAmb;
-import br.inf.portalfiscal.nfe.v8f.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v8f.TInutNFe;
-import br.inf.portalfiscal.nfe.v8f.TInutNFe.InfInut;
-import br.inf.portalfiscal.nfe.v8f.TMod;
+import br.inf.portalfiscal.nfe.v8g.InutNFeDocument;
+import br.inf.portalfiscal.nfe.v8g.RetInutNFeDocument;
+import br.inf.portalfiscal.nfe.v8g.TAmb;
+import br.inf.portalfiscal.nfe.v8g.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v8g.TInutNFe;
+import br.inf.portalfiscal.nfe.v8g.TInutNFe.InfInut;
+import br.inf.portalfiscal.nfe.v8g.TMod;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsgE;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeDadosMsg;
@@ -125,7 +125,7 @@ public class ProcInutNF extends SvrProcess
 		if (p_LBR_EnvType == null)
 			p_LBR_EnvType = oi.get_ValueAsString ("lbr_NFeEnv");
 		//
-		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
+		br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
 									dt.get_ValueAsString("lbr_NFModel"), p_DocumentNo, p_DocumentNo_To, dt.get_ValueAsString("lbr_NFSerie"), p_Just, p_DateDoc);
 		
 		StringBuilder msg = new StringBuilder("@Success@<br />");
@@ -173,7 +173,7 @@ public class ProcInutNF extends SvrProcess
 	 * @return
 	 * @throws Exception
 	 */
-	public static br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
+	public static br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
 			String regionCode, String p_LBR_EnvType, String nfModel, Integer p_DocumentNo, 
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
@@ -239,7 +239,7 @@ public class ProcInutNF extends SvrProcess
 		log.finer (respStatus);
 		
 		//	Processa o retorno
-		br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
+		br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
 		
 		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(retInutNFe.getCStat()))
 			MLBRNFSkipped.register (retInutNFe);
