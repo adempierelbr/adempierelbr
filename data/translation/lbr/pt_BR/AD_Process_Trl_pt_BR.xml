@@ -2,6 +2,13 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Process">
+  <row id="267" trl="Y">
+    <value column="Name" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Description" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Help" original="A Sales Order is created for the entered Business Partner.  A sales order line is created for each RfQ line quantity, where &quot;Offer Quantity&quot; is selected.  If on the RfQ Line Quantity, an offer amount is entered (not 0), that price is used. 
+If a magin is entered on RfQ Line Quantity, it overwrites the general margin.  The margin is the percentage added to the Best Response Amount.">Um Pedido de Vendas é criado para o Parceiro de Negócios entrado. Uma linha de pedido de vendas é criado para cada linha de quantidade SdC, onde "Quantidade de Oferta" é selecionado. Se, na Linha de Quantidade SdC, um valor da oferta foi entrado (não 0), esse preço é usado. 
+Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem geral. A margem é o percentual adicionado ao Valor de Melhor Resposta.</value>
+  </row>
   <row id="53199" trl="Y">
     <value column="Name" original="Reset Allocation Direct">Apagar Alocação</value>
     <value column="Description" original="Reset (delete) allocation of invoices to payments">Resetar (apagar) a alocação de faturas para pagamento</value>

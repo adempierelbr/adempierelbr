@@ -879,8 +879,8 @@ Então, a posição de todas as Quantidade de Respostas são adicionados para a 
     <value column="Help" original="Create purchase order(s) for the resonse(s) and lines marked as Selected Winner using the selected Purchase Quantity (in RfQ Line Quantity) . If a Response is marked as Selected Winner, all lines are created (and Selected Winner of other responses ignored).  If there is no response marked as Selected Winner, the lines are used.">Cria Pedido(s) de Compra para as respostas e linhas marcadas como Vencedor Selecionado usando a Quantidade de Compras (na Linha Quantidade da SdC). Se uma resposta for marcada como Vencedor Selecionado, todas as linhas serão criadas (e o Vencedor Selecionado de outras respostas será ignorado)  Se não houver resposta marcada como Vencedor Selecionado, as linhas serão utilizadas.</value>
   </row>
   <row id="267" trl="Y">
-    <value column="Name" original="Create Sales Order">Criar Ordem de Venda</value>
-    <value column="Description" original="Create Sales Order">Criar Ordem de Venda</value>
+    <value column="Name" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Description" original="Create Sales Order">Criar Pedido de Venda</value>
     <value column="Help" original="A Sales Order is created for the entered Business Partner.  A sales order line is created for each RfQ line quantity, where &quot;Offer Quantity&quot; is selected.  If on the RfQ Line Quantity, an offer amount is entered (not 0), that price is used. 
 If a magin is entered on RfQ Line Quantity, it overwrites the general margin.  The margin is the percentage added to the Best Response Amount.">Um Pedido de Vendas é criado para o Parceiro de Negócios entrado. Uma linha de pedido de vendas é criado para cada linha de quantidade SdC, onde "Quantidade de Oferta" é selecionado. Se, na Linha de Quantidade SdC, um valor da oferta foi entrado (não 0), esse preço é usado. 
 Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem geral. A margem é o percentual adicionado ao Valor de Melhor Resposta.</value>
