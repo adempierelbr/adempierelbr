@@ -147,7 +147,7 @@ public class VInvoiceGen extends InvoiceGen implements FormPanel, ActionListener
 				false, "AD_Ref_List.Value IN ('CO','PR')");
 		docAction = new VLookup("DocAction", true, false, true,docActionL);
 		//  lDcoACtion.setText((Msg.translate(Env.getCtx(), "DocAction")););
-		docAction.addVetoableChangeListener(this);
+//		docAction.addVetoableChangeListener(this);
 		
 		//
 		MLookup bpL = MLookupFactory.get (Env.getCtx(), m_WindowNo, 0, 2762, DisplayType.Search);
