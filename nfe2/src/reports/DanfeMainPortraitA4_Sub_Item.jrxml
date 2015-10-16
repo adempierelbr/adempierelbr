@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="441"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -35,7 +35,7 @@
 		<fieldDescription><![CDATA[prod/NCM]]></fieldDescription>
 	</field>
 	<field name="cst" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS50/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST]]></fieldDescription>
+		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS50/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST |imposto/ICMS/ICMSSN101/CSOSN | imposto/ICMS/ICMSSN102/CSOSN | imposto/ICMS/ICMSSN201/CSOSN | imposto/ICMS/ICMSSN202/CSOSN | imposto/ICMS/ICMSSN500/CSOSN | imposto/ICMS/ICMSSN900/CSOSN]]></fieldDescription>
 	</field>
 	<field name="cfop" class="java.lang.String">
 		<fieldDescription><![CDATA[prod/CFOP]]></fieldDescription>
