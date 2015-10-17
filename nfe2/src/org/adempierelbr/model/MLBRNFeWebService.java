@@ -43,6 +43,8 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	public static final String RETRECEPCAO			= "NfeRetRecepcao";
 	public static final String RECEPCAO				= "NfeRecepcao";
 	public static final String RECEPCAOEVENTO		= "RecepcaoEvento";
+	public static final String CONSULTANFEDEST		= "ConsultaNFeDest";
+	public static final String DOWNLOADNFE			= "DownloadNFe";
 	
 	/**************************************************************************
 	 *  Default Constructor
