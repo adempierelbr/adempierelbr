@@ -1,14 +1,14 @@
 /******************************************************************************
- * Product: ADempiereLBR - ADempiere Localization Brazil                      *
- * This program is free software; you can redistribute it and/or modify it    *
+ * Product: ADempiereLBR - ADempiere Localization Brazil					  *
+ * This program is free software; you can redistribute it and/or modify it	*
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
- * See the GNU General Public License for more details.                       *
- * You should have received a copy of the GNU General Public License along    *
- * with this program; if not, write to the Free Software Foundation, Inc.,    *
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.		   *
+ * See the GNU General Public License for more details.					   *
+ * You should have received a copy of the GNU General Public License along	*
+ * with this program; if not, write to the Free Software Foundation, Inc.,	*
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.					 *
  *****************************************************************************/
 package org.adempierelbr.util;
 
@@ -29,8 +29,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.crypto.AlgorithmMethod;
+import javax.xml.crypto.KeySelector;
+import javax.xml.crypto.KeySelectorException;
+import javax.xml.crypto.KeySelectorResult;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.crypto.dsig.Reference;
@@ -40,6 +47,7 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
@@ -155,7 +163,7 @@ public class SignatureUtil
 		if (isToken)
 		{
 			Provider p = new sun.security.pkcs11.SunPKCS11(cfgFile);  
-            Security.addProvider(p);
+			Security.addProvider(p);
 		}
 		//
 		KeyStore keystore = KeyStore.getInstance(certType);
@@ -224,20 +232,8 @@ public class SignatureUtil
 		transformList.add (sig.newTransform(C14N_TRANSFORM_METHOD, (TransformParameterSpec) null));
 		
 		//	TAG de Referência para posicionar a Assinatura
-		String tag = null;
+		String tag = getTag();
 
-		if (docType.equals(RECEPCAO_NFE))
-			tag = "infNFe";
-		else if (docType.equals(CANCELAMENTO_NFE))
-			tag = "infCanc";
-		else if (docType.equals(INUTILIZACAO_NFE))
-			tag = "infInut";
-		else if (docType.equals(EVENTO))
-			tag = "infEvento";
-		else if (docType.equals(RPS))
-			tag = "RPS";
-		else if (docType.equals(RECEPCAO_MDFE))
-			tag = "infMDFe";
 		//
 		Reference r = null;
 		
@@ -324,4 +320,136 @@ public class SignatureUtil
 		
 		return encoded;
 	}	//	signASCII
+	
+	/**
+	 * 	Valida a Assinatura da NF-e
+	 * 	Origem: https://docs.oracle.com/javase/7/docs/technotes/guides/security/xmldsig/Validate.java
+	 * 	@return true if is valid
+	 * 	@throws Exception
+	 */
+	public boolean isSignatureValid (XmlObject xml) throws Exception
+	{
+		String xmlText = xml.xmlText (NFeUtil.getXmlOpt());
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		Document doc = dbf.newDocumentBuilder().parse (new InputSource(new StringReader (xmlText)));
+
+		// Find Signature element
+		NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+		if (nl.getLength() == 0)
+			throw new Exception("Cannot find Signature element");
+
+		// Create a DOM XMLSignatureFactory that will be used to unmarshal the
+		// document containing the XMLSignature
+		XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+		
+		//	Select the correct tag, except for RPS
+		if (!docType.equals (RPS))
+		{
+			NodeList elements = doc.getElementsByTagName(getTag());  
+			org.w3c.dom.Element el = (org.w3c.dom.Element) elements.item(0);  
+			el.getAttribute("Id");
+			el.setIdAttribute("Id", true);     
+		}
+		
+		// Create a DOMValidateContext and specify a KeyValue KeySelector
+		// and document context
+		DOMValidateContext valContext = new DOMValidateContext (new X509KeySelector(), nl.item(0));
+
+		// unmarshal the XMLSignature
+		XMLSignature signature = fac.unmarshalXMLSignature(valContext);
+
+		// Validate the XMLSignature (generated above)
+		boolean coreValidity = signature.validate(valContext);
+		
+		return coreValidity;
+	}	//	isSignatureValid
+	
+	/**
+	 * 	http://www.oracle.com/technetwork/articles/javase/dig-signature-api-140772.html
+	 */
+	public class X509KeySelector extends KeySelector 
+	{
+	    public KeySelectorResult select (KeyInfo keyInfo,
+	                                    KeySelector.Purpose purpose,
+	                                    AlgorithmMethod method,
+	                                    XMLCryptoContext context)
+	        throws KeySelectorException 
+	    {
+	        Iterator<?> ki = keyInfo.getContent().iterator();
+	        while (ki.hasNext()) 
+	        {
+	            XMLStructure info = (XMLStructure) ki.next();
+	            if (!(info instanceof X509Data))
+	                continue;
+	            X509Data x509Data = (X509Data) info;
+	            Iterator<?> xi = x509Data.getContent().iterator();
+	            while (xi.hasNext()) 
+	            {
+	                Object o = xi.next();
+	                if (!(o instanceof X509Certificate))
+	                    continue;
+	                final PublicKey key = ((X509Certificate)o).getPublicKey();
+	                // Make sure the algorithm is compatible
+	                // with the method.
+	                if (algEquals(method.getAlgorithm(), key.getAlgorithm())) 
+	                {
+	                    return new KeySelectorResult() 
+	                    {
+	                        public Key getKey() 
+	                        { 
+	                        	return key; 
+	                        }
+	                    };
+	                }
+	            }
+	        }
+	        throw new KeySelectorException("No key found!");
+	    }	//	select
+
+	    /**
+	     *  Check algorithm
+	     *  http://www.oracle.com/technetwork/articles/javase/dig-signature-api-140772.html
+	     * 	@param algURI
+	     * 	@param algName
+	     * 	@return
+	     */
+	    boolean algEquals (String algURI, String algName)
+	    {
+	        if ((algName.equalsIgnoreCase("DSA") &&
+	            algURI.equalsIgnoreCase(SignatureMethod.DSA_SHA1)) ||
+	            (algName.equalsIgnoreCase("RSA") &&
+	            algURI.equalsIgnoreCase(SignatureMethod.RSA_SHA1)))
+	        {
+	            return true;
+	        }
+	        else 
+	        {
+	            return false;
+	        }
+	    }	//	algEquals
+	}	//	X509KeySelector
+	
+	/**
+	 * 	Tag
+	 * 	@return
+	 */
+	private String getTag ()
+	{
+		if (docType.equals(RECEPCAO_NFE))
+			return "infNFe";
+		else if (docType.equals(CANCELAMENTO_NFE))
+			return "infCanc";
+		else if (docType.equals(INUTILIZACAO_NFE))
+			return "infInut";
+		else if (docType.equals(EVENTO))
+			return "infEvento";
+		else if (docType.equals(RPS))
+			return "RPS";
+		else if (docType.equals(RECEPCAO_MDFE))
+			return "infMDFe";
+		else
+			return "";
+	}	//	getSignedTag
 }	//	SignatureUtil
