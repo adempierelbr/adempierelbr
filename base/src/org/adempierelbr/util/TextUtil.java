@@ -947,7 +947,7 @@ public abstract class TextUtil
 			for (int i=0; i<documentNo.length(); i++)
 			{
 				if (!Character.isDigit(documentNo.charAt(i)))
-					return false;;
+					return false;
 			}
 		}
 		return true;
