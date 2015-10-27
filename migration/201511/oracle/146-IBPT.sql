@@ -445,7 +445,7 @@ UPDATE AD_Process_Para_Trl SET Description=NULL,Help=NULL,Name='FileName',IsTran
 ;
 
 -- 27/10/2015 11h54min54s BRST
-INSERT INTO AD_Process_Para (AD_Client_ID,AD_Element_ID,AD_Org_ID,AD_Process_ID,AD_Process_Para_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,EntityType,FieldLength,IsActive,IsCentrallyMaintained,IsMandatory,IsRange,Name,SeqNo,Updated,UpdatedBy) VALUES (0,209,0,1120126,1120214,18,157,1000003,'C_Region_ID',TO_DATE('2015-10-27 11:54:53','YYYY-MM-DD HH24:MI:SS'),100,'@#C_Region_ID@','U',0,'Y','Y','Y','N','Region',15,TO_DATE('2015-10-27 11:54:53','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Process_Para (AD_Client_ID,AD_Element_ID,AD_Org_ID,AD_Process_ID,AD_Process_Para_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,DefaultValue,EntityType,FieldLength,IsActive,IsCentrallyMaintained,IsMandatory,IsRange,Name,SeqNo,Updated,UpdatedBy) VALUES (0,209,0,1120126,1120214,18,157,1000003,'C_Region_ID',TO_DATE('2015-10-27 11:54:53','YYYY-MM-DD HH24:MI:SS'),100,'-1','U',0,'Y','Y','Y','N','Region',15,TO_DATE('2015-10-27 11:54:53','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 27/10/2015 11h54min54s BRST
