@@ -1402,10 +1402,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			arguments[3] = taxRateRegTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
 			
 			//	Source
-			arguments[4] = String.join (",", sources);
+			arguments[4] = TextUtil.join (",", sources);
 			
 			//	Key
-			arguments[5] = String.join (",", keys);
+			arguments[5] = TextUtil.join (",", keys);
 
 			//	preffix
 			String description = getDescription();
