@@ -14,8 +14,6 @@ package org.adempierelbr.validator;
 
 import java.util.ArrayList;
 
-import org.adempiere.model.POWrapper;
-import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
@@ -104,8 +102,8 @@ public class ValidatorDocType implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		boolean isChange = type == TYPE_CHANGE;
-		boolean isNew    = type == TYPE_NEW;
+		boolean isChange = type == TYPE_BEFORE_CHANGE;
+		boolean isNew    = type == TYPE_BEFORE_NEW;
 
 		if (po instanceof MDocType && (isChange || isNew))
 			return modelChange((MDocType) po);
@@ -124,11 +122,8 @@ public class ValidatorDocType implements ModelValidator
 	 */
 	public String modelChange(MDocType doc)
 	{
-		I_W_C_DocType docW = POWrapper.create(doc, I_W_C_DocType.class);
-		//
-		
-		if (docW.islbr_IsAutomaticInvoice() 
-				&& docW.islbr_IsAutomaticShipment())
+		if (doc.get_ValueAsBoolean("lbr_IsAutomaticInvoice") 
+				&& doc.get_ValueAsBoolean("lbr_IsAutomaticShipment"))
 		{
 			MDocType shpDoc = new MDocType(doc.getCtx(),doc.getC_DocTypeShipment_ID(),doc.get_TrxName());
 			if((Boolean)shpDoc.get_Value("IsShipConfirm"))
