@@ -17,11 +17,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MProduct;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
-import org.compiere.model.X_M_Product;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
@@ -95,6 +92,26 @@ public class MLBRNCM extends X_LBR_NCM
 		//
 		return tcpg;
 	}	//	getLBR_Tax_ID
+	
+	/**
+	 * 		Get NCM
+	 * @author Ricardo Santana (Kenos, www.kenos.com.br)
+	 * @param ctx
+	 * @param LBR_NCM_ID
+	 * @param dateTrx
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBRNCM get (Properties ctx, String ncmName, String trxName)
+	{
+		String sql = "AD_Client_ID IN (0, ?)"
+				+ " AND REPLACE(Value, '.', '')=? ";
+		//
+		return new Query (ctx, Table_Name, sql, trxName)
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), TextUtil.toNumeric(ncmName)})
+			.setOrderBy ("ORDER BY AD_Client_ID DESC")
+			.first();
+	}	//	get
 	
 	/**
 	 * 	Usar a aba de imposto do NCM

@@ -19,6 +19,7 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
@@ -32,7 +33,7 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130729L;
+	private static final long serialVersionUID = 20151027L;
 
     /** Standard Constructor */
     public X_LBR_IBPTax (Properties ctx, int LBR_IBPTax_ID, String trxName)
@@ -40,8 +41,13 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
       super (ctx, LBR_IBPTax_ID, trxName);
       /** if (LBR_IBPTax_ID == 0)
         {
+			setC_Region_ID (0);
 			setLBR_IBPTax_ID (0);
 			setLBR_NCM_ID (0);
+			setLBR_TaxRateCity (Env.ZERO);
+// 0
+			setLBR_TaxRateRegion (Env.ZERO);
+// 0
 			setVersion (null);
 			setlbr_TaxRate (Env.ZERO);
 // 0
@@ -77,6 +83,34 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	public I_C_Region getC_Region() throws RuntimeException
+    {
+		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+			.getPO(getC_Region_ID(), get_TrxName());	}
+
+	/** Set Region.
+		@param C_Region_ID 
+		Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID)
+	{
+		if (C_Region_ID < 1) 
+			set_Value (COLUMNNAME_C_Region_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Region_ID, Integer.valueOf(C_Region_ID));
+	}
+
+	/** Get Region.
+		@return Identifies a geographical Region
+	  */
+	public int getC_Region_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Region_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Description.
 		@param Description 
@@ -143,6 +177,105 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Source.
+		@param LBR_Source Source	  */
+	public void setLBR_Source (String LBR_Source)
+	{
+		set_Value (COLUMNNAME_LBR_Source, LBR_Source);
+	}
+
+	/** Get Source.
+		@return Source	  */
+	public String getLBR_Source () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_Source);
+	}
+
+	/** Set Tax Rate City.
+		@param LBR_TaxRateCity Tax Rate City	  */
+	public void setLBR_TaxRateCity (BigDecimal LBR_TaxRateCity)
+	{
+		set_Value (COLUMNNAME_LBR_TaxRateCity, LBR_TaxRateCity);
+	}
+
+	/** Get Tax Rate City.
+		@return Tax Rate City	  */
+	public BigDecimal getLBR_TaxRateCity () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_TaxRateCity);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Rate Region.
+		@param LBR_TaxRateRegion Tax Rate Region	  */
+	public void setLBR_TaxRateRegion (BigDecimal LBR_TaxRateRegion)
+	{
+		set_Value (COLUMNNAME_LBR_TaxRateRegion, LBR_TaxRateRegion);
+	}
+
+	/** Get Tax Rate Region.
+		@return Tax Rate Region	  */
+	public BigDecimal getLBR_TaxRateRegion () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_TaxRateRegion);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Valid from.
+		@param ValidFrom 
+		Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom)
+	{
+		set_Value (COLUMNNAME_ValidFrom, ValidFrom);
+	}
+
+	/** Get Valid from.
+		@return Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
+	}
+
+	/** Set Valid to.
+		@param ValidTo 
+		Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo)
+	{
+		set_Value (COLUMNNAME_ValidTo, ValidTo);
+	}
+
+	/** Get Valid to.
+		@return Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
+	}
+
+	/** Set Search Key.
+		@param Value 
+		Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value)
+	{
+		set_ValueNoCheck (COLUMNNAME_Value, Value);
+	}
+
+	/** Get Search Key.
+		@return Search key for the record in the format required - must be unique
+	  */
+	public String getValue () 
+	{
+		return (String)get_Value(COLUMNNAME_Value);
+	}
+
 	/** Set Version.
 		@param Version 
 		Version of the table definition
@@ -180,7 +313,7 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
 		return bd;
 	}
 
-	/** Set Tax Rate(Imported).
+	/** Set Tax Rate Imported.
 		@param lbr_TaxRateImp 
 		Indicates the Imported Tax Rate 
 	  */
@@ -189,7 +322,7 @@ public class X_LBR_IBPTax extends PO implements I_LBR_IBPTax, I_Persistent
 		set_Value (COLUMNNAME_lbr_TaxRateImp, lbr_TaxRateImp);
 	}
 
-	/** Get Tax Rate(Imported).
+	/** Get Tax Rate Imported.
 		@return Indicates the Imported Tax Rate 
 	  */
 	public BigDecimal getlbr_TaxRateImp () 
