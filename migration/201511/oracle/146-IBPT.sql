@@ -486,6 +486,34 @@ UPDATE AD_Message_Trl SET MsgText='Trib Aprox R$ {0,number,#,##0.00} ({1,number,
 5 - Chave',IsTranslated='Y' WHERE AD_Message_ID=1120035
 ;
 
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Process SET Description='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT', Help='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual.',Updated=TO_DATE('2015-10-27 18:55:30','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120126
+;
+
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Process_Trl SET IsTranslated='N' WHERE AD_Process_ID=1120126
+;
+
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Process_Trl SET Description='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT',Help='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual.',Name='Importar tabela de Impostos do IBPT',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Process_ID=1120126
+;
+
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Menu SET Description='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT', IsActive='Y', Name='Importar tabela de Impostos do IBPT',Updated=TO_DATE('2015-10-27 18:55:30','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Menu_ID=1120195
+;
+
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Menu_Trl SET IsTranslated='N' WHERE AD_Menu_ID=1120195
+;
+
+-- 27/10/2015 18h55min30s BRST
+UPDATE AD_Menu_Trl SET Description='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT',Name='Importar tabela de Impostos do IBPT',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Menu_ID=1120195
+;
+
+-- 27/10/2015 18h55min35s BRST
+UPDATE AD_Process_Trl SET Description='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT',Help='Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual.',Updated=TO_DATE('2015-10-27 18:55:35','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120126 AND AD_Language='pt_BR'
+;
+
 -- 7/10/2015 14h4min23s BRST
 SELECT Register_Migration_Script ('146-IBPT.sql') FROM DUAL
 ;
