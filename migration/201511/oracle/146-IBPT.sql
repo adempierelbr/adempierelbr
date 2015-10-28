@@ -465,12 +465,7 @@ INSERT INTO AD_Message_Trl (AD_Language,AD_Message_ID, MsgText,MsgTip, IsTransla
 ;
 
 -- 27/10/2015 14h4min23s BRST
-UPDATE AD_Message SET MsgText='Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}',MsgTip='0 - Imposto Federal
-1 - % Federal
-2 - Imposto Estadual
-3 - % Estadual
-4 - Fonte
-5 - Chave',Updated=TO_DATE('2015-10-27 14:04:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Message_ID=1120035
+UPDATE AD_Message SET MsgText='Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}',MsgTip=NULL,Updated=TO_DATE('2015-10-27 14:04:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Message_ID=1120035
 ;
 
 -- 27/10/2015 14h4min23s BRST
@@ -478,12 +473,7 @@ UPDATE AD_Message_Trl SET IsTranslated='N' WHERE AD_Message_ID=1120035
 ;
 
 -- 27/10/2015 14h4min23s BRST
-UPDATE AD_Message_Trl SET MsgText='Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}',MsgTip='0 - Imposto Federal
-1 - % Federal
-2 - Imposto Estadual
-3 - % Estadual
-4 - Fonte
-5 - Chave',IsTranslated='Y' WHERE AD_Message_ID=1120035
+UPDATE AD_Message_Trl SET MsgText='Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}',MsgTip=NULL,IsTranslated='Y' WHERE AD_Message_ID=1120035
 ;
 
 -- 27/10/2015 18h55min30s BRST
