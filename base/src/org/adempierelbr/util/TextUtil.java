@@ -35,11 +35,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.jboss.util.Objects;
+import org.jfree.util.Log;
 
 /**
  * TextUtil
@@ -1050,8 +1052,14 @@ public abstract class TextUtil
      */
     public static String join(CharSequence delimiter,
             Iterable<? extends CharSequence> elements) {
-        Objects.requireNonNull(delimiter);
-        Objects.requireNonNull(elements);
+    	if (delimiter == null){
+    		log.warning("The delimiter must not be null");
+    		return "";
+    	}
+    	if (elements == null){
+    		log.warning("The elements must not be null");
+    		return "";
+    	}
         StringJoiner joiner = new StringJoiner(delimiter);
         for (CharSequence cs: elements) {
             joiner.add(cs);
@@ -1182,10 +1190,15 @@ class StringJoiner {
     public StringJoiner(CharSequence delimiter,
                         CharSequence prefix,
                         CharSequence suffix) {
-        Objects.requireNonNull(prefix, "The prefix must not be null");
-        Objects.requireNonNull(delimiter, "The delimiter must not be null");
-        Objects.requireNonNull(suffix, "The suffix must not be null");
-        // make defensive copies of arguments
+    	
+		if (prefix == null)
+			throw new AdempiereException ("The prefix must not be null");    		
+		if (delimiter == null)
+			throw new AdempiereException ("The delimiter must not be null");        			
+		if (suffix == null)
+			throw new AdempiereException ("The suffix must not be null"); 
+    	
+    	 // make defensive copies of arguments
         this.prefix = prefix.toString();
         this.delimiter = delimiter.toString();
         this.suffix = suffix.toString();
@@ -1207,9 +1220,19 @@ class StringJoiner {
      *         {@code null}
      */
     public StringJoiner setEmptyValue(CharSequence emptyValue) {
-        this.emptyValue = Objects.requireNonNull(emptyValue,
-            "The empty value must not be null").toString();
-        return this;
+    	try
+    	{
+	    	if (emptyValue == null)
+	    		throw new AdempiereException ("The empty value must not be null");
+    		
+	    	this.emptyValue = emptyValue.toString();
+        	return this;
+    	}
+    	catch (AdempiereException e)
+    	{
+    		Log.warn(e.toString());
+    		return null;
+    	}		
     }
 
     /**
@@ -1269,9 +1292,8 @@ class StringJoiner {
      * @throws NullPointerException if the other {@code StringJoiner} is null
      * @return This {@code StringJoiner}
      */
-    public StringJoiner merge(StringJoiner other) {
-        Objects.requireNonNull(other);
-        if (other.value != null) {
+    public StringJoiner merge(StringJoiner other) {    	
+        if (other != null && other.value != null) {
             final int length = other.value.length();
             // lock the length so that we can seize the data to be appended
             // before initiate copying to avoid interference, especially when
