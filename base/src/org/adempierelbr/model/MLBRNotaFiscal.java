@@ -1303,7 +1303,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		for (MLBRNotaFiscalLine line : getLines())
 		{
 			// somente linhas que tenham NCM
-			if (line.getLBR_NCM_ID() <= 0)
+			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT())
 				continue;
 			
 			// origem pra definir se é importado ou nacional
