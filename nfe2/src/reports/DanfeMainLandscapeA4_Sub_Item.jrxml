@@ -26,7 +26,7 @@
 		<fieldDescription><![CDATA[prod/NCM]]></fieldDescription>
 	</field>
 	<field name="cst" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS50/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST]]></fieldDescription>
+		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS50/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST |imposto/ICMS/ICMSSN101/CSOSN | imposto/ICMS/ICMSSN102/CSOSN | imposto/ICMS/ICMSSN201/CSOSN | imposto/ICMS/ICMSSN202/CSOSN | imposto/ICMS/ICMSSN500/CSOSN | imposto/ICMS/ICMSSN900/CSOSN]]></fieldDescription>
 	</field>
 	<field name="cfop" class="java.lang.String">
 		<fieldDescription><![CDATA[prod/CFOP]]></fieldDescription>

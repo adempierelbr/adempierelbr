@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_CFOP
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20151028L;
 
     /** Standard Constructor */
     public X_LBR_CFOP (Properties ctx, int LBR_CFOP_ID, String trxName)
@@ -39,6 +39,8 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
       /** if (LBR_CFOP_ID == 0)
         {
 			setLBR_CFOP_ID (0);
+			setLBR_IsShowIBPT (false);
+// N
 			setValue (null);
         } */
     }
@@ -109,6 +111,27 @@ public class X_LBR_CFOP extends PO implements I_LBR_CFOP, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Show IBPT.
+		@param LBR_IsShowIBPT Show IBPT	  */
+	public void setLBR_IsShowIBPT (boolean LBR_IsShowIBPT)
+	{
+		set_Value (COLUMNNAME_LBR_IsShowIBPT, Boolean.valueOf(LBR_IsShowIBPT));
+	}
+
+	/** Get Show IBPT.
+		@return Show IBPT	  */
+	public boolean isLBR_IsShowIBPT () 
+	{
+		Object oo = get_Value(COLUMNNAME_LBR_IsShowIBPT);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Search Key.

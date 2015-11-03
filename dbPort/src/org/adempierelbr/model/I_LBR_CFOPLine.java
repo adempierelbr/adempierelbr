@@ -122,6 +122,19 @@ public interface I_LBR_CFOPLine
 
 	public org.adempierelbr.model.I_LBR_BPartnerCategory getLBR_BPartnerCategory() throws RuntimeException;
 
+    /** Column name LBR_CFOPLine_ID */
+    public static final String COLUMNNAME_LBR_CFOPLine_ID = "LBR_CFOPLine_ID";
+
+	/** Set CFOP Line.
+	  * Primary key table LBR_CFOPLine
+	  */
+	public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID);
+
+	/** Get CFOP Line.
+	  * Primary key table LBR_CFOPLine
+	  */
+	public int getLBR_CFOPLine_ID();
+
     /** Column name LBR_CFOP_ID */
     public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";
 
@@ -136,58 +149,6 @@ public interface I_LBR_CFOPLine
 	public int getLBR_CFOP_ID();
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
-
-    /** Column name LBR_CFOPLine_ID */
-    public static final String COLUMNNAME_LBR_CFOPLine_ID = "LBR_CFOPLine_ID";
-
-	/** Set CFOP Line.
-	  * Primary key table LBR_CFOPLine
-	  */
-	public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID);
-
-	/** Get CFOP Line.
-	  * Primary key table LBR_CFOPLine
-	  */
-	public int getLBR_CFOPLine_ID();
-
-    /** Column name lbr_DestionationType */
-    public static final String COLUMNNAME_lbr_DestionationType = "lbr_DestionationType";
-
-	/** Set Destination Type.
-	  * Defines the Destination Type
-	  */
-	public void setlbr_DestionationType (String lbr_DestionationType);
-
-	/** Get Destination Type.
-	  * Defines the Destination Type
-	  */
-	public String getlbr_DestionationType();
-
-    /** Column name lbr_IsManufactured */
-    public static final String COLUMNNAME_lbr_IsManufactured = "lbr_IsManufactured";
-
-	/** Set Is Manufactured.
-	  * Defines if the Product is Manufactured
-	  */
-	public void setlbr_IsManufactured (String lbr_IsManufactured);
-
-	/** Get Is Manufactured.
-	  * Defines if the Product is Manufactured
-	  */
-	public String getlbr_IsManufactured();
-
-    /** Column name lbr_IsSubTributaria */
-    public static final String COLUMNNAME_lbr_IsSubTributaria = "lbr_IsSubTributaria";
-
-	/** Set Is Substituicao Tributaria.
-	  * Defines the Is Substituicao Tributaria Status
-	  */
-	public void setlbr_IsSubTributaria (String lbr_IsSubTributaria);
-
-	/** Get Is Substituicao Tributaria.
-	  * Defines the Is Substituicao Tributaria Status
-	  */
-	public String getlbr_IsSubTributaria();
 
     /** Column name LBR_LegalMessage_ID */
     public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
@@ -232,6 +193,61 @@ public interface I_LBR_CFOPLine
 	  */
 	public int getLBR_Tax_ID();
 
+    /** Column name Updated */
+    public static final String COLUMNNAME_Updated = "Updated";
+
+	/** Get Updated.
+	  * Date this record was updated
+	  */
+	public Timestamp getUpdated();
+
+    /** Column name UpdatedBy */
+    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
+
+	/** Get Updated By.
+	  * User who updated this records
+	  */
+	public int getUpdatedBy();
+
+    /** Column name lbr_DestionationType */
+    public static final String COLUMNNAME_lbr_DestionationType = "lbr_DestionationType";
+
+	/** Set Destination Type.
+	  * Defines the Destination Type
+	  */
+	public void setlbr_DestionationType (String lbr_DestionationType);
+
+	/** Get Destination Type.
+	  * Defines the Destination Type
+	  */
+	public String getlbr_DestionationType();
+
+    /** Column name lbr_IsManufactured */
+    public static final String COLUMNNAME_lbr_IsManufactured = "lbr_IsManufactured";
+
+	/** Set Is Manufactured.
+	  * Defines if the Product is Manufactured
+	  */
+	public void setlbr_IsManufactured (String lbr_IsManufactured);
+
+	/** Get Is Manufactured.
+	  * Defines if the Product is Manufactured
+	  */
+	public String getlbr_IsManufactured();
+
+    /** Column name lbr_IsSubTributaria */
+    public static final String COLUMNNAME_lbr_IsSubTributaria = "lbr_IsSubTributaria";
+
+	/** Set Is Substituicao Tributaria.
+	  * Defines the Is Substituicao Tributaria Status
+	  */
+	public void setlbr_IsSubTributaria (String lbr_IsSubTributaria);
+
+	/** Get Is Substituicao Tributaria.
+	  * Defines the Is Substituicao Tributaria Status
+	  */
+	public String getlbr_IsSubTributaria();
+
     /** Column name lbr_TaxStatus */
     public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
 
@@ -257,20 +273,4 @@ public interface I_LBR_CFOPLine
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
-
-    /** Column name Updated */
-    public static final String COLUMNNAME_Updated = "Updated";
-
-	/** Get Updated.
-	  * Date this record was updated
-	  */
-	public Timestamp getUpdated();
-
-    /** Column name UpdatedBy */
-    public static final String COLUMNNAME_UpdatedBy = "UpdatedBy";
-
-	/** Get Updated By.
-	  * User who updated this records
-	  */
-	public int getUpdatedBy();
 }

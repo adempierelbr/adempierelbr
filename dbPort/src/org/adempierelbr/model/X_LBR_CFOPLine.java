@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_CFOPLine
- *  @author OSEB (generated) 
+ *  @author ADempiereLBR (generated) 
  *  @version Release 3.6.0LTS - $Id$ */
 public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent 
 {
@@ -30,7 +30,7 @@ public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20100930L;
+	private static final long serialVersionUID = 20151028L;
 
     /** Standard Constructor */
     public X_LBR_CFOPLine (Properties ctx, int LBR_CFOPLine_ID, String trxName)
@@ -39,8 +39,8 @@ public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent
       /** if (LBR_CFOPLine_ID == 0)
         {
 			setC_DocType_ID (0);
-			setLBR_CFOP_ID (0);
 			setLBR_CFOPLine_ID (0);
+			setLBR_CFOP_ID (0);
 			setlbr_DestionationType (null);
 			setlbr_IsManufactured (null);
 // 'N'
@@ -133,6 +133,29 @@ public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set CFOP Line.
+		@param LBR_CFOPLine_ID 
+		Primary key table LBR_CFOPLine
+	  */
+	public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID)
+	{
+		if (LBR_CFOPLine_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_LBR_CFOPLine_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_LBR_CFOPLine_ID, Integer.valueOf(LBR_CFOPLine_ID));
+	}
+
+	/** Get CFOP Line.
+		@return Primary key table LBR_CFOPLine
+	  */
+	public int getLBR_CFOPLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CFOPLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_CFOP)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CFOP.Table_Name)
@@ -161,24 +184,80 @@ public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set CFOP Line.
-		@param LBR_CFOPLine_ID 
-		Primary key table LBR_CFOPLine
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
+			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
+
+	/** Set Legal Message.
+		@param LBR_LegalMessage_ID 
+		Defines the Legal Message
 	  */
-	public void setLBR_CFOPLine_ID (int LBR_CFOPLine_ID)
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
 	{
-		if (LBR_CFOPLine_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_CFOPLine_ID, null);
+		if (LBR_LegalMessage_ID < 1) 
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_CFOPLine_ID, Integer.valueOf(LBR_CFOPLine_ID));
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
 	}
 
-	/** Get CFOP Line.
-		@return Primary key table LBR_CFOPLine
+	/** Get Legal Message.
+		@return Defines the Legal Message
 	  */
-	public int getLBR_CFOPLine_ID () 
+	public int getLBR_LegalMessage_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CFOPLine_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_ProductCategory getLBR_ProductCategory() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_ProductCategory)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_ProductCategory.Table_Name)
+			.getPO(getLBR_ProductCategory_ID(), get_TrxName());	}
+
+	/** Set Product Category.
+		@param LBR_ProductCategory_ID 
+		Primary key table LBR_ProductCategory
+	  */
+	public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID)
+	{
+		if (LBR_ProductCategory_ID < 1) 
+			set_Value (COLUMNNAME_LBR_ProductCategory_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_ProductCategory_ID, Integer.valueOf(LBR_ProductCategory_ID));
+	}
+
+	/** Get Product Category.
+		@return Primary key table LBR_ProductCategory
+	  */
+	public int getLBR_ProductCategory_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_ProductCategory_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Brazilian Tax.
+		@param LBR_Tax_ID 
+		Primary key table LBR_Tax
+	  */
+	public void setLBR_Tax_ID (int LBR_Tax_ID)
+	{
+		if (LBR_Tax_ID < 1) 
+			set_Value (COLUMNNAME_LBR_Tax_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_Tax_ID, Integer.valueOf(LBR_Tax_ID));
+	}
+
+	/** Get Brazilian Tax.
+		@return Primary key table LBR_Tax
+	  */
+	public int getLBR_Tax_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_Tax_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -262,85 +341,6 @@ public class X_LBR_CFOPLine extends PO implements I_LBR_CFOPLine, I_Persistent
 	public String getlbr_IsSubTributaria () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_IsSubTributaria);
-	}
-
-	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
-			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
-
-	/** Set Legal Message.
-		@param LBR_LegalMessage_ID 
-		Defines the Legal Message
-	  */
-	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
-	{
-		if (LBR_LegalMessage_ID < 1) 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
-	}
-
-	/** Get Legal Message.
-		@return Defines the Legal Message
-	  */
-	public int getLBR_LegalMessage_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempierelbr.model.I_LBR_ProductCategory getLBR_ProductCategory() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_ProductCategory)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_ProductCategory.Table_Name)
-			.getPO(getLBR_ProductCategory_ID(), get_TrxName());	}
-
-	/** Set Product Category.
-		@param LBR_ProductCategory_ID 
-		Primary key table LBR_ProductCategory
-	  */
-	public void setLBR_ProductCategory_ID (int LBR_ProductCategory_ID)
-	{
-		if (LBR_ProductCategory_ID < 1) 
-			set_Value (COLUMNNAME_LBR_ProductCategory_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_ProductCategory_ID, Integer.valueOf(LBR_ProductCategory_ID));
-	}
-
-	/** Get Product Category.
-		@return Primary key table LBR_ProductCategory
-	  */
-	public int getLBR_ProductCategory_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_ProductCategory_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Brazilian Tax.
-		@param LBR_Tax_ID 
-		Primary key table LBR_Tax
-	  */
-	public void setLBR_Tax_ID (int LBR_Tax_ID)
-	{
-		if (LBR_Tax_ID < 1) 
-			set_Value (COLUMNNAME_LBR_Tax_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_Tax_ID, Integer.valueOf(LBR_Tax_ID));
-	}
-
-	/** Get Brazilian Tax.
-		@return Primary key table LBR_Tax
-	  */
-	public int getLBR_Tax_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_Tax_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** lbr_TaxStatus AD_Reference_ID=1000029 */

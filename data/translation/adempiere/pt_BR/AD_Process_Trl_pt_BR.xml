@@ -879,8 +879,8 @@ Então, a posição de todas as Quantidade de Respostas são adicionados para a 
     <value column="Help" original="Create purchase order(s) for the resonse(s) and lines marked as Selected Winner using the selected Purchase Quantity (in RfQ Line Quantity) . If a Response is marked as Selected Winner, all lines are created (and Selected Winner of other responses ignored).  If there is no response marked as Selected Winner, the lines are used.">Cria Pedido(s) de Compra para as respostas e linhas marcadas como Vencedor Selecionado usando a Quantidade de Compras (na Linha Quantidade da SdC). Se uma resposta for marcada como Vencedor Selecionado, todas as linhas serão criadas (e o Vencedor Selecionado de outras respostas será ignorado)  Se não houver resposta marcada como Vencedor Selecionado, as linhas serão utilizadas.</value>
   </row>
   <row id="267" trl="Y">
-    <value column="Name" original="Create Sales Order">Criar Ordem de Venda</value>
-    <value column="Description" original="Create Sales Order">Criar Ordem de Venda</value>
+    <value column="Name" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Description" original="Create Sales Order">Criar Pedido de Venda</value>
     <value column="Help" original="A Sales Order is created for the entered Business Partner.  A sales order line is created for each RfQ line quantity, where &quot;Offer Quantity&quot; is selected.  If on the RfQ Line Quantity, an offer amount is entered (not 0), that price is used. 
 If a magin is entered on RfQ Line Quantity, it overwrites the general margin.  The margin is the percentage added to the Best Response Amount.">Um Pedido de Vendas é criado para o Parceiro de Negócios entrado. Uma linha de pedido de vendas é criado para cada linha de quantidade SdC, onde "Quantidade de Oferta" é selecionado. Se, na Linha de Quantidade SdC, um valor da oferta foi entrado (não 0), esse preço é usado. 
 Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem geral. A margem é o percentual adicionado ao Valor de Melhor Resposta.</value>
@@ -1021,7 +1021,7 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
     <value column="Help" original="The report provides Material Shipment Header and Line with locator information.  You can use the report to create a Consolidated Picking List.">O relatório provê Linha e Cabeçalho de Envio de Materiais com informação do Localizador.  Você pode usar o relatório para criar uma Lista de Separação Consolidada.</value>
   </row>
   <row id="295" trl="Y">
-    <value column="Name" original="Role Access Update">Atualização do Acesso de Função (Papel)</value>
+    <value column="Name" original="Role Access Update">Atualização do Acesso do Papel (Função)</value>
     <value column="Description" original="Update the access rights of a role or roles of a client">Atualizar os direitos de acesso de um papel ou papéis de um cliente</value>
     <value column="Help" original="Update the access rights of a role or all roles of a client to windows, forms, processes and workflows. If run for System, all roles of all clients are updated. Note that a role is only updated if it is not marked as manual.">Atualizar os direitos de acesso de um papel ou todos os papéis de um cliente a janelas, formulários, processos e fluxos de trabalho. Se for executado para o Sistema, todos os papéis de todos as empresas serão atualizadas. Note que um papel somente será atualizado se ele não for marcado como manual.</value>
   </row>
@@ -1348,8 +1348,8 @@ Note que o suporte é restrito a configuração e teste, mas não para recupera�
     <value column="Help" original="Import a package">Importar um pacote</value>
   </row>
   <row id="50010" trl="Y">
-    <value column="Name" original="Copy Role">CopyRole</value>
-    <value column="Description" original="Copy Role">CopyRole</value>
+    <value column="Name" original="Copy Role">Copiar Papel (Função)</value>
+    <value column="Description" original="Copy Role">Copiar Papel (Função)</value>
     <value column="Help" original="Copy role access records from one role to another.  The existing access records for the destination role will be deleted.">Copiar registro de papel de acesso de um papel para outro. Os registros de acesso existentes do papel de destino serão eliminados.</value>
   </row>
   <row id="50011" trl="Y">

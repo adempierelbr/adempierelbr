@@ -46,7 +46,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Msg;
 
-import br.inf.portalfiscal.nfe.v8f.NFeDocument;
+import br.inf.portalfiscal.nfe.v8g.NFeDocument;
 
 /**
  * 		Procedimentos comuns, necessários para o LBR

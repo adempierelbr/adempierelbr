@@ -2,6 +2,23 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Process">
+  <row id="267" trl="Y">
+    <value column="Name" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Description" original="Create Sales Order">Criar Pedido de Venda</value>
+    <value column="Help" original="A Sales Order is created for the entered Business Partner.  A sales order line is created for each RfQ line quantity, where &quot;Offer Quantity&quot; is selected.  If on the RfQ Line Quantity, an offer amount is entered (not 0), that price is used. 
+If a magin is entered on RfQ Line Quantity, it overwrites the general margin.  The margin is the percentage added to the Best Response Amount.">Um Pedido de Vendas é criado para o Parceiro de Negócios entrado. Uma linha de pedido de vendas é criado para cada linha de quantidade SdC, onde "Quantidade de Oferta" é selecionado. Se, na Linha de Quantidade SdC, um valor da oferta foi entrado (não 0), esse preço é usado. 
+Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem geral. A margem é o percentual adicionado ao Valor de Melhor Resposta.</value>
+  </row>
+  <row id="295" trl="Y">
+    <value column="Name" original="Role Access Update">Atualização do Acesso do Papel (Função)</value>
+    <value column="Description" original="Update the access rights of a role or roles of a client">Atualizar os direitos de acesso de um papel ou papéis de um cliente</value>
+    <value column="Help" original="Update the access rights of a role or all roles of a client to windows, forms, processes and workflows. If run for System, all roles of all clients are updated. Note that a role is only updated if it is not marked as manual.">Atualizar os direitos de acesso de um papel ou todos os papéis de um cliente a janelas, formulários, processos e fluxos de trabalho. Se for executado para o Sistema, todos os papéis de todos as empresas serão atualizadas. Note que um papel somente será atualizado se ele não for marcado como manual.</value>
+  </row>
+  <row id="50010" trl="Y">
+    <value column="Name" original="Copy Role">Copiar Papel (Função)</value>
+    <value column="Description" original="Copy Role">Copiar Papel (Função)</value>
+    <value column="Help" original="Copy role access records from one role to another.  The existing access records for the destination role will be deleted.">Copiar registro de papel de acesso de um papel para outro. Os registros de acesso existentes do papel de destino serão eliminados.</value>
+  </row>
   <row id="53199" trl="Y">
     <value column="Name" original="Reset Allocation Direct">Apagar Alocação</value>
     <value column="Description" original="Reset (delete) allocation of invoices to payments">Resetar (apagar) a alocação de faturas para pagamento</value>

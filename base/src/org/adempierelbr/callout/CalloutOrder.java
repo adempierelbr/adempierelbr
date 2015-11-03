@@ -110,7 +110,7 @@ public class CalloutOrder extends CalloutEngine
 		if (paymentRule != null)
 			mTab.setValue(I_W_C_Order.COLUMNNAME_lbr_PaymentRule, paymentRule);
 		
-		if (C_BankAccount_ID != null)
+		if (C_BankAccount_ID != null && C_BankAccount_ID > 0)
 			mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
 		
 		mTab.setValue(I_W_C_Order.COLUMNNAME_PaymentRule, MOrder.PAYMENTRULE_OnCredit);

@@ -14,7 +14,6 @@ package org.adempierelbr.model;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -81,15 +80,16 @@ import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
-import br.inf.portalfiscal.nfe.v8f.NFeDocument;
-import br.inf.portalfiscal.nfe.v8f.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.v8f.TNFe.InfNFe.Ide.IdDest.Enum;
-import br.inf.portalfiscal.nfe.v8f.TNfeProc;
-import br.inf.portalfiscal.nfe.v8f.TProtNFe;
-import br.inf.portalfiscal.nfe.v8f.TProtNFe.InfProt;
-import br.inf.portalfiscal.nfe.v8f.TRetInutNFe.InfInut;
+import br.inf.portalfiscal.nfe.v8g.NFeDocument;
+import br.inf.portalfiscal.nfe.v8g.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.v8g.TNfeProc;
+import br.inf.portalfiscal.nfe.v8g.TProtNFe;
+import br.inf.portalfiscal.nfe.v8g.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -1148,7 +1148,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setDescription ();
 		
 		// IBPTax - LBR-81
-		setAproxTaxIBPT();
+		// Somente para consumidor final e for NF-e de Saída
+		if (LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType()) && isSOTrx())
+			setAproxTaxIBPT();
 		
 		//	Descrição para Nota de Serviço
 		setlbr_ServiceTaxes();
@@ -1282,8 +1284,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	}	//	GenerateXMLAutomatic
 	
-	
-	
 	/**
 	 * Colocar no campo de descrição os valor aproximados 
 	 * de impostos de acordo com o manual do IBPT
@@ -1292,51 +1292,135 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public void setAproxTaxIBPT()
 	{
+		List<String> sources = new ArrayList<String>();
+		List<String> keys = new ArrayList<String>();
 		
-		// somente para consumidor final, se no sisconfig tiver habilitado e for NF-e 
-		if(LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType()) && MSysConfig.getBooleanValue("LBR_FILL_IBPTax_DESCRIPTION", false, getAD_Client_ID()) && isSOTrx())
-		{		
-
-			BigDecimal taxAmt = Env.ZERO;
-		
-			// para cada linha, somar calcular o valor aproximado dos impostos
-			for(MLBRNotaFiscalLine line : getLines())
-			{
-				// somente linhas que tenham NCM
-				if(line.getLBR_NCM_ID() > 0)
-				{
-					// origem pra definir se é importado ou nacional
-					String productSource = line.getlbr_ProductSource() != null ? line.getlbr_ProductSource() : MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_0_Domestic;
+		BigDecimal taxAmtFed 	= Env.ZERO;
+		BigDecimal taxAmtReg = Env.ZERO;
+		BigDecimal taxAmtCity 	= Env.ZERO;
 	
-					// % rate
-					BigDecimal taxRate = MLBRIBPTax.getTaxRate(getCtx(), 
-							(productSource.equals(MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_1_Imported) || 
-									productSource.equals(MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_2_Imported_AcquiredFromADomesticDistributor)), line.getLBR_NCM_ID(), get_TrxName());
-					
-					// 
-					if(taxRate.signum() == 1)
-						taxRate = taxRate.divide(Env.ONEHUNDRED);
-					else
-						taxRate = Env.ZERO;
-					
-					// total do imposto
-					taxAmt = taxAmt.add(line.getLineTotalAmt().multiply(taxRate));
-				}
+		// para cada linha, somar calcular o valor aproximado dos impostos
+		for (MLBRNotaFiscalLine line : getLines())
+		{
+			// somente linhas que tenham NCM
+			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT())
+				continue;
+			
+			// origem pra definir se é importado ou nacional
+			String productSource = line.getlbr_ProductSource() != null ? 
+					line.getlbr_ProductSource() : MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_0_Domestic;
+
+			//	IBPT		
+			MLBRIBPTax ibpt = MLBRIBPTax.get (getCtx(), getOrg_Location().getC_Region_ID(), line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
+			if (ibpt == null)
+			{
+				log.warning("No IBPT Tax found for NCM: " + line.getlbr_NCMName());
+				continue;
+			}
+
+			//	Origem e Versão das informações
+			String source = ibpt.getLBR_Source();
+			String key = ibpt.getValue();
+			
+			if (source != null && !sources.contains(source.trim()))
+				sources.add(source.trim());
+
+			if (key != null && !keys.contains(key.trim()))
+				keys.add(key.trim());
+			
+			//		Importado?
+			//	1 - Importado
+			//	2 - Importado, adquirido no mercado nacional
+			//	6 - Importado, sem similar nacional
+			//	7 - Importado, sem similar nacional, adquirido no mercado nacional
+			boolean imported = "1267".indexOf(productSource) != -1;
+
+			// % rate
+			BigDecimal taxRate 		= ibpt.getlbr_TaxRate(imported);
+			BigDecimal taxRateReg 	= ibpt.getLBR_TaxRateRegion();
+			BigDecimal taxRateCity 	= ibpt.getLBR_TaxRateCity();
+
+			//	check for inconsistenses
+			if (taxRate == null || taxRate.signum() != 1)
+				taxRate 	= Env.ZERO;
+			
+			if (taxRateReg == null || taxRateReg.signum() != 1)
+				taxRateReg 	= Env.ZERO;
+			
+			if (taxRateCity == null || taxRateCity.signum() != 1)
+				taxRateCity = Env.ZERO;
+
+			// total do imposto
+			taxAmtFed 	= taxAmtFed.add (line.getLineTotalAmt().multiply (taxRate.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
+			taxAmtReg 	= taxAmtReg.add (line.getLineTotalAmt().multiply (taxRateReg.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
+			taxAmtCity 	= taxAmtCity.add (line.getLineTotalAmt().multiply (taxRateCity.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
+		}
+		
+		// se teve total de impostos, definir no fim da descrição
+		if (taxAmtFed.signum() == 1 || taxAmtReg.signum() == 1)
+		{
+			// aliquota geral = valor do imposto dividido pelo valor total da NF - fonte: Manual IBPT
+			BigDecimal taxRateFedTotal = taxAmtFed.divide(getGrandTotal(), 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal taxRateRegTotal = taxAmtReg.divide(getGrandTotal(), 17, BigDecimal.ROUND_HALF_UP);
+			
+			//	Check inconsistences
+			if (sources.size() == 0)
+				sources.add("IBPT");
+			if (keys.size() == 0)
+				keys.add("0");
+			
+			//	Prepare output message
+			String message = Msg.getMsg (Env.getAD_Language(getCtx()), "LBR_NFIBPT");
+			
+			if (message == null)
+				message = "Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}";
+			
+			MessageFormat mf = null;
+			try
+			{
+				mf = new MessageFormat (message);
+			}
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error parsing IBPT message. " + e.getMessage());
+				return;
 			}
 			
-			// se teve total de impostos, definir no fim da descrição
-			if(taxAmt.signum() == 1)
-			{
-				// aliquota geral = valor do imposto dividido pelo valor total da NF - fonte: Manual IBPT
-				BigDecimal taxRateTotal = taxAmt.divide(getGrandTotal(), new MathContext(2, RoundingMode.HALF_UP));
-				String description = "Valor Aprox. de Impostos R$ " + taxAmt.setScale(2, RoundingMode.HALF_UP) + " (" + taxRateTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP) + " %) Fonte: IBPT";
-				
-				// definir na NF
-				setDescription(getDescription().concat("\n" + description)); 
-			}
+			//	Argumentos
+			Object[] arguments = new Object[6];
+			
+			//	Amount Federal
+			arguments[0] = taxAmtFed.doubleValue();
+			
+			//	% Federal (Optional)
+			arguments[1] = taxRateFedTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
+			
+			//	Amount Region
+			arguments[2] = taxAmtReg.doubleValue();
+			
+			//	% Region (Optional)
+			arguments[3] = taxRateRegTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
+			
+			//	Source
+			arguments[4] = TextUtil.join (",", sources);
+			
+			//	Key
+			arguments[5] = TextUtil.join (",", keys);
+
+			//	preffix
+			String description = getDescription();
+			if (description != null && !description.trim().isEmpty() && !description.endsWith("\n"))
+				description += ". ";
+			else
+				description = "";
+			
+			//	monta a string
+			description += mf.format (arguments);
+
+			// definir na NF
+			setDescription(description); 
 		}
-	}
-	
+	}	//	setAproxTaxIBPT
 	
 	/**
 	 * 		Bill Note
@@ -1656,6 +1740,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		MBPartnerLocation bpLocation = null;
 
+		int M_Shipper_ID = 0;
+		
 		/**
 		 * 	Pega os dados da Expedição / Recebimento
 		 */
@@ -1668,16 +1754,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
 			setNoPackages(io.getNoPackages());
+			setDeliveryViaRule(io.getDeliveryViaRule());
 
+			M_Shipper_ID = io.getM_Shipper_ID();
+			
 			if (MSysConfig.getValue("LBR_NFESPECIE",  getAD_Client_ID()) != null )
 				setlbr_PackingType(MSysConfig.getValue("LBR_NFESPECIE", getAD_Client_ID()));
 			else
 				setlbr_PackingType(MSysConfig.getValue("VOLUME"));
-			
-			//	Transportadora
-			if (MInOut.DELIVERYVIARULE_Shipper.equals(io.getDeliveryViaRule())
-					&& io.getM_Shipper_ID() > 0)
-				setShipper(new MShipper (Env.getCtx(), io.getM_Shipper_ID(), get_TrxName()));
 		}
 		
 		/**
@@ -1696,20 +1780,31 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		/**
 		 * 	Caso seja baseado em um pedido
 		 */
-		else if (order != null 
-				&& order.isDropShip()
-				&& order.getDropShip_BPartner_ID() > 0)
+		else if (order != null && order.getC_Order_ID() > 0)
 		{
-			bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(),get_TrxName());
+			//	Transportadora
+			setDeliveryViaRule(order.getDeliveryViaRule());
+			M_Shipper_ID = order.getM_Shipper_ID();
 			
-			//	Dado obrigatório, não encontrado na Expedição/Recebimento
-			if (order.getC_Order_ID() > 0)
-				setFreightCostRule(order.getFreightCostRule());
+			//	Drop shipment
+			if (order.isDropShip() && order.getDropShip_BPartner_ID() > 0)
+			{
+				bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(),get_TrxName());
+				
+				//	Dado obrigatório, não encontrado na Expedição/Recebimento
+				if (order.getC_Order_ID() > 0)
+					setFreightCostRule(order.getFreightCostRule());
+			}
 		}
 		
 		//	Nothing to do
 		else 
 			return;
+		
+		//	Transportadora
+		if (MInOut.DELIVERYVIARULE_Shipper.equals(getDeliveryViaRule())
+				&& M_Shipper_ID > 0)
+			setShipper(new MShipper (Env.getCtx(), M_Shipper_ID, get_TrxName()));
 		
 		MLocation location = new MLocation (getCtx(), bpLocation.getC_Location_ID(), get_TrxName());
 		MCountry country = new MCountry (getCtx(), location.getC_Country_ID(), get_TrxName());

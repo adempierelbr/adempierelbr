@@ -118,6 +118,15 @@ public interface I_LBR_CFOP
 	  */
 	public int getLBR_CFOP_ID();
 
+    /** Column name LBR_IsShowIBPT */
+    public static final String COLUMNNAME_LBR_IsShowIBPT = "LBR_IsShowIBPT";
+
+	/** Set Show IBPT	  */
+	public void setLBR_IsShowIBPT (boolean LBR_IsShowIBPT);
+
+	/** Get Show IBPT	  */
+	public boolean isLBR_IsShowIBPT();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 

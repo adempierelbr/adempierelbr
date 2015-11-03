@@ -31,7 +31,7 @@ public interface I_LBR_IBPTax
     /** TableName=LBR_IBPTax */
     public static final String Table_Name = "LBR_IBPTax";
 
-    /** AD_Table_ID=2000005 */
+    /** AD_Table_ID=1120342 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -62,6 +62,21 @@ public interface I_LBR_IBPTax
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
+
+    /** Column name C_Region_ID */
+    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+
+	/** Set Region.
+	  * Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID);
+
+	/** Get Region.
+	  * Identifies a geographical Region
+	  */
+	public int getC_Region_ID();
+
+	public I_C_Region getC_Region() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -129,6 +144,33 @@ public interface I_LBR_IBPTax
 
 	public org.adempierelbr.model.I_LBR_NCM getLBR_NCM() throws RuntimeException;
 
+    /** Column name LBR_Source */
+    public static final String COLUMNNAME_LBR_Source = "LBR_Source";
+
+	/** Set Source	  */
+	public void setLBR_Source (String LBR_Source);
+
+	/** Get Source	  */
+	public String getLBR_Source();
+
+    /** Column name LBR_TaxRateCity */
+    public static final String COLUMNNAME_LBR_TaxRateCity = "LBR_TaxRateCity";
+
+	/** Set Tax Rate City	  */
+	public void setLBR_TaxRateCity (BigDecimal LBR_TaxRateCity);
+
+	/** Get Tax Rate City	  */
+	public BigDecimal getLBR_TaxRateCity();
+
+    /** Column name LBR_TaxRateRegion */
+    public static final String COLUMNNAME_LBR_TaxRateRegion = "LBR_TaxRateRegion";
+
+	/** Set Tax Rate Region	  */
+	public void setLBR_TaxRateRegion (BigDecimal LBR_TaxRateRegion);
+
+	/** Get Tax Rate Region	  */
+	public BigDecimal getLBR_TaxRateRegion();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -144,6 +186,45 @@ public interface I_LBR_IBPTax
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
+
+	/** Set Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom);
+
+	/** Get Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom();
+
+    /** Column name ValidTo */
+    public static final String COLUMNNAME_ValidTo = "ValidTo";
+
+	/** Set Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo);
+
+	/** Get Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo();
+
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
+
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value);
+
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public String getValue();
 
     /** Column name Version */
     public static final String COLUMNNAME_Version = "Version";
@@ -174,12 +255,12 @@ public interface I_LBR_IBPTax
     /** Column name lbr_TaxRateImp */
     public static final String COLUMNNAME_lbr_TaxRateImp = "lbr_TaxRateImp";
 
-	/** Set Tax Rate(Imported).
+	/** Set Tax Rate Imported.
 	  * Indicates the Imported Tax Rate 
 	  */
 	public void setlbr_TaxRateImp (BigDecimal lbr_TaxRateImp);
 
-	/** Get Tax Rate(Imported).
+	/** Get Tax Rate Imported.
 	  * Indicates the Imported Tax Rate 
 	  */
 	public BigDecimal getlbr_TaxRateImp();

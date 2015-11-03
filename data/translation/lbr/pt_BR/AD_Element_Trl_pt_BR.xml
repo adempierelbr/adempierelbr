@@ -113,6 +113,26 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="53237" trl="Y">
+    <value column="Name" original="Is Milestone">Final de Fase</value>
+    <value column="PrintName" original="Is Milestone">Final de Fase</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="53238" trl="Y">
+    <value column="Name" original="Is Subcontracting">Subcontratada</value>
+    <value column="PrintName" original="Is Subcontracting">Subcontratada</value>
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="53342" trl="Y">
     <value column="Name" original="Decimal Pattern">Decimal Pattern</value>
     <value column="PrintName" original="Decimal Pattern">Decimal Pattern</value>

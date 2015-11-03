@@ -14,17 +14,25 @@
 package org.adempierelbr.model;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
+import org.adempierelbr.util.TextUtil;
+import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
  * 		Model for MLBRIBPTax
+ * 	
+ * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ * 		<li> Alteração para diferenciar alíquotas Estaduais e Federais
+ * 		<li> Possibilidade para customizar a mensagem do IBPT, sem alterar o código
  * 
  * 	@author Pablo Boff Pigozzo
  * 	@version $Id: MLBRIBPTax.java, v1.0 2013/07/29 11:42:10 AM, ralexsander Exp $
@@ -51,7 +59,6 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	{
 		super (ctx, LBR_IBPTax_ID, trx);
 	}	//	MLBRIBPTax
-	
 
 	/**
 	 * Load Constructor
@@ -65,6 +72,47 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 		super (ctx, rs, trxName);
 	}	//	MLBRIBPTax
 	
+	/**
+	 * 		Get IBPT (Global Search)
+	 * @author Ricardo Santana (Kenos, www.kenos.com.br)
+	 * @param ctx
+	 * @param LBR_NCM_ID
+	 * @param dateTrx
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBRIBPTax get (Properties ctx, int C_Region_ID, int LBR_NCM_ID, Timestamp dateTrx, String trxName)
+	{
+		String sql = "AD_Client_ID IN (0, ?)"
+				+ " AND LBR_NCM_ID=?"
+				+ " AND ValidFrom<=" + DB.TO_DATE (dateTrx) 
+				+ " AND (ValidTo IS NULL OR ValidTo>= " + DB.TO_DATE (dateTrx) + ")";
+		//
+		return new Query (ctx, Table_Name, sql, trxName)
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), LBR_NCM_ID})
+			.setOrderBy("AD_Client_ID DESC, ValidFrom DESC")
+			.first();
+	}	//	get
+	
+	/**
+	 * 		Get IBPT with selected version
+	 * @param ctx
+	 * @param LBR_NCM_ID
+	 * @param dateTrx
+	 * @param trxName
+	 * @return
+	 */
+	private static MLBRIBPTax get (Properties ctx, int LBR_NCM_ID, String version, String trxName)
+	{
+		String sql = "AD_Client_ID=?"
+				+ " AND LBR_NCM_ID=?"
+				+ " AND Version=?";
+		//
+		return new Query (ctx, Table_Name, sql, trxName)
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), LBR_NCM_ID, version})
+			.setOrderBy("ValidFrom DESC")
+			.firstOnly();
+	}	//	get
 
 	/**
 	 * Buscar alíquota de acordo com a Tabela do IBPT
@@ -74,6 +122,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param LBR_NCM_ID ncm
 	 * @param trxName
 	 * @return
+	 * @deprecated
 	 */
 	public static BigDecimal getTaxRate (Properties ctx, boolean isImport, int LBR_NCM_ID, String trxName)
 	{
@@ -97,91 +146,100 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @throws Exception
 	 */
-	public static void ImportFromCSV (Properties ctx, String filePath, String trxName) throws Exception
+	public static void ImportFromCSV (Properties ctx, String filePath, int p_C_Region_ID, boolean p_DeleteOld, String trxName) throws Exception
 	{
 		try 
 		{
 			// excluir todas as linhas para reinserir todas novamente 
-			// pois é mais rápido que fazer verficiação e update nos que alteraram somente
-			DB.executeUpdate("DELETE FROM LBR_IBPTax WHERE AD_Client_ID=?", Env.getAD_Client_ID(ctx), trxName);
+			if (p_DeleteOld)
+				DB.executeUpdate("DELETE FROM LBR_IBPTax WHERE AD_Client_ID=?", Env.getAD_Client_ID(ctx), trxName);
 			
 			// 
 			@SuppressWarnings("resource")
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "ISO8859_1"));
 
 			//
-			String linha;
-			
-			// idx linha 
-			int idxline = 0;
-			
-			// versao
-			String version = "";
+			String linha = in.readLine();	//	Ignorar 1a linha
 			
 			// para cada linha, inserir no BD
 			while ((linha = in.readLine()) != null) 
 			{
-				// index da linha
-				idxline++;
-					
 				// buscar campos
 				String conteudo[] = linha.split(";");
-
+				
+				/*	
+				 * 	0 - NCM
+				 * 	1 - EX IPI
+				 * 	2 - Tipo
+				 * 	3 - Descrição
+				 * 	4 - % Federal (Nacionais)
+				 * 	5 - % Federal (Importados)
+				 * 	6 - % Estadual
+				 * 	7 - % Municipal
+				 * 	8 - Vigência Início
+				 * 	9 - Vigência Fim
+				 * 10 - Chave
+				 * 11 - Versão
+				 * 12 - Fonte
+				 */
+				if (conteudo.length < 5)
+					continue;
+				
 				// Ex: 20021000;01;0;Ex 01 - Cozidos (exceto em água ou vapor) e congelados;31.45;38.94;
-				String ncm = conteudo[0];
+				String ncmName = conteudo[0];
+				MLBRNCM ncm = MLBRNCM.get (ctx, ncmName, trxName);
 				
 				// verificar se o NCM está cadastrado no Adempiere, senão desconsiderar
-				int LBR_NCM_ID = getLBR_NCM_ID (ncm, trxName);
-				
-				// só pegar a versão do arquivo na primeira linha
-				if (idxline == 1)
-					version = conteudo[6];
-				
-				if (LBR_NCM_ID > 0)
+				if (ncm == null)
 				{
-					// inserir registro
-					MLBRIBPTax m_ibptax = new MLBRIBPTax(ctx, 0, trxName);
-					m_ibptax.setLBR_NCM_ID(LBR_NCM_ID);
-					m_ibptax.setAD_Client_ID(Env.getAD_Client_ID(ctx));
-					m_ibptax.setAD_Org_ID(0);
-					m_ibptax.setDescription(conteudo[3]);
-					m_ibptax.setlbr_TaxRate(new BigDecimal(conteudo[4]));
-					m_ibptax.setlbr_TaxRateImp(new BigDecimal(conteudo[5]));
-					m_ibptax.setVersion(version);
-					m_ibptax.saveEx(trxName);
+					log.info ("NCM não encontrado para importar IBPT: " + ncmName);
+					continue;
 				}
+				
+				// 	pesquissar existente
+				MLBRIBPTax m_ibptax = get (ctx, ncm.getLBR_NCM_ID(), conteudo[11], trxName);
+				
+				//	inserir registro
+				if (m_ibptax == null)
+					m_ibptax = new MLBRIBPTax (ctx, 0, trxName);
+				
+				m_ibptax.setLBR_NCM_ID(ncm.getLBR_NCM_ID());
+				m_ibptax.setAD_Client_ID(Env.getAD_Client_ID(ctx));
+				m_ibptax.setAD_Org_ID(0);
+				m_ibptax.setC_Region_ID(p_C_Region_ID);
+				m_ibptax.setDescription(conteudo[3]);
+				m_ibptax.setlbr_TaxRate(new BigDecimal(conteudo[4]));
+				m_ibptax.setlbr_TaxRateImp(new BigDecimal(conteudo[5]));
+				m_ibptax.setLBR_TaxRateRegion(new BigDecimal (conteudo[6]));
+				m_ibptax.setLBR_TaxRateCity(new BigDecimal (conteudo[7]));
+				m_ibptax.setValidFrom(TextUtil.stringToTime(conteudo[8], "dd/MM/yyyy"));
+				m_ibptax.setValidTo(TextUtil.stringToTime(conteudo[9], "dd/MM/yyyy"));
+				m_ibptax.setValue(conteudo[10]);
+				m_ibptax.setVersion(conteudo[11]);
+				m_ibptax.setLBR_Source(conteudo[12]);
+				m_ibptax.saveEx();
 			}
 		} 
 		
 		// tratar erro e dar um retorno mais amigável ao usuário
 		catch (Exception ex) 
 		{
-			// 
-			ex.printStackTrace();
-			
 			// logar erro
 			log.severe("Falha ao importar IBPTax CSV File. Error: " + ex.getMessage());
 			
 			// lança erro ao usuário
 			throw new Exception("Falha ao importar arquivo. Erro: " + ex.getMessage());
 		}
-	}
+	}	//	ImportFromCSV
 	
 	/**
-	 * Retornar o NCM de acordo com a linha do arquivo CSV.
-	 * 
-	 * @param String NCM - NCM Plano, sem pontos
+	 * 	Get Tax Rate for National and Imported
+	 * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
 	 */
-	private static int getLBR_NCM_ID (String ncm, String trxName)
+	public BigDecimal getlbr_TaxRate(boolean imported)
 	{
-		// ncm é null ou vazio
-		if(ncm == null || ncm.isEmpty())
-			return -1;
-		
-		// query
-		String sql = "SELECT LBR_NCM_ID FROM LBR_NCM WHERE REPLACE(Value, '.', '')=? ORDER BY AD_Client_ID DESC";
-		
-		// exec query
-		return DB.getSQLValue (trxName, sql, ncm);
-	}	//	getLBR_NCM_ID
+		if (imported) 
+			return super.getlbr_TaxRateImp();
+		return super.getlbr_TaxRate();
+	}	//	getlbr_TaxRate
 }	//	MLBRIBPTax

@@ -62,6 +62,15 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201511 [[Download]][30] [[Seed PostgreSQL]][31] [[Seed OracleXE]][32]
+
+	* Melhorias na tradução
+	* Correção do preenchimento da Transportadora na NF
+	* Atualização do esquema XML para a versão PL_008g
+	* Flexibilidade na pesquisa de produto
+	* Atualização do processo de importação do IBPT
+	* [Mais detalhes][29]
+	
 1. LBR-201510 [[Download]][26] [[Seed PostgreSQL]][27] [[Seed OracleXE]][28]
 
 	* Melhorias na tradução
@@ -143,3 +152,7 @@ Patrocinadores desta versão
 [26]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201510.tgz
 [27]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_PG.tgz
 [28]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_ORA.tgz
+[29]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201511
+[30]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201511.tgz
+[31]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_PG.tgz
+[32]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_ORA.tgz
