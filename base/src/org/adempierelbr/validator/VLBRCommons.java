@@ -16,7 +16,7 @@ package org.adempierelbr.validator;
 import java.util.List;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
-import org.adempierelbr.model.MLBRCCe;
+import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.grid.VCreateFromFactory;
@@ -206,11 +206,11 @@ public class VLBRCommons implements ModelValidator
      */
 	public String modelChange (MAttachment att, int type) throws Exception
 	{
-		if (type == TYPE_BEFORE_DELETE && att.getAD_Table_ID() == MLBRCCe.Table_ID)
+		if (type == TYPE_BEFORE_DELETE && att.getAD_Table_ID() == MLBRNFeEvent.Table_ID)
 		{
-			MLBRCCe cce = new MLBRCCe (Env.getCtx(), att.getRecord_ID(), att.get_TrxName());
+			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), att.getRecord_ID(), att.get_TrxName());
 			
-			if (cce.isProcessed())
+			if (event.isProcessed())
 				return "N\u00E3o \u00E9 permitido alterar um anexo de um registro j\u00E1 processado.";
 		}
 		

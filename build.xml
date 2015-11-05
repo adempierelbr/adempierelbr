@@ -84,7 +84,6 @@
 			<src path="nfe2/src" />
 			<src path="nfe2/ws/src" />
 			<src path="nfse/src" />
-			<src path="cce/src" />
 			<src path="rdef/src" />
 			<src path="zkwebui/WEB-INF/src" />
 			<classpath refid="compile.classpath"/>

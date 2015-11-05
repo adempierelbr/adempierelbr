@@ -20,6 +20,7 @@ import java.rmi.RemoteException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import javax.net.ssl.SSLException;
@@ -30,6 +31,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.nfe.NFeXMLGenerator;
+import org.adempierelbr.nfe.api.RecepcaoEventoStub;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -37,6 +39,8 @@ import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.apache.axis2.databinding.ADBException;
 import org.apache.xmlbeans.SchemaTypeLoader;
 import org.apache.xmlbeans.XmlBeans;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlObject;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MDocType;
 import org.compiere.model.MOrgInfo;
@@ -47,41 +51,40 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.evento.cce.EnvEventoDocument;
-import br.inf.portalfiscal.nfe.evento.cce.ProcEventoNFeDocument;
-import br.inf.portalfiscal.nfe.evento.cce.RetEnvEventoDocument;
-import br.inf.portalfiscal.nfe.evento.cce.TAmb;
-import br.inf.portalfiscal.nfe.evento.cce.TCOrgaoIBGE;
-import br.inf.portalfiscal.nfe.evento.cce.TEnvEvento;
-import br.inf.portalfiscal.nfe.evento.cce.TEvento;
-import br.inf.portalfiscal.nfe.evento.cce.TEvento.InfEvento;
-import br.inf.portalfiscal.nfe.evento.cce.TProcEvento;
-import br.inf.portalfiscal.nfe.evento.cce.TRetEnvEvento;
-import br.inf.portalfiscal.nfe.evento.cce.TretEvento;
-import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
+import br.inf.portalfiscal.nfe.evento.generico.EnvEventoDocument;
+import br.inf.portalfiscal.nfe.evento.generico.ProcEventoNFeDocument;
+import br.inf.portalfiscal.nfe.evento.generico.RetEnvEventoDocument;
+import br.inf.portalfiscal.nfe.evento.generico.TAmb;
+import br.inf.portalfiscal.nfe.evento.generico.TCOrgaoIBGE;
+import br.inf.portalfiscal.nfe.evento.generico.TEnvEvento;
+import br.inf.portalfiscal.nfe.evento.generico.TEvento;
+import br.inf.portalfiscal.nfe.evento.generico.TProcEvento;
+import br.inf.portalfiscal.nfe.evento.generico.TRetEnvEvento;
+import br.inf.portalfiscal.nfe.evento.generico.TRetEvento;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsg;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsgE;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeDadosMsg;
 
 /**
- * 		Model for CC-e
+ * 		Model for Events
  * 
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  *	@version $Id: MLBRCCe.java, v1.0 2012/05/13 21:53:21 PM, ralexsander Exp $
  */
-public class MLBRCCe extends X_LBR_CCe implements DocAction
+public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
 	 *  @param int ID (0 create new)
 	 *  @param String trx
 	 */
-	public MLBRCCe (Properties ctx, int ID, String trx)
+	public MLBRNFeEvent (Properties ctx, int ID, String trx)
 	{
 		super (ctx,ID,trx);
 	}	//	MLBRCCe
@@ -92,7 +95,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MLBRCCe (Properties ctx, ResultSet rs, String trxName)
+	public MLBRNFeEvent (Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
 	}	//	MLBRCCe
@@ -151,6 +154,7 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
+	private boolean 	m_updateNFe = true;
 
 	/**
 	 * 	Unlock Document.
@@ -183,11 +187,15 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		if (m_processMsg != null)
 			return DocAction.STATUS_Invalid;
 
-		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), getLBR_NotaFiscal_ID(), null);
-		if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(nf.getlbr_NFeStatus()))
+		//	Validação da NF-e
+		if (getLBR_NotaFiscal_ID() > 0)
 		{
-			m_processMsg = "@Invalid@ @LBR_NotaFiscal_ID@";
-			return DocAction.STATUS_Invalid;
+			MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), getLBR_NotaFiscal_ID(), null);
+			if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(nf.getlbr_NFeStatus()))
+			{
+				m_processMsg = "@Invalid@ @LBR_NotaFiscal_ID@";
+				return DocAction.STATUS_Invalid;
+			}
 		}
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
@@ -237,45 +245,124 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			return DocAction.STATUS_Invalid;
 		
 		log.info(toString());
+		
+		String xmlExtension = ".xml";
 				
-		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), getLBR_NotaFiscal_ID(), null);
-		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), nf.getAD_Org_ID(), null);
+		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), getAD_Org_ID(), null);
 		I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
-
-		//	Dados do Envio
-		EnvEventoDocument envDoc = EnvEventoDocument.Factory.newInstance();
-		TEnvEvento env = envDoc.addNewEnvEvento();
-		env.setVersao(NFeUtil.VERSAO_CCE);
-		env.setIdLote(getDocumentNo());
-		
-		//	Dados do Evento da Carta de Correção
-		TEvento evento = env.addNewEvento();
-		evento.setVersao(NFeUtil.VERSAO_CCE);
-		TEvento.InfEvento cce = evento.addNewInfEvento();
-		
-		//	Informações do Evento da Carta de Correção
-		cce.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));
-		cce.setTpAmb(TAmb.Enum.forString(oiW.getlbr_NFeEnv()));
-		cce.setCNPJ(TextUtil.toNumeric (oiW.getlbr_CNPJ()));
-		cce.setChNFe(nf.getlbr_NFeID());
-		cce.setDhEvento(NFeXMLGenerator.normalizeTZ (getDateDoc()));
-		cce.setNSeqEvento(Integer.toString(getSeqNo()));
-		cce.setVerEvento(TEvento.InfEvento.VerEvento.X_1_00);
-		cce.setTpEvento(TEvento.InfEvento.TpEvento.X_110110);
-		
-		//	Chave
-		String key = "ID" + cce.getTpEvento() + cce.getChNFe() + TextUtil.lPad (cce.getNSeqEvento(), 2);
-		cce.setId(key);
-
-		//	Detalhes
-		br.inf.portalfiscal.nfe.evento.cce.TEvento.InfEvento.DetEvento det = cce.addNewDetEvento();
-		det.setVersao(TEvento.InfEvento.DetEvento.Versao.X_1_00);
-		det.setXCorrecao(getDescription().trim());
-		det.setDescEvento(InfEvento.DetEvento.DescEvento.CARTA_DE_CORREÇÃO);
-		det.setXCondUso(InfEvento.DetEvento.XCondUso.A_CARTA_DE_CORREÇÃO_É_DISCIPLINADA_PELO_1_º_A_DO_ART_7_º_DO_CONVÊNIO_S_N_DE_15_DE_DEZEMBRO_DE_1970_E_PODE_SER_UTILIZADA_PARA_REGULARIZAÇÃO_DE_ERRO_OCORRIDO_NA_EMISSÃO_DE_DOCUMENTO_FISCAL_DESDE_QUE_O_ERRO_NÃO_ESTEJA_RELACIONADO_COM_I_AS_VARIÁVEIS_QUE_DETERMINAM_O_VALOR_DO_IMPOSTO_TAIS_COMO_BASE_DE_CÁLCULO_ALÍQUOTA_DIFERENÇA_DE_PREÇO_QUANTIDADE_VALOR_DA_OPERAÇÃO_OU_DA_PRESTAÇÃO_II_A_CORREÇÃO_DE_DADOS_CADASTRAIS_QUE_IMPLIQUE_MUDANÇA_DO_REMETENTE_OU_DO_DESTINATÁRIO_III_A_DATA_DE_EMISSÃO_OU_DE_SAÍDA);
+		int p_Org_Region_ID = oi.getC_Location().getC_Region_ID();
 		
 		try
 		{
+			//	Dados do Envio
+			EnvEventoDocument envDoc = EnvEventoDocument.Factory.newInstance();
+			TEnvEvento env = envDoc.addNewEnvEvento();
+			env.setVersao(NFeUtil.VERSAO_EVENTO);
+			env.setIdLote(getDocumentNo());
+			
+			//	Dados do Evento da Carta de Correção
+			TEvento evento = env.addNewEvento();
+			evento.setVersao(NFeUtil.VERSAO_EVENTO);
+			TEvento.InfEvento infEv = evento.addNewInfEvento();
+			
+			//	Informações do Evento da Carta de Correção
+			infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));
+			infEv.setTpAmb(TAmb.Enum.forString(oiW.getlbr_NFeEnv()));
+			infEv.setCNPJ(TextUtil.toNumeric (oiW.getlbr_CNPJ()));
+			infEv.setChNFe(getlbr_NFeID());
+			infEv.setDhEvento(NFeXMLGenerator.normalizeTZ (getDateDoc()));
+			infEv.setNSeqEvento(Integer.toString(getSeqNo()));
+			infEv.setVerEvento("1.00");
+			infEv.setTpEvento(getLBR_EventType());
+			
+			//	Chave
+			String key = "ID" + infEv.getTpEvento() + infEv.getChNFe() + TextUtil.lPad (infEv.getNSeqEvento(), 2);
+			infEv.setId(key);
+	
+			XmlObject det = null;
+			
+			//	Evento de cancelamento
+			if (LBR_EVENTTYPE_Cancelamento.equals(getLBR_EventType()))
+			{
+				br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument detDoc = br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.Factory.newInstance();
+				br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.DetEvento detCan = detDoc.addNewDetEvento();
+				//
+				if (getDescription() != null)
+					detCan.setXJust(getDescription().trim());	
+				//
+				detCan.setVersao(br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.DetEvento.Versao.X_1_00);
+				detCan.setDescEvento(br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.DetEvento.DescEvento.CANCELAMENTO);
+				detCan.setNProt(getLBR_NotaFiscal().getlbr_NFeProt());
+				//
+				xmlExtension = "-can-dst.xml";
+				NFeUtil.validate (detCan);
+				det = detCan;
+			}
+			
+			//	Carta de Correção
+			else if (LBR_EVENTTYPE_CartaDeCorrecao.equals(getLBR_EventType()))
+			{
+				br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument detDoc = br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument.Factory.newInstance();
+				br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument.DetEvento detCCe = detDoc.addNewDetEvento();
+				//
+				detCCe.setVersao(br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument.DetEvento.Versao.X_1_00);
+				detCCe.setXCorrecao(getDescription().trim());
+				detCCe.setDescEvento(br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument.DetEvento.DescEvento.CARTA_DE_CORREÇÃO);
+				detCCe.setXCondUso(br.inf.portalfiscal.nfe.evento.cce.DetEventoDocument.DetEvento.XCondUso.A_CARTA_DE_CORREÇÃO_É_DISCIPLINADA_PELO_1_º_A_DO_ART_7_º_DO_CONVÊNIO_S_N_DE_15_DE_DEZEMBRO_DE_1970_E_PODE_SER_UTILIZADA_PARA_REGULARIZAÇÃO_DE_ERRO_OCORRIDO_NA_EMISSÃO_DE_DOCUMENTO_FISCAL_DESDE_QUE_O_ERRO_NÃO_ESTEJA_RELACIONADO_COM_I_AS_VARIÁVEIS_QUE_DETERMINAM_O_VALOR_DO_IMPOSTO_TAIS_COMO_BASE_DE_CÁLCULO_ALÍQUOTA_DIFERENÇA_DE_PREÇO_QUANTIDADE_VALOR_DA_OPERAÇÃO_OU_DA_PRESTAÇÃO_II_A_CORREÇÃO_DE_DADOS_CADASTRAIS_QUE_IMPLIQUE_MUDANÇA_DO_REMETENTE_OU_DO_DESTINATÁRIO_III_A_DATA_DE_EMISSÃO_OU_DE_SAÍDA);
+				//
+				xmlExtension = "-cce-dst.xml";
+				NFeUtil.validate (detCCe);
+				det = detCCe;
+			}
+			
+			//	Manifestação do Destinatário
+			else if (getLBR_EventType().startsWith("2102"))	//	Manifesto
+			{
+				br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument detDoc = br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.Factory.newInstance();
+				br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento detManif = detDoc.addNewDetEvento();
+				//
+				detManif.setVersao(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.Versao.X_1_00);
+				detManif.setDescEvento(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.DescEvento.Enum.forString(getLBR_EventType()));
+				
+				if (LBR_EVENTTYPE_CienciaDaOperacao.equals(getLBR_EventType()))
+					detManif.setDescEvento(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.DescEvento.CIENCIA_DA_OPERACAO);
+				
+				else if (LBR_EVENTTYPE_ConfirmacaoDaOperacao.equals(getLBR_EventType()))
+					detManif.setDescEvento(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.DescEvento.CONFIRMACAO_DA_OPERACAO);
+				
+				else if (LBR_EVENTTYPE_DesconhecimentoDaOperacao.equals(getLBR_EventType()))
+					detManif.setDescEvento(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.DescEvento.DESCONHECIMENTO_DA_OPERACAO);
+				
+				else if (LBR_EVENTTYPE_OperacaoNaoRealizada.equals(getLBR_EventType()))
+				{
+					detManif.setXJust(getDescription().trim());
+					detManif.setDescEvento(br.inf.portalfiscal.nfe.evento.manifestadest.DetEventoDocument.DetEvento.DescEvento.OPERACAO_NAO_REALIZADA);
+					NFeUtil.validate (detManif);
+				}
+				else
+					throw new AdempiereException ("Evento não suportado");
+				
+				//	Manifesto - Ambiente Nacional
+				infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (91)));
+				p_Org_Region_ID = 0;
+				//
+				xmlExtension = "-manif.xml";
+				det = detManif;
+			}
+			
+			//	Detalhes do Evento
+			if (det == null)
+				return "@Error@ Detalhes do Evento não encontrado";
+			
+			XmlCursor detCursor = det.newCursor();
+			detCursor.toStartDoc();
+			detCursor.toNextToken();
+			
+			//	Move o XML do Detalhe do Evento
+			XmlCursor rootCursor = infEv.newCursor();
+			rootCursor.toEndToken();
+			detCursor.copyXml(rootCursor);
+			
 			//	Assinando o documento
 			new SignatureUtil (oi, SignatureUtil.EVENTO).sign (envDoc, evento.newCursor());
 
@@ -286,25 +373,31 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			StringBuilder xml = new StringBuilder (envDoc.xmlText (NFeUtil.getXmlOpt()));
 			
 			//	Procura os endereços para Transmissão
-			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
+			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, p_Org_Region_ID);
 			
 			if (ws == null)
 			{
-				m_processMsg = "Erro ao transmitir a CC-e. Não foi encontrado um endereço WebServices válido.";
+				m_processMsg = "Erro ao transmitir o Evento da NF-e. Não foi encontrado um endereço WebServices válido.";
 				return DocAction.STATUS_Invalid;
 			}
 			
-			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader (new StringReader (header + NFeUtil.wrapMsg (xml.toString ())));
+			XMLStreamReader dadosXML = XMLInputFactory.newInstance().createXMLStreamReader (new StringReader (NFeUtil.XML_HEADER + NFeUtil.wrapMsg (xml.toString ())));
 
 			//	Prepara a Transmissão
 			MLBRDigitalCertificate.setCertificate (getCtx(), oi.getAD_Org_ID());
-			RecepcaoEventoStub.NfeDadosMsg dadosMsg = RecepcaoEventoStub.NfeDadosMsg.Factory.parse(dadosXML);
-			RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = NFeUtil.geraCabecEvento ("" + NFeUtil.getRegionCode (oi));
-			RecepcaoEventoStub.setAmbiente (ws.getURL());
-			RecepcaoEventoStub stub = new RecepcaoEventoStub();
+			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse(dadosXML);
+			
+			NfeCabecMsg cabecMsg = new NfeCabecMsg();
+			cabecMsg.setCUF("" + NFeUtil.getRegionCode (oi));
+			cabecMsg.setVersaoDados(NFeUtil.VERSAO_EVENTO);
+			
+			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE();
+			cabecMsgE.setNfeCabecMsg(cabecMsg);
+			
+			RecepcaoEventoStub stub = new RecepcaoEventoStub(ws.getURL());
 
 			//	Resposta do SEFAZ
-			String respLote = header + stub.nfeRecepcaoEvento (dadosMsg, cabecMsgE).getExtraElement().toString();
+			String respLote = NFeUtil.XML_HEADER + stub.nfeRecepcaoEvento (dadosMsg.getExtraElement(), cabecMsgE).toString();
 			log.fine (respLote);
 			
 			//	SchemaTypeLoader necessário, pois o RetEnvEventoDocument existe com a mesma namespace para outros docs
@@ -315,11 +408,11 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 			if (!"128".equals (retEnvEvento.getCStat()))
 				throw new AdempiereException (retEnvEvento.getXMotivo());
 			
-			for (TretEvento retEvento : retEnvEvento.getRetEventoArray())
+			for (TRetEvento retEvento : retEnvEvento.getRetEventoArray())
 			{
-				TretEvento.InfEvento infReturn = retEvento.getInfEvento();
+				TRetEvento.InfEvento infReturn = retEvento.getInfEvento();
 				
-				//	CC-e processada com sucesso
+				//	Evento processada com sucesso
 				String cStat = infReturn.getCStat();
 				
 				if ("135".equals (cStat) || "136".equals (cStat))
@@ -337,21 +430,37 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 					setlbr_NFeProt (infReturn.getNProt ());
 					setEMail (infReturn.getEmailDest ());
 					saveEx ();
+					
+					//	Marca a NF como cancelada
+					if (LBR_EVENTTYPE_Cancelamento.equals (infReturn.getTpEvento())
+							&& m_updateNFe)
+					{
+						MLBRNotaFiscal nfe = MLBRNotaFiscal.getNFe(infReturn.getChNFe(), get_TrxName());
+						
+						if (nfe != null)
+						{
+							nfe.setVoidInfo (true);
+							nfe.save();
+						}
+					}
 	
 					//	Arquivo de Distribuição
 					ProcEventoNFeDocument procEventoNFeDoc = ProcEventoNFeDocument.Factory.newInstance(); 
 					TProcEvento procEventoNFe = procEventoNFeDoc.addNewProcEventoNFe();
-					procEventoNFe.setVersao (NFeUtil.VERSAO_CCE);
+					procEventoNFe.setVersao (NFeUtil.VERSAO_EVENTO);
 					procEventoNFe.setEvento(evento);
 					procEventoNFe.setRetEvento(retEvento);
 					
 					//	Arquivo de resposta final
-					MAttachment attachCCe = createAttachment (true);
-					attachCCe.addEntry (cce.getId() + "-cce-dst.xml", (header + procEventoNFeDoc.xmlText(NFeUtil.getXmlOpt())).getBytes("UTF-8"));
-					attachCCe.save();
+					MAttachment attachEvent = createAttachment (true);
+					attachEvent.addEntry (infEv.getId() + xmlExtension, (NFeUtil.XML_HEADER + procEventoNFeDoc.xmlText(NFeUtil.getXmlOpt())).getBytes("UTF-8"));
+					attachEvent.save();
 				}
 				else
-					throw new AdempiereException (infReturn.getXMotivo());
+				{
+					log.severe("XML Sent: " + xml + "\nXML Response: " + respLote);
+					throw new AdempiereException (infReturn.getCStat() + " - " + infReturn.getXMotivo());
+				}
 			}
 		}
 		catch (AdempiereException e)
@@ -363,43 +472,43 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 		catch (SSLException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao transmitir a CC-e. " + e.getMessage();
+			m_processMsg = "Erro ao transmitir o Evento. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (RemoteException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao transmitir a CC-e. " + e.getMessage();
+			m_processMsg = "Erro ao transmitir o Evento. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (ADBException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao converter o XML para transmissão da CC-e. " + e.getMessage();
+			m_processMsg = "Erro ao converter o XML para transmissão do Evento. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (XMLStreamException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao converter o XML para transmissão da CC-e. " + e.getMessage();
+			m_processMsg = "Erro ao converter o XML para transmissão do Evento. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (CertificateExpiredException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao assinar a CC-e. O certificado expirou. " + e.getMessage();
+			m_processMsg = "Erro ao assinar o Evento. O certificado expirou. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (CertificateNotYetValidException e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro ao assinar a CC-e. O certificado não é válido para esta data. " + e.getMessage();
+			m_processMsg = "Erro ao assinar o Evento. O certificado não é válido para esta data. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			m_processMsg = "Erro no processo para gerar CC-e. " + e.getMessage();
+			m_processMsg = "Erro no processo para gerar o Evento. " + e.getMessage();
 			return DocAction.STATUS_Invalid;
 		}
 	
@@ -531,7 +640,11 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	{
 		if (newRecord)
 		{
-			int seqNo = DB.getSQLValue (get_TrxName(), "SELECT COALESCE(MAX(SeqNo), 0)+1 AS DefaultValue FROM LBR_CCe WHERE DocStatus IN ('CL','CO') AND LBR_NotaFiscal_ID=?", getLBR_NotaFiscal_ID());
+			int seqNo = DB.getSQLValue (get_TrxName(), "SELECT COALESCE(MAX(SeqNo), 0)+1 AS DefaultValue "
+					+ "FROM LBR_NFeEvent "
+					+ "WHERE DocStatus IN ('CL','CO') "
+					+ "AND LBR_NFeID=? "
+					+ "AND LBR_EventType=?", getlbr_NFeID(), getLBR_EventType());	
 			//
 			setSeqNo (seqNo);
 		}
@@ -543,6 +656,39 @@ public class MLBRCCe extends X_LBR_CCe implements DocAction
 	 */
 	public String toString() 
 	{
-		return "MLBRCCe[ID=" + getLBR_CCe_ID() + ", DocStatus='" + getDocStatus() + "']";
+		return "MLBRNFeEvent[ID=" + getLBR_NFeEvent_ID() + ", Key='" + getlbr_NFeID() + "', Type='" + getLBR_EventType() + "', DocStatus='" + getDocStatus() + "']";
 	}	//	toString
-}	//	MLBRCCe
+	
+	/**
+	 * 	Registrar evento
+	 * @param nf
+	 * @param eventType
+	 * @param desc
+	 * @param seqNo
+	 * @throws AdempiereException
+	 */
+	public static void registerEvent (MLBRNotaFiscal nf, String eventType, String desc, int seqNo, boolean updateNFe) throws AdempiereException
+	{
+		MLBRNFeEvent event = new MLBRNFeEvent (nf.getCtx(), 0, nf.get_TrxName());
+		event.setLBR_NotaFiscal_ID(nf.getLBR_NotaFiscal_ID());
+		event.setlbr_NFeID(nf.getlbr_NFeID());
+		event.setLBR_EventType(eventType);
+		event.setDescription(desc);
+		event.setDateDoc(new Timestamp (System.currentTimeMillis()));
+		event.setSeqNo(seqNo);
+		event.saveEx();
+		//
+		event.m_updateNFe = updateNFe;
+		//
+		if (event.processIt(DOCACTION_Complete))
+		{
+			event.setDocStatus(DOCSTATUS_Completed);
+			event.setDocAction(DOCACTION_None);
+			event.save();
+		}
+		else
+		{
+			throw new AdempiereException ("Falha ao completar o registro do evento. " + event.getProcessMsg());
+		}
+	}	//	registerEvent
+}	//	MLBRNFeEvent

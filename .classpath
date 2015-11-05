@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="base/src"/>
 	<classpathentry kind="src" path="boleto/src"/>
-	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>

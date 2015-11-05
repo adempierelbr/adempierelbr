@@ -122,9 +122,22 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	public static MLBRNFeWebService get (String name, String envType, String versionNo, String type, int C_Region_ID)
 	{
-		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND LBR_WSType=? AND C_Region_ID=?";
+		Object[] parameters = null;
+		
+		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND LBR_WSType=?";
+		if (C_Region_ID > 0)
+		{
+			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID};
+			where += " AND C_Region_ID=?";
+		}
+		else
+		{
+			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type};
+			where += " AND C_Region_ID IS NULL";
+		}
+		
 		return new Query (Env.getCtx(),MLBRNFeWebService.Table_Name, where, null)
-						.setParameters(new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID})
+						.setParameters(parameters)
 						.first();
 	}	//	get
 }	//	MNFeWebService

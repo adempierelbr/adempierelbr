@@ -8593,8 +8593,8 @@ Para sistemas Multi-Idiomas, o modelo é traduzido baseado no idioma selecionado
     <value column="PO_PrintName" original="" />
   </row>
   <row id="1576" trl="Y">
-    <value column="Name" original="PO Payment Term">Termo de Pagamento do PC</value>
-    <value column="PrintName" original="PO Payment Term">Termo de Pagamento do PC</value>
+    <value column="Name" original="PO Payment Term">Condição de Pagamento do PC</value>
+    <value column="PrintName" original="PO Payment Term">Condição de Pagamento do PC</value>
     <value column="Description" original="Payment rules for a purchase order">Regras de pagamento para um pedido de compras</value>
     <value column="Help" original="The PO Payment Term indicates the payment term that will be used when this purchase order becomes an invoice.">O "Termo de Pagamento do PC" indica o termo de pagamento que será usado quando este pedido de compras se tornar uma fatura.</value>
     <value column="PO_Description" original="" />

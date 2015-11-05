@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.adempierelbr.model.MLBRCCe;
+import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -97,14 +97,14 @@ public class PrintFromXML extends SvrProcess
 	    int tableID = getProcessInfo().getTable_ID();
 		
 		//	Carta de Correção Eletrônica
-		if (tableID == MLBRCCe.Table_ID)
+		if (tableID == MLBRNFeEvent.Table_ID)
 		{
-			MLBRCCe cce = new MLBRCCe (Env.getCtx(), p_Record_ID, null);
+			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), p_Record_ID, null);
 			
-			if (!"135".equals (cce.getlbr_NFeStatus()) && !"136".equals (cce.getlbr_NFeStatus()))
+			if (!"135".equals (event.getlbr_NFeStatus()) && !"136".equals (event.getlbr_NFeStatus()))
 				return "CC-e n\u00E3o processada corretamente, n\u00E3o \u00E9 poss\u00EDvel fazer a impress\u00E3o";
 			
-			att = cce.getAttachment (true);
+			att = event.getAttachment (true);
 			
 			//	Verifica o nome do arquivo principal
 			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())

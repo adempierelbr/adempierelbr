@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.nfe.NFeCancelamento;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
@@ -2805,7 +2804,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				try
 				{
-					NFeCancelamento.cancelNFeEx (this);
+					MLBRNFeEvent.registerEvent(this, MLBRNFeEvent.LBR_EVENTTYPE_Cancelamento, getlbr_MotivoCancel(), 1, false);
+					setVoidInfo (false);
 					return true;
 				}
 				catch (Exception e)
@@ -3043,4 +3043,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//
 		return index;
 	}	//	docStatus
+	
+	/**
+	 * 	Set void info
+	 */
+	public void setVoidInfo (boolean docStatus)
+	{
+		setIsCancelled(true);
+		if (docStatus)
+			setDocStatus(MLBRNotaFiscal.DOCSTATUS_Voided);
+		setDocAction(MLBRNotaFiscal.DOCACTION_None);
+		setlbr_NFeStatus(MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado);
+	}	//	setVoidInfo
 }	//	MLBRNotaFiscal
