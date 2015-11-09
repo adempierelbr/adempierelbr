@@ -394,7 +394,11 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 		MBankAccount ba = getBankAccount();
 		ba.load(get_TrxName());
 		//BF 1933645
-		ba.setCurrentBalance(ba.getCurrentBalance().add(getStatementDifference()));
+		//Get Beginning Balance from Bank Statement if Current Balance of the Bank is 0
+		if (!ba.getCurrentBalance().equals(BigDecimal.ZERO))
+			ba.setCurrentBalance(ba.getCurrentBalance().add(getStatementDifference()));
+		else
+			ba.setCurrentBalance(getBeginningBalance().add(getStatementDifference()));
 		ba.save(get_TrxName());
 		
 		//	User Validation
