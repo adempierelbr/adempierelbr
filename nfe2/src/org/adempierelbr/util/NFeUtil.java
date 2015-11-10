@@ -76,6 +76,7 @@ public abstract class NFeUtil
 
 	/** XML					*/
 	public static final String DIST_XML_FILE_EXT 	= "-dst.xml";
+	public static final String PROC_XML_FILE_EXT 	= "-procNFe.xml";
 	public static final String XML_HEADER			= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	public static final long XML_SIZE   = 500;
 
