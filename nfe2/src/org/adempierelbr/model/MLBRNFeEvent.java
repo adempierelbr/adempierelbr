@@ -268,11 +268,18 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			//	Informações do Evento da Carta de Correção
 			infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));
 			infEv.setTpAmb(TAmb.Enum.forString(oiW.getlbr_NFeEnv()));
-			infEv.setCNPJ(TextUtil.toNumeric (oiW.getlbr_CNPJ()));
+			
+			//	CPF ou CNPJ
+			String CNPJF = TextUtil.toNumeric (oiW.getlbr_CNPJ());
+			if (CNPJF != null && CNPJF.length() == 11)
+				infEv.setCPF (CNPJF);
+			else
+				infEv.setCNPJ(CNPJF);
+			
 			infEv.setChNFe(getlbr_NFeID());
 			infEv.setDhEvento(NFeXMLGenerator.normalizeTZ (getDateDoc()));
 			infEv.setNSeqEvento(Integer.toString(getSeqNo()));
-			infEv.setVerEvento("1.00");
+			infEv.setVerEvento(NFeUtil.VERSAO_EVENTO);
 			infEv.setTpEvento(getLBR_EventType());
 			
 			//	Chave
@@ -371,7 +378,8 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			
 			//	XML
 			StringBuilder xml = new StringBuilder (envDoc.xmlText (NFeUtil.getXmlOpt()));
-			
+			log.fine (xml.toString());
+
 			//	Procura os endereços para Transmissão
 			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, p_Org_Region_ID);
 			
@@ -670,6 +678,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 	public static void registerEvent (MLBRNotaFiscal nf, String eventType, String desc, int seqNo, boolean updateNFe) throws AdempiereException
 	{
 		MLBRNFeEvent event = new MLBRNFeEvent (nf.getCtx(), 0, nf.get_TrxName());
+		event.setAD_Org_ID(nf.getAD_Org_ID());
 		event.setLBR_NotaFiscal_ID(nf.getLBR_NotaFiscal_ID());
 		event.setlbr_NFeID(nf.getlbr_NFeID());
 		event.setLBR_EventType(eventType);
