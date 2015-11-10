@@ -37,7 +37,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-local-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/httpcore-4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8g.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8g.jar" sourcepath="lib/nfebeans-v8g-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v6v.jar" sourcepath="lib/nfebeans-v6v-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-canc-v101.jar" sourcepath="lib/nfebeans-canc-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-cce-v101.jar" sourcepath="lib/nfebeans-cce-v101-souces.jar"/>
