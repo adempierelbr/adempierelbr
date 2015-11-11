@@ -80,7 +80,7 @@ public class GenBilling
 		//  Bank Account Info
 		String sql = MRole.getDefault().addAccessSQL(
 			"SELECT ba.C_BankAccount_ID,"                       //  1
-			+ "b.Name || ' ' || ba.AccountNo AS Name "          //  2
+			+ "b.Name || ' ' || ba.AccountNo || ' ' || (SELECT Name FROM AD_Org WHERE AD_Org_ID = ba.AD_Org_ID)  AS Name "          //  2
 			+ "FROM C_Bank b, C_BankAccount ba, C_Currency c "
 			+ "WHERE b.C_Bank_ID=ba.C_Bank_ID"
 			+ " AND ba.C_Currency_ID=c.C_Currency_ID AND ba.IsActive='Y' "
