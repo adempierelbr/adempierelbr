@@ -22871,10 +22871,10 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="3092" trl="Y">
-    <value column="Name" original="Collection Status">Estado da Coleção</value>
-    <value column="PrintName" original="Collection Status">Estado da Coleção</value>
-    <value column="Description" original="Invoice Collection Status">Estado da Coleção de Faturas</value>
-    <value column="Help" original="Status of the invoice collection process">Estado do proesso da coleção de faturas</value>
+    <value column="Name" original="Collection Status">Estado da Cobraça</value>
+    <value column="PrintName" original="Collection Status">Estado da Cobraça</value>
+    <value column="Description" original="Invoice Collection Status">Estado da Cobraça de Faturas</value>
+    <value column="Help" original="Status of the invoice collection process">Estado do processo de cobraça de faturas</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />

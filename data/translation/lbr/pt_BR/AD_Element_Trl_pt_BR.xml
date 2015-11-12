@@ -103,6 +103,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="3092" trl="Y">
+    <value column="Name" original="Collection Status">Estado da Cobraça</value>
+    <value column="PrintName" original="Collection Status">Estado da Cobraça</value>
+    <value column="Description" original="Invoice Collection Status">Estado da Cobraça de Faturas</value>
+    <value column="Help" original="Status of the invoice collection process">Estado do processo de cobraça de faturas</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="53222" trl="Y">
     <value column="Name" original="Activity Value">Valor da Atividade</value>
     <value column="PrintName" original="Activity Value">Valor da Atividade</value>
