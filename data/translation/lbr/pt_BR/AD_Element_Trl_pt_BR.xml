@@ -13,6 +13,22 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="348" trl="Y">
+    <value column="Name" original="Active">Ativo</value>
+    <value column="PrintName" original="Active">Ativo</value>
+    <value column="Description" original="The record is active in the system">O registro está ativo no sistema</value>
+    <value column="Help" original="There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+There are two reasons for de-activating and not deleting records:
+(1) The system requires the record for audit purposes.
+(2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.">Existem dois métodos de fazer os registros indisponíveis no sistema: Um é excluir o registro, o outro é desativar o registro. Um registro desativado não está disponível para seleção, mas disponível para relatórios.
+Há duas razões para desativar e não excluir registros:
+(1) O sistema requer o registro para propósitos de auditoria.
+(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Parceiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="369" trl="Y">
     <value column="Name" original="Document Controlled">Controlada por Documento</value>
     <value column="PrintName" original="Doc Controlled">Controlada por Documento</value>

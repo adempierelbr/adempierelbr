@@ -1851,7 +1851,7 @@ There are two reasons for de-activating and not deleting records:
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.">Existem dois métodos de fazer os registros indisponíveis no sistema: Um é excluir o registro, o outro é desativar o registro. Um registro desativado não está disponível para seleção, mas disponível para relatórios.
 Há duas razões para desativar e não excluir registros:
 (1) O sistema requer o registro para propósitos de auditoria.
-(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Pareiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
+(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Parceiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
