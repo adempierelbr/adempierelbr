@@ -290,10 +290,10 @@ Há duas razões para desativar e não excluir registros:
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000012" trl="Y">
-<value column="Name" original="CCM">CCM</value>
-<value column="PrintName" original="CCM">CCM</value>
-<value column="Description" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários</value>
-<value column="Help" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários</value>
+<value column="Name" original="CCM">CCM/IM</value>
+<value column="PrintName" original="CCM">CCM/IM</value>
+<value column="Description" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários ou Inscrição Municipal</value>
+<value column="Help" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários ou Inscrição Municipal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
