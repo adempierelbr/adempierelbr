@@ -63,6 +63,46 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="2390" trl="Y">
+    <value column="Name" original="Work Complete">Final do Trabalho</value>
+    <value column="PrintName" original="Work Complete">Final do Trabalho</value>
+    <value column="Description" original="Date when work is (planned to be) complete">Data (planejada) em que o trabalho estará completo</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2391" trl="Y">
+    <value column="Name" original="Work Start">Início do Trabalho</value>
+    <value column="PrintName" original="Work Start">Início do Trabalho</value>
+    <value column="Description" original="Date when work is (planned to be) started">Data (planejada) em que o trabalho será iniciado</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2404" trl="Y">
+    <value column="Name" original="Responses Accepted">Aceitar Respostas</value>
+    <value column="PrintName" original="Responses Accepted">Aceitar Respostas</value>
+    <value column="Description" original="Are Responses to the Request for Quotation accepted">Indica que as respostas para SdC ainda são aceitas</value>
+    <value column="Help" original="If selected, responses for the RfQ are accepted">Se selecionado, as respostas para a SdC são aceitas</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2563" trl="Y">
+    <value column="Name" original="Benchmark Price">Preço de Referência</value>
+    <value column="PrintName" original="Benchmark Price">Preço de Referência</value>
+    <value column="Description" original="Price to compare responses to">Preço base contra o qual compararemos as respostas</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="2784" trl="Y">
     <value column="Name" original="BOM Use">Uso da LDM</value>
     <value column="PrintName" original="BOM Use">Uso da LDM</value>
