@@ -89,6 +89,7 @@ public class SignatureUtil
 	public static final String EVENTO				="4";
 	public static final String RPS					="5";
 	public static final String RECEPCAO_MDFE		="6";
+	public static final String OUTROS	="9";
 	
 	/**		Algoritmos		*/
 	private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
@@ -105,10 +106,25 @@ public class SignatureUtil
 	
 	private MOrgInfo oi				= null;
 	private String docType			= null;
+	private String tag				= null;
 	
 	/**	Logger				*/
 	private static CLogger log = CLogger.getCLogger (SignatureUtil.class);
 
+
+	/**
+	 * 	Signature Constructor
+	 */
+	public SignatureUtil (MOrgInfo oi, String docType, String tag)
+	{
+		this (oi, docType);
+		//
+		this.tag = tag;
+		
+		if (OUTROS.equals (docType) && tag == null)
+			throw new AdempiereException ("Invalid Document Type of Signature - Tag for signature is empty");
+	}	//	SignatureUtil
+	
 	/**
 	 * 	Signature Constructor
 	 */
@@ -116,6 +132,9 @@ public class SignatureUtil
 	{
 		this.oi 		= oi;
 		this.docType 	= docType;
+		//
+		if (docType == null)
+			throw new AdempiereException ("Invalid Document Type of Signature");
 	}	//	SignatureUtil
 
 	/**
@@ -449,6 +468,8 @@ public class SignatureUtil
 			return "RPS";
 		else if (docType.equals(RECEPCAO_MDFE))
 			return "infMDFe";
+		else if (docType.equals(OUTROS))
+			return tag;
 		else
 			return "";
 	}	//	getSignedTag
