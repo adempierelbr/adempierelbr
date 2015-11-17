@@ -2040,7 +2040,7 @@
     <value column="Description" original="" />
   </row>
   <row id="658" trl="Y">
-    <value column="Name" original="Quote Total only">Somente Cotar Totais</value>
+    <value column="Name" original="Quote Total only">Cotar Somente Totais</value>
     <value column="Description" original="" />
   </row>
   <row id="659" trl="Y">
@@ -2048,7 +2048,7 @@
     <value column="Description" original="" />
   </row>
   <row id="660" trl="Y">
-    <value column="Name" original="Quote All Lines">Cotar todas as linhas</value>
+    <value column="Name" original="Quote All Lines">Cotar Todas as Linhas</value>
     <value column="Description" original="" />
   </row>
   <row id="661" trl="Y">

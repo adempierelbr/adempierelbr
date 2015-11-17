@@ -737,15 +737,24 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	protected boolean beforeSave(boolean newRecord)
 	{
 		//	Ajusta o valor do CFOP
-		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_CFOP_ID))
-				&& getLBR_CFOP_ID() > 0)
-			setlbr_CFOPName(getLBR_CFOP().getValue());
+		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_CFOP_ID)))
+			setlbr_CFOPName(getLBR_CFOP_ID() > 0 ? getLBR_CFOP().getValue() : null);
 		
 		//	Ajusta o valor do NCM
-		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_NCM_ID))
-				&& getLBR_NCM_ID() > 0)
-			setlbr_NCMName(getLBR_NCM().getValue());
+		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_NCM_ID)))
+			setlbr_NCMName(getLBR_NCM_ID() > 0 ? getLBR_NCM().getValue() : null);
 		
+		//	Ajusta o valor da UDM
+		if ((newRecord || is_ValueChanged(COLUMNNAME_C_UOM_ID)))
+		{
+			if (getC_UOM_ID() > 0)
+			{
+				MUOM uom = MUOM.get(getCtx(), getC_UOM_ID());
+				setlbr_UOMName(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol));
+			}
+			else
+				setlbr_NCMName(null);
+		}	
 		return true;
 	}	//	beforeSave
 	
