@@ -17,6 +17,9 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.text.MaskFormatter;
+
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -151,4 +154,25 @@ public class MLBRDI extends X_LBR_DI
 
 		return adl.getLBR_ADILine_ID();
 	}
+	
+	@Override
+	protected boolean beforeSave (boolean newRecord)
+	{
+		if (newRecord)
+		{
+			//		** Máscara da DI **
+			String doc = TextUtil.toNumeric(getDocumentNo());
+			if (doc != null && doc.length() == 10)
+			{
+				try
+				{
+					MaskFormatter mf = new MaskFormatter("##/#######-#");
+					mf.setValueContainsLiteralCharacters(false);
+					setDocumentNo (mf.valueToString (doc));
+				}
+				catch (Exception e) {}
+			}
+		}
+		return true;
+	}	//	beforeSave
 }	//	MLBRDI
