@@ -35,6 +35,7 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPaymentTerm;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -455,6 +456,15 @@ public class ValidatorInvoice implements ModelValidator
 			//
 			if (whInvoice != 0 && whInvoice != invoice.getC_Invoice_ID())
 				return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
+			
+			//	Não Permite Estornar Fatura ligada a uma Nota Fiscal Válida
+			MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx, wInvoice.getLBR_NotaFiscal_ID(), trxName);
+			
+			if(!MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_INVOICE_WITH_NF", false, wInvoice.getAD_Client_ID()))
+			{
+				if( wInvoice.getLBR_NotaFiscal_ID() != 0 && nf != null && !(nf.getDocStatus().equalsIgnoreCase("VO")))
+					return "Não é possível estornar uma Fatura que tenha vínculo com uma NF que não esteja cancelada!";
+			}
 		}	//	TIMING_BEFORE_REACTIVATE, VOID, CLOSE, REVERSECORRECT
 
 		return null;
