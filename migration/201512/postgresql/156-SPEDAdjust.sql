@@ -2140,5 +2140,7 @@ UNION
 ALTER TABLE lbr_factfiscalbase
   OWNER TO adempiere;
 
-
+-- 26/11/2015 16h2min44s BRST
+SELECT Register_Migration_Script ('156-SPEDAdjust.sql') FROM DUAL
+;
 
