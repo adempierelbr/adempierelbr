@@ -129,11 +129,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original="Consulta o Cadastro de um Parceiro de Negócio no SEFAZ">Consulta o Cadastro de um Parceiro de Negócio no SEFAZ</value>
 <value column="Help" original=""/>
 </row>
-<row id="1120004" trl="Y">
-<value column="Name" original="Geração de Certificados NFe">Geração de Certificados NF-e</value>
-<value column="Description" original="Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService">Processo para geração de certificados publicos de todos os WebServices cadastrados em LBR_NFeWebService (obsoleto com a utilização do "Dinamic Factory")</value>
-<value column="Help" original=""/>
-</row>
 <row id="1120012" trl="Y">
 <value column="Name" original="AvgCost - Create Records (Manufactured)">Custo Médio - Criar (Fabricados)</value>
 <value column="Description" original=""/>
@@ -165,7 +160,7 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Help" original=""/>
 </row>
 <row id="1120037" trl="Y">
-<value column="Name" original="Process CCe">Process CC-e</value>
+<value column="Name" original="Process NFeEvent">Process NFeEvent</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -186,8 +181,8 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 </row>
 <row id="1120126" trl="Y">
 <value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
-<value column="Description" original="Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>
-<value column="Help" original=""/>
+<value column="Description" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas apriximadas de impostos de acordo com o IBPT</value>
+<value column="Help" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual."/>
 </row>
 <row id="1120147" trl="N">
 <value column="Name" original="Process Nota Fiscal">Processar Nota Fiscal</value>
@@ -203,5 +198,10 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Name" original="Send EMail">Enviar EMail</value>
 <value column="Description" original="Send EMail with Nota Fiscal">Enviar EMail com a Nota Fiscal</value>
 <value column="Help" original="Send EMail with Nota Fiscal">Envia o EMail da Nota Fiscal com o XML e DANFE para Notas Fiscais modelo 55 e 56. Para RPS e Notas Fiscais de Serviço é enviado apenas o PDF da Nota Fiscal.</value>
+</row>
+<row id="1120154" trl="Y">
+<value column="Name" original="Import Replenish">Importar Níveis de Estoque</value>
+<value column="Description" original="Import Replenish for Products">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
+<value column="Help" original=""/>
 </row>
 </adempiereTrl>

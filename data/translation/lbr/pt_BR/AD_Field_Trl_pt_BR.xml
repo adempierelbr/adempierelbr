@@ -47,4 +47,9 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1123892" trl="Y">
+<value column="Name" original="Tax Rate">Alíquota Nacional</value>
+<value column="Description" original="Indicates the Tax Rate">Indica a Alíquota do Imposto Nacional (%)</value>
+<value column="Help" original="Indicates the Tax Rate">Indica a Alíquota do Imposto Nacional (%)</value>
+</row>
 </adempiereTrl>

@@ -1357,7 +1357,7 @@ public class NFeXMLGenerator
 		}		
 				
 		//	Dados da cobrança
-		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
+		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx() && nf.getC_Invoice_ID() > 0)
 		{
 			//	Y. Dados da Cobrança
 			Cobr cobr = infNFe.addNewCobr();

@@ -1851,7 +1851,7 @@ There are two reasons for de-activating and not deleting records:
 (2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.">Existem dois métodos de fazer os registros indisponíveis no sistema: Um é excluir o registro, o outro é desativar o registro. Um registro desativado não está disponível para seleção, mas disponível para relatórios.
 Há duas razões para desativar e não excluir registros:
 (1) O sistema requer o registro para propósitos de auditoria.
-(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Pareiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
+(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Parceiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -8593,8 +8593,8 @@ Para sistemas Multi-Idiomas, o modelo é traduzido baseado no idioma selecionado
     <value column="PO_PrintName" original="" />
   </row>
   <row id="1576" trl="Y">
-    <value column="Name" original="PO Payment Term">Termo de Pagamento do PC</value>
-    <value column="PrintName" original="PO Payment Term">Termo de Pagamento do PC</value>
+    <value column="Name" original="PO Payment Term">Condição de Pagamento do PC</value>
+    <value column="PrintName" original="PO Payment Term">Condição de Pagamento do PC</value>
     <value column="Description" original="Payment rules for a purchase order">Regras de pagamento para um pedido de compras</value>
     <value column="Help" original="The PO Payment Term indicates the payment term that will be used when this purchase order becomes an invoice.">O "Termo de Pagamento do PC" indica o termo de pagamento que será usado quando este pedido de compras se tornar uma fatura.</value>
     <value column="PO_Description" original="" />
@@ -22871,10 +22871,10 @@ O ID é relacionado de 1 para 1 para o ID do contêiner</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="3092" trl="Y">
-    <value column="Name" original="Collection Status">Estado da Coleção</value>
-    <value column="PrintName" original="Collection Status">Estado da Coleção</value>
-    <value column="Description" original="Invoice Collection Status">Estado da Coleção de Faturas</value>
-    <value column="Help" original="Status of the invoice collection process">Estado do proesso da coleção de faturas</value>
+    <value column="Name" original="Collection Status">Estado da Cobraça</value>
+    <value column="PrintName" original="Collection Status">Estado da Cobraça</value>
+    <value column="Description" original="Invoice Collection Status">Estado da Cobraça de Faturas</value>
+    <value column="Help" original="Status of the invoice collection process">Estado do processo de cobraça de faturas</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />

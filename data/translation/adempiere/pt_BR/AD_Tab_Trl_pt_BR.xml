@@ -5389,7 +5389,7 @@ Valido De/Para é determinado pelo imposto pai.</value>
     <value column="Help" original="" />
   </row>
   <row id="53197" trl="Y">
-    <value column="Name" original="Product Price Vendor Break">Preço de Ruptura de Produto de Fornecedor</value>
+    <value column="Name" original="Product Price Vendor Break">Preço de Ruptura</value>
     <value column="CommitWarning" original="" />
     <value column="Description" original="" />
     <value column="Help" original="" />

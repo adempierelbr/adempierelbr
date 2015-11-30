@@ -53,7 +53,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.RecepcaoEventoStub;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsg;
+import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsgE;
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -67,12 +68,16 @@ public abstract class NFeUtil
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 
 	/** Versão				*/
-	public static final String VERSAO_LAYOUT			= "3.10";
+	public static final String VERSAO_LAYOUT	= "3.10";
 	public static final String VERSAO_APP		= "Kenos ERP 3.10";
+	@Deprecated
 	public static final String VERSAO_CCE		= "1.00";
+	public static final String VERSAO_EVENTO	= "1.00";
 
 	/** XML					*/
-	private static String FILE_EXT      = "-dst.xml";
+	public static final String DIST_XML_FILE_EXT 	= "-dst.xml";
+	public static final String PROC_XML_FILE_EXT 	= "-procNFe.xml";
+	public static final String XML_HEADER			= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	public static final long XML_SIZE   = 500;
 
 	/** Status				*/
@@ -130,13 +135,14 @@ public abstract class NFeUtil
 	 * @param region
 	 * @return NfeRecepcao2Stub.NfeCabecMsgE
 	 */
-	public static RecepcaoEventoStub.NfeCabecMsgE geraCabecEvento (String region)
+	@Deprecated
+	public static NfeCabecMsgE geraCabecEvento (String region)
 	{
-		RecepcaoEventoStub.NfeCabecMsg cabecMsg = new RecepcaoEventoStub.NfeCabecMsg();
+		NfeCabecMsg cabecMsg = new NfeCabecMsg();
 		cabecMsg.setCUF(region);
 		cabecMsg.setVersaoDados(VERSAO_CCE);
 
-		RecepcaoEventoStub.NfeCabecMsgE cabecMsgE = new RecepcaoEventoStub.NfeCabecMsgE();
+		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE();
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 		return cabecMsgE;
@@ -202,16 +208,17 @@ public abstract class NFeUtil
 			return attach;
 
 		String status = nf.getlbr_NFeStatus();
-
+		String xmlExt = DIST_XML_FILE_EXT;
+		
 		if (status.equals(AUTORIZADA)){ //Autorizado o uso da NF-e
-			FILE_EXT = "-dst.xml";
+			xmlExt = "-dst.xml";
 		}
 		else if (status.equals(CANCELADA) || status.equals(CANCELADAPOREVENTO)){ //Cancelamento de NF-e homologado
-			FILE_EXT = "-can.xml";
+			xmlExt = "-can.xml";
 		}
 
 		File xml = getAttachmentEntryFile(nf.getAttachment().getEntry(0));
-		if (xml == null || xml.getName().endsWith(FILE_EXT)) //Já está no padrão de distribuição
+		if (xml == null || xml.getName().endsWith(xmlExt)) //Já está no padrão de distribuição
 			return attach;
 
 	    String dados = XMLtoString(xml);
@@ -223,7 +230,7 @@ public abstract class NFeUtil
 	        		                                  status,getNFeStatus(status));
 		//
 		String dadosEmXML = cabecalho + dados + rodape;
-		attach = new File(TextUtil.generateTmpFile(dadosEmXML, nf.getlbr_NFeID() + FILE_EXT));
+		attach = new File(TextUtil.generateTmpFile(dadosEmXML, nf.getlbr_NFeID() + xmlExt));
 
 		nf.getAttachment(true).delete(true); //Exclui anexo anterior. BUG ADempiere
 

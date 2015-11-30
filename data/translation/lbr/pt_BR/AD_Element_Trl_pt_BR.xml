@@ -13,6 +13,22 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="348" trl="Y">
+    <value column="Name" original="Active">Ativo</value>
+    <value column="PrintName" original="Active">Ativo</value>
+    <value column="Description" original="The record is active in the system">O registro está ativo no sistema</value>
+    <value column="Help" original="There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+There are two reasons for de-activating and not deleting records:
+(1) The system requires the record for audit purposes.
+(2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.">Existem dois métodos de fazer os registros indisponíveis no sistema: Um é excluir o registro, o outro é desativar o registro. Um registro desativado não está disponível para seleção, mas disponível para relatórios.
+Há duas razões para desativar e não excluir registros:
+(1) O sistema requer o registro para propósitos de auditoria.
+(2) O registro é referenciado por outros registros. isto é, você não pode excluir um Parceiro de Negócios, se há faturas existentes para este registro de parceiro. Você desativa este Parceiro de Negócios e evita que este registro seja usado para futuras entradas.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="369" trl="Y">
     <value column="Name" original="Document Controlled">Controlada por Documento</value>
     <value column="PrintName" original="Doc Controlled">Controlada por Documento</value>
@@ -52,6 +68,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PO_Help" original="The Material Shipment / Receipt ">Remessa/Recebimento de Material </value>
     <value column="PO_Name" original="Receipt">Recebimento</value>
     <value column="PO_PrintName" original="Receipt">Recebimento</value>
+  </row>
+  <row id="1576" trl="Y">
+    <value column="Name" original="PO Payment Term">Condição de Pagamento do PC</value>
+    <value column="PrintName" original="PO Payment Term">Condição de Pagamento do PC</value>
+    <value column="Description" original="Payment rules for a purchase order">Regras de pagamento para um pedido de compras</value>
+    <value column="Help" original="The PO Payment Term indicates the payment term that will be used when this purchase order becomes an invoice.">O "Termo de Pagamento do PC" indica o termo de pagamento que será usado quando este pedido de compras se tornar uma fatura.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
   </row>
   <row id="2019" trl="Y">
     <value column="Name" original="Attribute Set Instance">Instância de Atributos</value>
@@ -128,6 +154,16 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
     <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
     <value column="Description" original="Set the value of the inventory count to Zero or On Hand Quantity">Defina o valor da contagem de estoque para Zero ou para Quantidade em Mãos</value>
     <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="3092" trl="Y">
+    <value column="Name" original="Collection Status">Estado da Cobraça</value>
+    <value column="PrintName" original="Collection Status">Estado da Cobraça</value>
+    <value column="Description" original="Invoice Collection Status">Estado da Cobraça de Faturas</value>
+    <value column="Help" original="Status of the invoice collection process">Estado do processo de cobraça de faturas</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
@@ -294,10 +330,10 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000012" trl="Y">
-<value column="Name" original="CCM">CCM</value>
-<value column="PrintName" original="CCM">CCM</value>
-<value column="Description" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários</value>
-<value column="Help" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários</value>
+<value column="Name" original="CCM">CCM/IM</value>
+<value column="PrintName" original="CCM">CCM/IM</value>
+<value column="Description" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários ou Inscrição Municipal</value>
+<value column="Help" original="City Identification Code used in Brazil (City Tax ID)">Cadastro de Contribuintes Mobiliários ou Inscrição Municipal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -1464,20 +1500,20 @@ The callout is a Java class implementing org.compiere.model.Callout and a method
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000171" trl="Y">
-<value column="Name" original="Has WithHold">Possui Retenção</value>
-<value column="PrintName" original="Has WithHold">Possui Retenção</value>
-<value column="Description" original="Defines if the Tax, has WithHold">Define se o Imposto possui Retenção</value>
-<value column="Help" original="Defines if the Tax, has WithHold">Define se o Imposto possui Retenção</value>
+<value column="Name" original="Has Withhold">Possui Retenção</value>
+<value column="PrintName" original="Has Withhold">Possui Retenção</value>
+<value column="Description" original="Defines if the Tax, has Withhold">Define se o Imposto possui Retenção</value>
+<value column="Help" original="Defines if the Tax, has Withhold">Define se o Imposto possui Retenção</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000172" trl="Y">
-<value column="Name" original="WithHold Threshold">Limiar da Retenção</value>
-<value column="PrintName" original="WithHold Threshold">Limiar da Retenção</value>
-<value column="Description" original="Defines the WithHold Threshold ">Define o Limiar da Retenção</value>
-<value column="Help" original="Defines the WithHold Threshold ">Define o Limiar da Retenção</value>
+<value column="Name" original="Withhold Threshold">Limiar da Retenção</value>
+<value column="PrintName" original="Withhold Threshold">Limiar da Retenção</value>
+<value column="Description" original="Defines the Withhold Threshold ">Define o Limiar da Retenção</value>
+<value column="Help" original="Defines the Withhold Threshold ">Define o Limiar da Retenção</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2777,16 +2813,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000339" trl="Y">
-<value column="Name" original="Tax Included List">Lista de Impostos Inclusos</value>
-<value column="PrintName" original="Tax Included List">Lista de Impostos Inclusos</value>
-<value column="Description" original="Defines the Tax Included List">Defines the Tax Included List</value>
-<value column="Help" original="Primary key table LBR_TaxIncludedList">Primary key table LBR_TaxIncludedList</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000344" trl="Y">
 <value column="Name" original="Reference Invoice Line">Referência de Linha da Invoice</value>
 <value column="PrintName" original="Reference Invoice Line">Referência de Linha da Invoice</value>
@@ -3990,8 +4016,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1120496" trl="Y">
-<value column="Name" original="Carta de Correcao">Carta de Correção</value>
-<value column="PrintName" original="Carta de Correcao">Carta de Correção</value>
+<value column="Name" original="NFe Event">Evento da NFe</value>
+<value column="PrintName" original="NFe Event">Evento da NFe</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -4070,16 +4096,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1121263" trl="Y">
-<value column="Name" original="ToProcessSPED">Processar SPED</value>
-<value column="PrintName" original="ToProcessSPED">Processar SPED</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1121271" trl="N">
 <value column="Name" original="Tax Assessment">Apuração de Impostos</value>
 <value column="PrintName" original="Tax Assessment">Apuração de Impostos</value>
@@ -4091,8 +4107,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121272" trl="N">
-<value column="Name" original="booknumber">Número do Livro</value>
-<value column="PrintName" original="booknumber">Número do Livro</value>
+<value column="Name" original="Book No">Número do Livro</value>
+<value column="PrintName" original="Book No">Número do Livro</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -4101,8 +4117,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121273" trl="N">
-<value column="Name" original="pagenumber">Número da Página</value>
-<value column="PrintName" original="pagenumber">pagenumber</value>
+<value column="Name" original="Page No">Número da Página</value>
+<value column="PrintName" original="Page No">pagenumber</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
@@ -4271,8 +4287,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121417" trl="Y">
-<value column="Name" original="Tax Rate(Imported)">Alíquota (Importado)</value>
-<value column="PrintName" original="Tax Rate(Imported)">Alíquota (Importado)</value>
+<value column="Name" original="Tax Rate Imported">Alíquota (Importado)</value>
+<value column="PrintName" original="Tax Rate Imported">Alíquota (Importado)</value>
 <value column="Description" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
 <value column="Help" original="Indicates the Imported Tax Rate ">Indica a Alíquota de Imposto para Importados </value>
 <value column="PO_Description" original=""/>
@@ -4496,6 +4512,176 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PrintName" original="NF-e Referenced">NF-e Referenciada</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121740" trl="Y">
+<value column="Name" original="Transaction Type Vendor">Tipo de Transação (Fornecedor)</value>
+<value column="PrintName" original="Transaction Type Vendor">Tipo de Transação (Fornecedor)</value>
+<value column="Description" original="Defines the Transaction Type of a Vendor on Business Partner">Define o Tipo de Transação do Fornecedor no cadastro de Parceiro de Negócio</value>
+<value column="Help" original="Defines the Transaction Type of a Vendor on Business Partner">Define o Tipo de Transação do Fornecedor no cadastro de Parceiro de Negócio</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121746" trl="Y">
+<value column="Name" original="Withhold Type">Tipo de Retenção</value>
+<value column="PrintName" original="Withhold Type">Tipo de Retenção</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121748" trl="N">
+<value column="Name" original="Product for Withhold">Produto para Retenção</value>
+<value column="PrintName" original="Product for Withhold">Produto para Retenção</value>
+<value column="Description" original="Product for Withhold to be used in sales/purchase orders">Produto usado para calcular as retenções de impostos nos pedidos/faturas</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121749" trl="Y">
+<value column="Name" original="Withhold Group">Grupo de Retenção</value>
+<value column="PrintName" original="Withhold Group">Grupo de Retenção</value>
+<value column="Description" original="Withhold Group">Grupo para efeito de calculo de retenção</value>
+<value column="Help" original="">Os impostos que estão no mesmo Grupo de Retenção são somados para verificação do Limiar de Retenção</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121753" trl="Y">
+<value column="Name" original="Cumulative Regime">Regime Cumulativo</value>
+<value column="PrintName" original="Cumulative Regime">Regime Cumulativo</value>
+<value column="Description" original="For PIS and COFINS Tax"/>
+<value column="Help" original="For PIS and COFINS Tax"/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121771" trl="N">
+<value column="Name" original="Import Replenish">Import Replenish</value>
+<value column="PrintName" original="Import Replenish">Import Replenish</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121779" trl="Y">
+<value column="Name" original="LBR_NFETransmitter">Transmitir</value>
+<value column="PrintName" original="Transmit">Transmitir</value>
+<value column="Description" original="Function to send RPS file">Função para envio de arquivo RPS </value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121784" trl="Y">
+<value column="Name" original="Region Export ">UF de Embarque</value>
+<value column="PrintName" original="Region Export ">UF de Embarque</value>
+<value column="Description" original="Acronym boarding Region or boundary crossing">Sigla da Região de Embarque ou de transposição de fronteira</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121785" trl="Y">
+<value column="Name" original="Export Place">Local de Embarque</value>
+<value column="PrintName" original="Export Place">Local de Embarque</value>
+<value column="Description" original="Description boarding location or border transposing">Descrição do Local de Embarque ou de transposição de fronteira</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121786" trl="Y">
+<value column="Name" original="Dispatch Place">Local de Despacho</value>
+<value column="PrintName" original="Dispatch Place">Local de Despacho</value>
+<value column="Description" original="Dispatch Place Description">Descrição do local de despacho</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121791" trl="N">
+<value column="Name" original="Event Type">Event Type</value>
+<value column="PrintName" original="Event Type">Event Type</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121792" trl="Y">
+<value column="Name" original="CST Group">Grupo CST</value>
+<value column="PrintName" original="CST Group">Grupo CST</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121793" trl="Y">
+<value column="Name" original="Tax Legal Framework">Enquadramento Legal Imposto</value>
+<value column="PrintName" original="Tax Legal Framework">Enquadramento Legal Imposto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121797" trl="Y">
+<value column="Name" original="Tax Rate Region">Alíquota Estadual</value>
+<value column="PrintName" original="Tax Rate Region">Alíquota Estadual</value>
+<value column="Description" original="">Alíquota de Imposto Estadual</value>
+<value column="Help" original="">Alíquota de Imposto Estadual</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121798" trl="Y">
+<value column="Name" original="Tax Rate City">Alíquota Municipal</value>
+<value column="PrintName" original="Tax Rate City">Alíquota Municipal</value>
+<value column="Description" original="">Alíquota de Imposto Municipal</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121799" trl="Y">
+<value column="Name" original="Source">Origem</value>
+<value column="PrintName" original="Source of information">Origem</value>
+<value column="Description" original="">Origem da Informação</value>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121800" trl="Y">
+<value column="Name" original="Show IBPT">Mostrar IBPT</value>
+<value column="PrintName" original="Show IBPT">Mostrar IBPT</value>
+<value column="Description" original="">Mostra as informações de trubutação do IBPT na Nota Fiscal</value>
+<value column="Help" original="">Mostra as informações de trubutação do IBPT na Nota Fiscal</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>

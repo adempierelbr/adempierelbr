@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="base/src"/>
 	<classpathentry kind="src" path="boleto/src"/>
-	<classpathentry kind="src" path="cce/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
@@ -13,8 +12,9 @@
 	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils-1.9.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-132.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-132.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-138.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-138.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bctsp-jdk14-1.38.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/checkstyle-all-4.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/FontBox-0.2.0-dev.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/JempBox-0.2.0.jar"/>
@@ -38,7 +38,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-local-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/httpcore-4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8g.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8g.jar" sourcepath="lib/nfebeans-v8g-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v6v.jar" sourcepath="lib/nfebeans-v6v-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-canc-v101.jar" sourcepath="lib/nfebeans-canc-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-cce-v101.jar" sourcepath="lib/nfebeans-cce-v101-souces.jar"/>

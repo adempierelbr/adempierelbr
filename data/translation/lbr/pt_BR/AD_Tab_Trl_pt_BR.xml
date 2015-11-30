@@ -2,6 +2,12 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Tab">
+  <row id="53197" trl="Y">
+    <value column="Name" original="Product Price Vendor Break">Preço de Ruptura</value>
+    <value column="CommitWarning" original="" />
+    <value column="Description" original="" />
+    <value column="Help" original="" />
+  </row>
 <row id="1000000" trl="Y">
 <value column="Name" original="Bank">Banco</value>
 <value column="CommitWarning" original=""/>
@@ -242,12 +248,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000041" trl="Y">
-<value column="Name" original="Tax Included List">Imposto Incluso</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000042" trl="Y">
 <value column="Name" original="Header">Cabeçalho</value>
 <value column="CommitWarning" original=""/>
@@ -369,7 +369,7 @@
 <value column="Help" original=""/>
 </row>
 <row id="1120049" trl="Y">
-<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="Name" original="Event">Evento</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -436,6 +436,24 @@
 </row>
 <row id="1120179" trl="Y">
 <value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120195" trl="Y">
+<value column="Name" original="Replenish">Importar Níveis de Estoque</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Import Replenish">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120199" trl="N">
+<value column="Name" original="Tax Legal Framework">Enquadramento Legal Imposto</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120200" trl="Y">
+<value column="Name" original="Shipper">Transportadora</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>

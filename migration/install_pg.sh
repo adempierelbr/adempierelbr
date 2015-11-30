@@ -25,11 +25,11 @@ echo "."
 read -s -p "Enter Password: " pass
 echo ""
 export PGPASSWORD=$pass
-for f in $(ls $1/postgresql/*.sql); do
+for f in $(find $1/postgresql/ -name *.sql); do
 	echo ". Execultando Script" $f >> result_pg.log
 	$PSQL -d $2 -U $3 -f $f >> result_pg.log 2>&1
 done
-for f in $(ls post_install/postgresql/*.sql); do
+for f in $(find post_install/postgresql/ -name *.sql); do
 	echo ". Execultando Script" $f >> result_pg.log
 	$PSQL -d $2 -U $3 -f $f >> result_pg.log 2>&1
 done
