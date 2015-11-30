@@ -248,12 +248,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000041" trl="Y">
-<value column="Name" original="Tax Included List">Imposto Incluso</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000042" trl="Y">
 <value column="Name" original="Header">Cabeçalho</value>
 <value column="CommitWarning" original=""/>
@@ -375,7 +369,7 @@
 <value column="Help" original=""/>
 </row>
 <row id="1120049" trl="Y">
-<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="Name" original="Event">Evento</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -442,6 +436,24 @@
 </row>
 <row id="1120179" trl="Y">
 <value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120195" trl="Y">
+<value column="Name" original="Replenish">Importar Níveis de Estoque</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Import Replenish">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120199" trl="N">
+<value column="Name" original="Tax Legal Framework">Enquadramento Legal Imposto</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120200" trl="Y">
+<value column="Name" original="Shipper">Transportadora</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>

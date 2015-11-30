@@ -3082,4 +3082,156 @@
 <value column="Name" original="Waiting Confirmation">Aguardando a SeFaz</value>
 <value column="Description" original=""/>
 </row>
+<row id="1121569" trl="Y">
+<value column="Name" original="CT-e">CT-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121570" trl="Y">
+<value column="Name" original="Paid Amount Sum">Somatório do Valor Pago</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121571" trl="Y">
+<value column="Name" original="Tax Amount">Valor do Imposto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121572" trl="N">
+<value column="Name" original="Nota Fiscal de Consumidor Eletrônica">Nota Fiscal de Consumidor Eletrônica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121573" trl="Y">
+<value column="Name" original="PM - Individual Minor">Pessoa Física (Menor de Idade)</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121574" trl="N">
+<value column="Name" original="XX - Foreigner">Estrangeiro</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121575" trl="Y">
+<value column="Name" original="PF - Individual">Pessoa Física</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121576" trl="Y">
+<value column="Name" original="PJ - Legal Entity">Pessoa Jurídica</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121588" trl="N">
+<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121589" trl="N">
+<value column="Name" original="Cancelamento">Cancelamento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121590" trl="N">
+<value column="Name" original="Encerramento Homologado">Encerramento Homologado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121591" trl="N">
+<value column="Name" original="EPEC CT-e">EPEC CT-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121592" trl="N">
+<value column="Name" original="Inclusao de Condutor">Inclusão de Condutor</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121593" trl="N">
+<value column="Name" original="EPEC NF-e">EPEC NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121594" trl="N">
+<value column="Name" original="Registro Multimodal">Registro Multimodal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121595" trl="N">
+<value column="Name" original="Confirmacao da Operacao">Confirmação da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121596" trl="N">
+<value column="Name" original="Ciencia da Operacao">Ciência da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121597" trl="N">
+<value column="Name" original="Desconhecimento da Operacao">Desconhecimento da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121598" trl="N">
+<value column="Name" original="Operacao nao Realizada">Operação não Realizada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121599" trl="N">
+<value column="Name" original="Registro de Passagem">Registro de Passagem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121600" trl="N">
+<value column="Name" original="Registro de Passagem BRID">Registro de Passagem BRID</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121601" trl="N">
+<value column="Name" original="CT-e Autorizado para NF-e">CT-e Autorizado para NF-e</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121602" trl="N">
+<value column="Name" original="Registro de Passagem para NF-e Cancelado">Registro de Passagem para NF-e Cancelado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121603" trl="N">
+<value column="Name" original="Registro de Passagem para NF-e RFID">Registro de Passagem para NF-e RFID</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121604" trl="N">
+<value column="Name" original="CT-e Cancelado">CT-e Cancelado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121605" trl="N">
+<value column="Name" original="MDF-e Cancelado">MDF-e Cancelado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121606" trl="N">
+<value column="Name" original="Vistoria SUFRAMA">Vistoria SUFRAMA</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121607" trl="N">
+<value column="Name" original="Imunidade">Imunidade</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121608" trl="N">
+<value column="Name" original="Suspensão">Suspensão</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121609" trl="N">
+<value column="Name" original="Isenção">Isenção</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121610" trl="N">
+<value column="Name" original="Redução">Redução</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121611" trl="N">
+<value column="Name" original="Outros">Outros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121628" trl="Y">
+<value column="Name" original="Carta de Correcao">Carta de Correção</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121629" trl="N">
+<value column="Name" original="Cancelamento">Cancelamento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121630" trl="Y">
+<value column="Name" original="Confirmacao da Operacao">Confirmação da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121631" trl="Y">
+<value column="Name" original="Ciencia da Operacao">Ciência da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121632" trl="Y">
+<value column="Name" original="Desconhecimento da Operacao">Desconhecimento da Operação</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121633" trl="Y">
+<value column="Name" original="Operacao nao Realizada">Operação não Realizada</value>
+<value column="Description" original=""/>
+</row>
 </adempiereTrl>

@@ -60,4 +60,16 @@ Cobrança - {0}
 Telefone: {1}</value>
 <value column="MsgTip" original=""/>
 </row>
+<row id="1120033" trl="N">
+<value column="MsgText" original="Este e-mail é enviado automaticamente, por favor não responda.&lt;br&gt;&lt;br&gt;Prezado cliente,&lt;br&gt;&lt;br&gt;Anexo à este e-mail você está recebendo o arquivo XML da Nota Fiscal Eletrônica. Este arquivo deve ser armazenado eletronicamente por sua empresa pelo prazo de 05 (cinco) anos, conforme previsto na legislação tributária (Art. 173 do Código Tributário Nacional e § 4º da Lei 5.172 de 25/10/1966).&lt;br&gt;&lt;br&gt;O DANFE em papel seguirá junto com a mercadoria e poderá ser arquivado para apresentação ao fisco quando solicitado. Todavia, se sua empresa também for emitente de NF-e, o arquivamento eletrônico do XML de seus fornecedores é obrigatório, sendo passível de fiscalização.&lt;br&gt;&lt;br&gt;Para se certificar que esta NF-e é válida, queira por favor consultar sua autenticidade no site nacional do projeto NF-e (www.nfe.fazenda.gov.br), utilizando a chave de acesso contida no DANFE.&lt;br&gt;&lt;br&gt;--&lt;br&gt;Atenciosamente,&lt;br&gt;@AD_Org_ID&lt;Name&gt;@.&lt;br&gt;Nota Fiscal emitida pelo sistema Kenos ERP Adempiere (www.kenos.com.br)"><![CDATA[Este e-mail é enviado automaticamente, por favor não responda.<br><br>Prezado cliente,<br><br>Anexo à este e-mail você está recebendo o arquivo XML da Nota Fiscal Eletrônica. Este arquivo deve ser armazenado eletronicamente por sua empresa pelo prazo de 05 (cinco) anos, conforme previsto na legislação tributária (Art. 173 do Código Tributário Nacional e § 4º da Lei 5.172 de 25/10/1966).<br><br>O DANFE em papel seguirá junto com a mercadoria e poderá ser arquivado para apresentação ao fisco quando solicitado. Todavia, se sua empresa também for emitente de NF-e, o arquivamento eletrônico do XML de seus fornecedores é obrigatório, sendo passível de fiscalização.<br><br>Para se certificar que esta NF-e é válida, queira por favor consultar sua autenticidade no site nacional do projeto NF-e (www.nfe.fazenda.gov.br), utilizando a chave de acesso contida no DANFE.<br><br>--<br>Atenciosamente,<br>@AD_Org_ID<Name>@.<br>Nota Fiscal emitida pelo sistema Kenos ERP Adempiere (www.kenos.com.br)]]></value>
+<value column="MsgTip" original=""/>
+</row>
+<row id="1120034" trl="N">
+<value column="MsgText" original="Save Error - No Change">Erro ao Salvar Registro - Sem modificações</value>
+<value column="MsgTip" original=""/>
+</row>
+<row id="1120035" trl="Y">
+<value column="MsgText" original="Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}">Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}</value>
+<value column="MsgTip" original=""/>
+</row>
 </adempiereTrl>

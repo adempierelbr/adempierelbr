@@ -158,9 +158,9 @@
 <value column="Help" original=""/>
 </row>
 <row id="1120053" trl="Y">
-<value column="Name" original="Carta de Correcao">Carta de Correção</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
+<value column="Name" original="NFe Event">Eventos da NF-e</value>
+<value column="Description" original="">Lançamento de Eventos da NF-e</value>
+<value column="Help" original="">Nesta janela é possível registrar eventos para uma NF-e emitida por você (Carta de Correção ou Cancelamento) ou por terceiros (Manifestação).</value>
 </row>
 <row id="1120076" trl="Y">
 <value column="Name" original="Gerar SPED">Gerar SPED</value>
@@ -185,6 +185,11 @@
 <row id="1120103" trl="Y">
 <value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
 <value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120107" trl="Y">
+<value column="Name" original="Import Replenish">Importar Níveis de Estoque</value>
+<value column="Description" original="Import Replenish">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
 <value column="Help" original=""/>
 </row>
 </adempiereTrl>

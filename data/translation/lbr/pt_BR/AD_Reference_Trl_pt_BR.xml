@@ -372,4 +372,29 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120214" trl="N">
+<value column="Name" original="LBR_TaxName - LBR_WithholdType">LBR_TaxName - LBR_WithholdType</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120215" trl="N">
+<value column="Name" original="BPTypeBR (PF PJ only)">Tipo de Pessoa (somente PF PJ)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120220" trl="Y">
+<value column="Name" original="LBR_EventType (All)">LBR_EventType (All)</value>
+<value column="Description" original="Type of Events"/>
+<value column="Help" original=""/>
+</row>
+<row id="1120221" trl="Y">
+<value column="Name" original="CST Group">Grupo CST</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120225" trl="N">
+<value column="Name" original="LBR_EventType">LBR_EventType</value>
+<value column="Description" original="Type of Events">Type of Events</value>
+<value column="Help" original=""/>
+</row>
 </adempiereTrl>
