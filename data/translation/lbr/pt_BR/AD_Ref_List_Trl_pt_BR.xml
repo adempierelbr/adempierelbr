@@ -38,6 +38,14 @@
     <value column="Name" original="Credit OK">Crédito OK</value>
     <value column="Description" original="" />
   </row>
+  <row id="658" trl="Y">
+    <value column="Name" original="Quote Total only">Cotar Somente Totais</value>
+    <value column="Description" original="" />
+  </row>
+  <row id="660" trl="Y">
+    <value column="Name" original="Quote All Lines">Cotar Todas as Linhas</value>
+    <value column="Description" original="" />
+  </row>
   <row id="742" trl="Y">
     <value column="Name" original="Current Active">Corrente (Ativa)</value>
     <value column="Description" original="" />
