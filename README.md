@@ -8,11 +8,15 @@ AdempiereLBR é a extensão para o projeto Adempiere contendo a tropicalização
 Instalando
 ==========
 
-Caso o Adempiere 360 LTS ainda não esteja funcionando, faça a instalação [seguindo as intruções aqui][1]
+O AdempiereLBR depende do [Adempiere 360 LTS](https://bitbucket.org/AdempiereLBR/adempiere) para funcionar, caso já tenho o Adempiere funcionando pule para o segundo passo.
 
+ 1. Instalação do Adempiere
+    1. [Download](https://bitbucket.org/AdempiereLBR/adempiere/downloads)
+    1. [Instruções em Inglês][1]
+    1. [Vídeo em Português para Instalação Windows](https://www.youtube.com/watch?v=ydpClOjXK48)
  1. [Copie a versão desejada do LBR, ex. LBR_201506.tgz][2]
- 2. Descompacte o arquivo copiado e coloque os arquivos `customization.jar` e `zkcustomization.jar` na pasta lib da sua instalação do Adempiere.
- 3. Execute o `RUN_silentsetup.sh` ou  `RUN_silentsetup.bat`
+ 1. Descompacte o arquivo copiado e coloque os arquivos `customization.jar` e `zkcustomization.jar` na pasta lib da sua instalação do Adempiere.
+ 1. Execute o `RUN_silentsetup.sh` ou  `RUN_silentsetup.bat`
 
 Banco de Dados Padrão
 =====================
