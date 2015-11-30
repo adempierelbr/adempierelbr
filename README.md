@@ -32,7 +32,7 @@ Atualizar Banco de Dados existente
 
 Para atualizar um banco de dados existente é necessário executar os scripts da pasta migration. Os scripts são organizados nesta pasta a cada nova TAG. Ex. caso esteja atualizando da versão LBR\_201506 para a versão LBR\_201508, será necessário executar os scripts das TAGs LBR\_201507 e LBR\_201508.
 
-Caso sua versão da LBR seja mais antiga (anterior a LBR\_201506) você deverá atualizar pela pasta db_scripts.
+Caso sua versão da LBR seja mais antiga (anterior a LBR\_201506) você deverá atualizar pela pasta migration/000000.
 
 Principais Recursos
 ===================
@@ -44,6 +44,7 @@ Principais Recursos
 	* Cancelamento
 	* Inutilização
 	* Carta de Correção Eletrônica
+	* Eventos de Manifestação
 
 1. SPEDs
 
@@ -66,6 +67,16 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201512 [[Download]][34] [[Seed PostgreSQL]][35] [[Seed OracleXE]][36]
+
+	* Melhorias na tradução
+	* Registro de Eventos de Manifestação no Ambiente Nacional
+	* Mudança de Carta de Correção para Eventos
+	* Adição da Centro de Custo na Requisição/Caixa/Usuário
+	* Aba de Transportadora no Parceiro de Negócios
+	* Reestruturação das tabelas do SPED
+	* [Mais detalhes][33]
+	
 1. LBR-201511 [[Download]][30] [[Seed PostgreSQL]][31] [[Seed OracleXE]][32]
 
 	* Melhorias na tradução
@@ -160,3 +171,7 @@ Patrocinadores desta versão
 [30]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201511.tgz
 [31]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_PG.tgz
 [32]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_ORA.tgz
+[33]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201512
+[34]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201512.tgz
+[35]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_PG.tgz
+[36]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_ORA.tgz
