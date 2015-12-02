@@ -72,8 +72,8 @@ public class B0R0150 implements RegSacred{
 			+ PIPE + TextUtil.toNumeric(COD_PART) 
 			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(NOME),0,255)
 			+ PIPE + TextUtil.lPad(COD_PAIS, 5)
-			+ PIPE + TextUtil.formatStringCodes(CNPJ)
-			+ PIPE + TextUtil.formatStringCodes(IE)
+			+ PIPE + TextUtil.toNumeric(CNPJ)
+			+ PIPE + TextUtil.toNumeric(IE)
 			+ PIPE + UF
 			+ PIPE + TextUtil.lPad(TextUtil.toNumeric(CEP), 8)
 			+ PIPE + TextUtil.checkSize(TextUtil.retiraEspecial(END),0,255)

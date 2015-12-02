@@ -60,9 +60,9 @@ public class B0R0000 implements RegSacred{
 			+ PIPE + COD_FIN
 			+ PIPE + TextUtil.timeToString(PERIODO, "MMyyyy")
 			+ PIPE + TextUtil.checkSize(NOME,1,255)
-			+ PIPE + TextUtil.formatStringCodes(CNPJ)
-			+ PIPE + TextUtil.formatStringCodes(IE)
-			+ PIPE + TextUtil.formatStringCodes(CNAE)
+			+ PIPE + TextUtil.toNumeric(CNPJ)
+			+ PIPE + TextUtil.toNumeric(IE)
+			+ PIPE + TextUtil.toNumeric(CNAE)
 			+ PIPE + COD_MUN
 			+ PIPE + OP_CRD_OUT
 			+ PIPE + IE_INTIMA;
