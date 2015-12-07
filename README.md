@@ -8,10 +8,10 @@ AdempiereLBR é a extensão para o projeto Adempiere contendo a tropicalização
 Instalando
 ==========
 
-O AdempiereLBR depende do [Adempiere 360 LTS](https://bitbucket.org/AdempiereLBR/adempiere) para funcionar, caso já tenho o Adempiere funcionando pule para o segundo passo.
+O AdempiereLBR depende do [Adempiere 360 LTS](https://bitbucket.org/AdempiereLBR/adempiere360) para funcionar, caso já tenho o Adempiere funcionando pule para o segundo passo.
 
  1. Instalação do Adempiere
-    1. [Download](https://bitbucket.org/AdempiereLBR/adempiere/downloads)
+    1. [Download](https://bitbucket.org/AdempiereLBR/adempiere360/downloads)
     1. [Instruções em Inglês][1]
     1. [Vídeo em Português para Instalação Windows](https://www.youtube.com/watch?v=ydpClOjXK48)
  1. [Copie a versão desejada do LBR, ex. LBR_201506.tgz][2]
