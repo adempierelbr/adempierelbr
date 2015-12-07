@@ -129,6 +129,16 @@ Há duas razões para desativar e não excluir registros:
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="2739" trl="Y">
+    <value column="Name" original="Menu RfQs">Menu de SdCs</value>
+    <value column="PrintName" original="RfQs">SdCs</value>
+    <value column="Description" original="Show Menu RfQs">Mostrar Menu de SdCs</value>
+    <value column="Help" original="" />
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="2784" trl="Y">
     <value column="Name" original="BOM Use">Uso da LDM</value>
     <value column="PrintName" original="BOM Use">Uso da LDM</value>

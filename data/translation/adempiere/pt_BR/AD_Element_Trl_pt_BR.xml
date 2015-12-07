@@ -19502,9 +19502,9 @@ Exemplo: "Alterada-Criada" poderia listar a idade das entradas em dias</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="2739" trl="Y">
-    <value column="Name" original="Menu RfQs">Menu de RdCs</value>
-    <value column="PrintName" original="RfQs">RdCs</value>
-    <value column="Description" original="Show Menu RfQs">Mostrar Menu de RdCs</value>
+    <value column="Name" original="Menu RfQs">Menu de SdCs</value>
+    <value column="PrintName" original="RfQs">SdCs</value>
+    <value column="Description" original="Show Menu RfQs">Mostrar Menu de SdCs</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
