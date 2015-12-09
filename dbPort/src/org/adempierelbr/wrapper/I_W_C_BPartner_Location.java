@@ -26,6 +26,32 @@ public interface I_W_C_BPartner_Location extends I_C_BPartner_Location
 {
 
 
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
+
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+
+	/** 1 - Contribuinte do ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
+
+	/** 2 - Contribuinte Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
+
+	/** 9 - Não Contribuinte = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
+
+
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
+
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest();
+
     /** Column name lbr_BPTypeBRIsValid */
     public static final String COLUMNNAME_lbr_BPTypeBRIsValid = "lbr_BPTypeBRIsValid";
 
@@ -77,17 +103,4 @@ public interface I_W_C_BPartner_Location extends I_C_BPartner_Location
 	  * Used to Identify the IE (State Tax ID)
 	  */
 	public String getlbr_IE();
-
-    /** Column name lbr_IsIEExempt */
-    public static final String COLUMNNAME_lbr_IsIEExempt = "lbr_IsIEExempt";
-
-	/** Set IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public void setlbr_IsIEExempt (boolean lbr_IsIEExempt);
-
-	/** Get IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public boolean islbr_IsIEExempt();
 }

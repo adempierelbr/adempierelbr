@@ -106,6 +106,32 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public boolean isLBR_HasWithhold();
 
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
+
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+
+	/** 1 - Contribuinte do ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
+
+	/** 2 - Contribuinte Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
+
+	/** 9 - Não Contribuinte = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
+
+
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
+
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest();
+
     /** Column name LBR_VendorCategory_ID */
     public static final String COLUMNNAME_LBR_VendorCategory_ID = "LBR_VendorCategory_ID";
 
@@ -121,6 +147,22 @@ public interface I_W_C_BPartner extends I_C_BPartner
 
     /** Column name lbr_BPTypeBR */
     public static final String COLUMNNAME_lbr_BPTypeBR = "lbr_BPTypeBR";
+
+	/** lbr_BPTypeBR AD_Reference_ID=1000000 */
+	public static final int LBR_BPTYPEBR_AD_Reference_ID=1000000;
+
+	/** PJ - Legal Entity = PJ */
+	public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
+
+	/** PF - Individual = PF */
+	public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+
+	/** PM - Individual Minor = PM */
+	public static final String LBR_BPTYPEBR_PM_IndividualMinor = "PM";
+
+	/** XX - Foreigner = XX */
+	public static final String LBR_BPTYPEBR_XX_Foreigner = "XX";
+
 
 	/** Set Brazilian BP Type.
 	  * Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual)
@@ -210,19 +252,6 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public String getlbr_IE();
 
-    /** Column name lbr_IsIEExempt */
-    public static final String COLUMNNAME_lbr_IsIEExempt = "lbr_IsIEExempt";
-
-	/** Set IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public void setlbr_IsIEExempt (boolean lbr_IsIEExempt);
-
-	/** Get IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public boolean islbr_IsIEExempt();
-
     /** Column name lbr_NFDescription */
     public static final String COLUMNNAME_lbr_NFDescription = "lbr_NFDescription";
 
@@ -239,6 +268,112 @@ public interface I_W_C_BPartner extends I_C_BPartner
     /** Column name lbr_NFModel */
     public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
 
+	/** lbr_NFModel AD_Reference_ID=1120009 */
+	public static final int LBR_NFMODEL_AD_Reference_ID=1120009;
+
+	/** Nota Fiscal = 01 */
+	public static final String LBR_NFMODEL_NotaFiscal = "01";
+
+	/** Nota Fiscal Avulsa = 1B */
+	public static final String LBR_NFMODEL_NotaFiscalAvulsa = "1B";
+
+	/** Nota Fiscal de Venda a Consumidor = 02 */
+	public static final String LBR_NFMODEL_NotaFiscalDeVendaAConsumidor = "02";
+
+	/** Cupom Fiscal emitido por ECF = 2D */
+	public static final String LBR_NFMODEL_CupomFiscalEmitidoPorECF = "2D";
+
+	/** Bilhete de Passagem emitido por ECF = 2E */
+	public static final String LBR_NFMODEL_BilheteDePassagemEmitidoPorECF = "2E";
+
+	/** Nota Fiscal de Produtor = 04 */
+	public static final String LBR_NFMODEL_NotaFiscalDeProdutor = "04";
+
+	/** Nota Fiscal/Conta de Energia Elétrica = 06 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeEnergiaElétrica = "06";
+
+	/** Nota Fiscal de Serviço de Transporte = 07 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeTransporte = "07";
+
+	/** Conhecimento de Transporte Rodoviário de Cargas = 08 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteRodoviárioDeCargas = "08";
+
+	/** Conhecimento de Transporte de Cargas Avulso = 8B */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteDeCargasAvulso = "8B";
+
+	/** Conhecimento de Transporte Aquaviário de Cargas = 09 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteAquaviárioDeCargas = "09";
+
+	/** Conhecimento Aéreo = 10 */
+	public static final String LBR_NFMODEL_ConhecimentoAéreo = "10";
+
+	/** Conhecimento de Transporte Ferroviário de Cargas = 11 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteFerroviárioDeCargas = "11";
+
+	/** Bilhete de Passagem Rodoviário = 13 */
+	public static final String LBR_NFMODEL_BilheteDePassagemRodoviário = "13";
+
+	/** Bilhete de Passagem Aquaviário = 14 */
+	public static final String LBR_NFMODEL_BilheteDePassagemAquaviário = "14";
+
+	/** Bilhete de Passagem e Nota de Bagagem = 15 */
+	public static final String LBR_NFMODEL_BilheteDePassagemENotaDeBagagem = "15";
+
+	/** Despacho de Transporte = 17 */
+	public static final String LBR_NFMODEL_DespachoDeTransporte = "17";
+
+	/** Bilhete de Passagem Ferroviário = 16 */
+	public static final String LBR_NFMODEL_BilheteDePassagemFerroviário = "16";
+
+	/** Resumo de Movimento Diário = 18 */
+	public static final String LBR_NFMODEL_ResumoDeMovimentoDiário = "18";
+
+	/** Ordem de Coleta de Cargas = 20 */
+	public static final String LBR_NFMODEL_OrdemDeColetaDeCargas = "20";
+
+	/** Nota Fiscal de Serviço de Comunicação = 21 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeComunicação = "21";
+
+	/** Nota Fiscal de Serviço de Telecomunicação = 22 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçoDeTelecomunicação = "22";
+
+	/** GNRE = 23 */
+	public static final String LBR_NFMODEL_GNRE = "23";
+
+	/** Autorização de Carregamento e Transporte = 24 */
+	public static final String LBR_NFMODEL_AutorizaçãoDeCarregamentoETransporte = "24";
+
+	/** Manifesto de Carga = 25 */
+	public static final String LBR_NFMODEL_ManifestoDeCarga = "25";
+
+	/** Conhecimento de Transporte Multimodal de Cargas = 26 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteMultimodalDeCargas = "26";
+
+	/** Nota Fiscal de Transporte Ferroviário de Cargas = 27 */
+	public static final String LBR_NFMODEL_NotaFiscalDeTransporteFerroviárioDeCargas = "27";
+
+	/** Nota Fiscal/Conta de Fornecimento de Gás Canalizado = 28 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeFornecimentoDeGásCanalizado = "28";
+
+	/** Nota Fiscal/Conta de Fornecimento de Água Canalizada = 29 */
+	public static final String LBR_NFMODEL_NotaFiscalContaDeFornecimentoDeÁguaCanalizada = "29";
+
+	/** Bilhete/Recibo do Passageiro = 30 */
+	public static final String LBR_NFMODEL_BilheteReciboDoPassageiro = "30";
+
+	/** Nota Fiscal Eletrônica = 55 */
+	public static final String LBR_NFMODEL_NotaFiscalEletrônica = "55";
+
+	/** Conhecimento de Transporte Eletrônico – CT-e = 57 */
+	public static final String LBR_NFMODEL_ConhecimentoDeTransporteEletrônicoCT_E = "57";
+
+	/** Nota Fiscal de Serviços Eletrônica (RPS) = S1 */
+	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
+
+	/** Nota Fiscal de Consumidor Eletrônica = 56 */
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
+
+
 	/** Set NF Model.
 	  * Identifies the model of Nota Fiscal
 	  */
@@ -251,6 +386,22 @@ public interface I_W_C_BPartner extends I_C_BPartner
 
     /** Column name lbr_PaymentRule */
     public static final String COLUMNNAME_lbr_PaymentRule = "lbr_PaymentRule";
+
+	/** lbr_PaymentRule AD_Reference_ID=1000035 */
+	public static final int LBR_PAYMENTRULE_AD_Reference_ID=1000035;
+
+	/** Cash = X */
+	public static final String LBR_PAYMENTRULE_Cash = "X";
+
+	/** Check = C */
+	public static final String LBR_PAYMENTRULE_Check = "C";
+
+	/** Bill = B */
+	public static final String LBR_PAYMENTRULE_Bill = "B";
+
+	/** Direct Deposit = D */
+	public static final String LBR_PAYMENTRULE_DirectDeposit = "D";
+
 
 	/** Set Payment Rule.
 	  * How you pay the invoice
@@ -291,6 +442,25 @@ public interface I_W_C_BPartner extends I_C_BPartner
     /** Column name lbr_TransactionType */
     public static final String COLUMNNAME_lbr_TransactionType = "lbr_TransactionType";
 
+	/** lbr_TransactionType AD_Reference_ID=1000024 */
+	public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
+
+	/** End User = END */
+	public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
+
+	/** Manufacturing = MAN */
+	public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";
+
+	/** Import = IMP */
+	public static final String LBR_TRANSACTIONTYPE_Import = "IMP";
+
+	/** Export = EXP */
+	public static final String LBR_TRANSACTIONTYPE_Export = "EXP";
+
+	/** Resale = RES */
+	public static final String LBR_TRANSACTIONTYPE_Resale = "RES";
+
+
 	/** Set Transaction Type.
 	  * Defines the Transaction Type
 	  */
@@ -303,6 +473,25 @@ public interface I_W_C_BPartner extends I_C_BPartner
 
     /** Column name lbr_TransactionTypeVendor */
     public static final String COLUMNNAME_lbr_TransactionTypeVendor = "lbr_TransactionTypeVendor";
+
+	/** lbr_TransactionTypeVendor AD_Reference_ID=1000024 */
+	public static final int LBR_TRANSACTIONTYPEVENDOR_AD_Reference_ID=1000024;
+
+	/** End User = END */
+	public static final String LBR_TRANSACTIONTYPEVENDOR_EndUser = "END";
+
+	/** Manufacturing = MAN */
+	public static final String LBR_TRANSACTIONTYPEVENDOR_Manufacturing = "MAN";
+
+	/** Import = IMP */
+	public static final String LBR_TRANSACTIONTYPEVENDOR_Import = "IMP";
+
+	/** Export = EXP */
+	public static final String LBR_TRANSACTIONTYPEVENDOR_Export = "EXP";
+
+	/** Resale = RES */
+	public static final String LBR_TRANSACTIONTYPEVENDOR_Resale = "RES";
+
 
 	/** Set Transaction Type Vendor.
 	  * Defines the Transaction Type of a Vendor on Business Partner

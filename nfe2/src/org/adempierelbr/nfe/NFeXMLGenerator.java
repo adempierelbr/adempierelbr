@@ -610,19 +610,19 @@ public class NFeXMLGenerator
 			 * 		informar a tag IE do destinatário;
 			 */
 			if (ide.getMod().equals (MOD_NFCE_65))
-				dest.setIndIEDest(IND_IE_NAO_CONTRIB);
+				dest.setIndIEDest(IND_IE_NAO_CONTRIB);	//	Force 9
 			else 
 			{
 				//	Contribuinte de ICMS, possuí IE
-				if (T_AMB_PRODUCAO.equals(ide.getTpAmb())
-						&& nf.getlbr_BPIE() != null
-						&& !nf.getlbr_BPIE().toUpperCase().contains("ISENT"))
+				if (T_AMB_PRODUCAO.equals(ide.getTpAmb()))
 				{
-					dest.setIndIEDest (IND_IE_CONTRIB);
-					dest.setIE (toNumericStr (nf.getlbr_BPIE()));
+					dest.setIndIEDest (TNFe.InfNFe.Dest.IndIEDest.Enum.forString(nf.getLBR_IndIEDest()));
+					//
+					if (MLBRNotaFiscal.LBR_INDIEDEST_1_ContribuinteDoICMS.equals(nf.getLBR_IndIEDest()))
+						dest.setIE (toNumericStr (nf.getlbr_BPIE()));
 				}
 				else
-					dest.setIndIEDest (IND_IE_ISENTO);
+					dest.setIndIEDest (IND_IE_ISENTO);	//	Homologação
 			}
 			
 			//	SUFRAMA

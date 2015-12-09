@@ -110,6 +110,37 @@ public abstract class BPartnerUtil
 	 * 	@param bpLocation
 	 * 	@return IE
 	 */
+	public static String getIndIE (MBPartnerLocation bpLocation)
+	{
+		if (bpLocation == null)
+			return null;
+		//
+		I_W_C_BPartner_Location bpLW = POWrapper.create(bpLocation, I_W_C_BPartner_Location.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), bpLocation.getC_BPartner_ID(), null), I_W_C_BPartner.class);
+		String lbr_BPTypeBR = bp.getlbr_BPTypeBR();
+		//
+		if (lbr_BPTypeBR == null || lbr_BPTypeBR.isEmpty())
+			return null;
+		
+		/**
+		 * 	Parceiro com IE definido no cadastro de Parceiro 
+		 */
+		if (MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", true))
+			return bp.getLBR_IndIEDest();
+		
+		/**
+		 * 	Parceiro com IE definido na Localização 
+		 */
+		else 
+			return bpLW.getLBR_IndIEDest();
+	}	//	getIndIE
+	
+	/**
+	 * 		Retorna a Inscrição Estadual (IE) do Parceiro
+	 * 		
+	 * 	@param bpLocation
+	 * 	@return IE
+	 */
 	public static String getIE (MBPartnerLocation bpLocation)
 	{
 		if (bpLocation == null)
@@ -127,8 +158,10 @@ public abstract class BPartnerUtil
 			 */
 			if (MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", true))
 			{
-				if (bp.islbr_IsIEExempt())
+				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteIsento.equals(bp.getLBR_IndIEDest()))
 					return "ISENTO";
+				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinte.equals(bp.getLBR_IndIEDest()))
+					return "ISENTO-NÃO-CONTRIB";
 				else
 					return bp.getlbr_IE();
 			}
@@ -138,8 +171,10 @@ public abstract class BPartnerUtil
 			 */
 			else
 			{
-				if (bpLW.islbr_IsIEExempt())
+				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteIsento.equals(bpLW.getLBR_IndIEDest()))
 					return "ISENTO";
+				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinte.equals(bpLW.getLBR_IndIEDest()))
+					return "ISENTO-NÃO-CONTRIB";
 				else
 					return bpLW.getlbr_IE();
 			}

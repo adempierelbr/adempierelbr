@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150925L;
+	private static final long serialVersionUID = 20151209L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -54,6 +54,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 // 'Y'
 			setLBR_EMailSent (false);
 // N
+			setLBR_IndIEDest (null);
+// 1
 			setLBR_NotaFiscal_ID (0);
 			setNoPackages (0);
 // 1
@@ -740,15 +742,18 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return ii.intValue();
 	}
 
-	/** Set LBR_DispatchPlace.
-		@param LBR_DispatchPlace LBR_DispatchPlace	  */
+	/** Set Dispatch Place.
+		@param LBR_DispatchPlace 
+		Dispatch Place Description
+	  */
 	public void setLBR_DispatchPlace (String LBR_DispatchPlace)
 	{
 		set_Value (COLUMNNAME_LBR_DispatchPlace, LBR_DispatchPlace);
 	}
 
-	/** Get LBR_DispatchPlace.
-		@return LBR_DispatchPlace	  */
+	/** Get Dispatch Place.
+		@return Dispatch Place Description
+	  */
 	public String getLBR_DispatchPlace () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_DispatchPlace);
@@ -778,15 +783,18 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return false;
 	}
 
-	/** Set LBR_ExportPlace.
-		@param LBR_ExportPlace LBR_ExportPlace	  */
+	/** Set Export Place.
+		@param LBR_ExportPlace 
+		Description boarding location or border transposing
+	  */
 	public void setLBR_ExportPlace (String LBR_ExportPlace)
 	{
 		set_Value (COLUMNNAME_LBR_ExportPlace, LBR_ExportPlace);
 	}
 
-	/** Get LBR_ExportPlace.
-		@return LBR_ExportPlace	  */
+	/** Get Export Place.
+		@return Description boarding location or border transposing
+	  */
 	public String getLBR_ExportPlace () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_ExportPlace);
@@ -814,6 +822,32 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getLBR_FreightCostRule () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_FreightCostRule);
+	}
+
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+	/** 1 - Contribuinte do ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
+	/** 2 - Contribuinte Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
+	/** 9 - Não Contribuinte = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
+	/** Set Indicador da IE.
+		@param LBR_IndIEDest 
+		Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest)
+	{
+
+		set_Value (COLUMNNAME_LBR_IndIEDest, LBR_IndIEDest);
+	}
+
+	/** Get Indicador da IE.
+		@return Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_IndIEDest);
 	}
 
 	/** LBR_IndPres AD_Reference_ID=1120204 */
@@ -949,8 +983,10 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
 			.getPO(getLBR_RegionExport_ID(), get_TrxName());	}
 
-	/** Set LBR_RegionExport_ID.
-		@param LBR_RegionExport_ID LBR_RegionExport_ID	  */
+	/** Set Region Export .
+		@param LBR_RegionExport_ID 
+		Acronym boarding Region or boundary crossing
+	  */
 	public void setLBR_RegionExport_ID (int LBR_RegionExport_ID)
 	{
 		if (LBR_RegionExport_ID < 1) 
@@ -959,8 +995,9 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 			set_Value (COLUMNNAME_LBR_RegionExport_ID, Integer.valueOf(LBR_RegionExport_ID));
 	}
 
-	/** Get LBR_RegionExport_ID.
-		@return LBR_RegionExport_ID	  */
+	/** Get Region Export .
+		@return Acronym boarding Region or boundary crossing
+	  */
 	public int getLBR_RegionExport_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_RegionExport_ID);

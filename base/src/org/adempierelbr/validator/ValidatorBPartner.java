@@ -317,7 +317,7 @@ public class ValidatorBPartner implements ModelValidator
 		// FR [ 1898697 ] Validador BPartner - CFOP Group
 		// mgrigioni, 21/02/2008 (Kenos, http://www.kenos.com.br)
 		// Isento IE
-		if (bp.islbr_IsIEExempt())
+		if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteIsento.equals(bp.getLBR_IndIEDest()))
 		{
 			//	Cliente
 			if (bp.isCustomer())

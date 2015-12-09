@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150727L;
+	private static final long serialVersionUID = 20151209L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalDocRef (Properties ctx, int LBR_NotaFiscalDocRef_ID, String trxName)
@@ -42,6 +42,8 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
         {
 			setLBR_FiscalDocRefType (null);
 // N
+			setLBR_IndIEDest (null);
+// 1
 			setLBR_NotaFiscalDocRef_ID (0);
         } */
     }
@@ -177,6 +179,32 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 		return (String)get_Value(COLUMNNAME_LBR_FiscalDocRefType);
 	}
 
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+	/** 1 - Contribuinte do ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
+	/** 2 - Contribuinte Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
+	/** 9 - Não Contribuinte = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
+	/** Set Indicador da IE.
+		@param LBR_IndIEDest 
+		Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest)
+	{
+
+		set_Value (COLUMNNAME_LBR_IndIEDest, LBR_IndIEDest);
+	}
+
+	/** Get Indicador da IE.
+		@return Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_IndIEDest);
+	}
+
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NFeReferenced() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
@@ -264,6 +292,10 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public static final String LBR_BPTYPEBR_PJ_LegalEntity = "PJ";
 	/** PF - Individual = PF */
 	public static final String LBR_BPTYPEBR_PF_Individual = "PF";
+	/** PM - Individual Minor = PM */
+	public static final String LBR_BPTYPEBR_PM_IndividualMinor = "PM";
+	/** XX - Foreigner = XX */
+	public static final String LBR_BPTYPEBR_XX_Foreigner = "XX";
 	/** Set Brazilian BP Type.
 		@param lbr_BPTypeBR 
 		Brazilian BP Type (Identifies if the BP is a Legal Entity or an Individual)
@@ -331,30 +363,6 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	public String getlbr_IE () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_IE);
-	}
-
-	/** Set IE Exempt.
-		@param lbr_IsIEExempt 
-		Business Partner is IE Exempt
-	  */
-	public void setlbr_IsIEExempt (boolean lbr_IsIEExempt)
-	{
-		set_Value (COLUMNNAME_lbr_IsIEExempt, Boolean.valueOf(lbr_IsIEExempt));
-	}
-
-	/** Get IE Exempt.
-		@return Business Partner is IE Exempt
-	  */
-	public boolean islbr_IsIEExempt () 
-	{
-		Object oo = get_Value(COLUMNNAME_lbr_IsIEExempt);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
 	}
 
 	/** lbr_NFModel AD_Reference_ID=1120009 */

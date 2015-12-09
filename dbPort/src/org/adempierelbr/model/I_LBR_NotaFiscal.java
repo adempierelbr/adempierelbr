@@ -456,10 +456,14 @@ public interface I_LBR_NotaFiscal
     /** Column name LBR_DispatchPlace */
     public static final String COLUMNNAME_LBR_DispatchPlace = "LBR_DispatchPlace";
 
-	/** Set LBR_DispatchPlace	  */
+	/** Set Dispatch Place.
+	  * Dispatch Place Description
+	  */
 	public void setLBR_DispatchPlace (String LBR_DispatchPlace);
 
-	/** Get LBR_DispatchPlace	  */
+	/** Get Dispatch Place.
+	  * Dispatch Place Description
+	  */
 	public String getLBR_DispatchPlace();
 
     /** Column name LBR_EMailSent */
@@ -478,10 +482,14 @@ public interface I_LBR_NotaFiscal
     /** Column name LBR_ExportPlace */
     public static final String COLUMNNAME_LBR_ExportPlace = "LBR_ExportPlace";
 
-	/** Set LBR_ExportPlace	  */
+	/** Set Export Place.
+	  * Description boarding location or border transposing
+	  */
 	public void setLBR_ExportPlace (String LBR_ExportPlace);
 
-	/** Get LBR_ExportPlace	  */
+	/** Get Export Place.
+	  * Description boarding location or border transposing
+	  */
 	public String getLBR_ExportPlace();
 
     /** Column name LBR_FreightCostRule */
@@ -496,6 +504,19 @@ public interface I_LBR_NotaFiscal
 	  * Method for charging Freight
 	  */
 	public String getLBR_FreightCostRule();
+
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
+
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
+
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest();
 
     /** Column name LBR_IndPres */
     public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
@@ -568,10 +589,14 @@ public interface I_LBR_NotaFiscal
     /** Column name LBR_RegionExport_ID */
     public static final String COLUMNNAME_LBR_RegionExport_ID = "LBR_RegionExport_ID";
 
-	/** Set LBR_RegionExport_ID	  */
+	/** Set Region Export .
+	  * Acronym boarding Region or boundary crossing
+	  */
 	public void setLBR_RegionExport_ID (int LBR_RegionExport_ID);
 
-	/** Get LBR_RegionExport_ID	  */
+	/** Get Region Export .
+	  * Acronym boarding Region or boundary crossing
+	  */
 	public int getLBR_RegionExport_ID();
 
 	public I_C_Region getLBR_RegionExport() throws RuntimeException;
