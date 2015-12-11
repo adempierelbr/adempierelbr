@@ -41,110 +41,6 @@ public interface I_W_C_BPartner extends I_C_BPartner
 
 	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
-    /** Column name LBR_CustomerCategory_ID */
-    public static final String COLUMNNAME_LBR_CustomerCategory_ID = "LBR_CustomerCategory_ID";
-
-	/** Set Customer Category.
-	  * Defines the Customer Category
-	  */
-	public void setLBR_CustomerCategory_ID (int LBR_CustomerCategory_ID);
-
-	/** Get Customer Category.
-	  * Defines the Customer Category
-	  */
-	public int getLBR_CustomerCategory_ID();
-
-    /** Column name LBR_EMailNFe */
-    public static final String COLUMNNAME_LBR_EMailNFe = "LBR_EMailNFe";
-
-	/** Set NFe EMail.
-	  * NFe EMail separated by semicolon
-	  */
-	public void setLBR_EMailNFe (String LBR_EMailNFe);
-
-	/** Get NFe EMail.
-	  * NFe EMail separated by semicolon
-	  */
-	public String getLBR_EMailNFe();
-
-    /** Column name LBR_FiscalGroup_Customer_ID */
-    public static final String COLUMNNAME_LBR_FiscalGroup_Customer_ID = "LBR_FiscalGroup_Customer_ID";
-
-	/** Set Fiscal Group - Customer.
-	  * Defines the Fiscal Group - Customer
-	  */
-	public void setLBR_FiscalGroup_Customer_ID (int LBR_FiscalGroup_Customer_ID);
-
-	/** Get Fiscal Group - Customer.
-	  * Defines the Fiscal Group - Customer
-	  */
-	public int getLBR_FiscalGroup_Customer_ID();
-
-    /** Column name LBR_FiscalGroup_Vendor_ID */
-    public static final String COLUMNNAME_LBR_FiscalGroup_Vendor_ID = "LBR_FiscalGroup_Vendor_ID";
-
-	/** Set Fiscal Group - Vendor.
-	  * Defines the Fiscal Group - Vendor
-	  */
-	public void setLBR_FiscalGroup_Vendor_ID (int LBR_FiscalGroup_Vendor_ID);
-
-	/** Get Fiscal Group - Vendor.
-	  * Defines the Fiscal Group - Vendor
-	  */
-	public int getLBR_FiscalGroup_Vendor_ID();
-
-    /** Column name LBR_HasWithhold */
-    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
-
-	/** Set Has Withhold.
-	  * Defines if the Tax, has Withhold
-	  */
-	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
-
-	/** Get Has Withhold.
-	  * Defines if the Tax, has Withhold
-	  */
-	public boolean isLBR_HasWithhold();
-
-    /** Column name LBR_IndIEDest */
-    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
-
-	/** LBR_IndIEDest AD_Reference_ID=1120235 */
-	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
-
-	/** 1 - Contribuinte do ICMS = 1 */
-	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
-
-	/** 2 - Contribuinte Isento = 2 */
-	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
-
-	/** 9 - Não Contribuinte = 9 */
-	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
-
-
-	/** Set Indicador da IE.
-	  * Indicador da IE do Destinatário
-	  */
-	public void setLBR_IndIEDest (String LBR_IndIEDest);
-
-	/** Get Indicador da IE.
-	  * Indicador da IE do Destinatário
-	  */
-	public String getLBR_IndIEDest();
-
-    /** Column name LBR_VendorCategory_ID */
-    public static final String COLUMNNAME_LBR_VendorCategory_ID = "LBR_VendorCategory_ID";
-
-	/** Set Vendor Category.
-	  * Defines the Vendor Category
-	  */
-	public void setLBR_VendorCategory_ID (int LBR_VendorCategory_ID);
-
-	/** Get Vendor Category.
-	  * Defines the Vendor Category
-	  */
-	public int getLBR_VendorCategory_ID();
-
     /** Column name lbr_BPTypeBR */
     public static final String COLUMNNAME_lbr_BPTypeBR = "lbr_BPTypeBR";
 
@@ -226,6 +122,58 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public String getlbr_CPF();
 
+    /** Column name LBR_CustomerCategory_ID */
+    public static final String COLUMNNAME_LBR_CustomerCategory_ID = "LBR_CustomerCategory_ID";
+
+	/** Set Customer Category.
+	  * Defines the Customer Category
+	  */
+	public void setLBR_CustomerCategory_ID (int LBR_CustomerCategory_ID);
+
+	/** Get Customer Category.
+	  * Defines the Customer Category
+	  */
+	public int getLBR_CustomerCategory_ID();
+
+    /** Column name LBR_EMailNFe */
+    public static final String COLUMNNAME_LBR_EMailNFe = "LBR_EMailNFe";
+
+	/** Set NFe EMail.
+	  * NFe EMail separated by semicolon
+	  */
+	public void setLBR_EMailNFe (String LBR_EMailNFe);
+
+	/** Get NFe EMail.
+	  * NFe EMail separated by semicolon
+	  */
+	public String getLBR_EMailNFe();
+
+    /** Column name LBR_FiscalGroup_Customer_ID */
+    public static final String COLUMNNAME_LBR_FiscalGroup_Customer_ID = "LBR_FiscalGroup_Customer_ID";
+
+	/** Set Fiscal Group - Customer.
+	  * Defines the Fiscal Group - Customer
+	  */
+	public void setLBR_FiscalGroup_Customer_ID (int LBR_FiscalGroup_Customer_ID);
+
+	/** Get Fiscal Group - Customer.
+	  * Defines the Fiscal Group - Customer
+	  */
+	public int getLBR_FiscalGroup_Customer_ID();
+
+    /** Column name LBR_FiscalGroup_Vendor_ID */
+    public static final String COLUMNNAME_LBR_FiscalGroup_Vendor_ID = "LBR_FiscalGroup_Vendor_ID";
+
+	/** Set Fiscal Group - Vendor.
+	  * Defines the Fiscal Group - Vendor
+	  */
+	public void setLBR_FiscalGroup_Vendor_ID (int LBR_FiscalGroup_Vendor_ID);
+
+	/** Get Fiscal Group - Vendor.
+	  * Defines the Fiscal Group - Vendor
+	  */
+	public int getLBR_FiscalGroup_Vendor_ID();
+
     /** Column name lbr_HasSubstitution */
     public static final String COLUMNNAME_lbr_HasSubstitution = "lbr_HasSubstitution";
 
@@ -239,6 +187,19 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  */
 	public boolean islbr_HasSubstitution();
 
+    /** Column name LBR_HasWithhold */
+    public static final String COLUMNNAME_LBR_HasWithhold = "LBR_HasWithhold";
+
+	/** Set Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public void setLBR_HasWithhold (boolean LBR_HasWithhold);
+
+	/** Get Has Withhold.
+	  * Defines if the Tax, has Withhold
+	  */
+	public boolean isLBR_HasWithhold();
+
     /** Column name lbr_IE */
     public static final String COLUMNNAME_lbr_IE = "lbr_IE";
 
@@ -251,6 +212,32 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  * Used to Identify the IE (State Tax ID)
 	  */
 	public String getlbr_IE();
+
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
+
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+
+	/** 1 - Contribuinte de ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDeICMS = "1";
+
+	/** 2 - Contribuinte de ICMS - Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteDeICMS_Isento = "2";
+
+	/** 9 - Não Contribuinte de ICMS = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinteDeICMS = "9";
+
+
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
+
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest();
 
     /** Column name lbr_NFDescription */
     public static final String COLUMNNAME_lbr_NFDescription = "lbr_NFDescription";
@@ -502,4 +489,32 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	  * Defines the Transaction Type of a Vendor on Business Partner
 	  */
 	public String getlbr_TransactionTypeVendor();
+
+    /** Column name LBR_VendorCategory_ID */
+    public static final String COLUMNNAME_LBR_VendorCategory_ID = "LBR_VendorCategory_ID";
+
+	/** Set Vendor Category.
+	  * Defines the Vendor Category
+	  */
+	public void setLBR_VendorCategory_ID (int LBR_VendorCategory_ID);
+
+	/** Get Vendor Category.
+	  * Defines the Vendor Category
+	  */
+	public int getLBR_VendorCategory_ID();
+
+    /** Column name M_Shipper_ID */
+    public static final String COLUMNNAME_M_Shipper_ID = "M_Shipper_ID";
+
+	/** Set Shipper.
+	  * Method or manner of product delivery
+	  */
+	public void setM_Shipper_ID (int M_Shipper_ID);
+
+	/** Get Shipper.
+	  * Method or manner of product delivery
+	  */
+	public int getM_Shipper_ID();
+
+	public I_M_Shipper getM_Shipper() throws RuntimeException;
 }

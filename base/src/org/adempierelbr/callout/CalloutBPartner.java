@@ -50,13 +50,13 @@ public class CalloutBPartner extends CalloutEngine
 		{
 			//	Contribuinte de ICMS
 			if (I_W_C_BPartner.LBR_BPTYPEBR_PJ_LegalEntity.equals(bpType))
-				mTab.setValue(I_W_C_BPartner.COLUMNNAME_LBR_IndIEDest, I_W_C_BPartner.LBR_INDIEDEST_1_ContribuinteDoICMS);
+				mTab.setValue(I_W_C_BPartner.COLUMNNAME_LBR_IndIEDest, I_W_C_BPartner.LBR_INDIEDEST_1_ContribuinteDeICMS);
 			
 			//	Não Contribuinte
 			else if (TextUtil.match(bpType, I_W_C_BPartner.LBR_BPTYPEBR_PF_Individual, 
 					I_W_C_BPartner.LBR_BPTYPEBR_PM_IndividualMinor, 
 					I_W_C_BPartner.LBR_BPTYPEBR_XX_Foreigner))
-				mTab.setValue(I_W_C_BPartner.COLUMNNAME_LBR_IndIEDest, I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinte);
+				mTab.setValue(I_W_C_BPartner.COLUMNNAME_LBR_IndIEDest, I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinteDeICMS);
 		}
 		return "";
 	}	//	changeBPType

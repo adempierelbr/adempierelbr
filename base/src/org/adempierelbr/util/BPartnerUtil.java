@@ -158,9 +158,9 @@ public abstract class BPartnerUtil
 			 */
 			if (MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", true))
 			{
-				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteIsento.equals(bp.getLBR_IndIEDest()))
+				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteDeICMS_Isento.equals(bp.getLBR_IndIEDest()))
 					return "ISENTO";
-				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinte.equals(bp.getLBR_IndIEDest()))
+				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(bp.getLBR_IndIEDest()))
 					return "ISENTO-NÃO-CONTRIB";
 				else
 					return bp.getlbr_IE();
@@ -171,9 +171,9 @@ public abstract class BPartnerUtil
 			 */
 			else
 			{
-				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteIsento.equals(bpLW.getLBR_IndIEDest()))
+				if (I_W_C_BPartner.LBR_INDIEDEST_2_ContribuinteDeICMS_Isento.equals(bpLW.getLBR_IndIEDest()))
 					return "ISENTO";
-				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinte.equals(bpLW.getLBR_IndIEDest()))
+				else if (I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(bpLW.getLBR_IndIEDest()))
 					return "ISENTO-NÃO-CONTRIB";
 				else
 					return bpLW.getlbr_IE();
