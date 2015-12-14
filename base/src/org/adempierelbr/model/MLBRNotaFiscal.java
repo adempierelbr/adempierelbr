@@ -86,19 +86,19 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
-import br.inf.portalfiscal.nfe.v8g.InutNFeDocument;
-import br.inf.portalfiscal.nfe.v8g.NFeDocument;
-import br.inf.portalfiscal.nfe.v8g.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v8g.RetInutNFeDocument;
-import br.inf.portalfiscal.nfe.v8g.TAmb;
-import br.inf.portalfiscal.nfe.v8g.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v8g.TInutNFe;
-import br.inf.portalfiscal.nfe.v8g.TMod;
-import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.v8g.TNFe.InfNFe.Ide.IdDest.Enum;
-import br.inf.portalfiscal.nfe.v8g.TNfeProc;
-import br.inf.portalfiscal.nfe.v8g.TProtNFe;
-import br.inf.portalfiscal.nfe.v8g.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
+import br.inf.portalfiscal.nfe.v310.NFeDocument;
+import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v310.RetInutNFeDocument;
+import br.inf.portalfiscal.nfe.v310.TAmb;
+import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v310.TInutNFe;
+import br.inf.portalfiscal.nfe.v310.TMod;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.v310.TNfeProc;
+import br.inf.portalfiscal.nfe.v310.TProtNFe;
+import br.inf.portalfiscal.nfe.v310.TProtNFe.InfProt;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsgE;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeDadosMsg;
@@ -2852,7 +2852,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					String regionCode = BPartnerUtil.getRegionCode (new MLocation (p_ctx, getOrg_Location_ID(), null));
 					//
-					br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut ret = invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), 
+					br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut ret = invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), 
 								regionCode, getlbr_NFeEnv(), getlbr_NFModel(), Integer.parseInt(getDocumentNo()), 
 								Integer.parseInt(getDocumentNo()), getlbr_NFSerie(), getlbr_MotivoCancel(), getDateDoc());
 					//
@@ -3076,7 +3076,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @return
 	 * @throws Exception
 	 */
-	public static br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
+	public static br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
 			String regionCode, String p_LBR_EnvType, String nfModel, Integer p_DocumentNo, 
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
@@ -3091,7 +3091,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		TInutNFe inutNFe = inutNFeDocument.addNewInutNFe();
 		inutNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 		
-		br.inf.portalfiscal.nfe.v8g.TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
+		br.inf.portalfiscal.nfe.v310.TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
 		infInut.setMod(TMod.Enum.forString (nfModel));
 		infInut.setCNPJ(TextUtil.toNumeric(cnpj));
 		infInut.setTpAmb(TAmb.Enum.forString (p_LBR_EnvType));
@@ -3140,7 +3140,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		String respStatus = nfeStatusServicoNF2.toString();
 		
 		//	Processa o retorno
-		br.inf.portalfiscal.nfe.v8g.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
+		br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
 		
 		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(retInutNFe.getCStat()))
 			MLBRNFSkipped.register (retInutNFe);

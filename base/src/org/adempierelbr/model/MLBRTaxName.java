@@ -57,7 +57,7 @@ public class MLBRTaxName extends X_LBR_TaxName
 	{
 		MLBRTaxFormula tf = null;
 		//
-		StringBuffer sql = new StringBuffer("SELECT * FROM LBR_TaxFormula WHERE LBR_TaxName_ID=? AND lbr_TransactionType=?");
+		StringBuffer sql = new StringBuffer("SELECT * FROM LBR_TaxFormula WHERE IsActive='Y' AND LBR_TaxName_ID=? AND lbr_TransactionType=?");
 		if (validFrom != null)
 			sql.append(" AND ValidFrom <= " + DB.TO_DATE(validFrom));
 		//
