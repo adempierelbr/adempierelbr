@@ -85,6 +85,7 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN201;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN202;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN500;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN900;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMSUFDest;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.II;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISAliq;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISNT;
@@ -1252,6 +1253,21 @@ public class NFeXMLGenerator
 			
 			//	TODO	UA. Tributos Devolvidos (para o item da NF-e)
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
+			
+			//	NT2015.003
+			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
+					&& nfl.getLBR_ICMSDestAmt() != null && nfl.getLBR_ICMSDestAmt().signum() == 1)
+			{
+				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
+				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSST")));
+				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
+				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSST")));
+				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));
+				nflICMSDest.setPICMSInterPart (normalize (nfl.getLBR_ICMSInterPartRate()));
+				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
+				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt ("ICMSST")));
+				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMS")));
+			}	//	NT2015.003
 			
 			//	V. Informações adicionais (para o item da NF-e)
 			String nflDesc = nfl.getDescription();

@@ -189,6 +189,45 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
 
+    /** Column name LBR_ICMSDestAmt */
+    public static final String COLUMNNAME_LBR_ICMSDestAmt = "LBR_ICMSDestAmt";
+
+	/** Set ICMS Part. Dest..
+	  * Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public void setLBR_ICMSDestAmt (BigDecimal LBR_ICMSDestAmt);
+
+	/** Get ICMS Part. Dest..
+	  * Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public BigDecimal getLBR_ICMSDestAmt();
+
+    /** Column name LBR_ICMSInterPartRate */
+    public static final String COLUMNNAME_LBR_ICMSInterPartRate = "LBR_ICMSInterPartRate";
+
+	/** Set Partilha (%).
+	  * Percentual provisório de partilha do ICMS Interestadual
+	  */
+	public void setLBR_ICMSInterPartRate (BigDecimal LBR_ICMSInterPartRate);
+
+	/** Get Partilha (%).
+	  * Percentual provisório de partilha do ICMS Interestadual
+	  */
+	public BigDecimal getLBR_ICMSInterPartRate();
+
+    /** Column name LBR_ICMSIssuerAmt */
+    public static final String COLUMNNAME_LBR_ICMSIssuerAmt = "LBR_ICMSIssuerAmt";
+
+	/** Set ICMS Part. Rem..
+	  * Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public void setLBR_ICMSIssuerAmt (BigDecimal LBR_ICMSIssuerAmt);
+
+	/** Get ICMS Part. Rem..
+	  * Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public BigDecimal getLBR_ICMSIssuerAmt();
+
     /** Column name LBR_IndTot */
     public static final String COLUMNNAME_LBR_IndTot = "LBR_IndTot";
 

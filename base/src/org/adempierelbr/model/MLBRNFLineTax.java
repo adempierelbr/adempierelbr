@@ -14,8 +14,12 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -30,6 +34,9 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 	 */
 	private static final long serialVersionUID = -6683920438972507538L;
 	
+	/** Parent					*/
+	private MLBRNotaFiscalLine			m_parent = null;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
@@ -41,6 +48,17 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		super(ctx, ID, trxName);
 	}	//	MLBRNFLineTax
 
+	/**
+	 * 	Get Parent
+	 *	@return parent
+	 */
+	public MLBRNotaFiscalLine getParent()
+	{
+		if (m_parent == null)
+			m_parent = new MLBRNotaFiscalLine(getCtx(), getLBR_NotaFiscalLine_ID(), get_TrxName());
+		return m_parent;
+	}	//	getParent
+	
 	/**
 	 *  Load Constructor
 	 *  @param ctx context
@@ -132,5 +150,79 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		}
 		//
 		return taxesDiscount;
-	}
+	}	//	getTaxesDiscount
+	
+	/**
+	 * 	Atualiza a linha da Nota Fiscal Eletrônica com os valores da partilhar de 
+	 * 		ICMS entre estados para atender as normas da NT2015.003
+	 * 	@return true if OK
+	 */
+	private boolean updateLine ()
+	{
+		BigDecimal taxAmt = getlbr_TaxAmt();
+
+		//	Do nothing
+		if (getLBR_TaxGroup_ID () <= 0 || !getLBR_TaxGroup().getName().contains("ICMSST")
+				|| !MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(getParent().getParent().getlbr_TransactionType())
+				|| taxAmt.signum() != 1)
+			return true;
+		
+		//	Already processed
+		if (getParent().getParent().isProcessed())
+			return false;
+
+		BigDecimal partICMSRate = null;
+		
+		//	Check date
+		if (getParent().getLBR_ICMSInterPartRate() == null
+				|| getParent().getLBR_ICMSInterPartRate().compareTo(Env.ZERO) == 0)
+		{
+			Timestamp dateDoc = getParent().getParent().getDateDoc();
+			Calendar cal = new GregorianCalendar ();
+			cal.setTimeInMillis(dateDoc.getTime());
+			//
+			if (cal.before (new GregorianCalendar (2017, 01, 01)))		// ... -> 2016
+				partICMSRate = new BigDecimal (40);
+			
+			else if (cal.before (new GregorianCalendar (2018, 01, 01)))	// 2017
+				partICMSRate = new BigDecimal (60);
+			
+			else if (cal.before (new GregorianCalendar (2019, 01, 01)))	// 2018
+				partICMSRate = new BigDecimal (80);
+			
+			else														// 2019 -> ...
+				partICMSRate = new BigDecimal (100);
+		}
+		else
+			partICMSRate = getParent().getLBR_ICMSInterPartRate();
+		
+		//	Apply partitioning
+		BigDecimal partDest = taxAmt.multiply (partICMSRate.divide(Env.ONEHUNDRED, 2, BigDecimal.ROUND_HALF_UP));
+		
+		String sql = "UPDATE "
+				+ MLBRNotaFiscalLine.Table_Name + " nfl "
+				+ " SET " 
+				+ MLBRNotaFiscalLine.COLUMNNAME_LBR_ICMSInterPartRate 	+ "=?, "
+				+ MLBRNotaFiscalLine.COLUMNNAME_LBR_ICMSDestAmt 		+ "=?, "
+				+ MLBRNotaFiscalLine.COLUMNNAME_LBR_ICMSIssuerAmt 		+ "=? "
+				+ "WHERE " 
+				+ MLBRNotaFiscalLine.COLUMNNAME_LBR_NotaFiscalLine_ID + "=" + getLBR_NotaFiscalLine_ID();
+		
+		int no = DB.executeUpdate(sql, new Object[]{partICMSRate, partDest, taxAmt.subtract(partDest)}, false, get_TrxName());
+		if (no != 1)
+			log.warning("(2) #" + no);
+		return true;
+	}	//	updateLine
+	
+	/**
+	 * 	Called after Save for Post-Save Operation
+	 * 	@param newRecord new record
+	 *	@param success true if save operation was success
+	 *	@return true if save was a success
+	 */
+	@Override
+	protected boolean afterSave (boolean newRecord, boolean success)
+	{
+		return updateLine();
+	}	//	afterSave
 }	//	MLBRNotaFiscal

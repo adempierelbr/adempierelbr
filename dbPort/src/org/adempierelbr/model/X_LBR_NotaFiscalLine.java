@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150727L;
+	private static final long serialVersionUID = 20151214L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -233,6 +233,66 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set ICMS Part. Dest..
+		@param LBR_ICMSDestAmt 
+		Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public void setLBR_ICMSDestAmt (BigDecimal LBR_ICMSDestAmt)
+	{
+		set_Value (COLUMNNAME_LBR_ICMSDestAmt, LBR_ICMSDestAmt);
+	}
+
+	/** Get ICMS Part. Dest..
+		@return Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public BigDecimal getLBR_ICMSDestAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_ICMSDestAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Partilha (%).
+		@param LBR_ICMSInterPartRate 
+		Percentual provisório de partilha do ICMS Interestadual
+	  */
+	public void setLBR_ICMSInterPartRate (BigDecimal LBR_ICMSInterPartRate)
+	{
+		set_Value (COLUMNNAME_LBR_ICMSInterPartRate, LBR_ICMSInterPartRate);
+	}
+
+	/** Get Partilha (%).
+		@return Percentual provisório de partilha do ICMS Interestadual
+	  */
+	public BigDecimal getLBR_ICMSInterPartRate () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_ICMSInterPartRate);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set ICMS Part. Rem..
+		@param LBR_ICMSIssuerAmt 
+		Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public void setLBR_ICMSIssuerAmt (BigDecimal LBR_ICMSIssuerAmt)
+	{
+		set_Value (COLUMNNAME_LBR_ICMSIssuerAmt, LBR_ICMSIssuerAmt);
+	}
+
+	/** Get ICMS Part. Rem..
+		@return Valor do ICMS Interestadual partilhado para a UF de destino
+	  */
+	public BigDecimal getLBR_ICMSIssuerAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_ICMSIssuerAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** LBR_IndTot AD_Reference_ID=1120207 */
