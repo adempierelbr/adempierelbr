@@ -1281,6 +1281,9 @@ public class NFeXMLGenerator
 		icmsTot.setVBC(normalize (nf.getICMSBase()));
 		icmsTot.setVICMS(normalize (nf.getICMSAmt()));
 		icmsTot.setVICMSDeson(TextUtil.ZERO_STRING);
+		icmsTot.setVFCPUFDest(normalize (nf.getTaxAmt ("FCP")));		//	Fundo de Combate a Pobreza - NT2015.003
+		icmsTot.setVICMSUFDest(normalize (nf.getTotal_ICMSDestAmt()));
+		icmsTot.setVICMSUFRemet(normalize (nf.getTotal_ICMSIssuerAmt()));
 		icmsTot.setVBCST(normalize (nf.getICMSSTBase()));
 		icmsTot.setVST(normalize (nf.getICMSSTAmt()));
 		icmsTot.setVProd(normalize (nf.getTotalLines()));
