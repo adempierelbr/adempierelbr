@@ -164,6 +164,7 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		//	Do nothing
 		if (getLBR_TaxGroup_ID () <= 0 || !getLBR_TaxGroup().getName().contains("ICMSST")
 				|| !MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(getParent().getParent().getlbr_TransactionType())
+				|| !MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinte.equals(getParent().getParent().getLBR_IndIEDest())
 				|| taxAmt.signum() != 1)
 			return true;
 		
