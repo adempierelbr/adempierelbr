@@ -821,23 +821,13 @@ public class MLBRTax extends X_LBR_Tax
 		MLBRTaxDefinition[] taxesDef = MLBRTaxDefinition.get (oi.getAD_Org_ID(), bp.getC_BPartner_ID(), C_DocTypeTarget_ID, 
 				(oi.getC_Location_ID() < 1 ? -1 : oi.getC_Location().getC_Region_ID()), (bpLoc != null ? bp_C_Region_ID : 0),
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
-				(isSOTrx ? bp.getLBR_FiscalGroup_Customer_ID() : bp.getLBR_FiscalGroup_Vendor_ID()), p.getLBR_FiscalGroup_Product_ID(), 
+				(isSOTrx ? bp.getLBR_FiscalGroup_Customer_ID() : bp.getLBR_FiscalGroup_Vendor_ID()), bp.getLBR_IndIEDest(), p.getLBR_FiscalGroup_Product_ID(), 
 				p.getLBR_NCM_ID(),  p.getLBR_ProductCategory_ID(), hasSubstitution, isSOTrx, lbr_TransactionType, dateAcct, p.getlbr_ProductSource());
 		//
 		for (MLBRTaxDefinition td : taxesDef)
 		{
 			log.finer ("######## Processing Tax for Tax Definition: " + td + ", Taxes: " + new MLBRTax(ctx, td.getLBR_Tax_ID(), null));
 			processTaxes (taxes, td.getLBR_Tax_ID());
-			//
-			if (td.getLBR_LegalMessage_ID() > 0)
-				LBR_LegalMessage_ID =  td.getLBR_LegalMessage_ID();
-			//
-			if (td.getlbr_TaxStatus() != null && td.getlbr_TaxStatus().length() > 0)
-				lbr_TaxStatus = td.getlbr_TaxStatus();
-			//
-
-			if (td.getLBR_CFOP_ID() > 0)
-				LBR_CFOP_ID = td.getLBR_CFOP_ID();
 		}
 		
 		return new Object[]{taxes, LBR_LegalMessage_ID, LBR_CFOP_ID, lbr_TaxStatus};
