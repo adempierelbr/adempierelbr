@@ -31,7 +31,7 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20151209L;
+	private static final long serialVersionUID = 20151217L;
 
     /** Standard Constructor */
     public X_LBR_TaxDefinition (Properties ctx, int LBR_TaxDefinition_ID, String trxName)
@@ -39,10 +39,13 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
       super (ctx, LBR_TaxDefinition_ID, trxName);
       /** if (LBR_TaxDefinition_ID == 0)
         {
+			setIsManual (false);
+// N
 			setIsSOTrx (null);
 // B
 			setLBR_TaxDefinition_ID (0);
 			setValidFrom (new Timestamp( System.currentTimeMillis() ));
+// @#Date@
 			setlbr_IsSubTributaria (null);
 // B
         } */
@@ -177,6 +180,30 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** Set Manual.
+		@param IsManual 
+		This is a manual process
+	  */
+	public void setIsManual (boolean IsManual)
+	{
+		set_Value (COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
+	}
+
+	/** Get Manual.
+		@return This is a manual process
+	  */
+	public boolean isManual () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsManual);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** IsSOTrx AD_Reference_ID=1000027 */
 	public static final int ISSOTRX_AD_Reference_ID=1000027;
 	/** Yes = Y */
@@ -226,34 +253,6 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public int getLBR_BPartnerCategory_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_BPartnerCategory_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_CFOP)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CFOP.Table_Name)
-			.getPO(getLBR_CFOP_ID(), get_TrxName());	}
-
-	/** Set CFOP.
-		@param LBR_CFOP_ID 
-		Primary key table LBR_CFOP
-	  */
-	public void setLBR_CFOP_ID (int LBR_CFOP_ID)
-	{
-		if (LBR_CFOP_ID < 1) 
-			set_Value (COLUMNNAME_LBR_CFOP_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_CFOP_ID, Integer.valueOf(LBR_CFOP_ID));
-	}
-
-	/** Get CFOP.
-		@return Primary key table LBR_CFOP
-	  */
-	public int getLBR_CFOP_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CFOP_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -315,32 +314,30 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
-			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
-
-	/** Set Legal Message.
-		@param LBR_LegalMessage_ID 
-		Defines the Legal Message
+	/** LBR_IndIEDest AD_Reference_ID=1120235 */
+	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
+	/** 1 - Contribuinte de ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDeICMS = "1";
+	/** 2 - Contribuinte de ICMS - Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteDeICMS_Isento = "2";
+	/** 9 - Não Contribuinte de ICMS = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinteDeICMS = "9";
+	/** Set Indicador da IE.
+		@param LBR_IndIEDest 
+		Indicador da IE do Destinatário
 	  */
-	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
+	public void setLBR_IndIEDest (String LBR_IndIEDest)
 	{
-		if (LBR_LegalMessage_ID < 1) 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
+
+		set_Value (COLUMNNAME_LBR_IndIEDest, LBR_IndIEDest);
 	}
 
-	/** Get Legal Message.
-		@return Defines the Legal Message
+	/** Get Indicador da IE.
+		@return Indicador da IE do Destinatário
 	  */
-	public int getLBR_LegalMessage_ID () 
+	public String getLBR_IndIEDest () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (String)get_Value(COLUMNNAME_LBR_IndIEDest);
 	}
 
 	public org.adempierelbr.model.I_LBR_NCM getLBR_NCM() throws RuntimeException
@@ -397,6 +394,76 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** LBR_RegionFrom AD_Reference_ID=1120244 */
+	public static final int LBR_REGIONFROM_AD_Reference_ID=1120244;
+	/** Sul = 0 */
+	public static final String LBR_REGIONFROM_Sul = "0";
+	/** Sudeste = 1 */
+	public static final String LBR_REGIONFROM_Sudeste = "1";
+	/** Norte = 2 */
+	public static final String LBR_REGIONFROM_Norte = "2";
+	/** Nordeste = 3 */
+	public static final String LBR_REGIONFROM_Nordeste = "3";
+	/** Centro-Oeste = 4 */
+	public static final String LBR_REGIONFROM_Centro_Oeste = "4";
+	/** Sul e Sudeste = 5 */
+	public static final String LBR_REGIONFROM_SulESudeste = "5";
+	/** Norte, Nordeste e Centro-Oeste = 6 */
+	public static final String LBR_REGIONFROM_NorteNordesteECentro_Oeste = "6";
+	/** Sul e Sudeste, exceto ES = 7 */
+	public static final String LBR_REGIONFROM_SulESudesteExcetoES = "7";
+	/** Norte, Nordeste, Centro-Oeste e ES = 8 */
+	public static final String LBR_REGIONFROM_NorteNordesteCentro_OesteEES = "8";
+	/** Set Region From.
+		@param LBR_RegionFrom Region From	  */
+	public void setLBR_RegionFrom (String LBR_RegionFrom)
+	{
+
+		set_Value (COLUMNNAME_LBR_RegionFrom, LBR_RegionFrom);
+	}
+
+	/** Get Region From.
+		@return Region From	  */
+	public String getLBR_RegionFrom () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_RegionFrom);
+	}
+
+	/** LBR_RegionTo AD_Reference_ID=1120244 */
+	public static final int LBR_REGIONTO_AD_Reference_ID=1120244;
+	/** Sul = 0 */
+	public static final String LBR_REGIONTO_Sul = "0";
+	/** Sudeste = 1 */
+	public static final String LBR_REGIONTO_Sudeste = "1";
+	/** Norte = 2 */
+	public static final String LBR_REGIONTO_Norte = "2";
+	/** Nordeste = 3 */
+	public static final String LBR_REGIONTO_Nordeste = "3";
+	/** Centro-Oeste = 4 */
+	public static final String LBR_REGIONTO_Centro_Oeste = "4";
+	/** Sul e Sudeste = 5 */
+	public static final String LBR_REGIONTO_SulESudeste = "5";
+	/** Norte, Nordeste e Centro-Oeste = 6 */
+	public static final String LBR_REGIONTO_NorteNordesteECentro_Oeste = "6";
+	/** Sul e Sudeste, exceto ES = 7 */
+	public static final String LBR_REGIONTO_SulESudesteExcetoES = "7";
+	/** Norte, Nordeste, Centro-Oeste e ES = 8 */
+	public static final String LBR_REGIONTO_NorteNordesteCentro_OesteEES = "8";
+	/** Set Region To.
+		@param LBR_RegionTo Region To	  */
+	public void setLBR_RegionTo (String LBR_RegionTo)
+	{
+
+		set_Value (COLUMNNAME_LBR_RegionTo, LBR_RegionTo);
+	}
+
+	/** Get Region To.
+		@return Region To	  */
+	public String getLBR_RegionTo () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_RegionTo);
 	}
 
 	/** Set Tax Definition.
@@ -535,6 +602,23 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
 	}
 
+	/** Set Valid to.
+		@param ValidTo 
+		Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo)
+	{
+		set_Value (COLUMNNAME_ValidTo, ValidTo);
+	}
+
+	/** Get Valid to.
+		@return Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
+	}
+
 	/** lbr_IsSubTributaria AD_Reference_ID=1000027 */
 	public static final int LBR_ISSUBTRIBUTARIA_AD_Reference_ID=1000027;
 	/** Yes = Y */
@@ -595,48 +679,6 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public String getlbr_ProductSource () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_ProductSource);
-	}
-
-	/** lbr_TaxStatus AD_Reference_ID=1000029 */
-	public static final int LBR_TAXSTATUS_AD_Reference_ID=1000029;
-	/** 00 - Tributada integralmente = 00 */
-	public static final String LBR_TAXSTATUS_00_TributadaIntegralmente = "00";
-	/** 10 - Tributada e com cobranca do ICMS por Sub. Tributaria = 10 */
-	public static final String LBR_TAXSTATUS_10_TributadaEComCobrancaDoICMSPorSubTributaria = "10";
-	/** 20 - Com reducao de base de calculo = 20 */
-	public static final String LBR_TAXSTATUS_20_ComReducaoDeBaseDeCalculo = "20";
-	/** 30 - Isenta ou nao-trib. e com cobr. do ICMS por Sub. Tribut = 30 */
-	public static final String LBR_TAXSTATUS_30_IsentaOuNao_TribEComCobrDoICMSPorSubTribut = "30";
-	/** 40 - Isenta = 40 */
-	public static final String LBR_TAXSTATUS_40_Isenta = "40";
-	/** 41 - Nao-tributada = 41 */
-	public static final String LBR_TAXSTATUS_41_Nao_Tributada = "41";
-	/** 50 - Suspensao = 50 */
-	public static final String LBR_TAXSTATUS_50_Suspensao = "50";
-	/** 51 - Diferimento  = 51 */
-	public static final String LBR_TAXSTATUS_51_Diferimento = "51";
-	/** 60 - ICMS cobrado anteriormente por substituicao tributaria = 60 */
-	public static final String LBR_TAXSTATUS_60_ICMSCobradoAnteriormentePorSubstituicaoTributaria = "60";
-	/** 70 - Com red. de base de calc. e cobr. do ICMS por Sub. Trib = 70 */
-	public static final String LBR_TAXSTATUS_70_ComRedDeBaseDeCalcECobrDoICMSPorSubTrib = "70";
-	/** 90 - Outras = 90 */
-	public static final String LBR_TAXSTATUS_90_Outras = "90";
-	/** Set Tax Status.
-		@param lbr_TaxStatus 
-		Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus)
-	{
-
-		set_Value (COLUMNNAME_lbr_TaxStatus, lbr_TaxStatus);
-	}
-
-	/** Get Tax Status.
-		@return Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_TaxStatus);
 	}
 
 	/** lbr_TransactionType AD_Reference_ID=1000024 */

@@ -150,6 +150,19 @@ public interface I_LBR_TaxDefinition
 	  */
 	public boolean isActive();
 
+    /** Column name IsManual */
+    public static final String COLUMNNAME_IsManual = "IsManual";
+
+	/** Set Manual.
+	  * This is a manual process
+	  */
+	public void setIsManual (boolean IsManual);
+
+	/** Get Manual.
+	  * This is a manual process
+	  */
+	public boolean isManual();
+
     /** Column name IsSOTrx */
     public static final String COLUMNNAME_IsSOTrx = "IsSOTrx";
 
@@ -177,21 +190,6 @@ public interface I_LBR_TaxDefinition
 	public int getLBR_BPartnerCategory_ID();
 
 	public org.adempierelbr.model.I_LBR_BPartnerCategory getLBR_BPartnerCategory() throws RuntimeException;
-
-    /** Column name LBR_CFOP_ID */
-    public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";
-
-	/** Set CFOP.
-	  * Primary key table LBR_CFOP
-	  */
-	public void setLBR_CFOP_ID (int LBR_CFOP_ID);
-
-	/** Get CFOP.
-	  * Primary key table LBR_CFOP
-	  */
-	public int getLBR_CFOP_ID();
-
-	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
 
     /** Column name LBR_FiscalGroup_BPartner_ID */
     public static final String COLUMNNAME_LBR_FiscalGroup_BPartner_ID = "LBR_FiscalGroup_BPartner_ID";
@@ -223,20 +221,18 @@ public interface I_LBR_TaxDefinition
 
 	public org.adempierelbr.model.I_LBR_FiscalGroup_Product getLBR_FiscalGroup_Product() throws RuntimeException;
 
-    /** Column name LBR_LegalMessage_ID */
-    public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
 
-	/** Set Legal Message.
-	  * Defines the Legal Message
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
 	  */
-	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID);
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
 
-	/** Get Legal Message.
-	  * Defines the Legal Message
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
 	  */
-	public int getLBR_LegalMessage_ID();
-
-	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException;
+	public String getLBR_IndIEDest();
 
     /** Column name LBR_NCM_ID */
     public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
@@ -267,6 +263,24 @@ public interface I_LBR_TaxDefinition
 	public int getLBR_ProductCategory_ID();
 
 	public org.adempierelbr.model.I_LBR_ProductCategory getLBR_ProductCategory() throws RuntimeException;
+
+    /** Column name LBR_RegionFrom */
+    public static final String COLUMNNAME_LBR_RegionFrom = "LBR_RegionFrom";
+
+	/** Set Region From	  */
+	public void setLBR_RegionFrom (String LBR_RegionFrom);
+
+	/** Get Region From	  */
+	public String getLBR_RegionFrom();
+
+    /** Column name LBR_RegionTo */
+    public static final String COLUMNNAME_LBR_RegionTo = "LBR_RegionTo";
+
+	/** Set Region To	  */
+	public void setLBR_RegionTo (String LBR_RegionTo);
+
+	/** Get Region To	  */
+	public String getLBR_RegionTo();
 
     /** Column name LBR_TaxDefinition_ID */
     public static final String COLUMNNAME_LBR_TaxDefinition_ID = "LBR_TaxDefinition_ID";
@@ -362,6 +376,19 @@ public interface I_LBR_TaxDefinition
 	  */
 	public Timestamp getValidFrom();
 
+    /** Column name ValidTo */
+    public static final String COLUMNNAME_ValidTo = "ValidTo";
+
+	/** Set Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo);
+
+	/** Get Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo();
+
     /** Column name lbr_IsSubTributaria */
     public static final String COLUMNNAME_lbr_IsSubTributaria = "lbr_IsSubTributaria";
 
@@ -387,19 +414,6 @@ public interface I_LBR_TaxDefinition
 	  * Defines the Product Source
 	  */
 	public String getlbr_ProductSource();
-
-    /** Column name lbr_TaxStatus */
-    public static final String COLUMNNAME_lbr_TaxStatus = "lbr_TaxStatus";
-
-	/** Set Tax Status.
-	  * Defines the Tax Status
-	  */
-	public void setlbr_TaxStatus (String lbr_TaxStatus);
-
-	/** Get Tax Status.
-	  * Defines the Tax Status
-	  */
-	public String getlbr_TaxStatus();
 
     /** Column name lbr_TransactionType */
     public static final String COLUMNNAME_lbr_TransactionType = "lbr_TransactionType";
