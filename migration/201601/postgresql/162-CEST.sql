@@ -2232,6 +2232,354 @@ UPDATE AD_Field SET IsSameLine='Y', SeqNo=40,Updated=TO_TIMESTAMP('2015-12-18 10
 UPDATE AD_Field SET DisplayLength=22, SeqNo=50,Updated=TO_TIMESTAMP('2015-12-18 10:16:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125678
 ;
 
+-- 18/12/2015 13h55min2s BRST
+DELETE FROM AD_Column_Trl WHERE AD_Column_ID=2000000
+;
+
+-- 18/12/2015 13h55min2s BRST
+DELETE FROM AD_Column WHERE AD_Column_ID=2000000
+;
+
+-- 18/12/2015 13h56min0s BRST
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,ReadOnlyLogic,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1128692,1122214,0,30,1000028,'LBR_CEST_ID',TO_TIMESTAMP('2015-12-18 13:55:59','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_CEST Brazilian Specifier code Tax','LBRA',10,'Primary key table LBR_CEST Brazilian Specifier code Tax','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','CEST',NULL,0,TO_TIMESTAMP('2015-12-18 13:55:59','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 18/12/2015 13h56min0s BRST
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1128692 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 18/12/2015 13h56min2s BRST
+ALTER TABLE LBR_NotaFiscalLine ADD COLUMN LBR_CEST_ID NUMERIC(10) DEFAULT NULL 
+;
+
+-- 18/12/2015 13h56min30s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1128692,106,1125680,0,1000021,TO_TIMESTAMP('2015-12-18 13:56:29','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_CEST Brazilian Specifier code Tax',22,'LBRA','Primary key table LBR_CEST Brazilian Specifier code Tax','Y','Y','Y','N','N','N','N','Y','CEST',165,TO_TIMESTAMP('2015-12-18 13:56:29','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 13h56min30s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125680 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Element SET Description='Brazilian Specifier code Tax', Help='Brazilian Specifier code Tax',Updated=TO_TIMESTAMP('2015-12-18 13:57:08','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122214
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Element_Trl SET IsTranslated='N' WHERE AD_Element_ID=1122214
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Element_Trl SET Description='Brazilian Specifier code Tax',Help='Brazilian Specifier code Tax',Name='CEST',PO_Description=NULL,PO_Help=NULL,PO_Name=NULL,PO_PrintName=NULL,PrintName='CEST',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Element_ID=1122214
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Column SET ColumnName='LBR_CEST_ID', Name='CEST', Description='Brazilian Specifier code Tax', Help='Brazilian Specifier code Tax' WHERE AD_Element_ID=1122214
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Process_Para SET ColumnName='LBR_CEST_ID', Name='CEST', Description='Brazilian Specifier code Tax', Help='Brazilian Specifier code Tax', AD_Element_ID=1122214 WHERE UPPER(ColumnName)='LBR_CEST_ID' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Process_Para SET ColumnName='LBR_CEST_ID', Name='CEST', Description='Brazilian Specifier code Tax', Help='Brazilian Specifier code Tax' WHERE AD_Element_ID=1122214 AND IsCentrallyMaintained='Y'
+;
+
+-- 18/12/2015 13h57min8s BRST
+UPDATE AD_Field SET Name='CEST', Description='Brazilian Specifier code Tax', Help='Brazilian Specifier code Tax' WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Element_ID=1122214) AND IsCentrallyMaintained='Y'
+;
+
+-- 18/12/2015 13h57min17s BRST
+UPDATE AD_Element_Trl SET Help='Código Especificador da Substituição Tributária',Updated=TO_TIMESTAMP('2015-12-18 13:57:17','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122214 AND AD_Language='pt_BR'
+;
+
+-- 18/12/2015 13h58min17s BRST
+UPDATE AD_Element_Trl SET IsTranslated='Y',Updated=TO_TIMESTAMP('2015-12-18 13:58:17','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122214 AND AD_Language='pt_BR'
+;
+
+-- 18/12/2015 14h15min43s BRST
+UPDATE AD_Column SET IsActive='N',Updated=TO_TIMESTAMP('2015-12-18 14:15:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000628
+;
+
+-- 18/12/2015 14h16min21s BRST
+UPDATE AD_Column SET IsActive='N',Updated=TO_TIMESTAMP('2015-12-18 14:16:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000627
+;
+
+-- 18/12/2015 14h19min39s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1126811,1000000,1125681,0,180,TO_TIMESTAMP('2015-12-18 14:19:38','YYYY-MM-DD HH24:MI:SS'),100,1,'LBRA','Y','Y','Y','N','N','N','N','Y','Item Type (SPED)',525,TO_TIMESTAMP('2015-12-18 14:19:38','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h19min39s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125681 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h21min44s BRST
+UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2015-12-18 14:21:44','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1100089
+;
+
+-- 18/12/2015 14h23min9s BRST
+INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,CreatedBy,EntityType,IsActive,Name,Type,Updated,UpdatedBy) VALUES (0,0,1120119,'LBR_CEST.LBR_NCM_ID=@LBR_NCM_ID@',TO_TIMESTAMP('2015-12-18 14:23:07','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','LBR_CEST of NCM','S',TO_TIMESTAMP('2015-12-18 14:23:07','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h23min25s BRST
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1128693,1122214,0,17,208,1120119,'LBR_CEST_ID',TO_TIMESTAMP('2015-12-18 14:23:24','YYYY-MM-DD HH24:MI:SS'),100,'Brazilian Specifier code Tax','LBRA',10,'Brazilian Specifier code Tax','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','CEST',0,TO_TIMESTAMP('2015-12-18 14:23:24','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 18/12/2015 14h23min25s BRST
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1128693 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 18/12/2015 14h23min27s BRST
+ALTER TABLE M_Product ADD COLUMN LBR_CEST_ID VARCHAR(10) DEFAULT NULL 
+;
+
+-- 18/12/2015 14h23min55s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1128693,1000000,1125682,0,180,TO_TIMESTAMP('2015-12-18 14:23:54','YYYY-MM-DD HH24:MI:SS'),100,'Brazilian Specifier code Tax',22,'LBRA','Brazilian Specifier code Tax','Y','Y','Y','N','N','N','N','Y','CEST',535,TO_TIMESTAMP('2015-12-18 14:23:54','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h23min55s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125682 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h24min44s BRST
+UPDATE AD_Field SET SeqNo=555,Updated=TO_TIMESTAMP('2015-12-18 14:24:44','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000188
+;
+
+-- 18/12/2015 14h24min55s BRST
+UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2015-12-18 14:24:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000112
+;
+
+-- 18/12/2015 14h25min1s BRST
+DELETE FROM AD_Field_Trl WHERE AD_Field_ID=1000428
+;
+
+-- 18/12/2015 14h25min1s BRST
+DELETE FROM AD_Field WHERE AD_Field_ID=1000428
+;
+
+-- 18/12/2015 14h25min4s BRST
+DELETE FROM AD_Field_Trl WHERE AD_Field_ID=1000429
+;
+
+-- 18/12/2015 14h25min4s BRST
+DELETE FROM AD_Field WHERE AD_Field_ID=1000429
+;
+
+-- 18/12/2015 14h25min20s BRST
+UPDATE AD_Field SET SeqNo=656,Updated=TO_TIMESTAMP('2015-12-18 14:25:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1100089
+;
+
+-- 18/12/2015 14h25min33s BRST
+UPDATE AD_Field SET DisplayLogic='@ProductType@!S',Updated=TO_TIMESTAMP('2015-12-18 14:25:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000112
+;
+
+-- 18/12/2015 14h27min11s BRST
+UPDATE AD_Column SET AD_Reference_ID=18,Updated=TO_TIMESTAMP('2015-12-18 14:27:11','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1128693
+;
+
+-- 18/12/2015 14h29min44s BRST
+UPDATE AD_Val_Rule SET Code='EXISTS (SELECT ''1'' FROM LBR_NCM_CEST WHERE LBR_NCM_CEST.LBR_NCM_ID=@LBR_NCM_ID@)',Updated=TO_TIMESTAMP('2015-12-18 14:29:44','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Val_Rule_ID=1120119
+;
+
+-- 18/12/2015 14h31min10s BRST
+UPDATE AD_Val_Rule SET Code='EXISTS (SELECT ''1'' FROM LBR_NCM_CEST WHERE LBR_NCM_CEST.LBR_NCM_ID=@LBR_NCM_ID@ AND LBR_NCM_CEST.LBR_CEST_ID=LBR_CEST.LBR_CEST_ID)',Updated=TO_TIMESTAMP('2015-12-18 14:31:10','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Val_Rule_ID=1120119
+;
+
+-- 18/12/2015 14h35min40s BRST
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1122217,0,'LBR_CESTName',TO_TIMESTAMP('2015-12-18 14:35:39','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','CEST Name','CEST Name',TO_TIMESTAMP('2015-12-18 14:35:39','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h35min40s BRST
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1122217 AND NOT EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Element_ID=t.AD_Element_ID)
+;
+
+-- 18/12/2015 14h35min53s BRST
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='CEST',PrintName='CEST',Updated=TO_TIMESTAMP('2015-12-18 14:35:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122217 AND AD_Language='pt_BR'
+;
+
+-- 18/12/2015 14h36min19s BRST
+UPDATE AD_Element_Trl SET Description='Código de Especificação da Substituição Tributária',Help='Código de Especificação da Substituição Tributária',Updated=TO_TIMESTAMP('2015-12-18 14:36:19','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122217 AND AD_Language='pt_BR'
+;
+
+-- 18/12/2015 14h37min0s BRST
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1128694,1122217,0,10,1000028,'LBR_CESTName',TO_TIMESTAMP('2015-12-18 14:36:59','YYYY-MM-DD HH24:MI:SS'),100,'LBRA',9,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','CEST Name',0,TO_TIMESTAMP('2015-12-18 14:36:59','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 18/12/2015 14h37min0s BRST
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1128694 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 18/12/2015 14h37min2s BRST
+ALTER TABLE LBR_NotaFiscalLine ADD COLUMN LBR_CESTName VARCHAR(9) DEFAULT NULL 
+;
+
+-- 18/12/2015 14h37min55s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,SortNo,Updated,UpdatedBy) VALUES (0,1128694,1120057,1125683,0,1000021,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100,22,'LBRA','Y','Y','N','N','N','N','N','Y','CEST Name',999,0,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h37min55s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125683 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h40min7s BRST
+UPDATE AD_Field SET IsDisplayed='N',Updated=TO_TIMESTAMP('2015-12-18 14:40:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000599
+;
+
+-- 18/12/2015 14h40min12s BRST
+UPDATE AD_Field SET IsDisplayed='N',Updated=TO_TIMESTAMP('2015-12-18 14:40:12','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1000601
+;
+
+-- 18/12/2015 14h40min38s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1128692,106,1125684,0,1000030,TO_TIMESTAMP('2015-12-18 14:40:37','YYYY-MM-DD HH24:MI:SS'),100,'Brazilian Specifier code Tax',22,'LBRA','Brazilian Specifier code Tax','Y','Y','Y','N','N','N','N','Y','CEST',165,TO_TIMESTAMP('2015-12-18 14:40:37','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h40min38s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125684 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=0,IsDisplayed='N' WHERE AD_Field_ID=1000601
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=0,IsDisplayed='N' WHERE AD_Field_ID=1000599
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=110,IsDisplayed='Y' WHERE AD_Field_ID=1122916
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=120,IsDisplayed='Y' WHERE AD_Field_ID=1000595
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=130,IsDisplayed='Y' WHERE AD_Field_ID=1000596
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=140,IsDisplayed='Y' WHERE AD_Field_ID=1000597
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=150,IsDisplayed='Y' WHERE AD_Field_ID=1000598
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=170,IsDisplayed='Y' WHERE AD_Field_ID=1125684
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=220,IsDisplayed='Y' WHERE AD_Field_ID=1122782
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=230,IsDisplayed='Y' WHERE AD_Field_ID=1124871
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=240,IsDisplayed='Y' WHERE AD_Field_ID=1100072
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=250,IsDisplayed='Y' WHERE AD_Field_ID=1100073
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=260,IsDisplayed='Y' WHERE AD_Field_ID=1100074
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=270,IsDisplayed='Y' WHERE AD_Field_ID=1100075
+;
+
+-- 18/12/2015 14h42min30s BRST
+UPDATE AD_Field SET SeqNo=280,IsDisplayed='Y' WHERE AD_Field_ID=1000632
+;
+
+-- 18/12/2015 14h42min56s BRST
+UPDATE AD_Field SET IsSameLine='Y',Updated=TO_TIMESTAMP('2015-12-18 14:42:56','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1122916
+;
+
+-- 18/12/2015 14h44min2s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1126588,1125685,0,1000030,TO_TIMESTAMP('2015-12-18 14:44:01','YYYY-MM-DD HH24:MI:SS'),100,'Freight Amount ',13,'LBRA','The Freight Amount indicates the amount charged for Freight in the document currency.','Y','Y','Y','N','N','N','N','Y','Freight Amount',221,TO_TIMESTAMP('2015-12-18 14:44:01','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h44min2s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125685 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h44min18s BRST
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1126589,1125686,0,1000030,TO_TIMESTAMP('2015-12-18 14:44:17','YYYY-MM-DD HH24:MI:SS'),100,'Defines the Insurance Amt',13,'LBRA','Defines the Insurance Amt','Y','Y','Y','N','N','N','N','N','Insurance Amt',222,TO_TIMESTAMP('2015-12-18 14:44:17','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 18/12/2015 14h44min18s BRST
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1125686 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=210,IsDisplayed='Y' WHERE AD_Field_ID=1124871
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=220,IsDisplayed='Y' WHERE AD_Field_ID=1125685
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=230,IsDisplayed='Y' WHERE AD_Field_ID=1125686
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=240,IsDisplayed='Y' WHERE AD_Field_ID=1122782
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=250,IsDisplayed='Y' WHERE AD_Field_ID=1000605
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=260,IsDisplayed='Y' WHERE AD_Field_ID=1100072
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=270,IsDisplayed='Y' WHERE AD_Field_ID=1100073
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=280,IsDisplayed='Y' WHERE AD_Field_ID=1100074
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=290,IsDisplayed='Y' WHERE AD_Field_ID=1100075
+;
+
+-- 18/12/2015 14h46min6s BRST
+UPDATE AD_Field SET SeqNo=300,IsDisplayed='Y' WHERE AD_Field_ID=1000632
+;
+
+-- 18/12/2015 14h46min20s BRST
+UPDATE AD_Field SET IsSameLine='Y',Updated=TO_TIMESTAMP('2015-12-18 14:46:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1124871
+;
+
+-- 18/12/2015 14h46min22s BRST
+UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2015-12-18 14:46:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125685
+;
+
+-- 18/12/2015 14h46min25s BRST
+UPDATE AD_Field SET IsSameLine='Y',Updated=TO_TIMESTAMP('2015-12-18 14:46:25','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125686
+;
+
+-- 18/12/2015 14h49min7s BRST
+UPDATE AD_Column SET IsSelectionColumn='Y',Updated=TO_TIMESTAMP('2015-12-18 14:49:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1128621
+;
+
+-- 18/12/2015 14h49min11s BRST
+UPDATE AD_Column SET IsSelectionColumn='Y',Updated=TO_TIMESTAMP('2015-12-18 14:49:11','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1128623
+;
+
+-- 18/12/2015 14h49min34s BRST
+UPDATE AD_Table SET AD_Window_ID=1120110,Updated=TO_TIMESTAMP('2015-12-18 14:49:34','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Table_ID=1120531
+;
+
 SELECT Register_Migration_Script ('162-CEST.sql') FROM DUAL
 ;
 

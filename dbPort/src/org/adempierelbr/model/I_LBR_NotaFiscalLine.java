@@ -174,6 +174,30 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_CESTName */
+    public static final String COLUMNNAME_LBR_CESTName = "LBR_CESTName";
+
+	/** Set CEST Name	  */
+	public void setLBR_CESTName (String LBR_CESTName);
+
+	/** Get CEST Name	  */
+	public String getLBR_CESTName();
+
+    /** Column name LBR_CEST_ID */
+    public static final String COLUMNNAME_LBR_CEST_ID = "LBR_CEST_ID";
+
+	/** Set CEST.
+	  * Brazilian Specifier code Tax
+	  */
+	public void setLBR_CEST_ID (int LBR_CEST_ID);
+
+	/** Get CEST.
+	  * Brazilian Specifier code Tax
+	  */
+	public int getLBR_CEST_ID();
+
+	public org.adempierelbr.model.I_LBR_CEST getLBR_CEST() throws RuntimeException;
+
     /** Column name LBR_CFOP_ID */
     public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";
 
@@ -188,45 +212,6 @@ public interface I_LBR_NotaFiscalLine
 	public int getLBR_CFOP_ID();
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
-
-    /** Column name LBR_ICMSDestAmt */
-    public static final String COLUMNNAME_LBR_ICMSDestAmt = "LBR_ICMSDestAmt";
-
-	/** Set ICMS Part. Dest..
-	  * Valor do ICMS Interestadual partilhado para a UF de destino
-	  */
-	public void setLBR_ICMSDestAmt (BigDecimal LBR_ICMSDestAmt);
-
-	/** Get ICMS Part. Dest..
-	  * Valor do ICMS Interestadual partilhado para a UF de destino
-	  */
-	public BigDecimal getLBR_ICMSDestAmt();
-
-    /** Column name LBR_ICMSInterPartRate */
-    public static final String COLUMNNAME_LBR_ICMSInterPartRate = "LBR_ICMSInterPartRate";
-
-	/** Set Partilha (%).
-	  * Percentual provisório de partilha do ICMS Interestadual
-	  */
-	public void setLBR_ICMSInterPartRate (BigDecimal LBR_ICMSInterPartRate);
-
-	/** Get Partilha (%).
-	  * Percentual provisório de partilha do ICMS Interestadual
-	  */
-	public BigDecimal getLBR_ICMSInterPartRate();
-
-    /** Column name LBR_ICMSIssuerAmt */
-    public static final String COLUMNNAME_LBR_ICMSIssuerAmt = "LBR_ICMSIssuerAmt";
-
-	/** Set ICMS Part. Rem..
-	  * Valor do ICMS Interestadual partilhado para a UF de destino
-	  */
-	public void setLBR_ICMSIssuerAmt (BigDecimal LBR_ICMSIssuerAmt);
-
-	/** Get ICMS Part. Rem..
-	  * Valor do ICMS Interestadual partilhado para a UF de destino
-	  */
-	public BigDecimal getLBR_ICMSIssuerAmt();
 
     /** Column name LBR_IndTot */
     public static final String COLUMNNAME_LBR_IndTot = "LBR_IndTot";

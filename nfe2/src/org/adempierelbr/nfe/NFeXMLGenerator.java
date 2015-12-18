@@ -776,6 +776,10 @@ public class NFeXMLGenerator
 			else
 				prod.setNCM (toNumericStr (nfl.getlbr_NCMName ()));
 			
+			//	NT2015.003
+			if (nfl.getLBR_CEST_ID() > 0)
+				prod.setCEST(nfl.getLBR_CESTName());
+			
 //			prod.addNVE(arg0);		//	FIXME
 //			prod.setEXTIPI(arg0);	//	FIXME
 			prod.setCFOP(TCfop.Enum.forString (toNumericStr (nfl.getlbr_CFOPName())));
