@@ -450,42 +450,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		return getTaxAmt("II");
 	}	//	getIIAmt
-	
-	/**
-	 * 		ICMS para a UF de Destino para os casos de Venda 
-	 * 	para Consumidor Final Não Contribuinte de ICMS - NT2015.003
-	 * 	@return Valor do ICMS partilhado para UF de Destino
-	 */
-	public BigDecimal getTotal_ICMSDestAmt ()
-	{
-		String sql = "SELECT SUM (nfl." + MLBRNotaFiscalLine.COLUMNNAME_LBR_ICMSDestAmt + ") "
-				+ "FROM " + MLBRNotaFiscalLine.Table_Name + " nfl "
-                + "WHERE " + MLBRNotaFiscalLine.COLUMNNAME_LBR_NotaFiscal_ID + "=?";
-		//
-		BigDecimal result = DB.getSQLValueBD (get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID()});
-		
-		if (result != null && result.signum() == 1)
-			return result;
-		return Env.ZERO;
-	}	//	getTotal_ICMSDestAmt
-	
-	/**
-	 * 		ICMS para a UF Remetente para os casos de Venda 
-	 * 	para Consumidor Final Não Contribuinte de ICMS - NT2015.003
-	 * 	@return Valor do ICMS partilhado para UF de Remetente
-	 */
-	public BigDecimal getTotal_ICMSIssuerAmt ()
-	{
-		String sql = "SELECT SUM (nfl." + MLBRNotaFiscalLine.COLUMNNAME_LBR_ICMSIssuerAmt + ") "
-				+ "FROM " + MLBRNotaFiscalLine.Table_Name + " nfl "
-                + "WHERE " + MLBRNotaFiscalLine.COLUMNNAME_LBR_NotaFiscal_ID + "=?";
-		//
-		BigDecimal result = DB.getSQLValueBD (get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID()});
-		
-		if (result != null && result.signum() == 1)
-			return result;
-		return Env.ZERO;
-	}	//	getTotal_ICMSIssuerAmt
 
 	public static int getLBR_NotaFiscal_ID(String DocumentNo, boolean IsSOTrx, String trx)
 	{
@@ -1703,7 +1667,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPPhone(bpLocation.getPhone());   				//	Telefone
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
-		setLBR_IndIEDest(BPartnerUtil.getIndIE(bpLocation));	//	Ind IE (ICMS, Isento, Não Contribuinte)
+		String indIE = BPartnerUtil.getIndIE(bpLocation);
+		if (indIE != null)
+			setLBR_IndIEDest(indIE);							//	Ind IE (ICMS, Isento, Não Contribuinte)
 		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
 		String BPTypeBR = bp.getlbr_BPTypeBR();
 		if (BPTypeBR != null && !BPTypeBR.isEmpty())
@@ -2091,6 +2057,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Opcionalmente pode gerar o RPS apenas na hora da transmissão
 		if (newRecord)
 		{
+			if (getLBR_IndIEDest() == null)
+				setLBR_IndIEDest(LBR_INDIEDEST_9_NãoContribuinte);
+			
 			Integer vC_DocTypeTarget_ID = getC_DocTypeTarget_ID();
 			//
 			if (vC_DocTypeTarget_ID != null

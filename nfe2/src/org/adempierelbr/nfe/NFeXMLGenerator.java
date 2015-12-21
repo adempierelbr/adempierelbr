@@ -14,6 +14,8 @@ package org.adempierelbr.nfe;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
@@ -1259,18 +1261,40 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	NT2015.003
+			BigDecimal difal = nfl.getTaxAmt("ICMSDIFAL");
 			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
-					&& nfl.getLBR_ICMSDestAmt() != null && nfl.getLBR_ICMSDestAmt().signum() == 1)
+					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinte.equals(nf.getLBR_IndIEDest())
+					&& difal != null && difal.signum() == 1)
 			{
+				Timestamp dateDoc = nfl.getParent().getDateDoc();
+				Calendar cal = new GregorianCalendar ();
+				cal.setTimeInMillis(dateDoc.getTime());
+				BigDecimal partICMSRate = Env.ZERO;
+
+				/**
+				 * 	Percentual da partilha entre estados
+				 */
+				if (cal.before (new GregorianCalendar (2017, 01, 01)))		// ... -> 2016
+					partICMSRate = new BigDecimal (40);
+				
+				else if (cal.before (new GregorianCalendar (2018, 01, 01)))	// 2017
+					partICMSRate = new BigDecimal (60);
+				
+				else if (cal.before (new GregorianCalendar (2019, 01, 01)))	// 2018
+					partICMSRate = new BigDecimal (80);
+				
+				else														// 2019 -> ...
+					partICMSRate = new BigDecimal (100);
+				//
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
-				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSST")));
+				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMS")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
-				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSST")));
+				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
 				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));
-				nflICMSDest.setPICMSInterPart (normalize (nfl.getLBR_ICMSInterPartRate()));
+				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
-				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt ("ICMSST")));
-				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMS")));
+				nflICMSDest.setVICMSUFDest (normalize (difal));
+				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMSDIFALORIG")));
 			}	//	NT2015.003
 			
 			//	V. Informações adicionais (para o item da NF-e)
@@ -1286,8 +1310,8 @@ public class NFeXMLGenerator
 		icmsTot.setVICMS(normalize (nf.getICMSAmt()));
 		icmsTot.setVICMSDeson(TextUtil.ZERO_STRING);
 		icmsTot.setVFCPUFDest(normalize (nf.getTaxAmt ("FCP")));		//	Fundo de Combate a Pobreza - NT2015.003
-		icmsTot.setVICMSUFDest(normalize (nf.getTotal_ICMSDestAmt()));
-		icmsTot.setVICMSUFRemet(normalize (nf.getTotal_ICMSIssuerAmt()));
+		icmsTot.setVICMSUFDest(normalize (nf.getTaxAmt ("ICMSDIFAL")));
+		icmsTot.setVICMSUFRemet(normalize (nf.getTaxAmt ("ICMSDIFALORIG")));
 		icmsTot.setVBCST(normalize (nf.getICMSSTBase()));
 		icmsTot.setVST(normalize (nf.getICMSSTAmt()));
 		icmsTot.setVProd(normalize (nf.getTotalLines()));

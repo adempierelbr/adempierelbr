@@ -299,12 +299,19 @@ public class VLBRTax implements ModelValidator
 					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_C_BPartner_Location_ID)
 					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_lbr_TransactionType))
 				return true;
-			
+
 			/**
 			 * 	Campo existentes apenas no pedido
 			 */
 			if (po instanceof MOrder && (po.is_ValueChanged(I_W_C_Order.COLUMNNAME_Bill_BPartner_ID)
-					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_Bill_Location_ID)))
+					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_Bill_Location_ID)
+					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_DateOrdered)))
+				return true;
+			
+			/**
+			 * 	Campo existentes apenas na fatura
+			 */
+			if (po instanceof MInvoice && (po.is_ValueChanged(I_W_C_Invoice.COLUMNNAME_DateInvoiced)))
 				return true;
 		}
 		else if  (po instanceof MOrderLine || po instanceof MInvoiceLine)
