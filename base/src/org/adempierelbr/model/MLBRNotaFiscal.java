@@ -2771,7 +2771,43 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					try
 					{
-						if (!infSe.transmit(this))
+						//	Consultar Estado de NF-e de Serviço já Transmitida de Forma Assincrona
+						if (DOCSTATUS_WaitingConfirmation.equals(getDocStatus()))
+						{
+							if (infSe.consult(this))
+							{
+								//	Set status
+								setDocStatus(DOCSTATUS_Completed);
+								setDocAction(DOCACTION_None);
+							}
+							else
+							{
+								m_processMsg = "Falha na transmissão do RPS";
+								return DOCSTATUS_Invalid;
+							}
+						}
+						//	Transmitir NF-e de Serviço
+						else if (!DOCSTATUS_Completed.equals (getDocStatus()))
+						{
+							if (infSe.transmit(this))
+							{
+								//	Quando a Transmissão da NF-e é de Forma Sincrona	
+								if (INFSe.TYPE_SYNCHRONOUS.equals(infSe.getType()))
+								{
+									//	Set status
+									setDocStatus(DOCSTATUS_Completed);
+									setDocAction(DOCACTION_None);
+								}
+								//	Quando a Transmissão da NF-e é de Forma Assincrona
+								else
+								{
+									//	Set status
+									setDocStatus(DOCSTATUS_WaitingConfirmation);
+									setDocAction(DOCACTION_Complete);
+								}
+							}
+						}
+						else
 						{
 							m_processMsg = "Falha na transmissão do RPS";
 							return DOCSTATUS_Invalid;
@@ -2785,8 +2821,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 						return DOCSTATUS_Invalid;
 					}
 				}
-			}
-			
+			}			
 			//	Outras NF
 			else
 				setDocStatus(DOCSTATUS_Completed);
