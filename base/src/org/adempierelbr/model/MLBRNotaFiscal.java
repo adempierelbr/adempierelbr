@@ -2783,7 +2783,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 							else
 							{
 								m_processMsg = "Falha na transmissão do RPS";
-								return DOCSTATUS_Invalid;
+								return DOCSTATUS_WaitingConfirmation;
 							}
 						}
 						//	Transmitir NF-e de Serviço
