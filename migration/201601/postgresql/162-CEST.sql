@@ -2413,7 +2413,7 @@ ALTER TABLE LBR_NotaFiscalLine ADD COLUMN LBR_CESTName VARCHAR(9) DEFAULT NULL
 ;
 
 -- 18/12/2015 14h37min55s BRST
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,SortNo,Updated,UpdatedBy) VALUES (0,1128694,1120057,1125683,0,1000021,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100,22,'LBRA','Y','Y','N','N','N','N','N','Y','CEST Name',999,0,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,SortNo,Updated,UpdatedBy) VALUES (0,1128694,NULL,1125683,0,1000021,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100,22,'LBRA','Y','Y','N','N','N','N','N','Y','CEST Name',999,0,TO_TIMESTAMP('2015-12-18 14:37:55','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 18/12/2015 14h37min55s BRST
