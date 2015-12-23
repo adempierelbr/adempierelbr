@@ -15,15 +15,7 @@ INSERT INTO LBR_TaxName (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,Is
 ;
 
 -- 11/12/2015 19h51min21s BRST
-INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,IsTaxIncluded,LBR_FormulaNet_ID,LBR_Formula_ID,LBR_TaxFormula_ID,LBR_TaxName_ID,Updated,UpdatedBy,ValidFrom,lbr_TransactionType) VALUES (0,0,TO_DATE('2015-12-11 19:51:21','YYYY-MM-DD HH24:MI:SS'),100,'Y','N',1000003,1000015,1120010,1120000,TO_DATE('2015-12-11 19:51:21','YYYY-MM-DD HH24:MI:SS'),100,TO_DATE('2000-01-01','YYYY-MM-DD'),'END')
-;
-
--- 11/12/2015 19h51min26s BRST
-INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,IsTaxIncluded,LBR_FormulaNet_ID,LBR_Formula_ID,LBR_TaxFormula_ID,LBR_TaxName_ID,Updated,UpdatedBy,ValidFrom,lbr_TransactionType) VALUES (0,0,TO_DATE('2015-12-11 19:51:26','YYYY-MM-DD HH24:MI:SS'),100,'Y','N',1000003,1000015,1120011,1120000,TO_DATE('2015-12-11 19:51:26','YYYY-MM-DD HH24:MI:SS'),100,TO_DATE('2000-01-01','YYYY-MM-DD'),'RES')
-;
-
--- 11/12/2015 19h51min26s BRST
-INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,IsTaxIncluded,LBR_FormulaNet_ID,LBR_Formula_ID,LBR_TaxFormula_ID,LBR_TaxName_ID,Updated,UpdatedBy,ValidFrom,lbr_TransactionType) VALUES (0,0,TO_DATE('2015-12-11 19:51:26','YYYY-MM-DD HH24:MI:SS'),100,'Y','N',1000003,1000015,1120012,1120000,TO_DATE('2015-12-11 19:51:26','YYYY-MM-DD HH24:MI:SS'),100,TO_DATE('2000-01-01','YYYY-MM-DD'),'MAN')
+INSERT INTO LBR_TaxFormula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,IsTaxIncluded,LBR_FormulaNet_ID,LBR_Formula_ID,LBR_TaxFormula_ID,LBR_TaxName_ID,Updated,UpdatedBy,ValidFrom,lbr_TransactionType) VALUES (0,0,TO_DATE('2015-12-11 19:51:21','YYYY-MM-DD HH24:MI:SS'),100,'Y','N',1000001,1000016,1120010,1120000,TO_DATE('2015-12-11 19:51:21','YYYY-MM-DD HH24:MI:SS'),100,TO_DATE('2000-01-01','YYYY-MM-DD'),'END')
 ;
 
 -- 18/12/2015 18h29min6s BRST
