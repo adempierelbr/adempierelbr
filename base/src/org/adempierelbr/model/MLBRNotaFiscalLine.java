@@ -556,6 +556,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				setlbr_NumAdicao(adil.getParent().getSeqNo());
 				setlbr_NumSeqItem(adil.getSeqNo());
 			}
+			
+			//	FCI
+			if (getlbr_CFOPName() != null && getlbr_CFOPName().length() > 1
+					//	2 - Entrada de fora do Estado
+					//	3 - Entrada Estrangeira
+					//	6 - Saída para fora do Estado
+					//	7 - Saída para o Estrageiro
+					&& "2367".indexOf (getlbr_CFOPName().substring (0, 1)) != -1
+					//	3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 40% e inferior ou igual a 70%
+					//	5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40%
+					//	8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%
+					&& "358".indexOf (getlbr_ProductSource()) != -1)
+				setFCI();
 		}
 	}	//	setOrderLine
 
@@ -808,6 +821,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//
 		return true;
 	}	//	isSOTrx
+	
+	/**
+	 * 	Set FCI if exists
+	 */
+	public void setFCI ()
+	{
+		MLBRProductFCI fci = MLBRProductFCI.getActual (getM_Product_ID(), getAD_Org_ID(), getParent().getDateDoc(), get_TrxName());
+		if (fci != null)
+			setLBR_FCIValue (fci.getValue().toUpperCase());
+	}	//	setFCI
 	
 	/**
 	 * 	Get Parent

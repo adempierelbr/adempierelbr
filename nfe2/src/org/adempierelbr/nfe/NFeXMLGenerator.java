@@ -621,7 +621,7 @@ public class NFeXMLGenerator
 				{
 					dest.setIndIEDest (TNFe.InfNFe.Dest.IndIEDest.Enum.forString(nf.getLBR_IndIEDest()));
 					//
-					if (MLBRNotaFiscal.LBR_INDIEDEST_1_ContribuinteDoICMS.equals(nf.getLBR_IndIEDest()))
+					if (MLBRNotaFiscal.LBR_INDIEDEST_1_ContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
 						dest.setIE (toNumericStr (nf.getlbr_BPIE()));
 				}
 				else
@@ -871,7 +871,7 @@ public class NFeXMLGenerator
 			}
 			
 			//	I07. Produtos e Serviços / Grupo Diversos
-			String nFCI = nfl.get_ValueAsString ("LBR_FCIValue");
+			String nFCI = nfl.getLBR_FCIValue();
 			if (nFCI != null && !nFCI.trim().isEmpty())
 				prod.setNFCI (nFCI);
 			
@@ -1263,7 +1263,7 @@ public class NFeXMLGenerator
 			//	NT2015.003
 			BigDecimal difal = nfl.getTaxAmt("ICMSDIFAL");
 			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
-					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinte.equals(nf.getLBR_IndIEDest())
+					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest())
 					&& difal != null && difal.signum() == 1)
 			{
 				Timestamp dateDoc = nfl.getParent().getDateDoc();

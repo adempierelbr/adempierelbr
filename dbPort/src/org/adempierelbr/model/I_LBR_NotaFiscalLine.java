@@ -213,6 +213,19 @@ public interface I_LBR_NotaFiscalLine
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
 
+    /** Column name LBR_FCIValue */
+    public static final String COLUMNNAME_LBR_FCIValue = "LBR_FCIValue";
+
+	/** Set FCI Value.
+	  * FCI Value
+	  */
+	public void setLBR_FCIValue (String LBR_FCIValue);
+
+	/** Get FCI Value.
+	  * FCI Value
+	  */
+	public String getLBR_FCIValue();
+
     /** Column name LBR_IndTot */
     public static final String COLUMNNAME_LBR_IndTot = "LBR_IndTot";
 

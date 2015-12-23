@@ -2058,7 +2058,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (newRecord)
 		{
 			if (getLBR_IndIEDest() == null)
-				setLBR_IndIEDest(LBR_INDIEDEST_9_NãoContribuinte);
+				setLBR_IndIEDest(LBR_INDIEDEST_9_NãoContribuinteDeICMS);
 			
 			Integer vC_DocTypeTarget_ID = getC_DocTypeTarget_ID();
 			//

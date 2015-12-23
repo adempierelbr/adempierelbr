@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20151209L;
+	private static final long serialVersionUID = 20151223L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalDocRef (Properties ctx, int LBR_NotaFiscalDocRef_ID, String trxName)
@@ -181,12 +181,12 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 
 	/** LBR_IndIEDest AD_Reference_ID=1120235 */
 	public static final int LBR_INDIEDEST_AD_Reference_ID=1120235;
-	/** 1 - Contribuinte do ICMS = 1 */
-	public static final String LBR_INDIEDEST_1_ContribuinteDoICMS = "1";
-	/** 2 - Contribuinte Isento = 2 */
-	public static final String LBR_INDIEDEST_2_ContribuinteIsento = "2";
-	/** 9 - Não Contribuinte = 9 */
-	public static final String LBR_INDIEDEST_9_NãoContribuinte = "9";
+	/** 1 - Contribuinte de ICMS = 1 */
+	public static final String LBR_INDIEDEST_1_ContribuinteDeICMS = "1";
+	/** 2 - Contribuinte de ICMS - Isento = 2 */
+	public static final String LBR_INDIEDEST_2_ContribuinteDeICMS_Isento = "2";
+	/** 9 - Não Contribuinte de ICMS = 9 */
+	public static final String LBR_INDIEDEST_9_NãoContribuinteDeICMS = "9";
 	/** Set Indicador da IE.
 		@param LBR_IndIEDest 
 		Indicador da IE do Destinatário
