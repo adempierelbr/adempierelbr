@@ -1667,7 +1667,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPPhone(bpLocation.getPhone());   				//	Telefone
 		setlbr_BPCNPJ(BPartnerUtil.getCNPJ_CPF(bpLocation));	//	CNPJ
 		setlbr_BPIE(BPartnerUtil.getIE(bpLocation));			//	IE
-		setLBR_IndIEDest(BPartnerUtil.getIndIE(bpLocation));	//	Ind IE (ICMS, Isento, Não Contribuinte)
+		String indIE = BPartnerUtil.getIndIE(bpLocation);
+		if (indIE != null)
+			setLBR_IndIEDest(indIE);							//	Ind IE (ICMS, Isento, Não Contribuinte)
 		setlbr_BPSuframa(BPartnerUtil.getSUFRAMA(bpLocation)); 	//	Suframa
 		String BPTypeBR = bp.getlbr_BPTypeBR();
 		if (BPTypeBR != null && !BPTypeBR.isEmpty())
@@ -2055,6 +2057,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Opcionalmente pode gerar o RPS apenas na hora da transmissão
 		if (newRecord)
 		{
+			if (getLBR_IndIEDest() == null)
+				setLBR_IndIEDest(LBR_INDIEDEST_9_NãoContribuinte);
+			
 			Integer vC_DocTypeTarget_ID = getC_DocTypeTarget_ID();
 			//
 			if (vC_DocTypeTarget_ID != null

@@ -25,6 +25,9 @@ public class MLBRTaxName extends X_LBR_TaxName
 	 */
 	private static final long serialVersionUID = -3454360861235382468L;
 
+	public static final int TAX_ICMSPROD 	= 1106000;
+	public static final int TAX_ICMSST 		= 1106012;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

@@ -174,6 +174,30 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_CESTName */
+    public static final String COLUMNNAME_LBR_CESTName = "LBR_CESTName";
+
+	/** Set CEST Name	  */
+	public void setLBR_CESTName (String LBR_CESTName);
+
+	/** Get CEST Name	  */
+	public String getLBR_CESTName();
+
+    /** Column name LBR_CEST_ID */
+    public static final String COLUMNNAME_LBR_CEST_ID = "LBR_CEST_ID";
+
+	/** Set CEST.
+	  * Brazilian Specifier code Tax
+	  */
+	public void setLBR_CEST_ID (int LBR_CEST_ID);
+
+	/** Get CEST.
+	  * Brazilian Specifier code Tax
+	  */
+	public int getLBR_CEST_ID();
+
+	public org.adempierelbr.model.I_LBR_CEST getLBR_CEST() throws RuntimeException;
+
     /** Column name LBR_CFOP_ID */
     public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";
 

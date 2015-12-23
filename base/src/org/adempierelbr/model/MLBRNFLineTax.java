@@ -30,6 +30,9 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 	 */
 	private static final long serialVersionUID = -6683920438972507538L;
 	
+	/** Parent					*/
+	private MLBRNotaFiscalLine			m_parent = null;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
@@ -41,6 +44,17 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		super(ctx, ID, trxName);
 	}	//	MLBRNFLineTax
 
+	/**
+	 * 	Get Parent
+	 *	@return parent
+	 */
+	public MLBRNotaFiscalLine getParent()
+	{
+		if (m_parent == null)
+			m_parent = new MLBRNotaFiscalLine(getCtx(), getLBR_NotaFiscalLine_ID(), get_TrxName());
+		return m_parent;
+	}	//	getParent
+	
 	/**
 	 *  Load Constructor
 	 *  @param ctx context
@@ -132,5 +146,5 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		}
 		//
 		return taxesDiscount;
-	}
+	}	//	getTaxesDiscount
 }	//	MLBRNotaFiscal
