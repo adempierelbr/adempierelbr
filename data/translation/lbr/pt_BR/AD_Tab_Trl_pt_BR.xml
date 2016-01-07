@@ -410,6 +410,12 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120127" trl="N">
+<value column="Name" original="FCI">FCI</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Ficha de Conteúdo de Importação">Ficha de Conteúdo de Importação</value>
+<value column="Help" original="Ficha de Conteúdo de Importação">Ficha de Conteúdo de Importação</value>
+</row>
 <row id="1120175" trl="N">
 <value column="Name" original="Authorized Access to XML NFe">Acesso ao XML</value>
 <value column="CommitWarning" original=""/>
@@ -457,5 +463,23 @@
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
+</row>
+<row id="1120202" trl="N">
+<value column="Name" original="CEST">CEST</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="CEST">CEST</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120210" trl="N">
+<value column="Name" original="CEST">CEST</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
+<value column="Help" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
+</row>
+<row id="1120211" trl="N">
+<value column="Name" original="NCM">NCM</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Mercosur Common Nomenclature">Nomenclatura Comum do Mercosul</value>
+<value column="Help" original="Mercosur Common Nomenclature">Nomenclatura Comum do Mercosul</value>
 </row>
 </adempiereTrl>

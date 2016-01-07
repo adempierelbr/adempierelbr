@@ -379,16 +379,6 @@ Há duas razões para desativar e não excluir registros:
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000015" trl="Y">
-<value column="Name" original="IE Exempt">Isento IE</value>
-<value column="PrintName" original="IE Exempt">Isento IE</value>
-<value column="Description" original="Business Partner is IE Exempt">Define se o Parceiro de Negócios é Isento de Inscrição Estadual</value>
-<value column="Help" original="Business Partner is IE Exempt">Identifica se o Parceiro de Negócios é Isento de Inscrição Estadual</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000016" trl="Y">
 <value column="Name" original="Brazilian BP Valid">Parceiro Válido</value>
 <value column="PrintName" original="Brazilian BP Valid">Parceiro Válido</value>
@@ -1200,10 +1190,10 @@ Há duas razões para desativar e não excluir registros:
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000128" trl="Y">
-<value column="Name" original="Tax Base">Base de Cálculo</value>
-<value column="PrintName" original="Tax Base">Base de Cálculo</value>
-<value column="Description" original="Indicates the Tax Base">Indica a Redução na Base de Cálculo do Imposto (%)</value>
-<value column="Help" original="Indicates the Tax Base">Indica a Redução na Base de Cálculo do Imposto (%)</value>
+<value column="Name" original="Tax Base Reduction">Redução na BC (%)</value>
+<value column="PrintName" original="Tax Base Reduction">Redução na BC</value>
+<value column="Description" original="Indicates the Tax Base Reduction">Indica a Redução na Base de Cálculo do Imposto (%)</value>
+<value column="Help" original="Indicates the Tax Base Reduction">Indica a Redução na Base de Cálculo do Imposto (%)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -4327,6 +4317,26 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1121451" trl="N">
+<value column="Name" original="Product FCI">FCI do Produto</value>
+<value column="PrintName" original="Product FCI">FCI do Produto</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121452" trl="Y">
+<value column="Name" original="FCI Value">Código do FCI</value>
+<value column="PrintName" original="FCI Value">Código do FCI</value>
+<value column="Description" original="FCI Value">Código do FCI (Ficha de Conteúdo Importado)</value>
+<value column="Help" original="">Código do FCI (Ficha de Conteúdo Importado)</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1121529" trl="Y">
 <value column="Name" original="Tax Regime">Regime Tributário</value>
 <value column="PrintName" original="Tax Regime">Regime Tributário</value>
@@ -4667,6 +4677,36 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
+<row id="1121794" trl="N">
+<value column="Name" original="Tipo de atividade">Tipo de atividade</value>
+<value column="PrintName" original="Tipo de atividade">Tipo de atividade</value>
+<value column="Description" original="Tipo de atividade">Tipo de atividade</value>
+<value column="Help" original="Informar “0 - Industrial ou equiparado a industrial”, se o contribuinte é industrial ou equiparado a industrial, conforme legislação do Imposto sobre Produtos Industrializados (IPI). Se o estabelecimento não se enquadrar no disposto nos art. 8o, 9o., 10o e 11o e cujas operações não se enquadrem dentro do campo de incidência do IPI, conforme parágrafo único do art. 2o, todos do Decreto no 4.544/2002, ainda que seja uma indústria, deve informar a opção &quot;1 - Outras&quot;">Informar “0 - Industrial ou equiparado a industrial”, se o contribuinte é industrial ou equiparado a industrial, conforme legislação do Imposto sobre Produtos Industrializados (IPI). Se o estabelecimento não se enquadrar no disposto nos art. 8o, 9o., 10o e 11o e cujas operações não se enquadrem dentro do campo de incidência do IPI, conforme parágrafo único do art. 2o, todos do Decreto no 4.544/2002, ainda que seja uma indústria, deve informar a opção "1 - Outras"</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121795" trl="N">
+<value column="Name" original="Item Type (SPED)">Tipo de Item (SPED)</value>
+<value column="PrintName" original="Item Type (SPED)">Tipo de Item (SPED)</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1121796" trl="N">
+<value column="Name" original="Accountant">Contador</value>
+<value column="PrintName" original="Accountant">Contador</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
 <row id="1121797" trl="Y">
 <value column="Name" original="Tax Rate Region">Alíquota Estadual</value>
 <value column="PrintName" original="Tax Rate Region">Alíquota Estadual</value>
@@ -4702,6 +4742,56 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PrintName" original="Show IBPT">Mostrar IBPT</value>
 <value column="Description" original="">Mostra as informações de trubutação do IBPT na Nota Fiscal</value>
 <value column="Help" original="">Mostra as informações de trubutação do IBPT na Nota Fiscal</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1122099" trl="N">
+<value column="Name" original="Indicador da IE">Indicador da IE</value>
+<value column="PrintName" original="Indicador da IE">Indicador da IE</value>
+<value column="Description" original="Indicador da IE do Destinatário">Indicador da IE do Destinatário</value>
+<value column="Help" original="Indicador da IE do Destinatário">Indicador da IE do Destinatário</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1122214" trl="Y">
+<value column="Name" original="CEST">CEST</value>
+<value column="PrintName" original="CEST">CEST</value>
+<value column="Description" original="Brazilian Specifier code Tax">Código Especificador da Substituição Tributária</value>
+<value column="Help" original="Brazilian Specifier code Tax">Código Especificador da Substituição Tributária</value>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1122215" trl="Y">
+<value column="Name" original="Region From">Da Região</value>
+<value column="PrintName" original="Region From">Da Região</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1122216" trl="Y">
+<value column="Name" original="Region To">Para Região</value>
+<value column="PrintName" original="Region To">Para Região</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+<value column="PO_Description" original=""/>
+<value column="PO_Help" original=""/>
+<value column="PO_Name" original=""/>
+<value column="PO_PrintName" original=""/>
+</row>
+<row id="1122217" trl="Y">
+<value column="Name" original="CEST Name">CEST</value>
+<value column="PrintName" original="CEST Name">CEST</value>
+<value column="Description" original="">Código de Especificação da Substituição Tributária</value>
+<value column="Help" original="">Código de Especificação da Substituição Tributária</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>

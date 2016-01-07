@@ -2790,8 +2790,8 @@
 <value column="Name" original="PKCS#11">PKCS#11</value>
 <value column="Description" original=""/>
 </row>
-<row id="1121320" trl="Y">
-<value column="Name" original="3 - Domestic with more than 40 percent Imported">3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a  40%</value>
+<row id="1121320" trl="N">
+<value column="Name" original="3 - Domestic with between 40 percent and 70 percent Imported">3 - Nacional, mercadoria ou bem com Conteúdo de Importação entre 40% e 70%</value>
 <value column="Description" original=""/>
 </row>
 <row id="1121321" trl="Y">
@@ -3210,6 +3210,62 @@
 <value column="Name" original="Outros">Outros</value>
 <value column="Description" original=""/>
 </row>
+<row id="1121614" trl="N">
+<value column="Name" original="Industrial ou equiparado a industrial">Industrial ou equiparado a industrial</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121615" trl="N">
+<value column="Name" original="Outros">Outros</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121616" trl="N">
+<value column="Name" original="Mercadoria para Revenda">Mercadoria para Revenda</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121617" trl="N">
+<value column="Name" original="Materia-Prima">Materia-Prima</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121618" trl="N">
+<value column="Name" original="Embalagem">Embalagem</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121619" trl="N">
+<value column="Name" original="Produto em Processo">Produto em Processo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121620" trl="N">
+<value column="Name" original="Produto Acabado">Produto Acabado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121621" trl="N">
+<value column="Name" original="Subproduto">Subproduto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121622" trl="N">
+<value column="Name" original="Produto Intermediario">Produto Intermediario</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121623" trl="N">
+<value column="Name" original="Material de Uso e Consumo">Material de Uso e Consumo</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121624" trl="N">
+<value column="Name" original="Ativo Imobilizado">Ativo Imobilizado</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121625" trl="N">
+<value column="Name" original="Servicos">Servicos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121626" trl="N">
+<value column="Name" original="Outros insumos">Outros insumos</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121627" trl="N">
+<value column="Name" original="Outras">Outras</value>
+<value column="Description" original=""/>
+</row>
 <row id="1121628" trl="Y">
 <value column="Name" original="Carta de Correcao">Carta de Correção</value>
 <value column="Description" original=""/>
@@ -3232,6 +3288,58 @@
 </row>
 <row id="1121633" trl="Y">
 <value column="Name" original="Operacao nao Realizada">Operação não Realizada</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121696" trl="N">
+<value column="Name" original="1 - Contribuinte de ICMS">1 - Contribuinte de ICMS</value>
+<value column="Description" original="informar a IE do destinatário">informar a IE do destinatário</value>
+</row>
+<row id="1121697" trl="N">
+<value column="Name" original="2 - Contribuinte de ICMS - Isento">2 - Contribuinte de ICMS - Isento</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121698" trl="N">
+<value column="Name" original="9 - Não Contribuinte de ICMS">9 - Não Contribuinte de ICMS</value>
+<value column="Description" original="Pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS">Pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS</value>
+</row>
+<row id="1121757" trl="N">
+<value column="Name" original="Sul">Sul</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121758" trl="N">
+<value column="Name" original="Sudeste">Sudeste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121759" trl="N">
+<value column="Name" original="Norte">Norte</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121760" trl="N">
+<value column="Name" original="Nordeste">Nordeste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121761" trl="N">
+<value column="Name" original="Centro-Oeste">Centro-Oeste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121762" trl="N">
+<value column="Name" original="Sul e Sudeste">Sul e Sudeste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121763" trl="N">
+<value column="Name" original="Norte, Nordeste e Centro-Oeste">Norte, Nordeste e Centro-Oeste</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121764" trl="N">
+<value column="Name" original="Sul e Sudeste, exceto ES">Sul e Sudeste, exceto ES</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121765" trl="N">
+<value column="Name" original="Norte, Nordeste, Centro-Oeste e ES">Norte, Nordeste, Centro-Oeste e ES</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121766" trl="N">
+<value column="Name" original="8 - Domestic above 70 percent Imported">8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%</value>
 <value column="Description" original=""/>
 </row>
 </adempiereTrl>

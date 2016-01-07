@@ -182,6 +182,11 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120083" trl="Y">
+<value column="Name" original="Product FCI">Ficha de Conteúdo de Importação</value>
+<value column="Description" original="Product FCI">Ficha de Conteúdo de Importação (FCI)</value>
+<value column="Help" original="Product FCI">Ficha de Conteúdo de Importação (FCI)</value>
+</row>
 <row id="1120103" trl="Y">
 <value column="Name" original="Nota Fiscal (Skipped)">Nota Fiscal (Inutilizadas)</value>
 <value column="Description" original=""/>
@@ -191,5 +196,10 @@
 <value column="Name" original="Import Replenish">Importar Níveis de Estoque</value>
 <value column="Description" original="Import Replenish">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
 <value column="Help" original=""/>
+</row>
+<row id="1120110" trl="N">
+<value column="Name" original="CEST">CEST</value>
+<value column="Description" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
+<value column="Help" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
 </row>
 </adempiereTrl>

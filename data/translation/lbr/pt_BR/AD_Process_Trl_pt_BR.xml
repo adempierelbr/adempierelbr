@@ -204,4 +204,9 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original="Import Replenish for Products">Importar Níveis de Reabastecimento de um Produto no Estoque</value>
 <value column="Help" original=""/>
 </row>
+<row id="1120160" trl="N">
+<value column="Name" original="ProcTaxAssessment">Gerar Apuração de Impostos</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 </adempiereTrl>
