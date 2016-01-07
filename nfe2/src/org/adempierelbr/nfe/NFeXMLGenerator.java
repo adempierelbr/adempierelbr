@@ -1129,7 +1129,12 @@ public class NFeXMLGenerator
 				
 				//	IPI
 				TIpi ipi = imposto.addNewIPI();
-				ipi.setCEnq (CENQ_IPI_999);
+				
+				//	CEnq
+				if (ipiTax.getLBR_TaxLegalFW_ID() > 0)
+					ipi.setCEnq (ipiTax.getLBR_TaxLegalFW().getValue());
+				else
+					ipi.setCEnq (CENQ_IPI_999);
 				
 				//	IPI Tributado
 				if (TextUtil.match (taxStatus, CST_IPI_00, CST_IPI_49, CST_IPI_50, CST_IPI_99))
