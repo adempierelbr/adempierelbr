@@ -82,3 +82,6 @@ INSERT INTO LBR_TaxGroup (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,LBR_
 INSERT INTO LBR_TaxGroup (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,IsActive,LBR_TaxGroup_ID,Name,Updated,UpdatedBy) VALUES (0,0,TO_TIMESTAMP('2015-12-18 18:58:13','YYYY-MM-DD HH24:MI:SS'),100,'Fundo de Combate a Pobreza','Y',1120010,'FCP',TO_TIMESTAMP('2015-12-18 18:58:13','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
+-- 18/12/2015 18h58min13s BRST
+SELECT Register_Migration_Script ('161-Partilha-ICMS-NT2015.003.sql') FROM DUAL
+;

@@ -375,7 +375,7 @@ CREATE TABLE LBR_ProductFCI (LBR_ProductFCI_ID NUMBER(10) NOT NULL, AD_Client_ID
 ;
 
 -- 23/12/2015 14h43min33s BRST
-INSERT INTO AD_Menu (AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,"action",Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES (0,1120245,0,1120083,'W',TO_DATE('2015-12-23 14:43:31','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Y','N','Y','N','Ficha de Conteúdo de Importação',TO_DATE('2015-12-23 14:43:31','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Menu (AD_Client_ID,AD_Menu_ID,AD_Org_ID,AD_Window_ID,Action,Created,CreatedBy,EntityType,IsActive,IsCentrallyMaintained,IsReadOnly,IsSOTrx,IsSummary,Name,Updated,UpdatedBy) VALUES (0,1120245,0,1120083,'W',TO_DATE('2015-12-23 14:43:31','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Y','N','Y','N','Ficha de Conteúdo de Importação',TO_DATE('2015-12-23 14:43:31','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 23/12/2015 14h43min33s BRST

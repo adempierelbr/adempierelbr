@@ -10,6 +10,9 @@ INSERT INTO LBR_Formula (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,Is
 ALTER TABLE LBR_TaxFormula DROP CONSTRAINT LBR_TaxFormula_Key2
 ;
 
+DROP INDEX LBR_TaxFormula_Key2
+;
+
 -- 11/12/2015 19h50min42s BRST
 INSERT INTO LBR_TaxName (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,IsActive,LBR_HasWithhold,LBR_TaxName_ID,LBR_WithholdThreshold,LBR_WithholdType,Name,Updated,UpdatedBy,lbr_TaxType,lbr_WithholdFrequency) VALUES (0,0,TO_DATE('2015-12-11 19:50:42','YYYY-MM-DD HH24:MI:SS'),100,'Fundo de Combate a Pobreza','Y','N',1120000,0,'T','FCP',TO_DATE('2015-12-11 19:50:42','YYYY-MM-DD HH24:MI:SS'),100,'P','M')
 ;
@@ -82,3 +85,8 @@ INSERT INTO LBR_TaxGroup (AD_Client_ID,AD_Org_ID,Created,CreatedBy,IsActive,LBR_
 INSERT INTO LBR_TaxGroup (AD_Client_ID,AD_Org_ID,Created,CreatedBy,Description,IsActive,LBR_TaxGroup_ID,Name,Updated,UpdatedBy) VALUES (0,0,TO_DATE('2015-12-18 18:58:13','YYYY-MM-DD HH24:MI:SS'),100,'Fundo de Combate a Pobreza','Y',1120010,'FCP',TO_DATE('2015-12-18 18:58:13','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
+-- 18/12/2015 18h58min13s BRST
+SELECT Register_Migration_Script ('161-Partilha-ICMS-NT2015.003.sql') FROM DUAL
+;
+
+EXIT

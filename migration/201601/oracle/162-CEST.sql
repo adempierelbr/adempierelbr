@@ -1871,15 +1871,15 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000008, SeqNo=10, Updated=SysDate WHERE AD_T
 
 CREATE TABLE LBR_NCM_CEST
 ( 
-	LBR_NCM_ID         NUMERIC (10,0) NOT NULL,
-	LBR_CEST_ID        NUMERIC (10,0) NOT NULL,
-	AD_Client_ID       NUMERIC (10,0) NOT NULL,
-	AD_Org_ID          NUMERIC (10,0) NOT NULL,
-	IsActive           CHAR (1) NOT NULL DEFAULT 'Y'::BPCHAR,
-	Created            TIMESTAMP NOT NULL DEFAULT NOW(),
-	CreatedBy          NUMERIC (10,0) NOT NULL,
-	Updated            TIMESTAMP NOT NULL DEFAULT NOW(),
-	UpdatedBy          NUMERIC (10,0) NOT NULL,
+	LBR_NCM_ID         NUMBER (10) NOT NULL,
+	LBR_CEST_ID        NUMBER (10) NOT NULL,
+	AD_Client_ID       NUMBER (10) NOT NULL,
+	AD_Org_ID          NUMBER (10) NOT NULL,
+	IsActive           CHAR(1) CHECK (IsActive IN ('Y','N')) NOT NULL,
+	Created            DATE NOT NULL,
+	CreatedBy          NUMBER (10) NOT NULL,
+	Updated            DATE NOT NULL,
+	UpdatedBy          NUMBER (10) NOT NULL,
 	PRIMARY KEY( LBR_NCM_ID, LBR_CEST_ID)
 );
 
