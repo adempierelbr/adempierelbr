@@ -470,7 +470,6 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList());
 		
 		setC_UOM_ID(iLine.getC_UOM_ID());
-//	TODO		setLBR_NCM_ID(iLineW.getLBR_NCM_ID());
 		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
 		
 		//	Número de Série
@@ -520,10 +519,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList());
 			
 			setC_UOM_ID(oLine.getC_UOM_ID());
-//	TODO		setLBR_NCM_ID(iLineW.getLBR_NCM_ID());
 			setLBR_CFOP_ID(oLineW.getLBR_CFOP_ID());
-//	TODO		Mover cadastro do TaxStatus para LBR_TaxLine
-			setlbr_TaxStatus(oLineW.getlbr_TaxStatus());
 			
 			//  Seguro
 			setlbr_InsuranceAmt(oLineW.getlbr_InsuranceAmt());
@@ -560,6 +556,19 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				setlbr_NumAdicao(adil.getParent().getSeqNo());
 				setlbr_NumSeqItem(adil.getSeqNo());
 			}
+			
+			//	FCI
+			if (getlbr_CFOPName() != null && getlbr_CFOPName().length() > 1
+					//	2 - Entrada de fora do Estado
+					//	3 - Entrada Estrangeira
+					//	6 - Saída para fora do Estado
+					//	7 - Saída para o Estrageiro
+					&& "2367".indexOf (getlbr_CFOPName().substring (0, 1)) != -1
+					//	3 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 40% e inferior ou igual a 70%
+					//	5 - Nacional, mercadoria ou bem com Conteúdo de Importação inferior ou igual a 40%
+					//	8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%
+					&& "358".indexOf (getlbr_ProductSource()) != -1)
+				setFCI();
 		}
 	}	//	setOrderLine
 
@@ -635,7 +644,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setVendorProductNo(AdempiereLBR.getVendorProductNo(product.getM_Product_ID(), getParent().getC_BPartner_ID(), get_TrxName()));
 		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
 		//
-		setLBR_NCM_ID(productW.getLBR_NCM_ID());	//	TODO: Mover para C_OrderLine / C_InvoiceLine
+		setLBR_NCM_ID(productW.getLBR_NCM_ID());
+		setLBR_CEST_ID(productW.getLBR_CEST_ID());
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
 	}	//	setProduct
@@ -659,6 +669,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			MUOM uom = MUOM.get(getCtx(), C_UOM_ID);
 			setlbr_UOMName(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol));
 		}
+		else
+			setlbr_UOMName(null);
 		//
 		super.setC_UOM_ID(C_UOM_ID);
 	}	//	setC_UOM_ID
@@ -673,6 +685,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			MLBRNCM ncm = new MLBRNCM (getCtx(), LBR_NCM_ID, get_TrxName());
 			setlbr_NCMName(ncm.getValue());
 		}
+		else
+			setlbr_NCMName(null);
 		//
 		super.setLBR_NCM_ID(LBR_NCM_ID);
 	}	//	setLBR_NCM_ID
@@ -687,9 +701,28 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			MLBRCFOP cfop = new MLBRCFOP (getCtx(), LBR_CFOP_ID, get_TrxName());
 			setlbr_CFOPName(cfop.getValue());
 		}
+		else
+			setlbr_CFOPName(null);
 		//
 		super.setLBR_CFOP_ID(LBR_CFOP_ID);
 	}	//	setLBR_CFOP_ID
+	
+	/**
+	 * 	Ajusta o valor do CEST
+	 */
+	@Override
+	public void setLBR_CEST_ID (int LBR_CEST_ID)
+	{
+		if (LBR_CEST_ID > 0)
+		{
+			X_LBR_CEST cest = new X_LBR_CEST (getCtx(), LBR_CEST_ID, get_TrxName());
+			setLBR_CESTName(cest.getValue());
+		}
+		else
+			setLBR_CESTName(null);
+		//
+		super.setLBR_CEST_ID(LBR_CEST_ID);
+	}	//	setLBR_CEST_ID
 	
 	/**
 	 * 	Necessário para ajustar a precisão
@@ -744,6 +777,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_NCM_ID)))
 			setlbr_NCMName(getLBR_NCM_ID() > 0 ? getLBR_NCM().getValue() : null);
 		
+		//	Ajusta o valor do CEST
+		if ((newRecord || is_ValueChanged(COLUMNNAME_LBR_CEST_ID)))
+			setLBR_CESTName(getLBR_CEST_ID() > 0 ? getLBR_CEST().getValue() : null);
+		
 		//	Ajusta o valor da UDM
 		if ((newRecord || is_ValueChanged(COLUMNNAME_C_UOM_ID)))
 		{
@@ -753,7 +790,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				setlbr_UOMName(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol));
 			}
 			else
-				setlbr_NCMName(null);
+				setlbr_UOMName(null);
 		}	
 		return true;
 	}	//	beforeSave
@@ -784,6 +821,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//
 		return true;
 	}	//	isSOTrx
+	
+	/**
+	 * 	Set FCI if exists
+	 */
+	public void setFCI ()
+	{
+		MLBRProductFCI fci = MLBRProductFCI.getActual (getM_Product_ID(), getAD_Org_ID(), getParent().getDateDoc(), get_TrxName());
+		if (fci != null)
+			setLBR_FCIValue (fci.getValue().toUpperCase());
+	}	//	setFCI
 	
 	/**
 	 * 	Get Parent

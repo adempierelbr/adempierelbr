@@ -146,7 +146,7 @@ public class ProcGenerateSacredComp extends SvrProcess
 			if (r0150 != null)
 				result.append(r0150);
 			
-			MLBRNotaFiscalLine[] lines = nf.getLines("Line");
+			MLBRNotaFiscalLine[] lines = nf.getLines();
 			for (MLBRNotaFiscalLine line : lines){
 				B0R0200 r0200 = SacredCompUtil.createR0200(line);
 				if (r0200 != null)

@@ -148,45 +148,6 @@ public interface I_LBR_NFLineTax
 
 	public org.adempierelbr.model.I_LBR_NotaFiscalLine getLBR_NotaFiscalLine() throws RuntimeException;
 
-    /** Column name lbr_TaxAmt */
-    public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
-
-	/** Set Tax Amount.
-	  * Defines the Tax Amount
-	  */
-	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt);
-
-	/** Get Tax Amount.
-	  * Defines the Tax Amount
-	  */
-	public BigDecimal getlbr_TaxAmt();
-
-    /** Column name lbr_TaxBase */
-    public static final String COLUMNNAME_lbr_TaxBase = "lbr_TaxBase";
-
-	/** Set Tax Base.
-	  * Indicates the Tax Base
-	  */
-	public void setlbr_TaxBase (BigDecimal lbr_TaxBase);
-
-	/** Get Tax Base.
-	  * Indicates the Tax Base
-	  */
-	public BigDecimal getlbr_TaxBase();
-
-    /** Column name lbr_TaxBaseAmt */
-    public static final String COLUMNNAME_lbr_TaxBaseAmt = "lbr_TaxBaseAmt";
-
-	/** Set Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt);
-
-	/** Get Tax Base Amount.
-	  * Defines the Tax Base Amount
-	  */
-	public BigDecimal getlbr_TaxBaseAmt();
-
     /** Column name LBR_TaxBaseType_ID */
     public static final String COLUMNNAME_LBR_TaxBaseType_ID = "LBR_TaxBaseType_ID";
 
@@ -213,6 +174,17 @@ public interface I_LBR_NFLineTax
 
 	public org.adempierelbr.model.I_LBR_TaxGroup getLBR_TaxGroup() throws RuntimeException;
 
+    /** Column name LBR_TaxLegalFW_ID */
+    public static final String COLUMNNAME_LBR_TaxLegalFW_ID = "LBR_TaxLegalFW_ID";
+
+	/** Set Tax Legal Framework	  */
+	public void setLBR_TaxLegalFW_ID (int LBR_TaxLegalFW_ID);
+
+	/** Get Tax Legal Framework	  */
+	public int getLBR_TaxLegalFW_ID();
+
+	public org.adempierelbr.model.I_LBR_TaxLegalFW getLBR_TaxLegalFW() throws RuntimeException;
+
     /** Column name LBR_TaxListAmt */
     public static final String COLUMNNAME_LBR_TaxListAmt = "LBR_TaxListAmt";
 
@@ -221,19 +193,6 @@ public interface I_LBR_NFLineTax
 
 	/** Get Tax List Amt	  */
 	public BigDecimal getLBR_TaxListAmt();
-
-    /** Column name lbr_TaxRate */
-    public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
-
-	/** Set Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public void setlbr_TaxRate (BigDecimal lbr_TaxRate);
-
-	/** Get Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public BigDecimal getlbr_TaxRate();
 
     /** Column name LBR_TaxStatus_ID */
     public static final String COLUMNNAME_LBR_TaxStatus_ID = "LBR_TaxStatus_ID";
@@ -274,4 +233,56 @@ public interface I_LBR_NFLineTax
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name lbr_TaxAmt */
+    public static final String COLUMNNAME_lbr_TaxAmt = "lbr_TaxAmt";
+
+	/** Set Tax Amount.
+	  * Defines the Tax Amount
+	  */
+	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt);
+
+	/** Get Tax Amount.
+	  * Defines the Tax Amount
+	  */
+	public BigDecimal getlbr_TaxAmt();
+
+    /** Column name lbr_TaxBase */
+    public static final String COLUMNNAME_lbr_TaxBase = "lbr_TaxBase";
+
+	/** Set Tax Base Reduction.
+	  * Indicates the Tax Base Reduction
+	  */
+	public void setlbr_TaxBase (BigDecimal lbr_TaxBase);
+
+	/** Get Tax Base Reduction.
+	  * Indicates the Tax Base Reduction
+	  */
+	public BigDecimal getlbr_TaxBase();
+
+    /** Column name lbr_TaxBaseAmt */
+    public static final String COLUMNNAME_lbr_TaxBaseAmt = "lbr_TaxBaseAmt";
+
+	/** Set Tax Base Amount.
+	  * Defines the Tax Base Amount
+	  */
+	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt);
+
+	/** Get Tax Base Amount.
+	  * Defines the Tax Base Amount
+	  */
+	public BigDecimal getlbr_TaxBaseAmt();
+
+    /** Column name lbr_TaxRate */
+    public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
+
+	/** Set Tax Rate.
+	  * Indicates the Tax Rate
+	  */
+	public void setlbr_TaxRate (BigDecimal lbr_TaxRate);
+
+	/** Get Tax Rate.
+	  * Indicates the Tax Rate
+	  */
+	public BigDecimal getlbr_TaxRate();
 }

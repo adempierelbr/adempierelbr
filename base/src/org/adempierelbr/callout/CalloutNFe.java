@@ -56,7 +56,7 @@ public class CalloutNFe extends CalloutEngine
 			if (nf == null || nf.getlbr_NFeID() == null)
 				return "";
 			//
-			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_LBR_NotaFiscal_ID, nf.getlbr_NFeID());
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_NFeID, nf.getlbr_NFeID());
 		}
 		return "";
 	}	//	EventFillNFeID

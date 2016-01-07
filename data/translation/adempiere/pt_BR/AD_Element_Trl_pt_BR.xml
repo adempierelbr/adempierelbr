@@ -620,8 +620,8 @@
     <value column="PO_PrintName" original="" />
   </row>
   <row id="187" trl="Y">
-    <value column="Name" original="Business Partner ">Parceiro de Negócios </value>
-    <value column="PrintName" original="Business Partner ">Parceiro de Negócios </value>
+    <value column="Name" original="Business Partner ">Parceiro de Negócios</value>
+    <value column="PrintName" original="Business Partner ">Parceiro de Negócios</value>
     <value column="Description" original="Identifies a Business Partner">Identifica um Parceiro de Negócios.</value>
     <value column="Help" original="A Business Partner is anyone with whom you transact.  This can include Vendor, Customer, Employee or Salesperson">Um "Parceiro de Negócios" é qualquer um com quem você transaciona.  Isto pode incluir Fornecedores, Clientes, Funcionários, Vendedores, Representantes de Venda, etc.</value>
     <value column="PO_Description" original="" />
@@ -19502,9 +19502,9 @@ Exemplo: "Alterada-Criada" poderia listar a idade das entradas em dias</value>
     <value column="PO_PrintName" original="" />
   </row>
   <row id="2739" trl="Y">
-    <value column="Name" original="Menu RfQs">Menu de RdCs</value>
-    <value column="PrintName" original="RfQs">RdCs</value>
-    <value column="Description" original="Show Menu RfQs">Mostrar Menu de RdCs</value>
+    <value column="Name" original="Menu RfQs">Menu de SdCs</value>
+    <value column="PrintName" original="RfQs">SdCs</value>
+    <value column="Description" original="Show Menu RfQs">Mostrar Menu de SdCs</value>
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />

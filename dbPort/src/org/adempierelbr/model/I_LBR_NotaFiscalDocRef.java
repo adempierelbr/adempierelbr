@@ -151,6 +151,19 @@ public interface I_LBR_NotaFiscalDocRef
 	/** Get Type Fiscal Document Referenced	  */
 	public String getLBR_FiscalDocRefType();
 
+    /** Column name LBR_IndIEDest */
+    public static final String COLUMNNAME_LBR_IndIEDest = "LBR_IndIEDest";
+
+	/** Set Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public void setLBR_IndIEDest (String LBR_IndIEDest);
+
+	/** Get Indicador da IE.
+	  * Indicador da IE do Destinatário
+	  */
+	public String getLBR_IndIEDest();
+
     /** Column name LBR_NFeReferenced_ID */
     public static final String COLUMNNAME_LBR_NFeReferenced_ID = "LBR_NFeReferenced_ID";
 
@@ -253,19 +266,6 @@ public interface I_LBR_NotaFiscalDocRef
 	  * Used to Identify the IE (State Tax ID)
 	  */
 	public String getlbr_IE();
-
-    /** Column name lbr_IsIEExempt */
-    public static final String COLUMNNAME_lbr_IsIEExempt = "lbr_IsIEExempt";
-
-	/** Set IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public void setlbr_IsIEExempt (boolean lbr_IsIEExempt);
-
-	/** Get IE Exempt.
-	  * Business Partner is IE Exempt
-	  */
-	public boolean islbr_IsIEExempt();
 
     /** Column name lbr_NFModel */
     public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";

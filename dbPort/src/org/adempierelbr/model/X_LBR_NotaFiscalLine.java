@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150727L;
+	private static final long serialVersionUID = 20151223L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -207,6 +207,48 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return bd;
 	}
 
+	/** Set CEST Name.
+		@param LBR_CESTName CEST Name	  */
+	public void setLBR_CESTName (String LBR_CESTName)
+	{
+		set_Value (COLUMNNAME_LBR_CESTName, LBR_CESTName);
+	}
+
+	/** Get CEST Name.
+		@return CEST Name	  */
+	public String getLBR_CESTName () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_CESTName);
+	}
+
+	public org.adempierelbr.model.I_LBR_CEST getLBR_CEST() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_CEST)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CEST.Table_Name)
+			.getPO(getLBR_CEST_ID(), get_TrxName());	}
+
+	/** Set CEST.
+		@param LBR_CEST_ID 
+		Brazilian Specifier code Tax
+	  */
+	public void setLBR_CEST_ID (int LBR_CEST_ID)
+	{
+		if (LBR_CEST_ID < 1) 
+			set_Value (COLUMNNAME_LBR_CEST_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_CEST_ID, Integer.valueOf(LBR_CEST_ID));
+	}
+
+	/** Get CEST.
+		@return Brazilian Specifier code Tax
+	  */
+	public int getLBR_CEST_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CEST_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_CFOP)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CFOP.Table_Name)
@@ -233,6 +275,23 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set FCI Value.
+		@param LBR_FCIValue 
+		FCI Value
+	  */
+	public void setLBR_FCIValue (String LBR_FCIValue)
+	{
+		set_Value (COLUMNNAME_LBR_FCIValue, LBR_FCIValue);
+	}
+
+	/** Get FCI Value.
+		@return FCI Value
+	  */
+	public String getLBR_FCIValue () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_FCIValue);
 	}
 
 	/** LBR_IndTot AD_Reference_ID=1120207 */
@@ -759,8 +818,8 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public static final String LBR_PRODUCTSOURCE_1_Imported = "1";
 	/** 2 - Imported - Acquired from a domestic distributor = 2 */
 	public static final String LBR_PRODUCTSOURCE_2_Imported_AcquiredFromADomesticDistributor = "2";
-	/** 3 - Domestic with more than 40 percent Imported = 3 */
-	public static final String LBR_PRODUCTSOURCE_3_DomesticWithMoreThan40PercentImported = "3";
+	/** 3 - Domestic with between 40 percent and 70 percent Imported = 3 */
+	public static final String LBR_PRODUCTSOURCE_3_DomesticWithBetween40PercentAnd70PercentImported = "3";
 	/** 4 - Product acquired from Manaus = 4 */
 	public static final String LBR_PRODUCTSOURCE_4_ProductAcquiredFromManaus = "4";
 	/** 5 - Domestic until 40 percent Imported = 5 */
@@ -769,6 +828,8 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public static final String LBR_PRODUCTSOURCE_6_Foreign_DirectImportNoSimilarNational = "6";
 	/** 7 - Foreign - Acquired from a domestic distributor no similar national = 7 */
 	public static final String LBR_PRODUCTSOURCE_7_Foreign_AcquiredFromADomesticDistributorNoSimilarNational = "7";
+	/** 8 - Domestic above 70 percent Imported = 8 */
+	public static final String LBR_PRODUCTSOURCE_8_DomesticAbove70PercentImported = "8";
 	/** Set Product Source.
 		@param lbr_ProductSource 
 		Defines the Product Source

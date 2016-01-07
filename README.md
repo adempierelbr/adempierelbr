@@ -67,6 +67,18 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+
+1. LBR-201601 [[Download]][38] [[Seed PostgreSQL]][39] [[Seed OracleXE]][40]
+
+	* Melhorias na tradução
+	* Adição do campo CEST - Código Especificador da Substituição Tributária
+	* Adição do campo FCI na NF
+	* Adição do campo CEnq para o enquadramento do IPI
+	* Possibilidade de alterar o PN entre Contribuinte de ICMS Isento ou Não-Contribuinte
+	* Melhoria nos filtros e nas prioridades da janela de definição de impostos
+	* Partilha de ICMS entre estados (NT2015.003)
+	* [Mais detalhes][37]
+	
 1. LBR-201512 [[Download]][34] [[Seed PostgreSQL]][35] [[Seed OracleXE]][36]
 
 	* Melhorias na tradução
@@ -175,3 +187,7 @@ Patrocinadores desta versão
 [34]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201512.tgz
 [35]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_PG.tgz
 [36]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_ORA.tgz
+[37]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601
+[38]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201601.tgz
+[39]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_PG.tgz
+[40]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_ORA.tgz

@@ -72,7 +72,7 @@ public class NFSeImpl implements INFSe
 	@Override
 	public String getType()
 	{
-		return TYPE_RPS_FILE;
+		return TYPE_SYNCHRONOUS;
 	}	//	getType
 
 	@Override
@@ -493,6 +493,17 @@ public class NFSeImpl implements INFSe
 		return result.getCabecalho().getSucesso();
 	}	//	transmit
 	
+	public boolean consult(MLBRNotaFiscal nf) throws Exception
+	{
+		return false;
+	}
+
+	public boolean consult(Properties ctx, int AD_Org_ID, String trxName,
+			List<MLBRNotaFiscal> nfs) throws Exception
+	{
+		return false;
+	}
+	
 	/**
 	 * 	Retorna o valor das deduções
 	 * 	FIXME Verificar
@@ -679,4 +690,5 @@ public class NFSeImpl implements INFSe
 		nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Completed);
 		nf.save();
 	}	//	proccessNFSe
+	
 }	//	NFSeImpl

@@ -32,7 +32,7 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20130710L;
+	private static final long serialVersionUID = 20160107L;
 
     /** Standard Constructor */
     public X_LBR_NFLineTax (Properties ctx, int LBR_NFLineTax_ID, String trxName)
@@ -172,66 +172,6 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Tax Amount.
-		@param lbr_TaxAmt 
-		Defines the Tax Amount
-	  */
-	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt)
-	{
-		set_Value (COLUMNNAME_lbr_TaxAmt, lbr_TaxAmt);
-	}
-
-	/** Get Tax Amount.
-		@return Defines the Tax Amount
-	  */
-	public BigDecimal getlbr_TaxAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Tax Base.
-		@param lbr_TaxBase 
-		Indicates the Tax Base
-	  */
-	public void setlbr_TaxBase (BigDecimal lbr_TaxBase)
-	{
-		set_Value (COLUMNNAME_lbr_TaxBase, lbr_TaxBase);
-	}
-
-	/** Get Tax Base.
-		@return Indicates the Tax Base
-	  */
-	public BigDecimal getlbr_TaxBase () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxBase);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Tax Base Amount.
-		@param lbr_TaxBaseAmt 
-		Defines the Tax Base Amount
-	  */
-	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt)
-	{
-		set_Value (COLUMNNAME_lbr_TaxBaseAmt, lbr_TaxBaseAmt);
-	}
-
-	/** Get Tax Base Amount.
-		@return Defines the Tax Base Amount
-	  */
-	public BigDecimal getlbr_TaxBaseAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxBaseAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	public org.adempierelbr.model.I_LBR_TaxBaseType getLBR_TaxBaseType() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_TaxBaseType)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxBaseType.Table_Name)
@@ -285,6 +225,31 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempierelbr.model.I_LBR_TaxLegalFW getLBR_TaxLegalFW() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_TaxLegalFW)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_TaxLegalFW.Table_Name)
+			.getPO(getLBR_TaxLegalFW_ID(), get_TrxName());	}
+
+	/** Set Tax Legal Framework.
+		@param LBR_TaxLegalFW_ID Tax Legal Framework	  */
+	public void setLBR_TaxLegalFW_ID (int LBR_TaxLegalFW_ID)
+	{
+		if (LBR_TaxLegalFW_ID < 1) 
+			set_Value (COLUMNNAME_LBR_TaxLegalFW_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_TaxLegalFW_ID, Integer.valueOf(LBR_TaxLegalFW_ID));
+	}
+
+	/** Get Tax Legal Framework.
+		@return Tax Legal Framework	  */
+	public int getLBR_TaxLegalFW_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_TaxLegalFW_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Tax List Amt.
 		@param LBR_TaxListAmt Tax List Amt	  */
 	public void setLBR_TaxListAmt (BigDecimal LBR_TaxListAmt)
@@ -297,26 +262,6 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 	public BigDecimal getLBR_TaxListAmt () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_TaxListAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Tax Rate.
-		@param lbr_TaxRate 
-		Indicates the Tax Rate
-	  */
-	public void setlbr_TaxRate (BigDecimal lbr_TaxRate)
-	{
-		set_Value (COLUMNNAME_lbr_TaxRate, lbr_TaxRate);
-	}
-
-	/** Get Tax Rate.
-		@return Indicates the Tax Rate
-	  */
-	public BigDecimal getlbr_TaxRate () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -362,6 +307,86 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 	public BigDecimal getQty () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Qty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Amount.
+		@param lbr_TaxAmt 
+		Defines the Tax Amount
+	  */
+	public void setlbr_TaxAmt (BigDecimal lbr_TaxAmt)
+	{
+		set_Value (COLUMNNAME_lbr_TaxAmt, lbr_TaxAmt);
+	}
+
+	/** Get Tax Amount.
+		@return Defines the Tax Amount
+	  */
+	public BigDecimal getlbr_TaxAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Base Reduction.
+		@param lbr_TaxBase 
+		Indicates the Tax Base Reduction
+	  */
+	public void setlbr_TaxBase (BigDecimal lbr_TaxBase)
+	{
+		set_Value (COLUMNNAME_lbr_TaxBase, lbr_TaxBase);
+	}
+
+	/** Get Tax Base Reduction.
+		@return Indicates the Tax Base Reduction
+	  */
+	public BigDecimal getlbr_TaxBase () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxBase);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Base Amount.
+		@param lbr_TaxBaseAmt 
+		Defines the Tax Base Amount
+	  */
+	public void setlbr_TaxBaseAmt (BigDecimal lbr_TaxBaseAmt)
+	{
+		set_Value (COLUMNNAME_lbr_TaxBaseAmt, lbr_TaxBaseAmt);
+	}
+
+	/** Get Tax Base Amount.
+		@return Defines the Tax Base Amount
+	  */
+	public BigDecimal getlbr_TaxBaseAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxBaseAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Rate.
+		@param lbr_TaxRate 
+		Indicates the Tax Rate
+	  */
+	public void setlbr_TaxRate (BigDecimal lbr_TaxRate)
+	{
+		set_Value (COLUMNNAME_lbr_TaxRate, lbr_TaxRate);
+	}
+
+	/** Get Tax Rate.
+		@return Indicates the Tax Rate
+	  */
+	public BigDecimal getlbr_TaxRate () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_TaxRate);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;

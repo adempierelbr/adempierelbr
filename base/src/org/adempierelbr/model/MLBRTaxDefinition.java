@@ -18,12 +18,14 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempierelbr.util.BPartnerUtil;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
- * 		Model NCM Tax
+ * 		Model for Tax Definition
  * 
  * 	@author Ricardo Santana (Kenos, www.kenos.com.br)
  * 	@version $Id: MLBRNCMTax.java, v1.0 2011/11/14 9:38:36 AM, ralexsander Exp $
@@ -61,7 +63,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 	 * 		Retorna o grupo mais relevante de impost0
 	 */
 	public static MLBRTaxDefinition[] get (int AD_Org_ID, int C_BPartner_ID, int C_DocType_ID, 
-			int C_Region_ID, int To_Region_ID, int LBR_BPartnerCategory_ID, int LBR_FiscalGroup_BPartner_ID,
+			int C_Region_ID, int To_Region_ID, int LBR_BPartnerCategory_ID, int LBR_FiscalGroup_BPartner_ID, String LBR_IEDest,
 			int LBR_FiscalGroup_Product_ID, int LBR_NCM_ID, int LBR_ProductCategory_ID, boolean lbr_IsSubTributaria,
 			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource)
 	{
@@ -76,24 +78,73 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += "AND (LBR_FiscalGroup_Product_ID IS NULL OR LBR_FiscalGroup_Product_ID=?) ";
 		where += "AND (LBR_NCM_ID IS NULL OR LBR_NCM_ID=?) ";
 		where += "AND (LBR_ProductCategory_ID IS NULL OR LBR_ProductCategory_ID=?) ";
-		where += "AND lbr_IsSubTributaria IN ('B', ?) ";
+		where += "AND LBR_IsSubTributaria IN ('B', ?) ";
 		where += "AND IsSOTrx IN ('B', ?) ";
-		where += "AND (lbr_TransactionType IS NULL OR lbr_TransactionType=?) ";
+		where += "AND (LBR_TransactionType IS NULL OR lbr_TransactionType=?) ";
+		where += "AND (LBR_IndIEDest IS NULL OR LBR_IndIEDest=?) ";
 		
-		// product_source -> LBR-72
+		// Product Source -> LBR-72
 		where += "AND (lbr_ProductSource IS NULL OR lbr_ProductSource=?) ";
 		//
 		if (validFrom != null)
-			where += "AND ValidFrom <= " + DB.TO_DATE(validFrom);
+			where += "AND ValidFrom <= " + DB.TO_DATE(validFrom) + " AND (ValidTo IS NULL OR ValidTo >= " + DB.TO_DATE(validFrom) + ") ";
+		
+		where += regionFrom (C_Region_ID);
+		where += regionTo (To_Region_ID);
+		
 		//
 		List<MLBRTaxDefinition> list = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
 			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
-					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, LBR_ProductSource})
+					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, 
+					LBR_IEDest, LBR_ProductSource})
 			.setOrderBy("PriorityNo, ValidFrom").list();
 		//
 		return list.toArray(new MLBRTaxDefinition[list.size()]);
 	}	//	get
+
+	private static String regionFrom (int C_Region_ID)
+	{
+		return region (C_Region_ID, MLBRTaxDefinition.COLUMNNAME_LBR_RegionFrom);		
+	}	//	regionFrom
+	private static String regionTo (int C_Region_ID)
+	{
+		return region (C_Region_ID, MLBRTaxDefinition.COLUMNNAME_LBR_RegionTo);
+	}	//	regionTo
+	private static String region (int C_Region_ID, String column)
+	{
+		String where = "";
+		//
+		String region = BPartnerUtil.getBRRegion (C_Region_ID);
+		if (region != null)
+		{
+			where += "AND (" + column + " IS NULL OR " + column + " IN ";
+
+			if (MLBRTaxDefinition.LBR_REGIONFROM_Sul.equals(region))
+				where += "('0','5','7')) ";	//	[Sul], [Sul e Sudeste], [Sul, Sudeste exceto ES] 
+			
+			else if (MLBRTaxDefinition.LBR_REGIONFROM_Sudeste.equals(region))
+			{
+				where += "('1','5',";		//	[Sudeste], [Sul e Sudeste]
+				
+				//	ES - Espírito Santo
+				if (C_Region_ID != 448)
+					where += "'7')) ";		//	[Sul, Sudeste exceto ES] 
+				else
+					where += "'8')) ";		//	[Norte, Nordeste, Centro-Oeste e ES]
+			}
+			
+			else if (MLBRTaxDefinition.LBR_REGIONFROM_Norte.equals(region))
+				where += "('2','6','8')) ";	//	[Norte], [Norte, Nordeste e Centro-Oeste], [Norte, Nordeste, Centro-Oeste e ES]
+			
+			else if (MLBRTaxDefinition.LBR_REGIONFROM_Nordeste.equals(region))
+				where += "('3','6','8')) ";	//	[Nordeste], [Norte, Nordeste e Centro-Oeste], [Norte, Nordeste, Centro-Oeste e ES]
+			
+			else if (MLBRTaxDefinition.LBR_REGIONFROM_Centro_Oeste.equals(region))
+				where += "('4','6','8')) ";	//	[Centro-Oeste], [Norte, Nordeste e Centro-Oeste], [Norte, Nordeste, Centro-Oeste e ES]
+		}
+		return where;
+	}	//	region
 
 	/**
 	 * 	Called before Save for Pre-Save Operation
@@ -102,6 +153,17 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		//	Validar datas
+		if (getValidTo() != null && getValidTo().before(getValidFrom()))
+		{
+			log.saveError("Error", Msg.parseTranslation(getCtx(), "@Invalid@ @ValidTo@"));
+			return false;
+		}
+		
+		//	Nõa calcular a prioridade quando a configuração for manual
+		if (isManual() && getPriorityNo() != 0)
+			return true;
+		
 		int priorityNo = 0;
 
 		//	Prioridades
@@ -127,16 +189,17 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			priorityNo += 10;
 		if (LBR_ISSUBTRIBUTARIA_Both.equals(getlbr_IsSubTributaria()))
 			priorityNo += 10;
-		if (getlbr_TaxStatus() != null && getlbr_TaxStatus().length() > 0)
-			priorityNo += 10;
 		if (getlbr_TransactionType() != null && getlbr_TransactionType().length() > 0)
 			priorityNo += 10;
-		
-		// product_source -> LBR-72
+		// 	Product Source -> LBR-72
 		if (getlbr_ProductSource() != null && getlbr_ProductSource().length() > 0)
 			priorityNo += 10;
-		
-		
+		if (getLBR_RegionFrom() != null)
+			priorityNo += 10;
+		if (getLBR_RegionTo() != null)
+			priorityNo += 10;
+		if (getLBR_IndIEDest() != null && !getLBR_IndIEDest().isEmpty())
+			priorityNo += 10;
 		//
 		setPriorityNo(priorityNo);
 		//

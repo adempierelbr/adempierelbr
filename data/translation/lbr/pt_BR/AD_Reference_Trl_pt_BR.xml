@@ -392,9 +392,29 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120223" trl="N">
+<value column="Name" original="AD_OrgInfo - lbr_IndAtividade">AD_OrgInfo - lbr_IndAtividade</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120224" trl="N">
+<value column="Name" original="M_Product - lbr_ItemTypeBR">M_Product - lbr_ItemTypeBR</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 <row id="1120225" trl="N">
 <value column="Name" original="LBR_EventType">LBR_EventType</value>
 <value column="Description" original="Type of Events">Type of Events</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120235" trl="N">
+<value column="Name" original="LBR_IndIEDest">LBR_IndIEDest</value>
+<value column="Description" original="LBR_IndIEDest">LBR_IndIEDest</value>
+<value column="Help" original="Indicador da IE do Destinatário">Indicador da IE do Destinatário</value>
+</row>
+<row id="1120244" trl="N">
+<value column="Name" original="BR Regions">BR Regions</value>
+<value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
 </adempiereTrl>
