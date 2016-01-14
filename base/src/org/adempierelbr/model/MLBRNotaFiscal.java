@@ -2879,8 +2879,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Inutilizar a numeração
 		else if (TextUtil.match(getDocStatus(), DOCSTATUS_Drafted, DOCSTATUS_InProgress, DOCSTATUS_Invalid))
 		{
-			// Entra no IF se a Nota Fiscal não for um Documento Próprio e Anula a Nota Fiscal
-			if (!islbr_IsOwnDocument())
+			// Entra no IF se a Nota Fiscal não for um Documento Próprio
+			// ou for uma Nota Fiscal de Serviço e Anula a Nota Fiscal
+			if (!islbr_IsOwnDocument() || !LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
 			{
 				setProcessed (true);
 				setDocAction (DOCACTION_None);
