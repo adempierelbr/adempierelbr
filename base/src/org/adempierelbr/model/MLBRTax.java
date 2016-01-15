@@ -824,7 +824,7 @@ public class MLBRTax extends X_LBR_Tax
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
 				(isSOTrx ? bp.getLBR_FiscalGroup_Customer_ID() : bp.getLBR_FiscalGroup_Vendor_ID()), bp.getLBR_IndIEDest(), p.getLBR_FiscalGroup_Product_ID(), 
 				p.getLBR_NCM_ID(),  p.getLBR_ProductCategory_ID(), hasSubstitution, isSOTrx, lbr_TransactionType, dateAcct, p.getlbr_ProductSource(), 
-				lbr_DestionationType, lbr_TaxRegime);
+				lbr_DestionationType, lbr_TaxRegime, p.getM_Product_ID());
 		//
 		for (MLBRTaxDefinition td : taxesDef)
 		{

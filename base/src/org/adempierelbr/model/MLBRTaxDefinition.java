@@ -66,7 +66,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			int C_Region_ID, int To_Region_ID, int LBR_BPartnerCategory_ID, int LBR_FiscalGroup_BPartner_ID, String LBR_IEDest,
 			int LBR_FiscalGroup_Product_ID, int LBR_NCM_ID, int LBR_ProductCategory_ID, boolean lbr_IsSubTributaria,
 			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource, 
-			String lbr_DestionationType, String lbr_TaxRegime)
+			String lbr_DestionationType, String lbr_TaxRegime, int M_Product_ID)
 	{
 		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) ";
 		//
@@ -85,9 +85,9 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += "AND (LBR_IndIEDest IS NULL OR LBR_IndIEDest=?) ";
 		where += "AND (lbr_DestionationType IS NULL OR lbr_DestionationType=?) ";
 		where += "AND (LBR_TaxRegime IS NULL OR LBR_TaxRegime=?) ";
-		
-		// Product Source -> LBR-72
 		where += "AND (lbr_ProductSource IS NULL OR lbr_ProductSource=?) ";
+		where += "AND (M_Product_ID IS NULL OR M_Product_ID=?) ";
+		
 		//
 		if (validFrom != null)
 			where += "AND ValidFrom <= " + DB.TO_DATE(validFrom) + " AND (ValidTo IS NULL OR ValidTo >= " + DB.TO_DATE(validFrom) + ") ";
@@ -100,7 +100,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
 					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, 
-					LBR_IEDest, lbr_DestionationType, lbr_TaxRegime, LBR_ProductSource})
+					LBR_IEDest, lbr_DestionationType, lbr_TaxRegime, LBR_ProductSource, M_Product_ID})
 			.setOrderBy("PriorityNo, ValidFrom").list();
 		//
 		return list.toArray(new MLBRTaxDefinition[list.size()]);
