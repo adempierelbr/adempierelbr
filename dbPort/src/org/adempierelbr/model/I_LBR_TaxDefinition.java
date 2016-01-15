@@ -291,6 +291,15 @@ public interface I_LBR_TaxDefinition
 	/** Get Tax Definition	  */
 	public int getLBR_TaxDefinition_ID();
 
+    /** Column name LBR_TaxRegime */
+    public static final String COLUMNNAME_LBR_TaxRegime = "LBR_TaxRegime";
+
+	/** Set Tax Regime	  */
+	public void setLBR_TaxRegime (String LBR_TaxRegime);
+
+	/** Get Tax Regime	  */
+	public String getLBR_TaxRegime();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -331,6 +340,19 @@ public interface I_LBR_TaxDefinition
 	  * Where inventory should be picked from first
 	  */
 	public int getPriorityNo();
+
+    /** Column name Script */
+    public static final String COLUMNNAME_Script = "Script";
+
+	/** Set Script.
+	  * Dynamic Java Language Script to calculate result
+	  */
+	public void setScript (String Script);
+
+	/** Get Script.
+	  * Dynamic Java Language Script to calculate result
+	  */
+	public String getScript();
 
     /** Column name To_Region_ID */
     public static final String COLUMNNAME_To_Region_ID = "To_Region_ID";
@@ -388,6 +410,19 @@ public interface I_LBR_TaxDefinition
 	  * Valid to including this date (last day)
 	  */
 	public Timestamp getValidTo();
+
+    /** Column name lbr_DestionationType */
+    public static final String COLUMNNAME_lbr_DestionationType = "lbr_DestionationType";
+
+	/** Set Destination Type.
+	  * Defines the Destination Type
+	  */
+	public void setlbr_DestionationType (String lbr_DestionationType);
+
+	/** Get Destination Type.
+	  * Defines the Destination Type
+	  */
+	public String getlbr_DestionationType();
 
     /** Column name lbr_IsSubTributaria */
     public static final String COLUMNNAME_lbr_IsSubTributaria = "lbr_IsSubTributaria";

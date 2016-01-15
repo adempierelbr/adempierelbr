@@ -33,10 +33,32 @@ import org.compiere.util.Msg;
 public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 {
 	/**
-	 *
+	 *	Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 	Valid Tokens
+	 */
+	private static final String validTokens = MLBRTaxDefinition.COLUMNNAME_AD_Org_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_BPartner_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_DocType_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_Region_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_To_Region_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_BPartnerCategory_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_FiscalGroup_BPartner_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_IndIEDest
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_FiscalGroup_Product_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_NCM_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_ProductCategory_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_IsSubTributaria
+			 + "," + MLBRTaxDefinition.COLUMNNAME_IsSOTrx
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_TransactionType
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_ProductSource
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_DestionationType
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_TaxRegime
+			 + "," + MLBRTaxDefinition.COLUMNNAME_M_Product_ID;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
@@ -163,6 +185,41 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			return false;
 		}
 		
+		/**
+		 * 	Validate Script
+		 */
+		if (getScript() != null && !getScript().isEmpty())
+		{
+			String token;
+			String inStr = getScript();
+			StringBuffer outStr = new StringBuffer();
+
+			int i = inStr.indexOf('@');
+			while (i != -1)
+			{
+				outStr.append(inStr.substring(0, i));			// up to @
+				inStr = inStr.substring(i+1, inStr.length());	// from first @
+
+				int j = inStr.indexOf('@');						// next @
+				if (j < 0)
+				{
+					log.saveError("Error", "No second tag: " + inStr);
+					return false;						//	no second tag
+				}
+
+				token = inStr.substring(0, j);
+
+				if (validTokens.indexOf(token) == -1)
+				{
+					log.saveError("Error", "Invalid token in script: " + token);
+					return false;
+				}
+				
+				inStr = inStr.substring(j+1, inStr.length());	// from second @
+				i = inStr.indexOf('@');
+			}
+		}
+		
 		//	Nõa calcular a prioridade quando a configuração for manual
 		if (isManual() && getPriorityNo() != 0)
 			return true;
@@ -203,6 +260,13 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			priorityNo += 10;
 		if (getLBR_IndIEDest() != null && !getLBR_IndIEDest().isEmpty())
 			priorityNo += 10;
+		if (getM_Product_ID() > 0)
+			priorityNo += 10;
+		if (getlbr_DestionationType() != null && !getlbr_DestionationType().isEmpty())
+			priorityNo += 10;
+		if (getLBR_TaxRegime() != null && !getLBR_TaxRegime().isEmpty())
+			priorityNo += 10;
+		
 		//
 		setPriorityNo(priorityNo);
 		//
