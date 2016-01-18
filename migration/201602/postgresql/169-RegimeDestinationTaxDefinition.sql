@@ -67,5 +67,5 @@ UPDATE AD_Field SET SeqNo=84,AD_FieldGroup_ID=NULL,Updated=TO_TIMESTAMP('2016-01
 ;
 
 -- 14/01/2016 16h49min38s BRST
-SELECT Register_Migration_Script ('167-RegimeDestinationTaxDefinition.sql') FROM DUAL
+SELECT Register_Migration_Script ('169-RegimeDestinationTaxDefinition.sql') FROM DUAL
 ;
