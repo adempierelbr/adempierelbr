@@ -438,8 +438,8 @@ public class NFSeImpl implements INFSe
 		//	Gera o XML em arquivo para Assinatura	
 		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
 		
-		new SignatureUtil (oi, SignatureUtil.RPS).sign (envioLoteRPSDoc, envioLoteRPSDoc.newCursor());
-		envioLoteRPSDoc = PedidoEnvioLoteRPSDocument.Factory.parse (xml.toString());
+		new SignatureUtil (oi, SignatureUtil.RPS).sign (envioLoteRPSDoc, envioLoteRPSDoc.getPedidoEnvioLoteRPS().newCursor());
+		xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
 		
 		//	Log
 		log.fine ("Sending XML: " + xml.toString());
