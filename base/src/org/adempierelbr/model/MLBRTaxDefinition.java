@@ -15,6 +15,7 @@ package org.adempierelbr.model;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -118,14 +119,62 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += regionTo (To_Region_ID);
 		
 		//
-		List<MLBRTaxDefinition> list = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
+		List<MLBRTaxDefinition> tempLst = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
 			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
 					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, 
 					LBR_IEDest, lbr_DestionationType, lbr_TaxRegime, LBR_ProductSource, M_Product_ID})
 			.setOrderBy("PriorityNo, ValidFrom").list();
-		//
-		return list.toArray(new MLBRTaxDefinition[list.size()]);
+
+		List<MLBRTaxDefinition> resultLst = new ArrayList<MLBRTaxDefinition>();
+		
+		//	Validate Script
+		for (MLBRTaxDefinition td : tempLst)
+		{
+			String script = td.getScript();
+
+			if (td.getScript() == null || td.getScript().isEmpty())
+			{
+				resultLst.add (td);
+				continue;
+			}
+			
+			script = script.replace ("@AD_Org_ID@", String.valueOf (AD_Org_ID));
+			script = script.replace ("@C_BPartner_ID@", String.valueOf (C_BPartner_ID));
+			script = script.replace ("@C_DocType_ID@", String.valueOf (C_DocType_ID));
+			script = script.replace ("@C_Region_ID@", String.valueOf (C_Region_ID));
+			script = script.replace ("@To_Region_ID@", String.valueOf (To_Region_ID));
+			script = script.replace ("@LBR_BPartnerCategory_ID@", String.valueOf (LBR_BPartnerCategory_ID));
+			script = script.replace ("@LBR_FiscalGroup_BPartner_ID@", String.valueOf (LBR_FiscalGroup_BPartner_ID));
+			script = script.replace ("@LBR_IEDest@", "'" + LBR_IEDest + "'");
+			script = script.replace ("@LBR_FiscalGroup_Product_ID@", String.valueOf (LBR_FiscalGroup_Product_ID));
+			script = script.replace ("@LBR_NCM_ID@", String.valueOf (LBR_NCM_ID));
+			script = script.replace ("@LBR_ProductCategory_ID@", String.valueOf (LBR_ProductCategory_ID));
+			script = script.replace ("@lbr_IsSubTributaria@", String.valueOf (lbr_IsSubTributaria));
+			script = script.replace ("@isSOTrx@", String.valueOf (isSOTrx));
+			script = script.replace ("@lbr_TransactionType@", "'" + lbr_TransactionType + "'");
+			if (validFrom != null)
+				script = script.replace ("@validFrom@", "'" + DB.TO_DATE(validFrom) + "'");
+			else
+				script = script.replace ("@validFrom@", "NULL");
+			script = script.replace ("@LBR_ProductSource@", "'" + LBR_ProductSource + "'");
+			script = script.replace ("@lbr_DestionationType@", "'" + lbr_DestionationType + "'");
+			script = script.replace ("@lbr_TaxRegime@", "'" + lbr_TaxRegime + "'");
+			script = script.replace ("@M_Product_ID@", String.valueOf (M_Product_ID));
+			
+			try
+			{
+				int result = DB.getSQLValue (null, "SELECT COUNT('1') FROM DUAL WHERE " + script);
+				
+				if (result > 0)
+					resultLst.add (td);
+			}
+			
+			//	Falha na validação do script, não considerar
+			catch (Exception e)	{}
+		}
+		
+		return resultLst.toArray(new MLBRTaxDefinition[resultLst.size()]);
 	}	//	get
 
 	private static String regionFrom (int C_Region_ID)
