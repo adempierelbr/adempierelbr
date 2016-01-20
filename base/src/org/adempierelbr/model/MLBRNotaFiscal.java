@@ -1501,12 +1501,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	private void setC_DocTypeTarget_ID ()
 	{
+		
+		I_W_C_Invoice invoice = POWrapper.create(new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName()), I_W_C_Invoice.class);
+		I_W_C_DocType docType = POWrapper.create(new MDocType(getCtx(), getC_Invoice().getC_DocTypeTarget_ID(), get_TrxName()), I_W_C_DocType.class);
+		
 		//	Procura o Tipo de Documento pela Fatura
 		if (getC_Invoice_ID() > 0)
-		{
-			I_W_C_Invoice invoice = POWrapper.create(new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName()), I_W_C_Invoice.class);
-			I_W_C_DocType docType = POWrapper.create(new MDocType(getCtx(), getC_Invoice().getC_DocTypeTarget_ID(), get_TrxName()), I_W_C_DocType.class);
-			
+		{			
 			if (docType.getLBR_DocTypeNF_ID() > 0 &&
 					(docType.getAD_Org_ID() == 0 || docType.getAD_Org_ID() == getAD_Org_ID()))
 			{
@@ -1536,8 +1537,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			String sql = "SELECT C_DocType_ID FROM C_DocType " +
 				      	  "WHERE DocBaseType='NFB' " +
 				      	    "AND AD_Client_ID=? AND AD_Org_ID IN (0,?) " +
-				      	    "AND IsSOTrx=? " +
-				       "ORDER BY AD_Org_ID DESC, C_DocType_ID";
+				      	    "AND IsSOTrx=? ";
+			
+			//	Se o Modelo da NF estiver preenchido na Fatura
+			if (!"".equals(docType.getlbr_NFModel()) && docType.getlbr_NFModel() != null)
+				sql = sql + "AND lbr_NFModel = '" + docType.getlbr_NFModel() + "' ";
+			
+			//	Ordenar por Organização e Tipo de Documento
+			sql = sql + "ORDER BY AD_Org_ID DESC, C_DocType_ID";
+			
 			//
 			setC_DocTypeTarget_ID (DB.getSQLValue (get_TrxName(), sql,
 					new Object[]{getAD_Client_ID(), getAD_Org_ID(), isSOTrx()}));
