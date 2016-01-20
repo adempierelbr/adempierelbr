@@ -625,7 +625,7 @@ public class NFeXMLGenerator
 						dest.setIE (toNumericStr (nf.getlbr_BPIE()));
 				}
 				else
-					dest.setIndIEDest (IND_IE_ISENTO);	//	Homologação
+					dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
 			}
 			
 			//	SUFRAMA
