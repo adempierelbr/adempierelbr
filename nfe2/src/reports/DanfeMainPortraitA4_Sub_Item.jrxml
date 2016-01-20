@@ -35,7 +35,10 @@
 		<fieldDescription><![CDATA[prod/NCM]]></fieldDescription>
 	</field>
 	<field name="cst" class="java.lang.String">
-		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS50/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST |imposto/ICMS/ICMSSN101/CSOSN | imposto/ICMS/ICMSSN102/CSOSN | imposto/ICMS/ICMSSN201/CSOSN | imposto/ICMS/ICMSSN202/CSOSN | imposto/ICMS/ICMSSN500/CSOSN | imposto/ICMS/ICMSSN900/CSOSN]]></fieldDescription>
+		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/CST | imposto/ICMS/ICMS10/CST | imposto/ICMS/ICMS20/CST | imposto/ICMS/ICMS30/CST | imposto/ICMS/ICMS40/CST | imposto/ICMS/ICMS51/CST | imposto/ICMS/ICMS60/CST | imposto/ICMS/ICMS70/CST | imposto/ICMS/ICMS90/CST | imposto/ICMS/ICMSPart/CST |imposto/ICMS/ICMSSN101/CSOSN | imposto/ICMS/ICMSSN102/CSOSN | imposto/ICMS/ICMSSN201/CSOSN | imposto/ICMS/ICMSSN202/CSOSN | imposto/ICMS/ICMSSN500/CSOSN | imposto/ICMS/ICMSSN900/CSOSN]]></fieldDescription>
+	</field>
+	<field name="orig" class="java.lang.String">
+		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/orig | imposto/ICMS/ICMS10/orig | imposto/ICMS/ICMS20/orig | imposto/ICMS/ICMS30/orig | imposto/ICMS/ICMS40/orig | imposto/ICMS/ICMS51/orig | imposto/ICMS/ICMS60/orig | imposto/ICMS/ICMS70/orig | imposto/ICMS/ICMS90/orig | imposto/ICMS/ICMSPart/orig |imposto/ICMS/ICMSSN101/orig | imposto/ICMS/ICMSSN102/orig | imposto/ICMS/ICMSSN201/orig | imposto/ICMS/ICMSSN202/orig | imposto/ICMS/ICMSSN500/orig | imposto/ICMS/ICMSSN900/orig]]></fieldDescription>
 	</field>
 	<field name="cfop" class="java.lang.String">
 		<fieldDescription><![CDATA[prod/CFOP]]></fieldDescription>
@@ -458,7 +461,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{cst}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orig} + $F{cst}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-12" mode="Transparent" x="244" y="2" width="18" height="7"/>
