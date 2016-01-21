@@ -196,7 +196,7 @@ INSERT INTO AD_Process_Para_Trl (AD_Language,AD_Process_Para_ID, Description,Hel
 ;
 
 -- 17/12/2015 12h41min35s BRST
-SELECT Register_Migration_Script ('167-ExportXML.sql') FROM DUAL
+SELECT Register_Migration_Script ('171-ExportXML.sql') FROM DUAL
 ;
 
 EXIT
