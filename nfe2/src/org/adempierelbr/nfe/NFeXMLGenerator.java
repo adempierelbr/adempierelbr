@@ -1392,10 +1392,16 @@ public class NFeXMLGenerator
 				netWeight = Env.ZERO;
 			
 			//	Fix invalid net weight
-			if (grossWeight.compareTo(netWeight) == -1)
+			if (grossWeight.signum() == 1 
+					&& grossWeight.compareTo(netWeight) == -1)
 				netWeight = grossWeight;
+			
+			//	Fix invalid gross weight
+			if (grossWeight.signum() == 0
+					&& netWeight.signum() == 1)
+				grossWeight = netWeight;
 
-			//	Set gross and net weight in TON
+			//	Set gross and net weight in KG
 			if (netWeight.signum() == 1)
 				vol.setPesoL(normalize3 (netWeight));
 			if (grossWeight.signum() == 1)
