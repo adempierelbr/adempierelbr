@@ -1,12 +1,23 @@
 package org.adempierelbr.nfse.sp;
 
+import java.awt.Desktop;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+
+import javax.imageio.ImageIO;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRDigitalCertificate;
@@ -34,6 +45,16 @@ import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.pdfbox.exceptions.COSVisitorException;
+import org.pdfbox.pdmodel.PDDocument;
+import org.pdfbox.pdmodel.PDPage;
+import org.pdfbox.pdmodel.common.PDStream;
+import org.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
+import org.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
+
+import com.lowagie.text.pdf.PdfWriter;
+import com.packenius.library.xspdf.XSPDF;
 
 import br.gov.sp.prefeitura.nfe.PedidoEnvioLoteRPSDocument;
 import br.gov.sp.prefeitura.nfe.PedidoEnvioLoteRPSDocument.PedidoEnvioLoteRPS;
@@ -691,4 +712,122 @@ public class NFSeImpl implements INFSe
 		nf.save();
 	}	//	proccessNFSe
 	
+	/**
+	 *	Imprimir a NFS-e
+	 * @return
+	 */
+	public String printNFSe(MLBRNotaFiscal nf)
+	{
+		URL url;
+		InputStream is = null;
+
+		try
+		{
+			//	Campos para Criar URL de Impressão da NFS-e
+			String ccm = "27027805"; // = nf.getlbr_OrgCCM();
+			String nfnum = "98"; //nf.getlbr_NFENo();
+			String cod = "G18AYSAH"; //nf.getLBR_IndPres();
+			
+			//	URL de Impressão
+			url = new URL("https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm="+ccm+"&nf="+nfnum+"&cod="+cod+"&imprimir=1");
+			is = url.openStream(); // throws an IOException
+			BufferedImage image = null;
+			image = ImageIO.read(is);
+			if (image != null)
+			{
+				//	Arquivo da Imagem da NFS-e em Formato Gif
+				File file = new File("/tmp/tttt.gif");
+				ImageIO.write(image, "gif", file);				
+
+				String pdffile = "/tmp/"+nfnum + ".pdf";				
+				int width = image.getWidth(), height = image.getHeight();
+				
+				BufferedImage imageRGB = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				imageRGB.getGraphics().drawImage(image, 0, 0, null);
+				
+				XSPDF.getInstance()
+				.setPageSize(width, height)
+				.setPageMargin(0)
+				.setImage(imageRGB, 0, 0, width, height, 0)
+				.createPdf(pdffile);
+		      
+		      //	Abrir PDF Automaticamente
+		      if (Desktop.isDesktopSupported())
+		      {
+		    	  File myFile = new File(pdffile);
+			        Desktop.getDesktop().open(myFile);
+		      }
+
+		      return "@Success@";
+			}
+		}
+		catch (MalformedURLException mue)
+		{
+			mue.printStackTrace();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if (is != null)
+					is.close();
+			}
+			catch (IOException ioe)
+			{
+				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura do Emitente");
+			}
+		}
+		
+		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura do Emitente");
+	}
+	
+    public void createPDFFromImage(String pdfFile, 
+            List<String> imgList,int x, int y, float scale) throws IOException, COSVisitorException {
+        // the document
+        PDDocument doc = null;
+        try {
+            doc = new PDDocument();
+            Iterator iter = imgList.iterator();
+            int imgIndex=0;
+            while(iter.hasNext()) {
+                PDPage page = new PDPage();
+                doc.addPage(page);
+
+                BufferedImage tmp_image = ImageIO.read(new File(iter.next().toString()));
+                BufferedImage image = new BufferedImage(tmp_image.getWidth(), tmp_image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);        
+                image.createGraphics().drawRenderedImage(tmp_image, null);
+
+                PDStream pds = new PDStream(doc);
+                
+                PDXObjectImage ximage = new PDPixelMap(pds);
+                
+                //ximage.
+
+                imgIndex++;
+
+
+                PDPageContentStream contentStream = new PDPageContentStream(
+                        doc, page,true,true);
+
+                contentStream.drawXObject(ximage, x, y, ximage.getWidth()*scale, ximage.getHeight()*scale);
+
+                contentStream.close();
+            }
+            doc.save(pdfFile);
+        } finally {
+            if (doc != null) {
+                doc.close();
+            }
+        }
+    }
+
+
 }	//	NFSeImpl

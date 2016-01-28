@@ -26,4 +26,5 @@ public interface INFSe
 	public boolean transmit (Properties ctx, int AD_Org_ID, String trxName, List<MLBRNotaFiscal> nfs) throws Exception;
 	public boolean consult (MLBRNotaFiscal nf) throws Exception;
 	public boolean consult (Properties ctx, int AD_Org_ID, String trxName, List<MLBRNotaFiscal> nfs) throws Exception;
+	public String printNFSe(MLBRNotaFiscal nf);
 }	//	INFSe
