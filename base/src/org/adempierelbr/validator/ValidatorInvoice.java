@@ -462,7 +462,7 @@ public class ValidatorInvoice implements ModelValidator
 			
 			if(!MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_INVOICE_WITH_NF", false, wInvoice.getAD_Client_ID()))
 			{
-				if( wInvoice.getLBR_NotaFiscal_ID() != 0 && nf != null && !(nf.getDocStatus().equalsIgnoreCase("VO")))
+				if( nf != null && nf.getLBR_NotaFiscal_ID() != 0 && wInvoice.getLBR_NotaFiscal_ID() != 0 && !(nf.getDocStatus().equalsIgnoreCase("VO")))
 					return "Não é possível estornar uma Fatura que tenha vínculo com uma NF que não esteja cancelada!";
 			}
 		}	//	TIMING_BEFORE_REACTIVATE, VOID, CLOSE, REVERSECORRECT
