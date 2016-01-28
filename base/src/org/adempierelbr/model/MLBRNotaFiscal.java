@@ -217,6 +217,27 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	    return list.toArray(nfs);
 	}	//	get
 
+	/**
+	 * Retorna as Notas Fiscais por período (compra, venda ou ambos)
+	 * @param dateFrom
+	 * @param dateTo
+	 * @param isSOTrx: true = venda, false = compra, null = ambos
+	 * @return MNotaFiscal[]
+	 */
+	public static MLBRNotaFiscal[] get (Properties ctx, int C_Invoice_ID, String trxName)
+	{
+		String whereClause = "C_Invoice_ID=?";
+		String orderBy = "DocumentNo";
+
+		MTable table = MTable.get(ctx, MLBRNotaFiscal.Table_Name);
+		Query q =  new Query(ctx, table, whereClause.toString(), trxName);
+	          q.setOrderBy(orderBy);
+		      q.setParameters(new Object[]{C_Invoice_ID});
+
+	    List<MLBRNotaFiscal> list = q.list();
+	    MLBRNotaFiscal[] nfs = new MLBRNotaFiscal[list.size()];
+	    return list.toArray(nfs);
+	}	//	get
 
 	/**
 	 * Retorna o NCM ou a Referência do NCM
@@ -1564,6 +1585,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setC_Order_ID(wInvoice.getC_Order_ID());
 		//
 		setlbr_TransactionType (wInvoice.getlbr_TransactionType());
+		setLBR_IndPres(wInvoice.getLBR_IndPres());
 		setC_PaymentTerm_ID(wInvoice.getC_PaymentTerm_ID());
 		setLBR_FreightCostRule(wInvoice.getLBR_FreightCostRule());
 		
@@ -1603,6 +1625,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setC_Order_ID(wOrder.getC_Order_ID());
 		//
 		setlbr_TransactionType (wOrder.getlbr_TransactionType());
+		setLBR_IndPres(wOrder.getLBR_IndPres());
 		setC_PaymentTerm_ID(wOrder.getC_PaymentTerm_ID());
 		
 		//	Total da Fatura

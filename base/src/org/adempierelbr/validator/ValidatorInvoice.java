@@ -192,6 +192,10 @@ public class ValidatorInvoice implements ModelValidator
 		if (wInvoice.getC_BankAccount_ID() <= 0 && wOrder.getC_BankAccount_ID() > 0)
 			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
 		
+		//	Indication of presence of the customer at sales point
+		if (wInvoice.getLBR_IndPres() == null || wInvoice.getLBR_IndPres().isEmpty())
+			wInvoice.setLBR_IndPres(wOrder.getLBR_IndPres());
+			
 		//	Has tax Withhold
 		wInvoice.setLBR_HasWithhold(wOrder.isLBR_HasWithhold());
 
@@ -458,14 +462,13 @@ public class ValidatorInvoice implements ModelValidator
 				return "Não é possível re-abrir uma Fatura que tem Retenções de outra Fatura.";
 			
 			//	Não Permite Estornar Fatura ligada a uma Nota Fiscal Válida
-			MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx, wInvoice.getLBR_NotaFiscal_ID(), trxName);
-			
-			if(!MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_INVOICE_WITH_NF", false, wInvoice.getAD_Client_ID()))
+			if (!MSysConfig.getBooleanValue("LBR_ALLOW_REVERSE_INVOICE_WITH_NF", false, wInvoice.getAD_Client_ID()))
 			{
-				if( nf != null && nf.getLBR_NotaFiscal_ID() != 0 && wInvoice.getLBR_NotaFiscal_ID() != 0 && !(nf.getDocStatus().equalsIgnoreCase("VO")))
-					return "Não é possível estornar uma Fatura que tenha vínculo com uma NF que não esteja cancelada!";
+				for (MLBRNotaFiscal nf : MLBRNotaFiscal.get(invoice.getCtx(), invoice.getC_Invoice_ID(), trxName))
+					if (!MLBRNotaFiscal.DOCSTATUS_Voided.equals(nf.getDocStatus()))
+						return "Não é possível estornar uma Fatura, cancele as Notas Fiscais vinculadas primeiro.";
 			}
-		}	//	TIMING_BEFORE_REACTIVATE, VOID, CLOSE, REVERSECORRECT
+		}
 
 		return null;
 	}	//	docValidate
