@@ -656,6 +656,10 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			//
 			setSeqNo (seqNo);
 		}
+		
+		//	Remover espaços do campo de Carta de Correção
+		if (LBR_EVENTTYPE_CartaDeCorrecao.equals(getLBR_EventType()) && getDescription() != null)
+			setDescription(NFeXMLGenerator.normalize (getDescription()));
 		return true;
 	}	//	beforeSave
 	

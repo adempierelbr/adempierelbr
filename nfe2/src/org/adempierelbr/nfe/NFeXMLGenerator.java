@@ -1584,7 +1584,7 @@ public class NFeXMLGenerator
 	 * 	@param text
 	 * 	@return
 	 */
-	static String normalize (String text)
+	public static String normalize (String text)
 	{
 		if (text == null || text.isEmpty())
 			return text;
