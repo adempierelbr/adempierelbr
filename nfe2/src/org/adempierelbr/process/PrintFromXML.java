@@ -17,7 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Locale;
@@ -303,6 +302,10 @@ public class PrintFromXML extends SvrProcess
 		if (reportName.startsWith("DanfeMainPortraitA4"))
 			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper", "DanfeMainPortraitA4_Sub_Invoice.jasper"};
 		
+		//	Carta de Correção
+		if (reportName.startsWith("ReportCCe"))
+			return new String[]{};	//	No Subreports for this document
+		
 		//	Not found, try to catch all from the given path
 		URL dirURL = clazz.getClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file"))
@@ -312,7 +315,7 @@ public class PrintFromXML extends SvrProcess
 				/* A file path: easy enough */
 				return new File(dirURL.toURI()).list();
 			}
-			catch (URISyntaxException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
