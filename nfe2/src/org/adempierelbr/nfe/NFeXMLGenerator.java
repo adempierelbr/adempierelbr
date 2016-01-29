@@ -1463,6 +1463,10 @@ public class NFeXMLGenerator
 		//	Z. Informações Adicionais da NF-e
 		InfAdic infAdic = infNFe.addNewInfAdic();
 
+		String descFiscal = nf.getlbr_FiscalOBS();
+		if (descFiscal != null && !descFiscal.trim().isEmpty())
+			infAdic.setInfAdFisco(normalize (descFiscal));
+		
 		String descriptionNF = nf.getDescription();
 		if (descriptionNF != null && !descriptionNF.isEmpty())
 			infAdic.setInfCpl(normalize (descriptionNF));

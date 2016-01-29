@@ -78,6 +78,7 @@ import org.compiere.model.MTax;
 import org.compiere.model.MUser;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
@@ -1178,7 +1179,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setDiscountAmt(getDiscount());
 		
 		//	Nota do Documento (Mensagens Legais) e Descrição
-		setDocumentNote ();
+		setLBR_FiscalObs ();
 		setDescription ();
 		
 		// IBPTax - LBR-81
@@ -2003,7 +2004,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * 	Ajusta a descrição baseada no Tipo de Documento
 	 * 		e também nas mensagens legais
 	 */
-	public void setDocumentNote ()
+	public void setLBR_FiscalObs ()
 	{
 		StringBuffer description = new StringBuffer("");
 		List<Integer> legalMsg = new ArrayList<Integer>();
@@ -2036,10 +2037,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (description.length() > 0 && !description.toString().endsWith(" - "))
 				description.append(" - ");
 			//
-			description.append(nfl.getLBR_LegalMessage().getTextMsg());
+			description.append(parse (nfl.getLBR_LegalMessage().getTextMsg(), nfl));
 		}
 		//
-		setDocumentNote(description.toString());
+		setlbr_FiscalOBS(description.toString());
 	}	//	setDocumentNote
 	
 	/**
@@ -2047,10 +2048,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * 
 	 * 	@param documentNote
 	 */
-	public void setDocumentNote (String documentNote)
+	@Override
+	public void setlbr_FiscalOBS(String lbr_FiscalOBS)
 	{
-		super.setDocumentNote(parse(documentNote));
-	}	//	setDocumentNote
+		super.setlbr_FiscalOBS(parse(lbr_FiscalOBS));
+	}
 	
 	/**
 	 * 	Ajusta a descrição de acordo com o Tipo de Documento
@@ -2207,10 +2209,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	/**
 	 * 	Parse text
 	 *	@param text text
-	 *	@param po object
 	 *	@return parsed text
 	 */
 	private String parse (String text)
+	{
+		return parse (text, this);
+	}	//	parse
+	
+	/**
+	 * 	Parse text
+	 *	@param text text
+	 *	@param po object
+	 *	@return parsed text
+	 */
+	private String parse (String text, PO doc)
 	{
 		if (text.indexOf('@') == -1)
 			return text;
@@ -2233,7 +2245,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 
 			token = inStr.substring(0, j);
-			outStr.append(parseVariable(token));			// replace context
+			outStr.append(parseVariable(token, doc));			// replace context
 
 			inStr = inStr.substring(j+1, inStr.length());	// from second @
 			i = inStr.indexOf('@');
@@ -2248,7 +2260,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 *	@param variable variable
 	 *	@return translated variable or if not found the original tag
 	 */
-	private String parseVariable (String variable)
+	private String parseVariable (String variable, PO doc)
 	{
 		MessageFormat mf = new MessageFormat("{0,number,#,##0.00}", Env.getLanguage(getCtx()).getLocale());
 		//
@@ -2396,7 +2408,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			}
 		}
 		//
-		return Env.parseVariable ("@" + variable + "@", this, get_TrxName(), false);
+		return Env.parseVariable ("@" + variable + "@", doc, get_TrxName(), false);
 	}	//	parseVariable
 	
 	/**
