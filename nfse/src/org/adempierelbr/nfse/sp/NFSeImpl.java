@@ -1,12 +1,22 @@
 package org.adempierelbr.nfse.sp;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
+
+import javax.imageio.ImageIO;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRDigitalCertificate;
@@ -31,6 +41,7 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MSequence;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
+import org.compiere.report.ReportStarter;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -49,6 +60,11 @@ import br.gov.sp.prefeitura.nfe.tipos.TpEvento;
 import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
 import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
 import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * 		NFS-e para a cidade de São Paulo
@@ -691,4 +707,86 @@ public class NFSeImpl implements INFSe
 		nf.save();
 	}	//	proccessNFSe
 	
+	/**
+	 *	Imprimir a NFS-e
+	 * 	@return
+	 */
+	public String printNFSe (MLBRNotaFiscal nf)
+	{
+		InputStream is = null;
+		
+		try
+		{
+			//	Campos para Criar URL de Impressão da NFS-e
+			String ccm = TextUtil.toNumeric (nf.getlbr_OrgCCM());
+			String nfnum = TextUtil.toNumeric (nf.getlbr_NFENo());
+			String cod = nf.getlbr_NFeProt();
+			
+			if (cod == null || cod.trim().isEmpty())
+				return "NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o";
+			
+			//	URL de Impressão
+			String message = MSysConfig.getValue ("LBR_NFSE_SP_PRINT_URL", "https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm={0}&nf={1}&cod={2}&imprimir=1", nf.getAD_Client_ID(), nf.getAD_Org_ID());
+			
+			MessageFormat mf = null;
+			try
+			{
+				mf = new MessageFormat (message);
+			}
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error NFS-e SP print URL " + e.getMessage());
+			}
+			
+			URL url = new URL (mf.format (new Object[]{ccm, nfnum, cod}));
+			is = url.openStream();
+			
+			BufferedImage image = null;
+			image = ImageIO.read (is);
+			
+			if (image != null)
+			{
+				ClassLoader cl = getClass().getClassLoader();
+				InputStream report = cl.getResourceAsStream("reports/ImpressaoNFSESP.jasper");
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("DOCUMENTO_IMAGE", image);
+
+				JasperReport jasperReport = (JasperReport) JRLoader.loadObject (report);
+				JREmptyDataSource dataSource = new JREmptyDataSource ();
+				//
+				JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, map, dataSource);
+
+				ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
+				
+				return "@Success@";
+			}
+		}
+		catch (MalformedURLException mue)
+		{
+			mue.printStackTrace();
+		}
+		catch (IOException ioe)
+		{
+			ioe.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if (is != null)
+					is.close();
+			}
+			catch (IOException ioe)
+			{
+				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+			}
+		}
+		
+		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+	}	//	printNFSe
 }	//	NFSeImpl
