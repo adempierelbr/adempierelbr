@@ -27,6 +27,8 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfse.INFSe;
+import org.adempierelbr.nfse.NFSeUtil;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MImage;
@@ -119,6 +121,17 @@ public class PrintFromXML extends SvrProcess
 			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
 			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
 				return "N\u00E3o \u00E9 permitido imprimir o DANFE - Cancelada ou Sem autorizac\u00E3o";
+			
+			//	Nota Fiscal de Serviço Eletrônica
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(doc.getlbr_NFModel()))
+			{
+				INFSe infSe = NFSeUtil.get (doc);
+				
+				if (infSe != null)
+					return infSe.printNFSe(doc);
+				else
+					return "Documento sem formato de impress\u00E3o dispon\u00EDvel ou impress\u00E3o n\u00E3o permitida";
+			}
 
 			att = doc.getAttachment (true);
 			
@@ -134,7 +147,7 @@ public class PrintFromXML extends SvrProcess
 //				reportName = process.getJasperReport();
 			
 			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
-				message = "CANCELADO    CANCELADO\nCÓPIA DE SEGURANÇA";
+				message = "CANCELADO    CANCELADO\nC\u00D3PIA DE SEGURAN\u00C7A";
 			
 			else if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(doc.getlbr_NFeStatus()))
 				message = "C\u00D3PIA DE SEGURAN\u00C7A     Sem autorizac\u00E3o";

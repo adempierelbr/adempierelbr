@@ -52,7 +52,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/PDFBox/xsPDF-bin+src-20130619-2129.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>

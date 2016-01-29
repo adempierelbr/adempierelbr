@@ -1,19 +1,18 @@
 package org.adempierelbr.nfse.sp;
 
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -42,19 +41,10 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MSequence;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.X_C_City;
+import org.compiere.report.ReportStarter;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.pdfbox.exceptions.COSVisitorException;
-import org.pdfbox.pdmodel.PDDocument;
-import org.pdfbox.pdmodel.PDPage;
-import org.pdfbox.pdmodel.common.PDStream;
-import org.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.pdfbox.pdmodel.graphics.xobject.PDPixelMap;
-import org.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
-
-import com.lowagie.text.pdf.PdfWriter;
-import com.packenius.library.xspdf.XSPDF;
 
 import br.gov.sp.prefeitura.nfe.PedidoEnvioLoteRPSDocument;
 import br.gov.sp.prefeitura.nfe.PedidoEnvioLoteRPSDocument.PedidoEnvioLoteRPS;
@@ -70,6 +60,11 @@ import br.gov.sp.prefeitura.nfe.tipos.TpEvento;
 import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
 import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
 import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * 		NFS-e para a cidade de São Paulo
@@ -714,51 +709,57 @@ public class NFSeImpl implements INFSe
 	
 	/**
 	 *	Imprimir a NFS-e
-	 * @return
+	 * 	@return
 	 */
-	public String printNFSe(MLBRNotaFiscal nf)
+	public String printNFSe (MLBRNotaFiscal nf)
 	{
-		URL url;
 		InputStream is = null;
-
+		
 		try
 		{
 			//	Campos para Criar URL de Impressão da NFS-e
-			String ccm = "27027805"; // = nf.getlbr_OrgCCM();
-			String nfnum = "98"; //nf.getlbr_NFENo();
-			String cod = "G18AYSAH"; //nf.getLBR_IndPres();
+			String ccm = TextUtil.toNumeric (nf.getlbr_OrgCCM());
+			String nfnum = TextUtil.toNumeric (nf.getlbr_NFENo());
+			String cod = nf.getlbr_NFeProt();
+			
+			if (cod == null || cod.trim().isEmpty())
+				return "NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o";
 			
 			//	URL de Impressão
-			url = new URL("https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm="+ccm+"&nf="+nfnum+"&cod="+cod+"&imprimir=1");
-			is = url.openStream(); // throws an IOException
+			String message = MSysConfig.getValue ("LBR_NFSE_SP_PRINT_URL", "https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm={0}&nf={1}&cod={2}&imprimir=1", nf.getAD_Client_ID(), nf.getAD_Org_ID());
+			
+			MessageFormat mf = null;
+			try
+			{
+				mf = new MessageFormat (message);
+			}
+			catch (Exception e)
+			{
+				log.log (Level.SEVERE, "Error NFS-e SP print URL " + e.getMessage());
+			}
+			
+			URL url = new URL (mf.format (new Object[]{ccm, nfnum, cod}));
+			is = url.openStream();
+			
 			BufferedImage image = null;
-			image = ImageIO.read(is);
+			image = ImageIO.read (is);
+			
 			if (image != null)
 			{
-				//	Arquivo da Imagem da NFS-e em Formato Gif
-				File file = new File("/tmp/tttt.gif");
-				ImageIO.write(image, "gif", file);				
-
-				String pdffile = "/tmp/"+nfnum + ".pdf";				
-				int width = image.getWidth(), height = image.getHeight();
+				ClassLoader cl = getClass().getClassLoader();
+				InputStream report = cl.getResourceAsStream("reports/ImpressaoNFSESP.jasper");
 				
-				BufferedImage imageRGB = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-				imageRGB.getGraphics().drawImage(image, 0, 0, null);
-				
-				XSPDF.getInstance()
-				.setPageSize(width, height)
-				.setPageMargin(0)
-				.setImage(imageRGB, 0, 0, width, height, 0)
-				.createPdf(pdffile);
-		      
-		      //	Abrir PDF Automaticamente
-		      if (Desktop.isDesktopSupported())
-		      {
-		    	  File myFile = new File(pdffile);
-			        Desktop.getDesktop().open(myFile);
-		      }
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("DOCUMENTO_IMAGE", image);
 
-		      return "@Success@";
+				JasperReport jasperReport = (JasperReport) JRLoader.loadObject (report);
+				JREmptyDataSource dataSource = new JREmptyDataSource ();
+				//
+				JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, map, dataSource);
+
+				ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
+				
+				return "@Success@";
 			}
 		}
 		catch (MalformedURLException mue)
@@ -782,52 +783,10 @@ public class NFSeImpl implements INFSe
 			}
 			catch (IOException ioe)
 			{
-				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura do Emitente");
+				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
 			}
 		}
 		
-		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura do Emitente");
-	}
-	
-    public void createPDFFromImage(String pdfFile, 
-            List<String> imgList,int x, int y, float scale) throws IOException, COSVisitorException {
-        // the document
-        PDDocument doc = null;
-        try {
-            doc = new PDDocument();
-            Iterator iter = imgList.iterator();
-            int imgIndex=0;
-            while(iter.hasNext()) {
-                PDPage page = new PDPage();
-                doc.addPage(page);
-
-                BufferedImage tmp_image = ImageIO.read(new File(iter.next().toString()));
-                BufferedImage image = new BufferedImage(tmp_image.getWidth(), tmp_image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);        
-                image.createGraphics().drawRenderedImage(tmp_image, null);
-
-                PDStream pds = new PDStream(doc);
-                
-                PDXObjectImage ximage = new PDPixelMap(pds);
-                
-                //ximage.
-
-                imgIndex++;
-
-
-                PDPageContentStream contentStream = new PDPageContentStream(
-                        doc, page,true,true);
-
-                contentStream.drawXObject(ximage, x, y, ximage.getWidth()*scale, ximage.getHeight()*scale);
-
-                contentStream.close();
-            }
-            doc.save(pdfFile);
-        } finally {
-            if (doc != null) {
-                doc.close();
-            }
-        }
-    }
-
-
+		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+	}	//	printNFSe
 }	//	NFSeImpl

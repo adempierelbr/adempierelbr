@@ -104,6 +104,8 @@
 			<fileset dir="nfe2/src" includes="**/*.xsd"/>
 			<fileset dir="nfe2/src" includes="**/*.jasper"/>
 			<fileset dir="nfe2/src" includes="**/*.jrxml"/>
+			<fileset dir="nfse/src" includes="**/*.jasper"/>
+			<fileset dir="nfse/src" includes="**/*.jrxml"/>
 		</copy>
 		
 		<echo message=" ===============================================" />
