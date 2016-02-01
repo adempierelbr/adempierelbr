@@ -1842,7 +1842,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (invoice.getC_Order_ID() > 0)
 			{
 				M_Shipper_ID = invoice.getC_Order().getM_Shipper_ID();
-				setDeliveryViaRule(order.getDeliveryViaRule());
+				setDeliveryViaRule(invoice.getC_Order().getDeliveryViaRule());
 				setFreightCostRule(invoice.getC_Order().getFreightCostRule());
 			}
 		}
