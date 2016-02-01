@@ -394,9 +394,6 @@ public class ValidatorInvoice implements ModelValidator
 				MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), 0, invoice.get_TrxName());
 				nf.generateNF(invoice, isOwnDocument);
 				nf.save();
-
-				//	Ajusta o número gerado da NF para a Fatura
-				wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
 				
 				//	Gera o XML da NF-e efetuando a ação Preparar na NF
 				try

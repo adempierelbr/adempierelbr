@@ -14,9 +14,7 @@ package org.adempierelbr.process;
 
 import java.util.logging.Level;
 
-import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.compiere.model.MInvoice;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -78,22 +76,10 @@ public class ProcGenerateNF extends SvrProcess
 		//	Baseado em Fatura
 		if (getTable_ID() == MLBRNotaFiscal.Table_ID)
 		{
-			I_W_C_Invoice wInvoice = POWrapper.create(new MInvoice (getCtx(), nf.getC_Invoice_ID(), get_TrxName()), 
-					I_W_C_Invoice.class);
+			MInvoice invoice = new MInvoice (getCtx(), nf.getC_Invoice_ID(), get_TrxName());
 			
-			/**
-			 * 	Verifica se a Fatura não possui NF ainda ou se a NF
-			 * 		que esta na fatura está sendo recriada.
-			 */
-			if (wInvoice.getLBR_NotaFiscal_ID() > 0
-					&& wInvoice.getLBR_NotaFiscal_ID() != p_LBR_NotaFiscal_ID)
-				throw new IllegalArgumentException ("Fatura já possui nota fiscal");
-			
-			nf.generateNF((MInvoice) POWrapper.getPO(wInvoice), p_IsOwnDocument);
+			nf.generateNF(invoice, p_IsOwnDocument);
 			nf.save();
-			
-			wInvoice.setLBR_NotaFiscal_ID (nf.getLBR_NotaFiscal_ID());
-			POWrapper.getPO(wInvoice).save();
 		}
 		return "@Success@ NF Re-processada com as informações atuais";
 	}	//	doIt

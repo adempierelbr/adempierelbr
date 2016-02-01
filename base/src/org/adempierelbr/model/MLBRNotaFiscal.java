@@ -67,6 +67,7 @@ import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MOrderTax;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRefList;
@@ -1167,7 +1168,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			else
 				totalItem = totalItem.add(nfLine.getLineTotalAmt());
 			//
-			//	FIXME
 			if (nfLine.getLBR_CFOP_ID() > 0 
 					&& (getlbr_CFOPNote() == null || getlbr_CFOPNote().length() < 1))
 				setlbr_CFOPNote(nfLine.getLBR_CFOP().getDescription());
@@ -1200,8 +1200,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		BigDecimal totalItem = Env.ZERO, totalService = Env.ZERO;
 		//
-		MDocType dtPO = new MDocType(getCtx(), order.getC_DocTypeTarget_ID(), get_TrxName());
-		I_W_C_DocType dtPOW = POWrapper.create(dtPO, I_W_C_DocType.class);
 		Boolean isSOTrx = true;
 		int lineNo = 1;
 		
@@ -1216,13 +1214,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		 * 	Limpa os valores antigos
 		 */
 		clear();
-
-		if (!"MFCT".equals(dtPOW.getlbr_DocBaseType()))
-		{
-			m_processMsg = "Not implemented yet > " + dtPOW.getName();
-			log.log(Level.SEVERE, m_processMsg);
-			return false;
-		}
 		
 		// Imprime Descontos
 		setIsDiscountPrinted(order.isDiscountPrinted());
@@ -1250,7 +1241,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setShipmentBPartner (null, null, order);
 		
 		//	Impostos
-		//	Nota da Fatura: Dados do Vencimento
+		setTaxes(order);
 		
 		//	Linhas
 		for (MOrderLine oLine : order.getLines())
@@ -1272,14 +1263,19 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
+			nfLine.save();
 			nfLine.setLine(lineNo++);
-			nfLine.setOrderLine(oLine, true);
+			nfLine.setOrderLine(oLine, false);
 			nfLine.save();
 			//
 			if (nfLine.islbr_IsService())
 				totalService = totalService.add(nfLine.getLineTotalAmt());
 			else
 				totalItem = totalItem.add(nfLine.getLineTotalAmt());
+			
+			if (nfLine.getLBR_CFOP_ID() > 0 
+					&& (getlbr_CFOPNote() == null || getlbr_CFOPNote().length() < 1))
+				setlbr_CFOPNote(nfLine.getLBR_CFOP().getDescription());
 		}
 		
 		//	Valores
@@ -1512,6 +1508,28 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			MLBRNFTax nfTax = new MLBRNFTax (this);
 			nfTax.setTaxes (it);
+			nfTax.setLBR_TaxGroup_ID(taxAD.getLBR_TaxGroup_ID());
+			nfTax.save();
+		}
+	}	//	setTaxes
+	
+	/**
+	 * 		Set Taxes
+	 */
+	public void setTaxes (MOrder order)
+	{
+		if (order == null)
+			return;
+		
+		for (MOrderTax ot : order.getTaxes(true))
+		{
+			I_W_C_Tax taxAD = POWrapper.create(new MTax (getCtx(), ot.getC_Tax_ID(), get_TrxName()), I_W_C_Tax.class);
+			//
+			if (taxAD.getLBR_TaxGroup_ID() < 1)
+				continue;
+			
+			MLBRNFTax nfTax = new MLBRNFTax (this);
+			nfTax.setTaxes (ot);
 			nfTax.setLBR_TaxGroup_ID(taxAD.getLBR_TaxGroup_ID());
 			nfTax.save();
 		}
@@ -1822,7 +1840,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			//	Dado obrigatório, não encontrado na Expedição/Recebimento
 			if (invoice.getC_Order_ID() > 0)
+			{
+				M_Shipper_ID = invoice.getC_Order().getM_Shipper_ID();
+				setDeliveryViaRule(order.getDeliveryViaRule());
 				setFreightCostRule(invoice.getC_Order().getFreightCostRule());
+			}
 		}
 		
 		/**
@@ -1836,13 +1858,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			//	Drop shipment
 			if (order.isDropShip() && order.getDropShip_BPartner_ID() > 0)
-			{
-				bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(),get_TrxName());
-				
-				//	Dado obrigatório, não encontrado na Expedição/Recebimento
-				if (order.getC_Order_ID() > 0)
-					setFreightCostRule(order.getFreightCostRule());
-			}
+				bpLocation = new MBPartnerLocation(getCtx(), order.getDropShip_Location_ID(), get_TrxName());
+			
+			//	NF Comum
+			else
+				bpLocation = new MBPartnerLocation(getCtx(), order.getC_BPartner_Location_ID(), get_TrxName());
+			
+			//	Dado obrigatório, não encontrado na Expedição/Recebimento
+			setFreightCostRule(order.getFreightCostRule());
 		}
 		
 		//	Nothing to do
@@ -1972,6 +1995,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfl.deleteEx(true);
 		}
 		DB.executeUpdate ("DELETE LBR_NFDI WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
+		DB.executeUpdate ("DELETE LBR_NotaFiscalDocRef WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
 	}	//	clearAmounts
 	
 	/**
@@ -2106,6 +2130,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					if (!MSysConfig.getBooleanValue("LBR_REALTIME_RPS_NUMBER", true, getAD_Client_ID()))
 						setDocumentNo(RPS_TEMP);
 				}
+				
+				//	Série da NF-e
+				if (getlbr_NFSerie() == null)
+					setlbr_NFSerie(dt.get_ValueAsString("lbr_NFSerie"));
 			}
 			
 			//	Preenche o ambiente da NF caso esteja em branco
@@ -2656,6 +2684,24 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				m_processMsg = "Organização do Tipo de Documento não confere com a da Nota Fiscal";
 				return DocAction.STATUS_Invalid;
+			}
+			
+			//	Prepara a NF de forma automática
+			if (!isManual())
+			{
+				//	Gera a NF a partir da Fatura
+				if (getC_Invoice_ID() > 0)
+					generateNF (new MInvoice (getCtx(), getC_Invoice_ID(), get_TrxName()), islbr_IsOwnDocument());
+				
+				//	Gera a NF a parir do Pedido
+				else if (getC_Order_ID() > 0)
+					generateNF (new MOrder (getCtx(), getC_Order_ID(), get_TrxName()), islbr_IsOwnDocument());
+				
+				else
+				{
+					m_processMsg = "NF sem Pedido ou Fatura atrelada. Para fazer uma NF Manual, clique no campo Manual.";
+					return DocAction.STATUS_Invalid;
+				}
 			}
 			
 			//	Nota Fiscal Eletrônica
