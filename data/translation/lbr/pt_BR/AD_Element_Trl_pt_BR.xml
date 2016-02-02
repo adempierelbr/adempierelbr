@@ -4648,8 +4648,8 @@ The Incoterms rules are accepted by governments, legal authorities, and practiti
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1121791" trl="N">
-<value column="Name" original="Event Type">Event Type</value>
-<value column="PrintName" original="Event Type">Event Type</value>
+<value column="Name" original="Event Type">Tipo de Evento</value>
+<value column="PrintName" original="Event Type">Tipo de Evento</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>

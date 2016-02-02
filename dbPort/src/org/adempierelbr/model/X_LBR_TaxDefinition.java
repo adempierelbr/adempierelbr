@@ -31,7 +31,7 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20151217L;
+	private static final long serialVersionUID = 20160115L;
 
     /** Standard Constructor */
     public X_LBR_TaxDefinition (Properties ctx, int LBR_TaxDefinition_ID, String trxName)
@@ -486,6 +486,29 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return ii.intValue();
 	}
 
+	/** LBR_TaxRegime AD_Reference_ID=1120183 */
+	public static final int LBR_TAXREGIME_AD_Reference_ID=1120183;
+	/** Simple National = S */
+	public static final String LBR_TAXREGIME_SimpleNational = "S";
+	/** Presumed Profit = P */
+	public static final String LBR_TAXREGIME_PresumedProfit = "P";
+	/** Real Profit = R */
+	public static final String LBR_TAXREGIME_RealProfit = "R";
+	/** Set Tax Regime.
+		@param LBR_TaxRegime Tax Regime	  */
+	public void setLBR_TaxRegime (String LBR_TaxRegime)
+	{
+
+		set_Value (COLUMNNAME_LBR_TaxRegime, LBR_TaxRegime);
+	}
+
+	/** Get Tax Regime.
+		@return Tax Regime	  */
+	public String getLBR_TaxRegime () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TaxRegime);
+	}
+
 	/** Set Brazilian Tax.
 		@param LBR_Tax_ID 
 		Primary key table LBR_Tax
@@ -557,6 +580,23 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return ii.intValue();
 	}
 
+	/** Set Script.
+		@param Script 
+		Dynamic Java Language Script to calculate result
+	  */
+	public void setScript (String Script)
+	{
+		set_Value (COLUMNNAME_Script, Script);
+	}
+
+	/** Get Script.
+		@return Dynamic Java Language Script to calculate result
+	  */
+	public String getScript () 
+	{
+		return (String)get_Value(COLUMNNAME_Script);
+	}
+
 	public I_C_Region getTo_Region() throws RuntimeException
     {
 		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
@@ -619,6 +659,34 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
 	}
 
+	/** lbr_DestionationType AD_Reference_ID=1000012 */
+	public static final int LBR_DESTIONATIONTYPE_AD_Reference_ID=1000012;
+	/** Estados Identicos = 0 */
+	public static final String LBR_DESTIONATIONTYPE_EstadosIdenticos = "0";
+	/** Estados Diferentes = 1 */
+	public static final String LBR_DESTIONATIONTYPE_EstadosDiferentes = "1";
+	/** Estrangeiro = 2 */
+	public static final String LBR_DESTIONATIONTYPE_Estrangeiro = "2";
+	/** Zona Franca = 3 */
+	public static final String LBR_DESTIONATIONTYPE_ZonaFranca = "3";
+	/** Set Destination Type.
+		@param lbr_DestionationType 
+		Defines the Destination Type
+	  */
+	public void setlbr_DestionationType (String lbr_DestionationType)
+	{
+
+		set_Value (COLUMNNAME_lbr_DestionationType, lbr_DestionationType);
+	}
+
+	/** Get Destination Type.
+		@return Defines the Destination Type
+	  */
+	public String getlbr_DestionationType () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_DestionationType);
+	}
+
 	/** lbr_IsSubTributaria AD_Reference_ID=1000027 */
 	public static final int LBR_ISSUBTRIBUTARIA_AD_Reference_ID=1000027;
 	/** Yes = Y */
@@ -653,8 +721,8 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public static final String LBR_PRODUCTSOURCE_1_Imported = "1";
 	/** 2 - Imported - Acquired from a domestic distributor = 2 */
 	public static final String LBR_PRODUCTSOURCE_2_Imported_AcquiredFromADomesticDistributor = "2";
-	/** 3 - Domestic with more than 40 percent Imported = 3 */
-	public static final String LBR_PRODUCTSOURCE_3_DomesticWithMoreThan40PercentImported = "3";
+	/** 3 - Domestic with between 40 percent and 70 percent Imported = 3 */
+	public static final String LBR_PRODUCTSOURCE_3_DomesticWithBetween40PercentAnd70PercentImported = "3";
 	/** 4 - Product acquired from Manaus = 4 */
 	public static final String LBR_PRODUCTSOURCE_4_ProductAcquiredFromManaus = "4";
 	/** 5 - Domestic until 40 percent Imported = 5 */
@@ -663,6 +731,8 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	public static final String LBR_PRODUCTSOURCE_6_Foreign_DirectImportNoSimilarNational = "6";
 	/** 7 - Foreign - Acquired from a domestic distributor no similar national = 7 */
 	public static final String LBR_PRODUCTSOURCE_7_Foreign_AcquiredFromADomesticDistributorNoSimilarNational = "7";
+	/** 8 - Domestic above 70 percent Imported = 8 */
+	public static final String LBR_PRODUCTSOURCE_8_DomesticAbove70PercentImported = "8";
 	/** Set Product Source.
 		@param lbr_ProductSource 
 		Defines the Product Source

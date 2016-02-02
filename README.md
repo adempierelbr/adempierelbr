@@ -68,6 +68,16 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201602 [[Download]][42] [[Seed PostgreSQL]][43] [[Seed OracleXE]][44]
+
+	* Melhorias na tradução
+	* Melhoria na janela de definição de impostos (filtros por script)
+	* Impressão da NFS-e
+	* Melhorias na exibição dos campos da janela de NF-e
+	* Distinção das Informações Complementares do Fisco e do Contribuinte
+	* Possibilidade para re-criar a NF pelo processo de preparar
+	* [Mais detalhes][41]
+	
 1. LBR-201601 [[Download]][38] [[Seed PostgreSQL]][39] [[Seed OracleXE]][40]
 
 	* Melhorias na tradução
@@ -191,3 +201,7 @@ Patrocinadores desta versão
 [38]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201601.tgz
 [39]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_PG.tgz
 [40]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_ORA.tgz
+[41]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201602
+[42]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201602.tgz
+[43]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_PG.tgz
+[44]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_ORA.tgz

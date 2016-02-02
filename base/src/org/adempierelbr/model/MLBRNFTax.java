@@ -19,6 +19,7 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.compiere.model.MInvoiceTax;
+import org.compiere.model.MOrderTax;
 import org.compiere.model.MTax;
 import org.compiere.util.Env;
 
@@ -123,6 +124,39 @@ public class MLBRNFTax extends X_LBR_NFTax
 		{
 			setlbr_TaxAmt(it.getTaxAmt());
 			setlbr_TaxBaseAmt(it.getTaxBaseAmt());
+		}
+	}	//	setTaxes
+	
+	/**
+	 * 		Grava os impostos
+	 * 	@param tl
+	 */
+	public void setTaxes (MOrderTax ot)
+	{
+		if (ot == null)
+			return;
+		//
+		I_W_C_Tax tax = POWrapper.create (new MTax (getCtx(), ot.getC_Tax_ID(), null), I_W_C_Tax.class);
+		Boolean hasWithhold = false;
+		
+		//	Verifica se o imposto é de retenção para destacar na NF
+		if (tax.getLBR_TaxName_ID() > 0)
+		{
+			MLBRTaxName tn = new MLBRTaxName (getCtx(), tax.getLBR_TaxName_ID(), null);
+			hasWithhold = tn.isLBR_HasWithhold();
+		}
+		
+		//	Caso não seja de retenção e tenha valor negativo, não deve-se destacar na NF
+		//		portanto o valor é zerado
+		if (ot.getTaxAmt().signum() == -1 && !hasWithhold)
+		{
+			setlbr_TaxAmt(Env.ZERO);
+			setlbr_TaxBaseAmt(Env.ZERO);
+		}
+		else
+		{
+			setlbr_TaxAmt(ot.getTaxAmt());
+			setlbr_TaxBaseAmt(ot.getTaxBaseAmt());
 		}
 	}	//	setTaxes
 }	//	MLBRNotaFiscal

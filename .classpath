@@ -11,7 +11,7 @@
 	<classpathentry kind="src" path="sacred/src"/>
 	<classpathentry kind="src" path="sped/src"/>
 	<classpathentry kind="src" path="zkwebui/WEB-INF/src"/>
-	<classpathentry kind="lib" path="lib/commons-beanutils-1.9.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-1.9.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcmail-jdk14-138.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bcprov-jdk14-138.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/PDFBox/bctsp-jdk14-1.38.jar"/>
@@ -51,10 +51,10 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlbeans-qname.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/adempiere360lts"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="lib" path="lib/nfebeans-v8h1.jar" sourcepath="lib/nfebeans-v8h1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8h1.jar" sourcepath="lib/nfebeans-v8h1-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -103,6 +103,7 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Emit;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.IndPres;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefECF;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNF;
@@ -448,8 +449,14 @@ public class NFeXMLGenerator
 		if (ide.getFinNFe().equals (FIN_NFE_AJUSTE)
 				|| ide.getFinNFe().equals (FIN_NFE_COMPLEMENTAR))
 			ide.setIndPres (IND_PRES_N_A);
+		
+		//	Digitado na NF
+		else if (nf.getLBR_IndPres() != null && !nf.getLBR_IndPres().isEmpty())
+			ide.setIndPres (IndPres.Enum.forString(nf.getLBR_IndPres()));
+		
+		//	Valor padrão
 		else
-			ide.setIndPres (IND_PRES_TELE);	//	TODO: Outras formas de emissão
+			ide.setIndPres (IND_PRES_TELE);
 		
 		//	0 = Emissão de NF-e com aplicativo do contribuinte
 		ide.setProcEmi (TProcEmi.X_0);
@@ -625,7 +632,7 @@ public class NFeXMLGenerator
 						dest.setIE (toNumericStr (nf.getlbr_BPIE()));
 				}
 				else
-					dest.setIndIEDest (IND_IE_ISENTO);	//	Homologação
+					dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
 			}
 			
 			//	SUFRAMA
@@ -1392,10 +1399,16 @@ public class NFeXMLGenerator
 				netWeight = Env.ZERO;
 			
 			//	Fix invalid net weight
-			if (grossWeight.compareTo(netWeight) == -1)
+			if (grossWeight.signum() == 1 
+					&& grossWeight.compareTo(netWeight) == -1)
 				netWeight = grossWeight;
+			
+			//	Fix invalid gross weight
+			if (grossWeight.signum() == 0
+					&& netWeight.signum() == 1)
+				grossWeight = netWeight;
 
-			//	Set gross and net weight in TON
+			//	Set gross and net weight in KG
 			if (netWeight.signum() == 1)
 				vol.setPesoL(normalize3 (netWeight));
 			if (grossWeight.signum() == 1)
@@ -1450,6 +1463,10 @@ public class NFeXMLGenerator
 		//	Z. Informações Adicionais da NF-e
 		InfAdic infAdic = infNFe.addNewInfAdic();
 
+		String descFiscal = nf.getlbr_FiscalOBS();
+		if (descFiscal != null && !descFiscal.trim().isEmpty())
+			infAdic.setInfAdFisco(normalize (descFiscal));
+		
 		String descriptionNF = nf.getDescription();
 		if (descriptionNF != null && !descriptionNF.isEmpty())
 			infAdic.setInfCpl(normalize (descriptionNF));
@@ -1571,7 +1588,7 @@ public class NFeXMLGenerator
 	 * 	@param text
 	 * 	@return
 	 */
-	static String normalize (String text)
+	public static String normalize (String text)
 	{
 		if (text == null || text.isEmpty())
 			return text;

@@ -1178,7 +1178,7 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 			+ "FROM M_Storage s"
 			+ " INNER JOIN M_Locator l ON (s.M_Locator_ID=l.M_Locator_ID)"
 			+ " INNER JOIN M_Warehouse w ON (l.M_Warehouse_ID=w.M_Warehouse_ID) "
-			+ "WHERE M_Product_ID=?";
+			+ "WHERE s.M_Product_ID=?";
 		if (m_M_Warehouse_ID != 0)
 			sql += " AND l.M_Warehouse_ID=?";
 		if (m_M_AttributeSetInstance_ID > 0)

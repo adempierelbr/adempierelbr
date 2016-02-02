@@ -569,6 +569,31 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 					//	8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%
 					&& "358".indexOf (getlbr_ProductSource()) != -1)
 				setFCI();
+			
+			//	Número de Série
+			if (oLine.getM_AttributeSetInstance_ID()>0 && (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
+				setDescription(oLine.getM_AttributeSetInstance().getDescription());
+			
+			//		Impostos
+			MLBRTax tax = new MLBRTax (getCtx(), oLineW.getLBR_Tax_ID(), get_TrxName());
+					
+			for (MLBRTaxLine tl : tax.getLines())
+			{
+				int Child_Tax_ID = tl.getChild_Tax_ID (oLineW.getC_Tax_ID());
+				//
+				if (!tl.islbr_PostTax() || Child_Tax_ID < 1)
+					continue;
+				
+				I_W_C_Tax taxAD = POWrapper.create(new MTax (getCtx(), Child_Tax_ID, get_TrxName()), I_W_C_Tax.class);
+				
+				if (taxAD.getLBR_TaxGroup_ID() < 1)
+					continue;
+				
+				MLBRNFLineTax nfLineTax = new MLBRNFLineTax (this);
+				nfLineTax.setTaxes (tl);
+				nfLineTax.setLBR_TaxGroup_ID(taxAD.getLBR_TaxGroup_ID());
+				nfLineTax.save();
+			}
 		}
 	}	//	setOrderLine
 

@@ -84,16 +84,6 @@ public interface I_W_C_Invoice extends I_C_Invoice
     /** Column name LBR_NotaFiscal_ID */
     public static final String COLUMNNAME_LBR_NotaFiscal_ID = "LBR_NotaFiscal_ID";
 
-	/** Set Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
-	  */
-	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID);
-
-	/** Get Nota Fiscal.
-	  * Primary key table LBR_NotaFiscal
-	  */
-	public int getLBR_NotaFiscal_ID();
-
     /** Column name LBR_OtherChargesAmt */
     public static final String COLUMNNAME_LBR_OtherChargesAmt = "LBR_OtherChargesAmt";
 

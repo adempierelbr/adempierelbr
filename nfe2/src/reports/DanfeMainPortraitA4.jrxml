@@ -92,6 +92,9 @@
 	<field name="destinatarioEndereco" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/dest/enderDest/xLgr]]></fieldDescription>
 	</field>
+	<field name="destinatarioCompl" class="java.lang.String">
+		<fieldDescription><![CDATA[infNFe/dest/enderDest/xCpl]]></fieldDescription>
+	</field>
 	<field name="destinatarioBairro" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/dest/enderDest/xBairro]]></fieldDescription>
 	</field>
@@ -1189,7 +1192,9 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco} + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco}
++ ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )
++ ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioCompl}) ? "" : " - " + $F{destinatarioCompl} )]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-32" mode="Transparent" x="5" y="60" width="233" height="12"/>

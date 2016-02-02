@@ -15,6 +15,7 @@ package org.adempierelbr.model;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,10 +34,32 @@ import org.compiere.util.Msg;
 public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 {
 	/**
-	 *
+	 *	Serial
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 	Valid Tokens
+	 */
+	private static final String validTokens = MLBRTaxDefinition.COLUMNNAME_AD_Org_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_BPartner_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_DocType_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_C_Region_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_To_Region_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_BPartnerCategory_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_FiscalGroup_BPartner_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_IndIEDest
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_FiscalGroup_Product_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_NCM_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_ProductCategory_ID
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_IsSubTributaria
+			 + "," + MLBRTaxDefinition.COLUMNNAME_IsSOTrx
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_TransactionType
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_ProductSource
+			 + "," + MLBRTaxDefinition.COLUMNNAME_lbr_DestionationType
+			 + "," + MLBRTaxDefinition.COLUMNNAME_LBR_TaxRegime
+			 + "," + MLBRTaxDefinition.COLUMNNAME_M_Product_ID;
+	
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx
@@ -65,7 +88,8 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 	public static MLBRTaxDefinition[] get (int AD_Org_ID, int C_BPartner_ID, int C_DocType_ID, 
 			int C_Region_ID, int To_Region_ID, int LBR_BPartnerCategory_ID, int LBR_FiscalGroup_BPartner_ID, String LBR_IEDest,
 			int LBR_FiscalGroup_Product_ID, int LBR_NCM_ID, int LBR_ProductCategory_ID, boolean lbr_IsSubTributaria,
-			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource)
+			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource, 
+			String lbr_DestionationType, String lbr_TaxRegime, int M_Product_ID)
 	{
 		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) ";
 		//
@@ -82,9 +106,11 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += "AND IsSOTrx IN ('B', ?) ";
 		where += "AND (LBR_TransactionType IS NULL OR lbr_TransactionType=?) ";
 		where += "AND (LBR_IndIEDest IS NULL OR LBR_IndIEDest=?) ";
-		
-		// Product Source -> LBR-72
+		where += "AND (lbr_DestionationType IS NULL OR lbr_DestionationType=?) ";
+		where += "AND (LBR_TaxRegime IS NULL OR LBR_TaxRegime=?) ";
 		where += "AND (lbr_ProductSource IS NULL OR lbr_ProductSource=?) ";
+		where += "AND (M_Product_ID IS NULL OR M_Product_ID=?) ";
+		
 		//
 		if (validFrom != null)
 			where += "AND ValidFrom <= " + DB.TO_DATE(validFrom) + " AND (ValidTo IS NULL OR ValidTo >= " + DB.TO_DATE(validFrom) + ") ";
@@ -93,14 +119,62 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += regionTo (To_Region_ID);
 		
 		//
-		List<MLBRTaxDefinition> list = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
+		List<MLBRTaxDefinition> tempLst = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
 			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
 					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, 
-					LBR_IEDest, LBR_ProductSource})
+					LBR_IEDest, lbr_DestionationType, lbr_TaxRegime, LBR_ProductSource, M_Product_ID})
 			.setOrderBy("PriorityNo, ValidFrom").list();
-		//
-		return list.toArray(new MLBRTaxDefinition[list.size()]);
+
+		List<MLBRTaxDefinition> resultLst = new ArrayList<MLBRTaxDefinition>();
+		
+		//	Validate Script
+		for (MLBRTaxDefinition td : tempLst)
+		{
+			String script = td.getScript();
+
+			if (td.getScript() == null || td.getScript().isEmpty())
+			{
+				resultLst.add (td);
+				continue;
+			}
+			
+			script = script.replace ("@AD_Org_ID@", String.valueOf (AD_Org_ID));
+			script = script.replace ("@C_BPartner_ID@", String.valueOf (C_BPartner_ID));
+			script = script.replace ("@C_DocType_ID@", String.valueOf (C_DocType_ID));
+			script = script.replace ("@C_Region_ID@", String.valueOf (C_Region_ID));
+			script = script.replace ("@To_Region_ID@", String.valueOf (To_Region_ID));
+			script = script.replace ("@LBR_BPartnerCategory_ID@", String.valueOf (LBR_BPartnerCategory_ID));
+			script = script.replace ("@LBR_FiscalGroup_BPartner_ID@", String.valueOf (LBR_FiscalGroup_BPartner_ID));
+			script = script.replace ("@LBR_IEDest@", "'" + LBR_IEDest + "'");
+			script = script.replace ("@LBR_FiscalGroup_Product_ID@", String.valueOf (LBR_FiscalGroup_Product_ID));
+			script = script.replace ("@LBR_NCM_ID@", String.valueOf (LBR_NCM_ID));
+			script = script.replace ("@LBR_ProductCategory_ID@", String.valueOf (LBR_ProductCategory_ID));
+			script = script.replace ("@lbr_IsSubTributaria@", String.valueOf (lbr_IsSubTributaria));
+			script = script.replace ("@isSOTrx@", String.valueOf (isSOTrx));
+			script = script.replace ("@lbr_TransactionType@", "'" + lbr_TransactionType + "'");
+			if (validFrom != null)
+				script = script.replace ("@validFrom@", "'" + DB.TO_DATE(validFrom) + "'");
+			else
+				script = script.replace ("@validFrom@", "NULL");
+			script = script.replace ("@LBR_ProductSource@", "'" + LBR_ProductSource + "'");
+			script = script.replace ("@lbr_DestionationType@", "'" + lbr_DestionationType + "'");
+			script = script.replace ("@lbr_TaxRegime@", "'" + lbr_TaxRegime + "'");
+			script = script.replace ("@M_Product_ID@", String.valueOf (M_Product_ID));
+			
+			try
+			{
+				int result = DB.getSQLValue (null, "SELECT COUNT('1') FROM DUAL WHERE " + script);
+				
+				if (result > 0)
+					resultLst.add (td);
+			}
+			
+			//	Falha na validação do script, não considerar
+			catch (Exception e)	{}
+		}
+		
+		return resultLst.toArray(new MLBRTaxDefinition[resultLst.size()]);
 	}	//	get
 
 	private static String regionFrom (int C_Region_ID)
@@ -160,6 +234,41 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			return false;
 		}
 		
+		/**
+		 * 	Validate Script
+		 */
+		if (getScript() != null && !getScript().isEmpty())
+		{
+			String token;
+			String inStr = getScript();
+			StringBuffer outStr = new StringBuffer();
+
+			int i = inStr.indexOf('@');
+			while (i != -1)
+			{
+				outStr.append(inStr.substring(0, i));			// up to @
+				inStr = inStr.substring(i+1, inStr.length());	// from first @
+
+				int j = inStr.indexOf('@');						// next @
+				if (j < 0)
+				{
+					log.saveError("Error", "No second tag: " + inStr);
+					return false;						//	no second tag
+				}
+
+				token = inStr.substring(0, j);
+
+				if (validTokens.indexOf(token) == -1)
+				{
+					log.saveError("Error", "Invalid token in script: " + token);
+					return false;
+				}
+				
+				inStr = inStr.substring(j+1, inStr.length());	// from second @
+				i = inStr.indexOf('@');
+			}
+		}
+		
 		//	Nõa calcular a prioridade quando a configuração for manual
 		if (isManual() && getPriorityNo() != 0)
 			return true;
@@ -200,6 +309,13 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			priorityNo += 10;
 		if (getLBR_IndIEDest() != null && !getLBR_IndIEDest().isEmpty())
 			priorityNo += 10;
+		if (getM_Product_ID() > 0)
+			priorityNo += 10;
+		if (getlbr_DestionationType() != null && !getlbr_DestionationType().isEmpty())
+			priorityNo += 10;
+		if (getLBR_TaxRegime() != null && !getLBR_TaxRegime().isEmpty())
+			priorityNo += 10;
+		
 		//
 		setPriorityNo(priorityNo);
 		//
