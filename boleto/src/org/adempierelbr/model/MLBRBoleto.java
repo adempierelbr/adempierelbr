@@ -692,15 +692,14 @@ public class MLBRBoleto extends X_LBR_Boleto
 						newBoleto.setlbr_Instruction2(inst2);
 					}
 
-					//Nota Fiscal
-					Integer LBR_NotaFiscal_ID = (Integer)invoice.get_Value("LBR_NotaFiscal_ID");
-					if (MSysConfig.getBooleanValue("LBR_PRINTNFENOONBILLING", true) 
-							&& LBR_NotaFiscal_ID != null && LBR_NotaFiscal_ID.intValue() != 0){
-						MLBRNotaFiscal nf = new MLBRNotaFiscal(ctx,LBR_NotaFiscal_ID,trx);
-						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nf.getDocumentNo());
+					//	Nota Fiscal
+					MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+					if (MSysConfig.getBooleanValue("LBR_PRINTNFENOONBILLING", true) && nfs.length > 0)
+					{
+						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nfs[0].getDocumentNo());
 					}
 
-					//Observação Boleto
+					//	Observação Boleto
 					if (op.getC_InvoicePaySchedule_ID() != 0){ //Parcelado
 						MInvoicePaySchedule ips = new MInvoicePaySchedule(ctx,op.getC_InvoicePaySchedule_ID(),trx);
 						newBoleto.setComments(ips.get_ValueAsString("lbr_BoletoComments"));
