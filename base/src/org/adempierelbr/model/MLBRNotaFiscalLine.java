@@ -495,7 +495,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		
 		//	Valores
 		setQty(iLine.getQtyEntered());
-		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList(), true);
+		
+		boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
+		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList(), includeDIFAL);
 	}	//	setInvoiceLine
 	
 	/**
@@ -593,7 +595,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			
 			//	Valores
 			setQty(oLine.getQtyEntered());
-			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList(), true);
+			boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
+			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList(), includeDIFAL);
 		}
 	}	//	setOrderLine
 
@@ -631,7 +634,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//	Incluí o ICMS do Diferencial da Alíquota na NF
 		BigDecimal amtDIFAL = Env.ZERO;
 		if (includeDIFAL)
-			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG"));
+			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG")).divide(getQty(), BigDecimal.ROUND_HALF_UP, 2);
 		
 		//	Verifica o preço após a conversão para BRL
 		if (price == null || priceList == null)
