@@ -184,6 +184,7 @@ public class ProcAvgCostCreate extends SvrProcess
 									"LEFT JOIN LBR_AverageCostLine ccust ON (ccust.M_Product_ID=bom.TM_Product_ID AND cl.LBR_AverageCost_ID=ccust.LBR_AverageCost_ID) " +
 									"LEFT JOIN M_Cost ocust ON (ocust.M_Product_ID=bom.TM_Product_ID AND ocust.M_CostElement_ID=?) " +
 									"WHERE cl.LBR_AverageCostLine_ID=LBR_AverageCostLine.LBR_AverageCostLine_ID " +
+									"AND NOT EXISTS (SELECT '1' FROM M_Product p WHERE p.M_Product_ID = bom.TM_Product_ID AND p.isBOM = 'Y'::BPCHAR) " +
 								") WHERE LBR_AverageCost_ID=? AND LBR_AvgCostType='M'";
 				
 				String sqlProd = "UPDATE LBR_AverageCostLine SET CumulatedAmt =" +
