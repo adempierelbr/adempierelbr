@@ -119,12 +119,28 @@ public class ProcReturnRPS extends SvrProcess
 				if (status.equalsIgnoreCase("C"))
 					nf.voidIt();
 				
-				nf.setlbr_NFENo (noNFe);
-				nf.setlbr_NFeProt (protNFe);
-				nf.save();
+				//	Gravar resposta
+				proccessNFSe (nf, noNFe, protNFe);
 			}
 		}
 		
 		return "@Success@ Arquivo: " + p_FileName;
 	}	//	doIt
+	
+	/**
+	 * 	Processa a NF com as informaões da autorização
+	 * @param nf
+	 * @param p_NFe
+	 * @param p_VerifCode
+	 */
+	public static void proccessNFSe (MLBRNotaFiscal nf, String p_NFe, String p_VerifCode)
+	{
+		nf.setIsPrinted(true); //	Marca impresso para cancelar documentos vinculados
+		nf.setProcessed(true);
+		nf.setlbr_NFENo(p_NFe);
+		nf.setlbr_NFeProt(p_VerifCode);
+		nf.setDocAction(MLBRNotaFiscal.DOCACTION_None);
+		nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Completed);
+		nf.save();
+	}	//	proccessNFSe
 }	//	ProcReturnRPS

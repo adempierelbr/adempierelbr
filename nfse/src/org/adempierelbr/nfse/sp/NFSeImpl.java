@@ -26,6 +26,7 @@ import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.sp.api.LoteNFeStub;
+import org.adempierelbr.process.ProcReturnRPS;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
@@ -687,25 +688,8 @@ public class NFSeImpl implements INFSe
 		if (LBR_NotaFiscal_ID > 0)
 		{
 			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
-			proccessNFSe (nf, p_NFe, p_VerifCode);
+			ProcReturnRPS.proccessNFSe (nf, p_NFe, p_VerifCode);
 		}
-	}	//	proccessNFSe
-	
-	/**
-	 * 	Processa a NF com as informaões da autorização
-	 * @param nf
-	 * @param p_NFe
-	 * @param p_VerifCode
-	 */
-	private void proccessNFSe (MLBRNotaFiscal nf, String p_NFe, String p_VerifCode)
-	{
-		nf.setIsPrinted(true); //	Marca impresso para cancelar documentos vinculados
-		nf.setProcessed(true);
-		nf.setlbr_NFENo(p_NFe);
-		nf.setlbr_NFeProt(p_VerifCode);
-		nf.setDocAction(MLBRNotaFiscal.DOCACTION_None);
-		nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Completed);
-		nf.save();
 	}	//	proccessNFSe
 	
 	/**
