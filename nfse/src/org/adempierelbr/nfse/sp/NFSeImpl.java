@@ -503,7 +503,7 @@ public class NFSeImpl implements INFSe
 			if (chaves.getChaveRPS() == null || chaves.getChaveNFe() == null)
 				continue;
 			
-			proccessNFSe (ctx, trxName, "" + chaves.getChaveRPS().getNumeroRPS(), "" + chaves.getChaveNFe().getNumeroNFe(), chaves.getChaveNFe().getCodigoVerificacao());
+			proccessNFSe (ctx, trxName, "" + chaves.getChaveRPS().getNumeroRPS(), "" + chaves.getChaveNFe().getNumeroNFe(), chaves.getChaveNFe().getCodigoVerificacao(), p_AD_Org_ID);
 		}
 		
 		return result.getCabecalho().getSucesso();
@@ -679,10 +679,11 @@ public class NFSeImpl implements INFSe
 	 * 	@param p_RPS
 	 * 	@param p_NFe
 	 * 	@param p_VerifCode
+	 * 	@param p_AD_Org_ID - Organization
 	 */
-	private void proccessNFSe (Properties ctx, String trxName, String p_RPS, String p_NFe, String p_VerifCode)
+	private void proccessNFSe (Properties ctx, String trxName, String p_RPS, String p_NFe, String p_VerifCode, int p_AD_Org_ID)
 	{
-		int LBR_NotaFiscal_ID = MLBRNotaFiscal.getLBR_NotaFiscal_ID (p_RPS, true, trxName);
+		int LBR_NotaFiscal_ID = MLBRNotaFiscal.getLBR_NotaFiscal_ID (p_AD_Org_ID, p_RPS, true, MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS, trxName);
 		if (LBR_NotaFiscal_ID > 0)
 		{
 			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
@@ -750,7 +751,7 @@ public class NFSeImpl implements INFSe
 				InputStream report = cl.getResourceAsStream("reports/ImpressaoNFSESP.jasper");
 				
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("DOCUMENTO_IMAGE", image);
+				map.put("DOCUMENT_IMAGE", image);
 
 				JasperReport jasperReport = (JasperReport) JRLoader.loadObject (report);
 				JREmptyDataSource dataSource = new JREmptyDataSource ();

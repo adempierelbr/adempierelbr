@@ -474,21 +474,38 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return getTaxAmt("II");
 	}	//	getIIAmt
 
-	public static int getLBR_NotaFiscal_ID(String DocumentNo, boolean IsSOTrx, String trx)
+	/**
+	 * 
+	 * @param AD_Org_ID
+	 * @param p_DocumentNo
+	 * @param p_IsSOTrx
+	 * @param modelNF
+	 * @param trxName
+	 * @return LBR_NotaFiscal_ID
+	 */
+	public static int getLBR_NotaFiscal_ID (int p_AD_Org_ID, String p_DocumentNo, boolean p_IsSOTrx, String modelNF, String trxName)
 	{
+		//	SQL
+		String sql = "SELECT LBR_NotaFiscal_ID " +
+					   "FROM LBR_NotaFiscal " +
+				      "WHERE (DocumentNo=? OR DocumentNo=?) " +
+					    "AND AD_Org_ID=? " +
+				        "AND IsSOTrx=? ";
+		
+		//	Parameters
+		Object[] params = null;
+		if (modelNF != null)
+		{
+			sql += "AND LBR_NFModel=? ";
+			params = new Object[]{p_DocumentNo, TextUtil.lPad (p_DocumentNo, 12), p_AD_Org_ID, p_IsSOTrx, modelNF};
+		}
+		else
+			params = new Object[]{p_DocumentNo, TextUtil.lPad (p_DocumentNo, 12), p_AD_Org_ID, p_IsSOTrx};
+		
+	    sql += "ORDER BY LBR_NotaFiscal_ID DESC";
 
-		String sql = "SELECT LBR_NotaFiscal_ID FROM LBR_NotaFiscal " +
-				     "WHERE DocumentNo = ? AND AD_Client_ID = ? " +
-				     "AND IsSOTrx = ? " +
-				     "ORDER BY LBR_NotaFiscal_ID desc";
-
-		Integer LBR_NotaFiscal_ID = DB.getSQLValue(trx, sql,
-				new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
-
-		//	RPS
-		if (LBR_NotaFiscal_ID < 1)
-			LBR_NotaFiscal_ID = DB.getSQLValue (trx, sql, new Object[]{TextUtil.lPad (DocumentNo, 12), Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
-		//
+		Integer LBR_NotaFiscal_ID = DB.getSQLValue (trxName, sql, params);
+		
 		return LBR_NotaFiscal_ID;
 	}	//	getLBR_NotaFiscal_ID
 
