@@ -67,7 +67,10 @@ public class ProcReturnRPS extends SvrProcess
 	protected String doIt() throws Exception
 	{
 		log.info("ReturnRPS Process Arquivo: " + p_FileName);
-			
+		
+		int countOK = 0;
+		int countNOK = 0;
+		
 		if (p_FileName == null || p_FileName.isEmpty())
 			throw new IllegalArgumentException("Arquivo Inválido");
 		
@@ -98,7 +101,7 @@ public class ProcReturnRPS extends SvrProcess
 			}
 			
 			//	BUGFIX: String index out of range: 419
-			if (linhas[i].length() < 419)
+			if (!linhas[i].startsWith("2") || linhas[i].length() < 419)
 				continue;
 			
 			String rpsNumber = linhas[i].substring(41, 53).trim();
@@ -121,10 +124,16 @@ public class ProcReturnRPS extends SvrProcess
 				
 				//	Gravar resposta
 				proccessNFSe (nf, noNFe, protNFe);
+				countOK++;
+			}
+			else
+			{
+				log.warning("NF / RPS não encontrado: " + noNFe + " / " + rpsNumber);
+				countNOK++;
 			}
 		}
 		
-		return "@Success@ Arquivo: " + p_FileName;
+		return "@Success@ <br />" + countOK + " NFS(s) Processada(s)<br />" + countNOK + " Não Encontrada(s)";
 	}	//	doIt
 	
 	/**
