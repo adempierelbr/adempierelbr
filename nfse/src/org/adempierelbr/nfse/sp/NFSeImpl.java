@@ -1,6 +1,7 @@
 package org.adempierelbr.nfse.sp;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.sp.api.LoteNFeStub;
+import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.process.ProcReturnRPS;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
@@ -62,6 +64,7 @@ import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
 import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
 import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -689,6 +692,7 @@ public class NFSeImpl implements INFSe
 		{
 			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 			ProcReturnRPS.proccessNFSe (nf, p_NFe, p_VerifCode);
+			ProcEMailNFe.sendEmailNFe (nf, false);
 		}
 	}	//	proccessNFSe
 	
@@ -697,6 +701,50 @@ public class NFSeImpl implements INFSe
 	 * 	@return
 	 */
 	public String printNFSe (MLBRNotaFiscal nf)
+	{
+		try
+		{
+			JasperPrint jasperPrint = getReport (nf);
+			ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
+		}
+		catch (Exception e)
+		{
+			return "@Error@ " + e.getMessage();
+		}
+		
+		return "@Success@";
+	}	//	printNFSe
+
+	/**
+	 * 	Get the NF PDF
+	 */
+	@Override
+	public File getPDF(MLBRNotaFiscal nf)
+	{
+		File PDF = null;
+		
+		try
+		{
+			JasperPrint jasperPrint = getReport (nf);
+			
+			PDF = File.createTempFile("NFSe" + nf.getlbr_NFENo() + "-", ".pdf");
+    		JasperExportManager.exportReportToPdfFile(jasperPrint, PDF.getAbsolutePath());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return PDF;
+	}	//	getPDF
+
+	/**
+	 * 	Get JasperReport
+	 * @param nf
+	 * @return
+	 * @throws Exception
+	 */
+	private JasperPrint getReport (MLBRNotaFiscal nf) throws Exception
 	{
 		InputStream is = null;
 		
@@ -708,20 +756,13 @@ public class NFSeImpl implements INFSe
 			String cod = nf.getlbr_NFeProt();
 			
 			if (cod == null || cod.trim().isEmpty())
-				return "NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o";
+				throw new Exception ("NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o");
 			
 			//	URL de Impressão
 			String message = MSysConfig.getValue ("LBR_NFSE_SP_PRINT_URL", "https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm={0}&nf={1}&cod={2}&imprimir=1", nf.getAD_Client_ID(), nf.getAD_Org_ID());
 			
 			MessageFormat mf = null;
-			try
-			{
-				mf = new MessageFormat (message);
-			}
-			catch (Exception e)
-			{
-				log.log (Level.SEVERE, "Error NFS-e SP print URL " + e.getMessage());
-			}
+			mf = new MessageFormat (message);
 			
 			URL url = new URL (mf.format (new Object[]{ccm, nfnum, cod}));
 			is = url.openStream();
@@ -740,11 +781,7 @@ public class NFSeImpl implements INFSe
 				JasperReport jasperReport = (JasperReport) JRLoader.loadObject (report);
 				JREmptyDataSource dataSource = new JREmptyDataSource ();
 				//
-				JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, map, dataSource);
-
-				ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
-				
-				return "@Success@";
+				return JasperFillManager.fillReport (jasperReport, map, dataSource);
 			}
 		}
 		catch (MalformedURLException mue)
@@ -768,10 +805,10 @@ public class NFSeImpl implements INFSe
 			}
 			catch (IOException ioe)
 			{
-				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+				throw new Exception ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
 			}
 		}
 		
-		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
-	}	//	printNFSe
+		throw new Exception ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+	}	//	getReport
 }	//	NFSeImpl

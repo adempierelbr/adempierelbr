@@ -124,6 +124,10 @@ public class ProcReturnRPS extends SvrProcess
 				
 				//	Gravar resposta
 				proccessNFSe (nf, noNFe, protNFe);
+				
+				//	Enviar e-mail
+				ProcEMailNFe.sendEmailNFe (nf, false);
+				
 				countOK++;
 			}
 			else
