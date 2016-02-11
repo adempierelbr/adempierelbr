@@ -35,6 +35,9 @@ public class ProcEMailNFe extends SvrProcess
 	/** Nota Fiscal			*/
 	private Integer p_LBR_NotaFiscal_ID = 0;
 	
+	/**	EMail				*/
+	private String p_EMail = null;
+	
 	/**	Logger				*/
 	private static CLogger log = CLogger.getCLogger(ProcEMailNFe.class);
 
@@ -49,6 +52,8 @@ public class ProcEMailNFe extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (name.equals(MUser.COLUMNNAME_EMail))
+				p_EMail = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -66,8 +71,20 @@ public class ProcEMailNFe extends SvrProcess
 		//
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
 		//
-		return sendEmailNFe (nf, true);	//	TODO: Permitir o re-enviado se explícito nos parâmetros
+		return sendEmailNFe (nf, p_EMail, true);
 	}	//	doIt
+	
+	/**
+	 * 	Método para enviar e-mail da NF-e
+	 * 
+	 * @param nf
+	 * @param force
+	 * @return
+	 */
+	public static String sendEmailNFe (MLBRNotaFiscal nf, boolean force)
+	{
+		return sendEmailNFe (nf, null, force);
+	}	//	sendEmailNFe
 	
 	/**
 	 * 	Método para enviar e-mail da NF-e
@@ -75,7 +92,7 @@ public class ProcEMailNFe extends SvrProcess
 	 * @param nf
 	 * @return
 	 */
-	public static String sendEmailNFe (MLBRNotaFiscal nf, boolean force)
+	public static String sendEmailNFe (MLBRNotaFiscal nf, String toEMails, boolean force)
 	{
 		if (nf == null)
 		{
@@ -111,8 +128,12 @@ public class ProcEMailNFe extends SvrProcess
 			return "E-Mail já enviado";
 		}
 		
-		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), nf.get_TrxName());
-		String toEMails = bp.get_ValueAsString("lbr_EMailNFe");
+		//	Get e-mail from business partner
+		if (toEMails == null || toEMails.trim().isEmpty() || toEMails.indexOf('@') == -1)
+		{
+			MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), nf.get_TrxName());
+			toEMails = bp.get_ValueAsString("lbr_EMailNFe");
+		}
 		
 		if (isProductNFe && nf.getM_Shipper_ID() > 0)
 		{
@@ -134,7 +155,7 @@ public class ProcEMailNFe extends SvrProcess
 		if (toEMails == null || toEMails.indexOf('@') == -1)
 		{
 			log.warning("E-mail para recepção de NF-e inválido");
-			return "E-mail para recepção de NF-e inválido";
+			return "@Error@ E-mail para recepção de NF-e inválido";
 		}
 		else
 			toEMails = toEMails.replace(",", ";");
@@ -211,6 +232,8 @@ public class ProcEMailNFe extends SvrProcess
 			nf.setLBR_EMailSent (true);
 			nf.save();
 		}
+		else
+			return "@Error@ " + mail.getSentMsg();
 		//
 		return "@Success@";
 	}	//	sendEmailNFe
