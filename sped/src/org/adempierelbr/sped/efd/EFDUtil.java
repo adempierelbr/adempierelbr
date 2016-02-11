@@ -110,7 +110,7 @@ public class EFDUtil {
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 */
-	private static final String COD_VER = "009";	// A Partir de Jan/12
+	private static final String COD_VER = "010";	// A Partir de Jan/16
 	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
 	private static final String IND_PERFIL = "A"; 	// Perfil A
 	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
