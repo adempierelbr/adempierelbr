@@ -35,6 +35,7 @@ import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
@@ -69,6 +70,8 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstancePara;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
@@ -84,9 +87,12 @@ import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.ProcessInfoParameter;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.posterita.businesslogic.ProcessManager;
 
 import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
 import br.inf.portalfiscal.nfe.v310.NFeDocument;
@@ -2619,7 +2625,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		try
 		{
-			File temp = File.createTempFile(get_TableName()+get_ID()+"_", ".pdf");
+			String name = "";
+			
+			if (LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				name = "NFe";
+			else if (LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				name = "NFCe";
+			
+			File temp = File.createTempFile (name + getDocumentNo() + "-", ".pdf");
 			return createPDF (temp);
 		}
 		catch (Exception e)
@@ -2636,7 +2649,45 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public File createPDF (File file)
 	{
-		return null;
+		//	PrintFromXML Process
+		int AD_Process_ID=1120040;
+		
+		MPInstance instance = new MPInstance(Env.getCtx(), AD_Process_ID, getLBR_NotaFiscal_ID());
+		if (!instance.save())
+		{
+			log.log (Level.SEVERE, Msg.getMsg(Env.getCtx(), "ProcessNoInstance"));
+			return null;
+		}
+
+		//	Add Parameters
+		MPInstancePara para = new MPInstancePara(instance, 10);
+		para.setParameter("FileName", file.getAbsolutePath());
+		if (!para.save())
+		{
+			String msg = "No FileName parameter for PDF generation";  //  not translated
+			log.log(Level.SEVERE, msg);
+			return null;
+		}
+		
+		//	Process Info Parameter
+		ProcessInfoParameter pip = new ProcessInfoParameter("FileName", file.getAbsolutePath(), null, null, null);
+		
+		//	Process Info
+		ProcessInfo pi = new ProcessInfo ("", AD_Process_ID);
+		pi.setAD_PInstance_ID (instance.getAD_PInstance_ID());
+		pi.setRecord_ID(instance.getRecord_ID());
+		pi.setTable_ID(Table_ID);
+		pi.setParameter(new ProcessInfoParameter[]{pip});
+    	
+    	try
+		{
+			ProcessManager.startProcess (getCtx(), PrintFromXML.class.getName(), pi, null);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Unable to start the process for PDF creation");
+		}
+		return file;
 	}	//	createPDF
 
 	/**************************************************************************

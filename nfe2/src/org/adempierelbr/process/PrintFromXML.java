@@ -40,6 +40,7 @@ import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -57,6 +58,9 @@ public class PrintFromXML extends SvrProcess
 	/**	Record ID	*/
 	private int p_Record_ID = 0;
 	
+	/** PDF File 	*/
+	private String p_PDFFile = null;
+			
 	private MProcess process = null;
 	private String reportName = "";
 	
@@ -71,6 +75,8 @@ public class PrintFromXML extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (name.equals("FileName"))
+				p_PDFFile = (String) para[i].getParameter();
 			else
 				log.log (Level.SEVERE, "Unknown Parameter: " + name);
 		}
@@ -193,14 +199,25 @@ public class PrintFromXML extends SvrProcess
 		if (message != null)
 			files.put("msgPrevisualizacao", message);
 
+		//	Load the report
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject ( (InputStream) files.remove (reportName));
 		JRXmlDataSource dataSource = new JRXmlDataSource ( xml , jasperReport.getQuery().getText() );
 		dataSource.setDatePattern(datePattern);
 		dataSource.setNumberPattern(numberPattern);
 		dataSource.setLocale(locale);
-		//
+
+		//	Fill
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
+		//	Creates a PDF file instead of printing
+		if (p_PDFFile != null)
+		{
+			File file = new File (p_PDFFile);
+    		JasperExportManager.exportReportToPdfFile(jasperPrint, file.getAbsolutePath());
+    		
+    		return "@Success@";
+		}
+		
 		ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de Documento");
 		
 		return "@Success@";

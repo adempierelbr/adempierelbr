@@ -1,5 +1,6 @@
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
@@ -206,6 +207,11 @@ public class ProcEMailNFe extends SvrProcess
 			}
 			
 			mail.addAttachment (NFeUtil.getAttachmentEntryFile (entryXML));
+			
+			//	DANFE
+			File danfe = nf.createPDF();
+			if (danfe != null)
+				mail.addAttachment(danfe);
 		}
 		else
 		{
