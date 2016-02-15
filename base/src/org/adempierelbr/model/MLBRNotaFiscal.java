@@ -92,7 +92,6 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.posterita.businesslogic.ProcessManager;
 
 import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
 import br.inf.portalfiscal.nfe.v310.NFeDocument;
@@ -2681,7 +2680,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
     	
     	try
 		{
-			ProcessManager.startProcess (getCtx(), PrintFromXML.class.getName(), pi, null);
+    		PrintFromXML proc = new PrintFromXML ();
+    		proc.startProcess (getCtx(), pi, null);
 		}
 		catch (Exception e)
 		{
