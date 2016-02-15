@@ -413,7 +413,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			SchemaTypeLoader stl = XmlBeans.typeLoaderUnion(new SchemaTypeLoader[]{RetEnvEventoDocument.type.getTypeSystem(), XmlBeans.getContextTypeLoader()});			
 			TRetEnvEvento retEnvEvento = ((RetEnvEventoDocument) stl.parse (respLote, null, null)).getRetEnvEvento();
 			
-			if (!"128".equals (retEnvEvento.getCStat()))
+			if (!LBR_NFESTATUS_128_LoteDeEventoProcessado.equals (retEnvEvento.getCStat()))
 				throw new AdempiereException (retEnvEvento.getXMotivo());
 			
 			for (TRetEvento retEvento : retEnvEvento.getRetEventoArray())
@@ -423,7 +423,9 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 				//	Evento processada com sucesso
 				String cStat = infReturn.getCStat();
 				
-				if ("135".equals (cStat) || "136".equals (cStat))
+				if (TextUtil.match (cStat, 	LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E, 
+											LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANFC_E,
+											LBR_NFESTATUS_155_CancelamentoDeNF_EHomologadoForaDePrazo))
 				{
 					try
 					{
