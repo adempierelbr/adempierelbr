@@ -124,8 +124,6 @@ public class PrintFromXML extends SvrProcess
 		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
 			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
-			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
-				return "N\u00E3o \u00E9 permitido imprimir o DANFE - Cancelada ou Sem autorizac\u00E3o";
 			
 			//	Nota Fiscal de Serviço Eletrônica
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(doc.getlbr_NFModel()))
