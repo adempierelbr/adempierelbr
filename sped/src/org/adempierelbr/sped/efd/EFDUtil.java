@@ -387,9 +387,8 @@ public class EFDUtil {
 	 */
 	public static String getSER(MLBRFactFiscal factFiscal) throws Exception
 	{
-		if(factFiscal.islbr_IsOwnDocument() 
-				&& factFiscal.getlbr_NFeProt() != null 
-				&& !factFiscal.getlbr_NFeProt().isEmpty())
+		if(factFiscal.getlbr_NFSerie() != null 
+				&& !factFiscal.getlbr_NFSerie().isEmpty())
 			return factFiscal.getlbr_NFSerie();
 		else
 			return "";
