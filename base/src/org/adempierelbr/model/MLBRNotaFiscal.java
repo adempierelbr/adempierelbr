@@ -2176,6 +2176,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				else if (orgInfo.getlbr_DANFEFormat() != null)
 					setlbr_DANFEFormat(orgInfo.getlbr_DANFEFormat());
 			}
+			
+			//	Set Org details
+			setOrgInfo(orgInfo);
 		}
 		
 		//	Configura o código de Barras
