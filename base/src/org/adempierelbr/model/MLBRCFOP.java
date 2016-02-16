@@ -177,7 +177,7 @@ public class MLBRCFOP extends X_LBR_CFOP
 				+ "AND lbr_DestionationType=? "
 				+ "AND lbr_IsSubTributaria IN ('B', ?) "
 				+ "AND lbr_IsManufactured IN ('B', ?) "
-				+ "AND lbr_TaxRegime = ?";
+				+ "AND (lbr_TaxRegime = ? OR lbr_TaxRegime IS NULL)";
 		//
 		Object[] parameters = new Object[]{AD_Org_ID, C_DocType_ID, LBR_ProductCategory_ID, LBR_BPartnerCategory_ID, 
  				lbr_TransactionType, lbr_DestionationType, (lbr_IsSubTributaria ? "Y" : "N"), (lbr_IsManufactured ? "Y" : "N"), 
