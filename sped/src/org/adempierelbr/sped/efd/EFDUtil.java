@@ -69,6 +69,8 @@ import org.adempierelbr.sped.efd.bean.RH001;
 import org.adempierelbr.sped.efd.bean.RH005;
 import org.adempierelbr.sped.efd.bean.RH010;
 import org.adempierelbr.sped.efd.bean.RH990;
+import org.adempierelbr.sped.efd.bean.RK001;
+import org.adempierelbr.sped.efd.bean.RK990;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
@@ -1460,6 +1462,22 @@ public class EFDUtil {
 	
 	
 	/**
+	 * REGISTRO H001: ABERTURA DO BLOCO H
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RK001 createRK001(boolean hasInfo) throws Exception
+	{
+		RK001 reg = new RK001();
+		reg.setIND_MOV(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	
+	/**
 	 * REGISTRO H005: TOTAIS DO INVENTÁRIO
 	 * 
 	 * @param dtInv
@@ -1509,7 +1527,19 @@ public class EFDUtil {
 	
 	
 
+	/**
+	 * REGISTRO H990: ENCERRAMENTO DO BLOCO H
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RK990 createRK990() throws Exception 
+	{
+		RK990 reg = new RK990();
+		reg.setQTD_LIN_K(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
 	
+		return reg;
+	}
 	
 	
 	/**

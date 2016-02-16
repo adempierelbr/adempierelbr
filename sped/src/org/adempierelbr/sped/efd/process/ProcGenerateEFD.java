@@ -26,6 +26,7 @@ import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.BLOCOE;
 import org.adempierelbr.sped.efd.bean.BLOCOG;
 import org.adempierelbr.sped.efd.bean.BLOCOH;
+import org.adempierelbr.sped.efd.bean.BLOCOK;
 import org.adempierelbr.sped.efd.bean.R0190;
 import org.adempierelbr.sped.efd.bean.R0200;
 import org.adempierelbr.sped.efd.bean.R0460;
@@ -222,6 +223,7 @@ public class ProcGenerateEFD extends SvrProcess
 			BLOCOE blocoE = new BLOCOE();
 			BLOCOG blocoG = new BLOCOG();
 			BLOCOH blocoH = new BLOCOH();
+			BLOCOK blocoK = new BLOCOK();
 			BLOCO1 bloco1 = new BLOCO1();
 			BLOCO9 bloco9 = new BLOCO9();
 			
@@ -669,6 +671,7 @@ public class ProcGenerateEFD extends SvrProcess
 					&& blocoH.getrH005().getrH010().size() > 0));
 			blocoE.setrE001(EFDUtil.createRE001(true));						    // init bloco E
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
+			blocoK.setrK001(EFDUtil.createRK001(false));
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
 			bloco1.setR1010(EFDUtil.createR1010());
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
@@ -682,6 +685,7 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoE.setrE990(EFDUtil.createRE990()); // fim do E
 			blocoG.setrG990(EFDUtil.createRG990()); // fim do G
 			blocoH.setrH990(EFDUtil.createRH990()); // fim do H
+			blocoK.setrK990(EFDUtil.createRK990());	
 			bloco1.setR1990(EFDUtil.createR1990()); // fim do 1
 			bloco9.setR9990(EFDUtil.createR9990()); // fim do 9
 			
@@ -706,6 +710,7 @@ public class ProcGenerateEFD extends SvrProcess
 			result.append(blocoE.toString());
 			result.append(blocoG.toString());
 			result.append(blocoH.toString());
+			result.append(blocoK.toString());
 			result.append(bloco1.toString());
 			result.append(bloco9.toString());
 			
