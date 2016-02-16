@@ -1130,7 +1130,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		else
 			serie = "1";
 		
-		setlbr_NFSerie(serie);
+		if (getlbr_NFSerie() == null && IsOwnDocument)
+			setlbr_NFSerie(serie);
 		
 		if (!dtInvoice.get_ValueAsString("lbr_NFModel").isEmpty())
 			model = dtInvoice.get_ValueAsString("lbr_NFModel");
@@ -3360,4 +3361,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setDocAction(MLBRNotaFiscal.DOCACTION_None);
 		setlbr_NFeStatus(MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado);
 	}	//	setVoidInfo
+	
+	/**
+	 * 	Set DocumentNo
+	 */
+	@Override
+	public void setDocumentNo (String docNo)
+	{
+		if (docNo != null)
+		{
+			String[] docSerie = docNo.split ("-");
+			
+			//	Número da NF
+			super.setDocumentNo(docSerie[0]);
+			
+			//	Série
+			if (docSerie.length > 1)
+				setlbr_NFSerie(TextUtil.toNumeric (docSerie[1]));
+		}
+		else
+			super.setDocumentNo(docNo);
+	}	//	setDocumentNo
 }	//	MLBRNotaFiscal
