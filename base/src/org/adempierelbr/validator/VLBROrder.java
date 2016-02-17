@@ -189,10 +189,10 @@ public class VLBROrder implements ModelValidator
 			I_W_C_InvoiceLine iLineW = POWrapper.create(iLine, I_W_C_InvoiceLine.class);
 			I_W_C_OrderLine oLineW = POWrapper.create(new MOrderLine(Env.getCtx(), iLine.getC_OrderLine_ID(), null), I_W_C_OrderLine.class);
 			//
-			iLineW.setFreightAmt(oLineW.getFreightAmt());
-			iLineW.setlbr_SISCOMEXAmt(oLineW.getlbr_SISCOMEXAmt());
-			iLineW.setlbr_InsuranceAmt(oLineW.getlbr_InsuranceAmt());
-			iLineW.setLBR_OtherChargesAmt(oLineW.getLBR_OtherChargesAmt());
+			iLineW.setFreightAmt(iLineW.getQtyInvoiced().multiply(oLineW.getFreightAmt()).divide(oLineW.getQtyOrdered()));
+			iLineW.setlbr_SISCOMEXAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_SISCOMEXAmt()).divide(oLineW.getQtyOrdered()));
+			iLineW.setlbr_InsuranceAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_InsuranceAmt()).divide(oLineW.getQtyOrdered()));
+			iLineW.setLBR_OtherChargesAmt(iLineW.getQtyInvoiced().multiply(oLineW.getLBR_OtherChargesAmt()).divide(oLineW.getQtyOrdered()));
 		}
 		return null;
 	}	//	modelChange
