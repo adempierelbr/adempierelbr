@@ -1310,9 +1310,9 @@ public class NFeXMLGenerator
 			}	//	NT2015.003
 			
 			//	V. Informações adicionais (para o item da NF-e)
-			String nflDesc = nfl.getDescription();
+			String nflDesc = normalize (nfl.getDescription());
 			if (nflDesc != null && !nflDesc.isEmpty())
-				det.setInfAdProd (normalize (nflDesc));
+				det.setInfAdProd (nflDesc);
 		}
 		
 		//	W. Total da NF-e
