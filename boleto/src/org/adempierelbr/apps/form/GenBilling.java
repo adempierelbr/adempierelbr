@@ -225,7 +225,7 @@ public class GenBilling
 			+ " INNER JOIN AD_Org o ON (i.AD_Org_ID=o.AD_Org_ID)"
 			+ " INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)"
 			+ " INNER JOIN C_PaymentTerm pt ON (i.C_PaymentTerm_ID=pt.C_PaymentTerm_ID)"
-			+ "  LEFT JOIN LBR_NotaFiscal nf ON (nf.LBR_NotaFiscal_ID=i.LBR_NotaFiscal_ID)",
+			+ "  LEFT JOIN LBR_NotaFiscal nf ON (nf.C_Invoice_ID=i.C_Invoice_ID AND nf.IsCancelled <> 'Y')",
 			//	WHERE
 			"i.IsSOTrx=? AND i.IsPaid='N'"
 			+ " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B')"
