@@ -7,8 +7,8 @@
 	<property name="ireport.y" value="112"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="java.util.*"/>
 	<parameter name="DanfeMainLandscapeA4_Sub_Item" class="java.io.InputStream" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainLandscapeA4_Sub_Item.jasper")]]></defaultValueExpression>
 	</parameter>
@@ -112,7 +112,7 @@
 		<fieldDescription><![CDATA[infNFe/dest/IE]]></fieldDescription>
 	</field>
 	<field name="fatura" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/infAdic/obsCont[@xCampo='billnote']/xTexto]]></fieldDescription>
+		<fieldDescription><![CDATA[infNFe/infAdic/obsCont[@xCampo='billnote']/xTexto]]></fieldDescription>
 	</field>
 	<field name="baseIcms" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[infNFe/total/ICMSTot/vBC]]></fieldDescription>
@@ -224,7 +224,7 @@
 	<field name="codigoBarrasContingencia" class="java.awt.Image"/>
 	<field name="dadosNfeCodigoBarras" class="java.lang.String"/>
 	<field name="protocoloDataAutorizacao" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/protNFe/infProt/nProt]]></fieldDescription>
+		<fieldDescription><![CDATA[../protNFe/infProt/nProt]]></fieldDescription>
 	</field>
 	<field name="codigoTipoEmissao" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/ide/tpEmis]]></fieldDescription>
@@ -232,17 +232,17 @@
 	<field name="numeroRegistroDPEC" class="java.lang.String"/>
 	<field name="dataRegistroDPEC" class="java.lang.String"/>
 	<field name="situacao" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/protNFe/infProt/cStat]]></fieldDescription>
+		<fieldDescription><![CDATA[../protNFe/infProt/cStat]]></fieldDescription>
 	</field>
 	<field name="msgAutenticidade" class="java.lang.String"/>
 	<field name="dhRecbto" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/protNFe/infProt/dhRecbto]]></fieldDescription>
+		<fieldDescription><![CDATA[../protNFe/infProt/dhRecbto]]></fieldDescription>
 	</field>
 	<field name="emitenteEnderecoNro" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/emit/enderEmit/nro]]></fieldDescription>
+		<fieldDescription><![CDATA[infNFe/emit/enderEmit/nro]]></fieldDescription>
 	</field>
 	<field name="destinatarioEnderecoNro" class="java.lang.String">
-		<fieldDescription><![CDATA[/nfeProc/NFe/infNFe/dest/enderDest/nro]]></fieldDescription>
+		<fieldDescription><![CDATA[infNFe/dest/enderDest/nro]]></fieldDescription>
 	</field>
 	<group name="Grupo01" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
@@ -1153,7 +1153,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco}
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco} 
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioCompl}) ? "" : " - " + $F{destinatarioCompl} )]]></textFieldExpression>
 				</textField>
