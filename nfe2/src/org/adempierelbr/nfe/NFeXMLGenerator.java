@@ -1359,7 +1359,7 @@ public class NFeXMLGenerator
 			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
 			String shipperName 		= normalize (nf.getlbr_BPShipperName());
 			String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
-			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress1());
+			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
 			String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
 			String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
 			

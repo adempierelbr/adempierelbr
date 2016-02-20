@@ -1949,11 +1949,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 			setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocations[0]));	//	CNPJ
 			setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocations[0]));   		//	IE
-
-			setlbr_BPShipperAddress1(location.getAddress1());	//	Rua
-			setlbr_BPShipperAddress2(location.getAddress2());	//	Número
-			setlbr_BPShipperAddress3(location.getAddress3());	//	Bairro
-			setlbr_BPShipperAddress4(location.getAddress4());	//	Complemento
+			
+			//	Concatenar o Endereço em uma unica variável
+			String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
+							 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
+							 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
+							 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
+			
+			// Rua, Número, Bairro e Complemento e um único campo
+			setlbr_BPShipperAddress(address);			
 			setlbr_BPShipperCity(location.getCity());			//	Cidade
 			setlbr_BPShipperPostal(location.getPostal());		//	CEP
 			setlbr_BPShipperCountry(country.getCountryCode());	//	País
