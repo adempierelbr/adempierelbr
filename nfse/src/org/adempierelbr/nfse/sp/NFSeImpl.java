@@ -456,10 +456,8 @@ public class NFSeImpl implements INFSe
 		cabecalho.setValorTotalDeducoes(dedTotal);
 		
 		//	Gera o XML em arquivo para Assinatura	
-		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
-		
 		new SignatureUtil (oi, SignatureUtil.RPS).sign (envioLoteRPSDoc, envioLoteRPSDoc.getPedidoEnvioLoteRPS().newCursor());
-		xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
+		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()));
 		
 		//	Log
 		log.fine ("Sending XML: " + xml.toString());
