@@ -157,7 +157,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 				script = script.replace ("@validFrom@", "'" + DB.TO_DATE(validFrom) + "'");
 			else
 				script = script.replace ("@validFrom@", "NULL");
-			script = script.replace ("@LBR_ProductSource@", "'" + LBR_ProductSource + "'");
+			script = script.replace ("@lbr_ProductSource@", "'" + LBR_ProductSource + "'");
 			script = script.replace ("@lbr_DestionationType@", "'" + lbr_DestionationType + "'");
 			script = script.replace ("@lbr_TaxRegime@", "'" + lbr_TaxRegime + "'");
 			script = script.replace ("@M_Product_ID@", String.valueOf (M_Product_ID));
