@@ -92,6 +92,7 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Trx;
 
 import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
 import br.inf.portalfiscal.nfe.v310.NFeDocument;
@@ -793,6 +794,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	Atualiza o anexo
 			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes("UTF-8"));
 			attachment.save();
+			
+			//	Comitar Transação Antes de Enviar o XML e PDF por Email
+			Trx t = Trx.get(nf.get_TrxName(), false);
+			t.commit();
 			
 			//	Envia o e-mail para o cliente
 			ProcEMailNFe.sendEmailNFe (nf, false);
