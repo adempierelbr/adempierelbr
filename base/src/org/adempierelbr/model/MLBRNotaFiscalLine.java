@@ -837,7 +837,12 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			}
 			else
 				setlbr_UOMName(null);
-		}	
+		}
+		
+		String description = getDescription();
+		if (description != null)
+			setDescription (description.trim());
+		
 		return true;
 	}	//	beforeSave
 	
