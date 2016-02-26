@@ -830,6 +830,10 @@ public class MLBRTax extends X_LBR_Tax
 		{
 			log.finer ("######## Processing Tax for Tax Definition: " + td + ", Taxes: " + new MLBRTax(ctx, td.getLBR_Tax_ID(), null));
 			processTaxes (taxes, td.getLBR_Tax_ID());
+			
+			//	CFOP
+			if (td.getLBR_CFOP_ID() > 0)
+				LBR_CFOP_ID = td.getLBR_CFOP_ID();
 		}
 		
 		return new Object[]{taxes, LBR_LegalMessage_ID, LBR_CFOP_ID, lbr_TaxStatus};
