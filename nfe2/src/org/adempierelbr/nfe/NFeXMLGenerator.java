@@ -118,6 +118,7 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Vol;
 import br.inf.portalfiscal.nfe.v310.TProcEmi;
 import br.inf.portalfiscal.nfe.v310.TUf;
 import br.inf.portalfiscal.nfe.v310.TUfEmi;
+import br.inf.portalfiscal.nfe.v310.TVeiculo;
 import br.inf.portalfiscal.nfe.v310.Torig;
 import br.inf.portalfiscal.nfe.v310.Tpais;
 
@@ -1362,6 +1363,7 @@ public class NFeXMLGenerator
 			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
 			String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
 			String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
+			String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
 			
 			if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
 				transporta.setCNPJ(shipperCNPJ);
@@ -1380,6 +1382,23 @@ public class NFeXMLGenerator
 			
 			if (shipperRegion != null && !shipperRegion.isEmpty())
 				transporta.setUF(TUf.Enum.forString(shipperRegion));
+			
+			//	Placa do Veículo. Formato (XXX-0000/UF)
+			if (shipperPlate != null && !shipperPlate.isEmpty())
+			{
+				//	Encontrar posição da / na variável shipperPlate para Seperar a Placa da UF do Veículo
+				int pos = 0;
+				pos = shipperPlate.indexOf("/");
+				
+				//	Adicionar Veículo
+				TVeiculo veiculo = transp.addNewVeicTransp();
+				
+				//	Adicionar Placa do Veículo
+				veiculo.setPlaca(TextUtil.retiraEspecial(shipperPlate.substring(0, pos)));
+				
+				//	Adicionar UF do Veículo
+				veiculo.setUF(TUf.Enum.forString(shipperPlate.substring(pos+1, shipperPlate.length())));
+			}
 		}
 		
 		// Adicionar Volume no XMl da NF-e
