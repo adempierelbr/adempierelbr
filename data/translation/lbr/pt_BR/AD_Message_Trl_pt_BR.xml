@@ -72,4 +72,8 @@ Telefone: {1}</value>
 <value column="MsgText" original="Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}">Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}</value>
 <value column="MsgTip" original=""/>
 </row>
+<row id="1120036" trl="N">
+<value column="MsgText" original="Este e-mail é enviado automaticamente, por favor não responda.&lt;br&gt;&lt;br&gt;Prezado cliente,&lt;br&gt;&lt;br&gt;Anexo à este e-mail você está recebendo o arquivo PDF da Nota Fiscal de Serviços Eletrônica. &lt;br&gt;&lt;br&gt;Para se certificar que esta NFS-e é válida, queira por favor consultar sua autenticidade no site da prefeitura emitente da NFS-e.&lt;br&gt;&lt;br&gt;--&lt;br&gt;Atenciosamente,&lt;br&gt;@AD_Org_ID&lt;Name&gt;@.&lt;br&gt;Nota Fiscal emitida pelo sistema Kenos ERP Adempiere (www.kenos.com.br)"><![CDATA[Este e-mail é enviado automaticamente, por favor não responda.<br><br>Prezado cliente,<br><br>Anexo à este e-mail você está recebendo o arquivo PDF da Nota Fiscal de Serviços Eletrônica. <br><br>Para se certificar que esta NFS-e é válida, queira por favor consultar sua autenticidade no site da prefeitura emitente da NFS-e.<br><br>--<br>Atenciosamente,<br>@AD_Org_ID<Name>@.<br>Nota Fiscal emitida pelo sistema Kenos ERP Adempiere (www.kenos.com.br)]]></value>
+<value column="MsgTip" original=""/>
+</row>
 </adempiereTrl>

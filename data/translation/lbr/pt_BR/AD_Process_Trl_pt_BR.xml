@@ -209,4 +209,14 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120163" trl="Y">
+<value column="Name" original="Export XML">Exportar XML da NF-e</value>
+<value column="Description" original="Export all XML archives in range of dates">Exporta todos os arquivos XML dentro de um intervalo de datas</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120164" trl="Y">
+<value column="Name" original="Return RPS Process">Processar Retorno do RPS</value>
+<value column="Description" original="Process the file with results of RPS processing">Processar Retorno do RPS</value>
+<value column="Help" original="Process the file with results of RPS processing">Processa o arquivo de retorno do RPS</value>
+</row>
 </adempiereTrl>

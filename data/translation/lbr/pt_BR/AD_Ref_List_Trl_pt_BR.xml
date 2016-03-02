@@ -3342,4 +3342,44 @@
 <value column="Name" original="8 - Domestic above 70 percent Imported">8 - Nacional, mercadoria ou bem com Conteúdo de Importação superior a 70%</value>
 <value column="Description" original=""/>
 </row>
+<row id="1121767" trl="Y">
+<value column="Name" original="Sales Order Maintenance In">Ordem de Venda de Entrada para Conserto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121768" trl="Y">
+<value column="Name" original="Sales Order Maintenance Out">Ordem de Venda de Retorno de Conserto</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121769" trl="N">
+<value column="Name" original="Sales Order Demonstration Out">Ordem de Venda de Envio de Demonstração</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121770" trl="N">
+<value column="Name" original="Sales Order Demonstration In">Ordem de Venda de Retorno da Demonstração</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121771" trl="Y">
+<value column="Name" original="Sales Order Other In">Ordem de Venda de Outras Entradas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121772" trl="Y">
+<value column="Name" original="Sales Order Other Out">Ordem de Venda de Outras Saídas</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121773" trl="Y">
+<value column="Name" original="Simple National - MEI">Simples Nacional - MEI</value>
+<value column="Description" original="">Micro-empreendedor individual</value>
+</row>
+<row id="1121774" trl="N">
+<value column="Name" original="Normal">Normal</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121775" trl="Y">
+<value column="Name" original="Simple National">Simples Nacional</value>
+<value column="Description" original=""/>
+</row>
+<row id="1121776" trl="Y">
+<value column="Name" original="Simple National - MEI">Simples Nacional - MEI</value>
+<value column="Description" original="">Micro-empreendedor individual</value>
+</row>
 </adempiereTrl>

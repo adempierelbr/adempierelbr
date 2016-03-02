@@ -56,4 +56,7 @@
 <row id="1120056" trl="N">
 <value column="Name" original="NF Importação">NF Importação</value>
 </row>
+<row id="1120058" trl="N">
+<value column="Name" original="Query Script">Script de Pesquisa</value>
+</row>
 </adempiereTrl>
