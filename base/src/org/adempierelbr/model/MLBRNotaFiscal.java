@@ -2143,6 +2143,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
+		//	Sempre deixar a NF aberta para correção em caso de erro
+		if (DOCSTATUS_Invalid.equals(getDocStatus()))
+			setProcessed(false);
+			
 		//	Opcionalmente pode gerar o RPS apenas na hora da transmissão
 		if (newRecord)
 		{
@@ -2980,6 +2984,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 									setDocStatus(DOCSTATUS_WaitingConfirmation);
 									setDocAction(DOCACTION_Complete);
 								}
+							}
+							else
+							{
+								m_processMsg = "Falha na transmissão da NFS-e";
+								return DOCSTATUS_Invalid;
 							}
 						}
 						else
