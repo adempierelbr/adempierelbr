@@ -739,8 +739,8 @@ public class InfoProduct extends Info implements ActionListener, ChangeListener
 		//  => Value
 		String value = fieldValue.getText().toUpperCase();
 		if (!(value.equals("") || value.equals("%")))
-			where.append(" AND ((TRUE ").append(SQLUtils.likeField("p.Value", value))
-				 .append(") OR (TRUE ").append(SQLUtils.likeField("ppo.VendorProductNo", value))
+			where.append(" AND ((1=1 ").append(SQLUtils.likeField("p.Value", value))
+				 .append(") OR (1=1 ").append(SQLUtils.likeField("ppo.VendorProductNo", value))
 				 .append(")) ");
 //			where.append(" AND (UPPER(p.Value) LIKE ? OR UPPER(ppo.VendorProductNo) LIKE ?)");
 

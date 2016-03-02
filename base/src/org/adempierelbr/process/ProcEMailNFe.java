@@ -1,11 +1,15 @@
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfse.INFSe;
+import org.adempierelbr.nfse.NFSeUtil;
 import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
@@ -32,6 +36,9 @@ public class ProcEMailNFe extends SvrProcess
 	/** Nota Fiscal			*/
 	private Integer p_LBR_NotaFiscal_ID = 0;
 	
+	/**	EMail				*/
+	private String p_EMail = null;
+	
 	/**	Logger				*/
 	private static CLogger log = CLogger.getCLogger(ProcEMailNFe.class);
 
@@ -46,6 +53,8 @@ public class ProcEMailNFe extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (name.equals(MUser.COLUMNNAME_EMail))
+				p_EMail = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -63,8 +72,20 @@ public class ProcEMailNFe extends SvrProcess
 		//
 		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), p_LBR_NotaFiscal_ID, get_TrxName());
 		//
-		return sendEmailNFe (nf, true);	//	TODO: Permitir o re-enviado se explícito nos parâmetros
+		return sendEmailNFe (nf, p_EMail, true);
 	}	//	doIt
+	
+	/**
+	 * 	Método para enviar e-mail da NF-e
+	 * 
+	 * @param nf
+	 * @param force
+	 * @return
+	 */
+	public static String sendEmailNFe (MLBRNotaFiscal nf, boolean force)
+	{
+		return sendEmailNFe (nf, null, force);
+	}	//	sendEmailNFe
 	
 	/**
 	 * 	Método para enviar e-mail da NF-e
@@ -72,7 +93,7 @@ public class ProcEMailNFe extends SvrProcess
 	 * @param nf
 	 * @return
 	 */
-	public static String sendEmailNFe (MLBRNotaFiscal nf, boolean force)
+	public static String sendEmailNFe (MLBRNotaFiscal nf, String toEMails, boolean force)
 	{
 		if (nf == null)
 		{
@@ -86,23 +107,36 @@ public class ProcEMailNFe extends SvrProcess
 			return "NF-e sem parceiro de Negócios";
 		}
 		
+		boolean isProductNFe = TextUtil.match(nf.getlbr_NFModel(), 
+				MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica,
+				MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica);
+		
 		if (nf.getlbr_NFeProt() == null || nf.getlbr_NFeProt().length() <= 1
-				|| nf.getlbr_NFeStatus() == null || !nf.getlbr_NFeStatus().equals("100"))
+				|| (isProductNFe && (!TextUtil.match (nf.getlbr_NFeStatus(), MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
+							MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
+							MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
+							MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
+							MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+							MLBRNotaFiscal.LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))))
 		{
 			log.warning("NF-e não foi autorizada");
 			return "NF-e não foi autorizada";
 		}
 		
-		if (nf.get_ValueAsBoolean("lbr_EMailSent") && !force)
+		if (nf.isLBR_EMailSent() && !force)
 		{
 			log.warning("E-Mail já enviado");
 			return "E-Mail já enviado";
 		}
 		
-		MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), nf.get_TrxName());
-		String toEMails = bp.get_ValueAsString("lbr_EMailNFe");
+		//	Get e-mail from business partner
+		if (toEMails == null || toEMails.trim().isEmpty() || toEMails.indexOf('@') == -1)
+		{
+			MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), nf.get_TrxName());
+			toEMails = bp.get_ValueAsString("lbr_EMailNFe");
+		}
 		
-		if (nf.getM_Shipper_ID() > 0)
+		if (isProductNFe && nf.getM_Shipper_ID() > 0)
 		{
 			MShipper shipper = new MShipper(nf.getCtx(), nf.getM_Shipper_ID(), null);
 			//
@@ -122,16 +156,25 @@ public class ProcEMailNFe extends SvrProcess
 		if (toEMails == null || toEMails.indexOf('@') == -1)
 		{
 			log.warning("E-mail para recepção de NF-e inválido");
-			return "E-mail para recepção de NF-e inválido";
+			return "@Error@ E-mail para recepção de NF-e inválido";
 		}
 		else
 			toEMails = toEMails.replace(",", ";");
 		//
-		String emailMsgTag = MSysConfig.getValue ("LBR_CUSTOM_NFE_EMAIL_MESSAGE", "LBR_EMailNFe", nf.getAD_Client_ID());
-		String message = Env.parseVariable (Msg.getMsg(Env.getCtx(), emailMsgTag), 
-				nf, nf.get_TrxName(), false);
-		//
-		String subject = "Nota Fiscal Eletrônica - Chave " + nf.getlbr_NFeID();
+		String emailMsgTag = null;
+		
+		if (isProductNFe)
+			emailMsgTag = MSysConfig.getValue ("LBR_CUSTOM_NFE_EMAIL_MESSAGE", "LBR_EMailNFe", nf.getAD_Client_ID());
+		else
+			emailMsgTag = MSysConfig.getValue ("LBR_CUSTOM_NFSE_EMAIL_MESSAGE", "LBR_EMailNFSe", nf.getAD_Client_ID());
+		
+		String message = Env.parseVariable (Msg.getMsg(Env.getCtx(), emailMsgTag), nf, nf.get_TrxName(), false);
+		String subject = null;
+		
+		if (isProductNFe)
+			subject = "Nota Fiscal Eletrônica - Chave " + nf.getlbr_NFeID();
+		else
+			subject = "Nota Fiscal de Serviços Eletrônica - " + nf.getlbr_NFENo();
 		
 		if (message == null || message.length() == 0)
 		{
@@ -154,14 +197,27 @@ public class ProcEMailNFe extends SvrProcess
 		
 		EMail mail = client.createEMail (from, client.getRequestEMail(), subject,  message, true);
 		
-		MAttachmentEntry entryXML = null;
-		for (MAttachmentEntry entry : nf.getAttachment(true).getEntries())
+		if (isProductNFe)
 		{
-			if (entry.getName().endsWith ("dst.xml"))
-				entryXML = entry;
+			MAttachmentEntry entryXML = null;
+			for (MAttachmentEntry entry : nf.getAttachment(true).getEntries())
+			{
+				if (entry.getName().endsWith ("dst.xml"))
+					entryXML = entry;
+			}
+			
+			mail.addAttachment (NFeUtil.getAttachmentEntryFile (entryXML));
+			
+			//	DANFE
+			File danfe = nf.createPDF();
+			if (danfe != null)
+				mail.addAttachment(danfe);
 		}
-		
-		mail.addAttachment (NFeUtil.getAttachmentEntryFile (entryXML));
+		else
+		{
+			INFSe iNFSe = NFSeUtil.get (nf);
+			mail.addAttachment (iNFSe.getPDF (nf));
+		}
 		//
 		StringTokenizer st = new StringTokenizer(toEMails, ";");
 		while (st.hasMoreTokens())
@@ -182,7 +238,9 @@ public class ProcEMailNFe extends SvrProcess
 			nf.setLBR_EMailSent (true);
 			nf.save();
 		}
+		else
+			return "@Error@ " + mail.getSentMsg();
 		//
-		return "NF-e enviada por E-mail com sucesso";
+		return "@Success@";
 	}	//	sendEmailNFe
 }	//	ProcEMailNFe

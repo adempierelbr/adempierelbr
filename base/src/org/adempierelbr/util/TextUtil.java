@@ -223,6 +223,7 @@ public abstract class TextUtil
 	 *  @param  boolean append
 	 *  @return FileWriter fw
 	 */
+	@Deprecated
 	public static FileWriter createFile(String fileName, boolean append) throws IOException{
 		return createFile(fileName,append,UTF8);
 	}
@@ -230,11 +231,16 @@ public abstract class TextUtil
 	/**
 	 *  createFile
 	 *  Create a text file
+	 *  
+	 *  The encoding is not working in newer versions of Windows. Use {@link #OutputStreamWriter}
+	 *  OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(lotXML), TextUtil.UTF8);
+	 *  
 	 *  @param  String FileName (FilePath)
 	 *  @param  boolean append
 	 *  @param  String encoding
 	 *  @return FileWriter fw
 	 */
+	@Deprecated
 	public static FileWriter createFile(String fileName, boolean append, String encoding) throws IOException {
 
 		System.setProperty("file.encoding", encoding);

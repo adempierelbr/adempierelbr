@@ -780,4 +780,33 @@ public class X_LBR_TaxDefinition extends PO implements I_LBR_TaxDefinition, I_Pe
 	{
 		return (String)get_Value(COLUMNNAME_lbr_TransactionType);
 	}
+	
+	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_CFOP)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CFOP.Table_Name)
+			.getPO(getLBR_CFOP_ID(), get_TrxName());	}
+
+	/** Set CFOP.
+		@param LBR_CFOP_ID 
+		Primary key table LBR_CFOP
+	  */
+	public void setLBR_CFOP_ID (int LBR_CFOP_ID)
+	{
+		if (LBR_CFOP_ID < 1) 
+			set_Value (COLUMNNAME_LBR_CFOP_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_CFOP_ID, Integer.valueOf(LBR_CFOP_ID));
+	}
+
+	/** Get CFOP.
+		@return Primary key table LBR_CFOP
+	  */
+	public int getLBR_CFOP_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CFOP_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 }

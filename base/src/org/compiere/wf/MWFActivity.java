@@ -832,6 +832,11 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 			setTextMsg(processMsg);
 			addTextMsg(e);
 			setWFState (StateEngine.STATE_Terminated);	//	unlocks
+			
+			//	Forçar o documento ficar inválido em caso de erro
+			if (m_docStatus == null)
+				m_docStatus = DocAction.STATUS_Invalid;
+			
 			//	Set Document Status 
 			if (m_po != null && m_po instanceof DocAction && m_docStatus != null)
 			{

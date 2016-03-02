@@ -35,6 +35,7 @@ import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
@@ -69,6 +70,8 @@ import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrderTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstancePara;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
@@ -84,9 +87,12 @@ import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.ProcessInfoParameter;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Trx;
 
 import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
 import br.inf.portalfiscal.nfe.v310.NFeDocument;
@@ -474,21 +480,38 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return getTaxAmt("II");
 	}	//	getIIAmt
 
-	public static int getLBR_NotaFiscal_ID(String DocumentNo, boolean IsSOTrx, String trx)
+	/**
+	 * 
+	 * @param AD_Org_ID
+	 * @param p_DocumentNo
+	 * @param p_IsSOTrx
+	 * @param modelNF
+	 * @param trxName
+	 * @return LBR_NotaFiscal_ID
+	 */
+	public static int getLBR_NotaFiscal_ID (int p_AD_Org_ID, String p_DocumentNo, boolean p_IsSOTrx, String modelNF, String trxName)
 	{
+		//	SQL
+		String sql = "SELECT LBR_NotaFiscal_ID " +
+					   "FROM LBR_NotaFiscal " +
+				      "WHERE (DocumentNo=? OR DocumentNo=?) " +
+					    "AND AD_Org_ID=? " +
+				        "AND IsSOTrx=? ";
+		
+		//	Parameters
+		Object[] params = null;
+		if (modelNF != null)
+		{
+			sql += "AND LBR_NFModel=? ";
+			params = new Object[]{p_DocumentNo, TextUtil.lPad (p_DocumentNo, 12), p_AD_Org_ID, p_IsSOTrx, modelNF};
+		}
+		else
+			params = new Object[]{p_DocumentNo, TextUtil.lPad (p_DocumentNo, 12), p_AD_Org_ID, p_IsSOTrx};
+		
+	    sql += "ORDER BY LBR_NotaFiscal_ID DESC";
 
-		String sql = "SELECT LBR_NotaFiscal_ID FROM LBR_NotaFiscal " +
-				     "WHERE DocumentNo = ? AND AD_Client_ID = ? " +
-				     "AND IsSOTrx = ? " +
-				     "ORDER BY LBR_NotaFiscal_ID desc";
-
-		Integer LBR_NotaFiscal_ID = DB.getSQLValue(trx, sql,
-				new Object[]{DocumentNo, Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
-
-		//	RPS
-		if (LBR_NotaFiscal_ID < 1)
-			LBR_NotaFiscal_ID = DB.getSQLValue (trx, sql, new Object[]{TextUtil.lPad (DocumentNo, 12), Env.getAD_Client_ID(Env.getCtx()),IsSOTrx});
-		//
+		Integer LBR_NotaFiscal_ID = DB.getSQLValue (trxName, sql, params);
+		
 		return LBR_NotaFiscal_ID;
 	}	//	getLBR_NotaFiscal_ID
 
@@ -771,6 +794,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	Atualiza o anexo
 			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes("UTF-8"));
 			attachment.save();
+			
+			//	Comitar Transação Antes de Enviar o XML e PDF por Email
+			Trx t = Trx.get(nf.get_TrxName(), false);
+			t.commit();
 			
 			//	Envia o e-mail para o cliente
 			ProcEMailNFe.sendEmailNFe (nf, false);
@@ -1108,7 +1135,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		else
 			serie = "1";
 		
-		setlbr_NFSerie(serie);
+		if (getlbr_NFSerie() == null && IsOwnDocument)
+			setlbr_NFSerie(serie);
 		
 		if (!dtInvoice.get_ValueAsString("lbr_NFModel").isEmpty())
 			model = dtInvoice.get_ValueAsString("lbr_NFModel");
@@ -1926,11 +1954,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 			setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocations[0]));	//	CNPJ
 			setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocations[0]));   		//	IE
-
-			setlbr_BPShipperAddress1(location.getAddress1());	//	Rua
-			setlbr_BPShipperAddress2(location.getAddress2());	//	Número
-			setlbr_BPShipperAddress3(location.getAddress3());	//	Bairro
-			setlbr_BPShipperAddress4(location.getAddress4());	//	Complemento
+			
+			//	Concatenar o Endereço em uma unica variável
+			String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
+							 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
+							 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
+							 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
+			
+			// Rua, Número, Bairro e Complemento e um único campo
+			setlbr_BPShipperAddress(address);			
 			setlbr_BPShipperCity(location.getCity());			//	Cidade
 			setlbr_BPShipperPostal(location.getPostal());		//	CEP
 			setlbr_BPShipperCountry(country.getCountryCode());	//	País
@@ -2111,6 +2143,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
+		//	Sempre deixar a NF aberta para correção em caso de erro
+		if (DOCSTATUS_Invalid.equals(getDocStatus()))
+			setProcessed(false);
+			
 		//	Opcionalmente pode gerar o RPS apenas na hora da transmissão
 		if (newRecord)
 		{
@@ -2154,6 +2190,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				else if (orgInfo.getlbr_DANFEFormat() != null)
 					setlbr_DANFEFormat(orgInfo.getlbr_DANFEFormat());
 			}
+			
+			//	Set Org details
+			setOrgInfo(orgInfo);
 		}
 		
 		//	Configura o código de Barras
@@ -2602,7 +2641,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		try
 		{
-			File temp = File.createTempFile(get_TableName()+get_ID()+"_", ".pdf");
+			String name = "";
+			
+			if (LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				name = "NFe";
+			else if (LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				name = "NFCe";
+			
+			File temp = File.createTempFile (name + getDocumentNo() + "-", ".pdf");
 			return createPDF (temp);
 		}
 		catch (Exception e)
@@ -2619,7 +2665,46 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public File createPDF (File file)
 	{
-		return null;
+		//	PrintFromXML Process
+		int AD_Process_ID=1120040;
+		
+		MPInstance instance = new MPInstance(Env.getCtx(), AD_Process_ID, getLBR_NotaFiscal_ID());
+		if (!instance.save())
+		{
+			log.log (Level.SEVERE, Msg.getMsg(Env.getCtx(), "ProcessNoInstance"));
+			return null;
+		}
+
+		//	Add Parameters
+		MPInstancePara para = new MPInstancePara(instance, 10);
+		para.setParameter("FileName", file.getAbsolutePath());
+		if (!para.save())
+		{
+			String msg = "No FileName parameter for PDF generation";  //  not translated
+			log.log(Level.SEVERE, msg);
+			return null;
+		}
+		
+		//	Process Info Parameter
+		ProcessInfoParameter pip = new ProcessInfoParameter("FileName", file.getAbsolutePath(), null, null, null);
+		
+		//	Process Info
+		ProcessInfo pi = new ProcessInfo ("", AD_Process_ID);
+		pi.setAD_PInstance_ID (instance.getAD_PInstance_ID());
+		pi.setRecord_ID(instance.getRecord_ID());
+		pi.setTable_ID(Table_ID);
+		pi.setParameter(new ProcessInfoParameter[]{pip});
+    	
+    	try
+		{
+    		PrintFromXML proc = new PrintFromXML ();
+    		proc.startProcess (getCtx(), pi, null);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Unable to start the process for PDF creation");
+		}
+		return file;
 	}	//	createPDF
 
 	/**************************************************************************
@@ -2899,6 +2984,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 									setDocStatus(DOCSTATUS_WaitingConfirmation);
 									setDocAction(DOCACTION_Complete);
 								}
+							}
+							else
+							{
+								m_processMsg = "Falha na transmissão da NFS-e";
+								return DOCSTATUS_Invalid;
 							}
 						}
 						else
@@ -3289,4 +3379,25 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setDocAction(MLBRNotaFiscal.DOCACTION_None);
 		setlbr_NFeStatus(MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado);
 	}	//	setVoidInfo
+	
+	/**
+	 * 	Set DocumentNo
+	 */
+	@Override
+	public void setDocumentNo (String docNo)
+	{
+		if (docNo != null)
+		{
+			String[] docSerie = docNo.split ("-");
+			
+			//	Número da NF
+			super.setDocumentNo(docSerie[0]);
+			
+			//	Série
+			if (docSerie.length > 1)
+				setlbr_NFSerie(TextUtil.toNumeric (docSerie[1]));
+		}
+		else
+			super.setDocumentNo(docNo);
+	}	//	setDocumentNo
 }	//	MLBRNotaFiscal

@@ -802,7 +802,7 @@ public class MLBRTax extends X_LBR_Tax
 		
 		MLBRCFOPLine cFOPLine = MLBRCFOP.chooseCFOP (oi.getAD_Org_ID(), C_DocTypeTarget_ID, p.getLBR_ProductCategory_ID(), 
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
-				lbr_TransactionType, lbr_DestionationType, hasSubstitution, p.islbr_IsManufactured(), null);
+				lbr_TransactionType, lbr_DestionationType, hasSubstitution, p.islbr_IsManufactured(), lbr_TaxRegime, null);
 		//
 		if (cFOPLine != null)
 		{
@@ -830,6 +830,10 @@ public class MLBRTax extends X_LBR_Tax
 		{
 			log.finer ("######## Processing Tax for Tax Definition: " + td + ", Taxes: " + new MLBRTax(ctx, td.getLBR_Tax_ID(), null));
 			processTaxes (taxes, td.getLBR_Tax_ID());
+			
+			//	CFOP
+			if (td.getLBR_CFOP_ID() > 0)
+				LBR_CFOP_ID = td.getLBR_CFOP_ID();
 		}
 		
 		return new Object[]{taxes, LBR_LegalMessage_ID, LBR_CFOP_ID, lbr_TaxStatus};

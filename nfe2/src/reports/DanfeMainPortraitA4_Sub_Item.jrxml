@@ -47,7 +47,7 @@
 		<fieldDescription><![CDATA[prod/vProd]]></fieldDescription>
 	</field>
 	<field name="aliquotaIcms" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/pICMS | imposto/ICMS/ICMS10/pICMS | imposto/ICMS/ICMS20/pICMS | imposto/ICMS/ICMS51/pICMS | imposto/ICMS/ICMS70/pICMS | imposto/ICMS/ICMS90/pICMS]]></fieldDescription>
+		<fieldDescription><![CDATA[imposto/ICMS/ICMS00/pICMS | imposto/ICMS/ICMS10/pICMS | imposto/ICMS/ICMS20/pICMS | imposto/ICMS/ICMS51/pICMS | imposto/ICMS/ICMS70/pICMS | imposto/ICMS/ICMS90/pICMS | imposto/ICMS/ICMSSN900/pICMS]]></fieldDescription>
 	</field>
 	<field name="aliquotaIpi" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[imposto/IPI/IPITrib/pIPI]]></fieldDescription>

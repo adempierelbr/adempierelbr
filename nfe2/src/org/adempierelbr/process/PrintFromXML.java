@@ -15,31 +15,40 @@ package org.adempierelbr.process;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRNFeEvent;
+import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.util.NFeUtil;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MImage;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -57,6 +66,9 @@ public class PrintFromXML extends SvrProcess
 	/**	Record ID	*/
 	private int p_Record_ID = 0;
 	
+	/** PDF File 	*/
+	private String p_PDFFile = null;
+			
 	private MProcess process = null;
 	private String reportName = "";
 	
@@ -71,6 +83,8 @@ public class PrintFromXML extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
+			else if (name.equals("FileName"))
+				p_PDFFile = (String) para[i].getParameter();
 			else
 				log.log (Level.SEVERE, "Unknown Parameter: " + name);
 		}
@@ -93,6 +107,8 @@ public class PrintFromXML extends SvrProcess
 		String datePattern 		= "yyyy-MM-dd'T'HH:mm:ssZ";
 		String numberPattern 	= "###0.00";
 		Locale locale			= Locale.US;
+		//	Arquivo com os XML das notas Autorizadas relacionadas do lote.
+		File lotXML 			= File.createTempFile ("lotXMLAut", ".xml");
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
@@ -118,8 +134,6 @@ public class PrintFromXML extends SvrProcess
 		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
 			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
-			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
-				return "N\u00E3o \u00E9 permitido imprimir o DANFE - Cancelada ou Sem autorizac\u00E3o";
 			
 			//	Nota Fiscal de Serviço Eletrônica
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(doc.getlbr_NFModel()))
@@ -152,6 +166,61 @@ public class PrintFromXML extends SvrProcess
 				message = "C\u00D3PIA DE SEGURAN\u00C7A     Sem autorizac\u00E3o";
 		}
 		
+		//	Lote da Nota Fiscal Eletrônica
+		else if (tableID == MLBRNFeLot.Table_ID)
+		{
+			//	Lote da NF-e
+			MLBRNFeLot doc = new MLBRNFeLot(getCtx(), p_Record_ID, null);
+			
+			//	Lista de NF-e relacionada ao Lote.
+			List <MLBRNotaFiscal> nfs = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "LBR_NFeStatus = '100' AND LBR_NFeLot_ID = ?", null)
+										.setParameters(doc.getLBR_NFeLot_ID())
+										.list();			
+			
+			//	Gravar os XMLs no Arquivo nfXmlAutorized
+			OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(lotXML), TextUtil.UTF8);
+			
+			//	Adicionar Tab Principal do Arquivo
+			osw.append(NFeUtil.XML_HEADER).append("<NFeLot>");
+			
+			//	Lista de Notas Fiscais Autorizadas
+			for (MLBRNotaFiscal nf : nfs)
+			{
+				//	Arquivo Anexos na Nota Fiscal
+				att = nf.getAttachment (true);	
+				
+				//	Verificar na Lista de Arquivos em Anexo o XML referente a Nota Fiscal Autorizada
+				for (MAttachmentEntry entry : att.getEntries())
+				{
+					//	Try to find the right file
+					if (entry != null && entry.getName().endsWith(extension))
+					{
+						try
+						{
+							//	Grava o XML no Arquivo nfXmlAutorized
+							osw.append(new String (entry.getData(), TextUtil.UTF8).replace (NFeUtil.XML_HEADER, ""));
+						}
+						catch (Exception e)
+						{
+							log.warning(e.getMessage());
+						}
+					}
+				}
+			}
+			
+			//	Fechar Tag Principal
+			osw.append("</NFeLot>");
+			
+			//	Fechando Arquivo
+			osw.close();
+
+			//	Verifica o nome do arquivo principal da Primeira Nota do Lote.
+			if (MLBRNotaFiscal.LBR_DANFEFORMAT_1_NormalDANFE_Portrait.equals(nfs.get(0).getlbr_DANFEFormat()))
+				reportName = "DanfeMainPortraitA4.jasper";
+			else if (MLBRNotaFiscal.LBR_DANFEFORMAT_2_NormalDANFE_Landscape.equals(nfs.get(0).getlbr_DANFEFormat()))
+				reportName = "DanfeMainLandscapeA4.jasper";					
+		}
+		
 		else
 			return "Not implemented yet";
 		
@@ -162,19 +231,27 @@ public class PrintFromXML extends SvrProcess
 		InputStream xml = null;
 		InputStream xmlTmp = null;
 		
-		for (MAttachmentEntry entry : entries)
+		//	Lote da Nota Fiscal Eletrônica
+		if (tableID == MLBRNFeLot.Table_ID)
 		{
-			//	Try to find the right file
-			if (entry.getName().endsWith(extension))
+			xml = new FileInputStream (lotXML);
+		}
+		else
+		{	
+			for (MAttachmentEntry entry : entries)
 			{
-				xml = entry.getInputStream();
-				break;
-			}
-			
-			//	XML without authorization, preview only
-			else if (entry.getName().endsWith("nfe.xml"))
-			{
-				xmlTmp = entry.getInputStream();
+				//	Try to find the right file
+				if (entry.getName().endsWith(extension))
+				{
+					xml = entry.getInputStream();
+					break;
+				}
+				
+				//	XML without authorization, preview only
+				else if (entry.getName().endsWith("nfe.xml"))
+				{
+					xmlTmp = entry.getInputStream();
+				}
 			}
 		}
 
@@ -193,14 +270,25 @@ public class PrintFromXML extends SvrProcess
 		if (message != null)
 			files.put("msgPrevisualizacao", message);
 
+		//	Load the report
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject ( (InputStream) files.remove (reportName));
 		JRXmlDataSource dataSource = new JRXmlDataSource ( xml , jasperReport.getQuery().getText() );
 		dataSource.setDatePattern(datePattern);
 		dataSource.setNumberPattern(numberPattern);
 		dataSource.setLocale(locale);
-		//
+
+		//	Fill
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
+		//	Creates a PDF file instead of printing
+		if (p_PDFFile != null)
+		{
+			File file = new File (p_PDFFile);
+    		JasperExportManager.exportReportToPdfFile(jasperPrint, file.getAbsolutePath());
+    		
+    		return "@Success@";
+		}
+		
 		ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de Documento");
 		
 		return "@Success@";

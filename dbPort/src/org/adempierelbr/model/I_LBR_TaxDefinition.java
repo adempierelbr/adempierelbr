@@ -462,4 +462,20 @@ public interface I_LBR_TaxDefinition
 	  * Defines the Transaction Type
 	  */
 	public String getlbr_TransactionType();
+	
+	/** Column name LBR_CFOP_ID */
+    public static final String COLUMNNAME_LBR_CFOP_ID = "LBR_CFOP_ID";
+
+	/** Set CFOP.
+	  * Primary key table LBR_CFOP
+	  */
+	public void setLBR_CFOP_ID (int LBR_CFOP_ID);
+
+	/** Get CFOP.
+	  * Primary key table LBR_CFOP
+	  */
+	public int getLBR_CFOP_ID();
+
+	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException;
+
 }

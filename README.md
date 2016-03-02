@@ -38,6 +38,11 @@ Principais Recursos
 ===================
 
 1. Cálculo de Impostos para o padrão brasileiro
+
+	* Cálculo para PIS, COFINS, ICMS, IPI, ISS, IR e CSLL
+	* Cálculo de Impostos para Importação Direta e via Courrier
+	* Cálculo do Diferencial de Alíquota (EC 87/2015)
+	
 1. Emissão da NF-e versão 3.10
 
     * Emissão
@@ -68,6 +73,18 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201603 [[Download]][46] [[Seed PostgreSQL]][47] [[Seed OracleXE]][48]
+
+	* Melhorias na tradução
+	* Correção do processo de retorno do RPS
+	* Permitir o preenchimento de um e-mail avulso no re-envio do e-mail da NF-e
+	* Padronização dos tamanhos das descrições da NF-e e Eventos
+	* Correção das fórmulas de importação
+	* Tipo de Documento Base LBR para facilitar a configuração de impostos
+	* Impressão da DANFE pela janela de lote
+	* Informar a UF da Placa do veículo na emissão da NF
+	* [Mais detalhes][45]
+	
 1. LBR-201602 [[Download]][42] [[Seed PostgreSQL]][43] [[Seed OracleXE]][44]
 
 	* Melhorias na tradução
@@ -205,3 +222,7 @@ Patrocinadores desta versão
 [42]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201602.tgz
 [43]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_PG.tgz
 [44]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_ORA.tgz
+[45]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201603
+[46]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201603.tgz
+[47]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_PG.tgz
+[48]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_ORA.tgz

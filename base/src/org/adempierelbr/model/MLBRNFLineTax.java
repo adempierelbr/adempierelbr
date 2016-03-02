@@ -147,4 +147,15 @@ public class MLBRNFLineTax extends X_LBR_NFLineTax
 		//
 		return taxesDiscount;
 	}	//	getTaxesDiscount
+	
+	@Override
+	protected boolean beforeSave(boolean newRecord)
+	{
+		if (newRecord)
+		{
+			if (Env.ZERO.compareTo(getlbr_TaxAmt()) == 0)
+				setlbr_TaxBaseAmt(Env.ZERO);
+		}
+		return super.beforeSave(newRecord);
+	}
 }	//	MLBRNotaFiscal

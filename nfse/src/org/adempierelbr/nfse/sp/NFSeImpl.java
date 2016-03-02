@@ -1,6 +1,7 @@
 package org.adempierelbr.nfse.sp;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -26,6 +27,8 @@ import org.adempierelbr.model.X_LBR_NFTax;
 import org.adempierelbr.model.X_LBR_TaxGroup;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.sp.api.LoteNFeStub;
+import org.adempierelbr.process.ProcEMailNFe;
+import org.adempierelbr.process.ProcReturnRPS;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
@@ -61,6 +64,7 @@ import br.gov.sp.prefeitura.nfe.tipos.TpRPS;
 import br.gov.sp.prefeitura.nfe.tipos.TpStatusNFe;
 import br.gov.sp.prefeitura.nfe.tipos.TpTipoRPS;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -452,10 +456,8 @@ public class NFSeImpl implements INFSe
 		cabecalho.setValorTotalDeducoes(dedTotal);
 		
 		//	Gera o XML em arquivo para Assinatura	
-		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
-		
 		new SignatureUtil (oi, SignatureUtil.RPS).sign (envioLoteRPSDoc, envioLoteRPSDoc.getPedidoEnvioLoteRPS().newCursor());
-		xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()).replace("-03:00", ""));
+		StringBuilder xml = new StringBuilder (envioLoteRPSDoc.xmlText(NFeUtil.getXmlOpt()));
 		
 		//	Log
 		log.fine ("Sending XML: " + xml.toString());
@@ -503,7 +505,7 @@ public class NFSeImpl implements INFSe
 			if (chaves.getChaveRPS() == null || chaves.getChaveNFe() == null)
 				continue;
 			
-			proccessNFSe (ctx, trxName, "" + chaves.getChaveRPS().getNumeroRPS(), "" + chaves.getChaveNFe().getNumeroNFe(), chaves.getChaveNFe().getCodigoVerificacao());
+			proccessNFSe (ctx, trxName, "" + chaves.getChaveRPS().getNumeroRPS(), "" + chaves.getChaveNFe().getNumeroNFe(), chaves.getChaveNFe().getCodigoVerificacao(), p_AD_Org_ID);
 		}
 		
 		return result.getCabecalho().getSucesso();
@@ -679,32 +681,17 @@ public class NFSeImpl implements INFSe
 	 * 	@param p_RPS
 	 * 	@param p_NFe
 	 * 	@param p_VerifCode
+	 * 	@param p_AD_Org_ID - Organization
 	 */
-	private void proccessNFSe (Properties ctx, String trxName, String p_RPS, String p_NFe, String p_VerifCode)
+	private void proccessNFSe (Properties ctx, String trxName, String p_RPS, String p_NFe, String p_VerifCode, int p_AD_Org_ID)
 	{
-		int LBR_NotaFiscal_ID = MLBRNotaFiscal.getLBR_NotaFiscal_ID (p_RPS, true, trxName);
+		int LBR_NotaFiscal_ID = MLBRNotaFiscal.getLBR_NotaFiscal_ID (p_AD_Org_ID, p_RPS, true, MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS, trxName);
 		if (LBR_NotaFiscal_ID > 0)
 		{
 			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
-			proccessNFSe (nf, p_NFe, p_VerifCode);
+			ProcReturnRPS.proccessNFSe (nf, p_NFe, p_VerifCode);
+			ProcEMailNFe.sendEmailNFe (nf, false);
 		}
-	}	//	proccessNFSe
-	
-	/**
-	 * 	Processa a NF com as informaões da autorização
-	 * @param nf
-	 * @param p_NFe
-	 * @param p_VerifCode
-	 */
-	private void proccessNFSe (MLBRNotaFiscal nf, String p_NFe, String p_VerifCode)
-	{
-		nf.setIsPrinted(true); //	Marca impresso para cancelar documentos vinculados
-		nf.setProcessed(true);
-		nf.setlbr_NFENo(p_NFe);
-		nf.setlbr_NFeProt(p_VerifCode);
-		nf.setDocAction(MLBRNotaFiscal.DOCACTION_None);
-		nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Completed);
-		nf.save();
 	}	//	proccessNFSe
 	
 	/**
@@ -712,6 +699,50 @@ public class NFSeImpl implements INFSe
 	 * 	@return
 	 */
 	public String printNFSe (MLBRNotaFiscal nf)
+	{
+		try
+		{
+			JasperPrint jasperPrint = getReport (nf);
+			ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
+		}
+		catch (Exception e)
+		{
+			return "@Error@ " + e.getMessage();
+		}
+		
+		return "@Success@";
+	}	//	printNFSe
+
+	/**
+	 * 	Get the NF PDF
+	 */
+	@Override
+	public File getPDF(MLBRNotaFiscal nf)
+	{
+		File PDF = null;
+		
+		try
+		{
+			JasperPrint jasperPrint = getReport (nf);
+			
+			PDF = File.createTempFile("NFSe" + nf.getlbr_NFENo() + "-", ".pdf");
+    		JasperExportManager.exportReportToPdfFile(jasperPrint, PDF.getAbsolutePath());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return PDF;
+	}	//	getPDF
+
+	/**
+	 * 	Get JasperReport
+	 * @param nf
+	 * @return
+	 * @throws Exception
+	 */
+	private JasperPrint getReport (MLBRNotaFiscal nf) throws Exception
 	{
 		InputStream is = null;
 		
@@ -723,20 +754,13 @@ public class NFSeImpl implements INFSe
 			String cod = nf.getlbr_NFeProt();
 			
 			if (cod == null || cod.trim().isEmpty())
-				return "NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o";
+				throw new Exception ("NFS-e sem o c\u00F3digo de autoriza\u00E7\u00E3o necess\u00E1rio para a impress\u00E3o");
 			
 			//	URL de Impressão
 			String message = MSysConfig.getValue ("LBR_NFSE_SP_PRINT_URL", "https://nfe.prefeitura.sp.gov.br/contribuinte/notaprintimg.aspx?ccm={0}&nf={1}&cod={2}&imprimir=1", nf.getAD_Client_ID(), nf.getAD_Org_ID());
 			
 			MessageFormat mf = null;
-			try
-			{
-				mf = new MessageFormat (message);
-			}
-			catch (Exception e)
-			{
-				log.log (Level.SEVERE, "Error NFS-e SP print URL " + e.getMessage());
-			}
+			mf = new MessageFormat (message);
 			
 			URL url = new URL (mf.format (new Object[]{ccm, nfnum, cod}));
 			is = url.openStream();
@@ -750,16 +774,12 @@ public class NFSeImpl implements INFSe
 				InputStream report = cl.getResourceAsStream("reports/ImpressaoNFSESP.jasper");
 				
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("DOCUMENTO_IMAGE", image);
+				map.put("DOCUMENT_IMAGE", image);
 
 				JasperReport jasperReport = (JasperReport) JRLoader.loadObject (report);
 				JREmptyDataSource dataSource = new JREmptyDataSource ();
 				//
-				JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, map, dataSource);
-
-				ReportStarter.getReportViewerProvider ().openViewer (jasperPrint, "Impress\u00E3o de NFS-e para a Cidade de S\u00E3o Paulo");
-				
-				return "@Success@";
+				return JasperFillManager.fillReport (jasperReport, map, dataSource);
 			}
 		}
 		catch (MalformedURLException mue)
@@ -783,10 +803,10 @@ public class NFSeImpl implements INFSe
 			}
 			catch (IOException ioe)
 			{
-				return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+				throw new Exception ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
 			}
 		}
 		
-		return ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
-	}	//	printNFSe
+		throw new Exception ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
+	}	//	getReport
 }	//	NFSeImpl
