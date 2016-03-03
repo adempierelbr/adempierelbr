@@ -1,3 +1,8 @@
+-- 03/03/2016 16h46min33s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,CreatedBy,EntityType,IsActive,Name,Type,Updated,UpdatedBy) VALUES (0,0,1120123,'C_DocType.DocBaseType=''NFB'' AND C_DocType.AD_Org_ID IN (0, @AD_Org_ID@)',TO_TIMESTAMP('2016-03-03 16:46:32','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','DocType (Nota Fiscal And Org)','S',TO_TIMESTAMP('2016-03-03 16:46:32','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
 -- 02/03/2016 10h45min40s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_ReportView (AD_Client_ID,AD_Org_ID,AD_ReportView_ID,AD_Table_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy) VALUES (0,0,1120014,1000027,TO_TIMESTAMP('2016-03-02 10:45:39','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','RV_NotaFiscal',TO_TIMESTAMP('2016-03-02 10:45:39','YYYY-MM-DD HH24:MI:SS'),100)
@@ -1055,7 +1060,57 @@ UPDATE AD_Process_Para SET AD_Element_ID=2531,Updated=TO_TIMESTAMP('2016-03-02 1
 
 -- 02/03/2016 11h27min32s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Process_Para SET AD_Val_Rule_ID=1000007,Updated=TO_TIMESTAMP('2016-03-02 11:27:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120245
+UPDATE AD_Process_Para SET AD_Val_Rule_ID=1120123,Updated=TO_TIMESTAMP('2016-03-02 11:27:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120245
+;
+
+-- 03/03/2016 16h1min37s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Val_Rule_ID=202,Updated=TO_TIMESTAMP('2016-03-03 16:01:37','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120239
+;
+
+-- 03/03/2016 16h2min8s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Reference_ID=17, AD_Reference_Value_ID=1000027,Updated=TO_TIMESTAMP('2016-03-03 16:02:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120244
+;
+
+-- 03/03/2016 16h2min35s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Reference_ID=17, AD_Reference_Value_ID=1000027, IsActive='Y',Updated=TO_TIMESTAMP('2016-03-03 16:02:35','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120243
+;
+
+-- 03/03/2016 16h6min46s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Process_Para (AD_Client_ID,AD_Element_ID,AD_Org_ID,AD_Process_ID,AD_Process_Para_ID,AD_Reference_ID,AD_Reference_Value_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsCentrallyMaintained,IsMandatory,IsRange,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1100011,0,1120166,1120246,17,1100001,'lbr_NFeEnv',TO_TIMESTAMP('2016-03-03 16:06:45','YYYY-MM-DD HH24:MI:SS'),100,'LBRA',1,'Y','Y','N','N','NFe Environment',70,TO_TIMESTAMP('2016-03-03 16:06:45','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 03/03/2016 16h6min46s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Process_Para_Trl (AD_Language,AD_Process_Para_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Process_Para_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Process_Para t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Process_Para_ID=1120246 AND NOT EXISTS (SELECT * FROM AD_Process_Para_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Process_Para_ID=t.AD_Process_Para_ID)
+;
+
+-- 03/03/2016 16h7min28s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET DefaultValue='1',Updated=TO_TIMESTAMP('2016-03-03 16:07:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120246
+;
+
+-- 03/03/2016 16h12min2s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Reference_Value_ID=319,Updated=TO_TIMESTAMP('2016-03-03 16:12:02','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120244
+;
+
+-- 03/03/2016 16h12min12s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Reference_Value_ID=319,Updated=TO_TIMESTAMP('2016-03-03 16:12:12','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120243
+;
+
+-- 03/03/2016 16h15min48s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-03 16:15:48','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120244
+;
+
+-- 03/03/2016 16h15min56s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-03 16:15:56','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120243
 ;
 
 -- 02/03/2016 11h27min32s BRT
