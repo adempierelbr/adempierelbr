@@ -1040,12 +1040,12 @@ UPDATE AD_TreeNodeMM SET Parent_ID=1000023, SeqNo=18, Updated=CURRENT_TIMESTAMP 
 
 -- 02/03/2016 11h26min1s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Process_Para SET DefaultValue=NULL, IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-02 11:26:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120244
+UPDATE AD_Process_Para SET DefaultValue='Y', IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-02 11:26:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120244
 ;
 
 -- 02/03/2016 11h26min6s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Process_Para SET DefaultValue=NULL, IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-02 11:26:06','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120243
+UPDATE AD_Process_Para SET DefaultValue='Y', IsMandatory='N',Updated=TO_TIMESTAMP('2016-03-02 11:26:06','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120243
 ;
 
 -- 02/03/2016 11h26min23s BRT
