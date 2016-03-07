@@ -554,7 +554,7 @@ public class VLBROrder implements ModelValidator
 						"    FROM  " + 
 						"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
 						"    WHERE  " + 
-						"            TRUE " + 
+						"            1=1 " + 
 						"            AND it.C_Invoice_ID=?  " + 
 						"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
 						"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
