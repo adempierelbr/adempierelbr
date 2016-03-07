@@ -580,7 +580,6 @@ public class MLBRTax extends X_LBR_Tax
 	 * @param Date Acct
 	 * @return Object Array (Taxes, Legal Msg, CFOP and CST) 
 	 */
-	@SuppressWarnings("deprecation")
 	public static Object[] getTaxes (int C_DocTypeTarget_ID, boolean isSOTrx, String lbr_TransactionType, I_W_M_Product p, 
 			I_W_AD_OrgInfo oi, I_W_C_BPartner bp, MBPartnerLocation bpLoc, Timestamp dateAcct)
 	{
@@ -594,7 +593,6 @@ public class MLBRTax extends X_LBR_Tax
 		String lbr_TaxStatus 		= "";
 		boolean hasSubstitution		= false;
 		String lbr_TaxRegime		= oi.getLBR_TaxRegime();
-		//
 		
 		/**
 		 * 	Organization
@@ -609,6 +607,11 @@ public class MLBRTax extends X_LBR_Tax
 		if (p.getM_Product_ID() > 0 && p.getLBR_NCM_ID() > 0)
 		{
 			MLBRNCM ncm = new MLBRNCM (Env.getCtx(), p.getLBR_NCM_ID(), null);
+			
+			hasSubstitution = ncm.islbr_HasSubstitution();
+			log.finer ("######## Processing Tax for NCM: " + ncm + ", Taxes: " + new MLBRTax(ctx, ncm.getLBR_Tax_ID(), null));
+			processTaxes(taxes, ncm.getLBR_Tax_ID());
+			
 			MLBRNCMTax ncmTax = ncm.getLBR_Tax_ID(oi.getAD_Org_ID(), bp_C_Region_ID, dateAcct);
 			//
 			if (ncmTax != null)
@@ -616,12 +619,6 @@ public class MLBRTax extends X_LBR_Tax
 				hasSubstitution = ncmTax.islbr_HasSubstitution();
 				log.finer ("######## Processing Tax for NCM Line: " + ncmTax + ", Taxes: " + new MLBRTax(ctx, ncmTax.getLBR_Tax_ID(), null));
 				processTaxes(taxes, ncmTax.getLBR_Tax_ID());
-			}
-			else
-			{
-				hasSubstitution = ncm.islbr_HasSubstitution();
-				log.finer ("######## Processing Tax for NCM: " + ncm + ", Taxes: " + new MLBRTax(ctx, ncm.getLBR_Tax_ID(), null));
-				processTaxes(taxes, ncm.getLBR_Tax_ID());	//	Legacy
 			}
 		}
 		
