@@ -870,8 +870,12 @@ public class NFeXMLGenerator
 				//	Preenche o pedido referenciado (xPed)
 				String xPed = orderline.getParent().getPOReference();
 				if (xPed != null && !xPed.trim().isEmpty())
+				{
+					if (xPed.length() > 15)
+						xPed = xPed.substring (0, 15);
 					prod.setXPed (xPed);
-
+				}
+				
 				//	Preenche o item do pedido referenciado (nItemPed)
 				String nItemPed = orderline.get_ValueAsString("POReference");
 				if (nItemPed != null && !nItemPed.trim().isEmpty())
