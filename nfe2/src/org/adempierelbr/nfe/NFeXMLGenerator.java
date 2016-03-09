@@ -1476,7 +1476,7 @@ public class NFeXMLGenerator
 		    	Dup dup = cobr.addNewDup();
 		    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
 		    	dup.setDVenc(normalize (openItem.getDueDate()));
-		    	dup.setVDup(normalize (openItem.getGrandTotal()));
+		    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
 			}
 		}
 		
