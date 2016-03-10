@@ -169,6 +169,26 @@ Há duas razões para desativar e não excluir registros:
     <value column="PO_Name" original="" />
     <value column="PO_PrintName" original="" />
   </row>
+  <row id="2853" trl="Y">
+    <value column="Name" original="Confirm Query Records">Registros p/ Confirmar Pesquisa</value>
+    <value column="PrintName" original="Confirm Query Records">Registros p/ Confirmar Pesquisa</value>
+    <value column="Description" original="Require Confirmation if more records will be returned by the query (If not defined 500)">Exige Confirmação se mais registros serão retornados pela pergunta (500 se não definido)</value>
+    <value column="Help" original="Enter the number of records the query will return without confirmation to avoid unnecessary system load.  If 0, the system default of 500 is used.">Digite o número de registros que a inquisição irá retornar sem confirmação para evitar sobrecarga desnecessária do sistema.  Se 0, será usado o padrão do sistema (500).</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
+  <row id="2854" trl="Y">
+    <value column="Name" original="Max Query Records">Max Registros na Pesquisa</value>
+    <value column="PrintName" original="Max Query Records">Max Registros na Pesquisa</value>
+    <value column="Description" original="If defined, you cannot query more records as defined - the query criteria needs to be changed to query less records">Se definido, você não pode inquerir mais registros do que o valor definido - o critério de inquisição precisa ser alterado para retornar menos registros</value>
+    <value column="Help" original="Enter the number of records a user will be able to query to avoid unnecessary system load.  If 0, no restrictions are imposed.">Digite o número máximo de registros que o usuário será capaz de inquerir para evitar sobrecarga desnecessária do sistema.  Se 0, não haverá restrições.</value>
+    <value column="PO_Description" original="" />
+    <value column="PO_Help" original="" />
+    <value column="PO_Name" original="" />
+    <value column="PO_PrintName" original="" />
+  </row>
   <row id="2968" trl="Y">
     <value column="Name" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
     <value column="PrintName" original="Set Inventory Count to">Definir Contagem do Estoque para</value>
