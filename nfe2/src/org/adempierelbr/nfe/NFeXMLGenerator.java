@@ -1379,7 +1379,10 @@ public class NFeXMLGenerator
 				transporta.setIE (shipperIE);
 			
 			if (shipperAddress != null && !shipperAddress.isEmpty())
-				transporta.setXEnder(shipperAddress);
+			{
+				//	Limite de 60 caracteres
+				transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
+			}
 			
 			if (shipperCity != null && !shipperCity.isEmpty())
 				transporta.setXMun(shipperCity);
