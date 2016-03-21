@@ -597,8 +597,11 @@ public class MLBRTax extends X_LBR_Tax
 		/**
 		 * 	Organization
 		 */
-		log.finer ("######## Processing Tax for Organization: " + oi + ", Taxes: " + new MLBRTax(ctx, oi.getLBR_Tax_ID(), null));
-		processTaxes(taxes, oi.getLBR_Tax_ID());
+		if (!MProduct.PRODUCTTYPE_Service.equals(p.getProductType()))
+		{
+			log.finer ("######## Processing Tax for Organization: " + oi + ", Taxes: " + new MLBRTax(ctx, oi.getLBR_Tax_ID(), null));
+			processTaxes(taxes, oi.getLBR_Tax_ID());
+		}
 		
 		/**
 		 * 	NCM
