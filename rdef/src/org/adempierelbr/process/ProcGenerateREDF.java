@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -28,7 +29,6 @@ import org.adempierelbr.redf.beans.Registro40;
 import org.adempierelbr.redf.beans.Registro50;
 import org.adempierelbr.redf.beans.Registro60;
 import org.adempierelbr.redf.beans.Registro90;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
@@ -99,8 +99,8 @@ public class ProcGenerateREDF extends SvrProcess
 		String fileName = p_FilePath;
 		StringBuffer result = runREDF(ctx);;
 		//
-		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-	    	fileName += AdempiereLBR.getFileSeparator();
+		if (!(p_FilePath.endsWith(File.separator)))
+	    	fileName += File.separator;
 		//
 		fileName += "REDF_" + TextUtil.timeToString(p_DateFrom, "ddMMyyyy") + TextUtil.timeToString(p_DateTo, "ddMMyyyy") + ".txt";
 		//

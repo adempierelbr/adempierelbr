@@ -29,8 +29,8 @@ import org.adempierelbr.model.MLBRTaxStatus;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -656,7 +656,7 @@ public class NFeXMLGenerator
 		}
 		
 		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
-		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
+		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
 		
 		if (nf.getlbr_BPPhone() != null)
 			enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));

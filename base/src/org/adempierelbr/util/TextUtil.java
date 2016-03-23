@@ -205,7 +205,7 @@ public abstract class TextUtil
 	 */
 	public static String generateTmpFile(String data, String fileName){
 
-		int index = fileName.indexOf(AdempiereLBR.getFileSeparator());
+		int index = fileName.indexOf (File.separator);
 		if (index != -1){ //Already have a directory set
 			fileName = fileName.substring(index); //remove directory
 		}

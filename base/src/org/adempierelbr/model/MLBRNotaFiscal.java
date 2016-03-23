@@ -37,8 +37,8 @@ import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
 import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -1819,9 +1819,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public void setShipmentBPartner (MInvoice invoice)
 	{
-		int M_InOut_ID = AdempiereLBR.getM_InOut_ID (invoice.getC_Invoice_ID(), get_TrxName());
+		int M_InOut_ID = LBRUtils.getInOutFromInvoice (invoice);
 		//
-		setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
+		if (M_InOut_ID > 0)
+			setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
 	}	//	setShipmentBPartner
 	
 	/**

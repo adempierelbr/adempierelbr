@@ -17,7 +17,7 @@ import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 
 import org.adempiere.pipo.CreateZipFile;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MSysConfig;
@@ -85,11 +85,11 @@ public class ProcReturnCNAB extends SvrProcess
 		if (p_FilePath == null || p_FilePath.trim().length() < 1)
 			p_FilePath = System.getProperty("java.io.tmpdir") + File.separator;
 			
-		else if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-	    	p_FilePath += AdempiereLBR.getFileSeparator();
+		else if (!(p_FilePath.endsWith(File.separator)))
+	    	p_FilePath += File.separator;
 
 		String RoutingNo = linhas[0].substring(76, 79); //Cód. Banco
-		int LBR_Bank_ID = AdempiereLBR.getLBR_Bank_ID(RoutingNo, get_TrxName());
+		int LBR_Bank_ID = LBRUtils.getLBR_Bank_ID (RoutingNo, get_TrxName());
 
 		if (LBR_Bank_ID == -1) throw new IllegalArgumentException("Arquivo Inválido");
 

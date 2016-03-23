@@ -1,5 +1,6 @@
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,12 +29,13 @@ import org.adempierelbr.sacred.comp.beans.B9R9001;
 import org.adempierelbr.sacred.comp.beans.B9R9900;
 import org.adempierelbr.sacred.comp.beans.B9R9990;
 import org.adempierelbr.sacred.comp.beans.B9R9999;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
 
 /**
  * Sistema de Apuração do ICMS Relativo ao Custo 
@@ -91,8 +93,8 @@ public class ProcGenerateSacredComp extends SvrProcess
 		String fileName = p_FilePath;
 		StringBuffer result = runSACRED(dateFrom,dateTo);
 		
-		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-			fileName += AdempiereLBR.getFileSeparator();
+		if (!(p_FilePath.endsWith(File.separator)))
+			fileName += File.separator;
 		
 		fileName += "SACRED_CPL_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
@@ -101,7 +103,7 @@ public class ProcGenerateSacredComp extends SvrProcess
 		//
 		long end = System.currentTimeMillis();
 		
-		String tempoDecorrido = AdempiereLBR.executionTime(start, end);
+		String tempoDecorrido = LBRUtils.elapsedTime (start, end);
 		
 		return "Arquivo(s) Gerado(s) com Sucesso: " + fileName + 
 		       " <br>** Tempo decorrido: <font color=\"008800\">" + tempoDecorrido + "</font>" +
@@ -125,7 +127,7 @@ public class ProcGenerateSacredComp extends SvrProcess
 		//Notas Fiscais Período
 		MLBRNotaFiscal[] nfs = SacredCompUtil.getNotaFiscal(dateFrom, dateTo, true);
 		
-		MPeriod previous = MPeriod.get(getCtx(), AdempiereLBR.getPreviousPeriod_ID(getCtx(), p_C_Period_ID));
+		MPeriod previous = MPeriod.get (getCtx(), TimeUtil.addDays (MPeriod.get (getCtx(), p_C_Period_ID).getStartDate(), -1), 0);
 		medICMS_INI = SacredCompUtil.getMedICMS(previous.getStartDate(), previous.getEndDate()); //Média ICMS Compras Período Anterior
 		medICMS_FIM = SacredCompUtil.getMedICMS(dateFrom, dateTo); //Média ICMS Compras Período Atual
 		

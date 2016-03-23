@@ -47,6 +47,7 @@ import org.joda.time.Period;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: AdempiereLBR.java, 18/12/2009 09:37:00 mgrigioni
  */
+@Deprecated
 public abstract class AdempiereLBR{
 
 	/**	Logger			*/

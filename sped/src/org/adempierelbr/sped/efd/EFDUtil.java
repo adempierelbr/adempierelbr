@@ -71,8 +71,8 @@ import org.adempierelbr.sped.efd.bean.RH010;
 import org.adempierelbr.sped.efd.bean.RH990;
 import org.adempierelbr.sped.efd.bean.RK001;
 import org.adempierelbr.sped.efd.bean.RK990;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MBPartner;
@@ -711,9 +711,8 @@ public class EFDUtil {
 
 		//
 		R0190 reg = new R0190();
-		reg.setUNID(AdempiereLBR.getUOM_trl(uom));
-		reg.setDESCR(AdempiereLBR.getUOMName_trl(uom));
-	
+		reg.setUNID(uom.get_Translation (MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE));
+		reg.setDESCR(uom.get_Translation (MUOM.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
 		//
 		return reg;
 	} // createR0190
@@ -780,7 +779,8 @@ public class EFDUtil {
 		reg.setCOD_ANT_ITEM(null); // TODO
 		
 		// unidade
-		reg.setUNID_INV(AdempiereLBR.getUOM_trl(new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName())));
+		MUOM uom = new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName());
+		reg.setUNID_INV(uom.get_Translation(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE)));
 		
 		// tipo do item
 		reg.setTIPO_ITEM(product.get_ValueAsString("lbr_ItemTypeBR"));

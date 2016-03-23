@@ -22,7 +22,7 @@ import javax.sql.rowset.CachedRowSet;
 
 import org.adempierelbr.model.MLBROtherNF;
 import org.adempierelbr.model.MLBROtherNFLine;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MWarehouse;
 import org.compiere.process.ProcessInfoParameter;
@@ -175,7 +175,7 @@ public class ProcGenerateOtherNF extends SvrProcess
 					if(otherNF.getlbr_OtherNF_RequestType().equalsIgnoreCase("mi"))
 					{
 						MBPartner bpartner = new MBPartner(ctx,otherNF.getC_BPartner_ID(),trx);
-						line.setM_Locator_ID(AdempiereLBR.getM_Locator_ID(otherNF.getM_Warehouse_ID(), bpartner, trx));
+						line.setM_Locator_ID(LBRUtils.getM_Locator_ID (otherNF.getM_Warehouse_ID(), bpartner, trx));
 					}
 					else
 					{

@@ -26,7 +26,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -1273,7 +1273,7 @@ public class MInOut extends X_M_InOut implements DocAction
 				else
 					mLine.setM_Locator_ID(line.getM_Locator_ID());
 
-				int locatorTo = AdempiereLBR.getM_Locator_ID(M_Warehouse_ID, getBPartner(), get_TrxName());
+				int locatorTo = LBRUtils.getM_Locator_ID (M_Warehouse_ID, getBPartner(), get_TrxName());
 
 				if(locatorTo <= 0){
 					log.log(Level.SEVERE,"M_LocatorTo_ID = " + locatorTo);

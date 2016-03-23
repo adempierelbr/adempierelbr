@@ -42,7 +42,6 @@ import org.adempierelbr.model.MLBRDocPrint;
 import org.adempierelbr.model.MLBRMatrixPrinter;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.process.ProcPrintNF;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.ConfirmPanel;
@@ -67,6 +66,7 @@ import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
 
 /** 
  * Form to Print Nota Fiscal
@@ -333,7 +333,8 @@ public class VFormNotaFiscal extends CPanel
 				
 				if (index == 0 && printedNF.isSelected() && !documentno){ //SEM FILTRO E IMPRESSO, SELECIONA INTERVALO					
 					
-					startDate = AdempiereLBR.addDays(actualDate, Integer.parseInt(interval) * -1);
+					
+					startDate = TimeUtil.addDays(actualDate, Integer.parseInt(interval) * -1);
 					
 					sql.append("AND nf.DateDoc BETWEEN ? AND ?");
 					index = 4;

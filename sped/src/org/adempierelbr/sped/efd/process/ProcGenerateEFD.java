@@ -37,7 +37,7 @@ import org.adempierelbr.sped.efd.bean.RC500;
 import org.adempierelbr.sped.efd.bean.RD100;
 import org.adempierelbr.sped.efd.bean.RD500;
 import org.adempierelbr.sped.efd.bean.RE200;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MAttachment;
@@ -182,7 +182,7 @@ public class ProcGenerateEFD extends SvrProcess
 		 * Tempo Final
 		 */
 		long end = System.currentTimeMillis();		
-		String tempoDecorrido = AdempiereLBR.executionTime(start, end);
+		String tempoDecorrido = LBRUtils.elapsedTime (start, end);
 		
 		/*
 		 * Retorno
