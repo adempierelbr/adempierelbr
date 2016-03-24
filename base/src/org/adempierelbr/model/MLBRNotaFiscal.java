@@ -910,6 +910,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param	String	No da NF com a Série
 	 * @return	String	Série da NF
 	 */
+	@Deprecated
 	public static String getSerieNo(String documentNo)
 	{
 		if (documentNo == null || documentNo.indexOf('-') == -1 ||
@@ -920,6 +921,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return documentNo.substring(1+documentNo.indexOf('-'), documentNo.length());
 	}//getserieNo
 
+	@Deprecated
 	public String getSerieNo(){
 		return getSerieNo(getDocumentNo());
 	}
@@ -2205,6 +2207,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				|| is_ValueChanged(COLUMNNAME_GrandTotal))
 			setBarCodeModel1A();
 		
+		//	Preenche o campo séria pela chave da NFe
+		if (!islbr_IsOwnDocument() 
+				&& getlbr_NFeID() != null 
+				&& getlbr_NFeID().length() == 44
+				&& getlbr_NFSerie() == null)
+		{
+			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
+		}
 		return true;
 	}	//	beforeSave
 	
