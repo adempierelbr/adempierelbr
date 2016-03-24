@@ -572,10 +572,10 @@ public class NFeXMLGenerator
 		else
 		{
 			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
-				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				dest.setCPF(toNumericStr (nf.getlbr_BPCNPJ()));
 			
 			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
-				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				dest.setCNPJ(toNumericStr (nf.getlbr_BPCNPJ()));
 
 			//	Estrangeiro
 			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals(nf.getlbr_BPTypeBR()))
