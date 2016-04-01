@@ -788,7 +788,7 @@ public class NFeXMLGenerator
 			
 			//	NT2015.003
 			if (nfl.getLBR_CEST_ID() > 0)
-				prod.setCEST(nfl.getLBR_CESTName());
+				prod.setCEST(toNumericStr (nfl.getLBR_CESTName()));
 			
 //			prod.addNVE(arg0);		//	FIXME
 //			prod.setEXTIPI(arg0);	//	FIXME
