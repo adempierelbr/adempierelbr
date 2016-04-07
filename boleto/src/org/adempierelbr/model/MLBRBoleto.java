@@ -36,7 +36,6 @@ import org.adempierelbr.boleto.bank.MItau;
 import org.adempierelbr.boleto.bank.MSantander_033;
 import org.adempierelbr.boleto.bank.MSantander_353;
 import org.adempierelbr.boleto.bank.MUnibanco;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -748,7 +747,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 		return pdfList;
 	}
 
-	private File print(String FilePath, String PrinterName){
+	private File print(String filePath, String PrinterName){
 
 		JBoletoBean jBoletoBean = new JBoletoBean();
 
@@ -846,12 +845,13 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 	    String fileName = invoice.getDocumentNo() + "_" + getlbr_PayScheduleNo() + ".pdf";
 
-	    if (FilePath == null) FilePath = AdempiereLBR.getPath();
+	    if (filePath == null) 
+	    	filePath = System.getProperty("user.dir");
 
-	    if (!(FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-	    	FilePath += AdempiereLBR.getFileSeparator();
+	    if (!(filePath.endsWith(File.separator)))
+	    	filePath += File.separator;
 
-	    fileName = FilePath + fileName;
+	    fileName = filePath + fileName;
 
 	    log.log(Level.INFO, "SALVANDO ARQUIVO: " + fileName);
 	    jBoleto.writeToFile(fileName);

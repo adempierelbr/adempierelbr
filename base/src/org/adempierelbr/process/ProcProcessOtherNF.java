@@ -24,7 +24,7 @@ import javax.sql.rowset.CachedRowSet;
 
 import org.adempierelbr.model.MLBROtherNF;
 import org.adempierelbr.model.MLBROtherNFLine;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
@@ -202,7 +202,7 @@ public class ProcProcessOtherNF extends SvrProcess
 					MDocType dt = new MDocType(getCtx(),otherNF.getC_DocType_ID(),trx);
 					MDocType shpDT = new MDocType(getCtx(),dt.getC_DocTypeShipment_ID(),trx);
 					MBPartner bp = new MBPartner(getCtx(),otherNF.getC_BPartner_ID(),trx);
-					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = " + AdempiereLBR.getM_Locator_ID((Integer)shpDT.get_Value("M_Warehouse_ID"),bp, trx) + " and m_product_id = nfl.m_product_id) - qty ");
+					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = " + LBRUtils.getM_Locator_ID((Integer)shpDT.get_Value("M_Warehouse_ID"), bp, trx) + " and m_product_id = nfl.m_product_id) - qty ");
 				}
 				else
 					sql.append("(select sum(qtyonhand) from m_storage where m_locator_id = nfl.m_locator_id and m_product_id = nfl.m_product_id) - qty ");

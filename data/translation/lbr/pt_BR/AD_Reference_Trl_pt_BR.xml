@@ -417,4 +417,9 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
+<row id="1120245" trl="Y">
+<value column="Name" original="Tax Regime - Consult">Regime Tributário - Consultas</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
 </adempiereTrl>

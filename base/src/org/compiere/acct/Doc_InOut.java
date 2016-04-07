@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.X_LBR_DocType_Acct;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MCostDetail;
@@ -173,7 +173,7 @@ public class Doc_InOut extends Doc
 		//  *** INICIO: LBR
 		//  14/01/2008, 13:49:00, mgrigioni
 		int C_DocType_ID        = getC_DocType_ID();
-		int LBR_DocType_Acct_ID = AdempiereLBR.getDocTypeAcct(C_DocType_ID);
+		int LBR_DocType_Acct_ID = LBRUtils.getDocTypeAcct (C_DocType_ID);
 
 		if (LBR_DocType_Acct_ID != 0)
 		{

@@ -29,8 +29,8 @@ import org.adempierelbr.model.MLBRTaxStatus;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -572,10 +572,10 @@ public class NFeXMLGenerator
 		else
 		{
 			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
-				dest.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				dest.setCPF(toNumericStr (nf.getlbr_BPCNPJ()));
 			
 			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
-				dest.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				dest.setCNPJ(toNumericStr (nf.getlbr_BPCNPJ()));
 
 			//	Estrangeiro
 			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals(nf.getlbr_BPTypeBR()))
@@ -656,7 +656,7 @@ public class NFeXMLGenerator
 		}
 		
 		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
-		enderDest.setXPais(AdempiereLBR.getCountry_trl ((MCountry) POWrapper.getPO (country)));
+		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
 		
 		if (nf.getlbr_BPPhone() != null)
 			enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
@@ -788,7 +788,7 @@ public class NFeXMLGenerator
 			
 			//	NT2015.003
 			if (nfl.getLBR_CEST_ID() > 0)
-				prod.setCEST(nfl.getLBR_CESTName());
+				prod.setCEST(toNumericStr (nfl.getLBR_CESTName()));
 			
 //			prod.addNVE(arg0);		//	FIXME
 //			prod.setEXTIPI(arg0);	//	FIXME
@@ -870,8 +870,12 @@ public class NFeXMLGenerator
 				//	Preenche o pedido referenciado (xPed)
 				String xPed = orderline.getParent().getPOReference();
 				if (xPed != null && !xPed.trim().isEmpty())
+				{
+					if (xPed.length() > 15)
+						xPed = xPed.substring (0, 15);
 					prod.setXPed (xPed);
-
+				}
+				
 				//	Preenche o item do pedido referenciado (nItemPed)
 				String nItemPed = orderline.get_ValueAsString("POReference");
 				if (nItemPed != null && !nItemPed.trim().isEmpty())
@@ -1375,7 +1379,10 @@ public class NFeXMLGenerator
 				transporta.setIE (shipperIE);
 			
 			if (shipperAddress != null && !shipperAddress.isEmpty())
-				transporta.setXEnder(shipperAddress);
+			{
+				//	Limite de 60 caracteres
+				transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
+			}
 			
 			if (shipperCity != null && !shipperCity.isEmpty())
 				transporta.setXMun(shipperCity);
@@ -1472,7 +1479,7 @@ public class NFeXMLGenerator
 		    	Dup dup = cobr.addNewDup();
 		    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
 		    	dup.setDVenc(normalize (openItem.getDueDate()));
-		    	dup.setVDup(normalize (openItem.getGrandTotal()));
+		    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
 			}
 		}
 		

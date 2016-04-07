@@ -36,7 +36,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.adempiere.pipo.CreateZipFile;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AppsAction;
@@ -427,7 +426,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			chooser.setDialogTitle(Msg.getMsg(Env.getCtx(), "AttachmentSave"));
-			File f = new File(AdempiereLBR.getPath() + File.separator + "Boletos_" + TextUtil.timeToString(new Date(), "yyyyMMdd") + ".zip");
+			File f = new File(System.getProperty("user.dir") + File.separator + "Boletos_" + TextUtil.timeToString(new Date(), "yyyyMMdd") + ".zip");
 			chooser.setSelectedFile(f);
 			//	Show dialog
 			int returnVal = chooser.showSaveDialog(mainPanel);

@@ -214,7 +214,7 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		//
 		panelLayout.setHgap(5);
 		panelLayout.setVgap(5);
-		panel.setPreferredSize(new Dimension(500,270));
+		panel.setPreferredSize(new Dimension(710,270));
 		//
 		getContentPane().add(panel);
 		panel.add(scrollPanel, BorderLayout.CENTER);

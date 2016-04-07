@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
@@ -687,7 +687,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setProductName (product.getName());
 		
 		setProductValue (product.getValue());
-		setVendorProductNo(AdempiereLBR.getVendorProductNo(product.getM_Product_ID(), getParent().getC_BPartner_ID(), get_TrxName()));
+		setVendorProductNo(LBRUtils.getVendorProductNo (product, getParent().getC_BPartner_ID()));
 		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
 		//
 		setLBR_NCM_ID(productW.getLBR_NCM_ID());

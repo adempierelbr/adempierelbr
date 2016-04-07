@@ -112,14 +112,4 @@ public class MLBRNCM extends X_LBR_NCM
 			.setOrderBy ("ORDER BY AD_Client_ID DESC")
 			.first();
 	}	//	get
-	
-	/**
-	 * 	Usar a aba de imposto do NCM
-	 */
-	@Deprecated
-	public int getLBR_Tax_ID ()
-	{
-		return super.getLBR_Tax_ID();
-	}	//	getLBR_Tax_ID
-
 } 	//	MLBRNCM

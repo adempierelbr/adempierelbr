@@ -1,5 +1,6 @@
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import org.adempierelbr.sacred.simp.beans.B9R9001;
 import org.adempierelbr.sacred.simp.beans.B9R9900;
 import org.adempierelbr.sacred.simp.beans.B9R9990;
 import org.adempierelbr.sacred.simp.beans.B9R9999;
-import org.adempierelbr.util.AdempiereLBR;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MPeriod;
 import org.compiere.process.ProcessInfoParameter;
@@ -89,8 +90,8 @@ public class ProcGenerateSacredSimp extends SvrProcess
 		String fileName = p_FilePath;
 		StringBuffer result = runSACRED(dateFrom,dateTo);
 		
-		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-			fileName += AdempiereLBR.getFileSeparator();
+		if (!(p_FilePath.endsWith(File.separator)))
+			fileName += File.separator;
 		
 		fileName += "SACRED_SPL_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
@@ -99,7 +100,7 @@ public class ProcGenerateSacredSimp extends SvrProcess
 		//
 		long end = System.currentTimeMillis();
 		
-		String tempoDecorrido = AdempiereLBR.executionTime(start, end);
+		String tempoDecorrido = LBRUtils.elapsedTime (start, end);
 		
 		return "Arquivo(s) Gerado(s) com Sucesso: " + fileName + 
 		       " <br>** Tempo decorrido: <font color=\"008800\">" + tempoDecorrido + "</font>" +

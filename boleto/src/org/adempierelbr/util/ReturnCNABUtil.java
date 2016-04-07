@@ -94,7 +94,7 @@ public class ReturnCNABUtil
 		              Juros       + ";";
 
 		// Invoice
-		int C_Invoice_ID = AdempiereLBR.getC_Invoice_ID(DocumentNo,trx);
+		int C_Invoice_ID = LBRUtils.getInvoiceByDocNo (0, DocumentNo, trx);	// FIXME: Obter a Organização
 		
 		// Boleto
 		String LBR_PayScheduleNo = MLBRBoleto.getLBR_PayScheduleNo(DocumentNo);	
@@ -131,7 +131,7 @@ public class ReturnCNABUtil
 
 						Payment.setC_BankAccount_ID(C_BankAccount_ID);
 
-						Payment.setC_DocType_ID(AdempiereLBR.getARReceipt()); 		// Contas a Receber
+						Payment.setC_DocType_ID(LBRUtils.getARReceiptDocType()); 	// Contas a Receber
 						Payment.setC_Invoice_ID(C_Invoice_ID);						// Fatura
 						Payment.setC_BPartner_ID(Invoice.getC_BPartner_ID());		// BP
 						Payment.setC_Currency_ID(297); 								// BRL

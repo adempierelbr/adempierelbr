@@ -43,7 +43,7 @@ public abstract class BPartnerUtil
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(BPartnerUtil.class);
 
-	public static final int    BRASIL = AdempiereLBR.BRASIL;
+	public static final int    BRASIL = 139;
 	public static final String EXTCOD = "9999999";
 	public static final String EXTREG = "EX";
 	public static final String EXTMUN = "EXTERIOR";

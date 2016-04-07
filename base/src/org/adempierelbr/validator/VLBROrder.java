@@ -189,10 +189,10 @@ public class VLBROrder implements ModelValidator
 			I_W_C_InvoiceLine iLineW = POWrapper.create(iLine, I_W_C_InvoiceLine.class);
 			I_W_C_OrderLine oLineW = POWrapper.create(new MOrderLine(Env.getCtx(), iLine.getC_OrderLine_ID(), null), I_W_C_OrderLine.class);
 			//
-			iLineW.setFreightAmt(iLineW.getQtyInvoiced().multiply(oLineW.getFreightAmt()).divide(oLineW.getQtyOrdered()));
-			iLineW.setlbr_SISCOMEXAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_SISCOMEXAmt()).divide(oLineW.getQtyOrdered()));
-			iLineW.setlbr_InsuranceAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_InsuranceAmt()).divide(oLineW.getQtyOrdered()));
-			iLineW.setLBR_OtherChargesAmt(iLineW.getQtyInvoiced().multiply(oLineW.getLBR_OtherChargesAmt()).divide(oLineW.getQtyOrdered()));
+			iLineW.setFreightAmt(iLineW.getQtyInvoiced().multiply(oLineW.getFreightAmt()).divide(oLineW.getQtyOrdered(), 2, BigDecimal.ROUND_HALF_UP));
+			iLineW.setlbr_SISCOMEXAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_SISCOMEXAmt()).divide(oLineW.getQtyOrdered(), 2, BigDecimal.ROUND_HALF_UP));
+			iLineW.setlbr_InsuranceAmt(iLineW.getQtyInvoiced().multiply(oLineW.getlbr_InsuranceAmt()).divide(oLineW.getQtyOrdered(), 2, BigDecimal.ROUND_HALF_UP));
+			iLineW.setLBR_OtherChargesAmt(iLineW.getQtyInvoiced().multiply(oLineW.getLBR_OtherChargesAmt()).divide(oLineW.getQtyOrdered(), 2, BigDecimal.ROUND_HALF_UP));
 		}
 		return null;
 	}	//	modelChange
@@ -554,7 +554,7 @@ public class VLBROrder implements ModelValidator
 						"    FROM  " + 
 						"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
 						"    WHERE  " + 
-						"            TRUE " + 
+						"            1=1 " + 
 						"            AND it.C_Invoice_ID=?  " + 
 						"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
 						"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 

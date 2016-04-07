@@ -26,7 +26,6 @@ import org.adempierelbr.sacred.comp.beans.B5R5330;
 import org.adempierelbr.sacred.comp.beans.B5R5335;
 import org.adempierelbr.sacred.comp.beans.B5R5350;
 import org.adempierelbr.sacred.comp.beans.B9R9900;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MBPartner;
@@ -40,6 +39,7 @@ import org.compiere.model.MRegion;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
 
 public class SacredCompUtil{
 
@@ -475,8 +475,10 @@ public class SacredCompUtil{
 	 */
 	public static BigDecimal getCusto(int M_Product_ID, int C_Period_ID, boolean isStart){
 
-		if (isStart){ //busca período anterior
-			C_Period_ID = AdempiereLBR.getPreviousPeriod_ID(ctx, C_Period_ID);
+		if (isStart)
+		{ 
+			//	Busca período anterior
+			C_Period_ID = MPeriod.getC_Period_ID (ctx, TimeUtil.addDays (MPeriod.get(ctx, C_Period_ID).getStartDate(), -1), 0);
 		}
 			
 		String sql = "SELECT getCurrentCost(?,?,?) FROM DUAL";

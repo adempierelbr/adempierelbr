@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
@@ -22,7 +23,6 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfse.NFSeRPSGenerator;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MSequence;
@@ -121,8 +121,8 @@ public class ProcGenerateRPS extends SvrProcess
 		String     trxName = get_TrxName();
 		String     fileName = p_FilePath;
 		//
-	    if (!fileName.endsWith(AdempiereLBR.getFileSeparator()) && Ini.isClient()) 
-	    	fileName += AdempiereLBR.getFileSeparator();
+	    if (!fileName.endsWith(File.separator) && Ini.isClient()) 
+	    	fileName += File.separator;
 		//
 		String dateFrom = TextUtil.timeToString(p_DateFrom, "ddMMyyyy");
 		String dateTo = TextUtil.timeToString(p_DateTo, "ddMMyyyy");

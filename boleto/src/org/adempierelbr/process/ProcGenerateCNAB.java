@@ -12,13 +12,13 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRCNAB;
 import org.adempierelbr.model.X_LBR_Bank;
-import org.adempierelbr.util.AdempiereLBR;
 import org.compiere.model.MBank;
 import org.compiere.model.MBankAccount;
 import org.compiere.process.ProcessInfoParameter;
@@ -99,8 +99,8 @@ public class ProcGenerateCNAB extends SvrProcess
 		
 		int bNum = Integer.parseInt(bBank.getlbr_jBoletoNo());
 		
-	    if (!(fileName.endsWith(AdempiereLBR.getFileSeparator()))) 
-	    	fileName += AdempiereLBR.getFileSeparator();
+	    if (!(fileName.endsWith(File.separator))) 
+	    	fileName += File.separator;
 	    
 	    fileName += MLBRCNAB.prefix + MLBRCNAB.getSystemDate(ctx) + MLBRCNAB.ext;
 

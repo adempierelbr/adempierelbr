@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempierelbr.sped.process;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Properties;
@@ -35,7 +36,6 @@ import org.adempierelbr.sped.contrib.bean.BlocoM;
 import org.adempierelbr.sped.contrib.bean.R0000;
 import org.adempierelbr.sped.contrib.bean.R0100;
 import org.adempierelbr.sped.contrib.bean.SPEDContrib;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MOrgInfo;
@@ -259,8 +259,8 @@ public class GenerateSPEDContrib extends SvrProcess
 		
 		String fileName = p_FilePath;
 		
-		if (!(p_FilePath.endsWith(AdempiereLBR.getFileSeparator())))
-			fileName += AdempiereLBR.getFileSeparator();
+		if (!(p_FilePath.endsWith(File.separator)))
+			fileName += File.separator;
 		
 		/*
 		 * Nome do arquivo

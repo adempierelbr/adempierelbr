@@ -37,8 +37,8 @@ import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
 import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
-import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
@@ -910,6 +910,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param	String	No da NF com a Série
 	 * @return	String	Série da NF
 	 */
+	@Deprecated
 	public static String getSerieNo(String documentNo)
 	{
 		if (documentNo == null || documentNo.indexOf('-') == -1 ||
@@ -920,6 +921,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return documentNo.substring(1+documentNo.indexOf('-'), documentNo.length());
 	}//getserieNo
 
+	@Deprecated
 	public String getSerieNo(){
 		return getSerieNo(getDocumentNo());
 	}
@@ -1819,9 +1821,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public void setShipmentBPartner (MInvoice invoice)
 	{
-		int M_InOut_ID = AdempiereLBR.getM_InOut_ID (invoice.getC_Invoice_ID(), get_TrxName());
+		int M_InOut_ID = LBRUtils.getInOutFromInvoice (invoice);
 		//
-		setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
+		if (M_InOut_ID > 0)
+			setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
 	}	//	setShipmentBPartner
 	
 	/**
@@ -2204,6 +2207,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				|| is_ValueChanged(COLUMNNAME_GrandTotal))
 			setBarCodeModel1A();
 		
+		//	Preenche o campo séria pela chave da NFe
+		if (!islbr_IsOwnDocument() 
+				&& getlbr_NFeID() != null 
+				&& getlbr_NFeID().length() == 44
+				&& getlbr_NFSerie() == null)
+		{
+			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
+		}
 		return true;
 	}	//	beforeSave
 	
