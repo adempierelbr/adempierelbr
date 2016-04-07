@@ -1,5 +1,5 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                        *
+ * Product: Adempiere ERP & CRM Smart Business Solution                       *
  * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software; you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
@@ -33,7 +34,10 @@ import org.compiere.apps.ALayout;
 import org.compiere.apps.ALayoutConstraint;
 import org.compiere.grid.ed.VCheckBox;
 import org.compiere.minigrid.IDColumn;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MQuery;
+import org.compiere.model.MRole;
+import org.compiere.model.MTable;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CTextField;
 import org.compiere.util.Env;
@@ -52,7 +56,7 @@ public class InfoBPartner extends Info
 	 *
 	 */
 	private static final long serialVersionUID = 5550733934685665946L;
-
+	
 	/**
 	 *	Standard Constructor
 	 *  @param frame frame
@@ -99,25 +103,6 @@ public class InfoBPartner extends Info
 		+ " LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')"
 		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')"
 		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)";
-
-	/**  Array of Column Info    */
-	private static Info_Column[] s_partnerLayout = {
-		new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class),
-		new Info_Column("CPF", "C_BPartner.lbr_CPF", String.class),
-		new Info_Column("CNPJ", "C_BPartner.lbr_CNPJ", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class),
-		//new Info_Column(Msg.translate(Env.getCtx(), "Contact"), "c.Name AS Contact", KeyNamePair.class, "c.AD_User_ID"),
-		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditAvailable"), "C_BPartner.SO_CreditLimit-C_BPartner.SO_CreditUsed AS SO_CreditAvailable", BigDecimal.class, true, true, null),
-		new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditUsed"), "C_BPartner.SO_CreditUsed", BigDecimal.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "IsBillTo"), "l.IsBillTo", Boolean.class)
-	};
-
 	//
 	private CLabel labelValue = new CLabel();
 	private CTextField fieldValue = new CTextField(10);
@@ -228,10 +213,39 @@ public class InfoBPartner extends Info
 		if (whereClause != null && whereClause.length() > 0)
 			where.append(" AND ").append(whereClause);
 		//
-		prepareTable(s_partnerLayout, s_partnerFROM,
-			where.toString(),
-			"C_BPartner.Value");
-
+		MRole role = MRole.get (Env.getCtx(), Env.getAD_Role_ID(Env.getCtx()));
+		
+		boolean windowAccess = role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID());
+		boolean columnCreditAccess = role.isColumnAccess(MBPartner.Table_ID, 2921, true);		//	Column C_BPartner.SO_CreditUsed
+		boolean columnOpenBalanceAccess = role.isColumnAccess(MBPartner.Table_ID, 12533, true);	//	Column C_BPartner.TotalOpenBalance
+		boolean columnLifetimeAccess = role.isColumnAccess(MBPartner.Table_ID, 2925, true);		//	Column C_BPartner.ActualLifeTimeValue
+		
+		List<Info_Column> list = new ArrayList<Info_Column>();
+		list.add(new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class));
+		list.add(new Info_Column("CNPJ/CPF/ID", "COALESCE (C_BPartner.lbr_CNPJ, C_BPartner.lbr_CPF, C_BPartner.TaxID)", String.class));
+		if (windowAccess)
+		{
+			if (columnCreditAccess)
+			{
+				list.add(new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditAvailable"), "C_BPartner.SO_CreditLimit-C_BPartner.SO_CreditUsed AS SO_CreditAvailable", BigDecimal.class, true, true, null));
+				list.add(new Info_Column(Msg.translate(Env.getCtx(), "SO_CreditUsed"), "C_BPartner.SO_CreditUsed", BigDecimal.class));
+			}
+			if (columnOpenBalanceAccess)
+				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
+		}
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || COALESCE (', ' || a.Address2, '')", String.class));
+		if (windowAccess && columnLifetimeAccess)
+			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsBillTo"), "l.IsBillTo", Boolean.class));
+		
+		Info_Column[] s_partnerLayout = new Info_Column[list.size()];
+		list.toArray(s_partnerLayout);
+		prepareTable(s_partnerLayout, s_partnerFROM, where.toString(), "C_BPartner.Value");
+		
 		//  Get indexes
 		for (int i = 0; i < p_layout.length; i++)
 		{
@@ -467,7 +481,8 @@ public class InfoBPartner extends Info
 	 */
 	protected boolean hasHistory()
 	{
-		return true;
+		MRole role = MRole.get (Env.getCtx(), Env.getAD_Role_ID(Env.getCtx()));
+		return role.isAllow_Info_Order() || role.isAllow_Info_Invoice();
 	}	//	hasHistory
 
 	/**
