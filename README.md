@@ -73,6 +73,14 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201604 [[Download]][50] [[Seed PostgreSQL]][51] [[Seed OracleXE]][52]
+
+	* Melhorias na tradução
+	* Melhoria na janela de Informações de Parceiro de Negócios
+	* Correção no preenchimento do CEST
+	* Correção no preenchimento do endereço da transportadora
+	* [Mais detalhes][49]
+
 1. LBR-201603 [[Download]][46] [[Seed PostgreSQL]][47] [[Seed OracleXE]][48]
 
 	* Melhorias na tradução
@@ -226,3 +234,7 @@ Patrocinadores desta versão
 [46]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201603.tgz
 [47]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_PG.tgz
 [48]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_ORA.tgz
+[49]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201604
+[50]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
+[51]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
+[52]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz
