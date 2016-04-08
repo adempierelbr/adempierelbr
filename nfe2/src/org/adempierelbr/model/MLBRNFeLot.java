@@ -321,7 +321,9 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			catch (Exception e) {}
 			//
 			
-			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat))
+			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
+					&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
+					&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
 			{
 				setDocStatus(DOCSTATUS_Completed);
 				setDocAction(DOCACTION_None);
