@@ -2936,8 +2936,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
 					lot.save();
 					
-					System.out.println(getlbr_NFeID());
-					
 					//	Vincula o lote criado a NF-e
 					setLBR_NFeLot_ID (lot.getLBR_NFeLot_ID());
 					save();
