@@ -31,6 +31,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
 import org.adempiere.exceptions.DBException;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -2354,8 +2355,8 @@ public class MInvoice extends X_C_Invoice implements DocAction
         setC_Campaign_ID(originalInvoice.getC_Campaign_ID());
         setUser1_ID(originalInvoice.getUser1_ID());
         setUser2_ID(originalInvoice.getUser2_ID());
-        set_Value("LBR_TransactionType", originalInvoice.get_Value("LBR_TransactionType"));
-        set_Value("LBR_IndPres", originalInvoice.get_Value("LBR_IndPres"));
+        set_Value(I_W_C_Invoice.COLUMNNAME_lbr_TransactionType, originalInvoice.get_Value(I_W_C_Invoice.COLUMNNAME_lbr_TransactionType));
+        set_Value(I_W_C_Invoice.COLUMNNAME_LBR_IndPres, originalInvoice.get_Value(I_W_C_Invoice.COLUMNNAME_LBR_IndPres));
 	}
 
 	/**
