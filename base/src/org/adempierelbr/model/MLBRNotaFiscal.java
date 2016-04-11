@@ -2946,9 +2946,28 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					if (!lot.islbr_LotSent())
 						throw new Exception ("Erro na transmissão da NF-e. " + MRefList.getListName(getCtx(), LBR_NFESTATUS_AD_Reference_ID, lot.getlbr_NFeStatus()));
 					
-					//	Set status
-					setDocStatus(DOCSTATUS_WaitingConfirmation);
-					setDocAction(DOCACTION_Complete);
+					try 
+					{
+						//	Wait 2 secs before check if NF is processed
+						log.finer ("pause");
+						Thread.sleep(2000);
+						log.finer ("resume");
+					} 
+					catch (InterruptedException ex)
+					{
+					    Thread.currentThread().interrupt();
+					}
+
+
+					//	Lote já processado
+					if (!lot.islbr_LotReceived() && !lot.consultaLoteNFe())
+					{
+						//	Set status
+						setDocStatus(DOCSTATUS_WaitingConfirmation);
+						setDocAction(DOCACTION_Complete);
+					}
+					
+					return lot.getDocStatus();
 				}
 			}
 			
