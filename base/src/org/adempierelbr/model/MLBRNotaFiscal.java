@@ -2936,6 +2936,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
 					lot.save();
 					
+					System.out.println(getlbr_NFeID());
+					
 					//	Vincula o lote criado a NF-e
 					setLBR_NFeLot_ID (lot.getLBR_NFeLot_ID());
 					save();
@@ -2960,14 +2962,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 
 					//	Lote já processado
-					if (!lot.islbr_LotReceived() && !lot.consultaLoteNFe())
+					if ((!lot.islbr_LotReceived() 			//	Verifica se o Lote não foi processado de forma síncrona
+							&& !lot.consultaLoteNFe())		//	Envia o lote
+							|| !lot.islbr_LotReceived())	//	Caso o envio não tenha sido recebido, marca como WC
 					{
 						//	Set status
 						setDocStatus(DOCSTATUS_WaitingConfirmation);
 						setDocAction(DOCACTION_Complete);
 					}
 					
-					return lot.getDocStatus();
+					//	Retorna o próprio status, pois caso tenha ocorrido erro, o processo de retorno de lote
+					//		irá marcar o processo como inválido
+					return getDocStatus();
 				}
 			}
 			
@@ -3280,15 +3286,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		options[3] = null;
 		options[4] = null;
 		
-		if (DOCSTATUS_InProgress.equals(docStatus))
+		if (DOCSTATUS_Invalid.equals(docStatus))
+		{
+			options[0] = DOCACTION_Prepare;
+			options[1] = DOCACTION_VoidInvalidate;
+			index=2;
+		}
+		else if (DOCSTATUS_InProgress.equals(docStatus))
 		{
 			options[0] = DOCACTION_Complete;
 			options[1] = DOCACTION_Unlock;
 			options[2] = DOCACTION_VoidInvalidate;
 			index=3;
 		}
-		else if (DOCSTATUS_Drafted.equals(docStatus)
-				|| DOCSTATUS_Invalid.equals(docStatus))
+		else if (DOCSTATUS_Drafted.equals(docStatus))
 		{
 			options[0] = DOCACTION_Prepare;
 			options[1] = DOCACTION_Complete;
