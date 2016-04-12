@@ -224,7 +224,7 @@ public class InfoBPartner extends Info
 		list.add(new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class));
-		list.add(new Info_Column("CNPJ/CPF/ID", "COALESCE (C_BPartner.lbr_CNPJ, C_BPartner.lbr_CPF, C_BPartner.TaxID)", String.class));
+		list.add(new Info_Column("CNPJ/CPF/ID", "NVL (C_BPartner.lbr_CNPJ, NVL (C_BPartner.lbr_CPF, C_BPartner.TaxID))", String.class));
 		if (windowAccess)
 		{
 			if (columnCreditAccess)
@@ -236,7 +236,7 @@ public class InfoBPartner extends Info
 				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
 		}
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
-		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || COALESCE (', ' || a.Address2, '')", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '')", String.class));
 		if (windowAccess && columnLifetimeAccess)
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class));
