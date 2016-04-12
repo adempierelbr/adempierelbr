@@ -2948,16 +2948,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					
 					try 
 					{
-						//	Wait 2 secs before check if NF is processed
+						//	Wait 15 secs before check if NF is processed
+						//		15 secs is the SeFaz recommended time
 						log.finer ("pause");
-						Thread.sleep(2000);
+						Thread.sleep(15000);
 						log.finer ("resume");
 					} 
 					catch (InterruptedException ex)
 					{
 					    Thread.currentThread().interrupt();
 					}
-
 
 					//	Lote já processado
 					if ((!lot.islbr_LotReceived() 			//	Verifica se o Lote não foi processado de forma síncrona
