@@ -1825,6 +1825,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//
 		if (M_InOut_ID > 0)
 			setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
+		else
+			setShipmentBPartner(null, invoice, null);
 	}	//	setShipmentBPartner
 	
 	/**
