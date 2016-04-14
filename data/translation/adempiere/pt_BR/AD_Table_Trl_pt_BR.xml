@@ -585,7 +585,7 @@
     <value column="Name" original="Payment Batch">Lote de Pagamento</value>
   </row>
   <row id="413" trl="Y">
-    <value column="Name" original="Open Item">Abrir Item</value>
+    <value column="Name" original="Open Item">Itens em Aberto</value>
   </row>
   <row id="414" trl="Y">
     <value column="Name" original="Field Group">Grupo de Campo</value>
