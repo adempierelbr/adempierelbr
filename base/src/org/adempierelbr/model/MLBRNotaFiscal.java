@@ -1847,11 +1847,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (io != null && io.getM_InOut_ID() != 0)
 		{
 			bpLocation = new MBPartnerLocation (getCtx(), io.getC_BPartner_Location_ID(), get_TrxName());
+
+			//	Número de volumes definido na expedição
+			int noPackages = io.getNoPackages();
+			if (noPackages <= 0)
+				noPackages = 1;
 			
 			//	Dados exclusivos da Expedição/Recebimento
 			setM_InOut_ID(io.getM_InOut_ID());
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
+			setlbr_NetWeight(io.getWeight());
 			setNoPackages(io.getNoPackages());
 			setDeliveryViaRule(io.getDeliveryViaRule());
 
