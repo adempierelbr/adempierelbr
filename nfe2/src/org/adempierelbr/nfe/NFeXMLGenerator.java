@@ -918,8 +918,11 @@ public class NFeXMLGenerator
 				X_LBR_NFLineTax icmsSTTax = nfl.getICMSSTTax();
 
 				//	CST = Código de Situação Tributária
+				int LBR_TaxStatus_ID = icmsTax.getLBR_TaxStatus_ID();
+				if (icmsSTTax != null && icmsSTTax.getLBR_TaxStatus_ID() > 0)
+					LBR_TaxStatus_ID = icmsSTTax.getLBR_TaxStatus_ID();
 				
-				String taxStatus = new MLBRTaxStatus (nf.getCtx(), icmsTax.getLBR_TaxStatus_ID(), null).getTaxStatus(nf.isSOTrx());
+				String taxStatus = new MLBRTaxStatus (nf.getCtx(), LBR_TaxStatus_ID, null).getTaxStatus(nf.isSOTrx());
 				
 				//	Product Source
 				I_W_M_Product prdct = POWrapper.create(MProduct.get(ctx, nfl.getM_Product_ID()), I_W_M_Product.class);
