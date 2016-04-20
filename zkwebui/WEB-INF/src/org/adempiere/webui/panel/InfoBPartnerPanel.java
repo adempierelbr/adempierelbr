@@ -300,7 +300,11 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
             
 			MRole role = MRole.get (Env.getCtx(), Env.getAD_Role_ID(Env.getCtx()));
 			
-			boolean windowAccess = role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID());
+			boolean windowAccess = false;
+			
+			if (role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID()) != null)
+				windowAccess = role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID());
+			
 			boolean columnCreditAccess = role.isColumnAccess(MBPartner.Table_ID, 2921, true);		//	Column C_BPartner.SO_CreditUsed
 			boolean columnOpenBalanceAccess = role.isColumnAccess(MBPartner.Table_ID, 12533, true);	//	Column C_BPartner.TotalOpenBalance
 			boolean columnLifetimeAccess = role.isColumnAccess(MBPartner.Table_ID, 2925, true);		//	Column C_BPartner.ActualLifeTimeValue
