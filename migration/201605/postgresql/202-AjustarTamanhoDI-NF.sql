@@ -9,5 +9,5 @@ INSERT INTO t_alter_column values('lbr_nfdi','lbr_DI','VARCHAR(12)',null,'NULL')
 ;
 
 -- 11/04/2016 11h54min7s BRT
-SELECT Register_Migration_Script ('202-AjustarTamanhoDI-NFImportação.sql') FROM DUAL
+SELECT Register_Migration_Script ('202-AjustarTamanhoDI-NF.sql') FROM DUAL
 ;
