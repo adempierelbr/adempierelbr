@@ -245,7 +245,7 @@ Patrocinadores desta versão
 [50]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
 [51]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
 [52]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz
-[53]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201604
-[54]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
-[55]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
-[56]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz
+[53]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201605
+[54]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201605.tgz
+[55]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_PG.tgz
+[56]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_ORA.tgz
