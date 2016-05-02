@@ -15,15 +15,16 @@ package org.adempierelbr.process;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.pipo.CreateZipFile;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MSysConfig;
-import org.compiere.model.MTable;
-import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -106,17 +107,26 @@ public class ProcXMLExport extends SvrProcess
 		File f = new File (p_Temp);
 		if (f.exists())
 			deleteDir (f);
-		f = new File (p_Temp + p_FolderKey);
-		f.mkdirs();
 		//
+		if (Ini.isClient() && p_FilePath == null)
+			throw new AdempiereException ("@FillMandatory@ @File_Directory@");
+		
 		if (!(p_FilePath.endsWith(File.separator)))
 			p_FilePath += File.separator;
 		//
 		StringBuffer whereClause = new StringBuffer("AD_Client_ID=?")
-		.append(" AND C_DocTypeTarget_ID=?")
 		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
-		
+
+		if (p_C_DocTypeTarget_ID > 0)
+			whereClause.append(" AND C_DocTypeTarget_ID="+p_C_DocTypeTarget_ID);
+		else
+			whereClause.append(" AND EXISTS (SELECT '1' ")
+					.append("FROM C_DocType dt ")
+					.append("WHERE dt.C_DocType_ID=LBR_NotaFiscal.C_DocTypeTarget_ID ")
+					.append("AND dt.DocBaseType='NFB' ")
+					.append("AND dt.lbr_IsOwnDocument='Y')");
+
 		if (p_AD_Org_ID > 0)
 			whereClause.append(" AND AD_Org_ID="+p_AD_Org_ID);
 
@@ -129,26 +139,45 @@ public class ProcXMLExport extends SvrProcess
 		if (p_C_BP_Group_ID > 0)
 			whereClause.append(" AND EXISTS (SELECT '1' FROM C_BPartner bp WHERE bp.C_BPartner_ID=LBR_NotaFiscal.C_BPartner_ID AND bp.C_BP_Group_ID ="+p_C_BP_Group_ID+")");
 		
-		whereClause.append(" AND LBR_NFeStatus <> '101' ");	//	Canceladas
+		whereClause.append(" AND IsCancelled='N' ");	//	Canceladas
 		//
-		MTable table = MTable.get(Env.getCtx(), MLBRNotaFiscal.Table_Name);		
-		Query q =  new Query(Env.getCtx(), table, whereClause.toString(), null);
-		      q.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx()), p_C_DocTypeTarget_ID});
+		List<MLBRNotaFiscal> nfs = new Query(Env.getCtx(), MLBRNotaFiscal.Table_Name, whereClause.toString(), null)
+					.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx())})
+					.list();
 		//		
-		for (PO po : q.list())
+		for (MLBRNotaFiscal nf : nfs)
 		{
-			MLBRNotaFiscal nf = (MLBRNotaFiscal) po;
-			//
 			MAttachment attachment = nf.getAttachment();
-			if(attachment == null)
+			if (attachment == null 
+					|| (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nf.getlbr_NFModel()) &&
+							!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nf.getlbr_NFModel())))
 				continue;
-			//
-			for(int index=0; index < attachment.getEntryCount(); index++)
+
+			//	Tenta encontrar o arquivo de distribuição
+			MAttachmentEntry xml = null;
+			for (MAttachmentEntry entry : attachment.getEntries())
 			{
-				String fileName = p_Temp + p_FolderKey + File.separator + attachment.getEntryName(index);
+				if (entry.getName().endsWith("dst.xml"))
+				{
+					xml = entry;
+					break;
+				}
+				else if (entry.getName().endsWith("xml"))
+					xml = entry;
+			}
+			
+			if (xml != null)
+			{
+				String folder = p_Temp + p_FolderKey + File.separator + TextUtil.toNumeric(nf.getlbr_CNPJ()) 
+						+ File.separator + "Emitidas" + File.separator + (nf.isSOTrx() ? "Saída" : "Entrada");
+				String fileName = folder + File.separator + xml.getName();
 				//
-				log.fine ("Saving to >> " + fileName);
-				attachment.getEntryFile(index, new File(fileName));
+				File file = new File (folder);
+				if (!file.exists())
+					file.mkdirs();
+				//
+				log.finer ("Saving to >> " + fileName);
+				xml.getFile (new File (fileName));
 			}
 		}
 		//		Versão SWING

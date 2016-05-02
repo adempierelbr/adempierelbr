@@ -3539,16 +3539,16 @@ Se uma LDM é referenciada e ativada no Tipo de Solicitação, uma Solicitação
     <value column="Help" original="Define downloads for a product.  If the product is an asset, the user can download the data.">Definir downloads para um produto.  O usuário pode fazer download dos dados caso o produto seja um ativo.</value>
   </row>
   <row id="708" trl="Y">
-    <value column="Name" original="User Mail">Enviar mensagem para usuário</value>
+    <value column="Name" original="User Mail">Emails enviados</value>
     <value column="CommitWarning" original="" />
-    <value column="Description" original="Mail sent to the user">O email foi enviado ao usuário</value>
+    <value column="Description" original="Mail sent to the user">Emails enviados pelo usuário</value>
     <value column="Help" original="" />
   </row>
   <row id="709" trl="Y">
-    <value column="Name" original="User Mail">Enviar mensagem para usuário</value>
+    <value column="Name" original="User Mail">Emails enviados</value>
     <value column="CommitWarning" original="" />
-    <value column="Description" original="Mail sent to the user">O email foi enviado ao usuário</value>
-    <value column="Help" original="Archive of mails sent to users">Arquivo de emails enviados a usuários</value>
+    <value column="Description" original="Mail sent to the user">Emails enviados pelo usuário</value>
+    <value column="Help" original="Archive of mails sent to users">Arquivo dos emails enviados pelo usuário</value>
   </row>
   <row id="710" trl="Y">
     <value column="Name" original="Web Store">Loja de Web</value>
@@ -5605,10 +5605,10 @@ Valido De/Para é determinado pelo imposto pai.</value>
     <value column="Help" original="The User Tab defines the log in for Users who have access to the system.  For application access, users need to have a role assigned.">A Aba "Usuário" define o "login" para Usuários que têm acesso ao sistema.  For application access, users need to have a role assigned.</value>
   </row>
   <row id="53283" trl="Y">
-    <value column="Name" original="User Mail">Enviar mensagem para usuário</value>
+    <value column="Name" original="User Mail">Emails enviados</value>
     <value column="CommitWarning" original="" />
-    <value column="Description" original="Mail sent to the user">O email foi enviado ao usuário</value>
-    <value column="Help" original="Archive of mails sent to users">Arquivo de emails enviados a usuários</value>
+    <value column="Description" original="Mail sent to the user">Emails enviados pelo usuário</value>
+    <value column="Help" original="Archive of mails sent to users">Arquivo dos emails enviados pelo usuário</value>
   </row>
   <row id="53284" trl="Y">
     <value column="Name" original="Order Source">Origem do Pedido</value>

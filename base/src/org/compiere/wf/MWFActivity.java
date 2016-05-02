@@ -39,6 +39,7 @@ import org.compiere.model.MColumn;
 import org.compiere.model.MConversionRate;
 import org.compiere.model.MMailText;
 import org.compiere.model.MNote;
+import org.compiere.model.MOrder;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPInstance;
@@ -834,7 +835,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 			setWFState (StateEngine.STATE_Terminated);	//	unlocks
 			
 			//	Forçar o documento ficar inválido em caso de erro
-			if (m_docStatus == null)
+			String docAction = null;
+			
+			if (m_po != null && m_po.get_ColumnIndex(MOrder.COLUMNNAME_DocAction) > 0)
+				docAction = m_po.get_ValueAsString(MOrder.COLUMNNAME_DocAction);
+			
+			if (m_docStatus == null && 
+					(DocAction.ACTION_Complete.equals(docAction) || 
+					 DocAction.ACTION_Prepare.equals(docAction)))
 				m_docStatus = DocAction.STATUS_Invalid;
 			
 			//	Set Document Status 

@@ -72,7 +72,14 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201605 [[Download]][54] [[Seed PostgreSQL]][55] [[Seed OracleXE]][56]
 
+	* Melhorias na tradução
+	* Correção na CalloutNFe
+	* Ajuste no tamanho do campo DI
+	* Aumento do tempo de pesquisa da NF-e para o recomendado pela SeFaz
+	* [Mais detalhes][53]
+	
 1. LBR-201604 [[Download]][50] [[Seed PostgreSQL]][51] [[Seed OracleXE]][52]
 
 	* Melhorias na tradução
@@ -238,3 +245,7 @@ Patrocinadores desta versão
 [50]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
 [51]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
 [52]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz
+[53]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201604
+[54]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
+[55]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
+[56]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz

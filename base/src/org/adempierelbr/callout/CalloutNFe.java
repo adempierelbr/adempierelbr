@@ -289,7 +289,7 @@ public class CalloutNFe extends CalloutEngine
 			MLocation location = new MLocation(ctx, transpLocations[0].getC_Location_ID(), null);
 			MCountry country = new MCountry(ctx,location.getC_Country_ID(),null);
 
-			if (!MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", true))
+			if (MSysConfig.getBooleanValue("LBR_USE_UNIFIED_BP", true))
 			{
 				mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperCNPJ, transpW.getlbr_CNPJ());
 				mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperIE, transpW.getlbr_IE());
@@ -321,6 +321,16 @@ public class CalloutNFe extends CalloutEngine
 				MRegion region = new MRegion(ctx,location.getC_Region_ID(),null);
 				mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperRegion, region.getName());
 			}
+		}
+		else
+		{
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperCNPJ, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperIE, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperAddress, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperCity, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperPostal, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperCountry, null);
+			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPShipperRegion, null);
 		}
 		return "";
 	}	//	docType

@@ -27,11 +27,14 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_Invoice;
+import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_M_Product;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
@@ -567,6 +570,26 @@ public class MLBRTax extends X_LBR_Tax
 		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), o.getBill_Location_ID(), null); 
 		//
 		return getTaxes (o.getC_DocTypeTarget_ID(), o.isSOTrx(), o.getlbr_TransactionType(), p, oi, bp, bpLoc, o.getDateAcct());
+	}	//	getTaxes
+	
+	/**
+	 * Retorna o registro do imposto baseado na pesquisa
+	 * 
+	 * Não usar este método em Callouts, pois a Callout pode acioná=lo antes que 
+	 * a linha tenha sido salva.
+	 * 
+	 * 	@param Invoice Line
+	 * 	@return Object Array (Taxes, Legal Msg, CFOP and CST) 
+	 */
+	public static Object[] getTaxes (I_W_C_InvoiceLine il, String trx)
+	{
+		I_W_C_Invoice i = POWrapper.create(new MInvoice (Env.getCtx(), il.getC_Invoice_ID(), trx), I_W_C_Invoice.class);
+		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), il.getM_Product_ID(), trx), I_W_M_Product.class);
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), i.getAD_Org_ID(), trx), I_W_AD_OrgInfo.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), i.getC_BPartner_ID(), trx), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), i.getC_BPartner_Location_ID(), trx); 
+		//
+		return getTaxes (i.getC_DocTypeTarget_ID(), i.isSOTrx(), i.getlbr_TransactionType(), p, oi, bp, bpLoc, i.getDateAcct());
 	}	//	getTaxes
 	
 	/**

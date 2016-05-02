@@ -215,7 +215,11 @@ public class InfoBPartner extends Info
 		//
 		MRole role = MRole.get (Env.getCtx(), Env.getAD_Role_ID(Env.getCtx()));
 		
-		boolean windowAccess = role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID());
+		boolean windowAccess = false;
+		
+		if (role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID()) != null)
+			windowAccess = role.getWindowAccess(MTable.get(Env.getCtx(), MBPartner.Table_ID).getAD_Window_ID());
+			
 		boolean columnCreditAccess = role.isColumnAccess(MBPartner.Table_ID, 2921, true);		//	Column C_BPartner.SO_CreditUsed
 		boolean columnOpenBalanceAccess = role.isColumnAccess(MBPartner.Table_ID, 12533, true);	//	Column C_BPartner.TotalOpenBalance
 		boolean columnLifetimeAccess = role.isColumnAccess(MBPartner.Table_ID, 2925, true);		//	Column C_BPartner.ActualLifeTimeValue
@@ -224,7 +228,7 @@ public class InfoBPartner extends Info
 		list.add(new Info_Column(" ", "C_BPartner.C_BPartner_ID", IDColumn.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class));
-		list.add(new Info_Column("CNPJ/CPF/ID", "COALESCE (C_BPartner.lbr_CNPJ, C_BPartner.lbr_CPF, C_BPartner.TaxID)", String.class));
+		list.add(new Info_Column("CNPJ/CPF/ID", "NVL (C_BPartner.lbr_CNPJ, NVL (C_BPartner.lbr_CPF, C_BPartner.TaxID))", String.class));
 		if (windowAccess)
 		{
 			if (columnCreditAccess)
@@ -236,7 +240,7 @@ public class InfoBPartner extends Info
 				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
 		}
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
-		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || COALESCE (', ' || a.Address2, '')", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '')", String.class));
 		if (windowAccess && columnLifetimeAccess)
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class));

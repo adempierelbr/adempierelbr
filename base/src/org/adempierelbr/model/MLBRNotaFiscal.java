@@ -302,7 +302,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND IsActive='Y' AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
@@ -320,7 +320,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND IsActive='Y' AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
@@ -340,7 +340,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
 		             "WHERE LBR_NotaFiscalLine_ID IN " +
 		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID = ?) " +
-		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?) " +
+		             "AND IsActive='Y'";
 		//
 
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
@@ -1825,6 +1826,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//
 		if (M_InOut_ID > 0)
 			setShipmentBPartner(new MInOut (Env.getCtx(), M_InOut_ID, get_TrxName()), invoice, null);
+		else
+			setShipmentBPartner(null, invoice, null);
 	}	//	setShipmentBPartner
 	
 	/**
@@ -1845,11 +1848,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (io != null && io.getM_InOut_ID() != 0)
 		{
 			bpLocation = new MBPartnerLocation (getCtx(), io.getC_BPartner_Location_ID(), get_TrxName());
+
+			//	Número de volumes definido na expedição
+			int noPackages = io.getNoPackages();
+			if (noPackages <= 0)
+				noPackages = 1;
 			
 			//	Dados exclusivos da Expedição/Recebimento
 			setM_InOut_ID(io.getM_InOut_ID());
 			setFreightCostRule (io.getFreightCostRule());
 			setlbr_GrossWeight(io.getWeight());
+			setlbr_NetWeight(io.getWeight());
 			setNoPackages(io.getNoPackages());
 			setDeliveryViaRule(io.getDeliveryViaRule());
 
@@ -2946,9 +2955,32 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					if (!lot.islbr_LotSent())
 						throw new Exception ("Erro na transmissão da NF-e. " + MRefList.getListName(getCtx(), LBR_NFESTATUS_AD_Reference_ID, lot.getlbr_NFeStatus()));
 					
-					//	Set status
-					setDocStatus(DOCSTATUS_WaitingConfirmation);
-					setDocAction(DOCACTION_Complete);
+					try 
+					{
+						//	Wait 15 secs before check if NF is processed
+						//		15 secs is the SeFaz recommended time
+						log.finer ("pause");
+						Thread.sleep(15000);
+						log.finer ("resume");
+					} 
+					catch (InterruptedException ex)
+					{
+					    Thread.currentThread().interrupt();
+					}
+
+					//	Lote já processado
+					if ((!lot.islbr_LotReceived() 			//	Verifica se o Lote não foi processado de forma síncrona
+							&& !lot.consultaLoteNFe())		//	Envia o lote
+							|| !lot.islbr_LotReceived())	//	Caso o envio não tenha sido recebido, marca como WC
+					{
+						//	Set status
+						setDocStatus(DOCSTATUS_WaitingConfirmation);
+						setDocAction(DOCACTION_Complete);
+					}
+					
+					//	Retorna o próprio status, pois caso tenha ocorrido erro, o processo de retorno de lote
+					//		irá marcar o processo como inválido
+					return getDocStatus();
 				}
 			}
 			
@@ -3261,15 +3293,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		options[3] = null;
 		options[4] = null;
 		
-		if (DOCSTATUS_InProgress.equals(docStatus))
+		if (DOCSTATUS_Invalid.equals(docStatus))
+		{
+			options[0] = DOCACTION_Prepare;
+			options[1] = DOCACTION_VoidInvalidate;
+			index=2;
+		}
+		else if (DOCSTATUS_InProgress.equals(docStatus))
 		{
 			options[0] = DOCACTION_Complete;
 			options[1] = DOCACTION_Unlock;
 			options[2] = DOCACTION_VoidInvalidate;
 			index=3;
 		}
-		else if (DOCSTATUS_Drafted.equals(docStatus)
-				|| DOCSTATUS_Invalid.equals(docStatus))
+		else if (DOCSTATUS_Drafted.equals(docStatus))
 		{
 			options[0] = DOCACTION_Prepare;
 			options[1] = DOCACTION_Complete;
