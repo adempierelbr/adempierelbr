@@ -302,7 +302,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND IsActive='Y' AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
@@ -320,7 +320,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			return Env.ZERO;
 
 		String sql = "SELECT SUM(lbr_TaxBaseAmt) FROM LBR_NFTax " +
-		             "WHERE LBR_NotaFiscal_ID = ? AND LBR_TaxGroup_ID IN " +
+		             "WHERE LBR_NotaFiscal_ID = ? AND IsActive='Y' AND LBR_TaxGroup_ID IN " +
 		             "(SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
 		//
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
@@ -340,7 +340,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		String sql = "SELECT AVG(lbr_TaxRate) FROM LBR_NFLineTax " +
 		             "WHERE LBR_NotaFiscalLine_ID IN " +
 		             "(SELECT LBR_NotaFiscalLine_ID FROM LBR_NotaFiscalLine WHERE LBR_NotaFiscal_ID = ?) " +
-		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?)";
+		             "AND LBR_TaxGroup_ID IN (SELECT LBR_TaxGroup_ID FROM LBR_TaxGroup WHERE UPPER(Name)=?) " +
+		             "AND IsActive='Y'";
 		//
 
 		BigDecimal result = DB.getSQLValueBD(get_TrxName(), sql, new Object[]{getLBR_NotaFiscal_ID(),taxIndicator.toUpperCase()});
