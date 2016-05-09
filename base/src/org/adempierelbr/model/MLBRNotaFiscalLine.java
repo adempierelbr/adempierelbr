@@ -634,7 +634,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//	Incluí o ICMS do Diferencial da Alíquota na NF
 		BigDecimal amtDIFAL = Env.ZERO;
 		if (includeDIFAL)
-			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG")).divide(getQty(), BigDecimal.ROUND_HALF_UP, 2);
+			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG")).add(getTaxAmt("FCP")).divide(getQty(), BigDecimal.ROUND_HALF_UP, 2);
 		
 		//	Verifica o preço após a conversão para BRL
 		if (price == null || priceList == null)
