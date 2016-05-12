@@ -130,7 +130,7 @@ public class ValidatorBPartner implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_AFTER_NEW);
+		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_NEW);
 
 		if (po instanceof MBPartner && isChange)
 			return modelChange((MBPartner) po);
@@ -230,10 +230,6 @@ public class ValidatorBPartner implements ModelValidator
 	{
 		log.fine ("ini");
 
-		//	Ignorar a validação do CNPJ
-		if (bp_po.getC_BPartner_ID() <= 0)
-			return null;
-		
 		I_W_C_BPartner bp = POWrapper.create(bp_po, I_W_C_BPartner.class);
 		
 		//	Validação do E-mail
