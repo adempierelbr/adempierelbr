@@ -78,22 +78,29 @@ public abstract class NFeUtil
 	public static final String DIST_XML_FILE_EXT 	= "-dst.xml";
 	public static final String PROC_XML_FILE_EXT 	= "-procNFe.xml";
 	public static final String XML_HEADER			= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-	public static final long XML_SIZE   = 500;
+	@Deprecated
+	public static final long XML_SIZE   			= 500;
 
 	/** Status				*/
-	public static final String AUTORIZADA = "100";
-	public static final String CANCELADA  = "101";
-	public static final String CANCELADAPOREVENTO  = "135";
+	@Deprecated
+	public static final String AUTORIZADA 			= "100";
+	@Deprecated
+	public static final String CANCELADA  			= "101";
+	@Deprecated
+	public static final String CANCELADAPOREVENTO  	= "135";
 
 	/** Eventos				*/
 	public static final String NFE_EVENTO_CCE 		= "110110";
 	public static final String NFE_EVENTO_CANCEL 	= "110111";
 	
+	/** Encoding			*/
+	public static final String NFE_ENCODING			= "UTF-8";
+	
 	/** Reference NFeStatus */
-	public static final int NFeReference   = 1100004;
+	public static final int NFeReference   			= 1100004;
 
 	/**	XML Options			*/
-	private static XmlOptions xmlOptions = null;
+	private static XmlOptions xmlOptions 			= null;
 			
 	/**
 	 * Gera o cabeçalho da NFe

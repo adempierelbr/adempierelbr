@@ -719,7 +719,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (nf == null)
 			throw new Exception ("NF não encontrada: " + chNFe);
 
-		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
+		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E))
 			throw new Exception ("NF já processada. " + nf.getDocumentNo());
 
         Timestamp ts = NFeUtil.stringToTime (dhRecbto);
@@ -772,7 +772,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				if ((nf.getlbr_NFeID() + "-nfe.xml").equals(entry.getName()))
 				{
-					xml = new String (entry.getData(), "UTF-8");
+					xml = new String (entry.getData(), NFeUtil.NFE_ENCODING);
 					attachment.deleteEntry(entry.getIndex());
 					break;
 				}
@@ -793,7 +793,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setProtNFe(protNFe);
 			
 			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes("UTF-8"));
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
 			attachment.save();
 			
 			//	Comitar Transação Antes de Enviar o XML e PDF por Email
@@ -2839,14 +2839,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					try
 					{
-						byte[] xml = infSe.getXML (this);
+						String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
 
 						//	Anexa o XML na NF
 						if (getAttachment (true) != null)
 							getAttachment ().delete (true);
 						
 						MAttachment attachNFe = createAttachment(true);
-						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml);
+						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
 						attachNFe.save();
 					}
 					catch (Exception e)

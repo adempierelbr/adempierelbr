@@ -327,8 +327,8 @@ public class SignatureUtil
 			//
 			Signature dsa = Signature.getInstance ("SHA1withRSA");
 			dsa.initSign(getPrivateKey());
-			dsa.update(ascii.getBytes("UTF-8"));
-			encoded = new BASE64Encoder().encode (dsa.sign());
+			dsa.update(ascii.getBytes(NFeUtil.NFE_ENCODING));
+			encoded = new String (new BASE64Encoder().encode (dsa.sign()).getBytes(), NFeUtil.NFE_ENCODING);
 			//
 			log.fine("Signature: " + encoded);
 		} 

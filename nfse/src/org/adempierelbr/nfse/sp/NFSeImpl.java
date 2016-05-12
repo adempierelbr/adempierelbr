@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -96,7 +97,7 @@ public class NFSeImpl implements INFSe
 	}	//	getType
 
 	@Override
-	public byte[] getXML(MLBRNotaFiscal nf)
+	public byte[] getXML(MLBRNotaFiscal nf) throws UnsupportedEncodingException
 	{
 		Properties ctx = Env.getCtx();
 		String trxName = nf.get_TrxName();
@@ -234,7 +235,7 @@ public class NFSeImpl implements INFSe
 		//	Ignorar o erro, pois há casos que é gerado o arquivo RPS e não necessita de assinatura
 		catch (Exception e){}
 		//
-		return tpRPS.xmlText(NFeUtil.getXmlOpt()).getBytes();
+		return tpRPS.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING);
 	}	//	getXML
 
 	@Override
@@ -421,7 +422,7 @@ public class NFSeImpl implements INFSe
 			if (xmlData == null || xmlData.length == 0)
 				xmlData = getXML (nf);	//	Gera um novo XML
 			
-			TpRPS tpRPS = TpRPS.Factory.parse (new String (xmlData));
+			TpRPS tpRPS = TpRPS.Factory.parse (new String (xmlData, NFeUtil.NFE_ENCODING));
 			//
 			rps.add (tpRPS);
 			
@@ -599,7 +600,7 @@ public class NFSeImpl implements INFSe
 		ascii.append(indicador);
 		ascii.append(TextUtil.lPad (indicador.equals("1") ? rps.getCPFCNPJTomador().getCPF() : rps.getCPFCNPJTomador().getCNPJ(), 14));
 		//
-		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance();
+		TpAssinatura tpAssinatura = TpAssinatura.Factory.newInstance(NFeUtil.getXmlOpt());
 		
 		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), AD_Org_ID, null);
 		tpAssinatura.setStringValue(new SignatureUtil (oi, SignatureUtil.RPS).signASCII (ascii.toString()));
