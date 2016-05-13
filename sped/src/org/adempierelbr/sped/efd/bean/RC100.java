@@ -721,12 +721,10 @@ public class RC100 extends RegSped {
 
 			
 			// RC170 - deixar só o NUM_ITEM
-			List<RC170> getrC170 = getrC170();
-			for (int i = 0; i < getrC170.size(); i++)
+			for (RC170 rc170 : this.rC170)
 			{
-				RC170 rc170 = getrC170.get(i);
 				// remover dos itens o registro velho
-				getrC170().remove(rc170);
+				rC170.remove(rc170);
 				
 				// criar um novo, só com o núm item, obrigatório de acordo com essa exceção
 				RC170 new_rc170 = new RC170();
