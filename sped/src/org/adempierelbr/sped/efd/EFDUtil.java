@@ -299,6 +299,11 @@ public class EFDUtil {
 				&& !factFiscal.islbr_IsOwnDocument())
 			cod_sit = "08";
 		
+		//	NF Avulsa Emitida pelo FISCO
+		else if (factFiscal.getlbr_NFSerie() != null
+				&& factFiscal.getlbr_NFSerie().length() == 3
+				&& factFiscal.getlbr_NFSerie().startsWith("89"))
+			cod_sit = "08";
 		//
 		return cod_sit;
 	}
