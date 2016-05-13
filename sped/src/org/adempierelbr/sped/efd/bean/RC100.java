@@ -697,7 +697,7 @@ public class RC100 extends RegSped {
 			// zerar campos
 			//setIND_OPER(null);
 			setSER(null);
-			setCHV_NFE(null);
+//			setCHV_NFE(null);
 			setDT_E_S(null);
 			setVL_DOC(null);
 			setIND_PGTO(null);
