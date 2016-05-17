@@ -43,6 +43,7 @@ import org.compiere.model.MMovement;
 import org.compiere.model.MOrder;
 import org.compiere.model.MPayment;
 import org.compiere.model.MRequisition;
+import org.compiere.model.MRMA;
 import org.compiere.model.MRole;
 import org.compiere.model.MTable;
 import org.compiere.model.MTimeExpense;
@@ -1151,6 +1152,24 @@ public class DocumentEngine implements DocAction
 				{
 					options[index++] = DocumentEngine.ACTION_Prepare;
 					options[index++] = DocumentEngine.ACTION_Close;
+				}
+				//	Complete                    ..  CO
+				else if (docStatus.equals(DocumentEngine.STATUS_Completed))
+				{
+					options[index++] = DocumentEngine.ACTION_Void;
+					options[index++] = DocumentEngine.ACTION_ReActivate;
+				}
+		}
+		else if (AD_Table_ID == MRMA.Table_ID)
+		{
+			if (docStatus.equals(DocumentEngine.STATUS_Drafted)
+					|| docStatus.equals(DocumentEngine.STATUS_InProgress)
+					|| docStatus.equals(DocumentEngine.STATUS_Invalid))
+				{
+					options[index++] = DocumentEngine.ACTION_Prepare;
+					options[index++] = DocumentEngine.ACTION_Close;
+					options[index++] = DocumentEngine.ACTION_Void;
+															
 				}
 				//	Complete                    ..  CO
 				else if (docStatus.equals(DocumentEngine.STATUS_Completed))
