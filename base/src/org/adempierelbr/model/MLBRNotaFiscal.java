@@ -801,7 +801,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			t.commit();
 			
 			//	Envia o e-mail para o cliente
-			ProcEMailNFe.sendEmailNFe (nf, false);
+			//	em caso de erro o try/catch evita que o processamento não seja commitado
+			try
+			{
+				ProcEMailNFe.sendEmailNFe (nf, false);
+			}
+			catch (Exception e) {}
 		}
 		
 		//	Reativar o documento para correção
