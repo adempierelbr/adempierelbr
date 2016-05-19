@@ -696,7 +696,7 @@ public class RC100 extends RegSped {
 		{
 			// zerar campos
 			//setIND_OPER(null);
-			setSER(null);
+//			setSER(null);
 //			setCHV_NFE(null);
 			setDT_E_S(null);
 			setVL_DOC(null);
@@ -719,9 +719,10 @@ public class RC100 extends RegSped {
 			setVL_COFINS_ST(null);
 			setIND_ATIV(null);
 
+			List<RC170> copy = new ArrayList<RC170>(this.rC170);
 			
 			// RC170 - deixar só o NUM_ITEM
-			for (RC170 rc170 : this.rC170)
+			for (RC170 rc170 : copy)
 			{
 				// remover dos itens o registro velho
 				rC170.remove(rc170);
