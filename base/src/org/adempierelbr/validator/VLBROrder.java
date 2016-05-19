@@ -435,6 +435,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor de Despesas Acessórias
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -442,8 +443,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductOtherCharges_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingotherChargesAmt = otherChargesAmt;
+		int currentLine = 0;
 		
 		//	Rateia Despesas Acessórias
 		for (MOrderLine ol : order.getLines())
@@ -458,10 +466,16 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do Outras Despesas por Linha
 			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
-			BigDecimal lineOtherChargesAmt 	= lineAmt.multiply(otherChargesAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineOtherChargesAmt 	= lineAmt.multiply(otherChargesAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineOtherChargesAmt = remaingotherChargesAmt;
+			else
+				remaingotherChargesAmt = remaingotherChargesAmt.subtract(lineOtherChargesAmt);
 			
 			olW.setLBR_OtherChargesAmt(lineOtherChargesAmt);
-			
 			//
 			ol.save();
 		}
