@@ -152,19 +152,24 @@ public class VLBROrder implements ModelValidator
 		 */
 		if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
 		{
+			//	Ratear Outras Despesas entre as Linhas do Pedido
 			if (isChangeAffectOtherCharges (order))
 					recalcuteOtherCharges (order);
 			
+			//	Ratear Seguro entre as Linhas do Pedido
 			if (isChangeAffectInsurance (order))
 				recalcuteInsurance (order);
 			
+			//	Não Continuar o Calculo de Frete se as Linhas do Pedido não Existirem
+			if (order.getLines().length == 0)
+				return null;
+			
+			//	O Valor do Frete não poder ser Menor ou Igual a 0
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
 					&& Env.ZERO.compareTo(order.getFreightAmt()) >= 0)
 				return Msg.parseTranslation(Env.getCtx(), "@FillMandatory@ @FreightAmt@");
 			
-			/**
-			 * 	Divide o valor do frete nas linhas
-			 */
+			//	Divide o valor do frete nas linhas
 			else if (isChangeAffectFreight (order) 
 					&& !MOrder.FREIGHTCOSTRULE_Line.equals(order.getFreightCostRule()))
 				recalcuteFreight (order);
@@ -245,6 +250,20 @@ public class VLBROrder implements ModelValidator
 			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()) 
 					&& !isBPValid ((MOrder) po))
 				return "Cadastro de Parceiro de Negócios Inválido";
+			
+			/**
+			 * Rateio de Frete
+			 */
+			MOrder order = (MOrder) po;			
+			
+			//	O Valor do Frete não poder ser Menor ou Igual a 0
+			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
+					&& Env.ZERO.compareTo(order.getFreightAmt()) >= 0)
+				return Msg.parseTranslation(Env.getCtx(), "@FillMandatory@ @FreightAmt@");
+			
+			//	Divide o valor do frete nas linhas
+			else if (!MOrder.FREIGHTCOSTRULE_Line.equals(order.getFreightCostRule()))
+				recalcuteFreight (order);
 		}
 		//
 		return null;
