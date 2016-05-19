@@ -450,7 +450,7 @@ public class VLBROrder implements ModelValidator
 		}
 		
 		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
-		BigDecimal remaingotherChargesAmt = otherChargesAmt;
+		BigDecimal remaingOtherChargesAmt = otherChargesAmt;
 		int currentLine = 0;
 		
 		//	Rateia Despesas Acessórias
@@ -471,9 +471,9 @@ public class VLBROrder implements ModelValidator
 			//	Verifica se a linha atual é a última linha,
 			//		caso positivo, o valor residual é inserido nesta linha
 			if (++currentLine == lineCount)
-				lineOtherChargesAmt = remaingotherChargesAmt;
+				lineOtherChargesAmt = remaingOtherChargesAmt;
 			else
-				remaingotherChargesAmt = remaingotherChargesAmt.subtract(lineOtherChargesAmt);
+				remaingOtherChargesAmt = remaingOtherChargesAmt.subtract(lineOtherChargesAmt);
 			
 			olW.setLBR_OtherChargesAmt(lineOtherChargesAmt);
 			//
@@ -523,6 +523,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor do seguro
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -530,8 +531,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductInsurance_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingInsuranceAmt = insuranceAmt;
+		int currentLine = 0;
 		
 		//	Rateia o Seguro
 		for (MOrderLine ol : order.getLines())
@@ -546,7 +554,14 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do Seguro por Linha
 			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
-			BigDecimal lineInsuranceAmt 	= lineAmt.multiply(insuranceAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineInsuranceAmt 	= lineAmt.multiply(insuranceAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineInsuranceAmt = remaingInsuranceAmt;
+			else
+				remaingInsuranceAmt = remaingInsuranceAmt.subtract(lineInsuranceAmt);
 			
 			olW.setlbr_InsuranceAmt(lineInsuranceAmt);
 			
