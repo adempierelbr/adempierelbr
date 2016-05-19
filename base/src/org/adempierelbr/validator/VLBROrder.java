@@ -336,6 +336,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor do frete
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -343,8 +344,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductFreight_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingFreightAmt = freightAmt;
+		int currentLine = 0;
 		
 		//	Rateia o Frete
 		for (MOrderLine ol : order.getLines())
@@ -358,7 +366,14 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do valor do frete
 			BigDecimal lineAmt 			= ol.getLineNetAmt();
-			BigDecimal lineFreightAmt 	= lineAmt.multiply(freightAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineFreightAmt 	= lineAmt.multiply(freightAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineFreightAmt = remaingFreightAmt;
+			else
+				remaingFreightAmt = remaingFreightAmt.subtract(lineFreightAmt);
 			
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule()))
 				ol.setFreightAmt(lineFreightAmt);
