@@ -790,4 +790,47 @@ public class MLBRTax extends X_LBR_Tax
 	{
 		return "MLBRTax [ID=" + get_ID() + ", Taxes=" + (getDescription() == null ? "" : getDescription()) + "]";
 	}	//	toString
+
+	public String getValidation()
+	{
+		return getValidation(true);
+	}	//	getValidation
+	
+	public String getValidation(boolean isProduct)
+	{
+		String result = "";
+		
+		String desc = getDescription();
+		if (desc == null)
+			return "Sem Imposto";
+		
+		if (isProduct && desc.indexOf("ICMS-") == -1)
+			result += "Sem ICMS, ";
+		
+		if (isProduct && desc.indexOf("IPI-") == -1)
+			result += "Sem IPI, ";
+		
+		if (desc.indexOf("PIS-") == -1)
+			result += "Sem PIS, ";
+		
+		if (desc.indexOf("COFINS-") == -1)
+			result += "Sem COFINS, ";
+		
+		if (!isProduct && desc.indexOf("CSLL-") == -1)
+			result += "Sem CSLL, ";
+		
+		if (!isProduct && desc.indexOf("IR-") == -1)
+			result += "Sem IR, ";
+		
+		if (!isProduct && desc.indexOf("ISS-") == -1)
+			result += "Sem ISS, ";
+		
+		if (isProduct)
+			for (MLBRTaxLine tl : getLines())
+			{
+				
+			}
+		
+		return result;
+	}
 }	//	MLBRTax

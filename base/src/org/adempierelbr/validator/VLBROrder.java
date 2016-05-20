@@ -246,15 +246,37 @@ public class VLBROrder implements ModelValidator
 		else if (po.get_TableName().equals(MOrder.Table_Name) 
 				&& timing == TIMING_BEFORE_PREPARE)
 		{
-			//	Valida Cadastro do PN
-			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()) 
-					&& !isBPValid ((MOrder) po))
-				return "Cadastro de Parceiro de Negócios Inválido";
+			MOrder order = (MOrder) po;
 			
-			/**
-			 * Rateio de Frete
-			 */
-			MOrder order = (MOrder) po;			
+			/****************************************
+			 * 	Validação do Parceiro de Negócios
+			 **/
+
+			//	Valida Cadastro do PN
+			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()))
+			{
+				String result = validateBPartner (order);
+				//
+				if (result != null && !result.isEmpty())
+					return "Cadastro de Parceiro de Negócios Inválido, verifique: " + result;
+			}
+			
+			/****************************************
+			 * 	Validação dos Impostos do Pedido
+			 **/
+
+			//	Valida os Impostos
+			if (MSysConfig.getBooleanValue("LBR_VALIDATE_TAXES_ON_SO", false, po.getAD_Client_ID()))
+			{
+				String result = validateTaxes (order);
+				//
+				if (result != null && !result.isEmpty())
+					return "Pedido Inválido, verifique: " + result;
+			}
+			
+			/****************************************
+			 * 	Rateio de Frete
+			 **/
 			
 			//	O Valor do Frete não poder ser Menor ou Igual a 0
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
@@ -268,6 +290,43 @@ public class VLBROrder implements ModelValidator
 		//
 		return null;
 	}	//	docValidate
+
+	
+	/**
+	 * 		Verifica se o pedido está com os impostos corretos
+	 * 
+	 * 	@param order
+	 * 	@return	true or false
+	 */
+	private String validateTaxes (MOrder order)
+	{
+		String result = "";
+		
+		I_W_C_Order orderW = POWrapper.create (order, I_W_C_Order.class);
+
+		if (orderW.getlbr_TransactionType() == null)
+			result += "Tipo de Transação, ";
+		
+		for (MOrderLine ol : order.getLines())
+		{
+			I_W_C_OrderLine olW = POWrapper.create (ol, I_W_C_OrderLine.class);
+			//
+			String resultLine = "Linha " + olW.getLine() + "[";
+			
+			if (olW.getC_Charge_ID() == 0 && olW.getM_Product_ID() == 0)
+				resultLine +=  " sem produto/despesa, ";
+			if (olW.getLBR_CFOP_ID() == 0)
+				resultLine += " sem CFOP, ";
+			if (olW.getLBR_Tax_ID() == 0)
+				resultLine += " sem nenhum imposto, ";
+			
+			
+			if (resultLine.endsWith(", "))
+				result += resultLine;
+		}
+		
+		return result;
+	}	//	validateTaxes
 	
 	/**
 	 * 		Verifica se o parceiro de negócios 
@@ -276,25 +335,33 @@ public class VLBROrder implements ModelValidator
 	 * 	@param order
 	 * 	@return	true or false
 	 */
-	private boolean isBPValid (MOrder order)
+	private String validateBPartner (MOrder order)
 	{
+		String result = "";
+		//
 		if (MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
 				|| MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
-			return true;
+			return result;
 		//
-		MBPartner bp = new MBPartner (order.getCtx(), order.getC_BPartner_ID(), order.get_TrxName());
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (order.getCtx(), order.getC_BPartner_ID(), order.get_TrxName()), I_W_C_BPartner.class);
 		MBPartnerLocation bpL = new MBPartnerLocation (order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName());
 		MLocation loc = bpL.getLocation (true);
 		//
-		if (loc != null && loc.getC_Country_ID() == 139)	//	Brazil
-		{
-			I_W_C_BPartner bpW = POWrapper.create(bp, I_W_C_BPartner.class);
-			//
-			return bpW.islbr_BPTypeBRIsValid();
-		}
+		if (!bp.islbr_BPTypeBRIsValid())
+			result += "CNPJ/CPF ou ID do Estrangeiro, ";
+		if (loc == null)
+			result += "Cadastro do Endereço, ";
+		if (loc.getAddress1() == null || loc.getAddress1().isEmpty())
+			result += "Logradouro do Endereço, ";
+		if (loc.getAddress2() == null || loc.getAddress2().isEmpty())
+			result += "Número do Endereço, ";
+		if (loc.getAddress3() == null || loc.getAddress3().isEmpty())
+			result += "Bairro, ";
+		if (loc.getPostal() == null || loc.getPostal().isEmpty())
+			result += "CEP/ZIP, ";
 		//
-		return true;
-	}	//	isBPValid
+		return result;
+	}	//	validateBPartner
 	
 	/**
 	 * 	Verify if freight must be recalculated to all lines
