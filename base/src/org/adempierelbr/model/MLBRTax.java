@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
@@ -96,6 +97,13 @@ public class MLBRTax extends X_LBR_Tax
 	public static final int TYPE_LIST_POSITIVE 	= 104;
 	public static final int TYPE_LIST_NEUTRAL 	= 105;
 	public static final int TYPE_LIST_NEGATIVE 	= 106;
+	
+	/**	Taxes				*/
+	public static final int	TAX_PIS		= 1106001;
+	public static final int	TAX_COFINS	= 1106002;
+	public static final int	TAX_ICMS	= 1106000;
+	public static final int	TAX_ICMSST	= 1106012;
+	public static final int	TAX_IPI		= 1106003;
 	
 	/**	Included Taxes	*/
 	private List<Integer> includedTaxes = new ArrayList<Integer>();
@@ -804,33 +812,146 @@ public class MLBRTax extends X_LBR_Tax
 		if (desc == null)
 			return "Sem Imposto";
 		
-		if (isProduct && desc.indexOf("ICMS-") == -1)
+		if (isProduct && desc.indexOf("ICMS") == -1)
 			result += "Sem ICMS, ";
 		
-		if (isProduct && desc.indexOf("IPI-") == -1)
+		if (isProduct && desc.indexOf("IPI") == -1)
 			result += "Sem IPI, ";
 		
-		if (desc.indexOf("PIS-") == -1)
+		if (desc.indexOf("PIS") == -1)
 			result += "Sem PIS, ";
 		
-		if (desc.indexOf("COFINS-") == -1)
+		if (desc.indexOf("COFINS") == -1)
 			result += "Sem COFINS, ";
 		
-		if (!isProduct && desc.indexOf("CSLL-") == -1)
+		if (!isProduct && desc.indexOf("CSLL") == -1)
 			result += "Sem CSLL, ";
 		
-		if (!isProduct && desc.indexOf("IR-") == -1)
+		if (!isProduct && desc.indexOf("IR") == -1)
 			result += "Sem IR, ";
 		
-		if (!isProduct && desc.indexOf("ISS-") == -1)
+		if (!isProduct && desc.indexOf("ISS") == -1)
 			result += "Sem ISS, ";
 		
 		if (isProduct)
 			for (MLBRTaxLine tl : getLines())
 			{
-				
+				if (TextUtil.match (tl.getLBR_TaxName_ID(), 
+						TAX_PIS, 
+						TAX_COFINS, 
+						TAX_ICMS, 
+						TAX_ICMSST, 
+						TAX_IPI))
+				{
+					if (tl.getLBR_TaxStatus_ID() <= 0)
+					{
+						result += "Sem Situação Tributária para o imposto " + tl.getLBR_TaxName().getName() + ", ";
+						continue;
+					}
+					
+					String cst = tl.getLBR_TaxStatus().getName();
+					double rate = tl.getlbr_TaxRate().doubleValue();
+					double reduction = tl.getlbr_TaxBase().doubleValue();
+					
+					if (TextUtil.match (tl.getLBR_TaxName_ID(), 
+							TAX_PIS, 
+							TAX_COFINS))
+					{
+						//		Alíquota Básica
+						if ("01".equals(cst))
+						{
+							if (tl.getLBR_TaxName_ID() == TAX_PIS
+									&& rate != 0.65
+									&& rate != 1.65)
+							{
+								result += "Alíquota do PIS de " + rate + "% não é permitida para o CST 01, ";
+							}
+							
+							if (tl.getLBR_TaxName_ID() == TAX_COFINS
+									&& rate != 3.0
+									&& rate != 7.6)
+							{
+								result += "Alíquota do COFINS de " + rate + "% não é permitida para o CST 01, ";
+							}
+						}
+						
+						//	Alíquotas zero
+						if (TextUtil.match (cst, "06", "07", "08", "09", "71", "72", "73", "74")
+								&& rate != 0.0)
+						{
+							result += "Alíquota do PIS/COFINS de " + rate + "% não é permitida para o CST " + cst + ", ";
+						}
+					}
+					
+					if (tl.getLBR_TaxName_ID() == TAX_ICMS)
+					{
+						//	Tributado Integralmente
+						if (cst.equals("00"))
+						{
+							if (rate == 0)
+							{
+								result += "Alíquota do ICMS de " + rate + "% não é permitida para o CST " + cst + ", ";
+							}
+							
+							if (reduction != 0)
+							{
+								result += "Redução na base de cáclulo do ICMS não é permitida para o CST " + cst + ", ";
+							}
+						}
+						
+						//	Redução da Base de Cálculo
+						if (cst.equals("20"))
+						{
+							if (rate == 0)
+							{
+								result += "Alíquota do ICMS de " + rate + "% não é permitida para o CST " + cst + ", ";
+							}
+							
+							if (reduction <= 0)
+							{
+								result += "Redução na base de cáclulo do ICMS é obrigatória para o CST " + cst + ", ";
+							}
+						}
+						
+						//	Alíquotas zero
+						if (TextUtil.match (cst, "30", "40", "41", "50")
+								&& rate != 0.0)
+						{
+							result += "Alíquota do ICMS de " + rate + "% não é permitida para o CST " + cst + ", ";
+						}
+					}
+					
+					if (tl.getLBR_TaxName_ID() == TAX_ICMSST)
+					{
+						if (!TextUtil.match (cst, "10", "60", "70", "90"))
+						{
+							result += "CST do ICMSST inválida " + cst + " - Corretos: 10, 60, 70 ou 90, ";
+						}
+						
+						if (rate == 0)
+						{
+							result += "Alíquota do ICMSST de " + rate + "% não é permitida, ";
+						}
+					}
+					
+					if (tl.getLBR_TaxName_ID() == TAX_IPI)
+					{
+						//	Tributado Integralmente
+						if (cst.equals("50") && rate == 0)
+						{
+							result += "Alíquota do IPI de " + rate + "% não é permitida para o CST " + cst + ", ";
+						}
+						
+						//	Alíquotas zero
+						if (TextUtil.match (cst, "51", "52", "53", "54", "55")
+								&& rate != 0.0)
+						{
+							result += "Alíquota do IPI de " + rate + "% não é permitida para o CST " + cst + ", ";
+						}
+					}
+				}
 			}
 		
 		return result;
-	}
+	}	//	getValidation
 }	//	MLBRTax

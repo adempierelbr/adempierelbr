@@ -1,14 +1,17 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
+import org.adempierelbr.wrapper.I_W_M_Product;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
@@ -255,10 +258,33 @@ public class VLBROrder implements ModelValidator
 			//	Valida Cadastro do PN
 			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()))
 			{
-				String result = validateBPartner (order);
-				//
-				if (result != null && !result.isEmpty())
-					return "Cadastro de Parceiro de Negócios Inválido, verifique: " + result;
+				//	Não validar Propostas e Cotações
+				if (!MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
+						&& !MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
+				{
+					String result = validateBPartner (order.getCtx(), order.getC_BPartner_ID(), order.getC_BPartner_Location_ID());
+					//
+					if (result != null && !result.isEmpty())
+						return "Cadastro de Parceiro de Negócios Inválido, verifique: " + result;	
+					
+					if (MOrder.DELIVERYVIARULE_Shipper.equals(order.getDeliveryViaRule())
+							&& order.getM_Shipper_ID() > 0)
+					{
+						if (order.getM_Shipper().getC_BPartner_ID() == 0)
+							return "Transportadora sem Parceiro de Negócios vinculado";
+							
+						MBPartner bpShipper = new MBPartner (order.getCtx(), order.getM_Shipper().getC_BPartner_ID(), null);
+						MBPartnerLocation[] locations = bpShipper.getLocations(false);
+						
+						if (locations == null || locations.length == 0)
+							return "Transportadora sem endereço cadastrado";
+						
+						result = validateBPartner (order.getCtx(), bpShipper.getC_BPartner_ID(), locations[0].getC_BPartner_Location_ID());
+						//
+						if (result != null && !result.isEmpty())
+							return "Cadastro da Transportadora Inválido, verifique: " + result;
+					}
+				}
 			}
 			
 			/****************************************
@@ -271,7 +297,7 @@ public class VLBROrder implements ModelValidator
 				String result = validateTaxes (order);
 				//
 				if (result != null && !result.isEmpty())
-					return "Pedido Inválido, verifique: " + result;
+					return "Pedido Inválido, verifique: \n" + result;
 			}
 			
 			/****************************************
@@ -290,7 +316,6 @@ public class VLBROrder implements ModelValidator
 		//
 		return null;
 	}	//	docValidate
-
 	
 	/**
 	 * 		Verifica se o pedido está com os impostos corretos
@@ -311,19 +336,39 @@ public class VLBROrder implements ModelValidator
 		{
 			I_W_C_OrderLine olW = POWrapper.create (ol, I_W_C_OrderLine.class);
 			//
-			String resultLine = "Linha " + olW.getLine() + "[";
+			String resultLine = "Linha " + olW.getLine() + " [";
+			boolean isProduct = ol.getM_Product_ID() > 0 && MProduct.PRODUCTTYPE_Item.equals(ol.getProduct().getProductType());
 			
 			if (olW.getC_Charge_ID() == 0 && olW.getM_Product_ID() == 0)
-				resultLine +=  " sem produto/despesa, ";
-			if (olW.getLBR_CFOP_ID() == 0)
-				resultLine += " sem CFOP, ";
-			if (olW.getLBR_Tax_ID() == 0)
-				resultLine += " sem nenhum imposto, ";
+				resultLine +=  "Sem produto/despesa, ";
 			
+			if (olW.getLBR_CFOP_ID() == 0)
+				resultLine += "Sem CFOP, ";
+			
+			if (olW.getLBR_Tax_ID() == 0)
+				resultLine += "Sem nenhum imposto, ";
+			else
+				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct);
+			
+			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
+				resultLine += "Sem preço, ";
+			
+			if (olW.getM_Product_ID() > 0)
+			{
+				I_W_M_Product product = POWrapper.create(ol.getProduct(), I_W_M_Product.class);
+				//
+				if (product.getLBR_NCM_ID() == 0)
+				{
+					resultLine += "Produto sem NCM, ";
+				}
+			}
 			
 			if (resultLine.endsWith(", "))
-				result += resultLine;
+				result += resultLine + "] \n";
 		}
+		
+		if (result.length() > 0)
+			result = result.replace (", ]", "]");
 		
 		return result;
 	}	//	validateTaxes
@@ -335,16 +380,12 @@ public class VLBROrder implements ModelValidator
 	 * 	@param order
 	 * 	@return	true or false
 	 */
-	private String validateBPartner (MOrder order)
+	private String validateBPartner (Properties ctx, int C_BPartner_ID, int C_BPartner_Location_ID)
 	{
 		String result = "";
 		//
-		if (MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
-				|| MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
-			return result;
-		//
-		I_W_C_BPartner bp = POWrapper.create(new MBPartner (order.getCtx(), order.getC_BPartner_ID(), order.get_TrxName()), I_W_C_BPartner.class);
-		MBPartnerLocation bpL = new MBPartnerLocation (order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName());
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (ctx, C_BPartner_ID, null), I_W_C_BPartner.class);
+		MBPartnerLocation bpL = new MBPartnerLocation (ctx, C_BPartner_Location_ID, null);
 		MLocation loc = bpL.getLocation (true);
 		//
 		if (!bp.islbr_BPTypeBRIsValid())
