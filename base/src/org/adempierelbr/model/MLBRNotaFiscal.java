@@ -742,7 +742,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Estados Finais
 		if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
 				LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-				LBR_NFESTATUS_110_UsoDenegado,
 				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
 				LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
 				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))
@@ -807,6 +806,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				ProcEMailNFe.sendEmailNFe (nf, false);
 			}
 			catch (Exception e) {}
+		}
+		
+		//	Notas Fiscais Denegadas
+		else if (TextUtil.match (cStat,LBR_NFESTATUS_110_UsoDenegado,
+					LBR_NFESTATUS_301_RejeiçãoIrregularidadeCadastralDoEmitente,
+					LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+					LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNa))
+		{
+			nf.setDocStatus(DOCSTATUS_Voided);
+			nf.setDocAction(DOCACTION_None);
+			nf.setIsCancelled(true);
+			nf.setProcessed(true);
 		}
 		
 		//	Reativar o documento para correção
