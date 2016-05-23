@@ -4600,7 +4600,7 @@ Devido a arredondamentos, o valor da taxa pode diferir.</value>
     <value column="Name" original="Freight Cost Rule">Regra de Custo de Frete</value>
     <value column="PrintName" original="Freight Cost Rule">Regra de Custo de Frete</value>
     <value column="Description" original="Method for charging Freight">Método de cobrança de Frete</value>
-    <value column="Help" original="The Freight Cost Rule indicates the method used when charging for freight.">A "Regra de Custo de Frete" indica o método usado ao se cobrar por fretes.</value>
+	<value column="Help" original="The Freight Cost Rule indicates the method used when charging for freight.">A "Regra de Custo de Frete" indica o método usado para ser preenchido no valor do frete, o frete pode ser preenchido de três maneiras: (1)Frete Incluso – O custo do frete esta incluso no produto; (2)Linha – O valor do frete devera ser preenchido direto no campo “Valor do Frete” na linha do pedido. (3)Preço Fixo – O valor do frete deverá ser preenchido no campo “Valor do Frete”. Após o preenchimento o sistema irá ratear este valor para todas as linhas ao salvar o documento. Caso o documento ainda não tenha linhas, o sistema irá fazer o rateio ao Completar/Preparar o documento.</value>
     <value column="PO_Description" original="" />
     <value column="PO_Help" original="" />
     <value column="PO_Name" original="" />
