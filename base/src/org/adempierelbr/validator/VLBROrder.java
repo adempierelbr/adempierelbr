@@ -353,7 +353,8 @@ public class VLBROrder implements ModelValidator
 			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
 				resultLine += "Sem preço, ";
 			
-			if (olW.getM_Product_ID() > 0)
+			if (olW.getM_Product_ID() > 0 
+					&& MProduct.PRODUCTTYPE_Item.equals(olW.getM_Product().getProductType()))
 			{
 				I_W_M_Product product = POWrapper.create(ol.getProduct(), I_W_M_Product.class);
 				//
