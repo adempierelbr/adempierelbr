@@ -26,6 +26,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -279,9 +282,37 @@ public class MInvoiceLine extends X_C_InvoiceLine
             MRMALine rmaLine = new MRMALine(getCtx(), sLine.getM_RMALine_ID(), get_TrxName());
 
             setPrice();
-            setPrice(rmaLine.getAmt());
-            setC_Tax_ID(rmaLine.getC_Tax_ID());
+            setPrice(rmaLine.getAmt());            
             setLineNetAmt(rmaLine.getLineNetAmt());
+            
+            /**
+             *	Copiar Imposto do Pedido Original
+             */
+            // Linha da Expedição relacionada a RMA
+            MInOutLine inoutline = new MInOutLine(Env.getCtx(), rmaLine.getM_InOutLine_ID(), null);
+            
+            //	Linha do Pedido Original
+            MOrderLine originalOrderLine = (MOrderLine) inoutline.getC_OrderLine();
+            
+            //	Imposto da Linha do Pedido Original
+            MLBRTax taxOrder = new MLBRTax(Env.getCtx(), originalOrderLine.get_ValueAsInt("LBR_Tax_ID"), null);
+            
+            //	Novo imposto copiado do Pedido Original
+            MLBRTax newTax = taxOrder.copyTo();
+            
+            //	Adicionar Imposto Copiado do Pedido na Fatura
+            set_ValueOfColumn ("LBR_Tax_ID", newTax.getLBR_Tax_ID());            
+            
+            //	Buscar apenas o CFOP referente a operação
+            Object[] taxation = MLBRTax.getTaxes (POWrapper.create(this, I_W_C_InvoiceLine.class), get_TrxName());
+            
+    		if (taxation == null)
+    			log.warning ("Imposto não encontrado");
+    		else
+    		{
+	    		if (((Integer) taxation[2]) > 0)
+	    			set_ValueOfColumn("LBR_CFOP_ID" , ((Integer) taxation[2]));
+    		}
         }
 		else
 		{

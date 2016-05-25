@@ -1166,7 +1166,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setlbr_NFModel(null);
 		else
 			setlbr_NFModel(model);
-
+		
+		//	Fatura gerada a partir do RMA a Finalidade da NF deve ser Devolução/Retorno de Mercadoria
+		if (invoice.getM_RMA_ID() != 0)
+			setlbr_FinNFe(LBR_FINNFE_DevoluçãoRetornoDeMercadoria);
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
