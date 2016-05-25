@@ -472,6 +472,9 @@ public class WTaxesDialog extends Window implements EventListener, ValueChangeLi
 		//
 		m_tax.setDescription();
 		m_tax.save();
+		//
+		if (taxLines.size() == 0)
+			deleteRecord();
 	}	//	save
 
 	/**

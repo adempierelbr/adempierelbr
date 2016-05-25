@@ -567,6 +567,9 @@ public class VTaxesDialog extends CDialog implements ActionListener, VetoableCha
 		//
 		m_tax.setDescription();
 		m_tax.save();
+		//
+		if (taxLines.size() == 0)
+			deleteRecord();
 	}	//	save
 
 	/**
