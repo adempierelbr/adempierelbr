@@ -193,7 +193,7 @@ public class CalloutInOut extends CalloutEngine
 						else
 							mTab.setValue("MovementType", "V+"); // Vendor Receipts
 				}
-				if (!(trxFlag.equals(mTab.getValue("IsSOTrx"))))
+				if (!(trxFlag.equals(mTab.get_ValueAsString("IsSOTrx"))))
 					mTab.setValue("IsSOTrx", trxFlag);
 				/**END vpj-cd e-evolution */
 
