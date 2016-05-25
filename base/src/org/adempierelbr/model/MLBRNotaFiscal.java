@@ -50,6 +50,7 @@ import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_Tax;
+import org.adempierelbr.wrapper.I_W_M_Shipper;
 import org.apache.axiom.om.OMElement;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAttachment;
@@ -1976,42 +1977,63 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		MBPartner transp = new MBPartner(getCtx(), shipper.getC_BPartner_ID(), get_TrxName());
 
 		//	Localização Transportadora
-		MBPartnerLocation[] transpLocations = transp.getLocations (false);
-
-		if (transpLocations.length > 0)
+		MBPartnerLocation transpLocation = null;
+		
+		//	Procura o endereço no cadastro da transportadora
+		if (shipper.get_ColumnIndex(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID) > 0
+				&& shipper.get_ValueAsInt(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID) > 0)
 		{
-			MLocation location = new MLocation(getCtx(), transpLocations[0].getC_Location_ID(), get_TrxName());
-			MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+			transpLocation = new MBPartnerLocation (shipper.getCtx(), shipper.get_ValueAsInt(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID), get_TrxName());
+		}
+		
+		//	Caso não esteja cadastrado, faz a pesquisa e seleciona o primeiro endereço
+		if (transpLocation == null)
+		{
+			MBPartnerLocation[] transpLocations = transp.getLocations (false);
+			if (transpLocations.length > 0)
+				transpLocation = transpLocations[0];
+		}
+		
+		// Sem endereço
+		if (transpLocation == null)
+		{
+			log.warning("Transportadora sem endereço cadastrado: " + shipper.getName());
+			return;
+		}
+		
+		MLocation location = new MLocation(getCtx(), transpLocation.getC_Location_ID(), get_TrxName());
+		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
 
-			setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocations[0]));	//	CNPJ
-			setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocations[0]));   		//	IE
-			
-			//	Concatenar o Endereço em uma unica variável
-			String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
-							 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
-							 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
-							 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
-			
-			// Rua, Número, Bairro e Complemento e um único campo
-			setlbr_BPShipperAddress(address);			
-			setlbr_BPShipperCity(location.getCity());			//	Cidade
-			setlbr_BPShipperPostal(location.getPostal());		//	CEP
-			setlbr_BPShipperCountry(country.getCountryCode());	//	País
+		setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocation));	//	CNPJ
+		setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocation));   		//	IE
+		
+		//	Concatenar o Endereço em uma unica variável
+		String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
+						 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
+						 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
+						 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
+		
+		// Rua, Número, Bairro e Complemento e um único campo
+		setlbr_BPShipperAddress(address);			
+		setlbr_BPShipperCity(location.getCity());			//	Cidade
+		setlbr_BPShipperPostal(location.getPostal());		//	CEP
+		setlbr_BPShipperCountry(country.getCountryCode());	//	País
 
-			if (country.get_ID() != BRAZIL)
-				setlbr_BPShipperRegion("EX");
-			else
-			{
-				MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
-				setlbr_BPShipperRegion(region.getName());		//	Estado
-			}
+		if (country.get_ID() != BRAZIL)
+			setlbr_BPShipperRegion("EX");
+		else
+		{
+			MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+			setlbr_BPShipperRegion(region.getName());		//	Estado
 		}
 	}	//	setShipper
 	
 	/**
 	 * 	Código de Barras da NF Modelo 1 ou 1A
 	 * 		impressa a Laser
+	 * 	@deprecated Método para NF 1 e 1A, não é usado mais atualmente
 	 */
+	@Deprecated
 	private void setBarCodeModel1A ()
 	{
 		StringBuilder barcode1 = new StringBuilder();
