@@ -1544,6 +1544,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public BigDecimal getlbr_GrossWeight();
 
+    /** Column name lbr_HasOpenItems */
+    public static final String COLUMNNAME_lbr_HasOpenItems = "lbr_HasOpenItems";
+
+	/** Set Has Open Items.
+	  * Identifies if this Document Has Open Items
+	  */
+	public void setlbr_HasOpenItems (boolean lbr_HasOpenItems);
+
+	/** Get Has Open Items.
+	  * Identifies if this Document Has Open Items
+	  */
+	public boolean islbr_HasOpenItems();
+
     /** Column name lbr_IE */
     public static final String COLUMNNAME_lbr_IE = "lbr_IE";
 
