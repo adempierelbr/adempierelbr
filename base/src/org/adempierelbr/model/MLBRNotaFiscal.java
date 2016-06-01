@@ -909,7 +909,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		if (getC_Invoice_ID() > 0)
 		{
-			MInvoice i = new MInvoice (Env.getCtx(), getC_Invoice_ID(), null);
+			MInvoice i = new MInvoice (Env.getCtx(), getC_Invoice_ID(), get_TrxName());
 			if (i.getAD_User_ID() > 0)
 			{
 				MUser u = new MUser (Env.getCtx(), i.getAD_User_ID(), null);
