@@ -72,6 +72,15 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+
+1. LBR-201606 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
+
+	* Melhorias na tradução
+	* Padronização da aba de impostos na janela de NFe (Entrada)
+	* Campos de detralhes da transportadora na janela de NF
+	* Deixar opcional a impressão dos dados da fatura na NF
+	* [Mais detalhes][57]
+	
 1. LBR-201605 [[Download]][54] [[Seed PostgreSQL]][55] [[Seed OracleXE]][56]
 
 	* Melhorias na tradução
@@ -249,3 +258,7 @@ Patrocinadores desta versão
 [54]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201605.tgz
 [55]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_PG.tgz
 [56]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_ORA.tgz
+[57]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201606
+[58]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201606.tgz
+[59]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_PG.tgz
+[60]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_ORA.tgz
