@@ -255,12 +255,12 @@ public class VLBROrder implements ModelValidator
 			 * 	Validação do Parceiro de Negócios
 			 **/
 
-			//	Valida Cadastro do PN
-			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()))
+			//	Não validar Propostas e Cotações
+			if (!MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
+					&& !MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
 			{
-				//	Não validar Propostas e Cotações
-				if (!MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
-						&& !MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
+				//	Valida Cadastro do PN
+				if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()))
 				{
 					String result = validateBPartner (order.getCtx(), order.getC_BPartner_ID(), order.getC_BPartner_Location_ID());
 					//
@@ -285,19 +285,19 @@ public class VLBROrder implements ModelValidator
 							return "Cadastro da Transportadora Inválido, verifique: " + result;
 					}
 				}
-			}
-			
-			/****************************************
-			 * 	Validação dos Impostos do Pedido
-			 **/
+				
+				/****************************************
+				 * 	Validação dos Impostos do Pedido
+				 **/
 
-			//	Valida os Impostos
-			if (MSysConfig.getBooleanValue("LBR_VALIDATE_TAXES_ON_SO", false, po.getAD_Client_ID()))
-			{
-				String result = validateTaxes (order);
-				//
-				if (result != null && !result.isEmpty())
-					return "Pedido Inválido, verifique: \n" + result;
+				//	Valida os Impostos
+				if (MSysConfig.getBooleanValue("LBR_VALIDATE_TAXES_ON_SO", false, po.getAD_Client_ID()))
+				{
+					String result = validateTaxes (order);
+					//
+					if (result != null && !result.isEmpty())
+						return "Pedido Inválido, verifique: \n" + result;
+				}
 			}
 			
 			/****************************************
