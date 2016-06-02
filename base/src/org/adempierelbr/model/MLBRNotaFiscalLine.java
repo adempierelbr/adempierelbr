@@ -634,7 +634,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//	Incluí o ICMS do Diferencial da Alíquota na NF
 		BigDecimal amtDIFAL = Env.ZERO;
 		if (includeDIFAL)
-			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG")).divide(getQty(), BigDecimal.ROUND_HALF_UP, 2);
+			amtDIFAL = getTaxAmt("ICMSDIFAL").add(getTaxAmt("ICMSDIFALORIG")).add(getTaxAmt("FCP")).divide(getQty(), BigDecimal.ROUND_HALF_UP, 2);
 		
 		//	Verifica o preço após a conversão para BRL
 		if (price == null || priceList == null)
@@ -688,7 +688,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		
 		setProductValue (product.getValue());
 		setVendorProductNo(LBRUtils.getVendorProductNo (product, getParent().getC_BPartner_ID()));
-		setlbr_IsService(MProduct.PRODUCTTYPE_Service.equals(productW.getProductType()));
+		
+		if (MProduct.PRODUCTTYPE_Service.equals(productW.getProductType())
+				|| MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getParent().getlbr_NFModel()))
+			setlbr_IsService(true);
 		//
 		setLBR_NCM_ID(productW.getLBR_NCM_ID());
 		setLBR_CEST_ID(productW.getLBR_CEST_ID());

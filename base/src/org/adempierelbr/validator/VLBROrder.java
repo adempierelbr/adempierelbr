@@ -1,14 +1,17 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
+import org.adempierelbr.wrapper.I_W_M_Product;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
@@ -152,19 +155,24 @@ public class VLBROrder implements ModelValidator
 		 */
 		if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE)
 		{
+			//	Ratear Outras Despesas entre as Linhas do Pedido
 			if (isChangeAffectOtherCharges (order))
 					recalcuteOtherCharges (order);
 			
+			//	Ratear Seguro entre as Linhas do Pedido
 			if (isChangeAffectInsurance (order))
 				recalcuteInsurance (order);
 			
+			//	Não Continuar o Calculo de Frete se as Linhas do Pedido não Existirem
+			if (order.getLines().length == 0)
+				return null;
+			
+			//	O Valor do Frete não poder ser Menor ou Igual a 0
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
 					&& Env.ZERO.compareTo(order.getFreightAmt()) >= 0)
 				return Msg.parseTranslation(Env.getCtx(), "@FillMandatory@ @FreightAmt@");
 			
-			/**
-			 * 	Divide o valor do frete nas linhas
-			 */
+			//	Divide o valor do frete nas linhas
 			else if (isChangeAffectFreight (order) 
 					&& !MOrder.FREIGHTCOSTRULE_Line.equals(order.getFreightCostRule()))
 				recalcuteFreight (order);
@@ -241,14 +249,130 @@ public class VLBROrder implements ModelValidator
 		else if (po.get_TableName().equals(MOrder.Table_Name) 
 				&& timing == TIMING_BEFORE_PREPARE)
 		{
+			MOrder order = (MOrder) po;
+			
+			/****************************************
+			 * 	Validação do Parceiro de Negócios
+			 **/
+
 			//	Valida Cadastro do PN
-			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()) 
-					&& !isBPValid ((MOrder) po))
-				return "Cadastro de Parceiro de Negócios Inválido";
+			if (MSysConfig.getBooleanValue("LBR_VALIDATE_BP_ON_SO", false, po.getAD_Client_ID()))
+			{
+				//	Não validar Propostas e Cotações
+				if (!MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
+						&& !MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
+				{
+					String result = validateBPartner (order.getCtx(), order.getC_BPartner_ID(), order.getC_BPartner_Location_ID());
+					//
+					if (result != null && !result.isEmpty())
+						return "Cadastro de Parceiro de Negócios Inválido, verifique: " + result;	
+					
+					if (MOrder.DELIVERYVIARULE_Shipper.equals(order.getDeliveryViaRule())
+							&& order.getM_Shipper_ID() > 0)
+					{
+						if (order.getM_Shipper().getC_BPartner_ID() == 0)
+							return "Transportadora sem Parceiro de Negócios vinculado";
+							
+						MBPartner bpShipper = new MBPartner (order.getCtx(), order.getM_Shipper().getC_BPartner_ID(), null);
+						MBPartnerLocation[] locations = bpShipper.getLocations(false);
+						
+						if (locations == null || locations.length == 0)
+							return "Transportadora sem endereço cadastrado";
+						
+						result = validateBPartner (order.getCtx(), bpShipper.getC_BPartner_ID(), locations[0].getC_BPartner_Location_ID());
+						//
+						if (result != null && !result.isEmpty())
+							return "Cadastro da Transportadora Inválido, verifique: " + result;
+					}
+				}
+			}
+			
+			/****************************************
+			 * 	Validação dos Impostos do Pedido
+			 **/
+
+			//	Valida os Impostos
+			if (MSysConfig.getBooleanValue("LBR_VALIDATE_TAXES_ON_SO", false, po.getAD_Client_ID()))
+			{
+				String result = validateTaxes (order);
+				//
+				if (result != null && !result.isEmpty())
+					return "Pedido Inválido, verifique: \n" + result;
+			}
+			
+			/****************************************
+			 * 	Rateio de Frete
+			 **/
+			
+			//	O Valor do Frete não poder ser Menor ou Igual a 0
+			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule())
+					&& Env.ZERO.compareTo(order.getFreightAmt()) >= 0)
+				return Msg.parseTranslation(Env.getCtx(), "@FillMandatory@ @FreightAmt@");
+			
+			//	Divide o valor do frete nas linhas
+			else if (!MOrder.FREIGHTCOSTRULE_Line.equals(order.getFreightCostRule()))
+				recalcuteFreight (order);
 		}
 		//
 		return null;
 	}	//	docValidate
+	
+	/**
+	 * 		Verifica se o pedido está com os impostos corretos
+	 * 
+	 * 	@param order
+	 * 	@return	true or false
+	 */
+	private String validateTaxes (MOrder order)
+	{
+		String result = "";
+		
+		I_W_C_Order orderW = POWrapper.create (order, I_W_C_Order.class);
+
+		if (orderW.getlbr_TransactionType() == null)
+			result += "Tipo de Transação, ";
+		
+		for (MOrderLine ol : order.getLines())
+		{
+			I_W_C_OrderLine olW = POWrapper.create (ol, I_W_C_OrderLine.class);
+			//
+			String resultLine = "Linha " + olW.getLine() + " [";
+			boolean isProduct = ol.getM_Product_ID() > 0 && MProduct.PRODUCTTYPE_Item.equals(ol.getProduct().getProductType());
+			
+			if (olW.getC_Charge_ID() == 0 && olW.getM_Product_ID() == 0)
+				resultLine +=  "Sem produto/despesa, ";
+			
+			if (olW.getLBR_CFOP_ID() == 0)
+				resultLine += "Sem CFOP, ";
+			
+			if (olW.getLBR_Tax_ID() == 0)
+				resultLine += "Sem nenhum imposto, ";
+			else
+				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct);
+			
+			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
+				resultLine += "Sem preço, ";
+			
+			if (olW.getM_Product_ID() > 0 
+					&& MProduct.PRODUCTTYPE_Item.equals(olW.getM_Product().getProductType()))
+			{
+				I_W_M_Product product = POWrapper.create(ol.getProduct(), I_W_M_Product.class);
+				//
+				if (product.getLBR_NCM_ID() == 0)
+				{
+					resultLine += "Produto sem NCM, ";
+				}
+			}
+			
+			if (resultLine.endsWith(", "))
+				result += resultLine + "] \n";
+		}
+		
+		if (result.length() > 0)
+			result = result.replace (", ]", "]");
+		
+		return result;
+	}	//	validateTaxes
 	
 	/**
 	 * 		Verifica se o parceiro de negócios 
@@ -257,25 +381,29 @@ public class VLBROrder implements ModelValidator
 	 * 	@param order
 	 * 	@return	true or false
 	 */
-	private boolean isBPValid (MOrder order)
+	private String validateBPartner (Properties ctx, int C_BPartner_ID, int C_BPartner_Location_ID)
 	{
-		if (MDocType.DOCSUBTYPESO_Proposal.equals(order.getC_DocTypeTarget().getDocSubTypeSO())
-				|| MDocType.DOCSUBTYPESO_Quotation.equals(order.getC_DocTypeTarget().getDocSubTypeSO()))
-			return true;
+		String result = "";
 		//
-		MBPartner bp = new MBPartner (order.getCtx(), order.getC_BPartner_ID(), order.get_TrxName());
-		MBPartnerLocation bpL = new MBPartnerLocation (order.getCtx(), order.getC_BPartner_Location_ID(), order.get_TrxName());
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (ctx, C_BPartner_ID, null), I_W_C_BPartner.class);
+		MBPartnerLocation bpL = new MBPartnerLocation (ctx, C_BPartner_Location_ID, null);
 		MLocation loc = bpL.getLocation (true);
 		//
-		if (loc != null && loc.getC_Country_ID() == 139)	//	Brazil
-		{
-			I_W_C_BPartner bpW = POWrapper.create(bp, I_W_C_BPartner.class);
-			//
-			return bpW.islbr_BPTypeBRIsValid();
-		}
+		if (!bp.islbr_BPTypeBRIsValid())
+			result += "CNPJ/CPF ou ID do Estrangeiro, ";
+		if (loc == null)
+			result += "Cadastro do Endereço, ";
+		if (loc.getAddress1() == null || loc.getAddress1().isEmpty())
+			result += "Logradouro do Endereço, ";
+		if (loc.getAddress2() == null || loc.getAddress2().isEmpty())
+			result += "Número do Endereço, ";
+		if (loc.getAddress3() == null || loc.getAddress3().isEmpty())
+			result += "Bairro, ";
+		if (loc.getPostal() == null || loc.getPostal().isEmpty())
+			result += "CEP/ZIP, ";
 		//
-		return true;
-	}	//	isBPValid
+		return result;
+	}	//	validateBPartner
 	
 	/**
 	 * 	Verify if freight must be recalculated to all lines
@@ -317,6 +445,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor do frete
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -324,8 +453,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductFreight_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingFreightAmt = freightAmt;
+		int currentLine = 0;
 		
 		//	Rateia o Frete
 		for (MOrderLine ol : order.getLines())
@@ -339,7 +475,14 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do valor do frete
 			BigDecimal lineAmt 			= ol.getLineNetAmt();
-			BigDecimal lineFreightAmt 	= lineAmt.multiply(freightAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineFreightAmt 	= lineAmt.multiply(freightAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineFreightAmt = remaingFreightAmt;
+			else
+				remaingFreightAmt = remaingFreightAmt.subtract(lineFreightAmt);
 			
 			if (MOrder.FREIGHTCOSTRULE_FixPrice.equals(order.getFreightCostRule()))
 				ol.setFreightAmt(lineFreightAmt);
@@ -401,6 +544,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor de Despesas Acessórias
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -408,8 +552,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductOtherCharges_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingOtherChargesAmt = otherChargesAmt;
+		int currentLine = 0;
 		
 		//	Rateia Despesas Acessórias
 		for (MOrderLine ol : order.getLines())
@@ -424,10 +575,16 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do Outras Despesas por Linha
 			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
-			BigDecimal lineOtherChargesAmt 	= lineAmt.multiply(otherChargesAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineOtherChargesAmt 	= lineAmt.multiply(otherChargesAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineOtherChargesAmt = remaingOtherChargesAmt;
+			else
+				remaingOtherChargesAmt = remaingOtherChargesAmt.subtract(lineOtherChargesAmt);
 			
 			olW.setLBR_OtherChargesAmt(lineOtherChargesAmt);
-			
 			//
 			ol.save();
 		}
@@ -475,6 +632,7 @@ public class VLBROrder implements ModelValidator
 		
 		//	Total da NF sem considerar o valor do seguro
 		BigDecimal totalLines = Env.ZERO;
+		int lineCount = 0;
 		
 		//	Compõe o TotalLines
 		for (MOrderLine ol : order.getLines())
@@ -482,8 +640,15 @@ public class VLBROrder implements ModelValidator
 			if (ol.getM_Product_ID() > 0 
 					&& ol.getM_Product_ID() != M_ProductInsurance_ID
 					&& ol.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item))
+			{
 				totalLines = totalLines.add(ol.getLineNetAmt());
+				lineCount++;
+			}
 		}
+		
+		//	Calcula o valor remanescente do frete, para evitar problema de arredondamento
+		BigDecimal remaingInsuranceAmt = insuranceAmt;
+		int currentLine = 0;
 		
 		//	Rateia o Seguro
 		for (MOrderLine ol : order.getLines())
@@ -498,7 +663,14 @@ public class VLBROrder implements ModelValidator
 			
 			//	Faz o rateiro do Seguro por Linha
 			BigDecimal lineAmt 	     		= ol.getLineNetAmt();
-			BigDecimal lineInsuranceAmt 	= lineAmt.multiply(insuranceAmt).divide(totalLines, 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal lineInsuranceAmt 	= lineAmt.multiply(insuranceAmt).divide(totalLines, 2, BigDecimal.ROUND_HALF_UP);
+			
+			//	Verifica se a linha atual é a última linha,
+			//		caso positivo, o valor residual é inserido nesta linha
+			if (++currentLine == lineCount)
+				lineInsuranceAmt = remaingInsuranceAmt;
+			else
+				remaingInsuranceAmt = remaingInsuranceAmt.subtract(lineInsuranceAmt);
 			
 			olW.setlbr_InsuranceAmt(lineInsuranceAmt);
 			

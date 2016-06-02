@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
@@ -37,6 +38,7 @@ import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MQuery;
 import org.compiere.model.MRole;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.swing.CLabel;
 import org.compiere.swing.CTextField;
@@ -240,7 +242,7 @@ public class InfoBPartner extends Info
 				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
 		}
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
-		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '')", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '') || NVL (' - ' || a.Address3, '') || NVL (' - ' || a.Address4, '')", String.class));
 		if (windowAccess && columnLifetimeAccess)
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class));
@@ -352,6 +354,11 @@ public class InfoBPartner extends Info
 			else
 				sql.append ("C_BPartner.IsVendor='Y'");
 		}
+		
+		Properties ctx = Env.getCtx();
+		if (!MSysConfig.getBooleanValue("LBR_SHOW_EMPLOYEE_BP_INFO#" + Env.getAD_Role_ID(ctx), true, Env.getAD_Client_ID(ctx)))
+			sql.append(" AND C_BPartner.IsEmployee='N'");
+		
 		return sql.toString();
 	}	//	getSQLWhere
 

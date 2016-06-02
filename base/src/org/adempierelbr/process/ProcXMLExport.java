@@ -109,10 +109,8 @@ public class ProcXMLExport extends SvrProcess
 			deleteDir (f);
 		//
 		if (Ini.isClient() && p_FilePath == null)
-			throw new AdempiereException ("@FillMandatory@ @File_Directory@");
+			throw new AdempiereException ("@FillMandatory@ @File_Directory@");		
 		
-		if (!(p_FilePath.endsWith(File.separator)))
-			p_FilePath += File.separator;
 		//
 		StringBuffer whereClause = new StringBuffer("AD_Client_ID=?")
 		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
@@ -183,6 +181,8 @@ public class ProcXMLExport extends SvrProcess
 		//		Versão SWING
 		if (Ini.isClient())
 		{
+			if (!(p_FilePath.endsWith(File.separator)))
+				p_FilePath += File.separator;
 			//
 			String fileName = p_FilePath + "XML_NFe_" + TextUtil.timeToString(dateFrom, "ddMMyyyy") 
 			+ "_" + TextUtil.timeToString(dateTo, "ddMMyyyy") + ".zip";

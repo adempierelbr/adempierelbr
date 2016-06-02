@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
@@ -39,6 +40,7 @@ import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MQuery;
 import org.compiere.model.MRole;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -328,7 +330,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 //			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Phone"), "c.Phone", String.class));
 			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Postal"), "a.Postal", KeyNamePair.class, "l.C_BPartner_Location_ID"));
 			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
-			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Address1"), "a.Address1", String.class));
+			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '') || NVL (' - ' || a.Address3, '') || NVL (' - ' || a.Address4, '')", String.class));
 			if (windowAccess && columnLifetimeAccess)
 				list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
 			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "IsShipTo"), "l.IsShipTo", Boolean.class));
@@ -528,6 +530,10 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 			else
 				sql.append ("C_BPartner.IsVendor='Y'");
 		}
+		
+		Properties ctx = Env.getCtx();
+		if (!MSysConfig.getBooleanValue("LBR_SHOW_EMPLOYEE_BP_INFO@" + Env.getAD_Role_ID(ctx), true, Env.getAD_Client_ID(ctx)))
+			sql.append(" AND C_BPartner.IsEmployee='N'");
 		return sql.toString();
 
 	}	//	getSQLWhere

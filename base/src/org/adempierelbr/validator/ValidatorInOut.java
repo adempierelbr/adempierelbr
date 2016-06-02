@@ -423,11 +423,13 @@ public class ValidatorInOut implements ModelValidator
 				/**
 				 *  FIXME: QtyDelivered é na UDM padrão, QtyEntered pode ser outra,
 				 *  com isso a comparação, pode não funcionar corretamente.
+				 *  
+				 *  Se gerado a partir de uma RMA, não é necessário validar a quantidade
 				 *
 				 */
 
 				log.info("Delivered: " + oline.getQtyDelivered() + " Entered: " + oline.getQtyEntered() + " Trying: " + line.getQtyEntered());
-				if (timing == TIMING_BEFORE_COMPLETE
+				if (timing == TIMING_BEFORE_COMPLETE && line.getM_RMALine_ID() == 0 && oline.getC_Order_ID() > 0
 						&& MSysConfig.getBooleanValue("LBR_MATCH_SHIPMENT_RECEIPT_AND_ORDER_QTY", false, inOut.getAD_Client_ID())
 						&& oline.getQtyDelivered().add(line.getQtyEntered()).doubleValue() > oline.getQtyEntered().doubleValue())
 					return "Nao e possivel fazer recebimento maior que o pedido. Linha do pedido #" + line.getLine();

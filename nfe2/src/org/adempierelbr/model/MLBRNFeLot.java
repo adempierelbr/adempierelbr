@@ -253,6 +253,18 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		Properties ctx = getCtx();
 		String trxName = get_TrxName();
 
+		/**
+		 * 	Força o processamento offline 
+		 * 	caso o XML de retorno esteja anexado no lote
+		 */
+		byte[] attachmentData = getAttachmentData("-pro-rec.xml");
+		if (attachmentData != null)
+		{
+			processResponse(new String (attachmentData, "UTF-8"), trxName);
+			save();
+			return true;
+		}
+		
 		log.fine("Consulta Lote: " + getDocumentNo());
 		//
 		if (!islbr_LotSent())
@@ -311,53 +323,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			attachLotNFe.addEntry(getDocumentNo()+"-pro-rec.xml", respRetAutorizacao.getBytes("UTF-8"));
 			attachLotNFe.save();
 			
-			TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();
-			//
-			String cStat = retConsReciNFe.getCStat();
-			try
-			{
-				setlbr_NFeAnswerStatus(cStat);
-			}
-			catch (Exception e) {}
-			//
-			
-			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
-					&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
-					&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
-			{
-				setDocStatus(DOCSTATUS_Completed);
-				setDocAction(DOCACTION_None);
-				setlbr_LotReceived(true);
-				setProcessed(true);
-				
-				setlbr_NFeRespID(retConsReciNFe.getNRec());
-				setDateFinish(NFeUtil.stringToTime(retConsReciNFe.getDhRecbto()));
-				//
-				TProtNFe[] protNFes = retConsReciNFe.getProtNFeArray();
-				
-				//	Processa as NFes
-				if (protNFes != null && protNFes.length > 0)
-					for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
-					{
-						MLBRNotaFiscal.authorizeNFe (protNFe, trxName);
-					}	//	for
-				
-				//	Libera as NFs para envio em outro lote
-				else
-				{
-					List<MLBRNotaFiscal> nfs = new Query (Env.getCtx(),MLBRNotaFiscal.Table_Name, COLUMNNAME_LBR_NFeLot_ID + "=?", get_TrxName())
-						.setParameters(getLBR_NFeLot_ID()).list();
-					//
-					for (MLBRNotaFiscal nf : nfs)
-					{
-						nf.setLBR_NFeLot_ID(0);
-						nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Invalid);
-						nf.setDocAction(MLBRNotaFiscal.DOCACTION_Complete);
-						nf.setProcessed(false);
-						nf.save();
-					}
-				}
-			}	//	if
+			processResponse (respRetAutorizacao, trxName);
 			//
 			save();
 		}
@@ -370,6 +336,65 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 
 		return true;
 	}	//	consultaNFe
+
+	/**
+	 * 	Process the response XML of SeFaz
+	 * 
+	 * @param respRetAutorizacao
+	 * @param trxName
+	 * @throws XmlException
+	 * @throws Exception
+	 */
+	private void processResponse (String respRetAutorizacao, String trxName) throws XmlException, Exception
+	{
+		TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();
+		//
+		String cStat = retConsReciNFe.getCStat();
+		try
+		{
+			setlbr_NFeAnswerStatus(cStat);
+		}
+		catch (Exception e) {}
+		//
+		
+		if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
+				&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
+				&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
+		{
+			setDocStatus(DOCSTATUS_Completed);
+			setDocAction(DOCACTION_None);
+			setlbr_LotReceived(true);
+			setProcessed(true);
+			
+			setlbr_NFeRespID(retConsReciNFe.getNRec());
+			setDateFinish(NFeUtil.stringToTime(retConsReciNFe.getDhRecbto()));
+			//
+			TProtNFe[] protNFes = retConsReciNFe.getProtNFeArray();
+			
+			//	Processa as NFes
+			if (protNFes != null && protNFes.length > 0)
+				for (TProtNFe protNFe : retConsReciNFe.getProtNFeArray())
+				{
+					MLBRNotaFiscal.authorizeNFe (protNFe, trxName);
+				}	//	for
+			
+			//	Libera as NFs para envio em outro lote
+			else
+			{
+				List<MLBRNotaFiscal> nfs = new Query (Env.getCtx(),MLBRNotaFiscal.Table_Name, COLUMNNAME_LBR_NFeLot_ID + "=?", get_TrxName())
+					.setParameters(getLBR_NFeLot_ID()).list();
+				//
+				for (MLBRNotaFiscal nf : nfs)
+				{
+					nf.setLBR_NFeLot_ID(0);
+					nf.setDocStatus(MLBRNotaFiscal.DOCSTATUS_Invalid);
+					nf.setDocAction(MLBRNotaFiscal.DOCACTION_Complete);
+					nf.setProcessed(false);
+					nf.save();
+				}
+			}
+		}	//	if
+	}
 
 	/**
 	 * 	Release NF before deletion

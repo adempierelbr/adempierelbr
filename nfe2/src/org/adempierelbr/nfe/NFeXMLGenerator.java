@@ -1477,13 +1477,14 @@ public class NFeXMLGenerator
 			int dupCounter = 1;
 			
 		    //	Adiciona as duplicatas da fatura
-		    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
-		    {
-		    	Dup dup = cobr.addNewDup();
-		    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-		    	dup.setDVenc(normalize (openItem.getDueDate()));
-		    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
-			}
+			if (nf.islbr_HasOpenItems())
+			    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+			    {
+			    	Dup dup = cobr.addNewDup();
+			    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+			    	dup.setDVenc(normalize (openItem.getDueDate()));
+			    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+				}
 		}
 		
 		//	YA. Formas de Pagamento

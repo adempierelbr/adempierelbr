@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20151223L;
+	private static final long serialVersionUID = 20160525L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -63,6 +63,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 // 'N'
 			setlbr_FinNFe (null);
 // 1
+			setlbr_HasOpenItems (true);
+// Y
 			setlbr_IsOwnDocument (false);
 // N
         } */
@@ -2329,6 +2331,30 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Has Open Items.
+		@param lbr_HasOpenItems 
+		Identifies if this Document Has Open Items
+	  */
+	public void setlbr_HasOpenItems (boolean lbr_HasOpenItems)
+	{
+		set_Value (COLUMNNAME_lbr_HasOpenItems, Boolean.valueOf(lbr_HasOpenItems));
+	}
+
+	/** Get Has Open Items.
+		@return Identifies if this Document Has Open Items
+	  */
+	public boolean islbr_HasOpenItems () 
+	{
+		Object oo = get_Value(COLUMNNAME_lbr_HasOpenItems);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set IE.

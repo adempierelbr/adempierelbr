@@ -213,7 +213,7 @@ public class GenBilling
 			new ColumnInfo(Msg.translate(ctx, "AD_Org_ID"), "o.Name", KeyNamePair.class, true, true, "o.AD_Org_ID"),
 			new ColumnInfo(Msg.translate(ctx, "C_BPartner_ID"), "bp.Name", KeyNamePair.class, true, false, "i.C_BPartner_ID"),
 			new ColumnInfo(Msg.translate(ctx, "DocumentNo"), "i.DocumentNo", String.class),
-			new ColumnInfo(Msg.translate(ctx, "LBR_NotaFiscal_ID"), "nf.DocumentNo", KeyNamePair.class, true, false, "nf.LBR_NotaFiscal_ID"),
+			new ColumnInfo(Msg.translate(ctx, "LBR_NotaFiscal_ID"), "COALESCE (nf.lbr_NFENo, nf.DocumentNo) AS DocumentNo", KeyNamePair.class, true, false, "nf.LBR_NotaFiscal_ID"),
 			//	6..9
 			new ColumnInfo(Msg.translate(ctx, "DateInvoiced"), "i.DateInvoiced", Timestamp.class, true, true, null),
 			new ColumnInfo(Msg.translate(ctx, "C_PaymentTerm_ID"), "pt.Name", KeyNamePair.class, true, false, "i.C_PaymentTerm_ID"),

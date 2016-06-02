@@ -215,9 +215,9 @@
 		
 		<!-- processes classes  -->
 		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/adempierelbr/process" overwrite="true">
-			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcGenerateRPS.*" />
-			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcXMLExport.*" />
-		   	<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcReturnCNAB.*" />
+			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcGenerateRPS*" />
+			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcXMLExport*" />
+		   	<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcReturnCNAB*" />
 		</copy>
 	</target>
 </project>

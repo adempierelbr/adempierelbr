@@ -21,15 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.model.MLBRTaxLine;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
+import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrderLine;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRMALine;
 import org.compiere.process.DocAction;
@@ -161,10 +161,12 @@ public class InvoiceGenerateRMA extends SvrProcess
     
     private MInvoiceLine[] createInvoiceLines(MRMA rma, MInvoice invoice)
     {
+    	//	Lista de Linhas da Fatura
         ArrayList<MInvoiceLine> invLineList = new ArrayList<MInvoiceLine>();
         
         MRMALine rmaLines[] = rma.getLines(true);
         
+        //	Linhas do RMA
         for (MRMALine rmaLine : rmaLines)
         {
             if (rmaLine.getM_InOutLine_ID() == 0)
@@ -173,54 +175,38 @@ public class InvoiceGenerateRMA extends SvrProcess
                         + rma.getDocumentNo() + ", Line = " + rmaLine.getLine());
             }
             
+            //	Adicionar Linhas da Fatura
             MInvoiceLine invLine = new MInvoiceLine(invoice);
             invLine.setRMALine(rmaLine);
             
-            /**
-             * Buscar Imposto
-             */
+            // Linha da Expedição relacionada a RMA
+            MInOutLine inoutline = new MInOutLine(Env.getCtx(), rmaLine.getM_InOutLine_ID(), null);
+            
+            //	Linha do Pedido Original
+            MOrderLine originalOrderLine = (MOrderLine) inoutline.getC_OrderLine();
+            
+            //	Imposto da Linha do Pedido Original
+            MLBRTax taxOrder = new MLBRTax(Env.getCtx(), originalOrderLine.get_ValueAsInt("LBR_Tax_ID"), null);
+            
+            //	Novo imposto copiado do Pedido Original
+            MLBRTax newTax = taxOrder.copyTo();
+            
+            //	Adicionar Imposto Copiado do Pedido na Fatura
+            invLine.set_ValueOfColumn ("LBR_Tax_ID", newTax.getLBR_Tax_ID());
+            
+            //	Buscar apenas o CFOP referente a operação
+             
             Object[] taxation = MLBRTax.getTaxes (POWrapper.create(invLine, I_W_C_InvoiceLine.class), invoice.get_TrxName());
             
-            /**
-    		 * 	0 = Taxes
-    		 * 	1 = Legal Message
-    		 * 	2 = CFOP
-    		 * 	3 = CST
-    		 */
-    		//
     		if (taxation == null)
     			log.warning ("Imposto não encontrado");
     		else
     		{
-	    		//
-	    		@SuppressWarnings("unchecked")
-				Map<Integer, MLBRTaxLine> taxes = (Map<Integer, MLBRTaxLine>) taxation[0];
-	    		
 	    		if (((Integer) taxation[2]) > 0)
 	    			invLine.set_ValueOfColumn("LBR_CFOP_ID" , ((Integer) taxation[2]));
-	    		
-	    		//	if (((String) taxation[3]) != null && ((String) taxation[3]).length() > 0)
-	    		//	mTab.setValue("lbr_TaxStatus", p.getlbr_ProductSource() + ((String) taxation[3]));
-	    		//
-	    		if (taxes.size() > 0)
-	    		{
-	    			MLBRTax tax = new MLBRTax (Env.getCtx(), 0, null);
-	    			tax.save();
-	    			//
-	    			for (Integer key : taxes.keySet())
-	    			{
-	    				MLBRTaxLine tl = taxes.get(key);
-	    				tl.setLBR_Tax_ID(tax.getLBR_Tax_ID());
-	    				tl.save();
-	    			}
-	    			//
-	    			tax.setDescription();
-	    			tax.save();
-	    			//
-	    			invLine.set_ValueOfColumn ("LBR_Tax_ID", tax.getLBR_Tax_ID());
-	    		}
     		}
             
+    		//	Salvar Linha
             if (!invLine.save())
             {
                 throw new IllegalStateException("Could not create invoice line");

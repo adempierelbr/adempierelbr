@@ -2232,14 +2232,6 @@ UPDATE AD_Field SET IsSameLine='Y', SeqNo=40,Updated=TO_DATE('2015-12-18 10:16:4
 UPDATE AD_Field SET DisplayLength=22, SeqNo=50,Updated=TO_DATE('2015-12-18 10:16:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125678
 ;
 
--- 18/12/2015 13h55min2s BRST
-DELETE  FROM  AD_Column_Trl WHERE AD_Column_ID=2000000
-;
-
--- 18/12/2015 13h55min2s BRST
-DELETE FROM AD_Column WHERE AD_Column_ID=2000000
-;
-
 -- 18/12/2015 13h56min0s BRST
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,ReadOnlyLogic,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1128692,1122214,0,30,1000028,'LBR_CEST_ID',TO_DATE('2015-12-18 13:55:59','YYYY-MM-DD HH24:MI:SS'),100,'Primary key table LBR_CEST Brazilian Specifier code Tax','LBRA',10,'Primary key table LBR_CEST Brazilian Specifier code Tax','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','CEST',NULL,0,TO_DATE('2015-12-18 13:55:59','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;

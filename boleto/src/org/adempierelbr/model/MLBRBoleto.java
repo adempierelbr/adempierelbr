@@ -695,7 +695,17 @@ public class MLBRBoleto extends X_LBR_Boleto
 					MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
 					if (MSysConfig.getBooleanValue("LBR_PRINTNFENOONBILLING", true) && nfs.length > 0)
 					{
-						newBoleto.setlbr_Instruction3("NOTA FISCAL: " + nfs[0].getDocumentNo());
+						String type = "NOTA FISCAL: ";
+						String docNo = nfs[0].getDocumentNo();
+						
+						//	Imprime o número da NF de serviço
+						if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(nfs[0].getlbr_NFModel()))
+							if (nfs[0].getlbr_NFENo() != null)
+								docNo = nfs[0].getlbr_NFENo();
+							else
+								type = "RPS: ";
+						//
+						newBoleto.setlbr_Instruction3(type + docNo);
 					}
 
 					//	Observação Boleto

@@ -34,6 +34,7 @@ import org.compiere.model.MOrderLine;
 import org.compiere.model.MProduct;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRMALine;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MWarehouse;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
@@ -570,9 +571,10 @@ public class CreateFromShipment extends CreateFrom
 				//boolean isInvoiced = (C_InvoiceLine_ID != 0);
 				//	Precision of Qty UOM
 				int precision = 2;
+				MProduct product = null;
 				if (M_Product_ID != 0)
 				{
-					MProduct product = MProduct.get(Env.getCtx(), M_Product_ID);
+					product = MProduct.get(Env.getCtx(), M_Product_ID);
 					precision = product.getUOMPrecision();
 				}
 				QtyEntered = QtyEntered.setScale(precision, BigDecimal.ROUND_HALF_DOWN);
@@ -586,89 +588,111 @@ public class CreateFromShipment extends CreateFrom
 					QtyEntered = QtyEntered.negate();
 
 				//	Create new InOut Line
-				MInOutLine iol = new MInOutLine (inout);
-				iol.setM_Product_ID(M_Product_ID, C_UOM_ID);	//	Line UOM
-				iol.setQty(QtyEntered);							//	Movement/Entered
-				//
-				MOrderLine ol = null;
-				MRMALine rmal = null;
-				if (C_OrderLine_ID != 0)
+				boolean divideqty = false;
+				int qtydivide = QtyEntered.intValue();
+				
+				/**	
+				 * 	When enabled creates multiple lines for the same order/invoice line.
+				 * 	This is useful when the product has a serial number for each instance.
+				 */
+				if (MSysConfig.getBooleanValue("LBR_DIVIDE_PRODUCT_RECEPT_WHEN_SERIALNUMBER", false, inout.getAD_Client_ID(), inout.getAD_Org_ID())
+						&& product.getM_AttributeSet_ID() > 0 
+						&& product.getM_AttributeSet().isSerNo()
+						&& QtyEntered.compareTo(Env.ONE) == 1)
 				{
-					iol.setC_OrderLine_ID(C_OrderLine_ID);
-					ol = new MOrderLine (Env.getCtx(), C_OrderLine_ID, trxName);
-					if (ol.getQtyEntered().compareTo(ol.getQtyOrdered()) != 0)
-					{
-						iol.setMovementQty(QtyEntered
-								.multiply(ol.getQtyOrdered())
-								.divide(ol.getQtyEntered(), 12, BigDecimal.ROUND_HALF_UP));
-						iol.setC_UOM_ID(ol.getC_UOM_ID());
-					}
-					iol.setM_AttributeSetInstance_ID(ol.getM_AttributeSetInstance_ID());
-					iol.setDescription(ol.getDescription());
+					divideqty = true;
+					qtydivide = 1;
+				}
+				
+				for (int qty = qtydivide; QtyEntered.compareTo(new BigDecimal(qty)) >= 0; qty++)
+				{
+					MInOutLine iol = new MInOutLine (inout);
+					iol.setM_Product_ID(M_Product_ID, C_UOM_ID);	//	Line UOM
+					if (divideqty == true)
+						iol.setQty(Env.ONE);					//	Movement/Entered
+					else
+						iol.setQty(QtyEntered);							//	Movement/Entered
 					//
-					iol.setC_Project_ID(ol.getC_Project_ID());
-					iol.setC_ProjectPhase_ID(ol.getC_ProjectPhase_ID());
-					iol.setC_ProjectTask_ID(ol.getC_ProjectTask_ID());
-					iol.setC_Activity_ID(ol.getC_Activity_ID());
-					iol.setC_Campaign_ID(ol.getC_Campaign_ID());
-					iol.setAD_OrgTrx_ID(ol.getAD_OrgTrx_ID());
-					iol.setUser1_ID(ol.getUser1_ID());
-					iol.setUser2_ID(ol.getUser2_ID());
-				}
-				else if (il != null)
-				{
-					if (il.getQtyEntered().compareTo(il.getQtyInvoiced()) != 0)
+					MOrderLine ol = null;
+					MRMALine rmal = null;
+					if (C_OrderLine_ID != 0)
 					{
-						iol.setQtyEntered(QtyEntered
-								.multiply(il.getQtyInvoiced())
-								.divide(il.getQtyEntered(), 12, BigDecimal.ROUND_HALF_UP));
-						iol.setC_UOM_ID(il.getC_UOM_ID());
+						iol.setC_OrderLine_ID(C_OrderLine_ID);
+						ol = new MOrderLine (Env.getCtx(), C_OrderLine_ID, trxName);
+						if (ol.getQtyEntered().compareTo(ol.getQtyOrdered()) != 0)
+						{							
+							iol.setMovementQty(QtyEntered
+									.multiply(ol.getQtyOrdered())
+									.divide(ol.getQtyEntered(), 12, BigDecimal.ROUND_HALF_UP));
+							iol.setC_UOM_ID(ol.getC_UOM_ID());
+						}
+						iol.setM_AttributeSetInstance_ID(ol.getM_AttributeSetInstance_ID());
+						iol.setDescription(ol.getDescription());
+						//
+						iol.setC_Project_ID(ol.getC_Project_ID());
+						iol.setC_ProjectPhase_ID(ol.getC_ProjectPhase_ID());
+						iol.setC_ProjectTask_ID(ol.getC_ProjectTask_ID());
+						iol.setC_Activity_ID(ol.getC_Activity_ID());
+						iol.setC_Campaign_ID(ol.getC_Campaign_ID());
+						iol.setAD_OrgTrx_ID(ol.getAD_OrgTrx_ID());
+						iol.setUser1_ID(ol.getUser1_ID());
+						iol.setUser2_ID(ol.getUser2_ID());
 					}
-					iol.setDescription(il.getDescription());
-					iol.setC_Project_ID(il.getC_Project_ID());
-					iol.setC_ProjectPhase_ID(il.getC_ProjectPhase_ID());
-					iol.setC_ProjectTask_ID(il.getC_ProjectTask_ID());
-					iol.setC_Activity_ID(il.getC_Activity_ID());
-					iol.setC_Campaign_ID(il.getC_Campaign_ID());
-					iol.setAD_OrgTrx_ID(il.getAD_OrgTrx_ID());
-					iol.setUser1_ID(il.getUser1_ID());
-					iol.setUser2_ID(il.getUser2_ID());
-				}
-				else if (M_RMALine_ID != 0)
-				{
-					rmal = new MRMALine(Env.getCtx(), M_RMALine_ID, trxName);
-					iol.setM_RMALine_ID(M_RMALine_ID);
-					iol.setQtyEntered(QtyEntered);
-					iol.setDescription(rmal.getDescription());
-					iol.setM_AttributeSetInstance_ID(rmal.getM_AttributeSetInstance_ID());
-					iol.setC_Project_ID(rmal.getC_Project_ID());
-					iol.setC_ProjectPhase_ID(rmal.getC_ProjectPhase_ID());
-					iol.setC_ProjectTask_ID(rmal.getC_ProjectTask_ID());
-					iol.setC_Activity_ID(rmal.getC_Activity_ID());
-					iol.setAD_OrgTrx_ID(rmal.getAD_OrgTrx_ID());
-					iol.setUser1_ID(rmal.getUser1_ID());
-					iol.setUser2_ID(rmal.getUser2_ID());
-				}
+					else if (il != null)
+					{
+						if (il.getQtyEntered().compareTo(il.getQtyInvoiced()) != 0)
+						{
+							iol.setQtyEntered(QtyEntered
+									.multiply(il.getQtyInvoiced())
+									.divide(il.getQtyEntered(), 12, BigDecimal.ROUND_HALF_UP));
+							iol.setC_UOM_ID(il.getC_UOM_ID());
+						}
+						iol.setDescription(il.getDescription());
+						iol.setC_Project_ID(il.getC_Project_ID());
+						iol.setC_ProjectPhase_ID(il.getC_ProjectPhase_ID());
+						iol.setC_ProjectTask_ID(il.getC_ProjectTask_ID());
+						iol.setC_Activity_ID(il.getC_Activity_ID());
+						iol.setC_Campaign_ID(il.getC_Campaign_ID());
+						iol.setAD_OrgTrx_ID(il.getAD_OrgTrx_ID());
+						iol.setUser1_ID(il.getUser1_ID());
+						iol.setUser2_ID(il.getUser2_ID());
+					}
+					else if (M_RMALine_ID != 0)
+					{
+						rmal = new MRMALine(Env.getCtx(), M_RMALine_ID, trxName);
+						iol.setM_RMALine_ID(M_RMALine_ID);
+						iol.setQtyEntered(QtyEntered);
+						iol.setDescription(rmal.getDescription());
+						iol.setM_AttributeSetInstance_ID(rmal.getM_AttributeSetInstance_ID());
+						iol.setC_Project_ID(rmal.getC_Project_ID());
+						iol.setC_ProjectPhase_ID(rmal.getC_ProjectPhase_ID());
+						iol.setC_ProjectTask_ID(rmal.getC_ProjectTask_ID());
+						iol.setC_Activity_ID(rmal.getC_Activity_ID());
+						iol.setAD_OrgTrx_ID(rmal.getAD_OrgTrx_ID());
+						iol.setUser1_ID(rmal.getUser1_ID());
+						iol.setUser2_ID(rmal.getUser2_ID());
+					}				
 
-				//	Charge
-				if (M_Product_ID == 0)
-				{
-					if (ol != null && ol.getC_Charge_ID() != 0)			//	from order
-						iol.setC_Charge_ID(ol.getC_Charge_ID());
-					else if (il != null && il.getC_Charge_ID() != 0)	//	from invoice
-						iol.setC_Charge_ID(il.getC_Charge_ID());
-					else if (rmal != null && rmal.getC_Charge_ID() != 0) // from rma
-						iol.setC_Charge_ID(rmal.getC_Charge_ID());
-				}
-				// Set locator
-				iol.setM_Locator_ID(M_Locator_ID);
-				if (!iol.save())
-					log.log(Level.SEVERE, "Line NOT created #" + i);
-				//	Create Invoice Line Link
-				else if (il != null)
-				{
-					il.setM_InOutLine_ID(iol.getM_InOutLine_ID());
-					il.saveEx();
+					//	Charge
+					if (M_Product_ID == 0)
+					{
+						if (ol != null && ol.getC_Charge_ID() != 0)			//	from order
+							iol.setC_Charge_ID(ol.getC_Charge_ID());
+						else if (il != null && il.getC_Charge_ID() != 0)	//	from invoice
+							iol.setC_Charge_ID(il.getC_Charge_ID());
+						else if (rmal != null && rmal.getC_Charge_ID() != 0) // from rma
+							iol.setC_Charge_ID(rmal.getC_Charge_ID());
+					}
+					// Set locator
+					iol.setM_Locator_ID(M_Locator_ID);
+					if (!iol.save())
+						log.log(Level.SEVERE, "Line NOT created #" + qty);
+					//	Create Invoice Line Link
+					else if (il != null)
+					{
+						il.setM_InOutLine_ID(iol.getM_InOutLine_ID());
+						il.saveEx();
+					}
 				}
 			}   //   if selected
 		}   //  for all rows

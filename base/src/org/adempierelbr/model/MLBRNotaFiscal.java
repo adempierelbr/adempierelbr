@@ -50,6 +50,7 @@ import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_Tax;
+import org.adempierelbr.wrapper.I_W_M_Shipper;
 import org.apache.axiom.om.OMElement;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAttachment;
@@ -719,7 +720,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (nf == null)
 			throw new Exception ("NF não encontrada: " + chNFe);
 
-		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (NFeUtil.AUTORIZADA))
+		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E))
 			throw new Exception ("NF já processada. " + nf.getDocumentNo());
 
         Timestamp ts = NFeUtil.stringToTime (dhRecbto);
@@ -742,7 +743,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Estados Finais
 		if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
 				LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-				LBR_NFESTATUS_110_UsoDenegado,
 				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
 				LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
 				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))
@@ -772,7 +772,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				if ((nf.getlbr_NFeID() + "-nfe.xml").equals(entry.getName()))
 				{
-					xml = new String (entry.getData(), "UTF-8");
+					xml = new String (entry.getData(), NFeUtil.NFE_ENCODING);
 					attachment.deleteEntry(entry.getIndex());
 					break;
 				}
@@ -793,7 +793,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setProtNFe(protNFe);
 			
 			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes("UTF-8"));
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
 			attachment.save();
 			
 			//	Comitar Transação Antes de Enviar o XML e PDF por Email
@@ -801,7 +801,24 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			t.commit();
 			
 			//	Envia o e-mail para o cliente
-			ProcEMailNFe.sendEmailNFe (nf, false);
+			//	em caso de erro o try/catch evita que o processamento não seja commitado
+			try
+			{
+				ProcEMailNFe.sendEmailNFe (nf, false);
+			}
+			catch (Exception e) {}
+		}
+		
+		//	Notas Fiscais Denegadas
+		else if (TextUtil.match (cStat,LBR_NFESTATUS_110_UsoDenegado,
+					LBR_NFESTATUS_301_RejeiçãoIrregularidadeCadastralDoEmitente,
+					LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+					LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNa))
+		{
+			nf.setDocStatus(DOCSTATUS_Voided);
+			nf.setDocAction(DOCACTION_None);
+			nf.setIsCancelled(true);
+			nf.setProcessed(true);
 		}
 		
 		//	Reativar o documento para correção
@@ -892,7 +909,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		if (getC_Invoice_ID() > 0)
 		{
-			MInvoice i = new MInvoice (Env.getCtx(), getC_Invoice_ID(), null);
+			MInvoice i = new MInvoice (Env.getCtx(), getC_Invoice_ID(), get_TrxName());
 			if (i.getAD_User_ID() > 0)
 			{
 				MUser u = new MUser (Env.getCtx(), i.getAD_User_ID(), null);
@@ -1150,7 +1167,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setlbr_NFModel(null);
 		else
 			setlbr_NFModel(model);
-
+		
+		//	Fatura gerada a partir do RMA a Finalidade da NF deve ser Devolução/Retorno de Mercadoria
+		if (invoice.getM_RMA_ID() != 0)
+			setlbr_FinNFe(LBR_FINNFE_DevoluçãoRetornoDeMercadoria);
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
@@ -1957,42 +1977,63 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		MBPartner transp = new MBPartner(getCtx(), shipper.getC_BPartner_ID(), get_TrxName());
 
 		//	Localização Transportadora
-		MBPartnerLocation[] transpLocations = transp.getLocations (false);
-
-		if (transpLocations.length > 0)
+		MBPartnerLocation transpLocation = null;
+		
+		//	Procura o endereço no cadastro da transportadora
+		if (shipper.get_ColumnIndex(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID) > 0
+				&& shipper.get_ValueAsInt(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID) > 0)
 		{
-			MLocation location = new MLocation(getCtx(), transpLocations[0].getC_Location_ID(), get_TrxName());
-			MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
+			transpLocation = new MBPartnerLocation (shipper.getCtx(), shipper.get_ValueAsInt(I_W_M_Shipper.COLUMNNAME_C_BPartner_Location_ID), get_TrxName());
+		}
+		
+		//	Caso não esteja cadastrado, faz a pesquisa e seleciona o primeiro endereço
+		if (transpLocation == null)
+		{
+			MBPartnerLocation[] transpLocations = transp.getLocations (false);
+			if (transpLocations.length > 0)
+				transpLocation = transpLocations[0];
+		}
+		
+		// Sem endereço
+		if (transpLocation == null)
+		{
+			log.warning("Transportadora sem endereço cadastrado: " + shipper.getName());
+			return;
+		}
+		
+		MLocation location = new MLocation(getCtx(), transpLocation.getC_Location_ID(), get_TrxName());
+		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
 
-			setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocations[0]));	//	CNPJ
-			setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocations[0]));   		//	IE
-			
-			//	Concatenar o Endereço em uma unica variável
-			String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
-							 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
-							 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
-							 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
-			
-			// Rua, Número, Bairro e Complemento e um único campo
-			setlbr_BPShipperAddress(address);			
-			setlbr_BPShipperCity(location.getCity());			//	Cidade
-			setlbr_BPShipperPostal(location.getPostal());		//	CEP
-			setlbr_BPShipperCountry(country.getCountryCode());	//	País
+		setlbr_BPShipperCNPJ(BPartnerUtil.getCNPJ_CPF(transpLocation));	//	CNPJ
+		setlbr_BPShipperIE(BPartnerUtil.getIE(transpLocation));   		//	IE
+		
+		//	Concatenar o Endereço em uma unica variável
+		String address = (location.getAddress1() == null ? "" : location.getAddress1()) + 
+						 (location.getAddress2() == null ? "" : ", "  + location.getAddress2()) + 
+						 (location.getAddress3() == null ? "" : " - " + location.getAddress3()) + 
+						 (location.getAddress4() == null ? "" : " - " + location.getAddress4());
+		
+		// Rua, Número, Bairro e Complemento e um único campo
+		setlbr_BPShipperAddress(address);			
+		setlbr_BPShipperCity(location.getCity());			//	Cidade
+		setlbr_BPShipperPostal(location.getPostal());		//	CEP
+		setlbr_BPShipperCountry(country.getCountryCode());	//	País
 
-			if (country.get_ID() != BRAZIL)
-				setlbr_BPShipperRegion("EX");
-			else
-			{
-				MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
-				setlbr_BPShipperRegion(region.getName());		//	Estado
-			}
+		if (country.get_ID() != BRAZIL)
+			setlbr_BPShipperRegion("EX");
+		else
+		{
+			MRegion region = new MRegion(getCtx(),location.getC_Region_ID(),get_TrxName());
+			setlbr_BPShipperRegion(region.getName());		//	Estado
 		}
 	}	//	setShipper
 	
 	/**
 	 * 	Código de Barras da NF Modelo 1 ou 1A
 	 * 		impressa a Laser
+	 * 	@deprecated Método para NF 1 e 1A, não é usado mais atualmente
 	 */
+	@Deprecated
 	private void setBarCodeModel1A ()
 	{
 		StringBuilder barcode1 = new StringBuilder();
@@ -2839,14 +2880,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					try
 					{
-						byte[] xml = infSe.getXML (this);
+						String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
 
 						//	Anexa o XML na NF
 						if (getAttachment (true) != null)
 							getAttachment ().delete (true);
 						
 						MAttachment attachNFe = createAttachment(true);
-						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml);
+						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
 						attachNFe.save();
 					}
 					catch (Exception e)

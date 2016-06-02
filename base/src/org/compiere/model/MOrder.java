@@ -405,7 +405,7 @@ public class MOrder extends X_C_Order implements DocAction
 		//	PO
 		String sql = "SELECT C_DocType_ID FROM C_DocType "
 			+ "WHERE AD_Client_ID=? AND AD_Org_ID IN (0," + getAD_Org_ID()
-			+ ") AND DocBaseType='POO' "
+			+ ") AND DocBaseType='POO' AND DocSubTypeSO='SO' "
 			+ "ORDER BY AD_Org_ID DESC, IsDefault DESC";
 		int C_DocType_ID = DB.getSQLValue(null, sql, getAD_Client_ID());
 		if (C_DocType_ID <= 0)
