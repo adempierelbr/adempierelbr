@@ -2265,8 +2265,73 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
 		}
+		
+		//	Definir Valor Padrão do campo Estornar Fatura da NF.
+		if (MSysConfig.getBooleanValue("LBR_REVERSE_INVOICE_WHEN_VOID_NF", false, getAD_Client_ID()))
+			setLBR_ReverseCorrect_Invoice(true);
+		
+		//	Definir Valor Padrão do campo Estornar Remessa da NF.
+		if (MSysConfig.getBooleanValue("LBR_REVERSE_INOUT_WHEN_VOID_NF", false, getAD_Client_ID()))
+			setLBR_ReverseCorrect_InOut(true);
+		
 		return true;
 	}	//	beforeSave
+	
+	/**
+	 * 	Called after Save for Post-Save Operation
+	 * 	@param newRecord new record
+	 *	@param success true if save operation was success
+	 *	@return if save was a success
+	 */
+	protected boolean afterSave (boolean newRecord, boolean success)
+	{
+		if (success)
+		{
+			//	Continuar apenas se houver alteração no campo DocStatus
+			if (!is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_DocStatus))
+				return success;
+			
+			//	Fatura da NF
+			MInvoice invoice  = new MInvoice(Env.getCtx(), getC_Invoice_ID(), get_TrxName());
+			
+			//	Remessa / Recebimento da NF
+			MInOut inout = new MInOut (Env.getCtx(), getM_InOut_ID(), get_TrxName());
+			
+			//	Ao Anular uma NF Estornar a Fatura e Remessa / Recebimento
+			if (getDocStatus().equals(DocAction.ACTION_Void))
+			{
+				//	Se a Fatura for Válida, Estiver Completada e o Estorno Estiver Marcado
+			   	if (invoice != null && invoice.getDocStatus().equals(DocAction.ACTION_Complete)
+			   			&& isLBR_ReverseCorrect_Invoice())
+				{
+			   		//	Estonar Fatura
+					if (invoice.reverseCorrectIt())
+					{
+						invoice.setDocStatus(MInvoice.DOCSTATUS_Reversed);
+						invoice.setDocAction(MInvoice.DOCACTION_None);
+						invoice.save();
+					}
+					
+				}
+			   	
+			   	// Se a Remessa for Válida, Estiver Completada e o Estorno Estiver Marcado
+			   	if (inout != null && inout.getDocStatus().equals(DocAction.ACTION_Complete)
+			   			&& isLBR_ReverseCorrect_InOut())
+				{
+			   		//	Estornar Remessa
+					if (inout.reverseCorrectIt())
+					{
+						inout.setDocStatus(MInvoice.DOCSTATUS_Reversed);
+						inout.setDocAction(MInvoice.DOCACTION_None);
+						inout.save();
+					}
+					
+				}
+			}
+		}
+		
+		return success;
+	}	//	afterSave
 	
 	/**
 	 * 	Executed before Delete operation.
