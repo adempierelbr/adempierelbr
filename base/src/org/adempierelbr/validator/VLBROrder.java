@@ -362,6 +362,12 @@ public class VLBROrder implements ModelValidator
 				{
 					resultLine += "Produto sem NCM, ";
 				}
+				
+				String uomSymbol = product.getC_UOM().getUOMSymbol();
+				if (uomSymbol == null || uomSymbol.trim().isEmpty())
+				{
+					resultLine += "Unidade de Medido inválida (sem símbolo), ";
+				}
 			}
 			
 			if (resultLine.endsWith(", "))
