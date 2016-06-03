@@ -132,14 +132,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	private static final long serialVersionUID = 1L;
 
 	/** REFERENCE */
+	@Deprecated
 	public Map<String,String> m_refNCM  = new HashMap<String, String>(); //Referência NCM
+	@Deprecated
 	public Map<String,String> m_refCFOP = new HashMap<String, String>(); //Referência CFOP
+	@Deprecated
 	public ArrayList<Integer> m_refLegalMessage = new ArrayList<Integer>(); //Referência Mensagem Legal
 
 	/** STRING */
+	@Deprecated
 	String m_NCMReference  = "";
+	@Deprecated
 	String m_CFOPNote      = "";
+	@Deprecated
 	String m_CFOPReference = "";
+	@Deprecated
 	String m_LegalMessage  = "";
 
 	/** CONSTANT */
@@ -255,6 +262,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param LBR_NCM_ID
 	 * @return
 	 */
+	@Deprecated
 	public String getNCM (Integer LBR_NCM_ID)
 	{
 		if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
@@ -539,6 +547,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param LBR_CFOP_ID
 	 * @return CFOP ou Ref. do CFOP
 	 */
+	@Deprecated
 	public String getCFOP(Integer LBR_CFOP_ID)
 	{
 		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
@@ -577,6 +586,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return null;
 	}	//	getCFOP
 
+	@Deprecated
 	public void setLegalMessage(Integer LBR_LegalMessage_ID){
 
 		if (LBR_LegalMessage_ID == null || LBR_LegalMessage_ID.intValue() == 0)
@@ -591,6 +601,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	} //setLegalMessage
 
+	@Deprecated
 	public String getNCMReference()
 	{
 		return TextUtil.retiraPontoFinal(m_NCMReference);
@@ -605,6 +616,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param cl
 	 * @param concat
 	 */
+	@Deprecated
 	private void setNCMReference(String ncmName, String cl, boolean concat)
 	{
 		if (concat)
@@ -618,10 +630,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			m_NCMReference = ncmName;
 	}
 
+	@Deprecated
 	public String getCFOPNote() {
 		return TextUtil.retiraPontoFinal(m_CFOPNote);
 	}
 
+	@Deprecated
 	private void setCFOPNote(String cfopNote, boolean concat) {
 
 		if (concat){
@@ -632,6 +646,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	}
 
+	@Deprecated
 	public String getCFOPReference() {
 		return TextUtil.retiraPontoFinal(m_CFOPReference);
 	}
@@ -645,6 +660,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param cl
 	 * @param concat
 	 */
+	@Deprecated
 	private void setCFOPReference(String cfopName, String cl)
 	{
 		if (m_CFOPReference == null
@@ -664,10 +680,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	}
 
+	@Deprecated
 	public String getLegalMessage() {
 		return TextUtil.retiraPontoFinal(m_LegalMessage);
 	}
 
+	@Deprecated
 	private void setLegalMessage(String legalMessage, boolean concat) {
 		if (concat){
 			m_LegalMessage += legalMessage;
