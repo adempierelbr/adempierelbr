@@ -1937,6 +1937,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public BigDecimal getlbr_TotalSISCOMEX();
 
+    /** Column name LBR_TPEmis */
+    public static final String COLUMNNAME_LBR_TPEmis = "LBR_TPEmis";
+
+	/** Set Tipo de Emissão.
+	  * Indicar o Tipo de Emissão da NF-e.
+	  */
+	public void setLBR_TPEmis (String LBR_TPEmis);
+
+	/** Get Tipo de Emissão.
+	  * Indicar o Tipo de Emissão da NF-e.
+	  */
+	public String getLBR_TPEmis();
+
     /** Column name lbr_TransactionType */
     public static final String COLUMNNAME_lbr_TransactionType = "lbr_TransactionType";
 

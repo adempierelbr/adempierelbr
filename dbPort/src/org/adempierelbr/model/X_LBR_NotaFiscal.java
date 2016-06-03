@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20160602L;
+	private static final long serialVersionUID = 20160603L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -4030,6 +4030,42 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** LBR_TPEmis AD_Reference_ID=1120246 */
+	public static final int LBR_TPEMIS_AD_Reference_ID=1120246;
+	/** Emissão Normal = 1 */
+	public static final String LBR_TPEMIS_EmissãoNormal = "1";
+	/** Contingência FS-IA = 2 */
+	public static final String LBR_TPEMIS_ContingênciaFS_IA = "2";
+	/** Contingência SCAN = 3 */
+	public static final String LBR_TPEMIS_ContingênciaSCAN = "3";
+	/** Contingência DPEC = 4 */
+	public static final String LBR_TPEMIS_ContingênciaDPEC = "4";
+	/** Contingência FS-DA = 5 */
+	public static final String LBR_TPEMIS_ContingênciaFS_DA = "5";
+	/** Contingência SVC-AN = 6 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_AN = "6";
+	/** Contingência SVC-RS = 7 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_RS = "7";
+	/** Contingência off-line da NFC-e = 9 */
+	public static final String LBR_TPEMIS_ContingênciaOff_LineDaNFC_E = "9";
+	/** Set Tipo de Emissão.
+		@param LBR_TPEmis 
+		Indicar o Tipo de Emissão da NF-e.
+	  */
+	public void setLBR_TPEmis (String LBR_TPEmis)
+	{
+
+		set_Value (COLUMNNAME_LBR_TPEmis, LBR_TPEmis);
+	}
+
+	/** Get Tipo de Emissão.
+		@return Indicar o Tipo de Emissão da NF-e.
+	  */
+	public String getLBR_TPEmis () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TPEmis);
 	}
 
 	/** lbr_TransactionType AD_Reference_ID=1000024 */
