@@ -367,8 +367,14 @@ public class NFeXMLGenerator
 		//	Tipo de Documento
 		MDocType docType = new MDocType(ctx, nf.getC_DocTypeTarget_ID(), trxName);
 		
-		//	Tipo de Emissão da NF / TODO: Implementar contingência
+		//	Tipo de Emissão da NF
 		Ide.TpEmis.Enum tpEmissao = TP_EMI_NORMAL;
+		
+		if (MLBRNotaFiscal.LBR_TPEMIS_ContingênciaSVC_AN.equals(nf.getLBR_TPEmis()))
+			tpEmissao = TP_EMI_SVC_AN;
+		
+		else if (MLBRNotaFiscal.LBR_TPEMIS_ContingênciaSVC_RS.equals(nf.getLBR_TPEmis()))
+			tpEmissao = TP_EMI_SVC_RS;
 		
 		//	Main document
 		NFeDocument document = NFeDocument.Factory.newInstance ();
@@ -428,6 +434,11 @@ public class NFeXMLGenerator
 		ide.setCMunFG (BPartnerUtil.getCityCode (nf.getlbr_OrgRegion(), nf.getlbr_OrgCity()));
 		ide.setTpImp (Ide.TpImp.Enum.forString (nf.getlbr_DANFEFormat()));
 		ide.setTpEmis (tpEmissao);
+		if (!TP_EMI_NORMAL.equals(tpEmissao))
+		{
+			ide.setXJust(nf.getlbr_MotivoScan());
+			ide.setDhCont(normalizeTZ (nf.getlbr_DateScan()));
+		}
 		ide.setCDV (chaveNFE.getDigito());
 		
 		//	Produção
