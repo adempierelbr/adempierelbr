@@ -228,6 +228,26 @@ UPDATE AD_Field SET DisplayLength=1,Updated=TO_TIMESTAMP('2016-06-02 18:01:03','
 UPDATE AD_Field SET DisplayLength=1,Updated=TO_TIMESTAMP('2016-06-02 18:01:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125804
 ;
 
+-- 06/06/2016 11h10min56s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=1071,Updated=TO_TIMESTAMP('2016-06-06 11:10:56','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125803
+;
+
+-- 06/06/2016 11h11min9s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=1072,Updated=TO_TIMESTAMP('2016-06-06 11:11:09','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125804
+;
+
+-- 06/06/2016 11h12min23s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=911,Updated=TO_TIMESTAMP('2016-06-06 11:12:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125801
+;
+
+-- 06/06/2016 11h12min33s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=912,Updated=TO_TIMESTAMP('2016-06-06 11:12:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125802
+;
+
 -- 02/06/2016 18h1min5s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 SELECT Register_Migration_Script ('210-EstornarAutFaturaRemessaNF.sql') FROM DUAL
