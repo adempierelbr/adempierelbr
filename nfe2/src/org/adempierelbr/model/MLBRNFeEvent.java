@@ -265,9 +265,12 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			evento.setVersao(NFeUtil.VERSAO_EVENTO);
 			TEvento.InfEvento infEv = evento.addNewInfEvento();
 			
+			//	Configurações da NF-e
+			MLBRNFConfig config = MLBRNFConfig.get(oiW.getAD_Org_ID());
+			
 			//	Informações do Evento da Carta de Correção
 			infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));
-			infEv.setTpAmb(TAmb.Enum.forString(oiW.getlbr_NFeEnv()));
+			infEv.setTpAmb(TAmb.Enum.forString(config.getlbr_NFeEnv()));
 			
 			//	CPF ou CNPJ
 			String CNPJF = TextUtil.toNumeric (oiW.getlbr_CNPJ());
@@ -381,7 +384,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			log.fine (xml.toString());
 
 			//	Procura os endereços para Transmissão
-			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, oiW.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, p_Org_Region_ID);
+			MLBRNFeWebService ws = MLBRNFeWebService.get (MLBRNFeWebService.RECEPCAOEVENTO, config.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, p_Org_Region_ID);
 			
 			if (ws == null)
 			{

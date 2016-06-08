@@ -2243,26 +2243,51 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setlbr_NFSerie(dt.get_ValueAsString("lbr_NFSerie"));
 			}
 			
-			//	Preenche o ambiente da NF caso esteja em branco
-			I_W_AD_OrgInfo orgInfo = POWrapper.create (MOrgInfo.get (getCtx(), getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
-			String orgEnv = orgInfo.getlbr_NFeEnv();
-			if (getlbr_NFeEnv() == null && orgEnv != null && !orgEnv.isEmpty())
-				setlbr_NFeEnv (orgEnv);
-			
-			if (getlbr_DANFEFormat() == null)
+			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+			if (config != null)
 			{
-				I_W_C_DocType dt = POWrapper.create(new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null), I_W_C_DocType.class);
+				//	Preenche o ambiente da NF caso esteja em branco
+				if (getlbr_NFeEnv() == null)
+					setlbr_NFeEnv (config.getlbr_NFeEnv());
 				
-				//	Formato da DANFE pelo Tipo de Documento
-				if (dt.getlbr_DANFEFormat() != null)
-					setlbr_DANFEFormat(dt.getlbr_DANFEFormat());
+				//	Formato da DANFE
+				if (getlbr_DANFEFormat() == null)
+					setlbr_DANFEFormat(config.getlbr_DANFEFormat());
+
+				//	Definir Valor Padrão do campo Estornar Fatura da NF.
+				setLBR_ReverseInvoice(config.isLBR_ReverseInvoice());
 				
-				//	Formato da DANFE pela Organização
-				else if (orgInfo.getlbr_DANFEFormat() != null)
-					setlbr_DANFEFormat(orgInfo.getlbr_DANFEFormat());
+				//	Definir Valor Padrão do campo Estornar Remessa da NF.
+				setLBR_ReverseInOut(config.isLBR_ReverseInOut());
+				
+				//	Verificar se existe alguma contingência agendada
+				MLBRNFConfigSVC svc = MLBRNFConfigSVC.get (getAD_Org_ID(), new Timestamp(System.currentTimeMillis()));
+				
+				//	Contingência tem prioridade sobre a configuração normal
+				if (svc != null)
+				{
+					setLBR_TPEmis(svc.getLBR_TPEmis());
+					setlbr_DateScan(svc.getlbr_DateScan());
+					setlbr_MotivoScan(svc.getlbr_MotivoScan());
+				}
+				
+				//	configuração padrão
+				else
+				{
+					//	Força o tipo de emissão para seguir a configuração 
+					String tipoEmis = config.getLBR_TPEmis();
+					setLBR_TPEmis(tipoEmis);
+					
+					if (!MLBRNFConfig.LBR_TPEMIS_EmissãoNormal.equals(tipoEmis))
+					{
+						setlbr_DateScan(config.getlbr_DateScan());
+						setlbr_MotivoScan(config.getlbr_MotivoScan());
+					}
+				}
 			}
-			
+
 			//	Set Org details
+			I_W_AD_OrgInfo orgInfo = POWrapper.create (MOrgInfo.get (getCtx(), getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
 			setOrgInfo(orgInfo);
 		}
 		
@@ -2283,14 +2308,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
 		}
-		
-		//	Definir Valor Padrão do campo Estornar Fatura da NF.
-		if (MSysConfig.getBooleanValue("LBR_REVERSE_INVOICE_WHEN_VOID_NF", false, getAD_Client_ID()))
-			setLBR_ReverseCorrect_Invoice(true);
-		
-		//	Definir Valor Padrão do campo Estornar Remessa da NF.
-		if (MSysConfig.getBooleanValue("LBR_REVERSE_INOUT_WHEN_VOID_NF", false, getAD_Client_ID()))
-			setLBR_ReverseCorrect_InOut(true);
 		
 		return true;
 	}	//	beforeSave
@@ -2320,7 +2337,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			{
 				//	Se a Fatura for Válida, Estiver Completada e o Estorno Estiver Marcado
 			   	if (invoice != null && invoice.getDocStatus().equals(DocAction.ACTION_Complete)
-			   			&& isLBR_ReverseCorrect_Invoice())
+			   			&& isLBR_ReverseInvoice())
 				{
 			   		//	Estonar Fatura
 					if (invoice.reverseCorrectIt())
@@ -2334,7 +2351,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			   	
 			   	// Se a Remessa for Válida, Estiver Completada e o Estorno Estiver Marcado
 			   	if (inout != null && inout.getDocStatus().equals(DocAction.ACTION_Complete)
-			   			&& isLBR_ReverseCorrect_InOut())
+			   			&& isLBR_ReverseInOut())
 				{
 			   		//	Estornar Remessa
 					if (inout.reverseCorrectIt())

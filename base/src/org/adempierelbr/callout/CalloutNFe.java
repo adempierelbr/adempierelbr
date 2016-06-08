@@ -140,9 +140,6 @@ public class CalloutNFe extends CalloutEngine
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_NFSerie, dt.getlbr_NFSerie());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_IsOwnDocument, dt.islbr_IsOwnDocument());
 		
-		if (dt.getlbr_DANFEFormat() != null)
-			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_DANFEFormat, dt.getlbr_DANFEFormat());
-		
 		return "";
 	}	//	docType
 	

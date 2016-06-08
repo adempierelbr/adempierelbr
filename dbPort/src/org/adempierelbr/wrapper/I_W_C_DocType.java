@@ -71,72 +71,59 @@ public interface I_W_C_DocType extends I_C_DocType
 
 	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
-    /** Column name lbr_DANFEFormat */
-    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
-
-	/** lbr_DANFEFormat AD_Reference_ID=1100002 */
-	public static final int LBR_DANFEFORMAT_AD_Reference_ID=1100002;
-
-	/** 1 - Normal DANFE - Portrait = 1 */
-	public static final String LBR_DANFEFORMAT_1_NormalDANFE_Portrait = "1";
-
-	/** 2 - Normal DANFE - Landscape = 2 */
-	public static final String LBR_DANFEFORMAT_2_NormalDANFE_Landscape = "2";
-
-	/** 0 - No DANFE = 0 */
-	public static final String LBR_DANFEFORMAT_0_NoDANFE = "0";
-
-	/** 3 - Simple DANFE = 3 */
-	public static final String LBR_DANFEFORMAT_3_SimpleDANFE = "3";
-
-	/** 4 - DANFE NFC-e = 4 */
-	public static final String LBR_DANFEFORMAT_4_DANFENFC_E = "4";
-
-	/** 5 - DANFE NFC-e in Eletronic Message = 5 */
-	public static final String LBR_DANFEFORMAT_5_DANFENFC_EInEletronicMessage = "5";
-
-
-	/** Set DANFE Format	  */
-	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
-
-	/** Get DANFE Format	  */
-	public String getlbr_DANFEFormat();
-
     /** Column name lbr_DocBaseType */
     public static final String COLUMNNAME_lbr_DocBaseType = "lbr_DocBaseType";
 
 	/** lbr_DocBaseType AD_Reference_ID=1000043 */
 	public static final int LBR_DOCBASETYPE_AD_Reference_ID=1000043;
 
-	/** Consignation Sales Order = OVEC */
-	public static final String LBR_DOCBASETYPE_ConsignationSalesOrder = "OVEC";
+	/** Consignation Sales Order = OVEC- */
+	public static final String LBR_DOCBASETYPE_ConsignationSalesOrder = "OVEC-";
 
-	/** Consignation Shipment = EXEC */
-	public static final String LBR_DOCBASETYPE_ConsignationShipment = "EXEC";
+	/** Consignation Shipment = EXEC- */
+	public static final String LBR_DOCBASETYPE_ConsignationShipment = "EXEC-";
 
-	/** Consignation Invoice = FAEC */
-	public static final String LBR_DOCBASETYPE_ConsignationInvoice = "FAEC";
+	/** Consignation Invoice = FAEC- */
+	public static final String LBR_DOCBASETYPE_ConsignationInvoice = "FAEC-";
 
-	/** Consignation return sales order = OVRC */
-	public static final String LBR_DOCBASETYPE_ConsignationReturnSalesOrder = "OVRC";
+	/** Consignation return sales order = OVRC+ */
+	public static final String LBR_DOCBASETYPE_ConsignationReturnSalesOrder = "OVRC+";
 
-	/** Consignation Return Shipment = EXRC */
-	public static final String LBR_DOCBASETYPE_ConsignationReturnShipment = "EXRC";
+	/** Consignation Return Shipment = EXRC+ */
+	public static final String LBR_DOCBASETYPE_ConsignationReturnShipment = "EXRC+";
 
-	/** Consignation Return Invoice = FARC */
-	public static final String LBR_DOCBASETYPE_ConsignationReturnInvoice = "FARC";
+	/** Consignation Return Invoice = FARC+ */
+	public static final String LBR_DOCBASETYPE_ConsignationReturnInvoice = "FARC+";
 
-	/** Consignation Invoice Sales Order = OVFC */
-	public static final String LBR_DOCBASETYPE_ConsignationInvoiceSalesOrder = "OVFC";
+	/** Consignation Invoice Sales Order = OVFC- */
+	public static final String LBR_DOCBASETYPE_ConsignationInvoiceSalesOrder = "OVFC-";
 
-	/** Consignation Invoice Shipment = EXFC */
-	public static final String LBR_DOCBASETYPE_ConsignationInvoiceShipment = "EXFC";
+	/** Consignation Invoice Shipment = EXFC- */
+	public static final String LBR_DOCBASETYPE_ConsignationInvoiceShipment = "EXFC-";
 
-	/** Consignation Invoice Invoice = FAFC */
-	public static final String LBR_DOCBASETYPE_ConsignationInvoiceInvoice = "FAFC";
+	/** Consignation Invoice Invoice = FAFC- */
+	public static final String LBR_DOCBASETYPE_ConsignationInvoiceInvoice = "FAFC-";
 
-	/** Default = DEFA */
-	public static final String LBR_DOCBASETYPE_Default = "DEFA";
+	/** Default = DEFA+ */
+	public static final String LBR_DOCBASETYPE_Default = "DEFA+";
+
+	/** Sales Order Maintenance In = OVCO+ */
+	public static final String LBR_DOCBASETYPE_SalesOrderMaintenanceIn = "OVCO+";
+
+	/** Sales Order Maintenance Out = OVCO- */
+	public static final String LBR_DOCBASETYPE_SalesOrderMaintenanceOut = "OVCO-";
+
+	/** Sales Order Demonstration Out = OVDE- */
+	public static final String LBR_DOCBASETYPE_SalesOrderDemonstrationOut = "OVDE-";
+
+	/** Sales Order Demonstration In = OVDE+ */
+	public static final String LBR_DOCBASETYPE_SalesOrderDemonstrationIn = "OVDE+";
+
+	/** Sales Order Other In = OVOE+ */
+	public static final String LBR_DOCBASETYPE_SalesOrderOtherIn = "OVOE+";
+
+	/** Sales Order Other Out = OVOS- */
+	public static final String LBR_DOCBASETYPE_SalesOrderOtherOut = "OVOS-";
 
 
 	/** Set LBR DocBaseType.

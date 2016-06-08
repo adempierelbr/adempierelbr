@@ -442,11 +442,11 @@ public class NFeXMLGenerator
 		ide.setCDV (chaveNFE.getDigito());
 		
 		//	Produção
-		if (T_AMB_PRODUCAO.toString().equals (oi.getlbr_NFeEnv()))
+		if (T_AMB_PRODUCAO.toString().equals (nf.getlbr_NFeEnv()))
 			ide.setTpAmb (T_AMB_PRODUCAO);
 		
 		//	Homologação
-		else if (T_AMB_HOMOLOG.toString().equals (oi.getlbr_NFeEnv()))
+		else if (T_AMB_HOMOLOG.toString().equals (nf.getlbr_NFeEnv()))
 			ide.setTpAmb (T_AMB_HOMOLOG); 
 		
 		ide.setFinNFe (TFinNFe.Enum.forString (nf.getlbr_FinNFe ()));
