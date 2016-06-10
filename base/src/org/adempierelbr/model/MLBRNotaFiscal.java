@@ -3490,9 +3490,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
 		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
+		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID);
 		//
 		if (p_LBR_EnvType == null)
-			p_LBR_EnvType = oi.get_ValueAsString("lbr_NFeEnv");
+			p_LBR_EnvType = config.getlbr_NFeEnv();
 		if (p_Just == null)
 			p_Just = "Erro na emissão da NFe";
 		
