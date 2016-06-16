@@ -268,6 +268,15 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			return false;
 		}
 		
+		/**
+		 * 	New Record or Valid not changed, but dependent fields changed
+		 */
+		if (newRecord || (!is_ValueChanged(COLUMNNAME_IsValid) 
+					&& (is_ValueChanged(COLUMNNAME_Alias) 
+							|| is_ValueChanged(COLUMNNAME_Password) 
+							|| is_ValueChanged(COLUMNNAME_lbr_CertType))))
+			setIsValid(false);
+		
 		return true;
 	}	//	beforeSave
 	

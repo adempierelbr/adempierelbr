@@ -1,6 +1,9 @@
 package org.adempierelbr.process;
 
+import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.util.Enumeration;
@@ -47,8 +50,24 @@ public class ValidateCertificate extends SvrProcess
 			String certType = dc.getlbr_CertType();
 			String pass = dc.getPassword();
 			
-			if (MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12.equals(dc.getlbr_CertType()))
+			InputStream certFileOrg = null;
+			
+			//	PKCS11 - A3 (Cartão)
+			if (MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11.equals (dc.getlbr_CertType()))
+			{
+				certType = "PKCS11";
+				//
+				Provider p = new sun.security.pkcs11.SunPKCS11(dc.getConfigurationFile());
+				Security.addProvider(p);
+			}
+			
+			//	PKCS12 - A1 (Arquivo)
+			else if (MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12.equals(dc.getlbr_CertType()))
+			{
 				certType = "PKCS12";
+				certFileOrg = att.getEntry(0).getInputStream();
+			}
+			
 			else if (MLBRDigitalCertificate.LBR_CERTTYPE_ICPTrustStoreJKS.equals(dc.getlbr_CertType()))
 				certType = "JKS";
 			
@@ -64,7 +83,7 @@ public class ValidateCertificate extends SvrProcess
 			}
 			//
 			KeyStore ks = KeyStore.getInstance (certType);
-			ks.load (att.getEntry(0).getInputStream(), pass.toCharArray());
+			ks.load (certFileOrg, pass.toCharArray());
 			X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
 			//
 			if (certificate == null)
@@ -90,6 +109,7 @@ public class ValidateCertificate extends SvrProcess
 			}
 			dc.setValidFrom (new Timestamp (certificate.getNotBefore().getTime()));
 			dc.setValidTo (new Timestamp (certificate.getNotAfter().getTime()));
+			dc.setIsValid(true);
 			dc.saveEx();
 			//
 			if (dc.getValidTo().before(Env.getContextAsDate(Env.getCtx(), "#Date")))

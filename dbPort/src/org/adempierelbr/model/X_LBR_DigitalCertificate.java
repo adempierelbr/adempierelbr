@@ -31,7 +31,7 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20120523L;
+	private static final long serialVersionUID = 20160616L;
 
     /** Standard Constructor */
     public X_LBR_DigitalCertificate (Properties ctx, int LBR_DigitalCertificate_ID, String trxName)
@@ -39,8 +39,12 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
       super (ctx, LBR_DigitalCertificate_ID, trxName);
       /** if (LBR_DigitalCertificate_ID == 0)
         {
+			setIsValid (false);
+// N
 			setLBR_DigitalCertificate_ID (0);
 			setName (null);
+			setProcessing (false);
+// N
 			setValidFrom (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
         } */
@@ -108,6 +112,30 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** Set Valid.
+		@param IsValid 
+		Element is valid
+	  */
+	public void setIsValid (boolean IsValid)
+	{
+		set_Value (COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
+	}
+
+	/** Get Valid.
+		@return Element is valid
+	  */
+	public boolean isValid () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsValid);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Digital Certificate.
 		@param LBR_DigitalCertificate_ID Digital Certificate	  */
 	public void setLBR_DigitalCertificate_ID (int LBR_DigitalCertificate_ID)
@@ -162,6 +190,27 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 		return (String)get_Value(COLUMNNAME_Password);
 	}
 
+	/** Set Process Now.
+		@param Processing Process Now	  */
+	public void setProcessing (boolean Processing)
+	{
+		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public boolean isProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Valid from.
 		@param ValidFrom 
 		Valid from including this date (first day)
@@ -200,12 +249,12 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	public static final int LBR_CERTTYPE_AD_Reference_ID=1100000;
 	/** Java Key Store = JKS */
 	public static final String LBR_CERTTYPE_JavaKeyStore = "JKS";
-	/** PKCS#11 = P11 */
-	public static final String LBR_CERTTYPE_PKCS11 = "P11";
 	/** PKCS#12 = P12 */
 	public static final String LBR_CERTTYPE_PKCS12 = "P12";
 	/** ICP TrustStore (JKS) = ICP */
 	public static final String LBR_CERTTYPE_ICPTrustStoreJKS = "ICP";
+	/** PKCS#11 = P11 */
+	public static final String LBR_CERTTYPE_PKCS11 = "P11";
 	/** Set Certificate Type.
 		@param lbr_CertType 
 		Define the type of Digital Certificate

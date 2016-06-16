@@ -46,6 +46,50 @@ UPDATE AD_Field SET SeqNo=110,Updated=TO_TIMESTAMP('2016-06-16 11:04:36','YYYY-M
 UPDATE AD_Field_Trl SET IsTranslated='Y',Name='Validar',Updated=TO_TIMESTAMP('2016-06-16 11:04:42','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1126171 AND AD_Language='pt_BR'
 ;
 
+-- 16/06/2016 15h26min24s BRT
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1128950,2002,0,20,1100000,'IsValid',TO_TIMESTAMP('2016-06-16 15:26:23','YYYY-MM-DD HH24:MI:SS'),100,'Y','Element is valid','U',1,'The element passed the validation check','Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Valid',0,TO_TIMESTAMP('2016-06-16 15:26:23','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 16/06/2016 15h26min24s BRT
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1128950 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 16/06/2016 15h26min28s BRT
+UPDATE AD_Column SET EntityType='LBRA',Updated=TO_TIMESTAMP('2016-06-16 15:26:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1128950
+;
+
+-- 16/06/2016 15h26min33s BRT
+ALTER TABLE LBR_DigitalCertificate ADD COLUMN IsValid CHAR(1) DEFAULT 'Y' CHECK (IsValid IN ('Y','N')) NOT NULL
+;
+
+-- 16/06/2016 15h26min38s BRT
+UPDATE AD_Column SET DefaultValue='N',Updated=TO_TIMESTAMP('2016-06-16 15:26:38','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1128950
+;
+
+-- 16/06/2016 15h26min40s BRT
+INSERT INTO t_alter_column values('lbr_digitalcertificate','IsValid','CHAR(1)',null,'N')
+;
+
+-- 16/06/2016 15h26min41s BRT
+UPDATE LBR_DigitalCertificate SET IsValid='N' WHERE IsValid IS NULL
+;
+
+-- 16/06/2016 15h26min55s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1128950,1126172,0,1100000,TO_TIMESTAMP('2016-06-16 15:26:52','YYYY-MM-DD HH24:MI:SS'),100,'Element is valid',1,'LBRA','The element passed the validation check','Y','Y','Y','N','N','N','N','N','Valid',TO_TIMESTAMP('2016-06-16 15:26:52','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 16/06/2016 15h26min55s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1126172 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 16/06/2016 15h27min14s BRT
+UPDATE AD_Field SET IsReadOnly='Y', IsSameLine='Y', SeqNo=120,Updated=TO_TIMESTAMP('2016-06-16 15:27:14','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1126172
+;
+
+-- 16/06/2016 15h27min21s BRT
+UPDATE AD_Field_Trl SET IsTranslated='Y',Name='Válido',Updated=TO_TIMESTAMP('2016-06-16 15:27:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1126172 AND AD_Language='pt_BR'
+;
+
 -- 16/06/2016 11h4min42s BRT
 SELECT Register_Migration_Script ('214-ValidateDigCert.sql') FROM DUAL
 ;
