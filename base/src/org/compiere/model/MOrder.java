@@ -2446,4 +2446,16 @@ public class MOrder extends X_C_Order implements DocAction
 			|| DOCSTATUS_Reversed.equals(ds);
 	}	//	isComplete
 
+	/**
+	 * 	Un-Reserve Stock
+	 * 	@param line
+	 * 	@return true if success
+	 */
+	public boolean unreserveStock (MOrderLine line)
+	{
+		MDocType dt = new MDocType(getCtx(), MDocType.DOCBASETYPE_SalesOrder, "dummy", get_TrxName());
+		dt.setDocSubTypeSO(MDocType.DOCSUBTYPESO_Proposal);
+		//
+		return reserveStock(dt, new MOrderLine[]{line});
+	}	//	unreserveStock
 }	//	MOrder
