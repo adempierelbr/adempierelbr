@@ -133,7 +133,7 @@ public class ValidatorBPartner implements ModelValidator
 		boolean isChange      = (type == TYPE_CHANGE || type == TYPE_NEW);
 
 		if (po instanceof MBPartner && isChange)
-			return modelChange((MBPartner) po);
+			return modelChange((MBPartner) po, type);
 
 		else if (po instanceof MBPartnerLocation && isChange)
 			return modelChange ((MBPartnerLocation) po);
@@ -226,7 +226,7 @@ public class ValidatorBPartner implements ModelValidator
 	 * 	@param bp_po
 	 * 	@return null or Error msg
 	 */
-	private String modelChange (MBPartner bp_po)
+	private String modelChange (MBPartner bp_po, int type)
 	{
 		log.fine ("ini");
 
@@ -240,7 +240,7 @@ public class ValidatorBPartner implements ModelValidator
 			bp.setlbr_BPTypeBRIsValid(false);
 		
 		String bpType = bp.getlbr_BPTypeBR();
-		boolean isValid = bp.islbr_BPTypeBRIsValid();
+		boolean isValid = bp_po.get_ValueAsBoolean(I_W_C_BPartner.COLUMNNAME_lbr_BPTypeBRIsValid);
 
 		//	If not validated or trying to activate an inactive record
 		if (!isValid || (bp_po.is_ValueChanged(I_W_C_BPartner.COLUMNNAME_IsActive) && bp.isActive()))
@@ -343,7 +343,11 @@ public class ValidatorBPartner implements ModelValidator
 
 		//	Validação do flag funcionário
 		//		não permitir o cadastro de funcionários sem o preenchimento do campo Tipo de Parceiro
-		if (bp_po.is_ValueChanged(MBPartner.COLUMNNAME_IsEmployee) && bp.isEmployee()
+		//	Somente validar para alterações, não é possível marcar como funcionário 
+		//		um novo registro, pois o campo fica em outra aba. Isso evita a validação no processo
+		//		de criação inicial da empresa
+		if (type != TYPE_NEW 
+				&& bp_po.is_ValueChanged(MBPartner.COLUMNNAME_IsEmployee) && bp.isEmployee()
 				&& (bp.getlbr_BPTypeBR() == null || bp.getlbr_BPTypeBR().isEmpty()))
 			return "Obrigatório o preenchimento do campo Tipo de Parceiro para marcar um Parceiro de Negócios como Funcionário";
 		
