@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLInputFactory;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
+import org.adempierelbr.model.MLBRNFConfig;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.api.NfeStatusServico2Stub;
@@ -64,6 +65,9 @@ public class ProcStatusServico extends SvrProcess
 	/**	Environment		*/
 	private String p_LBR_EnvType = null;
 	
+	/**	Tipo de Emissão		*/
+	private String p_LBR_TPEmis = null;
+	
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -79,6 +83,8 @@ public class ProcStatusServico extends SvrProcess
 				p_AD_Org_ID = para[i].getParameterAsInt();
 			else if (name.equals("lbr_NFeEnv"))
 				p_LBR_EnvType = (String) para[i].getParameter();
+			else if (name.equals("LBR_TPEmis"))
+				p_LBR_TPEmis = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -92,18 +98,32 @@ public class ProcStatusServico extends SvrProcess
 		if (p_AD_Org_ID == 0)
 			p_AD_Org_ID = Env.getAD_Org_ID(getCtx());
 
+		//	Informações da Organização
 		MOrgInfo orgInfo = MOrgInfo.get (getCtx(), p_AD_Org_ID, null);
 		if (orgInfo == null)
 			return "Organização não encontrada";
 
 		MLocation orgLoc = new MLocation (getCtx(), orgInfo.getC_Location_ID(), null);
 		
+		//	Ambiente da NF
 		if (p_LBR_EnvType == null)
-			p_LBR_EnvType = orgInfo.get_ValueAsString ("lbr_NFeEnv");
+		{
+			//	Configuração da NF
+			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID);
+			
+			if (nfconfig == null)
+				return "Impossível identificar o Ambiente da NF-e.";
+			
+			p_LBR_EnvType = nfconfig.getlbr_NFeEnv();
+		}
 
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
 			return "UF Inválida";
+		
+		//	Tipo de Emissão
+		if (p_LBR_TPEmis == null)
+			p_LBR_TPEmis = MLBRNFConfig.LBR_TPEMIS_EmissãoNormal;
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate (getCtx(), p_AD_Org_ID);
@@ -134,7 +154,7 @@ public class ProcStatusServico extends SvrProcess
 			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
 			NfeStatusServico2Stub.setAmbiente(url);
 			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();
 
