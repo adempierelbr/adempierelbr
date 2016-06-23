@@ -885,7 +885,7 @@ UPDATE AD_Column SET IsIdentifier='Y', SeqNo=1,Updated=TO_TIMESTAMP('2016-06-08 
 
 -- 08/06/2016 11h42min14s BRT
 CREATE UNIQUE INDEX LBR_NFConfig_Org_Unq
-	ON adempiere.LBR_NFConfig USING BTREE (AD_Client_ID, AD_Org_ID)
+	ON LBR_NFConfig USING BTREE (AD_Client_ID, AD_Org_ID)
 ;
 
 -- 08/06/2016 11h42min14s BRT
