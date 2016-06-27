@@ -114,6 +114,8 @@ public class InfoInOut extends Info
 	private CLabel lBPartner_ID = new CLabel(Msg.translate(Env.getCtx(), "BPartner"));
 	private VLookup fBPartner_ID;
 	//
+	private CLabel lOrder_ID = new CLabel(Msg.translate(Env.getCtx(), "Order"));
+	private VLookup fOrder_ID;
 	private CLabel lDateFrom = new CLabel(Msg.translate(Env.getCtx(), "MovementDate"));
 	private VDate fDateFrom = new VDate("DateFrom", false, false, true, DisplayType.Date, Msg.translate(Env.getCtx(), "DateFrom"));
 	private CLabel lDateTo = new CLabel("-");
@@ -128,6 +130,7 @@ public class InfoInOut extends Info
 		new Info_Column(Msg.translate(Env.getCtx(), "DocumentNo"), "i.DocumentNo", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Description"), "i.Description", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "POReference"), "i.POReference", String.class),
+		new Info_Column(Msg.translate(Env.getCtx(), "C_BPartner_ID"), "(SELECT DocumentNo FROM C_Order o WHERE o.C_Order_ID=i.C_Order_ID)", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "IsSOTrx"), "i.IsSOTrx", Boolean.class)
 	};
 
@@ -158,6 +161,12 @@ public class InfoInOut extends Info
 			MLookupFactory.get (Env.getCtx(), p_WindowNo, 0, 3499, DisplayType.Search));
 		lBPartner_ID.setLabelFor(fBPartner_ID);
 		fBPartner_ID.setBackground(AdempierePLAF.getInfoBackground());
+		
+		//	Order
+		fOrder_ID = new VLookup("C_Order_ID", false, false, true,
+				MLookupFactory.get (Env.getCtx(), p_WindowNo, 0, 4247, DisplayType.Search));
+			lOrder_ID.setLabelFor(fOrder_ID);
+			fOrder_ID.setBackground(AdempierePLAF.getInfoBackground());
 		//
 		lDateFrom.setLabelFor(fDateFrom);
 		fDateFrom.setBackground(AdempierePLAF.getInfoBackground());
@@ -183,6 +192,8 @@ public class InfoInOut extends Info
 		//  3rd Row
 		parameterPanel.add(lPOReference, new ALayoutConstraint(2,0));
 		parameterPanel.add(fPOReference, null);
+		parameterPanel.add(lOrder_ID, null);
+		parameterPanel.add(fOrder_ID, null);
 	//	parameterPanel.add(lOrg_ID, null);
 	//	parameterPanel.add(fOrg_ID, null);
 	}	//	statInit
@@ -230,6 +241,9 @@ public class InfoInOut extends Info
 		//
 		if (fBPartner_ID.getValue() != null)
 			sql.append(" AND i.C_BPartner_ID=?");
+		
+		if (fOrder_ID.getValue() != null)
+			sql.append(" AND i.C_Order_ID=?");
 		//
 		if (fDateFrom.getValue() != null || fDateTo.getValue() != null)
 		{
@@ -270,6 +284,13 @@ public class InfoInOut extends Info
 			Integer bp = (Integer)fBPartner_ID.getValue();
 			pstmt.setInt(index++, bp.intValue());
 			log.fine("BPartner=" + bp);
+		}
+		
+		if (fOrder_ID.getValue() != null)
+		{
+			Integer o = (Integer)fOrder_ID.getValue();
+			pstmt.setInt(index++, o.intValue());
+			log.fine("Order=" + o);
 		}
 		//
 		if (fDateFrom.getValue() != null || fDateTo.getValue() != null)
