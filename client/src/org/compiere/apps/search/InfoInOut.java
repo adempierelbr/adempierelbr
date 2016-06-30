@@ -130,7 +130,7 @@ public class InfoInOut extends Info
 		new Info_Column(Msg.translate(Env.getCtx(), "DocumentNo"), "i.DocumentNo", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "Description"), "i.Description", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "POReference"), "i.POReference", String.class),
-		new Info_Column(Msg.translate(Env.getCtx(), "C_BPartner_ID"), "(SELECT DocumentNo FROM C_Order o WHERE o.C_Order_ID=i.C_Order_ID)", String.class),
+		new Info_Column(Msg.translate(Env.getCtx(), "C_Order_ID"), "(SELECT DocumentNo FROM C_Order o WHERE o.C_Order_ID=i.C_Order_ID)", String.class),
 		new Info_Column(Msg.translate(Env.getCtx(), "IsSOTrx"), "i.IsSOTrx", Boolean.class)
 	};
 
