@@ -235,9 +235,25 @@ public class CommissionCalc extends SvrProcess
 				sql.append(" AND l.M_Product_ID IN "
 					+ "(SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID=").append(lines[i].getM_Product_Category_ID()).append(")");
 			//	Payment Rule
-			if (lines[i].getPaymentRule() != null)
+			if (lines[i].getPaymentRule() != null && !lines[i].getPaymentRule().equals("N"))
 				sql.append(" AND h.PaymentRule IN "
-					+ "(SELECT AD_Ref_List_ID FROM AD_Ref_List WHERE AD_Reference_ID=195 and value = '").append(lines[i].getPaymentRule()).append("')");
+					+ "(SELECT Value FROM AD_Ref_List WHERE AD_Reference_ID=195 and value = '").append(lines[i].getPaymentRule()).append("')");
+			//	Product Type
+			if (!lines[i].get_ValueAsString("ProductType").equals(""))
+				sql.append(" AND l.M_Product_ID IN "
+					+ "(SELECT M_Product_ID FROM M_Product WHERE ProductType = '").append(lines[i].get_ValueAsString("ProductType")).append("')");
+			//	Is Manufacture
+			if (!lines[i].get_ValueAsString("lbr_IsManufactured").equals("B"))
+				sql.append(" AND l.M_Product_ID IN "
+					+ "(SELECT M_Product_ID FROM M_Product WHERE lbr_IsManufactured = '").append(lines[i].get_ValueAsString("lbr_IsManufactured")).append("')");
+			//	Is Drop Ship
+			if (!lines[i].get_ValueAsString("IsDropShip").equals("B"))
+				sql.append(" AND l.M_Product_ID IN "
+					+ "(SELECT M_Product_ID FROM M_Product WHERE IsDropShip = '").append(lines[i].get_ValueAsString("IsDropShip")).append("')");
+			//	LBR_FiscalGroup_Product_ID
+			if (lines[i].get_ValueAsInt("LBR_FiscalGroup_Product_ID") != 0)
+				sql.append(" AND l.M_Product_ID IN "
+					+ "(SELECT M_Product_ID FROM M_Product WHERE LBR_FiscalGroup_Product_ID = ").append(lines[i].get_ValueAsInt("LBR_FiscalGroup_Product_ID")).append(")");
 			//	Grouping
 			if (!m_com.isListDetails())
 				sql.append(" GROUP BY h.C_Currency_ID");
