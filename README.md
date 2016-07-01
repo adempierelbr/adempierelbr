@@ -72,6 +72,15 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201607 [[Download]][62] [[Seed PostgreSQL]][63] [[Seed OracleXE]][64]
+
+	* Janela de configuração de NF
+	* Possibilidade de parametrizar o cancelmento da Fatura/Remessa ao cancelar a NF
+	* Possibilidade de incluir fórmulas no cálculo de comissão
+	* Processo para validar o cadastro do certificado digital
+	* Correção da acentuação em alguns nomes de cidades com apóstrofo
+	* [Mais detalhes][61]
+	
 1. LBR-201606.01 [[Download]](https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201606.01.tgz)
 	* Correção na Validação do Parceiro de Negócios. [[Discussão no Fórum]](http://forum.kenos.com.br/viewtopic.php?f=1&t=1094)
 	* [Mais detalhes](https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601.01)
@@ -265,3 +274,7 @@ Patrocinadores desta versão
 [58]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201606.tgz
 [59]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_PG.tgz
 [60]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_ORA.tgz
+[61]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201607
+[62]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201607.tgz
+[63]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_PG.tgz
+[64]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_ORA.tgz
