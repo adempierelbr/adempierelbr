@@ -72,6 +72,9 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201606.01 [[Download]](https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201606.01.tgz)
+	* Correção na Validação do Parceiro de Negócios. [[Discussão no Fórum]](http://forum.kenos.com.br/viewtopic.php?f=1&t=1094)
+	* [Mais detalhes](https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601.01)
 
 1. LBR-201606 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
 
