@@ -8,13 +8,13 @@ CREATE TABLE LBR_NFConfig
 	CreatedBy       	NUMBER (10) NOT NULL,
 	Updated         	DATE NOT NULL,
 	UpdatedBy       	NUMBER (10) NOT NULL,
-	lbr_NFeEnv			CHAR (1) NOT NULL DEFAULT '2',
-	lbr_DANFEFormat		CHAR (1) NOT NULL DEFAULT '1',
+	lbr_NFeEnv			CHAR (1) DEFAULT '2' NOT NULL,
+	lbr_DANFEFormat		CHAR (1) DEFAULT '1' NOT NULL,
 	LBR_ReverseInOut	CHAR (1) DEFAULT 'N' CHECK (LBR_ReverseInOut IN ('Y','N')) NOT NULL,
 	LBR_ReverseInvoice	CHAR (1) DEFAULT 'N' CHECK (LBR_ReverseInvoice IN ('Y','N')) NOT NULL,
 	lbr_DateScan		DATE DEFAULT NULL,
 	lbr_MotivoScan		NVARCHAR2(256) DEFAULT NULL,
-	LBR_TPEmis			CHAR (1) NOT NULL DEFAULT '1',
+	LBR_TPEmis			CHAR (1) DEFAULT '1' NOT NULL,
 	CONSTRAINT LBR_NFConfig_Key PRIMARY KEY (LBR_NFConfig_ID)
 )
 ;
@@ -32,7 +32,7 @@ CREATE TABLE LBR_NFConfig_SVC
 	LBR_NFConfig_ID     NUMBER (10) NOT NULL,
 	lbr_DateScan		DATE DEFAULT NULL,
 	lbr_MotivoScan		NVARCHAR2(256) DEFAULT NULL,
-	LBR_TPEmis			CHAR (1) NOT NULL DEFAULT '1',
+	LBR_TPEmis			CHAR (1) DEFAULT '1' NOT NULL,
 	DateFrom         	DATE NOT NULL,
 	DateTo	        	DATE NOT NULL,
 	CONSTRAINT LBR_NFConfig_SVC_Key PRIMARY KEY (LBR_NFConfig_SVC_ID)
