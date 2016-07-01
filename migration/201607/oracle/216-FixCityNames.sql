@@ -16,3 +16,4 @@ UPDATE LBR_NotaFiscal SET lbr_OrgCity=REPLACE (lbr_OrgCity, '`', '''') WHERE lbr
 ;
 SELECT Register_Migration_Script ('216-FixCityNames.sql') FROM DUAL
 ;
+EXIT
