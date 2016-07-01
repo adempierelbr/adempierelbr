@@ -40,11 +40,12 @@ import org.compiere.util.Env;
  *	@author Mario Grigioni (Kenos, www.kenos.com.br)
  *	@version $Id: MOpenItem.java, 30/10/2007 10:47:00 mgrigioni
  */
-public class MLBROpenItem{
-
+public class MLBROpenItem
+{
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(MLBROpenItem.class);
 
+	private int AD_Org_ID;
 	private int C_BPartner_ID;
 	private int C_Invoice_ID;
 	private int C_InvoicePaySchedule_ID;
@@ -58,127 +59,129 @@ public class MLBROpenItem{
 	private BigDecimal InterestAmt;
 	private BigDecimal GrandTotal;
 	
-	private int AD_Org_ID;
+	/**
+	 * 
+	 * @param rs
+	 * @throws SQLException 
+	 */
+	private MLBROpenItem (ResultSet rs) throws SQLException
+	{
+		setAD_Org_ID(rs.getInt("AD_Org_ID"));
+		setC_BPartner_ID(rs.getInt("C_BPartner_ID"));
+		setC_Invoice_ID(rs.getInt("C_Invoice_ID"));
+		setNetDays(rs.getInt("NetDays"));
+		setDateInvoiced(rs.getTimestamp("DateInvoiced"));
+		setDueDate(rs.getTimestamp("DueDate"));
+		setDiscountDate(rs.getTimestamp("DiscountDate"));
+		setDiscountAmt(rs.getBigDecimal("DiscountAmt"));
+		setGrandTotal(rs.getBigDecimal("OpenAmt"));
+		setC_InvoicePaySchedule_ID(rs.getInt("C_InvoicePaySchedule_ID"));
+		setC_PaymentTerm_ID(rs.getInt("C_PaymentTerm_ID"));
+		//
+		setDiscountRate(GrandTotal, DiscountAmt);
+		setInterestAmt(GrandTotal);
+	}	//	MLBROpenItem
 
-	private MLBROpenItem(ResultSet rs){
+	/**
+	 * 	Get all open items
+	 * @param where
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBROpenItem[] getOpenItem (String where, String trxName)
+	{
+		return getOpenItem (where, "DueDate", null, trxName);
+	}	//	getOpenItem
+	
+	/**
+	 * 	Get all open items
+	 * @param where
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBROpenItem[] getOpenItem (String where, Object[] params, String trxName)
+	{
+		return getOpenItem (where, "DueDate", params, trxName);
+	}	//	getOpenItem
+	
+	/**
+	 * 	Get all open items
+	 * @param where
+	 * @param orderBy
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBROpenItem[] getOpenItem (String where, String orderBy, Object[] params, String trxName)
+	{
+		String sql = "SELECT C_Invoice_ID, C_BPartner_ID, DateInvoiced, " + 	//	1..3
+				     "NetDays, DueDate, DiscountDate, DiscountAmt, OpenAmt, " +	//	4..8
+				     "C_InvoicePaySchedule_ID, C_PaymentTerm_ID, AD_Org_ID " + 	//	9..11
+					 "FROM " + MSysConfig.getValue ("LBR_GENBILLING_TABLE", "RV_InvoicePaySchedule", Env.getAD_Client_ID(Env.getCtx()));
+		
+		if (where != null)
+			sql += " WHERE " + where;
+		
+		if (orderBy != null)
+			sql += " ORDER BY " + orderBy;
 
-		try
-		{
-			setAD_Org_ID(rs.getInt("AD_Org_ID"));
-			setC_BPartner_ID(rs.getInt("C_BPartner_ID"));
-			setC_Invoice_ID(rs.getInt("C_Invoice_ID"));
-			setNetDays(rs.getInt("NetDays"));
-			setDateInvoiced(rs.getTimestamp("DateInvoiced"));
-			setDueDate(rs.getTimestamp("DueDate"));
-			setDiscountDate(rs.getTimestamp("DiscountDate"));
-			setDiscountAmt(rs.getBigDecimal("DiscountAmt"));
-			setGrandTotal(rs.getBigDecimal("OpenAmt"));
-			setC_InvoicePaySchedule_ID(rs.getInt("C_InvoicePaySchedule_ID"));
-			setC_PaymentTerm_ID(rs.getInt("C_PaymentTerm_ID"));
-
-			setDiscountRate(GrandTotal,DiscountAmt);
-			setInterestAmt(GrandTotal);
-
-		}
-		catch (SQLException e)
-		{
-			log.log(Level.SEVERE, "" + e);
-		}
-
-
-
-	}
-
-	public static MLBROpenItem[] getOpenItem(Integer C_Invoice_ID, String trx){
-
-		String sql = "SELECT C_Invoice_ID, " + //1
-				     "C_BPartner_ID, " + //2
-				     "DateInvoiced, " + //3
-				     "NetDays, " + //4
-				     "DueDate, " + //5
-				     "DiscountDate, " + //6
-				     "DiscountAmt, " + //7
-				     "OpenAmt, " + //8
-				     "C_InvoicePaySchedule_ID, " + //9
-				     "C_PaymentTerm_ID, " + //10
-				     "AD_Org_ID " + //11
-					 "FROM " + MSysConfig.getValue ("LBR_GENBILLING_TABLE", "RV_InvoicePaySchedule", Env.getAD_Client_ID(Env.getCtx())) +
-				     " WHERE IsSOTrx='Y' " +
-					 "AND C_Invoice_ID=? ORDER BY DueDate"; //*1
-
-		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
+		List<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
 		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setInt(1, C_Invoice_ID);
+			pstmt = DB.prepareStatement (sql, trxName);
+			DB.setParameters(pstmt, params);
 			rs = pstmt.executeQuery ();
 			while (rs.next ())
 			{
-				list.add (new MLBROpenItem(rs));
+				list.add (new MLBROpenItem (rs));
 			}
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "", e);
 		}
-		finally{
+		finally
+		{
 		       DB.close(rs, pstmt);
 		}
 
 		MLBROpenItem[] retValue = new MLBROpenItem[list.size()];
 		list.toArray(retValue);
 		return retValue;
-	} //getOpenItem
+	}	//	getOpenItem
+	
+	/**
+	 * 	Get all open items for sales transactions of this invoice
+	 * @param C_Invoice_ID
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBROpenItem[] getOpenItem (Integer C_Invoice_ID, String trxName)
+	{
+		return getOpenItem ("IsSOTrx='Y' AND C_Invoice_ID=?", new Object[]{C_Invoice_ID}, trxName);
+	}	//	getOpenItem
 
-	public static MLBROpenItem[] getOpenItem(Timestamp DateInvoiced, String trx){
+	/**
+	 * 	Get all open items for sales transactions of this date
+	 * @param C_Invoice_ID
+	 * @param trxName
+	 * @return
+	 */
+	public static MLBROpenItem[] getOpenItem (Timestamp dateInvoiced, String trxName)
+	{
+		return getOpenItem ("IsSOTrx='Y' AND DateInvoiced=" + DB.TO_DATE (dateInvoiced), trxName);
+	} 	//	getOpenItem
 
-		String sql = "SELECT C_Invoice_ID, " + //1
-				     "C_BPartner_ID, " + //2
-				     "DateInvoiced, " + //3
-				     "NetDays, " + //4
-				     "DueDate, " + //5
-				     "DiscountDate, " + //6
-				     "DiscountAmt, " + //7
-				     "OpenAmt, " + //8
-				     "C_InvoicePaySchedule_ID, " + //9
-				     "C_PaymentTerm_ID, " + //10
-				     "AD_Org_ID " + //11
-					 "FROM RV_OpenItem " +
-				     "WHERE IsSOTrx='Y' " +
-					 "AND DateInvoiced = ? " + //*1
-					 "AND AD_Client_ID = ? order by DueDate"; //*2
-
-		ArrayList<MLBROpenItem> list = new ArrayList<MLBROpenItem>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trx);
-			pstmt.setTimestamp(1, DateInvoiced);
-			pstmt.setInt(2, Env.getContextAsInt(Env.getCtx(), "#AD_Client_ID"));
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				list.add (new MLBROpenItem(rs));
-			}
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "", e);
-		}
-		finally{
-		       DB.close(rs, pstmt);
-		}
-
-		MLBROpenItem[] retValue = new MLBROpenItem[list.size()];
-		list.toArray(retValue);
-		return retValue;
-	} //getOpenItem
-
-	public static boolean hasOpenItem(Integer C_BPartner_ID, String trx){
-
+	/**
+	 * 	Check if Business Partner has open invoices
+	 * @param C_BPartner_ID
+	 * @param trx
+	 * @return
+	 */
+	@Deprecated
+	public static boolean hasOpenItem (Integer C_BPartner_ID, String trx)
+	{
 		String sql = "SELECT * " + //1
 					 "FROM RV_OpenItem " +
 				     "WHERE IsSOTrx='Y' AND DaysDue > 0 " +
@@ -208,9 +211,9 @@ public class MLBROpenItem{
 		return hasOpenItem;
 	} //hasOpenItem
 
+	@Deprecated
 	public static MInvoicePaySchedule[] getInvoicePaySchedule(Properties ctx, int C_Invoice_ID, String trx)
 	{
-
 		String whereClause = "C_Invoice_ID=?";
 
 		MTable table = MTable.get(ctx, MInvoicePaySchedule.Table_Name);
@@ -222,8 +225,9 @@ public class MLBROpenItem{
 		return list.toArray(new MInvoicePaySchedule[list.size()]);
 	}	//	getInvoicePaySchedule
 
-	public static boolean hasPaySchedule(Integer C_Invoice_ID, String trx){
-
+	@Deprecated
+	public static boolean hasPaySchedule(Integer C_Invoice_ID, String trx)
+	{
 		String sql = "SELECT * " + //1
 					 "FROM C_InvoicePaySchedule " +
 					 "WHERE C_Invoice_ID=?"; //*1
@@ -368,4 +372,4 @@ public class MLBROpenItem{
 		return InterestAmt;
 	}
 
-} //MOpenItem
+} 	//	MLBROpenItem

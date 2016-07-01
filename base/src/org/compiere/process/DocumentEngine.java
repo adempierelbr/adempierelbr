@@ -978,8 +978,15 @@ public class DocumentEngine implements DocAction
 		 */
 		else if (AD_Table_ID == MInvoice.Table_ID)
 		{
+			//			Draft                       ..  DR/IP/IN
+			if (docStatus.equals(DocumentEngine.STATUS_Drafted)
+				|| docStatus.equals(DocumentEngine.STATUS_InProgress)
+				|| docStatus.equals(DocumentEngine.STATUS_Invalid))
+			{
+				options[index++] = DocumentEngine.ACTION_Prepare;
+			}			
 			//	Complete                    ..  CO
-			if (docStatus.equals(DocumentEngine.STATUS_Completed))
+			else if (docStatus.equals(DocumentEngine.STATUS_Completed))
 			{
 				options[index++] = DocumentEngine.ACTION_Void;
 				options[index++] = DocumentEngine.ACTION_Reverse_Correct;

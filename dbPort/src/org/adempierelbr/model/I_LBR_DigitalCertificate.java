@@ -118,6 +118,19 @@ public interface I_LBR_DigitalCertificate
 	  */
 	public boolean isActive();
 
+    /** Column name IsValid */
+    public static final String COLUMNNAME_IsValid = "IsValid";
+
+	/** Set Valid.
+	  * Element is valid
+	  */
+	public void setIsValid (boolean IsValid);
+
+	/** Get Valid.
+	  * Element is valid
+	  */
+	public boolean isValid();
+
     /** Column name LBR_DigitalCertificate_ID */
     public static final String COLUMNNAME_LBR_DigitalCertificate_ID = "LBR_DigitalCertificate_ID";
 
@@ -152,6 +165,15 @@ public interface I_LBR_DigitalCertificate
 	  * Password of any length (case sensitive)
 	  */
 	public String getPassword();
+
+    /** Column name Processing */
+    public static final String COLUMNNAME_Processing = "Processing";
+
+	/** Set Process Now	  */
+	public void setProcessing (boolean Processing);
+
+	/** Get Process Now	  */
+	public boolean isProcessing();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -15,16 +15,15 @@ package org.adempierelbr.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -35,7 +34,6 @@ import org.adempierelbr.util.SocketFactoryDinamico;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.apache.commons.httpclient.protocol.Protocol;
-import org.compiere.model.MAttachment;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -269,80 +267,15 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			log.saveError ("Error", Msg.getElement (getCtx(), "lbr_CertType"));
 			return false;
 		}
-	
-		//	Needs an attachment to continue
-		if (newRecord)
-			return true;
 		
-		MAttachment att = getAttachment (true);
-
-		//	No attachment
-		if ((LBR_CERTTYPE_JavaKeyStore.equals(getlbr_CertType ()) || LBR_CERTTYPE_PKCS12.equals(getlbr_CertType ())) 
-				&& (att == null || att.getEntryCount() == 0))
-		{
-			log.saveError ("Error", Msg.getElement (getCtx(), "AD_Attachment"));
-			return false;
-		}
-		
-		try
-		{
-			String certType = getlbr_CertType();
-			String pass = getPassword();
-			
-			if (LBR_CERTTYPE_PKCS12.equals(getlbr_CertType()))
-				certType = "PKCS12";
-			else if (LBR_CERTTYPE_ICPTrustStoreJKS.equals(getlbr_CertType()))
-				certType = "JKS";
-			
-			String alias = getAlias();
-			
-			if (alias == null || alias.length() == 0)
-				alias = "nfe";
-				
-			if (pass == null || pass.length() == 0)
-			{
-				pass = "changeit";
-				setPassword(pass);
-			}
-			//
-			KeyStore ks = KeyStore.getInstance (certType);
-			ks.load (att.getEntry(0).getInputStream(), pass.toCharArray());
-			X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
-			//
-			if (certificate == null)
-			{
-				Enumeration<String> aliases = ks.aliases();
-				while (aliases.hasMoreElements()) 
-				{
-					alias = aliases.nextElement();
-					X509Certificate tmp = (X509Certificate) ks.getCertificate (alias);
-					
-					if (tmp != null && (certificate == null || tmp.getNotAfter().after (Env.getContextAsDate(Env.getCtx(), "#Date"))))
-					{
-						certificate = tmp;
-						setAlias(alias);
-						break;
-					}	
-				}
-				
-				if (certificate == null)
-				{
-					log.saveWarning ("Invalid", "N\u00E3o foi encontrado um certificado v\u00E1lido");
-					return true;
-				}
-			}
-			setValidFrom (new Timestamp (certificate.getNotBefore().getTime()));
-			setValidTo (new Timestamp (certificate.getNotAfter().getTime()));
-			//
-			if (getValidTo().before(Env.getContextAsDate(Env.getCtx(), "#Date")))
-				log.saveWarning ("Invalid", "Certificado expirado em " + TextUtil.timeToString (certificate.getNotAfter(), "dd/MM/yyyy"));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			//
-			log.saveWarning ("Error", "Erro ao validar o certificado. Este certificado n\u00E3o funcionar\u00E1 com a NF-e. Verifique o log do sistema.");
-		}
+		/**
+		 * 	New Record or Valid not changed, but dependent fields changed
+		 */
+		if (newRecord || (!is_ValueChanged(COLUMNNAME_IsValid) 
+					&& (is_ValueChanged(COLUMNNAME_Alias) 
+							|| is_ValueChanged(COLUMNNAME_Password) 
+							|| is_ValueChanged(COLUMNNAME_lbr_CertType))))
+			setIsValid(false);
 		
 		return true;
 	}	//	beforeSave
@@ -392,11 +325,11 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 				fos.close();
 			}
 			
-			FileWriter f = TextUtil.createFile (cfgFile, false);
-			f.write("name= SmartCard");
-			f.write("\nlibrary= " + driverPath);
-			f.flush();
-			f.close();
+			OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(cfgFile), TextUtil.UTF8);
+			osw.write("name= SmartCard");
+			osw.write("\nlibrary= " + driverPath);
+			osw.flush();
+			osw.close();
 		}
 		catch (FileNotFoundException e)
 		{

@@ -601,6 +601,32 @@ public interface I_LBR_NotaFiscal
 
 	public I_C_Region getLBR_RegionExport() throws RuntimeException;
 
+    /** Column name LBR_ReverseInOut */
+    public static final String COLUMNNAME_LBR_ReverseInOut = "LBR_ReverseInOut";
+
+	/** Set Reverse InOut.
+	  * Allow to Reverse InOut related with the NF
+	  */
+	public void setLBR_ReverseInOut (boolean LBR_ReverseInOut);
+
+	/** Get Reverse InOut.
+	  * Allow to Reverse InOut related with the NF
+	  */
+	public boolean isLBR_ReverseInOut();
+
+    /** Column name LBR_ReverseInvoice */
+    public static final String COLUMNNAME_LBR_ReverseInvoice = "LBR_ReverseInvoice";
+
+	/** Set Reverse Invoice.
+	  * Allow to Reverse Invoice related with the NF
+	  */
+	public void setLBR_ReverseInvoice (boolean LBR_ReverseInvoice);
+
+	/** Get Reverse Invoice.
+	  * Allow to Reverse Invoice related with the NF
+	  */
+	public boolean isLBR_ReverseInvoice();
+
     /** Column name LBR_SendEMail */
     public static final String COLUMNNAME_LBR_SendEMail = "LBR_SendEMail";
 
@@ -613,6 +639,19 @@ public interface I_LBR_NotaFiscal
 	  * Send EMail with Nota Fiscal
 	  */
 	public String getLBR_SendEMail();
+
+    /** Column name LBR_TPEmis */
+    public static final String COLUMNNAME_LBR_TPEmis = "LBR_TPEmis";
+
+	/** Set Tipo de Emissão.
+	  * Indicar o Tipo de Emissão da NF-e.
+	  */
+	public void setLBR_TPEmis (String LBR_TPEmis);
+
+	/** Get Tipo de Emissão.
+	  * Indicar o Tipo de Emissão da NF-e.
+	  */
+	public String getLBR_TPEmis();
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";

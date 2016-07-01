@@ -837,7 +837,7 @@ public class MLBRTax extends X_LBR_Tax
 		 * 	Caso a NF de Serviço tenha apenas ISS, deixar como válida, 
 		 * pois em alguns casos (ex. conserto) só há incidência de ISS
 		 */
-		if (result.equals("Sem PIS, Sem COFINS, Sem CSLL, em IR, "))
+		if (result.equals("Sem PIS, Sem COFINS, Sem CSLL, Sem IR, "))
 			result = "";
 		
 		if (isProduct)

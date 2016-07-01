@@ -941,6 +941,24 @@ public class MOrderLine extends X_C_OrderLine
 			log.saveError("DeleteError", Msg.translate(getCtx(), "QtyInvoiced") + "=" + getQtyInvoiced());
 			return false;
 		}
+		
+		/**
+		 * 		Allow the deletion of a Sales Order Line even when 
+		 * 	it's linked to a proposal or has reserved quantities
+		 */
+		if (MSysConfig.getBooleanValue("LBR_REMOVE_RESERVES_ON_DELETE", false, getAD_Client_ID(), getAD_Org_ID()))
+		{
+			//	Un-Link all Quotations and Proposals
+			DB.executeUpdate("UPDATE C_OrderLine SET Ref_OrderLine_ID=NULL WHERE Ref_OrderLine_ID=?", getC_OrderLine_ID(), get_TrxName());
+			
+			//	Un-Reserve Stock
+			if (!getParent().unreserveStock(this))
+			{
+				log.saveError("DeleteError", "Cannot reserve Stock");
+				return false;
+			}
+		}
+		
 		if (Env.ZERO.compareTo(getQtyReserved()) != 0)
 		{
 			//	For PO should be On Order

@@ -31,6 +31,10 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
     /** Column name AD_Language */
     public static final String COLUMNNAME_AD_Language = "AD_Language";
 
+	/** AD_Language AD_Reference_ID=327 */
+	public static final int AD_LANGUAGE_AD_Reference_ID=327;
+
+
 	/** Set Language.
 	  * Language for this entity
 	  */
@@ -53,6 +57,17 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  * Business Partner Contact Name
 	  */
 	public String getContactName();
+
+    /** Column name LBR_BP_Accountant_ID */
+    public static final String COLUMNNAME_LBR_BP_Accountant_ID = "LBR_BP_Accountant_ID";
+
+	/** Set Accountant	  */
+	public void setLBR_BP_Accountant_ID (int LBR_BP_Accountant_ID);
+
+	/** Get Accountant	  */
+	public int getLBR_BP_Accountant_ID();
+
+	public I_C_BPartner getLBR_BP_Accountant() throws RuntimeException;
 
     /** Column name LBR_ContatoNFe_ID */
     public static final String COLUMNNAME_LBR_ContatoNFe_ID = "LBR_ContatoNFe_ID";
@@ -103,6 +118,28 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
     /** Column name LBR_IndPres */
     public static final String COLUMNNAME_LBR_IndPres = "LBR_IndPres";
 
+	/** LBR_IndPres AD_Reference_ID=1120204 */
+	public static final int LBR_INDPRES_AD_Reference_ID=1120204;
+
+	/** Não se Aplica = 0 */
+	public static final String LBR_INDPRES_NãoSeAplica = "0";
+
+	/** Operação Presencial = 1 */
+	public static final String LBR_INDPRES_OperaçãoPresencial = "1";
+
+	/** Operação não Presencial, pela Internet = 2 */
+	public static final String LBR_INDPRES_OperaçãoNãoPresencialPelaInternet = "2";
+
+	/** Operação não Presencial, Teleatendimento = 3 */
+	public static final String LBR_INDPRES_OperaçãoNãoPresencialTeleatendimento = "3";
+
+	/** NFC-e em Operação com Entrega em Domicílio = 4 */
+	public static final String LBR_INDPRES_NFC_EEmOperaçãoComEntregaEmDomicílio = "4";
+
+	/** Operação não Presencial, Outros = 9 */
+	public static final String LBR_INDPRES_OperaçãoNãoPresencialOutros = "9";
+
+
 	/** Set Indicação de Atendimento Presencial.
 	  * Indicador de presença do comprador no estabelecimento comercial no momento da operação
 	  */
@@ -115,6 +152,22 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 
     /** Column name LBR_TaxRegime */
     public static final String COLUMNNAME_LBR_TaxRegime = "LBR_TaxRegime";
+
+	/** LBR_TaxRegime AD_Reference_ID=1120183 */
+	public static final int LBR_TAXREGIME_AD_Reference_ID=1120183;
+
+	/** Simple National = S */
+	public static final String LBR_TAXREGIME_SimpleNational = "S";
+
+	/** Presumed Profit = P */
+	public static final String LBR_TAXREGIME_PresumedProfit = "P";
+
+	/** Real Profit = R */
+	public static final String LBR_TAXREGIME_RealProfit = "R";
+
+	/** Simple National - MEI = M */
+	public static final String LBR_TAXREGIME_SimpleNational_MEI = "M";
+
 
 	/** Set Tax Regime	  */
 	public void setLBR_TaxRegime (String LBR_TaxRegime);
@@ -174,15 +227,6 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public String getlbr_CNPJ();
 
-    /** Column name lbr_DANFEFormat */
-    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
-
-	/** Set DANFE Format	  */
-	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
-
-	/** Get DANFE Format	  */
-	public String getlbr_DANFEFormat();
-
     /** Column name lbr_DtArq */
     public static final String COLUMNNAME_lbr_DtArq = "lbr_DtArq";
 
@@ -218,6 +262,29 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public String getlbr_IE();
 
+    /** Column name lbr_IndAtividade */
+    public static final String COLUMNNAME_lbr_IndAtividade = "lbr_IndAtividade";
+
+	/** lbr_IndAtividade AD_Reference_ID=1120223 */
+	public static final int LBR_INDATIVIDADE_AD_Reference_ID=1120223;
+
+	/** Industrial ou equiparado a industrial = 0 */
+	public static final String LBR_INDATIVIDADE_IndustrialOuEquiparadoAIndustrial = "0";
+
+	/** Outros = 1 */
+	public static final String LBR_INDATIVIDADE_Outros = "1";
+
+
+	/** Set Tipo de atividade.
+	  * Tipo de atividade
+	  */
+	public void setlbr_IndAtividade (String lbr_IndAtividade);
+
+	/** Get Tipo de atividade.
+	  * Tipo de atividade
+	  */
+	public String getlbr_IndAtividade();
+
     /** Column name lbr_Interest */
     public static final String COLUMNNAME_lbr_Interest = "lbr_Interest";
 
@@ -231,15 +298,6 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 	  */
 	public BigDecimal getlbr_Interest();
 
-    /** Column name lbr_IsScan */
-    public static final String COLUMNNAME_lbr_IsScan = "lbr_IsScan";
-
-	/** Set Enable Scan	  */
-	public void setlbr_IsScan (boolean lbr_IsScan);
-
-	/** Get Enable Scan	  */
-	public boolean islbr_IsScan();
-
     /** Column name lbr_LegalEntity */
     public static final String COLUMNNAME_lbr_LegalEntity = "lbr_LegalEntity";
 
@@ -248,15 +306,6 @@ public interface I_W_AD_OrgInfo extends I_AD_OrgInfo
 
 	/** Get Legal Entity	  */
 	public String getlbr_LegalEntity();
-
-    /** Column name lbr_NFeEnv */
-    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
-
-	/** Set NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv);
-
-	/** Get NFe Environment	  */
-	public String getlbr_NFeEnv();
 
     /** Column name lbr_NIRE */
     public static final String COLUMNNAME_lbr_NIRE = "lbr_NIRE";

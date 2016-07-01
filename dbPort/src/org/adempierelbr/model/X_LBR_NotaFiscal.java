@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20160525L;
+	private static final long serialVersionUID = 20160608L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -1008,6 +1008,54 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set Reverse InOut.
+		@param LBR_ReverseInOut 
+		Allow to Reverse InOut related with the NF
+	  */
+	public void setLBR_ReverseInOut (boolean LBR_ReverseInOut)
+	{
+		set_Value (COLUMNNAME_LBR_ReverseInOut, Boolean.valueOf(LBR_ReverseInOut));
+	}
+
+	/** Get Reverse InOut.
+		@return Allow to Reverse InOut related with the NF
+	  */
+	public boolean isLBR_ReverseInOut () 
+	{
+		Object oo = get_Value(COLUMNNAME_LBR_ReverseInOut);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Reverse Invoice.
+		@param LBR_ReverseInvoice 
+		Allow to Reverse Invoice related with the NF
+	  */
+	public void setLBR_ReverseInvoice (boolean LBR_ReverseInvoice)
+	{
+		set_Value (COLUMNNAME_LBR_ReverseInvoice, Boolean.valueOf(LBR_ReverseInvoice));
+	}
+
+	/** Get Reverse Invoice.
+		@return Allow to Reverse Invoice related with the NF
+	  */
+	public boolean isLBR_ReverseInvoice () 
+	{
+		Object oo = get_Value(COLUMNNAME_LBR_ReverseInvoice);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Send EMail.
 		@param LBR_SendEMail 
 		Send EMail with Nota Fiscal
@@ -1023,6 +1071,42 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getLBR_SendEMail () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_SendEMail);
+	}
+
+	/** LBR_TPEmis AD_Reference_ID=1120246 */
+	public static final int LBR_TPEMIS_AD_Reference_ID=1120246;
+	/** Emissão Normal = 1 */
+	public static final String LBR_TPEMIS_EmissãoNormal = "1";
+	/** Contingência FS-IA = 2 */
+	public static final String LBR_TPEMIS_ContingênciaFS_IA = "2";
+	/** Contingência SCAN = 3 */
+	public static final String LBR_TPEMIS_ContingênciaSCAN = "3";
+	/** Contingência DPEC = 4 */
+	public static final String LBR_TPEMIS_ContingênciaDPEC = "4";
+	/** Contingência FS-DA = 5 */
+	public static final String LBR_TPEMIS_ContingênciaFS_DA = "5";
+	/** Contingência SVC-AN = 6 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_AN = "6";
+	/** Contingência SVC-RS = 7 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_RS = "7";
+	/** Contingência off-line da NFC-e = 9 */
+	public static final String LBR_TPEMIS_ContingênciaOff_LineDaNFC_E = "9";
+	/** Set Tipo de Emissão.
+		@param LBR_TPEmis 
+		Indicar o Tipo de Emissão da NF-e.
+	  */
+	public void setLBR_TPEmis (String LBR_TPEmis)
+	{
+
+		set_Value (COLUMNNAME_LBR_TPEmis, LBR_TPEmis);
+	}
+
+	/** Get Tipo de Emissão.
+		@return Indicar o Tipo de Emissão da NF-e.
+	  */
+	public String getLBR_TPEmis () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TPEmis);
 	}
 
 	public I_M_InOut getM_InOut() throws RuntimeException

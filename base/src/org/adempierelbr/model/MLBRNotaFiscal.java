@@ -132,14 +132,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	private static final long serialVersionUID = 1L;
 
 	/** REFERENCE */
+	@Deprecated
 	public Map<String,String> m_refNCM  = new HashMap<String, String>(); //Referência NCM
+	@Deprecated
 	public Map<String,String> m_refCFOP = new HashMap<String, String>(); //Referência CFOP
+	@Deprecated
 	public ArrayList<Integer> m_refLegalMessage = new ArrayList<Integer>(); //Referência Mensagem Legal
 
 	/** STRING */
+	@Deprecated
 	String m_NCMReference  = "";
+	@Deprecated
 	String m_CFOPNote      = "";
+	@Deprecated
 	String m_CFOPReference = "";
+	@Deprecated
 	String m_LegalMessage  = "";
 
 	/** CONSTANT */
@@ -255,6 +262,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param LBR_NCM_ID
 	 * @return
 	 */
+	@Deprecated
 	public String getNCM (Integer LBR_NCM_ID)
 	{
 		if (LBR_NCM_ID == null || LBR_NCM_ID.intValue() == 0)
@@ -539,6 +547,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param LBR_CFOP_ID
 	 * @return CFOP ou Ref. do CFOP
 	 */
+	@Deprecated
 	public String getCFOP(Integer LBR_CFOP_ID)
 	{
 		if (LBR_CFOP_ID == null || LBR_CFOP_ID.intValue() == 0)
@@ -577,6 +586,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		return null;
 	}	//	getCFOP
 
+	@Deprecated
 	public void setLegalMessage(Integer LBR_LegalMessage_ID){
 
 		if (LBR_LegalMessage_ID == null || LBR_LegalMessage_ID.intValue() == 0)
@@ -591,6 +601,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	} //setLegalMessage
 
+	@Deprecated
 	public String getNCMReference()
 	{
 		return TextUtil.retiraPontoFinal(m_NCMReference);
@@ -605,6 +616,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param cl
 	 * @param concat
 	 */
+	@Deprecated
 	private void setNCMReference(String ncmName, String cl, boolean concat)
 	{
 		if (concat)
@@ -618,10 +630,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			m_NCMReference = ncmName;
 	}
 
+	@Deprecated
 	public String getCFOPNote() {
 		return TextUtil.retiraPontoFinal(m_CFOPNote);
 	}
 
+	@Deprecated
 	private void setCFOPNote(String cfopNote, boolean concat) {
 
 		if (concat){
@@ -632,6 +646,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	}
 
+	@Deprecated
 	public String getCFOPReference() {
 		return TextUtil.retiraPontoFinal(m_CFOPReference);
 	}
@@ -645,6 +660,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @param cl
 	 * @param concat
 	 */
+	@Deprecated
 	private void setCFOPReference(String cfopName, String cl)
 	{
 		if (m_CFOPReference == null
@@ -664,10 +680,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 	}
 
+	@Deprecated
 	public String getLegalMessage() {
 		return TextUtil.retiraPontoFinal(m_LegalMessage);
 	}
 
+	@Deprecated
 	private void setLegalMessage(String legalMessage, boolean concat) {
 		if (concat){
 			m_LegalMessage += legalMessage;
@@ -2225,26 +2243,51 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setlbr_NFSerie(dt.get_ValueAsString("lbr_NFSerie"));
 			}
 			
-			//	Preenche o ambiente da NF caso esteja em branco
-			I_W_AD_OrgInfo orgInfo = POWrapper.create (MOrgInfo.get (getCtx(), getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
-			String orgEnv = orgInfo.getlbr_NFeEnv();
-			if (getlbr_NFeEnv() == null && orgEnv != null && !orgEnv.isEmpty())
-				setlbr_NFeEnv (orgEnv);
-			
-			if (getlbr_DANFEFormat() == null)
+			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+			if (config != null)
 			{
-				I_W_C_DocType dt = POWrapper.create(new MDocType (Env.getCtx(), getC_DocTypeTarget_ID(), null), I_W_C_DocType.class);
+				//	Preenche o ambiente da NF caso esteja em branco
+				if (getlbr_NFeEnv() == null)
+					setlbr_NFeEnv (config.getlbr_NFeEnv());
 				
-				//	Formato da DANFE pelo Tipo de Documento
-				if (dt.getlbr_DANFEFormat() != null)
-					setlbr_DANFEFormat(dt.getlbr_DANFEFormat());
+				//	Formato da DANFE
+				if (getlbr_DANFEFormat() == null)
+					setlbr_DANFEFormat(config.getlbr_DANFEFormat());
+
+				//	Definir Valor Padrão do campo Estornar Fatura da NF.
+				setLBR_ReverseInvoice(config.isLBR_ReverseInvoice());
 				
-				//	Formato da DANFE pela Organização
-				else if (orgInfo.getlbr_DANFEFormat() != null)
-					setlbr_DANFEFormat(orgInfo.getlbr_DANFEFormat());
+				//	Definir Valor Padrão do campo Estornar Remessa da NF.
+				setLBR_ReverseInOut(config.isLBR_ReverseInOut());
+				
+				//	Verificar se existe alguma contingência agendada
+				MLBRNFConfigSVC svc = MLBRNFConfigSVC.get (getAD_Org_ID(), new Timestamp(System.currentTimeMillis()));
+				
+				//	Contingência tem prioridade sobre a configuração normal
+				if (svc != null)
+				{
+					setLBR_TPEmis(svc.getLBR_TPEmis());
+					setlbr_DateScan(svc.getlbr_DateScan());
+					setlbr_MotivoScan(svc.getlbr_MotivoScan());
+				}
+				
+				//	configuração padrão
+				else
+				{
+					//	Força o tipo de emissão para seguir a configuração 
+					String tipoEmis = config.getLBR_TPEmis();
+					setLBR_TPEmis(tipoEmis);
+					
+					if (!MLBRNFConfig.LBR_TPEMIS_EmissãoNormal.equals(tipoEmis))
+					{
+						setlbr_DateScan(config.getlbr_DateScan());
+						setlbr_MotivoScan(config.getlbr_MotivoScan());
+					}
+				}
 			}
-			
+
 			//	Set Org details
+			I_W_AD_OrgInfo orgInfo = POWrapper.create (MOrgInfo.get (getCtx(), getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
 			setOrgInfo(orgInfo);
 		}
 		
@@ -2265,8 +2308,65 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
 		}
+		
 		return true;
 	}	//	beforeSave
+	
+	/**
+	 * 	Called after Save for Post-Save Operation
+	 * 	@param newRecord new record
+	 *	@param success true if save operation was success
+	 *	@return if save was a success
+	 */
+	protected boolean afterSave (boolean newRecord, boolean success)
+	{
+		if (success)
+		{
+			//	Continuar apenas se houver alteração no campo DocStatus
+			if (!is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_DocStatus))
+				return success;
+			
+			//	Fatura da NF
+			MInvoice invoice  = new MInvoice(Env.getCtx(), getC_Invoice_ID(), get_TrxName());
+			
+			//	Remessa / Recebimento da NF
+			MInOut inout = new MInOut (Env.getCtx(), getM_InOut_ID(), get_TrxName());
+			
+			//	Ao Anular uma NF Estornar a Fatura e Remessa / Recebimento
+			if (getDocStatus().equals(DocAction.ACTION_Void))
+			{
+				//	Se a Fatura for Válida, Estiver Completada e o Estorno Estiver Marcado
+			   	if (invoice != null && invoice.getDocStatus().equals(DocAction.ACTION_Complete)
+			   			&& isLBR_ReverseInvoice())
+				{
+			   		//	Estonar Fatura
+					if (invoice.reverseCorrectIt())
+					{
+						invoice.setDocStatus(MInvoice.DOCSTATUS_Reversed);
+						invoice.setDocAction(MInvoice.DOCACTION_None);
+						invoice.save();
+					}
+					
+				}
+			   	
+			   	// Se a Remessa for Válida, Estiver Completada e o Estorno Estiver Marcado
+			   	if (inout != null && inout.getDocStatus().equals(DocAction.ACTION_Complete)
+			   			&& isLBR_ReverseInOut())
+				{
+			   		//	Estornar Remessa
+					if (inout.reverseCorrectIt())
+					{
+						inout.setDocStatus(MInvoice.DOCSTATUS_Reversed);
+						inout.setDocAction(MInvoice.DOCACTION_None);
+						inout.save();
+					}
+					
+				}
+			}
+		}
+		
+		return success;
+	}	//	afterSave
 	
 	/**
 	 * 	Executed before Delete operation.
@@ -3390,9 +3490,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
 		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
+		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID);
 		//
 		if (p_LBR_EnvType == null)
-			p_LBR_EnvType = oi.get_ValueAsString("lbr_NFeEnv");
+			p_LBR_EnvType = config.getlbr_NFeEnv();
 		if (p_Just == null)
 			p_Just = "Erro na emissão da NFe";
 		

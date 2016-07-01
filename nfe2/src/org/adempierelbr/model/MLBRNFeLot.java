@@ -25,6 +25,7 @@ import java.util.logging.Level;
 
 import javax.xml.stream.XMLInputFactory;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeAutorizacaoStub;
 import org.adempierelbr.nfe.api.NfeRetAutorizacaoStub;
@@ -58,6 +59,7 @@ import br.inf.portalfiscal.nfe.v310.TAmb;
 import br.inf.portalfiscal.nfe.v310.TConsReciNFe;
 import br.inf.portalfiscal.nfe.v310.TEnviNFe;
 import br.inf.portalfiscal.nfe.v310.TNFe;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.TpEmis;
 import br.inf.portalfiscal.nfe.v310.TProtNFe;
 import br.inf.portalfiscal.nfe.v310.TRetConsReciNFe;
 import br.inf.portalfiscal.nfe.v310.TRetEnviNFe;
@@ -106,6 +108,9 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		super(ctx, rs, trxName);
 	}	//	MLBRNFeLot
 
+	/**	WS Type 	*/
+	private String LBR_WSType = MLBRNFeWebService.LBR_WSTYPE_Normal;
+	
 	/**
 	 * 	Gera o arquivo de Lote
 	 *
@@ -147,7 +152,12 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		log.fine("Envia Lote: " + getDocumentNo());
 
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+		
+		String envType 	= null;
+		
+		if (config != null)
+			envType = config.getlbr_NFeEnv();			
 		//
 		if (envType == null || envType.equals(""))
 			throw new Exception ("Ambiente da NF-e deve ser preenchido.");
@@ -180,7 +190,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 		
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.AUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.AUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
 		NfeAutorizacaoStub.setAmbiente(url);
 		NfeAutorizacaoStub stub = new NfeAutorizacaoStub();
 
@@ -274,7 +284,12 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		}
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		String envType 	= oi.get_ValueAsString("lbr_NFeEnv");
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+		
+		String envType 	= null;
+		
+		if (config != null)
+			envType = config.getlbr_NFeEnv();		
 		//
 		if (envType == null || envType.equals(""))
 			throw new Exception ("Ambiente da NF-e deve ser preenchido.");
@@ -313,7 +328,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETAUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, orgLoc.getC_Region_ID());
+			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETAUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
 			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
 
 			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
@@ -477,6 +492,9 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 	 		if (attachment == null)
 	 			continue;
 	 		
+	 		//	Tipo de Emissão
+	 		TpEmis.Enum tpEmis = null;
+	 		
 	 		for (MAttachmentEntry entry : attachment.getEntries())
 	 		{
 	 			//	Check if attachment is a NFe
@@ -484,8 +502,22 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 	 			{
 	 				NFeDocument nfeDoc = NFeDocument.Factory.parse (entry.getInputStream());
 	 				nfeList.add(nfeDoc.getNFe());
+	 				
+	 				TpEmis.Enum currentTPEmis = nfeDoc.getNFe().getInfNFe().getIde().getTpEmis();
+	 				
+	 				if (tpEmis != null && !tpEmis.equals(currentTPEmis))
+	 					throw new AdempiereException ("Tipo de Emissão da NF-e Inválido (SVC e Normal no mesmo lote)");
+	 				
+	 				tpEmis = currentTPEmis;
 	 			}
 	 		}
+	 		
+	 		if (tpEmis != null && (tpEmis.equals(TpEmis.X_6)
+	 				|| tpEmis.equals(TpEmis.X_7)))
+	 			LBR_WSType = MLBRNFeWebService.LBR_WSTYPE_SCAN;
+	 		
+	 		else
+	 			LBR_WSType = MLBRNFeWebService.LBR_WSTYPE_Normal;
 	 	}
 	 	
 	 	//	Convert to Array
@@ -726,11 +758,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		log.info("reActivateIt - " + toString());
 
 		setDocStatus(DOCSTATUS_InProgress);
-//		setDocAction(DOCACTION_Complete);
 		setProcessed(false);
-//		if (reverseCorrectIt())
-			return true;
-//		return false;
+		return true;
 	}	//	reActivateIt
 	
 	/*************************************************************************
