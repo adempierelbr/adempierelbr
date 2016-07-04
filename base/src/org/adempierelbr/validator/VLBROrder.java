@@ -347,7 +347,7 @@ public class VLBROrder implements ModelValidator
 			
 			if (olW.getLBR_Tax_ID() == 0)
 				resultLine += "Sem nenhum imposto, ";
-			else
+			else if (ol.getM_Product_ID() > 0)
 				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct);
 			
 			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
