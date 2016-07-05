@@ -2651,32 +2651,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFModel);
 	}
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getlbr_NFRefere() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
-			.getPO(getlbr_NFReference(), get_TrxName());	}
-
-	/** Set NF Reference.
-		@param lbr_NFReference 
-		Reference to other NF
-	  */
-	public void setlbr_NFReference (int lbr_NFReference)
-	{
-		set_Value (COLUMNNAME_lbr_NFReference, Integer.valueOf(lbr_NFReference));
-	}
-
-	/** Get NF Reference.
-		@return Reference to other NF
-	  */
-	public int getlbr_NFReference () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_NFReference);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
+	
 	/** Set NF Serie.
 		@param lbr_NFSerie NF Serie	  */
 	public void setlbr_NFSerie (String lbr_NFSerie)

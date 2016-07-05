@@ -1692,21 +1692,6 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_NFModel();
 
-    /** Column name lbr_NFReference */
-    public static final String COLUMNNAME_lbr_NFReference = "lbr_NFReference";
-
-	/** Set NF Reference.
-	  * Reference to other NF
-	  */
-	public void setlbr_NFReference (int lbr_NFReference);
-
-	/** Get NF Reference.
-	  * Reference to other NF
-	  */
-	public int getlbr_NFReference();
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getlbr_NFRefere() throws RuntimeException;
-
     /** Column name lbr_NFSerie */
     public static final String COLUMNNAME_lbr_NFSerie = "lbr_NFSerie";
 
