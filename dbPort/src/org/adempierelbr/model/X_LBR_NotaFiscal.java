@@ -4210,6 +4210,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/** lbr_TransactionType AD_Reference_ID=1000024 */
 	public static final int LBR_TRANSACTIONTYPE_AD_Reference_ID=1000024;
 	/** End User = END */
+	public static final String LBR_TRANSACTIONTYPE_EndUser_Double_BC = "EN2";
+	/** End User = END */
 	public static final String LBR_TRANSACTIONTYPE_EndUser = "END";
 	/** Manufacturing = MAN */
 	public static final String LBR_TRANSACTIONTYPE_Manufacturing = "MAN";

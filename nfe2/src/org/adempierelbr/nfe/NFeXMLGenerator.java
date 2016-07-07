@@ -452,7 +452,8 @@ public class NFeXMLGenerator
 		ide.setFinNFe (TFinNFe.Enum.forString (nf.getlbr_FinNFe ()));
 		
 		//	Indicação para verificar se a venda é para consumidor final
-		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(nf.getlbr_TransactionType()))
+		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(nf.getlbr_TransactionType())
+				|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals(nf.getlbr_TransactionType()))
 			ide.setIndFinal (IND_FINAL_CONS_FINAL);
 		else
 			ide.setIndFinal (IND_FINAL_NORMAL);
@@ -1292,7 +1293,8 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	NT2015.003
-			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
+			if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
+					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals (nfl.getParent().getlbr_TransactionType()))
 					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
 			{
 				Timestamp dateDoc = nfl.getParent().getDateDoc();
