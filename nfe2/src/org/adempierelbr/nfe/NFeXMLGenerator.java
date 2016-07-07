@@ -1316,7 +1316,7 @@ public class NFeXMLGenerator
 					partICMSRate = new BigDecimal (100);
 				//
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
-				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMS")));
+				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
 				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
 				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));

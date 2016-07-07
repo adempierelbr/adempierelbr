@@ -17,10 +17,12 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
+import org.compiere.util.Env;
 
 /** Generated Model for LBR_TaxFormula
  *  @author ADempiereLBR (generated) 
@@ -31,7 +33,7 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20110921L;
+	private static final long serialVersionUID = 20160707L;
 
     /** Standard Constructor */
     public X_LBR_TaxFormula (Properties ctx, int LBR_TaxFormula_ID, String trxName)
@@ -43,6 +45,8 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 // N
 			setLBR_TaxFormula_ID (0);
 			setLBR_TaxName_ID (0);
+			setPercentage (Env.ZERO);
+// 100
 			setValidFrom (new Timestamp( System.currentTimeMillis() ));
 			setlbr_ServiceFactor (null);
 			setlbr_TransactionType (null);
@@ -250,6 +254,26 @@ public class X_LBR_TaxFormula extends PO implements I_LBR_TaxFormula, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Percentage.
+		@param Percentage 
+		Percent of the entire amount
+	  */
+	public void setPercentage (BigDecimal Percentage)
+	{
+		set_Value (COLUMNNAME_Percentage, Percentage);
+	}
+
+	/** Get Percentage.
+		@return Percent of the entire amount
+	  */
+	public BigDecimal getPercentage () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Percentage);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Valid from.

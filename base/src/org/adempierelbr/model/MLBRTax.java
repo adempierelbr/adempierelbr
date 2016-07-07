@@ -261,6 +261,12 @@ public class MLBRTax extends X_LBR_Tax
 				}
 			}
 			
+			//	Percentage of tax that will be used
+			if (taxFormula != null 
+					&& taxFormula.get_ColumnIndex(MLBRTaxFormula.COLUMNNAME_Percentage) > 0		//	Compatibility Legacy 
+					&& Env.ONEHUNDRED.compareTo (taxFormula.getPercentage()) != 0)
+				taxAmt = taxAmt.multiply (taxFormula.getPercentage().divide (Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)).setScale(3, BigDecimal.ROUND_HALF_UP);
+			
 			//	Inverte o valor dos impostos para os casos de retenção
 			if (MLBRTaxName.LBR_TAXTYPE_Service.equals(taxName.getlbr_TaxType())
 					&& taxName.isLBR_HasWithhold()
@@ -321,12 +327,17 @@ public class MLBRTax extends X_LBR_Tax
 		if (taxBase == null || taxBase.signum() == 0 || taxRateOrQty == null || taxRateOrQty.signum() == 0)
 			return Env.ZERO;
 		//
+		BigDecimal result = Env.ZERO;
+
+		//	Quantity Based
 		if (isQty)
-			return taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP))
-																 .setScale(2, BigDecimal.ROUND_HALF_UP);
+			result = taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP));
+		
+		//	Tax Rate
 		else
-			return taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP))
-				.divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+			result = taxBase.multiply(taxRateOrQty.setScale(17, BigDecimal.ROUND_HALF_UP)).divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP);
+		
+		return result.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}	//	getTaxAmt
 
 	/**

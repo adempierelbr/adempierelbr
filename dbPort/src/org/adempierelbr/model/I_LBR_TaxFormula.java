@@ -177,6 +177,19 @@ public interface I_LBR_TaxFormula
 
 	public org.adempierelbr.model.I_LBR_TaxName getLBR_TaxName() throws RuntimeException;
 
+    /** Column name Percentage */
+    public static final String COLUMNNAME_Percentage = "Percentage";
+
+	/** Set Percentage.
+	  * Percent of the entire amount
+	  */
+	public void setPercentage (BigDecimal Percentage);
+
+	/** Get Percentage.
+	  * Percent of the entire amount
+	  */
+	public BigDecimal getPercentage();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
