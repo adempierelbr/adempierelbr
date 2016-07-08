@@ -452,7 +452,8 @@ public class NFeXMLGenerator
 		ide.setFinNFe (TFinNFe.Enum.forString (nf.getlbr_FinNFe ()));
 		
 		//	Indicação para verificar se a venda é para consumidor final
-		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(nf.getlbr_TransactionType()))
+		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(nf.getlbr_TransactionType())
+				|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals(nf.getlbr_TransactionType()))
 			ide.setIndFinal (IND_FINAL_CONS_FINAL);
 		else
 			ide.setIndFinal (IND_FINAL_NORMAL);
@@ -1292,10 +1293,9 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	NT2015.003
-			BigDecimal difal = nfl.getTaxAmt("ICMSDIFAL");
-			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
-					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest())
-					&& difal != null && difal.signum() == 1)
+			if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
+					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals (nfl.getParent().getlbr_TransactionType()))
+					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
 			{
 				Timestamp dateDoc = nfl.getParent().getDateDoc();
 				Calendar cal = new GregorianCalendar ();
@@ -1318,13 +1318,13 @@ public class NFeXMLGenerator
 					partICMSRate = new BigDecimal (100);
 				//
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
-				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMS")));
+				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
 				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
 				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
-				nflICMSDest.setVICMSUFDest (normalize (difal));
+				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt("ICMSDIFAL")));
 				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMSDIFALORIG")));
 			}	//	NT2015.003
 			

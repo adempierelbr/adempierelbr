@@ -297,6 +297,7 @@ public class VLBRTax implements ModelValidator
 			 */
 			if (po.is_ValueChanged(I_W_C_Order.COLUMNNAME_C_BPartner_ID)
 					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_C_BPartner_Location_ID)
+					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_IsTaxIncluded)
 					|| po.is_ValueChanged(I_W_C_Order.COLUMNNAME_lbr_TransactionType))
 				return true;
 

@@ -1253,7 +1253,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		// IBPTax - LBR-81
 		// Somente para consumidor final e for NF-e de Saída
-		if (LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType()) && isSOTrx())
+		if ((LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType())
+				|| LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals(getlbr_TransactionType())) && isSOTrx())
 			setAproxTaxIBPT();
 		
 		//	Descrição para Nota de Serviço
