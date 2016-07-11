@@ -168,7 +168,24 @@ public class MLBRTax extends X_LBR_Tax
 			BigDecimal taxAmt		= Env.ZERO;
 			BigDecimal amountBase 	= Env.ZERO;
 			BigDecimal factor 		= Env.ONE;
-			int calculationType = getCalculationType(taxLine);
+			int calculationType 	= getCalculationType(taxLine);
+			MLBRTaxLine taxSubDiff  = null;
+			
+			//	Encontra o imposto substituido para cálculo do ST
+			if ((MLBRTaxName.LBR_TAXTYPE_Substitution.equals(taxName.getlbr_TaxType())
+					|| MLBRTaxName.LBR_TAXTYPE_Differential.equals(taxName.getlbr_TaxType()))
+					&& taxName.getLBR_TaxSubstitution_ID() > 0)
+			{
+				for (MLBRTaxLine taxLineSubs : taxLines)
+				{
+					//	Calcula a diferença do imposto
+					if (taxLineSubs.getLBR_TaxName_ID() == taxName.getLBR_TaxSubstitution_ID())
+					{
+						taxSubDiff = taxLineSubs;
+						break;
+					}
+				}
+			}
 			
 			/**
 			 * 		Valor da Operação
@@ -243,22 +260,24 @@ public class MLBRTax extends X_LBR_Tax
 				taxBase = taxBaseAdd.add(factor.multiply(amountBase))
 						.multiply(ONE.subtract(taxLine.getlbr_TaxBase().setScale(17, BigDecimal.ROUND_HALF_UP).divide(ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP))).setScale(2, BigDecimal.ROUND_HALF_UP);
 				
-				taxAmt = getTaxAmt (taxBase, taxLine.getlbr_TaxRate(), false);
+				//	Alíquota de Imposto
+				BigDecimal taxRate = taxLine.getlbr_TaxRate();
+				
+				//	Calcula a Substituição por Alíquota
+				if (taxSubDiff != null 
+						&& MLBRTaxName.LBR_TAXTYPE_Differential.equals(taxName.getlbr_TaxType())
+						&& taxRate.compareTo(taxSubDiff.getlbr_TaxRate()) == 1)
+					taxRate = taxRate.subtract(taxSubDiff.getlbr_TaxRate());
+				//
+				taxAmt = getTaxAmt (taxBase, taxRate, false);
 			}
 			
-			//	Encontra o valor previamente calculado para ST
-			if (MLBRTaxName.LBR_TAXTYPE_Substitution.equals(taxName.getlbr_TaxType())
-					&& taxName.getLBR_TaxSubstitution_ID() > 0)
+			//	Imposto ST
+			if (taxSubDiff != null 
+					&& MLBRTaxName.LBR_TAXTYPE_Substitution.equals(taxName.getlbr_TaxType()))
 			{
-				for (MLBRTaxLine taxLineSubs : taxLines)
-				{
-					//	Calcula a diferença do imposto
-					if (taxLineSubs.getLBR_TaxName_ID() == taxName.getLBR_TaxSubstitution_ID())
-					{
-						taxAmt = taxAmt.subtract (taxLineSubs.getlbr_TaxAmt());
-						break;
-					}
-				}
+				//	Calcula a diferença do imposto por valor
+				taxAmt = taxAmt.subtract (taxSubDiff.getlbr_TaxAmt());
 			}
 			
 			//	Percentage of tax that will be used
@@ -277,13 +296,6 @@ public class MLBRTax extends X_LBR_Tax
 					&& (taxName.getLBR_WithholdType() == null 
 						|| taxName.getLBR_WithholdType().equals(MLBRTaxName.LBR_WITHHOLDTYPE_PaidAmountSum)))
 				taxAmt = taxAmt.negate();
-			
-			//	Não postar
-//			if (!taxLine.islbr_PostTax())
-//			{
-//				taxBase = Env.ZERO;
-//				taxAmt 	= Env.ZERO;
-//			}
 			//
 			taxLine.setlbr_TaxBaseAmt(taxBase);
 			taxLine.setlbr_TaxAmt(taxAmt);
