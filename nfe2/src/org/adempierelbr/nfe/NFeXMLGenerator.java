@@ -353,9 +353,7 @@ public class NFeXMLGenerator
 	 */
 	public static String generate (MLBRNotaFiscal nf) throws Exception
 	{
-		log.finer ("init");		
-		
-		String arg0 = "";	//	DELETEME
+		log.finer ("init");
 		
 		//	Transaction and Context
 		String trxName = nf.get_TrxName ();
