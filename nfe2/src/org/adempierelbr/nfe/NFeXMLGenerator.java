@@ -1291,9 +1291,23 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	NT2015.003
+			BigDecimal difal = nfl.getTaxAmt("ICMSDIFAL");
+			
+			//	Somente Consumidor Final
 			if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
 					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals (nfl.getParent().getlbr_TransactionType()))
-					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
+					
+					//	Não Contribuinte
+					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest())
+					
+					//	Não pode ser Devolução de Mercadoria
+					&& !MLBRNotaFiscal.LBR_FINNFE_DevoluçãoRetornoDeMercadoria.equals(nf.getlbr_FinNFe())
+					
+					//	Saída
+					&& nf.isSOTrx()
+					
+					//	Valor Preenchido
+					&& difal != null && difal.signum() == 1)
 			{
 				Timestamp dateDoc = nfl.getParent().getDateDoc();
 				Calendar cal = new GregorianCalendar ();
@@ -1322,7 +1336,7 @@ public class NFeXMLGenerator
 				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
-				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt("ICMSDIFAL")));
+				nflICMSDest.setVICMSUFDest (normalize (difal));
 				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMSDIFALORIG")));
 			}	//	NT2015.003
 			
