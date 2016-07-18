@@ -48,7 +48,6 @@ import org.compiere.util.Env;
 
 import br.inf.portalfiscal.nfe.v310.NFeDocument;
 import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TCfop;
 import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
 import br.inf.portalfiscal.nfe.v310.TEnderEmi;
 import br.inf.portalfiscal.nfe.v310.TEndereco;
@@ -88,6 +87,7 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN202;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN500;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN900;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMSUFDest;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMSUFDest.PICMSInter;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.II;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISAliq;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISNT;
@@ -120,7 +120,6 @@ import br.inf.portalfiscal.nfe.v310.TUf;
 import br.inf.portalfiscal.nfe.v310.TUfEmi;
 import br.inf.portalfiscal.nfe.v310.TVeiculo;
 import br.inf.portalfiscal.nfe.v310.Torig;
-import br.inf.portalfiscal.nfe.v310.Tpais;
 
 /**
  * 	Gera o arquivo XML
@@ -665,7 +664,7 @@ public class NFeXMLGenerator
 			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
 		}
 		
-		enderDest.setCPais(Tpais.Enum.forString (country.getlbr_CountryCode().substring(1)));
+		enderDest.setCPais(country.getlbr_CountryCode().substring(1));
 		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
 		
 		if (nf.getlbr_BPPhone() != null)
@@ -802,7 +801,7 @@ public class NFeXMLGenerator
 			
 //			prod.addNVE(arg0);		//	FIXME
 //			prod.setEXTIPI(arg0);	//	FIXME
-			prod.setCFOP(TCfop.Enum.forString (toNumericStr (nfl.getlbr_CFOPName())));
+			prod.setCFOP(toNumericStr (nfl.getlbr_CFOPName()));
 			prod.setUCom(normalize (nfl.getlbr_UOMName()));
 			prod.setQCom(normalize4  (nfl.getQty()));
 			prod.setVUnCom(normalize10  (nfl.getPrice()));
@@ -1333,7 +1332,7 @@ public class NFeXMLGenerator
 				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
 				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
-				nflICMSDest.setPICMSInter (normalize (nfl.getTaxRate ("ICMS")));
+				nflICMSDest.setPICMSInter (PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS"))));
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
 				nflICMSDest.setVICMSUFDest (normalize (difal));
