@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -51,18 +52,6 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.JobName;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
-import net.sf.jasperreports.engine.util.JRLoader;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
 import org.compiere.db.CConnection;
@@ -87,6 +76,18 @@ import org.compiere.util.Language;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.compiere.utils.DigestOfFile;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  * @author rlemeill
@@ -916,8 +917,25 @@ public class ReportStarter implements ProcessCall, ClientProcess
             if (reportFile.lastModified() == jasperFile.lastModified()) {
             	log.info(" no need to compile use "+jasperFile.getAbsolutePath());
                 try {
-                    jasperReport = (JasperReport)JRLoader.loadObject(jasperFile.getAbsolutePath());
-                } catch (JRException e) {
+                	Class<?> clazz = Class.forName("net.sf.jasperreports.engine.util.JRLoader");
+                	Method method 		= null;
+                	Object parameter 	= null;
+                	try
+                	{	//	Try to use new JRLoader
+                		method = clazz.getMethod ("loadObject", File.class);
+                		parameter = new File (jasperFile.getAbsolutePath());
+                	}
+                	catch (Exception e){}
+                	
+                	//	Old method
+                	if (method == null)
+                	{
+                		method = clazz.getMethod ("loadObject", String.class);
+                		parameter = jasperFile.getAbsolutePath();
+                	}
+                	
+                    jasperReport = (JasperReport)method.invoke(null, parameter);
+                } catch (Exception e) {
                     jasperReport = null;
                     log.severe("Can not load report - "+ e.getMessage());
                 }
