@@ -1290,7 +1290,7 @@ public class NFeXMLGenerator
 //			ImpostoDevol impostoDevol = det.addNewImpostoDevol();
 			
 			//	NT2015.003
-			BigDecimal difal = nfl.getTaxAmt("ICMSDIFAL");
+			BigDecimal taxRate = nfl.getTaxRate ("ICMSDIFAL");
 			
 			//	Somente Consumidor Final
 			if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
@@ -1305,8 +1305,8 @@ public class NFeXMLGenerator
 					//	Saída
 					&& nf.isSOTrx()
 					
-					//	Valor Preenchido
-					&& difal != null && difal.signum() == 1)
+					//	Alíquota Preenchida
+					&& taxRate != null && taxRate.signum() == 1)
 			{
 				Timestamp dateDoc = nfl.getParent().getDateDoc();
 				Calendar cal = new GregorianCalendar ();
@@ -1331,11 +1331,11 @@ public class NFeXMLGenerator
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
 				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
-				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
+				nflICMSDest.setPICMSUFDest (normalize (taxRate));
 				nflICMSDest.setPICMSInter (PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS"))));
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
-				nflICMSDest.setVICMSUFDest (normalize (difal));
+				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt("ICMSDIFAL")));
 				nflICMSDest.setVICMSUFRemet (normalize (nfl.getTaxAmt ("ICMSDIFALORIG")));
 			}	//	NT2015.003
 			
