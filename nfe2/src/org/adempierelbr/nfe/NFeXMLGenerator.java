@@ -43,6 +43,7 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
@@ -1328,6 +1329,11 @@ public class NFeXMLGenerator
 				else														// 2019 -> ...
 					partICMSRate = new BigDecimal (100);
 				//
+				PICMSInter.Enum taxICMSInter = PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS")));
+				
+				if (taxICMSInter == null)
+					throw new AdempiereUserError ("ICMSDest Inválido. Para vendas a Não-Contribuintes fora do Estado, é necessário incluir o ICMSDIFAL e preencher a Alíquota Interestadual. As alíquotas permitidas são 4%, 7% ou 12%.");
+				
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
 				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
