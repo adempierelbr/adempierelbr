@@ -1332,7 +1332,7 @@ public class NFeXMLGenerator
 				PICMSInter.Enum taxICMSInter = PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS")));
 				
 				if (taxICMSInter == null)
-					throw new AdempiereUserError ("ICMSDest Inválido. Para vendas a Não-Contribuintes fora do Estado, é necessário incluir o ICMSDIFAL e preencher a Alíquota Interestadual. As alíquotas permitidas são 4%, 7% ou 12%.");
+					throw new AdempiereUserError ("ICMSDest Inválido. Para vendas a Não-Contribuintes fora do Estado, é necessário incluir o ICMSDIFAL (normalmente 17% ou 18%), FCP/FCEP (normalmente 0%, 1% ou 2%) e preencher a Alíquota Interestadual do ICMS (obrigatoriamente 4%, 7% ou 12%).");
 				
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
 				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
