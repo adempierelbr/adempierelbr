@@ -43,7 +43,7 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120196" trl="N">
-<value column="Name" original="IBPT (Tabela de Impostos Aproximados)">IBPT (Tabela de Impostos Aproximados)</value>
+<value column="Name" original="IBPT">IBPT</value>
 <value column="Description" original=""/>
 </row>
 </adempiereTrl>
