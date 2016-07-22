@@ -3,11 +3,13 @@ package org.adempierelbr.util;
 import java.util.Properties;
 
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerProduct;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocator;
 import org.compiere.model.MProduct;
 import org.compiere.model.MProductPO;
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.joda.time.Period;
@@ -163,7 +165,15 @@ public abstract class LBRUtils
 	public static String getVendorProductNo (MProduct product, int C_BPartner_ID)
 	{
 		String productNo = null;
-				
+		
+		MBPartnerProduct partnerProd = new Query (product.getCtx(), MBPartnerProduct.Table_Name, "M_Product_ID=? AND C_BPartner_ID=?", null)
+				.setParameters(new Object[]{product.getM_Product_ID(), C_BPartner_ID})
+				.setOnlyActiveRecords(true)
+				.setClient_ID()
+				.first();
+		if (partnerProd != null && partnerProd.getVendorProductNo() != null)
+			return partnerProd.getVendorProductNo();
+		
 		for (MProductPO ppo : MProductPO.getOfProduct (product.getCtx(), product.getM_Product_ID(), null))
 		{
 			if (ppo.getC_BPartner_ID() == C_BPartner_ID)

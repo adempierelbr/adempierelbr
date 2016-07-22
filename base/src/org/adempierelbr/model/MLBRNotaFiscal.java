@@ -2192,10 +2192,15 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocTypeTarget_ID() > 0 && getC_DocTypeTarget().getDocumentNote() != null)
 			description.append(parse (getC_DocTypeTarget().getDocumentNote().trim()));
 		
-		if (getC_Order_ID()>0){
+		if (getC_Order_ID()>0)
+		{
 			MOrder order = new MOrder(getCtx(),getC_Order_ID(),get_TrxName());
 			if (order.get_Value("lbr_NFDescription")!=null)
+			{
+				if (description.length() > 0)
+					description.append("\n");
 				description.append(parse(order.get_Value("lbr_NFDescription").toString().trim()));
+			}
 		}
 		
 		setDescription(parse (description.toString()).replace("\n\n\n", "\n\n"));

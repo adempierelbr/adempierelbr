@@ -469,8 +469,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
 		
 		//	Número de Série
-		if (iLine.getM_AttributeSetInstance_ID()>0 && (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
-			setDescription(iLine.getM_AttributeSetInstance().getDescription());
+		if (iLine.getM_AttributeSetInstance_ID()>0 
+				&& iLine.getM_AttributeSetInstance().getSerNo() != null
+				&& (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
+			appendDescription("Núm. de Série: " + iLine.getM_AttributeSetInstance().getSerNo());
 		
 		//	Impostos
 		MLBRTax tax = new MLBRTax (getCtx(), iLineW.getLBR_Tax_ID(), get_TrxName());
@@ -509,9 +511,6 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
 		
-		//	IDs
-		if (get_ColumnIndex(MOrderLine.COLUMNNAME_C_OrderLine_ID) > 0)
-			set_CustomColumn(MOrderLine.COLUMNNAME_C_OrderLine_ID, oLine.getC_OrderLine_ID());	//	FIXME: Manter compatibilidade com LBRK, mudar quando criar todos os campos
 		setProduct (oLine.getProduct());
 		
 		if (!isDescription)
@@ -569,8 +568,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				setFCI();
 			
 			//	Número de Série
-			if (oLine.getM_AttributeSetInstance_ID()>0 && (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
-				setDescription(oLine.getM_AttributeSetInstance().getDescription());
+			if (oLine.getM_AttributeSetInstance_ID()>0 
+					&& oLine.getM_AttributeSetInstance().getSerNo() != null
+					&& (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
+				appendDescription("Núm. de Série: " + oLine.getM_AttributeSetInstance().getSerNo());
 			
 			//		Impostos
 			MLBRTax tax = new MLBRTax (getCtx(), oLineW.getLBR_Tax_ID(), get_TrxName());
@@ -687,7 +688,15 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setProductName (product.getName());
 		
 		setProductValue (product.getValue());
-		setVendorProductNo(LBRUtils.getVendorProductNo (product, getParent().getC_BPartner_ID()));
+		String vendorProductNo = LBRUtils.getVendorProductNo (product, getParent().getC_BPartner_ID());
+		setVendorProductNo(vendorProductNo);
+		
+		if (vendorProductNo != null
+				&& !vendorProductNo.isEmpty()
+				&& (MSysConfig.getBooleanValue("LBR_PRINT_BP_PRODUCT_NO_NF", true, getAD_Client_ID())))
+		{
+			appendDescription ("Código Interno: " + vendorProductNo);
+		}
 		
 		if (MProduct.PRODUCTTYPE_Service.equals(productW.getProductType())
 				|| MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getParent().getlbr_NFModel()))
@@ -698,6 +707,16 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
 	}	//	setProduct
+
+	private void appendDescription (String text)
+	{
+		String desc = getDescription();
+		if (desc == null)
+			desc = "";
+		else if (!desc.trim().isEmpty())
+			desc += ". ";
+		setDescription(desc + text);
+	}
 	
 	public void setProduct(MCharge charge)
 	{
