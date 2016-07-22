@@ -1065,6 +1065,9 @@ INSERT INTO AD_Ref_List (AD_Ref_List_ID, AD_Client_ID, AD_Org_ID, IsActive, Crea
 INSERT INTO AD_Ref_List (AD_Ref_List_ID, AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy, Value, Name, Description, AD_Reference_ID, ValidFrom, ValidTo, EntityType) SELECT 1120951, 0, 0, 'Y', NOW(), 100, NOW(), 100, '722', SUBSTRING ('722-Rejeição: Operação interna com idEstrangeiro informado deve ser presencial', 0, 128), NULL, 1100004, NULL, NULL, 'LBRA' WHERE NOT EXISTS (SELECT '1' FROM AD_Ref_List WHERE AD_Reference_ID=1100004 AND Value='722')
 ;
 
+SELECT Add_Missing_Translations () FROM DUAL
+;
+
 -- 11/07/2016 16h7min51s BRT
 SELECT Register_Migration_Script ('225-NFeStatus.sql') FROM DUAL
 ;
