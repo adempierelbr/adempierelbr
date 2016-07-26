@@ -737,6 +737,7 @@ public class VLBROrder implements ModelValidator
 						"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
 						"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
 						"            AND tn.LBR_WithholdType='T' " + 
+						"			 AND tn.LBR_HasWithhold='Y' " + 
 						"    GROUP BY  " + 
 						"            tn.LBR_WithholdGroup) a " + 
 						"WHERE " + 
