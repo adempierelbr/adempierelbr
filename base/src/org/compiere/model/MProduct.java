@@ -594,7 +594,9 @@ public class MProduct extends X_M_Product
 		}	//	storage
 
 		// it checks if UOM has been changed , if so disallow the change if the condition is true.
-		if ((!newRecord) && is_ValueChanged("C_UOM_ID") && hasInventoryOrCost ()) {
+		if ((!newRecord) && is_ValueChanged("C_UOM_ID") && hasInventoryOrCost ()
+				&& MSysConfig.getBooleanValue("LBR_ALLOW_CHANGE_PRODUCT_UOM", true, getAD_Client_ID(), getAD_Org_ID()))
+		{
 			log.saveError("Error", Msg.getMsg(getCtx(), "SaveUomError"));
 			return false;
 		}
