@@ -238,7 +238,10 @@ public class CalloutTax extends CalloutEngine
 	}	//	taxes
 	
 	/**
-	 *		Processos para habilitar a Flag lbr_RecalculateTaxes que habilitará o ModelChange da tabela
+	 *		Processos para habilitar a flag lbr_RecalculateTaxes que habilitará o ModelChange da tabela, 
+	 *	desta forma os impostos serão recalculados. Este recurso é usado por padrão quando há mudanças na janela
+	 *	do Imposto Brasileiro, pois ao alterar as informações desta janela o sistema não muda o LBR_Tax_ID, mas
+	 *	é necessário recalcular os impostos, então esta callout irá marcar o campo citado para que os cálculos sejam refeitos.
 	 *
 	 *  @param ctx      Context
 	 *  @param WindowNo current Window No
