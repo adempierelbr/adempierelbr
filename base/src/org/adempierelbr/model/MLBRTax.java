@@ -594,11 +594,26 @@ public class MLBRTax extends X_LBR_Tax
 	 */
 	public static Object[] getTaxes (I_W_C_OrderLine ol)
 	{
-		I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), ol.getC_Order_ID(), null), I_W_C_Order.class);
-		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), ol.getM_Product_ID(), null), I_W_M_Product.class);
-		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), o.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
-		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), o.getC_BPartner_ID(), null), I_W_C_BPartner.class);
-		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), o.getBill_Location_ID(), null); 
+		return getTaxes (ol, null);
+	}	//	getTaxes
+	
+	/**
+	 * 		Retorna o registro do imposto baseado na pesquisa
+	 * 
+	 * 		Não usar este método em Callouts, pois a Callout pode acioná=lo antes que 
+	 * 			a linha tenha sido salva.
+	 * 
+	 * 	@param Order Line
+	 * 	@param Trx Name
+	 * 	@return Object Array (Taxes, Legal Msg, CFOP and CST) 
+	 */
+	public static Object[] getTaxes (I_W_C_OrderLine ol, String trxName)
+	{
+		I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), ol.getC_Order_ID(), trxName), I_W_C_Order.class);
+		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), ol.getM_Product_ID(), trxName), I_W_M_Product.class);
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), o.getAD_Org_ID(), trxName), I_W_AD_OrgInfo.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), o.getC_BPartner_ID(), trxName), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), o.getBill_Location_ID(), trxName); 
 		//
 		return getTaxes (o.getC_DocTypeTarget_ID(), o.isSOTrx(), o.getlbr_TransactionType(), p, oi, bp, bpLoc, o.getDateAcct());
 	}	//	getTaxes
