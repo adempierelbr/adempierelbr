@@ -91,7 +91,7 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			boolean isSOTrx, String lbr_TransactionType, Timestamp validFrom, String LBR_ProductSource, 
 			String lbr_DestionationType, String lbr_TaxRegime, int M_Product_ID)
 	{
-		String where = "IsActive='Y' AND AD_Org_ID IN (0, ?) ";
+		String where = "IsActive='Y' AND AD_Client_ID IN (0, ?) AND AD_Org_ID IN (0, ?) ";
 		//
 		where += "AND (C_BPartner_ID IS NULL OR C_BPartner_ID=?) ";
 		where += "AND (C_DocType_ID IS NULL OR C_DocType_ID=?) ";
@@ -119,8 +119,9 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 		where += regionTo (To_Region_ID);
 		
 		//
-		List<MLBRTaxDefinition> tempLst = new Query (Env.getCtx(), MLBRTaxDefinition.Table_Name, where, null)
-			.setParameters(new Object[]{AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
+		Properties ctx = Env.getCtx();
+		List<MLBRTaxDefinition> tempLst = new Query (ctx, MLBRTaxDefinition.Table_Name, where, null)
+			.setParameters(new Object[]{Env.getAD_Client_ID(ctx), AD_Org_ID, C_BPartner_ID, C_DocType_ID, C_Region_ID, To_Region_ID, 
 					LBR_BPartnerCategory_ID, LBR_FiscalGroup_BPartner_ID, LBR_FiscalGroup_Product_ID, LBR_NCM_ID, 
 					LBR_ProductCategory_ID, (lbr_IsSubTributaria ? "Y" : "N"), (isSOTrx ? "Y" : "N"), lbr_TransactionType, 
 					LBR_IEDest, lbr_DestionationType, lbr_TaxRegime, LBR_ProductSource, M_Product_ID})
@@ -151,15 +152,15 @@ public class MLBRTaxDefinition extends X_LBR_TaxDefinition
 			script = script.replace ("@LBR_NCM_ID@", String.valueOf (LBR_NCM_ID));
 			script = script.replace ("@LBR_ProductCategory_ID@", String.valueOf (LBR_ProductCategory_ID));
 			script = script.replace ("@lbr_IsSubTributaria@", String.valueOf (lbr_IsSubTributaria));
-			script = script.replace ("@isSOTrx@", String.valueOf (isSOTrx));
+			script = script.replace ("@IsSOTrx@", String.valueOf (isSOTrx));
 			script = script.replace ("@lbr_TransactionType@", "'" + lbr_TransactionType + "'");
 			if (validFrom != null)
 				script = script.replace ("@validFrom@", "'" + DB.TO_DATE(validFrom) + "'");
 			else
-				script = script.replace ("@validFrom@", "NULL");
+				script = script.replace ("@ValidFrom@", "NULL");
 			script = script.replace ("@lbr_ProductSource@", "'" + LBR_ProductSource + "'");
 			script = script.replace ("@lbr_DestionationType@", "'" + lbr_DestionationType + "'");
-			script = script.replace ("@lbr_TaxRegime@", "'" + lbr_TaxRegime + "'");
+			script = script.replace ("@LBR_TaxRegime@", "'" + lbr_TaxRegime + "'");
 			script = script.replace ("@M_Product_ID@", String.valueOf (M_Product_ID));
 			
 			try

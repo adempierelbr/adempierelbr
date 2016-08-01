@@ -32,7 +32,7 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20150819L;
+	private static final long serialVersionUID = 20160711L;
 
     /** Standard Constructor */
     public X_LBR_TaxName (Properties ctx, int LBR_TaxName_ID, String trxName)
@@ -257,6 +257,8 @@ public class X_LBR_TaxName extends PO implements I_LBR_TaxName, I_Persistent
 	public static final String LBR_TAXTYPE_Service = "S";
 	/** Substitution = T */
 	public static final String LBR_TAXTYPE_Substitution = "T";
+	/** Differential = D */
+	public static final String LBR_TAXTYPE_Differential = "D";
 	/** Set Tax Type.
 		@param lbr_TaxType 
 		Define the Tax Type

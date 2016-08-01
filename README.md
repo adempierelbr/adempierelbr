@@ -72,6 +72,17 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+
+1. LBR-201608 [[Download]][66] [[Seed PostgreSQL]][67] [[Seed OracleXE]][68]
+
+	* Melhorias na tradução
+	* BugFix do Filtro do Tipo de Documento na Janela de NF
+	* BC Dupla para o DIFAL
+	* Atualização da lista de Rejeições da NF-e
+	* Atualização do esquema XSD da NF-e para 8i2
+	* Compatibilidade com o JasperReports 5.5
+	* [Mais detalhes][65]
+	
 1. LBR-201607 [[Download]][62] [[Seed PostgreSQL]][63] [[Seed OracleXE]][64]
 
 	* Janela de configuração de NF
@@ -278,3 +289,7 @@ Patrocinadores desta versão
 [62]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201607.tgz
 [63]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_PG.tgz
 [64]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_ORA.tgz
+[65]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201608
+[66]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201608.tgz
+[67]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201608_PG.tgz
+[68]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201608_ORA.tgz

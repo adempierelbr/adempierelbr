@@ -37,6 +37,7 @@ import java.security.cert.X509Certificate;
 import javax.net.SocketFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509KeyManager;
@@ -106,6 +107,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 		}
 
 		Socket socket = socketfactory.createSocket();
+		((SSLSocket) socket).setEnabledProtocols(new String[]{"SSLv3", "TLSv1"});
 		SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
 		SocketAddress remoteaddr = new InetSocketAddress(host, port);
 		socket.bind(localaddr);
