@@ -31,7 +31,7 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20160616L;
+	private static final long serialVersionUID = 20160802L;
 
     /** Standard Constructor */
     public X_LBR_DigitalCertificate (Properties ctx, int LBR_DigitalCertificate_ID, String trxName)
@@ -243,6 +243,23 @@ public class X_LBR_DigitalCertificate extends PO implements I_LBR_DigitalCertifi
 	public Timestamp getValidTo () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
+	}
+
+	/** Set CNPJ.
+		@param lbr_CNPJ 
+		Used to identify Legal Entities in Brazil
+	  */
+	public void setlbr_CNPJ (String lbr_CNPJ)
+	{
+		set_Value (COLUMNNAME_lbr_CNPJ, lbr_CNPJ);
+	}
+
+	/** Get CNPJ.
+		@return Used to identify Legal Entities in Brazil
+	  */
+	public String getlbr_CNPJ () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_CNPJ);
 	}
 
 	/** lbr_CertType AD_Reference_ID=1100000 */
