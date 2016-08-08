@@ -920,7 +920,8 @@ public class NFeXMLGenerator
 			Imposto imposto = det.addNewImposto();
 			
 			//	Valor aproximado total de tributos federais, estaduais e municipais.
-//			imposto.setVTotTrib(normalize(nfl.getlbr_vTotTrib()));
+			if (nfl.getlbr_vTotTrib() != null && nfl.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
+				imposto.setVTotTrib(normalize(nfl.getlbr_vTotTrib()));
 			
 			//	N. ICMS Normal e ST
 			if (nfl.getICMSTax() != null)
@@ -1375,7 +1376,9 @@ public class NFeXMLGenerator
 		icmsTot.setVCOFINS(normalize (nf.getCOFINSAmt()));
 		icmsTot.setVOutro(normalize (nf.getLBR_OtherChargesAmt()));
 		icmsTot.setVNF(normalize (nf.getGrandTotal()));
-//		icmsTot.setVTotTrib(normalize(nf.getlbr_vTotTrib()));
+		//	Valor aproximado total de tributos federais, estaduais e municipais.
+		if (nf.getlbr_vTotTrib() != null && nf.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
+			icmsTot.setVTotTrib(normalize(nf.getlbr_vTotTrib()));
 		
 		//	W01. Total da NF-e / ISSQN
 //		ISSQNtot issqNtot = total.addNewISSQNtot();
