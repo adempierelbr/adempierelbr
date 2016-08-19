@@ -231,6 +231,7 @@ public class InfoBPartner extends Info
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Value"), "C_BPartner.Value", String.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Name"), "C_BPartner.Name", String.class));
 		list.add(new Info_Column("CNPJ/CPF/ID", "NVL (C_BPartner.lbr_CNPJ, NVL (C_BPartner.lbr_CPF, C_BPartner.TaxID))", String.class));
+		
 		if (windowAccess)
 		{
 			if (columnCreditAccess)
@@ -242,6 +243,7 @@ public class InfoBPartner extends Info
 				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
 		}
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Postal"), "a.Postal", KeyNamePair.class, "l.C_BPartner_Location_ID"));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '') || NVL (' - ' || a.Address3, '') || NVL (' - ' || a.Address4, '')", String.class));
 		if (windowAccess && columnLifetimeAccess)
 			list.add(new Info_Column(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));
