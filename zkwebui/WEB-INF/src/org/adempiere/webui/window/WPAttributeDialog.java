@@ -85,6 +85,7 @@ public class WPAttributeDialog extends Window implements EventListener
 	 */
 	private static final long serialVersionUID = -7810825026970615029L;
 
+
 	/**
 	 *	Product Attribute Instance Dialog
 	 *	@param M_AttributeSetInstance_ID Product Attribute Set Instance id
@@ -93,10 +94,28 @@ public class WPAttributeDialog extends Window implements EventListener
 	 * 	@param productWindow this is the product window (define Product Instance)
 	 * 	@param AD_Column_ID column
 	 * 	@param WindowNo window
+	 * 	@param TabNo tab
 	 */
 	public WPAttributeDialog (int M_AttributeSetInstance_ID, 
 		int M_Product_ID, int C_BPartner_ID, 
 		boolean productWindow, int AD_Column_ID, int WindowNo)
+	{
+		this (M_AttributeSetInstance_ID, M_Product_ID, C_BPartner_ID, productWindow, AD_Column_ID, WindowNo, 0);
+	}
+	
+	/**
+	 *	Product Attribute Instance Dialog
+	 *	@param M_AttributeSetInstance_ID Product Attribute Set Instance id
+	 * 	@param M_Product_ID Product id
+	 * 	@param C_BPartner_ID b partner
+	 * 	@param productWindow this is the product window (define Product Instance)
+	 * 	@param AD_Column_ID column
+	 * 	@param WindowNo window
+	 * 	@param TabNo tab
+	 */
+	public WPAttributeDialog (int M_AttributeSetInstance_ID, 
+		int M_Product_ID, int C_BPartner_ID, 
+		boolean productWindow, int AD_Column_ID, int WindowNo, int TabNo)
 	{
 		super ();
 		this.setTitle(Msg.translate(Env.getCtx(), "M_AttributeSetInstance_ID"));
@@ -117,6 +136,7 @@ public class WPAttributeDialog extends Window implements EventListener
 		m_productWindow = productWindow;
 		m_AD_Column_ID = AD_Column_ID;
 		m_WindowNoParent = WindowNo;
+		m_TabNoParent = TabNo;
 
 		//get columnName from ad_column
 		m_columnName = DB.getSQLValueString(null, "SELECT ColumnName FROM AD_Column WHERE AD_Column_ID = ?", m_AD_Column_ID);
@@ -152,6 +172,7 @@ public class WPAttributeDialog extends Window implements EventListener
 	private int						m_C_BPartner_ID;
 	private int						m_AD_Column_ID;
 	private int						m_WindowNoParent;
+	private int						m_TabNoParent;
 	/**	Enter Product Attributes		*/
 	private boolean					m_productWindow = false;
 	/**	Change							*/
@@ -626,9 +647,9 @@ public class WPAttributeDialog extends Window implements EventListener
 		
 		// teo_sarca [ 1564520 ] Inventory Move: can't select existing attributes
 		int M_Locator_ID = 0;
-		if (m_AD_Column_ID == 8551) { // TODO: hardcoded: M_MovementLine[324].M_AttributeSetInstance_ID[8551]
-			M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, X_M_MovementLine.COLUMNNAME_M_Locator_ID, true); // only window
-		}
+//		if (m_AD_Column_ID == 8551) { // TODO: hardcoded: M_MovementLine[324].M_AttributeSetInstance_ID[8551]
+			M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, m_TabNoParent, X_M_MovementLine.COLUMNNAME_M_Locator_ID);
+//		}
 		
 		String title = "";
 		//	Get Text
