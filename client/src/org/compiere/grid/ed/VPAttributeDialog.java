@@ -126,10 +126,29 @@ public class VPAttributeDialog extends CDialog
 	 * 	@param productWindow this is the product window (define Product Instance)
 	 * 	@param AD_Column_ID column
 	 * 	@param WindowNo window
+	 * 	@param TabNo tab
 	 */
 	public VPAttributeDialog (Frame frame, int M_AttributeSetInstance_ID, 
 		int M_Product_ID, int C_BPartner_ID, 
 		boolean productWindow, int AD_Column_ID, int WindowNo)
+	{
+		this (frame, M_AttributeSetInstance_ID, M_Product_ID, C_BPartner_ID, productWindow, AD_Column_ID, WindowNo, 0);
+	}
+	
+	/**
+	 *	Product Attribute Instance Dialog
+	 *	@param frame parent frame
+	 *	@param M_AttributeSetInstance_ID Product Attribute Set Instance id
+	 * 	@param M_Product_ID Product id
+	 * 	@param C_BPartner_ID b partner
+	 * 	@param productWindow this is the product window (define Product Instance)
+	 * 	@param AD_Column_ID column
+	 * 	@param WindowNo window
+	 * 	@param TabNo tab
+	 */
+	public VPAttributeDialog (Frame frame, int M_AttributeSetInstance_ID, 
+		int M_Product_ID, int C_BPartner_ID, 
+		boolean productWindow, int AD_Column_ID, int WindowNo, int TabNo)
 	{
 		super (frame, Msg.translate(Env.getCtx(), "M_AttributeSetInstance_ID") , true);
 		log.config("M_AttributeSetInstance_ID=" + M_AttributeSetInstance_ID 
@@ -143,7 +162,8 @@ public class VPAttributeDialog extends CDialog
 		m_productWindow = productWindow;
 		m_AD_Column_ID = AD_Column_ID;
 		m_WindowNoParent = WindowNo;
-
+		m_TabNoParent = TabNo;
+		
 		//get columnName from ad_column
  	 	m_columnName = DB.getSQLValueString(null, "SELECT ColumnName FROM AD_Column WHERE AD_Column_ID = ?", m_AD_Column_ID);
  	 	if (m_columnName == null || m_columnName.trim().length() == 0)
@@ -178,6 +198,7 @@ public class VPAttributeDialog extends CDialog
 	private int						m_C_BPartner_ID;
 	private int						m_AD_Column_ID;
 	private int						m_WindowNoParent;
+	private int						m_TabNoParent;
 	/**	Enter Product Attributes		*/
 	private boolean					m_productWindow = false;
 	/**	Change							*/
@@ -607,7 +628,7 @@ public class VPAttributeDialog extends CDialog
 		// teo_sarca [ 1564520 ] Inventory Move: can't select existing attributes
 		// Trifon - Always read Locator from Context. There are too many windows to read explicitly one by one.
 		int M_Locator_ID = 0;
-		M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, Env.TAB_INFO, X_M_MovementLine.COLUMNNAME_M_Locator_ID);
+		M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, m_TabNoParent, X_M_MovementLine.COLUMNNAME_M_Locator_ID);
 		
 		String title = "";
 		//	Get Text

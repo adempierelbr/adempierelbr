@@ -417,7 +417,7 @@ public class VPAttribute extends JComponent
 		{
 			VPAttributeDialog vad = new VPAttributeDialog (Env.getFrame (this), 
 				M_AttributeSetInstance_ID, M_Product_ID, m_C_BPartner_ID,
-				productWindow, m_AD_Column_ID, m_WindowNo);
+				productWindow, m_AD_Column_ID, m_WindowNo, m_GridTab.getTabNo());
 			if (vad.isChanged())
 			{
 				m_text.setText(vad.getM_AttributeSetInstanceName());
