@@ -607,7 +607,7 @@ public class VPAttributeDialog extends CDialog
 		// teo_sarca [ 1564520 ] Inventory Move: can't select existing attributes
 		// Trifon - Always read Locator from Context. There are too many windows to read explicitly one by one.
 		int M_Locator_ID = 0;
-		M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, X_M_MovementLine.COLUMNNAME_M_Locator_ID, true); // only window
+		M_Locator_ID = Env.getContextAsInt(Env.getCtx(), m_WindowNoParent, Env.TAB_INFO, X_M_MovementLine.COLUMNNAME_M_Locator_ID);
 		
 		String title = "";
 		//	Get Text
