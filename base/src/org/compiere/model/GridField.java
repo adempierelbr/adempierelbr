@@ -1790,7 +1790,7 @@ public class GridField
 			
 			if (tableName != null && columnName != null) {
 				sql = "SELECT DISTINCT "  + columnName + " FROM " + tableName + " WHERE AD_Client_ID=? "
-				+ " AND AD_Org_ID=?";
+				+ " AND AD_Org_ID IN (0,?)";
 				pstmt2 = DB.prepareStatement(sql, null);
 				pstmt2.setInt(1, AD_Client_ID);
 				pstmt2.setInt(2, AD_Org_ID);
