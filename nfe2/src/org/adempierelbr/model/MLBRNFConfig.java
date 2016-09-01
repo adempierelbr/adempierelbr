@@ -1,12 +1,9 @@
 package org.adempierelbr.model;
 
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.compiere.model.PO;
 import org.compiere.model.Query;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
