@@ -46,11 +46,11 @@ CREATE OR REPLACE VIEW rv_lbr_notafiscal AS
     ipi.lbr_taxbaseamt AS ipi_taxbaseamt, icmsst.lbr_taxamt AS icmsst_taxamt, 
     icmsst.lbr_taxbaseamt AS icmsst_taxbaseamt
    FROM lbr_notafiscal nf
-   LEFT JOIN lbr_nftax_v icms ON nf.lbr_notafiscal_id = icms.lbr_notafiscal_id AND icms.taxindicator::text = 'ICMS'::text
-   LEFT JOIN lbr_nftax_v pis ON nf.lbr_notafiscal_id = pis.lbr_notafiscal_id AND pis.taxindicator::text = 'PIS'::text
-   LEFT JOIN lbr_nftax_v cofins ON nf.lbr_notafiscal_id = cofins.lbr_notafiscal_id AND cofins.taxindicator::text = 'COFINS'::text
-   LEFT JOIN lbr_nftax_v ipi ON nf.lbr_notafiscal_id = ipi.lbr_notafiscal_id AND ipi.taxindicator::text = 'IPI'::text
-   LEFT JOIN lbr_nftax_v icmsst ON nf.lbr_notafiscal_id = icmsst.lbr_notafiscal_id AND icmsst.taxindicator::text = 'ICMSST'::text;
+   LEFT JOIN lbr_nftax_v icms ON nf.lbr_notafiscal_id = icms.lbr_notafiscal_id AND icms.taxindicator = 'ICMS'
+   LEFT JOIN lbr_nftax_v pis ON nf.lbr_notafiscal_id = pis.lbr_notafiscal_id AND pis.taxindicator = 'PIS'
+   LEFT JOIN lbr_nftax_v cofins ON nf.lbr_notafiscal_id = cofins.lbr_notafiscal_id AND cofins.taxindicator = 'COFINS'
+   LEFT JOIN lbr_nftax_v ipi ON nf.lbr_notafiscal_id = ipi.lbr_notafiscal_id AND ipi.taxindicator = 'IPI'
+   LEFT JOIN lbr_nftax_v icmsst ON nf.lbr_notafiscal_id = icmsst.lbr_notafiscal_id AND icmsst.taxindicator = 'ICMSST';
 
 ALTER TABLE rv_lbr_notafiscal
   OWNER TO adempiere;
