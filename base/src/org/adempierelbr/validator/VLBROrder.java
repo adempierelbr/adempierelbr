@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
@@ -22,6 +23,7 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
@@ -332,12 +334,16 @@ public class VLBROrder implements ModelValidator
 		if (orderW.getlbr_TransactionType() == null)
 			result += "Tipo de Transação, ";
 		
+		//	Identificar Transação para Mesmo Estado, Estado Diferente ou Estrangeiro
+		String lbr_DestionationType = getDestinationType(order);
+		
 		for (MOrderLine ol : order.getLines())
 		{
 			I_W_C_OrderLine olW = POWrapper.create (ol, I_W_C_OrderLine.class);
 			//
 			String resultLine = "Linha " + olW.getLine() + " [";
 			boolean isProduct = ol.getM_Product_ID() > 0 && MProduct.PRODUCTTYPE_Item.equals(ol.getProduct().getProductType());
+			String productsource = ol.getProduct().get_ValueAsString(I_W_M_Product.COLUMNNAME_lbr_ProductSource);
 			
 			if (olW.getC_Charge_ID() == 0 && olW.getM_Product_ID() == 0)
 				resultLine +=  "Sem produto/despesa, ";
@@ -348,7 +354,7 @@ public class VLBROrder implements ModelValidator
 			if (olW.getLBR_Tax_ID() == 0)
 				resultLine += "Sem nenhum imposto, ";
 			else if (ol.getM_Product_ID() > 0)
-				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct);
+				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct, productsource, lbr_DestionationType);
 			
 			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
 				resultLine += "Sem preço, ";
@@ -410,6 +416,43 @@ public class VLBROrder implements ModelValidator
 		//
 		return result;
 	}	//	validateBPartner
+	
+	/**
+	 * Get Destination Type to Validate Order Tax
+	 * @param order
+	 * @return
+	 */
+	private String getDestinationType (MOrder order)
+	{
+		I_W_C_BPartner bp = POWrapper.create (order.getC_BPartner(), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = (MBPartnerLocation) order.getC_BPartner_Location();
+		int bp_C_Region_ID 			= bpLoc != null ? bpLoc.getC_Location().getC_Region_ID() : -1;
+		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), order.getAD_Org_ID());	
+		
+		/**
+		 * 	No caso de SUFRAMA, definir como Zona Franca - FIXME
+		 */
+		if (bp.getlbr_Suframa() != null && bp.getlbr_Suframa().length() > 0)
+			return X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_ZonaFranca;
+		
+		/**
+		 * 	Importação ou Exportação
+		 */
+		else if (bpLoc != null && (oi.getC_Location_ID() < 1 || bpLoc.getC_Location().getC_Country_ID() != oi.getC_Location().getC_Country_ID()))
+			return X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_Estrangeiro;
+		
+		/**
+		 * 	Dentro do Estado
+		 */
+		else if (bpLoc != null && bp_C_Region_ID == oi.getC_Location().getC_Region_ID())
+			 return X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosIdenticos;
+		
+		/**
+		 * 	Fora do Estado
+		 */
+		else 
+			return X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes;
+	}
 	
 	/**
 	 * 	Verify if freight must be recalculated to all lines

@@ -837,12 +837,25 @@ public class MLBRTax extends X_LBR_Tax
 		return "MLBRTax [ID=" + get_ID() + ", Taxes=" + (getDescription() == null ? "" : getDescription()) + "]";
 	}	//	toString
 
-	public String getValidation()
+	/**
+	 * Get Validation
+	 * @param productsource
+	 * @param DestinationType
+	 * @return
+	 */
+	public String getValidation(String productsource, String DestinationType)
 	{
-		return getValidation(true);
+		return getValidation(true, productsource, DestinationType);
 	}	//	getValidation
 	
-	public String getValidation(boolean isProduct)
+	/**
+	 * Get Validation
+	 * @param isProduct
+	 * @param productsource
+	 * @param DestinationType
+	 * @return
+	 */
+	public String getValidation(boolean isProduct, String productsource, String DestinationType)
 	{
 		String result = "";
 		
@@ -963,6 +976,27 @@ public class MLBRTax extends X_LBR_Tax
 								&& rate != 0.0)
 						{
 							result += "Alíquota do ICMS de " + rate + "% não é permitida para o CST " + cst + ", ";
+						}
+						
+						//	Validar Alíquota X Origem do Produto em Operação Interestadual
+						//	Exceção CST 40, 41, 103, 300, 400
+						if (X_LBR_CFOPLine.LBR_DESTIONATIONTYPE_EstadosDiferentes.equals(DestinationType)
+								&& !TextUtil.match(cst, "40", "41", "103", "300", "400"))
+						{
+							//	Produtos com Origem 1, 2, 3 e 8 devem ter Alíquota de 4%
+							if (TextUtil.match (productsource, "1" ,"2","3","8") &&
+									rate != 4.0)
+							{
+								result += "Alíquota do ICMS de " + rate + "% não é permitida para operação interestadual " +
+										"com origem do produto igual a " + productsource + ", ";
+							}
+							//	Produtos com Origem 0, 4, 5, 6 e 7 devem ter Alíquota de 7% ou  12%
+							else if (TextUtil.match (productsource, "0","4","5","6","7") &&
+									(rate != 7.0 && rate != 12.0))
+							{
+								result += "Alíquota do ICMS de " + rate + "% não é permitida para operação interestadual " +
+											"com origem do produto igual a " + productsource + ", ";
+							}
 						}
 					}
 					
