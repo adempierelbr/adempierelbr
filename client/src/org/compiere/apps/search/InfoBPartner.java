@@ -105,7 +105,7 @@ public class InfoBPartner extends Info
 		+ " LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')"
 		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')"
 		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)"
-		+ " LEFT OUTER JOIN C_Region r ON (a.C_Region_id = r.C_Region_id)";
+		+ " LEFT OUTER JOIN C_Region r ON (a.C_Region_ID = r.C_Region_ID)";
 	//
 	private CLabel labelValue = new CLabel();
 	private CTextField fieldValue = new CTextField(10);
@@ -243,7 +243,7 @@ public class InfoBPartner extends Info
 			if (columnOpenBalanceAccess)
 				list.add(new Info_Column(Msg.translate(Env.getCtx(), "TotalOpenBalance"), "C_BPartner.TotalOpenBalance", BigDecimal.class));
 		}
-		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "a.City || NVL (' - ' || r.Name)", String.class));
+		list.add(new Info_Column(Msg.translate(Env.getCtx(), "City"), "NVL (a.City || '/' || r.Name, NVL (a.City, r.Name))", String.class));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Postal"), "a.Postal", KeyNamePair.class, "l.C_BPartner_Location_ID"));
 		list.add(new Info_Column(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '') || NVL (' - ' || a.Address3, '') || NVL (' - ' || a.Address4, '')", String.class));
 		if (windowAccess && columnLifetimeAccess)
