@@ -109,7 +109,8 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 	private static String s_partnerFROM = "C_BPartner"
 		+ " LEFT OUTER JOIN C_BPartner_Location l ON (C_BPartner.C_BPartner_ID=l.C_BPartner_ID AND l.IsActive='Y')"
 		//+ " LEFT OUTER JOIN AD_User c ON (C_BPartner.C_BPartner_ID=c.C_BPartner_ID AND (c.C_BPartner_Location_ID IS NULL OR c.C_BPartner_Location_ID=l.C_BPartner_Location_ID) AND c.IsActive='Y')" 
-		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)";
+		+ " LEFT OUTER JOIN C_Location a ON (l.C_Location_ID=a.C_Location_ID)"
+		+ " LEFT OUTER JOIN C_Region r ON (a.C_Region_ID = r.C_Region_ID)";
 
 	/**
 	 *	Standard Constructor
@@ -329,7 +330,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 			}
 //			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Phone"), "c.Phone", String.class));
 			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Postal"), "a.Postal", KeyNamePair.class, "l.C_BPartner_Location_ID"));
-			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "City"), "a.City", String.class));
+			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "City"), "NVL (a.City || '/' || r.Name, NVL (a.City, r.Name))", String.class));
 			list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Address1"), "a.Address1 || NVL (', ' || a.Address2, '') || NVL (' - ' || a.Address3, '') || NVL (' - ' || a.Address4, '')", String.class));
 			if (windowAccess && columnLifetimeAccess)
 				list.add(new ColumnInfo(Msg.translate(Env.getCtx(), "Revenue"), "C_BPartner.ActualLifetimeValue", BigDecimal.class));

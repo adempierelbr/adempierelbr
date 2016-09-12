@@ -200,7 +200,7 @@ public class WPAttributeEditor extends WEditor implements ContextMenuListener
 		{
 			WPAttributeDialog vad = new WPAttributeDialog (
 				M_AttributeSetInstance_ID, M_Product_ID, m_C_BPartner_ID,
-				productWindow, gridField.getAD_Column_ID(), m_WindowNo);
+				productWindow, gridField.getAD_Column_ID(), m_WindowNo, m_GridTab.getTabNo());
 			if (vad.isChanged())
 			{
 				getComponent().setText(vad.getM_AttributeSetInstanceName());

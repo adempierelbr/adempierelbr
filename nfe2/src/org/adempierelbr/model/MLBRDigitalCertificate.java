@@ -27,6 +27,8 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.util.NFeUtil;
@@ -36,6 +38,7 @@ import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
@@ -87,6 +90,9 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		
 		Integer certOrg = oiW.getLBR_DC_Org_ID();
 		Integer certWS = oiW.getLBR_DC_WS_ID();
+		
+		if (certOrg == null || certOrg.intValue() < 1)
+			certOrg = getValidCertificate (ctx, AD_Org_ID);
 		
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
@@ -191,8 +197,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		String certTypeWS;
 		
 		//	Certificado PFX
-		if (dcOrg.getlbr_CertType() == null)
-			throw new Exception("Certificate Type is NULL");
+		if (dcOrg.is_new())
+			throw new Exception("Certificado Digital não encontrado");
+		else if (dcOrg.getlbr_CertType() == null)
+			throw new Exception("Tipo de Certificado Digital Inválido");
 		else if (dcOrg.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS11))
 		{
 			certTypeOrg = "PKCS11";
@@ -216,8 +224,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			throw new Exception("Unknow Certificate Type or Not implemented yet");
 
 		//	Certificado do WS
-		if (dcWS.getlbr_CertType() == null)
-			throw new Exception("Certificate Type is NULL");
+		if (dcWS.is_new())
+			throw new Exception("Sem TrustStore e Certificado Digital do WebServices não encontrado");
+		else if (dcWS.getlbr_CertType() == null)
+			throw new Exception("Tipo de Certificado do WebServices Inválido");
 		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_PKCS12))
 			certTypeWS = "PKCS12";
 		else if (dcWS.getlbr_CertType().equals(MLBRDigitalCertificate.LBR_CERTTYPE_JavaKeyStore))
@@ -260,7 +270,7 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	 *	@return true if record can be saved
 	 */
 	protected boolean beforeSave (boolean newRecord)
-	{		
+	{	
 		//	No certificate type
 		if (getlbr_CertType() == null)
 		{
@@ -341,4 +351,71 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		}
 		return cfgFile;
 	}	//	getConfigurationFile
+	
+	/**
+	 * 	Add masks to CNPJ
+	 */
+	@Override
+	public void setlbr_CNPJ(String lbr_CNPJ)
+	{
+		//	CNPJ
+		if (lbr_CNPJ == null)
+		{
+			super.setlbr_CNPJ (null);
+			return;
+		}
+		
+		try
+		{
+			Pattern pattern = Pattern.compile ("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})");
+			Matcher matcher = pattern.matcher (lbr_CNPJ);
+			if (matcher.matches ())
+				lbr_CNPJ = matcher.replaceAll ("$1.$2.$3/$4-$5");
+		}
+		catch (Exception e){}
+		super.setlbr_CNPJ (lbr_CNPJ);
+	}	//	setlbr_CNPJ
+	
+	/**
+	 * 	Obtém o certificado digital mais atual para a Organização
+	 * @param ctx
+	 * @param AD_Org_ID
+	 * @return
+	 */
+	public static Integer getValidCertificate (Properties ctx, int AD_Org_ID)
+	{
+		int result = -1;
+		//
+		I_W_AD_OrgInfo oi = POWrapper.create (MOrgInfo.get (ctx, AD_Org_ID, null), I_W_AD_OrgInfo.class);
+		String CNPJ = oi.getlbr_CNPJ();
+		
+		//	CNPJ Inválido
+		if (CNPJ == null || CNPJ.length() != 18)
+			return result;
+		
+		String sql = "SELECT LBR_DigitalCertificate_ID " +
+					   "FROM LBR_DigitalCertificate " +
+					  "WHERE IsActive='Y' " +
+					    "AND IsValid='Y' " +
+					  	"AND AD_Org_ID IN (0, ?) " +
+					  	"AND LBR_CNPJ=? " +
+					  	"AND SYSDATE BETWEEN ValidFrom AND ValidTo";
+		
+		//	CNPJ Exato
+		result = DB.getSQLValue (null, sql, AD_Org_ID, CNPJ);
+		if (result > 0)
+			return result;
+		//
+		sql = "SELECT LBR_DigitalCertificate_ID " +
+				"FROM LBR_DigitalCertificate " +
+			   "WHERE IsActive='Y' " +
+			     "AND IsValid='Y' " +
+				 "AND AD_Org_ID IN (0, ?) " +
+				 "AND LBR_CNPJ LIKE ? " +
+				 "AND SYSDATE BETWEEN ValidFrom AND ValidTo";
+		
+		//	CNPJ do Grupo
+		result = DB.getSQLValue (null, sql, AD_Org_ID, CNPJ.substring (0, 10) + "%");
+		return result;
+	}
 }	//	MDigitalCertificate

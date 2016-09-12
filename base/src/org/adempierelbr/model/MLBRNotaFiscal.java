@@ -761,16 +761,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Estados Finais
 		if (TextUtil.match (cStat, LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
 				LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
 				LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
-				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))
+				LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeErroCapturadoNoTratamentoDaExceção))
 		{
 			nf.setDocStatus(DOCSTATUS_Completed);
 			nf.setDocAction(DOCACTION_VoidInvalidate);
 			nf.setProcessed(true);
 			//
 			if (TextUtil.match (cStat, LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
-				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E))
+				LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E))
 				nf.setIsCancelled(true);
 			
 			/**	
@@ -829,9 +829,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Notas Fiscais Denegadas
 		else if (TextUtil.match (cStat,LBR_NFESTATUS_110_UsoDenegado,
-					LBR_NFESTATUS_301_RejeiçãoIrregularidadeCadastralDoEmitente,
+					LBR_NFESTATUS_301_UsoDenegadoIrregularidadeFiscalDoEmitente,
 					LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
-					LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNa))
+					LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNaUF))
 		{
 			nf.setDocStatus(DOCSTATUS_Voided);
 			nf.setDocAction(DOCACTION_None);
@@ -1254,7 +1254,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		// IBPTax - LBR-81
 		// Somente para consumidor final e for NF-e de Saída
 		if ((LBR_TRANSACTIONTYPE_EndUser.equals(getlbr_TransactionType())
-				|| LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals(getlbr_TransactionType())) && isSOTrx())
+				|| LBR_TRANSACTIONTYPE_EndUserDoubleBase.equals(getlbr_TransactionType())) && isSOTrx())
 			setAproxTaxIBPT();
 		
 		//	Descrição para Nota de Serviço
@@ -1399,6 +1399,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		BigDecimal taxAmtFed 	= Env.ZERO;
 		BigDecimal taxAmtReg = Env.ZERO;
 		BigDecimal taxAmtCity 	= Env.ZERO;
+		BigDecimal taxAmtGrandTotal 	= Env.ZERO;
 	
 		// para cada linha, somar calcular o valor aproximado dos impostos
 		for (MLBRNotaFiscalLine line : getLines())
@@ -1440,6 +1441,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			BigDecimal taxRate 		= ibpt.getlbr_TaxRate(imported);
 			BigDecimal taxRateReg 	= ibpt.getLBR_TaxRateRegion();
 			BigDecimal taxRateCity 	= ibpt.getLBR_TaxRateCity();
+			
+			//	Total Tributos Federal, Regional e Municipal
+			BigDecimal taxAmtTotal 	= Env.ZERO;
 
 			//	check for inconsistenses
 			if (taxRate == null || taxRate.signum() != 1)
@@ -1455,7 +1459,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			taxAmtFed 	= taxAmtFed.add (line.getLineTotalAmt().multiply (taxRate.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
 			taxAmtReg 	= taxAmtReg.add (line.getLineTotalAmt().multiply (taxRateReg.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
 			taxAmtCity 	= taxAmtCity.add (line.getLineTotalAmt().multiply (taxRateCity.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
+			
+			//	Soma do Total dos Impostos
+			taxAmtTotal = taxAmtTotal.add(taxAmtFed).add(taxAmtReg).add(taxAmtCity);
+			
+			//	Adiciona Valor Total de Tributos na Linha
+			line.setlbr_vTotTrib(taxAmtTotal);;
+			line.save();
+			
+			//	Total de Tributos de Todas as Linhas
+			taxAmtGrandTotal = taxAmtGrandTotal.add(taxAmtTotal);
 		}
+		
+		//	Valor Total de Tributos da NF
+		setlbr_vTotTrib(taxAmtGrandTotal);
+		
 		
 		// se teve total de impostos, definir no fim da descrição
 		if (taxAmtFed.signum() == 1 || taxAmtReg.signum() == 1)

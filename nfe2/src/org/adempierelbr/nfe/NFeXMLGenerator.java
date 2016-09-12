@@ -451,7 +451,7 @@ public class NFeXMLGenerator
 		
 		//	Indicação para verificar se a venda é para consumidor final
 		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals(nf.getlbr_TransactionType())
-				|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals(nf.getlbr_TransactionType()))
+				|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUserDoubleBase.equals(nf.getlbr_TransactionType()))
 			ide.setIndFinal (IND_FINAL_CONS_FINAL);
 		else
 			ide.setIndFinal (IND_FINAL_NORMAL);
@@ -919,6 +919,10 @@ public class NFeXMLGenerator
 			//	M. Tributos incidentes no Produto ou Serviço
 			Imposto imposto = det.addNewImposto();
 			
+			//	Valor aproximado total de tributos federais, estaduais e municipais.
+			if (nfl.getlbr_vTotTrib() != null && nfl.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
+				imposto.setVTotTrib(normalize(nfl.getlbr_vTotTrib()));
+			
 			//	N. ICMS Normal e ST
 			if (nfl.getICMSTax() != null)
 			{
@@ -1295,7 +1299,7 @@ public class NFeXMLGenerator
 			
 			//	Somente Consumidor Final
 			if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nfl.getParent().getlbr_TransactionType())
-					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser_Double_BC.equals (nfl.getParent().getlbr_TransactionType()))
+					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUserDoubleBase.equals (nfl.getParent().getlbr_TransactionType()))
 					
 					//	Não Contribuinte
 					&& MLBRNotaFiscal.LBR_INDIEDEST_9_NãoContribuinteDeICMS.equals(nf.getLBR_IndIEDest())
@@ -1372,7 +1376,9 @@ public class NFeXMLGenerator
 		icmsTot.setVCOFINS(normalize (nf.getCOFINSAmt()));
 		icmsTot.setVOutro(normalize (nf.getLBR_OtherChargesAmt()));
 		icmsTot.setVNF(normalize (nf.getGrandTotal()));
-//		icmsTot.setVTotTrib(arg0);
+		//	Valor aproximado total de tributos federais, estaduais e municipais.
+		if (nf.getlbr_vTotTrib() != null && nf.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
+			icmsTot.setVTotTrib(normalize(nf.getlbr_vTotTrib()));
 		
 		//	W01. Total da NF-e / ISSQN
 //		ISSQNtot issqNtot = total.addNewISSQNtot();

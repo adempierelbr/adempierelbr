@@ -29,6 +29,7 @@ import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
+import org.compiere.model.MMovementLine;
 import org.compiere.model.MOrder;
 import org.compiere.model.MRequisition;
 import org.compiere.model.MRequisitionLine;
@@ -191,6 +192,10 @@ public class VLBRCommons implements ModelValidator
 		//	Validar Tipo de Documento
 		else if (MInvoice.Table_Name.equals(po.get_TableName()))
 			return modelChange ((MInvoice) po, type);
+
+		//	Validar Movimentação de Estoque
+		else if (MMovementLine.Table_Name.equals(po.get_TableName()))
+			return modelChange ((MMovementLine) po, type);
 		
 		return null;
 	}	//	modelChange
@@ -328,6 +333,26 @@ public class VLBRCommons implements ModelValidator
 				return Msg.translate(Env.getCtx(), "Tipo de Documento Inválido");
 		}
 		
+		return null;
+	}	//	modelChange
+	
+	/**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	public String modelChange (MMovementLine ml, int type) throws Exception
+	{
+		if (type == TYPE_BEFORE_CHANGE)
+		{
+			//	Force To Attribute to be the same as From attribute
+			if (ml.getM_AttributeSetInstance_ID() > 0)
+				ml.setM_AttributeSetInstanceTo_ID(ml.getM_AttributeSetInstance_ID());
+		}
 		return null;
 	}	//	modelChange
 	

@@ -115,9 +115,9 @@ public class ProcEMailNFe extends SvrProcess
 				|| (isProductNFe && (!TextUtil.match (nf.getlbr_NFeStatus(), MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E,
 							MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado,
 							MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
-							MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E,
+							MLBRNotaFiscal.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E,
 							MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
-							MLBRNotaFiscal.LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogado))))
+							MLBRNotaFiscal.LBR_NFESTATUS_999_RejeiçãoErroNãoCatalogadoInformarAMensagemDeErroCapturadoNoTratamentoDaExceção))))
 		{
 			log.warning("NF-e não foi autorizada");
 			return "NF-e não foi autorizada";

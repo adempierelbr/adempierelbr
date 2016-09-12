@@ -217,6 +217,19 @@ public interface I_LBR_DigitalCertificate
 	  */
 	public Timestamp getValidTo();
 
+    /** Column name lbr_CNPJ */
+    public static final String COLUMNNAME_lbr_CNPJ = "lbr_CNPJ";
+
+	/** Set CNPJ.
+	  * Used to identify Legal Entities in Brazil
+	  */
+	public void setlbr_CNPJ (String lbr_CNPJ);
+
+	/** Get CNPJ.
+	  * Used to identify Legal Entities in Brazil
+	  */
+	public String getlbr_CNPJ();
+
     /** Column name lbr_CertType */
     public static final String COLUMNNAME_lbr_CertType = "lbr_CertType";
 
