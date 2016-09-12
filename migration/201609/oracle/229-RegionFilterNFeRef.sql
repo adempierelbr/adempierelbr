@@ -6,3 +6,4 @@ UPDATE AD_Column SET AD_Val_Rule_ID=1000003,Updated=TO_DATE('2016-08-25 11:38:33
 SELECT Register_Migration_Script ('229-RegionFilterNFeRef.sql') FROM DUAL
 ;
 
+EXIT
