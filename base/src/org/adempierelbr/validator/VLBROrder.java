@@ -1,10 +1,12 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxLine;
 import org.adempierelbr.model.X_LBR_CFOPLine;
 import org.adempierelbr.wrapper.I_W_AD_ClientInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
@@ -126,11 +128,10 @@ public class VLBROrder implements ModelValidator
 			return modelChange ((MOrder) po, type);
 		
 		/**
-		 * 	Recalcula o frete caso seja uma nova linha ou caso a linha seja deletada.
-		 * 		Também é necessário recalcular quando uma linha é alterada.
+		 * 	Faz a pesquisa dos impostos padrão para novas linhas
 		 */
-//		else if (po.get_TableName().equals(MOrderLine.Table_Name))
-//			return modelChange ((MOrderLine) po, type);
+		else if (po.get_TableName().equals(MOrderLine.Table_Name))
+			return modelChange ((MOrderLine) po, type);
 		
 		/**
 		 * 	Ajusta alguns campos ao gerar a fatura pelo pedido
@@ -180,6 +181,55 @@ public class VLBROrder implements ModelValidator
 				recalcuteFreight (order);
 		}
 		//
+		return null;
+	}	//	modelChange
+
+	/**
+	 *	Model Change of a monitored Table.
+	 *	Called after PO.beforeSave/PO.beforeDelete
+	 *	when you called addModelChange for the table
+	 *	@param po persistent object
+	 *	@param type TYPE_
+	 *	@return error message or null
+	 *	@exception Exception if the recipient wishes the change to be not accept.
+	 */
+	@SuppressWarnings("unchecked")
+	public String modelChange (MOrderLine orderLine, int type) throws Exception
+	{
+		if (type == TYPE_BEFORE_NEW)
+		{
+			I_W_C_OrderLine olW = POWrapper.create(orderLine, I_W_C_OrderLine.class);
+
+			//	Faz a pesquisa dos impostos padrão
+			if (orderLine.get_ValueAsBoolean(I_W_C_OrderLine.COLUMNNAME_lbr_RecalculateTax) 
+					&& olW.getLBR_Tax_ID() == 0)
+			{
+				Object[] taxation = MLBRTax.getTaxes (olW);
+				//
+				if (taxation != null)
+				{
+					Map<Integer, MLBRTaxLine> taxes = (Map<Integer, MLBRTaxLine>) taxation[0];
+					//
+					if (taxes != null && taxes.size() > 0)
+					{
+						MLBRTax tax = new MLBRTax (Env.getCtx(), 0, null);
+						tax.save();
+						//
+						for (Integer key : taxes.keySet())
+						{
+							MLBRTaxLine tl = taxes.get(key);
+							tl.setLBR_Tax_ID(tax.getLBR_Tax_ID());
+							tl.save();
+						}
+						//
+						tax.setDescription();
+						tax.save();
+						//
+						olW.setLBR_Tax_ID(tax.getLBR_Tax_ID());
+					}
+				}
+			}
+		}
 		return null;
 	}	//	modelChange
 
