@@ -427,7 +427,7 @@ public class VLBROrder implements ModelValidator
 		I_W_C_BPartner bp = POWrapper.create (order.getC_BPartner(), I_W_C_BPartner.class);
 		MBPartnerLocation bpLoc = (MBPartnerLocation) order.getC_BPartner_Location();
 		int bp_C_Region_ID 			= bpLoc != null ? bpLoc.getC_Location().getC_Region_ID() : -1;
-		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), order.getAD_Org_ID());	
+		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), order.getAD_Org_ID(), order.get_TrxName());	
 		
 		/**
 		 * 	No caso de SUFRAMA, definir como Zona Franca - FIXME
