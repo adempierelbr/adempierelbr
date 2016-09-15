@@ -406,7 +406,8 @@ public class VLBROrder implements ModelValidator
 			else if (ol.getM_Product_ID() > 0)
 				resultLine += new MLBRTax (ol.getCtx(), olW.getLBR_Tax_ID(), ol.get_TrxName()).getValidation(isProduct, productsource, lbr_DestionationType);
 			
-			if (olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0)
+			if ((olW.getLineNetAmt() == null || olW.getLineNetAmt().compareTo(Env.ZERO) == 0) 
+					&& olW.getQtyEntered().compareTo((BigDecimal.ZERO)) != 0)
 				resultLine += "Sem preço, ";
 			
 			if (olW.getM_Product_ID() > 0 
