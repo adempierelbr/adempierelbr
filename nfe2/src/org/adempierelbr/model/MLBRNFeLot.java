@@ -270,9 +270,23 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		byte[] attachmentData = getAttachmentData("-pro-rec.xml");
 		if (attachmentData != null)
 		{
-			processResponse(new String (attachmentData, "UTF-8"), trxName);
-			save();
-			return true;
+			TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (new String (attachmentData, "UTF-8")).getRetConsReciNFe();
+			
+			/**
+			 * 	Verifica se o lote offline é um lote processado 
+			 * ou se ainda depende da resposta da SeFaz.
+			 * 	Nos casos onde o lote não foi processado ou houve erro de consumo
+			 * o sistema deverá pesquisar o lote novamente na SeFaz.
+			 */
+			String cStat = retConsReciNFe.getCStat();
+			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
+					&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
+					&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
+			{
+				processResponse(retConsReciNFe, trxName);
+				save();
+				return true;
+			}
 		}
 		
 		log.fine("Consulta Lote: " + getDocumentNo());
@@ -363,7 +377,19 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 	private void processResponse (String respRetAutorizacao, String trxName) throws XmlException, Exception
 	{
 		TRetConsReciNFe retConsReciNFe = RetConsReciNFeDocument.Factory.parse (respRetAutorizacao).getRetConsReciNFe();
-		//
+		processResponse (retConsReciNFe, trxName);
+	}	//	processResponse
+
+	/**
+	 * 	Process the response XML of SeFaz
+	 * 
+	 * @param respRetAutorizacao
+	 * @param trxName
+	 * @throws XmlException
+	 * @throws Exception
+	 */
+	private void processResponse (TRetConsReciNFe retConsReciNFe, String trxName) throws XmlException, Exception
+	{
 		String cStat = retConsReciNFe.getCStat();
 		try
 		{
