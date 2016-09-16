@@ -35,5 +35,5 @@ UPDATE C_Country SET lbr_CountryCode='01619',Updated=TO_TIMESTAMP('2016-09-15 11
 
 -- 01/09/2016 17h50min30s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-SELECT Register_Migration_Script ('233-ADDCountryCod.sql') FROM DUAL
+SELECT Register_Migration_Script ('233-AddCountryCode.sql') FROM DUAL
 ;
