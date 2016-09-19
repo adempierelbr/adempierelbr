@@ -3213,6 +3213,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 						return DOCSTATUS_Invalid;
 					}
 				}
+				else
+					log.warning("Emissão da NFS-e - Cidade do Emissor não suportada");
 			}			
 			//	Outras NF
 			else
