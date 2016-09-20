@@ -2527,6 +2527,7 @@ public class GridTable extends AbstractTableModel
 					|| columnName.equals("lbr_NFeProt")
 					|| columnName.equals("DateTrx")
 					|| columnName.equals("lbr_DigestValue")
+					|| columnName.equals("IsCancelled")
 				)
 				{
 					rowData[i] = field.getDefault();
