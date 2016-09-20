@@ -3004,15 +3004,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					try
 					{
-						String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
-
-						//	Anexa o XML na NF
-						if (getAttachment (true) != null)
-							getAttachment ().delete (true);
-						
-						MAttachment attachNFe = createAttachment(true);
-						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
-						attachNFe.save();
+						if (infSe.getXML (this) != null)
+						{
+							String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
+	
+							//	Anexa o XML na NF
+							if (getAttachment (true) != null)
+								getAttachment ().delete (true);
+							
+							MAttachment attachNFe = createAttachment(true);
+							attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
+							attachNFe.save();
+						}
+						else
+							log.warning("XML não existe");
 					}
 					catch (Exception e)
 					{
