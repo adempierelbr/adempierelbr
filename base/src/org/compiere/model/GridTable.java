@@ -1356,6 +1356,7 @@ public class GridTable extends AbstractTableModel
 	 *  Error info (Access*, FillMandatory, SaveErrorNotUnique,
 	 *  SaveErrorRowNotFound, SaveErrorDataChanged) is saved in the log
 	 */
+	@SuppressWarnings("resource")
 	public char dataSave (boolean manualCmd)
 	{
 		//	cannot save
