@@ -242,7 +242,7 @@ public class DataEngine
 			+ "pfi.IsMinCalc,pfi.IsMaxCalc, "							//	18..19
 			+ "pfi.isRunningTotal,pfi.RunningTotalLines, "				//	20..21
 			+ "pfi.IsVarianceCalc, pfi.IsDeviationCalc, "				//	22..23
-			+ "c.ColumnSQL, COALESCE(pfi.FormatPattern, c.FormatPattern) "		//	24, 25
+			+ "c.ColumnSQL, COALESCE(pfi.FormatPattern, c.FormatPattern), lbr_Descending "		//	24, 25, 26
 			+ "FROM AD_PrintFormat pf"
 			+ " INNER JOIN AD_PrintFormatItem pfi ON (pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID)"
 			+ " INNER JOIN AD_Column c ON (pfi.AD_Column_ID=c.AD_Column_ID)"
@@ -320,6 +320,7 @@ public class DataEngine
 				String orderName = tableName + "." + ColumnName;
 				String lookupSQL = orderName;
 				PrintDataColumn pdc = null;
+				String orderDesc = rs.getString(26);
 
 				//  -- Key --
 				if (IsKey)
@@ -574,7 +575,11 @@ public class DataEngine
 				{
 					if (AD_Column_ID == orderAD_Column_IDs[i])
 					{
-						orderColumns.set(i, orderName);
+						if ("Y".equals(orderDesc))
+							orderColumns.set(i, orderName + " DESC");
+						else
+							orderColumns.set(i, orderName);
+						
 						// We need to GROUP BY even is not printed, because is used in ORDER clause
 						if (!IsPrinted && !IsGroupFunction)
 						{
