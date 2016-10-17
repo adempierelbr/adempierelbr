@@ -11,5 +11,5 @@ UPDATE AD_Column SET IsAlwaysUpdateable='Y',Updated=TO_TIMESTAMP('2016-10-17 10:
 ;
 
 -- 17/10/2016 10h50min52s BRST
-SELECT Register_Migration_Script ('234-LBR_MotivoCancel_ReadOnly.sql') FROM DUAL
+SELECT Register_Migration_Script ('237-LBR_MotivoCancel_ReadOnly.sql') FROM DUAL
 ;
