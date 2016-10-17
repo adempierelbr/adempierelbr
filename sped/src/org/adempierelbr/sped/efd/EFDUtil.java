@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRSalesCardTotal;
 import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
@@ -304,6 +305,11 @@ public class EFDUtil {
 				&& factFiscal.getlbr_NFSerie().length() == 3
 				&& factFiscal.getlbr_NFSerie().startsWith("89"))
 			cod_sit = "08";
+		
+		//	NF Complementar
+		else if (MLBRNotaFiscal.LBR_FINNFE_NFeComplementar.equals(factFiscal.getLBR_NotaFiscal().getlbr_FinNFe()))
+			cod_sit = "06";
+		
 		//
 		return cod_sit;
 	}

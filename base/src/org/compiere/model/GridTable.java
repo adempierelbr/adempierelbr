@@ -1356,6 +1356,7 @@ public class GridTable extends AbstractTableModel
 	 *  Error info (Access*, FillMandatory, SaveErrorNotUnique,
 	 *  SaveErrorRowNotFound, SaveErrorDataChanged) is saved in the log
 	 */
+	@SuppressWarnings("resource")
 	public char dataSave (boolean manualCmd)
 	{
 		//	cannot save
@@ -2527,6 +2528,7 @@ public class GridTable extends AbstractTableModel
 					|| columnName.equals("lbr_NFeProt")
 					|| columnName.equals("DateTrx")
 					|| columnName.equals("lbr_DigestValue")
+					|| columnName.equals("IsCancelled")
 				)
 				{
 					rowData[i] = field.getDefault();

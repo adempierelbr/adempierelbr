@@ -3004,15 +3004,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					try
 					{
-						String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
-
-						//	Anexa o XML na NF
-						if (getAttachment (true) != null)
-							getAttachment ().delete (true);
-						
-						MAttachment attachNFe = createAttachment(true);
-						attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
-						attachNFe.save();
+						if (infSe.getXML (this) != null)
+						{
+							String xml = new String (infSe.getXML (this), NFeUtil.NFE_ENCODING);
+	
+							//	Anexa o XML na NF
+							if (getAttachment (true) != null)
+								getAttachment ().delete (true);
+							
+							MAttachment attachNFe = createAttachment(true);
+							attachNFe.addEntry("RPS-" + getDocumentNo() + ".xml", xml.replaceAll("\\&\\#[0-9A-Za-z]*;|\\n", "").getBytes(NFeUtil.NFE_ENCODING));
+							attachNFe.save();
+						}
+						else
+							log.warning("XML não existe");
 					}
 					catch (Exception e)
 					{
@@ -3213,6 +3218,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 						return DOCSTATUS_Invalid;
 					}
 				}
+				else
+					log.warning("Emissão da NFS-e - Cidade do Emissor não suportada");
 			}			
 			//	Outras NF
 			else
@@ -3244,6 +3251,23 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(getlbr_NFeStatus())
 					&& LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
 			{
+				//	Permite Cancelar / Anular NF com Boletos Válidos
+				if (MSysConfig.getBooleanValue("LBR_ALLOW_VOID_NF_WITH_VALID_BILL", false, getAD_Client_ID()))
+				{
+					// Buscar Boleto
+					MLBRBoleto[] boletos = MLBRBoleto.getBoleto(Env.getCtx(), getC_Invoice_ID(), get_TrxName());
+					
+					for (MLBRBoleto boleto : boletos)
+					{
+						//	Se houver algum Boleto válido não Cancelar a NF.
+						if (!boleto.islbr_IsCancelled())
+						{
+							m_processMsg = "Impossível Cancelar NF com Boletos Válidos";
+							return false;
+						}
+					}
+				}
+				
 				try
 				{
 					MLBRNFeEvent.registerEvent(this, MLBRNFeEvent.LBR_EVENTTYPE_Cancelamento, getlbr_MotivoCancel(), 1, false);

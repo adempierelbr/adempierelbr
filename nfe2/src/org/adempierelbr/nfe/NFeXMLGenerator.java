@@ -665,7 +665,9 @@ public class NFeXMLGenerator
 			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
 		}
 		
-		enderDest.setCPais(country.getlbr_CountryCode().substring(1));
+		if (country.getlbr_CountryCode() != null)
+			enderDest.setCPais(country.getlbr_CountryCode().substring(1));
+		
 		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
 		
 		if (nf.getlbr_BPPhone() != null)

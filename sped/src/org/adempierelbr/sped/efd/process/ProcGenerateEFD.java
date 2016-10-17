@@ -312,7 +312,7 @@ public class ProcGenerateEFD extends SvrProcess
 							 *  de acordo com a descrição no método addrC170
 							 */
 							if(rc100.getIND_ATIV().equals("1") && rc100.getIND_OPER().equals("0"))
-							{						
+							{
 								//
 								R0460 r0460 = EFDUtil.createR0460(rc100, bloco0.getR0460().size());
 								bloco0.addr0460(r0460);
