@@ -72,6 +72,15 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+1. LBR-201610 [[Download]][74] [[Seed PostgreSQL]][75] [[Seed OracleXE]][76]
+
+	* Melhorias na tradução
+	* TAG opcional para o valor aproximados dos impostos
+	* Inclusão do CEP na janela de informações de produtos
+	* Correção de bug no preenchimento de NF Referenciada A
+	* Validação do ICMS 4% na OV
+	* [Mais detalhes][73]
+	
 1. LBR-201609 [[Download]][70] [[Seed PostgreSQL]][71] [[Seed OracleXE]][72]
 
 	* Melhorias na tradução
@@ -305,3 +314,7 @@ Patrocinadores desta versão
 [70]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201609.tgz
 [71]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201609_PG.tgz
 [72]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201609_ORA.tgz
+[73]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201610
+[74]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201610.tgz
+[75]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_PG.tgz
+[76]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_ORA.tgz
