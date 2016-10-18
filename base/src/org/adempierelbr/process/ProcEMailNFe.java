@@ -172,9 +172,9 @@ public class ProcEMailNFe extends SvrProcess
 		String subject = null;
 		
 		if (isProductNFe)
-			subject = "Nota Fiscal Eletrônica - Chave " + nf.getlbr_NFeID();
+			subject = "Nota Fiscal Eletr\u00F4nica - Chave " + nf.getlbr_NFeID();
 		else
-			subject = "Nota Fiscal de Serviços Eletrônica - " + nf.getlbr_NFENo();
+			subject = "Nota Fiscal de Servi\u00E7os Eletr\u00F4nica - " + nf.getlbr_NFENo();
 		
 		if (message == null || message.length() == 0)
 		{
