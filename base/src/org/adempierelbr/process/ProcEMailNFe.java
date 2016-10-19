@@ -192,10 +192,33 @@ public class ProcEMailNFe extends SvrProcess
 		//	Caso o contato não esteja configurado na Organização
 		//		o XML é enviado pelo e-mail da empresa
 		MUser from = null;
+		String replyTo = null;
 		if (oi.getLBR_ContatoNFe_ID() > 0)
-			from = new MUser (nf.getCtx(), oi.getLBR_ContatoNFe_ID(), null);
+		{
+
+			MUser user = new MUser (nf.getCtx(), oi.getLBR_ContatoNFe_ID(), null);
+			
+			//	O e-mail configurado na organização deve conter os dados de usuário/senha
+			if (user.isCanSendEMail())
+				from = user;
+			
+			//	Caso não esteja configurado, o envio é feito pelo cadastro da empresa, 
+			//		com o Reply-To para o endereço configurado
+			else if (user.getEMail() != null)
+				replyTo = user.getEMail(); 
+		}
 		
 		EMail mail = client.createEMail (from, client.getRequestEMail(), subject,  message, true);
+
+		if (mail == null)
+		{
+			log.severe("E-mail para envio da NF-e não está configurado corretamenete, verifique usuário/senha no contato do envio");
+			return "E-mail para envio da NF-e não está configurado corretamenete, verifique usuário/senha no contato do envio";
+		}
+		
+		//	Responder para
+		if (replyTo != null)
+			mail.setReplyTo(replyTo);
 		
 		if (isProductNFe)
 		{
