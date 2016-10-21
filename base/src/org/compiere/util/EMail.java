@@ -771,7 +771,7 @@ public final class EMail implements Serializable
 			.append("</TITLE>\n")
 			.append("</HEAD>\n");
 		sb.append("<BODY>\n")
-			.append("<H2>" + subject + "</H2>" + "\n")
+//			.append("<H2>" + subject + "</H2>" + "\n")
 			.append(message)
 			.append("\n")
 			.append("</BODY>\n");
