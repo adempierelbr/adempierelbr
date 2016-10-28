@@ -393,7 +393,9 @@ public class VLBROrder implements ModelValidator
 			//
 			String resultLine = "Linha " + olW.getLine() + " [";
 			boolean isProduct = ol.getM_Product_ID() > 0 && MProduct.PRODUCTTYPE_Item.equals(ol.getProduct().getProductType());
-			String productsource = ol.getProduct().get_ValueAsString(I_W_M_Product.COLUMNNAME_lbr_ProductSource);
+			String productsource = ol.getM_Product_ID() > 0 ? 
+						ol.getProduct().get_ValueAsString(I_W_M_Product.COLUMNNAME_lbr_ProductSource)
+						: I_W_M_Product.LBR_PRODUCTSOURCE_0_Domestic;
 			
 			if (olW.getC_Charge_ID() == 0 && olW.getM_Product_ID() == 0)
 				resultLine +=  "Sem produto/despesa, ";
