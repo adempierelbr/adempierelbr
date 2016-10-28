@@ -97,9 +97,16 @@ public class CopyOrder extends SvrProcess
 		if (p_IsCloseDocument)
 		{
 			MOrder original = new MOrder (getCtx(), p_C_Order_ID, get_TrxName());
-			original.setDocAction(MOrder.DOCACTION_Complete);
-			original.processIt(MOrder.DOCACTION_Complete);
-			original.save();
+			
+			// Cotação Convertida a Partir do Processo Converter Cotação fora da Janela Pedido de Venda 
+			// estarão com estado em Progresso
+			if (MOrder.DOCSTATUS_InProgress.equals(original.getDocStatus()))
+			{
+				original.setDocAction(MOrder.DOCACTION_Complete);
+				original.processIt(MOrder.DOCACTION_Complete);
+				original.save();
+			}
+			
 			original.setDocAction(MOrder.DOCACTION_Close);
 			original.processIt(MOrder.DOCACTION_Close);
 			original.save();
