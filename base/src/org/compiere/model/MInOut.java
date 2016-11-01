@@ -1144,19 +1144,13 @@ public class MInOut extends X_M_InOut implements DocAction
 			m_processMsg = "@NoLines@";
 			return DocAction.STATUS_Invalid;
 		}
-		BigDecimal Volume = Env.ZERO;
-		BigDecimal Weight = Env.ZERO;
-
+		
 		//	Mandatory Attributes
 		for (int i = 0; i < lines.length; i++)
 		{
 			MInOutLine line = lines[i];
 			MProduct product = line.getProduct();
-			if (product != null)
-			{
-				Volume = Volume.add(product.getVolume().multiply(line.getMovementQty()));
-				Weight = Weight.add(product.getWeight().multiply(line.getMovementQty()));
-			}
+			
 			//
 			if (line.getM_AttributeSetInstance_ID() != 0)
 				continue;
@@ -1167,8 +1161,6 @@ public class MInOut extends X_M_InOut implements DocAction
 				return DocAction.STATUS_Invalid;
 			}
 		}
-		setVolume(Volume);
-		setWeight(Weight);
 
 		if (!isReversal())	//	don't change reversal
 		{
