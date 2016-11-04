@@ -745,7 +745,7 @@ public class MInOutLine extends X_M_InOutLine
 
 		//	Update Volume and Weight on the Header
 		String sql = "UPDATE M_InOut "
-			+ " SET Volume = " + Volume + ", Weight = " + Weight
+			+ " SET NoPackages = " + Volume + ", Weight = " + Weight
 			+ " WHERE M_InOut_ID=" + getM_InOut_ID();
 		int no = DB.executeUpdate(sql, get_TrxName());
 		if (no != 1)
