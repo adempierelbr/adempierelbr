@@ -90,6 +90,7 @@ public class ProcCreatePO extends SvrProcess
 			oLine.setQty(line.getQty());
 			oLine.setPrice(line.getPriceActual());
 			oLine.setDescription(line.getDescription());
+			oLine.setC_UOM_ID(line.getC_UOM_ID());
 			oLine.save();
 			
 			line.setC_OrderLine_ID(oLine.getC_OrderLine_ID());
