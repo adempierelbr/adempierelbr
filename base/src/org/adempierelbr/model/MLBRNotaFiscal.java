@@ -74,6 +74,7 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MPInstancePara;
 import org.compiere.model.MProduct;
+import org.compiere.model.MRMA;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
 import org.compiere.model.MShipper;
@@ -1187,8 +1188,31 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setlbr_NFModel(model);
 		
 		//	Fatura gerada a partir do RMA a Finalidade da NF deve ser Devolução/Retorno de Mercadoria
+		//	Adicionar NF Referenciada
 		if (invoice.getM_RMA_ID() != 0)
+		{
+			// Altera a Finalidade para Devolução/Retorno de Mercadoria
 			setlbr_FinNFe(LBR_FINNFE_DevoluçãoRetornoDeMercadoria);
+			
+			// RMA
+			MRMA rma = (MRMA) invoice.getM_RMA();
+			// Nota Fiscal indicada na RMA
+			MLBRNotaFiscal nfrma = new MLBRNotaFiscal (Env.getCtx(), rma.get_ValueAsInt("LBR_NotaFiscal_ID"), null);
+			
+			// Verifica se a NF Indicada no RMA é uma NF-e
+			if (nfrma.getLBR_NotaFiscal_ID() > 0 && 
+					nfrma.getlbr_NFModel().equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica))
+			{
+				// Adiciona NF Referênciada
+				MLBRNotaFiscalDocRef nfref = new MLBRNotaFiscalDocRef (Env.getCtx(), 0, get_TrxName());
+				nfref.setLBR_FiscalDocRefType(MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NF_E);
+				nfref.setLBR_NotaFiscal_ID(getLBR_NotaFiscal_ID());
+				nfref.setLBR_NFeReferenced_ID(nfrma.getLBR_NotaFiscal_ID());
+				nfref.setlbr_NFeID(nfrma.getlbr_NFeID());				
+				nfref.save();
+			}
+			
+		}
 		
 		//	Description para Nota de Serviço
 		if (getC_DocType_ID() > 0)
@@ -1690,6 +1714,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setC_Invoice_ID(wInvoice.getC_Invoice_ID());
 		setAD_Org_ID(wInvoice.getAD_Org_ID());
 		setC_Order_ID(wInvoice.getC_Order_ID());
+		setM_RMA_ID(wInvoice.getM_RMA_ID());
 		//
 		setlbr_TransactionType (wInvoice.getlbr_TransactionType());
 		setLBR_IndPres(wInvoice.getLBR_IndPres());
@@ -2219,6 +2244,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					description.append("\n");
 				description.append(parse(order.get_Value("lbr_NFDescription").toString().trim()));
 			}
+		}
+		
+		// Descrição NF Referênciada
+		for (MLBRNotaFiscalDocRef nfref : MLBRNotaFiscalDocRef.get(getLBR_NotaFiscal_ID(), get_TrxName()))
+		{
+			if (description.length() > 0)
+				description.append("\n");			
+			description.append(parse("Chave de Acesso da NF-e Referenciada: " + nfref.getlbr_NFeID() + "".trim()));	
 		}
 		
 		setDescription(parse (description.toString()).replace("\n\n\n", "\n\n"));

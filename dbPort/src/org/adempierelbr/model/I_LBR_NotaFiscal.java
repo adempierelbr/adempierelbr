@@ -1976,6 +1976,21 @@ public interface I_LBR_NotaFiscal
 
 	public I_M_InOut getM_InOut() throws RuntimeException;
 
+    /** Column name M_RMA_ID */
+    public static final String COLUMNNAME_M_RMA_ID = "M_RMA_ID";
+
+	/** Set RMA.
+	  * Return Material Authorization
+	  */
+	public void setM_RMA_ID (int M_RMA_ID);
+
+	/** Get RMA.
+	  * Return Material Authorization
+	  */
+	public int getM_RMA_ID();
+
+	public I_M_RMA getM_RMA() throws RuntimeException;
+
     /** Column name M_Shipper_ID */
     public static final String COLUMNNAME_M_Shipper_ID = "M_Shipper_ID";
 

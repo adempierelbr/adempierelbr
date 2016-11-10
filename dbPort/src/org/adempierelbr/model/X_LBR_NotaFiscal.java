@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20160804L;
+	private static final long serialVersionUID = 20161110L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -4224,6 +4224,34 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public int getM_InOut_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_InOut_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_RMA getM_RMA() throws RuntimeException
+    {
+		return (I_M_RMA)MTable.get(getCtx(), I_M_RMA.Table_Name)
+			.getPO(getM_RMA_ID(), get_TrxName());	}
+
+	/** Set RMA.
+		@param M_RMA_ID 
+		Return Material Authorization
+	  */
+	public void setM_RMA_ID (int M_RMA_ID)
+	{
+		if (M_RMA_ID < 1) 
+			set_Value (COLUMNNAME_M_RMA_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_RMA_ID, Integer.valueOf(M_RMA_ID));
+	}
+
+	/** Get RMA.
+		@return Return Material Authorization
+	  */
+	public int getM_RMA_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_RMA_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
