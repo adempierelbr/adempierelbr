@@ -2556,11 +2556,26 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			/**
 			 * 	Impostos, por exemplo:
 			 * 		@NF_VAR|ICMS<lbr_TaxAmt>@ - Traz o valor do ICMS da NF
-			 * 		@NF_VAR|IPI<lbr_TaxAmt>@  - Traz o valor do ICMS da NF
+			 * 		@NF_VAR|IPI<lbr_TaxAmt>@  - Traz o valor do IPI da NF
 			 */
 			if (variable.endsWith("<lbr_TaxAmt>"))
 			{
 				BigDecimal tax = getTaxAmt(variable.substring(1+variable.indexOf('|'), variable.indexOf('<')));
+				//
+				if (tax == null)
+					tax = Env.ZERO;
+				//
+				return mf.format (new Object[]{tax});
+			}
+			
+			/**
+			 * 	Alíquotas de Impostos, por exemplo:
+			 * 		@NF_VAR|ICMS<lbr_TaxRate>@ - Traz o valor da alíquota de ICMS da NF
+			 * 		@NF_VAR|IPI<lbr_TaxRate>@  - Traz o valor da alíqupta de IPI da NF
+			 */
+			else if (variable.endsWith("<lbr_TaxRate>"))
+			{
+				BigDecimal tax = getTaxRate(variable.substring(1+variable.indexOf('|'), variable.indexOf('<')));
 				//
 				if (tax == null)
 					tax = Env.ZERO;
