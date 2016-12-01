@@ -15,42 +15,46 @@ package org.adempierelbr.boleto.bank;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.compiere.model.MBankAccount;
 
 /**
- * MSantander
+ * 		Bank Santander Model
  *
- * Bank Santander Model
- *
- * @author Mario Grigioni (Kenos, www.kenos.com.br)
- * @version $Id: MSantander_353.java, 22/11/2007 10:46:00 mgrigioni
+ *	@author Ricardo Santana (Kenos, www.kenos.com.br)
+ *		<li> Current version - Same layout of 033 - Santander BANESPA
+ * 	@author Mario Grigioni (Kenos, www.kenos.com.br)
+ * 		<li> Legacy version
+ * 	@version $Id: MSantander_033.java, v1.0 2016/12/01 13:55:42, ralexsander Exp $
  */
 public class MSantander_353 implements I_Bank
 {
-
+	/**
+	 * 	Generate
+	 */
 	@Override
-	public void generateCNAB(MLBRBoleto boleto) {
-		// TODO Auto-generated method stub
+	public void generateCNAB (MLBRBoleto boleto)
+	{
+		new MSantander_033().generateCNAB(boleto);
+	}	//	generateCNAB
 
-	}
-
+	/**
+	 * 	Generate CNAB File
+	 */
 	@Override
-	public void returnCNAB(HashMap<Integer, String[]> occurType,
-			String FilePath, String[] linhas, String trx) throws IOException {
-		// TODO Auto-generated method stub
+	public void generateFile (String fileName, Timestamp dateFrom, Timestamp dateTo, MBankAccount ba, String trxName) throws IOException
+	{
+		new MSantander_033().generateFile(fileName, dateFrom, dateTo, ba, trxName);
+	}	//	generateFile
 
-	}
-
+	/**
+	 * 	Process the return file
+	 */
 	@Override
-	public void generateFile(String FileName, Timestamp DateFrom,
-			Timestamp DateTo, MBankAccount BankA, String trx)
-			throws IOException {
-		// TODO Auto-generated method stub
-		log.log (Level.WARNING, "Bank not implemented yet.");
-	}
-
-} //MSantander_353
+	public void returnCNAB (HashMap<Integer,String[]> occurType, String filePath, String[] lines, String trxName) throws IOException
+	{
+		new MSantander_033().returnCNAB(occurType, filePath, lines, trxName);
+	}	//	returnCNAB
+} 	//	MSantander_353

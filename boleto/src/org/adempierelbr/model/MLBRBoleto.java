@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -442,28 +443,37 @@ public class MLBRBoleto extends X_LBR_Boleto
 	}
 
 	/**
-	 *  getAddress
-	 *
-	 *  Return Address using Boleto's Format
+	 *  Get the address for CNAB
 	 *
 	 *  @return String Address
 	 */
-	public String getAddress(){
-
-		String Address = "";
-
-		if (getAddress1() != null) Address += getAddress1(); //Endereço
-
-		if (getAddress2() != null) Address += ", " + getAddress2(); //Número
-
-		if (getAddress4() != null) Address += ", " + getAddress4(); //Complemento
-
-		if (Address.startsWith(",")){
-			Address = Address.substring(1);
+	public String getAddress ()
+	{
+		return getAddress (true);
+	}	//	getAddress
+	
+	/**
+	 * 	Get valid address (Street name and Street number)
+	 * 	@return address
+	 */
+	public String getAddress (boolean includeCompl)
+	{
+		String address = "";
+		//
+		if (getAddress1() != null)
+			address += TextUtil.retiraEspecial (getAddress1()) + ", ";
+		if (getAddress2() != null)
+			address += TextUtil.retiraEspecial (getAddress2());
+		if (includeCompl && getAddress4() != null)
+		{
+			if (!address.isEmpty() && !address.endsWith(", "))
+				address += " - ";
+			address += TextUtil.retiraEspecial (getAddress4());
 		}
-
-		return Address.trim();
-	}
+		if (address.endsWith(", "))
+			address = address.substring (0, address.length()-2);
+		return address.trim().toUpperCase();
+	}	//	getAddress
 
 	/**
 	 *  getPayScheduleNo
@@ -913,5 +923,121 @@ public class MLBRBoleto extends X_LBR_Boleto
 			log.log(Level.SEVERE, null, invoice);
 		}
 	}
-
-} //MBoleto
+	
+	/**
+	 * 		Check if this Boleto has a valid Discount configuration.
+	 * 		To be valid the discount date has to be before the due date, also
+	 * 	the amount of discount has to be positive and less than grand total.
+	 * 	@return true if valid discount, false other else
+	 */
+	public boolean hasValidDiscount ()
+	{
+		if (getDiscountAmt() != null 
+				&& getDiscountAmt().signum() == 1
+				&& getDiscountAmt().compareTo(getGrandTotal()) == -1
+				&& getDiscountDate() != null
+				&& getDiscountDate().before(getDueDate()))
+			return true;
+		return false;
+	}	//	hasValidDiscount
+	
+	/**
+	 * 	Get discount amount only when the discount is valid.
+	 *  Case the discount is not valid, zero is returned
+	 * 	@return zero or discount amount
+	 */
+	public BigDecimal getValidDiscountAmt ()
+	{
+		if (!hasValidDiscount())
+			return Env.ZERO;
+		return getDiscountAmt();
+	}	//	getValidDiscountAmt
+	
+	/**
+	 * 	Get discount date only when the discount is valid.
+	 *  Case the discount is not valid, null is returned
+	 * 	@return null or discount date
+	 */
+	public Timestamp getValidDiscountDate ()
+	{
+		if (!hasValidDiscount())
+			return null;
+		return getDiscountDate();
+	}	//	getValidDiscountDate
+	
+	/**
+	 * 	Get valid address district (bairro)
+	 * 	@return address
+	 */
+	public String getDistrict ()
+	{
+		if (getAddress3() == null)
+			return "";
+		return TextUtil.retiraEspecial (getAddress3().toUpperCase());
+	}	//	getValidDistrict
+	
+	/**
+	 * 	Get valid address complement (complemento)
+	 * 	@return address
+	 */
+	public String getCompl ()
+	{
+		if (getAddress4() == null)
+			return "";
+		return TextUtil.retiraEspecial (getAddress4().toUpperCase());
+	}	//	getValidCompl
+	
+	/**
+	 * 	Get valid city
+	 * 	@return address
+	 */
+	public String getValidCity ()
+	{
+		if (getCity() == null)
+			return "";
+		return TextUtil.retiraEspecial (getCity().toUpperCase());
+	}	//	getValidCity
+	
+	/**
+	 * 	Get valid postal (cep) with 8 digits
+	 * 	@return address
+	 */
+	public String getValidPostal ()
+	{
+		if (getPostal() == null)
+			return TextUtil.lPad (0, 8);
+		//
+		String numeric = TextUtil.toNumeric (getPostal());
+		if (numeric == null || numeric.length() != 8)
+			return TextUtil.lPad (0, 8);
+		//
+		return numeric;
+	}	//	getValidCity
+	
+	/**
+	 * 	Get begin of postal (cep) with 5 digits
+	 * 	@return postal begin
+	 */
+	public String getPostalBegin ()
+	{
+		return getValidPostal ().substring (0, 5);
+	}	//	getValidPostalBegin
+	
+	/**
+	 * 	Get end of postal (cep) with 3 digits
+	 * 	@return postal end
+	 */
+	public String getPostalEnd ()
+	{
+		return getValidPostal ().substring (3);
+	}	//	getValidPostalEnd
+	
+	/**
+	 * 	Get the valid Receiver Name
+	 * 	@return
+	 */
+	public String getReceiverName()
+	{
+		return TextUtil.retiraEspecial (super.getlbr_ReceiverName ());
+	}	//	getReceiverName
+}	//	MLBRBoleto
