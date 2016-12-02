@@ -30,6 +30,7 @@ import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_BankAccount;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MOrgInfo;
@@ -75,7 +76,7 @@ public class MSantander_033 implements I_Bank
 	 * @param ba Conta Bancária
 	 * @throws IOException
 	 */
-	private void generateHeader(OutputStreamWriter osw, MBankAccount ba) throws IOException
+	private void generateHeader(OutputStreamWriter osw, I_W_C_BankAccount ba) throws IOException
 	{
 		Properties ctx = Env.getCtx();
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get (ctx, ba.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
@@ -89,11 +90,11 @@ public class MSantander_033 implements I_Bank
 		osw.write("REMESSA"); 						//	Literal de transmissão = REMESSA
 		osw.write("01"); 							//	Código do serviço = 01
 		osw.write(TextUtil.rPad ("COBRANCA", 15)); 	//	Literal de serviço = COBRANÇA
-		osw.write(TextUtil.lPad (ba.get_ValueAsString ("lbr_ClientCode"), 20));	//	Código de Transmissão (nota 1)
-		osw.write(TextUtil.rPad (legalEntity, 30)); 	//	Nome do cedente
+		osw.write(TextUtil.lPad (getEmissionCode (ba), 20));	//	Código de Transmissão (nota 1)
+		osw.write(TextUtil.rPad (legalEntity, 30)); //	Nome do cedente
 		//
 		osw.write(CSANTANDER033); 					//	Código do Banco = 353 / 033
-		osw.write(TextUtil.lPad (NSANTANDER033, 15)); //	Nome do Banco = SANTANDER
+		osw.write(TextUtil.rPad (NSANTANDER033, 15)); //	Nome do Banco = SANTANDER
 		osw.write(MLBRCNAB.CNABDateFormat(Env.getContextAsDate (ctx, "#Date"))); 	//	Data de Gravação
 		osw.write(TextUtil.lPad ("0", 16)); 		//	Zeros
 		osw.write(TextUtil.rPad ("", 275)); 		//	Mensagens de 1 a 6
@@ -125,9 +126,10 @@ public class MSantander_033 implements I_Bank
 	{
 		//	Creates a new FileWriter
 		OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(fileName), TextUtil.UTF8);
-
+		I_W_C_BankAccount baw = POWrapper.create (ba, I_W_C_BankAccount.class);
+		
 		//	Prepare the header
-		generateHeader (osw, ba);
+		generateHeader (osw, baw);
 
 		//	Query for CNAB records
 		MLBRCNAB[] cnabs = null;
@@ -141,6 +143,12 @@ public class MSantander_033 implements I_Bank
 		BigDecimal grandTotal = Env.ZERO;
 		Properties ctx = Env.getCtx();
 		
+		//	Número da agência bancária
+		String agencyNo = getAgencyOnly (baw);
+
+		//	Número da conta bancária
+		String[] accountNo = getAccount(baw);
+				
 		for (MLBRCNAB cnab : cnabs)
 		{
 			MLBRBoleto boleto = new MLBRBoleto (ctx, cnab.getLBR_Boleto_ID(), trxName);
@@ -170,14 +178,20 @@ public class MSantander_033 implements I_Bank
 			if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0)
 				instruction2 = "06";
 			
+			//	Código do Participante
+			//	LBR_Boleto_ID-DocumentNo/Parcel
+			String customerCode = "B" + boleto.getLBR_Boleto_ID() + 
+					"F" + (boleto.getC_Invoice_ID() > 0 ? boleto.getC_Invoice().getDocumentNo() : "") + 
+					"P" + boleto.getlbr_PayScheduleNo();
+			//
 			osw.write("1");							//	Código do registro = 1
 			osw.write("02");						//	Tipo de inscrição do cedente
 			osw.write(TextUtil.lPad (ocnpj, 14));	//	CNPJ ou CPF do cedente
-			osw.write(TextUtil.lPad ("", 4));		//	Código da agência cedente (nota 2)
-			osw.write(TextUtil.lPad ("", 8));		//	Conta movimento cedente (nota 2)
-			osw.write(TextUtil.lPad ("", 8));		//	Conta cobrança cedente (nota 2)
-			osw.write(TextUtil.rPad ("", 25));		//	Número de controle do participante, para controle por parte do cedente
-			osw.write(TextUtil.lPad (documentNo, 8));		//	Nosso número (nota 3)
+			osw.write(TextUtil.lPad (agencyNo, 4));					//	Código da agência cedente (nota 2)
+			osw.write(TextUtil.lPad (baw.getlbr_ClientCode(), 8));	//	Conta movimento cedente (nota 2)
+			osw.write(TextUtil.lPad (accountNo[0], 8));				//	Conta cobrança cedente (nota 2)
+			osw.write(TextUtil.rPad (customerCode, 25));			//	Número de controle do participante, para controle por parte do cedente
+			osw.write(TextUtil.lPad ("", 8));		//	Nosso número (nota 3)
 			osw.write(TextUtil.lPad ("0", 6));		//	Data do segundo desconto
 			osw.write(TextUtil.rPad ("", 1));		//	Branco
 			osw.write(TextUtil.lPad ("", 1));		//	Informação de multa = 4, senão houver informar zero Verificar página 16
@@ -188,7 +202,7 @@ public class MSantander_033 implements I_Bank
 			osw.write(TextUtil.lPad ("", 6));		//	Data para cobrança de multa. (Nota 4)
 			osw.write(TextUtil.lPad ("1", 1));		//	Código da carteira
 			osw.write(TextUtil.lPad ("01", 2));		//	Código da ocorrência
-			osw.write(TextUtil.rPad ("", 10));		//	Seu número
+			osw.write(TextUtil.rPad (documentNo, 10));					//	Seu número
 			osw.write(TextUtil.lPad (MLBRCNAB.CNABDateFormat(boleto.getDueDate()), 6));				//	Data de vencimento do título
 			osw.write(TextUtil.lPad (boleto.getGrandTotal(), 13));		//	Valor do título - moeda corrente
 			osw.write(TextUtil.lPad (CSANTANDER033, 3));				//	Número do Banco cobrador = 353 / 033
@@ -214,8 +228,8 @@ public class MSantander_033 implements I_Bank
 			osw.write(TextUtil.rPad (boleto.getRegionName(), 2));		//	UF Estado do sacado
 			osw.write(TextUtil.rPad ("", 30));							//	Nome do sacador ou coobrigado
 			osw.write(TextUtil.rPad ("", 1));							//	Brancos
-			osw.write(TextUtil.lPad ("", 1));							//	Identificador do Complemento (nota 2)
-			osw.write(TextUtil.lPad ("", 2));							//	Complemento (nota 2)
+			osw.write(TextUtil.rPad ("I", 1));							//	Identificador do Complemento (nota 2)
+			osw.write(TextUtil.lPad (accountNo[1], 2));					//	Complemento (nota 2)
 			osw.write(TextUtil.rPad ("", 6));							//	Brancos
 			osw.write(TextUtil.lPad (boleto.getlbr_SueDays(), 2));		//	Número de dias para protesto. Quando posições 157/158 ou 159/160 for igual a 06.
 			osw.write(TextUtil.rPad ("", 1));							//	Branco
@@ -256,4 +270,62 @@ public class MSantander_033 implements I_Bank
 
 		TextUtil.closeFile(fw);
 	}	//	returnCNAB
+	
+	private String getAgencyOnly (I_W_C_BankAccount baw)
+	{
+		String agencyNo = baw.getlbr_AgencyNo();
+		if (agencyNo != null)
+		{
+			//	Remove o dígito da agência
+			if (agencyNo.indexOf("-") > 1)
+				agencyNo = agencyNo.substring (0, agencyNo.indexOf("-"));
+			
+			//	Trim
+			agencyNo = TextUtil.toNumeric (agencyNo);
+
+			//	Caso o cadastro da agência não use o separador de dígito
+			if (agencyNo.length() > 4)
+				agencyNo = agencyNo.substring(0, 4);
+		}
+		//
+		return TextUtil.lPad (agencyNo, 4);
+	}	//	getAgencyOnly
+	
+	/**
+	 * 	Retorna o número da conta dividido em 2 partes
+	 * @param baw
+	 * @return
+	 */
+	private String[] getAccount (I_W_C_BankAccount baw)
+	{
+		String accountNo = baw.getAccountNo();
+		String accountPartial = "";
+		String accountCompl = "";
+		//
+		if (accountNo != null)
+		{
+			//	Trim
+			accountNo = TextUtil.lPad (TextUtil.toNumeric (accountNo), 10);
+			//
+			accountPartial = accountNo.substring (0, 8);
+			accountCompl = accountNo.substring (8);
+		}
+		return new String[]
+				{
+						TextUtil.lPad (accountPartial, 8), 
+						TextUtil.lPad (accountCompl, 2)
+				};
+	}	//	getAccount
+	
+	/**
+	 * 		Emission code
+	 * 	@param ba
+	 * 	@return
+	 */
+	private String getEmissionCode (I_W_C_BankAccount baw)
+	{
+		return TextUtil.lPad (getAgencyOnly(baw), 4) 
+				+ TextUtil.lPad (baw.getlbr_ClientCode(), 8)
+				+ TextUtil.lPad (getAccount(baw)[0], 8);
+	}	//	getEmissionCode
 } 	//	MSantander_033
