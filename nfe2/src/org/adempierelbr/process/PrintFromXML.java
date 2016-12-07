@@ -384,11 +384,11 @@ public class PrintFromXML extends SvrProcess
 		
 		// NF-e Landscape
 		if (reportName.startsWith("DanfeMainLandscapeA4"))
-			return new String[]{"DanfeMainLandscapeA4_Sub_Item.jasper", "DanfeMainLandscapeA4_Sub_Invoice.jasper"};
+			return new String[]{"DanfeMainLandscapeA4_Sub_Item.jasper", "DanfeMainLandscapeA4_Sub_Invoice.jasper", "DanfeMainLandscapeA4_Sub_InfCompl.jasper"};
 		
 		//	NF-e Portrait
 		if (reportName.startsWith("DanfeMainPortraitA4"))
-			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper", "DanfeMainPortraitA4_Sub_Invoice.jasper"};
+			return new String[]{"DanfeMainPortraitA4_Sub_Item.jasper", "DanfeMainPortraitA4_Sub_Invoice.jasper", "DanfeMainPortraitA4_Sub_InfCompl.jasper"};
 		
 		//	Carta de Correção
 		if (reportName.startsWith("ReportCCe"))
