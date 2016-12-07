@@ -183,6 +183,14 @@ public class MSantander_033 implements I_Bank
 			String customerCode = "B" + boleto.getLBR_Boleto_ID() + 
 					"F" + (boleto.getC_Invoice_ID() > 0 ? boleto.getC_Invoice().getDocumentNo() : "") + 
 					"P" + boleto.getlbr_PayScheduleNo();
+			
+			// Seu Número composto de Fatura/Parcela
+			String seuNumero = "";			
+			if (boleto.getC_Invoice_ID() > 0)
+				seuNumero = boleto.getC_Invoice().getDocumentNo() + boleto.getlbr_PayScheduleNo();
+			else
+				seuNumero = documentNo;
+			
 			//
 			osw.write("1");							//	Código do registro = 1
 			osw.write("02");						//	Tipo de inscrição do cedente
@@ -202,7 +210,7 @@ public class MSantander_033 implements I_Bank
 			osw.write(TextUtil.lPad ("", 6));		//	Data para cobrança de multa. (Nota 4)
 			osw.write(TextUtil.lPad ("1", 1));		//	Código da carteira
 			osw.write(TextUtil.lPad ("01", 2));		//	Código da ocorrência
-			osw.write(TextUtil.rPad (documentNo, 10));					//	Seu número
+			osw.write(TextUtil.rPad (seuNumero, 10));					//	Seu número
 			osw.write(TextUtil.lPad (MLBRCNAB.CNABDateFormat(boleto.getDueDate()), 6));				//	Data de vencimento do título
 			osw.write(TextUtil.lPad (boleto.getGrandTotal(), 13));		//	Valor do título - moeda corrente
 			osw.write(TextUtil.lPad (CSANTANDER033, 3));				//	Número do Banco cobrador = 353 / 033
