@@ -1466,6 +1466,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			BigDecimal taxRateReg 	= ibpt.getLBR_TaxRateRegion();
 			BigDecimal taxRateCity 	= ibpt.getLBR_TaxRateCity();
 			
+			// Tributos Federal, Regional e Municipal
+			BigDecimal AmtFed = Env.ZERO;
+			BigDecimal AmtReg = Env.ZERO;
+			BigDecimal AmtCity = Env.ZERO;
+			
 			//	Total Tributos Federal, Regional e Municipal
 			BigDecimal taxAmtTotal 	= Env.ZERO;
 
@@ -1478,17 +1483,22 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			if (taxRateCity == null || taxRateCity.signum() != 1)
 				taxRateCity = Env.ZERO;
+			
+			//	Impostos
+			AmtFed = line.getLineTotalAmt().multiply (taxRate.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP));
+			AmtReg = line.getLineTotalAmt().multiply (taxRateReg.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP));
+			AmtCity = line.getLineTotalAmt().multiply (taxRateCity.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP));
 
 			// total do imposto
-			taxAmtFed 	= taxAmtFed.add (line.getLineTotalAmt().multiply (taxRate.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
-			taxAmtReg 	= taxAmtReg.add (line.getLineTotalAmt().multiply (taxRateReg.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
-			taxAmtCity 	= taxAmtCity.add (line.getLineTotalAmt().multiply (taxRateCity.divide(Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)));
+			taxAmtFed 	= taxAmtFed.add (AmtFed);
+			taxAmtReg 	= taxAmtReg.add (AmtReg);
+			taxAmtCity 	= taxAmtCity.add (AmtCity);
 			
 			//	Soma do Total dos Impostos
-			taxAmtTotal = taxAmtTotal.add(taxAmtFed).add(taxAmtReg).add(taxAmtCity);
+			taxAmtTotal = taxAmtTotal.add(AmtFed).add(AmtReg).add(AmtCity);
 			
 			//	Adiciona Valor Total de Tributos na Linha
-			line.setlbr_vTotTrib(taxAmtTotal);;
+			line.setlbr_vTotTrib(taxAmtTotal);
 			line.save();
 			
 			//	Total de Tributos de Todas as Linhas
