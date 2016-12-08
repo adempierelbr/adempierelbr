@@ -90,7 +90,7 @@ public class PrintFromXML extends SvrProcess
 				log.log (Level.SEVERE, "Unknown Parameter: " + name);
 		}
 		p_Record_ID = getRecord_ID();
-		process = new MProcess (Env.getCtx(), getProcessInfo().getAD_Process_ID(), null);
+		process = new MProcess (Env.getCtx(), getProcessInfo().getAD_Process_ID(), get_TrxName());
 	}	//	prepare
 	
 	/**
