@@ -47,6 +47,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
 
+import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -107,6 +108,7 @@ public class PrintFromXML extends SvrProcess
 		String datePattern 		= "yyyy-MM-dd'T'HH:mm:ssZ";
 		String numberPattern 	= "###0.00";
 		Locale locale			= Locale.US;
+		boolean printLogo		= true;
 		//	Arquivo com os XML das notas Autorizadas relacionadas do lote.
 		File lotXML 			= File.createTempFile ("lotXMLAut", ".xml");
 		
@@ -120,6 +122,9 @@ public class PrintFromXML extends SvrProcess
 			
 			if (!"135".equals (event.getlbr_NFeStatus()) && !"136".equals (event.getlbr_NFeStatus()))
 				return "CC-e n\u00E3o processada corretamente, n\u00E3o \u00E9 poss\u00EDvel fazer a impress\u00E3o";
+			
+			if (!MLBRNFeEvent.LBR_EVENTTYPE_CartaDeCorrecao.equals(event.getLBR_EventType()))
+				return "Documento n\u00E3o possui modelo de impress\u00E3o";
 			
 			att = event.getAttachment (true);
 			
@@ -148,6 +153,9 @@ public class PrintFromXML extends SvrProcess
 
 			att = doc.getAttachment (true);
 			
+			if (!doc.islbr_IsOwnDocument())
+				printLogo = false;
+			
 			//	Verifica o nome do arquivo principal
 			if (MLBRNotaFiscal.LBR_DANFEFORMAT_1_NormalDANFE_Portrait.equals(doc.getlbr_DANFEFormat()))
 				reportName = "DanfeMainPortraitA4.jasper";
@@ -175,6 +183,7 @@ public class PrintFromXML extends SvrProcess
 			//	Lista de NF-e relacionada ao Lote.
 			List <MLBRNotaFiscal> nfs = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "LBR_NFeStatus = '100' AND LBR_NFeLot_ID = ?", null)
 										.setParameters(doc.getLBR_NFeLot_ID())
+										.setOrderBy("DocumentNo")
 										.list();			
 			
 			//	Gravar os XMLs no Arquivo nfXmlAutorized
@@ -265,7 +274,31 @@ public class PrintFromXML extends SvrProcess
 		if (xml == null)
 			return "Arquivo XML n\u00E3o encontrado para impress\u00E3o";
 		
-		Map<String, Object> files = getReportFile ();
+		try
+		{
+			//	Lote da Nota Fiscal Eletrônica
+			if (tableID != MLBRNFeLot.Table_ID)
+			{
+				/*
+				 * 	Tenta encontrar o formato de impressão baseado no XML
+				 */
+				NfeProcDocument nfe = NfeProcDocument.Factory.parse(xml);
+				xml.reset();
+				
+				//	2-Landscape
+				if ("2".equals(nfe.getNfeProc().getNFe().getInfNFe().getIde().xgetTpImp().getStringValue()))
+					reportName = reportName.replace("[FORMAT]", "Landscape");
+				else
+					reportName = reportName.replace("[FORMAT]", "Portrait");
+			}
+		}
+		catch (Exception e) 
+		{
+			xml.reset();
+			reportName = reportName.replace("[FORMAT]", "Portrait");
+		}
+		
+		Map<String, Object> files = getReportFile (printLogo);
 		
 		if (message != null)
 			files.put("msgPrevisualizacao", message);
@@ -301,7 +334,7 @@ public class PrintFromXML extends SvrProcess
 	 * 	@throws AdempiereException
 	 * 	@throws IOException 
 	 */
-	private Map<String, Object> getReportFile () throws AdempiereException, IOException
+	private Map<String, Object> getReportFile (boolean printLogo) throws AdempiereException, IOException
 	{
 		//	Procura o relatório anexado no processo
 		MAttachment att = process.getAttachment (true);
@@ -350,7 +383,7 @@ public class PrintFromXML extends SvrProcess
 		MOrgInfo oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);
 		
 		//	Logo not found
-		if (oi.getLogo_ID() <= 0)
+		if (oi.getLogo_ID() <= 0 || !printLogo)
 			return map;
 		
 		MImage mImage = MImage.get (getCtx(), oi.getLogo_ID());
