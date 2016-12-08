@@ -2930,8 +2930,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
     	
     	try
 		{
+    		Trx trx = Trx.get(get_TrxName(), false);
+    		
     		PrintFromXML proc = new PrintFromXML ();
-    		proc.startProcess (getCtx(), pi, null);
+    		proc.startProcess (getCtx(), pi, trx);
 		}
 		catch (Exception e)
 		{
