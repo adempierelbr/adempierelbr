@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="45"/>
-	<property name="ireport.y" value="826"/>
+	<property name="ireport.x" value="18"/>
+	<property name="ireport.y" value="797"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -2257,7 +2257,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 						<subreportParameterExpression><![CDATA[$P{Frente}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="InfCompl">
-						<subreportParameterExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 591 ? $V{InfCompl}.substring(590) : ""]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 526 ? $V{InfCompl}.substring(525) : ""]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter name="PreImp">
 						<subreportParameterExpression><![CDATA[$P{PreImpresso}]]></subreportParameterExpression>
@@ -2546,7 +2546,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 				<textElement textAlignment="Left" markup="styled">
 					<font fontName="Monospaced" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() > 590 ? $V{InfCompl}.substring(0, 590) : $V{InfCompl}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() > 525 ? $V{InfCompl}.substring(0, 525) : $V{InfCompl}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
