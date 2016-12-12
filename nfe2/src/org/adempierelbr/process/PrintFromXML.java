@@ -118,7 +118,7 @@ public class PrintFromXML extends SvrProcess
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
 		{
-			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), p_Record_ID, null);
+			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), p_Record_ID, get_TrxName());
 			
 			if (!"135".equals (event.getlbr_NFeStatus()) && !"136".equals (event.getlbr_NFeStatus()))
 				return "CC-e n\u00E3o processada corretamente, n\u00E3o \u00E9 poss\u00EDvel fazer a impress\u00E3o";
@@ -138,7 +138,7 @@ public class PrintFromXML extends SvrProcess
 		//	Nota Fiscal Eletrônica
 		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
-			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, null);
+			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, get_TrxName());
 			
 			//	Nota Fiscal de Serviço Eletrônica
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(doc.getlbr_NFModel()))
@@ -178,10 +178,10 @@ public class PrintFromXML extends SvrProcess
 		else if (tableID == MLBRNFeLot.Table_ID)
 		{
 			//	Lote da NF-e
-			MLBRNFeLot doc = new MLBRNFeLot(getCtx(), p_Record_ID, null);
+			MLBRNFeLot doc = new MLBRNFeLot(getCtx(), p_Record_ID, get_TrxName());
 			
 			//	Lista de NF-e relacionada ao Lote.
-			List <MLBRNotaFiscal> nfs = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "LBR_NFeStatus = '100' AND LBR_NFeLot_ID = ?", null)
+			List <MLBRNotaFiscal> nfs = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "LBR_NFeStatus = '100' AND LBR_NFeLot_ID = ?", get_TrxName())
 										.setParameters(doc.getLBR_NFeLot_ID())
 										.setOrderBy("DocumentNo")
 										.list();			
