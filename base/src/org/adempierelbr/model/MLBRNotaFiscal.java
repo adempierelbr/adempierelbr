@@ -815,9 +815,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
 			attachment.save();
 			
-			//	Save changes
-			nf.save();
-			
 			//	Envia o e-mail para o cliente
 			//	em caso de erro o try/catch evita que o processamento não seja commitado
 			try
