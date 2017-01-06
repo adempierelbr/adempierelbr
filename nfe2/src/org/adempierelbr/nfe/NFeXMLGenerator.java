@@ -1323,13 +1323,13 @@ public class NFeXMLGenerator
 				/**
 				 * 	Percentual da partilha entre estados
 				 */
-				if (cal.before (new GregorianCalendar (2017, 01, 01)))		// ... -> 2016
+				if (cal.before (new GregorianCalendar (2017, Calendar.JANUARY, 01)))		// ... -> 2016
 					partICMSRate = new BigDecimal (40);
 				
-				else if (cal.before (new GregorianCalendar (2018, 01, 01)))	// 2017
+				else if (cal.before (new GregorianCalendar (2018, Calendar.JANUARY, 01)))	// 2017
 					partICMSRate = new BigDecimal (60);
 				
-				else if (cal.before (new GregorianCalendar (2019, 01, 01)))	// 2018
+				else if (cal.before (new GregorianCalendar (2019, Calendar.JANUARY, 01)))	// 2018
 					partICMSRate = new BigDecimal (80);
 				
 				else														// 2019 -> ...
