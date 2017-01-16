@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.compiere.apps.search.Info_Column;
@@ -246,15 +245,15 @@ public class ValidatorBPartner implements ModelValidator
 		if (!isValid || (bp_po.is_ValueChanged(I_W_C_BPartner.COLUMNNAME_IsActive) && bp.isActive()))
 		{			
 			//	If Individual - Validate CPF
-			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals (bpType)
-					|| (MLBRNotaFiscal.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType)))
+			if (I_W_C_BPartner.LBR_BPTYPEBR_PF_Individual.equals (bpType)
+					|| (I_W_C_BPartner.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType)))
 			{
 				String CPF = bp.getlbr_CPF();
 
 				if (CPF == null || CPF.isEmpty())
 				{
 					//	Não dá erro se o cadastro for de Indivíduo Menor
-					if (!MLBRNotaFiscal.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType))
+					if (!I_W_C_BPartner.LBR_BPTYPEBR_PM_IndividualMinor.equals (bpType))
 						return "CPF Nulo";
 				}
 				//	Somente valida o CPF se ele não for nulo
@@ -275,7 +274,7 @@ public class ValidatorBPartner implements ModelValidator
 			}
 			
 			//	If Legal Entity - Validate CNPJ
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals (bpType))
+			else if (I_W_C_BPartner.LBR_BPTYPEBR_PJ_LegalEntity.equals (bpType))
 			{
 				String CNPJ = bp.getlbr_CNPJ();
 
@@ -299,7 +298,7 @@ public class ValidatorBPartner implements ModelValidator
 			}
 			
 			//	Foreigner
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals (bpType))
+			else if (I_W_C_BPartner.LBR_BPTYPEBR_XX_Foreigner.equals (bpType))
 			{
 				//	Remove o CPF e CNPJ
 				bp.setlbr_CPF (null);
@@ -339,7 +338,7 @@ public class ValidatorBPartner implements ModelValidator
 		// mgrigioni, 25/03/2008 (Kenos, http://www.kenos.com.br)
 		String lbr_TransactionType = bp.getlbr_TransactionType();
 		if (lbr_TransactionType == null || lbr_TransactionType.isEmpty())
-			bp.setlbr_TransactionType (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser);
+			bp.setlbr_TransactionType (I_W_C_BPartner.LBR_TRANSACTIONTYPE_EndUser);
 
 		//	Validação do flag funcionário
 		//		não permitir o cadastro de funcionários sem o preenchimento do campo Tipo de Parceiro
