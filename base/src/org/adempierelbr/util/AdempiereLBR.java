@@ -363,16 +363,6 @@ public abstract class AdempiereLBR{
 		return new MOrderLine(ctx,C_OrderLine_ID.intValue(),trx);
 	} //getLastPurchase
 
-	public static String executionTime(long start,long end){
-
-		Period period = new Period(start,end);
-		String tempo  = TextUtil.lPad(period.getHours(),2)   + ":" +
-						TextUtil.lPad(period.getMinutes(),2) + ":" +
-						TextUtil.lPad(period.getSeconds(),2);
-
-		return tempo;
-	} //executionTime
-
 	public static String getFileSeparator(){
 
 		String FileSeparator = System.getProperty("file.separator");
