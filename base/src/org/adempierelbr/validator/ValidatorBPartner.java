@@ -549,36 +549,6 @@ public class ValidatorBPartner implements ModelValidator
 	} //validaCPNJ
 
 	/**
-	 * validaIE
-	 * @param ie
-	 * @param uf
-	 * @return NULL if Invalid OR IE with onlynumbers
-	 */
-	public static String validaIE(String ie, UF uf)
-	{
-		if (ie == null || uf == null)
-			return  "";
-		
-		else if (!ie.toUpperCase().contains("ISENT"))
-		{
-			InscricaoEstadual iEstadual = uf.getInscricaoEstadual();
-			iEstadual.setNumber(ie);
-			//
-			if (!iEstadual.isValid()){
-				if (iEstadual.getInvalidCause() != null)
-					return null;
-				else
-					return iEstadual.getNumber();
-			}
-			else
-				return iEstadual.getNumber();
-		}
-
-		return ie;
-	} //validaIE
-
-
-	/**
 	 *	consultaCNPJ
 	 *	Check if this CNPJ is already on database
 	 *	@param String xCNPJ
