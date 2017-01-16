@@ -18,7 +18,6 @@ import java.util.Properties;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Invoice;
@@ -410,14 +409,7 @@ public class ValidatorInvoice implements ModelValidator
 			}	//	geração de Documento Fiscal
 			
 			/**
-			 * 	4 - Ajusta o Product Filler
-			 * 	TODO: Verificar se essa função duplica a Fornecedor Ativo do produto
-			 */
-			MLBRProductMovementFiller pmf = new MLBRProductMovementFiller();
-			pmf.saveThis(invoice);
-			
-			/**
-			 * 	5 - Validação da Quantidade Faturada contra Quantidade Entregue
+			 * 	4 - Validação da Quantidade Faturada contra Quantidade Entregue
 			 */
 			for (MInvoiceLine iLine : invoice.getLines())
 			{

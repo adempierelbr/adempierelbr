@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
@@ -174,10 +173,6 @@ public class ValidatorOrder implements ModelValidator
 
 			if (timing == TIMING_AFTER_COMPLETE)
 			{
-				//	FR 3079621 Onhate
-				MLBRProductMovementFiller pmf = new MLBRProductMovementFiller();
-				pmf.saveThis(order);
-
 				MDocType dt = MDocType.get (ctx, order.getC_DocTypeTarget_ID());
 				I_W_C_DocType dtW = POWrapper.create(dt, I_W_C_DocType.class); 
 				String DocSubTypeSO = dt.getDocSubTypeSO();
