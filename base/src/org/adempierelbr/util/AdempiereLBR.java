@@ -12,7 +12,6 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -23,14 +22,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempierelbr.model.MLBRAgreement;
-import org.adempierelbr.model.MLBRAgreementLine;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCountry;
 import org.compiere.model.MLocator;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
-import org.compiere.model.MProduct;
 import org.compiere.model.MUOM;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -70,63 +66,6 @@ public abstract class AdempiereLBR{
 
 		return C_Invoice_ID;
 	}	//	getC_Invoice_ID
-	
-	/**
-	 * 	Retorna a Margem de Lucro (IVA) de um produto
-	 * 		de acordo com as dos Convênios Estaduais
-	 * 
-	 * @param 	Product
-	 * @return	IVA
-	 */
-	public static BigDecimal getIVA (MProduct prod)
-	{
-		String trxType = Env.getContext(Env.getCtx(), "LBR|TrxType");
-		//
-		if ("END".equals(trxType))
-			return Env.ZERO;
-		
-		int C_Region_ID = Env.getContextAsInt(Env.getCtx(), "LBR|RegionFrom");
-		int To_Region_ID = Env.getContextAsInt(Env.getCtx(), "LBR|RegionTo");
-		BigDecimal fixedIVA = (BigDecimal) prod.get_Value("lbr_ProfitPercentage");
-		BigDecimal prdIVA = Env.ZERO;
-		BigDecimal ncmIVA = Env.ZERO;
-		Timestamp prdValid = null, ncmValid = null;
-		Timestamp dateDoc = TextUtil.stringToTime(Env.getContext(Env.getCtx(), "LBR|DateDoc"), "yyyy-MM-dd");
-		//
-		Integer ncm = (Integer) prod.get_Value("LBR_NCM_ID");
-		if (ncm == null)
-			ncm = -1;
-		//
-		MLBRAgreement ag = MLBRAgreement.get(C_Region_ID, To_Region_ID);
-		if (ag == null)
-			return fixedIVA == null ? Env.ZERO : fixedIVA;
-		//
-		MLBRAgreementLine[] lines = ag.getLines(dateDoc);
-		for (MLBRAgreementLine line : lines)
-		{
-			if (line.getM_Product_ID() == prod.getM_Product_ID()
-					&& (prdValid == null || prdValid.before(line.getValidFrom())))
-			{
-				prdIVA 		= line.getlbr_ProfitPercentage();
-				prdValid 	= line.getValidFrom();
-			}
-			else if (line.getLBR_NCM_ID() == ncm
-					&& (ncmValid == null || ncmValid.before(line.getValidFrom())))
-			{
-				ncmIVA 		= line.getlbr_ProfitPercentage();
-				ncmValid 	= line.getValidFrom();
-			}
-		}
-		//	Produto sobrescreve NCM
-		if (prdIVA.compareTo(Env.ZERO) == 1)
-			return prdIVA;
-		//	NCM sobrescreve fixo
-		else if (ncmIVA.compareTo(Env.ZERO) == 1)
-			return ncmIVA;
-		//	Fixo
-		else
-			return fixedIVA;
-	}	//	getIVA
 	
 	@Deprecated
 	public static int getC_ElementValue_ID (String account,String trx)
