@@ -70,7 +70,7 @@ public class VLBRCommons implements ModelValidator
 	}	//	VLBRCommons
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(VLBROrder.class);
+	private static CLogger log = CLogger.getCLogger(VLBRCommons.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
 
