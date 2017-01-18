@@ -266,7 +266,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			TEvento.InfEvento infEv = evento.addNewInfEvento();
 			
 			//	Configurações da NF-e
-			MLBRNFConfig config = MLBRNFConfig.get(oiW.getAD_Org_ID());
+			MLBRNFConfig config = MLBRNFConfig.get(oiW.getAD_Org_ID(), MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
 			
 			//	Informações do Evento da Carta de Correção
 			infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));

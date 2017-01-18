@@ -45,6 +45,8 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	public static final String RECEPCAOEVENTO		= "RecepcaoEvento";
 	public static final String NFEDISTDFE			= "DistribuicaoDFe";
 	public static final String DOWNLOADNFE			= "DownloadNFe";
+	public static final String NFCE_CONSULTA 		= "NFCeConsulta"; 		// 	Consulta NFCe pela chave de acesso
+	public static final String NFCE_CONSULTA_QRCODE = "NFCeConsultaQRCode"; // 	URL da consulta do QR-Code
 	
 	/**************************************************************************
 	 *  Default Constructor

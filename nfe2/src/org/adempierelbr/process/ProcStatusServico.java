@@ -109,7 +109,7 @@ public class ProcStatusServico extends SvrProcess
 		if (p_LBR_EnvType == null)
 		{
 			//	Configuração da NF
-			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID);
+			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID, MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
 			
 			if (nfconfig == null)
 				return "Impossível identificar o Ambiente da NF-e.";

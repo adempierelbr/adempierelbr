@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRAuthorizedAccessXML;
+import org.adempierelbr.model.MLBRCSC;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -111,11 +112,13 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNF;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNFP;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic.ObsCont;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Pag;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total.ICMSTot;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Transporta;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Vol;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFeSupl;
 import br.inf.portalfiscal.nfe.v310.TProcEmi;
 import br.inf.portalfiscal.nfe.v310.TUf;
 import br.inf.portalfiscal.nfe.v310.TUfEmi;
@@ -1487,7 +1490,8 @@ public class NFeXMLGenerator
 		}		
 				
 		//	Dados da cobrança
-		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.getC_Invoice_ID() > 0)
+		// amc - Caso seja NFCE não haverá dados de fatura, duplicata
+		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx() && !docType.get_Value("lbr_NFModel").equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
 		{
 			//	Y. Dados da Cobrança
 			Cobr cobr = infNFe.addNewCobr();
@@ -1523,8 +1527,15 @@ public class NFeXMLGenerator
 				}
 		}
 		
+		// amc - Validar para NFCE só ser emitida caso a fatura esteja vinculada a um pagamento.
+		// Então preencher aqui com os dados do pagamento.
 		//	YA. Formas de Pagamento
-//		Pag pag = infNFe.addNewPag();	//	FIXME NFC-e
+		if (docType.get_Value("lbr_NFModel").equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
+		{
+			Pag pag = infNFe.addNewPag();
+			pag.setTPag(Pag.TPag.Enum.forString("01"));
+			pag.setVPag(normalize (nf.getGrandTotal().abs()));
+		}
 		
 		//	Z. Informações Adicionais da NF-e
 		InfAdic infAdic = infNFe.addNewInfAdic();
@@ -1563,10 +1574,56 @@ public class NFeXMLGenerator
 		//	XML
 		String nfeID = infNFe.getId().substring(3);
 
-		log.fine ("Assinando NF-e");
-		
+		log.fine ("Signing NF-e");
+				
 		//	ZZ. Informações da Assinatura Digital
 		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, nfe.newCursor());
+		
+		String vNFCeQRCodeURL = "";
+			
+		// Only NFC-e
+		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(docType.get_Value("lbr_NFModel"))) 
+		{
+			try 
+			{
+				/*
+				* QRCode da NFC-e
+				*/
+				log.fine ("Generating NFC-e QRCode URL");
+				
+				// Generate Digest Value
+				String digestValue = new String (document.getNFe().getSignature().getSignedInfo().getReferenceArray()[0].getDigestValue());
+				
+				// CSC
+				MLBRCSC csc = MLBRCSC.get(nf.getAD_Org_ID());
+				
+				String cDest = "";
+				if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					cDest = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+				
+				else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					cDest = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+				
+				// Generate QRCode URL Current Info
+				if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+					vNFCeQRCodeURL = NFeUtil.generateQRCodeNFCeURL(nf, digestValue, nfeID, HOMOLOG_BPCNPJ, nf.getDateDoc(), normalize (nf.getICMSAmt()), T_AMB_HOMOLOG.toString());
+				
+				else
+					vNFCeQRCodeURL = NFeUtil.generateQRCodeNFCeURL(nf, digestValue, nfeID, cDest, nf.getDateDoc(), normalize (nf.getICMSAmt()), T_AMB_HOMOLOG.toString());
+				
+				if (vNFCeQRCodeURL != null && !vNFCeQRCodeURL.isEmpty())
+				{
+					InfNFeSupl supl = nfe.addNewInfNFeSupl();
+					supl.setQrCode(vNFCeQRCodeURL);
+					nf.set_ValueOfColumn("LBR_NFCeQRCodeURL", vNFCeQRCodeURL);
+				}
+			} 
+			catch (Exception e) 
+			{
+				log.severe("Não foi possível gerar o QRCode da NFC-e. Erro: " + e.getMessage());
+				throw new Exception("Não foi possível gerar o QRCode da NFC-e. Erro: " + e.getMessage());
+			}
+		}
 		
 		log.fine ("Validando NF-e");
 		NFeUtil.validate (document);

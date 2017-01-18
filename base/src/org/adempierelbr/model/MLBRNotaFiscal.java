@@ -2306,7 +2306,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setlbr_NFSerie(dt.get_ValueAsString("lbr_NFSerie"));
 			}
 			
-			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), getlbr_NFModel());
 			if (config != null)
 			{
 				//	Preenche o ambiente da NF caso esteja em branco
@@ -3594,7 +3594,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
 		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
-		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID);
+		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID, LBR_NFMODEL_NotaFiscalEletrônica);
 		//
 		if (p_LBR_EnvType == null)
 			p_LBR_EnvType = config.getlbr_NFeEnv();

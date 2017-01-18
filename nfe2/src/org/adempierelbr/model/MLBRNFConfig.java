@@ -75,8 +75,8 @@ public class MLBRNFConfig extends X_LBR_NFConfig
 	 * @param AD_Org_ID
 	 * @return
 	 */
-	public static MLBRNFConfig get (int AD_Org_ID)
+	public static MLBRNFConfig get (int AD_Org_ID, String modelNF)
 	{
-		return new Query (Env.getCtx(), Table_Name, "AD_Org_ID=?", null).setParameters(AD_Org_ID).first();
+		return new Query (Env.getCtx(), Table_Name, "AD_Org_ID=? AND LBR_NFModel=?", null).setParameters(AD_Org_ID, modelNF).first();
 	}	//	get
 }	//	MLBRNFConfig
