@@ -54,14 +54,26 @@ public abstract class AdempiereLBR{
 
 	public static int getC_Invoice_ID(String DocumentNo,String trx)
 	{
-		int index = DocumentNo.indexOf('/');
-		if (index != -1)
-			DocumentNo = DocumentNo.substring(0, index);
+		int index = -1;
+		int C_Invoice_ID = 0;
+		
+		// Nova regra de registro do Id Da Fatura, Número do Documento e Parcela no Arquivo CNAB.
+		if (DocumentNo.contains("B") && DocumentNo.contains("F"))
+		{
+			C_Invoice_ID = Integer.parseInt(DocumentNo.substring (DocumentNo.indexOf('B') + 1, DocumentNo.indexOf('F')));
+			return C_Invoice_ID;
+		}
+		else if (DocumentNo.contains("/"))
+		{
+			index = DocumentNo.indexOf('/');
+			if (index != -1)
+				DocumentNo = DocumentNo.substring(0, index);
+		}		
 
 		String sql = "SELECT C_Invoice_ID FROM C_Invoice " +
 				     "WHERE DocumentNo = ? AND AD_Client_ID = ?";
 
-		int C_Invoice_ID = DB.getSQLValue(trx, sql,
+		C_Invoice_ID = DB.getSQLValue(trx, sql,
 				new Object[]{DocumentNo,Env.getAD_Client_ID(Env.getCtx())});
 
 		return C_Invoice_ID;
