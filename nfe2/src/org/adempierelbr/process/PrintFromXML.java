@@ -39,6 +39,7 @@ import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MImage;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
@@ -389,6 +390,12 @@ public class PrintFromXML extends SvrProcess
 						&& (resourceName.startsWith (subreport + "_Sub_") || resourceName.startsWith (subreport + "_Res_")))
 					map.put (resourceName.replace(".jasper", "").replace(".jrxml", ""), cl.getResourceAsStream("reports/" + resourceName));
 			}
+		}
+		
+		if (oi == null)
+		{
+			MPInstance pinstance = new MPInstance (getCtx(), getAD_PInstance_ID(), null);
+			oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);
 		}
 				
 		//	Logo not found
