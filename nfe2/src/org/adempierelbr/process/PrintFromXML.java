@@ -39,7 +39,6 @@ import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MImage;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
@@ -72,6 +71,9 @@ public class PrintFromXML extends SvrProcess
 			
 	private MProcess process = null;
 	private String reportName = "";
+	
+	// Informações da Organização
+	private MOrgInfo oi;
 	
 	/**
 	 * 	Prepare - e.g., get Parameters.
@@ -109,6 +111,7 @@ public class PrintFromXML extends SvrProcess
 		String numberPattern 	= "###0.00";
 		Locale locale			= Locale.US;
 		boolean printLogo		= true;
+
 		//	Arquivo com os XML das notas Autorizadas relacionadas do lote.
 		File lotXML 			= File.createTempFile ("lotXMLAut", ".xml");
 		
@@ -119,6 +122,9 @@ public class PrintFromXML extends SvrProcess
 		if (tableID == MLBRNFeEvent.Table_ID)
 		{
 			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), p_Record_ID, get_TrxName());
+			
+			// Organização
+			oi = MOrgInfo.get(Env.getCtx(), event.getAD_Org_ID(), null);
 			
 			if (!"135".equals (event.getlbr_NFeStatus()) && !"136".equals (event.getlbr_NFeStatus()))
 				return "CC-e n\u00E3o processada corretamente, n\u00E3o \u00E9 poss\u00EDvel fazer a impress\u00E3o";
@@ -139,6 +145,9 @@ public class PrintFromXML extends SvrProcess
 		else if (tableID == MLBRNotaFiscal.Table_ID)
 		{
 			MLBRNotaFiscal doc = new MLBRNotaFiscal(getCtx(), p_Record_ID, get_TrxName());
+			
+			// Organização
+			oi = MOrgInfo.get(Env.getCtx(), doc.getAD_Org_ID(), null);
 			
 			//	Nota Fiscal de Serviço Eletrônica
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(doc.getlbr_NFModel()))
@@ -180,11 +189,14 @@ public class PrintFromXML extends SvrProcess
 			//	Lote da NF-e
 			MLBRNFeLot doc = new MLBRNFeLot(getCtx(), p_Record_ID, get_TrxName());
 			
+			// Organização
+			oi = MOrgInfo.get(Env.getCtx(), doc.getAD_Org_ID(), null);
+			
 			//	Lista de NF-e relacionada ao Lote.
 			List <MLBRNotaFiscal> nfs = new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "LBR_NFeStatus = '100' AND LBR_NFeLot_ID = ?", get_TrxName())
 										.setParameters(doc.getLBR_NFeLot_ID())
 										.setOrderBy("DocumentNo")
-										.list();			
+										.list();
 			
 			//	Gravar os XMLs no Arquivo nfXmlAutorized
 			OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(lotXML), TextUtil.UTF8);
@@ -378,10 +390,7 @@ public class PrintFromXML extends SvrProcess
 					map.put (resourceName.replace(".jasper", "").replace(".jrxml", ""), cl.getResourceAsStream("reports/" + resourceName));
 			}
 		}
-		
-		MPInstance pinstance = new MPInstance (getCtx(), getAD_PInstance_ID(), null);
-		MOrgInfo oi = MOrgInfo.get (getCtx(), pinstance.getAD_Org_ID(), null);
-		
+				
 		//	Logo not found
 		if (oi.getLogo_ID() <= 0 || !printLogo)
 			return map;
