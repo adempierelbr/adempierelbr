@@ -219,16 +219,6 @@ public class ValidatorOrder implements ModelValidator
 	}	//	docValidate
 
 	/**
-	 * 	String Representation
-	 *	@return info
-	 */
-	public String toString ()
-	{
-		StringBuffer sb = new StringBuffer ("ValidatorOrder@AdempiereLBR - Powered by Kenos & Faire");
-		return sb.toString ();
-	}	//	toString
-
-	/**
 	 * 	Create Shipment
 	 *	@param dt order document type
 	 *	@param movementDate optional movement date (default today)

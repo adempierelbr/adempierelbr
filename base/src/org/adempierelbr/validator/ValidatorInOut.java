@@ -496,14 +496,4 @@ public class ValidatorInOut implements ModelValidator
 		return false;
 	}	//	updateInfoColumns
 
-	/**
-	 * 	String Representation
-	 *	@return info
-	 */
-	public String toString ()
-	{
-		StringBuffer sb = new StringBuffer ("AdempiereLBR - Powered by Kenos & Faire");
-		return sb.toString ();
-	}	//	toString
-
 } //ValidatorInOut
