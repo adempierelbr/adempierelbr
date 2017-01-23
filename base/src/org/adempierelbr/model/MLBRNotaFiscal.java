@@ -749,6 +749,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
         try
         {
         	nf.setlbr_NFeStatus(cStat);
+        	nf.save();
         }
         catch (IllegalArgumentException e)
         {
@@ -2933,6 +2934,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		pi.setRecord_ID(instance.getRecord_ID());
 		pi.setTable_ID(Table_ID);
 		pi.setParameter(new ProcessInfoParameter[]{pip});
+		pi.setTransactionName(get_TrxName());
     	
     	try
 		{

@@ -108,8 +108,15 @@ public class MLBRBoleto extends X_LBR_Boleto
 		//	Ocorrência para cobranças não registradas
 		if (documentNo == null || documentNo.length() <= 0)
 			return  "";
-		//
-		int index = documentNo.indexOf("/") + 1;
+		
+		int index = 0;
+		
+		// Nova regra de registro do Id Da Fatura, Número do Documento e Parcela no Arquivo CNAB.
+		if (documentNo.contains("P"))
+			index = documentNo.indexOf("P") + 1;
+		else
+			index = documentNo.indexOf("/") + 1;
+		
 		String LBR_PayScheduleNo = documentNo.substring(index, index + 2).trim();
 		
 		return LBR_PayScheduleNo;
