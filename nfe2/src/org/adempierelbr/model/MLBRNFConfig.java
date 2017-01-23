@@ -71,8 +71,20 @@ public class MLBRNFConfig extends X_LBR_NFConfig
 	}	//	beforeSave
 	
 	/**
+	 * 	Get Configuration for this Organization,
+	 * 	default model 55
+	 * @param AD_Org_ID
+	 * @return
+	 */
+	public static MLBRNFConfig get (int AD_Org_ID)
+	{
+		return get (AD_Org_ID, LBR_NFMODEL_NotaFiscalEletrônica);
+	}	//	get
+	
+	/**
 	 * 	Get Configuration for this Organization
 	 * @param AD_Org_ID
+	 * @param modelNF Model of NF (Usually 55 or 65)
 	 * @return
 	 */
 	public static MLBRNFConfig get (int AD_Org_ID, String modelNF)
