@@ -94,7 +94,12 @@ public class ReturnCNABUtil
 		              Juros       + ";";
 
 		// Invoice
-		int C_Invoice_ID = LBRUtils.getInvoiceIDonFile (0, DocumentNo, trx);	// FIXME: Obter a Organização
+		int C_Invoice_ID = 0;
+		
+		if (DocumentNo.contains("B"))
+			LBRUtils.getInvoiceIDonFile (0, DocumentNo, trx);	// FIXME: Obter a Organização
+		else			
+			LBRUtils.getInvoiceByDocNo (0, DocumentNo, trx);	// FIXME: Obter a Organização
 		
 		// Boleto
 		String LBR_PayScheduleNo = MLBRBoleto.getLBR_PayScheduleNo(DocumentNo);	

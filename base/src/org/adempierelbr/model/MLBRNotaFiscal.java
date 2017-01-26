@@ -3049,7 +3049,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					e.printStackTrace();
 					//
 					m_processMsg = e.getMessage();
-					return DOCSTATUS_Invalid;
+					
+					setlbr_NFeStatus(LBR_NFESTATUS_215_RejeiçãoFalhaNoSchemaXML);					
+					return DocAction.STATUS_InProgress;
 				}
 			}
 			
@@ -3166,6 +3168,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				//	XML gerado, pronto para ser adicionado ao lote
 				else if (DOCSTATUS_InProgress.equals (getDocStatus()))
 				{
+					if (getlbr_NFeStatus() != null)
+						throw new Exception ("Falha no Schema da NF-e");
+					
 					//	Cria um novo lote para a transmissão
 					MLBRNFeLot lot = new MLBRNFeLot (getCtx(), 0, get_TrxName());
 					lot.setName("[Auto] NF: " + getDocumentNo());
