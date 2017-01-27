@@ -3,6 +3,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -67,6 +68,17 @@ public class MLBRNFConfig extends X_LBR_NFConfig
 			setlbr_MotivoScan(null);
 		}
 
+		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+		{
+			if (!TextUtil.match(getlbr_DANFEFormat(), LBR_DANFEFORMAT_3_SimpleDANFE, 
+														LBR_DANFEFORMAT_4_DANFENFC_E, 
+														LBR_DANFEFORMAT_5_DANFENFC_EInEletronicMessage))
+			{
+				log.saveError("FillMandatory", "Formato da DANFE não compatível com NFC-e");
+				return false;
+			}
+		}
+		
 		return true;
 	}	//	beforeSave
 	

@@ -68,7 +68,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 		try {
 			KeyManager[] keyManagers = createKeyManagers();
 			TrustManager[] trustManagers = createTrustManagers();
-			SSLContext sslContext = SSLContext.getInstance("TLS");
+			SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
 			sslContext.init(keyManagers, trustManagers, null);
 
 			return sslContext;
@@ -107,7 +107,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 		}
 
 		Socket socket = socketfactory.createSocket();
-		((SSLSocket) socket).setEnabledProtocols(new String[]{"SSLv3", "TLSv1"});
+		((SSLSocket) socket).setEnabledProtocols(new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"});
 		SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
 		SocketAddress remoteaddr = new InetSocketAddress(host, port);
 		socket.bind(localaddr);

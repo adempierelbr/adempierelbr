@@ -152,7 +152,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		log.fine("Envia Lote: " + getDocumentNo());
 
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), MLBRNFConfig.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica);
 		
 		String envType 	= null;
 		
@@ -298,7 +298,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		}
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), MLBRNFConfig.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica);
 		
 		String envType 	= null;
 		

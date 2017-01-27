@@ -40,15 +40,15 @@ public class MLBRCSC extends X_LBR_CSC
 	 * @param AD_Org_ID
 	 * @return MRDTConfig
 	 */
-	public static MLBRCSC get (MLBRNFConfig LBR_NFConfig_ID)
+	public static MLBRCSC get (MLBRNFConfig nfConfig)
 	{
 		// WHERE
 		String where = "LBR_NFConfig_ID=? AND IsActive='Y' ";
 		
 		// Query
-		Query q = new Query(Env.getCtx(), MLBRCSC.Table_Name, where, null);
-		q.setParameters(new Object[] { LBR_NFConfig_ID });
-		q.setOrderBy("Value DESC");
+		Query q = new Query(Env.getCtx(), MLBRCSC.Table_Name, where, null)
+				.setParameters(new Object[] { nfConfig.getLBR_NFConfig_ID() })
+				.setOrderBy("Value DESC");
 		//
 		return q.first();
 	}	//	get

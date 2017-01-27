@@ -208,8 +208,9 @@ public class NFeXMLGenerator
 	private static final Dest.IndIEDest.Enum IND_IE_NAO_CONTRIB = Dest.IndIEDest.X_9;
 	
 	/**	Homologação						*/
-	private static final String HOMOLOG_BPNAME	=	"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
-	private static final String HOMOLOG_BPCNPJ	=	"99999999000191";
+	private static final String HOMOLOG_BPNAME		=	"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	private static final String HOMOLOG_PRODNAME	=	"NOTA FISCAL EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	private static final String HOMOLOG_BPCNPJ		=	"99999999000191";
 	
 	/** NCM	para serviços				*/
 	private static final String NCM_SERVICE		=	"00";
@@ -361,6 +362,7 @@ public class NFeXMLGenerator
 		//	Transaction and Context
 		String trxName = nf.get_TrxName ();
 		Properties ctx = nf.getCtx();
+		boolean nfce = MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nf.getlbr_NFModel()); 
 		
 		//	OrgInfo
 		I_W_AD_OrgInfo oi = POWrapper.create (MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
@@ -793,7 +795,10 @@ public class NFeXMLGenerator
 				prod.setCEANTrib(toNumericStr (ean));
 			}
 			
-			prod.setXProd(normalize (nfl.getProductName()));
+			if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+				prod.setXProd(HOMOLOG_PRODNAME);
+			else
+				prod.setXProd(normalize (nfl.getProductName()));
 			
 			//	Serviço
 			if (nfl.islbr_IsService())
@@ -1393,144 +1398,151 @@ public class NFeXMLGenerator
 		
 		//	X. Informações do Transporte da NF-e
 		Transp transp = infNFe.addNewTransp();
-		//
-		if (nf.getLBR_FreightCostRule() != null)
+
+		//	NFC-e force 9-No Freight when customer is present during sale
+		if (MLBRNotaFiscal.LBR_INDPRES_OperaçãoPresencial.equals(nf.getLBR_IndPres()))
+			transp.setModFrete(Transp.ModFrete.X_9);
+		else if (nf.getLBR_FreightCostRule() != null)
 			transp.setModFrete (Transp.ModFrete.Enum.forString (nf.getLBR_FreightCostRule()));
 		else
 			transp.setModFrete(Transp.ModFrete.X_0);
 		
-		if (nf.getM_Shipper_ID() > 0)
+		if (!nfce)
 		{
-			Transporta transporta = transp.addNewTransporta();
 			
-			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
-			String shipperName 		= normalize (nf.getlbr_BPShipperName());
-			String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
-			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
-			String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
-			String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
-			String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
-			
-			if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
-				transporta.setCNPJ(shipperCNPJ);
-			
-			if (shipperName != null && !shipperName.isEmpty())
-				transporta.setXNome(shipperName);
-			
-			if (shipperIE != null && !shipperIE.trim().isEmpty())
-				transporta.setIE (shipperIE);
-			
-			if (shipperAddress != null && !shipperAddress.isEmpty())
+			if (nf.getM_Shipper_ID() > 0)
 			{
-				//	Limite de 60 caracteres
-				transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
-			}
-			
-			if (shipperCity != null && !shipperCity.isEmpty())
-				transporta.setXMun(shipperCity);
-			
-			if (shipperRegion != null && !shipperRegion.isEmpty())
-				transporta.setUF(TUf.Enum.forString(shipperRegion));
-			
-			//	Placa do Veículo. Formato (XXX-0000/UF)
-			if (shipperPlate != null && !shipperPlate.isEmpty())
-			{
-				//	Encontrar posição da / na variável shipperPlate para Seperar a Placa da UF do Veículo
-				int pos = 0;
-				pos = shipperPlate.indexOf("/");
+				Transporta transporta = transp.addNewTransporta();
 				
-				//	Adicionar Veículo
-				TVeiculo veiculo = transp.addNewVeicTransp();
+				String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
+				String shipperName 		= normalize (nf.getlbr_BPShipperName());
+				String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
+				String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
+				String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
+				String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
+				String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
 				
-				//	Adicionar Placa do Veículo
-				veiculo.setPlaca(TextUtil.retiraEspecial(shipperPlate.substring(0, pos)));
+				if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
+					transporta.setCNPJ(shipperCNPJ);
 				
-				//	Adicionar UF do Veículo
-				veiculo.setUF(TUf.Enum.forString(shipperPlate.substring(pos+1, shipperPlate.length())));
-			}
-		}
-		
-		// Adicionar Volume no XMl da NF-e
-		if ( nf.getNoPackages() != 0  )
-		{
-			Vol vol = transp.addNewVol();
+				if (shipperName != null && !shipperName.isEmpty())
+					transporta.setXNome(shipperName);
 				
-			vol.setQVol(Integer.toString(nf.getNoPackages()));
-			//
-			BigDecimal grossWeight = nf.getlbr_GrossWeight();
-			BigDecimal netWeight = nf.getlbr_NetWeight();
-			
-			//	Not null
-			if (grossWeight == null)
-				grossWeight = Env.ZERO;
-			if (netWeight == null)
-				netWeight = Env.ZERO;
-			
-			//	Fix invalid net weight
-			if (grossWeight.signum() == 1 
-					&& grossWeight.compareTo(netWeight) == -1)
-				netWeight = grossWeight;
-			
-			//	Fix invalid gross weight
-			if (grossWeight.signum() == 0
-					&& netWeight.signum() == 1)
-				grossWeight = netWeight;
-
-			//	Set gross and net weight in KG
-			if (netWeight.signum() == 1)
-				vol.setPesoL(normalize3 (netWeight));
-			if (grossWeight.signum() == 1)
-				vol.setPesoB(normalize3 (grossWeight));
-			
-			//	Package Type
-			String packType = nf.getlbr_PackingType();
-			
-			if (packType != null && !packType.isEmpty())
-				vol.setEsp(packType.trim());
-		}		
+				if (shipperIE != null && !shipperIE.trim().isEmpty())
+					transporta.setIE (shipperIE);
 				
-		//	Dados da cobrança
-		// amc - Caso seja NFCE não haverá dados de fatura, duplicata
-		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx() && !docType.get_Value("lbr_NFModel").equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
-		{
-			//	Y. Dados da Cobrança
-			Cobr cobr = infNFe.addNewCobr();
-			
-			BigDecimal discountAmt = nf.getDiscountAmt();
-			
-			if (discountAmt == null || discountAmt.signum() == -1)
-				discountAmt = Env.ZERO;
-			
-			//	Fatura
-			Fat fat = cobr.addNewFat();
-			String fatNo = nf.getC_Invoice().getDocumentNo();
-			
-			fat.setNFat (fatNo); 				// 	Codigo NFE
-			fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
-			
-			if (discountAmt.signum() == 1)
-				fat.setVDesc (normalize (discountAmt));
-			
-			fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
-
-			//	Contador de duplicata
-			int dupCounter = 1;
-			
-		    //	Adiciona as duplicatas da fatura
-			if (nf.islbr_HasOpenItems())
-			    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
-			    {
-			    	Dup dup = cobr.addNewDup();
-			    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-			    	dup.setDVenc(normalize (openItem.getDueDate()));
-			    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+				if (shipperAddress != null && !shipperAddress.isEmpty())
+				{
+					//	Limite de 60 caracteres
+					transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
 				}
+				
+				if (shipperCity != null && !shipperCity.isEmpty())
+					transporta.setXMun(shipperCity);
+				
+				if (shipperRegion != null && !shipperRegion.isEmpty())
+					transporta.setUF(TUf.Enum.forString(shipperRegion));
+				
+				//	Placa do Veículo. Formato (XXX-0000/UF)
+				if (shipperPlate != null && !shipperPlate.isEmpty())
+				{
+					//	Encontrar posição da / na variável shipperPlate para Seperar a Placa da UF do Veículo
+					int pos = 0;
+					pos = shipperPlate.indexOf("/");
+					
+					//	Adicionar Veículo
+					TVeiculo veiculo = transp.addNewVeicTransp();
+					
+					//	Adicionar Placa do Veículo
+					veiculo.setPlaca(TextUtil.retiraEspecial(shipperPlate.substring(0, pos)));
+					
+					//	Adicionar UF do Veículo
+					veiculo.setUF(TUf.Enum.forString(shipperPlate.substring(pos+1, shipperPlate.length())));
+				}
+			}
+			
+			// Adicionar Volume no XMl da NF-e
+			if ( nf.getNoPackages() != 0  )
+			{
+				Vol vol = transp.addNewVol();
+					
+				vol.setQVol(Integer.toString(nf.getNoPackages()));
+				//
+				BigDecimal grossWeight = nf.getlbr_GrossWeight();
+				BigDecimal netWeight = nf.getlbr_NetWeight();
+				
+				//	Not null
+				if (grossWeight == null)
+					grossWeight = Env.ZERO;
+				if (netWeight == null)
+					netWeight = Env.ZERO;
+				
+				//	Fix invalid net weight
+				if (grossWeight.signum() == 1 
+						&& grossWeight.compareTo(netWeight) == -1)
+					netWeight = grossWeight;
+				
+				//	Fix invalid gross weight
+				if (grossWeight.signum() == 0
+						&& netWeight.signum() == 1)
+					grossWeight = netWeight;
+	
+				//	Set gross and net weight in KG
+				if (netWeight.signum() == 1)
+					vol.setPesoL(normalize3 (netWeight));
+				if (grossWeight.signum() == 1)
+					vol.setPesoB(normalize3 (grossWeight));
+				
+				//	Package Type
+				String packType = nf.getlbr_PackingType();
+				
+				if (packType != null && !packType.isEmpty())
+					vol.setEsp(packType.trim());
+			}
+			
+			//	Dados da cobrança
+			// amc - Caso seja NFCE não haverá dados de fatura, duplicata
+			if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
+			{
+				//	Y. Dados da Cobrança
+				Cobr cobr = infNFe.addNewCobr();
+				
+				BigDecimal discountAmt = nf.getDiscountAmt();
+				
+				if (discountAmt == null || discountAmt.signum() == -1)
+					discountAmt = Env.ZERO;
+				
+				//	Fatura
+				Fat fat = cobr.addNewFat();
+				String fatNo = nf.getC_Invoice().getDocumentNo();
+				
+				fat.setNFat (fatNo); 				// 	Codigo NFE
+				fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
+				
+				if (discountAmt.signum() == 1)
+					fat.setVDesc (normalize (discountAmt));
+				
+				fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
+		
+				//	Contador de duplicata
+				int dupCounter = 1;
+				
+			    //	Adiciona as duplicatas da fatura
+				if (nf.islbr_HasOpenItems())
+				    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+				    {
+				    	Dup dup = cobr.addNewDup();
+				    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+				    	dup.setDVenc(normalize (openItem.getDueDate()));
+				    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+					}
+			}
 		}
 		
 		// amc - Validar para NFCE só ser emitida caso a fatura esteja vinculada a um pagamento.
 		// Então preencher aqui com os dados do pagamento.
 		//	YA. Formas de Pagamento
-		if (docType.get_Value("lbr_NFModel").equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
+		if (nfce)
 		{
 			Pag pag = infNFe.addNewPag();
 			pag.setTPag(Pag.TPag.Enum.forString("01"));
@@ -1582,7 +1594,7 @@ public class NFeXMLGenerator
 		String vNFCeQRCodeURL = "";
 			
 		// Only NFC-e
-		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(docType.get_Value("lbr_NFModel"))) 
+		if (nfce) 
 		{
 			try 
 			{
@@ -1590,12 +1602,16 @@ public class NFeXMLGenerator
 				* QRCode da NFC-e
 				*/
 				log.fine ("Generating NFC-e QRCode URL");
+				String reference = document.getNFe().getSignature().getSignedInfo().xmlText(NFeUtil.getXmlOpt());
 				
 				// Generate Digest Value
-				String digestValue = new String (document.getNFe().getSignature().getSignedInfo().getReferenceArray()[0].getDigestValue());
+				String digestValue = reference.substring(reference.indexOf("<DigestValue>")+13, reference.indexOf("</DigestValue>"));
 				
 				// CSC
 				MLBRCSC csc = MLBRCSC.get(nf.getAD_Org_ID());
+				
+				if (csc == null)
+					throw new Exception("CSC nõa encontrado para a emissão de NFC-e");
 				
 				String cDest = "";
 				if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))

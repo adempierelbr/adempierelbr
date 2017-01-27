@@ -2373,6 +2373,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
 		}
 		
+		//	NFC-e details
+		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+		{
+			//	Mandatory End User
+			setlbr_TransactionType(LBR_TRANSACTIONTYPE_EndUser);
+			
+			//	Force Presence
+			if (!TextUtil.match (getLBR_IndPres(), LBR_INDPRES_OperaçãoPresencial, LBR_INDPRES_NFC_EEmOperaçãoComEntregaEmDomicílio))
+				setLBR_IndPres (LBR_INDPRES_OperaçãoPresencial);
+		}
+		
 		return true;
 	}	//	beforeSave
 	
@@ -3039,6 +3050,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setlbr_NFeStatus (null);
 				setlbr_NFeID (null);
 				setLBR_NFeLot_ID (0);
+				
+				//	Ajusta a data/hora de emissão da NFC-e
+				if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+					setDateDoc(new Timestamp (System.currentTimeMillis()));
 				try
 				{
 					//	Gera o XML da NF-e
