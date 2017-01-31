@@ -266,7 +266,7 @@ public class MSantander_033 implements I_Bank
 			String codOcorren      = lines[i].substring(108, 110); //Cód. Ocorrencia
 			String[] descOcorren   = (occurType.get(Integer.parseInt(codOcorren)));
 			String documentNo      = (lines[i].substring(37, 62)).trim();   //Número da Fatura
-			String nossoNo         = (lines[i].substring(65, 72)).trim(); //Nosso Número
+			String nossoNo         = (lines[i].substring(62, 70)).trim(); //Nosso Número
 			Timestamp  dataOcorren = TextUtil.stringToTime((lines[i].substring(110, 116)).trim(),"ddMMyy"); //Data Pagamento
 			BigDecimal valorTitulo = ReturnCNABUtil.stringTobigdecimal((lines[i].substring(152, 165)).trim()); //Valor Titulo
 			BigDecimal desconto    = ReturnCNABUtil.stringTobigdecimal((lines[i].substring(240, 253)).trim()); //Desconto
