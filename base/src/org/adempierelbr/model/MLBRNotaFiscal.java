@@ -1445,7 +1445,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			// NF de Produto (NCM)
 			if (!isservice)
 			{
-				ibpt = MLBRIBPTax.getbyNCM (getCtx(), getOrg_Location().getC_Region_ID(), 
+				ibpt = MLBRIBPTax.getByNCM (getCtx(), getOrg_Location().getC_Region_ID(), 
 						line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
 				
 				if (ibpt == null)
@@ -1457,7 +1457,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			// NF de Serviço (NBS)
 			else
 			{
-				ibpt = MLBRIBPTax.getbyNBS (getCtx(), getOrg_Location().getC_Region_ID(), 
+				ibpt = MLBRIBPTax.getByNBS (getCtx(), getOrg_Location().getC_Region_ID(), 
 						product.get_ValueAsInt("LBR_NBS_ID"), getDateDoc(), line.get_TrxName());
 				
 				if (ibpt == null)
