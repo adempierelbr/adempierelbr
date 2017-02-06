@@ -1425,8 +1425,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		// para cada linha, somar calcular o valor aproximado dos impostos
 		for (MLBRNotaFiscalLine line : getLines())
 		{
+			MProduct product = (MProduct) line.getM_Product();
+			
+			// Verificar se é um Serviço
+			Boolean isservice = MProduct.PRODUCTTYPE_Service.equals(product.getProductType());
+			
 			// somente linhas que tenham NCM
-			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT())
+			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT()
+					&& !isservice)
 				continue;
 			
 			// origem pra definir se é importado ou nacional
@@ -1434,12 +1440,34 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					line.getlbr_ProductSource() : MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_0_Domestic;
 
 			//	IBPT		
-			MLBRIBPTax ibpt = MLBRIBPTax.get (getCtx(), getOrg_Location().getC_Region_ID(), line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
-			if (ibpt == null)
+			MLBRIBPTax ibpt = null;
+			
+			// NF de Produto (NCM)
+			if (!isservice)
 			{
-				log.warning("No IBPT Tax found for NCM: " + line.getlbr_NCMName());
-				continue;
+				ibpt = MLBRIBPTax.getByNCM (getCtx(), getOrg_Location().getC_Region_ID(), 
+						line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
+				
+				if (ibpt == null)
+				{
+					log.warning("No IBPT Tax found for NCM: " + line.getlbr_NCMName());
+					continue;
+				}
 			}
+			// NF de Serviço (NBS)
+			else
+			{
+				ibpt = MLBRIBPTax.getByNBS (getCtx(), getOrg_Location().getC_Region_ID(), 
+						product.get_ValueAsInt("LBR_NBS_ID"), getDateDoc(), line.get_TrxName());
+				
+				if (ibpt == null)
+				{
+					log.warning("No IBPT Tax found for NBS: " + product.get_ValueAsInt("LBR_NBS_ID"));
+					continue;
+				}
+			}
+			
+			
 
 			//	Origem e Versão das informações
 			String source = ibpt.getLBR_Source();
