@@ -81,7 +81,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @return
 	 */
-	public static MLBRIBPTax getbyNCM (Properties ctx, int C_Region_ID, int LBR_NCM_ID, Timestamp dateTrx, String trxName)
+	public static MLBRIBPTax getByNCM (Properties ctx, int C_Region_ID, int LBR_NCM_ID, Timestamp dateTrx, String trxName)
 	{
 		String sql = "AD_Client_ID IN (0, ?)"
 				+ " AND LBR_NCM_ID=?"
@@ -103,7 +103,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @return
 	 */
-	public static MLBRIBPTax getbyNBS (Properties ctx, int C_Region_ID, int LBR_NBS_ID, Timestamp dateTrx, String trxName)
+	public static MLBRIBPTax getByNBS (Properties ctx, int C_Region_ID, int LBR_NBS_ID, Timestamp dateTrx, String trxName)
 	{
 		String sql = "AD_Client_ID IN (0, ?)"
 				+ " AND LBR_NBS_ID=?"
@@ -125,7 +125,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @return
 	 */
-	private static MLBRIBPTax getbyNCM (Properties ctx, int LBR_NCM_ID, String version, String trxName)
+	private static MLBRIBPTax getByNCM (Properties ctx, int LBR_NCM_ID, String version, String trxName)
 	{
 		String sql = null;
 		
@@ -149,7 +149,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @return
 	 */
-	private static MLBRIBPTax getbyNBS (Properties ctx, int LBR_NBS_ID, String version, String trxName)
+	private static MLBRIBPTax getByNBS (Properties ctx, int LBR_NBS_ID, String version, String trxName)
 	{
 		String sql = null;
 		
@@ -252,7 +252,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 						continue;
 					}
 					
-					m_ibptax = getbyNCM (ctx, ncm.getLBR_NCM_ID(),conteudo[11], trxName);
+					m_ibptax = getByNCM (ctx, ncm.getLBR_NCM_ID(),conteudo[11], trxName);
 					
 					//	inserir registro
 					if (m_ibptax == null)
@@ -274,7 +274,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 						continue;
 					}
 					
-					m_ibptax = getbyNBS (ctx, nbs.getLBR_NBS_ID(), conteudo[11], trxName);
+					m_ibptax = getByNBS (ctx, nbs.getLBR_NBS_ID(), conteudo[11], trxName);
 					
 					//	inserir registro
 					if (m_ibptax == null)
