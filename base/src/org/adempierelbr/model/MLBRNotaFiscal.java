@@ -1457,6 +1457,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			// NF de Serviço (NBS)
 			else
 			{
+				// somente Serviços que tenham NBS
+				if (product.get_ValueAsInt("LBR_NBS_ID") <= 0)
+					continue;
+				
 				ibpt = MLBRIBPTax.getByNBS (getCtx(), getOrg_Location().getC_Region_ID(), 
 						product.get_ValueAsInt("LBR_NBS_ID"), getDateDoc(), line.get_TrxName());
 				
