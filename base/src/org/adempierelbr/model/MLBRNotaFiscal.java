@@ -3081,7 +3081,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					e.printStackTrace();
 					//
 					m_processMsg = e.getMessage();
-					
+					//	Adicionar Erro na Janela NF
+					setErrorMsg(m_processMsg);
+					//	Alterar Estado da NF para Falha no Schema
 					setlbr_NFeStatus(LBR_NFESTATUS_215_RejeiçãoFalhaNoSchemaXML);					
 					return DocAction.STATUS_InProgress;
 				}
@@ -3123,6 +3125,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			//	Set action
 			setProcessed(true);
+			
+			//	Reset Error Message
+			setErrorMsg("");
 		}
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);

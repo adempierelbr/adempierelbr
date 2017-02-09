@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20161110L;
+	private static final long serialVersionUID = 20170209L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -527,6 +527,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getDocumentNote () 
 	{
 		return (String)get_Value(COLUMNNAME_DocumentNote);
+	}
+
+	/** Set Error Msg.
+		@param ErrorMsg Error Msg	  */
+	public void setErrorMsg (String ErrorMsg)
+	{
+		set_Value (COLUMNNAME_ErrorMsg, ErrorMsg);
+	}
+
+	/** Get Error Msg.
+		@return Error Msg	  */
+	public String getErrorMsg () 
+	{
+		return (String)get_Value(COLUMNNAME_ErrorMsg);
 	}
 
 	/** Set Freight Amount.
