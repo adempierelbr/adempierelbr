@@ -32,7 +32,7 @@ ipi.cst AS cstipi, icmsst.lbr_taxamt AS icmsst_taxamt,
 icmsst.lbr_taxbase AS icmsst_taxbase, 
 icmsst.lbr_taxbaseamt AS icmsst_taxbaseamt, 
 icmsst.lbr_taxrate AS icmsst_taxrate, icmsst.cst AS icmsst_taxstatus,
-round(nfl.linetotalamt + COALESCE(icmsst.lbr_taxamt, 0::numeric) + COALESCE(ipi.lbr_taxamt, 0::numeric), 2) AS grossramt
+round(nfl.linetotalamt + COALESCE(icmsst.lbr_taxamt, 0::numeric) + COALESCE(ipi.lbr_taxamt, 0::numeric), 2) AS grossramt,
 fcp.lbr_taxamt AS fcp_taxamt, fcp.lbr_taxbase AS fcp_taxbase, fcp.lbr_taxbaseamt AS fcp_taxbaseamt, fcp.lbr_taxrate AS fcp_taxrate, 
 fcp.cst AS fcp_taxstatus,
 icmsdifal.lbr_taxamt AS icmsdifal_taxamt, icmsdifal.lbr_taxbase AS icmsdifal_taxbase, icmsdifal.lbr_taxbaseamt AS icmsdifal_taxbaseamt, 
