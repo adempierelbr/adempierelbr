@@ -619,7 +619,22 @@ public class MLBRBoleto extends X_LBR_Boleto
 			MLocation Location = null;
 			MRegion Region = null;
 
-			BPLocation = BPartner.getLocation(invoice.getC_BPartner_Location_ID());
+			BPLocation = BPartner.getLocation(invoice.getC_BPartner_Location_ID());			
+			
+			if (!BPLocation.isPayFrom())
+			{
+				// Procurar um Endereço de Cobrança
+				MBPartnerLocation LocationPayFrom = new Query(Env.getCtx(), MBPartnerLocation.Table_Name,
+						"AD_Client_ID = ? AND C_BPartner_ID = ? AND IsPayFrom = 'Y' AND IsActive = 'Y'", invoice.get_TrxName())
+						.setParameters(invoice.getAD_Client_ID(), invoice.getC_BPartner_ID())
+						.first();
+				
+				// Se Encontrar um Endereço de Cobrança substituir a localização
+				if (LocationPayFrom != null)
+					BPLocation = LocationPayFrom;
+				
+			}
+			
 			Location = MLocation.get(ctx, BPLocation.getC_Location_ID(), trx);
 			Region = new MRegion(ctx, Location.getC_Region_ID(),trx);
 
