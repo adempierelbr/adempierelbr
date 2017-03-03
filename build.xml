@@ -219,5 +219,10 @@
 			<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcXMLExport*" />
 		   	<fileset dir="${build.dir}/org/adempierelbr/process" includes="**/ProcReturnCNAB*" />
 		</copy>
+		
+		<!-- processes classes  -->
+		<copy failonerror="no" todir="${build.dir}/WEB-INF/classes/org/compiere/report" overwrite="true">
+			<fileset dir="${build.dir}/org/compiere/report" includes="**/ReportStarter*" />
+		</copy>
 	</target>
 </project>
