@@ -1221,6 +1221,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setlbr_ServiceTaxes();
 		}
 		
+		//	Natureza da Operação do Tipo de Documento do Pedido
+		if (getC_Order_ID()>0)
+		{
+			// Tipo de Documento do Pedido
+			MDocType dtorder = new MDocType(getCtx(),getC_Order().getC_DocType_ID(),get_TrxName());
+			
+			// Se o campo estiver preenchido adicionar na Natureza da Operação
+			if (dtorder.get_ValueAsString("lbr_CFOPNote") != null &&
+					!dtorder.get_ValueAsString("lbr_CFOPNote").isEmpty())
+				setlbr_CFOPNote(dtorder.get_ValueAsString("lbr_CFOPNote"));			
+		}
+		
 		//	Linhas
 		for (MInvoiceLine iLine : invoice.getLines())
 		{
@@ -1333,6 +1345,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Impostos
 		setTaxes(order);
+		
+		//	Natureza da Operação do Tipo de Documento do Pedido		
+		MDocType dtorder = new MDocType(getCtx(),getC_Order().getC_DocType_ID(),get_TrxName());
+		
+		// Se o campo estiver preenchido adicionar na Natureza da Operação
+		if (dtorder.get_ValueAsString("lbr_CFOPNote") != null &&
+				!dtorder.get_ValueAsString("lbr_CFOPNote").isEmpty())
+			setlbr_CFOPNote(dtorder.get_ValueAsString("lbr_CFOPNote"));			
 		
 		//	Linhas
 		for (MOrderLine oLine : order.getLines())
