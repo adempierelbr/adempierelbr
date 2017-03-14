@@ -791,7 +791,7 @@ public class EFDUtil {
 		
 		// unidade
 		MUOM uom = new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName());
-		reg.setUNID_INV(uom.get_Translation(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE)));
+		reg.setUNID_INV(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE));
 		
 		// tipo do item
 		reg.setTIPO_ITEM(product.get_ValueAsString("lbr_ItemTypeBR"));
