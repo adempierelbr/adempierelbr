@@ -250,7 +250,7 @@ Os movimentos são criados somente, se um abastecimento de armazém está defini
     <value column="Help" original="" />
   </row>
   <row id="151" trl="Y">
-    <value column="Name" original="Invoice Transactions (Doc)">Transações de Faturamento (Contábil)</value>
+    <value column="Name" original="Invoice Transactions (Doc)">Transações de Faturamento (DOC)</value>
     <value column="Description" original="Invoice Transactions by Invoice Date">Transações de Faturamento por Data de Faturamento</value>
     <value column="Help" original="The report lists the invoice transactiobs by invoice date">O relatório lista as transações de faturamento por data de faturamento</value>
   </row>

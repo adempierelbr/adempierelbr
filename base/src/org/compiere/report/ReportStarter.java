@@ -710,7 +710,10 @@ public class ReportStarter implements ProcessCall, ClientProcess
 	private File[] getResourceSubreports(String reportName, String reportPath, String fileExtension)
 	{
 		ArrayList<File> subreports = new ArrayList<File>();
-		String remoteDir = reportPath.substring(0, reportPath.lastIndexOf("/"));
+
+		String remoteDir = "";
+		if (reportPath.contains("/"))
+			remoteDir = reportPath.substring(0, reportPath.lastIndexOf("/"));
 
 		// Currently check hardcoded for max. 10 subreports
 		for(int i=1; i<10; i++)

@@ -1221,6 +1221,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setlbr_ServiceTaxes();
 		}
 		
+		//	Natureza da Operação do Tipo de Documento do Pedido
+		if (getC_Order_ID()>0)
+		{
+			// Tipo de Documento do Pedido
+			MDocType dtorder = new MDocType(getCtx(),getC_Order().getC_DocType_ID(),get_TrxName());
+			
+			// Se o campo estiver preenchido adicionar na Natureza da Operação
+			if (dtorder.get_ValueAsString("lbr_CFOPNote") != null &&
+					!dtorder.get_ValueAsString("lbr_CFOPNote").isEmpty())
+				setlbr_CFOPNote(dtorder.get_ValueAsString("lbr_CFOPNote"));			
+		}
+		
 		//	Linhas
 		for (MInvoiceLine iLine : invoice.getLines())
 		{
@@ -1334,6 +1346,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Impostos
 		setTaxes(order);
 		
+		//	Natureza da Operação do Tipo de Documento do Pedido		
+		MDocType dtorder = new MDocType(getCtx(),getC_Order().getC_DocType_ID(),get_TrxName());
+		
+		// Se o campo estiver preenchido adicionar na Natureza da Operação
+		if (dtorder.get_ValueAsString("lbr_CFOPNote") != null &&
+				!dtorder.get_ValueAsString("lbr_CFOPNote").isEmpty())
+			setlbr_CFOPNote(dtorder.get_ValueAsString("lbr_CFOPNote"));			
+		
 		//	Linhas
 		for (MOrderLine oLine : order.getLines())
 		{
@@ -1425,8 +1445,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		// para cada linha, somar calcular o valor aproximado dos impostos
 		for (MLBRNotaFiscalLine line : getLines())
 		{
+			MProduct product = (MProduct) line.getM_Product();
+			
+			// Verificar se é um Serviço
+			Boolean isservice = MProduct.PRODUCTTYPE_Service.equals(product.getProductType());
+			
 			// somente linhas que tenham NCM
-			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT())
+			if (line.getLBR_NCM_ID() <= 0 || !line.getLBR_CFOP().isLBR_IsShowIBPT()
+					&& !isservice)
 				continue;
 			
 			// origem pra definir se é importado ou nacional
@@ -1434,12 +1460,38 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					line.getlbr_ProductSource() : MLBRNotaFiscalLine.LBR_PRODUCTSOURCE_0_Domestic;
 
 			//	IBPT		
-			MLBRIBPTax ibpt = MLBRIBPTax.get (getCtx(), getOrg_Location().getC_Region_ID(), line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
-			if (ibpt == null)
+			MLBRIBPTax ibpt = null;
+			
+			// NF de Produto (NCM)
+			if (!isservice)
 			{
-				log.warning("No IBPT Tax found for NCM: " + line.getlbr_NCMName());
-				continue;
+				ibpt = MLBRIBPTax.getByNCM (getCtx(), getOrg_Location().getC_Region_ID(), 
+						line.getLBR_NCM_ID(), getDateDoc(), line.get_TrxName());
+				
+				if (ibpt == null)
+				{
+					log.warning("No IBPT Tax found for NCM: " + line.getlbr_NCMName());
+					continue;
+				}
 			}
+			// NF de Serviço (NBS)
+			else
+			{
+				// somente Serviços que tenham NBS
+				if (product.get_ValueAsInt("LBR_NBS_ID") <= 0)
+					continue;
+				
+				ibpt = MLBRIBPTax.getByNBS (getCtx(), getOrg_Location().getC_Region_ID(), 
+						product.get_ValueAsInt("LBR_NBS_ID"), getDateDoc(), line.get_TrxName());
+				
+				if (ibpt == null)
+				{
+					log.warning("No IBPT Tax found for NBS: " + product.get_ValueAsInt("LBR_NBS_ID"));
+					continue;
+				}
+			}
+			
+			
 
 			//	Origem e Versão das informações
 			String source = ibpt.getLBR_Source();
@@ -3064,7 +3116,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					e.printStackTrace();
 					//
 					m_processMsg = e.getMessage();
-					return DOCSTATUS_Invalid;
+					//	Adicionar Erro na Janela NF
+					setErrorMsg(m_processMsg);
+					//	Alterar Estado da NF para Falha no Schema
+					setlbr_NFeStatus(LBR_NFESTATUS_215_RejeiçãoFalhaNoSchemaXML);					
+					return DocAction.STATUS_InProgress;
 				}
 			}
 			
@@ -3104,6 +3160,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			//	Set action
 			setProcessed(true);
+			
+			//	Reset Error Message
+			setErrorMsg("");
 		}
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
@@ -3181,6 +3240,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				//	XML gerado, pronto para ser adicionado ao lote
 				else if (DOCSTATUS_InProgress.equals (getDocStatus()))
 				{
+					if (getlbr_NFeStatus() != null)
+						throw new Exception ("Falha no Schema da NF-e");
+					
 					//	Cria um novo lote para a transmissão
 					MLBRNFeLot lot = new MLBRNFeLot (getCtx(), 0, get_TrxName());
 					lot.setName("[Auto] NF: " + getDocumentNo());

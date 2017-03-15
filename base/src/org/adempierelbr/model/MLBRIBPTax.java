@@ -81,7 +81,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	 * @param trxName
 	 * @return
 	 */
-	public static MLBRIBPTax get (Properties ctx, int C_Region_ID, int LBR_NCM_ID, Timestamp dateTrx, String trxName)
+	public static MLBRIBPTax getByNCM (Properties ctx, int C_Region_ID, int LBR_NCM_ID, Timestamp dateTrx, String trxName)
 	{
 		String sql = "AD_Client_ID IN (0, ?)"
 				+ " AND LBR_NCM_ID=?"
@@ -95,21 +95,71 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 	}	//	get
 	
 	/**
-	 * 		Get IBPT with selected version
+	 * 		Get IBPT (Global Search)
+	 * @author Ricardo Santana (Kenos, www.kenos.com.br)
 	 * @param ctx
 	 * @param LBR_NCM_ID
 	 * @param dateTrx
 	 * @param trxName
 	 * @return
 	 */
-	private static MLBRIBPTax get (Properties ctx, int LBR_NCM_ID, String version, String trxName)
+	public static MLBRIBPTax getByNBS (Properties ctx, int C_Region_ID, int LBR_NBS_ID, Timestamp dateTrx, String trxName)
 	{
-		String sql = "AD_Client_ID=?"
-				+ " AND LBR_NCM_ID=?"
-				+ " AND Version=?";
+		String sql = "AD_Client_ID IN (0, ?)"
+				+ " AND LBR_NBS_ID=?"
+				+ " AND ValidFrom<=" + DB.TO_DATE (dateTrx) 
+				+ " AND (ValidTo IS NULL OR ValidTo>= " + DB.TO_DATE (dateTrx) + ")";
+		//
+		return new Query (ctx, Table_Name, sql, trxName)
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), LBR_NBS_ID})
+			.setOrderBy("AD_Client_ID DESC, ValidFrom DESC")
+			.first();
+	}	//	get
+	
+	/**
+	 * 		Get IBPT with selected version
+	 * @param ctx
+	 * @param LBR_NCM_ID
+	 * @param LBR_NBS_ID
+	 * @param dateTrx
+	 * @param trxName
+	 * @return
+	 */
+	private static MLBRIBPTax getByNCM (Properties ctx, int LBR_NCM_ID, String version, String trxName)
+	{
+		String sql = null;
+		
+		if (LBR_NCM_ID > 0)
+			sql = "AD_Client_ID=?"
+					+ " AND LBR_NCM_ID=?"
+					+ " AND Version=?";
+	
 		//
 		return new Query (ctx, Table_Name, sql, trxName)
 			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), LBR_NCM_ID, version})
+			.setOrderBy("ValidFrom DESC")
+			.firstOnly();
+	}	//	get
+	
+	/**
+	 * 		Get IBPT with selected version
+	 * @param ctx
+	 * @param LBR_NBS_ID
+	 * @param dateTrx
+	 * @param trxName
+	 * @return
+	 */
+	private static MLBRIBPTax getByNBS (Properties ctx, int LBR_NBS_ID, String version, String trxName)
+	{
+		String sql = null;
+		
+		if (LBR_NBS_ID > 0)
+			sql = "AD_Client_ID=?"
+					+ " AND LBR_NBS_ID=?"
+					+ " AND Version=?";		
+		//
+		return new Query (ctx, Table_Name, sql, trxName)
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), LBR_NBS_ID, version})
 			.setOrderBy("ValidFrom DESC")
 			.firstOnly();
 	}	//	get
@@ -170,7 +220,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 				/*	
 				 * 	0 - NCM
 				 * 	1 - EX IPI
-				 * 	2 - Tipo
+				 * 	2 - Tipo (0 - NCM / 1 e 2 - NBS) - NCM = Produto / NBS = Serviço
 				 * 	3 - Descrição
 				 * 	4 - % Federal (Nacionais)
 				 * 	5 - % Federal (Importados)
@@ -185,25 +235,54 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 				if (conteudo.length < 5)
 					continue;
 				
-				// Ex: 20021000;01;0;Ex 01 - Cozidos (exceto em água ou vapor) e congelados;31.45;38.94;
-				String ncmName = conteudo[0];
-				MLBRNCM ncm = MLBRNCM.get (ctx, ncmName, trxName);
+				//	pesquissar existente
+				MLBRIBPTax m_ibptax = null;				
 				
-				// verificar se o NCM está cadastrado no Adempiere, senão desconsiderar
-				if (ncm == null)
-				{
-					log.info ("NCM não encontrado para importar IBPT: " + ncmName);
-					continue;
+				// Se o Tipo (conteudo[2]) for 0, buscar por NCM (Produto)
+				if ("0".equals(conteudo[2]))
+				{	
+					// Ex: 20021000;01;0;Ex 01 - Cozidos (exceto em água ou vapor) e congelados;31.45;38.94;
+					String ncmName = conteudo[0];
+					MLBRNCM ncm = MLBRNCM.get (ctx, ncmName, trxName);
+					
+					// verificar se o NCM está cadastrado no Adempiere, senão desconsiderar
+					if (ncm == null)
+					{
+						log.info ("NCM não encontrado para importar IBPT: " + ncmName);
+						continue;
+					}
+					
+					m_ibptax = getByNCM (ctx, ncm.getLBR_NCM_ID(),conteudo[11], trxName);
+					
+					//	inserir registro
+					if (m_ibptax == null)
+						m_ibptax = new MLBRIBPTax (ctx, 0, trxName);
+					
+					m_ibptax.setLBR_NCM_ID(ncm.getLBR_NCM_ID());
+					
 				}
+				// Se o Tipo (conteudo[2]) for 1 ou 2, buscar por NBS (Serviço)
+				else
+				{
+					String nbsName = conteudo[0];
+					MLBRNBS nbs = MLBRNBS.get(ctx, nbsName, trxName);
+					
+					// verificar se o NBS está cadastrado no Adempiere, senão desconsiderar
+					if (nbs == null)
+					{
+						log.info ("NBS não encontrado para importar IBPT: " + nbsName);
+						continue;
+					}
+					
+					m_ibptax = getByNBS (ctx, nbs.getLBR_NBS_ID(), conteudo[11], trxName);
+					
+					//	inserir registro
+					if (m_ibptax == null)
+						m_ibptax = new MLBRIBPTax (ctx, 0, trxName);
+					
+					m_ibptax.setLBR_NBS_ID(nbs.getLBR_NBS_ID());
+				}				
 				
-				// 	pesquissar existente
-				MLBRIBPTax m_ibptax = get (ctx, ncm.getLBR_NCM_ID(), conteudo[11], trxName);
-				
-				//	inserir registro
-				if (m_ibptax == null)
-					m_ibptax = new MLBRIBPTax (ctx, 0, trxName);
-				
-				m_ibptax.setLBR_NCM_ID(ncm.getLBR_NCM_ID());
 				m_ibptax.setAD_Client_ID(Env.getAD_Client_ID(ctx));
 				m_ibptax.setAD_Org_ID(0);
 				m_ibptax.setC_Region_ID(p_C_Region_ID);

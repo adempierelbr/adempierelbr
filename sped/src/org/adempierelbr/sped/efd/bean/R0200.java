@@ -60,6 +60,9 @@ public class R0200 extends RegSped {
 	@XMLFieldProperties( maxSize = 4, isMandatory = false, id = "ALIQ_ICMS")
 	private BigDecimal ALIQ_ICMS;
 	
+	@XMLFieldProperties( maxSize = 7, isMandatory = false, id = "CEST")
+	private String CEST;
+	
 	/**
 	 * Constructor
 	 */
@@ -151,6 +154,17 @@ public class R0200 extends RegSped {
 
 	public BigDecimal getALIQ_ICMS() {
 		return ALIQ_ICMS;
+	}
+	
+	public String getCEST()
+	{
+		return CEST;
+	}
+
+
+	public void setCEST(String cEST)
+	{
+		CEST = cEST;
 	}
 
 	public void setALIQ_ICMS(BigDecimal aLIQ_ICMS) {

@@ -113,7 +113,7 @@ public class ProcXMLExport extends SvrProcess
 		
 		//
 		StringBuffer whereClause = new StringBuffer("AD_Client_ID=?")
-		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
+		.append(" AND TRUNC (DateDoc) BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
 
 		if (p_C_DocTypeTarget_ID > 0)

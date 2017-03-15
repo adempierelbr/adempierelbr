@@ -133,7 +133,7 @@ public abstract class LBRUtils
 	 */
 	public static int getInvoiceIDonFile (int AD_Org_ID, String docNo, String trxName)
 	{
-		docNo = docNo.substring (docNo.indexOf('B') + 1, docNo.indexOf('F'));
+		docNo = docNo.substring (docNo.indexOf('F') + 1, docNo.indexOf('P'));
 		
 		if (docNo == null || docNo.isEmpty())
 			return -1;
