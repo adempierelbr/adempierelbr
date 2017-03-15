@@ -529,6 +529,20 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		return (String)get_Value(COLUMNNAME_DocumentNote);
 	}
 
+	/** Set Error Msg.
+		@param ErrorMsg Error Msg	  */
+	public void setErrorMsg (String ErrorMsg)
+	{
+		set_Value (COLUMNNAME_ErrorMsg, ErrorMsg);
+	}
+
+	/** Get Error Msg.
+		@return Error Msg	  */
+	public String getErrorMsg () 
+	{
+		return (String)get_Value(COLUMNNAME_ErrorMsg);
+	}
+
 	/** Set Freight Amount.
 		@param FreightAmt 
 		Freight Amount 
