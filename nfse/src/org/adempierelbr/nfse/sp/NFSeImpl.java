@@ -34,11 +34,13 @@ import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.validator.VLBROrder;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MDocType;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
@@ -148,19 +150,22 @@ public class NFSeImpl implements INFSe
 		BigDecimal v_IR 	= toBD (nf.getTaxAmt("IR")).abs();
 		BigDecimal v_CSLL 	= toBD (nf.getTaxAmt("CSLL")).abs();
 		
-		if (v_PIS.signum() == 1)
+		//	Impostos com Retenção
+		List<String> haswithhold = VLBROrder.hasWithHold ((MInvoice)nf.getC_Invoice());
+		
+		if (v_PIS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
 			tpRPS.setValorPIS(v_PIS);
 		
-		if (v_COFINS.signum() == 1)
+		if (v_COFINS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
 			tpRPS.setValorCOFINS(v_COFINS);
 		
-		if (v_INSS.signum() == 1)
+		if (v_INSS.signum() == 1 && haswithhold.contains("INSS"))
 			tpRPS.setValorINSS(v_INSS);
 		
-		if (v_IR.signum() == 1)
+		if (v_IR.signum() == 1 && haswithhold.contains("IR"))
 			tpRPS.setValorIR(v_IR);
 		
-		if (v_CSLL.signum() == 1)
+		if (v_CSLL.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
 			tpRPS.setValorCSLL(v_CSLL);
 		//
 		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
