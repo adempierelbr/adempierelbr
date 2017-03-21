@@ -196,7 +196,8 @@ public class InvoiceGenerate extends SvrProcess
 				//	New Invoice Location
 				if (!p_ConsolidateDocument 
 					|| (m_invoice != null
-					&& m_invoice.getC_BPartner_Location_ID() != order.getBill_Location_ID()) || m_invoice.getAD_Org_ID() != order.getAD_Org_ID() )
+					&& m_invoice.getC_BPartner_Location_ID() != order.getBill_Location_ID())
+					|| (m_invoice != null && m_invoice.getAD_Org_ID() != order.getAD_Org_ID()) )
 					completeInvoice();
 				boolean completeOrder = MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule());
 				
