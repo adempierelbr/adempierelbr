@@ -36,6 +36,7 @@ import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.validator.VLBROrder;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
+import org.adempierelbr.wrapper.I_W_C_Invoice;
 import org.apache.xmlbeans.XmlCalendar;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -151,22 +152,29 @@ public class NFSeImpl implements INFSe
 		BigDecimal v_CSLL 	= toBD (nf.getTaxAmt("CSLL")).abs();
 		
 		//	Impostos com Retenção
-		List<String> haswithhold = VLBROrder.hasWithHold ((MInvoice)nf.getC_Invoice());
+		I_W_C_Invoice invoice = POWrapper.create(new MInvoice (Env.getCtx(), nf.getC_Invoice_ID(), null), I_W_C_Invoice.class);
 		
-		if (v_PIS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
-			tpRPS.setValorPIS(v_PIS);
+		// Verificar quais impostos possui retenção
+		List<String> haswithhold = VLBROrder.hasWithHold ((MInvoice) nf.getC_Invoice());
 		
-		if (v_COFINS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
-			tpRPS.setValorCOFINS(v_COFINS);
-		
-		if (v_INSS.signum() == 1 && haswithhold.contains("INSS"))
-			tpRPS.setValorINSS(v_INSS);
-		
-		if (v_IR.signum() == 1 && haswithhold.contains("IR"))
-			tpRPS.setValorIR(v_IR);
-		
-		if (v_CSLL.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
-			tpRPS.setValorCSLL(v_CSLL);
+		// Se a Flag Possui retenção estiver desmarcada não adicionar os impostos
+		if (invoice.isLBR_HasWithhold())
+		{	
+			if (v_PIS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
+				tpRPS.setValorPIS(v_PIS);
+			
+			if (v_COFINS.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
+				tpRPS.setValorCOFINS(v_COFINS);
+			
+			if (v_INSS.signum() == 1 && haswithhold.contains("INSS"))
+				tpRPS.setValorINSS(v_INSS);
+			
+			if (v_IR.signum() == 1 && haswithhold.contains("IR"))
+				tpRPS.setValorIR(v_IR);
+			
+			if (v_CSLL.signum() == 1 && haswithhold.contains("PIS-COFINS-CSLL"))
+				tpRPS.setValorCSLL(v_CSLL);
+		}
 		//
 		TpCPFCNPJ tpCPFCNPJ = tpRPS.addNewCPFCNPJTomador();
 		//
