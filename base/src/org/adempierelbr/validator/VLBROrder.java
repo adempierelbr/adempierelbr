@@ -1,6 +1,11 @@
 package org.adempierelbr.validator;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -816,30 +821,8 @@ public class VLBROrder implements ModelValidator
 		{
 			M_Product_ID = cInfoW.getLBR_ProductWithhold_ID();
 			
-			//	Withhold Amount
-			String sql = "SELECT   " + 
-						"        COALESCE (SUM (TaxAmt), 0) " + 
-						"FROM " + 
-						" " + 
-						"   (SELECT  " + 
-						"            tn.LBR_WithholdGroup,  " + 
-						"            SUM (TaxAmt) AS TaxAmt,  " + 
-						"            AVG (LBR_WithholdThreshold) AS LBR_WithholdThreshold " + 
-						"    FROM  " + 
-						"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
-						"    WHERE  " + 
-						"            1=1 " + 
-						"            AND it.C_Invoice_ID=?  " + 
-						"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
-						"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
-						"            AND tn.LBR_WithholdType='T' " + 
-						"			 AND tn.LBR_HasWithhold='Y' " + 
-						"    GROUP BY  " + 
-						"            tn.LBR_WithholdGroup) a " + 
-						"WHERE " + 
-						"        TaxAmt >= LBR_WithholdThreshold"; 
-			
-			amount = DB.getSQLValueBD (invoice.get_TrxName(), sql, invoice.getC_Invoice_ID()).negate();
+			// Buscar o Valor de Renteção
+			amount = withHoldAmount(invoice);
 		}
 		
 		//	Charge Amount
@@ -943,4 +926,89 @@ public class VLBROrder implements ModelValidator
 		//
 		return amount;
 	}	//	getInsuranceAmt
+	
+	/**
+	 *	Valor de Retenção
+	 */
+	public BigDecimal withHoldAmount(MInvoice invoice)
+	{
+		BigDecimal amount = Env.ZERO;
+		
+		//		Withhold Amount
+		String sql = "SELECT   " + 
+					"        COALESCE (SUM (TaxAmt), 0) " + 
+					"FROM " + 
+					" " + 
+					"   (SELECT  " + 
+					"            tn.LBR_WithholdGroup,  " + 
+					"            SUM (TaxAmt) AS TaxAmt,  " + 
+					"            AVG (LBR_WithholdThreshold) AS LBR_WithholdThreshold " + 
+					"    FROM  " + 
+					"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
+					"    WHERE  " + 
+					"            1=1 " + 
+					"            AND it.C_Invoice_ID=?  " + 
+					"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
+					"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
+					"            AND tn.LBR_WithholdType='T' " + 
+					"			 AND tn.LBR_HasWithhold='Y' " + 
+					"    GROUP BY  " + 
+					"            tn.LBR_WithholdGroup) a " + 
+					"WHERE " + 
+					"        TaxAmt >= LBR_WithholdThreshold"; 
+		
+		amount = DB.getSQLValueBD (invoice.get_TrxName(), sql, invoice.getC_Invoice_ID()).negate();
+				
+		return amount;
+	}	//	withHoldAmount
+	
+	/**
+	 *	Identificar quais Impostos possuem retenção
+	 */
+	public static List<String> hasWithHold(MInvoice invoice)
+	{		
+		// Withhold Description
+		String sql = "SELECT  LBR_WithholdGroup FROM " + 
+					"   (SELECT  " + 
+					"            tn.LBR_WithholdGroup,  " + 
+					"            SUM (TaxAmt) AS TaxAmt,  " + 
+					"            AVG (LBR_WithholdThreshold) AS LBR_WithholdThreshold " + 
+					"    FROM  " + 
+					"            C_InvoiceTax it, C_Tax t, LBR_TaxName tn " + 
+					"    WHERE  " + 
+					"            1=1 " + 
+					"            AND it.C_Invoice_ID=?  " + 
+					"            AND it.C_Tax_ID=t.C_Tax_ID  " + 
+					"            AND t.LBR_TaxName_ID=tn.LBR_TaxName_ID " + 
+					"            AND tn.LBR_WithholdType='T' " + 
+					"			 AND tn.LBR_HasWithhold='Y' " + 
+					"    GROUP BY  " + 
+					"            tn.LBR_WithholdGroup) a " + 
+					"WHERE " + 
+					"        TaxAmt >= LBR_WithholdThreshold"; 
+		
+		try
+		{
+			
+			// Resultado
+			PreparedStatement pstmt = DB.prepareStatement(sql, invoice.get_TrxName());
+			pstmt.setInt(1, invoice.getC_Invoice_ID());
+			ResultSet rs = pstmt.executeQuery();		
+		
+			List<String> list = new ArrayList<String>();
+			
+			while (rs.next())
+				list.add(rs.getString(1));
+			
+			// Devolver resultado
+			if (list != null)
+				return list;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}		
+		
+		return null;
+	}	//	hasWithHold
 }	//	VLBROrder
