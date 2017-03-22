@@ -2359,7 +2359,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					setlbr_NFSerie(dt.get_ValueAsString("lbr_NFSerie"));
 			}
 			
-			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+			MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), getNFModel());
 			if (config != null)
 			{
 				//	Preenche o ambiente da NF caso esteja em branco
@@ -2425,9 +2425,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			setlbr_NFSerie(getlbr_NFeID().substring(22, 25));
 		}
 		
+		//	NFC-e details
+		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+		{
+			//	Mandatory End User
+			setlbr_TransactionType(LBR_TRANSACTIONTYPE_EndUser);
+			
+			//	Force Presence
+			if (!TextUtil.match (getLBR_IndPres(), LBR_INDPRES_OperaçãoPresencial, LBR_INDPRES_NFC_EEmOperaçãoComEntregaEmDomicílio))
+				setLBR_IndPres (LBR_INDPRES_OperaçãoPresencial);
+		}
+		
 		return true;
 	}	//	beforeSave
-	
+
 	/**
 	 * 	Called after Save for Post-Save Operation
 	 * 	@param newRecord new record
@@ -3082,6 +3093,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					m_processMsg = "NF sem Pedido ou Fatura atrelada. Para fazer uma NF Manual, clique no campo Manual.";
 					return DocAction.STATUS_Invalid;
 				}
+				
+				//	Save to preserve before save options
+				save();
 			}
 			
 			//	Nota Fiscal Eletrônica
@@ -3091,6 +3105,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setlbr_NFeStatus (null);
 				setlbr_NFeID (null);
 				setLBR_NFeLot_ID (0);
+				
+				//	Ajusta a data/hora de emissão da NFC-e
+				if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+					setDateDoc(new Timestamp (System.currentTimeMillis()));
 				try
 				{
 					//	Gera o XML da NF-e
@@ -3233,6 +3251,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					lot.setName("[Auto] NF: " + getDocumentNo());
 					lot.setAD_Org_ID(getAD_Org_ID());
 					lot.setLBR_NFeLotMethod(MLBRNFeLot.LBR_NFELOTMETHOD_Synchronous);
+					lot.setlbr_NFModel(getlbr_NFModel());
 					lot.save();
 					
 					//	Vincula o lote criado a NF-e
@@ -3658,7 +3677,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
 		MOrgInfo oi = MOrgInfo.get (ctx, p_AD_Org_ID, null);
-		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID);
+		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID, LBR_NFMODEL_NotaFiscalEletrônica);
 		//
 		if (p_LBR_EnvType == null)
 			p_LBR_EnvType = config.getlbr_NFeEnv();
@@ -3758,4 +3777,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		else
 			super.setDocumentNo(docNo);
 	}	//	setDocumentNo
+	
+	/**
+	 * 	Get NF Model from NF or Document Type
+	 * 	@return document number or null if absent
+	 */
+	private String getNFModel()
+	{
+		if (getlbr_NFModel() != null)
+			return getlbr_NFModel();
+		if (getC_DocTypeTarget_ID() > 0)
+		{
+			I_W_C_DocType dt = POWrapper.create(new MDocType (getCtx(), getC_DocTypeTarget_ID(), get_TrxName()), I_W_C_DocType.class);
+			return dt.getlbr_NFModel();
+		}
+		return null;
+	}	//	getNFModel
 }	//	MLBRNotaFiscal

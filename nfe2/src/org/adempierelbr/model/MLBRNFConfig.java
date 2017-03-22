@@ -3,6 +3,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -67,16 +68,39 @@ public class MLBRNFConfig extends X_LBR_NFConfig
 			setlbr_MotivoScan(null);
 		}
 
+		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+		{
+			if (!TextUtil.match(getlbr_DANFEFormat(), LBR_DANFEFORMAT_3_SimpleDANFE, 
+														LBR_DANFEFORMAT_4_DANFENFC_E, 
+														LBR_DANFEFORMAT_5_DANFENFC_EInEletronicMessage))
+			{
+				log.saveError("FillMandatory", "Formato da DANFE não compatível com NFC-e");
+				return false;
+			}
+		}
+		
 		return true;
 	}	//	beforeSave
 	
 	/**
-	 * 	Get Configuration for this Organization
+	 * 	Get Configuration for this Organization,
+	 * 	default model 55
 	 * @param AD_Org_ID
 	 * @return
 	 */
 	public static MLBRNFConfig get (int AD_Org_ID)
 	{
-		return new Query (Env.getCtx(), Table_Name, "AD_Org_ID=?", null).setParameters(AD_Org_ID).first();
+		return get (AD_Org_ID, LBR_NFMODEL_NotaFiscalEletrônica);
+	}	//	get
+	
+	/**
+	 * 	Get Configuration for this Organization
+	 * @param AD_Org_ID
+	 * @param modelNF Model of NF (Usually 55 or 65)
+	 * @return
+	 */
+	public static MLBRNFConfig get (int AD_Org_ID, String modelNF)
+	{
+		return new Query (Env.getCtx(), Table_Name, "AD_Org_ID=? AND LBR_NFModel=?", null).setParameters(AD_Org_ID, modelNF).first();
 	}	//	get
 }	//	MLBRNFConfig

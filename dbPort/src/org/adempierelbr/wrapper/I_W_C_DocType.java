@@ -346,7 +346,7 @@ public interface I_W_C_DocType extends I_C_DocType
 	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
 
 	/** Nota Fiscal de Consumidor Eletrônica = 56 */
-	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "65";
 
 
 	/** Set NF Model.

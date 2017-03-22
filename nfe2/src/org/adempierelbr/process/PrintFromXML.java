@@ -14,6 +14,7 @@
 package org.adempierelbr.process;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +32,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeLot;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
@@ -46,6 +49,12 @@ import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
 import net.sf.jasperreports.engine.JRException;
@@ -118,7 +127,8 @@ public class PrintFromXML extends SvrProcess
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
-		
+		Map<String, Object> qrFiles = getReportFile (printLogo);
+
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
 		{
@@ -160,6 +170,31 @@ public class PrintFromXML extends SvrProcess
 				else
 					return "Documento sem formato de impress\u00E3o dispon\u00EDvel ou impress\u00E3o n\u00E3o permitida";
 			}
+			
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals (doc.getlbr_NFModel ()))
+			{
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				try 
+				{
+					Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+					hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+					hints.put(EncodeHintType.MARGIN, 2);
+					//
+					MatrixToImageWriter.writeToStream(new QRCodeWriter().encode(doc.get_ValueAsString("LBR_NFCeQRCodeURL"), BarcodeFormat.QR_CODE, 300, 300, hints), "PNG", out);
+				}
+				catch (WriterException e)
+				{
+					e.printStackTrace();
+					log.severe("Não foi possível gerar o DANFE da NFC-e. Erro: " + e.getMessage());
+					throw new AdempiereException("Não foi possível gerar o QRCode da NFC-e.");
+				}
+				
+				//	URL
+				String url = MLBRNFeWebService.getURL (MLBRNFeWebService.NFCE_CONSULTA_QRCODE, doc.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, doc.getOrg_Location().getC_Region_ID());
+				
+				qrFiles.put("QRCode", new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray()));
+				qrFiles.put("URLConsulta", url);
+			}
 
 			att = doc.getAttachment (true);
 			
@@ -171,11 +206,8 @@ public class PrintFromXML extends SvrProcess
 				reportName = "DanfeMainPortraitA4.jasper";
 			else if (MLBRNotaFiscal.LBR_DANFEFORMAT_2_NormalDANFE_Landscape.equals(doc.getlbr_DANFEFormat()))
 				reportName = "DanfeMainLandscapeA4.jasper";
-//			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
-////				reportName = "DanfeMainPortraitA4.jasper";
-//				reportName = "DanfeMainLandscapeA4.jasper";
-//			else
-//				reportName = process.getJasperReport();
+			else if (MLBRNotaFiscal.LBR_DANFEFORMAT_4_DANFENFC_E.equals(doc.getlbr_DANFEFormat()))
+				reportName = "DanfeNFCe.jasper";
 			
 			if (MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado.equals(doc.getlbr_NFeStatus()))
 				message = "CANCELADO    CANCELADO\nC\u00D3PIA DE SEGURAN\u00C7A";
@@ -312,6 +344,7 @@ public class PrintFromXML extends SvrProcess
 		}
 		
 		Map<String, Object> files = getReportFile (printLogo);
+		files.putAll(qrFiles);
 		
 		if (message != null)
 			files.put("msgPrevisualizacao", message);
@@ -322,7 +355,7 @@ public class PrintFromXML extends SvrProcess
 		dataSource.setDatePattern(datePattern);
 		dataSource.setNumberPattern(numberPattern);
 		dataSource.setLocale(locale);
-
+		
 		//	Fill
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 

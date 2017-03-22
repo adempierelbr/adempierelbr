@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for LBR_NFConfig
+/** Generated Interface for LBR_CSC
  *  @author Adempiere (generated) 
  *  @version Release 3.6.0LTS
  */
-public interface I_LBR_NFConfig 
+public interface I_LBR_CSC 
 {
 
-    /** TableName=LBR_NFConfig */
-    public static final String Table_Name = "LBR_NFConfig";
+    /** TableName=LBR_CSC */
+    public static final String Table_Name = "LBR_CSC";
 
-    /** AD_Table_ID=1120547 */
+    /** AD_Table_ID=1120577 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -79,6 +79,19 @@ public interface I_LBR_NFConfig
 	  */
 	public int getCreatedBy();
 
+    /** Column name Description */
+    public static final String COLUMNNAME_Description = "Description";
+
+	/** Set Description.
+	  * Optional short description of the record
+	  */
+	public void setDescription (String Description);
+
+	/** Get Description.
+	  * Optional short description of the record
+	  */
+	public String getDescription();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -92,6 +105,15 @@ public interface I_LBR_NFConfig
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_CSC_ID */
+    public static final String COLUMNNAME_LBR_CSC_ID = "LBR_CSC_ID";
+
+	/** Set Taxpayer Security Code	  */
+	public void setLBR_CSC_ID (int LBR_CSC_ID);
+
+	/** Get Taxpayer Security Code	  */
+	public int getLBR_CSC_ID();
+
     /** Column name LBR_NFConfig_ID */
     public static final String COLUMNNAME_LBR_NFConfig_ID = "LBR_NFConfig_ID";
 
@@ -101,44 +123,20 @@ public interface I_LBR_NFConfig
 	/** Get NF Configuration	  */
 	public int getLBR_NFConfig_ID();
 
-    /** Column name LBR_ReverseInOut */
-    public static final String COLUMNNAME_LBR_ReverseInOut = "LBR_ReverseInOut";
+	public org.adempierelbr.model.I_LBR_NFConfig getLBR_NFConfig() throws RuntimeException;
 
-	/** Set Reverse InOut.
-	  * Allow to Reverse InOut related with the NF
+    /** Column name Name */
+    public static final String COLUMNNAME_Name = "Name";
+
+	/** Set Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public void setLBR_ReverseInOut (boolean LBR_ReverseInOut);
+	public void setName (String Name);
 
-	/** Get Reverse InOut.
-	  * Allow to Reverse InOut related with the NF
+	/** Get Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public boolean isLBR_ReverseInOut();
-
-    /** Column name LBR_ReverseInvoice */
-    public static final String COLUMNNAME_LBR_ReverseInvoice = "LBR_ReverseInvoice";
-
-	/** Set Reverse Invoice.
-	  * Allow to Reverse Invoice related with the NF
-	  */
-	public void setLBR_ReverseInvoice (boolean LBR_ReverseInvoice);
-
-	/** Get Reverse Invoice.
-	  * Allow to Reverse Invoice related with the NF
-	  */
-	public boolean isLBR_ReverseInvoice();
-
-    /** Column name LBR_TPEmis */
-    public static final String COLUMNNAME_LBR_TPEmis = "LBR_TPEmis";
-
-	/** Set Tipo de Emissão.
-	  * Indicar o Tipo de Emissão da NF-e.
-	  */
-	public void setLBR_TPEmis (String LBR_TPEmis);
-
-	/** Get Tipo de Emissão.
-	  * Indicar o Tipo de Emissão da NF-e.
-	  */
-	public String getLBR_TPEmis();
+	public String getName();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -156,52 +154,16 @@ public interface I_LBR_NFConfig
 	  */
 	public int getUpdatedBy();
 
-    /** Column name lbr_DANFEFormat */
-    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
 
-	/** Set DANFE Format	  */
-	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
-
-	/** Get DANFE Format	  */
-	public String getlbr_DANFEFormat();
-
-    /** Column name lbr_DateScan */
-    public static final String COLUMNNAME_lbr_DateScan = "lbr_DateScan";
-
-	/** Set Data contingência	  */
-	public void setlbr_DateScan (Timestamp lbr_DateScan);
-
-	/** Get Data contingência	  */
-	public Timestamp getlbr_DateScan();
-
-    /** Column name lbr_MotivoScan */
-    public static final String COLUMNNAME_lbr_MotivoScan = "lbr_MotivoScan";
-
-	/** Set Motivo contingência	  */
-	public void setlbr_MotivoScan (String lbr_MotivoScan);
-
-	/** Get Motivo contingência	  */
-	public String getlbr_MotivoScan();
-
-    /** Column name lbr_NFModel */
-    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
-
-	/** Set NF Model.
-	  * Identifies the model of Nota Fiscal
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
 	  */
-	public void setlbr_NFModel (String lbr_NFModel);
+	public void setValue (String Value);
 
-	/** Get NF Model.
-	  * Identifies the model of Nota Fiscal
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
 	  */
-	public String getlbr_NFModel();
-
-    /** Column name lbr_NFeEnv */
-    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
-
-	/** Set NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv);
-
-	/** Get NFe Environment	  */
-	public String getlbr_NFeEnv();
+	public String getValue();
 }
