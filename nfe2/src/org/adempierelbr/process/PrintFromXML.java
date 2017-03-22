@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +51,7 @@ import org.compiere.report.ReportStarter;
 import org.compiere.util.Env;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -125,7 +127,7 @@ public class PrintFromXML extends SvrProcess
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
-		Map<String, Object> files = getReportFile (printLogo);
+		Map<String, Object> qrFiles = getReportFile (printLogo);
 
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
@@ -168,6 +170,31 @@ public class PrintFromXML extends SvrProcess
 				else
 					return "Documento sem formato de impress\u00E3o dispon\u00EDvel ou impress\u00E3o n\u00E3o permitida";
 			}
+			
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals (doc.getlbr_NFModel ()))
+			{
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				try 
+				{
+					Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+					hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+					hints.put(EncodeHintType.MARGIN, 2);
+					//
+					MatrixToImageWriter.writeToStream(new QRCodeWriter().encode(doc.get_ValueAsString("LBR_NFCeQRCodeURL"), BarcodeFormat.QR_CODE, 300, 300, hints), "PNG", out);
+				}
+				catch (WriterException e)
+				{
+					e.printStackTrace();
+					log.severe("Não foi possível gerar o DANFE da NFC-e. Erro: " + e.getMessage());
+					throw new AdempiereException("Não foi possível gerar o QRCode da NFC-e.");
+				}
+				
+				//	URL
+				String url = MLBRNFeWebService.getURL (MLBRNFeWebService.NFCE_CONSULTA_QRCODE, doc.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, doc.getOrg_Location().getC_Region_ID());
+				
+				qrFiles.put("QRCode", new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray()));
+				qrFiles.put("URLConsulta", url);
+			}
 
 			att = doc.getAttachment (true);
 			
@@ -187,28 +214,6 @@ public class PrintFromXML extends SvrProcess
 			
 			else if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(doc.getlbr_NFeStatus()))
 				message = "C\u00D3PIA DE SEGURAN\u00C7A     Sem autorizac\u00E3o";
-			
-			//	String qrcode = "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html?chNFe=23151273257859000154650010010007551389603767&nVersao=100&tpAmb=2&cDest=99999999000191&dhEmi=323031352d31322d30375430303a30303a30302d30333a3030&vNF=350.00&vICMS=0.00&digVal=476e57587643414c46387947555268527379745a4a4368775a4e6b3d&cIdToken=000001&cHashQRCode=BEFB64ADBB94A3CAF6E90A2FF0673654F263C098";
-			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals (doc.getlbr_NFModel ()))
-			{
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				try 
-				{
-					MatrixToImageWriter.writeToStream(new QRCodeWriter().encode(doc.get_ValueAsString("LBR_NFCeQRCodeURL"), BarcodeFormat.QR_CODE, 300, 300), "PNG", out);
-				}
-				catch (WriterException e)
-				{
-					e.printStackTrace();
-					log.severe("Não foi possível gerar o DANFE da NFC-e. Erro: " + e.getMessage());
-					throw new AdempiereException("Não foi possível gerar o QRCode da NFC-e.");
-				}
-				
-				//	URL
-				String url = MLBRNFeWebService.getURL (MLBRNFeWebService.NFCE_CONSULTA, doc.getlbr_NFeEnv(), NFeUtil.VERSAO_LAYOUT, doc.getOrg_Location().getC_Region_ID());
-				
-				files.put("QRCode", new ByteArrayInputStream(((ByteArrayOutputStream) out).toByteArray()));
-				files.put("URLConsulta", url);
-			}
 		}
 		
 		//	Lote da Nota Fiscal Eletrônica
@@ -338,6 +343,8 @@ public class PrintFromXML extends SvrProcess
 			reportName = reportName.replace("[FORMAT]", "Portrait");
 		}
 		
+		Map<String, Object> files = getReportFile (printLogo);
+		files.putAll(qrFiles);
 		
 		if (message != null)
 			files.put("msgPrevisualizacao", message);

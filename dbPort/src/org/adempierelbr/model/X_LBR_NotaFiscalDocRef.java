@@ -434,7 +434,7 @@ public class X_LBR_NotaFiscalDocRef extends PO implements I_LBR_NotaFiscalDocRef
 	/** Nota Fiscal de Serviços Eletrônica (RPS) = S1 */
 	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
 	/** Nota Fiscal de Consumidor Eletrônica = 56 */
-	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "65";
 	/** Set NF Model.
 		@param lbr_NFModel 
 		Identifies the model of Nota Fiscal

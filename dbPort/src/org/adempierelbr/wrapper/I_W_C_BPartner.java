@@ -408,7 +408,7 @@ public interface I_W_C_BPartner extends I_C_BPartner
 	public static final String LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS = "S1";
 
 	/** Nota Fiscal de Consumidor Eletrônica = 56 */
-	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "56";
+	public static final String LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica = "65";
 
 
 	/** Set NF Model.

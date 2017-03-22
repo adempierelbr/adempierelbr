@@ -363,6 +363,10 @@ public class NFeXMLGenerator
 		String trxName = nf.get_TrxName ();
 		Properties ctx = nf.getCtx();
 		boolean nfce = MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nf.getlbr_NFModel()); 
+		boolean unknownCustomer = false;
+		
+		if (nfce)
+			unknownCustomer = true;
 		
 		//	OrgInfo
 		I_W_AD_OrgInfo oi = POWrapper.create (MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
@@ -605,7 +609,10 @@ public class NFeXMLGenerator
 				else
 					dest.setIdEstrangeiro("");
 			}
-			dest.setXNome(normalize (nf.getBPName()));
+			
+			//	Nome não obrigatório para NFC-e
+			if (nf.getBPName() != null)
+				dest.setXNome(normalize (nf.getBPName()));
 		}
 		
 		//	Endereço do destinatário
@@ -614,31 +621,33 @@ public class NFeXMLGenerator
 		if (country == null)
 			throw new AdempiereException ("Country not found");
 		
-		TEndereco enderDest = dest.addNewEnderDest();
-		enderDest.setXLgr(normalize (nf.getlbr_BPAddress1()));
-		enderDest.setNro(normalize (nf.getlbr_BPAddress2()));
+		/**
+		 * 	Nota 1: No caso de NFC-e informar indIEDest=9 e não
+		 * 		informar a tag IE do destinatário;
+		 */
+		if (nfce)
+			dest.setIndIEDest(IND_IE_NAO_CONTRIB);	//	Force 9
 		
-		if (nf.getlbr_BPAddress4() != null)
-			enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
-		
-		enderDest.setXBairro(normalize (nf.getlbr_BPAddress3()));
-		
-		//	Brazil
-		if (country.getC_Country_ID() == MLBRNotaFiscal.BRAZIL)
+		//	Make sure the customer is specified
+		if (!unknownCustomer)
 		{
-			enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
-			enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
-			enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
-			enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
-
-			/**
-			 * 	Nota 1: No caso de NFC-e informar indIEDest=9 e não
-			 * 		informar a tag IE do destinatário;
-			 */
-			if (ide.getMod().equals (MOD_NFCE_65))
-				dest.setIndIEDest(IND_IE_NAO_CONTRIB);	//	Force 9
-			else 
+			TEndereco enderDest = dest.addNewEnderDest();
+			enderDest.setXLgr(normalize (nf.getlbr_BPAddress1()));
+			enderDest.setNro(normalize (nf.getlbr_BPAddress2()));
+			
+			if (nf.getlbr_BPAddress4() != null)
+				enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
+			
+			enderDest.setXBairro(normalize (nf.getlbr_BPAddress3()));
+			
+			//	Brazil
+			if (country.getC_Country_ID() == MLBRNotaFiscal.BRAZIL)
 			{
+				enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
+				enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
+				enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
+				enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
+	
 				//	Contribuinte de ICMS, possuí IE
 				if (T_AMB_PRODUCAO.equals(ide.getTpAmb()))
 				{
@@ -649,78 +658,78 @@ public class NFeXMLGenerator
 				}
 				else
 					dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
+				
+				//	SUFRAMA
+				if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
+					dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
 			}
 			
-			//	SUFRAMA
-			if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
-				dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
-		}
-		
-		//	Other countries
-		else
-		{
-			enderDest.setCMun(BPartnerUtil.EXTCOD);
-			enderDest.setXMun(BPartnerUtil.EXTMUN);
-			enderDest.setUF(TUf.EX);
-
-			/**
-			 * 	Nota 2: No caso de operação com o Exterior informar
-			 * 		indIEDest=9 e não informar a tag IE do destinatário;
-			 */
-			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
-		}
-		
-		if (country.getlbr_CountryCode() != null)
-			enderDest.setCPais(country.getlbr_CountryCode().substring(1));
-		
-		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
-		
-		if (nf.getlbr_BPPhone() != null)
-			enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
-		
-		//	F. Identificação do Local de Retirada
-		//	G. Identificação do Local de Entrega
-		TLocal retOuEntreg = null;
-
-		//	Retirada
-		if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
-			if (!nf.isSamePickUpAddr())
-				retOuEntreg = infNFe.addNewRetirada();
-		
-		//	Entrega
-		else if (!nf.isSameDeliveryAddr())
-				retOuEntreg = infNFe.addNewEntrega();
-		
-		//	Endereço não obrigatório caso seja igual ao do parceiro
-		//		para entrega ou igual ao emitente no caso de retirada
-		if (retOuEntreg != null)
-		{
-			//	CNPJ ou CPF
-			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
-				retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
-				retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			//
-			retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
-			retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
-			
-			if (nf.getlbr_BPDeliveryAddress4() != null)
-				retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
-			
-			retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
-			
-			if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
-			{
-				retOuEntreg.setCMun(BPartnerUtil.EXTCOD);
-				retOuEntreg.setXMun(BPartnerUtil.EXTMUN);
-				retOuEntreg.setUF(TUf.EX);
-			}
+			//	Other countries
 			else
 			{
-				retOuEntreg.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPDeliveryRegion(), nf.getlbr_BPDeliveryCity()));
-				retOuEntreg.setXMun(normalize (normalize (nf.getlbr_BPDeliveryCity())));
-				retOuEntreg.setUF(TUf.Enum.forString (nf.getlbr_BPDeliveryRegion()));
+				enderDest.setCMun(BPartnerUtil.EXTCOD);
+				enderDest.setXMun(BPartnerUtil.EXTMUN);
+				enderDest.setUF(TUf.EX);
+	
+				/**
+				 * 	Nota 2: No caso de operação com o Exterior informar
+				 * 		indIEDest=9 e não informar a tag IE do destinatário;
+				 */
+				dest.setIndIEDest(IND_IE_NAO_CONTRIB);
+			}
+			
+			if (country.getlbr_CountryCode() != null)
+				enderDest.setCPais(country.getlbr_CountryCode().substring(1));
+			
+			enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
+			
+			if (nf.getlbr_BPPhone() != null)
+				enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
+			
+			//	F. Identificação do Local de Retirada
+			//	G. Identificação do Local de Entrega
+			TLocal retOuEntreg = null;
+	
+			//	Retirada
+			if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
+				if (!nf.isSamePickUpAddr())
+					retOuEntreg = infNFe.addNewRetirada();
+			
+			//	Entrega
+			else if (!nf.isSameDeliveryAddr())
+					retOuEntreg = infNFe.addNewEntrega();
+			
+			//	Endereço não obrigatório caso seja igual ao do parceiro
+			//		para entrega ou igual ao emitente no caso de retirada
+			if (retOuEntreg != null)
+			{
+				//	CNPJ ou CPF
+				if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				
+				else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+				//
+				retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
+				retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
+				
+				if (nf.getlbr_BPDeliveryAddress4() != null)
+					retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
+				
+				retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
+				
+				if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
+				{
+					retOuEntreg.setCMun(BPartnerUtil.EXTCOD);
+					retOuEntreg.setXMun(BPartnerUtil.EXTMUN);
+					retOuEntreg.setUF(TUf.EX);
+				}
+				else
+				{
+					retOuEntreg.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPDeliveryRegion(), nf.getlbr_BPDeliveryCity()));
+					retOuEntreg.setXMun(normalize (normalize (nf.getlbr_BPDeliveryCity())));
+					retOuEntreg.setUF(TUf.Enum.forString (nf.getlbr_BPDeliveryRegion()));
+				}
 			}
 		}
 		

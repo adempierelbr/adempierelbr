@@ -53,10 +53,10 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8i2.jar" sourcepath="lib/nfebeans-v8i2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/zxing-core-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/zxing-core-2.2.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="lib" path="lib/zxing-javase-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/zxing-javase-2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

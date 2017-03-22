@@ -349,5 +349,77 @@ CREATE UNIQUE INDEX LBR_NFConfig_Org_Unq
 	ON LBR_NFConfig (AD_Client_ID, AD_Org_ID, LBR_NFModel)
 ;
 
+-- 15/03/2017 18h23min20s BRT
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1129795,1100009,0,17,1120009,1100001,'lbr_NFModel',TO_DATE('2017-03-15 18:23:19','YYYY-MM-DD HH24:MI:SS'),100,'55','Identifies the model of Nota Fiscal','LBRA',2,'Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','NF Model',0,TO_DATE('2017-03-15 18:23:19','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 15/03/2017 18h23min20s BRT
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1129795 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 15/03/2017 18h23min26s BRT
+ALTER TABLE LBR_NFeLot ADD lbr_NFModel NVARCHAR2(2) DEFAULT '55' NOT NULL
+;
+
+-- 15/03/2017 18h26min12s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1129795,1127180,0,1100001,TO_DATE('2017-03-15 18:26:12','YYYY-MM-DD HH24:MI:SS'),100,'Identifies the model of Nota Fiscal',1,'LBRA','Y','Y','Y','N','N','N','Y','Y','NF Model',40,TO_DATE('2017-03-15 18:26:12','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 15/03/2017 18h26min12s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127180 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 15/03/2017 18h26min24s BRT
+UPDATE AD_Field SET SeqNo=190,Updated=TO_DATE('2017-03-15 18:26:24','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1100031
+;
+
+-- 15/03/2017 18h26min58s BRT
+UPDATE AD_Field SET IsReadOnly='N',Updated=TO_DATE('2017-03-15 18:26:58','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127180
+;
+
+-- 15/03/2017 18h33min45s BRT
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1122336,0,'LBR_CNPJF',TO_DATE('2017-03-15 18:33:45','YYYY-MM-DD HH24:MI:SS'),100,'CNPJ ou CPF do cliente','LBRA','Y','CNPJ/CPF','CNPJ/CPF',TO_DATE('2017-03-15 18:33:45','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 15/03/2017 18h33min45s BRT
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1122336 AND NOT EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Element_ID=t.AD_Element_ID)
+;
+
+-- 15/03/2017 18h34min18s BRT
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1129796,1122336,0,10,259,'LBR_CNPJF',TO_DATE('2017-03-15 18:34:18','YYYY-MM-DD HH24:MI:SS'),100,'CNPJ ou CPF do cliente','LBRA',18,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','CNPJ/CPF',0,TO_DATE('2017-03-15 18:34:18','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 15/03/2017 18h34min18s BRT
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1129796 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 15/03/2017 18h34min21s BRT
+ALTER TABLE C_Order ADD LBR_CNPJF NVARCHAR2(18) DEFAULT NULL 
+;
+
+-- 15/03/2017 18h36min4s BRT
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,DisplayLogic,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1129796,1127181,0,186,TO_DATE('2017-03-15 18:36:04','YYYY-MM-DD HH24:MI:SS'),100,'CNPJ ou CPF do cliente',14,'@OrderType@=''WR''','LBRA','Y','Y','Y','N','N','N','N','Y','CNPJ/CPF',100,TO_DATE('2017-03-15 18:36:04','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 15/03/2017 18h36min4s BRT
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127181 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 15/03/2017 18h38min32s BRT
+UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@=@#POS_BPartner_ID@',Updated=TO_DATE('2017-03-15 18:38:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1129796
+;
+
+-- 15/03/2017 18h39min43s BRT
+UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@',Updated=TO_DATE('2017-03-15 18:39:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1129796
+;
+
+-- 15/03/2017 18h40min22s BRT
+UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@ & @C_BPartner_ID@>0',Updated=TO_DATE('2017-03-15 18:40:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1129796
+;
+
+-- 15/03/2017 18h40min53s BRT
+UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@ | @C_BPartner_ID@=0',Updated=TO_DATE('2017-03-15 18:40:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1129796
+;
+
 SELECT Register_Migration_Script ('249-NFCe.sql') FROM DUAL
 ;
