@@ -421,5 +421,5 @@ UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@ & @C_BPar
 UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@ | @C_BPartner_ID@=0',Updated=TO_DATE('2017-03-15 18:40:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1129796
 ;
 
-SELECT Register_Migration_Script ('249-NFCe.sql') FROM DUAL
+SELECT Register_Migration_Script ('259-NFCe.sql') FROM DUAL
 ;
