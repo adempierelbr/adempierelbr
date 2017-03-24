@@ -121,13 +121,13 @@ public class PrintFromXML extends SvrProcess
 		String numberPattern 	= "###0.00";
 		Locale locale			= Locale.US;
 		boolean printLogo		= true;
+		Map<String, Object> qrFiles = new HashMap<String, Object>();
 
 		//	Arquivo com os XML das notas Autorizadas relacionadas do lote.
 		File lotXML 			= File.createTempFile ("lotXMLAut", ".xml");
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
-		Map<String, Object> qrFiles = getReportFile (printLogo);
 
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
