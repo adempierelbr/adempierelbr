@@ -121,13 +121,13 @@ public class PrintFromXML extends SvrProcess
 		String numberPattern 	= "###0.00";
 		Locale locale			= Locale.US;
 		boolean printLogo		= true;
-		Map<String, Object> qrFiles = new HashMap<String, Object>();
 
 		//	Arquivo com os XML das notas Autorizadas relacionadas do lote.
 		File lotXML 			= File.createTempFile ("lotXMLAut", ".xml");
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
+		Map<String, Object> qrFiles = getReportFile (printLogo);
 
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
@@ -476,6 +476,10 @@ public class PrintFromXML extends SvrProcess
 		if (reportName.startsWith("ReportCCe"))
 			return new String[]{};	//	No Subreports for this document
 		
+		// NFC-e 
+		if (reportName.startsWith("DanfeNFCe"))
+			return new String[]{}; //	No Subreports for this document
+						
 		//	Not found, try to catch all from the given path
 		URL dirURL = clazz.getClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file"))
