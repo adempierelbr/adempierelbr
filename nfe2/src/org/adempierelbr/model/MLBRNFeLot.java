@@ -25,8 +25,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
@@ -39,10 +37,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -140,7 +135,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		enviNFe.setNFeArray(getNFeDocuments());
 
 		//	Valida o XML
-		NFeUtil.validate(enviNFeDoc);
+		if (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+			NFeUtil.validate(enviNFeDoc);
 		
 		//	XML do Lote
 		String xmlText = enviNFeDoc.xmlText(NFeUtil.getXmlOpt());
@@ -347,7 +343,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			consReciNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 			
 			//	Validate
-			NFeUtil.validate (consReciNFeDoc);
+			if (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+				NFeUtil.validate (consReciNFeDoc);
 			
 			//	XML
 			StringReader xml = new StringReader (NFeUtil.wrapMsg (consReciNFeDoc.xmlText(NFeUtil.getXmlOpt())));

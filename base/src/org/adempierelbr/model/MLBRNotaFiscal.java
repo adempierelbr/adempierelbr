@@ -91,6 +91,7 @@ import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoParameter;
+import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -1881,6 +1882,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 
 		I_W_C_BPartner bp = POWrapper.create(new MBPartner (bpLocation.getCtx(), bpLocation.getC_BPartner_ID(), bpLocation.get_TrxName()), I_W_C_BPartner.class);
 		
+		//	Check POS
+		int POS_BPartner_ID = Env.getContextAsInt(p_ctx, "#POS_BPartner_ID");
+		if (POS_BPartner_ID == bp.getC_BPartner_ID())
+			return;
+		
 		setC_BPartner_ID(bpLocation.getC_BPartner_ID());
 		setC_BPartner_Location_ID(bpLocation.getC_BPartner_Location_ID());
 		
@@ -3003,7 +3009,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
     		Trx trx = Trx.get(get_TrxName(), false);
     		
-    		PrintFromXML proc = new PrintFromXML ();
+    		SvrProcess proc = new PrintFromXML ();
     		proc.startProcess (getCtx(), pi, trx);
 		}
 		catch (Exception e)
