@@ -1548,7 +1548,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			taxAmtTotal = taxAmtTotal.add(amtFed).add(amtReg).add(amtCity);
 			
 			//	Adiciona Valor Total de Tributos na Linha
-			line.setlbr_vTotTrib(taxAmtTotal);
+			line.setlbr_vTotTrib(taxAmtTotal.setScale(2, RoundingMode.HALF_UP));
 			line.save();
 			
 			//	Total de Tributos de Todas as Linhas
@@ -1556,7 +1556,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		
 		//	Valor Total de Tributos da NF
-		setlbr_vTotTrib(taxAmtGrandTotal);
+		setlbr_vTotTrib(taxAmtGrandTotal.setScale(2, RoundingMode.HALF_UP));
 		
 		
 		// se teve total de impostos, definir no fim da descrição
