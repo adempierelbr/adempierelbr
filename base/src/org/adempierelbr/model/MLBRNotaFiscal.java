@@ -1552,7 +1552,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			line.save();
 			
 			//	Total de Tributos de Todas as Linhas
-			taxAmtGrandTotal = taxAmtGrandTotal.add(taxAmtTotal);
+			taxAmtGrandTotal = taxAmtGrandTotal.add(taxAmtTotal.setScale(2, RoundingMode.HALF_UP));
 		}
 		
 		//	Valor Total de Tributos da NF
