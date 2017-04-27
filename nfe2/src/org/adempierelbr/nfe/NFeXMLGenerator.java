@@ -1217,6 +1217,17 @@ public class NFeXMLGenerator
 				ii.setVII (normalize  (iiTax.getlbr_TaxAmt()));
 				ii.setVIOF(TextUtil.ZERO_STRING);
 			}
+			//	Se a NF for de Importação o II deve ser adicionado obrigatóriamente
+			else if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Import.equals (nfl.getParent().getlbr_TransactionType()))
+			{
+				X_LBR_NFLineTax iiTax = nfl.getIITax();
+				//	
+				II ii = imposto.addNewII();
+				ii.setVBC (normalize  (BigDecimal.ZERO));
+				ii.setVDespAdu(TextUtil.ZERO_STRING);
+				ii.setVII (normalize  (BigDecimal.ZERO));
+				ii.setVIOF(TextUtil.ZERO_STRING);
+			}
 			
 			//	Q. PIS
 			if (nfl.getPISTax() != null)
