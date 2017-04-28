@@ -310,6 +310,14 @@ public class EFDUtil {
 		else if (MLBRNotaFiscal.LBR_FINNFE_NFeComplementar.equals(factFiscal.getLBR_NotaFiscal().getlbr_FinNFe()))
 			cod_sit = "06";
 		
+		//	Notas Fiscais Denegadas
+		else if (TextUtil.match (factFiscal.getLBR_NotaFiscal().getlbr_NFeStatus(),
+					MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
+					MLBRNotaFiscal.LBR_NFESTATUS_301_UsoDenegadoIrregularidadeFiscalDoEmitente,
+					MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+					MLBRNotaFiscal.LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNaUF))
+			cod_sit = "04";	//	Denegado;
+		
 		//
 		return cod_sit;
 	}

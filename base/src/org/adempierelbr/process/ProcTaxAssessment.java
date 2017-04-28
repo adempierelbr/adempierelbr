@@ -6,8 +6,10 @@ import java.math.RoundingMode;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRTaxName;
 import org.adempierelbr.model.X_LBR_TaxAssessment;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -117,6 +119,14 @@ public class ProcTaxAssessment extends SvrProcess
 			 * NF cancelada
 			 */
 			if(m_factfiscal.isCancelled())
+				continue;
+			
+			//	Notas Fiscais Denegadas
+			if (TextUtil.match (m_factfiscal.getLBR_NotaFiscal().getlbr_NFeStatus(),
+						MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
+						MLBRNotaFiscal.LBR_NFESTATUS_301_UsoDenegadoIrregularidadeFiscalDoEmitente,
+						MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+						MLBRNotaFiscal.LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNaUF))
 				continue;
 			
 			
