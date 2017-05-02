@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxLine;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -299,6 +300,13 @@ public class MInvoiceLine extends X_C_InvoiceLine
             
             //	Novo imposto copiado do Pedido Original
             MLBRTax newTax = taxOrder.copyTo();
+            
+            //	Remover DIFAL(1120002) e DIFALORIGEM (1120001) das Devoluções
+            for (MLBRTaxLine taxLine : newTax.getLines())
+            {
+            	if (taxLine.getLBR_TaxName_ID() == 1120001 || taxLine.getLBR_TaxName_ID() == 1120002)
+            		taxLine.delete(true);
+            }
             
             //	Adicionar Imposto Copiado do Pedido na Fatura
             set_ValueOfColumn ("LBR_Tax_ID", newTax.getLBR_Tax_ID());            
