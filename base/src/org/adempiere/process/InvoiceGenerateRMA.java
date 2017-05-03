@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.MLBRTaxLine;
+import org.adempierelbr.model.MLBRTaxName;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
@@ -192,10 +193,11 @@ public class InvoiceGenerateRMA extends SvrProcess
             //	Novo imposto copiado do Pedido Original
             MLBRTax newTax = taxOrder.copyTo();
             
-            //	Remover DIFAL(1120002) e DIFALORIGEM (1120001) das Devoluções
+            //	Remover DIFAL e DIFALORIGEM  das Devoluções
             for (MLBRTaxLine taxLine : newTax.getLines())
             {
-            	if (taxLine.getLBR_TaxName_ID() == 1120001 || taxLine.getLBR_TaxName_ID() == 1120002)
+            	if (taxLine.getLBR_TaxName_ID() == MLBRTaxName.TAX_DIFALORIGEM 
+            			|| taxLine.getLBR_TaxName_ID() == MLBRTaxName.TAX_DIFAL)
             		taxLine.delete(true);
             }
             
