@@ -3799,4 +3799,34 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		return null;
 	}	//	getNFModel
+	
+	/**
+	 * Return NFe Events
+	 * @return
+	 */
+	public List<MLBRNFeEvent> getNFeEvents()
+	{				
+		return getNFeEvents(null);
+	}	// getNFeEvents
+	
+	/**
+	 * Return NFe Events
+	 * @param lbr_eventType
+	 * @return
+	 */
+	public List<MLBRNFeEvent> getNFeEvents(String lbr_eventType)
+	{
+		String where = "";
+		
+		if (lbr_eventType != null && !lbr_eventType.isEmpty())
+			where = "LBR_EventType = '" + lbr_eventType + "' AND ";
+		
+		where = where + "LBR_NotaFiscal_ID=?";
+		
+		List<MLBRNFeEvent> events = new Query(Env.getCtx(), MLBRNFeEvent.Table_Name, where, null)
+				.setParameters(getLBR_NotaFiscal_ID())
+				.list();
+		
+		return events;
+	}	// getNFeEvents
 }	//	MLBRNotaFiscal
