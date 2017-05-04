@@ -2319,6 +2319,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			description.append(parse("Chave de Acesso da NF-e Referenciada: " + nfref.getlbr_NFeID() + "".trim()));	
 		}
 		
+		//	Adicionar DI na Descrição da NF
+		for (X_LBR_NFDI di : getDIs())
+		{
+			if (description.length() > 0)
+				description.append("\n");			
+			description.append(parse("DI: " + di.getlbr_DI() + "".trim()));	
+		}
+		
 		setDescription(parse (description.toString()).replace("\n\n\n", "\n\n"));
 	}	//	setDescription
 	
