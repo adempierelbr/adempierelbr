@@ -56,12 +56,21 @@ public class MLBRDI extends X_LBR_DI
 	 */
 	public MLBRDI (Properties ctx, ResultSet rs, String trxName)
 	{
-		super(ctx, rs, trxName);
+		super (ctx, rs, trxName);
 	}	//	MLBRDI
 	
+	/**
+	 * 	Try to find the DI from DocumentNo
+	 * @param ctx
+	 * @param noDI
+	 * @param trxName
+	 * @return
+	 */
 	public static MLBRDI get (Properties ctx, String noDI, String trxName)
 	{
-		return new Query (ctx, Table_Name, "DocumentNo=?", trxName).setParameters(noDI).setClient_ID().first();
+		return new Query (ctx, Table_Name, "DocumentNo=?", trxName)
+					.setParameters (formatDocNo(TextUtil.toNumeric (noDI)))
+					.setClient_ID ().first ();
 	}	//	get
 	
 	/**
@@ -164,15 +173,27 @@ public class MLBRDI extends X_LBR_DI
 			String doc = TextUtil.toNumeric(getDocumentNo());
 			if (doc != null && doc.length() == 10)
 			{
-				try
-				{
-					MaskFormatter mf = new MaskFormatter("##/#######-#");
-					mf.setValueContainsLiteralCharacters(false);
-					setDocumentNo (mf.valueToString (doc));
-				}
-				catch (Exception e) {}
+				String formatted = formatDocNo (doc);
+				setDocumentNo (formatted);
 			}
 		}
 		return true;
 	}	//	beforeSave
+
+	/**
+	 * 		Formata o número para o padrão da DI
+	 * 	@param doc
+	 * 	@return
+	 */
+	private static String formatDocNo (String doc)
+	{
+		try
+		{
+			MaskFormatter mf = new MaskFormatter("##/#######-#");
+			mf.setValueContainsLiteralCharacters(false);
+			return mf.valueToString(doc);
+		}
+		catch (Exception e) {}
+		return doc;
+	}	//	formatDocNo
 }	//	MLBRDI
