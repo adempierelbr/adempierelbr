@@ -20,7 +20,9 @@ import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.X_LBR_DI;
 import org.adempierelbr.wrapper.I_W_C_DocType;
+import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
@@ -168,8 +170,27 @@ public class ValidatorOrder implements ModelValidator
 			MOrder order   = (MOrder) po;
 			Properties ctx = order.getCtx();
 			String     trx = order.get_TrxName();
-
-			if (timing == TIMING_AFTER_COMPLETE)
+			
+			if (timing == TIMING_BEFORE_COMPLETE)
+			{
+				I_W_C_Order orderW = POWrapper.create (order, I_W_C_Order.class);
+				
+				//	Pedido de Compra de Importação
+				if(!order.isSOTrx() && 
+						"IMP".equals(orderW.getlbr_TransactionType()))
+				{
+					//	Validação na Declaração de Importação
+					for (X_LBR_DI dis : order.getDIs())
+					{
+						if (dis.getlbr_CustomSite() == null)
+							return "Preencha o Local do Desembaraço na DI: " + dis.getDocumentNo();
+						
+						if (dis.getC_Region_ID() == 0)
+							return "Preencha a Região na DI: " + dis.getDocumentNo();
+					}
+				}
+			}
+			else if (timing == TIMING_AFTER_COMPLETE)
 			{
 				MDocType dt = MDocType.get (ctx, order.getC_DocTypeTarget_ID());
 				I_W_C_DocType dtW = POWrapper.create(dt, I_W_C_DocType.class); 
