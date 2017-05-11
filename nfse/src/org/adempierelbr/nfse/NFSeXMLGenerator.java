@@ -237,8 +237,8 @@ public class NFSeXMLGenerator
 			discriminacao = discriminacao.replace("\n", "|").replace("  ", "").trim();
 		tpRPS.setDiscriminacao(discriminacao);
 		//
-		if (nf.getInvoiceContactEMail() != null && nf.getInvoiceContactEMail().indexOf("@") > 1)
-			tpRPS.setEmailTomador(nf.getInvoiceContactEMail());
+		if (nf.getLBR_EMailNFe() != null && nf.getLBR_EMailNFe().indexOf("@") > 1)
+			tpRPS.setEmailTomador(nf.getLBR_EMailNFe());
 		tpRPS.setISSRetido(false);
 		//
 		if (sign)

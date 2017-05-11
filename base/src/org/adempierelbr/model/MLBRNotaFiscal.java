@@ -916,12 +916,30 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	}
 	
 	/**
-	 * 	TODO: Replicar o campo email para a Nota Fiscal com a opção de ter um e-mail
-	 * 		cadastrado para recepção de NF. Discutir se este e-mail deve ser por BP
-	 * 		ou por Endereço.
+	 * 	Captura o e-mail de recebimento de XML/NFe do Parceiro de Negócios
+	 * 
+	 * 	TODO: Replicar o campo email para a Nota Fiscal.
 	 * 
 	 * @return Email
 	 */
+	public String getLBR_EMailNFe ()
+	{
+		if (getC_BPartner_ID() > 0)
+		{
+			I_W_C_BPartner bp = POWrapper.create (new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName()), I_W_C_BPartner.class);
+			if (bp.getLBR_EMailNFe() != null)
+				return bp.getLBR_EMailNFe();
+		}
+		//
+		return "";
+	}	//	012.848.698-81
+	
+	/**
+	 * Captura o e-mail do contato da Fatura
+	 * @deprecated Use the method {@link MLBRNotaFiscal#getLBR_EMailNFe()}
+	 * @return Email
+	 */
+	@Deprecated
 	public String getInvoiceContactEMail()
 	{
 		if (getC_Invoice_ID() > 0)
