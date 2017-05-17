@@ -16,9 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -53,7 +55,6 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.utils.DigestOfFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -353,8 +354,8 @@ public abstract class NFeUtil
 		File attachedFile = new File(localFile);
 		if (attachedFile.exists())
 		{
-			String localMD5hash = DigestOfFile.GetLocalMD5Hash(attachedFile);
-			String entryMD5hash = DigestOfFile.getMD5Hash(entry.getData());
+			String localMD5hash = hashMD5 (attachedFile);
+			String entryMD5hash = hashMD5 (entry.getData());
 			if (localMD5hash.equals(entryMD5hash))
 			{
 				log.fine("no need to download: local file is up-to-date");
@@ -859,4 +860,47 @@ public abstract class NFeUtil
 		StringBuffer timeStr = new StringBuffer (TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssZ"));
 		return timeStr.insert (timeStr.length() - 2, ':').toString();
 	}	//	convertDate
+	
+	/**
+	 * 		Hash the file
+	 * 	@param ba
+	 * 	@return md5 hash of file
+	 */
+	public static String hashMD5 (File file)
+	{
+		//	No file provided
+		if (file == null)
+			return "";
+
+		try
+		{
+			String text = TextUtil.readFile (file);
+			return hashMD5 (text.getBytes());
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
+	}	//	hash
+	
+	/**
+	 * 		Hash the byte array
+	 * 	@param ba
+	 * 	@return md5 hash of file
+	 */
+	public static String hashMD5 (byte[] ba)
+	{
+		try
+		{
+			MessageDigest md = MessageDigest.getInstance ("MD5");
+			md.update (ba);
+			//
+			byte[] digest = md.digest();
+			return new BigInteger(1, digest).toString(16);
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			return "";
+		}
+	}	//	hash
 }	//	NFeUtil
