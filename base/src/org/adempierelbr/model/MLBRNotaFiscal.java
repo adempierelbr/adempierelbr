@@ -1311,6 +1311,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Descrição para Nota de Serviço
 		setlbr_ServiceTaxes();
+		
+		//	O peso normalemnte vem da expedição, porém alguns casos a NF é feita com base no pedido
+		//		ou na fatura, portanto é necessário recalcular o peso
+		if (Env.ZERO.compareTo (getlbr_GrossWeight()) == 0)
+			calculateWeight();
 				
 		return true;
 	}	//	generateNF
@@ -1411,6 +1416,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Valores
 		setTotalLines(totalItem);
 		setlbr_ServiceTotalAmt(totalService);
+		
+		//	O peso normalemnte vem da expedição, porém alguns casos a NF é feita com base no pedido
+		//		ou na fatura, portanto é necessário recalcular o peso
+		if (Env.ZERO.compareTo (getlbr_GrossWeight()) == 0)
+			calculateWeight();
 		
 		return true;
 	}	//	generateNF
@@ -2047,8 +2057,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (invoice.getC_Order_ID() > 0)
 			{
 				M_Shipper_ID = invoice.getC_Order().getM_Shipper_ID();
-				setDeliveryViaRule(invoice.getC_Order().getDeliveryViaRule());
 				setFreightCostRule(invoice.getC_Order().getFreightCostRule());
+
+				//	Entrega somente na venda
+				if (isSOTrx())
+					setDeliveryViaRule(invoice.getC_Order().getDeliveryViaRule());
+				else
+					setDeliveryViaRule(null);
 			}
 		}
 		
@@ -3855,4 +3870,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		return events;
 	}	// getNFeEvents
+	
+	/**
+	 * 	Calculate the NF weight
+	 */
+	private void calculateWeight ()
+	{
+		BigDecimal weight = Env.ZERO;
+		for (MLBRNotaFiscalLine nfl : getLines())
+		{
+			if (nfl.getM_Product_ID() > 0)
+				weight = weight.add(nfl.getQty ().multiply (nfl.getM_Product ().getWeight ()));
+		}
+		
+		//	Set both gross and net weight
+		setlbr_GrossWeight(weight);
+		setlbr_NetWeight(weight);
+	}	//	calculateWeight
 }	//	MLBRNotaFiscal

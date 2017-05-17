@@ -862,12 +862,11 @@ public class NFeXMLGenerator
 			if (ID_DEST_EXTERIOR.equals (ide.getIdDest()))
 
 				//	I01. Produtos e Serviços / Declaração de Importação
-				if (TP_NF_ENTRADA.equals (ide.getTpNF())
-						&& nfl.get_Value ("LBR_NFDI_ID") != null)
+				if (TP_NF_ENTRADA.equals (ide.getTpNF()) && nfl.getLBR_NFDI_ID() > 0)
 				{
 					DI di = prod.addNewDI();
 					
-					X_LBR_NFDI nfdi = new X_LBR_NFDI (ctx, (Integer) nfl.get_Value ("LBR_NFDI_ID"), null);
+					X_LBR_NFDI nfdi = new X_LBR_NFDI (ctx, nfl.getLBR_NFDI_ID(), trxName);
 					//
 					di.setNDI(nfdi.getlbr_DI ());
 					di.setDDI(TextUtil.timeToString (nfdi.getDateTrx(), "yyyy-MM-dd"));
@@ -880,9 +879,11 @@ public class NFeXMLGenerator
 					di.setCExportador (normalize (nfdi.getlbr_CodExportador()));
 
 					Adi adi = di.addNewAdi();
-					adi.setNAdicao(nfl.get_ValueAsString("lbr_NumAdicao"));
-					adi.setNSeqAdic(nfl.get_ValueAsString("lbr_NumSeqItem"));
-					adi.setCFabricante(normalize (nfl.get_ValueAsString("Manufacturer")));
+					if (nfl.getlbr_NumAdicao() > 0)
+						adi.setNAdicao(String.valueOf (nfl.getlbr_NumAdicao()));
+					if (nfl.getlbr_NumSeqItem() > 0)
+						adi.setNSeqAdic(String.valueOf (nfl.getlbr_NumSeqItem()));
+					adi.setCFabricante(normalize (nfl.getManufacturer()));
 //					adi.setVDescDI(Env.ZERO);	//TODO
 //					adi.setNDraw(arg0);			//TODO
 				}
