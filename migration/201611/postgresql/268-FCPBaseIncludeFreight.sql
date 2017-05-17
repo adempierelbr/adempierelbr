@@ -1,0 +1,11 @@
+-- 12/05/2017 18h5min55s BRT
+UPDATE LBR_TaxFormula SET LBR_FormulaBase_ID=1000014,Updated=TO_TIMESTAMP('2017-05-12 18:05:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE LBR_TaxFormula_ID=1120010
+;
+
+-- 12/05/2017 18h5min58s BRT
+UPDATE LBR_TaxFormula SET LBR_FormulaBase_ID=1000014,Updated=TO_TIMESTAMP('2017-05-12 18:05:58','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE LBR_TaxFormula_ID=1120029
+;
+
+-- 12/05/2017 18h5min58s BRT
+SELECT Register_Migration_Script ('268-FCPBaseIncludeFreight.sql') FROM DUAL
+;
