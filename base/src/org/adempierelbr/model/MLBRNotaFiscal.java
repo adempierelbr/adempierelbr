@@ -3430,6 +3430,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	public boolean voidIt()
 	{
 		log.info("voidIt - " + toString());
+		// Before Void
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_VOID);
+		if (m_processMsg != null)
+			return false;
 		
 		//	Anular a NF
 		if (DOCSTATUS_Completed.equals(getDocStatus()))
@@ -3437,23 +3441,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(getlbr_NFeStatus())
 					&& LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
 			{
-				//	Permite Cancelar / Anular NF com Boletos Válidos
-				if (MSysConfig.getBooleanValue("LBR_ALLOW_VOID_NF_WITH_VALID_BILL", false, getAD_Client_ID()))
-				{
-					// Buscar Boleto
-					MLBRBoleto[] boletos = MLBRBoleto.getBoleto(Env.getCtx(), getC_Invoice_ID(), get_TrxName());
-					
-					for (MLBRBoleto boleto : boletos)
-					{
-						//	Se houver algum Boleto válido não Cancelar a NF.
-						if (!boleto.islbr_IsCancelled())
-						{
-							m_processMsg = "Impossível Cancelar NF com Boletos Válidos";
-							return false;
-						}
-					}
-				}
-				
 				try
 				{
 					MLBRNFeEvent.registerEvent(this, MLBRNFeEvent.LBR_EVENTTYPE_Cancelamento, getlbr_MotivoCancel(), 1, false);
