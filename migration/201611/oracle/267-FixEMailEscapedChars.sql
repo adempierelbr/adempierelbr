@@ -25,3 +25,5 @@ INSERT INTO AD_Message_Trl (AD_Language, AD_Message_ID, MsgText, MsgTip, IsTrans
 -- 12/05/2017 11h27min50s BRT
 SELECT Register_Migration_Script ('267-FixEMailEscapedChars.sql') FROM DUAL
 ;
+
+EXIT

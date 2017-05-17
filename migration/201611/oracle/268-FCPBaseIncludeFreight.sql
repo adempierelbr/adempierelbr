@@ -9,3 +9,5 @@ UPDATE LBR_TaxFormula SET LBR_FormulaBase_ID=1000014,Updated=TO_DATE('2017-05-12
 -- 12/05/2017 18h5min58s BRT
 SELECT Register_Migration_Script ('268-FCPBaseIncludeFreight.sql') FROM DUAL
 ;
+
+EXIT
