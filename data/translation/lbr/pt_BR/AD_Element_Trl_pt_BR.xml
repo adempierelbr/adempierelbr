@@ -3976,8 +3976,8 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1120098" trl="Y">
-<value column="Name" original="Custom Site">Custom Site</value>
-<value column="PrintName" original="Custom Site">Custom Site</value>
+<value column="Name" original="Custom Site">Local de Desembaraço</value>
+<value column="PrintName" original="Custom Site">Local de Desembaraço</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
