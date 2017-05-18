@@ -1139,8 +1139,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (LBR_TRANSACTIONTYPE_Import.equals(POWrapper.create(invoice, I_W_C_Invoice.class).getlbr_TransactionType()))
 				IsOwnDocument = true;
 		}
-		// Imprime Descontos
-		setIsDiscountPrinted(invoice.isDiscountPrinted());
 		
 		//	Dados mestre
 		setDateDoc(invoice.getDateAcct());
@@ -1162,6 +1160,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Tipo de Documento
 		setC_DocTypeTarget_ID();
+		
+		// Imprime Descontos
+		if (LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getNFModel()))
+			setIsDiscountPrinted(false);
+		else
+			setIsDiscountPrinted(invoice.isDiscountPrinted());
 		
 		//	Entrega
 		setShipmentBPartner(invoice);
@@ -1341,9 +1345,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		 * 	Limpa os valores antigos
 		 */
 		clear();
-		
-		// Imprime Descontos
-		setIsDiscountPrinted(order.isDiscountPrinted());
 				
 		//	Dados mestre
 		setDateDoc(order.getDateAcct());
@@ -1363,6 +1364,12 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Tipo de Documento
 		setC_DocTypeTarget_ID();
+		
+		// Imprime Descontos
+		if (LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getNFModel()))
+			setIsDiscountPrinted(false);
+		else
+			setIsDiscountPrinted(order.isDiscountPrinted());
 		
 		//	Entrega
 		setShipmentBPartner (null, null, order);
