@@ -16,11 +16,13 @@ package org.adempierelbr.validator;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.model.MClient;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**
@@ -53,6 +55,7 @@ public class VLBRBilling implements ModelValidator
 			log.info("Initializing global validator: "+this.toString());
 
 		//	ModelChange
+		engine.addDocValidate (MInvoice.Table_Name, this);
 		engine.addDocValidate (MLBRNotaFiscal.Table_Name, this);
 	}	//	initialize
 
@@ -105,6 +108,8 @@ public class VLBRBilling implements ModelValidator
 	{
 		if (MLBRNotaFiscal.Table_Name.equals(po.get_TableName()))
 			return docValidate ((MLBRNotaFiscal) po, timing);
+		else if (MInvoice.Table_Name.equals(po.get_TableName()))
+			return docValidate ((MInvoice) po, timing);
 		return null;
 	}	//	docValidate
 	
@@ -136,4 +141,28 @@ public class VLBRBilling implements ModelValidator
 
 		return null;
 	}	//	docValidate
+	
+	/**
+	 * 	Valida se é possível cancelar a NF
+	 * @param nf
+	 * @param timing
+	 * @return
+	 */
+	public String docValidate (MInvoice invoice, int timing)
+	{
+		/**
+		 * 	Após reativar, anular, fechar ou estornar executa:
+		 * 		Cancela retenções, boleto e CNAB
+		 */
+		if (timing == TIMING_AFTER_REACTIVATE || timing == TIMING_AFTER_VOID || timing == TIMING_AFTER_CLOSE || timing == TIMING_AFTER_REVERSECORRECT)
+		{
+			String sql = "UPDATE C_Invoice SET LBR_Withhold_Invoice_ID=NULL WHERE LBR_Withhold_Invoice_ID=" + invoice.getC_Invoice_ID();
+			DB.executeUpdate (sql, invoice.get_TrxName());
+
+			// Cancela o Boleto e CNAB
+			MLBRBoleto.cancelBoleto (invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+		}	//	TIMING_AFTER_REACTIVATE, VOID, CLOSE, REVERSECORRECT
+		
+		return null;
+	}
 }	//	VLBRRMA
