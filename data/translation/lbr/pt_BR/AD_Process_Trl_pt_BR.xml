@@ -125,9 +125,9 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Help" original=""/>
 </row>
 <row id="1120000" trl="Y">
-<value column="Name" original="ProcStatusServico">Consultar Disponibilidade da SeFaz</value>
-<value column="Description" original="Testa o status do serviço da NF-e">Testa o status do serviço de recepção da NF-e</value>
-<value column="Help" original=""/>
+<value column="Name" original="Check the status of NF-e services">Consultar Disponibilidade da SeFaz</value>
+<value column="Description" original="Check the status of reception services of NF-e and NFC-e">Testa o status do serviço de recepção da NF-e e NFC-e</value>
+<value column="Help" original="This process will try to check the condition of SeFaz services regarding NF-e and NFC-e reception">Este processo irá verificar se o serviço de recepção de notas está funcionando na SeFaz. Caso a SeFaz esteja enfrentando algum problema o processo irá retornar a informação e previsão de normalização. Em caso de erro na consulta, verifique diretamente na SeFaz do seu estado.</value>
 </row>
 <row id="1120001" trl="Y">
 <value column="Name" original="ProcConsultaCadastro">Consultar Cadastro</value>

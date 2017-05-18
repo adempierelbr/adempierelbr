@@ -68,6 +68,9 @@ public class ProcStatusServico extends SvrProcess
 	/**	Tipo de Emissão		*/
 	private String p_LBR_TPEmis = null;
 	
+	/**	Modelo de NF		*/
+	private String p_LBR_NFModel = "55";
+	
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -79,12 +82,21 @@ public class ProcStatusServico extends SvrProcess
 			String name = para[i].getParameterName();
 			if (name == null)
 				;
-			else if (name.equals("AD_Org_ID"))
+			//	Organização
+			else if (name.equals(MLBRNFConfig.COLUMNNAME_AD_Org_ID))
 				p_AD_Org_ID = para[i].getParameterAsInt();
-			else if (name.equals("lbr_NFeEnv"))
+			
+			//	Ambiente da NF
+			else if (name.equals(MLBRNFConfig.COLUMNNAME_lbr_NFeEnv))
 				p_LBR_EnvType = (String) para[i].getParameter();
-			else if (name.equals("LBR_TPEmis"))
+			
+			//	Tipo de Emissão
+			else if (name.equals(MLBRNFConfig.COLUMNNAME_LBR_TPEmis))
 				p_LBR_TPEmis = (String) para[i].getParameter();
+			
+			//	Modelo: NFe ou NFCe
+			else if (name.equals(MLBRNFConfig.COLUMNNAME_lbr_NFModel))
+				p_LBR_NFModel = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -155,6 +167,11 @@ public class ProcStatusServico extends SvrProcess
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
+			
+			//	FIXME: Quick fix
+			if (MLBRNFConfig.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(p_LBR_NFModel))
+				url = url.replace("nfe.", "nfce.");
+			
 			NfeStatusServico2Stub.setAmbiente(url);
 			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();
 
