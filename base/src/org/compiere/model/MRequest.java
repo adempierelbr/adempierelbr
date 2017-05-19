@@ -1100,6 +1100,13 @@ public class MRequest extends X_R_Request
 				.append(": ").append(get_DisplayValue(columnName, false))
 				.append(" -> ").append(get_DisplayValue(columnName, true));
 		}
+		
+		//	Verificar se o Formato do Modelo de Correspondência é HTML.
+		Boolean isHtml = false;
+		
+		if (getR_MailText_ID() > 0)
+			isHtml = new MMailText(Env.getCtx(), getR_MailText_ID(), get_TrxName()).isHtml();
+		
 		//	NextAction
 		if (getDateNextAction() != null)
 			message.append("\n").append(Msg.translate(getCtx(), "DateNextAction"))
@@ -1109,6 +1116,11 @@ public class MRequest extends X_R_Request
 		if (getResult() != null)
 			message.append("\n----------\n").append(getResult());
 		message.append(getMailTrailer(null));
+		
+		//	Enviar apenas o valor do campo Result se o Modelo de Correspondência for HTML.
+		if (isHtml && getResult() != null)
+			message.delete(0, message.length()).append(getResult());
+		
 		File pdf = createPDF();
 		log.finer(message.toString());
 		
@@ -1190,11 +1202,6 @@ public class MRequest extends X_R_Request
 				userList.add(ii);
 				//
 				MUser to = MUser.get (getCtx(), AD_User_ID);
-								
-				Boolean isHtml = false;
-				
-				if (getR_MailText_ID() > 0)
-					isHtml = new MMailText(Env.getCtx(), getR_MailText_ID(), get_TrxName()).isHtml();
 				
 				//	Send Mail
 				if (X_AD_User.NOTIFICATIONTYPE_EMail.equals(NotificationType)
