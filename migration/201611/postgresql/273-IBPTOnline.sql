@@ -23,7 +23,7 @@ UPDATE AD_Menu_Trl SET Description='Import the average taxes from IBPT',Name='Im
 ;
 
 -- 19/05/2017 10h47min32s BRT
-UPDATE AD_Process_Trl SET IsTranslated='Y',Name='Importar Impostos via IBPT',Description='Efetuar a importação da tabela de aliquotas aproximadas de impostos do IBPT',Help='** Atenção ** A importação pode demorar alguns minutos, de acordo com a quantidade de registros a serem importados. Você pode optar pela importação online ou por arquivo CSV. Marque a opção "Apagar registros obsoletos" para que todos os registros antigos sejam apagados antes da importação.',Updated=TO_TIMESTAMP('2017-05-19 10:47:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120126 AND AD_Language='pt_BR'
+UPDATE AD_Process_Trl SET IsTranslated='Y',Name='Importar Impostos via IBPT',Description='Efetuar a importação da tabela de aliquotas aproximadas de impostos do IBPT',Help='Você pode optar pela importação online ou por arquivo CSV. Marque a opção "Excluir registros antigos" para que todos os registros obsoletos sejam apagados antes da importação.',Updated=TO_TIMESTAMP('2017-05-19 10:47:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_ID=1120126 AND AD_Language='pt_BR'
 ;
 
 -- 19/05/2017 10h49min29s BRT

@@ -185,9 +185,9 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Help" original=""/>
 </row>
 <row id="1120126" trl="Y">
-<value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
-<value column="Description" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT</value>
-<value column="Help" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual."/>
+<value column="Name" original="Import IBPT average taxes">Importar Impostos via IBPT</value>
+<value column="Description" original="Import the average taxes from IBPT">Efetuar a importação da tabela de aliquotas aproximadas de impostos do IBPT</value>
+<value column="Help" original="Import average taxes from IBPT. This info is mandatory for customer invoices. You can choose getting this data online or from a CSV file.">Você pode optar pela importação online ou por arquivo CSV. Marque a opção "Excluir registros antigos" para que todos os registros obsoletos sejam apagados antes da importação.</value>
 </row>
 <row id="1120147" trl="N">
 <value column="Name" original="Process Nota Fiscal">Processar Nota Fiscal</value>

@@ -27,4 +27,9 @@
 <value column="Description" original="">Define a Nota Fiscal</value>
 <value column="Help" original="">Chave primária tabela LBR_NotaFiscal</value>
 </row>
+<row id="1120354" trl="Y">
+<value column="Name" original="Online Processing">Obter dados online via API</value>
+<value column="Description" original="Get the IBPT data from the internet API">Obtém os dados do IBPT via API online</value>
+<value column="Help" original=""/>
+</row>
 </adempiereTrl>
