@@ -166,11 +166,14 @@ public class ProcStatusServico extends SvrProcess
 			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.STATUSSERVICO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
+			String serviceType = null;
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(p_LBR_NFModel))
+				serviceType = MLBRNFeWebService.STATUSSERVICO;
 			
-			//	FIXME: Quick fix
-			if (MLBRNFConfig.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(p_LBR_NFModel))
-				url = url.replace("nfe.", "nfce.");
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(p_LBR_NFModel))
+				serviceType = MLBRNFeWebService.NFCE_STATUSSERVICO;
+			
+			String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
 			
 			NfeStatusServico2Stub.setAmbiente(url);
 			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();

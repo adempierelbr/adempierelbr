@@ -228,11 +228,16 @@ public class ProcInutNF extends SvrProcess
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
-			
-		//	Recupera a URL de Transmissão
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.INUTILIZACAO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
-		url = url.replace("nfe.", "nfce.");
 		
+		String serviceType = null;
+		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nfModel))
+			serviceType = MLBRNFeWebService.INUTILIZACAO;
+		
+		else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nfModel))
+			serviceType = MLBRNFeWebService.NFCE_INUTILIZACAO;
+		
+		//	Recupera a URL de Transmissão
+		String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());		
 		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub(url);
 
 		//	Faz a chamada

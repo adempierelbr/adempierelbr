@@ -202,11 +202,14 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 		
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.AUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+		String serviceType = null;
+		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+			serviceType = MLBRNFeWebService.AUTORIZACAO;
 		
-		//	FIXME: Quick fix
-		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
-			url = url.replace("nfe.", "nfce.");
+		else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+			serviceType = MLBRNFeWebService.NFCE_AUTORIZACAO;
+		
+		String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
 		
 		NfeAutorizacaoStub.setAmbiente(url);
 		NfeAutorizacaoStub stub = new NfeAutorizacaoStub();
@@ -360,11 +363,15 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETAUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+			String serviceType = null;
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				serviceType = MLBRNFeWebService.RETAUTORIZACAO;
 			
-			//	FIXME: Quick fix
-			if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
-				url = url.replace("nfe.", "nfce.");
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+				serviceType = MLBRNFeWebService.NFCE_RETAUTORIZACAO;
+			
+			String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+			
 			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
 
 			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
