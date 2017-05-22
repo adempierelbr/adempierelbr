@@ -3472,7 +3472,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		{
 			// Entra no IF se a Nota Fiscal não for um Documento Próprio
 			// ou for uma Nota Fiscal de Serviço e Anula a Nota Fiscal
-			if (!islbr_IsOwnDocument() || !LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+			if (!islbr_IsOwnDocument() || (!LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()) &&
+					!LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel())))
 			{
 				setProcessed (true);
 				setDocAction (DOCACTION_None);
