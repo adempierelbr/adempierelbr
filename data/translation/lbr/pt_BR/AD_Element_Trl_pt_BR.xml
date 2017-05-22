@@ -1029,166 +1029,6 @@ Há duas razões para desativar e não excluir registros:
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000078" trl="Y">
-<value column="Name" original="DocPrint">Impressão de Documento</value>
-<value column="PrintName" original="DocPrint">Impressão de Documento</value>
-<value column="Description" original="Primary key table LBR_DocPrint">Define o Documento de Impressão</value>
-<value column="Help" original="Primary key table LBR_DocPrint">Chave primária tabela LBR_DocPrint</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000079" trl="Y">
-<value column="Name" original="Create Fields">Criar Campos</value>
-<value column="PrintName" original="Create Fields">Criar Campos</value>
-<value column="Description" original="Processo to Create Document Fields">Processo para Criação de Campos</value>
-<value column="Help" original="Processo to Create Document Fields">Processo para Criação de Campos</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000080" trl="Y">
-<value column="Name" original="Table Name">Nome da Tabela</value>
-<value column="PrintName" original="Table Name">Nome da Tabela</value>
-<value column="Description" original="Identifies the Table or View Name">Identifica o Nome da Table ou View</value>
-<value column="Help" original="Identifies the Table or View Name">Identifica o Nome da Table ou View</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000081" trl="Y">
-<value column="Name" original="Has SubDoc">Tem SubDocumento</value>
-<value column="PrintName" original="Has SubDoc">Tem SubDocumento</value>
-<value column="Description" original="Identifies if the Document has SubDocuments">Identifica se existem SubDocumentos</value>
-<value column="Help" original="Identifies if the Document has SubDocuments">Identifica se existem SubDocumentos</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000082" trl="Y">
-<value column="Name" original="SubDoc_ID">SubDoc_ID</value>
-<value column="PrintName" original="SubDoc_ID">SubDoc_ID</value>
-<value column="Description" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
-<value column="Help" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000083" trl="Y">
-<value column="Name" original="SubDoc Row">Linha SubDocumento</value>
-<value column="PrintName" original="SubDoc Row">Linha SubDocumento</value>
-<value column="Description" original="Identifies the Starter Row of the SubDocument">Identifica a Primeira Linha do SubDocumento</value>
-<value column="Help" original="Identifies the Starter Row of the SubDocument">Identifica a Primeira Linha do SubDocumento</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000084" trl="Y">
-<value column="Name" original="Number of Rows">Número de Linhas</value>
-<value column="PrintName" original="Number of Rows">Número de Linhas</value>
-<value column="Description" original="Identifies the Number of Rows (If this is a SubDocument, enter 0 for unlimited)">Identifica o número de Linhas (Se este é um SubDocumento, 0 = ilimitado)</value>
-<value column="Help" original="Identifies the Number of Rows (If this is a SubDocument, enter 0 for unlimited)">Identifica o número de Linhas (Se este é um SubDocumento, 0 = ilimitado)</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000085" trl="Y">
-<value column="Name" original="Number of Columns">Número de Colunas</value>
-<value column="PrintName" original="Number of Columns">Número de Colunas</value>
-<value column="Description" original="Identifies the Number of Columns">Identifica o número de Colunas</value>
-<value column="Help" original="Identifies the Number of Columns">Identifica o número de Colunas</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000086" trl="Y">
-<value column="Name" original="IsSubDoc">SubDoc</value>
-<value column="PrintName" original="IsSubDoc">SubDoc</value>
-<value column="Description" original="Defines if this Documento is a SubDocument">Define se este Documento é um SubDocumento</value>
-<value column="Help" original="Defines if this Documento is a SubDocument">Define se este Documento é um SubDocumento</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000087" trl="Y">
-<value column="Name" original="DocPrint Field">Campo do Documento</value>
-<value column="PrintName" original="DocPrint Field">Campo do Documento</value>
-<value column="Description" original="Primary key table LBR_DocPrintField">Define o Campo do Documento</value>
-<value column="Help" original="Primary key table LBR_DocPrintField">Chave primária tabela LBR_DocPrintField</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000088" trl="Y">
-<value column="Name" original="Row Number">Linha</value>
-<value column="PrintName" original="Row Number">Linha</value>
-<value column="Description" original="Defines the Y Position">Define a Posição Y</value>
-<value column="Help" original="Defines the Y Position">Define a Posição Y</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000089" trl="Y">
-<value column="Name" original="Column Number">Coluna</value>
-<value column="PrintName" original="Column Number">Coluna</value>
-<value column="Description" original="Defines the X Position">Define a Posição X</value>
-<value column="Help" original="Defines the X Position">Define a Posição X</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000090" trl="Y">
-<value column="Name" original="Field Length">Tamanho do Campo</value>
-<value column="PrintName" original="Field Length">Tamanho do Campo</value>
-<value column="Description" original="Defines the Field Length">Define o tamanho do Campo</value>
-<value column="Help" original="Defines the Field Length">Define o tamanho do Campo</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000091" trl="Y">
-<value column="Name" original="Field Alignment">Alinhamento</value>
-<value column="PrintName" original="Field Alignment">Alinhamento</value>
-<value column="Description" original="Defines the Field Alignment">Define o Alinhamento do Campo</value>
-<value column="Help" original="Defines the Field Alignment">Define o Alinhamento do Campo</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000092" trl="Y">
-<value column="Name" original="Print Format">Formato de Impressão</value>
-<value column="PrintName" original="Print Format">Formato de Impressão</value>
-<value column="Description" original="Defines the Print Format Type">Define o Formato de Impressão</value>
-<value column="Help" original="Defines the Print Format Type">Define o Formato de Impressão</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000093" trl="Y">
-<value column="Name" original="IsHeader">Cabeçalho</value>
-<value column="PrintName" original="IsHeader">Cabeçalho</value>
-<value column="Description" original="Identifies if this is a Header Information (all pages prints column)">Identifica se é uma Informação de Cabeçalho (todas as páginas imprimem este coluna)</value>
-<value column="Help" original="Identifies if this is a Header Information (all pages prints column)">Identifica se é uma Informação de Cabeçalho (todas as páginas imprimem este coluna)</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000094" trl="Y">
 <value column="Name" original="Brazilian Tax">Imposto Brasileiro</value>
 <value column="PrintName" original="Brazilian Tax">Imposto Brasileiro</value>
@@ -1399,16 +1239,6 @@ Há duas razões para desativar e não excluir registros:
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000155" trl="Y">
-<value column="Name" original="Tax Configuration">Configuração de Impostos</value>
-<value column="PrintName" original="Tax Configuration">Configuração de Impostos</value>
-<value column="Description" original="Primary key table LBR_TaxConfiguration">Define a Configuração de Impostos</value>
-<value column="Help" original="Primary key table LBR_TaxConfiguration">Chave primária tabela LBR_TaxConfiguration</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000156" trl="Y">
 <value column="Name" original="Fiscal Group - Product">Grupo de Tributação</value>
 <value column="PrintName" original="Fiscal Group - Product">Grupo de Tributação</value>
@@ -1444,66 +1274,6 @@ Há duas razões para desativar e não excluir registros:
 <value column="PrintName" original="Fiscal Group - Vendor">Grupo de Tributação (Fornecedor)</value>
 <value column="Description" original="Defines the Fiscal Group - Vendor">Define o Grupo de Tributação do Fornecedor</value>
 <value column="Help" original="Defines the Fiscal Group - Vendor">Define o Grupo de Tributação do Fornecedor</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000160" trl="Y">
-<value column="Name" original="Exception Type">Tipo de Exceção</value>
-<value column="PrintName" original="Exception Type">Tipo de Exceção</value>
-<value column="Description" original="Defines the Exception Type">Define o Tipo de Exceção</value>
-<value column="Help" original="Defines the Exception Type">Define o Tipo de Exceção</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000161" trl="Y">
-<value column="Name" original="Business Partner Exception">Exceção Parceiro de Negócios</value>
-<value column="PrintName" original="Business Partner Exception">Exceção Parceiro de Negócios</value>
-<value column="Description" original="Primary key table LBR_TaxConfig_BPartner">Define as Exceções Parceiro de Negócios</value>
-<value column="Help" original="Primary key table LBR_TaxConfig_BPartner">Chave primária tabela LBR_TaxConfig_BPartner</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000162" trl="Y">
-<value column="Name" original="Business Partner Group Exception">Exceção Grupo de Tributação</value>
-<value column="PrintName" original="Business Partner Group Exception">Exceção Grupo de Tributação</value>
-<value column="Description" original="Primary key table LBR_TaxConfig_BPGroup">Define a Exceção do Grupo de Tributação (Parceiro de Negócios)</value>
-<value column="Help" original="Primary key table LBR_TaxConfig_BPGroup">Define a Exceção do Grupo de Tributação (Parceiro de Negócios)</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000163" trl="Y">
-<value column="Name" original="Product Exception">Exceção Produto</value>
-<value column="PrintName" original="Product Exception">Exceção Produto</value>
-<value column="Description" original="Primary key table LBR_TaxConfig_Product">Define a Exceção do Produto</value>
-<value column="Help" original="Primary key table LBR_TaxConfig_Product">Define a Exceção do Produto</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000164" trl="Y">
-<value column="Name" original="Product Group Exception">Exceção Grupo de Tributação</value>
-<value column="PrintName" original="Product Group Exception">Exceção Grupo de Tributação</value>
-<value column="Description" original="Primary key table LBR_TaxConfig_ProductGroup">Define a Exceção do Grupo de Tributação (Produto)</value>
-<value column="Help" original="Primary key table LBR_TaxConfig_ProductGroup">Chave primária tabela LBR_TaxConfig_ProductGroup</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000165" trl="Y">
-<value column="Name" original="Region Exception">Exceção Estado</value>
-<value column="PrintName" original="Region Exception">Exceção Estado</value>
-<value column="Description" original="Primary key table LBR_TaxConfig_Region">Define a Exceção do Estado</value>
-<value column="Help" original="Primary key table LBR_TaxConfig_Region">Chave primária tabela LBR_TaxConfig_Region</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2123,36 +1893,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000230" trl="Y">
-<value column="Name" original="DocumentType Accounting">Contabilidade</value>
-<value column="PrintName" original="DocumentType Accounting">Contabilidade</value>
-<value column="Description" original="Primary key table LBR_DocType_Acct">Primary key table LBR_DocType_Acct</value>
-<value column="Help" original="Primary key table LBR_DocType_Acct">Primary key table LBR_DocType_Acct</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000231" trl="Y">
-<value column="Name" original="Credit Account">Conta de Crédito</value>
-<value column="PrintName" original="Credit Account">Conta de Crédito</value>
-<value column="Description" original="Defines the Credit Account">Define a Conta de Crédito</value>
-<value column="Help" original="Defines the Credit Account">Define a Conta de Crédito</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000232" trl="Y">
-<value column="Name" original="Debit Account">Conta de Débito</value>
-<value column="PrintName" original="Debit Account">Conta de Débito</value>
-<value column="Description" original="Defines the Debit Account">Define a Conta de Débito</value>
-<value column="Help" original="Defines the Debit Account">Define a Conta de Débito</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000233" trl="Y">
 <value column="Name" original="Automatic Shipment">Remessa Automática</value>
 <value column="PrintName" original="Automatic Shipment">Remessa Automática</value>
@@ -2178,96 +1918,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="Has Open Items">Gerar Contas a Pagar/Receber</value>
 <value column="Description" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a Pagar/Receber</value>
 <value column="Help" original="Identifies if this Document Has Open Items">Identifica se o Documento gera um contas a Pagar/Receber</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000238" trl="Y">
-<value column="Name" original="Matrix Printer">Impressora Matricial</value>
-<value column="PrintName" original="Matrix Printer">Impressora Matricial</value>
-<value column="Description" original="Primary key table LBR_MatrixPrinter">Define a Impressora Matricial</value>
-<value column="Help" original="Primary key table LBR_MatrixPrinter">Chave primária tabela LBR_MatrixPrinter</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000239" trl="Y">
-<value column="Name" original="Characterset">Characterset</value>
-<value column="PrintName" original="Characterset">Characterset</value>
-<value column="Description" original="Defines the Characterset">Defines the Characterset</value>
-<value column="Help" original="Defines the Characterset">Defines the Characterset</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000240" trl="Y">
-<value column="Name" original="Is Condensed">Condensado</value>
-<value column="PrintName" original="Is Condensed">Condensado</value>
-<value column="Description" original="Defines if Character is Condensed">Indica se usa caracteres condensados</value>
-<value column="Help" original="Defines if Character is Condensed">Indica se usa caracteres condensados</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000241" trl="Y">
-<value column="Name" original="Interspace">Interspace</value>
-<value column="PrintName" original="Interspace">Interspace</value>
-<value column="Description" original="Defines the Interspace">Defines the Interspace</value>
-<value column="Help" original="Defines the Interspace">Defines the Interspace</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000242" trl="Y">
-<value column="Name" original="Is UnixPrinter">Impressora Unix</value>
-<value column="PrintName" original="Is UnixPrinter">Impressora Unix</value>
-<value column="Description" original="Define if this is an Unix Printer">Define if this is an Unix Printer</value>
-<value column="Help" original="Define if this is an Unix Printer">Define if this is an Unix Printer</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000243" trl="Y">
-<value column="Name" original="Pitch">Pitch</value>
-<value column="PrintName" original="Pitch">Pitch</value>
-<value column="Description" original="Defines the Printer Pitch">Defines the Printer Pitch</value>
-<value column="Help" original="Defines the Printer Pitch">Defines the Printer Pitch</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000244" trl="Y">
-<value column="Name" original="Printer Path">Caminho da Impressora</value>
-<value column="PrintName" original="Printer Path">Caminho da Impressora</value>
-<value column="Description" original="Defines the Printer Path">Define o Caminho da Impressora</value>
-<value column="Help" original="Defines the Printer Path">Define o Caminho da Impressora</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000245" trl="Y">
-<value column="Name" original="Printer Type">Tipo de Impressora</value>
-<value column="PrintName" original="Printer Type">Tipo de Impressora</value>
-<value column="Description" original="Defines the Printer Type">Define o Tipo de Impressora</value>
-<value column="Help" original="Defines the Printer Type">Define o Tipo de Impressora</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000246" trl="Y">
-<value column="Name" original="Unix PrinterName">Unix PrinterName</value>
-<value column="PrintName" original="Unix PrinterName">Unix PrinterName</value>
-<value column="Description" original="Defines the Unix PrinterName">Defines the Unix PrinterName</value>
-<value column="Help" original="Defines the Unix PrinterName">Defines the Unix PrinterName</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2453,16 +2103,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000277" trl="Y">
-<value column="Name" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
-<value column="PrintName" original="SubDoc_ID (2)">SubDoc_ID (2)</value>
-<value column="Description" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
-<value column="Help" original="Identifies the ID of the SubDocument">Identifica o ID do SubDocumento</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000279" trl="Y">
 <value column="Name" original="Service Taxes">Impostos Serviço</value>
 <value column="PrintName" original="Service Taxes">Impostos Serviço</value>
@@ -2538,16 +2178,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="Packing Type">Espécie</value>
 <value column="Description" original="Defines the Packing Type">Define a Espécie</value>
 <value column="Help" original="Defines the Packing Type">Define a Espécie</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000288" trl="Y">
-<value column="Name" original="Other Row">Outra Linha</value>
-<value column="PrintName" original="Other Row">Outra Linha</value>
-<value column="Description" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
-<value column="Help" original="Defines if this field uses another row or truncate">Define se este campo usa uma outa linha ou é truncado</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2703,16 +2333,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000319" trl="Y">
-<value column="Name" original="Purchase Transaction">Transação de Compras</value>
-<value column="PrintName" original="Purchase Transaction">Transação de Compras</value>
-<value column="Description" original="This is a Purchase Transaction">Esta é uma Transação de Compras</value>
-<value column="Help" original="The Purchase Transaction checkbox indicates if this item is a Purchase Transaction.">A caixa de verificação "Transação de Compras" indica se este item é uma Transação de Compras.</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000320" trl="Y">
 <value column="Name" original="Reactivate Nota Fiscal">Reativar Nota Fiscal</value>
 <value column="PrintName" original="Reactivate Nota Fiscal">Reativar Nota Fiscal</value>
@@ -2743,16 +2363,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_Name" original=""/>
 <value column="PO_PrintName" original=""/>
 </row>
-<row id="1000323" trl="Y">
-<value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
-<value column="PrintName" original="Other NF Link">Outras Notas Fiscais</value>
-<value column="Description" original="Identifies the Other NF Link">Identifica Outras Notas Fiscais</value>
-<value column="Help" original="Primary key table LBR_OtherNFLink">Chave primária da tabela LBR_OtherNFLink</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
 <row id="1000325" trl="Y">
 <value column="Name" original="NFe No">No. da NF-e</value>
 <value column="PrintName" original="NFe No">No. da NF-e</value>
@@ -2768,66 +2378,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="Is Return">Retorno</value>
 <value column="Description" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
 <value column="Help" original="Defines if the is a return of manufactured products">Define se é Retorno de Industrialização</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000327" trl="Y">
-<value column="Name" original="Other NF">Outra Nota Fiscal</value>
-<value column="PrintName" original="Other NF">Outra Nota Fiscal</value>
-<value column="Description" original="Other NF">Define a Outra Nota Fiscal</value>
-<value column="Help" original="Other NF">Campo chave da tabela LBR_OtherNF</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000328" trl="Y">
-<value column="Name" original="Other NF Request Type">Tipo de Solicitação</value>
-<value column="PrintName" original="Other NF Request Type">Tipo de Solicitação</value>
-<value column="Description" original="Type of request for the Other NF Process">Define o Tipo de Solicitação</value>
-<value column="Help" original="Type of request for the Other NF Process">Define o Tipo de Solicitação</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000329" trl="Y">
-<value column="Name" original="Generate">Criar Linhas</value>
-<value column="PrintName" original="Generate">Criar Linhas</value>
-<value column="Description" original="Generate">Processo para criação de Linhas</value>
-<value column="Help" original="Generates the Other NF Lines">Processo para criação de Linhas</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000330" trl="Y">
-<value column="Name" original="Process">Processar</value>
-<value column="PrintName" original="Process">Processar</value>
-<value column="Description" original="Process now">Processar Outras Notas Fiscais</value>
-<value column="Help" original="Process Other NF">Processar Outras Notas Fiscais</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000331" trl="Y">
-<value column="Name" original="Void">Anular</value>
-<value column="PrintName" original="Void">Anular</value>
-<value column="Description" original="Void Other NF">Anular Outras Notas Fiscais</value>
-<value column="Help" original="Void Other NF">Anular Outras Notas Fiscais</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000332" trl="Y">
-<value column="Name" original="Other NF Line">Outras NF (Linha)</value>
-<value column="PrintName" original="Other NF Line">Outras NF (Linha)</value>
-<value column="Description" original="Other NF Line">Outras NF (Linha)</value>
-<value column="Help" original="Other NF Line">Outras NF (Linha)</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2868,36 +2418,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="LBR DocBaseType">Tipo de Documento Base LBR</value>
 <value column="Description" original="Localization Brasil Document Base Type">Tipo de Documento Base do LBR</value>
 <value column="Help" original="Localization Brasil Document Base Type">Tipo de Documento Base do projeto de localização brasil.</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000346" trl="Y">
-<value column="Name" original="Origin Invoice Line">Linha da Fatura de Origem</value>
-<value column="PrintName" original="Origin Invoice Line">Linha da Fatura de Origem</value>
-<value column="Description" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
-<value column="Help" original="Origin Invoice Line">Linha da Fatura de Envio de Consignação</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000347" trl="Y">
-<value column="Name" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
-<value column="PrintName" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
-<value column="Description" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
-<value column="Help" original="LBR_ProcessLink_ID">LBR_ProcessLink_ID</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000348" trl="Y">
-<value column="Name" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-<value column="PrintName" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-<value column="Description" original="Destination Invoice Line">Linha da Fatura de Destino</value>
-<value column="Help" original="Destination Invoice Line">Linha da Fatura de Destino</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -2978,16 +2498,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PrintName" original="SISCOMEX Total">SISCOMEX Total</value>
 <value column="Description" original="SISCOMEX Total for all the document">SISCOMEX Total for all the document</value>
 <value column="Help" original="SISCOMEX Total for all the document">SISCOMEX Total for all the document</value>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1000357" trl="Y">
-<value column="Name" original="NF Reference">Referência da NF</value>
-<value column="PrintName" original="NF Reference">Referência da NF</value>
-<value column="Description" original="Reference to other NF">Referência da NF</value>
-<value column="Help" original="Reference to other NF">Referência da NF</value>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
 <value column="PO_Name" original=""/>
@@ -3164,9 +2674,9 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="PO_PrintName" original=""/>
 </row>
 <row id="1000650" trl="Y">
-<value column="Name" original="Cod. Cidade">Cod. Cidade</value>
-<value column="PrintName" original="Cod. Cidade">Cod. Cidade</value>
-<value column="Description" original=""/>
+<value column="Name" original="Cod. Cidade (IBGE)">Cod. Cidade</value>
+<value column="PrintName" original="Cod. Cidade (IBGE)">Cod. Cidade</value>
+<value column="Description" original="Código da Cidade do IBGE (Institudo Brasileiro de Geografia e Estatística)"/>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>
@@ -4039,16 +3549,6 @@ Usar @AMT@ quando for identificar o valor do Produto/Serviço</value>
 <value column="Name" original="Data contingência">Data contingência</value>
 <value column="PrintName" original="Data e Hora da entrada em contingência">Data e Hora da entrada em contingência</value>
 <value column="Description" original=""/>
-<value column="Help" original=""/>
-<value column="PO_Description" original=""/>
-<value column="PO_Help" original=""/>
-<value column="PO_Name" original=""/>
-<value column="PO_PrintName" original=""/>
-</row>
-<row id="1120105" trl="Y">
-<value column="Name" original="Enable Scan">SCAN</value>
-<value column="PrintName" original="Enable Scan">SCAN</value>
-<value column="Description" original="">Habilitada o SCAN (Sistema de Contignência do Ambiente Nacional)</value>
 <value column="Help" original=""/>
 <value column="PO_Description" original=""/>
 <value column="PO_Help" original=""/>

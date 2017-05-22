@@ -32,18 +32,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000001" trl="Y">
-<value column="Name" original="Document">Documento</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000002" trl="Y">
-<value column="Name" original="Fields">Campos</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000003" trl="Y">
 <value column="Name" original="Info">Info</value>
 <value column="CommitWarning" original=""/>
@@ -98,42 +86,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000012" trl="Y">
-<value column="Name" original="Header">Cabeçalho</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000013" trl="Y">
-<value column="Name" original="Business Partner">Parceiro de Negócios</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000014" trl="Y">
-<value column="Name" original="Business Partner Group">Grupo Parceiro de Negócios</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="">Grupo de Tributação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000015" trl="Y">
-<value column="Name" original="Product">Produto</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000016" trl="Y">
-<value column="Name" original="Product Group">Grupo Produto</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="">Grupo de Tributação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000017" trl="Y">
-<value column="Name" original="Region">Estado</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000018" trl="Y">
 <value column="Name" original="Tax">Imposto</value>
 <value column="CommitWarning" original=""/>
@@ -154,18 +106,6 @@
 </row>
 <row id="1000021" trl="Y">
 <value column="Name" original="Line">Linha</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000022" trl="Y">
-<value column="Name" original="DocType Acct">Contabilidade</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000023" trl="Y">
-<value column="Name" original="Matrix Printer">Impressora Matricial</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
@@ -230,12 +170,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000035" trl="Y">
-<value column="Name" original="Other NF Link">Outras Notas Fiscais</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000036" trl="Y">
 <value column="Name" original="Manufacture">Industrialização</value>
 <value column="CommitWarning" original=""/>
@@ -252,42 +186,6 @@
 <value column="Name" original="Manufacture Line">Linha</value>
 <value column="CommitWarning" original=""/>
 <value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000039" trl="Y">
-<value column="Name" original="Header">Cabeçalho</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000040" trl="Y">
-<value column="Name" original="Line">Linha</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000042" trl="Y">
-<value column="Name" original="Header">Cabeçalho</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="Consignation Return Header">Cabeçalho do Retorno de Consignação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000043" trl="Y">
-<value column="Name" original="Line">Linha</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="Consignation Return Line">Linha do Retorno de Consignação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000044" trl="Y">
-<value column="Name" original="Header">Cabeçalho</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="Consignation Invoice Header">Cabeçalho de Venda de Cosignação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000045" trl="Y">
-<value column="Name" original="Line">Linha</value>
-<value column="CommitWarning" original=""/>
-<value column="Description" original="Consignation Invoice Line">Linha de Venda de Consignação</value>
 <value column="Help" original=""/>
 </row>
 <row id="1100000" trl="Y">
@@ -499,5 +397,48 @@
 <value column="CommitWarning" original=""/>
 <value column="Description" original="Mercosur Common Nomenclature">Nomenclatura Comum do Mercosul</value>
 <value column="Help" original="Mercosur Common Nomenclature">Nomenclatura Comum do Mercosul</value>
+</row>
+<row id="1120263" trl="Y">
+<value column="Name" original="Order Line Tax">Imposto da Linha</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Order Tax">Imposto da Linha</value>
+<value column="Help" original="The Order Tax Tab displays the tax amount for an Order based on the lines entered.">Mostra os valores dos impostos para a linha do pedido</value>
+</row>
+<row id="1120264" trl="Y">
+<value column="Name" original="Order Line Tax">Imposto da Linha</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Order Line Tax">Imposto da Linha</value>
+<value column="Help" original="The Order Tax Tab displays the tax associated with the Order Lines.">Mostra os valores dos impostos para a linha do pedido</value>
+</row>
+<row id="1120265" trl="Y">
+<value column="Name" original="Invoice Line Tax">Imposto da Linha</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Customer Invoice Tax">Imposto da Linha</value>
+<value column="Help" original="The Invoice Tax Tab displays the total tax due based on the Invoice Lines.">Mostra os impostos da linha da fatura</value>
+</row>
+<row id="1120266" trl="Y">
+<value column="Name" original="Invoice Line Tax">Imposto da Linha</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Vendor Invoice Tax">Imposto da Linha</value>
+<value column="Help" original="The Invoice Tax Tab displays the total tax due based on the Invoice Lines.&#10;">Mostra os impostos da linha da fatura</value>
+</row>
+<row id="1120276" trl="N">
+<value column="Name" original="NBS">NBS</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
+</row>
+<row id="1120277" trl="N">
+<value column="Name" original="CSC">CSC</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="CSC">CSC</value>
+<value column="Help" original=""/>
+</row>
+<row id="1120278" trl="N">
+<value column="Name" original="Invoice Pay Schedule">Programação de Pagamentos</value>
+<value column="CommitWarning" original=""/>
+<value column="Description" original="Vendor Invoice Tax">Programação de Pagamento de Fatura</value>
+<value column="Help" original="The Invoice Tax Tab displays the total tax due based on the Invoice Lines.&#10;">
+</value>
 </row>
 </adempiereTrl>

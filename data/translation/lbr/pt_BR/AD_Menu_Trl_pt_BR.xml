@@ -10,10 +10,6 @@
 <value column="Name" original="Bank">Banco</value>
 <value column="Description" original=""/>
 </row>
-<row id="1000004" trl="Y">
-<value column="Name" original="Print">Impressão</value>
-<value column="Description" original=""/>
-</row>
 <row id="1000014" trl="Y">
 <value column="Name" original="CFOP">CFOP</value>
 <value column="Description" original=""/>
@@ -28,14 +24,6 @@
 </row>
 <row id="1000035" trl="Y">
 <value column="Name" original="Manufacture">Industrialização</value>
-<value column="Description" original=""/>
-</row>
-<row id="1000039" trl="Y">
-<value column="Name" original="Consignation">Consignação</value>
-<value column="Description" original=""/>
-</row>
-<row id="1120017" trl="N">
-<value column="Name" original="Contabilidade">Contabilidade</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120179" trl="N">

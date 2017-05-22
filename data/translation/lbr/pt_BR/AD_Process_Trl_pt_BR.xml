@@ -29,11 +29,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
     <value column="Description" original="Reset (delete) allocation of invoices to payments">Resetar (apagar) a alocação de faturas para pagamento</value>
     <value column="Help" original="Delete individual allocation. In contrast to &quot;Reverse&quot;, the allocation is deleted (no trace), if the period is open.">Eliminar alocação individual. Em contraste a "Reversão", a alocação é eliminada (sem rastro), se o período está aberto.</value>
   </row>
-<row id="1000000" trl="Y">
-<value column="Name" original="Create Fields">Criar Campos</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000001" trl="Y">
 <value column="Name" original="Generate CNAB">Geração CNAB</value>
 <value column="Description" original=""/>
@@ -41,26 +36,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 </row>
 <row id="1000002" trl="Y">
 <value column="Name" original="Return CNAB">Retorno CNAB</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000003" trl="Y">
-<value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000004" trl="Y">
-<value column="Name" original="ProcGenerateNFS">Processar NF (Saída)</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000005" trl="Y">
-<value column="Name" original="ProcGenerateNFE">Processar NF (Entrada)</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000006" trl="Y">
-<value column="Name" original="ProcCancelNF">Cancelar Nota Fiscal</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -74,31 +49,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000012" trl="Y">
-<value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000013" trl="Y">
-<value column="Name" original="ProcReactivateNF">Reativar Nota Fiscal</value>
-<value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
-<value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
-</row>
-<row id="1000014" trl="Y">
-<value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000015" trl="Y">
-<value column="Name" original="lbr_ProcessOtherNF">Processar</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000016" trl="Y">
-<value column="Name" original="lbr_VoidOtherNF">Anular</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000017" trl="Y">
 <value column="Name" original="Sobre ADempiereLBR">Sobre AdempiereLBR</value>
 <value column="Description" original=""/>
@@ -107,21 +57,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <row id="1000018" trl="Y">
 <value column="Name" original="ProcGenerateRPS">Geração Arquivo RPS</value>
 <value column="Description" original="Process to Generate RPS File (NFe)">Processo para Geração de Arquivo RPS (NFe)</value>
-<value column="Help" original=""/>
-</row>
-<row id="1100001" trl="Y">
-<value column="Name" original="Lot Transmission">Transmitir Lote</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1100002" trl="Y">
-<value column="Name" original="Generate NFe XML">Gerar XML da NF-e</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1100003" trl="Y">
-<value column="Name" original="Lot Return">Retorno do Lote</value>
-<value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
 <row id="1120000" trl="Y">

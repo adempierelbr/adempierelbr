@@ -59,4 +59,7 @@
 <row id="1120058" trl="N">
 <value column="Name" original="Query Script">Script de Pesquisa</value>
 </row>
+<row id="1120060" trl="Y">
+<value column="Name" original="Formula">Fórmula</value>
+</row>
 </adempiereTrl>
