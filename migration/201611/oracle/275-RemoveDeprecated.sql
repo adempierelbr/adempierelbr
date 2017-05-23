@@ -1,0 +1,22 @@
+DELETE FROM AD_Field WHERE AD_Column_ID=1103000
+;
+
+DELETE FROM AD_Column WHERE AD_Column_ID=1103000
+;
+
+DELETE FROM AD_Element WHERE AD_Element_ID=1103000
+;
+
+DELETE FROM AD_Field WHERE AD_Column_ID=1103001
+;
+
+DELETE FROM AD_Column WHERE AD_Column_ID=1103001
+;
+
+DELETE FROM AD_Element WHERE AD_Element_ID=1103001
+;
+
+SELECT Register_Migration_Script ('275-RemoveDeprecated.sql') FROM DUAL
+;
+
+EXIT
