@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
+import java.util.Random;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
@@ -357,6 +358,18 @@ public class NFeXMLGenerator
 	 */
 	public static String generate (MLBRNotaFiscal nf) throws Exception
 	{
+		return generate (nf, TextUtil.lPad (String.valueOf (new Random ().nextInt (99999999)), 8));
+	}	//	generate
+	
+	/**
+	 * Gera o corpo da NF
+	 * 
+	 * @param nf Nota Fiscal
+	 * @return Success or Error message
+	 * @throws Exception
+	 */
+	public static String generate (MLBRNotaFiscal nf, String random) throws Exception
+	{
 		log.finer ("init");
 		
 		//	Transaction and Context
@@ -397,7 +410,7 @@ public class NFeXMLGenerator
 		chaveNFE.setSerie(nf.getlbr_NFSerie());
 		chaveNFE.setTpEmis(tpEmissao.toString());
 		chaveNFE.setNNF(TextUtil.lPad(nf.getDocumentNo(), 9));
-		chaveNFE.setCNF();	//	Random code	
+		chaveNFE.setCNF(random);
 		
 		//	A. Dados da Nota Fiscal eletrônica
 		InfNFe infNFe = nfe.addNewInfNFe();
@@ -1626,10 +1639,9 @@ public class NFeXMLGenerator
 				* QRCode da NFC-e
 				*/
 				log.fine ("Generating NFC-e QRCode URL");
-				String reference = document.getNFe().getSignature().getSignedInfo().xmlText(NFeUtil.getXmlOpt());
 				
 				// Generate Digest Value
-				String digestValue = reference.substring(reference.indexOf("<DigestValue>")+13, reference.indexOf("</DigestValue>"));
+				String digestValue = NFeUtil.extractDigestValue (document);
 				
 				// CSC
 				MLBRCSC csc = MLBRCSC.get(nf.getAD_Org_ID());

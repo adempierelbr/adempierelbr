@@ -9,6 +9,7 @@ import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFConfig;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeConsulta2Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
@@ -114,7 +115,7 @@ public class ConsultNFe extends SvrProcess
 		//	Informações da Organização
 		MOrgInfo orgInfo = MOrgInfo.get (getCtx(), p_AD_Org_ID, null);
 		if (orgInfo == null)
-			return "Organização não encontrada";
+			return "@Error@ <font color=\"880000\">UOrganização não encontrada</font>";
 
 		MLocation orgLoc = new MLocation (getCtx(), orgInfo.getC_Location_ID(), null);
 		
@@ -125,14 +126,18 @@ public class ConsultNFe extends SvrProcess
 			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID, MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
 			
 			if (nfconfig == null)
-				return "Impossível identificar o Ambiente da NF-e.";
+				return "@Error@ <font color=\"880000\">UImpossível identificar o Ambiente da NF-e</font>";
 			
 			p_LBR_EnvType = nfconfig.getlbr_NFeEnv();
 		}
+		
+		//	Valida se a chave da NFe possuí 44 dígitos
+		if (p_LBR_NFeID == null || !p_LBR_NFeID.matches("^[\\d]{44}$"))
+			return "@Error@ <font color=\"880000\">Chave da NFe inválida</font>";
 
 		String region = BPartnerUtil.getRegionCode(orgLoc);
 		if (region.isEmpty())
-			return "UF Inválida";
+			return "@Error@ <font color=\"880000\">UF Inválida</font>";
 		
 		//	Tipo de Emissão
 		if (p_LBR_TPEmis == null)
@@ -212,28 +217,41 @@ public class ConsultNFe extends SvrProcess
 			if (ret.getProtNFe() != null)
 			{
 				InfProt infProt = ret.getProtNFe().getInfProt();
+				String digestValue = infProt.xgetDigVal().getStringValue();
+				String random = ret.getChNFe().substring (35, 43);
 				//
 				msg.append("<hr>");
 				msg.append("<br /><font color=\"008800\"><b>PROTOCOLO</b></font>");
 				msg.append("<br /><b>Status:</b> ").append(infProt.getCStat() + " - " + infProt.getXMotivo());
 				msg.append("<br /><b>Protocolo:</b> ").append(infProt.getNProt());
 				msg.append("<br /><b>Data/Hora Recbto:</b> ").append(infProt.getDhRecbto());
-				msg.append("<br /><b>Digest Value:</b> ").append(infProt.xgetDigVal().getStringValue());
+				msg.append("<br /><b>Digest Value:</b> ").append(digestValue);
 				msg.append("<br /><b>Versão da Aplicação:</b> ").append(infProt.getVerAplic());
 
 				//	Atualiza os dados da NF-e
 				if (p_LBR_UpdateNFe)
 				{
 					MLBRNotaFiscal nfe = MLBRNotaFiscal.getNFe(ret.getChNFe(), get_TrxName());
-					if (nfe != null && nfe.getAD_Org_ID() == p_AD_Org_ID)
+					if (nfe != null && nfe.getAD_Org_ID() == p_AD_Org_ID && nfe.islbr_IsOwnDocument())
 					{
 						//	NF sem protocolo
 						if (nfe.getlbr_NFeProt() == null)
 						{
 							try
 							{
-								MLBRNotaFiscal.authorizeNFe (ret.getProtNFe(), get_TrxName());
-								msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo foram atualizados na NFe</font>");
+								//	Caso não tenha XML, tenta recriar
+								if (!nfe.hasNFeXML())
+									NFeXMLGenerator.generate (nfe, random);
+								
+								//	Valida se o protocolo é válido para o XML anexado
+								if (!nfe.isProtocolValid(digestValue))
+									msg = new StringBuilder("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
+								
+								else
+								{
+									MLBRNotaFiscal.authorizeNFe (ret.getProtNFe(), get_TrxName());
+									msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo foram atualizados na NFe</font>");
+								}
 							}
 							catch (Exception e)
 							{
@@ -247,7 +265,69 @@ public class ConsultNFe extends SvrProcess
 							msg.append("<br /><br />Nota Fiscal já possuí dados do protocolo");
 					}
 					else
-						msg.append("<br /><br />Nota Fiscal não encontrada para fazer a atualização.");
+					{
+						String cnpj 		= ret.getChNFe().substring (6, 20);
+						String serie	 	= ret.getChNFe().substring (22, 25);
+						String documentNo 	= ret.getChNFe().substring (25, 34);
+						String model 		= ret.getChNFe().substring (20, 22);
+						
+						//	Tenta encontrar a NF pelo número, série e cnpj
+						nfe = MLBRNotaFiscal.getNFe (getCtx(), cnpj, model, documentNo, serie, get_TrxName());
+						
+						//	NF existe
+						if (nfe != null
+								
+								//	Documento próprio
+								&& nfe.islbr_IsOwnDocument()
+								
+								//	Estado da NF desconhecido
+								&& !MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(nfe.getDocStatus())
+
+								//	Docuemnto não pode estar completado
+								&& !MLBRNotaFiscal.DOCSTATUS_Completed.equals(nfe.getDocStatus())
+								
+								//	Docuemnto não pode estar anulado
+								&& !MLBRNotaFiscal.DOCSTATUS_Voided.equals(nfe.getDocStatus()))
+						{
+							
+							//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
+							nfe.setlbr_NFeStatus (null);
+							nfe.setlbr_NFeID (null);
+							nfe.setLBR_NFeLot_ID (0);
+							//							
+							try
+							{
+								NFeXMLGenerator.generate (nfe, random);
+
+								//	Valida a chave de acesso
+								if (nfe.getlbr_NFeID() == null || !nfe.getlbr_NFeID().equals(ret.getChNFe()))
+									msg = new StringBuilder("<br /><br /> Falha na atualização da NF, chave inválida ");
+								
+								//	Valida se existe XML
+								else if (!nfe.hasNFeXML())
+									msg = new StringBuilder("<br /><br /> Falha na atualização da NF, sem XML");
+									
+								//	Valida se o XML é válido
+								else if (!nfe.isProtocolValid(digestValue))
+									msg = new StringBuilder("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
+									
+								//	Tudo OK, prosseguir
+								else
+								{
+									MLBRNotaFiscal.authorizeNFe (ret.getProtNFe(), get_TrxName());
+									msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo foram atualizados na NFe</font>");
+								}
+							}
+							catch (Exception e)
+							{
+								msg = new StringBuilder("<br /><br /> Falha na reconstrução do XML - " + e.getMessage());
+							}
+						}
+						
+						//	NF não encontrada
+						else
+							msg.append("<br /><br />Nota Fiscal não encontrada para fazer a atualização.");
+					}
 				}
 			}
 			

@@ -60,6 +60,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import br.inf.portalfiscal.nfe.v310.NFeDocument;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsgE;
 
@@ -903,4 +904,25 @@ public abstract class NFeUtil
 			return "";
 		}
 	}	//	hash
+	
+	/**
+	 * 	Extract the Digest Value from NFe
+	 * 
+	 * @param 	nfeDoc NFe Document
+	 * @return	Digest Value from NFe Signature or "" in case of error
+	 */
+	public static String extractDigestValue (NFeDocument nfeDoc)
+	{
+		try
+		{
+			String reference = nfeDoc.getNFe().getSignature().getSignedInfo().xmlText(NFeUtil.getXmlOpt());
+			
+			// 	Extract Digest Value
+			return reference.substring(reference.indexOf("<DigestValue>")+13, reference.indexOf("</DigestValue>"));
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
+	}	//	extractDisgestValue
 }	//	NFeUtil

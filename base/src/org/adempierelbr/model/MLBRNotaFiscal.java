@@ -13,6 +13,7 @@
 package org.adempierelbr.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +32,7 @@ import javax.xml.stream.XMLInputFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.exceptions.NotaFiscalNotFoundException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
 import org.adempierelbr.nfse.INFSe;
@@ -52,6 +54,7 @@ import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.adempierelbr.wrapper.I_W_M_Shipper;
 import org.apache.axiom.om.OMElement;
+import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -738,7 +741,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//
 		MLBRNotaFiscal nf = getNFe (chNFe, trxName);
 		if (nf == null)
-			throw new Exception ("NF não encontrada: " + chNFe);
+			throw new NotaFiscalNotFoundException ("NF não encontrada: " + chNFe);
 
 		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E))
 			throw new Exception ("NF já processada. " + nf.getDocumentNo());
@@ -849,6 +852,31 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Save changes
 		nf.save();
 	}	//	authorizeNFe
+
+	/**
+	 * 	Encontra a NF pelo número da NF, série e Organização
+	 *
+	 * @param AD_Org_ID
+	 * @param DocumentNo 	Número da NF
+	 * @param serie 		Série da NF
+	 * @param trxName 		Transação
+	 * @return
+	 */
+	public static MLBRNotaFiscal getNFe (Properties ctx, String LBR_CNPJ, String LBR_NFModel, String documentNo, String serie, String trxName)
+	{
+		String sql = "LBR_CNPJ=? AND LBR_NFModel=? AND DocumentNo=? AND LBR_NFSerie=?";
+		
+		try
+		{
+			serie = String.valueOf (Integer.valueOf (serie));
+			documentNo = String.valueOf (Integer.valueOf (documentNo));
+			LBR_CNPJ = TextUtil.toNumeric (LBR_CNPJ).replaceAll ("([\\d]{2})([\\d]{3})([\\d]{3})([\\d]{4})([\\d]{2})", "$1.$2.$3/$4-$5");
+		}
+		catch (Exception e){}
+		//
+		MLBRNotaFiscal nf = new Query (ctx, Table_Name, sql, trxName).setParameters(LBR_CNPJ, LBR_NFModel, documentNo, serie).firstOnly();
+		return nf;
+	}	//	getNFe
 
 	/**
 	 * 	Encontra a NF pelo ID de NF-e
@@ -3871,6 +3899,59 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		return events;
 	}	// getNFeEvents
+	
+	/**
+	 * 	Check if this NF has a XML for NFe or NFCe
+	 * 	@return true if the XML is present
+	 */
+	public boolean hasNFeXML ()
+	{
+		MAttachment att = getAttachment(true);
+		if (att == null)
+			return false;
+		//
+		for (MAttachmentEntry entry : att.getEntries())
+		{
+			if (entry != null 
+					&& entry.getName() != null 
+					&& entry.getName().endsWith(NFeXMLGenerator.FILE_EXT))
+				return true;
+		}
+		return false;
+	}	//	hasNFeXML
+	
+	/**
+	 * 		Check if the provided digest value 
+	 * 	matches the digest value from XML
+	 * 
+	 * 	@param dv Digest Value to be compared with XML
+	 * 	@return true if the Digest Value matches
+	 * @throws IOException 
+	 * @throws XmlException 
+	 */
+	public boolean isProtocolValid (String dv) throws XmlException, IOException
+	{
+		MAttachment att = getAttachment(true);
+		if (att == null)
+			return false;
+		//
+		for (MAttachmentEntry entry : att.getEntries())
+		{
+			//	XML encontrado, conferir Digest Value
+			if (entry != null 
+					&& entry.getName() != null 
+					&& entry.getName().endsWith(NFeXMLGenerator.FILE_EXT))
+			{
+				NFeDocument nfeDoc = NFeDocument.Factory.parse (entry.getInputStream());
+				String digestValue = NFeUtil.extractDigestValue (nfeDoc);
+				
+				//	Same document
+				if (digestValue.equals(dv))
+					return true;
+			}
+		}
+		return false;
+	}	//	isProtocolValid
 	
 	/**
 	 * 	Calculate the NF weight
