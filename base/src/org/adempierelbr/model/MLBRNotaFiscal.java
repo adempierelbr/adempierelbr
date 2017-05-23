@@ -3770,7 +3770,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
 			
 		//	Recupera a URL de Transmissão
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.INUTILIZACAO, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
+		String serviceType = null;
+		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nfModel))
+			serviceType = MLBRNFeWebService.INUTILIZACAO;		
+		else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nfModel))
+			serviceType = MLBRNFeWebService.NFCE_INUTILIZACAO;
+		
+		String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
 		
 		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub(url);
 
