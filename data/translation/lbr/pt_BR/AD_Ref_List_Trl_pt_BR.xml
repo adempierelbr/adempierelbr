@@ -859,255 +859,255 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120420" trl="N">
-<value column="Name" original="100-Autorizado o uso da NF-e">467-Rejeição: Dados da NFC-e divergentes do EPEC</value>
+<value column="Name" original="100-Autorizado o uso da NF-e">100-Autorizado o uso da NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120421" trl="N">
-<value column="Name" original="101-Cancelamento de NF-e homologado">468-Rejeição: NFC-e com Tipo Emissão = 4, sem EPEC correspo</value>
+<value column="Name" original="101-Cancelamento de NF-e homologado">101-Cancelamento de NF-e homologado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120422" trl="N">
-<value column="Name" original="102-Inutilização de número homologado">659-Rejeição: Ano-Mês da Data de Emissão diverge do Ano-Mês</value>
+<value column="Name" original="102-Inutilização de número homologado">102-Inutilização de número homologado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120423" trl="N">
-<value column="Name" original="103-Lote recebido com sucesso">720-Rejeição: Na operação com Exterior deve ser informada t</value>
+<value column="Name" original="103-Lote recebido com sucesso">103-Lote recebido com sucesso</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120424" trl="N">
-<value column="Name" original="104-Lote processado">721-Rejeição: Operação interestadual não deve informar idEs</value>
+<value column="Name" original="104-Lote processado">104-Lote processado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120425" trl="N">
-<value column="Name" original="105-Lote em processamento">792-Rejeição: Informada a IE do destinatário para operação </value>
+<value column="Name" original="105-Lote em processamento">105-Lote em processamento</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120426" trl="N">
-<value column="Name" original="106-Lote não localizado">472-Rejeição: CPF consultado difere do CPF do Certificado D</value>
+<value column="Name" original="106-Lote não localizado">106-Lote não localizado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120427" trl="N">
-<value column="Name" original="107-Serviço em Operação">113-SCAN será desabilitado para a UF às hh:mm</value>
+<value column="Name" original="107-Serviço em Operação">107-Serviço em Operação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120428" trl="N">
-<value column="Name" original="108-Serviço Paralisado Momentaneamente (curto prazo)">114-SCAN desabilitado pela SEFAZ Origem</value>
+<value column="Name" original="108-Serviço Paralisado Momentaneamente (curto prazo)">108-Serviço Paralisado Momentaneamente (curto prazo)</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120429" trl="N">
-<value column="Name" original="109-Serviço Paralisado sem Previsão">155-Cancelamento de NF-e homologado fora de prazo</value>
+<value column="Name" original="109-Serviço Paralisado sem Previsão">109-Serviço Paralisado sem Previsão</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120430" trl="N">
-<value column="Name" original="110-Uso Denegado">303-Uso Denegado : Destinatário não habilitado a operar na </value>
+<value column="Name" original="110-Uso Denegado">110-Uso Denegado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120431" trl="N">
-<value column="Name" original="111-Consulta cadastro com uma ocorrência">321-Rejeição: NF-e de devolução não possui conhecimento fis</value>
+<value column="Name" original="111-Consulta cadastro com uma ocorrência">111-Consulta cadastro com uma ocorrência</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120432" trl="N">
-<value column="Name" original="112-Consulta cadastro com mais de uma ocorrência">322-Rejeição: NF-e de devolução com mais de um documento fi</value>
+<value column="Name" original="112-Consulta cadastro com mais de uma ocorrência">112-Consulta cadastro com mais de uma ocorrência</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120433" trl="N">
-<value column="Name" original="124-EPEC Autorizado">323-Rejeição: CNPJ autorizado para download inválido</value>
+<value column="Name" original="124-EPEC Autorizado">124-EPEC Autorizado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120434" trl="N">
-<value column="Name" original="128-Lote de Evento Processado">324-Rejeição: CNPJ do destinatário ja autorizado para downl</value>
+<value column="Name" original="128-Lote de Evento Processado">128-Lote de Evento Processado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120435" trl="N">
-<value column="Name" original="135-Evento registrado e vinculado a NF-e">325-Rejeição: CPF autorizado para download inválido</value>
+<value column="Name" original="135-Evento registrado e vinculado a NF-e">135-Evento registrado e vinculado a NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120436" trl="N">
-<value column="Name" original="136-Evento registrado, mas não vinculado a NF-e">326-Rejeição: CPF do destinatário autorizado para download</value>
+<value column="Name" original="136-Evento registrado, mas não vinculado a NF-e">136-Evento registrado, mas não vinculado a NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120437" trl="N">
-<value column="Name" original="137-Nenhum documento localizado para o Destinatário">327-Rejeição: CFOP inválido para NF-e com finalidade de dev</value>
+<value column="Name" original="137-Nenhum documento localizado para o Destinatário">137-Nenhum documento localizado para o Destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120438" trl="N">
-<value column="Name" original="138-Documento localizado para o Destinatário">328-Rejeição: CFOP inválido para NF-e que não tem finalidad</value>
+<value column="Name" original="138-Documento localizado para o Destinatário">138-Documento localizado para o Destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120439" trl="N">
-<value column="Name" original="139-Pedido de Download processado">329-Rejeição: Número da DI/DSI inválido</value>
+<value column="Name" original="139-Pedido de Download processado">139-Pedido de Download processado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120440" trl="N">
-<value column="Name" original="140-Download disponibilizado">330-Rejeição: Informar o valor da AFRMM na importação por v</value>
+<value column="Name" original="140-Download disponibilizado">140-Download disponibilizado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120441" trl="N">
-<value column="Name" original="142-Ambiente de Contingência EPEC bloqueado para o Emitente">331-Rejeição: Informar o CNPJ do adquirente ou do encomenda</value>
+<value column="Name" original="142-Ambiente de Contingência EPEC bloqueado para o Emitente">142-Ambiente de Contingência EPEC bloqueado para o Emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120442" trl="N">
-<value column="Name" original="150-Autorizado o uso da NF-e, autorização fora de prazo">332-Rejeição: CNPJ do adquirente ou do encomendante da impo</value>
+<value column="Name" original="150-Autorizado o uso da NF-e, autorização fora de prazo">150-Autorizado o uso da NF-e, autorização fora de prazo</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120443" trl="N">
-<value column="Name" original="151-Cancelamento de NF-e homologado fora de prazo">333-Rejeição: Informar a UF do adquirente ou do encomendant</value>
+<value column="Name" original="151-Cancelamento de NF-e homologado fora de prazo">151-Cancelamento de NF-e homologado fora de prazo</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120444" trl="N">
-<value column="Name" original="201-Rejeição: Número máximo de numeração a inutilizar ultrapassou o limite">334-Rejeição: Número do processo de drawback não informado </value>
+<value column="Name" original="201-Rejeição: Número máximo de numeração a inutilizar ultrapassou o limite">201-Rejeição: Número máximo de numeração a inutilizar ultrapassou o limite</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120445" trl="N">
-<value column="Name" original="202-Rejeição: Falha no reconhecimento da autoria ou integridade do arquivo digital">335-Rejeição: Número do processo de drawback na importação </value>
+<value column="Name" original="202-Rejeição: Falha no reconhecimento da autoria ou integridade do arquivo digital">202-Rejeição: Falha no reconhecimento da autoria ou integridade do arquivo digital</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120446" trl="N">
-<value column="Name" original="203-Rejeição: Emissor não habilitado para emissão de NF-e">336-Rejeição: Informado o grupo de exportação no item para </value>
+<value column="Name" original="203-Rejeição: Emissor não habilitado para emissão de NF-e">203-Rejeição: Emissor não habilitado para emissão de NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120447" trl="N">
-<value column="Name" original="204-Duplicidade de NF-e">337-Rejeição: Não informado o grupo de exportação no item</value>
+<value column="Name" original="204-Duplicidade de NF-e">204-Duplicidade de NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120448" trl="N">
-<value column="Name" original="205-NF-e está denegada na base de dados da SEFAZ">338-Rejeição: Número de processo de drawback não informado </value>
+<value column="Name" original="205-NF-e está denegada na base de dados da SEFAZ">205-NF-e está denegada na base de dados da SEFAZ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120449" trl="N">
-<value column="Name" original="206-Rejeição: NF-e já está inutilizada na Base de dados da SEFAZ">339-Rejeição: Número de processo de drawback na exportação </value>
+<value column="Name" original="206-Rejeição: NF-e já está inutilizada na Base de dados da SEFAZ">206-Rejeição: NF-e já está inutilizada na Base de dados da SEFAZ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120450" trl="N">
-<value column="Name" original="207-Rejeição: CNPJ do emitente inválido">340-Rejeição: Não informado o grupo de exportação indireta </value>
+<value column="Name" original="207-Rejeição: CNPJ do emitente inválido">207-Rejeição: CNPJ do emitente inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120451" trl="N">
-<value column="Name" original="208-Rejeição: CNPJ do destinatário inválido">341-Rejeição: Número do registro de exportação inválido</value>
+<value column="Name" original="208-Rejeição: CNPJ do destinatário inválido">208-Rejeição: CNPJ do destinatário inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120452" trl="N">
-<value column="Name" original="209-Rejeição: IE do emitente inválida">342-Rejeição: Chave de acesso informada na exportação indir</value>
+<value column="Name" original="209-Rejeição: IE do emitente inválida">209-Rejeição: IE do emitente inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120453" trl="N">
-<value column="Name" original="210-Rejeição: IE do destinatário inválida">343-Rejeição: Modelo da NF-e informada na exportação indire</value>
+<value column="Name" original="210-Rejeição: IE do destinatário inválida">210-Rejeição: IE do destinatário inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120454" trl="N">
-<value column="Name" original="211-Rejeição: IE do substituto inválida">344-Rejeição: Duplicidade de NF-e informada na exportação i</value>
+<value column="Name" original="211-Rejeição: IE do substituto inválida">211-Rejeição: IE do substituto inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120455" trl="N">
-<value column="Name" original="212-Rejeição: Data de emissão NF-e posterior a data de recebimento">345-Rejeição: Chave de acesso informada na exportação indir</value>
+<value column="Name" original="212-Rejeição: Data de emissão NF-e posterior a data de recebimento">212-Rejeição: Data de emissão NF-e posterior a data de recebimento</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120456" trl="N">
-<value column="Name" original="213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do Certificado Digital">346-Rejeição: Somatório quantidades informadas na exportaçã</value>
+<value column="Name" original="213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do Certificado Digital">213-Rejeição: CNPJ-Base do Emitente difere do CNPJ-Base do Certificado Digital</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120457" trl="N">
-<value column="Name" original="214-Rejeição: Tamanho da mensagem excedeu o limite estabelecido">347-Rejeição: Descrição do combustível diverge da descrição</value>
+<value column="Name" original="214-Rejeição: Tamanho da mensagem excedeu o limite estabelecido">214-Rejeição: Tamanho da mensagem excedeu o limite estabelecido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120458" trl="N">
-<value column="Name" original="215-Rejeição: Falha no schema XML">348-Rejeição: NFC-e com grupo RECOPI</value>
+<value column="Name" original="215-Rejeição: Falha no schema XML">215-Rejeição: Falha no schema XML</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120459" trl="N">
-<value column="Name" original="216-Rejeição: Chave de Acesso difere da cadastrada">349-Rejeição: Número RECOPI não informado</value>
+<value column="Name" original="216-Rejeição: Chave de Acesso difere da cadastrada">216-Rejeição: Chave de Acesso difere da cadastrada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120460" trl="N">
-<value column="Name" original="217-Rejeição: NF-e não consta na base de dados da SEFAZ">350-Rejeição: Número RECOPI inválido</value>
+<value column="Name" original="217-Rejeição: NF-e não consta na base de dados da SEFAZ">217-Rejeição: NF-e não consta na base de dados da SEFAZ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120461" trl="N">
-<value column="Name" original="218-NF-e já está cancelada na base de dados da SEFAZ">351-Rejeição: Valor do ICMS da operação no ICMS-ST=51 difer</value>
+<value column="Name" original="218-NF-e já está cancelada na base de dados da SEFAZ">218-NF-e já está cancelada na base de dados da SEFAZ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120462" trl="N">
-<value column="Name" original="219-Rejeição: Circulação da NF-e verificada">352-Rejeição: Valor do ICMS diferido no CST=51 difere do pr</value>
+<value column="Name" original="219-Rejeição: Circulação da NF-e verificada">219-Rejeição: Circulação da NF-e verificada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120463" trl="N">
-<value column="Name" original="220-Rejeição: Prazo de Cancelamento superior ao previsto na Legislação">353-Rejeição: Valor do ICMS no CST=51 não corresponde a dif</value>
+<value column="Name" original="220-Rejeição: Prazo de Cancelamento superior ao previsto na Legislação">220-Rejeição: Prazo de Cancelamento superior ao previsto na Legislação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120464" trl="N">
-<value column="Name" original="221-Rejeição: Confirmado o recebimento da NF-e pelo destinatário">354-Rejeição: Informado grupo de devoluçãode tributos para </value>
+<value column="Name" original="221-Rejeição: Confirmado o recebimento da NF-e pelo destinatário">221-Rejeição: Confirmado o recebimento da NF-e pelo destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120465" trl="N">
-<value column="Name" original="222-Rejeição: Protocolo de Autorização de Uso difere do cadastrado">355-Rejeição: Informar o local de saída do país no caso de </value>
+<value column="Name" original="222-Rejeição: Protocolo de Autorização de Uso difere do cadastrado">222-Rejeição: Protocolo de Autorização de Uso difere do cadastrado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120466" trl="N">
-<value column="Name" original="223-Rejeição: CNPJ do transmissor do lote difere do CNPJ do transmissor da consulta">356-Rejeição: Informar o clocal de saída do pís somente no </value>
+<value column="Name" original="223-Rejeição: CNPJ do transmissor do lote difere do CNPJ do transmissor da consulta">223-Rejeição: CNPJ do transmissor do lote difere do CNPJ do transmissor da consulta</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120467" trl="N">
-<value column="Name" original="224-Rejeição: A faixa inicial é maior que a faixa final">357-Rejeição: Chave de acesso do grupo de exportação indire</value>
+<value column="Name" original="224-Rejeição: A faixa inicial é maior que a faixa final">224-Rejeição: A faixa inicial é maior que a faixa final</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120468" trl="N">
-<value column="Name" original="225-Rejeição: Falha no Schema XML do lote de NFe">358-Rejeição: Chave de acesso no grupo de exportação indire</value>
+<value column="Name" original="225-Rejeição: Falha no Schema XML do lote de NFe">225-Rejeição: Falha no Schema XML do lote de NFe</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120469" trl="N">
-<value column="Name" original="226-Rejeição: Código da UF do Emitente diverge da UF autorizadora">359-Rejeição: NF-e de venda a Órgão público sem informar a </value>
+<value column="Name" original="226-Rejeição: Código da UF do Emitente diverge da UF autorizadora">226-Rejeição: Código da UF do Emitente diverge da UF autorizadora</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120470" trl="N">
-<value column="Name" original="227-Rejeição: Erro na Chave de Acesso - Campo Id – falta a literal NFe">360-Rejeição: NF-e com Nota de Empenho inválida para UF</value>
+<value column="Name" original="227-Rejeição: Erro na Chave de Acesso - Campo Id – falta a literal NFe">227-Rejeição: Erro na Chave de Acesso - Campo Id – falta a literal NFe</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120471" trl="N">
-<value column="Name" original="228-Rejeição: Data de Emissão muito atrasada">361-Rejeição: NF-e com Nota de Empenho inexistente na UF</value>
+<value column="Name" original="228-Rejeição: Data de Emissão muito atrasada">228-Rejeição: Data de Emissão muito atrasada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120472" trl="N">
-<value column="Name" original="229-Rejeição: IE do emitente não informada">362-Rejeição: Venda de combustível sem informação do Transp</value>
+<value column="Name" original="229-Rejeição: IE do emitente não informada">229-Rejeição: IE do emitente não informada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120473" trl="N">
-<value column="Name" original="230-Rejeição: IE do emitente não cadastrada">363-Rejeição: Total do ISS difere do somatório dos itens</value>
+<value column="Name" original="230-Rejeição: IE do emitente não cadastrada">230-Rejeição: IE do emitente não cadastrada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120474" trl="N">
-<value column="Name" original="231-Rejeição: IE do emitente não vinculada ao CNPJ">364-Rejeição: Total do valor da dedução do ISS difere do so</value>
+<value column="Name" original="231-Rejeição: IE do emitente não vinculada ao CNPJ">231-Rejeição: IE do emitente não vinculada ao CNPJ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120475" trl="N">
-<value column="Name" original="232-Rejeição: IE do destinatário não informada">365-Rejeição: Total de outras retenções difere do somatório</value>
+<value column="Name" original="232-Rejeição: IE do destinatário não informada">232-Rejeição: IE do destinatário não informada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120476" trl="N">
-<value column="Name" original="233-Rejeição: IE do destinatário não cadastrada">366-Rejeição: Total do desconto incondicionado do ISS difer</value>
+<value column="Name" original="233-Rejeição: IE do destinatário não cadastrada">233-Rejeição: IE do destinatário não cadastrada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120477" trl="N">
-<value column="Name" original="234-Rejeição: IE do destinatário não vinculada ao CNPJ">367-Rejeição: Total do desconto condicionado do ISS difere </value>
+<value column="Name" original="234-Rejeição: IE do destinatário não vinculada ao CNPJ">234-Rejeição: IE do destinatário não vinculada ao CNPJ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120478" trl="N">
-<value column="Name" original="235-Rejeição: Inscrição SUFRAMA inválida">368-Rejeição: Total do ISS retido difere do somatório dos i</value>
+<value column="Name" original="235-Rejeição: Inscrição SUFRAMA inválida">235-Rejeição: Inscrição SUFRAMA inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120479" trl="N">
-<value column="Name" original="236-Rejeição: Chave de Acesso com dígito verificador inválido">369-Rejeição: Não informado o grupo avulsa na emissão pelo </value>
+<value column="Name" original="236-Rejeição: Chave de Acesso com dígito verificador inválido">236-Rejeição: Chave de Acesso com dígito verificador inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120480" trl="N">
-<value column="Name" original="237-Rejeição: CPF do destinatário inválido">370-Rejeição: Nota Fiscal Avusa com tipo de emissão inválid</value>
+<value column="Name" original="237-Rejeição: CPF do destinatário inválido">237-Rejeição: CPF do destinatário inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120481" trl="N">
-<value column="Name" original="238-Rejeição: Cabeçalho - Versão do arquivo XML superior a Versão vigente">461-Rejeição: Informado percentual de gás natural na mistur</value>
+<value column="Name" original="238-Rejeição: Cabeçalho - Versão do arquivo XML superior a Versão vigente">238-Rejeição: Cabeçalho - Versão do arquivo XML superior a Versão vigente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120482" trl="N">
-<value column="Name" original="239-Rejeição: Cabeçalho - Versão do arquivo XML não suportada">465-Rejeição: Número de controle da FCI inexistente</value>
+<value column="Name" original="239-Rejeição: Cabeçalho - Versão do arquivo XML não suportada">239-Rejeição: Cabeçalho - Versão do arquivo XML não suportada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120483" trl="N">
@@ -1139,343 +1139,343 @@
 <value column="Description" original=""/>
 </row>
 <row id="1120490" trl="N">
-<value column="Name" original="247-Rejeição: Sigla da UF do Emitente diverge da UF autorizadora">620-Rejeição: Chave de Acesso difere da existente em BD</value>
+<value column="Name" original="247-Rejeição: Sigla da UF do Emitente diverge da UF autorizadora">247-Rejeição: Sigla da UF do Emitente diverge da UF autorizadora</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120491" trl="N">
-<value column="Name" original="248-Rejeição: UF do Recibo diverge da UF autorizadora">663-Rejeição: Alíq. ICMS maior que 4% na saída interestadua</value>
+<value column="Name" original="248-Rejeição: UF do Recibo diverge da UF autorizadora">248-Rejeição: UF do Recibo diverge da UF autorizadora</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120492" trl="N">
-<value column="Name" original="249-Rejeição: UF da Chave de Acesso diverge da UF autorizadora">701-Rejeição: NF-e não pode utilizar verão 3.00</value>
+<value column="Name" original="249-Rejeição: UF da Chave de Acesso diverge da UF autorizadora">249-Rejeição: UF da Chave de Acesso diverge da UF autorizadora</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120493" trl="N">
-<value column="Name" original="250-Rejeição: UF diverge da UF autorizadora">702-Rejeição: NFC-e não é aceita pela UF do Emitente</value>
+<value column="Name" original="250-Rejeição: UF diverge da UF autorizadora">250-Rejeição: UF diverge da UF autorizadora</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120494" trl="N">
-<value column="Name" original="251-Rejeição: UF/Município destinatário não pertence a SUFRAMA">703-Rejeição: Data-hora de emissão posterior ao horário de </value>
+<value column="Name" original="251-Rejeição: UF/Município destinatário não pertence a SUFRAMA">251-Rejeição: UF/Município destinatário não pertence a SUFRAMA</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120495" trl="N">
-<value column="Name" original="252-Rejeição: Ambiente informado diverge do Ambiente de recebimento">704-Rejeição: NFC-e com data-hora de emissão atrasada</value>
+<value column="Name" original="252-Rejeição: Ambiente informado diverge do Ambiente de recebimento">252-Rejeição: Ambiente informado diverge do Ambiente de recebimento</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120496" trl="N">
-<value column="Name" original="253-Rejeição: Digito Verificador da chave de acesso composta inválida">705-Rejeição: NFC-e com data de entrada/saida</value>
+<value column="Name" original="253-Rejeição: Digito Verificador da chave de acesso composta inválida">253-Rejeição: Digito Verificador da chave de acesso composta inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120497" trl="N">
-<value column="Name" original="254-Rejeição: NF-e complementar não possui NF referenciada">706-Rejeição: NFC-e para operação de entrada</value>
+<value column="Name" original="254-Rejeição: NF-e complementar não possui NF referenciada">254-Rejeição: NF-e complementar não possui NF referenciada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120498" trl="N">
-<value column="Name" original="255-Rejeição: NF-e complementar possui mais de uma NF referenciada">707-Rejeição: NFC-e para operação interestadual ou com o ex</value>
+<value column="Name" original="255-Rejeição: NF-e complementar possui mais de uma NF referenciada">255-Rejeição: NF-e complementar possui mais de uma NF referenciada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120499" trl="N">
-<value column="Name" original="256-Rejeição: Uma NF-e da faixa já está inutilizada na Base de dados da SEFAZ">708-Rejeição: NFC-e nao pode referenciar um documento fisca</value>
+<value column="Name" original="256-Rejeição: Uma NF-e da faixa já está inutilizada na Base de dados da SEFAZ">256-Rejeição: Uma NF-e da faixa já está inutilizada na Base de dados da SEFAZ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120500" trl="N">
-<value column="Name" original="257-Rejeição: Solicitante não habilitado para emissão da NF-e">709-Rejeição: NFC-e com formato de DANFE inválido</value>
+<value column="Name" original="257-Rejeição: Solicitante não habilitado para emissão da NF-e">257-Rejeição: Solicitante não habilitado para emissão da NF-e</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120501" trl="N">
-<value column="Name" original="258-Rejeição: CNPJ da consulta inválido">710-Rejeição: NF-e com formado de DANFE inválido</value>
+<value column="Name" original="258-Rejeição: CNPJ da consulta inválido">258-Rejeição: CNPJ da consulta inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120502" trl="N">
-<value column="Name" original="259-Rejeição: CNPJ da consulta não cadastrado como contribuinte na UF">711-Rejeição: NF-e com contingência off-line</value>
+<value column="Name" original="259-Rejeição: CNPJ da consulta não cadastrado como contribuinte na UF">259-Rejeição: CNPJ da consulta não cadastrado como contribuinte na UF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120503" trl="N">
-<value column="Name" original="260-Rejeição: IE da consulta inválida">712-Rejeição: NFC-e com contingência off-line para a UF</value>
+<value column="Name" original="260-Rejeição: IE da consulta inválida">260-Rejeição: IE da consulta inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120504" trl="N">
-<value column="Name" original="261-Rejeição: IE da consulta não cadastrada como contribuinte na UF">713-Rejeição: Tipo de emissão diferente de 6 ou 7 para cont</value>
+<value column="Name" original="261-Rejeição: IE da consulta não cadastrada como contribuinte na UF">261-Rejeição: IE da consulta não cadastrada como contribuinte na UF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120505" trl="N">
-<value column="Name" original="262-Rejeição: UF não fornece consulta por CPF">714-Rejeição: NFC-e com contingência DPEC inexistente</value>
+<value column="Name" original="262-Rejeição: UF não fornece consulta por CPF">262-Rejeição: UF não fornece consulta por CPF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120506" trl="N">
-<value column="Name" original="263-Rejeição: CPF da consulta inválido">715-Rejeição: NFC-e com finalidade inválida</value>
+<value column="Name" original="263-Rejeição: CPF da consulta inválido">263-Rejeição: CPF da consulta inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120507" trl="N">
-<value column="Name" original="264-Rejeição: CPF da consulta não cadastrado como contribuinte na UF">716-Rejeição: NFC-e em operaçoã não destinada a consumidor </value>
+<value column="Name" original="264-Rejeição: CPF da consulta não cadastrado como contribuinte na UF">264-Rejeição: CPF da consulta não cadastrado como contribuinte na UF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120508" trl="N">
-<value column="Name" original="265-Rejeição: Sigla da UF da consulta difere da UF do Web Service">717-Rejeição: NFC-e em operação não presencial</value>
+<value column="Name" original="265-Rejeição: Sigla da UF da consulta difere da UF do Web Service">265-Rejeição: Sigla da UF da consulta difere da UF do Web Service</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120509" trl="N">
-<value column="Name" original="266-Rejeição: Série utilizada não permitida no Web Service">718-Rejeição: NFC-e não deve informar IE de substituto trib</value>
+<value column="Name" original="266-Rejeição: Série utilizada não permitida no Web Service">266-Rejeição: Série utilizada não permitida no Web Service</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120510" trl="N">
-<value column="Name" original="267-Rejeição: NF Complementar referencia uma NF-e inexistente">722-Rejeição: Operação interna com idEstrangeiro informado </value>
+<value column="Name" original="267-Rejeição: NF Complementar referencia uma NF-e inexistente">267-Rejeição: NF Complementar referencia uma NF-e inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120511" trl="N">
-<value column="Name" original="268-Rejeição: NF Complementar referencia outra NF-e Complementar">723-Rejeição: Operação interna com idEstrangeiro informado </value>
+<value column="Name" original="268-Rejeição: NF Complementar referencia outra NF-e Complementar">268-Rejeição: NF Complementar referencia outra NF-e Complementar</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120512" trl="N">
-<value column="Name" original="269-Rejeição: CNPJ Emitente da NF Complementar difere do CNPJ da NF Referenciada">724-Rejeição: NF-e sem o nome do destinatário</value>
+<value column="Name" original="269-Rejeição: CNPJ Emitente da NF Complementar difere do CNPJ da NF Referenciada">269-Rejeição: CNPJ Emitente da NF Complementar difere do CNPJ da NF Referenciada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120513" trl="N">
-<value column="Name" original="270-Rejeição: Código Município do Fato Gerador: dígito inválido">725-Rejeição: NFC-e com CFOP inválido</value>
+<value column="Name" original="270-Rejeição: Código Município do Fato Gerador: dígito inválido">270-Rejeição: Código Município do Fato Gerador: dígito inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120514" trl="N">
-<value column="Name" original="271-Rejeição: Código Município do Fato Gerador: difere da UF do emitente">726-Rejeição: NF-e sem a informação de endereço do destinat</value>
+<value column="Name" original="271-Rejeição: Código Município do Fato Gerador: difere da UF do emitente">271-Rejeição: Código Município do Fato Gerador: difere da UF do emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120515" trl="N">
-<value column="Name" original="272-Rejeição: Código Município do Emitente inexistente">727-Rejeição: Operação com exterior e UF diferente de EX</value>
+<value column="Name" original="272-Rejeição: Código Município do Emitente inexistente">272-Rejeição: Código Município do Emitente inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120516" trl="N">
-<value column="Name" original="273-Rejeição: Código Município do Emitente: difere da UF do emitente">728-Rejeição: NF-e sem informação da IE do destinatário</value>
+<value column="Name" original="273-Rejeição: Código Município do Emitente: difere da UF do emitente">273-Rejeição: Código Município do Emitente: difere da UF do emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120517" trl="N">
-<value column="Name" original="274-Rejeição: Código Município do Destinatário inexistente">729-Rejeição: NFC-e sem informação da IE do destinatário</value>
+<value column="Name" original="274-Rejeição: Código Município do Destinatário inexistente">274-Rejeição: Código Município do Destinatário inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120518" trl="N">
-<value column="Name" original="275-Rejeição: Código Município do Destinatário: difere da UF do Destinatário">730-Rejeição: NFC-e com inscrição SUFRAMA</value>
+<value column="Name" original="275-Rejeição: Código Município do Destinatário: difere da UF do Destinatário">275-Rejeição: Código Município do Destinatário: difere da UF do Destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120519" trl="N">
-<value column="Name" original="276-Rejeição: Código Município do Local de Retirada inexistente"><![CDATA[731-Rejeição: CFOP de operação com exterior e idDest <> 3]]></value>
+<value column="Name" original="276-Rejeição: Código Município do Local de Retirada inexistente">276-Rejeição: Código Município do Local de Retirada inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120520" trl="N">
-<value column="Name" original="277-Rejeição: Código Município do Local de Retirada: difere da UF do Local de Retirada"><![CDATA[732-Rejeição: CFOP de operação com interestadual e idDest <]]></value>
+<value column="Name" original="277-Rejeição: Código Município do Local de Retirada: difere da UF do Local de Retirada">277-Rejeição: Código Município do Local de Retirada: difere da UF do Local de Retirada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120521" trl="N">
-<value column="Name" original="278-Rejeição: Código Município do Local de Entrega inexistente"><![CDATA[733-Rejeição: CFOP de operação interna e idDest <> 1]]></value>
+<value column="Name" original="278-Rejeição: Código Município do Local de Entrega inexistente">278-Rejeição: Código Município do Local de Entrega inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120522" trl="N">
-<value column="Name" original="279-Rejeição: Código Município do Local de Entrega: difere da UF do Local de Entrega">734-Rejeição: NFC-e com unidade de comercialização inválida</value>
+<value column="Name" original="279-Rejeição: Código Município do Local de Entrega: difere da UF do Local de Entrega">279-Rejeição: Código Município do Local de Entrega: difere da UF do Local de Entrega</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120523" trl="N">
-<value column="Name" original="280-Rejeição: Certificado Transmissor inválido">735-Rejeição: NFC-e com unidade de tributação inválida</value>
+<value column="Name" original="280-Rejeição: Certificado Transmissor inválido">280-Rejeição: Certificado Transmissor inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120524" trl="N">
-<value column="Name" original="281-Rejeição: Certificado Transmissor Data Validade">736-Rejeição: NFC-e com grupo de veículos novos</value>
+<value column="Name" original="281-Rejeição: Certificado Transmissor Data Validade">281-Rejeição: Certificado Transmissor Data Validade</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120525" trl="N">
-<value column="Name" original="282-Rejeição: Certificado Transmissor sem CNPJ">737-Rejeição: NFC-e com grupo de medicamentos</value>
+<value column="Name" original="282-Rejeição: Certificado Transmissor sem CNPJ">282-Rejeição: Certificado Transmissor sem CNPJ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120526" trl="N">
-<value column="Name" original="283-Rejeição: Certificado Transmissor - erro Cadeia de Certificação">738-Rejeição: NFC-e com grupo de armamentos</value>
+<value column="Name" original="283-Rejeição: Certificado Transmissor - erro Cadeia de Certificação">283-Rejeição: Certificado Transmissor - erro Cadeia de Certificação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120527" trl="N">
-<value column="Name" original="284-Rejeição: Certificado Transmissor revogado">739-Rejeição: NFC-e com grupo de combustíveis</value>
+<value column="Name" original="284-Rejeição: Certificado Transmissor revogado">284-Rejeição: Certificado Transmissor revogado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120528" trl="N">
-<value column="Name" original="285-Rejeição: Certificado Transmissor difere ICP-Brasil">740-Rejeição: NFC-e com CST 51 - diferimento</value>
+<value column="Name" original="285-Rejeição: Certificado Transmissor difere ICP-Brasil">285-Rejeição: Certificado Transmissor difere ICP-Brasil</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120529" trl="N">
-<value column="Name" original="286-Rejeição: Certificado Transmissor erro no acesso a LCR">741-Rejeição: NFC-e com partilha de CIMS entre UF</value>
+<value column="Name" original="286-Rejeição: Certificado Transmissor erro no acesso a LCR">286-Rejeição: Certificado Transmissor erro no acesso a LCR</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120530" trl="N">
-<value column="Name" original="287-Rejeição: Código Município do Fato Gerador de ISSQN inexistente">742-Rejeição: NFC-e com grupo do IPI</value>
+<value column="Name" original="287-Rejeição: Código Município do Fato Gerador de ISSQN inexistente">287-Rejeição: Código Município do Fato Gerador de ISSQN inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120531" trl="N">
-<value column="Name" original="288-Rejeição: Código Município do Fato Gerador do Transporte inexistente">743-Rejeição: NFC-e com grupo do II</value>
+<value column="Name" original="288-Rejeição: Código Município do Fato Gerador do Transporte inexistente">288-Rejeição: Código Município do Fato Gerador do Transporte inexistente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120532" trl="N">
-<value column="Name" original="289-Rejeição: Código da UF informada diverge da UF solicitada">745-Rejeição: NF-e sem grupo do PIS</value>
+<value column="Name" original="289-Rejeição: Código da UF informada diverge da UF solicitada">289-Rejeição: Código da UF informada diverge da UF solicitada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120533" trl="N">
-<value column="Name" original="290-Rejeição: Certificado Assinatura inválido">746-Rejeição: NFC-e com grupo do PIS-ST</value>
+<value column="Name" original="290-Rejeição: Certificado Assinatura inválido">290-Rejeição: Certificado Assinatura inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120534" trl="N">
-<value column="Name" original="291-Rejeição: Certificado Assinatura Data Validade">748-Rejeição: NF-e sem grupo do COFINS</value>
+<value column="Name" original="291-Rejeição: Certificado Assinatura Data Validade">291-Rejeição: Certificado Assinatura Data Validade</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120535" trl="N">
-<value column="Name" original="292-Rejeição: Certificado Assinatura sem CNPJ">749-Rejeição: NF-e sem grupo do COFINS-ST</value>
+<value column="Name" original="292-Rejeição: Certificado Assinatura sem CNPJ">292-Rejeição: Certificado Assinatura sem CNPJ</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120536" trl="N">
-<value column="Name" original="293-Rejeição: Certificado Assinatura - erro Cadeia de Certificação">750-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Name" original="293-Rejeição: Certificado Assinatura - erro Cadeia de Certificação">293-Rejeição: Certificado Assinatura - erro Cadeia de Certificação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120537" trl="N">
-<value column="Name" original="294-Rejeição: Certificado Assinatura revogado">751-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Name" original="294-Rejeição: Certificado Assinatura revogado">294-Rejeição: Certificado Assinatura revogado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120538" trl="N">
-<value column="Name" original="295-Rejeição: Certificado Assinatura difere ICP-Brasil">752-Rejeição: NFC-e com valor total superior ao permitido p</value>
+<value column="Name" original="295-Rejeição: Certificado Assinatura difere ICP-Brasil">295-Rejeição: Certificado Assinatura difere ICP-Brasil</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120539" trl="N">
-<value column="Name" original="296-Rejeição: Certificado Assinatura erro no acesso a LCR">753-Rejeição: NFC-e sem frete</value>
+<value column="Name" original="296-Rejeição: Certificado Assinatura erro no acesso a LCR">296-Rejeição: Certificado Assinatura erro no acesso a LCR</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120540" trl="N">
-<value column="Name" original="297-Rejeição: Assinatura difere do calculado">754-Rejeição: NFC-e com dados do transportador</value>
+<value column="Name" original="297-Rejeição: Assinatura difere do calculado">297-Rejeição: Assinatura difere do calculado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120541" trl="N">
-<value column="Name" original="298-Rejeição: Assinatura difere do padrão do Sistema">755-Rejeição: NFC-e com dados de retenção do ICMS no transp</value>
+<value column="Name" original="298-Rejeição: Assinatura difere do padrão do Sistema">298-Rejeição: Assinatura difere do padrão do Sistema</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120542" trl="N">
-<value column="Name" original="299-Rejeição: XML da área de cabeçalho com codificação diferente de UTF-8">756-Rejeição: NFC-e com dados do veículo de transporte</value>
+<value column="Name" original="299-Rejeição: XML da área de cabeçalho com codificação diferente de UTF-8">299-Rejeição: XML da área de cabeçalho com codificação diferente de UTF-8</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120543" trl="N">
-<value column="Name" original="301-Uso Denegado: Irregularidade fiscal do emitente">757-Rejeição: NFC-e com dados de reboque do veículo de tran</value>
+<value column="Name" original="301-Uso Denegado: Irregularidade fiscal do emitente">301-Uso Denegado: Irregularidade fiscal do emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120544" trl="N">
-<value column="Name" original="302-Rejeição: Irregularidade fiscal do destinatário">758-Rejeição: NFC-e com dados do vagão de transporte</value>
+<value column="Name" original="302-Rejeição: Irregularidade fiscal do destinatário">302-Rejeição: Irregularidade fiscal do destinatário</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120545" trl="N">
-<value column="Name" original="303-Uso Denegado: Destinatário não habilitado a operar na UF">759-Rejeição: NFC-e co dados da balsa de transporte</value>
+<value column="Name" original="303-Uso Denegado: Destinatário não habilitado a operar na UF">303-Uso Denegado: Destinatário não habilitado a operar na UF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120546" trl="N">
-<value column="Name" original="304-Rejeição: Pedido de Cancelamento para NF-e com evento da Suframa">760-Rejeição: NFC-e com dados de cobrança (fatura, duplicat</value>
+<value column="Name" original="304-Rejeição: Pedido de Cancelamento para NF-e com evento da Suframa">304-Rejeição: Pedido de Cancelamento para NF-e com evento da Suframa</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120547" trl="N">
-<value column="Name" original="315-Rejeição: Data de Emissão anterior ao início da autorização de Nota Fiscal na UF">762-Rejeição: NFC-e com dados de compra (empenho, pedido, c</value>
+<value column="Name" original="315-Rejeição: Data de Emissão anterior ao início da autorização de Nota Fiscal na UF">315-Rejeição: Data de Emissão anterior ao início da autorização de Nota Fiscal na UF</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120548" trl="N">
-<value column="Name" original="316-Rejeição: Nota Fiscal referenciada com a mesma Chave de Acesso da Nota Fiscal atual">763-Rejeição: NFC-e com dados de aquisiçãod e cana</value>
+<value column="Name" original="316-Rejeição: Nota Fiscal referenciada com a mesma Chave de Acesso da Nota Fiscal atual">316-Rejeição: Nota Fiscal referenciada com a mesma Chave de Acesso da Nota Fiscal atual</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120549" trl="N">
-<value column="Name" original="317-Rejeição: NF modelo 1 referenciada com data de emissão inválida">765-Rejeição: Lote só poderá conter NF-e ou NFC-e</value>
+<value column="Name" original="317-Rejeição: NF modelo 1 referenciada com data de emissão inválida">317-Rejeição: NF modelo 1 referenciada com data de emissão inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120550" trl="N">
-<value column="Name" original="318-Rejeição: Contranota de Produtor sem Nota Fiscal referenciada">766-Rejeição: NFC-e com CST 50-suspenção</value>
+<value column="Name" original="318-Rejeição: Contranota de Produtor sem Nota Fiscal referenciada">318-Rejeição: Contranota de Produtor sem Nota Fiscal referenciada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120551" trl="N">
-<value column="Name" original="319-Rejeição: Contranota de Produtor não pode referenciar somente Nota Fiscal de entrada">767-Rejeição: NFC-e com somatório dos pagamentos diferente </value>
+<value column="Name" original="319-Rejeição: Contranota de Produtor não pode referenciar somente Nota Fiscal de entrada">319-Rejeição: Contranota de Produtor não pode referenciar somente Nota Fiscal de entrada</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120552" trl="N">
-<value column="Name" original="320-Rejeição: Contranota de Produtor referencia somente NF de outro emitente">768-Rejeição: NF-e não deve possuir o grupo de formas de pa</value>
+<value column="Name" original="320-Rejeição: Contranota de Produtor referencia somente NF de outro emitente">320-Rejeição: Contranota de Produtor referencia somente NF de outro emitente</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120553" trl="N">
-<value column="Name" original="321-Rejeição: NF-e de devolução de mercadoria não possui documento fiscal referenciado">769-Rejeição: NFC-e deve possuir o grupo de formas de pagam</value>
+<value column="Name" original="321-Rejeição: NF-e de devolução de mercadoria não possui documento fiscal referenciado">321-Rejeição: NF-e de devolução de mercadoria não possui documento fiscal referenciado</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120554" trl="N">
-<value column="Name" original="322-Rejeição: NF de produtor referenciada com data de emissão inválida">771-Rejeição: Operação interestadual e UF de destino com EX</value>
+<value column="Name" original="322-Rejeição: NF de produtor referenciada com data de emissão inválida">322-Rejeição: NF de produtor referenciada com data de emissão inválida</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120555" trl="N">
-<value column="Name" original="323-Rejeição: CNPJ autorizado para download inválido">772-Rejeição: Operação interestadual e UF de destino igual </value>
+<value column="Name" original="323-Rejeição: CNPJ autorizado para download inválido">323-Rejeição: CNPJ autorizado para download inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120556" trl="N">
-<value column="Name" original="324-Rejeição: CNPJ do destinatário já autorizado para download">773-Rejeição: Operação interna e UF de destino difere da UF</value>
+<value column="Name" original="324-Rejeição: CNPJ do destinatário já autorizado para download">324-Rejeição: CNPJ do destinatário já autorizado para download</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120557" trl="N">
-<value column="Name" original="325-Rejeição: CPF autorizado para download inválido">774-Rejeição: NFC-e com indicador de item não participante </value>
+<value column="Name" original="325-Rejeição: CPF autorizado para download inválido">325-Rejeição: CPF autorizado para download inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120558" trl="N">
-<value column="Name" original="326-Rejeição: CPF do destinatário já autorizado para download">775-Rejeição: Modelo da NFC-e diferente de 65</value>
+<value column="Name" original="326-Rejeição: CPF do destinatário já autorizado para download">326-Rejeição: CPF do destinatário já autorizado para download</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120559" trl="N">
-<value column="Name" original="327-Rejeição: CFOP inválido para Nota Fiscal com finalidade de devolução de mercadoria">777-Rejeição: NFC-e deve informar NCM completo</value>
+<value column="Name" original="327-Rejeição: CFOP inválido para Nota Fiscal com finalidade de devolução de mercadoria">327-Rejeição: CFOP inválido para Nota Fiscal com finalidade de devolução de mercadoria</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120560" trl="N">
-<value column="Name" original="328-Rejeição: CFOP de devolução de mercadoria para NF-e que não tem finalidade de devolução de mercadoria">778-Rejeição: Informado NCM inexistente</value>
+<value column="Name" original="328-Rejeição: CFOP de devolução de mercadoria para NF-e que não tem finalidade de devolução de mercadoria">328-Rejeição: CFOP de devolução de mercadoria para NF-e que não tem finalidade de devolução de mercadoria</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120561" trl="N">
-<value column="Name" original="329-Rejeição: Número da DI /DSI inválido">779-Rejeição:NFC-e com NCM incompatível</value>
+<value column="Name" original="329-Rejeição: Número da DI /DSI inválido">329-Rejeição: Número da DI /DSI inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120562" trl="N">
-<value column="Name" original="330-Rejeição: Informar o Valor da AFRMM na importação por via marítima">780-Rejeição: Total da NFC-e superior ao valor limite estab</value>
+<value column="Name" original="330-Rejeição: Informar o Valor da AFRMM na importação por via marítima">330-Rejeição: Informar o Valor da AFRMM na importação por via marítima</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120563" trl="N">
-<value column="Name" original="331-Rejeição: Informar o CNPJ do adquirente ou do encomendante nesta forma de importação">781-Rejeição: Emissor não habilitado para emissão de NFC-e</value>
+<value column="Name" original="331-Rejeição: Informar o CNPJ do adquirente ou do encomendante nesta forma de importação">331-Rejeição: Informar o CNPJ do adquirente ou do encomendante nesta forma de importação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120564" trl="N">
-<value column="Name" original="332-Rejeição: CNPJ do adquirente ou do encomendante da importação inválido">782-Rejeição: NFC-e não é autorizada pelo SCAN</value>
+<value column="Name" original="332-Rejeição: CNPJ do adquirente ou do encomendante da importação inválido">332-Rejeição: CNPJ do adquirente ou do encomendante da importação inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120565" trl="N">
-<value column="Name" original="333-Rejeição: Informar a UF do adquirente ou do encomendante nesta forma de importação">783-Rejeição: NFC-e não é autorizada pelo SVC</value>
+<value column="Name" original="333-Rejeição: Informar a UF do adquirente ou do encomendante nesta forma de importação">333-Rejeição: Informar a UF do adquirente ou do encomendante nesta forma de importação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120566" trl="N">
-<value column="Name" original="334-Rejeição: Número do processo de drawback não informado na importação">784-Rejeição: NF-e com indicativo de NFC-e com entrega a do</value>
+<value column="Name" original="334-Rejeição: Número do processo de drawback não informado na importação">334-Rejeição: Número do processo de drawback não informado na importação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120567" trl="N">
-<value column="Name" original="335-Rejeição: Número do processo de drawback na importação inválido">785-Rejeição: NFC-e com entrega a domicilio não permitida p</value>
+<value column="Name" original="335-Rejeição: Número do processo de drawback na importação inválido">335-Rejeição: Número do processo de drawback na importação inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120568" trl="N">
-<value column="Name" original="336-Rejeição: Informado o grupo de exportação no item para CFOP que não é de exportação">786-Rejeiçao: NFC-e de entrega a domicilio sem dados dos tr</value>
+<value column="Name" original="336-Rejeição: Informado o grupo de exportação no item para CFOP que não é de exportação">336-Rejeição: Informado o grupo de exportação no item para CFOP que não é de exportação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120569" trl="N">
-<value column="Name" original="337-Rejeição: NFC-e para emitente pessoa física">787-Rejeição: NFC-e de entrega a domicilio sem a identifica</value>
+<value column="Name" original="337-Rejeição: NFC-e para emitente pessoa física">337-Rejeição: NFC-e para emitente pessoa física</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120570" trl="N">
-<value column="Name" original="338-Rejeição: Número do processo de drawback não informado na exportação">788-Rejeição: NFC-e de entrega a domicílio sem o endereço d</value>
+<value column="Name" original="338-Rejeição: Número do processo de drawback não informado na exportação">338-Rejeição: Número do processo de drawback não informado na exportação</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120571" trl="N">
-<value column="Name" original="339-Rejeição: Número do processo de drawback na exportação inválido">789-Rejeição: NFC-e para destinatário contribuinte de ICMS</value>
+<value column="Name" original="339-Rejeição: Número do processo de drawback na exportação inválido">339-Rejeição: Número do processo de drawback na exportação inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120572" trl="N">
-<value column="Name" original="340-Rejeição: Não informado o grupo de exportação indireta no item">790-Rejeição: Operação com exterior para destinatário contr</value>
+<value column="Name" original="340-Rejeição: Não informado o grupo de exportação indireta no item">340-Rejeição: Não informado o grupo de exportação indireta no item</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120573" trl="N">
-<value column="Name" original="341-Rejeição: Número do registro de exportação inválido">791-Rejeição: NF-e com indicação de destinatário isento de </value>
+<value column="Name" original="341-Rejeição: Número do registro de exportação inválido">341-Rejeição: Número do registro de exportação inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120574" trl="N">
-<value column="Name" original="342-Rejeição: Chave de Acesso informada na Exportação Indireta com DV inválido">793-Rejeição: Informado capítulo do NCM inexistente</value>
+<value column="Name" original="342-Rejeição: Chave de Acesso informada na Exportação Indireta com DV inválido">342-Rejeição: Chave de Acesso informada na Exportação Indireta com DV inválido</value>
 <value column="Description" original=""/>
 </row>
 <row id="1120575" trl="N">
