@@ -844,6 +844,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Reativar o documento para correção
 		else
 		{
+			nf.setErrorMsg(protNFe.getInfProt().getXMotivo());			
 			nf.setDocStatus(DOCSTATUS_Invalid);
 			nf.setDocAction(DOCACTION_Complete);
 			nf.setProcessed(false);
