@@ -138,6 +138,8 @@ public class MLBRCNAB extends X_LBR_CNAB
 	 */
 	public static String CNABDateFormat(Timestamp dt)
 	{
+		if (dt == null)
+			return null;
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 		String data = formatter.format(dt);
 		data = data.replaceAll("[/]", "");
@@ -188,29 +190,53 @@ public class MLBRCNAB extends X_LBR_CNAB
         return dac;
     }
 
-	/**************************************************************************
-	 * 	getModulo11
+	/**
+	 * 		Modulo 11
 	 *  @param String value
 	 *  @param int type
 	 * 	@return int dac
 	 */
-    public static int getModulo11(String campo,int type) {
-    	//Modulo 11 - 234567   (type = 7)
-    	//Modulo 11 - 23456789 (type = 9)
+    public static int getModulo11Reverse (String campo)
+    {
+    	return getModulo11 (new StringBuilder (campo).reverse().toString(), 9);
+    }	//	getModulo11
+
+	/**
+	 * 		Modulo 11
+	 *  @param String value
+	 *  @param int type
+	 * 	@return int dac
+	 */
+    public static int getModulo11 (String campo)
+    {
+    	return getModulo11 (campo, 9);
+    }	//	getModulo11
+
+	/**
+	 * 		Modulo 11
+	 *  @param String value
+	 *  @param int type
+	 * 	@return int dac
+	 */
+    public static int getModulo11 (String campo, int type)
+    {
+    	//	Modulo 11 - 234567   (type = 7)
+    	//	Modulo 11 - 23456789 (type = 9)
 
     	int multiplicador = 2;
 		int multiplicacao = 0;
 		int soma_campo = 0;
 
-		for (int i = campo.length(); i > 0; i--) {
-			multiplicacao = Integer.parseInt(campo.substring(i-1,i)) * multiplicador;
+		for (int i = campo.length(); i > 0; i--)
+		{
+			multiplicacao = Integer.parseInt (campo.substring(i-1,i)) * multiplicador;
 
 			soma_campo = soma_campo + multiplicacao;
 
 			multiplicador++;
 			if (multiplicador > 7 && type == 7)
 				multiplicador = 2;
-			else if (multiplicador > 9 && type == 9)
+			else if (multiplicador > 9)
 				multiplicador = 2;
 		}
 

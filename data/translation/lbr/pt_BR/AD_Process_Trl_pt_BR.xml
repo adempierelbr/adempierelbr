@@ -2,6 +2,11 @@
 <!--ADempiere(r) Release 3.6.0LTS_2010-06-14 -Smart Suite ERP,CRM and SCM- (c) 1999-2010 ADempiere(r); Implementation: ADempiere - Supported by ADempiere community-->
 <!--<!DOCTYPE adempiereTrl PUBLIC "-//ComPiere, Inc.//DTD Adempiere Translation 1.0//EN" "http://www.adempiere.com/dtd/adempiereTrl.dtd">-->
 <adempiereTrl language="pt_BR" table="AD_Process">
+ <row id="151" trl="Y">
+  <value column="Name" original="Invoice Transactions (Doc)">Transações de Faturamento (Doc)</value>
+  <value column="Description" original="Invoice Transactions by Invoice Date">Transações de Faturamento por Data de Faturamento</value>
+  <value column="Help" original="The report lists the invoice transactiobs by invoice date">O relatório lista as transações de faturamento por data de faturamento</value>
+ </row>
   <row id="267" trl="Y">
     <value column="Name" original="Create Sales Order">Criar Pedido de Venda</value>
     <value column="Description" original="Create Sales Order">Criar Pedido de Venda</value>
@@ -24,11 +29,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
     <value column="Description" original="Reset (delete) allocation of invoices to payments">Resetar (apagar) a alocação de faturas para pagamento</value>
     <value column="Help" original="Delete individual allocation. In contrast to &quot;Reverse&quot;, the allocation is deleted (no trace), if the period is open.">Eliminar alocação individual. Em contraste a "Reversão", a alocação é eliminada (sem rastro), se o período está aberto.</value>
   </row>
-<row id="1000000" trl="Y">
-<value column="Name" original="Create Fields">Criar Campos</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000001" trl="Y">
 <value column="Name" original="Generate CNAB">Geração CNAB</value>
 <value column="Description" original=""/>
@@ -36,26 +36,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 </row>
 <row id="1000002" trl="Y">
 <value column="Name" original="Return CNAB">Retorno CNAB</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000003" trl="Y">
-<value column="Name" original="ProcPrintNF">Impressão Nota Fiscal</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000004" trl="Y">
-<value column="Name" original="ProcGenerateNFS">Processar NF (Saída)</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000005" trl="Y">
-<value column="Name" original="ProcGenerateNFE">Processar NF (Entrada)</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000006" trl="Y">
-<value column="Name" original="ProcCancelNF">Cancelar Nota Fiscal</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -69,31 +49,6 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000012" trl="Y">
-<value column="Name" original="ProcNFNo">Seqüência Nota Fiscal</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000013" trl="Y">
-<value column="Name" original="ProcReactivateNF">Reativar Nota Fiscal</value>
-<value column="Description" original="This Process Reactivates the Nota Fiscal Document">Este processo reativa o documento Nota Fiscal</value>
-<value column="Help" original="Important: Reactivating the Nota Fiscal Document can result Legal Problems. BE AWARE OF THE MODIFICATIONS">Importante: Reativando a Nota Fiscal pode resultar em problemas Legais. ESTEJA CIENTE DAS MODIFICAÇÕES</value>
-</row>
-<row id="1000014" trl="Y">
-<value column="Name" original="lbr_GenerateOtherNF">Criar Linhas</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000015" trl="Y">
-<value column="Name" original="lbr_ProcessOtherNF">Processar</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000016" trl="Y">
-<value column="Name" original="lbr_VoidOtherNF">Anular</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000017" trl="Y">
 <value column="Name" original="Sobre ADempiereLBR">Sobre AdempiereLBR</value>
 <value column="Description" original=""/>
@@ -104,25 +59,10 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Description" original="Process to Generate RPS File (NFe)">Processo para Geração de Arquivo RPS (NFe)</value>
 <value column="Help" original=""/>
 </row>
-<row id="1100001" trl="Y">
-<value column="Name" original="Lot Transmission">Transmitir Lote</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1100002" trl="Y">
-<value column="Name" original="Generate NFe XML">Gerar XML da NF-e</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1100003" trl="Y">
-<value column="Name" original="Lot Return">Retorno do Lote</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1120000" trl="Y">
-<value column="Name" original="ProcStatusServico">Consultar Disponibilidade da SeFaz</value>
-<value column="Description" original="Testa o status do serviço da NF-e">Testa o status do serviço de recepção da NF-e</value>
-<value column="Help" original=""/>
+<value column="Name" original="Check the status of NF-e services">Consultar Disponibilidade da SeFaz</value>
+<value column="Description" original="Check the status of reception services of NF-e and NFC-e">Testa o status do serviço de recepção da NF-e e NFC-e</value>
+<value column="Help" original="This process will try to check the condition of SeFaz services regarding NF-e and NFC-e reception">Este processo irá verificar se o serviço de recepção de notas está funcionando na SeFaz. Caso a SeFaz esteja enfrentando algum problema o processo irá retornar a informação e previsão de normalização. Em caso de erro na consulta, verifique diretamente na SeFaz do seu estado.</value>
 </row>
 <row id="1120001" trl="Y">
 <value column="Name" original="ProcConsultaCadastro">Consultar Cadastro</value>
@@ -180,9 +120,9 @@ Se uma margem foi entrada na Linha de Quantidade SdC, ele substitui a margem ger
 <value column="Help" original=""/>
 </row>
 <row id="1120126" trl="Y">
-<value column="Name" original="Importar tabela de Impostos do IBPT">Importar tabela de Impostos do IBPT</value>
-<value column="Description" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT">Efetuar a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT</value>
-<value column="Help" original="Efetua a importação da tabela de aliquotas aproximadas de impostos de acordo com o IBPT. Marque a opção de apagar registros obsoletos para apagar toda a tabela do IBPT atual."/>
+<value column="Name" original="Import IBPT average taxes">Importar Impostos via IBPT</value>
+<value column="Description" original="Import the average taxes from IBPT">Efetuar a importação da tabela de aliquotas aproximadas de impostos do IBPT</value>
+<value column="Help" original="Import average taxes from IBPT. This info is mandatory for customer invoices. You can choose getting this data online or from a CSV file.">Você pode optar pela importação online ou por arquivo CSV. Marque a opção "Excluir registros antigos" para que todos os registros obsoletos sejam apagados antes da importação.</value>
 </row>
 <row id="1120147" trl="N">
 <value column="Name" original="Process Nota Fiscal">Processar Nota Fiscal</value>

@@ -125,6 +125,36 @@ public abstract class LBRUtils
 	}	//	getInvoiceByDocNo
 	
 	/**
+	 * 	Obtém o ID da Fatura do Arquivo de Retorno
+	 * 	@param AD_Org_ID
+	 * 	@param docNo
+	 * 	@param trxName
+	 * 	@return C_Invoce_ID
+	 */
+	public static int getInvoiceIDonFile (int AD_Org_ID, String docNo, String trxName)
+	{
+		docNo = docNo.substring (docNo.indexOf('F') + 1, docNo.indexOf('P'));
+		
+		if (docNo == null || docNo.isEmpty())
+			return -1;
+
+		String sql = "SELECT C_Invoice_ID "
+				+ "FROM C_Invoice "
+				+ "WHERE DocumentNo=? AND ";
+		
+		//	Organization
+		if (AD_Org_ID > 0)
+			sql += "AD_Org_ID=?";
+		else
+			sql += "AD_Client_ID=?";
+		
+		Object[] params = new Object[]{docNo, (AD_Org_ID > 0 ? AD_Org_ID : Env.getAD_Client_ID(Env.getCtx()))};
+		int C_Invoice_ID = DB.getSQLValue(trxName, sql,	params);
+
+		return C_Invoice_ID;
+	}	//	getInvoiceByDocNo
+	
+	/**
 	 * 	Obtém o Tipo de Documento do Pagamento para Recebimentos
 	 * 	@return C_DocType_ID
 	 */

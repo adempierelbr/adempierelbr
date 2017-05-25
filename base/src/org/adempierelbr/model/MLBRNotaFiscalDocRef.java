@@ -116,4 +116,30 @@ public class MLBRNotaFiscalDocRef extends X_LBR_NotaFiscalDocRef
 		
 		return true;
 	}	//	beforeSave
-}	//	MLBRADI
+	
+	/**
+	 * 	Called after Save for Post-Save Operation
+	 * 	@param newRecord new record
+	 *	@param success true if save operation was success
+	 *	@return if save was a success
+	 */
+	protected boolean afterSave (boolean newRecord, boolean success)
+	{
+		// Nota Fiscal
+		MLBRNotaFiscal nf = new MLBRNotaFiscal (Env.getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
+		
+		// Descrição 
+		StringBuffer description = new StringBuffer((nf.getDescription() != null ? nf.getDescription() : ""));
+		
+		// Se já existir
+		if (description.length() > 0)
+			description.append("\n");		
+		description.append("Chave de Acesso da NF-e Referenciada: " + getlbr_NFeID());
+	
+		// Adicionar Descrição da NF-e Referênciada
+		nf.setDescription(description.toString());
+		nf.save();
+		
+		return success;
+	}	//	afterSave
+}	//	MLBRNotaFiscalDocRef

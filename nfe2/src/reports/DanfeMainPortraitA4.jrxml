@@ -2,13 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ImpressaoDanfeRetratoA4Report" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="797"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="Frente" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
 	</parameter>
@@ -23,6 +23,9 @@
 	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="DanfeMainPortraitA4_Sub_Invoice" class="java.io.InputStream" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainPortraitA4_Sub_Invoice.jasper")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DanfeMainPortraitA4_Sub_InfCompl" class="java.io.InputStream" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainPortraitA4_Sub_InfCompl.jasper")]]></defaultValueExpression>
 	</parameter>
 	<queryString language="xPath">
 		<![CDATA[//NFe]]>
@@ -243,6 +246,12 @@
 	<field name="destinatarioEnderecoNro" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/dest/enderDest/nro]]></fieldDescription>
 	</field>
+	<variable name="InfCompl" class="java.lang.String">
+		<variableExpression><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
+($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></variableExpression>
+		<initialValueExpression><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
+($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></initialValueExpression>
+	</variable>
 	<group name="Grupo01" isStartNewPage="true" isResetPageNumber="true" footerPosition="StackAtBottom">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
 		<groupHeader>
@@ -1192,7 +1201,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco} 
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco}
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioCompl}) ? "" : " - " + $F{destinatarioCompl} )]]></textFieldExpression>
 				</textField>
@@ -2237,10 +2246,26 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 			</band>
 		</groupHeader>
 	</group>
-	<group name="Grupo08">
+	<group name="Grupo08" minHeightToStartNewPage="300">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
 		<groupHeader>
-			<band splitType="Stretch"/>
+			<band height="11" splitType="Stretch">
+				<printWhenExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 411 ? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport-1" mode="Transparent" x="-30" y="1" width="90" height="10"/>
+					<subreportParameter name="ImpFrente">
+						<subreportParameterExpression><![CDATA[$P{Frente}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InfCompl">
+						<subreportParameterExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 411 ? $V{InfCompl}.substring(410) : ""]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PreImp">
+						<subreportParameterExpression><![CDATA[$P{PreImpresso}]]></subreportParameterExpression>
+					</subreportParameter>
+					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/NFe/infNFe/infAdic")]]></dataSourceExpression>
+					<subreportExpression class="java.io.InputStream"><![CDATA[$P{DanfeMainPortraitA4_Sub_InfCompl}]]></subreportExpression>
+				</subreport>
+			</band>
 		</groupHeader>
 	</group>
 	<background>
@@ -2476,7 +2501,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 				<text><![CDATA[DADOS ADICIONAIS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-20" mode="Transparent" x="6" y="14" width="86" height="8">
+				<reportElement key="staticText-20" mode="Transparent" x="6" y="14" width="134" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImpresso}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -2521,8 +2546,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 				<textElement textAlignment="Left" markup="styled">
 					<font fontName="Monospaced" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
-($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() > 410 ? $V{InfCompl}.substring(0, 410) : $V{InfCompl}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

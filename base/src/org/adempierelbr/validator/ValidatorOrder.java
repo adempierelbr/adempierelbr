@@ -15,16 +15,15 @@ package org.adempierelbr.validator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.model.MLBRProductMovementFiller;
 import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.X_LBR_DI;
 import org.adempierelbr.wrapper.I_W_C_DocType;
+import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
-import org.compiere.apps.search.Info_Column;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
@@ -171,13 +170,28 @@ public class ValidatorOrder implements ModelValidator
 			MOrder order   = (MOrder) po;
 			Properties ctx = order.getCtx();
 			String     trx = order.get_TrxName();
-
-			if (timing == TIMING_AFTER_COMPLETE)
+			
+			if (timing == TIMING_BEFORE_COMPLETE)
 			{
-				//	FR 3079621 Onhate
-				MLBRProductMovementFiller pmf = new MLBRProductMovementFiller();
-				pmf.saveThis(order);
-
+				I_W_C_Order orderW = POWrapper.create (order, I_W_C_Order.class);
+				
+				//	Pedido de Compra de Importação
+				if(!order.isSOTrx() && 
+						"IMP".equals(orderW.getlbr_TransactionType()))
+				{
+					//	Validação na Declaração de Importação
+					for (X_LBR_DI dis : order.getDIs())
+					{
+						if (dis.getlbr_CustomSite() == null)
+							return "Preencha o Local do Desembaraço na DI: " + dis.getDocumentNo();
+						
+						if (dis.getC_Region_ID() == 0)
+							return "Preencha a Região na DI: " + dis.getDocumentNo();
+					}
+				}
+			}
+			else if (timing == TIMING_AFTER_COMPLETE)
+			{
 				MDocType dt = MDocType.get (ctx, order.getC_DocTypeTarget_ID());
 				I_W_C_DocType dtW = POWrapper.create(dt, I_W_C_DocType.class); 
 				String DocSubTypeSO = dt.getDocSubTypeSO();
@@ -224,40 +238,6 @@ public class ValidatorOrder implements ModelValidator
 		//
 		return null;
 	}	//	docValidate
-
-	/**
-	 * 	Update Info Window Columns.
-	 * 	- add new Columns
-	 * 	- remove columns
-	 * 	- change dispay sequence
-	 *	@param columns array of columns
-	 *	@param sqlFrom from clause, can be modified
-	 *	@param sqlOrder order by clause, can me modified
-	 *	@return true if you updated columns, sequence or sql From clause
-	 */
-	public boolean updateInfoColumns (ArrayList<Info_Column> columns,
-		StringBuffer sqlFrom, StringBuffer sqlOrder)
-	{
-		/**		*
-		int AD_Role_ID = Env.getAD_Role_ID (Env.getCtx());	// Can be Role/User specific
-		String from = sqlFrom.toString();
-		if (from.startsWith ("M_Product"))
-		{
-			columns.add (new Info_Column("Header", "'sql'", String.class).seq(35));
-			return true;
-		}/**	*/
-		return false;
-	}	//	updateInfoColumns
-
-	/**
-	 * 	String Representation
-	 *	@return info
-	 */
-	public String toString ()
-	{
-		StringBuffer sb = new StringBuffer ("ValidatorOrder@AdempiereLBR - Powered by Kenos & Faire");
-		return sb.toString ();
-	}	//	toString
 
 	/**
 	 * 	Create Shipment

@@ -16,15 +16,13 @@ package org.adempierelbr.validator;
 import java.util.List;
 
 import org.adempierelbr.grid.VCreateFromNFeLotUI;
-import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeLot;
-import org.adempierelbr.model.MLBRNotaFiscal;
 import org.compiere.grid.VCreateFromFactory;
 import org.compiere.model.MAttachment;
-import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
+import org.compiere.model.MClientInfo;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -47,8 +45,6 @@ import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Msg;
 
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-
 /**
  * 		Procedimentos comuns, necessários para o LBR
  * 
@@ -70,7 +66,7 @@ public class VLBRCommons implements ModelValidator
 	}	//	VLBRCommons
 	
 	/**	Logger			*/
-	private static CLogger log = CLogger.getCLogger(VLBROrder.class);
+	private static CLogger log = CLogger.getCLogger(VLBRCommons.class);
 	/** Client			*/
 	private int		m_AD_Client_ID = -1;
 
@@ -130,6 +126,7 @@ public class VLBRCommons implements ModelValidator
 		/**
 		 * Registra a classe de CreateFrom para o Lote da NFe para a versão SWING
 		 * 		para a versão ZK veja @see org.adempiere.webui.session.WebUIServlet
+		 * Remover na integração com o iDempiere, usar a VLBRNFe
 		 */
 		if (Ini.isClient())
 			VCreateFromFactory.registerClass (MLBRNFeLot.Table_ID, VCreateFromNFeLotUI.class);
@@ -146,6 +143,9 @@ public class VLBRCommons implements ModelValidator
 
 		//	Set Enviroment
 		Env.setContext(Env.getCtx(), "#LBR_ENABLED", enabled);
+		
+		//	Set BPartner Cash
+		Env.setContext(Env.getCtx(), "#POS_BPartner_ID", MClientInfo.get(Env.getCtx()).getC_BPartnerCashTrx_ID());
 		
 		return null;
 	}	//	login
@@ -211,42 +211,8 @@ public class VLBRCommons implements ModelValidator
      */
 	public String modelChange (MAttachment att, int type) throws Exception
 	{
-		if (type == TYPE_BEFORE_DELETE && att.getAD_Table_ID() == MLBRNFeEvent.Table_ID)
-		{
-			MLBRNFeEvent event = new MLBRNFeEvent (Env.getCtx(), att.getRecord_ID(), att.get_TrxName());
-			
-			if (event.isProcessed())
-				return "N\u00E3o \u00E9 permitido alterar um anexo de um registro j\u00E1 processado.";
-		}
-		
-		if (type == TYPE_AFTER_CHANGE || type == TYPE_AFTER_NEW)
-		{
-			if (att.getAD_Table_ID() == MLBRNotaFiscal.Table_ID)
-			{
-				MLBRNotaFiscal nf = new MLBRNotaFiscal(Env.getCtx(),att.getRecord_ID(), att.get_TrxName());
-				
-				//	Carrega o ID da NFe apenas para as Notas de Entrada que não seja documento próprio.
-				if (!nf.isSOTrx() && !nf.islbr_IsOwnDocument())
-				{
-					for (MAttachmentEntry entry : att.getEntries())
-					{
-						try
-						{
-							NFeDocument nfeXml = NFeDocument.Factory.parse (new String (entry.getData(), "UTF-8"));
-							//
-							if (nfeXml != null)
-							{
-								nf.setlbr_NFeID(nfeXml.getNFe().getInfNFe().getId().replace("NFe", ""));
-								nf.save();
-							}
-						}
-						catch (Exception e){}
-					}
-				}
-			}
-		}
-		
-		return null;
+		//	Remover este método na integração com o iDempiere, usar VLBRNFe
+		return new VLBRNFe ().modelChange (att, type);
 	}	//	modelChange
 	
 	/**

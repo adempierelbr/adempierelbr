@@ -62,7 +62,6 @@ public class MLBRNCM extends X_LBR_NCM
 
 	public static int getDefaultNCM(int AD_Client_ID)
 	{
-
 		String sql = "SELECT COALESCE(MAX(LBR_NCM_ID),0) FROM LBR_NCM "
 			       + "WHERE IsDefault='Y' AND IsActive='Y' AND AD_Client_ID=?";
 
@@ -104,12 +103,38 @@ public class MLBRNCM extends X_LBR_NCM
 	 */
 	public static MLBRNCM get (Properties ctx, String ncmName, String trxName)
 	{
-		String sql = "AD_Client_ID IN (0, ?)"
-				+ " AND REPLACE(Value, '.', '')=? ";
+		String sql = "AD_Client_ID IN (0, ?) AND Value=? ";
 		//
 		return new Query (ctx, Table_Name, sql, trxName)
-			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), TextUtil.toNumeric(ncmName)})
+			.setParameters (new Object[]{Env.getAD_Client_ID(ctx), formatNCM (ncmName)})
 			.setOrderBy ("ORDER BY AD_Client_ID DESC")
 			.first();
 	}	//	get
+	
+	/**
+	 * 	Format the NCM code, e.g.:
+	 * 
+	 * 	88888888 	->	8888.88.88
+	 * 	8888.8888	->	8888.88.88
+	 * 	888888		->	8888.88
+	 * 
+	 * @param ncm
+	 * @return	formatted NCM
+	 */
+	public static String formatNCM (String ncm)
+	{
+		//	Get numeric only
+		ncm = TextUtil.toNumeric (ncm);
+
+		//	Format full-sized NCM
+		if (ncm.length() >= 7)
+			return ncm.replaceAll ("^([\\d]{4})([\\d]{2})([\\d]{1,2})[\\w\\W]*", "$1.$2.$3");
+
+		//	Format mid-sized NCM
+		if (ncm.length() >= 5)
+			return ncm.replaceAll ("^([\\d]{4})([\\d]{1,2})[\\w\\W]*", "$1.$2");
+
+		//	Otherwise return the numeric 1-4 digits
+		return ncm;
+	}	//	formatNCM
 } 	//	MLBRNCM

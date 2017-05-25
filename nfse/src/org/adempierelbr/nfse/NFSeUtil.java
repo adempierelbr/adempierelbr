@@ -5,14 +5,13 @@ import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfse.sp.NFSeImpl;
-import org.adempierelbr.webui.adapter.RPSAdapter;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 
 public class NFSeUtil
 {
 	/**	Static Logger	*/
-	private static CLogger 	s_log = CLogger.getCLogger (RPSAdapter.class);
+	private static CLogger 	s_log = CLogger.getCLogger (NFSeUtil.class);
 
 	/** Registered classes map (AD_Table_ID -> Class) */
 	private static HashMap<Integer, Class<? extends INFSe>> s_registeredClasses = null;

@@ -744,7 +744,7 @@ public class ImportOrder extends SvrProcess
 					String trxType = bp.get_ValueAsString("lbr_TransactionType");
 					if (trxType != null && !trxType.isEmpty())
 						order.set_CustomColumn("lbr_TransactionType", trxType);
-					
+						
 					order.save();
 					noInsert++;
 					lineNo = 10;
@@ -770,7 +770,16 @@ public class ImportOrder extends SvrProcess
 					imp.setC_Tax_ID(line.getC_Tax_ID());
 				}
 				if (imp.getFreightAmt() != null)
+				{
 					line.setFreightAmt(imp.getFreightAmt());
+					
+					//	Change freight to line, when freight line is filled
+					if (!MOrder.FREIGHTCOSTRULE_Line.equals (order.getFreightCostRule ()))
+					{
+						order.setFreightCostRule(MOrder.FREIGHTCOSTRULE_Line);
+						order.save();
+					}
+				}
 				if (imp.getLineDescription() != null)
 					line.setDescription(imp.getLineDescription());
 				

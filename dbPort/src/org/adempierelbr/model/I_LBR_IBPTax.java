@@ -63,21 +63,6 @@ public interface I_LBR_IBPTax
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_Region_ID */
-    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
-
-	/** Set Region.
-	  * Identifies a geographical Region
-	  */
-	public void setC_Region_ID (int C_Region_ID);
-
-	/** Get Region.
-	  * Identifies a geographical Region
-	  */
-	public int getC_Region_ID();
-
-	public I_C_Region getC_Region() throws RuntimeException;
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -93,6 +78,21 @@ public interface I_LBR_IBPTax
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_Region_ID */
+    public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
+
+	/** Set Region.
+	  * Identifies a geographical Region
+	  */
+	public void setC_Region_ID (int C_Region_ID);
+
+	/** Get Region.
+	  * Identifies a geographical Region
+	  */
+	public int getC_Region_ID();
+
+	public I_C_Region getC_Region() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -129,6 +129,21 @@ public interface I_LBR_IBPTax
 	/** Get Tabela de Impostos do IBPT	  */
 	public int getLBR_IBPTax_ID();
 
+    /** Column name LBR_NBS_ID */
+    public static final String COLUMNNAME_LBR_NBS_ID = "LBR_NBS_ID";
+
+	/** Set NBS.
+	  * Primary key table LBR_NBS
+	  */
+	public void setLBR_NBS_ID (int LBR_NBS_ID);
+
+	/** Get NBS.
+	  * Primary key table LBR_NBS
+	  */
+	public int getLBR_NBS_ID();
+
+	public org.adempierelbr.model.I_LBR_NBS getLBR_NBS() throws RuntimeException;
+
     /** Column name LBR_NCM_ID */
     public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
 
@@ -153,6 +168,19 @@ public interface I_LBR_IBPTax
 	/** Get Source	  */
 	public String getLBR_Source();
 
+    /** Column name lbr_TaxRate */
+    public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
+
+	/** Set Tax Rate.
+	  * Indicates the Tax Rate
+	  */
+	public void setlbr_TaxRate (BigDecimal lbr_TaxRate);
+
+	/** Get Tax Rate.
+	  * Indicates the Tax Rate
+	  */
+	public BigDecimal getlbr_TaxRate();
+
     /** Column name LBR_TaxRateCity */
     public static final String COLUMNNAME_LBR_TaxRateCity = "LBR_TaxRateCity";
 
@@ -161,6 +189,19 @@ public interface I_LBR_IBPTax
 
 	/** Get Tax Rate City	  */
 	public BigDecimal getLBR_TaxRateCity();
+
+    /** Column name lbr_TaxRateImp */
+    public static final String COLUMNNAME_lbr_TaxRateImp = "lbr_TaxRateImp";
+
+	/** Set Tax Rate Imported.
+	  * Indicates the Imported Tax Rate 
+	  */
+	public void setlbr_TaxRateImp (BigDecimal lbr_TaxRateImp);
+
+	/** Get Tax Rate Imported.
+	  * Indicates the Imported Tax Rate 
+	  */
+	public BigDecimal getlbr_TaxRateImp();
 
     /** Column name LBR_TaxRateRegion */
     public static final String COLUMNNAME_LBR_TaxRateRegion = "LBR_TaxRateRegion";
@@ -238,30 +279,4 @@ public interface I_LBR_IBPTax
 	  * Version of the table definition
 	  */
 	public String getVersion();
-
-    /** Column name lbr_TaxRate */
-    public static final String COLUMNNAME_lbr_TaxRate = "lbr_TaxRate";
-
-	/** Set Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public void setlbr_TaxRate (BigDecimal lbr_TaxRate);
-
-	/** Get Tax Rate.
-	  * Indicates the Tax Rate
-	  */
-	public BigDecimal getlbr_TaxRate();
-
-    /** Column name lbr_TaxRateImp */
-    public static final String COLUMNNAME_lbr_TaxRateImp = "lbr_TaxRateImp";
-
-	/** Set Tax Rate Imported.
-	  * Indicates the Imported Tax Rate 
-	  */
-	public void setlbr_TaxRateImp (BigDecimal lbr_TaxRateImp);
-
-	/** Get Tax Rate Imported.
-	  * Indicates the Imported Tax Rate 
-	  */
-	public BigDecimal getlbr_TaxRateImp();
 }

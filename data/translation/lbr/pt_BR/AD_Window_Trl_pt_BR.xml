@@ -17,11 +17,6 @@
 <value column="Description" original="Brazilian Banks">Bancos Brasileiros</value>
 <value column="Help" original=""/>
 </row>
-<row id="1000001" trl="Y">
-<value column="Name" original="Document Print">Impressão de Documento</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000002" trl="Y">
 <value column="Name" original="NCM">NCM</value>
 <value column="Description" original=""/>
@@ -72,11 +67,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000016" trl="Y">
-<value column="Name" original="Matrix Printer">Impressora Matricial</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000017" trl="Y">
 <value column="Name" original="Legal Message">Mensagem Legal</value>
 <value column="Description" original=""/>
@@ -105,21 +95,6 @@
 <row id="1000023" trl="Y">
 <value column="Name" original="Manufacture">Industrialização</value>
 <value column="Description" original="Manufacture based on Bill of Materials">Industrialização baseada na Lista de Materiais</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000024" trl="Y">
-<value column="Name" original="Other NF">Outras Notas Fiscais</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000025" trl="Y">
-<value column="Name" original="Consignation Return">Retorno de Consignação</value>
-<value column="Description" original="Process all the Consignation Returns steps">Executa o processo de retorno de cosnginação</value>
-<value column="Help" original=""/>
-</row>
-<row id="1000026" trl="Y">
-<value column="Name" original="Consignation Invoice">Venda de Consignação</value>
-<value column="Description" original="Process all the Consignation Invoice Processes">Executa o processo de venda de consignação</value>
 <value column="Help" original=""/>
 </row>
 <row id="1100000" trl="Y">
@@ -201,5 +176,20 @@
 <value column="Name" original="CEST">CEST</value>
 <value column="Description" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
 <value column="Help" original="Brazilian Specifier Code Tax">Código Especificador da Substituição Tributária</value>
+</row>
+<row id="1120112" trl="Y">
+<value column="Name" original="NF Configuration">Configuração da NF</value>
+<value column="Description" original="">Define configurações básicas da NF</value>
+<value column="Help" original="">Define configurações básicas da NF. É possível habilitar o SVC ou fazer o agendamento da ativação do SVC.</value>
+</row>
+<row id="1120116" trl="Y">
+<value column="Name" original="Project (Custom)">Projeto (Kenos)</value>
+<value column="Description" original="Maintain Projects">Maintain Projects</value>
+<value column="Help" original="The Project Window is used to define the projects which will can be tracked by phases and tasks.">The Project Window is used to define the projects which will can be tracked by phases and tasks.</value>
+</row>
+<row id="1120130" trl="N">
+<value column="Name" original="NBS">NBS</value>
+<value column="Description" original=""/>
+<value column="Help" original=""/>
 </row>
 </adempiereTrl>

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
-import org.adempierelbr.model.MLBRTaxDefinition;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_BPartner_Location;
 import org.compiere.model.MBPartner;
@@ -415,6 +414,25 @@ public abstract class BPartnerUtil
 
 		return city;
 	}	//	getX_C_City
+
+	/** Sul = 0 */
+	public static final String REGION_Sul = "0";
+	/** Sudeste = 1 */
+	public static final String REGION_Sudeste = "1";
+	/** Norte = 2 */
+	public static final String REGION_Norte = "2";
+	/** Nordeste = 3 */
+	public static final String REGION_Nordeste = "3";
+	/** Centro-Oeste = 4 */
+	public static final String REGION_Centro_Oeste = "4";
+	/** Sul e Sudeste = 5 */
+	public static final String REGION_SulESudeste = "5";
+	/** Norte, Nordeste e Centro-Oeste = 6 */
+	public static final String REGION_NorteNordesteECentro_Oeste = "6";
+	/** Sul e Sudeste, exceto ES = 7 */
+	public static final String REGION_SulESudesteExcetoES = "7";
+	/** Norte, Nordeste, Centro-Oeste e ES = 8 */
+	public static final String REGION_NorteNordesteCentro_OesteEES = "8";
 	
 	/**
 	 * 	Get Brazilian Region (Sul, Sudeste, Norte, Nordeste and Centro-Oeste)
@@ -431,14 +449,14 @@ public abstract class BPartnerUtil
 		if (TextUtil.match (C_Region_ID, 456,	//	Paraná
 				461,							//	Rio Grande do Sul
 				464))							//	Santa Catarina
-			return MLBRTaxDefinition.LBR_REGIONFROM_Sul;
+			return REGION_Sul;
 		
 		//	Sudeste
 		if (TextUtil.match (C_Region_ID, 448,	//	Espírito Santo
 				453,							//	Minas Gerais
 				459,							//	Rio de Janeiro
 				465))							//	São Paulo
-			return MLBRTaxDefinition.LBR_REGIONFROM_Sudeste;
+			return REGION_Sudeste;
 		
 		//	 Norte
 		if (TextUtil.match (C_Region_ID, 441,	//	Acre
@@ -448,7 +466,7 @@ public abstract class BPartnerUtil
 				462,  							//	Rondônia
 				463,  							//	Roraima
 				467)) 							//	Tocantins
-			return MLBRTaxDefinition.LBR_REGIONFROM_Norte;
+			return REGION_Norte;
 		
 		//	Nordeste
 		if (TextUtil.match (C_Region_ID, 442, 	//	Alagoas
@@ -460,14 +478,14 @@ public abstract class BPartnerUtil
 				458, 							//	Piauí
 				460, 							//	Rio Grande do Norte
 				466))							//	Sergipe
-			return MLBRTaxDefinition.LBR_REGIONFROM_Nordeste;
+			return REGION_Nordeste;
 		
 		//	Centro-Oeste
 		if (TextUtil.match (C_Region_ID, 447, 	//	Distrito Federal
 				449, 							//	Goiás
 				452, 							//	Mato Grosso
 				451))							//	Mato Grosso do Sul
-			return MLBRTaxDefinition.LBR_REGIONFROM_Centro_Oeste;
+			return REGION_Centro_Oeste;
 		
 		return null;
 	}	//	getBRRegion

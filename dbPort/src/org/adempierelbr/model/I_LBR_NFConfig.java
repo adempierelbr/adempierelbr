@@ -183,6 +183,19 @@ public interface I_LBR_NFConfig
 	/** Get Motivo contingência	  */
 	public String getlbr_MotivoScan();
 
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
+
     /** Column name lbr_NFeEnv */
     public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
 

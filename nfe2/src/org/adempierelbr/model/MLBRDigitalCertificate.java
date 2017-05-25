@@ -258,7 +258,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 	 */
 	public static MLBRDigitalCertificate getICPTrustStore ()
 	{
-		String where = COLUMNNAME_IsActive + "='Y' AND " + COLUMNNAME_lbr_CertType + "='" + LBR_CERTTYPE_ICPTrustStoreJKS + "'";
+		String where = COLUMNNAME_AD_Client_ID + " IN (0," + Env.getAD_Client_ID(Env.getCtx()) + ") AND " +
+					COLUMNNAME_IsActive + "='Y' AND " + 
+					COLUMNNAME_lbr_CertType + "='" + 
+					LBR_CERTTYPE_ICPTrustStoreJKS + "'";
 		String order = COLUMNNAME_ValidTo + " DESC";
 		//
 		return new Query (Env.getCtx(), Table_Name, where, null).setOrderBy(order).first();

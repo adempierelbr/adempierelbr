@@ -113,7 +113,7 @@ public class EFDUtil {
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 */
-	private static final String COD_VER = "010";	// A Partir de Jan/16
+	private static final String COD_VER = "011";	// A Partir de Jan/16
 	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
 	private static final String IND_PERFIL = "A"; 	// Perfil A
 	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
@@ -309,6 +309,14 @@ public class EFDUtil {
 		//	NF Complementar
 		else if (MLBRNotaFiscal.LBR_FINNFE_NFeComplementar.equals(factFiscal.getLBR_NotaFiscal().getlbr_FinNFe()))
 			cod_sit = "06";
+		
+		//	Notas Fiscais Denegadas
+		else if (TextUtil.match (factFiscal.getLBR_NotaFiscal().getlbr_NFeStatus(),
+					MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
+					MLBRNotaFiscal.LBR_NFESTATUS_301_UsoDenegadoIrregularidadeFiscalDoEmitente,
+					MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+					MLBRNotaFiscal.LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNaUF))
+			cod_sit = "04";	//	Denegado;
 		
 		//
 		return cod_sit;
@@ -791,7 +799,7 @@ public class EFDUtil {
 		
 		// unidade
 		MUOM uom = new MUOM(product.getCtx(), product.getC_UOM_ID(), product.get_TrxName());
-		reg.setUNID_INV(uom.get_Translation(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE)));
+		reg.setUNID_INV(uom.get_Translation(MUOM.COLUMNNAME_UOMSymbol, LBRUtils.AD_LANGUAGE));
 		
 		// tipo do item
 		reg.setTIPO_ITEM(product.get_ValueAsString("lbr_ItemTypeBR"));
@@ -809,6 +817,7 @@ public class EFDUtil {
 		reg.setCOD_GEN(null); // TODO
 		reg.setCOD_LST(null); // TODO
 		reg.setALIQ_ICMS(null);// TODO
+		reg.setCEST(null);
 		
 		//
 		return reg;

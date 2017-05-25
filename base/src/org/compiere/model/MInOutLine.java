@@ -611,6 +611,33 @@ public class MInOutLine extends X_M_InOutLine
 		log.saveError("Error", Msg.getMsg(getCtx(), "CannotDelete"));
 		return false;
 	}	//	beforeDelete
+	
+	/**
+	 * 	After Save
+	 *	@param newRecord new
+	 *	@param success success
+	 *	@return saved
+	 */
+	protected boolean afterSave (boolean newRecord, boolean success)
+	{
+		if (!success || isProcessed())
+			return success;
+		
+		return updateHeaderVolumeWeight();
+	}	//	afterSave
+	
+	/**
+	 * 	After Delete
+	 *	@param success success
+	 *	@return deleted
+	 */
+	protected boolean afterDelete (boolean success)
+	{
+		if (!success)
+			return success;
+				
+		return updateHeaderVolumeWeight();
+	}	//	afterDelete
 
 	/**
 	 * 	String Representation
@@ -686,5 +713,48 @@ public class MInOutLine extends X_M_InOutLine
 		// inout has orderline and both has the same UOM
 		return true;
 	}
+	
+	/**
+	 *	Update Volume and Weight From Header
+	 *	@return true if header updated
+	 */
+	private boolean updateHeaderVolumeWeight()
+	{
+		// In Out Header
+		MInOut io = new MInOut(Env.getCtx(), getM_InOut_ID(), get_TrxName());
+		
+		//	Volume and weight
+		BigDecimal Volume = Env.ZERO;
+		BigDecimal Weight = Env.ZERO;
+		
+		//	Lines
+		MInOutLine[] lines = io.getLines(true);
+		
+		//	Calcule Volume and Weight
+		for (int i = 0; i < lines.length; i++)
+		{
+			MInOutLine line = lines[i];
+			MProduct product = line.getProduct();
+			
+			if (product != null)
+			{
+				Volume = Volume.add(product.getVolume().multiply(line.getMovementQty()));
+				Weight = Weight.add(product.getWeight().multiply(line.getMovementQty()));
+			}
+		}
+
+		//	Update Volume and Weight on the Header
+		String sql = "UPDATE M_InOut "
+			+ " SET NoPackages = " + Volume + ", Weight = " + Weight
+			+ " WHERE M_InOut_ID=" + getM_InOut_ID();
+		int no = DB.executeUpdate(sql, get_TrxName());
+		if (no != 1)
+			log.warning("(1) #" + no);
+
+		m_parent = null;
+		
+		return no == 1;
+		
+	}	//	updateHeaderVolumeWeight
 
 }	//	MInOutLine

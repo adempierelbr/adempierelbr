@@ -153,6 +153,14 @@ public class ProcEMailNFe extends SvrProcess
 			}
 		}
 		
+		// Definir Endereço de Email para receber todas as NFs Autorizadas no Adempiere
+		String nfbyEmailto = MSysConfig.getValue("LBR_SEND_NF_BY_EMAIL_TO", "", Env.getAD_Client_ID(Env.getCtx()));
+		
+		if (!"".equals(nfbyEmailto))
+		{
+			toEMails += ";" + nfbyEmailto;
+		}
+		
 		if (toEMails == null || toEMails.indexOf('@') == -1)
 		{
 			log.warning("E-mail para recepção de NF-e inválido");

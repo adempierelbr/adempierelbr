@@ -211,6 +211,7 @@ public final class EMail implements Serializable
 		props.put("mail.store.protocol", "smtp");
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.host", m_smtpHost);
+		props.put("mail.smtp.ssl.trust", m_smtpHost);
 		if (CLogMgt.isLevelFinest())
 			props.put("mail.debug", "true");
 		//
@@ -220,16 +221,10 @@ public final class EMail implements Serializable
 			if (m_auth != null)		//	createAuthenticator was called
 				props.put("mail.smtp.auth", "true");
 			
-			if(MSysConfig.getBooleanValue("LBR_SEND_EMAIL_USING_TLS", false, Env.getAD_Client_ID(Env.getCtx())))
+			if (MSysConfig.getBooleanValue("LBR_SEND_EMAIL_USING_TLS", false, Env.getAD_Client_ID(Env.getCtx())))
 				props.put("mail.smtp.starttls.enable", "true");
 			else
 				props.put("mail.smtp.starttls.enable", "false");
-			
-			if (m_smtpHost.equalsIgnoreCase("smtp.gmail.com")) 
-			{
-				props.put("mail.smtp.port", "587");
-				props.put("mail.smtp.starttls.enable", "true");
-			}
 			
 			if (m_smtpPort != null && !m_smtpPort.isEmpty())
 				props.put("mail.smtp.port", m_smtpPort);

@@ -27,11 +27,6 @@
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
-<row id="1000002" trl="Y">
-<value column="Name" original="LBR_DocPrint">LBR_DocPrint</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
 <row id="1000003" trl="Y">
 <value column="Name" original="lbr_FieldAlignment">LBR_FieldAlignment</value>
 <value column="Description" original=""/>
@@ -103,7 +98,7 @@
 <value column="Help" original=""/>
 </row>
 <row id="1000022" trl="Y">
-<value column="Name" original="lbr_TaxType">LBR_TaxType</value>
+<value column="Name" original="LBR_TaxType">LBR_TaxType</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -114,11 +109,6 @@
 </row>
 <row id="1000024" trl="Y">
 <value column="Name" original="lbr_TransactionType (Sales/Purchase)">LBR_TransactionType (Sales/Purchase)</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000025" trl="Y">
-<value column="Name" original="LBR_MatrixPrinter">LBR_MatrixPrinter</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
 </row>
@@ -176,21 +166,6 @@
 <value column="Name" original="C_BankAccount ">C_BankAccount</value>
 <value column="Description" original=""/>
 <value column="Help" original=""/>
-</row>
-<row id="1000038" trl="Y">
-<value column="Name" original="LBR_OtherNFDocType">LBR_OtherNFDocType</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000039" trl="Y">
-<value column="Name" original="LBR_WHLocOtherNF">LBR_WHLocOtherNF</value>
-<value column="Description" original=""/>
-<value column="Help" original=""/>
-</row>
-<row id="1000040" trl="Y">
-<value column="Name" original="LBR_OtherNF_RequestType">LBR_OtherNF_RequestType</value>
-<value column="Description" original="Other NF Request Type">Other NF Request Type</value>
-<value column="Help" original="Other NF Request Type">Other NF Request Type</value>
 </row>
 <row id="1000042" trl="Y">
 <value column="Name" original="LBR_C_InvoiceLine">LBR_C_InvoiceLine</value>

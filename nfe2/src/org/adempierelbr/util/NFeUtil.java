@@ -16,13 +16,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,8 +39,11 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRCSC;
+import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.wrapper.I_W_C_City;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
@@ -47,12 +55,12 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.utils.DigestOfFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import br.inf.portalfiscal.nfe.v310.NFeDocument;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsgE;
 
@@ -70,6 +78,7 @@ public abstract class NFeUtil
 	/** Versão				*/
 	public static final String VERSAO_LAYOUT	= "3.10";
 	public static final String VERSAO_APP		= "Kenos ERP 3.10";
+	public static final String VERSAO_QR_CODE 	= "100";
 	@Deprecated
 	public static final String VERSAO_CCE		= "1.00";
 	public static final String VERSAO_EVENTO	= "1.00";
@@ -346,8 +355,8 @@ public abstract class NFeUtil
 		File attachedFile = new File(localFile);
 		if (attachedFile.exists())
 		{
-			String localMD5hash = DigestOfFile.GetLocalMD5Hash(attachedFile);
-			String entryMD5hash = DigestOfFile.getMD5Hash(entry.getData());
+			String localMD5hash = hashMD5 (attachedFile);
+			String entryMD5hash = hashMD5 (entry.getData());
 			if (localMD5hash.equals(entryMD5hash))
 			{
 				log.fine("no need to download: local file is up-to-date");
@@ -708,4 +717,212 @@ public abstract class NFeUtil
 			throw new AdempiereException (result.toString());
 		}
 	}	//	validate
+	
+
+	
+	
+	/**
+	 * Monta parâmetros a serem colocados em uma URL
+	 * 
+	 * @param parametros
+	 * @return
+	 */
+	public static String generateQRCodeParamsURL(Map<String, String> parametros) {
+
+		String ret = "";
+		int nParameter = 0;
+
+		for (String key : parametros.keySet()) {
+
+			if (nParameter > 0)
+				ret += "&";
+
+			ret += key + "=" + parametros.get(key);
+
+			nParameter++;
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Encode byte array to Digest Code in SHA-1 method
+	 * 
+	 * Source:
+	 * http://www.guj.com.br/17236-nota-fiscal-eletronica---validar-assinatura
+	 * 
+	 * @param data
+	 *            byte[]
+	 * @return String digest
+	 */
+	public static String getDigestBase64String(byte[] data) throws Exception {
+		MessageDigest messageDisgester = MessageDigest.getInstance("SHA-1");
+		return new String(Base64.encodeBase64(messageDisgester.digest(data)));
+	}
+
+	/**
+	 * 	Generate QRCode
+	 * 
+	 * @param nf
+	 * @param digestValue
+	 * @param nfeID
+	 * @return
+	 * @throws Exception
+	 */
+	public static String generateQRCodeNFCeURL (MLBRNotaFiscal nf, String digestValue, String nfeID, String cDest, Timestamp dhEmi, String vICMS, String tpAmb) throws Exception
+	{
+		String envType 	= nf.getlbr_NFeEnv();
+		//
+		if (envType == null || envType.isEmpty())
+			throw new Exception ("Ambiente da NF-e deve ser preenchido.");
+		
+		if (nf.getOrg_Location_ID() <= 0)
+			throw new Exception ("Endereço da Organização deve ser preenchido.");
+		
+		// URL
+		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.NFCE_CONSULTA_QRCODE, envType, NFeUtil.VERSAO_LAYOUT, nf.getOrg_Location().getC_Region_ID());
+		
+		// CSC
+		MLBRCSC csc = MLBRCSC.get (nf.getAD_Org_ID());
+		
+		// QRCode
+		String chNFe = nfeID;
+		String nVersao = NFeUtil.VERSAO_QR_CODE;
+		String vNF = TextUtil.bigdecimalToString(nf.getGrandTotal());
+		String digest = digestValue;
+		String tokenID = csc.getValue();//"000001";//
+		String token = csc.getName();//"C1774291-A86A-4ADA-B247-791207C6CF50";//
+
+		// generate
+		return generateQRCodeNFCeURL(chNFe, nVersao, tpAmb, cDest, dhEmi, vNF, vICMS, digest, tokenID, token, url);
+	}	//	generateQRCodeNFCeURL
+	
+	/**
+	 * Generate NFC-e QRCode
+	 * 
+	 * Especs:
+	 * http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=jKHRw%
+	 * 20g4V%20E=
+	 * 
+	 * @param chNFe
+	 * @param nVersao
+	 * @param tpAmb
+	 * @param cDest
+	 * @param dhEmi
+	 * @param vNF
+	 * @param vICMS
+	 * @param digest
+	 * @param tokenID
+	 * @param token
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	public static String generateQRCodeNFCeURL(String chNFe, String nVersao, String tpAmb, String cDest,
+			Timestamp dhEmi, String vNF, String vICMS, String digest, String tokenID, String token, String url)
+					throws Exception
+	{
+		if (url == null || url.isEmpty())
+			throw new Exception("URL de consulta pelo QrCode é inválida");
+		//
+		if (tokenID == null || tokenID.isEmpty() || token == null || token.isEmpty())
+			throw new Exception(
+					"CSC inválido! Empresa não possui chave de segurança para o QR-Code cadastrada na UF, ou as chaves existentes foram revogadas");
+		//
+		Map<String, String> parametros = new LinkedHashMap<String, String>();
+		parametros.put("chNFe", chNFe);
+		parametros.put("nVersao", nVersao);
+		parametros.put("tpAmb", tpAmb);
+		if (!TextUtil.toNumeric(cDest).isEmpty()){
+			parametros.put("cDest", TextUtil.toNumeric(cDest));
+		}
+		parametros.put("dhEmi", TextUtil.convertStringToHex(normalizeTZ (dhEmi)));
+		parametros.put("vNF", vNF);
+		parametros.put("vICMS", vICMS);
+		parametros.put("digVal", TextUtil.convertStringToHex(digest));
+		parametros.put("cIdToken", TextUtil.lPad(tokenID, 6) + token);
+		      
+		// Calcula o hash do QR Code:
+		String hashQRCodeStr = generateQRCodeParamsURL(parametros);
+		String hashQRCode = TextUtil.byteArrayToHexString(TextUtil.generateSHA1(hashQRCodeStr));
+
+		parametros.put("cIdToken", TextUtil.lPad(tokenID, 6));
+		parametros.put("cHashQRCode", hashQRCode);
+		return url + "?" + NFeUtil.generateQRCodeParamsURL(parametros);
+	}	//	generateQRCodeNFCeURL
+	
+	/**
+	 * 	Convert Date
+	 * 	@param ts
+	 * 	@return
+	 */
+	public static String normalizeTZ (Timestamp ts)
+	{
+		StringBuffer timeStr = new StringBuffer (TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssZ"));
+		return timeStr.insert (timeStr.length() - 2, ':').toString();
+	}	//	convertDate
+	
+	/**
+	 * 		Hash the file
+	 * 	@param ba
+	 * 	@return md5 hash of file
+	 */
+	public static String hashMD5 (File file)
+	{
+		//	No file provided
+		if (file == null)
+			return "";
+
+		try
+		{
+			String text = TextUtil.readFile (file);
+			return hashMD5 (text.getBytes());
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
+	}	//	hash
+	
+	/**
+	 * 		Hash the byte array
+	 * 	@param ba
+	 * 	@return md5 hash of file
+	 */
+	public static String hashMD5 (byte[] ba)
+	{
+		try
+		{
+			MessageDigest md = MessageDigest.getInstance ("MD5");
+			md.update (ba);
+			//
+			byte[] digest = md.digest();
+			return new BigInteger(1, digest).toString(16);
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			return "";
+		}
+	}	//	hash
+	
+	/**
+	 * 	Extract the Digest Value from NFe
+	 * 
+	 * @param 	nfeDoc NFe Document
+	 * @return	Digest Value from NFe Signature or "" in case of error
+	 */
+	public static String extractDigestValue (NFeDocument nfeDoc)
+	{
+		try
+		{
+			String reference = nfeDoc.getNFe().getSignature().getSignedInfo().xmlText(NFeUtil.getXmlOpt());
+			
+			// 	Extract Digest Value
+			return reference.substring(reference.indexOf("<DigestValue>")+13, reference.indexOf("</DigestValue>"));
+		}
+		catch (Exception e)
+		{
+			return "";
+		}
+	}	//	extractDisgestValue
 }	//	NFeUtil

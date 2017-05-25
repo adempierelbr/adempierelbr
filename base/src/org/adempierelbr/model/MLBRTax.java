@@ -824,7 +824,10 @@ public class MLBRTax extends X_LBR_Tax
 		{
 			if (taxes.containsKey(tl.getLBR_TaxName_ID()))
 				taxes.remove(tl.getLBR_TaxName_ID());
-			//
+
+			//	Não incluir impostos zerados na configuração
+			if (tl.getlbr_TaxRate().signum() == 0 && tl.getLBR_TaxStatus_ID() <= 0)
+				continue;
 			taxes.put (tl.getLBR_TaxName_ID(), tl.copy());
 		}
 	}	//	processTaxes

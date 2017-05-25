@@ -17,10 +17,12 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
+import java.util.Random;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRAuthorizedAccessXML;
+import org.adempierelbr.model.MLBRCSC;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -111,11 +113,13 @@ import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNF;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNFP;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic.ObsCont;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Pag;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total.ICMSTot;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Transporta;
 import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Vol;
+import br.inf.portalfiscal.nfe.v310.TNFe.InfNFeSupl;
 import br.inf.portalfiscal.nfe.v310.TProcEmi;
 import br.inf.portalfiscal.nfe.v310.TUf;
 import br.inf.portalfiscal.nfe.v310.TUfEmi;
@@ -205,8 +209,9 @@ public class NFeXMLGenerator
 	private static final Dest.IndIEDest.Enum IND_IE_NAO_CONTRIB = Dest.IndIEDest.X_9;
 	
 	/**	Homologação						*/
-	private static final String HOMOLOG_BPNAME	=	"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
-	private static final String HOMOLOG_BPCNPJ	=	"99999999000191";
+	private static final String HOMOLOG_BPNAME		=	"NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	private static final String HOMOLOG_PRODNAME	=	"NOTA FISCAL EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL";
+	private static final String HOMOLOG_BPCNPJ		=	"99999999000191";
 	
 	/** NCM	para serviços				*/
 	private static final String NCM_SERVICE		=	"00";
@@ -353,11 +358,28 @@ public class NFeXMLGenerator
 	 */
 	public static String generate (MLBRNotaFiscal nf) throws Exception
 	{
+		return generate (nf, TextUtil.lPad (String.valueOf (new Random ().nextInt (99999999)), 8));
+	}	//	generate
+	
+	/**
+	 * Gera o corpo da NF
+	 * 
+	 * @param nf Nota Fiscal
+	 * @return Success or Error message
+	 * @throws Exception
+	 */
+	public static String generate (MLBRNotaFiscal nf, String random) throws Exception
+	{
 		log.finer ("init");
 		
 		//	Transaction and Context
 		String trxName = nf.get_TrxName ();
 		Properties ctx = nf.getCtx();
+		boolean nfce = MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nf.getlbr_NFModel()); 
+		boolean unknownCustomer = false;
+		
+		if (nfce)
+			unknownCustomer = true;
 		
 		//	OrgInfo
 		I_W_AD_OrgInfo oi = POWrapper.create (MOrgInfo.get (nf.getCtx(), nf.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
@@ -388,7 +410,7 @@ public class NFeXMLGenerator
 		chaveNFE.setSerie(nf.getlbr_NFSerie());
 		chaveNFE.setTpEmis(tpEmissao.toString());
 		chaveNFE.setNNF(TextUtil.lPad(nf.getDocumentNo(), 9));
-		chaveNFE.setCNF();	//	Random code	
+		chaveNFE.setCNF(random);
 		
 		//	A. Dados da Nota Fiscal eletrônica
 		InfNFe infNFe = nfe.addNewInfNFe();
@@ -569,153 +591,161 @@ public class NFeXMLGenerator
 		//	Avulsa avulsa = infNFe.addNewAvulsa();
 		
 		//	E. Identificação do Destinatário da Nota Fiscal eletrônica
-		Dest dest = infNFe.addNewDest();
-		
-		//	Homologação
-		if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+		if (!nfce || nf.getlbr_BPTypeBR() != null)
 		{
-			dest.setCNPJ (HOMOLOG_BPCNPJ);
-			dest.setXNome (HOMOLOG_BPNAME);
-		}
-		
-		//	Produção
-		else
-		{
-			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
-				dest.setCPF(toNumericStr (nf.getlbr_BPCNPJ()));
+			Dest dest = infNFe.addNewDest();
 			
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
-				dest.setCNPJ(toNumericStr (nf.getlbr_BPCNPJ()));
-
-			//	Estrangeiro
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals(nf.getlbr_BPTypeBR()))
+			//	Homologação
+			if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
 			{
-				String taxID = nf.getC_BPartner().getTaxID();
-				
-				//	ID do Estrangeiro OK
-				if (taxID != null && taxID.trim().length() >= 5)
-					dest.setIdEstrangeiro(taxID);
-			
-				//	ID do Estrangeiro não especificado
-				else
-					dest.setIdEstrangeiro("");
+				dest.setCNPJ (HOMOLOG_BPCNPJ);
+				dest.setXNome (HOMOLOG_BPNAME);
 			}
-			dest.setXNome(normalize (nf.getBPName()));
-		}
-		
-		//	Endereço do destinatário
-		I_W_C_Country country = POWrapper.create(new MCountry(ctx, nf.getC_BPartner_Location().getC_Location().getC_Country_ID(), trxName), I_W_C_Country.class);
-		
-		if (country == null)
-			throw new AdempiereException ("Country not found");
-		
-		TEndereco enderDest = dest.addNewEnderDest();
-		enderDest.setXLgr(normalize (nf.getlbr_BPAddress1()));
-		enderDest.setNro(normalize (nf.getlbr_BPAddress2()));
-		
-		if (nf.getlbr_BPAddress4() != null)
-			enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
-		
-		enderDest.setXBairro(normalize (nf.getlbr_BPAddress3()));
-		
-		//	Brazil
-		if (country.getC_Country_ID() == MLBRNotaFiscal.BRAZIL)
-		{
-			enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
-			enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
-			enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
-			enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
-
+			
+			//	Produção
+			else
+			{
+				if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					dest.setCPF(toNumericStr (nf.getlbr_BPCNPJ()));
+				
+				else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					dest.setCNPJ(toNumericStr (nf.getlbr_BPCNPJ()));
+	
+				//	Estrangeiro
+				else if (MLBRNotaFiscal.LBR_BPTYPEBR_XX_Foreigner.equals(nf.getlbr_BPTypeBR()))
+				{
+					String taxID = nf.getC_BPartner().getTaxID();
+					
+					//	ID do Estrangeiro OK
+					if (taxID != null && taxID.trim().length() >= 5)
+						dest.setIdEstrangeiro(taxID);
+				
+					//	ID do Estrangeiro não especificado
+					else
+						dest.setIdEstrangeiro("");
+				}
+				
+				//	Nome não obrigatório para NFC-e
+				if (nf.getBPName() != null)
+					dest.setXNome(normalize (nf.getBPName()));
+			}
+			
+			//	Endereço do destinatário
+			I_W_C_Country country = POWrapper.create(new MCountry(ctx, nf.getC_BPartner_Location().getC_Location().getC_Country_ID(), trxName), I_W_C_Country.class);
+			
+			if (country == null)
+				throw new AdempiereException ("Country not found");
+			
 			/**
 			 * 	Nota 1: No caso de NFC-e informar indIEDest=9 e não
 			 * 		informar a tag IE do destinatário;
 			 */
-			if (ide.getMod().equals (MOD_NFCE_65))
+			if (nfce)
 				dest.setIndIEDest(IND_IE_NAO_CONTRIB);	//	Force 9
-			else 
+			
+			//	Make sure the customer is specified
+			if (!unknownCustomer)
 			{
-				//	Contribuinte de ICMS, possuí IE
-				if (T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+				TEndereco enderDest = dest.addNewEnderDest();
+				enderDest.setXLgr(normalize (nf.getlbr_BPAddress1()));
+				enderDest.setNro(normalize (nf.getlbr_BPAddress2()));
+				
+				if (nf.getlbr_BPAddress4() != null)
+					enderDest.setXCpl(normalize (nf.getlbr_BPAddress4()));
+				
+				enderDest.setXBairro(normalize (nf.getlbr_BPAddress3()));
+				
+				//	Brazil
+				if (country.getC_Country_ID() == MLBRNotaFiscal.BRAZIL)
 				{
-					dest.setIndIEDest (TNFe.InfNFe.Dest.IndIEDest.Enum.forString(nf.getLBR_IndIEDest()));
-					//
-					if (MLBRNotaFiscal.LBR_INDIEDEST_1_ContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
-						dest.setIE (toNumericStr (nf.getlbr_BPIE()));
+					enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
+					enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
+					enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
+					enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
+		
+					//	Contribuinte de ICMS, possuí IE
+					if (T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+					{
+						dest.setIndIEDest (TNFe.InfNFe.Dest.IndIEDest.Enum.forString(nf.getLBR_IndIEDest()));
+						//
+						if (MLBRNotaFiscal.LBR_INDIEDEST_1_ContribuinteDeICMS.equals(nf.getLBR_IndIEDest()))
+							dest.setIE (toNumericStr (nf.getlbr_BPIE()));
+					}
+					else
+						dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
+					
+					//	SUFRAMA
+					if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
+						dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
 				}
+				
+				//	Other countries
 				else
-					dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
-			}
-			
-			//	SUFRAMA
-			if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
-				dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
-		}
+				{
+					enderDest.setCMun(BPartnerUtil.EXTCOD);
+					enderDest.setXMun(BPartnerUtil.EXTMUN);
+					enderDest.setUF(TUf.EX);
 		
-		//	Other countries
-		else
-		{
-			enderDest.setCMun(BPartnerUtil.EXTCOD);
-			enderDest.setXMun(BPartnerUtil.EXTMUN);
-			enderDest.setUF(TUf.EX);
-
-			/**
-			 * 	Nota 2: No caso de operação com o Exterior informar
-			 * 		indIEDest=9 e não informar a tag IE do destinatário;
-			 */
-			dest.setIndIEDest(IND_IE_NAO_CONTRIB);
-		}
+					/**
+					 * 	Nota 2: No caso de operação com o Exterior informar
+					 * 		indIEDest=9 e não informar a tag IE do destinatário;
+					 */
+					dest.setIndIEDest(IND_IE_NAO_CONTRIB);
+				}
+				
+				if (country.getlbr_CountryCode() != null)
+					enderDest.setCPais(country.getlbr_CountryCode().substring(1));
+				
+				enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
+				
+				if (nf.getlbr_BPPhone() != null)
+					enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
+				
+				//	F. Identificação do Local de Retirada
+				//	G. Identificação do Local de Entrega
+				TLocal retOuEntreg = null;
 		
-		if (country.getlbr_CountryCode() != null)
-			enderDest.setCPais(country.getlbr_CountryCode().substring(1));
-		
-		enderDest.setXPais(((MCountry) POWrapper.getPO (country)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
-		
-		if (nf.getlbr_BPPhone() != null)
-			enderDest.setFone(toNumericStr (nf.getlbr_BPPhone()));
-		
-		//	F. Identificação do Local de Retirada
-		//	G. Identificação do Local de Entrega
-		TLocal retOuEntreg = null;
-
-		//	Retirada
-		if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
-			if (!nf.isSamePickUpAddr())
-				retOuEntreg = infNFe.addNewRetirada();
-		
-		//	Entrega
-		else if (!nf.isSameDeliveryAddr())
-				retOuEntreg = infNFe.addNewEntrega();
-		
-		//	Endereço não obrigatório caso seja igual ao do parceiro
-		//		para entrega ou igual ao emitente no caso de retirada
-		if (retOuEntreg != null)
-		{
-			//	CNPJ ou CPF
-			if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
-				retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			
-			else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
-				retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
-			//
-			retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
-			retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
-			
-			if (nf.getlbr_BPDeliveryAddress4() != null)
-				retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
-			
-			retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
-			
-			if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
-			{
-				retOuEntreg.setCMun(BPartnerUtil.EXTCOD);
-				retOuEntreg.setXMun(BPartnerUtil.EXTMUN);
-				retOuEntreg.setUF(TUf.EX);
-			}
-			else
-			{
-				retOuEntreg.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPDeliveryRegion(), nf.getlbr_BPDeliveryCity()));
-				retOuEntreg.setXMun(normalize (normalize (nf.getlbr_BPDeliveryCity())));
-				retOuEntreg.setUF(TUf.Enum.forString (nf.getlbr_BPDeliveryRegion()));
+				//	Retirada
+				if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
+					if (!nf.isSamePickUpAddr())
+						retOuEntreg = infNFe.addNewRetirada();
+				
+				//	Entrega
+				else if (!nf.isSameDeliveryAddr())
+						retOuEntreg = infNFe.addNewEntrega();
+				
+				//	Endereço não obrigatório caso seja igual ao do parceiro
+				//		para entrega ou igual ao emitente no caso de retirada
+				if (retOuEntreg != null)
+				{
+					//	CNPJ ou CPF
+					if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+						retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+					
+					else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+						retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+					//
+					retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
+					retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
+					
+					if (nf.getlbr_BPDeliveryAddress4() != null)
+						retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
+					
+					retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
+					
+					if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
+					{
+						retOuEntreg.setCMun(BPartnerUtil.EXTCOD);
+						retOuEntreg.setXMun(BPartnerUtil.EXTMUN);
+						retOuEntreg.setUF(TUf.EX);
+					}
+					else
+					{
+						retOuEntreg.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPDeliveryRegion(), nf.getlbr_BPDeliveryCity()));
+						retOuEntreg.setXMun(normalize (normalize (nf.getlbr_BPDeliveryCity())));
+						retOuEntreg.setUF(TUf.Enum.forString (nf.getlbr_BPDeliveryRegion()));
+					}
+				}
 			}
 		}
 		
@@ -790,7 +820,10 @@ public class NFeXMLGenerator
 				prod.setCEANTrib(toNumericStr (ean));
 			}
 			
-			prod.setXProd(normalize (nfl.getProductName()));
+			if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+				prod.setXProd(HOMOLOG_PRODNAME);
+			else
+				prod.setXProd(normalize (nfl.getProductName()));
 			
 			//	Serviço
 			if (nfl.islbr_IsService())
@@ -842,12 +875,11 @@ public class NFeXMLGenerator
 			if (ID_DEST_EXTERIOR.equals (ide.getIdDest()))
 
 				//	I01. Produtos e Serviços / Declaração de Importação
-				if (TP_NF_ENTRADA.equals (ide.getTpNF())
-						&& nfl.get_Value ("LBR_NFDI_ID") != null)
+				if (TP_NF_ENTRADA.equals (ide.getTpNF()) && nfl.getLBR_NFDI_ID() > 0)
 				{
 					DI di = prod.addNewDI();
 					
-					X_LBR_NFDI nfdi = new X_LBR_NFDI (ctx, (Integer) nfl.get_Value ("LBR_NFDI_ID"), null);
+					X_LBR_NFDI nfdi = new X_LBR_NFDI (ctx, nfl.getLBR_NFDI_ID(), trxName);
 					//
 					di.setNDI(nfdi.getlbr_DI ());
 					di.setDDI(TextUtil.timeToString (nfdi.getDateTrx(), "yyyy-MM-dd"));
@@ -860,9 +892,11 @@ public class NFeXMLGenerator
 					di.setCExportador (normalize (nfdi.getlbr_CodExportador()));
 
 					Adi adi = di.addNewAdi();
-					adi.setNAdicao(nfl.get_ValueAsString("lbr_NumAdicao"));
-					adi.setNSeqAdic(nfl.get_ValueAsString("lbr_NumSeqItem"));
-					adi.setCFabricante(normalize (nfl.get_ValueAsString("Manufacturer")));
+					if (nfl.getlbr_NumAdicao() > 0)
+						adi.setNAdicao(String.valueOf (nfl.getlbr_NumAdicao()));
+					if (nfl.getlbr_NumSeqItem() > 0)
+						adi.setNSeqAdic(String.valueOf (nfl.getlbr_NumSeqItem()));
+					adi.setCFabricante(normalize (nfl.getManufacturer()));
 //					adi.setVDescDI(Env.ZERO);	//TODO
 //					adi.setNDraw(arg0);			//TODO
 				}
@@ -1197,6 +1231,17 @@ public class NFeXMLGenerator
 				ii.setVII (normalize  (iiTax.getlbr_TaxAmt()));
 				ii.setVIOF(TextUtil.ZERO_STRING);
 			}
+			//	Se a NF for de Importação o II deve ser adicionado obrigatóriamente
+			else if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Import.equals (nfl.getParent().getlbr_TransactionType()))
+			{
+				X_LBR_NFLineTax iiTax = nfl.getIITax();
+				//	
+				II ii = imposto.addNewII();
+				ii.setVBC (normalize  (BigDecimal.ZERO));
+				ii.setVDespAdu(TextUtil.ZERO_STRING);
+				ii.setVII (normalize  (BigDecimal.ZERO));
+				ii.setVIOF(TextUtil.ZERO_STRING);
+			}
 			
 			//	Q. PIS
 			if (nfl.getPISTax() != null)
@@ -1323,13 +1368,13 @@ public class NFeXMLGenerator
 				/**
 				 * 	Percentual da partilha entre estados
 				 */
-				if (cal.before (new GregorianCalendar (2017, 01, 01)))		// ... -> 2016
+				if (cal.before (new GregorianCalendar (2017, Calendar.JANUARY, 01)))		// ... -> 2016
 					partICMSRate = new BigDecimal (40);
 				
-				else if (cal.before (new GregorianCalendar (2018, 01, 01)))	// 2017
+				else if (cal.before (new GregorianCalendar (2018, Calendar.JANUARY, 01)))	// 2017
 					partICMSRate = new BigDecimal (60);
 				
-				else if (cal.before (new GregorianCalendar (2019, 01, 01)))	// 2018
+				else if (cal.before (new GregorianCalendar (2019, Calendar.JANUARY, 01)))	// 2018
 					partICMSRate = new BigDecimal (80);
 				
 				else														// 2019 -> ...
@@ -1390,141 +1435,156 @@ public class NFeXMLGenerator
 		
 		//	X. Informações do Transporte da NF-e
 		Transp transp = infNFe.addNewTransp();
-		//
-		if (nf.getLBR_FreightCostRule() != null)
+
+		//	NFC-e force 9-No Freight when customer is present during sale
+		if (MLBRNotaFiscal.LBR_INDPRES_OperaçãoPresencial.equals(nf.getLBR_IndPres()))
+			transp.setModFrete(Transp.ModFrete.X_9);
+		else if (nf.getLBR_FreightCostRule() != null)
 			transp.setModFrete (Transp.ModFrete.Enum.forString (nf.getLBR_FreightCostRule()));
 		else
 			transp.setModFrete(Transp.ModFrete.X_0);
 		
-		if (nf.getM_Shipper_ID() > 0)
+		if (!nfce)
 		{
-			Transporta transporta = transp.addNewTransporta();
 			
-			String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
-			String shipperName 		= normalize (nf.getlbr_BPShipperName());
-			String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
-			String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
-			String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
-			String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
-			String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
-			
-			if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
-				transporta.setCNPJ(shipperCNPJ);
-			
-			if (shipperName != null && !shipperName.isEmpty())
-				transporta.setXNome(shipperName);
-			
-			if (shipperIE != null && !shipperIE.trim().isEmpty())
-				transporta.setIE (shipperIE);
-			
-			if (shipperAddress != null && !shipperAddress.isEmpty())
+			if (nf.getM_Shipper_ID() > 0)
 			{
-				//	Limite de 60 caracteres
-				transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
-			}
-			
-			if (shipperCity != null && !shipperCity.isEmpty())
-				transporta.setXMun(shipperCity);
-			
-			if (shipperRegion != null && !shipperRegion.isEmpty())
-				transporta.setUF(TUf.Enum.forString(shipperRegion));
-			
-			//	Placa do Veículo. Formato (XXX-0000/UF)
-			if (shipperPlate != null && !shipperPlate.isEmpty())
-			{
-				//	Encontrar posição da / na variável shipperPlate para Seperar a Placa da UF do Veículo
-				int pos = 0;
-				pos = shipperPlate.indexOf("/");
+				Transporta transporta = transp.addNewTransporta();
 				
-				//	Adicionar Veículo
-				TVeiculo veiculo = transp.addNewVeicTransp();
+				String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
+				String shipperName 		= normalize (nf.getlbr_BPShipperName());
+				String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
+				String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
+				String shipperCity 		= normalize (nf.getlbr_BPShipperCity());
+				String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
+				String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
 				
-				//	Adicionar Placa do Veículo
-				veiculo.setPlaca(TextUtil.retiraEspecial(shipperPlate.substring(0, pos)));
+				if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
+					transporta.setCNPJ(shipperCNPJ);
 				
-				//	Adicionar UF do Veículo
-				veiculo.setUF(TUf.Enum.forString(shipperPlate.substring(pos+1, shipperPlate.length())));
-			}
-		}
-		
-		// Adicionar Volume no XMl da NF-e
-		if ( nf.getNoPackages() != 0  )
-		{
-			Vol vol = transp.addNewVol();
+				if (shipperName != null && !shipperName.isEmpty())
+					transporta.setXNome(shipperName);
 				
-			vol.setQVol(Integer.toString(nf.getNoPackages()));
-			//
-			BigDecimal grossWeight = nf.getlbr_GrossWeight();
-			BigDecimal netWeight = nf.getlbr_NetWeight();
-			
-			//	Not null
-			if (grossWeight == null)
-				grossWeight = Env.ZERO;
-			if (netWeight == null)
-				netWeight = Env.ZERO;
-			
-			//	Fix invalid net weight
-			if (grossWeight.signum() == 1 
-					&& grossWeight.compareTo(netWeight) == -1)
-				netWeight = grossWeight;
-			
-			//	Fix invalid gross weight
-			if (grossWeight.signum() == 0
-					&& netWeight.signum() == 1)
-				grossWeight = netWeight;
-
-			//	Set gross and net weight in KG
-			if (netWeight.signum() == 1)
-				vol.setPesoL(normalize3 (netWeight));
-			if (grossWeight.signum() == 1)
-				vol.setPesoB(normalize3 (grossWeight));
-			
-			//	Package Type
-			String packType = nf.getlbr_PackingType();
-			
-			if (packType != null && !packType.isEmpty())
-				vol.setEsp(packType.trim());
-		}		
+				if (shipperIE != null && !shipperIE.trim().isEmpty())
+					transporta.setIE (shipperIE);
 				
-		//	Dados da cobrança
-		if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.getC_Invoice_ID() > 0)
-		{
-			//	Y. Dados da Cobrança
-			Cobr cobr = infNFe.addNewCobr();
-			
-			BigDecimal discountAmt = nf.getDiscountAmt();
-			
-			if (discountAmt == null || discountAmt.signum() == -1)
-				discountAmt = Env.ZERO;
-			
-			//	Fatura
-			Fat fat = cobr.addNewFat();
-			String fatNo = nf.getC_Invoice().getDocumentNo();
-			
-			fat.setNFat (fatNo); 				// 	Codigo NFE
-			fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
-			
-			if (discountAmt.signum() == 1)
-				fat.setVDesc (normalize (discountAmt));
-			
-			fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
-
-			//	Contador de duplicata
-			int dupCounter = 1;
-			
-		    //	Adiciona as duplicatas da fatura
-			if (nf.islbr_HasOpenItems())
-			    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
-			    {
-			    	Dup dup = cobr.addNewDup();
-			    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-			    	dup.setDVenc(normalize (openItem.getDueDate()));
-			    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+				if (shipperAddress != null && !shipperAddress.isEmpty())
+				{
+					//	Limite de 60 caracteres
+					transporta.setXEnder(shipperAddress.substring (0, Math.min (shipperAddress.length(), 60)));
 				}
+				
+				if (shipperCity != null && !shipperCity.isEmpty())
+					transporta.setXMun(shipperCity);
+				
+				if (shipperRegion != null && !shipperRegion.isEmpty())
+					transporta.setUF(TUf.Enum.forString(shipperRegion));
+				
+				//	Placa do Veículo. Formato (XXX-0000/UF)
+				if (shipperPlate != null && !shipperPlate.isEmpty())
+				{
+					//	Encontrar posição da / na variável shipperPlate para Seperar a Placa da UF do Veículo
+					int pos = 0;
+					pos = shipperPlate.indexOf("/");
+					
+					//	Adicionar Veículo
+					TVeiculo veiculo = transp.addNewVeicTransp();
+					
+					//	Adicionar Placa do Veículo
+					veiculo.setPlaca(TextUtil.retiraEspecial(shipperPlate.substring(0, pos)));
+					
+					//	Adicionar UF do Veículo
+					veiculo.setUF(TUf.Enum.forString(shipperPlate.substring(pos+1, shipperPlate.length())));
+				}
+			}
+			
+			// Adicionar Volume no XMl da NF-e
+			if ( nf.getNoPackages() != 0  )
+			{
+				Vol vol = transp.addNewVol();
+					
+				vol.setQVol(Integer.toString(nf.getNoPackages()));
+				//
+				BigDecimal grossWeight = nf.getlbr_GrossWeight();
+				BigDecimal netWeight = nf.getlbr_NetWeight();
+				
+				//	Not null
+				if (grossWeight == null)
+					grossWeight = Env.ZERO;
+				if (netWeight == null)
+					netWeight = Env.ZERO;
+				
+				//	Fix invalid net weight
+				if (grossWeight.signum() == 1 
+						&& grossWeight.compareTo(netWeight) == -1)
+					netWeight = grossWeight;
+				
+				//	Fix invalid gross weight
+				if (grossWeight.signum() == 0
+						&& netWeight.signum() == 1)
+					grossWeight = netWeight;
+	
+				//	Set gross and net weight in KG
+				if (netWeight.signum() == 1)
+					vol.setPesoL(normalize3 (netWeight));
+				if (grossWeight.signum() == 1)
+					vol.setPesoB(normalize3 (grossWeight));
+				
+				//	Package Type
+				String packType = nf.getlbr_PackingType();
+				
+				if (packType != null && !packType.isEmpty())
+					vol.setEsp(packType.trim());
+			}
+			
+			//	Dados da cobrança
+			// amc - Caso seja NFCE não haverá dados de fatura, duplicata
+			if (FIN_NFE_NORMAL.equals (ide.getFinNFe()) && nf.isSOTrx())
+			{
+				//	Y. Dados da Cobrança
+				Cobr cobr = infNFe.addNewCobr();
+				
+				BigDecimal discountAmt = nf.getDiscountAmt();
+				
+				if (discountAmt == null || discountAmt.signum() == -1)
+					discountAmt = Env.ZERO;
+				
+				//	Fatura
+				Fat fat = cobr.addNewFat();
+				String fatNo = nf.getC_Invoice().getDocumentNo();
+				
+				fat.setNFat (fatNo); 				// 	Codigo NFE
+				fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
+				
+				if (discountAmt.signum() == 1)
+					fat.setVDesc (normalize (discountAmt));
+				
+				fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
+		
+				//	Contador de duplicata
+				int dupCounter = 1;
+				
+			    //	Adiciona as duplicatas da fatura
+				if (nf.islbr_HasOpenItems())
+				    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+				    {
+				    	Dup dup = cobr.addNewDup();
+				    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+				    	dup.setDVenc(normalize (openItem.getDueDate()));
+				    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+					}
+			}
 		}
 		
+		// amc - Validar para NFCE só ser emitida caso a fatura esteja vinculada a um pagamento.
+		// Então preencher aqui com os dados do pagamento.
 		//	YA. Formas de Pagamento
-//		Pag pag = infNFe.addNewPag();	//	FIXME NFC-e
+		if (nfce)
+		{
+			Pag pag = infNFe.addNewPag();
+			pag.setTPag(Pag.TPag.Enum.forString("01"));
+			pag.setVPag(normalize (nf.getGrandTotal().abs()));
+		}
 		
 		//	Z. Informações Adicionais da NF-e
 		InfAdic infAdic = infNFe.addNewInfAdic();
@@ -1563,13 +1623,63 @@ public class NFeXMLGenerator
 		//	XML
 		String nfeID = infNFe.getId().substring(3);
 
-		log.fine ("Assinando NF-e");
-		
+		log.fine ("Signing NF-e");
+				
 		//	ZZ. Informações da Assinatura Digital
 		new SignatureUtil ((MOrgInfo) POWrapper.getPO (oi), SignatureUtil.RECEPCAO_NFE).sign (document, nfe.newCursor());
 		
+		String vNFCeQRCodeURL = "";
+			
+		// Only NFC-e
+		if (nfce) 
+		{
+			try 
+			{
+				/*
+				* QRCode da NFC-e
+				*/
+				log.fine ("Generating NFC-e QRCode URL");
+				
+				// Generate Digest Value
+				String digestValue = NFeUtil.extractDigestValue (document);
+				
+				// CSC
+				MLBRCSC csc = MLBRCSC.get(nf.getAD_Org_ID());
+				
+				if (csc == null)
+					throw new Exception("CSC nõa encontrado para a emissão de NFC-e");
+				
+				String cDest = "";
+				if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					cDest = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+				
+				else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					cDest = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+				
+				// Generate QRCode URL Current Info
+				if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+					vNFCeQRCodeURL = NFeUtil.generateQRCodeNFCeURL(nf, digestValue, nfeID, HOMOLOG_BPCNPJ, nf.getDateDoc(), normalize (nf.getICMSAmt()), T_AMB_HOMOLOG.toString());
+				
+				else
+					vNFCeQRCodeURL = NFeUtil.generateQRCodeNFCeURL(nf, digestValue, nfeID, cDest, nf.getDateDoc(), normalize (nf.getICMSAmt()), T_AMB_PRODUCAO.toString());
+				
+				if (vNFCeQRCodeURL != null && !vNFCeQRCodeURL.isEmpty())
+				{
+					InfNFeSupl supl = nfe.addNewInfNFeSupl();
+					supl.setQrCode(vNFCeQRCodeURL);
+					nf.set_ValueOfColumn("LBR_NFCeQRCodeURL", vNFCeQRCodeURL);
+				}
+			} 
+			catch (Exception e) 
+			{
+				log.severe("Não foi possível gerar o QRCode da NFC-e. Erro: " + e.getMessage());
+				throw new Exception("Não foi possível gerar o QRCode da NFC-e. Erro: " + e.getMessage());
+			}
+		}
+		
 		log.fine ("Validando NF-e");
-		NFeUtil.validate (document);
+		if (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(nf.getlbr_NFModel()))
+			NFeUtil.validate (document);
 		
 		//	Grava ID
 		nf.setlbr_NFeID(nfeID);

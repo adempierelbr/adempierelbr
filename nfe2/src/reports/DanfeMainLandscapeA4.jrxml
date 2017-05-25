@@ -4,11 +4,11 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="112"/>
+	<property name="ireport.y" value="288"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="DanfeMainLandscapeA4_Sub_Item" class="java.io.InputStream" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainLandscapeA4_Sub_Item.jasper")]]></defaultValueExpression>
 	</parameter>
@@ -23,6 +23,9 @@
 	<parameter name="LOGO" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="DanfeMainLandscapeA4_Sub_Invoice" class="java.io.InputStream" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainLandscapeA4_Sub_Invoice.jasper")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DanfeMainLandscapeA4_Sub_InfCompl" class="java.io.InputStream" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.io.FileInputStream ("/Users/ricardo/workspace/adempierelbr/nfe2/src/reports/DanfeMainLandscapeA4_Sub_InfCompl.jasper")]]></defaultValueExpression>
 	</parameter>
 	<queryString language="xPath">
 		<![CDATA[//NFe]]>
@@ -244,6 +247,12 @@
 	<field name="destinatarioEnderecoNro" class="java.lang.String">
 		<fieldDescription><![CDATA[infNFe/dest/enderDest/nro]]></fieldDescription>
 	</field>
+	<variable name="InfCompl" class="java.lang.String">
+		<variableExpression><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
+($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></variableExpression>
+		<initialValueExpression><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
+($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></initialValueExpression>
+	</variable>
 	<group name="Grupo01" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
 		<groupHeader>
@@ -1153,7 +1162,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="8"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco} 
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{destinatarioEndereco}
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioEnderecoNro}) ? "" : ", " + $F{destinatarioEnderecoNro} )
 + ( org.adempierelbr.util.TextUtil.isBlankOrNull ($F{destinatarioCompl}) ? "" : " - " + $F{destinatarioCompl} )]]></textFieldExpression>
 				</textField>
@@ -2236,10 +2245,26 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 			<band splitType="Stretch"/>
 		</groupHeader>
 	</group>
-	<group name="Grupo08">
+	<group name="Grupo08" minHeightToStartNewPage="200">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
 		<groupHeader>
-			<band/>
+			<band height="11">
+				<printWhenExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 652 ? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport-1" mode="Transparent" x="-30" y="1" width="61" height="10" isRemoveLineWhenBlank="true"/>
+					<subreportParameter name="ImpFrente">
+						<subreportParameterExpression><![CDATA[$P{Frente}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="InfCompl">
+						<subreportParameterExpression><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() >= 612 ? $V{InfCompl}.substring(651) : ""]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PreImp">
+						<subreportParameterExpression><![CDATA[$P{PreImpresso}]]></subreportParameterExpression>
+					</subreportParameter>
+					<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("/NFe/infNFe//det")]]></dataSourceExpression>
+					<subreportExpression class="java.io.InputStream"><![CDATA[$P{DanfeMainLandscapeA4_Sub_InfCompl}]]></subreportExpression>
+				</subreport>
+			</band>
 		</groupHeader>
 	</group>
 	<background>
@@ -2454,8 +2479,7 @@ DPEC regularmente recebido pela Receita Federal do Brasil]]></text>
 				<textElement textAlignment="Left" markup="styled">
 					<font fontName="Monospaced" size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{informacoesComplementares} == null ? "" : $F{informacoesComplementares} + "\n") +
-($F{informacoesComplementares2} == null ? "" : $F{informacoesComplementares2})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{InfCompl} != null && $V{InfCompl}.length() > 651 ? $V{InfCompl}.substring(0, 651) : $V{InfCompl}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="1">
 				<reportElement key="rectangle-59" mode="Transparent" x="19" y="0" width="40" height="99" isRemoveLineWhenBlank="true">

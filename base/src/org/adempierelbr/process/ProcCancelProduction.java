@@ -44,9 +44,9 @@ public class ProcCancelProduction extends SvrProcess
 		X_M_Production producaoOriginal = new X_M_Production(getCtx(), p_Record_ID,	get_TrxName());
 		X_M_Production producaoDestino = new X_M_Production(getCtx(), 0, get_TrxName());
 
-		producaoOriginal.isCreated();
-		producaoOriginal.isProcessed();
-		producaoOriginal.get_ValueAsBoolean("IsCancelled");
+		isCreated 	= producaoOriginal.isCreated();
+		processed 	= producaoOriginal.isProcessed();
+		isCancelled = producaoOriginal.get_ValueAsBoolean("IsCancelled");
 		
 		
 		if (isCreated && processed && isCancelled)

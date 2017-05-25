@@ -6,8 +6,10 @@ import java.math.RoundingMode;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRFactFiscal;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRTaxName;
 import org.adempierelbr.model.X_LBR_TaxAssessment;
+import org.adempierelbr.util.TextUtil;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -47,25 +49,42 @@ public class ProcTaxAssessment extends SvrProcess
 	 */
 	protected String doIt() throws Exception
 	{
+		
+		//	Gerar Apuração de Impostos
+		generateTaxAssessment(getRecord_ID(), get_TrxName());
+		
+		//
+		return "";
+	}
+	
+	/**
+	 * Gerar Apuração de Impostos
+	 * @param record_id
+	 * @param trxName
+	 * @throws RuntimeException
+	 * @throws Exception
+	 */
+	public static void generateTaxAssessment(int record_id, String trxName) throws RuntimeException, Exception
+	{
 		//
 		MathContext mc = new MathContext(12);
 		
 		// validar record ID
-		int Record_ID  = getRecord_ID();
+		int Record_ID  = record_id;
 		if (Record_ID == 0)
 			throw new IllegalArgumentException("LBR_Assessment_ID = 0");
 
 		
 		// carregar apuração
-		X_LBR_TaxAssessment m_taxassesment = new X_LBR_TaxAssessment(getCtx(), Record_ID, get_TrxName());
+		X_LBR_TaxAssessment m_taxassesment = new X_LBR_TaxAssessment(Env.getCtx(), Record_ID, trxName);
 		
 		
 		// Fatos Fiscais
-		MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(getCtx(), 
+		MLBRFactFiscal[] factFiscals = MLBRFactFiscal.get(Env.getCtx(), 
 				m_taxassesment.getC_Period().getStartDate(), 
 				m_taxassesment.getC_Period().getEndDate(), 
 				m_taxassesment.getAD_Org_ID(), 
-				null, get_TrxName());
+				null, trxName);
 		
 		
 		// 
@@ -100,6 +119,14 @@ public class ProcTaxAssessment extends SvrProcess
 			 * NF cancelada
 			 */
 			if(m_factfiscal.isCancelled())
+				continue;
+			
+			//	Notas Fiscais Denegadas
+			if (TextUtil.match (m_factfiscal.getLBR_NotaFiscal().getlbr_NFeStatus(),
+						MLBRNotaFiscal.LBR_NFESTATUS_110_UsoDenegado,
+						MLBRNotaFiscal.LBR_NFESTATUS_301_UsoDenegadoIrregularidadeFiscalDoEmitente,
+						MLBRNotaFiscal.LBR_NFESTATUS_302_RejeiçãoIrregularidadeFiscalDoDestinatário,
+						MLBRNotaFiscal.LBR_NFESTATUS_303_UsoDenegadoDestinatárioNãoHabilitadoAOperarNaUF))
 				continue;
 			
 			
@@ -143,11 +170,11 @@ public class ProcTaxAssessment extends SvrProcess
 		}
 		
 		// nome do imposto (ICMS/IPI/PIS/COFINS)
-		String taxName = new MLBRTaxName(getCtx(), m_taxassesment.getLBR_TaxName_ID(), get_TrxName()).getName();
+		String taxName = new MLBRTaxName(Env.getCtx(), m_taxassesment.getLBR_TaxName_ID(), trxName).getName();
 		
 		// outros crédito/débitos
-		BigDecimal otherCredit = getOtherCredit(Record_ID);
-		BigDecimal otherDebit  = getOtherDebit(Record_ID);
+		BigDecimal otherCredit = getOtherCredit(Record_ID, trxName);
+		BigDecimal otherDebit  = getOtherDebit(Record_ID, trxName);
 		
 		// valor acumulado do mês anterior
 		BigDecimal cumulatedAmt = Env.ZERO;/** MLBRTaxAssessment.getCumulatedAmt(getCtx(), 
@@ -200,10 +227,6 @@ public class ProcTaxAssessment extends SvrProcess
 		
 		// 
 		m_taxassesment.save();
-		
-		
-		//
-		return "";
 	}
 	
 	
@@ -215,7 +238,7 @@ public class ProcTaxAssessment extends SvrProcess
 	 * @param LBR_TaxAssessment_ID
 	 * @return
 	 */
-	private BigDecimal getOtherCredit(int LBR_TaxAssessment_ID){
+	private static BigDecimal getOtherCredit(int LBR_TaxAssessment_ID, String trxName){
 		
 		BigDecimal amt = null;
 		
@@ -225,7 +248,7 @@ public class ProcTaxAssessment extends SvrProcess
 				     "   AND al.Type IN ('2', '3') 		";
 		
 		
-		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_TaxAssessment_ID);
+		amt = DB.getSQLValueBD(trxName, sql, LBR_TaxAssessment_ID);
 		
 		if (amt == null)
 			amt =  Env.ZERO;
@@ -242,7 +265,7 @@ public class ProcTaxAssessment extends SvrProcess
 	 * @param LBR_TaxAssessment_ID
 	 * @return
 	 */
-	private BigDecimal getOtherDebit(int LBR_TaxAssessment_ID){
+	private static BigDecimal getOtherDebit(int LBR_TaxAssessment_ID, String trxName){
 		
 		BigDecimal amt = null;
 		
@@ -251,7 +274,7 @@ public class ProcTaxAssessment extends SvrProcess
 				     " WHERE al.LBR_TaxAssessment_ID = ? 	" +
 				     "   AND al.Type IN ('0','1')		";
 		
-		amt = DB.getSQLValueBD(get_TrxName(), sql, LBR_TaxAssessment_ID);
+		amt = DB.getSQLValueBD(trxName, sql, LBR_TaxAssessment_ID);
 		
 		if (amt == null)
 			amt =  Env.ZERO;

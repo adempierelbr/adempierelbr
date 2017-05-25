@@ -17,14 +17,19 @@
 <value column="Description" original="">Diretório onde será salvo o Arquivo de Log do Retorno</value>
 <value column="Help" original=""/>
 </row>
-<row id="1000009" trl="Y">
-<value column="Name" original="Nota Fiscal">Nota Fiscal (de)</value>
-<value column="Description" original="Primary key table LBR_NotaFiscal">Define a Nota Fiscal</value>
-<value column="Help" original="Primary key table LBR_NotaFiscal">Chave primária tabela LBR_NotaFiscal</value>
+<row id="1120216" trl="Y">
+<value column="Name" original="Reason">Justificativa</value>
+<value column="Description" original="">Justificava para Operações não Realizadas</value>
+<value column="Help" original=""/>
 </row>
-<row id="1000010" trl="Y">
-<value column="Name" original="LBR_NotaFiscal_ID_to">Nota Fiscal (para)</value>
-<value column="Description" original="">Define a Nota Fiscal</value>
-<value column="Help" original="">Chave primária tabela LBR_NotaFiscal</value>
+<row id="1120346" trl="N">
+<value column="Name" original="Incluir Documentos Cancelados">Incluir Documentos Cancelados</value>
+<value column="Description" original="Incluir Documentos Cancelados">Incluir Documentos Cancelados</value>
+<value column="Help" original="Inclui os XML cancelados das Notas Fiscais.">Inclui os XML cancelados das Notas Fiscais.</value>
+</row>
+<row id="1120354" trl="Y">
+<value column="Name" original="Online Processing">Obter dados online via API</value>
+<value column="Description" original="Get the IBPT data from the internet API">Obtém os dados do IBPT via API online</value>
+<value column="Help" original=""/>
 </row>
 </adempiereTrl>

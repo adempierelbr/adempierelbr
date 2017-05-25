@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -32,7 +33,11 @@ import org.adempierelbr.nfe.api.NfeRetAutorizacaoStub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -130,7 +135,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		enviNFe.setNFeArray(getNFeDocuments());
 
 		//	Valida o XML
-		NFeUtil.validate(enviNFeDoc);
+		if (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+			NFeUtil.validate(enviNFeDoc);
 		
 		//	XML do Lote
 		String xmlText = enviNFeDoc.xmlText(NFeUtil.getXmlOpt());
@@ -152,7 +158,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		log.fine("Envia Lote: " + getDocumentNo());
 
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), getlbr_NFModel());
 		
 		String envType 	= null;
 		
@@ -177,10 +183,16 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		MLBRDigitalCertificate.setCertificate(ctx, getAD_Org_ID());
 
 		//	XML
-		StringReader xml = new StringReader (NFeUtil.wrapMsg (geraLote (envType)));
+		OMElement ome = AXIOMUtil.stringToOM (geraLote (envType));
+		
+		//	Fix CData
+		if (LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+			ome = fixCData (ome);
 		
 		//	Mensagem
-		NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
+//		NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
+		NfeDadosMsg dadosMsg = new NfeDadosMsg();
+		dadosMsg.setExtraElement(ome);
 		
 		//	Cabeçalho
 		NfeCabecMsg cabecMsg = new NfeCabecMsg ();
@@ -190,7 +202,15 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
 		cabecMsgE.setNfeCabecMsg(cabecMsg);
 		
-		String url = MLBRNFeWebService.getURL (MLBRNFeWebService.AUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+		String serviceType = null;
+		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+			serviceType = MLBRNFeWebService.AUTORIZACAO;
+		
+		else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+			serviceType = MLBRNFeWebService.NFCE_AUTORIZACAO;
+		
+		String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+		
 		NfeAutorizacaoStub.setAmbiente(url);
 		NfeAutorizacaoStub stub = new NfeAutorizacaoStub();
 
@@ -280,7 +300,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			 */
 			String cStat = retConsReciNFe.getCStat();
 			if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
-					&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
+					&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
 					&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
 			{
 				processResponse(retConsReciNFe, trxName);
@@ -298,7 +318,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		}
 		//
 		MOrgInfo oi = MOrgInfo.get(ctx, getAD_Org_ID(), null);
-		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID());
+		MLBRNFConfig config = MLBRNFConfig.get(getAD_Org_ID(), getlbr_NFModel());
 		
 		String envType 	= null;
 		
@@ -326,7 +346,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			consReciNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 			
 			//	Validate
-			NFeUtil.validate (consReciNFeDoc);
+			if (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+				NFeUtil.validate (consReciNFeDoc);
 			
 			//	XML
 			StringReader xml = new StringReader (NFeUtil.wrapMsg (consReciNFeDoc.xmlText(NFeUtil.getXmlOpt())));
@@ -342,7 +363,15 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
 			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
-			String url = MLBRNFeWebService.getURL (MLBRNFeWebService.RETAUTORIZACAO, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+			String serviceType = null;
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
+				serviceType = MLBRNFeWebService.RETAUTORIZACAO;
+			
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica.equals(getlbr_NFModel()))
+				serviceType = MLBRNFeWebService.NFCE_RETAUTORIZACAO;
+			
+			String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
+			
 			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
 
 			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
@@ -399,7 +428,7 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		//
 		
 		if (!LBR_NFEANSWERSTATUS_105_LoteEmProcessamento.equals(cStat)
-				&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
+				&& !LBR_NFEANSWERSTATUS_641_RejeiçãoConsumoIndevido645.equals(cStat)
 				&& !LBR_NFEANSWERSTATUS_656_RejeiçãoConsumoIndevido.equals(cStat))
 		{
 			setDocStatus(DOCSTATUS_Completed);
@@ -885,5 +914,42 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 	{
 		int retVal = DB.getSQLValue(get_TrxName(), "SELECT COUNT(*) FROM LBR_NotaFiscal WHERE LBR_NFeLot_ID=?", getLBR_NFeLot_ID());
 		return retVal;
+	}
+	
+	private OMElement fixCData(final OMElement ome) 
+	{
+		Iterator<?> children = ome.getChildrenWithLocalName("NFe");
+		while (children.hasNext())
+		{
+			OMElement omElementNFe = (OMElement) children.next();
+			if ((omElementNFe != null) && ("NFe".equals(omElementNFe.getLocalName())))
+			{
+//				omElementNFe.addAttribute("xmlns","http://www.portalfiscal.inf.br/nfe", null);
+				OMFactory f = OMAbstractFactory.getOMFactory();
+
+				Iterator<?> itInfSupl = omElementNFe.getChildrenWithLocalName("infNFeSupl");
+				while (itInfSupl.hasNext())
+				{
+					Object elementInfSupl = itInfSupl.next();
+					if (elementInfSupl instanceof OMElement)
+					{
+						OMElement omElementInfSupl = (OMElement) elementInfSupl;
+						Iterator<?> itqrCode = omElementInfSupl.getChildrenWithLocalName("qrCode");
+						while (itqrCode.hasNext())
+						{
+							Object elementQrCode = itqrCode.next();
+							if (elementQrCode instanceof OMElement)
+							{
+								OMElement omElementQrCode = (OMElement) elementQrCode;
+								OMText omt = f.createOMText(omElementQrCode.getText(), OMElement.CDATA_SECTION_NODE);
+								omElementQrCode.setText("");
+								omElementQrCode.addChild(omt);
+							}
+						}
+					}
+				}
+			}
+		}
+		return ome;
 	}
 }	//	MNFeLot

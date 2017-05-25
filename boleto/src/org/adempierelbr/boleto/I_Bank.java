@@ -34,7 +34,7 @@ public interface I_Bank {
 	public final String NCAIXAECONOMICA = "CAIXA ECONOMICA";
 	public final String NHSBC           = "HSBC";
 	public final String NITAU           = "BANCO ITAU SA";
-	public final String NSANTANDER033   = "BANESPA";
+	public final String NSANTANDER033   = "SANTANDER";
 	public final String NSANTANDER353   = "SANTANDER";
 	public final String NUNIBANCO       = "UNIBANCO S/A";
 

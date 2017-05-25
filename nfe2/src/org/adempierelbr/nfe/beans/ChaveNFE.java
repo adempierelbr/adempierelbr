@@ -172,10 +172,35 @@ public class ChaveNFE
 
 	public void setCNF(String cnf) {
 		cNF = cnf;
+		digito = null;
 	}
 
 	public void setCNF() {
 		cNF = TextUtil.lPad (String.valueOf (new Random ().nextInt (99999999)), 8);
 		digito = null;
+	}
+	
+	public static void main (String[] args)
+	{
+		/**
+		 * 1 [ 02 ] UF
+		 * 2 [ 04 ] AAMM - Emissão
+		 * 3 [ 14 ] CNPJ
+		 * 4 [ 02 ] Modelo
+		 * 5 [ 03 ] Série
+		 * 6 [ 09 ] Número
+		 * 7 [ 01 ] Forma de Emissão
+		 * 8 [ 08 ] Random
+		 * 9 [ 01 ] DV
+		 */
+		String chave = "11222233333333333333445556666666667888888889";
+		//
+		System.out.println(chave);
+		System.out.println("Tamanho: " + chave.length ());
+		System.out.println("CNPJ: " + chave.substring (6, 20));
+		System.out.println("Modelo: " + chave.substring (20, 22));
+		System.out.println("Série: " + chave.substring (22, 25));
+		System.out.println("Número: " + chave.substring (25, 34));
+		System.out.println("Random: " + chave.substring (35, 43));
 	}
 }	//	ChaveNFE

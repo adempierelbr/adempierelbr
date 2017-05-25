@@ -20,6 +20,7 @@ import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.pipo.CreateZipFile;
+import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.model.MAttachment;
@@ -51,6 +52,7 @@ public class ProcXMLExport extends SvrProcess
 	private int p_C_BPartner_ID 		= 0;
 	private int p_C_BP_Group_ID 		= 0;
 	private int p_M_Shipper_ID 			= 0;
+	private Boolean p_LBR_IsCancelled	= false;
 	
 	/**	Period			*/
 	private Timestamp dateFrom;
@@ -90,6 +92,8 @@ public class ProcXMLExport extends SvrProcess
 				p_C_BP_Group_ID = para[i].getParameterAsInt();
 			else if (name.equals("M_Shipper_ID"))
 				p_M_Shipper_ID = para[i].getParameterAsInt();
+			else if (name.equals("lbr_IsCancelled"))
+				p_LBR_IsCancelled = para[i].getParameterAsBoolean();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -113,7 +117,7 @@ public class ProcXMLExport extends SvrProcess
 		
 		//
 		StringBuffer whereClause = new StringBuffer("AD_Client_ID=?")
-		.append(" AND DateDoc BETWEEN " + DB.TO_DATE(dateFrom))
+		.append(" AND TRUNC (DateDoc) BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
 
 		if (p_C_DocTypeTarget_ID > 0)
@@ -137,7 +141,13 @@ public class ProcXMLExport extends SvrProcess
 		if (p_C_BP_Group_ID > 0)
 			whereClause.append(" AND EXISTS (SELECT '1' FROM C_BPartner bp WHERE bp.C_BPartner_ID=LBR_NotaFiscal.C_BPartner_ID AND bp.C_BP_Group_ID ="+p_C_BP_Group_ID+")");
 		
-		whereClause.append(" AND IsCancelled='N' ");	//	Canceladas
+		if (!p_LBR_IsCancelled)
+			whereClause.append(" AND IsCancelled='N' ");	//	Não Exportar NFs Canceladas
+		else
+			whereClause.append(" OR LBR_NFeStatus IN ('" + MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado + 
+													"', '" + MLBRNotaFiscal.LBR_NFESTATUS_151_CancelamentoDeNF_EHomologadoForaDePrazo +
+													"', '" + MLBRNotaFiscal.LBR_NFESTATUS_220_RejeiçãoPrazoDeCancelamentoSuperiorAoPrevistoNaLegislação + "')");	//	Exportar NFs Canceladas
+			
 		//
 		List<MLBRNotaFiscal> nfs = new Query(Env.getCtx(), MLBRNotaFiscal.Table_Name, whereClause.toString(), null)
 					.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx())})
@@ -164,10 +174,14 @@ public class ProcXMLExport extends SvrProcess
 					xml = entry;
 			}
 			
+			//	Se houver XML da NF-e
 			if (xml != null)
 			{
+				//	Pasta para adicionar o XML das NFs de Entrada e Saída
 				String folder = p_Temp + p_FolderKey + File.separator + TextUtil.toNumeric(nf.getlbr_CNPJ()) 
-						+ File.separator + "Emitidas" + File.separator + (nf.isSOTrx() ? "Saída" : "Entrada");
+				+ File.separator + "Emitidas" + File.separator + (nf.isSOTrx() ? "Saída" : "Entrada");						
+				
+				//	Arquivo XML
 				String fileName = folder + File.separator + xml.getName();
 				//
 				File file = new File (folder);
@@ -176,6 +190,37 @@ public class ProcXMLExport extends SvrProcess
 				//
 				log.finer ("Saving to >> " + fileName);
 				xml.getFile (new File (fileName));
+				
+				//	Adicionar Eventos da NFe
+				List<MLBRNFeEvent> events = nf.getNFeEvents();
+				
+				//	Adicionando os Eventos
+				for (MLBRNFeEvent event : events)
+				{
+					//	Se houver um Evento
+					if (event != null)
+					{
+						//	XMLs do Evento
+						MAttachmentEntry xmlEvent = event.getAttachment().getEntry(0);
+						
+						//	Pasta dos Eventos
+						folder = p_Temp + p_FolderKey + File.separator + TextUtil.toNumeric(nf.getlbr_CNPJ()) 
+						+ File.separator + "Emitidas" + File.separator + 
+						(nf.isSOTrx() ? "Saída" + File.separator + "Eventos" : 
+							"Entrada" + File.separator + "Eventos");
+						
+						//	XML
+						String fileNameEvent = folder + File.separator + xmlEvent.getName();
+						//
+						File fileEvent = new File (folder);
+						if (!fileEvent.exists())
+							fileEvent.mkdirs();
+						//						
+						log.finer ("Saving to >> " + fileNameEvent);
+						xmlEvent.getFile (new File (fileNameEvent));
+					}
+				}
+
 			}
 		}
 		//		Versão SWING

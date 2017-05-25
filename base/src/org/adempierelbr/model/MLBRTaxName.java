@@ -27,6 +27,8 @@ public class MLBRTaxName extends X_LBR_TaxName
 
 	public static final int TAX_ICMSPROD 	= 1106000;
 	public static final int TAX_ICMSST 		= 1106012;
+	public static final int TAX_DIFAL 		= 1120002;
+	public static final int TAX_DIFALORIGEM	= 1120001;
 	
 	/**************************************************************************
 	 *  Default Constructor

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import org.adempierelbr.boleto.I_Bank;
 import org.adempierelbr.model.MLBRBoleto;
 import org.adempierelbr.model.MLBRCNAB;
+import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.util.RemoverAcentos;
 import org.adempierelbr.util.ReturnCNABUtil;
 import org.adempierelbr.util.TextUtil;
@@ -31,6 +32,7 @@ import org.compiere.model.MBankAccount;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MSysConfig;
 import org.compiere.util.Env;
 
 /**
@@ -121,7 +123,22 @@ public class MItau implements I_Bank
 	        cnab.setlbr_CNABField38(MLBRCNAB.CNABFormat(boleto.getPostal(),8)); //CEP
 	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getCity()).toUpperCase()); //Cidade
 	        cnab.setlbr_CNABField40(boleto.getRegionName()); //Estado
-	        cnab.setlbr_CNABField41(null); //Sacador / Avalista
+	        
+	        //	Nota Fiscal
+			MLBRNotaFiscal[] nfs = MLBRNotaFiscal.get(invoice.getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName());
+			
+			// 	Enviar Número da NF via CNAB. A NF será impressa no Corpo do Boleto gerado pelo banco.
+	        if (MSysConfig.getBooleanValue("LBR_SENDNFENOONCNAB", false, Env.getAD_Client_ID(ctx)))
+	        {
+	        	String nf = "NOTA FISCAL: " +  nfs[0].getDocumentNo();
+	        	
+	        	// 93 - Instrução referente a Mensagem nos Boletos com 30 posições
+	        	cnab.setlbr_CNABField25("93"); //Instrução 1
+	        	cnab.setlbr_CNABField41(nf); //Sacador / Avalista
+	        }
+	        else
+	        	cnab.setlbr_CNABField41(null); //Sacador / Avalista
+	        
 	        cnab.setlbr_CNABField42(null); //Preencher com Espaços em Branco
 	        cnab.setlbr_CNABField43(null); //Data Mora
 	        cnab.setlbr_CNABField44(null); //Prazo

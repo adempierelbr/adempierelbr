@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
@@ -16,6 +17,7 @@ import org.adempierelbr.model.MLBRSalesCardTotal;
 import org.adempierelbr.model.MLBRTaxAssessment;
 import org.adempierelbr.model.X_LBR_SPED;
 import org.adempierelbr.model.X_LBR_TaxAssessmentLine;
+import org.adempierelbr.process.ProcTaxAssessment;
 import org.adempierelbr.sped.CounterSped;
 import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
@@ -45,6 +47,7 @@ import org.compiere.model.MElementValue;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MProduct;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DB;
@@ -83,6 +86,11 @@ public class ProcGenerateEFD extends SvrProcess
 	 */
 	private int p_LBR_SPED_ID = 0;
 	
+	/**
+	 * Processar Apuração de Impostos
+	 */
+	private Boolean p_LBR_ProcTaxAssessment = true;
+	
 	
 	/**
 	 * Prepare - e.g., get Parameters.
@@ -95,7 +103,9 @@ public class ProcGenerateEFD extends SvrProcess
 		{
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
-				;			
+				;	
+			else if (name.equals("LBR_ProcTaxAssessment"))
+				p_LBR_ProcTaxAssessment = para[i].getParameterAsBoolean();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}	//	for
@@ -146,6 +156,20 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		DB.executeUpdate("DROP TABLE LBR_FactFiscal", null);
 		DB.executeUpdate("CREATE TABLE LBR_FactFiscal AS SELECT * FROM LBR_FactFiscalBase", null);
+		
+		//	Identificar Apurações de Impostos criadas para o Período
+		List <MLBRTaxAssessment> list = new Query(Env.getCtx(), 
+											MLBRTaxAssessment.Table_Name, "AD_Client_ID = ? AND AD_Org_ID = ? AND C_Period_ID = ?", 
+											get_TrxName())
+										.setParameters(Env.getAD_Client_ID(getCtx()), p_AD_Org_ID, p_C_Period_ID)
+										.list();
+		
+		//	Calcular as Apurações de Impostos
+		if (!list.isEmpty() && p_LBR_ProcTaxAssessment)
+		{
+			for (MLBRTaxAssessment ta : list)
+				ProcTaxAssessment.generateTaxAssessment(ta.getLBR_TaxAssessment_ID(), get_TrxName());
+		}
 		
 		/*
 		 * Rodar Processo
