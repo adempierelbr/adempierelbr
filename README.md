@@ -72,6 +72,26 @@ Versões
 
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
+
+1. LBR-201705 [[Download]][78] [[Seed PostgreSQL]][79] [[Seed OracleXE]][80]
+
+	* Melhorias na tradução
+	* Suporte para NFC-e (Nota Fiscal de Consumidor)
+	* Obtenção das Alíquotas do IBPT via API [Mais detalhes](https://bitbucket.org/kenos/org.kenos.ibpt)
+	* Relatório de Resumo de Vendas
+	* Relatório de Parcelamentos
+	* Relatório de Boletos
+	* Inclusão de Códigos NBS
+	* Melhoria na validação de esquema XML da NFe
+	* Customização da Natureza da Operação
+	* Suporte para Supervisor de Vendas (Comissão)
+	* Melhoria na Apuração de Impostos para SPED
+	* Correção no Envio de E-Mail automático (charset e acentuação)
+	* Separação de estrutura de Validator (Boleto, NF e RMA)
+	* Processo para Consulta de NFe na SeFaz
+	* Remoção de funções obsoletas
+	* [Mais detalhes][77]
+	
 1. LBR-201610 [[Download]][74] [[Seed PostgreSQL]][75] [[Seed OracleXE]][76]
 
 	* Melhorias na tradução
@@ -318,3 +338,7 @@ Patrocinadores desta versão
 [74]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201610.tgz
 [75]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_PG.tgz
 [76]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_ORA.tgz
+[77]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201705
+[78]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201705.tgz
+[79]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_PG.tgz
+[80]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_ORA.tgz
