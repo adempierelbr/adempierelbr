@@ -32,7 +32,7 @@ ipi.cst AS cstipi, icmsst.lbr_taxamt AS icmsst_taxamt,
 icmsst.lbr_taxbase AS icmsst_taxbase, 
 icmsst.lbr_taxbaseamt AS icmsst_taxbaseamt, 
 icmsst.lbr_taxrate AS icmsst_taxrate, icmsst.cst AS icmsst_taxstatus,
-round(nfl.linetotalamt + COALESCE(icmsst.lbr_taxamt, 0::numeric) + COALESCE(ipi.lbr_taxamt, 0::numeric), 2) AS grossramt,
+round(nfl.linetotalamt + COALESCE(icmsst.lbr_taxamt, 0) + COALESCE(ipi.lbr_taxamt, 0), 2) AS grossramt,
 fcp.lbr_taxamt AS fcp_taxamt, fcp.lbr_taxbase AS fcp_taxbase, fcp.lbr_taxbaseamt AS fcp_taxbaseamt, fcp.lbr_taxrate AS fcp_taxrate, 
 fcp.cst AS fcp_taxstatus,
 icmsdifal.lbr_taxamt AS icmsdifal_taxamt, icmsdifal.lbr_taxbase AS icmsdifal_taxbase, icmsdifal.lbr_taxbaseamt AS icmsdifal_taxbaseamt, 
@@ -41,14 +41,14 @@ icmsdifalorig.lbr_taxamt AS icmsdifalorig_taxamt, icmsdifalorig.lbr_taxbase AS i
 icmsdifalorig.lbr_taxrate AS icmsdifalorig_taxrate, icmsdifalorig.cst AS icmsdifalorig_taxstatus
 FROM lbr_notafiscalline nfl
 LEFT JOIN lbr_notafiscal nf ON nfl.lbr_notafiscal_id = nf.lbr_notafiscal_id
-LEFT JOIN lbr_nflinetax_v icms ON nfl.lbr_notafiscalline_id = icms.lbr_notafiscalline_id AND icms.taxindicator::text = 'ICMS'::text
-LEFT JOIN lbr_nflinetax_v pis ON nfl.lbr_notafiscalline_id = pis.lbr_notafiscalline_id AND pis.taxindicator::text = 'PIS'::text
-LEFT JOIN lbr_nflinetax_v cofins ON nfl.lbr_notafiscalline_id = cofins.lbr_notafiscalline_id AND cofins.taxindicator::text = 'COFINS'::text
-LEFT JOIN lbr_nflinetax_v ipi ON nfl.lbr_notafiscalline_id = ipi.lbr_notafiscalline_id AND ipi.taxindicator::text = 'IPI'::text
-LEFT JOIN lbr_nflinetax_v icmsst ON nfl.lbr_notafiscalline_id = icmsst.lbr_notafiscalline_id AND icmsst.taxindicator::text = 'ICMSST'::text
-LEFT JOIN lbr_nflinetax_v fcp ON nfl.lbr_notafiscalline_id = fcp.lbr_notafiscalline_id AND fcp.taxindicator::text = 'FCP'
-LEFT JOIN lbr_nflinetax_v icmsdifal ON nfl.lbr_notafiscalline_id = icmsdifal.lbr_notafiscalline_id AND icmsdifal.taxindicator::text = 'ICMSDIFAL'
-LEFT JOIN lbr_nflinetax_v icmsdifalorig ON nfl.lbr_notafiscalline_id = icmsdifalorig.lbr_notafiscalline_id AND icmsdifalorig.taxindicator::text = 'ICMSDIFALORIG'
+LEFT JOIN lbr_nflinetax_v icms ON nfl.lbr_notafiscalline_id = icms.lbr_notafiscalline_id AND icms.taxindicator = 'ICMS'
+LEFT JOIN lbr_nflinetax_v pis ON nfl.lbr_notafiscalline_id = pis.lbr_notafiscalline_id AND pis.taxindicator = 'PIS'
+LEFT JOIN lbr_nflinetax_v cofins ON nfl.lbr_notafiscalline_id = cofins.lbr_notafiscalline_id AND cofins.taxindicator = 'COFINS'
+LEFT JOIN lbr_nflinetax_v ipi ON nfl.lbr_notafiscalline_id = ipi.lbr_notafiscalline_id AND ipi.taxindicator = 'IPI'
+LEFT JOIN lbr_nflinetax_v icmsst ON nfl.lbr_notafiscalline_id = icmsst.lbr_notafiscalline_id AND icmsst.taxindicator = 'ICMSST'
+LEFT JOIN lbr_nflinetax_v fcp ON nfl.lbr_notafiscalline_id = fcp.lbr_notafiscalline_id AND fcp.taxindicator = 'FCP'
+LEFT JOIN lbr_nflinetax_v icmsdifal ON nfl.lbr_notafiscalline_id = icmsdifal.lbr_notafiscalline_id AND icmsdifal.taxindicator = 'ICMSDIFAL'
+LEFT JOIN lbr_nflinetax_v icmsdifalorig ON nfl.lbr_notafiscalline_id = icmsdifalorig.lbr_notafiscalline_id AND icmsdifalorig.taxindicator = 'ICMSDIFALORIG'
 ;
 -- 08/12/2016 11h59min27s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator

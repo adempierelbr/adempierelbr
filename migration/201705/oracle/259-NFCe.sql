@@ -423,3 +423,5 @@ UPDATE AD_Column SET ReadOnlyLogic='@C_BPartner_ID@!@#POS_BPartner_ID@ | @C_BPar
 
 SELECT Register_Migration_Script ('259-NFCe.sql') FROM DUAL
 ;
+
+EXIT

@@ -548,13 +548,12 @@ icmsst.lbr_taxbaseamt AS icmsst_taxbaseamt,
 icmsst.lbr_taxrate AS icmsst_taxrate, icmsst.cst AS icmsst_taxstatus
 FROM lbr_notafiscalline nfl
 LEFT JOIN lbr_notafiscal nf ON nfl.lbr_notafiscal_id = nf.lbr_notafiscal_id
-LEFT JOIN lbr_nflinetax_v icms ON nfl.lbr_notafiscalline_id = icms.lbr_notafiscalline_id AND icms.taxindicator::text = 'ICMS'::text
-LEFT JOIN lbr_nflinetax_v pis ON nfl.lbr_notafiscalline_id = pis.lbr_notafiscalline_id AND pis.taxindicator::text = 'PIS'::text
-LEFT JOIN lbr_nflinetax_v cofins ON nfl.lbr_notafiscalline_id = cofins.lbr_notafiscalline_id AND cofins.taxindicator::text = 'COFINS'::text
-LEFT JOIN lbr_nflinetax_v ipi ON nfl.lbr_notafiscalline_id = ipi.lbr_notafiscalline_id AND ipi.taxindicator::text = 'IPI'::text
-LEFT JOIN lbr_nflinetax_v icmsst ON nfl.lbr_notafiscalline_id = icmsst.lbr_notafiscalline_id AND icmsst.taxindicator::text = 'ICMSST'::text;
-ALTER TABLE rv_lbr_notafiscal_details
-OWNER TO adempiere;
+LEFT JOIN lbr_nflinetax_v icms ON nfl.lbr_notafiscalline_id = icms.lbr_notafiscalline_id AND icms.taxindicator = 'ICMS'
+LEFT JOIN lbr_nflinetax_v pis ON nfl.lbr_notafiscalline_id = pis.lbr_notafiscalline_id AND pis.taxindicator = 'PIS'
+LEFT JOIN lbr_nflinetax_v cofins ON nfl.lbr_notafiscalline_id = cofins.lbr_notafiscalline_id AND cofins.taxindicator = 'COFINS'
+LEFT JOIN lbr_nflinetax_v ipi ON nfl.lbr_notafiscalline_id = ipi.lbr_notafiscalline_id AND ipi.taxindicator = 'IPI'
+LEFT JOIN lbr_nflinetax_v icmsst ON nfl.lbr_notafiscalline_id = icmsst.lbr_notafiscalline_id AND icmsst.taxindicator = 'ICMSST'
+;
 
 -- 08/12/2016 11h59min27s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator

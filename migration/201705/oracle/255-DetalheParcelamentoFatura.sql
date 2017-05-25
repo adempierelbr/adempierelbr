@@ -6,45 +6,42 @@ CREATE OR REPLACE VIEW rv_lbr_invoicepayschedule AS
          SELECT i.ad_org_id, i.ad_client_id, i.documentno, i.c_invoice_id, 
             i.c_order_id, i.c_bpartner_id, i.issotrx, i.dateinvoiced, 
             i.dateacct, p.netdays, 
-            paymenttermduedate(i.c_paymentterm_id, i.dateinvoiced::timestamp with time zone) AS duedate, 
-            paymenttermduedays(i.c_paymentterm_id, i.dateinvoiced::timestamp with time zone, getdate()) AS daysdue, 
-            adddays(i.dateinvoiced::timestamp with time zone, p.discountdays) AS discountdate, 
-            round(i.grandtotal * p.discount / 100::numeric, 2) AS discountamt, 
+            paymenttermduedate(i.c_paymentterm_id, i.dateinvoiced) AS duedate, 
+            paymenttermduedays(i.c_paymentterm_id, i.dateinvoiced, getdate()) AS daysdue, 
+            adddays(i.dateinvoiced, p.discountdays) AS discountdate, 
+            round(i.grandtotal * p.discount / 100, 2) AS discountamt, 
             i.grandtotal, 
-            invoicepaid(i.c_invoice_id, i.c_currency_id, 1::numeric) AS paidamt, 
-            invoiceopen(i.c_invoice_id, 0::numeric) AS openamt, i.c_currency_id, 
+            invoicepaid(i.c_invoice_id, i.c_currency_id, 1) AS paidamt, 
+            invoiceopen(i.c_invoice_id, 0) AS openamt, i.c_currency_id, 
             i.c_conversiontype_id, i.c_paymentterm_id, i.ispayschedulevalid, 
-            NULL::numeric AS c_invoicepayschedule_id, i.invoicecollectiontype, 
+            NULL AS c_invoicepayschedule_id, i.invoicecollectiontype, 
             i.c_campaign_id, i.c_project_id, i.c_activity_id, i.salesrep_id, 
-            ( SELECT max(lbr_notafiscal.documentno::text) AS max
+            ( SELECT max(lbr_notafiscal.documentno) AS max
                    FROM lbr_notafiscal
-                  WHERE lbr_notafiscal.c_invoice_id = i.c_invoice_id AND lbr_notafiscal.iscancelled = 'N'::bpchar AND lbr_notafiscal.docstatus::text <> 'VO'::text) AS lbr_nfeno, i.c_doctype_id
+                  WHERE lbr_notafiscal.c_invoice_id = i.c_invoice_id AND lbr_notafiscal.iscancelled = 'N' AND lbr_notafiscal.docstatus <> 'VO') AS lbr_nfeno, i.c_doctype_id
            FROM rv_c_invoice i
       JOIN c_paymentterm p ON i.c_paymentterm_id = p.c_paymentterm_id
-     WHERE i.ispayschedulevalid <> 'Y'::bpchar AND (i.docstatus = ANY (ARRAY['CO'::bpchar, 'CL'::bpchar]))
+     WHERE i.ispayschedulevalid <> 'Y' AND (i.docstatus = ANY ('CO', 'CL'))
 UNION 
          SELECT i.ad_org_id, i.ad_client_id, i.documentno, i.c_invoice_id, 
             i.c_order_id, i.c_bpartner_id, i.issotrx, i.dateinvoiced, 
             i.dateacct, 
-            daysbetween(ips.duedate::timestamp with time zone, i.dateinvoiced::timestamp with time zone) AS netdays, 
+            daysbetween(ips.duedate, i.dateinvoiced) AS netdays, 
             ips.duedate, 
-            daysbetween(getdate(), ips.duedate::timestamp with time zone) AS daysdue, 
+            daysbetween(getdate(), ips.duedate) AS daysdue, 
             ips.discountdate, ips.discountamt, ips.dueamt AS grandtotal, 
-            invoicepaid(i.c_invoice_id, i.c_currency_id, 1::numeric) AS paidamt, 
+            invoicepaid(i.c_invoice_id, i.c_currency_id, 1) AS paidamt, 
             invoiceopen(i.c_invoice_id, ips.c_invoicepayschedule_id) AS openamt, 
             i.c_currency_id, i.c_conversiontype_id, i.c_paymentterm_id, 
             i.ispayschedulevalid, ips.c_invoicepayschedule_id, 
             i.invoicecollectiontype, i.c_campaign_id, i.c_project_id, 
             i.c_activity_id, i.salesrep_id, 
-            ( SELECT max(lbr_notafiscal.documentno::text) AS max
+            ( SELECT max(lbr_notafiscal.documentno) AS max
                    FROM lbr_notafiscal
-                  WHERE lbr_notafiscal.c_invoice_id = i.c_invoice_id AND lbr_notafiscal.iscancelled = 'N'::bpchar AND lbr_notafiscal.docstatus::text <> 'VO'::text) AS lbr_nfeno, i.c_doctype_id
+                  WHERE lbr_notafiscal.c_invoice_id = i.c_invoice_id AND lbr_notafiscal.iscancelled = 'N' AND lbr_notafiscal.docstatus <> 'VO') AS lbr_nfeno, i.c_doctype_id
            FROM rv_c_invoice i
       JOIN c_invoicepayschedule ips ON i.c_invoice_id = ips.c_invoice_id
-     WHERE i.ispayschedulevalid = 'Y'::bpchar AND (i.docstatus = ANY (ARRAY['CO'::bpchar, 'CL'::bpchar])) AND ips.isvalid = 'Y'::bpchar;
-
-ALTER TABLE rv_lbr_invoicepayschedule
-  OWNER TO adempiere;
+     WHERE i.ispayschedulevalid = 'Y' AND (i.docstatus = ANY ('CO', 'CL')) AND ips.isvalid = 'Y';
 
 -- 15/02/2017 14h7min56s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
@@ -83,9 +80,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 15/02/2017 14h8min9s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1129717,290,0,10,1120578,'DocumentNo',TO_DATE('2017-02-15 14:08:09','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document','LBRA',30,'The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>".
-
-If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','N','N','N','N','N','N','N','N','N','Document No',TO_DATE('2017-02-15 14:08:09','YYYY-MM-DD HH24:MI:SS'),100,0)
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAlwaysUpdateable,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsTranslated,IsUpdateable,Name,Updated,UpdatedBy,Version) VALUES (0,1129717,290,0,10,1120578,'DocumentNo',TO_DATE('2017-02-15 14:08:09','YYYY-MM-DD HH24:MI:SS'),100,'Document sequence number of the document','LBRA',30,'The document number is usually automatically generated by the system and determined by the document type of the document. If the document is not saved, the preliminary number is displayed in "<>". If the document type of your document has no automatic document sequence defined, the field is empty if you create a new document. This is for documents which usually have an external number (like vendor invoice).  If you leave the field empty, the system will generate a document number for you. The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_<TableName>", where TableName is the actual name of the table (e.g. C_Order).','Y','N','N','N','N','N','N','N','N','N','Document No',TO_DATE('2017-02-15 14:08:09','YYYY-MM-DD HH24:MI:SS'),100,0)
 ;
 
 -- 15/02/2017 14h8min9s BRST
