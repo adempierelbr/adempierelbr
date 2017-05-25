@@ -197,7 +197,7 @@ public class CommissionCalc extends SvrProcess
 			//	CommissionOrders/Invoices
 			if (lines[i].isCommissionOrders())
 			{
-				MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getC_BPartner_ID());
+				MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getC_BPartner_ID(), null);
 				if (users == null || users.length == 0)
 					throw new AdempiereUserError ("Commission Business Partner has no Users/Contact");
 				if (users.length == 1)
