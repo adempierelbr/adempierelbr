@@ -183,6 +183,8 @@ public final class EMail implements Serializable
 
 	/**	Info Valid					*/
 	private boolean 	m_valid = false;
+	/**	Delivery Notification		*/
+	private boolean 	m_deliveryNotification = false;
 	/** Send result Message			*/
 	private String		m_sentMsg = null;
 
@@ -267,6 +269,10 @@ public final class EMail implements Serializable
 			//
 			m_msg.setSentDate(new java.util.Date());
 			m_msg.setHeader("Comments", "AdempiereMail");
+			
+			//	Delivery Notification
+			if (m_deliveryNotification)
+				m_msg.setHeader("Disposition-Notification-To", m_from.getAddress());
 		//	m_msg.setDescription("Description");
 			//	SMTP specifics
 			m_msg.setAllow8bitMIME(true);
@@ -1046,6 +1052,15 @@ public final class EMail implements Serializable
 			.append ("]");
 		return sb.toString ();
 	}	//	toString
+	
+	/**
+	 * 	Set if EMail should ask for delivery notification
+	 * @param dn
+	 */
+	public void setDeliveryNotification (boolean dn)
+	{
+		m_deliveryNotification = dn;
+	}	//	setDeliveryNotification
 
 	/**************************************************************************
 	 *  Test.
