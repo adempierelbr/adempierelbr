@@ -116,7 +116,7 @@ public class MBradesco implements I_Bank
 	        }
 
 	        cnab.setlbr_CNABField38(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
-	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase() + "," + boleto.getCity().toUpperCase()); //Logradouro
+	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase() + "," + RemoverAcentos.remover(boleto.getCity()).toUpperCase()); //Logradouro
 	        cnab.setlbr_CNABField40(null); //1a Mensagem
 
 	        String getcep = MLBRCNAB.CNABFormat(boleto.getPostal(),8);
