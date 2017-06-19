@@ -499,7 +499,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setQty(iLine.getQtyEntered());
 		
 		boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
-		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList(), includeDIFAL);
+		boolean isFOB = getParent().getC_Invoice_ID() > 0 ? !getParent().getC_Invoice().isTaxIncluded() : false;
+		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList(), includeDIFAL, isFOB);
 	}	//	setInvoiceLine
 	
 	/**
@@ -597,7 +598,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			//	Valores
 			setQty(oLine.getQtyEntered());
 			boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
-			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList(), includeDIFAL);
+			boolean isFOB = getParent().getC_Invoice_ID() > 0 ? !getParent().getC_Invoice().isTaxIncluded() : false;
+			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList(), includeDIFAL, isFOB);
 		}
 	}	//	setOrderLine
 
@@ -610,7 +612,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 */
 	public void setPrice (int C_Currency_ID, BigDecimal price, BigDecimal priceList)
 	{
-		setPrice (C_Currency_ID, price, priceList, false);
+		setPrice (C_Currency_ID, price, priceList, false, false);
 	}	//	setPrice
 	
 	/**
@@ -621,7 +623,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * 	@param	Price List
 	 * 	@param  Include DIFAL
 	 */
-	public void setPrice (int C_Currency_ID, BigDecimal price, BigDecimal priceList, boolean includeDIFAL)
+	public void setPrice (int C_Currency_ID, BigDecimal price, BigDecimal priceList, boolean includeDIFAL, boolean isFOB)
 	{
 		//	Conversão
 		if (C_Currency_ID != MLBRNotaFiscal.CURRENCY_BRL)
@@ -640,7 +642,32 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//	Verifica o preço após a conversão para BRL
 		if (price == null || priceList == null)
 			throw new AdempiereException ("Impossível converter o valor fatura para Real (BRL) na geração da NF");
-		//
+		
+		//	Ajuste do FOB para NF de Importação
+		if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Import.equals(getParent().getlbr_TransactionType())
+				&& !getParent().isSOTrx() && isFOB)
+		{
+			//	Freight
+			BigDecimal freightAmt = getFreightAmt();
+			if (freightAmt == null)
+				freightAmt = Env.ZERO;
+			else
+				freightAmt = freightAmt.divide(getQty(), 17, BigDecimal.ROUND_HALF_UP);
+			
+			//	Imposto de Importação
+			BigDecimal iiAmt = getTaxAmt("II");
+			if (iiAmt == null)
+				iiAmt = Env.ZERO;
+			else
+				iiAmt = iiAmt.divide(getQty(), 17, BigDecimal.ROUND_HALF_UP);
+			
+			//	Ajusta o preço unitário
+			price = iiAmt.add(freightAmt).add(price);
+			
+			//	Ajusta o preço de lista
+			priceList = iiAmt.add(freightAmt).add(priceList);
+		}
+		
 		super.setPriceListAmt(amtDIFAL.add(priceList));
 		
 		if (getParent().isDiscountPrinted() && priceList.compareTo(price)==1)
