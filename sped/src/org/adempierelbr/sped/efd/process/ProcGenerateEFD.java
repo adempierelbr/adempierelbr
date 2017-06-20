@@ -697,7 +697,7 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			blocoK.setrK001(EFDUtil.createRK001(false));
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
-			bloco1.setR1010(EFDUtil.createR1010());
+			bloco1.setR1010(EFDUtil.createR1010(p_C_Period_ID));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 
 			/*
