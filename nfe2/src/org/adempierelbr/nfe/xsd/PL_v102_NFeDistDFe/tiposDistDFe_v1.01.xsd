@@ -23,7 +23,7 @@
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:whiteSpace value="preserve"/>
-      <xs:enumeration value="1.00"/>
+      <xs:enumeration value="1.01"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="TAmb">
@@ -215,3 +215,4 @@
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
+
