@@ -184,11 +184,14 @@ public class ProcGenerateEFD extends SvrProcess
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
 		fileName = "EFD_" + TextUtil.toNumeric(oi.getlbr_CNPJ()) + "_" + TextUtil.timeToString(dateFrom, "MMyyyy") + ".txt";
 		
+		String tmp = System.getProperty("java.io.tmpdir") +
+	             System.getProperty("file.separator");
+		
 		/*
 		 * Gerar Arquivo no disco
 		 */
 		
-		File file = new File(TextUtil.generateFile(result.toString(), fileName));
+		File file = new File(TextUtil.generateFile(result.toString(), tmp + "/" +  fileName));
 		
 		try
 		{
