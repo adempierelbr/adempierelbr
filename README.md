@@ -73,6 +73,13 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201708 [[Download]][82] [[Seed PostgreSQL]][83] [[Seed OracleXE]][84]
+
+	* Melhorias na tradução
+	* Suporte para NFC-e (Nota Fiscal de Consumidor)
+	* Obtenção das Alíquotas do IBPT via API [Mais detalhes](https://bitbucket.org/kenos/org.kenos.ibpt)
+	* [Mais detalhes][81]
+
 1. LBR-201705 [[Download]][78] [[Seed PostgreSQL]][79] [[Seed OracleXE]][80]
 
 	* Melhorias na tradução
@@ -133,12 +140,13 @@ Listagem das principais mudanças. As correções menos importantes podem não c
 	* Correção na Validação do Parceiro de Negócios. [[Discussão no Fórum]](http://forum.kenos.com.br/viewtopic.php?f=1&t=1094)
 	* [Mais detalhes](https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601.01)
 
-1. LBR-201606 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
+1. LBR-201608 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
 
-	* Melhorias na tradução
-	* Padronização da aba de impostos na janela de NFe (Entrada)
-	* Campos de detralhes da transportadora na janela de NF
-	* Deixar opcional a impressão dos dados da fatura na NF
+	* Correção na programação de pagamentos
+	* Correção na sequencia dos validators
+	* Correção na geração do arquivo de SPED
+	* Atualização dos schemas de pesquisa de XML na SeFaz
+	* Melhoria no processo de importação do XML do SISCOMEX para emisssão de NF-e de Importação
 	* [Mais detalhes][57]
 	
 1. LBR-201605 [[Download]][54] [[Seed PostgreSQL]][55] [[Seed OracleXE]][56]
@@ -342,3 +350,7 @@ Patrocinadores desta versão
 [78]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201705.tgz
 [79]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_PG.tgz
 [80]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_ORA.tgz
+[81]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201708
+[82]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
+[83]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
+[84]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz
