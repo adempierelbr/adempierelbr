@@ -75,9 +75,11 @@ Listagem das principais mudanças. As correções menos importantes podem não c
 
 1. LBR-201708 [[Download]][82] [[Seed PostgreSQL]][83] [[Seed OracleXE]][84]
 
-	* Melhorias na tradução
-	* Suporte para NFC-e (Nota Fiscal de Consumidor)
-	* Obtenção das Alíquotas do IBPT via API [Mais detalhes](https://bitbucket.org/kenos/org.kenos.ibpt)
+	* Correção na programação de pagamentos
+	* Correção na sequencia dos validators
+	* Correção na geração do arquivo de SPED
+	* Atualização dos schemas de pesquisa de XML na SeFaz
+	* Melhoria no processo de importação do XML do SISCOMEX para emisssão de NF-e de Importação
 	* [Mais detalhes][81]
 
 1. LBR-201705 [[Download]][78] [[Seed PostgreSQL]][79] [[Seed OracleXE]][80]
@@ -140,13 +142,12 @@ Listagem das principais mudanças. As correções menos importantes podem não c
 	* Correção na Validação do Parceiro de Negócios. [[Discussão no Fórum]](http://forum.kenos.com.br/viewtopic.php?f=1&t=1094)
 	* [Mais detalhes](https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601.01)
 
-1. LBR-201608 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
+1. LBR-201606 [[Download]][58] [[Seed PostgreSQL]][59] [[Seed OracleXE]][60]
 
-	* Correção na programação de pagamentos
-	* Correção na sequencia dos validators
-	* Correção na geração do arquivo de SPED
-	* Atualização dos schemas de pesquisa de XML na SeFaz
-	* Melhoria no processo de importação do XML do SISCOMEX para emisssão de NF-e de Importação
+	* Melhorias na tradução
+	* Padronização da aba de impostos na janela de NFe (Entrada)
+	* Campos de detralhes da transportadora na janela de NF
+	* Deixar opcional a impressão dos dados da fatura na NF
 	* [Mais detalhes][57]
 	
 1. LBR-201605 [[Download]][54] [[Seed PostgreSQL]][55] [[Seed OracleXE]][56]
