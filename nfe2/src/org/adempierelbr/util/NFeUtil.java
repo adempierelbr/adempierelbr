@@ -42,6 +42,7 @@ import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRCSC;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.X_LBR_DI;
 import org.adempierelbr.wrapper.I_W_C_City;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xmlbeans.XmlException;
@@ -51,7 +52,10 @@ import org.apache.xmlbeans.XmlValidationError;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MCity;
+import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MTable;
+import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -925,4 +929,22 @@ public abstract class NFeUtil
 			return "";
 		}
 	}	//	extractDisgestValue
+
+	/**
+	 * 	Obtém as DIs (Declaração de Importação) associadas a este pedido
+	 * 	@param order
+	 * 	@return array de DI
+	 */
+	public static X_LBR_DI[] getDIs (MOrder order)
+	{
+		String whereClause = "LBR_DI_ID IN (SELECT LBR_DI_ID FROM C_OrderLine WHERE C_Order_ID = ?)";
+
+		MTable table = MTable.get(order.getCtx(), X_LBR_DI.Table_Name);
+		Query query =  new Query(order.getCtx(), table, whereClause, order.get_TrxName());
+	 		  query.setParameters(new Object[]{order.getC_Order_ID()});
+
+		List<X_LBR_DI> list = query.list();
+
+		return list.toArray(new X_LBR_DI[list.size()]);
+	}	//	getDIs
 }	//	NFeUtil

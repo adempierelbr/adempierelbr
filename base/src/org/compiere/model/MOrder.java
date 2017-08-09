@@ -30,7 +30,6 @@ import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempierelbr.model.MLBRTax;
-import org.adempierelbr.model.X_LBR_DI;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -2459,21 +2458,4 @@ public class MOrder extends X_C_Order implements DocAction
 		//
 		return reserveStock(dt, new MOrderLine[]{line});
 	}	//	unreserveStock
-	
-	/**************************************************************************
-	 *  getDIs
-	 *  @return X_LBR_DI[] taxes
-	 */
-	public X_LBR_DI[] getDIs(){
-
-		String whereClause = "LBR_DI_ID IN (SELECT LBR_DI_ID FROM C_OrderLine WHERE C_Order_ID = ?)";
-
-		MTable table = MTable.get(getCtx(), X_LBR_DI.Table_Name);
-		Query query =  new Query(getCtx(), table, whereClause, get_TrxName());
-	 		  query.setParameters(new Object[]{getC_Order_ID()});
-
-		List<X_LBR_DI> list = query.list();
-
-		return list.toArray(new X_LBR_DI[list.size()]);
-	}	//	getDIs
 }	//	MOrder

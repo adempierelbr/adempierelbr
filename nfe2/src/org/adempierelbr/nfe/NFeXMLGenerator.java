@@ -707,9 +707,10 @@ public class NFeXMLGenerator
 		
 				//	Retirada
 				if (MLBRNotaFiscal.DELIVERYVIARULE_Pickup.equals (nf.getDeliveryViaRule ()))
+				{	
 					if (!nf.isSamePickUpAddr())
 						retOuEntreg = infNFe.addNewRetirada();
-				
+				}
 				//	Entrega
 				else if (!nf.isSameDeliveryAddr())
 						retOuEntreg = infNFe.addNewEntrega();

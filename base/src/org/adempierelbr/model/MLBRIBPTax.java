@@ -471,7 +471,7 @@ public class MLBRIBPTax extends X_LBR_IBPTax
 		setValidTo(TextUtil.stringToTime(resp.getVigenciaFim(), "dd/MM/yyyy"));
 		setValue(resp.getChave());
 		setVersion(resp.getVersao());
-		setLBR_Source(resp.getCodigo());
+		setLBR_Source(resp.getFonte());
 	}	//	setData
 	
 	/**

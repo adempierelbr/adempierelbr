@@ -113,7 +113,7 @@ public class EFDUtil {
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 */
-	private static final String COD_VER = "011";	// A Partir de Jan/16
+	private static final String COD_VER = "011";	// A Partir de Jan/17
 	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
 	private static final String IND_PERFIL = "A"; 	// Perfil A
 	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
@@ -2182,12 +2182,15 @@ public class EFDUtil {
 	
 	/**
 	 * REGISTRO 1010: REGISTROS DO BLOCO 1
+	 * @param p_C_Period_ID 
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public static R1010 createR1010() throws Exception
+	public static R1010 createR1010(int p_C_Period_ID) throws Exception
 	{
+		int salesCard = DB.getSQLValue (null, "SELECT COUNT('1') FROM LBR_SalesCardTotal c WHERE c.C_Period_ID=?", p_C_Period_ID);
+		
 		R1010 reg = new R1010();
 		reg.setREG("1010");
 		reg.setIND_EXP("N");
@@ -2196,7 +2199,7 @@ public class EFDUtil {
 		reg.setIND_USINA("N");
 		reg.setIND_VA("N");
 		reg.setIND_EE("N");
-		reg.setIND_CART("S");
+		reg.setIND_CART(salesCard > 0 ? "S" : "N");
 		reg.setIND_FORM("N");
 		reg.setIND_AER("N");
 		

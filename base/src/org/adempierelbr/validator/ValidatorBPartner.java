@@ -33,9 +33,6 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import br.gov.sp.fazenda.dsge.brazilutils.uf.UF;
-import br.gov.sp.fazenda.dsge.brazilutils.uf.ie.InscricaoEstadual;
-
 /**
  *	ValidatorBPartner
  *

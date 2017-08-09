@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRTax;
 import org.adempierelbr.model.X_LBR_DI;
+import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.wrapper.I_W_C_DocType;
 import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
@@ -180,7 +181,7 @@ public class ValidatorOrder implements ModelValidator
 						"IMP".equals(orderW.getlbr_TransactionType()))
 				{
 					//	Validação na Declaração de Importação
-					for (X_LBR_DI dis : order.getDIs())
+					for (X_LBR_DI dis : NFeUtil.getDIs (order))
 					{
 						if (dis.getlbr_CustomSite() == null)
 							return "Preencha o Local do Desembaraço na DI: " + dis.getDocumentNo();

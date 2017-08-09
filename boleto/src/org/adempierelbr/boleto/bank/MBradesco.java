@@ -69,7 +69,12 @@ public class MBradesco implements I_Bank
 		               + TextUtil.pad(boleto.getlbr_AgencyNo(),'0',5,true)
 		               + TextUtil.pad(boleto.getAccountNo(),'0',7,true)
 		               + boleto.getAccountDigit()); // ZERO + CARTEIRA + AGÊNCIA + CC + DV
-	        cnab.setlbr_CNABField8(invoice.getDocumentNo() + "/" + boleto.getlbr_PayScheduleNo()); //Controle do Participanete (Preencher com Número de Documento)
+	        
+	        String controleParticipante = "B" + boleto.getLBR_Boleto_ID() + 
+					"F" + (boleto.getC_Invoice_ID() > 0 ? boleto.getC_Invoice().getDocumentNo() : "") + 
+					"P" + boleto.getlbr_PayScheduleNo();
+	        
+	        cnab.setlbr_CNABField8(controleParticipante); //Controle do Participanete (Preencher com Número de Documento)
 	        cnab.setlbr_CNABField9(CBRADESCO); //Código do Banco
 	        cnab.setlbr_CNABField10("00000"); //ZEROS
 	        cnab.setlbr_CNABField11(MLBRCNAB.CNABFormat(boleto.getDocumentNo() ,11)); //Nosso Número
@@ -111,7 +116,7 @@ public class MBradesco implements I_Bank
 	        }
 
 	        cnab.setlbr_CNABField38(RemoverAcentos.remover(boleto.getlbr_ReceiverName()).toUpperCase()); //NOME
-	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase() + "," + boleto.getCity().toUpperCase()); //Logradouro
+	        cnab.setlbr_CNABField39(RemoverAcentos.remover(boleto.getAddress1()).toUpperCase() + "," + RemoverAcentos.remover(boleto.getCity()).toUpperCase()); //Logradouro
 	        cnab.setlbr_CNABField40(null); //1a Mensagem
 
 	        String getcep = MLBRCNAB.CNABFormat(boleto.getPostal(),8);

@@ -224,6 +224,9 @@ public class ProcEMailNFe extends SvrProcess
 			return "E-mail para envio da NF-e não está configurado corretamenete, verifique usuário/senha no contato do envio";
 		}
 		
+		//	Ask for Delivery Notification
+		mail.setDeliveryNotification(true);
+		
 		//	Responder para
 		if (replyTo != null)
 			mail.setReplyTo(replyTo);

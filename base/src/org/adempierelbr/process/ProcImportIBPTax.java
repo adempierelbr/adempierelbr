@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRIBPTax;
-import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MSysConfig;
@@ -87,7 +87,7 @@ public class ProcImportIBPTax extends SvrProcess
 		if (oi.getC_Location_ID() < 0 || oi.getC_Location().getC_Region_ID() < 0)
 			return "@Error@ para fazer a importação é necessário primeiramente preencher o endereço da Organização";
 		
-		if (oi.getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
+		if (oi.getC_Location().getC_Country_ID() != BPartnerUtil.BRASIL)
 			return "@Error@ por favor selecione uma Organização lotada no território brasileiro";
 		
 		int C_Region_ID = oi.getC_Location().getC_Region_ID();
