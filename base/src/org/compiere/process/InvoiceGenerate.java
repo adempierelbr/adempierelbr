@@ -128,7 +128,7 @@ public class InvoiceGenerate extends SvrProcess
 		if (p_Selection)	//	VInvoiceGen
 		{
 			sql = "SELECT C_Order.* FROM C_Order, T_Selection "
-				+ "WHERE C_Order.DocStatus='CO' " //AND C_Order.IsSOTrx='Y' "
+				+ "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' "
 				+ "AND C_Order.C_Order_ID = T_Selection.T_Selection_ID "
 				+ "AND T_Selection.AD_PInstance_ID=? "
 				+ "ORDER BY C_Order.AD_Org_ID, C_Order.M_Warehouse_ID, C_Order.PriorityRule, C_Order.C_BPartner_ID, C_Order.C_Order_ID";
@@ -136,7 +136,7 @@ public class InvoiceGenerate extends SvrProcess
 		else
 		{
 			sql = "SELECT * FROM C_Order o "
-				+ "WHERE DocStatus IN('CO','CL') "; // AND IsSOTrx='Y'
+				+ "WHERE DocStatus IN('CO','CL') AND IsSOTrx='Y'";
 			if (p_AD_Org_ID != 0)
 				sql += " AND AD_Org_ID=?";
 			if (p_C_BPartner_ID != 0)
@@ -148,7 +148,7 @@ public class InvoiceGenerate extends SvrProcess
 					+ "WHERE o.C_Order_ID=ol.C_Order_ID AND ol.QtyOrdered<>ol.QtyInvoiced) "
 				+ "AND o.C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType "
 					+ "WHERE DocBaseType='SOO' AND DocSubTypeSO NOT IN ('ON','OB','WR')) "
-				+ "ORDER C_Order.AD_Org_ID, BY M_Warehouse_ID, PriorityRule, C_BPartner_ID, C_Order_ID";
+				+ "ORDER BY o.AD_Org_ID, M_Warehouse_ID, PriorityRule, C_BPartner_ID, C_Order_ID";
 		}
 	//	sql += " FOR UPDATE";
 		
