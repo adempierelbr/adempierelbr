@@ -24,7 +24,8 @@ import org.compiere.util.Env;
  * CalloutInvoice
  *
  * Callout for Table C_Invoice
- *
+ * iDempiere: org.kenos.idempiere.lbr.callout.BPartner
+ * 
  * @author Mario Grigioni (Kenos, www.kenos.com.br)
  * @version $Id: CalloutInvoice.java, 18/03/2008 10:04:00 mgrigioni
  */

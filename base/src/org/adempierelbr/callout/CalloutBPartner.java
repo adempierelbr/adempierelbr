@@ -23,6 +23,7 @@ import org.compiere.model.GridTab;
 
 /**
  * 	Callout for Business Partner table
+ * iDempiere: org.kenos.idempiere.lbr.callout.BPartner
  * 
  * @author Ricardo Santana (Kenos, www.kenos.com.br)
  * @version $Id: CalloutBPartner.java, 2015/08/20 10:44:00 ralexsander $
