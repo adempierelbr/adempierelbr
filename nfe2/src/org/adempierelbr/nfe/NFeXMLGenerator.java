@@ -1740,8 +1740,8 @@ public class NFeXMLGenerator
 	 */
 	private static String normalize4 (BigDecimal value)
 	{
-		return TextUtil.bigdecimalToString (value);
-		//return TextUtil.bdToStringNoTrail (value, 4);
+		//return TextUtil.bigdecimalToString (value);
+		return TextUtil.bdToStringNoTrail (value, 4);
 	}	//	normalize4
 	
 	/**
