@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.compiere.model.MProduct;
-import org.compiere.model.MSequence;
 import org.compiere.model.PO;
 import org.compiere.model.X_M_Production;
 import org.compiere.model.X_M_ProductionLine;
@@ -221,7 +220,7 @@ public class ProcCancelProduction extends SvrProcess
 			}
 
 			// Create Transaction Entry
-			int nextNo = MSequence.getNextID(pl.getInt("AD_Org_ID"),
+			int nextNo = DB.getNextID(pl.getInt("AD_Org_ID"),
 					"M_Transaction", get_TrxName());
 			String sqlins = " INSERT INTO M_Transaction (M_Transaction_ID, M_ProductionLine_ID,"
 					+ " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,"
