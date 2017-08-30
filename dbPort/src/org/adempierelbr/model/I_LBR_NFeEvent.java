@@ -216,6 +216,16 @@ public interface I_LBR_NFeEvent
 
 	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException;
 
+    /** Column name LBR_PartnerDFe_ID */
+    public static final String COLUMNNAME_LBR_PartnerDFe_ID = "LBR_PartnerDFe_ID";
+
+	/** Set Partner Doc Fiscal	  */
+	public void setLBR_PartnerDFe_ID (int LBR_PartnerDFe_ID);
+
+	/** Get Partner Doc Fiscal	  */
+	public int getLBR_PartnerDFe_ID();
+
+	public org.adempierelbr.model.I_LBR_PartnerDFe getLBR_PartnerDFe() throws RuntimeException;
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 

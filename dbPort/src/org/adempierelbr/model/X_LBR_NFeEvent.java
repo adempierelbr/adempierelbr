@@ -362,7 +362,31 @@ public class X_LBR_NFeEvent extends PO implements I_LBR_NFeEvent, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
+	
+	public org.adempierelbr.model.I_LBR_PartnerDFe getLBR_PartnerDFe() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_PartnerDFe)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_PartnerDFe.Table_Name)
+			.getPO(getLBR_PartnerDFe_ID(), get_TrxName());	}
 
+	/** Set Partner Doc Fiscal.
+		@param LBR_PartnerDFe_ID Partner Doc Fiscal	  */
+	public void setLBR_PartnerDFe_ID (int LBR_PartnerDFe_ID)
+	{
+		if (LBR_PartnerDFe_ID < 1) 
+			set_Value (COLUMNNAME_LBR_PartnerDFe_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_PartnerDFe_ID, Integer.valueOf(LBR_PartnerDFe_ID));
+	}
+
+	/** Get Partner Doc Fiscal.
+		@return Partner Doc Fiscal	  */
+	public int getLBR_PartnerDFe_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_PartnerDFe_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 	/** Set Processed.
 		@param Processed 
 		The document has been processed

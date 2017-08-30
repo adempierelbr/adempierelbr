@@ -13,18 +13,33 @@
 package org.adempierelbr.process;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.model.POWrapper;
 import org.adempiere.pipo.CreateZipFile;
 import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRPartnerDFe;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
@@ -53,7 +68,10 @@ public class ProcXMLExport extends SvrProcess
 	private int p_C_BP_Group_ID 		= 0;
 	private int p_M_Shipper_ID 			= 0;
 	private Boolean p_LBR_IsCancelled	= false;
-	
+
+	/**	Include DF-e	*/
+	private boolean p_IncludeDFe		= true;
+
 	/**	Period			*/
 	private Timestamp dateFrom;
 	private Timestamp dateTo;
@@ -116,7 +134,7 @@ public class ProcXMLExport extends SvrProcess
 			throw new AdempiereException ("@FillMandatory@ @File_Directory@");		
 		
 		//
-		StringBuffer whereClause = new StringBuffer("AD_Client_ID=?")
+		StringBuilder whereClause = new StringBuilder("AD_Client_ID=?")
 		.append(" AND TRUNC (DateDoc) BETWEEN " + DB.TO_DATE(dateFrom))
 		.append(" AND " + DB.TO_DATE(dateTo));
 
@@ -141,20 +159,31 @@ public class ProcXMLExport extends SvrProcess
 		if (p_C_BP_Group_ID > 0)
 			whereClause.append(" AND EXISTS (SELECT '1' FROM C_BPartner bp WHERE bp.C_BPartner_ID=LBR_NotaFiscal.C_BPartner_ID AND bp.C_BP_Group_ID ="+p_C_BP_Group_ID+")");
 		
-		if (!p_LBR_IsCancelled)
-			whereClause.append(" AND IsCancelled='N' ");	//	Não Exportar NFs Canceladas
-		else
-			whereClause.append(" OR LBR_NFeStatus IN ('" + MLBRNotaFiscal.LBR_NFESTATUS_101_CancelamentoDeNF_EHomologado + 
-													"', '" + MLBRNotaFiscal.LBR_NFESTATUS_151_CancelamentoDeNF_EHomologadoForaDePrazo +
-													"', '" + MLBRNotaFiscal.LBR_NFESTATUS_220_RejeiçãoPrazoDeCancelamentoSuperiorAoPrevistoNaLegislação + "')");	//	Exportar NFs Canceladas
-			
-		//
+		List<ExportRow> rows = new ArrayList<ExportRow>();
 		List<MLBRNotaFiscal> nfs = new Query(Env.getCtx(), MLBRNotaFiscal.Table_Name, whereClause.toString(), null)
 					.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx())})
 					.list();
+		
+		int countDFeXML = 0;
 		//		
 		for (MLBRNotaFiscal nf : nfs)
 		{
+			//	Adicionar NFs Cancelada no Arquivo de Resumo
+			if (nf.isCancelled())
+			{
+				rows.add(new ExportRow (TextUtil.toNumeric(nf.getlbr_CNPJ()), "Cancelada/Inutilizada", nf.getlbr_NFeStatus(), nf.getDateDoc(), null, nf.isSOTrx(), 
+						nf.getBPName(), nf.getDocumentNo(), nf.getlbr_NFSerie(), nf.getlbr_NFeID(), null));
+				
+				//	Se o campo Incluir Documentos Cancelados estiver desmarcado não adicionar o XML da NF ao arquivo
+				if (!p_LBR_IsCancelled)
+					continue;
+				
+				// NF Inutilizada não possui XML
+				if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(nf.getlbr_NFeStatus()))
+					continue;
+			}						
+			
+			//	Anexos da NF-e
 			MAttachment attachment = nf.getAttachment();
 			if (attachment == null 
 					|| (!MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nf.getlbr_NFModel()) &&
@@ -179,7 +208,7 @@ public class ProcXMLExport extends SvrProcess
 			{
 				//	Pasta para adicionar o XML das NFs de Entrada e Saída
 				String folder = p_Temp + p_FolderKey + File.separator + TextUtil.toNumeric(nf.getlbr_CNPJ()) 
-				+ File.separator + "Emitidas" + File.separator + (nf.isSOTrx() ? "Saída" : "Entrada");						
+				+ File.separator + "Emitidas" + File.separator + (nf.isSOTrx() ? "Saída" : "Entrada");
 				
 				//	Arquivo XML
 				String fileName = folder + File.separator + xml.getName();
@@ -191,12 +220,17 @@ public class ProcXMLExport extends SvrProcess
 				log.finer ("Saving to >> " + fileName);
 				xml.getFile (new File (fileName));
 				
-				//	Adicionar Eventos da NFe
+				//	Adicionar no Relatório como Emitidas Apenas que as NFs Válidas
+				if (!nf.isCancelled())
+					rows.add(new ExportRow (TextUtil.toNumeric(nf.getlbr_CNPJ()), "Emitidas", nf.getlbr_NFeStatus(), nf.getDateDoc(), null, nf.isSOTrx(), 
+							nf.getBPName(), nf.getDocumentNo(), nf.getlbr_NFSerie(), nf.getlbr_NFeID(), null));
+						
+				//	Adicionar Eventos da NFe				
 				List<MLBRNFeEvent> events = nf.getNFeEvents();
-				
+	
 				//	Adicionando os Eventos
 				for (MLBRNFeEvent event : events)
-				{
+				{	
 					//	Se houver um Evento
 					if (event != null && MLBRNFeEvent.DOCSTATUS_Completed.equals(event.getDocStatus()))
 					{
@@ -220,9 +254,67 @@ public class ProcXMLExport extends SvrProcess
 						xmlEvent.getFile (new File (fileNameEvent));
 					}
 				}
-
 			}
 		}
+
+		whereClause = new StringBuilder("AD_Client_ID=?")
+				.append(" AND TRUNC (DateDoc) BETWEEN " + DB.TO_DATE(dateFrom))
+				.append(" AND " + DB.TO_DATE(dateTo))
+				.append(" AND DocumentType='0'");
+		
+		List<MLBRPartnerDFe> dfes = new Query(Env.getCtx(), MLBRPartnerDFe.Table_Name, whereClause.toString(), null)
+				.setParameters(new Object[]{Env.getAD_Client_ID(Env.getCtx())})
+				.list();
+		
+		/**	Incluir documentos destinados (DF-e)	*/
+		if (p_IncludeDFe)
+		{
+			for (MLBRPartnerDFe dfe : dfes)
+			{
+				I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), dfe.getAD_Org_ID(), null), I_W_AD_OrgInfo.class);
+				rows.add(new ExportRow (TextUtil.toNumeric(oi.getlbr_CNPJ()), "Recebidas", null, dfe.getDateDoc(), null, dfe.isSOTrx(), 
+						dfe.getBPName(), dfe.getlbr_NFeID().substring(26, 35), dfe.getlbr_NFeID().substring(23, 26), dfe.getlbr_NFeID(), null));
+				
+				MAttachment attachment = dfe.getAttachment();
+				if (attachment == null)
+					continue;
+				
+				if (!dfe.isLBR_IsXMLValid())
+					continue;
+				
+				//	Tenta encontrar o arquivo de distribuição
+				MAttachmentEntry xml = null;
+				for (MAttachmentEntry entry : attachment.getEntries())
+				{
+					if (entry.getName().endsWith("xml"))
+					{
+						xml = entry;
+						break;
+					}
+				}
+				
+				if (xml != null)
+				{
+					String folder = p_Temp + p_FolderKey + File.separator + TextUtil.toNumeric(oi.getlbr_CNPJ()) 
+							+ File.separator + "Recebidas" + File.separator + (dfe.isSOTrx() ? "Saída" : "Entrada");
+					String fileName = folder + File.separator + xml.getName();
+					//
+					File file = new File (folder);
+					if (!file.exists())
+						file.mkdirs();
+					//
+					log.finer ("Saving to >> " + fileName);
+					xml.getFile (new File (fileName));
+					countDFeXML++;
+				}
+			}
+		}
+		
+		File resume = new File (p_Temp + p_FolderKey);
+		if (!resume.exists())
+			resume.mkdirs();
+		processResult (resume.getAbsolutePath() + File.separator + "Resumo.xls", rows);
+		
 		//		Versão SWING
 		if (Ini.isClient())
 		{
@@ -252,7 +344,7 @@ public class ProcXMLExport extends SvrProcess
 			}
 		log.info("finale");
 		//
-		return "Processo finalizado";
+		return "@Success@<br /><br />Resumo:<br />" + nfs.size() + " Nota(s) emitida(s) incluída(s)<br />" + dfes.size() + " Nota(s) recebida(s) incluída(s) com " + countDFeXML + " XML(s)";
 	}	//	doIt
 	
 	/**
@@ -279,4 +371,170 @@ public class ProcXMLExport extends SvrProcess
 		return dir.delete();
 	}	//	deleteDir
 	
+	/**
+	 * 	Process result
+	 * @param file
+	 * @param rows
+	 * @throws IOException
+	 */
+	private void processResult (String file, List<ExportRow> rows) throws IOException
+	{
+		FileOutputStream out = new FileOutputStream(file);
+		Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet();
+		Row row = null;
+		Cell cell = null;
+		CellStyle csTitle = wb.createCellStyle();
+		CellStyle csRows = wb.createCellStyle();
+		CellStyle csTS = wb.createCellStyle();
+
+		Font fTitle = wb.createFont();
+		Font fRows = wb.createFont();
+
+		fTitle.setFontHeightInPoints((short) 13);
+		fTitle.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		fRows.setFontHeightInPoints((short) 12);
+
+		csTitle.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"));
+		csTitle.setFont(fTitle);
+		csRows.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"));
+		csRows.setFont(fRows);
+		csTS.setDataFormat((short)16);
+		csTS.setFont(fRows);
+
+		wb.setSheetName(0, "NFs" );
+		
+		int index = 0;
+		row = sheet.createRow(0);
+		String header = "CNPJ:TIPO:ESTADO:DATA EMISSÃO:DATA ENTRADA:ENTRADA/SAÍDA:NOME DO PARCEIRO:NÚMERO DA NF:SÉRIE DA NF:CHAVE:OBSERVAÇÃO";
+		for (String text : header.split(":"))
+		{
+			cell = row.createCell(index++);
+		    cell.setCellStyle(csTitle);
+		    cell.setCellValue(text);
+		}
+		
+		int rownum = 1;
+		for (ExportRow erow : rows)
+		{
+		    // create a row
+		    row = sheet.createRow(rownum++);
+
+		    if (erow.cnpj != null)
+		    {
+			    cell = row.createCell(0);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.cnpj);
+		    }
+		    
+		    if (erow.type != null)
+		    {
+			    cell = row.createCell(1);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.type);
+		    }
+		    
+		    if (erow.status != null)
+		    {
+			    cell = row.createCell(2);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.status);
+		    }
+		    
+		    if (erow.dateDoc != null)
+		    {
+			    cell = row.createCell(3);
+			    cell.setCellStyle(csTS);
+			    cell.setCellValue(erow.dateDoc);
+		    }
+		    
+		    if (erow.dateInOut != null)
+		    {
+			    cell = row.createCell(4);
+			    cell.setCellStyle(csTS);
+			    cell.setCellValue(erow.dateInOut);
+		    }
+		    
+		    if (erow.isSOTrx != null)
+		    {
+			    cell = row.createCell(5);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.isSOTrx);
+		    }
+		    
+		    if (erow.bpName != null)
+		    {
+			    cell = row.createCell(6);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.bpName);
+		    }
+		    
+		    if (erow.documentNo != null)
+		    {
+			    cell = row.createCell(7);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.documentNo);
+		    }
+		    
+		    if (erow.serieNo != null)
+		    {
+			    cell = row.createCell(8);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.serieNo);
+		    }
+		    
+		    if (erow.nfeID != null)
+		    {
+			    cell = row.createCell(9);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.nfeID);
+		    }
+		    
+		    if (erow.desc != null)
+		    {
+			    cell = row.createCell(10);
+			    cell.setCellStyle(csRows);
+			    cell.setCellValue(erow.desc);
+		    }
+		}
+
+		wb.write(out);
+		out.close();
+	}
+	
+	/**
+	 * 	Row
+	 * 	@author ricardo
+	 */
+	public class ExportRow 
+	{
+		public ExportRow (String cnpj, String type, String status, Timestamp dateDoc, 
+				Timestamp dateInOut, boolean isSOTrx, String bpName, 
+				String documentNo, String serieNo, String nfeID, String desc)
+		{
+			this.cnpj 		= cnpj;
+			this.type 		= type;
+			this.status 	= status;
+			this.dateDoc 	= dateDoc;
+			this.dateInOut 	= dateInOut;
+			this.isSOTrx 	= isSOTrx ? "Saída" : "Entrada";
+			this.bpName 	= bpName;
+			this.documentNo = documentNo;
+			this.serieNo 	= serieNo;
+			this.nfeID 		= nfeID;
+			this.desc 		= desc;
+		}	//	ExportRow
+		
+		public String cnpj;
+		public String type;
+		public String status;
+		public Timestamp dateDoc;
+		public Timestamp dateInOut;
+		public String isSOTrx;
+		public String bpName;
+		public String documentNo;
+		public String serieNo;
+		public String nfeID;
+		public String desc;
+	}	//	ExportRow
 }	//	ProcXMLExport

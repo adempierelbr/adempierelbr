@@ -1,0 +1,5 @@
+<xb:config xmlns:xb="http://xml.apache.org/xmlbeans/2004/02/xbean/config">
+  <xb:namespace uri="##local">
+    <xb:package>br.gov.fazenda.receita.siscomex</xb:package>
+  </xb:namespace>
+</xb:config>

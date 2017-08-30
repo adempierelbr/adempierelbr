@@ -4,6 +4,8 @@
 	<classpathentry kind="src" path="boleto/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
+	<classpathentry kind="src" path="mdfe/src"/>
+	<classpathentry kind="src" path="mdfe/ws/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
 	<classpathentry kind="src" path="nfse/src"/>
@@ -55,6 +57,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8i2.jar" sourcepath="lib/nfebeans-v8i2-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/zxing-core-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/ibpt-interfaces-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mdfebeans-v100a.jar"/>
+	<classpathentry kind="lib" path="lib/siscomexbeans-v100.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>

@@ -81,6 +81,8 @@
 			<src path="boleto/src" />
 			<src path="client/src" />
 			<src path="dbPort/src" />
+			<src path="mdfe/src" />
+			<src path="mdfe/ws/src" />
 			<src path="nfe2/src" />
 			<src path="nfe2/ws/src" />
 			<src path="nfse/src" />
@@ -106,6 +108,10 @@
 			<fileset dir="nfe2/src" includes="**/*.jrxml"/>
 			<fileset dir="nfse/src" includes="**/*.jasper"/>
 			<fileset dir="nfse/src" includes="**/*.jrxml"/>
+			<fileset dir="mdfe/src" includes="**/*.xsd"/>
+			<fileset dir="mdfe/src" includes="**/*.jasper"/>
+			<fileset dir="mdfe/src" includes="**/*.jrxml"/>	
+			<fileset dir="nfse/src" includes="**/*.xsd"/>
 		</copy>
 		
 		<echo message=" ===============================================" />
