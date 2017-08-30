@@ -70,6 +70,7 @@ public class XMLMatch extends CPanel
 	private static final int		MATCH_ORDER = 2;
 
 	private static final int		MODE_NOTMATCHED = 0;
+	@SuppressWarnings("unused")
 	private static final int		MODE_MATCHED = 1;
 
 	/**	Indexes in Table			*/
@@ -78,6 +79,7 @@ public class XMLMatch extends CPanel
 	private static final int		I_Product = 5;
 	private static final int		I_QTY = 6;
 	private static final int		I_MATCHED = 7;
+	@SuppressWarnings("unused")
 	private static final int        I_Org = 8; //JAVIER 
 	
 
@@ -407,6 +409,7 @@ public class XMLMatch extends CPanel
 	 *  @param trxName 
 	 *  @return true if created
 	 */
+	@SuppressWarnings("unused")
 	protected boolean createMatchRecord (boolean invoice, int M_InOutLine_ID, int Line_ID,
 		BigDecimal qty, String trxName)
 	{
@@ -595,7 +598,7 @@ public class XMLMatch extends CPanel
 		
 		String nfeID 		= nfe.getNFe().getInfNFe().getId().substring(3);
 		String protocol 	= nfe.getProtNFe().getInfProt().getNProt();
-		String digValSig	= nfe.getNFe().getSignature().getSignedInfo().getReferenceArray(0).xgetDigestValue().getStringValue();
+		String digValSig	= nfe.getNFe().getSignature().getSignedInfo().getReference().xgetDigestValue().getStringValue();
 		String digValProt	= nfe.getProtNFe().getInfProt().xgetDigVal().getStringValue();
 		
 		/**
