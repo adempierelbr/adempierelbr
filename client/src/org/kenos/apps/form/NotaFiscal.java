@@ -381,7 +381,7 @@ public class NotaFiscal extends GenForm
 		List<Integer> results = new ArrayList<Integer>();
 
 		//	Get selected entries
-		for (int row=0; row < miniTable.getColumnCount(); row++)
+		for (int row=0; row < miniTable.getRowCount(); row++)
 		{
 			IDColumn id = (IDColumn)miniTable.getValueAt(row, 0);     //  ID in column 0
 			if (id.isSelected())
