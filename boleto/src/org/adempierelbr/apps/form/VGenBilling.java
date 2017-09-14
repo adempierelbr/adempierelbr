@@ -230,7 +230,10 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 			fieldBankAccount.addItem(bi);
 
 		if (fieldBankAccount.getItemCount() == 0)
+		{
 			ADialog.error(m_WindowNo, panel, "VPaySelectNoBank");
+			return;
+		}
 		else
 			fieldBankAccount.setSelectedIndex(0);
 		
