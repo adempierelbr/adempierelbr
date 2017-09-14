@@ -1,5 +1,4 @@
 CREATE	OR REPLACE	VIEW RV_BOMLine AS 
-
 WITH TR_BOMLine
 (
     Orig_Product_ID,
@@ -9,7 +8,6 @@ WITH TR_BOMLine
 	Depth,
     Tree
 )
-
 AS 
 (
     SELECT
@@ -19,12 +17,9 @@ AS
         1 AS QtyBOM,
         0 AS Depth,
         '' || pb.M_Product_ID AS Tree
-        
     FROM
         PP_Product_BOM pb 
-        
     UNION ALL
-    
     SELECT
         bl.Orig_Product_ID,
         pl.M_Product_ID AS BOM_Product_ID,
@@ -32,17 +27,14 @@ AS
         (bl.QtyBOM * pl.QtyBOM) AS QtyBOM,
         (bl.Depth + 1) AS Depth,
         bl.Tree || '|' || pl.M_Product_ID AS Tree
-        
     FROM
         PP_Product_BOMLine pl,
         PP_Product_BOM pb,
-        TR_BOMline bl 
-        
+        TR_BOMline bl       
     WHERE
         (pb.PP_Product_BOM_ID = pl.PP_Product_BOM_ID
         AND pb.M_Product_ID = bl.BOM_Product_ID)
 ) 
-
 SELECT
 	bl.AD_Client_ID,
 	bl.AD_Org_ID,
@@ -70,14 +62,12 @@ SELECT
 	bl.IsQtyPercentage,
 	t.Depth,
     t.Tree
-    
 FROM
 	TR_BOMline t 
-
 INNER JOIN 
 	PP_Product_BOMLine bl 
-	ON (t.PP_Product_BOMLine_ID = bl.PP_Product_BOMLine_ID)
-;
+	ON (t.PP_Product_BOMLine_ID = bl.PP_Product_BOMLine_ID);
+/
 
 -- KenosERP/017-Fix-RV_BOMLine.sql
 SELECT Register_Migration_Script ('201708301900_RV_BOMLine.sql') FROM DUAL

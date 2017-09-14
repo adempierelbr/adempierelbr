@@ -9024,17 +9024,19 @@ UPDATE AD_Column SET IsIdentifier='Y', SeqNo=1,Updated=TO_DATE('2015-11-09 13:23
 -- *** FIM do KenosERP/020-LBR_NFeEvent-DFe.sql
 
 -- 07/12/2015 13h1min17s BRST
-ALTER TABLE AD_Rule ADD (foo CLOB)
-;
-UPDATE AD_Rule SET foo = Script
-;
-ALTER TABLE AD_Rule DROP COLUMN Script
-;
-ALTER TABLE AD_Rule RENAME COLUMN foo TO Script
-;
+--ALTER TABLE AD_Rule ADD (foo CLOB)
+--;
+--UPDATE AD_Rule SET foo = Script
+--;
+--ALTER TABLE AD_Rule DROP COLUMN Script
+--;
+--ALTER TABLE AD_Rule RENAME COLUMN foo TO Script
+--;
 
 -- 07/12/2015 11h44min10s BRST
-INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,Description,EntityType,EventType,Help,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120002,TO_DATE('2015-12-07 11:43:52','YYYY-MM-DD HH24:MI:SS'),100,'Make some fields read-only for manual roles (e.g. DocumentNo)','LBRA','T','Make some fields read-only for manual roles (e.g. DocumentNo)','Y','beanshell:RestrictRoles','S','String sql = "INSERT INTO AD_Column_Access (AD_Role_ID, AD_Column_ID, AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy, IsReadOnly, IsExclude, AD_Table_ID) " + "SELECT r.AD_Role_ID, z.AD_Column_ID, r.AD_Client_ID, 0 AS AD_Org_ID, ''Y'' AS IsActive, SYSDATE AS Created, 0 AS CreatedBy, SYSDATE AS Updated, 0 AS UpdatedBy, ''Y'' AS IsReadOnly, ''Y'' AS IsExclude, AD_Table_ID  " + "FROM AD_Role r,  " + "( " + "    SELECT 53297 AS AD_Table_ID, 60178 AS AD_Column_ID, ''C_CashPlan'' AS TableName, ''DocumentNo'' AS ColumnName FROM DUAL UNION " + "    SELECT 436, 5810, ''C_CommissionRun'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 318, 3492, ''C_Invoice'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 259, 2169, ''C_Order'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 335, 5401, ''C_Payment'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 677, 12057, ''C_RfQ'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 319, 3791, ''M_InOut'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 727, 12091, ''M_InOutConfirm'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 321, 3550, ''M_Inventory'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 323, 3577, ''M_Movement'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 738, 12459, ''M_MovementConfirm'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 325, 1126690, ''M_Production'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 702, 11470, ''M_Requisition'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 661, 10841, ''M_RMA'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 53027, 53621, ''PP_Order'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 417, 5423, ''R_Request'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 486, 6840, ''S_TimeExpense'', ''DocumentNo'' FROM DUAL  " + ") z " + "WHERE r.IsManual=''Y'' AND NOT EXISTS (SELECT ''1'' FROM AD_Column_Access ca WHERE ca.AD_Role_ID=r.AD_Role_ID AND ca.AD_Column_ID=z.AD_Column_ID) " + "AND EXISTS (SELECT ''1'' FROM AD_Column c WHERE c.AD_Column_ID=z.AD_Column_ID)"; org.compiere.util.DB.executeUpdate (sql, A_PO.get_TrxName()); return "";',TO_DATE('2015-12-07 11:43:52','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:RestrictRoles')
+INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,Description,EntityType,EventType,Help,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120002,TO_DATE('2015-12-07 11:43:52','YYYY-MM-DD HH24:MI:SS'),100,'Make some fields read-only for manual roles (e.g. DocumentNo)','LBRA','T','Make some fields read-only for manual roles (e.g. DocumentNo)','Y','beanshell:RestrictRoles','S','String sql = "INSERT INTO AD_Column_Access (AD_Role_ID, AD_Column_ID, AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy, IsReadOnly, IsExclude, AD_Table_ID) " + "SELECT r.AD_Role_ID, z.AD_Column_ID, r.AD_Client_ID, 0 AS AD_Org_ID, ''Y'' AS IsActive, SYSDATE AS Created, 0 AS CreatedBy, SYSDATE AS Updated, 0 AS UpdatedBy, ''Y'' AS IsReadOnly, ''Y'' AS IsExclude, AD_Table_ID  " 
++ "FROM AD_Role r,  " + "( " + "    SELECT 53297 AS AD_Table_ID, 60178 AS AD_Column_ID, ''C_CashPlan'' AS TableName, ''DocumentNo'' AS ColumnName FROM DUAL UNION " + "    SELECT 436, 5810, ''C_CommissionRun'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 318, 3492, ''C_Invoice'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 259, 2169, ''C_Order'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 335, 5401, ''C_Payment'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 677, 12057, ''C_RfQ'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 319, 3791, ''M_InOut'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 727, 12091, ''M_InOutConfirm'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 321, 3550, ''M_Inventory'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 323, 3577, ''M_Movement'', ''DocumentNo'' FROM DUAL UNION " 
++ "    SELECT 738, 12459, ''M_MovementConfirm'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 325, 1126690, ''M_Production'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 702, 11470, ''M_Requisition'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 661, 10841, ''M_RMA'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 53027, 53621, ''PP_Order'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 417, 5423, ''R_Request'', ''DocumentNo'' FROM DUAL UNION " + "    SELECT 486, 6840, ''S_TimeExpense'', ''DocumentNo'' FROM DUAL  " + ") z " + "WHERE r.IsManual=''Y'' AND NOT EXISTS (SELECT ''1'' FROM AD_Column_Access ca WHERE ca.AD_Role_ID=r.AD_Role_ID AND ca.AD_Column_ID=z.AD_Column_ID) " + "AND EXISTS (SELECT ''1'' FROM AD_Column c WHERE c.AD_Column_ID=z.AD_Column_ID)"; org.compiere.util.DB.executeUpdate (sql, A_PO.get_TrxName()); return "";',TO_DATE('2015-12-07 11:43:52','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:RestrictRoles')
 ;
 
 -- 07/12/2015 11h50min28s BRST
@@ -16516,12 +16518,10 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 
 -- 01/08/2016 11h37min28s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,EntityType,EventType,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120006,TO_DATE('2016-08-01 11:37:26','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','L','Y','beanshell:RegisterCitieTubaraoSC','S','import org.adempierelbr.nfse.NFSeUtil;
-import org.adempierelbr.nfse.NFSeTubaraoImpl;
-
-NFSeUtil.registerClass (NFSeTubaraoImpl.C_City_ID, NFSeTubaraoImpl.class);
-',TO_DATE('2016-08-01 11:37:26','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:RegisterCitieTubaraoSC')
+INSERT INTO AD_Rule (AD_Client_ID,AD_Org_ID,AD_Rule_ID,Created,CreatedBy,EntityType,EventType,IsActive,Name,RuleType,Script,Updated,UpdatedBy,Value) VALUES (0,0,1120006,TO_DATE('2016-08-01 11:37:26','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','L','Y','beanshell:RegisterCitieTubaraoSC','S','import org.adempierelbr.nfse.NFSeUtil; import org.adempierelbr.nfse.NFSeTubaraoImpl; NFSeUtil.registerClass (NFSeTubaraoImpl.C_City_ID, NFSeTubaraoImpl.class);',TO_DATE('2016-08-01 11:37:26','YYYY-MM-DD HH24:MI:SS'),100,'beanshell:RegisterCitieTubaraoSC')
 ;
+
+
 
 -- 01/08/2016 11h37min28s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
@@ -16803,15 +16803,15 @@ ALTER TABLE LBR_ADI MODIFY LBR_DI_ID NUMBER(10)
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 ALTER TABLE LBR_ADI
   ADD CONSTRAINT lbrdi_corderline FOREIGN KEY (lbr_di_id)
-      REFERENCES lbr_di (lbr_di_id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+      REFERENCES lbr_di (lbr_di_id)
+;
 
 -- 08/05/2017 11h36min38s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 ALTER TABLE LBR_ADILine
   ADD CONSTRAINT lbradi_corderline FOREIGN KEY (LBR_ADI_ID)
-      REFERENCES lbr_adi (LBR_ADI_ID) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+      REFERENCES lbr_adi (LBR_ADI_ID)
+;
 
 -- 08/05/2017 15h23min50s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
