@@ -25,7 +25,7 @@ for f in $(find $1/oracle/ -name *.sql | sort | sed ':a;N;$!ba;s/\n/ /g'); do
 	echo ". Executando Script" $f >> result_ora.log
 	sqlplus $3/$pass@$2 @$f >> result_ora.log 2>&1
 done
-for f in $(find post_install/oracle/ -name *.sql | sort | sed ':a;N;$!ba;s/\n/ /g'); do
+for f in $(find processes_post_migration/oracle/ -name *.sql | sort | sed ':a;N;$!ba;s/\n/ /g'); do
 	echo ". Executando Script" $f >> result_ora.log
 	sqlplus $3/$pass@$2 @$f >> result_ora.log 2>&1
 done
