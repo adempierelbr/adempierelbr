@@ -189,6 +189,10 @@ public class VGenCNAB extends GenCNAB implements FormPanel, ActionListener, Tabl
 	{
 		KeyNamePair bi = (KeyNamePair)fieldBankAccount.getSelectedItem();
 		
+		if (bi == null)
+			return;
+		
+		
 		MBankAccount bank = new MBankAccount(Env.getCtx(), bi.getKey(), null);
 		int org = bank.getAD_Org_ID();
 		

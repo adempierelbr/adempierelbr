@@ -73,6 +73,15 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201709 [[Download]][86] [[Seed PostgreSQL]][87] [[Seed OracleXE]][88]
+
+	* Funcionalidade para emissão de MDF-e
+	* Funcionalidade para Documentos Fiscais de Parceiros (DF-e)
+	* Correção na view RV_BOMLine (reportado por Geizon Tischer)
+	* Atualização do DF-e para a NT2014.002v1.02b
+	* Correção dos scripts de migração
+	* [Mais detalhes][85]
+
 1. LBR-201708 [[Download]][82] [[Seed PostgreSQL]][83] [[Seed OracleXE]][84]
 
 	* Correção na programação de pagamentos
@@ -355,3 +364,7 @@ Patrocinadores desta versão
 [82]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
 [83]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
 [84]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz
+[85]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201708
+[86]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
+[87]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
+[88]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz

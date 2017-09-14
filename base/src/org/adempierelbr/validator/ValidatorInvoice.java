@@ -158,47 +158,44 @@ public class ValidatorInvoice implements ModelValidator
 	public String modelChange (MInvoice invoice, int type) throws Exception
 	{
 		int C_Order_ID = invoice.getC_Order_ID();
-		if (C_Order_ID <= 0 || type != TYPE_BEFORE_NEW)	//	Apenas para novas faturas
+		if (C_Order_ID <= 0 || (type != TYPE_BEFORE_NEW && type != TYPE_BEFORE_CHANGE))
 			return null;
 
-		MOrder order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());
-		I_W_C_Order wOrder = POWrapper.create (order, I_W_C_Order.class);
-		I_W_C_Invoice wInvoice = POWrapper.create (invoice, I_W_C_Invoice.class);
-		
-		//	Transaction Type
-		if (wInvoice.getlbr_TransactionType() == null || wInvoice.getlbr_TransactionType().isEmpty())
-			wInvoice.setlbr_TransactionType(wOrder.getlbr_TransactionType());
-		
-		//	Freight Cost
-		if (wInvoice.getLBR_FreightCostRule() == null || wInvoice.getLBR_FreightCostRule().isEmpty())
-			wInvoice.setLBR_FreightCostRule(wOrder.getLBR_FreightCostRule());
-		
-		//	Payment Rule
-		if (wInvoice.getlbr_PaymentRule() == null || wInvoice.getlbr_PaymentRule().isEmpty())
-			wInvoice.setlbr_PaymentRule(wOrder.getlbr_PaymentRule());
-		
-		//	NF de Entrada
-		if (wInvoice.getlbr_NFEntrada() == null || wInvoice.getlbr_NFEntrada().isEmpty())
-			wInvoice.setlbr_NFEntrada(wOrder.getlbr_NFEntrada());
-		
-		//	Bill Note
-		if (wInvoice.getlbr_BillNote() == null || wInvoice.getlbr_BillNote().isEmpty())
-			wInvoice.setlbr_BillNote(wOrder.getlbr_BillNote());
-		
-		//	Shipment Note
-		if (wInvoice.getlbr_ShipNote() == null || wInvoice.getlbr_ShipNote().isEmpty())
-			wInvoice.setlbr_ShipNote(wOrder.getlbr_ShipNote());
-		
-		//	Billing Bank Account
-		if (wInvoice.getC_BankAccount_ID() <= 0 && wOrder.getC_BankAccount_ID() > 0)
-			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
-		
-		//	Indication of presence of the customer at sales point
-		if (wInvoice.getLBR_IndPres() == null || wInvoice.getLBR_IndPres().isEmpty())
-			wInvoice.setLBR_IndPres(wOrder.getLBR_IndPres());
+		//	Se o campo Pedido for alterado, atualizar a Fatura com base no pedido.
+		//	Esse campo é somente leitura e só pode ser alterado pelo processo criar linhas a partir de.
+		if (invoice.is_ValueChanged(MInvoice.COLUMNNAME_C_Order_ID))
+		{	
+			MOrder order = new MOrder(invoice.getCtx(), C_Order_ID, invoice.get_TrxName());
+			I_W_C_Order wOrder = POWrapper.create (order, I_W_C_Order.class);
+			I_W_C_Invoice wInvoice = POWrapper.create (invoice, I_W_C_Invoice.class);
 			
-		//	Has tax Withhold
-		wInvoice.setLBR_HasWithhold(wOrder.isLBR_HasWithhold());
+			//	Transaction Type
+			wInvoice.setlbr_TransactionType(wOrder.getlbr_TransactionType());
+			
+			//	Freight Cost
+			wInvoice.setLBR_FreightCostRule(wOrder.getLBR_FreightCostRule());
+			
+			//	Payment Rule
+			wInvoice.setlbr_PaymentRule(wOrder.getlbr_PaymentRule());
+			
+			//	NF de Entrada
+			wInvoice.setlbr_NFEntrada(wOrder.getlbr_NFEntrada());
+			
+			//	Bill Note
+			wInvoice.setlbr_BillNote(wOrder.getlbr_BillNote());
+			
+			//	Shipment Note
+			wInvoice.setlbr_ShipNote(wOrder.getlbr_ShipNote());
+			
+			//	Billing Bank Account
+			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
+			
+			//	Indication of presence of the customer at sales point
+			wInvoice.setLBR_IndPres(wOrder.getLBR_IndPres());
+				
+			//	Has tax Withhold
+			wInvoice.setLBR_HasWithhold(wOrder.isLBR_HasWithhold());
+		}
 
 		return null;
 	}	//	modelChange

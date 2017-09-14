@@ -13,7 +13,7 @@ CLS
 @SET /p DBPASSWORD=Password (Usuario do Banco de Dados, ex.:ADEMPIERE):
 
 FOR %%f IN (%1\oracle\*.sql) DO sqlplus %3/%DBPASSWORD%@%2 @%%f >> result_ora.log
-FOR %%f IN (post_install\oracle\*.sql) DO sqlplus %3/%DBPASSWORD%@%2 @%%f >> result_ora.log
+FOR %%f IN (processes_post_migration\oracle\*.sql) DO sqlplus %3/%DBPASSWORD%@%2 @%%f >> result_ora.log
 @GOTO :OK
 
 :END

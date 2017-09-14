@@ -30,10 +30,13 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.adempierelbr.mdfe.util.MDFeUtil;
+import org.adempierelbr.model.MLBRMDFe;
 import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeLot;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.MLBRPartnerDFe;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
 import org.adempierelbr.util.NFeUtil;
@@ -128,7 +131,7 @@ public class PrintFromXML extends SvrProcess
 		
 		MAttachment att = null;
 	    int tableID = getProcessInfo().getTable_ID();
-
+		
 		//	Carta de Correção Eletrônica
 		if (tableID == MLBRNFeEvent.Table_ID)
 		{
@@ -214,6 +217,52 @@ public class PrintFromXML extends SvrProcess
 			
 			else if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(doc.getlbr_NFeStatus()))
 				message = "C\u00D3PIA DE SEGURAN\u00C7A     Sem autorizac\u00E3o";
+		}
+
+		//	Documento Fiscal Eletrônico
+		else if (tableID == MLBRPartnerDFe.Table_ID)
+		{
+			MLBRPartnerDFe doc = new MLBRPartnerDFe(getCtx(), p_Record_ID, get_TrxName());
+			
+			// Organização
+			oi = MOrgInfo.get(Env.getCtx(), doc.getAD_Org_ID(), null);
+			
+			if (MLBRPartnerDFe.LBR_SITNF_2_UseDenied.equals(doc.getLBR_SitNF()))
+				message = "Uso Denegado         Uso Denegado       Uso Denegado";
+
+			att = doc.getAttachment (true);
+			reportName = "DanfeMain[FORMAT]A4.jasper";
+			extension = NFeUtil.PROC_XML_FILE_EXT;
+			printLogo = false;
+		}
+		
+		//	Manifesto Eletrônico de Documentos Fiscais
+		else if (tableID == MLBRMDFe.Table_ID)
+		{
+			MLBRMDFe doc = new MLBRMDFe (getCtx(), p_Record_ID, get_TrxName());
+			
+			// Organização
+			oi = MOrgInfo.get(Env.getCtx(), doc.getAD_Org_ID(), null);
+			
+			if (MDFeUtil.STATUS_ENCERRADO.equals(doc.getlbr_NFeStatus()))
+				message = "MDF-E J\u00C1 ENCERRADO\nC\u00D3PIA DE SEGURAN\u00C7A";
+			
+			else if (MDFeUtil.STATUS_CANCELADO.equals(doc.getlbr_NFeStatus()))
+				message = "CANCELADO    CANCELADO\nC\u00D3PIA DE SEGURAN\u00C7A";
+			
+			else if (!MDFeUtil.STATUS_AUTORIZADO.equals(doc.getlbr_NFeStatus()))
+				return "N\u00E3o \u00E9 permitido imprimir o DAMDFE - Sem autorizac\u00E3o";
+
+			att = doc.getAttachment (true);
+			
+			//	Verifica o nome do arquivo principal
+			if (process.getJasperReport() == null || process.getJasperReport().isEmpty())
+				reportName = "DAMDFeRetratoA4.jasper";
+			else
+				reportName = process.getJasperReport();
+			
+			extension = "mdfe.xml";
+			datePattern = "yyyy-MM-dd'T'HH:mm:ss";
 		}
 		
 		//	Lote da Nota Fiscal Eletrônica
@@ -355,7 +404,7 @@ public class PrintFromXML extends SvrProcess
 		dataSource.setDatePattern(datePattern);
 		dataSource.setNumberPattern(numberPattern);
 		dataSource.setLocale(locale);
-		
+
 		//	Fill
 		JasperPrint jasperPrint = JasperFillManager.fillReport (jasperReport, files, dataSource);
 
@@ -479,7 +528,7 @@ public class PrintFromXML extends SvrProcess
 		// NFC-e 
 		if (reportName.startsWith("DanfeNFCe"))
 			return new String[]{}; //	No Subreports for this document
-						
+		
 		//	Not found, try to catch all from the given path
 		URL dirURL = clazz.getClassLoader().getResource(path);
 		if (dirURL != null && dirURL.getProtocol().equals("file"))

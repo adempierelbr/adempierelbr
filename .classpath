@@ -4,6 +4,8 @@
 	<classpathentry kind="src" path="boleto/src"/>
 	<classpathentry kind="src" path="client/src"/>
 	<classpathentry kind="src" path="dbPort/src"/>
+	<classpathentry kind="src" path="mdfe/src"/>
+	<classpathentry kind="src" path="mdfe/ws/src"/>
 	<classpathentry kind="src" path="nfe2/src"/>
 	<classpathentry kind="src" path="nfe2/ws/src"/>
 	<classpathentry kind="src" path="nfse/src"/>
@@ -37,13 +39,13 @@
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-http-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/axis2-transport-local-1.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ws/httpcore-4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v6v.jar" sourcepath="lib/nfebeans-v6v-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-canc-v101.jar" sourcepath="lib/nfebeans-canc-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-cce-v101.jar" sourcepath="lib/nfebeans-cce-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-gen-v101.jar" sourcepath="lib/nfebeans-gen-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-manif-v101.jar" sourcepath="lib/nfebeans-manif-v101-souces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-dfe-v102.jar" sourcepath="lib/nfebeans-dfe-v102-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfsebeans-v01.jar" sourcepath="lib/nfsebeans-v01-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/jsr173_1.0_api.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/resolver.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xbean_xpath.jar"/>
@@ -55,6 +57,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8i2.jar" sourcepath="lib/nfebeans-v8i2-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/zxing-core-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/ibpt-interfaces-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/mdfebeans-v100a.jar"/>
+	<classpathentry kind="lib" path="lib/siscomexbeans-v100.jar"/>
+	<classpathentry kind="lib" path="lib/poi-3.5-FINAL-20090928.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/adempiere360lts"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>

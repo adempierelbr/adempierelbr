@@ -13,7 +13,7 @@ CLS
 @SET /p PGPASSWORD=Password (ADEMPIERE): 
 
 FOR %%f IN (%1\postgresql\*.sql) DO psql -d %2 -U %3 -f %%f >> result_pg.log
-FOR %%f IN (post_install\postgresql\*.sql) DO psql -d %2 -U %3 -f %%f >> result_pg.log
+FOR %%f IN (processes_post_migration\postgresql\*.sql) DO psql -d %2 -U %3 -f %%f >> result_pg.log
 @GOTO :OK
 
 :END

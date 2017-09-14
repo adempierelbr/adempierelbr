@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.Properties;
 
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
+import org.adempierelbr.model.MLBRPartnerDFe;
 import org.adempierelbr.wrapper.I_W_C_BPartner;
 import org.adempierelbr.wrapper.I_W_C_BPartner_Location;
 import org.adempierelbr.wrapper.I_W_C_DocType;
@@ -108,14 +110,26 @@ public class CalloutNFe extends CalloutEngine
 	public String fillNFeID (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
 	{
 		//	Preenche o valor da chave da NF-e
-		if (mField.getColumnName().equals(MLBRNotaFiscal.COLUMNNAME_LBR_NotaFiscal_ID) && value != null)
+		if (value == null || !(value instanceof Integer))
+			return "";
+		
+		Integer Record_ID = (Integer) value;
+		String nfeKey = null;
+		
+		String columnName = mField.getColumnName();
+		if (MLBRNFeEvent.COLUMNNAME_LBR_PartnerDFe_ID.equals(columnName))
 		{
-			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, (Integer) value, null);
-			if (nf == null || nf.getlbr_NFeID() == null)
-				return "";
-			//
-			mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_NFeID, nf.getlbr_NFeID());
+			MLBRPartnerDFe dfe = new MLBRPartnerDFe (ctx, Record_ID, null);
+			nfeKey = dfe.getlbr_NFeID();
 		}
+		else if (MLBRNFeEvent.COLUMNNAME_LBR_NotaFiscal_ID.equals(columnName))
+		{
+			MLBRNotaFiscal nfe = new MLBRNotaFiscal (ctx, Record_ID, null);
+			nfeKey = nfe.getlbr_NFeID();
+		}
+		
+		//	Set field value
+		mTab.setValue (MLBRNFeEvent.COLUMNNAME_lbr_NFeID, nfeKey);
 		return "";
 	}	//	EventFillNFeID
 

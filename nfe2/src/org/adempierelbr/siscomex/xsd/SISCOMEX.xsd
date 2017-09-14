@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="listaDeclaracoes">
+		<xs:sequence>
+			<xs:element name="declaracaoImportacao" type="declaracaoImportacaoConsulta"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="declaracaoImportacaoConsulta">
+		<xs:sequence>
+			<xs:element name="adicao" type="adicao" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="armazem" type="armazem" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="armazenamentoRecintoAduaneiroCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="armazenamentoRecintoAduaneiroNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="armazenamentoSetor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="canalSelecaoParametrizada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="caracterizacaoOperacaoCodigoTipo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="caracterizacaoOperacaoDescricaoTipo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="caracterizacaoOperacaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="caracterizacaoOperacaoNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaDataChegada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaNumeroAgente" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaPaisProcedenciaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaPaisProcedenciaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaPesoBruto" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaPesoLiquido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaUrfEntradaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cargaUrfEntradaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaEmbarqueData" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaEmbarqueLocal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaId" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaIdMaster" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaTipoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaTipoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaUtilizacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="conhecimentoCargaUtilizacaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dataDesembaraco" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dataRegistro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="declaracaoEe" type="declaracaoExportacaoEstrangeiro"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="documentoChegadaCargaCodigoTipo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="documentoChegadaCargaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="documentoChegadaCargaNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="documentoInstrucaoDespacho" type="documentoInstrucaoDespacho"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="dossie" type="dossieDi" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="embalagem" type="embalagem" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="freteCollect" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteEmTerritorioNacional" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteMoedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteMoedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fretePrepaid" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteTotalDolares" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteTotalMoeda" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteTotalReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="icms" type="icms" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="importadorCodigoTipo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorCpfRepresentanteLegal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoBairro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoCep" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoComplemento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoLogradouro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoMunicipio" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorEnderecoUf" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorNomeRepresentanteLegal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="importadorNumeroTelefone" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="informacaoComplementar" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="localDescargaTotalDolares" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="localDescargaTotalReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="localEmbarqueTotalDolares" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="localEmbarqueTotalReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="modalidadeDespachoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="modalidadeDespachoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroDI" type="xs:string" minOccurs="0" />
+			<xs:element name="operacaoFundap" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pagamento" type="pagamento" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="processoVinculado" type="processoVinculado"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="seguroMoedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroMoedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroTotalDolares" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroTotalMoedaNegociada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroTotalReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="sequencialRetificacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="situacaoEntregaCarga" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="tipoDeclaracaoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="tipoDeclaracaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="totalAdicoes" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="urfDespachoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="urfDespachoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteMultimodal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteNomeTransportador" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteNomeVeiculo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransporteNumeroVeiculo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="viaTransportePaisTransportadorCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="viaTransportePaisTransportadorNome"
+				type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="adicao">
+		<xs:sequence>
+			<xs:element name="acrescimo" type="acrescimo" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="antidumpingAliquotaAdValorem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAliquotaBaseCalculo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAliquotaEspecificaQuantidadeUnidade"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="antidumpingAliquotaEspecificaValor"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="antidumpingAliquotaValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAliquotaValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAtoLegalAno" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAtoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAtoLegalEX" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAtoLegalNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="antidumpingAtoLegalOrgaoEmissor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="certificadoMercosul" type="certificadoMercosul"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="codigoRelacaoCompradorVendedor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="codigoVinculoCompradorVendedor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cofinsAliquotaAdValorem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cofinsAliquotaEspecificaQuantidadeUnidade"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="cofinsAliquotaEspecificaUnidadeMedida"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="cofinsAliquotaEspecificaValor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cofinsAliquotaReduzida" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cofinsAliquotaValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="cofinsAliquotaValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaComplemento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaIncoterm" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaLocal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaMetodoValoracaoCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="condicaoVendaMetodoValoracaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaMoedaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaMoedaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaValorMoeda" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="condicaoVendaValorReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCambiaisCoberturaCambialCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosCambiaisCoberturaCambialNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCambiaisInstituicaoFinanciadoraCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosCambiaisInstituicaoFinanciadoraNome"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosCambiaisMotivoSemCoberturaCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosCambiaisMotivoSemCoberturaNome"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosCambiaisNumeroROF" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCambiaisValorRealCambio" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaPaisProcedenciaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaPaisProcedenciaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaUrfEntradaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaUrfEntradaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaViaTransporteCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosCargaViaTransporteNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaAplicacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaCodigoNaladiNCCA" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaCodigoNaladiSH" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaCodigoNcm" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaCondicao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaDescricaoTipoCertificado"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosMercadoriaIndicadorTipoCertificado"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosMercadoriaMedidaEstatisticaQuantidade"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosMercadoriaMedidaEstatisticaUnidade"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="dadosMercadoriaNomeNcm" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dadosMercadoriaPesoLiquido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrCoeficienteReducao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrIdentificacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrValorDolar" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrValorReal" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dcrValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="deducao" type="deducao" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="destaqueNcm" type="destaqueNcm"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="documentoVinculado" type="documentoVinculado"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="fabricanteCidade" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fabricanteComplemento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fabricanteEstado" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fabricanteLogradouro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fabricanteNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fabricanteNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorCidade" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorComplemento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorEstado" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorLogradouro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="fornecedorNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteMoedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteMoedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteValorMoedaNegociada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="freteValorReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAladiCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAladiNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAtoLegalAno" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAtoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAtoLegalEX" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAtoLegalNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioAtoLegalOrgaoEmissor"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioTipoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAcordoTarifarioTipoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaAcordo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaAdValorem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaPercentualReducao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaReduzida" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaValorCalculado" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiAliquotaValorReduzido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiBaseCalculo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiExTarifarioAtoLegalAno" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiExTarifarioAtoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiExTarifarioAtoLegalEX" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiExTarifarioAtoLegalNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiExTarifarioAtoLegalOrgaoEmissor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiFundamentoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiFundamentoLegalNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiMotivoAdmissaoTemporariaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiMotivoAdmissaoTemporariaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiRegimeTributacaoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="iiRegimeTributacaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiAliquotaAdValorem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiAliquotaEspecificaCapacidadeRecipciente"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiAliquotaEspecificaQuantidadeUnidadeMedida"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiAliquotaEspecificaTipoRecipienteCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiAliquotaEspecificaTipoRecipienteNome"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiAliquotaEspecificaValorUnidadeMedida"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiAliquotaNotaComplementarTIPI" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiAliquotaReduzida" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiAliquotaValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiAliquotaValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiBeneficioFiscalAtoLegalAno" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiBeneficioFiscalAtoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiBeneficioFiscalAtoLegalEX" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiBeneficioFiscalAtoLegalNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiBeneficioFiscalAtoLegalOrgaoEmissor"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiExTarifarioAtoLegalAno" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiExTarifarioAtoLegalCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiExTarifarioAtoLegalEX" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiExTarifarioAtoLegalNumero" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiExTarifarioAtoLegalOrgaoEmissor"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="ipiRegimeTributacaoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ipiRegimeTributacaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="mercadoria" type="detalheMercadoria"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="nomenclaturaValorAduaneiro" type="nomenclaturaValorAduaneiro"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="numeroAdicao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroDI" type="xs:string" minOccurs="0" />
+			<xs:element name="numeroLI" type="xs:string" minOccurs="0" />
+			<xs:element name="paisAquisicaoMercadoriaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="paisAquisicaoMercadoriaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="paisOrigemMercadoriaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="paisOrigemMercadoriaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisCofinsBaseCalculoAliquotaICMS" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisCofinsBaseCalculoFundamentoLegalCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisCofinsBaseCalculoFundamentoLegalNome"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisCofinsBaseCalculoPercentualReducao"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisCofinsBaseCalculoValor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisCofinsFundamentoLegalReducaoCodigo"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisCofinsFundamentoLegalReducaoNome"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisCofinsRegimeTributacaoCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisCofinsRegimeTributacaoNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisPasepAliquotaAdValorem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisPasepAliquotaEspecificaQuantidadeUnidade"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisPasepAliquotaEspecificaUnidadeMedida"
+				type="xs:string" minOccurs="0" />
+			<xs:element name="pisPasepAliquotaEspecificaValor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisPasepAliquotaReduzida" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisPasepAliquotaValorDevido" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="pisPasepAliquotaValorRecolher" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="relacaoCompradorVendedor" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroMoedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroMoedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroValorMoedaNegociada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="seguroValorReais" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="sequencialRetificacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorReaisFreteInternacional" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorReaisSeguroInternacional" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorTotalCondicaoVenda" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="vinculoCompradorVendedor" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="acrescimo">
+		<xs:sequence>
+			<xs:element name="codigoAcrescimo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="denominacao" type="xs:string" minOccurs="0" />
+			<xs:element name="moedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="moedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorMoedaNegociada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorReais" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificadoMercosul">
+		<xs:sequence>
+			<xs:element name="numeroCertificado" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroDE" type="xs:string" minOccurs="0" />
+			<xs:element name="numeroItem" type="xs:string" minOccurs="0" />
+			<xs:element name="paisCodigo" type="xs:string" minOccurs="0" />
+			<xs:element name="paisNome" type="xs:string" minOccurs="0" />
+			<xs:element name="quantidade" type="xs:string" minOccurs="0" />
+			<xs:element name="reFinal" type="xs:string" minOccurs="0" />
+			<xs:element name="reInicial" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="deducao">
+		<xs:sequence>
+			<xs:element name="codigoDeducao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="denominacao" type="xs:string" minOccurs="0" />
+			<xs:element name="moedaNegociadaCodigo" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="moedaNegociadaNome" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorMoedaNegociada" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorReais" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="destaqueNcm">
+		<xs:sequence>
+			<xs:element name="numeroDestaque" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="documentoVinculado">
+		<xs:sequence>
+			<xs:element name="codigoTipo" type="xs:string" minOccurs="0" />
+			<xs:element name="nomeTipo" type="xs:string" minOccurs="0" />
+			<xs:element name="numero" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="detalheMercadoria">
+		<xs:sequence>
+			<xs:element name="descricaoMercadoria" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroSequencialItem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="quantidade" type="xs:string" minOccurs="0" />
+			<xs:element name="unidadeMedida" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorUnitario" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nomenclaturaValorAduaneiro">
+		<xs:sequence>
+			<xs:element name="atributo" type="xs:string" minOccurs="0" />
+			<xs:element name="especificacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nivelNome" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="armazem">
+		<xs:sequence>
+			<xs:element name="nomeArmazem" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="declaracaoExportacaoEstrangeiro">
+		<xs:sequence>
+			<xs:element name="faixaFinal" type="xs:string" minOccurs="0" />
+			<xs:element name="faixaInicial" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroDeclaracaoEstrangeira" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="documentoInstrucaoDespacho">
+		<xs:sequence>
+			<xs:element name="codigoTipoDocumentoDespacho" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeDocumentoDespacho" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroDocumentoDespacho" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dossieDi">
+		<xs:sequence>
+			<xs:element name="dossieDataVinculacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dossieHoraVinculacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dossieNumero" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="embalagem">
+		<xs:sequence>
+			<xs:element name="codigoTipoEmbalagem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeEmbalagem" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="quantidadeVolume" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="icms">
+		<xs:sequence>
+			<xs:element name="agenciaIcms" type="xs:string" minOccurs="0" />
+			<xs:element name="bancoIcms" type="xs:string" minOccurs="0" />
+			<xs:element name="codigoTipoDeclaracaoIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="codigoTipoRecolhimentoIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="contaIcms" type="xs:string" minOccurs="0" />
+			<xs:element name="cpfResponsavelRegistro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dataPagamentoIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dataRegistro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="horaRegistro" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="mandadoJudicialIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeTipoDeclaracaoIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeTipoRecolhimentoIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroSequencialIcms" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="ufIcms" type="xs:string" minOccurs="0" />
+			<xs:element name="valorTotalIcms" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pagamento">
+		<xs:sequence>
+			<xs:element name="agenciaPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="bancoPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="codigoReceita" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="codigoTipoPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="contaPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="dataPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeTipoPagamento" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="numeroRetificacao" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorJurosEncargos" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="valorMulta" type="xs:string" minOccurs="0" />
+			<xs:element name="valorReceita" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="processoVinculado">
+		<xs:sequence>
+			<xs:element name="codigoTipoProcesso" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="identificacaoProcesso" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="nomeTipoProcesso" type="xs:string"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="ListaDeclaracoes" type="listaDeclaracoes"></xs:element>
+</xs:schema>

@@ -7,7 +7,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 ;
 
 -- 15/01/2016 16h42min1s BRST
-ALTER TABLE LBR_TaxDefinition ADD Script NVARCHAR2(4000) DEFAULT NULL 
+ALTER TABLE LBR_TaxDefinition ADD Script CLOB DEFAULT NULL
 ;
 
 -- 15/01/2016 16h44min27s BRST
