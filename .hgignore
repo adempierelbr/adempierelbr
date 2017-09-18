@@ -1,9 +1,15 @@
 
 syntax: regexp
 ^build$
+
 syntax: regexp
 ^bin$
+
 syntax: regexp
 ^dist$
+
 syntax: regexp
 ^migration/result_pg\.log$
+
+syntax: regexp
+^.*\.DS_Store$
