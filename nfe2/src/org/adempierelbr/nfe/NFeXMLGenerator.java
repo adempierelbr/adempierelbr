@@ -1258,7 +1258,7 @@ public class NFeXMLGenerator
 					PISAliq pisAliq = imposto.addNewPIS().addNewPISAliq();
 					pisAliq.setCST(Det.Imposto.PIS.PISAliq.CST.Enum.forString (taxStatus));
 					pisAliq.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisAliq.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisAliq.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisAliq.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 				else if (TextUtil.match (taxStatus, CST_PC_03))
@@ -1279,14 +1279,14 @@ public class NFeXMLGenerator
 					PISOutr pisOutr = imposto.addNewPIS().addNewPISOutr();
 					pisOutr.setCST(Det.Imposto.PIS.PISOutr.CST.Enum.forString (taxStatus));
 					pisOutr.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisOutr.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisOutr.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisOutr.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 				else if (false)	//	FIXME PIS ST
 				{
 					PISST pisST = imposto.addNewPISST();
 					pisST.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisST.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisST.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisST.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 			}
@@ -1304,7 +1304,7 @@ public class NFeXMLGenerator
 					COFINSAliq cofinsAliq = imposto.addNewCOFINS().addNewCOFINSAliq();
 					cofinsAliq.setCST(Det.Imposto.COFINS.COFINSAliq.CST.Enum.forString (taxStatus));
 					cofinsAliq.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsAliq.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsAliq.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsAliq.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 				else if (TextUtil.match (taxStatus, CST_PC_03))
@@ -1325,14 +1325,14 @@ public class NFeXMLGenerator
 					COFINSOutr cofinsOutr = imposto.addNewCOFINS().addNewCOFINSOutr();
 					cofinsOutr.setCST(Det.Imposto.COFINS.COFINSOutr.CST.Enum.forString (taxStatus));
 					cofinsOutr.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsOutr.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsOutr.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsOutr.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 				else if (false)	//	FIXME COFINS ST
 				{
 					COFINSST cofinsST = imposto.addNewCOFINSST();
 					cofinsST.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsST.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsST.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsST.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 			}
