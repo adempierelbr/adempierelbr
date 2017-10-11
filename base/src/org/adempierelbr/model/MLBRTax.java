@@ -771,7 +771,7 @@ public class MLBRTax extends X_LBR_Tax
 		
 		MLBRCFOPLine cFOPLine = MLBRCFOP.chooseCFOP (oi.getAD_Org_ID(), C_DocTypeTarget_ID, p.getLBR_ProductCategory_ID(), 
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
-				lbr_TransactionType, lbr_DestionationType, hasSubstitution, p.islbr_IsManufactured(), lbr_TaxRegime, null);
+				lbr_TransactionType, lbr_DestionationType, hasSubstitution, POWrapper.getPO(p).get_ValueAsBoolean("lbr_IsManufactured"), lbr_TaxRegime, null);
 		//
 		if (cFOPLine != null)
 		{
