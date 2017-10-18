@@ -476,7 +476,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCFOP ($F{cfop})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-11" mode="Transparent" x="263" y="2" width="20" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -489,7 +489,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[( $F{unidadeComercial}.equals($F{unidadeTributaria}) ? "" + $F{unidadeComercial} : $F{unidadeComercial} + "\n" + $F{unidadeTributaria} )]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-10" mode="Transparent" x="287" y="2" width="24" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -500,7 +500,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{quantidadeComercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{quantidadeComercial}.equals($F{quantidadeTributaria}) ? (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) : (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{quantidadeTributaria}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-8" mode="Transparent" x="350" y="2" width="34" height="7"/>
@@ -515,7 +515,7 @@
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotal}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-9" mode="Transparent" x="314" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -526,7 +526,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitarioComercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorUnitarioComercial}.equals($F{valorUnitarioTributario}) ? (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) : (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{valorUnitarioTributario}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-7" mode="Transparent" x="386" y="2" width="34" height="7"/>

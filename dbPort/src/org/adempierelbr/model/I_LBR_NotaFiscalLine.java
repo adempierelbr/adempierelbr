@@ -424,6 +424,19 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_ProductSource();
 
+    /** Column name lbr_qTrib */
+    public static final String COLUMNNAME_lbr_qTrib = "lbr_qTrib";
+
+	/** Set Tax Quantity.
+	  * Defines the Tax Quantity
+	  */
+	public void setlbr_qTrib (BigDecimal lbr_qTrib);
+
+	/** Get Tax Quantity.
+	  * Defines the Tax Quantity
+	  */
+	public BigDecimal getlbr_qTrib();
+
     /** Column name lbr_ServiceTaxes */
     public static final String COLUMNNAME_lbr_ServiceTaxes = "lbr_ServiceTaxes";
 
@@ -476,6 +489,34 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_UOMName();
 
+    /** Column name lbr_UTribID */
+    public static final String COLUMNNAME_lbr_UTribID = "lbr_UTribID";
+
+	/** Set UTrib.
+	  * Unit of Tax
+	  */
+	public void setlbr_UTribID (int lbr_UTribID);
+
+	/** Get UTrib.
+	  * Unit of Tax
+	  */
+	public int getlbr_UTribID();
+
+	public I_C_UOM getlbr_UTri() throws RuntimeException;
+
+    /** Column name lbr_UTribName */
+    public static final String COLUMNNAME_lbr_UTribName = "lbr_UTribName";
+
+	/** Set UTrib Name.
+	  * Defines the UTrib Name
+	  */
+	public void setlbr_UTribName (String lbr_UTribName);
+
+	/** Get UTrib Name.
+	  * Defines the UTrib Name
+	  */
+	public String getlbr_UTribName();
+
     /** Column name lbr_vTotTrib */
     public static final String COLUMNNAME_lbr_vTotTrib = "lbr_vTotTrib";
 
@@ -488,6 +529,19 @@ public interface I_LBR_NotaFiscalLine
 	  * Valor aproximado total de tributos federais, estaduais e municipais.
 	  */
 	public BigDecimal getlbr_vTotTrib();
+
+    /** Column name lbr_vUnTrib */
+    public static final String COLUMNNAME_lbr_vUnTrib = "lbr_vUnTrib";
+
+	/** Set Unit Tax Price.
+	  * Defines the Unit Tax Price
+	  */
+	public void setlbr_vUnTrib (BigDecimal lbr_vUnTrib);
+
+	/** Get Unit Tax Price.
+	  * Defines the Unit Tax Price
+	  */
+	public BigDecimal getlbr_vUnTrib();
 
     /** Column name Line */
     public static final String COLUMNNAME_Line = "Line";

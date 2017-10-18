@@ -844,9 +844,20 @@ public class NFeXMLGenerator
 			prod.setVUnCom(normalize10  (nfl.getPrice()));
 			prod.setVProd(normalize  (nfl.getLineTotalAmt()));
 //			prod.setCEANTrib();		//	Check above (after setCEAN)
-			prod.setUTrib(normalize (nfl.getlbr_UOMName()));
-			prod.setQTrib(normalize4  (nfl.getQty()));
-			prod.setVUnTrib(normalize10  (nfl.getPrice()));
+			
+			// 	Unidade Tributária pode ser Diferente apenas para Exportação
+			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ()))
+			{
+				prod.setUTrib(normalize (nfl.getlbr_UTribName()));
+				prod.setQTrib(normalize4  ((nfl.getlbr_qTrib())));
+				prod.setVUnTrib(normalize10  (nfl.getlbr_vUnTrib()));
+			}
+			else
+			{	
+				prod.setUTrib(normalize (nfl.getlbr_UOMName()));
+				prod.setQTrib(normalize4 (nfl.getQty()));
+				prod.setVUnTrib(normalize10 (nfl.getPrice()));
+			}	
 			
 			//	Valores adicionais
 			BigDecimal freightAmt 		= nfl.getFreightAmt();

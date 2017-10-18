@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20160804L;
+	private static final long serialVersionUID = 20170927L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -652,6 +652,26 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_ProductSource);
 	}
 
+	/** Set Tax Quantity.
+		@param lbr_qTrib 
+		Defines the Tax Quantity
+	  */
+	public void setlbr_qTrib (BigDecimal lbr_qTrib)
+	{
+		set_Value (COLUMNNAME_lbr_qTrib, lbr_qTrib);
+	}
+
+	/** Get Tax Quantity.
+		@return Defines the Tax Quantity
+	  */
+	public BigDecimal getlbr_qTrib () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_qTrib);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Service Taxes.
 		@param lbr_ServiceTaxes 
 		String with all Taxes Names and Taxes Rates
@@ -751,6 +771,48 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_UOMName);
 	}
 
+	public I_C_UOM getlbr_UTri() throws RuntimeException
+    {
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
+			.getPO(getlbr_UTribID(), get_TrxName());	}
+
+	/** Set UTrib.
+		@param lbr_UTribID 
+		Unit of Tax
+	  */
+	public void setlbr_UTribID (int lbr_UTribID)
+	{
+		set_Value (COLUMNNAME_lbr_UTribID, Integer.valueOf(lbr_UTribID));
+	}
+
+	/** Get UTrib.
+		@return Unit of Tax
+	  */
+	public int getlbr_UTribID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_UTribID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set UTrib Name.
+		@param lbr_UTribName 
+		Defines the UTrib Name
+	  */
+	public void setlbr_UTribName (String lbr_UTribName)
+	{
+		set_Value (COLUMNNAME_lbr_UTribName, lbr_UTribName);
+	}
+
+	/** Get UTrib Name.
+		@return Defines the UTrib Name
+	  */
+	public String getlbr_UTribName () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_UTribName);
+	}
+
 	/** Set Total de Tributo.
 		@param lbr_vTotTrib 
 		Valor aproximado total de tributos federais, estaduais e municipais.
@@ -766,6 +828,26 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public BigDecimal getlbr_vTotTrib () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_vTotTrib);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Unit Tax Price.
+		@param lbr_vUnTrib 
+		Defines the Unit Tax Price
+	  */
+	public void setlbr_vUnTrib (BigDecimal lbr_vUnTrib)
+	{
+		set_Value (COLUMNNAME_lbr_vUnTrib, lbr_vUnTrib);
+	}
+
+	/** Get Unit Tax Price.
+		@return Defines the Unit Tax Price
+	  */
+	public BigDecimal getlbr_vUnTrib () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_vUnTrib);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
