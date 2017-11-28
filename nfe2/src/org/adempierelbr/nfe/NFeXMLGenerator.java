@@ -720,10 +720,12 @@ public class NFeXMLGenerator
 				if (retOuEntreg != null)
 				{
 					//	CNPJ ou CPF
-					if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					String cnpjf = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+
+					if (cnpjf.length() == 11)
 						retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 					
-					else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					else if (cnpjf.length() == 14)
 						retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 					//
 					retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
