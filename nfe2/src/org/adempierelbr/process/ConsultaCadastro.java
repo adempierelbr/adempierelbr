@@ -23,11 +23,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MClientInfo;
+import org.compiere.model.MLocation;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPriceListVersion;
 import org.compiere.model.MRegion;
 import org.compiere.model.MSysConfig;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.AdempiereUserError;
@@ -205,10 +209,133 @@ public class ConsultaCadastro extends SvrProcess
 		if (p_C_BPartner_ID <= 0 
 				&& p_CreateNew 
 				&& InfCad.CSit.X_1.equals(infCad.getCSit()))
-		{
-			//	TODO: Criar PN com base no modelo, verificar na janela de Pedido, clicar com o direito
-			//		no campo de Parceiro e verificar como aquele atalha de criar PN funciona. Ele deve
-			//		buscar o PN padrão no cadastro da empresa.
+		{			
+			//	Novo Parceiro de Negócio
+			MBPartner bpartner = new MBPartner(Env.getCtx(), 0, null);	
+			
+			//	Parceiro de Negócio Modelo
+			MClientInfo clientinfo = MClientInfo.get(Env.getCtx());
+			
+			MBPartner bpModel = null;
+			
+			if (clientinfo.getC_BPartnerCashTrx() != null)
+				bpModel = (MBPartner) clientinfo.getC_BPartnerCashTrx();
+			else
+			{
+				log.warning("Preencher Parceiro de Negócio Modelo na Janela Empresa");
+				return "@Success@" + result.toString();
+			}
+			
+			//	Copiar Padrão do Parceiro de Negócio Modelo para o Novo Parceiro de Negócio
+			PO.copyValues(bpModel, bpartner);
+			
+			//	Limpar Chave de Busca
+			bpartner.setValue("");
+			
+			bpartner.save();
+			
+			// Class Wrapper Novo Parceiro de Negócio
+			I_W_C_BPartner bpartnerNew = POWrapper.create (bpartner, I_W_C_BPartner.class);			
+			
+			// Remover Perspectiva
+			bpartnerNew.setIsProspect(false);
+	
+			//	Verificar se é uma Pessoa Jurídica
+			if (!p_CNPJ.isEmpty())
+			{			
+				//	Se o Parceiro de Negócio já existir sair do processo
+				if (new Query(Env.getCtx(), MBPartner.Table_Name, "LBR_CNPJ = ?", null)
+						.setParameters(p_CNPJ)
+						.first() != null)
+					return "@Success@" + result.toString() + "<br /><br /><b>Parceiro de Negócio já Cadastrado</b>";
+				else
+				{	
+					// Adicionar CNPJ para Pessoa Juridica
+					bpartnerNew.setlbr_BPTypeBR(I_W_C_BPartner.LBR_BPTYPEBR_PJ_LegalEntity);
+					bpartnerNew.setlbr_CNPJ(p_CNPJ);
+				}	
+			}
+			//	Verificar se é uma Pessoa Física
+			else if (!p_CPF.isEmpty())
+			{
+				//	Se o Parceiro de Negócio já existir sair do processo
+				if (new Query(Env.getCtx(), MBPartner.Table_Name, "LBR_CPF = ?", null)
+						.setParameters(p_CPF)
+						.first() != null)
+					return "@Success@" + result.toString() + "<br /><br /><b>Parceiro de Negócio já Cadastrado</b>";
+				else
+				{
+					// Adicionar CPF para Pessoa Física
+					bpartnerNew.setlbr_BPTypeBR(I_W_C_BPartner.LBR_BPTYPEBR_PF_Individual);
+					bpartnerNew.setlbr_CPF(p_CPF);
+				}
+			}
+						
+			//	Dados do Novo Parceiro de Negócio
+			bpartnerNew.setName(infCad.getXNome());
+			bpartnerNew.setName2((infCad.getXFant() == null ? infCad.getXNome() : infCad.getXFant()));			
+			
+			//	Regime Tributário do Parceiro de Negócio
+			if (xRegApur.toUpperCase().startsWith("NORMAL"))
+				bpartnerNew.setLBR_TaxRegime(I_W_C_BPartner.LBR_TAXREGIME_Normal);
+			
+			//	Simples e MEI
+			else if (xRegApur.toUpperCase().startsWith("SIMPLES"))
+			{
+				//	Simples Nacional - MEI
+				if (xRegApur.toUpperCase().endsWith("MEI"))
+					bpartnerNew.setLBR_TaxRegime(I_W_C_BPartner.LBR_TAXREGIME_SimpleNational_MEI);
+				
+				//	Simples Nacional
+				else
+					bpartnerNew.setLBR_TaxRegime(I_W_C_BPartner.LBR_TAXREGIME_SimpleNational);
+			}
+			
+			//	Adicionar Inscrição Estadual.
+			if (!infCad.getIE().isEmpty())
+			{
+				bpartnerNew.setLBR_IndIEDest(I_W_C_BPartner.LBR_INDIEDEST_1_ContribuinteDeICMS);
+				bpartnerNew.setlbr_IE(infCad.getIE());
+			}
+			else
+			{
+				//	Se não houver Inscrição Estadual, indicar como Não Contribuinte
+				bpartnerNew.setLBR_IndIEDest(I_W_C_BPartner.LBR_INDIEDEST_9_NãoContribuinteDeICMS);
+				bpartnerNew.setlbr_IE("");
+			}
+			
+			//	Savar Novo Parceiro de Negócio
+			bpartner.saveEx();
+			
+			// Localização do Parceiro de Negócio
+			MBPartnerLocation bpartnerLocation = new MBPartnerLocation(bpartner);
+			bpartnerLocation.setName(infCad.getEnder().getXBairro() + " - " + infCad.getUF().toString());
+			
+			// Estado
+			int region_id = 0;
+			
+			//	Identificar ID do Estado
+			for (MRegion r : MRegion.getRegions(Env.getCtx(), 139))
+			{	
+				if (infCad.getUF().toString().equals(r.getName()))
+				{	
+					region_id = r.getC_Region_ID();
+					break;
+				}	
+			}
+			
+			// Salvando Localização do Novo Parceiro de Negócio
+			MLocation location  = new MLocation(Env.getCtx(), 139, region_id, infCad.getEnder().getXMun(), null);			
+			location.setAddress1(infCad.getEnder().getXLgr());
+			location.setAddress2(infCad.getEnder().getNro());
+			location.setAddress3(infCad.getEnder().getXBairro());
+			location.setAddress4(infCad.getEnder().getXCpl());			
+			location.setPostal(infCad.getEnder().getCEP());
+			location.setRegionName(infCad.getUF().toString());
+			location.saveEx();
+						
+			bpartnerLocation.setC_Location_ID(location.getC_Location_ID());			
+			bpartnerLocation.saveEx();
 		}
 		
 		else if (p_C_BPartner_ID > 0 && xRegApur != null)
