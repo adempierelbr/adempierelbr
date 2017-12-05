@@ -2519,6 +2519,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setLBR_IndPres (LBR_INDPRES_OperaçãoPresencial);
 		}
 		
+		//	Region must be upper case
+		if (getlbr_BPShipperRegion() != null && !getlbr_BPShipperRegion().isEmpty())
+			setlbr_BPShipperRegion(getlbr_BPShipperRegion().toUpperCase());
+		
 		return true;
 	}	//	beforeSave
 
