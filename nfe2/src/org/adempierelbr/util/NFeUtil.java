@@ -601,6 +601,44 @@ public abstract class NFeUtil
 	/**
 	 * 	Pega o código do estado
 	 * 	
+	 * 	@param uf literal
+	 * 	@return	region code
+	 */
+	public static int getRegionCode (String region)
+	{
+		if (region.equals("RO")) return 11;
+		if (region.equals("AC")) return 12;
+		if (region.equals("AM")) return 13;
+		if (region.equals("RR")) return 14;
+		if (region.equals("PA")) return 15;
+		if (region.equals("AP")) return 16;
+		if (region.equals("TO")) return 17;
+		if (region.equals("MA")) return 21;
+		if (region.equals("PI")) return 22;
+		if (region.equals("CE")) return 23;
+		if (region.equals("RN")) return 24;
+		if (region.equals("PB")) return 25;
+		if (region.equals("PE")) return 26;
+		if (region.equals("AL")) return 27;
+		if (region.equals("SE")) return 28;
+		if (region.equals("BA")) return 29;
+		if (region.equals("MG")) return 31;
+		if (region.equals("ES")) return 32;
+		if (region.equals("RJ")) return 33;
+		if (region.equals("SP")) return 35;
+		if (region.equals("PR")) return 41;
+		if (region.equals("SC")) return 42;
+		if (region.equals("RS")) return 43;
+		if (region.equals("MS")) return 50;
+		if (region.equals("MT")) return 51;
+		if (region.equals("GO")) return 52;
+		if (region.equals("DF")) return 53;
+		return -1;
+	}	//	getRegionCode
+	
+	/**
+	 * 	Pega o código do estado
+	 * 	
 	 * 	@param oi
 	 * 	@return	region code
 	 */
