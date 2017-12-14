@@ -6,5 +6,5 @@ UPDATE AD_Process_Para SET DefaultValue='@#AD_Org_ID@',AD_Val_Rule_ID=202,Update
 ;
 
 
-SELECT Register_Migration_Script ('20171214170000_ConsultarCadFix.sql') FROM DUAL
+SELECT Register_Migration_Script ('201712141700_ConsultarCadFix.sql') FROM DUAL
 ;

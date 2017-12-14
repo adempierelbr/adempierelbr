@@ -7,7 +7,7 @@ UPDATE adempiere.AD_Process_Para SET VFormat = '00.000.000/0000-00', FieldLength
 
 -- 04/12/2017 17h00min00s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-SELECT Register_Migration_Script ('20171204170000_ConsultarCadCPFCNPJ.sql') FROM DUAL
+SELECT Register_Migration_Script ('201712041700_ConsultarCadCPFCNPJ.sql') FROM DUAL
 ;
 
 EXIT
