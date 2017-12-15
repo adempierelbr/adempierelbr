@@ -931,6 +931,9 @@ public class NFeXMLGenerator
 				String xPed = orderline.getParent().getPOReference();
 				if (xPed != null && !xPed.trim().isEmpty())
 				{
+					//	Trim XPed
+					xPed = xPed.trim();
+					
 					if (xPed.length() > 15)
 						xPed = xPed.substring (0, 15);
 					prod.setXPed (xPed);
