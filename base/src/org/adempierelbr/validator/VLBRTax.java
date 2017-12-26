@@ -496,7 +496,14 @@ public class VLBRTax implements ModelValidator
 		}
 		
 		if (save)
-			parentPO.save();
+		{
+			String sql = "UPDATE " + parentPO.get_TableName() + " i "
+					+ " SET TotalLines=?, GrandTotal=? "
+						+ "WHERE " + parentPO.get_TableName() + "_ID=?";
+			int no = DB.executeUpdate (sql, new Object[]{totalLines, grandTotal, parentPO.get_ID()}, false, parentPO.get_TrxName());
+			if (no != 1)
+				log.warning("(2) #" + no);
+		}
 		
 		return true;
 	}	//	updateTax
