@@ -610,7 +610,7 @@ public class MLBRTax extends X_LBR_Tax
 	public static Object[] getTaxes (I_W_C_OrderLine ol, String trxName)
 	{
 		//	Wrong transaction, do not continue
-		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Order WHERE C_Order_ID=", ol.getC_Order_ID()) != 1)
+		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Order WHERE C_Order_ID=?", ol.getC_Order_ID()) != 1)
 			return null;
 		//
 		I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), ol.getC_Order_ID(), trxName), I_W_C_Order.class);
@@ -634,7 +634,7 @@ public class MLBRTax extends X_LBR_Tax
 	public static Object[] getTaxes (I_W_C_InvoiceLine il, String trxName)
 	{
 		//	Wrong transaction, do not continue
-		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Invoice WHERE C_Invoice_ID=", il.getC_Invoice_ID()) != 1)
+		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Invoice WHERE C_Invoice_ID=?", il.getC_Invoice_ID()) != 1)
 			return null;
 		//
 		I_W_C_Invoice i = POWrapper.create(new MInvoice (Env.getCtx(), il.getC_Invoice_ID(), trxName), I_W_C_Invoice.class);
