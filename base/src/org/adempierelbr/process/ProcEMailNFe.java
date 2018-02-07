@@ -225,7 +225,7 @@ public class ProcEMailNFe extends SvrProcess
 		}
 		
 		//	Ask for Delivery Notification
-		mail.setDeliveryNotification(true);
+		mail.setDeliveryNotification(MSysConfig.getBooleanValue("LBR_CONFIRM_RECEIPT_EMAIL_NFE", false));
 		
 		//	Responder para
 		if (replyTo != null)
