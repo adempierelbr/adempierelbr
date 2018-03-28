@@ -1,12 +1,14 @@
 package org.adempierelbr.process;
 
 import java.io.StringReader;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 
 import javax.xml.stream.XMLInputFactory;
 
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFConfig;
+import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeXMLGenerator;
@@ -213,6 +215,9 @@ public class ConsultNFe extends SvrProcess
 			msg.append("<br />Data/Hora: ").append (NFeUtil.formatTime (ret.getDhRecbto().toString()));
 			msg.append("<br />Chave: ").append(ret.getChNFe());
 			
+			//	Nota Fiscal Eletrônica
+			MLBRNotaFiscal nfe  = null;
+			
 			//	Dados do Protocolo
 			if (ret.getProtNFe() != null)
 			{
@@ -231,7 +236,7 @@ public class ConsultNFe extends SvrProcess
 				//	Atualiza os dados da NF-e
 				if (p_LBR_UpdateNFe)
 				{
-					MLBRNotaFiscal nfe = MLBRNotaFiscal.getNFe(ret.getChNFe(), get_TrxName());
+					nfe = MLBRNotaFiscal.getNFe(ret.getChNFe(), get_TrxName());
 					if (nfe != null && nfe.getAD_Org_ID() == p_AD_Org_ID && nfe.islbr_IsOwnDocument())
 					{
 						//	NF sem protocolo
@@ -245,7 +250,7 @@ public class ConsultNFe extends SvrProcess
 								
 								//	Valida se o protocolo é válido para o XML anexado
 								if (!nfe.isProtocolValid(digestValue))
-									msg = new StringBuilder("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
+									msg.append ("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
 								
 								else
 								{
@@ -262,7 +267,7 @@ public class ConsultNFe extends SvrProcess
 						
 						//	NF já atualizada
 						else
-							msg.append("<br /><br />Nota Fiscal já possuí dados do protocolo");
+							msg.append("<br /><br />Nota Fiscal já possuí dados do protocolo de autorização");
 					}
 					else
 					{
@@ -301,26 +306,26 @@ public class ConsultNFe extends SvrProcess
 
 								//	Valida a chave de acesso
 								if (nfe.getlbr_NFeID() == null || !nfe.getlbr_NFeID().equals(ret.getChNFe()))
-									msg.append("<br /><br /> Falha na atualização da NF, chave inválida ");
+									msg.append ("<br /><br /> Falha na atualização da NF, chave inválida ");
 								
 								//	Valida se existe XML
 								else if (!nfe.hasNFeXML())
-									msg.append("<br /><br /> Falha na atualização da NF, sem XML");
+									msg.append ("<br /><br /> Falha na atualização da NF, sem XML");
 									
 								//	Valida se o XML é válido
 								else if (!nfe.isProtocolValid(digestValue))
-									msg.append("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
+									msg.append ("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
 									
 								//	Tudo OK, prosseguir
 								else
 								{
 									MLBRNotaFiscal.authorizeNFe (ret.getProtNFe(), get_TrxName());
-									msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo foram atualizados na NFe</font>");
+									msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo de autorização foram atualizados na NFe</font>");
 								}
 							}
 							catch (Exception e)
 							{
-								msg.append("<br /><br /> Falha na reconstrução do XML - " + e.getMessage());
+								msg.append ("<br /><br /> Falha na reconstrução do XML - " + e.getMessage());
 							}
 						}
 						
@@ -342,6 +347,43 @@ public class ConsultNFe extends SvrProcess
 				msg.append("<br /><b>Protocolo:</b> ").append(infCanc.getNProt());
 				msg.append("<br /><b>Versão da Aplicação:</b> ").append(infCanc.getVerAplic());
 				msg.append("<br /><b>Data/Hora Recbto:</b> ").append(infCanc.getDhRecbto());
+				
+				//	Atualiza os dados do protocolo do cancelamento
+				if (p_LBR_UpdateNFe && nfe != null)
+				{
+					if (!nfe.isCancelled())
+					{
+						//	Valida se o motivo do cancelamento foi digitado
+						String cancelReason = nfe.getlbr_MotivoCancel();
+						if (cancelReason == null || cancelReason.length() < 15)
+							cancelReason = "Registro do cancelamento obtido via processo sob o protocolo " + infCanc.getNProt();
+						
+						//	Cria um evento para registro
+						MLBRNFeEvent event = MLBRNFeEvent.registerEvent (nfe, MLBRNFeEvent.LBR_EVENTTYPE_Cancelamento, cancelReason, 1, false, false);
+						
+						//	Adiciona os dados de autorização de evento
+						event.setlbr_NFeProt(infCanc.getNProt());
+						event.setDateTrx (new Timestamp (infCanc.getDhRecbto().getTimeInMillis()));
+						event.setlbr_NFeStatus(MLBRNFeEvent.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E);
+						event.setStatus (infCanc.getXMotivo ());
+						event.setDocStatus(MLBRNFeEvent.DOCSTATUS_Completed);
+						event.setDocAction(MLBRNFeEvent.DOCACTION_None);
+						event.setProcessed(true);
+						event.save ();
+						
+						//	Cancel NF
+						nfe.setVoidInfo (true);
+						
+						//	Do not reverse documents automatically
+						nfe.setLBR_ReverseInOut(false);
+						nfe.setLBR_ReverseInvoice(false);
+						nfe.save ();
+						
+						msg.append("<br /><br /><font color=\"008800\">Os dados do protocolo de cancelamento foram atualizados na NFe</font>");
+					}
+					else
+						msg.append("<br /><br />Nota Fiscal já possuí dados do protocolo de cancelamento");
+				}
 			}
 		}
 		catch (Throwable e)

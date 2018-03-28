@@ -686,6 +686,19 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 	 */
 	public static void registerEvent (MLBRNotaFiscal nf, String eventType, String desc, int seqNo, boolean updateNFe) throws AdempiereException
 	{
+		registerEvent (nf, eventType, desc, seqNo, updateNFe, true);
+	}	//	registerEvent
+	
+	/**
+	 * 	Registrar evento
+	 * @param nf
+	 * @param eventType
+	 * @param desc
+	 * @param seqNo
+	 * @throws AdempiereException
+	 */
+	public static MLBRNFeEvent registerEvent (MLBRNotaFiscal nf, String eventType, String desc, int seqNo, boolean updateNFe, boolean transmit) throws AdempiereException
+	{
 		MLBRNFeEvent event = new MLBRNFeEvent (nf.getCtx(), 0, nf.get_TrxName());
 		event.setAD_Org_ID(nf.getAD_Org_ID());
 		event.setLBR_NotaFiscal_ID(nf.getLBR_NotaFiscal_ID());
@@ -697,16 +710,22 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 		event.saveEx();
 		//
 		event.m_updateNFe = updateNFe;
-		//
-		if (event.processIt(DOCACTION_Complete))
+		
+		//	Transmit the evento to SeFaz
+		if (transmit)
 		{
-			event.setDocStatus(DOCSTATUS_Completed);
-			event.setDocAction(DOCACTION_None);
-			event.save();
+			if (event.processIt(DOCACTION_Complete))
+			{
+				event.setDocStatus(DOCSTATUS_Completed);
+				event.setDocAction(DOCACTION_None);
+				event.save();
+			}
+			else
+			{
+				throw new AdempiereException ("Falha ao completar o registro do evento. " + event.getProcessMsg());
+			}
 		}
-		else
-		{
-			throw new AdempiereException ("Falha ao completar o registro do evento. " + event.getProcessMsg());
-		}
+		
+		return event;
 	}	//	registerEvent
 }	//	MLBRNFeEvent
