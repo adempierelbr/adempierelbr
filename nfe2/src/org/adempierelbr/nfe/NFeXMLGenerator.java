@@ -1587,10 +1587,10 @@ public class NFeXMLGenerator
 					if (nf.islbr_HasOpenItems())
 					    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
 					    {
-					    	Dup dup = cobr.addNewDup();
-					    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-					    	dup.setDVenc(normalize (openItem.getDueDate()));
-					    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+						    	Dup dup = cobr.addNewDup();
+						    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+						    	dup.setDVenc(normalize (openItem.getDueDate()));
+						    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
 						}
 				}
 			}
