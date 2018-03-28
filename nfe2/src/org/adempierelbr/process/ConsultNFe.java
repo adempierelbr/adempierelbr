@@ -301,15 +301,15 @@ public class ConsultNFe extends SvrProcess
 
 								//	Valida a chave de acesso
 								if (nfe.getlbr_NFeID() == null || !nfe.getlbr_NFeID().equals(ret.getChNFe()))
-									msg = new StringBuilder("<br /><br /> Falha na atualização da NF, chave inválida ");
+									msg.append("<br /><br /> Falha na atualização da NF, chave inválida ");
 								
 								//	Valida se existe XML
 								else if (!nfe.hasNFeXML())
-									msg = new StringBuilder("<br /><br /> Falha na atualização da NF, sem XML");
+									msg.append("<br /><br /> Falha na atualização da NF, sem XML");
 									
 								//	Valida se o XML é válido
 								else if (!nfe.isProtocolValid(digestValue))
-									msg = new StringBuilder("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
+									msg.append("<br /><br /> Falha ao atualizar NFe, diferença no Digest Value. Verifique se a NF foi alterada");
 									
 								//	Tudo OK, prosseguir
 								else
@@ -320,7 +320,7 @@ public class ConsultNFe extends SvrProcess
 							}
 							catch (Exception e)
 							{
-								msg = new StringBuilder("<br /><br /> Falha na reconstrução do XML - " + e.getMessage());
+								msg.append("<br /><br /> Falha na reconstrução do XML - " + e.getMessage());
 							}
 						}
 						
