@@ -351,6 +351,9 @@ public class ValidatorInvoice implements ModelValidator
 				MPaymentTerm pt = new MPaymentTerm(invoice.getCtx(), invoice.getC_PaymentTerm_ID(), null);
 				log.fine(pt.toString());
 				pt.apply(invoice);
+				
+				//	Salva para que os processos futuros tenham acesso a condição de pagamento aplicada
+				invoice.save();
 			}
 			/**
 			 * 	2 - Alocação de Faturas que não geram itens em aberto
