@@ -704,7 +704,7 @@ public class NFSeImpl implements INFSe
 		{
 			MLBRNotaFiscal nf = new MLBRNotaFiscal (ctx, LBR_NotaFiscal_ID, trxName);
 			ProcReturnRPS.proccessNFSe (nf, p_NFe, p_VerifCode);
-			ProcEMailNFe.sendEmailNFe (nf, false);
+			ProcEMailNFe.sendEmailNFeThread (nf, false);
 		}
 	}	//	proccessNFSe
 	

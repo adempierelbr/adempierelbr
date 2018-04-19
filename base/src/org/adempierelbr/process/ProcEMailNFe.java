@@ -298,13 +298,13 @@ public class ProcEMailNFe extends SvrProcess
 		if (mail.send().equals(EMail.SENT_OK))
 		{
 			//	Mark as e-mail sent
-			int count = DB.executeUpdate ("UPDATE LBR_NotaFiscal SET LBR_EMailSent='Y' WHERE LBR_NotaFiscal_ID=?", nf.getLBR_NotaFiscal_ID(), null);
+			int count = DB.executeUpdate ("UPDATE LBR_NotaFiscal SET LBR_EMailSent='Y' WHERE LBR_NotaFiscal_ID=?", nf.getLBR_NotaFiscal_ID(), nf.get_TrxName());
 			
 			//	Force save the log
 			if (count == 1)
 			{
 				int AD_Session_ID = Env.getContextAsInt(nf.getCtx(), "#AD_Session_ID");
-				MChangeLog c = new MChangeLog (nf.getCtx(), 0, null, AD_Session_ID, MLBRNotaFiscal.Table_ID, 
+				MChangeLog c = new MChangeLog (nf.getCtx(), 0, nf.get_TrxName(), AD_Session_ID, MLBRNotaFiscal.Table_ID, 
 						MColumn.getColumn_ID(MLBRNotaFiscal.Table_Name, MLBRNotaFiscal.COLUMNNAME_LBR_EMailSent), 
 						nf.getLBR_NotaFiscal_ID(), nf.getAD_Client_ID(), nf.getAD_Org_ID(), nf.isLBR_EMailSent(), true, MChangeLog.EVENTCHANGELOG_Update);
 				c.save();
