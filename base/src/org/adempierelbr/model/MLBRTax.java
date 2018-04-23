@@ -284,7 +284,7 @@ public class MLBRTax extends X_LBR_Tax
 			if (taxFormula != null 
 					&& taxFormula.get_ColumnIndex(MLBRTaxFormula.COLUMNNAME_Percentage) > 0		//	Compatibility Legacy 
 					&& Env.ONEHUNDRED.compareTo (taxFormula.getPercentage()) != 0)
-				taxAmt = taxAmt.multiply (taxFormula.getPercentage().divide (Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)).setScale(3, BigDecimal.ROUND_HALF_UP);
+				taxAmt = taxAmt.multiply (taxFormula.getPercentage().divide (Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP);
 			
 			//	Inverte o valor dos impostos para os casos de retenção
 			if (MLBRTaxName.LBR_TAXTYPE_Service.equals(taxName.getlbr_TaxType())
