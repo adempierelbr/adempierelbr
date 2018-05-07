@@ -188,7 +188,8 @@ public class ValidatorInvoice implements ModelValidator
 			wInvoice.setlbr_ShipNote(wOrder.getlbr_ShipNote());
 			
 			//	Billing Bank Account
-			wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
+			if (wOrder.getC_BankAccount_ID() > 0)
+				wInvoice.setC_BankAccount_ID(wOrder.getC_BankAccount_ID());
 			
 			//	Indication of presence of the customer at sales point
 			wInvoice.setLBR_IndPres(wOrder.getLBR_IndPres());
