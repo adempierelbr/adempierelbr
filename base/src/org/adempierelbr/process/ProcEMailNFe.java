@@ -27,6 +27,7 @@ import org.compiere.util.DB;
 import org.compiere.util.EMail;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Trx;
 
 /**
  * 	Processo para enviar a NF-e para o e-mail do Cliente
@@ -91,6 +92,40 @@ public class ProcEMailNFe extends SvrProcess
 		{
 			public void run ()
 			{
+				try
+				{
+					int counterLimit = 0;
+					Thread.sleep (10*1000);	//	10 secs waiting time
+					
+					//	Wait until the transaction is closed by other processes
+					//	max of 60 interactions, resulting in a 10 minutes total
+					while (counterLimit < 60)
+					{
+						Trx trx = Trx.get (nf.get_TrxName(), false);
+						
+						//	Transaction closed or inactive, abort
+						if (trx == null || !trx.isActive())
+							counterLimit = 999;
+						
+						else
+						{
+							if (counterLimit == 0)
+								log.warning("Aguardando a liberação da NF para envio de e-mail, tentando novamente a cada 10 segs num limite de 10 min");
+							//
+							counterLimit++;
+							Thread.sleep (10*1000);	//	10 secs waiting time
+						}
+					} 
+					
+					//	Log that waiting time is reached
+					if (counterLimit == 60)
+						log.warning("Tempo limite atingido. Tentando forçar o envio de e-mail mesmo sem a liberação da transação da NF");
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
 				//	Make sure the transaction is new
 				String result = ProcEMailNFe.sendEmailNFe (new MLBRNotaFiscal (nf.getCtx(), nf.getLBR_NotaFiscal_ID(), null), force);
 				
