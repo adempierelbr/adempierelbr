@@ -16972,6 +16972,10 @@ ALTER TABLE LBR_PartnerDFe ADD COLUMN IsCancelled CHAR(1) DEFAULT 'N' CHECK (IsC
 -- 28/06/2017 18h18min40s BRT
 -- *** FIM do KenosERP/047-DFeCancelled.sql
 
+-- FIX Login Error
+UPDATE AD_Rule SET IsActive='N' WHERE AD_Rule_ID IN (1120002, 1120003, 1120006)
+;
+
 SELECT Register_Migration_Script ('201708301830_KenosERP.sql') FROM DUAL
 ;
 
