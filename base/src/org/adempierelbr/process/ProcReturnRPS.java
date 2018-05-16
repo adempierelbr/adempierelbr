@@ -126,7 +126,7 @@ public class ProcReturnRPS extends SvrProcess
 				proccessNFSe (nf, noNFe, protNFe);
 				
 				//	Enviar e-mail
-				ProcEMailNFe.sendEmailNFe (nf, false);
+				ProcEMailNFe.sendEmailNFeThread (nf, false);
 				
 				countOK++;
 			}

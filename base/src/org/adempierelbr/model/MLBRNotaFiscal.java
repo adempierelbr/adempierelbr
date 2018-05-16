@@ -728,6 +728,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (protNFe == null || protNFe.getInfProt() == null)
 			throw new Exception ("Protocolo inválido");
 
+		Boolean sendMail = false;
+		
 		InfProt infProt = protNFe.getInfProt();
 			
 		String chNFe	= infProt.getChNFe();
@@ -818,15 +820,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			//	Atualiza o anexo
 			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
-			attachment.save();
-			
-			//	Envia o e-mail para o cliente
-			//	em caso de erro o try/catch evita que o processamento não seja commitado
-			try
-			{
-				ProcEMailNFe.sendEmailNFe (nf, false);
-			}
-			catch (Exception e) {}
+			if (attachment.save())
+				sendMail = true;
 		}
 		
 		//	Notas Fiscais Denegadas
@@ -852,6 +847,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Save changes
 		nf.save();
+		
+		//	Send mail
+		if (sendMail)
+		{
+			//	Envia o e-mail para o cliente
+			//	em caso de erro o try/catch evita que o processamento não seja commitado
+			try
+			{
+				ProcEMailNFe.sendEmailNFeThread (nf, false);
+			}
+			catch (Exception e) {}
+		}
 	}	//	authorizeNFe
 
 	/**
@@ -2518,6 +2525,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			if (!TextUtil.match (getLBR_IndPres(), LBR_INDPRES_OperaçãoPresencial, LBR_INDPRES_NFC_EEmOperaçãoComEntregaEmDomicílio))
 				setLBR_IndPres (LBR_INDPRES_OperaçãoPresencial);
 		}
+		
+		//	Region must be upper case
+		if (getlbr_BPShipperRegion() != null && !getlbr_BPShipperRegion().isEmpty())
+			setlbr_BPShipperRegion(getlbr_BPShipperRegion().toUpperCase());
 		
 		return true;
 	}	//	beforeSave

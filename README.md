@@ -73,6 +73,15 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201804 [[Download]][90] [[Seed PostgreSQL]][91] ~~Seed OracleXE~~
+
+	* Consultar Cadastro por CPF
+	* Novas Cidades
+	* Trava de emissão de boleto por banco e organização
+	* Envio de e-mail da NFe em background
+	* EFD versão 12
+	* [Mais detalhes][89]
+	
 1. LBR-201709 [[Download]][86] [[Seed PostgreSQL]][87] [[Seed OracleXE]][88]
 
 	* Funcionalidade para emissão de MDF-e
@@ -368,3 +377,6 @@ Patrocinadores desta versão
 [86]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
 [87]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
 [88]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz
+[89]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201804
+[90]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201804.tgz
+[91]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201804_PG.tgz

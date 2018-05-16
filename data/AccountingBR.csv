@@ -354,6 +354,7 @@
 5.1.1.03.0012,Taxa de Variação,,Expense,,Yes,No,P_RATEVARIANCE_ACCT,5.1.1.03,,,,,,,,,,
 5.1.1.03.0013,Variação Mix,,Expense,,Yes,No,P_MIXVARIANCE_ACCT,5.1.1.03,,,,,,,,,,
 5.1.1.03.0014,Variação do Custo Médio,,Expense,,Yes,No,P_AVERAGECOSTVARIANCE_ACCT,5.1.1.03,,,,,,,,,,
+5.1.1.03.0015,Ajustes de Custo Operacional,Default Landed Cost Clearing,Expense,,Yes,No,P_LANDEDCOSTCLEARING_ACCT,5.1.1.03,,,,,,,,,,
 6,Receitas e Despesas não Operacional,,Expense,,,Yes,,,,,,,,,,,,
 6.1,Resultado na Alienação Ativo Imobilizado,,Expense,,,Yes,,6,,,,,,,,,,
 6.1.1,Resultado na Alienação Ativo Imobilizado,,Expense,,,Yes,,6.1,,,,,,,,,,

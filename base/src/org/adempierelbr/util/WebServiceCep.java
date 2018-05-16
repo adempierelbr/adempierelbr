@@ -12,8 +12,10 @@
  *****************************************************************************/
 package org.adempierelbr.util;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -183,13 +185,16 @@ public final class WebServiceCep {
      * @param cep número do cep.
      * @return {@link Document} xml WebService do site Republic Virtual
      * @throws DocumentException Quando há problema na formação do documento XML.
-     * @throws MalformedURLException Quando a há problema no link url.
+     * @throws IOException 
      */
 	private static Document getDocument(String cep) 
-			throws DocumentException, MalformedURLException {
-		URL url = new URL(String.format(URL_STRING, cep));
+			throws DocumentException, IOException {
+		URLConnection conn = new URL(String.format(URL_STRING, cep)).openConnection();
+		conn.setConnectTimeout(10000);
+		conn.setReadTimeout(10000);
+		//
 		SAXReader reader = new SAXReader();
-        Document document = reader.read(url);
+        Document document = reader.read(conn.getInputStream());
         return document;
 	}
 	/**
@@ -197,10 +202,10 @@ public final class WebServiceCep {
      * @param cep número do cep.
 	 * @return {@link Element} principal (root) da arvore XML.
      * @throws DocumentException Quando há problema na formação do documento XML.
-     * @throws MalformedURLException Quando a há problema no link url.
+	 * @throws IOException 
 	 */
 	private static Element getRootElement(String cep) 
-			throws DocumentException, MalformedURLException {
+			throws DocumentException, IOException {
 		return getDocument(cep).getRootElement();
 	}
 	/**
@@ -215,10 +220,10 @@ public final class WebServiceCep {
      * @param cep número do cep.
 	 * @return
      * @throws DocumentException Quando há problema na formação do documento XML.
-     * @throws MalformedURLException Quando a há problema no link url.
+	 * @throws IOException 
 	 */
 	private static IterableElement getElements(String cep) 
-			throws DocumentException, MalformedURLException {
+			throws DocumentException, IOException {
 		return new IterableElement(getRootElement(cep).elementIterator());
 	}
 	/**
@@ -261,6 +266,10 @@ public final class WebServiceCep {
 		} catch (MalformedURLException ex) {
 			loadCep.setExceptio(ex);
 			loadCep.setResultText("Erro na formação da url.");
+			loadCep.setResulCode(-16);
+		} catch (IOException ex) {
+			loadCep.setExceptio(ex);
+			loadCep.setResultText("Erro na conexão");
 			loadCep.setResulCode(-16);
 		} catch (Exception ex) {
 			loadCep.setExceptio(ex);
@@ -360,7 +369,7 @@ public final class WebServiceCep {
 	 * 			cadastrado.
 	 */
 	public boolean wasSuccessful() {
-		return (resulCode == 1 && exception == null);
+		return ((resulCode == 1 || resulCode == 2) && exception == null);
 	}
 	/**
 	 * Informa se não existe o cep cadastrado.

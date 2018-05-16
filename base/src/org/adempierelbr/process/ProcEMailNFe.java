@@ -13,7 +13,9 @@ import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MChangeLog;
 import org.compiere.model.MClient;
+import org.compiere.model.MColumn;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
@@ -21,9 +23,11 @@ import org.compiere.model.MUser;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.EMail;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Trx;
 
 /**
  * 	Processo para enviar a NF-e para o e-mail do Cliente
@@ -74,6 +78,65 @@ public class ProcEMailNFe extends SvrProcess
 		//
 		return sendEmailNFe (nf, p_EMail, true);
 	}	//	doIt
+	
+	/**
+	 * 		Método para enviar e-mail da NF-e numa nova thread
+	 * 
+	 * @param nf
+	 * @param force
+	 * @return
+	 */
+	public static void sendEmailNFeThread (final MLBRNotaFiscal nf, final boolean force)
+	{
+		Thread thread = new Thread ("Timeout") 
+		{
+			public void run ()
+			{
+				try
+				{
+					int counterLimit = 0;
+					Thread.sleep (10*1000);	//	10 secs waiting time
+					
+					//	Wait until the transaction is closed by other processes
+					//	max of 60 interactions, resulting in a 10 minutes total
+					while (counterLimit < 60)
+					{
+						Trx trx = Trx.get (nf.get_TrxName(), false);
+						
+						//	Transaction closed or inactive, abort
+						if (trx == null || !trx.isActive())
+							counterLimit = 999;
+						
+						else
+						{
+							if (counterLimit == 0)
+								log.warning("Aguardando a liberação da NF para envio de e-mail, tentando novamente a cada 10 segs num limite de 10 min");
+							//
+							counterLimit++;
+							Thread.sleep (10*1000);	//	10 secs waiting time
+						}
+					} 
+					
+					//	Log that waiting time is reached
+					if (counterLimit == 60)
+						log.warning("Tempo limite atingido. Tentando forçar o envio de e-mail mesmo sem a liberação da transação da NF");
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
+				//	Make sure the transaction is new
+				String result = ProcEMailNFe.sendEmailNFe (new MLBRNotaFiscal (nf.getCtx(), nf.getLBR_NotaFiscal_ID(), null), force);
+				
+				if (result.indexOf ("@Success@") == -1)
+					log.fine ("Erro ao enviar e-mail da NF #" + nf.getlbr_NFeID() + ", Resultado: " + result);
+			}
+		};
+		
+		//	Timeout check
+		thread.start();
+	}	//	sendEmailNFeThread
 	
 	/**
 	 * 	Método para enviar e-mail da NF-e
@@ -225,7 +288,7 @@ public class ProcEMailNFe extends SvrProcess
 		}
 		
 		//	Ask for Delivery Notification
-		mail.setDeliveryNotification(true);
+		mail.setDeliveryNotification(MSysConfig.getBooleanValue("LBR_CONFIRM_RECEIPT_EMAIL_NFE", false));
 		
 		//	Responder para
 		if (replyTo != null)
@@ -269,11 +332,23 @@ public class ProcEMailNFe extends SvrProcess
 		//
 		if (mail.send().equals(EMail.SENT_OK))
 		{
-			nf.setLBR_EMailSent (true);
-			nf.save();
+			//	Mark as e-mail sent
+			int count = DB.executeUpdate ("UPDATE LBR_NotaFiscal SET LBR_EMailSent='Y' WHERE LBR_NotaFiscal_ID=?", nf.getLBR_NotaFiscal_ID(), nf.get_TrxName());
+			
+			//	Force save the log
+			if (count == 1)
+			{
+				int AD_Session_ID = Env.getContextAsInt(nf.getCtx(), "#AD_Session_ID");
+				MChangeLog c = new MChangeLog (nf.getCtx(), 0, nf.get_TrxName(), AD_Session_ID, MLBRNotaFiscal.Table_ID, 
+						MColumn.getColumn_ID(MLBRNotaFiscal.Table_Name, MLBRNotaFiscal.COLUMNNAME_LBR_EMailSent), 
+						nf.getLBR_NotaFiscal_ID(), nf.getAD_Client_ID(), nf.getAD_Org_ID(), nf.isLBR_EMailSent(), true, MChangeLog.EVENTCHANGELOG_Update);
+				c.save();
+			}
 		}
 		else
+		{
 			return "@Error@ " + mail.getSentMsg();
+		}
 		//
 		return "@Success@";
 	}	//	sendEmailNFe

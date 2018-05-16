@@ -720,10 +720,12 @@ public class NFeXMLGenerator
 				if (retOuEntreg != null)
 				{
 					//	CNPJ ou CPF
-					if (MLBRNotaFiscal.LBR_BPTYPEBR_PF_Individual.equals(nf.getlbr_BPTypeBR()))
+					String cnpjf = toNumericStr (nf.getlbr_BPDeliveryCNPJ());
+
+					if (cnpjf.length() == 11)
 						retOuEntreg.setCPF(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 					
-					else if (MLBRNotaFiscal.LBR_BPTYPEBR_PJ_LegalEntity.equals(nf.getlbr_BPTypeBR()))
+					else if (cnpjf.length() == 14)
 						retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 					//
 					retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
@@ -844,9 +846,20 @@ public class NFeXMLGenerator
 			prod.setVUnCom(normalize10  (nfl.getPrice()));
 			prod.setVProd(normalize  (nfl.getLineTotalAmt()));
 //			prod.setCEANTrib();		//	Check above (after setCEAN)
-			prod.setUTrib(normalize (nfl.getlbr_UOMName()));
-			prod.setQTrib(normalize4  (nfl.getQty()));
-			prod.setVUnTrib(normalize10  (nfl.getPrice()));
+			
+			// 	Unidade Tributária pode ser Diferente apenas para Exportação
+			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ()))
+			{
+				prod.setUTrib(normalize (nfl.getlbr_UTribName()));
+				prod.setQTrib(normalize4  ((nfl.getlbr_qTrib())));
+				prod.setVUnTrib(normalize10  (nfl.getlbr_vUnTrib()));
+			}
+			else
+			{	
+				prod.setUTrib(normalize (nfl.getlbr_UOMName()));
+				prod.setQTrib(normalize4 (nfl.getQty()));
+				prod.setVUnTrib(normalize10 (nfl.getPrice()));
+			}	
 			
 			//	Valores adicionais
 			BigDecimal freightAmt 		= nfl.getFreightAmt();
@@ -918,6 +931,9 @@ public class NFeXMLGenerator
 				String xPed = orderline.getParent().getPOReference();
 				if (xPed != null && !xPed.trim().isEmpty())
 				{
+					//	Trim XPed
+					xPed = xPed.trim();
+					
 					if (xPed.length() > 15)
 						xPed = xPed.substring (0, 15);
 					prod.setXPed (xPed);
@@ -1258,7 +1274,7 @@ public class NFeXMLGenerator
 					PISAliq pisAliq = imposto.addNewPIS().addNewPISAliq();
 					pisAliq.setCST(Det.Imposto.PIS.PISAliq.CST.Enum.forString (taxStatus));
 					pisAliq.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisAliq.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisAliq.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisAliq.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 				else if (TextUtil.match (taxStatus, CST_PC_03))
@@ -1279,14 +1295,14 @@ public class NFeXMLGenerator
 					PISOutr pisOutr = imposto.addNewPIS().addNewPISOutr();
 					pisOutr.setCST(Det.Imposto.PIS.PISOutr.CST.Enum.forString (taxStatus));
 					pisOutr.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisOutr.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisOutr.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisOutr.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 				else if (false)	//	FIXME PIS ST
 				{
 					PISST pisST = imposto.addNewPISST();
 					pisST.setVBC(normalize  (pisTax.getlbr_TaxBaseAmt()));
-					pisST.setPPIS(normalize4  (pisTax.getlbr_TaxRate()));
+					pisST.setPPIS(normalize  (pisTax.getlbr_TaxRate()));
 					pisST.setVPIS(normalize  (pisTax.getlbr_TaxAmt()));
 				}
 			}
@@ -1304,7 +1320,7 @@ public class NFeXMLGenerator
 					COFINSAliq cofinsAliq = imposto.addNewCOFINS().addNewCOFINSAliq();
 					cofinsAliq.setCST(Det.Imposto.COFINS.COFINSAliq.CST.Enum.forString (taxStatus));
 					cofinsAliq.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsAliq.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsAliq.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsAliq.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 				else if (TextUtil.match (taxStatus, CST_PC_03))
@@ -1325,14 +1341,14 @@ public class NFeXMLGenerator
 					COFINSOutr cofinsOutr = imposto.addNewCOFINS().addNewCOFINSOutr();
 					cofinsOutr.setCST(Det.Imposto.COFINS.COFINSOutr.CST.Enum.forString (taxStatus));
 					cofinsOutr.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsOutr.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsOutr.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsOutr.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 				else if (false)	//	FIXME COFINS ST
 				{
 					COFINSST cofinsST = imposto.addNewCOFINSST();
 					cofinsST.setVBC(normalize  (cofinsTax.getlbr_TaxBaseAmt()));
-					cofinsST.setPCOFINS(normalize4  (cofinsTax.getlbr_TaxRate()));
+					cofinsST.setPCOFINS(normalize  (cofinsTax.getlbr_TaxRate()));
 					cofinsST.setVCOFINS(normalize  (cofinsTax.getlbr_TaxAmt()));
 				}
 			}
@@ -1551,29 +1567,32 @@ public class NFeXMLGenerator
 					discountAmt = Env.ZERO;
 				
 				//	Fatura
-				Fat fat = cobr.addNewFat();
-				String fatNo = nf.getC_Invoice().getDocumentNo();
-				
-				fat.setNFat (fatNo); 				// 	Codigo NFE
-				fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
-				
-				if (discountAmt.signum() == 1)
-					fat.setVDesc (normalize (discountAmt));
-				
-				fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
-		
-				//	Contador de duplicata
-				int dupCounter = 1;
-				
-			    //	Adiciona as duplicatas da fatura
-				if (nf.islbr_HasOpenItems())
-				    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
-				    {
-				    	Dup dup = cobr.addNewDup();
-				    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-				    	dup.setDVenc(normalize (openItem.getDueDate()));
-				    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
-					}
+				if (nf.getC_Invoice_ID() > 0)
+				{
+					Fat fat = cobr.addNewFat();
+					String fatNo = nf.getC_Invoice().getDocumentNo();
+					
+					fat.setNFat (fatNo); 				// 	Codigo NFE
+					fat.setVOrig(normalize (discountAmt.add (nf.getGrandTotal()))); // 	Valor Bruto
+					
+					if (discountAmt.signum() == 1)
+						fat.setVDesc (normalize (discountAmt));
+					
+					fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
+					
+					//	Contador de duplicata
+					int dupCounter = 1;
+					
+				    //	Adiciona as duplicatas da fatura
+					if (nf.islbr_HasOpenItems())
+					    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+					    {
+						    	Dup dup = cobr.addNewDup();
+						    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+						    	dup.setDVenc(normalize (openItem.getDueDate()));
+						    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+						}
+				}
 			}
 		}
 		

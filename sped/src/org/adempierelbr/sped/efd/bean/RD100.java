@@ -94,9 +94,15 @@ public class RD100 extends RegSped implements Comparable<Object> {
 	
 	@XMLFieldProperties(id = "COD_INF", isMandatory = false, maxSize = 6)
 	private String COD_INF;
-	
+
 	@XMLFieldProperties(id = "COD_CTA", isMandatory = false)
 	private String COD_CTA;
+	
+	@XMLFieldProperties(id = "COD_MUN_ORIG", isMandatory = false)
+	private String COD_MUN_ORIG;
+	
+	@XMLFieldProperties(id = "COD_MUN_DEST", isMandatory = false)
+	private String COD_MUN_DEST;
 
 	@XMLFieldProperties(needsValidation = true, id = "RD110", isSPEDField = false)
 	private List<RD110> rD110 = new ArrayList<RD110>();
@@ -312,6 +318,22 @@ public class RD100 extends RegSped implements Comparable<Object> {
 
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
+	}
+
+	public String getCOD_MUN_ORIG() {
+		return COD_MUN_ORIG;
+	}
+
+	public void setCOD_MUN_ORIG(String COD_MUN_ORIG) {
+		this.COD_MUN_ORIG = COD_MUN_ORIG;
+	}
+
+	public String getCOD_MUN_DEST() {
+		return COD_MUN_DEST;
+	}
+
+	public void setCOD_MUN_DEST(String COD_MUN_DEST) {
+		this.COD_MUN_DEST = COD_MUN_DEST;
 	}
 
 	public void addrD110(RD110 rd110) {

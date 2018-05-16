@@ -21446,8 +21446,8 @@ Tempo representa um valor em dado momento (ex., Valor da Fatura em 1/1) - Histó
     <value column="PO_PrintName" original="" />
   </row>
   <row id="2940" trl="Y">
-    <value column="Name" original="Support EMail">Suporta Email</value>
-    <value column="PrintName" original="Support EMail">Suporta Email</value>
+    <value column="Name" original="Support EMail">Email do Suporte</value>
+    <value column="PrintName" original="Support EMail">Email do Suporte</value>
     <value column="Description" original="EMail address to send support information and updates to">Endereço de EMail para enviar informação e atualização de suporte</value>
     <value column="Help" original="If not entered the registered email is used.">Se não entrado o email registrado é usado</value>
     <value column="PO_Description" original="" />
@@ -25398,8 +25398,8 @@ A soma do Preço de Custo Atual + Preço Atual Nível Inferior é o custo total 
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53324" trl="Y">
-    <value column="Name" original="Fail on Missing Model Validator">Falha ao Esquecer Validador de Modelo</value>
-    <value column="PrintName" original="Fail on Missing Model Validator">Falha ao Esquecer Validador de Modelo</value>
+    <value column="Name" original="Fail on Missing Model Validator">Falha na falta de Validador de Modelo</value>
+    <value column="PrintName" original="Fail on Missing Model Validator">Falha na falta de Validador de Modelo</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
@@ -25598,8 +25598,8 @@ A soma do Preço de Custo Atual + Preço Atual Nível Inferior é o custo total 
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53346" trl="Y">
-    <value column="Name" original="Last Build Info">Última informação de Construção</value>
-    <value column="PrintName" original="Last Build Info">Última informação de Construção</value>
+    <value column="Name" original="Last Build Info">Última informação de Compilação</value>
+    <value column="PrintName" original="Last Build Info">Última informação de Compilação</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />
@@ -25608,8 +25608,8 @@ A soma do Preço de Custo Atual + Preço Atual Nível Inferior é o custo total 
     <value column="PO_PrintName" original="" />
   </row>
   <row id="53347" trl="Y">
-    <value column="Name" original="Fail if Build Differ">Falha se Construido Difere</value>
-    <value column="PrintName" original="Fail if Build Differ">Falha se Construido Difere</value>
+    <value column="Name" original="Fail if Build Differ">Falha se Compilação Difere</value>
+    <value column="PrintName" original="Fail if Build Differ">Falha se Compilação Difere</value>
     <value column="Description" original="" />
     <value column="Help" original="" />
     <value column="PO_Description" original="" />

@@ -3,12 +3,12 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="586"/>
+	<property name="ireport.x" value="919"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="PreImp" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[Boolean.FALSE]]></defaultValueExpression>
 	</parameter>
@@ -505,9 +505,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidadeComercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[( $F{unidadeComercial}.equals($F{unidadeTributaria}) ? "" + $F{unidadeComercial} : $F{unidadeComercial} + "\n" + $F{unidadeTributaria} )]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.0000" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-7" mode="Transparent" x="418" y="2" width="35" height="7" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -518,9 +518,9 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{quantidadeComercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{quantidadeComercial}.equals($F{quantidadeTributaria}) ? (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) : (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{quantidadeTributaria}))]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-8" mode="Transparent" x="455" y="2" width="38" height="7" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -531,7 +531,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorUnitarioComercial}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorUnitarioComercial}.equals($F{valorUnitarioTributario}) ? (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) : (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{valorUnitarioTributario}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement key="textField-9" mode="Transparent" x="495" y="2" width="39" height="7" isRemoveLineWhenBlank="true"/>

@@ -14,6 +14,7 @@ package org.adempierelbr.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
@@ -468,11 +469,28 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setC_UOM_ID(iLine.getC_UOM_ID());
 		setLBR_CFOP_ID(iLineW.getLBR_CFOP_ID());
 		
-		//	Número de Série
-		if (iLine.getM_AttributeSetInstance_ID()>0 
-				&& iLine.getM_AttributeSetInstance().getSerNo() != null
-				&& (MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID())))
-			appendDescription("Núm. de Série: " + iLine.getM_AttributeSetInstance().getSerNo());
+		//	Impressão dos Atributos
+		if (iLine.getM_AttributeSetInstance_ID()>0)
+		{
+			String serNo = iLine.getM_AttributeSetInstance().getSerNo();
+			String lot = iLine.getM_AttributeSetInstance().getLot();
+			Timestamp guaranteeDate = iLine.getM_AttributeSetInstance().getGuaranteeDate();
+
+			//	Número de Série
+			if (serNo != null
+					&& MSysConfig.getBooleanValue("LBR_PRINT_SERIALNUMBER_NF", true, getAD_Client_ID()))
+				appendDescription("Núm. de Série: " + serNo);
+		
+			//	Lote
+			if (lot != null
+					&& MSysConfig.getBooleanValue("LBR_PRINT_LOT_NF", false, getAD_Client_ID()))
+				appendDescription("Lote: " + lot);
+			
+			//	Vencimento
+			if (guaranteeDate != null
+					&& MSysConfig.getBooleanValue("LBR_PRINT_EXPIRE_NF", false, getAD_Client_ID()))
+				appendDescription ("Vencto: " + TextUtil.timeToString (guaranteeDate, "dd/MM/yyyy"));
+		}
 		
 		//	Impostos
 		MLBRTax tax = new MLBRTax (getCtx(), iLineW.getLBR_Tax_ID(), get_TrxName());

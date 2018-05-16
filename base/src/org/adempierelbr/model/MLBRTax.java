@@ -284,7 +284,7 @@ public class MLBRTax extends X_LBR_Tax
 			if (taxFormula != null 
 					&& taxFormula.get_ColumnIndex(MLBRTaxFormula.COLUMNNAME_Percentage) > 0		//	Compatibility Legacy 
 					&& Env.ONEHUNDRED.compareTo (taxFormula.getPercentage()) != 0)
-				taxAmt = taxAmt.multiply (taxFormula.getPercentage().divide (Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)).setScale(3, BigDecimal.ROUND_HALF_UP);
+				taxAmt = taxAmt.multiply (taxFormula.getPercentage().divide (Env.ONEHUNDRED, 17, BigDecimal.ROUND_HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP);
 			
 			//	Inverte o valor dos impostos para os casos de retenção
 			if (MLBRTaxName.LBR_TAXTYPE_Service.equals(taxName.getlbr_TaxType())
@@ -609,6 +609,10 @@ public class MLBRTax extends X_LBR_Tax
 	 */
 	public static Object[] getTaxes (I_W_C_OrderLine ol, String trxName)
 	{
+		//	Wrong transaction, do not continue
+		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Order WHERE C_Order_ID=?", ol.getC_Order_ID()) != 1)
+			return null;
+		//
 		I_W_C_Order o = POWrapper.create(new MOrder (Env.getCtx(), ol.getC_Order_ID(), trxName), I_W_C_Order.class);
 		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), ol.getM_Product_ID(), trxName), I_W_M_Product.class);
 		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), o.getAD_Org_ID(), trxName), I_W_AD_OrgInfo.class);
@@ -627,13 +631,17 @@ public class MLBRTax extends X_LBR_Tax
 	 * 	@param Invoice Line
 	 * 	@return Object Array (Taxes, Legal Msg, CFOP and CST) 
 	 */
-	public static Object[] getTaxes (I_W_C_InvoiceLine il, String trx)
+	public static Object[] getTaxes (I_W_C_InvoiceLine il, String trxName)
 	{
-		I_W_C_Invoice i = POWrapper.create(new MInvoice (Env.getCtx(), il.getC_Invoice_ID(), trx), I_W_C_Invoice.class);
-		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), il.getM_Product_ID(), trx), I_W_M_Product.class);
-		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), i.getAD_Org_ID(), trx), I_W_AD_OrgInfo.class);
-		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), i.getC_BPartner_ID(), trx), I_W_C_BPartner.class);
-		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), i.getC_BPartner_Location_ID(), trx); 
+		//	Wrong transaction, do not continue
+		if (DB.getSQLValue(trxName, "SELECT COUNT(*) FROM C_Invoice WHERE C_Invoice_ID=?", il.getC_Invoice_ID()) != 1)
+			return null;
+		//
+		I_W_C_Invoice i = POWrapper.create(new MInvoice (Env.getCtx(), il.getC_Invoice_ID(), trxName), I_W_C_Invoice.class);
+		I_W_M_Product p = POWrapper.create(new MProduct (Env.getCtx(), il.getM_Product_ID(), trxName), I_W_M_Product.class);
+		I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(Env.getCtx(), i.getAD_Org_ID(), trxName), I_W_AD_OrgInfo.class);
+		I_W_C_BPartner bp = POWrapper.create(new MBPartner (Env.getCtx(), i.getC_BPartner_ID(), trxName), I_W_C_BPartner.class);
+		MBPartnerLocation bpLoc = new MBPartnerLocation (Env.getCtx(), i.getC_BPartner_Location_ID(), trxName); 
 		//
 		return getTaxes (i.getC_DocTypeTarget_ID(), i.isSOTrx(), i.getlbr_TransactionType(), p, oi, bp, bpLoc, i.getDateAcct());
 	}	//	getTaxes
@@ -771,7 +779,7 @@ public class MLBRTax extends X_LBR_Tax
 		
 		MLBRCFOPLine cFOPLine = MLBRCFOP.chooseCFOP (oi.getAD_Org_ID(), C_DocTypeTarget_ID, p.getLBR_ProductCategory_ID(), 
 				(isSOTrx ? bp.getLBR_CustomerCategory_ID() : bp.getLBR_VendorCategory_ID()), 
-				lbr_TransactionType, lbr_DestionationType, hasSubstitution, p.islbr_IsManufactured(), lbr_TaxRegime, null);
+				lbr_TransactionType, lbr_DestionationType, hasSubstitution, POWrapper.getPO(p).get_ValueAsBoolean("lbr_IsManufactured"), lbr_TaxRegime, null);
 		//
 		if (cFOPLine != null)
 		{
