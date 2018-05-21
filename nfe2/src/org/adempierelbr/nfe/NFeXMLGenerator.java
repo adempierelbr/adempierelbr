@@ -935,14 +935,24 @@ public class NFeXMLGenerator
 					xPed = xPed.trim();
 					
 					if (xPed.length() > 15)
+					{
 						xPed = xPed.substring (0, 15);
+						log.warning("XML = xPed excede o tamanho máximo de 15 dígitos, valor será cortado no XML");
+					}
 					prod.setXPed (xPed);
 				}
 				
 				//	Preenche o item do pedido referenciado (nItemPed)
-				String nItemPed = orderline.get_ValueAsString("POReference");
-				if (nItemPed != null && !nItemPed.trim().isEmpty())
+				String nItemPed = TextUtil.toNumeric (orderline.get_ValueAsString("POReference"));
+				if (!nItemPed.isEmpty())
+				{
+					if (nItemPed.length() > 6)
+					{
+						nItemPed = nItemPed.substring (0, 6);
+						log.warning("XML = nItemPed excede o tamanho máximo de 6 dígitos, valor será cortado no XML");
+					}
 					prod.setNItemPed(nItemPed);
+				}
 			}
 			
 			//	I07. Produtos e Serviços / Grupo Diversos
