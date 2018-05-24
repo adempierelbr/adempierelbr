@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.ConsultNFe;
 import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.util.BPartnerUtil;
@@ -80,6 +82,7 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
+import org.compiere.model.MRole;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
@@ -818,8 +821,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setNFe(nfe.getNFe());
 			nfeProc.setProtNFe(protNFe);
 			
+			//	Inclusão de Name Space
+			String xmlText = nfeProcDoc.xmlText (NFeUtil.getXmlOpt());
+			List<String> config = Arrays.asList (MSysConfig.getValue ("LBR_INCLUDE_XMLNS_NFE", "NONE", nf.getAD_Client_ID()).split(","));
+			if (config.contains("ALL") || config.contains(nf.getlbr_BPCNPJ()))
+				xmlText = xmlText.replaceAll ("<NFe>", "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">");
+			
 			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", xmlText.getBytes(NFeUtil.NFE_ENCODING));
 			if (attachment.save())
 				sendMail = true;
 		}
@@ -846,6 +855,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		
 		//	Save changes
+		nf.setProcessing(false);
 		nf.save();
 		
 		//	Send mail
@@ -1316,6 +1326,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
+			nfLine.setAD_Org_ID(getAD_Org_ID());
 			nfLine.save();
 			//
 			nfLine.setLine(lineNo++);
@@ -2420,6 +2431,22 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
+		//	Tenta sempre preencher a Organização com base nos documentos vinculados
+		if (getAD_Org_ID() < 1)
+		{
+			//	Tenta pela fatura
+			if (getC_Invoice_ID() > 0)
+				setAD_Org_ID (getC_Invoice().getAD_Org_ID());
+			
+			//	Pela remessa
+			else if (getM_InOut_ID() > 0)
+				setAD_Org_ID (getM_InOut().getAD_Org_ID());
+			
+			//	Pelo pedido
+			else if (getC_Order_ID() > 0)
+				setAD_Org_ID (getC_Order().getAD_Org_ID());
+		}
+		
 		//	Sempre deixar a NF aberta para correção em caso de erro
 		if (DOCSTATUS_Invalid.equals(getDocStatus()))
 			setProcessed(false);
@@ -2530,6 +2557,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getlbr_BPShipperRegion() != null && !getlbr_BPShipperRegion().isEmpty())
 			setlbr_BPShipperRegion(getlbr_BPShipperRegion().toUpperCase());
 		
+		//		Mark as processing because the automatic fix will be triggered in afterSave method
+		//	users can't make changes if the document is processing
+		if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus)
+				&& TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+		{
+			setProcessing (true);
+		}
 		return true;
 	}	//	beforeSave
 
@@ -2543,6 +2577,75 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		if (success)
 		{
+			//	Valida automaticamente os casos de duplicidade de NF
+			if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus))
+			{
+				if (TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+				{
+					//	Access inside thread
+					final MLBRNotaFiscal nf = new MLBRNotaFiscal (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
+					
+					new Thread ("Fix Duplicated Error") 
+					{
+						public void run ()
+						{
+							Properties ctx = nf.getCtx();
+							
+							//	Can't access process, do nothing
+							if (!MRole.get (ctx, Env.getAD_Role_ID (ctx)).getProcessAccess (1120192))
+								return;
+							
+							try
+							{
+								int counterLimit = 0;
+								Thread.sleep (2*1000);	//	2 secs waiting time, then 5 secs
+								
+								//	Wait until the transaction is closed by other processes
+								//	max of 60 interactions, resulting in a 5 minutes total
+								while (counterLimit < 60)
+								{
+									Trx trx = Trx.get (nf.get_TrxName(), false);
+									
+									//	Transaction closed or inactive, abort
+									if (trx == null || !trx.isActive ())
+										counterLimit = 999;
+									
+									else
+									{
+										counterLimit++;
+										Thread.sleep (5*1000);	//	5 secs waiting time
+									}
+								} 
+								
+								int AD_Process_ID = 1120192;
+								MPInstance instance = new MPInstance(ctx, AD_Process_ID, nf.getLBR_NotaFiscal_ID());
+								instance.save();
+								
+								ProcessInfo pi = new ProcessInfo ("", AD_Process_ID);
+								pi.setAD_PInstance_ID (instance.getAD_PInstance_ID());
+								pi.setAD_Client_ID(nf.getAD_Client_ID());
+								pi.setRecord_ID(nf.getLBR_NotaFiscal_ID());
+								
+								String trxName = Trx.createTrxName ("FixDuplNFe");
+								Trx trx = Trx.get (trxName, false);
+								SvrProcess proc = new ConsultNFe();
+					    			proc.startProcess (ctx, pi, trx);
+								//
+								if (trx.isActive())
+								{
+									trx.commit();
+									trx.close();
+								}
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
+			}
+			
 			//	Continuar apenas se houver alteração no campo DocStatus
 			if (!is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_DocStatus))
 				return success;

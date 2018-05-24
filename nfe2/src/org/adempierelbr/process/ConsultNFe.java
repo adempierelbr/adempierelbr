@@ -3,6 +3,8 @@ package org.adempierelbr.process;
 import java.io.StringReader;
 import java.sql.Timestamp;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLInputFactory;
 
@@ -71,6 +73,38 @@ public class ConsultNFe extends SvrProcess
 	 */
 	protected void prepare()
 	{
+		//	NF found
+		if (getRecord_ID() > 0)
+		{
+			MLBRNotaFiscal nf = new MLBRNotaFiscal (getCtx(), getRecord_ID(), get_TrxName());
+			if (nf != null && nf.islbr_IsOwnDocument())
+			{
+				p_AD_Org_ID 		= nf.getAD_Org_ID();
+				p_LBR_EnvType 	= nf.getlbr_NFeEnv();
+				p_LBR_TPEmis		= nf.getLBR_TPEmis();
+				p_LBR_NFModel	= nf.getlbr_NFModel();
+				//
+				if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(nf.getlbr_NFeStatus()))
+					p_LBR_UpdateNFe 	= true;
+				//
+				if (nf.getErrorMsg() != null && !nf.getErrorMsg().isEmpty())
+				{
+					final Pattern pattern = Pattern.compile("(\\d{44})");
+					final Matcher matcher = pattern.matcher(nf.getErrorMsg());
+					if (matcher.find())
+					{
+						p_LBR_NFeID = matcher.group (1);
+					}
+				}
+				if (p_LBR_NFeID == null || p_LBR_NFeID.length() != 44)
+					p_LBR_NFeID = nf.getlbr_NFeID();
+				
+				//	All parameters found
+				return;
+			}
+		}
+		
+		//	Regular parameters
 		ProcessInfoParameter[] para = getParameter();
 		for (int i = 0; i < para.length; i++)
 		{
@@ -128,7 +162,7 @@ public class ConsultNFe extends SvrProcess
 			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID, MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
 			
 			if (nfconfig == null)
-				return "@Error@ <font color=\"880000\">UImpossível identificar o Ambiente da NF-e</font>";
+				return "@Error@ <font color=\"880000\">Impossível identificar o Ambiente da NF-e</font>";
 			
 			p_LBR_EnvType = nfconfig.getlbr_NFeEnv();
 		}
