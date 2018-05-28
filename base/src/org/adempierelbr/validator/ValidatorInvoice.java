@@ -157,6 +157,21 @@ public class ValidatorInvoice implements ModelValidator
 	 */
 	public String modelChange (MInvoice invoice, int type) throws Exception
 	{
+		//	Validar a conta bancária
+		if (type == TYPE_BEFORE_NEW || (type == TYPE_BEFORE_CHANGE 
+				&& invoice.is_ValueChanged (I_W_C_Invoice.COLUMNNAME_C_BankAccount_ID)))
+		{
+			I_W_C_Invoice iW = POWrapper.create (invoice, I_W_C_Invoice.class);
+			//
+			if (iW.getC_BankAccount_ID() > 0 
+					&& iW.getC_BankAccount().getAD_Org_ID() > 0
+					&& iW.getC_BankAccount().getAD_Org_ID() != iW.getAD_Org_ID())
+			{
+				//	Não permitir conta bancária para organização diferente
+				invoice.set_ValueOfColumn(I_W_C_Invoice.COLUMNNAME_C_BankAccount_ID, null);
+			}
+		}
+		
 		int C_Order_ID = invoice.getC_Order_ID();
 		if (C_Order_ID <= 0 || (type != TYPE_BEFORE_NEW && type != TYPE_BEFORE_CHANGE))
 			return null;
