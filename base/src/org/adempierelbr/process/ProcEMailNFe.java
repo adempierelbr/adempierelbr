@@ -307,7 +307,7 @@ public class ProcEMailNFe extends SvrProcess
 			
 			//	DANFE
 			File danfe = nf.createPDF();
-			if (danfe != null)
+			if (danfe != null && danfe.length() > 0)
 				mail.addAttachment(danfe);
 		}
 		else

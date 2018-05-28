@@ -13,6 +13,7 @@
 package org.adempierelbr.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +33,12 @@ import javax.xml.stream.XMLInputFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
+import org.adempierelbr.exceptions.NotaFiscalNotFoundException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
 import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.ConsultNFe;
 import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.util.BPartnerUtil;
@@ -52,6 +56,7 @@ import org.adempierelbr.wrapper.I_W_C_Order;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.adempierelbr.wrapper.I_W_M_Shipper;
 import org.apache.axiom.om.OMElement;
+import org.apache.xmlbeans.XmlException;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -77,6 +82,7 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
+import org.compiere.model.MRole;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
@@ -725,6 +731,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (protNFe == null || protNFe.getInfProt() == null)
 			throw new Exception ("Protocolo inválido");
 
+		Boolean sendMail = false;
+		
 		InfProt infProt = protNFe.getInfProt();
 			
 		String chNFe	= infProt.getChNFe();
@@ -738,7 +746,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//
 		MLBRNotaFiscal nf = getNFe (chNFe, trxName);
 		if (nf == null)
-			throw new Exception ("NF não encontrada: " + chNFe);
+			throw new NotaFiscalNotFoundException ("NF não encontrada: " + chNFe);
 
 		if (nf.getlbr_NFeStatus() != null && nf.getlbr_NFeStatus().equals (MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E))
 			throw new Exception ("NF já processada. " + nf.getDocumentNo());
@@ -813,17 +821,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setNFe(nfe.getNFe());
 			nfeProc.setProtNFe(protNFe);
 			
-			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
-			attachment.save();
+			//	Inclusão de Name Space
+			String xmlText = nfeProcDoc.xmlText (NFeUtil.getXmlOpt());
+			List<String> config = Arrays.asList (MSysConfig.getValue ("LBR_INCLUDE_XMLNS_NFE", "NONE", nf.getAD_Client_ID()).split(","));
+			if (config.contains("ALL") || config.contains(nf.getlbr_BPCNPJ()))
+				xmlText = xmlText.replaceAll ("<NFe>", "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">");
 			
-			//	Envia o e-mail para o cliente
-			//	em caso de erro o try/catch evita que o processamento não seja commitado
-			try
-			{
-				ProcEMailNFe.sendEmailNFe (nf, false);
-			}
-			catch (Exception e) {}
+			//	Atualiza o anexo
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", xmlText.getBytes(NFeUtil.NFE_ENCODING));
+			if (attachment.save())
+				sendMail = true;
 		}
 		
 		//	Notas Fiscais Denegadas
@@ -841,14 +848,53 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Reativar o documento para correção
 		else
 		{
+			nf.setErrorMsg(protNFe.getInfProt().getXMotivo());			
 			nf.setDocStatus(DOCSTATUS_Invalid);
 			nf.setDocAction(DOCACTION_Complete);
 			nf.setProcessed(false);
 		}
 		
 		//	Save changes
+		nf.setProcessing(false);
 		nf.save();
+		
+		//	Send mail
+		if (sendMail)
+		{
+			//	Envia o e-mail para o cliente
+			//	em caso de erro o try/catch evita que o processamento não seja commitado
+			try
+			{
+				ProcEMailNFe.sendEmailNFeThread (nf, false);
+			}
+			catch (Exception e) {}
+		}
 	}	//	authorizeNFe
+
+	/**
+	 * 	Encontra a NF pelo número da NF, série e Organização
+	 *
+	 * @param AD_Org_ID
+	 * @param DocumentNo 	Número da NF
+	 * @param serie 		Série da NF
+	 * @param trxName 		Transação
+	 * @return
+	 */
+	public static MLBRNotaFiscal getNFe (Properties ctx, String LBR_CNPJ, String LBR_NFModel, String documentNo, String serie, String trxName)
+	{
+		String sql = "LBR_CNPJ=? AND LBR_NFModel=? AND DocumentNo=? AND LBR_NFSerie=?";
+		
+		try
+		{
+			serie = String.valueOf (Integer.valueOf (serie));
+			documentNo = String.valueOf (Integer.valueOf (documentNo));
+			LBR_CNPJ = TextUtil.toNumeric (LBR_CNPJ).replaceAll ("([\\d]{2})([\\d]{3})([\\d]{3})([\\d]{4})([\\d]{2})", "$1.$2.$3/$4-$5");
+		}
+		catch (Exception e){}
+		//
+		MLBRNotaFiscal nf = new Query (ctx, Table_Name, sql, trxName).setParameters(LBR_CNPJ, LBR_NFModel, documentNo, serie).firstOnly();
+		return nf;
+	}	//	getNFe
 
 	/**
 	 * 	Encontra a NF pelo ID de NF-e
@@ -1280,6 +1326,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
+			nfLine.setAD_Org_ID(getAD_Org_ID());
 			nfLine.save();
 			//
 			nfLine.setLine(lineNo++);
@@ -2384,6 +2431,22 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
+		//	Tenta sempre preencher a Organização com base nos documentos vinculados
+		if (getAD_Org_ID() < 1)
+		{
+			//	Tenta pela fatura
+			if (getC_Invoice_ID() > 0)
+				setAD_Org_ID (getC_Invoice().getAD_Org_ID());
+			
+			//	Pela remessa
+			else if (getM_InOut_ID() > 0)
+				setAD_Org_ID (getM_InOut().getAD_Org_ID());
+			
+			//	Pelo pedido
+			else if (getC_Order_ID() > 0)
+				setAD_Org_ID (getC_Order().getAD_Org_ID());
+		}
+		
 		//	Sempre deixar a NF aberta para correção em caso de erro
 		if (DOCSTATUS_Invalid.equals(getDocStatus()))
 			setProcessed(false);
@@ -2490,6 +2553,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				setLBR_IndPres (LBR_INDPRES_OperaçãoPresencial);
 		}
 		
+		//	Region must be upper case
+		if (getlbr_BPShipperRegion() != null && !getlbr_BPShipperRegion().isEmpty())
+			setlbr_BPShipperRegion(getlbr_BPShipperRegion().toUpperCase());
+		
+		//		Mark as processing because the automatic fix will be triggered in afterSave method
+		//	users can't make changes if the document is processing
+		if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus)
+				&& TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+		{
+			setProcessing (true);
+		}
 		return true;
 	}	//	beforeSave
 
@@ -2503,6 +2577,75 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		if (success)
 		{
+			//	Valida automaticamente os casos de duplicidade de NF
+			if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus))
+			{
+				if (TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+				{
+					//	Access inside thread
+					final MLBRNotaFiscal nf = new MLBRNotaFiscal (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
+					
+					new Thread ("Fix Duplicated Error") 
+					{
+						public void run ()
+						{
+							Properties ctx = nf.getCtx();
+							
+							//	Can't access process, do nothing
+							if (!MRole.get (ctx, Env.getAD_Role_ID (ctx)).getProcessAccess (1120192))
+								return;
+							
+							try
+							{
+								int counterLimit = 0;
+								Thread.sleep (2*1000);	//	2 secs waiting time, then 5 secs
+								
+								//	Wait until the transaction is closed by other processes
+								//	max of 60 interactions, resulting in a 5 minutes total
+								while (counterLimit < 60)
+								{
+									Trx trx = Trx.get (nf.get_TrxName(), false);
+									
+									//	Transaction closed or inactive, abort
+									if (trx == null || !trx.isActive ())
+										counterLimit = 999;
+									
+									else
+									{
+										counterLimit++;
+										Thread.sleep (5*1000);	//	5 secs waiting time
+									}
+								} 
+								
+								int AD_Process_ID = 1120192;
+								MPInstance instance = new MPInstance(ctx, AD_Process_ID, nf.getLBR_NotaFiscal_ID());
+								instance.save();
+								
+								ProcessInfo pi = new ProcessInfo ("", AD_Process_ID);
+								pi.setAD_PInstance_ID (instance.getAD_PInstance_ID());
+								pi.setAD_Client_ID(nf.getAD_Client_ID());
+								pi.setRecord_ID(nf.getLBR_NotaFiscal_ID());
+								
+								String trxName = Trx.createTrxName ("FixDuplNFe");
+								Trx trx = Trx.get (trxName, false);
+								SvrProcess proc = new ConsultNFe();
+					    			proc.startProcess (ctx, pi, trx);
+								//
+								if (trx.isActive())
+								{
+									trx.commit();
+									trx.close();
+								}
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
+			}
+			
 			//	Continuar apenas se houver alteração no campo DocStatus
 			if (!is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_DocStatus))
 				return success;
@@ -3871,6 +4014,59 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		return events;
 	}	// getNFeEvents
+	
+	/**
+	 * 	Check if this NF has a XML for NFe or NFCe
+	 * 	@return true if the XML is present
+	 */
+	public boolean hasNFeXML ()
+	{
+		MAttachment att = getAttachment(true);
+		if (att == null)
+			return false;
+		//
+		for (MAttachmentEntry entry : att.getEntries())
+		{
+			if (entry != null 
+					&& entry.getName() != null 
+					&& entry.getName().endsWith(NFeXMLGenerator.FILE_EXT))
+				return true;
+		}
+		return false;
+	}	//	hasNFeXML
+	
+	/**
+	 * 		Check if the provided digest value 
+	 * 	matches the digest value from XML
+	 * 
+	 * 	@param dv Digest Value to be compared with XML
+	 * 	@return true if the Digest Value matches
+	 * @throws IOException 
+	 * @throws XmlException 
+	 */
+	public boolean isProtocolValid (String dv) throws XmlException, IOException
+	{
+		MAttachment att = getAttachment(true);
+		if (att == null)
+			return false;
+		//
+		for (MAttachmentEntry entry : att.getEntries())
+		{
+			//	XML encontrado, conferir Digest Value
+			if (entry != null 
+					&& entry.getName() != null 
+					&& entry.getName().endsWith(NFeXMLGenerator.FILE_EXT))
+			{
+				NFeDocument nfeDoc = NFeDocument.Factory.parse (entry.getInputStream());
+				String digestValue = NFeUtil.extractDigestValue (nfeDoc);
+				
+				//	Same document
+				if (digestValue.equals(dv))
+					return true;
+			}
+		}
+		return false;
+	}	//	isProtocolValid
 	
 	/**
 	 * 	Calculate the NF weight
