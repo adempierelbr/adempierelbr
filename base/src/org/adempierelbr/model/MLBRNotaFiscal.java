@@ -3201,18 +3201,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		pi.setParameter(new ProcessInfoParameter[]{pip});
 		pi.setTransactionName(trxName);
     	
-    	try
+    		try
 		{
-    		Trx trx = Trx.get(trxName, false);
-    		
-    		SvrProcess proc = new PrintFromXML ();
-    		proc.startProcess (getCtx(), pi, trx);
-    		
-    		if (get_TrxName() == null && trx.isActive())
-    		{
-    			trx.commit();
-    			trx.close();
-    		}
+	    		Trx trx = Trx.get(trxName, false);
+	    		
+	    		SvrProcess proc = new PrintFromXML ();
+	    		proc.startProcess (getCtx(), pi, trx);
+	    		
+	    		if (get_TrxName() == null && trx.isActive())
+	    		{
+	    			trx.commit();
+	    			trx.close();
+	    		}
 		}
 		catch (Exception e)
 		{
