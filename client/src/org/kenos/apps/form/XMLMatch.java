@@ -49,10 +49,10 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v310.TNFe;
-import br.inf.portalfiscal.nfe.v310.TNfeProc;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
+import br.inf.portalfiscal.nfe.v400.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v400.TNFe;
+import br.inf.portalfiscal.nfe.v400.TNfeProc;
 
 public class XMLMatch extends CPanel
 {

@@ -582,6 +582,17 @@ public interface I_LBR_NotaFiscal
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
 
+    /** Column name LBR_PartnerDFe_ID */
+    public static final String COLUMNNAME_LBR_PartnerDFe_ID = "LBR_PartnerDFe_ID";
+
+	/** Set Partner Doc Fiscal	  */
+	public void setLBR_PartnerDFe_ID (int LBR_PartnerDFe_ID);
+
+	/** Get Partner Doc Fiscal	  */
+	public int getLBR_PartnerDFe_ID();
+
+	public org.adempierelbr.model.I_LBR_PartnerDFe getLBR_PartnerDFe() throws RuntimeException;
+
     /** Column name LBR_ProcReactivateNF */
     public static final String COLUMNNAME_LBR_ProcReactivateNF = "LBR_ProcReactivateNF";
 
@@ -670,6 +681,15 @@ public interface I_LBR_NotaFiscal
 	  * Indicar o Tipo de Emissão da NF-e.
 	  */
 	public String getLBR_TPEmis();
+
+    /** Column name LBR_TaxRegime */
+    public static final String COLUMNNAME_LBR_TaxRegime = "LBR_TaxRegime";
+
+	/** Set Tax Regime	  */
+	public void setLBR_TaxRegime (String LBR_TaxRegime);
+
+	/** Get Tax Regime	  */
+	public String getLBR_TaxRegime();
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";

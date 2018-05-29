@@ -54,7 +54,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/XML/xmlbeans-2.6.0/xmlpublic.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/XML/rsyntaxtextarea-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v8i2.jar" sourcepath="lib/nfebeans-v8i2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nfebeans-v9.jar" sourcepath="lib/nfebeans-v9-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/zxing-core-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/ibpt-interfaces-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/mdfebeans-v100a.jar"/>

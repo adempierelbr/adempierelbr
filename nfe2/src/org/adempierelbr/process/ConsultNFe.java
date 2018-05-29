@@ -26,14 +26,14 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.ConsSitNFeDocument;
-import br.inf.portalfiscal.nfe.v310.RetConsSitNFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TConsSitNFe;
-import br.inf.portalfiscal.nfe.v310.TProtNFe.InfProt;
-import br.inf.portalfiscal.nfe.v310.TRetCancNFe.InfCanc;
-import br.inf.portalfiscal.nfe.v310.TRetConsSitNFe;
-import br.inf.portalfiscal.nfe.v310.TVerConsSitNFe;
+import br.inf.portalfiscal.nfe.v400.ConsSitNFeDocument;
+import br.inf.portalfiscal.nfe.v400.RetConsSitNFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TConsSitNFe;
+import br.inf.portalfiscal.nfe.v400.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v400.TRetCancNFe.InfCanc;
+import br.inf.portalfiscal.nfe.v400.TRetConsSitNFe;
+import br.inf.portalfiscal.nfe.v400.TVerConsSitNFe;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsg;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsgE;
 import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeDadosMsg;
@@ -191,7 +191,7 @@ public class ConsultNFe extends SvrProcess
 			TConsSitNFe consNFe = consNFeDoc.addNewConsSitNFe();
 			consNFe.setTpAmb(TAmb.Enum.forString(p_LBR_EnvType));
 			consNFe.setXServ(TConsSitNFe.XServ.CONSULTAR);
-			consNFe.setVersao(TVerConsSitNFe.X_3_10);
+			consNFe.setVersao(TVerConsSitNFe.X_4_00);
 			consNFe.setChNFe(p_LBR_NFeID);
 			
 			//	XML

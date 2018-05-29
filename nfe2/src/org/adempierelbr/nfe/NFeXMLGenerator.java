@@ -49,82 +49,83 @@ import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v310.TEnderEmi;
-import br.inf.portalfiscal.nfe.v310.TEndereco;
-import br.inf.portalfiscal.nfe.v310.TFinNFe;
-import br.inf.portalfiscal.nfe.v310.TIpi;
-import br.inf.portalfiscal.nfe.v310.TIpi.IPINT;
-import br.inf.portalfiscal.nfe.v310.TIpi.IPITrib;
-import br.inf.portalfiscal.nfe.v310.TLocal;
-import br.inf.portalfiscal.nfe.v310.TMod;
-import br.inf.portalfiscal.nfe.v310.TNFe;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.AutXML;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Cobr;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Cobr.Dup;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Cobr.Fat;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Dest;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.COFINS.COFINSAliq;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.COFINS.COFINSNT;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.COFINS.COFINSOutr;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.COFINS.COFINSQtde;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.COFINSST;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS00;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS10;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS20;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS30;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS40;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS51;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS60;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS70;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMS90;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN101;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN102;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN201;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN202;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN500;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN900;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMSUFDest;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.ICMSUFDest.PICMSInter;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.II;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISAliq;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISNT;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISOutr;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PIS.PISQtde;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Imposto.PISST;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DI;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DI.Adi;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Det.Prod.DetExport;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Emit;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Exporta;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.IndPres;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefECF;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNF;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.NFref.RefNFP;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.InfAdic.ObsCont;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Pag;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Total.ICMSTot;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Transporta;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Transp.Vol;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFeSupl;
-import br.inf.portalfiscal.nfe.v310.TProcEmi;
-import br.inf.portalfiscal.nfe.v310.TUf;
-import br.inf.portalfiscal.nfe.v310.TUfEmi;
-import br.inf.portalfiscal.nfe.v310.TVeiculo;
-import br.inf.portalfiscal.nfe.v310.Torig;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v400.TEnderEmi;
+import br.inf.portalfiscal.nfe.v400.TEndereco;
+import br.inf.portalfiscal.nfe.v400.TFinNFe;
+import br.inf.portalfiscal.nfe.v400.TIpi;
+import br.inf.portalfiscal.nfe.v400.TIpi.IPINT;
+import br.inf.portalfiscal.nfe.v400.TIpi.IPITrib;
+import br.inf.portalfiscal.nfe.v400.TLocal;
+import br.inf.portalfiscal.nfe.v400.TMod;
+import br.inf.portalfiscal.nfe.v400.TNFe;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.AutXML;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Cobr;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Cobr.Dup;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Cobr.Fat;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Dest;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.COFINS.COFINSAliq;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.COFINS.COFINSNT;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.COFINS.COFINSOutr;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.COFINS.COFINSQtde;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.COFINSST;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS00;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS10;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS20;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS30;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS40;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS51;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS60;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS70;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMS90;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN101;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN102;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN201;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN202;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN500;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMS.ICMSSN900;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMSUFDest;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.ICMSUFDest.PICMSInter;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.II;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISAliq;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISNT;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISOutr;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISQtde;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PISST;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.Adi;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DetExport;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Emit;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Exporta;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.IndPres;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.NFref;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.NFref.RefECF;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.NFref.RefNF;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.NFref.RefNFP;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.InfAdic;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.InfAdic.ObsCont;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Pag;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Pag.DetPag;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Total;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Total.ICMSTot;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Transp;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Transp.Transporta;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Transp.Vol;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFeSupl;
+import br.inf.portalfiscal.nfe.v400.TProcEmi;
+import br.inf.portalfiscal.nfe.v400.TUf;
+import br.inf.portalfiscal.nfe.v400.TUfEmi;
+import br.inf.portalfiscal.nfe.v400.TVeiculo;
+import br.inf.portalfiscal.nfe.v400.Torig;
 
 /**
  * 	Gera o arquivo XML
@@ -171,11 +172,6 @@ public class NFeXMLGenerator
 	/**	Indicação de Pagamento	*/
 	private static final Ide.IndFinal.Enum IND_FINAL_NORMAL		=	Ide.IndFinal.X_0;
 	private static final Ide.IndFinal.Enum IND_FINAL_CONS_FINAL	=	Ide.IndFinal.X_1;
-	
-	/**	Indicação de Pagamento	*/
-	private static final Ide.IndPag.Enum IND_PAG_A_VISTA	=	Ide.IndPag.X_0;
-	private static final Ide.IndPag.Enum IND_PAG_A_PRAZO	=	Ide.IndPag.X_1;
-	private static final Ide.IndPag.Enum IND_PAG_OUTROS		=	Ide.IndPag.X_2;
 	
 	/**	Modelo da NF			*/
 	private static final TMod.Enum MOD_NFE_55			=	TMod.X_55;
@@ -331,6 +327,36 @@ public class NFeXMLGenerator
 	private static final String MOT_DESONERA_OUTROS			= "9";
 	
 	private static final String ENQ_IPI_999	= "999";
+	
+	/** Rastreabilidade dos produtos					*/
+	private static final String NCM_PRODFARM_RASTREADOS = "30";
+	
+	
+	/** Produtos Especificos							*/
+	private static final String DET_ESPEC_VEICUL = "J01";
+	private static final String DET_ESPEC_MEDIC = "K01";
+	private static final String DET_ESPEC_ARMAM = "L01";
+	private static final String DET_ESPEC_COMB = "LA01";
+	
+	
+	/** Forma de pagamento													  */
+	private static final DetPag.TPag.Enum DET_TP_PAG_DINHEIRO 	= DetPag.TPag.X_01;
+	private static final DetPag.TPag.Enum DET_TP_PAG_CHEQUE 		= DetPag.TPag.X_02;
+	private static final DetPag.TPag.Enum DET_TP_PAG_CTCREDITO 	= DetPag.TPag.X_03;
+	private static final DetPag.TPag.Enum DET_TP_PAG_CTDEBITO 	= DetPag.TPag.X_04;
+	private static final DetPag.TPag.Enum DET_TP_PAG_CRED_LOJA 	= DetPag.TPag.X_05;
+	private static final DetPag.TPag.Enum DET_TP_PAG_VL_ALIMEN 	= DetPag.TPag.X_10;
+	private static final DetPag.TPag.Enum DET_TP_PAG_VL_REFEI 	= DetPag.TPag.X_11;
+	private static final DetPag.TPag.Enum DET_TP_PAG_VL_PRESE 	= DetPag.TPag.X_12;
+	private static final DetPag.TPag.Enum DET_TP_PAG_VL_COMB 		= DetPag.TPag.X_13;
+	private static final DetPag.TPag.Enum DET_TP_PAG_DUPL_MERC 	= DetPag.TPag.X_14;
+	private static final DetPag.TPag.Enum DET_TP_PAG_SEM_PAGAM 	= DetPag.TPag.X_90;
+	private static final DetPag.TPag.Enum DET_TP_PAG_OUTROS 		= DetPag.TPag.X_99;
+	
+	/** Indicador de Produção em escala relevante							  */
+	private static final TNFe.InfNFe.Det.Prod.IndEscala.Enum PROD_EM_ESCALA_REL = TNFe.InfNFe.Det.Prod.IndEscala.S;
+	private static final TNFe.InfNFe.Det.Prod.IndEscala.Enum PROD_EM_ESCALA_NAO_REL = TNFe.InfNFe.Det.Prod.IndEscala.N;
+	
 
 	/**
 	 * 	Gera o corpo da NF
@@ -423,24 +449,7 @@ public class NFeXMLGenerator
 		ide.setCNF (chaveNFE.getCNF());
 		ide.setNatOp (normalize (TextUtil.checkSize (nf.getlbr_CFOPNote(), 1, 60)));
 		
-		//	Indicador da forma de pagamento
-		Ide.IndPag.Enum indPag = IND_PAG_OUTROS;
-		
-		MLBROpenItem[] openItems = MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName);
-		
-		//	Mais de uma parcela
-		if (openItems.length > 1)
-			indPag = IND_PAG_A_PRAZO;
-		
-		//	Parcela única
-		else
-		{
-			//	Se parcela única for para o mesmo dia da emissão
-			if (openItems.length == 1 && openItems[0].getNetDays() > 0)
-				indPag = IND_PAG_A_VISTA;
-		}
-		
-		ide.setIndPag (indPag);
+
 		ide.setMod(TMod.Enum.forString (chaveNFE.getMod()));
 		ide.setSerie(nf.getlbr_NFSerie());
 		ide.setNNF(nf.getDocumentNo());
@@ -505,8 +514,10 @@ public class NFeXMLGenerator
 			if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NF_E.equals(docRef.getLBR_FiscalDocRefType()))
 				nFref.setRefNFe(docRef.getlbr_NFeID());
 			
-			//	NF Modelo 1 e 1-A
-			else if (MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NFManual11A.equals(docRef.getLBR_FiscalDocRefType()))
+			//	NF Modelo 1, 1-A ou 2
+			else if (TextUtil.match(docRef.getLBR_FiscalDocRefType(), 
+						MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NFManual11A, 
+						MLBRNotaFiscalDocRef.LBR_FISCALDOCREFTYPE_NFVendaAConsumidorModelo2))
 			{
 				RefNF refNF = nFref.addNewRefNF();
 				refNF.setCUF(TCodUfIBGE.Enum.forString(BPartnerUtil.getRegionCode (docRef.getC_Region_ID())));
@@ -661,7 +672,8 @@ public class NFeXMLGenerator
 					enderDest.setCMun(BPartnerUtil.getCityCode (nf.getlbr_BPRegion(), nf.getlbr_BPCity()));
 					enderDest.setXMun(normalize (normalize (nf.getlbr_BPCity())));
 					enderDest.setUF(TUf.Enum.forString (nf.getlbr_BPRegion()));
-					enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
+					if (nf.getlbr_BPPostal() != null)
+						enderDest.setCEP(toNumericStr (nf.getlbr_BPPostal()));
 		
 					//	Contribuinte de ICMS, possuí IE
 					if (T_AMB_PRODUCAO.equals(ide.getTpAmb()))
@@ -823,7 +835,11 @@ public class NFeXMLGenerator
 				prod.setCEANTrib(toNumericStr (ean));
 			}
 			
-			if (!T_AMB_PRODUCAO.equals(ide.getTpAmb()))
+			/* 
+			 * JIRA[AIL-108] alterar o nome do produto somente se for nfce em ambiente de homologação
+			 * jefferson.alves (ormel.com.br) 20170614
+			 */
+			if (nfce && !T_AMB_PRODUCAO.equals(ide.getTpAmb()))
 				prod.setXProd(HOMOLOG_PRODNAME);
 			else
 				prod.setXProd(normalize (nfl.getProductName()));
@@ -846,6 +862,10 @@ public class NFeXMLGenerator
 			prod.setVUnCom(normalize10  (nfl.getPrice()));
 			prod.setVProd(normalize  (nfl.getLineTotalAmt()));
 //			prod.setCEANTrib();		//	Check above (after setCEAN)
+			
+			// Produzido em Escala Relevante - v4.00
+			if (nfl.getLBR_CEST_ID() > 0)
+				prod.setIndEscala(PROD_EM_ESCALA_REL);
 			
 			// 	Unidade Tributária pode ser Diferente apenas para Exportação
 			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ()))
@@ -960,6 +980,22 @@ public class NFeXMLGenerator
 			if (nFCI != null && !nFCI.trim().isEmpty())
 				prod.setNFCI (nFCI);
 			
+			/*
+			 * Grupo I80. Rastreabilidade de produto
+			 * Icaro Caetano - 23/05/2017
+			 */
+//			if (prod.sizeOfRastroArray()>0
+//					&& nfl.getC_InvoiceLine().getM_AttributeSetInstance_ID()>0
+//					&& nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot_ID()>0)
+//			{
+//			
+//				Rastro rastro = prod.addNewRastro();
+//				rastro.setNLote(nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getName());
+//				rastro.setQLote(normalize3(qtyOnHand));
+//				rastro.setDFab(normalize (nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getDateFrom()));
+//				rastro.setDVal(normalize (nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getDateTo()));
+//			}
+			
 			/**
 			 * 	J. Produto Específico
 			 * 
@@ -987,9 +1023,12 @@ public class NFeXMLGenerator
 				imposto.setVTotTrib(normalize(nfl.getlbr_vTotTrib()));
 			
 			//	N. ICMS Normal e ST
-			if (nfl.getICMSTax() != null)
+			if (nfl.getICMSTax() != null && nfl.getFCPTax() != null)
 			{
 				X_LBR_NFLineTax icmsTax = nfl.getICMSTax();
+				
+				// FCP (Fundo de Combate a Pobreza)
+				X_LBR_NFLineTax fcpTax = nfl.getFCPTax();
 
 				//	ICMS ST
 				X_LBR_NFLineTax icmsSTTax = nfl.getICMSSTTax();
@@ -1014,6 +1053,9 @@ public class NFeXMLGenerator
 					icms00.setVBC(normalize  (icmsTax.getlbr_TaxBaseAmt()));
 					icms00.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
 					icms00.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+					// v4.00
+					icms00.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+					icms00.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
 				}
 				else if (CST_ICMS_10.equals (taxStatus))
 				{
@@ -1042,6 +1084,13 @@ public class NFeXMLGenerator
 						icms10.setVBCST(normalize  (icmsSTTax.getlbr_TaxBaseAmt()));
 						icms10.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
 						icms10.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+						// v4.00
+						icms10.setVBCFCP(normalize(fcpTax.getlbr_TaxBaseAmt()));
+						icms10.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+						icms10.setVFCP(normalize(fcpTax.getlbr_TaxAmt()));
+						icms10.setVBCFCPST(normalize(fcpTax.getlbr_TaxBaseAmt()));
+						icms10.setPFCPST(normalize4(fcpTax.getlbr_TaxRate()));
+						icms10.setVFCPST(normalize(fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_20.equals (taxStatus))
@@ -1054,6 +1103,11 @@ public class NFeXMLGenerator
 					icms20.setVBC(normalize  (icmsTax.getlbr_TaxBaseAmt()));
 					icms20.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
 					icms20.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+					
+					// v4.00
+					icms20.setVBCFCP(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+					icms20.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+					icms20.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
 				}
 				else if (CST_ICMS_30.equals (taxStatus))
 				{
@@ -1077,6 +1131,11 @@ public class NFeXMLGenerator
 						icms30.setVBCST(normalize (icmsSTTax.getlbr_TaxBaseAmt()));
 						icms30.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
 						icms30.setVICMSST(normalize (icmsSTTax.getlbr_TaxAmt()));
+						
+						// v4.00
+						icms30.setVBCFCPST(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+						icms30.setPFCPST(normalize4(fcpTax.getlbr_TaxRate()));
+						icms30.setVFCPST(normalize4(fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_40.equals (taxStatus)
@@ -1093,6 +1152,11 @@ public class NFeXMLGenerator
 					icms51.setOrig(Torig.Enum.forString(productSource));
 					icms51.setCST(Det.Imposto.ICMS.ICMS51.CST.X_51);
 					icms51.setModBC(InfNFe.Det.Imposto.ICMS.ICMS51.ModBC.X_0);	//	FIXME: MVA %
+					
+					// v4.00
+					icms51.setVBCFCP(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+					icms51.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+					icms51.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
 				}
 				else if (CST_ICMS_60.equals (taxStatus))
 				{
@@ -1104,6 +1168,11 @@ public class NFeXMLGenerator
 					{
 						icms60.setVBCSTRet(normalize (icmsSTTax.getlbr_TaxBaseAmt()));
 						icms60.setVICMSSTRet(normalize (icmsSTTax.getlbr_TaxAmt()));
+						
+						// v4.00
+						icms60.setVBCFCPSTRet(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+						icms60.setPFCPSTRet(normalize4(fcpTax.getlbr_TaxRate()));
+						icms60.setVFCPSTRet(normalize4(fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_70.equals (taxStatus))
@@ -1129,6 +1198,14 @@ public class NFeXMLGenerator
 						icms70.setVBCST(normalize (icmsSTTax.getlbr_TaxBaseAmt()));
 						icms70.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
 						icms70.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+						
+						// v4.00
+						icms70.setVBCFCP(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+						icms70.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+						icms70.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
+						icms70.setVBCFCPST(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+						icms70.setPFCPST(normalize4(fcpTax.getlbr_TaxRate()));
+						icms70.setVFCPST(normalize4(fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_90.equals (taxStatus))
@@ -1136,6 +1213,14 @@ public class NFeXMLGenerator
 					ICMS90 icms90 = imposto.addNewICMS().addNewICMS90();
 					icms90.setOrig(Torig.Enum.forString(productSource));
 					icms90.setCST(Det.Imposto.ICMS.ICMS90.CST.X_90);
+					
+					// v4.00
+					icms90.setVBCFCP(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+					icms90.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
+					icms90.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
+					icms90.setVBCFCPST(normalize4(fcpTax.getlbr_TaxBaseAmt()));
+					icms90.setPFCPST(normalize4(fcpTax.getlbr_TaxRate()));
+					icms90.setVFCPST(normalize4(fcpTax.getlbr_TaxAmt()));
 				}
 				else if (CSOSN_101.equals (taxStatus))
 				{
@@ -1171,6 +1256,13 @@ public class NFeXMLGenerator
 						icmssn201.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
 						icmssn201.setPCredSN(normalize4  (icmsTax.getlbr_TaxRate()));
 						icmssn201.setVCredICMSSN(normalize  (icmsTax.getlbr_TaxAmt()));
+						
+						// v4.00
+						icmssn201.setVBCFCPST(normalize(fcpTax.getlbr_TaxBaseAmt()));
+						icmssn201.setPFCPST(normalize4(fcpTax.getlbr_TaxRate()));
+						icmssn201.setVFCPST(normalize4(fcpTax.getlbr_TaxAmt()));
+						icmssn201.setPCredSN(normalize4  (icmsTax.getlbr_TaxRate()));
+						icmssn201.setVCredICMSSN(normalize(icmsTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (TextUtil.match(taxStatus, CSOSN_202, CSOSN_203))
@@ -1191,6 +1283,11 @@ public class NFeXMLGenerator
 						icmssn202.setVBCST(normalize (icmsSTTax.getlbr_TaxBaseAmt()));
 						icmssn202.setPICMSST(normalize4  (icmsSTTax.getlbr_TaxRate()));
 						icmssn202.setVICMSST(normalize  (icmsSTTax.getlbr_TaxAmt()));
+
+						// v4.00
+						icmssn202.setVBCFCPST(normalize (fcpTax.getlbr_TaxBaseAmt()));
+						icmssn202.setPFCPST(normalize4  (fcpTax.getlbr_TaxRate()));
+						icmssn202.setVFCPST(normalize  (fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CSOSN_500.equals (taxStatus))
@@ -1198,6 +1295,11 @@ public class NFeXMLGenerator
 					ICMSSN500 icmssn500 = imposto.addNewICMS().addNewICMSSN500();
 					icmssn500.setOrig(Torig.Enum.forString(productSource));
 					icmssn500.setCSOSN(Det.Imposto.ICMS.ICMSSN500.CSOSN.X_500);
+					
+					// v4.00
+					icmssn500.setVBCFCPSTRet(normalize (fcpTax.getlbr_TaxBaseAmt()));
+					icmssn500.setPFCPSTRet(normalize4 (fcpTax.getlbr_TaxRate()));
+					icmssn500.setVFCPSTRet(normalize (fcpTax.getlbr_TaxAmt()));
 				}
 				else if (CSOSN_900.equals (taxStatus))
 				{
@@ -1208,6 +1310,11 @@ public class NFeXMLGenerator
 					icmssn900.setVBC(normalize (icmsTax.getlbr_TaxBaseAmt()));
 					icmssn900.setPICMS(normalize4  (icmsTax.getlbr_TaxRate()));
 					icmssn900.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
+					
+					// v4.00
+					icmssn900.setVBCFCPST(normalize (fcpTax.getlbr_TaxBaseAmt()));
+					icmssn900.setPFCPST(normalize4 (fcpTax.getlbr_TaxRate()));
+					icmssn900.setVFCPST(normalize (fcpTax.getlbr_TaxAmt()));
 				}
 			}
 			
@@ -1415,6 +1522,9 @@ public class NFeXMLGenerator
 				ICMSUFDest nflICMSDest = imposto.addNewICMSUFDest();
 				nflICMSDest.setVBCUFDest (normalize (nfl.getTaxBaseAmt ("ICMSDIFAL")));
 				nflICMSDest.setPFCPUFDest (normalize (nfl.getTaxRate ("FCP")));
+				// v.400
+				nflICMSDest.setVBCFCPUFDest(normalize(nfl.getTaxBaseAmt("FCP")));
+				
 				nflICMSDest.setPICMSUFDest (normalize (taxRate));
 				nflICMSDest.setPICMSInter (PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS"))));
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
@@ -1435,11 +1545,18 @@ public class NFeXMLGenerator
 		icmsTot.setVBC(normalize (nf.getICMSBase()));
 		icmsTot.setVICMS(normalize (nf.getICMSAmt()));
 		icmsTot.setVICMSDeson(TextUtil.ZERO_STRING);
+		// v4.00
+		icmsTot.setVFCP(normalize(nf.getFCPAmt()));
+		
 		icmsTot.setVFCPUFDest(normalize (nf.getTaxAmt ("FCP")));		//	Fundo de Combate a Pobreza - NT2015.003
 		icmsTot.setVICMSUFDest(normalize (nf.getTaxAmt ("ICMSDIFAL")));
 		icmsTot.setVICMSUFRemet(normalize (nf.getTaxAmt ("ICMSDIFALORIG")));
 		icmsTot.setVBCST(normalize (nf.getICMSSTBase()));
 		icmsTot.setVST(normalize (nf.getICMSSTAmt()));
+		// v4.00
+		icmsTot.setVFCPST(normalize(nf.getFCPAmt()));
+		icmsTot.setVFCPSTRet(normalize(nf.getFCPAmt()));
+		
 		icmsTot.setVProd(normalize (nf.getTotalLines()));
 		icmsTot.setVFrete(normalize (nf.getFreightAmt()));
 		icmsTot.setVSeg(normalize (nf.getlbr_InsuranceAmt()));
@@ -1450,6 +1567,7 @@ public class NFeXMLGenerator
 		icmsTot.setVCOFINS(normalize (nf.getCOFINSAmt()));
 		icmsTot.setVOutro(normalize (nf.getLBR_OtherChargesAmt()));
 		icmsTot.setVNF(normalize (nf.getGrandTotal()));
+		icmsTot.setVIPIDevol(normalize (nf.getIPIAmt()));
 		//	Valor aproximado total de tributos federais, estaduais e municipais.
 		if (nf.getlbr_vTotTrib() != null && nf.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
 			icmsTot.setVTotTrib(normalize(nf.getlbr_vTotTrib()));
@@ -1609,11 +1727,26 @@ public class NFeXMLGenerator
 		// amc - Validar para NFCE só ser emitida caso a fatura esteja vinculada a um pagamento.
 		// Então preencher aqui com os dados do pagamento.
 		//	YA. Formas de Pagamento
+		Pag pag = infNFe.addNewPag();
+		DetPag dPag = pag.addNewDetPag();
+		dPag.setVPag(normalize (nf.getGrandTotal().abs()));
+		//
 		if (nfce)
 		{
-			Pag pag = infNFe.addNewPag();
-			pag.setTPag(Pag.TPag.Enum.forString("01"));
-			pag.setVPag(normalize (nf.getGrandTotal().abs()));
+			//	FIXME: Permitir outras formas de pagamento para NFCe
+			dPag.setTPag(DET_TP_PAG_DINHEIRO);
+		}
+		else
+		{
+					// 	Para as notas com finalidade de Ajuste ou Devolução
+			if (TextUtil.match(ide.getFinNFe(), FIN_NFE_AJUSTE, FIN_NFE_DEVOLUCAO)
+					//	NFs sem valores a receber (simples remessas, transferêncisa, etc)
+					|| nf.islbr_HasOpenItems())
+				dPag.setTPag(DET_TP_PAG_SEM_PAGAM);
+			else
+			{
+				dPag.setTPag(DET_TP_PAG_DINHEIRO);
+			}
 		}
 		
 		//	Z. Informações Adicionais da NF-e
@@ -1697,7 +1830,7 @@ public class NFeXMLGenerator
 				{
 					InfNFeSupl supl = nfe.addNewInfNFeSupl();
 					supl.setQrCode(vNFCeQRCodeURL);
-					nf.set_ValueOfColumn("LBR_NFCeQRCodeURL", vNFCeQRCodeURL);
+					nf.setLBR_NFCeQRCodeURL(vNFCeQRCodeURL);
 				}
 			} 
 			catch (Exception e) 

@@ -12,7 +12,7 @@ import org.adempierelbr.model.MLBRNFConfig;
 import org.adempierelbr.model.MLBRNFSkipped;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
+import org.adempierelbr.nfe.api.NFeInutilizacao4Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
@@ -27,15 +27,14 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
-import br.inf.portalfiscal.nfe.v310.RetInutNFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v310.TInutNFe;
-import br.inf.portalfiscal.nfe.v310.TMod;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeDadosMsg;
+import br.inf.portalfiscal.nfe.v400.InutNFeDocument;
+import br.inf.portalfiscal.nfe.v400.RetInutNFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v400.TInutNFe;
+import br.inf.portalfiscal.nfe.v400.TMod;
+import br.inf.portalfiscal.nfe.v400.TRetInutNFe;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao4.NfeDadosMsg;
 
 /**
  * 		Inutiliza uma NF ou uma Sequência de NF
@@ -125,7 +124,7 @@ public class ProcInutNF extends SvrProcess
 		if (p_LBR_EnvType == null)
 			p_LBR_EnvType = "1";
 		//
-		br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
+		TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
 									dt.get_ValueAsString("lbr_NFModel"), p_DocumentNo, p_DocumentNo_To, dt.get_ValueAsString("lbr_NFSerie"), p_Just, p_DateDoc);
 		
 		StringBuilder msg = new StringBuilder("@Success@<br />");
@@ -173,7 +172,7 @@ public class ProcInutNF extends SvrProcess
 	 * @return
 	 * @throws Exception
 	 */
-	public static br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
+	public static TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
 			String regionCode, String p_LBR_EnvType, String nfModel, Integer p_DocumentNo, 
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
@@ -189,7 +188,7 @@ public class ProcInutNF extends SvrProcess
 		TInutNFe inutNFe = inutNFeDocument.addNewInutNFe();
 		inutNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 		
-		br.inf.portalfiscal.nfe.v310.TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
+		TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
 		infInut.setMod(TMod.Enum.forString (nfModel));
 		infInut.setCNPJ(TextUtil.toNumeric(cnpj));
 		infInut.setTpAmb(TAmb.Enum.forString (p_LBR_EnvType));
@@ -217,14 +216,6 @@ public class ProcInutNF extends SvrProcess
 		
 		//	Mensagem
 		NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-		
-		//	Cabeçalho
-		NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-		cabecMsg.setCUF(regionCode);
-		cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
@@ -238,14 +229,14 @@ public class ProcInutNF extends SvrProcess
 		
 		//	Recupera a URL de Transmissão
 		String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());		
-		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub(url);
+		NFeInutilizacao4Stub stub = new NFeInutilizacao4Stub(url);
 
 		//	Faz a chamada
-		OMElement nfeStatusServicoNF2 = stub.nfeInutilizacaoNF2(dadosMsg.getExtraElement(), cabecMsgE);
+		OMElement nfeStatusServicoNF2 = stub.nfeInutilizacaoNF(dadosMsg.getExtraElement());
 		String respStatus = nfeStatusServicoNF2.toString();
 		
 		//	Processa o retorno
-		br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
+		TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
 		
 		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(retInutNFe.getCStat()))
 			MLBRNFSkipped.register (retInutNFe);

@@ -64,9 +64,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.recepcaoevento.NfeCabecMsgE;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
 
 /**
  * 	Utilitários para gerar a NFe.
@@ -80,8 +78,8 @@ public abstract class NFeUtil
 	private static CLogger log = CLogger.getCLogger(NFeUtil.class);
 
 	/** Versão				*/
-	public static final String VERSAO_LAYOUT	= "3.10";
-	public static final String VERSAO_APP		= "Kenos ERP 3.10";
+	public static final String VERSAO_LAYOUT	= "4.00";
+	public static final String VERSAO_APP		= "Kenos ERP 4.00";
 	public static final String VERSAO_QR_CODE 	= "100";
 	@Deprecated
 	public static final String VERSAO_CCE		= "1.00";
@@ -149,24 +147,6 @@ public abstract class NFeUtil
 
 		return cabecalho;
 	}
-	
-	/**
-	 * Método para gerar cabeçalho envio do lote NF 2.00
-	 * @param region
-	 * @return NfeRecepcao2Stub.NfeCabecMsgE
-	 */
-	@Deprecated
-	public static NfeCabecMsgE geraCabecEvento (String region)
-	{
-		NfeCabecMsg cabecMsg = new NfeCabecMsg();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(VERSAO_CCE);
-
-		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
-
-		return cabecMsgE;
-	}	//	geraCabecEvento
 
 	/**
 	 * Rodapé padrão Distribuição

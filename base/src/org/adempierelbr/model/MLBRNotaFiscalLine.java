@@ -338,7 +338,59 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		return getTaxRate("ICMS");
 	}	//	getICMSRate
+	
+	
+	/**
+	 *  Retorno a LBR_NFLineTax do FCP
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getFCPTax()
+	{
+		return getTax("FCP");
+	}	//	getFCPTax
+	
+	/**
+	 *  Retorno o valor da Base de FCP
+	 *
+	 *  @return	BigDecimal	Base FCP
+	 */
+	public BigDecimal getFCPBase()
+	{
+		return getTaxBaseAmt("FCP");
+	}	//	getFCPBase
 
+	/**
+	 *  Retorno o valor do FCP
+	 *
+	 *  @return	BigDecimal	Valor FCP
+	 */
+	public BigDecimal getFCPAmt()
+	{
+		return getTaxAmt("FCP");
+	}	//	getFCPAmt
+
+
+	/**
+	 *  Retorno o valor da Redução da Base de FCP
+	 *
+	 *  @return	BigDecimal	Redução da Base de FCP
+	 */
+	public BigDecimal getFCPBaseReduction()
+	{
+		return getTaxBaseReduction("FCP");
+	}	//	getFCPBaseReduction
+
+	/**
+	 *  Retorno a alíquota de FCP
+	 *
+	 *  @return	BigDecimal	Alíquota FCP
+	 */
+	public BigDecimal getFCPRate()
+	{
+		return getTaxRate("FCP");
+	}	//	getFCPRate
+	
 	/**
 	 *  Retorno a LBR_NFLineTax do IPI
 	 *

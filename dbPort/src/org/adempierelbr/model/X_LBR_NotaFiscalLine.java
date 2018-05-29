@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20170927L;
+	private static final long serialVersionUID = 20180529L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -40,9 +40,9 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
       super (ctx, LBR_NotaFiscalLine_ID, trxName);
       /** if (LBR_NotaFiscalLine_ID == 0)
         {
+			setLBR_NotaFiscalLine_ID (0);
 			setlbr_IsService (false);
 // 'N'
-			setLBR_NotaFiscalLine_ID (0);
         } */
     }
 
@@ -207,6 +207,37 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return bd;
 	}
 
+	/** Set AFRMM Amount.
+		@param LBR_AFRMMAmt AFRMM Amount	  */
+	public void setLBR_AFRMMAmt (BigDecimal LBR_AFRMMAmt)
+	{
+		set_Value (COLUMNNAME_LBR_AFRMMAmt, LBR_AFRMMAmt);
+	}
+
+	/** Get AFRMM Amount.
+		@return AFRMM Amount	  */
+	public BigDecimal getLBR_AFRMMAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_AFRMMAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set CEST Name.
+		@param LBR_CESTName CEST Name	  */
+	public void setLBR_CESTName (String LBR_CESTName)
+	{
+		set_Value (COLUMNNAME_LBR_CESTName, LBR_CESTName);
+	}
+
+	/** Get CEST Name.
+		@return CEST Name	  */
+	public String getLBR_CESTName () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_CESTName);
+	}
+
 	public org.adempierelbr.model.I_LBR_CEST getLBR_CEST() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_CEST)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_CEST.Table_Name)
@@ -233,20 +264,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set CEST Name.
-		@param LBR_CESTName CEST Name	  */
-	public void setLBR_CESTName (String LBR_CESTName)
-	{
-		set_Value (COLUMNNAME_LBR_CESTName, LBR_CESTName);
-	}
-
-	/** Get CEST Name.
-		@return CEST Name	  */
-	public String getLBR_CESTName () 
-	{
-		return (String)get_Value(COLUMNNAME_LBR_CESTName);
 	}
 
 	public org.adempierelbr.model.I_LBR_CFOP getLBR_CFOP() throws RuntimeException
@@ -277,21 +294,18 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return ii.intValue();
 	}
 
-	/** Set CFOP Name.
-		@param lbr_CFOPName 
-		Defines the CFOP Name
-	  */
-	public void setlbr_CFOPName (String lbr_CFOPName)
+	/** Set CNPJ Manufacturer.
+		@param LBR_CNPJManufacturer CNPJ Manufacturer	  */
+	public void setLBR_CNPJManufacturer (String LBR_CNPJManufacturer)
 	{
-		set_Value (COLUMNNAME_lbr_CFOPName, lbr_CFOPName);
+		set_Value (COLUMNNAME_LBR_CNPJManufacturer, LBR_CNPJManufacturer);
 	}
 
-	/** Get CFOP Name.
-		@return Defines the CFOP Name
-	  */
-	public String getlbr_CFOPName () 
+	/** Get CNPJ Manufacturer.
+		@return CNPJ Manufacturer	  */
+	public String getLBR_CNPJManufacturer () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_CFOPName);
+		return (String)get_Value(COLUMNNAME_LBR_CNPJManufacturer);
 	}
 
 	/** Set FCI Value.
@@ -333,6 +347,432 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public String getLBR_IndTot () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_IndTot);
+	}
+
+	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
+			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
+
+	/** Set Legal Message.
+		@param LBR_LegalMessage_ID 
+		Defines the Legal Message
+	  */
+	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
+	{
+		if (LBR_LegalMessage_ID < 1) 
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
+	}
+
+	/** Get Legal Message.
+		@return Defines the Legal Message
+	  */
+	public int getLBR_LegalMessage_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_NCM getLBR_NCM() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NCM)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NCM.Table_Name)
+			.getPO(getLBR_NCM_ID(), get_TrxName());	}
+
+	/** Set NCM.
+		@param LBR_NCM_ID 
+		Primary key table LBR_NCM
+	  */
+	public void setLBR_NCM_ID (int LBR_NCM_ID)
+	{
+		if (LBR_NCM_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NCM_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NCM_ID, Integer.valueOf(LBR_NCM_ID));
+	}
+
+	/** Get NCM.
+		@return Primary key table LBR_NCM
+	  */
+	public int getLBR_NCM_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NCM_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set DI.
+		@param LBR_NFDI_ID DI	  */
+	public void setLBR_NFDI_ID (int LBR_NFDI_ID)
+	{
+		if (LBR_NFDI_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NFDI_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NFDI_ID, Integer.valueOf(LBR_NFDI_ID));
+	}
+
+	/** Get DI.
+		@return DI	  */
+	public int getLBR_NFDI_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFDI_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Nota Fiscal Line.
+		@param LBR_NotaFiscalLine_ID 
+		Primary key table LBR_NotaFiscalLine
+	  */
+	public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
+	{
+		if (LBR_NotaFiscalLine_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscalLine_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscalLine_ID, Integer.valueOf(LBR_NotaFiscalLine_ID));
+	}
+
+	/** Get Nota Fiscal Line.
+		@return Primary key table LBR_NotaFiscalLine
+	  */
+	public int getLBR_NotaFiscalLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscalLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getLBR_NotaFiscal_ID(), get_TrxName());	}
+
+	/** Set Nota Fiscal.
+		@param LBR_NotaFiscal_ID 
+		Primary key table LBR_NotaFiscal
+	  */
+	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
+	{
+		if (LBR_NotaFiscal_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
+	}
+
+	/** Get Nota Fiscal.
+		@return Primary key table LBR_NotaFiscal
+	  */
+	public int getLBR_NotaFiscal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Other Charges Amount.
+		@param LBR_OtherChargesAmt Other Charges Amount	  */
+	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt)
+	{
+		set_Value (COLUMNNAME_LBR_OtherChargesAmt, LBR_OtherChargesAmt);
+	}
+
+	/** Get Other Charges Amount.
+		@return Other Charges Amount	  */
+	public BigDecimal getLBR_OtherChargesAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_OtherChargesAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Order Reference Item.
+		@param LBR_PORef_Item 
+		Item reference to the Order Reference indicated in the same document
+	  */
+	public void setLBR_PORef_Item (String LBR_PORef_Item)
+	{
+		set_Value (COLUMNNAME_LBR_PORef_Item, LBR_PORef_Item);
+	}
+
+	/** Get Order Reference Item.
+		@return Item reference to the Order Reference indicated in the same document
+	  */
+	public String getLBR_PORef_Item () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_PORef_Item);
+	}
+
+	/** LBR_ScaleProduction AD_Reference_ID=319 */
+	public static final int LBR_SCALEPRODUCTION_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String LBR_SCALEPRODUCTION_Yes = "Y";
+	/** No = N */
+	public static final String LBR_SCALEPRODUCTION_No = "N";
+	/** Set Scale Production.
+		@param LBR_ScaleProduction Scale Production	  */
+	public void setLBR_ScaleProduction (String LBR_ScaleProduction)
+	{
+
+		set_Value (COLUMNNAME_LBR_ScaleProduction, LBR_ScaleProduction);
+	}
+
+	/** Get Scale Production.
+		@return Scale Production	  */
+	public String getLBR_ScaleProduction () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_ScaleProduction);
+	}
+
+	/** Set Tax Benefit Code.
+		@param LBR_TaxBenefitCode Tax Benefit Code	  */
+	public void setLBR_TaxBenefitCode (String LBR_TaxBenefitCode)
+	{
+		set_Value (COLUMNNAME_LBR_TaxBenefitCode, LBR_TaxBenefitCode);
+	}
+
+	/** Get Tax Benefit Code.
+		@return Tax Benefit Code	  */
+	public String getLBR_TaxBenefitCode () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TaxBenefitCode);
+	}
+
+	/** Set Line No.
+		@param Line 
+		Unique line for this document
+	  */
+	public void setLine (int Line)
+	{
+		set_Value (COLUMNNAME_Line, Integer.valueOf(Line));
+	}
+
+	/** Get Line No.
+		@return Unique line for this document
+	  */
+	public int getLine () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Line);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Line Total.
+		@param LineTotalAmt 
+		Total line amount incl. Tax
+	  */
+	public void setLineTotalAmt (BigDecimal LineTotalAmt)
+	{
+		set_Value (COLUMNNAME_LineTotalAmt, LineTotalAmt);
+	}
+
+	/** Get Line Total.
+		@return Total line amount incl. Tax
+	  */
+	public BigDecimal getLineTotalAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LineTotalAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_M_Product getM_Product() throws RuntimeException
+    {
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getM_Product_ID(), get_TrxName());	}
+
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Manufacturer.
+		@param Manufacturer 
+		Manufacturer of the Product
+	  */
+	public void setManufacturer (String Manufacturer)
+	{
+		set_Value (COLUMNNAME_Manufacturer, Manufacturer);
+	}
+
+	/** Get Manufacturer.
+		@return Manufacturer of the Product
+	  */
+	public String getManufacturer () 
+	{
+		return (String)get_Value(COLUMNNAME_Manufacturer);
+	}
+
+	/** Set Order Reference.
+		@param POReference 
+		Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner
+	  */
+	public void setPOReference (String POReference)
+	{
+		set_Value (COLUMNNAME_POReference, POReference);
+	}
+
+	/** Get Order Reference.
+		@return Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner
+	  */
+	public String getPOReference () 
+	{
+		return (String)get_Value(COLUMNNAME_POReference);
+	}
+
+	/** Set Price.
+		@param Price 
+		Price
+	  */
+	public void setPrice (BigDecimal Price)
+	{
+		set_Value (COLUMNNAME_Price, Price);
+	}
+
+	/** Get Price.
+		@return Price
+	  */
+	public BigDecimal getPrice () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Price);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set List price Value.
+		@param PriceListAmt 
+		Valuation with List Price
+	  */
+	public void setPriceListAmt (BigDecimal PriceListAmt)
+	{
+		set_Value (COLUMNNAME_PriceListAmt, PriceListAmt);
+	}
+
+	/** Get List price Value.
+		@return Valuation with List Price
+	  */
+	public BigDecimal getPriceListAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PriceListAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Product Name.
+		@param ProductName 
+		Name of the Product
+	  */
+	public void setProductName (String ProductName)
+	{
+		set_Value (COLUMNNAME_ProductName, ProductName);
+	}
+
+	/** Get Product Name.
+		@return Name of the Product
+	  */
+	public String getProductName () 
+	{
+		return (String)get_Value(COLUMNNAME_ProductName);
+	}
+
+	/** Set Product Key.
+		@param ProductValue 
+		Key of the Product
+	  */
+	public void setProductValue (String ProductValue)
+	{
+		set_Value (COLUMNNAME_ProductValue, ProductValue);
+	}
+
+	/** Get Product Key.
+		@return Key of the Product
+	  */
+	public String getProductValue () 
+	{
+		return (String)get_Value(COLUMNNAME_ProductValue);
+	}
+
+	/** Set Quantity.
+		@param Qty 
+		Quantity
+	  */
+	public void setQty (BigDecimal Qty)
+	{
+		set_Value (COLUMNNAME_Qty, Qty);
+	}
+
+	/** Get Quantity.
+		@return Quantity
+	  */
+	public BigDecimal getQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Qty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Partner Product Key.
+		@param VendorProductNo 
+		Product Key of the Business Partner
+	  */
+	public void setVendorProductNo (String VendorProductNo)
+	{
+		set_Value (COLUMNNAME_VendorProductNo, VendorProductNo);
+	}
+
+	/** Get Partner Product Key.
+		@return Product Key of the Business Partner
+	  */
+	public String getVendorProductNo () 
+	{
+		return (String)get_Value(COLUMNNAME_VendorProductNo);
+	}
+
+	/** Set CFOP Name.
+		@param lbr_CFOPName 
+		Defines the CFOP Name
+	  */
+	public void setlbr_CFOPName (String lbr_CFOPName)
+	{
+		set_Value (COLUMNNAME_lbr_CFOPName, lbr_CFOPName);
+	}
+
+	/** Get CFOP Name.
+		@return Defines the CFOP Name
+	  */
+	public String getlbr_CFOPName () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_CFOPName);
 	}
 
 	/** Set Insurance Amt.
@@ -379,34 +819,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return false;
 	}
 
-	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)
-			.getPO(getLBR_LegalMessage_ID(), get_TrxName());	}
-
-	/** Set Legal Message.
-		@param LBR_LegalMessage_ID 
-		Defines the Legal Message
-	  */
-	public void setLBR_LegalMessage_ID (int LBR_LegalMessage_ID)
-	{
-		if (LBR_LegalMessage_ID < 1) 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_LegalMessage_ID, Integer.valueOf(LBR_LegalMessage_ID));
-	}
-
-	/** Get Legal Message.
-		@return Defines the Legal Message
-	  */
-	public int getLBR_LegalMessage_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_LegalMessage_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set Line Total CIF.
 		@param lbr_LineTotalCIF 
 		The total CIF for the line
@@ -447,34 +859,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return bd;
 	}
 
-	public org.adempierelbr.model.I_LBR_NCM getLBR_NCM() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NCM)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NCM.Table_Name)
-			.getPO(getLBR_NCM_ID(), get_TrxName());	}
-
-	/** Set NCM.
-		@param LBR_NCM_ID 
-		Primary key table LBR_NCM
-	  */
-	public void setLBR_NCM_ID (int LBR_NCM_ID)
-	{
-		if (LBR_NCM_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NCM_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_NCM_ID, Integer.valueOf(LBR_NCM_ID));
-	}
-
-	/** Get NCM.
-		@return Primary key table LBR_NCM
-	  */
-	public int getLBR_NCM_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NCM_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set NCM Name.
 		@param lbr_NCMName 
 		Defines the NCM Name
@@ -490,77 +874,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public String getlbr_NCMName () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NCMName);
-	}
-
-	/** Set DI.
-		@param LBR_NFDI_ID DI	  */
-	public void setLBR_NFDI_ID (int LBR_NFDI_ID)
-	{
-		if (LBR_NFDI_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NFDI_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_NFDI_ID, Integer.valueOf(LBR_NFDI_ID));
-	}
-
-	/** Get DI.
-		@return DI	  */
-	public int getLBR_NFDI_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFDI_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException
-    {
-		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
-			.getPO(getLBR_NotaFiscal_ID(), get_TrxName());	}
-
-	/** Set Nota Fiscal.
-		@param LBR_NotaFiscal_ID 
-		Primary key table LBR_NotaFiscal
-	  */
-	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
-	{
-		if (LBR_NotaFiscal_ID < 1) 
-			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, null);
-		else 
-			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
-	}
-
-	/** Get Nota Fiscal.
-		@return Primary key table LBR_NotaFiscal
-	  */
-	public int getLBR_NotaFiscal_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscal_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Nota Fiscal Line.
-		@param LBR_NotaFiscalLine_ID 
-		Primary key table LBR_NotaFiscalLine
-	  */
-	public void setLBR_NotaFiscalLine_ID (int LBR_NotaFiscalLine_ID)
-	{
-		if (LBR_NotaFiscalLine_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscalLine_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_NotaFiscalLine_ID, Integer.valueOf(LBR_NotaFiscalLine_ID));
-	}
-
-	/** Get Nota Fiscal Line.
-		@return Primary key table LBR_NotaFiscalLine
-	  */
-	public int getLBR_NotaFiscalLine_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscalLine_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
 	}
 
 	/** Set Numero da adição.
@@ -595,23 +908,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Other Charges Amount.
-		@param LBR_OtherChargesAmt Other Charges Amount	  */
-	public void setLBR_OtherChargesAmt (BigDecimal LBR_OtherChargesAmt)
-	{
-		set_Value (COLUMNNAME_LBR_OtherChargesAmt, LBR_OtherChargesAmt);
-	}
-
-	/** Get Other Charges Amount.
-		@return Other Charges Amount	  */
-	public BigDecimal getLBR_OtherChargesAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_OtherChargesAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** lbr_ProductSource AD_Reference_ID=1000031 */
@@ -650,26 +946,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public String getlbr_ProductSource () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_ProductSource);
-	}
-
-	/** Set Tax Quantity.
-		@param lbr_qTrib 
-		Defines the Tax Quantity
-	  */
-	public void setlbr_qTrib (BigDecimal lbr_qTrib)
-	{
-		set_Value (COLUMNNAME_lbr_qTrib, lbr_qTrib);
-	}
-
-	/** Get Tax Quantity.
-		@return Defines the Tax Quantity
-	  */
-	public BigDecimal getlbr_qTrib () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_qTrib);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** Set Service Taxes.
@@ -813,6 +1089,26 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_UTribName);
 	}
 
+	/** Set Tax Quantity.
+		@param lbr_qTrib 
+		Defines the Tax Quantity
+	  */
+	public void setlbr_qTrib (BigDecimal lbr_qTrib)
+	{
+		set_Value (COLUMNNAME_lbr_qTrib, lbr_qTrib);
+	}
+
+	/** Get Tax Quantity.
+		@return Defines the Tax Quantity
+	  */
+	public BigDecimal getlbr_qTrib () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_qTrib);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Total de Tributo.
 		@param lbr_vTotTrib 
 		Valor aproximado total de tributos federais, estaduais e municipais.
@@ -851,201 +1147,5 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	/** Set Line No.
-		@param Line 
-		Unique line for this document
-	  */
-	public void setLine (int Line)
-	{
-		set_Value (COLUMNNAME_Line, Integer.valueOf(Line));
-	}
-
-	/** Get Line No.
-		@return Unique line for this document
-	  */
-	public int getLine () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Line);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Line Total.
-		@param LineTotalAmt 
-		Total line amount incl. Tax
-	  */
-	public void setLineTotalAmt (BigDecimal LineTotalAmt)
-	{
-		set_Value (COLUMNNAME_LineTotalAmt, LineTotalAmt);
-	}
-
-	/** Get Line Total.
-		@return Total line amount incl. Tax
-	  */
-	public BigDecimal getLineTotalAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LineTotalAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Manufacturer.
-		@param Manufacturer 
-		Manufacturer of the Product
-	  */
-	public void setManufacturer (String Manufacturer)
-	{
-		set_Value (COLUMNNAME_Manufacturer, Manufacturer);
-	}
-
-	/** Get Manufacturer.
-		@return Manufacturer of the Product
-	  */
-	public String getManufacturer () 
-	{
-		return (String)get_Value(COLUMNNAME_Manufacturer);
-	}
-
-	public I_M_Product getM_Product() throws RuntimeException
-    {
-		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
-			.getPO(getM_Product_ID(), get_TrxName());	}
-
-	/** Set Product.
-		@param M_Product_ID 
-		Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID)
-	{
-		if (M_Product_ID < 1) 
-			set_Value (COLUMNNAME_M_Product_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-	}
-
-	/** Get Product.
-		@return Product, Service, Item
-	  */
-	public int getM_Product_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Price.
-		@param Price 
-		Price
-	  */
-	public void setPrice (BigDecimal Price)
-	{
-		set_Value (COLUMNNAME_Price, Price);
-	}
-
-	/** Get Price.
-		@return Price
-	  */
-	public BigDecimal getPrice () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Price);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set List price Value.
-		@param PriceListAmt 
-		Valuation with List Price
-	  */
-	public void setPriceListAmt (BigDecimal PriceListAmt)
-	{
-		set_Value (COLUMNNAME_PriceListAmt, PriceListAmt);
-	}
-
-	/** Get List price Value.
-		@return Valuation with List Price
-	  */
-	public BigDecimal getPriceListAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PriceListAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Product Name.
-		@param ProductName 
-		Name of the Product
-	  */
-	public void setProductName (String ProductName)
-	{
-		set_Value (COLUMNNAME_ProductName, ProductName);
-	}
-
-	/** Get Product Name.
-		@return Name of the Product
-	  */
-	public String getProductName () 
-	{
-		return (String)get_Value(COLUMNNAME_ProductName);
-	}
-
-	/** Set Product Key.
-		@param ProductValue 
-		Key of the Product
-	  */
-	public void setProductValue (String ProductValue)
-	{
-		set_Value (COLUMNNAME_ProductValue, ProductValue);
-	}
-
-	/** Get Product Key.
-		@return Key of the Product
-	  */
-	public String getProductValue () 
-	{
-		return (String)get_Value(COLUMNNAME_ProductValue);
-	}
-
-	/** Set Quantity.
-		@param Qty 
-		Quantity
-	  */
-	public void setQty (BigDecimal Qty)
-	{
-		set_Value (COLUMNNAME_Qty, Qty);
-	}
-
-	/** Get Quantity.
-		@return Quantity
-	  */
-	public BigDecimal getQty () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Qty);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Partner Product Key.
-		@param VendorProductNo 
-		Product Key of the Business Partner
-	  */
-	public void setVendorProductNo (String VendorProductNo)
-	{
-		set_Value (COLUMNNAME_VendorProductNo, VendorProductNo);
-	}
-
-	/** Get Partner Product Key.
-		@return Product Key of the Business Partner
-	  */
-	public String getVendorProductNo () 
-	{
-		return (String)get_Value(COLUMNNAME_VendorProductNo);
 	}
 }
