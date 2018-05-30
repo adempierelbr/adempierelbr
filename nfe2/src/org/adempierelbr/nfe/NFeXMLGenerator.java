@@ -1021,9 +1021,11 @@ public class NFeXMLGenerator
 			//	Valor aproximado total de tributos federais, estaduais e municipais.
 			if (nfl.getlbr_vTotTrib() != null && nfl.getlbr_vTotTrib().compareTo(BigDecimal.ZERO) > 0)
 				imposto.setVTotTrib(normalize(nfl.getlbr_vTotTrib()));
+			else
+				imposto.setVTotTrib(normalize(BigDecimal.ZERO));
 			
 			//	N. ICMS Normal e ST
-			if (nfl.getICMSTax() != null && nfl.getFCPTax() != null)
+			if (nfl.getICMSTax() != null)
 			{
 				X_LBR_NFLineTax icmsTax = nfl.getICMSTax();
 				
