@@ -249,12 +249,11 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 		MOrgInfo oi = MOrgInfo.get (Env.getCtx(), getAD_Org_ID(), null);
 		I_W_AD_OrgInfo oiW = POWrapper.create (oi, I_W_AD_OrgInfo.class);
 		int p_Org_Region_ID = oi.getC_Location().getC_Region_ID();
-		MLBRNotaFiscal nf = new MLBRNotaFiscal(getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
 		
 		try
 		{
 			//Nota Fiscal Eletrônica
-			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nf.getlbr_NFModel())) 
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel())) 
 			{	
 				//	Dados do Envio
 				EnvEventoDocument envDoc = EnvEventoDocument.Factory.newInstance();
@@ -268,7 +267,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 				TEvento.InfEvento infEv = evento.addNewInfEvento();
 				
 				//	Configurações da NF-e
-				MLBRNFConfig config = MLBRNFConfig.get(oiW.getAD_Org_ID(), nf.getlbr_NFModel());
+				MLBRNFConfig config = MLBRNFConfig.get(oiW.getAD_Org_ID(), getlbr_NFModel());
 				
 				//	Informações do Evento da Carta de Correção
 				infEv.setCOrgao(TCOrgaoIBGE.Enum.forString(Integer.toString (NFeUtil.getRegionCode (oi))));
@@ -304,7 +303,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 					//
 					detCan.setVersao(br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.DetEvento.Versao.X_1_00);
 					detCan.setDescEvento(br.inf.portalfiscal.nfe.evento.cancelamento.DetEventoDocument.DetEvento.DescEvento.CANCELAMENTO);
-					detCan.setNProt(getLBR_NotaFiscal().getlbr_NFeProt());
+					detCan.setNProt(getProtocol());
 					//
 					xmlExtension = "-can-dst.xml";
 					NFeUtil.validate (detCan);
@@ -421,8 +420,8 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 					//	Evento processada com sucesso
 					String cStat = infReturn.getCStat();
 					
-					if (TextUtil.match (cStat, 	LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E, 
-												LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANFC_E,
+					if (TextUtil.match (cStat, 	LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E, 
+												LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANF_E,
 												LBR_NFESTATUS_155_CancelamentoDeNF_EHomologadoForaDePrazo))
 					{
 						try
@@ -473,7 +472,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			}
 			
 			//Nota Fiscal de Serviços Eletrõnica - RPS
-			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(nf.getlbr_NFModel())) 
+			else if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getlbr_NFModel())) 
 			{
 //		TODO		if (!LBR_EVENTTYPE_Cancelamento.equals(getLBR_EventType()))
 					throw new AdempiereException ("Evento não suportado para NFSe");

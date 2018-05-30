@@ -388,7 +388,7 @@ public class ConsultNFe extends SvrProcess
 						//	Adiciona os dados de autorização de evento
 						event.setlbr_NFeProt(infCanc.getNProt());
 						event.setDateTrx (new Timestamp (infCanc.getDhRecbto().getTimeInMillis()));
-						event.setlbr_NFeStatus(MLBRNFeEvent.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E);
+						event.setlbr_NFeStatus(MLBRNFeEvent.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E);
 						event.setStatus (infCanc.getXMotivo ());
 						event.setDocStatus(MLBRNFeEvent.DOCSTATUS_Completed);
 						event.setDocAction(MLBRNFeEvent.DOCACTION_None);

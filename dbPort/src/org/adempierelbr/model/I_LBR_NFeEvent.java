@@ -226,6 +226,7 @@ public interface I_LBR_NFeEvent
 	public int getLBR_PartnerDFe_ID();
 
 	public org.adempierelbr.model.I_LBR_PartnerDFe getLBR_PartnerDFe() throws RuntimeException;
+
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 
@@ -238,6 +239,19 @@ public interface I_LBR_NFeEvent
 	  * The document has been processed
 	  */
 	public boolean isProcessed();
+
+    /** Column name Protocol */
+    public static final String COLUMNNAME_Protocol = "Protocol";
+
+	/** Set Protocol.
+	  * Protocol
+	  */
+	public void setProtocol (String Protocol);
+
+	/** Get Protocol.
+	  * Protocol
+	  */
+	public String getProtocol();
 
     /** Column name SeqNo */
     public static final String COLUMNNAME_SeqNo = "SeqNo";
@@ -308,6 +322,19 @@ public interface I_LBR_NFeEvent
 	  * Used to identify individuals in Brazil
 	  */
 	public String getlbr_CPF();
+
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
 
     /** Column name lbr_NFeID */
     public static final String COLUMNNAME_lbr_NFeID = "lbr_NFeID";

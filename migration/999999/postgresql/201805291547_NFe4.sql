@@ -384,3 +384,127 @@ UPDATE LBR_NotaFiscalLine SET LBR_AFRMMAmt=0 WHERE LBR_AFRMMAmt IS NULL
 INSERT INTO t_alter_column values('lbr_notafiscalline','LBR_AFRMMAmt',null,'NOT NULL',null)
 ;
 
+-- 30/05/2018 13h41min48s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1130284,1100009,0,17,1120257,1120247,'lbr_NFModel',TO_TIMESTAMP('2018-05-30 13:41:48','YYYY-MM-DD HH24:MI:SS'),100,'Identifies the model of Nota Fiscal','LBRA',2,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','NF Model',0,TO_TIMESTAMP('2018-05-30 13:41:48','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 30/05/2018 13h41min48s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1130284 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 30/05/2018 13h41min54s BRT
+-- NF-e 4.0
+ALTER TABLE LBR_NFeEvent ADD COLUMN lbr_NFModel VARCHAR(2) DEFAULT NULL 
+;
+
+-- 30/05/2018 13h43min59s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1130286,3065,0,10,1120247,'Protocol',TO_TIMESTAMP('2018-05-30 13:43:59','YYYY-MM-DD HH24:MI:SS'),100,'Protocol','LBRA',60,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Protocol',0,TO_TIMESTAMP('2018-05-30 13:43:59','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 30/05/2018 13h43min59s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1130286 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 30/05/2018 13h44min1s BRT
+-- NF-e 4.0
+ALTER TABLE LBR_NFeEvent ADD COLUMN Protocol VARCHAR(60) DEFAULT NULL 
+;
+
+-- 30/05/2018 13h44min15s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1130284,1127368,0,1120049,TO_TIMESTAMP('2018-05-30 13:44:14','YYYY-MM-DD HH24:MI:SS'),100,'Identifies the model of Nota Fiscal',2,'LBRA','Y','Y','Y','N','N','N','N','N','NF Model',TO_TIMESTAMP('2018-05-30 13:44:14','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 30/05/2018 13h44min15s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127368 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 30/05/2018 13h44min15s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1130286,1127369,0,1120049,TO_TIMESTAMP('2018-05-30 13:44:15','YYYY-MM-DD HH24:MI:SS'),100,'Protocol',60,'LBRA','Y','Y','Y','N','N','N','N','N','Protocol',TO_TIMESTAMP('2018-05-30 13:44:15','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 30/05/2018 13h44min15s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127369 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 30/05/2018 13h45min28s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET SeqNo=85,Updated=TO_TIMESTAMP('2018-05-30 13:45:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127368
+;
+
+-- 30/05/2018 13h45min36s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET IsSameLine='Y', SeqNo=86,Updated=TO_TIMESTAMP('2018-05-30 13:45:36','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127369
+;
+
+-- 30/05/2018 13h47min35s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@LBR_NotaFiscal_ID@=0 & @LBR_PartnerDFe_ID@=0',Updated=TO_TIMESTAMP('2018-05-30 13:47:35','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127368
+;
+
+-- 30/05/2018 13h47min43s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@LBR_NotaFiscal_ID@=0 & @LBR_PartnerDFe_ID@=0',Updated=TO_TIMESTAMP('2018-05-30 13:47:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127369
+;
+
+-- 30/05/2018 13h48min20s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DefaultValue='55',Updated=TO_TIMESTAMP('2018-05-30 13:48:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127368
+;
+
+-- 30/05/2018 13h51min31s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@LBR_NotaFiscal_ID@=0 & @LBR_PartnerDFe_ID@=0 & @LBR_EventType@=''110111''',Updated=TO_TIMESTAMP('2018-05-30 13:51:31','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127369
+;
+
+UPDATE LBR_NFeEvent SET Protocol=(SELECT LBR_NFeProt FROM LBR_NotaFiscal nf WHERE nf.LBR_NotaFiscal_ID=LBR_NFeEvent.LBR_NotaFiscal_ID) WHERE LBR_NotaFiscal_ID>0 AND Protocol IS NULL
+;
+UPDATE LBR_NFeEvent SET LBR_NFModel=(SELECT LBR_NFModel FROM LBR_NotaFiscal nf WHERE nf.LBR_NotaFiscal_ID=LBR_NFeEvent.LBR_NotaFiscal_ID) WHERE LBR_NotaFiscal_ID>0 AND LBR_NFModel IS NULL
+;
+UPDATE LBR_NFeEvent SET Protocol=(SELECT LBR_NFeProt FROM LBR_PartnerDFe dfe WHERE dfe.LBR_PartnerDFe_ID=LBR_NFeEvent.LBR_PartnerDFe_ID) WHERE LBR_PartnerDFe_ID>0 AND Protocol IS NULL
+;
+UPDATE LBR_NFeEvent SET LBR_NFModel=(SELECT LBR_NFModel FROM LBR_PartnerDFe dfe WHERE dfe.LBR_PartnerDFe_ID=LBR_NFeEvent.LBR_PartnerDFe_ID) WHERE LBR_PartnerDFe_ID>0 AND LBR_NFModel IS NULL
+;
+
+-- 30/05/2018 14h10min52s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,AD_Val_Rule_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1130287,1830,0,30,1000034,1120000,1000009,'C_City_ID',TO_TIMESTAMP('2018-05-30 14:10:52','YYYY-MM-DD HH24:MI:SS'),100,'City','U',10,'City in a country','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','City',0,TO_TIMESTAMP('2018-05-30 14:10:52','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 30/05/2018 14h10min52s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1130287 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 30/05/2018 14h10min56s BRT
+-- NF-e 4.0
+ALTER TABLE LBR_NFeWebService ADD COLUMN C_City_ID NUMERIC(10) DEFAULT NULL 
+;
+
+-- 30/05/2018 14h11min11s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1130287,1127370,0,1120000,TO_TIMESTAMP('2018-05-30 14:11:10','YYYY-MM-DD HH24:MI:SS'),100,'City',10,'U','City in a country','Y','Y','Y','N','N','N','N','N','City',TO_TIMESTAMP('2018-05-30 14:11:10','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 30/05/2018 14h11min11s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127370 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 30/05/2018 14h14min45s BRT
+-- NF-e 4.0
+INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,CreatedBy,Description,EntityType,IsActive,Name,Type,Updated,UpdatedBy) VALUES (0,0,1120144,'C_Region.C_Country_ID=139 AND C_Region.Name IN (''AC'',''BA'',''CE'',''GO'',''MS'',''MT'',''PB'',''PR'',''RN'',''RS'',''SC'',''SP'')',TO_TIMESTAMP('2018-05-30 14:14:45','YYYY-MM-DD HH24:MI:SS'),100,'UFs com serviço de Consulta de Cadastro habilitadas','LBRA','Y','C_Region (Brazil Consulta Cadastro)','S',TO_TIMESTAMP('2018-05-30 14:14:45','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 30/05/2018 14h15min5s BRT
+-- NF-e 4.0
+UPDATE AD_Process_Para SET AD_Val_Rule_ID=1120144,Updated=TO_TIMESTAMP('2018-05-30 14:15:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120211
+;
+
