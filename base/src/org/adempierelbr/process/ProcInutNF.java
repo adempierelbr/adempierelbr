@@ -18,7 +18,6 @@ import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
 import org.apache.axiom.om.OMElement;
-import org.compiere.model.MDocType;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MRefList;
@@ -47,18 +46,19 @@ public class ProcInutNF extends SvrProcess
 	/** Nota Fiscal               	*/
 	private Integer 	p_AD_Org_ID 	= 0;
 	
-	/** Tipo de Documento         	*/
-	private Integer 	p_C_DocType_ID 	= 0;
-	
 	/**	Sequência de NF			  	*/
-	private Integer 	p_DocumentNo 	= 0;
+	private Integer 	p_DocumentNo = 0;
 	private Integer 	p_DocumentNo_To = 0;
 	
 	/**	Justificativa			  	*/
-	private String 		p_Just 			= "";
+	private String p_Just = "";
 	
-	/**	Data do Cancelamento	  	*/
-	private Timestamp 	p_DateDoc;
+	/**	Data do Cancelamento	 	 	*/
+	private Timestamp p_DateDoc;
+	
+	/**	Modelo e Série da NF		  	*/
+	private String p_NFModel = null;
+	private String p_NFSerie = null;
 	
 	/**	Logger						*/
 	private static CLogger log = CLogger.getCLogger(ProcInutNF.class);
@@ -77,21 +77,25 @@ public class ProcInutNF extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
-			else if (name.equals("AD_Org_ID"))
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_AD_Org_ID))
 				p_AD_Org_ID = para[i].getParameterAsInt();
-			else if (name.equals("C_DocType_ID"))
-				p_C_DocType_ID = para[i].getParameterAsInt();
-			else if (name.equals("DocumentNo"))
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_C_DocType_ID))
+				;	//	Not Used anymore
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_DocumentNo))
 			{
 				p_DocumentNo = para[i].getParameterAsInt();
 				p_DocumentNo_To = para[i].getParameter_ToAsInt();
 			}
-			else if (name.equals("DateDoc"))
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_DateDoc))
 				p_DateDoc = (Timestamp) para[i].getParameter();
-			else if (name.equals("lbr_MotivoCancel"))
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_lbr_MotivoCancel))
 				p_Just = (String) para[i].getParameter();
-			else if (name.equals("lbr_NFeEnv"))
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_lbr_NFeEnv))
 				p_LBR_EnvType = (String) para[i].getParameter();
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_lbr_NFModel))
+				p_NFModel = (String) para[i].getParameter();
+			else if (name.equals(MLBRNotaFiscal.COLUMNNAME_lbr_NFSerie))
+				p_NFSerie = (String) para[i].getParameter();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -104,8 +108,8 @@ public class ProcInutNF extends SvrProcess
 	{
 		if (p_AD_Org_ID <= 0)
 			throw new Exception ("@Mandatory@ @AD_Org_ID@");
-		if (p_C_DocType_ID <= 0)
-			throw new Exception ("@Mandatory@ @C_DocType_ID@");
+		if (p_NFModel == null)
+			throw new Exception ("@Mandatory@ @lbr_NFModel@");
 		if (p_DocumentNo == null || p_DocumentNo.intValue() <= 0)
 			throw new Exception ("@Mandatory@ @DocumentNo@");
 		if (p_DocumentNo_To == null || p_DocumentNo_To.intValue() <= 0)
@@ -114,18 +118,20 @@ public class ProcInutNF extends SvrProcess
 			throw new Exception ("@Mandatory@ @DocumentNo@");
 		//
 		MOrgInfo oi = MOrgInfo.get(Env.getCtx(), p_AD_Org_ID, get_TrxName());
-		MDocType dt = new MDocType(Env.getCtx(), p_C_DocType_ID, null);
 		//
 		MLocation orgLocation = new MLocation(getCtx(), oi.getC_Location_ID(), get_TrxName());
 		String regionCode = BPartnerUtil.getRegionCode(orgLocation);
 		if (regionCode.isEmpty())
 			return "@Error@ UF Inválida";
 
+		//	Configuração para esta NF
+		MLBRNFConfig config = MLBRNFConfig.get(p_AD_Org_ID, p_NFModel);
+		
 		if (p_LBR_EnvType == null)
-			p_LBR_EnvType = "1";
+			p_LBR_EnvType = config.getlbr_NFeEnv();
 		//
 		TRetInutNFe.InfInut ret = invalidateNF (getCtx(), oi.getAD_Org_ID(), oi.get_ValueAsString("lbr_CNPJ"), regionCode, p_LBR_EnvType, 
-									dt.get_ValueAsString("lbr_NFModel"), p_DocumentNo, p_DocumentNo_To, dt.get_ValueAsString("lbr_NFSerie"), p_Just, p_DateDoc);
+				p_NFModel, p_DocumentNo, p_DocumentNo_To, p_NFSerie, p_Just, p_DateDoc);
 		
 		StringBuilder msg = new StringBuilder("@Success@<br />");
 		msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), 1100001, ret.getTpAmb().toString()));

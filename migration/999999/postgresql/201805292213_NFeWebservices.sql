@@ -2447,3 +2447,6 @@ INSERT INTO LBR_NFeWebService (LBR_NFeWebService_ID,AD_Client_ID,AD_Org_ID,IsAct
 INSERT INTO LBR_NFeWebService (LBR_NFeWebService_ID,AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,Name,C_Region_ID,lbr_NFeEnv,VersionNo,URL,LBR_WSType) VALUES (1122290,0,0,'Y',TO_TIMESTAMP('2018-05-29 22:10:18','YYYY-MM-DD HH24:MI:SS'),100,TO_TIMESTAMP('2018-05-29 22:10:18','YYYY-MM-DD HH24:MI:SS'),100,'RecepcaoEvento',464,'2','4.00','https://hom.svc.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx','2')
 ;
 
+-- 30/05/2018 16h1min44s BRT
+SELECT Register_Migration_Script ('201805292213_NFeWebservices.sql') FROM DUAL
+;

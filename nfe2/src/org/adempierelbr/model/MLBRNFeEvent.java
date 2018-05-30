@@ -196,6 +196,20 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 			}
 		}
 		
+		//	Validação do Tipo de Evento Cancelamento
+		if (LBR_EVENTTYPE_Cancelamento.equals(getLBR_EventType()) && (getProtocol() == null || getProtocol().isEmpty()))
+		{
+			m_processMsg = "@Invalid@ @Protocol@";
+			return DocAction.STATUS_Invalid;
+		}
+		
+		//	Validação do Modelo da NF
+		if (getlbr_NFModel() == null || getlbr_NFModel().isEmpty())
+		{
+			m_processMsg = "@Invalid@ @lbr_NFModel@";
+			return DocAction.STATUS_Invalid;
+		}
+		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
 			return DocAction.STATUS_Invalid;
@@ -713,6 +727,8 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 		event.setDescription(desc);
 		event.setDateDoc(new Timestamp (System.currentTimeMillis()));
 		event.setSeqNo(seqNo);
+		event.setlbr_NFModel(nf.getlbr_NFModel());
+		event.setProtocol(nf.getlbr_NFeProt());
 		event.saveEx();
 		//
 		event.m_updateNFe = updateNFe;

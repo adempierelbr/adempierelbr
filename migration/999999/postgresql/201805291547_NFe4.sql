@@ -508,3 +508,6 @@ INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,Crea
 UPDATE AD_Process_Para SET AD_Val_Rule_ID=1120144,Updated=TO_TIMESTAMP('2018-05-30 14:15:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120211
 ;
 
+-- 30/05/2018 16h1min44s BRT
+SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
+;

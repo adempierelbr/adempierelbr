@@ -1,3 +1,6 @@
+SET SQLBLANKLINES ON
+SET DEFINE OFF
+
 -- 30/01/2018 18h17min52s BRST
 INSERT INTO AD_Element (AD_Element_ID,AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,ColumnName,Name,Description,Help,PrintName,EntityType) VALUES (1122437,0,0,'Y',TO_TIMESTAMP('2018-01-30 18:17:51','YYYY-MM-DD HH24:MI:SS'),100,TO_TIMESTAMP('2018-01-30 18:17:51','YYYY-MM-DD HH24:MI:SS'),100,'LBR_PORef_Item','Order Reference Item','Item reference to the Order Reference indicated in the same document','Item reference to the Order Reference indicated in the same document','Order Reference Item','LBRA')
 ;
@@ -508,3 +511,8 @@ INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,Crea
 UPDATE AD_Process_Para SET AD_Val_Rule_ID=1120144,Updated=TO_DATE('2018-05-30 14:15:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120211
 ;
 
+-- 30/05/2018 16h1min44s BRT
+SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
+;
+
+EXIT

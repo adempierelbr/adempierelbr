@@ -174,7 +174,7 @@ public class ConsultaCadastro extends SvrProcess
 		RetConsCadDocument bpResponse = ConsultaCadastro.doIt (MOrgInfo.get (getCtx(), p_AD_Org_ID, null), p_CNPJ, p_CPF, p_IE, uf);
 		
 		if (bpResponse == null)
-			throw new AdempiereUserError ("Error consulting Business Partner data. Check log for more info.");
+			throw new AdempiereUserError ("Erro ao consultar dados ou a SeFaz não possuí serviço de Consulta de Cadastro.");
 
 		TRetConsCad retConsCad = bpResponse.getRetConsCad();
 		br.inf.portalfiscal.nfe.v6v.TRetConsCad.InfCons infCons = retConsCad.getInfCons();
@@ -439,6 +439,8 @@ public class ConsultaCadastro extends SvrProcess
 			OMElement nfeConsulta = stub.consultaCadastro (dadosMsg.getExtraElement());
 			String respStatus = nfeConsulta.toString();
 
+			log.finer(respStatus);
+			
 			//	Resposta
 			return RetConsCadDocument.Factory.parse (respStatus);
 		}
