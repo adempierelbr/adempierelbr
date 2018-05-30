@@ -14,7 +14,7 @@ import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.nfe.api.NfeConsulta2Stub;
+import org.adempierelbr.nfe.api.NFeConsultaProtocolo4Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.apache.axiom.om.OMElement;
@@ -34,9 +34,7 @@ import br.inf.portalfiscal.nfe.v400.TProtNFe.InfProt;
 import br.inf.portalfiscal.nfe.v400.TRetCancNFe.InfCanc;
 import br.inf.portalfiscal.nfe.v400.TRetConsSitNFe;
 import br.inf.portalfiscal.nfe.v400.TVerConsSitNFe;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeDadosMsg;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeconsultaprotocolo4.NfeDadosMsg;
 
 /**
  * 		Consulta os dados da NF-e diretamenta na SeFaz
@@ -199,14 +197,6 @@ public class ConsultNFe extends SvrProcess
 			
 			//	Mensagem
 			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-			
-			//	Cabeçalho
-			NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-			cabecMsg.setCUF(region);
-			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 			String serviceType = null;
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(p_LBR_NFModel))
@@ -217,9 +207,9 @@ public class ConsultNFe extends SvrProcess
 			
 			String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
 			
-			NfeConsulta2Stub stub = new NfeConsulta2Stub(url);
+			NFeConsultaProtocolo4Stub stub = new NFeConsultaProtocolo4Stub(url);
 
-			OMElement nfeConsNF2 = stub.nfeConsultaNF2(dadosMsg.getExtraElement(), cabecMsgE);
+			OMElement nfeConsNF2 = stub.nfeConsultaNF (dadosMsg.getExtraElement());
 			String respStatus = nfeConsNF2.toString();
 
 			//	Resposta
