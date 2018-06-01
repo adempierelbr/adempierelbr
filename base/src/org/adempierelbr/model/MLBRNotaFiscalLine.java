@@ -339,6 +339,15 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		return getTaxRate("ICMS");
 	}	//	getICMSRate
 	
+	/**
+	 *  Retorno a LBR_NFLineTax do FCP
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getFCPTaxST()
+	{
+		return getTax("FCPST");
+	}	//	getFCPTax
 	
 	/**
 	 *  Retorno a LBR_NFLineTax do FCP

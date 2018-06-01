@@ -467,6 +467,16 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		return getTaxAmt("FCP");
 	}	//	getICMSAmt
+	
+	/**
+	 *  Retorno o valor do FCP por Substituição Tributária
+	 *
+	 *  @return	BigDecimal	FCPST
+	 */
+	public BigDecimal getFCPSTAmt()
+	{
+		return getTaxAmt("FCPST");
+	}	//	getICMSAmt
 
 	/**
 	 *  Retorno o valor do IPI

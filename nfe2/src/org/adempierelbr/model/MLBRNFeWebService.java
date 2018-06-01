@@ -13,6 +13,8 @@
 package org.adempierelbr.model;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
@@ -157,29 +159,30 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 	 */
 	public static MLBRNFeWebService get (String name, String envType, String versionNo, String type, int C_Region_ID, int C_City_ID)
 	{
-		Object[] parameters = null;
-		
 		String where = "UPPER(Name) LIKE ? AND lbr_NFeEnv=? AND VersionNo=? AND LBR_WSType=?";
-		if (C_Region_ID > 0)
-		{
-			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID};
-			where += " AND C_Region_ID=?";
-		}
-		else
-		{
-			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type};
-			where += " AND C_Region_ID IS NULL";
-		}
-		
+		//
+		List<Object> parameters = new ArrayList<Object>();
+		parameters.add(name.toUpperCase());
+		parameters.add(envType);
+		parameters.add(versionNo);
+		parameters.add(type);
+		//
 		if (C_City_ID > 0)
 		{
-			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID, C_City_ID};
+			parameters.add (C_City_ID);
 			where += " AND C_City_ID=?";	
 		}
 		else
 		{
-			parameters = new Object[]{name.toUpperCase(), envType, versionNo, type, C_Region_ID};
 			where += " AND C_City_ID IS NULL";
+			//
+			if (C_Region_ID > 0)
+			{
+				parameters.add (C_Region_ID);
+				where += " AND C_Region_ID=?";
+			}
+			else
+				where += " AND C_Region_ID IS NULL";
 		}
 		
 		return new Query (Env.getCtx(),MLBRNFeWebService.Table_Name, where, null)
