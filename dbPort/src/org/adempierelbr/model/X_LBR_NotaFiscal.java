@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20180529L;
+	private static final long serialVersionUID = 20180601L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -4264,6 +4264,60 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_PackingType () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_PackingType);
+	}
+
+	/** lbr_PaymentRule AD_Reference_ID=1000035 */
+	public static final int LBR_PAYMENTRULE_AD_Reference_ID=1000035;
+	/** Cash = X */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Cash = "X";
+	/** Check = C */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Check = "C";
+	/** Bill = B */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Bill = "B";
+	/** Direct Deposit = D */
+	public static final String LBR_PAYMENTRULE_INACTIVE_DirectDeposit = "D";
+	/** Cash = 01 */
+	public static final String LBR_PAYMENTRULE_Cash = "01";
+	/** Check = 02 */
+	public static final String LBR_PAYMENTRULE_Check = "02";
+	/** Credit Card = 03 */
+	public static final String LBR_PAYMENTRULE_CreditCard = "03";
+	/** Debit Card = 04 */
+	public static final String LBR_PAYMENTRULE_DebitCard = "04";
+	/** Store Credit = 05 */
+	public static final String LBR_PAYMENTRULE_StoreCredit = "05";
+	/** Food Voucher = 10 */
+	public static final String LBR_PAYMENTRULE_FoodVoucher = "10";
+	/** Meal Voucher = 11 */
+	public static final String LBR_PAYMENTRULE_MealVoucher = "11";
+	/** Gift Card = 12 */
+	public static final String LBR_PAYMENTRULE_GiftCard = "12";
+	/** Fuel Voucher = 13 */
+	public static final String LBR_PAYMENTRULE_FuelVoucher = "13";
+	/** Trade Bill = 14 */
+	public static final String LBR_PAYMENTRULE_TradeBill = "14";
+	/** Bill = 15 */
+	public static final String LBR_PAYMENTRULE_Bill = "15";
+	/** No Payment Required = 90 */
+	public static final String LBR_PAYMENTRULE_NoPaymentRequired = "90";
+	/** Other = 99 */
+	public static final String LBR_PAYMENTRULE_Other = "99";
+	/** Set Payment Rule.
+		@param lbr_PaymentRule 
+		How you pay the invoice
+	  */
+	public void setlbr_PaymentRule (String lbr_PaymentRule)
+	{
+
+		set_Value (COLUMNNAME_lbr_PaymentRule, lbr_PaymentRule);
+	}
+
+	/** Get Payment Rule.
+		@return How you pay the invoice
+	  */
+	public String getlbr_PaymentRule () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_PaymentRule);
 	}
 
 	/** Set Process Cancel Nota Fiscal.

@@ -115,6 +115,7 @@ import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.InfAdic;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.InfAdic.ObsCont;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Pag;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Pag.DetPag;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Pag.DetPag.TPag;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Total;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Total.ICMSTot;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Transp;
@@ -1787,23 +1788,39 @@ public class NFeXMLGenerator
 		Pag pag = infNFe.addNewPag();
 		DetPag dPag = pag.addNewDetPag();
 		dPag.setVPag(normalize (nf.getGrandTotal().abs()));
-		//
-		if (nfce)
-		{
-			//	FIXME: Permitir outras formas de pagamento para NFCe
-			dPag.setTPag(DET_TP_PAG_DINHEIRO);
-		}
+		// 	Para as notas com finalidade de Ajuste ou Devolução
+		if (TextUtil.match(ide.getFinNFe(), FIN_NFE_AJUSTE, FIN_NFE_DEVOLUCAO)
+				//	NFs sem valores a receber (simples remessas, transferêncisa, etc)
+				|| !nf.islbr_HasOpenItems())
+			dPag.setTPag(DET_TP_PAG_SEM_PAGAM);
 		else
 		{
-					// 	Para as notas com finalidade de Ajuste ou Devolução
-			if (TextUtil.match(ide.getFinNFe(), FIN_NFE_AJUSTE, FIN_NFE_DEVOLUCAO)
-					//	NFs sem valores a receber (simples remessas, transferêncisa, etc)
-					|| nf.islbr_HasOpenItems())
-				dPag.setTPag(DET_TP_PAG_SEM_PAGAM);
-			else
+			//	Regra de Pagamento
+			String paymentRule = nf.getlbr_PaymentRule();
+			//
+			if (paymentRule != null)
 			{
-				dPag.setTPag(DET_TP_PAG_DINHEIRO);
+				/**
+				 * 	Regra de pagamento compatível com a NF,
+				 * 	Nos casos onde a Regra for outra (ex. depósito) preencher como Outros
+				 */
+				if (TextUtil.match (paymentRule, MLBRNotaFiscal.LBR_PAYMENTRULE_Cash,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_Check, MLBRNotaFiscal.LBR_PAYMENTRULE_CreditCard,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_DebitCard, MLBRNotaFiscal.LBR_PAYMENTRULE_StoreCredit,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_FoodVoucher, MLBRNotaFiscal.LBR_PAYMENTRULE_MealVoucher,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_GiftCard, MLBRNotaFiscal.LBR_PAYMENTRULE_FuelVoucher,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill, MLBRNotaFiscal.LBR_PAYMENTRULE_Bill,
+						MLBRNotaFiscal.LBR_PAYMENTRULE_NoPaymentRequired, MLBRNotaFiscal.LBR_PAYMENTRULE_Other))
+				{
+					dPag.setTPag(TPag.Enum.forString(paymentRule));
+				}
+				//	Outra Regra
+				else
+					dPag.setTPag(DET_TP_PAG_OUTROS);
 			}
+			//	Regra não preenchida, padrão outros
+			else
+				dPag.setTPag(DET_TP_PAG_OUTROS);
 		}
 		
 		//	Z. Informações Adicionais da NF-e

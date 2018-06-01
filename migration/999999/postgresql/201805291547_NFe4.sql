@@ -518,6 +518,401 @@ INSERT INTO AD_Val_Rule (AD_Client_ID,AD_Org_ID,AD_Val_Rule_ID,Code,Created,Crea
 UPDATE AD_Process_Para SET AD_Val_Rule_ID=1120144,Updated=TO_TIMESTAMP('2018-05-30 14:15:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120211
 ;
 
+-- 01/06/2018 14h1min21s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET Description='Deprecated, use new values from NFe', IsActive='N',Updated=TO_TIMESTAMP('2018-06-01 14:01:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000063
+;
+
+-- 01/06/2018 14h1min22s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1000063
+;
+
+-- 01/06/2018 14h1min22s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET Description='Deprecated, use new values from NFe',Name='Bill',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1000063
+;
+
+-- 01/06/2018 14h1min27s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET Description='Deprecated, use new values from NFe', IsActive='N',Updated=TO_TIMESTAMP('2018-06-01 14:01:27','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000062
+;
+
+-- 01/06/2018 14h1min27s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1000062
+;
+
+-- 01/06/2018 14h1min27s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET Description='Deprecated, use new values from NFe',Name='Check',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1000062
+;
+
+-- 01/06/2018 14h1min29s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET Description='Deprecated, use new values from NFe', IsActive='N',Updated=TO_TIMESTAMP('2018-06-01 14:01:29','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000064
+;
+
+-- 01/06/2018 14h1min29s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1000064
+;
+
+-- 01/06/2018 14h1min29s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET Description='Deprecated, use new values from NFe',Name='Direct Deposit',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1000064
+;
+
+-- 01/06/2018 14h1min32s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET Description='Deprecated, use new values from NFe', IsActive='N',Updated=TO_TIMESTAMP('2018-06-01 14:01:32','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1000061
+;
+
+-- 01/06/2018 14h1min32s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1000061
+;
+
+-- 01/06/2018 14h1min32s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET Description='Deprecated, use new values from NFe',Name='Cash',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1000061
+;
+
+-- 01/06/2018 14h2min23s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121884,1000035,TO_TIMESTAMP('2018-06-01 14:02:22','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Cash',TO_TIMESTAMP('2018-06-01 14:02:22','YYYY-MM-DD HH24:MI:SS'),100,'01')
+;
+
+-- 01/06/2018 14h2min23s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121884 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h2min31s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Dinheiro',Updated=TO_TIMESTAMP('2018-06-01 14:02:31','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121884 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h2min49s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121885,1000035,TO_TIMESTAMP('2018-06-01 14:02:49','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Check',TO_TIMESTAMP('2018-06-01 14:02:49','YYYY-MM-DD HH24:MI:SS'),100,'02')
+;
+
+-- 01/06/2018 14h2min49s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121885 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h2min54s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Cheque',Updated=TO_TIMESTAMP('2018-06-01 14:02:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121885 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h3min10s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121886,1000035,TO_TIMESTAMP('2018-06-01 14:03:09','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Credit Card',TO_TIMESTAMP('2018-06-01 14:03:09','YYYY-MM-DD HH24:MI:SS'),100,'03')
+;
+
+-- 01/06/2018 14h3min10s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121886 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h3min18s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Cartão de Crédito',Updated=TO_TIMESTAMP('2018-06-01 14:03:18','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121886 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h3min33s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121887,1000035,TO_TIMESTAMP('2018-06-01 14:03:32','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Debit Card',TO_TIMESTAMP('2018-06-01 14:03:32','YYYY-MM-DD HH24:MI:SS'),100,'04')
+;
+
+-- 01/06/2018 14h3min33s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121887 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h3min40s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Cartão de Débito',Updated=TO_TIMESTAMP('2018-06-01 14:03:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121887 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h4min0s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121888,1000035,TO_TIMESTAMP('2018-06-01 14:04:00','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Store Credit',TO_TIMESTAMP('2018-06-01 14:04:00','YYYY-MM-DD HH24:MI:SS'),100,'05')
+;
+
+-- 01/06/2018 14h4min0s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121888 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h4min7s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Crédito na Loja',Updated=TO_TIMESTAMP('2018-06-01 14:04:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121888 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h4min37s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121889,1000035,TO_TIMESTAMP('2018-06-01 14:04:36','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Food Voucher',TO_TIMESTAMP('2018-06-01 14:04:36','YYYY-MM-DD HH24:MI:SS'),100,'10')
+;
+
+-- 01/06/2018 14h4min37s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121889 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h4min44s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Vale Alimentação',Updated=TO_TIMESTAMP('2018-06-01 14:04:44','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121889 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h4min58s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121890,1000035,TO_TIMESTAMP('2018-06-01 14:04:58','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Meal Voucher',TO_TIMESTAMP('2018-06-01 14:04:58','YYYY-MM-DD HH24:MI:SS'),100,'11')
+;
+
+-- 01/06/2018 14h4min58s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121890 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h5min5s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Vale Refeição',Updated=TO_TIMESTAMP('2018-06-01 14:05:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121890 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h5min28s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121891,1000035,TO_TIMESTAMP('2018-06-01 14:05:28','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Gift Card',TO_TIMESTAMP('2018-06-01 14:05:28','YYYY-MM-DD HH24:MI:SS'),100,'12')
+;
+
+-- 01/06/2018 14h5min28s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121891 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h5min36s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Vale Presente',Updated=TO_TIMESTAMP('2018-06-01 14:05:36','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121891 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h5min48s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121892,1000035,TO_TIMESTAMP('2018-06-01 14:05:48','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Fuel Voucher',TO_TIMESTAMP('2018-06-01 14:05:48','YYYY-MM-DD HH24:MI:SS'),100,'13')
+;
+
+-- 01/06/2018 14h5min48s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121892 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h5min55s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Vale Combustível',Updated=TO_TIMESTAMP('2018-06-01 14:05:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121892 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h7min34s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121893,1000035,TO_TIMESTAMP('2018-06-01 14:07:34','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Trade Bill',TO_TIMESTAMP('2018-06-01 14:07:34','YYYY-MM-DD HH24:MI:SS'),100,'14')
+;
+
+-- 01/06/2018 14h7min34s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121893 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h7min40s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Duplicata Mercantil',Updated=TO_TIMESTAMP('2018-06-01 14:07:40','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121893 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h8min18s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET Description='De-activate on revision 1.51 of Nota Técnica 2016.002',Updated=TO_TIMESTAMP('2018-06-01 14:08:18','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121893
+;
+
+-- 01/06/2018 14h8min18s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1121893
+;
+
+-- 01/06/2018 14h8min18s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET Description='De-activate on revision 1.51 of Nota Técnica 2016.002',Name='Trade Bill',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1121893
+;
+
+-- 01/06/2018 14h8min22s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List SET IsActive='N',Updated=TO_TIMESTAMP('2018-06-01 14:08:22','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121893
+;
+
+-- 01/06/2018 14h8min37s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121894,1000035,TO_TIMESTAMP('2018-06-01 14:08:37','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Bill',TO_TIMESTAMP('2018-06-01 14:08:37','YYYY-MM-DD HH24:MI:SS'),100,'15')
+;
+
+-- 01/06/2018 14h8min37s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121894 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h8min46s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Boleto Bancário',Updated=TO_TIMESTAMP('2018-06-01 14:08:46','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121894 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h9min7s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121895,1000035,TO_TIMESTAMP('2018-06-01 14:09:07','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','No Payment Required',TO_TIMESTAMP('2018-06-01 14:09:07','YYYY-MM-DD HH24:MI:SS'),100,'90')
+;
+
+-- 01/06/2018 14h9min7s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121895 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h9min16s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Sem Pagamento',Updated=TO_TIMESTAMP('2018-06-01 14:09:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121895 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h9min26s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121896,1000035,TO_TIMESTAMP('2018-06-01 14:09:26','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Other',TO_TIMESTAMP('2018-06-01 14:09:26','YYYY-MM-DD HH24:MI:SS'),100,'99')
+;
+
+-- 01/06/2018 14h9min26s BRT
+-- NF-e 4.0
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1121896 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 01/06/2018 14h9min31s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Outros',Updated=TO_TIMESTAMP('2018-06-01 14:09:31','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121896 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h14min20s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Updated=TO_TIMESTAMP('2018-06-01 14:14:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121893 AND AD_Language='pt_BR'
+;
+
+-- 01/06/2018 14h20min38s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1130288,1000305,0,17,1000035,1000027,'lbr_PaymentRule',TO_TIMESTAMP('2018-06-01 14:20:37','YYYY-MM-DD HH24:MI:SS'),100,'How you pay the invoice','U',2,'The Payment Rule indicates the method of invoice payment.','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','Payment Rule',0,TO_TIMESTAMP('2018-06-01 14:20:37','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 01/06/2018 14h20min38s BRT
+-- NF-e 4.0
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1130288 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 01/06/2018 14h20min43s BRT
+-- NF-e 4.0
+UPDATE AD_Column SET EntityType='LBRA',Updated=TO_TIMESTAMP('2018-06-01 14:20:43','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1130288
+;
+
+-- 01/06/2018 14h20min45s BRT
+-- NF-e 4.0
+ALTER TABLE LBR_NotaFiscal ADD COLUMN lbr_PaymentRule VARCHAR(2) DEFAULT NULL 
+;
+
+-- 01/06/2018 14h21min11s BRT
+-- NF-e 4.0
+UPDATE AD_Column SET FieldLength=2,Updated=TO_TIMESTAMP('2018-06-01 14:21:11','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000905
+;
+
+-- 01/06/2018 14h21min15s BRT
+-- NF-e 4.0
+INSERT INTO t_alter_column values('c_order','lbr_PaymentRule','VARCHAR(2)',null,'NULL')
+;
+
+-- 01/06/2018 14h21min36s BRT
+-- NF-e 4.0
+UPDATE AD_Column SET FieldLength=2,Updated=TO_TIMESTAMP('2018-06-01 14:21:36','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000907
+;
+
+-- 01/06/2018 14h21min37s BRT
+-- NF-e 4.0
+INSERT INTO t_alter_column values('c_invoice','lbr_PaymentRule','VARCHAR(2)',null,'NULL')
+;
+
+-- 01/06/2018 14h21min55s BRT
+-- NF-e 4.0
+UPDATE AD_Column SET FieldLength=2,Updated=TO_TIMESTAMP('2018-06-01 14:21:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000903
+;
+
+-- 01/06/2018 14h21min59s BRT
+-- NF-e 4.0
+INSERT INTO t_alter_column values('c_bpartner','lbr_PaymentRule','VARCHAR(2)',null,'NULL')
+;
+
+-- 01/06/2018 14h23min13s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2018-06-01 14:23:13','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1125797
+;
+
+-- 01/06/2018 14h23min33s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1130288,1127371,0,1000020,TO_TIMESTAMP('2018-06-01 14:23:33','YYYY-MM-DD HH24:MI:SS'),100,'How you pay the invoice',1,'LBRA','The Payment Rule indicates the method of invoice payment.','Y','Y','Y','N','N','N','N','Y','Payment Rule',265,TO_TIMESTAMP('2018-06-01 14:23:33','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 01/06/2018 14h23min33s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127371 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 01/06/2018 14h29min28s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@lbr_HasOpenItems@=Y',Updated=TO_TIMESTAMP('2018-06-01 14:29:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127371
+;
+
+-- 01/06/2018 14h29min58s BRT
+-- NF-e 4.0
+UPDATE AD_Reference SET IsOrderByValue='Y',Updated=TO_TIMESTAMP('2018-06-01 14:29:58','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Reference_ID=1000035
+;
+
+--	Fix Payment Rules to new schema
+UPDATE AD_Field SET DisplayLogic=REPLACE (DisplayLogic, '@lbr_PaymentRule@=''B''', '@lbr_PaymentRule@=''B'' | @lbr_PaymentRule@=''15''') 
+WHERE (DisplayLogic) LIKE '%@lbr_PaymentRule@=''B''%' AND
+(DisplayLogic) NOT LIKE '%@lbr_PaymentRule@=''15''%'
+;
+
+UPDATE AD_Field SET DisplayLogic=REPLACE (DisplayLogic, '@lbr_PaymentRule@=''D''', '@lbr_PaymentRule@=''D'' | @lbr_PaymentRule@=''99''') 
+WHERE (DisplayLogic) LIKE '%@lbr_PaymentRule@=''D''%' AND
+(DisplayLogic) NOT LIKE '%@lbr_PaymentRule@=''99''%'
+;
+
+--  Corrigir para Boleto
+UPDATE C_BPartner SET lbr_PaymentRule='15' WHERE lbr_PaymentRule='B'
+;
+UPDATE C_Order SET lbr_PaymentRule='15' WHERE lbr_PaymentRule='B'
+;
+UPDATE C_Invoice SET lbr_PaymentRule='15' WHERE lbr_PaymentRule='B'
+;
+--  Corrigir para Dinheiro
+UPDATE C_BPartner SET lbr_PaymentRule='01' WHERE lbr_PaymentRule='X'
+;
+UPDATE C_Order SET lbr_PaymentRule='01' WHERE lbr_PaymentRule='X'
+;
+UPDATE C_Invoice SET lbr_PaymentRule='01' WHERE lbr_PaymentRule='X'
+;
+--  Corrigir para Cheque
+UPDATE C_BPartner SET lbr_PaymentRule='02' WHERE lbr_PaymentRule='C'
+;
+UPDATE C_Order SET lbr_PaymentRule='02' WHERE lbr_PaymentRule='C'
+;
+UPDATE C_Invoice SET lbr_PaymentRule='02' WHERE lbr_PaymentRule='C'
+;
+--  Corrigir para Depósito
+UPDATE C_BPartner SET lbr_PaymentRule='99' WHERE lbr_PaymentRule='D'
+;
+UPDATE C_Order SET lbr_PaymentRule='99' WHERE lbr_PaymentRule='D'
+;
+UPDATE C_Invoice SET lbr_PaymentRule='99' WHERE lbr_PaymentRule='D'
+;
+
 -- 30/05/2018 16h1min44s BRT
 SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
 ;

@@ -1995,6 +1995,19 @@ public interface I_LBR_NotaFiscal
 	  */
 	public String getlbr_PackingType();
 
+    /** Column name lbr_PaymentRule */
+    public static final String COLUMNNAME_lbr_PaymentRule = "lbr_PaymentRule";
+
+	/** Set Payment Rule.
+	  * How you pay the invoice
+	  */
+	public void setlbr_PaymentRule (String lbr_PaymentRule);
+
+	/** Get Payment Rule.
+	  * How you pay the invoice
+	  */
+	public String getlbr_PaymentRule();
+
     /** Column name lbr_ProcCancelNF */
     public static final String COLUMNNAME_lbr_ProcCancelNF = "lbr_ProcCancelNF";
 
