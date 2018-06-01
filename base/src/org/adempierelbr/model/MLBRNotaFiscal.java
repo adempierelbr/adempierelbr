@@ -1906,6 +1906,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setLBR_IndPres(wInvoice.getLBR_IndPres());
 		setC_PaymentTerm_ID(wInvoice.getC_PaymentTerm_ID());
 		setLBR_FreightCostRule(wInvoice.getLBR_FreightCostRule());
+		//		Regra de Pagamento
+		setlbr_PaymentRule(wInvoice.getlbr_PaymentRule());
 		
 		//	Total da Fatura
 		if (wInvoice.getC_Currency_ID() != CURRENCY_BRL)
@@ -1945,6 +1947,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_TransactionType (wOrder.getlbr_TransactionType());
 		setLBR_IndPres(wOrder.getLBR_IndPres());
 		setC_PaymentTerm_ID(wOrder.getC_PaymentTerm_ID());
+		//		Regra de Pagamento
+		setlbr_PaymentRule(wOrder.getlbr_PaymentRule());
 		
 		//	Total da Fatura
 		if (wOrder.getC_Currency_ID() != CURRENCY_BRL)
