@@ -1604,9 +1604,10 @@ public class NFeXMLGenerator
 		icmsTot.setVBC(normalize (nf.getICMSBase()));
 		icmsTot.setVICMS(normalize (nf.getICMSAmt()));
 		icmsTot.setVICMSDeson(TextUtil.ZERO_STRING);
-		icmsTot.setVFCPUFDest(normalize (nf.getTaxAmt ("FCP")));		//	Fundo de Combate a Pobreza - NT2015.003
-		icmsTot.setVICMSUFDest(normalize (nf.getTaxAmt ("ICMSDIFAL")));
-		icmsTot.setVICMSUFRemet(normalize (nf.getTaxAmt ("ICMSDIFALORIG")));
+		//	Fundo de Combate a Pobreza - NT2015.003
+		icmsTot.setVFCPUFDest(icmsDest ? normalize (nf.getTaxAmt ("FCP")) : TextUtil.ZERO_STRING);
+		icmsTot.setVICMSUFDest(icmsDest ? normalize (nf.getTaxAmt ("ICMSDIFAL")) : TextUtil.ZERO_STRING);
+		icmsTot.setVICMSUFRemet(icmsDest ? normalize (nf.getTaxAmt ("ICMSDIFALORIG")) : TextUtil.ZERO_STRING);
 		icmsTot.setVBCST(normalize (nf.getICMSSTBase()));
 		icmsTot.setVST(normalize (nf.getICMSSTAmt()));
 		icmsTot.setVProd(normalize (nf.getTotalLines()));
@@ -1620,8 +1621,8 @@ public class NFeXMLGenerator
 		icmsTot.setVOutro(normalize (nf.getLBR_OtherChargesAmt()));
 		icmsTot.setVNF(normalize (nf.getGrandTotal()));
 		// v4.00
-		icmsTot.setVFCP(normalize(nf.getFCPAmt()));
-		icmsTot.setVFCPST(normalize(nf.getFCPSTAmt()));
+		icmsTot.setVFCP(!icmsDest ? normalize(nf.getFCPAmt()) : TextUtil.ZERO_STRING);
+		icmsTot.setVFCPST(!icmsDest ? normalize(nf.getFCPSTAmt()) : TextUtil.ZERO_STRING);
 		icmsTot.setVFCPSTRet(TextUtil.ZERO_STRING);			//	FIXME
 		icmsTot.setVIPIDevol(TextUtil.ZERO_STRING);			//	FIXME
 		//	Valor aproximado total de tributos federais, estaduais e municipais.
