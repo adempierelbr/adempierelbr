@@ -100,6 +100,11 @@ UPDATE AD_Ref_List_Trl SET Description=NULL,Name='0 - Contratação do Frete por
 UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='0 - Contratação do Frete por conta do Remetente (CIF)',Updated=TO_TIMESTAMP('2018-05-29 15:43:18','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121327 AND AD_Language='es_MX'
 ;
 
+-- 01/06/2018 13h26min28s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='0 - Contratação do Frete por conta do Remetente (CIF)',Updated=TO_TIMESTAMP('2018-06-01 13:26:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121327 AND AD_Language='pt_BR'
+;
+
 -- 29/05/2018 15h44min28s BRT
 -- NF-e 4.0
 UPDATE AD_Ref_List SET Name='1 - Contratação do Frete por conta do Destinatário (FOB)',Updated=TO_TIMESTAMP('2018-05-29 15:44:28','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121328
@@ -118,6 +123,11 @@ UPDATE AD_Ref_List_Trl SET Description=NULL,Name='1 - Contratação do Frete por
 -- 29/05/2018 15h44min34s BRT
 -- NF-e 4.0
 UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='1 - Contratação do Frete por conta do Destinatário (FOB)',Updated=TO_TIMESTAMP('2018-05-29 15:44:34','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121328 AND AD_Language='es_MX'
+;
+
+-- 01/06/2018 13h26min37s BRT
+-- NF-e 4.0
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='1 - Contratação do Frete por conta do Destinatário (FOB)',Updated=TO_TIMESTAMP('2018-06-01 13:26:37','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121328 AND AD_Language='pt_BR'
 ;
 
 -- 29/05/2018 15h45min2s BRT
