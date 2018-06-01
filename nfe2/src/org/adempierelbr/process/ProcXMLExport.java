@@ -234,6 +234,9 @@ public class ProcXMLExport extends SvrProcess
 					//	Se houver um Evento
 					if (event != null && MLBRNFeEvent.DOCSTATUS_Completed.equals(event.getDocStatus()))
 					{
+						if (event.getAttachment() == null)
+							continue;
+						
 						//	XMLs do Evento
 						MAttachmentEntry xmlEvent = event.getAttachment().getEntry(0);
 						
