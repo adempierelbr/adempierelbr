@@ -925,12 +925,12 @@ UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2018-06-04 10:56:55','Y
 
 -- 04/06/2018 10h57min20s BRT
 -- NF-e 4.0
-UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@=N',Updated=TO_TIMESTAMP('2018-06-04 10:57:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127364
+UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@!''''',Updated=TO_TIMESTAMP('2018-06-04 10:57:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127364
 ;
 
 -- 04/06/2018 10h57min23s BRT
 -- NF-e 4.0
-UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@=N',Updated=TO_TIMESTAMP('2018-06-04 10:57:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127365
+UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@!''''',Updated=TO_TIMESTAMP('2018-06-04 10:57:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127365
 ;
 
 -- 30/05/2018 16h1min44s BRT
