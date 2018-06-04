@@ -1770,9 +1770,9 @@ public class NFeXMLGenerator
 					int dupCounter = 1;
 					
 				    //	Adiciona as duplicatas da fatura
-					if (nf.islbr_HasOpenItems() 
+					if (nf.islbr_HasOpenItems())
 							//	Somente para Duplicata Mercantil
-							&& MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill.equals(nf.getlbr_PaymentRule()))
+							//	&& MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill.equals(nf.getlbr_PaymentRule()))
 					    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
 					    {
 						    	Dup dup = cobr.addNewDup();
