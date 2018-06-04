@@ -936,6 +936,26 @@ UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@!''''',Updated=TO_DATE('2
 UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@!''''',Updated=TO_DATE('2018-06-04 10:57:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127365
 ;
 
+-- 04/06/2018 11h47min28s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,SortNo,Updated,UpdatedBy) VALUES (0,1130280,1127372,0,1000021,TO_TIMESTAMP('2018-06-04 11:47:27','YYYY-MM-DD HH24:MI:SS'),100,'Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner',22,'LBRA','The business partner order reference is the order reference for this specific transaction; Often Purchase Order numbers are given to print on Invoices for easier reference.  A standard number can be defined in the Business Partner (Customer) window.','Y','Y','Y','N','N','N','N','N','Order Reference',75,0,TO_TIMESTAMP('2018-06-04 11:47:27','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 04/06/2018 11h47min28s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127372 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 04/06/2018 11h47min49s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,Help,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,SortNo,Updated,UpdatedBy) VALUES (0,1130281,1127373,0,1000021,TO_TIMESTAMP('2018-06-04 11:47:48','YYYY-MM-DD HH24:MI:SS'),100,'Item reference to the Order Reference indicated in the same document',22,'LBRA','Item reference to the Order Reference indicated in the same document','Y','Y','Y','N','N','N','N','Y','Order Reference Item',76,0,TO_TIMESTAMP('2018-06-04 11:47:48','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 04/06/2018 11h47min49s BRT
+-- NF-e 4.0
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127373 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
 -- 30/05/2018 16h1min44s BRT
 SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
 ;
