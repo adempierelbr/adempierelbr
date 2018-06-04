@@ -913,6 +913,26 @@ UPDATE C_Order SET lbr_PaymentRule='99' WHERE lbr_PaymentRule='D'
 UPDATE C_Invoice SET lbr_PaymentRule='99' WHERE lbr_PaymentRule='D'
 ;
 
+-- 04/06/2018 10h56min48s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLength=22, SeqNo=177,Updated=TO_TIMESTAMP('2018-06-04 10:56:48','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127365
+;
+
+-- 04/06/2018 10h56min55s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET IsSameLine='N',Updated=TO_TIMESTAMP('2018-06-04 10:56:55','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127364
+;
+
+-- 04/06/2018 10h57min20s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@=N',Updated=TO_TIMESTAMP('2018-06-04 10:57:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127364
+;
+
+-- 04/06/2018 10h57min23s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLogic='@LBR_ScaleProduction@=N',Updated=TO_TIMESTAMP('2018-06-04 10:57:23','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127365
+;
+
 -- 30/05/2018 16h1min44s BRT
 SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
 ;
