@@ -956,6 +956,27 @@ INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,
 INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1127373 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
 ;
 
+-- 04/06/2018 12h31min8s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLength=22, SeqNo=145,Updated=TO_DATE('2018-06-04 12:31:08','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1123973
+;
+
+-- 04/06/2018 12h31min21s BRT
+-- NF-e 4.0
+UPDATE AD_Field SET DisplayLength=22, IsSameLine='Y', SeqNo=146,Updated=TO_DATE('2018-06-04 12:31:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1127296
+;
+
+-- 04/06/2018 14h2min44s BRT
+UPDATE C_OrderLine SET LBR_PORef_Item=POReference
+WHERE LBR_PORef_Item IS NULL AND POReference IS NOT NULL
+;
+UPDATE C_OrderLine SET POReference=NULL 
+WHERE POReference IS NOT NULL
+;
+UPDATE C_OrderLine SET POReference=(SELECT SUBSTR (o.POReference,0,20) FROM C_Order o WHERE o.C_Order_ID=C_OrderLine.C_Order_ID) 
+WHERE EXISTS (SELECT '1' FROM C_Order o WHERE o.C_Order_ID=C_OrderLine.C_Order_ID AND o.POReference IS NOT NULL)
+;
+
 -- 30/05/2018 16h1min44s BRT
 SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
 ;
