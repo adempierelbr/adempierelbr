@@ -579,6 +579,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//	Valores
 		setQty(iLine.getQtyEntered());
 		
+		//	References
+		if (iLine.getC_OrderLine_ID() > 0)
+			setPOReference (POWrapper.create (new MOrderLine (iLine.getCtx(), iLine.getC_OrderLine_ID(), null), I_W_C_OrderLine.class));
+		
 		boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
 		boolean isFOB = getParent().getC_Invoice_ID() > 0 ? !getParent().getC_Invoice().isTaxIncluded() : false;
 		setPrice(iLine.getParent().getC_Currency_ID(), iLine.getPriceEntered(), iLine.getPriceList(), includeDIFAL, isFOB);
@@ -676,6 +680,9 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				nfLineTax.save();
 			}
 			
+			//	References
+			setPOReference (oLineW);
+			
 			//	Valores
 			setQty(oLine.getQtyEntered());
 			boolean includeDIFAL = MSysConfig.getBooleanValue("LBR_ADD_DIFAL_PROD", true, getAD_Client_ID(), getAD_Org_ID());
@@ -683,6 +690,27 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			setPrice(oLine.getParent().getC_Currency_ID(), oLine.getPriceEntered(), oLine.getPriceList(), includeDIFAL, isFOB);
 		}
 	}	//	setOrderLine
+	
+	/**
+	 * 	Set PO References
+	 * 	@param ol
+	 */
+	private void setPOReference (I_W_C_OrderLine ol)
+	{
+		if (ol == null)
+			return;
+		
+		//	Referência do Cabeçalho
+		if (ol.getPOReference() == null)
+			setPOReference(ol.getC_Order().getPOReference());
+		
+		//	Referência da Linha
+		else
+			setPOReference(ol.getPOReference());
+		
+		//	Referência do Item
+		setLBR_PORef_Item(ol.getLBR_PORef_Item());
+	}	//	setPOReference
 
 	/**
 	 * 		Define os preços
