@@ -964,7 +964,7 @@ UPDATE AD_Field SET DisplayLength=22, IsSameLine='Y', SeqNo=146,Updated=TO_TIMES
 ;
 
 -- 04/06/2018 14h2min44s BRT
-UPDATE C_OrderLine SET LBR_PORef_Item=POReference
+UPDATE C_OrderLine SET LBR_PORef_Item=SUBSTR (POReference,0,10)
 WHERE LBR_PORef_Item IS NULL AND POReference IS NOT NULL
 ;
 UPDATE C_OrderLine SET POReference=NULL 
