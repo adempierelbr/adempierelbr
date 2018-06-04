@@ -884,23 +884,19 @@ public class NFeXMLGenerator
 //			prod.setCEANTrib();		//	Check above (after setCEAN)
 			
 			// Produzido em Escala Relevante - v4.00
-			if (nfl.getLBR_CEST_ID() > 0)
+			if (nfl.getLBR_CEST_ID() > 0
+					&& nfl.getLBR_ScaleProduction() != null)
 			{
-				if (nfl.getLBR_ScaleProduction() != null)
-				{
-					//	Indicação de Escala Relevante
-					prod.setIndEscala ("Y".equals(nfl.getLBR_ScaleProduction ()) ? PROD_EM_ESCALA_REL : PROD_EM_ESCALA_NAO_REL);
-					
-					//	CNPJ do Fabricante de Escala NÃO Relevante
-					if (nfl.getLBR_CNPJManufacturer() != null)
-						prod.setCNPJFab(TextUtil.toNumeric (nfl.getLBR_CNPJManufacturer ()));
-					
-					//	Código do Benefício na UF
-					if (nfl.getLBR_TaxBenefitCode() != null && !nfl.getLBR_TaxBenefitCode().trim().isEmpty())
-						prod.setCBenef(nfl.getLBR_TaxBenefitCode().trim());
-				}
-				else
-					prod.setIndEscala(PROD_EM_ESCALA_REL);
+				//	Indicação de Escala Relevante
+				prod.setIndEscala ("Y".equals(nfl.getLBR_ScaleProduction ()) ? PROD_EM_ESCALA_REL : PROD_EM_ESCALA_NAO_REL);
+				
+				//	CNPJ do Fabricante de Escala NÃO Relevante
+				if (nfl.getLBR_CNPJManufacturer() != null)
+					prod.setCNPJFab(TextUtil.toNumeric (nfl.getLBR_CNPJManufacturer ()));
+				
+				//	Código do Benefício na UF
+				if (nfl.getLBR_TaxBenefitCode() != null && !nfl.getLBR_TaxBenefitCode().trim().isEmpty())
+					prod.setCBenef(nfl.getLBR_TaxBenefitCode().trim());
 			}
 			
 			// 	Unidade Tributária pode ser Diferente apenas para Exportação

@@ -22,6 +22,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
+import org.adempierelbr.validator.ValidatorBPartner;
 import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_C_Tax;
@@ -38,6 +39,7 @@ import org.compiere.model.MUOM;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Msg;
 
 /**
  *	MNotaFiscalLine
@@ -970,6 +972,24 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		String description = getDescription();
 		if (description != null)
 			setDescription (description.trim());
+		
+		//	Valida o CNPJ do Fabricante
+		String cnpjManuf = TextUtil.toNumeric (getLBR_CNPJManufacturer ());
+		if (!cnpjManuf.isEmpty() && (cnpjManuf.length() != 14 || !ValidatorBPartner.validaCNPJ (cnpjManuf)))
+		{
+			log.saveError ("Error", Msg.parseTranslation (getCtx(), "@Invalid@ @LBR_CNPJManufacturer@"));
+			return false;
+		}
+		
+		//	Valida o código de benefício fiscal
+		String benefitCode = getLBR_TaxBenefitCode();
+		if (benefitCode != null
+				&& !benefitCode.isEmpty()
+				&& benefitCode.trim().length() != 10)
+		{
+			log.saveError ("Error", Msg.parseTranslation (getCtx(), "@Invalid@ @LBR_TaxBenefitCode@, o código precisa ter 10 dígitos"));
+			return false;
+		}
 		
 		return true;
 	}	//	beforeSave
