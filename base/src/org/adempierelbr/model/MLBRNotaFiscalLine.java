@@ -12,12 +12,18 @@
  *****************************************************************************/
 package org.adempierelbr.model;
 
+import static org.adempierelbr.model.MLBRNFLineMA.MATCH_GUN;
+import static org.adempierelbr.model.MLBRNFLineMA.MATCH_TRACKING;
+import static org.adempierelbr.model.MLBRNFLineMA.MATCH_VEHICLE;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
@@ -29,6 +35,7 @@ import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.adempierelbr.wrapper.I_W_C_OrderLine;
 import org.adempierelbr.wrapper.I_W_C_Tax;
 import org.adempierelbr.wrapper.I_W_M_Product;
+import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MCharge;
 import org.compiere.model.MConversionRate;
 import org.compiere.model.MInvoiceLine;
@@ -493,7 +500,17 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		if (iLine.getC_Charge_ID()>0)
 			setProduct ((MCharge)iLine.getC_Charge());
 		else
-			setProduct (iLine.getProduct());
+		{
+			MProduct product = iLine.getProduct();
+			setProduct (product);
+			
+			Map<Integer, BigDecimal> attributes = new  HashMap<Integer, BigDecimal>();
+			if (iLine.getM_AttributeSetInstance_ID() > 0)
+				attributes.put(iLine.getM_AttributeSetInstance_ID(), iLine.getQtyInvoiced());
+			
+			//	Set Attibutes
+			setAttributes(product, attributes);
+		}
 		
 		//  Seguro
 		setlbr_InsuranceAmt(iLineW.getlbr_InsuranceAmt());
@@ -599,7 +616,20 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	{
 		I_W_C_OrderLine oLineW = POWrapper.create (oLine, I_W_C_OrderLine.class);
 		
-		setProduct (oLine.getProduct());
+		if (oLine.getC_Charge_ID()>0)
+			setProduct ((MCharge)oLine.getC_Charge());
+		else
+		{
+			MProduct product = oLine.getProduct();
+			setProduct (product);
+			
+			Map<Integer, BigDecimal> attributes = new  HashMap<Integer, BigDecimal>();
+			if (oLine.getM_AttributeSetInstance_ID() > 0)
+				attributes.put(oLine.getM_AttributeSetInstance_ID(), oLine.getQtyInvoiced());
+			
+			//	Set Attibutes
+			setAttributes(product, attributes);
+		}
 		
 		if (!isDescription)
 		{
@@ -805,19 +835,88 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}	//	setDiscount
 	
 	/**
+	 * 		Define os atributos do produto
+	 * 	@param Product
+	 */
+	public void setAttributes (MProduct product, Map<Integer, BigDecimal> attributes)
+	{
+		I_W_M_Product productW = POWrapper.create (product, I_W_M_Product.class);
+		
+		//	Attributes
+		String attributeType = productW.getLBR_AttributeType();
+		if (attributeType == null || attributeType.isEmpty())
+			return;
+		
+		//	Product static attributes
+		MAttributeSetInstance asiProd = null;
+		if (product.getM_AttributeSetInstance_ID() > 0)
+			asiProd = new MAttributeSetInstance (getCtx(), product.getM_AttributeSetInstance_ID(), get_TrxName());
+		
+		//	Intances attributes found
+		if (!attributes.isEmpty())
+		{
+			boolean firstMA = true;
+			
+			//	Scan all Attributes
+			for (Integer M_AttributeSetInstance_ID : attributes.keySet())
+			{
+				MAttributeSetInstance asi = new MAttributeSetInstance (getCtx(), M_AttributeSetInstance_ID, get_TrxName());
+				
+				//	Create 
+				createMA (attributeType, asi, asiProd);
+				
+				if (firstMA)
+				{
+					firstMA = false;
+					
+					//	Guns can have multiple records, all other that doesn't request tracking should have only one record
+					if (!attributeType.endsWith (MATCH_GUN) 
+							&& !attributeType.startsWith(MATCH_TRACKING))
+						break;
+					
+					//	
+					if (!attributeType.endsWith(MATCH_GUN) 
+							&& !attributeType.endsWith(MATCH_VEHICLE))
+					{
+						attributeType = LBR_ATTRIBUTETYPE_Tracking;
+						//
+						createMA (attributeType, asi, asiProd);
+					}
+				}
+				
+			}
+		}
+		
+		//	Empty instance attributes
+		else if (asiProd != null)
+			createMA (attributeType, null, asiProd);
+	}	//	setProduct
+	
+	/**
+	 * 	Create Material Attributes
+	 * 
+	 * @param attributeType
+	 * @param asi
+	 * @param asiProd
+	 * @return
+	 */
+	private boolean createMA (String attributeType, MAttributeSetInstance asi, MAttributeSetInstance asiProd)
+	{
+		MLBRNFLineMA ma = new MLBRNFLineMA (getCtx(), 0, get_TrxName());
+		ma.setLBR_NotaFiscalLine_ID(getLBR_NotaFiscalLine_ID());
+		ma.setLBR_AttributeType(attributeType);
+		if (asiProd != null)
+			ma.setASI(asiProd, false);
+		if (asi != null)
+			ma.setASI(asi, true);
+		return ma.save();
+	}	//	createMA
+	
+	/**
 	 * 		Define qual é o produto
 	 * 	@param Product
 	 */
 	public void setProduct (MProduct product)
-	{
-		setProduct (product, 0);
-	}	//	setProduct
-	
-	/**
-	 * 		Define qual é o produto e seus atributos
-	 * 	@param Product
-	 */
-	public void setProduct (MProduct product, int M_AttributeSetInstance_ID)
 	{
 		if (product == null)
 		{
@@ -854,12 +953,6 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
 		setLBR_AttributeType(productW.getLBR_AttributeType());
-		
-		//	Atributos
-		if (productW.getLBR_AttributeType() != null)
-		{
-//			if (M_AttributeSetInstance_ID > 0 &&)
-		}
 	}	//	setProduct
 
 	private void appendDescription (String text)
