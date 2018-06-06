@@ -183,6 +183,15 @@ public interface I_LBR_NotaFiscalLine
 	/** Get AFRMM Amount	  */
 	public BigDecimal getLBR_AFRMMAmt();
 
+    /** Column name LBR_AttributeType */
+    public static final String COLUMNNAME_LBR_AttributeType = "LBR_AttributeType";
+
+	/** Set Attribute Type	  */
+	public void setLBR_AttributeType (String LBR_AttributeType);
+
+	/** Get Attribute Type	  */
+	public String getLBR_AttributeType();
+
     /** Column name LBR_CESTName */
     public static final String COLUMNNAME_LBR_CESTName = "LBR_CESTName";
 

@@ -15,6 +15,8 @@ package org.adempierelbr.model;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -808,6 +810,15 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 */
 	public void setProduct (MProduct product)
 	{
+		setProduct (product, 0);
+	}	//	setProduct
+	
+	/**
+	 * 		Define qual é o produto e seus atributos
+	 * 	@param Product
+	 */
+	public void setProduct (MProduct product, int M_AttributeSetInstance_ID)
+	{
 		if (product == null)
 		{
 			setlbr_IsService(true);
@@ -842,6 +853,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		setLBR_CEST_ID(productW.getLBR_CEST_ID());
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
+		setLBR_AttributeType(productW.getLBR_AttributeType());
+		
+		//	Atributos
+		if (productW.getLBR_AttributeType() != null)
+		{
+//			if (M_AttributeSetInstance_ID > 0 &&)
+		}
 	}	//	setProduct
 
 	private void appendDescription (String text)
@@ -996,6 +1014,35 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			else
 				setlbr_UOMName(null);
 		}
+
+		//	Valida o Tipo de Atributo
+		if (!newRecord && is_ValueChanged (COLUMNNAME_LBR_AttributeType))	
+		{
+			String oldAttribute = (String) get_ValueOld (COLUMNNAME_LBR_AttributeType);
+			String newAttribute = getLBR_AttributeType();
+
+			//	Valor antigo atributo já estava preenchido
+			if (oldAttribute != null && 
+					//	Novo atributo ficou em branco
+					(newAttribute == null || newAttribute.isEmpty() 
+					//	ou o atributo é de uma categoria diferente
+					|| !oldAttribute.endsWith (newAttribute.substring (1))))
+			{
+				//	Deve validar se já tem algum atributo preenchido
+				int count = DB.getSQLValue (get_TrxName(), "SELECT COUNT(*) FROM LBR_NFLineMA WHERE LBR_NotaFiscalLine_ID=?", getLBR_NotaFiscalLine_ID());
+				if (count > 0)
+				{
+					log.saveError ("Error", "Não é possível alterar o campo de Atributos, remova os atributos cadastrados primeiramente");
+					return false;
+				}
+			}
+			//	Update atributes
+			for (MLBRNFLineMA att : getAttributes (null))
+			{
+				att.setLBR_AttributeType (newAttribute);
+				att.save();
+			}
+		}
 		
 		String description = getDescription();
 		if (description != null)
@@ -1069,4 +1116,82 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 			m_parent = new MLBRNotaFiscal (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
 		return m_parent;
 	}	//	getParent
+	
+	/**
+	 * 	Line has tracking information
+	 * 	@return
+	 */
+	public boolean hasTracking ()
+	{
+		if (getLBR_AttributeType() != null && getLBR_AttributeType().startsWith("R"))
+			return true;
+		return false;
+	}	//	hasTracking
+	
+	/**
+	 * 	Get Tracking Records
+	 * @return
+	 */
+	public List<MLBRNFLineMA> getTracking ()
+	{
+		String whereClause = COLUMNNAME_LBR_AttributeType+"=? AND "+COLUMNNAME_LBR_NotaFiscalLine_ID+"=?";
+		List<MLBRNFLineMA> result = new Query (getCtx(), MLBRNFLineMA.Table_Name, whereClause, get_TrxName())
+			.setParameters(LBR_ATTRIBUTETYPE_Tracking, getLBR_NotaFiscalLine_ID())
+			.list();
+		return result;
+	}	//	getTracking
+	
+	/**
+	 * 	Get Tracking Records
+	 * @return
+	 * @throws Exception 
+	 */
+	public MLBRNFLineMA getAttribute () throws Exception
+	{
+		List<MLBRNFLineMA> attributes = getAttributes();
+		if (attributes.size() == 1)
+			return attributes.get (0);
+		if (attributes.size() > 1)
+			throw new Exception ("Mais de um atributo encontrado para a linha da NF " + getLine());
+		return null;
+	}	//	getAttribute
+	
+	/**
+	 * 	Get Tracking Records
+	 * @return
+	 */
+	public List<MLBRNFLineMA> getAttributes ()
+	{
+		String attributeType = getLBR_AttributeType();
+		if (attributeType == null || attributeType.length() != 3)
+			return Collections.emptyList();
+		
+		//	Should match both X and R records
+		attributeType = "_" + attributeType.substring (1);
+		
+		return getAttributes(attributeType);
+	}
+	
+	/**
+	 * 	Get Tracking Records
+	 * @return
+	 */
+	public List<MLBRNFLineMA> getAttributes (String attributeType)
+	{
+		List<Object> params = new ArrayList<Object>();
+		params.add(getLBR_NotaFiscalLine_ID());
+		//
+		String whereClause = COLUMNNAME_LBR_NotaFiscalLine_ID+"=?";
+		//
+		if (attributeType != null)
+		{
+			whereClause += " AND "+COLUMNNAME_LBR_AttributeType+" LIKE ?";
+			params.add (attributeType);
+		}
+			
+		List<MLBRNFLineMA> result = new Query (getCtx(), MLBRNFLineMA.Table_Name, whereClause, get_TrxName())
+			.setParameters(params)
+			.list();
+		return result;
+	}	//	getAttributes
 }	//	MLBRNotaFiscalLine

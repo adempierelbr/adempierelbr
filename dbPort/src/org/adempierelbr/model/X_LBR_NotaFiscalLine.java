@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20180529L;
+	private static final long serialVersionUID = 20180605L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -40,6 +40,8 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
       super (ctx, LBR_NotaFiscalLine_ID, trxName);
       /** if (LBR_NotaFiscalLine_ID == 0)
         {
+			setLBR_AFRMMAmt (Env.ZERO);
+// 0
 			setLBR_NotaFiscalLine_ID (0);
 			setlbr_IsService (false);
 // 'N'
@@ -222,6 +224,41 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** LBR_AttributeType AD_Reference_ID=1120278 */
+	public static final int LBR_ATTRIBUTETYPE_AD_Reference_ID=1120278;
+	/** Tracking = R00 */
+	public static final String LBR_ATTRIBUTETYPE_Tracking = "R00";
+	/** Medicine = X01 */
+	public static final String LBR_ATTRIBUTETYPE_Medicine = "X01";
+	/** Fuel = X02 */
+	public static final String LBR_ATTRIBUTETYPE_Fuel = "X02";
+	/** Vehicle = X03 */
+	public static final String LBR_ATTRIBUTETYPE_Vehicle = "X03";
+	/** Gun = X04 */
+	public static final String LBR_ATTRIBUTETYPE_Gun = "X04";
+	/** Medicine and Tracking = R01 */
+	public static final String LBR_ATTRIBUTETYPE_MedicineAndTracking = "R01";
+	/** Fuel and Tracking = R02 */
+	public static final String LBR_ATTRIBUTETYPE_FuelAndTracking = "R02";
+	/** Vehicle and Tracking = R03 */
+	public static final String LBR_ATTRIBUTETYPE_VehicleAndTracking = "R03";
+	/** Gun and Tracking = R04 */
+	public static final String LBR_ATTRIBUTETYPE_GunAndTracking = "R04";
+	/** Set Attribute Type.
+		@param LBR_AttributeType Attribute Type	  */
+	public void setLBR_AttributeType (String LBR_AttributeType)
+	{
+
+		set_Value (COLUMNNAME_LBR_AttributeType, LBR_AttributeType);
+	}
+
+	/** Get Attribute Type.
+		@return Attribute Type	  */
+	public String getLBR_AttributeType () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_AttributeType);
 	}
 
 	/** Set CEST Name.

@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRAuthorizedAccessXML;
 import org.adempierelbr.model.MLBRCSC;
+import org.adempierelbr.model.MLBRNFLineMA;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
 import org.adempierelbr.model.MLBRNotaFiscalLine;
@@ -98,11 +100,21 @@ import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISOutr;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PIS.PISQtde;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Imposto.PISST;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Arma;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Arma.TpArma;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Comb;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.Adi;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.TpIntermedio;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DI.TpViaTransp;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DetExport;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Med;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Rastro;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.TpOp;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.VIN;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.CondVeic;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.TpRest;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Emit;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide;
@@ -356,6 +368,12 @@ public class NFeXMLGenerator
 	private static final TNFe.InfNFe.Det.Prod.IndEscala.Enum PROD_EM_ESCALA_REL = TNFe.InfNFe.Det.Prod.IndEscala.S;
 	private static final TNFe.InfNFe.Det.Prod.IndEscala.Enum PROD_EM_ESCALA_NAO_REL = TNFe.InfNFe.Det.Prod.IndEscala.N;
 	
+	/**	Produtos Específicos		*/
+	private static final String PROD_ESPEC_MEDICAMENTO 	= "01";
+	private static final String PROD_ESPEC_COMBUSTIVEL 	= "02";
+	private static final String PROD_ESPEC_VEICULO 		= "03";
+	private static final String PROD_ESPEC_ARMAMENTO 		= "04";
+	private static final String PROD_ESPEC_PAPEL_IMUNE 	= "05";
 
 	/**
 	 * 	Gera o corpo da NF
@@ -686,7 +704,7 @@ public class NFeXMLGenerator
 						dest.setIndIEDest (IND_IE_NAO_CONTRIB);	//	Homologação
 					
 					//	SUFRAMA
-					if (nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
+					if ("AM".equals (nf.getlbr_BPRegion()) && nf.getlbr_BPSuframa() != null && !nf.getlbr_BPSuframa().isEmpty())
 						dest.setISUF (toNumericStr (nf.getlbr_BPSuframa()));
 				}
 				
@@ -1011,22 +1029,19 @@ public class NFeXMLGenerator
 			String nFCI = nfl.getLBR_FCIValue();
 			if (nFCI != null && !nFCI.trim().isEmpty())
 				prod.setNFCI (nFCI);
-			
-			/*
-			 * Grupo I80. Rastreabilidade de produto
-			 * Icaro Caetano - 23/05/2017
-			 */
-//			if (prod.sizeOfRastroArray()>0
-//					&& nfl.getC_InvoiceLine().getM_AttributeSetInstance_ID()>0
-//					&& nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot_ID()>0)
-//			{
-//			
-//				Rastro rastro = prod.addNewRastro();
-//				rastro.setNLote(nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getName());
-//				rastro.setQLote(normalize3(qtyOnHand));
-//				rastro.setDFab(normalize (nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getDateFrom()));
-//				rastro.setDVal(normalize (nfl.getC_InvoiceLine().getM_AttributeSetInstance().getM_Lot().getDateTo()));
-//			}
+
+			//	I80. Rastreabilidade de Produto - NT2016.002 v1.51
+			if (nfl.hasTracking())
+			{
+				for (MLBRNFLineMA tracking : nfl.getTracking())
+				{
+					Rastro rastro = prod.addNewRastro();
+					rastro.setNLote(tracking.getLot());
+					rastro.setQLote(normalize (tracking.getQty()));
+					rastro.setDFab(TextUtil.timeToString (tracking.getLBR_ProductionDate(), "yyyy-MM-dd"));
+					rastro.setDVal(TextUtil.timeToString (tracking.getDueDate(), "yyyy-MM-dd"));
+				}
+			}
 			
 			/**
 			 * 	J. Produto Específico
@@ -1041,11 +1056,95 @@ public class NFeXMLGenerator
 			 * 	LA. Detalhamento Específico de Combustíveis
 			 * 	LB. Detalhamento Específico para Operação com Papel Imune
 			 */
-//			if (product.getType . equals ( Veiculo ))
-//				;
-//			else if (product.getType . equals ( Medicamento ))
-//				;
-//			....
+			String attributeType = nfl.getLBR_AttributeType();
+			if (attributeType != null)
+			{
+				//	K. Detalhamento Específico de Medicamento e de
+				//		matérias-primas farmacêuticas
+				if (attributeType.endsWith (PROD_ESPEC_MEDICAMENTO))
+				{
+					MLBRNFLineMA attribute = nfl.getAttribute ();
+					if (attribute != null)
+					{
+						Med med = prod.addNewMed();
+						med.setCProdANVISA(attribute.getLBR_ANVISACode());
+						med.setVPMC(normalize (attribute.getLBR_MaxPrice()));
+					}
+				}
+				
+				//	LA. Detalhamento Específico de Combustíveis
+				else if (attributeType.endsWith (PROD_ESPEC_COMBUSTIVEL))
+				{
+					MLBRNFLineMA attribute = nfl.getAttribute ();
+					if (attribute != null)
+					{
+						Comb comb = prod.addNewComb();
+						comb.setCProdANP(attribute.getLBR_ANPCode());
+						comb.setDescANP(attribute.getLBR_ANPDesc());
+						comb.setPGLP(normalize (attribute.getLBR_PercGLP()));
+						comb.setPGNn(normalize (attribute.getLBR_PercGasN()));
+						comb.setPGNi(normalize (attribute.getLBR_PercGasI()));
+						comb.setVPart(normalize (attribute.getLBR_StartAmt()));
+						comb.setCODIF(attribute.getLBR_CODIF());
+					}
+				}
+				
+				//	JA. Detalhamento Específico de Veículos novos
+				else if (attributeType.endsWith (PROD_ESPEC_VEICULO))
+				{
+					MLBRNFLineMA attribute = nfl.getAttribute ();
+					if (attribute != null)
+					{
+						VeicProd veicProd = prod.addNewVeicProd();
+						veicProd.setTpOp(TpOp.Enum.forString (attribute.getLBR_VeOperType()));
+						veicProd.setChassi(attribute.getLBR_VeChassis());
+						veicProd.setCCor(attribute.getLBR_VeColorCode());
+						veicProd.setXCor(attribute.getLBR_VeColorDesc());
+						veicProd.setPot(normalize (attribute.getLBR_VePower()));
+						veicProd.setCilin(normalize (attribute.getLBR_VeCylinder()));
+						veicProd.setPesoL(normalize (nf.getlbr_NetWeight()));
+						veicProd.setPesoB(normalize (nf.getlbr_GrossWeight()));
+						veicProd.setNSerie(attribute.getLBR_VeSerial());
+						veicProd.setTpComb(attribute.getLBR_VeTpFuel());
+						veicProd.setNMotor(attribute.getLBR_VeEngineNo());
+						veicProd.setCMT(normalize (attribute.getLBR_VeTractionCap()));
+						veicProd.setDist(normalize (attribute.getLBR_VeWheelBase()));
+						veicProd.setAnoMod(attribute.getLBR_VeYearModel());
+						veicProd.setAnoFab(attribute.getLBR_VeYearProduction());
+						veicProd.setTpPint(attribute.getLBR_VeTpPaint());
+						veicProd.setTpVeic(attribute.getLBR_VeType());
+						veicProd.setEspVeic(attribute.getLBR_VeKind());
+						veicProd.setVIN(VIN.Enum.forString (attribute.getLBR_VeVIN()));
+						veicProd.setCondVeic(CondVeic.Enum.forString(attribute.getLBR_VeCondition()));
+						veicProd.setCMod(attribute.getLBR_VeBrandCode());
+						veicProd.setCCorDENATRAN(attribute.getLBR_VeColorDENAT());
+						veicProd.setLota(String.valueOf(attribute.getLBR_VeMaxCapacity()));
+						veicProd.setTpRest(TpRest.Enum.forString(attribute.getLBR_VeRestriction()));
+					}
+				}
+				
+				//	L. Detalhamento Específico de Armamentos
+				else if (attributeType.endsWith (PROD_ESPEC_ARMAMENTO))
+				{
+					List<MLBRNFLineMA> attributes = nfl.getAttributes();
+					for (MLBRNFLineMA attribute : attributes)
+					{
+						Arma arma = prod.addNewArma();
+						arma.setTpArma(TpArma.Enum.forString(attribute.getLBR_GunType()));
+						arma.setNSerie(attribute.getLBR_GunSerial());
+						arma.setNCano(attribute.getLBR_GunBarrel());
+						arma.setDescr(nfl.getDescription());		//	FIXME
+					}
+				}
+				
+				//	LB. Detalhamento Específico para Operação com Papel Imune
+				else if (attributeType.endsWith (PROD_ESPEC_PAPEL_IMUNE))
+				{
+					MLBRNFLineMA attribute = nfl.getAttribute ();
+					if (attribute != null)
+						prod.setNRECOPI(attribute.getLBR_RECOPI());
+				}
+			}
 			
 			//	M. Tributos incidentes no Produto ou Serviço
 			Imposto imposto = det.addNewImposto();
