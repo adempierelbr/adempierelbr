@@ -863,7 +863,8 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				MAttributeSetInstance asi = new MAttributeSetInstance (getCtx(), M_AttributeSetInstance_ID, get_TrxName());
 				
 				//	Create 
-				createMA (attributeType, asi, asiProd);
+				BigDecimal qty = attributes.get (M_AttributeSetInstance_ID);
+				createMA (attributeType, asi, asiProd, qty);
 				
 				if (firstMA)
 				{
@@ -880,7 +881,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 					{
 						attributeType = LBR_ATTRIBUTETYPE_Tracking;
 						//
-						createMA (attributeType, asi, asiProd);
+						createMA (attributeType, asi, asiProd, qty);
 					}
 				}
 				
@@ -889,7 +890,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		
 		//	Empty instance attributes
 		else if (asiProd != null)
-			createMA (attributeType, null, asiProd);
+			createMA (attributeType, null, asiProd, null);
 	}	//	setProduct
 	
 	/**
@@ -900,11 +901,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	 * @param asiProd
 	 * @return
 	 */
-	private boolean createMA (String attributeType, MAttributeSetInstance asi, MAttributeSetInstance asiProd)
+	private boolean createMA (String attributeType, MAttributeSetInstance asi, MAttributeSetInstance asiProd, BigDecimal qty)
 	{
 		MLBRNFLineMA ma = new MLBRNFLineMA (getCtx(), 0, get_TrxName());
 		ma.setLBR_NotaFiscalLine_ID(getLBR_NotaFiscalLine_ID());
 		ma.setLBR_AttributeType(attributeType);
+		if (qty != null)
+			ma.setQty(qty);
 		if (asiProd != null)
 			ma.setASI(asiProd, false);
 		if (asi != null)
@@ -1130,7 +1133,7 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 				}
 			}
 			//	Update atributes
-			for (MLBRNFLineMA att : getAttributes (null))
+			for (MLBRNFLineMA att : getAttributes ())
 			{
 				att.setLBR_AttributeType (newAttribute);
 				att.save();

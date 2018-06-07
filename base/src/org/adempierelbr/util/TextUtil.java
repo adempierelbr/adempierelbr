@@ -867,6 +867,8 @@ public abstract class TextUtil
 		Timestamp timestamp = null;
 
 		date = formatter.parse(data,pos);
+		if (date == null)
+			return null;
 		timestamp = new Timestamp(date.getTime());
 		return timestamp;
 	} //stringToTime

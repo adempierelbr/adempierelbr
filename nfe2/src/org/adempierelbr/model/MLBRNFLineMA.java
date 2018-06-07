@@ -86,7 +86,7 @@ public class MLBRNFLineMA extends X_LBR_NFLineMA
 			return false;
 		}
 		
-		String attributeType = getLBR_NotaFiscalLine().getLBR_AttributeType();
+		String attributeType = getLBR_AttributeType();
 		if (attributeType == null || attributeType.isEmpty())
 		{
 			log.saveError("FillMandatory", Msg.getElement (getCtx(), "LBR_AttributeType"));
@@ -252,7 +252,7 @@ public class MLBRNFLineMA extends X_LBR_NFLineMA
 		//	Scan all attributes
 		for (MAttribute attribute : asi.getMAttributeSet().getMAttributes (instanceAS))
 		{
-			MAttributeInstance mai = attribute.getMAttributeInstance (getM_AttributeSetInstance_ID());
+			MAttributeInstance mai = attribute.getMAttributeInstance (asi.getM_AttributeSetInstance_ID());
 			if (mai != null && mai.getValue() != null)
 			{
 				I_W_M_Attribute maW = POWrapper.create(new MAttribute (mai.getCtx(), mai.getM_Attribute_ID(),  mai.get_TrxName()), I_W_M_Attribute.class);
