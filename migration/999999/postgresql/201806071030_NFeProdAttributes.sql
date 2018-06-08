@@ -1066,11 +1066,6 @@ UPDATE AD_Ref_List_Trl SET IsTranslated='N' WHERE AD_Ref_List_ID=1121907
 UPDATE AD_Ref_List_Trl SET Description=NULL,Name='Electrical External',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Ref_List_ID=1121907
 ;
 
--- 05/06/2018 12h38min5s BRT
--- NF-e 4.0
-INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Ref_List_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1121908,1120270,TO_TIMESTAMP('2018-06-05 12:38:05','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Gasoline / GNC',TO_TIMESTAMP('2018-06-05 12:38:05','YYYY-MM-DD HH24:MI:SS'),100,'08')
-;
-
 -- 05/06/2018 12h38min21s BRT
 -- NF-e 4.0
 UPDATE AD_Ref_List SET Value='06',Updated=TO_TIMESTAMP('2018-06-05 12:38:21','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1121906
