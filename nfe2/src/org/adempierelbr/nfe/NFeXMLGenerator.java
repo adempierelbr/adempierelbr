@@ -34,6 +34,7 @@ import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.util.BPartnerUtil;
+import org.adempierelbr.util.GTINValidator;
 import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
@@ -111,10 +112,10 @@ import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.DetExport;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Med;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.Rastro;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd;
-import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.TpOp;
-import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.VIN;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.CondVeic;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.TpOp;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.TpRest;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Det.Prod.VeicProd.VIN;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Emit;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Exporta;
 import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide;
@@ -153,6 +154,8 @@ import br.inf.portalfiscal.nfe.v400.Torig;
 @SuppressWarnings("unused")
 public class NFeXMLGenerator
 {
+	private static final String SEM_GTIN = "SEM GTIN";
+
 	/** Log				*/
 	private static CLogger log = CLogger.getCLogger(NFeXMLGenerator.class);
 
@@ -860,17 +863,24 @@ public class NFeXMLGenerator
 			Prod prod = det.addNewProd();
 			prod.setCProd(nfl.getProductValue());
 			
-			//	EAN
-			String ean = nfl.getM_Product().getUPC();
-			if (ean == null)
+			//	GTIN (antigo EAN)
+			String gtin = nfl.getUPC();
+			if (gtin == null || gtin.isEmpty() || gtin.equalsIgnoreCase (SEM_GTIN))
 			{
-				prod.setCEAN("");
-				prod.setCEANTrib("");
+				prod.setCEAN (SEM_GTIN);
+				prod.setCEANTrib (SEM_GTIN);
 			}
 			else
 			{
-				prod.setCEAN(toNumericStr (ean));
-				prod.setCEANTrib(toNumericStr (ean));
+				GTINValidator val = new GTINValidator(gtin);
+				//
+				if (val.isValid())
+				{
+					prod.setCEAN (toNumericStr (gtin));
+					prod.setCEANTrib (toNumericStr (gtin));
+				}
+				else
+					throw new AdempiereException ("Código de Barras (GTIN) do produto Inválido. Err=" + val.getErrorMsg());
 			}
 			
 			/* 

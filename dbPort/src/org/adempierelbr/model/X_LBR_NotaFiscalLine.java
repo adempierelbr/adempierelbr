@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20180605L;
+	private static final long serialVersionUID = 20180607L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -246,6 +246,10 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public static final String LBR_ATTRIBUTETYPE_VehicleAndTracking = "R03";
 	/** Gun and Tracking = R04 */
 	public static final String LBR_ATTRIBUTETYPE_GunAndTracking = "R04";
+	/** Exempt Paper = X05 */
+	public static final String LBR_ATTRIBUTETYPE_ExemptPaper = "X05";
+	/** Exempt Paper and Tracking = R05 */
+	public static final String LBR_ATTRIBUTETYPE_ExemptPaperAndTracking = "R05";
 	/** Set Attribute Type.
 		@param LBR_AttributeType Attribute Type	  */
 	public void setLBR_AttributeType (String LBR_AttributeType)
@@ -776,6 +780,23 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set UPC/EAN.
+		@param UPC 
+		Bar Code (Universal Product Code or its superset European Article Number)
+	  */
+	public void setUPC (String UPC)
+	{
+		set_Value (COLUMNNAME_UPC, UPC);
+	}
+
+	/** Get UPC/EAN.
+		@return Bar Code (Universal Product Code or its superset European Article Number)
+	  */
+	public String getUPC () 
+	{
+		return (String)get_Value(COLUMNNAME_UPC);
 	}
 
 	/** Set Partner Product Key.

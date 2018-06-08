@@ -956,6 +956,13 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		//
 		setlbr_ProductSource(productW.getlbr_ProductSource());
 		setLBR_AttributeType(productW.getLBR_AttributeType());
+		
+		//	NT2017.001 - v1.20
+		String upc = TextUtil.toNumeric (product.getUPC ());
+		if (!upc.isEmpty ())
+			setUPC (upc);
+		else
+			setUPC ("SEM GTIN");
 	}	//	setProduct
 
 	private void appendDescription (String text)
