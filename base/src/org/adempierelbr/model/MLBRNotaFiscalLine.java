@@ -911,7 +911,10 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		if (asiProd != null)
 			ma.setASI(asiProd, false);
 		if (asi != null)
+		{
 			ma.setASI(asi, true);
+			ma.setM_AttributeSetInstance_ID(asi.getM_AttributeSetInstance_ID());
+		}
 		return ma.save();
 	}	//	createMA
 	
