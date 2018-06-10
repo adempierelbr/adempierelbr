@@ -21,7 +21,7 @@ import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRNFConfig;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
-import org.adempierelbr.nfe.api.NfeStatusServico2Stub;
+import org.adempierelbr.nfe.api.NFeStatusServico4Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.apache.axiom.om.OMElement;
@@ -33,16 +33,14 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.ConsStatServDocument;
-import br.inf.portalfiscal.nfe.v310.RetConsStatServDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v310.TConsStatServ;
-import br.inf.portalfiscal.nfe.v310.TConsStatServ.XServ;
-import br.inf.portalfiscal.nfe.v310.TRetConsStatServ;
-import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico2.NfeDadosMsg;
+import br.inf.portalfiscal.nfe.v400.ConsStatServDocument;
+import br.inf.portalfiscal.nfe.v400.RetConsStatServDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v400.TConsStatServ;
+import br.inf.portalfiscal.nfe.v400.TConsStatServ.XServ;
+import br.inf.portalfiscal.nfe.v400.TRetConsStatServ;
+import br.inf.portalfiscal.www.nfe.wsdl.nfestatusservico4.NfeDadosMsg;
 
 /**
  * 	Processo para consultar o Status do Serviço
@@ -157,14 +155,6 @@ public class ProcStatusServico extends SvrProcess
 			
 			//	Mensagem
 			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-			
-			//	Cabeçalho
-			NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-			cabecMsg.setCUF(region);
-			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 			String serviceType = null;
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(p_LBR_NFModel))
@@ -175,10 +165,9 @@ public class ProcStatusServico extends SvrProcess
 			
 			String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
 			
-			NfeStatusServico2Stub.setAmbiente(url);
-			NfeStatusServico2Stub stub = new NfeStatusServico2Stub();
+			NFeStatusServico4Stub stub = new NFeStatusServico4Stub(url);
 
-			OMElement nfeStatusServicoNF2 = stub.nfeStatusServicoNF2(dadosMsg.getExtraElement(), cabecMsgE);
+			OMElement nfeStatusServicoNF2 = stub.nfeStatusServicoNF (dadosMsg.getExtraElement());
 			String respStatus = nfeStatusServicoNF2.toString();
 
 			//	Resposta

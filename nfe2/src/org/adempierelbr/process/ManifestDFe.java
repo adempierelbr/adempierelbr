@@ -82,6 +82,8 @@ public class ManifestDFe extends SvrProcess
 		event.setLBR_PartnerDFe_ID(p_Record_ID);
 		event.setlbr_NFeID(dfe.getlbr_NFeID());
 		event.setLBR_EventType(p_EventType);
+		event.setlbr_NFModel(MLBRNFeEvent.LBR_NFMODEL_NotaFiscalEletrônica);	//	FIXME: Verificar se é necessário
+		event.setProtocol(dfe.getlbr_NFeProt());
 		
 		//	Only for 210240
 		if (MLBRNFeEvent.LBR_EVENTTYPE_OperacaoNaoRealizada.equals(p_EventType))

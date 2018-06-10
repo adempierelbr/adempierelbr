@@ -28,7 +28,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Ini;
 
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
 
 /**
  * 		Processos auxiliares a NF-e que não podem entrar na MLBRNotaFiscal, ex. validação de anexos

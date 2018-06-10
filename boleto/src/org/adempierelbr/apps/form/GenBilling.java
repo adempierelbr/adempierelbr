@@ -125,7 +125,7 @@ public class GenBilling
 			+ " AND EXISTS (SELECT * FROM C_Invoice i WHERE bp.C_BPartner_ID=i.C_BPartner_ID"
 			//	X_C_Order.PAYMENTRULE_DirectDebit
 			  + " AND i.IsSOTrx='Y'"
-			  + " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B')"
+			  + " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B' OR i.lbr_PaymentRule='15')"
 			  + " AND i.DocStatus IN ('CO','CL')"
 			  + " AND i.IsPaid<>'Y') "
 			+ "ORDER BY 2";
@@ -228,7 +228,7 @@ public class GenBilling
 			+ "  LEFT JOIN LBR_NotaFiscal nf ON (nf.C_Invoice_ID=i.C_Invoice_ID AND nf.IsCancelled <> 'Y')",
 			//	WHERE
 			"i.IsSOTrx=? AND i.IsPaid='N'"
-			+ " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B')"
+			+ " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B' OR i.lbr_PaymentRule='15')"
 			+ " AND i.DocStatus IN ('CO','CL')"
 			+ " AND i.AD_Client_ID=?",	//	additional where & order in loadTableInfo()
 			true, "i");

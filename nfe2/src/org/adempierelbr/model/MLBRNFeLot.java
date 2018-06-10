@@ -28,8 +28,8 @@ import javax.xml.stream.XMLInputFactory;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.nfe.api.NfeAutorizacaoStub;
-import org.adempierelbr.nfe.api.NfeRetAutorizacaoStub;
+import org.adempierelbr.nfe.api.NFeAutorizacao4Stub;
+import org.adempierelbr.nfe.api.NFeRetAutorizacao4Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.TextUtil;
@@ -55,22 +55,20 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.ConsReciNFeDocument;
-import br.inf.portalfiscal.nfe.v310.EnviNFeDocument;
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-import br.inf.portalfiscal.nfe.v310.RetConsReciNFeDocument;
-import br.inf.portalfiscal.nfe.v310.RetEnviNFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TConsReciNFe;
-import br.inf.portalfiscal.nfe.v310.TEnviNFe;
-import br.inf.portalfiscal.nfe.v310.TNFe;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.TpEmis;
-import br.inf.portalfiscal.nfe.v310.TProtNFe;
-import br.inf.portalfiscal.nfe.v310.TRetConsReciNFe;
-import br.inf.portalfiscal.nfe.v310.TRetEnviNFe;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao.NfeDadosMsg;
+import br.inf.portalfiscal.nfe.v400.ConsReciNFeDocument;
+import br.inf.portalfiscal.nfe.v400.EnviNFeDocument;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
+import br.inf.portalfiscal.nfe.v400.RetConsReciNFeDocument;
+import br.inf.portalfiscal.nfe.v400.RetEnviNFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TConsReciNFe;
+import br.inf.portalfiscal.nfe.v400.TEnviNFe;
+import br.inf.portalfiscal.nfe.v400.TNFe;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.TpEmis;
+import br.inf.portalfiscal.nfe.v400.TProtNFe;
+import br.inf.portalfiscal.nfe.v400.TRetConsReciNFe;
+import br.inf.portalfiscal.nfe.v400.TRetEnviNFe;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeautorizacao4.NfeDadosMsg;
 
 /**
  *	Model for LBR_NFeLot
@@ -190,17 +188,8 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			ome = fixCData (ome);
 		
 		//	Mensagem
-//		NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
 		NfeDadosMsg dadosMsg = new NfeDadosMsg();
 		dadosMsg.setExtraElement(ome);
-		
-		//	Cabeçalho
-		NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-		cabecMsg.setCUF(region);
-		cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
 		
 		String serviceType = null;
 		if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
@@ -211,10 +200,9 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 		
 		String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
 		
-		NfeAutorizacaoStub.setAmbiente(url);
-		NfeAutorizacaoStub stub = new NfeAutorizacaoStub();
+		NFeAutorizacao4Stub stub = new NFeAutorizacao4Stub(url);
 
-		OMElement nfeAutorizacao = stub.nfeAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
+		OMElement nfeAutorizacao = stub.nfeAutorizacaoLote (dadosMsg.getExtraElement());
 		String respAutorizacao = nfeAutorizacao.toString();
 		//	
 		MAttachment attachLotNFe = createAttachment();
@@ -354,14 +342,6 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			
 			//	Mensagem
 			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-			
-			//	Cabeçalho
-			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsg cabecMsg = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsg ();
-			cabecMsg.setCUF(region);
-			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-			br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE cabecMsgE = new br.inf.portalfiscal.www.nfe.wsdl.nferetautorizacao.NfeCabecMsgE ();
-			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 			String serviceType = null;
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(getlbr_NFModel()))
@@ -372,9 +352,9 @@ public class MLBRNFeLot extends X_LBR_NFeLot implements DocAction, DocOptions
 			
 			String url = MLBRNFeWebService.getURL (serviceType, envType, NFeUtil.VERSAO_LAYOUT, LBR_WSType, orgLoc.getC_Region_ID());
 			
-			NfeRetAutorizacaoStub stub = new NfeRetAutorizacaoStub(url);
+			NFeRetAutorizacao4Stub stub = new NFeRetAutorizacao4Stub(url);
 
-			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement(), cabecMsgE);
+			OMElement nfeRetAutorizacao = stub.nfeRetAutorizacaoLote (dadosMsg.getExtraElement());
 			String respRetAutorizacao = nfeRetAutorizacao.toString();
 			
 			MAttachment attachLotNFe = createAttachment();
