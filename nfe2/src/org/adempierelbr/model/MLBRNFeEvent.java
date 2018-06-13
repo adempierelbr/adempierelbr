@@ -436,6 +436,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 					
 					if (TextUtil.match (cStat, 	LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E, 
 												LBR_NFESTATUS_136_EventoRegistradoMasNãoVinculadoANF_E,
+												LBR_NFESTATUS_151_CancelamentoDeNF_EHomologadoForaDePrazo,
 												LBR_NFESTATUS_155_CancelamentoDeNF_EHomologadoForaDePrazo))
 					{
 						try
