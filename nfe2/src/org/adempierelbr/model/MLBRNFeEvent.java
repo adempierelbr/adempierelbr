@@ -681,6 +681,7 @@ public class MLBRNFeEvent extends X_LBR_NFeEvent implements DocAction
 					+ "AND LBR_EventType=?", getlbr_NFeID(), getLBR_EventType());	
 			//
 			setSeqNo (seqNo);
+			setDateDoc(new Timestamp(System.currentTimeMillis()));
 		}
 		
 		//	Remover espaços do campo de Carta de Correção

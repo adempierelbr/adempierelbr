@@ -974,6 +974,10 @@ UPDATE C_OrderLine SET POReference=(SELECT SUBSTR (o.POReference,0,20) FROM C_Or
 WHERE EXISTS (SELECT '1' FROM C_Order o WHERE o.C_Order_ID=C_OrderLine.C_Order_ID AND o.POReference IS NOT NULL)
 ;
 
+-- 14/06/2018 19h23min48s BRT
+UPDATE AD_Column SET DefaultValue='@#Date@',Updated=TO_TIMESTAMP('2018-06-14 19:23:48','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1122477
+;
+
 -- 30/05/2018 16h1min44s BRT
 SELECT Register_Migration_Script ('201805291547_NFe4.sql') FROM DUAL
 ;
