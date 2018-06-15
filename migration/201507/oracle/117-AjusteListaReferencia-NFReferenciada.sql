@@ -10,6 +10,6 @@ UPDATE AD_Ref_List_Trl SET AD_Ref_List_ID = 1121569 WHERE AD_Ref_List_ID = 20002
 
 ALTER TABLE AD_Ref_List_Trl ENABLE CONSTRAINT AD_RefListTrl;
 
-SELECT register_migration_script('117-AjusteListaReferencia-AcessoXMLNFe-NFReferenciada.sql') FROM dual;
+SELECT register_migration_script('117-AjusteListaReferencia-NFReferenciada.sql') FROM dual;
 
 EXIT
