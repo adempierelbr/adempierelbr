@@ -1287,7 +1287,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			// Verifica se a NF Indicada no RMA é uma NF-e
 			if (nfrma.getLBR_NotaFiscal_ID() > 0 && 
-					nfrma.getlbr_NFModel().equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica))
+					MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nfrma.getlbr_NFModel()) &&
+					nfrma.getlbr_NFeID() != null)
 			{
 				// Adiciona NF Referênciada
 				MLBRNotaFiscalDocRef nfref = new MLBRNotaFiscalDocRef (Env.getCtx(), 0, get_TrxName());
