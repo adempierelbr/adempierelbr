@@ -1874,7 +1874,7 @@ public class NFeXMLGenerator
 					discountAmt = Env.ZERO;
 				
 				//	Fatura
-				if (nf.getC_Invoice_ID() > 0)
+				if (nf.getC_Invoice_ID() > 0 && nf.islbr_HasOpenItems())
 				{
 					Fat fat = cobr.addNewFat();
 					String fatNo = nf.getC_Invoice().getDocumentNo();
@@ -1891,16 +1891,15 @@ public class NFeXMLGenerator
 					int dupCounter = 1;
 					
 				    //	Adiciona as duplicatas da fatura
-					if (nf.islbr_HasOpenItems())
-							//	Somente para Duplicata Mercantil
-							//	&& MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill.equals(nf.getlbr_PaymentRule()))
-					    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
-					    {
-						    	Dup dup = cobr.addNewDup();
-						    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-						    	dup.setDVenc(normalize (openItem.getDueDate()));
-						    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
-						}
+					//	Somente para Duplicata Mercantil
+					//	&& MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill.equals(nf.getlbr_PaymentRule()))
+				    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
+				    {
+					    	Dup dup = cobr.addNewDup();
+					    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
+					    	dup.setDVenc(normalize (openItem.getDueDate()));
+					    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+					}
 				}
 			}
 		}
