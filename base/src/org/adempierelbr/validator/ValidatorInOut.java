@@ -117,6 +117,28 @@ public class ValidatorInOut implements ModelValidator
      */
 	public String modelChange (PO po, int type) throws Exception
 	{
+		if (po.get_TableName().equals(MMovementLine.Table_Name))
+			return modelChange((MMovementLine) po, type);
+		return null;
+	}	//	modelChange
+
+    /**
+     *	Model Change of a monitored Table.
+     *	Called after PO.beforeSave/PO.beforeDelete
+     *	when you called addModelChange for the table
+     *	@param po persistent object
+     *	@param type TYPE_
+     *	@return error message or null
+     *	@exception Exception if the recipient wishes the change to be not accept.
+     */
+	private String modelChange (MMovementLine ml, int type) throws Exception
+	{
+		/**
+		 * 	Prevent from 'ASI To' being different from 'ASI From'
+		 */
+		if ((type == TYPE_BEFORE_CHANGE || type == TYPE_BEFORE_NEW) 
+				&& ml.getM_AttributeSetInstance_ID() != ml.getM_AttributeSetInstanceTo_ID())
+			ml.setM_AttributeSetInstanceTo_ID(ml.getM_AttributeSetInstance_ID());
 		return null;
 	}	//	modelChange
 
