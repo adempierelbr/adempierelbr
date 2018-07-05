@@ -78,6 +78,8 @@ public class ValidatorInOut implements ModelValidator
 			log.info("Initializing global validator: "+this.toString());
 		}
 
+		engine.addModelChange(MMovementLine.Table_Name, this);
+
 		engine.addDocValidate(MInOut.Table_Name, this);
 		engine.addDocValidate(MMovement.Table_Name, this);
 		engine.addDocValidate(MInventory.Table_Name, this);
