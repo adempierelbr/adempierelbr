@@ -832,7 +832,6 @@ public class NFeXMLGenerator
 		}
 		
 		boolean icmsDest = false;
-		BigDecimal taxDestAmt = nf.getTaxAmt("ICMSDIFAL");
 		
 		if ((MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUser.equals (nf.getlbr_TransactionType())
 					|| MLBRNotaFiscal.LBR_TRANSACTIONTYPE_EndUserDoubleBase.equals (nf.getlbr_TransactionType()))
@@ -847,7 +846,8 @@ public class NFeXMLGenerator
 					&& nf.isSOTrx()
 					
 					//	Alíquota Preenchida
-					&& taxDestAmt != null && taxDestAmt.signum() == 1)
+					&& nf.getlbr_OrgRegion() != null && nf.getlbr_BPRegion() != null 
+					&& !nf.getlbr_OrgRegion().equals(nf.getlbr_BPRegion()))
 			
 			//	Grupo ICMS Dest
 			icmsDest = true;
@@ -1707,7 +1707,7 @@ public class NFeXMLGenerator
 				nflICMSDest.setVBCFCPUFDest(normalize(nfl.getTaxBaseAmt("FCP")));
 				
 				nflICMSDest.setPICMSUFDest (normalize (nfl.getTaxRate ("ICMSDIFAL")));
-				nflICMSDest.setPICMSInter (PICMSInter.Enum.forString(normalize (nfl.getTaxRate ("ICMS"))));
+				nflICMSDest.setPICMSInter (taxICMSInter);
 				nflICMSDest.setPICMSInterPart (normalize (partICMSRate));
 				nflICMSDest.setVFCPUFDest (normalize (nfl.getTaxAmt("FCP")));
 				nflICMSDest.setVICMSUFDest (normalize (nfl.getTaxAmt("ICMSDIFAL")));
