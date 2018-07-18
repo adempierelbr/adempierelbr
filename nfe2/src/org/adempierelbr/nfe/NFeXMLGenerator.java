@@ -1775,7 +1775,7 @@ public class NFeXMLGenerator
 			{
 				Transporta transporta = transp.addNewTransporta();
 				
-				String shipperCNPJ 		= toNumericStr (nf.getlbr_BPShipperCNPJ());
+				String shipperCNPJF 	= toNumericStr (nf.getlbr_BPShipperCNPJ());
 				String shipperName 		= normalize (nf.getlbr_BPShipperName());
 				String shipperIE 		= toNumericStr (nf.getlbr_BPShipperIE());
 				String shipperAddress 	= normalize (nf.getlbr_BPShipperAddress());
@@ -1783,8 +1783,13 @@ public class NFeXMLGenerator
 				String shipperRegion 	= normalize (nf.getlbr_BPShipperRegion());
 				String shipperPlate		= normalize (nf.getlbr_BPShipperLicensePlate());
 				
-				if (shipperCNPJ != null && !shipperCNPJ.trim().isEmpty())
-					transporta.setCNPJ(shipperCNPJ);
+				if (shipperCNPJF != null && !shipperCNPJF.trim().isEmpty())
+				{
+					if (shipperCNPJF.length() == 11)
+						transporta.setCPF (shipperCNPJF);
+					else if (shipperCNPJF.length() == 14)
+						transporta.setCNPJ (shipperCNPJF);
+				}
 				
 				if (shipperName != null && !shipperName.isEmpty())
 					transporta.setXNome(shipperName);
