@@ -1950,6 +1950,10 @@ public class NFeXMLGenerator
 				dPag.setTPag(DET_TP_PAG_OUTROS);
 		}
 		
+		//	Se o campo tPag for preenchido como Sem Pagamento, Zerar o Valor do Pagamento
+		if (dPag.getTPag().equals(DET_TP_PAG_SEM_PAGAM))
+			dPag.setVPag(normalize (BigDecimal.ZERO));
+		
 		//	Z. Informações Adicionais da NF-e
 		InfAdic infAdic = infNFe.addNewInfAdic();
 
