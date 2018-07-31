@@ -708,46 +708,18 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_UOMName();
 
-    /** Column name lbr_UTribID */
-    public static final String COLUMNNAME_lbr_UTribID = "lbr_UTribID";
-
-	/** Set UTrib.
-	  * Unit of Tax
-	  */
-	public void setlbr_UTribID (int lbr_UTribID);
-
-	/** Get UTrib.
-	  * Unit of Tax
-	  */
-	public int getlbr_UTribID();
-
-	public I_C_UOM getlbr_UTri() throws RuntimeException;
-
-    /** Column name lbr_UTribName */
-    public static final String COLUMNNAME_lbr_UTribName = "lbr_UTribName";
-
-	/** Set UTrib Name.
-	  * Defines the UTrib Name
-	  */
-	public void setlbr_UTribName (String lbr_UTribName);
-
-	/** Get UTrib Name.
-	  * Defines the UTrib Name
-	  */
-	public String getlbr_UTribName();
-
-    /** Column name lbr_qTrib */
-    public static final String COLUMNNAME_lbr_qTrib = "lbr_qTrib";
+    /** Column name LBR_qTrib */
+    public static final String COLUMNNAME_LBR_qTrib = "LBR_qTrib";
 
 	/** Set Tax Quantity.
 	  * Defines the Tax Quantity
 	  */
-	public void setlbr_qTrib (BigDecimal lbr_qTrib);
+	public void setLBR_qTrib (BigDecimal LBR_qTrib);
 
 	/** Get Tax Quantity.
 	  * Defines the Tax Quantity
 	  */
-	public BigDecimal getlbr_qTrib();
+	public BigDecimal getLBR_qTrib();
 
     /** Column name lbr_vTotTrib */
     public static final String COLUMNNAME_lbr_vTotTrib = "lbr_vTotTrib";
@@ -762,16 +734,29 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public BigDecimal getlbr_vTotTrib();
 
-    /** Column name lbr_vUnTrib */
-    public static final String COLUMNNAME_lbr_vUnTrib = "lbr_vUnTrib";
+    /** Column name LBR_vUnTrib */
+    public static final String COLUMNNAME_LBR_vUnTrib = "LBR_vUnTrib";
 
 	/** Set Unit Tax Price.
 	  * Defines the Unit Tax Price
 	  */
-	public void setlbr_vUnTrib (BigDecimal lbr_vUnTrib);
+	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib);
 
 	/** Get Unit Tax Price.
 	  * Defines the Unit Tax Price
 	  */
-	public BigDecimal getlbr_vUnTrib();
+	public BigDecimal getLBR_vUnTrib();
+	
+	/** Column name X12DE355 */
+    public static final String COLUMNNAME_X12DE355 = "X12DE355";
+
+	/** Set UOM Code.
+	  * UOM EDI X12 Code
+	  */
+	public void setX12DE355 (String X12DE355);
+
+	/** Get UOM Code.
+	  * UOM EDI X12 Code
+	  */
+	public String getX12DE355();
 }

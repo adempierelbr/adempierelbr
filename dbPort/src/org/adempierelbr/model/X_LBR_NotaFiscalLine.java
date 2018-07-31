@@ -1105,63 +1105,21 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_UOMName);
 	}
 
-	public I_C_UOM getlbr_UTri() throws RuntimeException
-    {
-		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
-			.getPO(getlbr_UTribID(), get_TrxName());	}
-
-	/** Set UTrib.
-		@param lbr_UTribID 
-		Unit of Tax
-	  */
-	public void setlbr_UTribID (int lbr_UTribID)
-	{
-		set_Value (COLUMNNAME_lbr_UTribID, Integer.valueOf(lbr_UTribID));
-	}
-
-	/** Get UTrib.
-		@return Unit of Tax
-	  */
-	public int getlbr_UTribID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_lbr_UTribID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set UTrib Name.
-		@param lbr_UTribName 
-		Defines the UTrib Name
-	  */
-	public void setlbr_UTribName (String lbr_UTribName)
-	{
-		set_Value (COLUMNNAME_lbr_UTribName, lbr_UTribName);
-	}
-
-	/** Get UTrib Name.
-		@return Defines the UTrib Name
-	  */
-	public String getlbr_UTribName () 
-	{
-		return (String)get_Value(COLUMNNAME_lbr_UTribName);
-	}
-
 	/** Set Tax Quantity.
-		@param lbr_qTrib 
+		@param LBR_qTrib 
 		Defines the Tax Quantity
 	  */
-	public void setlbr_qTrib (BigDecimal lbr_qTrib)
+	public void setLBR_qTrib (BigDecimal LBR_qTrib)
 	{
-		set_Value (COLUMNNAME_lbr_qTrib, lbr_qTrib);
+		set_Value (COLUMNNAME_LBR_qTrib, LBR_qTrib);
 	}
 
 	/** Get Tax Quantity.
 		@return Defines the Tax Quantity
 	  */
-	public BigDecimal getlbr_qTrib () 
+	public BigDecimal getLBR_qTrib () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_qTrib);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_qTrib);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -1188,22 +1146,39 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	}
 
 	/** Set Unit Tax Price.
-		@param lbr_vUnTrib 
+		@param LBR_vUnTrib 
 		Defines the Unit Tax Price
 	  */
-	public void setlbr_vUnTrib (BigDecimal lbr_vUnTrib)
+	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib)
 	{
-		set_Value (COLUMNNAME_lbr_vUnTrib, lbr_vUnTrib);
+		set_Value (COLUMNNAME_LBR_vUnTrib, LBR_vUnTrib);
 	}
 
 	/** Get Unit Tax Price.
 		@return Defines the Unit Tax Price
 	  */
-	public BigDecimal getlbr_vUnTrib () 
+	public BigDecimal getLBR_vUnTrib () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_lbr_vUnTrib);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_vUnTrib);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+	
+	/** Set UOM Code.
+	@param X12DE355 
+	UOM EDI X12 Code
+	  */
+	public void setX12DE355 (String X12DE355)
+	{
+		set_Value (COLUMNNAME_X12DE355, X12DE355);
+	}
+	
+	/** Get UOM Code.
+		@return UOM EDI X12 Code
+	  */
+	public String getX12DE355 () 
+	{
+		return (String)get_Value(COLUMNNAME_X12DE355);
 	}
 }

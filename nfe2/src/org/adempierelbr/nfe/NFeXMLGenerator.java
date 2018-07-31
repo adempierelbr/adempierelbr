@@ -930,9 +930,9 @@ public class NFeXMLGenerator
 			// 	Unidade Tributária pode ser Diferente apenas para Exportação
 			if (MLBRNotaFiscal.LBR_TRANSACTIONTYPE_Export.equals (nf.getlbr_TransactionType ()))
 			{
-				prod.setUTrib(normalize (nfl.getlbr_UTribName()));
-				prod.setQTrib(normalize4  ((nfl.getlbr_qTrib())));
-				prod.setVUnTrib(normalize10  (nfl.getlbr_vUnTrib()));
+				prod.setUTrib(normalize (nfl.getX12DE355()));
+				prod.setQTrib(normalize4  ((nfl.getLBR_qTrib())));
+				prod.setVUnTrib(normalize10  (nfl.getLBR_vUnTrib()));
 			}
 			else
 			{	
