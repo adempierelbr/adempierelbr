@@ -2,7 +2,7 @@
 
 #	Check Parameters
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-   echo "Usage: $0 MIGRATION-FOLDER DATABASE USER [PG PARAMS]"
+   echo "Usage: $0 MIGRATION-FOLDER DATABASE USER [HOSTNAME] [PORT] [PG PARAMS]"
    exit 0
 fi
 
@@ -15,14 +15,22 @@ fi
 PGPASS=~/.pgpass
 DATABASE=${2}
 USER=${3}
-ADDPG=${4}   # i.e. "-h localhost -p 5432"
+ADDPG=${6}   # i.e. "-h localhost -p 5432"
 MIGRATIONDIR=${1}
 MSGERROR=""
 APPLIED=N
+HOST=${4}
+PORT=${5}
 
-#	Default connection
-HOST=localhost
-PORT=5432
+#	Default hostname
+if [ -z "$HOST" ]; then
+	HOST=localhost
+fi
+
+#	Default port
+if [ -z "$PORT" ]; then
+	PORT=5432
+fi
 
 echo
 echo "========================================="
@@ -115,20 +123,26 @@ do
     if [ -d ${FOLDER}/postgresql ]
     then
         cd ${FOLDER}/postgresql
-        find . -name '*.sql' -type f -exec basename {} \; | sort >> /tmp/lisFS.txt
+        find . -name '*.sql' -type f -exec basename {} \; | sort -u | sort -k1.1,1.12 -n >> /tmp/lisFS.txt
         cd ../..
     fi
 done
 
 #	Sort by file name
-sort -u -o /tmp/lisFS.txt /tmp/lisFS.txt
-sort -u -o /tmp/lisDB.txt /tmp/lisDB.txt
+cat /tmp/lisDB.txt | sort -u | sort -k1.1,1.12 -no /tmp/lisDB.txt
 echo
 
 APPLIED=N
 
 #	Confirm scripts to be applied
-for i in `comm -13 /tmp/lisDB.txt /tmp/lisFS.txt`
+#
+#     FNR==NR       # Are we looking at the first file
+#     a[$0]         # If so build an associative array of the file
+#     next          # Go get the next line in the file
+#     !($0 in a)    # In the second file now, check if the current line is in the array
+#     print sub...  # If not print the first 3 characters from the current line
+#
+for i in `awk 'FNR==NR{a[$0];next}!($0 in a)' /tmp/lisDB.txt /tmp/lisFS.txt`
 do
 	if [ x$APPLIED = xN ]
 	then
@@ -151,7 +165,7 @@ fi
 APPLIED=N
 
 #	Execute the scripts
-for i in `comm -13 /tmp/lisDB.txt /tmp/lisFS.txt`
+for i in `awk 'FNR==NR{a[$0];next}!($0 in a)' /tmp/lisDB.txt /tmp/lisFS.txt`
 do
     SCRIPT=`find . -name "$i" -print | fgrep -v /oracle/`
     OUTFILE=/tmp/`basename "$i" .sql`.out
