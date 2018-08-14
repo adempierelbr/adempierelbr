@@ -87,7 +87,7 @@ if ! grep -q "$HOST\:$PORT\:\*\:$USER\:*" $PGPASS; then
 fi
 
 #	Check if connection is OK
-THECOUNT=`psql --quiet -d $DATABASE -U $USER $ADDPG -qwAt -c "SELECT 1"`
+THECOUNT=`psql --quiet -d $DATABASE -U $USER -h $HOST -p $PORT $ADDPG -qwAt -c "SELECT 1"`
 
 #	Prompt for password until connection can be made
 #while [[ ! $THECOUNT -eq 1 ]]; do
@@ -100,7 +100,7 @@ while [ ! "x$THECOUNT" = "x1" ]; do
 	mv $PGPASS.tmp $PGPASS
 	chmod 0600 $PGPASS
 	
-	THECOUNT=`psql --quiet -d $DATABASE -U $USER $ADDPG -qwAt -c "SELECT 1"`
+	THECOUNT=`psql --quiet -d $DATABASE -U $USER -h $HOST -p $PORT $ADDPG -qwAt -c "SELECT 1"`
 
 done
 
@@ -112,7 +112,7 @@ echo "Connection OK"
 cd $MIGRATIONDIR
 
 #	Retrieve applied scripts
-psql -d $DATABASE -U $USER $ADDPG -q -t -c "SELECT Name FROM AD_MigrationScript" | sed -e 's:^ ::' | grep -v '^$' | sort > /tmp/lisDB.txt
+psql -d $DATABASE -U $USER -h $HOST -p $PORT $ADDPG -q -t -c "SELECT Name FROM AD_MigrationScript" | sed -e 's:^ ::' | grep -v '^$' | sort > /tmp/lisDB.txt
 
 #	Clean the list of available scripts
 > /tmp/lisFS.txt
@@ -169,7 +169,7 @@ for i in `awk 'FNR==NR{a[$0];next}!($0 in a)' /tmp/lisDB.txt /tmp/lisFS.txt`
 do
     SCRIPT=`find . -name "$i" -print | fgrep -v /oracle/`
     OUTFILE=/tmp/`basename "$i" .sql`.out
-    psql -d $DATABASE -U $USER $ADDPG -f "$SCRIPT" 2>&1 | tee "$OUTFILE"
+    psql -d $DATABASE -U $USER -h $HOST -p $PORT $ADDPG -f "$SCRIPT" 2>&1 | tee "$OUTFILE"
     if fgrep "ERROR:
 FATAL:" "$OUTFILE" > /dev/null 2>&1
     then
@@ -185,7 +185,7 @@ then
     for i in processes_post_migration/postgresql/*.sql
     do
         OUTFILE=/tmp/`basename "$i" .sql`.out
-        psql -d $DATABASE -U $USER $ADDPG -f "$i" 2>&1 | tee "$OUTFILE"
+        psql -d $DATABASE -U $USER -h $HOST -p $PORT $ADDPG -f "$i" 2>&1 | tee "$OUTFILE"
         if fgrep "ERROR:
 FATAL:" "$OUTFILE" > /dev/null 2>&1
         then
