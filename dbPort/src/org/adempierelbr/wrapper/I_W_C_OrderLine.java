@@ -17,11 +17,7 @@
 package org.adempierelbr.wrapper;
 
 import java.math.BigDecimal;
-
-import org.compiere.model.I_C_InvoiceLine;
-import org.compiere.model.I_C_Location;
-import org.compiere.model.I_C_OrderLine;
-import org.compiere.model.I_M_ProductionLine;
+import org.compiere.model.*;
 
 /** Generated Interface for C_OrderLine
  *  @author Adempiere (generated) 
@@ -84,6 +80,19 @@ public interface I_W_C_OrderLine extends I_C_OrderLine
 	/** Get Other Charges Amount	  */
 	public BigDecimal getLBR_OtherChargesAmt();
 
+    /** Column name LBR_PORef_Item */
+    public static final String COLUMNNAME_LBR_PORef_Item = "LBR_PORef_Item";
+
+	/** Set Order Reference Item.
+	  * Item reference to the Order Reference indicated in the same document
+	  */
+	public void setLBR_PORef_Item (String LBR_PORef_Item);
+
+	/** Get Order Reference Item.
+	  * Item reference to the Order Reference indicated in the same document
+	  */
+	public String getLBR_PORef_Item();
+
     /** Column name LBR_Tax_ID */
     public static final String COLUMNNAME_LBR_Tax_ID = "LBR_Tax_ID";
 
@@ -126,6 +135,19 @@ public interface I_W_C_OrderLine extends I_C_OrderLine
 	public int getM_ProductionLine_ID();
 
 	public I_M_ProductionLine getM_ProductionLine() throws RuntimeException;
+
+    /** Column name POReference */
+    public static final String COLUMNNAME_POReference = "POReference";
+
+	/** Set Order Reference.
+	  * Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner
+	  */
+	public void setPOReference (String POReference);
+
+	/** Get Order Reference.
+	  * Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner
+	  */
+	public String getPOReference();
 
     /** Column name TaxAmt */
     public static final String COLUMNNAME_TaxAmt = "TaxAmt";

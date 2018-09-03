@@ -26,6 +26,46 @@ public interface I_W_M_Product extends I_M_Product
 {
 
 
+    /** Column name LBR_AttributeType */
+    public static final String COLUMNNAME_LBR_AttributeType = "LBR_AttributeType";
+
+	/** LBR_AttributeType AD_Reference_ID=1120278 */
+	public static final int LBR_ATTRIBUTETYPE_AD_Reference_ID=1120278;
+
+	/** Tracking = R00 */
+	public static final String LBR_ATTRIBUTETYPE_Tracking = "R00";
+
+	/** Medicine = X01 */
+	public static final String LBR_ATTRIBUTETYPE_Medicine = "X01";
+
+	/** Fuel = X02 */
+	public static final String LBR_ATTRIBUTETYPE_Fuel = "X02";
+
+	/** Vehicle = X03 */
+	public static final String LBR_ATTRIBUTETYPE_Vehicle = "X03";
+
+	/** Gun = X04 */
+	public static final String LBR_ATTRIBUTETYPE_Gun = "X04";
+
+	/** Medicine and Tracking = R01 */
+	public static final String LBR_ATTRIBUTETYPE_MedicineAndTracking = "R01";
+
+	/** Fuel and Tracking = R02 */
+	public static final String LBR_ATTRIBUTETYPE_FuelAndTracking = "R02";
+
+	/** Vehicle and Tracking = R03 */
+	public static final String LBR_ATTRIBUTETYPE_VehicleAndTracking = "R03";
+
+	/** Gun and Tracking = R04 */
+	public static final String LBR_ATTRIBUTETYPE_GunAndTracking = "R04";
+
+
+	/** Set Attribute Type	  */
+	public void setLBR_AttributeType (String LBR_AttributeType);
+
+	/** Get Attribute Type	  */
+	public String getLBR_AttributeType();
+
     /** Column name LBR_CEST_ID */
     public static final String COLUMNNAME_LBR_CEST_ID = "LBR_CEST_ID";
 
@@ -60,6 +100,19 @@ public interface I_W_M_Product extends I_M_Product
 
 	/** Get Legal Product Description	  */
 	public String getLBR_LegalProductDescription();
+
+    /** Column name LBR_NBS_ID */
+    public static final String COLUMNNAME_LBR_NBS_ID = "LBR_NBS_ID";
+
+	/** Set NBS.
+	  * Primary key table LBR_NBS
+	  */
+	public void setLBR_NBS_ID (int LBR_NBS_ID);
+
+	/** Get NBS.
+	  * Primary key table LBR_NBS
+	  */
+	public int getLBR_NBS_ID();
 
     /** Column name LBR_NCM_ID */
     public static final String COLUMNNAME_LBR_NCM_ID = "LBR_NCM_ID";
@@ -164,8 +217,8 @@ public interface I_W_M_Product extends I_M_Product
 	/** 2 - Imported - Acquired from a domestic distributor = 2 */
 	public static final String LBR_PRODUCTSOURCE_2_Imported_AcquiredFromADomesticDistributor = "2";
 
-	/** 3 - Domestic with more than 40 percent Imported = 3 */
-	public static final String LBR_PRODUCTSOURCE_3_DomesticWithMoreThan40PercentImported = "3";
+	/** 3 - Domestic with between 40 percent and 70 percent Imported = 3 */
+	public static final String LBR_PRODUCTSOURCE_3_DomesticWithBetween40PercentAnd70PercentImported = "3";
 
 	/** 4 - Product acquired from Manaus = 4 */
 	public static final String LBR_PRODUCTSOURCE_4_ProductAcquiredFromManaus = "4";
@@ -178,6 +231,9 @@ public interface I_W_M_Product extends I_M_Product
 
 	/** 7 - Foreign - Acquired from a domestic distributor no similar national = 7 */
 	public static final String LBR_PRODUCTSOURCE_7_Foreign_AcquiredFromADomesticDistributorNoSimilarNational = "7";
+
+	/** 8 - Domestic above 70 percent Imported = 8 */
+	public static final String LBR_PRODUCTSOURCE_8_DomesticAbove70PercentImported = "8";
 
 
 	/** Set Product Source.

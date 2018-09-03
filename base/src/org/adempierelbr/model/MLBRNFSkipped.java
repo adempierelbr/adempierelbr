@@ -18,7 +18,7 @@ import java.util.Properties;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut;
+import br.inf.portalfiscal.nfe.v400.TRetInutNFe.InfInut;
 
 /**
  *		Model for Invalidated NF (Skipped)

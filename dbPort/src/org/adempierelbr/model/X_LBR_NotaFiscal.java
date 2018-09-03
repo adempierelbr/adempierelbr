@@ -33,7 +33,7 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20170118L;
+	private static final long serialVersionUID = 20180601L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscal (Properties ctx, int LBR_NotaFiscal_ID, String trxName)
@@ -818,10 +818,18 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 
 	/** LBR_FreightCostRule AD_Reference_ID=1120147 */
 	public static final int LBR_FREIGHTCOSTRULE_AD_Reference_ID=1120147;
-	/** 0 - Frete por conta do Emitente = 0 */
-	public static final String LBR_FREIGHTCOSTRULE_0_FretePorContaDoEmitente = "0";
-	/** 1 - Frete por conta do Destinatário = 1 */
-	public static final String LBR_FREIGHTCOSTRULE_1_FretePorContaDoDestinatário = "1";
+	/** 0 - Contratação do Frete por conta do Remetente (CIF) = 0 */
+	public static final String LBR_FREIGHTCOSTRULE_0_ContrataçãoDoFretePorContaDoRemetenteCIF = "0";
+	/** 1 - Contratação do Frete por conta do Destinatário (FOB) = 1 */
+	public static final String LBR_FREIGHTCOSTRULE_1_ContrataçãoDoFretePorContaDoDestinatárioFOB = "1";
+	/** 3 - Transporte Próprio por conta do Remetente = 3 */
+	public static final String LBR_FREIGHTCOSTRULE_3_TransportePróprioPorContaDoRemetente = "3";
+	/** 4 - Transporte Próprio por conta do Destinatário = 4 */
+	public static final String LBR_FREIGHTCOSTRULE_4_TransportePróprioPorContaDoDestinatário = "4";
+	/** 2 - Contratação do Frete por conta de Terceiros = 2 */
+	public static final String LBR_FREIGHTCOSTRULE_2_ContrataçãoDoFretePorContaDeTerceiros = "2";
+	/** 9 - Sem Ocorrência de Transporte = 9 */
+	public static final String LBR_FREIGHTCOSTRULE_9_SemOcorrênciaDeTransporte = "9";
 	/** Set Freight Cost Rule.
 		@param LBR_FreightCostRule 
 		Method for charging Freight
@@ -880,6 +888,8 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public static final String LBR_INDPRES_NFC_EEmOperaçãoComEntregaEmDomicílio = "4";
 	/** Operação não Presencial, Outros = 9 */
 	public static final String LBR_INDPRES_OperaçãoNãoPresencialOutros = "9";
+	/** Operação presencial, fora do estabelecimento = 5 */
+	public static final String LBR_INDPRES_OperaçãoPresencialForaDoEstabelecimento = "5";
 	/** Set Indicação de Atendimento Presencial.
 		@param LBR_IndPres 
 		Indicador de presença do comprador no estabelecimento comercial no momento da operação
@@ -975,6 +985,31 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public org.adempierelbr.model.I_LBR_PartnerDFe getLBR_PartnerDFe() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_PartnerDFe)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_PartnerDFe.Table_Name)
+			.getPO(getLBR_PartnerDFe_ID(), get_TrxName());	}
+
+	/** Set Partner Doc Fiscal.
+		@param LBR_PartnerDFe_ID Partner Doc Fiscal	  */
+	public void setLBR_PartnerDFe_ID (int LBR_PartnerDFe_ID)
+	{
+		if (LBR_PartnerDFe_ID < 1) 
+			set_Value (COLUMNNAME_LBR_PartnerDFe_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_PartnerDFe_ID, Integer.valueOf(LBR_PartnerDFe_ID));
+	}
+
+	/** Get Partner Doc Fiscal.
+		@return Partner Doc Fiscal	  */
+	public int getLBR_PartnerDFe_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_PartnerDFe_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Reactivate Nota Fiscal.
@@ -1135,6 +1170,31 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getLBR_TPEmis () 
 	{
 		return (String)get_Value(COLUMNNAME_LBR_TPEmis);
+	}
+
+	/** LBR_TaxRegime AD_Reference_ID=1120183 */
+	public static final int LBR_TAXREGIME_AD_Reference_ID=1120183;
+	/** Simple National = S */
+	public static final String LBR_TAXREGIME_SimpleNational = "S";
+	/** Presumed Profit = P */
+	public static final String LBR_TAXREGIME_PresumedProfit = "P";
+	/** Real Profit = R */
+	public static final String LBR_TAXREGIME_RealProfit = "R";
+	/** Simple National - MEI = M */
+	public static final String LBR_TAXREGIME_SimpleNational_MEI = "M";
+	/** Set Tax Regime.
+		@param LBR_TaxRegime Tax Regime	  */
+	public void setLBR_TaxRegime (String LBR_TaxRegime)
+	{
+
+		set_Value (COLUMNNAME_LBR_TaxRegime, LBR_TaxRegime);
+	}
+
+	/** Get Tax Regime.
+		@return Tax Regime	  */
+	public String getLBR_TaxRegime () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TaxRegime);
 	}
 
 	public I_M_InOut getM_InOut() throws RuntimeException
@@ -4204,6 +4264,60 @@ public class X_LBR_NotaFiscal extends PO implements I_LBR_NotaFiscal, I_Persiste
 	public String getlbr_PackingType () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_PackingType);
+	}
+
+	/** lbr_PaymentRule AD_Reference_ID=1000035 */
+	public static final int LBR_PAYMENTRULE_AD_Reference_ID=1000035;
+	/** Cash = X */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Cash = "X";
+	/** Check = C */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Check = "C";
+	/** Bill = B */
+	public static final String LBR_PAYMENTRULE_INACTIVE_Bill = "B";
+	/** Direct Deposit = D */
+	public static final String LBR_PAYMENTRULE_INACTIVE_DirectDeposit = "D";
+	/** Cash = 01 */
+	public static final String LBR_PAYMENTRULE_Cash = "01";
+	/** Check = 02 */
+	public static final String LBR_PAYMENTRULE_Check = "02";
+	/** Credit Card = 03 */
+	public static final String LBR_PAYMENTRULE_CreditCard = "03";
+	/** Debit Card = 04 */
+	public static final String LBR_PAYMENTRULE_DebitCard = "04";
+	/** Store Credit = 05 */
+	public static final String LBR_PAYMENTRULE_StoreCredit = "05";
+	/** Food Voucher = 10 */
+	public static final String LBR_PAYMENTRULE_FoodVoucher = "10";
+	/** Meal Voucher = 11 */
+	public static final String LBR_PAYMENTRULE_MealVoucher = "11";
+	/** Gift Card = 12 */
+	public static final String LBR_PAYMENTRULE_GiftCard = "12";
+	/** Fuel Voucher = 13 */
+	public static final String LBR_PAYMENTRULE_FuelVoucher = "13";
+	/** Trade Bill = 14 */
+	public static final String LBR_PAYMENTRULE_TradeBill = "14";
+	/** Bill = 15 */
+	public static final String LBR_PAYMENTRULE_Bill = "15";
+	/** No Payment Required = 90 */
+	public static final String LBR_PAYMENTRULE_NoPaymentRequired = "90";
+	/** Other = 99 */
+	public static final String LBR_PAYMENTRULE_Other = "99";
+	/** Set Payment Rule.
+		@param lbr_PaymentRule 
+		How you pay the invoice
+	  */
+	public void setlbr_PaymentRule (String lbr_PaymentRule)
+	{
+
+		set_Value (COLUMNNAME_lbr_PaymentRule, lbr_PaymentRule);
+	}
+
+	/** Get Payment Rule.
+		@return How you pay the invoice
+	  */
+	public String getlbr_PaymentRule () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_PaymentRule);
 	}
 
 	/** Set Process Cancel Nota Fiscal.

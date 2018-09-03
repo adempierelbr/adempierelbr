@@ -13,7 +13,9 @@
  *****************************************************************************/
 package org.adempierelbr.apps.form;
 
+import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,6 +69,9 @@ public class GenBilling
 	
 	/**	Logger					*/
 	public static CLogger log = CLogger.getCLogger(GenBilling.class);
+	
+	/**	Trx						*/
+	public Trx trx = null;
 
 	/**
 	 * 	Get Bank Accounts
@@ -125,7 +130,7 @@ public class GenBilling
 			+ " AND EXISTS (SELECT * FROM C_Invoice i WHERE bp.C_BPartner_ID=i.C_BPartner_ID"
 			//	X_C_Order.PAYMENTRULE_DirectDebit
 			  + " AND i.IsSOTrx='Y'"
-			  + " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B')"
+			  + " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B' OR i.lbr_PaymentRule='15')"
 			  + " AND i.DocStatus IN ('CO','CL')"
 			  + " AND i.IsPaid<>'Y') "
 			+ "ORDER BY 2";
@@ -228,7 +233,7 @@ public class GenBilling
 			+ "  LEFT JOIN LBR_NotaFiscal nf ON (nf.C_Invoice_ID=i.C_Invoice_ID AND nf.IsCancelled <> 'Y')",
 			//	WHERE
 			"i.IsSOTrx=? AND i.IsPaid='N'"
-			+ " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B')"
+			+ " AND (i.lbr_PaymentRule IS NULL OR i.lbr_PaymentRule='B' OR i.lbr_PaymentRule='15')"
 			+ " AND i.DocStatus IN ('CO','CL')"
 			+ " AND i.AD_Client_ID=?",	//	additional where & order in loadTableInfo()
 			true, "i");
@@ -413,6 +418,45 @@ public class GenBilling
 		//
 		return files;
 	}   //  generatePaySelect
+	
+	/**
+	 *  Generate PaySelection
+	 */
+	public List<File> emailBilling (IMiniTable miniTable,  String filePath, KeyNamePair bi)
+	{
+		log.info("");
+
+		String trxName = null;
+		trx = null;
+		List<File> files = new ArrayList<File>();
+
+		//  Create Lines
+		int rows = miniTable.getRowCount();
+		for (int i = 0; i < rows; i++)
+		{
+			IDColumn id = (IDColumn)miniTable.getValueAt(i, 0);
+			if (id.isSelected())
+			{
+				int C_Invoice_ID = id.getRecord_ID().intValue();
+				try
+				{
+					MLBRBoleto.emailBoleto (Env.getCtx(), C_Invoice_ID, bi.getKey(), filePath, null, trxName);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+				catch (PrinterException e)
+				{
+					e.printStackTrace();
+				}
+				//
+				log.fine("C_Invoice_ID=" + C_Invoice_ID);
+			}
+		}   //  for all rows in table
+		
+		return files;
+	}   //  sendBilling
 	
 	/**
 	 * 	Delete folder

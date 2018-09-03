@@ -14,10 +14,12 @@ package org.adempierelbr.callout;
 
 import java.util.Properties;
 
+import org.adempierelbr.wrapper.I_W_C_Order;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBankAccount;
 import org.compiere.util.Env;
 
 /**
@@ -66,9 +68,16 @@ public class CalloutInvoice extends CalloutEngine
 		Integer C_BankAccount_ID = (Integer)bpartner.get_Value("C_BankAccount_ID");
 
 		mTab.setValue("lbr_PaymentRule", lbr_PaymentRule);
-		mTab.setValue("C_BankAccount_ID", C_BankAccount_ID);
 		mTab.setValue("PaymentRule", "P");
-
+		
+		if (C_BankAccount_ID != null && C_BankAccount_ID > 0)
+		{
+			Object org = mTab.getValue(I_W_C_Order.COLUMNNAME_AD_Org_ID);
+			//
+			MBankAccount ba = new MBankAccount (ctx, C_BankAccount_ID, null);
+			if (org != null && ((Integer)org).intValue() == ba.getAD_Org_ID())
+				mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
+		}
 		return "";
 	}	//	PaymentRule
 

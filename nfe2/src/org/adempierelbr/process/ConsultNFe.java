@@ -3,6 +3,8 @@ package org.adempierelbr.process;
 import java.io.StringReader;
 import java.sql.Timestamp;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLInputFactory;
 
@@ -12,7 +14,7 @@ import org.adempierelbr.model.MLBRNFeEvent;
 import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.nfe.api.NfeConsulta2Stub;
+import org.adempierelbr.nfe.api.NFeConsultaProtocolo4Stub;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.NFeUtil;
 import org.apache.axiom.om.OMElement;
@@ -24,17 +26,15 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 
-import br.inf.portalfiscal.nfe.v310.ConsSitNFeDocument;
-import br.inf.portalfiscal.nfe.v310.RetConsSitNFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TConsSitNFe;
-import br.inf.portalfiscal.nfe.v310.TProtNFe.InfProt;
-import br.inf.portalfiscal.nfe.v310.TRetCancNFe.InfCanc;
-import br.inf.portalfiscal.nfe.v310.TRetConsSitNFe;
-import br.inf.portalfiscal.nfe.v310.TVerConsSitNFe;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeconsulta2.NfeDadosMsg;
+import br.inf.portalfiscal.nfe.v400.ConsSitNFeDocument;
+import br.inf.portalfiscal.nfe.v400.RetConsSitNFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TConsSitNFe;
+import br.inf.portalfiscal.nfe.v400.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v400.TRetCancNFe.InfCanc;
+import br.inf.portalfiscal.nfe.v400.TRetConsSitNFe;
+import br.inf.portalfiscal.nfe.v400.TVerConsSitNFe;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeconsultaprotocolo4.NfeDadosMsg;
 
 /**
  * 		Consulta os dados da NF-e diretamenta na SeFaz
@@ -71,6 +71,38 @@ public class ConsultNFe extends SvrProcess
 	 */
 	protected void prepare()
 	{
+		//	NF found
+		if (getRecord_ID() > 0)
+		{
+			MLBRNotaFiscal nf = new MLBRNotaFiscal (getCtx(), getRecord_ID(), get_TrxName());
+			if (nf != null && nf.islbr_IsOwnDocument())
+			{
+				p_AD_Org_ID 		= nf.getAD_Org_ID();
+				p_LBR_EnvType 	= nf.getlbr_NFeEnv();
+				p_LBR_TPEmis		= nf.getLBR_TPEmis();
+				p_LBR_NFModel	= nf.getlbr_NFModel();
+				//
+				if (!MLBRNotaFiscal.LBR_NFESTATUS_100_AutorizadoOUsoDaNF_E.equals(nf.getlbr_NFeStatus()))
+					p_LBR_UpdateNFe 	= true;
+				//
+				if (nf.getErrorMsg() != null && !nf.getErrorMsg().isEmpty())
+				{
+					final Pattern pattern = Pattern.compile("(\\d{44})");
+					final Matcher matcher = pattern.matcher(nf.getErrorMsg());
+					if (matcher.find())
+					{
+						p_LBR_NFeID = matcher.group (1);
+					}
+				}
+				if (p_LBR_NFeID == null || p_LBR_NFeID.length() != 44)
+					p_LBR_NFeID = nf.getlbr_NFeID();
+				
+				//	All parameters found
+				return;
+			}
+		}
+		
+		//	Regular parameters
 		ProcessInfoParameter[] para = getParameter();
 		for (int i = 0; i < para.length; i++)
 		{
@@ -128,7 +160,7 @@ public class ConsultNFe extends SvrProcess
 			MLBRNFConfig nfconfig = MLBRNFConfig.get(p_AD_Org_ID, MLBRNFConfig.LBR_NFMODEL_NotaFiscalEletrônica);
 			
 			if (nfconfig == null)
-				return "@Error@ <font color=\"880000\">UImpossível identificar o Ambiente da NF-e</font>";
+				return "@Error@ <font color=\"880000\">Impossível identificar o Ambiente da NF-e</font>";
 			
 			p_LBR_EnvType = nfconfig.getlbr_NFeEnv();
 		}
@@ -157,7 +189,7 @@ public class ConsultNFe extends SvrProcess
 			TConsSitNFe consNFe = consNFeDoc.addNewConsSitNFe();
 			consNFe.setTpAmb(TAmb.Enum.forString(p_LBR_EnvType));
 			consNFe.setXServ(TConsSitNFe.XServ.CONSULTAR);
-			consNFe.setVersao(TVerConsSitNFe.X_3_10);
+			consNFe.setVersao(TVerConsSitNFe.X_4_00);
 			consNFe.setChNFe(p_LBR_NFeID);
 			
 			//	XML
@@ -165,14 +197,6 @@ public class ConsultNFe extends SvrProcess
 			
 			//	Mensagem
 			NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-			
-			//	Cabeçalho
-			NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-			cabecMsg.setCUF(region);
-			cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-			NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-			cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 			String serviceType = null;
 			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(p_LBR_NFModel))
@@ -183,9 +207,9 @@ public class ConsultNFe extends SvrProcess
 			
 			String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, p_LBR_TPEmis, orgLoc.getC_Region_ID());
 			
-			NfeConsulta2Stub stub = new NfeConsulta2Stub(url);
+			NFeConsultaProtocolo4Stub stub = new NFeConsultaProtocolo4Stub(url);
 
-			OMElement nfeConsNF2 = stub.nfeConsultaNF2(dadosMsg.getExtraElement(), cabecMsgE);
+			OMElement nfeConsNF2 = stub.nfeConsultaNF (dadosMsg.getExtraElement());
 			String respStatus = nfeConsNF2.toString();
 
 			//	Resposta
@@ -364,7 +388,7 @@ public class ConsultNFe extends SvrProcess
 						//	Adiciona os dados de autorização de evento
 						event.setlbr_NFeProt(infCanc.getNProt());
 						event.setDateTrx (new Timestamp (infCanc.getDhRecbto().getTimeInMillis()));
-						event.setlbr_NFeStatus(MLBRNFeEvent.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANFC_E);
+						event.setlbr_NFeStatus(MLBRNFeEvent.LBR_NFESTATUS_135_EventoRegistradoEVinculadoANF_E);
 						event.setStatus (infCanc.getXMotivo ());
 						event.setDocStatus(MLBRNFeEvent.DOCSTATUS_Completed);
 						event.setDocAction(MLBRNFeEvent.DOCACTION_None);

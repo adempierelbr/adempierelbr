@@ -23,6 +23,7 @@ import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBankAccount;
 import org.compiere.model.MOrder;
 import org.compiere.util.Env;
 
@@ -112,7 +113,13 @@ public class CalloutOrder extends CalloutEngine
 			mTab.setValue(I_W_C_Order.COLUMNNAME_lbr_PaymentRule, paymentRule);
 		
 		if (C_BankAccount_ID != null && C_BankAccount_ID > 0)
-			mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
+		{
+			Object org = mTab.getValue(I_W_C_Order.COLUMNNAME_AD_Org_ID);
+			//
+			MBankAccount ba = new MBankAccount (ctx, C_BankAccount_ID, null);
+			if (org != null && ((Integer)org).intValue() == ba.getAD_Org_ID())
+				mTab.setValue(I_W_C_Order.COLUMNNAME_C_BankAccount_ID, C_BankAccount_ID);
+		}
 		
 		if (M_Shipper_ID != null && M_Shipper_ID > 0)
 			mTab.setValue(I_W_C_Order.COLUMNNAME_M_Shipper_ID, M_Shipper_ID);

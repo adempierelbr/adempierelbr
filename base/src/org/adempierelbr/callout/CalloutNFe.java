@@ -115,21 +115,29 @@ public class CalloutNFe extends CalloutEngine
 		
 		Integer Record_ID = (Integer) value;
 		String nfeKey = null;
+		String nfeProtocol = null;
+		String nfeModel = null;
 		
 		String columnName = mField.getColumnName();
 		if (MLBRNFeEvent.COLUMNNAME_LBR_PartnerDFe_ID.equals(columnName))
 		{
 			MLBRPartnerDFe dfe = new MLBRPartnerDFe (ctx, Record_ID, null);
 			nfeKey = dfe.getlbr_NFeID();
+			nfeProtocol = dfe.getlbr_NFeProt();
+			nfeModel = "55"; // FIXME: Verificar se essa informação vem no DFe
 		}
 		else if (MLBRNFeEvent.COLUMNNAME_LBR_NotaFiscal_ID.equals(columnName))
 		{
 			MLBRNotaFiscal nfe = new MLBRNotaFiscal (ctx, Record_ID, null);
 			nfeKey = nfe.getlbr_NFeID();
+			nfeProtocol = nfe.getlbr_NFeProt();
+			nfeModel = nfe.getlbr_NFModel();
 		}
 		
 		//	Set field value
 		mTab.setValue (MLBRNFeEvent.COLUMNNAME_lbr_NFeID, nfeKey);
+		mTab.setValue (MLBRNFeEvent.COLUMNNAME_Protocol, nfeProtocol);
+		mTab.setValue (MLBRNFeEvent.COLUMNNAME_lbr_NFModel, nfeModel);
 		return "";
 	}	//	EventFillNFeID
 

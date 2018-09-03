@@ -158,6 +158,21 @@ public class VLBROrder implements ModelValidator
 	 */
 	public String modelChange (MOrder order, int type) throws Exception
 	{
+		//	Validar a conta bancária
+		if (type == TYPE_BEFORE_NEW || (type == TYPE_BEFORE_CHANGE 
+				&& order.is_ValueChanged (I_W_C_Invoice.COLUMNNAME_C_BankAccount_ID)))
+		{
+			I_W_C_Order oW = POWrapper.create (order, I_W_C_Order.class);
+			//
+			if (oW.getC_BankAccount_ID() > 0 
+					&& oW.getC_BankAccount().getAD_Org_ID() > 0
+					&& oW.getC_BankAccount().getAD_Org_ID() != oW.getAD_Org_ID())
+			{
+				//	Não permitir conta bancária para organização diferente
+				order.set_ValueOfColumn(I_W_C_Invoice.COLUMNNAME_C_BankAccount_ID, null);
+			}
+		}
+		
 		/**
 		 * 	Faz as validações dos valores para evitar erros
 		 */
@@ -848,9 +863,14 @@ public class VLBROrder implements ModelValidator
 		if (chgLine == null)
 		{
 			chgLine = new MInvoiceLine(invoice);
-			chgLine.setQty(Env.ONE);
 			chgLine.setDescription("Inserido Automáticamente");
 			chgLine.setM_Product_ID(M_Product_ID);
+
+			//	Case Invoice is Reversal, should be negative
+			if (invoice.isReversal())
+				chgLine.setQty(Env.ONE.negate());
+			else
+				chgLine.setQty(Env.ONE);
 		}		
 		//
 		chgLine.setPrice(amount);

@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +35,10 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.exceptions.NotaFiscalNotFoundException;
 import org.adempierelbr.nfe.NFeXMLGenerator;
-import org.adempierelbr.nfe.api.NfeInutilizacao2Stub;
+import org.adempierelbr.nfe.api.NFeInutilizacao4Stub;
 import org.adempierelbr.nfse.INFSe;
 import org.adempierelbr.nfse.NFSeUtil;
+import org.adempierelbr.process.ConsultNFe;
 import org.adempierelbr.process.PrintFromXML;
 import org.adempierelbr.process.ProcEMailNFe;
 import org.adempierelbr.util.BPartnerUtil;
@@ -80,6 +82,7 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MRMA;
 import org.compiere.model.MRefList;
 import org.compiere.model.MRegion;
+import org.compiere.model.MRole;
 import org.compiere.model.MShipper;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTable;
@@ -100,22 +103,21 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 
-import br.inf.portalfiscal.nfe.v310.InutNFeDocument;
-import br.inf.portalfiscal.nfe.v310.NFeDocument;
-import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v310.RetInutNFeDocument;
-import br.inf.portalfiscal.nfe.v310.TAmb;
-import br.inf.portalfiscal.nfe.v310.TCodUfIBGE;
-import br.inf.portalfiscal.nfe.v310.TInutNFe;
-import br.inf.portalfiscal.nfe.v310.TMod;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Ide.IdDest.Enum;
-import br.inf.portalfiscal.nfe.v310.TNfeProc;
-import br.inf.portalfiscal.nfe.v310.TProtNFe;
-import br.inf.portalfiscal.nfe.v310.TProtNFe.InfProt;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsg;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeCabecMsgE;
-import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao2.NfeDadosMsg;
+import br.inf.portalfiscal.nfe.v400.InutNFeDocument;
+import br.inf.portalfiscal.nfe.v400.NFeDocument;
+import br.inf.portalfiscal.nfe.v400.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v400.RetInutNFeDocument;
+import br.inf.portalfiscal.nfe.v400.TAmb;
+import br.inf.portalfiscal.nfe.v400.TCodUfIBGE;
+import br.inf.portalfiscal.nfe.v400.TInutNFe;
+import br.inf.portalfiscal.nfe.v400.TMod;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Ide.IdDest.Enum;
+import br.inf.portalfiscal.nfe.v400.TNfeProc;
+import br.inf.portalfiscal.nfe.v400.TProtNFe;
+import br.inf.portalfiscal.nfe.v400.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v400.TRetInutNFe;
+import br.inf.portalfiscal.www.nfe.wsdl.nfeinutilizacao4.NfeDadosMsg;
 import bsh.EvalError;
 import bsh.Interpreter;
 
@@ -454,6 +456,27 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		return getTaxAmt("ICMSST");
 	}	//	getICMSAmtST
+	
+	/**
+	 * @author Icaro Caetano
+	 *  Retorno o valor do FCP
+	 *
+	 *  @return	BigDecimal	FCP
+	 */
+	public BigDecimal getFCPAmt()
+	{
+		return getTaxAmt("FCP");
+	}	//	getICMSAmt
+	
+	/**
+	 *  Retorno o valor do FCP por Substituição Tributária
+	 *
+	 *  @return	BigDecimal	FCPST
+	 */
+	public BigDecimal getFCPSTAmt()
+	{
+		return getTaxAmt("FCPST");
+	}	//	getICMSAmt
 
 	/**
 	 *  Retorno o valor do IPI
@@ -818,8 +841,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			nfeProc.setNFe(nfe.getNFe());
 			nfeProc.setProtNFe(protNFe);
 			
+			//	Inclusão de Name Space
+			String xmlText = nfeProcDoc.xmlText (NFeUtil.getXmlOpt());
+			List<String> config = Arrays.asList (MSysConfig.getValue ("LBR_INCLUDE_XMLNS_NFE", "NONE", nf.getAD_Client_ID()).split(","));
+			if (config.contains("ALL") || config.contains(nf.getlbr_BPCNPJ()))
+				xmlText = xmlText.replaceAll ("<NFe>", "<NFe xmlns=\"http://www.portalfiscal.inf.br/nfe\">");
+			
 			//	Atualiza o anexo
-			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", nfeProcDoc.xmlText(NFeUtil.getXmlOpt()).getBytes(NFeUtil.NFE_ENCODING));
+			attachment.addEntry(nf.getlbr_NFeID() + "-dst.xml", xmlText.getBytes(NFeUtil.NFE_ENCODING));
 			if (attachment.save())
 				sendMail = true;
 		}
@@ -846,6 +875,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		
 		//	Save changes
+		nf.setProcessing(false);
 		nf.save();
 		
 		//	Send mail
@@ -1257,7 +1287,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			
 			// Verifica se a NF Indicada no RMA é uma NF-e
 			if (nfrma.getLBR_NotaFiscal_ID() > 0 && 
-					nfrma.getlbr_NFModel().equals(MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica))
+					MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalEletrônica.equals(nfrma.getlbr_NFModel()) &&
+					nfrma.getlbr_NFeID() != null)
 			{
 				// Adiciona NF Referênciada
 				MLBRNotaFiscalDocRef nfref = new MLBRNotaFiscalDocRef (Env.getCtx(), 0, get_TrxName());
@@ -1277,7 +1308,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			model = dt.getlbr_NFModel();
 			
 			if (model != null && model.startsWith("RPS"))
+			{
+				setlbr_RPSStatus(MLBRNotaFiscal.LBR_RPSSTATUS_OperacaoNormal);
 				setlbr_ServiceTaxes();
+			}
 		}
 		
 		//	Natureza da Operação do Tipo de Documento do Pedido
@@ -1316,6 +1350,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				continue;
 			
 			MLBRNotaFiscalLine nfLine = new MLBRNotaFiscalLine (this);
+			nfLine.setAD_Org_ID(getAD_Org_ID());
 			nfLine.save();
 			//
 			nfLine.setLine(lineNo++);
@@ -1636,6 +1671,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			// aliquota geral = valor do imposto dividido pelo valor total da NF - fonte: Manual IBPT
 			BigDecimal taxRateFedTotal = taxAmtFed.divide(getGrandTotal(), 17, BigDecimal.ROUND_HALF_UP);
 			BigDecimal taxRateRegTotal = taxAmtReg.divide(getGrandTotal(), 17, BigDecimal.ROUND_HALF_UP);
+			BigDecimal taxRateCityTotal = taxAmtCity.divide(getGrandTotal(), 17, BigDecimal.ROUND_HALF_UP);
 			
 			//	Check inconsistences
 			if (sources.size() == 0)
@@ -1644,7 +1680,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				keys.add("0");
 			
 			//	Prepare output message
-			String message = Msg.getMsg (Env.getAD_Language(getCtx()), "LBR_NFIBPT");
+			String message = null;
+			
+			// NF de Produto (NCM)
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica, LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
+				message = Msg.getMsg (Env.getAD_Language(getCtx()), "LBR_NFIBPT");
+			// NF de Serviço (NBS)
+			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS))
+				message = Msg.getMsg (Env.getAD_Language(getCtx()), "LBR_NFSIBPT");
 			
 			if (message == null)
 				message = "Trib Aprox R$ {0,number,#,##0.00} ({1,number,#,##0.00}%) Federal e R$ {2,number,#,##0.00} ({3,number,#,##0.00}%) Estadual, Fonte(s): {4} {5}";
@@ -1669,11 +1712,24 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	% Federal (Optional)
 			arguments[1] = taxRateFedTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
 			
-			//	Amount Region
-			arguments[2] = taxAmtReg.doubleValue();
+			// NF de Produto (NCM)
+			if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalEletrônica, LBR_NFMODEL_NotaFiscalDeConsumidorEletrônica))
+			{
+				//	Amount Region
+				arguments[2] = taxAmtReg.doubleValue();
 			
-			//	% Region (Optional)
-			arguments[3] = taxRateRegTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
+				//	% Region (Optional)
+				arguments[3] = taxRateRegTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
+			}
+			// NF de Serviço (NBS)
+			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS))
+			{
+				//	Amount Region
+				arguments[2] = taxAmtCity.doubleValue();
+			
+				//	% Region (Optional)
+				arguments[3] = taxRateCityTotal.multiply(Env.ONEHUNDRED).setScale(2, RoundingMode.HALF_UP);
+			}
 			
 			//	Source
 			arguments[4] = TextUtil.join (",", sources);
@@ -1851,6 +1907,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setLBR_IndPres(wInvoice.getLBR_IndPres());
 		setC_PaymentTerm_ID(wInvoice.getC_PaymentTerm_ID());
 		setLBR_FreightCostRule(wInvoice.getLBR_FreightCostRule());
+		//		Regra de Pagamento
+		setlbr_PaymentRule(wInvoice.getlbr_PaymentRule());
 		
 		//	Total da Fatura
 		if (wInvoice.getC_Currency_ID() != CURRENCY_BRL)
@@ -1890,6 +1948,8 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_TransactionType (wOrder.getlbr_TransactionType());
 		setLBR_IndPres(wOrder.getLBR_IndPres());
 		setC_PaymentTerm_ID(wOrder.getC_PaymentTerm_ID());
+		//		Regra de Pagamento
+		setlbr_PaymentRule(wOrder.getlbr_PaymentRule());
 		
 		//	Total da Fatura
 		if (wOrder.getC_Currency_ID() != CURRENCY_BRL)
@@ -2420,6 +2480,22 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getC_DocType_ID() != getC_DocTypeTarget_ID())
 			setC_DocType_ID(getC_DocTypeTarget_ID()); 	//	Define que o C_DocType_ID = C_DocTypeTarget_ID
 		
+		//	Tenta sempre preencher a Organização com base nos documentos vinculados
+		if (getAD_Org_ID() < 1)
+		{
+			//	Tenta pela fatura
+			if (getC_Invoice_ID() > 0)
+				setAD_Org_ID (getC_Invoice().getAD_Org_ID());
+			
+			//	Pela remessa
+			else if (getM_InOut_ID() > 0)
+				setAD_Org_ID (getM_InOut().getAD_Org_ID());
+			
+			//	Pelo pedido
+			else if (getC_Order_ID() > 0)
+				setAD_Org_ID (getC_Order().getAD_Org_ID());
+		}
+		
 		//	Sempre deixar a NF aberta para correção em caso de erro
 		if (DOCSTATUS_Invalid.equals(getDocStatus()))
 			setProcessed(false);
@@ -2530,6 +2606,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		if (getlbr_BPShipperRegion() != null && !getlbr_BPShipperRegion().isEmpty())
 			setlbr_BPShipperRegion(getlbr_BPShipperRegion().toUpperCase());
 		
+		//		Mark as processing because the automatic fix will be triggered in afterSave method
+		//	users can't make changes if the document is processing
+		if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus)
+				&& TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+		{
+			setProcessing (true);
+		}
 		return true;
 	}	//	beforeSave
 
@@ -2543,6 +2626,75 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	{
 		if (success)
 		{
+			//	Valida automaticamente os casos de duplicidade de NF
+			if (is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_lbr_NFeStatus))
+			{
+				if (TextUtil.match(getlbr_NFeStatus(), LBR_NFESTATUS_204_DuplicidadeDeNF_E, LBR_NFESTATUS_539_RejeiçãoDuplicidadeDeNF_EComDiferençaNaChaveDeAcesso))
+				{
+					//	Access inside thread
+					final MLBRNotaFiscal nf = new MLBRNotaFiscal (getCtx(), getLBR_NotaFiscal_ID(), get_TrxName());
+					
+					new Thread ("Fix Duplicated Error") 
+					{
+						public void run ()
+						{
+							Properties ctx = nf.getCtx();
+							
+							//	Can't access process, do nothing
+							if (!MRole.get (ctx, Env.getAD_Role_ID (ctx)).getProcessAccess (1120192))
+								return;
+							
+							try
+							{
+								int counterLimit = 0;
+								Thread.sleep (2*1000);	//	2 secs waiting time, then 5 secs
+								
+								//	Wait until the transaction is closed by other processes
+								//	max of 60 interactions, resulting in a 5 minutes total
+								while (counterLimit < 60)
+								{
+									Trx trx = Trx.get (nf.get_TrxName(), false);
+									
+									//	Transaction closed or inactive, abort
+									if (trx == null || !trx.isActive ())
+										counterLimit = 999;
+									
+									else
+									{
+										counterLimit++;
+										Thread.sleep (5*1000);	//	5 secs waiting time
+									}
+								} 
+								
+								int AD_Process_ID = 1120192;
+								MPInstance instance = new MPInstance(ctx, AD_Process_ID, nf.getLBR_NotaFiscal_ID());
+								instance.save();
+								
+								ProcessInfo pi = new ProcessInfo ("", AD_Process_ID);
+								pi.setAD_PInstance_ID (instance.getAD_PInstance_ID());
+								pi.setAD_Client_ID(nf.getAD_Client_ID());
+								pi.setRecord_ID(nf.getLBR_NotaFiscal_ID());
+								
+								String trxName = Trx.createTrxName ("FixDuplNFe");
+								Trx trx = Trx.get (trxName, false);
+								SvrProcess proc = new ConsultNFe();
+					    			proc.startProcess (ctx, pi, trx);
+								//
+								if (trx.isActive())
+								{
+									trx.commit();
+									trx.close();
+								}
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
+			}
+			
 			//	Continuar apenas se houver alteração no campo DocStatus
 			if (!is_ValueChanged (I_LBR_NotaFiscal.COLUMNNAME_DocStatus))
 				return success;
@@ -3098,18 +3250,18 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		pi.setParameter(new ProcessInfoParameter[]{pip});
 		pi.setTransactionName(trxName);
     	
-    	try
+    		try
 		{
-    		Trx trx = Trx.get(trxName, false);
-    		
-    		SvrProcess proc = new PrintFromXML ();
-    		proc.startProcess (getCtx(), pi, trx);
-    		
-    		if (get_TrxName() == null && trx.isActive())
-    		{
-    			trx.commit();
-    			trx.close();
-    		}
+	    		Trx trx = Trx.get(trxName, false);
+	    		
+	    		SvrProcess proc = new PrintFromXML ();
+	    		proc.startProcess (getCtx(), pi, trx);
+	    		
+	    		if (get_TrxName() == null && trx.isActive())
+	    		{
+	    			trx.commit();
+	    			trx.close();
+	    		}
 		}
 		catch (Exception e)
 		{
@@ -3235,6 +3387,11 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	NFS-e
 			else if (TextUtil.match (getlbr_NFModel(), LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS))
 			{
+				//	Limpa os campos no caso de reenviar uma NF que foi previament rejeitada
+				setlbr_NFeStatus (null);
+				setlbr_NFeID (null);
+				setLBR_NFeLot_ID (0);
+				
 				INFSe infSe = NFSeUtil.get (this);
 				//
 				if (infSe != null)
@@ -3536,7 +3693,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				{
 					String regionCode = BPartnerUtil.getRegionCode (new MLocation (p_ctx, getOrg_Location_ID(), null));
 					//
-					br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut ret = invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), 
+					TRetInutNFe.InfInut ret = invalidateNF (p_ctx, getAD_Org_ID(), getlbr_CNPJ(), 
 								regionCode, getlbr_NFeEnv(), getlbr_NFModel(), Integer.parseInt(getDocumentNo()), 
 								Integer.parseInt(getDocumentNo()), getlbr_NFSerie(), getlbr_MotivoCancel(), getDateDoc());
 					//
@@ -3765,7 +3922,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 * @return
 	 * @throws Exception
 	 */
-	public static br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
+	public static TRetInutNFe.InfInut invalidateNF (Properties ctx, int p_AD_Org_ID, String cnpj, 
 			String regionCode, String p_LBR_EnvType, String nfModel, Integer p_DocumentNo, 
 			Integer p_DocumentNo_To, String nfSerie, String p_Just, Timestamp p_DateDoc) throws Exception
 	{
@@ -3781,7 +3938,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		TInutNFe inutNFe = inutNFeDocument.addNewInutNFe();
 		inutNFe.setVersao(NFeUtil.VERSAO_LAYOUT);
 		
-		br.inf.portalfiscal.nfe.v310.TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
+		TInutNFe.InfInut infInut = inutNFe.addNewInfInut();
 		infInut.setMod(TMod.Enum.forString (nfModel));
 		infInut.setCNPJ(TextUtil.toNumeric(cnpj));
 		infInut.setTpAmb(TAmb.Enum.forString (p_LBR_EnvType));
@@ -3808,14 +3965,6 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		//	Mensagem
 		NfeDadosMsg dadosMsg = NfeDadosMsg.Factory.parse (XMLInputFactory.newInstance().createXMLStreamReader(xml));
-		
-		//	Cabeçalho
-		NfeCabecMsg cabecMsg = new NfeCabecMsg ();
-		cabecMsg.setCUF(regionCode);
-		cabecMsg.setVersaoDados(NFeUtil.VERSAO_LAYOUT);
-
-		NfeCabecMsgE cabecMsgE = new NfeCabecMsgE ();
-		cabecMsgE.setNfeCabecMsg(cabecMsg);
 
 		//	Inicializa o Certificado
 		MLBRDigitalCertificate.setCertificate (ctx, p_AD_Org_ID);
@@ -3829,14 +3978,14 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		
 		String url = MLBRNFeWebService.getURL (serviceType, p_LBR_EnvType, NFeUtil.VERSAO_LAYOUT, oi.getC_Location().getC_Region_ID());
 		
-		NfeInutilizacao2Stub stub = new NfeInutilizacao2Stub(url);
+		NFeInutilizacao4Stub stub = new NFeInutilizacao4Stub(url);
 
 		//	Faz a chamada
-		OMElement nfeStatusServicoNF2 = stub.nfeInutilizacaoNF2(dadosMsg.getExtraElement(), cabecMsgE);
+		OMElement nfeStatusServicoNF2 = stub.nfeInutilizacaoNF(dadosMsg.getExtraElement());
 		String respStatus = nfeStatusServicoNF2.toString();
 		
 		//	Processa o retorno
-		br.inf.portalfiscal.nfe.v310.TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
+		TRetInutNFe.InfInut retInutNFe = RetInutNFeDocument.Factory.parse (respStatus).getRetInutNFe().getInfInut();
 		
 		if (MLBRNotaFiscal.LBR_NFESTATUS_102_InutilizaçãoDeNúmeroHomologado.equals(retInutNFe.getCStat()))
 			MLBRNFSkipped.register (retInutNFe);

@@ -59,10 +59,10 @@ import br.inf.portalfiscal.nfe.dfe.TCodUfIBGE;
 import br.inf.portalfiscal.nfe.dfe.TVerDistDFe;
 import br.inf.portalfiscal.nfe.evento.generico.ProcEventoNFeDocument;
 import br.inf.portalfiscal.nfe.evento.generico.TRetEvento.InfEvento;
-import br.inf.portalfiscal.nfe.v310.NfeProcDocument;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe;
-import br.inf.portalfiscal.nfe.v310.TNFe.InfNFe.Emit;
-import br.inf.portalfiscal.nfe.v310.TProtNFe.InfProt;
+import br.inf.portalfiscal.nfe.v400.NfeProcDocument;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe;
+import br.inf.portalfiscal.nfe.v400.TNFe.InfNFe.Emit;
+import br.inf.portalfiscal.nfe.v400.TProtNFe.InfProt;
 import br.inf.portalfiscal.www.nfe.wsdl.nfedistribuicaodfe.NfeDadosMsg_type0;
 
 /**
@@ -394,7 +394,11 @@ public class GetDFe extends SvrProcess
 				pDFe.setDocumentNote(resEvento.getXEvento());
 				pDFe.setDateTrx(NFeUtil.stringToTime (resProcEvento.getProcEventoNFe().getEvento().getInfEvento().getDhEvento()));
 				pDFe.setlbr_NFeProt(resEvento.getNProt());
-				pDFe.setLBR_EventType(resEvento.getTpEvento());
+				try
+				{
+					pDFe.setLBR_EventType(resEvento.getTpEvento());
+				} 
+				catch (Exception e) {}
 				pDFe.setProcessed(true);
 				if (pDFe.save())
 				{

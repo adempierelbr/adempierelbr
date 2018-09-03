@@ -36,6 +36,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import org.adempiere.pipo.CreateZipFile;
+import org.adempierelbr.util.AdempiereLBR;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AppsAction;
@@ -119,6 +120,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 	private CButton bPrint = ConfirmPanel.createPrintButton(true);
 	private BorderLayout commandLayout = new BorderLayout();
 	private CButton bRefresh = ConfirmPanel.createRefreshButton(true);
+	private CButton bSendMail = new CButton(Env.getImageIcon2("EMailSupport24"));
 	private CLabel labelDate = new CLabel();
 	private CLabel labelDateTo = new CLabel();
 	private VDate fieldDate = new VDate();
@@ -156,6 +158,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 		bGenerate.addActionListener(this);
 		bPrint.addActionListener(this);
 		bCancel.addActionListener(this);
+		bSendMail.addActionListener(this);
 		//
 		mainPanel.add(parameterPanel, BorderLayout.NORTH);
 		parameterPanel.add(labelBankAccount,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
@@ -197,6 +200,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 		CPanel confirmPanel = new CPanel(new FlowLayout(FlowLayout.RIGHT));
 		confirmPanel.setOpaque(false);
 		confirmPanel.add(bCancel, null);
+		confirmPanel.add(bSendMail,null);
 		confirmPanel.add(bGenerate, null);
 		confirmPanel.add(bPrint, null);
 		//
@@ -318,6 +322,12 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 			dispose();
 		}
 		
+		else if (e.getSource() == bSendMail)
+		{
+			sendBilling();
+			dispose();
+		}
+		
 		//  Print PaySelection
 		else if (e.getSource() == bPrint)
 		{
@@ -368,6 +378,7 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 		//
 		bGenerate.setEnabled(m_noSelected != 0);
 		bPrint.setEnabled(m_noSelected != 0);
+		bSendMail.setEnabled(m_noSelected != 0);
 	}   //  calculateSelection
 
 	/**
@@ -447,6 +458,36 @@ public class VGenBilling extends GenBilling implements FormPanel, ActionListener
 			ADialog.error(m_WindowNo, panel, "SaveError", "Erro ao exportar o arquivo");
 		}
 	}   //  printBilling
+	
+	/**
+	 *  Send Billing
+	 */
+	private void sendBilling ()
+	{
+		miniTable.stopEditor(true);
+		if (miniTable.getRowCount() == 0)
+			return;
+		miniTable.setRowSelectionInterval(0,0);
+		calculateSelection();
+		if (m_noSelected == 0)
+			return;
+
+		String filePath = System.getProperty("java.io.tmpdir") + File.separator + "Boletos_" + TextUtil.timeToString(new Date(), "yyyyMMdd");
+		File folder = new File (filePath);
+		if (!folder.exists())
+			folder.mkdirs();
+		//
+		deleteDir(folder);
+		
+		try
+		{
+			emailBilling (miniTable, filePath, (KeyNamePair) fieldBankAccount.getSelectedItem());
+		}
+		catch (Exception e)
+		{
+			ADialog.error(m_WindowNo, panel, "SaveError", "Erro ao Enviar o arquivo");
+		}		
+	}   //  sendBilling
 
 	/**
 	 *  Lock User Interface

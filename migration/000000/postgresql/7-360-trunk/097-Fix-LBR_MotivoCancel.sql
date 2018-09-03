@@ -3,4 +3,4 @@
 ALTER TABLE LBR_NotaFiscal ADD COLUMN lbr_MotivoCancel VARCHAR(255) DEFAULT NULL 
 ;
 
-SELECT Register_Migration_Script('097-Fix-LBR_MotivoCancel') FROM dual;
+SELECT Register_Migration_Script('097-Fix-LBR_MotivoCancel.sql') FROM dual;

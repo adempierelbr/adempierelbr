@@ -24,7 +24,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.adempiere.model.POWrapper;
+import org.adempierelbr.model.MLBRTax;
+import org.adempierelbr.model.MLBRTaxLine;
 import org.adempierelbr.model.X_LBR_TaxName;
+import org.adempierelbr.wrapper.I_W_C_InvoiceLine;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MClientInfo;
@@ -382,6 +386,25 @@ public class Doc_Invoice extends Doc
 				 * com os valores dos impostos
 				 **/
 				amt = p_lines[i].getAmtSource();//.add(p_lines[i].getLineTaxAmt());
+				BigDecimal taxNotIncludeAmt = Env.ZERO;
+					
+					MInvoiceLine line = new MInvoiceLine(Env.getCtx(), p_lines[i].get_ID(), getTrxName());
+					I_W_C_InvoiceLine wLine = POWrapper.create(line, I_W_C_InvoiceLine.class);
+					
+					MLBRTaxLine[] iTaxes = new MLBRTax (Env.getCtx(), wLine.getLBR_Tax_ID(), getTrxName()).getLines ();
+					
+					/** Adiciona O DIFALORIGEM e DIFAL DESTINO ao valor do produto 
+					 *  quando não compõe o preço do produto*/
+					
+					for (MLBRTaxLine iTax : iTaxes)
+					{
+						if (iTax.getLBR_TaxName() != null &&
+								iTax.getLBR_TaxName().getName().contains("DIFAL") &&
+								!iTax.isTaxIncluded())
+							taxNotIncludeAmt = taxNotIncludeAmt.add(iTax.getlbr_TaxAmt());
+					}
+					
+					amt = amt.add(taxNotIncludeAmt);
 
 
 					BigDecimal dAmt = null;

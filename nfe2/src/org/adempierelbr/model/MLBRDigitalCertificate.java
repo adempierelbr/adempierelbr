@@ -93,11 +93,17 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		
 		if (certOrg == null || certOrg.intValue() < 1)
 			certOrg = getValidCertificate (ctx, AD_Org_ID);
+		if (certOrg == null || certOrg.intValue() < 1)
+			throw new Exception ("Não foi encontrado um certificado para o CNPJ: " + oiW.getlbr_CNPJ() + ", válido na data/hora atual.");
 		
 		MLBRDigitalCertificate dcOrg = new MLBRDigitalCertificate(Env.getCtx(), certOrg, null);
 		MLBRDigitalCertificate dcWS = new MLBRDigitalCertificate(Env.getCtx(), certWS, null);
 		MLBRDigitalCertificate dcICP = MLBRDigitalCertificate.getICPTrustStore();
-		
+
+		if (!dcOrg.isValid())
+			throw new Exception ("Certificado da Organização inválido, acione o processo de validação do certificado no cadastro dele");
+		if (dcOrg.isExpired())
+			throw new Exception ("Certificado da Organização vencido, será necessário incluir um novo certificado válido");
 		if (dcICP != null)
 			//	TrustStore dinamica, compatível com todos os endereços da NF-e
 			setTrustStoreDynamic (dcOrg, dcICP);
@@ -105,6 +111,20 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 			//	Necessário um certificado para cada webservice
 			setTrustStore (dcOrg, dcWS);
 	}	//	setCertificate
+
+	/**
+	 * 	Check if certified is expired
+	 * 	@return true if expired
+	 */
+	private boolean isExpired()
+	{
+		/**
+		 * 	Expired
+		 */
+		if (getValidTo() == null || getValidTo().before(new Date (System.currentTimeMillis ())))
+			return true;
+		return false;
+	}	//	isExpired
 
 	/**
 	 * 		Dynamic Trust Store

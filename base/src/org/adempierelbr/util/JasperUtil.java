@@ -224,9 +224,17 @@ public class JasperUtil
 			if (result == null)
 			{
 				if ("0".equals (p_Freight))
-					result = "0 - Emitente";
+					result = "0-Remetente Contratada";
 				else if ("1".equals (p_Freight))
-					result = "1 - Destinatário";
+					result = "1-Destinat. Contratada";
+				else if ("2".equals (p_Freight))
+					result = "2-Terceiros Contratada";
+				else if ("3".equals (p_Freight))
+					result = "3-Rem. Transp. Próprio";
+				else if ("4".equals (p_Freight))
+					result = "4-Dest. Transp. Próprio";
+				else if ("9".equals (p_Freight))
+					result = "9-Sem Frete";
 				else
 					result = p_Freight;
 			}
