@@ -1889,6 +1889,8 @@ public class NFeXMLGenerator
 					
 					if (discountAmt.signum() == 1)
 						fat.setVDesc (normalize (discountAmt));
+					else
+						fat.setVDesc (normalize (BigDecimal.ZERO));
 					
 					fat.setVLiq (normalize (nf.getGrandTotal())); 					// 	Valor Liquido
 					
