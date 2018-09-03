@@ -845,7 +845,7 @@ public class NFeXMLGenerator
 					//	Saída
 					&& nf.isSOTrx()
 					
-					//	Alíquota Preenchida
+					//	Estados Diferentes
 					&& nf.getlbr_OrgRegion() != null && nf.getlbr_BPRegion() != null 
 					&& !nf.getlbr_OrgRegion().equals(nf.getlbr_BPRegion()))
 			
@@ -1898,14 +1898,12 @@ public class NFeXMLGenerator
 					int dupCounter = 1;
 					
 				    //	Adiciona as duplicatas da fatura
-					//	Somente para Duplicata Mercantil
-					//	&& MLBRNotaFiscal.LBR_PAYMENTRULE_TradeBill.equals(nf.getlbr_PaymentRule()))
 				    for (MLBROpenItem openItem : MLBROpenItem.getOpenItem (nf.getC_Invoice_ID(), trxName))
 				    {
-					    	Dup dup = cobr.addNewDup();
-					    	dup.setNDup(fatNo + "/" + Integer.toString (dupCounter++));
-					    	dup.setDVenc(normalize (openItem.getDueDate()));
-					    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
+				    	Dup dup = cobr.addNewDup();
+				    	dup.setNDup(TextUtil.lPad(dupCounter++, 3));
+				    	dup.setDVenc(normalize (openItem.getDueDate()));
+				    	dup.setVDup(normalize (openItem.getGrandTotal().abs()));
 					}
 				}
 			}
