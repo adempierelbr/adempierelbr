@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -634,10 +635,9 @@ public class MLBRBoleto extends X_LBR_Boleto
 						String billbyEmailto = MSysConfig.getValue("LBR_SEND_BILL_BY_EMAIL_TO", "", Env.getAD_Client_ID(Env.getCtx()));
 						
 						if (!"".equals(billbyEmailto))
-						{
 							toEMails += ";" + billbyEmailto;
-						}
 						
+						//	Valida Emails
 						if (toEMails == null || toEMails.indexOf('@') == -1)
 						{
 							log.warning("E-mail para recepção de NF-e inválido");
@@ -647,7 +647,23 @@ public class MLBRBoleto extends X_LBR_Boleto
 							toEMails = toEMails.replace(",", ";");
 						
 						//	Send Email
-						EMail email = client.createEMail (from, toEMails, subject, message, true);
+						EMail email = client.createEMail (from, from.getEMailUser(), subject, message, true);
+						
+						// Se houver mais de um email cadastrado, adicionar como cópia
+						StringTokenizer st = new StringTokenizer(toEMails, ";");
+						while (st.hasMoreTokens())
+						{
+							String toEMail = st.nextToken();
+							if (toEMail == null)
+								continue;
+							//
+							toEMail = toEMail.trim();
+							if (toEMail.length() == 0 || toEMail.indexOf("@") == -1)
+								continue;
+							//
+							email.addCc(toEMail);
+						}
+						
 						email.addBcc (actual.getEMail());
 						
 						for (File file : boletos)
