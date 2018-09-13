@@ -594,12 +594,16 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MOrg org = MOrg.get (ctx, invoice.getAD_Org_ID ());
 			final MOrgInfo orgInfo = MOrgInfo.get (ctx, invoice.getAD_Org_ID(), trxName);
 			final MUser from = new MUser (ctx, orgInfo.get_ValueAsInt ("lbr_ContatoNFe_ID"), trxName);
+			final MBPartner bpartner= (MBPartner) invoice.getC_BPartner();
 
-			if (invoice.getAD_User() == null
-					|| invoice.getAD_User().getEMail() == null 
-					|| invoice.getAD_User().getEMail().indexOf("@") < 1)
-				throw new IllegalArgumentException ("E-Mail não cadastrado para a Fatura: " + invoice.getDocumentNo());
-
+			if (bpartner.get_ValueAsString("LBR_EMailBilling").isEmpty())
+			{
+				if (invoice.getAD_User() == null
+						|| invoice.getAD_User().getEMail() == null 
+						|| invoice.getAD_User().getEMail().indexOf("@") < 1)
+					throw new IllegalArgumentException ("E-Mail não cadastrado para a Fatura: " + invoice.getDocumentNo());
+			}
+			
 			//	Check from email user
 			if (from.getEMailUser() == null && from.getEMailUserPW () == null)
 				throw new IllegalArgumentException ("Problemas com o Contato de emissão de Boleto da Organização");
@@ -617,7 +621,33 @@ public class MLBRBoleto extends X_LBR_Boleto
 				{
 					try 
 					{
-						EMail email = client.createEMail (from, invoice.getAD_User().getEMail(), subject, message, true);
+						// Emails
+						String toEMails = "";
+						
+						//	Validar Campo Email de Cobrança. Se não estiver preenchido, buscar email da fatura
+						if (!bpartner.get_ValueAsString("LBR_EMailBilling").isEmpty())
+							toEMails = bpartner.get_ValueAsString("LBR_EMailBilling");
+						else						
+							toEMails = invoice.getAD_User().getEMail();
+						
+						// Definir Endereço de Email para receber todos os Boletos
+						String billbyEmailto = MSysConfig.getValue("LBR_SEND_BILL_BY_EMAIL_TO", "", Env.getAD_Client_ID(Env.getCtx()));
+						
+						if (!"".equals(billbyEmailto))
+						{
+							toEMails += ";" + billbyEmailto;
+						}
+						
+						if (toEMails == null || toEMails.indexOf('@') == -1)
+						{
+							log.warning("E-mail para recepção de NF-e inválido");
+							return;
+						}
+						else
+							toEMails = toEMails.replace(",", ";");
+						
+						//	Send Email
+						EMail email = client.createEMail (from, toEMails, subject, message, true);
 						email.addBcc (actual.getEMail());
 						
 						for (File file : boletos)

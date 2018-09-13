@@ -196,7 +196,11 @@ public class ProcEMailNFe extends SvrProcess
 		if (toEMails == null || toEMails.trim().isEmpty() || toEMails.indexOf('@') == -1)
 		{
 			MBPartner bp = new MBPartner (Env.getCtx(), nf.getC_BPartner_ID(), nf.get_TrxName());
-			toEMails = bp.get_ValueAsString("lbr_EMailNFe");
+			if (MLBRNotaFiscal.LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(nf.getlbr_NFModel())
+					&& !bp.get_ValueAsString("LBR_EMailNFSe").isEmpty())
+						toEMails = bp.get_ValueAsString("LBR_EMailNFSe");
+			else
+				toEMails = bp.get_ValueAsString("lbr_EMailNFe");
 		}
 		
 		if (isProductNFe && nf.getM_Shipper_ID() > 0)
