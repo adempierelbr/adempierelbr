@@ -596,6 +596,15 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MOrgInfo orgInfo = MOrgInfo.get (ctx, invoice.getAD_Org_ID(), trxName);
 			final MUser from = new MUser (ctx, orgInfo.get_ValueAsInt ("lbr_ContatoNFe_ID"), trxName);
 			final MBPartner bpartner= (MBPartner) invoice.getC_BPartner();
+			final MLBRNotaFiscal nf = (MLBRNotaFiscal) new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "lbr_NFeStatus='100' AND C_Invoice_ID = ? AND lbr_FinNFe='1'", null)
+										.setParameters(invoice.getC_Invoice_ID())
+										.first();
+			
+			
+			String nfonSubject = "";
+
+			if (nf != null && nf.getLBR_NotaFiscal_ID() > 0)
+				nfonSubject = " - Nota Fiscal: " + nf.getDocumentNo();
 
 			if (bpartner.get_ValueAsString("LBR_EMailBilling").isEmpty())
 			{
@@ -613,7 +622,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MUser actual = new MUser (ctx, Env.getAD_User_ID(ctx), trxName);
 			
 			SimpleDateFormat dt = new SimpleDateFormat("MM/yyyy");
-			final String subject = "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced());					
+			final String subject = "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced()) + nfonSubject;					
 			final String message = Msg.getMsg (ctx, "LBR_BillingEMailText", new Object[]{org.getName(), orgInfo.getPhone(), invoice.getDocumentNo()});
 
 			new Thread() 
