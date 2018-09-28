@@ -369,10 +369,18 @@ public class Doc_Invoice extends Doc
 						X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
 						if (!txName.isLBR_HasWithhold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 						{
-							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
-									getC_Currency_ID(), amt, null);
-								if (tl != null)
-									tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+							//	Verificar se imposto compõe Preço do Produto
+							String IsTaxInclued = DB.getSQLValueString(getTrxName(), 
+									"SELECT isTaxIncluded FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?", get_ID(), m_taxes[i].getC_Tax_ID());
+							
+							//	Se Imposto compõe preço do produto
+							if ("Y".equals(IsTaxInclued))
+							{
+								tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxExpense, as),
+										getC_Currency_ID(), amt, null);
+									if (tl != null)
+										tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+							}		
 						}
 					}
 				}
@@ -619,10 +627,18 @@ public class Doc_Invoice extends Doc
 					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
 					if (!txName.isLBR_HasWithhold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 					{
-						tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxLiability, as),
-								getC_Currency_ID(), null, m_taxes[i].getAmount());
-							if (tl != null)
-								tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+						//	Verificar se imposto compõe Preço do Produto
+						String IsTaxInclued = DB.getSQLValueString(getTrxName(), 
+								"SELECT isTaxIncluded FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?", get_ID(), m_taxes[i].getC_Tax_ID());
+						
+						//	Se Imposto compõe preço do produto
+						if ("Y".equals(IsTaxInclued))
+						{
+							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxLiability, as),
+									getC_Currency_ID(), null, m_taxes[i].getAmount());
+								if (tl != null)
+									tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+						}		
 					}
 				}
 			}
