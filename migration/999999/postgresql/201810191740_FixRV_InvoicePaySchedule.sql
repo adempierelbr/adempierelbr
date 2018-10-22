@@ -1,6 +1,6 @@
 -- View: rv_invoicepayschedule
 
--- DROP VIEW rv_invoicepayschedule;
+DROP VIEW rv_invoicepayschedule;
 
 CREATE OR REPLACE VIEW rv_invoicepayschedule AS 
          SELECT ( SELECT c_invoice.lbr_notafiscal_id
