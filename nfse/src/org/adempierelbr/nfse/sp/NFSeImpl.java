@@ -479,12 +479,24 @@ public class NFSeImpl implements INFSe
 		Calendar calFrom = new XmlCalendar ();
 		calFrom.setTimeInMillis(dateFrom.getTime());
 		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCalFrom = new XmlCalendar ();
+		xmlCalFrom.set(Calendar.YEAR, 			calFrom.get (Calendar.YEAR));
+		xmlCalFrom.set(Calendar.MONTH, 			calFrom.get (Calendar.MONTH));
+		xmlCalFrom.set(Calendar.DAY_OF_MONTH, 	calFrom.get (Calendar.DAY_OF_MONTH));
+		
 		Calendar calTo = new XmlCalendar ();
 		calTo.setTimeInMillis(dateTo.getTime());
 		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCalTo = new XmlCalendar ();
+		xmlCalTo.set(Calendar.YEAR, 			calTo.get (Calendar.YEAR));
+		xmlCalTo.set(Calendar.MONTH, 			calTo.get (Calendar.MONTH));
+		xmlCalTo.set(Calendar.DAY_OF_MONTH, 	calTo.get (Calendar.DAY_OF_MONTH));
+		
 		//	Cabeçalho para o Lote
-		cabecalho.setDtInicio (calFrom);
-		cabecalho.setDtFim (calTo);
+		cabecalho.setDtInicio (xmlCalFrom);
+		cabecalho.setDtFim (xmlCalTo);
 		cabecalho.setQtdRPS (envioLoteRPS.sizeOfRPSArray());
 		cabecalho.setValorTotalServicos (servTotal);
 		cabecalho.setValorTotalDeducoes(dedTotal);
