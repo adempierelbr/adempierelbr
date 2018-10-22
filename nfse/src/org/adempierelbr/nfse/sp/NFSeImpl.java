@@ -446,6 +446,19 @@ public class NFSeImpl implements INFSe
 			//
 			rps.add (tpRPS);
 			
+			//	Fix ZULU Date/Time
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(tpRPS.getDataEmissao().getTime().getTime());
+			
+			//	Set date this way to avoid time zone incompatibilities
+			Calendar xmlCal = new XmlCalendar ();
+			xmlCal.set(Calendar.YEAR, 			cal.get (Calendar.YEAR));
+			xmlCal.set(Calendar.MONTH, 			cal.get (Calendar.MONTH));
+			xmlCal.set(Calendar.DAY_OF_MONTH, 	cal.get (Calendar.DAY_OF_MONTH));
+			
+			//	Set date withou timezone
+			tpRPS.setDataEmissao(xmlCal);
+			
 			servTotal  = servTotal.add(tpRPS.getValorServicos());
 			dedTotal = dedTotal.add(tpRPS.getValorDeducoes());
 			
