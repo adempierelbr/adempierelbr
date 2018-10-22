@@ -134,12 +134,19 @@ public class NFSeImpl implements INFSe
 		tpChaveRPS.setNumeroRPS(toLong (nf.getDocumentNo()));
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
-		Calendar cal = new XmlCalendar ();
+		//	Date ZULU
+		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis (nf.getDateDoc().getTime());
+		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCal = new XmlCalendar ();
+		xmlCal.set(Calendar.YEAR, 			cal.get (Calendar.YEAR));
+		xmlCal.set(Calendar.MONTH, 			cal.get (Calendar.MONTH));
+		xmlCal.set(Calendar.DAY_OF_MONTH, 	cal.get (Calendar.DAY_OF_MONTH));
 		
 		tpRPS.setChaveRPS(tpChaveRPS);
 		tpRPS.setTipoRPS(TpTipoRPS.RPS);
-		tpRPS.setDataEmissao(cal);
+		tpRPS.setDataEmissao(xmlCal);
 		tpRPS.setStatusRPS(TpStatusNFe.N);				//	FIXME
 		tpRPS.setTributacaoRPS("T");					//	FIXME
 		tpRPS.setValorServicos(toBD (nf.getlbr_ServiceTotalAmt()));
