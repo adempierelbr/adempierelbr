@@ -1208,7 +1208,7 @@ public class NFeXMLGenerator
 					if (fcpTax != null)
 					{
 						icms00.setPFCP(normalize4(fcpTax.getlbr_TaxRate()));
-						icms00.setVFCP(normalize4(fcpTax.getlbr_TaxAmt()));
+						icms00.setVFCP(normalize(fcpTax.getlbr_TaxAmt()));
 					}
 				}
 				else if (CST_ICMS_10.equals (taxStatus))
