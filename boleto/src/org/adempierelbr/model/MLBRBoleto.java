@@ -564,7 +564,24 @@ public class MLBRBoleto extends X_LBR_Boleto
 		}
 
     } //generateCNAB
-
+    
+	/**
+	* 		Envia boleto por EMail
+	* 
+	* 	@param ctx
+	* 	@param C_Invoice_ID
+	* 	@param C_BankAccount_ID
+	* 	@param FilePath
+	* 	@param PrinterName
+	* 	@param trxName
+	* 	@return true or false when error
+	* 	@throws IOException
+	* 	@throws PrinterException
+	*/
+	public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
+	{
+		return emailBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, 0, FilePath, PrinterName, trxName);
+	}	//	emailBoleto
 
     /**
      * 		Envia boleto por EMail
@@ -579,9 +596,9 @@ public class MLBRBoleto extends X_LBR_Boleto
      * 	@throws IOException
      * 	@throws PrinterException
      */
-    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
+    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
     {
-    	final List<File> boletos = generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, FilePath, PrinterName, trxName);
+    	final List<File> boletos = generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, LBR_Boleto_ID, FilePath, PrinterName, trxName);
     	
     	final Properties fctx = ctx;
     	final int fC_Invoice_ID = C_Invoice_ID;
@@ -599,7 +616,6 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MLBRNotaFiscal nf = (MLBRNotaFiscal) new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "lbr_NFeStatus='100' AND C_Invoice_ID = ? AND lbr_FinNFe='1'", null)
 										.setParameters(invoice.getC_Invoice_ID())
 										.first();
-			
 			
 			String nfonSubject = "";
 
@@ -719,6 +735,10 @@ public class MLBRBoleto extends X_LBR_Boleto
     }
 
 	public static List<File> generateBoleto(Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
+		return generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, 0, FilePath, PrinterName, trx);
+	}
+	
+	public static List<File> generateBoleto(Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
 
 		if (C_Invoice_ID == 0){
 			log.log(Level.SEVERE, "C_Invoice_ID == 0");
@@ -732,6 +752,8 @@ public class MLBRBoleto extends X_LBR_Boleto
 		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		if (boletos.length > 0){
 			for (int i=0;i<boletos.length; i++){
+				if (LBR_Boleto_ID > 0 && boletos[i].getLBR_Boleto_ID() != LBR_Boleto_ID)
+					continue;
 				File boletoPDF = boletos[i].print(FilePath, PrinterName);
 				if (boletoPDF != null)
 					pdfList.add(boletoPDF);
