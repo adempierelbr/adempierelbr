@@ -621,7 +621,7 @@ public class Doc_Invoice extends Doc
 						"SELECT IsTaxIncluded FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?", get_ID(), m_taxes[i].getC_Tax_ID()));
 				
 				//	Não postar impostos inclusos
-				if (MSysConfig.getBooleanValue ("LBR_SKIP_INCLUDED_TAXES_ON_API", true) && taxInclued)
+				if (MSysConfig.getBooleanValue ("LBR_SKIP_INCLUDED_TAXES_ON_API", false) && taxInclued)
 					continue;
 				
 				FactLine tl = fact.createLine(null, m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
