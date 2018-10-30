@@ -10,7 +10,7 @@ INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Clien
 
 -- 30/10/2018 15h10min15s BRST
 -- Accounting for Vendor Liability per Charge
-ALTER TABLE C_Charge_Acct MODIFY V_Liability_Services_Acct NUMBER(10) DEFAULT NULL 
+ALTER TABLE C_Charge_Acct ADD V_Liability_Services_Acct NUMBER(10) DEFAULT NULL 
 ;
 
 -- 30/10/2018 15h10min55s BRST
