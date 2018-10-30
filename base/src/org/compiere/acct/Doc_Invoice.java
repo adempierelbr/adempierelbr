@@ -38,6 +38,7 @@ import org.compiere.model.MCurrency;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLandedCostAllocation;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
 import org.compiere.model.ProductCost;
 import org.compiere.util.DB;
@@ -615,6 +616,14 @@ public class Doc_Invoice extends Doc
 			//  TaxCredit       DR
 			for (int i = 0; i < m_taxes.length; i++)
 			{
+				//	Verificar se imposto compõe Preço do Produto
+				boolean taxInclued = "Y".equals(DB.getSQLValueString(getTrxName(), 
+						"SELECT IsTaxIncluded FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?", get_ID(), m_taxes[i].getC_Tax_ID()));
+				
+				//	Não postar impostos inclusos
+				if (MSysConfig.getBooleanValue ("LBR_SKIP_INCLUDED_TAXES_ON_API", true) && taxInclued)
+					continue;
+				
 				FactLine tl = fact.createLine(null, m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
 					getC_Currency_ID(), m_taxes[i].getAmount(), null);
 				if (tl != null)
@@ -627,12 +636,8 @@ public class Doc_Invoice extends Doc
 					X_LBR_TaxName txName = new X_LBR_TaxName (Env.getCtx(), LBR_TaxName_ID, null);
 					if (!txName.isLBR_HasWithhold() && !X_LBR_TaxName.LBR_TAXTYPE_Substitution.equals(txName.getlbr_TaxType()))
 					{
-						//	Verificar se imposto compõe Preço do Produto
-						String IsTaxInclued = DB.getSQLValueString(getTrxName(), 
-								"SELECT isTaxIncluded FROM C_InvoiceTax WHERE C_Invoice_ID=? AND C_Tax_ID=?", get_ID(), m_taxes[i].getC_Tax_ID());
-						
 						//	Se Imposto compõe preço do produto
-						if ("Y".equals(IsTaxInclued))
+						if (taxInclued)
 						{
 							tl = fact.createLine(null, m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxLiability, as),
 									getC_Currency_ID(), null, m_taxes[i].getAmount());
@@ -643,7 +648,7 @@ public class Doc_Invoice extends Doc
 				}
 			}
 
-			//if (hasOpenItems){ //ELTEK
+			BigDecimal payable = Env.ZERO;
 
 				//  Expense         DR
 				for (int i = 0; i < p_lines.length; i++)
@@ -698,6 +703,17 @@ public class Doc_Invoice extends Doc
 								line.get_ID(), 0,		//	No Cost Element
 								line.getAmtSource(), line.getQty(),
 								line.getDescription(), getTrxName());
+						
+						if (line.getC_Charge_ID() > 0)
+						{
+							int payablesServices_ID = DB.getSQLValue (null, "SELECT V_Liability_Services_Acct FROM C_Charge_Acct WHERE C_AcctSchema_ID=? AND C_Charge_ID=?", as.getC_AcctSchema_ID(), line.getC_Charge_ID());
+							if (payablesServices_ID > 0)
+							{
+								fact.createLine (line, MAccount.get(as.getCtx(), payablesServices_ID),
+										getC_Currency_ID(), null,  amt);
+								payable = payable.add(amt);
+							}
+						}
 					}
 				}
 				//  Set Locations
@@ -717,12 +733,12 @@ public class Doc_Invoice extends Doc
 			if (m_allLinesItem || !as.isPostServices()
 				|| payables_ID == payablesServices_ID)
 			{
-				grossAmt = getAmount(Doc.AMTTYPE_Gross);
+				grossAmt = getAmount(Doc.AMTTYPE_Gross).subtract(payable);
 				serviceAmt = Env.ZERO;
 			}
 			else if (m_allLinesService)
 			{
-				serviceAmt = getAmount(Doc.AMTTYPE_Gross);
+				serviceAmt = getAmount(Doc.AMTTYPE_Gross).subtract(payable);
 				grossAmt = Env.ZERO;
 			}
 			if (grossAmt.signum() != 0)
