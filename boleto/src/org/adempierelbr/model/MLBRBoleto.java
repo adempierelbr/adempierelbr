@@ -583,7 +583,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 		return emailBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, 0, FilePath, PrinterName, trxName);
 	}	//	emailBoleto
 
-    /**
+	/**
      * 		Envia boleto por EMail
      * 
      * 	@param ctx
@@ -597,6 +597,24 @@ public class MLBRBoleto extends X_LBR_Boleto
      * 	@throws PrinterException
      */
     public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
+    {
+    	return emailBoleto(ctx, C_Invoice_ID, C_BankAccount_ID, LBR_Boleto_ID, FilePath, PrinterName, trxName, null);
+    }
+    /**
+     * 		Envia boleto por EMail
+     * 
+     * 	@param ctx
+     * 	@param C_Invoice_ID
+     * 	@param C_BankAccount_ID
+     * 	@param FilePath
+     * 	@param PrinterName
+     * 	@param trxName
+     *	@param preSubject
+     * 	@return true or false when error
+     * 	@throws IOException
+     * 	@throws PrinterException
+     */
+    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trxName, String preSubject) throws IOException, PrinterException
     {
     	final List<File> boletos = generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, LBR_Boleto_ID, FilePath, PrinterName, trxName);
     	
@@ -638,7 +656,11 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MUser actual = new MUser (ctx, Env.getAD_User_ID(ctx), trxName);
 			
 			SimpleDateFormat dt = new SimpleDateFormat("MM/yyyy");
-			final String subject = "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced()) + nfonSubject;					
+			
+			if (preSubject == null)
+				preSubject = "";
+			
+			final String subject = preSubject + "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced()) + nfonSubject;
 			final String message = Msg.getMsg (ctx, "LBR_BillingEMailText", new Object[]{org.getName(), orgInfo.getPhone(), invoice.getDocumentNo()});
 
 			new Thread() 
