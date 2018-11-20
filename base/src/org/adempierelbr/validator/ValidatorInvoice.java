@@ -333,7 +333,7 @@ public class ValidatorInvoice implements ModelValidator
 		 * 	Após preparar executa:
 		 * 		Validação do número da Nota Fiscal de Entrada
 		 */
-		if (timing == TIMING_AFTER_PREPARE)
+		if (timing == TIMING_BEFORE_COMPLETE)
 		{
 			/**
 			 * 	Quando gera documento fiscal de terceiros E
@@ -347,7 +347,7 @@ public class ValidatorInvoice implements ModelValidator
 			{
 				return "@FillMandatory@ @lbr_NFEntrada@";
 			}
-		}	//	AFTER PREPARE
+		}	//	BEFORE COMPLETE
 
 		/**
 		 * 	Após completar executa:
