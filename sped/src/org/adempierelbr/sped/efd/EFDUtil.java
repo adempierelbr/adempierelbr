@@ -36,6 +36,8 @@ import org.adempierelbr.sped.efd.bean.R9001;
 import org.adempierelbr.sped.efd.bean.R9900;
 import org.adempierelbr.sped.efd.bean.R9990;
 import org.adempierelbr.sped.efd.bean.R9999;
+import org.adempierelbr.sped.efd.bean.RB001;
+import org.adempierelbr.sped.efd.bean.RB990;
 import org.adempierelbr.sped.efd.bean.RC001;
 import org.adempierelbr.sped.efd.bean.RC100;
 import org.adempierelbr.sped.efd.bean.RC120;
@@ -113,7 +115,7 @@ public class EFDUtil {
 	/**
 	 * TODO: ALTERAR E DEIXAR DINAMICO
 	 */
-	private static final String COD_VER = "012";	// A Partir de Jan/18
+	private static final String COD_VER = "013";	// A Partir de Jan/19
 	private static final String COD_FIN = "0"; 		// Remessa do Arquivo Original
 	private static final String IND_PERFIL = "A"; 	// Perfil A
 	private static final String COD_DOC_IMP = "0"; 	// Declaração de Importacao
@@ -905,6 +907,35 @@ public class EFDUtil {
 		return reg;
 	}
 	
+	/**
+	 * REGISTRO B001: ABERTURA DO BLOCO B
+	 * 
+	 * @param hasInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public static RB001 createRB001(boolean hasInfo) throws Exception
+	{
+		RB001 reg = new RB001();
+		reg.setIND_DAD(hasInfo ? "0" : "1");
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO B990: ENCERRAMENTO DO BLOCO B
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RB990 createRB990() throws Exception 
+	{
+		RB990 reg = new RB990();
+		reg.setQTD_LIN_B(String.valueOf(CounterSped.getBlockCounter(reg.getReg())));
+	
+		return reg;
+	}
+	
 	
 	/**
 	 * REGISTRO C001: ABERTURA DO BLOCO C
@@ -1098,6 +1129,12 @@ public class EFDUtil {
 		// TODO: Código da conta contábil
 		reg.setCOD_CTA("");
 		
+		//	Desconto da Linha da Nota Fiscal
+		//	TODO: Adicionar campo na Tabela LBR_FactFiscal
+		if (factFiscal.getLBR_NotaFiscalLine() != null)
+			reg.setVL_ABAT_NT(factFiscal.getLBR_NotaFiscalLine().getDiscountAmt());	
+		else
+			reg.setVL_ABAT_NT(BigDecimal.ZERO);	
 		
 		/*
 		 * Definir valor da operação no registro C170 para
@@ -2183,11 +2220,12 @@ public class EFDUtil {
 	/**
 	 * REGISTRO 1010: REGISTROS DO BLOCO 1
 	 * @param p_C_Period_ID 
+	 * @param Region
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public static R1010 createR1010(int p_C_Period_ID) throws Exception
+	public static R1010 createR1010(int p_C_Period_ID, String Region) throws Exception
 	{
 		int salesCard = DB.getSQLValue (null, "SELECT COUNT('1') FROM LBR_SalesCardTotal c WHERE c.C_Period_ID=?", p_C_Period_ID);
 		
@@ -2202,6 +2240,10 @@ public class EFDUtil {
 		reg.setIND_CART(salesCard > 0 ? "S" : "N");
 		reg.setIND_FORM("N");
 		reg.setIND_AER("N");
+		//	Preenchimento: “S – Sim”, somente quando o estabelecimento informante for domiciliado no estado de Pernambuco
+		reg.setIND_GIAF1(("PE".equals(Region) ? "S" : "N"));
+		reg.setIND_GIAF3(("PE".equals(Region) ? "S" : "N"));
+		reg.setIND_GIAF4(("PE".equals(Region) ? "S" : "N"));
 		
 		return reg;
 	}

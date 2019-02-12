@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRSalesCardTotal;
@@ -23,6 +24,7 @@ import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCO1;
 import org.adempierelbr.sped.efd.bean.BLOCO9;
+import org.adempierelbr.sped.efd.bean.BLOCOB;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.BLOCOE;
@@ -245,6 +247,7 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			// criar blocos
 			BLOCO0 bloco0 = new BLOCO0();
+			BLOCOB blocoB = new BLOCOB();
 			BLOCOC blocoC = new BLOCOC();
 			BLOCOD blocoD = new BLOCOD();
 			BLOCOE blocoE = new BLOCOE();
@@ -686,12 +689,25 @@ public class ProcGenerateEFD extends SvrProcess
 				}
 			}
 
+			//	Organização
+			I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
 			
+			//	Verificar Endereço
+			if (oi.getC_Location() == null || oi.getC_Location_ID() == 0)
+				throw new AdempiereException("Endereço da Organização não preenchido");
+			
+			//	Estado Padrão SP
+			String Region = "";
+			
+			//	Verificar Estado/Região da Organização
+			if (oi.getC_Location() != null && oi.getC_Location().getC_Region() != null)
+				Region = oi.getC_Location().getC_Region().getName();
 			
 			/*
 			 * Inicialização dos Blocos 
 			 */
 			bloco0.setR0001(EFDUtil.createR0001(bloco0.getR0150().size() > 0)); // init bloco 0
+			blocoB.setRB001(EFDUtil.createRB001(false)); // init bloco B
 			blocoC.setrC001(EFDUtil.createRC001(blocoC.getrC100().size() > 0)); // init bloco C
 			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0 || blocoD.getrD500().size() > 0)); // init bloco D
 			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
@@ -700,13 +716,14 @@ public class ProcGenerateEFD extends SvrProcess
 			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
 			blocoK.setrK001(EFDUtil.createRK001(false));
 			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
-			bloco1.setR1010(EFDUtil.createR1010(p_C_Period_ID));
+			bloco1.setR1010(EFDUtil.createR1010(p_C_Period_ID, Region));
 			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
 
 			/*
 			 * Registros Totalizadores dos Blocos
 			 */
 			bloco0.setR0990(EFDUtil.createR0990()); // fim do 0
+			blocoB.setRB990(EFDUtil.createRB990()); // fim do B
 			blocoC.setrC990(EFDUtil.createRC990()); // fim do C
 			blocoD.setrD990(EFDUtil.createRD990()); // fim do D
 			blocoE.setrE990(EFDUtil.createRE990()); // fim do E
@@ -732,6 +749,7 @@ public class ProcGenerateEFD extends SvrProcess
 			// Montar resultado			 
 			StringBuilder result = new StringBuilder();
 			result.append(bloco0.toString());
+			result.append(blocoB.toString());
 			result.append(blocoC.toString());
 			result.append(blocoD.toString());
 			result.append(blocoE.toString());
