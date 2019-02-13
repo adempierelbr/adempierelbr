@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRNCM;
@@ -73,6 +74,9 @@ import org.adempierelbr.sped.efd.bean.RH005;
 import org.adempierelbr.sped.efd.bean.RH010;
 import org.adempierelbr.sped.efd.bean.RH990;
 import org.adempierelbr.sped.efd.bean.RK001;
+import org.adempierelbr.sped.efd.bean.RK100;
+import org.adempierelbr.sped.efd.bean.RK200;
+import org.adempierelbr.sped.efd.bean.RK280;
 import org.adempierelbr.sped.efd.bean.RK990;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.LBRUtils;
@@ -1012,6 +1016,9 @@ public class EFDUtil {
 			 * 
 			 * UF - Usado na apuração da ST
 			 */
+			if (factFiscal.getlbr_IndAtividade() == null || factFiscal.getlbr_IndAtividade().isEmpty())
+				throw new AdempiereException("Preencher campo Tipo de Atividade da Organização");
+			
 			reg.setIND_ATIV(factFiscal.getlbr_IndAtividade().equals("0") ? "0" : "1");
 			reg.setUF(factFiscal.getlbr_BPRegion());
 			
@@ -1577,6 +1584,63 @@ public class EFDUtil {
 		reg.setCOD_PART(null);
 		reg.setTXT_COMPL(null);
 		reg.setVL_ITEM_IR(null);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO K100: PERÍODO de APURAÇÃO DO ICMS/IPI.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RK100 createRK100(Timestamp DT_INI, Timestamp DT_FIN) throws Exception 
+	{
+		
+		RK100 reg = new RK100();
+		reg.setDT_INI(DT_INI);
+		reg.setDT_FIN(DT_FIN);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO K200: ESTOQUE ESCRITURADO.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RK200 createRK200(String COD_ITEM, String COD_PART, Timestamp DT_EST, String IND_EST, BigDecimal QTD) throws Exception 
+	{
+		
+		RK200 reg = new RK200();
+		reg.setCOD_ITEM(COD_ITEM);
+		reg.setCOD_PART(COD_PART);
+		reg.setDT_EST(DT_EST);
+		reg.setIND_EST(IND_EST);
+		reg.setQTD(QTD);
+		
+		return reg;
+	}
+	
+	/**
+	 * REGISTRO K280: CORREÇÃO DE APONTAMENTO - ESTOQUE ESCRITURADO.
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public static RK280 createRK280(String COD_ITEM, String COD_PART, Timestamp DT_EST, String IND_EST, BigDecimal QTD) throws Exception 
+	{
+		
+		RK280 reg = new RK280();
+		reg.setCOD_ITEM(COD_ITEM);
+		reg.setCOD_PART(COD_PART);
+		reg.setDT_EST(DT_EST);
+		reg.setIND_EST(IND_EST);
+		if (QTD.compareTo(BigDecimal.ZERO) > 0)
+			reg.setQTD_COR_POS(QTD.abs().toString());
+		else
+			reg.setQTD_COR_NEG(QTD.abs().toString());
 		
 		return reg;
 	}
@@ -2351,4 +2415,33 @@ public class EFDUtil {
 		return sql;
 	}
 	
+	/**
+	 * Retornar a query para buscar as informações do inventário para o Bloco K
+	 * 
+	 * Parametros do SQL
+	 * 
+	 * #1 - AD_Client_ID
+	 * #2 - AD_Org_ID
+	 * #3 - LBR_SPED_ID
+	 * 
+	 * @return Sql String
+	 */
+	public static String getSQLBookInv()  throws Exception
+	{
+		// sql
+		String sql = " SELECT AD_Client_ID, AD_Org_ID, C_BPartner_ID, SUM(QtyBook) AS QtyBook,	" + 
+				" lbr_WarehouseType, movementdate, M_Product_ID,			" +
+				" isRevalidate																	" +
+				" FROM LBR_BookInventory														" +
+				" WHERE AD_Client_ID = ? 														" + // # 1
+				" AND AD_Org_ID = ?																" + // # 2
+				" AND LBR_SPED_ID = ? "	  	 												  	  + // # 3
+				" GROUP BY AD_Client_ID, AD_Org_ID, M_Product_ID, C_BPartner_ID, " + 
+				" lbr_WarehouseType, movementdate, isRevalidate " + 
+				" ORDER BY M_Product_ID															";
+
+		//
+		return sql;
+	}
+
 } // EFDUtil
