@@ -765,14 +765,9 @@ public class EFDUtil {
 		reg.setUNID_INV(factFiscal.getlbr_UOMName() == null ? "un" : factFiscal.getlbr_UOMName());
 		
 		if (factFiscal.islbr_IsService() && factFiscal.getlbr_ItemTypeBR()==null)
-			reg.setTIPO_ITEM(factFiscal.getlbr_ItemTypeBR());
-		else
 			reg.setTIPO_ITEM("09");//marcar como serviço quando for despesa
-		
-		// serviço na linha
-		if(factFiscal.islbr_IsService())
+		else
 			reg.setTIPO_ITEM(factFiscal.getlbr_ItemTypeBR());
-		
 		//
 		reg.setCOD_NCM(factFiscal.getlbr_NCMName());
 		reg.setEX_IPI(null); // TODO
