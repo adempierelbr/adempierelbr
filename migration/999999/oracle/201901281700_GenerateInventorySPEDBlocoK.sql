@@ -496,7 +496,7 @@ ALTER TABLE LBR_SPED ADD GenerateTo CHAR(10) DEFAULT NULL
 
 -- 13/02/2019 15h29min51s BRST
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,200016,200001,0,1120115,TO_DATE('2019-02-13 15:29:51','YYYY-MM-DD HH24:MI:SS'),100,'Generate To',10,'LBRA','Y','Y','Y','N','N','N','N','Y','Generate To',TO_DATE('2019-02-13 15:29:51','YYYY-MM-DD HH24:MI:SS'),100)
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,Description,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,Updated,UpdatedBy) VALUES (0,1131411,200001,0,1120115,TO_DATE('2019-02-13 15:29:51','YYYY-MM-DD HH24:MI:SS'),100,'Generate To',10,'LBRA','Y','Y','Y','N','N','N','N','Y','Generate To',TO_DATE('2019-02-13 15:29:51','YYYY-MM-DD HH24:MI:SS'),100)
 ;
 
 -- 13/02/2019 15h29min51s BRST
