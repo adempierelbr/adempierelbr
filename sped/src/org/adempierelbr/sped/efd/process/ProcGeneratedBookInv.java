@@ -85,7 +85,7 @@ public class ProcGeneratedBookInv extends SvrProcess
 				"   AND mt.AD_Org_ID = " + sped.getAD_Org_ID()											  +
 				"	AND mt.MovementDate <= " + DB.TO_DATE(period.getEndDate())							  +
 				"	AND wh.AD_Org_ID = mt.AD_Org_ID 													" +
-				"	AND p.lbr_ItemTypeBR NOT IN ('07', '08', '09')										" +
+				"	AND p.lbr_ItemTypeBR IN ('00', '01', '02','03', '04','05', '06', '10')				" +
 				" GROUP BY																				" +
 				" mt.AD_Client_ID, mt.AD_Org_ID, mt.M_Product_ID, l.C_BPartner_ID " 					  + 
 				" HAVING SUM(MovementQty) > 0															" +
