@@ -310,10 +310,6 @@ public class BLOCO0 {
 		blc.r0000.setCOD_VER("1");
 		blc.r0000.setDT_INI(new Timestamp(new Date().getTime()));
 		blc.r0000.setCOD_MUN("1234");
-		
-		
-		//
-		System.out.println (blc.r0000.toString());
 	}
 	
 } // R0000

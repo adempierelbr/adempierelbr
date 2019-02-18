@@ -572,9 +572,6 @@ public class ProcGenerateEFD extends SvrProcess
 			m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "IPI", p_C_Period_ID, null);
 			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 			{				
-				
-				System.out.println("Apurou IPI");
-				
 				// E500
 				blocoE.setrE500(EFDUtil.createRE500(dateFrom, dateTo));
 				
@@ -601,7 +598,6 @@ public class ProcGenerateEFD extends SvrProcess
 			 */
 			GregorianCalendar calendar = new GregorianCalendar();
 			calendar.setTime(dateFrom);
-			System.out.println("Mês: " + calendar.get(Calendar.MONTH));
 			
 			if(calendar.get(Calendar.MONTH) == 1) // (indice do calendar: 0(mês 1), 1(mês 2), 2(mês 3)...)
 			{
@@ -882,10 +878,6 @@ public class ProcGenerateEFD extends SvrProcess
 		calendar.set(Calendar.DAY_OF_MONTH, 31);
 		calendar.set(Calendar.MONTH, 11);
 		calendar.add(Calendar.YEAR, -1);
-		
-		System.out.println(new Timestamp(calendar.getTimeInMillis()));
-		
-		
 	}
 	
 }	//	ProcGenerateEF
