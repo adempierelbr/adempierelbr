@@ -867,17 +867,4 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		// return bloco0;
 	}
-	
-	
-	
-	
-	public static void main(String args[])
-	{
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(new Timestamp(System.currentTimeMillis()));
-		calendar.set(Calendar.DAY_OF_MONTH, 31);
-		calendar.set(Calendar.MONTH, 11);
-		calendar.add(Calendar.YEAR, -1);
-	}
-	
-}	//	ProcGenerateEF
+}	//	ProcGenerateEFD
