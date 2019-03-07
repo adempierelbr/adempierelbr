@@ -1,3 +1,72 @@
+CREATE TABLE LBR_EmployeeHistory
+( 
+	LBR_EmployeeHistory_ID 		NUMERIC (10,0) NOT NULL,
+	LBR_EmployeeHistory_UU 		VARCHAR (36) NULL DEFAULT NULL,
+	AD_Client_ID           		NUMERIC (10,0) NOT NULL,
+	AD_Org_ID       	   		NUMERIC (10,0) NOT NULL,
+	IsActive        	   		CHAR (1) NOT NULL DEFAULT 'Y'::BPCHAR,
+	Created         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	CreatedBy       	   		NUMERIC (10,0) NOT NULL,
+	Updated         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	UpdatedBy       	   		NUMERIC (10,0) NOT NULL,
+    HR_Employee_ID          	NUMERIC (10,0) NOT NULL,
+    LBR_JobRole_ID          	NUMERIC (10,0) NULL,
+    LBR_JobTitle_ID          	NUMERIC (10,0) NULL,
+    StartDate					TIMESTAMP NOT NULL DEFAULT NOW (),
+    EndDate						TIMESTAMP NULL DEFAULT NULL,
+    LBR_BaseSalary				NUMERIC (10) NOT NULL DEFAULT 0,
+	Description					VARCHAR (255) NULL DEFAULT NULL,
+    Processed					CHAR (1) NOT NULL DEFAULT 'N'::BPCHAR,
+						   		PRIMARY KEY (LBR_EmployeeHistory_ID)
+)		
+;
+
+CREATE TABLE LBR_EmpVacation
+( 
+	LBR_EmpVacation_ID 			NUMERIC (10,0) NOT NULL,
+	LBR_EmpVacation_UU 			VARCHAR (36) NULL DEFAULT NULL,
+	AD_Client_ID           		NUMERIC (10,0) NOT NULL,
+	AD_Org_ID       	   		NUMERIC (10,0) NOT NULL,
+	IsActive        	   		CHAR (1) NOT NULL DEFAULT 'Y'::BPCHAR,
+	Created         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	CreatedBy       	   		NUMERIC (10,0) NOT NULL,
+	Updated         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	UpdatedBy       	   		NUMERIC (10,0) NOT NULL,
+    HR_Employee_ID          	NUMERIC (10,0) NOT NULL,
+    StartDate					TIMESTAMP NOT NULL DEFAULT NOW (),
+    EndDate						TIMESTAMP NULL DEFAULT NULL,
+    QtyAvailable          		NUMERIC (10,0) NOT NULL,
+    QtyDelivered          		NUMERIC (10,0) NOT NULL,
+    QtyInvoiced          		NUMERIC (10,0) NOT NULL,
+    Balance    		      		NUMERIC (10,0) NOT NULL,
+	Description					VARCHAR (255) NULL DEFAULT NULL,
+    Processed					CHAR (1) NOT NULL DEFAULT 'N'::BPCHAR,
+						   		PRIMARY KEY (LBR_EmpVacation_ID)
+)
+;
+
+CREATE TABLE LBR_EmpVacationLine
+( 
+	LBR_EmpVacationLine_ID 		NUMERIC (10,0) NOT NULL,
+	LBR_EmpVacationLine_UU 		VARCHAR (36) NULL DEFAULT NULL,
+	AD_Client_ID           		NUMERIC (10,0) NOT NULL,
+	AD_Org_ID       	   		NUMERIC (10,0) NOT NULL,
+	IsActive        	   		CHAR (1) NOT NULL DEFAULT 'Y'::BPCHAR,
+	Created         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	CreatedBy       	   		NUMERIC (10,0) NOT NULL,
+	Updated         	   		TIMESTAMP NOT NULL DEFAULT NOW (),
+	UpdatedBy       	   		NUMERIC (10,0) NOT NULL,
+    LBR_EmpVacation_ID          NUMERIC (10,0) NOT NULL,
+    StartDate					TIMESTAMP NOT NULL DEFAULT NOW (),
+    EndDate						TIMESTAMP NULL DEFAULT NULL,
+    Qty          				NUMERIC (10,0) NOT NULL,
+	Description					VARCHAR (255) NULL DEFAULT NULL,
+    IsCancelled					CHAR (1) NOT NULL DEFAULT 'N'::BPCHAR,
+    Processed					CHAR (1) NOT NULL DEFAULT 'N'::BPCHAR,
+						   		PRIMARY KEY (LBR_EmpVacationLine_ID)
+)
+;
+
 -- 07/03/2019 11h22min50s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Table (AD_Client_ID,AD_Org_ID,AD_Table_ID,AccessLevel,CopyColumnsFromTable,Created,CreatedBy,EntityType,ImportTable,IsActive,IsCentrallyMaintained,IsChangeLog,IsDeleteable,IsHighVolume,IsSecurityEnabled,IsSystemLanguage,IsView,LoadSeq,Name,ReplicationType,TableName,Updated,UpdatedBy) VALUES (0,0,1120652,'3','N',TO_TIMESTAMP('2019-03-07 11:22:49','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','N','Y','Y','N','Y','N','N','N','N',0,'Employee History','L','LBR_EmployeeHistory',TO_TIMESTAMP('2019-03-07 11:22:49','YYYY-MM-DD HH24:MI:SS'),100)
