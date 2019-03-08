@@ -1394,11 +1394,11 @@ UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:15','YYYY-M
 ;
 
 -- 07/03/2019 11h56min26s BRT
-UPDATE AD_Field SET DisplayLogic='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128164
+UPDATE AD_Field SET DefaultValue='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:26','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128164
 ;
 
 -- 07/03/2019 11h56min39s BRT
-UPDATE AD_Field SET DisplayLogic='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128151
+UPDATE AD_Field SET DefaultValue='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:39','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128151
 ;
 
 -- 07/03/2019 11h56min42s BRT
@@ -1406,7 +1406,7 @@ UPDATE AD_Field SET IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:42','YYYY-M
 ;
 
 -- 07/03/2019 11h56min49s BRT
-UPDATE AD_Field SET DisplayLogic='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128138
+UPDATE AD_Field SET DefaultValue='0', IsReadOnly='Y',Updated=TO_DATE('2019-03-07 11:56:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128138
 ;
 
 -- 07/03/2019 11h56min52s BRT
