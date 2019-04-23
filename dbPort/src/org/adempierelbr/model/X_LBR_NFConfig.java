@@ -31,7 +31,7 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20170118L;
+	private static final long serialVersionUID = 20190418L;
 
     /** Standard Constructor */
     public X_LBR_NFConfig (Properties ctx, int LBR_NFConfig_ID, String trxName)
@@ -39,19 +39,19 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
       super (ctx, LBR_NFConfig_ID, trxName);
       /** if (LBR_NFConfig_ID == 0)
         {
+			setlbr_DANFEFormat (null);
+// 1
 			setLBR_NFConfig_ID (0);
+			setlbr_NFeEnv (null);
+// 2
+			setlbr_NFModel (null);
+// 55
 			setLBR_ReverseInOut (false);
 // N
 			setLBR_ReverseInvoice (false);
 // N
 			setLBR_TPEmis (null);
 // 1
-			setlbr_DANFEFormat (null);
-// 1
-			setlbr_NFModel (null);
-// 55
-			setlbr_NFeEnv (null);
-// 2
         } */
     }
 
@@ -83,108 +83,41 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
       return sb.toString();
     }
 
-	/** Set NF Configuration.
-		@param LBR_NFConfig_ID NF Configuration	  */
-	public void setLBR_NFConfig_ID (int LBR_NFConfig_ID)
+	/** Set CSRT Code.
+		@param LBR_CSRTCode 
+		CSRT Code used to generate Hash CSRT
+	  */
+	public void setLBR_CSRTCode (String LBR_CSRTCode)
 	{
-		if (LBR_NFConfig_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_LBR_NFConfig_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_LBR_NFConfig_ID, Integer.valueOf(LBR_NFConfig_ID));
+		set_Value (COLUMNNAME_LBR_CSRTCode, LBR_CSRTCode);
 	}
 
-	/** Get NF Configuration.
-		@return NF Configuration	  */
-	public int getLBR_NFConfig_ID () 
+	/** Get CSRT Code.
+		@return CSRT Code used to generate Hash CSRT
+	  */
+	public String getLBR_CSRTCode () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFConfig_ID);
+		return (String)get_Value(COLUMNNAME_LBR_CSRTCode);
+	}
+
+	/** Set CSRT ID.
+		@param LBR_CSRTID 
+		CSRT ID corresponding to the CSRT Code
+	  */
+	public void setLBR_CSRTID (int LBR_CSRTID)
+	{
+		set_Value (COLUMNNAME_LBR_CSRTID, Integer.valueOf(LBR_CSRTID));
+	}
+
+	/** Get CSRT ID.
+		@return CSRT ID corresponding to the CSRT Code
+	  */
+	public int getLBR_CSRTID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_CSRTID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Reverse InOut.
-		@param LBR_ReverseInOut 
-		Allow to Reverse InOut related with the NF
-	  */
-	public void setLBR_ReverseInOut (boolean LBR_ReverseInOut)
-	{
-		set_Value (COLUMNNAME_LBR_ReverseInOut, Boolean.valueOf(LBR_ReverseInOut));
-	}
-
-	/** Get Reverse InOut.
-		@return Allow to Reverse InOut related with the NF
-	  */
-	public boolean isLBR_ReverseInOut () 
-	{
-		Object oo = get_Value(COLUMNNAME_LBR_ReverseInOut);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Reverse Invoice.
-		@param LBR_ReverseInvoice 
-		Allow to Reverse Invoice related with the NF
-	  */
-	public void setLBR_ReverseInvoice (boolean LBR_ReverseInvoice)
-	{
-		set_Value (COLUMNNAME_LBR_ReverseInvoice, Boolean.valueOf(LBR_ReverseInvoice));
-	}
-
-	/** Get Reverse Invoice.
-		@return Allow to Reverse Invoice related with the NF
-	  */
-	public boolean isLBR_ReverseInvoice () 
-	{
-		Object oo = get_Value(COLUMNNAME_LBR_ReverseInvoice);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** LBR_TPEmis AD_Reference_ID=1120246 */
-	public static final int LBR_TPEMIS_AD_Reference_ID=1120246;
-	/** Emissão Normal = 1 */
-	public static final String LBR_TPEMIS_EmissãoNormal = "1";
-	/** Contingência FS-IA = 2 */
-	public static final String LBR_TPEMIS_ContingênciaFS_IA = "2";
-	/** Contingência SCAN = 3 */
-	public static final String LBR_TPEMIS_ContingênciaSCAN = "3";
-	/** Contingência DPEC = 4 */
-	public static final String LBR_TPEMIS_ContingênciaDPEC = "4";
-	/** Contingência FS-DA = 5 */
-	public static final String LBR_TPEMIS_ContingênciaFS_DA = "5";
-	/** Contingência SVC-AN = 6 */
-	public static final String LBR_TPEMIS_ContingênciaSVC_AN = "6";
-	/** Contingência SVC-RS = 7 */
-	public static final String LBR_TPEMIS_ContingênciaSVC_RS = "7";
-	/** Contingência off-line da NFC-e = 9 */
-	public static final String LBR_TPEMIS_ContingênciaOff_LineDaNFC_E = "9";
-	/** Set Tipo de Emissão.
-		@param LBR_TPEmis 
-		Indicar o Tipo de Emissão da NF-e.
-	  */
-	public void setLBR_TPEmis (String LBR_TPEmis)
-	{
-
-		set_Value (COLUMNNAME_LBR_TPEmis, LBR_TPEmis);
-	}
-
-	/** Get Tipo de Emissão.
-		@return Indicar o Tipo de Emissão da NF-e.
-	  */
-	public String getLBR_TPEmis () 
-	{
-		return (String)get_Value(COLUMNNAME_LBR_TPEmis);
 	}
 
 	/** lbr_DANFEFormat AD_Reference_ID=1100002 */
@@ -242,6 +175,47 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
 	public String getlbr_MotivoScan () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_MotivoScan);
+	}
+
+	/** Set NF Configuration.
+		@param LBR_NFConfig_ID NF Configuration	  */
+	public void setLBR_NFConfig_ID (int LBR_NFConfig_ID)
+	{
+		if (LBR_NFConfig_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_LBR_NFConfig_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_LBR_NFConfig_ID, Integer.valueOf(LBR_NFConfig_ID));
+	}
+
+	/** Get NF Configuration.
+		@return NF Configuration	  */
+	public int getLBR_NFConfig_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NFConfig_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** lbr_NFeEnv AD_Reference_ID=1100001 */
+	public static final int LBR_NFEENV_AD_Reference_ID=1100001;
+	/** Production = 1 */
+	public static final String LBR_NFEENV_Production = "1";
+	/** Homologation = 2 */
+	public static final String LBR_NFEENV_Homologation = "2";
+	/** Set NFe Environment.
+		@param lbr_NFeEnv NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv)
+	{
+
+		set_Value (COLUMNNAME_lbr_NFeEnv, lbr_NFeEnv);
+	}
+
+	/** Get NFe Environment.
+		@return NFe Environment	  */
+	public String getlbr_NFeEnv () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_NFeEnv);
 	}
 
 	/** lbr_NFModel AD_Reference_ID=1120009 */
@@ -332,24 +306,87 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
 		return (String)get_Value(COLUMNNAME_lbr_NFModel);
 	}
 
-	/** lbr_NFeEnv AD_Reference_ID=1100001 */
-	public static final int LBR_NFEENV_AD_Reference_ID=1100001;
-	/** Production = 1 */
-	public static final String LBR_NFEENV_Production = "1";
-	/** Homologation = 2 */
-	public static final String LBR_NFEENV_Homologation = "2";
-	/** Set NFe Environment.
-		@param lbr_NFeEnv NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv)
+	/** Set Reverse InOut.
+		@param LBR_ReverseInOut 
+		Allow to Reverse InOut related with the NF
+	  */
+	public void setLBR_ReverseInOut (boolean LBR_ReverseInOut)
 	{
-
-		set_Value (COLUMNNAME_lbr_NFeEnv, lbr_NFeEnv);
+		set_Value (COLUMNNAME_LBR_ReverseInOut, Boolean.valueOf(LBR_ReverseInOut));
 	}
 
-	/** Get NFe Environment.
-		@return NFe Environment	  */
-	public String getlbr_NFeEnv () 
+	/** Get Reverse InOut.
+		@return Allow to Reverse InOut related with the NF
+	  */
+	public boolean isLBR_ReverseInOut () 
 	{
-		return (String)get_Value(COLUMNNAME_lbr_NFeEnv);
+		Object oo = get_Value(COLUMNNAME_LBR_ReverseInOut);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Reverse Invoice.
+		@param LBR_ReverseInvoice 
+		Allow to Reverse Invoice related with the NF
+	  */
+	public void setLBR_ReverseInvoice (boolean LBR_ReverseInvoice)
+	{
+		set_Value (COLUMNNAME_LBR_ReverseInvoice, Boolean.valueOf(LBR_ReverseInvoice));
+	}
+
+	/** Get Reverse Invoice.
+		@return Allow to Reverse Invoice related with the NF
+	  */
+	public boolean isLBR_ReverseInvoice () 
+	{
+		Object oo = get_Value(COLUMNNAME_LBR_ReverseInvoice);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** LBR_TPEmis AD_Reference_ID=1120246 */
+	public static final int LBR_TPEMIS_AD_Reference_ID=1120246;
+	/** Emissão Normal = 1 */
+	public static final String LBR_TPEMIS_EmissãoNormal = "1";
+	/** Contingência FS-IA = 2 */
+	public static final String LBR_TPEMIS_ContingênciaFS_IA = "2";
+	/** Contingência SCAN = 3 */
+	public static final String LBR_TPEMIS_ContingênciaSCAN = "3";
+	/** Contingência DPEC = 4 */
+	public static final String LBR_TPEMIS_ContingênciaDPEC = "4";
+	/** Contingência FS-DA = 5 */
+	public static final String LBR_TPEMIS_ContingênciaFS_DA = "5";
+	/** Contingência SVC-AN = 6 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_AN = "6";
+	/** Contingência SVC-RS = 7 */
+	public static final String LBR_TPEMIS_ContingênciaSVC_RS = "7";
+	/** Contingência off-line da NFC-e = 9 */
+	public static final String LBR_TPEMIS_ContingênciaOff_LineDaNFC_E = "9";
+	/** Set Tipo de Emissão.
+		@param LBR_TPEmis 
+		Indicar o Tipo de Emissão da NF-e.
+	  */
+	public void setLBR_TPEmis (String LBR_TPEmis)
+	{
+
+		set_Value (COLUMNNAME_LBR_TPEmis, LBR_TPEmis);
+	}
+
+	/** Get Tipo de Emissão.
+		@return Indicar o Tipo de Emissão da NF-e.
+	  */
+	public String getLBR_TPEmis () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_TPEmis);
 	}
 }

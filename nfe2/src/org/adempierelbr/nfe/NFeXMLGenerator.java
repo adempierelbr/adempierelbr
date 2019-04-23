@@ -24,6 +24,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRAuthorizedAccessXML;
 import org.adempierelbr.model.MLBRCSC;
+import org.adempierelbr.model.MLBRNFConfig;
 import org.adempierelbr.model.MLBRNFLineMA;
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.model.MLBRNotaFiscalDocRef;
@@ -32,6 +33,7 @@ import org.adempierelbr.model.MLBROpenItem;
 import org.adempierelbr.model.MLBRTaxStatus;
 import org.adempierelbr.model.X_LBR_NFDI;
 import org.adempierelbr.model.X_LBR_NFLineTax;
+import org.adempierelbr.model.X_LBR_SystemResponsible;
 import org.adempierelbr.nfe.beans.ChaveNFE;
 import org.adempierelbr.util.BPartnerUtil;
 import org.adempierelbr.util.GTINValidator;
@@ -48,6 +50,7 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MProduct;
+import org.compiere.model.Query;
 import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -58,6 +61,7 @@ import br.inf.portalfiscal.nfe.v400.TCodUfIBGE;
 import br.inf.portalfiscal.nfe.v400.TEnderEmi;
 import br.inf.portalfiscal.nfe.v400.TEndereco;
 import br.inf.portalfiscal.nfe.v400.TFinNFe;
+import br.inf.portalfiscal.nfe.v400.TInfRespTec;
 import br.inf.portalfiscal.nfe.v400.TIpi;
 import br.inf.portalfiscal.nfe.v400.TIpi.IPINT;
 import br.inf.portalfiscal.nfe.v400.TIpi.IPITrib;
@@ -759,7 +763,11 @@ public class NFeXMLGenerator
 					
 					else if (cnpjf.length() == 14)
 						retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
+					
+					if (nf.getlbr_BPDeliveryIE() != null)
+						retOuEntreg.setIE(nf.getlbr_BPDeliveryIE());
 					//
+					retOuEntreg.setXNome(nf.getLBR_BPDeliveryName());
 					retOuEntreg.setXLgr(normalize (nf.getlbr_BPDeliveryAddress1()));
 					retOuEntreg.setNro(normalize (nf.getlbr_BPDeliveryAddress2()));
 					
@@ -767,6 +775,21 @@ public class NFeXMLGenerator
 						retOuEntreg.setXCpl(normalize (nf.getlbr_BPDeliveryAddress4()));
 					
 					retOuEntreg.setXBairro(normalize (nf.getlbr_BPDeliveryAddress3()));
+					
+					if (nf.getlbr_BPDeliveryPostal() != null)
+						retOuEntreg.setCEP(nf.getlbr_BPDeliveryPostal());
+					
+					if (nf.getlbr_BPDeliveryCountry() != null)
+						retOuEntreg.setXPais(nf.getlbr_BPDeliveryCountry());
+					
+					if (nf.getLBR_BPDeliveryCountryCode() != null)
+						retOuEntreg.setCPais(nf.getLBR_BPDeliveryCountryCode());
+					
+					if (nf.getLBR_BPDeliveryPhone() != null)
+						retOuEntreg.setFone(nf.getLBR_BPDeliveryPhone());
+					
+					if (nf.getLBR_BPDeliveryEmail() != null)
+						retOuEntreg.setEmail(nf.getLBR_BPDeliveryEmail());
 					
 					if (nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID() != MLBRNotaFiscal.BRAZIL)
 					{
@@ -1077,7 +1100,15 @@ public class NFeXMLGenerator
 					if (attribute != null)
 					{
 						Med med = prod.addNewMed();
-						med.setCProdANVISA(attribute.getLBR_ANVISACode());
+						if (attribute.getLBR_ANVISACode() != null && 
+								!attribute.getLBR_ANVISACode().isEmpty() &&
+									!attribute.getLBR_ANVISACode().equals("ISENTO"))
+							med.setCProdANVISA(attribute.getLBR_ANVISACode());
+						else
+						{	
+							med.setCProdANVISA("ISENTO");
+							med.setXMotivoIsencao(nf.get_ValueAsString("LBR_ANVISAMotivo"));
+						}	
 						med.setVPMC(normalize (attribute.getLBR_MaxPrice()));
 					}
 				}
@@ -1173,6 +1204,7 @@ public class NFeXMLGenerator
 				// FCP (Fundo de Combate a Pobreza)
 				X_LBR_NFLineTax fcpTax = null;
 				X_LBR_NFLineTax fcpTaxST = null;
+				X_LBR_NFLineTax icmsEfetTax = nfl.getICMSEfetTax();
 				
 				//	Destacar como ICMS Dest
 				if (!icmsDest)
@@ -1343,6 +1375,16 @@ public class NFeXMLGenerator
 							icms60.setPFCPSTRet(normalize2to4(fcpTax.getlbr_TaxRate()));
 							icms60.setVFCPSTRet(normalize4(fcpTax.getlbr_TaxAmt()));
 						}
+					}
+					
+					//	NT 2018.005 v1.20
+					if (icmsEfetTax != null)
+					{
+						icms60.setVBCEfet(normalize (icmsEfetTax.getlbr_TaxBaseAmt()));
+						icms60.setPRedBCEfet(normalize (icmsEfetTax.getlbr_TaxBase()));
+						icms60.setPICMSEfet(normalize (icmsEfetTax.getlbr_TaxRate()));
+						icms60.setVICMSEfet(normalize (icmsEfetTax.getlbr_TaxAmt()));
+							
 					}
 				}
 				else if (CST_ICMS_70.equals (taxStatus))
@@ -1990,6 +2032,26 @@ public class NFeXMLGenerator
 		
 		//	XML
 		String nfeID = infNFe.getId().substring(3);
+		
+		//	CSRT Hash
+		String CSRTHash = generateCSRTHash (nfeID);
+		
+		//	Add Technical Resposible
+		if (!CSRTHash.isEmpty())
+		{
+			X_LBR_SystemResponsible sresp = new Query(Env.getCtx(), X_LBR_SystemResponsible.Table_Name, "", null)
+											.first();
+			MLBRNFConfig config = MLBRNFConfig.get(nf.getAD_Org_ID());
+			
+			//	add Technical Responsible
+			TInfRespTec respTec = infNFe.addNewInfRespTec();
+			respTec.setCNPJ(sresp.getlbr_CNPJ());
+			respTec.setXContato(sresp.getContactName());
+			respTec.setEmail(sresp.getEMail());
+			respTec.setFone(sresp.getPhone());
+			respTec.setIdCSRT(config.getLBR_CSRTID() + "");
+			respTec.setHashCSRT(CSRTHash.getBytes());
+		}
 
 		log.fine ("Signing NF-e");
 				
@@ -2203,4 +2265,14 @@ public class NFeXMLGenerator
 	{
 		return TextUtil.toNumeric (value);
 	}	//	toNumericStr
+	
+	/**
+	 * 
+	 * @param nfeID
+	 * @return
+	 */
+	private static String generateCSRTHash(String nfeID)
+	{
+		return "";
+	}
 }	//	NFeXMLGenerator
