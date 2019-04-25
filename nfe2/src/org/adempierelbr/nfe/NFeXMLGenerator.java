@@ -44,6 +44,7 @@ import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.adempierelbr.wrapper.I_W_C_Country;
 import org.adempierelbr.wrapper.I_W_M_Product;
+import org.apache.commons.codec.binary.Base64;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
@@ -1386,6 +1387,8 @@ public class NFeXMLGenerator
 						icms60.setVICMSEfet(normalize (icmsEfetTax.getlbr_TaxAmt()));
 							
 					}
+					
+					// TODO: NT 2018.005 vICMSSubstituto
 				}
 				else if (CST_ICMS_70.equals (taxStatus))
 				{
@@ -1535,6 +1538,8 @@ public class NFeXMLGenerator
 						icmssn500.setVFCPSTRet(normalize (fcpTaxST.getlbr_TaxAmt()));
 						icmssn500.setPST(normalize4 (icmsTax.getlbr_TaxRate().add(fcpTaxST.getlbr_TaxRate())));
 					}
+					
+					// TODO: NT 2018.005 vICMSSubstituto					
 				}
 				else if (CSOSN_900.equals (taxStatus))
 				{
@@ -2033,24 +2038,36 @@ public class NFeXMLGenerator
 		//	XML
 		String nfeID = infNFe.getId().substring(3);
 		
-		//	CSRT Hash
-		String CSRTHash = generateCSRTHash (nfeID);
+		//
+		MLBRNFConfig config = MLBRNFConfig.get(nf.getAD_Org_ID());
 		
-		//	Add Technical Resposible
-		if (!CSRTHash.isEmpty())
-		{
-			X_LBR_SystemResponsible sresp = new Query(Env.getCtx(), X_LBR_SystemResponsible.Table_Name, "", null)
-											.first();
-			MLBRNFConfig config = MLBRNFConfig.get(nf.getAD_Org_ID());
+		//
+		if (config != null && config.getLBR_CSRTCode() != null)
+		{		
+			//	CSRT Hash
+			byte[] CSRTHash = generateCSRTHash (nfeID, config.getLBR_CSRTCode());
 			
-			//	add Technical Responsible
-			TInfRespTec respTec = infNFe.addNewInfRespTec();
-			respTec.setCNPJ(sresp.getlbr_CNPJ());
-			respTec.setXContato(sresp.getContactName());
-			respTec.setEmail(sresp.getEMail());
-			respTec.setFone(sresp.getPhone());
-			respTec.setIdCSRT(config.getLBR_CSRTID() + "");
-			respTec.setHashCSRT(CSRTHash.getBytes());
+			//	Add Technical Resposible
+			if (CSRTHash != null)
+			{
+				String hash = new String (CSRTHash);				
+				nf.setLBR_CSRTHash(hash);
+				
+				X_LBR_SystemResponsible sresp = new Query(Env.getCtx(), X_LBR_SystemResponsible.Table_Name, "", null)
+												.first();
+				
+				if (sresp != null)
+				{			
+					//	add Technical Responsible
+					TInfRespTec respTec = infNFe.addNewInfRespTec();
+					respTec.setCNPJ(sresp.getlbr_CNPJ());
+					respTec.setXContato(sresp.getContactName());
+					respTec.setEmail(sresp.getEMail());
+					respTec.setFone(sresp.getPhone());
+					respTec.setIdCSRT(config.getLBR_CSRTID() + "");
+					respTec.setHashCSRT(CSRTHash);
+				}	
+			}
 		}
 
 		log.fine ("Signing NF-e");
@@ -2271,8 +2288,24 @@ public class NFeXMLGenerator
 	 * @param nfeID
 	 * @return
 	 */
-	private static String generateCSRTHash(String nfeID)
+	private static byte[] generateCSRTHash(String nfeID, String CSRTCode)
 	{
-		return "";
+		try
+		{
+			//	Concatenar NFe ID + CSRT Code
+			String concat = CSRTCode + nfeID;
+			
+			//	Gerando hash com Algoritmo SHA-1 e convertendo para Base 64
+			byte [] result = Base64.encodeBase64(TextUtil.generateSHA1(concat));
+			
+			//	Resultado
+			return result;
+		}
+		catch (Exception e)
+		{
+			log.saveError(e.getMessage(), e);
+		}		
+		
+		return null;
 	}
 }	//	NFeXMLGenerator
