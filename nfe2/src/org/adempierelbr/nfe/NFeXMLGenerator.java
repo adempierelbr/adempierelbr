@@ -780,11 +780,11 @@ public class NFeXMLGenerator
 					if (nf.getlbr_BPDeliveryPostal() != null)
 						retOuEntreg.setCEP(nf.getlbr_BPDeliveryPostal());
 					
-					if (nf.getlbr_BPDeliveryCountry() != null)
-						retOuEntreg.setXPais(nf.getlbr_BPDeliveryCountry());
-					
+					I_W_C_Country countryDL = POWrapper.create(new MCountry(ctx, nf.getlbr_Delivery_Location().getC_Location().getC_Country_ID(), trxName), I_W_C_Country.class);
+					retOuEntreg.setXPais(((MCountry) POWrapper.getPO (countryDL)).get_Translation (MCountry.COLUMNNAME_Name, LBRUtils.AD_LANGUAGE));
+						
 					if (nf.getLBR_BPDeliveryCountryCode() != null)
-						retOuEntreg.setCPais(nf.getLBR_BPDeliveryCountryCode());
+						retOuEntreg.setCPais(nf.getlbr_BPDeliveryCountry().substring(1));
 					
 					if (nf.getLBR_BPDeliveryPhone() != null)
 						retOuEntreg.setFone(nf.getLBR_BPDeliveryPhone());
@@ -2064,7 +2064,7 @@ public class NFeXMLGenerator
 					respTec.setXContato(sresp.getContactName());
 					respTec.setEmail(sresp.getEMail());
 					respTec.setFone(sresp.getPhone());
-					respTec.setIdCSRT(config.getLBR_CSRTID() + "");
+					respTec.setIdCSRT(TextUtil.lPad(config.getLBR_CSRTID(),2));
 					respTec.setHashCSRT(CSRTHash);
 				}	
 			}

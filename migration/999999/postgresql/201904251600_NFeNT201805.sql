@@ -904,16 +904,6 @@ INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_
 UPDATE AD_Column SET IsAutocomplete='Y',Updated=TO_TIMESTAMP('2019-04-22 11:44:29','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1000514
 ;
 
--- 22/04/2019 11h44min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,Description,EntityType,Help,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1122878,0,'lbr_BPDeliveryCountryCode',TO_TIMESTAMP('2019-04-22 11:44:57','YYYY-MM-DD HH24:MI:SS'),100,'BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books','LBRA','BP Delivery Country Code - Copied from the BP Location into Brazilan Legal and Tax Books','Y','BP Delivery Country Code','BP Delivery Country Code',TO_TIMESTAMP('2019-04-22 11:44:57','YYYY-MM-DD HH24:MI:SS'),100)
-;
-
--- 22/04/2019 11h44min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1122878 AND NOT EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Element_ID=t.AD_Element_ID)
-;
-
 -- 22/04/2019 11h46min22s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1131518,1122877,0,10,1000027,'LBR_BPDeliveryName',TO_TIMESTAMP('2019-04-22 11:46:22','YYYY-MM-DD HH24:MI:SS'),100,'LBRA',255,'Y','Y','N','N','N','N','N','N','N','N','N','N','Y','BP Delivery Name',0,TO_TIMESTAMP('2019-04-22 11:46:22','YYYY-MM-DD HH24:MI:SS'),100,0)
@@ -932,41 +922,6 @@ UPDATE AD_Column SET ReadOnlyLogic='@IsManual@!Y',Updated=TO_TIMESTAMP('2019-04-
 -- 22/04/2019 11h46min38s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 ALTER TABLE LBR_NotaFiscal ADD COLUMN LBR_BPDeliveryName VARCHAR(255) DEFAULT NULL 
-;
-
--- 22/04/2019 11h46min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Element SET ColumnName='LBR_BPDeliveryCountryCode',Updated=TO_TIMESTAMP('2019-04-22 11:46:57','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122878
-;
-
--- 22/04/2019 11h46min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Column SET ColumnName='LBR_BPDeliveryCountryCode', Name='BP Delivery Country Code', Description='BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books', Help='BP Delivery Country Code - Copied from the BP Location into Brazilan Legal and Tax Books' WHERE AD_Element_ID=1122878
-;
-
--- 22/04/2019 11h46min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Process_Para SET ColumnName='LBR_BPDeliveryCountryCode', Name='BP Delivery Country Code', Description='BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books', Help='BP Delivery Country Code - Copied from the BP Location into Brazilan Legal and Tax Books', AD_Element_ID=1122878 WHERE UPPER(ColumnName)='LBR_BPDELIVERYCOUNTRYCODE' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
-;
-
--- 22/04/2019 11h46min57s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-UPDATE AD_Process_Para SET ColumnName='LBR_BPDeliveryCountryCode', Name='BP Delivery Country Code', Description='BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books', Help='BP Delivery Country Code - Copied from the BP Location into Brazilan Legal and Tax Books' WHERE AD_Element_ID=1122878 AND IsCentrallyMaintained='Y'
-;
-
--- 22/04/2019 11h47min27s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Table_ID,ColumnName,Created,CreatedBy,Description,EntityType,FieldLength,Help,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,ReadOnlyLogic,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1131519,1122878,0,10,1000027,'LBR_BPDeliveryCountryCode',TO_TIMESTAMP('2019-04-22 11:47:27','YYYY-MM-DD HH24:MI:SS'),100,'BP Delivery Country - Copied from the BP Location into Brazilan Legal and Tax Books','LBRA',5,'BP Delivery Country Code - Copied from the BP Location into Brazilan Legal and Tax Books','Y','Y','N','N','N','N','N','N','N','N','N','N','Y','BP Delivery Country Code','@IsManual@!Y',0,TO_TIMESTAMP('2019-04-22 11:47:27','YYYY-MM-DD HH24:MI:SS'),100,0)
-;
-
--- 22/04/2019 11h47min27s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1131519 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
-;
-
--- 22/04/2019 11h47min35s BRT
--- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-ALTER TABLE LBR_NotaFiscal ADD COLUMN LBR_BPDeliveryCountryCode VARCHAR(5) DEFAULT NULL 
 ;
 
 -- 22/04/2019 11h49min22s BRT

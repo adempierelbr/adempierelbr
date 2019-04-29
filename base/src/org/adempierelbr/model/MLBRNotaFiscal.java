@@ -2227,6 +2227,10 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_BPDeliveryCity(location.getCity());			//	Cidade
 		setlbr_BPDeliveryPostal(location.getPostal());		//	CEP
 		setlbr_BPDeliveryCountry(country.getCountryCode());	//	País
+		
+		// NT 2018.005
+		setLBR_BPDeliveryName(bpLocation.getC_BPartner().getName());
+		setLBR_BPDeliveryPhone(bpLocation.getPhone());
 
 		//	Importação / Exportação
 		if (country.get_ID() != BRAZIL)
