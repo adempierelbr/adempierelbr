@@ -31,7 +31,7 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20190418L;
+	private static final long serialVersionUID = 20190503L;
 
     /** Standard Constructor */
     public X_LBR_NFConfig (Properties ctx, int LBR_NFConfig_ID, String trxName)
@@ -39,6 +39,8 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
       super (ctx, LBR_NFConfig_ID, trxName);
       /** if (LBR_NFConfig_ID == 0)
         {
+			setLBR_ConfigSystemResp (null);
+// N
 			setlbr_DANFEFormat (null);
 // 1
 			setLBR_NFConfig_ID (0);
@@ -82,6 +84,27 @@ public class X_LBR_NFConfig extends PO implements I_LBR_NFConfig, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** LBR_ConfigSystemResp AD_Reference_ID=1120323 */
+	public static final int LBR_CONFIGSYSTEMRESP_AD_Reference_ID=1120323;
+	/** Inform System Responsible = I */
+	public static final String LBR_CONFIGSYSTEMRESP_InformSystemResponsible = "I";
+	/** Not Inform System Responsible = N */
+	public static final String LBR_CONFIGSYSTEMRESP_NotInformSystemResponsible = "N";
+	/** Set Configure System Responsible.
+		@param LBR_ConfigSystemResp Configure System Responsible	  */
+	public void setLBR_ConfigSystemResp (String LBR_ConfigSystemResp)
+	{
+
+		set_Value (COLUMNNAME_LBR_ConfigSystemResp, LBR_ConfigSystemResp);
+	}
+
+	/** Get Configure System Responsible.
+		@return Configure System Responsible	  */
+	public String getLBR_ConfigSystemResp () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_ConfigSystemResp);
+	}
 
 	/** Set CSRT Code.
 		@param LBR_CSRTCode 

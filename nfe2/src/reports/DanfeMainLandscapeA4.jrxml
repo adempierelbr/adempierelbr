@@ -332,7 +332,7 @@
 					<text><![CDATA[Documento Auxiliar da Nota Fiscal Eletrônica]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-3" mode="Transparent" x="401" y="50" width="44" height="11" uuid="e385600c-b5d6-4787-8d89-b0fd22fedfdf">
+					<reportElement key="staticText-3" mode="Transparent" x="394" y="50" width="50" height="11" uuid="e385600c-b5d6-4787-8d89-b0fd22fedfdf">
 						<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImpresso}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -347,7 +347,7 @@
 					<text><![CDATA[1 - Saída]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-4" mode="Transparent" x="401" y="39" width="44" height="11" uuid="90495e0a-1c2f-4a7c-a0f0-1f0a327e4a39">
+					<reportElement key="staticText-4" mode="Transparent" x="394" y="39" width="50" height="11" uuid="90495e0a-1c2f-4a7c-a0f0-1f0a327e4a39">
 						<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImpresso}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -500,7 +500,7 @@
 					<text><![CDATA[CHAVE DE ACESSO DA NF-e - CONSULTA NO SITE: WWW.NFE.FAZENDA.GOV.BR]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-14" mode="Transparent" x="534" y="61" width="230" height="10" uuid="4dcfd974-812d-49f9-8094-e8bcac026dda"/>
+					<reportElement key="textField-14" mode="Transparent" x="525" y="61" width="256" height="10" uuid="4dcfd974-812d-49f9-8094-e8bcac026dda"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1634,7 +1634,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 		<groupHeader>
 			<band height="10" splitType="Stretch">
 				<subreport isUsingCache="true">
-					<reportElement key="subreport-1" positionType="FixRelativeToBottom" stretchType="ContainerBottom" mode="Transparent" x="-30" y="0" width="61" height="10" isRemoveLineWhenBlank="true" uuid="2b39f4d7-acb0-46ae-9851-efbffea48851"/>
+					<reportElement key="subreport-1" mode="Transparent" x="-30" y="0" width="61" height="10" isRemoveLineWhenBlank="true" uuid="2b39f4d7-acb0-46ae-9851-efbffea48851"/>
 					<subreportParameter name="ImpFrente">
 						<subreportParameterExpression><![CDATA[$P{Frente}]]></subreportParameterExpression>
 					</subreportParameter>

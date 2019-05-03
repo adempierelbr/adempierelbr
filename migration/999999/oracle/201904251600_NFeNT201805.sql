@@ -1110,5 +1110,136 @@ UPDATE AD_Field SET SeqNo=451,Updated=TO_DATE('2019-04-22 14:54:31','YYYY-MM-DD 
 UPDATE AD_Field SET SeqNo=452,Updated=TO_DATE('2019-04-22 14:54:35','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128191
 ;
 
+-- 02/05/2019 11h25min6s BRT
+UPDATE AD_Tab SET TabLevel=1,Updated=TO_DATE('2019-05-02 11:25:06','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Tab_ID=1120340
+;
+
+-- 02/05/2019 11h26min49s BRT
+UPDATE AD_Field SET IsDisplayed='Y', SeqNo=20, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, IsAllowCopy='Y', XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128178
+;
+
+-- 02/05/2019 11h26min49s BRT
+UPDATE AD_Field SET SeqNo=40, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128176
+;
+
+-- 02/05/2019 11h26min50s BRT
+UPDATE AD_Field SET SeqNo=60, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128179
+;
+
+-- 02/05/2019 11h26min50s BRT
+UPDATE AD_Field SET SeqNo=0, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128180
+;
+
+-- 02/05/2019 11h37min20s BRT
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, MandatoryLogic='@LBR_ANVISACode@=''ISENTO'' | @LBR_ANVISACode@ = ''''', IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:37:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128183
+;
+
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+-- 02/05/2019 17h48min7s BRT
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, ColumnSpan=2, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 17:48:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128187
+;
+
+-- 02/05/2019 17h48min54s BRT
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=4, ColumnSpan=2, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 17:48:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128188
+;
+
+-- 03/05/2019 12h24min52s BRT
+UPDATE AD_Field SET SeqNo=120, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, SeqNoGrid=120, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-03 12:24:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100, ColumnSpan=2 WHERE AD_Field_ID=1128171
+;
+
+-- 03/05/2019 12h24min59s BRT
+UPDATE AD_Field SET SeqNo=130, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, SeqNoGrid=130, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-03 12:24:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100, XPosition=4, ColumnSpan=2 WHERE AD_Field_ID=1128172
+;
+
+-- 03/05/2019 17h39min0s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Element (AD_Client_ID,AD_Element_ID,AD_Org_ID,ColumnName,Created,CreatedBy,EntityType,IsActive,Name,PrintName,Updated,UpdatedBy) VALUES (0,1122881,0,'LBR_ConfigSystemResp',TO_DATE('2019-05-03 17:38:59','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Configure System Responsible','Configure System Responsible',TO_DATE('2019-05-03 17:38:59','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 03/05/2019 17h39min0s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Element_Trl (AD_Language,AD_Element_ID, Description,Help,Name,PO_Description,PO_Help,PO_Name,PO_PrintName,PrintName, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Element_ID, t.Description,t.Help,t.Name,t.PO_Description,t.PO_Help,t.PO_Name,t.PO_PrintName,t.PrintName, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Element t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Element_ID=1122881 AND NOT EXISTS (SELECT * FROM AD_Element_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Element_ID=t.AD_Element_ID)
+;
+
+-- 03/05/2019 17h39min46s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Configurar Responsável Técnico',PrintName='Configurar Responsável Técnico',Description='Indique se o Responsável Técnico deve ser ou não informado no XML da NF-e',Updated=TO_DATE('2019-05-03 17:39:46','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122881 AND AD_Language='pt_BR'
+;
+
+-- 03/05/2019 17h40min44s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Reference (AD_Client_ID,AD_Org_ID,AD_Reference_ID,Created,CreatedBy,EntityType,IsActive,IsOrderByValue,Name,Updated,UpdatedBy,ValidationType) VALUES (0,0,1120323,TO_DATE('2019-05-03 17:40:44','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','N','LBR_ConfigSystemResp',TO_DATE('2019-05-03 17:40:44','YYYY-MM-DD HH24:MI:SS'),100,'L')
+;
+
+-- 03/05/2019 17h40min44s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Reference_Trl (AD_Language,AD_Reference_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Reference_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Reference t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Reference_ID=1120323 AND NOT EXISTS (SELECT * FROM AD_Reference_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Reference_ID=t.AD_Reference_ID)
+;
+
+-- 03/05/2019 17h42min58s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Reference_ID,AD_Ref_List_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1120323,1122287,TO_DATE('2019-05-03 17:42:57','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Inform System Responsible',TO_DATE('2019-05-03 17:42:57','YYYY-MM-DD HH24:MI:SS'),100,'I')
+;
+
+-- 03/05/2019 17h42min58s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1122287 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 03/05/2019 17h46min0s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Ref_List (AD_Client_ID,AD_Org_ID,AD_Reference_ID,AD_Ref_List_ID,Created,CreatedBy,EntityType,IsActive,Name,Updated,UpdatedBy,Value) VALUES (0,0,1120323,1122288,TO_DATE('2019-05-03 17:46:00','YYYY-MM-DD HH24:MI:SS'),100,'LBRA','Y','Not Inform System Responsible',TO_DATE('2019-05-03 17:46:00','YYYY-MM-DD HH24:MI:SS'),100,'N')
+;
+
+-- 03/05/2019 17h46min0s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Ref_List_Trl (AD_Language,AD_Ref_List_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Ref_List_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Ref_List t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Ref_List_ID=1122288 AND NOT EXISTS (SELECT * FROM AD_Ref_List_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Ref_List_ID=t.AD_Ref_List_ID)
+;
+
+-- 03/05/2019 17h46min14s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Informar Responsável Técnico',Description='Informar Responsável Técnico',Updated=TO_DATE('2019-05-03 17:46:14','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1122287 AND AD_Language='pt_BR'
+;
+
+-- 03/05/2019 17h46min24s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Ref_List_Trl SET IsTranslated='Y',Name='Não Informar Responsável Técnico',Description='Não Informar Responsável Técnico',Updated=TO_DATE('2019-05-03 17:46:24','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Ref_List_ID=1122288 AND AD_Language='pt_BR'
+;
+
+-- 03/05/2019 17h46min50s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Column (AD_Client_ID,AD_Column_ID,AD_Element_ID,AD_Org_ID,AD_Reference_ID,AD_Reference_Value_ID,AD_Table_ID,ColumnName,Created,CreatedBy,DefaultValue,EntityType,FieldLength,IsActive,IsAllowLogging,IsAlwaysUpdateable,IsAutocomplete,IsEncrypted,IsIdentifier,IsKey,IsMandatory,IsParent,IsSelectionColumn,IsSyncDatabase,IsTranslated,IsUpdateable,Name,SeqNo,Updated,UpdatedBy,Version) VALUES (0,1131522,1122881,0,17,1120323,1120547,'LBR_ConfigSystemResp',TO_DATE('2019-05-03 17:46:50','YYYY-MM-DD HH24:MI:SS'),100,'N','LBRA',1,'Y','Y','N','N','N','N','N','Y','N','N','N','N','Y','Configure System Responsible',0,TO_DATE('2019-05-03 17:46:50','YYYY-MM-DD HH24:MI:SS'),100,0)
+;
+
+-- 03/05/2019 17h46min50s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Column_Trl (AD_Language,AD_Column_ID, Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Column_ID, t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Column t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Column_ID=1131522 AND NOT EXISTS (SELECT * FROM AD_Column_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Column_ID=t.AD_Column_ID)
+;
+
+-- 03/05/2019 17h47min56s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=110,Updated=TO_DATE('2019-05-03 17:47:56','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128171
+;
+
+-- 03/05/2019 17h47min59s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=120,Updated=TO_DATE('2019-05-03 17:47:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128172
+;
+
+-- 03/05/2019 17h48min19s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field (AD_Client_ID,AD_Column_ID,AD_FieldGroup_ID,AD_Field_ID,AD_Org_ID,AD_Tab_ID,Created,CreatedBy,DisplayLength,EntityType,IsActive,IsCentrallyMaintained,IsDisplayed,IsEncrypted,IsFieldOnly,IsHeading,IsReadOnly,IsSameLine,Name,SeqNo,Updated,UpdatedBy) VALUES (0,1131522,1120075,1128192,0,1120216,TO_DATE('2019-05-03 17:48:19','YYYY-MM-DD HH24:MI:SS'),100,60,'LBRA','Y','Y','Y','N','N','N','N','N','Configure System Responsible',100,TO_DATE('2019-05-03 17:48:19','YYYY-MM-DD HH24:MI:SS'),100)
+;
+
+-- 03/05/2019 17h48min19s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy) SELECT l.AD_Language,t.AD_Field_ID, t.Description,t.Help,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy FROM AD_Language l, AD_Field t WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.AD_Field_ID=1128192 AND NOT EXISTS (SELECT * FROM AD_Field_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.AD_Field_ID=t.AD_Field_ID)
+;
+
+-- 03/05/2019 17h48min38s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE LBR_NFConfig ADD LBR_ConfigSystemResp CHAR(1) DEFAULT 'N' NOT NULL
+;
+
 SELECT Register_Migration_Script ('201904251600_NFeNT201805.sql') FROM DUAL
 ;

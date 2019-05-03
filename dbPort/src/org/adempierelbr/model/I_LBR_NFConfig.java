@@ -92,6 +92,15 @@ public interface I_LBR_NFConfig
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_ConfigSystemResp */
+    public static final String COLUMNNAME_LBR_ConfigSystemResp = "LBR_ConfigSystemResp";
+
+	/** Set Configure System Responsible	  */
+	public void setLBR_ConfigSystemResp (String LBR_ConfigSystemResp);
+
+	/** Get Configure System Responsible	  */
+	public String getLBR_ConfigSystemResp();
+
     /** Column name LBR_CSRTCode */
     public static final String COLUMNNAME_LBR_CSRTCode = "LBR_CSRTCode";
 
