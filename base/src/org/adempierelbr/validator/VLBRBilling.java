@@ -134,7 +134,7 @@ public class VLBRBilling implements ModelValidator
 			for (MLBRBoleto boleto : boletos)
 			{
 				//	Se houver algum Boleto válido não Cancelar a NF.
-				if (!boleto.islbr_IsCancelled())
+				if (!boleto.isIsCancelled())
 					return "Impossível Cancelar NF com Boletos Válidos";
 			}
 		}

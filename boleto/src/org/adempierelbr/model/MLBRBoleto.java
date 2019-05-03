@@ -181,7 +181,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 		
 		sql = " SELECT LBR_Boleto_ID 				" +
 			  "   FROM LBR_Boleto 					" +
-			  "  WHERE LBR_IsCancelled = 'N'		" +
+			  "  WHERE IsCancelled = 'N'		" +
 			  "    AND AD_Client_ID = ? 			";
 		
 		
@@ -328,7 +328,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 	public static MLBRBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 
-		String whereClause = "C_Invoice_ID = ? AND lbr_IsCancelled = 'N'";
+		String whereClause = "C_Invoice_ID = ? AND IsCancelled = 'N'";
 
 		MTable table = MTable.get(ctx, MLBRBoleto.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
@@ -1121,13 +1121,13 @@ public class MLBRBoleto extends X_LBR_Boleto
 		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		for(MLBRBoleto boleto : boletos){
 
-			boleto.setlbr_IsCancelled(true);
+			boleto.setIsCancelled(true);
 			boleto.save(trx);
 
 			int LBR_CNAB_ID = MLBRCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
 			if (LBR_CNAB_ID > 0){
 				MLBRCNAB cnab = new MLBRCNAB(ctx,LBR_CNAB_ID,trx);
-				cnab.setlbr_IsCancelled(true);
+				cnab.setIsCancelled(true);
 				if (!cnab.save(trx)){
 					log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);
 				}

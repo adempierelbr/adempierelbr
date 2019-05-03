@@ -45,7 +45,7 @@ public class X_LBR_CNAB extends PO implements I_LBR_CNAB, I_Persistent
 // N
 			setLBR_CNAB_ID (0);
 			setlbr_DocDate (new Timestamp( System.currentTimeMillis() ));
-			setlbr_IsCancelled (false);
+			setIsCancelled (false);
 // 'N'
 			setRoutingNo (null);
         } */
@@ -1122,20 +1122,20 @@ public class X_LBR_CNAB extends PO implements I_LBR_CNAB, I_Persistent
 	}
 
 	/** Set IsCancelled.
-		@param lbr_IsCancelled 
+		@param IsCancelled 
 		Defines if the Document IsCancelled
 	  */
-	public void setlbr_IsCancelled (boolean lbr_IsCancelled)
+	public void setIsCancelled (boolean IsCancelled)
 	{
-		set_Value (COLUMNNAME_lbr_IsCancelled, Boolean.valueOf(lbr_IsCancelled));
+		set_Value (COLUMNNAME_IsCancelled, Boolean.valueOf(IsCancelled));
 	}
 
 	/** Get IsCancelled.
 		@return Defines if the Document IsCancelled
 	  */
-	public boolean islbr_IsCancelled () 
+	public boolean isIsCancelled () 
 	{
-		Object oo = get_Value(COLUMNNAME_lbr_IsCancelled);
+		Object oo = get_Value(COLUMNNAME_IsCancelled);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

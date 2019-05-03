@@ -503,18 +503,18 @@ public interface I_LBR_Boleto
 	  */
 	public BigDecimal getlbr_Interest();
 
-    /** Column name lbr_IsCancelled */
-    public static final String COLUMNNAME_lbr_IsCancelled = "lbr_IsCancelled";
+    /** Column name IsCancelled */
+    public static final String COLUMNNAME_IsCancelled = "IsCancelled";
 
 	/** Set IsCancelled.
 	  * Defines if the Document IsCancelled
 	  */
-	public void setlbr_IsCancelled (boolean lbr_IsCancelled);
+	public void setIsCancelled (boolean IsCancelled);
 
 	/** Get IsCancelled.
 	  * Defines if the Document IsCancelled
 	  */
-	public boolean islbr_IsCancelled();
+	public boolean isIsCancelled();
 
     /** Column name lbr_jBoletoNo */
     public static final String COLUMNNAME_lbr_jBoletoNo = "lbr_jBoletoNo";

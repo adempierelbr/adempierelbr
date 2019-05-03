@@ -67,7 +67,7 @@ public class ProcXMLExport extends SvrProcess
 	private int p_C_BPartner_ID 		= 0;
 	private int p_C_BP_Group_ID 		= 0;
 	private int p_M_Shipper_ID 			= 0;
-	private Boolean p_LBR_IsCancelled	= false;
+	private Boolean p_IsCancelled	= false;
 
 	/**	Include DF-e	*/
 	private boolean p_IncludeDFe		= true;
@@ -110,8 +110,8 @@ public class ProcXMLExport extends SvrProcess
 				p_C_BP_Group_ID = para[i].getParameterAsInt();
 			else if (name.equals("M_Shipper_ID"))
 				p_M_Shipper_ID = para[i].getParameterAsInt();
-			else if (name.equals("lbr_IsCancelled"))
-				p_LBR_IsCancelled = para[i].getParameterAsBoolean();
+			else if (name.equals("IsCancelled"))
+				p_IsCancelled = para[i].getParameterAsBoolean();
 			else
 				log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
 		}
@@ -175,7 +175,7 @@ public class ProcXMLExport extends SvrProcess
 						nf.getBPName(), nf.getDocumentNo(), nf.getlbr_NFSerie(), nf.getlbr_NFeID(), null));
 				
 				//	Se o campo Incluir Documentos Cancelados estiver desmarcado não adicionar o XML da NF ao arquivo
-				if (!p_LBR_IsCancelled)
+				if (!p_IsCancelled)
 					continue;
 				
 				// NF Inutilizada não possui XML
