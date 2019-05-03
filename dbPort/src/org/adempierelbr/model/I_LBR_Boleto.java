@@ -514,7 +514,7 @@ public interface I_LBR_Boleto
 	/** Get IsCancelled.
 	  * Defines if the Document IsCancelled
 	  */
-	public boolean isIsCancelled();
+	public boolean isCancelled();
 
     /** Column name lbr_jBoletoNo */
     public static final String COLUMNNAME_lbr_jBoletoNo = "lbr_jBoletoNo";

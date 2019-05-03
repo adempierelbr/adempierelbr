@@ -1133,7 +1133,7 @@ public class X_LBR_CNAB extends PO implements I_LBR_CNAB, I_Persistent
 	/** Get IsCancelled.
 		@return Defines if the Document IsCancelled
 	  */
-	public boolean isIsCancelled () 
+	public boolean isCancelled () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsCancelled);
 		if (oo != null) 

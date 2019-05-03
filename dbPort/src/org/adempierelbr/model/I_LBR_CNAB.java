@@ -870,7 +870,7 @@ public interface I_LBR_CNAB
 	/** Get IsCancelled.
 	  * Defines if the Document IsCancelled
 	  */
-	public boolean isIsCancelled();
+	public boolean isCancelled();
 
     /** Column name RoutingNo */
     public static final String COLUMNNAME_RoutingNo = "RoutingNo";
