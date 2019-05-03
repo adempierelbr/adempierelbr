@@ -2041,32 +2041,32 @@ public class NFeXMLGenerator
 		//
 		MLBRNFConfig config = MLBRNFConfig.get(nf.getAD_Org_ID());
 		
-		//
-		if (config != null && config.getLBR_CSRTCode() != null)
-		{		
-			//	CSRT Hash
-			byte[] CSRTHash = generateCSRTHash (nfeID, config.getLBR_CSRTCode());
+		//	Add Technical Resposible
+		X_LBR_SystemResponsible sresp = new Query(Env.getCtx(), X_LBR_SystemResponsible.Table_Name, "", null)
+										.first();
+		if (sresp != null && !sresp.getlbr_CNPJ().isEmpty() && !sresp.getContactName().isEmpty()
+				&& !sresp.getEMail().isEmpty() && !sresp.getPhone().isEmpty())
+		{							
+			//	add Technical Responsible
+			TInfRespTec respTec = infNFe.addNewInfRespTec();
+			respTec.setCNPJ(TextUtil.toNumeric(sresp.getlbr_CNPJ()));
+			respTec.setXContato(sresp.getContactName().trim());
+			respTec.setEmail(sresp.getEMail().trim());
+			respTec.setFone(toNumericStr(sresp.getPhone()));
 			
-			//	Add Technical Resposible
-			if (CSRTHash != null)
+			//
+			if (config != null && config.getLBR_CSRTCode() != null)
 			{
-				String hash = new String (CSRTHash);				
-				nf.setLBR_CSRTHash(hash);
+				//	CSRT Hash
+				byte[] CSRTHash = generateCSRTHash (nfeID, config.getLBR_CSRTCode());
 				
-				X_LBR_SystemResponsible sresp = new Query(Env.getCtx(), X_LBR_SystemResponsible.Table_Name, "", null)
-												.first();
-				
-				if (sresp != null)
-				{			
-					//	add Technical Responsible
-					TInfRespTec respTec = infNFe.addNewInfRespTec();
-					respTec.setCNPJ(sresp.getlbr_CNPJ());
-					respTec.setXContato(sresp.getContactName());
-					respTec.setEmail(sresp.getEMail());
-					respTec.setFone(sresp.getPhone());
-					respTec.setIdCSRT(TextUtil.lPad(config.getLBR_CSRTID(),2));
+				if (CSRTHash != null)
+				{
+					String hash = new String (CSRTHash);				
+					nf.setLBR_CSRTHash(hash);
+					respTec.setIdCSRT(TextUtil.lPad(config.getLBR_CSRTID(), 2));
 					respTec.setHashCSRT(CSRTHash);
-				}	
+				}
 			}
 		}
 
