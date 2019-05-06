@@ -351,6 +351,56 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 	}	//	getICMSRate
 	
 	/**
+	 *  Retorno o valor do ICMS EFETIVO
+	 *
+	 *  @return	BigDecimal	Valor ICMS EFETIVO
+	 */
+	public BigDecimal getICMSEfetAmt()
+	{
+		return getTaxAmt("ICMSEFET");
+	}	//	getICMSAmt
+
+	/**
+	 *  Retorno o valor da Base de ICMS EFETIVO
+	 *
+	 *  @return	BigDecimal	Base ICMS EFETIVO
+	 */
+	public BigDecimal getICMSEfetBase()
+	{
+		return getTaxBaseAmt("ICMSEFET");
+	}	//	getICMSBase
+
+	/**
+	 *  Retorno o valor da Redução da Base de ICMS EFETIVO
+	 *
+	 *  @return	BigDecimal	Redução da Base de ICMS EFETIVO
+	 */
+	public BigDecimal getICMSEfetBaseReduction()
+	{
+		return getTaxBaseReduction("ICMSEFET");
+	}	//	getICMSBaseReduction
+
+	/**
+	 *  Retorno a alíquota de ICMS EFETIVO
+	 *
+	 *  @return	BigDecimal	Alíquota ICMS EFETIVO
+	 */
+	public BigDecimal getICMSEfetRate()
+	{
+		return getTaxRate("ICMSEFET");
+	}	//	getICMSRate
+	
+	/**
+	 *  Retorno a LBR_NFLineTax do ICMS EFETIVO
+	 *
+	 *  @return	LBR_NFLineTax
+	 */
+	public X_LBR_NFLineTax getICMSEfetTax()
+	{
+		return getTax("ICMSEFET");
+	}	//	getICMSTax
+	
+	/**
 	 *  Retorno a LBR_NFLineTax do FCP
 	 *
 	 *  @return	LBR_NFLineTax

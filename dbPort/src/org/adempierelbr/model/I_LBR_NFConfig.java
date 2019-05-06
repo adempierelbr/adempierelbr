@@ -92,6 +92,68 @@ public interface I_LBR_NFConfig
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_ConfigSystemResp */
+    public static final String COLUMNNAME_LBR_ConfigSystemResp = "LBR_ConfigSystemResp";
+
+	/** Set Configure System Responsible	  */
+	public void setLBR_ConfigSystemResp (String LBR_ConfigSystemResp);
+
+	/** Get Configure System Responsible	  */
+	public String getLBR_ConfigSystemResp();
+
+    /** Column name LBR_CSRTCode */
+    public static final String COLUMNNAME_LBR_CSRTCode = "LBR_CSRTCode";
+
+	/** Set CSRT Code.
+	  * CSRT Code used to generate Hash CSRT
+	  */
+	public void setLBR_CSRTCode (String LBR_CSRTCode);
+
+	/** Get CSRT Code.
+	  * CSRT Code used to generate Hash CSRT
+	  */
+	public String getLBR_CSRTCode();
+
+    /** Column name LBR_CSRTID */
+    public static final String COLUMNNAME_LBR_CSRTID = "LBR_CSRTID";
+
+	/** Set CSRT ID.
+	  * CSRT ID corresponding to the CSRT Code
+	  */
+	public void setLBR_CSRTID (int LBR_CSRTID);
+
+	/** Get CSRT ID.
+	  * CSRT ID corresponding to the CSRT Code
+	  */
+	public int getLBR_CSRTID();
+
+    /** Column name lbr_DANFEFormat */
+    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
+
+	/** Set DANFE Format	  */
+	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
+
+	/** Get DANFE Format	  */
+	public String getlbr_DANFEFormat();
+
+    /** Column name lbr_DateScan */
+    public static final String COLUMNNAME_lbr_DateScan = "lbr_DateScan";
+
+	/** Set Data contingência	  */
+	public void setlbr_DateScan (Timestamp lbr_DateScan);
+
+	/** Get Data contingência	  */
+	public Timestamp getlbr_DateScan();
+
+    /** Column name lbr_MotivoScan */
+    public static final String COLUMNNAME_lbr_MotivoScan = "lbr_MotivoScan";
+
+	/** Set Motivo contingência	  */
+	public void setlbr_MotivoScan (String lbr_MotivoScan);
+
+	/** Get Motivo contingência	  */
+	public String getlbr_MotivoScan();
+
     /** Column name LBR_NFConfig_ID */
     public static final String COLUMNNAME_LBR_NFConfig_ID = "LBR_NFConfig_ID";
 
@@ -100,6 +162,28 @@ public interface I_LBR_NFConfig
 
 	/** Get NF Configuration	  */
 	public int getLBR_NFConfig_ID();
+
+    /** Column name lbr_NFeEnv */
+    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
+
+	/** Set NFe Environment	  */
+	public void setlbr_NFeEnv (String lbr_NFeEnv);
+
+	/** Get NFe Environment	  */
+	public String getlbr_NFeEnv();
+
+    /** Column name lbr_NFModel */
+    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
+
+	/** Set NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public void setlbr_NFModel (String lbr_NFModel);
+
+	/** Get NF Model.
+	  * Identifies the model of Nota Fiscal
+	  */
+	public String getlbr_NFModel();
 
     /** Column name LBR_ReverseInOut */
     public static final String COLUMNNAME_LBR_ReverseInOut = "LBR_ReverseInOut";
@@ -155,53 +239,4 @@ public interface I_LBR_NFConfig
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
-
-    /** Column name lbr_DANFEFormat */
-    public static final String COLUMNNAME_lbr_DANFEFormat = "lbr_DANFEFormat";
-
-	/** Set DANFE Format	  */
-	public void setlbr_DANFEFormat (String lbr_DANFEFormat);
-
-	/** Get DANFE Format	  */
-	public String getlbr_DANFEFormat();
-
-    /** Column name lbr_DateScan */
-    public static final String COLUMNNAME_lbr_DateScan = "lbr_DateScan";
-
-	/** Set Data contingência	  */
-	public void setlbr_DateScan (Timestamp lbr_DateScan);
-
-	/** Get Data contingência	  */
-	public Timestamp getlbr_DateScan();
-
-    /** Column name lbr_MotivoScan */
-    public static final String COLUMNNAME_lbr_MotivoScan = "lbr_MotivoScan";
-
-	/** Set Motivo contingência	  */
-	public void setlbr_MotivoScan (String lbr_MotivoScan);
-
-	/** Get Motivo contingência	  */
-	public String getlbr_MotivoScan();
-
-    /** Column name lbr_NFModel */
-    public static final String COLUMNNAME_lbr_NFModel = "lbr_NFModel";
-
-	/** Set NF Model.
-	  * Identifies the model of Nota Fiscal
-	  */
-	public void setlbr_NFModel (String lbr_NFModel);
-
-	/** Get NF Model.
-	  * Identifies the model of Nota Fiscal
-	  */
-	public String getlbr_NFModel();
-
-    /** Column name lbr_NFeEnv */
-    public static final String COLUMNNAME_lbr_NFeEnv = "lbr_NFeEnv";
-
-	/** Set NFe Environment	  */
-	public void setlbr_NFeEnv (String lbr_NFeEnv);
-
-	/** Get NFe Environment	  */
-	public String getlbr_NFeEnv();
 }
