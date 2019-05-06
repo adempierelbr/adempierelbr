@@ -1240,5 +1240,100 @@ INSERT INTO AD_Field_Trl (AD_Language,AD_Field_ID, Description,Help,Name, IsTran
 ALTER TABLE LBR_NFConfig ADD COLUMN LBR_ConfigSystemResp CHAR(1) DEFAULT 'N' NOT NULL
 ;
 
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Element SET Name='System Responsible', PrintName='System Responsible',Updated=TO_TIMESTAMP('2019-05-06 16:21:17','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122881
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Element_Trl SET IsTranslated='N' WHERE AD_Element_ID=1122881
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Element_Trl SET Description=NULL,Help=NULL,Name='System Responsible',PO_Description=NULL,PO_Help=NULL,PO_Name=NULL,PO_PrintName=NULL,PrintName='System Responsible',IsTranslated='Y' WHERE AD_Language='en_US' AND AD_Element_ID=1122881
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Column SET ColumnName='LBR_ConfigSystemResp', Name='System Responsible', Description=NULL, Help=NULL WHERE AD_Element_ID=1122881
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET ColumnName='LBR_ConfigSystemResp', Name='System Responsible', Description=NULL, Help=NULL, AD_Element_ID=1122881 WHERE UPPER(ColumnName)='LBR_CONFIGSYSTEMRESP' AND IsCentrallyMaintained='Y' AND AD_Element_ID IS NULL
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET ColumnName='LBR_ConfigSystemResp', Name='System Responsible', Description=NULL, Help=NULL WHERE AD_Element_ID=1122881 AND IsCentrallyMaintained='Y'
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET Name='System Responsible', Description=NULL, Help=NULL WHERE AD_Column_ID IN (SELECT AD_Column_ID FROM AD_Column WHERE AD_Element_ID=1122881) AND IsCentrallyMaintained='Y'
+;
+
+-- 06/05/2019 16h21min17s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_PrintFormatItem SET PrintName='System Responsible', Name='System Responsible' WHERE IsCentrallyMaintained='Y' AND EXISTS (SELECT * FROM AD_Column c WHERE c.AD_Column_ID=AD_PrintFormatItem.AD_Column_ID AND c.AD_Element_ID=1122881)
+;
+
+-- 06/05/2019 16h21min47s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Element_Trl SET IsTranslated='Y',Name='Responsável Técnico',PrintName='Responsável Técnico',Updated=TO_TIMESTAMP('2019-05-06 16:21:47','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1122881 AND AD_Language='pt_BR'
+;
+
+-- 06/05/2019 16h22min33s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=121,Updated=TO_TIMESTAMP('2019-05-06 16:22:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128171
+;
+
+-- 06/05/2019 16h22min42s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET SeqNo=110,Updated=TO_TIMESTAMP('2019-05-06 16:22:42','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128172
+;
+
+-- 06/05/2019 16h22min46s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLength=22,Updated=TO_TIMESTAMP('2019-05-06 16:22:46','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128172
+;
+
+-- 06/05/2019 16h22min51s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLength=22, IsSameLine='Y',Updated=TO_TIMESTAMP('2019-05-06 16:22:51','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128171
+;
+
+-- 06/05/2019 16h23min53s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLogic='@LBR_ConfigSystemResp@=I',Updated=TO_TIMESTAMP('2019-05-06 16:23:53','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128192
+;
+
+-- 06/05/2019 16h23min58s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLogic='@LBR_ConfigSystemResp@=I',Updated=TO_TIMESTAMP('2019-05-06 16:23:58','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128171
+;
+
+-- 06/05/2019 16h24min1s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLogic='@LBR_ConfigSystemResp@=I',Updated=TO_TIMESTAMP('2019-05-06 16:24:01','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128172
+;
+
+-- 06/05/2019 16h24min5s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLogic=NULL,Updated=TO_TIMESTAMP('2019-05-06 16:24:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128192
+;
+
+-- 06/05/2019 16h25min29s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Field SET DisplayLength=22,Updated=TO_TIMESTAMP('2019-05-06 16:25:29','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128192
+;
+
+-- 06/05/2019 16h28min33s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Column SET ValueMax='99', ValueMin='0',Updated=TO_TIMESTAMP('2019-05-06 16:28:33','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Column_ID=1131514
+;
+
 SELECT Register_Migration_Script ('201904251600_NFeNT201805.sql') FROM DUAL
 ;
