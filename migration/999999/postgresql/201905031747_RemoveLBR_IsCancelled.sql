@@ -68,6 +68,28 @@ UPDATE AD_Column_Trl SET Name='Cancelled',IsTranslated='Y' WHERE AD_Language='en
 UPDATE AD_Field SET Name='Cancelled', Description='The transaction was cancelled', Help=NULL WHERE AD_Column_ID=1129790 AND IsCentrallyMaintained='Y'
 ;
 
+-- 06/05/2019 11h45min5s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Element_ID=2531, ColumnName='IsCancelled',Updated=TO_TIMESTAMP('2019-05-06 11:45:05','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120338
+;
+
+-- 06/05/2019 11h45min36s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+UPDATE AD_Process_Para SET AD_Element_ID=2531, ColumnName='IsCancelled',Updated=TO_TIMESTAMP('2019-05-06 11:45:36','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120346
+;
+
+-- 06/05/2019 11h45min53s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+DELETE FROM AD_Element_Trl WHERE AD_Element_ID=1000027
+;
+
+-- 06/05/2019 11h45min53s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+DELETE FROM AD_Element WHERE AD_Element_ID=1000027
+;
+
+UPDATE AD_Process_Para SET AD_Element_ID=2531, ColumnName='IsCancelled',Updated=TO_TIMESTAMP('2019-05-06 11:45:36','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000027
+;
 UPDATE LBR_Boleto SET IsCancelled=LBR_IsCancelled
 ;
 UPDATE LBR_CNAB SET IsCancelled=LBR_IsCancelled
