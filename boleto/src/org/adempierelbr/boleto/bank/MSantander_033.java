@@ -60,7 +60,7 @@ public class MSantander_033 implements I_Bank
 			cnab.setRoutingNo(CSANTANDER033); 							//	Santander (Banespa)
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); 			//	Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); 	//	Conta Bancária
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate());
+			cnab.setDateDoc(boleto.getDateDoc());
 			cnab.saveEx();
 		}
 		catch (Exception e)
@@ -217,7 +217,7 @@ public class MSantander_033 implements I_Bank
 			osw.write(TextUtil.lPad ("", 5));							//	Código da agência cobradora do Banco Santander informar somente se carteira for igual a 5, caso contrário, informar zeros.
 			osw.write(TextUtil.lPad ("01", 2));							//	Espécie de documento
 			osw.write(TextUtil.rPad ("N", 1));							//	Tipo de aceite = N
-			osw.write(TextUtil.lPad (MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate()), 6));			//	Data da emissão do título
+			osw.write(TextUtil.lPad (MLBRCNAB.CNABDateFormat(boleto.getDateDoc()), 6));			//	Data da emissão do título
 			osw.write(TextUtil.lPad (instruction1, 2));					//	Primeira instrução cobrança
 			osw.write(TextUtil.lPad (instruction2, 2));					//	Segunda instrução cobrança
 			osw.write(TextUtil.lPad (boleto.getlbr_Interest(), 13));	//	Valor de mora a ser cobrado por dia de atraso

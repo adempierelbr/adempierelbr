@@ -846,18 +846,18 @@ public interface I_LBR_CNAB
 	  */
 	public int getLBR_CNAB_ID();
 
-    /** Column name lbr_DocDate */
-    public static final String COLUMNNAME_lbr_DocDate = "lbr_DocDate";
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
 
 	/** Set Document Date.
 	  * Identifies the Document Date
 	  */
-	public void setlbr_DocDate (Timestamp lbr_DocDate);
+	public void setDateDoc (Timestamp DateDoc);
 
 	/** Get Document Date.
 	  * Identifies the Document Date
 	  */
-	public Timestamp getlbr_DocDate();
+	public Timestamp getDateDoc();
 
     /** Column name IsCancelled */
     public static final String COLUMNNAME_IsCancelled = "IsCancelled";

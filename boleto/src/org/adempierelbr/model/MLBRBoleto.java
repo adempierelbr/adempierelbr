@@ -852,7 +852,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 					MLBRBoleto newBoleto = new MLBRBoleto(ctx,0,trx);
 					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
 					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
-					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
+					newBoleto.setDateDoc(invoice.getDateInvoiced()); //Data do Documento
 					newBoleto.setC_BankAccount_ID(BankA.getC_BankAccount_ID()); //Conta Bancária
 					newBoleto.setAD_Org_ID(BankA.getAD_Org_ID());
 					// Buscar nome da Empresa do campo Razão Social na Janela
@@ -997,8 +997,8 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 		int bank = Integer.parseInt(getlbr_jBoletoNo());
 
-		jBoletoBean.setDataDocumento(TextUtil.timeToString(getlbr_DocDate(),dateFormat));
-	    jBoletoBean.setDataProcessamento(TextUtil.timeToString(getlbr_DocDate(),dateFormat));
+		jBoletoBean.setDataDocumento(TextUtil.timeToString(getDateDoc(),dateFormat));
+	    jBoletoBean.setDataProcessamento(TextUtil.timeToString(getDateDoc(),dateFormat));
 	    jBoletoBean.setCedente(getlbr_Cessionary());
 	    jBoletoBean.setNomeSacado(getlbr_ReceiverName());
 	    jBoletoBean.setEnderecoSacado(getAddress());

@@ -81,7 +81,7 @@ public class MBancoReal implements I_Bank
 			String titCedeNo = MLBRCNAB.CNABFormat(invoice.getDocumentNo(),10);
 			//
 			String dueDate = MLBRCNAB.CNABDateFormat(boleto.getDueDate());
-			String docDate = MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate());
+			String docDate = MLBRCNAB.CNABDateFormat(boleto.getDateDoc());
 			String discountDate = MLBRCNAB.CNABDateFormat(boleto.getDiscountDate());
 			//
 			String grandTot = MLBRCNAB.CNABFormat(boleto.getGrandTotal()
@@ -92,7 +92,7 @@ public class MBancoReal implements I_Bank
 					.setScale(2, ROUND).toString(), 13);
 			//
 			cnab.setRoutingNo(CBANCOREAL); 								//	Banco Real
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); 			//	Data do Documento
+			cnab.setDateDoc(boleto.getDateDoc()); 			//	Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); 		//	Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //	Conta Bancária
 			//

@@ -78,7 +78,7 @@ public class ProcGenerateRPS extends SvrProcess
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
-			else if(name.equals("lbr_DocDate"))
+			else if(name.equals("lbr_DocDate") || name.equals("DateDoc"))
 			{
 				p_DateFrom = (Timestamp)para[i].getParameter();
 				p_DateTo   = (Timestamp)para[i].getParameter_To();

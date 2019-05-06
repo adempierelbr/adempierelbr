@@ -44,7 +44,7 @@ public class X_LBR_CNAB extends PO implements I_LBR_CNAB, I_Persistent
 			setIsSelected (false);
 // N
 			setLBR_CNAB_ID (0);
-			setlbr_DocDate (new Timestamp( System.currentTimeMillis() ));
+			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 			setIsCancelled (false);
 // 'N'
 			setRoutingNo (null);
@@ -1105,20 +1105,20 @@ public class X_LBR_CNAB extends PO implements I_LBR_CNAB, I_Persistent
 	}
 
 	/** Set Document Date.
-		@param lbr_DocDate 
+		@param DateDoc 
 		Identifies the Document Date
 	  */
-	public void setlbr_DocDate (Timestamp lbr_DocDate)
+	public void setDateDoc (Timestamp DateDoc)
 	{
-		set_Value (COLUMNNAME_lbr_DocDate, lbr_DocDate);
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
 	}
 
 	/** Get Document Date.
 		@return Identifies the Document Date
 	  */
-	public Timestamp getlbr_DocDate () 
+	public Timestamp getDateDoc () 
 	{
-		return (Timestamp)get_Value(COLUMNNAME_lbr_DocDate);
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
 	/** Set IsCancelled.

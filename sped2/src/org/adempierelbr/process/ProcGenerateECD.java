@@ -84,7 +84,7 @@ public class ProcGenerateECD extends SvrProcess {
 			String name = para[i].getParameterName();
 			if (para[i].getParameter() == null)
 				;
-			else if (name.equals("lbr_DocDate"))
+			else if (name.equals("lbr_DocDate") || name.equals("DateDoc"))
 			{
 				p_DateFrom = (Timestamp) para[i].getParameter();
 				p_DateTo = (Timestamp) para[i].getParameter_To();
@@ -113,7 +113,7 @@ public class ProcGenerateECD extends SvrProcess {
 		if (p_AD_Org_ID == 0)
 			throw new Exception("@AD_Org_ID@ @Mandatory@");
 		if (p_DateFrom == null || p_DateTo == null)
-			throw new Exception("@lbr_DocDate@ @Mandatory@");
+			throw new Exception("@DateDoc@ @Mandatory@");
 
 		String fileName = p_FilePath;
 		StringBuffer result = runSPED (ctx);

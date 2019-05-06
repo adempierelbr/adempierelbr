@@ -56,7 +56,7 @@ public class X_LBR_Boleto extends PO implements I_LBR_Boleto, I_Persistent
 			setLBR_Boleto_ID (0);
 			setlbr_BPTypeBR (null);
 			setlbr_Cessionary (null);
-			setlbr_DocDate (new Timestamp( System.currentTimeMillis() ));
+			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 			setlbr_HasSue (false);
 // 'N'
 			setIsCancelled (false);
@@ -591,20 +591,20 @@ public class X_LBR_Boleto extends PO implements I_LBR_Boleto, I_Persistent
 	}
 
 	/** Set Document Date.
-		@param lbr_DocDate 
+		@param DateDoc 
 		Identifies the Document Date
 	  */
-	public void setlbr_DocDate (Timestamp lbr_DocDate)
+	public void setDateDoc (Timestamp DateDoc)
 	{
-		set_Value (COLUMNNAME_lbr_DocDate, lbr_DocDate);
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
 	}
 
 	/** Get Document Date.
 		@return Identifies the Document Date
 	  */
-	public Timestamp getlbr_DocDate () 
+	public Timestamp getDateDoc () 
 	{
-		return (Timestamp)get_Value(COLUMNNAME_lbr_DocDate);
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
 	/** Set Has Sue.
