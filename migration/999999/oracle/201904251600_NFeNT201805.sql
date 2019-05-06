@@ -1115,40 +1115,40 @@ UPDATE AD_Tab SET TabLevel=1,Updated=TO_DATE('2019-05-02 11:25:06','YYYY-MM-DD H
 ;
 
 -- 02/05/2019 11h26min49s BRT
-UPDATE AD_Field SET IsDisplayed='Y', SeqNo=20, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, IsAllowCopy='Y', XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128178
+UPDATE AD_Field SET IsDisplayed='Y', SeqNo=20, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128178
 ;
 
 -- 02/05/2019 11h26min49s BRT
-UPDATE AD_Field SET SeqNo=40, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128176
+UPDATE AD_Field SET SeqNo=40, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 11:26:49','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128176
 ;
 
 -- 02/05/2019 11h26min50s BRT
-UPDATE AD_Field SET SeqNo=60, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=3, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128179
+UPDATE AD_Field SET SeqNo=60, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128179
 ;
 
 -- 02/05/2019 11h26min50s BRT
-UPDATE AD_Field SET SeqNo=0, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128180
+UPDATE AD_Field SET SeqNo=0, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 11:26:50','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128180
 ;
 
 -- 02/05/2019 11h37min20s BRT
-UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, MandatoryLogic='@LBR_ANVISACode@=''ISENTO'' | @LBR_ANVISACode@ = ''''', IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 11:37:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128183
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL,Updated=TO_DATE('2019-05-02 11:37:20','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128183
 ;
 
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 -- 02/05/2019 17h48min7s BRT
-UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, ColumnSpan=2, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 17:48:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128187
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 17:48:07','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128187
 ;
 
 -- 02/05/2019 17h48min54s BRT
-UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, XPosition=4, ColumnSpan=2, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-02 17:48:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128188
+UPDATE AD_Field SET AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-02 17:48:54','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128188
 ;
 
 -- 03/05/2019 12h24min52s BRT
-UPDATE AD_Field SET SeqNo=120, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, SeqNoGrid=120, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-03 12:24:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100, ColumnSpan=2 WHERE AD_Field_ID=1128171
+UPDATE AD_Field SET SeqNo=120, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-03 12:24:52','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128171
 ;
 
 -- 03/05/2019 12h24min59s BRT
-UPDATE AD_Field SET SeqNo=130, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, SeqNoGrid=130, IsToolbarButton=NULL,Updated=TO_DATE('2019-05-03 12:24:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100, XPosition=4, ColumnSpan=2 WHERE AD_Field_ID=1128172
+UPDATE AD_Field SET SeqNo=130, AD_Reference_Value_ID=NULL, AD_Val_Rule_ID=NULL, Updated=TO_DATE('2019-05-03 12:24:59','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Field_ID=1128172
 ;
 
 -- 03/05/2019 17h39min0s BRT
