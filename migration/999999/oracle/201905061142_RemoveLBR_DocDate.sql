@@ -127,5 +127,9 @@ CREATE OR REPLACE VIEW RV_LBR_Boleto AS
    FROM lbr_boleto b
 ;
 
+-- 06/05/2019 11h40min22s BRT
+-- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
+ALTER TABLE LBR_Boleto MODIFY LBR_DocDate NULL;
+
 SELECT Register_Migration_Script ('201905061142_RemoveLBR_DocDate.sql') FROM DUAL
 ;
