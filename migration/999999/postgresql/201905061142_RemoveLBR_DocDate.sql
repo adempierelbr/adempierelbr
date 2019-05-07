@@ -10,7 +10,7 @@ UPDATE AD_Field SET Name='Document Date', Description='Date of the Document', He
 
 -- 06/05/2019 11h40min22s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-ALTER TABLE LBR_Boleto ADD COLUMN DateDoc TIMESTAMP NOT NULL
+ALTER TABLE LBR_Boleto ADD COLUMN DateDoc TIMESTAMP
 ;
 
 -- 06/05/2019 11h40min46s BRT
@@ -25,7 +25,7 @@ UPDATE AD_Field SET Name='Document Date', Description='Date of the Document', He
 
 -- 06/05/2019 11h40min49s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-ALTER TABLE LBR_CNAB ADD COLUMN DateDoc TIMESTAMP NOT NULL
+ALTER TABLE LBR_CNAB ADD COLUMN DateDoc TIMESTAMP
 ;
 
 -- 06/05/2019 11h41min12s BRT
@@ -53,17 +53,25 @@ UPDATE AD_Process_Para SET AD_Element_ID=265, ColumnName='DateDoc',Updated=TO_TI
 UPDATE AD_Process_Para SET AD_Element_ID=265, ColumnName='DateDoc',Updated=TO_TIMESTAMP('2019-05-06 11:44:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Process_Para_ID=1120334
 ;
 
+UPDATE AD_Process_Para SET AD_Element_ID=265, ColumnName='DateDoc',Updated=TO_TIMESTAMP('2019-05-06 11:44:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000018
+;
+
 -- 06/05/2019 11h44min25s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
-DELETE FROM AD_Element_Trl WHERE AD_Element_ID=1000018
+DELETE  FROM  AD_Element_Trl WHERE AD_Element_ID=1000018
 ;
 
 -- 06/05/2019 11h44min25s BRT
 -- I forgot to set the DICTIONARY_ID_COMMENTS System Configurator
 DELETE FROM AD_Element WHERE AD_Element_ID=1000018
 ;
-
-UPDATE AD_Process_Para SET AD_Element_ID=265, ColumnName='DateDoc',Updated=TO_TIMESTAMP('2019-05-06 11:44:16','YYYY-MM-DD HH24:MI:SS'),UpdatedBy=100 WHERE AD_Element_ID=1000018
+UPDATE LBR_Boleto SET DateDoc=lbr_DocDate WHERE DateDoc IS NULL AND lbr_DocDate IS NOT NULL
+;
+UPDATE LBR_CNAB SET DateDoc=lbr_DocDate WHERE DateDoc IS NULL AND lbr_DocDate IS NOT NULL
+;
+INSERT INTO t_alter_column values('lbr_boleto','DateDoc',null,'NOT NULL',null)
+;
+INSERT INTO t_alter_column values('lbr_cnab','DateDoc',null,'NOT NULL',null)
 ;
 DROP VIEW RV_LBR_Boleto
 ;
