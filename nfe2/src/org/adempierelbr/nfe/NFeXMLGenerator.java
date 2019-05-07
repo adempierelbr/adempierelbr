@@ -765,7 +765,7 @@ public class NFeXMLGenerator
 					else if (cnpjf.length() == 14)
 						retOuEntreg.setCNPJ(toNumericStr (nf.getlbr_BPDeliveryCNPJ()));
 					
-					if (nf.getlbr_BPDeliveryIE() != null)
+					if (nf.getlbr_BPDeliveryIE() != null && !nf.getlbr_BPDeliveryIE().toUpperCase().contains("ISENT"))
 						retOuEntreg.setIE(toNumericStr(nf.getlbr_BPDeliveryIE()));
 					//
 					if (nf.getLBR_BPDeliveryName() != null && !nf.getLBR_BPDeliveryName().isEmpty())
