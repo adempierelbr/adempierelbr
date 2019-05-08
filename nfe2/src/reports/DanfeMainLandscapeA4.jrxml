@@ -1310,7 +1310,7 @@ $F{valorTotalServicos}.signum() == 1 ? Boolean.TRUE : Boolean.FALSE]]></printWhe
 	<group name="Group03-A" isResetPageNumber="true" footerPosition="CollateAtBottom">
 		<groupExpression><![CDATA[$F{numeroNfe}]]></groupExpression>
 		<groupHeader>
-			<band height="74" splitType="Stretch">
+			<band height="69" splitType="Stretch">
 				<printWhenExpression><![CDATA[$F{retirarEntregarNome} != null ? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
 				<rectangle radius="1">
 					<reportElement key="rectangle-9" mode="Transparent" x="699" y="49" width="82" height="20">
