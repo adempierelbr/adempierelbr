@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ImpressaoDanfeItemRetratoA4Report" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="0" bottomMargin="0" uuid="7b7766e9-3a9b-4c63-8c65-9d53d36af0b6">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ImpressaoDanfeItemRetratoA4Report" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="0" bottomMargin="0">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.0"/>
@@ -83,12 +82,12 @@
 	<columnHeader>
 		<band height="27" splitType="Stretch">
 			<rectangle radius="1">
-				<reportElement key="rectangle-42" mode="Opaque" x="2" y="10" width="46" height="17" backcolor="#DEDEDE" uuid="36e30f50-4566-4bae-b230-6b34d48712e9">
+				<reportElement key="rectangle-42" mode="Opaque" x="2" y="10" width="46" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-46" mode="Transparent" x="4" y="16" width="42" height="8" uuid="df117e4f-717c-4093-b731-07afd9b07d16">
+				<reportElement key="staticText-46" mode="Transparent" x="4" y="16" width="42" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -103,12 +102,12 @@
 				<text><![CDATA[CÓDIGO]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-43" mode="Opaque" x="48" y="10" width="142" height="17" backcolor="#DEDEDE" uuid="98af3f80-2db2-43e7-a8c5-aadee6569c3a">
+				<reportElement key="rectangle-43" mode="Opaque" x="48" y="10" width="142" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-47" mode="Transparent" x="50" y="16" width="139" height="8" uuid="80148ff6-eace-46dd-be7e-a13bad81fd1e">
+				<reportElement key="staticText-47" mode="Transparent" x="50" y="16" width="139" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -123,12 +122,12 @@
 				<text><![CDATA[DESCRIÇÃO DO PRODUTO/SERVIÇO]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-44" mode="Opaque" x="190" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="405db2fe-1dea-4b8a-94a2-13138db5828b">
+				<reportElement key="rectangle-44" mode="Opaque" x="190" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-48" mode="Transparent" x="197" y="16" width="23" height="8" uuid="ccd4be07-cca4-4513-841a-bfdab62b82dd">
+				<reportElement key="staticText-48" mode="Transparent" x="197" y="16" width="23" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -143,12 +142,12 @@
 				<text><![CDATA[NCM/SH]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-45" mode="Opaque" x="226" y="10" width="17" height="17" backcolor="#DEDEDE" uuid="a43a65e1-7653-4efb-9930-3544344b1181">
+				<reportElement key="rectangle-45" mode="Opaque" x="226" y="10" width="17" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-49" mode="Transparent" x="227" y="16" width="14" height="8" uuid="8c89144a-2a34-4be9-a952-55d0d9e6b332">
+				<reportElement key="staticText-49" mode="Transparent" x="227" y="16" width="14" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -163,12 +162,12 @@
 				<text><![CDATA[CST]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-46" mode="Opaque" x="243" y="10" width="19" height="17" backcolor="#DEDEDE" uuid="17e6b4fe-d164-4722-8d16-ca5faeec5aea">
+				<reportElement key="rectangle-46" mode="Opaque" x="243" y="10" width="19" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-50" mode="Transparent" x="246" y="16" width="14" height="8" uuid="48905989-63dc-4eb3-9037-f658d93f53a3">
+				<reportElement key="staticText-50" mode="Transparent" x="246" y="16" width="14" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -183,12 +182,12 @@
 				<text><![CDATA[CFOP]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-47" mode="Opaque" x="262" y="10" width="23" height="17" backcolor="#DEDEDE" uuid="247e495a-5e50-499f-9966-bef3a4b1210f">
+				<reportElement key="rectangle-47" mode="Opaque" x="262" y="10" width="23" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-51" mode="Transparent" x="264" y="16" width="18" height="8" uuid="cef43514-2523-40b9-a900-cef4e1b8635f">
+				<reportElement key="staticText-51" mode="Transparent" x="264" y="16" width="18" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -203,12 +202,12 @@
 				<text><![CDATA[UNID.]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-48" mode="Opaque" x="285" y="10" width="28" height="17" backcolor="#DEDEDE" uuid="65e90b85-0332-4283-a6f9-fb8891618481">
+				<reportElement key="rectangle-48" mode="Opaque" x="285" y="10" width="28" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-52" mode="Transparent" x="287" y="16" width="24" height="8" uuid="082b70c7-8b57-4a5c-a1e8-5ede76574cb3">
+				<reportElement key="staticText-52" mode="Transparent" x="287" y="16" width="24" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -223,12 +222,12 @@
 				<text><![CDATA[QTD.]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-49" mode="Opaque" x="313" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="91e993b5-87ab-486e-9cbd-52f425d5720c">
+				<reportElement key="rectangle-49" mode="Opaque" x="313" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-53" mode="Transparent" x="316" y="16" width="30" height="8" uuid="c0090b0d-1a50-4c6d-bab8-49b2b5cf251e">
+				<reportElement key="staticText-53" mode="Transparent" x="316" y="16" width="30" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -243,12 +242,12 @@
 				<text><![CDATA[VLR. UNIT.]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-50" mode="Opaque" x="349" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="68447d05-43dc-4382-a183-e2f29479501d">
+				<reportElement key="rectangle-50" mode="Opaque" x="349" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-54" mode="Transparent" x="352" y="16" width="30" height="8" uuid="1e210043-cfd9-4a0e-86f6-6c1fd1390182">
+				<reportElement key="staticText-54" mode="Transparent" x="352" y="16" width="30" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -263,12 +262,12 @@
 				<text><![CDATA[VLR. TOTAL]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-51" mode="Opaque" x="385" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="09a2d729-6dc5-42f2-80c8-521dc3941630">
+				<reportElement key="rectangle-51" mode="Opaque" x="385" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-55" mode="Transparent" x="388" y="16" width="30" height="8" uuid="8547ab1b-8d96-4ee7-8fb1-4e8d81417779">
+				<reportElement key="staticText-55" mode="Transparent" x="388" y="16" width="30" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -283,12 +282,12 @@
 				<text><![CDATA[BC ICMS]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-52" mode="Opaque" x="421" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="893799f6-b939-4b34-805c-7ca6864c3770">
+				<reportElement key="rectangle-52" mode="Opaque" x="421" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-56" mode="Transparent" x="424" y="16" width="30" height="8" uuid="fc4e8c39-93fe-4a61-996b-176521b60541">
+				<reportElement key="staticText-56" mode="Transparent" x="424" y="16" width="30" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -303,12 +302,12 @@
 				<text><![CDATA[VLR. ICMS]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-53" mode="Opaque" x="457" y="10" width="36" height="17" backcolor="#DEDEDE" uuid="86c7d0c8-faf0-48fd-a660-9846a6f9099c">
+				<reportElement key="rectangle-53" mode="Opaque" x="457" y="10" width="36" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-57" mode="Transparent" x="460" y="16" width="30" height="8" uuid="ee19ed4d-28ba-4deb-8f1d-dbe26bd3de05">
+				<reportElement key="staticText-57" mode="Transparent" x="460" y="16" width="30" height="8">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -323,12 +322,12 @@
 				<text><![CDATA[VLR. IPI]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-54" mode="Opaque" x="493" y="10" width="21" height="17" backcolor="#DEDEDE" uuid="263b6075-a4d9-4ac5-ac82-d4da3fdbea6f">
+				<reportElement key="rectangle-54" mode="Opaque" x="493" y="10" width="21" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-58" mode="Transparent" x="496" y="13" width="14" height="12" uuid="475eaeec-97bf-43b6-a6aa-1feb1a8164b3">
+				<reportElement key="staticText-58" mode="Transparent" x="496" y="13" width="14" height="12">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -343,12 +342,12 @@
 				<text><![CDATA[ALÍQ. ICMS]]></text>
 			</staticText>
 			<rectangle radius="1">
-				<reportElement key="rectangle-55" mode="Opaque" x="514" y="10" width="21" height="17" backcolor="#DEDEDE" uuid="70163e64-c954-4270-beb8-65fe1ecbdfcc">
+				<reportElement key="rectangle-55" mode="Opaque" x="514" y="10" width="21" height="17" backcolor="#DEDEDE">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-59" mode="Transparent" x="517" y="13" width="15" height="12" uuid="1dda381f-91f7-4565-aec9-87f354c64621">
+				<reportElement key="staticText-59" mode="Transparent" x="517" y="13" width="15" height="12">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -363,7 +362,7 @@
 				<text><![CDATA[ALÍQ. IPI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-60" mode="Transparent" x="4" y="1" width="136" height="10" uuid="ebd30804-9429-49ad-9c87-dfc4ad1b6abe">
+				<reportElement key="staticText-60" mode="Transparent" x="4" y="1" width="136" height="10">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -382,77 +381,77 @@
 	<detail>
 		<band height="11" splitType="Stretch">
 			<rectangle radius="1">
-				<reportElement key="rectangle-42" stretchType="RelativeToBandHeight" mode="Transparent" x="2" y="0" width="46" height="11" uuid="4b7207a0-d7a1-44fb-be3b-cc604bdb859e">
+				<reportElement key="rectangle-42" stretchType="RelativeToBandHeight" mode="Transparent" x="2" y="0" width="46" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-43" stretchType="RelativeToBandHeight" mode="Transparent" x="48" y="0" width="142" height="11" uuid="875d337c-36e8-4d1c-bf7b-7f806a62a9c0">
+				<reportElement key="rectangle-43" stretchType="RelativeToBandHeight" mode="Transparent" x="48" y="0" width="142" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-44" stretchType="RelativeToBandHeight" mode="Transparent" x="190" y="0" width="36" height="11" uuid="491417e7-8b25-4b40-be47-706cd312ef82">
+				<reportElement key="rectangle-44" stretchType="RelativeToBandHeight" mode="Transparent" x="190" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-45" stretchType="RelativeToBandHeight" mode="Transparent" x="226" y="0" width="17" height="11" uuid="88fc31df-42c4-4a0f-b922-e3c73f941710">
+				<reportElement key="rectangle-45" stretchType="RelativeToBandHeight" mode="Transparent" x="226" y="0" width="17" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-46" stretchType="RelativeToBandHeight" mode="Transparent" x="243" y="0" width="19" height="11" uuid="a93d53f1-0fcb-4f06-83b1-4a1379a3a1e0">
+				<reportElement key="rectangle-46" stretchType="RelativeToBandHeight" mode="Transparent" x="243" y="0" width="19" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-47" stretchType="RelativeToBandHeight" mode="Transparent" x="262" y="0" width="23" height="11" uuid="f1ecf1c5-071d-4aae-833b-e511e1100e77">
+				<reportElement key="rectangle-47" stretchType="RelativeToBandHeight" mode="Transparent" x="262" y="0" width="23" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-48" stretchType="RelativeToBandHeight" mode="Transparent" x="285" y="0" width="28" height="11" uuid="4037a050-2ed4-4ecc-93c1-d9a9e986e99b">
+				<reportElement key="rectangle-48" stretchType="RelativeToBandHeight" mode="Transparent" x="285" y="0" width="28" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-49" stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="0" width="36" height="11" uuid="b6dfcbe5-0083-4b1f-96d7-a5118a72ece6">
+				<reportElement key="rectangle-49" stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-50" stretchType="RelativeToBandHeight" mode="Transparent" x="349" y="0" width="36" height="11" uuid="de34cc76-f375-4fe2-8302-9bf4f95e2f0e">
+				<reportElement key="rectangle-50" stretchType="RelativeToBandHeight" mode="Transparent" x="349" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-51" stretchType="RelativeToBandHeight" mode="Transparent" x="385" y="0" width="36" height="11" uuid="9aadf2d1-f412-47d9-a9ef-aabb5257b55c">
+				<reportElement key="rectangle-51" stretchType="RelativeToBandHeight" mode="Transparent" x="385" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-52" stretchType="RelativeToBandHeight" mode="Transparent" x="421" y="0" width="36" height="11" uuid="8b0a8542-588f-4901-a691-452bf73c0749">
+				<reportElement key="rectangle-52" stretchType="RelativeToBandHeight" mode="Transparent" x="421" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-53" stretchType="RelativeToBandHeight" mode="Transparent" x="457" y="0" width="36" height="11" uuid="a5c0e094-51fc-4bfe-ab4e-46d7ac429cd8">
+				<reportElement key="rectangle-53" stretchType="RelativeToBandHeight" mode="Transparent" x="457" y="0" width="36" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-54" stretchType="RelativeToBandHeight" mode="Transparent" x="493" y="0" width="21" height="11" uuid="21b0a13e-1f9b-448a-96d7-bcc1e77a29fd">
+				<reportElement key="rectangle-54" stretchType="RelativeToBandHeight" mode="Transparent" x="493" y="0" width="21" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<rectangle radius="1">
-				<reportElement key="rectangle-55" stretchType="RelativeToBandHeight" mode="Transparent" x="514" y="0" width="21" height="11" uuid="fb691e57-f6c1-45f9-b2fc-5d27ae461c2e">
+				<reportElement key="rectangle-55" stretchType="RelativeToBandHeight" mode="Transparent" x="514" y="0" width="21" height="11">
 					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{PreImp}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-13" mode="Transparent" x="226" y="2" width="16" height="7" uuid="33d9d8ef-bd35-468e-ae9a-7ba57b9effdc"/>
+				<reportElement key="textField-13" mode="Transparent" x="226" y="2" width="16" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -462,10 +461,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{orig} + $F{cst}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orig} + $F{cst}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-12" mode="Transparent" x="244" y="2" width="18" height="7" uuid="22ecdd9b-6e80-4522-a703-7f065da7c76a"/>
+				<reportElement key="textField-12" mode="Transparent" x="244" y="2" width="18" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -475,10 +474,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[org.adempierelbr.util.JasperUtil.maskCFOP ($F{cfop})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskCFOP ($F{cfop})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-11" mode="Transparent" x="263" y="2" width="20" height="7" uuid="57baa193-0ca4-41a5-b9f4-641a8d1dffda"/>
+				<reportElement key="textField-11" mode="Transparent" x="263" y="2" width="20" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -488,10 +487,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[( $F{unidadeComercial}.equals($F{unidadeTributaria}) ? "" + $F{unidadeComercial} : $F{unidadeComercial} + "\n" + $F{unidadeTributaria} )]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[( $F{unidadeComercial}.equals($F{unidadeTributaria}) ? "" + $F{unidadeComercial} : $F{unidadeComercial} + "\n" + $F{unidadeTributaria} )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-10" mode="Transparent" x="287" y="2" width="24" height="7" uuid="fa169f48-20b9-44e6-a11b-271f1051f9d6"/>
+				<reportElement key="textField-10" mode="Transparent" x="287" y="2" width="24" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -501,10 +500,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{quantidadeComercial}.equals($F{quantidadeTributaria}) ? (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) : (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{quantidadeTributaria}))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{quantidadeComercial}.equals($F{quantidadeTributaria}) ? (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) : (new DecimalFormat("#,##0.00#").format($F{quantidadeComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{quantidadeTributaria}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-8" mode="Transparent" x="350" y="2" width="34" height="7" uuid="042e5dfa-6ab4-4a35-a0b2-90f6ef99b03c"/>
+				<reportElement key="textField-8" mode="Transparent" x="350" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -514,10 +513,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorTotal}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorTotal}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-9" mode="Transparent" x="314" y="2" width="34" height="7" uuid="b90230e4-40eb-45c7-a9e4-a94f54ba8260"/>
+				<reportElement key="textField-9" mode="Transparent" x="314" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -527,10 +526,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorUnitarioComercial}.equals($F{valorUnitarioTributario}) ? (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) : (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{valorUnitarioTributario}))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorUnitarioComercial}.equals($F{valorUnitarioTributario}) ? (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) : (new DecimalFormat("#,##0.00#").format($F{valorUnitarioComercial})) + "\n" + (new DecimalFormat("#,##0.00#").format($F{valorUnitarioTributario}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-7" mode="Transparent" x="386" y="2" width="34" height="7" uuid="d2c63ce6-6cc0-4fa2-9226-52bcba144ee8"/>
+				<reportElement key="textField-7" mode="Transparent" x="386" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -540,10 +539,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{baseIcms}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseIcms}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-5" mode="Transparent" x="458" y="2" width="34" height="7" uuid="0f493d0b-4758-4e3a-8445-b8d061a3b1f2"/>
+				<reportElement key="textField-5" mode="Transparent" x="458" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -553,10 +552,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorIpi}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIpi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-6" mode="Transparent" x="422" y="2" width="34" height="7" uuid="329a8be0-bc0b-423e-9419-72ee0ee5135b"/>
+				<reportElement key="textField-6" mode="Transparent" x="422" y="2" width="34" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -566,15 +565,15 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorIcms}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorIcms}]]></textFieldExpression>
 			</textField>
 			<break>
-				<reportElement key="element-1" x="0" y="10" width="535" height="1" isPrintWhenDetailOverflows="true" uuid="83044945-519d-491d-b7f4-cf9e3ceac8a1">
+				<reportElement key="element-1" x="0" y="10" width="535" height="1" isPrintWhenDetailOverflows="true">
 					<printWhenExpression><![CDATA[Boolean.valueOf($V{PAGE_NUMBER}.intValue() % 2 ==0 && $V{PAGE_COUNT}.intValue() == 25 && $P{ImpFrente}.equals("0"))]]></printWhenExpression>
 				</reportElement>
 			</break>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-14" mode="Transparent" x="190" y="2" width="35" height="7" uuid="fd3f2b4b-f658-4588-8cd4-3babb03f6738"/>
+				<reportElement key="textField-14" mode="Transparent" x="190" y="2" width="35" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -584,10 +583,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[org.adempierelbr.util.JasperUtil.maskNCM ($F{ncm})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[org.adempierelbr.util.JasperUtil.maskNCM ($F{ncm})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-1" mode="Transparent" x="4" y="2" width="42" height="7" uuid="6b6d24b6-2f9b-479b-ab05-8cf35b7cf139"/>
+				<reportElement key="textField-1" mode="Transparent" x="4" y="2" width="42" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -597,10 +596,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" mode="Transparent" x="50" y="2" width="139" height="7" uuid="9f1aa89b-3026-464c-b664-24d06ceb8d21"/>
+				<reportElement key="textField-2" mode="Transparent" x="50" y="2" width="139" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -610,10 +609,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{descricao} + ($F{descricaoAdicional} == null ? "" : ("\n" + $F{descricaoAdicional}))]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao} + ($F{descricaoAdicional} == null ? "" : ("\n" + $F{descricaoAdicional}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-3" mode="Transparent" x="516" y="2" width="17" height="7" uuid="b22004c1-bfde-4a42-8739-611cdd6da981"/>
+				<reportElement key="textField-3" mode="Transparent" x="516" y="2" width="17" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -623,10 +622,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{aliquotaIpi}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{aliquotaIpi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-4" mode="Transparent" x="495" y="2" width="17" height="7" uuid="a2d19c97-5976-4422-8fb4-f29c0d90d31a"/>
+				<reportElement key="textField-4" mode="Transparent" x="495" y="2" width="17" height="7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -636,7 +635,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{aliquotaIcms}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{aliquotaIcms}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
