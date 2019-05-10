@@ -1950,7 +1950,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	}	//	setInvoice
 	
 	/**
-	 * 		Invoice Info
+	 * 		Order Info
 	 * 	@param wOrgInfo
 	 */
 	public void setOrder (I_W_C_Order wOrder)
@@ -1996,10 +1996,13 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		//	Dados da Organização
 		setAD_Org_ID(wOrgInfo.getAD_Org_ID());
 		setlbr_OrgName(wOrgInfo.getlbr_LegalEntity());
+//		setlbr_Fantasia(wOrgInfo.getlbr_Fantasia());
 		setlbr_OrgCCM(wOrgInfo.getlbr_CCM());
 		setlbr_CNPJ(wOrgInfo.getlbr_CNPJ());
 		setlbr_IE(wOrgInfo.getlbr_IE());
 		setlbr_OrgPhone(wOrgInfo.getPhone());
+//		setlbr_CNAE(wOrgInfo.getlbr_CNAE());
+		setLBR_TaxRegime(wOrgInfo.getLBR_TaxRegime());
 		
 		//	Endereço
 		setOrg_Location_ID(orgLoc.getC_Location_ID());
@@ -2046,6 +2049,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		String BPTypeBR = bp.getlbr_BPTypeBR();
 		if (BPTypeBR != null && !BPTypeBR.isEmpty())
 			setlbr_BPTypeBR(BPTypeBR);
+		
+//		if (bp.getTaxID() != null && !bp.getTaxID().isEmpty())
+//			setTaxID(bp.getTaxID());
 		
 		MLocation location = new MLocation(getCtx(),bpLocation.getC_Location_ID(),get_TrxName());
 		MCountry country = new MCountry(getCtx(),location.getC_Country_ID(),get_TrxName());
@@ -2172,6 +2178,9 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 			//	Dado obrigatório, não encontrado na Expedição/Recebimento
 			if (invoice.getC_Order_ID() > 0)
 			{
+				//	Para casos de local de entrega diferente do local de fatura, priorizar o endereço do pedido
+				bpLocation = new MBPartnerLocation(getCtx(), invoice.getC_Order().getC_BPartner_Location_ID(),get_TrxName());
+				
 				M_Shipper_ID = invoice.getC_Order().getM_Shipper_ID();
 				setFreightCostRule(invoice.getC_Order().getFreightCostRule());
 
@@ -2213,32 +2222,35 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 				&& M_Shipper_ID > 0)
 			setShipper(new MShipper (Env.getCtx(), M_Shipper_ID, get_TrxName()));
 		
-		MLocation location = new MLocation (getCtx(), bpLocation.getC_Location_ID(), get_TrxName());
-		MCountry country = new MCountry (getCtx(), location.getC_Country_ID(), get_TrxName());
-
-		//	Endereço de Entrega
-		setlbr_BPDeliveryCNPJ(BPartnerUtil.getCNPJ_CPF (bpLocation));	//	CNPJ
-		setlbr_BPDeliveryIE(BPartnerUtil.getIE (bpLocation));   		//	IE
-		//
-		setlbr_BPDeliveryAddress1(location.getAddress1());	//	Rua
-		setlbr_BPDeliveryAddress2(location.getAddress2());	//	Número
-		setlbr_BPDeliveryAddress3(location.getAddress3());	//	Bairro
-		setlbr_BPDeliveryAddress4(location.getAddress4());	//	Complemento
-		setlbr_BPDeliveryCity(location.getCity());			//	Cidade
-		setlbr_BPDeliveryPostal(location.getPostal());		//	CEP
-		setlbr_BPDeliveryCountry(country.getCountryCode());	//	País
-		
-		// NT 2018.005
-		setLBR_BPDeliveryName(bpLocation.getC_BPartner().getName());
-		setLBR_BPDeliveryPhone(bpLocation.getPhone());
-
-		//	Importação / Exportação
-		if (country.get_ID() != BRAZIL)
-			setlbr_BPDeliveryRegion("EX");
-		else
+		else if (getDeliveryViaRule() != null && !MInOut.DELIVERYVIARULE_Pickup.equals(getDeliveryViaRule()))
 		{
-			MRegion region = new MRegion (getCtx(), location.getC_Region_ID(), get_TrxName());
-			setlbr_BPDeliveryRegion (region.getName());		//	Estado
+			MLocation location = new MLocation (getCtx(), bpLocation.getC_Location_ID(), get_TrxName());
+			MCountry country = new MCountry (getCtx(), location.getC_Country_ID(), get_TrxName());
+
+			//	Endereço de Entrega
+			setlbr_BPDeliveryCNPJ(BPartnerUtil.getCNPJ_CPF (bpLocation));	//	CNPJ
+			setlbr_BPDeliveryIE(BPartnerUtil.getIE (bpLocation));   		//	IE
+			//
+			setlbr_BPDeliveryAddress1(location.getAddress1());	//	Rua
+			setlbr_BPDeliveryAddress2(location.getAddress2());	//	Número
+			setlbr_BPDeliveryAddress3(location.getAddress3());	//	Bairro
+			setlbr_BPDeliveryAddress4(location.getAddress4());	//	Complemento
+			setlbr_BPDeliveryCity(location.getCity());			//	Cidade
+			setlbr_BPDeliveryPostal(location.getPostal());		//	CEP
+			setlbr_BPDeliveryCountry(country.getCountryCode());	//	País
+			
+			// NT 2018.005
+			setLBR_BPDeliveryName(bpLocation.getC_BPartner().getName());
+			setLBR_BPDeliveryPhone(bpLocation.getPhone());
+
+			//	Importação / Exportação
+			if (country.get_ID() != BRAZIL)
+				setlbr_BPDeliveryRegion("EX");
+			else
+			{
+				MRegion region = new MRegion (getCtx(), location.getC_Region_ID(), get_TrxName());
+				setlbr_BPDeliveryRegion (region.getName());		//	Estado
+			}
 		}
 	}	//	setShipmentBPartner
 	
@@ -2341,6 +2353,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	private void clear ()
 	{
+		//	Totais
 		setGrandTotal(Env.ZERO);
 		setTotalLines(Env.ZERO);
 		setlbr_TotalCIF(Env.ZERO);
@@ -2350,6 +2363,32 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		setlbr_NetWeight(Env.ZERO);
 		setlbr_GrossWeight(Env.ZERO);
 		
+		//	Transportadora
+		setlbr_BPShipperName(null);
+		setlbr_BPShipperAddress(null);
+		setlbr_BPShipperAddress3(null);		
+		setlbr_BPShipperPostal(null);
+		setlbr_BPShipperCity(null);
+		setlbr_BPShipperRegion(null);
+		setlbr_BPShipperCNPJ(null);
+		setlbr_BPShipperIE(null);
+		setlbr_BPShipperLicensePlate(null);
+		setlbr_BPShipperCountry(null);
+		
+		//	Local de Entrega
+		setLBR_BPDeliveryName(null);
+		setlbr_BPDeliveryAddress1(null);
+		setlbr_BPDeliveryAddress2(null);
+		setlbr_BPDeliveryAddress3(null);		
+		setlbr_BPDeliveryAddress4(null);		
+		setlbr_BPDeliveryPostal(null);
+		setlbr_BPDeliveryCity(null);
+		setlbr_BPDeliveryRegion(null);
+		setlbr_BPDeliveryCNPJ(null);
+		setlbr_BPDeliveryIE(null);
+		setlbr_BPDeliveryCountry(null);
+		setLBR_BPDeliveryPhone(null);
+
 		//	Apaga as Linhas e Impostos
 		for (MLBRNFTax nft : getTaxes())
 		{
@@ -2361,6 +2400,7 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 		}
 		DB.executeUpdate ("DELETE LBR_NFDI WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
 		DB.executeUpdate ("DELETE LBR_NotaFiscalDocRef WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
+//		DB.executeUpdate ("DELETE LBR_NFPaySchedule WHERE LBR_NotaFiscal_ID=" + getLBR_NotaFiscal_ID(), get_TrxName());
 	}	//	clearAmounts
 	
 	/**
@@ -3151,14 +3191,20 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public boolean isSamePickUpAddr()
 	{
-		String orgAddr 		= getlbr_OrgPostal() + getlbr_OrgAddress2() + getlbr_OrgAddress4();
-		String pickUpAddr 	= getlbr_BPDeliveryPostal() + getlbr_BPDeliveryAddress2() + getlbr_BPDeliveryAddress4();
+		String orgAddr 		= TextUtil.toNumeric (getlbr_OrgPostal()) + 			//	CEP
+				TextUtil.itrim (getlbr_OrgAddress2()).trim() + 						//	Número
+				TextUtil.itrim (getlbr_OrgAddress4()).trim();						//	Complemento
 		
-		if (orgAddr == null || pickUpAddr == null)
-			return false;
+		String pickUpAddr 	= TextUtil.toNumeric (getlbr_BPDeliveryPostal()) + 		//	CEP
+				TextUtil.itrim (getlbr_BPDeliveryAddress2()).trim() + 				//	Número
+				TextUtil.itrim (getlbr_BPDeliveryAddress4()).trim();				//	Complemento
+		
+		//	One address is empty, so its not the same
+		if (orgAddr.isEmpty() || pickUpAddr.isEmpty())		//	Check if its empty
+			return true;
 		
 		//	Same Address
-		if (orgAddr.trim().toUpperCase().equals(pickUpAddr.trim().toUpperCase()))
+		if (orgAddr.toUpperCase().equals(pickUpAddr.toUpperCase()))
 			return true;
 		
 		//	Different Address
@@ -3172,11 +3218,17 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 	 */
 	public boolean isSameDeliveryAddr()
 	{
-		String bpAddr 		= getlbr_BPPostal() + getlbr_BPAddress2() + getlbr_BPAddress4();
-		String deliveryAddr 	= getlbr_BPDeliveryPostal() + getlbr_BPDeliveryAddress2() + getlbr_BPDeliveryAddress4();
+		String bpAddr 		= TextUtil.toNumeric (getlbr_BPPostal()) + 				//	CEP
+				TextUtil.itrim (getlbr_BPAddress2()).trim() + 						//	Número
+				TextUtil.itrim (getlbr_BPAddress4()).trim();						//	Complemento
 		
-		if (bpAddr == null || deliveryAddr == null)
-			return false;
+		String deliveryAddr = TextUtil.toNumeric (getlbr_BPDeliveryPostal()) + 		//	CEP
+				TextUtil.itrim (getlbr_BPDeliveryAddress2()).trim() + 				//	Número
+				TextUtil.itrim (getlbr_BPDeliveryAddress4()).trim();				//	Complemento
+		
+		//	One address is empty, so its not the same
+		if (bpAddr.isEmpty() || deliveryAddr.isEmpty())
+			return true;
 		
 		//	Same Address
 		if (bpAddr.trim().toUpperCase().equals(deliveryAddr.trim().toUpperCase()))
