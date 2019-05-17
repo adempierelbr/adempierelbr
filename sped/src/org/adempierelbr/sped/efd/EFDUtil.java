@@ -1633,9 +1633,9 @@ public class EFDUtil {
 		reg.setDT_EST(DT_EST);
 		reg.setIND_EST(IND_EST);
 		if (QTD.compareTo(BigDecimal.ZERO) > 0)
-			reg.setQTD_COR_POS(QTD.abs().toString());
+			reg.setQTD_COR_POS(QTD.abs());
 		else
-			reg.setQTD_COR_NEG(QTD.abs().toString());
+			reg.setQTD_COR_NEG(QTD.abs());
 		
 		return reg;
 	}

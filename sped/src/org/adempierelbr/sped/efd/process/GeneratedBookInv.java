@@ -17,7 +17,7 @@ import org.compiere.util.Env;
  * @version $Id: ProcGeneratedBookInv.java, v1.0 2019/01/28 17:59:55, kenos_rfeitosa Exp $
  * 
  */
-public class ProcGeneratedBookInv extends SvrProcess
+public class GeneratedBookInv extends SvrProcess
 {
 
 	//	SPED
@@ -75,7 +75,7 @@ public class ProcGeneratedBookInv extends SvrProcess
 				"   m_product_id, qtybook, updated, updatedby)									" +
 				"   SELECT mt.AD_Client_ID, mt.AD_Org_ID, l.C_BPartner_ID, " + sped.getLBR_SPED_ID() + "," 			+ 
 				" 	current_timestamp, " + sped.getUpdatedBy() + ", 'Y', 'N', nextid(" + nextId + ",'Y'), " +
-				"   MAX(wh.lbr_WarehouseType) AS lbr_WarehouseType,	" + DB.TO_DATE(period.getEndDate()) + ", mt.M_Product_ID,	" +
+				"   wh.lbr_WarehouseType,	" + DB.TO_DATE(period.getEndDate()) + ", mt.M_Product_ID,	" +
 				"	ROUND(SUM(MovementQty), 4), current_timestamp, " + sped.getUpdatedBy() + 
 				" 	FROM M_Transaction mt																	" +
 				"	INNER JOIN M_Product p ON mt.M_Product_id = p.M_Product_id							" +
@@ -87,7 +87,7 @@ public class ProcGeneratedBookInv extends SvrProcess
 				"	AND wh.AD_Org_ID = mt.AD_Org_ID 													" +
 				"	AND p.lbr_ItemTypeBR IN ('00', '01', '02','03', '04','05', '06', '10')				" +
 				" GROUP BY																				" +
-				" mt.AD_Client_ID, mt.AD_Org_ID, mt.M_Product_ID, l.C_BPartner_ID " 					  + 
+				" mt.AD_Client_ID, mt.AD_Org_ID, mt.M_Product_ID, l.C_BPartner_ID, wh.lbr_WarehouseType " + 
 				" HAVING SUM(MovementQty) > 0															" +
 				" ORDER BY mt.M_Product_ID																";
 		

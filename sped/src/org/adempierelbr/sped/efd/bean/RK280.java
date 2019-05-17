@@ -31,9 +31,9 @@ public class RK280 extends RegSped
 	@XMLFieldProperties(id = "COD_ITEM")
 	private String COD_ITEM;
 	@XMLFieldProperties(id = "QTD_COR_POS")
-	private String QTD_COR_POS;
+	private BigDecimal QTD_COR_POS;
 	@XMLFieldProperties(id = "QTD_COR_NEG")
-	private String QTD_COR_NEG;	
+	private BigDecimal QTD_COR_NEG;	
 	@XMLFieldProperties(id = "IND_EST")
 	private String IND_EST;
 	@XMLFieldProperties(id = "COD_PART")
@@ -66,22 +66,22 @@ public class RK280 extends RegSped
 		COD_ITEM = cOD_ITEM;
 	}
 
-	public String getQTD_COR_POS()
+	public BigDecimal getQTD_COR_POS()
 	{
 		return QTD_COR_POS;
 	}
 
-	public void setQTD_COR_POS(String qTD_COR_POS)
+	public void setQTD_COR_POS(BigDecimal qTD_COR_POS)
 	{
 		QTD_COR_POS = qTD_COR_POS;
 	}
 
-	public String getQTD_COR_NEG()
+	public BigDecimal getQTD_COR_NEG()
 	{
 		return QTD_COR_NEG;
 	}
 
-	public void setQTD_COR_NEG(String qTD_COR_NEG)
+	public void setQTD_COR_NEG(BigDecimal qTD_COR_NEG)
 	{
 		QTD_COR_NEG = qTD_COR_NEG;
 	}
