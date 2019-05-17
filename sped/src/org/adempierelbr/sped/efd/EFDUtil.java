@@ -2390,7 +2390,7 @@ public class EFDUtil {
 		String sql = " SELECT 																			" +
 				" 	mt.M_Product_ID,																	" +
 				"   ROUND(SUM(MovementQty), 4) AS QtyOnHand, 											" +
-				"	MAX(wh.lbr_WarehouseType) AS lbr_WarehouseType,										" +
+				"	wh.lbr_WarehouseType,																" +
 				"	getCurrentCost(mt.AD_Client_ID, mt.M_Product_ID, ?, ?) AS CurrentCostPrice			" + // # 1, 2
 				" FROM M_Transaction mt																	" +
 				"	INNER JOIN M_Product p ON mt.M_Product_id = p.M_Product_id							" +
@@ -2402,7 +2402,8 @@ public class EFDUtil {
 				"	AND wh.AD_Org_ID = mt.AD_Org_ID 													" +
 				" GROUP BY																				" +
 				" 	mt.AD_Client_ID, 																	" +
-				"	mt.M_Product_ID																		" +
+				"	mt.M_Product_ID,																	" +
+				"	wh.lbr_WarehouseType																" +
 				" HAVING SUM(MovementQty) > 0															" +
 				" ORDER BY mt.M_Product_ID																";
 
