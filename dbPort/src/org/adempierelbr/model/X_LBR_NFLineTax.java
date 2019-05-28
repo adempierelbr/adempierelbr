@@ -93,6 +93,26 @@ public class X_LBR_NFLineTax extends PO implements I_LBR_NFLineTax, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** Set ICMS Substituto.
+		@param LBR_ICMSSubstituto 
+		Valor do ICMS próprio do Substituto
+	  */
+	public void setLBR_ICMSSubstituto (BigDecimal LBR_ICMSSubstituto)
+	{
+		set_Value (COLUMNNAME_LBR_ICMSSubstituto, LBR_ICMSSubstituto);
+	}
+
+	/** Get ICMS Substituto.
+		@return Valor do ICMS próprio do Substituto
+	  */
+	public BigDecimal getLBR_ICMSSubstituto () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_ICMSSubstituto);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public org.adempierelbr.model.I_LBR_LegalMessage getLBR_LegalMessage() throws RuntimeException
     {
 		return (org.adempierelbr.model.I_LBR_LegalMessage)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_LegalMessage.Table_Name)

@@ -1390,7 +1390,7 @@ public class NFeXMLGenerator
 							
 					}
 					
-					// TODO: NT 2018.005 vICMSSubstituto
+					icms60.setVICMSSubstituto(normalize (icmsSTTax.getLBR_ICMSSubstituto()));
 				}
 				else if (CST_ICMS_70.equals (taxStatus))
 				{
@@ -1541,7 +1541,7 @@ public class NFeXMLGenerator
 						icmssn500.setPST(normalize4 (icmsTax.getlbr_TaxRate().add(fcpTaxST.getlbr_TaxRate())));
 					}
 					
-					// TODO: NT 2018.005 vICMSSubstituto					
+					icmssn500.setVICMSSubstituto(normalize (icmsSTTax.getLBR_ICMSSubstituto()));					
 				}
 				else if (CSOSN_900.equals (taxStatus))
 				{
