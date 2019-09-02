@@ -73,13 +73,17 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
-1. LBR-201804 [[Download]][93] [[Seed PostgreSQL]][94] ~~Seed OracleXE~~
+1. LBR-201909 [[Download]][95] [[Seed PostgreSQL]][95]
+
+	* Campos para RH e Folha de Pagamento
+	* NT 2018.005
+
+1. LBR-201809 [[Download]][95] [[Seed PostgreSQL]][95]
 
 	* NF-e 4.00
 	* NT 2016.002 v1.60
-	* [Mais detalhes][92]
 	
-1. LBR-201804 [[Download]][90] [[Seed PostgreSQL]][91] ~~Seed OracleXE~~
+1. LBR-201804 [[Download]][90] [[Seed PostgreSQL]][91]
 
 	* Consultar Cadastro por CPF
 	* Novas Cidades
@@ -389,3 +393,4 @@ Patrocinadores desta versão
 [92]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201809
 [93]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201809.tgz
 [94]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201809_PG.tgz
+[95]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/
