@@ -105,6 +105,19 @@ public interface I_LBR_NFLineTax
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_ICMSSubstituto */
+    public static final String COLUMNNAME_LBR_ICMSSubstituto = "LBR_ICMSSubstituto";
+
+	/** Set ICMS Substituto.
+	  * Valor do ICMS próprio do Substituto
+	  */
+	public void setLBR_ICMSSubstituto (BigDecimal LBR_ICMSSubstituto);
+
+	/** Get ICMS Substituto.
+	  * Valor do ICMS próprio do Substituto
+	  */
+	public BigDecimal getLBR_ICMSSubstituto();
+
     /** Column name LBR_LegalMessage_ID */
     public static final String COLUMNNAME_LBR_LegalMessage_ID = "LBR_LegalMessage_ID";
 

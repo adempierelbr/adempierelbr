@@ -56,7 +56,7 @@ public class MBradesco implements I_Bank
 			MBPartner bpartner = new MBPartner(ctx,boleto.getC_BPartner_ID(),trx);
 
 			cnab.setRoutingNo(CBRADESCO); //Bradesco
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
+			cnab.setDateDoc(boleto.getDateDoc()); //Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //Conta Bancária
 	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
@@ -94,7 +94,7 @@ public class MBradesco implements I_Bank
 	        cnab.setlbr_CNABField25("00000"); //ZEROS
 	        cnab.setlbr_CNABField26(DUPLICATA); //Duplicata
 	        cnab.setlbr_CNABField27("N"); //Aceite
-	        cnab.setlbr_CNABField28(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        cnab.setlbr_CNABField28(MLBRCNAB.CNABDateFormat(boleto.getDateDoc())); //Data de Emissão
 	        //Protestar
 	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
 	        	cnab.setlbr_CNABField29("06"); //Protesto Automático

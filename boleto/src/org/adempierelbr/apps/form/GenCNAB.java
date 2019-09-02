@@ -139,7 +139,7 @@ public class GenCNAB
 			+ " INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)"
 			+ "  LEFT JOIN C_Order o ON (o.C_Order_ID=i.C_Order_ID)",
 			//	WHERE
-			"c.IsRegistered='N' AND c.LBR_IsCancelled='N' AND b.LBR_IsCancelled='N'"
+			"c.IsRegistered='N' AND c.IsCancelled='N' AND b.IsCancelled='N'"
 			+ " AND (i.LBR_PaymentRule IS NULL OR i.LBR_PaymentRule='B' OR i.LBR_PaymentRule='15')"
 			+ " AND c.C_BankAccount_ID=?"
 			+ " AND i.AD_Client_ID=?",	//	additional where & order in loadTableInfo()

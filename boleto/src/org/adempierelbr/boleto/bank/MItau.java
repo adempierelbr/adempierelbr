@@ -62,7 +62,7 @@ public class MItau implements I_Bank
 			String CNPJ = OrgInfo.get_ValueAsString("lbr_CNPJ");
 
 			cnab.setRoutingNo(CITAU); //Itaú
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); //Data do Documento
+			cnab.setDateDoc(boleto.getDateDoc()); //Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); //Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); //Conta Bancária
 	        cnab.setlbr_CNABField1("1"); //Tipo de Registro = 1
@@ -98,7 +98,7 @@ public class MItau implements I_Bank
 	        cnab.setlbr_CNABField21(MLBRCNAB.CNABFormat("",5)); //Preencher com Zeros
 	        cnab.setlbr_CNABField22(DUPLICATA); // Duplicata Mercantil
 	        cnab.setlbr_CNABField23("N"); //Aceite
-	        cnab.setlbr_CNABField24(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); //Data de Emissão
+	        cnab.setlbr_CNABField24(MLBRCNAB.CNABDateFormat(boleto.getDateDoc())); //Data de Emissão
 	        cnab.setlbr_CNABField25("00"); //Instrução 1
 	        cnab.setlbr_CNABField26("00"); //Instrução 2
 	        cnab.setlbr_CNABField27(MLBRCNAB.CNABFormat(String.format("%,.2f", boleto.getlbr_Interest()),13)); //Juros

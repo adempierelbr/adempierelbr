@@ -260,9 +260,9 @@ public class MLBRCNAB extends X_LBR_CNAB
 
 		Properties ctx = Env.getCtx();
 
-		String whereClause = "lbr_DocDate BETWEEN ? AND ? " +
+		String whereClause = "DateDoc BETWEEN ? AND ? " +
 				             "AND AD_Client_ID = ? " +
-				             "AND lbr_IsCancelled = 'N' AND IsRegistered = 'N'";
+				             "AND IsCancelled = 'N' AND IsRegistered = 'N'";
 
 		where = TextUtil.checkWhereClause(where);
 		if (where != null)

@@ -50,6 +50,15 @@ public class R1010 extends RegSped
 	
 	@XMLFieldProperties(id = "IND_AER", maxSize = 1, minSize = 1)
 	private String IND_AER;
+	
+	@XMLFieldProperties(id = "IND_GIAF1", maxSize = 1, minSize = 1)
+	private String IND_GIAF1;
+	
+	@XMLFieldProperties(id = "IND_GIAF3", maxSize = 1, minSize = 1)
+	private String IND_GIAF3;
+	
+	@XMLFieldProperties(id = "IND_GIAF4", maxSize = 1, minSize = 1)
+	private String IND_GIAF4;	
 
 	/**
 	 * Constructor
@@ -136,6 +145,36 @@ public class R1010 extends RegSped
 
 	public void setIND_AER(String iND_AER) {
 		IND_AER = iND_AER;
+	}
+	
+	public String getIND_GIAF1()
+	{
+		return IND_GIAF1;
+	}
+
+	public void setIND_GIAF1(String iND_GIAF1)
+	{
+		IND_GIAF1 = iND_GIAF1;
+	}
+
+	public String getIND_GIAF3()
+	{
+		return IND_GIAF3;
+	}
+
+	public void setIND_GIAF3(String iND_GIAF3)
+	{
+		IND_GIAF3 = iND_GIAF3;
+	}
+
+	public String getIND_GIAF4()
+	{
+		return IND_GIAF4;
+	}
+
+	public void setIND_GIAF4(String iND_GIAF4)
+	{
+		IND_GIAF4 = iND_GIAF4;
 	}
 
 

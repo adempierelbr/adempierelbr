@@ -324,6 +324,10 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		String cfgFile 			= System.getProperty("java.io.tmpdir") + File.separator + "Token.cfg";
 
 		byte[] library = null;
+		byte[] file = null;
+		
+		// Token.cfg
+		file = getAttachmentData("cfg");
 		//
 		if (Env.isWindows())
 		{
@@ -344,25 +348,35 @@ public class MLBRDigitalCertificate extends X_LBR_DigitalCertificate
 		
 		try 
 		{
-			//	Check driver - Default path
-			if (library == null)
-				driverPath = defaultDriver;
-	
-			//	Load from a file
-			else
+			//	File Token.cfg Attached
+			if (file != null)
 			{
-				driverPath = System.getProperty("java.io.tmpdir") + File.separator + "SmartCard.Driver";
-				//
-				FileOutputStream fos = new FileOutputStream(driverPath);
-				fos.write(library);
+				FileOutputStream fos = new FileOutputStream(cfgFile);
+				fos.write(file);
 				fos.close();
 			}
-			
-			OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(cfgFile), TextUtil.UTF8);
-			osw.write("name= SmartCard");
-			osw.write("\nlibrary= " + driverPath);
-			osw.flush();
-			osw.close();
+			else
+			{
+				//	Check driver - Default path
+				if (library == null)
+					driverPath = defaultDriver;
+		
+				//	Load from a file
+				else
+				{
+					driverPath = System.getProperty("java.io.tmpdir") + File.separator + "SmartCard.Driver";
+					//
+					FileOutputStream fos = new FileOutputStream(driverPath);
+					fos.write(library);
+					fos.close();
+				}
+				
+				OutputStreamWriter osw = new OutputStreamWriter (new FileOutputStream(cfgFile), TextUtil.UTF8);
+				osw.write("name= SmartCard");
+				osw.write("\nlibrary= " + driverPath);
+				osw.flush();
+				osw.close();
+			}	
 		}
 		catch (FileNotFoundException e)
 		{

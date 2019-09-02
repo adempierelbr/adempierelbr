@@ -134,6 +134,9 @@ public class RC170 extends RegSped {
 
 	@XMLFieldProperties(id = "COD_CTA", isMandatory = false)
 	private String COD_CTA;
+	
+	@XMLFieldProperties(id = "VL_ABAT_NT", isMandatory = false)
+	private BigDecimal VL_ABAT_NT;
 
 	/*
 	 * Variável auxiliar usada para fazer os somatórios do Registro C190.
@@ -455,6 +458,16 @@ public class RC170 extends RegSped {
 
 	public void setCOD_CTA(String cOD_CTA) {
 		COD_CTA = cOD_CTA;
+	}
+
+	public BigDecimal getVL_ABAT_NT()
+	{
+		return VL_ABAT_NT;
+	}
+
+	public void setVL_ABAT_NT(BigDecimal vL_ABAT_NT)
+	{
+		VL_ABAT_NT = vL_ABAT_NT;
 	}
 
 	/**

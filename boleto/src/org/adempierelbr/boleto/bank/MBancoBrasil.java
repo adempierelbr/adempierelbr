@@ -83,7 +83,7 @@ public class MBancoBrasil implements I_Bank
 
 			String CNPJ = OrgInfo.get_ValueAsString("lbr_CNPJ");
 			cnab.setRoutingNo(CBANCOBRASIL); 													// Banco do Brasil
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); 								// Data do Documento
+			cnab.setDateDoc(boleto.getDateDoc()); 								// Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); 							//Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); 					//Conta Bancária
 
@@ -137,7 +137,7 @@ public class MBancoBrasil implements I_Bank
 	        cnab.setlbr_CNABField30(" "); 												// DV AGENCIA COBRADORA
 	        cnab.setlbr_CNABField31(DUPLICATA); 										// DUPLICATA MERCANTIL
 	        cnab.setlbr_CNABField32("N"); 												// Aceite
-	        cnab.setlbr_CNABField33(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); 	// Data de Emissão
+	        cnab.setlbr_CNABField33(MLBRCNAB.CNABDateFormat(boleto.getDateDoc())); 	// Data de Emissão
 
 	        // Instrução Codificada 1 - Protestar
 	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){
@@ -220,7 +220,7 @@ public class MBancoBrasil implements I_Bank
 
 			String CNPJ = OrgInfo.get_ValueAsString("lbr_CNPJ");
 			cnab.setRoutingNo(CBANCOBRASIL); 											// Banco do Brasil
-			cnab.setlbr_DocDate(boleto.getlbr_DocDate()); 								// Data do Documento
+			cnab.setDateDoc(boleto.getDateDoc()); 								// Data do Documento
 			cnab.setLBR_Boleto_ID(boleto.getLBR_Boleto_ID()); 							// Boleto
 			cnab.setC_BankAccount_ID(boleto.getC_BankAccount_ID()); 					// Conta Bancária
 
@@ -271,7 +271,7 @@ public class MBancoBrasil implements I_Bank
         	cnab.setlbr_CNABField27(null); 												// DV da Agência Cobradora(Brancos)
         	cnab.setlbr_CNABField28(DUPLICATA); 										// Espécie do título (Duplicata Mercantil)
         	cnab.setlbr_CNABField29("N"); 												// Aceite do Titulo
-        	cnab.setlbr_CNABField30(MLBRCNAB.CNABDateFormat(boleto.getlbr_DocDate())); 	// Data de Emissão
+        	cnab.setlbr_CNABField30(MLBRCNAB.CNABDateFormat(boleto.getDateDoc())); 	// Data de Emissão
 
         	// Instrução 1
 	        if (boleto.islbr_HasSue() && boleto.getlbr_SueDays() > 0){

@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.POWrapper;
 import org.adempierelbr.model.MLBRFactFiscal;
 import org.adempierelbr.model.MLBRSalesCardTotal;
@@ -23,6 +24,7 @@ import org.adempierelbr.sped.efd.EFDUtil;
 import org.adempierelbr.sped.efd.bean.BLOCO0;
 import org.adempierelbr.sped.efd.bean.BLOCO1;
 import org.adempierelbr.sped.efd.bean.BLOCO9;
+import org.adempierelbr.sped.efd.bean.BLOCOB;
 import org.adempierelbr.sped.efd.bean.BLOCOC;
 import org.adempierelbr.sped.efd.bean.BLOCOD;
 import org.adempierelbr.sped.efd.bean.BLOCOE;
@@ -43,6 +45,7 @@ import org.adempierelbr.util.LBRUtils;
 import org.adempierelbr.util.TextUtil;
 import org.adempierelbr.wrapper.I_W_AD_OrgInfo;
 import org.compiere.model.MAttachment;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MElementValue;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
@@ -245,6 +248,7 @@ public class ProcGenerateEFD extends SvrProcess
 			
 			// criar blocos
 			BLOCO0 bloco0 = new BLOCO0();
+			BLOCOB blocoB = new BLOCOB();
 			BLOCOC blocoC = new BLOCOC();
 			BLOCOD blocoD = new BLOCOD();
 			BLOCOE blocoE = new BLOCOE();
@@ -568,9 +572,6 @@ public class ProcGenerateEFD extends SvrProcess
 			m_taxAssessment = MLBRTaxAssessment.get(getCtx(), p_AD_Org_ID, "IPI", p_C_Period_ID, null);
 			if(m_taxAssessment != null && m_taxAssessment.get_ID() > 0)
 			{				
-				
-				System.out.println("Apurou IPI");
-				
 				// E500
 				blocoE.setrE500(EFDUtil.createRE500(dateFrom, dateTo));
 				
@@ -597,7 +598,6 @@ public class ProcGenerateEFD extends SvrProcess
 			 */
 			GregorianCalendar calendar = new GregorianCalendar();
 			calendar.setTime(dateFrom);
-			System.out.println("Mês: " + calendar.get(Calendar.MONTH));
 			
 			if(calendar.get(Calendar.MONTH) == 1) // (indice do calendar: 0(mês 1), 1(mês 2), 2(mês 3)...)
 			{
@@ -685,34 +685,134 @@ public class ProcGenerateEFD extends SvrProcess
 				       DB.close(rs, pstmt);
 				}
 			}
-
 			
+			/**
+			 * INVENTÁRIO - BLOCO K
+			 */
+		
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			try
+			{
+				// carregar informações do inventário para o Bloco K
+				pstmt = DB.prepareStatement (EFDUtil.getSQLBookInv(), null);
+				// params
+				pstmt.setInt(1, Env.getAD_Client_ID(getCtx()));
+				pstmt.setInt(2, p_AD_Org_ID);
+				pstmt.setInt(3, p_LBR_SPED_ID);
+				
+				// K100
+				blocoK.setrK100(EFDUtil.createRK100(dateFrom, dateTo));
+				
+				// rs
+				rs  = pstmt.executeQuery ();
+			
+				/*
+				 *  para cada registro do inventário, gera-se um RH010 e totaliza com o RH005
+				 */
+				while (rs.next())
+				{
+					// carregar produto
+					MProduct m_product = new MProduct(getCtx(), rs.getInt("M_Product_ID"), null);
+
+					// criar R0190
+					R0190 r0190 = EFDUtil.createR0190(m_product);
+					bloco0.addr0190(r0190);
+					
+					// criar R0200
+					R0200 r0200 = EFDUtil.createR0200(m_product);
+					bloco0.addr0200(r0200);
+			
+					// indicador de quem está com o estoque
+					String IND_PROP = rs.getString("lbr_WarehouseType").equals("3RD") ? "2" :
+							rs.getString("lbr_WarehouseType").equals("3WN") ? "1" : "0";
+					
+//					Parceiro de Negócio
+					String bpValue = "";
+					
+					if (rs.getInt("C_BPartner_ID") > 0)
+						bpValue = new MBPartner(Env.getCtx(), rs.getInt("C_BPartner_ID"), null).getValue();
+					
+					// Quantidade em Mãos
+					BigDecimal qtyBook = rs.getBigDecimal("QtyBook");
+					
+					//
+					Timestamp movDate = rs.getTimestamp("MovementDate");
+					
+					// Se Revalidar for igual a falso, Adicionar ao Bloco K200
+					if (!"Y".equals(rs.getString("isRevalidate")))
+						// criar registro RK200
+						blocoK.addrK200(EFDUtil.createRK200(
+								r0200.getCOD_ITEM(), 
+								bpValue, 
+								dateTo,
+								IND_PROP,
+								qtyBook));
+					else
+						// Se Revalidar, adicionar ao Bloco K280.
+						//K280 indica Correção de Apontamento de um período anterior
+						blocoK.addrK280(EFDUtil.createRK280(
+								r0200.getCOD_ITEM(), 
+								bpValue, 
+								movDate,
+								IND_PROP,
+								qtyBook));
+						
+					
+				}
+			} // fim Bloco K
+			catch (SQLException e)
+			{
+				log.log(Level.SEVERE, EFDUtil.getSQLBookInv(), e);
+				return null;
+			}
+			finally{
+			       DB.close(rs, pstmt);
+			}
+
+			//	Organização
+			I_W_AD_OrgInfo oi = POWrapper.create(MOrgInfo.get(getCtx(), p_AD_Org_ID, get_TrxName()), I_W_AD_OrgInfo.class);
+			
+			//	Verificar Endereço
+			if (oi.getC_Location() == null || oi.getC_Location_ID() == 0)
+				throw new AdempiereException("Endereço da Organização não preenchido");
+			
+			//	Estado Padrão SP
+			String Region = "";
+			
+			//	Verificar Estado/Região da Organização
+			if (oi.getC_Location() != null && oi.getC_Location().getC_Region() != null)
+				Region = oi.getC_Location().getC_Region().getName();
 			
 			/*
 			 * Inicialização dos Blocos 
 			 */
-			bloco0.setR0001(EFDUtil.createR0001(bloco0.getR0150().size() > 0)); // init bloco 0
-			blocoC.setrC001(EFDUtil.createRC001(blocoC.getrC100().size() > 0)); // init bloco C
-			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0 || blocoD.getrD500().size() > 0)); // init bloco D
-			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 		// init bloco H
+			bloco0.setR0001(EFDUtil.createR0001(bloco0.getR0150().size() > 0)); 	// init bloco 0
+			blocoB.setRB001(EFDUtil.createRB001(false)); // init bloco B
+			blocoC.setrC001(EFDUtil.createRC001(blocoC.getrC100().size() > 0)); 	// init bloco C
+			blocoD.setrD001(EFDUtil.createRD001(blocoD.getrD100().size() > 0 
+					|| blocoD.getrD500().size() > 0)); // init bloco D
+			blocoH.setrH001(EFDUtil.createRH001(blocoH.getrH005() != null 			// init bloco H
 					&& blocoH.getrH005().getrH010().size() > 0));
-			blocoE.setrE001(EFDUtil.createRE001(true));						    // init bloco E
-			blocoG.setrG001(EFDUtil.createRG001(false));						// init bloco G
-			blocoK.setrK001(EFDUtil.createRK001(false));
-			bloco1.setR1001(EFDUtil.createR1001(true));						// init bloco 1
-			bloco1.setR1010(EFDUtil.createR1010(p_C_Period_ID));
-			bloco9.setR9001(EFDUtil.createR9001(true));							// init bloco 9 (sempre true)
+			blocoE.setrE001(EFDUtil.createRE001(true));						    	// init bloco E
+			blocoG.setrG001(EFDUtil.createRG001(false));							// init bloco G
+			blocoK.setrK001(EFDUtil.createRK001((blocoK.getrK200().size() > 0)));	// init bloco K
+			bloco1.setR1001(EFDUtil.createR1001(true));								// init bloco 1
+			bloco1.setR1010(EFDUtil.createR1010(p_C_Period_ID, Region));
+			bloco9.setR9001(EFDUtil.createR9001(true));								// init bloco 9 (sempre true)
 
 			/*
 			 * Registros Totalizadores dos Blocos
 			 */
 			bloco0.setR0990(EFDUtil.createR0990()); // fim do 0
+			blocoB.setRB990(EFDUtil.createRB990()); // fim do B
 			blocoC.setrC990(EFDUtil.createRC990()); // fim do C
 			blocoD.setrD990(EFDUtil.createRD990()); // fim do D
 			blocoE.setrE990(EFDUtil.createRE990()); // fim do E
 			blocoG.setrG990(EFDUtil.createRG990()); // fim do G
 			blocoH.setrH990(EFDUtil.createRH990()); // fim do H
-			blocoK.setrK990(EFDUtil.createRK990());	
+			blocoK.setrK990(EFDUtil.createRK990());	// fim do K
 			bloco1.setR1990(EFDUtil.createR1990()); // fim do 1
 			bloco9.setR9990(EFDUtil.createR9990()); // fim do 9
 			
@@ -732,6 +832,7 @@ public class ProcGenerateEFD extends SvrProcess
 			// Montar resultado			 
 			StringBuilder result = new StringBuilder();
 			result.append(bloco0.toString());
+			result.append(blocoB.toString());
 			result.append(blocoC.toString());
 			result.append(blocoD.toString());
 			result.append(blocoE.toString());
@@ -772,21 +873,4 @@ public class ProcGenerateEFD extends SvrProcess
 		
 		// return bloco0;
 	}
-	
-	
-	
-	
-	public static void main(String args[])
-	{
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTime(new Timestamp(System.currentTimeMillis()));
-		calendar.set(Calendar.DAY_OF_MONTH, 31);
-		calendar.set(Calendar.MONTH, 11);
-		calendar.add(Calendar.YEAR, -1);
-		
-		System.out.println(new Timestamp(calendar.getTimeInMillis()));
-		
-		
-	}
-	
-}	//	ProcGenerateEF
+}	//	ProcGenerateEFD

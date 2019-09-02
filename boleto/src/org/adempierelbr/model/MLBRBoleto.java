@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -180,7 +181,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 		
 		sql = " SELECT LBR_Boleto_ID 				" +
 			  "   FROM LBR_Boleto 					" +
-			  "  WHERE LBR_IsCancelled = 'N'		" +
+			  "  WHERE IsCancelled = 'N'		" +
 			  "    AND AD_Client_ID = ? 			";
 		
 		
@@ -327,7 +328,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 	public static MLBRBoleto[] getBoleto(Properties ctx, int C_Invoice_ID, String trx){
 
-		String whereClause = "C_Invoice_ID = ? AND lbr_IsCancelled = 'N'";
+		String whereClause = "C_Invoice_ID = ? AND IsCancelled = 'N'";
 
 		MTable table = MTable.get(ctx, MLBRBoleto.Table_Name);
 		Query query =  new Query(ctx, table, whereClause, trx);
@@ -563,9 +564,26 @@ public class MLBRBoleto extends X_LBR_Boleto
 		}
 
     } //generateCNAB
+    
+	/**
+	* 		Envia boleto por EMail
+	* 
+	* 	@param ctx
+	* 	@param C_Invoice_ID
+	* 	@param C_BankAccount_ID
+	* 	@param FilePath
+	* 	@param PrinterName
+	* 	@param trxName
+	* 	@return true or false when error
+	* 	@throws IOException
+	* 	@throws PrinterException
+	*/
+	public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
+	{
+		return emailBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, 0, FilePath, PrinterName, trxName);
+	}	//	emailBoleto
 
-
-    /**
+	/**
      * 		Envia boleto por EMail
      * 
      * 	@param ctx
@@ -578,9 +596,27 @@ public class MLBRBoleto extends X_LBR_Boleto
      * 	@throws IOException
      * 	@throws PrinterException
      */
-    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
+    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trxName) throws IOException, PrinterException
     {
-    	final List<File> boletos = generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, FilePath, PrinterName, trxName);
+    	return emailBoleto(ctx, C_Invoice_ID, C_BankAccount_ID, LBR_Boleto_ID, FilePath, PrinterName, trxName, null);
+    }
+    /**
+     * 		Envia boleto por EMail
+     * 
+     * 	@param ctx
+     * 	@param C_Invoice_ID
+     * 	@param C_BankAccount_ID
+     * 	@param FilePath
+     * 	@param PrinterName
+     * 	@param trxName
+     *	@param preSubject
+     * 	@return true or false when error
+     * 	@throws IOException
+     * 	@throws PrinterException
+     */
+    public static boolean emailBoleto (Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trxName, String preSubject) throws IOException, PrinterException
+    {
+    	final List<File> boletos = generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, LBR_Boleto_ID, FilePath, PrinterName, trxName);
     	
     	final Properties fctx = ctx;
     	final int fC_Invoice_ID = C_Invoice_ID;
@@ -594,12 +630,24 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MOrg org = MOrg.get (ctx, invoice.getAD_Org_ID ());
 			final MOrgInfo orgInfo = MOrgInfo.get (ctx, invoice.getAD_Org_ID(), trxName);
 			final MUser from = new MUser (ctx, orgInfo.get_ValueAsInt ("lbr_ContatoNFe_ID"), trxName);
+			final MBPartner bpartner= (MBPartner) invoice.getC_BPartner();
+			final MLBRNotaFiscal nf = (MLBRNotaFiscal) new Query (Env.getCtx(), MLBRNotaFiscal.Table_Name, "lbr_NFeStatus='100' AND C_Invoice_ID = ? AND lbr_FinNFe='1'", null)
+										.setParameters(invoice.getC_Invoice_ID())
+										.first();
+			
+			String nfonSubject = "";
 
-			if (invoice.getAD_User() == null
-					|| invoice.getAD_User().getEMail() == null 
-					|| invoice.getAD_User().getEMail().indexOf("@") < 1)
-				throw new IllegalArgumentException ("E-Mail não cadastrado para a Fatura: " + invoice.getDocumentNo());
+			if (nf != null && nf.getLBR_NotaFiscal_ID() > 0)
+				nfonSubject = " - Nota Fiscal: " + nf.getDocumentNo();
 
+			if (bpartner.get_ValueAsString("LBR_EMailBilling").isEmpty())
+			{
+				if (invoice.getAD_User() == null
+						|| invoice.getAD_User().getEMail() == null 
+						|| invoice.getAD_User().getEMail().indexOf("@") < 1)
+					throw new IllegalArgumentException ("E-Mail não cadastrado para a Fatura: " + invoice.getDocumentNo());
+			}
+			
 			//	Check from email user
 			if (from.getEMailUser() == null && from.getEMailUserPW () == null)
 				throw new IllegalArgumentException ("Problemas com o Contato de emissão de Boleto da Organização");
@@ -608,7 +656,11 @@ public class MLBRBoleto extends X_LBR_Boleto
 			final MUser actual = new MUser (ctx, Env.getAD_User_ID(ctx), trxName);
 			
 			SimpleDateFormat dt = new SimpleDateFormat("MM/yyyy");
-			final String subject = "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced());					
+			
+			if (preSubject == null)
+				preSubject = "";
+			
+			final String subject = preSubject + "Boleto " + org.getName() + " - " + dt.format(invoice.getDateInvoiced()) + nfonSubject;
 			final String message = Msg.getMsg (ctx, "LBR_BillingEMailText", new Object[]{org.getName(), orgInfo.getPhone(), invoice.getDocumentNo()});
 
 			new Thread() 
@@ -617,7 +669,48 @@ public class MLBRBoleto extends X_LBR_Boleto
 				{
 					try 
 					{
-						EMail email = client.createEMail (from, invoice.getAD_User().getEMail(), subject, message, true);
+						// Emails
+						String toEMails = "";
+						
+						//	Validar Campo Email de Cobrança. Se não estiver preenchido, buscar email da fatura
+						if (!bpartner.get_ValueAsString("LBR_EMailBilling").isEmpty())
+							toEMails = bpartner.get_ValueAsString("LBR_EMailBilling");
+						else						
+							toEMails = invoice.getAD_User().getEMail();
+						
+						// Definir Endereço de Email para receber todos os Boletos
+						String billbyEmailto = MSysConfig.getValue("LBR_SEND_BILL_BY_EMAIL_TO", "", Env.getAD_Client_ID(Env.getCtx()));
+						
+						if (!"".equals(billbyEmailto))
+							toEMails += ";" + billbyEmailto;
+						
+						//	Valida Emails
+						if (toEMails == null || toEMails.indexOf('@') == -1)
+						{
+							log.warning("E-mail para recepção de NF-e inválido");
+							return;
+						}
+						else
+							toEMails = toEMails.replace(",", ";");
+						
+						//	Send Email
+						EMail email = client.createEMail (from, from.getEMailUser(), subject, message, true);
+						
+						// Se houver mais de um email cadastrado, adicionar como cópia
+						StringTokenizer st = new StringTokenizer(toEMails, ";");
+						while (st.hasMoreTokens())
+						{
+							String toEMail = st.nextToken();
+							if (toEMail == null)
+								continue;
+							//
+							toEMail = toEMail.trim();
+							if (toEMail.length() == 0 || toEMail.indexOf("@") == -1)
+								continue;
+							//
+							email.addCc(toEMail);
+						}
+						
 						email.addBcc (actual.getEMail());
 						
 						for (File file : boletos)
@@ -664,6 +757,10 @@ public class MLBRBoleto extends X_LBR_Boleto
     }
 
 	public static List<File> generateBoleto(Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
+		return generateBoleto (ctx, C_Invoice_ID, C_BankAccount_ID, 0, FilePath, PrinterName, trx);
+	}
+	
+	public static List<File> generateBoleto(Properties ctx, int C_Invoice_ID, Integer C_BankAccount_ID, int LBR_Boleto_ID, String FilePath, String PrinterName, String trx) throws IOException, PrinterException{
 
 		if (C_Invoice_ID == 0){
 			log.log(Level.SEVERE, "C_Invoice_ID == 0");
@@ -677,6 +774,8 @@ public class MLBRBoleto extends X_LBR_Boleto
 		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		if (boletos.length > 0){
 			for (int i=0;i<boletos.length; i++){
+				if (LBR_Boleto_ID > 0 && boletos[i].getLBR_Boleto_ID() != LBR_Boleto_ID)
+					continue;
 				File boletoPDF = boletos[i].print(FilePath, PrinterName);
 				if (boletoPDF != null)
 					pdfList.add(boletoPDF);
@@ -753,7 +852,7 @@ public class MLBRBoleto extends X_LBR_Boleto
 					MLBRBoleto newBoleto = new MLBRBoleto(ctx,0,trx);
 					newBoleto.setRoutingNo(Bank.getRoutingNo()); //Número Banco
 					newBoleto.setlbr_jBoletoNo(lbrBank.getlbr_jBoletoNo()); //Número jBoleto
-					newBoleto.setlbr_DocDate(invoice.getDateInvoiced()); //Data do Documento
+					newBoleto.setDateDoc(invoice.getDateInvoiced()); //Data do Documento
 					newBoleto.setC_BankAccount_ID(BankA.getC_BankAccount_ID()); //Conta Bancária
 					newBoleto.setAD_Org_ID(BankA.getAD_Org_ID());
 					// Buscar nome da Empresa do campo Razão Social na Janela
@@ -898,8 +997,8 @@ public class MLBRBoleto extends X_LBR_Boleto
 
 		int bank = Integer.parseInt(getlbr_jBoletoNo());
 
-		jBoletoBean.setDataDocumento(TextUtil.timeToString(getlbr_DocDate(),dateFormat));
-	    jBoletoBean.setDataProcessamento(TextUtil.timeToString(getlbr_DocDate(),dateFormat));
+		jBoletoBean.setDataDocumento(TextUtil.timeToString(getDateDoc(),dateFormat));
+	    jBoletoBean.setDataProcessamento(TextUtil.timeToString(getDateDoc(),dateFormat));
 	    jBoletoBean.setCedente(getlbr_Cessionary());
 	    jBoletoBean.setNomeSacado(getlbr_ReceiverName());
 	    jBoletoBean.setEnderecoSacado(getAddress());
@@ -1022,13 +1121,13 @@ public class MLBRBoleto extends X_LBR_Boleto
 		MLBRBoleto[] boletos = MLBRBoleto.getBoleto(ctx, C_Invoice_ID, trx);
 		for(MLBRBoleto boleto : boletos){
 
-			boleto.setlbr_IsCancelled(true);
+			boleto.setIsCancelled(true);
 			boleto.save(trx);
 
 			int LBR_CNAB_ID = MLBRCNAB.getLBR_CNAB_ID(boleto.getLBR_Boleto_ID(), trx);
 			if (LBR_CNAB_ID > 0){
 				MLBRCNAB cnab = new MLBRCNAB(ctx,LBR_CNAB_ID,trx);
-				cnab.setlbr_IsCancelled(true);
+				cnab.setIsCancelled(true);
 				if (!cnab.save(trx)){
 					log.log(Level.SEVERE, "Erro ao cancelar o cnab", cnab);
 				}

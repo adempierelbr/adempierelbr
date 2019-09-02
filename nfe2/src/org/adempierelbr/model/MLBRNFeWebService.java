@@ -188,6 +188,7 @@ public class MLBRNFeWebService extends X_LBR_NFeWebService
 		
 		return new Query (Env.getCtx(),MLBRNFeWebService.Table_Name, where, null)
 						.setParameters(parameters)
+						.setOnlyActiveRecords(true)
 						.first();
 	}	//	get
 }	//	MNFeWebService

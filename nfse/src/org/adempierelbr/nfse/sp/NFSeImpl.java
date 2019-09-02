@@ -134,12 +134,19 @@ public class NFSeImpl implements INFSe
 		tpChaveRPS.setNumeroRPS(toLong (nf.getDocumentNo()));
 		tpChaveRPS.setSerieRPS(dt.get_ValueAsString("lbr_NFSerie"));
 		
-		Calendar cal = new XmlCalendar ();
+		//	Date ZULU
+		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis (nf.getDateDoc().getTime());
+		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCal = new XmlCalendar ();
+		xmlCal.set(Calendar.YEAR, 			cal.get (Calendar.YEAR));
+		xmlCal.set(Calendar.MONTH, 			cal.get (Calendar.MONTH));
+		xmlCal.set(Calendar.DAY_OF_MONTH, 	cal.get (Calendar.DAY_OF_MONTH));
 		
 		tpRPS.setChaveRPS(tpChaveRPS);
 		tpRPS.setTipoRPS(TpTipoRPS.RPS);
-		tpRPS.setDataEmissao(cal);
+		tpRPS.setDataEmissao(xmlCal);
 		tpRPS.setStatusRPS(TpStatusNFe.N);				//	FIXME
 		tpRPS.setTributacaoRPS("T");					//	FIXME
 		tpRPS.setValorServicos(toBD (nf.getlbr_ServiceTotalAmt()));
@@ -439,6 +446,19 @@ public class NFSeImpl implements INFSe
 			//
 			rps.add (tpRPS);
 			
+			//	Fix ZULU Date/Time
+			Calendar cal = Calendar.getInstance();
+			cal.setTimeInMillis(tpRPS.getDataEmissao().getTime().getTime());
+			
+			//	Set date this way to avoid time zone incompatibilities
+			Calendar xmlCal = new XmlCalendar ();
+			xmlCal.set(Calendar.YEAR, 			cal.get (Calendar.YEAR));
+			xmlCal.set(Calendar.MONTH, 			cal.get (Calendar.MONTH));
+			xmlCal.set(Calendar.DAY_OF_MONTH, 	cal.get (Calendar.DAY_OF_MONTH));
+			
+			//	Set date withou timezone
+			tpRPS.setDataEmissao(xmlCal);
+			
 			servTotal  = servTotal.add(tpRPS.getValorServicos());
 			dedTotal = dedTotal.add(tpRPS.getValorDeducoes());
 			
@@ -459,12 +479,24 @@ public class NFSeImpl implements INFSe
 		Calendar calFrom = new XmlCalendar ();
 		calFrom.setTimeInMillis(dateFrom.getTime());
 		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCalFrom = new XmlCalendar ();
+		xmlCalFrom.set(Calendar.YEAR, 			calFrom.get (Calendar.YEAR));
+		xmlCalFrom.set(Calendar.MONTH, 			calFrom.get (Calendar.MONTH));
+		xmlCalFrom.set(Calendar.DAY_OF_MONTH, 	calFrom.get (Calendar.DAY_OF_MONTH));
+		
 		Calendar calTo = new XmlCalendar ();
 		calTo.setTimeInMillis(dateTo.getTime());
 		
+		//	Set date this way to avoid time zone incompatibilities
+		Calendar xmlCalTo = new XmlCalendar ();
+		xmlCalTo.set(Calendar.YEAR, 			calTo.get (Calendar.YEAR));
+		xmlCalTo.set(Calendar.MONTH, 			calTo.get (Calendar.MONTH));
+		xmlCalTo.set(Calendar.DAY_OF_MONTH, 	calTo.get (Calendar.DAY_OF_MONTH));
+		
 		//	Cabeçalho para o Lote
-		cabecalho.setDtInicio (calFrom);
-		cabecalho.setDtFim (calTo);
+		cabecalho.setDtInicio (xmlCalFrom);
+		cabecalho.setDtFim (xmlCalTo);
 		cabecalho.setQtdRPS (envioLoteRPS.sizeOfRPSArray());
 		cabecalho.setValorTotalServicos (servTotal);
 		cabecalho.setValorTotalDeducoes(dedTotal);

@@ -457,6 +457,7 @@ public class CalloutNFe extends CalloutEngine
 		MCountry country = new MCountry (ctx, location.getC_Country_ID(), null);
 
 		//	Endereço do Destinatário
+		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_LBR_BPDeliveryName, bpl.getC_BPartner().getName());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryAddress1, location.getAddress1());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryAddress2, location.getAddress2());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryAddress3, location.getAddress3());
@@ -464,6 +465,8 @@ public class CalloutNFe extends CalloutEngine
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryCity, location.getCity());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryPostal, location.getPostal());
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryCountry, country.getCountryCode());
+		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_LBR_BPDeliveryPhone, bpl.getPhone());
+		
 		mTab.setValue (MLBRNotaFiscal.COLUMNNAME_lbr_BPDeliveryRegion, null);
 
 		if (country.get_ID() != MLBRNotaFiscal.BRAZIL)
