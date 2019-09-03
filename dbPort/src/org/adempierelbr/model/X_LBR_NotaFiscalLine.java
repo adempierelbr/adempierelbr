@@ -32,7 +32,7 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20180607L;
+	private static final long serialVersionUID = 20190903L;
 
     /** Standard Constructor */
     public X_LBR_NotaFiscalLine (Properties ctx, int LBR_NotaFiscalLine_ID, String trxName)
@@ -43,6 +43,8 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 			setLBR_AFRMMAmt (Env.ZERO);
 // 0
 			setLBR_NotaFiscalLine_ID (0);
+			setLBR_VAM (Env.ZERO);
+// 0
 			setlbr_IsService (false);
 // 'N'
         } */
@@ -586,6 +588,66 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_LBR_TaxBenefitCode);
 	}
 
+	/** Set VAM.
+		@param LBR_VAM 
+		VAM (value-added margin)
+	  */
+	public void setLBR_VAM (BigDecimal LBR_VAM)
+	{
+		set_Value (COLUMNNAME_LBR_VAM, LBR_VAM);
+	}
+
+	/** Get VAM.
+		@return VAM (value-added margin)
+	  */
+	public BigDecimal getLBR_VAM () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_VAM);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Tax Quantity.
+		@param LBR_qTrib 
+		Defines the Tax Quantity
+	  */
+	public void setLBR_qTrib (BigDecimal LBR_qTrib)
+	{
+		set_Value (COLUMNNAME_LBR_qTrib, LBR_qTrib);
+	}
+
+	/** Get Tax Quantity.
+		@return Defines the Tax Quantity
+	  */
+	public BigDecimal getLBR_qTrib () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_qTrib);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Unit Tax Price.
+		@param LBR_vUnTrib 
+		Defines the Unit Tax Price
+	  */
+	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib)
+	{
+		set_Value (COLUMNNAME_LBR_vUnTrib, LBR_vUnTrib);
+	}
+
+	/** Get Unit Tax Price.
+		@return Defines the Unit Tax Price
+	  */
+	public BigDecimal getLBR_vUnTrib () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_vUnTrib);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Line No.
 		@param Line 
 		Unique line for this document
@@ -814,6 +876,23 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 	public String getVendorProductNo () 
 	{
 		return (String)get_Value(COLUMNNAME_VendorProductNo);
+	}
+
+	/** Set UOM Code.
+		@param X12DE355 
+		UOM EDI X12 Code
+	  */
+	public void setX12DE355 (String X12DE355)
+	{
+		set_Value (COLUMNNAME_X12DE355, X12DE355);
+	}
+
+	/** Get UOM Code.
+		@return UOM EDI X12 Code
+	  */
+	public String getX12DE355 () 
+	{
+		return (String)get_Value(COLUMNNAME_X12DE355);
 	}
 
 	/** Set CFOP Name.
@@ -1105,26 +1184,6 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		return (String)get_Value(COLUMNNAME_lbr_UOMName);
 	}
 
-	/** Set Tax Quantity.
-		@param LBR_qTrib 
-		Defines the Tax Quantity
-	  */
-	public void setLBR_qTrib (BigDecimal LBR_qTrib)
-	{
-		set_Value (COLUMNNAME_LBR_qTrib, LBR_qTrib);
-	}
-
-	/** Get Tax Quantity.
-		@return Defines the Tax Quantity
-	  */
-	public BigDecimal getLBR_qTrib () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_qTrib);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	/** Set Total de Tributo.
 		@param lbr_vTotTrib 
 		Valor aproximado total de tributos federais, estaduais e municipais.
@@ -1143,42 +1202,5 @@ public class X_LBR_NotaFiscalLine extends PO implements I_LBR_NotaFiscalLine, I_
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	/** Set Unit Tax Price.
-		@param LBR_vUnTrib 
-		Defines the Unit Tax Price
-	  */
-	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib)
-	{
-		set_Value (COLUMNNAME_LBR_vUnTrib, LBR_vUnTrib);
-	}
-
-	/** Get Unit Tax Price.
-		@return Defines the Unit Tax Price
-	  */
-	public BigDecimal getLBR_vUnTrib () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LBR_vUnTrib);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-	
-	/** Set UOM Code.
-	@param X12DE355 
-	UOM EDI X12 Code
-	  */
-	public void setX12DE355 (String X12DE355)
-	{
-		set_Value (COLUMNNAME_X12DE355, X12DE355);
-	}
-	
-	/** Get UOM Code.
-		@return UOM EDI X12 Code
-	  */
-	public String getX12DE355 () 
-	{
-		return (String)get_Value(COLUMNNAME_X12DE355);
 	}
 }

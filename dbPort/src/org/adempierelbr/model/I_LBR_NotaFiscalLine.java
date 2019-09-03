@@ -373,6 +373,45 @@ public interface I_LBR_NotaFiscalLine
 	/** Get Tax Benefit Code	  */
 	public String getLBR_TaxBenefitCode();
 
+    /** Column name LBR_VAM */
+    public static final String COLUMNNAME_LBR_VAM = "LBR_VAM";
+
+	/** Set VAM.
+	  * VAM (value-added margin)
+	  */
+	public void setLBR_VAM (BigDecimal LBR_VAM);
+
+	/** Get VAM.
+	  * VAM (value-added margin)
+	  */
+	public BigDecimal getLBR_VAM();
+
+    /** Column name LBR_qTrib */
+    public static final String COLUMNNAME_LBR_qTrib = "LBR_qTrib";
+
+	/** Set Tax Quantity.
+	  * Defines the Tax Quantity
+	  */
+	public void setLBR_qTrib (BigDecimal LBR_qTrib);
+
+	/** Get Tax Quantity.
+	  * Defines the Tax Quantity
+	  */
+	public BigDecimal getLBR_qTrib();
+
+    /** Column name LBR_vUnTrib */
+    public static final String COLUMNNAME_LBR_vUnTrib = "LBR_vUnTrib";
+
+	/** Set Unit Tax Price.
+	  * Defines the Unit Tax Price
+	  */
+	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib);
+
+	/** Get Unit Tax Price.
+	  * Defines the Unit Tax Price
+	  */
+	public BigDecimal getLBR_vUnTrib();
+
     /** Column name Line */
     public static final String COLUMNNAME_Line = "Line";
 
@@ -547,6 +586,19 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getVendorProductNo();
 
+    /** Column name X12DE355 */
+    public static final String COLUMNNAME_X12DE355 = "X12DE355";
+
+	/** Set UOM Code.
+	  * UOM EDI X12 Code
+	  */
+	public void setX12DE355 (String X12DE355);
+
+	/** Get UOM Code.
+	  * UOM EDI X12 Code
+	  */
+	public String getX12DE355();
+
     /** Column name lbr_CFOPName */
     public static final String COLUMNNAME_lbr_CFOPName = "lbr_CFOPName";
 
@@ -708,19 +760,6 @@ public interface I_LBR_NotaFiscalLine
 	  */
 	public String getlbr_UOMName();
 
-    /** Column name LBR_qTrib */
-    public static final String COLUMNNAME_LBR_qTrib = "LBR_qTrib";
-
-	/** Set Tax Quantity.
-	  * Defines the Tax Quantity
-	  */
-	public void setLBR_qTrib (BigDecimal LBR_qTrib);
-
-	/** Get Tax Quantity.
-	  * Defines the Tax Quantity
-	  */
-	public BigDecimal getLBR_qTrib();
-
     /** Column name lbr_vTotTrib */
     public static final String COLUMNNAME_lbr_vTotTrib = "lbr_vTotTrib";
 
@@ -733,30 +772,4 @@ public interface I_LBR_NotaFiscalLine
 	  * Valor aproximado total de tributos federais, estaduais e municipais.
 	  */
 	public BigDecimal getlbr_vTotTrib();
-
-    /** Column name LBR_vUnTrib */
-    public static final String COLUMNNAME_LBR_vUnTrib = "LBR_vUnTrib";
-
-	/** Set Unit Tax Price.
-	  * Defines the Unit Tax Price
-	  */
-	public void setLBR_vUnTrib (BigDecimal LBR_vUnTrib);
-
-	/** Get Unit Tax Price.
-	  * Defines the Unit Tax Price
-	  */
-	public BigDecimal getLBR_vUnTrib();
-	
-	/** Column name X12DE355 */
-    public static final String COLUMNNAME_X12DE355 = "X12DE355";
-
-	/** Set UOM Code.
-	  * UOM EDI X12 Code
-	  */
-	public void setX12DE355 (String X12DE355);
-
-	/** Get UOM Code.
-	  * UOM EDI X12 Code
-	  */
-	public String getX12DE355();
 }

@@ -1259,9 +1259,9 @@ public class NFeXMLGenerator
 						icms10.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
 						icms10.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS10.ModBCST.X_4);	//	FIXME: MVA %
 						
-						//	MVA - IVA
-//						if (nfl.getMVA)	//	FIXME
-//						icms10.setPMVAST(normalize2to4  (nfl.getMVA, 4));
+						//	MVA - VAM
+						if (nfl.getLBR_VAM() != null && nfl.getLBR_VAM().signum() == 1)
+							icms10.setPMVAST(normalize2to4  (nfl.getLBR_VAM()));
 						
 						//	Redução na BC
 						if (icmsSTTax.getlbr_TaxBase() != null 
@@ -1313,9 +1313,9 @@ public class NFeXMLGenerator
 						icms30.setCST(Det.Imposto.ICMS.ICMS30.CST.X_30);
 						icms30.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS30.ModBCST.X_4);	//	FIXME: MVA %
 						
-						//	MVA - IVA
-//						if (nfl.getMVA)	//	FIXME
-//						icms10.setPMVAST(normalize2to4  (nfl.getMVA, 4));
+						//	MVA - VAM
+						if (nfl.getLBR_VAM() != null && nfl.getLBR_VAM().signum() == 1)
+							icms30.setPMVAST(normalize2to4  (nfl.getLBR_VAM()));
 						
 						//	Redução na BC
 						if (icmsSTTax.getlbr_TaxBase() != null 

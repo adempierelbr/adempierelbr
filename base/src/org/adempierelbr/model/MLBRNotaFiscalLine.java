@@ -630,7 +630,11 @@ public class MLBRNotaFiscalLine extends X_LBR_NotaFiscalLine {
 		for (MLBRTaxLine tl : tax.getLines())
 		{
 			int Child_Tax_ID = tl.getChild_Tax_ID (iLineW.getC_Tax_ID());
-			//
+			
+			//	MVA - Margem de Valor Agregado
+			if (MLBRTax.TAX_MVA == tl.getLBR_TaxName_ID())
+				setLBR_VAM (tl.getlbr_TaxRate());
+
 			if (!tl.islbr_PostTax() || Child_Tax_ID < 1)
 				continue;
 			

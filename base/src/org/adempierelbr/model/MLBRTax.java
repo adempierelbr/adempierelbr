@@ -104,6 +104,7 @@ public class MLBRTax extends X_LBR_Tax
 	public static final int	TAX_ICMS	= 1106000;
 	public static final int	TAX_ICMSST	= 1106012;
 	public static final int	TAX_IPI		= 1106003;
+	public static final int	TAX_MVA		= 1106013;
 	
 	/**	Included Taxes	*/
 	private List<Integer> includedTaxes = new ArrayList<Integer>();
