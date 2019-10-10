@@ -1,12 +1,16 @@
 package org.adempierelbr.nfse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.adempierelbr.model.MLBRNotaFiscal;
 import org.adempierelbr.nfse.sp.NFSeImpl;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.Query;
+import org.compiere.model.X_C_City;
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 
 public class NFSeUtil
 {
@@ -79,4 +83,47 @@ public class NFSeUtil
 		}
 		return retValue;
 	}   //  create
+	
+	/**
+	 * Get City
+	 * @param citycode
+	 * @param regionname
+	 * @param cityname
+	 * @return
+	 */
+	public static X_C_City getCity (String citycode, String regionname, String cityname)
+	{
+		//	Validate Variavel citycode
+		if (citycode != null && !"0".equals(citycode))
+		{	
+			//	Get City Source by City Code
+			X_C_City city = new Query(Env.getCtx(), X_C_City.Table_Name, "LBR_CityCode = ?", null)
+			.setParameters(citycode)
+			.first();
+			
+			// Return City
+			if (city != null)
+				return city;
+		}
+		
+		//	Validate Variavel regionname e cityname
+		if (regionname == null || cityname == null)
+			return null;
+
+		//	Get List of city
+		List <X_C_City> citys = new Query(Env.getCtx(), X_C_City.Table_Name, "Name = ?", null)
+				.setParameters(cityname)
+				.list();
+		
+		//	Cities
+		for (X_C_City c : citys)
+		{
+			//	Return the City after validate the Region Name
+			if (c.getC_Region().getName().equals(regionname))
+				return c;
+		}
+		
+		return null;			
+	}
+	
 }	//	NFSeUtil
