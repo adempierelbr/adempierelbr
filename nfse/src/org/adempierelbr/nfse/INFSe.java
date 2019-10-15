@@ -96,4 +96,11 @@ public interface INFSe
 	 * 	@return PDF
 	 */
 	public File getPDF (MLBRNotaFiscal nf);
+	
+	/**
+	 * Cancel NFS-e
+	 * @param nf
+	 * @return
+	 */
+	public String cancel(MLBRNotaFiscal nf);
 }	//	INFSe

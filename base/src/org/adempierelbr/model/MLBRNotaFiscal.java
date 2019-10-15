@@ -3736,6 +3736,21 @@ public class MLBRNotaFiscal extends X_LBR_NotaFiscal implements DocAction, DocOp
 					m_processMsg = e.getMessage();
 				}
 			}
+			else if (LBR_NFMODEL_NotaFiscalDeServiçosEletrônicaRPS.equals(getlbr_NFModel()))
+			{
+				INFSe infSe = NFSeUtil.get (this);
+				//
+				if (infSe != null)
+				{
+					infSe.cancel(this);
+				}
+				else
+				{
+					setProcessed (true);
+					setDocAction (DOCACTION_None);
+					return true;
+				}
+			}
 			else
 			{
 				setProcessed (true);
