@@ -33,7 +33,7 @@ public class X_LBR_NFLineMA extends PO implements I_LBR_NFLineMA, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20180606L;
+	private static final long serialVersionUID = 20191028L;
 
     /** Standard Constructor */
     public X_LBR_NFLineMA (Properties ctx, int LBR_NFLineMA_ID, String trxName)
@@ -423,6 +423,31 @@ public class X_LBR_NFLineMA extends PO implements I_LBR_NFLineMA, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public I_C_Region getLBR_UFC() throws RuntimeException
+    {
+		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+			.getPO(getLBR_UFCons(), get_TrxName());	}
+
+	/** Set Consumption Region.
+		@param LBR_UFCons 
+		Indicate the Consumption Region
+	  */
+	public void setLBR_UFCons (int LBR_UFCons)
+	{
+		set_Value (COLUMNNAME_LBR_UFCons, Integer.valueOf(LBR_UFCons));
+	}
+
+	/** Get Consumption Region.
+		@return Indicate the Consumption Region
+	  */
+	public int getLBR_UFCons () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_UFCons);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Brand Code.

@@ -145,6 +145,7 @@ import br.inf.portalfiscal.nfe.v400.TUf;
 import br.inf.portalfiscal.nfe.v400.TUfEmi;
 import br.inf.portalfiscal.nfe.v400.TVeiculo;
 import br.inf.portalfiscal.nfe.v400.Torig;
+import br.inf.portalfiscal.nfe.v6v.TUfCons;
 
 /**
  * 	Gera o arquivo XML
@@ -1130,6 +1131,8 @@ public class NFeXMLGenerator
 						comb.setPGNi(normalize (attribute.getLBR_PercGasI()));
 						comb.setVPart(normalize (attribute.getLBR_StartAmt()));
 						comb.setCODIF(attribute.getLBR_CODIF());
+						if (attribute.getLBR_UFC() != null)
+							comb.setUFCons(TUf.Enum.forString(attribute.getLBR_UFC().getName()));
 					}
 				}
 				

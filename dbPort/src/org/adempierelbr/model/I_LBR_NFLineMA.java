@@ -281,6 +281,21 @@ public interface I_LBR_NFLineMA
 	/** Get Start Amount	  */
 	public BigDecimal getLBR_StartAmt();
 
+    /** Column name LBR_UFCons */
+    public static final String COLUMNNAME_LBR_UFCons = "LBR_UFCons";
+
+	/** Set Consumption Region.
+	  * Indicate the Consumption Region
+	  */
+	public void setLBR_UFCons (int LBR_UFCons);
+
+	/** Get Consumption Region.
+	  * Indicate the Consumption Region
+	  */
+	public int getLBR_UFCons();
+
+	public I_C_Region getLBR_UFC() throws RuntimeException;
+
     /** Column name LBR_VeBrandCode */
     public static final String COLUMNNAME_LBR_VeBrandCode = "LBR_VeBrandCode";
 
