@@ -3,11 +3,16 @@ package org.adempierelbr.mdfe.util;
 import java.io.Writer;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.text.MaskFormatter;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.DB;
+
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import br.inf.portalfiscal.mdfe.TProcEmi;
 
@@ -300,4 +305,15 @@ public class MDFeUtil
 		}
 		
 	}	//	format
+	
+	/**
+	 * 		QR Code Parameters
+	 * 	@return HashMap with parameters of QR Code
+	 */
+	public static Map<EncodeHintType, Object> getQRCodeParam ()
+	{
+		final Map<EncodeHintType, Object> params = new HashMap<>();
+		params.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+		return params;
+	}
 }	//	MDFeUtil

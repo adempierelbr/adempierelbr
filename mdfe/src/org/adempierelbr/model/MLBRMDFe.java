@@ -1038,6 +1038,7 @@ public class MLBRMDFe extends X_LBR_MDFe implements DocAction, DocOptions
 				if (LBR_POSTLOADING_Yes.equals(getLBR_PostLoading()))
 				{
 					MLBRMDFeUnload unload = new MLBRMDFeUnload(getCtx(), 0, get_TrxName());
+					unload.setLBR_MDFe_ID (getLBR_MDFe_ID());
 					unload.setC_Region_ID (oi.getC_Location().getC_Region_ID());
 					unload.setC_City_ID (oi.getC_Location().getC_City_ID());
 					unload.save();
