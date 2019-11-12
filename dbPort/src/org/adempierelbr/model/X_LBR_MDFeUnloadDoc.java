@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -25,15 +25,15 @@ import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /** Generated Model for LBR_MDFeUnloadDoc
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFeUnloadDoc (Properties ctx, int LBR_MDFeUnloadDoc_ID, String trxName)
@@ -75,9 +75,9 @@ public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Pe
       return sb.toString();
     }
 
-	public I_C_Region getC_Region() throws RuntimeException
+	public org.compiere.model.I_C_Region getC_Region() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getC_Region_ID(), get_TrxName());	}
 
 	/** Set Region.
@@ -120,6 +120,23 @@ public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Pe
 		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
+	/** Set Transaction Date.
+		@param DateTrx 
+		Transaction Date
+	  */
+	public void setDateTrx (Timestamp DateTrx)
+	{
+		set_Value (COLUMNNAME_DateTrx, DateTrx);
+	}
+
+	/** Get Transaction Date.
+		@return Transaction Date
+	  */
+	public Timestamp getDateTrx () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateTrx);
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -157,8 +174,6 @@ public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Pe
 		return bd;
 	}
 
-	/** LBR_MDFeDocType AD_Reference_ID=1120175 */
-	public static final int LBR_MDFEDOCTYPE_AD_Reference_ID=1120175;
 	/** CT-e = 01 */
 	public static final String LBR_MDFEDOCTYPE_CT_E = "01";
 	/** CT paper = 02 */
@@ -225,6 +240,34 @@ public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Pe
 	public int getLBR_MDFeUnload_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_MDFeUnload_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempierelbr.model.I_LBR_NotaFiscal getLBR_NotaFiscal() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_NotaFiscal)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_NotaFiscal.Table_Name)
+			.getPO(getLBR_NotaFiscal_ID(), get_TrxName());	}
+
+	/** Set Nota Fiscal.
+		@param LBR_NotaFiscal_ID 
+		Primary key table LBR_NotaFiscal
+	  */
+	public void setLBR_NotaFiscal_ID (int LBR_NotaFiscal_ID)
+	{
+		if (LBR_NotaFiscal_ID < 1) 
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_NotaFiscal_ID, Integer.valueOf(LBR_NotaFiscal_ID));
+	}
+
+	/** Get Nota Fiscal.
+		@return Primary key table LBR_NotaFiscal
+	  */
+	public int getLBR_NotaFiscal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_NotaFiscal_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -327,5 +370,19 @@ public class X_LBR_MDFeUnloadDoc extends PO implements I_LBR_MDFeUnloadDoc, I_Pe
 	public String getlbr_NFeID () 
 	{
 		return (String)get_Value(COLUMNNAME_lbr_NFeID);
+	}
+
+	/** Set NFe Protocol.
+		@param lbr_NFeProt NFe Protocol	  */
+	public void setlbr_NFeProt (String lbr_NFeProt)
+	{
+		set_Value (COLUMNNAME_lbr_NFeProt, lbr_NFeProt);
+	}
+
+	/** Get NFe Protocol.
+		@return NFe Protocol	  */
+	public String getlbr_NFeProt () 
+	{
+		return (String)get_Value(COLUMNNAME_lbr_NFeProt);
 	}
 }

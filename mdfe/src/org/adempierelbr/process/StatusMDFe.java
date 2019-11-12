@@ -51,6 +51,9 @@ public class StatusMDFe extends SvrProcess
 	/**	Organization		*/
 	private int p_AD_Org_ID 		= 0;
 	
+	/**	Legacy Process Name	*/
+	public static String PROCESS_NAME = "org.adempierelbr.process.StatusMDFe";
+	
 	@SuppressWarnings("unused")
 	private String p_LBR_CommType	= MLBRMDFe.LBR_COMMTYPE_Regular;
 	
@@ -102,14 +105,6 @@ public class StatusMDFe extends SvrProcess
 			//	Certificado
 			MLBRDigitalCertificate.setCertificate (getCtx(), oi.getAD_Org_ID());
 			
-			//	Cabeçalho
-			MDFeStatusServicoStub.MdfeCabecMsg header = new MDFeStatusServicoStub.MdfeCabecMsg ();
-			header.setCUF((city.getlbr_CityCode()+"").substring(0, 2));
-			header.setVersaoDados(MDFeUtil.VERSION);
-			
-			MDFeStatusServicoStub.MdfeCabecMsgE headerE = new MDFeStatusServicoStub.MdfeCabecMsgE ();
-			headerE.setMdfeCabecMsg(header);
-			
 			//	XML
 			ConsStatServMDFeDocument statDoc = ConsStatServMDFeDocument.Factory.newInstance();
 			TConsStatServ status = statDoc.addNewConsStatServMDFe();
@@ -121,6 +116,19 @@ public class StatusMDFe extends SvrProcess
 			log.fine (xml.toString());
 			
 //			ValidaXML.ValidaDocEx (sw.toString(), MDFeUtil.XSD_VERSION + "/consStatServMDFe_v1.00.xsd");
+
+			String regionCode = (city.getlbr_CityCode()+"").substring(0, 2);
+			MLBRNFeWebService ws = MLBRNFeWebService.get (MDFeUtil.TYPE_STATUS, p_LBR_NFeEnv, MDFeUtil.VERSION, MDFeUtil.MDFE_REGION);
+			
+			final StringBuilder respStatus = new StringBuilder("");
+			
+			//	Cabeçalho
+			MDFeStatusServicoStub.MdfeCabecMsg header = new MDFeStatusServicoStub.MdfeCabecMsg ();
+			header.setCUF(regionCode);
+			header.setVersaoDados(MDFeUtil.VERSION);
+			
+			MDFeStatusServicoStub.MdfeCabecMsgE headerE = new MDFeStatusServicoStub.MdfeCabecMsgE ();
+			headerE.setMdfeCabecMsg(header);
 			
 			XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(MDFeUtil.getWrapped (xml)));
 			
@@ -128,14 +136,13 @@ public class StatusMDFe extends SvrProcess
 			MDFeStatusServicoStub.MdfeDadosMsg content = MDFeStatusServicoStub.MdfeDadosMsg.Factory.parse (xmlReader);
 			
 			//	Consulta
-			MDFeStatusServicoStub.setAmbiente (MLBRNFeWebService.get (MDFeUtil.TYPE_STATUS, p_LBR_NFeEnv, MDFeUtil.VERSION, MDFeUtil.MDFE_REGION));
-			MDFeStatusServicoStub stub = new MDFeStatusServicoStub();
+			MDFeStatusServicoStub stub = new MDFeStatusServicoStub(ws.getURL());
 			
-			StringBuilder result = new StringBuilder (MDFeUtil.HEADER + stub.mdfeStatusServicoMDF (content, headerE).getExtraElement().toString());
+			respStatus.append(MDFeUtil.HEADER + stub.mdfeStatusServicoMDF (content, headerE).getExtraElement().toString());
 
-			log.fine (result.toString());
+			log.fine (respStatus.toString());
 			
-			TRetConsStatServ ret = RetConsStatServMDFeDocument.Factory.parse(result.toString()).getRetConsStatServMDFe();
+			TRetConsStatServ ret = RetConsStatServMDFeDocument.Factory.parse(respStatus.toString()).getRetConsStatServMDFe();
 			
 			StringBuilder msg = new StringBuilder("<br />");
 			msg.append("<br />Ambiente: ").append(ret.getTpAmb()).append(" - ").append(MRefList.getListName (getCtx(), MLBRMDFe.LBR_NFEENV_AD_Reference_ID, ret.getTpAmb().toString()));

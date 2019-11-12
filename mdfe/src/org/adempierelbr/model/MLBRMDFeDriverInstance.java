@@ -16,6 +16,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_MDFe_DriverInstance;
 import org.compiere.util.DB;
 
 /**
@@ -26,6 +27,11 @@ import org.compiere.util.DB;
  */
 public class MLBRMDFeDriverInstance extends X_LBR_MDFe_DriverInstance
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = 631150892726614466L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -26,15 +26,15 @@ import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for LBR_MDFe
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFe (Properties ctx, int LBR_MDFe_ID, String trxName)
@@ -104,9 +104,9 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
       return sb.toString();
     }
 
-	public I_C_City getC_City() throws RuntimeException
+	public org.compiere.model.I_C_City getC_City() throws RuntimeException
     {
-		return (I_C_City)MTable.get(getCtx(), I_C_City.Table_Name)
+		return (org.compiere.model.I_C_City)MTable.get(getCtx(), org.compiere.model.I_C_City.Table_Name)
 			.getPO(getC_City_ID(), get_TrxName());	}
 
 	/** Set City.
@@ -155,9 +155,9 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_Region getC_SalesRegion() throws RuntimeException
+	public org.compiere.model.I_C_Region getC_SalesRegion() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -198,6 +198,23 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 	public Timestamp getDateDoc () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
+	}
+
+	/** Set Start Plan.
+		@param DateStartPlan 
+		Planned Start Date
+	  */
+	public void setDateStartPlan (Timestamp DateStartPlan)
+	{
+		set_Value (COLUMNNAME_DateStartPlan, DateStartPlan);
+	}
+
+	/** Get Start Plan.
+		@return Planned Start Date
+	  */
+	public Timestamp getDateStartPlan () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateStartPlan);
 	}
 
 	/** Set Transaction Date.
@@ -388,6 +405,23 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 		return (String)get_Value(COLUMNNAME_LBR_CIOT);
 	}
 
+	/** Set CSRT Hash.
+		@param LBR_CSRTHash 
+		CSRT Hash is generated using NFe ID and CSRT Code
+	  */
+	public void setLBR_CSRTHash (String LBR_CSRTHash)
+	{
+		set_Value (COLUMNNAME_LBR_CSRTHash, LBR_CSRTHash);
+	}
+
+	/** Get CSRT Hash.
+		@return CSRT Hash is generated using NFe ID and CSRT Code
+	  */
+	public String getLBR_CSRTHash () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_CSRTHash);
+	}
+
 	/** LBR_CommType AD_Reference_ID=1120173 */
 	public static final int LBR_COMMTYPE_AD_Reference_ID=1120173;
 	/** Regular = 1 */
@@ -409,9 +443,9 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 		return (String)get_Value(COLUMNNAME_LBR_CommType);
 	}
 
-	public I_C_Region getLBR_EndRegion() throws RuntimeException
+	public org.compiere.model.I_C_Region getLBR_EndRegion() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getLBR_EndRegion_ID(), get_TrxName());	}
 
 	/** Set End Region.
@@ -432,6 +466,27 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** LBR_GreenChannel AD_Reference_ID=319 */
+	public static final int LBR_GREENCHANNEL_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String LBR_GREENCHANNEL_Yes = "Y";
+	/** No = N */
+	public static final String LBR_GREENCHANNEL_No = "N";
+	/** Set Green Channel.
+		@param LBR_GreenChannel Green Channel	  */
+	public void setLBR_GreenChannel (String LBR_GreenChannel)
+	{
+
+		set_Value (COLUMNNAME_LBR_GreenChannel, LBR_GreenChannel);
+	}
+
+	/** Get Green Channel.
+		@return Green Channel	  */
+	public String getLBR_GreenChannel () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_GreenChannel);
 	}
 
 	/** LBR_MDFeIssuerType AD_Reference_ID=1120171 */
@@ -555,8 +610,10 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Manifesto Eletronico de Documentos.
-		@param LBR_MDFe_ID Manifesto Eletronico de Documentos	  */
+	/** Set MDF-e.
+		@param LBR_MDFe_ID 
+		Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public void setLBR_MDFe_ID (int LBR_MDFe_ID)
 	{
 		if (LBR_MDFe_ID < 1) 
@@ -565,14 +622,36 @@ public class X_LBR_MDFe extends PO implements I_LBR_MDFe, I_Persistent
 			set_ValueNoCheck (COLUMNNAME_LBR_MDFe_ID, Integer.valueOf(LBR_MDFe_ID));
 	}
 
-	/** Get Manifesto Eletronico de Documentos.
-		@return Manifesto Eletronico de Documentos	  */
+	/** Get MDF-e.
+		@return Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public int getLBR_MDFe_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_MDFe_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** LBR_PostLoading AD_Reference_ID=319 */
+	public static final int LBR_POSTLOADING_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String LBR_POSTLOADING_Yes = "Y";
+	/** No = N */
+	public static final String LBR_POSTLOADING_No = "N";
+	/** Set Post Loading.
+		@param LBR_PostLoading Post Loading	  */
+	public void setLBR_PostLoading (String LBR_PostLoading)
+	{
+
+		set_Value (COLUMNNAME_LBR_PostLoading, LBR_PostLoading);
+	}
+
+	/** Get Post Loading.
+		@return Post Loading	  */
+	public String getLBR_PostLoading () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_PostLoading);
 	}
 
 	/** Set RNTRC.

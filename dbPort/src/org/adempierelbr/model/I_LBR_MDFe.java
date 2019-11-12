@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -22,9 +22,10 @@ import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LBR_MDFe
- *  @author Adempiere (generated) 
- *  @version Release 3.6.0LTS
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1
  */
+@SuppressWarnings("all")
 public interface I_LBR_MDFe 
 {
 
@@ -76,7 +77,7 @@ public interface I_LBR_MDFe
 	  */
 	public int getC_City_ID();
 
-	public I_C_City getC_City() throws RuntimeException;
+	public org.compiere.model.I_C_City getC_City() throws RuntimeException;
 
     /** Column name C_Region_ID */
     public static final String COLUMNNAME_C_Region_ID = "C_Region_ID";
@@ -104,7 +105,7 @@ public interface I_LBR_MDFe
 	  */
 	public int getC_SalesRegion_ID();
 
-	public I_C_Region getC_SalesRegion() throws RuntimeException;
+	public org.compiere.model.I_C_Region getC_SalesRegion() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -134,6 +135,19 @@ public interface I_LBR_MDFe
 	  * Date of the Document
 	  */
 	public Timestamp getDateDoc();
+
+    /** Column name DateStartPlan */
+    public static final String COLUMNNAME_DateStartPlan = "DateStartPlan";
+
+	/** Set Start Plan.
+	  * Planned Start Date
+	  */
+	public void setDateStartPlan (Timestamp DateStartPlan);
+
+	/** Get Start Plan.
+	  * Planned Start Date
+	  */
+	public Timestamp getDateStartPlan();
 
     /** Column name DateTrx */
     public static final String COLUMNNAME_DateTrx = "DateTrx";
@@ -239,6 +253,19 @@ public interface I_LBR_MDFe
 	  */
 	public String getLBR_CIOT();
 
+    /** Column name LBR_CSRTHash */
+    public static final String COLUMNNAME_LBR_CSRTHash = "LBR_CSRTHash";
+
+	/** Set CSRT Hash.
+	  * CSRT Hash is generated using NFe ID and CSRT Code
+	  */
+	public void setLBR_CSRTHash (String LBR_CSRTHash);
+
+	/** Get CSRT Hash.
+	  * CSRT Hash is generated using NFe ID and CSRT Code
+	  */
+	public String getLBR_CSRTHash();
+
     /** Column name LBR_CommType */
     public static final String COLUMNNAME_LBR_CommType = "LBR_CommType";
 
@@ -258,6 +285,15 @@ public interface I_LBR_MDFe
 	public int getLBR_EndRegion_ID();
 
 	public I_C_Region getLBR_EndRegion() throws RuntimeException;
+
+    /** Column name LBR_GreenChannel */
+    public static final String COLUMNNAME_LBR_GreenChannel = "LBR_GreenChannel";
+
+	/** Set Green Channel	  */
+	public void setLBR_GreenChannel (String LBR_GreenChannel);
+
+	/** Get Green Channel	  */
+	public String getLBR_GreenChannel();
 
     /** Column name LBR_MDFeIssuerType */
     public static final String COLUMNNAME_LBR_MDFeIssuerType = "LBR_MDFeIssuerType";
@@ -315,11 +351,24 @@ public interface I_LBR_MDFe
     /** Column name LBR_MDFe_ID */
     public static final String COLUMNNAME_LBR_MDFe_ID = "LBR_MDFe_ID";
 
-	/** Set Manifesto Eletronico de Documentos	  */
+	/** Set MDF-e.
+	  * Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public void setLBR_MDFe_ID (int LBR_MDFe_ID);
 
-	/** Get Manifesto Eletronico de Documentos	  */
+	/** Get MDF-e.
+	  * Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public int getLBR_MDFe_ID();
+
+    /** Column name LBR_PostLoading */
+    public static final String COLUMNNAME_LBR_PostLoading = "LBR_PostLoading";
+
+	/** Set Post Loading	  */
+	public void setLBR_PostLoading (String LBR_PostLoading);
+
+	/** Get Post Loading	  */
+	public String getLBR_PostLoading();
 
     /** Column name LBR_RNTRC */
     public static final String COLUMNNAME_LBR_RNTRC = "LBR_RNTRC";

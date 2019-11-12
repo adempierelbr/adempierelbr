@@ -16,6 +16,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_MDFeToll;
 import org.adempierelbr.validator.ValidatorBPartner;
 import org.compiere.util.Msg;
 
@@ -27,6 +28,11 @@ import org.compiere.util.Msg;
  */
 public class MLBRMDFeToll extends X_LBR_MDFeToll
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = 6688410325078224750L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

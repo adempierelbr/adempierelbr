@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -22,9 +22,10 @@ import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LBR_MDFeDriver
- *  @author Adempiere (generated) 
- *  @version Release 3.6.0LTS
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1
  */
+@SuppressWarnings("all")
 public interface I_LBR_MDFeDriver 
 {
 
@@ -62,6 +63,36 @@ public interface I_LBR_MDFeDriver
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
+
+    /** Column name AD_User_ID */
+    public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
+
+	/** Set User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_User_ID (int AD_User_ID);
+
+	/** Get User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_User_ID();
+
+	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
+
+    /** Column name C_BPartner_ID */
+    public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
+
+	/** Set Business Partner .
+	  * Identifies a Business Partner
+	  */
+	public void setC_BPartner_ID (int C_BPartner_ID);
+
+	/** Get Business Partner .
+	  * Identifies a Business Partner
+	  */
+	public int getC_BPartner_ID();
+
+	public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";

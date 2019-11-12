@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -23,15 +23,15 @@ import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for LBR_MDFeDriver
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFeDriver extends PO implements I_LBR_MDFeDriver, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFeDriver (Properties ctx, int LBR_MDFeDriver_ID, String trxName)
@@ -72,6 +72,62 @@ public class X_LBR_MDFeDriver extends PO implements I_LBR_MDFeDriver, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException
+    {
+		return (org.compiere.model.I_AD_User)MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
+			.getPO(getAD_User_ID(), get_TrxName());	}
+
+	/** Set User/Contact.
+		@param AD_User_ID 
+		User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_User_ID (int AD_User_ID)
+	{
+		if (AD_User_ID < 1) 
+			set_Value (COLUMNNAME_AD_User_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+	}
+
+	/** Get User/Contact.
+		@return User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_User_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_User_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_BPartner)MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
+			.getPO(getC_BPartner_ID(), get_TrxName());	}
+
+	/** Set Business Partner .
+		@param C_BPartner_ID 
+		Identifies a Business Partner
+	  */
+	public void setC_BPartner_ID (int C_BPartner_ID)
+	{
+		if (C_BPartner_ID < 1) 
+			set_Value (COLUMNNAME_C_BPartner_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+	}
+
+	/** Get Business Partner .
+		@return Identifies a Business Partner
+	  */
+	public int getC_BPartner_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BPartner_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set MDFe Driver.
 		@param LBR_MDFeDriver_ID MDFe Driver	  */

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempierelbr.util.TextUtil;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
@@ -279,5 +280,22 @@ public class MLBRAuthorizedAccessXML extends X_LBR_AuthorizedAccessXML
 	    }
 	    return true;
 	} //validaCPNJ
-	
+
+	/**
+	 * 	Numeric CNPJ without mask
+	 * 	@return
+	 */
+	public String getCNPJ()
+	{
+		return TextUtil.toNumeric(getlbr_CNPJ());
+	}
+
+	/**
+	 * 	Numeric CPF without mask
+	 * 	@return
+	 */
+	public String getCPF()
+	{
+		return TextUtil.toNumeric(getlbr_CPF());
+	}
 }	//	MLBRAuthorizedAccessXML

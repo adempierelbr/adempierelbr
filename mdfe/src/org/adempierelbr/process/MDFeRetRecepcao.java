@@ -62,6 +62,9 @@ public class MDFeRetRecepcao extends SvrProcess
 	/**	Static Logger	*/
 	private static CLogger	s_log	= CLogger.getCLogger (MDFeRetRecepcao.class);
 	
+	/**	Legacy Process Name	*/
+	public static String PROCESS_NAME = "org.adempierelbr.process.MDFeRetRecepcao";
+	
 	/**	Organization		*/
 	private int p_AD_Org_ID 		= 0;
 	
@@ -146,18 +149,14 @@ public class MDFeRetRecepcao extends SvrProcess
 		
 		Properties ctx = mdfe.getCtx();
 		
-		I_W_C_City city = POWrapper.create (new MCity (ctx, MOrgInfo.get (ctx, mdfe.getAD_Org_ID(), null).getC_Location().getC_City_ID(), null), I_W_C_City.class);
+		MOrgInfo oi = MOrgInfo.get (ctx, mdfe.getAD_Org_ID(), null);
+		I_W_C_City city = POWrapper.create (new MCity (ctx, oi.getC_Location().getC_City_ID(), null), I_W_C_City.class);
 		
 		//	Certificado
 		MLBRDigitalCertificate.setCertificate (ctx, mdfe.getAD_Org_ID());
-		
-		//	Cabeçalho
-		MDFeRetRecepcaoStub.MdfeCabecMsg header = new MDFeRetRecepcaoStub.MdfeCabecMsg ();
-		header.setCUF((city.getlbr_CityCode()+"").substring(0, 2));
-		header.setVersaoDados(MDFeUtil.VERSION);
-		
-		MDFeRetRecepcaoStub.MdfeCabecMsgE headerE = new MDFeRetRecepcaoStub.MdfeCabecMsgE ();
-		headerE.setMdfeCabecMsg(header);
+
+		String regionCode = (city.getlbr_CityCode()+"").substring(0, 2);
+		MLBRNFeWebService ws = MLBRNFeWebService.get (MDFeUtil.TYPE_RETRECEPCAO, mdfe.getlbr_NFeEnv(), MDFeUtil.VERSION, MDFeUtil.MDFE_REGION);
 		
 		//	XML
 		ConsReciMDFeDocument recDoc = ConsReciMDFeDocument.Factory.newInstance();
@@ -170,23 +169,30 @@ public class MDFeRetRecepcao extends SvrProcess
 		StringBuilder xml = new StringBuilder (recDoc.xmlText(NFeUtil.getXmlOpt()));
 		
 		s_log.fine (xml.toString());
-		
-//		ValidaXML.ValidaDocEx (sw.toString(), MDFeUtil.XSD_VERSION + "/consReciMDFe_v1.00.xsd");
-		
+				
 		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(MDFeUtil.getWrapped (xml)));
+		
+		final StringBuilder respStatus = new StringBuilder("");
+		
+		//	Cabeçalho
+		MDFeRetRecepcaoStub.MdfeCabecMsg header = new MDFeRetRecepcaoStub.MdfeCabecMsg ();
+		header.setCUF(regionCode);
+		header.setVersaoDados(MDFeUtil.VERSION);
+		
+		MDFeRetRecepcaoStub.MdfeCabecMsgE headerE = new MDFeRetRecepcaoStub.MdfeCabecMsgE ();
+		headerE.setMdfeCabecMsg(header);
 		
 		//	Conteúdo
 		MDFeRetRecepcaoStub.MdfeDadosMsg content = MDFeRetRecepcaoStub.MdfeDadosMsg.Factory.parse (xmlReader);
 		
 		//	Consulta
-		MDFeRetRecepcaoStub.setAmbiente (MLBRNFeWebService.get (MDFeUtil.TYPE_RETRECEPCAO, mdfe.getlbr_NFeEnv(), MDFeUtil.VERSION, MDFeUtil.MDFE_REGION));
-		MDFeRetRecepcaoStub stub = new MDFeRetRecepcaoStub();
+		MDFeRetRecepcaoStub stub = new MDFeRetRecepcaoStub(ws.getURL());
 		
-		StringBuilder result = new StringBuilder (MDFeUtil.HEADER + stub.mdfeRetRecepcao (content, headerE).getExtraElement().toString());
-
-		s_log.fine (result.toString());
+		respStatus.append(MDFeUtil.HEADER + stub.mdfeRetRecepcao (content, headerE).getExtraElement().toString());
 		
-		TRetConsReciMDFe ret = RetConsReciMDFeDocument.Factory.parse(result.toString()).getRetConsReciMDFe();
+		s_log.fine (respStatus.toString());
+		
+		TRetConsReciMDFe ret = RetConsReciMDFeDocument.Factory.parse(respStatus.toString()).getRetConsReciMDFe();
 		
 		if (MDFeUtil.STATUS_PROCESSADO.equals (ret.getCStat()) && ret.getProtMDFe() != null && ret.getProtMDFe().getInfProt() != null)
 		{
@@ -204,9 +210,9 @@ public class MDFeRetRecepcao extends SvrProcess
 					mdfe.setlbr_DigestValue(ret.getProtMDFe().getInfProt().xgetDigVal().getStringValue());
 				
 				//	Add Attachment Entry
-				MAttachment attachment = mdfe.createAttachment(true);
+				MAttachment attachment = mdfe.createAttachment();
 				//
-				attachment.addEntry (new File (TextUtil.generateTmpFile (result.toString(), mdfe.getlbr_NFeRecID() + "-pro-rec.xml")));
+				attachment.addEntry (new File (TextUtil.generateTmpFile (respStatus.toString(), mdfe.getlbr_NFeRecID() + "-pro-rec.xml")));
 				attachment.save();
 				
 				mdfe.setProcessed(true);
