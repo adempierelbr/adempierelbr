@@ -62,9 +62,6 @@ public class MDFeRetRecepcao extends SvrProcess
 	/**	Static Logger	*/
 	private static CLogger	s_log	= CLogger.getCLogger (MDFeRetRecepcao.class);
 	
-	/**	Legacy Process Name	*/
-	public static String PROCESS_NAME = "org.adempierelbr.process.MDFeRetRecepcao";
-	
 	/**	Organization		*/
 	private int p_AD_Org_ID 		= 0;
 	
@@ -210,7 +207,7 @@ public class MDFeRetRecepcao extends SvrProcess
 					mdfe.setlbr_DigestValue(ret.getProtMDFe().getInfProt().xgetDigVal().getStringValue());
 				
 				//	Add Attachment Entry
-				MAttachment attachment = mdfe.createAttachment();
+				MAttachment attachment = mdfe.createAttachment(true);
 				//
 				attachment.addEntry (new File (TextUtil.generateTmpFile (respStatus.toString(), mdfe.getlbr_NFeRecID() + "-pro-rec.xml")));
 				attachment.save();

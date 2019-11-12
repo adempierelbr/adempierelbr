@@ -301,7 +301,7 @@ public class MLBRMDFe extends X_LBR_MDFe implements DocAction, DocOptions
 				StringBuilder xml = new StringBuilder (cancDoc.xmlText(NFeUtil.getXmlOpt()));
 				
 				//	Add Attachment Entry
-				MAttachment attachment = createAttachment ();
+				MAttachment attachment = createAttachment (true);
 				//
 				attachment.addEntry (ret.getInfEvento().getChMDFe() + "-env.xml", xml.toString().getBytes());
 				attachment.save();
@@ -366,7 +366,7 @@ public class MLBRMDFe extends X_LBR_MDFe implements DocAction, DocOptions
 				String xml = retDoc.xmlText(NFeUtil.getXmlOpt());
 				
 				//	Add Attachment Entry
-				MAttachment attachment = createAttachment ();
+				MAttachment attachment = createAttachment (true);
 				//
 				attachment.addEntry (ret.getInfEvento().getChMDFe() + "-env.xml", xml.getBytes());
 				attachment.save();

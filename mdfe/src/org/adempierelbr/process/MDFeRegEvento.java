@@ -65,9 +65,6 @@ public class MDFeRegEvento extends SvrProcess
 	/**	Static Logger	*/
 	private static CLogger	s_log	= CLogger.getCLogger (MDFeRegEvento.class);
 	
-	/**	Legacy Process Name	*/
-	public static String PROCESS_NAME = "org.adempierelbr.process.MDFeRegEvento";
-	
 	private int p_Record_ID 			= 0;
 	
 	private int p_LBR_MDFeDriver_ID		= 0;

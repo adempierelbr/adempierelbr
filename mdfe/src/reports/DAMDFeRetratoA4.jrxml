@@ -241,7 +241,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial Narrow" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{logradouroEmitente} + ", " + $F{numeroLogradouroEmitente} + ($F{complementoEmitente} == null ? "" : ", " + $F{complementoEmitente}) + "\n" + ($F{bairroEmitente} == null ? "" : $F{bairroEmitente} + " - ") + $F{municipioEmitente} + " - " + $F{ufEmitente} + " - CEP: " + org.kenos.idempiere.lbr.mdfe.util.MDFeUtil.formatCEP ($F{cepEmitente})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{logradouroEmitente} + ", " + $F{numeroLogradouroEmitente} + ($F{complementoEmitente} == null ? "" : ", " + $F{complementoEmitente}) + "\n" + ($F{bairroEmitente} == null ? "" : $F{bairroEmitente} + " - ") + $F{municipioEmitente} + " - " + $F{ufEmitente} + " - CEP: " + org.adempierelbr.mdfe.util.MDFeUtil.formatCEP ($F{cepEmitente})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-149" x="10" y="230" width="232" height="12" uuid="da13bc21-ddb7-4f13-b3ca-04ee0f1bd61b"/>
@@ -254,7 +254,7 @@
 					<textElement textAlignment="Left">
 						<font fontName="Arial Narrow" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[org.kenos.idempiere.lbr.mdfe.util.MDFeUtil.getMDFeProtocol ($F{chaveAcesso})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[org.adempierelbr.mdfe.util.MDFeUtil.getMDFeProtocol ($F{chaveAcesso})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-151" x="248" y="230" width="308" height="12" uuid="a2091c77-99a2-4228-a452-3426ead04366">
@@ -270,7 +270,7 @@
 						<font fontName="Arial Narrow" size="10"/>
 						<paragraph leftIndent="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[org.kenos.idempiere.lbr.mdfe.util.MDFeUtil.formatMDFeKey ($F{chaveAcesso})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[org.adempierelbr.mdfe.util.MDFeUtil.formatMDFeKey ($F{chaveAcesso})]]></textFieldExpression>
 				</textField>
 				<image hAlign="Left" vAlign="Top" isUsingCache="false">
 					<reportElement key="image-1" mode="Opaque" x="10" y="10" width="56" height="58" uuid="5827e21a-774e-4245-aaaf-527f212057d8">
@@ -298,7 +298,7 @@
 					<textElement verticalAlignment="Middle" markup="styled">
 						<font fontName="Arial Narrow" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA["<style isBold='true'>CNPJ: </style>" + org.kenos.idempiere.lbr.mdfe.util.MDFeUtil.formatCNPJ ($F{cnpjEmitente})]]></textFieldExpression>
+					<textFieldExpression><![CDATA["<style isBold='true'>CNPJ: </style>" + org.adempierelbr.mdfe.util.MDFeUtil.formatCNPJ ($F{cnpjEmitente})]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="false">
 					<reportElement key="textField-156" x="75" y="10" width="348" height="19" uuid="5d8fa0c7-c9af-411c-9bfb-5d6a9a425b0b">
@@ -977,7 +977,7 @@
 									<font fontName="Arial Narrow" isBold="true"/>
 									<paragraph leftIndent="10"/>
 								</textElement>
-								<textFieldExpression><![CDATA[org.kenos.idempiere.lbr.mdfe.util.MDFeUtil.formatCPF ($F{CPF})]]></textFieldExpression>
+								<textFieldExpression><![CDATA[org.adempierelbr.mdfe.util.MDFeUtil.formatCPF ($F{CPF})]]></textFieldExpression>
 							</textField>
 							<textField>
 								<reportElement x="100" y="0" width="208" height="12" uuid="0bff8975-7ede-43d0-a99a-9fca05d90280">

@@ -51,9 +51,6 @@ public class StatusMDFe extends SvrProcess
 	/**	Organization		*/
 	private int p_AD_Org_ID 		= 0;
 	
-	/**	Legacy Process Name	*/
-	public static String PROCESS_NAME = "org.adempierelbr.process.StatusMDFe";
-	
 	@SuppressWarnings("unused")
 	private String p_LBR_CommType	= MLBRMDFe.LBR_COMMTYPE_Regular;
 	
