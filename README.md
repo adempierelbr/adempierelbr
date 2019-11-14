@@ -73,6 +73,12 @@ Versões
 Listagem das principais mudanças. As correções menos importantes podem não constar na listagem, caso deseje verificar detalhadamente é possível verificar os commits [clicando aqui][9].
 
 
+1. LBR-201911 [[Download]][95] [[Seed PostgreSQL]][95]
+
+	* Versão 3.00a do MDF-e
+	* Inclusão do MVA na DANFE
+	* Java 8 como versão mínima compatível
+	
 1. LBR-201909 [[Download]][95] [[Seed PostgreSQL]][95]
 
 	* Campos para RH e Folha de Pagamento
@@ -308,89 +314,65 @@ Patrocinadores desta versão
 [7]: https://bitbucket.org/AdempiereLBR/adempierelbr/pull-requests
 [8]: http://forum.kenos.com.br/
 [9]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/all
-[10]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201506
 [11]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201506.tgz
 [12]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201506_PG.tgz
-[13]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201507
 [14]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201507.tgz
 [15]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_PG.tgz
 [16]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201507_ORA.tgz
-[17]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201508
 [18]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201508.tgz
 [19]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_PG.tgz
 [20]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201508_ORA.tgz
-[21]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201509
 [22]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201509.tgz
 [23]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_PG.tgz
 [24]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201509_ORA.tgz
-[25]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201510
 [26]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201510.tgz
 [27]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_PG.tgz
 [28]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201510_ORA.tgz
-[29]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201511
 [30]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201511.tgz
 [31]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_PG.tgz
 [32]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201511_ORA.tgz
-[33]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201512
 [34]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201512.tgz
 [35]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_PG.tgz
 [36]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201512_ORA.tgz
-[37]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201601
 [38]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201601.tgz
 [39]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_PG.tgz
 [40]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201601_ORA.tgz
-[41]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201602
 [42]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201602.tgz
 [43]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_PG.tgz
 [44]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201602_ORA.tgz
-[45]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201603
 [46]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201603.tgz
 [47]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_PG.tgz
 [48]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201603_ORA.tgz
-[49]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201604
 [50]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201604.tgz
 [51]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_PG.tgz
 [52]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201604_ORA.tgz
-[53]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201605
 [54]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201605.tgz
 [55]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_PG.tgz
 [56]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201605_ORA.tgz
-[57]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201606
 [58]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201606.tgz
 [59]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_PG.tgz
 [60]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201606_ORA.tgz
-[61]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201607
 [62]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201607.tgz
 [63]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_PG.tgz
 [64]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201607_ORA.tgz
-[65]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201608
 [66]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201608.tgz
 [67]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201608_PG.tgz
 [68]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201608_ORA.tgz
-[69]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201609
 [70]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201609.tgz
 [71]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201609_PG.tgz
 [72]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201609_ORA.tgz
-[73]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201610
 [74]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201610.tgz
 [75]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_PG.tgz
 [76]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201610_ORA.tgz
-[77]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201705
 [78]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201705.tgz
 [79]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_PG.tgz
 [80]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201705_ORA.tgz
-[81]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201708
 [82]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
 [83]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
 [84]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz
-[85]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201708
 [86]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201708.tgz
 [87]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_PG.tgz
 [88]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201708_ORA.tgz
-[89]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201804
 [90]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201804.tgz
 [91]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201804_PG.tgz
-[92]: https://bitbucket.org/AdempiereLBR/adempierelbr/commits/tag/LBR-201809
-[93]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/LBR_201809.tgz
-[94]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/Seed_201809_PG.tgz
 [95]: https://bitbucket.org/AdempiereLBR/adempierelbr/downloads/
