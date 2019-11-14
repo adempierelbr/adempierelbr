@@ -123,7 +123,7 @@ do
     if [ -d ${FOLDER}/postgresql ]
     then
         cd ${FOLDER}/postgresql
-        find . -name '*.sql' -type f -exec basename {} \; | sort -u | sort -k1.1,1.12 -n >> /tmp/lisFS.txt
+        find . -name '*.sql' -type f | sort -u | sort -k1.1,1.12 -n | sed 's!.*/!!' >> /tmp/lisFS.txt
         cd ../..
     fi
 done
