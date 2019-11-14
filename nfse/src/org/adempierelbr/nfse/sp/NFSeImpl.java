@@ -855,4 +855,14 @@ public class NFSeImpl implements INFSe
 		
 		throw new Exception ("Erro na Emissão da Nota Fiscal de Serviço. Imprima a partir do Site da Prefeitura");
 	}	//	getReport
+	
+	/**
+	 * Cancel NFS-e
+	 * @param nf
+	 * @return
+	 */
+	public String cancel(MLBRNotaFiscal nf)
+	{		
+		return null;
+	}
 }	//	NFSeImpl

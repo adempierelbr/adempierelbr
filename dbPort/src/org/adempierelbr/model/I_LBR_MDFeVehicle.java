@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -22,9 +22,10 @@ import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LBR_MDFeVehicle
- *  @author Adempiere (generated) 
- *  @version Release 3.6.0LTS
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1
  */
+@SuppressWarnings("all")
 public interface I_LBR_MDFeVehicle 
 {
 
@@ -76,7 +77,7 @@ public interface I_LBR_MDFeVehicle
 	  */
 	public int getC_Region_ID();
 
-	public I_C_Region getC_Region() throws RuntimeException;
+	public org.compiere.model.I_C_Region getC_Region() throws RuntimeException;
 
     /** Column name C_SalesRegion_ID */
     public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
@@ -91,7 +92,7 @@ public interface I_LBR_MDFeVehicle
 	  */
 	public int getC_SalesRegion_ID();
 
-	public I_C_Region getC_SalesRegion() throws RuntimeException;
+	public org.compiere.model.I_C_Region getC_SalesRegion() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -122,6 +123,17 @@ public interface I_LBR_MDFeVehicle
 	  */
 	public boolean isActive();
 
+    /** Column name LBR_MDFeDriver_ID */
+    public static final String COLUMNNAME_LBR_MDFeDriver_ID = "LBR_MDFeDriver_ID";
+
+	/** Set MDFe Driver	  */
+	public void setLBR_MDFeDriver_ID (int LBR_MDFeDriver_ID);
+
+	/** Get MDFe Driver	  */
+	public int getLBR_MDFeDriver_ID();
+
+	public org.adempierelbr.model.I_LBR_MDFeDriver getLBR_MDFeDriver() throws RuntimeException;
+
     /** Column name LBR_MDFeVehicle_ID */
     public static final String COLUMNNAME_LBR_MDFeVehicle_ID = "LBR_MDFeVehicle_ID";
 
@@ -139,6 +151,19 @@ public interface I_LBR_MDFeVehicle
 
 	/** Get Owner Type	  */
 	public String getLBR_OwnerType();
+
+    /** Column name LBR_RENAVAM */
+    public static final String COLUMNNAME_LBR_RENAVAM = "LBR_RENAVAM";
+
+	/** Set RENAVAM.
+	  * Registro Nacional de Veículos Automotores (RENAVAM)
+	  */
+	public void setLBR_RENAVAM (String LBR_RENAVAM);
+
+	/** Get RENAVAM.
+	  * Registro Nacional de Veículos Automotores (RENAVAM)
+	  */
+	public String getLBR_RENAVAM();
 
     /** Column name LBR_RNTRC */
     public static final String COLUMNNAME_LBR_RNTRC = "LBR_RNTRC";

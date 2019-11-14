@@ -16,6 +16,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_MDFeUnloadDoc;
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.DB;
 import org.compiere.util.Msg;
@@ -28,6 +29,11 @@ import org.compiere.util.Msg;
  */
 public class MLBRMDFeUnloadDoc extends X_LBR_MDFeUnloadDoc
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = -5393317785289128296L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

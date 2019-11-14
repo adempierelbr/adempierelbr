@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -24,15 +24,15 @@ import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /** Generated Model for LBR_MDFeVehicle
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFeVehicle (Properties ctx, int LBR_MDFeVehicle_ID, String trxName)
@@ -76,9 +76,9 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
       return sb.toString();
     }
 
-	public I_C_Region getC_Region() throws RuntimeException
+	public org.compiere.model.I_C_Region getC_Region() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getC_Region_ID(), get_TrxName());	}
 
 	/** Set Region.
@@ -104,9 +104,9 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return ii.intValue();
 	}
 
-	public I_C_Region getC_SalesRegion() throws RuntimeException
+	public org.compiere.model.I_C_Region getC_SalesRegion() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -132,6 +132,31 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return ii.intValue();
 	}
 
+	public org.adempierelbr.model.I_LBR_MDFeDriver getLBR_MDFeDriver() throws RuntimeException
+    {
+		return (org.adempierelbr.model.I_LBR_MDFeDriver)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_MDFeDriver.Table_Name)
+			.getPO(getLBR_MDFeDriver_ID(), get_TrxName());	}
+
+	/** Set MDFe Driver.
+		@param LBR_MDFeDriver_ID MDFe Driver	  */
+	public void setLBR_MDFeDriver_ID (int LBR_MDFeDriver_ID)
+	{
+		if (LBR_MDFeDriver_ID < 1) 
+			set_Value (COLUMNNAME_LBR_MDFeDriver_ID, null);
+		else 
+			set_Value (COLUMNNAME_LBR_MDFeDriver_ID, Integer.valueOf(LBR_MDFeDriver_ID));
+	}
+
+	/** Get MDFe Driver.
+		@return MDFe Driver	  */
+	public int getLBR_MDFeDriver_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_MDFeDriver_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set MDFe Vehicle.
 		@param LBR_MDFeVehicle_ID MDFe Vehicle	  */
 	public void setLBR_MDFeVehicle_ID (int LBR_MDFeVehicle_ID)
@@ -152,8 +177,6 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return ii.intValue();
 	}
 
-	/** LBR_OwnerType AD_Reference_ID=1120179 */
-	public static final int LBR_OWNERTYPE_AD_Reference_ID=1120179;
 	/** TAC Aggregate = 0 */
 	public static final String LBR_OWNERTYPE_TACAggregate = "0";
 	/** TAC Independent = 1 */
@@ -175,6 +198,23 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return (String)get_Value(COLUMNNAME_LBR_OwnerType);
 	}
 
+	/** Set RENAVAM.
+		@param LBR_RENAVAM 
+		Registro Nacional de Veículos Automotores (RENAVAM)
+	  */
+	public void setLBR_RENAVAM (String LBR_RENAVAM)
+	{
+		set_Value (COLUMNNAME_LBR_RENAVAM, LBR_RENAVAM);
+	}
+
+	/** Get RENAVAM.
+		@return Registro Nacional de Veículos Automotores (RENAVAM)
+	  */
+	public String getLBR_RENAVAM () 
+	{
+		return (String)get_Value(COLUMNNAME_LBR_RENAVAM);
+	}
+
 	/** Set RNTRC.
 		@param LBR_RNTRC 
 		Registro Nacional dos Transportadores Rodoviários de Carga
@@ -192,8 +232,6 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return (String)get_Value(COLUMNNAME_LBR_RNTRC);
 	}
 
-	/** LBR_TruckType AD_Reference_ID=1120178 */
-	public static final int LBR_TRUCKTYPE_AD_Reference_ID=1120178;
 	/** Not Applicable = 00 */
 	public static final String LBR_TRUCKTYPE_NotApplicable = "00";
 	/** Open = 01 */
@@ -261,8 +299,6 @@ public class X_LBR_MDFeVehicle extends PO implements I_LBR_MDFeVehicle, I_Persis
 		return bd;
 	}
 
-	/** LBR_VehicleType AD_Reference_ID=1120177 */
-	public static final int LBR_VEHICLETYPE_AD_Reference_ID=1120177;
 	/** Truck = 01 */
 	public static final String LBR_VEHICLETYPE_Truck = "01";
 	/** Toco = 02 */

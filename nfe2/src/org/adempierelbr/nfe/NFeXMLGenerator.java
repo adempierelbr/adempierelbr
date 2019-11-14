@@ -145,6 +145,7 @@ import br.inf.portalfiscal.nfe.v400.TUf;
 import br.inf.portalfiscal.nfe.v400.TUfEmi;
 import br.inf.portalfiscal.nfe.v400.TVeiculo;
 import br.inf.portalfiscal.nfe.v400.Torig;
+import br.inf.portalfiscal.nfe.v6v.TUfCons;
 
 /**
  * 	Gera o arquivo XML
@@ -1130,6 +1131,8 @@ public class NFeXMLGenerator
 						comb.setPGNi(normalize (attribute.getLBR_PercGasI()));
 						comb.setVPart(normalize (attribute.getLBR_StartAmt()));
 						comb.setCODIF(attribute.getLBR_CODIF());
+						if (attribute.getLBR_UFC() != null)
+							comb.setUFCons(TUf.Enum.forString(attribute.getLBR_UFC().getName()));
 					}
 				}
 				
@@ -1259,9 +1262,9 @@ public class NFeXMLGenerator
 						icms10.setVICMS(normalize  (icmsTax.getlbr_TaxAmt()));
 						icms10.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS10.ModBCST.X_4);	//	FIXME: MVA %
 						
-						//	MVA - IVA
-//						if (nfl.getMVA)	//	FIXME
-//						icms10.setPMVAST(normalize2to4  (nfl.getMVA, 4));
+						//	MVA - VAM
+						if (nfl.getLBR_VAM() != null && nfl.getLBR_VAM().signum() == 1)
+							icms10.setPMVAST(normalize2to4  (nfl.getLBR_VAM()));
 						
 						//	Redução na BC
 						if (icmsSTTax.getlbr_TaxBase() != null 
@@ -1313,9 +1316,9 @@ public class NFeXMLGenerator
 						icms30.setCST(Det.Imposto.ICMS.ICMS30.CST.X_30);
 						icms30.setModBCST(InfNFe.Det.Imposto.ICMS.ICMS30.ModBCST.X_4);	//	FIXME: MVA %
 						
-						//	MVA - IVA
-//						if (nfl.getMVA)	//	FIXME
-//						icms10.setPMVAST(normalize2to4  (nfl.getMVA, 4));
+						//	MVA - VAM
+						if (nfl.getLBR_VAM() != null && nfl.getLBR_VAM().signum() == 1)
+							icms30.setPMVAST(normalize2to4  (nfl.getLBR_VAM()));
 						
 						//	Redução na BC
 						if (icmsSTTax.getlbr_TaxBase() != null 

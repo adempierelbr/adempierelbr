@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -22,15 +22,15 @@ import java.util.Properties;
 import org.compiere.model.*;
 
 /** Generated Model for LBR_MDFeLoad
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFeLoad extends PO implements I_LBR_MDFeLoad, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFeLoad (Properties ctx, int LBR_MDFeLoad_ID, String trxName)
@@ -72,9 +72,9 @@ public class X_LBR_MDFeLoad extends PO implements I_LBR_MDFeLoad, I_Persistent
       return sb.toString();
     }
 
-	public I_C_City getC_City() throws RuntimeException
+	public org.compiere.model.I_C_City getC_City() throws RuntimeException
     {
-		return (I_C_City)MTable.get(getCtx(), I_C_City.Table_Name)
+		return (org.compiere.model.I_C_City)MTable.get(getCtx(), org.compiere.model.I_C_City.Table_Name)
 			.getPO(getC_City_ID(), get_TrxName());	}
 
 	/** Set City.
@@ -100,9 +100,9 @@ public class X_LBR_MDFeLoad extends PO implements I_LBR_MDFeLoad, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_Region getC_Region() throws RuntimeException
+	public org.compiere.model.I_C_Region getC_Region() throws RuntimeException
     {
-		return (I_C_Region)MTable.get(getCtx(), I_C_Region.Table_Name)
+		return (org.compiere.model.I_C_Region)MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
 			.getPO(getC_Region_ID(), get_TrxName());	}
 
 	/** Set Region.

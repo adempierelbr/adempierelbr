@@ -16,6 +16,7 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_MDFeRoute;
 import org.compiere.util.Msg;
 
 /**
@@ -26,6 +27,11 @@ import org.compiere.util.Msg;
  */
 public class MLBRMDFeRoute extends X_LBR_MDFeRoute
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = -8028240045048739524L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

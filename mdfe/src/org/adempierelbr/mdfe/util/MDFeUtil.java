@@ -3,11 +3,16 @@ package org.adempierelbr.mdfe.util;
 import java.io.Writer;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.text.MaskFormatter;
 
 import org.adempierelbr.util.TextUtil;
 import org.compiere.util.DB;
+
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import br.inf.portalfiscal.mdfe.TProcEmi;
 
@@ -78,23 +83,23 @@ public class MDFeUtil
 	public static final String D7   = "1,2,3,4";
 	public static final String D8   = "01,1B,02,2D,2E,04,06,07,08,8B,09,10,11,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,55";
 
-	public static final String VERSION   = "1.00";
+	public static final String VERSION   = "3.00";
 	public static final TProcEmi.Enum EMISSAO_APLICATIVO_CONTRIB   = TProcEmi.X_0;
 	
 	public static final String HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 	public static final String STATUS = "STATUS";
 	
 	public static final String TYPE_RECEPCAO 		= "MDFeRecepcao";
+	public static final String TYPE_RECEPCAOSINC 	= "MDFeRecepcaoSinc";
 	public static final String TYPE_RETRECEPCAO 	= "MDFeRetRecepcao";
 	public static final String TYPE_RECEPCAOEVENTO 	= "MDFeRecepcaoEvento";
 	public static final String TYPE_CONSULTA 		= "MDFeConsulta";
+	public static final String TYPE_NAOENCERRADOS 	= "MDFeConsNaoEnc";
 	public static final String TYPE_STATUS 			= "MDFeStatusServico";
+	public static final String TYPE_QRCODEURL 		= "MDFeQRCodeURL";
 	
 	/**	MDFe Ambiente Único, registrado como SP	*/
 	public static final int MDFE_REGION				= 465;
-	
-	/**	Versão do CSD	*/
-	public static final String XSD_VERSION 			= "PL_MDFe_100a_NT012014";
 	
 	public static final String STATUS_AUTORIZADO 			= "100";
 	public static final String STATUS_CANCELADO 			= "101";
@@ -109,9 +114,12 @@ public class MDFeUtil
 	public static final String EVENTO_CANCELAMENTO 			= "110111";
 	public static final String EVENTO_ENCERRAMENTO 			= "110112";
 	public static final String EVENTO_INCLUSAO_CONDUTOR		= "110114";
+	public static final String EVENTO_INCLUSAO_DFE 			= "110115";
 	public static final String EVENTO_REGISTO_PASSAGEM 		= "310620";
 
 	public static final String ENCODING 					= "UTF-8";
+	
+	public static final String qrCode = "{0}?chMDFe={1}&tpAmb={2}";
 	
 	/**
 	 * 	Format Date and Time to XML Standard
@@ -130,7 +138,7 @@ public class MDFeUtil
 	 */
 	public static String formatTime (Timestamp ts)
 	{
-		return TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ss");
+		return TextUtil.timeToString (ts, "yyyy-MM-dd'T'HH:mm:ssXXX");
 	}	//	formatTime
 	
 	/**
@@ -148,9 +156,29 @@ public class MDFeUtil
 	 * 	@param sw
 	 * 	@return String
 	 */
+	public static String getWrapped (String s)
+	{
+		return getWrapped(new StringBuilder(s), "wrapper", null);
+	}	//	getWrapped
+
+	/**
+	 * 	Return wrapped XML
+	 * 	@param sw
+	 * 	@return String
+	 */
 	public static String getWrapped (StringBuilder sb)
 	{
-		return HEADER + "<wrapper>" + removeNS (sb) + "</wrapper>";
+		return getWrapped(sb, "wrapper", null);
+	}	//	getWrapped
+
+	/**
+	 * 	Return wrapped XML
+	 * 	@param sw
+	 * 	@return String
+	 */
+	public static String getWrapped (StringBuilder sb, String tagName, String xmlns)
+	{
+		return HEADER + "<" + tagName + (xmlns != null && !xmlns.trim().isEmpty() ? " xmlns=\"" + xmlns + "\"" : "" ) + ">" + removeNS (sb) + "</" + tagName + ">";
 	}	//	getWrapped
 
 	/**
@@ -211,7 +239,7 @@ public class MDFeUtil
 		if (key == null)
 			return "";
 		//
-		return format ("####.####.####.####.####.####.####.####.####.####.####", TextUtil.toNumeric (key));
+		return format ("#### #### #### #### #### #### #### #### #### #### ####", TextUtil.toNumeric (key));
 	}	//	formatMDFeKey
 	
 	/**
@@ -277,4 +305,15 @@ public class MDFeUtil
 		}
 		
 	}	//	format
+	
+	/**
+	 * 		QR Code Parameters
+	 * 	@return HashMap with parameters of QR Code
+	 */
+	public static Map<EncodeHintType, Object> getQRCodeParam ()
+	{
+		final Map<EncodeHintType, Object> params = new HashMap<>();
+		params.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+		return params;
+	}
 }	//	MDFeUtil

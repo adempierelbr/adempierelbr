@@ -13,17 +13,20 @@
  *****************************************************************************/
 package org.adempierelbr.process;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.model.POWrapper;
 import org.adempierelbr.mdfe.util.MDFeUtil;
 import org.adempierelbr.model.MLBRDigitalCertificate;
 import org.adempierelbr.model.MLBRMDFe;
@@ -31,21 +34,17 @@ import org.adempierelbr.model.MLBRNFeWebService;
 import org.adempierelbr.util.NFeUtil;
 import org.adempierelbr.util.SignatureUtil;
 import org.adempierelbr.util.TextUtil;
-import org.adempierelbr.wrapper.I_W_C_City;
 import org.compiere.model.MAttachment;
-import org.compiere.model.MCity;
 import org.compiere.model.MOrgInfo;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.CLogger;
 
-import br.inf.portalfiscal.mdfe.EnviMDFeDocument;
 import br.inf.portalfiscal.mdfe.MDFeDocument;
-import br.inf.portalfiscal.mdfe.RetEnviMDFeDocument;
-import br.inf.portalfiscal.mdfe.TEnviMDFe;
+import br.inf.portalfiscal.mdfe.RetMDFeDocument;
 import br.inf.portalfiscal.mdfe.TMDFe;
-import br.inf.portalfiscal.mdfe.TRetEnviMDFe;
-import br.inf.portalfiscal.www.mdfe.wsdl.mdferecepcao.MDFeRecepcaoStub;
+import br.inf.portalfiscal.mdfe.TRetMDFe;
+import br.inf.portalfiscal.www.mdfe.wsdl.mdferecepcaosinc.MDFeRecepcaoSincStub;
 
 /**
  * 		Retorno do Envio do MDFe
@@ -119,7 +118,6 @@ public class MDFeRecepcao extends SvrProcess
 		mdfe.setDateDoc	(new Timestamp (System.currentTimeMillis()));
 		
 		//	Gera o XML
-//		StringBuilder xml = mdfe.getXML();
 		MDFeDocument mdfeDoc = mdfe.getMDFe();
 		TMDFe tMDFe = mdfeDoc.getMDFe();
 
@@ -127,74 +125,108 @@ public class MDFeRecepcao extends SvrProcess
 		MOrgInfo oi = MOrgInfo.get(mdfe.getCtx(), mdfe.getAD_Org_ID(), null);
 		new SignatureUtil (oi, SignatureUtil.RECEPCAO_MDFE).sign (mdfeDoc, tMDFe.newCursor());
 		
-		EnviMDFeDocument mdFeDocument = EnviMDFeDocument.Factory.newInstance();
-		TEnviMDFe enviMDFe = mdFeDocument.addNewEnviMDFe();
-		enviMDFe.setVersao(MDFeUtil.VERSION);
-		enviMDFe.setIdLote(mdfe.getDocumentNo());
-		enviMDFe.setMDFe(tMDFe);
+		StringBuilder sb = MDFeUtil.removeNS (new StringBuilder ("<![CDATA[" + encode (compress (mdfeDoc.xmlText(NFeUtil.getXmlOpt ()))) + "]]>"));
 		
-		StringBuilder sb = MDFeUtil.removeNS (new StringBuilder (mdFeDocument.xmlText(NFeUtil.getXmlOpt ())));
-		
-//		ValidaXML.ValidaDocEx (MDFeUtil.HEADER + sb.toString(), MDFeUtil.XSD_VERSION + "/enviMDFe_v1.00.xsd");
+		//	Validate document
+		NFeUtil.validate (mdfeDoc);
 		
 		//	XML
-		XMLStreamReader data = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(MDFeUtil.getWrapped (sb)));
+		String wrapped = MDFeUtil.getWrapped (sb, "mdfeDadosMsg", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc");
+		XMLStreamReader data = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(wrapped));
 
 		//	Prepara a Transmissão
 		MLBRDigitalCertificate.setCertificate (p_ctx, mdfe.getAD_Org_ID());
 		
-		I_W_C_City city = POWrapper.create (new MCity (p_ctx, MOrgInfo.get(p_ctx, mdfe.getAD_Org_ID(), null).getC_Location().getC_City_ID(), null), I_W_C_City.class);
-		
-		//	Cabeçalho
-		MDFeRecepcaoStub.MdfeCabecMsg header = new MDFeRecepcaoStub.MdfeCabecMsg();
-		header.setCUF((city.getlbr_CityCode()+"").substring(0, 2));
-		header.setVersaoDados(MDFeUtil.VERSION);
-		
-		MDFeRecepcaoStub.MdfeCabecMsgE headerE = new MDFeRecepcaoStub.MdfeCabecMsgE();
-		headerE.setMdfeCabecMsg(header);
+		MLBRNFeWebService url = MLBRNFeWebService.get (MDFeUtil.TYPE_RECEPCAOSINC, mdfe.getlbr_NFeEnv(), MDFeUtil.VERSION, MDFeUtil.MDFE_REGION);
+		if (url == null)
+			throw new Exception ("URL for MDF-e not found");
+
+		final StringBuilder result = new StringBuilder();
 		
 		//	Conteúdo
-		MDFeRecepcaoStub.MdfeDadosMsg content = MDFeRecepcaoStub.MdfeDadosMsg.Factory.parse (data);
+		MDFeRecepcaoSincStub.MdfeDadosMsg content = MDFeRecepcaoSincStub.MdfeDadosMsg.Factory.parse (data);
 		
 		//	Consulta
-		MDFeRecepcaoStub.setAmbiente(MLBRNFeWebService.get (MDFeUtil.TYPE_RECEPCAO, mdfe.getlbr_NFeEnv(), MDFeUtil.VERSION, MDFeUtil.MDFE_REGION));
-		MDFeRecepcaoStub stub = new MDFeRecepcaoStub();
+		MDFeRecepcaoSincStub stub = new MDFeRecepcaoSincStub(url.getURL());
 		
-		StringBuilder result = new StringBuilder (MDFeUtil.HEADER + stub.mdfeRecepcaoLote (content, headerE).getExtraElement().toString());
-
+		result.append(MDFeUtil.HEADER + stub.mdfeRecepcao (content).getExtraElement().toString());
+		
 		s_log.fine (result.toString());
 
-		TRetEnviMDFe ret = RetEnviMDFeDocument.Factory.parse (result.toString()).getRetEnviMDFe();
-					
-		mdfe.setlbr_NFeStatus(ret.getCStat());
-		mdfe.setlbr_NFeAnswerStatus(ret.getCStat() + "-" + ret.getXMotivo());
+		TRetMDFe ret = RetMDFeDocument.Factory.parse (result.toString()).getRetMDFe();
 		
-		if (MDFeUtil.STATUS_RECEBIDO.equals (ret.getCStat()) && ret.getInfRec() != null)
+		if (MDFeUtil.STATUS_AUTORIZADO.equals (ret.getCStat()) && ret.getProtMDFe() != null && ret.getProtMDFe().getInfProt() != null)
 		{
-			String key = tMDFe.getInfMDFe().getId().replace("MDFe", "");
+			mdfe.setlbr_NFeStatus(ret.getProtMDFe().getInfProt().getCStat());
+			mdfe.setlbr_NFeAnswerStatus(ret.getProtMDFe().getInfProt().getCStat() + "-" + ret.getProtMDFe().getInfProt().getXMotivo());
 			//
-			mdfe.setlbr_NFeID(key);
-			mdfe.setlbr_NFeRecID (ret.getInfRec().getNRec());
-			mdfe.setDateTrx (TextUtil.stringToTime (ret.getInfRec().getDhRecbto().toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+			mdfe.setlbr_NFeID(ret.getProtMDFe().getInfProt().getChMDFe());
+			mdfe.setDateTrx (TextUtil.stringToTime (ret.getProtMDFe().getInfProt().getDhRecbto().toString(), "yyyy-MM-dd'T'HH:mm:ss"));
 			
-			//	Refresh
-			if (mdfe.getAttachment(true) != null)
-				mdfe.getAttachment(false).delete(true);
+			if (MDFeUtil.STATUS_AUTORIZADO.equals (ret.getProtMDFe().getInfProt().getCStat()))
+			{
+				if (ret.getProtMDFe().getInfProt().getNProt() != null)
+					mdfe.setlbr_NFeProt(ret.getProtMDFe().getInfProt().getNProt());
+				
+				if (ret.getProtMDFe().getInfProt().getDigVal() != null)
+					mdfe.setlbr_DigestValue(ret.getProtMDFe().getInfProt().xgetDigVal().getStringValue());
+				
+				//	Add Attachment Entry
+				MAttachment attachment = mdfe.createAttachment();
+				//
+				attachment.addEntry (new File (TextUtil.generateTmpFile (result.toString(), mdfe.getlbr_NFeID() + "-pro-rec.xml")));
+				attachment.save();
+				
+				attachment.addEntry (new File (TextUtil.generateTmpFile (MDFeUtil.HEADER + mdfeDoc.xmlText(NFeUtil.getXmlOpt ()), mdfe.getlbr_NFeID() + "-mdfe.xml")));
+				attachment.save();
+				
+				mdfe.setProcessed(true);
+				mdfe.setDocStatus(MLBRMDFe.DOCSTATUS_Completed);
+				mdfe.setDocAction(MLBRMDFe.DOCACTION_Close);
+			}
 			
-			//	Add Attachment Entry
-			MAttachment attachment = mdfe.createAttachment(true);
-			attachment.addEntry (new File (TextUtil.generateTmpFile (MDFeUtil.HEADER + sb.toString(), key + "-mdfe.xml")));
-			attachment.save();
-			
-			mdfe.setProcessed(true);
-			mdfe.setDocAction(MLBRMDFe.DOCACTION_Complete);
-			mdfe.setDocStatus(MLBRMDFe.DOCSTATUS_WaitingConfirmation);
+			else
+			{
+				mdfe.setProcessed(false);
+				mdfe.setDocStatus(MLBRMDFe.DOCSTATUS_InProgress);
+				mdfe.setDocAction(MLBRMDFe.DOCACTION_Complete);
+			}
 		}
 		
 		else
 		{
-			mdfe.setDocAction(MLBRMDFe.DOCACTION_Complete);
-			mdfe.setDocStatus(MLBRMDFe.DOCSTATUS_Invalid);
-		}
+			mdfe.setlbr_NFeStatus(ret.getCStat());
+			mdfe.setlbr_NFeAnswerStatus(ret.getCStat() + "-" + ret.getXMotivo());
+			
+			/**
+			 * 		Para estado Em Processamento, 
+			 * 	o documento deve continuar processado, para outros 
+			 * 	deve ser liberado novamente para alteração.
+			 */
+			if (!MDFeUtil.STATUS_EM_PROCESSAMENTO.equals (ret.getCStat()))
+			{
+				mdfe.setProcessed(false);
+				mdfe.setDocStatus(MLBRMDFe.DOCSTATUS_InProgress);
+				mdfe.setDocAction(MLBRMDFe.DOCACTION_Complete);
+			}
+		}	
 	}	//	getReturn
+	
+
+	private static String encode(byte[] compress)
+	{  
+		byte[] encoded = Base64.getEncoder().encode(compress);  
+		return new String(encoded);  
+	}  
+	
+	public static byte[] compress(String data) throws IOException 
+	{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
+		GZIPOutputStream gzip = new GZIPOutputStream(bos);
+		gzip.write(data.getBytes());
+		gzip.close();
+		byte[] compressed = bos.toByteArray();
+		bos.close();
+		return compressed;
+	}
 }	//	RetRecepcao

@@ -16,6 +16,8 @@ package org.adempierelbr.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempierelbr.model.X_LBR_MDFeSeal;
+
 /**
  * 		Model for MDF-e Seal
  * 
@@ -24,6 +26,11 @@ import java.util.Properties;
  */
 public class MLBRMDFeSeal extends X_LBR_MDFeSeal
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = 5837101320408030497L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

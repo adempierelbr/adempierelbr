@@ -262,7 +262,7 @@ public class PrintFromXML extends SvrProcess
 				reportName = process.getJasperReport();
 			
 			extension = "mdfe.xml";
-			datePattern = "yyyy-MM-dd'T'HH:mm:ss";
+			datePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
 		}
 		
 		//	Lote da Nota Fiscal Eletrônica
@@ -511,7 +511,7 @@ public class PrintFromXML extends SvrProcess
 	{
 		//	MDFe
 		if (reportName.startsWith("DAMDFeRetratoA4"))
-			return new String[]{"DAMDFeRetratoA4_Sub_ValePedagio.jasper", "DAMDFeRetratoA4_Sub_Motoristas.jasper"};
+			return new String[]{};
 		
 		// NF-e Landscape
 		if (reportName.startsWith("DanfeMainLandscapeA4"))

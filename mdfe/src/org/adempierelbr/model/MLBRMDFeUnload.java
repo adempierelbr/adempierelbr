@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempierelbr.model.MLBRNotaFiscal;
+import org.adempierelbr.model.X_LBR_MDFeUnload;
 import org.adempierelbr.util.BPartnerUtil;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MTable;
@@ -31,6 +33,11 @@ import org.compiere.model.X_C_City;
  */
 public class MLBRMDFeUnload extends X_LBR_MDFeUnload
 {
+	/**
+	 * 	Serial
+	 */
+	private static final long serialVersionUID = -3586002090546425444L;
+
 	/**************************************************************************
 	 *  Default Constructor
 	 *  @param Properties ctx

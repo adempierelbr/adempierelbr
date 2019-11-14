@@ -1,6 +1,6 @@
 /******************************************************************************
- * Product: AdempiereLBR ERP & CRM Smart Business Solution                    *
- * Copyright (C) 1999-2007 ComPiere, Inc. All Rights Reserved.                *
+ * Product: iDempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 1999-2012 ComPiere, Inc. All Rights Reserved.                *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
  * by the Free Software Foundation. This program is distributed in the hope   *
@@ -17,21 +17,23 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempierelbr.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.model.*;
+import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for LBR_MDFeToll
- *  @author ADempiereLBR (generated) 
- *  @version Release 3.6.0LTS - $Id$ */
+ *  @author iDempiere (generated) 
+ *  @version Release 4.1 - $Id$ */
 public class X_LBR_MDFeToll extends PO implements I_LBR_MDFeToll, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20140204L;
+	private static final long serialVersionUID = 20170626L;
 
     /** Standard Constructor */
     public X_LBR_MDFeToll (Properties ctx, int LBR_MDFeToll_ID, String trxName)
@@ -74,6 +76,26 @@ public class X_LBR_MDFeToll extends PO implements I_LBR_MDFeToll, I_Persistent
       return sb.toString();
     }
 
+	/** Set Amount.
+		@param Amount 
+		Amount in a defined currency
+	  */
+	public void setAmount (BigDecimal Amount)
+	{
+		set_Value (COLUMNNAME_Amount, Amount);
+	}
+
+	/** Get Amount.
+		@return Amount in a defined currency
+	  */
+	public BigDecimal getAmount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set MDFe Toll.
 		@param LBR_MDFeToll_ID MDFe Toll	  */
 	public void setLBR_MDFeToll_ID (int LBR_MDFeToll_ID)
@@ -99,8 +121,10 @@ public class X_LBR_MDFeToll extends PO implements I_LBR_MDFeToll, I_Persistent
 		return (org.adempierelbr.model.I_LBR_MDFe)MTable.get(getCtx(), org.adempierelbr.model.I_LBR_MDFe.Table_Name)
 			.getPO(getLBR_MDFe_ID(), get_TrxName());	}
 
-	/** Set Manifesto Eletronico de Documentos.
-		@param LBR_MDFe_ID Manifesto Eletronico de Documentos	  */
+	/** Set MDF-e.
+		@param LBR_MDFe_ID 
+		Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public void setLBR_MDFe_ID (int LBR_MDFe_ID)
 	{
 		if (LBR_MDFe_ID < 1) 
@@ -109,8 +133,9 @@ public class X_LBR_MDFeToll extends PO implements I_LBR_MDFeToll, I_Persistent
 			set_Value (COLUMNNAME_LBR_MDFe_ID, Integer.valueOf(LBR_MDFe_ID));
 	}
 
-	/** Get Manifesto Eletronico de Documentos.
-		@return Manifesto Eletronico de Documentos	  */
+	/** Get MDF-e.
+		@return Manifesto Eletrônico de Documentos Fiscais
+	  */
 	public int getLBR_MDFe_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_LBR_MDFe_ID);
